@@ -4,7 +4,7 @@ shared extension class Something<out X>(X this)
     shared extension X value = this;
     
     shared actual Boolean defined { 
-        return true 
+        return true;
     }
     
 }

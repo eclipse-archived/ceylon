@@ -53,7 +53,7 @@ shared class Creature(String name, String description, Location location,
 	doc "Override this to implement special 
 	     rules for commanding the creature"
 	shared Boolean cooperative(Direction direction) {
-		return true
+		return true;
 	}
 	
 	doc "Override this to do special things

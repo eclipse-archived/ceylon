@@ -3,7 +3,7 @@ shared abstract class Component() {
     OpenList<Observer> observers = none;
     
     shared Observer[] currentObservers {
-    	return observers
+    	return observers;
     }
     
     shared void addObserver(Observer o)() {
@@ -11,7 +11,7 @@ shared abstract class Component() {
         void remove() {
         	observers.remove(o);
         }
-        return remove
+        return remove;
     }
     
     shared void fire(Event event) {

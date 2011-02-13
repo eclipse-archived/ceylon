@@ -9,7 +9,7 @@ shared object none {
         
         shared actual Gettable<X?> value(Natural index) {
             X? nullValue = null;
-            return nullValue 
+            return nullValue;
         }
         
     }

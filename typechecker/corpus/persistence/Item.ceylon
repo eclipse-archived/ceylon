@@ -16,7 +16,7 @@ shared class Item(Order order, Product product, Natural quantity) {
 	
 	transient
 	shared Float price {
-		return product.price*quantity
+		return product.price*quantity;
 	}
 	
 }

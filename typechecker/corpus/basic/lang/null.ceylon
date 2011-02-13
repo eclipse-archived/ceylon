@@ -5,12 +5,12 @@ shared object null
     shared extension object matcher 
             satisfies Matcher<Object> {
         shared actual Boolean matches(Object value) {
-            return false
+            return false;
         }
     }
     
     shared extension Nothing<X> nothing<X>() {
-        return Nothing<X>()
+        return Nothing<X>();
     }
      
 }

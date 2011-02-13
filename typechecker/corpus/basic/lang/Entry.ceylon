@@ -11,7 +11,7 @@ shared class Entry<out U, out V>(U key, V value)
     shared V value = value;
     
     shared actual Boolean equals(Entry<U,V> that) {
-        return this.key==that.key && this.value==that.value
+        return this.key==that.key && this.value==that.value;
     }
     
     shared actual Integer hash = 0; 

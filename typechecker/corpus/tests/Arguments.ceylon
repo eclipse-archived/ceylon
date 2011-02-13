@@ -57,7 +57,7 @@ class Arguments() {
 	class Varargs() {
 	
 		String join(String sep, String... strings) {
-			return (sep+" ").join(strings)
+			return (sep+" ").join(strings);
 		}
 		
 		String methodResultWithPositionalVarargs = join(",", "foo", "bar"); 
@@ -83,8 +83,8 @@ class Arguments() {
 		}
 		
 		logLazily() message ("hello");
-		logLazily() message { return "hello" };
-		logLazily { String message() { return "hello" } };
+		logLazily() message { return "hello"; };
+		logLazily { String message() { return "hello"; } };
 	
 	
 		shared void from<Y>(Y initial, 
@@ -104,30 +104,30 @@ class Arguments() {
 			perform (Natural y) { log.info(y); };
 		
 		from(0) 
-			until(Natural y) { return y==10 } 
-			each(Natural y) { return y+2 } 
+			until(Natural y) { return y==10; } 
+			each(Natural y) { return y+2; } 
 			perform(Natural y) { log.info(y); };
 		
 		from {
 			initial=0; 
-			Boolean until(Natural y) { return y==10 } 
-			Natural each(Natural y) { return y+2 } 
+			Boolean until(Natural y) { return y==10; } 
+			Natural each(Natural y) { return y+2; } 
 			void perform(Natural y) { log.info(y); }
 		};
 		
 		class Processor<X,Y>(Y process(X x)) {
-			shared Y handle(X x) { return process(x).strip }
+			shared Y handle(X x) { return process(x).strip; }
 		}
 		
 		Processor<Float,String> p = 
 			Processor() process (Float f) ($f);
 		
 		Processor<Float,String> q = 
-			Processor() process (Float f) { return $f };
+			Processor() process (Float f) { return $f; };
 		
 		Processor<Float,String> r = 
 			Processor { 
-				String process (Float f) { return $f }
+				String process (Float f) { return $f; }
 			};
 			
 	}
@@ -154,14 +154,14 @@ class Arguments() {
 		
 		printName {
 			Name name {
-				return Name("Gavin", "King")
+				return Name("Gavin", "King");
 			}
 		};
 		
 		printName {
 			object name extends Name("Gavin", "King") {
-				actual String first { return super.first.uppercase }
-				actual String last { return super.last.uppercase }
+				actual String first { return super.first.uppercase; }
+				actual String last { return super.last.uppercase; }
 			}
 		};
 		

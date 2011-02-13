@@ -7,6 +7,6 @@ shared interface EnumerableCorrespondence<U,V>
                 satisfies Correspondence<U,V> {
             //TODO...
         }
-        return correspondence
+        return correspondence;
     }
 }

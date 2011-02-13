@@ -17,7 +17,7 @@ shared T[] join<T>(T[]... sequences)
                     }
                 }
             }
-            return result
+            return result;
         }
         shared actual Gettable<T?> value(Natural index) {
             T? value {
@@ -25,20 +25,20 @@ shared T[] join<T>(T[]... sequences)
                 for (T[] s in sequences) {
                     if (exists Natural last = s.lastIndex) {
                         if (i<=last) {
-                            return s[i]
+                            return s[i];
                         }
                         else {
                             i-=last;
                         }
                     }
                 }
-                return null
+                return null;
                 
             }
-            return value
+            return value;
         }
     }
     
-    return copy(joinedSequence) //take a shallow copy
+    return copy(joinedSequence); //take a shallow copy
     
 }

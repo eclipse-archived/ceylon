@@ -9,7 +9,7 @@ shared interface Category {
          Return |true| iff all the given objects belong to the 
          category."
     shared default Boolean contains(Object... objects) {
-        return forAll(Object obj in objects) every (contains(obj))
+        return forAll(Object obj in objects) every (contains(obj));
     }
 
 }

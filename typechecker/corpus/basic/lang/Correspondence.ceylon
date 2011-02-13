@@ -14,7 +14,7 @@ shared interface Correspondence<in U, out V>
             -> "if no value is defined for one of the given 
                 keys")
     shared default V[] values(U... keys) {
-        return from (U key in keys) select (this[key])
+        return from (U key in keys) select (this[key]);
     }
     
     doc "Binary iterated lookup operator |x[keys]|. Return an iterator
@@ -23,14 +23,14 @@ shared interface Correspondence<in U, out V>
             -> "if no value is defined for one of the given 
                 keys")
     shared default Iterable<V> values(Iterable<U> keys) {
-        return from (U key in keys) select (this[key])
+        return from (U key in keys) select (this[key]);
     }
     
     doc "Determine if there are values defined for the given keys.
          Return |true| iff there are values defined for all the
          given keys."
     shared default Boolean defines(U... keys) {
-        return forAll (U key in keys) every (this[key] exists)
+        return forAll (U key in keys) every (this[key] exists);
     }
     
 }

@@ -4,15 +4,15 @@ shared abstract class IdentifiableObject()
 
     doc "The |Class| of the instance."
     shared actual Class<subtype> type {
-        throw
+        throw;
     }
     
     shared default actual Boolean equals(IdentifiableObject that) {
-        return this===that
+        return this===that;
     }
     
     shared default actual Integer hash {
-        return identityHash(this)
+        return identityHash(this);
     }
         
 }

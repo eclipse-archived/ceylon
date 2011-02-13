@@ -3,5 +3,5 @@ shared annotation {
     occurs = onceEachElement; 
 }
 Transactional tx(Boolean requiresNew = false) {
-    return Transactional(requiresNew)
+    return Transactional(requiresNew);
 }

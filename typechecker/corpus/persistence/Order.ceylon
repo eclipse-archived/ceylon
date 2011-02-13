@@ -43,17 +43,17 @@ shared class Order() {
 	shared Item addItem(Product product, Natural quantity=1) {
 		Item item = Item(this, product, quantity);
 		itemList.add(item);
-		return item
+		return item;
 	}
 	
 	transient
 	shared List<Item> items {
-		return itemList
+		return itemList;
 	}
 	
 	transient
 	shared Float total {
-		return Math.sum(items[].price)
+		return Math.sum(items[].price);
 	}
 	
 	

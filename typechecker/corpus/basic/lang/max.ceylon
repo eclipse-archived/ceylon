@@ -6,5 +6,5 @@ shared X max<X>(X x, X... xs)
             max:=y;
         }
     }
-    return max
+    return max;
 }

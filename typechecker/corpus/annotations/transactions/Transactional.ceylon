@@ -10,18 +10,18 @@ shared class Transactional(Boolean requiresNew)
         method.intercept() 
                 onInvoke(X instance, T proceed(P... args), P... args) {
             if (currentTransaction.inProcess || !requiresNew) {
-                return proceed(args)
+                return proceed(args);
             }
             else {
                 currentTransaction.begin();
                 try {
                     T result = proceed(args);
                     currentTransaction.commit();
-                    return result
+                    return result;
                 }
                 catch (Exception e) {
                     currentTransaction.rollback();
-                    throw e
+                    throw e;
                 }
             }
         };

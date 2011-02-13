@@ -12,7 +12,7 @@ class ControlStructures() {
 		for (String name in names) {
 			if (name == "Gavin") {
 				log.info("found");
-				break
+				break;
 			}
 		}
 		fail {
@@ -24,8 +24,8 @@ class ControlStructures() {
 		}
 		
 		for (Natural n in 1..5) {
-		    if (n==2) { continue }
-		    if (n==4) { break }
+		    if (n==2) { continue; }
+		    if (n==4) { break; }
 		}
 		
 	}
@@ -153,10 +153,10 @@ class ControlStructures() {
 		}
 		
 		try ( Session s = Session() ) {
-			throw Exception()
+			throw Exception();
 		}
 		catch (Exception e) {
-			throw e
+			throw e;
 		}
 		
 		try ( Session s = Session() ) {

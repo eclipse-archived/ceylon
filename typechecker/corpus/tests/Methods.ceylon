@@ -7,7 +7,7 @@ class Methods() {
 		void methodWithParams(Whole amount, Object something) {}
 		
 		void methodWithMultipleParamLists()(Whole amount, Object something) {
-			return this.methodWithParams
+			return this.methodWithParams;
 		}
 		
 		formal void abstractMethod();
@@ -71,10 +71,10 @@ class Methods() {
 		
 		String methodWithMultipleParamLists(Boolean b)(Whole amount) {
 			if (b) {
-				return this.methodWithParam
+				return this.methodWithParam;
 			}
 			else {
-				throw
+				throw;
 			}
 		}
 		

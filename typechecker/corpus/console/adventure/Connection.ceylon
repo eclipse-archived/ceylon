@@ -11,7 +11,7 @@ shared class Connection(String description, Direction direction, Location to) {
 	doc "Override this to implement special 
 	     rules navigating the connection."
 	shared Boolean open() {
-		return true
+		return true;
 	}
 		
 	shared void go(Adventure game) {

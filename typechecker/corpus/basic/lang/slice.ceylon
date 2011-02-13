@@ -10,30 +10,30 @@ shared T[] slice<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
             if (exists Natural last = sequence.lastIndex) {
                 if (exists to) {
                     if (to<last) {
-                        return to-from
+                        return to-from;
                     }
                     else {
-                        return last-from
+                        return last-from;
                     }
                 }
             }
             else {
-                return null
+                return null;
             }
         } 
         shared actual Gettable<T?> value(Natural index) {
             T? value {
                 if (exists to) {
                     if (index>to) {
-                        return null
+                        return null;
                     }
                 }
-                return sequence[index+from]
+                return sequence[index+from];
             }
-            return value
+            return value;
         }
      }
 
-    return copy(rangeSequence) //take a shallow copy
+    return copy(rangeSequence); //take a shallow copy
     
 }

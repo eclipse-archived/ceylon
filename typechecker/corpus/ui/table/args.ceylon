@@ -6,14 +6,14 @@ Table args {
 		title = "name";
 		width = 5;
         String content(Natural row) {
-            return process.switches[row].name
+            return process.switches[row].name;
         }
 	},
 	Column {
 		title = "value";
 		width = 5;
         String content(Natural row) {
-            return process.switches[row].value ? ""
+            return process.switches[row].value ? "";
         }
 	}
 }

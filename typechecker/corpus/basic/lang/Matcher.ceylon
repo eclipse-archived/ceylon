@@ -9,15 +9,15 @@ shared interface Matcher<in X> {
             given Y abstracts X {
         if (exists y) {
             if (is X y) {
-                return matches(y)
+                return matches(y);
             }
             else {
-                return false
+                return false;
             }
         }
         else {
             //match only if this is a case(null)
-            return this==null.matcher
+            return this==null.matcher;
         }
     }
         

@@ -2,19 +2,19 @@ class Generics() {
 
     class TypeWithParameter<X>(X init) {
         shared variable X x := init;
-        shared X process(X input) { return input }
+        shared X process(X input) { return input; }
     }
     
     class TypeWithMultipleParameters<X,Y>(Map<X,Y> map) {
-        shared Y y(X x) { return map[y] }
+        shared Y y(X x) { return map[y]; }
     }
     
     class TypeWithInParameter<in X>(String toString(X x)) {
-        shared String consume(X x) { return toString(x) }
+        shared String consume(X x) { return toString(x); }
     }
     
     class TypeWithOutParameter<out X>(X x) {
-        shared X produce() { return x }
+        shared X produce() { return x; }
         shared X x = x;
     }
     
@@ -45,21 +45,21 @@ class Generics() {
     }
 
 
-    X methodWithParameter<X>(X x) { return x }
+    X methodWithParameter<X>(X x) { return x; }
     
-    Entry<X,Y> methodWithMultipleParameters<X,Y>(X x, Y y) { return Entry(x, y) }
+    Entry<X,Y> methodWithMultipleParameters<X,Y>(X x, Y y) { return Entry(x, y); }
     
     String methodWithUpperBoundParameter<X>(X produce())
-        given X satisfies String { return produce() }
+        given X satisfies String { return produce(); }
 
     void methodWithLowerBoundParameter<X>(void accept(X x), X xx)
         given X abstracts String { accept(xx); }
         
     X methodWithConstructableParameter<X>(String s, Natural n)
-        given X(String s, Natural n) { return X(s,n) }
+        given X(String s, Natural n) { return X(s,n); }
 
     String methodWithMultipleParameterConstraints<X>(String s, Natural n)
-        given X(String s, Natural n) satisfies String { return X(s,n) }
+        given X(String s, Natural n) satisfies String { return X(s,n); }
 
 
     interface Processor<out X, in Y> {
@@ -68,11 +68,11 @@ class Generics() {
     
     class ProcessorImpl<out X, in Y>(X p(Y y)) satisfies Processor<X,Y> {
         shared actual X process(Y y) {
-            return p(y)
+            return p(y);
         }
     }
     
-    String stringify<Y>(Y y) given Y satisfies Number { return $y }
+    String stringify<Y>(Y y) given Y satisfies Number { return $y; }
     String zero = stringify<Natural>(0);
 
     Processor<String, Natural> p = ProcessorImpl<String, Natural>(stringify);

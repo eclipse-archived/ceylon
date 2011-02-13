@@ -20,15 +20,15 @@ shared class Location(String name, String description, Connection... connections
 	}
 		
 	shared List<String> thingNames {
-		return thingByName.keys
+		return thingByName.keys;
 	}
 		
 	shared Bag<Thing> things {
-		return thingByName.values
+		return thingByName.values;
 	}
 		
 	shared Thing? thing(String name) {
-		return thingByName.valueOrNull(name)
+		return thingByName.valueOrNull(name);
 	}
 		
 	shared void put(Thing thing) {

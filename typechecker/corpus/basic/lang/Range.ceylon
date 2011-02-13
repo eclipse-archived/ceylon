@@ -20,12 +20,12 @@ shared class Range<X>(X first, X last)
                     select (value)*/
     	return from (Entry<Natural,X> e in this) 
                     where (e.key%stepSize == 0)
-                    select (e.value)
+                    select (e.value);
     }
     
     shared Natural? index(X x) {
         if (x<first || x>last) {
-            return null
+            return null;
         }
         else {
             //optimize this for numbers!
@@ -35,7 +35,7 @@ shared class Range<X>(X first, X last)
                 ++index;
                 ++value;
             }
-            return index
+            return index;
         }
     }
     
@@ -44,17 +44,17 @@ shared class Range<X>(X first, X last)
                 satisfies Iterator<X> {
             shared actual X? head { 
                 if (x>last) { 
-                    return null 
+                    return null;
                 } 
                 else { 
-                    return x 
+                    return x;
                 }
             }
             shared actual Iterator<X> tail {
-                return RangeIterator(x.successor)
+                return RangeIterator(x.successor);
             }
         }
-        return RangeIterator(first)
+        return RangeIterator(first);
     }
     
     shared actual Boolean empty = last<first;
@@ -63,20 +63,20 @@ shared class Range<X>(X first, X last)
         for (Object x in objects) {
             if (is X x) {
                 if ( x<first || x>last ) {
-                    return false
+                    return false;
                 }
             }
             else {
-                return false
+                return false;
             }
         }
         fail {
-            return true
+            return true;
         } 
     }
     
     shared actual Boolean matches(X x) {
-        return x>first && x<last
+        return x>first && x<last;
     }
     
     shared actual Natural? lastIndex = index(last);
@@ -93,11 +93,11 @@ shared class Range<X>(X first, X last)
                 break
             }
         }
-        return value
+        return value;
     }
     
     shared actual Boolean equals(Range<X> that) {
-        return that.first==first && that.last==last
+        return that.first==first && that.last==last;
     }
     
     //TODO

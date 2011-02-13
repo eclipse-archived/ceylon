@@ -13,7 +13,7 @@ void adventure() {
     Random<Natural> rand = RandomNatural(1..10);
 	
 	shared Float backpackWeight {
-		return Math.sum( backpack.things[].weight )
+		return Math.sum( backpack.things[].weight );
 	}
 	
 	shared void display(String message) {
@@ -21,7 +21,7 @@ void adventure() {
 	}
 	
 	shared Natural random() {
-		return rand.next()
+		return rand.next();
 	}
 	
 	void go(String where) {

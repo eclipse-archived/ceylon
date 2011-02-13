@@ -6,15 +6,15 @@ shared interface FiniteCategory<T>
         for (Object obj in objects) {
             if (is T obj) {
                 if ( forAll (Object elem in this) every (elem != obj) ) {
-                    return false
+                    return false;
                 }
             }
             else {
-                return false
+                return false;
             }
         }
         fail {
-            return true
+            return true;
         }
     }
     

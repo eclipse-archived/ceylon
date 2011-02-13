@@ -23,31 +23,31 @@ class MoreDeclarations() {
 	
 	Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) { 
 		if (reverse) {
-			local reverse(Natural x, Natural y) { return y<=>x } 
-			return reverse
+			local reverse(Natural x, Natural y) { return y<=>x; } 
+			return reverse;
 		} 
 		else {
-			local natural(Natural x, Natural y) { return x<=>y } 
-			return natural
+			local natural(Natural x, Natural y) { return x<=>y; } 
+			return natural;
 		}
 	}
 	
 	class Catalog() {
 	    class Schema() {
-	        Catalog catalog { return outer }
+	        Catalog catalog { return outer; }
 	        class Table() {
-	            Schema schema { return outer }
-	            Catalog catalog { return outer.outer }
+	            Schema schema { return outer; }
+	            Catalog catalog { return outer.outer; }
 	        }
 	    }
 	}
 	
 	shared Integer add(Integer x, Integer y) { 
-		return x + y
+		return x + y;
 	}
 	
 	Identifier createToken() { 
-		return Token()
+		return Token();
 	}
 	
 	shared void print(Object... objects) { 
@@ -62,7 +62,7 @@ class MoreDeclarations() {
 	
 	shared Set<T> singleton<T>(T element) 
 			given T satisfies Comparable<T> {
-		return TreeSet(element)
+		return TreeSet(element);
 	}
 	
 	
@@ -75,11 +75,11 @@ class MoreDeclarations() {
 		Float sum := 0.0; 
 		for (LineItem li in lineItems) {
 			sum += li.amount; 
-			return sum
+			return sum;
 		}
 	}
 	
-	shared String name { return join(firstName, lastName) } 
+	shared String name { return join(firstName, lastName); } 
 	shared assign name { firstName = first(name); lastName = last(name); }
 	
 	
@@ -147,7 +147,7 @@ class MoreDeclarations() {
 			for (Item item in order.items) {
 				total += item.quantity * item.product.unitPrice; 
 			}
-			return total
+			return total;
 		}
 	}
 	

@@ -28,12 +28,12 @@ shared class CommandLine(Process process) {
 	doc "Named arguments given in the form 
 		 |-name value| at the command line."
 	shared NamedArguments namedArguments {
-		return namedArgs
+		return namedArgs;
 	}
 	
 	doc "Arguments listed at the command line."
 	shared ListedArguments listedArguments {
-		return listedArgs
+		return listedArgs;
 	}
 
 }

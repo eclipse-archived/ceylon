@@ -4,7 +4,7 @@ shared extension class Objects(Object this) {
          The binary |in| operator."
     see (Category)
     shared Boolean element(Category category) {
-        return category.contains(this)
+        return category.contains(this);
     }
 
 }

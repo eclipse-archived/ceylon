@@ -17,18 +17,18 @@ void find() {
  	}
  	catch (Exception e) {
  		log.error(e.message);
- 		throw process.exit(1)
+ 		throw process.exit(1);
  	}
  	
  	doc "get the pattern specified on the command line
  	     using |-pattern|"
  	String pattern(CommandLine cl) {
  		try {
-			return commandLine.namedArguments["pattern"]
+			return commandLine.namedArguments["pattern"];
 		}
 		catch (UndefinedKeyException uke) {
 			log.error("No pattern specified.");
-			throw process.exit(1)
+			throw process.exit(1);
 		}
  	}
  	
@@ -37,14 +37,14 @@ void find() {
 		CommandLine.ListedArguments paths = cl.listedArguments;
 		if (paths.empty) {
 			log.error("No paths specified.");
-			throw process.exit(1)
+			throw process.exit(1);
 		}
 		else {
 			OpenList<File> files = ArrayList<File>();
 			for (String path in paths) {
 				files.add( Path(path).files );
 			}
-			return files
+			return files;
 		}
 	}
 

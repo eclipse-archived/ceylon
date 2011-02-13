@@ -5,7 +5,7 @@ shared interface Sized satisfies Container {
     shared formal Natural size;
     
     shared actual default Boolean empty {
-        return size==0
+        return size==0;
     }
     
 }

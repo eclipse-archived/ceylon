@@ -3,7 +3,7 @@ interface DefiniteReturn {
     void doSomething() {}
     void doSomethingElse() {}
     void doNothing() {}
-    @error Boolean testSomething()  { @error return false }
+    @error Boolean testSomething()  { @error return false; }
     class X() {}
     
     //void methods:
@@ -15,18 +15,18 @@ interface DefiniteReturn {
     
     void voidMethodWithReturn() {
         doSomething();
-        return
+        return;
     }
     
     void voidMethodWithThrow() {
         doSomething();
-        throw
+        throw;
     }
     
     void voidMethodWithReturnInIf() {
         if (testSomething()) {
             doSomething();
-            return
+            return;
         }
         doSomethingElse();
     }
@@ -34,7 +34,7 @@ interface DefiniteReturn {
     void voidMethodWithThrowInIf() {
         if (testSomething()) {
             doSomething();
-            throw
+            throw;
         }
         doSomethingElse();
     }
@@ -42,7 +42,7 @@ interface DefiniteReturn {
     void voidMethodWithReturnInIf2() {
         if (testSomething()) {
             doSomething();
-            return
+            return;
         }
         else {
             doSomethingElse();
@@ -53,7 +53,7 @@ interface DefiniteReturn {
     void voidMethodWithThrowInIf2() {
         if (testSomething()) {
             doSomething();
-            throw
+            throw;
         }
         else {
             doSomethingElse();
@@ -65,12 +65,12 @@ interface DefiniteReturn {
         if (testSomething()) {
             if (testSomething()) {
                 doSomething();
-                return
+                return;
             }
         }
         else {
             doSomethingElse();
-            return
+            return;
         }
     }
     
@@ -78,29 +78,29 @@ interface DefiniteReturn {
         if (testSomething()) {
             if (testSomething()) {
                 doSomething();
-                return
+                return;
             }
         }
         else {
             doSomethingElse();
         }
-        return
+        return;
     }
     
     void voidMethodWithReturnInNestedIf3() {
         if (testSomething()) {
             if (testSomething()) {
                 doSomething();
-                return
+                return;
             }
             else {
                 doNothing();
-                return
+                return;
             }
         }
         else {
             doSomethingElse();
-            return
+            return;
         }
     }
     
@@ -110,7 +110,7 @@ interface DefiniteReturn {
         }
         else {
             doNothing();
-            return
+            return;
         }
         doSomethingElse();
     }
@@ -121,7 +121,7 @@ interface DefiniteReturn {
         }
         else {
             doNothing();
-            throw
+            throw;
         }
         doSomethingElse();
     }
@@ -129,33 +129,33 @@ interface DefiniteReturn {
     void voidMethodWithReturnInIfAndElse() {
         if (testSomething()) {
             doSomething();
-            return
+            return;
         }
         else {
             doSomethingElse();
-            return
+            return;
         }
     }
     
     void voidMethodWithThrowInIfAndElse() {
         if (testSomething()) {
             doSomething();
-            throw
+            throw;
         }
         else {
             doSomethingElse();
-            throw
+            throw;
         }
     }
     
     void voidMethodWithStatementAfterDefiniteReturn() {
         if (testSomething()) {
             doSomething();
-            return
+            return;
         }
         else {
             doSomethingElse();
-            return
+            return;
         }
         @error doNothing();
     }
@@ -163,11 +163,11 @@ interface DefiniteReturn {
     void voidMethodWithStatementAfterDefiniteThrow() {
         if (testSomething()) {
             doSomething();
-            throw
+            throw;
         }
         else {
             doSomethingElse();
-            throw
+            throw;
         }
         @error doNothing();
     }
@@ -175,7 +175,7 @@ interface DefiniteReturn {
     void voidMethodWithReturnInFor() {
         for (X x in {X()}) {
             doSomething();
-            return
+            return;
         }
         doNothing();
     }
@@ -183,7 +183,7 @@ interface DefiniteReturn {
     void voidMethodWithReturnInFor2() {
         for (X x in {X()}) {
             doSomething();
-            return
+            return;
         }
         fail {
             doSomethingElse();
@@ -194,18 +194,18 @@ interface DefiniteReturn {
     void voidMethodWithReturnInForAndFail() {
         for (X x in {X()}) {
             doSomething();
-            return
+            return;
         }
         fail {
             doSomethingElse();
-            return
+            return;
         }
     }
     
     void voidMethodWithReturnInWhile() {
         while (testSomething()) {
             doSomething();
-            return
+            return;
         }
         doSomethingElse();
     }
@@ -213,16 +213,16 @@ interface DefiniteReturn {
     void voidMethodWithReturnInWhile2() {
         while (testSomething()) {
             doSomething();
-            return
+            return;
         }
         doSomethingElse();
-        return
+        return;
     }
     
     void voidMethodWithReturnInDo() {
         do {
             doSomething();
-            return
+            return;
         }
         while (testSomething());
     }
@@ -230,7 +230,7 @@ interface DefiniteReturn {
     void voidMethodWithStatementAfterReturnInDo() {
         do {
             doSomething();
-            return
+            return;
         }
         while (testSomething());
         @error doSomethingElse();
@@ -245,18 +245,18 @@ interface DefiniteReturn {
     
     X methodWithReturn() {
         doSomething();
-        return X()
+        return X();
     }
     
     X methodWithThrow() {
         doSomething();
-        throw
+        throw;
     }
     
     @error X methodWithReturnInIf() {
         if (testSomething()) {
             doSomething();
-            return X()
+            return X();
         }
         doSomethingElse();
     }
@@ -264,7 +264,7 @@ interface DefiniteReturn {
     @error X methodWithThrowInIf() {
         if (testSomething()) {
             doSomething();
-            throw
+            throw;
         }
         doSomethingElse();
     }
@@ -272,7 +272,7 @@ interface DefiniteReturn {
     @error X methodWithReturnInIf2() {
         if (testSomething()) {
             doSomething();
-            return X()
+            return X();
         }
         else {
             doSomethingElse();
@@ -283,7 +283,7 @@ interface DefiniteReturn {
     @error X methodWithThrowInIf2() {
         if (testSomething()) {
             doSomething();
-            throw
+            throw;
         }
         else {
             doSomethingElse();
@@ -294,37 +294,37 @@ interface DefiniteReturn {
     X methodWithReturnInIf3() {
         if (testSomething()) {
             doSomething();
-            return X()
+            return X();
         }
         else {
             doSomethingElse();
         }
         doNothing();
-        return X()
+        return X();
     }
     
     X methodWithThrowInIf3() {
         if (testSomething()) {
             doSomething();
-            throw
+            throw;
         }
         else {
             doSomethingElse();
         }
         doNothing();
-        throw
+        throw;
     }
     
     @error X methodWithReturnInNestedIf() {
         if (testSomething()) {
             if (testSomething()) {
                 doSomething();
-                return
+                return;
             }
         }
         else {
             doSomethingElse();
-            return
+            return;
         }
     }
     
@@ -332,29 +332,29 @@ interface DefiniteReturn {
         if (testSomething()) {
             if (testSomething()) {
                 doSomething();
-                return
+                return;
             }
         }
         else {
             doSomethingElse();
         }
-        return
+        return;
     }
     
     X methodWithReturnInNestedIf3() {
         if (testSomething()) {
             if (testSomething()) {
                 doSomething();
-                return
+                return;
             }
             else {
                 doNothing();
-                return
+                return;
             }
         }
         else {
             doSomethingElse();
-            return
+            return;
         }
     }
     
@@ -364,7 +364,7 @@ interface DefiniteReturn {
         }
         else {
             doNothing();
-            return X()
+            return X();
         }
         doSomethingElse();
     }
@@ -375,7 +375,7 @@ interface DefiniteReturn {
         }
         else {
             doNothing();
-            throw
+            throw;
         }
         doSomethingElse();
     }
@@ -383,33 +383,33 @@ interface DefiniteReturn {
     X methodWithReturnInIfAndElse() {
         if (testSomething()) {
             doSomething();
-            return X()
+            return X();
         }
         else {
             doSomethingElse();
-            return X()
+            return X();
         }
     }
     
     X methodWithThrowInIfAndElse() {
         if (testSomething()) {
             doSomething();
-            throw
+            throw;
         }
         else {
             doSomethingElse();
-            throw
+            throw;
         }
     }
     
     X methodWithStatementAfterDefiniteReturn() {
         if (testSomething()) {
             doSomething();
-            return X()
+            return X();
         }
         else {
             doSomethingElse();
-            return X()
+            return X();
         }
         @error doNothing();
     }
@@ -417,11 +417,11 @@ interface DefiniteReturn {
     X methodWithStatementAfterDefiniteThrow() {
         if (testSomething()) {
             doSomething();
-            throw
+            throw;
         }
         else {
             doSomethingElse();
-            throw
+            throw;
         }
         @error doNothing();
     }
@@ -429,7 +429,7 @@ interface DefiniteReturn {
     @error X methodWithReturnInFor() {
         for (X x in {X()}) {
             doSomething();
-            return X()
+            return X();
         }
         doNothing();
     }
@@ -437,7 +437,7 @@ interface DefiniteReturn {
     @error X methodWithReturnInFor2() {
         for (X x in {X()}) {
             doSomething();
-            return X()
+            return X();
         }
         fail {
             doSomethingElse();
@@ -448,30 +448,30 @@ interface DefiniteReturn {
     X methodWithReturnInFor3() {
         for (X x in {X()}) {
             doSomething();
-            return X()
+            return X();
         }
         fail {
             doSomethingElse();
         }
         doNothing();
-        return X()
+        return X();
     }
     
     X methodWithReturnInForAndFail() {
         for (X x in {X()}) {
             doSomething();
-            return X()
+            return X();
         }
         fail {
             doSomethingElse();
-            return X()
+            return X();
         }
     }
     
     @error X methodWithReturnInWhile() {
         while (testSomething()) {
             doSomething();
-            return X()
+            return X();
         }
         doSomethingElse();
     }
@@ -479,16 +479,16 @@ interface DefiniteReturn {
     X methodWithReturnInWhile2() {
         while (testSomething()) {
             doSomething();
-            return X()
+            return X();
         }
         doSomethingElse();
-        return X()
+        return X();
     }
     
     X methodWithReturnInDo() {
         do {
             doSomething();
-            return X()
+            return X();
         }
         while (testSomething());
     }
@@ -496,7 +496,7 @@ interface DefiniteReturn {
     X methodWithStatementAfterReturnInDo() {
         do {
             doSomething();
-            return X()
+            return X();
         }
         while (testSomething());
         @error doSomethingElse();
@@ -511,18 +511,18 @@ interface DefiniteReturn {
     
     X getterWithReturn {
         doSomething();
-        return X()
+        return X();
     }
     
     X getterWithThrow {
         doSomething();
-        throw
+        throw;
     }
     
     @error X getterWithReturnInIf {
         if (testSomething()) {
             doSomething();
-            return X()
+            return X();
         }
         doSomethingElse();
     }
@@ -530,7 +530,7 @@ interface DefiniteReturn {
     @error X getterWithThrowInIf {
         if (testSomething()) {
             doSomething();
-            throw
+            throw;
         }
         doSomethingElse();
     }
@@ -538,7 +538,7 @@ interface DefiniteReturn {
     @error X getterWithReturnInIf2 {
         if (testSomething()) {
             doSomething();
-            return X()
+            return X();
         }
         else {
             doSomethingElse();
@@ -549,7 +549,7 @@ interface DefiniteReturn {
     @error X getterWithThrowInIf2 {
         if (testSomething()) {
             doSomething();
-            throw
+            throw;
         }
         else {
             doSomethingElse();
@@ -561,12 +561,12 @@ interface DefiniteReturn {
         if (testSomething()) {
             if (testSomething()) {
                 doSomething();
-                return
+                return;
             }
         }
         else {
             doSomethingElse();
-            return
+            return;
         }
     }
     
@@ -574,29 +574,29 @@ interface DefiniteReturn {
         if (testSomething()) {
             if (testSomething()) {
                 doSomething();
-                return
+                return;
             }
         }
         else {
             doSomethingElse();
         }
-        return
+        return;
     }
     
     X getterWithReturnInNestedIf3 {
         if (testSomething()) {
             if (testSomething()) {
                 doSomething();
-                return
+                return;
             }
             else {
                 doNothing();
-                return
+                return;
             }
         }
         else {
             doSomethingElse();
-            return
+            return;
         }
     }
     
@@ -606,7 +606,7 @@ interface DefiniteReturn {
         }
         else {
             doNothing();
-            return X()
+            return X();
         }
         doSomethingElse();
     }
@@ -617,7 +617,7 @@ interface DefiniteReturn {
         }
         else {
             doNothing();
-            throw
+            throw;
         }
         doSomethingElse();
     }
@@ -625,33 +625,33 @@ interface DefiniteReturn {
     X getterWithReturnInIfAndElse {
         if (testSomething()) {
             doSomething();
-            return X()
+            return X();
         }
         else {
             doSomethingElse();
-            return X()
+            return X();
         }
     }
     
     X getterWithThrowInIfAndElse {
         if (testSomething()) {
             doSomething();
-            throw
+            throw;
         }
         else {
             doSomethingElse();
-            throw
+            throw;
         }
     }
     
     X getterWithStatementAfterDefiniteReturn {
         if (testSomething()) {
             doSomething();
-            return X()
+            return X();
         }
         else {
             doSomethingElse();
-            return X()
+            return X();
         }
         @error doNothing();
     }
@@ -659,11 +659,11 @@ interface DefiniteReturn {
     X getterWithStatementAfterDefiniteThrow {
         if (testSomething()) {
             doSomething();
-            throw
+            throw;
         }
         else {
             doSomethingElse();
-            throw
+            throw;
         }
         @error doNothing();
     }
@@ -671,7 +671,7 @@ interface DefiniteReturn {
     @error X getterWithReturnInFor {
         for (X x in {X()}) {
             doSomething();
-            return X()
+            return X();
         }
         doNothing();
     }
@@ -679,7 +679,7 @@ interface DefiniteReturn {
     @error X getterWithReturnInFor2 {
         for (X x in {X()}) {
             doSomething();
-            return X()
+            return X();
         }
         fail {
             doSomethingElse();
@@ -690,30 +690,30 @@ interface DefiniteReturn {
     X getterWithReturnInFor3 {
         for (X x in {X()}) {
             doSomething();
-            return X()
+            return X();
         }
         fail {
             doSomethingElse();
         }
         doNothing();
-        return X()
+        return X();
     }
     
     X getterWithReturnInForAndFail {
         for (X x in {X()}) {
             doSomething();
-            return X()
+            return X();
         }
         fail {
             doSomethingElse();
-            return X()
+            return X();
         }
     }
     
     @error X getterWithReturnInWhile {
         while (testSomething()) {
             doSomething();
-            return X()
+            return X();
         }
         doSomethingElse();
     }
@@ -721,16 +721,16 @@ interface DefiniteReturn {
     X getterWithReturnInWhile2 {
         while (testSomething()) {
             doSomething();
-            return X()
+            return X();
         }
         doSomethingElse();
-        return X()
+        return X();
     }
     
     X getterWithReturnInDo {
         do {
             doSomething();
-            return X()
+            return X();
         }
         while (testSomething());
     }
@@ -738,7 +738,7 @@ interface DefiniteReturn {
     X getterWithStatementAfterReturnInDo {
         do {
             doSomething();
-            return X()
+            return X();
         }
         while (testSomething());
         @error doSomethingElse();
@@ -753,7 +753,7 @@ interface DefiniteReturn {
     
     assign setterWithReturn {
         doSomething();
-        return
+        return;
     }
     
     assign setterWithThrow {
@@ -764,7 +764,7 @@ interface DefiniteReturn {
     assign setterWithReturnInIf {
         if (testSomething()) {
             doSomething();
-            return
+            return;
         }
         doSomethingElse();
     }
@@ -772,7 +772,7 @@ interface DefiniteReturn {
     assign setterWithThrowInIf {
         if (testSomething()) {
             doSomething();
-            throw
+            throw;
         }
         doSomethingElse();
     }
@@ -780,7 +780,7 @@ interface DefiniteReturn {
     assign setterWithReturnInIf2 {
         if (testSomething()) {
             doSomething();
-            return
+            return;
         }
         else {
             doSomethingElse();
@@ -791,7 +791,7 @@ interface DefiniteReturn {
     assign setterWithThrowInIf2 {
         if (testSomething()) {
             doSomething();
-            throw
+            throw;
         }
         else {
             doSomethingElse();
@@ -803,12 +803,12 @@ interface DefiniteReturn {
         if (testSomething()) {
             if (testSomething()) {
                 doSomething();
-                return
+                return;
             }
         }
         else {
             doSomethingElse();
-            return
+            return;
         }
     }
     
@@ -816,29 +816,29 @@ interface DefiniteReturn {
         if (testSomething()) {
             if (testSomething()) {
                 doSomething();
-                return
+                return;
             }
         }
         else {
             doSomethingElse();
         }
-        return
+        return;
     }
     
     assign setterWithReturnInNestedIf3 {
         if (testSomething()) {
             if (testSomething()) {
                 doSomething();
-                return
+                return;
             }
             else {
                 doNothing();
-                return
+                return;
             }
         }
         else {
             doSomethingElse();
-            return
+            return;
         }
     }
     
@@ -848,7 +848,7 @@ interface DefiniteReturn {
         }
         else {
             doNothing();
-            return
+            return;
         }
         doSomethingElse();
     }
@@ -859,7 +859,7 @@ interface DefiniteReturn {
         }
         else {
             doNothing();
-            throw
+            throw;
         }
         doSomethingElse();
     }
@@ -867,33 +867,33 @@ interface DefiniteReturn {
     assign setterWithReturnInIfAndElse {
         if (testSomething()) {
             doSomething();
-            return
+            return;
         }
         else {
             doSomethingElse();
-            return
+            return;
         }
     }
     
     assign setterWithThrowInIfAndElse {
         if (testSomething()) {
             doSomething();
-            throw
+            throw;
         }
         else {
             doSomethingElse();
-            throw
+            throw;
         }
     }
     
     assign setterWithStatementAfterDefiniteReturn {
         if (testSomething()) {
             doSomething();
-            return
+            return;
         }
         else {
             doSomethingElse();
-            return
+            return;
         }
         @error doNothing();
     }
@@ -901,11 +901,11 @@ interface DefiniteReturn {
     assign setterWithStatementAfterDefiniteThrow {
         if (testSomething()) {
             doSomething();
-            throw
+            throw;
         }
         else {
             doSomethingElse();
-            throw
+            throw;
         }
         @error doNothing();
     }
@@ -913,7 +913,7 @@ interface DefiniteReturn {
     assign setterWithReturnInFor {
         for (X x in {X()}) {
             doSomething();
-            return
+            return;
         }
         doNothing();
     }
@@ -921,7 +921,7 @@ interface DefiniteReturn {
     assign setterWithReturnInFor2 {
         for (X x in {X()}) {
             doSomething();
-            return
+            return;
         }
         fail {
             doSomethingElse();
@@ -932,18 +932,18 @@ interface DefiniteReturn {
     assign setterWithReturnInForAndFail {
         for (X x in {X()}) {
             doSomething();
-            return
+            return;
         }
         fail {
             doSomethingElse();
-            return
+            return;
         }
     }
     
     assign setterWithReturnInWhile {
         while (testSomething()) {
             doSomething();
-            return
+            return;
         }
         doSomethingElse();
     }
@@ -951,16 +951,16 @@ interface DefiniteReturn {
     assign setterWithReturnInWhile2 {
         while (testSomething()) {
             doSomething();
-            return
+            return;
         }
         doSomethingElse();
-        return
+        return;
     }
     
     assign setterWithReturnInDo {
         do {
             doSomething();
-            return
+            return;
         }
         while (testSomething());
     }
@@ -968,7 +968,7 @@ interface DefiniteReturn {
     assign setterWithStatementAfterReturnInDo {
         do {
             doSomething();
-            return
+            return;
         }
         while (testSomething());
         @error doSomethingElse();
@@ -978,84 +978,84 @@ interface DefiniteReturn {
     
     class ClassWithReturn() {
         if (testSomething()) {
-            @error return
+            @error return;
         }
         else {
-            @error return
+            @error return;
         }
     }
     
     class ClassWithThrow() {
         if (testSomething()) {
-            throw
+            throw;
         }
         else {
-            throw
+            throw;
         }
     }
     
     X methodWithNestedMethod() {
         local nestedMethod() {
-            return X()
+            return X();
         }
-        return nestedMethod()
+        return nestedMethod();
     }
     
     X getterWithNestedGetter {
         local nestedGetter {
-            return X()
+            return X();
         }
-        return nestedGetter
+        return nestedGetter;
     }
     
     X methodWithNestedMethodWithThrow() {
         X nestedMethod() {
-            throw
+            throw;
         }
-        return nestedMethod()
+        return nestedMethod();
     }
     
     X getterWithNestedGetterWithThrow {
         X nestedGetter {
-            throw
+            throw;
         }
-        return nestedGetter
+        return nestedGetter;
     }
     
     X methodWithNestedClass() {
         class Nested() {
             if (testSomething()) {
-                @error return X()
+                @error return X();
             }
         }
-        return X()
+        return X();
     }
     
     X getterWithNestedClass {
         class Nested() {
             if (testSomething()) {
-                @error return X()
+                @error return X();
             }
         }
-        return X()
+        return X();
     }
     
     X methodWithNestedClassWithThrow() {
         class Nested() {
             if (testSomething()) {
-                throw
+                throw;
             }
         }
-        return X()
+        return X();
     }
     
     X getterWithNestedClassWithThrow {
         class Nested() {
             if (testSomething()) {
-                throw
+                throw;
             }
         }
-        return X()
+        return X();
     }
     
 }

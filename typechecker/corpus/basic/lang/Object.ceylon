@@ -3,7 +3,7 @@ shared abstract class Object()
     
     doc "The |Type| of the instance."
     shared Type<subtype> type {
-        throw
+        throw;
     }
     
     doc "A developer-friendly string representing the instance."

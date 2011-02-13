@@ -3,7 +3,7 @@ shared abstract class BaseObject()
         
     Attribute<subtype,Object>[] idAttributes() {
         return from ( Attribute<subtype,Object> a in type.attributes() ) 
-                    where ( a.annotations(Id) nonempty )
+                    where ( a.annotations(Id) nonempty );
     }
     
     doc "The equals operator |x == y|. Default implementation compares
@@ -11,14 +11,14 @@ shared abstract class BaseObject()
     see (id)
     shared default actual Boolean equals(IdentifiableObject that) {
         if (that.type!=type) {
-            return false
+            return false;
         }
         Attribute<subtype,Object>[] idAttributes = idAttributes();
         if (nonempty idAttributes) {
-            return equals(that, idAttributes)
+            return equals(that, idAttributes);
         }
         else {
-            return super.equals(that)
+            return super.equals(that);
         }
     }
     
@@ -27,10 +27,10 @@ shared abstract class BaseObject()
     shared Boolean equals(IdentifiableObject that, Attribute<subtype,Object>... attributes) {
         if (is subtype that) {
             return forAll (Attribute<subtype,Object> a in attributes)
-                        every ( a(this) == a(that) )
+                        every ( a(this) == a(that) );
         }
         else {
-            return false
+            return false;
         }
     }
     
@@ -40,24 +40,24 @@ shared abstract class BaseObject()
     shared default actual Integer hash { 
         Attribute<subtype,Object>[] idAttributes = idAttributes();
         if (nonempty idAttributes) {
-            return hash(idAttributes)
+            return hash(idAttributes);
         }
         else {
-            return super.hash
+            return super.hash;
         }
     }
     
     doc "Computes the hash code of the instance using the given 
          attributes."
     shared Integer hash(Attribute<subtype,Object>... attributes) {
-    	throw
+    	throw;
     }
         
     doc "A developer-friendly string representing the instance. 
          By default, the string contains the name of the type, 
          and the values of all attributes annotated |id|."
     shared default actual String string {
-        return string(idAttributes())
+        return string(idAttributes());
     }
     
     doc "A developer-friendly string representing the instance,
@@ -69,7 +69,7 @@ shared abstract class BaseObject()
         result .= forEach (Attribute<subtype,Object> a in attributes)
                     with ({ a.name, "=", $a(this), ";" });
         result .= with ("}");
-        return result 
+        return result;
     }
         
 }

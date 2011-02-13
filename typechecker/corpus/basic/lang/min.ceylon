@@ -6,5 +6,5 @@ shared X min<X>(X x, X... xs)
             min:=y;
         }
     }
-    return min
+    return min;
 }

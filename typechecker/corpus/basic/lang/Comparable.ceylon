@@ -12,22 +12,22 @@ shared interface Comparable<in T>
     
     doc "The binary |>| operator."
     shared Boolean largerThan(T other) {
-        return compare(other)==larger
+        return compare(other)==larger;
     }
     
     doc "The binary |<| operator."
     shared Boolean smallerThan(T other) {
-        return compare(other)==smaller
+        return compare(other)==smaller;
     }
     
     doc "The binary |>=| operator."
     shared Boolean asLargeAs(T other) {
-        return compare(other)!=smaller
+        return compare(other)!=smaller;
     }
     
     doc "The binary |<=| operator."
     shared Boolean asSmallAs(T other) {
-        return compare(other)!=larger
+        return compare(other)!=larger;
     }
     
 }

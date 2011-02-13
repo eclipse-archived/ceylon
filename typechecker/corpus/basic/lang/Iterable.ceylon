@@ -5,7 +5,7 @@ shared interface Iterable<out X> satisfies Container {
     shared formal Iterator<X> iterator();
     
     shared actual default Boolean empty {
-        return !(iterator().head exists)
+        return !(iterator().head exists);
     }
 
 }

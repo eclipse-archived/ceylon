@@ -9,14 +9,14 @@ Table squares(Natural min=1, Natural max) {
         title="x"; 
         width=10; 
         String content(Natural row) {
-            return $(row+min)
+            return $(row+min);
         }
     },
     Column { 
         title="x**2"; 
         width=10; 
         String content(Natural row) {
-            return $((row+min)**2)
+            return $((row+min)**2);
         }
     } 
 }

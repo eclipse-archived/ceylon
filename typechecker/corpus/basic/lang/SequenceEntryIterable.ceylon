@@ -7,17 +7,17 @@ shared extension class SequenceEntryIterable<X>(X[] this)
                 satisfies Iterator<Entry<Natural,X>> {
             shared actual Entry<Natural,X>? head {
                 if (exists X x = this[from]) {
-                    return from->x
+                    return from->x;
                 }
                 else {
-                    return null
+                    return null;
                 }
             }
             shared actual Iterable<Entry<Natural,X>> tail {
-                return EntryIterator(from+1)
+                return EntryIterator(from+1);
             }
         }
-        return EntryIterator(0)
+        return EntryIterator(0);
     }
     
 }
