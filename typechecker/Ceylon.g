@@ -168,8 +168,8 @@ packageName
     ;
 
 block
-    : LBRACE annotatedDeclarationOrStatement2* directiveStatement2? '}'
-    -> ^(BLOCK[$LBRACE] annotatedDeclarationOrStatement2* directiveStatement2?)
+    : LBRACE annotatedDeclarationOrStatement2* '}'
+    -> ^(BLOCK[$LBRACE] annotatedDeclarationOrStatement2*)
     ;
 
 //This rule accounts for the problem that we
@@ -192,8 +192,8 @@ brokenMemberBody
     | ( 
         specificationStatement brokenMemberBody?
       | controlStructure brokenMemberBody?
+      | directiveStatement brokenMemberBody?
       | expressionStatementOrList
-      | directiveStatement
       )
     ;
     
@@ -267,24 +267,25 @@ statement
     : specificationStatement
     | expressionStatement
     | controlStructure
+    | directiveStatement
     ;
 
 specificationStatement
-    : memberName specifier ';'
+    : memberName specifier semi
     -> ^(SPECIFIER_STATEMENT ^(MEMBER memberName) specifier)
     ;
 
 expressionStatement
-    : expression ';'
+    : expression semi
     -> ^(EXPRESSION_STATEMENT expression)
     ;
 
-directiveStatement2
-    : compilerAnnotation* directiveStatement^
+directiveStatement
+    : directive semi
     ;
 
-directiveStatement
-    : directive ';'!?
+semi
+    : {input.LT(1).getType()==RBRACE}? | ';'!
     ;
 
 directive
@@ -320,7 +321,7 @@ objectDeclaration
     ;
 
 voidMethodDeclaration
-    : VOID_MODIFIER memberName methodParameters (block | specifier? ';')
+    : VOID_MODIFIER memberName methodParameters (block | specifier? semi)
     -> ^(METHOD_DECLARATION VOID_MODIFIER memberName methodParameters block? specifier?)
     
     ;
@@ -333,9 +334,9 @@ setterDeclaration
 typedMethodOrAttributeDeclaration
     : inferrableType memberName
     ( 
-      methodParameters (memberBody[$inferrableType.tree] | specifier? ';')
+      methodParameters (memberBody[$inferrableType.tree] | specifier? semi)
     -> ^(METHOD_DECLARATION inferrableType memberName methodParameters memberBody? specifier?)
-    | (specifier | initializer)? ';'
+    | (specifier | initializer)? semi
     -> ^(ATTRIBUTE_DECLARATION inferrableType memberName specifier? initializer?)
     | memberBody[$inferrableType.tree]
     -> ^(ATTRIBUTE_GETTER inferrableType memberName memberBody)      
@@ -355,12 +356,12 @@ interfaceDeclaration
       typeName typeParameters?
       caseTypes? metatypes? satisfiedTypes?
       typeConstraints?
-      (interfaceBody | typeSpecifier ';'!)
+      (interfaceBody | typeSpecifier semi)
     ;
 
 interfaceBody
-    : LBRACE annotatedDeclaration2* '}'
-    -> ^(INTERFACE_BODY[$LBRACE] annotatedDeclaration2*)
+    : LBRACE annotatedDeclarationOrStatement2* '}'
+    -> ^(INTERFACE_BODY[$LBRACE] annotatedDeclarationOrStatement2*)
     ;
 
 classDeclaration
@@ -368,7 +369,7 @@ classDeclaration
       typeName typeParameters? parameters extraParameters?
       caseTypes? metatypes? extendedType? satisfiedTypes?
       typeConstraints?
-      (classBody | typeSpecifier? ';'!)
+      (classBody | typeSpecifier? semi)
     ;
 
 classBody
@@ -835,7 +836,7 @@ typedMethodOrGetterArgument
     ;
 
 namedSpecifiedArgument
-    : parameterName specifier ';'
+    : parameterName specifier semi
     -> parameterName ^(SPECIFIED_ARGUMENT parameterName specifier)
     ;
 
@@ -1107,7 +1108,7 @@ containment
     ;
     
 doWhile
-    : doBlock ';'
+    : doBlock semi
     -> ^(DO_WHILE_STATEMENT doBlock)
     ;
 
