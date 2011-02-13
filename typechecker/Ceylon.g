@@ -271,22 +271,22 @@ statement
     ;
 
 specificationStatement
-    : memberName specifier semi
+    : memberName specifier ';'
     -> ^(SPECIFIER_STATEMENT ^(MEMBER memberName) specifier)
     ;
 
 expressionStatement
-    : expression semi
+    : expression ';'
     -> ^(EXPRESSION_STATEMENT expression)
     ;
 
 directiveStatement
-    : directive semi
+    : directive ';'!
     ;
 
-semi
+/*semi
     : {input.LT(1).getType()==RBRACE}? | ';'!
-    ;
+    ;*/
 
 directive
     : returnDirective
@@ -321,7 +321,7 @@ objectDeclaration
     ;
 
 voidMethodDeclaration
-    : VOID_MODIFIER memberName methodParameters (block | specifier? semi)
+    : VOID_MODIFIER memberName methodParameters (block | specifier? ';')
     -> ^(METHOD_DECLARATION VOID_MODIFIER memberName methodParameters block? specifier?)
     
     ;
@@ -334,9 +334,9 @@ setterDeclaration
 typedMethodOrAttributeDeclaration
     : inferrableType memberName
     ( 
-      methodParameters (memberBody[$inferrableType.tree] | specifier? semi)
+      methodParameters (memberBody[$inferrableType.tree] | specifier? ';')
     -> ^(METHOD_DECLARATION inferrableType memberName methodParameters memberBody? specifier?)
-    | (specifier | initializer)? semi
+    | (specifier | initializer)? ';'
     -> ^(ATTRIBUTE_DECLARATION inferrableType memberName specifier? initializer?)
     | memberBody[$inferrableType.tree]
     -> ^(ATTRIBUTE_GETTER inferrableType memberName memberBody)      
@@ -356,7 +356,7 @@ interfaceDeclaration
       typeName typeParameters?
       caseTypes? metatypes? satisfiedTypes?
       typeConstraints?
-      (interfaceBody | typeSpecifier semi)
+      (interfaceBody | typeSpecifier ';'!)
     ;
 
 interfaceBody
@@ -369,7 +369,7 @@ classDeclaration
       typeName typeParameters? parameters extraParameters?
       caseTypes? metatypes? extendedType? satisfiedTypes?
       typeConstraints?
-      (classBody | typeSpecifier? semi)
+      (classBody | typeSpecifier? ';'!)
     ;
 
 classBody
@@ -836,7 +836,7 @@ typedMethodOrGetterArgument
     ;
 
 namedSpecifiedArgument
-    : parameterName specifier semi
+    : parameterName specifier ';'
     -> parameterName ^(SPECIFIED_ARGUMENT parameterName specifier)
     ;
 
@@ -1108,7 +1108,7 @@ containment
     ;
     
 doWhile
-    : doBlock semi
+    : doBlock ';'
     -> ^(DO_WHILE_STATEMENT doBlock)
     ;
 
