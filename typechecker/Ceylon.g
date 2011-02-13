@@ -359,17 +359,21 @@ interfaceDeclaration
       (interfaceBody | typeSpecifier ';'!)
     ;
 
-interfaceBody
-    : LBRACE annotatedDeclarationOrStatement2* '}'
-    -> ^(INTERFACE_BODY[$LBRACE] annotatedDeclarationOrStatement2*)
-    ;
-
 classDeclaration
     : 'class'^
       typeName typeParameters? parameters extraParameters?
       caseTypes? metatypes? extendedType? satisfiedTypes?
       typeConstraints?
       (classBody | typeSpecifier? ';'!)
+    ;
+
+//Note: interface bodies can't really contain 
+//      statements, but error recovery works
+//      much better if we validate that later
+//      on, instead of doing it in the parser.
+interfaceBody
+    : LBRACE annotatedDeclarationOrStatement2* '}'
+    -> ^(INTERFACE_BODY[$LBRACE] annotatedDeclarationOrStatement2*)
     ;
 
 classBody
