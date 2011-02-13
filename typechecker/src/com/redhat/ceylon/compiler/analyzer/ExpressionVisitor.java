@@ -10,7 +10,6 @@ import com.redhat.ceylon.compiler.model.Type;
 import com.redhat.ceylon.compiler.model.Typed;
 import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
-import com.redhat.ceylon.compiler.tree.Tree.Directive;
 import com.redhat.ceylon.compiler.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.tree.Tree.MemberOrType;
 import com.redhat.ceylon.compiler.tree.Tree.Return;
@@ -132,7 +131,8 @@ public class ExpressionVisitor extends Visitor {
     private void setType(Tree.LocalModifier local, 
             Tree.Block block, 
             Tree.TypedDeclaration that) {
-        Directive d = block.getDirective();
+        int s = block.getStatements().size();
+        Tree.Statement d = s==0 ? null : block.getStatements().get(s-1);
         if (d!=null && (d instanceof Return)) {
             Type t = ((Return) d).getExpression().getTypeModel();
             local.setTypeModel(t);

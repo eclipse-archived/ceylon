@@ -18,6 +18,7 @@ public class ControlFlowVisitor extends Visitor {
     boolean broken = false;
     boolean canReturn = false;
     boolean canBreakOrContinue = false;
+    boolean canExecute = true;
         
     @Override
     public void visit(Tree.AttributeGetter that) {
@@ -54,6 +55,18 @@ public class ControlFlowVisitor extends Visitor {
             definitelyReturns = d;
             canReturn = c;
         }
+        else if (that.getSpecifierExpression()!=null) {
+            checkExecutableStatementAllowed(that);
+            super.visit(that);
+        }
+    }
+    
+    @Override
+    public void visit(Tree.AttributeDeclaration that) {
+        if (that.getSpecifierOrInitializerExpression()!=null) {
+            checkExecutableStatementAllowed(that);
+            super.visit(that);
+        }
     }
     
     @Override
@@ -76,6 +89,27 @@ public class ControlFlowVisitor extends Visitor {
         super.visit(that);
         canReturn = c;
         definitelyReturns = d;
+    }
+    
+    @Override
+    public void visit(Tree.Body that) {
+        boolean e = canExecute;
+        canExecute = !(that instanceof Tree.InterfaceBody);
+        super.visit(that);
+        canExecute = e;
+    }
+    
+    @Override
+    public void visit(Tree.ExecutableStatement that) {
+        checkExecutableStatementAllowed(that);
+        super.visit(that);
+    }
+
+    private void checkExecutableStatementAllowed(Tree.Statement that) {
+        if (!canExecute) {
+            that.getErrors().add( new AnalysisError(that, 
+            "Misplaced statement") );
+        }
     }
     
     @Override
@@ -115,16 +149,7 @@ public class ControlFlowVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.ExecutableStatement that) {
-        if (definitelyReturns) {
-            that.getErrors().add( new AnalysisError(that, 
-                    "Unreachable code") );
-        }
-        super.visit(that);
-    }
-    
-    @Override
-    public void visit(Tree.Directive that) {
+    public void visit(Tree.Statement that) {
         if (definitelyReturns) {
             that.getErrors().add( new AnalysisError(that, 
                     "Unreachable code") );
@@ -160,6 +185,7 @@ public class ControlFlowVisitor extends Visitor {
 
     @Override
     public void visit(Tree.IfStatement that) {
+        checkExecutableStatementAllowed(that);
         boolean d = definitelyReturns;
         
         visit(that.getIfClause());
@@ -177,6 +203,7 @@ public class ControlFlowVisitor extends Visitor {
 
     @Override
     public void visit(Tree.ForStatement that) {
+        checkExecutableStatementAllowed(that);
         boolean d = definitelyReturns;
         
         boolean b = broken;
@@ -200,14 +227,17 @@ public class ControlFlowVisitor extends Visitor {
 
     @Override
     public void visit(Tree.SwitchStatement that) {
+        checkExecutableStatementAllowed(that);
         //TODO!
         //if every case and the default case definitely
         //returns, then it has definitely returned after
         //the switch statement
+        super.visit(that);
     }
 
     @Override
     public void visit(Tree.TryCatchStatement that) {
+        checkExecutableStatementAllowed(that);
         //TODO!
         //if the try and every catch definitely returns, 
         //then it is has definitely returned after the 
@@ -215,5 +245,6 @@ public class ControlFlowVisitor extends Visitor {
         //or if the finally definitely returns, then it 
         //has definitely returned after the try/catch 
         //statement
+        super.visit(that);
     }
 }
