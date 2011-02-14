@@ -16,7 +16,6 @@ import com.redhat.ceylon.compiler.model.Typed;
 import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.tree.Tree.MemberOrType;
 import com.redhat.ceylon.compiler.tree.Tree.Return;
 import com.redhat.ceylon.compiler.tree.Tree.Term;
 import com.redhat.ceylon.compiler.tree.Visitor;
@@ -97,7 +96,7 @@ public class ExpressionVisitor extends Visitor {
             Type siet = sie.getExpression().getTypeModel();
             Type attm = at.getTypeModel();
             if ( siet!=null && attm!=null && !siet.isExactly(attm) ) {
-                that.getErrors().add( new AnalysisError(sie, 
+                sie.getErrors().add( new AnalysisError(sie, 
                         "Attribute specifier or initializer expression not assignable to attribute type: " + 
                         that.getIdentifier().getText()) );
             }
@@ -111,7 +110,7 @@ public class ExpressionVisitor extends Visitor {
             Type siet = sie.getExpression().getTypeModel();
             Type mttm = that.getMember().getTypeModel();
             if ( siet!=null && mttm!=null && !siet.isExactly(mttm) ) {
-                that.getErrors().add( new AnalysisError(sie, 
+                sie.getErrors().add( new AnalysisError(sie, 
                         "Specifier expression not assignable to attribute type: " + 
                         that.getMember().getIdentifier().getText()) );
             }
@@ -181,11 +180,11 @@ public class ExpressionVisitor extends Visitor {
         if (pt!=null) {
             GenericType gt = pt.getGenericType();
             if (gt instanceof Scope) {
-                MemberOrType mt = that.getMemberOrType();
+                Tree.MemberOrType mt = that.getMemberOrType();
                 if (mt instanceof Tree.Member) {
                     Typed member = Util.getDeclaration((Scope) gt, (Tree.Member) mt);
                     if (member==null) {
-                        that.getErrors().add( new AnalysisError(that, 
+                        mt.getErrors().add( new AnalysisError(mt, 
                                 "Could not determine target of member reference: " +
                                 ((Tree.Member) mt).getIdentifier().getText()) );
                     }
@@ -199,7 +198,7 @@ public class ExpressionVisitor extends Visitor {
                 else if (mt instanceof Tree.Type) {
                     GenericType member = Util.getDeclaration((Scope) gt, (Tree.Type) mt);
                     if (member==null) {
-                        that.getErrors().add( new AnalysisError(that, 
+                        mt.getErrors().add( new AnalysisError(mt, 
                                 "Could not determine target of member type reference: " +
                                 ((Tree.Type) mt).getIdentifier().getText()) );
                     }
@@ -215,7 +214,7 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else if (mt instanceof Tree.Outer) {
                     if (!(gt instanceof ClassOrInterface)) {
-                        that.getErrors().add( new AnalysisError(that, 
+                        that.getErrors().add( new AnalysisError(mt, 
                                 "Can't use outer on a type parameter"));
                     }
                     else {
@@ -289,15 +288,34 @@ public class ExpressionVisitor extends Visitor {
             if ( pal!=null ) {
                 List<Tree.PositionalArgument> pa = pal.getPositionalArguments();
                 if ( pl.size()!=pa.size() ) {
-                    that.getErrors().add( new AnalysisError(that, 
+                    pal.getErrors().add( new AnalysisError(pal, 
                             "wrong number of arguments") );
+                    return;
+                }
+                for (int i=0; i<pl.size(); i++) {
+                    Parameter p = pl.get(i);
+                    Type paramType = p.getType();
+                    Tree.PositionalArgument a = pa.get(i);
+                    Type argType = a.getExpression().getTypeModel();
+                    if (paramType!=null && argType!=null) {
+                        if (!paramType.isExactly(argType)) {
+                            a.getErrors().add( new AnalysisError(a, 
+                                    "argument not assignable to parameter type: " + 
+                                    p.getName()) );
+                        }
+                    }
+                    else {
+                        a.getErrors().add( new AnalysisError(a, 
+                                "could not determine assignability of argument to parameter +" +
+                                p.getName()) );
+                    }
                 }
             }
             Tree.NamedArgumentList nal = that.getNamedArgumentList();
             if (nal!=null) {
                 List<Tree.NamedArgument> na = nal.getNamedArguments();
                 if ( pl.size()!=na.size() ) {
-                    that.getErrors().add( new AnalysisError(that, 
+                    nal.getErrors().add( new AnalysisError(nal, 
                             "wrong number of arguments") );
                 }
             }
@@ -356,7 +374,7 @@ public class ExpressionVisitor extends Visitor {
         Term term = that.getTerm();
         if (term==null) {
             that.getErrors().add( new AnalysisError(that, 
-            "Expression not well formed") );
+                    "Expression not well formed") );
         }
         else {
             Type t = term.getTypeModel();

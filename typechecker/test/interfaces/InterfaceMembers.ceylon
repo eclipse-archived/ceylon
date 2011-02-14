@@ -32,12 +32,12 @@ interface Interfaces {
     }
     
     abstract class NestedAbstractClass() {
-        String hello = upper("Hello");
+        String hello = upper(String());
         formal Natural times;
     }
     
     class MemberClass() {
-        String hello = upper("Hello");
+        String hello = upper(String());
         @error Natural times = 1; //TODO: not really an error
     }
     

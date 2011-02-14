@@ -7,6 +7,9 @@ class Assignability() {
     
     method(X(),Y());
     
+    @error method(Y(), Y());
+    @error method(X(), X());
+    
     this.X();
     
     @error X(Y());

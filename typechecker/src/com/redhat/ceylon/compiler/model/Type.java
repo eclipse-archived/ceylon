@@ -45,8 +45,11 @@ public class Type extends Model {
 	    if (that.genericType!=genericType) {
 	        return false;
 	    }
+	    if (that.typeArguments.size()!=typeArguments.size()) {
+	        return false;
+	    }
 	    for (int i=0; i<typeArguments.size(); i++) {
-	        if ( !that.typeArguments.get(i).isExactly(that.typeArguments.get(i)) ) {
+	        if ( !that.typeArguments.get(i).isExactly(typeArguments.get(i)) ) {
 	            return false;
 	        }
 	    }
