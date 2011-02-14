@@ -166,7 +166,8 @@ public class DeclarationVisitor extends Visitor {
             parameterList = ( (Class) scope ).getParameters();
         }
         else {
-            that.getErrors().add( new AnalysisError(that, "unexpected parameter list") );
+            that.getErrors().add( new AnalysisError(that, 
+                    "unexpected parameter list") );
         }
         super.visit(that);
         parameterList = pl;

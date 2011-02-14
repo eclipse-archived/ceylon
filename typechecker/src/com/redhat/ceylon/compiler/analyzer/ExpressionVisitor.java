@@ -117,6 +117,19 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    @Override public void visit(Tree.AssignOp that) {
+        super.visit(that);
+        Type rhst = that.getRightTerm().getTypeModel();
+        Type lhst = that.getLeftTerm().getTypeModel();
+        if ( rhst!=null && lhst!=null && !rhst.isExactly(lhst) ) {
+            that.getErrors().add( new AnalysisError(that, 
+                    "type not assignable"));
+        }
+        //TODO: validate that the LHS really is assignable
+        that.setTypeModel(rhst);
+        that.setModelNode(rhst);
+    }
+
     @Override public void visit(Tree.AttributeGetter that) {
         super.visit(that);
         if (that.getTypeOrSubtype() instanceof Tree.LocalModifier) {
