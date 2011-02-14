@@ -758,7 +758,7 @@ interface DefiniteReturn {
     
     assign setterWithThrow {
         doSomething();
-        throw
+        throw;
     }
     
     assign setterWithReturnInIf {

@@ -103,6 +103,9 @@ public class SpecificationVisitor extends Visitor {
             definitelyAssigned = true;
             possiblyAssigned = true;
         }
+        //TODO: allow references to un-assigned things
+        //      in interface bodies or the declaration
+        //      section of class bodies.
         super.visit(that);
         if (that.getModelNode()==declaration &&
                 that.getSpecifierExpression()!=null) {
@@ -114,6 +117,15 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Variable that) {
+        super.visit(that);
+        if (that.getModelNode()==declaration) {
+            definitelyAssigned = true;
+            possiblyAssigned = true;
+        }
+    }
+    
+    @Override
+    public void visit(Tree.Parameter that) {
         super.visit(that);
         if (that.getModelNode()==declaration) {
             definitelyAssigned = true;
