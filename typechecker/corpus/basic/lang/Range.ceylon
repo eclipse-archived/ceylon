@@ -90,7 +90,7 @@ shared class Range<X>(X first, X last)
             ++value;
             if (value>last) {
                 value := null;
-                break
+                break;
             }
         }
         return value;
