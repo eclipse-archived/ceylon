@@ -79,6 +79,24 @@ interface DefiniteSpecification {
         use(x);
     }
     
+    void badMethodWithMutuallyRecursiveDef() {
+        X y { @error return x; }
+        X x { return y; }
+        use(x);
+    }
+    
+    void goodMethodWithRecursiveDef() {
+        X y { return X(); }
+        X x { return y; }
+        use(x);
+    }
+    
+    void goodMethodWithRecursiveSpec() {
+        X y = X();
+        X x = y;
+        use(x);
+    }
+    
     void goodMethodWithSpecInIf() {
         X x;
         if (testSomething()) {
@@ -241,6 +259,27 @@ interface DefiniteSpecification {
             x = X();
         }
         use(x);
+    }
+    
+    void goodMethodWithRecursiveSpecInIfAndElse() {
+        X y;
+        if (testSomething()) {
+            y = X();
+        }
+        else {
+            y = X();
+            use(y);
+        }
+        X x = y;
+        use(x);
+    }
+    
+    void badMethodWithRecursiveSpecInIf() {
+        X y;
+        if (testSomething()) {
+            y = X();
+        }
+        @error X x = y;
     }
     
     void goodMethodWithSpecInFor() {
