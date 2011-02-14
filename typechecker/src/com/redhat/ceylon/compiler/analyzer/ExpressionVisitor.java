@@ -1,10 +1,15 @@
 package com.redhat.ceylon.compiler.analyzer;
 
+import java.util.List;
+
 import com.redhat.ceylon.compiler.model.Class;
 import com.redhat.ceylon.compiler.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.model.Functional;
 import com.redhat.ceylon.compiler.model.GenericType;
 import com.redhat.ceylon.compiler.model.Interface;
+import com.redhat.ceylon.compiler.model.Model;
 import com.redhat.ceylon.compiler.model.Package;
+import com.redhat.ceylon.compiler.model.Parameter;
 import com.redhat.ceylon.compiler.model.Scope;
 import com.redhat.ceylon.compiler.model.Type;
 import com.redhat.ceylon.compiler.model.Typed;
@@ -12,6 +17,7 @@ import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.tree.Tree.MemberOrType;
+import com.redhat.ceylon.compiler.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.tree.Tree.Return;
 import com.redhat.ceylon.compiler.tree.Tree.Term;
 import com.redhat.ceylon.compiler.tree.Visitor;
@@ -188,6 +194,7 @@ public class ExpressionVisitor extends Visitor {
                         that.setTypeModel(member.getType());
                         //TODO: handle type arguments by substitution
                         mt.setModelNode(member);
+                        that.setModelNode(member);
                     }
                 }
                 else if (mt instanceof Tree.Type) {
@@ -203,7 +210,8 @@ public class ExpressionVisitor extends Visitor {
                         t.setTreeNode(that);
                         //TODO: handle type arguments by substitution
                         that.setTypeModel(t);
-                        mt.setModelNode(member);
+                        mt.setModelNode(t);
+                        that.setModelNode(t);
                     }
                 }
                 else if (mt instanceof Tree.Outer) {
@@ -214,6 +222,8 @@ public class ExpressionVisitor extends Visitor {
                     else {
                         Type t = getOuterType(mt, (ClassOrInterface) gt);
                         that.setTypeModel(t);
+                        mt.setModelNode(t);
+                        that.setModelNode(t);
                     }
                 }
                 else {
@@ -235,8 +245,23 @@ public class ExpressionVisitor extends Visitor {
         Type pt = that.getPrimary().getTypeModel();
         if (pt!=null) {
             that.setTypeModel(pt); //TODO: this is hackish
+            that.setModelNode(pt);
         }
-        //TODO: validate argument types are assignable to parameter types
+        List<Parameter> pl;
+        Model pm = that.getPrimary().getModelNode();
+        if (pm!=null) {
+            if (pm instanceof Functional) {
+                pl = ((Functional) pm).getParameters().get(0);
+            }
+            else {
+                Class gt = (Class) ((Type) pm).getGenericType();
+                pl = gt.getParameters();
+            }
+            List<PositionalArgument> pa = that.getPositionalArgumentList().getPositionalArguments();
+            if ( pl.size()!=pa.size() ) {
+                that.getErrors().add( new AnalysisError(that, "wrong number of arguments") );
+            }
+        }
     }
     
     @Override public void visit(Tree.IndexExpression that) {
@@ -274,6 +299,7 @@ public class ExpressionVisitor extends Visitor {
             else {
                 that.setTypeModel(t);
             }
+            that.setModelNode(d);
         }
     }
     
@@ -356,6 +382,7 @@ public class ExpressionVisitor extends Visitor {
             t.setGenericType(classOrInterface);
             //TODO: type arguments
             that.setTypeModel(t);
+            that.setModelNode(t);
         }
     }
     

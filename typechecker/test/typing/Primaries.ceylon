@@ -34,6 +34,8 @@ class Primaries() {
     
     @type["C"] local ccc { return aa.b.c(); }
     
+    @type["A"] this.A();
+    
     //@type["String"] "Hello";
     
     class Inner(A arg) {

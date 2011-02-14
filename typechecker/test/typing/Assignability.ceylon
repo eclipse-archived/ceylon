@@ -3,6 +3,16 @@ class Assignability() {
     class X() {}
     class Y() {}
     
+    void method(X arg1, Y arg2) {}
+    
+    method(X(),Y());
+    
+    this.X();
+    
+    @error X(Y());
+    @error method(X());
+    @error method(X(),Y(),this);
+    
     X x1 = X();
     @error X x2 = Y();
     
