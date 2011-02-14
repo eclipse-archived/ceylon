@@ -90,6 +90,11 @@ public class DeclarationVisitor extends Visitor {
         Scope o = enterScope(c);
         super.visit(that);
         exitScope(o);
+        if (that.getParameterList()==null) {
+            that.getErrors().add( new AnalysisError(that, 
+                    "Missing parameter list in class declaration: " + 
+                    that.getIdentifier().getText() ) );
+        }
     }
 
     @Override
