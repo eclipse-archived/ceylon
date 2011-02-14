@@ -17,6 +17,7 @@ class Assignability() {
     @error method(X(),Y(),this);
     
     X x1 = X();
+    
     @error X x2 = Y();
     
     X x3;
