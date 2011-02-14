@@ -266,21 +266,31 @@ interface DefiniteSpecification {
         @error use (y);
     }
     
-    void voidMethodWithReturnInWhile() {
+    void goodMethodWithSpecInWhile() {
         while (testSomething()) {
+            X x;
             doSomething();
-            return;
+            x = X();
         }
         doSomethingElse();
     }
     
-    void badMethodWithSpecInWhile2() {
+    void badMethodWithSpecInWhile() {
         X x;
         while (testSomething()) {
             doSomething();
             @error x = X();
         }
         doSomethingElse();
+    }
+    
+    void goodMethodWithSpecInDo() {
+        do {
+            X x;
+            doSomething();
+            x = X();
+        }
+        while (testSomething());
     }
     
     void badMethodWithSpecInDo() {

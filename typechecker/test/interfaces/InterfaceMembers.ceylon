@@ -51,4 +51,8 @@ interface Interfaces {
         return MemberClass();
     }
     
+    String warning {
+        return "watch out";
+    }
+    
 }
