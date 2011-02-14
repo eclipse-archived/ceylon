@@ -345,7 +345,7 @@ public class ExpressionVisitor extends Visitor {
         //TODO: validate that the subexpression types are Formattable
         Type t = new Type();
         t.setGenericType( (Class) Util.getImportedDeclaration(that.getUnit(), 
-                "ceylon.language.String") );
+                "String") );
         that.setTypeModel(t);
     }
     
@@ -360,7 +360,7 @@ public class ExpressionVisitor extends Visitor {
         }
         Type t = new Type();
         t.setGenericType( (Interface) Util.getImportedDeclaration(that.getUnit(), 
-                "ceylon.language.Sequence") );
+                "Sequence") );
         t.getTypeArguments().add(et);
         that.setTypeModel(t);
     }
@@ -368,35 +368,35 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.StringLiteral that) {
         Type t = new Type();
         t.setGenericType( (Class) Util.getImportedDeclaration(that.getUnit(), 
-                "ceylon.language.String") );
+                "String") );
         that.setTypeModel(t);
     }
     
     @Override public void visit(Tree.NaturalLiteral that) {
         Type t = new Type();
         t.setGenericType( (Class) Util.getImportedDeclaration(that.getUnit(), 
-                "ceylon.language.Natural") );
+                "Natural") );
         that.setTypeModel(t);
     }
     
     @Override public void visit(Tree.FloatLiteral that) {
         Type t = new Type();
         t.setGenericType( (Class) Util.getImportedDeclaration(that.getUnit(), 
-                "ceylon.language.Float") );
+                "Float") );
         that.setTypeModel(t);
     }
     
     @Override public void visit(Tree.CharLiteral that) {
         Type t = new Type();
         t.setGenericType( (Class) Util.getImportedDeclaration(that.getUnit(), 
-                "ceylon.language.Character") );
+                "Character") );
         that.setTypeModel(t);
     }
     
     @Override public void visit(Tree.QuotedLiteral that) {
         Type t = new Type();
         t.setGenericType( (Class) Util.getImportedDeclaration(that.getUnit(), 
-                "ceylon.language.Quoted") );
+                "Quoted") );
         that.setTypeModel(t);
     }
     
