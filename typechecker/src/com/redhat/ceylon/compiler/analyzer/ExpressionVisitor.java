@@ -17,7 +17,6 @@ import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.tree.Tree.MemberOrType;
-import com.redhat.ceylon.compiler.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.tree.Tree.Return;
 import com.redhat.ceylon.compiler.tree.Tree.Term;
 import com.redhat.ceylon.compiler.tree.Visitor;
@@ -251,15 +250,56 @@ public class ExpressionVisitor extends Visitor {
         Model pm = that.getPrimary().getModelNode();
         if (pm!=null) {
             if (pm instanceof Functional) {
-                pl = ((Functional) pm).getParameters().get(0);
+                Functional fpm = (Functional) pm;
+                List<List<Parameter>> pls = fpm.getParameters();
+                if (pls.size()==0) {
+                    that.getErrors().add( new AnalysisError(that, 
+                            "cannot be invoked: " + 
+                            fpm.getName()) );
+                    return;
+                }
+                else {
+                    pl = pls.get(0);
+                }
+            }
+            else if (pm instanceof Type) {
+                GenericType pgt = ((Type) pm).getGenericType();
+                if (pgt==null) {
+                    that.getErrors().add( new AnalysisError( that, 
+                            "could not determine parameter list: " + 
+                            ((Type) pm).getProducedTypeName() ) );
+                    return;
+                }
+                else if (pgt instanceof Class) {
+                    pl = ((Class) pgt).getParameters();
+                }
+                else {
+                    that.getErrors().add( new AnalysisError(that, 
+                            "interface cannot be invoked: " + 
+                            pgt.getName()) );
+                    return;
+                }
             }
             else {
-                Class gt = (Class) ((Type) pm).getGenericType();
-                pl = gt.getParameters();
+                that.getErrors().add( new AnalysisError(that, 
+                        "cannot be invoked") );
+                return;
             }
-            List<PositionalArgument> pa = that.getPositionalArgumentList().getPositionalArguments();
-            if ( pl.size()!=pa.size() ) {
-                that.getErrors().add( new AnalysisError(that, "wrong number of arguments") );
+            Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
+            if ( pal!=null ) {
+                List<Tree.PositionalArgument> pa = pal.getPositionalArguments();
+                if ( pl.size()!=pa.size() ) {
+                    that.getErrors().add( new AnalysisError(that, 
+                            "wrong number of arguments") );
+                }
+            }
+            Tree.NamedArgumentList nal = that.getNamedArgumentList();
+            if (nal!=null) {
+                List<Tree.NamedArgument> na = nal.getNamedArguments();
+                if ( pl.size()!=na.size() ) {
+                    that.getErrors().add( new AnalysisError(that, 
+                            "wrong number of arguments") );
+                }
             }
         }
     }
