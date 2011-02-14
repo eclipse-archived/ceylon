@@ -27,7 +27,12 @@ public class AssertionVisitor extends Visitor {
             if (c.getIdentifier().getText().equals("type")) {
                 String actualType = tm.getProducedTypeName();
                 String expectedType = c.getStringLiteral().getText();
-                if ( !actualType.equals(expectedType.substring(1,expectedType.length()-1)) )
+                if (actualType==null) {
+                    System.err.println(
+                            "type not known at "+ that.getAntlrTreeNode().getLine() + ":" +
+                            that.getAntlrTreeNode().getCharPositionInLine());
+                }
+                else if ( !actualType.equals(expectedType.substring(1,expectedType.length()-1)) )
                     System.err.println(
                         "not of type " + expectedType + 
                         " at "+ that.getAntlrTreeNode().getLine() + ":" +
