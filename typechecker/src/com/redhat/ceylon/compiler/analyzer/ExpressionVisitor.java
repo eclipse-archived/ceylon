@@ -76,16 +76,39 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.AttributeDeclaration that) {
         super.visit(that);
-        if (that.getTypeOrSubtype() instanceof Tree.LocalModifier) {
-            if ( that.getSpecifierOrInitializerExpression()!=null ) {
-                setType((Tree.LocalModifier) that.getTypeOrSubtype(), 
-                        that.getSpecifierOrInitializerExpression(),
-                        that);
+        Tree.TypeOrSubtype at = that.getTypeOrSubtype();
+        Tree.SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
+        if (at instanceof Tree.LocalModifier) {
+            if (sie!=null) {
+                setType((Tree.LocalModifier) at, sie, that);
             }
             else {
                 that.getErrors().add( new AnalysisError(that, 
                         "Could not infer type of: " + 
                         that.getIdentifier().getText()) );
+            }
+        }
+        else if (sie!=null) {
+            Type siet = sie.getExpression().getTypeModel();
+            Type attm = at.getTypeModel();
+            if ( siet!=null && attm!=null && !siet.isExactly(attm) ) {
+                that.getErrors().add( new AnalysisError(sie, 
+                        "Attribute specifier or initializer expression not assignable to attribute type: " + 
+                        that.getIdentifier().getText()) );
+            }
+        }
+    }
+
+    @Override public void visit(Tree.SpecifierStatement that) {
+        super.visit(that);
+        Tree.SpecifierExpression sie = that.getSpecifierExpression();
+        if (sie!=null) {
+            Type siet = sie.getExpression().getTypeModel();
+            Type mttm = that.getMember().getTypeModel();
+            if ( siet!=null && mttm!=null && !siet.isExactly(mttm) ) {
+                that.getErrors().add( new AnalysisError(sie, 
+                        "Specifier expression not assignable to attribute type: " + 
+                        that.getMember().getIdentifier().getText()) );
             }
         }
     }

@@ -41,4 +41,16 @@ public class Type extends Model {
 		return producedTypeName;
 	}
 	
+	public boolean isExactly(Type that) {
+	    if (that.genericType!=genericType) {
+	        return false;
+	    }
+	    for (int i=0; i<typeArguments.size(); i++) {
+	        if ( !that.typeArguments.get(i).isExactly(that.typeArguments.get(i)) ) {
+	            return false;
+	        }
+	    }
+	    return true;
+	}
+	
 }
