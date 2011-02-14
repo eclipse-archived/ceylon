@@ -423,4 +423,9 @@ public class ExpressionVisitor extends Visitor {
         that.setTypeModel(t);
     }
     
+    @Override
+    public void visit(Tree.CompilerAnnotation that) {
+        //don't visit arg       
+    }
+    
 }

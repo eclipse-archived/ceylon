@@ -38,7 +38,7 @@ interface Interfaces {
     
     class MemberClass() {
         String hello = upper("Hello");
-        Natural times = 1;
+        @error Natural times = 1; //TODO: not really an error
     }
     
     @error MemberClass();
