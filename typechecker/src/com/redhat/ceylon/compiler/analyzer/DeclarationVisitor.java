@@ -150,7 +150,9 @@ public class DeclarationVisitor extends Visitor {
         Scope o = enterScope(p);
         super.visit(that);
         exitScope(o);
-        parameterList.add(p);
+        if (parameterList!=null) {
+            parameterList.add(p);
+        }
     }
 
     @Override
@@ -160,8 +162,11 @@ public class DeclarationVisitor extends Visitor {
             parameterList = new ArrayList<Parameter>();
             ( (Functional) scope ).getParameters().add(parameterList);
         }
-        else {
+        else if (scope instanceof Class){
             parameterList = ( (Class) scope ).getParameters();
+        }
+        else {
+            that.getErrors().add( new AnalysisError(that, "unexpected parameter list") );
         }
         super.visit(that);
         parameterList = pl;
