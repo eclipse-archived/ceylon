@@ -17,7 +17,7 @@ void guess() {
 			Comparison comparison = number <=> guess;
 			if (comparison.equal) {
 				process.writeLine("You guessed right!");
-				break
+				break;
 			}
 			else {
 				process.writeLine("The number is " comparison ".");
@@ -31,7 +31,7 @@ void guess() {
 		}
 		catch (NumberFormatException nfe) {
 			process.writeLine("Please enter a number.");
-			retry
+			retry;
 		}
 		
 	}

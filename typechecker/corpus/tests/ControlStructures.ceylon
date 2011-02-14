@@ -133,7 +133,7 @@ class ControlStructures() {
 			String word = tokens.next().lowercase;
 			if ("hello" == word) {
 				log.info("found hello");
-				break
+				break;
 			}
 		}
 		
