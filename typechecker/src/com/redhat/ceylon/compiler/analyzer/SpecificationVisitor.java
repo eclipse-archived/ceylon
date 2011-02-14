@@ -66,11 +66,15 @@ public class SpecificationVisitor extends Visitor {
                         that.getMember().getIdentifier().getText()) );
             }
             else {
+                super.visit(that.getSpecifierExpression());
                 definitelyAssigned=true;
                 possiblyAssigned=true;
+                super.visit(that.getMember());
             }
         }
-        super.visit(that);
+        else {
+            super.visit(that);
+        }
     }
     
     @Override

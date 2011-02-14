@@ -47,6 +47,38 @@ interface DefiniteSpecification {
         @error x = X();
     }
     
+    void goodMethodWithRecursiveSpec() {
+        X x {
+            return x;
+        }
+        doSomething();
+        use(x);
+        doSomethingElse();
+    }
+    
+    void goodMethodWithRecursiveSpec2() {
+        X x() {
+            return x();
+        }
+        doSomething();
+        use(x);
+        doSomethingElse();
+    }
+    
+    void badMethodWithRecursiveSpec() {
+        X x;
+        doSomething();
+        @error x = x;
+        doSomethingElse();
+        use(x);
+    }
+    
+    void badMethodWithRecursiveSpec2() {
+        @error X x = x;
+        doSomething();
+        use(x);
+    }
+    
     void goodMethodWithSpecInIf() {
         X x;
         if (testSomething()) {
