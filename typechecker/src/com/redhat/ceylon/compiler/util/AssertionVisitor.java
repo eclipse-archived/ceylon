@@ -1,5 +1,9 @@
 package com.redhat.ceylon.compiler.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.redhat.ceylon.compiler.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.model.Type;
 import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
@@ -8,7 +12,7 @@ import com.redhat.ceylon.compiler.tree.Visitor;
 public class AssertionVisitor extends Visitor {
     
     boolean expectingError = false;
-    boolean foundError = false;
+    List<AnalysisError> foundErrors = new ArrayList<AnalysisError>();
 
     @Override
     public void visit(Tree.TypedDeclaration that) {
@@ -46,28 +50,34 @@ public class AssertionVisitor extends Visitor {
     @Override
     public void visit(Tree.Statement that) {
         boolean b = expectingError;
-        boolean f = foundError;
+        List<AnalysisError> f = foundErrors;
         expectingError = false;
-        foundError = false;
+        foundErrors = new ArrayList<AnalysisError>();
         for (Tree.CompilerAnnotation c: that.getCompilerAnnotations()) {
             if (c.getIdentifier().getText().equals("error")) {
                 expectingError = true;
             }
         }
         super.visit(that);
-        if (expectingError!=foundError)
+        if (expectingError && foundErrors.size()==0)
             System.err.println(
-                (expectingError ? "no " : "") + "error encountered at " + 
+                "no error encountered at " + 
                 that.getAntlrTreeNode().getLine() + ":" +
                 that.getAntlrTreeNode().getCharPositionInLine());
+        if (!expectingError && foundErrors.size()>0)
+            System.err.println(
+                "errors encountered at " + 
+                that.getAntlrTreeNode().getLine() + ":" +
+                that.getAntlrTreeNode().getCharPositionInLine() + " " +
+                foundErrors);
         expectingError = b;
-        foundError = f;
+        foundErrors = f;
     }
     
     @Override
     public void visitAny(Node that) {
-        if ( !that.getErrors().isEmpty() )
-            foundError = true;
+        //if ( !that.getErrors().isEmpty() )
+            foundErrors.addAll(that.getErrors());
         super.visitAny(that);
     }
     
