@@ -22,7 +22,7 @@ public class Functional extends Typed implements Scope {
 	
 	List<Structure> members = new ArrayList<Structure>();
 
-	public List<List<Parameter>> parameters() {
+	public List<List<Parameter>> getParameters() {
 		return parameters;
 	}
 

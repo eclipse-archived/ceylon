@@ -1,8 +1,12 @@
 package com.redhat.ceylon.compiler.analyzer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.redhat.ceylon.compiler.model.Class;
 import com.redhat.ceylon.compiler.model.ControlBlock;
 import com.redhat.ceylon.compiler.model.Declaration;
+import com.redhat.ceylon.compiler.model.Functional;
 import com.redhat.ceylon.compiler.model.Getter;
 import com.redhat.ceylon.compiler.model.Interface;
 import com.redhat.ceylon.compiler.model.Method;
@@ -33,6 +37,7 @@ public class DeclarationVisitor extends Visitor {
     Scope scope;
     Unit unit;
     final Package pkg;
+    List<Parameter> parameterList;
     
     public DeclarationVisitor(Package p) {
         scope = p;
@@ -145,8 +150,23 @@ public class DeclarationVisitor extends Visitor {
         Scope o = enterScope(p);
         super.visit(that);
         exitScope(o);
+        parameterList.add(p);
     }
 
+    @Override
+    public void visit(Tree.ParameterList that) {
+        List<Parameter> pl = parameterList;
+        if (scope instanceof Functional) {
+            parameterList = new ArrayList<Parameter>();
+            ( (Functional) scope ).getParameters().add(parameterList);
+        }
+        else {
+            parameterList = ( (Class) scope ).getParameters();
+        }
+        super.visit(that);
+        parameterList = pl;
+    }
+    
     @Override
     public void visit(Tree.ControlClause that) {
         ControlBlock c = new ControlBlock();

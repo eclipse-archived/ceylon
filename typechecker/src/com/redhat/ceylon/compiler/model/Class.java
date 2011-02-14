@@ -7,7 +7,7 @@ public class Class extends ClassOrInterface {
 	
     Boolean isAbstract;
     Boolean formal;    
-	List<Typed> parameters = new ArrayList<Typed>();
+	List<Parameter> parameters = new ArrayList<Parameter>();
 	
 	public Boolean isFormal() {
 		return formal;
@@ -21,7 +21,7 @@ public class Class extends ClassOrInterface {
 		return isAbstract;
 	}	
 	
-    public List<Typed> parameters() {
+    public List<Parameter> getParameters() {
     	return parameters;
     }
 }
