@@ -34,4 +34,7 @@ class Assignability() {
     Y atty { @error return var; }
     assign atty { @error var := atty; }
     
+    X methx { return var; }
+    Y methy { @error return var; }
+    
 }
