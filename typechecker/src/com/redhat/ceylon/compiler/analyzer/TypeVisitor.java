@@ -32,9 +32,7 @@ import com.redhat.ceylon.compiler.util.PrintUtil;
 public class TypeVisitor extends Visitor {
     
     private Unit unit;
-    
     private Type outerType;
-    
     private Package importPackage;
     
     public TypeVisitor(Unit u) {
