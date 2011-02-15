@@ -35,10 +35,10 @@ import com.redhat.ceylon.compiler.tree.Visitor;
  */
 public class DeclarationVisitor extends Visitor {
     
-    Scope scope;
-    Unit unit;
-    final Package pkg;
-    List<Parameter> parameterList;
+    private final Package pkg;
+    private Scope scope;
+    private Unit unit;
+    private List<Parameter> parameterList;
     
     public DeclarationVisitor(Package p) {
         scope = p;
@@ -61,8 +61,21 @@ public class DeclarationVisitor extends Visitor {
 
     private void visitDeclaration(Tree.Declaration that, Declaration model) {
         String name = that.getIdentifier().getText();
-        model.setName(name);
+        if (name==null || name.startsWith("<missing")) {
+            that.addError("missing declaration name");
+        }
+        else {
+            model.setName(name);
+            checkForDuplicateDeclaration(that, model);
+        }
+        visitStructure(that, model);
+        unit.getDeclarations().add(model);
+    }
+
+    private void checkForDuplicateDeclaration(Tree.Declaration that,
+            Declaration model) {
         boolean found = false;
+        String name = that.getIdentifier().getText();
         for (Structure s: scope.getMembers()) {
             if (s instanceof Declaration) {
                 if (((Declaration) s).getName().equals(name)) {
@@ -79,8 +92,6 @@ public class DeclarationVisitor extends Visitor {
         if (!found && (model instanceof Setter)) {
             that.addError("setter with no matching getter: " + name);
         }
-        visitStructure(that, model);
-        unit.getDeclarations().add(model);
     }
 
     private void visitStructure(Node that, Structure model) {
