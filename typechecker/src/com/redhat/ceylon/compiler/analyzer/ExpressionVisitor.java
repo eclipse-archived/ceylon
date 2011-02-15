@@ -52,7 +52,17 @@ public class ExpressionVisitor extends Visitor {
         returnType = t;
     }
 
-    //Type inference for members declared "local":
+    @Override public void visit(Tree.AssignOp that) {
+        super.visit(that);
+        Type rhst = that.getRightTerm().getTypeModel();
+        Type lhst = that.getLeftTerm().getTypeModel();
+        if ( rhst!=null && lhst!=null && !rhst.isExactly(lhst) ) {
+            that.addError("type not assignable");
+        }
+        //TODO: validate that the LHS really is assignable
+        that.setTypeModel(rhst);
+        that.setModelNode(rhst);
+    }
     
     @Override public void visit(Tree.VariableOrExpression that) {
         super.visit(that);
@@ -73,7 +83,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.AttributeDeclaration that) {
         super.visit(that);
-        inferType(that);
+        inferType(that, that.getSpecifierOrInitializerExpression());
         checkType(that.getSpecifierOrInitializerExpression(), 
                 that.getTypeOrSubtype(), 
                 that.getIdentifier());
@@ -86,19 +96,6 @@ public class ExpressionVisitor extends Visitor {
                 that.getMember().getIdentifier());
     }
 
-    private void inferType(Tree.AttributeDeclaration that) {
-        if (that.getTypeOrSubtype() instanceof Tree.LocalModifier) {
-            Tree.SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
-            if (sie!=null) {
-                setType((Tree.LocalModifier) that.getTypeOrSubtype(), sie, that);
-            }
-            else {
-                that.addError("Could not infer type of: " + 
-                        that.getIdentifier().getText());
-            }
-        }
-    }
-    
     private void checkType(Tree.SpecifierOrInitializerExpression sie, Node typedNode, Tree.Identifier id) {
         if (sie!=null) {
             Type siet = sie.getExpression().getTypeModel();
@@ -114,18 +111,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    @Override public void visit(Tree.AssignOp that) {
-        super.visit(that);
-        Type rhst = that.getRightTerm().getTypeModel();
-        Type lhst = that.getLeftTerm().getTypeModel();
-        if ( rhst!=null && lhst!=null && !rhst.isExactly(lhst) ) {
-            that.addError("type not assignable");
-        }
-        //TODO: validate that the LHS really is assignable
-        that.setTypeModel(rhst);
-        that.setModelNode(rhst);
-    }
-    
     @Override public void visit(Tree.AttributeGetter that) {
         Tree.TypeOrSubtype rt = beginReturnScope(that.getTypeOrSubtype());
         super.visit(that);
@@ -152,16 +137,28 @@ public class ExpressionVisitor extends Visitor {
         inferType(that);
     }
 
+    //Type inference for members declared "local":
+    
     private void inferType(Tree.TypedDeclaration that, Tree.Block block) {
         if (that.getTypeOrSubtype() instanceof Tree.LocalModifier) {
-            setType((Tree.LocalModifier) that.getTypeOrSubtype(), block, that);
+            if (block!=null) {
+                setType((Tree.LocalModifier) that.getTypeOrSubtype(), block, that);
+            }
+            else {
+                that.addError("Could not infer type of: " + 
+                        that.getIdentifier().getText());
+            }
         }
     }
 
-    private void inferType(Tree.TypedDeclaration var, Tree.SpecifierExpression spec) {
-        if (spec!=null && var!=null) {
-            if ((var.getTypeOrSubtype() instanceof Tree.LocalModifier)) {
-                setType((Tree.LocalModifier) var.getTypeOrSubtype(), spec, var);
+    private void inferType(Tree.TypedDeclaration that, Tree.SpecifierOrInitializerExpression spec) {
+        if ((that.getTypeOrSubtype() instanceof Tree.LocalModifier)) {
+            if (spec!=null) {
+                setType((Tree.LocalModifier) that.getTypeOrSubtype(), spec, that);
+            }
+            else {
+                that.addError("Could not infer type of: " + 
+                        that.getIdentifier().getText());
             }
         }
     }
@@ -171,7 +168,7 @@ public class ExpressionVisitor extends Visitor {
             if (that.getBlock()!=null) {
                 inferType(that, that.getBlock());
             }
-            else if ( that.getSpecifierExpression()!=null ) {
+            else if (that.getSpecifierExpression()!=null) {
                 inferType(that, that.getSpecifierExpression());  //TODO: this is hackish
             }
             else {
