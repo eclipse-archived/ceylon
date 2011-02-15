@@ -5,7 +5,7 @@ shared class Bounded<M>(Bounded<M> b)
 
     doc "The |Natural| representing this natural
          number."
-    shared extension Natural natural { ... }
+    shared extension Natural natural { throw; }
 
     shared actual Comparison compare(Bounded<M> other) {
         return natural.compare(other.natural);
@@ -14,6 +14,6 @@ shared class Bounded<M>(Bounded<M> b)
     doc "This natural number, as a |Bounded<N>| where
          |N>=M|."
     shared extension Bounded<M+I> bounded<I>()
-            given I satisfies Dimension { ... }
+            given I satisfies Dimension { throw; }
 
 }

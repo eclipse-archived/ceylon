@@ -10,16 +10,14 @@ shared extension class String(Character[] this)
         chars = copy(this);
     }
 
-    ...
-
     doc "Split the string into tokens, using the given
          separator characters."
-    shared Iterable<String> tokens(Iterable<Character> separators=" ,;\n\l\r\t") { return ... }
+    shared Iterable<String> tokens(Iterable<Character> separators=" ,;\n\l\r\t") { throw; }
 
     doc "Split the string into lines of text."
     shared Iterable<String> lines() { return tokens("\n\l\r") }
 
-    shared String replace(Character with(Character character)) { return ... }
+    shared String replace(Character with(Character character)) { throw; }
 
     shared String replace(Character character -> Character replacement) {
         return replace() with (Character c)
@@ -42,14 +40,14 @@ shared extension class String(Character[] this)
 
     doc "Remove the given characters from the beginning
          and end of the string.
-    shared String strip(Character[] whitespace = " \n\l\r\t") { return ... }
+    shared String strip(Character[] whitespace = " \n\l\r\t") { throw; }
 
     doc "Collapse substrings of the given characters into
          single space characters."
-    shared String normalize(Character[] whitespace = " \n\l\r\t") { return ... }
+    shared String normalize(Character[] whitespace = " \n\l\r\t") { throw; }
 
     doc "Join the given strings, using this string as
          a separator."
-    shared String join(String... strings) { return ... }
+    shared String join(String... strings) { throw; }
 
 }

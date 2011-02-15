@@ -4,15 +4,15 @@ shared class Float(Float float)
     //TODO finish
 
     doc "The natural logarithm of the number"
-    shared Float ln { return ... }
+    shared Float ln { throw; }
 
     doc "Implicit type promotion to |Decimal|"
-    shared actual extension Decimal decimal { return ... }
+    shared actual extension Decimal decimal { throw; }
 
     shared extension class StringToFloat(String this) {
 
         doc "Parse the string representation of a |Float| in the given radix"
-        shared Float parseFloat(small Natural radix=10) { return ... }
+        shared Float parseFloat(small Natural radix=10) { throw; }
 
     }
 

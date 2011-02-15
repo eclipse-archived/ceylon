@@ -5,10 +5,10 @@ shared extension class Regex(Quoted this)
          match the parenthesized groups of the regex,
          ordered by the position of the opening parenthesis
          of the group."
-    shared Match? matchList(String string)() { return ... }
+    shared Match? matchList(String string)() { throw; }
 
     doc "Determine if the given string matches the regex."
-    shared actual Boolean matches(String string) { return ... }
+    shared actual Boolean matches(String string) { throw; }
 
     //TODO finish
 
