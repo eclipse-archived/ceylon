@@ -98,9 +98,9 @@ public class ExpressionVisitor extends Visitor {
 
     private void checkType(Tree.SpecifierOrInitializerExpression sie, Node typedNode, Tree.Identifier id) {
         if (sie!=null) {
-            Type siet = sie.getExpression().getTypeModel();
-            if ( siet!=null && typedNode.getTypeModel()!=null) {
-                if ( !siet.isExactly(typedNode.getTypeModel()) ) {
+            Type type = sie.getExpression().getTypeModel();
+            if ( type!=null && typedNode.getTypeModel()!=null) {
+                if ( !type.isExactly(typedNode.getTypeModel()) ) {
                     sie.addError("Specifier expression not assignable to attribute type: " + 
                             id.getText());
                 }
