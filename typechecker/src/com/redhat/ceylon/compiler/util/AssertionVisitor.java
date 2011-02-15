@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.analyzer.AnalysisError;
-import com.redhat.ceylon.compiler.model.Type;
 import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Visitor;
@@ -16,27 +15,27 @@ public class AssertionVisitor extends Visitor {
 
     @Override
     public void visit(Tree.TypedDeclaration that) {
-        checkType(that, that.getTypeOrSubtype().getTypeModel());
+        checkType(that, that.getTypeOrSubtype());
         super.visit(that);
     }
 
     @Override
     public void visit(Tree.ExpressionStatement that) {
-        checkType(that, that.getExpression().getTypeModel());
+        checkType(that, that.getExpression());
         super.visit(that);
     }
     
-    private void checkType(Tree.Statement that, Type tm) {
+    private void checkType(Tree.Statement that, Node typedNode) {
         for (Tree.CompilerAnnotation c: that.getCompilerAnnotations()) {
             if (c.getIdentifier().getText().equals("type")) {
                 String expectedType = c.getStringLiteral().getText();
-                if (tm==null) {
+                if (typedNode==null || typedNode.getTypeModel()==null) {
                     System.err.println(
                             "type not known at "+ that.getAntlrTreeNode().getLine() + ":" +
                             that.getAntlrTreeNode().getCharPositionInLine());
                 }
                 else {
-                    String actualType = tm.getProducedTypeName();
+                    String actualType = typedNode.getTypeModel().getProducedTypeName();
                     if ( !actualType.equals(expectedType.substring(1,expectedType.length()-1)) )
                         System.err.println("type " + actualType +
                                 "not of expected type " + expectedType + 
