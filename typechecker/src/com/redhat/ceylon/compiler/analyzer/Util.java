@@ -5,6 +5,7 @@ import com.redhat.ceylon.compiler.model.GenericType;
 import com.redhat.ceylon.compiler.model.Import;
 import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.Scope;
+import com.redhat.ceylon.compiler.model.Setter;
 import com.redhat.ceylon.compiler.model.Structure;
 import com.redhat.ceylon.compiler.model.Typed;
 import com.redhat.ceylon.compiler.model.Unit;
@@ -117,7 +118,7 @@ class Util {
      */
     private static Declaration getLocalDeclaration(Scope scope, String name) {
         for ( Structure s: scope.getMembers() ) {
-            if (s instanceof Declaration) {
+            if (s instanceof Declaration && !(s instanceof Setter) ) {
                 Declaration d = (Declaration) s;
                 if (d.getName().equals(name)) {
                     return d;
