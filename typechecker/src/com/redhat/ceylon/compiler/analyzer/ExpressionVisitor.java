@@ -16,8 +16,6 @@ import com.redhat.ceylon.compiler.model.Typed;
 import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.tree.Tree.Return;
-import com.redhat.ceylon.compiler.tree.Tree.Term;
 import com.redhat.ceylon.compiler.tree.Visitor;
 
 /**
@@ -34,6 +32,7 @@ import com.redhat.ceylon.compiler.tree.Visitor;
 public class ExpressionVisitor extends Visitor {
     
     ClassOrInterface classOrInterface;
+    Tree.TypeOrSubtype returnType;
     
     public void visit(Tree.ClassOrInterfaceDeclaration that) {
         ClassOrInterface o = classOrInterface;
@@ -95,10 +94,16 @@ public class ExpressionVisitor extends Visitor {
         else if (sie!=null) {
             Type siet = sie.getExpression().getTypeModel();
             Type attm = at.getTypeModel();
-            if ( siet!=null && attm!=null && !siet.isExactly(attm) ) {
-                sie.getErrors().add( new AnalysisError(sie, 
-                        "Attribute specifier or initializer expression not assignable to attribute type: " + 
-                        that.getIdentifier().getText()) );
+            if ( siet!=null && attm!=null) {
+                if ( !siet.isExactly(attm) ) {
+                    sie.getErrors().add( new AnalysisError(sie, 
+                            "Attribute specifier or initializer expression not assignable to attribute type: " + 
+                            that.getIdentifier().getText()) );
+                }
+            }
+            else {
+                that.getErrors().add( new AnalysisError(that, 
+                        "Could not determine assignability of specified expression to attribute type") );
             }
         }
     }
@@ -109,10 +114,16 @@ public class ExpressionVisitor extends Visitor {
         if (sie!=null) {
             Type siet = sie.getExpression().getTypeModel();
             Type mttm = that.getMember().getTypeModel();
-            if ( siet!=null && mttm!=null && !siet.isExactly(mttm) ) {
-                sie.getErrors().add( new AnalysisError(sie, 
-                        "Specifier expression not assignable to attribute type: " + 
-                        that.getMember().getIdentifier().getText()) );
+            if ( siet!=null && mttm!=null) {
+                if ( !siet.isExactly(mttm) ) {
+                    sie.getErrors().add( new AnalysisError(sie, 
+                            "Specifier expression not assignable to attribute type: " + 
+                            that.getMember().getIdentifier().getText()) );
+                }
+            }
+            else {
+                that.getErrors().add( new AnalysisError(that, 
+                        "Could not determine assignability of specified expression to attribute type") );
             }
         }
     }
@@ -131,24 +142,44 @@ public class ExpressionVisitor extends Visitor {
     }
 
     @Override public void visit(Tree.AttributeGetter that) {
+        Tree.TypeOrSubtype r = returnType;
+        Tree.TypeOrSubtype t = that.getTypeOrSubtype();
+        returnType = t;
         super.visit(that);
-        if (that.getTypeOrSubtype() instanceof Tree.LocalModifier) {
-            setType((Tree.LocalModifier) that.getTypeOrSubtype(), 
-                    that.getBlock(),
-                    that);
+        returnType = r;
+        if (t instanceof Tree.LocalModifier) {
+            setType((Tree.LocalModifier) t, that.getBlock(), that);
+        }
+    }
+
+    @Override public void visit(Tree.AttributeSetter that) {
+        Tree.TypeOrSubtype r = returnType;
+        Tree.TypeOrSubtype t = that.getTypeOrSubtype();
+        returnType = t;
+        super.visit(that);
+        returnType = r;
+        if (t instanceof Tree.LocalModifier) {
+            setType((Tree.LocalModifier) t, that.getBlock(), that);
         }
     }
 
     @Override public void visit(Tree.MethodDeclaration that) {
+        Tree.TypeOrSubtype t = that.getTypeOrSubtype();
+        Tree.Block b = that.getBlock();
+        Tree.TypeOrSubtype r = returnType;
+        if (b!=null) {
+            returnType = t;            
+        }
         super.visit(that);
-        if (that.getTypeOrSubtype() instanceof Tree.LocalModifier) {
-            if (that.getBlock()!=null) {
-                setType((Tree.LocalModifier) that.getTypeOrSubtype(), 
-                        that.getBlock(),
-                        that);
+        if (b!=null) {
+            returnType = r;
+        }
+        if (t instanceof Tree.LocalModifier) {
+            if (b!=null) {
+                setType((Tree.LocalModifier) t, b, that);
             }
             else if ( that.getSpecifierExpression()!=null ) {
-                setType((Tree.LocalModifier) that.getTypeOrSubtype(), 
+                setType((Tree.LocalModifier) t, 
                         that.getSpecifierExpression(),
                         that);  //TODO: this is hackish
             }
@@ -173,8 +204,8 @@ public class ExpressionVisitor extends Visitor {
             Tree.TypedDeclaration that) {
         int s = block.getStatements().size();
         Tree.Statement d = s==0 ? null : block.getStatements().get(s-1);
-        if (d!=null && (d instanceof Return)) {
-            Type t = ((Return) d).getExpression().getTypeModel();
+        if (d!=null && (d instanceof Tree.Return)) {
+            Type t = ((Tree.Return) d).getExpression().getTypeModel();
             local.setTypeModel(t);
             ((Typed) that.getModelNode()).setType(t);
         }
@@ -182,6 +213,43 @@ public class ExpressionVisitor extends Visitor {
             local.getErrors().add( new AnalysisError(local, 
                     "Could not infer type of: " + 
                     that.getIdentifier().getText()) );
+        }
+    }
+    
+    @Override public void visit(Tree.Return that) {
+        super.visit(that);
+        if (returnType==null) {
+            that.getErrors().add( new AnalysisError(that, 
+                    "Could not determine expected return type") );
+        } 
+        else {
+            Expression e = that.getExpression();
+            if ( returnType instanceof Tree.VoidModifier ) {
+                if (e!=null) {
+                    that.getErrors().add( new AnalysisError(that, 
+                            "void methods may not return a value") );
+                }
+            }
+            else if ( !(returnType instanceof Tree.LocalModifier) ) {
+                if (e==null) {
+                    that.getErrors().add( new AnalysisError(that, 
+                            "non-void methods and getters must return a value") );
+                }
+                else {
+                    Type et = returnType.getTypeModel();
+                    Type at = e.getTypeModel();
+                    if (et!=null && at!=null) {
+                        if ( !et.isExactly(at) ) {
+                            that.getErrors().add( new AnalysisError(that, 
+                                    "Returned expression not assignable to expected return type") );
+                        }
+                    }
+                    else {
+                        that.getErrors().add( new AnalysisError(that, 
+                                "Could not determine assignability of returned expression to expected return type") );
+                    }
+                }
+            }
         }
     }
     
@@ -319,7 +387,7 @@ public class ExpressionVisitor extends Visitor {
                     }
                     else {
                         a.getErrors().add( new AnalysisError(a, 
-                                "could not determine assignability of argument to parameter +" +
+                                "could not determine assignability of argument to parameter: " +
                                 p.getName()) );
                     }
                 }
@@ -384,7 +452,7 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.Expression that) {
         //i.e. this is a parenthesized expression
         super.visit(that);
-        Term term = that.getTerm();
+        Tree.Term term = that.getTerm();
         if (term==null) {
             that.getErrors().add( new AnalysisError(that, 
                     "Expression not well formed") );
@@ -473,7 +541,7 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.SequenceEnumeration that) {
         super.visit(that);
         Type et = null; 
-        for (Expression e: that.getExpressionList().getExpressions()) {
+        for (Tree.Expression e: that.getExpressionList().getExpressions()) {
             if (et==null) {
                 et = e.getTypeModel();
             }
