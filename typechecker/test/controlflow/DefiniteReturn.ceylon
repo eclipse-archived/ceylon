@@ -319,12 +319,12 @@ interface DefiniteReturn {
         if (testSomething()) {
             if (testSomething()) {
                 doSomething();
-                return;
+                return X();
             }
         }
         else {
             doSomethingElse();
-            return;
+            return X();
         }
     }
     
@@ -332,29 +332,29 @@ interface DefiniteReturn {
         if (testSomething()) {
             if (testSomething()) {
                 doSomething();
-                return;
+                return X();
             }
         }
         else {
             doSomethingElse();
         }
-        return;
+        return X();
     }
     
     X methodWithReturnInNestedIf3() {
         if (testSomething()) {
             if (testSomething()) {
                 doSomething();
-                return;
+                return X();
             }
             else {
                 doNothing();
-                return;
+                return X();
             }
         }
         else {
             doSomethingElse();
-            return;
+            return X();
         }
     }
     
@@ -561,12 +561,12 @@ interface DefiniteReturn {
         if (testSomething()) {
             if (testSomething()) {
                 doSomething();
-                return;
+                return X();
             }
         }
         else {
             doSomethingElse();
-            return;
+            return X();
         }
     }
     
@@ -574,29 +574,29 @@ interface DefiniteReturn {
         if (testSomething()) {
             if (testSomething()) {
                 doSomething();
-                return;
+                return X();
             }
         }
         else {
             doSomethingElse();
         }
-        return;
+        return X();
     }
     
     X getterWithReturnInNestedIf3 {
         if (testSomething()) {
             if (testSomething()) {
                 doSomething();
-                return;
+                return X();
             }
             else {
                 doNothing();
-                return;
+                return X();
             }
         }
         else {
             doSomethingElse();
-            return;
+            return X();
         }
     }
     
