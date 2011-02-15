@@ -93,7 +93,7 @@
     BLOCK(BLOCK BROKEN_MEMBER_BODY))
 
 "An attribute setter declaration."
-^(ATTRIBUTE_SETTER:DECLARATION 
+^(ATTRIBUTE_SETTER:TYPED_DECLARATION
     BLOCK)
 
 "A method declaration."
