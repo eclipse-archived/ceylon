@@ -43,8 +43,7 @@ class Context {
         name.add(path);
         pkg.setName(name);
         if (module != null) {
-            module.getPackages().add(pkg);
-            pkg.setModule(module);
+            bindPackageToCurrentModule(pkg);
         }
         //FIXME this is a total hack, should be an implicit import of the ceylon.language module (unless we compile ceylon.language :) )
         //add ceylon.language elements to the package
@@ -55,6 +54,11 @@ class Context {
             }
         }
         packageStack.addLast(pkg);
+    }
+
+    private void bindPackageToCurrentModule(Package pkg) {
+        module.getPackages().add(pkg);
+        pkg.setModule(module);
     }
 
     public void pop() {
@@ -72,11 +76,13 @@ class Context {
     public void defineModule() {
         if ( module == null ) {
             module = new Module();
-            final List<String> moduleName = packageStack.peekLast().getName();
+            final Package currentPkg = packageStack.peekLast();
+            final List<String> moduleName = currentPkg.getName();
             if (moduleName.size() == 0) {
                 throw new RuntimeException("Module cannot be top level");
             }
             module.setName(moduleName);
+            bindPackageToCurrentModule(currentPkg);
         }
         else {
             StringBuilder error = new StringBuilder("Found two modules within the same hierarchy: '");

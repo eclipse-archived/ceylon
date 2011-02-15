@@ -61,6 +61,13 @@ public class Main {
         Context context = new Context();
         final File file = new File(path);
         buildLanguageImport(context);
+
+        if (!ENABLE_MODULE_AND_PACKAGE) {
+            //TODO here for legacy purpose until the corpus is cleanly split into properly formed modules
+            context.push("test");
+            context.defineModule();
+        }
+
         if ( file.isDirectory() ) {
             //root directory is the src dir => start from here
             for ( File subfile : file.listFiles() )
@@ -70,6 +77,10 @@ public class Main {
             //simple file compilation
             //TODO is that really valid?
             parseFileOrDirectory(file, context);
+        }
+
+        if (!ENABLE_MODULE_AND_PACKAGE) {
+            context.pop();
         }
 
         executePhases(context);
@@ -137,21 +148,7 @@ public class Main {
                 System.out.println("Parser error: " + pe.getMessage(parser));
         	}
 
-        	Package p;
-
-            if (ENABLE_MODULE_AND_PACKAGE) {
-                p = context.getPackage();
-            }
-            else {
-                //TODO here for legacy purpose until the corpus is cleanly split into properly formed modules
-                p = new Package();
-                p.setName(Arrays.asList(new String[]{"test"}));
-                Module m = new Module();
-                m.setName(Arrays.asList(new String[]{"test"}));
-                p.setModule(m);
-                m.getPackages().add(p);
-            }
-
+        	Package p = context.getPackage();
             CommonTree t = (CommonTree) r.getTree();
             CompilationUnit cu = new Builder().buildCompilationUnit(t);
             PhasedUnit phasedUnit = new PhasedUnit(file.getName(),cu,p);
