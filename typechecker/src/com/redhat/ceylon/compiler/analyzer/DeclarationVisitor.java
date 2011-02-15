@@ -13,6 +13,7 @@ import com.redhat.ceylon.compiler.model.Method;
 import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.Parameter;
 import com.redhat.ceylon.compiler.model.Scope;
+import com.redhat.ceylon.compiler.model.Setter;
 import com.redhat.ceylon.compiler.model.SimpleValue;
 import com.redhat.ceylon.compiler.model.Structure;
 import com.redhat.ceylon.compiler.model.TypeParameter;
@@ -137,6 +138,15 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.AttributeGetter that) {
         Getter g = new Getter();
+        visitDeclaration(that, g);
+        Scope o = enterScope(g);
+        super.visit(that);
+        exitScope(o);
+    }
+    
+    @Override
+    public void visit(Tree.AttributeSetter that) {
+        Setter g = new Setter();
         visitDeclaration(that, g);
         Scope o = enterScope(g);
         super.visit(that);

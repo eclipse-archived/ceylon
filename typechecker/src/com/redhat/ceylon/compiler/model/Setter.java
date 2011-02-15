@@ -9,7 +9,7 @@ import java.util.List;
  * @author Gavin King
  *
  */
-public class Setter extends Declaration implements Scope {
+public class Setter extends Typed implements Scope {
 	List<Structure> members = new ArrayList<Structure>();
 	Getter getter;
 
