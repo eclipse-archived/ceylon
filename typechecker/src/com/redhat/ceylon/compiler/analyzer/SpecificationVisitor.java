@@ -16,15 +16,74 @@ import com.redhat.ceylon.compiler.tree.Visitor;
  */
 public class SpecificationVisitor extends Visitor {
     
-    final Declaration declaration;
+    private final Declaration declaration;
     
-    boolean definitelyAssigned = false;
-    boolean possiblyAssigned = false;
-    boolean cannotAssign = true;
-    boolean declared = false;
-        
+    private SpecificationState specified = new SpecificationState(false, false);
+    private boolean cannotSpecify = true;
+    private boolean declared = false;
+    
+    class SpecificationState {
+        boolean definitely;
+        boolean possibly;
+        boolean exited;
+        SpecificationState(boolean definitely, boolean possibly) {
+            this.definitely = definitely;
+            this.possibly = possibly;
+            this.exited = false;
+        }
+    }
+    
     public SpecificationVisitor(Declaration declaration) {
         this.declaration = declaration;
+    }
+    
+    private void declare() {
+        declared = true;
+    }
+    
+    private boolean beginDeclarationScope() {
+        return declared;
+    }
+    
+    private void endDeclarationScope(boolean d) {
+        declared = d;
+    }
+    
+    private boolean beginDisabledSpecificationScope() {
+        boolean ca = cannotSpecify;
+        cannotSpecify = true;
+        return ca;
+    }
+    
+    private void endDisabledSpecificationScope(boolean ca) {
+        cannotSpecify = ca;
+    }
+    
+    private void specify() {
+        specified.definitely = true;
+        specified.possibly = true;
+    }
+    
+    private void exit() {
+        specified.exited = true;
+    }
+    
+    private SpecificationState beginSpecificationScope() {
+        SpecificationState as = specified;
+        specified = new SpecificationState(specified.definitely, specified.possibly);
+        return as;
+    }
+    
+    private void endSpecificationScope(SpecificationState as) {
+        specified = as;
+    }
+    
+    private boolean beginIndefiniteSpecificationScope() {
+        return specified.definitely;
+    }
+    
+    private void endIndefiniteSpecificationScope(boolean da) {
+        specified.definitely = da;
     }
     
     @Override
@@ -37,8 +96,8 @@ public class SpecificationVisitor extends Visitor {
                 that.addError("Not yet declared: " + 
                         that.getIdentifier().getText());
             }
-            else if (!definitelyAssigned) {
-                that.addError("Not definitely assigned: " + 
+            else if (!specified.definitely) {
+                that.addError("Not definitely specified: " + 
                         that.getIdentifier().getText());
             }
         }
@@ -51,18 +110,17 @@ public class SpecificationVisitor extends Visitor {
                 that.addError("Not yet declared: " + 
                         that.getMember().getIdentifier().getText());
             }
-            else if (cannotAssign) {
-                that.addError("Cannot assign from here: " + 
+            else if (cannotSpecify) {
+                that.addError("Cannot specify value from here: " + 
                         that.getMember().getIdentifier().getText());
             }
-            else if (possiblyAssigned) {
-                that.addError("Not definitely unassigned: " + 
+            else if (specified.possibly) {
+                that.addError("Not definitely unspecified: " + 
                         that.getMember().getIdentifier().getText());
             }
             else {
                 super.visit(that.getSpecifierExpression());
-                definitelyAssigned=true;
-                possiblyAssigned=true;
+                specify();
                 super.visit(that.getMember());
             }
         }
@@ -74,22 +132,19 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.Declaration that) {
         if (that.getModelNode()==declaration) {
-            cannotAssign = true;
+            beginDisabledSpecificationScope();
             super.visit(that);
-            declared = true;
-            cannotAssign = false;
+            declare();
+            endDisabledSpecificationScope(false);
         }
         else {
-            boolean c = cannotAssign;
-            boolean d = declared;
-            boolean a = definitelyAssigned;
-            boolean p = possiblyAssigned;
-            cannotAssign=true;
+            boolean c = beginDisabledSpecificationScope();
+            boolean d = beginDeclarationScope();
+            SpecificationState as = beginSpecificationScope();
             super.visit(that);
-            cannotAssign = c;
-            declared = d;
-            definitelyAssigned = a;
-            possiblyAssigned = p;
+            endDisabledSpecificationScope(c);
+            endDeclarationScope(d);
+            endSpecificationScope(as);
         }
     }
     
@@ -97,9 +152,8 @@ public class SpecificationVisitor extends Visitor {
     public void visit(Tree.MethodDeclaration that) {
         if (that.getModelNode()==declaration &&
                 that.getBlock()!=null) {
-            declared = true;
-            definitelyAssigned = true;
-            possiblyAssigned = true;
+            declare();
+            specify();
         }
         //TODO: allow references to un-assigned things
         //      in interface bodies or the declaration
@@ -107,8 +161,7 @@ public class SpecificationVisitor extends Visitor {
         super.visit(that);
         if (that.getModelNode()==declaration &&
                 that.getSpecifierExpression()!=null) {
-            definitelyAssigned = true;
-            possiblyAssigned = true;
+            specify();
         }
             
     }
@@ -117,8 +170,7 @@ public class SpecificationVisitor extends Visitor {
     public void visit(Tree.Variable that) {
         super.visit(that);
         if (that.getModelNode()==declaration) {
-            definitelyAssigned = true;
-            possiblyAssigned = true;
+            specify();
         }
     }
     
@@ -126,8 +178,7 @@ public class SpecificationVisitor extends Visitor {
     public void visit(Tree.Parameter that) {
         super.visit(that);
         if (that.getModelNode()==declaration) {
-            definitelyAssigned = true;
-            possiblyAssigned = true;
+            specify();
         }
     }
     
@@ -136,17 +187,15 @@ public class SpecificationVisitor extends Visitor {
         super.visit(that);        
         if (that.getModelNode()==declaration &&
                 that.getSpecifierOrInitializerExpression()!=null) {
-            definitelyAssigned = true;
-            possiblyAssigned = true;
+            specify();
         }
     }
     
     @Override
     public void visit(Tree.AttributeGetter that) {
         if (that.getModelNode()==declaration){
-            declared = true;
-            definitelyAssigned = true;
-            possiblyAssigned = true;
+            declare();
+            specify();
         }
         super.visit(that);        
     }
@@ -154,9 +203,8 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.ClassOrInterfaceDeclaration that) {
         if (that.getModelNode()==declaration){
-            declared = true;
-            definitelyAssigned = true;
-            possiblyAssigned = true;
+            declare();
+            specify();
         }
         super.visit(that);        
     }
@@ -164,51 +212,54 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.Return that) {
         super.visit(that);
-        definitelyAssigned = true;
+        exit();
     }
 
     @Override
     public void visit(Tree.Throw that) {
         super.visit(that);
-        definitelyAssigned = true;
+        exit();
     }
     
     @Override
     public void visit(Tree.Break that) {
         super.visit(that);
-        definitelyAssigned = true;
+        exit();
     }
 
     @Override
     public void visit(Tree.Continue that) {
         super.visit(that);
-        definitelyAssigned = true;
+        exit();
     }
     
     @Override
     public void visit(Tree.IfStatement that) {
-        boolean d = declared;
-        boolean o = definitelyAssigned;
-        boolean p = possiblyAssigned;
+        boolean d = beginDeclarationScope();
+        SpecificationState as = beginSpecificationScope();
         
         visit(that.getIfClause());
-        boolean definitelyAssignedByIfClause = definitelyAssigned;
-        boolean possiblyAssignedByIfClause = possiblyAssigned;
-        declared = d;
-        definitelyAssigned = o;
-        possiblyAssigned = p;
+        boolean definitelyAssignedByIfClause = specified.definitely || specified.exited;
+        boolean possiblyAssignedByIfClause = specified.possibly;
+        endDeclarationScope(d);
+        endSpecificationScope(as);
         
-        boolean definitelyAssignedByElseClause = false;
-        boolean possiblyAssignedByElseClause = false;
+        boolean definitelyAssignedByElseClause;
+        boolean possiblyAssignedByElseClause;
         if (that.getElseClause()!=null) {
             visit(that.getElseClause());
-            declared = d;
-            definitelyAssignedByElseClause = definitelyAssigned;
-            possiblyAssignedByElseClause = possiblyAssigned;
+            endDeclarationScope(d);
+            definitelyAssignedByElseClause = specified.definitely || specified.exited;
+            possiblyAssignedByElseClause = specified.possibly;
         }
+        else {
+            definitelyAssignedByElseClause = false;
+            possiblyAssignedByElseClause = false;
+        }
+        endSpecificationScope(as);
         
-        definitelyAssigned = o || (definitelyAssignedByIfClause && definitelyAssignedByElseClause);
-        possiblyAssigned = p || possiblyAssignedByIfClause || possiblyAssignedByElseClause;
+        specified.definitely = specified.definitely || (definitelyAssignedByIfClause && definitelyAssignedByElseClause);
+        specified.possibly = specified.possibly || possiblyAssignedByIfClause || possiblyAssignedByElseClause;
     }
     
     @Override
@@ -218,45 +269,42 @@ public class SpecificationVisitor extends Visitor {
         //assigns, then it is definitely assigned after
         //the switch statement
     }
-        
+    
     @Override
     public void visit(Tree.WhileClause that) {
-        boolean c = cannotAssign;
-        boolean d = declared;
-        cannotAssign=true;
+        boolean c = beginDisabledSpecificationScope();
+        boolean d = beginDeclarationScope();
         super.visit(that);
-        cannotAssign = c;
-        declared = d;
+        endDisabledSpecificationScope(c);
+        endDeclarationScope(d);
     }
     
     @Override
     public void visit(Tree.DoClause that) {
-        boolean c = cannotAssign;
-        boolean d = declared;
-        cannotAssign=true;
+        boolean c = beginDisabledSpecificationScope();
+        boolean d = beginDeclarationScope();
         super.visit(that);
-        cannotAssign = c;
-        declared = d;
+        endDisabledSpecificationScope(c);
+        endDeclarationScope(d);
     }
 
     @Override
     public void visit(Tree.ForClause that) {
-        boolean c = cannotAssign;
-        boolean d = declared;        
-        cannotAssign = true;
+        boolean c = beginDisabledSpecificationScope();
+        boolean d = beginDeclarationScope();        
         super.visit(that);
-        cannotAssign = c;
-        declared = d;
+        endDisabledSpecificationScope(c);
+        endDeclarationScope(d);
     }
     
 
     @Override
     public void visit(Tree.FailClause that) {
-        boolean o = definitelyAssigned;
-        boolean d = declared;
+        boolean o = beginIndefiniteSpecificationScope();
+        boolean d = beginDeclarationScope();
         super.visit(that);
-        definitelyAssigned = o;
-        declared = d;
+        endIndefiniteSpecificationScope(o);
+        endDeclarationScope(d);
     }
 
     @Override
@@ -265,27 +313,27 @@ public class SpecificationVisitor extends Visitor {
         //      no catch clauses, and the try clause 
         //      definitely assigns, it is definitely
         //      assigned after the try
-        boolean o = definitelyAssigned;
-        boolean d = declared;
+        boolean o = beginIndefiniteSpecificationScope();
+        boolean d = beginDeclarationScope();
         super.visit(that);
-        definitelyAssigned = o;
-        declared = d;
+        endIndefiniteSpecificationScope(o);
+        endDeclarationScope(d);
     }
 
     @Override
     public void visit(Tree.CatchClause that) {
-        boolean o = definitelyAssigned;
-        boolean d = declared;
+        boolean o = beginIndefiniteSpecificationScope();
+        boolean d = beginDeclarationScope();
         super.visit(that);
-        definitelyAssigned = o;
-        declared = d;
+        endIndefiniteSpecificationScope(o);
+        endDeclarationScope(d);
     }
     
     @Override
     public void visit(Tree.FinallyClause that) {
-        boolean d = declared;
+        boolean d = beginDeclarationScope();
         super.visit(that);
-        declared = d;
+        endDeclarationScope(d);
     }
 
     /**

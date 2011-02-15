@@ -14,44 +14,96 @@ import com.redhat.ceylon.compiler.tree.Visitor;
  */
 public class ControlFlowVisitor extends Visitor {
     
-    boolean definitelyReturns = false;
-    boolean broken = false;
-    boolean canReturn = false;
-    boolean canBreakOrContinue = false;
-    boolean canExecute = true;
+    private boolean definitelyReturns = false;
+    private boolean canReturn = false;
+    private boolean canExecute = true;
+    private Boolean exitedFromLoop = null;
+    
+    boolean beginDefiniteReturnScope() {
+        boolean dr = definitelyReturns;
+        definitelyReturns = false;
+        return dr;
+    }
+        
+    boolean beginIndefiniteReturnScope() {
+        return definitelyReturns;
+    }
+    
+    void endDefiniteReturnScope(boolean dr) {
+        definitelyReturns = dr;
+    }
+    
+    void exit() {
+        definitelyReturns = true;
+    }
+    
+    boolean beginReturnScope(boolean cr) {
+        boolean ocr = canReturn;
+        canReturn = cr;
+        return ocr;
+    }
+    
+    void endReturnScope(boolean cr) {
+        canReturn = cr;
+    }
+    
+    boolean beginStatementScope(boolean ce) {
+        boolean oce = canExecute;
+        canExecute = ce;
+        return oce;
+    }
+    
+    void endStatementScope(boolean ce) {
+        canExecute = ce;
+    }
+    
+    Boolean beginLoop() {
+        Boolean efl = exitedFromLoop;
+        exitedFromLoop = false;
+        return efl;
+    }
+    
+    void endLoop(Boolean efl) {
+        exitedFromLoop = efl;
+    }
+    
+    void exitLoop() {
+        exitedFromLoop = true;
+    }
+    
+    boolean inLoop() {
+        return exitedFromLoop!=null;
+    }
         
     @Override
     public void visit(Tree.AttributeGetter that) {
-        boolean c = canReturn;
-        canReturn = true;
-        boolean d = definitelyReturns;
-        definitelyReturns = false;
+        boolean c = beginReturnScope(true);
+        boolean d = beginDefiniteReturnScope();
         super.visit(that);
+        checkDefiniteReturn(that);
+        endDefiniteReturnScope(d);
+        endReturnScope(c);
+    }
+
+    private void checkDefiniteReturn(Tree.Declaration that) {
         if (!definitelyReturns) {
             that.addError("Does not definitely return: " + 
                     that.getIdentifier().getText());
         }
-        definitelyReturns = d;
-        canReturn = c;
     }
 
     @Override
     public void visit(Tree.MethodDeclaration that) {
         if (that.getBlock()!=null) {
-            boolean c = canReturn;
-            canReturn = true;
-            boolean d = definitelyReturns;
-            definitelyReturns = false;
+            boolean c = beginReturnScope(true);
+            boolean d = beginDefiniteReturnScope();
             super.visit(that);
             if (that.getBlock()!=null && 
                     !(that.getTypeOrSubtype() instanceof Tree.VoidModifier)) {
-                if (!definitelyReturns) {
-                    that.addError("Does not definitely return: " + 
-                            that.getIdentifier().getText());
-                }
+                checkDefiniteReturn(that);
             }
-            definitelyReturns = d;
-            canReturn = c;
+            endDefiniteReturnScope(d);
+            endReturnScope(c);
         }
         else if (that.getSpecifierExpression()!=null) {
             checkExecutableStatementAllowed(that);
@@ -69,32 +121,27 @@ public class ControlFlowVisitor extends Visitor {
     
     @Override
     public void visit(Tree.AttributeSetter that) {
-        boolean c = canReturn;
-        canReturn = true;
-        boolean d = definitelyReturns;
-        definitelyReturns = false;
+        boolean c = beginReturnScope(true);
+        boolean d = beginDefiniteReturnScope();
         super.visit(that);
-        canReturn = c;
-        definitelyReturns = d;
+        endReturnScope(c);
+        endDefiniteReturnScope(d);
     }
     
     @Override
     public void visit(Tree.ClassOrInterfaceDeclaration that) {
-        boolean c = canReturn;
-        canReturn = false;
-        boolean d = definitelyReturns;
-        definitelyReturns = false;
+        boolean c = beginReturnScope(false);
+        boolean d = beginDefiniteReturnScope();
         super.visit(that);
-        canReturn = c;
-        definitelyReturns = d;
+        endReturnScope(c);
+        endDefiniteReturnScope(d);
     }
     
     @Override
     public void visit(Tree.Body that) {
-        boolean e = canExecute;
-        canExecute = !(that instanceof Tree.InterfaceBody);
+        boolean e = beginStatementScope(!(that instanceof Tree.InterfaceBody));
         super.visit(that);
-        canExecute = e;
+        endStatementScope(e);
     }
     
     @Override
@@ -115,31 +162,31 @@ public class ControlFlowVisitor extends Visitor {
             that.addError("Nothing to return from");
         }
         super.visit(that);
-        definitelyReturns = true;
+        exit();
     }
 
     @Override
     public void visit(Tree.Throw that) {
         super.visit(that);
-        definitelyReturns = true;
+        exit();
     }
     
     @Override
     public void visit(Tree.Break that) {
-        if (!canBreakOrContinue) {
+        if (!inLoop()) {
             that.addError("No surrounding loop to break");
         }
         super.visit(that);
-        broken = true;
+        exitLoop();
     }
 
     @Override
     public void visit(Tree.Continue that) {
-        if (!canBreakOrContinue) {
+        if (!inLoop()) {
             that.addError("No surrounding loop to continue");
         }
         super.visit(that);
-        definitelyReturns = true;
+        exit();
     }
     
     @Override
@@ -152,43 +199,38 @@ public class ControlFlowVisitor extends Visitor {
     
     @Override
     public void visit(Tree.WhileClause that) {
-        boolean d = definitelyReturns;
-        boolean b = broken;
-        boolean c = canBreakOrContinue;
-        canBreakOrContinue = true;
-        broken = false;
+        boolean d = beginIndefiniteReturnScope();
+        Boolean b = beginLoop();
         super.visit(that);
-        definitelyReturns = d;
-        broken = b;
-        canBreakOrContinue = c;
+        endDefiniteReturnScope(d);
+        endLoop(b);
     }
 
     @Override
     public void visit(Tree.DoClause that) {
-        boolean d = definitelyReturns;
-        boolean b = broken;
-        boolean c = canBreakOrContinue;
-        canBreakOrContinue = true;
-        broken = false;
+        boolean d = beginIndefiniteReturnScope();
+        Boolean b = beginLoop();
         super.visit(that);
-        definitelyReturns = d || (definitelyReturns && !broken);
-        broken = b;
-        canBreakOrContinue = c;
+        definitelyReturns = d || (definitelyReturns && !exitedFromLoop);
+        endLoop(b);
     }
 
     @Override
     public void visit(Tree.IfStatement that) {
         checkExecutableStatementAllowed(that);
-        boolean d = definitelyReturns;
+        boolean d = beginIndefiniteReturnScope();
         
         visit(that.getIfClause());
         boolean definitelyReturnsFromIf = definitelyReturns;
-        definitelyReturns = d;
+        endDefiniteReturnScope(d);
         
-        boolean definitelyReturnsFromElse = false;
+        boolean definitelyReturnsFromElse;
         if (that.getElseClause()!=null) {
             visit(that.getElseClause());
             definitelyReturnsFromElse = definitelyReturns;
+        }
+        else {
+            definitelyReturnsFromElse = false;
         }
         
         definitelyReturns = d || (definitelyReturnsFromIf && definitelyReturnsFromElse);
@@ -197,22 +239,21 @@ public class ControlFlowVisitor extends Visitor {
     @Override
     public void visit(Tree.ForStatement that) {
         checkExecutableStatementAllowed(that);
-        boolean d = definitelyReturns;
+        boolean d = beginIndefiniteReturnScope();
         
-        boolean b = broken;
-        boolean c = canBreakOrContinue;
-        canBreakOrContinue = true;
-        broken = false;
+        Boolean b = beginLoop();
         visit(that.getForClause());
-        boolean definitelyReturnsFromFor = definitelyReturns && !broken;
-        broken = b;
-        definitelyReturns = d;
-        canBreakOrContinue = c;
+        boolean definitelyReturnsFromFor = definitelyReturns && !exitedFromLoop;
+        endLoop(b);
+        endDefiniteReturnScope(d);
         
-        boolean definitelyReturnsFromFail = false;
+        boolean definitelyReturnsFromFail;
         if (that.getFailClause()!=null) {
             visit(that.getFailClause());
             definitelyReturnsFromFail = definitelyReturns;
+        }
+        else {
+            definitelyReturnsFromFail = false;
         }
         
         definitelyReturns = d || (definitelyReturnsFromFor && definitelyReturnsFromFail);

@@ -316,72 +316,90 @@ public class ExpressionVisitor extends Visitor {
                 that.setTypeModel(pt); //TODO: this is hackish
                 that.setModelNode(pt);
             }
-            List<Parameter> pl;
-            Model pm = pr.getModelNode();
-            if (pm!=null) {
-                if (pm instanceof Functional) {
-                    Functional fpm = (Functional) pm;
-                    List<List<Parameter>> pls = fpm.getParameters();
-                    if (pls.size()==0) {
-                        that.addError("cannot be invoked: " + 
-                                fpm.getName());
-                        return;
-                    }
-                    else {
-                        pl = pls.get(0);
-                    }
-                }
-                else if (pm instanceof Type) {
-                    GenericType pgt = ((Type) pm).getGenericType();
-                    if (pgt==null) {
-                        that.addError("could not determine parameter list: " + 
-                                ((Type) pm).getProducedTypeName() );
-                        return;
-                    }
-                    else if (pgt instanceof Class) {
-                        pl = ((Class) pgt).getParameters();
-                    }
-                    else {
-                        that.addError("interface cannot be invoked: " + 
-                                pgt.getName());
-                        return;
-                    }
-                }
-                else {
-                    that.addError("cannot be invoked");
+            checkInvocationArguments(that);
+        }
+    }
+
+    private void checkInvocationArguments(Tree.InvocationExpression that) {
+        List<Parameter> pl;
+        Model pm = that.getPrimary().getModelNode();
+        if (pm!=null) {
+            if (pm instanceof Functional) {
+                Functional fpm = (Functional) pm;
+                List<List<Parameter>> pls = fpm.getParameters();
+                if (pls.size()==0) {
+                    that.addError("cannot be invoked: " + 
+                            fpm.getName());
                     return;
                 }
-                Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
-                if ( pal!=null ) {
-                    List<Tree.PositionalArgument> pa = pal.getPositionalArguments();
-                    if ( pl.size()!=pa.size() ) {
-                        pal.addError("wrong number of arguments");
-                        return;
-                    }
-                    for (int i=0; i<pl.size(); i++) {
-                        Parameter p = pl.get(i);
-                        Type paramType = p.getType();
-                        Tree.PositionalArgument a = pa.get(i);
-                        Type argType = a.getExpression().getTypeModel();
-                        if (paramType!=null && argType!=null) {
-                            if (!paramType.isExactly(argType)) {
-                                a.addError("argument not assignable to parameter type: " + 
-                                        p.getName());
-                            }
-                        }
-                        else {
-                            a.addError("could not determine assignability of argument to parameter: " +
-                                    p.getName());
-                        }
-                    }
+                else {
+                    pl = pls.get(0);
                 }
-                Tree.NamedArgumentList nal = that.getNamedArgumentList();
-                if (nal!=null) {
-                    List<Tree.NamedArgument> na = nal.getNamedArguments();
-                    if ( pl.size()!=na.size() ) {
-                        nal.addError("wrong number of arguments");
-                    }
+            }
+            else if (pm instanceof Type) {
+                GenericType pgt = ((Type) pm).getGenericType();
+                if (pgt==null) {
+                    that.addError("could not determine parameter list: " + 
+                            ((Type) pm).getProducedTypeName() );
+                    return;
                 }
+                else if (pgt instanceof Class) {
+                    pl = ((Class) pgt).getParameters();
+                }
+                else {
+                    that.addError("interface cannot be invoked: " + 
+                            pgt.getName());
+                    return;
+                }
+            }
+            else {
+                that.addError("cannot be invoked");
+                return;
+            }
+            
+            Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
+            if ( pal!=null ) {
+                checkPositionalArguments(pl, pal);
+            }
+            
+            Tree.NamedArgumentList nal = that.getNamedArgumentList();
+            if (nal!=null) {
+                checkNamedArguments(pl, nal);
+            }
+            
+        }
+    }
+
+    private void checkNamedArguments(List<Parameter> pl,
+            Tree.NamedArgumentList nal) {
+        List<Tree.NamedArgument> na = nal.getNamedArguments();
+        if ( pl.size()!=na.size() ) {
+            nal.addError("wrong number of arguments");
+        }
+        //TODO!!
+    }
+
+    private void checkPositionalArguments(List<Parameter> pl,
+            Tree.PositionalArgumentList pal) {
+        List<Tree.PositionalArgument> pa = pal.getPositionalArguments();
+        if ( pl.size()!=pa.size() ) {
+            pal.addError("wrong number of arguments");
+            return;
+        }
+        for (int i=0; i<pl.size(); i++) {
+            Parameter p = pl.get(i);
+            Type paramType = p.getType();
+            Tree.PositionalArgument a = pa.get(i);
+            Type argType = a.getExpression().getTypeModel();
+            if (paramType!=null && argType!=null) {
+                if (!paramType.isExactly(argType)) {
+                    a.addError("argument not assignable to parameter type: " + 
+                            p.getName());
+                }
+            }
+            else {
+                a.addError("could not determine assignability of argument to parameter: " +
+                        p.getName());
             }
         }
     }
@@ -449,8 +467,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.Outer that) {
-        Type t = getOuterType(that, that.getScope());
-        that.setTypeModel(t);
+        that.setTypeModel(getOuterType(that, that.getScope()));
     }
 
     private Type getOuterType(Node that, Scope scope) {
