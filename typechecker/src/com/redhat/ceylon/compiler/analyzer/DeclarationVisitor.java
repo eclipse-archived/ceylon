@@ -126,6 +126,11 @@ public class DeclarationVisitor extends Visitor {
         Scope o = enterScope(m);
         super.visit(that);
         exitScope(o);
+        if (that.getParameterLists().isEmpty()) {
+            that.getErrors().add( new AnalysisError(that, 
+                    "Missing parameter list in method declaration: " + 
+                    that.getIdentifier().getText() ) );
+        }
     }
 
     @Override
