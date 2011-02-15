@@ -37,4 +37,42 @@ class Assignability() {
     X methx { return var; }
     Y methy { @error return var; }
     
+    void methv() { @error return var; }
+    
+    void methv2() {
+        if (var) {
+            @error return var;
+        }
+    }
+    
+    X methx2 {
+        if (var) {
+            return var;
+        }
+        else {
+            return X();
+        }
+    }
+    
+    Y methy2 {
+        if (var) {
+            @error return var;
+        }
+        return Y();
+    }
+    
+    X outerMethod() {
+        Y innerMethod() {
+            return Y();
+        }
+        return X();
+    }
+    
+    X outerAtt {
+        Y innerAtt {
+            return Y();
+        }
+        return X();
+    }
+    
 }
