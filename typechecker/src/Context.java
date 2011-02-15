@@ -90,7 +90,8 @@ class Context {
                 .append( "' and '" )
                 .append( importPathToString( packageStack.peekLast().getName() ) )
                 .append("'");
-            throw new RuntimeException( error.toString() );
+            //throw new RuntimeException( error.toString() );
+            System.err.println(error);
         }
     }
 

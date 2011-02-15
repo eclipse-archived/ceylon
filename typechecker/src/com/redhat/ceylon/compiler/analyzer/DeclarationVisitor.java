@@ -60,12 +60,12 @@ public class DeclarationVisitor extends Visitor {
     }
 
     private void visitDeclaration(Tree.Declaration that, Declaration model) {
-        String name = that.getIdentifier().getText();
-        if (name==null || name.startsWith("<missing")) {
+        Tree.Identifier id = that.getIdentifier();
+        if (id==null || id.getText().startsWith("<missing")) {
             that.addError("missing declaration name");
         }
         else {
-            model.setName(name);
+            model.setName(id.getText());
             checkForDuplicateDeclaration(that, model);
         }
         visitStructure(that, model);
@@ -75,10 +75,11 @@ public class DeclarationVisitor extends Visitor {
     private void checkForDuplicateDeclaration(Tree.Declaration that,
             Declaration model) {
         boolean found = false;
-        String name = that.getIdentifier().getText();
+        String name = Util.name(that);
         for (Structure s: scope.getMembers()) {
             if (s instanceof Declaration) {
-                if (((Declaration) s).getName().equals(name)) {
+                String dname = ((Declaration) s).getName();
+                if (dname!=null && dname.equals(name)) {
                     if (model instanceof Setter) {
                         if (s instanceof Getter) {
                             found = true;
@@ -127,7 +128,7 @@ public class DeclarationVisitor extends Visitor {
         exitScope(o);
         if (that.getParameterList()==null) {
             that.addError("Missing parameter list in class declaration: " + 
-                    that.getIdentifier().getText() );
+                    Util.name(that) );
         }
     }
 
@@ -156,7 +157,7 @@ public class DeclarationVisitor extends Visitor {
         exitScope(o);
         if (that.getParameterLists().isEmpty()) {
             that.addError("Missing parameter list in method declaration: " + 
-                    that.getIdentifier().getText() );
+                    Util.name(that) );
         }
     }
 

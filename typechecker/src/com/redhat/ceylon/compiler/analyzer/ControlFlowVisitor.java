@@ -88,7 +88,7 @@ public class ControlFlowVisitor extends Visitor {
     private void checkDefiniteReturn(Tree.Declaration that) {
         if (!definitelyReturns) {
             that.addError("Does not definitely return: " + 
-                    that.getIdentifier().getText());
+                    Util.name(that));
         }
     }
 

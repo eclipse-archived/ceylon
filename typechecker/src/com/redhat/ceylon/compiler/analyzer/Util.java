@@ -120,7 +120,7 @@ class Util {
         for ( Structure s: scope.getMembers() ) {
             if (s instanceof Declaration && !(s instanceof Setter) ) {
                 Declaration d = (Declaration) s;
-                if (d.getName().equals(name)) {
+                if (d.getName()!=null && d.getName().equals(name)) {
                     return d;
                 }
             }
@@ -140,6 +140,15 @@ class Util {
             }
         }
         return null;
+    }
+    
+    public static String name(Tree.Declaration dec) {
+        if (dec.getIdentifier()==null) {
+            return "declaration with missing name";
+        }
+        else {
+            return dec.getIdentifier().getText();
+        }
     }
     
 }

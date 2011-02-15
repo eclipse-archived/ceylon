@@ -127,9 +127,15 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.TypedDeclaration that) {
         super.visit(that);
         Tree.TypeOrSubtype type = that.getTypeOrSubtype();
-        if (!(type instanceof Tree.LocalModifier)) { //if the type declaration is missing, we do type inference later
-            Type t = (Type) type.getModelNode();
-            ( (Typed) that.getModelNode() ).setType(t);
+        if (type==null) {
+            that.addError("missing type of declaration: " + 
+                    Util.name(that));
+        }
+        else {
+            if (!(type instanceof Tree.LocalModifier)) { //if the type declaration is missing, we do type inference later
+                Type t = (Type) type.getModelNode();
+                ( (Typed) that.getModelNode() ).setType(t);
+            }
         }
     }
     

@@ -66,12 +66,17 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.VariableOrExpression that) {
         super.visit(that);
-        inferType(that.getVariable(), that.getSpecifierExpression());
+        if (that.getVariable()!=null) {
+            inferType(that.getVariable(), that.getSpecifierExpression());
+            checkType(that.getVariable(), that.getSpecifierExpression());
+        }
     }
     
     @Override public void visit(Tree.ValueIterator that) {
         super.visit(that);
+        //TODO: this is not correct, should infer from arguments to Iterable<V>
         inferType(that.getVariable(), that.getSpecifierExpression());
+        checkType(that.getVariable(), that.getSpecifierExpression());
     }
 
     @Override public void visit(Tree.KeyValueIterator that) {
@@ -79,30 +84,27 @@ public class ExpressionVisitor extends Visitor {
         //TODO: this is not correct, should infer from arguments to Iterable<Entry<K,V>>
         inferType(that.getKeyVariable(), that.getSpecifierExpression());
         inferType(that.getValueVariable(), that.getSpecifierExpression());
+        checkType(that.getKeyVariable(), that.getSpecifierExpression());
+        checkType(that.getValueVariable(), that.getSpecifierExpression());
     }
     
     @Override public void visit(Tree.AttributeDeclaration that) {
         super.visit(that);
         inferType(that, that.getSpecifierOrInitializerExpression());
-        checkType(that.getSpecifierOrInitializerExpression(), 
-                that.getTypeOrSubtype(), 
-                that.getIdentifier());
+        checkType(that.getTypeOrSubtype(), that.getSpecifierOrInitializerExpression());
     }
 
     @Override public void visit(Tree.SpecifierStatement that) {
         super.visit(that);
-        checkType(that.getSpecifierExpression(),
-                that.getMember(),
-                that.getMember().getIdentifier());
+        checkType(that.getMember(), that.getSpecifierExpression());
     }
 
-    private void checkType(Tree.SpecifierOrInitializerExpression sie, Node typedNode, Tree.Identifier id) {
+    private void checkType(Node typedNode, Tree.SpecifierOrInitializerExpression sie) {
         if (sie!=null) {
             Type type = sie.getExpression().getTypeModel();
             if ( type!=null && typedNode.getTypeModel()!=null) {
                 if ( !type.isExactly(typedNode.getTypeModel()) ) {
-                    sie.addError("Specifier expression not assignable to attribute type: " + 
-                            id.getText());
+                    sie.addError("Specifier expression not assignable to attribute type");
                 }
             }
             else {
@@ -146,19 +148,22 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 that.addError("Could not infer type of: " + 
-                        that.getIdentifier().getText());
+                        Util.name(that));
             }
         }
     }
 
     private void inferType(Tree.TypedDeclaration that, Tree.SpecifierOrInitializerExpression spec) {
+        if (that==null) {
+            System.out.flush();
+        }
         if ((that.getTypeOrSubtype() instanceof Tree.LocalModifier)) {
             if (spec!=null) {
                 setType((Tree.LocalModifier) that.getTypeOrSubtype(), spec, that);
             }
             else {
                 that.addError("Could not infer type of: " + 
-                        that.getIdentifier().getText());
+                        Util.name(that));
             }
         }
     }
@@ -173,7 +178,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 that.addError("Could not infer type of: " + 
-                        that.getIdentifier().getText());
+                        Util.name(that));
             }
         }
     }
@@ -198,7 +203,7 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             local.addError("Could not infer type of: " + 
-                    that.getIdentifier().getText());
+                    Util.name(that));
         }
     }
     
