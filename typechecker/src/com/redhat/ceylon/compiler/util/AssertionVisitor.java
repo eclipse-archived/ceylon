@@ -76,8 +76,7 @@ public class AssertionVisitor extends Visitor {
     
     @Override
     public void visitAny(Node that) {
-        //if ( !that.getErrors().isEmpty() )
-            foundErrors.addAll(that.getErrors());
+        foundErrors.addAll(that.getErrors());
         super.visitAny(that);
     }
     
