@@ -31,11 +31,11 @@ import com.redhat.ceylon.compiler.util.PrintUtil;
  */
 public class TypeVisitor extends Visitor {
     
-    Unit unit;
+    private Unit unit;
     
-    Type outerType;
+    private Type outerType;
     
-    Package importPackage;
+    private Package importPackage;
     
     public TypeVisitor(Unit u) {
         unit = u;
