@@ -159,6 +159,25 @@ interface DefiniteSpecification {
         @error x = X();
     }
     
+    void badMethodWithSpecInIf4() {
+        X x = X();
+        doNothing();
+        if (testSomething()) {
+            doSomething();
+            @error x = X();
+        }
+    }
+    
+    void badMethodWithSpecInIf5() {
+        X x;
+        doNothing();
+        x = X();
+        if (testSomething()) {
+            doSomething();
+            @error x = X();
+        }
+    }
+    
     void goodMethodWithSpecInNestedIf() {
         X x;
         if (testSomething()) {
@@ -232,6 +251,31 @@ interface DefiniteSpecification {
         }
         doSomethingElse();
         @error x = X();
+    }
+    
+    void badMethodWithSpecInElse3() {
+        X x = X();
+        doSomethingElse();
+        if (testSomething()) {
+            doSomething();
+        }
+        else {
+            @error x = X();
+            doNothing();
+        }
+    }
+    
+    void badMethodWithSpecInElse4() {
+        X x;
+        doSomethingElse();
+        x = X();
+        if (testSomething()) {
+            doSomething();
+        }
+        else {
+            @error x = X();
+            doNothing();
+        }
     }
     
     void goodMethodWithSpecInIfAndElse() {
