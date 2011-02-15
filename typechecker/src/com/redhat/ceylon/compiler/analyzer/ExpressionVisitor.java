@@ -86,9 +86,8 @@ public class ExpressionVisitor extends Visitor {
                 setType((Tree.LocalModifier) at, sie, that);
             }
             else {
-                that.getErrors().add( new AnalysisError(that, 
-                        "Could not infer type of: " + 
-                        that.getIdentifier().getText()) );
+                that.addError("Could not infer type of: " + 
+                        that.getIdentifier().getText());
             }
         }
         else if (sie!=null) {
@@ -96,14 +95,12 @@ public class ExpressionVisitor extends Visitor {
             Type attm = at.getTypeModel();
             if ( siet!=null && attm!=null) {
                 if ( !siet.isExactly(attm) ) {
-                    sie.getErrors().add( new AnalysisError(sie, 
-                            "Attribute specifier or initializer expression not assignable to attribute type: " + 
-                            that.getIdentifier().getText()) );
+                    sie.addError("Attribute specifier or initializer expression not assignable to attribute type: " + 
+                            that.getIdentifier().getText());
                 }
             }
             else {
-                that.getErrors().add( new AnalysisError(that, 
-                        "Could not determine assignability of specified expression to attribute type") );
+                that.addError("Could not determine assignability of specified expression to attribute type");
             }
         }
     }
@@ -116,14 +113,12 @@ public class ExpressionVisitor extends Visitor {
             Type mttm = that.getMember().getTypeModel();
             if ( siet!=null && mttm!=null) {
                 if ( !siet.isExactly(mttm) ) {
-                    sie.getErrors().add( new AnalysisError(sie, 
-                            "Specifier expression not assignable to attribute type: " + 
-                            that.getMember().getIdentifier().getText()) );
+                    sie.addError("Specifier expression not assignable to attribute type: " + 
+                            that.getMember().getIdentifier().getText());
                 }
             }
             else {
-                that.getErrors().add( new AnalysisError(that, 
-                        "Could not determine assignability of specified expression to attribute type") );
+                that.addError("Could not determine assignability of specified expression to attribute type");
             }
         }
     }
@@ -133,8 +128,7 @@ public class ExpressionVisitor extends Visitor {
         Type rhst = that.getRightTerm().getTypeModel();
         Type lhst = that.getLeftTerm().getTypeModel();
         if ( rhst!=null && lhst!=null && !rhst.isExactly(lhst) ) {
-            that.getErrors().add( new AnalysisError(that, 
-                    "type not assignable"));
+            that.addError("type not assignable");
         }
         //TODO: validate that the LHS really is assignable
         that.setTypeModel(rhst);
@@ -184,9 +178,8 @@ public class ExpressionVisitor extends Visitor {
                         that);  //TODO: this is hackish
             }
             else {
-                that.getErrors().add( new AnalysisError(that, 
-                        "Could not infer type of: " + 
-                        that.getIdentifier().getText()) );
+                that.addError("Could not infer type of: " + 
+                        that.getIdentifier().getText());
             }
         }
     }
@@ -210,43 +203,37 @@ public class ExpressionVisitor extends Visitor {
             ((Typed) that.getModelNode()).setType(t);
         }
         else {
-            local.getErrors().add( new AnalysisError(local, 
-                    "Could not infer type of: " + 
-                    that.getIdentifier().getText()) );
+            local.addError("Could not infer type of: " + 
+                    that.getIdentifier().getText());
         }
     }
     
     @Override public void visit(Tree.Return that) {
         super.visit(that);
         if (returnType==null) {
-            that.getErrors().add( new AnalysisError(that, 
-                    "Could not determine expected return type") );
+            that.addError("Could not determine expected return type");
         } 
         else {
             Expression e = that.getExpression();
             if ( returnType instanceof Tree.VoidModifier ) {
                 if (e!=null) {
-                    that.getErrors().add( new AnalysisError(that, 
-                            "void methods may not return a value") );
+                    that.addError("void methods may not return a value");
                 }
             }
             else if ( !(returnType instanceof Tree.LocalModifier) ) {
                 if (e==null) {
-                    that.getErrors().add( new AnalysisError(that, 
-                            "non-void methods and getters must return a value") );
+                    that.addError("non-void methods and getters must return a value");
                 }
                 else {
                     Type et = returnType.getTypeModel();
                     Type at = e.getTypeModel();
                     if (et!=null && at!=null) {
                         if ( !et.isExactly(at) ) {
-                            that.getErrors().add( new AnalysisError(that, 
-                                    "Returned expression not assignable to expected return type") );
+                            that.addError("Returned expression not assignable to expected return type");
                         }
                     }
                     else {
-                        that.getErrors().add( new AnalysisError(that, 
-                                "Could not determine assignability of returned expression to expected return type") );
+                        that.addError("Could not determine assignability of returned expression to expected return type");
                     }
                 }
             }
@@ -265,9 +252,8 @@ public class ExpressionVisitor extends Visitor {
                 if (mt instanceof Tree.Member) {
                     Typed member = Util.getDeclaration((Scope) gt, (Tree.Member) mt);
                     if (member==null) {
-                        mt.getErrors().add( new AnalysisError(mt, 
-                                "Could not determine target of member reference: " +
-                                ((Tree.Member) mt).getIdentifier().getText()) );
+                        mt.addError("Could not determine target of member reference: " +
+                                ((Tree.Member) mt).getIdentifier().getText());
                     }
                     else {
                         that.setTypeModel(member.getType());
@@ -279,9 +265,8 @@ public class ExpressionVisitor extends Visitor {
                 else if (mt instanceof Tree.Type) {
                     GenericType member = Util.getDeclaration((Scope) gt, (Tree.Type) mt);
                     if (member==null) {
-                        mt.getErrors().add( new AnalysisError(mt, 
-                                "Could not determine target of member type reference: " +
-                                ((Tree.Type) mt).getIdentifier().getText()) );
+                        mt.addError("Could not determine target of member type reference: " +
+                                ((Tree.Type) mt).getIdentifier().getText());
                     }
                     else {
                         Type t = new Type();
@@ -295,8 +280,7 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else if (mt instanceof Tree.Outer) {
                     if (!(gt instanceof ClassOrInterface)) {
-                        that.getErrors().add( new AnalysisError(mt, 
-                                "Can't use outer on a type parameter"));
+                        that.addError("Can't use outer on a type parameter");
                     }
                     else {
                         Type t = getOuterType(mt, (ClassOrInterface) gt);
@@ -333,9 +317,8 @@ public class ExpressionVisitor extends Visitor {
                 Functional fpm = (Functional) pm;
                 List<List<Parameter>> pls = fpm.getParameters();
                 if (pls.size()==0) {
-                    that.getErrors().add( new AnalysisError(that, 
-                            "cannot be invoked: " + 
-                            fpm.getName()) );
+                    that.addError("cannot be invoked: " + 
+                            fpm.getName());
                     return;
                 }
                 else {
@@ -345,32 +328,28 @@ public class ExpressionVisitor extends Visitor {
             else if (pm instanceof Type) {
                 GenericType pgt = ((Type) pm).getGenericType();
                 if (pgt==null) {
-                    that.getErrors().add( new AnalysisError( that, 
-                            "could not determine parameter list: " + 
-                            ((Type) pm).getProducedTypeName() ) );
+                    that.addError("could not determine parameter list: " + 
+                            ((Type) pm).getProducedTypeName() );
                     return;
                 }
                 else if (pgt instanceof Class) {
                     pl = ((Class) pgt).getParameters();
                 }
                 else {
-                    that.getErrors().add( new AnalysisError(that, 
-                            "interface cannot be invoked: " + 
-                            pgt.getName()) );
+                    that.addError("interface cannot be invoked: " + 
+                            pgt.getName());
                     return;
                 }
             }
             else {
-                that.getErrors().add( new AnalysisError(that, 
-                        "cannot be invoked") );
+                that.addError("cannot be invoked");
                 return;
             }
             Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
             if ( pal!=null ) {
                 List<Tree.PositionalArgument> pa = pal.getPositionalArguments();
                 if ( pl.size()!=pa.size() ) {
-                    pal.getErrors().add( new AnalysisError(pal, 
-                            "wrong number of arguments") );
+                    pal.addError("wrong number of arguments");
                     return;
                 }
                 for (int i=0; i<pl.size(); i++) {
@@ -380,15 +359,13 @@ public class ExpressionVisitor extends Visitor {
                     Type argType = a.getExpression().getTypeModel();
                     if (paramType!=null && argType!=null) {
                         if (!paramType.isExactly(argType)) {
-                            a.getErrors().add( new AnalysisError(a, 
-                                    "argument not assignable to parameter type: " + 
-                                    p.getName()) );
+                            a.addError("argument not assignable to parameter type: " + 
+                                    p.getName());
                         }
                     }
                     else {
-                        a.getErrors().add( new AnalysisError(a, 
-                                "could not determine assignability of argument to parameter: " +
-                                p.getName()) );
+                        a.addError("could not determine assignability of argument to parameter: " +
+                                p.getName());
                     }
                 }
             }
@@ -396,8 +373,7 @@ public class ExpressionVisitor extends Visitor {
             if (nal!=null) {
                 List<Tree.NamedArgument> na = nal.getNamedArguments();
                 if ( pl.size()!=na.size() ) {
-                    nal.getErrors().add( new AnalysisError(nal, 
-                            "wrong number of arguments") );
+                    nal.addError("wrong number of arguments");
                 }
             }
         }
@@ -424,16 +400,14 @@ public class ExpressionVisitor extends Visitor {
         //      invoked (should return the callable type)
         Typed d = Util.getDeclaration(that);
         if (d==null) {
-            that.getErrors().add( new AnalysisError(that, 
-                    "Could not determine target of member reference: " +
-                    that.getIdentifier().getText()) );
+            that.addError("Could not determine target of member reference: " +
+                    that.getIdentifier().getText());
         }
         else {
             Type t = d.getType();
             if (t==null) {
-                that.getErrors().add( new AnalysisError(that, 
-                        "Could not determine type of member reference: " +
-                        that.getIdentifier().getText()) );
+                that.addError("Could not determine type of member reference: " +
+                        that.getIdentifier().getText());
             }
             else {
                 that.setTypeModel(t);
@@ -454,14 +428,12 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         Tree.Term term = that.getTerm();
         if (term==null) {
-            that.getErrors().add( new AnalysisError(that, 
-                    "Expression not well formed") );
+            that.addError("Expression not well formed");
         }
         else {
             Type t = term.getTypeModel();
             if (t==null) {
-                that.getErrors().add( new AnalysisError(that, 
-                        "Could not determine type of expression") );
+                that.addError("Could not determine type of expression");
             }
             else {
                 that.setTypeModel(t);
@@ -490,19 +462,16 @@ public class ExpressionVisitor extends Visitor {
             }
             scope = scope.getContainer();
         }
-        that.getErrors().add( new AnalysisError(that, 
-                "Can't use outer outside of nested class or interface"));
+        that.addError("Can't use outer outside of nested class or interface");
         return null;
     }
     
     @Override public void visit(Tree.Super that) {
         if (classOrInterface==null) {
-            that.getErrors().add( new AnalysisError(that, 
-                    "Can't use super outside a class"));
+            that.addError("Can't use super outside a class");
         }
         else if (!(classOrInterface instanceof Class)) {
-            that.getErrors().add( new AnalysisError(that, 
-                    "Can't use super inside an interface"));
+            that.addError("Can't use super inside an interface");
         }
         else {
             Type t = classOrInterface.getExtendedType();
@@ -513,8 +482,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.This that) {
         if (classOrInterface==null) {
-            that.getErrors().add( new AnalysisError(that, 
-                    "Can't use this outside a class or interface"));
+            that.addError("Can't use this outside a class or interface");
         }
         else {
             Type t = new Type();

@@ -34,14 +34,12 @@ public class SpecificationVisitor extends Visitor {
     public void visit(Tree.Member that) {
         if (Util.getDeclaration(that)==declaration) {
             if (!declared) {
-                that.getErrors().add( new AnalysisError(that, 
-                        "Not yet declared: " + 
-                        that.getIdentifier().getText()) );
+                that.addError("Not yet declared: " + 
+                        that.getIdentifier().getText());
             }
             else if (!definitelyAssigned) {
-                that.getErrors().add( new AnalysisError(that, 
-                        "Not definitely assigned: " + 
-                        that.getIdentifier().getText()) );
+                that.addError("Not definitely assigned: " + 
+                        that.getIdentifier().getText());
             }
         }
     }
@@ -50,19 +48,16 @@ public class SpecificationVisitor extends Visitor {
     public void visit(Tree.SpecifierStatement that) {
         if (Util.getDeclaration(that.getMember())==declaration) {
             if (!declared) {
-                that.getErrors().add( new AnalysisError(that, 
-                        "Not yet declared: " + 
-                        that.getMember().getIdentifier().getText()) );
+                that.addError("Not yet declared: " + 
+                        that.getMember().getIdentifier().getText());
             }
             else if (cannotAssign) {
-                that.getErrors().add( new AnalysisError(that, 
-                        "Cannot assign from here: " + 
-                        that.getMember().getIdentifier().getText()) );
+                that.addError("Cannot assign from here: " + 
+                        that.getMember().getIdentifier().getText());
             }
             else if (possiblyAssigned) {
-                that.getErrors().add( new AnalysisError(that, 
-                        "Not definitely unassigned: " + 
-                        that.getMember().getIdentifier().getText()) );
+                that.addError("Not definitely unassigned: " + 
+                        that.getMember().getIdentifier().getText());
             }
             else {
                 super.visit(that.getSpecifierExpression());

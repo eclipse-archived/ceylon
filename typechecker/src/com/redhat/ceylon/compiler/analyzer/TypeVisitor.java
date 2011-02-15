@@ -50,9 +50,8 @@ public class TypeVisitor extends Visitor {
                 return;
             }
         }
-        that.getErrors().add( new AnalysisError(that, 
-                "Package not found: " + 
-                PrintUtil.importNodeToString(that.getIdentifiers()) ) );
+        that.addError("Package not found: " + 
+                PrintUtil.importNodeToString(that.getIdentifiers()) );
     }
 
     private boolean hasName(List<Tree.Identifier> importPath, Package mp) {
@@ -81,9 +80,8 @@ public class TypeVisitor extends Visitor {
         }
         Declaration d = Util.getDeclaration(importPackage, that);
         if (d==null) {
-            that.getErrors().add( new AnalysisError(that, 
-                    "imported declaration not found: " + 
-                    that.getIdentifier().getText() ) );
+            that.addError("imported declaration not found: " + 
+                    that.getIdentifier().getText());
         }
         else {
             i.setDeclaration(d);
@@ -98,9 +96,8 @@ public class TypeVisitor extends Visitor {
         type.setTreeNode(that);
         GenericType d = Util.getDeclaration(that);
         if (d==null) {
-            that.getErrors().add( new AnalysisError(that, 
-                    "type declaration not found: " + 
-                    that.getIdentifier().getText() ) );
+            that.addError("type declaration not found: " + 
+                    that.getIdentifier().getText());
         }
         else {
             type.setGenericType(d);

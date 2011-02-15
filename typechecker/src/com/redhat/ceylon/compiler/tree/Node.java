@@ -93,8 +93,16 @@ public abstract class Node {
         return antlrTreeNode;
     }
     
+    
+    /**
+     * The compilation errors belonging to this node.
+     */
     public List<AnalysisError> getErrors() {
         return errors;
+    }
+    
+    public void addError(String message) {
+        errors.add( new AnalysisError(this, message) );
     }
     
     public abstract void visitChildren(Visitor visitor);

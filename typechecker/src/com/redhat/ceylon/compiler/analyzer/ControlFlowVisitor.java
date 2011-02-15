@@ -28,9 +28,8 @@ public class ControlFlowVisitor extends Visitor {
         definitelyReturns = false;
         super.visit(that);
         if (!definitelyReturns) {
-            that.getErrors().add( new AnalysisError(that, 
-                    "Does not definitely return: " + 
-                    that.getIdentifier().getText()) );
+            that.addError("Does not definitely return: " + 
+                    that.getIdentifier().getText());
         }
         definitelyReturns = d;
         canReturn = c;
@@ -47,9 +46,8 @@ public class ControlFlowVisitor extends Visitor {
             if (that.getBlock()!=null && 
                     !(that.getTypeOrSubtype() instanceof Tree.VoidModifier)) {
                 if (!definitelyReturns) {
-                    that.getErrors().add( new AnalysisError(that, 
-                            "Does not definitely return: " + 
-                            that.getIdentifier().getText()) );
+                    that.addError("Does not definitely return: " + 
+                            that.getIdentifier().getText());
                 }
             }
             definitelyReturns = d;
@@ -107,16 +105,14 @@ public class ControlFlowVisitor extends Visitor {
 
     private void checkExecutableStatementAllowed(Tree.Statement that) {
         if (!canExecute) {
-            that.getErrors().add( new AnalysisError(that, 
-            "Misplaced statement") );
+            that.addError("Misplaced statement");
         }
     }
     
     @Override
     public void visit(Tree.Return that) {
         if (!canReturn) {
-            that.getErrors().add( new AnalysisError(that, 
-                    "Nothing to return from") );
+            that.addError("Nothing to return from");
         }
         super.visit(that);
         definitelyReturns = true;
@@ -131,8 +127,7 @@ public class ControlFlowVisitor extends Visitor {
     @Override
     public void visit(Tree.Break that) {
         if (!canBreakOrContinue) {
-            that.getErrors().add( new AnalysisError(that, 
-                    "No loop to break") );
+            that.addError("No surrounding loop to break");
         }
         super.visit(that);
         broken = true;
@@ -141,8 +136,7 @@ public class ControlFlowVisitor extends Visitor {
     @Override
     public void visit(Tree.Continue that) {
         if (!canBreakOrContinue) {
-            that.getErrors().add( new AnalysisError(that, 
-                    "No loop to continue") );
+            that.addError("No surrounding loop to continue");
         }
         super.visit(that);
         definitelyReturns = true;
@@ -151,8 +145,7 @@ public class ControlFlowVisitor extends Visitor {
     @Override
     public void visit(Tree.Statement that) {
         if (definitelyReturns) {
-            that.getErrors().add( new AnalysisError(that, 
-                    "Unreachable code") );
+            that.addError("Unreachable code");
         }
         super.visit(that);
     }

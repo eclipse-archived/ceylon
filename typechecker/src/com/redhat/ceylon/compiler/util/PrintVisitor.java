@@ -7,7 +7,7 @@ import com.redhat.ceylon.compiler.tree.Visitor;
 public class PrintVisitor extends Visitor {
     int depth=0;
 
-    void print(String str) {
+    protected void print(String str) {
         System.out.print(str);
     }
 
@@ -25,6 +25,14 @@ public class PrintVisitor extends Visitor {
         if (depth>0) newline();
         indent();
         print("+ ");
+        print(node);
+        depth++;
+        super.visitAny(node);
+        depth--;
+        if (depth==0) newline();
+    }
+
+    private void print(Node node) {
         print(node.getText() + 
                 " [" + node.getClass().getSimpleName() + 
                 "] (" + node.getAntlrTreeNode().getLine() + 
@@ -36,9 +44,5 @@ public class PrintVisitor extends Visitor {
         if (!node.getErrors().isEmpty()) {
             print(" <-- ** " + node.getErrors() + " **");
         }
-        depth++;
-        super.visitAny(node);
-        depth--;
-        if (depth==0) newline();
     }
 }

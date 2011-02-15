@@ -38,8 +38,8 @@ public class AssertionVisitor extends Visitor {
                 else {
                     String actualType = tm.getProducedTypeName();
                     if ( !actualType.equals(expectedType.substring(1,expectedType.length()-1)) )
-                        System.err.println(
-                                "not of type " + expectedType + 
+                        System.err.println("type " + actualType +
+                                "not of expected type " + expectedType + 
                                 " at "+ that.getAntlrTreeNode().getLine() + ":" +
                                 that.getAntlrTreeNode().getCharPositionInLine());
                 }

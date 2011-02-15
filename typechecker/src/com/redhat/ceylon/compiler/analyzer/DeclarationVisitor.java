@@ -72,14 +72,12 @@ public class DeclarationVisitor extends Visitor {
                             continue;
                         }
                     }
-                    that.getErrors().add( new AnalysisError(that, 
-                            "duplicate declaration: " + name) );
+                    that.addError("duplicate declaration: " + name);
                 }
             }
         }
         if (!found && (model instanceof Setter)) {
-            that.getErrors().add( new AnalysisError(that, 
-                    "setter with no matching getter: " + name) );
+            that.addError("setter with no matching getter: " + name);
         }
         visitStructure(that, model);
         unit.getDeclarations().add(model);
@@ -117,9 +115,8 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
         if (that.getParameterList()==null) {
-            that.getErrors().add( new AnalysisError(that, 
-                    "Missing parameter list in class declaration: " + 
-                    that.getIdentifier().getText() ) );
+            that.addError("Missing parameter list in class declaration: " + 
+                    that.getIdentifier().getText() );
         }
     }
 
@@ -147,9 +144,8 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
         if (that.getParameterLists().isEmpty()) {
-            that.getErrors().add( new AnalysisError(that, 
-                    "Missing parameter list in method declaration: " + 
-                    that.getIdentifier().getText() ) );
+            that.addError("Missing parameter list in method declaration: " + 
+                    that.getIdentifier().getText() );
         }
     }
 
@@ -201,8 +197,7 @@ public class DeclarationVisitor extends Visitor {
             parameterList = ( (Class) scope ).getParameters();
         }
         else {
-            that.getErrors().add( new AnalysisError(that, 
-                    "unexpected parameter list") );
+            that.addError("unexpected parameter list");
         }
         super.visit(that);
         parameterList = pl;
