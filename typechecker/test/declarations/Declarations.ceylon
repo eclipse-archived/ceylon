@@ -25,4 +25,10 @@ interface Declarations {
     class Dupe() {}
     @error class Dupe(X x) {}
     
+    @error class () {}
+    @error void () {}
+    @error interface {}
+    @error local { return Y(); }
+    @error local () { return Y(); }
+
 }
