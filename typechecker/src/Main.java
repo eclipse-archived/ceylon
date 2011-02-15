@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,11 +19,22 @@ import com.redhat.ceylon.compiler.parser.ParseError;
 import com.redhat.ceylon.compiler.tree.Builder;
 import com.redhat.ceylon.compiler.tree.Tree.CompilationUnit;
 
+/**
+ * @author Gavin King <gavin@hibernate.org>
+ * @author Emmanuel Bernard <emmanuel@hibernate.org>
+ */
 public class Main {
 
     private static final String MODULE_FILE = "module.ceylon";
     private static boolean ENABLE_MODULE_AND_PACKAGE = false;
     private static boolean noisy;
+
+    private static List<String> tempConvertedToModule = new ArrayList<String>();
+    static {
+        tempConvertedToModule.add("corpus/multisource");
+        tempConvertedToModule.add("corpus/ceylon");
+        tempConvertedToModule.add("corpus/ceylon/language");
+    }
     
     /**
      * When run with the argument corpus/multisource
@@ -42,8 +54,8 @@ public class Main {
         
         noisy = "true".equals(System.getProperties().getProperty("verbose"));
         
-        if ( path.equals("corpus/multisource") ) {
-            //Today only multisource respects the module / package structure defined in the Ceylon spec
+        if ( tempConvertedToModule.contains(path) ) {
+            //Today only a few packages respect the module / package structure defined in the Ceylon spec
             ENABLE_MODULE_AND_PACKAGE = true;
         }
         Context context = new Context();
