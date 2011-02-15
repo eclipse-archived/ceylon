@@ -52,7 +52,7 @@ interface Interfaces {
     }
     
     String warning {
-        return "watch out";
+        return String();
     }
     
 }
