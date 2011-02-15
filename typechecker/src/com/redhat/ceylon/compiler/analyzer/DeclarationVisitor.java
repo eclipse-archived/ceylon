@@ -60,7 +60,27 @@ public class DeclarationVisitor extends Visitor {
     }
 
     private void visitDeclaration(Tree.Declaration that, Declaration model) {
-        model.setName(that.getIdentifier().getText());
+        String name = that.getIdentifier().getText();
+        model.setName(name);
+        boolean found = false;
+        for (Structure s: scope.getMembers()) {
+            if (s instanceof Declaration) {
+                if (((Declaration) s).getName().equals(name)) {
+                    if (model instanceof Setter) {
+                        if (s instanceof Getter) {
+                            found = true;
+                            continue;
+                        }
+                    }
+                    that.getErrors().add( new AnalysisError(that, 
+                            "duplicate declaration: " + name) );
+                }
+            }
+        }
+        if (!found && (model instanceof Setter)) {
+            that.getErrors().add( new AnalysisError(that, 
+                    "setter with no matching getter: " + name) );
+        }
         visitStructure(that, model);
         unit.getDeclarations().add(model);
     }

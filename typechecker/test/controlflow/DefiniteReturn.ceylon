@@ -746,22 +746,22 @@ interface DefiniteReturn {
     
     //setters
     
-    assign setterWithNoReturn {
+    assign getterWithNoReturn {
         doSomething();
         doSomethingElse();
     }
     
-    assign setterWithReturn {
+    assign getterWithReturn {
         doSomething();
         return;
     }
     
-    assign setterWithThrow {
+    assign getterWithThrow {
         doSomething();
         throw;
     }
     
-    assign setterWithReturnInIf {
+    assign getterWithReturnInIf {
         if (testSomething()) {
             doSomething();
             return;
@@ -769,7 +769,7 @@ interface DefiniteReturn {
         doSomethingElse();
     }
     
-    assign setterWithThrowInIf {
+    assign getterWithThrowInIf {
         if (testSomething()) {
             doSomething();
             throw;
@@ -777,7 +777,7 @@ interface DefiniteReturn {
         doSomethingElse();
     }
     
-    assign setterWithReturnInIf2 {
+    assign getterWithReturnInIf2 {
         if (testSomething()) {
             doSomething();
             return;
@@ -788,7 +788,7 @@ interface DefiniteReturn {
         doNothing();
     }
     
-    assign setterWithThrowInIf2 {
+    assign getterWithThrowInIf2 {
         if (testSomething()) {
             doSomething();
             throw;
@@ -799,7 +799,7 @@ interface DefiniteReturn {
         doNothing();
     }
     
-    assign setterWithReturnInNestedIf {
+    assign getterWithReturnInNestedIf {
         if (testSomething()) {
             if (testSomething()) {
                 doSomething();
@@ -812,7 +812,7 @@ interface DefiniteReturn {
         }
     }
     
-    assign setterWithReturnInNestedIf2 {
+    assign getterWithReturnInNestedIf2 {
         if (testSomething()) {
             if (testSomething()) {
                 doSomething();
@@ -825,7 +825,7 @@ interface DefiniteReturn {
         return;
     }
     
-    assign setterWithReturnInNestedIf3 {
+    assign getterWithReturnInNestedIf3 {
         if (testSomething()) {
             if (testSomething()) {
                 doSomething();
@@ -842,7 +842,7 @@ interface DefiniteReturn {
         }
     }
     
-    assign setterWithReturnInElse {
+    assign getterWithReturnInElse {
         if (testSomething()) {
             doSomething();
         }
@@ -853,7 +853,7 @@ interface DefiniteReturn {
         doSomethingElse();
     }
     
-    assign setterWithThrowInElse {
+    assign getterWithThrowInElse {
         if (testSomething()) {
             doSomething();
         }
@@ -864,7 +864,7 @@ interface DefiniteReturn {
         doSomethingElse();
     }
     
-    assign setterWithReturnInIfAndElse {
+    assign getterWithReturnInIfAndElse {
         if (testSomething()) {
             doSomething();
             return;
@@ -875,7 +875,7 @@ interface DefiniteReturn {
         }
     }
     
-    assign setterWithThrowInIfAndElse {
+    assign getterWithThrowInIfAndElse {
         if (testSomething()) {
             doSomething();
             throw;
@@ -886,7 +886,7 @@ interface DefiniteReturn {
         }
     }
     
-    assign setterWithStatementAfterDefiniteReturn {
+    assign getterWithStatementAfterDefiniteReturn {
         if (testSomething()) {
             doSomething();
             return;
@@ -898,7 +898,7 @@ interface DefiniteReturn {
         @error doNothing();
     }
     
-    assign setterWithStatementAfterDefiniteThrow {
+    assign getterWithStatementAfterDefiniteThrow {
         if (testSomething()) {
             doSomething();
             throw;
@@ -910,7 +910,7 @@ interface DefiniteReturn {
         @error doNothing();
     }
     
-    assign setterWithReturnInFor {
+    assign getterWithReturnInFor {
         for (X x in {X()}) {
             doSomething();
             return;
@@ -918,7 +918,7 @@ interface DefiniteReturn {
         doNothing();
     }
     
-    assign setterWithReturnInFor2 {
+    assign getterWithReturnInFor2 {
         for (X x in {X()}) {
             doSomething();
             return;
@@ -929,7 +929,7 @@ interface DefiniteReturn {
         doNothing();
     }
     
-    assign setterWithReturnInForAndFail {
+    assign getterWithReturnInForAndFail {
         for (X x in {X()}) {
             doSomething();
             return;
@@ -940,7 +940,7 @@ interface DefiniteReturn {
         }
     }
     
-    assign setterWithReturnInWhile {
+    assign getterWithReturnInWhile {
         while (testSomething()) {
             doSomething();
             return;
@@ -948,7 +948,7 @@ interface DefiniteReturn {
         doSomethingElse();
     }
     
-    assign setterWithReturnInWhile2 {
+    assign getterWithReturnInWhile2 {
         while (testSomething()) {
             doSomething();
             return;
@@ -957,7 +957,7 @@ interface DefiniteReturn {
         return;
     }
     
-    assign setterWithReturnInDo {
+    assign getterWithReturnInDo {
         do {
             doSomething();
             return;
@@ -965,7 +965,7 @@ interface DefiniteReturn {
         while (testSomething());
     }
     
-    assign setterWithStatementAfterReturnInDo {
+    assign getterWithStatementAfterReturnInDo {
         do {
             doSomething();
             return;

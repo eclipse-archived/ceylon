@@ -91,7 +91,7 @@ interface DefiniteSpecification {
         use(x);
     }
     
-    void goodMethodWithRecursiveSpec() {
+    void goodMethodWithRecursiveSpec3() {
         X y = X();
         X x = y;
         use(x);
