@@ -1,8 +1,12 @@
+package com.redhat.ceylon.compiler.context;
+
 import com.redhat.ceylon.compiler.analyzer.ControlFlowVisitor;
 import com.redhat.ceylon.compiler.analyzer.DeclarationVisitor;
 import com.redhat.ceylon.compiler.analyzer.ExpressionVisitor;
+import com.redhat.ceylon.compiler.analyzer.ModuleImportVisitor;
 import com.redhat.ceylon.compiler.analyzer.SpecificationVisitor;
 import com.redhat.ceylon.compiler.analyzer.TypeVisitor;
+import com.redhat.ceylon.compiler.context.Context;
 import com.redhat.ceylon.compiler.model.Declaration;
 import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.Unit;
@@ -19,22 +23,32 @@ public class PhasedUnit {
     private Tree.CompilationUnit compilationUnit;
     private Package pkg;
     private Unit unit;
+    //must be the non qualified file name
     private String fileName;
+    private Context context;
 
-    public PhasedUnit(String fileName, Tree.CompilationUnit cu, Package p) {
+    public PhasedUnit(String fileName, Tree.CompilationUnit cu, Package p, Context context) {
         this.compilationUnit = cu;
         this.pkg = p;
         this.fileName = fileName;
+        this.context = context;
     }
 
-    void scanDeclarations() {
+    public void buildModuleImport() {
+        if ( Context.MODULE_FILE.equals(fileName) ) {
+            final ModuleImportVisitor v = new ModuleImportVisitor(context);
+            compilationUnit.visit(v);
+        }
+    }
+
+    public void scanDeclarations() {
         System.out.println("Scan declarations for " + fileName);
         DeclarationVisitor dv = new DeclarationVisitor(pkg);
         compilationUnit.visit(dv);
         unit = dv.getCompilationUnit();
     }
 
-    void scanTypeDeclarations() {
+    public void scanTypeDeclarations() {
         System.out.println("Scan type declarations for " + fileName);
         compilationUnit.visit( new TypeVisitor(unit) );
     }
