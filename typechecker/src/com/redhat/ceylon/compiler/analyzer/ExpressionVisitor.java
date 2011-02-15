@@ -32,8 +32,8 @@ import com.redhat.ceylon.compiler.tree.Visitor;
  */
 public class ExpressionVisitor extends Visitor {
     
-    ClassOrInterface classOrInterface;
-    Tree.TypeOrSubtype returnType;
+    private ClassOrInterface classOrInterface;
+    private Tree.TypeOrSubtype returnType;
     
     public void visit(Tree.ClassOrInterfaceDeclaration that) {
         ClassOrInterface o = classOrInterface;
@@ -42,84 +42,74 @@ public class ExpressionVisitor extends Visitor {
         classOrInterface = o;
     }
     
+    private Tree.TypeOrSubtype beginReturnScope(Tree.TypeOrSubtype t) {
+        Tree.TypeOrSubtype ort = returnType;
+        returnType = t;
+        return ort;
+    }
+    
+    private void endReturnScope(Tree.TypeOrSubtype t) {
+        returnType = t;
+    }
+
     //Type inference for members declared "local":
     
     @Override public void visit(Tree.VariableOrExpression that) {
         super.visit(that);
-        if (that.getSpecifierExpression()!=null 
-                && that.getVariable()!=null
-                && (that.getVariable().getTypeOrSubtype() instanceof Tree.LocalModifier)) {
-            setType((Tree.LocalModifier) that.getVariable().getTypeOrSubtype(), 
-                    that.getSpecifierExpression(), 
-                    that.getVariable());
-        }
+        inferType(that.getVariable(), that.getSpecifierExpression());
     }
     
     @Override public void visit(Tree.ValueIterator that) {
         super.visit(that);
-        if ((that.getVariable().getTypeOrSubtype() instanceof Tree.LocalModifier)) {
-            setType((Tree.LocalModifier) that.getVariable().getTypeOrSubtype(), 
-                    that.getSpecifierExpression(), 
-                    that.getVariable());
-        }
+        inferType(that.getVariable(), that.getSpecifierExpression());
     }
-    
+
     @Override public void visit(Tree.KeyValueIterator that) {
         super.visit(that);
-        if ((that.getKeyVariable().getTypeOrSubtype() instanceof Tree.LocalModifier)) {
-            setType((Tree.LocalModifier) that.getKeyVariable().getTypeOrSubtype(), 
-                    that.getSpecifierExpression(), 
-                    that.getKeyVariable());
-        }
-        if ((that.getValueVariable().getTypeOrSubtype() instanceof Tree.LocalModifier)) {
-            setType((Tree.LocalModifier) that.getValueVariable().getTypeOrSubtype(), 
-                    that.getSpecifierExpression(), 
-                    that.getValueVariable());
-        }
+        //TODO: this is not correct, should infer from arguments to Iterable<Entry<K,V>>
+        inferType(that.getKeyVariable(), that.getSpecifierExpression());
+        inferType(that.getValueVariable(), that.getSpecifierExpression());
     }
     
     @Override public void visit(Tree.AttributeDeclaration that) {
         super.visit(that);
-        Tree.TypeOrSubtype at = that.getTypeOrSubtype();
-        Tree.SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
-        if (at instanceof Tree.LocalModifier) {
+        inferType(that);
+        checkType(that.getSpecifierOrInitializerExpression(), 
+                that.getTypeOrSubtype(), 
+                that.getIdentifier());
+    }
+
+    @Override public void visit(Tree.SpecifierStatement that) {
+        super.visit(that);
+        checkType(that.getSpecifierExpression(),
+                that.getMember(),
+                that.getMember().getIdentifier());
+    }
+
+    private void inferType(Tree.AttributeDeclaration that) {
+        if (that.getTypeOrSubtype() instanceof Tree.LocalModifier) {
+            Tree.SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
             if (sie!=null) {
-                setType((Tree.LocalModifier) at, sie, that);
+                setType((Tree.LocalModifier) that.getTypeOrSubtype(), sie, that);
             }
             else {
                 that.addError("Could not infer type of: " + 
                         that.getIdentifier().getText());
             }
         }
-        else if (sie!=null) {
-            Type siet = sie.getExpression().getTypeModel();
-            Type attm = at.getTypeModel();
-            if ( siet!=null && attm!=null) {
-                if ( !siet.isExactly(attm) ) {
-                    sie.addError("Attribute specifier or initializer expression not assignable to attribute type: " + 
-                            that.getIdentifier().getText());
-                }
-            }
-            else {
-                that.addError("Could not determine assignability of specified expression to attribute type");
-            }
-        }
     }
-
-    @Override public void visit(Tree.SpecifierStatement that) {
-        super.visit(that);
-        Tree.SpecifierExpression sie = that.getSpecifierExpression();
+    
+    private void checkType(Tree.SpecifierOrInitializerExpression sie, Node typedNode, Tree.Identifier id) {
         if (sie!=null) {
             Type siet = sie.getExpression().getTypeModel();
-            Type mttm = that.getMember().getTypeModel();
-            if ( siet!=null && mttm!=null) {
-                if ( !siet.isExactly(mttm) ) {
+            if ( siet!=null && typedNode.getTypeModel()!=null) {
+                if ( !siet.isExactly(typedNode.getTypeModel()) ) {
                     sie.addError("Specifier expression not assignable to attribute type: " + 
-                            that.getMember().getIdentifier().getText());
+                            id.getText());
                 }
             }
             else {
-                that.addError("Could not determine assignability of specified expression to attribute type");
+                sie.addError("Could not determine assignability of specified expression to attribute type");
             }
         }
     }
@@ -135,48 +125,54 @@ public class ExpressionVisitor extends Visitor {
         that.setTypeModel(rhst);
         that.setModelNode(rhst);
     }
-
+    
     @Override public void visit(Tree.AttributeGetter that) {
-        Tree.TypeOrSubtype r = returnType;
-        Tree.TypeOrSubtype t = that.getTypeOrSubtype();
-        returnType = t;
+        Tree.TypeOrSubtype rt = beginReturnScope(that.getTypeOrSubtype());
         super.visit(that);
-        returnType = r;
-        if (t instanceof Tree.LocalModifier) {
-            setType((Tree.LocalModifier) t, that.getBlock(), that);
-        }
+        inferType(that, that.getBlock());
+        endReturnScope(rt);
     }
 
     @Override public void visit(Tree.AttributeSetter that) {
-        Tree.TypeOrSubtype r = returnType;
-        Tree.TypeOrSubtype t = that.getTypeOrSubtype();
-        returnType = t;
+        Tree.TypeOrSubtype rt = beginReturnScope(that.getTypeOrSubtype());
         super.visit(that);
-        returnType = r;
-        if (t instanceof Tree.LocalModifier) {
-            setType((Tree.LocalModifier) t, that.getBlock(), that);
-        }
+        inferType(that, that.getBlock());
+        endReturnScope(rt);
     }
 
     @Override public void visit(Tree.MethodDeclaration that) {
-        Tree.TypeOrSubtype t = that.getTypeOrSubtype();
-        Tree.Block b = that.getBlock();
-        Tree.TypeOrSubtype r = returnType;
-        if (b!=null) {
-            returnType = t;            
+        if (that.getBlock()!=null) {
+            Tree.TypeOrSubtype rt = beginReturnScope(that.getTypeOrSubtype());           
+            super.visit(that);
+            endReturnScope(rt);
         }
-        super.visit(that);
-        if (b!=null) {
-            returnType = r;
+        else {
+            super.visit(that);
         }
-        if (t instanceof Tree.LocalModifier) {
-            if (b!=null) {
-                setType((Tree.LocalModifier) t, b, that);
+        inferType(that);
+    }
+
+    private void inferType(Tree.TypedDeclaration that, Tree.Block block) {
+        if (that.getTypeOrSubtype() instanceof Tree.LocalModifier) {
+            setType((Tree.LocalModifier) that.getTypeOrSubtype(), block, that);
+        }
+    }
+
+    private void inferType(Tree.TypedDeclaration var, Tree.SpecifierExpression spec) {
+        if (spec!=null && var!=null) {
+            if ((var.getTypeOrSubtype() instanceof Tree.LocalModifier)) {
+                setType((Tree.LocalModifier) var.getTypeOrSubtype(), spec, var);
+            }
+        }
+    }
+        
+    private void inferType(Tree.MethodDeclaration that) {
+        if (that.getTypeOrSubtype() instanceof Tree.LocalModifier) {
+            if (that.getBlock()!=null) {
+                inferType(that, that.getBlock());
             }
             else if ( that.getSpecifierExpression()!=null ) {
-                setType((Tree.LocalModifier) t, 
-                        that.getSpecifierExpression(),
-                        that);  //TODO: this is hackish
+                inferType(that, that.getSpecifierExpression());  //TODO: this is hackish
             }
             else {
                 that.addError("Could not infer type of: " + 
