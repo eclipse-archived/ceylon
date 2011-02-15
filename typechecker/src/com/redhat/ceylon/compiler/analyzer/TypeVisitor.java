@@ -12,9 +12,6 @@ import com.redhat.ceylon.compiler.model.Type;
 import com.redhat.ceylon.compiler.model.Typed;
 import com.redhat.ceylon.compiler.model.Unit;
 import com.redhat.ceylon.compiler.tree.Tree;
-import com.redhat.ceylon.compiler.tree.Tree.Alias;
-import com.redhat.ceylon.compiler.tree.Tree.Identifier;
-import com.redhat.ceylon.compiler.tree.Tree.TypeOrSubtype;
 import com.redhat.ceylon.compiler.tree.Visitor;
 import com.redhat.ceylon.compiler.util.PrintUtil;
 
@@ -58,7 +55,7 @@ public class TypeVisitor extends Visitor {
                 PrintUtil.importNodeToString(that.getIdentifiers()) ) );
     }
 
-    private boolean hasName(List<Identifier> importPath, Package mp) {
+    private boolean hasName(List<Tree.Identifier> importPath, Package mp) {
         if (mp.getName().size()==importPath.size()) {
             for (int i=0; i<mp.getName().size(); i++) {
                 if (!mp.getName().get(i).equals(importPath.get(i).getText())) {
@@ -75,7 +72,7 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.ImportMemberOrType that) {
         Import i = new Import();
-        Alias alias = that.getAlias();
+        Tree.Alias alias = that.getAlias();
         if (alias==null) {
             i.setAlias(that.getIdentifier().getText());
         }
@@ -134,13 +131,13 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.TypedDeclaration that) {
         super.visit(that);
-        TypeOrSubtype type = that.getTypeOrSubtype();
+        Tree.TypeOrSubtype type = that.getTypeOrSubtype();
         if (!(type instanceof Tree.LocalModifier)) { //if the type declaration is missing, we do type inference later
             Type t = (Type) type.getModelNode();
             ( (Typed) that.getModelNode() ).setType(t);
         }
     }
-        
+    
     /**
      * Suppress resolution of types that appear after the
      * member selection operator "."

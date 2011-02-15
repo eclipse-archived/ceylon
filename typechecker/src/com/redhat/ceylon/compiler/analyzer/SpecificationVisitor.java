@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.analyzer;
 
 import com.redhat.ceylon.compiler.model.Declaration;
 import com.redhat.ceylon.compiler.tree.Tree;
-import com.redhat.ceylon.compiler.tree.Tree.This;
 import com.redhat.ceylon.compiler.tree.Visitor;
 
 /**
@@ -299,7 +298,7 @@ public class SpecificationVisitor extends Visitor {
      */
     @Override
     public void visit(Tree.MemberExpression that) {
-        if (that.getPrimary() instanceof This) {
+        if (that.getPrimary() instanceof Tree.This) {
             super.visit(that);
         }
         else {
