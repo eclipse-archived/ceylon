@@ -180,8 +180,14 @@
         <para>The following toplevel methods expose the notion of object 
         identity:</para>
     
-        <programlisting>shared Boolean identical(IdentifiableObject x, IdentifiableObject y) { return ... }</programlisting>
-        <programlisting>shared Integer identityHash(IdentifiableObject x) { return ... }</programlisting>
+        <programlisting>doc "Return |True| if |x| and |y| are identical."
+    shared Boolean identical(IdentifiableObject x, IdentifiableObject y) {
+        return ...
+    }</programlisting>
+        <programlisting>doc "Return the hash of |x|."
+    shared Integer identityHash(IdentifiableObject x) {
+        return ...
+    }</programlisting>
     
         <para>Classes written in other Java VM languages (including Java classes) 
         are considered subtypes of <literal>IdentifiableObject</literal>. Indeed,
@@ -279,7 +285,8 @@
         subject of the argument specification operators <literal>()</literal> 
         and <literal>{}</literal>.</para>
         
-        <programlisting><![CDATA[shared interface Callable<out R, P...> {
+        <programlisting><![CDATA[doc "The type |Callable| represents an executable operation."
+shared interface Callable<out R, P...> {
     shared formal R call(P... args);
 }]]></programlisting>
     
@@ -287,7 +294,9 @@
         combining a <literal>Callable&lt;Y,X&gt;</literal> with a <literal>Callable&lt;X,P...&gt;</literal>
         to produce a <literal>Callable&lt;Y,P...&gt;</literal>:</para>
         
-        <programlisting><![CDATA[shared extension Y composeable<X,Y,P...>(Y this(X x))(X g(P... args))(P... args) {
+        <programlisting><![CDATA[doc "The following extension provides function composition,
+     combining a |Callable<Y,X>| with a |Callable<X,P...>| to produce a |Callable<Y,P...>|."
+shared extension Y composeable<X,Y,P...>(Y this(X x))(X g(P... args))(P... args) {
     Y compose(X g(P... args))(P... args) {
         Y composition(P... args) {
             return this(g(args));
@@ -306,7 +315,9 @@
        <literal>Callable&lt;R,T,P...&gt;</literal> into a
        <literal>Callable&lt;Callable&lt;R,P...&gt;,T&gt;</literal>:</para>
 
-       <programlisting><![CDATA[shared extension class Curryable<R,T,P...>(R this(T t, P... args)) {
+       <programlisting><![CDATA[doc "allows the first parameter of any function with multiple parameters to be curried,
+     transforming a |Callable<R,T,P...>| into a |Callable<Callable<R,P...>,T>|."
+shared extension class Curryable<R,T,P...>(R this(T t, P... args)) {
     R partial(T t)(P... p) {
         R curried(P... p) {
             return this(t, args);
@@ -324,7 +335,8 @@ void hello() = info.partial("Hello!");</programlisting>
        <literal>Callable&lt;Callable&lt;R,P...&gt;,T&gt;</literal> into a
        <literal>Callable&lt;R,T,P...&gt;</literal>:</para>
 
-       <programlisting><![CDATA[shared extension class Flattenable<R,T,P...>(R this(T t)(P... args)) {
+       <programlisting><![CDATA[doc "Reverse of a currying operation. Transform a |Callable<Callable<R,P...>,T>| into a |Callable<R,T,P...>|."
+shared extension class Flattenable<R,T,P...>(R this(T t)(P... args)) {
     R flatten(T t, P... p) {
         return this(t)(p);
     }
@@ -339,7 +351,9 @@ void hello() = info.partial("Hello!");</programlisting>
        <literal>Callable&lt;Callable&lt;R,Q...&gt;,P...&gt;</literal> into a
        <literal>Callable&lt;Callable&lt;R,P...&gt;,Q...&gt;</literal>:</para>
        
-       <programlisting><![CDATA[shared extension class Shuffleable<R,P...,Q...>(R this(P... p)(Q... q)) {
+       <programlisting><![CDATA[doc "Swaps the first and second parameter lists of a function with multiple parameter lists,
+     transforming a |Callable<Callable<R,Q...>,P...>| into a |Callable<Callable<R,P...>,Q...>|."
+shared extension class Shuffleable<R,P...,Q...>(R this(P... p)(Q... q)) {
    R shuffle(Q... q)(P... p) {
        R shuffled(P... p) {
            return this(p)(q);
