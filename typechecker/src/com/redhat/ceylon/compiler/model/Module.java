@@ -5,11 +5,24 @@ import java.util.List;
 
 public class Module {
 	
-	List<String> name;
-	List<Package> packages = new ArrayList<Package>();
-	List<Module> dependencies = new ArrayList<Module>();
-	
-	public List<String> getName() {
+	private List<String> name;
+	private List<Package> packages = new ArrayList<Package>();
+	private List<Module> dependencies = new ArrayList<Module>();
+    private boolean available;
+
+    /**
+     * Whether or not the module is available in the
+     * source path or the repository
+     */
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+
+    public List<String> getName() {
 		return name;
 	}
 	
@@ -36,7 +49,15 @@ public class Module {
 	
 	@Override
 	public String toString() {
-		return "Module[" + name + "]";
+        StringBuilder string = new StringBuilder("Module[");
+        for(String node : name) {
+            string.append(node).append('.');
+        }
+        if ( name.size() != 0 ) {
+            string.deleteCharAt( string.length() - 1 );
+        }
+        string.append("]");
+		return string.toString();
 	}
 	
 }

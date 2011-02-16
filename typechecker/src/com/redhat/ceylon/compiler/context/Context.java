@@ -5,6 +5,7 @@ import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.Structure;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -101,6 +102,7 @@ public class Context {
             final Package currentPkg = packageStack.peekLast();
             final List<String> moduleName = currentPkg.getName();
             currentModule = getOrCreateModule(moduleName);
+            currentModule.setAvailable(true);
             bindPackageToCurrentModule(currentPkg);
         }
         else {
@@ -109,7 +111,6 @@ public class Context {
                 .append( "' and '" )
                 .append( importPathToString( packageStack.peekLast().getName() ) )
                 .append("'");
-            //throw new RuntimeException( error.toString() );
             System.err.println(error);
         }
     }
@@ -132,5 +133,43 @@ public class Context {
 
     public List<PhasedUnit> getPhasedUnits() {
         return phasedUnits;
+    }
+
+    public void verifyModuleDependencyTree() {
+        LinkedList<Module> dependencyTree = new LinkedList<Module>();
+        for (Module module : modules) {
+            dependencyTree.addLast(module);
+            verifyModuleDependencyTree( module.getDependencies(), dependencyTree );
+            dependencyTree.pollLast();
+        }
+    }
+
+    private void verifyModuleDependencyTree(Collection<Module> modules, LinkedList<Module> dependencyTree) {
+        for (Module module : modules) {
+            if ( dependencyTree.contains(module) ) {
+                StringBuilder error = new StringBuilder("Circular dependency between modules: ");
+                buildDependencyString(dependencyTree, module, error);
+                error.append(".");
+                System.err.println(error);
+                return;
+            }
+            if ( ! module.isAvailable() ) {
+                StringBuilder error = new StringBuilder("Unable to find ");
+                error.append(module).append(". Dependency tree ");
+                buildDependencyString(dependencyTree, module, error);
+                error.append(".");
+                System.err.println(error);
+            }
+            dependencyTree.addLast(module);
+            verifyModuleDependencyTree( module.getDependencies(), dependencyTree );
+            dependencyTree.pollLast();
+        }
+    }
+
+    private void buildDependencyString(LinkedList<Module> dependencyTree, Module module, StringBuilder error) {
+        for (Module errorModule : dependencyTree) {
+            error.append(errorModule).append(" -> ");
+        }
+        error.append(module);
     }
 }

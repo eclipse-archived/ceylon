@@ -90,6 +90,16 @@ public class Main {
         for (PhasedUnit pu : phasedUnits) {
             pu.buildModuleImport();
         }
+
+        /*
+        At this stage we need to
+         - resolve all non local modules (recursively) TODO
+         - build the object model of these compiled modules TODO
+         - declare a missing module as an error
+         - detect circular dependencies
+         */
+        context.verifyModuleDependencyTree();
+
         for (PhasedUnit pu : phasedUnits) {
             pu.scanDeclarations();
             pu.validateControlFlow();
