@@ -86,28 +86,24 @@ public class Main {
     }
 
     private static void executePhases(Context context) {
-        final List<PhasedUnit> stagedUnits = context.getPhasedUnits();
-        /*for (PhasedUnit su : stagedUnits) {
-            su.display();
-        }*/
-        for (PhasedUnit pu : stagedUnits) {
+        final List<PhasedUnit> phasedUnits = context.getPhasedUnits();
+        for (PhasedUnit pu : phasedUnits) {
             pu.buildModuleImport();
         }
-        for (PhasedUnit su : stagedUnits) {
-            su.scanDeclarations();
-            su.validateControlFlow();
-            su.validateSpecification();
+        for (PhasedUnit pu : phasedUnits) {
+            pu.scanDeclarations();
+            pu.validateControlFlow();
+            pu.validateSpecification();
         }
-        for (PhasedUnit su : stagedUnits) {
-            su.scanTypeDeclarations();
+        for (PhasedUnit pu : phasedUnits) {
+            pu.scanTypeDeclarations();
         }
-        for (PhasedUnit su : stagedUnits) {
-            su.analyseTypes();
+        for (PhasedUnit pu : phasedUnits) {
+            pu.analyseTypes();
         }
-        //TODO we print before and after, not sure why but Gavin added the call
-        for (PhasedUnit su : stagedUnits) {
-            if (noisy) su.display();
-            su.runAssertions();
+        for (PhasedUnit pu : phasedUnits) {
+            if (noisy) pu.display();
+            pu.runAssertions();
         }
     }
 
