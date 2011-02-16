@@ -34,9 +34,18 @@ public class Package implements Scope {
 		return null;
 	}
 	
+	public String getNameAsString() {
+	    StringBuilder sb = new StringBuilder();
+	    for (int i=0; i<name.size(); i++) {
+	        sb.append(name.get(i));
+	        if (i<name.size()-1) sb.append('.');
+	    }
+	    return sb.toString();
+	}
+	
 	@Override
 	public String toString() {
-		return "Package[" + name + "]";
+		return "Package[" + getNameAsString() + "]";
 	}
 	
 }
