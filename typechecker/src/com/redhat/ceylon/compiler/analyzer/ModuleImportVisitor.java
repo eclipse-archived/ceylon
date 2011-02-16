@@ -8,11 +8,25 @@ import com.redhat.ceylon.compiler.tree.Visitor;
 import java.util.Arrays;
 
 /**
+ * Detect and populate the list of imports for modules.
+ * In theory should only be called on module.ceylon files
+ *
+ * Put retrictions on how module.ceylon files are built today:
+ *  - names must be string literals or else the visitor cannot extract them
+ *  - imports must be "explicitly defined, ie not imported as List<Import> or else the module names cannot be extracted
+ *
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
 public class ModuleImportVisitor extends Visitor {
     private Context context;
+    /**
+     * are we truly in a module?
+     */
     private boolean isModule = false;
+    /**
+     * Instance of the visited module which will receive
+     * the dependencies declaration
+     */
     private Module visitedModule;
 
 
@@ -22,20 +36,34 @@ public class ModuleImportVisitor extends Visitor {
 
     @Override
     public void visit(Tree.Type that) {
-        if ( "Module".equals(that.getIdentifier().getText()) ) {
+        final Tree.Identifier identifier = that.getIdentifier();
+        if ( identifier != null && "Module".equals( identifier.getText() ) ) {
             isModule = true;
         }
-        super.visit(that);
+        super.visit(that); //is that right to call super after? I have no clue
     }
 
     @Override
     public void visit(Tree.SpecifiedArgument that) {
         //safety, if the object is not of type Module, ignore
         if (isModule) {
-            if ( "name".equals( that.getIdentifier().getText() ) ) {
-                String currentModuleName = that.getSpecifierExpression().getExpression().getTerm().getText();
+            final Tree.Identifier identifier = that.getIdentifier();
+            if ( identifier != null && "name".equals( identifier.getText() ) ) {
+                final Tree.SpecifierExpression specifierExpression = that.getSpecifierExpression();
+                final Tree.Expression expression =
+                        specifierExpression != null ? specifierExpression.getExpression() : null;
+                final Tree.Term term = expression != null ? expression.getTerm() : null;
+                String currentModuleName = term != null ? term.getText() : null;
+                if ( currentModuleName == null ) {
+                    that.getErrors().add( new AnalysisError(that, "Malformed module.ceylon: cannot extract module name") );
+                    super.visit(that); //is that right to call super after? I have no clue
+                    return;
+                }
+
                 if ( !currentModuleName.startsWith("'") || !currentModuleName.endsWith("'") ) {
-                    throw new RuntimeException("Module names in module.ceylon files must be quoted identifiers");
+                    that.getErrors().add( new AnalysisError(that, "Malformed module.ceylon: module names must be quoted identifiers") );
+                    super.visit(that); //is that right to call super after? I have no clue
+                    return;
                 }
                 final String[] splitModuleName = currentModuleName.substring(1,currentModuleName.length()-1).split("[\\.']");
                 Module currentModule = context.getOrCreateModule(Arrays.asList(splitModuleName));
@@ -48,7 +76,7 @@ public class ModuleImportVisitor extends Visitor {
                 }
             }
         }
-        super.visit(that);
+        super.visit(that); //is that right to call super after? I have no clue
     }
 }
 
