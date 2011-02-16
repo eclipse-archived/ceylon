@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.model.Interface;
 import com.redhat.ceylon.compiler.model.Model;
 import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.Parameter;
+import com.redhat.ceylon.compiler.model.ParameterList;
 import com.redhat.ceylon.compiler.model.Scope;
 import com.redhat.ceylon.compiler.model.Type;
 import com.redhat.ceylon.compiler.model.Typed;
@@ -128,15 +129,15 @@ public class ExpressionVisitor extends Visitor {
     }
 
     @Override public void visit(Tree.MethodDeclaration that) {
-        if (that.getBlock()!=null) {
-            Tree.TypeOrSubtype rt = beginReturnScope(that.getTypeOrSubtype());           
-            super.visit(that);
-            endReturnScope(rt);
-        }
-        else {
-            super.visit(that);
-        }
-        inferType(that);
+        super.visit(that);
+        inferType(that, that.getSpecifierExpression());
+    }
+
+    @Override public void visit(Tree.Method that) {
+        Tree.TypeOrSubtype rt = beginReturnScope(that.getTypeOrSubtype());           
+        super.visit(that);
+        endReturnScope(rt);
+        inferType(that, that.getBlock());
     }
 
     //Type inference for members declared "local":
@@ -160,21 +161,6 @@ public class ExpressionVisitor extends Visitor {
         if ((that.getTypeOrSubtype() instanceof Tree.LocalModifier)) {
             if (spec!=null) {
                 setType((Tree.LocalModifier) that.getTypeOrSubtype(), spec, that);
-            }
-            else {
-                that.addError("Could not infer type of: " + 
-                        Util.name(that));
-            }
-        }
-    }
-        
-    private void inferType(Tree.MethodDeclaration that) {
-        if (that.getTypeOrSubtype() instanceof Tree.LocalModifier) {
-            if (that.getBlock()!=null) {
-                inferType(that, that.getBlock());
-            }
-            else if (that.getSpecifierExpression()!=null) {
-                inferType(that, that.getSpecifierExpression());  //TODO: this is hackish
             }
             else {
                 that.addError("Could not infer type of: " + 
@@ -319,12 +305,12 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkInvocationArguments(Tree.InvocationExpression that) {
-        List<Parameter> pl;
+        ParameterList pl;
         Model pm = that.getPrimary().getModelNode();
         if (pm!=null) {
             if (pm instanceof Functional) {
                 Functional fpm = (Functional) pm;
-                List<List<Parameter>> pls = fpm.getParameters();
+                List<ParameterList> pls = fpm.getParameterLists();
                 if (pls.size()==0) {
                     that.addError("cannot be invoked: " + 
                             fpm.getName());
@@ -335,14 +321,20 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             else if (pm instanceof Type) {
-                GenericType pgt = ((Type) pm).getGenericType();
+                Type pmt = (Type) pm;
+                GenericType pgt = pmt.getGenericType();
                 if (pgt==null) {
                     that.addError("could not determine parameter list: " + 
-                            ((Type) pm).getProducedTypeName() );
+                            pmt.getProducedTypeName() );
                     return;
                 }
                 else if (pgt instanceof Class) {
-                    pl = ((Class) pgt).getParameters();
+                    pl = ((Class) pgt).getParameterList();
+                    if (pl==null) {
+                        that.addError("could not determine parameter list: " + 
+                                pmt.getProducedTypeName() );
+                        return;
+                    }
                 }
                 else {
                     that.addError("interface cannot be invoked: " + 
@@ -354,7 +346,7 @@ public class ExpressionVisitor extends Visitor {
                 that.addError("cannot be invoked");
                 return;
             }
-            
+                        
             Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
             if ( pal!=null ) {
                 checkPositionalArguments(pl, pal);
@@ -368,24 +360,24 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void checkNamedArguments(List<Parameter> pl,
+    private void checkNamedArguments(ParameterList pl,
             Tree.NamedArgumentList nal) {
         List<Tree.NamedArgument> na = nal.getNamedArguments();
-        if ( pl.size()!=na.size() ) {
+        if ( pl.getParameters().size()!=na.size() ) {
             nal.addError("wrong number of arguments");
         }
         //TODO!!
     }
 
-    private void checkPositionalArguments(List<Parameter> pl,
+    private void checkPositionalArguments(ParameterList pl,
             Tree.PositionalArgumentList pal) {
         List<Tree.PositionalArgument> pa = pal.getPositionalArguments();
-        if ( pl.size()!=pa.size() ) {
+        if ( pl.getParameters().size()!=pa.size() ) {
             pal.addError("wrong number of arguments");
             return;
         }
-        for (int i=0; i<pl.size(); i++) {
-            Parameter p = pl.get(i);
+        for (int i=0; i<pl.getParameters().size(); i++) {
+            Parameter p = pl.getParameters().get(i);
             Type paramType = p.getType();
             Tree.PositionalArgument a = pa.get(i);
             Type argType = a.getExpression().getTypeModel();

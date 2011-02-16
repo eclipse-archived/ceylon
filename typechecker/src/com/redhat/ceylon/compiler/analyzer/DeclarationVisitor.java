@@ -1,17 +1,14 @@
 package com.redhat.ceylon.compiler.analyzer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.redhat.ceylon.compiler.model.Class;
 import com.redhat.ceylon.compiler.model.ControlBlock;
 import com.redhat.ceylon.compiler.model.Declaration;
-import com.redhat.ceylon.compiler.model.Functional;
 import com.redhat.ceylon.compiler.model.Getter;
 import com.redhat.ceylon.compiler.model.Interface;
 import com.redhat.ceylon.compiler.model.Method;
 import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.Parameter;
+import com.redhat.ceylon.compiler.model.ParameterList;
 import com.redhat.ceylon.compiler.model.Scope;
 import com.redhat.ceylon.compiler.model.Setter;
 import com.redhat.ceylon.compiler.model.SimpleValue;
@@ -38,7 +35,7 @@ public class DeclarationVisitor extends Visitor {
     private final Package pkg;
     private Scope scope;
     private Unit unit;
-    private List<Parameter> parameterList;
+    private ParameterList parameterList;
     
     public DeclarationVisitor(Package p) {
         scope = p;
@@ -58,7 +55,7 @@ public class DeclarationVisitor extends Visitor {
     private void exitScope(Scope outerScope) {
         scope = outerScope;
     }
-
+    
     private void visitDeclaration(Tree.Declaration that, Declaration model) {
         Tree.Identifier id = that.getIdentifier();
         if (id==null || id.getText().startsWith("<missing")) {
@@ -130,6 +127,9 @@ public class DeclarationVisitor extends Visitor {
             that.addError("Missing parameter list in class declaration: " + 
                     Util.name(that) );
         }
+        else {
+            c.setParameterList( (ParameterList) that.getParameterList().getModelNode() );
+        }
     }
 
     @Override
@@ -152,12 +152,29 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.MethodDeclaration that) {
         Method m = new Method();
         visitDeclaration(that, m);
+        super.visit(that);
+        grabParameters(that, m);
+    }
+
+    @Override
+    public void visit(Tree.Method that) {
+        Method m = new Method();
+        visitDeclaration(that, m);
         Scope o = enterScope(m);
         super.visit(that);
         exitScope(o);
+        grabParameters(that, m);
+    }
+
+    private void grabParameters(Tree.AnyMethodDeclaration that, Method m) {
         if (that.getParameterLists().isEmpty()) {
             that.addError("Missing parameter list in method declaration: " + 
                     Util.name(that) );
+        }
+        else {
+            for (Tree.ParameterList pl: that.getParameterLists()) {
+                m.getParameterLists().add( (ParameterList) pl.getModelNode() );
+            }
         }
     }
 
@@ -188,30 +205,24 @@ public class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Parameter that) {
+        //TODO: what about callable parameters?
         Parameter p = new Parameter();
         visitDeclaration(that, p);
-        Scope o = enterScope(p);
+        //Scope o = enterScope(p);
         super.visit(that);
-        exitScope(o);
-        if (parameterList!=null) {
-            parameterList.add(p);
+        //exitScope(o);
+        if (parameterList==null) {
+            parameterList.getParameters();
         }
+        parameterList.getParameters().add(p);
     }
 
     @Override
     public void visit(Tree.ParameterList that) {
-        List<Parameter> pl = parameterList;
-        if (scope instanceof Functional) {
-            parameterList = new ArrayList<Parameter>();
-            ( (Functional) scope ).getParameters().add(parameterList);
-        }
-        else if (scope instanceof Class){
-            parameterList = ( (Class) scope ).getParameters();
-        }
-        else {
-            that.addError("unexpected parameter list");
-        }
+        ParameterList pl = parameterList;
+        parameterList = new ParameterList();
         super.visit(that);
+        that.setModelNode(parameterList);
         parameterList = pl;
     }
     
@@ -226,10 +237,10 @@ public class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Variable that) {
-        super.visit(that);
-        //TODO: what about callable variables?!
         SimpleValue v = new SimpleValue();
         v.setName(that.getIdentifier().getText());
+        super.visit(that);
+        //TODO: what about callable variables?!
         visitStructure(that, v);
         unit.getDeclarations().add(v);
     }

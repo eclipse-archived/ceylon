@@ -13,6 +13,7 @@ tokens {
     ATTRIBUTE_GETTER;
     ATTRIBUTE_SETTER;
     BLOCK;
+    METHOD;
     INVOCATION_EXPRESSION;
     CLASS_BODY;
     BOOLEAN_CONDITION;
@@ -33,8 +34,6 @@ tokens {
     ALIAS;
     INITIALIZER_EXPRESSION;
     INTERFACE_BODY;
-    MEMBER_DECLARATION;
-    MEMBER_EXPRESSION;
     BROKEN_MEMBER_BODY;
     METHOD_ARGUMENT;
     METHOD_DECLARATION;
@@ -321,9 +320,13 @@ objectDeclaration
     ;
 
 voidMethodDeclaration
-    : VOID_MODIFIER memberName methodParameters (block | specifier? ';')
-    -> ^(METHOD_DECLARATION VOID_MODIFIER memberName methodParameters block? specifier?)
-    
+    : VOID_MODIFIER memberName methodParameters 
+      ( 
+        block 
+    -> ^(METHOD VOID_MODIFIER memberName methodParameters block)   
+      | specifier? ';'
+    -> ^(METHOD_DECLARATION VOID_MODIFIER memberName methodParameters specifier?)   
+      )
     ;
 
 setterDeclaration
@@ -334,8 +337,13 @@ setterDeclaration
 typedMethodOrAttributeDeclaration
     : inferrableType memberName
     ( 
-      methodParameters (memberBody[$inferrableType.tree] | specifier? ';')
-    -> ^(METHOD_DECLARATION inferrableType memberName methodParameters memberBody? specifier?)
+      methodParameters 
+      (
+        memberBody[$inferrableType.tree] 
+    -> ^(METHOD inferrableType memberName methodParameters memberBody)
+      | specifier? ';'
+    -> ^(METHOD_DECLARATION inferrableType memberName methodParameters specifier?)
+    )
     | (specifier | initializer)? ';'
     -> ^(ATTRIBUTE_DECLARATION inferrableType memberName specifier? initializer?)
     | memberBody[$inferrableType.tree]

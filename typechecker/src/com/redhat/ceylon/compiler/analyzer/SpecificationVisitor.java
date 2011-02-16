@@ -150,11 +150,6 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.MethodDeclaration that) {
-        if (that.getModelNode()==declaration &&
-                that.getBlock()!=null) {
-            declare();
-            specify();
-        }
         //TODO: allow references to un-assigned things
         //      in interface bodies or the declaration
         //      section of class bodies.
@@ -163,7 +158,18 @@ public class SpecificationVisitor extends Visitor {
                 that.getSpecifierExpression()!=null) {
             specify();
         }
-            
+    }
+    
+    @Override
+    public void visit(Tree.Method that) {
+        if (that.getModelNode()==declaration) {
+            declare();
+            specify();
+        }
+        //TODO: allow references to un-assigned things
+        //      in interface bodies or the declaration
+        //      section of class bodies.
+        super.visit(that);
     }
     
     @Override

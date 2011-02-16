@@ -94,21 +94,22 @@ public class ControlFlowVisitor extends Visitor {
 
     @Override
     public void visit(Tree.MethodDeclaration that) {
-        if (that.getBlock()!=null) {
-            boolean c = beginReturnScope(true);
-            boolean d = beginDefiniteReturnScope();
-            super.visit(that);
-            if (that.getBlock()!=null && 
-                    !(that.getTypeOrSubtype() instanceof Tree.VoidModifier)) {
-                checkDefiniteReturn(that);
-            }
-            endDefiniteReturnScope(d);
-            endReturnScope(c);
-        }
-        else if (that.getSpecifierExpression()!=null) {
+        if (that.getSpecifierExpression()!=null) {
             checkExecutableStatementAllowed(that);
             super.visit(that);
         }
+    }
+    
+    @Override
+    public void visit(Tree.Method that) {
+        boolean c = beginReturnScope(true);
+        boolean d = beginDefiniteReturnScope();
+        super.visit(that);
+        if (!(that.getTypeOrSubtype() instanceof Tree.VoidModifier)) {
+            checkDefiniteReturn(that);
+        }
+        endDefiniteReturnScope(d);
+        endReturnScope(c);
     }
     
     @Override

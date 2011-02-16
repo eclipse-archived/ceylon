@@ -1,13 +1,11 @@
 package com.redhat.ceylon.compiler.model;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Class extends ClassOrInterface {
 	
     Boolean isAbstract;
     Boolean formal;    
-	List<Parameter> parameters = new ArrayList<Parameter>();
+	ParameterList parameterList;
 	
 	public Boolean isFormal() {
 		return formal;
@@ -21,7 +19,12 @@ public class Class extends ClassOrInterface {
 		return isAbstract;
 	}	
 	
-    public List<Parameter> getParameters() {
-    	return parameters;
+	public ParameterList getParameterList() {
+        return parameterList;
     }
+	
+	public void setParameterList(ParameterList parameterList) {
+        this.parameterList = parameterList;
+    }
+    
 }

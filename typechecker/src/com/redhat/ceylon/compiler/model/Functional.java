@@ -18,12 +18,12 @@ import java.util.List;
  */
 public class Functional extends Typed implements Scope {
 	
-	List<List<Parameter>> parameters = new ArrayList<List<Parameter>>();
+	List<ParameterList> parameterLists = new ArrayList<ParameterList>();
 	
 	List<Structure> members = new ArrayList<Structure>();
 
-	public List<List<Parameter>> getParameters() {
-		return parameters;
+	public List<ParameterList> getParameterLists() {
+		return parameterLists;
 	}
 
 	@Override
