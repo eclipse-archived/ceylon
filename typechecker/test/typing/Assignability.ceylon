@@ -75,4 +75,7 @@ class Assignability() {
         return X();
     }
     
+    for (X x in {X(), X()} ) {}
+    @error for (Y y in {X(), X()} ) {}
+    
 }

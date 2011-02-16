@@ -90,7 +90,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         //TODO: this is not correct, should infer from arguments to Iterable<V>
         inferType(that.getVariable(), that.getSpecifierExpression());
-        checkType(that.getVariable(), that.getSpecifierExpression());
+        checkIterableType(that.getVariable().getTypeOrSubtype(), that.getSpecifierExpression());
     }
 
     @Override public void visit(Tree.KeyValueIterator that) {
@@ -98,8 +98,8 @@ public class ExpressionVisitor extends Visitor {
         //TODO: this is not correct, should infer from arguments to Iterable<Entry<K,V>>
         inferType(that.getKeyVariable(), that.getSpecifierExpression());
         inferType(that.getValueVariable(), that.getSpecifierExpression());
-        checkType(that.getKeyVariable(), that.getSpecifierExpression());
-        checkType(that.getValueVariable(), that.getSpecifierExpression());
+        checkIterableType(that.getKeyVariable().getTypeOrSubtype(), that.getSpecifierExpression());
+        checkIterableType(that.getValueVariable().getTypeOrSubtype(), that.getSpecifierExpression());
     }
     
     @Override public void visit(Tree.AttributeDeclaration that) {
@@ -118,6 +118,27 @@ public class ExpressionVisitor extends Visitor {
             Type type = sie.getExpression().getTypeModel();
             if ( type!=null && typedNode.getTypeModel()!=null) {
                 if ( !type.isExactly(typedNode.getTypeModel()) ) {
+                    sie.addError("Specifier expression not assignable to attribute type");
+                }
+            }
+            else {
+                sie.addError("Could not determine assignability of specified expression to attribute type");
+            }
+        }
+    }
+
+    private void checkIterableType(Node typedNode, Tree.SpecifierOrInitializerExpression sie) {
+        if (sie!=null) {
+            Type type = sie.getExpression().getTypeModel();
+            if ( type!=null && typedNode.getTypeModel()!=null) {
+                //TODO: use subtyping!
+                Type it = new Type();
+                it.setGenericType( (GenericType) Util.getLanguageModuleDeclaration("Iterable", context) );
+                it.getTypeArguments().add(typedNode.getTypeModel());
+                Type st = new Type();
+                st.setGenericType( (GenericType) Util.getLanguageModuleDeclaration("Sequence", context) );
+                st.getTypeArguments().add(typedNode.getTypeModel());
+                if ( !type.isExactly(it) &&  !type.isExactly(st)  ) {
                     sie.addError("Specifier expression not assignable to attribute type");
                 }
             }
@@ -168,9 +189,6 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void inferType(Tree.TypedDeclaration that, Tree.SpecifierOrInitializerExpression spec) {
-        if (that==null) {
-            System.out.flush();
-        }
         if ((that.getTypeOrSubtype() instanceof Tree.LocalModifier)) {
             if (spec!=null) {
                 setType((Tree.LocalModifier) that.getTypeOrSubtype(), spec, that);
@@ -544,15 +562,6 @@ public class ExpressionVisitor extends Visitor {
         //TODO!
     }
     
-    @Override public void visit(Tree.StringTemplate that) {
-        super.visit(that);
-        //TODO: validate that the subexpression types are Formattable
-        Type t = new Type();
-        t.setGenericType( (Class) Util.getImportedDeclaration(that.getUnit(), 
-                "String") );
-        that.setTypeModel(t);
-    }
-    
     @Override public void visit(Tree.SequenceEnumeration that) {
         super.visit(that);
         Type et = null; 
@@ -563,44 +572,46 @@ public class ExpressionVisitor extends Visitor {
             //TODO: determine the common supertype of all of them
         }
         Type t = new Type();
-        t.setGenericType( (Interface) Util.getImportedDeclaration(that.getUnit(), 
-                "Sequence") );
+        t.setGenericType( (Interface) Util.getLanguageModuleDeclaration("Sequence", context) );
         t.getTypeArguments().add(et);
+        that.setTypeModel(t);
+    }
+    
+    @Override public void visit(Tree.StringTemplate that) {
+        super.visit(that);
+        //TODO: validate that the subexpression types are Formattable
+        Type t = new Type();
+        t.setGenericType( (Class) Util.getLanguageModuleDeclaration("String", context) );
         that.setTypeModel(t);
     }
     
     @Override public void visit(Tree.StringLiteral that) {
         Type t = new Type();
-        t.setGenericType( (Class) Util.getImportedDeclaration(that.getUnit(), 
-                "String") );
+        t.setGenericType( (Class) Util.getLanguageModuleDeclaration("String", context) );
         that.setTypeModel(t);
     }
     
     @Override public void visit(Tree.NaturalLiteral that) {
         Type t = new Type();
-        t.setGenericType( (Class) Util.getImportedDeclaration(that.getUnit(), 
-                "Natural") );
+        t.setGenericType( (Class) Util.getLanguageModuleDeclaration("Natural", context) );
         that.setTypeModel(t);
     }
     
     @Override public void visit(Tree.FloatLiteral that) {
         Type t = new Type();
-        t.setGenericType( (Class) Util.getImportedDeclaration(that.getUnit(), 
-                "Float") );
+        t.setGenericType( (Class) Util.getLanguageModuleDeclaration("Float", context) );
         that.setTypeModel(t);
     }
     
     @Override public void visit(Tree.CharLiteral that) {
         Type t = new Type();
-        t.setGenericType( (Class) Util.getImportedDeclaration(that.getUnit(), 
-                "Character") );
+        t.setGenericType( (Class) Util.getLanguageModuleDeclaration("Character", context) );
         that.setTypeModel(t);
     }
     
     @Override public void visit(Tree.QuotedLiteral that) {
         Type t = new Type();
-        t.setGenericType( (Class) Util.getImportedDeclaration(that.getUnit(), 
-                "Quoted") );
+        t.setGenericType( (Class) Util.getLanguageModuleDeclaration("Quoted", context) );
         that.setTypeModel(t);
     }
     

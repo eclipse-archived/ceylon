@@ -47,17 +47,18 @@ public class Module {
 		return list;
 	}
 	
-	@Override
-	public String toString() {
-        StringBuilder string = new StringBuilder("Module[");
-        for(String node : name) {
-            string.append(node).append('.');
+    public String getNameAsString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i=0; i<name.size(); i++) {
+            sb.append(name.get(i));
+            if (i<name.size()-1) sb.append('.');
         }
-        if ( name.size() != 0 ) {
-            string.deleteCharAt( string.length() - 1 );
-        }
-        string.append("]");
-		return string.toString();
-	}
-	
+        return sb.toString();
+    }
+    
+    @Override
+    public String toString() {
+        return "Module[" + getNameAsString() + "]";
+    }
+    
 }

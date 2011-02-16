@@ -45,7 +45,7 @@ public class Context {
             throw new RuntimeException("Module cannot be top level");
         }
         Module module = null;
-        for(Module current : modules ) {
+        for (Module current : modules ) {
             final List<String> names = current.getName();
             if ( names.size() == moduleName.size()
                     && moduleName.containsAll(names) ) {

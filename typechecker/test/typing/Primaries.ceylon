@@ -10,6 +10,8 @@ class Primaries() {
     
     @type["A"] A();
     
+    @type["Sequence<A>"] { A(), A() };
+    
     @error A().x;
     
     @error A().c();

@@ -82,7 +82,7 @@ public class PhasedUnit {
 
     public void display() {
         System.out.println("Display " + fileName);
-        compilationUnit.visit (new PrintVisitor() );
+        compilationUnit.visit(new PrintVisitor());
     }
     
     public Package getPackage() {

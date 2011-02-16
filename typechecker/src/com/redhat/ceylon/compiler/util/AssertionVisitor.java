@@ -29,7 +29,8 @@ public class AssertionVisitor extends Visitor {
         for (Tree.CompilerAnnotation c: that.getCompilerAnnotations()) {
             if (c.getIdentifier().getText().equals("type")) {
                 String expectedType = c.getStringLiteral().getText();
-                if (typedNode==null || typedNode.getTypeModel()==null) {
+                if (typedNode==null || typedNode.getTypeModel()==null || 
+                        typedNode.getTypeModel().getGenericType()==null) {
                     System.err.println(
                             "type not known at "+ that.getAntlrTreeNode().getLine() + ":" +
                             that.getAntlrTreeNode().getCharPositionInLine());

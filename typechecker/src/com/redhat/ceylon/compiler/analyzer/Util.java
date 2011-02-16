@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.analyzer;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.redhat.ceylon.compiler.context.Context;
 import com.redhat.ceylon.compiler.model.Declaration;
 import com.redhat.ceylon.compiler.model.GenericType;
@@ -12,9 +15,6 @@ import com.redhat.ceylon.compiler.model.Structure;
 import com.redhat.ceylon.compiler.model.Typed;
 import com.redhat.ceylon.compiler.model.Unit;
 import com.redhat.ceylon.compiler.tree.Tree;
-
-import java.util.HashSet;
-import java.util.Set;
 
 class Util {
 
@@ -115,6 +115,16 @@ class Util {
             }
             scope = scope.getContainer();
         }
+        return getLanguageModuleDeclaration(name, context, traversedScopes);
+    }
+
+    public static Declaration getLanguageModuleDeclaration(String name,
+            Context context) {
+        return getLanguageModuleDeclaration(name, context, new HashSet<Scope>());
+    }
+    
+    private static Declaration getLanguageModuleDeclaration(String name,
+            Context context, Set<Scope> traversedScopes) {
         //all elements in ceylon.language are auto-imported
         //traverse all default module packages provided they have not been traversed yet
         final Module languageModule = context.getLanguageModule();
