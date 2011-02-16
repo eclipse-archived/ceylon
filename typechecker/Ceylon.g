@@ -443,7 +443,7 @@ typeConstraint
     : 
         'given'^
         typeName 
-        typeArguments? 
+        typeParameters? 
         parameters? 
         caseTypes? 
         metatypes? 
