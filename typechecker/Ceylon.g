@@ -357,46 +357,43 @@ inferrableType
     : type | 'local'
     ;
 
-methodParameters
-    : typeParameters? parameters+ extraParameters? metatypes? typeConstraints?
-    ;
-    
 interfaceDeclaration
     : INTERFACE_DEFINITION
-      typeName typeParameters?
+      typeName interfaceParameters
       (
-        caseTypes? metatypes? satisfiedTypes?
-        typeConstraints?
         interfaceBody
-      -> ^(INTERFACE_DEFINITION
-           typeName typeParameters?
-           caseTypes? metatypes? satisfiedTypes?
-           typeConstraints?
-           interfaceBody)
+      -> ^(INTERFACE_DEFINITION typeName interfaceParameters? interfaceBody)
       | typeSpecifier ';'
-      -> ^(INTERFACE_DECLARATION[$INTERFACE_DEFINITION] 
-           typeName typeParameters?
-           typeSpecifier)
+      -> ^(INTERFACE_DECLARATION[$INTERFACE_DEFINITION] typeName interfaceParameters? typeSpecifier)
       )
     ;
 
 classDeclaration
-    : CLASS_DEFINITION
-      typeName typeParameters? parameters extraParameters?
+    : CLASS_DEFINITION typeName classParameters
       (
-        caseTypes? metatypes? extendedType? satisfiedTypes?
-        typeConstraints?
         classBody
-      -> ^(CLASS_DEFINITION
-           typeName typeParameters? parameters extraParameters?
-           caseTypes? metatypes? extendedType? satisfiedTypes?
-           typeConstraints?
-           classBody)
+      -> ^(CLASS_DEFINITION typeName classParameters classBody)
       | typeSpecifier? ';'
-      -> ^(CLASS_DECLARATION[$CLASS_DEFINITION] 
-           typeName typeParameters? parameters extraParameters?
-           typeSpecifier?)
+      -> ^(CLASS_DECLARATION[$CLASS_DEFINITION] typeName classParameters typeSpecifier?)
       )
+    ;
+
+methodParameters
+    : typeParameters? parameters+ extraParameters? 
+      metatypes? 
+      typeConstraints?
+    ;
+    
+interfaceParameters
+    : typeParameters?
+      caseTypes? metatypes? satisfiedTypes?
+      typeConstraints?
+    ;
+
+classParameters
+    : typeParameters? parameters extraParameters?
+      caseTypes? metatypes? extendedType? satisfiedTypes?
+      typeConstraints?
     ;
 
 //Note: interface bodies can't really contain 

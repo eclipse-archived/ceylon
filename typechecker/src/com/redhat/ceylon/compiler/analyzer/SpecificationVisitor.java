@@ -199,7 +199,7 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.AttributeGetterDefinition that) {
-        if (that.getModelNode()==declaration){
+        if (that.getModelNode()==declaration) {
             declare();
             specify();
         }
@@ -207,8 +207,17 @@ public class SpecificationVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.ClassOrInterfaceDefinition that) {
-        if (that.getModelNode()==declaration){
+    public void visit(Tree.ClassDefinition that) {
+        if (that.getModelNode()==declaration) {
+            declare();
+            specify();
+        }
+        super.visit(that);        
+    }
+    
+    @Override
+    public void visit(Tree.InterfaceDefinition that) {
+        if (that.getModelNode()==declaration) {
             declare();
             specify();
         }
