@@ -16,15 +16,23 @@ class Primaries() {
     
     @type["A"] (A());
     
+    @error A()();
+    
     @type["A"] A aa = A();
     
     @error aa.c();
+    
+    @error aa.b();
 
     @type["B"] aa.b;
     
     @type["B"] local bb = aa.b;
     
     @error bb.b;
+    
+    @type["C"] bb.c();
+    
+    @error bb.c()();
     
     @type["C"] aa.b.c();
     

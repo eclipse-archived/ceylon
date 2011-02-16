@@ -302,68 +302,88 @@ public class ExpressionVisitor extends Visitor {
             that.addError("malformed expression");
         }
         else {
-            Type pt = pr.getTypeModel();
-            if (pt!=null) {
-                that.setTypeModel(pt); //TODO: this is hackish
-                that.setModelNode(pt);
+            Model m = pr.getModelNode();
+            if (m==null) {
+                that.addError("receiving expression cannot be invoked");
             }
-            checkInvocationArguments(that);
+            else if (m instanceof Functional) {
+                Functional f = (Functional) m;
+                that.setTypeModel(f.getType());
+                //TODO: type argument substitution
+                checkInvocationArguments(that, f);
+            }
+            else if (m instanceof Type) {
+                Type t = (Type) m;
+                //TODO: type argument substitution
+                that.setTypeModel(t);
+                checkInvocationArguments(that, t);
+            }
+            /*else if (m instanceof Class) {
+                Type t = new Type();
+                t.setGenericType( (Class) m );
+                //TODO: type argument substitution
+                that.setTypeModel(t);
+            }*/
+            else {
+                that.addError("receiving expression cannot be invoked");
+            }
         }
     }
 
-    private void checkInvocationArguments(Tree.InvocationExpression that) {
+    private void checkInvocationArguments(Tree.InvocationExpression that, Functional f) {
         ParameterList pl;
-        Model pm = that.getPrimary().getModelNode();
-        if (pm!=null) {
-            if (pm instanceof Functional) {
-                Functional fpm = (Functional) pm;
-                List<ParameterList> pls = fpm.getParameterLists();
-                if (pls.size()==0) {
-                    that.addError("cannot be invoked: " + 
-                            fpm.getName());
-                    return;
-                }
-                else {
-                    pl = pls.get(0);
-                }
-            }
-            else if (pm instanceof Type) {
-                Type pmt = (Type) pm;
-                GenericType pgt = pmt.getGenericType();
-                if (pgt==null) {
-                    that.addError("could not determine parameter list: " + 
-                            pmt.getProducedTypeName() );
-                    return;
-                }
-                else if (pgt instanceof Class) {
-                    pl = ((Class) pgt).getParameterList();
-                    if (pl==null) {
-                        that.addError("could not determine parameter list: " + 
-                                pmt.getProducedTypeName() );
-                        return;
-                    }
-                }
-                else {
-                    that.addError("interface cannot be invoked: " + 
-                            pgt.getName());
-                    return;
-                }
-            }
-            else {
-                that.addError("cannot be invoked");
+        List<ParameterList> pls = f.getParameterLists();
+        if (pls.size()==0) {
+            that.addError("receiving expression cannot be invoked: " + 
+                    f.getName());
+            return;
+        }
+        else {
+            pl = pls.get(0);
+        }
+
+        Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
+        if ( pal!=null ) {
+            checkPositionalArguments(pl, pal);
+        }
+        
+        Tree.NamedArgumentList nal = that.getNamedArgumentList();
+        if (nal!=null) {
+            checkNamedArguments(pl, nal);
+        }
+    }
+
+    private void checkInvocationArguments(Tree.InvocationExpression that, Type t) {
+        ParameterList pl;
+        GenericType gt = t.getGenericType();
+        if (gt==null) {
+            that.addError("could not determine parameter list: " + 
+                    t.getProducedTypeName() );
+            return;
+        }
+        else if (gt instanceof Class) {
+            pl = ((Class) gt).getParameterList();
+            if (pl==null) {
+                that.addError("could not determine parameter list: " + 
+                        t.getProducedTypeName() );
                 return;
             }
+        }
+        else {
+            that.addError("interface cannot be invoked: " + 
+                    gt.getName());
+            return;
+        }
+
                         
-            Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
-            if ( pal!=null ) {
-                checkPositionalArguments(pl, pal);
-            }
-            
-            Tree.NamedArgumentList nal = that.getNamedArgumentList();
-            if (nal!=null) {
-                checkNamedArguments(pl, nal);
-            }
-            
+        Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
+        if ( pal!=null ) {
+            checkPositionalArguments(pl, pal);
+        }
+        
+        Tree.NamedArgumentList nal = that.getNamedArgumentList();
+        if (nal!=null) {
+            checkNamedArguments(pl, nal);
         }
     }
 
