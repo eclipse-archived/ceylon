@@ -1,11 +1,14 @@
+package com.redhat.ceylon.compiler.context;
+
 import com.redhat.ceylon.compiler.model.Module;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.Structure;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 import static com.redhat.ceylon.compiler.util.PrintUtil.importPathToString;
 
@@ -14,19 +17,39 @@ import static com.redhat.ceylon.compiler.util.PrintUtil.importPathToString;
  *
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
-class Context {
+public class Context {
+    public static final String MODULE_FILE = "module.ceylon";
+
     private LinkedList<Package> packageStack = new LinkedList<Package>();
-    private Module module;
+    private Module currentModule;
     private Package defaultPackage;
     private List<PhasedUnit> phasedUnits = new ArrayList<PhasedUnit>();
+    private Set<Module> modules = new HashSet<Module>();
 
-    Context() {
+    public Context() {
         final Package pkg = new Package();
         pkg.setName( new ArrayList<String>(0) );
         packageStack.add(pkg);
     }
 
-    public Module getModule() {
+    public Module getOrCreateModule(List<String> moduleName) {
+        if (moduleName.size() == 0) {
+            throw new RuntimeException("Module cannot be top level");
+        }
+        Module module = null;
+        for(Module current : modules ) {
+            final List<String> names = current.getName();
+            if ( names.size() == moduleName.size()
+                    && moduleName.containsAll(names) ) {
+                module = current;
+                break;
+            }
+        }
+        if (module == null) {
+            module = new Module();
+            module.setName(moduleName);
+            modules.add(module);
+        }
         return module;
     }
 
@@ -42,7 +65,7 @@ class Context {
         name.addAll( parentName );
         name.add(path);
         pkg.setName(name);
-        if (module != null) {
+        if (currentModule != null) {
             bindPackageToCurrentModule(pkg);
         }
         //FIXME this is a total hack, should be an implicit import of the ceylon.language module (unless we compile ceylon.language :) )
@@ -57,8 +80,8 @@ class Context {
     }
 
     private void bindPackageToCurrentModule(Package pkg) {
-        module.getPackages().add(pkg);
-        pkg.setModule(module);
+        currentModule.getPackages().add(pkg);
+        pkg.setModule(currentModule);
     }
 
     public void pop() {
@@ -67,26 +90,22 @@ class Context {
 
     private void removeLastPackageAndModuleIfNecessary() {
         packageStack.pollLast();
-        final boolean moveAboveModuleLevel = module != null && module.getName().size() > packageStack.size();
+        final boolean moveAboveModuleLevel = currentModule != null && currentModule.getName().size() > packageStack.size();
         if (moveAboveModuleLevel) {
-            module = null;
+            currentModule = null;
         }
     }
 
     public void defineModule() {
-        if ( module == null ) {
-            module = new Module();
+        if ( currentModule == null ) {
             final Package currentPkg = packageStack.peekLast();
             final List<String> moduleName = currentPkg.getName();
-            if (moduleName.size() == 0) {
-                throw new RuntimeException("Module cannot be top level");
-            }
-            module.setName(moduleName);
+            currentModule = getOrCreateModule(moduleName);
             bindPackageToCurrentModule(currentPkg);
         }
         else {
             StringBuilder error = new StringBuilder("Found two modules within the same hierarchy: '");
-            error.append( importPathToString( module.getName() ) )
+            error.append( importPathToString( currentModule.getName() ) )
                 .append( "' and '" )
                 .append( importPathToString( packageStack.peekLast().getName() ) )
                 .append("'");

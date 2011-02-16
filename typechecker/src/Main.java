@@ -4,6 +4,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.context.Context;
+import com.redhat.ceylon.compiler.context.PhasedUnit;
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
@@ -23,7 +25,6 @@ import com.redhat.ceylon.compiler.tree.Tree.CompilationUnit;
  */
 public class Main {
 
-    private static final String MODULE_FILE = "module.ceylon";
     private static boolean ENABLE_MODULE_AND_PACKAGE = false;
     private static boolean noisy;
 
@@ -89,6 +90,9 @@ public class Main {
         /*for (PhasedUnit su : stagedUnits) {
             su.display();
         }*/
+        for (PhasedUnit pu : stagedUnits) {
+            pu.buildModuleImport();
+        }
         for (PhasedUnit su : stagedUnits) {
             su.scanDeclarations();
             su.validateControlFlow();
@@ -149,7 +153,7 @@ public class Main {
         	Package p = context.getPackage();
             CommonTree t = (CommonTree) r.getTree();
             CompilationUnit cu = new Builder().buildCompilationUnit(t);
-            PhasedUnit phasedUnit = new PhasedUnit(file.getName(),cu,p);
+            PhasedUnit phasedUnit = new PhasedUnit(file.getName(),cu,p, context);
             context.addStagedUnit(phasedUnit);
             
         }
@@ -168,7 +172,7 @@ public class Main {
         context.push( dir.getName() );
         final File[] files = dir.listFiles();
         for (File file: files) {
-            if ( MODULE_FILE.equals( file.getName() ) ) {
+            if ( Context.MODULE_FILE.equals( file.getName() ) ) {
                 context.defineModule();
             }
         }
