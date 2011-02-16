@@ -10,7 +10,6 @@ import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
 
-import com.redhat.ceylon.compiler.model.Class;
 import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.parser.CeylonParser;
@@ -24,23 +23,10 @@ import com.redhat.ceylon.compiler.tree.Tree.CompilationUnit;
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
 public class Main {
-
-    private static boolean ENABLE_MODULE_AND_PACKAGE = false;
     private static boolean noisy;
 
-    private static List<String> tempConvertedToModule = new ArrayList<String>();
-    static {
-        tempConvertedToModule.add("corpus/multisource");
-        tempConvertedToModule.add("corpus/ceylon");
-        tempConvertedToModule.add("corpus/ceylon/language");
-    }
-    
     /**
-     * When run with the argument corpus/multisource
-     * the code supports proper module and allow for multisource compilation
-     *
-     * However the corpus does not define the proper ceylon.language module
-     * And the compiler does not know how to reverse engineer a .class file into a type model
+     * Files that are not under a proper module structure are placed under a <nomodule> module.
      */
     public static void main(String[] args) throws Exception {
         String path;
@@ -53,35 +39,23 @@ public class Main {
         
         noisy = "true".equals(System.getProperties().getProperty("verbose"));
         
-        if ( tempConvertedToModule.contains(path) ) {
-            //Today only a few packages respect the module / package structure defined in the Ceylon spec
-            ENABLE_MODULE_AND_PACKAGE = true;
-        }
         Context context = new Context();
         final File file = new File(path);
-        buildLanguageImport(context);
 
-        if (!ENABLE_MODULE_AND_PACKAGE) {
-            //TODO here for legacy purpose until the corpus is cleanly split into properly formed modules
-            context.push("test");
-            context.defineModule();
-        }
+        //ceylon.language must be built (parsed) before any other
+        buildLanguageModule(context, file);
 
         if ( file.isDirectory() ) {
             //root directory is the src dir => start from here
-            for ( File subfile : file.listFiles() )
-            parseFileOrDirectory(subfile, context);
+            for ( File subfile : file.listFiles() ) {
+                parseFileOrDirectory(subfile, context);
+            }
         }
         else {
             //simple file compilation
             //TODO is that really valid?
             parseFileOrDirectory(file, context);
         }
-
-        if (!ENABLE_MODULE_AND_PACKAGE) {
-            context.pop();
-        }
-
         executePhases(context);
     }
 
@@ -117,20 +91,14 @@ public class Main {
         }
     }
 
-    private static void buildLanguageImport(Context context) {
-        //FIXME this is a hack: need to be read from the module dependency or in this case an implicit dependency
-        context.push("ceylon");
-        context.push("language");
-        context.defineModule();
-        //add Module
-        Class module = new Class();
-        final Package defaultPackage = context.getPackage();
-        module.setContainer(defaultPackage);
-        module.setName("Module");
-        defaultPackage.getMembers().add(module);
-        context.setDefaultPackage(defaultPackage);
-        context.pop();
-        context.pop();
+    private static void buildLanguageModule(Context context, File master) throws Exception {
+        //ceylon.language must be parsed before any other
+        if ( ! ( master.getName().equals("corpus")
+                || master.getName().equals("corpus/ceylon")
+                || master.getName().equals("corpus/ceylon/language") ) ) {
+            File file = new File("corpus/ceylon");
+            parseFileOrDirectory(file, context);
+        }
     }
 
     private static void parseFile(File file, Context context) throws Exception {
