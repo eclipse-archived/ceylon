@@ -1,8 +1,6 @@
 package com.redhat.ceylon.compiler.context;
 
-import com.redhat.ceylon.compiler.model.Module;
-import com.redhat.ceylon.compiler.model.Package;
-import com.redhat.ceylon.compiler.model.Structure;
+import static com.redhat.ceylon.compiler.util.PrintUtil.importPathToString;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,7 +9,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import static com.redhat.ceylon.compiler.util.PrintUtil.importPathToString;
+import com.redhat.ceylon.compiler.model.Module;
+import com.redhat.ceylon.compiler.model.Package;
 
 /**
  * Keep compiler contextual information like the package stack and the current module
