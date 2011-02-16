@@ -1,15 +1,14 @@
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.context.Context;
-import com.redhat.ceylon.compiler.context.PhasedUnit;
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
 
+import com.redhat.ceylon.compiler.context.Context;
+import com.redhat.ceylon.compiler.context.PhasedUnit;
 import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.parser.CeylonParser;
@@ -86,8 +85,10 @@ public class Main {
             pu.analyseTypes();
         }
         for (PhasedUnit pu : phasedUnits) {
-            if (noisy) pu.display();
-            pu.runAssertions();
+            if (!pu.getPackage().getNameAsString().startsWith("ceylon.language")) {
+                if (noisy) pu.display();
+                pu.runAssertions();
+            }
         }
     }
 
