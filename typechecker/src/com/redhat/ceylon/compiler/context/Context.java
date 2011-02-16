@@ -23,6 +23,7 @@ public class Context {
 
     private LinkedList<Package> packageStack = new LinkedList<Package>();
     private Module currentModule;
+    private Module nomodule;
     private Module languageModule;
     private List<PhasedUnit> phasedUnits = new ArrayList<PhasedUnit>();
     private Set<Module> modules = new HashSet<Module>();
@@ -31,6 +32,13 @@ public class Context {
         final Package pkg = new Package();
         pkg.setName( new ArrayList<String>(0) );
         packageStack.add(pkg);
+        nomodule = new Module();
+        final List<String> name = new ArrayList<String>();
+        name.add("<nomodule>");
+        nomodule.setName(name);
+        nomodule.setAvailable(true);
+        bindPackageToModule(pkg, nomodule);
+        modules.add(nomodule);
     }
 
     public Module getOrCreateModule(List<String> moduleName) {
@@ -72,22 +80,23 @@ public class Context {
         name.add(path);
         pkg.setName(name);
         if (currentModule != null) {
-            bindPackageToCurrentModule(pkg);
+            bindPackageToModule(pkg, currentModule);
         }
-        //FIXME this is a total hack, should be an implicit import of the ceylon.language module (unless we compile ceylon.language :) )
-        //add ceylon.language elements to the package
-        if (defaultPackage != null) {
-            final List<Structure> packageMembers = pkg.getMembers();
-            for ( Structure structure : defaultPackage.getMembers() ) {
-                packageMembers.add(structure);
-            }
+        else {
+            //bind package to nomodule
+            bindPackageToModule(pkg, nomodule);
         }
         packageStack.addLast(pkg);
     }
 
-    private void bindPackageToCurrentModule(Package pkg) {
-        currentModule.getPackages().add(pkg);
-        pkg.setModule(currentModule);
+    private void bindPackageToModule(Package pkg, Module module) {
+        //undo nomodule setting if necessary
+        if (pkg.getModule() != null) {
+            pkg.getModule().getPackages().remove(pkg);
+            pkg.setModule(null);
+        }
+        module.getPackages().add(pkg);
+        pkg.setModule(module);
     }
 
     public void pop() {
@@ -96,7 +105,8 @@ public class Context {
 
     private void removeLastPackageAndModuleIfNecessary() {
         packageStack.pollLast();
-        final boolean moveAboveModuleLevel = currentModule != null && currentModule.getName().size() > packageStack.size();
+        final boolean moveAboveModuleLevel = currentModule != null
+                && currentModule.getName().size() > packageStack.size() -1; //first package is the empty package
         if (moveAboveModuleLevel) {
             currentModule = null;
         }
@@ -108,7 +118,7 @@ public class Context {
             final List<String> moduleName = currentPkg.getName();
             currentModule = getOrCreateModule(moduleName);
             currentModule.setAvailable(true);
-            bindPackageToCurrentModule(currentPkg);
+            bindPackageToModule(currentPkg, currentModule);
         }
         else {
             StringBuilder error = new StringBuilder("Found two modules within the same hierarchy: '");
