@@ -323,9 +323,9 @@ voidMethodDeclaration
     : VOID_MODIFIER memberName methodParameters 
       ( 
         block 
-    -> ^(METHOD VOID_MODIFIER memberName methodParameters block)   
+      -> ^(METHOD VOID_MODIFIER memberName methodParameters block)   
       | specifier? ';'
-    -> ^(METHOD_DECLARATION VOID_MODIFIER memberName methodParameters specifier?)   
+      -> ^(METHOD_DECLARATION VOID_MODIFIER memberName methodParameters specifier?)   
       )
     ;
 
@@ -340,9 +340,9 @@ typedMethodOrAttributeDeclaration
       methodParameters 
       (
         memberBody[$inferrableType.tree] 
-    -> ^(METHOD inferrableType memberName methodParameters memberBody)
+      -> ^(METHOD inferrableType memberName methodParameters memberBody)
       | specifier? ';'
-    -> ^(METHOD_DECLARATION inferrableType memberName methodParameters specifier?)
+      -> ^(METHOD_DECLARATION inferrableType memberName methodParameters specifier?)
     )
     | (specifier | initializer)? ';'
     -> ^(ATTRIBUTE_DECLARATION inferrableType memberName specifier? initializer?)
