@@ -50,12 +50,12 @@ public class PhasedUnit {
 
     public void scanTypeDeclarations() {
         System.out.println("Scan type declarations for " + fileName);
-        compilationUnit.visit( new TypeVisitor(unit) );
+        compilationUnit.visit( new TypeVisitor(unit, context) );
     }
 
     public void analyseTypes() {
         System.out.println("Run analysis phase for " + fileName);
-        compilationUnit.visit(new ExpressionVisitor());
+        compilationUnit.visit(new ExpressionVisitor(context));
     }
     
     public void validateControlFlow() {
@@ -75,7 +75,7 @@ public class PhasedUnit {
         //      I think the only relevant cases are members of a class that
         //      occur in the declaration section, and members of interfaces.
         for (Declaration d: unit.getDeclarations()) {
-            compilationUnit.visit(new SpecificationVisitor(d));
+            compilationUnit.visit(new SpecificationVisitor(d, context));
             //TODO: variable attributes (definite initialization)
         }
     }

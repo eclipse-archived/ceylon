@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.analyzer;
 
+import com.redhat.ceylon.compiler.context.Context;
 import com.redhat.ceylon.compiler.model.Declaration;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Visitor;
@@ -21,7 +22,8 @@ public class SpecificationVisitor extends Visitor {
     private SpecificationState specified = new SpecificationState(false, false);
     private boolean cannotSpecify = true;
     private boolean declared = false;
-    
+    private Context context;
+
     class SpecificationState {
         boolean definitely;
         boolean possibly;
@@ -33,8 +35,9 @@ public class SpecificationVisitor extends Visitor {
         }
     }
     
-    public SpecificationVisitor(Declaration declaration) {
+    public SpecificationVisitor(Declaration declaration, Context context) {
         this.declaration = declaration;
+        this.context = context;
     }
     
     private void declare() {
@@ -91,7 +94,7 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Member that) {
-        if (Util.getDeclaration(that)==declaration) {
+        if (Util.getDeclaration(that, context)==declaration) {
             if (!declared) {
                 that.addError("Not yet declared: " + 
                         that.getIdentifier().getText());
@@ -105,7 +108,7 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.SpecifierStatement that) {
-        if (Util.getDeclaration(that.getMember())==declaration) {
+        if (Util.getDeclaration(that.getMember(), context)==declaration) {
             if (!declared) {
                 that.addError("Not yet declared: " + 
                         that.getMember().getIdentifier().getText());

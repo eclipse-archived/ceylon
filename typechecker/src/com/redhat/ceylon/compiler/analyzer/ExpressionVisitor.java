@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.analyzer;
 
 import java.util.List;
 
+import com.redhat.ceylon.compiler.context.Context;
 import com.redhat.ceylon.compiler.model.Class;
 import com.redhat.ceylon.compiler.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.model.Functional;
@@ -35,6 +36,11 @@ public class ExpressionVisitor extends Visitor {
     
     private ClassOrInterface classOrInterface;
     private Tree.TypeOrSubtype returnType;
+    private Context context;
+
+    public ExpressionVisitor(Context context) {
+        this.context = context;
+    }
     
     public void visit(Tree.ClassDefinition that) {
         ClassOrInterface o = classOrInterface;
@@ -242,7 +248,7 @@ public class ExpressionVisitor extends Visitor {
             if (gt instanceof Scope) {
                 Tree.MemberOrType mt = that.getMemberOrType();
                 if (mt instanceof Tree.Member) {
-                    Typed member = Util.getDeclaration((Scope) gt, (Tree.Member) mt);
+                    Typed member = Util.getDeclaration((Scope) gt, (Tree.Member) mt, context);
                     if (member==null) {
                         mt.addError("Could not determine target of member reference: " +
                                 ((Tree.Member) mt).getIdentifier().getText());
@@ -255,7 +261,7 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
                 else if (mt instanceof Tree.Type) {
-                    GenericType member = Util.getDeclaration((Scope) gt, (Tree.Type) mt);
+                    GenericType member = Util.getDeclaration((Scope) gt, (Tree.Type) mt, context);
                     if (member==null) {
                         mt.addError("Could not determine target of member type reference: " +
                                 ((Tree.Type) mt).getIdentifier().getText());
@@ -440,7 +446,7 @@ public class ExpressionVisitor extends Visitor {
         //TODO: this does not correctly handle methods
         //      and classes which are not subsequently 
         //      invoked (should return the callable type)
-        Typed d = Util.getDeclaration(that);
+        Typed d = Util.getDeclaration(that, context);
         if (d==null) {
             that.addError("Could not determine target of member reference: " +
                     that.getIdentifier().getText());

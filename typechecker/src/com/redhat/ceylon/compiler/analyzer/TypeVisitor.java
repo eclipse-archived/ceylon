@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.analyzer;
 
 import java.util.List;
 
+import com.redhat.ceylon.compiler.context.Context;
 import com.redhat.ceylon.compiler.model.Class;
 import com.redhat.ceylon.compiler.model.Declaration;
 import com.redhat.ceylon.compiler.model.GenericType;
@@ -34,9 +35,11 @@ public class TypeVisitor extends Visitor {
     private Unit unit;
     private Type outerType;
     private Package importPackage;
-    
-    public TypeVisitor(Unit u) {
+    private Context context;
+
+    public TypeVisitor(Unit u, Context context) {
         unit = u;
+        this.context = context;
     }
     
     @Override
@@ -76,7 +79,7 @@ public class TypeVisitor extends Visitor {
         else {
             i.setAlias(alias.getIdentifier().getText());
         }
-        Declaration d = Util.getDeclaration(importPackage, that);
+        Declaration d = Util.getDeclaration(importPackage, that, context);
         if (d==null) {
             that.addError("imported declaration not found: " + 
                     that.getIdentifier().getText());
@@ -92,7 +95,7 @@ public class TypeVisitor extends Visitor {
         Type type = new Type();
         that.setModelNode(type);
         type.setTreeNode(that);
-        GenericType d = Util.getDeclaration(that);
+        GenericType d = Util.getDeclaration(that, context);
         if (d==null) {
             that.addError("type declaration not found: " + 
                     that.getIdentifier().getText());

@@ -1,8 +1,10 @@
 package com.redhat.ceylon.compiler.analyzer;
 
+import com.redhat.ceylon.compiler.context.Context;
 import com.redhat.ceylon.compiler.model.Declaration;
 import com.redhat.ceylon.compiler.model.GenericType;
 import com.redhat.ceylon.compiler.model.Import;
+import com.redhat.ceylon.compiler.model.Module;
 import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.Scope;
 import com.redhat.ceylon.compiler.model.Setter;
@@ -17,10 +19,10 @@ class Util {
      * Resolve the type against the scope in which it
      * occurs. Imports are taken into account.
      */
-    static GenericType getDeclaration(Tree.Type that) {
+    static GenericType getDeclaration(Tree.Type that, Context context) {
         final GenericType declaration = (GenericType) getDeclaration(that.getScope(), 
                 that.getUnit(),
-                that.getIdentifier());
+                that.getIdentifier(), context);
         //checkForError(that, declaration);
         return declaration;
     }
@@ -29,9 +31,9 @@ class Util {
      * Resolve the type against the given scope. Imports 
      * are ignored.
      */
-    static GenericType getDeclaration(Scope scope, Tree.Type that) {
+    static GenericType getDeclaration(Scope scope, Tree.Type that, Context context) {
         final GenericType declaration = (GenericType) getDeclaration(scope, null,
-                that.getIdentifier());
+                that.getIdentifier(), context);
         //checkForError(that, declaration);
         return declaration;
     }
@@ -40,9 +42,9 @@ class Util {
      * Resolve the type against the scope in which it
      * occurs. Imports are taken into account.
      */
-    static Typed getDeclaration(Tree.Member that) {
+    static Typed getDeclaration(Tree.Member that, Context context) {
         final Typed declaration = (Typed) getDeclaration(that.getScope(), that.getUnit(),
-                that.getIdentifier());
+                that.getIdentifier(), context);
         //checkForError(that, declaration);
         return declaration;
     }
@@ -51,9 +53,9 @@ class Util {
      * Resolve the member against the given scope. Imports 
      * are ignored.
      */
-    static Typed getDeclaration(Scope scope, Tree.Member that) {
+    static Typed getDeclaration(Scope scope, Tree.Member that, Context context) {
         final Typed declaration = (Typed) getDeclaration(scope, null,
-                that.getIdentifier());
+                that.getIdentifier(), context);
         //checkForError(that, declaration);
         return declaration;
     }
@@ -61,8 +63,8 @@ class Util {
     /**
      * Resolve the declaration against the given package.
      */
-    static Declaration getDeclaration(Package pkg, Tree.ImportMemberOrType that) {
-        final Declaration declaration = getDeclaration(pkg, null, that.getIdentifier());
+    static Declaration getDeclaration(Package pkg, Tree.ImportMemberOrType that, Context context) {
+        final Declaration declaration = getDeclaration(pkg, null, that.getIdentifier(), context);
         //checkForError(that, declaration);
         return declaration;
     }
@@ -88,11 +90,11 @@ class Util {
         }
     }*/
 
-    private static Declaration getDeclaration(Scope scope, Unit unit, Tree.Identifier id) {
-        return getDeclaration(scope, unit, id.getText());
+    private static Declaration getDeclaration(Scope scope, Unit unit, Tree.Identifier id, Context context) {
+        return getDeclaration(scope, unit, id.getText(), context);
     }
 
-    private static Declaration getDeclaration(Scope scope, Unit unit, String name) {
+    private static Declaration getDeclaration(Scope scope, Unit unit, String name, Context context) {
         while (scope!=null) {
             //imports hide declarations in same package
             //but not declarations in local scopes
