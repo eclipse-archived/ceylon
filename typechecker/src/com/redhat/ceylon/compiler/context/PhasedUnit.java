@@ -84,6 +84,10 @@ public class PhasedUnit {
         System.out.println("Display " + fileName);
         compilationUnit.visit (new PrintVisitor() );
     }
+    
+    public Package getPackage() {
+        return pkg;
+    }
 
     @Override
     public String toString() {
