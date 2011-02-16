@@ -23,7 +23,7 @@ public class Context {
 
     private LinkedList<Package> packageStack = new LinkedList<Package>();
     private Module currentModule;
-    private Package defaultPackage;
+    private Module languageModule;
     private List<PhasedUnit> phasedUnits = new ArrayList<PhasedUnit>();
     private Set<Module> modules = new HashSet<Module>();
 
@@ -50,6 +50,11 @@ public class Context {
             module = new Module();
             module.setName(moduleName);
             modules.add(module);
+            if ( moduleName.size() == 2
+                    && moduleName.get(0).equals("ceylon")
+                    && moduleName.get(1).equals("language") ) {
+                languageModule = module;
+            }
         }
         return module;
     }
@@ -119,14 +124,6 @@ public class Context {
         return packageStack.peekLast();
     }
 
-    public void setDefaultPackage(Package pkg) {
-        defaultPackage = pkg;
-    }
-
-    public Package getDefaultPackage() {
-        return defaultPackage;
-    }
-
     public void addStagedUnit(PhasedUnit phasedUnit) {
         this.phasedUnits.add(phasedUnit);
     }
@@ -171,5 +168,9 @@ public class Context {
             error.append(errorModule).append(" -> ");
         }
         error.append(module);
+    }
+
+    public Module getLanguageModule() {
+        return languageModule;
     }
 }
