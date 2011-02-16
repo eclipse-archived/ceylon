@@ -4,6 +4,6 @@ doc "Construct a |Map| by evaluating the block for
      evaluation."
 shared Map<U,V> mapFrom<U,V>(iterated Iterable<U> keys,
                              V to(coordinated U key)) {
-    Entry<U,V> of(U key) { return key->to(key); }
-    return map(keys, of);
+    Entry<U,V> containing(U key) { return key->to(key); }
+    return map(keys, containing);
 }

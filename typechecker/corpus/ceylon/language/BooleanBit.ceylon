@@ -6,6 +6,7 @@ shared extension class BooleanBit(Boolean this)
     shared actual Bits<1> or(Bits<1> bit) {
         if (this) {
             return this;
+        }
         else {
             return bit;
         }
@@ -14,6 +15,7 @@ shared extension class BooleanBit(Boolean this)
     shared actual Bits<1> and(Bits<1> bit) {
         if (this) {
             return bit;
+        }
         else {
             return false;
         }
@@ -22,6 +24,7 @@ shared extension class BooleanBit(Boolean this)
     shared actual Bits<1> xor(Bits<1> bit) {
         if (this) {
             return bit.complement;
+        }
         else {
             return bit;
         }
@@ -30,6 +33,7 @@ shared extension class BooleanBit(Boolean this)
     shared actual Bits<1> complement(Bits<1> bit) {
         if (this) {
             return bit.complement;
+        }
         else {
             return this;
         }

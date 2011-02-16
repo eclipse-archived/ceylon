@@ -1,6 +1,6 @@
 shared extension class StringBuilder(Character[] this) {
 
-    Character[] with(Character[] appendedStrings...) {
+    Character[] with(Character[]... appendedStrings) {
         variable OpenList<Character> list = ArrayList<Character>(this);
         list.append(string);
         for (Character[] s in appendedStrings) {

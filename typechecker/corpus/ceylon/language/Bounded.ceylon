@@ -1,6 +1,6 @@
 shared class Bounded<M>(Bounded<M> b)
        extends Object()
-       satisfies Comparable<Bounded<M>>, Number
+       satisfies Comparable<Bounded<M>> & Number
        given M satisfies Dimension {
 
     doc "The |Natural| representing this natural
