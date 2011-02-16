@@ -161,7 +161,7 @@ public class SpecificationVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.Method that) {
+    public void visit(Tree.MethodDefinition that) {
         if (that.getModelNode()==declaration) {
             declare();
             specify();
@@ -198,7 +198,7 @@ public class SpecificationVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.AttributeGetter that) {
+    public void visit(Tree.AttributeGetterDefinition that) {
         if (that.getModelNode()==declaration){
             declare();
             specify();
@@ -207,7 +207,7 @@ public class SpecificationVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.ClassOrInterfaceDeclaration that) {
+    public void visit(Tree.ClassOrInterfaceDefinition that) {
         if (that.getModelNode()==declaration){
             declare();
             specify();

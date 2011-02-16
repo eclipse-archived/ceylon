@@ -117,7 +117,7 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.ClassDeclaration that) {
+    public void visit(Tree.ClassDefinition that) {
         Class c = new Class();
         visitDeclaration(that, c);
         Scope o = enterScope(c);
@@ -133,7 +133,7 @@ public class DeclarationVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Tree.InterfaceDeclaration that) {
+    public void visit(Tree.InterfaceDefinition that) {
         Interface i = new Interface();
         visitDeclaration(that, i);
         Scope o = enterScope(i);
@@ -157,7 +157,7 @@ public class DeclarationVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Tree.Method that) {
+    public void visit(Tree.MethodDefinition that) {
         Method m = new Method();
         visitDeclaration(that, m);
         Scope o = enterScope(m);
@@ -166,7 +166,7 @@ public class DeclarationVisitor extends Visitor {
         grabParameters(that, m);
     }
 
-    private void grabParameters(Tree.AnyMethodDeclaration that, Method m) {
+    private void grabParameters(Tree.Method that, Method m) {
         if (that.getParameterLists().isEmpty()) {
             that.addError("Missing parameter list in method declaration: " + 
                     Util.name(that) );
@@ -186,7 +186,7 @@ public class DeclarationVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Tree.AttributeGetter that) {
+    public void visit(Tree.AttributeGetterDefinition that) {
         Getter g = new Getter();
         visitDeclaration(that, g);
         Scope o = enterScope(g);
@@ -195,7 +195,7 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.AttributeSetter that) {
+    public void visit(Tree.AttributeSetterDefinition that) {
         Setter g = new Setter();
         visitDeclaration(that, g);
         Scope o = enterScope(g);

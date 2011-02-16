@@ -10,10 +10,12 @@ tokens {
     ANNOTATION_LIST;
     ATTRIBUTE_ARGUMENT;
     ATTRIBUTE_DECLARATION;
-    ATTRIBUTE_GETTER;
-    ATTRIBUTE_SETTER;
+    ATTRIBUTE_GETTER_DEFINITION;
+    ATTRIBUTE_SETTER_DEFINITION;
     BLOCK;
-    METHOD;
+    METHOD_DEFINITION;
+    INTERFACE_DECLARATION;
+    CLASS_DECLARATION;
     INVOCATION_EXPRESSION;
     CLASS_BODY;
     BOOLEAN_CONDITION;
@@ -323,7 +325,7 @@ voidMethodDeclaration
     : VOID_MODIFIER memberName methodParameters 
       ( 
         block 
-      -> ^(METHOD VOID_MODIFIER memberName methodParameters block)   
+      -> ^(METHOD_DEFINITION VOID_MODIFIER memberName methodParameters block)   
       | specifier? ';'
       -> ^(METHOD_DECLARATION VOID_MODIFIER memberName methodParameters specifier?)   
       )
@@ -331,7 +333,7 @@ voidMethodDeclaration
 
 setterDeclaration
     : ASSIGN memberName block
-    -> ^(ATTRIBUTE_SETTER[$ASSIGN] VOID_MODIFIER memberName block)
+    -> ^(ATTRIBUTE_SETTER_DEFINITION[$ASSIGN] VOID_MODIFIER memberName block)
     ;
 
 typedMethodOrAttributeDeclaration
@@ -340,14 +342,14 @@ typedMethodOrAttributeDeclaration
       methodParameters 
       (
         memberBody[$inferrableType.tree] 
-      -> ^(METHOD inferrableType memberName methodParameters memberBody)
+      -> ^(METHOD_DEFINITION inferrableType memberName methodParameters memberBody)
       | specifier? ';'
       -> ^(METHOD_DECLARATION inferrableType memberName methodParameters specifier?)
     )
     | (specifier | initializer)? ';'
     -> ^(ATTRIBUTE_DECLARATION inferrableType memberName specifier? initializer?)
     | memberBody[$inferrableType.tree]
-    -> ^(ATTRIBUTE_GETTER inferrableType memberName memberBody)      
+    -> ^(ATTRIBUTE_GETTER_DEFINITION inferrableType memberName memberBody)      
     )
     ;
 
@@ -360,19 +362,41 @@ methodParameters
     ;
     
 interfaceDeclaration
-    : 'interface'^
+    : INTERFACE_DEFINITION
       typeName typeParameters?
-      caseTypes? metatypes? satisfiedTypes?
-      typeConstraints?
-      (interfaceBody | typeSpecifier ';'!)
+      (
+        caseTypes? metatypes? satisfiedTypes?
+        typeConstraints?
+        interfaceBody
+      -> ^(INTERFACE_DEFINITION
+           typeName typeParameters?
+           caseTypes? metatypes? satisfiedTypes?
+           typeConstraints?
+           interfaceBody)
+      | typeSpecifier ';'
+      -> ^(INTERFACE_DECLARATION[$INTERFACE_DEFINITION] 
+           typeName typeParameters?
+           typeSpecifier)
+      )
     ;
 
 classDeclaration
-    : 'class'^
+    : CLASS_DEFINITION
       typeName typeParameters? parameters extraParameters?
-      caseTypes? metatypes? extendedType? satisfiedTypes?
-      typeConstraints?
-      (classBody | typeSpecifier? ';'!)
+      (
+        caseTypes? metatypes? extendedType? satisfiedTypes?
+        typeConstraints?
+        classBody
+      -> ^(CLASS_DEFINITION
+           typeName typeParameters? parameters extraParameters?
+           caseTypes? metatypes? extendedType? satisfiedTypes?
+           typeConstraints?
+           classBody)
+      | typeSpecifier? ';'
+      -> ^(CLASS_DECLARATION[$CLASS_DEFINITION] 
+           typeName typeParameters? parameters extraParameters?
+           typeSpecifier?)
+      )
     ;
 
 //Note: interface bodies can't really contain 
@@ -1340,7 +1364,7 @@ CATCH_CLAUSE
     :   'catch'
     ;
 
-CLASS_DECLARATION
+CLASS_DEFINITION
     :   'class'
     ;
 
@@ -1396,7 +1420,7 @@ IMPLICIT
     :   'implicit'
     ;
 
-INTERFACE_DECLARATION
+INTERFACE_DEFINITION
     :   'interface'
     ;
 

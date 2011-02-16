@@ -36,7 +36,7 @@ public class ExpressionVisitor extends Visitor {
     private ClassOrInterface classOrInterface;
     private Tree.TypeOrSubtype returnType;
     
-    public void visit(Tree.ClassOrInterfaceDeclaration that) {
+    public void visit(Tree.ClassOrInterfaceDefinition that) {
         ClassOrInterface o = classOrInterface;
         classOrInterface = (ClassOrInterface) that.getModelNode();
         super.visit(that);
@@ -114,14 +114,14 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    @Override public void visit(Tree.AttributeGetter that) {
+    @Override public void visit(Tree.AttributeGetterDefinition that) {
         Tree.TypeOrSubtype rt = beginReturnScope(that.getTypeOrSubtype());
         super.visit(that);
         inferType(that, that.getBlock());
         endReturnScope(rt);
     }
 
-    @Override public void visit(Tree.AttributeSetter that) {
+    @Override public void visit(Tree.AttributeSetterDefinition that) {
         Tree.TypeOrSubtype rt = beginReturnScope(that.getTypeOrSubtype());
         super.visit(that);
         inferType(that, that.getBlock());
@@ -133,7 +133,7 @@ public class ExpressionVisitor extends Visitor {
         inferType(that, that.getSpecifierExpression());
     }
 
-    @Override public void visit(Tree.Method that) {
+    @Override public void visit(Tree.MethodDefinition that) {
         Tree.TypeOrSubtype rt = beginReturnScope(that.getTypeOrSubtype());           
         super.visit(that);
         endReturnScope(rt);
