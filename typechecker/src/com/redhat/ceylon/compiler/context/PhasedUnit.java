@@ -88,8 +88,9 @@ public class PhasedUnit {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
-        sb.append("StagedUnit");
-        sb.append("{compilationUnit=").append(unit);
+        sb.append("PhasedUnit");
+        sb.append("{filename=").append(fileName);
+        sb.append(", compilationUnit=").append(unit);
         sb.append(", pkg=").append(pkg);
         sb.append('}');
         return sb.toString();
