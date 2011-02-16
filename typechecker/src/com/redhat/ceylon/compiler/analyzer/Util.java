@@ -13,6 +13,9 @@ import com.redhat.ceylon.compiler.model.Typed;
 import com.redhat.ceylon.compiler.model.Unit;
 import com.redhat.ceylon.compiler.tree.Tree;
 
+import java.util.HashSet;
+import java.util.Set;
+
 class Util {
 
     /**
@@ -95,7 +98,9 @@ class Util {
     }
 
     private static Declaration getDeclaration(Scope scope, Unit unit, String name, Context context) {
+        Set<Scope> traversedScopes = new HashSet<Scope>();
         while (scope!=null) {
+            traversedScopes.add(scope);
             //imports hide declarations in same package
             //but not declarations in local scopes
             if (scope instanceof Package && unit!=null) {
@@ -109,6 +114,20 @@ class Util {
                 return d;
             }
             scope = scope.getContainer();
+        }
+        //all elements in ceylon.language are auto-imported
+        //traverse all default module packages provided they have not been traversed yet
+        final Module languageModule = context.getLanguageModule();
+        if (languageModule != null) {
+            for (Scope languageScope : languageModule.getPackages() ) {
+                if ( !traversedScopes.contains(languageScope) ) {
+                    traversedScopes.add(languageScope);
+                    final Declaration d = getLocalDeclaration(languageScope, name);
+                    if (d != null) {
+                        return d;
+                    }
+                }
+            }
         }
         return null;
     }
