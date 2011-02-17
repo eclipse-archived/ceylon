@@ -9,12 +9,13 @@ import java.util.List;
  * @author Gavin King
  *
  */
-public class Setter extends Typed implements Scope {
-	List<Structure> members = new ArrayList<Structure>();
+public class Setter extends MethodOrValue implements Scope {
+    
+	List<Declaration> members = new ArrayList<Declaration>();
 	Getter getter;
 
 	@Override
-	public List<Structure> getMembers() {
+	public List<Declaration> getMembers() {
 		return members;
 	}
 

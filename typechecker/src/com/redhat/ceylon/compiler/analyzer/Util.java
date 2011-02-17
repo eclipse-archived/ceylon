@@ -5,14 +5,13 @@ import java.util.Set;
 
 import com.redhat.ceylon.compiler.context.Context;
 import com.redhat.ceylon.compiler.model.Declaration;
-import com.redhat.ceylon.compiler.model.GenericType;
 import com.redhat.ceylon.compiler.model.Import;
 import com.redhat.ceylon.compiler.model.Module;
 import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.Scope;
 import com.redhat.ceylon.compiler.model.Setter;
-import com.redhat.ceylon.compiler.model.Structure;
-import com.redhat.ceylon.compiler.model.Typed;
+import com.redhat.ceylon.compiler.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.model.Unit;
 import com.redhat.ceylon.compiler.tree.Tree;
 
@@ -22,8 +21,8 @@ class Util {
      * Resolve the type against the scope in which it
      * occurs. Imports are taken into account.
      */
-    static GenericType getDeclaration(Tree.Type that, Context context) {
-        final GenericType declaration = (GenericType) getDeclaration(that.getScope(), 
+    static TypeDeclaration getDeclaration(Tree.Type that, Context context) {
+        final TypeDeclaration declaration = (TypeDeclaration) getDeclaration(that.getScope(), 
                 that.getUnit(),
                 that.getIdentifier(), context);
         //checkForError(that, declaration);
@@ -34,8 +33,8 @@ class Util {
      * Resolve the type against the given scope. Imports 
      * are ignored.
      */
-    static GenericType getDeclaration(Scope scope, Tree.Type that, Context context) {
-        final GenericType declaration = (GenericType) getDeclaration(scope, null,
+    static TypeDeclaration getDeclaration(Scope scope, Tree.Type that, Context context) {
+        final TypeDeclaration declaration = (TypeDeclaration) getDeclaration(scope, null,
                 that.getIdentifier(), context);
         //checkForError(that, declaration);
         return declaration;
@@ -45,8 +44,8 @@ class Util {
      * Resolve the type against the scope in which it
      * occurs. Imports are taken into account.
      */
-    static Typed getDeclaration(Tree.Member that, Context context) {
-        final Typed declaration = (Typed) getDeclaration(that.getScope(), that.getUnit(),
+    static TypedDeclaration getDeclaration(Tree.Member that, Context context) {
+        final TypedDeclaration declaration = (TypedDeclaration) getDeclaration(that.getScope(), that.getUnit(),
                 that.getIdentifier(), context);
         //checkForError(that, declaration);
         return declaration;
@@ -56,8 +55,8 @@ class Util {
      * Resolve the member against the given scope. Imports 
      * are ignored.
      */
-    static Typed getDeclaration(Scope scope, Tree.Member that, Context context) {
-        final Typed declaration = (Typed) getDeclaration(scope, null,
+    static TypedDeclaration getDeclaration(Scope scope, Tree.Member that, Context context) {
+        final TypedDeclaration declaration = (TypedDeclaration) getDeclaration(scope, null,
                 that.getIdentifier(), context);
         //checkForError(that, declaration);
         return declaration;
@@ -148,8 +147,8 @@ class Util {
      * imports. 
      */
     private static Declaration getLocalDeclaration(Scope scope, String name) {
-        for ( Structure s: scope.getMembers() ) {
-            if (s instanceof Declaration && !(s instanceof Setter) ) {
+        for ( Declaration s: scope.getMembers() ) {
+            if ( !(s instanceof Setter) ) {
                 Declaration d = (Declaration) s;
                 if (d.getName()!=null && d.getName().equals(name)) {
                     return d;

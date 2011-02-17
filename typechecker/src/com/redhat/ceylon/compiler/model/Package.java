@@ -6,7 +6,7 @@ import java.util.List;
 public class Package implements Scope {
 	List<String> name;
 	Module module;
-	List<Structure> members = new ArrayList<Structure>();
+	List<Declaration> members = new ArrayList<Declaration>();
 
 	public Module getModule() {
 		return module;
@@ -25,7 +25,7 @@ public class Package implements Scope {
 	}
 
 	@Override
-	public List<Structure> getMembers() {
+	public List<Declaration> getMembers() {
 		return members;
 	}
 

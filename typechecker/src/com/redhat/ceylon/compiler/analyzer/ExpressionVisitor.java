@@ -6,19 +6,17 @@ import com.redhat.ceylon.compiler.context.Context;
 import com.redhat.ceylon.compiler.model.Class;
 import com.redhat.ceylon.compiler.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.model.Functional;
-import com.redhat.ceylon.compiler.model.GenericType;
 import com.redhat.ceylon.compiler.model.Interface;
 import com.redhat.ceylon.compiler.model.Model;
 import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.Parameter;
 import com.redhat.ceylon.compiler.model.ParameterList;
+import com.redhat.ceylon.compiler.model.ProducedType;
 import com.redhat.ceylon.compiler.model.Scope;
-import com.redhat.ceylon.compiler.model.Type;
-import com.redhat.ceylon.compiler.model.Typed;
+import com.redhat.ceylon.compiler.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
-import com.redhat.ceylon.compiler.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.tree.Visitor;
 
 /**
@@ -68,8 +66,8 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.AssignOp that) {
         super.visit(that);
-        Type rhst = that.getRightTerm().getTypeModel();
-        Type lhst = that.getLeftTerm().getTypeModel();
+        ProducedType rhst = that.getRightTerm().getTypeModel();
+        ProducedType lhst = that.getLeftTerm().getTypeModel();
         if ( rhst!=null && lhst!=null && !rhst.isExactly(lhst) ) {
             that.addError("type not assignable");
         }
@@ -115,7 +113,7 @@ public class ExpressionVisitor extends Visitor {
 
     private void checkType(Node typedNode, Tree.SpecifierOrInitializerExpression sie) {
         if (sie!=null) {
-            Type type = sie.getExpression().getTypeModel();
+            ProducedType type = sie.getExpression().getTypeModel();
             if ( type!=null && typedNode.getTypeModel()!=null) {
                 if ( !type.isExactly(typedNode.getTypeModel()) ) {
                     sie.addError("Specifier expression not assignable to attribute type");
@@ -129,14 +127,14 @@ public class ExpressionVisitor extends Visitor {
 
     private void checkIterableType(Node typedNode, Tree.SpecifierOrInitializerExpression sie) {
         if (sie!=null) {
-            Type type = sie.getExpression().getTypeModel();
+            ProducedType type = sie.getExpression().getTypeModel();
             if ( type!=null && typedNode.getTypeModel()!=null) {
                 //TODO: use subtyping!
-                Type it = new Type();
-                it.setGenericType( (GenericType) Util.getLanguageModuleDeclaration("Iterable", context) );
+                ProducedType it = new ProducedType();
+                it.setGenericType( (TypeDeclaration) Util.getLanguageModuleDeclaration("Iterable", context) );
                 it.getTypeArguments().add(typedNode.getTypeModel());
-                Type st = new Type();
-                st.setGenericType( (GenericType) Util.getLanguageModuleDeclaration("Sequence", context) );
+                ProducedType st = new ProducedType();
+                st.setGenericType( (TypeDeclaration) Util.getLanguageModuleDeclaration("Sequence", context) );
                 st.getTypeArguments().add(typedNode.getTypeModel());
                 if ( !type.isExactly(it) &&  !type.isExactly(st)  ) {
                     sie.addError("Specifier expression not assignable to attribute type");
@@ -203,9 +201,9 @@ public class ExpressionVisitor extends Visitor {
     private void setType(Tree.LocalModifier local, 
             Tree.SpecifierOrInitializerExpression s, 
             Tree.TypedDeclaration that) {
-        Type t = s.getExpression().getTypeModel();
+        ProducedType t = s.getExpression().getTypeModel();
         local.setTypeModel(t);
-        ((Typed) that.getModelNode()).setType(t);
+        ((TypedDeclaration) that.getModelNode()).setType(t);
     }
     
     private void setType(Tree.LocalModifier local, 
@@ -214,9 +212,9 @@ public class ExpressionVisitor extends Visitor {
         int s = block.getStatements().size();
         Tree.Statement d = s==0 ? null : block.getStatements().get(s-1);
         if (d!=null && (d instanceof Tree.Return)) {
-            Type t = ((Tree.Return) d).getExpression().getTypeModel();
+            ProducedType t = ((Tree.Return) d).getExpression().getTypeModel();
             local.setTypeModel(t);
-            ((Typed) that.getModelNode()).setType(t);
+            ((TypedDeclaration) that.getModelNode()).setType(t);
         }
         else {
             local.addError("Could not infer type of: " + 
@@ -230,7 +228,7 @@ public class ExpressionVisitor extends Visitor {
             that.addError("Could not determine expected return type");
         } 
         else {
-            Expression e = that.getExpression();
+            Tree.Expression e = that.getExpression();
             if ( returnType instanceof Tree.VoidModifier ) {
                 if (e!=null) {
                     that.addError("void methods may not return a value");
@@ -241,8 +239,8 @@ public class ExpressionVisitor extends Visitor {
                     that.addError("non-void methods and getters must return a value");
                 }
                 else {
-                    Type et = returnType.getTypeModel();
-                    Type at = e.getTypeModel();
+                    ProducedType et = returnType.getTypeModel();
+                    ProducedType at = e.getTypeModel();
                     if (et!=null && at!=null) {
                         if ( !et.isExactly(at) ) {
                             that.addError("Returned expression not assignable to expected return type");
@@ -260,13 +258,13 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.MemberExpression that) {
         that.getPrimary().visit(this);
-        Type pt = that.getPrimary().getTypeModel();
+        ProducedType pt = that.getPrimary().getTypeModel();
         if (pt!=null) {
-            GenericType gt = pt.getGenericType();
+            TypeDeclaration gt = pt.getGenericType();
             if (gt instanceof Scope) {
                 Tree.MemberOrType mt = that.getMemberOrType();
                 if (mt instanceof Tree.Member) {
-                    Typed member = Util.getDeclaration((Scope) gt, (Tree.Member) mt, context);
+                    TypedDeclaration member = Util.getDeclaration((Scope) gt, (Tree.Member) mt, context);
                     if (member==null) {
                         mt.addError("Could not determine target of member reference: " +
                                 ((Tree.Member) mt).getIdentifier().getText());
@@ -279,13 +277,13 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
                 else if (mt instanceof Tree.Type) {
-                    GenericType member = Util.getDeclaration((Scope) gt, (Tree.Type) mt, context);
+                    TypeDeclaration member = Util.getDeclaration((Scope) gt, (Tree.Type) mt, context);
                     if (member==null) {
                         mt.addError("Could not determine target of member type reference: " +
                                 ((Tree.Type) mt).getIdentifier().getText());
                     }
                     else {
-                        Type t = new Type();
+                        ProducedType t = new ProducedType();
                         t.setGenericType(member);
                         t.setTreeNode(that);
                         //TODO: handle type arguments by substitution
@@ -299,7 +297,7 @@ public class ExpressionVisitor extends Visitor {
                         that.addError("Can't use outer on a type parameter");
                     }
                     else {
-                        Type t = getOuterType(mt, (ClassOrInterface) gt);
+                        ProducedType t = getOuterType(mt, (ClassOrInterface) gt);
                         that.setTypeModel(t);
                         mt.setModelNode(t);
                         that.setModelNode(t);
@@ -321,7 +319,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.InvocationExpression that) {
         super.visit(that);
-        Primary pr = that.getPrimary();
+        Tree.Primary pr = that.getPrimary();
         if (pr==null) {
             that.addError("malformed expression");
         }
@@ -336,8 +334,8 @@ public class ExpressionVisitor extends Visitor {
                 //TODO: type argument substitution
                 checkInvocationArguments(that, f);
             }
-            else if (m instanceof Type) {
-                Type t = (Type) m;
+            else if (m instanceof ProducedType) {
+                ProducedType t = (ProducedType) m;
                 //TODO: type argument substitution
                 that.setTypeModel(t);
                 checkInvocationArguments(that, t);
@@ -377,9 +375,9 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void checkInvocationArguments(Tree.InvocationExpression that, Type t) {
+    private void checkInvocationArguments(Tree.InvocationExpression that, ProducedType t) {
         ParameterList pl;
-        GenericType gt = t.getGenericType();
+        TypeDeclaration gt = t.getGenericType();
         if (gt==null) {
             that.addError("could not determine parameter list: " + 
                     t.getProducedTypeName() );
@@ -429,9 +427,9 @@ public class ExpressionVisitor extends Visitor {
         }
         for (int i=0; i<pl.getParameters().size(); i++) {
             Parameter p = pl.getParameters().get(i);
-            Type paramType = p.getType();
+            ProducedType paramType = p.getType();
             Tree.PositionalArgument a = pa.get(i);
-            Type argType = a.getExpression().getTypeModel();
+            ProducedType argType = a.getExpression().getTypeModel();
             if (paramType!=null && argType!=null) {
                 if (!paramType.isExactly(argType)) {
                     a.addError("argument not assignable to parameter type: " + 
@@ -452,7 +450,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.PostfixOperatorExpression that) {
         super.visit(that);
-        Type pt = that.getPrimary().getTypeModel();
+        ProducedType pt = that.getPrimary().getTypeModel();
         if (pt!=null) {
             that.setTypeModel(pt);
         }
@@ -464,13 +462,13 @@ public class ExpressionVisitor extends Visitor {
         //TODO: this does not correctly handle methods
         //      and classes which are not subsequently 
         //      invoked (should return the callable type)
-        Typed d = Util.getDeclaration(that, context);
+        TypedDeclaration d = Util.getDeclaration(that, context);
         if (d==null) {
             that.addError("Could not determine target of member reference: " +
                     that.getIdentifier().getText());
         }
         else {
-            Type t = d.getType();
+            ProducedType t = d.getType();
             if (t==null) {
                 that.addError("Could not determine type of member reference: " +
                         that.getIdentifier().getText());
@@ -497,7 +495,7 @@ public class ExpressionVisitor extends Visitor {
             that.addError("Expression not well formed");
         }
         else {
-            Type t = term.getTypeModel();
+            ProducedType t = term.getTypeModel();
             if (t==null) {
                 that.addError("Could not determine type of expression");
             }
@@ -511,12 +509,12 @@ public class ExpressionVisitor extends Visitor {
         that.setTypeModel(getOuterType(that, that.getScope()));
     }
 
-    private Type getOuterType(Node that, Scope scope) {
+    private ProducedType getOuterType(Node that, Scope scope) {
         Boolean foundInner = false;
         while (!(scope instanceof Package)) {
             if (scope instanceof ClassOrInterface) {
                 if (foundInner) {
-                    Type t = new Type();
+                    ProducedType t = new ProducedType();
                     t.setGenericType((ClassOrInterface) scope);
                     //TODO: type arguments
                     return t;
@@ -539,7 +537,7 @@ public class ExpressionVisitor extends Visitor {
             that.addError("Can't use super inside an interface");
         }
         else {
-            Type t = classOrInterface.getExtendedType();
+            ProducedType t = classOrInterface.getExtendedType();
             //TODO: type arguments
             that.setTypeModel(t);
         }
@@ -550,7 +548,7 @@ public class ExpressionVisitor extends Visitor {
             that.addError("Can't use this outside a class or interface");
         }
         else {
-            Type t = new Type();
+            ProducedType t = new ProducedType();
             t.setGenericType(classOrInterface);
             //TODO: type arguments
             that.setTypeModel(t);
@@ -564,14 +562,14 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.SequenceEnumeration that) {
         super.visit(that);
-        Type et = null; 
+        ProducedType et = null; 
         for (Tree.Expression e: that.getExpressionList().getExpressions()) {
             if (et==null) {
                 et = e.getTypeModel();
             }
             //TODO: determine the common supertype of all of them
         }
-        Type t = new Type();
+        ProducedType t = new ProducedType();
         t.setGenericType( (Interface) Util.getLanguageModuleDeclaration("Sequence", context) );
         t.getTypeArguments().add(et);
         that.setTypeModel(t);
@@ -580,37 +578,37 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.StringTemplate that) {
         super.visit(that);
         //TODO: validate that the subexpression types are Formattable
-        Type t = new Type();
+        ProducedType t = new ProducedType();
         t.setGenericType( (Class) Util.getLanguageModuleDeclaration("String", context) );
         that.setTypeModel(t);
     }
     
     @Override public void visit(Tree.StringLiteral that) {
-        Type t = new Type();
+        ProducedType t = new ProducedType();
         t.setGenericType( (Class) Util.getLanguageModuleDeclaration("String", context) );
         that.setTypeModel(t);
     }
     
     @Override public void visit(Tree.NaturalLiteral that) {
-        Type t = new Type();
+        ProducedType t = new ProducedType();
         t.setGenericType( (Class) Util.getLanguageModuleDeclaration("Natural", context) );
         that.setTypeModel(t);
     }
     
     @Override public void visit(Tree.FloatLiteral that) {
-        Type t = new Type();
+        ProducedType t = new ProducedType();
         t.setGenericType( (Class) Util.getLanguageModuleDeclaration("Float", context) );
         that.setTypeModel(t);
     }
     
     @Override public void visit(Tree.CharLiteral that) {
-        Type t = new Type();
+        ProducedType t = new ProducedType();
         t.setGenericType( (Class) Util.getLanguageModuleDeclaration("Character", context) );
         that.setTypeModel(t);
     }
     
     @Override public void visit(Tree.QuotedLiteral that) {
-        Type t = new Type();
+        ProducedType t = new ProducedType();
         t.setGenericType( (Class) Util.getLanguageModuleDeclaration("Quoted", context) );
         that.setTypeModel(t);
     }

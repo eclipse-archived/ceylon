@@ -7,7 +7,8 @@ package com.redhat.ceylon.compiler.model;
  * @author Gavin King
  *
  */
-public class SimpleValue extends Typed {
+public class Value extends MethodOrValue {
+    
 	Boolean variable;
 	Boolean formal;
 	
@@ -25,4 +26,5 @@ public class SimpleValue extends Typed {
 	public void setVariable(Boolean variable) {
 		this.variable = variable;
 	}
+	
 }

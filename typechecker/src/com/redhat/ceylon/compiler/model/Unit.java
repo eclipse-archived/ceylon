@@ -5,9 +5,9 @@ import java.util.List;
 
 public class Unit extends Model {
 	
+    Package pkg;
 	List<Import> imports = new ArrayList<Import>();
-	Package pkg;
-    private List<Declaration> declarations = new ArrayList<Declaration>();
+    List<Declaration> declarations = new ArrayList<Declaration>();
 	
 	public List<Import> getImports() {
 		return imports;

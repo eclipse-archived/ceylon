@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,19 +15,14 @@ import java.util.List;
  * @author Gavin King
  *
  */
-public class Functional extends Typed implements Scope {
+public interface Functional {
 	
-	List<ParameterList> parameterLists = new ArrayList<ParameterList>();
+	public List<ParameterList> getParameterLists();
 	
-	List<Structure> members = new ArrayList<Structure>();
-
-	public List<ParameterList> getParameterLists() {
-		return parameterLists;
-	}
-
-	@Override
-	public List<Structure> getMembers() {
-		return members;
-	}
+	public void addParameterList(ParameterList pl);
+	
+	public ProducedType getType();
+	
+	public String getName();
 
 }

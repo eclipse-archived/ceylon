@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.model;
 
-public class Structure extends Model {
+public abstract class Element extends Model {
 	
 	Scope container;
 	Unit unit;

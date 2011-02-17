@@ -11,7 +11,7 @@ import java.util.List;
  * @author Gavin King
  *
  */
-public class Declaration extends Structure {
+public abstract class Declaration extends Element {
 	
 	String name;
 	Boolean shared;

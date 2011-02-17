@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.model;
 
-public class TypeParameter extends GenericType {
+public class TypeParameter extends TypeDeclaration {
 	
 	Boolean covariant;
 	Boolean contravariant;

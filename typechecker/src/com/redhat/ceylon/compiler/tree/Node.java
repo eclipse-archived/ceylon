@@ -8,7 +8,7 @@ import org.antlr.runtime.tree.CommonTree;
 import com.redhat.ceylon.compiler.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.model.Model;
 import com.redhat.ceylon.compiler.model.Scope;
-import com.redhat.ceylon.compiler.model.Type;
+import com.redhat.ceylon.compiler.model.ProducedType;
 import com.redhat.ceylon.compiler.model.Unit;
 
 public abstract class Node {
@@ -18,7 +18,7 @@ public abstract class Node {
     private Model modelNode;
     private Scope scope;
     private Unit unit;
-    private Type typeModel;
+    private ProducedType typeModel;
     private List<AnalysisError> errors = new ArrayList<AnalysisError>();
     
     protected Node(CommonTree antlrTreeNode) {
@@ -41,11 +41,11 @@ public abstract class Node {
      * The type of this node. Note that many 
      * nodes do not have a type.
      */
-    public Type getTypeModel() {
+    public ProducedType getTypeModel() {
         return typeModel;
     }
     
-    public void setTypeModel(Type type) {
+    public void setTypeModel(ProducedType type) {
         this.typeModel = type;
     }
     

@@ -3,18 +3,19 @@ package com.redhat.ceylon.compiler.analyzer;
 import com.redhat.ceylon.compiler.model.Class;
 import com.redhat.ceylon.compiler.model.ControlBlock;
 import com.redhat.ceylon.compiler.model.Declaration;
+import com.redhat.ceylon.compiler.model.Element;
+import com.redhat.ceylon.compiler.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.model.Getter;
 import com.redhat.ceylon.compiler.model.Interface;
 import com.redhat.ceylon.compiler.model.Method;
 import com.redhat.ceylon.compiler.model.Package;
-import com.redhat.ceylon.compiler.model.Parameter;
 import com.redhat.ceylon.compiler.model.ParameterList;
 import com.redhat.ceylon.compiler.model.Scope;
 import com.redhat.ceylon.compiler.model.Setter;
-import com.redhat.ceylon.compiler.model.SimpleValue;
-import com.redhat.ceylon.compiler.model.Structure;
 import com.redhat.ceylon.compiler.model.TypeParameter;
 import com.redhat.ceylon.compiler.model.Unit;
+import com.redhat.ceylon.compiler.model.Value;
+import com.redhat.ceylon.compiler.model.ValueParameter;
 import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Visitor;
@@ -67,24 +68,25 @@ public class DeclarationVisitor extends Visitor {
         }
         visitStructure(that, model);
         unit.getDeclarations().add(model);
+        scope.getMembers().add(model);
     }
 
     private void checkForDuplicateDeclaration(Tree.Declaration that,
             Declaration model) {
         boolean found = false;
         String name = Util.name(that);
-        for (Structure s: scope.getMembers()) {
-            if (s instanceof Declaration) {
-                String dname = ((Declaration) s).getName();
-                if (dname!=null && dname.equals(name)) {
-                    if (model instanceof Setter) {
-                        if (s instanceof Getter) {
-                            found = true;
-                            continue;
-                        }
+        for (Declaration m: scope.getMembers()) {
+            String dname = m.getName();
+            if (dname!=null && dname.equals(name)) {
+                if (model instanceof Setter) {
+                    if (m instanceof Getter) {
+                        found = true;
+                        continue;
                     }
-                    that.addError("duplicate declaration: " + name);
                 }
+                //TODO: special exception where a parameter of
+                //      a class can have same name as an attribute
+                that.addError("duplicate declaration: " + name);
             }
         }
         if (!found && (model instanceof Setter)) {
@@ -92,12 +94,11 @@ public class DeclarationVisitor extends Visitor {
         }
     }
 
-    private void visitStructure(Node that, Structure model) {
+    private void visitStructure(Node that, Element model) {
         that.setModelNode(model);
         model.setTreeNode(that);
         model.setUnit(unit);
         model.setContainer(scope);
-        scope.getMembers().add(model); //TODO: do we really need to include control statements here?
     }
     
     @Override
@@ -180,7 +181,7 @@ public class DeclarationVisitor extends Visitor {
 
     @Override
     public void visit(Tree.AttributeDeclaration that) {
-        SimpleValue v = new SimpleValue();
+        Value v = new Value();
         visitDeclaration(that, v);
         super.visit(that);
     }
@@ -204,16 +205,20 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.Parameter that) {
-        //TODO: what about callable parameters?
-        Parameter p = new Parameter();
+    public void visit(Tree.ValueParameter that) {
+        ValueParameter p = new ValueParameter();
+        visitDeclaration(that, p);
+        super.visit(that);
+        parameterList.getParameters().add(p);
+    }
+
+    @Override
+    public void visit(Tree.FunctionalParameter that) {
+        FunctionalParameter p = new FunctionalParameter();
         visitDeclaration(that, p);
         //Scope o = enterScope(p);
         super.visit(that);
         //exitScope(o);
-        if (parameterList==null) {
-            parameterList.getParameters();
-        }
         parameterList.getParameters().add(p);
     }
 
@@ -237,7 +242,7 @@ public class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Variable that) {
-        SimpleValue v = new SimpleValue();
+        Value v = new Value();
         v.setName(that.getIdentifier().getText());
         super.visit(that);
         //TODO: what about callable variables?!

@@ -3,20 +3,20 @@ package com.redhat.ceylon.compiler.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Type extends Model {
+public class ProducedType extends Model {
 	
-	List<Type> typeArguments = new ArrayList<Type>();
-	GenericType genericType;
+	List<ProducedType> typeArguments = new ArrayList<ProducedType>();
+	TypeDeclaration genericType;
 	
-	public GenericType getGenericType() {
+	public TypeDeclaration getGenericType() {
 		return genericType;
 	}
 	
-	public void setGenericType(GenericType type) {
+	public void setGenericType(TypeDeclaration type) {
 		this.genericType = type;
 	}
 	
-	public List<Type> getTypeArguments() {
+	public List<ProducedType> getTypeArguments() {
 		return typeArguments;
 	}
 	
@@ -33,7 +33,7 @@ public class Type extends Model {
 		String producedTypeName = genericType.getName();
 		if (!typeArguments.isEmpty()) {
 			producedTypeName+="<";
-			for (Type t: typeArguments) {
+			for (ProducedType t: typeArguments) {
 				producedTypeName+=t.getProducedTypeName();
 			}
 			producedTypeName+=">";
@@ -41,7 +41,7 @@ public class Type extends Model {
 		return producedTypeName;
 	}
 	
-	public boolean isExactly(Type that) {
+	public boolean isExactly(ProducedType that) {
 	    if (that.genericType!=genericType) {
 	        return false;
 	    }

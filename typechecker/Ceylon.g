@@ -25,7 +25,8 @@ tokens {
     EXPRESSION_STATEMENT;
     FOR_ITERATOR;
     FOR_STATEMENT;
-    PARAMETER;
+    VALUE_PARAMETER;
+    FUNCTIONAL_PARAMETER;
     PARAMETER_LIST;
     IF_STATEMENT;
     IMPORT_LIST;
@@ -943,7 +944,7 @@ specialArgument
 
 parameters
     : LPAREN (parameter (',' parameter)*)? ')'
-    -> ^(PARAMETER_LIST[$LPAREN] ^(PARAMETER parameter)*)
+    -> ^(PARAMETER_LIST[$LPAREN] parameter*)
     ;
 
 //Support for declaring functional formal parameters outside
@@ -951,7 +952,7 @@ parameters
 //Note that this is just a TODO in the spec
 extraParameters
     : extraParameter+
-    -> ^(PARAMETER_LIST ^(PARAMETER extraParameter)+)
+    -> ^(PARAMETER_LIST ^(FUNCTIONAL_PARAMETER extraParameter)+)
     ;
 
 //special rule for syntactic predicate
@@ -973,12 +974,14 @@ parameter
     : annotations? 
       parameterType
       parameterName
-      parameters*   //for callable parameters
-      (   //more exotic stuff
-          valueParameter 
-        | iteratedParameter 
-        | (specifiedFormalParameterStart) => specifiedFormalParameter 
-      )? 
+      (
+         valueParameter?
+        -> ^(VALUE_PARAMETER annotations? parameterType parameterName)
+        |  parameters+   //for callable parameters
+        -> ^(FUNCTIONAL_PARAMETER annotations? parameterType parameterName parameters+)
+      /*| iteratedParameter 
+      | (specifiedParameterStart) => specifiedParameter*/
+      ) 
       specifier?   //for defaulted parameters
     ;
 
@@ -986,6 +989,7 @@ valueParameter
     : '->' type parameterName
     ;
 
+/*
 //Support for "X x in Iterable<X> param" in formal parameter lists
 //Note that this is just a TODO in the spec
 iteratedParameter
@@ -994,14 +998,15 @@ iteratedParameter
 
 //Support for "X x = X? param" in formal parameter lists
 //Note that this is just a TODO in the spec
-specifiedFormalParameter
+specifiedParameter
     : '=' type parameterName
     ;
 
 //special rule for syntactic predicate
-specifiedFormalParameterStart
+specifiedParameterStart
     : '=' declarationStart
     ;
+*/
 
 extraParameter
     : parameterType parameterName parameters*

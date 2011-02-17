@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.model;
 
 import com.redhat.ceylon.compiler.tree.Node;
 
-public class Model {
+public abstract class Model {
 	
 	Node treeNode;
 	

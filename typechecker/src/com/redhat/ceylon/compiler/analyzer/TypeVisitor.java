@@ -5,12 +5,12 @@ import java.util.List;
 import com.redhat.ceylon.compiler.context.Context;
 import com.redhat.ceylon.compiler.model.Class;
 import com.redhat.ceylon.compiler.model.Declaration;
-import com.redhat.ceylon.compiler.model.GenericType;
+import com.redhat.ceylon.compiler.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.model.Import;
 import com.redhat.ceylon.compiler.model.Module;
 import com.redhat.ceylon.compiler.model.Package;
-import com.redhat.ceylon.compiler.model.Type;
-import com.redhat.ceylon.compiler.model.Typed;
+import com.redhat.ceylon.compiler.model.ProducedType;
+import com.redhat.ceylon.compiler.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.model.Unit;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Visitor;
@@ -33,7 +33,7 @@ import com.redhat.ceylon.compiler.util.PrintUtil;
 public class TypeVisitor extends Visitor {
     
     private Unit unit;
-    private Type outerType;
+    private ProducedType outerType;
     private Package importPackage;
     private Context context;
 
@@ -92,10 +92,10 @@ public class TypeVisitor extends Visitor {
         
     @Override 
     public void visit(Tree.Type that) {
-        Type type = new Type();
+        ProducedType type = new ProducedType();
         that.setModelNode(type);
         type.setTreeNode(that);
-        GenericType d = Util.getDeclaration(that, context);
+        TypeDeclaration d = Util.getDeclaration(that, context);
         if (d==null) {
             that.addError("type declaration not found: " + 
                     that.getIdentifier().getText());
@@ -107,7 +107,7 @@ public class TypeVisitor extends Visitor {
             if (outerType!=null) {
                 outerType.getTypeArguments().add(type);
             }
-            Type o = outerType;
+            ProducedType o = outerType;
             outerType = type;
             super.visit(that);
             outerType = o;
@@ -116,7 +116,7 @@ public class TypeVisitor extends Visitor {
     
     @Override 
     public void visit(Tree.VoidModifier that) {
-        Type type = new Type();
+        ProducedType type = new ProducedType();
         that.setModelNode(type);
         type.setTreeNode(that);
         //TODO: use the Void from the language package!
@@ -136,8 +136,8 @@ public class TypeVisitor extends Visitor {
         }
         else {
             if (!(type instanceof Tree.LocalModifier)) { //if the type declaration is missing, we do type inference later
-                Type t = (Type) type.getModelNode();
-                ( (Typed) that.getModelNode() ).setType(t);
+                ProducedType t = (ProducedType) type.getModelNode();
+                ( (TypedDeclaration) that.getModelNode() ).setType(t);
             }
         }
     }

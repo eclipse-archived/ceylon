@@ -7,15 +7,15 @@ package com.redhat.ceylon.compiler.model;
  * @author Gavin King
  *
  */
-public class Typed extends Declaration {
+public abstract class TypedDeclaration extends Declaration {
 	
-	Type type;
+	ProducedType type;
 
-	public Type getType() {
+	public ProducedType getType() {
 		return type;
 	}
 	
-	public void setType(Type type) {
+	public void setType(ProducedType type) {
 		this.type = type;
 	}
 	
