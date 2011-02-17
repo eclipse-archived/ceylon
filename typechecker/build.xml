@@ -244,11 +244,11 @@
         <mkdir dir="${antlr.dst}/com/redhat/ceylon/compiler/treegen"/>
         <java classname="org.antlr.Tool">
           <arg value="-o"/>
-          <arg value="${antlr.dst}/com/redhat/ceylon/compiler/treegen"/>
-          <arg value="Treegen.g"/>
-          <arg value="Buildergen.g"/>
-          <arg value="Walkergen.g"/>
-          <arg value="Visitorgen.g"/>
+          <arg value="${antlr.dst}/com/redhat/ceylon/compiler"/>
+          <arg value="treegen/Treegen.g"/>
+          <arg value="treegen/Buildergen.g"/>
+          <arg value="treegen/Walkergen.g"/>
+          <arg value="treegen/Visitorgen.g"/>
           <classpath>
             <pathelement location="${antlr.lib}"/>
           </classpath>
