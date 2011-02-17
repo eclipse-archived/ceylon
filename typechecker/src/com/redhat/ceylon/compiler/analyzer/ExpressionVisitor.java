@@ -5,8 +5,10 @@ import java.util.List;
 import com.redhat.ceylon.compiler.context.Context;
 import com.redhat.ceylon.compiler.model.Class;
 import com.redhat.ceylon.compiler.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.model.Declaration;
 import com.redhat.ceylon.compiler.model.Functional;
 import com.redhat.ceylon.compiler.model.Interface;
+import com.redhat.ceylon.compiler.model.MemberReference;
 import com.redhat.ceylon.compiler.model.Model;
 import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.Parameter;
@@ -73,7 +75,6 @@ public class ExpressionVisitor extends Visitor {
         }
         //TODO: validate that the LHS really is assignable
         that.setTypeModel(rhst);
-        that.setModelNode(rhst);
     }
     
     @Override public void visit(Tree.VariableOrExpression that) {
@@ -270,10 +271,17 @@ public class ExpressionVisitor extends Visitor {
                                 ((Tree.Member) mt).getIdentifier().getText());
                     }
                     else {
-                        that.setTypeModel(member.getType());
+                        MemberReference mr = new MemberReference();
+                        mr.setDeclaration(member);
+                        mr.setTreeNode(mt);
+                        ProducedType t = member.getType();
+                        if (t==null) {
+                            mt.addError("could not determine type of member reference");
+                        }
+                        that.setTypeModel(t);
                         //TODO: handle type arguments by substitution
                         mt.setModelNode(member);
-                        that.setModelNode(member);
+                        that.setModelNode(mr);
                     }
                 }
                 else if (mt instanceof Tree.Type) {
@@ -284,23 +292,22 @@ public class ExpressionVisitor extends Visitor {
                     }
                     else {
                         ProducedType t = new ProducedType();
-                        t.setTypeDeclaration(member);
-                        t.setTreeNode(that);
+                        t.setDeclaration(member);
+                        t.setTreeNode(mt);
                         //TODO: handle type arguments by substitution
                         that.setTypeModel(t);
-                        mt.setModelNode(t);
+                        mt.setModelNode(member);
                         that.setModelNode(t);
                     }
                 }
                 else if (mt instanceof Tree.Outer) {
-                    if (!(gt instanceof ClassOrInterface)) {
-                        that.addError("can't use outer on a type parameter");
-                    }
-                    else {
+                    if (gt instanceof ClassOrInterface) {
                         ProducedType t = getOuterType(mt, (ClassOrInterface) gt);
                         that.setTypeModel(t);
-                        mt.setModelNode(t);
-                        that.setModelNode(t);
+                        //TODO: some kind of MemberReference
+                    }
+                    else {
+                        that.addError("can't use outer on a type parameter");
                     }
                 }
                 else {
@@ -328,30 +335,22 @@ public class ExpressionVisitor extends Visitor {
             if (m==null) {
                 that.addError("receiving expression cannot be invoked");
             }
-            else if (m instanceof Functional) {
-                Functional f = (Functional) m;
-                that.setTypeModel(f.getType());
-                //TODO: type argument substitution
-                checkInvocationArguments(that, f);
-            }
-            else if (m instanceof ProducedType) {
-                ProducedType t = (ProducedType) m;
-                TypeDeclaration td = t.getTypeDeclaration();
+            else {
+                MemberReference t = (MemberReference) m;
+                Declaration td = t.getDeclaration();
                 if (td==null) {
                     that.addError("could not determine type to instantiate");
                 }
-                else if (td instanceof Class) {
+                else if (td instanceof Functional) {
+                    Functional f = (Functional) td;
                     //TODO: type argument substitution
-                    that.setTypeModel(t);
-                    checkInvocationArguments(that, (Class)td);
+                    that.setTypeModel(f.getType());
+                    checkInvocationArguments(that, f);
                 }
                 else {
-                    that.addError("type is not a class and cannot be instantiated: " + 
+                    that.addError("receiving expression cannot be invoked: " + 
                            td.getName());
                 }
-            }
-            else {
-                that.addError("receiving expression cannot be invoked");
             }
         }
     }
@@ -446,7 +445,10 @@ public class ExpressionVisitor extends Visitor {
             else {
                 that.setTypeModel(t);
             }
-            that.setModelNode(d);
+            MemberReference mr = new MemberReference();
+            mr.setTreeNode(that);
+            mr.setDeclaration(d);
+            that.setModelNode(mr);
         }
     }
     
@@ -522,7 +524,6 @@ public class ExpressionVisitor extends Visitor {
             t.setTypeDeclaration(classOrInterface);
             //TODO: type arguments
             that.setTypeModel(t);
-            that.setModelNode(t);
         }
     }
     

@@ -1,36 +1,32 @@
 package com.redhat.ceylon.compiler.model;
 
-import java.util.ArrayList;
-import java.util.List;
 
-public class ProducedType extends Model {
+public class ProducedType extends MemberReference {
 	
-	List<ProducedType> typeArguments = new ArrayList<ProducedType>();
-	TypeDeclaration typeDeclaration;
-	
-	public TypeDeclaration getTypeDeclaration() {
-		return typeDeclaration;
+	@Override
+    public TypeDeclaration getDeclaration() {
+		return (TypeDeclaration) declaration;
 	}
 	
-	public void setTypeDeclaration(TypeDeclaration type) {
-		this.typeDeclaration = type;
+    public TypeDeclaration getTypeDeclaration() {
+        return getDeclaration();
+    }
+        
+	public void setTypeDeclaration(TypeDeclaration td) {
+	    declaration = td;
 	}
-	
-	public List<ProducedType> getTypeArguments() {
-		return typeArguments;
-	}
-	
+		
 	@Override
 	public String toString() {
 		return "Type[" + getProducedTypeName() + "]";
 	}
 
 	public String getProducedTypeName() {
-        if (typeDeclaration == null) {
+        if (declaration == null) {
             //unknown type
             return null;
         }
-		String producedTypeName = typeDeclaration.getName();
+		String producedTypeName = declaration.getName();
 		if (!typeArguments.isEmpty()) {
 			producedTypeName+="<";
 			for (ProducedType t: typeArguments) {
@@ -42,7 +38,7 @@ public class ProducedType extends Model {
 	}
 	
 	public boolean isExactly(ProducedType that) {
-	    if (that.typeDeclaration!=typeDeclaration) {
+	    if (that.declaration!=declaration) {
 	        return false;
 	    }
 	    if (that.typeArguments.size()!=typeArguments.size()) {
