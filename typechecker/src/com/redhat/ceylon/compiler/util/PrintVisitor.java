@@ -1,14 +1,33 @@
 package com.redhat.ceylon.compiler.util;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+
 import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Visitor;
 
 
 public class PrintVisitor extends Visitor {
+    
     int depth=0;
+    Writer stream;
 
+    public PrintVisitor() {
+        stream = new OutputStreamWriter(System.out);
+    }
+    
+    public PrintVisitor(Writer w) {
+        stream = w;
+    }
+    
     protected void print(String str) {
-        System.out.print(str);
+        try {
+            stream.write(str);
+        }
+        catch (IOException ioe) {
+            throw new RuntimeException(ioe);
+        }
     }
 
     void newline() {

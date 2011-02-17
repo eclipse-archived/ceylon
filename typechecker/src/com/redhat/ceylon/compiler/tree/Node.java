@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.tree;
 
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,9 +8,10 @@ import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.model.Model;
-import com.redhat.ceylon.compiler.model.Scope;
 import com.redhat.ceylon.compiler.model.ProducedType;
+import com.redhat.ceylon.compiler.model.Scope;
 import com.redhat.ceylon.compiler.model.Unit;
+import com.redhat.ceylon.compiler.util.PrintVisitor;
 
 public abstract class Node {
     
@@ -109,6 +111,10 @@ public abstract class Node {
     
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" + text + ")"; 
+        StringWriter w = new StringWriter();
+        PrintVisitor pv = new PrintVisitor(w);
+        pv.visitAny(this);
+        return w.toString();
+        //return getClass().getSimpleName() + "(" + text + ")"; 
     }
 }
