@@ -134,7 +134,7 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Declaration that) {
-        if (that.getModelNode()==declaration) {
+        if (that.getDeclarationModel()==declaration) {
             beginDisabledSpecificationScope();
             super.visit(that);
             declare();
@@ -157,7 +157,7 @@ public class SpecificationVisitor extends Visitor {
         //      in interface bodies or the declaration
         //      section of class bodies.
         super.visit(that);
-        if (that.getModelNode()==declaration &&
+        if (that.getDeclarationModel()==declaration &&
                 that.getSpecifierExpression()!=null) {
             specify();
         }
@@ -165,7 +165,7 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.MethodDefinition that) {
-        if (that.getModelNode()==declaration) {
+        if (that.getDeclarationModel()==declaration) {
             declare();
             specify();
         }
@@ -178,7 +178,7 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.Variable that) {
         super.visit(that);
-        if (that.getModelNode()==declaration) {
+        if (that.getDeclarationModel()==declaration) {
             specify();
         }
     }
@@ -186,7 +186,7 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.Parameter that) {
         super.visit(that);
-        if (that.getModelNode()==declaration) {
+        if (that.getDeclarationModel()==declaration) {
             specify();
         }
     }
@@ -194,7 +194,7 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.AttributeDeclaration that) {
         super.visit(that);        
-        if (that.getModelNode()==declaration &&
+        if (that.getDeclarationModel()==declaration &&
                 that.getSpecifierOrInitializerExpression()!=null) {
             specify();
         }
@@ -202,7 +202,7 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.AttributeGetterDefinition that) {
-        if (that.getModelNode()==declaration) {
+        if (that.getDeclarationModel()==declaration) {
             declare();
             specify();
         }
@@ -211,7 +211,7 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ClassDefinition that) {
-        if (that.getModelNode()==declaration) {
+        if (that.getDeclarationModel()==declaration) {
             declare();
             specify();
         }
@@ -220,7 +220,7 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.InterfaceDefinition that) {
-        if (that.getModelNode()==declaration) {
+        if (that.getDeclarationModel()==declaration) {
             declare();
             specify();
         }

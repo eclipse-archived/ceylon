@@ -7,7 +7,8 @@ import java.util.List;
 import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.analyzer.AnalysisError;
-import com.redhat.ceylon.compiler.model.Model;
+import com.redhat.ceylon.compiler.model.Declaration;
+import com.redhat.ceylon.compiler.model.MemberReference;
 import com.redhat.ceylon.compiler.model.ProducedType;
 import com.redhat.ceylon.compiler.model.Scope;
 import com.redhat.ceylon.compiler.model.Unit;
@@ -17,10 +18,11 @@ public abstract class Node {
     
     private String text;
     private final CommonTree antlrTreeNode;
-    private Model modelNode;
+    private Declaration declarationModel;
     private Scope scope;
     private Unit unit;
     private ProducedType typeModel;
+    private MemberReference memberReference;
     private List<AnalysisError> errors = new ArrayList<AnalysisError>();
     
     protected Node(CommonTree antlrTreeNode) {
@@ -40,8 +42,8 @@ public abstract class Node {
     }
     
     /**
-     * The type of this node. Note that many 
-     * nodes do not have a type.
+     * The model object representing the type of this 
+     * node. Note that many nodes do not have a type.
      */
     public ProducedType getTypeModel() {
         return typeModel;
@@ -64,16 +66,29 @@ public abstract class Node {
     }
 
     /**
-     * The corresponding model object. Note that there may be no
-     * corresponding model object, since the two data structures
-     * are not isomorphic.
+     * The model object representing the declaration
+     * introduced by this node. Note that most nodes
+     * are not declarations.
      */
-    public Model getModelNode() {
-        return modelNode;
+    public Declaration getDeclarationModel() {
+        return declarationModel;
     }
 
-    public void setModelNode(Model modelNode) {
-        this.modelNode = modelNode;
+    public void setDeclarationModel(Declaration modelNode) {
+        this.declarationModel = modelNode;
+    }
+    
+    /**
+     * The member reference of a primary expression. This 
+     * will be null for nodes which do not refer to a member 
+     * or type.
+     */
+    public MemberReference getMemberReference() {
+        return memberReference;
+    }
+    
+    public void setMemberReference(MemberReference memberReference) {
+        this.memberReference = memberReference;
     }
     
     /**

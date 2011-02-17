@@ -7,14 +7,6 @@ public class ProducedType extends MemberReference {
     public TypeDeclaration getDeclaration() {
 		return (TypeDeclaration) declaration;
 	}
-	
-    public TypeDeclaration getTypeDeclaration() {
-        return getDeclaration();
-    }
-        
-	public void setTypeDeclaration(TypeDeclaration td) {
-	    declaration = td;
-	}
 		
 	@Override
 	public String toString() {

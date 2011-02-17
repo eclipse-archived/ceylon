@@ -93,15 +93,14 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.Type that) {
         ProducedType type = new ProducedType();
-        that.setModelNode(type);
-        type.setTreeNode(that);
+        that.setMemberReference(type);
         TypeDeclaration d = Util.getDeclaration(that, context);
         if (d==null) {
             that.addError("type declaration not found: " + 
                     that.getIdentifier().getText());
         }
         else {
-            type.setTypeDeclaration(d);
+            type.setDeclaration(d);
             //TODO: handle type arguments by substitution
             that.setTypeModel(type);
             if (outerType!=null) {
@@ -117,12 +116,10 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.VoidModifier that) {
         ProducedType type = new ProducedType();
-        that.setModelNode(type);
-        type.setTreeNode(that);
         //TODO: use the Void from the language package!
         Class c = new Class();
         c.setName("Void");
-        type.setTypeDeclaration(c);
+        type.setDeclaration(c);
         that.setTypeModel(type);
     }
     
@@ -136,8 +133,14 @@ public class TypeVisitor extends Visitor {
         }
         else {
             if (!(type instanceof Tree.LocalModifier)) { //if the type declaration is missing, we do type inference later
-                ProducedType t = (ProducedType) type.getModelNode();
-                ( (TypedDeclaration) that.getModelNode() ).setType(t);
+                ProducedType t = type.getTypeModel();
+                if (t==null) {
+                    //TODO: this case is temporary until we
+                    //      add support for sequenced parameters
+                }
+                else {
+                    ( (TypedDeclaration) that.getDeclarationModel() ).setType(t);
+                }
             }
         }
     }

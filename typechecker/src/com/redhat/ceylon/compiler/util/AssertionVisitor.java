@@ -30,7 +30,7 @@ public class AssertionVisitor extends Visitor {
             if (c.getIdentifier().getText().equals("type")) {
                 String expectedType = c.getStringLiteral().getText();
                 if (typedNode==null || typedNode.getTypeModel()==null || 
-                        typedNode.getTypeModel().getTypeDeclaration()==null) {
+                        typedNode.getTypeModel().getDeclaration()==null) {
                     System.err.println(
                             "type not known at "+ that.getAntlrTreeNode().getLine() + ":" +
                             that.getAntlrTreeNode().getCharPositionInLine());

@@ -33,10 +33,10 @@ public class Class extends ClassOrInterface implements Functional {
 	@Override
 	public ProducedType getType() {
 	    ProducedType pt = new ProducedType();
-	    pt.setTypeDeclaration(this);
+	    pt.setDeclaration(this);
 	    for (TypeDeclaration t: getTypeParameters()) {
 	        ProducedType pta = new ProducedType();
-	        pta.setTypeDeclaration(t);
+	        pta.setDeclaration(t);
 	        pt.getTypeArguments().add(pta);
 	    }
 	    return pt;
@@ -44,7 +44,12 @@ public class Class extends ClassOrInterface implements Functional {
 	
 	@Override
 	public List<ParameterList> getParameterLists() {
-	    return Collections.singletonList(parameterList);
+	    if (parameterList==null) {
+	        return Collections.emptyList();
+	    }
+	    else {
+	        return Collections.singletonList(parameterList);
+	    }
 	}
 	
 	@Override

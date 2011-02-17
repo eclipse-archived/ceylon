@@ -4,6 +4,7 @@ import com.redhat.ceylon.compiler.model.Class;
 import com.redhat.ceylon.compiler.model.ControlBlock;
 import com.redhat.ceylon.compiler.model.Declaration;
 import com.redhat.ceylon.compiler.model.Element;
+import com.redhat.ceylon.compiler.model.Functional;
 import com.redhat.ceylon.compiler.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.model.Getter;
 import com.redhat.ceylon.compiler.model.Interface;
@@ -37,6 +38,7 @@ public class DeclarationVisitor extends Visitor {
     private Scope scope;
     private Unit unit;
     private ParameterList parameterList;
+    private Functional functional;
     
     public DeclarationVisitor(Package p) {
         scope = p;
@@ -66,7 +68,8 @@ public class DeclarationVisitor extends Visitor {
             model.setName(id.getText());
             checkForDuplicateDeclaration(that, model);
         }
-        visitStructure(that, model);
+        visitElement(that, model);
+        that.setDeclarationModel(model);
         unit.getDeclarations().add(model);
         scope.getMembers().add(model);
     }
@@ -94,9 +97,7 @@ public class DeclarationVisitor extends Visitor {
         }
     }
 
-    private void visitStructure(Node that, Element model) {
-        that.setModelNode(model);
-        model.setTreeNode(that);
+    private void visitElement(Node that, Element model) {
         model.setUnit(unit);
         model.setContainer(scope);
     }
@@ -111,8 +112,7 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.CompilationUnit that) {
         unit = new Unit();
-        that.setModelNode(unit);
-        unit.setTreeNode(that);
+        //that.setModelNode(unit);
         unit.setPackage(pkg);
         super.visit(that);
     }
@@ -121,15 +121,14 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.ClassDefinition that) {
         Class c = new Class();
         visitDeclaration(that, c);
+        functional = c;
         Scope o = enterScope(c);
         super.visit(that);
         exitScope(o);
+        functional = null;
         if (that.getParameterList()==null) {
             that.addError("missing parameter list in class declaration: " + 
                     Util.name(that) );
-        }
-        else {
-            c.setParameterList( (ParameterList) that.getParameterList().getModelNode() );
         }
     }
 
@@ -153,29 +152,28 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.MethodDeclaration that) {
         Method m = new Method();
         visitDeclaration(that, m);
+        functional = m;
         super.visit(that);
-        grabParameters(that, m);
+        functional = null;
+        checkMethodParameters(that);
     }
 
     @Override
     public void visit(Tree.MethodDefinition that) {
         Method m = new Method();
         visitDeclaration(that, m);
+        functional = m;
         Scope o = enterScope(m);
         super.visit(that);
         exitScope(o);
-        grabParameters(that, m);
+        functional = null;
+        checkMethodParameters(that);
     }
 
-    private void grabParameters(Tree.Method that, Method m) {
+    private void checkMethodParameters(Tree.Method that) {
         if (that.getParameterLists().isEmpty()) {
             that.addError("missing parameter list in method declaration: " + 
                     Util.name(that) );
-        }
-        else {
-            for (Tree.ParameterList pl: that.getParameterLists()) {
-                m.getParameterLists().add( (ParameterList) pl.getModelNode() );
-            }
         }
     }
 
@@ -217,7 +215,10 @@ public class DeclarationVisitor extends Visitor {
         FunctionalParameter p = new FunctionalParameter();
         visitDeclaration(that, p);
         //Scope o = enterScope(p);
+        Functional o = functional;
+        functional = p;
         super.visit(that);
+        functional = o;
         //exitScope(o);
         parameterList.getParameters().add(p);
     }
@@ -227,14 +228,27 @@ public class DeclarationVisitor extends Visitor {
         ParameterList pl = parameterList;
         parameterList = new ParameterList();
         super.visit(that);
-        that.setModelNode(parameterList);
+        //TODO: check that we are allowed to add!
+        if (functional==null) {
+            //TODO: this case is temporary until
+            //      we add support for MethodArguments
+        }
+        else {
+            if ( (functional instanceof Class) && 
+                    !functional.getParameterLists().isEmpty() ) {
+                that.addError("classes may have only one parameter list");
+            }
+            else {
+                functional.addParameterList(parameterList);
+            }
+        }
         parameterList = pl;
     }
     
     @Override
     public void visit(Tree.ControlClause that) {
         ControlBlock c = new ControlBlock();
-        visitStructure(that, c);
+        visitElement(that, c);
         Scope o = enterScope(c);
         super.visit(that);
         exitScope(o);
@@ -243,11 +257,9 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.Variable that) {
         Value v = new Value();
-        v.setName(that.getIdentifier().getText());
+        visitDeclaration(that, v);
         super.visit(that);
         //TODO: what about callable variables?!
-        visitStructure(that, v);
-        unit.getDeclarations().add(v);
     }
 
 }

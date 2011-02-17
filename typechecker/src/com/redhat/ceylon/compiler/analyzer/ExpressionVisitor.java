@@ -9,7 +9,6 @@ import com.redhat.ceylon.compiler.model.Declaration;
 import com.redhat.ceylon.compiler.model.Functional;
 import com.redhat.ceylon.compiler.model.Interface;
 import com.redhat.ceylon.compiler.model.MemberReference;
-import com.redhat.ceylon.compiler.model.Model;
 import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.Parameter;
 import com.redhat.ceylon.compiler.model.ParameterList;
@@ -44,14 +43,14 @@ public class ExpressionVisitor extends Visitor {
     
     public void visit(Tree.ClassDefinition that) {
         ClassOrInterface o = classOrInterface;
-        classOrInterface = (Class) that.getModelNode();
+        classOrInterface = (Class) that.getDeclarationModel();
         super.visit(that);
         classOrInterface = o;
     }
     
     public void visit(Tree.InterfaceDefinition that) {
         ClassOrInterface o = classOrInterface;
-        classOrInterface = (Interface) that.getModelNode();
+        classOrInterface = (Interface) that.getDeclarationModel();
         super.visit(that);
         classOrInterface = o;
     }
@@ -132,10 +131,10 @@ public class ExpressionVisitor extends Visitor {
             if ( type!=null && typedNode.getTypeModel()!=null) {
                 //TODO: use subtyping!
                 ProducedType it = new ProducedType();
-                it.setTypeDeclaration( (TypeDeclaration) Util.getLanguageModuleDeclaration("Iterable", context) );
+                it.setDeclaration( (TypeDeclaration) Util.getLanguageModuleDeclaration("Iterable", context) );
                 it.getTypeArguments().add(typedNode.getTypeModel());
                 ProducedType st = new ProducedType();
-                st.setTypeDeclaration( (TypeDeclaration) Util.getLanguageModuleDeclaration("Sequence", context) );
+                st.setDeclaration( (TypeDeclaration) Util.getLanguageModuleDeclaration("Sequence", context) );
                 st.getTypeArguments().add(typedNode.getTypeModel());
                 if ( !type.isExactly(it) &&  !type.isExactly(st)  ) {
                     sie.addError("specifier expression not assignable to attribute type");
@@ -204,7 +203,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.TypedDeclaration that) {
         ProducedType t = s.getExpression().getTypeModel();
         local.setTypeModel(t);
-        ((TypedDeclaration) that.getModelNode()).setType(t);
+        ((TypedDeclaration) that.getDeclarationModel()).setType(t);
     }
     
     private void setType(Tree.LocalModifier local, 
@@ -215,7 +214,7 @@ public class ExpressionVisitor extends Visitor {
         if (d!=null && (d instanceof Tree.Return)) {
             ProducedType t = ((Tree.Return) d).getExpression().getTypeModel();
             local.setTypeModel(t);
-            ((TypedDeclaration) that.getModelNode()).setType(t);
+            ((TypedDeclaration) that.getDeclarationModel()).setType(t);
         }
         else {
             local.addError("could not infer type of: " + 
@@ -261,7 +260,7 @@ public class ExpressionVisitor extends Visitor {
         that.getPrimary().visit(this);
         ProducedType pt = that.getPrimary().getTypeModel();
         if (pt!=null) {
-            TypeDeclaration gt = pt.getTypeDeclaration();
+            TypeDeclaration gt = pt.getDeclaration();
             if (gt instanceof Scope) {
                 Tree.MemberOrType mt = that.getMemberOrType();
                 if (mt instanceof Tree.Member) {
@@ -273,15 +272,15 @@ public class ExpressionVisitor extends Visitor {
                     else {
                         MemberReference mr = new MemberReference();
                         mr.setDeclaration(member);
-                        mr.setTreeNode(mt);
+                        that.setMemberReference(mr);
                         ProducedType t = member.getType();
+                        //TODO: handle type arguments by substitution
                         if (t==null) {
                             mt.addError("could not determine type of member reference");
                         }
-                        that.setTypeModel(t);
-                        //TODO: handle type arguments by substitution
-                        mt.setModelNode(member);
-                        that.setModelNode(mr);
+                        else {
+                            that.setTypeModel(t);
+                        }
                     }
                 }
                 else if (mt instanceof Tree.Type) {
@@ -293,11 +292,9 @@ public class ExpressionVisitor extends Visitor {
                     else {
                         ProducedType t = new ProducedType();
                         t.setDeclaration(member);
-                        t.setTreeNode(mt);
                         //TODO: handle type arguments by substitution
                         that.setTypeModel(t);
-                        mt.setModelNode(member);
-                        that.setModelNode(t);
+                        that.setMemberReference(t);
                     }
                 }
                 else if (mt instanceof Tree.Outer) {
@@ -331,50 +328,47 @@ public class ExpressionVisitor extends Visitor {
             that.addError("malformed expression");
         }
         else {
-            Model m = pr.getModelNode();
+            MemberReference m = pr.getMemberReference();
             if (m==null) {
                 that.addError("receiving expression cannot be invoked");
             }
             else {
-                MemberReference t = (MemberReference) m;
-                Declaration td = t.getDeclaration();
-                if (td==null) {
+                Declaration d = m.getDeclaration();
+                if (d==null) {
                     that.addError("could not determine type to instantiate");
                 }
-                else if (td instanceof Functional) {
-                    Functional f = (Functional) td;
+                else if (d instanceof Functional) {
+                    Functional f = (Functional) d;
                     //TODO: type argument substitution
                     that.setTypeModel(f.getType());
                     checkInvocationArguments(that, f);
                 }
                 else {
                     that.addError("receiving expression cannot be invoked: " + 
-                           td.getName());
+                           d.getName());
                 }
             }
         }
     }
 
     private void checkInvocationArguments(Tree.InvocationExpression that, Functional f) {
-        ParameterList pl;
         List<ParameterList> pls = f.getParameterLists();
-        if (pls.size()==0) {
-            that.addError("receiving expression cannot be invoked: " + 
+        if (pls.isEmpty()) {
+            that.addError("receiver does not define a parameter list: " + 
                     f.getName());
-            return;
         }
         else {
-            pl = pls.get(0);
-        }
+            ParameterList pl = pls.get(0);
 
-        Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
-        if ( pal!=null ) {
-            checkPositionalArguments(pl, pal);
-        }
-        
-        Tree.NamedArgumentList nal = that.getNamedArgumentList();
-        if (nal!=null) {
-            checkNamedArguments(pl, nal);
+            Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
+            if ( pal!=null ) {
+                checkPositionalArguments(pl, pal);
+            }
+            
+            Tree.NamedArgumentList nal = that.getNamedArgumentList();
+            if (nal!=null) {
+                checkNamedArguments(pl, nal);
+            }
         }
     }
 
@@ -392,22 +386,23 @@ public class ExpressionVisitor extends Visitor {
         List<Tree.PositionalArgument> pa = pal.getPositionalArguments();
         if ( pl.getParameters().size()!=pa.size() ) {
             pal.addError("wrong number of arguments");
-            return;
         }
-        for (int i=0; i<pl.getParameters().size(); i++) {
-            Parameter p = pl.getParameters().get(i);
-            ProducedType paramType = p.getType();
-            Tree.PositionalArgument a = pa.get(i);
-            ProducedType argType = a.getExpression().getTypeModel();
-            if (paramType!=null && argType!=null) {
-                if (!paramType.isExactly(argType)) {
-                    a.addError("argument not assignable to parameter type: " + 
+        else {
+            for (int i=0; i<pl.getParameters().size(); i++) {
+                Parameter p = pl.getParameters().get(i);
+                ProducedType paramType = p.getType();
+                Tree.PositionalArgument a = pa.get(i);
+                ProducedType argType = a.getExpression().getTypeModel();
+                if (paramType!=null && argType!=null) {
+                    if (!paramType.isExactly(argType)) {
+                        a.addError("argument not assignable to parameter type: " + 
+                                p.getName());
+                    }
+                }
+                else {
+                    a.addError("could not determine assignability of argument to parameter: " +
                             p.getName());
                 }
-            }
-            else {
-                a.addError("could not determine assignability of argument to parameter: " +
-                        p.getName());
             }
         }
     }
@@ -437,6 +432,9 @@ public class ExpressionVisitor extends Visitor {
                     that.getIdentifier().getText());
         }
         else {
+            MemberReference mr = new MemberReference();
+            mr.setDeclaration(d);
+            that.setMemberReference(mr);
             ProducedType t = d.getType();
             if (t==null) {
                 that.addError("could not determine type of member reference: " +
@@ -445,10 +443,6 @@ public class ExpressionVisitor extends Visitor {
             else {
                 that.setTypeModel(t);
             }
-            MemberReference mr = new MemberReference();
-            mr.setTreeNode(that);
-            mr.setDeclaration(d);
-            that.setModelNode(mr);
         }
     }
     
@@ -487,7 +481,7 @@ public class ExpressionVisitor extends Visitor {
             if (scope instanceof ClassOrInterface) {
                 if (foundInner) {
                     ProducedType t = new ProducedType();
-                    t.setTypeDeclaration((ClassOrInterface) scope);
+                    t.setDeclaration((ClassOrInterface) scope);
                     //TODO: type arguments
                     return t;
                 }
@@ -521,7 +515,7 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             ProducedType t = new ProducedType();
-            t.setTypeDeclaration(classOrInterface);
+            t.setDeclaration(classOrInterface);
             //TODO: type arguments
             that.setTypeModel(t);
         }
@@ -541,7 +535,7 @@ public class ExpressionVisitor extends Visitor {
             //TODO: determine the common supertype of all of them
         }
         ProducedType t = new ProducedType();
-        t.setTypeDeclaration( (Interface) Util.getLanguageModuleDeclaration("Sequence", context) );
+        t.setDeclaration( (Interface) Util.getLanguageModuleDeclaration("Sequence", context) );
         t.getTypeArguments().add(et);
         that.setTypeModel(t);
     }
@@ -549,44 +543,38 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.StringTemplate that) {
         super.visit(that);
         //TODO: validate that the subexpression types are Formattable
-        ProducedType t = new ProducedType();
-        t.setTypeDeclaration( (Class) Util.getLanguageModuleDeclaration("String", context) );
-        that.setTypeModel(t);
+        setLiteralType(that, "String");
     }
     
     @Override public void visit(Tree.StringLiteral that) {
-        ProducedType t = new ProducedType();
-        t.setTypeDeclaration( (Class) Util.getLanguageModuleDeclaration("String", context) );
-        that.setTypeModel(t);
+        setLiteralType(that, "String");
     }
     
     @Override public void visit(Tree.NaturalLiteral that) {
-        ProducedType t = new ProducedType();
-        t.setTypeDeclaration( (Class) Util.getLanguageModuleDeclaration("Natural", context) );
-        that.setTypeModel(t);
+        setLiteralType(that, "Natural");
     }
     
     @Override public void visit(Tree.FloatLiteral that) {
-        ProducedType t = new ProducedType();
-        t.setTypeDeclaration( (Class) Util.getLanguageModuleDeclaration("Float", context) );
-        that.setTypeModel(t);
+        setLiteralType(that, "Float");
     }
     
     @Override public void visit(Tree.CharLiteral that) {
-        ProducedType t = new ProducedType();
-        t.setTypeDeclaration( (Class) Util.getLanguageModuleDeclaration("Character", context) );
-        that.setTypeModel(t);
+        setLiteralType(that, "Character");
     }
     
     @Override public void visit(Tree.QuotedLiteral that) {
+        setLiteralType(that, "Quoted");
+    }
+    
+    private void setLiteralType(Tree.Atom that, String languageType) {
         ProducedType t = new ProducedType();
-        t.setTypeDeclaration( (Class) Util.getLanguageModuleDeclaration("Quoted", context) );
+        t.setDeclaration( (Class) Util.getLanguageModuleDeclaration(languageType, context) );
         that.setTypeModel(t);
     }
     
     @Override
     public void visit(Tree.CompilerAnnotation that) {
-        //don't visit arg       
+        //don't visit the argument       
     }
     
 }

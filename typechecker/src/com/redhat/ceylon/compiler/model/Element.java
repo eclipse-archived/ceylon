@@ -8,6 +8,7 @@ public abstract class Element extends Model {
 	public Unit getUnit() {
 		return unit;
 	}
+	
 	public void setUnit(Unit compilationUnit) {
 		this.unit = compilationUnit;
 	}
