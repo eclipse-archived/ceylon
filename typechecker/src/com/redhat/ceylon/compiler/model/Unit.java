@@ -8,6 +8,7 @@ public class Unit extends Model {
     Package pkg;
 	List<Import> imports = new ArrayList<Import>();
     List<Declaration> declarations = new ArrayList<Declaration>();
+    String filename;
 	
 	public List<Import> getImports() {
 		return imports;
@@ -23,6 +24,14 @@ public class Unit extends Model {
 	
 	public List<Declaration> getDeclarations() {
         return declarations;
+    }
+	
+	public String getFilename() {
+        return filename;
+    }
+	
+	public void setFilename(String filename) {
+        this.filename = filename;
     }
 	
 }

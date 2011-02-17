@@ -35,14 +35,16 @@ import com.redhat.ceylon.compiler.tree.Visitor;
 public class DeclarationVisitor extends Visitor {
     
     private final Package pkg;
+    private final String filename;
     private Scope scope;
     private Unit unit;
     private ParameterList parameterList;
     private Functional functional;
     
-    public DeclarationVisitor(Package p) {
+    public DeclarationVisitor(Package p, String fn) {
         scope = p;
         pkg = p;
+        filename = fn;
     }
     
     public Unit getCompilationUnit() {
@@ -114,6 +116,7 @@ public class DeclarationVisitor extends Visitor {
         unit = new Unit();
         //that.setModelNode(unit);
         unit.setPackage(pkg);
+        unit.setFilename(filename);
         super.visit(that);
     }
     

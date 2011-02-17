@@ -43,7 +43,7 @@ public class PhasedUnit {
 
     public void scanDeclarations() {
         System.out.println("Scan declarations for " + fileName);
-        DeclarationVisitor dv = new DeclarationVisitor(pkg);
+        DeclarationVisitor dv = new DeclarationVisitor(pkg, fileName);
         compilationUnit.visit(dv);
         unit = dv.getCompilationUnit();
     }

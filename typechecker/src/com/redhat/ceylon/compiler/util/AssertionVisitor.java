@@ -33,7 +33,8 @@ public class AssertionVisitor extends Visitor {
                         typedNode.getTypeModel().getDeclaration()==null) {
                     System.err.println(
                             "type not known at "+ that.getAntlrTreeNode().getLine() + ":" +
-                            that.getAntlrTreeNode().getCharPositionInLine());
+                            that.getAntlrTreeNode().getCharPositionInLine() + " of " +
+                            that.getUnit().getFilename());
                 }
                 else {
                     String actualType = typedNode.getTypeModel().getProducedTypeName();
@@ -41,7 +42,8 @@ public class AssertionVisitor extends Visitor {
                         System.err.println("type " + actualType +
                                 "not of expected type " + expectedType + 
                                 " at "+ that.getAntlrTreeNode().getLine() + ":" +
-                                that.getAntlrTreeNode().getCharPositionInLine());
+                                that.getAntlrTreeNode().getCharPositionInLine() + " of " +
+                                that.getUnit().getFilename());
                 }
             }
         }
@@ -63,12 +65,14 @@ public class AssertionVisitor extends Visitor {
             System.err.println(
                 "no error encountered at " + 
                 that.getAntlrTreeNode().getLine() + ":" +
-                that.getAntlrTreeNode().getCharPositionInLine());
+                that.getAntlrTreeNode().getCharPositionInLine() + " of " +
+                that.getUnit().getFilename());
         if (!expectingError && foundErrors.size()>0)
             System.err.println(
                 "errors encountered at " + 
                 that.getAntlrTreeNode().getLine() + ":" +
-                that.getAntlrTreeNode().getCharPositionInLine() + " " +
+                that.getAntlrTreeNode().getCharPositionInLine() + " of " +
+                that.getUnit().getFilename() + " " +
                 foundErrors);
         expectingError = b;
         foundErrors = f;
