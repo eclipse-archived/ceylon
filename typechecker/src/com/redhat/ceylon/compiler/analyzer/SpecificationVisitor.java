@@ -176,6 +176,18 @@ public class SpecificationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.MethodArgument that) {
+        if (that.getDeclarationModel()==declaration) {
+            declare();
+            specify();
+        }
+        //TODO: allow references to un-assigned things
+        //      in interface bodies or the declaration
+        //      section of class bodies.
+        super.visit(that);
+    }
+    
+    @Override
     public void visit(Tree.Variable that) {
         super.visit(that);
         if (that.getDeclarationModel()==declaration) {
@@ -202,6 +214,15 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.AttributeGetterDefinition that) {
+        if (that.getDeclarationModel()==declaration) {
+            declare();
+            specify();
+        }
+        super.visit(that);        
+    }
+    
+    @Override
+    public void visit(Tree.AttributeArgument that) {
         if (that.getDeclarationModel()==declaration) {
             declare();
             specify();

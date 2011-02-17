@@ -5,13 +5,14 @@ import java.util.List;
 import com.redhat.ceylon.compiler.context.Context;
 import com.redhat.ceylon.compiler.model.Class;
 import com.redhat.ceylon.compiler.model.Declaration;
-import com.redhat.ceylon.compiler.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.model.Import;
 import com.redhat.ceylon.compiler.model.Module;
 import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.ProducedType;
+import com.redhat.ceylon.compiler.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.model.Unit;
+import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Visitor;
 import com.redhat.ceylon.compiler.util.PrintUtil;
@@ -126,21 +127,33 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.TypedDeclaration that) {
         super.visit(that);
-        Tree.TypeOrSubtype type = that.getTypeOrSubtype();
+        setType(that, Util.name(that), that.getTypeOrSubtype());
+    }
+
+    @Override 
+    public void visit(Tree.MethodArgument that) {
+        super.visit(that);
+        setType(that, Util.name(that), that.getTypeOrSubtype());
+    }
+    
+    @Override 
+    public void visit(Tree.AttributeArgument that) {
+        super.visit(that);
+        setType(that, Util.name(that), that.getType());
+    }
+    
+    private void setType(Node that, String name, Tree.TypeOrSubtype type) {
         if (type==null) {
-            that.addError("missing type of declaration: " + 
-                    Util.name(that));
+            that.addError("missing type of declaration: " + name);
         }
-        else {
-            if (!(type instanceof Tree.LocalModifier)) { //if the type declaration is missing, we do type inference later
-                ProducedType t = type.getTypeModel();
-                if (t==null) {
-                    //TODO: this case is temporary until we
-                    //      add support for sequenced parameters
-                }
-                else {
-                    ( (TypedDeclaration) that.getDeclarationModel() ).setType(t);
-                }
+        else if (!(type instanceof Tree.LocalModifier)) { //if the type declaration is missing, we do type inference later
+            ProducedType t = type.getTypeModel();
+            if (t==null) {
+                //TODO: this case is temporary until we
+                //      add support for sequenced parameters
+            }
+            else {
+                ( (TypedDeclaration) that.getDeclarationModel() ).setType(t);
             }
         }
     }

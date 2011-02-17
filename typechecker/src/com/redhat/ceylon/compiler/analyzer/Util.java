@@ -181,4 +181,13 @@ class Util {
         }
     }
     
+    public static String name(Tree.NamedArgument arg) {
+        if (arg.getIdentifier()==null) {
+            return "named argument with missing name";
+        }
+        else {
+            return arg.getIdentifier().getText();
+        }
+    }
+    
 }

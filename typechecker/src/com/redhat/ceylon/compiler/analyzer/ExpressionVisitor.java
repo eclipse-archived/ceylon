@@ -153,6 +153,13 @@ public class ExpressionVisitor extends Visitor {
         endReturnScope(rt);
     }
 
+    @Override public void visit(Tree.AttributeArgument that) {
+        Tree.TypeOrSubtype rt = beginReturnScope(that.getType());
+        super.visit(that);
+        //TODO: inferType(that, that.getBlock());
+        endReturnScope(rt);
+    }
+
     @Override public void visit(Tree.AttributeSetterDefinition that) {
         Tree.TypeOrSubtype rt = beginReturnScope(that.getTypeOrSubtype());
         super.visit(that);
@@ -170,6 +177,13 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         endReturnScope(rt);
         inferType(that, that.getBlock());
+    }
+
+    @Override public void visit(Tree.MethodArgument that) {
+        Tree.TypeOrSubtype rt = beginReturnScope(that.getTypeOrSubtype());           
+        super.visit(that);
+        endReturnScope(rt);
+        //TODO: inferType(that, that.getBlock());
     }
 
     //Type inference for members declared "local":

@@ -76,7 +76,21 @@ public class DeclarationVisitor extends Visitor {
         scope.getMembers().add(model);
     }
 
-    private void checkForDuplicateDeclaration(Tree.Declaration that,
+    private void visitArgument(Tree.NamedArgument that, Declaration model) {
+        Tree.Identifier id = that.getIdentifier();
+        if (id==null || id.getText().startsWith("<missing")) {
+            that.addError("missing declaration name");
+        }
+        else {
+            model.setName(id.getText());
+            //TODO: check for dupe arg name
+        }
+        visitElement(that, model);
+        that.setDeclarationModel(model);
+        unit.getDeclarations().add(model);
+    }
+
+    private void checkForDuplicateDeclaration(Tree.Declaration that, 
             Declaration model) {
         boolean found = false;
         String name = Util.name(that);
@@ -173,9 +187,28 @@ public class DeclarationVisitor extends Visitor {
         checkMethodParameters(that);
     }
 
+    @Override
+    public void visit(Tree.MethodArgument that) {
+        Method m = new Method();
+        visitArgument(that, m);
+        functional = m;
+        Scope o = enterScope(m);
+        super.visit(that);
+        exitScope(o);
+        functional = null;
+        checkMethodArgumentParameters(that);
+    }
+
     private void checkMethodParameters(Tree.Method that) {
         if (that.getParameterLists().isEmpty()) {
             that.addError("missing parameter list in method declaration: " + 
+                    Util.name(that) );
+        }
+    }
+
+    private void checkMethodArgumentParameters(Tree.MethodArgument that) {
+        if (that.getParameterLists().isEmpty()) {
+            that.addError("missing parameter list in named argument declaration: " + 
                     Util.name(that) );
         }
     }
@@ -191,6 +224,15 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.AttributeGetterDefinition that) {
         Getter g = new Getter();
         visitDeclaration(that, g);
+        Scope o = enterScope(g);
+        super.visit(that);
+        exitScope(o);
+    }
+    
+    @Override
+    public void visit(Tree.AttributeArgument that) {
+        Getter g = new Getter();
+        visitArgument(that, g);
         Scope o = enterScope(g);
         super.visit(that);
         exitScope(o);

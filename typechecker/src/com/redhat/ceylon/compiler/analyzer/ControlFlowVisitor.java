@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.analyzer;
 
+import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Visitor;
 
@@ -80,15 +81,25 @@ public class ControlFlowVisitor extends Visitor {
         boolean c = beginReturnScope(true);
         boolean d = beginDefiniteReturnScope();
         super.visit(that);
-        checkDefiniteReturn(that);
+        checkDefiniteReturn(that, Util.name(that));
         endDefiniteReturnScope(d);
         endReturnScope(c);
     }
 
-    private void checkDefiniteReturn(Tree.Declaration that) {
+    @Override
+    public void visit(Tree.AttributeArgument that) {
+        boolean c = beginReturnScope(true);
+        boolean d = beginDefiniteReturnScope();
+        super.visit(that);
+        checkDefiniteReturn(that, Util.name(that));
+        endDefiniteReturnScope(d);
+        endReturnScope(c);
+    }
+
+    private void checkDefiniteReturn(Node that, String name) {
         if (!definitelyReturns) {
             that.addError("does not definitely return: " + 
-                    Util.name(that));
+                    name);
         }
     }
 
@@ -106,7 +117,19 @@ public class ControlFlowVisitor extends Visitor {
         boolean d = beginDefiniteReturnScope();
         super.visit(that);
         if (!(that.getTypeOrSubtype() instanceof Tree.VoidModifier)) {
-            checkDefiniteReturn(that);
+            checkDefiniteReturn(that, Util.name(that));
+        }
+        endDefiniteReturnScope(d);
+        endReturnScope(c);
+    }
+    
+    @Override
+    public void visit(Tree.MethodArgument that) {
+        boolean c = beginReturnScope(true);
+        boolean d = beginDefiniteReturnScope();
+        super.visit(that);
+        if (!(that.getTypeOrSubtype() instanceof Tree.VoidModifier)) {
+            checkDefiniteReturn(that, Util.name(that));
         }
         endDefiniteReturnScope(d);
         endReturnScope(c);
