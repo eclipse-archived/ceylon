@@ -125,7 +125,7 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
         if (that.getParameterList()==null) {
-            that.addError("Missing parameter list in class declaration: " + 
+            that.addError("missing parameter list in class declaration: " + 
                     Util.name(that) );
         }
         else {
@@ -169,7 +169,7 @@ public class DeclarationVisitor extends Visitor {
 
     private void grabParameters(Tree.Method that, Method m) {
         if (that.getParameterLists().isEmpty()) {
-            that.addError("Missing parameter list in method declaration: " + 
+            that.addError("missing parameter list in method declaration: " + 
                     Util.name(that) );
         }
         else {

@@ -96,11 +96,11 @@ public class SpecificationVisitor extends Visitor {
     public void visit(Tree.Member that) {
         if (Util.getDeclaration(that, context)==declaration) {
             if (!declared) {
-                that.addError("Not yet declared: " + 
+                that.addError("not yet declared: " + 
                         that.getIdentifier().getText());
             }
             else if (!specified.definitely) {
-                that.addError("Not definitely specified: " + 
+                that.addError("not definitely specified: " + 
                         that.getIdentifier().getText());
             }
         }
@@ -110,15 +110,15 @@ public class SpecificationVisitor extends Visitor {
     public void visit(Tree.SpecifierStatement that) {
         if (Util.getDeclaration(that.getMember(), context)==declaration) {
             if (!declared) {
-                that.addError("Not yet declared: " + 
+                that.addError("not yet declared: " + 
                         that.getMember().getIdentifier().getText());
             }
             else if (cannotSpecify) {
-                that.addError("Cannot specify value from here: " + 
+                that.addError("cannot specify value from here: " + 
                         that.getMember().getIdentifier().getText());
             }
             else if (specified.possibly) {
-                that.addError("Not definitely unspecified: " + 
+                that.addError("not definitely unspecified: " + 
                         that.getMember().getIdentifier().getText());
             }
             else {

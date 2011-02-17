@@ -55,4 +55,9 @@ interface Interfaces {
         return String();
     }
     
+    void usesSuperAndThis() {
+        @error super;
+        this;
+    }
+    
 }

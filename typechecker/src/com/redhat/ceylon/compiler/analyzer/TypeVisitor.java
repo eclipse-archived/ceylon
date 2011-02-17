@@ -101,7 +101,7 @@ public class TypeVisitor extends Visitor {
                     that.getIdentifier().getText());
         }
         else {
-            type.setGenericType(d);
+            type.setTypeDeclaration(d);
             //TODO: handle type arguments by substitution
             that.setTypeModel(type);
             if (outerType!=null) {
@@ -122,7 +122,7 @@ public class TypeVisitor extends Visitor {
         //TODO: use the Void from the language package!
         Class c = new Class();
         c.setName("Void");
-        type.setGenericType(c);
+        type.setTypeDeclaration(c);
         that.setTypeModel(type);
     }
     

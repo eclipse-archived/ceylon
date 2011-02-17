@@ -33,10 +33,10 @@ public class Class extends ClassOrInterface implements Functional {
 	@Override
 	public ProducedType getType() {
 	    ProducedType pt = new ProducedType();
-	    pt.setGenericType(this);
+	    pt.setTypeDeclaration(this);
 	    for (TypeDeclaration t: getTypeParameters()) {
 	        ProducedType pta = new ProducedType();
-	        pta.setGenericType(t);
+	        pta.setTypeDeclaration(t);
 	        pt.getTypeArguments().add(pta);
 	    }
 	    return pt;

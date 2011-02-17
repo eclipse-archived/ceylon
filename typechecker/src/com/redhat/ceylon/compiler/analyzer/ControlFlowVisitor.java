@@ -87,7 +87,7 @@ public class ControlFlowVisitor extends Visitor {
 
     private void checkDefiniteReturn(Tree.Declaration that) {
         if (!definitelyReturns) {
-            that.addError("Does not definitely return: " + 
+            that.addError("does not definitely return: " + 
                     Util.name(that));
         }
     }
@@ -162,14 +162,14 @@ public class ControlFlowVisitor extends Visitor {
 
     private void checkExecutableStatementAllowed(Tree.Statement that) {
         if (!canExecute) {
-            that.addError("Misplaced statement");
+            that.addError("misplaced statement");
         }
     }
     
     @Override
     public void visit(Tree.Return that) {
         if (!canReturn) {
-            that.addError("Nothing to return from");
+            that.addError("nothing to return from");
         }
         super.visit(that);
         exit();
@@ -184,7 +184,7 @@ public class ControlFlowVisitor extends Visitor {
     @Override
     public void visit(Tree.Break that) {
         if (!inLoop()) {
-            that.addError("No surrounding loop to break");
+            that.addError("no surrounding loop to break");
         }
         super.visit(that);
         exitLoop();
@@ -193,7 +193,7 @@ public class ControlFlowVisitor extends Visitor {
     @Override
     public void visit(Tree.Continue that) {
         if (!inLoop()) {
-            that.addError("No surrounding loop to continue");
+            that.addError("no surrounding loop to continue");
         }
         super.visit(that);
         exit();
@@ -202,7 +202,7 @@ public class ControlFlowVisitor extends Visitor {
     @Override
     public void visit(Tree.Statement that) {
         if (definitelyReturns) {
-            that.addError("Unreachable code");
+            that.addError("unreachable code");
         }
         super.visit(that);
     }

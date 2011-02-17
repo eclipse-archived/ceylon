@@ -6,14 +6,14 @@ import java.util.List;
 public class ProducedType extends Model {
 	
 	List<ProducedType> typeArguments = new ArrayList<ProducedType>();
-	TypeDeclaration genericType;
+	TypeDeclaration typeDeclaration;
 	
-	public TypeDeclaration getGenericType() {
-		return genericType;
+	public TypeDeclaration getTypeDeclaration() {
+		return typeDeclaration;
 	}
 	
-	public void setGenericType(TypeDeclaration type) {
-		this.genericType = type;
+	public void setTypeDeclaration(TypeDeclaration type) {
+		this.typeDeclaration = type;
 	}
 	
 	public List<ProducedType> getTypeArguments() {
@@ -26,11 +26,11 @@ public class ProducedType extends Model {
 	}
 
 	public String getProducedTypeName() {
-        if (genericType == null) {
+        if (typeDeclaration == null) {
             //unknown type
             return null;
         }
-		String producedTypeName = genericType.getName();
+		String producedTypeName = typeDeclaration.getName();
 		if (!typeArguments.isEmpty()) {
 			producedTypeName+="<";
 			for (ProducedType t: typeArguments) {
@@ -42,7 +42,7 @@ public class ProducedType extends Model {
 	}
 	
 	public boolean isExactly(ProducedType that) {
-	    if (that.genericType!=genericType) {
+	    if (that.typeDeclaration!=typeDeclaration) {
 	        return false;
 	    }
 	    if (that.typeArguments.size()!=typeArguments.size()) {
