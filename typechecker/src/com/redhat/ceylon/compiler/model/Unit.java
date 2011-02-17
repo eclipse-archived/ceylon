@@ -34,4 +34,9 @@ public class Unit extends Model {
         this.filename = filename;
     }
 	
+	@Override
+	public String toString() {
+	    return "Unit[" + filename + "]";
+	}
+	
 }
