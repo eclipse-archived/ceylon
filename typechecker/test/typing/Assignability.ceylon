@@ -111,7 +111,7 @@ class Assignability() {
     }
     
     for (X x in {X(), X()} ) {}
-    @error for (Y y in {X(), X()} ) {}
+    for (@error Y y in {X(), X()} ) {}
     
     void hello(String greeting = "Hello", String name = "World") {}
     
@@ -129,13 +129,22 @@ class Assignability() {
     class Hi(@error String greeting = 23.0, String name = "World", @error Natural times = "X") {}
     
     X something = X();
-    @error X? nothing = null; //not really an error!
+    X? nothing {
+        @error return null; //not really an error!
+    }
     
-    @error if (exists something) {}
-    if (exists nothing) {}
+    @error nothing.hello;
+    if (exists nothing) {
+        nothing.hello;
+    }
     if (exists X x = nothing) {
         x.hello;
     }
+    if (exists @error X x = something) {
+        x.hello;
+    }
+    @error if (exists something.hello) {}
+    //@error if (exists something) {}
     
     Boolean b = 1<2;
     if (b) {}
