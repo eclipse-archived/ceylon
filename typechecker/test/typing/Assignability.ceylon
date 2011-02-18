@@ -7,7 +7,11 @@ class Assignability() {
         shared String name = "Gavin";
     }
     
-    void method(X arg1, Y arg2) {}
+    void print(String s) {}
+    
+    void method(X arg1, Y arg2) {
+        print(arg1.hello + arg2.name);
+    }
     
     method(X(),Y());
     
