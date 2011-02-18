@@ -352,10 +352,22 @@ public class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Variable that) {
+        if (that.getSpecifierExpression()!=null) {
+            Scope s = scope;
+            scope = scope.getContainer();
+            visit(that.getSpecifierExpression());
+            scope = s;
+        }
         Value v = new Value();
         visitDeclaration(that, v);
-        super.visit(that);
-        //TODO: what about callable variables?!
+        visit(that.getTypeOrSubtype());
+        visit(that.getIdentifier());
+        if (that.getAnnotationList()!=null) {
+            visit(that.getAnnotationList());
+        }
+        //TODO: parameters of callable variables?!
+        that.setScope(scope);
+        that.setUnit(unit);
     }
 
 }

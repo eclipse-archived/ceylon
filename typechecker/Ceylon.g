@@ -980,7 +980,7 @@ parameter
       parameterType
       parameterName
       (
-         valueParameter? specifier?
+          valueParameter? specifier?
         -> ^(VALUE_PARAMETER compilerAnnotation* annotations? parameterType parameterName specifier?)
         |  parameters+ specifier? //for callable parameters
         -> ^(FUNCTIONAL_PARAMETER compilerAnnotation* annotations? parameterType parameterName parameters+ specifier?)
@@ -1024,34 +1024,43 @@ parameterType
 // Control structures.
 
 controlCondition
-    : '('! condition ')'!
+    : condition
     ;
 
 condition
-    : expression 
-    -> ^(BOOLEAN_CONDITION expression)
+    : booleanCondition 
     | existsCondition
     | nonemptyCondition
     | isCondition 
     | satisfiesCondition
     ;
     
-existsCondition
-    : EXISTS controlVariableOrExpression 
-    -> ^(EXISTS_CONDITION[$EXISTS] controlVariableOrExpression)
+booleanCondition
+    : '(' expression ')'
+    -> ^(BOOLEAN_CONDITION expression)
     ;
+        
+existsCondition
+    : ('(' EXISTS LIDENTIFIER ')') => '(' EXISTS impliedVariable ')'
+    -> ^(EXISTS_CONDITION[$EXISTS] impliedVariable)
+    | '(' EXISTS variableOrExpression2 ')'
+    -> ^(EXISTS_CONDITION[$EXISTS] variableOrExpression2)
+    ;
+    
 nonemptyCondition
-    : NONEMPTY controlVariableOrExpression 
-    -> ^(NONEMPTY_CONDITION[$NONEMPTY] controlVariableOrExpression)
+    : ('(' NONEMPTY LIDENTIFIER ')') => '(' NONEMPTY impliedVariable ')'
+    -> ^(NONEMPTY_CONDITION[$NONEMPTY] impliedVariable)
+    | '(' NONEMPTY variableOrExpression2 ')' 
+    -> ^(NONEMPTY_CONDITION[$NONEMPTY] variableOrExpression2)
     ;
 
 isCondition
-    : IS_OP type (memberName specifier | expression)
+    : '(' IS_OP type (memberName specifier | expression) ')'
     -> ^(IS_CONDITION[$IS_OP] type ^(VARIABLE type memberName specifier?)? expression?)
     ;
 
 satisfiesCondition
-    : SATISFIED_TYPES type type
+    : '(' SATISFIED_TYPES type type ')'
     -> ^(SATISFIES_CONDITION[$SATISFIED_TYPES] type+)
     ;
 
@@ -1139,11 +1148,11 @@ failBlock
     ;
 
 forIterator
-    : v=variable 
+    : v=variable2
     (
       containment
       -> ^(VALUE_ITERATOR $v containment)
-      | '->' vv=variable containment
+      | '->' vv=variable2 containment
       -> ^(KEY_VALUE_ITERATOR $v $vv containment)
     )
     ;
@@ -1181,7 +1190,7 @@ tryBlock
     ;
 
 catchBlock
-    : 'catch'^ '('! variable ')'! block
+    : 'catch'^ '('! variable2 ')'! block
     ;
 
 finallyBlock
@@ -1189,18 +1198,31 @@ finallyBlock
     ;
 
 resource
-    : controlVariableOrExpression
-    -> ^(TRY_RESOURCE controlVariableOrExpression)
+    : variableOrExpression2
+    -> ^(TRY_RESOURCE variableOrExpression2)
     ;
 
-controlVariableOrExpression
+variableOrExpression2
+    : compilerAnnotation* variableOrExpression^
+    ;
+
+variableOrExpression
     : (declarationStart) => variable^ specifier
     | expression
+    ;
+
+variable2
+    : compilerAnnotation* variable^
     ;
 
 variable
     : inferrableType memberName parameters*
     -> ^(VARIABLE inferrableType memberName parameters*)
+    ;
+
+impliedVariable
+    : memberName 
+    -> ^(VARIABLE LOCAL_MODIFIER memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(MEMBER memberName))))
     ;
 
 // Lexer
