@@ -77,7 +77,6 @@ tokens {
     TYPE_PARAMETER;
     STRING_TEMPLATE;
     VARIABLE;
-    VARIABLE_OR_EXPRESSION;
     EXISTS_CONDITION;
     NONEMPTY_CONDITION;
     SATISFIES_CONDITION;
@@ -1039,16 +1038,16 @@ condition
     
 existsCondition
     : EXISTS controlVariableOrExpression 
-    -> ^(EXISTS_CONDITION[$EXISTS] ^(VARIABLE_OR_EXPRESSION controlVariableOrExpression))
+    -> ^(EXISTS_CONDITION[$EXISTS] controlVariableOrExpression)
     ;
 nonemptyCondition
     : NONEMPTY controlVariableOrExpression 
-    -> ^(NONEMPTY_CONDITION[$NONEMPTY] ^(VARIABLE_OR_EXPRESSION controlVariableOrExpression))
+    -> ^(NONEMPTY_CONDITION[$NONEMPTY] controlVariableOrExpression)
     ;
 
 isCondition
     : IS_OP type (memberName specifier | expression)
-    -> ^(IS_CONDITION[$IS_OP] type ^(VARIABLE_OR_EXPRESSION ^(VARIABLE type memberName)? specifier? expression?))
+    -> ^(IS_CONDITION[$IS_OP] type ^(VARIABLE type memberName specifier?)? expression?)
     ;
 
 satisfiesCondition
@@ -1191,11 +1190,11 @@ finallyBlock
 
 resource
     : controlVariableOrExpression
-    -> ^(TRY_RESOURCE ^(VARIABLE_OR_EXPRESSION controlVariableOrExpression))
+    -> ^(TRY_RESOURCE controlVariableOrExpression)
     ;
 
 controlVariableOrExpression
-    : (declarationStart) => variable specifier 
+    : (declarationStart) => variable^ specifier
     | expression
     ;
 

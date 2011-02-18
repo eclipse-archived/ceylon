@@ -5,7 +5,7 @@ interface DefiniteSpecification {
     void doSomethingElse() {}
     void doNothing() {}
     void use(X x) {}
-    Boolean testSomething()  { @error return false; }
+    Boolean testSomething()  { return 1>100; }
     
     //void methods:
     

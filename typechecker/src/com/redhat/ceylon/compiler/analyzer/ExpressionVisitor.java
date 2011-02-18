@@ -21,8 +21,6 @@ import com.redhat.ceylon.compiler.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.model.Value;
 import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
-import com.redhat.ceylon.compiler.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.tree.Tree.VariableOrExpression;
 import com.redhat.ceylon.compiler.tree.Visitor;
 
 /**
@@ -95,26 +93,61 @@ public class ExpressionVisitor extends Visitor {
         that.setTypeModel(rhst);
     }
     
-    @Override public void visit(Tree.VariableOrExpression that) {
+    @Override public void visit(Tree.Variable that) {
         super.visit(that);
-        if (that.getVariable()!=null) {
-            inferType(that.getVariable(), that.getSpecifierExpression());
-            checkType(that.getVariable(), that.getSpecifierExpression());
+        if (that.getSpecifierExpression()!=null) {
+            inferType(that, that.getSpecifierExpression());
+            checkType(that.getTypeOrSubtype(), that.getSpecifierExpression());
         }
     }
     
+    @Override public void visit(Tree.ExistsCondition that) {
+        ProducedType t=null;
+        if (that.getVariable()!=null) {
+            visit(that.getVariable().getSpecifierExpression());
+            checkOptionalType(that.getVariable().getTypeOrSubtype(), that.getVariable().getSpecifierExpression());
+            t = that.getVariable().getSpecifierExpression().getExpression().getTypeModel();
+        }
+        if (that.getExpression()!=null) {
+            visit(that.getExpression());
+            t = that.getExpression().getTypeModel();
+        }
+        if (t==null) {
+            that.addError("could not determine if expression is of optional type");
+        }
+        else {
+            Class ot = (Class) Util.getLanguageModuleDeclaration("Optional", context);
+            if (t.getDeclaration()!=ot) {
+                that.addError("expression is not of optional type");
+            }
+        }
+    }
+
+    @Override public void visit(Tree.BooleanCondition that) {
+        super.visit(that);
+        if (that.getExpression()!=null) {
+            ProducedType t = that.getExpression().getTypeModel();
+            if (t==null) {
+                that.addError("could not determine if expression is of boolean type");
+            }
+            else {
+                ProducedType bt = getLanguageType("Boolean");
+                if (!bt.isExactly(t)) {
+                    that.addError("expression is not of boolean type");
+                }
+            }
+        }
+    }
+
     @Override public void visit(Tree.ValueIterator that) {
         super.visit(that);
-        //TODO: this is not correct, should infer from arguments to Iterable<V>
-        inferType(that.getVariable(), that.getSpecifierExpression());
+        //TODO: infer type from arguments to Iterable<V>
         checkIterableType(that.getVariable().getTypeOrSubtype(), that.getSpecifierExpression());
     }
 
     @Override public void visit(Tree.KeyValueIterator that) {
         super.visit(that);
-        //TODO: this is not correct, should infer from arguments to Iterable<Entry<K,V>>
-        inferType(that.getKeyVariable(), that.getSpecifierExpression());
-        inferType(that.getValueVariable(), that.getSpecifierExpression());
+        //TODO: infer type from arguments to Iterable<Entry<K,V>>
         checkIterableType(that.getKeyVariable().getTypeOrSubtype(), that.getSpecifierExpression());
         checkIterableType(that.getValueVariable().getTypeOrSubtype(), that.getSpecifierExpression());
     }
@@ -134,38 +167,17 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         checkType(that.getTypeOrSubtype(), that.getSpecifierExpression());
     }
-    
-    @Override public void visit(Tree.ExistsCondition that) {
-        super.visit(that);
-        Class ot = (Class) Util.getLanguageModuleDeclaration("Optional", context);
-        VariableOrExpression voe = that.getVariableOrExpression();
-        ProducedType voet;
-        if (voe.getExpression()!=null) {
-            voet = voe.getExpression().getTypeModel();
-        }
-        else if (voe.getVariable()!=null) {
-            voet = voe.getVariable().getTypeOrSubtype().getTypeModel();
-        }
-        else {
-            voet=null;
-        }
-        if  (voet!=null) {
-            if (voet.getDeclaration()!=ot) {
-                voe.addError("must be of type Optional");
-            }
-        }
-    }
 
     private void checkType(Node typedNode, Tree.SpecifierOrInitializerExpression sie) {
         if (sie!=null) {
             ProducedType type = sie.getExpression().getTypeModel();
             if ( type!=null && typedNode.getTypeModel()!=null) {
                 if ( !type.isExactly(typedNode.getTypeModel()) ) {
-                    sie.addError("specifier expression not assignable to attribute type");
+                    sie.addError("specifier expression not assignable to expected type");
                 }
             }
             else {
-                sie.addError("could not determine assignability of specified expression to attribute type");
+                sie.addError("could not determine assignability of specified expression to expected type");
             }
         }
     }
@@ -181,12 +193,29 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType st = new ProducedType();
                 st.setDeclaration( (TypeDeclaration) Util.getLanguageModuleDeclaration("Sequence", context) );
                 st.getTypeArguments().add(typedNode.getTypeModel());
-                if ( !type.isExactly(it) &&  !type.isExactly(st)  ) {
-                    sie.addError("specifier expression not assignable to attribute type");
+                if ( !type.isExactly(it) && !type.isExactly(st)  ) {
+                    sie.addError("specifier expression not an iterable type");
                 }
             }
             else {
-                sie.addError("could not determine assignability of specified expression to attribute type");
+                sie.addError("could not determine if specified expression is an iterable type");
+            }
+        }
+    }
+
+    private void checkOptionalType(Node typedNode, Tree.SpecifierOrInitializerExpression sie) {
+        if (sie!=null) {
+            ProducedType type = sie.getExpression().getTypeModel();
+            if ( type!=null && typedNode.getTypeModel()!=null) {
+                ProducedType ot = new ProducedType();
+                ot.setDeclaration( (TypeDeclaration) Util.getLanguageModuleDeclaration("Optional", context) );
+                ot.getTypeArguments().add(typedNode.getTypeModel());
+                if ( !type.isExactly(ot) ) {
+                    sie.addError("specifier expression not an optional type");
+                }
+            }
+            else {
+                sie.addError("could not determine if specified expression is an optional type");
             }
         }
     }
@@ -536,7 +565,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 Tree.PositionalArgument a = args.get(i);
-                Expression e = a.getExpression();
+                Tree.Expression e = a.getExpression();
                 if (e==null) {
                     //TODO: this case is temporary until we get support for SPECIAL_ARGUMENTs
                 }

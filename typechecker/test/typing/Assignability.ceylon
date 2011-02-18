@@ -1,6 +1,8 @@
 class Assignability() {
     
-    class X() {}
+    class X() {
+        shared String hello = "Hello";
+    }
     class Y() {}
     
     void method(X arg1, Y arg2) {}
@@ -73,13 +75,13 @@ class Assignability() {
     void methv() { @error return var; }
     
     void methv2() {
-        if (var) {
+        if ("Hello"=="Goodbye") {
             @error return var;
         }
     }
     
     X methx2 {
-        if (var) {
+        if ("Hello">"Goodbye") {
             return var;
         }
         else {
@@ -88,7 +90,7 @@ class Assignability() {
     }
     
     Y methy2 {
-        if (var) {
+        if ("Hello"<"Goodbye") {
             @error return var;
         }
         return Y();
@@ -131,5 +133,11 @@ class Assignability() {
     
     @error if (exists something) {}
     if (exists nothing) {}
+    if (exists X x = nothing) {
+        x.hello;
+    }
     
+    Boolean b = 1<2;
+    if (b) {}
+    @error if (something) {}
 }

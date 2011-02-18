@@ -3,7 +3,7 @@ interface DefiniteReturn {
     void doSomething() {}
     void doSomethingElse() {}
     void doNothing() {}
-    Boolean testSomething()  { @error return false; }
+    Boolean testSomething()  { return 1<2; }
     class X() {}
     
     //void methods:
