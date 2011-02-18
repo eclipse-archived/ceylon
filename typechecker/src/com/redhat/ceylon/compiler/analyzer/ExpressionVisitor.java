@@ -521,7 +521,20 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.IndexExpression that) {
         super.visit(that);
-        //TODO!
+        Interface s = (Interface) Util.getLanguageModuleDeclaration("Sequence", context);
+        ProducedType st = that.getPrimary().getTypeModel();
+        if (st==null) {
+            that.addError("could not determine type of receiver");
+        }
+        else {
+            if ( st.getDeclaration()!=s || st.getTypeArguments().size()!=1 ) {
+                that.addError("receiving type of an index expression must be a sequence");
+            }
+            else {
+                ProducedType vt = st.getTypeArguments().get(0);
+                that.setTypeModel(vt);
+            }
+        }
     }
     
     @Override public void visit(Tree.PostfixOperatorExpression that) {
@@ -544,6 +557,12 @@ public class ExpressionVisitor extends Visitor {
         if ( rhst!=null && lhst!=null && !rhst.isExactly(lhst) ) {
             that.addError("operands must have same numeric type");
         }
+    }
+        
+    @Override public void visit(Tree.DefaultOp that) {
+        super.visit(that);
+        ProducedType rhst = that.getRightTerm().getTypeModel();
+        that.setTypeModel(rhst);
     }
         
     @Override public void visit(Tree.NegativeOp that) {
