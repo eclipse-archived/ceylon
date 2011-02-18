@@ -50,7 +50,7 @@ public class AssertionVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.Statement that) {
+    public void visit(Tree.StatementOrArgument that) {
         boolean b = expectingError;
         List<AnalysisError> f = foundErrors;
         expectingError = false;
@@ -61,32 +61,6 @@ public class AssertionVisitor extends Visitor {
         expectingError = b;
         foundErrors = f;
     }
-
-    /*@Override
-    public void visit(Tree.NamedArgument that) {
-        boolean b = expectingError;
-        List<AnalysisError> f = foundErrors;
-        expectingError = false;
-        foundErrors = new ArrayList<AnalysisError>();
-        //initExpectingError(that);
-        super.visit(that);
-        checkErrors(that);
-        expectingError = b;
-        foundErrors = f;
-    }
-
-    @Override
-    public void visit(Tree.SequencedArgument that) {
-        boolean b = expectingError;
-        List<AnalysisError> f = foundErrors;
-        expectingError = false;
-        foundErrors = new ArrayList<AnalysisError>();
-        //initExpectingError(that);
-        super.visit(that);
-        checkErrors(that);
-        expectingError = b;
-        foundErrors = f;
-    }*/
 
     private void checkErrors(Node that) {
         if (expectingError && foundErrors.size()==0)
@@ -104,7 +78,7 @@ public class AssertionVisitor extends Visitor {
                 foundErrors);
     }
 
-    private void initExpectingError(Tree.Statement that) {
+    private void initExpectingError(Tree.StatementOrArgument that) {
         for (Tree.CompilerAnnotation c: that.getCompilerAnnotations()) {
             if (c.getIdentifier().getText().equals("error")) {
                 expectingError = true;

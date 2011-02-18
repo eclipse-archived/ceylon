@@ -139,7 +139,7 @@ public class ExpressionVisitor extends Visitor {
             ProducedType type = sie.getExpression().getTypeModel();
             if ( type!=null && typedNode.getTypeModel()!=null) {
                 if ( !type.isExactly(typedNode.getTypeModel()) ) {
-                    sie.addError("Specifier expression not assignable to attribute type");
+                    sie.addError("specifier expression not assignable to attribute type");
                 }
             }
             else {
@@ -425,11 +425,11 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         
-        List<Tree.SequencedArgument> sa = nal.getSequencedArguments();
-        if (!sa.isEmpty()) {
+        Tree.SequencedArgument sa = nal.getSequencedArgument();
+        if (sa!=null) {
             Parameter sp = getSequencedParameter(pl);
             if (sp==null) {
-                nal.addError("no matching sequenced parameter");
+                sa.addError("no matching sequenced parameter");
             }
             else {
                 foundParameters.add(sp);

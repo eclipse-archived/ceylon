@@ -12,8 +12,8 @@ class Assignability() {
     @error method(Y(), Y());
     @error method(X(), X());
 
-    @error method { arg1=X(); arg2=X(); };
-    @error method { arg1=Y(); arg2=Y(); };
+    method { arg1=X(); @error arg2=X(); };
+    method { @error arg1=Y(); arg2=Y(); };
 
     this.X();
     this.X{};
@@ -22,31 +22,31 @@ class Assignability() {
     @error method(X());
     @error method(X(),Y(),this);
     
-    @error X{ y=Y(); };
+    X{ @error y=Y(); };
     @error method{ arg1=X(); };
-    @error method{ arg1=X(); arg2=Y(); arg3=this; };
+    method{ arg1=X(); arg2=Y(); @error arg3=this; };
     
-    @error X{ Y() };
-    @error method{ arg1=X(); arg2=Y(); this };
+    X{ @error Y() };
+    method{ arg1=X(); arg2=Y(); @error this };
     
     method { 
         X arg1 { return X(); }
         Y arg2 { return Y(); }
     };
     
-    @error method { 
+    method { 
         X arg1 { return X(); }
-        X arg2 { return X(); }
+        @error X arg2 { return X(); }
     };
     
     @error method { 
         X arg1 { return X(); }
     };
     
-    @error method { 
+    method { 
         X arg1 { return X(); }
         Y arg2 { return Y(); }
-        X arg3 { return X(); }
+        @error X arg3 { return X(); }
     };
     
     X x1 = X();

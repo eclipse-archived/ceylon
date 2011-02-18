@@ -839,7 +839,11 @@ functionalArguments
 arguments
     : positionalArguments | namedArguments
     ;
-    
+
+namedArgument2
+    : compilerAnnotation* namedArgument^
+    ;
+
 namedArgument
     : namedSpecifiedArgument | namedArgumentDeclaration
     ;
@@ -872,14 +876,14 @@ typedMethodOrGetterArgument
 
 namedSpecifiedArgument
     : parameterName specifier ';'
-    -> parameterName ^(SPECIFIED_ARGUMENT parameterName specifier)
+    -> ^(SPECIFIED_ARGUMENT parameterName specifier)
     ;
 
 //special rule for syntactic predicate
 //to distinguish between a named argument
 //and a sequenced argument
 namedArgumentStart
-    : specificationStart | declarationStart
+    : compilerAnnotation* (specificationStart | declarationStart)
     ;
 
 //special rule for syntactic predicates
@@ -895,8 +899,8 @@ parameterName
     ;
 
 namedArguments
-    : LBRACE ((namedArgumentStart) => namedArgument)* expressions? '}'
-    -> ^(NAMED_ARGUMENT_LIST[$LBRACE] namedArgument* ^(SEQUENCED_ARGUMENT expressions)?)
+    : LBRACE ((namedArgumentStart) => namedArgument2)* expressions2? '}'
+    -> ^(NAMED_ARGUMENT_LIST[$LBRACE] namedArgument2* ^(SEQUENCED_ARGUMENT expressions2)?)
     ;
 
 parExpression 
@@ -1101,6 +1105,10 @@ caseCondition
     -> ^(MATCH_CASE expressions)
     | isCaseCondition 
     | satisfiesCaseCondition
+    ;
+
+expressions2
+    : compilerAnnotation* expressions
     ;
 
 expressions
