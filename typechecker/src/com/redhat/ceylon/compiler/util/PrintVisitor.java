@@ -49,6 +49,12 @@ public class PrintVisitor extends Visitor {
         super.visitAny(node);
         depth--;
         if (depth==0) newline();
+        try {
+            stream.flush();
+        }
+        catch (IOException ioe) {
+            throw new RuntimeException(ioe);
+        }
     }
 
     private void print(Node node) {
