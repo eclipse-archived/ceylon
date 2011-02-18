@@ -22,6 +22,7 @@ import com.redhat.ceylon.compiler.model.Value;
 import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.tree.Tree.VariableOrExpression;
 import com.redhat.ceylon.compiler.tree.Visitor;
 
 /**
@@ -132,6 +133,27 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.Parameter that) {
         super.visit(that);
         checkType(that.getTypeOrSubtype(), that.getSpecifierExpression());
+    }
+    
+    @Override public void visit(Tree.ExistsCondition that) {
+        super.visit(that);
+        Class ot = (Class) Util.getLanguageModuleDeclaration("Optional", context);
+        VariableOrExpression voe = that.getVariableOrExpression();
+        ProducedType voet;
+        if (voe.getExpression()!=null) {
+            voet = voe.getExpression().getTypeModel();
+        }
+        else if (voe.getVariable()!=null) {
+            voet = voe.getVariable().getTypeOrSubtype().getTypeModel();
+        }
+        else {
+            voet=null;
+        }
+        if  (voet!=null) {
+            if (voet.getDeclaration()!=ot) {
+                voe.addError("must be of type Optional");
+            }
+        }
     }
 
     private void checkType(Node typedNode, Tree.SpecifierOrInitializerExpression sie) {

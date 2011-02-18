@@ -126,4 +126,10 @@ class Assignability() {
     void hi(@error String greeting = 1, String name = "World", Natural times = 1) {}
     class Hi(@error String greeting = 23.0, String name = "World", @error Natural times = "X") {}
     
+    X something = X();
+    @error X? nothing = null; //not really an error!
+    
+    @error if (exists something) {}
+    if (exists nothing) {}
+    
 }
