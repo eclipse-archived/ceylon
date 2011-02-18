@@ -18,6 +18,7 @@ import com.redhat.ceylon.compiler.model.ProducedType;
 import com.redhat.ceylon.compiler.model.Scope;
 import com.redhat.ceylon.compiler.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.model.Value;
 import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Tree.Expression;
@@ -54,6 +55,20 @@ public class ExpressionVisitor extends Visitor {
     public void visit(Tree.InterfaceDefinition that) {
         ClassOrInterface o = classOrInterface;
         classOrInterface = (Interface) that.getDeclarationModel();
+        super.visit(that);
+        classOrInterface = o;
+    }
+    
+    public void visit(Tree.ObjectDeclaration that) {
+        ClassOrInterface o = classOrInterface;
+        classOrInterface = (Class) ((Value) that.getDeclarationModel()).getType().getDeclaration();
+        super.visit(that);
+        classOrInterface = o;
+    }
+    
+    public void visit(Tree.ObjectArgument that) {
+        ClassOrInterface o = classOrInterface;
+        classOrInterface = (Class) ((Value) that.getDeclarationModel()).getType().getDeclaration();
         super.visit(that);
         classOrInterface = o;
     }
@@ -157,7 +172,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     @Override public void visit(Tree.AttributeArgument that) {
-        Tree.TypeOrSubtype rt = beginReturnScope(that.getType());
+        Tree.TypeOrSubtype rt = beginReturnScope(that.getTypeOrSubtype());
         super.visit(that);
         //TODO: inferType(that, that.getBlock());
         endReturnScope(rt);
@@ -443,8 +458,8 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
             }
-            else if (a instanceof Tree.AttributeArgument) {
-                ProducedType t = ((Tree.AttributeArgument) a).getType().getTypeModel();
+            else if (a instanceof Tree.TypedArgument) {
+                ProducedType t = ((Tree.TypedArgument) a).getTypeOrSubtype().getTypeModel();
                 if (t==null) {
                     a.addError("could not determine assignability of argument to parameter: " +
                             p.getName());

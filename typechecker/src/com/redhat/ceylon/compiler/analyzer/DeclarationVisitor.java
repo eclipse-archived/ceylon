@@ -64,15 +64,7 @@ public class DeclarationVisitor extends Visitor {
     
     private void visitDeclaration(Tree.Declaration that, Declaration model) {
         Tree.Identifier id = that.getIdentifier();
-        if (id==null || id.getText().startsWith("<missing")) {
-            that.addError("missing declaration name");
-        }
-        else {
-            String n = id.getText();
-            if (that instanceof Tree.ObjectDeclaration && model instanceof Class) {
-                n = "Type_" + n;
-            }
-            model.setName(n);
+        if ( setModelName(that, model, id) ) {
             checkForDuplicateDeclaration(that, model);
         }
         visitElement(that, model);
@@ -83,16 +75,33 @@ public class DeclarationVisitor extends Visitor {
 
     private void visitArgument(Tree.NamedArgument that, Declaration model) {
         Tree.Identifier id = that.getIdentifier();
-        if (id==null || id.getText().startsWith("<missing")) {
-            that.addError("missing declaration name");
-        }
-        else {
-            model.setName(id.getText());
-            //TODO: check for dupe arg name
-        }
+        setModelName(that, model, id);
         visitElement(that, model);
         that.setDeclarationModel(model);
         unit.getDeclarations().add(model);
+    }
+
+    private boolean setModelName(Node that, Declaration model,
+            Tree.Identifier id) {
+        if (id==null || id.getText().startsWith("<missing")) {
+            that.addError("missing declaration name");
+            return false;
+        }
+        else {
+            model.setName(internalName(that, model, id));
+            return true;
+            //TODO: check for dupe arg name
+        }
+    }
+
+    private String internalName(Node that, Declaration model,
+            Tree.Identifier id) {
+        String n = id.getText();
+        if ((that instanceof Tree.ObjectDeclaration||that instanceof Tree.ObjectArgument) 
+                && model instanceof Class) {
+            n = "Type_" + n;
+        }
+        return n;
     }
 
     private void checkForDuplicateDeclaration(Tree.Declaration that, 
@@ -231,7 +240,24 @@ public class DeclarationVisitor extends Visitor {
         functional = null;
         ProducedType t = new ProducedType();
         t.setDeclaration(c);
-        that.getLocalModifier().setTypeModel(t);
+        that.getTypeOrSubtype().setTypeModel(t);
+        v.setType(t);
+    }
+
+    @Override
+    public void visit(Tree.ObjectArgument that) {
+        Class c = new Class();
+        visitArgument(that, c);
+        Value v = new Value();
+        visitArgument(that, v);
+        functional = c;
+        Scope o = enterScope(c);
+        super.visit(that);
+        exitScope(o);
+        functional = null;
+        ProducedType t = new ProducedType();
+        t.setDeclaration(c);
+        that.getTypeOrSubtype().setTypeModel(t);
         v.setType(t);
     }
 

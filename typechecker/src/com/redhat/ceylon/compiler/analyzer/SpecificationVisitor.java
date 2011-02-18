@@ -152,6 +152,25 @@ public class SpecificationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.NamedArgument that) {
+        if (that.getDeclarationModel()==declaration) {
+            beginDisabledSpecificationScope();
+            super.visit(that);
+            declare();
+            endDisabledSpecificationScope(false);
+        }
+        else {
+            boolean c = beginDisabledSpecificationScope();
+            boolean d = beginDeclarationScope();
+            SpecificationState as = beginSpecificationScope();
+            super.visit(that);
+            endDisabledSpecificationScope(c);
+            endDeclarationScope(d);
+            endSpecificationScope(as);
+        }
+    }
+    
+    @Override
     public void visit(Tree.MethodDeclaration that) {
         //TODO: allow references to un-assigned things
         //      in interface bodies or the declaration
@@ -223,6 +242,24 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.AttributeArgument that) {
+        if (that.getDeclarationModel()==declaration) {
+            declare();
+            specify();
+        }
+        super.visit(that);        
+    }
+    
+    @Override
+    public void visit(Tree.ObjectDeclaration that) {
+        if (that.getDeclarationModel()==declaration) {
+            declare();
+            specify();
+        }
+        super.visit(that);        
+    }
+    
+    @Override
+    public void visit(Tree.ObjectArgument that) {
         if (that.getDeclarationModel()==declaration) {
             declare();
             specify();
