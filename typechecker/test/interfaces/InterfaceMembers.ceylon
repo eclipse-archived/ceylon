@@ -1,12 +1,5 @@
 interface Interfaces {
     
-    class String() {
-        shared String uppercase {
-            return this;
-        }
-    }
-    class Natural() {}
-    
     @error Natural count = 0;
     
     @error count++;
@@ -18,7 +11,7 @@ interface Interfaces {
     formal void print(String s);
     
     void printLine(String s) {
-        @error print(s + "\n"); //not really an error, just a todo
+        @error print(s + "\n");
     }
     
     String upper(String x) {
@@ -32,13 +25,13 @@ interface Interfaces {
     }
     
     abstract class NestedAbstractClass() {
-        String hello = upper(String());
+        String hello = upper("hello");
         formal Natural times;
     }
     
     class MemberClass() {
-        String hello = upper(String());
-        @error Natural times = 1; //TODO: not really an error
+        String goodbye = upper("goodbye");
+        Natural times = 1;
     }
     
     @error MemberClass();
@@ -52,7 +45,7 @@ interface Interfaces {
     }
     
     String warning {
-        return String();
+        return "Watch out!";
     }
     
     void usesSuperAndThis() {
