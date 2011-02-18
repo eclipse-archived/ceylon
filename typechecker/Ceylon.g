@@ -976,14 +976,13 @@ parameter
       parameterType
       parameterName
       (
-         valueParameter?
-        -> ^(VALUE_PARAMETER annotations? parameterType parameterName)
-        |  parameters+   //for callable parameters
-        -> ^(FUNCTIONAL_PARAMETER annotations? parameterType parameterName parameters+)
+         valueParameter? specifier?
+        -> ^(VALUE_PARAMETER annotations? parameterType parameterName specifier?)
+        |  parameters+ specifier? //for callable parameters
+        -> ^(FUNCTIONAL_PARAMETER annotations? parameterType parameterName parameters+ specifier?)
       /*| iteratedParameter 
       | (specifiedParameterStart) => specifiedParameter*/
-      ) 
-      specifier?   //for defaulted parameters
+      )
     ;
 
 valueParameter

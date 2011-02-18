@@ -111,4 +111,16 @@ class Assignability() {
     for (X x in {X(), X()} ) {}
     @error for (Y y in {X(), X()} ) {}
     
+    void hello(String greeting = "Hello", String name = "World") {}
+    
+    hello("Hi", "Gavin");
+    hello("Hi");
+    hello();
+    @error hello("Hi", "Gavin", "Foo");
+    
+    hello{ name = "Gavin"; };
+    hello{ greeting = "Hi"; };
+    hello{ greeting = "Hi"; name = "Gavin"; };
+    hello{};
+    
 }
