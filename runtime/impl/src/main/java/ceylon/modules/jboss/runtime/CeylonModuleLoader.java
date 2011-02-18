@@ -31,6 +31,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.jboss.modules.*;
+import org.jboss.modules.filter.PathFilter;
+import org.jboss.modules.filter.PathFilters;
 
 import ceylon.lang.modules.Import;
 import ceylon.lang.modules.Module;
@@ -152,7 +154,8 @@ public class CeylonModuleLoader extends ModuleLoader
          final List<DependencySpec> deps = new ArrayList<DependencySpec>();
          ModuleSpec.Builder builder = ModuleSpec.build(moduleIdentifier);
          ResourceLoader resourceLoader = ResourceLoaderProvider.getResourceLoader(moduleIdentifier, repository, moduleFile);
-         builder.addResourceRoot(resourceLoader);
+         ResourceLoaderSpec rls = ResourceLoaderSpec.createResourceLoaderSpec(resourceLoader);
+         builder.addResourceRoot(rls);
 
          Graph.Vertex<ModuleIdentifier, Boolean> vertex = graph.createVertex(moduleIdentifier, moduleIdentifier);
 

@@ -37,9 +37,9 @@ import java.util.jar.Manifest;
 
 import org.jboss.modules.ClassSpec;
 import org.jboss.modules.PackageSpec;
-import org.jboss.modules.PathFilter;
 import org.jboss.modules.Resource;
 import org.jboss.modules.ResourceLoader;
+import org.jboss.modules.filter.PathFilter;
 
 /**
  * Ceylon archive resource loader.

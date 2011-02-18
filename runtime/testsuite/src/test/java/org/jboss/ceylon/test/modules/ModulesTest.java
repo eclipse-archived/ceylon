@@ -36,7 +36,7 @@ import org.jboss.shrinkwrap.api.exporter.ZipExporter;
 import org.jboss.util.file.Files;
 
 import ceylon.modules.Main;
-import ceylon.modules.mc.runtime.MicrocontainerRuntime;
+import ceylon.modules.jboss.runtime.JBossRuntime;
 import ceylon.modules.spi.Constants;
 import org.junit.Assert;
 
@@ -47,7 +47,7 @@ import org.junit.Assert;
  */
 public abstract class ModulesTest
 {
-   private Class<? extends ceylon.modules.spi.runtime.Runtime> runtimeClazz = MicrocontainerRuntime.class;
+   private Class<? extends ceylon.modules.spi.runtime.Runtime> runtimeClazz = JBossRuntime.class; // TODO -- fixme; //MicrocontainerRuntime.class;
    
    protected File createModuleFile(File tmpdir, Archive module) throws Exception
    {

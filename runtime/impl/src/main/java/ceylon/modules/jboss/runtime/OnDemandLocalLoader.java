@@ -101,11 +101,4 @@ class OnDemandLocalLoader implements LocalLoader
       LocalLoader ll = doUpdate(tokens);
       return (ll != null ? ll.loadResourceLocal(name) : Collections.<Resource>emptyList());
    }
-
-   public Resource loadResourceLocal(String root, String name)
-   {
-      String[] tokens = name.split("/");
-      LocalLoader ll = doUpdate(tokens);
-      return (ll != null ? ll.loadResourceLocal(root, name) : null);
-   }
 }

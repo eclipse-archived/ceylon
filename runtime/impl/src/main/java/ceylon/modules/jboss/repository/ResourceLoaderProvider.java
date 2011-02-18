@@ -27,8 +27,8 @@ import java.io.IOException;
 import java.util.jar.JarFile;
 
 import org.jboss.modules.ModuleIdentifier;
-import org.jboss.modules.PathFilters;
 import org.jboss.modules.ResourceLoader;
+import org.jboss.modules.filter.PathFilters;
 
 import ceylon.modules.spi.repository.Repository;
 

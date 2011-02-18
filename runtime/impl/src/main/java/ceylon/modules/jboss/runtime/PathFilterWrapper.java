@@ -22,7 +22,7 @@
 
 package ceylon.modules.jboss.runtime;
 
-import org.jboss.modules.PathFilter;
+import org.jboss.modules.filter.PathFilter;
 
 /**
  * Ceylon to Module path filter wrapper.
