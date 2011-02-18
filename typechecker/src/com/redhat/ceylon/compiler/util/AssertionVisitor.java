@@ -62,7 +62,7 @@ public class AssertionVisitor extends Visitor {
         foundErrors = f;
     }
 
-    @Override
+    /*@Override
     public void visit(Tree.NamedArgument that) {
         boolean b = expectingError;
         List<AnalysisError> f = foundErrors;
@@ -86,7 +86,7 @@ public class AssertionVisitor extends Visitor {
         checkErrors(that);
         expectingError = b;
         foundErrors = f;
-    }
+    }*/
 
     private void checkErrors(Node that) {
         if (expectingError && foundErrors.size()==0)

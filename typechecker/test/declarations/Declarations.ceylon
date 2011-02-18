@@ -5,6 +5,10 @@ interface Declarations {
     
     void doSomething() {}
     
+    Y createSomething() { return Y(); }
+    
+    Y something { return createSomething(); }
+    
     @error class WithoutArgs {}
     
     @error void withoutArgs {}
@@ -30,5 +34,9 @@ interface Declarations {
     @error interface {}
     @error local { return Y(); }
     @error local () { return Y(); }
+    
+    object x {
+        String hello = "Hello";
+    }
 
 }
