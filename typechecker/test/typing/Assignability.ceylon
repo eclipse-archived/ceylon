@@ -3,7 +3,9 @@ class Assignability() {
     class X() {
         shared String hello = "Hello";
     }
-    class Y() {}
+    class Y() {
+        shared String name = "Gavin";
+    }
     
     void method(X arg1, Y arg2) {}
     
@@ -132,21 +134,47 @@ class Assignability() {
     X? nothing {
         @error return null; //not really an error!
     }
-    
     @error nothing.hello;
+    Boolean b = 1<2;
+    
+    if (b) {}
+    
+    @error if (something) {}
+        
     if (exists nothing) {
         nothing.hello;
     }
+    
     if (exists X x = nothing) {
         x.hello;
     }
+    
+    if (exists local xx = nothing) {
+        xx.hello;
+    }
+    
+    if (exists @error Y y = nothing) {
+        y.hello;
+    }
+    
     if (exists @error X x = something) {
         x.hello;
     }
+    
+    if (exists @error local xx = something) {
+        @error xx.hello;
+    }
+    
     @error if (exists something.hello) {}
     //@error if (exists something) {}
     
-    Boolean b = 1<2;
-    if (b) {}
-    @error if (something) {}
+    if (is Y something) {
+        something.name;
+    }
+
+    if (is Y y = something) {
+        y.name;
+    }
+    
+    if (is Y X()) {}
 }

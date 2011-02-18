@@ -1055,8 +1055,10 @@ nonemptyCondition
     ;
 
 isCondition
-    : '(' IS_OP type (memberName specifier | expression) ')'
-    -> ^(IS_CONDITION[$IS_OP] type ^(VARIABLE type memberName specifier?)? expression?)
+    : ('(' IS_OP type LIDENTIFIER ')') => '(' IS_OP type memberName ')'
+    -> ^(IS_CONDITION[$IS_OP] type ^(VARIABLE type memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(MEMBER memberName)))))
+    | '(' IS_OP type (memberName specifier | expression) ')'
+    -> ^(IS_CONDITION[$IS_OP] type ^(VARIABLE type memberName specifier)? expression?)
     ;
 
 satisfiesCondition

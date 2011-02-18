@@ -101,6 +101,15 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
+    @Override public void visit(Tree.IsCondition that) {
+        if (that.getVariable()!=null) {
+            visit(that.getVariable().getSpecifierExpression());
+        }
+        if (that.getExpression()!=null) {
+            visit(that.getExpression());
+        }
+    }
+    
     @Override public void visit(Tree.ExistsCondition that) {
         ProducedType t = null;
         Node n = that;
@@ -190,16 +199,18 @@ public class ExpressionVisitor extends Visitor {
         if (se!=null) {
             ProducedType et = se.getExpression().getTypeModel();
             ProducedType vt = var.getTypeOrSubtype().getTypeModel();
-            if ( et!=null && vt!=null) {
-                //TODO: use subtyping!
-                ProducedType it = new ProducedType();
-                it.setDeclaration( (TypeDeclaration) Util.getLanguageModuleDeclaration("Iterable", context) );
-                it.getTypeArguments().add(vt);
-                ProducedType st = new ProducedType();
-                st.setDeclaration( (TypeDeclaration) Util.getLanguageModuleDeclaration("Sequence", context) );
-                st.getTypeArguments().add(vt);
-                if ( !et.isExactly(it) && !et.isExactly(st)  ) {
-                    var.addError("specifier expression not an iterable type");
+            if (et!=null) {
+                if (vt!=null) {
+                    //TODO: use subtyping!
+                    ProducedType it = new ProducedType();
+                    it.setDeclaration( (TypeDeclaration) Util.getLanguageModuleDeclaration("Iterable", context) );
+                    it.getTypeArguments().add(vt);
+                    ProducedType st = new ProducedType();
+                    st.setDeclaration( (TypeDeclaration) Util.getLanguageModuleDeclaration("Sequence", context) );
+                    st.getTypeArguments().add(vt);
+                    if ( !et.isExactly(it) && !et.isExactly(st)  ) {
+                        var.addError("variable has wrong type for iterated expression");
+                    }
                 }
             }
             else {
@@ -213,12 +224,16 @@ public class ExpressionVisitor extends Visitor {
         if (se!=null) {
             ProducedType et = se.getExpression().getTypeModel();
             ProducedType vt = var.getTypeOrSubtype().getTypeModel();
-            if ( et!=null && vt!=null) {
-                ProducedType ot = new ProducedType();
-                ot.setDeclaration( (TypeDeclaration) Util.getLanguageModuleDeclaration("Optional", context) );
-                ot.getTypeArguments().add(vt);
-                if ( !et.isExactly(ot) ) {
-                    var.addError("specifier expression not an optional type");
+            if (et!=null) {
+                if (vt!=null) {
+                    ProducedType ot = new ProducedType();
+                    ot.setDeclaration( (TypeDeclaration) Util.getLanguageModuleDeclaration("Optional", context) );
+                    ot.getTypeArguments().add(vt);
+                    if ( !et.isExactly(ot) ) {
+                        var.addError("variable has wrong type for specified optional expression: " +
+                                Util.name(var));
+                    }
+                    //else type inference failed
                 }
             }
             else {
@@ -282,7 +297,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void inferType(Tree.TypedDeclaration that, Tree.SpecifierOrInitializerExpression spec) {
-        if ((that.getTypeOrSubtype() instanceof Tree.LocalModifier)) {
+        if (that.getTypeOrSubtype() instanceof Tree.LocalModifier) {
             if (spec!=null) {
                 setType((Tree.LocalModifier) that.getTypeOrSubtype(), spec, that);
             }
@@ -294,7 +309,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void inferOptionalType(Tree.Variable that) {
-        if ((that.getTypeOrSubtype() instanceof Tree.LocalModifier)) {
+        if (that.getTypeOrSubtype() instanceof Tree.LocalModifier) {
             Tree.SpecifierExpression se = that.getSpecifierExpression();
             if (se!=null) {
                 setOptionalType((Tree.LocalModifier) that.getTypeOrSubtype(), se, that);
@@ -308,12 +323,16 @@ public class ExpressionVisitor extends Visitor {
 
     private void setOptionalType(Tree.LocalModifier local, 
             Tree.SpecifierExpression s, 
-            Tree.TypedDeclaration that) {
+            Tree.Variable that) {
         ProducedType ot = s.getExpression().getTypeModel();
         if (ot!=null && ot.getTypeArguments().size()==1) {
             ProducedType t = ot.getTypeArguments().get(0);
             local.setTypeModel(t);
             ((TypedDeclaration) that.getDeclarationModel()).setType(t);
+        }
+        else {
+            that.addError("could not infer type of: " + 
+                    Util.name(that));
         }
     }
     
