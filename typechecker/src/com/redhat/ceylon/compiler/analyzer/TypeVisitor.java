@@ -131,17 +131,11 @@ public class TypeVisitor extends Visitor {
     }
 
     @Override 
-    public void visit(Tree.MethodArgument that) {
+    public void visit(Tree.TypedArgument that) {
         super.visit(that);
         setType(that, Util.name(that), that.getTypeOrSubtype());
     }
-    
-    @Override 
-    public void visit(Tree.AttributeArgument that) {
-        super.visit(that);
-        setType(that, Util.name(that), that.getType());
-    }
-    
+        
     private void setType(Node that, String name, Tree.TypeOrSubtype type) {
         if (type==null) {
             that.addError("missing type of declaration: " + name);

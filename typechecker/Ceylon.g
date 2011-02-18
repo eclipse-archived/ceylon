@@ -852,7 +852,7 @@ namedArgumentDeclaration
     
 objectArgument
     : OBJECT_DECLARATION parameterName extendedType? satisfiedTypes? classBody
-    -> ^(OBJECT_ARGUMENT[$OBJECT_DECLARATION] parameterName extendedType? satisfiedTypes? classBody)
+    -> ^(OBJECT_ARGUMENT[$OBJECT_DECLARATION] LOCAL_MODIFIER parameterName extendedType? satisfiedTypes? classBody)
     ;
 
 voidMethodArgument

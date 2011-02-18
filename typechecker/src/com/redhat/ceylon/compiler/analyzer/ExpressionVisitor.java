@@ -157,7 +157,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     @Override public void visit(Tree.AttributeArgument that) {
-        Tree.TypeOrSubtype rt = beginReturnScope(that.getType());
+        Tree.TypeOrSubtype rt = beginReturnScope(that.getTypeOrSubtype());
         super.visit(that);
         //TODO: inferType(that, that.getBlock());
         endReturnScope(rt);
@@ -443,8 +443,8 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
             }
-            else if (a instanceof Tree.AttributeArgument) {
-                ProducedType t = ((Tree.AttributeArgument) a).getType().getTypeModel();
+            else if (a instanceof Tree.TypedArgument) {
+                ProducedType t = ((Tree.TypedArgument) a).getTypeOrSubtype().getTypeModel();
                 if (t==null) {
                     a.addError("could not determine assignability of argument to parameter: " +
                             p.getName());

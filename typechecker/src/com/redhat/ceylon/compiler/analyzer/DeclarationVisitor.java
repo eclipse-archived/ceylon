@@ -231,7 +231,7 @@ public class DeclarationVisitor extends Visitor {
         functional = null;
         ProducedType t = new ProducedType();
         t.setDeclaration(c);
-        that.getLocalModifier().setTypeModel(t);
+        that.getTypeOrSubtype().setTypeModel(t);
         v.setType(t);
     }
 

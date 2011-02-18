@@ -231,6 +231,24 @@ public class SpecificationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.ObjectDeclaration that) {
+        if (that.getDeclarationModel()==declaration) {
+            declare();
+            specify();
+        }
+        super.visit(that);        
+    }
+    
+    @Override
+    public void visit(Tree.ObjectArgument that) {
+        if (that.getDeclarationModel()==declaration) {
+            declare();
+            specify();
+        }
+        super.visit(that);        
+    }
+    
+    @Override
     public void visit(Tree.ClassDefinition that) {
         if (that.getDeclarationModel()==declaration) {
             declare();
