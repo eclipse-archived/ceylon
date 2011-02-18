@@ -3,14 +3,14 @@ Table args {
 	rows = process.switches.size;
 	border = Border(1,1);
 	Column {
-		title = "name";
+	    heading = "name";
 		width = 5;
         String content(Natural row) {
             return process.switches[row].name;
         }
 	},
 	Column {
-		title = "value";
+	    heading = "value";
 		width = 5;
         String content(Natural row) {
             return process.switches[row].value ? "";
