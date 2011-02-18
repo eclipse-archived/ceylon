@@ -972,14 +972,15 @@ parametersStart
 // enforce the rule that the ... appears at the end of the parapmeter
 // list in a later pass of the compiler.
 parameter
-    : annotations? 
+    : compilerAnnotation*
+      annotations?
       parameterType
       parameterName
       (
          valueParameter? specifier?
-        -> ^(VALUE_PARAMETER annotations? parameterType parameterName specifier?)
+        -> ^(VALUE_PARAMETER compilerAnnotation* annotations? parameterType parameterName specifier?)
         |  parameters+ specifier? //for callable parameters
-        -> ^(FUNCTIONAL_PARAMETER annotations? parameterType parameterName parameters+ specifier?)
+        -> ^(FUNCTIONAL_PARAMETER compilerAnnotation* annotations? parameterType parameterName parameters+ specifier?)
       /*| iteratedParameter 
       | (specifiedParameterStart) => specifiedParameter*/
       )

@@ -129,6 +129,11 @@ public class ExpressionVisitor extends Visitor {
         checkType(that.getMember(), that.getSpecifierExpression());
     }
 
+    @Override public void visit(Tree.Parameter that) {
+        super.visit(that);
+        checkType(that.getTypeOrSubtype(), that.getSpecifierExpression());
+    }
+
     private void checkType(Node typedNode, Tree.SpecifierOrInitializerExpression sie) {
         if (sie!=null) {
             ProducedType type = sie.getExpression().getTypeModel();

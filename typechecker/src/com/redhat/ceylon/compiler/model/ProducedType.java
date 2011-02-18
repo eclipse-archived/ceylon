@@ -22,7 +22,12 @@ public class ProducedType extends MemberReference {
 		if (!typeArguments.isEmpty()) {
 			producedTypeName+="<";
 			for (ProducedType t: typeArguments) {
-				producedTypeName+=t.getProducedTypeName() + ",";
+			    if (t==null) {
+			        producedTypeName+="null";
+			    }
+			    else {
+			        producedTypeName+=t.getProducedTypeName() + ",";
+			    }
 			}
 			producedTypeName+=">";
 		}

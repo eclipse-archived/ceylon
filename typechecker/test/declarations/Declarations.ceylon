@@ -38,5 +38,10 @@ interface Declarations {
     object x {
         String hello = "Hello";
     }
+    
+    void a(String s = "a string") {}
+    class A(Natural count = 1) {}
+    
+    void dup(String name, @error String name) {}
 
 }

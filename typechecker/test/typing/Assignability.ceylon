@@ -123,4 +123,7 @@ class Assignability() {
     hello{ greeting = "Hi"; name = "Gavin"; };
     hello{};
     
+    void hi(@error String greeting = 1, String name = "World", Natural times = 1) {}
+    class Hi(@error String greeting = 23.0, String name = "World", @error Natural times = "X") {}
+    
 }
