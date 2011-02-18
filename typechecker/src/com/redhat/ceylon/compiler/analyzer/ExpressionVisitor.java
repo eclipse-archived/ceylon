@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.analyzer;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.redhat.ceylon.compiler.context.Context;
 import com.redhat.ceylon.compiler.model.Class;
@@ -18,6 +20,7 @@ import com.redhat.ceylon.compiler.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
+import com.redhat.ceylon.compiler.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.tree.Visitor;
 
 /**
@@ -386,42 +389,133 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void checkNamedArguments(ParameterList pl,
-            Tree.NamedArgumentList nal) {
-        List<Tree.NamedArgument> na = nal.getNamedArguments();
-        int n = na.size();
-        if (nal.getSequencedArguments()!=null) {
-            n++;
+    private void checkNamedArguments(ParameterList pl, Tree.NamedArgumentList nal) {
+        List<Tree.NamedArgument> na = nal.getNamedArguments();        
+        Set<Parameter> foundParameters = new HashSet<Parameter>();
+        
+        for (Tree.NamedArgument a: na) {
+            Parameter p = getMatchingParameter(pl, a);
+            if (p==null) {
+                a.addError("no matching parameter for named argument: " + 
+                        Util.name(a));
+            }
+            else {
+                foundParameters.add(p);
+                checkNamedArgument(a, p);
+            }
         }
-        if ( pl.getParameters().size()!=n ) {
-            nal.addError("wrong number of arguments");
+        
+        List<Tree.SequencedArgument> sa = nal.getSequencedArguments();
+        if (!sa.isEmpty()) {
+            Parameter sp = getSequencedParameter(pl);
+            if (sp==null) {
+                nal.addError("no matching sequenced parameter");
+            }
+            else {
+                foundParameters.add(sp);
+            }
+            //TODO: check type!
         }
-        //TODO!!
+            
+        for (Parameter p: pl.getParameters()) {
+            if (!foundParameters.contains(p) && !p.isDefaulted()) {
+                nal.addError("missing named argument to parameter: " + 
+                        p.getName());
+            }
+        }
+    }
+
+    private void checkNamedArgument(Tree.NamedArgument a, Parameter p) {
+        if (p.getType()==null) {
+            a.addError("parameter type not known: " + Util.name(a));
+        }
+        else {
+            if (a instanceof Tree.SpecifiedArgument) {
+                ProducedType t = ((Tree.SpecifiedArgument) a).getSpecifierExpression().getExpression().getTypeModel();
+                if (t==null) {
+                    a.addError("could not determine assignability of argument to parameter: " +
+                            p.getName());
+                }
+                else {
+                    if ( !p.getType().isExactly(t) ) {
+                        a.addError("named argument not assignable to parameter type: " + 
+                                Util.name(a));
+                    }
+                }
+            }
+            else if (a instanceof Tree.AttributeArgument) {
+                ProducedType t = ((Tree.AttributeArgument) a).getType().getTypeModel();
+                if (t==null) {
+                    a.addError("could not determine assignability of argument to parameter: " +
+                            p.getName());
+                }
+                else {
+                    if ( !p.getType().isExactly(t) ) {
+                        a.addError("argument not assignable to parameter type: " + 
+                                Util.name(a));
+                    }
+                }
+            }
+        }
+    }
+    
+    private Parameter getMatchingParameter(ParameterList pl, Tree.NamedArgument na) {
+        for (Parameter p: pl.getParameters()) {
+            if (p.getName().equals(na.getIdentifier().getText())) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    private Parameter getSequencedParameter(ParameterList pl) {
+        int s = pl.getParameters().size();
+        if (s==0) return null;
+        Parameter p = pl.getParameters().get(s-1);
+        if (p.isSequenced()) {
+            return p;
+        }
+        else {
+            return null;
+        }
     }
 
     private void checkPositionalArguments(ParameterList pl,
             Tree.PositionalArgumentList pal) {
-        List<Tree.PositionalArgument> pa = pal.getPositionalArguments();
-        if ( pl.getParameters().size()!=pa.size() ) {
-            pal.addError("wrong number of arguments");
-        }
-        else {
-            for (int i=0; i<pl.getParameters().size(); i++) {
-                Parameter p = pl.getParameters().get(i);
-                ProducedType paramType = p.getType();
-                Tree.PositionalArgument a = pa.get(i);
-                ProducedType argType = a.getExpression().getTypeModel();
-                if (paramType!=null && argType!=null) {
-                    if (!paramType.isExactly(argType)) {
-                        a.addError("argument not assignable to parameter type: " + 
+        List<Tree.PositionalArgument> args = pal.getPositionalArguments();
+        List<Parameter> params = pl.getParameters();
+        for (int i=0; i<params.size(); i++) {
+            Parameter p = params.get(i);
+            ProducedType paramType = p.getType();
+            if (i>=args.size()) {
+                if (!p.isDefaulted() && !p.isSequenced()) {
+                    pal.addError("no argument to parameter: " + p.getName());
+                }
+            }
+            else {
+                Tree.PositionalArgument a = args.get(i);
+                Expression e = a.getExpression();
+                if (e==null) {
+                    //TODO: this case is temporary until we get support for SPECIAL_ARGUMENTs
+                }
+                else {
+                    ProducedType argType = e.getTypeModel();
+                    if (paramType!=null && argType!=null) {
+                        if (!paramType.isExactly(argType)) {
+                            a.addError("argument not assignable to parameter type: " + 
+                                    p.getName());
+                        }
+                    }
+                    else {
+                        a.addError("could not determine assignability of argument to parameter: " +
                                 p.getName());
                     }
                 }
-                else {
-                    a.addError("could not determine assignability of argument to parameter: " +
-                            p.getName());
-                }
             }
+        }
+        //TODO: sequenced arguments!
+        for (int i=params.size(); i<args.size(); i++) {
+            args.get(i).addError("no matching parameter for argument");
         }
     }
     

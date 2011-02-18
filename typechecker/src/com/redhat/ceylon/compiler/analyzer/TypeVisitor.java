@@ -164,7 +164,7 @@ public class TypeVisitor extends Visitor {
      */
     @Override
     public void visit(Tree.MemberExpression that) {
-        that.getPrimary().visit(this);            
+        that.getPrimary().visit(this);
     }
     
 }
