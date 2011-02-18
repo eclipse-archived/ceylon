@@ -1,8 +1,10 @@
 shared object process {
 
-    shared List<String> args;
+    shared String[] args;
+    
+    shared Entry<String, String>[] switches;
 
-    shared Map<String,String> properties;
+    shared Correspondence<String,String> properties;
 
     shared extension OutputStream output;
     shared extension InputStream input;

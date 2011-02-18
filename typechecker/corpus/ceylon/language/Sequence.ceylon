@@ -25,7 +25,7 @@ shared interface Sequence<out X>
         }
     }
     
-    shared actual default Boolean size {
+    shared actual default Natural size {
         if (exists lastIndex) {
             return lastIndex+1;
         }
