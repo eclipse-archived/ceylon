@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.model.Interface;
 import com.redhat.ceylon.compiler.model.Method;
 import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.ParameterList;
+import com.redhat.ceylon.compiler.model.ProducedType;
 import com.redhat.ceylon.compiler.model.Scope;
 import com.redhat.ceylon.compiler.model.Setter;
 import com.redhat.ceylon.compiler.model.TypeParameter;
@@ -67,7 +68,11 @@ public class DeclarationVisitor extends Visitor {
             that.addError("missing declaration name");
         }
         else {
-            model.setName(id.getText());
+            String n = id.getText();
+            if (that instanceof Tree.ObjectDeclaration && model instanceof Class) {
+                n = "Type_" + n;
+            }
+            model.setName(n);
             checkForDuplicateDeclaration(that, model);
         }
         visitElement(that, model);
@@ -211,6 +216,23 @@ public class DeclarationVisitor extends Visitor {
             that.addError("missing parameter list in named argument declaration: " + 
                     Util.name(that) );
         }
+    }
+
+    @Override
+    public void visit(Tree.ObjectDeclaration that) {
+        Class c = new Class();
+        visitDeclaration(that, c);
+        Value v = new Value();
+        visitDeclaration(that, v);
+        functional = c;
+        Scope o = enterScope(c);
+        super.visit(that);
+        exitScope(o);
+        functional = null;
+        ProducedType t = new ProducedType();
+        t.setDeclaration(c);
+        that.getLocalModifier().setTypeModel(t);
+        v.setType(t);
     }
 
     @Override

@@ -319,7 +319,8 @@ retryDirective
     ;
 
 objectDeclaration
-    : 'object'^ memberName extendedType? satisfiedTypes? classBody
+    : OBJECT_DECLARATION memberName extendedType? satisfiedTypes? classBody
+    -> ^(OBJECT_DECLARATION LOCAL_MODIFIER memberName extendedType? satisfiedTypes? classBody) 
     ;
 
 voidMethodDeclaration
