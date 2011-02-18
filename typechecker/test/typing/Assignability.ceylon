@@ -116,8 +116,17 @@ class Assignability() {
         return X();
     }
     
-    for (X x in {X(), X()} ) {}
-    for (@error Y y in {X(), X()} ) {}
+    for (X x in {X(), X()} ) {
+        x.hello;
+    }
+    
+    for (local x in {X(), X()} ) {
+        x.hello;
+    }
+    
+    for (@error Y y in {X(), X()} ) {
+        y.name;
+    }
     
     void hello(String greeting = "Hello", String name = "World") {}
     

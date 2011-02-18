@@ -154,7 +154,7 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.ValueIterator that) {
         super.visit(that);
-        //TODO: infer type from arguments to Iterable<V>
+        inferIterableType(that.getVariable(), that.getSpecifierExpression());
         checkIterableType(that.getVariable(), that.getSpecifierExpression());
     }
 
@@ -311,6 +311,18 @@ public class ExpressionVisitor extends Visitor {
     private void inferOptionalType(Tree.Variable that) {
         if (that.getTypeOrSubtype() instanceof Tree.LocalModifier) {
             Tree.SpecifierExpression se = that.getSpecifierExpression();
+            if (se!=null) {
+                setOptionalType((Tree.LocalModifier) that.getTypeOrSubtype(), se, that);
+            }
+            else {
+                that.addError("could not infer type of: " + 
+                        Util.name(that));
+            }
+        }
+    }
+
+    private void inferIterableType(Tree.Variable that, Tree.SpecifierExpression se) {
+        if (that.getTypeOrSubtype() instanceof Tree.LocalModifier) {
             if (se!=null) {
                 setOptionalType((Tree.LocalModifier) that.getTypeOrSubtype(), se, that);
             }
