@@ -22,11 +22,11 @@ public class ProducedType extends MemberReference {
 		if (!typeArguments.isEmpty()) {
 			producedTypeName+="<";
 			for (ProducedType t: typeArguments) {
-				producedTypeName+=t.getProducedTypeName();
+				producedTypeName+=t.getProducedTypeName() + ",";
 			}
 			producedTypeName+=">";
 		}
-		return producedTypeName;
+		return producedTypeName.replace(",>", ">");
 	}
 	
 	public boolean isExactly(ProducedType that) {
