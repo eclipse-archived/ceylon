@@ -82,7 +82,7 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
       String moduleClassName = name + ".Module"; // TODO -- allow for top level method
       ceylon.lang.modules.Module runtimeModule = loadModule(cl, moduleClassName);
       if (runtimeModule == null)
-         throw new IllegalArgumentException("Something went very wrong, missing runtime module!");
+         throw new IllegalArgumentException("Something went very wrong, missing runtime module!"); // TODO -- dump some more useful msg
 
       ceylon.lang.Runnable runnable = runtimeModule.getProcess();
       if (runnable != null)
