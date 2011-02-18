@@ -29,7 +29,6 @@ import java.util.jar.JarFile;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ResourceLoader;
 import org.jboss.modules.ResourceLoaders;
-import org.jboss.modules.filter.PathFilters;
 
 import ceylon.modules.spi.repository.Repository;
 
@@ -57,7 +56,7 @@ public class ResourceLoaderProvider
       File classesRoot = repository.getCompileDirectory();
       if (classesRoot != null)
       {
-         return new SourceResourceLoader(moduleFile, classesRoot, "", PathFilters.acceptAll());
+         return new SourceResourceLoader(moduleFile, classesRoot, "");
       }
       else
       {

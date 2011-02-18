@@ -38,8 +38,6 @@ import org.jboss.modules.ClassSpec;
 import org.jboss.modules.PackageSpec;
 import org.jboss.modules.Resource;
 import org.jboss.modules.ResourceLoader;
-import org.jboss.modules.filter.PathFilter;
-import org.jboss.modules.filter.PathFilters;
 
 import ceylon.modules.api.compiler.CompilerAdapterFactory;
 
@@ -53,10 +51,9 @@ class SourceResourceLoader implements ResourceLoader
    private File sourcesRoot;
    private File classesRoot;
    private String rootName;
-   private PathFilter exportFilter;
    private Manifest manifest;
 
-   SourceResourceLoader(File sourcesRoot, File classesRoot, String rootName, PathFilter exportFilter)
+   SourceResourceLoader(File sourcesRoot, File classesRoot, String rootName)
    {
       if (sourcesRoot == null)
          throw new IllegalArgumentException("Null sources root");
@@ -64,13 +61,10 @@ class SourceResourceLoader implements ResourceLoader
          throw new IllegalArgumentException("Null classes root");
       if (rootName == null)
          throw new IllegalArgumentException("Null root name");
-      if (exportFilter == null)
-         exportFilter = PathFilters.acceptAll();
 
       this.sourcesRoot = sourcesRoot;
       this.classesRoot = classesRoot;
       this.rootName = rootName;
-      this.exportFilter = exportFilter;
 
       final File manifestFile = new File(sourcesRoot, "META-INF" + File.separator + "MANIFEST.MF");
       manifest = readManifestFile(manifestFile);
@@ -246,11 +240,6 @@ class SourceResourceLoader implements ResourceLoader
       List<String> paths = new ArrayList<String>();
       buildIndex(paths, sourcesRoot, "");
       return paths;
-   }
-
-   public PathFilter getExportFilter()
-   {
-      return exportFilter;
    }
 
    private void buildIndex(final List<String> index, final File root, final String pathBase)
