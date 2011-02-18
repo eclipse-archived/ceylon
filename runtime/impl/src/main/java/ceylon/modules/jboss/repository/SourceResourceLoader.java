@@ -103,8 +103,7 @@ class SourceResourceLoader implements ResourceLoader
 
    public ClassSpec getClassSpec(String name) throws IOException
    {
-      final String compiledFile = fileNameOfClass(name, "class");
-      File file = new File(classesRoot, compiledFile);
+      File file = new File(classesRoot, name);
       if (file.exists())
       {
          return toClassSpec(file);

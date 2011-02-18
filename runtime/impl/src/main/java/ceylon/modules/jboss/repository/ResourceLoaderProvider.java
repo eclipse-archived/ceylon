@@ -28,6 +28,7 @@ import java.util.jar.JarFile;
 
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ResourceLoader;
+import org.jboss.modules.ResourceLoaders;
 import org.jboss.modules.filter.PathFilters;
 
 import ceylon.modules.spi.repository.Repository;
@@ -61,8 +62,8 @@ public class ResourceLoaderProvider
       else
       {
          JarFile jarFile = new JarFile(moduleFile);
-         String rootName = moduleIdentifier + ".car"; // TODO -- ok?         
-         return new CarFileResourceLoader(jarFile, rootName, PathFilters.acceptAll());
+         String rootName = moduleIdentifier + ".car"; // TODO -- ok?
+         return ResourceLoaders.createJarResourceLoader(rootName, jarFile);
       }
    }
 }
