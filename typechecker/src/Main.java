@@ -55,10 +55,10 @@ public class Main {
             //TODO is that really valid?
             parseFileOrDirectory(file, context);
         }
-        executePhases(context);
+        executePhases(context, path);
     }
 
-    private static void executePhases(Context context) {
+    private static void executePhases(Context context, String path) {
         final List<PhasedUnit> phasedUnits = context.getPhasedUnits();
         for (PhasedUnit pu : phasedUnits) {
             pu.buildModuleImport();
@@ -85,7 +85,7 @@ public class Main {
             pu.analyseTypes();
         }
         for (PhasedUnit pu : phasedUnits) {
-            if (!pu.getPackage().getNameAsString().startsWith("ceylon.language")) {
+            if (pu.getPath().startsWith(path)) {
                 if (noisy) pu.display();
                 pu.runAssertions();
             }
@@ -128,7 +128,7 @@ public class Main {
         	Package p = context.getPackage();
             CommonTree t = (CommonTree) r.getTree();
             CompilationUnit cu = new Builder().buildCompilationUnit(t);
-            PhasedUnit phasedUnit = new PhasedUnit(file.getName(),cu,p, context);
+            PhasedUnit phasedUnit = new PhasedUnit(file.getName(), file.getPath(), cu, p, context);
             context.addStagedUnit(phasedUnit);
             
         }

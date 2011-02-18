@@ -25,13 +25,19 @@ public class PhasedUnit {
     private Unit unit;
     //must be the non qualified file name
     private String fileName;
+    private String path;
     private Context context;
 
-    public PhasedUnit(String fileName, Tree.CompilationUnit cu, Package p, Context context) {
+    public PhasedUnit(String fileName, String path, Tree.CompilationUnit cu, Package p, Context context) {
         this.compilationUnit = cu;
         this.pkg = p;
         this.fileName = fileName;
+        this.path = path;
         this.context = context;
+    }
+    
+    public String getPath() {
+        return path;
     }
 
     public void buildModuleImport() {
