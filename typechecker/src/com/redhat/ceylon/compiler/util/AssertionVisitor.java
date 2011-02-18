@@ -55,12 +55,40 @@ public class AssertionVisitor extends Visitor {
         List<AnalysisError> f = foundErrors;
         expectingError = false;
         foundErrors = new ArrayList<AnalysisError>();
-        for (Tree.CompilerAnnotation c: that.getCompilerAnnotations()) {
-            if (c.getIdentifier().getText().equals("error")) {
-                expectingError = true;
-            }
-        }
+        initExpectingError(that);
         super.visit(that);
+        checkErrors(that);
+        expectingError = b;
+        foundErrors = f;
+    }
+
+    @Override
+    public void visit(Tree.NamedArgument that) {
+        boolean b = expectingError;
+        List<AnalysisError> f = foundErrors;
+        expectingError = false;
+        foundErrors = new ArrayList<AnalysisError>();
+        //initExpectingError(that);
+        super.visit(that);
+        checkErrors(that);
+        expectingError = b;
+        foundErrors = f;
+    }
+
+    @Override
+    public void visit(Tree.SequencedArgument that) {
+        boolean b = expectingError;
+        List<AnalysisError> f = foundErrors;
+        expectingError = false;
+        foundErrors = new ArrayList<AnalysisError>();
+        //initExpectingError(that);
+        super.visit(that);
+        checkErrors(that);
+        expectingError = b;
+        foundErrors = f;
+    }
+
+    private void checkErrors(Node that) {
         if (expectingError && foundErrors.size()==0)
             System.err.println(
                 "no error encountered at " + 
@@ -74,8 +102,14 @@ public class AssertionVisitor extends Visitor {
                 that.getAntlrTreeNode().getCharPositionInLine() + " of " +
                 that.getUnit().getFilename() + " " +
                 foundErrors);
-        expectingError = b;
-        foundErrors = f;
+    }
+
+    private void initExpectingError(Tree.Statement that) {
+        for (Tree.CompilerAnnotation c: that.getCompilerAnnotations()) {
+            if (c.getIdentifier().getText().equals("error")) {
+                expectingError = true;
+            }
+        }
     }
     
     @Override
