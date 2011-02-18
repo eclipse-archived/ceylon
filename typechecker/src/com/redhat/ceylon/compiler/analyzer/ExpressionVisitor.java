@@ -389,7 +389,11 @@ public class ExpressionVisitor extends Visitor {
     private void checkNamedArguments(ParameterList pl,
             Tree.NamedArgumentList nal) {
         List<Tree.NamedArgument> na = nal.getNamedArguments();
-        if ( pl.getParameters().size()!=na.size() ) {
+        int n = na.size();
+        if (nal.getSequencedArguments()!=null) {
+            n++;
+        }
+        if ( pl.getParameters().size()!=n ) {
             nal.addError("wrong number of arguments");
         }
         //TODO!!
@@ -429,9 +433,108 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.PostfixOperatorExpression that) {
         super.visit(that);
         ProducedType pt = that.getPrimary().getTypeModel();
-        if (pt!=null) {
-            that.setTypeModel(pt);
+        that.setTypeModel(pt);
+    }
+    
+    @Override public void visit(Tree.PrefixOperatorExpression that) {
+        super.visit(that);
+        ProducedType pt = that.getTerm().getTypeModel();
+        that.setTypeModel(pt);
+    }
+    
+    @Override public void visit(Tree.ArithmeticOp that) {
+        super.visit(that);
+        ProducedType lhst = that.getLeftTerm().getTypeModel();
+        ProducedType rhst = that.getRightTerm().getTypeModel();
+        that.setTypeModel(lhst);
+        if ( rhst!=null && lhst!=null && !rhst.isExactly(lhst) ) {
+            that.addError("operands must have same numeric type");
         }
+    }
+        
+    @Override public void visit(Tree.NegativeOp that) {
+        super.visit(that);
+        ProducedType t = that.getTerm().getTypeModel();
+        that.setTypeModel(t);
+    }
+        
+    @Override public void visit(Tree.BitwiseOp that) {
+        super.visit(that);
+        ProducedType lhst = that.getLeftTerm().getTypeModel();
+        ProducedType rhst = that.getRightTerm().getTypeModel();
+        that.setTypeModel(lhst);
+        if ( rhst!=null && lhst!=null && !rhst.isExactly(lhst) ) {
+            that.addError("operands must have same numeric type");
+        }
+    }
+        
+    @Override public void visit(Tree.FlipOp that) {
+        super.visit(that);
+        ProducedType t = that.getTerm().getTypeModel();
+        that.setTypeModel(t);
+    }
+        
+    @Override public void visit(Tree.LogicalOp that) {
+        super.visit(that);
+        ProducedType lhst = that.getLeftTerm().getTypeModel();
+        ProducedType rhst = that.getRightTerm().getTypeModel();
+        ProducedType bt = getLanguageType("Boolean");
+        that.setTypeModel(bt);
+        if ( rhst!=null && !rhst.isExactly(bt) ) {
+            that.addError("operands must have boolean type");
+        }
+        if ( lhst!=null && !lhst.isExactly(bt) ) {
+            that.addError("operands must have boolean type");
+        }
+    }
+        
+    @Override public void visit(Tree.NotOp that) {
+        super.visit(that);
+        ProducedType t = that.getTerm().getTypeModel();
+        ProducedType bt = getLanguageType("Boolean");
+        that.setTypeModel(bt);
+        if ( t!=null && !t.isExactly(bt) ) {
+            that.addError("operand must have boolean type");
+        }
+    }
+        
+    @Override public void visit(Tree.ComparisonOp that) {
+        super.visit(that);
+        ProducedType lhst = that.getLeftTerm().getTypeModel();
+        ProducedType rhst = that.getRightTerm().getTypeModel();
+        ProducedType bt = getLanguageType("Boolean");
+        that.setTypeModel(bt);
+        if ( rhst!=null && lhst!=null && !rhst.isExactly(lhst) ) {
+            that.addError("operands must have same comparable type");
+        }
+    }
+        
+    @Override public void visit(Tree.EqualityOp that) {
+        super.visit(that);
+        ProducedType bt = getLanguageType("Boolean");
+        that.setTypeModel(bt);
+    }
+        
+    @Override public void visit(Tree.IdenticalOp that) {
+        super.visit(that);
+        ProducedType bt = getLanguageType("Boolean");
+        that.setTypeModel(bt);
+    }
+        
+    @Override public void visit(Tree.AssignmentOp that) {
+        super.visit(that);
+        ProducedType lhst = that.getLeftTerm().getTypeModel();
+        ProducedType rhst = that.getRightTerm().getTypeModel();
+        that.setTypeModel(lhst);
+        if ( rhst!=null && lhst!=null && !rhst.isExactly(lhst) ) {
+            that.addError("operands must have same type");
+        }
+    }
+        
+    @Override public void visit(Tree.FormatOp that) {
+        super.visit(that);
+        ProducedType t = getLanguageType("String");
+        that.setTypeModel(t);
     }
         
     //Atoms:
@@ -581,9 +684,14 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void setLiteralType(Tree.Atom that, String languageType) {
+        ProducedType t = getLanguageType(languageType);
+        that.setTypeModel(t);
+    }
+
+    private ProducedType getLanguageType(String languageType) {
         ProducedType t = new ProducedType();
         t.setDeclaration( (Class) Util.getLanguageModuleDeclaration(languageType, context) );
-        that.setTypeModel(t);
+        return t;
     }
     
     @Override
