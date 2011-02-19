@@ -45,11 +45,17 @@ public abstract class ProducedReference extends Model {
     }
     
     public abstract ProducedType getType();
-    
-    public abstract ProducedTypedReference getTypedParameter(Parameter td);
-    
+        
     public boolean isFunctional() {
         return declaration instanceof Functional;
     }
     
+    public ProducedTypedReference getTypedParameter(Parameter td) {
+        ProducedTypedReference ptr = new ProducedTypedReference();
+        ptr.setDeclaration(td);
+        ptr.setDeclaringType(getDeclaringType());
+        ptr.setTypeArguments(getTypeArguments());
+        return ptr;
+    }
+         
 }

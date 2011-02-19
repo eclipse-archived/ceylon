@@ -418,65 +418,69 @@ public class ExpressionVisitor extends Visitor {
             if (gt instanceof Scope) {
                 Tree.MemberOrType mt = that.getMemberOrType();
                 if (mt instanceof Tree.Member) {
-                    Tree.Member m = (Tree.Member) mt;
-                    TypedDeclaration member = Util.getDeclaration((Scope) gt, m, context);
-                    if (member==null) {
-                        mt.addError("could not determine target of member reference: " +
-                                m.getIdentifier().getText());
-                    }
-                    else {
-                        List<ProducedType> typeArgs = getTypeArguments(m, m.getTypeArgumentList());
-                        if (!com.redhat.ceylon.compiler.model.Util.acceptsArguments(member, typeArgs)) {
-                            mt.addError("does not accept the given type arguments");
-                        }
-                        else {
-                            ProducedTypedReference ptr = pt.getTypedMember(member, typeArgs);
-                            ProducedType t = ptr.getType();
-                            that.setMemberReference(ptr);
-                            if (t==null) {
-                                mt.addError("could not determine type of member reference");
-                            }
-                            else {
-                                that.setTypeModel(t);
-                            }
-                        }
-                    }
+                    handleMemberReference(that, pt, gt, (Tree.Member) mt);
                 }
                 else if (mt instanceof Tree.Type) {
-                    Tree.Type tt = (Tree.Type) mt;
-                    TypeDeclaration member = Util.getDeclaration((Scope) gt, tt, context);
-                    if (member==null) {
-                        mt.addError("could not determine target of member type reference: " +
-                                tt.getIdentifier().getText());
-                    }
-                    else {
-                        List<ProducedType> typeArgs = getTypeArguments(tt, tt.getTypeArgumentList());
-                        if (!com.redhat.ceylon.compiler.model.Util.acceptsArguments(member, typeArgs)) {
-                            mt.addError("does not accept the given type arguments");
-                        }
-                        else {
-                            ProducedType t = pt.getTypeMember(member, typeArgs);
-                            that.setTypeModel(t);
-                            that.setMemberReference(t);
-                        }
-                    }
+                    handleMemberTypeReference(that, pt, gt, (Tree.Type) mt);
                 }
                 else if (mt instanceof Tree.Outer) {
-                    if (gt instanceof ClassOrInterface) {
-                        ProducedType t = getOuterType(mt, (ClassOrInterface) gt);
-                        that.setTypeModel(t);
-                        //TODO: some kind of MemberReference
-                    }
-                    else {
-                        that.addError("can't use outer on a type parameter");
-                    }
+                    handleOuterReference(that, gt, mt);
                 }
                 else {
-                    //TODO: handle type parameters by looking at
-                    //      their upper bound constraints 
-                    //TODO: handle x.outer
-                    throw new RuntimeException("not yet supported");
+                    that.addError("not a valid member reference");
                 }
+            }
+        }
+    }
+
+    private void handleOuterReference(Tree.MemberExpression that, TypeDeclaration gt,
+            Tree.MemberOrType mt) {
+        if (gt instanceof ClassOrInterface) {
+            that.setTypeModel(getOuterType(mt, (ClassOrInterface) gt));
+            //TODO: some kind of MemberReference
+        }
+        else {
+            that.addError("can't use outer on a type parameter");
+        }
+    }
+
+    private void handleMemberTypeReference(Tree.MemberExpression that,
+            ProducedType pt, TypeDeclaration gt, Tree.Type tt) {
+        TypeDeclaration member = Util.getDeclaration((Scope) gt, tt, context);
+        if (member==null) {
+            tt.addError("could not determine target of member type reference: " +
+                    tt.getIdentifier().getText());
+        }
+        else {
+            List<ProducedType> typeArgs = getTypeArguments(tt, tt.getTypeArgumentList());
+            if (!com.redhat.ceylon.compiler.model.Util.acceptsArguments(member, typeArgs)) {
+                tt.addError("member type does not accept the given type arguments");
+            }
+            else {
+                ProducedType t = pt.getTypeMember(member, typeArgs);
+                that.setTypeModel(t);
+                that.setMemberReference(t);
+            }
+        }
+    }
+
+    private void handleMemberReference(Tree.MemberExpression that,
+            ProducedType pt, TypeDeclaration gt, Tree.Member m) {
+        TypedDeclaration member = Util.getDeclaration((Scope) gt, m, context);
+        if (member==null) {
+            m.addError("could not determine target of member reference: " +
+                    m.getIdentifier().getText());
+        }
+        else {
+            List<ProducedType> typeArgs = getTypeArguments(m, m.getTypeArgumentList());
+            if (!com.redhat.ceylon.compiler.model.Util.acceptsArguments(member, typeArgs)) {
+                m.addError("member does not accept the given type arguments");
+            }
+            else {
+                ProducedTypedReference ptr = pt.getTypedMember(member, typeArgs);
+                ProducedType t = ptr.getType();
+                that.setMemberReference(ptr);
+                that.setTypeModel(t);
             }
         }
     }
@@ -804,15 +808,21 @@ public class ExpressionVisitor extends Visitor {
                     that.getIdentifier().getText());
         }
         else {
-            ProducedReference mr = d.getTypedReference();
-            that.setMemberReference(mr);
-            ProducedType t = d.getType();
-            if (t==null) {
-                that.addError("could not determine type of member reference: " +
-                        that.getIdentifier().getText());
+            List<ProducedType> typeArgs = getTypeArguments(that, that.getTypeArgumentList());
+            if (!com.redhat.ceylon.compiler.model.Util.acceptsArguments(d, typeArgs)) {
+                that.addError("does not accept the given type arguments");
             }
             else {
-                that.setTypeModel(t);
+                ProducedReference pr = d.getProducedTypedReference(typeArgs);
+                that.setMemberReference(pr);
+                ProducedType t = pr.getType();
+                if (t==null) {
+                    that.addError("could not determine type of member reference: " +
+                            that.getIdentifier().getText());
+                }
+                else {
+                    that.setTypeModel(t);
+                }
             }
         }
     }

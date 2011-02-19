@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.model;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +52,7 @@ public class ProducedType extends ProducedReference {
 	    return true;
 	}
 	
-    public ProducedType substitute(Map<TypeParameter,ProducedType> substitutions) {
+    ProducedType substitute(Map<TypeParameter,ProducedType> substitutions) {
         if (getDeclaration() instanceof TypeParameter) {
             ProducedType sub = substitutions.get(getDeclaration());
             if (sub!=null) return sub;
@@ -64,8 +63,10 @@ public class ProducedType extends ProducedReference {
         return t;
     }
     
-    public ProducedTypedReference getTypedParameter(Parameter td) {
-        return getTypedMember(td, Collections.<ProducedType>emptyList());
+    private Map<TypeParameter,ProducedType> memberArgs(Declaration d, List<ProducedType> typeArguments) {
+        Map<TypeParameter, ProducedType> map = Util.arguments(d, typeArguments);
+        map.putAll(sub(map));
+        return map;
     }
     
     public ProducedTypedReference getTypedMember(TypedDeclaration td, List<ProducedType> typeArguments) {
@@ -74,9 +75,9 @@ public class ProducedType extends ProducedReference {
         }
         ProducedTypedReference ptr = new ProducedTypedReference();
         ptr.setDeclaration(td);
-        ptr.setTypeArguments(getTypeArguments());
         ptr.setDeclaringType(this);
-        return ptr.substitute(Util.arguments(td, typeArguments));
+        ptr.setTypeArguments(memberArgs(td, typeArguments));
+        return ptr;
     }
          
     public ProducedType getTypeMember(TypeDeclaration td, List<ProducedType> typeArguments) {
@@ -86,8 +87,8 @@ public class ProducedType extends ProducedReference {
         ProducedType pt = new ProducedType();
         pt.setDeclaration(td);
         pt.setDeclaringType(this);
-        pt.setTypeArguments(getTypeArguments());
-        return pt.substitute(Util.arguments(td, typeArguments));
+        pt.setTypeArguments(memberArgs(td, typeArguments));
+        return pt;
     }
     
     public ProducedType getType() {

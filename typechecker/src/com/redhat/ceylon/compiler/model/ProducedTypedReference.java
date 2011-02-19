@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.model;
 
-import java.util.Map;
 
 
 public class ProducedTypedReference extends ProducedReference {
@@ -25,19 +24,4 @@ public class ProducedTypedReference extends ProducedReference {
         }
     }
 
-    public ProducedTypedReference substitute(Map<TypeParameter,ProducedType> substitutions) {
-        ProducedTypedReference ptr = new ProducedTypedReference();
-        ptr.setDeclaration(getDeclaration());
-        ptr.setTypeArguments(sub(substitutions));
-        return ptr;
-    }
-
-    public ProducedTypedReference getTypedParameter(Parameter td) {
-        ProducedTypedReference ptr = new ProducedTypedReference();
-        ptr.setDeclaration(td);
-        ptr.setTypeArguments(getTypeArguments());
-        ptr.setDeclaringType(getDeclaringType());
-        return ptr.substitute(getTypeArguments());
-    }
-         
 }
