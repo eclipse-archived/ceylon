@@ -8,7 +8,7 @@ import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.model.Declaration;
-import com.redhat.ceylon.compiler.model.MemberReference;
+import com.redhat.ceylon.compiler.model.ProducedReference;
 import com.redhat.ceylon.compiler.model.ProducedType;
 import com.redhat.ceylon.compiler.model.Scope;
 import com.redhat.ceylon.compiler.model.Unit;
@@ -22,7 +22,7 @@ public abstract class Node {
     private Scope scope;
     private Unit unit;
     private ProducedType typeModel;
-    private MemberReference memberReference;
+    private ProducedReference memberReference;
     private List<AnalysisError> errors = new ArrayList<AnalysisError>();
     
     protected Node(CommonTree antlrTreeNode) {
@@ -83,11 +83,11 @@ public abstract class Node {
      * will be null for nodes which do not refer to a member 
      * or type.
      */
-    public MemberReference getMemberReference() {
+    public ProducedReference getMemberReference() {
         return memberReference;
     }
     
-    public void setMemberReference(MemberReference memberReference) {
+    public void setMemberReference(ProducedReference memberReference) {
         this.memberReference = memberReference;
     }
     

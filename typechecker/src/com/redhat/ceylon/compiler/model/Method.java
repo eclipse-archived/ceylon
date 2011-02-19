@@ -1,7 +1,10 @@
 package com.redhat.ceylon.compiler.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A method. Note that a method must have
@@ -14,7 +17,7 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
 	
     Boolean formal;
     
-    List<TypeParameter> typeParameters = new ArrayList<TypeParameter>();	
+    List<TypeParameter> typeParameters = Collections.emptyList();	
     List<ParameterList> parameterLists = new ArrayList<ParameterList>();
     List<Declaration> members = new ArrayList<Declaration>();
 
@@ -38,6 +41,10 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
 		return typeParameters;
 	}
 	
+	public void setTypeParameters(List<TypeParameter> typeParameters) {
+        this.typeParameters = typeParameters;
+    }
+	
 	@Override
 	public List<Declaration> getMembers() {
 	    return members;
@@ -53,4 +60,36 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
 	    parameterLists.add(pl);
 	}
 
+	@Override
+    public boolean acceptsArguments(List<ProducedType> typeArguments) {
+        //TODO!
+        return this.typeParameters.size()==typeArguments.size();
+    }
+    
+    @Override
+    public ProducedTypedReference getProducedTypedReference(List<ProducedType> typeArguments) {
+        if (!acceptsArguments(typeArguments)) {
+            throw new RuntimeException( getName() + 
+                    " does not accept given type arguments");
+        }
+        ProducedTypedReference pt = new ProducedTypedReference();
+        pt.setDeclaration(this);
+        pt.setTypeArguments( Util.arguments(this, typeArguments) );
+        return pt;
+    }
+    
+    @Override
+    public ProducedTypedReference getTypedReference() {
+        ProducedTypedReference pt = new ProducedTypedReference();
+        pt.setDeclaration(this);
+        Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
+        for (TypeParameter p: getTypeParameters()) {
+            ProducedType pta = new ProducedType();
+            pta.setDeclaration(p);
+            map.put(p, pta);
+        }
+        pt.setTypeArguments(map);
+        return pt;
+    }
+    
 }

@@ -40,7 +40,7 @@ public class AssertionVisitor extends Visitor {
                     String actualType = typedNode.getTypeModel().getProducedTypeName();
                     if ( !actualType.equals(expectedType.substring(1,expectedType.length()-1)) )
                         System.err.println("type " + actualType +
-                                "not of expected type " + expectedType + 
+                                " not of expected type " + expectedType + 
                                 " at "+ that.getAntlrTreeNode().getLine() + ":" +
                                 that.getAntlrTreeNode().getCharPositionInLine() + " of " +
                                 that.getUnit().getFilename());

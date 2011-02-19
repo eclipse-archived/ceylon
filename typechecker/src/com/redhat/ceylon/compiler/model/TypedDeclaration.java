@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.model;
 
+import java.util.Collections;
+import java.util.List;
+
 
 /**
  * Anything which includes a type declaration: 
@@ -30,4 +33,23 @@ public abstract class TypedDeclaration extends Declaration {
 	    }
 	}
 
+    public boolean acceptsArguments(List<ProducedType> typeArguments) {
+        return typeArguments.isEmpty();
+    }
+    
+    public ProducedTypedReference getProducedTypedReference(List<ProducedType> typeArguments) {
+        if (!acceptsArguments(typeArguments)) {
+            throw new RuntimeException( getName() + 
+                    " does not accept given type arguments");
+        }
+        return getTypedReference();
+    }
+    
+    public ProducedTypedReference getTypedReference() {
+        ProducedTypedReference pt = new ProducedTypedReference();
+        pt.setDeclaration(this);
+        pt.setTypeArguments( Collections.<TypeParameter, ProducedType>emptyMap() );
+        return pt;
+    }
+    
 }

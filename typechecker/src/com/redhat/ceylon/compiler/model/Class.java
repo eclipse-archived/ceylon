@@ -29,19 +29,7 @@ public class Class extends ClassOrInterface implements Functional {
 	public void setParameterList(ParameterList parameterList) {
         this.parameterList = parameterList;
     }
-	
-	@Override
-	public ProducedType getType() {
-	    ProducedType pt = new ProducedType();
-	    pt.setDeclaration(this);
-	    for (TypeDeclaration t: getTypeParameters()) {
-	        ProducedType pta = new ProducedType();
-	        pta.setDeclaration(t);
-	        pt.getTypeArguments().add(pta);
-	    }
-	    return pt;
-	}
-	
+		
 	@Override
 	public List<ParameterList> getParameterLists() {
 	    if (parameterList==null) {

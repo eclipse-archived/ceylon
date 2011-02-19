@@ -8,6 +8,7 @@ public class TypeParameter extends TypeDeclaration {
 	public Boolean isCovariant() {
 		return covariant;
 	}
+	
 	public void setCovariant(Boolean covariant) {
 		this.covariant = covariant;
 	}
@@ -15,6 +16,7 @@ public class TypeParameter extends TypeDeclaration {
 	public Boolean isContravariant() {
 		return contravariant;
 	}
+	
 	public void setContravariant(Boolean contravariant) {
 		this.contravariant = contravariant;
 	}

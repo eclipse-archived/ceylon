@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.analyzer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.context.Context;
@@ -14,6 +15,7 @@ import com.redhat.ceylon.compiler.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.model.Unit;
 import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
+import com.redhat.ceylon.compiler.tree.Tree.TypeArgumentList;
 import com.redhat.ceylon.compiler.tree.Visitor;
 import com.redhat.ceylon.compiler.util.PrintUtil;
 
@@ -34,7 +36,6 @@ import com.redhat.ceylon.compiler.util.PrintUtil;
 public class TypeVisitor extends Visitor {
     
     private Unit unit;
-    private ProducedType outerType;
     private Package importPackage;
     private Context context;
 
@@ -93,35 +94,57 @@ public class TypeVisitor extends Visitor {
         
     @Override 
     public void visit(Tree.Type that) {
-        ProducedType type = new ProducedType();
-        that.setMemberReference(type);
         TypeDeclaration d = Util.getDeclaration(that, context);
         if (d==null) {
             that.addError("type declaration not found: " + 
                     that.getIdentifier().getText());
         }
         else {
-            type.setDeclaration(d);
-            //TODO: handle type arguments by substitution
-            that.setTypeModel(type);
-            if (outerType!=null) {
-                outerType.getTypeArguments().add(type);
-            }
-            ProducedType o = outerType;
-            outerType = type;
             super.visit(that);
-            outerType = o;
+            List<ProducedType> typeArguments = getTypeArguments(that);
+            if (typeArguments!=null) {
+                if (!com.redhat.ceylon.compiler.model.Util.acceptsArguments(d, typeArguments)) {
+                    that.addError("does not accept the given type arguments");
+                }
+                else {
+                    ProducedType pt = d.getProducedType(typeArguments);
+                    if (pt==null) {
+                        that.addError("incompatible type arguments");
+                    }
+                    else {
+                        that.setTypeModel(pt);
+                        that.setMemberReference(pt);
+                        if (typeArguments!=null) {
+                            typeArguments.add(pt);
+                        }
+                    }
+                }
+            }
         }
+    }
+
+    private List<ProducedType> getTypeArguments(Tree.Type that) {
+        List<ProducedType> typeArguments = new ArrayList<ProducedType>();
+        TypeArgumentList tal = that.getTypeArgumentList();
+        if (tal!=null) {
+            for (Tree.TypeOrSubtype ta: tal.getTypeOrSubtypes()) {
+                ProducedType t = ta.getTypeModel();
+                if (t==null) {
+                    ta.addError("could not resolve type argument");
+                    return null;
+                }
+                else {
+                    typeArguments.add(t);
+                }
+            }
+        }
+        return typeArguments;
     }
     
     @Override 
     public void visit(Tree.VoidModifier that) {
-        ProducedType type = new ProducedType();
-        //TODO: use the Void from the language package!
-        Class c = new Class();
-        c.setName("Void");
-        type.setDeclaration(c);
-        that.setTypeModel(type);
+        Class vd = (Class) Util.getLanguageModuleDeclaration("Void", context);
+        that.setTypeModel(vd.getType());
     }
     
     @Override 
@@ -159,6 +182,7 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.MemberExpression that) {
         that.getPrimary().visit(this);
+        super.visitAny( that.getMemberOrType() );
     }
     
 }

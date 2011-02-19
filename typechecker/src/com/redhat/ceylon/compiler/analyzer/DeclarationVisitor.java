@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.analyzer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.redhat.ceylon.compiler.model.Class;
 import com.redhat.ceylon.compiler.model.ControlBlock;
 import com.redhat.ceylon.compiler.model.Declaration;
@@ -11,9 +14,9 @@ import com.redhat.ceylon.compiler.model.Interface;
 import com.redhat.ceylon.compiler.model.Method;
 import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.ParameterList;
-import com.redhat.ceylon.compiler.model.ProducedType;
 import com.redhat.ceylon.compiler.model.Scope;
 import com.redhat.ceylon.compiler.model.Setter;
+import com.redhat.ceylon.compiler.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.model.TypeParameter;
 import com.redhat.ceylon.compiler.model.Unit;
 import com.redhat.ceylon.compiler.model.Value;
@@ -149,6 +152,24 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.TypeDeclaration that) {
+        super.visit(that);
+        TypeDeclaration d = (TypeDeclaration) that.getDeclarationModel();
+        if (d==null) {
+            //TODO: this case is temporary until we have type constraints!
+        }
+        else {
+            d.setTypeParameters(getTypeParameters(that.getTypeParameterList()));
+        }
+    }
+    
+    @Override
+    public void visit(Tree.Method that) {
+        super.visit(that);
+        ( (Method) that.getDeclarationModel() ).setTypeParameters(getTypeParameters(that.getTypeParameterList()));
+    }
+    
+    @Override
     public void visit(Tree.ClassDefinition that) {
         Class c = new Class();
         visitDeclaration(that, c);
@@ -238,10 +259,8 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
         functional = null;
-        ProducedType t = new ProducedType();
-        t.setDeclaration(c);
-        that.getTypeOrSubtype().setTypeModel(t);
-        v.setType(t);
+        that.getTypeOrSubtype().setTypeModel(c.getType());
+        v.setType(c.getType());
     }
 
     @Override
@@ -255,10 +274,8 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
         functional = null;
-        ProducedType t = new ProducedType();
-        t.setDeclaration(c);
-        that.getTypeOrSubtype().setTypeModel(t);
-        v.setType(t);
+        that.getTypeOrSubtype().setTypeModel(c.getType());
+        v.setType(c.getType());
     }
 
     @Override
@@ -370,4 +387,14 @@ public class DeclarationVisitor extends Visitor {
         that.setUnit(unit);
     }
 
+    private List<TypeParameter> getTypeParameters(Tree.TypeParameterList tpl) {
+        List<TypeParameter> typeParameters = new ArrayList<TypeParameter>();
+        if (tpl!=null) {
+            for (Tree.TypeParameter tp: tpl.getTypeParameters()) {
+                typeParameters.add((TypeParameter) tp.getDeclarationModel());
+            }
+        }
+        return typeParameters;
+    }
+    
 }
