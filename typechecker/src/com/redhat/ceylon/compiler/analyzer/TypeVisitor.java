@@ -224,6 +224,22 @@ public class TypeVisitor extends Visitor {
         }
     }
     
+    @Override 
+    public void visit(Tree.ObjectArgument that) {
+        super.visit(that);
+        Tree.ExtendedType et = that.getExtendedType();
+        Tree.SatisfiedTypes st = that.getSatisfiedTypes();
+        TypeDeclaration td = ( (Value) that.getDeclarationModel() ).getType().getDeclaration();
+        if (td!=null) {
+            if (et!=null) {
+                td.setExtendedType(et.getType().getTypeModel());
+            }
+            if (st!=null) {
+                td.setSatisfiedTypes(getSatisfiedTypes(st));
+            }
+        }
+    }
+    
     /**
      * Suppress resolution of types that appear after the
      * member selection operator "." (but not their type

@@ -43,8 +43,18 @@ class Assignability() {
     };
     
     method { 
+        object arg1 extends X() {}
+        object arg2 extends Y() {}
+    };
+    
+    method { 
         X arg1 { return X(); }
         @error X arg2 { return X(); }
+    };
+    
+    method { 
+        object arg1 extends X() {}
+        @error object arg2 extends X() {}
     };
     
     @error method { 
