@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +53,20 @@ public class ProducedType extends ProducedReference {
 	    return true;
 	}
 	
+	public boolean isSubtypeOf(ProducedType type) {
+	    ProducedType st = getSupertype( type.getDeclaration() );
+	    if (st==null) {
+	        return false;
+	    }
+	    else {
+	        return st.isExactly(type);
+	    }
+	}
+	
+    public boolean isSupertypeOf(ProducedType type) {
+        return type.isSubtypeOf(this);
+    }
+    
     ProducedType substitute(Map<TypeParameter,ProducedType> substitutions) {
         if (getDeclaration() instanceof TypeParameter) {
             ProducedType sub = substitutions.get(getDeclaration());
@@ -93,6 +108,31 @@ public class ProducedType extends ProducedReference {
     
     public ProducedType getType() {
         return this;
+    }
+    
+    public List<ProducedType> getSupertypes() {
+        List<ProducedType> list = new ArrayList<ProducedType>();
+        list.add(this);
+        if (getDeclaration().getExtendedType()!=null) {
+            for (ProducedType et: getDeclaration().getExtendedType().getSupertypes()) {
+                list.add( et.substitute(getTypeArguments()) );
+            }
+        }
+        for (ProducedType dst: getDeclaration().getSatisfiedTypes()) {
+            for (ProducedType st: dst.getSupertypes()) {
+                list.add( st.substitute(getTypeArguments()) );
+            }
+        }
+        return list;
+    }
+    
+    public ProducedType getSupertype(TypeDeclaration genericType) {
+        for (ProducedType st: getSupertypes()) {
+            if (st.getDeclaration()==genericType) {
+                return st;
+            }
+        }
+        return null;
     }
     
 }

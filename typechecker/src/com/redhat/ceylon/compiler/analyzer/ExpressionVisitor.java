@@ -188,7 +188,7 @@ public class ExpressionVisitor extends Visitor {
         if (sie!=null) {
             ProducedType type = sie.getExpression().getTypeModel();
             if ( type!=null && typedNode.getTypeModel()!=null) {
-                if ( !type.isExactly(typedNode.getTypeModel()) ) {
+                if ( !typedNode.getTypeModel().isSupertypeOf(type) ) {
                     sie.addError("specifier expression not assignable to expected type: " + 
                             type.getProducedTypeName() + " is not " + 
                             typedNode.getTypeModel().getProducedTypeName());
@@ -395,7 +395,7 @@ public class ExpressionVisitor extends Visitor {
                     ProducedType et = returnType.getTypeModel();
                     ProducedType at = e.getTypeModel();
                     if (et!=null && at!=null) {
-                        if ( !et.isExactly(at) ) {
+                        if ( !et.isSupertypeOf(at) ) {
                             that.addError("returned expression not assignable to expected return type: " +
                                     at.getProducedTypeName() + " is not " +
                                     et.getProducedTypeName());
@@ -580,7 +580,7 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else {
                     ProducedType paramType = pr.getTypedParameter(p).getType();
-                    if ( !paramType.getType().isExactly(t) ) {
+                    if ( !paramType.getType().isSupertypeOf(t) ) {
                         a.addError("named argument not assignable to parameter type: " + 
                                 Util.name(a) + " since " +
                                 t.getProducedTypeName() + " is not " +
@@ -646,7 +646,7 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     ProducedType argType = e.getTypeModel();
                     if (paramType!=null && argType!=null) {
-                        if (!paramType.isExactly(argType)) {
+                        if (!paramType.isSupertypeOf(argType)) {
                             a.addError("argument not assignable to parameter type: " + 
                                     p.getName() + " since " +
                                     argType.getProducedTypeName() + " is not " +

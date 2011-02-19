@@ -175,9 +175,38 @@ public class TypeVisitor extends Visitor {
         }
     }
     
+    @Override 
+    public void visit(Tree.ClassOrInterface that) {
+        super.visit(that);
+        Tree.SatisfiedTypes st = that.getSatisfiedTypes();
+        List<ProducedType> list = new ArrayList<ProducedType>();
+        if (st!=null) {
+            for (Tree.Type t: st.getTypes()) {
+                if (t.getTypeModel()!=null) {
+                    list.add(t.getTypeModel());
+                }
+            }
+        }
+        TypeDeclaration dm = (TypeDeclaration) that.getDeclarationModel();
+        if (dm!=null) {
+            dm.setSatisfiedTypes(list);
+        }
+    }
+    
+    @Override 
+    public void visit(Tree.AnyClass that) {
+        super.visit(that);
+        Tree.ExtendedType st = that.getExtendedType();
+        if (st!=null) {
+            Tree.Type t = st.getType();
+            ( (Class) that.getDeclarationModel() ).setExtendedType(t.getTypeModel());
+        }
+    }
+    
     /**
      * Suppress resolution of types that appear after the
-     * member selection operator "."
+     * member selection operator "." (but not their type
+     * arguments).
      */
     @Override
     public void visit(Tree.MemberExpression that) {
