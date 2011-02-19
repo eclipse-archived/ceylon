@@ -1142,19 +1142,23 @@ forFail
     ;
 
 forBlock
-    : 'for'^ '('! forIterator ')'! block
+    : 'for'^ '('! forIterator2 ')'! block
     ;
 
 failBlock
     : 'fail'^ block
     ;
 
+forIterator2
+    : compilerAnnotation* forIterator^
+    ;
+
 forIterator
-    : v=variable2
+    : v=variable
     (
       containment
       -> ^(VALUE_ITERATOR $v containment)
-      | '->' vv=variable2 containment
+      | '->' vv=variable containment
       -> ^(KEY_VALUE_ITERATOR $v $vv containment)
     )
     ;
