@@ -113,7 +113,7 @@ public class ExpressionVisitor extends Visitor {
         ProducedType t = null;
         Node n = that;
         Variable v = that.getVariable();
-        TypeDeclaration ot = (TypeDeclaration) Util.getLanguageModuleDeclaration("Optional", context);
+        Class ot = getOptionalDeclaration();
         if (v!=null) {
             SpecifierExpression se = v.getSpecifierExpression();
             visit(se);
@@ -143,7 +143,7 @@ public class ExpressionVisitor extends Visitor {
                 that.addError("could not determine if expression is of boolean type");
             }
             else {
-                ProducedType bt = getLanguageType("Boolean");
+                ProducedType bt = getBooleanDeclaration().getType();
                 if (!bt.isSupertypeOf(t)) {
                     that.addError("expression is not of boolean type");
                 }
@@ -153,7 +153,7 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.ValueIterator that) {
         super.visit(that);
-        TypeDeclaration it = (TypeDeclaration) Util.getLanguageModuleDeclaration("Iterable", context);
+        Interface it = getIterableDeclaration();
         inferType(that.getVariable(), that.getSpecifierExpression(), it);
         checkType(that.getVariable(), that.getSpecifierExpression(), it);
     }
@@ -640,7 +640,7 @@ public class ExpressionVisitor extends Visitor {
             that.addError("could not determine type of receiver");
         }
         else {
-            Interface s = (Interface) Util.getLanguageModuleDeclaration("Correspondence", context);
+            Interface s = getCorrespondenceDeclaration();
             ProducedType st = pt.getSupertype(s);
             if (st==null) {
                 that.getPrimary().addError("receiving type of an index expression must be a Correspondence");
@@ -665,10 +665,10 @@ public class ExpressionVisitor extends Visitor {
                 ClassOrInterface rtd;
                 UpperBound ub = that.getUpperBound();
                 if (ub==null) {
-                    rtd = (Class) Util.getLanguageModuleDeclaration("Optional", context);
+                    rtd = getOptionalDeclaration();
                 }
                 else {
-                    rtd = (Interface) Util.getLanguageModuleDeclaration("Sequence", context);
+                    rtd = getSequenceDeclaration();
                     ProducedType ubt = ub.getExpression().getTypeModel();
                     if (ubt!=null) {
                         if (!kt.isSupertypeOf(ubt)) {
@@ -682,7 +682,67 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
+
+    private Interface getCorrespondenceDeclaration() {
+        return (Interface) getLanguageDeclaration("Correspondence");
+    }
+
+    private Interface getSequenceDeclaration() {
+        return (Interface) getLanguageDeclaration("Sequence");
+    }
+
+    private Class getOptionalDeclaration() {
+        return (Class) getLanguageDeclaration("Optional");
+    }
     
+    private Interface getIterableDeclaration() {
+        return (Interface) getLanguageDeclaration("Iterable");
+    }
+
+    private TypeDeclaration getNumericDeclaration() {
+        return getLanguageDeclaration("Numeric");
+    }
+        
+    private TypeDeclaration getSlotsDeclaration() {
+        return getLanguageDeclaration("Slots");
+    }
+        
+    private TypeDeclaration getBooleanDeclaration() {
+        return getLanguageDeclaration("Boolean");
+    }
+        
+    private TypeDeclaration getStringDeclaration() {
+        return getLanguageDeclaration("String");
+    }
+        
+    private TypeDeclaration getFloatDeclaration() {
+        return getLanguageDeclaration("Float");
+    }
+        
+    private TypeDeclaration getNaturalDeclaration() {
+        return getLanguageDeclaration("Natural");
+    }
+        
+    private TypeDeclaration getCharacterDeclaration() {
+        return getLanguageDeclaration("Character");
+    }
+        
+    private TypeDeclaration getQuotedDeclaration() {
+        return getLanguageDeclaration("Quoted");
+    }
+        
+    private TypeDeclaration getEqualityDeclaration() {
+        return getLanguageDeclaration("Equality");
+    }
+        
+    private TypeDeclaration getComparableDeclaration() {
+        return getLanguageDeclaration("Comparable");
+    }
+        
+    private TypeDeclaration getIdentifiableObjectDeclaration() {
+        return getLanguageDeclaration("IdentifiableObject");
+    }
+        
     @Override public void visit(Tree.PostfixOperatorExpression that) {
         super.visit(that);
         ProducedType pt = type(that);
@@ -705,25 +765,25 @@ public class ExpressionVisitor extends Visitor {
         ProducedType lhst = leftType(that);
         if (lhst!=null) {
             //take into account overloading of + operator
-            if (lhst.isSubtypeOf(getLanguageType("String"))) {
-                visitBinaryOperator(that, "String");
+            if (lhst.isSubtypeOf(getStringDeclaration().getType())) {
+                visitBinaryOperator(that, getStringDeclaration());
             }
             else {
-                visitBinaryOperator(that, "Numeric");
+                visitBinaryOperator(that, getNumericDeclaration());
             }
         }
     }
 
-    private void visitComparisonOperator(Tree.BinaryOperatorExpression that, String type) {
+    private void visitComparisonOperator(Tree.BinaryOperatorExpression that, TypeDeclaration type) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            ProducedType nt = lhst.getSupertype( (TypeDeclaration) Util.getLanguageModuleDeclaration(type, context) );
+            ProducedType nt = lhst.getSupertype(type);
             if (nt==null) {
-                that.getLeftTerm().addError("must be of type: " + type);
+                that.getLeftTerm().addError("must be of type: " + type.getName());
             }
             else {
-                that.setTypeModel( getLanguageType("Boolean") );            
+                that.setTypeModel( getBooleanDeclaration().getType() );            
                 if (!nt.isSupertypeOf(rhst)) {
                     that.getRightTerm().addError("must be of type: " + nt.getProducedTypeName());
                 }
@@ -731,13 +791,13 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void visitBinaryOperator(Tree.BinaryOperatorExpression that, String type) {
+    private void visitBinaryOperator(Tree.BinaryOperatorExpression that, TypeDeclaration type) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            ProducedType nt = lhst.getSupertype( (TypeDeclaration) Util.getLanguageModuleDeclaration(type, context) );
+            ProducedType nt = lhst.getSupertype(type);
             if (nt==null) {
-                that.getLeftTerm().addError("must be of type: " + type);
+                that.getLeftTerm().addError("must be of type: " + type.getName());
             }
             else {
                 ProducedType t = nt.getTypeArguments().isEmpty() ? 
@@ -754,7 +814,7 @@ public class ExpressionVisitor extends Visitor {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            TypeDeclaration otd = (TypeDeclaration) Util.getLanguageModuleDeclaration("Optional", context);
+            Class otd = getOptionalDeclaration();
             that.setTypeModel(rhst);
             ProducedType nt = rhst.getSupertype(otd);
             if (nt==null) {
@@ -771,12 +831,12 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void visitUnaryOperator(Tree.UnaryOperatorExpression that, String type) {
+    private void visitUnaryOperator(Tree.UnaryOperatorExpression that, TypeDeclaration type) {
         ProducedType t = type(that);
         if ( t!=null ) {
-            ProducedType nt = t.getSupertype( (TypeDeclaration) Util.getLanguageModuleDeclaration(type, context) );
+            ProducedType nt = t.getSupertype(type);
             if (nt==null) {
-                that.getTerm().addError("must be of type: " + type);
+                that.getTerm().addError("must be of type: " + type.getName());
             }
             else {
                 ProducedType at = nt.getTypeArguments().isEmpty() ? 
@@ -784,6 +844,10 @@ public class ExpressionVisitor extends Visitor {
                 that.setTypeModel(at);
             }
         }
+    }
+
+    private TypeDeclaration getLanguageDeclaration(String type) {
+        return (TypeDeclaration) Util.getLanguageModuleDeclaration(type, context);
     }
 
     private void visitFormatOperator(Tree.UnaryOperatorExpression that) {
@@ -794,7 +858,7 @@ public class ExpressionVisitor extends Visitor {
                 that.getTerm().addError("must be of type: Formattable");
             }
         }*/
-        that.setTypeModel( getLanguageType("String") );
+        that.setTypeModel( getStringDeclaration().getType() );
     }
     
     private void visitAssignOperator(Tree.AssignOp that) {
@@ -827,34 +891,34 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.ArithmeticOp that) {
         super.visit(that);
-        visitBinaryOperator(that, "Numeric");
+        visitBinaryOperator(that, getNumericDeclaration());
     }
-        
+
     @Override public void visit(Tree.BitwiseOp that) {
         super.visit(that);
-        visitBinaryOperator(that, "Slots");
+        visitBinaryOperator(that, getSlotsDeclaration());
     }
-        
+
     @Override public void visit(Tree.LogicalOp that) {
         super.visit(that);
-        visitBinaryOperator(that, "Boolean");
+        visitBinaryOperator(that, getBooleanDeclaration());
     }
-        
+
     @Override public void visit(Tree.EqualityOp that) {
         super.visit(that);
-        visitComparisonOperator(that, "Equality");
+        visitComparisonOperator(that, getEqualityDeclaration());
     }
-        
+
     @Override public void visit(Tree.ComparisonOp that) {
         super.visit(that);
-        visitComparisonOperator(that, "Comparable");
+        visitComparisonOperator(that, getComparableDeclaration());
     }
-        
+
     @Override public void visit(Tree.IdenticalOp that) {
         super.visit(that);
-        visitComparisonOperator(that, "IdentifiableObject");
+        visitComparisonOperator(that, getIdentifiableObjectDeclaration());
     }
-        
+
     @Override public void visit(Tree.DefaultOp that) {
         super.visit(that);
         visitDefaultOperator(that);
@@ -862,17 +926,17 @@ public class ExpressionVisitor extends Visitor {
         
     @Override public void visit(Tree.NegativeOp that) {
         super.visit(that);
-        visitUnaryOperator(that, "Numeric");
+        visitUnaryOperator(that, getNumericDeclaration());
     }
         
     @Override public void visit(Tree.FlipOp that) {
         super.visit(that);
-        visitUnaryOperator(that, "Slots");
+        visitUnaryOperator(that, getSlotsDeclaration());
     }
         
     @Override public void visit(Tree.NotOp that) {
         super.visit(that);
-        visitUnaryOperator(that, "Boolean");
+        visitUnaryOperator(that, getBooleanDeclaration());
     }
         
     @Override public void visit(Tree.AssignOp that) {
@@ -882,17 +946,17 @@ public class ExpressionVisitor extends Visitor {
         
     @Override public void visit(Tree.ArithmeticAssignmentOp that) {
         super.visit(that);
-        visitBinaryOperator(that, "Numeric");
+        visitBinaryOperator(that, getNumericDeclaration());
     }
         
     @Override public void visit(Tree.LogicalAssignmentOp that) {
         super.visit(that);
-        visitBinaryOperator(that, "Boolean");
+        visitBinaryOperator(that, getBooleanDeclaration());
     }
         
     @Override public void visit(Tree.BitwiseAssignmentOp that) {
         super.visit(that);
-        visitBinaryOperator(that, "Slots");
+        visitBinaryOperator(that, getSlotsDeclaration());
     }
         
     @Override public void visit(Tree.FormatOp that) {
@@ -1038,7 +1102,7 @@ public class ExpressionVisitor extends Visitor {
             //TODO: determine the common supertype of all of them
         }
         if (et!=null) {
-            Interface std = (Interface) Util.getLanguageModuleDeclaration("Sequence", context);
+            Interface std = getSequenceDeclaration();
             that.setTypeModel(std.getProducedType(Collections.singletonList(et)));
         }
     }
@@ -1046,37 +1110,31 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.StringTemplate that) {
         super.visit(that);
         //TODO: validate that the subexpression types are Formattable
-        setLiteralType(that, "String");
+        setLiteralType(that, getStringDeclaration());
     }
     
     @Override public void visit(Tree.StringLiteral that) {
-        setLiteralType(that, "String");
+        setLiteralType(that, getStringDeclaration());
     }
     
     @Override public void visit(Tree.NaturalLiteral that) {
-        setLiteralType(that, "Natural");
+        setLiteralType(that, getNaturalDeclaration());
     }
     
     @Override public void visit(Tree.FloatLiteral that) {
-        setLiteralType(that, "Float");
+        setLiteralType(that, getFloatDeclaration());
     }
     
     @Override public void visit(Tree.CharLiteral that) {
-        setLiteralType(that, "Character");
+        setLiteralType(that, getCharacterDeclaration());
     }
     
     @Override public void visit(Tree.QuotedLiteral that) {
-        setLiteralType(that, "Quoted");
+        setLiteralType(that, getQuotedDeclaration());
     }
     
-    private void setLiteralType(Tree.Atom that, String languageType) {
-        ProducedType t = getLanguageType(languageType);
-        that.setTypeModel(t);
-    }
-
-    private ProducedType getLanguageType(String languageType) {
-        Class td = (Class) Util.getLanguageModuleDeclaration(languageType, context);
-        return td.getType();
+    private void setLiteralType(Tree.Atom that, TypeDeclaration languageType) {
+        that.setTypeModel(languageType.getType());
     }
     
     @Override

@@ -146,10 +146,9 @@ public class TypeVisitor extends Visitor {
     
     @Override 
     public void visit(Tree.VoidModifier that) {
-        Class vd = (Class) Util.getLanguageModuleDeclaration("Void", context);
-        that.setTypeModel(vd.getType());
+        that.setTypeModel(getVoidDeclaration().getType());
     }
-    
+
     @Override 
     public void visit(Tree.TypedDeclaration that) {
         super.visit(that);
@@ -202,9 +201,8 @@ public class TypeVisitor extends Visitor {
             if (st!=null) {
                 ci.setSatisfiedTypes(getSatisfiedTypes(st));
             }
-            Class od = (Class) Util.getLanguageModuleDeclaration("Object", context);
             if (ci instanceof Interface) {
-                ci.getSatisfiedTypes().add(od.getType());
+                ci.getSatisfiedTypes().add(getObjectDeclaration().getType());
             }
         }
         //TODO: interfaces should have Object as a supertype!!
@@ -219,11 +217,10 @@ public class TypeVisitor extends Visitor {
         }
         else {
             Tree.ExtendedType et = that.getExtendedType();
-            Class vd = (Class) Util.getLanguageModuleDeclaration("Void", context);
+            Class vd = getVoidDeclaration();
             if (c!=vd) {
                 if (et==null) {
-                    Class iotd = (Class) Util.getLanguageModuleDeclaration("IdentifiableObject", context);
-                    c.setExtendedType(iotd.getType());
+                    c.setExtendedType(getIdentifiableObjectDeclaration().getType());
                 }
                 else {
                     c.setExtendedType(et.getType().getTypeModel());
@@ -231,7 +228,7 @@ public class TypeVisitor extends Visitor {
             }
         }
     }
-    
+
     @Override 
     public void visit(Tree.ObjectDeclaration that) {
         super.visit(that);
@@ -273,6 +270,18 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.MemberExpression that) {
         that.getPrimary().visit(this);
         super.visitAny( that.getMemberOrType() );
+    }
+    
+    private Class getObjectDeclaration() {
+        return (Class) Util.getLanguageModuleDeclaration("Object", context);
+    }
+
+    private Class getVoidDeclaration() {
+        return (Class) Util.getLanguageModuleDeclaration("Void", context);
+    }
+    
+    private Class getIdentifiableObjectDeclaration() {
+        return (Class) Util.getLanguageModuleDeclaration("IdentifiableObject", context);
     }
     
 }
