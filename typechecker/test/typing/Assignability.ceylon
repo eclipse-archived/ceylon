@@ -167,7 +167,8 @@ class Assignability() {
     }
     
     if (exists @error Y y = nothing) {
-        y.hello;
+        @error y.hello;
+        y.name;
     }
     
     if (exists @error X x = something) {

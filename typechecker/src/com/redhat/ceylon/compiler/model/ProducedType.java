@@ -85,6 +85,16 @@ public class ProducedType extends ProducedReference {
     }
     
     public ProducedTypedReference getTypedMember(TypedDeclaration td, List<ProducedType> typeArguments) {
+        ProducedType declaringType = getSupertype( (TypeDeclaration) td.getContainer() );
+        if (declaringType==null) {
+            return null;
+        }
+        else {
+            return declaringType.getDeclaredTypedMember(td, typeArguments);
+        }
+    }
+         
+    public ProducedTypedReference getDeclaredTypedMember(TypedDeclaration td, List<ProducedType> typeArguments) {
         if (!Util.acceptsArguments(td, typeArguments)) {
             return null;
         }
@@ -96,6 +106,7 @@ public class ProducedType extends ProducedReference {
     }
          
     public ProducedType getTypeMember(TypeDeclaration td, List<ProducedType> typeArguments) {
+        //TODO: inherited type members, following pattern above!
         if (!Util.acceptsArguments(td, typeArguments)) {
             return null;
         }

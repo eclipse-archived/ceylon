@@ -479,9 +479,16 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 ProducedTypedReference ptr = pt.getTypedMember(member, typeArgs);
-                ProducedType t = ptr.getType();
-                that.setMemberReference(ptr);
-                that.setTypeModel(t);
+                if (ptr==null) {
+                    m.addError("member not found: " + 
+                            member.getName() + " of type " + 
+                            pt.getDeclaration().getName());
+                }
+                else {
+                    ProducedType t = ptr.getType();
+                    that.setMemberReference(ptr);
+                    that.setTypeModel(t);
+                }
             }
         }
     }
