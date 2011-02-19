@@ -745,7 +745,9 @@ public class ExpressionVisitor extends Visitor {
                 that.getTerm().addError("must be of type: " + type);
             }
             else {
-                that.setTypeModel(nt);
+                ProducedType at = nt.getTypeArguments().isEmpty() ? 
+                        nt : nt.getTypeArguments().values().iterator().next();
+                that.setTypeModel(at);
             }
         }
     }

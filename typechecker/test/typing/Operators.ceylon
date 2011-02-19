@@ -7,6 +7,12 @@ class Operators() {
     
     @error "Hello" + 1;
     
+    @type["Float"] 1.3 + 2.3;
+    
+    @type["Float"] -2.5;
+    
+    @type["Float"] 2.4 ** 0.5;
+    
     @type["Natural"]  1 + 2 - -3;
     
     @type["Float"]  1.0 * 2.5 ** (-0.5);
