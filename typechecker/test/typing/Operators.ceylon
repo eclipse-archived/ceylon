@@ -36,5 +36,17 @@ class Operators() {
     @error "foo" === 12;
     
     @type["String"] $12.34;
+    
+    X? nothing = null.nothing<X>();
+    
+    @type["Optional<X>"] nothing ? nothing;
+    
+    @type["X"] nothing ? X();
+    
+    @type["X"] nothing ? nothing ? X();
+    
+    @error X() ? X();
+    
+    @error X() ? nothing;
 
 }
