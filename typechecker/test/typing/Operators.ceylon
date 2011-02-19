@@ -5,15 +5,21 @@ class Operators() {
     
     @type["String"] "Hello" + " " + "World";
     
+    @error "Hello" + 1;
+    
     @type["Natural"]  1 + 2 - -3;
     
     @type["Float"]  1.0 * 2.5 ** (-0.5);
+    
+    @error 1 + 1.0;
     
     @error 1.0 * 2.5 ** -0.5;
     
     @type["Boolean"]  !( true || false ) && true;
     
     @type["Boolean"]  1 < 100;
+    
+    @error "foo" < 100;
     
     @type["Boolean"]  "foo" == "bar";
     
