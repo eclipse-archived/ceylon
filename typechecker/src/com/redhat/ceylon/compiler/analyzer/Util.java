@@ -8,7 +8,6 @@ import com.redhat.ceylon.compiler.model.Class;
 import com.redhat.ceylon.compiler.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.model.Declaration;
 import com.redhat.ceylon.compiler.model.Import;
-import com.redhat.ceylon.compiler.model.Interface;
 import com.redhat.ceylon.compiler.model.Module;
 import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.ProducedType;
@@ -19,7 +18,7 @@ import com.redhat.ceylon.compiler.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.model.Unit;
 import com.redhat.ceylon.compiler.tree.Tree;
 
-class Util {
+public class Util {
 
     /**
      * Resolve the type against the scope in which it
@@ -171,7 +170,7 @@ class Util {
             }
             for (ProducedType st: ci.getSatisfiedTypes()) {
                 TypeDeclaration sid = st.getDeclaration();
-                Declaration d = getLocalDeclaration( (Interface) sid, name );
+                Declaration d = getLocalDeclaration( (ClassOrInterface) sid, name );
                 if (d!=null) {
                     return d;
                 }

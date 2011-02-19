@@ -19,6 +19,7 @@ class Inheritance() {
     ys.doIt("to a string");
     @type["String"] ys.getIt();
     I<String> iys = ys;
+    Object oys = iys;
     
     X<Natural> yn = Y<Natural>(1);
     yn.doIt(6);

@@ -8,6 +8,7 @@ import com.redhat.ceylon.compiler.model.Class;
 import com.redhat.ceylon.compiler.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.model.Declaration;
 import com.redhat.ceylon.compiler.model.Import;
+import com.redhat.ceylon.compiler.model.Interface;
 import com.redhat.ceylon.compiler.model.Module;
 import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.ProducedType;
@@ -200,6 +201,10 @@ public class TypeVisitor extends Visitor {
             Tree.SatisfiedTypes st = that.getSatisfiedTypes();
             if (st!=null) {
                 ci.setSatisfiedTypes(getSatisfiedTypes(st));
+            }
+            Class od = (Class) Util.getLanguageModuleDeclaration("Object", context);
+            if (ci instanceof Interface) {
+                ci.getSatisfiedTypes().add(od.getType());
             }
         }
         //TODO: interfaces should have Object as a supertype!!
