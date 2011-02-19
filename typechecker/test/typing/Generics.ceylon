@@ -47,7 +47,7 @@ class Generics() {
     class C<X>() {
         X cop(X arg) {
             if (arg=="ERROR") {
-                X nothing { return arg }
+                X nothing { return arg; }
                 return nothing;
             }
             else {
