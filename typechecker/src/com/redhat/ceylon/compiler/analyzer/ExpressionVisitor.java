@@ -24,10 +24,12 @@ import com.redhat.ceylon.compiler.model.Value;
 import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Tree.BinaryOperatorExpression;
+import com.redhat.ceylon.compiler.tree.Tree.LowerBound;
 import com.redhat.ceylon.compiler.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.tree.Tree.Term;
 import com.redhat.ceylon.compiler.tree.Tree.TypeArgumentList;
+import com.redhat.ceylon.compiler.tree.Tree.UpperBound;
 import com.redhat.ceylon.compiler.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.tree.Visitor;
 
@@ -633,18 +635,50 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.IndexExpression that) {
         super.visit(that);
-        Interface s = (Interface) Util.getLanguageModuleDeclaration("Sequence", context);
-        ProducedType st = type(that);
-        if (st==null) {
+        ProducedType pt = type(that);
+        if (pt==null) {
             that.addError("could not determine type of receiver");
         }
         else {
-            if ( st.getDeclaration()!=s || st.getTypeArguments().size()!=1 ) {
-                that.addError("receiving type of an index expression must be a sequence");
+            Interface s = (Interface) Util.getLanguageModuleDeclaration("Correspondence", context);
+            ProducedType st = pt.getSupertype(s);
+            if (st==null) {
+                that.getPrimary().addError("receiving type of an index expression must be a Correspondence");
             }
             else {
-                ProducedType vt = st.getTypeArguments().get(0);
-                that.setTypeModel(vt);
+                List<ProducedType> args = st.getTypeArgumentList();
+                ProducedType kt = args.get(0);
+                ProducedType vt = args.get(1);
+                LowerBound lb = that.getLowerBound();
+                if (lb==null) {
+                    that.addError("missing lower bound");
+                }
+                else {
+                    ProducedType lbt = lb.getExpression().getTypeModel();
+                    if (lbt!=null) {
+                        if (!kt.isSupertypeOf(lbt)) {
+                            lb.addError("index must be of type: " +
+                                    kt.getProducedTypeName());
+                        }
+                    }
+                }
+                ClassOrInterface rtd;
+                UpperBound ub = that.getUpperBound();
+                if (ub==null) {
+                    rtd = (Class) Util.getLanguageModuleDeclaration("Optional", context);
+                }
+                else {
+                    rtd = (Interface) Util.getLanguageModuleDeclaration("Sequence", context);
+                    ProducedType ubt = ub.getExpression().getTypeModel();
+                    if (ubt!=null) {
+                        if (!kt.isSupertypeOf(ubt)) {
+                            ub.addError("index must be of type: " +
+                                    kt.getProducedTypeName());
+                        }
+                    }
+                }
+                ProducedType ot = rtd.getProducedType( Collections.singletonList(vt) );
+                that.setTypeModel(ot);
             }
         }
     }

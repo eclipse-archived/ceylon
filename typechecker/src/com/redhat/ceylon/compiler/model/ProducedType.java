@@ -146,4 +146,12 @@ public class ProducedType extends ProducedReference {
         return null;
     }
     
+    public List<ProducedType> getTypeArgumentList() {
+        List<ProducedType> lpt = new ArrayList<ProducedType>();
+        for (TypeParameter tp: getDeclaration().getTypeParameters()) {
+            lpt.add( getTypeArguments().get(tp) );
+        }
+        return lpt;
+    }
+    
 }

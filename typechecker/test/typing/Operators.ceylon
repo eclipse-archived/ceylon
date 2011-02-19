@@ -48,5 +48,13 @@ class Operators() {
     @error X() ? X();
     
     @error X() ? nothing;
+    
+    X[] sequence = {X(), X()};
+    
+    @type["Optional<X>"] sequence[0];
+    @type["Sequence<X>"] sequence[0..1];
+    
+    @error sequence["hello"];
+    @error sequence[1.."hello"];
 
 }
