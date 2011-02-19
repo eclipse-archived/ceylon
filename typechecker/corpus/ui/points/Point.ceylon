@@ -1,4 +1,4 @@
 shared abstract class Point() { 
-	shared formal Decimal x; 
-	shared formal Decimal y;
+	shared formal Float x; 
+	shared formal Float y;
 }

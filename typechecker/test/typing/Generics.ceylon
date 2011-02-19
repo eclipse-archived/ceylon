@@ -3,7 +3,7 @@ class Generics() {
     class Holder<X>(X x) {
         shared X held = x;
         X add(X x, X y) {
-            return x + y;
+            @error return x + y;
         }
         Y noop<Y>(Y y) {
             return y;
@@ -46,7 +46,7 @@ class Generics() {
     
     class C<X>() {
         X cop(X arg) {
-            if (arg=="ERROR") {
+            if (false) {
                 X nothing { return arg; }
                 return nothing;
             }

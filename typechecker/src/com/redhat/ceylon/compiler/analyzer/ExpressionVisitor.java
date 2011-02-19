@@ -23,7 +23,10 @@ import com.redhat.ceylon.compiler.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.model.Value;
 import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
+import com.redhat.ceylon.compiler.tree.Tree.BinaryOperatorExpression;
+import com.redhat.ceylon.compiler.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.tree.Tree.SpecifierExpression;
+import com.redhat.ceylon.compiler.tree.Tree.Term;
 import com.redhat.ceylon.compiler.tree.Tree.TypeArgumentList;
 import com.redhat.ceylon.compiler.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.tree.Visitor;
@@ -87,17 +90,6 @@ public class ExpressionVisitor extends Visitor {
         returnType = t;
     }
 
-    @Override public void visit(Tree.AssignOp that) {
-        super.visit(that);
-        ProducedType rhst = that.getRightTerm().getTypeModel();
-        ProducedType lhst = that.getLeftTerm().getTypeModel();
-        if ( rhst!=null && lhst!=null && !rhst.isExactly(lhst) ) {
-            that.addError("type not assignable");
-        }
-        //TODO: validate that the LHS really is assignable
-        that.setTypeModel(rhst);
-    }
-    
     @Override public void visit(Tree.Variable that) {
         super.visit(that);
         if (that.getSpecifierExpression()!=null) {
@@ -150,7 +142,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 ProducedType bt = getLanguageType("Boolean");
-                if (!bt.isExactly(t)) {
+                if (!bt.isSupertypeOf(t)) {
                     that.addError("expression is not of boolean type");
                 }
             }
@@ -642,7 +634,7 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.IndexExpression that) {
         super.visit(that);
         Interface s = (Interface) Util.getLanguageModuleDeclaration("Sequence", context);
-        ProducedType st = that.getPrimary().getTypeModel();
+        ProducedType st = type(that);
         if (st==null) {
             that.addError("could not determine type of receiver");
         }
@@ -659,115 +651,217 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.PostfixOperatorExpression that) {
         super.visit(that);
-        ProducedType pt = that.getPrimary().getTypeModel();
+        ProducedType pt = type(that);
         that.setTypeModel(pt);
+    }
+
+    private ProducedType type(Tree.PostfixExpression that) {
+        Primary p = that.getPrimary();
+        return p==null ? null : p.getTypeModel();
     }
     
     @Override public void visit(Tree.PrefixOperatorExpression that) {
         super.visit(that);
-        ProducedType pt = that.getTerm().getTypeModel();
+        ProducedType pt = type(that);
         that.setTypeModel(pt);
+    }
+    
+    @Override public void visit(Tree.SumOp that) {
+        super.visit( (BinaryOperatorExpression) that );
+        ProducedType lhst = leftType(that);
+        if (lhst!=null) {
+            //take into account overloading of + operator
+            if (lhst.isSubtypeOf(getLanguageType("String"))) {
+                visitBinaryOperator(that, "String");
+            }
+            else {
+                visitBinaryOperator(that, "Numeric");
+            }
+        }
+    }
+
+    private void visitComparisonOperator(Tree.BinaryOperatorExpression that, String type) {
+        ProducedType lhst = leftType(that);
+        ProducedType rhst = rightType(that);
+        if ( rhst!=null && lhst!=null ) {
+            ProducedType nt = lhst.getSupertype( (TypeDeclaration) Util.getLanguageModuleDeclaration(type, context) );
+            if (nt==null) {
+                that.getLeftTerm().addError("must be of type: " + type);
+            }
+            else {
+                that.setTypeModel( getLanguageType("Boolean") );            
+                if (!nt.isSupertypeOf(rhst)) {
+                    that.getRightTerm().addError("must be of type: " + nt.getProducedTypeName());
+                }
+            }
+        }
+    }
+    
+    private void visitBinaryOperator(Tree.BinaryOperatorExpression that, String type) {
+        ProducedType lhst = leftType(that);
+        ProducedType rhst = rightType(that);
+        if ( rhst!=null && lhst!=null ) {
+            ProducedType nt = lhst.getSupertype( (TypeDeclaration) Util.getLanguageModuleDeclaration(type, context) );
+            if (nt==null) {
+                that.getLeftTerm().addError("must be of type: " + type);
+            }
+            else {
+                ProducedType t = nt.getTypeArguments().isEmpty() ? 
+                        nt : nt.getTypeArguments().values().iterator().next();
+                that.setTypeModel(t);
+                if (!nt.isSupertypeOf(rhst)) {
+                    that.getRightTerm().addError("must be of type: " + nt.getProducedTypeName());
+                }
+            }
+        }
+    }
+
+    private void visitDefaultOperator(Tree.BinaryOperatorExpression that) {
+        ProducedType lhst = leftType(that);
+        ProducedType rhst = rightType(that);
+        if ( rhst!=null && lhst!=null ) {
+            TypeDeclaration otd = (TypeDeclaration) Util.getLanguageModuleDeclaration("Optional", context);
+            that.setTypeModel(rhst);
+            ProducedType nt = rhst.getSupertype(otd);
+            if (nt==null) {
+                ProducedType ot = otd.getProducedType(Collections.singletonList(rhst));
+                if (!lhst.isSubtypeOf(ot)) {
+                    that.getLeftTerm().addError("must be of type: " + ot.getProducedTypeName());
+                }
+            }
+            else {
+                if (!lhst.isSubtypeOf(rhst)) {
+                    that.getRightTerm().addError("must be of type: " + rhst.getProducedTypeName());
+                }
+            }
+        }
+    }
+    
+    private void visitUnaryOperator(Tree.UnaryOperatorExpression that, String type) {
+        ProducedType t = type(that);
+        if ( t!=null ) {
+            ProducedType nt = t.getSupertype( (TypeDeclaration) Util.getLanguageModuleDeclaration(type, context) );
+            if (nt==null) {
+                that.getTerm().addError("must be of type: " + type);
+            }
+            else {
+                that.setTypeModel(nt);
+            }
+        }
+    }
+
+    private void visitFormatOperator(Tree.UnaryOperatorExpression that) {
+        //TODO: reenable once we have extensions:
+        /*ProducedType t = that.getTerm().getTypeModel();
+        if ( t!=null ) {
+            if ( !getLanguageType("Formattable").isSupertypeOf(t) ) {
+                that.getTerm().addError("must be of type: Formattable");
+            }
+        }*/
+        that.setTypeModel( getLanguageType("String") );
+    }
+    
+    private void visitAssignOperator(Tree.AssignOp that) {
+        ProducedType rhst = rightType(that);
+        ProducedType lhst = leftType(that);
+        if ( rhst!=null && lhst!=null ) {
+            if ( !rhst.isSubtypeOf(lhst) ) {
+                that.getRightTerm().addError("must be of type " +
+                        lhst.getProducedTypeName());
+            }
+        }
+        //TODO: validate that the LHS really is assignable
+        that.setTypeModel(rhst);
+    }
+    
+    private ProducedType rightType(Tree.BinaryOperatorExpression that) {
+        Term rt = that.getRightTerm();
+        return rt==null? null : rt.getTypeModel();
+    }
+
+    private ProducedType leftType(Tree.BinaryOperatorExpression that) {
+        Term lt = that.getLeftTerm();
+        return lt==null ? null : lt.getTypeModel();
+    }
+    
+    private ProducedType type(Tree.UnaryOperatorExpression that) {
+        Term t = that.getTerm();
+        return t==null ? null : t.getTypeModel();
     }
     
     @Override public void visit(Tree.ArithmeticOp that) {
         super.visit(that);
-        ProducedType lhst = that.getLeftTerm().getTypeModel();
-        ProducedType rhst = that.getRightTerm().getTypeModel();
-        that.setTypeModel(lhst);
-        if ( rhst!=null && lhst!=null && !rhst.isExactly(lhst) ) {
-            that.addError("operands must have same numeric type");
-        }
-    }
-        
-    @Override public void visit(Tree.DefaultOp that) {
-        super.visit(that);
-        ProducedType rhst = that.getRightTerm().getTypeModel();
-        that.setTypeModel(rhst);
-    }
-        
-    @Override public void visit(Tree.NegativeOp that) {
-        super.visit(that);
-        ProducedType t = that.getTerm().getTypeModel();
-        that.setTypeModel(t);
+        visitBinaryOperator(that, "Numeric");
     }
         
     @Override public void visit(Tree.BitwiseOp that) {
         super.visit(that);
-        ProducedType lhst = that.getLeftTerm().getTypeModel();
-        ProducedType rhst = that.getRightTerm().getTypeModel();
-        that.setTypeModel(lhst);
-        if ( rhst!=null && lhst!=null && !rhst.isExactly(lhst) ) {
-            that.addError("operands must have same numeric type");
-        }
-    }
-        
-    @Override public void visit(Tree.FlipOp that) {
-        super.visit(that);
-        ProducedType t = that.getTerm().getTypeModel();
-        that.setTypeModel(t);
+        visitBinaryOperator(that, "Slots");
     }
         
     @Override public void visit(Tree.LogicalOp that) {
         super.visit(that);
-        ProducedType lhst = that.getLeftTerm().getTypeModel();
-        ProducedType rhst = that.getRightTerm().getTypeModel();
-        ProducedType bt = getLanguageType("Boolean");
-        that.setTypeModel(bt);
-        if ( rhst!=null && !rhst.isExactly(bt) ) {
-            that.addError("operands must have boolean type");
-        }
-        if ( lhst!=null && !lhst.isExactly(bt) ) {
-            that.addError("operands must have boolean type");
-        }
-    }
-        
-    @Override public void visit(Tree.NotOp that) {
-        super.visit(that);
-        ProducedType t = that.getTerm().getTypeModel();
-        ProducedType bt = getLanguageType("Boolean");
-        that.setTypeModel(bt);
-        if ( t!=null && !t.isExactly(bt) ) {
-            that.addError("operand must have boolean type");
-        }
-    }
-        
-    @Override public void visit(Tree.ComparisonOp that) {
-        super.visit(that);
-        ProducedType lhst = that.getLeftTerm().getTypeModel();
-        ProducedType rhst = that.getRightTerm().getTypeModel();
-        ProducedType bt = getLanguageType("Boolean");
-        that.setTypeModel(bt);
-        if ( rhst!=null && lhst!=null && !rhst.isExactly(lhst) ) {
-            that.addError("operands must have same comparable type");
-        }
+        visitBinaryOperator(that, "Boolean");
     }
         
     @Override public void visit(Tree.EqualityOp that) {
         super.visit(that);
-        ProducedType bt = getLanguageType("Boolean");
-        that.setTypeModel(bt);
+        visitComparisonOperator(that, "Equality");
+    }
+        
+    @Override public void visit(Tree.ComparisonOp that) {
+        super.visit(that);
+        visitComparisonOperator(that, "Comparable");
     }
         
     @Override public void visit(Tree.IdenticalOp that) {
         super.visit(that);
-        ProducedType bt = getLanguageType("Boolean");
-        that.setTypeModel(bt);
+        visitComparisonOperator(that, "IdentifiableObject");
     }
         
-    @Override public void visit(Tree.AssignmentOp that) {
+    @Override public void visit(Tree.DefaultOp that) {
         super.visit(that);
-        ProducedType lhst = that.getLeftTerm().getTypeModel();
-        ProducedType rhst = that.getRightTerm().getTypeModel();
-        that.setTypeModel(lhst);
-        if ( rhst!=null && lhst!=null && !rhst.isExactly(lhst) ) {
-            that.addError("operands must have same type");
-        }
+        visitDefaultOperator(that);
+    }
+        
+    @Override public void visit(Tree.NegativeOp that) {
+        super.visit(that);
+        visitUnaryOperator(that, "Numeric");
+    }
+        
+    @Override public void visit(Tree.FlipOp that) {
+        super.visit(that);
+        visitUnaryOperator(that, "Slots");
+    }
+        
+    @Override public void visit(Tree.NotOp that) {
+        super.visit(that);
+        visitUnaryOperator(that, "Boolean");
+    }
+        
+    @Override public void visit(Tree.AssignOp that) {
+        super.visit(that);
+        visitAssignOperator(that);
+    }
+        
+    @Override public void visit(Tree.ArithmeticAssignmentOp that) {
+        super.visit(that);
+        visitBinaryOperator(that, "Numeric");
+    }
+        
+    @Override public void visit(Tree.LogicalAssignmentOp that) {
+        super.visit(that);
+        visitBinaryOperator(that, "Boolean");
+    }
+        
+    @Override public void visit(Tree.BitwiseAssignmentOp that) {
+        super.visit(that);
+        visitBinaryOperator(that, "Slots");
     }
         
     @Override public void visit(Tree.FormatOp that) {
         super.visit(that);
-        ProducedType t = getLanguageType("String");
-        that.setTypeModel(t);
+        visitFormatOperator(that);
     }
         
     //Atoms:

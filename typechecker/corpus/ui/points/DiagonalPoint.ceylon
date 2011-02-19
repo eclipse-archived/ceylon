@@ -1,8 +1,8 @@
-shared class DiagonalPoint(Decimal distance) 
+shared class DiagonalPoint(Float distance) 
         extends Point() {
-    Decimal pos = distance / 2**0.5; 
+    Float pos = distance / 2.0**0.5; 
     x = pos; 
     y = pos;
     assert ("must have distance " distance " from origin") 
-        that ( x**2 + y**2 == distance**2 );
+        that ( x**2.0 + y**2.0 == distance**2.0 );
 }

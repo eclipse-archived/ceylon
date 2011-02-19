@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.context.Context;
 import com.redhat.ceylon.compiler.model.Class;
+import com.redhat.ceylon.compiler.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.model.Declaration;
 import com.redhat.ceylon.compiler.model.Import;
 import com.redhat.ceylon.compiler.model.Module;
@@ -191,20 +192,38 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.ClassOrInterface that) {
         super.visit(that);
-        Tree.SatisfiedTypes st = that.getSatisfiedTypes();
-        TypeDeclaration dm = (TypeDeclaration) that.getDeclarationModel();
-        if (dm!=null && st!=null) {
-            dm.setSatisfiedTypes(getSatisfiedTypes(st));
+        ClassOrInterface ci = (ClassOrInterface) that.getDeclarationModel();
+        if (ci==null) {
+            //TODO: this case is temporary until we get aliases
         }
+        else {
+            Tree.SatisfiedTypes st = that.getSatisfiedTypes();
+            if (st!=null) {
+                ci.setSatisfiedTypes(getSatisfiedTypes(st));
+            }
+        }
+        //TODO: interfaces should have Object as a supertype!!
     }
 
     @Override 
     public void visit(Tree.AnyClass that) {
         super.visit(that);
-        Tree.ExtendedType et = that.getExtendedType();
-        if (et!=null) {
-            Class c = (Class) that.getDeclarationModel();
-            c.setExtendedType(et.getType().getTypeModel());
+        Class c = (Class) that.getDeclarationModel();
+        if (c==null) {
+            //TODO: this case is temporary until we get aliases
+        }
+        else {
+            Tree.ExtendedType et = that.getExtendedType();
+            Class vd = (Class) Util.getLanguageModuleDeclaration("Void", context);
+            if (c!=vd) {
+                if (et==null) {
+                    Class iotd = (Class) Util.getLanguageModuleDeclaration("IdentifiableObject", context);
+                    c.setExtendedType(iotd.getType());
+                }
+                else {
+                    c.setExtendedType(et.getType().getTypeModel());
+                }
+            }
         }
     }
     
