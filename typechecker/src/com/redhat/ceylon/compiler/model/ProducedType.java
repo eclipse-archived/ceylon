@@ -94,7 +94,7 @@ public class ProducedType extends ProducedReference {
         }
     }
          
-    public ProducedTypedReference getDeclaredTypedMember(TypedDeclaration td, List<ProducedType> typeArguments) {
+    ProducedTypedReference getDeclaredTypedMember(TypedDeclaration td, List<ProducedType> typeArguments) {
         if (!Util.acceptsArguments(td, typeArguments)) {
             return null;
         }

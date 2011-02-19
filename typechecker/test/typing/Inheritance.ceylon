@@ -8,8 +8,12 @@ class Inheritance() {
         shared T getIt() { return it; }
     }
     class Y<T>(T t) extends X<T>(t) {}
-    class Z() extends X<String>("Hello") {}
-    class W<U,V>(U u, V v) extends X<V>(v) {}
+    class Z() extends X<String>("Hello") {
+        String sss = getIt();
+    }
+    class W<U,V>(U u, V v) extends X<V>(v) {
+        V vv = getIt();
+    }
         
     X<String> ys = Y<String>("foo");
     ys.doIt("to a string");

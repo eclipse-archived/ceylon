@@ -478,7 +478,7 @@ public class ExpressionVisitor extends Visitor {
                 m.addError("member does not accept the given type arguments");
             }
             else {
-                ProducedTypedReference ptr = pt.getTypedMember(member, typeArgs);
+                ProducedTypedReference ptr = getMemberProducedReference(member, pt, m, typeArgs);
                 if (ptr==null) {
                     m.addError("member not found: " + 
                             member.getName() + " of type " + 
@@ -490,6 +490,22 @@ public class ExpressionVisitor extends Visitor {
                     that.setTypeModel(t);
                 }
             }
+        }
+    }
+
+    private ProducedTypedReference getMemberProducedReference(
+            TypedDeclaration member, ProducedType pt, Tree.Member m,
+            List<ProducedType> typeArgs) {
+        if (member.getContainer() instanceof ClassOrInterface) {
+            //TODO: we should try each class/interface that contains
+            //      the current class/interface in turn until we
+            //      get to toplevel scope (the package)
+            //      ... or, well, perhaps not!!
+            return pt.getTypedMember(member, typeArgs);
+        }
+        else {
+            //TODO: should we even remove this one?
+            return member.getProducedTypedReference(typeArgs);
         }
     }
     
@@ -816,12 +832,15 @@ public class ExpressionVisitor extends Visitor {
                     that.getIdentifier().getText());
         }
         else {
+            if ( that.getIdentifier().getText().equals("getIt") ) {
+                that.getIdentifier();
+            }
             List<ProducedType> typeArgs = getTypeArguments(that, that.getTypeArgumentList());
             if (!com.redhat.ceylon.compiler.model.Util.acceptsArguments(d, typeArgs)) {
                 that.addError("does not accept the given type arguments");
             }
             else {
-                ProducedReference pr = d.getProducedTypedReference(typeArgs);
+                ProducedReference pr = getProducedReference(d, classOrInterface, typeArgs);
                 that.setMemberReference(pr);
                 ProducedType t = pr.getType();
                 if (t==null) {
@@ -832,6 +851,34 @@ public class ExpressionVisitor extends Visitor {
                     that.setTypeModel(t);
                 }
             }
+        }
+    }
+
+    private ProducedTypedReference getProducedReference(TypedDeclaration d, Scope scope,
+            List<ProducedType> typeArgs) {
+        //TODO: we need to try each class/interface that contains
+        //      the current class/interface in turn until we
+        //      get to toplevel scope (the package)
+        //TODO: I think we even need to try control blocks and
+        //      method/attribute bodies!
+        if ( d.getContainer() instanceof ClassOrInterface ) {
+            //look for it as a declared or inherited 
+            //member of the current class or interface
+            while ( !(scope instanceof Package) ) {
+                if (scope instanceof ClassOrInterface) {
+                    ProducedTypedReference pr = ((ClassOrInterface) scope).getType().getTypedMember(d, typeArgs);
+                    if (pr!=null) {
+                        return pr;
+                    }
+                }
+                scope = scope.getContainer();
+            }
+            //we will definitely find it, so this never occurs:
+            throw new RuntimeException("member not found");
+        }
+        else {
+            //it must be a member of an outer scope
+            return d.getProducedTypedReference(typeArgs);
         }
     }
     

@@ -64,6 +64,7 @@ class Primaries() {
     @type["Inner2"] Inner(aa).Inner2();
     @type["Inner"] Inner(A()).Inner2().outer;
     @type["Primaries"] Inner(aa).Inner2().outer.outer;
+    //@type["A"] Inner(A()).aa;
     
     void method(A arg1, B arg2) {
         @type["A"] arg1;

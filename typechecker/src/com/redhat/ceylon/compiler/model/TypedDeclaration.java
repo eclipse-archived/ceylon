@@ -37,18 +37,18 @@ public abstract class TypedDeclaration extends Declaration {
         return typeArguments.isEmpty();
     }
     
+    public ProducedTypedReference getTypedReference() {
+        return getProducedTypedReference(Collections.<ProducedType>emptyList());
+    }
+    
     public ProducedTypedReference getProducedTypedReference(List<ProducedType> typeArguments) {
         if (!acceptsArguments(typeArguments)) {
             throw new RuntimeException( getName() + 
                     " does not accept given type arguments");
         }
-        return getTypedReference();
-    }
-    
-    public ProducedTypedReference getTypedReference() {
         ProducedTypedReference pt = new ProducedTypedReference();
         pt.setDeclaration(this);
-        pt.setTypeArguments( Collections.<TypeParameter, ProducedType>emptyMap() );
+        pt.setTypeArguments(Util.arguments(this, typeArguments));
         return pt;
     }
     

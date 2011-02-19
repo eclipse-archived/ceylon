@@ -38,4 +38,23 @@ class Generics() {
     @type["Holder<Natural>"] create<Natural>(3);
     Natural nn = create<Natural>(5).held;
     
+    X op<X>(X arg) {
+        return arg;
+    }
+    String hi = op<String>("Hi");
+    @error String hi2 = op<X>("Hi");
+    
+    class C<X>() {
+        X cop(X arg) {
+            if (arg=="ERROR") {
+                X nothing { return arg }
+                return nothing;
+            }
+            else {
+                return arg;
+            }
+        }
+    }
+    String hiback = C<String>().cop("Hi back!");
+    
 }

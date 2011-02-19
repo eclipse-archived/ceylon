@@ -18,12 +18,17 @@ public class Util {
     }
 
     public static boolean acceptsArguments(Declaration d, List<ProducedType> typeArguments) {
-        if (d instanceof Generic) {
-            //TODO: assignability!!
-            return ((Generic) d).getTypeParameters().size()==typeArguments.size();
+        if (typeArguments==null) {
+            return false;
         }
         else {
-            return typeArguments.isEmpty();
+            if (d instanceof Generic) {
+                //TODO: assignability!!
+                return ((Generic) d).getTypeParameters().size()==typeArguments.size();
+            }
+            else {
+                return typeArguments.isEmpty();
+            }
         }
     }
 
