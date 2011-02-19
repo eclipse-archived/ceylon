@@ -119,10 +119,10 @@ public class ExpressionVisitor extends Visitor {
         ProducedType t = null;
         Node n = that;
         Variable v = that.getVariable();
+        TypeDeclaration ot = (TypeDeclaration) Util.getLanguageModuleDeclaration("Optional", context);
         if (v!=null) {
             SpecifierExpression se = v.getSpecifierExpression();
             visit(se);
-            TypeDeclaration ot = (TypeDeclaration) Util.getLanguageModuleDeclaration("Optional", context);
             inferType(v, se, ot);
             checkType(v, se, ot);
             t = se.getExpression().getTypeModel();
@@ -136,11 +136,8 @@ public class ExpressionVisitor extends Visitor {
         if (t==null) {
             n.addError("could not determine if expression is of optional type");
         }
-        else {
-            Class ot = (Class) Util.getLanguageModuleDeclaration("Optional", context);
-            if (t.getDeclaration()!=ot) {
-                n.addError("expression is not of optional type");
-            }
+        else if (t.getDeclaration()!=ot) {
+            n.addError("expression is not of optional type");
         }
     }
 
@@ -557,33 +554,24 @@ public class ExpressionVisitor extends Visitor {
             a.addError("parameter type not known: " + Util.name(a));
         }
         else {
+            ProducedType argType = null;
             if (a instanceof Tree.SpecifiedArgument) {
-                ProducedType t = ((Tree.SpecifiedArgument) a).getSpecifierExpression().getExpression().getTypeModel();
-                if (t==null) {
-                    a.addError("could not determine assignability of argument to parameter: " +
-                            p.getName());
-                }
-                else {
-                    ProducedType paramType = pr.getTypedParameter(p).getType();
-                    if ( !paramType.getType().isSupertypeOf(t) ) {
-                        a.addError("named argument not assignable to parameter type: " + 
-                                Util.name(a) + " since " +
-                                t.getProducedTypeName() + " is not " +
-                                p.getType().getProducedTypeName());
-                    }
-                }
+                argType = ((Tree.SpecifiedArgument) a).getSpecifierExpression().getExpression().getTypeModel();
             }
             else if (a instanceof Tree.TypedArgument) {
-                ProducedType t = ((Tree.TypedArgument) a).getTypeOrSubtype().getTypeModel();
-                if (t==null) {
-                    a.addError("could not determine assignability of argument to parameter: " +
-                            p.getName());
-                }
-                else {
-                    if ( !p.getType().isExactly(t) ) {
-                        a.addError("argument not assignable to parameter type: " + 
-                                Util.name(a));
-                    }
+                argType = ((Tree.TypedArgument) a).getTypeOrSubtype().getTypeModel();
+            }
+            if (argType==null) {
+                a.addError("could not determine assignability of argument to parameter: " +
+                        p.getName());
+            }
+            else {
+                ProducedType paramType = pr.getTypedParameter(p).getType();
+                if ( !paramType.getType().isSupertypeOf(argType) ) {
+                    a.addError("named argument not assignable to parameter type: " + 
+                            Util.name(a) + " since " +
+                            argType.getProducedTypeName() + " is not " +
+                            paramType.getProducedTypeName());
                 }
             }
         }
@@ -616,7 +604,6 @@ public class ExpressionVisitor extends Visitor {
         List<Parameter> params = pl.getParameters();
         for (int i=0; i<params.size(); i++) {
             Parameter p = params.get(i);
-            ProducedType paramType = r.getTypedParameter(p).getType();
             if (i>=args.size()) {
                 if (!p.isDefaulted() && !p.isSequenced()) {
                     pal.addError("no argument to parameter: " + p.getName());
@@ -630,6 +617,7 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else {
                     ProducedType argType = e.getTypeModel();
+                    ProducedType paramType = r.getTypedParameter(p).getType();
                     if (paramType!=null && argType!=null) {
                         if (!paramType.isSupertypeOf(argType)) {
                             a.addError("argument not assignable to parameter type: " + 
