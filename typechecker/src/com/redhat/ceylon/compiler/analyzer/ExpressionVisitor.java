@@ -314,7 +314,7 @@ public class ExpressionVisitor extends Visitor {
         if (that.getTypeOrSubtype() instanceof Tree.LocalModifier) {
             Tree.SpecifierExpression se = that.getSpecifierExpression();
             if (se!=null) {
-                setOptionalType((Tree.LocalModifier) that.getTypeOrSubtype(), se, that);
+                setTypeFromTypeArgument((Tree.LocalModifier) that.getTypeOrSubtype(), se, that);
             }
             else {
                 that.addError("could not infer type of: " + 
@@ -326,7 +326,7 @@ public class ExpressionVisitor extends Visitor {
     private void inferIterableType(Tree.Variable that, Tree.SpecifierExpression se) {
         if (that.getTypeOrSubtype() instanceof Tree.LocalModifier) {
             if (se!=null) {
-                setOptionalType((Tree.LocalModifier) that.getTypeOrSubtype(), se, that);
+                setTypeFromTypeArgument((Tree.LocalModifier) that.getTypeOrSubtype(), se, that);
             }
             else {
                 that.addError("could not infer type of: " + 
@@ -335,10 +335,11 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void setOptionalType(Tree.LocalModifier local, 
+    private void setTypeFromTypeArgument(Tree.LocalModifier local, 
             Tree.SpecifierExpression s, 
             Tree.Variable that) {
         ProducedType ot = s.getExpression().getTypeModel();
+        //TODO: search for the correct type to look for the argument of!
         if (ot!=null && ot.getTypeArguments().size()==1) {
             ProducedType t = ot.getTypeArguments().values().iterator().next();
             local.setTypeModel(t);
