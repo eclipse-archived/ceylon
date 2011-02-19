@@ -145,7 +145,7 @@ class Assignability() {
     
     X something = X();
     X? nothing {
-        @error return null; //not really an error!
+        return null.nothing<X>();
     }
     @error nothing.hello;
     Boolean b = 1<2;

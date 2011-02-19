@@ -1,4 +1,5 @@
 public class Literals() {
+    
     @type["String"] "Hello";
     @type["Natural"] 1;
     @type["Float"] 1.0;
@@ -13,5 +14,7 @@ public class Literals() {
     String[] strings = { "Hello", "World" };
     
     String? string = null.nothing<String>();
+    
+    Iterable<String> istrings = strings;
     
 }
