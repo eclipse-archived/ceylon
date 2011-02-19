@@ -683,66 +683,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private Interface getCorrespondenceDeclaration() {
-        return (Interface) getLanguageDeclaration("Correspondence");
-    }
-
-    private Interface getSequenceDeclaration() {
-        return (Interface) getLanguageDeclaration("Sequence");
-    }
-
-    private Class getOptionalDeclaration() {
-        return (Class) getLanguageDeclaration("Optional");
-    }
-    
-    private Interface getIterableDeclaration() {
-        return (Interface) getLanguageDeclaration("Iterable");
-    }
-
-    private TypeDeclaration getNumericDeclaration() {
-        return getLanguageDeclaration("Numeric");
-    }
-        
-    private TypeDeclaration getSlotsDeclaration() {
-        return getLanguageDeclaration("Slots");
-    }
-        
-    private TypeDeclaration getBooleanDeclaration() {
-        return getLanguageDeclaration("Boolean");
-    }
-        
-    private TypeDeclaration getStringDeclaration() {
-        return getLanguageDeclaration("String");
-    }
-        
-    private TypeDeclaration getFloatDeclaration() {
-        return getLanguageDeclaration("Float");
-    }
-        
-    private TypeDeclaration getNaturalDeclaration() {
-        return getLanguageDeclaration("Natural");
-    }
-        
-    private TypeDeclaration getCharacterDeclaration() {
-        return getLanguageDeclaration("Character");
-    }
-        
-    private TypeDeclaration getQuotedDeclaration() {
-        return getLanguageDeclaration("Quoted");
-    }
-        
-    private TypeDeclaration getEqualityDeclaration() {
-        return getLanguageDeclaration("Equality");
-    }
-        
-    private TypeDeclaration getComparableDeclaration() {
-        return getLanguageDeclaration("Comparable");
-    }
-        
-    private TypeDeclaration getIdentifiableObjectDeclaration() {
-        return getLanguageDeclaration("IdentifiableObject");
-    }
-        
     @Override public void visit(Tree.PostfixOperatorExpression that) {
         super.visit(that);
         ProducedType pt = type(that);
@@ -1160,4 +1100,64 @@ public class ExpressionVisitor extends Visitor {
         return typeArguments;
     }
 
+    private Interface getCorrespondenceDeclaration() {
+        return (Interface) getLanguageDeclaration("Correspondence");
+    }
+
+    private Interface getSequenceDeclaration() {
+        return (Interface) getLanguageDeclaration("Sequence");
+    }
+
+    private Class getOptionalDeclaration() {
+        return (Class) getLanguageDeclaration("Optional");
+    }
+    
+    private Interface getIterableDeclaration() {
+        return (Interface) getLanguageDeclaration("Iterable");
+    }
+
+    private TypeDeclaration getNumericDeclaration() {
+        return getLanguageDeclaration("Numeric");
+    }
+        
+    private TypeDeclaration getSlotsDeclaration() {
+        return getLanguageDeclaration("Slots");
+    }
+        
+    private TypeDeclaration getBooleanDeclaration() {
+        return getLanguageDeclaration("Boolean");
+    }
+        
+    private TypeDeclaration getStringDeclaration() {
+        return getLanguageDeclaration("String");
+    }
+        
+    private TypeDeclaration getFloatDeclaration() {
+        return getLanguageDeclaration("Float");
+    }
+        
+    private TypeDeclaration getNaturalDeclaration() {
+        return getLanguageDeclaration("Natural");
+    }
+        
+    private TypeDeclaration getCharacterDeclaration() {
+        return getLanguageDeclaration("Character");
+    }
+        
+    private TypeDeclaration getQuotedDeclaration() {
+        return getLanguageDeclaration("Quoted");
+    }
+        
+    private TypeDeclaration getEqualityDeclaration() {
+        return getLanguageDeclaration("Equality");
+    }
+        
+    private TypeDeclaration getComparableDeclaration() {
+        return getLanguageDeclaration("Comparable");
+    }
+        
+    private TypeDeclaration getIdentifiableObjectDeclaration() {
+        return getLanguageDeclaration("IdentifiableObject");
+    }
+        
 }
