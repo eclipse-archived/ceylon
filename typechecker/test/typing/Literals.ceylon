@@ -7,4 +7,11 @@ public class Literals() {
     @type["Sequence<Natural>"] { 1, 2, 3, 4 };
     @type["String"] "pi = " 3.1415 " approx";
     @type["Quoted"] 'hibernate.org';
+    
+    Boolean b = true;
+    
+    String[] strings = { "Hello", "World" };
+    
+    String? string = null.nothing<String>();
+    
 }

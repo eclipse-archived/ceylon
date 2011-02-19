@@ -13,6 +13,7 @@ import com.redhat.ceylon.compiler.model.ProducedType;
 import com.redhat.ceylon.compiler.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.model.Unit;
+import com.redhat.ceylon.compiler.model.Value;
 import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Tree.TypeArgumentList;
@@ -175,10 +176,7 @@ public class TypeVisitor extends Visitor {
         }
     }
     
-    @Override 
-    public void visit(Tree.ClassOrInterface that) {
-        super.visit(that);
-        Tree.SatisfiedTypes st = that.getSatisfiedTypes();
+    private List<ProducedType> getSatisfiedTypes(Tree.SatisfiedTypes st) {
         List<ProducedType> list = new ArrayList<ProducedType>();
         if (st!=null) {
             for (Tree.Type t: st.getTypes()) {
@@ -187,19 +185,42 @@ public class TypeVisitor extends Visitor {
                 }
             }
         }
+        return list;
+    }
+    
+    @Override 
+    public void visit(Tree.ClassOrInterface that) {
+        super.visit(that);
+        Tree.SatisfiedTypes st = that.getSatisfiedTypes();
         TypeDeclaration dm = (TypeDeclaration) that.getDeclarationModel();
-        if (dm!=null) {
-            dm.setSatisfiedTypes(list);
+        if (dm!=null && st!=null) {
+            dm.setSatisfiedTypes(getSatisfiedTypes(st));
+        }
+    }
+
+    @Override 
+    public void visit(Tree.AnyClass that) {
+        super.visit(that);
+        Tree.ExtendedType et = that.getExtendedType();
+        if (et!=null) {
+            Class c = (Class) that.getDeclarationModel();
+            c.setExtendedType(et.getType().getTypeModel());
         }
     }
     
     @Override 
-    public void visit(Tree.AnyClass that) {
+    public void visit(Tree.ObjectDeclaration that) {
         super.visit(that);
-        Tree.ExtendedType st = that.getExtendedType();
-        if (st!=null) {
-            Tree.Type t = st.getType();
-            ( (Class) that.getDeclarationModel() ).setExtendedType(t.getTypeModel());
+        Tree.ExtendedType et = that.getExtendedType();
+        Tree.SatisfiedTypes st = that.getSatisfiedTypes();
+        TypeDeclaration td = ( (Value) that.getDeclarationModel() ).getType().getDeclaration();
+        if (td!=null) {
+            if (et!=null) {
+                td.setExtendedType(et.getType().getTypeModel());
+            }
+            if (st!=null) {
+                td.setSatisfiedTypes(getSatisfiedTypes(st));
+            }
         }
     }
     
