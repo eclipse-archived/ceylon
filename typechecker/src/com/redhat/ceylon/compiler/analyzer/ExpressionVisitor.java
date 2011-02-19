@@ -102,7 +102,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         if (that.getSpecifierExpression()!=null) {
             inferType(that, that.getSpecifierExpression());
-            checkType(that.getTypeOrSubtype(), that.getSpecifierExpression());
+            checkType(that, that.getSpecifierExpression());
         }
     }
     
@@ -175,7 +175,7 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.AttributeDeclaration that) {
         super.visit(that);
         inferType(that, that.getSpecifierOrInitializerExpression());
-        checkType(that.getTypeOrSubtype(), that.getSpecifierOrInitializerExpression());
+        checkType(that, that.getSpecifierOrInitializerExpression());
     }
 
     @Override public void visit(Tree.SpecifierStatement that) {
@@ -185,13 +185,12 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.Parameter that) {
         super.visit(that);
-        checkType(that.getTypeOrSubtype(), that.getSpecifierExpression());
+        checkType(that, that.getSpecifierExpression());
     }
 
-    private void checkType(Node typedNode, Tree.SpecifierOrInitializerExpression sie) {
+    private void checkType(ProducedType dt, Tree.SpecifierOrInitializerExpression sie) {
         if (sie!=null) {
             ProducedType et = sie.getExpression().getTypeModel();
-            ProducedType dt = typedNode.getTypeModel();
             if ( et!=null && dt!=null) {
                 if ( !dt.isSupertypeOf(et) ) {
                     sie.addError("specifier expression not assignable to expected type: " + 
@@ -205,27 +204,18 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    private void checkType(Tree.Member td, Tree.SpecifierOrInitializerExpression sie) {
+        checkType(td.getTypeModel(), sie);
+    }
+    
+    private void checkType(Tree.TypedDeclaration td, Tree.SpecifierOrInitializerExpression sie) {
+        checkType(td.getTypeOrSubtype().getTypeModel(), sie);
+    }
+    
     private void checkType(Tree.Variable var, Tree.SpecifierExpression se, TypeDeclaration otd) {
-        if (se!=null) {
-            ProducedType et = se.getExpression().getTypeModel();
-            ProducedType vt = var.getTypeOrSubtype().getTypeModel();
-            if (et!=null) {
-                if (vt!=null) {
-                    ProducedType ot = otd.getProducedType(Collections.singletonList(vt));
-                    if ( !ot.isSupertypeOf(et) ) {
-                        var.addError("variable has wrong type for specified expression: " +
-                                Util.name(var) + " since " +
-                                et.getProducedTypeName() +  " is not " +
-                                ot.getProducedTypeName());
-                    }
-                }
-                //else type inference failed
-            }
-            else {
-                var.addError("could not determine if specified expression is of correct type: " + 
-                        Util.name(var));
-            }
-        }
+        ProducedType vt = var.getTypeOrSubtype().getTypeModel();
+        ProducedType t = otd.getProducedType(Collections.singletonList(vt));
+        checkType(t, se);
     }
 
     @Override public void visit(Tree.AttributeGetterDefinition that) {
