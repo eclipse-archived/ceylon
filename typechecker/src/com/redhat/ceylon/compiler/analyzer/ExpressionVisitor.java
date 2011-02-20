@@ -860,6 +860,20 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
+    private void visitInOperator(Tree.InOp that) {
+        ProducedType lhst = leftType(that);
+        ProducedType rhst = rightType(that);
+        if ( rhst!=null && lhst!=null ) {
+            if ( !lhst.isSubtypeOf(getObjectDeclaration().getType())) {
+                that.getLeftTerm().addError("must be of type: Ordinal");
+            }
+            if ( !rhst.isSubtypeOf(getCategoryDeclaration().getType())) {
+                that.getRightTerm().addError("must be of type: Ordinal");
+            }
+        }
+        that.setTypeModel( getBooleanDeclaration().getType() );
+    }
+    
     private void visitUnaryOperator(Tree.UnaryOperatorExpression that, TypeDeclaration type) {
         ProducedType t = type(that);
         if ( t!=null ) {
@@ -1034,6 +1048,11 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.IsOp that) {
         super.visit(that);
         visitIsOperator(that);
+    }
+        
+    @Override public void visit(Tree.InOp that) {
+        super.visit(that);
+        visitInOperator(that);
     }
         
     //Atoms:
@@ -1248,6 +1267,10 @@ public class ExpressionVisitor extends Visitor {
         return (Class) getLanguageDeclaration("Object");
     }
     
+    private Interface getCategoryDeclaration() {
+        return (Interface) getLanguageDeclaration("Category");
+    }
+    
     private Interface getIterableDeclaration() {
         return (Interface) getLanguageDeclaration("Iterable");
     }
@@ -1284,28 +1307,28 @@ public class ExpressionVisitor extends Visitor {
         return getLanguageDeclaration("Quoted");
     }
         
-    private TypeDeclaration getEqualityDeclaration() {
-        return getLanguageDeclaration("Equality");
+    private Interface getEqualityDeclaration() {
+        return (Interface) getLanguageDeclaration("Equality");
     }
         
-    private TypeDeclaration getComparableDeclaration() {
-        return getLanguageDeclaration("Comparable");
+    private Interface getComparableDeclaration() {
+        return (Interface) getLanguageDeclaration("Comparable");
     }
         
-    private TypeDeclaration getIdentifiableObjectDeclaration() {
-        return getLanguageDeclaration("IdentifiableObject");
+    private Class getIdentifiableObjectDeclaration() {
+        return (Class) getLanguageDeclaration("IdentifiableObject");
     }
         
-    private TypeDeclaration getOrdinalDeclaration() {
-        return getLanguageDeclaration("Ordinal");
+    private Interface getOrdinalDeclaration() {
+        return (Interface) getLanguageDeclaration("Ordinal");
     }
         
-    private TypeDeclaration getRangeDeclaration() {
-        return getLanguageDeclaration("Range");
+    private Class getRangeDeclaration() {
+        return (Class) getLanguageDeclaration("Range");
     }
         
-    private TypeDeclaration getEntryDeclaration() {
-        return getLanguageDeclaration("Entry");
+    private Class getEntryDeclaration() {
+        return (Class) getLanguageDeclaration("Entry");
     }
         
 }

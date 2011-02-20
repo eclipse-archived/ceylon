@@ -65,6 +65,8 @@ class Operators() {
     
     @error nothing is Natural;
     
+    @type["Boolean"] 1 in {1, 2};
+    
     X[] sequence = {X(), X()};
     
     @type["Optional<X>"] sequence[0];
