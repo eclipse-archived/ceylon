@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.model;
 import java.util.Collections;
 import java.util.List;
 
-public class TypeParameter extends TypeDeclaration implements Scope {
+public class TypeParameter extends TypeDeclaration {
 	
 	boolean covariant;
 	boolean contravariant;

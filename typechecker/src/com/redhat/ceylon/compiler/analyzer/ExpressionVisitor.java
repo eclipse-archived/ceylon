@@ -132,7 +132,7 @@ public class ExpressionVisitor extends Visitor {
         if (t==null) {
             n.addError("could not determine if expression is of optional type");
         }
-        else if (t.getDeclaration()!=ot) {
+        else if (t.getSupertype(ot)==null) {
             n.addError("expression is not of optional type");
         }
     }
@@ -370,24 +370,18 @@ public class ExpressionVisitor extends Visitor {
         that.getPrimary().visit(this);
         ProducedType pt = that.getPrimary().getTypeModel();
         if (pt!=null) {
-            if (pt.getDeclaration() instanceof Scope) {
-                Tree.MemberOrType mt = that.getMemberOrType();
-                if (mt instanceof Tree.Member) {
-                    handleMemberReference(that, pt, (Tree.Member) mt);
-                }
-                else if (mt instanceof Tree.Type) {
-                    handleMemberTypeReference(that, pt, (Tree.Type) mt);
-                }
-                else if (mt instanceof Tree.Outer) {
-                    handleOuterReference(that, pt, mt);
-                }
-                else {
-                    that.addError("not a valid member reference");
-                }
+            Tree.MemberOrType mt = that.getMemberOrType();
+            if (mt instanceof Tree.Member) {
+                handleMemberReference(that, pt, (Tree.Member) mt);
+            }
+            else if (mt instanceof Tree.Type) {
+                handleMemberTypeReference(that, pt, (Tree.Type) mt);
+            }
+            else if (mt instanceof Tree.Outer) {
+                handleOuterReference(that, pt, mt);
             }
             else {
-                //TODO: this case is temporary, until we
-                //      have support for type constraints
+                that.addError("not a valid member reference");
             }
         }
     }
@@ -434,7 +428,7 @@ public class ExpressionVisitor extends Visitor {
     private void handleMemberTypeReference(Tree.MemberExpression that,
             ProducedType pt, Tree.Type tt) {
         pt = unwrap(pt, that);
-        TypeDeclaration member = Util.getDeclaration((Scope) pt.getDeclaration(), tt, context);
+        TypeDeclaration member = Util.getDeclaration(pt.getDeclaration(), tt, context);
         if (member==null) {
             tt.addError("could not determine target of member type reference: " +
                     tt.getIdentifier().getText());
@@ -455,7 +449,7 @@ public class ExpressionVisitor extends Visitor {
     private void handleMemberReference(Tree.MemberExpression that,
             ProducedType pt, Tree.Member m) {
         pt = unwrap(pt, that);
-        TypedDeclaration member = Util.getDeclaration((Scope) pt.getDeclaration(), m, context);
+        TypedDeclaration member = Util.getDeclaration(pt.getDeclaration(), m, context);
         if (member==null) {
             m.addError("could not determine target of member reference: " +
                     m.getIdentifier().getText());

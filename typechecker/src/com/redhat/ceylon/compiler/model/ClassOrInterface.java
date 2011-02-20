@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ClassOrInterface extends TypeDeclaration implements Scope {
+public abstract class ClassOrInterface extends TypeDeclaration {
 	
 	List<Declaration> members = new ArrayList<Declaration>();
 

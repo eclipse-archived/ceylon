@@ -173,8 +173,7 @@ public class Util {
             ClassOrInterface ci = (ClassOrInterface) scope;
             ProducedType et = ci.getExtendedType();
             if (et!=null) {
-                TypeDeclaration ecd = et.getDeclaration();
-                Declaration d = getLocalDeclaration( (Class) ecd, name );
+                Declaration d = getLocalDeclaration( (Class) et.getDeclaration(), name );
                 if (d!=null) {
                     return d;
                 }
