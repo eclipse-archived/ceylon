@@ -26,6 +26,7 @@ import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Tree.BinaryOperatorExpression;
 import com.redhat.ceylon.compiler.tree.Tree.LowerBound;
 import com.redhat.ceylon.compiler.tree.Tree.Primary;
+import com.redhat.ceylon.compiler.tree.Tree.SafeIndexOp;
 import com.redhat.ceylon.compiler.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.tree.Tree.Term;
 import com.redhat.ceylon.compiler.tree.Tree.TypeArgumentList;
@@ -675,6 +676,13 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             Interface s = getCorrespondenceDeclaration();
+            if (that instanceof SafeIndexOp) {
+                ProducedType ot = pt.getSupertype( getOptionalDeclaration() );
+                if (ot!=null) {
+                    //TODO: add a proper error
+                    pt = ot.getTypeArguments().values().iterator().next();
+                }
+            }
             ProducedType st = pt.getSupertype(s);
             if (st==null) {
                 that.getPrimary().addError("receiving type of an index expression must be a Correspondence");
@@ -712,6 +720,9 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
                 ProducedType ot = rtd.getProducedType( Collections.singletonList(vt) );
+                if (that instanceof SafeIndexOp) {
+                    ot = getOptionalDeclaration().getProducedType( Collections.singletonList(ot) );
+                }
                 that.setTypeModel(ot);
             }
         }
