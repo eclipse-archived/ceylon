@@ -928,7 +928,7 @@ public class ExpressionVisitor extends Visitor {
     private void visitIsOperator(Tree.IsOp that) {
         ProducedType t = leftType(that);
         if (t!=null) {
-            if (t.getSupertype(getObjectDeclaration())==null) {
+            if (!t.isSubtypeOf(getObjectDeclaration().getType())) {
                 that.getLeftTerm().addError("must be of type: Object");
             }
         }
