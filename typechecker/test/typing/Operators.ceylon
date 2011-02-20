@@ -62,5 +62,6 @@ class Operators() {
     @type["Optional<Sequence<Character>>"] null.nothing<String>()?.chars;
     @type["Sequence<Iterable<String>>"] {"hello", "world"}[].lines();
     @type["Optional<String>"] null.nothing<String>()?.normalize(" #");
+    @type["Sequence<X>"] {Operators()}[].X();
 
 }

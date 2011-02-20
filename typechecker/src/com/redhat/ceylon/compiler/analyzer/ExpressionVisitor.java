@@ -443,8 +443,8 @@ public class ExpressionVisitor extends Visitor {
                 tt.addError("member type does not accept the given type arguments");
             }
             else {
-                ProducedType t = wrap(pt.getTypeMember(member, typeArgs), that);
-                that.setTypeModel(t); //TODO: this is not correct, should be Callable
+                ProducedType t = pt.getTypeMember(member, typeArgs);
+                that.setTypeModel(wrap(t, that)); //TODO: this is not correct, should be Callable
                 that.setMemberReference(t);
             }
         }
@@ -471,9 +471,9 @@ public class ExpressionVisitor extends Visitor {
                             pt.getDeclaration().getName());
                 }
                 else {
-                    ProducedType t = wrap(ptr.getType(), that);
+                    ProducedType t = ptr.getType();
                     that.setMemberReference(ptr); //TODO: how do we wrap ptr???
-                    that.setTypeModel(t); //TODO: this is not correct, should be Callable
+                    that.setTypeModel(wrap(t, that)); //TODO: this is not correct, should be Callable
                 }
             }
         }
