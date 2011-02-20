@@ -46,7 +46,9 @@ class Primaries() {
     
     @type["A"] this.A();
     
-    //@type["String"] "Hello";
+    @type["A"] Primaries().A();
+    
+    @type["String"] "Hello";
     
     class Inner(A arg) {
         @type["A"] arg;
