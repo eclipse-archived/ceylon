@@ -196,6 +196,11 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.TypeParameter that) {
         TypeParameter t = new TypeParameter();
+        if (that.getTypeVariance()!=null) {
+            String v = that.getTypeVariance().getText();
+            t.setCovariant("out".equals(v));
+            t.setCovariant("in".equals(v));
+        }
         visitDeclaration(that, t);
         super.visit(that);
     }
