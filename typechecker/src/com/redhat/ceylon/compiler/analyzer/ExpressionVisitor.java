@@ -890,6 +890,16 @@ public class ExpressionVisitor extends Visitor {
         that.setTypeModel( getStringDeclaration().getType() );
     }
     
+    private void visitExistsOperator(Tree.Exists that) {
+        ProducedType t = type(that);
+        if (t!=null) {
+            if (t.getSupertype(getOptionalDeclaration())==null) {
+                that.getTerm().addError("must be of type: Optional");
+            }
+        }
+        that.setTypeModel(getBooleanDeclaration().getType());
+    }
+    
     private void visitAssignOperator(Tree.AssignOp that) {
         ProducedType rhst = rightType(that);
         ProducedType lhst = leftType(that);
@@ -1001,6 +1011,11 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.EntryOp that) {
         super.visit(that);
         visitEntryOperator(that);
+    }
+        
+    @Override public void visit(Tree.Exists that) {
+        super.visit(that);
+        visitExistsOperator(that);
     }
         
     //Atoms:
