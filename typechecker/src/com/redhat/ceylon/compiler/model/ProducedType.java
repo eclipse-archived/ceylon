@@ -41,12 +41,19 @@ public class ProducedType extends ProducedReference {
 		return producedTypeName.replace(",>", ">");
 	}
 	
-	public boolean isExactly(ProducedType that) {
-	    if (that.getDeclaration()!=getDeclaration()) {
+	private boolean isExactly(ProducedType type) {
+	    if (type.getDeclaration()!=getDeclaration()) {
 	        return false;
 	    }
         for (TypeParameter p: getDeclaration().getTypeParameters()) {
-	        if ( !that.getTypeArguments().get(p).isExactly(getTypeArguments().get(p)) ) {
+            ProducedType arg = getTypeArguments().get(p);
+            ProducedType otherArg = type.getTypeArguments().get(p);
+            if (arg==null || otherArg==null) {
+                throw new RuntimeException("Missing type argument for: " +
+                        p.getName() + " of " + 
+                        getDeclaration().getName());
+            }
+	        if ( !arg.isExactly(otherArg) ) {
 	            return false;
 	        }
 	    }
@@ -59,7 +66,31 @@ public class ProducedType extends ProducedReference {
 	        return false;
 	    }
 	    else {
-	        return st.isExactly(type);
+	        for (TypeParameter p: type.getDeclaration().getTypeParameters()) {
+	            ProducedType arg = st.getTypeArguments().get(p);
+	            ProducedType otherArg = type.getTypeArguments().get(p);
+	            if (arg==null || otherArg==null) {
+	                throw new RuntimeException("Missing type argument for type parameter: " +
+	                        p.getName() + " of " + 
+	                        type.getDeclaration().getName());
+	            }
+	            if (p.isCovariant()) {
+	                if (!arg.isSubtypeOf(otherArg)) {
+	                    return false;
+	                }
+	            }
+	            else if (p.isContravariant()) {
+	                if (!arg.isSupertypeOf(otherArg)) {
+	                    return false;
+	                }
+	            }
+	            else {
+	                if ( !arg.isExactly(otherArg) ) {
+	                    return false;
+	                }
+	            }
+	        }
+	        return true;
 	    }
 	}
 	

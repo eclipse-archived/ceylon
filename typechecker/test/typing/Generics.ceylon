@@ -57,4 +57,11 @@ class Generics() {
     }
     String hiback = C<String>().cop("Hi back!");
     
+    class Producer<out X>() {}
+    class Consumer<in X>() {}
+    
+    Producer<Object> p = Producer<String>();
+    Consumer<String> c = Consumer<Object>();
+    Producer<Consumer<Producer<String>>> o = Producer<Consumer<Producer<Object>>>();
+    
 }
