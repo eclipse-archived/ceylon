@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.analyzer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -776,6 +777,49 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
+    private void visitRangeOperator(Tree.RangeOp that) {
+        ProducedType lhst = leftType(that);
+        ProducedType rhst = rightType(that);
+        if ( rhst!=null && lhst!=null ) {
+            if ( !lhst.isSubtypeOf(getOrdinalDeclaration().getType())) {
+                that.getLeftTerm().addError("must be of type: Ordinal");
+            }
+            if ( !rhst.isSubtypeOf(getOrdinalDeclaration().getType())) {
+                that.getRightTerm().addError("must be of type: Ordinal");
+            }
+            ProducedType ct = lhst.getSupertype(getComparableDeclaration());
+            if ( ct==null) {
+                that.getLeftTerm().addError("must be of type: Comparable");
+            }
+            else {
+                ProducedType t = ct.getTypeArguments().values().iterator().next();
+                if ( !rhst.isSubtypeOf(t)) {
+                    that.getRightTerm().addError("must be of type: " + 
+                            t.getProducedTypeName());
+                }
+                else {
+                    that.setTypeModel( getRangeDeclaration().getProducedType( Collections.singletonList(t) ) );
+                }
+            }
+        }
+    }
+    
+    private void visitEntryOperator(Tree.EntryOp that) {
+        ProducedType lhst = leftType(that);
+        ProducedType rhst = rightType(that);
+        if ( rhst!=null && lhst!=null ) {
+            ProducedType let = lhst.getSupertype(getEqualityDeclaration());
+            ProducedType ret = rhst.getSupertype(getEqualityDeclaration());
+            if ( let==null) {
+                that.getLeftTerm().addError("must be of type: Equality");
+            }
+            if ( ret==null) {
+                that.getRightTerm().addError("must be of type: Equality");
+            }
+            that.setTypeModel(getEntryDeclaration().getProducedType(Arrays.asList(new ProducedType[] {lhst,rhst})));
+        }
+    }
+    
     private void visitBinaryOperator(Tree.BinaryOperatorExpression that, TypeDeclaration type) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
@@ -795,7 +839,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void visitDefaultOperator(Tree.BinaryOperatorExpression that) {
+    private void visitDefaultOperator(Tree.DefaultOp that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
@@ -947,6 +991,16 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.FormatOp that) {
         super.visit(that);
         visitFormatOperator(that);
+    }
+    
+    @Override public void visit(Tree.RangeOp that) {
+        super.visit(that);
+        visitRangeOperator(that);
+    }
+        
+    @Override public void visit(Tree.EntryOp that) {
+        super.visit(that);
+        visitEntryOperator(that);
     }
         
     //Atoms:
@@ -1203,6 +1257,18 @@ public class ExpressionVisitor extends Visitor {
         
     private TypeDeclaration getIdentifiableObjectDeclaration() {
         return getLanguageDeclaration("IdentifiableObject");
+    }
+        
+    private TypeDeclaration getOrdinalDeclaration() {
+        return getLanguageDeclaration("Ordinal");
+    }
+        
+    private TypeDeclaration getRangeDeclaration() {
+        return getLanguageDeclaration("Range");
+    }
+        
+    private TypeDeclaration getEntryDeclaration() {
+        return getLanguageDeclaration("Entry");
     }
         
 }

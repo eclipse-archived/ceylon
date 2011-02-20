@@ -49,6 +49,14 @@ class Operators() {
     
     @error X() ? nothing;
     
+    @type["Range<Natural>"] 1..4;
+    
+    @error 1.2..3.4;
+    
+    @type["Entry<Natural,X>"] 0->X();
+    
+    @error 0->nothing;
+    
     X[] sequence = {X(), X()};
     
     @type["Optional<X>"] sequence[0];
