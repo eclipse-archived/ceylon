@@ -4,6 +4,7 @@ public class TypeParameter extends TypeDeclaration {
 	
 	boolean covariant;
 	boolean contravariant;
+	Declaration declaration;
 	
 	public boolean isCovariant() {
 		return covariant;
@@ -21,5 +22,12 @@ public class TypeParameter extends TypeDeclaration {
 		this.contravariant = contravariant;
 	}
 	
+	public Declaration getDeclaration() {
+        return declaration;
+    }
+	
+	public void setDeclaration(Declaration declaration) {
+        this.declaration = declaration;
+    }
 	
 }

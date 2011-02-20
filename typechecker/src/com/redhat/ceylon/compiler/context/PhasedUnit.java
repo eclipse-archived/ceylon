@@ -5,6 +5,7 @@ import com.redhat.ceylon.compiler.analyzer.DeclarationVisitor;
 import com.redhat.ceylon.compiler.analyzer.ExpressionVisitor;
 import com.redhat.ceylon.compiler.analyzer.ModuleImportVisitor;
 import com.redhat.ceylon.compiler.analyzer.SpecificationVisitor;
+import com.redhat.ceylon.compiler.analyzer.TypeArgumentVisitor;
 import com.redhat.ceylon.compiler.analyzer.TypeVisitor;
 import com.redhat.ceylon.compiler.model.Declaration;
 import com.redhat.ceylon.compiler.model.Package;
@@ -61,6 +62,7 @@ public class PhasedUnit {
     public void analyseTypes() {
         System.out.println("Run analysis phase for " + fileName);
         compilationUnit.visit(new ExpressionVisitor(context));
+        compilationUnit.visit(new TypeArgumentVisitor());
     }
     
     public void validateControlFlow() {

@@ -57,4 +57,44 @@ class Generics() {
     }
     String hiback = C<String>().cop("Hi back!");
     
+    class Producer<out X>() {}
+    class Consumer<in X>() {}
+    
+    Producer<Object> p = Producer<String>();
+    Consumer<String> c = Consumer<Object>();
+    Producer<Consumer<Producer<String>>> o = Producer<Consumer<Producer<Object>>>();
+    
+    class BadVariances<out X, in Y>(X x, Y y) {
+        X goodAtt = x;
+        @error Y badAtt = y;
+        X[] goodAtt2 { return {x}; }
+        @error Y[] badAtt2 { return {y}; }
+        X goodMethod() { return goodAtt; }
+        @error Y badMethod() { return badAtt; }
+        X[] goodMethod2() { return {goodAtt}; }
+        @error Y[] badMethod2() { return {badAtt}; }
+        Producer<X> goodMethod3() { return Producer<X>(); }
+        @error Consumer<X> badMethod3() { @error return Consumer<X>(); }
+        Consumer<Y> goodMethod4() { return Consumer<Y>(); }
+        @error Producer<Y> badMethod4() { @error return Producer<Y>(); }
+        void goodVoidMethod(Y y) {}
+        void badVoidMethod(@error X x) {}
+        void goodVoidMethod2(Y[] y) {}
+        void badVoidMethod2(@error X[] x) {}
+        void goodVoidMethod3(Consumer<X> c) {}
+        void badVoidMethod3(@error Consumer<Y> p) {}
+        void goodVoidMethod4(Producer<Y> c) {}
+        void badVoidMethod4(@error Producer<X> p) {}
+        class GoodClass(Y y) {}
+        class BadClass(@error X x) {}
+        class GoodClass2(Y[] y) {}
+        class BadClass2(@error X[] x) {}
+        class GoodClassInheritance() satisfies X[] {}
+        @error class BadClassInheritance() satisfies Y[] {}
+        class GoodClassInheritance2() satisfies Producer<X> {}
+        @error class BadClassInheritance2() satisfies Producer<Y> {}
+        class GoodClassInheritance3() satisfies Consumer<Y> {}
+        @error class BadClassInheritance3() satisfies Consumer<X> {}
+    }
+    
 }

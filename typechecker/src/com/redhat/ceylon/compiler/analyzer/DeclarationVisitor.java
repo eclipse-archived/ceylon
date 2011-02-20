@@ -44,6 +44,7 @@ public class DeclarationVisitor extends Visitor {
     private Unit unit;
     private ParameterList parameterList;
     private Functional functional;
+    private Declaration declaration;
     
     public DeclarationVisitor(Package p, String fn) {
         scope = p;
@@ -195,13 +196,14 @@ public class DeclarationVisitor extends Visitor {
 
     @Override
     public void visit(Tree.TypeParameter that) {
-        TypeParameter t = new TypeParameter();
+        TypeParameter p = new TypeParameter();
+        p.setDeclaration(declaration);
         if (that.getTypeVariance()!=null) {
             String v = that.getTypeVariance().getText();
-            t.setCovariant("out".equals(v));
-            t.setCovariant("in".equals(v));
+            p.setCovariant("out".equals(v));
+            p.setContravariant("in".equals(v));
         }
-        visitDeclaration(that, t);
+        visitDeclaration(that, p);
         super.visit(that);
     }
 
@@ -416,4 +418,11 @@ public class DeclarationVisitor extends Visitor {
         return false;
     }
     
+    @Override public void visit(Tree.Declaration that) {
+        Declaration d = declaration;
+        declaration = that.getDeclarationModel();
+        super.visit(that);
+        declaration = d;
+    }
+        
 }
