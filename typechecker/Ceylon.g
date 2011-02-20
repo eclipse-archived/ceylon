@@ -91,6 +91,8 @@ tokens {
     IDENTIFIER;
     VALUE_ITERATOR;
     KEY_VALUE_ITERATOR;
+    SATISFIED_TYPES;
+    EXTENDED_TYPE;
 }
 
 @parser::header { package com.redhat.ceylon.compiler.parser; }
@@ -412,11 +414,13 @@ classBody
     ;
 
 extendedType
-    : 'extends'^ type positionalArguments
+    : EXTENDS type positionalArguments
+    -> ^(EXTENDED_TYPE[$EXTENDS] type positionalArguments)
     ;
 
 satisfiedTypes
-    : 'satisfies'^ type ('&'! type)*
+    : SATISFIES type ('&' type)*
+    -> ^(SATISFIED_TYPES[$SATISFIES] type+)
     ;
 
 abstractedType
@@ -1062,8 +1066,8 @@ isCondition
     ;
 
 satisfiesCondition
-    : '(' SATISFIED_TYPES type type ')'
-    -> ^(SATISFIES_CONDITION[$SATISFIED_TYPES] type+)
+    : '(' SATISFIES type type ')'
+    -> ^(SATISFIES_CONDITION[$SATISFIES] type+)
     ;
 
 controlStructure
@@ -1132,8 +1136,8 @@ isCaseCondition
     ;
 
 satisfiesCaseCondition
-    : SATISFIED_TYPES type
-    -> ^(SATISFIES_CASE[$SATISFIED_TYPES] type)
+    : SATISFIES type
+    -> ^(SATISFIES_CASE[$SATISFIES] type)
     ;
 
 forFail
@@ -1422,7 +1426,7 @@ EXISTS
     :   'exists'
     ;
 
-EXTENDED_TYPE
+EXTENDS
     :   'extends'
     ;
 
@@ -1446,7 +1450,7 @@ IF_CLAUSE
     :   'if'
     ;
 
-SATISFIED_TYPES
+SATISFIES
     :   'satisfies'
     ;
 
