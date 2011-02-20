@@ -17,6 +17,9 @@ class Operators() {
     
     @type["Float"]  1.0 * 2.5 ** (-0.5);
     
+    @type["Natural"] 10 % 3;
+    @type["Natural"] 10 / 3;
+    
     @error 1 + 1.0;
     
     @error 1.0 * 2.5 ** -0.5;
@@ -28,6 +31,7 @@ class Operators() {
     @error "foo" < 100;
     
     @type["Boolean"]  "foo" == "bar";
+    @type["Boolean"]  "foo" != "bar";
     
     @error "foo" == 12;
     
@@ -88,5 +92,15 @@ class Operators() {
     @type["Sequence<Iterable<String>>"] {"hello", "world"}[].lines();
     @type["Optional<String>"] null.nothing<String>()?.normalize(" #");
     @type["Sequence<X>"] {Operators()}[].X();
+    
+    variable Natural n := 0;
+    @type["Natural"] n++;
+    @type["Natural"] ++n;
+    @type["Natural"] n+=1;
+    @type["Natural"] n/=3;
+    
+    variable Boolean bb := false;
+    @type["Boolean"] bb||=false;
+    @type["Boolean"] bb&&=true;
 
 }
