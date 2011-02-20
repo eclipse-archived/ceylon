@@ -67,6 +67,11 @@ class Operators() {
     
     @type["Boolean"] 1 in {1, 2};
     
+    @type["Comparison"] 1<=>3;
+    @type["Comparison"] "foo"<=>"bar";
+    @error X()<=>X();
+    @error 1<=>"hello";
+    
     X[] sequence = {X(), X()};
     
     @type["Optional<X>"] sequence[0];

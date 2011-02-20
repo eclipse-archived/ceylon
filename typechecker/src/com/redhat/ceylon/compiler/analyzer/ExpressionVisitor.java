@@ -777,6 +777,23 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
+    private void visitCompareOperator(Tree.CompareOp that) {
+        ProducedType lhst = leftType(that);
+        ProducedType rhst = rightType(that);
+        if ( rhst!=null && lhst!=null ) {
+            ProducedType nt = lhst.getSupertype(getComparableDeclaration());
+            if (nt==null) {
+                that.getLeftTerm().addError("must be of type: Comparable");
+            }
+            else {
+                that.setTypeModel( getComparisonDeclaration().getType() );            
+                if (!nt.isSupertypeOf(rhst)) {
+                    that.getRightTerm().addError("must be of type: " + nt.getProducedTypeName());
+                }
+            }
+        }
+    }
+    
     private void visitRangeOperator(Tree.RangeOp that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
@@ -983,6 +1000,11 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.IdenticalOp that) {
         super.visit(that);
         visitComparisonOperator(that, getIdentifiableObjectDeclaration());
+    }
+
+    @Override public void visit(Tree.CompareOp that) {
+        super.visit(that);
+        visitCompareOperator(that);
     }
 
     @Override public void visit(Tree.DefaultOp that) {
@@ -1275,12 +1297,16 @@ public class ExpressionVisitor extends Visitor {
         return (Interface) getLanguageDeclaration("Iterable");
     }
 
-    private TypeDeclaration getNumericDeclaration() {
-        return getLanguageDeclaration("Numeric");
+    private Interface getNumericDeclaration() {
+        return (Interface) getLanguageDeclaration("Numeric");
     }
         
-    private TypeDeclaration getSlotsDeclaration() {
-        return getLanguageDeclaration("Slots");
+    private Interface getSlotsDeclaration() {
+        return (Interface) getLanguageDeclaration("Slots");
+    }
+        
+    private TypeDeclaration getComparisonDeclaration() {
+        return getLanguageDeclaration("Comparison");
     }
         
     private TypeDeclaration getBooleanDeclaration() {
