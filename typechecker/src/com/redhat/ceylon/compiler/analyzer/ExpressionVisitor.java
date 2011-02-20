@@ -400,9 +400,38 @@ public class ExpressionVisitor extends Visitor {
             that.addError("can't use outer on a type parameter");
         }
     }
+    
+    ProducedType unwrap(ProducedType pt, Tree.MemberExpression op) {
+        if (op instanceof Tree.SafeMemberOp)  {
+            ProducedType ot = pt.getSupertype(getOptionalDeclaration());
+            if (ot==null) return pt; //TODO: proper error!
+            return ot.getTypeArguments().values().iterator().next();
+        }
+        else if (op instanceof Tree.SpreadOp) {
+            ProducedType st = pt.getSupertype(getSequenceDeclaration());
+            if (st==null) return pt; //TODO: proper error!
+            return st.getTypeArguments().values().iterator().next();
+        }
+        else {
+            return pt;
+        }
+    }
+    
+    ProducedType wrap(ProducedType pt, Tree.MemberExpression op) {
+        if (op instanceof Tree.SafeMemberOp)  {
+            return getOptionalDeclaration().getProducedType(Collections.singletonList(pt));
+        }
+        else if (op instanceof Tree.SpreadOp) {
+            return getSequenceDeclaration().getProducedType(Collections.singletonList(pt));
+        }
+        else {
+            return pt;
+        }
+    }
 
     private void handleMemberTypeReference(Tree.MemberExpression that,
             ProducedType pt, Tree.Type tt) {
+        pt = unwrap(pt, that);
         TypeDeclaration member = Util.getDeclaration((Scope) pt.getDeclaration(), tt, context);
         if (member==null) {
             tt.addError("could not determine target of member type reference: " +
@@ -414,7 +443,7 @@ public class ExpressionVisitor extends Visitor {
                 tt.addError("member type does not accept the given type arguments");
             }
             else {
-                ProducedType t = pt.getTypeMember(member, typeArgs);
+                ProducedType t = wrap(pt.getTypeMember(member, typeArgs), that);
                 that.setTypeModel(t);
                 that.setMemberReference(t);
             }
@@ -423,6 +452,7 @@ public class ExpressionVisitor extends Visitor {
 
     private void handleMemberReference(Tree.MemberExpression that,
             ProducedType pt, Tree.Member m) {
+        pt = unwrap(pt, that);
         TypedDeclaration member = Util.getDeclaration((Scope) pt.getDeclaration(), m, context);
         if (member==null) {
             m.addError("could not determine target of member reference: " +
@@ -441,8 +471,8 @@ public class ExpressionVisitor extends Visitor {
                             pt.getDeclaration().getName());
                 }
                 else {
-                    ProducedType t = ptr.getType();
-                    that.setMemberReference(ptr);
+                    ProducedType t = wrap(ptr.getType(), that);
+                    that.setMemberReference(ptr); //TODO: how do we wrap ptr???
                     that.setTypeModel(t);
                 }
             }

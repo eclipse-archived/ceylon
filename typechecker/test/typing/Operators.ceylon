@@ -56,5 +56,8 @@ class Operators() {
     
     @error sequence["hello"];
     @error sequence[1.."hello"];
+    
+    @type["Sequence<Sequence<Character>>"] {"hello", "world"}[].chars;
+    @type["Optional<Sequence<Character>>"] null.nothing<String>()?.chars;
 
 }
