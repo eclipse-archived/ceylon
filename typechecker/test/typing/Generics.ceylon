@@ -64,7 +64,7 @@ class Generics() {
     Consumer<String> c = Consumer<Object>();
     Producer<Consumer<Producer<String>>> o = Producer<Consumer<Producer<Object>>>();
     
-    class Variances<out X, in Y>(X x, Y y) {
+    class Variances<out X, in Y, Z>(X x, Y y) {
         X goodAtt = x;
         @error Y badAtt = y;
         X[] goodAtt2 { return {x}; }
@@ -115,6 +115,17 @@ class Generics() {
         void badHigherOrderMethod2(void get(@error Y[] x)) {}
         void goodHigherOrderMethod3(void get(Producer<X> x)) {}
         void badHigherOrderMethod3(void get(@error Consumer<X> x)) {}
+        
+        Z methodWithNonvariant(Z z) { return z; }
+        Z attributeWithNonvariant;
+        
+        class NestedClass() {
+            X x;
+            @error Y y;
+            void goodMethod(Y y) {}
+            void badMethod(@error X x) {}
+            Z method(Z z) { return z; }
+        }
     }
     
 }
