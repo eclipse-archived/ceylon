@@ -58,6 +58,9 @@ class Operators() {
     @error sequence[1.."hello"];
     
     @type["Sequence<Sequence<Character>>"] {"hello", "world"}[].chars;
+    @type["Sequence<String>"] {"hello", "world"}[].uppercase;
     @type["Optional<Sequence<Character>>"] null.nothing<String>()?.chars;
+    @type["Sequence<Iterable<String>>"] {"hello", "world"}[].lines();
+    @type["Optional<String>"] null.nothing<String>()?.normalize(" #");
 
 }

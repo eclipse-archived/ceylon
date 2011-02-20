@@ -444,7 +444,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 ProducedType t = wrap(pt.getTypeMember(member, typeArgs), that);
-                that.setTypeModel(t);
+                that.setTypeModel(t); //TODO: this is not correct, should be Callable
                 that.setMemberReference(t);
             }
         }
@@ -473,7 +473,7 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     ProducedType t = wrap(ptr.getType(), that);
                     that.setMemberReference(ptr); //TODO: how do we wrap ptr???
-                    that.setTypeModel(t);
+                    that.setTypeModel(t); //TODO: this is not correct, should be Callable
                 }
             }
         }
@@ -511,7 +511,8 @@ public class ExpressionVisitor extends Visitor {
                 that.addError("receiving expression cannot be invoked");
             }
             else {
-                that.setTypeModel(m.getType());
+                //that.setTypeModel(m.getType()); //THIS IS THE CORRECT ONE!
+                that.setTypeModel(pr.getTypeModel()); //TODO: THIS IS A TEMPORARY HACK!
                 List<ParameterList> pls = ((Functional) m.getDeclaration()).getParameterLists();
                 checkInvocationArguments(that, m, pls);
             }
