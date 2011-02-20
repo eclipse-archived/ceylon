@@ -42,7 +42,18 @@ public class Util {
         //checkForError(that, declaration);
         return declaration;
     }
-
+    
+    /**
+     * Resolve the type against the given scope. Imports 
+     * are ignored.
+     */
+    static TypeDeclaration getDeclaration(Tree.TypeConstraint that, Context context) {
+        final TypeDeclaration declaration = (TypeDeclaration) getDeclaration(that.getScope(), that.getUnit(),
+                that.getIdentifier(), context);
+        //checkForError(that, declaration);
+        return declaration;
+    }
+    
     /**
      * Resolve the type against the scope in which it
      * occurs. Imports are taken into account.
@@ -168,6 +179,9 @@ public class Util {
                     return d;
                 }
             }
+        }
+        if (scope instanceof TypeDeclaration) {
+            TypeDeclaration ci = (TypeDeclaration) scope;
             for (ProducedType st: ci.getSatisfiedTypes()) {
                 TypeDeclaration sid = st.getDeclaration();
                 Declaration d = getLocalDeclaration( (ClassOrInterface) sid, name );

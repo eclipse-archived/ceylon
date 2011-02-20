@@ -1,6 +1,9 @@
 package com.redhat.ceylon.compiler.model;
 
-public class TypeParameter extends TypeDeclaration {
+import java.util.Collections;
+import java.util.List;
+
+public class TypeParameter extends TypeDeclaration implements Scope {
 	
 	boolean covariant;
 	boolean contravariant;
@@ -29,5 +32,10 @@ public class TypeParameter extends TypeDeclaration {
 	public void setDeclaration(Declaration declaration) {
         this.declaration = declaration;
     }
+	
+	@Override
+	public List<Declaration> getMembers() {
+	    return Collections.emptyList();
+	}
 	
 }

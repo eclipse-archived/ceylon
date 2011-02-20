@@ -128,4 +128,11 @@ class Generics() {
         }
     }
     
+    class Bar() {
+        String hello = "Hello";
+    }
+    class Foo<X>(X x) given X satisfies Bar {
+        @type["String"] x.hello;
+    }
+    
 }

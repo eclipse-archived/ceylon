@@ -458,7 +458,7 @@ typeConstraint
     
 typeConstraints
     : typeConstraint+
-    -> ^(TYPE_CONSTRAINT_LIST ^(TYPE_CONSTRAINT typeConstraint)+)
+    -> ^(TYPE_CONSTRAINT_LIST typeConstraint+)
     ;
 
 type

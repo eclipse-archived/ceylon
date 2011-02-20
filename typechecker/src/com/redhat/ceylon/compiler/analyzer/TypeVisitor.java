@@ -13,6 +13,7 @@ import com.redhat.ceylon.compiler.model.Module;
 import com.redhat.ceylon.compiler.model.Package;
 import com.redhat.ceylon.compiler.model.ProducedType;
 import com.redhat.ceylon.compiler.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.model.TypeParameter;
 import com.redhat.ceylon.compiler.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.model.Unit;
 import com.redhat.ceylon.compiler.model.Value;
@@ -189,6 +190,21 @@ public class TypeVisitor extends Visitor {
         return list;
     }
     
+    @Override
+    public void visit(Tree.TypeConstraint that) {
+        super.visit(that);
+        TypeParameter p = (TypeParameter) Util.getDeclaration(that, context);
+        if (p==null) {
+            that.addError("no matching type parameter for constraint");
+        }
+        else {
+            Tree.SatisfiedTypes st = that.getSatisfiedTypes();
+            if (st!=null) {
+                p.setSatisfiedTypes(getSatisfiedTypes(st));
+            }
+        }
+    }
+
     @Override 
     public void visit(Tree.ClassOrInterface that) {
         super.visit(that);

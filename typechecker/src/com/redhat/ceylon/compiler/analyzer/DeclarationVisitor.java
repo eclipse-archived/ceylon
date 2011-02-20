@@ -206,7 +206,7 @@ public class DeclarationVisitor extends Visitor {
         visitDeclaration(that, p);
         super.visit(that);
     }
-
+    
     @Override
     public void visit(Tree.MethodDeclaration that) {
         Method m = new Method();
