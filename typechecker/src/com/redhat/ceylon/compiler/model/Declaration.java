@@ -14,7 +14,7 @@ import java.util.List;
 public abstract class Declaration extends Element {
 	
 	String name;
-	Boolean shared;
+	boolean shared;
 	List<Annotation> annotations = new ArrayList<Annotation>();
 	
 	public String getName() {
@@ -24,10 +24,10 @@ public abstract class Declaration extends Element {
 		this.name = name;
 	}
 	
-	public Boolean isShared() {
+	public boolean isShared() {
 		return shared;
 	}
-	public void setShared(Boolean shared) {
+	public void setShared(boolean shared) {
 		this.shared = shared;
 	}
 	

@@ -15,17 +15,17 @@ import java.util.Map;
  */
 public class Method extends MethodOrValue implements Generic, Scope, Functional {
 	
-    Boolean formal;
+    boolean formal;
     
     List<TypeParameter> typeParameters = Collections.emptyList();	
     List<ParameterList> parameterLists = new ArrayList<ParameterList>();
     List<Declaration> members = new ArrayList<Declaration>();
 
-	public Boolean isFormal() {
+	public boolean isFormal() {
 		return formal;
 	}
 	
-	public void setFormal(Boolean formal) {
+	public void setFormal(boolean formal) {
 		this.formal = formal;
 	}
 	

@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.model;
 public class Import {
 	String alias;
 	Declaration declaration;
-	Boolean implicit;
+	boolean implicit;
 	
 	public Declaration getDeclaration() {
 		return declaration;
@@ -20,11 +20,11 @@ public class Import {
 		this.alias = alias;
 	}
 	
-	public Boolean isImplicit() {
+	public boolean isImplicit() {
 		return implicit;
 	}
 	
-	public void setImplicit(Boolean implicit) {
+	public void setImplicit(boolean implicit) {
 		this.implicit = implicit;
 	}
 	

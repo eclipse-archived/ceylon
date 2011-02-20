@@ -2,8 +2,11 @@ package com.redhat.ceylon.compiler.analyzer;
 
 import com.redhat.ceylon.compiler.context.Context;
 import com.redhat.ceylon.compiler.model.Declaration;
+import com.redhat.ceylon.compiler.model.Value;
 import com.redhat.ceylon.compiler.tree.Tree;
+import com.redhat.ceylon.compiler.tree.Tree.Member;
 import com.redhat.ceylon.compiler.tree.Visitor;
+import com.redhat.ceylon.compiler.model.Class;
 
 /**
  * Validates that non-variable values are well-defined
@@ -89,6 +92,10 @@ public class SpecificationVisitor extends Visitor {
         specified.definitely = da;
     }
     
+    private boolean isVariable() {
+        return declaration instanceof Value && ((Value) declaration).isVariable();
+    }
+    
     @Override
     public void visit(Tree.AnnotationList that) {}
     
@@ -107,24 +114,63 @@ public class SpecificationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.AssignOp that) {
+        Tree.Term lt = that.getLeftTerm();
+        if (lt instanceof Tree.Member) {
+            Tree.Member m = (Tree.Member) lt;
+            if (Util.getDeclaration(m, context)==declaration) {
+                if (!declared) {
+                    that.addError("not yet declared: " + 
+                            m.getIdentifier().getText());
+                }
+                else if (!isVariable()) {
+                    that.addError("is not a variable: " +
+                            m.getIdentifier().getText());
+                }
+                else if (cannotSpecify) {
+                    that.addError("cannot assign value from here: " + 
+                            m.getIdentifier().getText());
+                }
+                else {
+                    that.getRightTerm().visit(this);
+                    specify();
+                    super.visit(lt);
+                }
+            }
+            else {
+                super.visit(that);
+            }
+        }
+        else {
+            //TODO: not the right place to do this check!
+            that.addError("expression cannot be assigned");
+        }
+    }
+    
+    @Override
     public void visit(Tree.SpecifierStatement that) {
-        if (Util.getDeclaration(that.getMember(), context)==declaration) {
+        Member m = that.getMember();
+        if (Util.getDeclaration(m, context)==declaration) {
             if (!declared) {
                 that.addError("not yet declared: " + 
-                        that.getMember().getIdentifier().getText());
+                        m.getIdentifier().getText());
+            }
+            else if (isVariable()) {
+                that.addError("is a variable: " +
+                        m.getIdentifier().getText());
             }
             else if (cannotSpecify) {
                 that.addError("cannot specify value from here: " + 
-                        that.getMember().getIdentifier().getText());
+                        m.getIdentifier().getText());
             }
             else if (specified.possibly) {
                 that.addError("not definitely unspecified: " + 
-                        that.getMember().getIdentifier().getText());
+                        m.getIdentifier().getText());
             }
             else {
-                super.visit(that.getSpecifierExpression());
+                that.getSpecifierExpression().visit(this);
                 specify();
-                super.visit(that.getMember());
+                super.visit(m);
             }
         }
         else {
@@ -140,6 +186,13 @@ public class SpecificationVisitor extends Visitor {
             declare();
             endDisabledSpecificationScope(false);
         }
+        else if (isVariable() && isMemberOfClass(that)) {
+            boolean d = beginDeclarationScope();
+            SpecificationState as = beginSpecificationScope();
+            super.visit(that);
+            endDeclarationScope(d);
+            endSpecificationScope(as);
+        }
         else {
             boolean c = beginDisabledSpecificationScope();
             boolean d = beginDeclarationScope();
@@ -148,6 +201,16 @@ public class SpecificationVisitor extends Visitor {
             endDisabledSpecificationScope(c);
             endDeclarationScope(d);
             endSpecificationScope(as);
+        }
+    }
+
+    private boolean isMemberOfClass(Tree.Declaration that) {
+        Declaration dm = that.getDeclarationModel();
+        if (dm==null) {
+            return false;
+        }
+        else {
+            return dm.getContainer() instanceof Class;
         }
     }
     
@@ -227,6 +290,16 @@ public class SpecificationVisitor extends Visitor {
         super.visit(that);        
         if (that.getDeclarationModel()==declaration &&
                 that.getSpecifierOrInitializerExpression()!=null) {
+            if (isVariable()) {
+                if (that.getSpecifierOrInitializerExpression() instanceof Tree.SpecifierExpression) {
+                    that.addError("is a variable: " + that.getIdentifier().getText());
+                }
+            }
+            else {
+                if (that.getSpecifierOrInitializerExpression() instanceof Tree.InitializerExpression) {
+                    that.addError("is not a variable: " + that.getIdentifier().getText());
+                }
+            }
             specify();
         }
     }
@@ -348,29 +421,50 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.WhileClause that) {
-        boolean c = beginDisabledSpecificationScope();
-        boolean d = beginDeclarationScope();
-        super.visit(that);
-        endDisabledSpecificationScope(c);
-        endDeclarationScope(d);
+        if (isVariable()) {
+            boolean d = beginDeclarationScope();
+            super.visit(that);
+            endDeclarationScope(d);
+        }
+        else {
+            boolean c = beginDisabledSpecificationScope();
+            boolean d = beginDeclarationScope();
+            super.visit(that);
+            endDisabledSpecificationScope(c);
+            endDeclarationScope(d);
+        }
     }
     
     @Override
     public void visit(Tree.DoClause that) {
-        boolean c = beginDisabledSpecificationScope();
-        boolean d = beginDeclarationScope();
-        super.visit(that);
-        endDisabledSpecificationScope(c);
-        endDeclarationScope(d);
+        if (isVariable()) {
+            boolean d = beginDeclarationScope();
+            super.visit(that);
+            endDeclarationScope(d);
+        }
+        else {
+            boolean c = beginDisabledSpecificationScope();
+            boolean d = beginDeclarationScope();
+            super.visit(that);
+            endDisabledSpecificationScope(c);
+            endDeclarationScope(d);
+        }
     }
 
     @Override
     public void visit(Tree.ForClause that) {
-        boolean c = beginDisabledSpecificationScope();
-        boolean d = beginDeclarationScope();        
-        super.visit(that);
-        endDisabledSpecificationScope(c);
-        endDeclarationScope(d);
+        if (isVariable()) {
+            boolean d = beginDeclarationScope();
+            super.visit(that);
+            endDeclarationScope(d);
+        }
+        else {
+            boolean c = beginDisabledSpecificationScope();
+            boolean d = beginDeclarationScope();        
+            super.visit(that);
+            endDisabledSpecificationScope(c);
+            endDeclarationScope(d);
+        }
     }
     
 

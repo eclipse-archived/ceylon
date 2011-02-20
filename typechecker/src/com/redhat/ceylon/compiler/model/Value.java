@@ -9,21 +9,21 @@ package com.redhat.ceylon.compiler.model;
  */
 public class Value extends MethodOrValue {
     
-	Boolean variable;
-	Boolean formal;
+	boolean variable;
+	boolean formal;
 	
-	public Boolean isFormal() {
+	public boolean isFormal() {
 		return formal;
 	}
 	
-	public void setFormal(Boolean formal) {
+	public void setFormal(boolean formal) {
 		this.formal = formal;
 	}
 	
-	public Boolean isVariable() {
+	public boolean isVariable() {
 		return variable;
 	}
-	public void setVariable(Boolean variable) {
+	public void setVariable(boolean variable) {
 		this.variable = variable;
 	}
 	

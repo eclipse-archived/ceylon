@@ -282,6 +282,9 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.AttributeDeclaration that) {
         Value v = new Value();
         visitDeclaration(that, v);
+        if (hasAnnotation(that.getAnnotationList(), "variable")) {
+            v.setVariable(true);
+        }
         super.visit(that);
     }
 
@@ -395,6 +398,17 @@ public class DeclarationVisitor extends Visitor {
             }
         }
         return typeParameters;
+    }
+    
+    private boolean hasAnnotation(Tree.AnnotationList al, String name) {
+        if (al!=null) {
+            for (Tree.Annotation a: al.getAnnotations()) {
+                if ( ((Tree.Member) a.getPrimary()).getIdentifier().getText().equals(name)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     
 }

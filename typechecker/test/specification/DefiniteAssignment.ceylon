@@ -1,4 +1,4 @@
-interface DefiniteSpecification {
+interface DefiniteAssignment {
     
     class X() {}
     void doSomething() {}
@@ -9,107 +9,77 @@ interface DefiniteSpecification {
     
     //void methods:
     
-    void badMethodWithAssign() {
-        @error X x := X();
+    void badMethodWithImmutableSpec() {
+        @error variable X x = X();
     }
     
-    void badMethodWithAssign2() {
-        X x;
-        @error x := X();
+    void badMethodWithImmutableSpec2() {
+        variable X x;
+        @error x = X();
     }
     
     void goodMethodWithNoSpec() {
-        X x;
+        variable X x;
         doSomething();
         doSomethingElse();
     }
     
     void badMethodWithNoSpec() {
-        X x;
+        variable X x;
         doSomething();
         doSomethingElse();
         @error use(x);
     }
     
     void goodMethodWithSpec() {
-        X x;
+        variable X x;
         doSomething();
-        x = X();
+        x := X();
         doSomethingElse();
         use(x);
     }
     
     void badMethodWithSpec() {
-        X x;
+        variable X x;
         doSomething();
         @error use(x);
         doSomethingElse();
-        x = X();
+        x := X();
     }
     
     void badMethodWithRepeatedSpec() {
-        X x;
+        variable X x;
         doSomething();
-        x = X();
+        x := X();
         doSomethingElse();
-        @error x = X();
+        x := X();
     }
-    
-    void goodMethodWithRecursiveSpec() {
-        X x {
-            return x;
-        }
-        doSomething();
-        use(x);
-        doSomethingElse();
-    }
-    
-    void goodMethodWithRecursiveSpec2() {
-        X x() {
-            return x();
-        }
-        doSomething();
-        use(x);
-        doSomethingElse();
-    }
-    
+        
     void badMethodWithRecursiveSpec() {
-        X x;
+        variable X x;
         doSomething();
-        @error x = x;
+        @error x := x;
         doSomethingElse();
         use(x);
     }
     
     void badMethodWithRecursiveSpec2() {
-        @error X x = x;
+        @error variable X x := x;
         doSomething();
         use(x);
     }
     
-    void badMethodWithMutuallyRecursiveDef() {
-        X y { @error return x; }
-        X x { return y; }
-        use(x);
-    }
-    
-    void goodMethodWithRecursiveDef() {
-        X y { return X(); }
-        X x { return y; }
-        use(x);
-    }
-    
     void goodMethodWithRecursiveSpec3() {
-        X y = X();
-        X x = y;
+        variable X y := X();
+        variable X x := y;
         use(x);
     }
     
     void goodMethodWithSpecInIf() {
-        X x;
+        variable X x;
         if (testSomething()) {
             doSomething();
-            x = X();
+            x := X();
             doSomethingElse();
             use(x);
         }
@@ -117,10 +87,10 @@ interface DefiniteSpecification {
     }
     
     void badMethodWithSpecInIf() {
-        X x;
+        variable X x;
         if (testSomething()) {
             doSomething();
-            x = X();
+            x := X();
             doSomethingElse();
         }
         doNothing();
@@ -128,9 +98,9 @@ interface DefiniteSpecification {
     }
     
     void goodMethodWithSpecInIf2() {
-        X x;
+        variable X x;
         if (testSomething()) {
-            x = X();
+            x := X();
             doSomething();
             use(x);
         }
@@ -141,10 +111,10 @@ interface DefiniteSpecification {
     }
     
     void badMethodWithSpecInIf2() {
-        X x;
+        variable X x;
         if (testSomething()) {
             doSomething();
-            x = X();
+            x := X();
         }
         else {
             doSomethingElse();
@@ -154,42 +124,42 @@ interface DefiniteSpecification {
     }
     
     void badMethodWithSpecInIf3() {
-        X x;
+        variable X x;
         if (testSomething()) {
             doSomething();
-            x = X();
+            x := X();
             use(x);
         }
         else {
             doSomethingElse();
         }
         doNothing();
-        @error x = X();
+        x := X();
     }
     
     void badMethodWithSpecInIf4() {
-        X x = X();
+        variable X x := X();
         doNothing();
         if (testSomething()) {
             doSomething();
-            @error x = X();
+            x := X();
         }
     }
     
     void badMethodWithSpecInIf5() {
-        X x;
+        variable X x;
         doNothing();
-        x = X();
+        x := X();
         if (testSomething()) {
             doSomething();
-            @error x = X();
+            x := X();
         }
     }
     
     void goodMethodWithSpecInNestedIf() {
-        X x;
+        variable X x;
         if (testSomething()) {
-            x = X();
+            x := X();
             if (testSomething()) {
                 doSomething();
                 use(x);
@@ -204,10 +174,10 @@ interface DefiniteSpecification {
     }
     
     void badMethodWithSpecInNestedIf() {
-        X x;
+        variable X x;
         if (testSomething()) {
             if (testSomething()) {
-                x = X();
+                x := X();
                 doSomething();
                 use(x);
             }
@@ -221,12 +191,12 @@ interface DefiniteSpecification {
     }
         
     void goodMethodWithSpecInElse() {
-        X x;
+        variable X x;
         if (testSomething()) {
             doSomething();
         }
         else {
-            x = X();
+            x := X();
             doNothing();
             use(x);
         }
@@ -234,13 +204,13 @@ interface DefiniteSpecification {
     }
     
     void badMethodWithSpecInElse() {
-        X x;
+        variable X x;
         if (testSomething()) {
             doSomething();
             @error use(x);
         }
         else {
-            x = X();
+            x := X();
             doNothing();
             use(x);
         }
@@ -248,142 +218,142 @@ interface DefiniteSpecification {
     }
     
     void badMethodWithSpecInElse2() {
-        X x;
+        variable X x;
         if (testSomething()) {
             doSomething();
         }
         else {
-            x = X();
+            x := X();
             doNothing();
             use(x);
         }
         doSomethingElse();
-        @error x = X();
+        x := X();
     }
     
     void badMethodWithSpecInElse3() {
-        X x = X();
+        variable X x := X();
         doSomethingElse();
         if (testSomething()) {
             doSomething();
         }
         else {
-            @error x = X();
+            x := X();
             doNothing();
         }
     }
     
     void badMethodWithSpecInElse4() {
-        X x;
+        variable X x;
         doSomethingElse();
-        x = X();
+        x := X();
         if (testSomething()) {
             doSomething();
         }
         else {
-            @error x = X();
+            x := X();
             doNothing();
         }
     }
     
     void goodMethodWithSpecInIfAndElse() {
-        X x;
+        variable X x;
         if (testSomething()) {
-            x = X();
+            x := X();
             doSomething();
             use(x);
         }
         else {
-            x = X();
+            x := X();
             doSomethingElse();
             use(x);
         }
     }
     
     void goodMethodWithSpecInIfAndElse2() {
-        X x;
+        variable X x;
         if (testSomething()) {
             doSomething();
-            x = X();
+            x := X();
         }
         else {
             doSomethingElse();
-            x = X();
+            x := X();
         }
         use(x);
     }
     
     void goodMethodWithRecursiveSpecInIfAndElse() {
-        X y;
+        variable X y;
         if (testSomething()) {
-            y = X();
+            y := X();
         }
         else {
-            y = X();
+            y := X();
             use(y);
         }
-        X x = y;
+        variable X x := y;
         use(x);
     }
     
     void badMethodWithRecursiveSpecInIf() {
-        X y;
+        variable X y;
         if (testSomething()) {
-            y = X();
+            y := X();
         }
-        @error X x = y;
+        @error variable X x := y;
     }
     
     void goodMethodWithSpecInFor() {
         for (X x in {X()}) {
-            X y;
+            variable X y;
             doSomething();
-            y=X();
+            y := x;
         }
         doNothing();
     }
     
     void badMethodWithSpecInFor() {
-        X y;
+        variable X y;
         for (X x in {X()}) {
             doSomething();
-            @error y=X();
+            y := x;
         }
         doNothing();
     }
     
     void goodMethodWithSpecInFail() {
-        X y;
+        variable X y;
         for (X x in {X()}) {
             doSomething();
         }
         fail {
             doSomethingElse();
-            y = X();
+            y := X();
         }
         doNothing();
     }
     
     void badMethodWithSpecInFail() {
         for (X x in {X()}) {
-            X y;
+            variable X y;
             doSomething();
         }
         fail {
             doSomethingElse();
-            @error y = X();
+            @error y := X();
         }
         doNothing();
     }
     
     void badMethodWithSpecInFail2() {
-        X y;
+        variable X y;
         for (X x in {X()}) {
             doSomething();
         }
         fail {
             doSomethingElse();
-            y = X();
+            y := X();
         }
         doNothing();
         @error use (y);
@@ -391,36 +361,36 @@ interface DefiniteSpecification {
     
     void goodMethodWithSpecInWhile() {
         while (testSomething()) {
-            X x;
+            variable X x;
             doSomething();
-            x = X();
+            x := X();
         }
         doSomethingElse();
     }
     
     void badMethodWithSpecInWhile() {
-        X x;
+        variable X x;
         while (testSomething()) {
             doSomething();
-            @error x = X();
+            x := X();
         }
         doSomethingElse();
     }
     
     void goodMethodWithSpecInDo() {
         do {
-            X x;
+            variable X x;
             doSomething();
-            x = X();
+            x := X();
         }
         while (testSomething());
     }
     
     void badMethodWithSpecInDo() {
-        X x;
+        variable X x;
         do {
             doSomething();
-            @error x = X();
+            x := X();
         }
         while (testSomething());
     }
