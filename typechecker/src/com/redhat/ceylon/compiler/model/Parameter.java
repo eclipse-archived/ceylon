@@ -4,6 +4,7 @@ public abstract class Parameter extends TypedDeclaration {
     
     boolean defaulted;
     boolean sequenced;
+    private Declaration declaration;
     
     public boolean isDefaulted() {
         return defaulted;
@@ -19,6 +20,14 @@ public abstract class Parameter extends TypedDeclaration {
     
     public void setSequenced(boolean sequenced) {
         this.sequenced = sequenced;
+    }
+    
+    public Declaration getDeclaration() {
+        return declaration;
+    }
+    
+    public void setDeclaration(Declaration declaration) {
+        this.declaration = declaration;
     }
     
 }

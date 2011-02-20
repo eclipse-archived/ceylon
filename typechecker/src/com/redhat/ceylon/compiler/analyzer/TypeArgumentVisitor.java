@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.analyzer;
 
 import com.redhat.ceylon.compiler.model.Declaration;
+import com.redhat.ceylon.compiler.model.Parameter;
 import com.redhat.ceylon.compiler.model.ProducedType;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Visitor;
@@ -13,7 +14,7 @@ import com.redhat.ceylon.compiler.tree.Visitor;
 public class TypeArgumentVisitor extends Visitor {
     
     private boolean contravariant = false;
-    private Declaration declaration;
+    private Declaration parameterizedDeclaration;
     
     private void flip() {
         contravariant = !contravariant;
@@ -27,39 +28,22 @@ public class TypeArgumentVisitor extends Visitor {
         flip();
     }
     
-    @Override public void visit(Tree.Type that) {
+    @Override public void visit(Tree.Parameter that) {
+        boolean topLevel = parameterizedDeclaration==null;
+        if (topLevel) {
+            parameterizedDeclaration = ( (Parameter) that.getDeclarationModel() ).getDeclaration();
+        }
+        super.visit(that);
+        if (topLevel) {
+            parameterizedDeclaration = null;
+        }
+    }
+    
+    @Override public void visit(Tree.TypeOrSubtype that) {
         ProducedType pt = that.getTypeModel();
-        if ( pt!=null && !pt.checkVariance(!contravariant, contravariant, declaration) ) {
+        if ( pt!=null && !pt.checkVariance(!contravariant, contravariant, parameterizedDeclaration) ) {
             that.addError("incorrect variance: " + pt.getProducedTypeName());
         }
     }
     
-    @Override public void visit(Tree.Method that) {
-        Declaration d = declaration;
-        declaration = that.getDeclarationModel();
-        super.visit(that);
-        declaration = d;
-    }
-        
-    @Override public void visit(Tree.Attribute that) {
-        Declaration d = declaration;
-        declaration = that.getDeclarationModel();
-        super.visit(that);
-        declaration = d;
-    }
-        
-    @Override public void visit(Tree.AttributeSetterDefinition that) {
-        Declaration d = declaration;
-        declaration = that.getDeclarationModel();
-        super.visit(that);
-        declaration = d;
-    }
-        
-    @Override public void visit(Tree.ClassOrInterface that) {
-        Declaration d = declaration;
-        declaration = that.getDeclarationModel();
-        super.visit(that);
-        declaration = d;
-    }
-        
 }

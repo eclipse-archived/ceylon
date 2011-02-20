@@ -325,6 +325,7 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.ValueParameter that) {
         ValueParameter p = new ValueParameter();
+        p.setDeclaration(declaration);
         p.setDefaulted(that.getSpecifierExpression()!=null);
         p.setSequenced(that.getTypeOrSubtype() instanceof Tree.SequencedType);
         visitDeclaration(that, p);
@@ -335,6 +336,7 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.FunctionalParameter that) {
         FunctionalParameter p = new FunctionalParameter();
+        p.setDeclaration(declaration);
         p.setDefaulted(that.getSpecifierExpression()!=null);
         visitDeclaration(that, p);
         //Scope o = enterScope(p);
