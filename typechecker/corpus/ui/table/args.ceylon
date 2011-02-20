@@ -6,7 +6,7 @@ Table args {
 	    heading = "name";
 		width = 5;
         String content(Natural row) {
-            return process.switches[row]?.key;
+            return process.switches[row]?.key ? "";
         }
 	},
 	Column {
