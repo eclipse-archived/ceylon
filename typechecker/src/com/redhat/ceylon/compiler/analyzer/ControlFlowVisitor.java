@@ -271,13 +271,13 @@ public class ControlFlowVisitor extends Visitor {
         checkExecutableStatementAllowed(that);
         boolean d = beginIndefiniteReturnScope();
         
-        visit(that.getIfClause());
+        that.getIfClause().visit(this);
         boolean definitelyReturnsFromIf = definitelyReturns;
         endDefiniteReturnScope(d);
         
         boolean definitelyReturnsFromElse;
         if (that.getElseClause()!=null) {
-            visit(that.getElseClause());
+            that.getElseClause().visit(this);
             definitelyReturnsFromElse = definitelyReturns;
         }
         else {
@@ -293,14 +293,14 @@ public class ControlFlowVisitor extends Visitor {
         boolean d = beginIndefiniteReturnScope();
         
         Boolean b = beginLoop();
-        visit(that.getForClause());
+        that.getForClause().visit(this);
         boolean definitelyReturnsFromFor = definitelyReturns && !exitedFromLoop;
         endLoop(b);
         endDefiniteReturnScope(d);
         
         boolean definitelyReturnsFromFail;
         if (that.getFailClause()!=null) {
-            visit(that.getFailClause());
+            that.getFailClause().visit(this);
             definitelyReturnsFromFail = definitelyReturns;
         }
         else {

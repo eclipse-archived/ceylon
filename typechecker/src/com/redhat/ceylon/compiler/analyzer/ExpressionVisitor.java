@@ -102,10 +102,10 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.IsCondition that) {
         if (that.getVariable()!=null) {
-            visit(that.getVariable().getSpecifierExpression());
+            that.getVariable().getSpecifierExpression().visit(this);
         }
         if (that.getExpression()!=null) {
-            visit(that.getExpression());
+            that.getExpression().visit(this);
         }
     }
     
@@ -123,7 +123,7 @@ public class ExpressionVisitor extends Visitor {
             n = v;
         }
         if (that.getExpression()!=null) {
-            visit(that.getExpression());
+            that.getExpression().visit(this);
             t = that.getExpression().getTypeModel();
             n = that.getExpression();
         }

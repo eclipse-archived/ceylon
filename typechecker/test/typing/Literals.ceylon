@@ -17,4 +17,6 @@ public class Literals() {
     
     Iterable<String> istrings = strings;
     
+    @type["Optional<Entry<String,String>>"] process.switches[3];
+    
 }

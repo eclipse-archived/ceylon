@@ -387,7 +387,7 @@ public class SpecificationVisitor extends Visitor {
         boolean d = beginDeclarationScope();
         SpecificationState as = beginSpecificationScope();
         
-        visit(that.getIfClause());
+        that.getIfClause().visit(this);
         boolean definitelyAssignedByIfClause = specified.definitely || specified.exited;
         boolean possiblyAssignedByIfClause = specified.possibly;
         endDeclarationScope(d);
@@ -396,7 +396,7 @@ public class SpecificationVisitor extends Visitor {
         boolean definitelyAssignedByElseClause;
         boolean possiblyAssignedByElseClause;
         if (that.getElseClause()!=null) {
-            visit(that.getElseClause());
+            that.getElseClause().visit(this);
             endDeclarationScope(d);
             definitelyAssignedByElseClause = specified.definitely || specified.exited;
             possiblyAssignedByElseClause = specified.possibly;

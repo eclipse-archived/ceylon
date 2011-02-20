@@ -375,15 +375,15 @@ public class DeclarationVisitor extends Visitor {
         if (that.getSpecifierExpression()!=null) {
             Scope s = scope;
             scope = scope.getContainer();
-            visit(that.getSpecifierExpression());
+            that.getSpecifierExpression().visit(this);
             scope = s;
         }
         Value v = new Value();
         visitDeclaration(that, v);
-        visit(that.getTypeOrSubtype());
-        visit(that.getIdentifier());
+        that.getTypeOrSubtype().visit(this);
+        that.getIdentifier().visit(this);
         if (that.getAnnotationList()!=null) {
-            visit(that.getAnnotationList());
+            that.getAnnotationList().visit(this);
         }
         //TODO: parameters of callable variables?!
         that.setScope(scope);
