@@ -900,6 +900,19 @@ public class ExpressionVisitor extends Visitor {
         that.setTypeModel(getBooleanDeclaration().getType());
     }
     
+    private void visitIsOperator(Tree.IsOp that) {
+        ProducedType t = leftType(that);
+        if (t!=null) {
+            if (t.getSupertype(getObjectDeclaration())==null) {
+                that.getLeftTerm().addError("must be of type: Object");
+            }
+        }
+        if (!(that.getRightTerm() instanceof Tree.Type)) {
+            that.getRightTerm().addError("must be a literal type");
+        }
+        that.setTypeModel(getBooleanDeclaration().getType());
+    }
+    
     private void visitAssignOperator(Tree.AssignOp that) {
         ProducedType rhst = rightType(that);
         ProducedType lhst = leftType(that);
@@ -1016,6 +1029,11 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.Exists that) {
         super.visit(that);
         visitExistsOperator(that);
+    }
+        
+    @Override public void visit(Tree.IsOp that) {
+        super.visit(that);
+        visitIsOperator(that);
     }
         
     //Atoms:
@@ -1224,6 +1242,10 @@ public class ExpressionVisitor extends Visitor {
 
     private Class getOptionalDeclaration() {
         return (Class) getLanguageDeclaration("Optional");
+    }
+    
+    private Class getObjectDeclaration() {
+        return (Class) getLanguageDeclaration("Object");
     }
     
     private Interface getIterableDeclaration() {
