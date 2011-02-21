@@ -10,7 +10,7 @@ public abstract class TypeDeclaration extends Declaration implements Generic, Sc
 	
 	ProducedType extendedType;
 	List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>();
-	List<ProducedType> caseTypes = new ArrayList<ProducedType>();
+	List<ProducedType> caseTypes = null;
 	List<TypeParameter> typeParameters = Collections.emptyList();
 	
 	public List<TypeParameter> getTypeParameters() {
@@ -30,7 +30,24 @@ public abstract class TypeDeclaration extends Declaration implements Generic, Sc
 	}
 	
 	public List<ProducedType> getSatisfiedTypes() {
-		return satisfiedTypes;
+		List<ProducedType> list = new ArrayList<ProducedType>();
+        list.addAll(satisfiedTypes);
+        if (caseTypes!=null && !caseTypes.isEmpty()) {
+            List<ProducedType> candidates = caseTypes.get(0).getSupertypes();
+            for (ProducedType st: candidates) {
+                boolean include = true;
+                for (ProducedType ct: caseTypes) {
+                    if (!ct.isSubtypeOf(st)) {
+                        include = false;
+                        break;
+                    }
+                }
+                if (include) {
+                    list.add(st);
+                }
+            }
+        }
+        return list;
 	}
 	
 	public void setSatisfiedTypes(List<ProducedType> satisfiedTypes) {
@@ -67,5 +84,4 @@ public abstract class TypeDeclaration extends Declaration implements Generic, Sc
         pt.setTypeArguments(map);
         return pt;
     }
-    
 }

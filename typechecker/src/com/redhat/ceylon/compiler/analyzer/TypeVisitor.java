@@ -218,7 +218,7 @@ public class TypeVisitor extends Visitor {
                 ci.setSatisfiedTypes(getSatisfiedTypes(st));
             }
             if (ci instanceof Interface) {
-                ci.getSatisfiedTypes().add(getObjectDeclaration().getType());
+                ((Interface) ci).setExtendedType(getObjectDeclaration().getType());
             }
         }
         //TODO: interfaces should have Object as a supertype!!

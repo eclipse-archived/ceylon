@@ -82,4 +82,14 @@ class Primaries() {
         @type["Primaries"] Inner3().outer;
     }
     
+    @type["Sequence<A|B|String|Sequence<Natural>>"] {A(),B(),"Hello",{1,2,3}};
+    Object[] stuff = {A(),B(),"Hello",{1,2,3}};
+    local objects = {A(),B(),"Hello",{1,2,3}};
+    Object[] things = objects;
+    @type["Optional<A|B|String|Sequence<Natural>>"] objects[1];
+    if (exists local o = objects[1]) {
+        @type["A|B|String|Sequence<Natural>"] o;
+        String s = o.string;
+    }
+    
 }

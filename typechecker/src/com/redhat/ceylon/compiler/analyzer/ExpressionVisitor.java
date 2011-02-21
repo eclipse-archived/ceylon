@@ -21,6 +21,7 @@ import com.redhat.ceylon.compiler.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.model.Scope;
 import com.redhat.ceylon.compiler.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.model.UnionType;
 import com.redhat.ceylon.compiler.model.Value;
 import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
@@ -932,8 +933,11 @@ public class ExpressionVisitor extends Visitor {
                 that.getLeftTerm().addError("must be of type: Object");
             }
         }
-        if (!(that.getRightTerm() instanceof Tree.Type)) {
-            that.getRightTerm().addError("must be a literal type");
+        Term rt = that.getRightTerm();
+        if (rt!=null) {
+            if (!(rt instanceof Tree.Type)) {
+                rt.addError("must be a literal type");
+            }
         }
         that.setTypeModel(getBooleanDeclaration().getType());
     }
@@ -1201,17 +1205,37 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.SequenceEnumeration that) {
         super.visit(that);
-        ProducedType et = null; 
+        List<ProducedType> list = new ArrayList<ProducedType>();
         for (Tree.Expression e: that.getExpressionList().getExpressions()) {
-            if (et==null) {
-                et = e.getTypeModel();
+            if (e.getTypeModel()!=null) {
+                Boolean included = false;
+                for (ProducedType t: list) {
+                    if (e.getTypeModel().isSubtypeOf(t)) {
+                        included = true;
+                        break;
+                    }
+                }
+                if (!included) {
+                    list.add(e.getTypeModel());
+                }
             }
-            //TODO: determine the common supertype of all of them
         }
-        if (et!=null) {
-            Interface std = getSequenceDeclaration();
-            that.setTypeModel(std.getProducedType(Collections.singletonList(et)));
+        ProducedType et;
+        if (list.isEmpty()) {
+            that.addError("could not infer type of sequence enumeration");
+            return;
         }
+        else if (list.size()==1) {
+            et = list.get(0);
+        }
+        else {
+            UnionType ut = new UnionType();
+            ut.setExtendedType( getObjectDeclaration().getType() );
+            ut.setCaseTypes(list);
+            et = ut.getType(); 
+        }
+        ProducedType t = getSequenceDeclaration().getProducedType(Collections.singletonList(et));
+        that.setTypeModel(t);
     }
     
     @Override public void visit(Tree.StringTemplate that) {

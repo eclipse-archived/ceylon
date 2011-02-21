@@ -135,4 +135,18 @@ class Generics() {
         @type["String"] x.hello;
     }
     
+    class Outer<X>(X x) given X satisfies Equality<X> {
+        class Inner<Y>(Y y) given Y satisfies Equality<Y> {
+            Entry<X,Y> getIt() {
+                return x->y;
+            }
+        }
+    }
+    
+    @type["Entry<Natural,String>"] Outer<Natural>(1).Inner<String>("hello").getIt();
+    
+    Outer<Natural>.Inner<String> aa = Outer<Natural>(1).Inner<String>("hello");
+    @error Inner<String> bb = Outer<Natural>(1).Inner<String>("hello");
+    @error Outer<Natural>.Inner<String> cc = Outer<Float>(1.3).Inner<String>("hello");
+    
 }

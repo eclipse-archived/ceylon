@@ -36,13 +36,14 @@ public class ProducedType extends ProducedReference {
 			        producedTypeName+=t.getProducedTypeName() + ",";
 			    }
 			}
+			producedTypeName = producedTypeName.substring(0,producedTypeName.length()-1);
 			producedTypeName+=">";
 		}
-		return producedTypeName.replace(",>", ">");
+		return producedTypeName;
 	}
 	
 	private boolean isExactly(ProducedType type) {
-	    if (type.getDeclaration()!=getDeclaration()) {
+	    if (type.getDeclaration()!=getDeclaration()) { //TODO: broken for union types
 	        return false;
 	    }
         for (TypeParameter p: getDeclaration().getTypeParameters()) {
@@ -61,7 +62,7 @@ public class ProducedType extends ProducedReference {
 	}
 	
 	public boolean isSubtypeOf(ProducedType type) {
-	    ProducedType st = getSupertype( type.getDeclaration() );
+	    ProducedType st = getSupertype( type.getDeclaration() ); //TODO: broken for union types
 	    if (st==null) {
 	        return false;
 	    }
