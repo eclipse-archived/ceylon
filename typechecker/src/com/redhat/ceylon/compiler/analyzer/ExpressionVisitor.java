@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.analyzer;
 
+import static com.redhat.ceylon.compiler.analyzer.Util.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -261,7 +263,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 that.addError("could not infer type of: " + 
-                        Util.name(that));
+                        name(that.getIdentifier()));
             }
         }
     }
@@ -273,7 +275,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 that.addError("could not infer type of: " + 
-                        Util.name(that));
+                        name(that.getIdentifier()));
             }
         }
     }
@@ -285,7 +287,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 that.addError("could not infer type of: " + 
-                        Util.name(that));
+                        name(that.getIdentifier()));
             }
         }
     }
@@ -303,7 +305,7 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             that.addError("could not infer type of: " + 
-                    Util.name(that));
+                    name(that.getIdentifier()));
         }
     }
     
@@ -327,7 +329,7 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             local.addError("could not infer type of: " + 
-                    Util.name(that));
+                    name(that.getIdentifier()));
         }
     }
     
@@ -429,7 +431,7 @@ public class ExpressionVisitor extends Visitor {
     private void handleMemberTypeReference(Tree.MemberExpression that,
             ProducedType pt, Tree.Type tt) {
         pt = unwrap(pt, that);
-        TypeDeclaration member = (TypeDeclaration) Util.getMemberDeclaration(pt.getDeclaration(), tt.getIdentifier(), context);
+        TypeDeclaration member = (TypeDeclaration) getMemberDeclaration(pt.getDeclaration(), tt.getIdentifier(), context);
         if (member==null) {
             tt.addError("could not determine target of member type reference: " +
                     tt.getIdentifier().getText());
@@ -450,7 +452,7 @@ public class ExpressionVisitor extends Visitor {
     private void handleMemberReference(Tree.MemberExpression that,
             ProducedType pt, Tree.Member m) {
         pt = unwrap(pt, that);
-        TypedDeclaration member = (TypedDeclaration) Util.getMemberDeclaration(pt.getDeclaration(), m.getIdentifier(), context);
+        TypedDeclaration member = (TypedDeclaration) getMemberDeclaration(pt.getDeclaration(), m.getIdentifier(), context);
         if (member==null) {
             m.addError("could not determine target of member reference: " +
                     m.getIdentifier().getText());
@@ -545,7 +547,7 @@ public class ExpressionVisitor extends Visitor {
             Parameter p = getMatchingParameter(pl, a);
             if (p==null) {
                 a.addError("no matching parameter for named argument: " + 
-                        Util.name(a));
+                        name(a.getIdentifier()));
             }
             else {
                 foundParameters.add(p);
@@ -576,7 +578,7 @@ public class ExpressionVisitor extends Visitor {
     private void checkNamedArgument(Tree.NamedArgument a, ProducedReference pr, 
             Parameter p) {
         if (p.getType()==null) {
-            a.addError("parameter type not known: " + Util.name(a));
+            a.addError("parameter type not known: " + name(a.getIdentifier()));
         }
         else {
             ProducedType argType = null;
@@ -594,7 +596,7 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType paramType = pr.getTypedParameter(p).getType();
                 if ( !paramType.getType().isSupertypeOf(argType) ) {
                     a.addError("named argument not assignable to parameter type: " + 
-                            Util.name(a) + " since " +
+                            name(a.getIdentifier()) + " since " +
                             argType.getProducedTypeName() + " is not " +
                             paramType.getProducedTypeName());
                 }
@@ -902,7 +904,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private TypeDeclaration getLanguageDeclaration(String type) {
-        return (TypeDeclaration) Util.getLanguageModuleDeclaration(type, context);
+        return (TypeDeclaration) getLanguageModuleDeclaration(type, context);
     }
 
     private void visitFormatOperator(Tree.UnaryOperatorExpression that) {
@@ -1081,7 +1083,7 @@ public class ExpressionVisitor extends Visitor {
         //TODO: this does not correctly handle methods
         //      and classes which are not subsequently 
         //      invoked (should return the callable type)
-        TypedDeclaration d = (TypedDeclaration) Util.getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
+        TypedDeclaration d = (TypedDeclaration) getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
         if (d==null) {
             that.addError("could not determine target of member reference: " +
                     that.getIdentifier().getText());

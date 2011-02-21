@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.model;
 
+import static com.redhat.ceylon.compiler.model.Util.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -158,7 +160,7 @@ public class ProducedType extends ProducedReference {
     }
     
     private Map<TypeParameter,ProducedType> memberArgs(Declaration d, List<ProducedType> typeArguments) {
-        Map<TypeParameter, ProducedType> map = Util.arguments(d, typeArguments);
+        Map<TypeParameter, ProducedType> map = arguments(d, typeArguments);
         map.putAll(sub(map));
         return map;
     }
@@ -174,7 +176,7 @@ public class ProducedType extends ProducedReference {
     }
          
     ProducedTypedReference getDeclaredTypedMember(TypedDeclaration td, List<ProducedType> typeArguments) {
-        if (!Util.acceptsArguments(td, typeArguments)) {
+        if (!acceptsArguments(td, typeArguments)) {
             return null;
         }
         ProducedTypedReference ptr = new ProducedTypedReference();
@@ -186,7 +188,7 @@ public class ProducedType extends ProducedReference {
          
     public ProducedType getTypeMember(TypeDeclaration td, List<ProducedType> typeArguments) {
         //TODO: inherited type members, following pattern above!
-        if (!Util.acceptsArguments(td, typeArguments)) {
+        if (!acceptsArguments(td, typeArguments)) {
             return null;
         }
         ProducedType pt = new ProducedType();

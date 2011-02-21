@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.model;
 
+import static com.redhat.ceylon.compiler.model.Util.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -46,12 +48,12 @@ public abstract class TypeDeclaration extends Declaration implements Generic, Sc
 	}
 	
 	public ProducedType getProducedType(List<ProducedType> typeArguments) {
-	    if (!Util.acceptsArguments(this, typeArguments)) {
+	    if (!acceptsArguments(this, typeArguments)) {
 	        return null;
 	    }
 	    ProducedType pt = new ProducedType();
 	    pt.setDeclaration(this);
-	    pt.setTypeArguments( Util.arguments(this, typeArguments) );
+	    pt.setTypeArguments( arguments(this, typeArguments) );
 	    return pt;
 	}
 	

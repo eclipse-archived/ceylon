@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.analyzer;
 
+import static com.redhat.ceylon.compiler.analyzer.Util.*;
+
 import com.redhat.ceylon.compiler.context.Context;
 import com.redhat.ceylon.compiler.model.Declaration;
 import com.redhat.ceylon.compiler.model.Value;
@@ -101,7 +103,7 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Member that) {
-        Declaration member = Util.getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
+        Declaration member = getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
         if (member==declaration) {
             if (!declared) {
                 that.addError("not yet declared: " + 
@@ -119,7 +121,7 @@ public class SpecificationVisitor extends Visitor {
         Tree.Term lt = that.getLeftTerm();
         if (lt instanceof Tree.Member) {
             Tree.Member m = (Tree.Member) lt;
-            Declaration member = Util.getDeclaration(m.getScope(), m.getUnit(), m.getIdentifier(), context);
+            Declaration member = getDeclaration(m.getScope(), m.getUnit(), m.getIdentifier(), context);
             if (member==declaration) {
                 if (!declared) {
                     that.addError("not yet declared: " + 
@@ -152,7 +154,7 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.SpecifierStatement that) {
         Member m = that.getMember();
-        Declaration member = Util.getDeclaration(m.getScope(), m.getUnit(), m.getIdentifier(), context);
+        Declaration member = getDeclaration(m.getScope(), m.getUnit(), m.getIdentifier(), context);
         if (member==declaration) {
             if (!declared) {
                 that.addError("not yet declared: " + 

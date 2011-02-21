@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.analyzer;
 
+import static com.redhat.ceylon.compiler.analyzer.Util.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,7 +87,7 @@ public class TypeVisitor extends Visitor {
         else {
             i.setAlias(alias.getIdentifier().getText());
         }
-        Declaration d = Util.getPackageDeclaration(importPackage, that.getIdentifier(), context);
+        Declaration d = getPackageDeclaration(importPackage, that.getIdentifier(), context);
         if (d==null) {
             that.addError("imported declaration not found: " + 
                     that.getIdentifier().getText());
@@ -98,7 +100,7 @@ public class TypeVisitor extends Visitor {
         
     @Override 
     public void visit(Tree.Type that) {
-        TypeDeclaration d = (TypeDeclaration) Util.getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
+        TypeDeclaration d = (TypeDeclaration) getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
         if (d==null) {
             that.addError("type declaration not found: " + 
                     that.getIdentifier().getText());
@@ -153,13 +155,13 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.TypedDeclaration that) {
         super.visit(that);
-        setType(that, Util.name(that), that.getTypeOrSubtype());
+        setType(that, name(that.getIdentifier()), that.getTypeOrSubtype());
     }
 
     @Override 
     public void visit(Tree.TypedArgument that) {
         super.visit(that);
-        setType(that, Util.name(that), that.getTypeOrSubtype());
+        setType(that, name(that.getIdentifier()), that.getTypeOrSubtype());
     }
         
     private void setType(Node that, String name, Tree.TypeOrSubtype type) {
@@ -193,7 +195,7 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.TypeConstraint that) {
         super.visit(that);
-        TypeParameter p = (TypeParameter) Util.getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
+        TypeParameter p = (TypeParameter) getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
         if (p==null) {
             that.addError("no matching type parameter for constraint");
         }
@@ -289,15 +291,15 @@ public class TypeVisitor extends Visitor {
     }
     
     private Class getObjectDeclaration() {
-        return (Class) Util.getLanguageModuleDeclaration("Object", context);
+        return (Class) getLanguageModuleDeclaration("Object", context);
     }
 
     private Class getVoidDeclaration() {
-        return (Class) Util.getLanguageModuleDeclaration("Void", context);
+        return (Class) getLanguageModuleDeclaration("Void", context);
     }
     
     private Class getIdentifiableObjectDeclaration() {
-        return (Class) Util.getLanguageModuleDeclaration("IdentifiableObject", context);
+        return (Class) getLanguageModuleDeclaration("IdentifiableObject", context);
     }
     
 }

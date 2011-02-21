@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.analyzer;
 
+import static com.redhat.ceylon.compiler.analyzer.Util.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,7 +113,7 @@ public class DeclarationVisitor extends Visitor {
     private void checkForDuplicateDeclaration(Tree.Declaration that, 
             Declaration model) {
         boolean found = false;
-        String name = Util.name(that);
+        String name = name(that.getIdentifier());
         for (Declaration m: scope.getMembers()) {
             String dname = m.getName();
             if (dname!=null && dname.equals(name)) {
@@ -181,7 +183,7 @@ public class DeclarationVisitor extends Visitor {
         functional = null;
         if (that.getParameterList()==null) {
             that.addError("missing parameter list in class declaration: " + 
-                    Util.name(that) );
+                    name(that.getIdentifier()) );
         }
     }
 
@@ -244,14 +246,14 @@ public class DeclarationVisitor extends Visitor {
     private void checkMethodParameters(Tree.Method that) {
         if (that.getParameterLists().isEmpty()) {
             that.addError("missing parameter list in method declaration: " + 
-                    Util.name(that) );
+                    name(that.getIdentifier()) );
         }
     }
 
     private void checkMethodArgumentParameters(Tree.MethodArgument that) {
         if (that.getParameterLists().isEmpty()) {
             that.addError("missing parameter list in named argument declaration: " + 
-                    Util.name(that) );
+                    name(that.getIdentifier()) );
         }
     }
 

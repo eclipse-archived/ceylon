@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.model;
 
+import static com.redhat.ceylon.compiler.model.Util.*;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -48,7 +50,7 @@ public abstract class TypedDeclaration extends Declaration {
         }
         ProducedTypedReference pt = new ProducedTypedReference();
         pt.setDeclaration(this);
-        pt.setTypeArguments(Util.arguments(this, typeArguments));
+        pt.setTypeArguments(arguments(this, typeArguments));
         return pt;
     }
     

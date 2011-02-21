@@ -134,21 +134,12 @@ public class Util {
         return null;
     }
     
-    public static String name(Tree.Declaration dec) {
-        if (dec.getIdentifier()==null) {
-            return "declaration with missing name";
+    public static String name(Tree.Identifier id) {
+        if (id==null) {
+            return "program element with missing name";
         }
         else {
-            return dec.getIdentifier().getText();
-        }
-    }
-    
-    public static String name(Tree.NamedArgument arg) {
-        if (arg.getIdentifier()==null) {
-            return "named argument with missing name";
-        }
-        else {
-            return arg.getIdentifier().getText();
+            return id.getText();
         }
     }
 

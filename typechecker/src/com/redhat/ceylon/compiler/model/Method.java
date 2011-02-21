@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.model;
 
+import static com.redhat.ceylon.compiler.model.Util.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -74,7 +76,7 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
         }
         ProducedTypedReference pt = new ProducedTypedReference();
         pt.setDeclaration(this);
-        pt.setTypeArguments( Util.arguments(this, typeArguments) );
+        pt.setTypeArguments( arguments(this, typeArguments) );
         return pt;
     }
     
