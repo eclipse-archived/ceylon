@@ -15,6 +15,7 @@ import com.redhat.ceylon.compiler.model.Getter;
 import com.redhat.ceylon.compiler.model.Interface;
 import com.redhat.ceylon.compiler.model.Method;
 import com.redhat.ceylon.compiler.model.Package;
+import com.redhat.ceylon.compiler.model.Parameter;
 import com.redhat.ceylon.compiler.model.ParameterList;
 import com.redhat.ceylon.compiler.model.Scope;
 import com.redhat.ceylon.compiler.model.Setter;
@@ -117,15 +118,20 @@ public class DeclarationVisitor extends Visitor {
         for (Declaration m: scope.getMembers()) {
             String dname = m.getName();
             if (dname!=null && dname.equals(name)) {
-                if (model instanceof Setter) {
-                    if (m instanceof Getter) {
-                        found = true;
-                        continue;
-                    }
+                if (model instanceof Setter && m instanceof Getter) {
+                    found = true;
+                    continue;
                 }
-                //TODO: special exception where a parameter of
-                //      a class can have same name as an attribute
-                that.addError("duplicate declaration: " + name);
+                /*else if (model instanceof Parameter && ((Parameter) model).getDeclaration()!=scope) {
+                    //no error
+                }*/
+                else if ((model instanceof Value || model instanceof Getter || model instanceof Setter) 
+                        && m instanceof Parameter 
+                        && ((Parameter) m).getDeclaration() instanceof Class) {
+                }
+                else {
+                    that.addError("duplicate declaration: " + name);
+                }
             }
         }
         if (!found && (model instanceof Setter)) {
@@ -213,6 +219,9 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.MethodDeclaration that) {
         Method m = new Method();
         visitDeclaration(that, m);
+        //TODO: we should visit its parameters within
+        //      the scope of the Method, to avoid
+        //      duplicate declaration errors!
         functional = m;
         super.visit(that);
         functional = null;
@@ -341,11 +350,14 @@ public class DeclarationVisitor extends Visitor {
         p.setDeclaration(declaration);
         p.setDefaulted(that.getSpecifierExpression()!=null);
         visitDeclaration(that, p);
+        //TODO: we should visit its parameters within
+        //      the scope of the FunctionalParameter, 
+        //      to avoid duplicate declaration errors!
         //Scope o = enterScope(p);
-        Functional o = functional;
+        Functional of = functional;
         functional = p;
         super.visit(that);
-        functional = o;
+        functional = of;
         //exitScope(o);
         parameterList.getParameters().add(p);
     }
@@ -429,4 +441,22 @@ public class DeclarationVisitor extends Visitor {
         declaration = d;
     }
         
+    @Override
+    public void visit(Tree.TypeConstraint that) {
+        TypeParameter p = (TypeParameter) getDeclaration(scope, unit, that.getIdentifier(), null);
+        if (p==null) {
+            that.addError("no matching type parameter for constraint: " + 
+                    name(that.getIdentifier()));
+            super.visit(that);
+        }
+        else {
+            Functional of = functional;
+            functional = p;
+            Scope o = enterScope(p);
+            super.visit(that);
+            exitScope(o);
+            functional = of;
+        }
+    }
+
 }

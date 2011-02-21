@@ -87,7 +87,7 @@ public class TypeVisitor extends Visitor {
         else {
             i.setAlias(alias.getIdentifier().getText());
         }
-        Declaration d = getPackageDeclaration(importPackage, that.getIdentifier(), context);
+        Declaration d = getExternalDeclaration(importPackage, that.getIdentifier(), context);
         if (d==null) {
             that.addError("imported declaration not found: " + 
                     that.getIdentifier().getText());
@@ -197,7 +197,8 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         TypeParameter p = (TypeParameter) getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
         if (p==null) {
-            that.addError("no matching type parameter for constraint");
+            //already added error
+            //that.addError("no matching type parameter for constraint");
         }
         else {
             Tree.SatisfiedTypes st = that.getSatisfiedTypes();

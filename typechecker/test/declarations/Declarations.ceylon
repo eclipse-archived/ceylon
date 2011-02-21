@@ -43,5 +43,23 @@ interface Declarations {
     class A(Natural count = 1) {}
     
     void dup(String name, @error String name) {}
+    
+    class Hiding(String name) {
+        shared String name = name;
+    }
+    
+    class HidingWithTypeConstraint<T>(String name)
+            given T(String name) {
+        shared String name = name;
+        shared T t = T(name);
+    }
+    
+    class AdvancedHiding(Float x) {
+        String x = x.string;
+        @type["Float"] x;
+    }
+    void advancedHiding() {
+        @type["String"] AdvancedHiding(1.0).x;
+    }
 
 }

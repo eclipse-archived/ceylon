@@ -89,7 +89,7 @@ class Arguments() {
 	
 		shared void from<Y>(Y initial, 
 							Boolean until(Y y), 
-							Y each(Y y), 
+							Y each(Y y),
 							void perform(Y y)) {
 			variable Y y := initial;
 			while (!until(y)) {

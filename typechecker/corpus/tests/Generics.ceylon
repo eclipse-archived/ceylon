@@ -19,7 +19,7 @@ class Generics() {
     }
     
     interface TypeWithVariantParameters<out X, in Y, Z> {
-        shared formal void consume(X x);
+        shared formal void consume(Y y);
         shared formal X produce();
         shared formal variable Z z;
     }
@@ -35,12 +35,12 @@ class Generics() {
     }
         
     class TypeWithConstructableParameter<X>(String s, Natural n)
-            given X(String s, Natural n) {
+            given X(String ss, Natural nn) {
         X x = X(s,n);
     }
 
     class TypeWithMultipleParameterConstraints<X>(String s, Natural n)
-            given X(String s, Natural n) satisfies String {
+            given X(String ss, Natural nn) satisfies String {
         String sn = X(s,n);
     }
 

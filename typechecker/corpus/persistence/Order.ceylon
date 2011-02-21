@@ -10,10 +10,6 @@ shared class Order() {
 	
 	//TODO: address, payment, user
 	
-	shared class Status() 
-	        of draft | submitted | shipped | closed 
-	        extends Case() {}
-	
     doc "A draft order being edited"
     charColumnValue "DR"
     shared object draft extends Status() {}
@@ -31,6 +27,10 @@ shared class Order() {
     charColumnValue "CL"
     shared object closed extends Status() {}
         
+    shared class Status() 
+    of draft | submitted | shipped | closed 
+    extends Case() {}
+
 	oneToMany{ mappedBy=Item.order; }
 	cascade(persist, merge, remove) deleteOrphans
 	OpenList<Item> itemList = ArrayList<Item>();

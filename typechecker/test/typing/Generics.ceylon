@@ -17,7 +17,7 @@ class Generics() {
     @type["Holder<String>"] Holder<String> hs;
     
     @type["Holder<String>"] Holder<String>("hello");
-    @type["String"] Holder<String>("hello").x;
+    @type["String"] Holder<String>("hello").held;
     
     @error Holder("hello");
     
@@ -136,7 +136,9 @@ class Generics() {
     }
     
     class Outer<X>(X x) given X satisfies Equality<X> {
+        //shared X x = x;
         class Inner<Y>(Y y) given Y satisfies Equality<Y> {
+            //shared Y y = y;
             Entry<X,Y> getIt() {
                 return x->y;
             }

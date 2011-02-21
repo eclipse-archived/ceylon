@@ -9,7 +9,7 @@ class Classes() {
 	}
 	
 	class WithAttributes() {
-		Natural count = 0;
+		variable Natural count := 0;
 		variable String description := "";
 		String countAsString { return $count; }
 		assign countAsString { count := countAsString.parseNatural; }
