@@ -101,7 +101,8 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Member that) {
-        if (Util.getDeclaration(that, context)==declaration) {
+        Declaration member = Util.getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
+        if (member==declaration) {
             if (!declared) {
                 that.addError("not yet declared: " + 
                         that.getIdentifier().getText());
@@ -118,7 +119,8 @@ public class SpecificationVisitor extends Visitor {
         Tree.Term lt = that.getLeftTerm();
         if (lt instanceof Tree.Member) {
             Tree.Member m = (Tree.Member) lt;
-            if (Util.getDeclaration(m, context)==declaration) {
+            Declaration member = Util.getDeclaration(m.getScope(), m.getUnit(), m.getIdentifier(), context);
+            if (member==declaration) {
                 if (!declared) {
                     that.addError("not yet declared: " + 
                             m.getIdentifier().getText());
@@ -150,7 +152,8 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.SpecifierStatement that) {
         Member m = that.getMember();
-        if (Util.getDeclaration(m, context)==declaration) {
+        Declaration member = Util.getDeclaration(m.getScope(), m.getUnit(), m.getIdentifier(), context);
+        if (member==declaration) {
             if (!declared) {
                 that.addError("not yet declared: " + 
                         m.getIdentifier().getText());

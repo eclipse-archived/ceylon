@@ -19,5 +19,10 @@ public class UnionType extends TypeDeclaration {
         }
         return name.substring(0,name.length()-1);
     }
+    
+    @Override
+    public String toString() {
+        return "UnionType[" + getName() + "]";
+    }
 
 }

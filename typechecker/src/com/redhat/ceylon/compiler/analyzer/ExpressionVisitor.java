@@ -429,7 +429,7 @@ public class ExpressionVisitor extends Visitor {
     private void handleMemberTypeReference(Tree.MemberExpression that,
             ProducedType pt, Tree.Type tt) {
         pt = unwrap(pt, that);
-        TypeDeclaration member = Util.getDeclaration(pt.getDeclaration(), tt, context);
+        TypeDeclaration member = (TypeDeclaration) Util.getMemberDeclaration(pt.getDeclaration(), tt.getIdentifier(), context);
         if (member==null) {
             tt.addError("could not determine target of member type reference: " +
                     tt.getIdentifier().getText());
@@ -450,7 +450,7 @@ public class ExpressionVisitor extends Visitor {
     private void handleMemberReference(Tree.MemberExpression that,
             ProducedType pt, Tree.Member m) {
         pt = unwrap(pt, that);
-        TypedDeclaration member = Util.getDeclaration(pt.getDeclaration(), m, context);
+        TypedDeclaration member = (TypedDeclaration) Util.getMemberDeclaration(pt.getDeclaration(), m.getIdentifier(), context);
         if (member==null) {
             m.addError("could not determine target of member reference: " +
                     m.getIdentifier().getText());
@@ -1081,7 +1081,7 @@ public class ExpressionVisitor extends Visitor {
         //TODO: this does not correctly handle methods
         //      and classes which are not subsequently 
         //      invoked (should return the callable type)
-        TypedDeclaration d = Util.getDeclaration(that, context);
+        TypedDeclaration d = (TypedDeclaration) Util.getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
         if (d==null) {
             that.addError("could not determine target of member reference: " +
                     that.getIdentifier().getText());

@@ -43,55 +43,102 @@ public class ProducedType extends ProducedReference {
 	}
 	
 	private boolean isExactly(ProducedType type) {
-	    if (type.getDeclaration()!=getDeclaration()) { //TODO: broken for union types
-	        return false;
-	    }
-        for (TypeParameter p: getDeclaration().getTypeParameters()) {
-            ProducedType arg = getTypeArguments().get(p);
-            ProducedType otherArg = type.getTypeArguments().get(p);
-            if (arg==null || otherArg==null) {
-                throw new RuntimeException("Missing type argument for: " +
-                        p.getName() + " of " + 
-                        getDeclaration().getName());
-            }
-	        if ( !arg.isExactly(otherArg) ) {
+	    if (getDeclaration() instanceof UnionType) {
+	        if (type.getDeclaration() instanceof UnionType) {
+	            List<ProducedType> cases = getDeclaration().getCaseTypes();
+	            List<ProducedType> otherCases = type.getDeclaration().getCaseTypes();
+	            if (cases.size()!=otherCases.size()) {
+	                return false;
+	            }
+	            else {
+	                for (ProducedType c: cases) {
+	                    boolean found = false;
+	                    for (ProducedType oc: otherCases) {
+	                        if (c.isExactly(oc)) {
+	                            found = true;
+	                            break;
+	                        }
+	                    }
+	                    if (!found) return false;
+	                }
+	                return true;
+	            }
+	        }
+	        else {
 	            return false;
 	        }
 	    }
-	    return true;
+	    else {
+    	    if (type.getDeclaration()!=getDeclaration()) {
+    	        return false;
+    	    }
+    	    else {
+                for (TypeParameter p: getDeclaration().getTypeParameters()) {
+                    ProducedType arg = getTypeArguments().get(p);
+                    ProducedType otherArg = type.getTypeArguments().get(p);
+                    if (arg==null || otherArg==null) {
+                        throw new RuntimeException("Missing type argument for: " +
+                                p.getName() + " of " + 
+                                getDeclaration().getName());
+                    }
+        	        if ( !arg.isExactly(otherArg) ) {
+        	            return false;
+        	        }
+        	    }
+        	    return true;
+    	    }
+	    }
 	}
 	
 	public boolean isSubtypeOf(ProducedType type) {
-	    ProducedType st = getSupertype( type.getDeclaration() ); //TODO: broken for union types
-	    if (st==null) {
-	        return false;
-	    }
-	    else {
-	        for (TypeParameter p: type.getDeclaration().getTypeParameters()) {
-	            ProducedType arg = st.getTypeArguments().get(p);
-	            ProducedType otherArg = type.getTypeArguments().get(p);
-	            if (arg==null || otherArg==null) {
-	                throw new RuntimeException("Missing type argument for type parameter: " +
-	                        p.getName() + " of " + 
-	                        type.getDeclaration().getName());
-	            }
-	            if (p.isCovariant()) {
-	                if (!arg.isSubtypeOf(otherArg)) {
-	                    return false;
-	                }
-	            }
-	            else if (p.isContravariant()) {
-	                if (!arg.isSupertypeOf(otherArg)) {
-	                    return false;
-	                }
-	            }
-	            else {
-	                if ( !arg.isExactly(otherArg) ) {
-	                    return false;
-	                }
+	    if (getDeclaration() instanceof UnionType) {
+	        for (ProducedType ct: getDeclaration().getCaseTypes() ) {
+	            if (!ct.isSubtypeOf(type)) {
+	                return false;
 	            }
 	        }
-	        return true;
+            return true;
+	    }
+	    else if (type.getDeclaration() instanceof UnionType) {
+            for (ProducedType ct: type.getDeclaration().getCaseTypes() ) {
+                if (this.isSubtypeOf(ct)) {
+                    return true;
+                }
+            }
+            return false;	    
+	    }
+    	else {
+    	    ProducedType st = getSupertype( type.getDeclaration() );
+    	    if (st==null) {
+    	        return false;
+    	    }
+    	    else {
+    	        for (TypeParameter p: type.getDeclaration().getTypeParameters()) {
+    	            ProducedType arg = st.getTypeArguments().get(p);
+    	            ProducedType otherArg = type.getTypeArguments().get(p);
+    	            if (arg==null || otherArg==null) {
+    	                throw new RuntimeException("Missing type argument for type parameter: " +
+    	                        p.getName() + " of " + 
+    	                        type.getDeclaration().getName());
+    	            }
+    	            if (p.isCovariant()) {
+    	                if (!arg.isSubtypeOf(otherArg)) {
+    	                    return false;
+    	                }
+    	            }
+    	            else if (p.isContravariant()) {
+    	                if (!arg.isSupertypeOf(otherArg)) {
+    	                    return false;
+    	                }
+    	            }
+    	            else {
+    	                if ( !arg.isExactly(otherArg) ) {
+    	                    return false;
+    	                }
+    	            }
+    	        }
+    	        return true;
+    	    }
 	    }
 	}
 	
@@ -164,6 +211,21 @@ public class ProducedType extends ProducedReference {
         for (ProducedType dst: getDeclaration().getSatisfiedTypes()) {
             for (ProducedType st: dst.getSupertypes()) {
                 list.add( st.substitute(getTypeArguments()) );
+            }
+        }
+        if (getDeclaration().getCaseTypes()!=null && !getDeclaration().getCaseTypes().isEmpty()) {
+            List<ProducedType> candidates = getDeclaration().getCaseTypes().get(0).getSupertypes();
+            for (ProducedType st: candidates) {
+                boolean include = true;
+                for (ProducedType ct: getDeclaration().getCaseTypes()) {
+                    if (!ct.isSubtypeOf(st)) {
+                        include = false;
+                        break;
+                    }
+                }
+                if (include) {
+                    list.add(st);
+                }
             }
         }
         return list;
