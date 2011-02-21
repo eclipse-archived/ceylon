@@ -728,9 +728,9 @@ public class ExpressionVisitor extends Visitor {
                         }
                     }
                     ProducedType ot = rtd.getProducedType( Collections.singletonList(vt) );
-                    if (that instanceof SafeIndexOp) {
+                    /*if (that instanceof SafeIndexOp) {
                         ot = getOptionalDeclaration().getProducedType( Collections.singletonList(ot) );
-                    }
+                    }*/
                     that.setTypeModel(ot);
                 }
             }

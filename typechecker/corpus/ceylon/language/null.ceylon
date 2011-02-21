@@ -1,6 +1,6 @@
 doc "Represents a null reference."  
 shared object null 
-        extends Void() {
+        extends Bottom?() {
 
     shared extension object matcher 
             satisfies Matcher<Object> {
@@ -9,8 +9,8 @@ shared object null
         }
     }
     
-    shared extension Nothing<X> nothing<X>() {
-        return Nothing<X>();
+    shared actual Boolean defined { 
+        return false;
     }
-     
+         
 }

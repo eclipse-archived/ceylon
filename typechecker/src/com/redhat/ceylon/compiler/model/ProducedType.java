@@ -45,7 +45,10 @@ public class ProducedType extends ProducedReference {
 	}
 	
 	private boolean isExactly(ProducedType type) {
-	    if (getDeclaration() instanceof UnionType) {
+	    if (getDeclaration() instanceof BottomType) {
+	        return type.getDeclaration() instanceof BottomType;
+	    }
+	    else if (getDeclaration() instanceof UnionType) {
 	        if (type.getDeclaration() instanceof UnionType) {
 	            List<ProducedType> cases = getDeclaration().getCaseTypes();
 	            List<ProducedType> otherCases = type.getDeclaration().getCaseTypes();
@@ -93,7 +96,13 @@ public class ProducedType extends ProducedReference {
 	}
 	
 	public boolean isSubtypeOf(ProducedType type) {
-	    if (getDeclaration() instanceof UnionType) {
+	    if (getDeclaration() instanceof BottomType) {
+	        return true;
+	    }
+	    else if (type.getDeclaration() instanceof BottomType) {
+	        return false;
+	    }
+	    else if (getDeclaration() instanceof UnionType) {
 	        for (ProducedType ct: getDeclaration().getCaseTypes() ) {
 	            if (!ct.isSubtypeOf(type)) {
 	                return false;

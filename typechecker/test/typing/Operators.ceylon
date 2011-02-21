@@ -41,7 +41,7 @@ class Operators() {
     
     @type["String"] $12.34;
     
-    X? nothing = null.nothing<X>();
+    X? nothing = null;
     
     @type["Optional<X>"] nothing ? nothing;
     
@@ -77,12 +77,13 @@ class Operators() {
     @error 1<=>"hello";
     
     X[] sequence = {X(), X()};
+    String[]? noSequence = null;
     
     @type["Optional<X>"] sequence[0];
     @type["Sequence<X>"] sequence[0..1];
     @type["Sequence<X>"] sequence[1+1...];
     @type["Optional<Optional<X>>"]{nothing}[0];
-    @type["Optional<Optional<String>>"] null.nothing<Sequence<String>>()?[0];
+    @type["Optional<String>"] noSequence?[0];
     
     @error sequence["hello"];
     @error sequence["hello"...];
@@ -90,9 +91,12 @@ class Operators() {
     
     @type["Sequence<Sequence<Character>>"] {"hello", "world"}[].chars;
     @type["Sequence<String>"] {"hello", "world"}[].uppercase;
-    @type["Optional<Sequence<Character>>"] null.nothing<String>()?.chars;
+    @type["Optional<Sequence<Character>>"] {"hello", "world"}[0]?.chars;
+    @type["Sequence<Sequence<Character>>"] {"hello", "world"}[].chars;
     @type["Sequence<Iterable<String>>"] {"hello", "world"}[].lines();
-    @type["Optional<String>"] null.nothing<String>()?.normalize(" #");
+    @type["Optional<String>"] {"hello", "world"}[0]?.normalize(" #");
+    @type["Sequence<String>"] {"hello", "world"}[].normalize(" #");
+    @type["Optional<String>"] noSequence?[0]?.normalize(" #");
     @type["Sequence<X>"] {Operators()}[].X();
     
     variable Natural n := 0;

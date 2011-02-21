@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.context.Context;
+import com.redhat.ceylon.compiler.model.BottomType;
 import com.redhat.ceylon.compiler.model.Declaration;
 import com.redhat.ceylon.compiler.model.Import;
 import com.redhat.ceylon.compiler.model.Module;
@@ -61,6 +62,9 @@ public class Util {
         //traverse all default module packages provided they have not been traversed yet
         final Module languageModule = context.getLanguageModule();
         if (languageModule != null) {
+            if ("Bottom".equals(name)) {
+                return new BottomType();
+            }
             for (Scope languageScope : languageModule.getPackages() ) {
                 if ( !traversedScopes.contains(languageScope) ) {
                     traversedScopes.add(languageScope);
