@@ -12,6 +12,15 @@ You need also some generated classes:
  - generated in gensrc/
  - by running 'ant clean tree'
 
+Repository
+----------
+The local repository is created under ~/.ceylon/repo
+
+ant clean.repo - clean local repository
+ant publish.language.module - publish ceylon.language module as .template file in the local repo
+ant publish.typechecker - publish typechecker jar in the local repo
+ant publish - publish both ceylon.language template and type checker jar
+
 Note on the ant build system (UNSTABLE)
 ---------------------------------------
 antlr.parser: generates the parser for the language
