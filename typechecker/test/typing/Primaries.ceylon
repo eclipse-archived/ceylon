@@ -100,6 +100,7 @@ class Primaries() {
     local objects = {A(),B(),"Hello",{1,2,3}};
     Object[] things = objects;
     @type["Optional<A|B|String|Sequence<Natural>>"] objects[1];
+    @type["Optional<String>"] objects[1]?.string;
     if (exists local o = objects[1]) {
         @type["A|B|String|Sequence<Natural>"] o;
         String s = o.string;
