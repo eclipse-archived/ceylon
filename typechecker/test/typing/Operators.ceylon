@@ -80,10 +80,12 @@ class Operators() {
     
     @type["Optional<X>"] sequence[0];
     @type["Sequence<X>"] sequence[0..1];
+    @type["Sequence<X>"] sequence[1+1...];
     @type["Optional<Optional<X>>"]{nothing}[0];
     @type["Optional<Optional<String>>"] null.nothing<Sequence<String>>()?[0];
     
     @error sequence["hello"];
+    @error sequence["hello"...];
     @error sequence[1.."hello"];
     
     @type["Sequence<Sequence<Character>>"] {"hello", "world"}[].chars;

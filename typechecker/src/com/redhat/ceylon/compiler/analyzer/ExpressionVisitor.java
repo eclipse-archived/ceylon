@@ -1,6 +1,9 @@
 package com.redhat.ceylon.compiler.analyzer;
 
-import static com.redhat.ceylon.compiler.analyzer.Util.*;
+import static com.redhat.ceylon.compiler.analyzer.Util.getDeclaration;
+import static com.redhat.ceylon.compiler.analyzer.Util.getLanguageModuleDeclaration;
+import static com.redhat.ceylon.compiler.analyzer.Util.getMemberDeclaration;
+import static com.redhat.ceylon.compiler.analyzer.Util.name;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,13 +32,11 @@ import com.redhat.ceylon.compiler.model.Value;
 import com.redhat.ceylon.compiler.tree.Node;
 import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.tree.Tree.BinaryOperatorExpression;
-import com.redhat.ceylon.compiler.tree.Tree.LowerBound;
 import com.redhat.ceylon.compiler.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.tree.Tree.SafeIndexOp;
 import com.redhat.ceylon.compiler.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.tree.Tree.Term;
 import com.redhat.ceylon.compiler.tree.Tree.TypeArgumentList;
-import com.redhat.ceylon.compiler.tree.Tree.UpperBound;
 import com.redhat.ceylon.compiler.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.tree.Visitor;
 
@@ -690,39 +691,48 @@ public class ExpressionVisitor extends Visitor {
                 List<ProducedType> args = st.getTypeArgumentList();
                 ProducedType kt = args.get(0);
                 ProducedType vt = args.get(1);
-                LowerBound lb = that.getLowerBound();
-                if (lb==null) {
-                    that.addError("missing lower bound");
+                if (that.getElementOrRange()==null) {
+                    that.addError("malformed index expression");
                 }
                 else {
-                    ProducedType lbt = lb.getExpression().getTypeModel();
-                    if (lbt!=null) {
-                        if (!kt.isSupertypeOf(lbt)) {
-                            lb.addError("index must be of type: " +
-                                    kt.getProducedTypeName());
+                    ClassOrInterface rtd;
+                    if (that.getElementOrRange() instanceof Tree.Element) {
+                        rtd = getOptionalDeclaration();
+                        Tree.Element e = (Tree.Element) that.getElementOrRange();
+                        ProducedType et = e.getExpression().getTypeModel();
+                        if (et!=null) {
+                            if (!kt.isSupertypeOf(et)) {
+                                e.addError("index must be of type: " +
+                                        kt.getProducedTypeName());
+                            }
                         }
                     }
-                }
-                ClassOrInterface rtd;
-                UpperBound ub = that.getUpperBound();
-                if (ub==null) {
-                    rtd = getOptionalDeclaration();
-                }
-                else {
-                    rtd = getSequenceDeclaration();
-                    ProducedType ubt = ub.getExpression().getTypeModel();
-                    if (ubt!=null) {
-                        if (!kt.isSupertypeOf(ubt)) {
-                            ub.addError("index must be of type: " +
-                                    kt.getProducedTypeName());
+                    else {
+                        rtd = getSequenceDeclaration();
+                        Tree.ElementRange er = (Tree.ElementRange) that.getElementOrRange();
+                        ProducedType lbt = er.getLowerBound().getTypeModel();
+                        if (lbt!=null) {
+                            if (!kt.isSupertypeOf(lbt)) {
+                                er.getLowerBound().addError("lower bound must be of type: " +
+                                        kt.getProducedTypeName());
+                            }
+                        }
+                        if (er.getUpperBound()!=null) {
+                            ProducedType ubt = er.getUpperBound().getTypeModel();
+                            if (ubt!=null) {
+                                if (!kt.isSupertypeOf(ubt)) {
+                                    er.getUpperBound().addError("upper bound must be of type: " +
+                                            kt.getProducedTypeName());
+                                }
+                            }
                         }
                     }
+                    ProducedType ot = rtd.getProducedType( Collections.singletonList(vt) );
+                    if (that instanceof SafeIndexOp) {
+                        ot = getOptionalDeclaration().getProducedType( Collections.singletonList(ot) );
+                    }
+                    that.setTypeModel(ot);
                 }
-                ProducedType ot = rtd.getProducedType( Collections.singletonList(vt) );
-                if (that instanceof SafeIndexOp) {
-                    ot = getOptionalDeclaration().getProducedType( Collections.singletonList(ot) );
-                }
-                that.setTypeModel(ot);
             }
         }
     }

@@ -93,6 +93,8 @@ tokens {
     KEY_VALUE_ITERATOR;
     SATISFIED_TYPES;
     EXTENDED_TYPE;
+    ELEMENT;
+    ELEMENT_RANGE;
 }
 
 @parser::header { package com.redhat.ceylon.compiler.parser; }
@@ -817,17 +819,19 @@ elementSelectionOperator
     ;
 
 elementsSpec
-    : lowerBound ( '...'! | '..'! upperBound )?
+    : l=index
+    (
+      -> ^(ELEMENT $l)
+      | '...' 
+      -> ^(ELEMENT_RANGE $l)
+      | '..' u=index 
+      -> ^(ELEMENT_RANGE $l $u)
+    )
     ;
 
-lowerBound
+index
     : additiveExpression 
-    -> ^(LOWER_BOUND ^(EXPRESSION additiveExpression))
-    ;
-
-upperBound
-    : additiveExpression 
-    -> ^(UPPER_BOUND ^(EXPRESSION additiveExpression))
+    -> ^(EXPRESSION additiveExpression)
     ;
 
 argumentsWithFunctionalArguments
