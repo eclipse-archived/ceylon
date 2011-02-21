@@ -82,8 +82,14 @@ class Primaries() {
         @type["Primaries"] Inner3().outer;
     }
     
-    interface G {}
-    interface H {}
+    interface G {
+        String getIt() {
+            return "Hello";
+        }
+    }
+    interface H {
+        void doIt() {}
+    }
     class S() extends B() satisfies G & H {}
     class T() satisfies G & H {}
     
@@ -91,6 +97,8 @@ class Primaries() {
     @type["Sequence<B>"] {B(), S()};
     @type["Sequence<S|T>"] {S(), T()};
     @type["Sequence<T|S>"] {T(), S()};
+    {T(), S()}[].doIt();
+    @type["Sequence<String>"] {S(), T()}[].getIt();
     B[] bs1 = {S(), B()};
     B[] bs2 = {B(), S()};
     H[] hs = {S(), T()};
