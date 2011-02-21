@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -1211,10 +1212,14 @@ public class ExpressionVisitor extends Visitor {
         for (Tree.Expression e: that.getExpressionList().getExpressions()) {
             if (e.getTypeModel()!=null) {
                 Boolean included = false;
-                for (ProducedType t: list) {
+                for (Iterator<ProducedType> iter = list.iterator(); iter.hasNext();) {
+                    ProducedType t = iter.next();
                     if (e.getTypeModel().isSubtypeOf(t)) {
                         included = true;
                         break;
+                    }
+                    else if (e.getTypeModel().isSupertypeOf(t)) {
+                        iter.remove();
                     }
                 }
                 if (!included) {

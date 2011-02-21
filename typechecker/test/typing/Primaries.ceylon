@@ -82,7 +82,20 @@ class Primaries() {
         @type["Primaries"] Inner3().outer;
     }
     
-    @type["Sequence<A|B|String|Sequence<Natural>>"] {A(),B(),"Hello",{1,2,3}};
+    interface G {}
+    interface H {}
+    class S() extends B() satisfies G & H {}
+    class T() satisfies G & H {}
+    
+    @type["Sequence<B>"] {S(), B()};
+    @type["Sequence<B>"] {B(), S()};
+    @type["Sequence<S|T>"] {S(), T()};
+    @type["Sequence<T|S>"] {T(), S()};
+    B[] bs1 = {S(), B()};
+    B[] bs2 = {B(), S()};
+    H[] hs = {S(), T()};
+    G[] gs = {T(), S()};
+    @type["Sequence<A|B|String|Sequence<Natural>>"] {A(),B(),"Hello",A(),{1,2,3}, S()};
     Object[] stuff = {A(),B(),"Hello",{1,2,3}};
     local objects = {A(),B(),"Hello",{1,2,3}};
     Object[] things = objects;
@@ -90,6 +103,7 @@ class Primaries() {
     if (exists local o = objects[1]) {
         @type["A|B|String|Sequence<Natural>"] o;
         String s = o.string;
+        @type["Sequence<A|B|String|Sequence<Natural>|Float>"] {o, "foo", 3.1, A()};
     }
     
 }
