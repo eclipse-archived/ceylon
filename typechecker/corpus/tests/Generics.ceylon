@@ -35,12 +35,12 @@ class Generics() {
     }
         
     class TypeWithConstructableParameter<X>(String s, Natural n)
-            given X(String ss, Natural nn) {
+            given X(String s, Natural n) {
         X x = X(s,n);
     }
 
     class TypeWithMultipleParameterConstraints<X>(String s, Natural n)
-            given X(String ss, Natural nn) satisfies String {
+            given X(String s, Natural n) satisfies String {
         String sn = X(s,n);
     }
 
