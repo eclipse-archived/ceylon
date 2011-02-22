@@ -151,4 +151,10 @@ class Generics() {
     @error Inner<String> bb = Outer<Natural>(1).Inner<String>("hello");
     @error Outer<Natural>.Inner<String> cc = Outer<Float>(1.3).Inner<String>("hello");
     
+    class Num() satisfies Comparable<Num> {}
+    
+    abstract class SortedList<T>(T... elements) 
+        satisfies T[] 
+        given T satisfies Comparable<T> {}
+    
 }
