@@ -1,5 +1,7 @@
 class FormalParameters() {
 	
+    class Lock() {}
+    
 	class MethodParameters() {
 	
 		void noParameter() {}
@@ -12,7 +14,7 @@ class FormalParameters() {
 		
 		void defaultValueParameters(Natural param=1, 
 		                            String description="", 
-		                            Lock lock=null) {}
+		                            Lock? lock=null) {}
 		
 		void sequencedParameter(String... strings) {}
 		

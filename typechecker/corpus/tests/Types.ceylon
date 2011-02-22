@@ -1,16 +1,34 @@
 abstract class Types() {
 	
+    interface Foo {
+        interface Bar {
+            interface Baz {}
+        }
+        interface Bar1<T> {}
+    }
+    interface Foo1<T> {
+        interface Baz {}
+    }
+    interface Foo2<U,V> {}
+    interface Bar {
+        interface Baz {}
+        interface Baz1<T> {}
+    }
+    interface Bar1<T> {}
+    interface Baz {}
+    interface Qux {}
+    
 	formal Foo simpleType;
-	formal Foo<Bar> typeWithParameter;
-	formal Foo<Bar,Baz> typeWithMultipleParameters;
-	formal Foo<Bar<Baz>> typeWithNestedParameter;
+	formal Foo1<Bar> typeWithParameter;
+	formal Foo2<Bar,Baz> typeWithMultipleParameters;
+	formal Foo1<Bar1<Baz>> typeWithNestedParameter;
 	formal Foo.Bar nestedType;
 	formal Foo.Bar.Baz multiplyNestedType;
-	formal Foo.Bar<Baz> nestedTypeWithTypeParameter;
-	formal Foo<Bar.Baz> typeWithNestedTypeParameter;
-	formal Foo<Bar.Baz<Qux>> anythingGoes;
-	formal Foo<Bar>.Baz evenThis;
-	formal Foo<Bar>.Baz<Qux> orThis;
+	formal Foo.Bar1<Baz> nestedTypeWithTypeParameter;
+	formal Foo1<Bar.Baz> typeWithNestedTypeParameter;
+	formal Foo2<Bar.Baz1<Qux>> anythingGoes;
+	formal Foo1<Bar>.Baz evenThis;
+	formal Foo1<Bar>.Baz<Qux> orThis;
 	formal subtype theSubtype;
 	formal Foo[] sequenceType;
 	formal Foo? optionalType;

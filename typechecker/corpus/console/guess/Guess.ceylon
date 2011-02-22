@@ -15,16 +15,16 @@ void guess() {
 			String input = process.readLine();
 			Natural guess = input.parseNatural();
 			Comparison comparison = number <=> guess;
-			if (comparison.equal) {
+			if (comparison==equal) {
 				process.writeLine("You guessed right!");
 				break;
 			}
 			else {
 				process.writeLine("The number is " comparison ".");
-				if (comparison.smaller && guess<max) {
+				if (comparison==smaller && guess<max) {
 					max := guess;
 				}
-				else if (comparison.larger && guess>min) {
+				else if (comparison==larger && guess>min) {
 					min := guess;
 				}
 			}

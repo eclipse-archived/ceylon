@@ -11,7 +11,7 @@ class MoreDeclarations() {
 	
 	Character[] alphanum = (`A`..`Z`) + (`0`..`9`);
 	
-	Comparison order(X x, Y y) = reverse;
+	Comparison order<X>(X x, X y) = reverse;
 	void display(String message) = log.info;
 	String newString(Character... chars) = String;
 	void print<T>(T val) given T of String | Integer | Float = printer.print;

@@ -19,12 +19,12 @@ class Statements() {
 	y/=2; //divide
 	y%=7; //remainder
 	
-	variable Boolean b := true;
+	variable Bit b := Bit(true);
 	b||=b; //or
 	b&&=b; //and
 	b|=b; //bitwise or
 	b&=b; //bitwise and
-	b^=false; //exclusive or
+	b^=Bit(false); //exclusive or
 	
 	variable String? qux := null;
 	qux ?= "Hello";

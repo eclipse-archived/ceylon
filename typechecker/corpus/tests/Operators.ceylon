@@ -1,7 +1,7 @@
 class Operators() {
 
 	Natural sum = 1+2;
-	Integer difference = 1-2;
+	Integer difference = 1.integer-2.integer;
 	Natural product = 2*2;
 	Natural power = 2**2;
 	Natural quotient = 2/2;
@@ -30,10 +30,13 @@ class Operators() {
 	Boolean largeAs = 1>=2;
 	Comparison compare = 1<=>2;
 	
-	Boolean complement = ~true;
-	Boolean bitwiseOr = true|false;
-	Boolean bitwiseAnd = true&true;
-	Boolean exclusiveOr = true^false;
+	Bit t = Bit(true);
+	Bit f = Bit(false);
+	
+	Bit complement = ~t;
+	Bit bitwiseOr = t|f;
+	Bit bitwiseAnd = t&t;
+	Bit exclusiveOr = t^f;
 	
 	Boolean instanceOf = 1 is Natural;
 	Boolean containedIn = 3 in range;
@@ -43,14 +46,14 @@ class Operators() {
 	
 	String join = "Gavin" + " " + "King";
 	
-	List<String> list = {"Gavin", "Andrew", "Emmanuel"};
-	List<String>? nullList = null;
+	String[] list = {"Gavin", "Andrew", "Emmanuel"};
+	String[]? nullList = null;
 
-	String element = list[1];
-	String? element = nullList?[666];
-	List<String> elements = list[{3,2,1}];
-	List<String> subrange = list[0..1];
-	List<String> upperRange = list[1...];
+	String? element1 = list[1];
+	String? element2 = nullList?[666];
+	String[] elements = list[{3,2,1}];
+	String[] subrange = list[0..1];
+	String[] upperRange = list[1...];
 	
 	String? input = null;
 	Iterable<String>? tokens = input?.tokens();
