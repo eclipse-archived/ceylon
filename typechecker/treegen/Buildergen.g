@@ -1,7 +1,7 @@
 grammar Buildergen;
 
-@parser::header { package com.redhat.ceylon.compiler.treegen; }
-@lexer::header { package com.redhat.ceylon.compiler.treegen; }
+@parser::header { package com.redhat.ceylon.compiler.typechecker.treegen; }
+@lexer::header { package com.redhat.ceylon.compiler.typechecker.treegen; }
 
 @members {
 
@@ -48,9 +48,9 @@ grammar Buildergen;
 
 nodeList : 
     {
-    println("package com.redhat.ceylon.compiler.tree;\n");
-    println("import static com.redhat.ceylon.compiler.tree.Tree.*;\n");
-    println("import static com.redhat.ceylon.compiler.parser.CeylonParser.*;\n");
+    println("package com.redhat.ceylon.compiler.typechecker.tree;\n");
+    println("import static com.redhat.ceylon.compiler.typechecker.tree.Tree.*;\n");
+    println("import static com.redhat.ceylon.compiler.typechecker.parser.CeylonParser.*;\n");
     println("import org.antlr.runtime.tree.CommonTree;\n");
     println("import java.util.*;\n");
     println("public class Builder {\n");

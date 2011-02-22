@@ -3,21 +3,21 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.TypeChecker;
-import com.redhat.ceylon.compiler.TypeCheckerBuilder;
+import com.redhat.ceylon.compiler.typechecker.TypeChecker;
+import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
 
-import com.redhat.ceylon.compiler.context.Context;
-import com.redhat.ceylon.compiler.context.PhasedUnit;
-import com.redhat.ceylon.compiler.model.Package;
-import com.redhat.ceylon.compiler.parser.CeylonLexer;
-import com.redhat.ceylon.compiler.parser.CeylonParser;
-import com.redhat.ceylon.compiler.parser.LexError;
-import com.redhat.ceylon.compiler.parser.ParseError;
-import com.redhat.ceylon.compiler.tree.Builder;
-import com.redhat.ceylon.compiler.tree.Tree.CompilationUnit;
+import com.redhat.ceylon.compiler.typechecker.context.Context;
+import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
+import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
+import com.redhat.ceylon.compiler.typechecker.parser.LexError;
+import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
+import com.redhat.ceylon.compiler.typechecker.tree.Builder;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 
 /**
  * @author Gavin King <gavin@hibernate.org>

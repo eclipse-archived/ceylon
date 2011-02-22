@@ -97,8 +97,8 @@ tokens {
     ELEMENT_RANGE;
 }
 
-@parser::header { package com.redhat.ceylon.compiler.parser; }
-@lexer::header { package com.redhat.ceylon.compiler.parser; }
+@parser::header { package com.redhat.ceylon.compiler.typechecker.parser; }
+@lexer::header { package com.redhat.ceylon.compiler.typechecker.parser; }
 
 @members {
     private java.util.List<ParseError> errors 

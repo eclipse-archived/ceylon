@@ -1,7 +1,7 @@
 grammar Treegen;
 
-@parser::header { package com.redhat.ceylon.compiler.treegen; }
-@lexer::header { package com.redhat.ceylon.compiler.treegen; }
+@parser::header { package com.redhat.ceylon.compiler.typechecker.treegen; }
+@lexer::header { package com.redhat.ceylon.compiler.typechecker.treegen; }
 
 @members {
 
@@ -47,8 +47,8 @@ grammar Treegen;
 }
 
 nodeList : { 
-           println("package com.redhat.ceylon.compiler.tree;\n");
-           println("import static com.redhat.ceylon.compiler.tree.Walker.*;\n");
+           println("package com.redhat.ceylon.compiler.typechecker.tree;\n");
+           println("import static com.redhat.ceylon.compiler.typechecker.tree.Walker.*;\n");
            println("import org.antlr.runtime.tree.CommonTree;\n");
            println("import java.util.*;\n");
            println("public class Tree {\n");

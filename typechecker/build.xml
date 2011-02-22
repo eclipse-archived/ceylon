@@ -238,10 +238,10 @@
 	
 	<target name="antlr.parser"
 	        description="Generate code from ANTLR grammar">
-	    <mkdir dir="${antlr.dst}/com/redhat/ceylon/compiler/parser"/>
+	    <mkdir dir="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/parser"/>
 	    <java classname="org.antlr.Tool">
 	      <arg value="-o"/>
-	      <arg value="${antlr.dst}/com/redhat/ceylon/compiler/parser"/>
+	      <arg value="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/parser"/>
 	      <arg value="${antlr.src}"/>
 	      <classpath>
 	        <pathelement location="${antlr.lib}"/>
@@ -251,10 +251,10 @@
 	
     <target name="antlr.tree"
             description="Generate code from ANTLR grammar">
-        <mkdir dir="${antlr.dst}/com/redhat/ceylon/compiler/treegen"/>
+        <mkdir dir="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/treegen"/>
         <java classname="org.antlr.Tool">
           <arg value="-fo"/>
-          <arg value="${antlr.dst}/com/redhat/ceylon/compiler/treegen"/>
+          <arg value="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/treegen"/>
           <arg value="treegen/Treegen.g"/>
           <arg value="treegen/Buildergen.g"/>
           <arg value="treegen/Walkergen.g"/>
@@ -264,7 +264,7 @@
           </classpath>
         </java>
     	<delete>
-    		<fileset dir="${antlr.dst}/com/redhat/ceylon/compiler/treegen" 
+    		<fileset dir="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/treegen"
     			     includes="*.tokens"/>
     	</delete>
     </target>
@@ -276,14 +276,14 @@
 	       destdir="${build.classes}"
 	       debug="true"
 	       classpath="${antlr.lib}">
-	       <include name="com/redhat/ceylon/compiler/treegen/*.java"/>
+	       <include name="com/redhat/ceylon/compiler/typechecker/treegen/*.java"/>
 	    </javac>
 	  </target>
 	
 	<target name="tree" depends="treegen"
             description="Generate the tree builder code">
-		<mkdir dir="${gensrc}/com/redhat/ceylon/compiler/tree"/>
-		<java classname="com.redhat.ceylon.compiler.treegen.Generate">
+		<mkdir dir="${gensrc}/com/redhat/ceylon/compiler/typechecker/tree"/>
+		<java classname="com.redhat.ceylon.compiler.typechecker.treegen.Generate">
         <arg value="Ceylon.nodes"/>
         <classpath>
           <pathelement location="${antlr.lib}"/>

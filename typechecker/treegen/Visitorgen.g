@@ -1,7 +1,7 @@
 grammar Visitorgen;
 
-@parser::header { package com.redhat.ceylon.compiler.treegen; }
-@lexer::header { package com.redhat.ceylon.compiler.treegen; }
+@parser::header { package com.redhat.ceylon.compiler.typechecker.treegen; }
+@lexer::header { package com.redhat.ceylon.compiler.typechecker.treegen; }
 
 @members {
 
@@ -43,8 +43,8 @@ grammar Visitorgen;
 }
 
 nodeList : { 
-           println("package com.redhat.ceylon.compiler.tree;\n");
-           println("import static com.redhat.ceylon.compiler.tree.Tree.*;\n");
+           println("package com.redhat.ceylon.compiler.typechecker.tree;\n");
+           println("import static com.redhat.ceylon.compiler.typechecker.tree.Tree.*;\n");
            println("public abstract class Visitor {\n");
            println("    public void visitAny(Node that) { that.visitChildren(this); }\n");
            }
