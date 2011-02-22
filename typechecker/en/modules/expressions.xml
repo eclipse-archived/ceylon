@@ -813,7 +813,7 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         method using <literal>=</literal>. The expression type must be assignable to the 
         callable type of the method being defined.</para>
         
-        <programlisting>Comparison order(X x, Y y) = reverse;</programlisting>
+        <programlisting>Comparison order&lt;X&gt;(X x, X y) = reverse;</programlisting>
         
         <programlisting>void display(String message) = log.info;</programlisting>
         
