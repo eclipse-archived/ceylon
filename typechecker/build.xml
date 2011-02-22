@@ -8,6 +8,7 @@
    language, compared with the English reference.
 -->
 <project name="Project Ceylon" default="all.doc" basedir=".">
+    <property file="build.properties"/>
     <!-- Allow this to be overriden by others importing this project. -->
     <dirname property="imported.basedir" file="${ant.file.ReferenceDocumentation}"/>
 
@@ -29,6 +30,13 @@
     <property name="db.style.fopdf"        value="fopdf.xsl"/>
     <property name="db.style.html"         value="html_chunk.xsl"/>
     <property name="db.style.htmlsingle"   value="html.xsl"/>
+
+    <!-- Local repository -->
+    <property name="repo.local.dir" value="${user.home}/.ceylon/repo"/>
+
+    <!-- ceylon.language -->
+    <property name="module.language.dir" value="ceylon/language"/>
+    <property name="module.language.name" value="ceylon.language"/>
 
     <!-- Classpath for the build tools. -->
     <path id="lib.classpath">
@@ -223,6 +231,8 @@
             <arg value="${support.dir}/section-check.xsl"/>
         </java>
     </target>
+
+    <!-- Antlr and code generation -->
 	
 	<target name="antlr" depends="antlr.parser,antlr.tree"/>
 	
@@ -282,4 +292,58 @@
         </java>
 	</target>
 
+    <!-- project compilation -->
+    <target name="compile" depends="tree" description="compile the type checker">
+        <javac
+	       srcdir="${src}:${gensrc}"
+	       destdir="${build.classes}"
+	       debug="true"
+	       classpath="${antlr.lib}">
+	       <include name="**/*.java"/>
+	    </javac>
+    </target>
+
+    <target name="publish.typechecker" depends="compile,init.repo">
+        <property name="typechecker.dir" value="${repo.local.dir}/com/redhat/ceylon/typechecker/${module.com.redhat.typechecker.version}"/>
+        <property name="typechecker.jar" value="${typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.typechecker.version}.jar"/>
+        <echo>dir ${typechecker.dir}</echo>
+        <echo>jar ${typechecker.jar}</echo>
+        <delete dir="${typechecker.dir}"/>
+        <zip destfile="${typechecker.jar}">
+            <fileset dir="${build.classes}">
+                <include name="**/*.class"/>
+            </fileset>
+        </zip>
+        <checksum file="${typechecker.jar}" algorithm="sha1"/>
+    </target>
+
+    <!-- Repository targets -->
+    <target name="init.repo"
+            description="Init local ceylon repository and add ceylon.language">
+        <mkdir dir="${repo.local.dir}"/>
+    </target>
+
+    <target name="publish.language.module"
+            depends="init.repo"
+            description="Publish ceylon language template">
+        <property name="template.file" value="${repo.local.dir}/${module.language.dir}/${module.ceylon.language.version}/${module.language.name}-${module.ceylon.language.version}.template"/>
+        <delete dir="${repo.local.dir}/${module.language.dir}/${module.ceylon.language.version}"/>
+        <zip destfile="${template.file}">
+            <fileset dir="${basedir}/corpus">
+                <include name="ceylon/language/**/*.ceylon"/>
+            </fileset>
+        </zip>
+        <checksum file="${template.file}" algorithm="sha1"/>
+    </target>
+
+    <target name="clean.repo"
+            description="Clean local ceylon repository">
+        <delete dir="${repo.local.dir}"/>
+    </target>
+
+    <target name="publish"
+            depends="publish.language.module,publish.typechecker"
+            description="Publish both type checker and ceylon.language template module">
+
+    </target>
 </project>
