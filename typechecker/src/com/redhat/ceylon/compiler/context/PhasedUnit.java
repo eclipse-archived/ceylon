@@ -14,6 +14,8 @@ import com.redhat.ceylon.compiler.tree.Tree;
 import com.redhat.ceylon.compiler.util.AssertionVisitor;
 import com.redhat.ceylon.compiler.util.PrintVisitor;
 
+import java.io.File;
+
 /**
  * Represent a unit and each of the type checking phases
  *
@@ -28,11 +30,11 @@ public class PhasedUnit {
     private String path;
     private Context context;
 
-    public PhasedUnit(String fileName, String path, Tree.CompilationUnit cu, Package p, Context context) {
+    public PhasedUnit(File unitFile, Tree.CompilationUnit cu, Package p, Context context) {
         this.compilationUnit = cu;
         this.pkg = p;
-        this.fileName = fileName;
-        this.path = path;
+        this.fileName = unitFile.getName();
+        this.path = unitFile.getPath();
         this.context = context;
     }
     
@@ -105,5 +107,9 @@ public class PhasedUnit {
         sb.append(", pkg=").append(pkg);
         sb.append('}');
         return sb.toString();
+    }
+
+    public Tree.CompilationUnit getCompilationUnit() {
+        return compilationUnit;
     }
 }

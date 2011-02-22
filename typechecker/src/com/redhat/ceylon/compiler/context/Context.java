@@ -2,11 +2,14 @@ package com.redhat.ceylon.compiler.context;
 
 import static com.redhat.ceylon.compiler.util.PrintUtil.importPathToString;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.model.Module;
@@ -25,6 +28,7 @@ public class Context {
     private Module nomodule;
     private Module languageModule;
     private List<PhasedUnit> phasedUnits = new ArrayList<PhasedUnit>();
+    private Map<File,PhasedUnit> phasedUnitPerFile = new HashMap<File,PhasedUnit>();
     private Set<Module> modules = new HashSet<Module>();
 
     public Context() {
@@ -133,12 +137,18 @@ public class Context {
         return packageStack.peekLast();
     }
 
-    public void addStagedUnit(PhasedUnit phasedUnit) {
+    public void addStagedUnit(File unitFile, PhasedUnit phasedUnit) {
+        //TODO do we need the ordering??, we could get rid of the List and use map.valueSet()
         this.phasedUnits.add(phasedUnit);
+        this.phasedUnitPerFile.put(unitFile, phasedUnit);
     }
 
     public List<PhasedUnit> getPhasedUnits() {
         return phasedUnits;
+    }
+
+    public PhasedUnit getPhasedUnit(File file) {
+        return phasedUnitPerFile.get(file);
     }
 
     public void verifyModuleDependencyTree() {
