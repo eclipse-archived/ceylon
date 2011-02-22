@@ -114,5 +114,6 @@ class Primaries() {
         String s = o.string;
         @type["Sequence<A|B|String|Sequence<Natural>|Float>"] {o, "foo", 3.1, A()};
     }
+    String[] noStrings = none;
     
 }

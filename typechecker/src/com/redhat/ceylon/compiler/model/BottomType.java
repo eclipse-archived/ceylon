@@ -9,5 +9,10 @@ public class BottomType extends TypeDeclaration {
     public List<Declaration> getMembers() {
         return Collections.emptyList();
     }
+    
+    @Override
+    public String getName() {
+        return "Bottom";
+    }
 
 }
