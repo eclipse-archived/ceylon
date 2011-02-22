@@ -939,6 +939,23 @@ public class ExpressionVisitor extends Visitor {
         that.setTypeModel(getBooleanDeclaration().getType());
     }
     
+    private void visitNonemptyOperator(Tree.Nonempty that) {
+        ProducedType t = type(that);
+        if (t!=null) {
+            ProducedType ot = t.getSupertype(getOptionalDeclaration());
+            if (ot==null) {
+                that.getTerm().addError("must be of type: Optional<Container>");
+            }
+            else {
+                ProducedType ct = ot.getTypeArguments().values().iterator().next();
+                if (!ct.isSubtypeOf( getContainerDeclaration().getType())) {
+                    that.getTerm().addError("must be of type: Optional<Container>");
+                }
+            }
+        }
+        that.setTypeModel(getBooleanDeclaration().getType());
+    }
+    
     private void visitIsOperator(Tree.IsOp that) {
         ProducedType t = leftType(that);
         if (t!=null) {
@@ -1076,6 +1093,11 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.Exists that) {
         super.visit(that);
         visitExistsOperator(that);
+    }
+        
+    @Override public void visit(Tree.Nonempty that) {
+        super.visit(that);
+        visitNonemptyOperator(that);
     }
         
     @Override public void visit(Tree.IsOp that) {
@@ -1318,6 +1340,10 @@ public class ExpressionVisitor extends Visitor {
 
     private Class getOptionalDeclaration() {
         return (Class) getLanguageDeclaration("Optional");
+    }
+    
+    private Interface getContainerDeclaration() {
+        return (Interface) getLanguageDeclaration("Container");
     }
     
     private Class getObjectDeclaration() {
