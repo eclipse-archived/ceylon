@@ -1,9 +1,9 @@
-shared extension class BooleanBit(Boolean this)
-        satisfies Bits<1> {
+shared extension class BooleanSlot(Boolean this)
+        satisfies FixedSlots<BooleanSlot> {
 
     shared extension Boolean boolean { return this; }
 
-    shared actual Bits<1> or(Bits<1> bit) {
+    shared actual BooleanSlot or(BooleanSlot bit) {
         if (this) {
             return this;
         }
@@ -12,7 +12,7 @@ shared extension class BooleanBit(Boolean this)
         }
     }
 
-    shared actual Bits<1> and(Bits<1> bit) {
+    shared actual BooleanSlot and(BooleanSlot bit) {
         if (this) {
             return bit;
         }
@@ -21,7 +21,7 @@ shared extension class BooleanBit(Boolean this)
         }
     }
 
-    shared actual Bits<1> xor(Bits<1> bit) {
+    shared actual BooleanSlot xor(BooleanSlot bit) {
         if (this) {
             return bit.complement;
         }
@@ -30,7 +30,7 @@ shared extension class BooleanBit(Boolean this)
         }
     }
 
-    shared actual Bits<1> complement(Bits<1> bit) {
+    shared actual BooleanSlot complement(BooleanSlot bit) {
         if (this) {
             return bit.complement;
         }
@@ -39,11 +39,11 @@ shared extension class BooleanBit(Boolean this)
         }
     }
 
-    shared actual Bits<1> complement {
+    shared actual BooleanSlot complement {
         return BooleanBit(!this);
     }
 
-    shared actual Gettable<Boolean> value(Bounded<1> index) {
+    shared actual Gettable<Boolean> value(BooleanSlot index) {
         return this;
     }
 
@@ -58,7 +58,7 @@ shared extension class BooleanBit(Boolean this)
         return result;
     }
 
-    shared actual Bounded<1> lastIndex {
+    shared actual BooleanSlot lastIndex {
         return 0;
     }
 
