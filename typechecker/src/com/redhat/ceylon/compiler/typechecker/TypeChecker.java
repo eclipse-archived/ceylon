@@ -1,21 +1,22 @@
 package com.redhat.ceylon.compiler.typechecker;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.List;
+
+import org.antlr.runtime.ANTLRInputStream;
+import org.antlr.runtime.CommonTokenStream;
+import org.antlr.runtime.tree.CommonTree;
+
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
 import com.redhat.ceylon.compiler.typechecker.parser.LexError;
 import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
-import com.redhat.ceylon.compiler.typechecker.tree.Builder;
+import com.redhat.ceylon.compiler.typechecker.tree.CustomBuilder;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import org.antlr.runtime.ANTLRInputStream;
-import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.tree.CommonTree;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.List;
 
 /**
  * Executes type checking upon construction and retrieve a CompilationUnit object for a given File.
@@ -159,7 +160,7 @@ public class TypeChecker {
 
         	com.redhat.ceylon.compiler.typechecker.model.Package p = context.getPackage();
             CommonTree t = (CommonTree) r.getTree();
-            Tree.CompilationUnit cu = new Builder().buildCompilationUnit(t);
+            Tree.CompilationUnit cu = new CustomBuilder().buildCompilationUnit(t);
             PhasedUnit phasedUnit = new PhasedUnit(file, cu, p, context);
             context.addStagedUnit(file, phasedUnit);
 

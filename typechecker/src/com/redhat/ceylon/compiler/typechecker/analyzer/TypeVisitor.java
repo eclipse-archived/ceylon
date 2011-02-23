@@ -255,7 +255,6 @@ public class TypeVisitor extends Visitor {
                 ((Interface) ci).setExtendedType(getObjectDeclaration().getType());
             }
         }
-        //TODO: interfaces should have Object as a supertype!!
     }
 
     @Override 

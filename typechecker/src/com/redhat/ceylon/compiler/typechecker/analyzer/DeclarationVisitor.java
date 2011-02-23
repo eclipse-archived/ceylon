@@ -120,6 +120,7 @@ public class DeclarationVisitor extends Visitor {
             if (dname!=null && dname.equals(name)) {
                 if (model instanceof Setter && m instanceof Getter) {
                     found = true;
+                    ((Getter) m).setVariable(true);
                     continue;
                 }
                 /*else if (model instanceof Parameter && ((Parameter) model).getDeclaration()!=scope) {
@@ -173,12 +174,6 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.Method that) {
-        super.visit(that);
-        ( (Method) that.getDeclarationModel() ).setTypeParameters(getTypeParameters(that.getTypeParameterList()));
-    }
-    
-    @Override
     public void visit(Tree.ClassDefinition that) {
         Class c = new Class();
         visitDeclaration(that, c);
@@ -216,20 +211,7 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.MethodDeclaration that) {
-        Method m = new Method();
-        visitDeclaration(that, m);
-        //TODO: we should visit its parameters within
-        //      the scope of the Method, to avoid
-        //      duplicate declaration errors!
-        functional = m;
-        super.visit(that);
-        functional = null;
-        checkMethodParameters(that);
-    }
-
-    @Override
-    public void visit(Tree.MethodDefinition that) {
+    public void visit(Tree.Method that) {
         Method m = new Method();
         visitDeclaration(that, m);
         functional = m;
@@ -238,6 +220,7 @@ public class DeclarationVisitor extends Visitor {
         exitScope(o);
         functional = null;
         checkMethodParameters(that);
+        ( (Method) that.getDeclarationModel() ).setTypeParameters(getTypeParameters(that.getTypeParameterList()));
     }
 
     @Override
@@ -350,15 +333,12 @@ public class DeclarationVisitor extends Visitor {
         p.setDeclaration(declaration);
         p.setDefaulted(that.getSpecifierExpression()!=null);
         visitDeclaration(that, p);
-        //TODO: we should visit its parameters within
-        //      the scope of the FunctionalParameter, 
-        //      to avoid duplicate declaration errors!
-        //Scope o = enterScope(p);
+        Scope o = enterScope(p);
         Functional of = functional;
         functional = p;
         super.visit(that);
         functional = of;
-        //exitScope(o);
+        exitScope(o);
         parameterList.getParameters().add(p);
     }
 

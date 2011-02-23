@@ -12,10 +12,20 @@ import java.util.List;
 public class Getter extends MethodOrValue implements Scope {
 	
 	List<Declaration> members = new ArrayList<Declaration>();
+	boolean variable;
 
 	@Override
 	public List<Declaration> getMembers() {
 		return members;
 	}
+	
+	@Override
+	public boolean isVariable() {
+        return variable;
+    }
+	
+	public void setVariable(boolean variable) {
+        this.variable = variable;
+    }
 
 }

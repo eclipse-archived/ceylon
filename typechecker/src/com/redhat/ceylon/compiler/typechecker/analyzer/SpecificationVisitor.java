@@ -1,14 +1,14 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.*;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getDeclaration;
 
 import com.redhat.ceylon.compiler.typechecker.context.Context;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Member;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.redhat.ceylon.compiler.typechecker.model.Class;
 
 /**
  * Validates that non-variable values are well-defined
@@ -95,7 +95,8 @@ public class SpecificationVisitor extends Visitor {
     }
     
     private boolean isVariable() {
-        return declaration instanceof Value && ((Value) declaration).isVariable();
+        return (declaration instanceof TypedDeclaration)
+            && ((TypedDeclaration) declaration).isVariable();
     }
     
     @Override
@@ -138,7 +139,7 @@ public class SpecificationVisitor extends Visitor {
                 else {
                     that.getRightTerm().visit(this);
                     specify();
-                    super.visit(lt);
+                    lt.visit(this);
                 }
             }
             else {
@@ -175,12 +176,10 @@ public class SpecificationVisitor extends Visitor {
             else {
                 that.getSpecifierExpression().visit(this);
                 specify();
-                super.visit(m);
+                m.visit(this);
             }
         }
-        else {
-            super.visit(that);
-        }
+        super.visit(that);
     }
     
     @Override

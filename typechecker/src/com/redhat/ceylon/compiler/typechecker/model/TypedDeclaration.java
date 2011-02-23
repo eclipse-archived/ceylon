@@ -54,4 +54,8 @@ public abstract class TypedDeclaration extends Declaration {
         return getContainer() instanceof ClassOrInterface; 
     }
     
+    public boolean isVariable() {
+        return false;
+    }
+    
 }

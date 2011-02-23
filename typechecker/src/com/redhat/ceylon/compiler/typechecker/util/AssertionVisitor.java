@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
+import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
-public class AssertionVisitor extends Visitor {
+public class AssertionVisitor extends Visitor implements NaturalVisitor {
     
     boolean expectingError = false;
     List<AnalysisError> foundErrors = new ArrayList<AnalysisError>();

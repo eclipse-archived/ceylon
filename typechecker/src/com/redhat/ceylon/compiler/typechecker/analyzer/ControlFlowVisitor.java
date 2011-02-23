@@ -108,7 +108,7 @@ public class ControlFlowVisitor extends Visitor {
     @Override
     public void visit(Tree.MethodDeclaration that) {
         if (that.getSpecifierExpression()!=null) {
-            checkExecutableStatementAllowed(that);
+            checkExecutableStatementAllowed(that.getSpecifierExpression());
             super.visit(that);
         }
     }
@@ -140,7 +140,7 @@ public class ControlFlowVisitor extends Visitor {
     @Override
     public void visit(Tree.AttributeDeclaration that) {
         if (that.getSpecifierOrInitializerExpression()!=null) {
-            checkExecutableStatementAllowed(that);
+            checkExecutableStatementAllowed(that.getSpecifierOrInitializerExpression());
             super.visit(that);
         }
     }
@@ -203,7 +203,7 @@ public class ControlFlowVisitor extends Visitor {
         super.visit(that);
     }
 
-    private void checkExecutableStatementAllowed(Tree.Statement that) {
+    private void checkExecutableStatementAllowed(Node that) {
         if (!canExecute) {
             that.addError("misplaced statement");
         }

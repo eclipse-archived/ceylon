@@ -20,9 +20,11 @@ public class Value extends MethodOrValue {
 		this.formal = formal;
 	}
 	
+	@Override
 	public boolean isVariable() {
 		return variable;
 	}
+	
 	public void setVariable(boolean variable) {
 		this.variable = variable;
 	}

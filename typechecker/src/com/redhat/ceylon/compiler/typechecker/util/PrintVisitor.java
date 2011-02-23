@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
+import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 
-public class PrintVisitor extends Visitor {
+public class PrintVisitor extends Visitor implements NaturalVisitor {
     
     int depth=0;
     Writer stream;
