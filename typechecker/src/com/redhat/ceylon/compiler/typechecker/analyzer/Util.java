@@ -1,8 +1,5 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -24,21 +21,20 @@ public class Util {
     }
 
     public static Declaration getMemberDeclaration(TypeDeclaration scope, Tree.Identifier id, Context context) {
-        return getDeclaration(scope, null, false, id.getText(), context);
+        return getDeclaration(scope, null, false, id.getText());
     }
 
     public static Declaration getExternalDeclaration(Package pkg, Tree.Identifier id, Context context) {
         return getDeclaration(pkg, null, false, id.getText(), context);
     }
 
-    public static Declaration getLanguageModuleDeclaration(String name, Context context) {
-        return getLanguageModuleDeclaration(name, context, new HashSet<Scope>());
-    }
-    
     private static Declaration getDeclaration(Scope scope, Unit unit, boolean includeParameters, String name, Context context) {
-        Set<Scope> traversedScopes = new HashSet<Scope>();
+        Declaration d  = getDeclaration(scope, unit, includeParameters, name);
+        return d==null ? getLanguageModuleDeclaration(name, context) : d;
+    }
+
+    private static Declaration getDeclaration(Scope scope, Unit unit, boolean includeParameters, String name) {
         while (scope!=null) {
-            traversedScopes.add(scope);
             //imports hide declarations in same package
             //but not declarations in local scopes
             if (scope instanceof Package && unit!=null) {
@@ -53,11 +49,10 @@ public class Util {
             }
             scope = scope.getContainer();
         }
-        return context==null ? null : getLanguageModuleDeclaration(name, context, traversedScopes);
+        return null;
     }
 
-    private static Declaration getLanguageModuleDeclaration(String name,
-            Context context, Set<Scope> traversedScopes) {
+    public static Declaration getLanguageModuleDeclaration(String name, Context context) {
         //all elements in ceylon.language are auto-imported
         //traverse all default module packages provided they have not been traversed yet
         final Module languageModule = context.getLanguageModule();
@@ -66,12 +61,9 @@ public class Util {
                 return new BottomType();
             }
             for (Scope languageScope : languageModule.getPackages() ) {
-                if ( !traversedScopes.contains(languageScope) ) {
-                    traversedScopes.add(languageScope);
-                    final Declaration d = getLocalDeclarationIgnoringSupertypes(languageScope, false, name);
-                    if (d != null) {
-                        return d;
-                    }
+                final Declaration d = getLocalDeclarationIgnoringSupertypes(languageScope, false, name);
+                if (d != null) {
+                    return d;
                 }
             }
         }

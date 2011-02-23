@@ -31,13 +31,6 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BinaryOperatorExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SafeIndexOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArgumentList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -119,10 +112,10 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.ExistsCondition that) {
         ProducedType t = null;
         Node n = that;
-        Variable v = that.getVariable();
+        Tree.Variable v = that.getVariable();
         Class ot = getOptionalDeclaration();
         if (v!=null) {
-            SpecifierExpression se = v.getSpecifierExpression();
+            Tree.SpecifierExpression se = v.getSpecifierExpression();
             visit(se);
             inferType(v, se, ot);
             checkType(v, se, ot);
@@ -387,6 +380,9 @@ public class ExpressionVisitor extends Visitor {
                     that.addError("member does not accept the given type arguments");
                 }
                 else {
+                    if (member.getContainer() instanceof Package) {
+                        member.getName();
+                    }
                     ProducedTypedReference ptr = pt.getTypedMember(member, typeArgs);
                     if (ptr==null) {
                         that.addError("member not found: " + 
@@ -651,7 +647,7 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             Interface s = getCorrespondenceDeclaration();
-            if (that instanceof SafeIndexOp) {
+            if (that instanceof Tree.SafeIndexOp) {
                 ProducedType ot = pt.getSupertype( getOptionalDeclaration() );
                 if (ot!=null) {
                     //TODO: add a proper error
@@ -719,7 +715,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private ProducedType type(Tree.PostfixExpression that) {
-        Primary p = that.getPrimary();
+        Tree.Primary p = that.getPrimary();
         return p==null ? null : p.getTypeModel();
     }
     
@@ -730,7 +726,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.SumOp that) {
-        super.visit( (BinaryOperatorExpression) that );
+        super.visit( (Tree.BinaryOperatorExpression) that );
         ProducedType lhst = leftType(that);
         if (lhst!=null) {
             //take into account overloading of + operator
@@ -940,7 +936,7 @@ public class ExpressionVisitor extends Visitor {
                 that.getLeftTerm().addError("must be of type: Object");
             }
         }
-        Term rt = that.getRightTerm();
+        Tree.Term rt = that.getRightTerm();
         if (rt!=null) {
             if (!(rt instanceof Tree.StaticType)) {
                 rt.addError("must be a literal type");
@@ -963,17 +959,17 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private ProducedType rightType(Tree.BinaryOperatorExpression that) {
-        Term rt = that.getRightTerm();
+        Tree.Term rt = that.getRightTerm();
         return rt==null? null : rt.getTypeModel();
     }
 
     private ProducedType leftType(Tree.BinaryOperatorExpression that) {
-        Term lt = that.getLeftTerm();
+        Tree.Term lt = that.getLeftTerm();
         return lt==null ? null : lt.getTypeModel();
     }
     
     private ProducedType type(Tree.UnaryOperatorExpression that) {
-        Term t = that.getTerm();
+        Tree.Term t = that.getTerm();
         return t==null ? null : t.getTypeModel();
     }
     
@@ -1286,7 +1282,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     //copy/pasted from TypeVisitor!
-    private List<ProducedType> getTypeArguments(TypeArgumentList tal) {
+    private List<ProducedType> getTypeArguments(Tree.TypeArgumentList tal) {
         List<ProducedType> typeArguments = new ArrayList<ProducedType>();
         if (tal!=null) {
             for (Tree.Type ta: tal.getTypes()) {
