@@ -326,7 +326,7 @@
     <target name="publish.language.module"
             depends="init.repo"
             description="Publish ceylon language template">
-        <property name="template.file" value="${repo.local.dir}/${module.language.dir}/${module.ceylon.language.version}/${module.language.name}-${module.ceylon.language.version}.template"/>
+        <property name="template.file" value="${repo.local.dir}/${module.language.dir}/${module.ceylon.language.version}/${module.language.name}-${module.ceylon.language.version}.src"/>
         <delete dir="${repo.local.dir}/${module.language.dir}/${module.ceylon.language.version}"/>
         <zip destfile="${template.file}">
             <fileset dir="${basedir}/corpus">
