@@ -24,9 +24,6 @@ public class TypeCheckerBuilder {
 
     public TypeCheckerBuilder addSrcDirectory(File srcDirectory) {
         srcDirectories.add(srcDirectory);
-        if ( srcDirectories.size() > 1 ) {
-            System.err.println("TypeChecker does not yet support multiple src directories, ignoring subsequent ones");
-        }
         return this;
     }
 

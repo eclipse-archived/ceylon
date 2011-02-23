@@ -46,11 +46,26 @@ public class TypeChecker {
     }
 
     private void process(Context context) throws RuntimeException {
+        //ceylon.language must be built (parsed) before any other
+
+        try {
+            //FIXME hack to not parse ceylon.language twice: only works if a single directory is set
+            if ( srcDirectories.size() == 1 ) {
+                buildLanguageModule( context, srcDirectories.get(0) );
+            }
+            else {
+                buildLanguageModule(context, null);
+            }
+        }
+        catch (RuntimeException e) {
+            //let it go
+            throw e;
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Error while parsing the source directory: " + srcDirectories.get(0).toString() ,e);
+        }
         for ( File file : srcDirectories ) {
             try {
-                //ceylon.language must be built (parsed) before any other
-                buildLanguageModule(context, file);
-
                 if ( file.isDirectory() ) {
                     //root directory is the src dir => start from here
                     for ( File subfile : file.listFiles() ) {
@@ -110,7 +125,8 @@ public class TypeChecker {
 
     private void buildLanguageModule(Context context, File master) throws Exception {
         //ceylon.language must be parsed before any other
-        if ( ! ( master.getName().equals("corpus")
+        if ( master == null ||
+                ! ( master.getName().equals("corpus")
                 || master.getName().equals("corpus/ceylon")
                 || master.getName().equals("corpus/ceylon/language") ) ) {
             File file = new File("corpus/ceylon");
