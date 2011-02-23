@@ -29,6 +29,9 @@ interface Declarations {
     class Dupe() {}
     @error class Dupe(X x) {}
     
+    void withDupeParam(X x, @error X x) {}
+    void withoutDupeParam(X x(Y y), X y(Y y)) {}
+    
     @error class () {}
     @error void () {}
     @error interface {}
