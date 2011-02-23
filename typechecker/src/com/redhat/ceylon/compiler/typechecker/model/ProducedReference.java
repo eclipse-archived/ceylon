@@ -41,6 +41,9 @@ public abstract class ProducedReference extends Model {
         for (Map.Entry<TypeParameter, ProducedType> e: getTypeArguments().entrySet()) {
             map.put(e.getKey(), e.getValue().substitute(substitutions));
         }
+        if (getDeclaringType()!=null) {
+            map.putAll(getDeclaringType().sub(substitutions));
+        }
         return map;
     }
     

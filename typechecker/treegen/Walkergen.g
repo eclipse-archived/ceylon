@@ -81,6 +81,9 @@ subnode : n=NODE_NAME '?'? f=FIELD_NAME ('(' NODE_NAME* ')')?
         | mn=NODE_NAME '*' ('(' NODE_NAME* ')')? 
           { println("        for (" + className($mn.text) + " subnode: node.get" + className($mn.text) +"s())"); }
           { println("            subnode.visit(visitor);"); }
+        | mn=NODE_NAME '*' f=FIELD_NAME ('(' NODE_NAME* ')')? 
+          { println("        for (" + className($mn.text) + " subnode: node.get" + initialUpper($f.text) +"s())"); }
+          { println("            subnode.visit(visitor);"); }
         ;
 
 field : t=TYPE_NAME f=FIELD_NAME ';'

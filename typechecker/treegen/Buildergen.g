@@ -120,6 +120,11 @@ subnode : n=NODE_NAME '?'? f=FIELD_NAME
           { println("                node.add" + className($mn.text) + "(build" + className($mn.text) + "(childTreeNode));"); }
           { println("                continue;"); }
           { println("            }"); }
+        | mn=NODE_NAME '*' f=FIELD_NAME
+          { println("            if (childTreeNode.getType()==" + $mn.text + ") {"); }
+          { println("                node.add" + initialUpper($f.text) + "(build" + className($mn.text) + "(childTreeNode));"); }
+          { println("                continue;"); }
+          { println("            }"); }
         | mn=NODE_NAME '*'
           '(' (
           s=NODE_NAME

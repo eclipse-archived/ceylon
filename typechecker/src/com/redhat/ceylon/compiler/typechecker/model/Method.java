@@ -1,12 +1,10 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import static com.redhat.ceylon.compiler.typechecker.model.Util.*;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A method. Note that a method must have
@@ -69,28 +67,15 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     }
     
     @Override
-    public ProducedTypedReference getProducedTypedReference(List<ProducedType> typeArguments) {
+    public ProducedTypedReference getProducedTypedReference(ProducedType dt, List<ProducedType> typeArguments) {
         if (!acceptsArguments(typeArguments)) {
             throw new RuntimeException( getName() + 
                     " does not accept given type arguments");
         }
         ProducedTypedReference pt = new ProducedTypedReference();
         pt.setDeclaration(this);
-        pt.setTypeArguments( arguments(this, typeArguments) );
-        return pt;
-    }
-    
-    @Override
-    public ProducedTypedReference getTypedReference() {
-        ProducedTypedReference pt = new ProducedTypedReference();
-        pt.setDeclaration(this);
-        Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
-        for (TypeParameter p: getTypeParameters()) {
-            ProducedType pta = new ProducedType();
-            pta.setDeclaration(p);
-            map.put(p, pta);
-        }
-        pt.setTypeArguments(map);
+        pt.setDeclaringType(dt);
+        pt.setTypeArguments( arguments(this, dt, typeArguments) );
         return pt;
     }
     

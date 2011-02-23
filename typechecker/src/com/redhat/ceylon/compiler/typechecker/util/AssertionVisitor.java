@@ -15,7 +15,7 @@ public class AssertionVisitor extends Visitor {
 
     @Override
     public void visit(Tree.TypedDeclaration that) {
-        checkType(that, that.getTypeOrSubtype());
+        checkType(that, that.getType());
         super.visit(that);
     }
 

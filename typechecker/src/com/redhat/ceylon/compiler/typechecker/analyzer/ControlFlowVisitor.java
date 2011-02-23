@@ -118,7 +118,7 @@ public class ControlFlowVisitor extends Visitor {
         boolean c = beginReturnScope(true);
         boolean d = beginDefiniteReturnScope();
         super.visit(that);
-        if (!(that.getTypeOrSubtype() instanceof Tree.VoidModifier)) {
+        if (!(that.getType() instanceof Tree.VoidModifier)) {
             checkDefiniteReturn(that, name(that.getIdentifier()));
         }
         endDefiniteReturnScope(d);
@@ -130,7 +130,7 @@ public class ControlFlowVisitor extends Visitor {
         boolean c = beginReturnScope(true);
         boolean d = beginDefiniteReturnScope();
         super.visit(that);
-        if (!(that.getTypeOrSubtype() instanceof Tree.VoidModifier)) {
+        if (!(that.getType() instanceof Tree.VoidModifier)) {
             checkDefiniteReturn(that, name(that.getIdentifier()));
         }
         endDefiniteReturnScope(d);

@@ -12,4 +12,9 @@ public abstract class ClassOrInterface extends TypeDeclaration {
 		return members;
 	}
 
+	@Override
+	public boolean isMemberType() {
+	    return getContainer() instanceof ClassOrInterface;
+	}
+	
 }

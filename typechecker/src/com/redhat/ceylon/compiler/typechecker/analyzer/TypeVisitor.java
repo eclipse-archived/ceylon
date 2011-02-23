@@ -1,6 +1,10 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.*;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getExternalDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLanguageModuleDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getMemberDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.name;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +25,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.PrintUtil;
 
@@ -99,41 +102,69 @@ public class TypeVisitor extends Visitor {
     }
         
     @Override 
-    public void visit(Tree.Type that) {
+    public void visit(Tree.BaseType that) {
+        super.visit(that);
         TypeDeclaration d = (TypeDeclaration) getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
         if (d==null) {
             that.addError("type declaration not found: " + 
                     that.getIdentifier().getText());
         }
         else {
-            super.visit(that);
-            List<ProducedType> typeArguments = getTypeArguments(that);
-            if (typeArguments!=null) {
-                if (!com.redhat.ceylon.compiler.typechecker.model.Util.acceptsArguments(d, typeArguments)) {
-                    that.addError("does not accept the given type arguments");
+            ProducedType outerType;
+            if (d.isMemberType()) {
+                //TODO: really we need to search up all the containing scopes,
+                //      just like we do in ExpressionVisitor.getDeclaringType() 
+                outerType = ( (ClassOrInterface) d.getContainer() ).getType();
+            }
+            else {
+                outerType = null;
+            }
+            visitType(that, outerType, d);
+        }
+    }
+
+    public void visit(Tree.QualifiedType that) {
+        super.visit(that);
+        ProducedType pt = that.getOuterType().getTypeModel();
+        if (pt!=null) {
+            TypeDeclaration d = (TypeDeclaration) getMemberDeclaration(pt.getDeclaration(), that.getIdentifier(), context);
+            if (d==null) {
+                that.addError("member type declaration not found: " + 
+                        that.getIdentifier().getText());
+            }
+            else {
+                visitType(that, pt, d);
+            }
+        }
+    }
+
+    private void visitType(Tree.StaticType that, ProducedType ot, TypeDeclaration d) {
+        List<ProducedType> typeArguments = getTypeArguments(that);
+        if (typeArguments!=null) {
+            if (!com.redhat.ceylon.compiler.typechecker.model.Util.acceptsArguments(d, typeArguments)) {
+                that.addError("does not accept the given type arguments");
+            }
+            else {
+                ProducedType pt = d.getProducedType(ot, typeArguments);
+                if (pt==null) {
+                    that.addError("incompatible type arguments");
                 }
                 else {
-                    ProducedType pt = d.getProducedType(typeArguments);
-                    if (pt==null) {
-                        that.addError("incompatible type arguments");
-                    }
-                    else {
-                        that.setTypeModel(pt);
-                        that.setMemberReference(pt);
-                        if (typeArguments!=null) {
-                            typeArguments.add(pt);
-                        }
+                    that.setTypeModel(pt);
+                    that.setMemberReference(pt);
+                    if (typeArguments!=null) {
+                        typeArguments.add(pt);
                     }
                 }
             }
         }
     }
-
-    private List<ProducedType> getTypeArguments(Tree.Type that) {
+    
+    private List<ProducedType> getTypeArguments(Tree.StaticType that) {
         List<ProducedType> typeArguments = new ArrayList<ProducedType>();
-        TypeArgumentList tal = that.getTypeArgumentList();
+        Tree.TypeArgumentList tal = that.getTypeArgumentList();
         if (tal!=null) {
-            for (Tree.TypeOrSubtype ta: tal.getTypeOrSubtypes()) {
+            for (Tree.Type ta: tal.getTypes()) {
                 ProducedType t = ta.getTypeModel();
                 if (t==null) {
                     ta.addError("could not resolve type argument");
@@ -155,16 +186,16 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.TypedDeclaration that) {
         super.visit(that);
-        setType(that, name(that.getIdentifier()), that.getTypeOrSubtype());
+        setType(that, name(that.getIdentifier()), that.getType());
     }
 
     @Override 
     public void visit(Tree.TypedArgument that) {
         super.visit(that);
-        setType(that, name(that.getIdentifier()), that.getTypeOrSubtype());
+        setType(that, name(that.getIdentifier()), that.getType());
     }
         
-    private void setType(Node that, String name, Tree.TypeOrSubtype type) {
+    private void setType(Node that, String name, Tree.Type type) {
         if (type==null) {
             that.addError("missing type of declaration: " + name);
         }
@@ -183,7 +214,7 @@ public class TypeVisitor extends Visitor {
     private List<ProducedType> getSatisfiedTypes(Tree.SatisfiedTypes st) {
         List<ProducedType> list = new ArrayList<ProducedType>();
         if (st!=null) {
-            for (Tree.Type t: st.getTypes()) {
+            for (Tree.StaticType t: st.getTypes()) {
                 if (t.getTypeModel()!=null) {
                     list.add(t.getTypeModel());
                 }
@@ -278,17 +309,6 @@ public class TypeVisitor extends Visitor {
                 td.setSatisfiedTypes(getSatisfiedTypes(st));
             }
         }
-    }
-    
-    /**
-     * Suppress resolution of types that appear after the
-     * member selection operator "." (but not their type
-     * arguments).
-     */
-    @Override
-    public void visit(Tree.MemberExpression that) {
-        that.getPrimary().visit(this);
-        super.visitAny( that.getMemberOrType() );
     }
     
     private Class getObjectDeclaration() {

@@ -14,9 +14,9 @@ class Generics() {
         return Holder<W>(w);
     }
     
-    @type["Holder<String>"] Holder<String> hs;
+    @type["Generics.Holder<String>"] Holder<String> hs;
     
-    @type["Holder<String>"] Holder<String>("hello");
+    @type["Generics.Holder<String>"] Holder<String>("hello");
     @type["String"] Holder<String>("hello").held;
     
     @error Holder("hello");
@@ -35,7 +35,7 @@ class Generics() {
     String s1 = h2.noop<String>("Hi!");
     @error String s2 = h2.noop("Hi!");
     
-    @type["Holder<Natural>"] create<Natural>(3);
+    @type["Generics.Holder<Natural>"] create<Natural>(3);
     Natural nn = create<Natural>(5).held;
     
     X op<X>(X arg) {
@@ -143,13 +143,23 @@ class Generics() {
                 return x->y;
             }
         }
+        Inner<String> createInner(String string) {
+            return Inner<String>(string);
+        }
     }
-    
+        
+    @type["Generics.Outer<Natural>.Inner<String>"] Outer<Natural>(1).Inner<String>("hello");
+    @type["Generics.Outer<Natural>.Inner<String>"] Outer<Natural>(1).createInner("hello");
     @type["Entry<Natural,String>"] Outer<Natural>(1).Inner<String>("hello").getIt();
-    
+    @type["Entry<Natural,String>"] Outer<Natural>(1).createInner("hello").getIt();
+
     Outer<Natural>.Inner<String> aa = Outer<Natural>(1).Inner<String>("hello");
     @error Inner<String> bb = Outer<Natural>(1).Inner<String>("hello");
+    @error Outer<Natural> dd = Outer<Natural>(1).Inner<String>("hello");
     @error Outer<Natural>.Inner<String> cc = Outer<Float>(1.3).Inner<String>("hello");
+    
+    @type["Generics.Outer<Natural>.Inner<String>"] aa;
+    @type["Entry<Natural,String>"] aa.getIt();
     
     class Num() satisfies Comparable<Num> {}
     

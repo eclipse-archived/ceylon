@@ -63,7 +63,6 @@ tokens {
     SWITCH_STATEMENT;
     SWITCH_CASE_LIST;
     TYPE_CONSTRAINT_LIST;
-    TYPE;
     TYPE_DECLARATION;
     INDEX_EXPRESSION;
     LOWER_BOUND;
@@ -95,6 +94,12 @@ tokens {
     EXTENDED_TYPE;
     ELEMENT;
     ELEMENT_RANGE;
+    BASE_TYPE;
+    QUALIFIED_TYPE;
+
+    MEMBER_EXPRESSION;
+    TYPE_EXPRESSION;
+    OUTER_EXPRESSION;
 }
 
 @parser::header { package com.redhat.ceylon.compiler.typechecker.parser; }
@@ -465,12 +470,12 @@ typeConstraints
 
 type
     : (unabbreviatedType -> unabbreviatedType) 
-      (typeAbbreviation -> ^(TYPE typeAbbreviation ^(TYPE_ARGUMENT_LIST $type)))*
+      (typeAbbreviation -> ^(BASE_TYPE typeAbbreviation ^(TYPE_ARGUMENT_LIST $type)))*
     ;
 
 unabbreviatedType
-    : typeNameWithArguments ('.' typeNameWithArguments)* 
-    -> ^(TYPE typeNameWithArguments+ )
+    : (ot=typeNameWithArguments -> ^(BASE_TYPE $ot))
+      ('.' it=typeNameWithArguments -> ^(QUALIFIED_TYPE $unabbreviatedType $it))*
     | SUBTYPE
     /*| parameterName '.' 'subtype' abbreviation*
     -> ^(TYPE parameterName 'subtype' abbreviation*)*/
@@ -747,8 +752,15 @@ enumeration
 primary
     : (base -> base)
     ( 
-        memberSelectionOperator (m=memberReference | t=typeReference)
-      -> ^(memberSelectionOperator $primary $m? $t?)
+        memberSelectionOperator 
+        (
+          m=memberReference 
+      -> ^(MEMBER_EXPRESSION $primary memberSelectionOperator $m)
+        | o='outer'
+      -> ^(OUTER_EXPRESSION $primary memberSelectionOperator $o)
+        | t=typeReference
+      -> ^(TYPE_EXPRESSION $primary memberSelectionOperator $t)
+        )
       | elementSelectionOperator elementsSpec ']'
       -> ^(elementSelectionOperator $primary elementsSpec)
       | postfixOperator 
@@ -770,7 +782,11 @@ base
     | enumeration
     | selfReference
     | typeReference
+    -> ^(BASE_TYPE typeReference)
     | memberReference
+    -> ^(MEMBER memberReference)
+    | 'subtype' 
+    | 'outer'
     ;
 
 memberSelectionOperator
@@ -778,15 +794,11 @@ memberSelectionOperator
     ;
 
 typeReference
-    : typeInExpression ( (typeInExpressionStart) => '.' typeInExpression )*
-    -> ^(TYPE typeInExpression+)
+    : typeInExpression
     ;
 
 memberReference
     : memberInExpression
-    -> ^(MEMBER memberInExpression)
-    | 'subtype' 
-    | 'outer'
     ;
 
 memberInExpression

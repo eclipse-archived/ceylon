@@ -511,17 +511,4 @@ public class SpecificationVisitor extends Visitor {
         endDeclarationScope(d);
     }
 
-    /**
-     * Suppress navigation to members
-     */
-    @Override
-    public void visit(Tree.MemberExpression that) {
-        if (that.getPrimary() instanceof Tree.This) {
-            super.visit(that);
-        }
-        else {
-            that.getPrimary().visit(this);
-        }
-    }
-    
 }

@@ -277,7 +277,7 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
         functional = null;
-        that.getTypeOrSubtype().setTypeModel(c.getType());
+        that.getType().setTypeModel(c.getType());
         v.setType(c.getType());
     }
 
@@ -292,7 +292,7 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
         functional = null;
-        that.getTypeOrSubtype().setTypeModel(c.getType());
+        that.getType().setTypeModel(c.getType());
         v.setType(c.getType());
     }
 
@@ -338,7 +338,7 @@ public class DeclarationVisitor extends Visitor {
         ValueParameter p = new ValueParameter();
         p.setDeclaration(declaration);
         p.setDefaulted(that.getSpecifierExpression()!=null);
-        p.setSequenced(that.getTypeOrSubtype() instanceof Tree.SequencedType);
+        p.setSequenced(that.getType() instanceof Tree.SequencedType);
         visitDeclaration(that, p);
         super.visit(that);
         parameterList.getParameters().add(p);
@@ -403,7 +403,7 @@ public class DeclarationVisitor extends Visitor {
         }
         Value v = new Value();
         visitDeclaration(that, v);
-        that.getTypeOrSubtype().visit(this);
+        that.getType().visit(this);
         that.getIdentifier().visit(this);
         if (that.getAnnotationList()!=null) {
             that.getAnnotationList().visit(this);

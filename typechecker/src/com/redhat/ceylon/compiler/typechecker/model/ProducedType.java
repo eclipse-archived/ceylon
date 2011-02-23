@@ -6,7 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * A type with actual type arguments.
+ * 
+ * @author Gavin King
+ *
+ */
 public class ProducedType extends ProducedReference {
 	
     ProducedType() {}
@@ -26,7 +31,12 @@ public class ProducedType extends ProducedReference {
             //unknown type
             return null;
         }
-		String producedTypeName = getDeclaration().getName();
+		String producedTypeName = "";
+		if (getDeclaration().isMemberType()) {
+		    producedTypeName += getDeclaringType().getProducedTypeName();
+		    producedTypeName += ".";
+		}
+		producedTypeName += getDeclaration().getName();
 		if (!getTypeArguments().isEmpty()) {
 			producedTypeName+="<";
 			for (TypeParameter p: getDeclaration().getTypeParameters()) {
@@ -119,6 +129,15 @@ public class ProducedType extends ProducedReference {
             return false;	    
 	    }
     	else {
+    	    boolean isInner = getDeclaration().isMemberType();
+            if (isInner) {
+                boolean isOtherInner = type.getDeclaration().isMemberType();
+                if (isOtherInner) {
+    	            if (!getDeclaringType().isSubtypeOf(type.getDeclaringType())) {
+    	                return false;
+    	            }
+                }
+    	    }
     	    ProducedType st = getSupertype( type.getDeclaration() );
     	    if (st==null) {
     	        return false;
@@ -164,34 +183,33 @@ public class ProducedType extends ProducedReference {
         }
         ProducedType t = new ProducedType();
         t.setDeclaration(getDeclaration());
+        if (getDeclaringType()!=null) {
+            t.setDeclaringType(getDeclaringType().substitute(substitutions));
+        }
         t.setTypeArguments(sub(substitutions));
         return t;
     }
-    
-    private Map<TypeParameter,ProducedType> memberArgs(Declaration d, List<ProducedType> typeArguments) {
-        Map<TypeParameter, ProducedType> map = arguments(d, typeArguments);
-        map.putAll(sub(map));
-        return map;
-    }
-    
+        
     public ProducedTypedReference getTypedMember(TypedDeclaration td, List<ProducedType> typeArguments) {
         ProducedType declaringType = getSupertype( (TypeDeclaration) td.getContainer() );
         if (declaringType==null) {
             return null;
         }
         else {
-            return declaringType.getDeclaredTypedMember(td, typeArguments);
+            return declaringType.getDeclaredTypedMember(td, declaringType, typeArguments);
         }
     }
          
-    ProducedTypedReference getDeclaredTypedMember(TypedDeclaration td, List<ProducedType> typeArguments) {
+    ProducedTypedReference getDeclaredTypedMember(TypedDeclaration td, ProducedType declaringType, List<ProducedType> typeArguments) {
         if (!acceptsArguments(td, typeArguments)) {
             return null;
         }
         ProducedTypedReference ptr = new ProducedTypedReference();
         ptr.setDeclaration(td);
-        ptr.setDeclaringType(this);
-        ptr.setTypeArguments(memberArgs(td, typeArguments));
+        ptr.setDeclaringType(declaringType);
+        Map<TypeParameter, ProducedType> map = arguments(td, declaringType, typeArguments);
+        map.putAll(sub(map));
+        ptr.setTypeArguments(map);
         return ptr;
     }
          
@@ -202,8 +220,11 @@ public class ProducedType extends ProducedReference {
         }
         ProducedType pt = new ProducedType();
         pt.setDeclaration(td);
-        pt.setDeclaringType(this);
-        pt.setTypeArguments(memberArgs(td, typeArguments));
+        ProducedType declaringType = getSupertype( (TypeDeclaration) td.getContainer() );
+        pt.setDeclaringType(declaringType);
+        Map<TypeParameter, ProducedType> map = arguments(td, declaringType, typeArguments);
+        map.putAll(sub(map));
+        pt.setTypeArguments(map);
         return pt;
     }
     

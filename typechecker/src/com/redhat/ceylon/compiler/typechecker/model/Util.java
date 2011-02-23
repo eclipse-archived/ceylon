@@ -6,8 +6,11 @@ import java.util.Map;
 
 public class Util {
 
-    static Map<TypeParameter,ProducedType> arguments(Declaration d, List<ProducedType> typeArguments) {
+    static Map<TypeParameter,ProducedType> arguments(Declaration d, ProducedType declaringType, List<ProducedType> typeArguments) {
         Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
+        if (declaringType!=null) {
+            map.putAll(declaringType.getTypeArguments());
+        }
         if (d instanceof Generic) {
             Generic g = (Generic) d;
             for (int i=0; i<g.getTypeParameters().size(); i++) {

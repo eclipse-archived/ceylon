@@ -38,15 +38,15 @@ class Inheritance() {
     
     @type["String"] X<String>("goodbye").getIt();
     
-    @type["Y<String>"] Y<String>("hello");
+    @type["Inheritance.Y<String>"] Y<String>("hello");
     
     @type["String"] Y<String>("adios").getIt();
     
-    @type["Z"] Z();
+    @type["Inheritance.Z"] Z();
     
     @type["String"] Z().getIt();
     
-    @type["W<Float,Natural>"] W<Float,Natural>(1.2, 1);
+    @type["Inheritance.W<Float,Natural>"] W<Float,Natural>(1.2, 1);
     
     @type["Natural"] W<Float,Natural>(1.2, 1).getIt();
         

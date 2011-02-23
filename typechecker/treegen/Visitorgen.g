@@ -66,7 +66,7 @@ node : '^' '('
      ;
 
 subnode : n=NODE_NAME '?'? f=FIELD_NAME? ('(' NODE_NAME* ')')?
-        | mn=NODE_NAME '*' ('(' NODE_NAME* ')')? 
+        | mn=NODE_NAME '*' f=FIELD_NAME? ('(' NODE_NAME* ')')? 
         ;
 
 field : TYPE_NAME FIELD_NAME ';';

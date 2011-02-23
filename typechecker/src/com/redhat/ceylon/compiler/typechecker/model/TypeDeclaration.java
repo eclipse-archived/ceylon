@@ -47,18 +47,22 @@ public abstract class TypeDeclaration extends Declaration implements Generic, Sc
 		this.caseTypes = caseTypes;
 	}
 	
-	public ProducedType getProducedType(List<ProducedType> typeArguments) {
+	public ProducedType getProducedType(ProducedType outerType, List<ProducedType> typeArguments) {
 	    if (!acceptsArguments(this, typeArguments)) {
 	        return null;
 	    }
 	    ProducedType pt = new ProducedType();
 	    pt.setDeclaration(this);
-	    pt.setTypeArguments( arguments(this, typeArguments) );
+	    pt.setDeclaringType(outerType);
+	    pt.setTypeArguments( arguments(this, outerType, typeArguments) );
 	    return pt;
 	}
 	
     public ProducedType getType() {
         ProducedType pt = new ProducedType();
+        if (isMemberType()) {
+            pt.setDeclaringType( ( (ClassOrInterface) getContainer() ).getType() ); 
+        }
         pt.setDeclaration(this);
         Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
         for (TypeParameter p: getTypeParameters()) {
@@ -69,4 +73,9 @@ public abstract class TypeDeclaration extends Declaration implements Generic, Sc
         pt.setTypeArguments(map);
         return pt;
     }
+    
+    public boolean isMemberType() {
+        return false;
+    }
+    
 }

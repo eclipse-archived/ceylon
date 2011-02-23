@@ -106,6 +106,11 @@ subnode :
                                "s = new ArrayList<" + className($mn.text) + ">();"); }
           { println("        public List<" + className($mn.text) + "> get" + className($mn.text) + "s() { return " + fieldName($mn.text) + "s; }"); }
           { println("        public void add" + className($mn.text) + "(" + className($mn.text) + " node) { " + fieldName($mn.text) + "s.add(node); }\n"); }
+        | mn=NODE_NAME '*' f=FIELD_NAME ('(' NODE_NAME* ')')?
+          { println("        private List<" + className($mn.text) + "> " + $f.text + 
+                               "s = new ArrayList<" + className($mn.text) + ">();"); }
+          { println("        public List<" + className($mn.text) + "> get" + initialUpper($f.text) + "s() { return " + $f.text + "s; }"); }
+          { println("        public void add" + initialUpper($f.text) + "(" + className($mn.text) + " node) { " + $f.text + "s.add(node); }\n"); }
         ;
 
 field : t=TYPE_NAME f=FIELD_NAME 

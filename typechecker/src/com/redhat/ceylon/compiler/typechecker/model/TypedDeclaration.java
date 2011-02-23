@@ -1,8 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import static com.redhat.ceylon.compiler.typechecker.model.Util.*;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
 
-import java.util.Collections;
 import java.util.List;
 
 
@@ -39,19 +38,20 @@ public abstract class TypedDeclaration extends Declaration {
         return typeArguments.isEmpty();
     }
     
-    public ProducedTypedReference getTypedReference() {
-        return getProducedTypedReference(Collections.<ProducedType>emptyList());
-    }
-    
-    public ProducedTypedReference getProducedTypedReference(List<ProducedType> typeArguments) {
+    public ProducedTypedReference getProducedTypedReference(ProducedType pt, List<ProducedType> typeArguments) {
         if (!acceptsArguments(typeArguments)) {
             throw new RuntimeException( getName() + 
                     " does not accept given type arguments");
         }
-        ProducedTypedReference pt = new ProducedTypedReference();
-        pt.setDeclaration(this);
-        pt.setTypeArguments(arguments(this, typeArguments));
-        return pt;
+        ProducedTypedReference ptr = new ProducedTypedReference();
+        ptr.setDeclaration(this);
+        ptr.setDeclaringType(pt);
+        ptr.setTypeArguments(arguments(this, pt, typeArguments));
+        return ptr;
+    }
+    
+    public boolean isMember() {
+        return getContainer() instanceof ClassOrInterface; 
     }
     
 }

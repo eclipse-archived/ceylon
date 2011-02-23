@@ -43,11 +43,11 @@ class Operators() {
     
     X? nothing = null;
     
-    @type["Optional<X>"] nothing ? nothing;
+    @type["Optional<Operators.X>"] nothing ? nothing;
     
-    @type["X"] nothing ? X();
+    @type["Operators.X"] nothing ? X();
     
-    @type["X"] nothing ? nothing ? X();
+    @type["Operators.X"] nothing ? nothing ? X();
     
     @error X() ? X();
     
@@ -57,7 +57,7 @@ class Operators() {
     
     @error 1.2..3.4;
     
-    @type["Entry<Natural,X>"] 0->X();
+    @type["Entry<Natural,Operators.X>"] 0->X();
     
     @error 0->nothing;
     
@@ -79,10 +79,10 @@ class Operators() {
     X[] sequence = {X(), X()};
     String[]? noSequence = null;
     
-    @type["Optional<X>"] sequence[0];
-    @type["Sequence<X>"] sequence[0..1];
-    @type["Sequence<X>"] sequence[1+1...];
-    @type["Optional<Optional<X>>"]{nothing}[0];
+    @type["Optional<Operators.X>"] sequence[0];
+    @type["Sequence<Operators.X>"] sequence[0..1];
+    @type["Sequence<Operators.X>"] sequence[1+1...];
+    @type["Optional<Optional<Operators.X>>"]{nothing}[0];
     @type["Optional<String>"] noSequence?[0];
     
     @error sequence["hello"];
@@ -97,7 +97,7 @@ class Operators() {
     @type["Optional<String>"] {"hello", "world"}[0]?.normalize(" #");
     @type["Sequence<String>"] {"hello", "world"}[].normalize(" #");
     @type["Optional<String>"] noSequence?[0]?.normalize(" #");
-    @type["Sequence<X>"] {Operators()}[].X();
+    @type["Sequence<Operators.X>"] {Operators()}[].X();
     
     variable Natural n := 0;
     @type["Natural"] n++;

@@ -1,7 +1,12 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 
-
+/**
+ * A callable member with actual type arguments.
+ * 
+ * @author Gavin King
+ *
+ */
 public class ProducedTypedReference extends ProducedReference {
     
     ProducedTypedReference() {}
@@ -17,9 +22,6 @@ public class ProducedTypedReference extends ProducedReference {
             return null;
         }
         else {
-            if (getDeclaringType()!=null) {
-                t = t.substitute(getDeclaringType().getTypeArguments()); //the type arguments to the declaring type
-            }
             return t.substitute(getTypeArguments()); //the type arguments to the member
         }
     }

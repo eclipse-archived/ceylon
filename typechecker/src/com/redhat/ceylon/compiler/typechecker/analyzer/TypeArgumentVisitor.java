@@ -39,7 +39,7 @@ public class TypeArgumentVisitor extends Visitor {
         }
     }
     
-    @Override public void visit(Tree.TypeOrSubtype that) {
+    @Override public void visit(Tree.Type that) {
         ProducedType pt = that.getTypeModel();
         if ( pt!=null && !pt.checkVariance(!contravariant, contravariant, parameterizedDeclaration) ) {
             that.addError("incorrect variance: " + pt.getProducedTypeName());
