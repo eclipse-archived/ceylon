@@ -11,6 +11,7 @@ public class Value extends MethodOrValue {
     
 	boolean variable;
 	boolean formal;
+	boolean captured = false;
 	
 	public boolean isFormal() {
 		return formal;
@@ -28,5 +29,13 @@ public class Value extends MethodOrValue {
 	public void setVariable(boolean variable) {
 		this.variable = variable;
 	}
+	
+	public boolean isCaptured() {
+        return captured;
+    }
+	
+	public void setCaptured(boolean local) {
+        this.captured = local;
+    }
 	
 }

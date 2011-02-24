@@ -419,6 +419,9 @@ public class DeclarationVisitor extends Visitor {
     @Override public void visit(Tree.Declaration that) {
         Declaration d = declaration;
         declaration = that.getDeclarationModel();
+        if (hasAnnotation(that.getAnnotationList(), "shared")) {
+            declaration.setShared(true);
+        }
         super.visit(that);
         declaration = d;
     }

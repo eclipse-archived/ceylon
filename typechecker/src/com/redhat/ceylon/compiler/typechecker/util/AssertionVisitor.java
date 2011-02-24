@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -32,19 +35,12 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
                 String expectedType = c.getStringLiteral().getText();
                 if (typedNode==null || typedNode.getTypeModel()==null || 
                         typedNode.getTypeModel().getDeclaration()==null) {
-                    System.err.println(
-                            "type not known at "+ that.getAntlrTreeNode().getLine() + ":" +
-                            that.getAntlrTreeNode().getCharPositionInLine() + " of " +
-                            that.getUnit().getFilename());
+                    out(that, "type not known");
                 }
                 else {
                     String actualType = typedNode.getTypeModel().getProducedTypeName();
                     if ( !actualType.equals(expectedType.substring(1,expectedType.length()-1)) )
-                        System.err.println("type " + actualType +
-                                " not of expected type " + expectedType + 
-                                " at "+ that.getAntlrTreeNode().getLine() + ":" +
-                                that.getAntlrTreeNode().getCharPositionInLine() + " of " +
-                                that.getUnit().getFilename());
+                        out(that, "type " + actualType + " not of expected type " + expectedType);
                 }
             }
         }
@@ -59,24 +55,61 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         initExpectingError(that);
         super.visit(that);
         checkErrors(that);
+        checkCapture(that);
         expectingError = b;
         foundErrors = f;
+    }
+    
+    private void checkCapture(Tree.StatementOrArgument that) {
+        for (Tree.CompilerAnnotation c: that.getCompilerAnnotations()) {
+            if (c.getIdentifier().getText().equals("captured")) {
+                Declaration d = that.getDeclarationModel();
+                if (d instanceof Value) {
+                     if (!((Value) d).isCaptured() && !d.isShared()) {
+                         out(that, "not captured");
+                     }
+                }
+                else if (d instanceof ValueParameter) {
+                    if (!((ValueParameter) d).isCaptured()) {
+                        out(that, "not captured");
+                    }
+                }
+                else {
+                    out(that, "not a value");
+                }
+            }
+            if (c.getIdentifier().getText().equals("uncaptured")) {
+                Declaration d = that.getDeclarationModel();
+                if (d instanceof Value) {
+                     if (((Value) d).isCaptured() || d.isShared()) {
+                         out(that, "captured");
+                     }
+                }
+                else if (d instanceof ValueParameter) {
+                    if (((ValueParameter) d).isCaptured()) {
+                        out(that,"captured");
+                    }
+                }
+                else {
+                    out(that, "not a value");
+                }
+            }
+        }
+    }
+
+    private void out(Node that, String message) {
+        System.err.println(
+            message + " at " + 
+            that.getAntlrTreeNode().getLine() + ":" +
+            that.getAntlrTreeNode().getCharPositionInLine() + " of " +
+            that.getUnit().getFilename());
     }
 
     private void checkErrors(Node that) {
         if (expectingError && foundErrors.size()==0)
-            System.err.println(
-                "no error encountered at " + 
-                that.getAntlrTreeNode().getLine() + ":" +
-                that.getAntlrTreeNode().getCharPositionInLine() + " of " +
-                that.getUnit().getFilename());
+            out(that, "no error encountered");
         if (!expectingError && foundErrors.size()>0)
-            System.err.println(
-                "errors encountered at " + 
-                that.getAntlrTreeNode().getLine() + ":" +
-                that.getAntlrTreeNode().getCharPositionInLine() + " of " +
-                that.getUnit().getFilename() + " " +
-                foundErrors);
+            out(that, "errors encountered " + foundErrors);
     }
 
     private void initExpectingError(Tree.StatementOrArgument that) {

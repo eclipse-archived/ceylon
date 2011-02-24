@@ -7,9 +7,12 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleImportVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.SpecificationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeArgumentVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeVisitor;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ValueVisitor;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
@@ -78,13 +81,11 @@ public class PhasedUnit {
 
     public void validateSpecification() {
         System.out.println("Validate specification for " + fileName);
-        //TODO: This is too strict - it does not account for cases where 
-        //      a member *is* allowed to be called before it is declared!
-        //      I think the only relevant cases are members of a class that
-        //      occur in the declaration section, and members of interfaces.
         for (Declaration d: unit.getDeclarations()) {
             compilationUnit.visit(new SpecificationVisitor(d, context));
-            //TODO: variable attributes (definite initialization)
+            if (d instanceof TypedDeclaration && !(d instanceof Setter)) {
+                compilationUnit.visit(new ValueVisitor((TypedDeclaration) d, context));
+            }
         }
     }
 
