@@ -452,7 +452,7 @@ metatypes
     ;
 
 typeConstraint
-    : 
+    :   compilerAnnotation*
         'given'^
         typeName 
         typeParameters? 

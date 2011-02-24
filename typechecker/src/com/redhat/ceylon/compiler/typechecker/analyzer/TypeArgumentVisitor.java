@@ -3,11 +3,14 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
+ * Validates the position in which covariant and contravariant
+ * type parameters appear in the schemas of declarations.
  * 
  * @author Gavin King
  *
@@ -27,6 +30,19 @@ public class TypeArgumentVisitor extends Visitor {
         flip();
         super.visit(that);
         flip();
+    }
+    
+    @Override public void visit(Tree.TypeConstraint that) {
+        super.visit(that);
+        parameterizedDeclaration = ((TypeParameter) that.getDeclarationModel()).getDeclaration();
+        flip();
+        if (that.getSatisfiedTypes()!=null) {
+            for (Tree.Type t: that.getSatisfiedTypes().getTypes()) {
+                check(t, false);
+            }
+        }
+        flip();
+        parameterizedDeclaration = null;
     }
     
     @Override public void visit(Tree.Parameter that) {

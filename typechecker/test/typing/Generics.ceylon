@@ -137,6 +137,13 @@ class Generics() {
             void badMethod(@error X x) {}
             Z method(Z z) { return z; }
         }
+        
+        void goodGenericMethod1<D>(D d) given D satisfies Y {}
+        void goodGenericMethod3<D>(D d) given D satisfies Consumer<X> {}
+        void goodGenericMethod4<D>(D d) given D satisfies Producer<Y> {}
+        void badGenericMethod1<D>(D d) @error given D satisfies X {}
+        void badGenericMethod5<D>(D d) @error given D satisfies Producer<X> {}
+        void badGenericMethod6<D>(D d) @error given D satisfies Consumer<Y> {}
     }
     
     class Bar() {
