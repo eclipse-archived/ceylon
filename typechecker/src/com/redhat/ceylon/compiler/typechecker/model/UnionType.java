@@ -24,5 +24,10 @@ public class UnionType extends TypeDeclaration {
     public String toString() {
         return "UnionType[" + getName() + "]";
     }
+    
+    @Override
+    public String getQualifiedName() {
+        return super.getName();
+    }
 
 }

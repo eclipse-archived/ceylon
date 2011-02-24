@@ -77,5 +77,5 @@ public abstract class TypeDeclaration extends Declaration implements Generic, Sc
     public boolean isMemberType() {
         return false;
     }
-    
+
 }

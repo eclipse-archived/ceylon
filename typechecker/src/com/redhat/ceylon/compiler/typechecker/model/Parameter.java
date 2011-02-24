@@ -30,4 +30,9 @@ public abstract class Parameter extends TypedDeclaration {
         this.declaration = declaration;
     }
     
+    @Override
+    public String getQualifiedName() {
+        return getContainer().getQualifiedName() + "#" + getName();
+    }
+    
 }

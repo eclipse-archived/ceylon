@@ -115,20 +115,22 @@ public class DeclarationVisitor extends Visitor {
             Declaration model) {
         boolean found = false;
         String name = name(that.getIdentifier());
-        for (Declaration m: scope.getMembers()) {
-            String dname = m.getName();
+        for (Declaration member: scope.getMembers()) {
+            String dname = member.getName();
             if (dname!=null && dname.equals(name)) {
-                if (model instanceof Setter && m instanceof Getter) {
+                if (model instanceof Setter && member instanceof Getter) {
                     found = true;
-                    ((Getter) m).setVariable(true);
+                    Getter g = (Getter) member;
+                    g.setVariable(true);
+                    ((Setter) model).setGetter(g);
                     continue;
                 }
                 /*else if (model instanceof Parameter && ((Parameter) model).getDeclaration()!=scope) {
                     //no error
                 }*/
                 else if ((model instanceof Value || model instanceof Getter || model instanceof Setter) 
-                        && m instanceof Parameter 
-                        && ((Parameter) m).getDeclaration() instanceof Class) {
+                        && member instanceof Parameter 
+                        && ((Parameter) member).getDeclaration() instanceof Class) {
                 }
                 else {
                     that.addError("duplicate declaration: " + name);

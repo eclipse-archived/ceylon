@@ -14,5 +14,10 @@ public class BottomType extends TypeDeclaration {
     public String getName() {
         return "Bottom";
     }
+    
+    @Override
+    public String getQualifiedName() {
+        return getName();
+    }
 
 }

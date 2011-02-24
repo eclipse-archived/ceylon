@@ -11,5 +11,10 @@ public class ControlBlock extends Element implements Scope {
 	public List<Declaration> getMembers() {
 		return members;
 	}
+	
+	@Override
+	public String getQualifiedName() {
+	    return getContainer().getQualifiedName();
+	}
 
 }

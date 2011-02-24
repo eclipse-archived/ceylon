@@ -41,4 +41,8 @@ public abstract class Declaration extends Element {
 			"[" + name + "]";
 	}
 	
+    public String getQualifiedName() {
+        return getContainer().getQualifiedName() + "." + getName();
+    }
+
 }

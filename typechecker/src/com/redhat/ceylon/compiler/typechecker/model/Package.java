@@ -48,4 +48,9 @@ public class Package implements Scope {
 		return "Package[" + getNameAsString() + "]";
 	}
 	
+	@Override
+	public String getQualifiedName() {
+	    return getNameAsString();
+	}
+	
 }
