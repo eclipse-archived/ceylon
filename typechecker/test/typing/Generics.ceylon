@@ -93,10 +93,10 @@ class Generics() {
         class BadClass2(@error X[] x) {}
         class GoodClassInheritance() satisfies X[] {}
         @error class BadClassInheritance() satisfies Y[] {}
-        class GoodClassInheritance2() satisfies Producer<X> {}
-        @error class BadClassInheritance2() satisfies Producer<Y> {}
-        class GoodClassInheritance3() satisfies Consumer<Y> {}
-        @error class BadClassInheritance3() satisfies Consumer<X> {}
+        class GoodClassInheritance2() extends Producer<X>() {}
+        @error class BadClassInheritance2() extends Producer<Y>() {}
+        class GoodClassInheritance3() extends Consumer<Y>() {}
+        @error class BadClassInheritance3() extends Consumer<X>() {}
         class GoodParameterizedClass<out T>(T t) {}
         class GoodParameterizedClass2<out T>(Producer<T> t) {}
         class GoodParameterizedClass3<out T>(Consumer<T> t) {}

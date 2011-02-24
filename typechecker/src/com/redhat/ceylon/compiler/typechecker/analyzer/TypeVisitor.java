@@ -199,12 +199,30 @@ public class TypeVisitor extends Visitor {
         }
     }
     
-    private List<ProducedType> getSatisfiedTypes(Tree.SatisfiedTypes st) {
+    private ProducedType getExtendedType(Tree.ExtendedType et) {
+        ProducedType tm = et.getType().getTypeModel();
+        if (tm.getDeclaration() instanceof TypeParameter) {
+            et.getType().addError("directly extends a type parameter");
+        }
+        if (tm.getDeclaration() instanceof Interface) {
+            et.getType().addError("extends an interface");
+        }
+        return tm;
+    }
+
+    private List<ProducedType> getSatisfiedTypes(Tree.SatisfiedTypes st, boolean typeParameter) {
         List<ProducedType> list = new ArrayList<ProducedType>();
         if (st!=null) {
             for (Tree.StaticType t: st.getTypes()) {
-                if (t.getTypeModel()!=null) {
-                    list.add(t.getTypeModel());
+                ProducedType tm = t.getTypeModel();
+                if (tm!=null) {
+                    if (!typeParameter && tm.getDeclaration() instanceof TypeParameter) {
+                        t.addError("directly satisfies type parameter");
+                    }
+                    if (!typeParameter && tm.getDeclaration() instanceof Class) {
+                        t.addError("satisfies a class");
+                    }
+                    list.add(tm);
                 }
             }
         }
@@ -222,7 +240,7 @@ public class TypeVisitor extends Visitor {
         else {
             Tree.SatisfiedTypes st = that.getSatisfiedTypes();
             if (st!=null) {
-                p.setSatisfiedTypes(getSatisfiedTypes(st));
+                p.setSatisfiedTypes(getSatisfiedTypes(st, true));
             }
         }
     }
@@ -237,7 +255,7 @@ public class TypeVisitor extends Visitor {
         else {
             Tree.SatisfiedTypes st = that.getSatisfiedTypes();
             if (st!=null) {
-                ci.setSatisfiedTypes(getSatisfiedTypes(st));
+                ci.setSatisfiedTypes(getSatisfiedTypes(st, false));
             }
             if (ci instanceof Interface) {
                 ((Interface) ci).setExtendedType(getObjectDeclaration().getType());
@@ -260,7 +278,7 @@ public class TypeVisitor extends Visitor {
                     c.setExtendedType(getIdentifiableObjectDeclaration().getType());
                 }
                 else {
-                    c.setExtendedType(et.getType().getTypeModel());
+                    c.setExtendedType(getExtendedType(et));
                 }
             }
         }
@@ -274,10 +292,10 @@ public class TypeVisitor extends Visitor {
         TypeDeclaration td = ( (Value) that.getDeclarationModel() ).getType().getDeclaration();
         if (td!=null) {
             if (et!=null) {
-                td.setExtendedType(et.getType().getTypeModel());
+                td.setExtendedType(getExtendedType(et));
             }
             if (st!=null) {
-                td.setSatisfiedTypes(getSatisfiedTypes(st));
+                td.setSatisfiedTypes(getSatisfiedTypes(st, false));
             }
         }
     }
@@ -290,10 +308,10 @@ public class TypeVisitor extends Visitor {
         TypeDeclaration td = ( (Value) that.getDeclarationModel() ).getType().getDeclaration();
         if (td!=null) {
             if (et!=null) {
-                td.setExtendedType(et.getType().getTypeModel());
+                td.setExtendedType(getExtendedType(et));
             }
             if (st!=null) {
-                td.setSatisfiedTypes(getSatisfiedTypes(st));
+                td.setSatisfiedTypes(getSatisfiedTypes(st, false));
             }
         }
     }

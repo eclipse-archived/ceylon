@@ -21,7 +21,13 @@ class Inheritance() {
         @error String sss = getIt();
         @error Boolean b = isIt("hi");
     }
-        
+    
+    @error class Bad() extends X<String>() {}
+    
+    @error class Bad2() extends I<String>() {}
+    
+    @error class Bad3() satisfies X<String> {}
+    
     X<String> ys = Y<String>("foo");
     ys.doIt("to a string");
     @error ys.doIt(1);
