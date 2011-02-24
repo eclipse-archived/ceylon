@@ -7,6 +7,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleImportVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.SpecificationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeArgumentVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeVisitor;
+import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
@@ -30,7 +31,7 @@ public class PhasedUnit {
     private String path;
     private Context context;
 
-    public PhasedUnit(File unitFile, Tree.CompilationUnit cu, Package p, Context context) {
+    public PhasedUnit(VirtualFile unitFile, Tree.CompilationUnit cu, Package p, Context context) {
         this.compilationUnit = cu;
         this.pkg = p;
         this.fileName = unitFile.getName();
