@@ -15,8 +15,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.PrintVisitor;
 
-import java.io.File;
-
 /**
  * Represent a unit and each of the type checking phases
  *

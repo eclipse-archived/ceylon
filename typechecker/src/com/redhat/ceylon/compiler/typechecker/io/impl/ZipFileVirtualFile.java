@@ -21,7 +21,7 @@ public class ZipFileVirtualFile implements VirtualFile {
 
     private final ZipFile zipFile;
     private final String name;
-    private final List<VirtualFile> children;
+    //private final List<VirtualFile> children;
 
     public ZipFileVirtualFile(File file) throws IOException {
         this( new ZipFile(file) );
@@ -67,7 +67,7 @@ public class ZipFileVirtualFile implements VirtualFile {
                 addToPArentfolder(directChildren, directoryStack, entryName, file);
             }
         }
-        children = directChildren;
+        //children = directChildren;
     }
 
     private void addToPArentfolder(List<VirtualFile> directChildren, LinkedList<ZipFolderVirtualFile> directoryStack, String entryName, VirtualFile file) {

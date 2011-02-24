@@ -1,6 +1,5 @@
 import java.io.File;
 
-import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 
 /**
@@ -23,7 +22,7 @@ public class Main {
         
         boolean noisy = "true".equals(System.getProperties().getProperty("verbose"));
 
-        final TypeChecker typeChecker = new TypeCheckerBuilder()
+        new TypeCheckerBuilder()
                 .verbose(noisy)
                 .addSrcDirectory(new File(path))
                 .getTypeChecker();

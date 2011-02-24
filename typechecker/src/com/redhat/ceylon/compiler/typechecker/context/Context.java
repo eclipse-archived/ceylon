@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.typechecker.context;
 
 import static com.redhat.ceylon.compiler.typechecker.util.PrintUtil.importPathToString;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
