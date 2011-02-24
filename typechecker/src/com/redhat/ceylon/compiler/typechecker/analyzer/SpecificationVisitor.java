@@ -129,11 +129,12 @@ public class SpecificationVisitor extends Visitor {
             Tree.Member m = (Tree.Member) lt;
             Declaration member = getDeclaration(m.getScope(), m.getUnit(), m.getIdentifier(), context);
             if (member==declaration) {
-                if (!declared) {
-                    that.addError("not yet declared: " + 
+                that.getRightTerm().visit(this);
+                /*if (!declared) {
+                    lt.addError("not yet declared: " + 
                             m.getIdentifier().getText());
                 }
-                else if (!isVariable()) {
+                else*/ if (!isVariable()) {
                     that.addError("is not a variable: " +
                             m.getIdentifier().getText());
                 }
@@ -142,7 +143,6 @@ public class SpecificationVisitor extends Visitor {
                             m.getIdentifier().getText());
                 }
                 else {
-                    that.getRightTerm().visit(this);
                     specify();
                     lt.visit(this);
                 }
@@ -151,10 +151,6 @@ public class SpecificationVisitor extends Visitor {
                 super.visit(that);
             }
         }
-        else {
-            //TODO: not the right place to do this check!
-            that.addError("expression cannot be assigned");
-        }
     }
     
     @Override
@@ -162,11 +158,12 @@ public class SpecificationVisitor extends Visitor {
         Member m = that.getMember();
         Declaration member = getDeclaration(m.getScope(), m.getUnit(), m.getIdentifier(), context);
         if (member==declaration) {
-            if (!declared) {
-                that.addError("not yet declared: " + 
+            that.getSpecifierExpression().visit(this);
+            /*if (!declared) {
+                m.addError("not yet declared: " + 
                         m.getIdentifier().getText());
             }
-            else if (isVariable()) {
+            else*/ if (isVariable()) {
                 that.addError("is a variable: " +
                         m.getIdentifier().getText());
             }
@@ -179,12 +176,13 @@ public class SpecificationVisitor extends Visitor {
                         m.getIdentifier().getText());
             }
             else {
-                that.getSpecifierExpression().visit(this);
                 specify();
                 m.visit(this);
             }
         }
-        super.visit(that);
+        else {
+            super.visit(that);
+        }
     }
     
     @Override

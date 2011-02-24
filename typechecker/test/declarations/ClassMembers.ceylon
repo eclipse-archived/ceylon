@@ -25,6 +25,9 @@ class Classes() {
     
     printLine("Hi!");
     
+    @error x = 0;
+    @error y := 0.0;
+    
     interface NestedInterface {
         formal String hello;
     }
@@ -41,6 +44,10 @@ class Classes() {
     
     MemberClass();
         
+    @type["String"] MemberClass().goodbye;
+    @error MemberClass().goodbye = "Foo";
+    @error MemberClass().goodbye := "Foo";
+    
     MemberClass create() {
         return MemberClass();
     }

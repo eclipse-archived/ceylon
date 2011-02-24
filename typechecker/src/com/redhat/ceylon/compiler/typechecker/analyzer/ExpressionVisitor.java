@@ -367,7 +367,7 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.MemberExpression that) {
         that.getPrimary().visit(this);
         ProducedType pt = that.getPrimary().getTypeModel();
-        if (pt!=null) {
+        if (pt!=null && that.getIdentifier()!=null) {
             pt = unwrap(pt, that);
             TypedDeclaration member = (TypedDeclaration) getMemberDeclaration(pt.getDeclaration(), that.getIdentifier(), context);
             if (member==null) {
@@ -953,9 +953,12 @@ public class ExpressionVisitor extends Visitor {
                 that.getRightTerm().addError("must be of type " +
                         lhst.getProducedTypeName());
             }
+            if (!(that.getLeftTerm() instanceof Tree.Member)) {
+                that.getLeftTerm().addError("expression cannot be assigned");
+            }
         }
-        //TODO: validate that the LHS really is assignable
         that.setTypeModel(rhst);
+
     }
     
     private ProducedType rightType(Tree.BinaryOperatorExpression that) {
