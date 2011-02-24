@@ -64,7 +64,7 @@ class Generics() {
     Consumer<String> c = Consumer<Object>();
     Producer<Consumer<Producer<String>>> o = Producer<Consumer<Producer<Object>>>();
     
-    class Variances<out X, in Y, Z>(X x, Y y) 
+    class Variances<out X, in Y, Z>(X x, Y y, Z z) 
             given X satisfies Equality<X>
             given Y satisfies Equality<Y> {
         X goodAtt = x;
@@ -120,6 +120,15 @@ class Generics() {
         
         Z methodWithNonvariant(Z z) { return z; }
         Z attributeWithNonvariant;
+        variable Z variableAtt := z;
+        @error variable X badVariableAtt := x;
+        @error variable Y badVariableAtt2 := y;
+        Z goodGetter { return z; }
+        assign goodGetter { }
+        @error X badGetter { return x; }
+        assign badGetter { }
+        @error Y badGetter2 { return y; }
+        assign badGetter2 { }
         
         class NestedClass() {
             X x;
