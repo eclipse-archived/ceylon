@@ -35,6 +35,8 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgumentList;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -473,35 +475,51 @@ public class ExpressionVisitor extends Visitor {
             that.addError("malformed expression");
         }
         else {
+            PositionalArgumentList pal = that.getPositionalArgumentList();
+            NamedArgumentList nal = that.getNamedArgumentList();
             ProducedReference m = pr.getMemberReference();
             if (m==null || !m.isFunctional()) {
                 that.addError("receiving expression cannot be invoked");
             }
             else {
-                //that.setTypeModel(m.getType()); //THIS IS THE CORRECT ONE!
-                that.setTypeModel(pr.getTypeModel()); //TODO: THIS IS A TEMPORARY HACK!
-                List<ParameterList> pls = ((Functional) m.getDeclaration()).getParameterLists();
-                checkInvocationArguments(that, m, pls);
+                visitInvocation(pal, nal, that, pr);
             }
         }
     }
 
-    private void checkInvocationArguments(Tree.InvocationExpression that, ProducedReference pr, 
-            List<ParameterList> pls) {
-        if (pls.isEmpty()) {
-            that.addError("receiver does not define a parameter list");
+    @Override public void visit(Tree.ExtendedType that) {
+        super.visit(that);
+        Tree.BaseType pr = that.getType();
+        PositionalArgumentList pal = that.getPositionalArgumentList();
+        if (pr==null || pal==null) {
+            that.addError("malformed expression");
         }
         else {
-            ParameterList pl = pls.get(0);
-            
-            Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
-            if ( pal!=null ) {
-                checkPositionalArguments(pl, pr, pal);
+            visitInvocation(pal, null, that, pr);
+        }
+    }
+
+    private void visitInvocation(Tree.PositionalArgumentList pal, Tree.NamedArgumentList nal, 
+            Node that, Node primary) {
+        ProducedReference mr = primary.getMemberReference();
+        if (mr==null || !mr.isFunctional()) {
+            that.addError("receiving expression cannot be invoked");
+        }
+        else {
+            //that.setTypeModel(m.getType()); //THIS IS THE CORRECT ONE!
+            that.setTypeModel(primary.getTypeModel()); //TODO: THIS IS A TEMPORARY HACK!
+            List<ParameterList> pls = ((Functional) mr.getDeclaration()).getParameterLists();
+            if (pls.isEmpty()) {
+                that.addError("receiver does not define a parameter list");
             }
-            
-            Tree.NamedArgumentList nal = that.getNamedArgumentList();
-            if (nal!=null) {
-                checkNamedArguments(pl, pr, nal);
+            else {
+                ParameterList pl = pls.get(0);            
+                if ( pal!=null ) {
+                    checkPositionalArguments(pl, mr, pal);
+                }
+                if (nal!=null) {
+                    checkNamedArguments(pl, mr, nal);
+                }
             }
         }
     }
