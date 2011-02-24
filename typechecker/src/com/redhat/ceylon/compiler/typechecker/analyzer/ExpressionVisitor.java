@@ -1389,7 +1389,8 @@ public class ExpressionVisitor extends Visitor {
         return (Class) getLanguageDeclaration("Entry");
     }
 
-    private boolean acceptsTypeArguments(Declaration d, List<ProducedType> typeArguments, Tree.TypeArgumentList tal, Node parent) {
+    private boolean acceptsTypeArguments(Declaration d, List<ProducedType> typeArguments, 
+            Tree.TypeArgumentList tal, Node parent) {
         if (d instanceof Generic) {
             List<TypeParameter> params = ((Generic) d).getTypeParameters();
             if ( params.size()==typeArguments.size() ) {
