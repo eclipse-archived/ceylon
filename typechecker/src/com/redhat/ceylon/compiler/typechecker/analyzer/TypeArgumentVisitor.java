@@ -34,15 +34,39 @@ public class TypeArgumentVisitor extends Visitor {
             parameterizedDeclaration = ( (Parameter) that.getDeclarationModel() ).getDeclaration();
         }
         super.visit(that);
+        check(that.getType());
         if (topLevel) {
             parameterizedDeclaration = null;
         }
     }
     
-    @Override public void visit(Tree.Type that) {
-        ProducedType pt = that.getTypeModel();
-        if ( pt!=null && !pt.checkVariance(!contravariant, contravariant, parameterizedDeclaration) ) {
-            that.addError("incorrect variance: " + pt.getProducedTypeName());
+    @Override public void visit(Tree.TypedDeclaration that) {
+        super.visit(that);
+        check(that.getType());
+    }
+    
+    @Override public void visit(Tree.ClassOrInterface that) {
+        super.visit(that);
+        if (that.getSatisfiedTypes()!=null) {
+            for (Tree.Type t: that.getSatisfiedTypes().getTypes()) {
+                check(t);
+            }
+        }
+    }
+    
+    @Override public void visit(Tree.AnyClass that) {
+        super.visit(that);
+        if (that.getExtendedType()!=null) {
+            check(that.getExtendedType().getType());
+        }
+    }
+    
+    private void check(Tree.Type that) {
+        if (that!=null) {
+            ProducedType pt = that.getTypeModel();
+            if ( pt!=null && !pt.checkVariance(!contravariant, contravariant, parameterizedDeclaration) ) {
+                that.addError("incorrect variance: " + pt.getProducedTypeName());
+            }
         }
     }
     

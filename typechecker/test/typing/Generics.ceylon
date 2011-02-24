@@ -76,9 +76,9 @@ class Generics() {
         X[] goodMethod2() { return {goodAtt}; }
         @error Y[] badMethod2() { return {badAtt}; }
         Producer<X> goodMethod3() { return Producer<X>(); }
-        @error Consumer<X> badMethod3() { @error return Consumer<X>(); }
+        @error Consumer<X> badMethod3() { return Consumer<X>(); }
         Consumer<Y> goodMethod4() { return Consumer<Y>(); }
-        @error Producer<Y> badMethod4() { @error return Producer<Y>(); }
+        @error Producer<Y> badMethod4() { return Producer<Y>(); }
         void goodVoidMethod(Y y) {}
         void badVoidMethod(@error X x) {}
         void goodVoidMethod2(Y[] y) {}
@@ -169,4 +169,11 @@ class Generics() {
         satisfies T[] 
         given T satisfies Comparable<T> {}
     
+    interface WithCovariant<out X> {}
+    class Good1<T>() satisfies WithCovariant<T> {}
+    @error class Bad1<in T>() satisfies WithCovariant<T> {}
+    
+    interface WithContravariant<in X> {}
+    class Good2<T>() satisfies WithContravariant<T> {}
+    @error class Bad2<out T>() satisfies WithContravariant<T> {}
 }
