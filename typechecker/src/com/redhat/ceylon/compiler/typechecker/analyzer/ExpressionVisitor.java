@@ -1291,7 +1291,7 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType t = ta.getTypeModel();
                 if (t==null) {
                     ta.addError("could not resolve type argument");
-                    return null;
+                    typeArguments.add(null);
                 }
                 else {
                     typeArguments.add(t);
@@ -1400,7 +1400,7 @@ public class ExpressionVisitor extends Visitor {
                     Map<TypeParameter, ProducedType> self = Collections.singletonMap(param, arg);
                     for (ProducedType st: param.getSatisfiedTypes()) {
                         ProducedType sts = st.substitute(self);
-                        if (!arg.isSubtypeOf(sts)) {
+                        if (arg!=null && !arg.isSubtypeOf(sts)) {
                             tal.getTypes().get(i).addError("type parameter " + param.getName() 
                                     + " of declaration " + d.getName()
                                     + " has argument " + arg.getProducedTypeName() 
