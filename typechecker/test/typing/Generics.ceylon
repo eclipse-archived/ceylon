@@ -171,9 +171,14 @@ class Generics() {
     
     interface WithCovariant<out X> {}
     class Good1<T>() satisfies WithCovariant<T> {}
+    class Good2<out T>() satisfies WithCovariant<Producer<T>> {}
     @error class Bad1<in T>() satisfies WithCovariant<T> {}
+    @error class Bad2<out T>() satisfies WithCovariant<Consumer<T>> {}
     
     interface WithContravariant<in X> {}
-    class Good2<T>() satisfies WithContravariant<T> {}
-    @error class Bad2<out T>() satisfies WithContravariant<T> {}
+    class Good3<T>() satisfies WithContravariant<T> {}
+    class Good4<in T>() satisfies WithContravariant<Producer<T>> {}
+    @error class Bad3<out T>() satisfies WithContravariant<T> {}
+    @error class Bad4<in T>() satisfies WithContravariant<Consumer<T>> {}
+    
 }
