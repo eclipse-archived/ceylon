@@ -35,6 +35,7 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -380,18 +381,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 List<ProducedType> typeArgs = getTypeArguments(that.getTypeArgumentList());
-                if (!acceptsTypeArguments(member, typeArgs)) {
-                    if (that.getTypeArgumentList()==null) {
-                        that.addError("requires type arguments");
-                    }
-                    else {
-                        that.getTypeArgumentList().addError("member does not accept the given type arguments");
-                    }
-                }
-                else {
-                    if (member.getContainer() instanceof Package) {
-                        member.getName();
-                    }
+                if (acceptsTypeArguments(member, typeArgs, that.getTypeArgumentList(), that)) {
                     ProducedTypedReference ptr = pt.getTypedMember(member, typeArgs);
                     if (ptr==null) {
                         that.addError("member not found: " + 
@@ -434,15 +424,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 List<ProducedType> typeArgs = getTypeArguments(that.getTypeArgumentList());
-                if (!acceptsTypeArguments(member, typeArgs)) {
-                    if (that.getTypeArgumentList()==null) {
-                        that.addError("requires type arguments");
-                    }
-                    else {
-                        that.getTypeArgumentList().addError("member type does not accept the given type arguments");
-                    }
-                }
-                else {
+                if (acceptsTypeArguments(member, typeArgs, that.getTypeArgumentList(), that)) {
                     ProducedType t = pt.getTypeMember(member, typeArgs);
                     that.setTypeModel(wrap(t, that)); //TODO: this is not correct, should be Callable
                     that.setMemberReference(t);
@@ -1112,19 +1094,8 @@ public class ExpressionVisitor extends Visitor {
                     that.getIdentifier().getText());
         }
         else {
-            if ( that.getIdentifier().getText().equals("getIt") ) {
-                that.getIdentifier();
-            }
             List<ProducedType> typeArgs = getTypeArguments(that.getTypeArgumentList());
-            if (!acceptsTypeArguments(d, typeArgs)) {
-                if (that.getTypeArgumentList()==null) {
-                    that.addError("requires type arguments");
-                }
-                else {
-                    that.getTypeArgumentList().addError("does not accept the given type arguments");
-                }
-            }
-            else {
+            if (acceptsTypeArguments(d, typeArgs, that.getTypeArgumentList(), that)) {
                 ProducedType ot;
                 if ( d.isMember() ) {
                     ot = getDeclaringType(d, typeArgs);
@@ -1152,14 +1123,7 @@ public class ExpressionVisitor extends Visitor {
         if (typeArguments!=null) {
             ProducedType pt = that.getTypeModel();
             if (pt!=null) {
-                if (!acceptsTypeArguments(pt.getDeclaration(), typeArguments)) {
-                    if (that.getTypeArgumentList()==null) {
-                        that.addError("requires type arguments");
-                    }
-                    else {
-                        that.getTypeArgumentList().addError("does not accept the given type arguments");
-                    }
-                }
+                acceptsTypeArguments(pt.getDeclaration(), typeArguments, that.getTypeArgumentList(), that);
             }
         }
     }
@@ -1426,41 +1390,43 @@ public class ExpressionVisitor extends Visitor {
         return (Class) getLanguageDeclaration("Entry");
     }
 
-    private boolean acceptsTypeArguments(Declaration d, List<ProducedType> typeArguments) {
-        if (typeArguments==null) {
-            return false;
-        }
-        else {
-            if (d instanceof Generic) {
-                //TODO: actually produce some useful errors!
-                List<TypeParameter> params = ((Generic) d).getTypeParameters();
-                if ( params.size()==typeArguments.size() ) {
-                    for (int i=0; i<params.size(); i++) {
-                        TypeParameter param = params.get(i);
-                        ProducedType arg = typeArguments.get(i);
-                        Map<TypeParameter, ProducedType> self = Collections.singletonMap(param, arg);
-                        for (ProducedType st: param.getSatisfiedTypes()) {
-                            ProducedType sts = st.substitute(self);
-                            if (!arg.isSubtypeOf(sts)) {
-                                System.out.println("type parameter " + param.getName() 
-                                        + " of declaration " + d.getName()
-                                        + " has argument " + arg.getProducedTypeName() 
-                                        + " not assignable to " + sts.getProducedTypeName() );
-                                System.out.println(arg.getProducedTypeName() + " satisfies " + arg.getSupertypes());
-                                System.out.println(sts.getProducedTypeName() + " satisfies " + sts.getSupertypes());
-                                return false;
-                            }
+    private boolean acceptsTypeArguments(Declaration d, List<ProducedType> typeArguments, TypeArgumentList tal, Node parent) {
+        if (d instanceof Generic) {
+            List<TypeParameter> params = ((Generic) d).getTypeParameters();
+            if ( params.size()==typeArguments.size() ) {
+                for (int i=0; i<params.size(); i++) {
+                    TypeParameter param = params.get(i);
+                    ProducedType arg = typeArguments.get(i);
+                    Map<TypeParameter, ProducedType> self = Collections.singletonMap(param, arg);
+                    for (ProducedType st: param.getSatisfiedTypes()) {
+                        ProducedType sts = st.substitute(self);
+                        if (!arg.isSubtypeOf(sts)) {
+                            tal.getTypes().get(i).addError("type parameter " + param.getName() 
+                                    + " of declaration " + d.getName()
+                                    + " has argument " + arg.getProducedTypeName() 
+                                    + " not assignable to " + sts.getProducedTypeName());
+                            return false;
                         }
                     }
-                    return true;
                 }
-                else {
-                    return false;
-                }
+                return true;
             }
             else {
-                return typeArguments.isEmpty();
+                if (tal==null) {
+                    parent.addError("requires type arguments (until we implement type inference)");
+                }
+                else {
+                    tal.addError("wrong number of type arguments");
+                }
+                return false;
             }
+        }
+        else {
+            boolean empty = typeArguments.isEmpty();
+            if (!empty) {
+                tal.addError("does not accept type arguments");
+            }
+            return empty;
         }
     }
         
