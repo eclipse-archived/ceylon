@@ -15,6 +15,31 @@ class Capture() {
         }
     }
     
+    void methodWithConstant() {
+        X x = X();
+        void innerMethod() {
+            x;
+        }
+        X innerGetter {
+            return x;
+        }
+        assign innerGetter {
+            @error x:=innerGetter;
+        }
+    }
+    
+    void methodWithParameter(X x) {
+        void innerMethod() {
+            x;
+        }
+        X innerGetter {
+            return x;
+        }
+        assign innerGetter {
+            @error x:=innerGetter;
+        }
+    }
+    
     X getterWithVariable {
         variable X x := X();
         void innerMethod() {
@@ -41,6 +66,18 @@ class Capture() {
         }
         assign innerGetter {
             x:=innerGetter;
+        }
+    }
+    
+    class ClassWithParameter(@captured X x) {
+        void innerMethod() {
+            x;
+        }
+        X innerGetter {
+            return x;
+        }
+        assign innerGetter {
+            @error x:=innerGetter;
         }
     }
     
