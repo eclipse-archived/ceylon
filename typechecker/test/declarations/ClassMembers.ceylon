@@ -1,14 +1,19 @@
-interface Interfaces {
+class Classes() {
     
-    @error Natural count = 0;
+    Natural count = 0;
     
-    @error count++;
+    count++;
     
-    formal String name;
+    String name;
+    name = "Gavin";
     
-    @error name = "Gavin";
+    formal Boolean shouldRetry;
     
     formal void print(String s);
+    
+    void callsForward() {
+        @error printLine("Hello world");
+    }
     
     void printLine(String s) {
         @error print(s + "\n");
@@ -18,7 +23,7 @@ interface Interfaces {
         return x.uppercase;
     }
     
-    @error print("Hi!");
+    printLine("Hi!");
     
     interface NestedInterface {
         formal String hello;
@@ -34,12 +39,8 @@ interface Interfaces {
         Natural times = 1;
     }
     
-    @error MemberClass();
-    
-    @error throw;
-    
-    @error return MemberClass();
-    
+    MemberClass();
+        
     MemberClass create() {
         return MemberClass();
     }
@@ -49,8 +50,10 @@ interface Interfaces {
     }
     
     void usesSuperAndThis() {
-        @error super;
+        super;
         this;
     }
+    
+    @error return Classes();
     
 }

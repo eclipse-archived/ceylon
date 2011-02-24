@@ -5,6 +5,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getDeclaratio
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Member;
@@ -105,7 +106,7 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.Member that) {
         Declaration member = getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
-        if (member==declaration) {
+        if (member==declaration && !isInterfaceMember()) {
             if (!declared) {
                 that.addError("not yet declared: " + 
                         that.getIdentifier().getText());
@@ -115,6 +116,10 @@ public class SpecificationVisitor extends Visitor {
                         that.getIdentifier().getText());
             }
         }
+    }
+
+    private boolean isInterfaceMember() {
+        return declaration.getContainer() instanceof Interface;
     }
     
     @Override
