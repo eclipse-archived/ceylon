@@ -257,9 +257,6 @@ public class TypeVisitor extends Visitor {
             if (st!=null) {
                 ci.setSatisfiedTypes(getSatisfiedTypes(st, false));
             }
-            if (ci instanceof Interface) {
-                ((Interface) ci).setExtendedType(getObjectDeclaration().getType());
-            }
         }
     }
 
@@ -281,6 +278,18 @@ public class TypeVisitor extends Visitor {
                     c.setExtendedType(getExtendedType(et));
                 }
             }
+        }
+    }
+
+    @Override 
+    public void visit(Tree.AnyInterface that) {
+        super.visit(that);
+        Interface i = (Interface) that.getDeclarationModel();
+        if (i==null) {
+            //TODO: this case is temporary until we get aliases
+        }
+        else {
+            i.setExtendedType(getObjectDeclaration().getType());
         }
     }
 
