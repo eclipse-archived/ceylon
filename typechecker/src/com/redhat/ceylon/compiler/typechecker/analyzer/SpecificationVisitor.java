@@ -9,6 +9,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Member;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -29,6 +30,8 @@ public class SpecificationVisitor extends Visitor {
     private boolean cannotSpecify = true;
     private boolean declared = false;
     private Context context;
+    private Statement lastExecutableStatement;
+    private boolean declarationSection = false;
 
     class SpecificationState {
         boolean definitely;
@@ -106,7 +109,7 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.Member that) {
         Declaration member = getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
-        if (member==declaration && !isInterfaceMember()) {
+        if (member==declaration && !inDeclarationSection()) {
             if (!declared) {
                 that.addError("not yet declared: " + 
                         that.getIdentifier().getText());
@@ -118,8 +121,9 @@ public class SpecificationVisitor extends Visitor {
         }
     }
 
-    private boolean isInterfaceMember() {
-        return declaration.getContainer() instanceof Interface;
+    private boolean inDeclarationSection() {
+        return declarationSection || 
+            declaration.getContainer() instanceof Interface;
     }
     
     @Override
@@ -354,6 +358,47 @@ public class SpecificationVisitor extends Visitor {
             specify();
         }
         super.visit(that);        
+    }
+    
+    @Override
+    public void visit(Tree.ClassBody that) {
+        Tree.Statement les = null;
+        boolean found = false;
+        for (Tree.Statement s: that.getStatements()) {
+            if (s instanceof Tree.ExecutableStatement) {
+                les = s;
+            }
+            if (s instanceof Tree.AttributeDeclaration) {
+                if ( ((Tree.AttributeDeclaration) s).getSpecifierOrInitializerExpression()!=null ) {
+                    les = s;
+                }
+            }
+            if (s instanceof Tree.MethodDeclaration) {
+                if ( ((Tree.MethodDeclaration) s).getSpecifierExpression()!=null ) {
+                    les = s;
+                }
+            }
+            if (s.getDeclarationModel()==declaration) {
+                found = true;
+            }
+        }
+        if (found) {
+            declarationSection = false;
+            lastExecutableStatement = les;
+            super.visit(that);        
+            declarationSection = false;
+        }
+        else {
+            super.visit(that);
+        }
+    }
+    
+    @Override
+    public void visit(Tree.Statement that) {
+        super.visit(that);
+        if (that==lastExecutableStatement) {
+            declarationSection = true;
+        }
     }
     
     @Override
