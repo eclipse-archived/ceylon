@@ -42,7 +42,8 @@ public abstract class Declaration extends Element {
 	}
 	
     public String getQualifiedName() {
-        return getContainer().getQualifiedName() + "." + getName();
+        String cname = getContainer().getQualifiedName();
+        return cname.length()==0 ? getName() : cname + "." + getName();
     }
 
 }
