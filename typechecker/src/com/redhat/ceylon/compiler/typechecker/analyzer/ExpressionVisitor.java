@@ -11,12 +11,15 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -26,6 +29,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -376,8 +380,13 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 List<ProducedType> typeArgs = getTypeArguments(that.getTypeArgumentList());
-                if (!com.redhat.ceylon.compiler.typechecker.model.Util.acceptsArguments(member, typeArgs)) {
-                    that.addError("member does not accept the given type arguments");
+                if (!acceptsTypeArguments(member, typeArgs)) {
+                    if (that.getTypeArgumentList()==null) {
+                        that.addError("requires type arguments");
+                    }
+                    else {
+                        that.getTypeArgumentList().addError("member does not accept the given type arguments");
+                    }
                 }
                 else {
                     if (member.getContainer() instanceof Package) {
@@ -425,8 +434,13 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 List<ProducedType> typeArgs = getTypeArguments(that.getTypeArgumentList());
-                if (!com.redhat.ceylon.compiler.typechecker.model.Util.acceptsArguments(member, typeArgs)) {
-                    that.addError("member type does not accept the given type arguments");
+                if (!acceptsTypeArguments(member, typeArgs)) {
+                    if (that.getTypeArgumentList()==null) {
+                        that.addError("requires type arguments");
+                    }
+                    else {
+                        that.getTypeArgumentList().addError("member type does not accept the given type arguments");
+                    }
                 }
                 else {
                     ProducedType t = pt.getTypeMember(member, typeArgs);
@@ -1102,8 +1116,13 @@ public class ExpressionVisitor extends Visitor {
                 that.getIdentifier();
             }
             List<ProducedType> typeArgs = getTypeArguments(that.getTypeArgumentList());
-            if (!com.redhat.ceylon.compiler.typechecker.model.Util.acceptsArguments(d, typeArgs)) {
-                that.addError("does not accept the given type arguments");
+            if (!acceptsTypeArguments(d, typeArgs)) {
+                if (that.getTypeArgumentList()==null) {
+                    that.addError("requires type arguments");
+                }
+                else {
+                    that.getTypeArgumentList().addError("does not accept the given type arguments");
+                }
             }
             else {
                 ProducedType ot;
@@ -1128,6 +1147,23 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    @Override public void visit(Tree.StaticType that) {
+        List<ProducedType> typeArguments = getTypeArguments(that.getTypeArgumentList());
+        if (typeArguments!=null) {
+            ProducedType pt = that.getTypeModel();
+            if (pt!=null) {
+                if (!acceptsTypeArguments(pt.getDeclaration(), typeArguments)) {
+                    if (that.getTypeArgumentList()==null) {
+                        that.addError("requires type arguments");
+                    }
+                    else {
+                        that.getTypeArgumentList().addError("does not accept the given type arguments");
+                    }
+                }
+            }
+        }
+    }
+        
     private ProducedType getDeclaringType(TypedDeclaration d, List<ProducedType> typeArgs) {
         //look for it as a declared or inherited 
         //member of the current class or interface
@@ -1388,6 +1424,44 @@ public class ExpressionVisitor extends Visitor {
         
     private Class getEntryDeclaration() {
         return (Class) getLanguageDeclaration("Entry");
+    }
+
+    private boolean acceptsTypeArguments(Declaration d, List<ProducedType> typeArguments) {
+        if (typeArguments==null) {
+            return false;
+        }
+        else {
+            if (d instanceof Generic) {
+                //TODO: actually produce some useful errors!
+                List<TypeParameter> params = ((Generic) d).getTypeParameters();
+                if ( params.size()==typeArguments.size() ) {
+                    for (int i=0; i<params.size(); i++) {
+                        TypeParameter param = params.get(i);
+                        ProducedType arg = typeArguments.get(i);
+                        Map<TypeParameter, ProducedType> self = Collections.singletonMap(param, arg);
+                        for (ProducedType st: param.getSatisfiedTypes()) {
+                            ProducedType sts = st.substitute(self);
+                            if (!arg.isSubtypeOf(sts)) {
+                                System.out.println("type parameter " + param.getName() 
+                                        + " of declaration " + d.getName()
+                                        + " has argument " + arg.getProducedTypeName() 
+                                        + " not assignable to " + sts.getProducedTypeName() );
+                                System.out.println(arg.getProducedTypeName() + " satisfies " + arg.getSupertypes());
+                                System.out.println(sts.getProducedTypeName() + " satisfies " + sts.getSupertypes());
+                                return false;
+                            }
+                        }
+                    }
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+            else {
+                return typeArguments.isEmpty();
+            }
+        }
     }
         
 }

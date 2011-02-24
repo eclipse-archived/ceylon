@@ -42,7 +42,7 @@ public class ProducedType extends ProducedReference {
 			for (TypeParameter p: getDeclaration().getTypeParameters()) {
 			    ProducedType t = getTypeArguments().get(p);
 			    if (t==null) {
-			        producedTypeName+="null";
+			        producedTypeName+="unknown,";
 			    }
 			    else {
 			        producedTypeName+=t.getProducedTypeName() + ",";
@@ -147,9 +147,10 @@ public class ProducedType extends ProducedReference {
     	            ProducedType arg = st.getTypeArguments().get(p);
     	            ProducedType otherArg = type.getTypeArguments().get(p);
     	            if (arg==null || otherArg==null) {
-    	                throw new RuntimeException("Missing type argument for type parameter: " +
+    	                /*throw new RuntimeException("Missing type argument for type parameter: " +
     	                        p.getName() + " of " + 
-    	                        type.getDeclaration().getName());
+    	                        type.getDeclaration().getName());*/
+    	                return false;
     	            }
     	            if (p.isCovariant()) {
     	                if (!arg.isSubtypeOf(otherArg)) {
@@ -176,7 +177,7 @@ public class ProducedType extends ProducedReference {
         return type.isSubtypeOf(this);
     }
     
-    ProducedType substitute(Map<TypeParameter,ProducedType> substitutions) {
+    public ProducedType substitute(Map<TypeParameter,ProducedType> substitutions) {
         if (getDeclaration() instanceof TypeParameter) {
             ProducedType sub = substitutions.get(getDeclaration());
             if (sub!=null) return sub;
@@ -201,9 +202,9 @@ public class ProducedType extends ProducedReference {
     }
          
     ProducedTypedReference getDeclaredTypedMember(TypedDeclaration td, ProducedType declaringType, List<ProducedType> typeArguments) {
-        if (!acceptsArguments(td, typeArguments)) {
+        /*if (!acceptsArguments(td, typeArguments)) {
             return null;
-        }
+        }*/
         ProducedTypedReference ptr = new ProducedTypedReference();
         ptr.setDeclaration(td);
         ptr.setDeclaringType(declaringType);
@@ -215,9 +216,9 @@ public class ProducedType extends ProducedReference {
          
     public ProducedType getTypeMember(TypeDeclaration td, List<ProducedType> typeArguments) {
         //TODO: inherited type members, following pattern above!
-        if (!acceptsArguments(td, typeArguments)) {
+        /*if (!acceptsArguments(td, typeArguments)) {
             return null;
-        }
+        }*/
         ProducedType pt = new ProducedType();
         pt.setDeclaration(td);
         ProducedType declaringType = getSupertype( (TypeDeclaration) td.getContainer() );
@@ -289,14 +290,16 @@ public class ProducedType extends ProducedReference {
         else {
             for (TypeParameter tp: getDeclaration().getTypeParameters()) {
                 ProducedType pt = getTypeArguments().get(tp);
-                if (tp.isCovariant()) {
-                    if (!pt.checkVariance(covariant, contravariant, declaration)) return false;
-                }
-                else if (tp.isContravariant()) {
-                    if (!pt.checkVariance(!covariant, !contravariant, declaration)) return false;
-                }
-                else {
-                    pt.checkVariance(false, false, declaration);
+                if (pt!=null) {
+                    if (tp.isCovariant()) {
+                        if (!pt.checkVariance(covariant, contravariant, declaration)) return false;
+                    }
+                    else if (tp.isContravariant()) {
+                        if (!pt.checkVariance(!covariant, !contravariant, declaration)) return false;
+                    }
+                    else {
+                        pt.checkVariance(false, false, declaration);
+                    }
                 }
             }
             return true;

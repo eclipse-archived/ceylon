@@ -1,12 +1,12 @@
 class Primaries() {
     
-    class A() {
+    class A() extends IdentifiableObject() {
         shared B b = B();
     }
-    class B() {
+    class B() extends IdentifiableObject() {
         shared C c() = C();
     }
-    class C() {}
+    class C() extends IdentifiableObject() {}
     
     @type["Primaries.A"] A();
     
@@ -82,16 +82,16 @@ class Primaries() {
         @type["Primaries"] Inner3().outer;
     }
     
-    interface G {
+    interface G satisfies Equality<IdentifiableObject> {
         String getIt() {
             return "Hello";
         }
     }
-    interface H {
+    interface H satisfies Equality<IdentifiableObject> {
         void doIt() {}
     }
     class S() extends B() satisfies G & H {}
-    class T() satisfies G & H {}
+    class T() extends IdentifiableObject() satisfies G & H {}
     
     @type["Sequence<Primaries.B>"] {S(), B()};
     @type["Sequence<Primaries.B>"] {B(), S()};
@@ -101,12 +101,12 @@ class Primaries() {
     @type["Sequence<String>"] {S(), T()}[].getIt();
     B[] bs1 = {S(), B()};
     B[] bs2 = {B(), S()};
-    H[] hs = {S(), T()};
-    G[] gs = {T(), S()};
+    //H[] hs = {S(), T()};
+    //G[] gs = {T(), S()};
     @type["Sequence<Primaries.A|Primaries.B|String|Sequence<Natural>>"] {A(),B(),"Hello",A(),{1,2,3}, S()};
-    Object[] stuff = {A(),B(),"Hello",{1,2,3}};
+    //Object[] stuff = {A(),B(),"Hello",{1,2,3}};
     local objects = {A(),B(),"Hello",{1,2,3}};
-    Object[] things = objects;
+    //Object[] things = objects;
     @type["Optional<Primaries.A|Primaries.B|String|Sequence<Natural>>"] objects[1];
     @type["Optional<String>"] objects[1]?.string;
     if (exists local o = objects[1]) {

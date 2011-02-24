@@ -9,12 +9,12 @@ class Inheritance() {
         shared T getIt() { return it; }
         shared Boolean isIt(T t) { return t==it; }
     }
-    class Y<T>(T t) extends X<T>(t) {}
+    class Y<T>(T t) extends X<T>(t) given T satisfies Equality<T> {}
     class Z() extends X<String>("Hello") {
         String sss = getIt();
         Boolean b = isIt("hi");
     }
-    class W<U,V>(U u, V v) extends X<V>(v) {
+    class W<U,V>(U u, V v) extends X<V>(v) given V satisfies Equality<V> {
         V vv = getIt();
     }
     class ZZ(Natural n) extends X<Natural>(n) {

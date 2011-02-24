@@ -140,24 +140,12 @@ public class TypeVisitor extends Visitor {
 
     private void visitType(Tree.StaticType that, ProducedType ot, TypeDeclaration d) {
         List<ProducedType> typeArguments = getTypeArguments(that);
-        if (typeArguments!=null) {
-            if (!com.redhat.ceylon.compiler.typechecker.model.Util.acceptsArguments(d, typeArguments)) {
-                that.addError("does not accept the given type arguments");
-            }
-            else {
-                ProducedType pt = d.getProducedType(ot, typeArguments);
-                if (pt==null) {
-                    that.addError("incompatible type arguments");
-                }
-                else {
-                    that.setTypeModel(pt);
-                    that.setMemberReference(pt);
-                    if (typeArguments!=null) {
-                        typeArguments.add(pt);
-                    }
-                }
-            }
-        }
+        ProducedType pt = d.getProducedType(ot, typeArguments);
+        that.setTypeModel(pt);
+        that.setMemberReference(pt);
+        /*if (typeArguments!=null) {
+            typeArguments.add(pt);
+        }*/
     }
     
     private List<ProducedType> getTypeArguments(Tree.StaticType that) {
@@ -168,7 +156,7 @@ public class TypeVisitor extends Visitor {
                 ProducedType t = ta.getTypeModel();
                 if (t==null) {
                     ta.addError("could not resolve type argument");
-                    return null;
+                    typeArguments.add(null);
                 }
                 else {
                     typeArguments.add(t);

@@ -55,6 +55,7 @@ public class Util {
     public static Declaration getLanguageModuleDeclaration(String name, Context context) {
         //all elements in ceylon.language are auto-imported
         //traverse all default module packages provided they have not been traversed yet
+        if (context==null) return null;
         final Module languageModule = context.getLanguageModule();
         if (languageModule != null) {
             if ("Bottom".equals(name)) {

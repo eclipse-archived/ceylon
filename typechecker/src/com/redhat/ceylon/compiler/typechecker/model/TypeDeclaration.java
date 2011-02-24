@@ -48,9 +48,9 @@ public abstract class TypeDeclaration extends Declaration implements Generic, Sc
 	}
 	
 	public ProducedType getProducedType(ProducedType outerType, List<ProducedType> typeArguments) {
-	    if (!acceptsArguments(this, typeArguments)) {
+	    /*if (!acceptsArguments(this, typeArguments)) {
 	        return null;
-	    }
+	    }*/
 	    ProducedType pt = new ProducedType();
 	    pt.setDeclaration(this);
 	    pt.setDeclaringType(outerType);

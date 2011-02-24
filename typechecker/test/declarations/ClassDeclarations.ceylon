@@ -16,7 +16,7 @@ abstract class ClassDeclarations() {
     @error sayGoodbye();
     @error goodbye;
     
-    hello;
+    @error hello;
     sayHello();
     
     formal String goodbye;

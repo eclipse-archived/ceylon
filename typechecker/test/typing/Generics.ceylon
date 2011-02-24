@@ -64,7 +64,9 @@ class Generics() {
     Consumer<String> c = Consumer<Object>();
     Producer<Consumer<Producer<String>>> o = Producer<Consumer<Producer<Object>>>();
     
-    class Variances<out X, in Y, Z>(X x, Y y) {
+    class Variances<out X, in Y, Z>(X x, Y y) 
+            given X satisfies Equality<X>
+            given Y satisfies Equality<Y> {
         X goodAtt = x;
         @error Y badAtt = y;
         X[] goodAtt2 { return {x}; }
@@ -99,7 +101,7 @@ class Generics() {
         class GoodParameterizedClass2<out T>(Producer<T> t) {}
         class GoodParameterizedClass3<out T>(Consumer<T> t) {}
         class GoodParameterizedClass4<out T>(void get(T t)) {}
-        class GoodParameterizedClass5<out T>(void get(T[] t)) {}
+        class GoodParameterizedClass5<out T>(void get(T[] t)) given T satisfies Equality<T> {}
         class GoodParameterizedClass6<out T>(void get(Producer<T> t)) {}
         class GoodParameterizedClass7<in T>(T t) {}
         class GoodParameterizedClass8<in T>(void get(Consumer<T> t)) {}
@@ -107,7 +109,7 @@ class Generics() {
         class GoodParameterizedClass10<in T>(Consumer<T> t) {}
         class BadParameterizedClass<out T>(void get(Consumer<T> t)) {}
         class BadParameterizedClass2<in T>(void get(T t)) {}
-        class BadParameterizedClass3<in T>(void get(T[] t)) {}
+        class BadParameterizedClass3<in T>(void get(T[] t)) given T satisfies Equality<T> {}
         class BadParameterizedClass4<in T>(void get(Producer<T> t)) {}
         void goodHigherOrderMethod(void get(X x)) {}
         void badHigherOrderMethod(void get(@error Y x)) {}

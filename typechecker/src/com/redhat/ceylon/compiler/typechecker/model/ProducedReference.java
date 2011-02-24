@@ -39,7 +39,9 @@ public abstract class ProducedReference extends Model {
     Map<TypeParameter, ProducedType> sub(Map<TypeParameter, ProducedType> substitutions) {
         Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
         for (Map.Entry<TypeParameter, ProducedType> e: getTypeArguments().entrySet()) {
-            map.put(e.getKey(), e.getValue().substitute(substitutions));
+            if (e.getValue()!=null) {
+                map.put(e.getKey(), e.getValue().substitute(substitutions));
+            }
         }
         if (getDeclaringType()!=null) {
             map.putAll(getDeclaringType().sub(substitutions));
@@ -60,5 +62,5 @@ public abstract class ProducedReference extends Model {
         ptr.setTypeArguments(getTypeArguments());
         return ptr;
     }
-         
+    
 }

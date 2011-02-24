@@ -1,5 +1,6 @@
 shared interface FixedSlots<B>
-        satisfies Slots<B> {
+        satisfies Slots<B> 
+        given B satisfies Slots<B> {
 
     doc "Slotwise complement operator |~x|.
          Implementations should respect the constraint
