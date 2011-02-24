@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.typechecker;
 
+import com.redhat.ceylon.compiler.typechecker.io.VFS;
+import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +20,14 @@ import java.util.List;
  */
 public class TypeCheckerBuilder {
     private boolean verbose = false;
-    private List<File> srcDirectories = new ArrayList<File>();
+    private List<VirtualFile> srcDirectories = new ArrayList<VirtualFile>();
+    private final VFS vfs = new VFS();
 
     public TypeCheckerBuilder() {
     }
 
     public TypeCheckerBuilder addSrcDirectory(File srcDirectory) {
-        srcDirectories.add(srcDirectory);
+        srcDirectories.add( vfs.getFromFile( srcDirectory ) );
         return this;
     }
 
@@ -34,7 +38,7 @@ public class TypeCheckerBuilder {
     }
 
     public TypeChecker getTypeChecker() {
-        return new TypeChecker(srcDirectories, verbose);
+        return new TypeChecker(vfs, srcDirectories, verbose);
     }
 
 }

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 
@@ -28,7 +29,7 @@ public class Context {
     private Module nomodule;
     private Module languageModule;
     private List<PhasedUnit> phasedUnits = new ArrayList<PhasedUnit>();
-    private Map<File,PhasedUnit> phasedUnitPerFile = new HashMap<File,PhasedUnit>();
+    private Map<VirtualFile,PhasedUnit> phasedUnitPerFile = new HashMap<VirtualFile,PhasedUnit>();
     private Set<Module> modules = new HashSet<Module>();
 
     public Context() {
@@ -137,7 +138,7 @@ public class Context {
         return packageStack.peekLast();
     }
 
-    public void addStagedUnit(File unitFile, PhasedUnit phasedUnit) {
+    public void addPhasedUnit(VirtualFile unitFile, PhasedUnit phasedUnit) {
         //TODO do we need the ordering??, we could get rid of the List and use map.valueSet()
         this.phasedUnits.add(phasedUnit);
         this.phasedUnitPerFile.put(unitFile, phasedUnit);
@@ -147,7 +148,7 @@ public class Context {
         return phasedUnits;
     }
 
-    public PhasedUnit getPhasedUnit(File file) {
+    public PhasedUnit getPhasedUnit(VirtualFile file) {
         return phasedUnitPerFile.get(file);
     }
 
