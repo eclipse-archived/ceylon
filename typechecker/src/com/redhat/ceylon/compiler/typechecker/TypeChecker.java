@@ -30,7 +30,6 @@ public class TypeChecker {
     private final boolean verbose;
     private final List<VirtualFile> srcDirectories;
     private final Context context;
-    private final File ceylonLocalRepo;
     private final VFS vfs;
 
     //package level
