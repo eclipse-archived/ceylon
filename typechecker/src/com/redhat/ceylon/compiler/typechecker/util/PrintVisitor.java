@@ -60,7 +60,7 @@ public class PrintVisitor extends Visitor implements NaturalVisitor {
 
     private void print(Node node) {
         print(node.getText() + 
-                " [" + node.getClass().getSimpleName() + 
+                " [" + node.getNodeType() + 
                 "] (" + node.getAntlrTreeNode().getLine() + 
                 ":" + node.getAntlrTreeNode().getCharPositionInLine()  + 
                 ")");

@@ -3,8 +3,11 @@ package com.redhat.ceylon.compiler.typechecker.tree;
 import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList;
 
 public class CustomBuilder extends Builder {
     
@@ -31,7 +34,9 @@ public class CustomBuilder extends Builder {
                     Walker.walkAttribute(visitor, this);
                 }
             }
-            
+            @Override public String getNodeType() {
+                return AttributeDeclaration.class.getSimpleName();
+            }
         };
         buildAttributeDeclaration(treeNode, node);
         return node;
@@ -57,12 +62,98 @@ public class CustomBuilder extends Builder {
                     super.visitChildren(visitor);
                 }
                 else {
-                    Walker.walkMethod(visitor, this);
+                    if (getTypeParameterList()!=null)
+                        getTypeParameterList().visit(visitor);
+                    if (getTypeConstraintList()!=null)
+                        getTypeConstraintList().visit(visitor);
+                    Walker.walkTypedDeclaration(visitor, this);
+                    for (ParameterList subnode: getParameterLists())
+                        subnode.visit(visitor);
                 }
             }
-            
+            @Override public String getNodeType() {
+                return MethodDeclaration.class.getSimpleName();
+            }
         };
         buildMethodDeclaration(treeNode, node);
+        return node;
+    }
+    
+    @Override
+    public MethodDefinition buildMethodDefinition(CommonTree treeNode) {
+        MethodDefinition node = new MethodDefinition(treeNode) {
+            @Override
+            public void visitChildren(Visitor visitor) {
+                if (visitor instanceof NaturalVisitor) {
+                    super.visitChildren(visitor);
+                }
+                else {
+                    Walker.walkDeclaration(visitor, this);
+                    if (getTypeParameterList()!=null)
+                        getTypeParameterList().visit(visitor);
+                    if (getTypeConstraintList()!=null)
+                        getTypeConstraintList().visit(visitor);
+                    if (getType()!=null)
+                        getType().visit(visitor);
+                    for (ParameterList subnode: getParameterLists())
+                        subnode.visit(visitor);
+                    if (getBlock()!=null)
+                        getBlock().visit(visitor);
+                }
+            }
+            @Override public String getNodeType() {
+                return MethodDefinition.class.getSimpleName();
+            }
+        };
+        buildMethodDefinition(treeNode, node);
+        return node;
+    }
+    
+    @Override
+    public ClassDefinition buildClassDefinition(CommonTree treeNode) {
+        ClassDefinition node = new ClassDefinition(treeNode) {
+            @Override
+            public void visitChildren(Visitor visitor) {
+                if (visitor instanceof NaturalVisitor) {
+                    Walker.walkDeclaration(visitor, this);
+                    if (getTypeParameterList()!=null)
+                        getTypeParameterList().visit(visitor);
+                    if (getParameterList()!=null)
+                        getParameterList().visit(visitor);
+                    if (getCaseTypes()!=null)
+                        getCaseTypes().visit(visitor);
+                    if (getExtendedType()!=null)
+                        getExtendedType().visit(visitor);
+                    if (getSatisfiedTypes()!=null)
+                        getSatisfiedTypes().visit(visitor);
+                    if (getTypeConstraintList()!=null)
+                        getTypeConstraintList().visit(visitor);
+                    if (getClassBody()!=null)
+                        getClassBody().visit(visitor);
+                }
+                else {
+                    Walker.walkDeclaration(visitor, this);
+                    if (getTypeParameterList()!=null)
+                        getTypeParameterList().visit(visitor);
+                    if (getTypeConstraintList()!=null)
+                        getTypeConstraintList().visit(visitor);
+                    if (getParameterList()!=null)
+                        getParameterList().visit(visitor);
+                    if (getCaseTypes()!=null)
+                        getCaseTypes().visit(visitor);
+                    if (getExtendedType()!=null)
+                        getExtendedType().visit(visitor);
+                    if (getSatisfiedTypes()!=null)
+                        getSatisfiedTypes().visit(visitor);
+                    if (getClassBody()!=null)
+                        getClassBody().visit(visitor);
+                }
+            }
+            @Override public String getNodeType() {
+                return ClassDefinition.class.getSimpleName();
+            }
+        };
+        buildClassDefinition(treeNode, node);
         return node;
     }
     
@@ -89,7 +180,9 @@ public class CustomBuilder extends Builder {
                     Walker.walkTypedDeclaration(visitor, this);
                 }
             }
-            
+            @Override public String getNodeType() {
+                return Parameter.class.getSimpleName();
+            }
         };
         buildParameter(treeNode, node);
         return node;

@@ -132,4 +132,9 @@ public abstract class Node {
         return w.toString();
         //return getClass().getSimpleName() + "(" + text + ")"; 
     }
+
+    public String getNodeType() {
+        return getClass().getSimpleName();
+    }
+    
 }
