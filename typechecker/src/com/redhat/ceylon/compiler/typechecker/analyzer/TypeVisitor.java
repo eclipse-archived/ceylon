@@ -233,6 +233,13 @@ public class TypeVisitor extends Visitor {
         return list;
     }
     
+    @Override 
+    public void visit(Tree.TypeParameter that) {
+        super.visit(that);
+        TypeParameter tp = (TypeParameter) that.getDeclarationModel();
+        tp.setExtendedType(getVoidDeclaration().getType());
+    }
+    
     @Override
     public void visit(Tree.TypeConstraint that) {
         super.visit(that);
