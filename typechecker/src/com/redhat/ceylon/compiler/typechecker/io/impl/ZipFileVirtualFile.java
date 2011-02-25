@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.io.impl;
 
+import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 
 import java.io.File;
@@ -17,17 +18,23 @@ import java.util.zip.ZipFile;
 /**
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
-public class ZipFileVirtualFile implements VirtualFile {
+public class ZipFileVirtualFile implements ClosableVirtualFile {
 
-    private final ZipFile zipFile;
+    protected final ZipFile zipFile;
     private final String name;
-    //private final List<VirtualFile> children;
+    private final List<VirtualFile> children;
+    private final boolean closable;
 
     public ZipFileVirtualFile(File file) throws IOException {
-        this( new ZipFile(file) );
+        this( new ZipFile(file), true );
     }
 
     public ZipFileVirtualFile(ZipFile zipFile) {
+        this( zipFile, false );
+    }
+
+    private ZipFileVirtualFile(ZipFile zipFile, boolean closable) {
+        this.closable = closable;
         this.zipFile = zipFile;
         final String path = zipFile.getName();
         final int lastIndex = path.lastIndexOf(File.separator);
@@ -67,7 +74,7 @@ public class ZipFileVirtualFile implements VirtualFile {
                 addToPArentfolder(directChildren, directoryStack, entryName, file);
             }
         }
-        //children = directChildren;
+        children = directChildren;
     }
 
     private void addToPArentfolder(List<VirtualFile> directChildren, LinkedList<ZipFolderVirtualFile> directoryStack, String entryName, VirtualFile file) {
@@ -113,7 +120,7 @@ public class ZipFileVirtualFile implements VirtualFile {
 
     @Override
     public List<VirtualFile> getChildren() {
-        return null;
+        return children;
     }
 
     @Override
@@ -123,5 +130,17 @@ public class ZipFileVirtualFile implements VirtualFile {
         sb.append("{name='").append(name).append('\'');
         sb.append('}');
         return sb.toString();
+    }
+
+    @Override
+    public void close() {
+        if (closable) {
+            try {
+                zipFile.close();
+            }
+            catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

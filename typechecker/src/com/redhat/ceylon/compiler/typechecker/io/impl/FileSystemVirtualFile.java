@@ -33,6 +33,10 @@ public class FileSystemVirtualFile implements VirtualFile {
         files = Collections.unmodifiableList(localFiles);
     }
 
+    public File getFile() {
+        return file;
+    }
+
     @Override
     public boolean isFolder() {
         return file.isDirectory();
