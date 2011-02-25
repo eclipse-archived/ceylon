@@ -76,14 +76,14 @@ public class ExpressionVisitor extends Visitor {
     
     public void visit(Tree.ObjectDeclaration that) {
         ClassOrInterface o = classOrInterface;
-        classOrInterface = (Class) ((Value) that.getDeclarationModel()).getType().getDeclaration();
+        classOrInterface = (Class) ((Value) that.getDeclarationModel()).getTypeDeclaration();
         super.visit(that);
         classOrInterface = o;
     }
     
     public void visit(Tree.ObjectArgument that) {
         ClassOrInterface o = classOrInterface;
-        classOrInterface = (Class) ((Value) that.getDeclarationModel()).getType().getDeclaration();
+        classOrInterface = (Class) ((Value) that.getDeclarationModel()).getTypeDeclaration();
         super.visit(that);
         classOrInterface = o;
     }

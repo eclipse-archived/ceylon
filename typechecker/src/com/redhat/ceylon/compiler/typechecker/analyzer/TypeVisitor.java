@@ -302,7 +302,7 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         Tree.ExtendedType et = that.getExtendedType();
         Tree.SatisfiedTypes st = that.getSatisfiedTypes();
-        TypeDeclaration td = ( (Value) that.getDeclarationModel() ).getType().getDeclaration();
+        TypeDeclaration td = ( (Value) that.getDeclarationModel() ).getTypeDeclaration();
         if (td!=null) {
             if (et!=null) {
                 td.setExtendedType(getExtendedType(et));
@@ -318,7 +318,7 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         Tree.ExtendedType et = that.getExtendedType();
         Tree.SatisfiedTypes st = that.getSatisfiedTypes();
-        TypeDeclaration td = ( (Value) that.getDeclarationModel() ).getType().getDeclaration();
+        TypeDeclaration td = ( (Value) that.getDeclarationModel() ).getTypeDeclaration();
         if (td!=null) {
             if (et!=null) {
                 td.setExtendedType(getExtendedType(et));

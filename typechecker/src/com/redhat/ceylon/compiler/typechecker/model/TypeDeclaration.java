@@ -23,12 +23,24 @@ public abstract class TypeDeclaration extends Declaration implements Generic, Sc
 		this.typeParameters = typeParameters;
 	}
 	
+	public Class getExtendedTypeDeclaration() {
+	    return (Class) getExtendedType().getDeclaration();
+	}
+	
 	public ProducedType getExtendedType() {
 		return extendedType;
 	}
 	
 	public void setExtendedType(ProducedType extendedType) {
 		this.extendedType = extendedType;
+	}
+	
+	public List<TypeDeclaration> getSatisfiedTypeDeclarations() {
+	    List<TypeDeclaration> list = new ArrayList<TypeDeclaration>();
+	    for (ProducedType pt: getSatisfiedTypes()) {
+	        list.add(pt.getDeclaration());
+	    }
+	    return list;
 	}
 	
 	public List<ProducedType> getSatisfiedTypes() {
@@ -39,6 +51,14 @@ public abstract class TypeDeclaration extends Declaration implements Generic, Sc
 		this.satisfiedTypes = satisfiedTypes;
 	}
 	
+    public List<TypeDeclaration> getCaseTypeDeclarations() {
+        List<TypeDeclaration> list = new ArrayList<TypeDeclaration>();
+        for (ProducedType pt: getCaseTypes()) {
+            list.add(pt.getDeclaration());
+        }
+        return list;
+    }
+    
 	public List<ProducedType> getCaseTypes() {
 		return caseTypes;
 	}

@@ -14,7 +14,11 @@ import java.util.List;
 public abstract class TypedDeclaration extends Declaration {
 	
 	ProducedType type;
-
+	
+	public TypeDeclaration getTypeDeclaration() {
+	    return type.getDeclaration();
+	}
+	
 	public ProducedType getType() {
 		return type;
 	}
