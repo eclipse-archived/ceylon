@@ -83,12 +83,12 @@ class Primaries() {
     }
     
     interface G satisfies Equality<IdentifiableObject> {
-        String getIt() {
+        shared String getIt() {
             return "Hello";
         }
     }
     interface H satisfies Equality<IdentifiableObject> {
-        void doIt() {}
+        shared void doIt() {}
     }
     class S() extends B() satisfies G & H {}
     class T() extends IdentifiableObject() satisfies G & H {}

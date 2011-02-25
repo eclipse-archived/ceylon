@@ -96,6 +96,10 @@ public class TypeVisitor extends Visitor {
                     that.getIdentifier().getText());
         }
         else {
+            if (!d.isShared()) {
+                that.addError("imported declaration is not shared: " +
+                        that.getIdentifier().getText());
+            }
             i.setDeclaration(d);
             unit.getImports().add(i);
         }

@@ -1,7 +1,7 @@
 class Inheritance() {
     
     interface I<T> {
-        void doIt(T t) {}
+        shared void doIt(T t) {}
     }
     class X<T>(T t) satisfies I<T> 
             given T satisfies Equality<T> {

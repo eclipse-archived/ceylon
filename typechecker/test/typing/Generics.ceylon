@@ -2,10 +2,10 @@ class Generics() {
     
     class Holder<X>(X x) {
         shared X held = x;
-        X add(X x, X y) {
+        shared X add(X x, X y) {
             @error return x + y;
         }
-        Y noop<Y>(Y y) {
+        shared Y noop<Y>(Y y) {
             return y;
         }
     }
@@ -45,7 +45,7 @@ class Generics() {
     @error String hi2 = op<X>("Hi");
     
     class C<X>() {
-        X cop(X arg) {
+        shared X cop(X arg) {
             if (false) {
                 X nothing { return arg; }
                 return nothing;
@@ -147,7 +147,7 @@ class Generics() {
     }
     
     class Bar() {
-        String hello = "Hello";
+        shared String hello = "Hello";
     }
     class Foo<X>(X x) given X satisfies Bar {
         @type["String"] x.hello;
@@ -155,13 +155,13 @@ class Generics() {
     
     class Outer<X>(X x) given X satisfies Equality<X> {
         //shared X x = x;
-        class Inner<Y>(Y y) given Y satisfies Equality<Y> {
+        shared class Inner<Y>(Y y) given Y satisfies Equality<Y> {
             //shared Y y = y;
-            Entry<X,Y> getIt() {
+            shared Entry<X,Y> getIt() {
                 return x->y;
             }
         }
-        Inner<String> createInner(String string) {
+        shared Inner<String> createInner(String string) {
             return Inner<String>(string);
         }
     }

@@ -2,12 +2,12 @@ shared extension class String(Character[] this)
         extends Object()
         satisfies Character[] & Comparable<String> & Matcher<String> & Format {
 
-    Character[] chars;
+    shared Character[] characters;
     if (is String this) {
-        chars = this;
+        characters = this;
     }
     else {
-        chars = copy(this);
+        characters = copy(this);
     }
 
     doc "Split the string into tokens, using the given

@@ -38,7 +38,7 @@ class Classes() {
     }
     
     class MemberClass() {
-        String goodbye = upper("goodbye");
+        shared String goodbye = upper("goodbye");
         Natural times = 1;
     }
     

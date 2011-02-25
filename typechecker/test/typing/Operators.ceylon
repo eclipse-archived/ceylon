@@ -89,10 +89,10 @@ class Operators() {
     @error sequence["hello"...];
     @error sequence[1.."hello"];
     
-    @type["Sequence<Sequence<Character>>"] {"hello", "world"}[].chars;
+    @type["Sequence<Sequence<Character>>"] {"hello", "world"}[].characters;
     @type["Sequence<String>"] {"hello", "world"}[].uppercase;
-    @type["Optional<Sequence<Character>>"] {"hello", "world"}[0]?.chars;
-    @type["Sequence<Sequence<Character>>"] {"hello", "world"}[].chars;
+    @type["Optional<Sequence<Character>>"] {"hello", "world"}[0]?.characters;
+    @type["Sequence<Sequence<Character>>"] {"hello", "world"}[].characters;
     @type["Sequence<Iterable<String>>"] {"hello", "world"}[].lines();
     @type["Optional<String>"] {"hello", "world"}[0]?.normalize(" #");
     @type["Sequence<String>"] {"hello", "world"}[].normalize(" #");

@@ -381,6 +381,10 @@ public class ExpressionVisitor extends Visitor {
                         that.getIdentifier().getText());
             }
             else {
+                if (!isVisible(member, that)) {
+                    that.addError("target of member reference is not shared: " +
+                            that.getIdentifier().getText());
+                }
                 List<ProducedType> typeArgs = getTypeArguments(that.getTypeArgumentList());
                 if (acceptsTypeArguments(member, typeArgs, that.getTypeArgumentList(), that)) {
                     ProducedTypedReference ptr = pt.getTypedMember(member, typeArgs);
@@ -396,6 +400,23 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
             }
+        }
+    }
+    
+    private boolean isVisible(Declaration d, Node that) {
+        if (d.isShared()) {
+            return true;
+        }
+        else {
+            Scope s = that.getScope();
+            do {
+                if ( d.getContainer()==s ) {
+                    return true;
+                }
+                s = s.getContainer();
+            }
+            while (s!=null);
+            return false;
         }
     }
 
@@ -424,6 +445,10 @@ public class ExpressionVisitor extends Visitor {
                         that.getIdentifier().getText());
             }
             else {
+                if (!isVisible(member, that)) {
+                    that.addError("target of member type reference is not shared: " +
+                            that.getIdentifier().getText());
+                }
                 List<ProducedType> typeArgs = getTypeArguments(that.getTypeArgumentList());
                 if (acceptsTypeArguments(member, typeArgs, that.getTypeArgumentList(), that)) {
                     ProducedType t = pt.getTypeMember(member, typeArgs);

@@ -58,7 +58,7 @@ interface Declarations {
     }
     
     class AdvancedHiding(Float x) {
-        String x = x.string;
+        shared String x = x.string;
         @type["Float"] x;
     }
     void advancedHiding() {
