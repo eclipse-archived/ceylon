@@ -27,8 +27,6 @@ public class Context {
     private Module currentModule;
     private Module nomodule;
     private Module languageModule;
-    private List<PhasedUnit> phasedUnits = new ArrayList<PhasedUnit>();
-    private Map<VirtualFile,PhasedUnit> phasedUnitPerFile = new HashMap<VirtualFile,PhasedUnit>();
     private Set<Module> modules = new HashSet<Module>();
 
     public Context() {
@@ -135,20 +133,6 @@ public class Context {
 
     public Package getPackage() {
         return packageStack.peekLast();
-    }
-
-    public void addPhasedUnit(VirtualFile unitFile, PhasedUnit phasedUnit) {
-        //TODO do we need the ordering??, we could get rid of the List and use map.valueSet()
-        this.phasedUnits.add(phasedUnit);
-        this.phasedUnitPerFile.put(unitFile, phasedUnit);
-    }
-
-    public List<PhasedUnit> getPhasedUnits() {
-        return phasedUnits;
-    }
-
-    public PhasedUnit getPhasedUnit(VirtualFile file) {
-        return phasedUnitPerFile.get(file);
     }
 
     public void verifyModuleDependencyTree() {

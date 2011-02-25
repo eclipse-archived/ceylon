@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import org.antlr.runtime.ANTLRInputStream;
@@ -31,13 +32,15 @@ public class TypeChecker {
     private final List<VirtualFile> srcDirectories;
     private final Context context;
     private final VFS vfs;
+    private final PhasedUnits phasedUnits;
 
     //package level
     TypeChecker(VFS vfs, List<VirtualFile> srcDirectories, boolean verbose) {
         this.vfs = vfs;
         this.srcDirectories = srcDirectories;
         this.verbose = verbose;
-        context = new Context();
+        this.context = new Context();
+        this.phasedUnits = new PhasedUnits();
         process(context);
     }
 
@@ -46,7 +49,7 @@ public class TypeChecker {
      * May return null of the CompilationUnit has not been parsed.
      */
     public Tree.CompilationUnit getCompilationUnit(File file) {
-        return context.getPhasedUnit( vfs.getFromFile( file ) ).getCompilationUnit();
+        return phasedUnits.getPhasedUnit( vfs.getFromFile( file ) ).getCompilationUnit();
     }
 
     private void process(Context context) throws RuntimeException {
@@ -94,7 +97,7 @@ public class TypeChecker {
     }
 
     private void executePhases(Context context, String path) {
-        final List<PhasedUnit> phasedUnits = context.getPhasedUnits();
+        final List<PhasedUnit> phasedUnits = this.phasedUnits.getPhasedUnits();
         for (PhasedUnit pu : phasedUnits) {
             pu.buildModuleImport();
         }
@@ -168,7 +171,7 @@ public class TypeChecker {
             CommonTree t = (CommonTree) r.getTree();
             Tree.CompilationUnit cu = new CustomBuilder().buildCompilationUnit(t);
             PhasedUnit phasedUnit = new PhasedUnit(file, cu, p, context);
-            context.addPhasedUnit(file, phasedUnit);
+            phasedUnits.addPhasedUnit(file, phasedUnit);
 
         }
     }
