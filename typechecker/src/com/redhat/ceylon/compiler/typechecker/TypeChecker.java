@@ -1,14 +1,14 @@
 package com.redhat.ceylon.compiler.typechecker;
 
+import java.io.File;
+import java.util.List;
+
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-
-import java.io.File;
-import java.util.List;
 
 /**
  * Executes type checking upon construction and retrieve a CompilationUnit object for a given File.

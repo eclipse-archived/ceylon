@@ -12,7 +12,7 @@ public abstract class TypeDeclaration extends Declaration implements Generic, Sc
 	
 	ProducedType extendedType;
 	List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>();
-	List<ProducedType> caseTypes = null;
+	List<ProducedType> caseTypes = Collections.emptyList();
 	List<TypeParameter> typeParameters = Collections.emptyList();
 	
 	public List<TypeParameter> getTypeParameters() {
@@ -24,7 +24,12 @@ public abstract class TypeDeclaration extends Declaration implements Generic, Sc
 	}
 	
 	public Class getExtendedTypeDeclaration() {
-	    return (Class) getExtendedType().getDeclaration();
+	    if (getExtendedType()==null) {
+	        return null;
+	    }
+	    else {
+	        return (Class) getExtendedType().getDeclaration();
+	    }
 	}
 	
 	public ProducedType getExtendedType() {
@@ -109,7 +114,8 @@ public abstract class TypeDeclaration extends Declaration implements Generic, Sc
             members.addAll(getInheritedMembers(name));
         }
         return members;
-    }    
+    }
+    
     public List<Declaration> getInheritedMembers(String name) {
         List<Declaration> members = new ArrayList<Declaration>();
         for (ProducedType t: getSatisfiedTypes()) {
