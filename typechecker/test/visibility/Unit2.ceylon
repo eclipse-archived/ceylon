@@ -6,9 +6,6 @@ class Unit2() {
     Unit1().Inner().hello;
     @error Unit1().Inner().goodbye;
 
-    Inner().hello;
-    @error Inner().goodbye;
-    
     class Inner() {
         shared String hello = "Hello";
         String goodbye = "Goodbye";
@@ -19,4 +16,7 @@ class Unit2() {
         void say(String s) {}
     }
 
+    Inner().hello;
+    @error Inner().goodbye;
+        
 }

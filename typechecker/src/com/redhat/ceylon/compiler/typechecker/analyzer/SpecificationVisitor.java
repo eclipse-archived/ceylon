@@ -7,6 +7,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Member;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
@@ -108,15 +109,24 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Member that) {
-        Declaration member = getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
+        visitReference(that, that.getIdentifier());
+    }
+
+    @Override
+    public void visit(Tree.BaseType that) {
+        visitReference(that, that.getIdentifier());
+    }
+
+    private void visitReference(Node that, Tree.Identifier id) {
+        Declaration member = getDeclaration(that.getScope(), that.getUnit(), id, context);
         if (member==declaration && !inDeclarationSection()) {
             if (!declared) {
                 that.addError("not yet declared: " + 
-                        that.getIdentifier().getText());
+                        member.getName());
             }
             else if (!specified.definitely) {
                 that.addError("not definitely specified: " + 
-                        that.getIdentifier().getText());
+                        member.getName());
             }
         }
     }
@@ -140,11 +150,11 @@ public class SpecificationVisitor extends Visitor {
                 }
                 else*/ if (!isVariable()) {
                     that.addError("is not a variable: " +
-                            m.getIdentifier().getText());
+                            member.getName());
                 }
                 else if (cannotSpecify) {
                     that.addError("cannot assign value from here: " + 
-                            m.getIdentifier().getText());
+                            member.getName());
                 }
                 else {
                     specify();
@@ -169,15 +179,15 @@ public class SpecificationVisitor extends Visitor {
             }
             else*/ if (isVariable()) {
                 that.addError("is a variable: " +
-                        m.getIdentifier().getText());
+                        member.getName());
             }
             else if (cannotSpecify) {
                 that.addError("cannot specify value from here: " + 
-                        m.getIdentifier().getText());
+                        member.getName());
             }
             else if (specified.possibly) {
                 that.addError("not definitely unspecified: " + 
-                        m.getIdentifier().getText());
+                        member.getName());
             }
             else {
                 specify();
@@ -290,6 +300,14 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Parameter that) {
+        super.visit(that);
+        if (that.getDeclarationModel()==declaration) {
+            specify();
+        }
+    }
+    
+    @Override
+    public void visit(Tree.TypeParameter that) {
         super.visit(that);
         if (that.getDeclarationModel()==declaration) {
             specify();

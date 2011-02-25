@@ -1,13 +1,15 @@
 class Primaries() {
     
-    class A() extends IdentifiableObject() {
-        shared B b = B();
-    }
+    class C() extends IdentifiableObject() {}
+    
     class B() extends IdentifiableObject() {
         shared C c() = C();
     }
-    class C() extends IdentifiableObject() {}
     
+    class A() extends IdentifiableObject() {
+        shared B b = B();
+    }
+
     @type["Primaries.A"] A();
     
     @type["Sequence<Primaries.A>"] { A(), A() };
