@@ -37,6 +37,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -746,21 +747,31 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    @Override public void visit(Tree.PostfixOperatorExpression that) {
-        super.visit(that);
-        ProducedType pt = type(that);
-        that.setTypeModel(pt);
-    }
-
     private ProducedType type(Tree.PostfixExpression that) {
         Tree.Primary p = that.getPrimary();
         return p==null ? null : p.getTypeModel();
     }
     
+    @Override public void visit(Tree.PostfixOperatorExpression that) {
+        super.visit(that);
+        visitIncrementDecrement(that, type(that), that.getPrimary());
+        checkAssignable(that.getPrimary());
+    }
+
     @Override public void visit(Tree.PrefixOperatorExpression that) {
         super.visit(that);
-        ProducedType pt = type(that);
-        that.setTypeModel(pt);
+        visitIncrementDecrement(that, type(that), that.getTerm());
+        checkAssignable(that.getTerm());
+    }
+
+    private void visitIncrementDecrement(Tree.Term that,
+            ProducedType pt, Term term) {
+        if (pt!=null) {
+            if (!pt.isSubtypeOf(getOrdinalDeclaration().getType())) {
+                term.addError("must be of type: Ordinal");
+            }
+            that.setTypeModel(pt);
+        }
     }
     
     @Override public void visit(Tree.SumOp that) {
@@ -991,12 +1002,15 @@ public class ExpressionVisitor extends Visitor {
                 that.getRightTerm().addError("must be of type " +
                         lhst.getProducedTypeName());
             }
-            if (!(that.getLeftTerm() instanceof Tree.Member)) {
-                that.getLeftTerm().addError("expression cannot be assigned");
-            }
         }
         that.setTypeModel(rhst);
 
+    }
+
+    private void checkAssignable(Tree.Term that) {
+        if (!(that instanceof Tree.Member)) {
+            that.addError("expression cannot be assigned");
+        }
     }
     
     private ProducedType rightType(Tree.BinaryOperatorExpression that) {
@@ -1072,21 +1086,25 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.AssignOp that) {
         super.visit(that);
         visitAssignOperator(that);
+        checkAssignable(that.getLeftTerm());
     }
         
     @Override public void visit(Tree.ArithmeticAssignmentOp that) {
         super.visit(that);
         visitBinaryOperator(that, getNumericDeclaration());
+        checkAssignable(that.getLeftTerm());
     }
         
     @Override public void visit(Tree.LogicalAssignmentOp that) {
         super.visit(that);
         visitBinaryOperator(that, getBooleanDeclaration());
+        checkAssignable(that.getLeftTerm());
     }
         
     @Override public void visit(Tree.BitwiseAssignmentOp that) {
         super.visit(that);
         visitBinaryOperator(that, getSlotsDeclaration());
+        checkAssignable(that.getLeftTerm());
     }
         
     @Override public void visit(Tree.FormatOp that) {

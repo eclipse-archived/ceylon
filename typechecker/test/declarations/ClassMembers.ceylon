@@ -1,6 +1,6 @@
 abstract class Classes() {
     
-    Natural count = 0;
+    variable Natural count := 0;
     
     count++;
     

@@ -149,21 +149,43 @@ public class SpecificationVisitor extends Visitor {
             Declaration member = getDeclaration(m.getScope(), m.getUnit(), m.getIdentifier(), context);
             if (member==declaration) {
                 that.getRightTerm().visit(this);
-                /*if (!declared) {
-                    lt.addError("not yet declared: " + 
-                            m.getIdentifier().getText());
-                }
-                else*/ if (!isVariable()) {
-                    that.addError("is not a variable: " +
-                            member.getName());
-                }
-                else {
-                    specify();
-                    lt.visit(this);
-                }
+                checkVariable(lt);
+                specify();
+                lt.visit(this);
             }
             else {
                 super.visit(that);
+            }
+        }
+    }
+    
+    @Override
+    public void visit(Tree.AssignmentOp that) {
+        super.visit(that);
+        checkVariable(that.getLeftTerm());
+    }
+
+    @Override
+    public void visit(Tree.PostfixOperatorExpression that) {
+        super.visit(that);
+        checkVariable(that.getPrimary());
+    }
+    
+    @Override
+    public void visit(Tree.PrefixOperatorExpression that) {
+        super.visit(that);
+        checkVariable(that.getTerm());
+    }
+    
+    private void checkVariable(Tree.Term term) {
+        if (term instanceof Tree.Member) {
+            Tree.Member m = (Tree.Member) term;
+            Declaration member = getDeclaration(m.getScope(), m.getUnit(), m.getIdentifier(), context);
+            if (member==declaration) {
+                if (!isVariable()) {
+                    term.addError("is not a variable: " +
+                            member.getName());
+                }
             }
         }
     }

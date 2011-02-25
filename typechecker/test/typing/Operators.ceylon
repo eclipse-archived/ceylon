@@ -108,5 +108,17 @@ class Operators() {
     variable Boolean bb := false;
     @type["Boolean"] bb||=false;
     @type["Boolean"] bb&&=true;
+    
+    @error (n+1) ++;
+    @error ++ (n+1);
+    
+    Natural const = 0;
+    @error const++;
+    @error --const;
+    @error const+=10;
+    
+    variable Natural nn;
+    @error nn+=1;
+    @error nn++;
 
 }
