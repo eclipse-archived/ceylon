@@ -18,7 +18,7 @@ import java.util.Arrays;
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
 public class ModuleImportVisitor extends Visitor {
-    private Context context;
+    private final Context context;
     /**
      * are we truly in a module?
      */
@@ -28,9 +28,11 @@ public class ModuleImportVisitor extends Visitor {
      * the dependencies declaration
      */
     private Module visitedModule;
+    private final ModuleBuilder moduleBuilder;
 
 
-    public ModuleImportVisitor(Context context) {
+    public ModuleImportVisitor(ModuleBuilder moduleBuilder, Context context) {
+        this.moduleBuilder = moduleBuilder;
         this.context = context;
     }
 
@@ -66,7 +68,7 @@ public class ModuleImportVisitor extends Visitor {
                     return;
                 }
                 final String[] splitModuleName = currentModuleName.substring(1,currentModuleName.length()-1).split("[\\.']");
-                Module currentModule = context.getOrCreateModule(Arrays.asList(splitModuleName));
+                Module currentModule = moduleBuilder.getOrCreateModule(Arrays.asList(splitModuleName));
                 //main module definition
                 if (visitedModule == null) {
                     visitedModule = currentModule;

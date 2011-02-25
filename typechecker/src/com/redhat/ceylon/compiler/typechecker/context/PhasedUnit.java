@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.context;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ControlFlowVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleBuilder;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleImportVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.RefinementVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.SpecificationVisitor;
@@ -31,13 +32,15 @@ public class PhasedUnit {
     //must be the non qualified file name
     private String fileName;
     private String path;
-    private Context context;
+    private final ModuleBuilder moduleBuilder;
+    private final Context context;
 
-    public PhasedUnit(VirtualFile unitFile, Tree.CompilationUnit cu, Package p, Context context) {
+    public PhasedUnit(VirtualFile unitFile, Tree.CompilationUnit cu, Package p, ModuleBuilder moduleBuilder, Context context) {
         this.compilationUnit = cu;
         this.pkg = p;
         this.fileName = unitFile.getName();
         this.path = unitFile.getPath();
+        this.moduleBuilder = moduleBuilder;
         this.context = context;
     }
     
@@ -46,8 +49,8 @@ public class PhasedUnit {
     }
 
     public void buildModuleImport() {
-        if ( Context.MODULE_FILE.equals(fileName) ) {
-            final ModuleImportVisitor v = new ModuleImportVisitor(context);
+        if ( ModuleBuilder.MODULE_FILE.equals(fileName) ) {
+            final ModuleImportVisitor v = new ModuleImportVisitor(moduleBuilder, context);
             compilationUnit.visit(v);
         }
     }
