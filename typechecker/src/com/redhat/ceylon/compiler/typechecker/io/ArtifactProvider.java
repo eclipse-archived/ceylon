@@ -24,27 +24,33 @@ public class ArtifactProvider {
      * Must be closed when done with it
      */
     public ClosableVirtualFile getArtifact(List<String> moduleName, String version, String extension) {
-        VirtualFile moduleDirectory = getModuleDirectory(moduleName);
+        VirtualFile moduleDirectory = getModuleDirectory(moduleName, version);
         if (moduleDirectory == null) {
             return null;
         }
         final VirtualFile child = getChild(moduleDirectory, getArtifactName(moduleName, version, extension) );
+        //build sha1 and compare it
         return child == null ? null : vfs.openAsContainer(child);
     }
 
     /**
      * f.q.module.name-version.extension
      */
-    private String getArtifactName(List<String> moduleName, String version, String extension) {
+    public String getArtifactName(List<String> moduleName, String version, String extension) {
         StringBuilder name = new StringBuilder();
         for (String moduleRadix : moduleName) {
             name.append(moduleRadix).append(".");
         }
+        name.deleteCharAt( name.length() - 1 ); //remove trailing dot
         name.append("-").append(version).append(".").append(extension);
         return name.toString();
     }
 
-    private VirtualFile getModuleDirectory(List<String> moduleName) {
+    /**
+     * Navigate down the path down to the version directory
+     * f.q.module.name.version
+     */
+    private VirtualFile getModuleDirectory(List<String> moduleName, String version) {
         VirtualFile current = homeRepo;
         for (String dir : moduleName) {
             current = getChild(current, dir);
@@ -52,6 +58,7 @@ public class ArtifactProvider {
                 return null;
             }
         }
+        current = getChild(current, version);
         return current;
     }
 

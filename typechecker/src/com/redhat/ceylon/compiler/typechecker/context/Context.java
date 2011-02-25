@@ -28,22 +28,32 @@ public class Context {
     private Module nomodule;
     private Module languageModule;
     private Set<Module> modules = new HashSet<Module>();
-    private VFS vfs;
     private ArtifactProvider artifactProvider;
 
     public Context(VFS vfs) {
-        this.vfs = vfs;
         this.artifactProvider = new ArtifactProvider(vfs);
+
+        //build nomodule module: used by any package not declared within a module
         final Package pkg = new Package();
         pkg.setName( new ArrayList<String>(0) );
         packageStack.add(pkg);
         nomodule = new Module();
-        final List<String> name = new ArrayList<String>();
-        name.add("<nomodule>");
-        nomodule.setName(name);
+        final List<String> noModuleName = new ArrayList<String>();
+        noModuleName.add("<nomodule>");
+        nomodule.setName(noModuleName);
         nomodule.setAvailable(true);
         bindPackageToModule(pkg, nomodule);
         modules.add(nomodule);
+
+        //create language module and add it as a dependency of nomodule
+        //since packages outside a module cannot declare dependencies
+        final List<String> languageName = new ArrayList<String>();
+        languageName.add("ceylon");
+        languageName.add("language");
+        languageModule = new Module();
+        languageModule.setName(languageName);
+        modules.add(languageModule);
+        nomodule.getDependencies().add(languageModule);
     }
 
     public Module getOrCreateModule(List<String> moduleName) {
@@ -63,11 +73,6 @@ public class Context {
             module = new Module();
             module.setName(moduleName);
             modules.add(module);
-            if ( moduleName.size() == 2
-                    && moduleName.get(0).equals("ceylon")
-                    && moduleName.get(1).equals("language") ) {
-                languageModule = module;
-            }
         }
         return module;
     }
@@ -139,19 +144,35 @@ public class Context {
         return packageStack.peekLast();
     }
 
+    /**
+     *  At this stage we need to
+     *  - resolve all non local modules (recursively)
+     *  - build the object model of these compiled modules
+     *  - declare a missing module as an error
+     *  - detect circular dependencies
+     */
     public void verifyModuleDependencyTree() {
+        List<PhasedUnits> phasedUnitsOfDependencies = new ArrayList<PhasedUnits>();
         LinkedList<Module> dependencyTree = new LinkedList<Module>();
+        //copy modules collection as new (dependent) modules might be added on the fly.
         final HashSet<Module> modulesCopy = new HashSet<Module>(modules);
         for (Module module : modulesCopy) {
             dependencyTree.addLast(module);
-            verifyModuleDependencyTree( module.getDependencies(), dependencyTree );
+            verifyModuleDependencyTree( module.getDependencies(), dependencyTree, phasedUnitsOfDependencies );
             dependencyTree.pollLast();
+        }
+        for (PhasedUnits units : phasedUnitsOfDependencies) {
+            executeExternalModulePhases(units);
         }
     }
 
-    private void verifyModuleDependencyTree(Collection<Module> modules, LinkedList<Module> dependencyTree) {
+    private void verifyModuleDependencyTree(
+            Collection<Module> modules,
+            LinkedList<Module> dependencyTree,
+            List<PhasedUnits> phasedUnitsOfDependencies) {
         for (Module module : modules) {
             if ( dependencyTree.contains(module) ) {
+                //circular dependency
                 StringBuilder error = new StringBuilder("Circular dependency between modules: ");
                 buildDependencyString(dependencyTree, module, error);
                 error.append(".");
@@ -159,15 +180,49 @@ public class Context {
                 return;
             }
             if ( ! module.isAvailable() ) {
-                StringBuilder error = new StringBuilder("Unable to find ");
-                error.append(module).append(". Dependency tree ");
-                buildDependencyString(dependencyTree, module, error);
-                error.append(".");
-                System.err.println(error);
+                //try and load the module from the repository
+                final ClosableVirtualFile src = artifactProvider.getArtifact(module.getName(), "0.1", "src");
+                if (src == null) {
+                    //not there => error
+                    StringBuilder error = new StringBuilder("Cannot find module artifact ");
+                    error.append( artifactProvider.getArtifactName(module.getName(), "0.1", "src") )
+                            .append(" in local repository ('~/.ceylon/repo')")
+                            .append("\n\tDependency tree: ");
+                    buildDependencyString(dependencyTree, module, error);
+                    error.append(".");
+                    error.append("\n\tGet ceylon-spec and run 'ant publish' or 'ant publish.language.module'");
+                    System.err.println(error);
+                    System.exit(1);
+                }
+                else {
+                    //parse module units and build module dependency and carry on
+                    PhasedUnits modulePhasedUnit = new PhasedUnits(this);
+                    phasedUnitsOfDependencies.add(modulePhasedUnit);
+                    modulePhasedUnit.parseUnit(src);
+                    src.close();
+                    module.setAvailable(true);
+                    final List<PhasedUnit> listOfUnits = modulePhasedUnit.getPhasedUnits();
+                    //populate module.getDependencies()
+                    for (PhasedUnit pu : listOfUnits) {
+                        pu.buildModuleImport();
+                    }
+                }
             }
             dependencyTree.addLast(module);
-            verifyModuleDependencyTree( module.getDependencies(), dependencyTree );
+            verifyModuleDependencyTree( module.getDependencies(), dependencyTree, phasedUnitsOfDependencies );
             dependencyTree.pollLast();
+        }
+    }
+
+    private void executeExternalModulePhases(PhasedUnits phasedUnits) {
+        //moduleimport phase already done
+        //Already called from within verifyModuleDependencyTree
+        final List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
+        for (PhasedUnit pu : listOfUnits) {
+            pu.scanDeclarations();
+        }
+        for (PhasedUnit pu : listOfUnits) {
+            pu.scanTypeDeclarations();
         }
     }
 
