@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getDeclaration;
 
 import com.redhat.ceylon.compiler.typechecker.context.Context;
-import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -125,8 +124,14 @@ public class SpecificationVisitor extends Visitor {
                         member.getName());
             }
             else if (!specified.definitely) {
-                that.addError("not definitely specified: " + 
-                        member.getName());
+                if (isVariable()) {
+                    that.addError("not definitely initialized: " + 
+                            member.getName());                    
+                }
+                else {
+                    that.addError("not definitely specified: " + 
+                            member.getName());
+                }
             }
         }
     }
@@ -150,10 +155,6 @@ public class SpecificationVisitor extends Visitor {
                 }
                 else*/ if (!isVariable()) {
                     that.addError("is not a variable: " +
-                            member.getName());
-                }
-                else if (cannotSpecify) {
-                    that.addError("cannot assign value from here: " + 
                             member.getName());
                 }
                 else {
@@ -207,13 +208,6 @@ public class SpecificationVisitor extends Visitor {
             declare();
             endDisabledSpecificationScope(false);
         }
-        else if (isVariable() && isMemberOfClass(that)) {
-            boolean d = beginDeclarationScope();
-            SpecificationState as = beginSpecificationScope();
-            super.visit(that);
-            endDeclarationScope(d);
-            endSpecificationScope(as);
-        }
         else {
             boolean c = beginDisabledSpecificationScope();
             boolean d = beginDeclarationScope();
@@ -225,16 +219,6 @@ public class SpecificationVisitor extends Visitor {
         }
     }
 
-    private boolean isMemberOfClass(Tree.Declaration that) {
-        Declaration dm = that.getDeclarationModel();
-        if (dm==null) {
-            return false;
-        }
-        else {
-            return dm.getContainer() instanceof Class;
-        }
-    }
-    
     @Override
     public void visit(Tree.NamedArgument that) {
         if (that.getDeclarationModel()==declaration) {

@@ -44,7 +44,7 @@ public class ValueVisitor extends Visitor {
                     ((ValueParameter) d).setCaptured(true);
                 }
                 if (!(declaration.getContainer() instanceof Class) && d.isVariable()) {
-                    that.addError("access to variable from capturing scope: " + declaration.getName());
+                    that.addError("access to variable local from capturing scope: " + declaration.getName());
                 }
             }
         }

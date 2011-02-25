@@ -13,6 +13,11 @@ class Capture() {
         assign innerGetter {
             @error x:=innerGetter;
         }
+        void containingMethod() {
+            void nestedMethod() {
+                @error x:=X();
+            }
+        }
     }
     
     void methodWithConstant() {
@@ -26,6 +31,11 @@ class Capture() {
         assign innerGetter {
             @error x:=innerGetter;
         }
+        void containingMethod() {
+            void nestedMethod() {
+                x;
+            }
+        }
     }
     
     void methodWithParameter(X x) {
@@ -37,6 +47,11 @@ class Capture() {
         }
         assign innerGetter {
             @error x:=innerGetter;
+        }
+        void containingMethod() {
+            void nestedMethod() {
+                x;
+            }
         }
     }
     
@@ -50,6 +65,11 @@ class Capture() {
         }
         assign innerGetter {
             @error x:=innerGetter;
+        }
+        void containingMethod() {
+            void nestedMethod() {
+                @error x:=X();
+            }
         }
         return x;
     }
@@ -67,6 +87,11 @@ class Capture() {
         assign innerGetter {
             x:=innerGetter;
         }
+        void containingMethod() {
+            void nestedMethod() {
+                x:=X();
+            }
+        }
     }
     
     class ClassWithParameter(@captured X x) {
@@ -78,6 +103,11 @@ class Capture() {
         }
         assign innerGetter {
             @error x:=innerGetter;
+        }
+        void containingMethod() {
+            void nestedMethod() {
+                x;
+            }
         }
     }
     
