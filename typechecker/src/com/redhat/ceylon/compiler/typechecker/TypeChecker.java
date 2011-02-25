@@ -1,24 +1,14 @@
 package com.redhat.ceylon.compiler.typechecker;
 
-import java.io.File;
-import java.io.InputStream;
-import java.util.List;
-
+import com.redhat.ceylon.compiler.typechecker.context.Context;
+import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
-import org.antlr.runtime.ANTLRInputStream;
-import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.tree.CommonTree;
-
-import com.redhat.ceylon.compiler.typechecker.context.Context;
-import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
-import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
-import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
-import com.redhat.ceylon.compiler.typechecker.parser.LexError;
-import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
-import com.redhat.ceylon.compiler.typechecker.tree.CustomBuilder;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+
+import java.io.File;
+import java.util.List;
 
 /**
  * Executes type checking upon construction and retrieve a CompilationUnit object for a given File.
@@ -40,7 +30,7 @@ public class TypeChecker {
         this.srcDirectories = srcDirectories;
         this.verbose = verbose;
         this.context = new Context();
-        this.phasedUnits = new PhasedUnits();
+        this.phasedUnits = new PhasedUnits(context);
         process(context);
     }
 
@@ -71,34 +61,13 @@ public class TypeChecker {
         catch (Exception e) {
             throw new RuntimeException("Error while parsing the source directory: " + srcDirectories.get(0).toString() ,e);
         }
-        for ( VirtualFile file : srcDirectories ) {
-            try {
-                if ( file.isFolder() ) {
-                    //root directory is the src dir => start from here
-                    for ( VirtualFile subfile : file.getChildren() ) {
-                        parseFileOrDirectory(subfile, context);
-                    }
-                }
-                else {
-                    //simple file compilation
-                    //TODO is that really valid?
-                    parseFileOrDirectory(file, context);
-                }
-                executePhases( context, file.getPath() );
-            }
-            catch (RuntimeException e) {
-                //let it go
-                throw e;
-            }
-            catch (Exception e) {
-                throw new RuntimeException("Error while parsing the source directory: " + file.toString() ,e);
-            }
-        }
+        phasedUnits.parseUnits(srcDirectories);
+        executePhases(phasedUnits, false);
     }
 
-    private void executePhases(Context context, String path) {
-        final List<PhasedUnit> phasedUnits = this.phasedUnits.getPhasedUnits();
-        for (PhasedUnit pu : phasedUnits) {
+    private void executePhases(PhasedUnits phasedUnits, boolean forceSilence) {
+        final List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
+        for (PhasedUnit pu : listOfUnits) {
             pu.buildModuleImport();
         }
 
@@ -111,22 +80,22 @@ public class TypeChecker {
          */
         context.verifyModuleDependencyTree();
 
-        for (PhasedUnit pu : phasedUnits) {
+        for (PhasedUnit pu : listOfUnits) {
             pu.scanDeclarations();
             pu.validateControlFlow();
             pu.validateSpecification();
         }
-        for (PhasedUnit pu : phasedUnits) {
+        for (PhasedUnit pu : listOfUnits) {
             pu.scanTypeDeclarations();
         }
-        for (PhasedUnit pu: phasedUnits) {
+        for (PhasedUnit pu: listOfUnits) {
             pu.validateRefinement();
         }
-        for (PhasedUnit pu : phasedUnits) {
+        for (PhasedUnit pu : listOfUnits) {
             pu.analyseTypes();
         }
-        for (PhasedUnit pu : phasedUnits) {
-            if (pu.getPath().startsWith(path)) {
+        for (PhasedUnit pu : listOfUnits) {
+            if (!forceSilence) {
                 if (verbose) pu.display();
                 pu.runAssertions();
             }
@@ -140,62 +109,9 @@ public class TypeChecker {
                 || master.getName().equals("corpus/ceylon")
                 || master.getName().equals("corpus/ceylon/language") ) ) {
             VirtualFile file = vfs.getFromFile( new File("corpus/ceylon") );
-            parseFileOrDirectory(file, context);
+            PhasedUnits languageUnits = new PhasedUnits(context);
+            languageUnits.hackedParseUnit(file);
+            executePhases(languageUnits, true);
         }
-    }
-
-    private void parseFile(VirtualFile file, Context context) throws Exception {
-        if ( file.getName().endsWith(".ceylon") ) {
-
-            System.out.println("Parsing " + file.getName());
-            InputStream is = file.getInputStream();
-            ANTLRInputStream input = new ANTLRInputStream(is);
-            CeylonLexer lexer = new CeylonLexer(input);
-
-            CommonTokenStream tokens = new CommonTokenStream(lexer);
-
-            CeylonParser parser = new CeylonParser(tokens);
-            CeylonParser.compilationUnit_return r = parser.compilationUnit();
-
-        	List<LexError> lexerErrors = lexer.getErrors();
-        	for (LexError le: lexerErrors) {
-                System.out.println("Lexer error: " + le.getMessage(lexer));
-        	}
-
-        	List<ParseError> parserErrors = parser.getErrors();
-        	for (ParseError pe: parserErrors) {
-                System.out.println("Parser error: " + pe.getMessage(parser));
-        	}
-
-        	com.redhat.ceylon.compiler.typechecker.model.Package p = context.getPackage();
-            CommonTree t = (CommonTree) r.getTree();
-            Tree.CompilationUnit cu = new CustomBuilder().buildCompilationUnit(t);
-            PhasedUnit phasedUnit = new PhasedUnit(file, cu, p, context);
-            phasedUnits.addPhasedUnit(file, phasedUnit);
-
-        }
-    }
-
-    private void parseFileOrDirectory(VirtualFile file, Context context) throws Exception {
-        if (file.isFolder()) {
-            processDirectory(file, context);
-        }
-        else {
-            parseFile(file, context);
-        }
-    }
-
-    private void processDirectory(VirtualFile dir, Context context) throws Exception {
-        context.push( dir.getName() );
-        final List<VirtualFile> files = dir.getChildren();
-        for (VirtualFile file: files) {
-            if ( Context.MODULE_FILE.equals( file.getName() ) ) {
-                context.defineModule();
-            }
-        }
-        for (VirtualFile file: files) {
-            parseFileOrDirectory(file, context);
-        }
-        context.pop();
     }
 }
