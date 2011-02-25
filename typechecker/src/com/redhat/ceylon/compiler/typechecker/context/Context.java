@@ -1,19 +1,19 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
-import static com.redhat.ceylon.compiler.typechecker.util.PrintUtil.importPathToString;
+import com.redhat.ceylon.compiler.typechecker.io.ArtifactProvider;
+import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
+import com.redhat.ceylon.compiler.typechecker.io.VFS;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
+import static com.redhat.ceylon.compiler.typechecker.util.PrintUtil.importPathToString;
 
 /**
  * Keep compiler contextual information like the package stack and the current module
@@ -28,8 +28,12 @@ public class Context {
     private Module nomodule;
     private Module languageModule;
     private Set<Module> modules = new HashSet<Module>();
+    private VFS vfs;
+    private ArtifactProvider artifactProvider;
 
-    public Context() {
+    public Context(VFS vfs) {
+        this.vfs = vfs;
+        this.artifactProvider = new ArtifactProvider(vfs);
         final Package pkg = new Package();
         pkg.setName( new ArrayList<String>(0) );
         packageStack.add(pkg);
@@ -137,7 +141,8 @@ public class Context {
 
     public void verifyModuleDependencyTree() {
         LinkedList<Module> dependencyTree = new LinkedList<Module>();
-        for (Module module : modules) {
+        final HashSet<Module> modulesCopy = new HashSet<Module>(modules);
+        for (Module module : modulesCopy) {
             dependencyTree.addLast(module);
             verifyModuleDependencyTree( module.getDependencies(), dependencyTree );
             dependencyTree.pollLast();

@@ -26,12 +26,15 @@ public class TypeChecker {
 
     //package level
     TypeChecker(VFS vfs, List<VirtualFile> srcDirectories, boolean verbose) {
+        long start = System.nanoTime();
         this.vfs = vfs;
         this.srcDirectories = srcDirectories;
         this.verbose = verbose;
-        this.context = new Context();
+        this.context = new Context(vfs);
         this.phasedUnits = new PhasedUnits(context);
         process(context);
+        long time = System.nanoTime()-start;
+        System.out.println("Type checker ran in " + time/1000000 + " ms");
     }
 
     /**
@@ -102,6 +105,29 @@ public class TypeChecker {
         }
     }
 
+    private void executeExternalModulePhases(PhasedUnits phasedUnits) {
+        final List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
+        for (PhasedUnit pu : listOfUnits) {
+            pu.buildModuleImport();
+        }
+
+        /*
+        At this stage we need to
+         - resolve all non local modules (recursively) TODO
+         - build the object model of these compiled modules TODO
+         - declare a missing module as an error
+         - detect circular dependencies
+         */
+        context.verifyModuleDependencyTree();
+
+        for (PhasedUnit pu : listOfUnits) {
+            pu.scanDeclarations();
+        }
+        for (PhasedUnit pu : listOfUnits) {
+            pu.scanTypeDeclarations();
+        }
+    }
+
     private void buildLanguageModule(Context context, VirtualFile master) throws Exception {
         //ceylon.language must be parsed before any other
         if ( master == null ||
@@ -111,7 +137,7 @@ public class TypeChecker {
             VirtualFile file = vfs.getFromFile( new File("corpus/ceylon") );
             PhasedUnits languageUnits = new PhasedUnits(context);
             languageUnits.hackedParseUnit(file);
-            executePhases(languageUnits, true);
+            executeExternalModulePhases(languageUnits);
         }
     }
 }
