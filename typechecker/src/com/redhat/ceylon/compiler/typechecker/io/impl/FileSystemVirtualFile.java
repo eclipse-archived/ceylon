@@ -82,4 +82,13 @@ public class FileSystemVirtualFile implements VirtualFile {
     public int hashCode() {
         return file.hashCode();
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("FileSystemVirtualFile");
+        sb.append("{name='").append( file.getName() ).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }
