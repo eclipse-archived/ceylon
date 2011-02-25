@@ -8,6 +8,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 
 public class RefinementVisitor extends Visitor {
     
@@ -43,8 +44,8 @@ public class RefinementVisitor extends Visitor {
                         that.addError("member refines multiple inherited members");
                     }
                 }
-                else {
-                    that.addError("shared declaration does not belong to a class or interface");
+                else if (!(dec.getContainer() instanceof Package)) {
+                    that.addError("shared declaration does not belong to a class, interface, or package");
                 }
             }
             else {
