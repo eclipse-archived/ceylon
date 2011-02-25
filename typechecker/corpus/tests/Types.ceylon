@@ -8,6 +8,7 @@ abstract class Types() {
     }
     interface Foo1<T> {
         interface Baz {}
+        interface Baz1<W> {}
     }
     interface Foo2<U,V> {}
     interface Bar {
@@ -26,9 +27,9 @@ abstract class Types() {
 	formal Foo.Bar.Baz multiplyNestedType;
 	formal Foo.Bar1<Baz> nestedTypeWithTypeParameter;
 	formal Foo1<Bar.Baz> typeWithNestedTypeParameter;
-	formal Foo2<Bar.Baz1<Qux>> anythingGoes;
+	formal Foo1<Bar.Baz1<Qux>> anythingGoes;
 	formal Foo1<Bar>.Baz evenThis;
-	formal Foo1<Bar>.Baz<Qux> orThis;
+	formal Foo1<Bar>.Baz1<Qux> orThis;
 	formal subtype theSubtype;
 	formal Foo[] sequenceType;
 	formal Foo? optionalType;
