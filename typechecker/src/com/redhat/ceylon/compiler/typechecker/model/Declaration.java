@@ -15,6 +15,9 @@ public abstract class Declaration extends Element {
 	
 	String name;
 	boolean shared;
+	boolean formal;
+	boolean actual;
+	boolean def;
 	List<Annotation> annotations = new ArrayList<Annotation>();
 	
 	public String getName() {
@@ -44,6 +47,30 @@ public abstract class Declaration extends Element {
     public String getQualifiedName() {
         String cname = getContainer().getQualifiedName();
         return cname.length()==0 ? getName() : cname + "." + getName();
+    }
+    
+    public boolean isActual() {
+        return actual;
+    }
+    
+    public void setActual(boolean actual) {
+        this.actual = actual;
+    }
+    
+    public boolean isFormal() {
+        return formal;
+    }
+    
+    public void setFormal(boolean formal) {
+        this.formal = formal;
+    }
+    
+    public boolean isDefault() {
+        return def;
+    }
+    
+    public void setDefault(boolean def) {
+        this.def = def;
     }
 
 }

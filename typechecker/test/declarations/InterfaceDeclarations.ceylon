@@ -1,6 +1,6 @@
 interface InterfaceDeclarations {
     
-    formal String hello;
+    shared formal String hello;
     void sayHello() {
         hello;
     }
@@ -15,7 +15,7 @@ interface InterfaceDeclarations {
     
     @error sayHello();
     
-    formal String goodbye;
+    shared formal String goodbye;
     void sayGoodbye() {
         goodbye;
     }

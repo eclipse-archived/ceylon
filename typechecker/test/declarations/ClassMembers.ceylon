@@ -1,4 +1,4 @@
-class Classes() {
+abstract class Classes() {
     
     Natural count = 0;
     
@@ -7,9 +7,9 @@ class Classes() {
     String name;
     name = "Gavin";
     
-    formal Boolean shouldRetry;
+    shared formal Boolean shouldRetry;
     
-    formal void print(String s);
+    shared formal void print(String s);
     
     void callsForward() {
         @error printLine("Hello world");
@@ -29,17 +29,17 @@ class Classes() {
     @error y := 0.0;
     
     interface NestedInterface {
-        formal String hello;
+        shared formal String hello;
     }
     
     abstract class NestedAbstractClass() {
-        String hello = upper("hello");
-        formal Natural times;
+        shared String hello = upper("hello");
+        shared formal Natural times;
     }
     
     class MemberClass() {
         shared String goodbye = upper("goodbye");
-        Natural times = 1;
+        shared Natural times = 1;
     }
     
     MemberClass();

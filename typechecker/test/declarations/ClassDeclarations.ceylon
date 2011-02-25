@@ -1,6 +1,6 @@
 abstract class ClassDeclarations() {
     
-    formal String hello;
+    shared formal String hello;
     void sayHello() {
         @error hello;
     }
@@ -19,7 +19,7 @@ abstract class ClassDeclarations() {
     @error hello;
     sayHello();
     
-    formal String goodbye;
+    shared formal String goodbye;
     void sayGoodbye() {
         goodbye;
     }

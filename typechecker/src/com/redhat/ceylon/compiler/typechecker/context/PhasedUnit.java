@@ -4,6 +4,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.ControlFlowVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleImportVisitor;
+import com.redhat.ceylon.compiler.typechecker.analyzer.RefinementVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.SpecificationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeArgumentVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeVisitor;
@@ -72,6 +73,11 @@ public class PhasedUnit {
     public void validateControlFlow() {
         System.out.println("Validate control flow for " + fileName);
         compilationUnit.visit(new ControlFlowVisitor());
+    }
+
+    public void validateRefinement() {
+        System.out.println("Validate member refinement for " + fileName);
+        compilationUnit.visit(new RefinementVisitor());
     }
 
     public void runAssertions() {

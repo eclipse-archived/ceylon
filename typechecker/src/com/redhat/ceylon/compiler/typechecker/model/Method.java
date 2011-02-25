@@ -15,19 +15,19 @@ import java.util.List;
  */
 public class Method extends MethodOrValue implements Generic, Scope, Functional {
 	
-    boolean formal;
+    //boolean formal;
     
     List<TypeParameter> typeParameters = Collections.emptyList();	
     List<ParameterList> parameterLists = new ArrayList<ParameterList>();
     List<Declaration> members = new ArrayList<Declaration>();
 
-	public boolean isFormal() {
+	/*public boolean isFormal() {
 		return formal;
 	}
 	
 	public void setFormal(boolean formal) {
 		this.formal = formal;
-	}
+	}*/
 	
 	public ProducedType getType() {
 		return type;

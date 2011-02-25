@@ -6,24 +6,24 @@ import java.util.List;
 
 public class Class extends ClassOrInterface implements Functional {
 	
-    boolean isAbstract;
-    boolean formal;    
+    boolean abstr;
+    //boolean formal;    
 	ParameterList parameterList;
 	
-	public boolean isFormal() {
+	/*public boolean isFormal() {
 		return formal;
 	}
 
 	public void setFormal(boolean formal) {
 		this.formal = formal;
-	}
+	}*/
 
 	public boolean isAbstract() {
-		return isAbstract;
+		return abstr;
 	}
 	
 	public void setAbstract(boolean isAbstract) {
-        this.isAbstract = isAbstract;
+        this.abstr = isAbstract;
     }
 	
 	public ParameterList getParameterList() {

@@ -188,6 +188,9 @@ public class DeclarationVisitor extends Visitor {
             that.addError("missing parameter list in class declaration: " + 
                     name(that.getIdentifier()) );
         }
+        if (hasAnnotation(that.getAnnotationList(), "abstract")) {
+            c.setAbstract(true);
+        }
     }
 
     @Override
@@ -422,6 +425,15 @@ public class DeclarationVisitor extends Visitor {
         if (declaration!=null) {
             if (hasAnnotation(that.getAnnotationList(), "shared")) {
                 declaration.setShared(true);
+            }
+            if (hasAnnotation(that.getAnnotationList(), "default")) {
+                declaration.setDefault(true);
+            }
+            if (hasAnnotation(that.getAnnotationList(), "formal")) {
+                declaration.setFormal(true);
+            }
+            if (hasAnnotation(that.getAnnotationList(), "actual")) {
+                declaration.setActual(true);
             }
         }
         super.visit(that);

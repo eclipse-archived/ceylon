@@ -10,16 +10,16 @@ package com.redhat.ceylon.compiler.typechecker.model;
 public class Value extends MethodOrValue {
     
 	boolean variable;
-	boolean formal;
+	//boolean formal;
 	boolean captured = false;
 	
-	public boolean isFormal() {
+	/*public boolean isFormal() {
 		return formal;
 	}
 	
 	public void setFormal(boolean formal) {
 		this.formal = formal;
-	}
+	}*/
 	
 	@Override
 	public boolean isVariable() {

@@ -77,5 +77,28 @@ public abstract class TypeDeclaration extends Declaration implements Generic, Sc
     public boolean isMemberType() {
         return false;
     }
+    
+    private List<Declaration> getMembers(String name) {
+        List<Declaration> members = new ArrayList<Declaration>();
+        for (Declaration d: getMembers()) {
+            if (d.getName().equals(name)) {
+                members.add(d);
+            }
+        }
+        if (members.isEmpty()) {
+            members.addAll(getInheritedMembers(name));
+        }
+        return members;
+    }    
+    public List<Declaration> getInheritedMembers(String name) {
+        List<Declaration> members = new ArrayList<Declaration>();
+        for (ProducedType t: getSatisfiedTypes()) {
+            members.addAll( t.getDeclaration().getMembers(name) );
+        }
+        if (getExtendedType()!=null) {
+            members.addAll( getExtendedType().getDeclaration().getMembers(name) );
+        }
+        return members;
+    }
 
 }

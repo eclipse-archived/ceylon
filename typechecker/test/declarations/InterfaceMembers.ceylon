@@ -4,11 +4,11 @@ interface Interfaces {
     
     @error count++;
     
-    formal String name;
+    shared formal String name;
     
     @error name = "Gavin";
     
-    formal void print(String s);
+    shared formal void print(String s);
     
     void callsForward() {
         printLine("Hello world");
@@ -25,17 +25,17 @@ interface Interfaces {
     @error printLine("Hi!");
     
     interface NestedInterface {
-        formal String hello;
+        shared formal String hello;
     }
     
     abstract class NestedAbstractClass() {
-        String hello = upper("hello");
-        formal Natural times;
+        shared String hello = upper("hello");
+        shared formal Natural times;
     }
     
     class MemberClass() {
-        String goodbye = upper("goodbye");
-        Natural times = 1;
+        shared String goodbye = upper("goodbye");
+        shared Natural times = 1;
     }
     
     @error MemberClass();

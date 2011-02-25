@@ -116,6 +116,9 @@ public class TypeChecker {
         for (PhasedUnit pu : phasedUnits) {
             pu.scanTypeDeclarations();
         }
+        for (PhasedUnit pu: phasedUnits) {
+            pu.validateRefinement();
+        }
         for (PhasedUnit pu : phasedUnits) {
             pu.analyseTypes();
         }
