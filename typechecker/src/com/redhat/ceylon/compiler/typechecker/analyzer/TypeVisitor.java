@@ -283,7 +283,7 @@ public class TypeVisitor extends Visitor {
             Class vd = getVoidDeclaration();
             if (c!=vd) {
                 if (et==null) {
-                    c.setExtendedType(getIdentifiableObjectDeclaration().getType());
+                    c.setExtendedType(getBaseObjectDeclaration().getType());
                 }
                 else {
                     c.setExtendedType(getExtendedType(et));
@@ -344,8 +344,8 @@ public class TypeVisitor extends Visitor {
         return (Class) getLanguageModuleDeclaration("Void", context);
     }
     
-    private Class getIdentifiableObjectDeclaration() {
-        return (Class) getLanguageModuleDeclaration("IdentifiableObject", context);
+    private Class getBaseObjectDeclaration() {
+        return (Class) getLanguageModuleDeclaration("BaseObject", context);
     }
     
 }
