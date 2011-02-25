@@ -35,6 +35,7 @@
     <property name="repo.local.dir" value="${user.home}/.ceylon/repo"/>
 
     <!-- ceylon.language -->
+    <property name="module.language.srcrootdir" value="${basedir}/languagesrc"/>
     <property name="module.language.dir" value="ceylon/language"/>
     <property name="module.language.name" value="ceylon.language"/>
 
@@ -326,14 +327,14 @@
     <target name="publish.language.module"
             depends="init.repo"
             description="Publish ceylon language template">
-        <property name="template.file" value="${repo.local.dir}/${module.language.dir}/${module.ceylon.language.version}/${module.language.name}-${module.ceylon.language.version}.src"/>
+        <property name="src.file" value="${repo.local.dir}/${module.language.dir}/${module.ceylon.language.version}/${module.language.name}-${module.ceylon.language.version}.src"/>
         <delete dir="${repo.local.dir}/${module.language.dir}/${module.ceylon.language.version}"/>
-        <zip destfile="${template.file}">
-            <fileset dir="${basedir}/corpus">
+        <zip destfile="${src.file}">
+            <fileset dir="${module.language.srcrootdir}">
                 <include name="ceylon/language/**/*.ceylon"/>
             </fileset>
         </zip>
-        <checksum file="${template.file}" algorithm="sha1"/>
+        <checksum file="${src.file}" algorithm="sha1"/>
     </target>
 
     <target name="clean.repo"
