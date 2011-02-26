@@ -104,7 +104,7 @@ public class DeclarationVisitor extends Visitor {
     private String internalName(Node that, Declaration model,
             Tree.Identifier id) {
         String n = id.getText();
-        if ((that instanceof Tree.ObjectDeclaration||that instanceof Tree.ObjectArgument) 
+        if ((that instanceof Tree.ObjectDefinition||that instanceof Tree.ObjectArgument) 
                 && model instanceof Class) {
             n = "Type_" + n;
         }
@@ -260,7 +260,7 @@ public class DeclarationVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Tree.ObjectDeclaration that) {
+    public void visit(Tree.ObjectDefinition that) {
         Class c = new Class();
         visitDeclaration(that, c);
         Value v = new Value();

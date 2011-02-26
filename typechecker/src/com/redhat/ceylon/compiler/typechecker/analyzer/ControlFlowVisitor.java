@@ -173,7 +173,7 @@ public class ControlFlowVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.ObjectDeclaration that) {
+    public void visit(Tree.ObjectDefinition that) {
         boolean c = beginReturnScope(false);
         boolean d = beginDefiniteReturnScope();
         super.visit(that);

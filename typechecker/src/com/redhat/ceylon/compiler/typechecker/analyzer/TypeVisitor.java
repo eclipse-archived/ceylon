@@ -302,7 +302,7 @@ public class TypeVisitor extends Visitor {
     }
 
     @Override 
-    public void visit(Tree.ObjectDeclaration that) {
+    public void visit(Tree.ObjectDefinition that) {
         super.visit(that);
         Tree.ExtendedType et = that.getExtendedType();
         Tree.SatisfiedTypes st = that.getSatisfiedTypes();

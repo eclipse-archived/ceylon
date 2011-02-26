@@ -327,8 +327,8 @@ retryDirective
     ;
 
 objectDeclaration
-    : OBJECT_DECLARATION memberName extendedType? satisfiedTypes? classBody
-    -> ^(OBJECT_DECLARATION LOCAL_MODIFIER memberName extendedType? satisfiedTypes? classBody) 
+    : OBJECT_DEFINITION memberName extendedType? satisfiedTypes? classBody
+    -> ^(OBJECT_DEFINITION LOCAL_MODIFIER memberName extendedType? satisfiedTypes? classBody) 
     ;
 
 voidMethodDeclaration
@@ -874,8 +874,8 @@ namedArgumentDeclaration
     ;
     
 objectArgument
-    : OBJECT_DECLARATION parameterName extendedType? satisfiedTypes? classBody
-    -> ^(OBJECT_ARGUMENT[$OBJECT_DECLARATION] LOCAL_MODIFIER parameterName extendedType? satisfiedTypes? classBody)
+    : OBJECT_DEFINITION parameterName extendedType? satisfiedTypes? classBody
+    -> ^(OBJECT_ARGUMENT[$OBJECT_DEFINITION] LOCAL_MODIFIER parameterName extendedType? satisfiedTypes? classBody)
     ;
 
 voidMethodArgument
@@ -1510,7 +1510,7 @@ OUTER
     :   'outer'
     ;
 
-OBJECT_DECLARATION
+OBJECT_DEFINITION
     :   'object'
     ;
 

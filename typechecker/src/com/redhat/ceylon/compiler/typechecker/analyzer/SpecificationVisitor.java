@@ -358,7 +358,7 @@ public class SpecificationVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.ObjectDeclaration that) {
+    public void visit(Tree.ObjectDefinition that) {
         if (that.getDeclarationModel()==declaration) {
             declare();
             specify();

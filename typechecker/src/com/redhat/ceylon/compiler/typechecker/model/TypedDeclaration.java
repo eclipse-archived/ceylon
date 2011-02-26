@@ -42,7 +42,8 @@ public abstract class TypedDeclaration extends Declaration {
         return typeArguments.isEmpty();
     }
     
-    public ProducedTypedReference getProducedTypedReference(ProducedType pt, List<ProducedType> typeArguments) {
+    public ProducedTypedReference getProducedTypedReference(ProducedType pt, 
+            List<ProducedType> typeArguments) {
         if (!acceptsArguments(typeArguments)) {
             throw new RuntimeException( getName() + 
                     " does not accept given type arguments");
