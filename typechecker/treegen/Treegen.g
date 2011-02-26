@@ -55,11 +55,11 @@ nodeList : {
            println("import com.redhat.ceylon.compiler.typechecker.model.Method;");
            println("import com.redhat.ceylon.compiler.typechecker.model.Value;");
            println("import com.redhat.ceylon.compiler.typechecker.model.Getter;");
-           println("import com.redhat.ceylon.compiler.typechecker.model.Setter;\n");
-           println("import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;\n");
-           println("import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;\n");
-           println("import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;\n");
-           println("import com.redhat.ceylon.compiler.typechecker.model.ProducedType;\n");
+           println("import com.redhat.ceylon.compiler.typechecker.model.Setter;");
+           println("import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;");
+           println("import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;");
+           println("import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;");
+           println("import com.redhat.ceylon.compiler.typechecker.model.ProducedType;");
            println("import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;\n");
            println("import java.util.*;\n");
            println("public class Tree {\n");
