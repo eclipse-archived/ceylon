@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 
@@ -64,8 +66,11 @@ public class PrintVisitor extends Visitor implements NaturalVisitor {
                 "] (" + node.getAntlrTreeNode().getLine() + 
                 ":" + node.getAntlrTreeNode().getCharPositionInLine()  + 
                 ")");
-        if (node.getTypeModel()!=null) {
-            print(" -> " + node.getTypeModel().getProducedTypeName());
+        if (node instanceof Tree.Term) {
+            ProducedType type = ((Tree.Term) node).getTypeModel();
+            if (type!=null) {
+                print(" -> " + type.getProducedTypeName());
+            }
         }
         if (!node.getErrors().isEmpty()) {
             print(" <-- ** " + node.getErrors() + " **");

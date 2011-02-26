@@ -332,7 +332,8 @@
     SPECIFIER_EXPRESSION?
     Value declarationModel;)
 
-^(abstract TERM)
+^(abstract TERM
+    ProducedType typeModel;)
 ^(OPERATOR_EXPRESSION:TERM)
 
 ^(BINARY_OPERATOR_EXPRESSION:OPERATOR_EXPRESSION

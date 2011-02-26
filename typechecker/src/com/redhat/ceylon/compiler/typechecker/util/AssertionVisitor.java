@@ -29,7 +29,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         super.visit(that);
     }
     
-    private void checkType(Tree.Statement that, Node typedNode) {
+    private void checkType(Tree.Statement that, Tree.Term typedNode) {
         for (Tree.CompilerAnnotation c: that.getCompilerAnnotations()) {
             if (c.getIdentifier().getText().equals("type")) {
                 String expectedType = c.getStringLiteral().getText();

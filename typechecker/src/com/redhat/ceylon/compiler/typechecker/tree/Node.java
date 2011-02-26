@@ -8,7 +8,6 @@ import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.util.PrintVisitor;
@@ -20,7 +19,6 @@ public abstract class Node {
     //private Declaration declarationModel;
     private Scope scope;
     private Unit unit;
-    private ProducedType typeModel;
     private ProducedReference memberReference;
     private List<AnalysisError> errors = new ArrayList<AnalysisError>();
     
@@ -38,18 +36,6 @@ public abstract class Node {
 
     public void setScope(Scope scope) {
         this.scope = scope;
-    }
-    
-    /**
-     * The model object representing the type of this 
-     * node. Note that many nodes do not have a type.
-     */
-    public ProducedType getTypeModel() {
-        return typeModel;
-    }
-    
-    public void setTypeModel(ProducedType type) {
-        this.typeModel = type;
     }
     
     /**

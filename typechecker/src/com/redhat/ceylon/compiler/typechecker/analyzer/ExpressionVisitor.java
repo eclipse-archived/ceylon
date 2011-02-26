@@ -522,14 +522,16 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void visitInvocation(Tree.PositionalArgumentList pal, Tree.NamedArgumentList nal, 
-            Node that, Node primary) {
+            Node that, Tree.Primary primary) {
         ProducedReference mr = primary.getMemberReference();
         if (mr==null || !mr.isFunctional()) {
             that.addError("receiving expression cannot be invoked");
         }
         else {
-            //that.setTypeModel(m.getType()); //THIS IS THE CORRECT ONE!
-            that.setTypeModel(primary.getTypeModel()); //TODO: THIS IS A TEMPORARY HACK!
+            if (that instanceof Tree.InvocationExpression) {
+                //that.setTypeModel(mr.getType()); //THIS IS THE CORRECT ONE!
+                ( (Tree.InvocationExpression) that ).setTypeModel(primary.getTypeModel()); //TODO: THIS IS A TEMPORARY HACK!
+            }
             List<ParameterList> pls = ((Functional) mr.getDeclaration()).getParameterLists();
             if (pls.isEmpty()) {
                 that.addError("receiver does not define a parameter list");
