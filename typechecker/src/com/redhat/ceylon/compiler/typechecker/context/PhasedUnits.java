@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleBuilder;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
@@ -26,9 +27,12 @@ public class PhasedUnits {
     private List<PhasedUnit> phasedUnits = new ArrayList<PhasedUnit>();
     private Map<VirtualFile,PhasedUnit> phasedUnitPerFile = new HashMap<VirtualFile,PhasedUnit>();
     private final Context context;
+    private final ModuleBuilder moduleBuilder;
 
     public PhasedUnits(Context context) {
         this.context = context;
+        this.moduleBuilder = new ModuleBuilder(context);
+        this.moduleBuilder.initCoreModules();
     }
 
     public void addPhasedUnit(VirtualFile unitFile, PhasedUnit phasedUnit) {
@@ -74,20 +78,6 @@ public class PhasedUnits {
         }
     }
 
-    //to be removed when language hack is out
-    public void hackedParseUnit(VirtualFile file) {
-        try {
-            parseFileOrDirectory(file);
-        }
-        catch (RuntimeException e) {
-            //let it go
-            throw e;
-        }
-        catch (Exception e) {
-            throw new RuntimeException("Error while parsing the source directory: " + file.toString() ,e);
-        }
-    }
-
     private void parseFile(VirtualFile file) throws Exception {
         if ( file.getName().endsWith(".ceylon") ) {
 
@@ -111,10 +101,10 @@ public class PhasedUnits {
                 System.out.println("Parser error: " + pe.getMessage(parser));
         	}
 
-        	com.redhat.ceylon.compiler.typechecker.model.Package p = context.getPackage();
+        	com.redhat.ceylon.compiler.typechecker.model.Package p = moduleBuilder.getCurrentPackage();
             CommonTree t = (CommonTree) r.getTree();
             Tree.CompilationUnit cu = new CustomBuilder().buildCompilationUnit(t);
-            PhasedUnit phasedUnit = new PhasedUnit(file, cu, p, context);
+            PhasedUnit phasedUnit = new PhasedUnit(file, cu, p, moduleBuilder, context);
             addPhasedUnit(file, phasedUnit);
 
         }
@@ -130,16 +120,16 @@ public class PhasedUnits {
     }
 
     private void processDirectory(VirtualFile dir) throws Exception {
-        context.push( dir.getName() );
+        moduleBuilder.push( dir.getName() );
         final List<VirtualFile> files = dir.getChildren();
         for (VirtualFile file: files) {
-            if ( Context.MODULE_FILE.equals( file.getName() ) ) {
-                context.defineModule();
+            if ( ModuleBuilder.MODULE_FILE.equals( file.getName() ) ) {
+                moduleBuilder.visitModuleFile();
             }
         }
         for (VirtualFile file: files) {
             parseFileOrDirectory(file);
         }
-        context.pop();
+        moduleBuilder.pop();
     }
 }

@@ -56,7 +56,7 @@ public class Util {
         //all elements in ceylon.language are auto-imported
         //traverse all default module packages provided they have not been traversed yet
         if (context==null) return null;
-        final Module languageModule = context.getLanguageModule();
+        final Module languageModule = context.getModules().getLanguageModule();
         if ( languageModule != null && languageModule.isAvailable() ) {
             if ("Bottom".equals(name)) {
                 return new BottomType();

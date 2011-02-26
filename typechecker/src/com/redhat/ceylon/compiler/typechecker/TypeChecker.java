@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker;
 import java.io.File;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleValidator;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -21,13 +22,11 @@ public class TypeChecker {
     private final boolean verbose;
     private final List<VirtualFile> srcDirectories;
     private final Context context;
-    private final VFS vfs;
     private final PhasedUnits phasedUnits;
 
     //package level
     TypeChecker(VFS vfs, List<VirtualFile> srcDirectories, boolean verbose) {
         long start = System.nanoTime();
-        this.vfs = vfs;
         this.srcDirectories = srcDirectories;
         this.verbose = verbose;
         this.context = new Context(vfs);
@@ -42,7 +41,7 @@ public class TypeChecker {
      * May return null of the CompilationUnit has not been parsed.
      */
     public Tree.CompilationUnit getCompilationUnit(File file) {
-        return phasedUnits.getPhasedUnit( vfs.getFromFile( file ) ).getCompilationUnit();
+        return phasedUnits.getPhasedUnit( context.getVfs().getFromFile(file) ).getCompilationUnit();
     }
 
     private void process() throws RuntimeException {
@@ -56,7 +55,7 @@ public class TypeChecker {
             pu.buildModuleImport();
         }
 
-        context.verifyModuleDependencyTree();
+        new ModuleValidator(context).verifyModuleDependencyTree();
 
         for (PhasedUnit pu : listOfUnits) {
             pu.scanDeclarations();
