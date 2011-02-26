@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+
 public abstract class Parameter extends TypedDeclaration {
     
     boolean defaulted;
@@ -28,11 +29,6 @@ public abstract class Parameter extends TypedDeclaration {
     
     public void setDeclaration(Declaration declaration) {
         this.declaration = declaration;
-    }
-    
-    @Override
-    public String getQualifiedName() {
-        return getContainer().getQualifiedName() + "#" + getName();
     }
     
 }

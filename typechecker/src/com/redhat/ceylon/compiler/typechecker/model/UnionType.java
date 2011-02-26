@@ -26,8 +26,8 @@ public class UnionType extends TypeDeclaration {
     }
     
     @Override
-    public String getQualifiedName() {
-        return super.getName();
+    public List<String> getQualifiedName() {
+        return null;
     }
 
 }

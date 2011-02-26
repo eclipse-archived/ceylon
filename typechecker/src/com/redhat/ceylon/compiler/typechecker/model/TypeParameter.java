@@ -64,9 +64,4 @@ public class TypeParameter extends TypeDeclaration implements Functional {
         parameterList = pl;
     }
     
-    @Override
-    public String getQualifiedName() {
-        return getContainer().getQualifiedName() + "#" + getName();
-    }
-    
 }

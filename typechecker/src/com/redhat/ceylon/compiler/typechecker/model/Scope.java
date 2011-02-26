@@ -13,5 +13,5 @@ import java.util.List;
 public interface Scope {
 	List<Declaration> getMembers();
 	Scope getContainer();
-	String getQualifiedName();
+	List<String> getQualifiedName();
 }

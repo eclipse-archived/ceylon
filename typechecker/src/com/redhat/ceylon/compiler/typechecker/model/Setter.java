@@ -28,7 +28,7 @@ public class Setter extends MethodOrValue implements Scope {
 	}
 	
 	@Override
-	public String getQualifiedName() {
+	public List<String> getQualifiedName() {
 	    return getter.getQualifiedName();
 	}
 	

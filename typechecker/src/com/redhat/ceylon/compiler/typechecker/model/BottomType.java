@@ -16,8 +16,8 @@ public class BottomType extends TypeDeclaration {
     }
     
     @Override
-    public String getQualifiedName() {
-        return getName();
+    public List<String> getQualifiedName() {
+        return null;
     }
 
 }

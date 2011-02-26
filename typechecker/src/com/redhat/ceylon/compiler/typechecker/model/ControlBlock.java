@@ -13,7 +13,7 @@ public class ControlBlock extends Element implements Scope {
 	}
 	
 	@Override
-	public String getQualifiedName() {
+	public List<String> getQualifiedName() {
 	    return getContainer().getQualifiedName();
 	}
 

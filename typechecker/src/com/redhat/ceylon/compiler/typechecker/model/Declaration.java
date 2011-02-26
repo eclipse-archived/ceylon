@@ -44,9 +44,8 @@ public abstract class Declaration extends Element {
 			"[" + name + "]";
 	}
 	
-    public String getQualifiedName() {
-        String cname = getContainer().getQualifiedName();
-        return cname.length()==0 ? getName() : cname + "." + getName();
+    public List<String> getQualifiedName() {
+        return Util.list( getContainer().getQualifiedName(), getName() );
     }
     
     public boolean isActual() {

@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,13 @@ class Util {
             }
         }
         return map;
+    }
+    
+    static <T> List<T> list(List<T> list, T element) {
+        List<T> result = new ArrayList<T>();
+        result.addAll(list);
+        result.add(element);
+        return result;
     }
 
 }
