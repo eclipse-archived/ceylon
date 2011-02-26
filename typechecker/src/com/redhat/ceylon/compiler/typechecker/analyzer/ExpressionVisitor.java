@@ -460,13 +460,23 @@ public class ExpressionVisitor extends Visitor {
         Tree.MemberOperator op = mte.getMemberOperator();
         if (op instanceof Tree.SafeMemberOp)  {
             ProducedType ot = pt.getSupertype(getOptionalDeclaration());
-            if (ot==null) return pt; //TODO: proper error!
-            return ot.getTypeArguments().values().iterator().next();
+            if (ot==null) {
+                mte.getPrimary().addError("receiver not of type: Optional");
+                return pt;
+            }
+            else {
+                return ot.getTypeArguments().values().iterator().next();
+            }
         }
         else if (op instanceof Tree.SpreadOp) {
             ProducedType st = pt.getSupertype(getSequenceDeclaration());
-            if (st==null) return pt; //TODO: proper error!
-            return st.getTypeArguments().values().iterator().next();
+            if (st==null) {
+                mte.getPrimary().addError("receiver not of type: Sequence");
+                return pt;
+            }
+            else {
+                return st.getTypeArguments().values().iterator().next();
+            }
         }
         else {
             return pt;

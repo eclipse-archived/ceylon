@@ -120,5 +120,8 @@ class Operators() {
     variable Natural nn;
     @error nn+=1;
     @error nn++;
+    
+    @error X()[].doIt();
+    @error X()?.doIt();
 
 }
