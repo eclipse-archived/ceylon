@@ -125,17 +125,17 @@ class Assignability() {
         }
         return X();
     }
-    
+        
     for (X x in {X(), X()} ) {
-        x.hello;
+        print(x.hello);
     }
     
     for (local x in {X(), X()} ) {
-        x.hello;
+        print(x.hello);
     }
     
     for (@error Y y in {X(), X()} ) {
-        y.name;
+        print(y.name);
     }
     
     void hello(String greeting = "Hello", String name = "World") {}
@@ -157,7 +157,7 @@ class Assignability() {
     X? nothing {
         return null;
     }
-    @error nothing.hello;
+    @error print(nothing.hello);
     Boolean b = 1<2;
     
     if (b) {}
@@ -165,39 +165,39 @@ class Assignability() {
     @error if (something) {}
         
     if (exists nothing) {
-        nothing.hello;
+        print(nothing.hello);
     }
     
     if (exists X x = nothing) {
-        x.hello;
+        print(x.hello);
     }
     
     if (exists local xx = nothing) {
-        xx.hello;
+        print(xx.hello);
     }
     
     if (exists @error Y y = nothing) {
-        @error y.hello;
-        y.name;
+        @error print(y.hello);
+        print(y.name);
     }
     
     if (exists @error X x = something) {
-        x.hello;
+        print(x.hello);
     }
     
     if (exists @error local xx = something) {
-        @error xx.hello;
+        @error print(xx.hello);
     }
     
     @error if (exists something.hello) {}
     //@error if (exists something) {}
     
     if (is Y something) {
-        something.name;
+        print(something.name);
     }
 
     if (is Y y = something) {
-        y.name;
+        print(y.name);
     }
     
     if (is Y X()) {}

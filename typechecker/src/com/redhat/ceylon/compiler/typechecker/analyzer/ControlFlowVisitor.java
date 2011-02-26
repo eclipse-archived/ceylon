@@ -334,4 +334,21 @@ public class ControlFlowVisitor extends Visitor {
         //statement
         super.visit(that);
     }
+    
+    @Override
+    public void visit(Tree.ExpressionStatement that) {
+        super.visit(that);
+        Tree.Term t = that.getExpression().getTerm();
+        if (t==null) {
+            that.getExpression().addError("malformed expression");
+        }
+        else {
+            if (!(t instanceof Tree.InvocationExpression
+                    || t instanceof Tree.PostfixOperatorExpression
+                    || t instanceof Tree.PrefixOperatorExpression
+                    || t instanceof Tree.AssignmentOp)) {
+                that.getExpression().addError("not a legal statement");
+            }
+        }
+    }
 }

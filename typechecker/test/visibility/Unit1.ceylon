@@ -15,10 +15,12 @@ class Unit1() {
         void say(String s) {}
     }
     
-    Inner().hello;
-    @error Inner().goodbye;
+    void print(String s) {}
     
-    @error Unit2().Inner().hello;
-    @error Unit2().Inner().goodbye; 
+    print(Inner().hello);
+    @error print(Inner().goodbye);
+    
+    @error print(Unit2().Inner().hello);
+    @error print(Unit2().Inner().goodbye); 
     
 }

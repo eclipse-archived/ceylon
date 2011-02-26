@@ -1,8 +1,10 @@
 abstract class ClassDeclarations() {
     
+    void use(String s) {}
+    
     shared formal String hello;
     void sayHello() {
-        @error hello;
+        @error use(hello);
     }
     
     void foo() {
@@ -14,14 +16,14 @@ abstract class ClassDeclarations() {
     }
     
     @error sayGoodbye();
-    @error goodbye;
+    @error use(goodbye);
     
-    @error hello;
+    @error use(hello);
     sayHello();
     
     shared formal String goodbye;
     void sayGoodbye() {
-        goodbye;
+        use(goodbye);
     }
     
     void baz() {

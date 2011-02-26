@@ -1,21 +1,22 @@
 class Test() {
+    void print(String s) {}
     @error Inner();
     @error method();
-    @error attribute;
+    @error print(attribute);
     String attribute { 
         Inner();
         method();
-        attribute;
+        print(attribute);
         return "hello"; 
     }
     class Inner() {
         Inner();
         method();
-        attribute;
+        print(attribute);
     }
     void method() {
         Inner();
         method();
-        attribute;
+        print(attribute);
     }
 }

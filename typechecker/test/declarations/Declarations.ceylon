@@ -59,10 +59,10 @@ interface Declarations {
     
     class AdvancedHiding(Float x) {
         shared String x = x.string;
-        @type["Float"] x;
+        @type["Float"] local f = x;
     }
     void advancedHiding() {
-        @type["String"] AdvancedHiding(1.0).x;
+        @type["String"] local s = AdvancedHiding(1.0).x;
     }
 
 }

@@ -17,7 +17,7 @@ class Generics() {
     @type["Generics.Holder<String>"] Holder<String> hs;
     
     @type["Generics.Holder<String>"] Holder<String>("hello");
-    @type["String"] Holder<String>("hello").held;
+    @type["String"] local shh = Holder<String>("hello").held;
     
     @error Holder("hello");
     
@@ -150,7 +150,7 @@ class Generics() {
         shared String hello = "Hello";
     }
     class Foo<X>(X x) given X satisfies Bar {
-        @type["String"] x.hello;
+        @type["String"] local xh = x.hello;
     }
     
     class Outer<X>(X x) given X satisfies Equality<X> {
@@ -176,7 +176,7 @@ class Generics() {
     @error Outer<Natural> dd = Outer<Natural>(1).Inner<String>("hello");
     @error Outer<Natural>.Inner<String> cc = Outer<Float>(1.3).Inner<String>("hello");
     
-    @type["Generics.Outer<Natural>.Inner<String>"] aa;
+    @type["Generics.Outer<Natural>.Inner<String>"] local aaa = aa;
     @type["Entry<Natural,String>"] aa.getIt();
     
     class Num() satisfies Comparable<Num> {}

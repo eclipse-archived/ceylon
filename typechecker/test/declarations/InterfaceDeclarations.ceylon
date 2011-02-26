@@ -1,8 +1,10 @@
 interface InterfaceDeclarations {
     
+    void print(String s) {}
+    
     shared formal String hello;
     void sayHello() {
-        hello;
+        print(hello);
     }
     
     void foo() {
@@ -17,7 +19,7 @@ interface InterfaceDeclarations {
     
     shared formal String goodbye;
     void sayGoodbye() {
-        goodbye;
+        print(goodbye);
     }
     
     void baz() {

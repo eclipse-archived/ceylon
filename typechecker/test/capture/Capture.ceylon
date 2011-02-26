@@ -1,11 +1,13 @@
 class Capture() {
     
+    void use(Object o) {}
+    
     class X() {}
     
     void methodWithVariable() {
         variable X x := X();
         void innerMethod() {
-            @error x;
+            @error use(x);
         }
         X innerGetter {
             @error return x;
@@ -23,7 +25,7 @@ class Capture() {
     void methodWithConstant() {
         X x = X();
         void innerMethod() {
-            x;
+            use(x);
         }
         X innerGetter {
             return x;
@@ -33,14 +35,14 @@ class Capture() {
         }
         void containingMethod() {
             void nestedMethod() {
-                x;
+                use(x);
             }
         }
     }
     
     void methodWithParameter(X x) {
         void innerMethod() {
-            x;
+            use(x);
         }
         X innerGetter {
             return x;
@@ -50,7 +52,7 @@ class Capture() {
         }
         void containingMethod() {
             void nestedMethod() {
-                x;
+                use(x);
             }
         }
     }
@@ -58,7 +60,7 @@ class Capture() {
     X getterWithVariable {
         variable X x := X();
         void innerMethod() {
-            @error x;
+            @error use(x);
         }
         X innerGetter {
             @error return x;
@@ -79,7 +81,7 @@ class Capture() {
         @uncaptured variable X y := X();
         @captured shared variable X z := X();
         void innerMethod() {
-            x;
+            use(x);
         }
         X innerGetter {
             return x;
@@ -96,7 +98,7 @@ class Capture() {
     
     class ClassWithParameter(@captured X x) {
         void innerMethod() {
-            x;
+            use(x);
         }
         X innerGetter {
             return x;
@@ -106,7 +108,7 @@ class Capture() {
         }
         void containingMethod() {
             void nestedMethod() {
-                x;
+                use(x);
             }
         }
     }

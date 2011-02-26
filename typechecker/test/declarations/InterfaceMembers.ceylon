@@ -53,8 +53,9 @@ interface Interfaces {
     }
     
     void usesSuperAndThis() {
-        @error super;
-        this;
+        void use(Object o) {}
+        @error use(super);
+        use(this);
     }
     
 }

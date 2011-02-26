@@ -1,13 +1,13 @@
 public class Literals() {
     
-    @type["String"] "Hello";
-    @type["Natural"] 1;
-    @type["Float"] 1.0;
-    @type["Character"] `x`;
-    @type["Sequence<String>"] { "hello", "world" };
-    @type["Sequence<Natural>"] { 1, 2, 3, 4 };
-    @type["String"] "pi = " 3.1415 " approx";
-    @type["Quoted"] 'hibernate.org';
+    @type["String"] local s = "Hello";
+    @type["Natural"] local n = 1;
+    @type["Float"] local f = 1.0;
+    @type["Character"] local c = `x`;
+    @type["Sequence<String>"] local ss = { "hello", "world" };
+    @type["Sequence<Natural>"] local ns = { 1, 2, 3, 4 };
+    @type["String"] local st = "pi = " 3.1415 " approx";
+    @type["Quoted"] local q = 'hibernate.org';
     
     Boolean b = true;
     
@@ -17,6 +17,6 @@ public class Literals() {
     
     Iterable<String> istrings = strings;
     
-    @type["Optional<Entry<String,String>>"] process.switches[3];
+    @type["Optional<Entry<String,String>>"] local sw = process.switches[3];
     
 }

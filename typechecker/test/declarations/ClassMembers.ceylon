@@ -44,7 +44,7 @@ abstract class Classes() {
     
     MemberClass();
         
-    @type["String"] MemberClass().goodbye;
+    printLine(MemberClass().goodbye);
     @error MemberClass().goodbye = "Foo";
     @error MemberClass().goodbye := "Foo";
     
@@ -57,8 +57,9 @@ abstract class Classes() {
     }
     
     void usesSuperAndThis() {
-        super;
-        this;
+        void use(Object o) {}
+        use(super);
+        use(this);
     }
     
     @error return Classes();

@@ -1,10 +1,12 @@
 class Unit2() {
 
-    Unit1().hello;
-    @error Unit1().goodbye;
+    void print(String s) {}
+    
+    print(Unit1().hello);
+    @error print(Unit1().goodbye);
 
-    Unit1().Inner().hello;
-    @error Unit1().Inner().goodbye;
+    print(Unit1().Inner().hello);
+    @error print(Unit1().Inner().goodbye);
 
     class Inner() {
         shared String hello = "Hello";
@@ -16,7 +18,7 @@ class Unit2() {
         void say(String s) {}
     }
 
-    Inner().hello;
-    @error Inner().goodbye;
+    print(Inner().hello);
+    @error print(Inner().goodbye);
         
 }
