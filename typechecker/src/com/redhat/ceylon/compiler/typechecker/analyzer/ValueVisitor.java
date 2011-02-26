@@ -50,7 +50,7 @@ public class ValueVisitor extends Visitor {
         }
     }
     
-    @Override public void visit(Tree.Statement that) {
+    @Override public void visit(Tree.Declaration that) {
         Declaration dm = that.getDeclarationModel();
         if (dm==declaration.getContainer() 
                 || dm==declaration

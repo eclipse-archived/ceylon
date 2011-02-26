@@ -75,7 +75,7 @@ public class DeclarationVisitor extends Visitor {
             checkForDuplicateDeclaration(that, model);
         }
         visitElement(that, model);
-        that.setDeclarationModel(model);
+        //that.setDeclarationModel(model);
         unit.getDeclarations().add(model);
         scope.getMembers().add(model);
     }
@@ -84,7 +84,7 @@ public class DeclarationVisitor extends Visitor {
         Tree.Identifier id = that.getIdentifier();
         setModelName(that, model, id);
         visitElement(that, model);
-        that.setDeclarationModel(model);
+        //that.setDeclarationModel(model);
         unit.getDeclarations().add(model);
     }
 
@@ -166,7 +166,7 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.TypeDeclaration that) {
         super.visit(that);
-        TypeDeclaration d = (TypeDeclaration) that.getDeclarationModel();
+        TypeDeclaration d = that.getDeclarationModel();
         if (d==null) {
             //TODO: this case is temporary until we have type constraints!
         }
@@ -178,6 +178,7 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.ClassDefinition that) {
         Class c = new Class();
+        that.setDeclarationModel(c);
         visitDeclaration(that, c);
         functional = c;
         Scope o = enterScope(c);
@@ -196,6 +197,7 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.InterfaceDefinition that) {
         Interface i = new Interface();
+        that.setDeclarationModel(i);
         visitDeclaration(that, i);
         Scope o = enterScope(i);
         super.visit(that);
@@ -203,7 +205,7 @@ public class DeclarationVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Tree.TypeParameter that) {
+    public void visit(Tree.TypeParameterDeclaration that) {
         TypeParameter p = new TypeParameter();
         p.setDeclaration(declaration);
         if (that.getTypeVariance()!=null) {
@@ -211,13 +213,15 @@ public class DeclarationVisitor extends Visitor {
             p.setCovariant("out".equals(v));
             p.setContravariant("in".equals(v));
         }
+        that.setDeclarationModel(p);
         visitDeclaration(that, p);
         super.visit(that);
     }
     
     @Override
-    public void visit(Tree.Method that) {
+    public void visit(Tree.AnyMethod that) {
         Method m = new Method();
+        that.setDeclarationModel(m);
         visitDeclaration(that, m);
         functional = m;
         Scope o = enterScope(m);
@@ -225,12 +229,13 @@ public class DeclarationVisitor extends Visitor {
         exitScope(o);
         functional = null;
         checkMethodParameters(that);
-        ( (Method) that.getDeclarationModel() ).setTypeParameters(getTypeParameters(that.getTypeParameterList()));
+        that.getDeclarationModel().setTypeParameters(getTypeParameters(that.getTypeParameterList()));
     }
 
     @Override
     public void visit(Tree.MethodArgument that) {
         Method m = new Method();
+        that.setDeclarationModel(m);
         visitArgument(that, m);
         functional = m;
         Scope o = enterScope(m);
@@ -240,7 +245,7 @@ public class DeclarationVisitor extends Visitor {
         checkMethodArgumentParameters(that);
     }
 
-    private void checkMethodParameters(Tree.Method that) {
+    private void checkMethodParameters(Tree.AnyMethod that) {
         if (that.getParameterLists().isEmpty()) {
             that.addError("missing parameter list in method declaration: " + 
                     name(that.getIdentifier()) );
@@ -259,6 +264,7 @@ public class DeclarationVisitor extends Visitor {
         Class c = new Class();
         visitDeclaration(that, c);
         Value v = new Value();
+        that.setDeclarationModel(v);
         visitDeclaration(that, v);
         functional = c;
         Scope o = enterScope(c);
@@ -274,6 +280,7 @@ public class DeclarationVisitor extends Visitor {
         Class c = new Class();
         visitArgument(that, c);
         Value v = new Value();
+        that.setDeclarationModel(v);
         visitArgument(that, v);
         functional = c;
         Scope o = enterScope(c);
@@ -287,6 +294,7 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.AttributeDeclaration that) {
         Value v = new Value();
+        that.setDeclarationModel(v);
         visitDeclaration(that, v);
         if (hasAnnotation(that.getAnnotationList(), "variable")) {
             v.setVariable(true);
@@ -297,6 +305,7 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.AttributeGetterDefinition that) {
         Getter g = new Getter();
+        that.setDeclarationModel(g);
         visitDeclaration(that, g);
         Scope o = enterScope(g);
         super.visit(that);
@@ -306,6 +315,7 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.AttributeArgument that) {
         Getter g = new Getter();
+        that.setDeclarationModel(g);
         visitArgument(that, g);
         Scope o = enterScope(g);
         super.visit(that);
@@ -314,29 +324,32 @@ public class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.AttributeSetterDefinition that) {
-        Setter g = new Setter();
-        visitDeclaration(that, g);
-        Scope o = enterScope(g);
+        Setter s = new Setter();
+        that.setDeclarationModel(s);
+        visitDeclaration(that, s);
+        Scope o = enterScope(s);
         super.visit(that);
         exitScope(o);
     }
     
     @Override
-    public void visit(Tree.ValueParameter that) {
+    public void visit(Tree.ValueParameterDeclaration that) {
         ValueParameter p = new ValueParameter();
         p.setDeclaration(declaration);
         p.setDefaulted(that.getSpecifierExpression()!=null);
         p.setSequenced(that.getType() instanceof Tree.SequencedType);
+        that.setDeclarationModel(p);
         visitDeclaration(that, p);
         super.visit(that);
         parameterList.getParameters().add(p);
     }
 
     @Override
-    public void visit(Tree.FunctionalParameter that) {
+    public void visit(Tree.FunctionalParameterDeclaration that) {
         FunctionalParameter p = new FunctionalParameter();
         p.setDeclaration(declaration);
         p.setDefaulted(that.getSpecifierExpression()!=null);
+        that.setDeclarationModel(p);
         visitDeclaration(that, p);
         Scope o = enterScope(p);
         Functional of = functional;
@@ -387,6 +400,7 @@ public class DeclarationVisitor extends Visitor {
             scope = s;
         }
         Value v = new Value();
+        that.setDeclarationModel(v);
         visitDeclaration(that, v);
         that.getType().visit(this);
         that.getIdentifier().visit(this);
@@ -401,8 +415,8 @@ public class DeclarationVisitor extends Visitor {
     private List<TypeParameter> getTypeParameters(Tree.TypeParameterList tpl) {
         List<TypeParameter> typeParameters = new ArrayList<TypeParameter>();
         if (tpl!=null) {
-            for (Tree.TypeParameter tp: tpl.getTypeParameters()) {
-                typeParameters.add((TypeParameter) tp.getDeclarationModel());
+            for (Tree.TypeParameterDeclaration tp: tpl.getTypeParameterDeclarations()) {
+                typeParameters.add(tp.getDeclarationModel());
             }
         }
         return typeParameters;

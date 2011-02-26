@@ -32,12 +32,8 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgumentList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -63,28 +59,28 @@ public class ExpressionVisitor extends Visitor {
     
     public void visit(Tree.ClassDefinition that) {
         ClassOrInterface o = classOrInterface;
-        classOrInterface = (Class) that.getDeclarationModel();
+        classOrInterface = that.getDeclarationModel();
         super.visit(that);
         classOrInterface = o;
     }
     
     public void visit(Tree.InterfaceDefinition that) {
         ClassOrInterface o = classOrInterface;
-        classOrInterface = (Interface) that.getDeclarationModel();
+        classOrInterface = that.getDeclarationModel();
         super.visit(that);
         classOrInterface = o;
     }
     
     public void visit(Tree.ObjectDeclaration that) {
         ClassOrInterface o = classOrInterface;
-        classOrInterface = (Class) ((Value) that.getDeclarationModel()).getTypeDeclaration();
+        classOrInterface = (Class) that.getDeclarationModel().getTypeDeclaration();
         super.visit(that);
         classOrInterface = o;
     }
     
     public void visit(Tree.ObjectArgument that) {
         ClassOrInterface o = classOrInterface;
-        classOrInterface = (Class) ((Value) that.getDeclarationModel()).getTypeDeclaration();
+        classOrInterface = (Class) that.getDeclarationModel().getTypeDeclaration();
         super.visit(that);
         classOrInterface = o;
     }
@@ -303,7 +299,7 @@ public class ExpressionVisitor extends Visitor {
         if (ot!=null && ot.getTypeArguments().size()==1) {
             ProducedType t = ot.getTypeArguments().values().iterator().next();
             local.setTypeModel(t);
-            ((TypedDeclaration) that.getDeclarationModel()).setType(t);
+            that.getDeclarationModel().setType(t);
         }
         else {
             that.addError("could not infer type of: " + 
@@ -316,7 +312,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.TypedDeclaration that) {
         ProducedType t = s.getExpression().getTypeModel();
         local.setTypeModel(t);
-        ((TypedDeclaration) that.getDeclarationModel()).setType(t);
+        that.getDeclarationModel().setType(t);
     }
     
     private void setType(Tree.LocalModifier local, 
@@ -327,7 +323,7 @@ public class ExpressionVisitor extends Visitor {
         if (d!=null && (d instanceof Tree.Return)) {
             ProducedType t = ((Tree.Return) d).getExpression().getTypeModel();
             local.setTypeModel(t);
-            ((TypedDeclaration) that.getDeclarationModel()).setType(t);
+            that.getDeclarationModel().setType(t);
         }
         else {
             local.addError("could not infer type of: " + 
@@ -501,8 +497,8 @@ public class ExpressionVisitor extends Visitor {
             that.addError("malformed expression");
         }
         else {
-            PositionalArgumentList pal = that.getPositionalArgumentList();
-            NamedArgumentList nal = that.getNamedArgumentList();
+            Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
+            Tree.NamedArgumentList nal = that.getNamedArgumentList();
             ProducedReference m = pr.getMemberReference();
             if (m==null || !m.isFunctional()) {
                 that.addError("receiving expression cannot be invoked");
@@ -516,7 +512,7 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.ExtendedType that) {
         super.visit(that);
         Tree.BaseType pr = that.getType();
-        PositionalArgumentList pal = that.getPositionalArgumentList();
+        Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
         if (pr==null || pal==null) {
             that.addError("malformed expression");
         }
@@ -765,7 +761,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void visitIncrementDecrement(Tree.Term that,
-            ProducedType pt, Term term) {
+            ProducedType pt, Tree.Term term) {
         if (pt!=null) {
             if (!pt.isSubtypeOf(getOrdinalDeclaration().getType())) {
                 term.addError("must be of type: Ordinal");

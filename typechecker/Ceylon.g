@@ -25,8 +25,8 @@ tokens {
     EXPRESSION_STATEMENT;
     FOR_ITERATOR;
     FOR_STATEMENT;
-    VALUE_PARAMETER;
-    FUNCTIONAL_PARAMETER;
+    VALUE_PARAMETER_DECLARATION;
+    FUNCTIONAL_PARAMETER_DECLARATION;
     PARAMETER_LIST;
     IF_STATEMENT;
     IMPORT_LIST;
@@ -73,7 +73,7 @@ tokens {
     SPECIFIER_EXPRESSION;
     SPECIFIER_STATEMENT;
     TYPE_VARIANCE;
-    TYPE_PARAMETER;
+    TYPE_PARAMETER_DECLARATION;
     STRING_TEMPLATE;
     VARIABLE;
     EXISTS_CONDITION;
@@ -575,7 +575,7 @@ typeParameters
 
 typeParameter
     : variance? typeName
-    -> ^(TYPE_PARAMETER variance? typeName)
+    -> ^(TYPE_PARAMETER_DECLARATION variance? typeName)
     | typeName '...'
     -> ^(SEQUENCED_TYPE_PARAMETER typeName)
     //| '#'! dimensionalTypeParameter
@@ -588,7 +588,7 @@ variance
     
 dimensionalTypeParameter
     : memberName
-    -> ^(TYPE_PARAMETER memberName)
+    -> ^(TYPE_PARAMETER_DECLARATION memberName)
     ;
     
 initializer
@@ -976,7 +976,7 @@ parameters
 //Note that this is just a TODO in the spec
 extraParameters
     : extraParameter+
-    -> ^(PARAMETER_LIST ^(FUNCTIONAL_PARAMETER extraParameter)+)
+    -> ^(PARAMETER_LIST ^(FUNCTIONAL_PARAMETER_DECLARATION extraParameter)+)
     ;
 
 //special rule for syntactic predicate
@@ -1001,9 +1001,9 @@ parameter
       parameterName
       (
           valueParameter? specifier?
-        -> ^(VALUE_PARAMETER compilerAnnotation* annotations? parameterType parameterName specifier?)
+        -> ^(VALUE_PARAMETER_DECLARATION compilerAnnotation* annotations? parameterType parameterName specifier?)
         |  parameters+ specifier? //for callable parameters
-        -> ^(FUNCTIONAL_PARAMETER compilerAnnotation* annotations? parameterType parameterName parameters+ specifier?)
+        -> ^(FUNCTIONAL_PARAMETER_DECLARATION compilerAnnotation* annotations? parameterType parameterName parameters+ specifier?)
       /*| iteratedParameter 
       | (specifiedParameterStart) => specifiedParameter*/
       )

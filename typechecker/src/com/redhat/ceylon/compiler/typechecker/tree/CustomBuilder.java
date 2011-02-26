@@ -4,10 +4,12 @@ import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionalParameterDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueParameterDeclaration;
 
 public class CustomBuilder extends Builder {
     
@@ -31,7 +33,7 @@ public class CustomBuilder extends Builder {
                     super.visitChildren(visitor);
                 }
                 else {
-                    Walker.walkAttribute(visitor, this);
+                    Walker.walkAnyAttribute(visitor, this);
                 }
             }
             @Override public String getNodeType() {
@@ -158,8 +160,8 @@ public class CustomBuilder extends Builder {
     }
     
     @Override
-    public Parameter buildParameter(CommonTree treeNode) {
-        Parameter node = new Parameter(treeNode) {
+    public ValueParameterDeclaration buildValueParameterDeclaration(CommonTree treeNode) {
+        ValueParameterDeclaration node = new ValueParameterDeclaration(treeNode) {
             @Override
             public void visit(Visitor visitor) {
                 if (visitor instanceof NaturalVisitor) {
@@ -178,6 +180,39 @@ public class CustomBuilder extends Builder {
                 }
                 else {
                     Walker.walkTypedDeclaration(visitor, this);
+                }
+            }
+            @Override public String getNodeType() {
+                return Parameter.class.getSimpleName();
+            }
+        };
+        buildParameter(treeNode, node);
+        return node;
+    }
+    
+    @Override
+    public FunctionalParameterDeclaration buildFunctionalParameterDeclaration(CommonTree treeNode) {
+        FunctionalParameterDeclaration node = new FunctionalParameterDeclaration(treeNode) {
+            @Override
+            public void visit(Visitor visitor) {
+                if (visitor instanceof NaturalVisitor) {
+                    super.visit(visitor);
+                }
+                else {
+                    if (getSpecifierExpression()!=null)
+                        getSpecifierExpression().visit(visitor);
+                    super.visit(visitor);
+                }
+            }
+            @Override
+            public void visitChildren(Visitor visitor) {
+                if (visitor instanceof NaturalVisitor) {
+                    super.visitChildren(visitor);
+                }
+                else {
+                    Walker.walkTypedDeclaration(visitor, this);
+                    for (ParameterList subnode: getParameterLists())
+                        subnode.visit(visitor);
                 }
             }
             @Override public String getNodeType() {

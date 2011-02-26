@@ -58,7 +58,7 @@ nodeList :
            ;
 
 node : '^' '('
-       n=NODE_NAME 
+       'abstract'? n=NODE_NAME 
        { println("    public static void walk" + className($n.text) +"(Visitor visitor, " + className($n.text) + " node) {"); }
        extendsNode?
        (DESCRIPTION? subnode)*
@@ -86,7 +86,7 @@ subnode : n=NODE_NAME '?'? f=FIELD_NAME ('(' NODE_NAME* ')')?
           { println("            subnode.visit(visitor);"); }
         ;
 
-field : t=TYPE_NAME f=FIELD_NAME ';'
+field : 'abstract'? t=TYPE_NAME f=FIELD_NAME ';'
       ;
 
 NODE_NAME : ('A'..'Z'|'_')+;

@@ -7,7 +7,6 @@ import java.util.List;
 import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
@@ -18,7 +17,7 @@ public abstract class Node {
     
     private String text;
     private final CommonTree antlrTreeNode;
-    private Declaration declarationModel;
+    //private Declaration declarationModel;
     private Scope scope;
     private Unit unit;
     private ProducedType typeModel;
@@ -63,19 +62,6 @@ public abstract class Node {
     
     public void setUnit(Unit unit) {
         this.unit = unit;
-    }
-
-    /**
-     * The model object representing the declaration
-     * introduced by this node. Note that most nodes
-     * are not declarations.
-     */
-    public Declaration getDeclarationModel() {
-        return declarationModel;
-    }
-
-    public void setDeclarationModel(Declaration modelNode) {
-        this.declarationModel = modelNode;
     }
     
     /**

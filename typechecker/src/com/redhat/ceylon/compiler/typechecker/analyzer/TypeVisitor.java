@@ -4,7 +4,6 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getDeclaratio
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getExternalDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLanguageModuleDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getMemberDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.name;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -178,18 +176,18 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.TypedDeclaration that) {
         super.visit(that);
-        setType(that, name(that.getIdentifier()), that.getType());
+        setType(that, that.getType(), that.getDeclarationModel());
     }
 
     @Override 
     public void visit(Tree.TypedArgument that) {
         super.visit(that);
-        setType(that, name(that.getIdentifier()), that.getType());
+        setType(that, that.getType(), that.getDeclarationModel());
     }
         
-    private void setType(Node that, String name, Tree.Type type) {
+    private void setType(Node that, Tree.Type type, TypedDeclaration td) {
         if (type==null) {
-            that.addError("missing type of declaration: " + name);
+            that.addError("missing type of declaration: " + td.getName());
         }
         else if (!(type instanceof Tree.LocalModifier)) { //if the type declaration is missing, we do type inference later
             ProducedType t = type.getTypeModel();
@@ -198,7 +196,7 @@ public class TypeVisitor extends Visitor {
                 //      add support for sequenced parameters
             }
             else {
-                ( (TypedDeclaration) that.getDeclarationModel() ).setType(t);
+                td.setType(t);
             }
         }
     }
@@ -234,10 +232,9 @@ public class TypeVisitor extends Visitor {
     }
     
     @Override 
-    public void visit(Tree.TypeParameter that) {
+    public void visit(Tree.TypeParameterDeclaration that) {
         super.visit(that);
-        TypeParameter tp = (TypeParameter) that.getDeclarationModel();
-        tp.setExtendedType(getVoidDeclaration().getType());
+        that.getDeclarationModel().setExtendedType(getVoidDeclaration().getType());
     }
     
     @Override
@@ -259,7 +256,7 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.ClassOrInterface that) {
         super.visit(that);
-        ClassOrInterface ci = (ClassOrInterface) that.getDeclarationModel();
+        ClassOrInterface ci = that.getDeclarationModel();
         if (ci==null) {
             //TODO: this case is temporary until we get aliases
         }
@@ -274,7 +271,7 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.AnyClass that) {
         super.visit(that);
-        Class c = (Class) that.getDeclarationModel();
+        Class c = that.getDeclarationModel();
         if (c==null) {
             //TODO: this case is temporary until we get aliases
         }
@@ -295,7 +292,7 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.AnyInterface that) {
         super.visit(that);
-        Interface i = (Interface) that.getDeclarationModel();
+        Interface i = that.getDeclarationModel();
         if (i==null) {
             //TODO: this case is temporary until we get aliases
         }
@@ -309,7 +306,7 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         Tree.ExtendedType et = that.getExtendedType();
         Tree.SatisfiedTypes st = that.getSatisfiedTypes();
-        TypeDeclaration td = ( (Value) that.getDeclarationModel() ).getTypeDeclaration();
+        TypeDeclaration td = that.getDeclarationModel().getTypeDeclaration();
         if (td!=null) {
             if (et!=null) {
                 td.setExtendedType(getExtendedType(et));
@@ -325,7 +322,7 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         Tree.ExtendedType et = that.getExtendedType();
         Tree.SatisfiedTypes st = that.getSatisfiedTypes();
-        TypeDeclaration td = ( (Value) that.getDeclarationModel() ).getTypeDeclaration();
+        TypeDeclaration td = that.getDeclarationModel().getTypeDeclaration();
         if (td!=null) {
             if (et!=null) {
                 td.setExtendedType(getExtendedType(et));

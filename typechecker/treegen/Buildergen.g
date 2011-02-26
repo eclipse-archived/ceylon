@@ -61,13 +61,16 @@ nodeList :
            ;
 
 node : '^' '('
-       n=NODE_NAME 
-       { println("    public " + className($n.text) + " build" + className($n.text) +"(CommonTree treeNode) {"); }
-       { println("        " + className($n.text) + " node = new " + className($n.text) + "(treeNode);"); }
-       { println("        build" + className($n.text) + "(treeNode, node);"); }
-       { println("        return node;"); }
-       { println("    }\n"); }
-       { println("    public void build" + className($n.text) + "(CommonTree treeNode, " + className($n.text) + " node) {"); }
+       ( 'abstract' n=NODE_NAME
+         { println("    public void build" + className($n.text) + "(CommonTree treeNode, " + className($n.text) + " node) {"); }
+       | n=NODE_NAME 
+         { println("    public " + className($n.text) + " build" + className($n.text) +"(CommonTree treeNode) {"); }
+         { println("        " + className($n.text) + " node = new " + className($n.text) + "(treeNode);"); }
+         { println("        build" + className($n.text) + "(treeNode, node);"); }
+         { println("        return node;"); }
+         { println("    }\n"); }
+         { println("    public void build" + className($n.text) + "(CommonTree treeNode, " + className($n.text) + " node) {"); }
+       )
        extendsNode?
        (
        { println("        @SuppressWarnings(\"unchecked\")"); }
@@ -135,7 +138,7 @@ subnode : n=NODE_NAME '?'? f=FIELD_NAME
           )+ ')' 
         ;
 
-field : t=TYPE_NAME f=FIELD_NAME ';'
+field : 'abstract'? t=TYPE_NAME f=FIELD_NAME ';'
       ;
 
 NODE_NAME : ('A'..'Z'|'_')+;

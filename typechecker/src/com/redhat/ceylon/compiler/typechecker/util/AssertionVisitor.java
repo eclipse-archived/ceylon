@@ -55,12 +55,13 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         initExpectingError(that);
         super.visit(that);
         checkErrors(that);
-        checkCapture(that);
         expectingError = b;
         foundErrors = f;
     }
     
-    private void checkCapture(Tree.StatementOrArgument that) {
+    @Override
+    public void visit(Tree.Declaration that) {
+        super.visit(that);
         for (Tree.CompilerAnnotation c: that.getCompilerAnnotations()) {
             if (c.getIdentifier().getText().equals("captured")) {
                 Declaration d = that.getDeclarationModel();

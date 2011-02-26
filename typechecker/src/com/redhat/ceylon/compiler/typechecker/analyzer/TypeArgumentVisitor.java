@@ -1,10 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
-import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -34,7 +31,7 @@ public class TypeArgumentVisitor extends Visitor {
     
     @Override public void visit(Tree.TypeConstraint that) {
         super.visit(that);
-        parameterizedDeclaration = ((TypeParameter) that.getDeclarationModel()).getDeclaration();
+        parameterizedDeclaration = that.getDeclarationModel().getDeclaration();
         flip();
         if (that.getSatisfiedTypes()!=null) {
             for (Tree.Type t: that.getSatisfiedTypes().getTypes()) {
@@ -48,7 +45,7 @@ public class TypeArgumentVisitor extends Visitor {
     @Override public void visit(Tree.Parameter that) {
         boolean topLevel = parameterizedDeclaration==null;
         if (topLevel) {
-            parameterizedDeclaration = ( (Parameter) that.getDeclarationModel() ).getDeclaration();
+            parameterizedDeclaration = that.getDeclarationModel().getDeclaration();
         }
         super.visit(that);
         check(that.getType(), false);
@@ -59,7 +56,7 @@ public class TypeArgumentVisitor extends Visitor {
     
     @Override public void visit(Tree.TypedDeclaration that) {
         super.visit(that);
-        check(that.getType(), ((TypedDeclaration) that.getDeclarationModel() ).isVariable());
+        check(that.getType(), that.getDeclarationModel().isVariable());
     }
     
     @Override public void visit(Tree.ClassOrInterface that) {

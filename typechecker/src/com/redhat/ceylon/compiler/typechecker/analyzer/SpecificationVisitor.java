@@ -242,7 +242,7 @@ public class SpecificationVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Tree.NamedArgument that) {
+    public void visit(Tree.TypedArgument that) {
         if (that.getDeclarationModel()==declaration) {
             beginDisabledSpecificationScope();
             super.visit(that);
@@ -313,7 +313,7 @@ public class SpecificationVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.TypeParameter that) {
+    public void visit(Tree.TypeParameterDeclaration that) {
         super.visit(that);
         if (that.getDeclarationModel()==declaration) {
             specify();
@@ -392,18 +392,21 @@ public class SpecificationVisitor extends Visitor {
             if (s instanceof Tree.ExecutableStatement) {
                 les = s;
             }
-            if (s instanceof Tree.AttributeDeclaration) {
-                if ( ((Tree.AttributeDeclaration) s).getSpecifierOrInitializerExpression()!=null ) {
-                    les = s;
+            else {
+                Tree.Declaration d = (Tree.Declaration) s;
+                if (s instanceof Tree.AttributeDeclaration) {
+                    if ( ((Tree.AttributeDeclaration) s).getSpecifierOrInitializerExpression()!=null ) {
+                        les = s;
+                    }
                 }
-            }
-            if (s instanceof Tree.MethodDeclaration) {
-                if ( ((Tree.MethodDeclaration) s).getSpecifierExpression()!=null ) {
-                    les = s;
+                if (s instanceof Tree.MethodDeclaration) {
+                    if ( ((Tree.MethodDeclaration) s).getSpecifierExpression()!=null ) {
+                        les = s;
+                    }
                 }
-            }
-            if (s.getDeclarationModel()==declaration) {
-                found = true;
+                if (d.getDeclarationModel()==declaration) {
+                    found = true;
+                }
             }
         }
         if (found) {
