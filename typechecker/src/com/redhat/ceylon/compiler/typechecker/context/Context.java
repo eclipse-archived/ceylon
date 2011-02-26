@@ -1,20 +1,8 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
 import com.redhat.ceylon.compiler.typechecker.io.ArtifactProvider;
-import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
-import static com.redhat.ceylon.compiler.typechecker.util.PrintUtil.importPathToString;
 
 /**
  * Keep compiler contextual information like the package stack and the current module

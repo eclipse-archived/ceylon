@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import java.util.Arrays;
+
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-
-import java.util.Arrays;
 
 /**
  * Detect and populate the list of imports for modules.
