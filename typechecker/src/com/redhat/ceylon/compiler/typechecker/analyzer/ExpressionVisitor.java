@@ -392,7 +392,7 @@ public class ExpressionVisitor extends Visitor {
                     }
                     else {
                         ProducedType t = ptr.getType();
-                        that.setMemberReference(ptr); //TODO: how do we wrap ptr???
+                        that.setTarget(ptr); //TODO: how do we wrap ptr???
                         that.setTypeModel(wrap(t, that)); //TODO: this is not correct, should be Callable
                     }
                 }
@@ -450,7 +450,7 @@ public class ExpressionVisitor extends Visitor {
                 if (acceptsTypeArguments(member, typeArgs, that.getTypeArgumentList(), that)) {
                     ProducedType t = pt.getTypeMember(member, typeArgs);
                     that.setTypeModel(wrap(t, that)); //TODO: this is not correct, should be Callable
-                    that.setMemberReference(t);
+                    that.setTarget(t);
                 }
             }
         }
@@ -499,7 +499,7 @@ public class ExpressionVisitor extends Visitor {
         else {
             Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
             Tree.NamedArgumentList nal = that.getNamedArgumentList();
-            ProducedReference m = pr.getMemberReference();
+            ProducedReference m = pr.getTarget();
             if (m==null || !m.isFunctional()) {
                 that.addError("receiving expression cannot be invoked");
             }
@@ -523,7 +523,7 @@ public class ExpressionVisitor extends Visitor {
 
     private void visitInvocation(Tree.PositionalArgumentList pal, Tree.NamedArgumentList nal, 
             Node that, Tree.Primary primary) {
-        ProducedReference mr = primary.getMemberReference();
+        ProducedReference mr = primary.getTarget();
         if (mr==null || !mr.isFunctional()) {
             that.addError("receiving expression cannot be invoked");
         }
@@ -1163,7 +1163,7 @@ public class ExpressionVisitor extends Visitor {
                    ot = null;
                 }
                 ProducedReference pr = d.getProducedTypedReference(ot, typeArgs);
-                that.setMemberReference(pr);
+                that.setTarget(pr);
                 ProducedType t = pr.getType();
                 if (t==null) {
                     that.addError("could not determine type of member reference: " +

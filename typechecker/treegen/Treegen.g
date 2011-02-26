@@ -60,6 +60,7 @@ nodeList : {
            println("import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;\n");
            println("import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;\n");
            println("import com.redhat.ceylon.compiler.typechecker.model.ProducedType;\n");
+           println("import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;\n");
            println("import java.util.*;\n");
            println("public class Tree {\n");
            }

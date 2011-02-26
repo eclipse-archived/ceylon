@@ -144,7 +144,7 @@ public class TypeVisitor extends Visitor {
         List<ProducedType> typeArguments = getTypeArguments(that);
         ProducedType pt = d.getProducedType(ot, typeArguments);
         that.setTypeModel(pt);
-        that.setMemberReference(pt);
+        that.setTarget(pt);
         /*if (typeArguments!=null) {
             typeArguments.add(pt);
         }*/
