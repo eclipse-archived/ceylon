@@ -19,23 +19,23 @@ abstract class Types() {
     interface Baz {}
     interface Qux {}
     
-	formal Foo simpleType;
-	formal Foo1<Bar> typeWithParameter;
-	formal Foo2<Bar,Baz> typeWithMultipleParameters;
-	formal Foo1<Bar1<Baz>> typeWithNestedParameter;
-	formal Foo.Bar nestedType;
-	formal Foo.Bar.Baz multiplyNestedType;
-	formal Foo.Bar1<Baz> nestedTypeWithTypeParameter;
-	formal Foo1<Bar.Baz> typeWithNestedTypeParameter;
-	formal Foo1<Bar.Baz1<Qux>> anythingGoes;
-	formal Foo1<Bar>.Baz evenThis;
-	formal Foo1<Bar>.Baz1<Qux> orThis;
-	formal subtype theSubtype;
-	formal Foo[] sequenceType;
-	formal Foo? optionalType;
-	formal Foo[][] sequenceOfSequenceType;
-	formal Foo[]? x;
-	formal Foo?[] y;
+	shared formal Foo simpleType;
+	shared formal Foo1<Bar> typeWithParameter;
+	shared formal Foo2<Bar,Baz> typeWithMultipleParameters;
+	shared formal Foo1<Bar1<Baz>> typeWithNestedParameter;
+	shared formal Foo.Bar nestedType;
+	shared formal Foo.Bar.Baz multiplyNestedType;
+	shared formal Foo.Bar1<Baz> nestedTypeWithTypeParameter;
+	shared formal Foo1<Bar.Baz> typeWithNestedTypeParameter;
+	shared formal Foo1<Bar.Baz1<Qux>> anythingGoes;
+	shared formal Foo1<Bar>.Baz evenThis;
+	shared formal Foo1<Bar>.Baz1<Qux> orThis;
+	shared formal subtype theSubtype;
+	shared formal Foo[] sequenceType;
+	shared formal Foo? optionalType;
+	shared formal Foo[][] sequenceOfSequenceType;
+	shared formal Foo[]? x;
+	shared formal Foo?[] y;
 	//formal Foo<#2> typeWithDimension;
 	//formal Foo<#3,#5> typeWithMultipleDimensions;
 	//formal Foo[10] sequenceWithDimension;
