@@ -34,7 +34,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -50,40 +49,11 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  */
 public class ExpressionVisitor extends Visitor {
     
-    private ClassOrInterface classOrInterface;
     private Tree.Type returnType;
     private Context context;
 
     public ExpressionVisitor(Context context) {
         this.context = context;
-    }
-    
-    public void visit(Tree.ClassDefinition that) {
-        ClassOrInterface o = classOrInterface;
-        classOrInterface = that.getDeclarationModel();
-        super.visit(that);
-        classOrInterface = o;
-    }
-    
-    public void visit(Tree.InterfaceDefinition that) {
-        ClassOrInterface o = classOrInterface;
-        classOrInterface = that.getDeclarationModel();
-        super.visit(that);
-        classOrInterface = o;
-    }
-    
-    public void visit(Tree.ObjectDefinition that) {
-        ClassOrInterface o = classOrInterface;
-        classOrInterface = (Class) that.getDeclarationModel().getTypeDeclaration();
-        super.visit(that);
-        classOrInterface = o;
-    }
-    
-    public void visit(Tree.ObjectArgument that) {
-        ClassOrInterface o = classOrInterface;
-        classOrInterface = (Class) that.getDeclarationModel().getTypeDeclaration();
-        super.visit(that);
-        classOrInterface = o;
     }
     
     private Tree.Type beginReturnScope(Tree.Type t) {
@@ -126,7 +96,7 @@ public class ExpressionVisitor extends Visitor {
             t = se.getExpression().getTypeModel();
             n = v;
         }
-        Expression e = that.getExpression();
+        Tree.Expression e = that.getExpression();
         if (e!=null) {
             e.visit(this);
             t = e.getTypeModel();
@@ -1242,7 +1212,7 @@ public class ExpressionVisitor extends Visitor {
             if (acceptsTypeArguments(d, typeArgs, that.getTypeArgumentList(), that)) {
                 ProducedType ot;
                 if ( d.isMember() ) {
-                    ot = getDeclaringType(d, typeArgs);
+                    ot = getDeclaringType(that, d, typeArgs);
                 }
                 else {
                     //it must be a member of an outer scope
@@ -1272,13 +1242,13 @@ public class ExpressionVisitor extends Visitor {
         }
     }
         
-    private ProducedType getDeclaringType(TypedDeclaration d, List<ProducedType> typeArgs) {
+    private ProducedType getDeclaringType(Node that, TypedDeclaration d, List<ProducedType> typeArgs) {
         //look for it as a declared or inherited 
         //member of the current class or interface
-        Scope scope = classOrInterface;
+        Scope scope = that.getScope();
         while ( !(scope instanceof Package) ) {
             if (scope instanceof ClassOrInterface) {
-                ProducedType st = ((ClassOrInterface) scope).getType().getSupertype((TypeDeclaration) d.getContainer());
+                ProducedType st = getDeclaringType(d, ((ClassOrInterface) scope).getType());
                 if (st!=null) {
                     return st;
                 }
@@ -1286,6 +1256,12 @@ public class ExpressionVisitor extends Visitor {
             scope = scope.getContainer();
         }
         return null;
+    }
+
+    private ProducedType getDeclaringType(TypedDeclaration d,
+            ProducedType containingType) {
+        ProducedType st = containingType.getSupertype((TypeDeclaration) d.getContainer());
+        return st;
     }
     
     @Override public void visit(Tree.Expression that) {
@@ -1328,26 +1304,39 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.Super that) {
-        if (classOrInterface==null) {
-            that.addError("can't use super outside a class");
+        ClassOrInterface ci = getContainingClassOrInterface(that);
+        if (ci==null) {
+            that.addError("super appears outside a class definition");
         }
-        else if (!(classOrInterface instanceof Class)) {
-            that.addError("can't use super inside an interface");
+        else if (!(ci instanceof Class)) {
+            that.addError("super appears inside an interface definition");
         }
         else {
-            ProducedType t = classOrInterface.getExtendedType();
+            ProducedType t = ci.getExtendedType();
             //TODO: type arguments
             that.setTypeModel(t);
         }
     }
     
     @Override public void visit(Tree.This that) {
-        if (classOrInterface==null) {
-            that.addError("can't use this outside a class or interface");
+        ClassOrInterface ci = getContainingClassOrInterface(that);
+        if (ci==null) {
+            that.addError("this appears outside a class or interface definition");
         }
         else {
-            that.setTypeModel(classOrInterface.getType());
+            that.setTypeModel(ci.getType());
         }
+    }
+    
+    private ClassOrInterface getContainingClassOrInterface(Node that) {
+        Scope scope = that.getScope();
+        while (!(scope instanceof Package)) {
+            if (scope instanceof ClassOrInterface) {
+                return (ClassOrInterface) scope;
+            }
+            scope = scope.getContainer();
+        }
+        return null;
     }
     
     @Override public void visit(Tree.Subtype that) {
