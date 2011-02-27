@@ -135,14 +135,14 @@ public class ExpressionVisitor extends Visitor {
         if (t==null) {
             n.addError("could not determine if expression is of optional type");
         }
-        if (that instanceof Tree.ExistsCondition) {
-            if (t.getSupertype(ot)==null) {
-                n.addError("expression is not of optional type: " +
-                        t.getProducedTypeName() + " is not Optional");
+        else {
+            if (that instanceof Tree.ExistsCondition) {
+                if (t.getSupertype(ot)==null) {
+                    n.addError("expression is not of optional type: " +
+                            t.getProducedTypeName() + " is not Optional");
+                }
             }
-        }
-        if (that instanceof Tree.NonemptyCondition) {
-            if (t!=null) {
+            if (that instanceof Tree.NonemptyCondition) {
                 ProducedType oct = ot.getProducedType(null, Collections.singletonList(getContainerDeclaration().getType()));
                 if (!t.isSubtypeOf(oct)) {
                     n.addError("expression is not of correct type: " + 

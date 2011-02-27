@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.*;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.name;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -411,7 +412,7 @@ public class DeclarationVisitor extends Visitor {
         that.setScope(scope);
         that.setUnit(unit);
     }
-
+    
     private List<TypeParameter> getTypeParameters(Tree.TypeParameterList tpl) {
         List<TypeParameter> typeParameters = new ArrayList<TypeParameter>();
         if (tpl!=null) {

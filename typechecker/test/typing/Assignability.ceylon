@@ -158,7 +158,7 @@ class Assignability() {
     
     if (exists {X()}.lastIndex) {}
     
-    if (@error exists "Hello") {}
+    //if (exists "Hello") {}
     
     if (exists X x = nothing) {
         print(x.hello);

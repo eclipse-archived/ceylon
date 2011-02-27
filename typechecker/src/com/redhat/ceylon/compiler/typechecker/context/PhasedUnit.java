@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.context;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ControlFlowVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor;
+import com.redhat.ceylon.compiler.typechecker.analyzer.LineNumberVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleBuilder;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleImportVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.RefinementVisitor;
@@ -56,6 +57,7 @@ public class PhasedUnit {
     }
 
     public void scanDeclarations() {
+        compilationUnit.visit(new LineNumberVisitor());
         System.out.println("Scan declarations for " + fileName);
         DeclarationVisitor dv = new DeclarationVisitor(pkg, fileName);
         compilationUnit.visit(dv);
