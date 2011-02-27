@@ -4,6 +4,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
@@ -22,6 +23,7 @@ public abstract class Node {
     protected Node(CommonTree antlrTreeNode) {
         this.antlrTreeNode = antlrTreeNode; 
         text = antlrTreeNode.getText();
+        correctLineNumber(antlrTreeNode);
     }
     
     /**
@@ -93,4 +95,17 @@ public abstract class Node {
         return getClass().getSimpleName();
     }
     
+    public static void correctLineNumber(CommonTree node) {
+        Token token = node.getToken();
+        if (token.getLine()==0 && 
+                token.getCharPositionInLine()==-1) {
+            org.antlr.runtime.tree.Tree tr = node.getParent();
+            if (tr!=null && tr instanceof CommonTree) {
+                Token o = ((CommonTree) tr).getToken();
+                token.setLine(o.getLine());
+                token.setCharPositionInLine(o.getCharPositionInLine());
+            }
+        }
+    }
+
 }
