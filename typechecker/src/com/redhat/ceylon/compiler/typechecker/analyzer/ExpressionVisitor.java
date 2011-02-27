@@ -34,6 +34,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -112,29 +113,42 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    @Override public void visit(Tree.ExistsCondition that) {
+    @Override public void visit(Tree.ExistsOrNonemptyCondition that) {
         ProducedType t = null;
         Node n = that;
-        Tree.Variable v = that.getVariable();
         Class ot = getOptionalDeclaration();
+        Tree.Variable v = that.getVariable();
         if (v!=null) {
             Tree.SpecifierExpression se = v.getSpecifierExpression();
-            visit(se);
+            se.visit(this);
             inferContainedType(v, se, ot);
             checkContainedType(v, se, ot);
             t = se.getExpression().getTypeModel();
             n = v;
         }
-        if (that.getExpression()!=null) {
-            that.getExpression().visit(this);
-            t = that.getExpression().getTypeModel();
-            n = that.getExpression();
+        Expression e = that.getExpression();
+        if (e!=null) {
+            e.visit(this);
+            t = e.getTypeModel();
+            n = e;
         }
         if (t==null) {
             n.addError("could not determine if expression is of optional type");
         }
-        else if (t.getSupertype(ot)==null) {
-            n.addError("expression is not of optional type");
+        if (that instanceof Tree.ExistsCondition) {
+            if (t.getSupertype(ot)==null) {
+                n.addError("expression is not of optional type: " +
+                        t.getProducedTypeName() + " is not Optional");
+            }
+        }
+        if (that instanceof Tree.NonemptyCondition) {
+            if (t!=null) {
+                ProducedType oct = ot.getProducedType(null, Collections.singletonList(getContainerDeclaration().getType()));
+                if (!t.isSubtypeOf(oct)) {
+                    n.addError("expression is not of correct type: " + 
+                            t.getProducedTypeName() + " is not Optional<Container>");
+                }
+            }
         }
     }
 
@@ -148,7 +162,8 @@ public class ExpressionVisitor extends Visitor {
             else {
                 ProducedType bt = getBooleanDeclaration().getType();
                 if (!bt.isSupertypeOf(t)) {
-                    that.addError("expression is not of boolean type");
+                    that.addError("expression is not of boolean type: " +
+                            t.getProducedTypeName() + " is not Boolean");
                 }
             }
         }

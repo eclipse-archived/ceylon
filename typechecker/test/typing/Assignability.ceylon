@@ -189,7 +189,16 @@ class Assignability() {
     }
     
     if (is Y X()) {}
-        
+    
+    X[]? seq = null;
+    
+    if (nonempty seq) {
+        print(seq.size.string);
+    }
+    
+    //Natural? nat = null;
+    //@error if (nonempty nat) {} 
+    
     for (X x in {X(), X()} ) {
         print(x.hello);
     }
