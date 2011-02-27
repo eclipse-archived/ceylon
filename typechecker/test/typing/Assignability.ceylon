@@ -126,18 +126,6 @@ class Assignability() {
         return X();
     }
         
-    for (X x in {X(), X()} ) {
-        print(x.hello);
-    }
-    
-    for (local x in {X(), X()} ) {
-        print(x.hello);
-    }
-    
-    for (@error Y y in {X(), X()} ) {
-        print(y.name);
-    }
-    
     void hello(String greeting = "Hello", String name = "World") {}
     
     hello("Hi", "Gavin");
@@ -202,4 +190,40 @@ class Assignability() {
     
     if (is Y X()) {}
         
+    for (X x in {X(), X()} ) {
+        print(x.hello);
+    }
+    
+    for (local x in {X(), X()} ) {
+        print(x.hello);
+    }
+    
+    for (@error Y y in {X(), X()} ) {
+        print(y.name);
+    }
+    
+    for (@error X x in 46 ) {}
+    
+    //for (@error local x in 46 ) {}
+    
+    for (X x -> Y y in {X()->Y(), X()->Y()}) {
+        print(x.hello + " " + y.name);
+    }
+    
+    for (local x -> local y in {X()->Y(), X()->Y()}) {
+        print(x.hello + " " + y.name);
+    }
+    
+    for (@error X x -> X y in {X()->Y(), X()->Y()}) {
+        print(x.hello);
+    }
+    
+    for (@error Y x -> Y y in {X()->Y(), X()->Y()}) {
+        print(y.name);
+    }
+    
+    for (@error X x -> Y y in 12) {}
+    
+    //for (@error local x -> local y in 12) {}
+    
 }
