@@ -363,7 +363,7 @@ public class DeclarationVisitor extends Visitor {
         parameterList = new ParameterList();
         super.visit(that);
         Functional f = (Functional) scope;
-        if ( (f instanceof Class) && 
+        if ( f instanceof Class && 
                 !f.getParameterLists().isEmpty() ) {
             that.addError("classes may have only one parameter list");
         }
