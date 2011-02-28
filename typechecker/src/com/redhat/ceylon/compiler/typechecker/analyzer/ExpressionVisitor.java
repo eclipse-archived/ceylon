@@ -632,7 +632,6 @@ public class ExpressionVisitor extends Visitor {
                 foundParameters.add(sp);
                 checkSequencedArgument(sa, pr, sp);
             }
-            //TODO: check type!
         }
             
         for (Parameter p: pl.getParameters()) {
@@ -745,7 +744,6 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
         }
-        //TODO: sequenced arguments!
         for (int i=params.size(); i<args.size(); i++) {
             args.get(i).addError("no matching parameter for argument");
         }
@@ -781,17 +779,20 @@ public class ExpressionVisitor extends Visitor {
             that.addError("could not determine type of receiver");
         }
         else {
-            Interface s = getCorrespondenceDeclaration();
             if (that instanceof Tree.SafeIndexOp) {
                 ProducedType ot = pt.getSupertype( getOptionalDeclaration() );
-                if (ot!=null) {
-                    //TODO: add a proper error
+                if (ot==null) {
+                    that.getPrimary().addError("receving type not of optional type: " +
+                            pt.getProducedTypeName() + " is not Optional");
+                }
+                else {
                     pt = ot.getTypeArgumentList().get(0);
                 }
             }
-            ProducedType st = pt.getSupertype(s);
+            ProducedType st = pt.getSupertype(getCorrespondenceDeclaration());
             if (st==null) {
-                that.getPrimary().addError("receiving type of an index expression must be a Correspondence");
+                that.getPrimary().addError("illegal receiving type for index expression: " +
+                        pt.getProducedTypeName() + " is not Correspondence");
             }
             else {
                 List<ProducedType> args = st.getTypeArgumentList();
@@ -834,9 +835,6 @@ public class ExpressionVisitor extends Visitor {
                         }
                     }
                     ProducedType ot = rtd.getProducedType( null, Collections.singletonList(vt) );
-                    /*if (that instanceof SafeIndexOp) {
-                        ot = getOptionalDeclaration().getProducedType( Collections.singletonList(ot) );
-                    }*/
                     that.setTypeModel(ot);
                 }
             }
