@@ -260,9 +260,9 @@ public class TypeVisitor extends Visitor {
             //TODO: this case is temporary until we get aliases
         }
         else {
-            Tree.ExtendedType et = that.getExtendedType();
             Class vd = getVoidDeclaration();
             if (c!=vd) {
+                Tree.ExtendedType et = that.getExtendedType();
                 if (et==null) {
                     c.setExtendedType(getBaseObjectDeclaration().getType());
                 }
@@ -288,13 +288,13 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.ObjectDefinition that) {
         super.visit(that);
-        Tree.ExtendedType et = that.getExtendedType();
-        Tree.SatisfiedTypes st = that.getSatisfiedTypes();
         TypeDeclaration td = that.getDeclarationModel().getTypeDeclaration();
         if (td!=null) {
+            Tree.ExtendedType et = that.getExtendedType();
             if (et!=null) {
                 td.setExtendedType(getExtendedType(et));
             }
+            Tree.SatisfiedTypes st = that.getSatisfiedTypes();
             if (st!=null) {
                 td.setSatisfiedTypes(getSatisfiedTypes(st, false));
             }
@@ -304,13 +304,13 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.ObjectArgument that) {
         super.visit(that);
-        Tree.ExtendedType et = that.getExtendedType();
-        Tree.SatisfiedTypes st = that.getSatisfiedTypes();
         TypeDeclaration td = that.getDeclarationModel().getTypeDeclaration();
         if (td!=null) {
+            Tree.ExtendedType et = that.getExtendedType();
             if (et!=null) {
                 td.setExtendedType(getExtendedType(et));
             }
+            Tree.SatisfiedTypes st = that.getSatisfiedTypes();
             if (st!=null) {
                 td.setSatisfiedTypes(getSatisfiedTypes(st, false));
             }
