@@ -47,13 +47,12 @@ public class DeclarationVisitor extends Visitor {
     private Scope scope;
     private Unit unit;
     private ParameterList parameterList;
-    private Functional functional;
     private Declaration declaration;
     
-    public DeclarationVisitor(Package p, String fn) {
-        scope = p;
-        pkg = p;
-        filename = fn;
+    public DeclarationVisitor(Package pkg, String filename) {
+        scope = pkg;
+        this.pkg = pkg;
+        this.filename = filename;
     }
     
     public Unit getCompilationUnit() {
@@ -68,6 +67,16 @@ public class DeclarationVisitor extends Visitor {
 
     private void exitScope(Scope outerScope) {
         scope = outerScope;
+    }
+    
+    private Declaration beginDeclaration(Declaration innerDec) {
+        Declaration outerDec = declaration;
+        declaration = innerDec;
+        return outerDec;
+    }
+
+    private void endDeclaration(Declaration outerDec) {
+        declaration = outerDec;
     }
     
     private void visitDeclaration(Tree.Declaration that, Declaration model) {
@@ -181,11 +190,9 @@ public class DeclarationVisitor extends Visitor {
         Class c = new Class();
         that.setDeclarationModel(c);
         visitDeclaration(that, c);
-        functional = c;
         Scope o = enterScope(c);
         super.visit(that);
         exitScope(o);
-        functional = null;
         if (that.getParameterList()==null) {
             that.addError("missing parameter list in class declaration: " + 
                     name(that.getIdentifier()) );
@@ -224,11 +231,9 @@ public class DeclarationVisitor extends Visitor {
         Method m = new Method();
         that.setDeclarationModel(m);
         visitDeclaration(that, m);
-        functional = m;
         Scope o = enterScope(m);
         super.visit(that);
         exitScope(o);
-        functional = null;
         checkMethodParameters(that);
         that.getDeclarationModel().setTypeParameters(getTypeParameters(that.getTypeParameterList()));
     }
@@ -238,11 +243,9 @@ public class DeclarationVisitor extends Visitor {
         Method m = new Method();
         that.setDeclarationModel(m);
         visitArgument(that, m);
-        functional = m;
         Scope o = enterScope(m);
         super.visit(that);
         exitScope(o);
-        functional = null;
         checkMethodArgumentParameters(that);
     }
 
@@ -267,11 +270,9 @@ public class DeclarationVisitor extends Visitor {
         Value v = new Value();
         that.setDeclarationModel(v);
         visitDeclaration(that, v);
-        functional = c;
         Scope o = enterScope(c);
         super.visit(that);
         exitScope(o);
-        functional = null;
         that.getType().setTypeModel(c.getType());
         v.setType(c.getType());
     }
@@ -283,11 +284,9 @@ public class DeclarationVisitor extends Visitor {
         Value v = new Value();
         that.setDeclarationModel(v);
         visitArgument(that, v);
-        functional = c;
         Scope o = enterScope(c);
         super.visit(that);
         exitScope(o);
-        functional = null;
         that.getType().setTypeModel(c.getType());
         v.setType(c.getType());
     }
@@ -353,10 +352,7 @@ public class DeclarationVisitor extends Visitor {
         that.setDeclarationModel(p);
         visitDeclaration(that, p);
         Scope o = enterScope(p);
-        Functional of = functional;
-        functional = p;
         super.visit(that);
-        functional = of;
         exitScope(o);
         parameterList.getParameters().add(p);
     }
@@ -366,19 +362,13 @@ public class DeclarationVisitor extends Visitor {
         ParameterList pl = parameterList;
         parameterList = new ParameterList();
         super.visit(that);
-        //TODO: check that we are allowed to add!
-        if (functional==null) {
-            //TODO: this case is temporary until
-            //      we add support for MethodArguments
+        Functional f = (Functional) scope;
+        if ( (f instanceof Class) && 
+                !f.getParameterLists().isEmpty() ) {
+            that.addError("classes may have only one parameter list");
         }
         else {
-            if ( (functional instanceof Class) && 
-                    !functional.getParameterLists().isEmpty() ) {
-                that.addError("classes may have only one parameter list");
-            }
-            else {
-                functional.addParameterList(parameterList);
-            }
+            f.addParameterList(parameterList);
         }
         parameterList = pl;
     }
@@ -435,8 +425,7 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.Declaration that) {
-        Declaration d = declaration;
-        declaration = that.getDeclarationModel();
+        Declaration d = beginDeclaration(that.getDeclarationModel());
         if (declaration!=null) {
             if (hasAnnotation(that.getAnnotationList(), "shared")) {
                 declaration.setShared(true);
@@ -452,9 +441,15 @@ public class DeclarationVisitor extends Visitor {
             }
         }
         super.visit(that);
-        declaration = d;
+        endDeclaration(d);
     }
         
+    @Override public void visit(Tree.TypedArgument that) {
+        Declaration d = beginDeclaration(that.getDeclarationModel());
+        super.visit(that);
+        endDeclaration(d);
+    }
+
     @Override
     public void visit(Tree.TypeConstraint that) {
         TypeParameter p = (TypeParameter) getDeclaration(scope, unit, that.getIdentifier(), null);
@@ -465,12 +460,9 @@ public class DeclarationVisitor extends Visitor {
             super.visit(that);
         }
         else {
-            Functional of = functional;
-            functional = p;
             Scope o = enterScope(p);
             super.visit(that);
             exitScope(o);
-            functional = of;
         }
     }
 
