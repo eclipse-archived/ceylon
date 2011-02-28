@@ -729,33 +729,48 @@ public class ExpressionVisitor extends Visitor {
                     pal.addError("no argument to parameter: " + p.getName());
                 }
             }
-            else {
-                Tree.PositionalArgument a = args.get(i);
-                Tree.Expression e = a.getExpression();
-                if (e==null) {
-                    //TODO: this case is temporary until we get support for SPECIAL_ARGUMENTs
-                }
-                else {
-                    ProducedType argType = e.getTypeModel();
+            else if (p.isSequenced()) {
+                for (int j=i; j<args.size(); j++) {
                     ProducedType paramType = r.getTypedParameter(p).getType();
-                    if (paramType!=null && argType!=null) {
-                        if (!paramType.isSupertypeOf(argType)) {
-                            a.addError("argument not assignable to parameter type: " + 
-                                    p.getName() + " since " +
-                                    argType.getProducedTypeName() + " is not " +
-                                    paramType.getProducedTypeName());
-                        }
+                    if (paramType!=null) {
+                        checkPositionalArgument(p, args.get(i), paramType.getTypeArgumentList().get(0));
                     }
-                    else {
-                        a.addError("could not determine assignability of argument to parameter: " +
-                                p.getName());
-                    }
+                }
+                return;
+            }
+            else {
+                ProducedType paramType = r.getTypedParameter(p).getType();
+                if (paramType!=null) {
+                    checkPositionalArgument(p, args.get(i), paramType);
                 }
             }
         }
         //TODO: sequenced arguments!
         for (int i=params.size(); i<args.size(); i++) {
             args.get(i).addError("no matching parameter for argument");
+        }
+    }
+
+    private void checkPositionalArgument(Parameter p,
+            Tree.PositionalArgument a, ProducedType paramType) {
+        Tree.Expression e = a.getExpression();
+        if (e==null) {
+            //TODO: this case is temporary until we get support for SPECIAL_ARGUMENTs
+        }
+        else {
+            ProducedType argType = e.getTypeModel();
+            if (argType!=null) {
+                if (!paramType.isSupertypeOf(argType)) {
+                    a.addError("argument not assignable to parameter type: " + 
+                            p.getName() + " since " +
+                            argType.getProducedTypeName() + " is not " +
+                            paramType.getProducedTypeName());
+                }
+            }
+            else {
+                a.addError("could not determine assignability of argument to parameter: " +
+                        p.getName());
+            }
         }
     }
     
