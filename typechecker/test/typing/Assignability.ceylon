@@ -239,4 +239,19 @@ class Assignability() {
     
     //for (@error local x -> local y in 12) {}
     
+    void printStrings(String... strings) {}
+    
+    printStrings("Hello", "World");
+
+    printStrings { "Hello", "World" };
+
+    printStrings { strings={"Hello", "World"}; };
+
+
+    @error printStrings(1, 2);
+
+    printStrings { @error 1, 2 };
+
+    printStrings { @error strings={1, 2}; };
+    
 }
