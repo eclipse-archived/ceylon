@@ -630,6 +630,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 foundParameters.add(sp);
+                checkSequencedArgument(sa, pr, sp);
             }
             //TODO: check type!
         }
@@ -663,9 +664,34 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType paramType = pr.getTypedParameter(p).getType();
                 if ( !paramType.getType().isSupertypeOf(argType) ) {
                     a.addError("named argument not assignable to parameter type: " + 
-                            name(a.getIdentifier()) + " since " +
+                            p.getName() + " since " +
                             argType.getProducedTypeName() + " is not " +
                             paramType.getProducedTypeName());
+                }
+            }
+        }
+    }
+    
+    private void checkSequencedArgument(Tree.SequencedArgument a, ProducedReference pr, 
+            Parameter p) {
+        if (p.getType()==null) {
+            a.addError("sequenced parameter type not known");
+        }
+        else {
+            for (Tree.Expression e: a.getExpressionList().getExpressions()) {
+                ProducedType argType = e.getTypeModel();    
+                if (argType==null) {
+                    a.addError("could not determine assignability of argument to parameter: " +
+                            p.getName());
+                }
+                else {
+                    ProducedType paramType = pr.getTypedParameter(p).getType().getTypeArgumentList().get(0);
+                    if ( !paramType.getType().isSupertypeOf(argType) ) {
+                        a.addError("sequenced argument not assignable to sequenced parameter type: " + 
+                                p.getName() + " since " +
+                                argType.getProducedTypeName() + " is not " +
+                                paramType.getProducedTypeName());
+                    }
                 }
             }
         }
