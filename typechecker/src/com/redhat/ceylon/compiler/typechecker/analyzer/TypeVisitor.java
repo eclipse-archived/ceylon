@@ -12,7 +12,6 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
-import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Import;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -45,7 +44,6 @@ import com.redhat.ceylon.compiler.typechecker.util.PrintUtil;
 public class TypeVisitor extends Visitor {
     
     private Unit unit;
-    private Package importPackage;
     private Context context;
 
     public TypeVisitor(Unit u, Context context) {
@@ -54,16 +52,25 @@ public class TypeVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.ImportPath that) {
-        Module m = unit.getPackage().getModule();
-        for (Package mp: m.getAllPackages()) {
-            if ( hasName(that.getIdentifiers(), mp) ) {
-                importPackage = mp;
-                return;
+    public void visit(Tree.Import that) {
+        Package importedPackage = getPackage(that.getImportPath());
+        if (importedPackage!=null) {
+            for (Tree.ImportMemberOrType member: that.getImportMemberOrTypes()) {
+                importMember(member, importedPackage);
             }
         }
-        that.addError("Package not found: " + 
-                PrintUtil.importNodeToString(that.getIdentifiers()) );
+    }
+
+    private Package getPackage(Tree.ImportPath path) {
+        Module module = unit.getPackage().getModule();
+        for (Package pkg: module.getAllPackages()) {
+            if ( hasName(path.getIdentifiers(), pkg) ) {
+                return pkg;
+            }
+        }
+        path.addError("Package not found: " + 
+                PrintUtil.importNodeToString(path.getIdentifiers()));
+        return null;
     }
 
     private boolean hasName(List<Tree.Identifier> importPath, Package mp) {
@@ -80,25 +87,24 @@ public class TypeVisitor extends Visitor {
         }
     }
     
-    @Override
-    public void visit(Tree.ImportMemberOrType that) {
+    private void importMember(Tree.ImportMemberOrType member, Package importedPackage) {
         Import i = new Import();
-        Tree.Alias alias = that.getAlias();
+        Tree.Alias alias = member.getAlias();
         if (alias==null) {
-            i.setAlias(that.getIdentifier().getText());
+            i.setAlias(member.getIdentifier().getText());
         }
         else {
             i.setAlias(alias.getIdentifier().getText());
         }
-        Declaration d = getExternalDeclaration(importPackage, that.getIdentifier(), context);
+        Declaration d = getExternalDeclaration(importedPackage, member.getIdentifier(), context);
         if (d==null) {
-            that.addError("imported declaration not found: " + 
-                    that.getIdentifier().getText());
+            member.addError("imported declaration not found: " + 
+                    member.getIdentifier().getText());
         }
         else {
             if (!d.isShared()) {
-                that.addError("imported declaration is not shared: " +
-                        that.getIdentifier().getText());
+                member.addError("imported declaration is not shared: " +
+                        member.getIdentifier().getText());
             }
             i.setDeclaration(d);
             unit.getImports().add(i);
@@ -185,76 +191,8 @@ public class TypeVisitor extends Visitor {
         }
     }
     
-    private ProducedType getExtendedType(Tree.ExtendedType et) {
-        ProducedType tm = et.getType().getTypeModel();
-        if (tm.getDeclaration() instanceof TypeParameter) {
-            et.getType().addError("directly extends a type parameter");
-        }
-        if (tm.getDeclaration() instanceof Interface) {
-            et.getType().addError("extends an interface");
-        }
-        return tm;
-    }
-
-    private List<ProducedType> getSatisfiedTypes(Tree.SatisfiedTypes st, boolean typeParameter) {
-        List<ProducedType> list = new ArrayList<ProducedType>();
-        if (st!=null) {
-            for (Tree.StaticType t: st.getTypes()) {
-                ProducedType tm = t.getTypeModel();
-                if (tm!=null) {
-                    if (!typeParameter && tm.getDeclaration() instanceof TypeParameter) {
-                        t.addError("directly satisfies type parameter");
-                    }
-                    if (!typeParameter && tm.getDeclaration() instanceof Class) {
-                        t.addError("satisfies a class");
-                    }
-                    list.add(tm);
-                }
-            }
-        }
-        return list;
-    }
-    
-    @Override 
-    public void visit(Tree.TypeParameterDeclaration that) {
-        super.visit(that);
-        that.getDeclarationModel().setExtendedType(getVoidDeclaration().getType());
-    }
-    
-    @Override
-    public void visit(Tree.TypeConstraint that) {
-        super.visit(that);
-        TypeParameter p = (TypeParameter) getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
-        if (p==null) {
-            //already added error
-            //that.addError("no matching type parameter for constraint");
-        }
-        else {
-            Tree.SatisfiedTypes st = that.getSatisfiedTypes();
-            if (st!=null) {
-                p.setSatisfiedTypes(getSatisfiedTypes(st, true));
-            }
-        }
-    }
-
-    @Override 
-    public void visit(Tree.ClassOrInterface that) {
-        super.visit(that);
-        ClassOrInterface ci = that.getDeclarationModel();
-        if (ci==null) {
-            //TODO: this case is temporary until we get aliases
-        }
-        else {
-            Tree.SatisfiedTypes st = that.getSatisfiedTypes();
-            if (st!=null) {
-                ci.setSatisfiedTypes(getSatisfiedTypes(st, false));
-            }
-        }
-    }
-
     @Override 
     public void visit(Tree.AnyClass that) {
-        super.visit(that);
         Class c = that.getDeclarationModel();
         if (c==null) {
             //TODO: this case is temporary until we get aliases
@@ -266,16 +204,13 @@ public class TypeVisitor extends Visitor {
                 if (et==null) {
                     c.setExtendedType(getBaseObjectDeclaration().getType());
                 }
-                else {
-                    c.setExtendedType(getExtendedType(et));
-                }
             }
         }
+        super.visit(that);
     }
 
     @Override 
     public void visit(Tree.AnyInterface that) {
-        super.visit(that);
         Interface i = that.getDeclarationModel();
         if (i==null) {
             //TODO: this case is temporary until we get aliases
@@ -283,38 +218,51 @@ public class TypeVisitor extends Visitor {
         else {
             i.setExtendedType(getObjectDeclaration().getType());
         }
+        super.visit(that);
     }
 
     @Override 
-    public void visit(Tree.ObjectDefinition that) {
+    public void visit(Tree.TypeParameterDeclaration that) {
+        that.getDeclarationModel().setExtendedType(getVoidDeclaration().getType());
         super.visit(that);
-        TypeDeclaration td = that.getDeclarationModel().getTypeDeclaration();
-        if (td!=null) {
-            Tree.ExtendedType et = that.getExtendedType();
-            if (et!=null) {
-                td.setExtendedType(getExtendedType(et));
-            }
-            Tree.SatisfiedTypes st = that.getSatisfiedTypes();
-            if (st!=null) {
-                td.setSatisfiedTypes(getSatisfiedTypes(st, false));
-            }
-        }
     }
     
     @Override 
-    public void visit(Tree.ObjectArgument that) {
+    public void visit(Tree.ExtendedType that) {
         super.visit(that);
-        TypeDeclaration td = that.getDeclarationModel().getTypeDeclaration();
-        if (td!=null) {
-            Tree.ExtendedType et = that.getExtendedType();
-            if (et!=null) {
-                td.setExtendedType(getExtendedType(et));
-            }
-            Tree.SatisfiedTypes st = that.getSatisfiedTypes();
-            if (st!=null) {
-                td.setSatisfiedTypes(getSatisfiedTypes(st, false));
+        TypeDeclaration td = (TypeDeclaration) that.getScope();
+        ProducedType type = that.getType().getTypeModel();
+        if (type.getDeclaration() instanceof TypeParameter) {
+            that.getType().addError("directly extends a type parameter");
+        }
+        if (type.getDeclaration() instanceof Interface) {
+            that.getType().addError("extends an interface");
+        }
+        td.setExtendedType(type);
+    }
+    
+    @Override 
+    public void visit(Tree.SatisfiedTypes that) {
+        super.visit(that);
+        TypeDeclaration td = (TypeDeclaration) that.getScope();
+        List<ProducedType> list = new ArrayList<ProducedType>();
+        if (that!=null) {
+            for (Tree.StaticType t: that.getTypes()) {
+                ProducedType type = t.getTypeModel();
+                if (type!=null) {
+                    if (!(td instanceof TypeParameter)) {
+                        if (type.getDeclaration() instanceof TypeParameter) {
+                            t.addError("directly satisfies type parameter");
+                        }
+                        if (type.getDeclaration() instanceof Class) {
+                            t.addError("satisfies a class");
+                        }
+                    }
+                    list.add(type);
+                }
             }
         }
+        td.setSatisfiedTypes(list);
     }
     
     private Class getObjectDeclaration() {
