@@ -37,10 +37,9 @@ public class ProducedType extends ProducedReference {
 		    producedTypeName += ".";
 		}
 		producedTypeName += getDeclaration().getName();
-		if (!getTypeArguments().isEmpty()) {
+		if (!getTypeArgumentList().isEmpty()) {
 			producedTypeName+="<";
-			for (TypeParameter p: getDeclaration().getTypeParameters()) {
-			    ProducedType t = getTypeArguments().get(p);
+			for (ProducedType t: getTypeArgumentList()) {
 			    if (t==null) {
 			        producedTypeName+="unknown,";
 			    }
@@ -48,8 +47,8 @@ public class ProducedType extends ProducedReference {
 			        producedTypeName+=t.getProducedTypeName() + ",";
 			    }
 			}
-			producedTypeName = producedTypeName.substring(0,producedTypeName.length()-1);
-			producedTypeName+=">";
+            producedTypeName+=">";
+			producedTypeName = producedTypeName.replace(",>", ">");
 		}
 		return producedTypeName;
 	}

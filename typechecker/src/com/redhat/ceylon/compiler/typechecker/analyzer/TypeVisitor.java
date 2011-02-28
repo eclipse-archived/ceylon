@@ -1,9 +1,11 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getDeclaringType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getExternalDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLanguageModuleDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getMemberDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,9 +116,7 @@ public class TypeVisitor extends Visitor {
         else {
             ProducedType outerType;
             if (d.isMemberType()) {
-                //TODO: really we need to search up all the containing scopes,
-                //      just like we do in ExpressionVisitor.getDeclaringType() 
-                outerType = ( (ClassOrInterface) d.getContainer() ).getType();
+                outerType = getDeclaringType(that, d);
             }
             else {
                 outerType = null;
@@ -141,31 +141,15 @@ public class TypeVisitor extends Visitor {
     }
 
     private void visitType(Tree.StaticType that, ProducedType ot, TypeDeclaration d) {
-        List<ProducedType> typeArguments = getTypeArguments(that);
-        ProducedType pt = d.getProducedType(ot, typeArguments);
-        that.setTypeModel(pt);
-        that.setTarget(pt);
-        /*if (typeArguments!=null) {
-            typeArguments.add(pt);
-        }*/
-    }
-    
-    private List<ProducedType> getTypeArguments(Tree.StaticType that) {
-        List<ProducedType> typeArguments = new ArrayList<ProducedType>();
-        Tree.TypeArgumentList tal = that.getTypeArgumentList();
-        if (tal!=null) {
-            for (Tree.Type ta: tal.getTypes()) {
-                ProducedType t = ta.getTypeModel();
-                if (t==null) {
-                    ta.addError("could not resolve type argument");
-                    typeArguments.add(null);
-                }
-                else {
-                    typeArguments.add(t);
-                }
-            }
-        }
-        return typeArguments;
+        List<ProducedType> typeArguments = getTypeArguments(that.getTypeArgumentList());
+        //if (acceptsTypeArguments(d, typeArguments, that.getTypeArgumentList(), that)) {
+            ProducedType pt = d.getProducedType(ot, typeArguments);
+            that.setTypeModel(pt);
+            that.setTarget(pt);
+            /*if (typeArguments!=null) {
+                typeArguments.add(pt);
+            }*/
+        //}
     }
     
     @Override 

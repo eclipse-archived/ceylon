@@ -3,6 +3,10 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLanguageModuleDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getMemberDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.acceptsTypeArguments;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getContainingClassOrInterface;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getDeclaringType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.name;
 
 import java.util.ArrayList;
@@ -11,7 +15,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.context.Context;
@@ -19,7 +22,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -29,7 +31,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -1208,16 +1209,16 @@ public class ExpressionVisitor extends Visitor {
                     that.getIdentifier().getText());
         }
         else {
+            ProducedType ot;
+            if ( d.isMember() ) {
+                ot = getDeclaringType(that, d);
+            }
+            else {
+                //it must be a member of an outer scope
+               ot = null;
+            }
             List<ProducedType> typeArgs = getTypeArguments(that.getTypeArgumentList());
             if (acceptsTypeArguments(d, typeArgs, that.getTypeArgumentList(), that)) {
-                ProducedType ot;
-                if ( d.isMember() ) {
-                    ot = getDeclaringType(that, d, typeArgs);
-                }
-                else {
-                    //it must be a member of an outer scope
-                   ot = null;
-                }
                 ProducedReference pr = d.getProducedTypedReference(ot, typeArgs);
                 that.setTarget(pr);
                 ProducedType t = pr.getType();
@@ -1242,28 +1243,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
         
-    private ProducedType getDeclaringType(Node that, TypedDeclaration d, List<ProducedType> typeArgs) {
-        //look for it as a declared or inherited 
-        //member of the current class or interface
-        Scope scope = that.getScope();
-        while ( !(scope instanceof Package) ) {
-            if (scope instanceof ClassOrInterface) {
-                ProducedType st = getDeclaringType(d, ((ClassOrInterface) scope).getType());
-                if (st!=null) {
-                    return st;
-                }
-            }
-            scope = scope.getContainer();
-        }
-        return null;
-    }
-
-    private ProducedType getDeclaringType(TypedDeclaration d,
-            ProducedType containingType) {
-        ProducedType st = containingType.getSupertype((TypeDeclaration) d.getContainer());
-        return st;
-    }
-    
     @Override public void visit(Tree.Expression that) {
         //i.e. this is a parenthesized expression
         super.visit(that);
@@ -1299,7 +1278,7 @@ public class ExpressionVisitor extends Visitor {
             }
             scope = scope.getContainer();
         }
-        that.addError("can't use outer outside of nested class or interface");
+        that.addError("outer appears outside a nested class or interface definition");
         return null;
     }
     
@@ -1326,17 +1305,6 @@ public class ExpressionVisitor extends Visitor {
         else {
             that.setTypeModel(ci.getType());
         }
-    }
-    
-    private ClassOrInterface getContainingClassOrInterface(Node that) {
-        Scope scope = that.getScope();
-        while (!(scope instanceof Package)) {
-            if (scope instanceof ClassOrInterface) {
-                return (ClassOrInterface) scope;
-            }
-            scope = scope.getContainer();
-        }
-        return null;
     }
     
     @Override public void visit(Tree.Subtype that) {
@@ -1415,24 +1383,6 @@ public class ExpressionVisitor extends Visitor {
     @Override
     public void visit(Tree.CompilerAnnotation that) {
         //don't visit the argument       
-    }
-
-    //copy/pasted from TypeVisitor!
-    private List<ProducedType> getTypeArguments(Tree.TypeArgumentList tal) {
-        List<ProducedType> typeArguments = new ArrayList<ProducedType>();
-        if (tal!=null) {
-            for (Tree.Type ta: tal.getTypes()) {
-                ProducedType t = ta.getTypeModel();
-                if (t==null) {
-                    ta.addError("could not resolve type argument");
-                    typeArguments.add(null);
-                }
-                else {
-                    typeArguments.add(t);
-                }
-            }
-        }
-        return typeArguments;
     }
 
     private Interface getCorrespondenceDeclaration() {
@@ -1521,47 +1471,6 @@ public class ExpressionVisitor extends Visitor {
         
     private Class getEntryDeclaration() {
         return (Class) getLanguageDeclaration("Entry");
-    }
-
-    private boolean acceptsTypeArguments(Declaration d, List<ProducedType> typeArguments, 
-            Tree.TypeArgumentList tal, Node parent) {
-        if (d instanceof Generic) {
-            List<TypeParameter> params = ((Generic) d).getTypeParameters();
-            if ( params.size()==typeArguments.size() ) {
-                for (int i=0; i<params.size(); i++) {
-                    TypeParameter param = params.get(i);
-                    ProducedType arg = typeArguments.get(i);
-                    Map<TypeParameter, ProducedType> self = Collections.singletonMap(param, arg);
-                    for (ProducedType st: param.getSatisfiedTypes()) {
-                        ProducedType sts = st.substitute(self);
-                        if (arg!=null && !arg.isSubtypeOf(sts)) {
-                            tal.getTypes().get(i).addError("type parameter " + param.getName() 
-                                    + " of declaration " + d.getName()
-                                    + " has argument " + arg.getProducedTypeName() 
-                                    + " not assignable to " + sts.getProducedTypeName());
-                            return false;
-                        }
-                    }
-                }
-                return true;
-            }
-            else {
-                if (tal==null) {
-                    parent.addError("requires type arguments (until we implement type inference)");
-                }
-                else {
-                    tal.addError("wrong number of type arguments");
-                }
-                return false;
-            }
-        }
-        else {
-            boolean empty = typeArguments.isEmpty();
-            if (!empty) {
-                tal.addError("does not accept type arguments");
-            }
-            return empty;
-        }
     }
         
 }
