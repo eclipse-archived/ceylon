@@ -254,4 +254,20 @@ class Assignability() {
 
     printStrings { @error strings={1, 2}; };
     
+    
+    String joinStrings(Character char, String... strings) { throw; }
+    
+    joinStrings(`.`, "Hello", "World");
+
+    joinStrings { char=` `; "Hello", "World" };
+
+    joinStrings { char=` `; strings={"Hello", "World"}; };
+
+
+    @error joinStrings(`.`, 1, 2);
+
+    joinStrings { char=` `; @error 1, 2 };
+
+    joinStrings { char=` `; @error strings={1, 2}; };
+    
 }
