@@ -8,6 +8,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getMemberDecl
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.context.Context;
@@ -163,6 +164,15 @@ public class TypeVisitor extends Visitor {
         that.setTypeModel(getVoidDeclaration().getType());
     }
 
+    public void visit(Tree.SequencedType that) {
+        super.visit(that);
+        ProducedType type = that.getType().getTypeModel();
+        if (type!=null) {
+            that.setTypeModel(getSequenceDeclaration()
+                    .getProducedType(null, Collections.singletonList(type)));
+        }
+    }
+    
     @Override 
     public void visit(Tree.TypedDeclaration that) {
         super.visit(that);
@@ -265,6 +275,10 @@ public class TypeVisitor extends Visitor {
         td.setSatisfiedTypes(list);
     }
     
+    private Interface getSequenceDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("Sequence", context);
+    }
+
     private Class getObjectDeclaration() {
         return (Class) getLanguageModuleDeclaration("Object", context);
     }
