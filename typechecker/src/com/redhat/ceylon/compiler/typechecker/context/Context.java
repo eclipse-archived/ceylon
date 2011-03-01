@@ -16,6 +16,7 @@ public class Context {
     private VFS vfs;
 
     public Context(VFS vfs) {
+        this.vfs = vfs;
         this.artifactProvider = new ArtifactProvider(vfs);
     }
 
