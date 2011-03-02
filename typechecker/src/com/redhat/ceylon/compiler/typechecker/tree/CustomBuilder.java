@@ -7,7 +7,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionalParameterDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueParameterDeclaration;
 
@@ -183,10 +182,10 @@ public class CustomBuilder extends Builder {
                 }
             }
             @Override public String getNodeType() {
-                return Parameter.class.getSimpleName();
+                return ValueParameterDeclaration.class.getSimpleName();
             }
         };
-        buildParameter(treeNode, node);
+        buildValueParameterDeclaration(treeNode, node);
         return node;
     }
     
@@ -216,10 +215,10 @@ public class CustomBuilder extends Builder {
                 }
             }
             @Override public String getNodeType() {
-                return Parameter.class.getSimpleName();
+                return FunctionalParameterDeclaration.class.getSimpleName();
             }
         };
-        buildParameter(treeNode, node);
+        buildFunctionalParameterDeclaration(treeNode, node);
         return node;
     }
     
