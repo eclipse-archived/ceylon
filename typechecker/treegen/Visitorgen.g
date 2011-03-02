@@ -1,45 +1,11 @@
 grammar Visitorgen;
 
-@parser::header { package com.redhat.ceylon.compiler.typechecker.treegen; }
-@lexer::header { package com.redhat.ceylon.compiler.typechecker.treegen; }
-
-@members {
-
-    public java.io.PrintStream out = System.out;
-
-    String className(String nodeName) { 
-        return toJavaIdentifier(nodeName, true); 
-    }
-    
-    String fieldName(String nodeName) { 
-        return toJavaIdentifier(nodeName, false); 
-    }
-    
-    String toJavaIdentifier(String nodeName, boolean boundary) {
-        StringBuilder result = new StringBuilder();
-        for (char c: nodeName.toCharArray()) {
-            if (c=='_') {
-                boundary=true;
-            }
-            else if (boundary) {
-                result.append(c);
-                boundary=false;
-            }
-            else {
-                result.append(Character.toLowerCase(c));
-            }
-        }
-        return result.toString();
-    }
-    
-    void print(String text) {
-       out.print(text); 
-    }
-    
-    void println(String text) {
-       out.println(text); 
-    }
-    
+@parser::header { 
+    package com.redhat.ceylon.compiler.typechecker.treegen; 
+    import static com.redhat.ceylon.compiler.typechecker.treegen.Util.*; 
+}
+@lexer::header { 
+    package com.redhat.ceylon.compiler.typechecker.treegen; 
 }
 
 nodeList : { 

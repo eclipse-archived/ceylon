@@ -591,8 +591,8 @@ argument list."
     BLOCK
     Getter declarationModel;)
 ^(OBJECT_ARGUMENT:TYPED_ARGUMENT
-    EXTENDED_TYPE
-    SATISFIED_TYPES
+    EXTENDED_TYPE?
+    SATISFIED_TYPES?
     CLASS_BODY
     Value declarationModel;)
 

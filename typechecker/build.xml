@@ -260,6 +260,7 @@
           <arg value="treegen/Buildergen.g"/>
           <arg value="treegen/Walkergen.g"/>
           <arg value="treegen/Visitorgen.g"/>
+          <arg value="treegen/Validatorgen.g"/>
           <classpath>
             <pathelement location="${antlr.lib}"/>
           </classpath>

@@ -17,6 +17,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Validator;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.PrintVisitor;
 
@@ -53,6 +54,11 @@ public class PhasedUnit {
             final ModuleImportVisitor v = new ModuleImportVisitor(moduleBuilder, context);
             compilationUnit.visit(v);
         }
+    }
+
+    public void validateTree() {
+        System.out.println("Validating tree for " + fileName);
+        compilationUnit.visit(new Validator());
     }
 
     public void scanDeclarations() {

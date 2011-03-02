@@ -19,6 +19,7 @@ public class Generate {
         builder(file);
         walker(file);
         visitor(file);
+        validator(file);
     }
     
     private static void tree(File file) throws Exception {
@@ -29,7 +30,7 @@ public class Generate {
         TreegenParser parser = new TreegenParser(tokens);
         File out = new File( GENERATED_PACKAGE_DIR + "Tree.java" );
         out.createNewFile();
-        parser.out=new PrintStream(out);
+        Util.out=new PrintStream(out);
         parser.nodeList();
     }
 
@@ -41,7 +42,7 @@ public class Generate {
         BuildergenParser parser = new BuildergenParser(tokens);
         File out = new File( GENERATED_PACKAGE_DIR + "Builder.java" );
         out.createNewFile();
-        parser.out=new PrintStream(out);
+        Util.out=new PrintStream(out);
         parser.nodeList();
     }
     
@@ -53,7 +54,7 @@ public class Generate {
         WalkergenParser parser = new WalkergenParser(tokens);
         File out = new File( GENERATED_PACKAGE_DIR + "Walker.java" );
         out.createNewFile();
-        parser.out=new PrintStream(out);
+        Util.out=new PrintStream(out);
         parser.nodeList();
     }
     
@@ -65,7 +66,19 @@ public class Generate {
         VisitorgenParser parser = new VisitorgenParser(tokens);
         File out = new File( GENERATED_PACKAGE_DIR + "Visitor.java" );
         out.createNewFile();
-        parser.out=new PrintStream(out);
+        Util.out=new PrintStream(out);
+        parser.nodeList();
+    }
+    
+    private static void validator(File file) throws Exception {
+        InputStream is = new FileInputStream( file );
+        ANTLRInputStream input = new ANTLRInputStream(is);
+        ValidatorgenLexer lexer = new ValidatorgenLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        ValidatorgenParser parser = new ValidatorgenParser(tokens);
+        File out = new File( GENERATED_PACKAGE_DIR + "Validator.java" );
+        out.createNewFile();
+        Util.out=new PrintStream(out);
         parser.nodeList();
     }
     

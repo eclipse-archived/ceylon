@@ -58,6 +58,7 @@ public class TypeChecker {
         new ModuleValidator(context).verifyModuleDependencyTree();
 
         for (PhasedUnit pu : listOfUnits) {
+            pu.validateTree();
             pu.scanDeclarations();
             pu.validateControlFlow();
             pu.validateSpecification();
