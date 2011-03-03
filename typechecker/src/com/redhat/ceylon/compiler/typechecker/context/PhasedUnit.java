@@ -32,21 +32,30 @@ public class PhasedUnit {
     private Unit unit;
     //must be the non qualified file name
     private String fileName;
-    private String path;
     private final ModuleBuilder moduleBuilder;
     private final Context context;
+    private final String pathRelativeToSrcDir;
 
-    public PhasedUnit(VirtualFile unitFile, Tree.CompilationUnit cu, Package p, ModuleBuilder moduleBuilder, Context context) {
+    public PhasedUnit(VirtualFile unitFile, VirtualFile srcDir, Tree.CompilationUnit cu, Package p, ModuleBuilder moduleBuilder, Context context) {
         this.compilationUnit = cu;
         this.pkg = p;
         this.fileName = unitFile.getName();
-        this.path = unitFile.getPath();
+        this.pathRelativeToSrcDir = computeRelativePath(unitFile, srcDir);
         this.moduleBuilder = moduleBuilder;
         this.context = context;
     }
-    
-    public String getPath() {
-        return path;
+
+    private String computeRelativePath(VirtualFile unitFile, VirtualFile srcDir) {
+        final String rawRelativePath = unitFile.getPath().substring( srcDir.getPath().length() );
+        if ( rawRelativePath.startsWith("/") ) {
+            return rawRelativePath.substring(1);
+        }
+        else if ( rawRelativePath.startsWith("!/") ) {
+            return rawRelativePath.substring(2);
+        }
+        else {
+            return rawRelativePath;
+        }
     }
 
     public void buildModuleImport() {
@@ -115,6 +124,10 @@ public class PhasedUnit {
     
     public Unit getUnit() {
         return unit;
+    }
+
+    public String getPathRelativeToSrcDir() {
+        return pathRelativeToSrcDir;
     }
 
     @Override

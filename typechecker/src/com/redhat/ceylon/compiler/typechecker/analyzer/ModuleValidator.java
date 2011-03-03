@@ -22,10 +22,15 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
 public class ModuleValidator {
-    private Context context;
+    private final Context context;
+    private List<PhasedUnits> phasedUnitsOfDependencies;
 
     public ModuleValidator(Context context) {
         this.context = context;
+    }
+
+    public List<PhasedUnits> getPhasedUnitsOfDependencies() {
+        return phasedUnitsOfDependencies;
     }
 
     /**
@@ -36,13 +41,13 @@ public class ModuleValidator {
      *  - detect circular dependencies
      */
     public void verifyModuleDependencyTree() {
-        List<PhasedUnits> phasedUnitsOfDependencies = new ArrayList<PhasedUnits>();
+        phasedUnitsOfDependencies = new ArrayList<PhasedUnits>();
         LinkedList<Module> dependencyTree = new LinkedList<Module>();
         //copy modules collection as new (dependent) modules might be added on the fly.
         final HashSet<Module> modulesCopy = new HashSet<Module>( context.getModules().getListOfModules() );
         for (Module module : modulesCopy) {
             dependencyTree.addLast(module);
-            verifyModuleDependencyTree( module.getDependencies(), dependencyTree, phasedUnitsOfDependencies );
+            verifyModuleDependencyTree( module.getDependencies(), dependencyTree );
             dependencyTree.pollLast();
         }
         for (PhasedUnits units : phasedUnitsOfDependencies) {
@@ -52,8 +57,7 @@ public class ModuleValidator {
 
     private void verifyModuleDependencyTree(
             Collection<Module> modules,
-            LinkedList<Module> dependencyTree,
-            List<PhasedUnits> phasedUnitsOfDependencies) {
+            LinkedList<Module> dependencyTree) {
         for (Module module : modules) {
             if ( dependencyTree.contains(module) ) {
                 //circular dependency
@@ -94,7 +98,7 @@ public class ModuleValidator {
                 }
             }
             dependencyTree.addLast(module);
-            verifyModuleDependencyTree( module.getDependencies(), dependencyTree, phasedUnitsOfDependencies );
+            verifyModuleDependencyTree( module.getDependencies(), dependencyTree );
             dependencyTree.pollLast();
         }
     }

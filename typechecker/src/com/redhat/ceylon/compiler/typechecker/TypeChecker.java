@@ -23,6 +23,7 @@ public class TypeChecker {
     private final List<VirtualFile> srcDirectories;
     private final Context context;
     private final PhasedUnits phasedUnits;
+    private List<PhasedUnits> phasedUnitsOfDependencies;
 
     //package level
     TypeChecker(VFS vfs, List<VirtualFile> srcDirectories, boolean verbose) {
@@ -37,11 +38,30 @@ public class TypeChecker {
     }
 
     /**
+     * Return the CompilationUnit for a given relative path.
+     * The path is relative to the source directory
+     * eg ceylon/language/BaseObject.ceylon
+     */
+    public Tree.CompilationUnit getCompilationUnitFromRelativePath(String relativePath) {
+        PhasedUnit phasedUnit = phasedUnits.getPhasedUnitFromRelativePath(relativePath);
+        if (phasedUnit == null) {
+            for (PhasedUnits units : phasedUnitsOfDependencies) {
+                phasedUnit = units.getPhasedUnitFromRelativePath(relativePath);
+                if (phasedUnit != null) {
+                    break;
+                }
+            }
+        }
+        return phasedUnit == null ? null : phasedUnit.getCompilationUnit();
+    }
+
+    /**
      * Return the CompilationUnit for a given file.
      * May return null of the CompilationUnit has not been parsed.
      */
     public Tree.CompilationUnit getCompilationUnit(File file) {
-        return phasedUnits.getPhasedUnit( context.getVfs().getFromFile(file) ).getCompilationUnit();
+        final PhasedUnit phasedUnit = phasedUnits.getPhasedUnit( context.getVfs().getFromFile(file) );
+        return phasedUnit.getCompilationUnit();
     }
 
     private void process() throws RuntimeException {
@@ -55,7 +75,9 @@ public class TypeChecker {
             pu.buildModuleImport();
         }
 
-        new ModuleValidator(context).verifyModuleDependencyTree();
+        final ModuleValidator moduleValidator = new ModuleValidator(context);
+        moduleValidator.verifyModuleDependencyTree();
+        phasedUnitsOfDependencies = moduleValidator.getPhasedUnitsOfDependencies();
 
         for (PhasedUnit pu : listOfUnits) {
             pu.validateTree();
