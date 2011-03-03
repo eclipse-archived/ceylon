@@ -55,29 +55,18 @@ public class ZipFileVirtualFile implements ClosableVirtualFile {
                 if an entry is not a child of the previous entry, move up till we find its parent
                  */
                 final ZipFolderVirtualFile folder = new ZipFolderVirtualFile(entry, path);
-                addToPArentfolder(directChildren, directoryStack, entryName, folder);
-//                ZipFolderVirtualFile up = directoryStack.peekLast();
-//                while ( !isChildOf(entryName, up) ) {
-//                    directoryStack.pollLast();
-//                    up = directoryStack.peekLast();
-//                }
-//                if (up == null) {
-//                    directChildren.add(folder);
-//                }
-//                else {
-//                    up.addChild(folder);
-//                }
+                addToParentfolder(directChildren, directoryStack, entryName, folder);
                 directoryStack.addLast(folder);
             }
             else {
                 ZipEntryVirtualFile file = new ZipEntryVirtualFile(entry, zipFile);
-                addToPArentfolder(directChildren, directoryStack, entryName, file);
+                addToParentfolder(directChildren, directoryStack, entryName, file);
             }
         }
         children = directChildren;
     }
 
-    private void addToPArentfolder(List<VirtualFile> directChildren, LinkedList<ZipFolderVirtualFile> directoryStack, String entryName, VirtualFile file) {
+    private void addToParentfolder(List<VirtualFile> directChildren, LinkedList<ZipFolderVirtualFile> directoryStack, String entryName, VirtualFile file) {
         ZipFolderVirtualFile up = directoryStack.peekLast();
         while ( !isChildOf(entryName, up) ) {
             directoryStack.pollLast();
