@@ -19,9 +19,13 @@ public class MainForTest {
                 .verbose(false)
                 .addSrcDirectory( new File("test") )
                 .getTypeChecker();
-        final Tree.CompilationUnit compilationUnit = typeChecker.getCompilationUnitFromRelativePath("ceylon/language/BaseObject.ceylon");
+        Tree.CompilationUnit compilationUnit = typeChecker.getCompilationUnitFromRelativePath("ceylon/language/BaseObject.ceylon");
         if ( compilationUnit == null ) {
-            throw new RuntimeException("Failed to pass getCompilationUnitFromRelativePath");
+            throw new RuntimeException("Failed to pass getCompilationUnitFromRelativePath for files in .src");
+        }
+        compilationUnit = typeChecker.getCompilationUnitFromRelativePath("capture/Capture.ceylon");
+        if ( compilationUnit == null ) {
+            throw new RuntimeException("Failed to pass getCompilationUnitFromRelativePath for files in real src dir");
         }
     }
 }
