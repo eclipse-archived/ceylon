@@ -308,9 +308,8 @@
     <target name="publish.typechecker" depends="compile,init.repo">
         <property name="typechecker.dir" value="${repo.local.dir}/com/redhat/ceylon/typechecker/${module.com.redhat.typechecker.version}"/>
         <property name="typechecker.jar" value="${typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.typechecker.version}.jar"/>
-        <echo>dir ${typechecker.dir}</echo>
-        <echo>jar ${typechecker.jar}</echo>
         <delete dir="${typechecker.dir}"/>
+        <mkdir dir="${typechecker.dir}"/>
         <zip destfile="${typechecker.jar}">
             <fileset dir="${build.classes}">
                 <include name="**/*.class"/>
@@ -328,8 +327,11 @@
     <target name="publish.language.module"
             depends="init.repo"
             description="Publish ceylon language template">
-        <property name="src.file" value="${repo.local.dir}/${module.language.dir}/${module.ceylon.language.version}/${module.language.name}-${module.ceylon.language.version}.src"/>
-        <delete dir="${repo.local.dir}/${module.language.dir}/${module.ceylon.language.version}"/>
+        <property name="dir.file" value="${repo.local.dir}/${module.language.dir}/${module.ceylon.language.version}"/>
+        <property name="src.file" value="${dir.file}/${module.language.name}-${module.ceylon.language.version}.src"/>
+
+        <delete dir="${dir.file}"/>
+        <mkdir dir="${dir.file}" />
         <zip destfile="${src.file}">
             <fileset dir="${module.language.srcrootdir}">
                 <include name="ceylon/language/**/*.ceylon"/>
