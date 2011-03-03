@@ -15,7 +15,7 @@ public class MainForTest {
      */
     public static void main(String[] args) throws Exception {
 
-        final TypeChecker typeChecker = new TypeCheckerBuilder()
+        TypeChecker typeChecker = new TypeCheckerBuilder()
                 .verbose(false)
                 .addSrcDirectory( new File("test") )
                 .getTypeChecker();
@@ -26,6 +26,14 @@ public class MainForTest {
         compilationUnit = typeChecker.getCompilationUnitFromRelativePath("capture/Capture.ceylon");
         if ( compilationUnit == null ) {
             throw new RuntimeException("Failed to pass getCompilationUnitFromRelativePath for files in real src dir");
+        }
+        typeChecker = new TypeCheckerBuilder()
+                .verbose(false)
+                .addSrcDirectory( new File("test/capture") )
+                .getTypeChecker();
+        compilationUnit = typeChecker.getCompilationUnitFromRelativePath("Capture.ceylon");
+        if ( compilationUnit == null ) {
+            throw new RuntimeException("Failed to pass getCompilationUnitFromRelativePath for top level files (no package) in real src dir");
         }
     }
 }
