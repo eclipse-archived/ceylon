@@ -13,7 +13,7 @@ public class Literals() {
     
     String[] strings = { "Hello", "World" };
     
-    String? string = null;
+    String? maybeString = null;
     
     Iterable<String> istrings = strings;
     

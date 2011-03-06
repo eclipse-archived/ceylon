@@ -39,5 +39,40 @@ class Refinement() {
     
     }
     
+    interface BadTypes {
+        
+        class X() {
+            shared default String hello = "Hello";
+            shared default void print(String s) {}
+            shared default String getHello() { return hello; }
+            shared default class Z() {}
+        }
+        
+        class Y() extends X() {
+            @error shared actual Natural hello = 1;
+            @error shared actual void print(Object o) {}
+            @error shared actual Natural getHello() { return hello; }
+            @error shared actual class Z() {}
+        }
+        
+    }
+    
+    interface GoodTypes {
+        
+        class X() {
+            shared default Object something = "Hello";
+            shared default void print(Object o) {}
+            shared default Object getSomething() { return something; }
+            shared default class Z() {}
+        }
+        
+        class Y() extends X() {
+            shared actual Natural something = 1;
+            shared actual void print(Object o) {}
+            shared actual Natural getSomething() { return something; }
+            shared actual class Z() extends super.Z() {}
+        }
+        
+    }
     
 }

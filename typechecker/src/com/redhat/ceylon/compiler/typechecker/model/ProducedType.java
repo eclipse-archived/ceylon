@@ -53,7 +53,7 @@ public class ProducedType extends ProducedReference {
 		return producedTypeName;
 	}
 	
-	private boolean isExactly(ProducedType type) {
+	public boolean isExactly(ProducedType type) {
 	    if (getDeclaration() instanceof BottomType) {
 	        return type.getDeclaration() instanceof BottomType;
 	    }

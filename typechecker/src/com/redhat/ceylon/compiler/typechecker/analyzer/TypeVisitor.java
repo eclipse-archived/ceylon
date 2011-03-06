@@ -241,14 +241,20 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.ExtendedType that) {
         super.visit(that);
         TypeDeclaration td = (TypeDeclaration) that.getScope();
-        ProducedType type = that.getType().getTypeModel();
-        if (type.getDeclaration() instanceof TypeParameter) {
-            that.getType().addError("directly extends a type parameter");
+        Tree.BaseType et = that.getType();
+        if (et==null) {
+            that.addError("malformed extended type");
         }
-        if (type.getDeclaration() instanceof Interface) {
-            that.getType().addError("extends an interface");
+        else {
+            ProducedType type = et.getTypeModel();
+            if (type.getDeclaration() instanceof TypeParameter) {
+                et.addError("directly extends a type parameter");
+            }
+            if (type.getDeclaration() instanceof Interface) {
+                et.addError("extends an interface");
+            }
+            td.setExtendedType(type);
         }
-        td.setExtendedType(type);
     }
     
     @Override 

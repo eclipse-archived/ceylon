@@ -119,10 +119,18 @@ public abstract class TypeDeclaration extends Declaration implements Generic, Sc
     public List<Declaration> getInheritedMembers(String name) {
         List<Declaration> members = new ArrayList<Declaration>();
         for (ProducedType t: getSatisfiedTypes()) {
-            members.addAll( t.getDeclaration().getMembers(name) );
+            for (Declaration d: t.getDeclaration().getMembers(name)) {
+                if (d.isShared()) {
+                    members.add(d);
+                }
+            }
         }
         if (getExtendedType()!=null) {
-            members.addAll( getExtendedType().getDeclaration().getMembers(name) );
+            for (Declaration d: getExtendedType().getDeclaration().getMembers(name)) {
+                if (d.isShared()) {
+                    members.add(d);
+                }
+            }
         }
         return members;
     }
