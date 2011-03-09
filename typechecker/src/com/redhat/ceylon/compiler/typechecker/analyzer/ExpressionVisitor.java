@@ -568,7 +568,7 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.ExtendedType that) {
         super.visit(that);
-        Tree.BaseType pr = that.getType();
+        Tree.Primary pr = that.getType();
         Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
         if (pr==null || pal==null) {
             that.addError("malformed expression");
@@ -1322,17 +1322,19 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.Super that) {
-        ClassOrInterface ci = getContainingClassOrInterface(that);
-        if (ci==null) {
-            that.addError("super appears outside a class definition");
-        }
-        else if (!(ci instanceof Class)) {
-            that.addError("super appears inside an interface definition");
-        }
-        else {
-            ProducedType t = ci.getExtendedType();
-            //TODO: type arguments
-            that.setTypeModel(t);
+        if (that.getTypeModel()==null) {
+            ClassOrInterface ci = getContainingClassOrInterface(that);
+            if (ci==null) {
+                that.addError("super appears outside a class definition");
+            }
+            else if (!(ci instanceof Class)) {
+                that.addError("super appears inside an interface definition");
+            }
+            else {
+                ProducedType t = ci.getExtendedType();
+                //TODO: type arguments
+                that.setTypeModel(t);
+            }
         }
     }
     

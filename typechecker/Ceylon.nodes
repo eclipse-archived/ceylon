@@ -56,7 +56,7 @@
     BASE_TYPE* type
     MEMBER*)
 ^(EXTENDED_TYPE 
-    BASE_TYPE type
+    PRIMARY type (BASE_TYPE TYPE_EXPRESSION)
     POSITIONAL_ARGUMENT_LIST)
 
 "A list of constraints organized by parameter."

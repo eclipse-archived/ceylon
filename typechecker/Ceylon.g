@@ -96,7 +96,6 @@ tokens {
     ELEMENT_RANGE;
     BASE_TYPE;
     QUALIFIED_TYPE;
-
     MEMBER_EXPRESSION;
     TYPE_EXPRESSION;
     OUTER_EXPRESSION;
@@ -421,8 +420,13 @@ classBody
     ;
 
 extendedType
-    : EXTENDS type positionalArguments
-    -> ^(EXTENDED_TYPE[$EXTENDS] type positionalArguments)
+    : EXTENDS 
+    (
+      type positionalArguments
+      -> ^(EXTENDED_TYPE[$EXTENDS] type positionalArguments)
+    | SUPER MEMBER_OP typeReference positionalArguments
+      -> ^(EXTENDED_TYPE[$EXTENDS] ^(TYPE_EXPRESSION SUPER MEMBER_OP typeReference) positionalArguments)
+    )
     ;
 
 satisfiedTypes

@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getDeclaringType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getExternalDeclaration;
@@ -13,12 +14,14 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Import;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -46,6 +49,7 @@ public class TypeVisitor extends Visitor {
     
     private Unit unit;
     private Context context;
+    private boolean inExtendsClause = false;
 
     public TypeVisitor(Unit u, Context context) {
         unit = u;
@@ -159,6 +163,33 @@ public class TypeVisitor extends Visitor {
         //}
     }
     
+    private void visitType(Tree.TypeExpression that, ProducedType ot, TypeDeclaration d) {
+        List<ProducedType> typeArguments = getTypeArguments(that.getTypeArgumentList());
+        //if (acceptsTypeArguments(d, typeArguments, that.getTypeArgumentList(), that)) {
+            ProducedType pt = d.getProducedType(ot, typeArguments);
+            that.setTypeModel(pt);
+            that.setTarget(pt);
+            /*if (typeArguments!=null) {
+                typeArguments.add(pt);
+            }*/
+        //}
+    }
+    
+    @Override public void visit(Tree.Super that) {
+        if (inExtendsClause) {
+            ClassOrInterface ci = getContainingClassOrInterface(that);
+            Scope s = ci.getContainer();
+            if (s instanceof ClassOrInterface) {
+                ProducedType t = ((ClassOrInterface) s).getExtendedType();
+                //TODO: type arguments
+                that.setTypeModel(t);
+            }
+            else {
+                that.addError("super appears in extends for non-member class");
+            }
+        }
+    }
+    
     @Override 
     public void visit(Tree.VoidModifier that) {
         that.setTypeModel(getVoidDeclaration().getType());
@@ -239,21 +270,39 @@ public class TypeVisitor extends Visitor {
     
     @Override 
     public void visit(Tree.ExtendedType that) {
+        inExtendsClause = true;
         super.visit(that);
+        inExtendsClause = false;
         TypeDeclaration td = (TypeDeclaration) that.getScope();
-        Tree.BaseType et = that.getType();
+        Tree.Primary et = that.getType();
         if (et==null) {
             that.addError("malformed extended type");
         }
         else {
+            if (et instanceof Tree.TypeExpression) {
+                Tree.TypeExpression st = (Tree.TypeExpression) et;
+                ProducedType pt = st.getPrimary().getTypeModel();
+                if (pt!=null) {
+                    TypeDeclaration d = (TypeDeclaration) getMemberDeclaration(pt.getDeclaration(), st.getIdentifier(), context);
+                    if (d==null) {
+                        that.addError("member type declaration not found: " + 
+                                st.getIdentifier().getText());
+                    }
+                    else {
+                        visitType(st, pt, d);
+                    }
+                }
+            }
             ProducedType type = et.getTypeModel();
-            if (type.getDeclaration() instanceof TypeParameter) {
-                et.addError("directly extends a type parameter");
+            if (type!=null) {
+                if (type.getDeclaration() instanceof TypeParameter) {
+                    et.addError("directly extends a type parameter");
+                }
+                if (type.getDeclaration() instanceof Interface) {
+                    et.addError("extends an interface");
+                }
+                td.setExtendedType(type);
             }
-            if (type.getDeclaration() instanceof Interface) {
-                et.addError("extends an interface");
-            }
-            td.setExtendedType(type);
         }
     }
     

@@ -75,7 +75,7 @@ public class TypeArgumentVisitor extends Visitor {
         }
     }
     
-    private void check(Tree.Type that, boolean variable) {
+    private void check(Tree.Primary that, boolean variable) {
         if (that!=null) {
             ProducedType pt = that.getTypeModel();
             if ( pt!=null && !pt.checkVariance(!contravariant && !variable, contravariant && !variable, parameterizedDeclaration) ) {
