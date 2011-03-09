@@ -70,7 +70,7 @@ class Refinement() {
             shared actual Natural something = 1;
             shared actual void print(Object o) {}
             shared actual Natural getSomething() { return something; }
-            shared actual class Z() extends super.Z() {}
+            //shared actual class Z() extends super.Z() {}
         }
         
     }
