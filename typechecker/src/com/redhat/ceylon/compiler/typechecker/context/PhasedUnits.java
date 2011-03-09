@@ -26,6 +26,7 @@ import java.util.Map;
 public class PhasedUnits {
     private List<PhasedUnit> phasedUnits = new ArrayList<PhasedUnit>();
     private Map<VirtualFile,PhasedUnit> phasedUnitPerFile = new HashMap<VirtualFile,PhasedUnit>();
+    private Map<String,PhasedUnit> phasedUnitPerRelativePath = new HashMap<String,PhasedUnit>();
     private final Context context;
     private final ModuleBuilder moduleBuilder;
 
@@ -39,6 +40,7 @@ public class PhasedUnits {
         //TODO do we need the ordering??, we could get rid of the List and use map.valueSet()
         this.phasedUnits.add(phasedUnit);
         this.phasedUnitPerFile.put(unitFile, phasedUnit);
+        this.phasedUnitPerRelativePath.put( phasedUnit.getPathRelativeToSrcDir(), phasedUnit );
     }
 
     public List<PhasedUnit> getPhasedUnits() {
@@ -49,24 +51,35 @@ public class PhasedUnits {
         return phasedUnitPerFile.get(file);
     }
 
+    public PhasedUnit getPhasedUnitFromRelativePath(String relativePath) {
+        if ( relativePath.startsWith("/") ) {
+            relativePath = relativePath.substring(1);
+        }
+        return phasedUnitPerRelativePath.get(relativePath);
+    }
+
     public void parseUnits(List<VirtualFile> srcDirectories) {
         for ( VirtualFile file : srcDirectories ) {
-            parseUnit(file);
+            parseUnit(file, file);
         }
     }
 
-    public void parseUnit(VirtualFile file) {
+    public void parseUnit(VirtualFile srcDir) {
+        parseUnit(srcDir, srcDir);
+    }
+
+    public void parseUnit(VirtualFile file, VirtualFile srcDir) {
         try {
             if ( file.isFolder() ) {
                 //root directory is the src dir => start from here
                 for ( VirtualFile subfile : file.getChildren() ) {
-                    parseFileOrDirectory(subfile);
+                    parseFileOrDirectory(subfile, srcDir);
                 }
             }
             else {
                 //simple file compilation
                 //TODO is that really valid?
-                parseFileOrDirectory(file);
+                parseFileOrDirectory(file, srcDir);
             }
         }
         catch (RuntimeException e) {
@@ -78,7 +91,7 @@ public class PhasedUnits {
         }
     }
 
-    private void parseFile(VirtualFile file) throws Exception {
+    private void parseFile(VirtualFile file, VirtualFile srcDir) throws Exception {
         if ( file.getName().endsWith(".ceylon") ) {
 
             System.out.println("Parsing " + file.getName());
@@ -104,22 +117,22 @@ public class PhasedUnits {
         	com.redhat.ceylon.compiler.typechecker.model.Package p = moduleBuilder.getCurrentPackage();
             CommonTree t = (CommonTree) r.getTree();
             Tree.CompilationUnit cu = new CustomBuilder().buildCompilationUnit(t);
-            PhasedUnit phasedUnit = new PhasedUnit(file, cu, p, moduleBuilder, context);
+            PhasedUnit phasedUnit = new PhasedUnit(file, srcDir, cu, p, moduleBuilder, context);
             addPhasedUnit(file, phasedUnit);
 
         }
     }
 
-    private void parseFileOrDirectory(VirtualFile file) throws Exception {
+    private void parseFileOrDirectory(VirtualFile file, VirtualFile srcDir) throws Exception {
         if (file.isFolder()) {
-            processDirectory(file);
+            processDirectory(file, srcDir);
         }
         else {
-            parseFile(file);
+            parseFile(file, srcDir);
         }
     }
 
-    private void processDirectory(VirtualFile dir) throws Exception {
+    private void processDirectory(VirtualFile dir, VirtualFile srcDir) throws Exception {
         moduleBuilder.push( dir.getName() );
         final List<VirtualFile> files = dir.getChildren();
         for (VirtualFile file: files) {
@@ -128,7 +141,7 @@ public class PhasedUnits {
             }
         }
         for (VirtualFile file: files) {
-            parseFileOrDirectory(file);
+            parseFileOrDirectory(file, srcDir);
         }
         moduleBuilder.pop();
     }
