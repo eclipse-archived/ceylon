@@ -89,8 +89,10 @@ public class RefinementVisitor extends Visitor {
                     that.addError("member refines a non-default, non-formal member");
                 }
                 if (dec instanceof TypedDeclaration) {
-                    ProducedType type = ((TypedDeclaration) dec).getType();
-                    ProducedType refinedType = ((TypedDeclaration) refined).getType();
+                    TypedDeclaration tdec = (TypedDeclaration) dec;
+                    ProducedType type = tdec.getType();
+                    TypedDeclaration trefined = (TypedDeclaration) refined;
+                    ProducedType refinedType = trefined.getType();
                     if (type!=null) {
                         if (refinedType==null) {
                             that.addError("could not determine type of refined member");
@@ -105,13 +107,20 @@ public class RefinementVisitor extends Visitor {
                        if (!(refined instanceof Method)) {
                            that.addError("method refines an attribute");
                        }
-                       ParameterList params = ((Method) dec).getParameterLists().get(0);
-                       ParameterList refinedParams = ((Method) refined).getParameterLists().get(0);
-                       checkParameterTypes(that, params, refinedParams);
+                       else {
+                           ParameterList params = ((Method) dec).getParameterLists().get(0);
+                           ParameterList refinedParams = ((Method) refined).getParameterLists().get(0);
+                           checkParameterTypes(that, params, refinedParams);
+                       }
                     }
                     else {
                         if (refined instanceof Method) {
                             that.addError("attribute refines a method");
+                        }
+                        else {
+                            if (trefined.isVariable() && !tdec.isVariable()) {
+                                that.addError("non-variable attribute refines a variable attribute");
+                            }
                         }
                     }
                 }
