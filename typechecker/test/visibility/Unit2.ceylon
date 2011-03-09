@@ -21,4 +21,10 @@ class Unit2() {
     print(Inner().hello);
     @error print(Inner().goodbye);
         
+    @error class Subclass1() extends Unit3() {}
+    @error class Subclass2() extends Unit4() {}
+    
+    @error Unit3 u3 = Unit3();
+    @error Unit4 u4 = Unit4();
+    
 }

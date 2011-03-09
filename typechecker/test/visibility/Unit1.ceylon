@@ -1,3 +1,5 @@
+import visibility.package { @error Unit3, Unit4 }
+
 class Unit1() {
     
     shared String hello = "Hello";
@@ -22,5 +24,11 @@ class Unit1() {
     
     @error print(Unit2().Inner().hello);
     @error print(Unit2().Inner().goodbye); 
+    
+    class Subclass1() extends Unit3() {}
+    class Subclass2() extends Unit4() {}
+    
+    Unit3 u3 = Unit3();
+    Unit4 u4 = Unit4();
     
 }

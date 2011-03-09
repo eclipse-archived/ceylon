@@ -139,8 +139,12 @@ importDeclaration
     : 'import'^ packagePath '{'! importElements '}'!
     ;
 
+importElement2
+    : compilerAnnotation* importElement^
+    ;
+
 importElements
-    : importElement (','! importElement)* (','! importWildcard)?
+    : importElement2 (','! importElement2)* (','! importWildcard)?
     | importWildcard
     ;
 
