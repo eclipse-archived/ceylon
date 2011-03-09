@@ -98,7 +98,7 @@ public class RefinementVisitor extends Visitor {
                             that.addError("could not determine type of refined member");
                         }
                         else if (!type.isSubtypeOf(refinedType)) {
-                            that.addError("member type is not a subtype of refined member type: " +
+                            ((Tree.TypedDeclaration) that).getType().addError("member type is not a subtype of refined member type: " +
                                     type.getProducedTypeName() + " is not " + 
                                     refinedType.getProducedTypeName());
                         }
@@ -196,9 +196,19 @@ public class RefinementVisitor extends Visitor {
                 ProducedType parameterType = params.getParameters().get(i).getType();
                 if (!parameterType.isExactly(refinedParameterType)) {
                     //TODO: much better error needed
-                    that.addError("member parameter type is different to corresponding parameter of refined member: " +
-                            parameterType.getProducedTypeName() + " is not exactly " +
-                            refinedParameterType.getProducedTypeName());
+                    Tree.ParameterList pl;
+                    if (that instanceof Tree.AnyMethod) {
+                        pl = ((Tree.AnyMethod) that).getParameterLists().get(0);
+                    }
+                    else {
+                        pl = ((Tree.ClassDefinition) that).getParameterList();
+                    }
+                    pl.getParameters().get(i).getType()
+                            .addError("type of parameter " + 
+                                    params.getParameters().get(i).getName() + " is different to type of corresponding parameter " +
+                                    refinedParams.getParameters().get(i).getName() + " of refined member: " +
+                                    parameterType.getProducedTypeName() + " is not exactly " +
+                                    refinedParameterType.getProducedTypeName());
                 }
             }
         }

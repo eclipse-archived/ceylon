@@ -52,7 +52,7 @@ class Refinement() {
         class Y() extends X() {
             @error shared actual Natural hello = 1;
             @error shared actual Natural count { return 1; }
-            @error shared actual void print(Object o) {}
+            shared actual void print(@error Object o) {}
             @error shared actual Natural getHello() { return hello; }
             @error shared actual class Z() {}
         }
