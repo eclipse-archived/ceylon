@@ -63,6 +63,7 @@ class Refinement() {
         
         class X() {
             shared default Object something = "Hello";
+            shared default Natural count = 0;
             shared default void print(Object o) {}
             shared default Object getSomething() { return something; }
             shared default class Z() {}
@@ -70,6 +71,7 @@ class Refinement() {
         
         class Y() extends X() {
             shared actual Natural something = 1;
+            shared actual variable Natural count := 0;
             shared actual void print(Object o) {}
             shared actual Natural getSomething() { return something; }
             shared actual class Z() extends super.Z() {}
