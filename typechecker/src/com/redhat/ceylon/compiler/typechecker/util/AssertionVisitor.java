@@ -60,19 +60,6 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
     }
     
     @Override
-    public void visit(Tree.ImportMemberOrType that) {
-        boolean b = expectingError;
-        List<AnalysisError> f = foundErrors;
-        expectingError = false;
-        foundErrors = new ArrayList<AnalysisError>();
-        initExpectingError(that);
-        super.visit(that);
-        checkErrors(that);
-        expectingError = b;
-        foundErrors = f;
-    }
-    
-    @Override
     public void visit(Tree.Declaration that) {
         super.visit(that);
         for (Tree.CompilerAnnotation c: that.getCompilerAnnotations()) {
@@ -124,14 +111,6 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
             out(that, "no error encountered");
         if (!expectingError && foundErrors.size()>0)
             out(that, "errors encountered " + foundErrors);
-    }
-
-    private void initExpectingError(Tree.ImportMemberOrType that) {
-        for (Tree.CompilerAnnotation c: that.getCompilerAnnotations()) {
-            if (c.getIdentifier().getText().equals("error")) {
-                expectingError = true;
-            }
-        }
     }
     
     private void initExpectingError(Tree.StatementOrArgument that) {
