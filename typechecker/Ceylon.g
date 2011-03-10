@@ -483,7 +483,7 @@ type
 
 unabbreviatedType
     : (ot=typeNameWithArguments -> ^(BASE_TYPE $ot))
-      ('.' it=typeNameWithArguments -> ^(QUALIFIED_TYPE $unabbreviatedType $it))*
+      (MEMBER_OP it=typeNameWithArguments -> ^(QUALIFIED_TYPE[$MEMBER_OP] $unabbreviatedType $it))*
     | SUBTYPE
     /*| parameterName '.' 'subtype' abbreviation*
     -> ^(TYPE parameterName 'subtype' abbreviation*)*/

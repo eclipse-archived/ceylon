@@ -201,6 +201,18 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.StaticType that) {
+        super.visit(that);
+        //hacky fix for line numbers
+        if (that.getIdentifier()!=null) {
+            Token dt = that.getAntlrTreeNode().getToken();
+            CommonTree it = that.getIdentifier().getAntlrTreeNode();
+            dt.setLine(it.getLine());
+            dt.setCharPositionInLine(it.getCharPositionInLine());
+        }
+    }
+    
+    @Override
     public void visit(Tree.ClassDefinition that) {
         Class c = new Class();
         that.setDeclarationModel(c);
