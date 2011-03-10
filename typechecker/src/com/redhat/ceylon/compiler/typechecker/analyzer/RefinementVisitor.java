@@ -99,7 +99,8 @@ public class RefinementVisitor extends Visitor {
                             that.addError("could not determine type of refined member");
                         }
                         else if (!type.isSubtypeOf(refinedType)) {
-                            ((Tree.TypedDeclaration) that).getType().addError("member type is not a subtype of refined member type: " +
+                            ((Tree.TypedDeclaration) that).getType().addError(
+                                    "member type is not a subtype of refined member type: " +
                                     type.getProducedTypeName() + " is not " + 
                                     refinedType.getProducedTypeName());
                         }
