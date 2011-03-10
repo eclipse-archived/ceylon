@@ -106,11 +106,26 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
             that.getUnit().getFilename());
     }
 
+    private void out(AnalysisError err) {
+        System.err.println(
+            "error encountered [" +
+            err.getMessage() + "] at " + 
+            err.getTreeNode().getAntlrTreeNode().getLine() + ":" +
+            err.getTreeNode().getAntlrTreeNode().getCharPositionInLine() + " of " +
+            err.getTreeNode().getUnit().getFilename());
+    }
+
     private void checkErrors(Node that) {
-        if (expectingError && foundErrors.size()==0)
-            out(that, "no error encountered");
-        if (!expectingError && foundErrors.size()>0)
-            out(that, "errors encountered " + foundErrors);
+        if (expectingError) {
+            if (foundErrors.size()==0) {
+                out(that, "no error encountered");
+            }
+        }
+        else {
+            for (AnalysisError err: foundErrors) {
+                out(err);
+            }
+        }
     }
     
     private void initExpectingError(Tree.StatementOrArgument that) {
