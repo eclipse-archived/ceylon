@@ -6,9 +6,6 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.name;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.antlr.runtime.Token;
-import org.antlr.runtime.tree.CommonTree;
-
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -185,30 +182,6 @@ public class DeclarationVisitor extends Visitor {
         }
         else {
             d.setTypeParameters(getTypeParameters(that.getTypeParameterList()));
-        }
-    }
-    
-    @Override
-    public void visit(Tree.TypedDeclaration that) {
-        super.visit(that);
-        //hacky fix for line numbers of method and attribute declaration nodes
-        if (that.getIdentifier()!=null) {
-            Token dt = that.getAntlrTreeNode().getToken();
-            CommonTree it = that.getIdentifier().getAntlrTreeNode();
-            dt.setLine(it.getLine());
-            dt.setCharPositionInLine(it.getCharPositionInLine());
-        }
-    }
-    
-    @Override
-    public void visit(Tree.StaticType that) {
-        super.visit(that);
-        //hacky fix for line numbers
-        if (that.getIdentifier()!=null) {
-            Token dt = that.getAntlrTreeNode().getToken();
-            CommonTree it = that.getIdentifier().getAntlrTreeNode();
-            dt.setLine(it.getLine());
-            dt.setCharPositionInLine(it.getCharPositionInLine());
         }
     }
     

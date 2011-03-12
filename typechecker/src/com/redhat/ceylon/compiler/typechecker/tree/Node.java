@@ -97,15 +97,38 @@ public abstract class Node {
     
     public static void correctLineNumber(CommonTree node) {
         Token token = node.getToken();
-        if (token.getLine()==0 && 
-                token.getCharPositionInLine()==-1) {
-            org.antlr.runtime.tree.Tree tr = node.getParent();
-            if (tr!=null && tr instanceof CommonTree) {
-                Token o = ((CommonTree) tr).getToken();
-                token.setLine(o.getLine());
-                token.setCharPositionInLine(o.getCharPositionInLine());
+        if (!hasLocation(token)) {
+            //TODO: should do a depth-first search instead of
+            //      just considering direct children 
+            @SuppressWarnings("rawtypes") 
+            List children = node.getChildren();
+            if (children!=null) {
+                for (Object child: children) {
+                    if (child instanceof CommonTree) {
+                        Token ct = ((CommonTree) child).getToken();
+                        if (hasLocation(ct)) {
+                            copyLocation(token, ct);
+                            return;
+                        }                    
+                    }
+                }
+            }
+            org.antlr.runtime.tree.Tree parent = node.getParent();
+            if (parent!=null && parent instanceof CommonTree) {
+                Token pt = ((CommonTree) parent).getToken();
+                copyLocation(token, pt);
             }
         }
+    }
+
+    private static void copyLocation(Token token, Token other) {
+        token.setLine(other.getLine());
+        token.setCharPositionInLine(other.getCharPositionInLine());
+    }
+
+    private static boolean hasLocation(Token token) {
+        return token.getLine()!=0 || 
+                token.getCharPositionInLine()!=-1;
     }
 
 }
