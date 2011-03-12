@@ -98,32 +98,50 @@ public abstract class Node {
     public static void correctLineNumber(CommonTree node) {
         Token token = node.getToken();
         if (!hasLocation(token)) {
-            //TODO: should do a depth-first search instead of
-            //      just considering direct children 
-            @SuppressWarnings("rawtypes") 
-            List children = node.getChildren();
-            if (children!=null) {
-                for (Object child: children) {
-                    if (child instanceof CommonTree) {
-                        Token ct = ((CommonTree) child).getToken();
-                        if (hasLocation(ct)) {
-                            copyLocation(token, ct);
-                            return;
-                        }                    
-                    }
-                }
+            Token t = getFirstChildToken(node);
+            if (t==null) {
+                t = getParentToken(node);
             }
-            org.antlr.runtime.tree.Tree parent = node.getParent();
-            if (parent!=null && parent instanceof CommonTree) {
-                Token pt = ((CommonTree) parent).getToken();
-                copyLocation(token, pt);
+            if (t!=null) {
+                copyLocation(t, token);
             }
         }
     }
 
-    private static void copyLocation(Token token, Token other) {
-        token.setLine(other.getLine());
-        token.setCharPositionInLine(other.getCharPositionInLine());
+    private static Token getFirstChildToken(CommonTree node) {
+        @SuppressWarnings("rawtypes") 
+        List children = node.getChildren();
+        if (children!=null) {
+            for (Object child: children) {
+                if (child instanceof CommonTree) {
+                    Token ct = ((CommonTree) child).getToken();
+                    if (hasLocation(ct)) {
+                        return ct;
+                    }
+                    else {
+                        Token st = getFirstChildToken((CommonTree) child);
+                        if (st!=null) return st;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private static Token getParentToken(CommonTree node) {
+        org.antlr.runtime.tree.Tree parent = node.getParent();
+        if (parent!=null && parent instanceof CommonTree) {
+            Token pt = ((CommonTree) parent).getToken();
+            if (hasLocation(pt)) {
+                return pt;
+            }
+        }
+        return null;
+    }
+
+    private static void copyLocation(Token from, Token to) {
+        to.setLine(from.getLine());
+        to.setCharPositionInLine(from.getCharPositionInLine());
     }
 
     private static boolean hasLocation(Token token) {
