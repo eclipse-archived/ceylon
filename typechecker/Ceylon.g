@@ -460,20 +460,23 @@ metatypes
     ;
 
 typeConstraint
-    :   compilerAnnotation*
-        'given'^
-        typeName 
-        typeParameters? 
-        parameters? 
-        caseTypes? 
-        metatypes? 
-        satisfiedTypes? 
-        abstractedType?
+    : 'given'^
+      typeName 
+      typeParameters? 
+      parameters? 
+      caseTypes? 
+      metatypes? 
+      satisfiedTypes? 
+      abstractedType?
     ;
-    
+
+typeConstraint2
+    : compilerAnnotation* typeConstraint^
+    ;
+
 typeConstraints
-    : typeConstraint+
-    -> ^(TYPE_CONSTRAINT_LIST typeConstraint+)
+    : typeConstraint2+
+    -> ^(TYPE_CONSTRAINT_LIST typeConstraint2+)
     ;
 
 type
@@ -975,8 +978,8 @@ specialArgument
     ;
 
 parameters
-    : LPAREN (parameter (',' parameter)*)? ')'
-    -> ^(PARAMETER_LIST[$LPAREN] parameter*)
+    : LPAREN (annotatedParameter2 (',' annotatedParameter2)*)? ')'
+    -> ^(PARAMETER_LIST[$LPAREN] annotatedParameter2*)
     ;
 
 //Support for declaring functional formal parameters outside
@@ -1003,18 +1006,23 @@ parametersStart
 // enforce the rule that the ... appears at the end of the parapmeter
 // list in a later pass of the compiler.
 parameter
-    : compilerAnnotation*
-      annotations?
-      parameterType
-      parameterName
+    : parameterType parameterName
       (
           valueParameter? specifier?
-        -> ^(VALUE_PARAMETER_DECLARATION compilerAnnotation* annotations? parameterType parameterName specifier?)
+        -> ^(VALUE_PARAMETER_DECLARATION parameterType parameterName specifier?)
         |  parameters+ specifier? //for callable parameters
-        -> ^(FUNCTIONAL_PARAMETER_DECLARATION compilerAnnotation* annotations? parameterType parameterName parameters+ specifier?)
+        -> ^(FUNCTIONAL_PARAMETER_DECLARATION parameterType parameterName parameters+ specifier?)
       /*| iteratedParameter 
       | (specifiedParameterStart) => specifiedParameter*/
       )
+    ;
+
+annotatedParameter
+    : annotations? parameter^
+    ;
+
+annotatedParameter2
+    : compilerAnnotation* annotatedParameter^
     ;
 
 valueParameter
