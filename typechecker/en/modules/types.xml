@@ -3283,6 +3283,8 @@ shared Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
          condition evaluates to |true|, as a |Set|."
     shared Set<X> elements(Boolean where(X element));
     
+    shared default Partition<Collection<X>> partitioned(Boolean by(X element));
+    
     doc "The elements of the collection, sorted using the given
          comparison."
     shared List<X> sortedElements(Comparison by(X x, X y));
@@ -3299,6 +3301,13 @@ shared Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
     shared Collection<T> copy<T>() given T abstracts X;
     
 }]]></programlisting>
+
+        <programlisting><![CDATA[shared interface Partition<T> 
+        given T satisfies Collection<X>
+        given X satisfies Equality<X> {
+    shared T interior;
+    shared T exterior;
+}
 
 <!-- shared Boolean containsAny(Object... objects); ??? -->
 
@@ -3355,6 +3364,8 @@ shared Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
     doc "Determine if the set is a subset of the given set.
          Return |true| if it is a subset."
     shared Boolean subset(Set<Object> set);
+    
+    shared actual Partition<Set<X>> partitioned(Boolean by(X element));
     
     shared actual Set<T> with<T>(T... elements) given T abstracts X;
     shared actual OpenSet<T> openCopy<T>() given T abstracts X;
@@ -3481,6 +3492,8 @@ shared Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
                       X[] right
                   )
               );
+    
+    shared actual Partition<List<X>> partitioned(Boolean by(X element));
     
     doc "An extension of the list with the given elements
          at the end of the list. The returned list does 
@@ -3644,7 +3657,7 @@ shared List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
             in the key type?</para></comment>
             
             <programlisting><![CDATA[shared interface Map<U, out V>
-        satisfies Collection<Entry<U,V>> & Correspondence<U, V> 
+        satisfies Collection<Entry<U,V>> & Correspondence<U,V> 
         given U satisfies Equality<U> 
         given V satisfies Equality<V> {
     
@@ -3666,7 +3679,9 @@ shared List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
          evaluates to |true|, as a |Map|."
     shared Map<U, V> entries(Boolean where(U key -> V value));
     
-    shared actual Map<U, T> with<U,T>(Entry<U, T>... entries) given T abstracts V;
+    shared actual Partition<Map<U,V>> partitioned(Boolean by(X element));
+    
+    shared actual Map<U,T> with<U,T>(Entry<U,T>... entries) given T abstracts V;
     shared actual OpenMap<U,T> openCopy<T>() given T abstracts V;
     shared actual Map<U,T> copy<U,T>() given T abstracts X;    
     
@@ -3717,6 +3732,8 @@ shared List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
          the element. The returned map reflects changes to 
          the original bag."
     shared Map<X,Natural> map;
+    
+    shared actual Partition<Bag<X>> partitioned(Boolean by(X element));
     
     shared actual Bag<T> with<T>(T... elements) given T abstracts X;
     shared actual OpenBag<T> openCopy<T>() given T abstracts X;
