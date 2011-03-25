@@ -199,4 +199,14 @@ class Generics() {
     @error class Bad3<out T>() satisfies WithContravariant<T> {}
     @error class Bad4<in T>() satisfies WithContravariant<Consumer<T>> {}
     
+    interface SequenceSequence<out T, out X> 
+            satisfies T[]
+            given T satisfies X[] & Equality<T>
+            given X satisfies Equality<X> {}
+    
+    interface BadSequenceSequence<out T> 
+            satisfies T[]
+            @error given T/*<out X>*/ satisfies X[] & Equality<T>
+            @error given X satisfies Equality<X> {}
+
 }
