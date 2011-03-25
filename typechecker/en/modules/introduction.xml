@@ -451,7 +451,7 @@
         </para>
         
         <programlisting>void hello() {
-    process.writeLine("Hello, World!");
+    writeLine("Hello, World!");
 }</programlisting>
 
         <para>
@@ -468,9 +468,8 @@
         <para>
         This method is declared using the <literal>void</literal> keyword, which 
         means that it doesn't return a value. When the method is executed, it 
-        calls the <literal>writeLine()</literal> method of an object named 
-        <literal>process</literal>. (This method displays its parameter on the 
-        console.)
+        calls another toplevel method named <literal>writeLine()</literal> This 
+        method displays its parameter on the console.
         </para>
         
         <para>Copy this code into a file named <literal>hello.ceylon</literal>
@@ -498,14 +497,14 @@
         
         <programlisting>/* The classic Hello World program */
 void hello() {
-    process.writeLine("Hello, World!");
+    writeLine("Hello, World!");
 }</programlisting>
 
         <para>Or like this:</para>
         
         <programlisting>//The classic Hello World program
 void hello() {
-    process.writeLine("Hello, World!");
+    writeLine("Hello, World!");
 }</programlisting>
         
         <para>But it's much better to use the <literal>doc</literal>
@@ -513,7 +512,7 @@ void hello() {
 
         <programlisting>doc "The classic Hello World program"
 void hello() {
-    process.writeLine("Hello, World!");
+    writeLine("Hello, World!");
 }</programlisting>
 
         <para>
@@ -531,12 +530,17 @@ by "Gavin"
 see (goodbye)
 throws (IOException)
 void hello() {
-    process.writeLine("Hello, World!");
+    writeLine("Hello, World!");
 }</programlisting>
         
         <para>There's also a <literal>deprecated</literal> annotation for
         marking program elements that will be removed in a future version
         of the module.</para>
+        
+        <para>Note that annotations like <literal>doc</literal>, 
+        <literal>by</literal>, <literal>see</literal>, and <literal>deprecated</literal> 
+        aren't keywords. They're just ordinary identifiers. On the other 
+        hand, <literal>void</literal> <emphasis>is</emphasis> a keyword.</para>
         
     </section>
         
@@ -553,31 +557,38 @@ void hello() {
             <programlisting>doc "The Hello World program
      ... version 1.1!"
 void hello() {
-    process.writeLine("Hello, this is Ceylon " process.languageVersion 
-                      " running on Java " process.javaVersion "!");
+    writeLine("Hello, this is Ceylon " process.languageVersion 
+                  " running on Java " process.javaVersion "!");
 }</programlisting>
 
-            <para>Here we can see two nice things about strings in Ceylon.
-            The first is that we can split a string across multiple lines.
-            That's especially useful when we're writing documentation in
-            a <literal>doc</literal> annotation. The second is that we can
-            interpolate expressions inside a string literal. Technically, a
-            string with expressions in it isn't really a literal 
-            anymore&mdash;it's considered a <emphasis>string 
-            template</emphasis>.</para>
+            <para>Here we can see two nice things about strings in Ceylon. 
+            The first is that we can split a string across multiple lines. 
+            That's especially useful when we're writing documentation in a 
+            <literal>doc</literal> annotation. The second is that we can 
+            interpolate expressions inside a string literal. Technically, a 
+            string with expressions in it isn't really a literal anymore&mdash;it's 
+            considered a <emphasis>string template</emphasis>.</para>
             
             <para>A string template must begin and end in a string literal.
             The following is <emphasis>not</emphasis> legal syntax:</para>
             
-            <programlisting>process.writeLine("Hello, this is Ceylon " process.languageVersion);  //compile error!</programlisting>
+            <programlisting>writeLine("Hello, this is Ceylon " process.languageVersion);  //compile error!</programlisting>
             
             <para>A quick fix is to terminate the template with an empty string 
             literal:</para>
             
-            <programlisting>process.writeLine("Hello, this is Ceylon " process.languageVersion "");</programlisting>
+            <programlisting>writeLine("Hello, this is Ceylon " process.languageVersion "");</programlisting>
             
-            <para>Copy this code into <literal>hello.ceylon</literal> 
-            and run, as before:</para>
+            <para>The identifier <literal>process</literal> refers to a 
+            <emphasis>toplevel attribute</emphasis> (a bit like a 
+            <literal>static</literal> field in Java) which holds information 
+            about the current process (command line arguments, system properties, 
+            etc.), along with references to streams representing standard input 
+            and standard output. (The <literal>writeLine()</literal> method 
+            actually just calls <literal>process.output.writeLine()</literal>.)</para>
+
+            <para>Copy this code into <literal>hello.ceylon</literal> and run, 
+            as before:</para>
         
             <programlisting>ceylon hello</programlisting>
         
@@ -591,8 +602,8 @@ void hello() {
             operator you're probably used to is an alternative, and more flexible
             in many cases:</para>
         
-            <programlisting>process.writeLine("Hello, this is Ceylon " + process.languageVersion + 
-                      " running on Java " + process.javaVersion + "!");</programlisting>
+            <programlisting>writeLine("Hello, this is Ceylon " + process.languageVersion + 
+                  " running on Java " + process.javaVersion + "!");</programlisting>
             
             <para>However, don't make the mistake of thinking that these two
             approaches are always equivalent just because they result in the 
@@ -635,7 +646,7 @@ void hello() {
     else {
         greeting = "Hello, World!";
     }
-    process.writeLine(greeting);
+    writeLine(greeting);
 }]]></programlisting>
 
         <para>The <literal>process</literal> object has an attribute named 
@@ -697,7 +708,7 @@ if (exists String name = process.args.first) {
 else {
     greeting = "Hello, World!";
 }
-process.writeLine(greeting);]]></programlisting>
+writeLine(greeting);]]></programlisting>
         
         <para>This is the prefered style most of the time, since we can't actually
         use <literal>name</literal> for anything useful outside of the 
@@ -993,7 +1004,7 @@ else {
         
         <programlisting><![CDATA[doc "Print a personalized greeting"
 void hello() {
-    Hello(process.args.first).say(process);
+    Hello(process.args.first).say(process.output);
 }]]></programlisting>
         
         <para>Our rewritten <literal>hello()</literal> method just creates a new instance
@@ -1035,13 +1046,13 @@ void hello() {
         
         <programlisting>//defaulted parameter
 void print(String string = "\n") {
-    process.writeLine(string);
+    writeLine(string);
 }</programlisting>
 
         <programlisting>//sequenced parameter
 void print(String... strings) {
     for (String string in strings) {
-        process.writeLine(string);
+        writeLine(string);
     }
 }</programlisting>
 
@@ -1056,7 +1067,7 @@ void print&lt;T&gt;(T printable)
     case (satisfies Named) {
         string = printable.name;
     }
-    process.writeLine(string);
+    writeLine(string);
 }</programlisting>
         
         <para>Don't worry if you don't completely understand the third example just yet. Just
@@ -1081,7 +1092,7 @@ class Hello(String? name = process.args.first) {
     ...
 
     doc "Print the greeting" 
-    shared void say(OutputStream stream = process) {
+    shared void say(OutputStream stream = process.output) {
         stream.writeLine(greeting);
     }
     
@@ -1250,6 +1261,11 @@ class PersonalizedHello(String name) extends Hello() {
             attribute, since an interface may not define a simple attribute, and may not 
             hold a reference to another object.</para>
             
+            <para>Note also that the call to <literal>writeLine()</literal> from 
+            <literal>writeFormattedLine()</literal> resolves to the instance method of 
+            <literal>Writer</literal>, which hides the toplevel method of the same
+            name.</para>
+            
             <para>Now let's define a concrete implementation of this interface.</para>
             
             <programlisting>shared class ConsoleWriter() satisfies Writer {
@@ -1257,7 +1273,7 @@ class PersonalizedHello(String name) extends Hello() {
     formatter = StringFormatter();
     
     shared actual void write(String string) {
-        process.write(string);
+        process.output.write(string);
     }
     
 }</programlisting>
@@ -1393,7 +1409,7 @@ object defaultHello extends Hello() {
     formatter = StringFormatter();
     
     shared actual void write(String string) {
-        process.write(string);
+        process.output.write(string);
     }
     
 }</programlisting>
@@ -1520,10 +1536,10 @@ else {
         <programlisting>Hello hello = ... ;
 switch(hello)
 case (defaultHello) {
-    process.writeLine("What's your name?");
+    writeLine("What's your name?");
 }
 case (is PersonalizedHello) {
-    process.writeLine("Nice to hear from you again!");
+    writeLine("Nice to hear from you again!");
 }</programlisting>
         
         <para>This is Ceylon's version of a Java <literal>enum</literal>:</para>
@@ -2329,7 +2345,7 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             loop:</para>
             
             <programlisting>for (String city in voyage) {
-    stream.writeLine(city);
+    writeLine(city);
 }</programlisting>
             
             <para>Ceylon doesn't need C-style <literal>for</literal> loops. Instead,
@@ -2338,7 +2354,7 @@ String[] longerVoyage := voyage + { "Rome", "Paris", "Edinburgh" };</programlist
             <programlisting>variable Natural fac:=1;
 for (Natural n in 1..100) {
     fac*=n;
-    process.writeLine("Factorial " n "! = " fac "");
+    writeLine("Factorial " n "! = " fac "");
 }</programlisting>
 
             <para>If, for any reason, we need to use the index of each element of
@@ -2346,7 +2362,7 @@ for (Natural n in 1..100) {
             loop:</para>
             
             <programlisting>for (Natural i -> String city in voyage) {
-    stream.writeLine($i + ": " + city);
+    writeLine($i + ": " + city);
 }</programlisting>
 
             <para>This works because there's a built-in extension method (a concept we'll
@@ -2562,13 +2578,13 @@ cities.define("Emmanuel"->"Paris",
             we can iterate a <literal>Map</literal> like this:</para>
 
             <programlisting>for (Entry&lt;String,String&gt; entry in cities) {
-    stream.writeLine(entry.key + " lives in " + entry.value);
+    writeLine(entry.key + " lives in " + entry.value);
 }</programlisting>
 
             <para>Or, much more commonly:</para>
             
             <programlisting>for (String person -> String city in cities) {
-    stream.writeLine(person + " lives in " + city);
+    writeLine(person + " lives in " + city);
 }</programlisting>
             
             <para>(Note that the <literal>-&gt;</literal> symbol here isn't
@@ -2952,7 +2968,7 @@ Natural inc(Natural arg) = add.partial(3);</programlisting>
             </listitem>
             <listitem>
                 <para><emphasis>repetition</emphasis>, such as:
-                <programlisting>repeat (3) times { stream.writeLine("Hello!"); };</programlisting></para>
+                <programlisting>repeat (3) times { writeLine("Hello!"); };</programlisting></para>
             </listitem>
             <listitem>
                 <para><emphasis>tabulation</emphasis>, such as:
@@ -4115,11 +4131,11 @@ Set&lt;Object&gt; allTheObjects = hellos.union(objects);</programlisting>
             <para>Ceylon, like Java, lets you write a method with a parameter that accepts 
             multiple arguments, for example:</para>
             
-            <programlisting>void print(String... strings) {
+            <programlisting>void print(Writer w, String... strings) {
     for (String s in strings) {
-        process.write(s);
+        w.write(s);
     }
-    process.writeLine();
+    w.writeLine();
 }</programlisting>
             
             <para>In Ceylon, we call this a <emphasis>sequenced parameter</emphasis>.</para>
@@ -4325,7 +4341,7 @@ class Hello(String? name) {
         <para>And of the <emphasis>format operator</emphasis>, the prefix 
         <literal>$</literal>:</para>
         
-        <programlisting>stream.writeLine($obj);</programlisting>
+        <programlisting>writeLine($obj);</programlisting>
         
         <para>You might have wondered earlier exactly what expression types are 
         permitted in an interpolated string or as arguments to the format operator. 
@@ -4358,7 +4374,7 @@ class Hello(String? name) {
         <para>Now, of course, one option we have is to explicitly wrap each object 
         we're printing out in an instance of the appropriate <literal>Format</literal>.</para>
         
-        <programlisting>stream.writeLine("2 / 3 = " + $FloatFormat(2.0/3))</programlisting>
+        <programlisting>writeLine("2 / 3 = " + $FloatFormat(2.0/3))</programlisting>
         
         <para>But this gets verbose and boring. So we can define our format as an 
         extension, for example:</para>
@@ -4378,7 +4394,7 @@ class Hello(String? name) {
         <para>And now, when we don't explicitly specify a format, the format defaults
         to the extension format:</para>
         
-        <programlisting>stream.writeLine("2 / 3 = " + $(2.0/3))</programlisting>
+        <programlisting>writeLine("2 / 3 = " + $(2.0/3))</programlisting>
         
         <para>Ceylon includes a built-in extension, 
         <literal>ceylon.language.util.DebugFormat</literal> that formats any expression 

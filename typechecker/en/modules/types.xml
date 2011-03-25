@@ -2697,6 +2697,7 @@ removeSayInterceptor();]]></programlisting>
     
 }]]></programlisting>
         
+        <programlisting>shared void writeLine(String line) = process.output.writeLine;</programlisting>
     
     </section>
     
