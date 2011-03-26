@@ -543,7 +543,7 @@ String? firstWord = words[0];</programlisting>
     
         <para>A class may extend another class.</para>
         
-        <programlisting>ExtendedType: "extends" Type PositionalArguments</programlisting>
+        <programlisting>ExtendedType: "extends" ("super" ".")? Type PositionalArguments</programlisting>
     
         <para>The <literal>extends</literal> clause must specify exactly one superclass. 
         If the superclass is a parameterized type, the <literal>extends</literal> clause 
@@ -551,6 +551,20 @@ String? firstWord = words[0];</programlisting>
         arguments for the initializer parameters of the superclass.</para>
         
         <programlisting>extends Person(name, org)</programlisting>
+        
+        <para>A member class annotated <literal>actual</literal> may use the qualifier 
+        <literal>super</literal> in the <literal>extends</literal> clause to refer to the 
+        member class it refines. When the qualifier <literal>super</literal> appears, the
+        following class name refers to a member class of the superclass of the class that
+        contains the member class annotated <literal>actual</literal>.</para>
+        
+        <programlisting>extends super.Iterator()</programlisting>
+        
+        <comment><para>TODO: This doesn't work if the member class being refined belongs
+        to an interface. A solution would be to let you rename the refined member class
+        in an <literal>import</literal> statement. Another possibility would be to introduce
+        a specialized syntax, for example something like 
+        <literal>super(Iterable).Iterator()</literal>.</para></comment>
     
         <para>
         If a class does not explicitly specify a superclass using <literal>extends</literal>,

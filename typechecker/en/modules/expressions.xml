@@ -485,6 +485,12 @@ if you prefer.";</programlisting>
         <literal>definite</literal> is a proposed feature for a future version of the 
         language.)</emphasis></para>
         
+        <comment><para>TODO: <literal>super</literal> doesn't let you call a refined
+        member belonging to an interface. A solution would be to let you rename 
+        the refined member in an <literal>import</literal> statement. Another
+        possibility would be to introduce a specialized syntax, for example something
+        like <literal>super(Writer).write(string)</literal>.</para></comment>
+    
         <para>The keyword <literal>this</literal> refers to the current instance, 
         and is assignable to both the type of the current class or interface (the 
         class or interface in which the expression appears), and to the special 
