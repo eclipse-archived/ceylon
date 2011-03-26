@@ -13,16 +13,11 @@ shared interface Sequence<out X>
             shared actual X? head { 
                 return this[from];
             }
-            shared actual Iterable<X> tail {
+            shared actual Iterator<X> tail {
                 return SequenceIterator(from+1);
             }
         }
-        if (is Iterable<X> sequence) {
-            return this.iterator();
-        }
-        else {
-            return SequenceIterator(0);
-        }
+        return SequenceIterator(0);
     }
     
     shared actual default Natural size {
