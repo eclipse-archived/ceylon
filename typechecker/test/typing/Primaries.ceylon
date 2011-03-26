@@ -48,6 +48,9 @@ class Primaries() {
     
     @type["Primaries.A"] local p15 = this.A();
     
+    @error A().this;
+    @error A().super;
+    
     @type["Primaries.A"] local p16 = Primaries().A();
     
     @type["String"] local p17 = "Hello";
