@@ -97,7 +97,7 @@ public abstract class Node {
     
     public static void correctLineNumber(CommonTree node) {
         Token token = node.getToken();
-        if (!hasLocation(token)) {
+        if (token!=null && !hasLocation(token)) {
             Token t = getFirstChildToken(node);
             if (t==null) {
                 t = getParentToken(node);
@@ -115,7 +115,7 @@ public abstract class Node {
             for (Object child: children) {
                 if (child instanceof CommonTree) {
                     Token ct = ((CommonTree) child).getToken();
-                    if (hasLocation(ct)) {
+                    if (ct!=null && hasLocation(ct)) {
                         return ct;
                     }
                     else {
@@ -132,7 +132,7 @@ public abstract class Node {
         org.antlr.runtime.tree.Tree parent = node.getParent();
         if (parent!=null && parent instanceof CommonTree) {
             Token pt = ((CommonTree) parent).getToken();
-            if (hasLocation(pt)) {
+            if (pt!=null && hasLocation(pt)) {
                 return pt;
             }
         }
