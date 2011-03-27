@@ -124,6 +124,12 @@ TypeConstraints?
             </listitem>
         </itemizedlist>
         
+        <para>An import element may not refer to a non-<literal>shared</literal> 
+        declaration.</para>
+        
+        <para>An <literal>import</literal> statement may not contain two import elements
+        which refer to the same declaration.</para>
+        
         <para>Note that toplevel types, toplevel methods, toplevel attributes,
         and extensions in the module <literal>ceylon.language</literal> never need to be 
         explicitly imported. They are implicitly imported by every compilation unit.</para>
@@ -135,9 +141,6 @@ TypeConstraints?
         that name from the given package.</para>
         
         <programlisting>ImportTypeElement: "implicit"? TypeAlias? TypeName</programlisting>
-        
-        <para>An <literal>import</literal> statement may not contain two import elements
-        which refer to the same type.</para>
         
         <para>A compilation unit may not import two types with the same name.</para>
         
@@ -152,9 +155,6 @@ TypeConstraints?
         toplevel method or attribute with that name from the given package.</para>
         
         <programlisting>ImportMethodAttributeElement: "implicit"? MethodAttributeAlias? MemberName</programlisting>
-        
-        <para>An <literal>import</literal> statement may not contain two import elements
-        which refer to the same method or attribute.</para>
         
         <para>A compilation unit may not import two methods or attributes with the same 
         name.</para>
