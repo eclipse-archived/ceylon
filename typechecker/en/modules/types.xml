@@ -2054,6 +2054,9 @@ while (i<=max) {
 
 }]]></programlisting>
 
+        <comment><para>TODO: Actually, instead of throwing exceptions, the 
+        type conversion operations should return optional values.</para></comment>
+
         <para>It is not possible to perform arithmetic or comparisons upon
         a <literal>Number</literal> without additional information about its
         type.</para>
