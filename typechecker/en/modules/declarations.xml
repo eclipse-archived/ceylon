@@ -953,7 +953,7 @@ shared class Person { ... }</programlisting>
 }</programlisting>
          -->
          
-         <para>A sublass of a nested class must be a member of the type that declares 
+         <para>A subclass of a nested class must be a member of the type that declares 
          the nested class or of a subtype of the type that declares the nested class. 
          A class that implements a nested interface must be a member of the type that 
          declares the nested interface or of a subtype of the type that declares the 
