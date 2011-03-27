@@ -3130,7 +3130,7 @@ Float[] tenZeroes = Sequence(10,0.0);</programlisting>
                 at which the annotation occurs. Its accepts one or more arguments of type
                 <literal>Element</literal>: 
                 <literal>classes</literal>, <literal>interfaces</literal>,
-                <literal>aliases</literal>, <literal>objects</literal>, 
+                <!--literal>aliases</literal,--> <literal>objects</literal>, 
                 <literal>methods</literal>, <literal>attributes</literal>, 
                 <literal>parameters</literal>, <literal>any</literal>.</para>
             </listitem>

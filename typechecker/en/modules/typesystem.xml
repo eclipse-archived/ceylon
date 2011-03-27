@@ -536,7 +536,11 @@ String? firstWord = words[0];</programlisting>
         <programlisting>void write(String|Integer|Float value) { ... }</programlisting>
         <programlisting>void store(Persistent&amp;Format&amp;IdentifiableObject object) { ... }</programlisting>
         <para>This syntax is consistent with the interpretation of these operators as set 
-        intersection and union.</para></comment>
+        intersection and union.</para>
+        <para>We would also probably support aliases for ad hoc union and intersection 
+        types using a syntax like this:</para>
+        <programlisting>type Printable = String | Integer | Float;</programlisting>
+        <programlisting>type Storable = Persistent &amp; Format &amp; IdentifiableObject;</programlisting></comment>
         
     <section id="extendedclass">
         <title>Extension</title>
@@ -780,6 +784,10 @@ shared interface ElementwiseEquality
         <literal>switch</literal> statement. The compiler is able to validate that 
         the <literal>switch</literal> contains an exhaustive list of all cases of 
         the type.</para>
+        
+        <comment><para>TODO: If all cases of an interface or class are subtypes of 
+        a certain type, does the compiler automatically reason that the interface 
+        or class is a subtype of that type?</para></comment>
         
         <para>Therefore, the <literal>of</literal> declaration is used to simulate 
         enumerated types and algebraic datatypes.</para>
