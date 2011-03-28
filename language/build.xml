@@ -350,4 +350,17 @@
             description="Publish both type checker and ceylon.language template module">
 
     </target>
+
+    <target name="test"
+            depends="publish"
+            description="Run rudimentary tests">
+        <java classname="MainForTest">
+            <classpath>
+                <pathelement location="${build.classes}"/>
+                <fileset dir="lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
 </project>
