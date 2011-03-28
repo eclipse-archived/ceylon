@@ -35,5 +35,9 @@ public class MainForTest {
         if ( compilationUnit == null ) {
             throw new RuntimeException("Failed to pass getCompilationUnitFromRelativePath for top level files (no package) in real src dir");
         }
+        typeChecker = new TypeCheckerBuilder()
+                .verbose(false)
+                .addSrcDirectory( new File("languagesrc") )
+                .getTypeChecker();
     }
 }
