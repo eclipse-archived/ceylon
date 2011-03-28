@@ -13,23 +13,23 @@
     <dirname property="imported.basedir" file="${ant.file.ReferenceDocumentation}"/>
 
     <!-- Set build directories for all formats. -->
-    <property name="build.dir"             value="${basedir}/build"/>
-	<property name="build.classes" location="${build.dir}/classes"/>
+    <property name="build.dir" value="${basedir}/build"/>
+    <property name="build.classes" location="${build.dir}/classes"/>
 
-	<property name="src" location="src"/>
+    <property name="src" location="src"/>
     <property name="gensrc" location="gensrc"/>
 
-	<!-- Support files for build process. -->
-    <property name="support.dir"           value="${imported.basedir}/support"/>
+    <!-- Support files for build process. -->
+    <property name="support.dir" value="${imported.basedir}/support"/>
 
     <!-- Base name for documentation artifacts. -->
-    <tstamp />
-    <property name="docname"               value="Project Ceylon ${DSTAMP}"/>
+    <tstamp/>
+    <property name="docname" value="Project Ceylon ${DSTAMP}"/>
 
     <!-- Set DocBook stylesheets. -->
-    <property name="db.style.fopdf"        value="fopdf.xsl"/>
-    <property name="db.style.html"         value="html_chunk.xsl"/>
-    <property name="db.style.htmlsingle"   value="html.xsl"/>
+    <property name="db.style.fopdf" value="fopdf.xsl"/>
+    <property name="db.style.html" value="html_chunk.xsl"/>
+    <property name="db.style.htmlsingle" value="html.xsl"/>
 
     <!-- Local repository -->
     <property name="repo.local.dir" value="${user.home}/.ceylon/repo"/>
@@ -45,11 +45,11 @@
             <include name="**/*.jar"/>
         </fileset>
     </path>
-      
-      <!-- ANTLR -->
-	  <property name="antlr.src" location="Ceylon.g"/>
-	  <property name="antlr.dst" location="gensrc"/>
-	  <property name="antlr.lib" location="lib/antlrworks-1.3.1.jar"/>
+
+    <!-- ANTLR -->
+    <property name="antlr.src" location="Ceylon.g"/>
+    <property name="antlr.dst" location="gensrc"/>
+    <property name="antlr.lib" location="lib/antlrworks-1.3.1.jar"/>
 
     <!-- ################################################################## -->
 
@@ -58,7 +58,9 @@
             description="Compile documentation for all languages and all formats.">
 
         <!-- TRANSLATOR: Duplicate this line for your language -->
-        <antcall target="lang.all"><param name="lang" value="en"/></antcall>
+        <antcall target="lang.all">
+            <param name="lang" value="en"/>
+        </antcall>
 
     </target>
 
@@ -67,17 +69,21 @@
             description="Compile PDF documentation for all languages.">
 
         <!-- TRANSLATOR: Duplicate this line for your language -->
-        <antcall target="lang.docpdf"><param name="lang" value="en"/></antcall>
-        
-    	<copy file="${build.dir}/en/pdf/${docname}.pdf" todir="${basedir}"/>
-	
+        <antcall target="lang.docpdf">
+            <param name="lang" value="en"/>
+        </antcall>
+
+        <copy file="${build.dir}/en/pdf/${docname}.pdf" todir="${basedir}"/>
+
     </target>
 
     <target name="all.revdiff"
             description="Generates a diff report for all translated versions.">
 
         <!-- TRANSLATOR: Duplicate this line for your language -->
-    	<antcall target="lang.revdiff"><param name="lang" value="de"/></antcall>
+        <antcall target="lang.revdiff">
+            <param name="lang" value="de"/>
+        </antcall>
 
     </target>
 
@@ -91,10 +97,10 @@
 
         <!-- Delete build directory. -->
         <delete dir="${build.dir}"/>
-    	
+
     </target>
-    
-	<target name="clean.antlr">
+
+    <target name="clean.antlr">
         <delete dir="${antlr.dst}"/>
     </target>
 
@@ -119,7 +125,7 @@
         </copy>
 
         <!-- Create the XSL/FO temporary file. -->
-        <java classname="com.icl.saxon.StyleSheet" fork="true" dir="${basedir}" maxmemory="192m" >
+        <java classname="com.icl.saxon.StyleSheet" fork="true" dir="${basedir}" maxmemory="192m">
             <classpath refid="lib.classpath"/>
             <arg value="-o"/>
             <arg value="${build.dir}/${lang}/pdf/docbook_fop.tmp"/>
@@ -139,7 +145,7 @@
         </copy>
 
         <!-- Create a PDF from the XSL/FO, using customized fop userconfig.xml -->
-        <java classname="org.apache.fop.apps.Fop" fork="true" dir="${basedir}" maxmemory="192m" >
+        <java classname="org.apache.fop.apps.Fop" fork="true" dir="${basedir}" maxmemory="192m">
             <classpath refid="lib.classpath"/>
             <arg value="-c"/>
             <arg value="${basedir}/${lang}/fop/userconfig.xml"/>
@@ -163,7 +169,7 @@
         <delete>
             <fileset dir="${build.dir}/${lang}/pdf" excludes="**/*.pdf"/>
         </delete>
-        <delete  dir="${build.dir}/${lang}/pdf/images"/>
+        <delete dir="${build.dir}/${lang}/pdf/images"/>
     </target>
 
     <target name="lang.dochtml"
@@ -179,7 +185,7 @@
     </target>
 
     <target name="lang.dochtmlsingle"
-        description="Generates the single-page HTML documentation only for a language (set lang)">
+            description="Generates the single-page HTML documentation only for a language (set lang)">
 
         <mkdir dir="${build.dir}/${lang}/html_single/"/>
 
@@ -213,8 +219,8 @@
             description="Reports difference between English and translation (set lang)">
 
         <taskdef name="revdiff"
-            classname="org.hibernate.docproc.revdiff.RevDiffReportTask"
-            classpathref="lib.classpath">
+                 classname="org.hibernate.docproc.revdiff.RevDiffReportTask"
+                 classpathref="lib.classpath">
 
         </taskdef>
 
@@ -234,80 +240,82 @@
     </target>
 
     <!-- Antlr and code generation -->
-	
-	<target name="antlr" depends="antlr.parser,antlr.tree"/>
-	
-	<target name="antlr.parser"
-	        description="Generate code from ANTLR grammar">
-	    <mkdir dir="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/parser"/>
-	    <java classname="org.antlr.Tool">
-	      <arg value="-o"/>
-	      <arg value="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/parser"/>
-	      <arg value="${antlr.src}"/>
-	      <classpath>
-	        <pathelement location="${antlr.lib}"/>
-	      </classpath>
-	    </java>
-	</target>
-	
+
+    <target name="antlr" depends="antlr.parser,antlr.tree"/>
+
+    <target name="antlr.parser"
+            description="Generate code from ANTLR grammar">
+        <mkdir dir="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/parser"/>
+        <java classname="org.antlr.Tool">
+            <arg value="-o"/>
+            <arg value="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/parser"/>
+            <arg value="${antlr.src}"/>
+            <classpath>
+                <pathelement location="${antlr.lib}"/>
+            </classpath>
+        </java>
+    </target>
+
     <target name="antlr.tree"
             description="Generate code from ANTLR grammar">
         <mkdir dir="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/treegen"/>
         <java classname="org.antlr.Tool">
-          <arg value="-fo"/>
-          <arg value="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/treegen"/>
-          <arg value="treegen/Treegen.g"/>
-          <arg value="treegen/Buildergen.g"/>
-          <arg value="treegen/Walkergen.g"/>
-          <arg value="treegen/Visitorgen.g"/>
-          <arg value="treegen/Validatorgen.g"/>
-          <classpath>
-            <pathelement location="${antlr.lib}"/>
-          </classpath>
+            <arg value="-fo"/>
+            <arg value="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/treegen"/>
+            <arg value="treegen/Treegen.g"/>
+            <arg value="treegen/Buildergen.g"/>
+            <arg value="treegen/Walkergen.g"/>
+            <arg value="treegen/Visitorgen.g"/>
+            <arg value="treegen/Validatorgen.g"/>
+            <classpath>
+                <pathelement location="${antlr.lib}"/>
+            </classpath>
         </java>
-    	<delete>
-    		<fileset dir="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/treegen"
-    			     includes="*.tokens"/>
-    	</delete>
+        <delete>
+            <fileset dir="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/treegen"
+                     includes="*.tokens"/>
+        </delete>
     </target>
-    
-	  <target name="treegen" depends="antlr.tree, antlr.parser">
-	    <mkdir dir="${build.classes}"/>
-	    <javac
-	       srcdir="${src}:${gensrc}"
-	       destdir="${build.classes}"
-	       debug="true"
-	       classpath="${antlr.lib}">
-	       <include name="com/redhat/ceylon/compiler/typechecker/treegen/*.java"/>
-	    </javac>
-	  </target>
-	
-	<target name="tree" depends="treegen"
+
+    <target name="treegen" depends="antlr.tree, antlr.parser">
+        <mkdir dir="${build.classes}"/>
+        <javac
+                srcdir="${src}:${gensrc}"
+                destdir="${build.classes}"
+                debug="true"
+                classpath="${antlr.lib}">
+            <include name="com/redhat/ceylon/compiler/typechecker/treegen/*.java"/>
+        </javac>
+    </target>
+
+    <target name="tree" depends="treegen"
             description="Generate the tree builder code">
-		<mkdir dir="${gensrc}/com/redhat/ceylon/compiler/typechecker/tree"/>
-		<java classname="com.redhat.ceylon.compiler.typechecker.treegen.Generate">
-        <arg value="Ceylon.nodes"/>
-        <classpath>
-          <pathelement location="${antlr.lib}"/>
-          <pathelement location="${build.classes}"/>
-        </classpath>
+        <mkdir dir="${gensrc}/com/redhat/ceylon/compiler/typechecker/tree"/>
+        <java classname="com.redhat.ceylon.compiler.typechecker.treegen.Generate">
+            <arg value="Ceylon.nodes"/>
+            <classpath>
+                <pathelement location="${antlr.lib}"/>
+                <pathelement location="${build.classes}"/>
+            </classpath>
         </java>
-	</target>
+    </target>
 
     <!-- project compilation -->
     <target name="compile" depends="tree" description="compile the type checker">
         <javac
-	       srcdir="${src}:${gensrc}"
-	       destdir="${build.classes}"
-	       debug="true"
-	       classpath="${antlr.lib}">
-	       <include name="**/*.java"/>
-	    </javac>
+                srcdir="${src}:${gensrc}"
+                destdir="${build.classes}"
+                debug="true"
+                classpath="${antlr.lib}">
+            <include name="**/*.java"/>
+        </javac>
     </target>
 
     <target name="publish.typechecker" depends="compile,init.repo">
-        <property name="typechecker.dir" value="${repo.local.dir}/com/redhat/ceylon/typechecker/${module.com.redhat.typechecker.version}"/>
-        <property name="typechecker.jar" value="${typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.typechecker.version}.jar"/>
+        <property name="typechecker.dir"
+                  value="${repo.local.dir}/com/redhat/ceylon/typechecker/${module.com.redhat.typechecker.version}"/>
+        <property name="typechecker.jar"
+                  value="${typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.typechecker.version}.jar"/>
         <delete dir="${typechecker.dir}"/>
         <mkdir dir="${typechecker.dir}"/>
         <zip destfile="${typechecker.jar}">
@@ -331,7 +339,7 @@
         <property name="src.file" value="${dir.file}/${module.language.name}-${module.ceylon.language.version}.src"/>
 
         <delete dir="${dir.file}"/>
-        <mkdir dir="${dir.file}" />
+        <mkdir dir="${dir.file}"/>
         <zip destfile="${src.file}">
             <fileset dir="${module.language.srcrootdir}">
                 <include name="ceylon/language/**/*.ceylon"/>
@@ -349,5 +357,18 @@
             depends="publish.language.module,publish.typechecker"
             description="Publish both type checker and ceylon.language template module">
 
+    </target>
+
+    <target name="test"
+            depends="publish"
+            description="Run rudimentary tests">
+        <java classname="MainForTest">
+            <classpath>
+                <pathelement location="${build.classes}"/>
+                <fileset dir="lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+        </java>
     </target>
 </project>
