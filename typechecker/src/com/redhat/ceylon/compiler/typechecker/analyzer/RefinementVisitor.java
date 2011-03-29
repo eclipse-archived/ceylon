@@ -196,16 +196,13 @@ public class RefinementVisitor extends Visitor {
             for (int i=0; i<params.getParameters().size(); i++) {
                 ProducedType refinedParameterType = refinedParams.getParameters().get(i).getType();
                 ProducedType parameterType = params.getParameters().get(i).getType();
-                if (!parameterType.isExactly(refinedParameterType)) {
-                    //TODO: much better error needed
-                    Tree.ParameterList pl;
-                    if (that instanceof Tree.AnyMethod) {
-                        pl = ((Tree.AnyMethod) that).getParameterLists().get(0);
-                    }
-                    else {
-                        pl = ((Tree.ClassDefinition) that).getParameterList();
-                    }
-                    pl.getParameters().get(i).getType()
+                if (refinedParameterType==null || parameterType==null) {
+                    getParameterList(that).getParameters().get(i).getType()
+                            .addError("could not determine if parameter type is the same as the corresponding parameter of refined member");
+                }
+                else if (!parameterType.isExactly(refinedParameterType)) {
+                    //TODO: consider type parameter substitution!!!
+                    getParameterList(that).getParameters().get(i).getType()
                             .addError("type of parameter " + 
                                     params.getParameters().get(i).getName() + " is different to type of corresponding parameter " +
                                     refinedParams.getParameters().get(i).getName() + " of refined member: " +
@@ -214,6 +211,17 @@ public class RefinementVisitor extends Visitor {
                 }
             }
         }
+    }
+
+    private static Tree.ParameterList getParameterList(Tree.Declaration that) {
+        Tree.ParameterList pl;
+        if (that instanceof Tree.AnyMethod) {
+            pl = ((Tree.AnyMethod) that).getParameterLists().get(0);
+        }
+        else {
+            pl = ((Tree.ClassDefinition) that).getParameterList();
+        }
+        return pl;
     }
     
 }
