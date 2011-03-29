@@ -1,5 +1,8 @@
 #Ignored files
 
+#OS
+.DS_Store
+
 # build system
 build
 bin
