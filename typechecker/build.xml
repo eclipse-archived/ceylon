@@ -35,7 +35,7 @@
     <property name="repo.local.dir" value="${user.home}/.ceylon/repo"/>
 
     <!-- ceylon.language -->
-    <property name="module.language.srcrootdir" value="${basedir}/languagesrc"/>
+    <property name="module.language.srcrootdir" value="${basedir}/languagesrc/current"/>
     <property name="module.language.dir" value="ceylon/language"/>
     <property name="module.language.name" value="ceylon.language"/>
 

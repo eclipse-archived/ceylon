@@ -37,7 +37,7 @@ public class MainForTest {
         }
         typeChecker = new TypeCheckerBuilder()
                 .verbose(false)
-                .addSrcDirectory( new File("languagesrc") )
+                .addSrcDirectory( new File("languagesrc/final") )
                 .getTypeChecker();
     }
 }
