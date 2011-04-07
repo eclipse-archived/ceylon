@@ -1243,7 +1243,7 @@ shared abstract class Comparison()
         
         <programlisting><![CDATA[shared class Bounded<M>(Bounded<M> b)
        extends Object()
-       satisfies Comparable<Bounded<M>>, Number 
+       satisfies Comparable<Bounded<M>> & Number 
        given M satisfies Dimension {
    
     doc "The |Natural| representing this natural
@@ -1285,7 +1285,7 @@ shared BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>()
 
         <programlisting><![CDATA[shared interface Sequence<out X> 
         is EnumerableSequence<X>
-        satisfies Correspondence<Natural, X> & Iterable<X> & Sized & Category
+        satisfies Correspondence<Natural, X> & FiniteCategory<X> & Sized
         given X satisfies Equality<X> {
 
     doc "The index of the last element of the sequence,
