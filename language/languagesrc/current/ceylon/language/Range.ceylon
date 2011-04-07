@@ -15,12 +15,7 @@ shared class Range<X>(X first, X last)
          until a value outside the range is
          reached."
     shared X[] by(Natural stepSize) { 
-        /*return from (Natural index->X value in this) 
-                    where (index%stepSize == 0)
-                    select (value)*/
-    	return from (Entry<Natural,X> e in this) 
-                    where (e.key%stepSize == 0)
-                    select (e.value);
+        throw;
     }
     
     shared Natural? index(X x) {
@@ -81,7 +76,7 @@ shared class Range<X>(X first, X last)
     
     shared actual Natural? lastIndex = index(last);
     
-    shared actual Gettable<X?> value(Natural n) {
+    shared actual X? value(Natural n) {
         //optimize this for numbers!
         variable Natural index:=0;
         variable X? value:=first;

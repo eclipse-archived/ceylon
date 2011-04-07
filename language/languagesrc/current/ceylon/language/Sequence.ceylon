@@ -35,7 +35,12 @@ shared interface Sequence<out X>
     
     shared actual default Boolean contains(Object obj) {
         if (is X obj) {
-            return forAny (X x in this) some (x==obj);
+            for (X x in this) {
+                if (x==obj) {
+                    return true;
+                }
+            }
+            return false;
         }
         else {
             return false;

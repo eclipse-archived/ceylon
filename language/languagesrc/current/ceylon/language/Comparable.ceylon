@@ -1,5 +1,5 @@
 shared interface Comparable<in T> 
-        satisfies Equality<T> & PartlyComparable<T>
+        satisfies Equality<T>
         given T satisfies Comparable<T> {
     
     doc "The binary compare operator |<=>|. Compares this 
@@ -8,7 +8,7 @@ shared interface Comparable<in T>
          |x<=>y == Comparison.equal|, the constraint that 
          if |x>y| then |y<x|, and the constraint that if 
          |x>y| and |y>z| then |x>z|."
-    shared actual formal Comparison compare(T other);
+    shared formal Comparison compare(T other);
     
     doc "The binary |>| operator."
     shared Boolean largerThan(T other) {

@@ -1,6 +1,6 @@
 shared interface Sequence<out X> 
         is EnumerableSequence<X>
-        satisfies Correspondence<Natural, X> & Iterable<X> & Sized & Category
+        satisfies Correspondence<Natural, X> & FiniteCategory<X> & Sized
         given X satisfies Equality<X> {
 
     doc "The index of the last element of the sequence,

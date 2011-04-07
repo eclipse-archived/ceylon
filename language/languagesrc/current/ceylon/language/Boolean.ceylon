@@ -1,5 +1,5 @@
-shared object true extends Boolean() {}
-shared object false extends Boolean() {}
-shared abstract class Boolean() 
+shared object true extends Boolean("true") {}
+shared object false extends Boolean("false") {}
+shared abstract class Boolean(String name) 
         of true | false 
-        extends Case() {}
+        extends Case(name) {}
