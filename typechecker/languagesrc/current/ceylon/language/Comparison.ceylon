@@ -1,27 +1,17 @@
 doc "The receiving object is larger than 
      the given object."
-shared object larger extends Comparison() {}
+shared object larger extends Comparison("larger") {}
 
 doc "The receiving object is smaller than 
      the given object."
-shared object smaller extends Comparison() {}
+shared object smaller extends Comparison("smaller") {}
 
 doc "The receiving object is exactly equal 
      to the given object."
-shared object equal extends Comparison() {}
-
-doc "The receiving object is not comparable 
-     to the given object."
-shared object uncomparable extends PartialComparison() {}
-
-doc "The result of a comparison between two
-     |PartlyComparable| objects."
-partial abstract class PartialComparison()
-        of uncomparable | Comparison
-        extends Case() {}
+shared object equal extends Comparison("equal") {}
 
 doc "The result of a comparison between two
      |Comparable| objects."
-shared abstract class Comparison() 
+shared abstract class Comparison(String name) 
         of larger | smaller | equal 
-        extends PartialComparison() {}
+        extends Case(name) {}

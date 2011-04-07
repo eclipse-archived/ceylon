@@ -40,7 +40,7 @@ public class TypeChecker {
     /**
      * Return the CompilationUnit for a given relative path.
      * The path is relative to the source directory
-     * eg ceylon/language/BaseObject.ceylon
+     * eg ceylon/language/Object.ceylon
      */
     public Tree.CompilationUnit getCompilationUnitFromRelativePath(String relativePath) {
         PhasedUnit phasedUnit = phasedUnits.getPhasedUnitFromRelativePath(relativePath);

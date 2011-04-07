@@ -243,7 +243,8 @@ public class TypeVisitor extends Visitor {
             if (c!=vd) {
                 Tree.ExtendedType et = that.getExtendedType();
                 if (et==null) {
-                    c.setExtendedType(getBaseObjectDeclaration().getType());
+                    //TODO: should be BaseObject, according to the spec!
+                    c.setExtendedType(getIdentifiableObjectDeclaration().getType());
                 }
             }
         }
@@ -342,8 +343,8 @@ public class TypeVisitor extends Visitor {
         return (Class) getLanguageModuleDeclaration("Void", context);
     }
     
-    private Class getBaseObjectDeclaration() {
-        return (Class) getLanguageModuleDeclaration("BaseObject", context);
+    private Class getIdentifiableObjectDeclaration() {
+        return (Class) getLanguageModuleDeclaration("IdentifiableObject", context);
     }
     
 }

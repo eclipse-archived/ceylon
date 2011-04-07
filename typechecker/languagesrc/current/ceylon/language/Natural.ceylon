@@ -1,7 +1,6 @@
 shared class Natural(Natural natural)
         extends Object()
         satisfies Integral<Natural> & Invertable<Integer> & Matcher<Integer> {
-    //TODO finish
 
     doc "Implicit type promotion to |Integer|"
     shared actual extension Integer integer { throw; }
@@ -20,12 +19,5 @@ shared class Natural(Natural natural)
 
     doc "Shift bits right by the given number of places"
     shared Natural rightShift(Natural digits) { throw; }
-
-    shared extension class StringToNatural(String this) {
-
-        doc "Parse the string representation of a |Natural| in the given radix"
-        shared Natural parseNatural(small Natural radix=10) { throw; }
-
-    }
 
 }

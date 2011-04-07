@@ -1,4 +1,4 @@
-shared abstract class Case(String caseName=type.declarationName) 
+shared abstract class Case(String caseName) 
         satisfies Matcher<Object> {
     
     shared actual Boolean matches(Object that) {
