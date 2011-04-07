@@ -1,5 +1,5 @@
 shared interface Correspondence<in U, out V>
-        is EnumerableCorrespondence<U,V>
+        //is EnumerableCorrespondence<U,V>
         given U satisfies Equality<U> 
         given V satisfies Equality<V> {
     

@@ -1,5 +1,5 @@
 shared interface Sequence<out X> 
-        is EnumerableSequence<X>
+        //is EnumerableSequence<X>
         satisfies Correspondence<Natural, X> & Iterable<X> & Sized & Category
         given X satisfies Equality<X> {
 
