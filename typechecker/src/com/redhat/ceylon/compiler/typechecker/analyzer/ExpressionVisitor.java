@@ -242,12 +242,26 @@ public class ExpressionVisitor extends Visitor {
         Tree.Type rt = beginReturnScope(that.getType());           
         super.visit(that);
         endReturnScope(rt);
-        //TODO: inferType(that, that.getBlock());
+        inferType(that, that.getBlock());
     }
 
     //Type inference for members declared "local":
     
     private void inferType(Tree.TypedDeclaration that, Tree.Block block) {
+        if (that.getType() instanceof Tree.LocalModifier) {
+            Tree.LocalModifier local = (Tree.LocalModifier) that.getType();
+            if (block!=null) {
+                setType(local, block, that);
+            }
+            else {
+                local.addError("could not infer type of: " + 
+                        name(that.getIdentifier()));
+            }
+        }
+    }
+
+    //TODO: fix copy/paste code duplication
+    private void inferType(Tree.MethodArgument that, Tree.Block block) {
         if (that.getType() instanceof Tree.LocalModifier) {
             Tree.LocalModifier local = (Tree.LocalModifier) that.getType();
             if (block!=null) {
@@ -365,6 +379,23 @@ public class ExpressionVisitor extends Visitor {
     private void setType(Tree.LocalModifier local, 
             Tree.Block block, 
             Tree.TypedDeclaration that) {
+        int s = block.getStatements().size();
+        Tree.Statement d = s==0 ? null : block.getStatements().get(s-1);
+        if (d!=null && (d instanceof Tree.Return)) {
+            ProducedType t = ((Tree.Return) d).getExpression().getTypeModel();
+            local.setTypeModel(t);
+            that.getDeclarationModel().setType(t);
+        }
+        else {
+            local.addError("could not infer type of: " + 
+                    name(that.getIdentifier()));
+        }
+    }
+    
+    //TODO: fix copy/paste code duplication
+    private void setType(Tree.LocalModifier local, 
+            Tree.Block block, 
+            Tree.MethodArgument that) {
         int s = block.getStatements().size();
         Tree.Statement d = s==0 ? null : block.getStatements().get(s-1);
         if (d!=null && (d instanceof Tree.Return)) {

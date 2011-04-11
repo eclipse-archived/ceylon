@@ -1121,7 +1121,12 @@ ifBlock
     ;
 
 elseBlock
-    : 'else'^ (ifElse | block)
+    : 'else'^ (elseIf | block)
+    ;
+
+elseIf
+    : ifElse 
+    -> ^(BLOCK ifElse)
     ;
 
 switchCaseElse
