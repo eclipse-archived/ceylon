@@ -1587,7 +1587,7 @@ shared interface Successor&lt;out N&gt; satisfies Dimension given N satisfies Di
         <para>A parameterized type parameter appears as a produced type (with type 
         arguments) in the body of the declaration.</para>
         
-        <programlisting><![CDATA[R<Entry<U,V>> entry<R,U,V>(R<U> u, R<V> v) 
+        <programlisting><![CDATA[R<Entry<U,V>> entry<R<T>,U,V>(R<U> u, R<V> v) 
         given R<T>(T x) satisfies Reference<T> {
     return R(u.value->v.value);
 }]]></programlisting>
@@ -1605,7 +1605,7 @@ WeakReference<Entry<Person,Org>> e = entry(person, org);  //infers X==WeakRefere
         <para>Parameterized type parameters allow functions to operate generically 
         over "container" types:</para>
                 
-        <programlisting><![CDATA[M<U> map<M,U,V>(U function(V v), M<V> inputs)
+        <programlisting><![CDATA[M<U> map<M<T>,U,V>(U function(V v), M<V> inputs)
         given M<T>() satisfies Iterable<T> & Addable<T> {
     variable M<U> outputs := M<U>();
     for (V input in inputs) {
@@ -1621,12 +1621,17 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
         which can be expressed using metatypes are more elegantly expressed using
         parameterized type parameters:</para>
         
-        <programlisting><![CDATA[S<T> join<S,T>(S<T>... sequences)
+        <programlisting><![CDATA[S<T> join<S<E>,T>(S<T>... sequences)
         given S<E>(E... es) satisfies E[] 
         given E satisfies Equality<E>
         given T satisfies Equality<T> {
     return S(joinSequences(sequences));
 }]]></programlisting>
+        
+        <comment><para>Note: support for type constructors as type arguments of 
+        classes and interfaces, is called "higher kinds". But I'm not especially
+        keen on this. I think you can get most of the practical value by limiting 
+        this feature to method type parameters only.</para></comment>
         
         <comment>
         <para>TODO: There are at least two other interesting functions which map
@@ -1644,7 +1649,7 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
         <para>Should we allow these type constructors as arguments to a 
         parameterized type parameter?</para>
         
-        <programlisting><![CDATA[Comparison compare<S,T>(S<T> x, S<T> y)
+        <programlisting><![CDATA[Comparison compare<S<X>,T>(S<T> x, S<T> y)
         given S<X> satisfies X[] | X
         given T satisfies PartlyComparable<T> {
     switch (S<T>)
@@ -1672,7 +1677,7 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
         <para>Note that <literal>given S&lt;X&gt; satisfies X[] | X</literal> is a way of writing
         <literal>given S&lt;X&gt; satisfies X[] | id&lt;X&gt;</literal>. A second example:</para>
         
-        <programlisting><![CDATA[X<T> findByKey<X,T,K>(Type<T> type, X<K> keys)
+        <programlisting><![CDATA[X<T> findByKey<X<E>,T,K>(Type<T> type, X<K> keys)
         given X<E> of E | E[]
         given K satisfies Equality<K> {
     ...
