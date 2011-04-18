@@ -1607,7 +1607,7 @@ WeakReference<Entry<Person,Org>> e = entry(person, org);  //infers X==WeakRefere
                 
         <programlisting><![CDATA[M<U> map<M,U,V>(U function(V v), M<V> inputs)
         given M<T>() satisfies Iterable<T> & Addable<T> {
-    M<U> outputs := M<U>();
+    variable M<U> outputs := M<U>();
     for (V input in inputs) {
         outputs.=add(function(input));
     }
