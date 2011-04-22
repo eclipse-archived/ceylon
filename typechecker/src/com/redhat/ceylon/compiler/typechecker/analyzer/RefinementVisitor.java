@@ -9,8 +9,10 @@ import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -23,9 +25,9 @@ public class RefinementVisitor extends Visitor {
         Declaration dec = that.getDeclarationModel();
         if (dec!=null) {
             boolean toplevel = dec.getContainer() instanceof Package;
-            boolean member = dec.getContainer() instanceof ClassOrInterface /*&& 
+            boolean member = (dec.getContainer() instanceof ClassOrInterface) && 
                     !(dec instanceof Parameter) &&
-                    !(dec instanceof TypeParameter)*/; //TODO: what about nested interfaces and abstract classes?!
+                    !(dec instanceof TypeParameter); //TODO: what about nested interfaces and abstract classes?!
             
             if (!toplevel && !member) {
                 if (dec.isShared()) {
