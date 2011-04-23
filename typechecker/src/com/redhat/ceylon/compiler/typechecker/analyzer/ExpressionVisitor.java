@@ -1037,10 +1037,16 @@ public class ExpressionVisitor extends Visitor {
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
             if ( !lhst.isSubtypeOf(getObjectDeclaration().getType())) {
-                that.getLeftTerm().addError("must be of type: Ordinal");
+                that.getLeftTerm().addError("must be of type: Object");
             }
-            if ( !rhst.isSubtypeOf(getCategoryDeclaration().getType())) {
-                that.getRightTerm().addError("must be of type: Ordinal");
+            if ( !rhst.isSubtypeOf(getCategoryDeclaration().getType()) ) {
+                ProducedType it = rhst.getSupertype(getIterableDeclaration());
+                if (it==null) {
+                    that.getRightTerm().addError("must be of type: Category | Iterable<Equality>");
+                }
+                else if ( !it.getTypeArgumentList().get(0).isSubtypeOf(getEqualityDeclaration().getType()) ){
+                    that.getRightTerm().addError("must be of type: Category | Iterable<Equality>");
+                }
             }
         }
         that.setTypeModel( getBooleanDeclaration().getType() );
