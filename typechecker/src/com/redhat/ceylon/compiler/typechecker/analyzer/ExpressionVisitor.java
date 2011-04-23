@@ -892,7 +892,7 @@ public class ExpressionVisitor extends Visitor {
     private void visitIncrementDecrement(Tree.Term that,
             ProducedType pt, Tree.Term term) {
         if (pt!=null) {
-            if (!pt.isSubtypeOf(getOrdinalDeclaration().getType())) {
+            if (pt.getSupertype(getOrdinalDeclaration())==null) {
                 term.addError("must be of type: Ordinal");
             }
             that.setTypeModel(pt);
@@ -951,10 +951,10 @@ public class ExpressionVisitor extends Visitor {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            if ( !lhst.isSubtypeOf(getOrdinalDeclaration().getType())) {
+            if ( lhst.getSupertype(getOrdinalDeclaration())==null) {
                 that.getLeftTerm().addError("must be of type: Ordinal");
             }
-            if ( !rhst.isSubtypeOf(getOrdinalDeclaration().getType())) {
+            if ( rhst.getSupertype(getOrdinalDeclaration())==null) {
                 that.getRightTerm().addError("must be of type: Ordinal");
             }
             ProducedType ct = lhst.getSupertype(getComparableDeclaration());
