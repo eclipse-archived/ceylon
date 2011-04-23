@@ -74,7 +74,7 @@ shared class Range<X>(X start, X end)
             ++value;
         }
         if (value>end) {
-            return null
+            return null;
         }
         else {
             return Something<X>(value);
