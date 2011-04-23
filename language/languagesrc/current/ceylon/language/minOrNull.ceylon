@@ -7,7 +7,7 @@ shared X? minOrNull<X>(X... xs)
                 min:=y;
             }
         }
-        return Definite<X>(min);
+        return min;
     }
     else {
         return null;
