@@ -147,6 +147,7 @@ public class RefinementVisitor extends Visitor {
                 }
             }
             if (others.size()>1) {
+                //TODO: this is broken for recursive refinement
                 that.addError("member refines multiple inherited members");
             }
         }
@@ -198,18 +199,19 @@ public class RefinementVisitor extends Visitor {
             for (int i=0; i<params.getParameters().size(); i++) {
                 ProducedType refinedParameterType = refinedParams.getParameters().get(i).getType();
                 ProducedType parameterType = params.getParameters().get(i).getType();
-                if (refinedParameterType==null || parameterType==null) {
-                    getParameterList(that).getParameters().get(i).getType()
-                            .addError("could not determine if parameter type is the same as the corresponding parameter of refined member");
-                }
-                else if (!parameterType.isExactly(refinedParameterType)) {
-                    //TODO: consider type parameter substitution!!!
-                    getParameterList(that).getParameters().get(i).getType()
-                            .addError("type of parameter " + 
-                                    params.getParameters().get(i).getName() + " is different to type of corresponding parameter " +
-                                    refinedParams.getParameters().get(i).getName() + " of refined member: " +
-                                    parameterType.getProducedTypeName() + " is not exactly " +
-                                    refinedParameterType.getProducedTypeName());
+                Tree.Type type = getParameterList(that).getParameters().get(i).getType(); //some kind of syntax error
+                if (type!=null) {
+                    if (refinedParameterType==null || parameterType==null) {
+                        type.addError("could not determine if parameter type is the same as the corresponding parameter of refined member");
+                    }
+                    else if (!parameterType.isExactly(refinedParameterType)) {
+                        //TODO: consider type parameter substitution!!!
+                        type.addError("type of parameter " + 
+                                        params.getParameters().get(i).getName() + " is different to type of corresponding parameter " +
+                                        refinedParams.getParameters().get(i).getName() + " of refined member: " +
+                                        parameterType.getProducedTypeName() + " is not exactly " +
+                                        refinedParameterType.getProducedTypeName());
+                    }
                 }
             }
         }
