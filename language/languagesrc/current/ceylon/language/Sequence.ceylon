@@ -1,7 +1,6 @@
 shared interface Sequence<out X> 
         //is EnumerableSequence<X>
-        satisfies Correspondence<Natural, X> & Iterable<X> & Sized & Category & Cloneable<X[]>
-        given X satisfies Equality {
+        satisfies Correspondence<Natural, X> & Iterable<X> & Sized & Cloneable<X[]> {
 
     doc "The index of the last element of the sequence,
          or |null| if the sequence has no elements."
@@ -32,21 +31,7 @@ shared interface Sequence<out X>
     shared actual default Boolean empty {
         return !(this.lastIndex exists);
     }
-    
-    shared actual default Boolean contains(Object obj) {
-        if (is X obj) {
-            for (X x in this) {
-                if (x==obj) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        else {
-            return false;
-        }
-    }
-    
+        
     doc "The first element of the sequence, or
          |null| if the sequence has no elements."
     shared default X? first {
