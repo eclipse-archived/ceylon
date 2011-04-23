@@ -1,7 +1,7 @@
-shared extension class Something<out X>(X this) 
+shared class Something<out X>(X value) 
         extends X?() {
 
-    shared extension X value = this;
+    shared X value = value;
     
     shared actual Boolean defined { 
         return true;

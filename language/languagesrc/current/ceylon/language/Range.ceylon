@@ -1,6 +1,6 @@
 shared class Range<X>(X start, X end) 
         extends Object() 
-        satisfies X[] & Matcher<X> & Equality
+        satisfies X[] & Equality
         given X satisfies Ordinal & Comparable<X> { 
     
     doc "The start of the range."
@@ -61,10 +61,6 @@ shared class Range<X>(X start, X end)
         else {
             return false;
         }
-    }
-    
-    shared actual Boolean matches(X x) {
-        return x>start && x<end;
     }
     
     shared actual Natural? lastIndex = index(end);

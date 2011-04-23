@@ -1,9 +1,4 @@
-shared abstract class Case(String caseName)
-        satisfies Matcher<Case> { //TODO: should this be Matcher<IdentifiableObject>?
-    
-    shared actual Boolean matches(Case that) {
-        return this==that;
-    }
+shared abstract class Case(String caseName) {
     
     shared actual Boolean equals(Object that) {
         return super.equals(that);
