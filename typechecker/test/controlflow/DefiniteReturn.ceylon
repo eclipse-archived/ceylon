@@ -434,6 +434,27 @@ interface DefiniteReturn {
         doNothing();
     }
     
+    X methodWithReturnInFail() {
+        for (X x in {X()}) {
+            doSomething();
+        }
+        fail {
+            doNothing();
+            return X();
+        }
+    }
+    
+    @error X methodWithReturnInFail() {
+        for (X x in {X()}) {
+            doSomething();
+            break;
+        }
+        fail {
+            return X();
+        }
+        doNothing();
+    }
+    
     @error X methodWithReturnInFor2() {
         for (X x in {X()}) {
             doSomething();
