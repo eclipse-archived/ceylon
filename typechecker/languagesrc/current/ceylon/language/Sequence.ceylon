@@ -1,6 +1,6 @@
 shared interface Sequence<out X> 
         //is EnumerableSequence<X>
-        satisfies Correspondence<Natural, X> & Iterable<X> & Sized & Category 
+        satisfies Correspondence<Natural, X> & Iterable<X> & Sized & Category & Cloneable<X[]>
         given X satisfies Equality {
 
     doc "The index of the last element of the sequence,
@@ -69,5 +69,5 @@ shared interface Sequence<out X>
     shared default X[] rest {
         return this[1...];
     }
-   
+    
 }
