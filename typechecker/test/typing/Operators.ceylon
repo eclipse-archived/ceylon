@@ -3,6 +3,8 @@ class Operators() {
     class X() {}
     class Y() {}
     
+    class Z() extends Object() {}
+    
     @type["String"] local x1 = "Hello" + " " + "World";
     
     @error local x1 = "Hello" + 1;
@@ -33,7 +35,7 @@ class Operators() {
     @type["Boolean"] local x14 = "foo" == "bar";
     @type["Boolean"] local x15 = "foo" != "bar";
     
-    @error local x16 = "foo" == 12;
+    @error local x16 = "foo" == Z();
     
     @type["Boolean"] local x17 = Y() === X();
     

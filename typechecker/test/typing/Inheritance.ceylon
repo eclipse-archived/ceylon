@@ -4,17 +4,17 @@ class Inheritance() {
         shared void doIt(T t) {}
     }
     class X<T>(T t) satisfies I<T> 
-            given T satisfies Equality<T> {
+            given T satisfies Comparable<T> {
         T it = t;
         shared T getIt() { return it; }
         shared Boolean isIt(T t) { return t==it; }
     }
-    class Y<T>(T t) extends X<T>(t) given T satisfies Equality<T> {}
+    class Y<T>(T t) extends X<T>(t) given T satisfies Comparable<T> {}
     class Z() extends X<String>("Hello") {
         String sss = getIt();
         Boolean b = isIt("hi");
     }
-    class W<U,V>(U u, V v) extends X<V>(v) given V satisfies Equality<V> {
+    class W<U,V>(U u, V v) extends X<V>(v) given V satisfies Comparable<V> {
         V vv = getIt();
     }
     class ZZ(Natural n) extends X<Natural>(n) {

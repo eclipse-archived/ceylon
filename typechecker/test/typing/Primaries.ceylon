@@ -87,12 +87,12 @@ class Primaries() {
         @type["Primaries"] local p9 = Inner3().outer;
     }
     
-    interface G satisfies Equality<IdentifiableObject> {
+    interface G satisfies Equality {
         shared String getIt() {
             return "Hello";
         }
     }
-    interface H satisfies Equality<IdentifiableObject> {
+    interface H satisfies Equality {
         shared void doIt() {}
     }
     class S() extends B() satisfies G & H {}
