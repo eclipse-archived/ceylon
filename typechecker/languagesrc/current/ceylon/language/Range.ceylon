@@ -1,7 +1,7 @@
 shared class Range<X>(X start, X end) 
         extends Object() 
         satisfies X[] & Equality
-        given X satisfies Ordinal & Comparable<X> { 
+        given X satisfies Ordinal<X> & Comparable<X> { 
     
     doc "The start of the range."
     shared X start = start;
