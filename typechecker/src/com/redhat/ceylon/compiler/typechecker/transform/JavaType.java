@@ -82,8 +82,8 @@ public abstract class JavaType {
         if ( isLanguageModuleType(type) ) { 
             String typeName = type.getDeclaration().getName();
             return typeName.equals("Optional") ||
-                    typeName.equals("Something") ||
-                    typeName.equals("Nothing");
+                    typeName.equals("Definite") ||
+                    typeName.equals("Type_null");
         }
         else {
             return false;

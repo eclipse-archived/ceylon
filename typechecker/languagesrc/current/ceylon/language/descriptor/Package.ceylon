@@ -8,11 +8,11 @@ shared class Package(
         Boolean shared = false,
 
         doc "A description of the package."
-        String? doc=null,
+        String doc="",
 
         doc "The license under which the package
              is distributed."
-        String? license=null) {
+        String license="") {
 
     //TODO implement
 

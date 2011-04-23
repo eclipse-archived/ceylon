@@ -8,11 +8,11 @@ shared class Module(
         Quoted version,
 
         doc "A description of the module."
-        String? doc=null,
+        String doc="",
 
         doc "The license under which the module
              is distributed."
-        String? license=null,
+        String license="",
 
         /*doc "A method that is responsible for
              initializing state needed by the
