@@ -1,5 +1,5 @@
 shared interface Integral<N>
-        satisfies Numeric<N> & Ordinal
+        satisfies Numeric<N> & Ordinal<N>
         given N satisfies Integral<N> {
 
     doc "The binary |%| operator"
