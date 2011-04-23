@@ -3,10 +3,10 @@ doc "Specifies an imported module (dependency) of a
 shared class Import(
 
         doc "The name of this imported module."
-        ModuleName name,
+        Quoted name,
 
         doc "The version id of this imported module."
-        ModuleVersion version=null,
+        Quoted version,
 
         doc "Determines if this imported module is
              required by the module."

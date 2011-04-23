@@ -1,8 +1,5 @@
-shared class Float(Float float)
+shared class Float(Float f)
         extends Object()
         satisfies Numeric<Float> & Invertable<Float> {
-
-    doc "Implicit type promotion to |Decimal|"
-    shared actual extension Decimal decimal { throw; }
 
 }

@@ -1,4 +1,5 @@
-shared interface Matcher<in X> {
+shared interface Matcher<in X> 
+        satisfies Equality {
 
     doc "Determine if the given value matches
          this case, returning |true| iff the
@@ -16,7 +17,7 @@ shared interface Matcher<in X> {
             }
         }
         else {
-            //match only if this is a case(null)
+            //match only if this is a case (null)
             return this==null.matcher;
         }
     }

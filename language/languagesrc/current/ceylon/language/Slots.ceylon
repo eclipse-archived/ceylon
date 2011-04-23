@@ -19,6 +19,6 @@ shared interface Slots<B>
     doc "Slotwise complement in operator |x ~ y|. 
          Implementations should respect the constraint 
          that |(x~y).slot(z)==(x.slot(z)&&!y.slot(z))|."
-    shared formal B complement(B bits);
+    shared formal B complementIn(B bits);
     
 }

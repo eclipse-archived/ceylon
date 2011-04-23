@@ -1,4 +1,4 @@
-shared interface Number {
+shared interface Number satisfies Equality {
     
     doc "Determine if the number represents
          an integer value"
@@ -16,20 +16,12 @@ shared interface Number {
     doc "Determine if the number is one"
     shared formal Boolean unit;
     
-    doc "The number, represented as a |Decimal|"
-    shared formal Decimal decimal;
-
     doc "The number, represented as a |Float|"
     throws (FloatOverflowException
             -> "if the number is too large to be
                 represented as a |Float|")
     shared formal Float float;
-    
-    doc "The number, represented as an |Whole|,
-         after truncation of any fractional 
-         part"
-    shared formal Whole whole;
-    
+        
     doc "The number, represented as an |Integer|,
          after truncation of any fractional 
          part"

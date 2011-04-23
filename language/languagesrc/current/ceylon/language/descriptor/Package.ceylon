@@ -2,7 +2,7 @@ doc "A package descriptor."
 shared class Package(
 
         doc "The name of the package."
-        PackageName name,
+        Quoted name,
 
         doc "The visibility of the package."
         Boolean shared = false,
@@ -12,7 +12,7 @@ shared class Package(
 
         doc "The license under which the package
              is distributed."
-        URL? license=null) {
+        String? license=null) {
 
     //TODO implement
 
