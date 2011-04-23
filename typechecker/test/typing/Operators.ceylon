@@ -73,6 +73,17 @@ class Operators() {
     
     @type["Boolean"] local x33 = 1 in {1, 2};
     
+    object cat satisfies Category {
+        shared actual Boolean contains(Object obj) {
+            return true;
+        }
+    }
+    
+    @type["Boolean"] local x55 = 1 in cat;
+    
+    Sequence<Optional<Natural>> seqopt2 = { null, Definite<Natural>(1) };    
+    @error local x56 = "foo" in seqopt2;
+    
     @type["Comparison"] local x34 = 1<=>3;
     @type["Comparison"] local x35 = "foo"<=>"bar";
     @error local x36 = X()<=>X();
