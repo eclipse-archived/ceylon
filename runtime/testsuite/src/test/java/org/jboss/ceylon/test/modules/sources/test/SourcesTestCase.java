@@ -22,6 +22,8 @@
 
 package org.jboss.ceylon.test.modules.sources.test;
 
+import java.io.File;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +39,15 @@ import org.junit.Test;
  */
 public class SourcesTestCase extends ModulesTest
 {
+   protected String getTestsuiteDir() throws Exception
+   {
+      URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+      File dir = new File(url.toURI());
+      String path = dir.getCanonicalPath();
+      int p = path.lastIndexOf("testsuite/");
+      return path.substring(0, p + "testsuite/".length());
+   }
+
    @Test
    public void testSimpleUsage() throws Exception
    {
@@ -44,8 +55,7 @@ public class SourcesTestCase extends ModulesTest
       extra.put(Constants.SOURCES, "src/test/java");
       extra.put(Constants.CLASSES, "target/test-classes-bak");
 
-      // TODO -- fix proper src path
-      src("org.jboss.acme", "/Users/alesj/projects/labs/ceylon/modules/trunk/testsuite", extra);
+      src("org.jboss.acme", getTestsuiteDir(), extra);
    }
 
    @Test
@@ -55,7 +65,6 @@ public class SourcesTestCase extends ModulesTest
       extra.put(Constants.SOURCES, "src/test/java");
       extra.put(Constants.CLASSES, "target/test-classes-bak");
 
-      // TODO -- fix proper src path
-      src("com.foobar.qwert", "/Users/alesj/projects/labs/ceylon/modules/trunk/testsuite", extra);
+      src("com.foobar.qwert", getTestsuiteDir(), extra);
    }
 }

@@ -1,0 +1,12 @@
+.idea
+*.iml
+*.iws
+*.ipr
+api/target/
+dist/target/
+impl/target/
+mc/target/
+osgi/target/
+sdk/target/
+spi/target/
+testsuite/target/
