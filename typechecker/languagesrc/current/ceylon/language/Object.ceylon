@@ -3,5 +3,5 @@ shared abstract class Object()
         
     doc "A developer-friendly string representing the instance."
     shared formal String string;
-        
+    
 }

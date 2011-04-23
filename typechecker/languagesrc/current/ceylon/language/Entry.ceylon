@@ -1,8 +1,8 @@
-shared class Entry<out U, out V>(U key, V value) 
-        extends Object() 
-        satisfies Equality<Entry<U,V>>
-        given U satisfies Equality<U> 
-        given V satisfies Equality<V> {
+shared abstract class Entry<out U, out V>(U key, V value)
+        extends Object()
+        satisfies Equality
+        given U satisfies Equality
+        given V satisfies Equality {
     
     doc "The key used to access the entry."
     shared U key = key;
@@ -10,10 +10,15 @@ shared class Entry<out U, out V>(U key, V value)
     doc "The value associated with the key."
     shared V value = value;
     
-    shared actual Boolean equals(Entry<U,V> that) {
-        return this.key==that.key && this.value==that.value;
+    shared actual Integer hash = key.hash/2.integer + value.hash/2.integer; //TODO: really should be xor 
+    
+    shared actual Boolean equals(Object that) {
+        if (is Entry<Equality,Equality> that) {
+            return this.key==that.key && this.value==that.value;
+        }
+        else {
+            return false;
+        }
     }
     
-    shared actual Integer hash = 0; 
-
 }

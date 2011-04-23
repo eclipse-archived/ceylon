@@ -1,7 +1,7 @@
 shared interface Sequence<out X> 
         //is EnumerableSequence<X>
-        satisfies Correspondence<Natural, X> & Iterable<X> & Sized & Category
-        given X satisfies Equality<X> {
+        satisfies Correspondence<Natural, X> & Iterable<X> & Sized & Category 
+        given X satisfies Equality {
 
     doc "The index of the last element of the sequence,
          or |null| if the sequence has no elements."
@@ -53,21 +53,21 @@ shared interface Sequence<out X>
         return this[0];
     }
     
+    doc "The last element of the sequence, or
+         |null| if the sequence has no elements."
+    shared default X? last {
+        if (exists lastIndex) {
+            return this[lastIndex];
+        }
+        else {
+            return null;
+        } 
+    }
+
     doc "The rest of the sequence, after removing 
          the first element."
     shared default X[] rest {
         return this[1...];
-    }
-
-    doc "The last element of the sequence, or
-         |null| if the sequence has no elements."
-    shared default X? last {
-        if (exists Natural index = sequence.lastIndex) {
-            return this[index];
-        }
-        else {
-            return null;
-        }
     }
    
 }

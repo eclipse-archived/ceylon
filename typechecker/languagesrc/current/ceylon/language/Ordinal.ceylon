@@ -1,4 +1,5 @@
-shared interface Ordinal {
+shared interface Ordinal 
+        satisfies Equality {
 
     doc "The unary |++| operator. The successor of this instance."
     throws (OutOfRangeException

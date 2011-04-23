@@ -1,13 +1,13 @@
-shared class Range<X>(X first, X last) 
+shared class Range<X>(X start, X end) 
         extends Object() 
-        satisfies X[] & Matcher<X> & Equality<Range<X>>
-        given X satisfies Ordinal & Comparable<X> & Equality<X> { 
+        satisfies X[] & Matcher<X> & Equality
+        given X satisfies Ordinal & Comparable<X> { 
     
-    doc "The first value in the range."
-    shared X first = first;
+    doc "The start of the range."
+    shared X start = start;
     
-    doc "The last value in the range."
-    shared X last = last;
+    doc "The end of the range."
+    shared X end = end;
     
     doc "Return a |Sequence| of values in the range, 
          beginning at the first value, and 
@@ -19,18 +19,18 @@ shared class Range<X>(X first, X last)
     }
     
     shared Natural? index(X x) {
-        if (x<first || x>last) {
+        if (x<start || x>end) {
             return null;
         }
         else {
             //optimize this for numbers!
             variable Natural index:=0;
-            variable X value:=first;
+            variable X value:=start;
             while (value<x) {
                 ++index;
                 ++value;
             }
-            return index;
+            return Something<Natural>(index);
         }
     }
     
@@ -38,61 +38,60 @@ shared class Range<X>(X first, X last)
         class RangeIterator(X x) 
                 satisfies Iterator<X> {
             shared actual X? head { 
-                if (x>last) { 
+                if (x>end) { 
                     return null;
                 } 
                 else { 
-                    return x;
+                    return Something<X>(x);
                 }
             }
             shared actual Iterator<X> tail {
                 return RangeIterator(x.successor);
             }
         }
-        return RangeIterator(first);
+        return RangeIterator(start);
     }
     
-    shared actual Boolean empty = last<first;
+    shared actual Boolean empty = end<start;
     
-    shared actual Boolean contains(Object... objects) {
-        for (Object x in objects) {
-            if (is X x) {
-                if ( x<first || x>last ) {
-                    return false;
-                }
-            }
-            else {
-                return false;
-            }
+    shared actual Boolean contains(Object obj) {
+        if (is X obj) {
+            return obj>start || obj<end;
         }
-        fail {
-            return true;
-        } 
+        else {
+            return false;
+        }
     }
     
     shared actual Boolean matches(X x) {
-        return x>first && x<last;
+        return x>start && x<end;
     }
     
-    shared actual Natural? lastIndex = index(last);
+    shared actual Natural? lastIndex = index(end);
     
     shared actual X? value(Natural n) {
         //optimize this for numbers!
         variable Natural index:=0;
-        variable X? value:=first;
-        while (index<n) {
+        variable X value:=start;
+        while (index<n && value<=end) {
             ++index;
             ++value;
-            if (value>last) {
-                value := null;
-                break;
-            }
         }
-        return value;
+        if (value>end) {
+            return null
+        }
+        else {
+            return Something<X>(value);
+        }
     }
     
-    shared actual Boolean equals(Range<X> that) {
-        return that.first==first && that.last==last;
+    shared actual Boolean equals(Object that) {
+        if (is Range<X> that) {
+            return that.start==start && that.end==end;
+        }
+        else {
+            return false;
+        }
     }
     
     //TODO
