@@ -666,7 +666,7 @@ public class ExpressionVisitor extends Visitor {
         }
             
         for (Parameter p: pl.getParameters()) {
-            if (!foundParameters.contains(p) && !p.isDefaulted()) {
+            if (!foundParameters.contains(p) && !p.isDefaulted() && !p.isSequenced()) {
                 nal.addError("missing named argument to parameter: " + 
                         p.getName());
             }
