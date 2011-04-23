@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -11,7 +12,9 @@ import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -95,7 +98,8 @@ public class RefinementVisitor extends Visitor {
                     TypedDeclaration tdec = (TypedDeclaration) dec;
                     ProducedType type = tdec.getType();
                     TypedDeclaration trefined = (TypedDeclaration) refined;
-                    ProducedType refinedType = trefined.getType();
+                    ProducedTypedReference typedMember = ci.getType().getTypedMember(trefined, Collections.<ProducedType>emptyList());
+                    ProducedType refinedType = typedMember.getType();
                     if (type!=null) {
                         if (refinedType==null) {
                             that.addError("could not determine type of refined member");
@@ -114,7 +118,7 @@ public class RefinementVisitor extends Visitor {
                        else {
                            ParameterList params = ((Method) dec).getParameterLists().get(0);
                            ParameterList refinedParams = ((Method) refined).getParameterLists().get(0);
-                           checkParameterTypes(that, params, refinedParams);
+                           checkParameterTypes(that, typedMember, params, refinedParams);
                        }
                     }
                     else {
@@ -133,16 +137,19 @@ public class RefinementVisitor extends Visitor {
                         that.addError("refined declaration is not a class");
                     }
                     else {
-                        ProducedType type = ((Class) dec).getType();
-                        ProducedType refinedType = ((Class) refined).getType();
+                        Class tdec = (Class) dec;
+                        ProducedType type = tdec.getType();
+                        Class trefined = (Class) refined;
+                        ProducedType typedMember = ci.getType().getTypeMember(trefined, Collections.<ProducedType>emptyList());
+                        ProducedType refinedType = typedMember.getType();
                         if (!type.isSubtypeOf(refinedType)) {
                             that.addError("member class is not a subclass of refined class: " +
                                     dec.getName() + " is not " + 
                                     refined.getName());
                         }
-                        ParameterList params = ((Class) dec).getParameterList();
-                        ParameterList refinedParams = ((Class) refined).getParameterList();
-                        checkParameterTypes(that, params, refinedParams);
+                        ParameterList params = tdec.getParameterList();
+                        ParameterList refinedParams = trefined.getParameterList();
+                        checkParameterTypes(that, typedMember, params, refinedParams);
                     }
                 }
             }
@@ -190,14 +197,14 @@ public class RefinementVisitor extends Visitor {
         }
     }
 
-    private void checkParameterTypes(Tree.Declaration that,
+    private void checkParameterTypes(Tree.Declaration that, ProducedReference pr,
             ParameterList params, ParameterList refinedParams) {
         if (params.getParameters().size()!=refinedParams.getParameters().size()) {
            that.addError("member does not have the same number of parameters as the member it refines");
         }
         else {
             for (int i=0; i<params.getParameters().size(); i++) {
-                ProducedType refinedParameterType = refinedParams.getParameters().get(i).getType();
+                ProducedType refinedParameterType = pr.getTypedParameter( refinedParams.getParameters().get(i) ).getType();
                 ProducedType parameterType = params.getParameters().get(i).getType();
                 Tree.Type type = getParameterList(that).getParameters().get(i).getType(); //some kind of syntax error
                 if (type!=null) {
