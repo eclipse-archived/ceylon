@@ -11,7 +11,7 @@ shared interface Sequence<out X>
         class SequenceIterator(Natural from) 
                 satisfies Iterator<X> {
             shared actual X? head { 
-                return this[from];
+                return value(from);
             }
             shared actual Iterator<X> tail {
                 return SequenceIterator(from+1);
