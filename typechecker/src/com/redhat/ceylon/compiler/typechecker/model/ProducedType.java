@@ -121,7 +121,7 @@ public class ProducedType extends ProducedReference {
 	    }
 	    else if (type.getDeclaration() instanceof UnionType) {
             for (ProducedType ct: type.getDeclaration().getCaseTypes() ) {
-                if (this.isSubtypeOf(ct)) {
+                if (ct!=null && this.isSubtypeOf(ct)) {
                     return true;
                 }
             }

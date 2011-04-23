@@ -30,7 +30,7 @@ shared class Range<X>(X start, X end)
                 ++index;
                 ++value;
             }
-            return Definite<Natural>(index);
+            return index;
         }
     }
     
@@ -42,7 +42,7 @@ shared class Range<X>(X start, X end)
                     return null;
                 } 
                 else { 
-                    return Definite<X>(x);
+                    return x;
                 }
             }
             shared actual Iterator<X> tail {
@@ -77,7 +77,7 @@ shared class Range<X>(X start, X end)
             return null;
         }
         else {
-            return Definite<X>(value);
+            return value;
         }
     }
     

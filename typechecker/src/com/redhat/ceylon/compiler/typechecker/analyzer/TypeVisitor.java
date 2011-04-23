@@ -25,6 +25,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -117,6 +118,20 @@ public class TypeVisitor extends Visitor {
     }
         
     @Override 
+    public void visit(Tree.UnionType that) {
+        super.visit(that);
+        UnionType ut = new UnionType();
+        List<ProducedType> types = new ArrayList<ProducedType>();
+        for (Tree.StaticType st: that.getStaticTypes()) {
+            types.add( st.getTypeModel() );
+        }
+        ut.setCaseTypes(types);
+        ProducedType pt = ut.getType();
+        that.setTypeModel(pt);
+        that.setTarget(pt);
+    }
+
+    @Override 
     public void visit(Tree.BaseType that) {
         super.visit(that);
         TypeDeclaration d = (TypeDeclaration) getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
@@ -151,7 +166,7 @@ public class TypeVisitor extends Visitor {
         }
     }
 
-    private void visitType(Tree.StaticType that, ProducedType ot, TypeDeclaration d) {
+    private void visitType(Tree.SimpleType that, ProducedType ot, TypeDeclaration d) {
         List<ProducedType> typeArguments = getTypeArguments(that.getTypeArgumentList());
         //if (acceptsTypeArguments(d, typeArguments, that.getTypeArgumentList(), that)) {
             ProducedType pt = d.getProducedType(ot, typeArguments);

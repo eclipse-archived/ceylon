@@ -37,7 +37,7 @@ public class ModuleImportVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Tree.StaticType that) {
+    public void visit(Tree.SimpleType that) {
         final Tree.Identifier identifier = that.getIdentifier();
         if ( identifier != null && "Module".equals( identifier.getText() ) ) {
             isModule = true;

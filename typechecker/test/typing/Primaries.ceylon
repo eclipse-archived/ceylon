@@ -112,8 +112,8 @@ class Primaries() {
     //Object[] stuff = {A(),B(),"Hello",{1,2,3}};
     local objects = {A(),B(),"Hello",{1,2,3}};
     //Object[] things = objects;
-    @type["Optional<Primaries.A|Primaries.B|String|Sequence<Natural>>"] local p27 = objects[1];
-    @type["Optional<String>"] local p28 = objects[1]?.string;
+    @type["Nothing|Primaries.A|Primaries.B|String|Sequence<Natural>"] local p27 = objects[1];
+    @type["Nothing|String"] local p28 = objects[1]?.string;
     if (exists local o = objects[1]) {
         @type["Primaries.A|Primaries.B|String|Sequence<Natural>"] local p29 = o;
         String s = o.string;

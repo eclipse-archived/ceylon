@@ -96,6 +96,7 @@ tokens {
     ELEMENT_RANGE;
     BASE_TYPE;
     QUALIFIED_TYPE;
+    UNION_TYPE;
     MEMBER_EXPRESSION;
     TYPE_EXPRESSION;
     OUTER_EXPRESSION;
@@ -480,8 +481,11 @@ typeConstraints
     ;
 
 type
-    : (unabbreviatedType -> unabbreviatedType) 
-      (typeAbbreviation -> ^(BASE_TYPE typeAbbreviation ^(TYPE_ARGUMENT_LIST $type)))*
+    : (unabbreviatedType -> unabbreviatedType)
+      (
+        sequenceType -> ^(BASE_TYPE sequenceType ^(TYPE_ARGUMENT_LIST $type))
+      | optionalType -> ^(UNION_TYPE ^(BASE_TYPE optionalType) $type)
+      )*
     ;
 
 unabbreviatedType
@@ -492,10 +496,13 @@ unabbreviatedType
     -> ^(TYPE parameterName 'subtype' abbreviation*)*/
     ;
 
-typeAbbreviation
+optionalType
     : DEFAULT_OP
-    -> ^(IDENTIFIER[$DEFAULT_OP,"Optional"])
-    | ARRAY 
+    -> ^(IDENTIFIER[$DEFAULT_OP,"Nothing"])
+    ;
+    
+sequenceType
+    : ARRAY 
     -> ^(IDENTIFIER[$ARRAY,"Sequence"])
     //| '[' dimension ']'
     ;
@@ -833,7 +840,7 @@ typeInExpressionStart
 typeArgumentsStart
     : '<' 
       (UIDENTIFIER ('.' UIDENTIFIER)* | 'subtype') 
-      typeAbbreviation*
+      (DEFAULT_OP|ARRAY)*
       ('>'|'<'|','|'...')
     ;
 

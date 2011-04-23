@@ -45,7 +45,7 @@ class Operators() {
     
     X? nothing = null;
     
-    @type["Optional<Operators.X>"] local x20 = nothing ? nothing;
+    @type["Nothing|Operators.X"] local x20 = nothing ? nothing;
     
     @type["Operators.X"] local x21 = nothing ? X();
     
@@ -81,7 +81,7 @@ class Operators() {
     
     @type["Boolean"] local x55 = 1 in cat;
     
-    Sequence<Optional<Natural>> seqopt2 = { null, Definite<Natural>(1) };    
+    Sequence<Natural?> seqopt2 = { null, 1 };    
     @error local x56 = "foo" in seqopt2;
     
     @type["Comparison"] local x34 = 1<=>3;
@@ -92,11 +92,11 @@ class Operators() {
     X[] sequence = {X(), X()};
     String[]? noSequence = null;
     
-    @type["Optional<Operators.X>"] local x38 = sequence[0];
+    @type["Nothing|Operators.X"] local x38 = sequence[0];
     @type["Sequence<Operators.X>"] local x39 = sequence[0..1];
     @type["Sequence<Operators.X>"] local x40 = sequence[1+1...];
-    @type["Optional<Optional<Operators.X>>"] local x41 = {nothing}[0];
-    @type["Optional<String>"] local x42 = noSequence?[0];
+    @type["Nothing|Nothing|Operators.X"] local x41 = {nothing}[0];
+    @type["Nothing|String"] local x42 = noSequence?[0];
     
     @error local x43 = sequence["hello"];
     @error local x44 = sequence["hello"...];
@@ -104,12 +104,12 @@ class Operators() {
     
     @type["Sequence<Sequence<Character>>"] local x46 = {"hello", "world"}[].characters;
     @type["Sequence<String>"] local x47 = {"hello", "world"}[].uppercase;
-    @type["Optional<Sequence<Character>>"] local x48 = {"hello", "world"}[0]?.characters;
+    @type["Nothing|Sequence<Character>"] local x48 = {"hello", "world"}[0]?.characters;
     @type["Sequence<Sequence<Character>>"] local x49 = {"hello", "world"}[].characters;
     @type["Sequence<Iterable<String>>"] local x50 = {"hello", "world"}[].lines();
-    @type["Optional<String>"] local x51 = {"hello", "world"}[0]?.normalize(" #");
+    @type["Nothing|String"] local x51 = {"hello", "world"}[0]?.normalize(" #");
     @type["Sequence<String>"] local x52 = {"hello", "world"}[].normalize(" #");
-    @type["Optional<String>"] local x53 = noSequence?[0]?.normalize(" #");
+    @type["Nothing|String"] local x53 = noSequence?[0]?.normalize(" #");
     @type["Sequence<Operators.X>"] local x54 = {Operators()}[].X();
     
     variable Natural n := 0;

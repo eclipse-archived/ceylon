@@ -14,7 +14,12 @@ public class UnionType extends TypeDeclaration {
     public String getName() {
         String name = "";
         for (ProducedType pt: caseTypes) {
-            name+=pt.getProducedTypeName();
+            if (pt==null) {
+                name+="<unknown>";
+            }
+            else {
+                name+=pt.getProducedTypeName();
+            }
             name+="|";
         }
         return name.substring(0,name.length()-1);
