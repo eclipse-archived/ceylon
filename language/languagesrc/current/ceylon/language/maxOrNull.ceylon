@@ -7,7 +7,7 @@ shared X? maxOrNull<X>(X... xs)
                 max:=y;
             }
         }
-        return Something<X>(max);
+        return Definite<X>(max);
     }
     else {
         return null;

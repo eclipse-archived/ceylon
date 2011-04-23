@@ -1,5 +1,5 @@
 shared abstract class Optional<out X>() 
-        of Something<X> | null
+        of Definite<X> | null
         extends Void() {
     
     doc "The unary postfix existence operator 

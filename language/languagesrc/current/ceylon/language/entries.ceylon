@@ -7,7 +7,7 @@ shared Iterable<Entry<Natural,X>> entries<X>(X[] sequence)
                     satisfies Iterator<Entry<Natural,X>> {
                 shared actual Entry<Natural,X>? head {
                     if (exists X x = sequence[from]) {
-                        return Something<Entry<Natural,X>>(from->x);
+                        return Definite<Entry<Natural,X>>(from->x);
                     }
                     else {
                         return null;
