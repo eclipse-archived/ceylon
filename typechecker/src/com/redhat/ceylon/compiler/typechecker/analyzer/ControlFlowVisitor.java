@@ -296,7 +296,7 @@ public class ControlFlowVisitor extends Visitor {
         
         Boolean b = beginLoop();
         that.getForClause().visit(this);
-        boolean definitelyReturnsFromFor = definitelyReturns && !exitedFromLoop;
+        boolean definitelyDoesNotExitFromFor = !exitedFromLoop;
         endLoop(b);
         endDefiniteReturnScope(d);
         
@@ -309,7 +309,7 @@ public class ControlFlowVisitor extends Visitor {
             definitelyReturnsFromFail = false;
         }
         
-        definitelyReturns = d || (definitelyReturnsFromFor && definitelyReturnsFromFail);
+        definitelyReturns = d || (definitelyReturnsFromFail && definitelyDoesNotExitFromFor);
     }
 
     @Override
