@@ -105,7 +105,7 @@ public class Util {
             TypeDeclaration std = st.getDeclaration();
             if (std!=td) {
                 Declaration d = getLocalDeclaration(std, false, name);
-                if (d!=null) {
+                if (d!=null && d.isShared()) {
                     return d;
                 }
             }
