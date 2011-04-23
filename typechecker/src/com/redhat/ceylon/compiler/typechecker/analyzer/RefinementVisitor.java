@@ -153,10 +153,11 @@ public class RefinementVisitor extends Visitor {
                     }
                 }
             }
-            if (others.size()>1) {
+            /*if (others.size()>1) {
                 //TODO: this is broken for recursive refinement
-                that.addError("member refines multiple inherited members");
-            }
+                that.addError("member refines multiple inherited members: " + 
+                        dec.getName());
+            }*/
         }
     }
 
