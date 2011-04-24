@@ -201,7 +201,7 @@ public class SpecificationVisitor extends Visitor {
                         m.getIdentifier().getText());
             }
             else*/ if (isVariable()) {
-                that.addError("is a variable: " +
+                that.addError("variable values must be assigned using \":=\": " +
                         member.getName());
             }
             else if (cannotSpecify) {
@@ -327,12 +327,12 @@ public class SpecificationVisitor extends Visitor {
                 that.getSpecifierOrInitializerExpression()!=null) {
             if (isVariable()) {
                 if (that.getSpecifierOrInitializerExpression() instanceof Tree.SpecifierExpression) {
-                    that.addError("is a variable: " + that.getIdentifier().getText());
+                    that.addError("variable values must be initialized using \":=\": " + that.getIdentifier().getText());
                 }
             }
             else {
                 if (that.getSpecifierOrInitializerExpression() instanceof Tree.InitializerExpression) {
-                    that.addError("is not a variable: " + that.getIdentifier().getText());
+                    that.addError("non-variable values must be specified using \"=\": " + that.getIdentifier().getText());
                 }
             }
             specify();
