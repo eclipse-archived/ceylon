@@ -177,17 +177,34 @@ public class ProducedType extends ProducedReference {
     }
     
     public ProducedType substitute(Map<TypeParameter,ProducedType> substitutions) {
-        if (getDeclaration() instanceof TypeParameter) {
-            ProducedType sub = substitutions.get(getDeclaration());
-            if (sub!=null) return sub;
+        
+        Declaration d;
+        if (getDeclaration() instanceof UnionType) {
+            UnionType ut = new UnionType();
+            List<ProducedType> types = new ArrayList<ProducedType>();
+            for (ProducedType ct: getDeclaration().getCaseTypes()) {
+                types.add( ct.substitute(substitutions) );
+            }
+            ut.setCaseTypes(types);
+            d = ut;
+            
         }
+        else {
+            if (getDeclaration() instanceof TypeParameter) {
+                ProducedType sub = substitutions.get(getDeclaration());
+                if (sub!=null) return sub;
+            }
+            d = getDeclaration();
+        }
+        
         ProducedType t = new ProducedType();
-        t.setDeclaration(getDeclaration());
+        t.setDeclaration(d);
         if (getDeclaringType()!=null) {
             t.setDeclaringType(getDeclaringType().substitute(substitutions));
         }
         t.setTypeArguments(sub(substitutions));
         return t;
+        
     }
         
     public ProducedTypedReference getTypedMember(TypedDeclaration td, List<ProducedType> typeArguments) {
