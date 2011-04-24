@@ -95,7 +95,7 @@ class Operators() {
     @type["Nothing|Operators.X"] local x38 = sequence[0];
     @type["Sequence<Operators.X>"] local x39 = sequence[0..1];
     @type["Sequence<Operators.X>"] local x40 = sequence[1+1...];
-    @type["Nothing|Nothing|Operators.X"] local x41 = {nothing}[0];
+    @type["Nothing|Operators.X"] local x41 = {nothing}[0];
     @type["Nothing|String"] local x42 = noSequence?[0];
     
     @error local x43 = sequence["hello"];

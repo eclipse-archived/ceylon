@@ -1,19 +1,11 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLanguageModuleDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getMemberDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.acceptsTypeArguments;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getContainingClassOrInterface;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getDeclaringType;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.name;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -87,13 +79,12 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.ExistsOrNonemptyCondition that) {
         ProducedType t = null;
         Node n = that;
-        Class ot = getOptionalDeclaration();
         Tree.Variable v = that.getVariable();
         if (v!=null) {
             Tree.SpecifierExpression se = v.getSpecifierExpression();
             se.visit(this);
-            inferContainedType(v, se, ot);
-            checkContainedType(v, se, ot);
+            inferDefiniteType(v, se);
+            checkOptionalType(v, se);
             t = se.getExpression().getTypeModel();
             n = v;
         }
@@ -108,18 +99,22 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             if (that instanceof Tree.ExistsCondition) {
-                if (t.getSupertype(ot)==null) {
-                    n.addError("expression is not of optional type: " +
-                            t.getProducedTypeName() + " is not Optional");
-                }
+                checkOptional(t, n);
             }
-            if (that instanceof Tree.NonemptyCondition) {
-                ProducedType oct = ot.getProducedType(null, Collections.singletonList(getContainerDeclaration().getType()));
+            else if (that instanceof Tree.NonemptyCondition) {
+                ProducedType oct = getOptionalType(getContainerDeclaration().getType());
                 if (!t.isSubtypeOf(oct)) {
                     n.addError("expression is not of correct type: " + 
                             t.getProducedTypeName() + " is not Optional<Container>");
                 }
             }
+        }
+    }
+
+    private void checkOptional(ProducedType t, Node n) {
+        if (!isOptionalType(t)) {
+            n.addError("expression is not of optional type: " +
+                    t.getProducedTypeName() + " must be a supertype of: Nothing");
         }
     }
 
@@ -142,9 +137,8 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.ValueIterator that) {
         super.visit(that);
-        Interface it = getIterableDeclaration();
-        inferContainedType(that.getVariable(), that.getSpecifierExpression(), it);
-        checkContainedType(that.getVariable(), that.getSpecifierExpression(), it);
+        inferContainedType(that.getVariable(), that.getSpecifierExpression());
+        checkContainedType(that.getVariable(), that.getSpecifierExpression());
     }
 
     @Override public void visit(Tree.KeyValueIterator that) {
@@ -191,18 +185,28 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void checkContainedType(Tree.Variable var, Tree.SpecifierExpression se, TypeDeclaration containerType) {
+    private void checkOptionalType(Tree.Variable var, Tree.SpecifierExpression se) {
         ProducedType vt = var.getType().getTypeModel();
-        ProducedType t = containerType.getProducedType(null, Collections.singletonList(vt));
-        checkType(t, se);
+        checkType(getOptionalType(vt), se);
+    }
+
+    private void checkContainedType(Tree.Variable var, Tree.SpecifierExpression se) {
+        ProducedType vt = var.getType().getTypeModel();
+        checkType(getIterableType(vt), se);
     }
 
     private void checkKeyValueType(Tree.Variable key, Tree.Variable value, Tree.SpecifierExpression se) {
         ProducedType kt = key.getType().getTypeModel();
         ProducedType vt = value.getType().getTypeModel();
-        ProducedType et = getEntryDeclaration().getProducedType(null, Arrays.asList(new ProducedType[] {kt, vt}));
-        ProducedType t = getIterableDeclaration().getProducedType(null, Collections.singletonList(et));
-        checkType(t, se);
+        checkType(getIterableType(getEntryType(kt, vt)), se);
+    }
+
+    private ProducedType getIterableType(ProducedType et) {
+        return getIterableDeclaration().getProducedType(null, Collections.singletonList(et));
+    }
+
+    private ProducedType getEntryType(ProducedType kt, ProducedType vt) {
+        return getEntryDeclaration().getProducedType(null, Arrays.asList(new ProducedType[] {kt, vt}));
     }
 
     @Override public void visit(Tree.AttributeGetterDefinition that) {
@@ -287,11 +291,24 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void inferContainedType(Tree.Variable that, Tree.SpecifierExpression se, TypeDeclaration td) {
+    private void inferDefiniteType(Tree.Variable that, Tree.SpecifierExpression se) {
         if (that.getType() instanceof Tree.LocalModifier) {
             Tree.LocalModifier local = (Tree.LocalModifier) that.getType();
             if (se!=null) {
-                setTypeFromTypeArgument(local, se, that, td);
+                setTypeFromUnion(local, se, that);
+            }
+            else {
+                local.addError("could not infer type of: " + 
+                        name(that.getIdentifier()));
+            }
+        }
+    }
+
+    private void inferContainedType(Tree.Variable that, Tree.SpecifierExpression se) {
+        if (that.getType() instanceof Tree.LocalModifier) {
+            Tree.LocalModifier local = (Tree.LocalModifier) that.getType();
+            if (se!=null) {
+                setTypeFromTypeArgument(local, se, that);
             }
             else {
                 local.addError("could not infer type of: " + 
@@ -328,13 +345,28 @@ public class ExpressionVisitor extends Visitor {
 
     private void setTypeFromTypeArgument(Tree.LocalModifier local, 
             Tree.SpecifierExpression se, 
-            Tree.Variable that,
-            TypeDeclaration td) {
+            Tree.Variable that) {
         ProducedType expressionType = se.getExpression().getTypeModel();
         if (expressionType!=null) {
-            ProducedType st = expressionType.getSupertype(td);
+            ProducedType st = expressionType.getSupertype(getIterableDeclaration());
             if (st!=null && st.getTypeArguments().size()==1) {
                 ProducedType t = st.getTypeArgumentList().get(0);
+                local.setTypeModel(t);
+                that.getDeclarationModel().setType(t);
+                return;
+            }
+        }
+        local.addError("could not infer type of: " + 
+                name(that.getIdentifier()));
+    }
+    
+    private void setTypeFromUnion(Tree.LocalModifier local, 
+            Tree.SpecifierExpression se, 
+            Tree.Variable that) {
+        ProducedType expressionType = se.getExpression().getTypeModel();
+        if (expressionType!=null) {
+            if (isOptionalType(expressionType)) {
+                ProducedType t = getDefiniteType(expressionType);
                 local.setTypeModel(t);
                 that.getDeclarationModel().setType(t);
                 return;
@@ -537,13 +569,12 @@ public class ExpressionVisitor extends Visitor {
     ProducedType unwrap(ProducedType pt, Tree.MemberOrTypeExpression mte) {
         Tree.MemberOperator op = mte.getMemberOperator();
         if (op instanceof Tree.SafeMemberOp)  {
-            ProducedType ot = pt.getSupertype(getOptionalDeclaration());
-            if (ot==null) {
-                mte.getPrimary().addError("receiver not of type: Optional");
-                return pt;
+            if (isOptionalType(pt)) {
+                return getDefiniteType(pt);
             }
             else {
-                return ot.getTypeArgumentList().get(0);
+                mte.getPrimary().addError("receiver not of optional type");
+                return pt;
             }
         }
         else if (op instanceof Tree.SpreadOp) {
@@ -564,13 +595,30 @@ public class ExpressionVisitor extends Visitor {
     ProducedType wrap(ProducedType pt, Tree.MemberOrTypeExpression mte) {
         Tree.MemberOperator op = mte.getMemberOperator();
         if (op instanceof Tree.SafeMemberOp)  {
-            return getOptionalDeclaration().getProducedType(null, Collections.singletonList(pt));
+            return getOptionalType(pt);
         }
         else if (op instanceof Tree.SpreadOp) {
-            return getSequenceDeclaration().getProducedType(null, Collections.singletonList(pt));
+            return getSequenceType(pt);
         }
         else {
             return pt;
+        }
+    }
+
+    private ProducedType getOptionalType(ProducedType pt) {
+        if (pt==null) {
+            return null;
+        }
+        else if (isOptionalType(pt)) {
+            return pt;
+        }
+        else {
+            UnionType ut = new UnionType();
+            List<ProducedType> types = new ArrayList<ProducedType>();
+            types.add(getNothingDeclaration().getType());
+            types.add(pt);
+            ut.setCaseTypes(types);
+            return ut.getType();
         }
     }
     
@@ -811,13 +859,12 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             if (that instanceof Tree.SafeIndexOp) {
-                ProducedType ot = pt.getSupertype( getOptionalDeclaration() );
-                if (ot==null) {
-                    that.getPrimary().addError("receving type not of optional type: " +
-                            pt.getProducedTypeName() + " is not Optional");
+                if (isOptionalType(pt)) {
+                    pt = getDefiniteType(pt);
                 }
                 else {
-                    pt = ot.getTypeArgumentList().get(0);
+                    that.getPrimary().addError("receving type not of optional type: " +
+                            pt.getProducedTypeName() + " is not Optional");
                 }
             }
             ProducedType st = pt.getSupertype(getCorrespondenceDeclaration());
@@ -829,13 +876,12 @@ public class ExpressionVisitor extends Visitor {
                 List<ProducedType> args = st.getTypeArgumentList();
                 ProducedType kt = args.get(0);
                 ProducedType vt = args.get(1);
+                ProducedType rt;
                 if (that.getElementOrRange()==null) {
                     that.addError("malformed index expression");
                 }
                 else {
-                    ClassOrInterface rtd;
                     if (that.getElementOrRange() instanceof Tree.Element) {
-                        rtd = getOptionalDeclaration();
                         Tree.Element e = (Tree.Element) that.getElementOrRange();
                         ProducedType et = e.getExpression().getTypeModel();
                         if (et!=null) {
@@ -844,9 +890,9 @@ public class ExpressionVisitor extends Visitor {
                                         kt.getProducedTypeName());
                             }
                         }
+                        rt = getOptionalType(vt);
                     }
                     else {
-                        rtd = getSequenceDeclaration();
                         Tree.ElementRange er = (Tree.ElementRange) that.getElementOrRange();
                         ProducedType lbt = er.getLowerBound().getTypeModel();
                         if (lbt!=null) {
@@ -864,12 +910,16 @@ public class ExpressionVisitor extends Visitor {
                                 }
                             }
                         }
+                        rt = getSequenceType(vt);
                     }
-                    ProducedType ot = rtd.getProducedType( null, Collections.singletonList(vt) );
-                    that.setTypeModel(ot);
+                    that.setTypeModel(rt);
                 }
             }
         }
+    }
+
+    private ProducedType getDefiniteType(ProducedType pt) {
+        return pt.minus(getNothingDeclaration());
     }
 
     private ProducedType type(Tree.PostfixExpression that) {
@@ -986,8 +1036,7 @@ public class ExpressionVisitor extends Visitor {
             if ( ret==null) {
                 that.getRightTerm().addError("must be of type: Equality");
             }
-            ProducedType et = getEntryDeclaration().getProducedType(null, 
-                    Arrays.asList(new ProducedType[] {lhst,rhst}));
+            ProducedType et = getEntryType(lhst, rhst);
             that.setTypeModel(et);
         }
     }
@@ -1016,20 +1065,24 @@ public class ExpressionVisitor extends Visitor {
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
             that.setTypeModel(rhst);
-            Class otd = getOptionalDeclaration();
-            ProducedType nt = rhst.getSupertype(otd);
-            if (nt==null) {
-                ProducedType ot = otd.getProducedType(null, Collections.singletonList(rhst));
-                if (!lhst.isSubtypeOf(ot)) {
-                    that.getLeftTerm().addError("must be of type: " + ot.getProducedTypeName());
-                }
+            if (!isOptionalType(lhst)) {
+                that.getLeftTerm().addError("must be of optional type");
+            }
+            ProducedType ot;
+            if (isOptionalType(rhst)) {
+                ot = rhst;
             }
             else {
-                if (!lhst.isSubtypeOf(rhst)) {
-                    that.getRightTerm().addError("must be of type: " + rhst.getProducedTypeName());
-                }
+                ot = getOptionalType(rhst);
+            }
+            if (!lhst.isSubtypeOf(ot)) {
+                that.getLeftTerm().addError("must be of type: " + ot.getProducedTypeName());
             }
         }
+    }
+
+    private boolean isOptionalType(ProducedType rhst) {
+        return getNothingDeclaration().getType().isSubtypeOf(rhst);
     }
     
     private void visitInOperator(Tree.InOp that) {
@@ -1085,9 +1138,7 @@ public class ExpressionVisitor extends Visitor {
     private void visitExistsOperator(Tree.Exists that) {
         ProducedType t = type(that);
         if (t!=null) {
-            if (t.getSupertype(getOptionalDeclaration())==null) {
-                that.getTerm().addError("must be of type: Optional");
-            }
+            checkOptional(t, that);
         }
         that.setTypeModel(getBooleanDeclaration().getType());
     }
@@ -1095,15 +1146,13 @@ public class ExpressionVisitor extends Visitor {
     private void visitNonemptyOperator(Tree.Nonempty that) {
         ProducedType t = type(that);
         if (t!=null) {
-            ProducedType ot = t.getSupertype(getOptionalDeclaration());
-            if (ot==null) {
-                that.getTerm().addError("must be of type: Optional<Container>");
-            }
-            else {
-                ProducedType ct = ot.getTypeArgumentList().get(0);
-                if (!ct.isSubtypeOf( getContainerDeclaration().getType())) {
+            if (isOptionalType(t)) {
+                if ( !getDefiniteType(t).isSubtypeOf(getContainerDeclaration().getType()) ) {
                     that.getTerm().addError("must be of type: Optional<Container>");
                 }
+            }
+            else {
+                that.getTerm().addError("must be of type: Optional<Container>");
             }
         }
         that.setTypeModel(getBooleanDeclaration().getType());
@@ -1118,7 +1167,7 @@ public class ExpressionVisitor extends Visitor {
         }
         Tree.Term rt = that.getRightTerm();
         if (rt!=null) {
-            if (!(rt instanceof Tree.StaticType)) {
+            if (!(rt instanceof Tree.SimpleType)) {
                 rt.addError("must be a literal type");
             }
         }
@@ -1309,7 +1358,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    @Override public void visit(Tree.StaticType that) {
+    @Override public void visit(Tree.SimpleType that) {
         List<ProducedType> typeArguments = getTypeArguments(that.getTypeArgumentList());
         if (typeArguments!=null) {
             ProducedType pt = that.getTypeModel();
@@ -1394,20 +1443,7 @@ public class ExpressionVisitor extends Visitor {
         List<ProducedType> list = new ArrayList<ProducedType>();
         for (Tree.Expression e: that.getExpressionList().getExpressions()) {
             if (e.getTypeModel()!=null) {
-                Boolean included = false;
-                for (Iterator<ProducedType> iter = list.iterator(); iter.hasNext();) {
-                    ProducedType t = iter.next();
-                    if (e.getTypeModel().isSubtypeOf(t)) {
-                        included = true;
-                        break;
-                    }
-                    else if (e.getTypeModel().isSupertypeOf(t)) {
-                        iter.remove();
-                    }
-                }
-                if (!included) {
-                    list.add(e.getTypeModel());
-                }
+                addToUnion(list, e.getTypeModel());
             }
         }
         ProducedType et;
@@ -1424,8 +1460,11 @@ public class ExpressionVisitor extends Visitor {
             ut.setCaseTypes(list);
             et = ut.getType(); 
         }
-        ProducedType t = getSequenceDeclaration().getProducedType(null, Collections.singletonList(et));
-        that.setTypeModel(t);
+        that.setTypeModel(getSequenceType(et));
+    }
+
+    private ProducedType getSequenceType(ProducedType et) {
+        return getSequenceDeclaration().getProducedType(null, Collections.singletonList(et));
     }
     
     @Override public void visit(Tree.StringTemplate that) {
@@ -1467,14 +1506,14 @@ public class ExpressionVisitor extends Visitor {
         return (Interface) getLanguageDeclaration("Correspondence");
     }
 
+    private Class getNothingDeclaration() {
+        return (Class) getLanguageDeclaration("Nothing");
+    }
+
     private Interface getSequenceDeclaration() {
         return (Interface) getLanguageDeclaration("Sequence");
     }
 
-    private Class getOptionalDeclaration() {
-        return (Class) getLanguageDeclaration("Optional");
-    }
-    
     private Interface getContainerDeclaration() {
         return (Interface) getLanguageDeclaration("Container");
     }

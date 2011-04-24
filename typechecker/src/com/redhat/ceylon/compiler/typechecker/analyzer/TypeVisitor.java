@@ -1,12 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getContainingClassOrInterface;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getDeclaringType;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getExternalDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLanguageModuleDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getMemberDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -123,7 +117,7 @@ public class TypeVisitor extends Visitor {
         UnionType ut = new UnionType();
         List<ProducedType> types = new ArrayList<ProducedType>();
         for (Tree.StaticType st: that.getStaticTypes()) {
-            types.add( st.getTypeModel() );
+            addToUnion( types, st.getTypeModel() );
         }
         ut.setCaseTypes(types);
         ProducedType pt = ut.getType();
@@ -214,9 +208,13 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         ProducedType type = that.getType().getTypeModel();
         if (type!=null) {
-            that.setTypeModel(getSequenceDeclaration()
-                    .getProducedType(null, Collections.singletonList(type)));
+            that.setTypeModel(getSequenceType(type));
         }
+    }
+
+    private ProducedType getSequenceType(ProducedType type) {
+        return getSequenceDeclaration()
+                .getProducedType(null, Collections.singletonList(type));
     }
     
     @Override 

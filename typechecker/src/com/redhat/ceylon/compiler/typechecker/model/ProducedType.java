@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import static com.redhat.ceylon.compiler.typechecker.model.Util.*;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.addToUnion;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,7 +114,7 @@ public class ProducedType extends ProducedReference {
 	    }
 	    else if (getDeclaration() instanceof UnionType) {
 	        for (ProducedType ct: getDeclaration().getCaseTypes() ) {
-	            if (!ct.isSubtypeOf(type)) {
+	            if (ct==null || !ct.isSubtypeOf(type)) {
 	                return false;
 	            }
 	        }
@@ -176,6 +177,26 @@ public class ProducedType extends ProducedReference {
         return type.isSubtypeOf(this);
     }
     
+    public ProducedType minus(ClassOrInterface ci) {
+        if (getDeclaration()==ci) {
+            return replaceDeclaration( new BottomType() );
+        }
+        else if (getDeclaration() instanceof UnionType) {
+            UnionType ut = new UnionType();
+            List<ProducedType> types = new ArrayList<ProducedType>();
+            for (ProducedType ct: getDeclaration().getCaseTypes()) {
+                if (ct.getDeclaration()!=ci) {
+                    addToUnion(types, ct.minus(ci));
+                }
+            }
+            ut.setCaseTypes(types);
+            return replaceDeclaration(ut);
+        }
+        else {
+            return this;
+        }
+    }
+    
     public ProducedType substitute(Map<TypeParameter,ProducedType> substitutions) {
         
         Declaration d;
@@ -183,11 +204,15 @@ public class ProducedType extends ProducedReference {
             UnionType ut = new UnionType();
             List<ProducedType> types = new ArrayList<ProducedType>();
             for (ProducedType ct: getDeclaration().getCaseTypes()) {
-                types.add( ct.substitute(substitutions) );
+                if (ct==null) {
+                    types.add(null);
+                }
+                else {
+                    addToUnion(types, ct.substitute(substitutions));
+                }
             }
             ut.setCaseTypes(types);
-            d = ut;
-            
+            d = ut;            
         }
         else {
             if (getDeclaration() instanceof TypeParameter) {
@@ -197,6 +222,22 @@ public class ProducedType extends ProducedReference {
             d = getDeclaration();
         }
         
+        return replaceDeclaration(d, substitutions);
+        
+    }
+
+    private ProducedType replaceDeclaration(Declaration d) {
+        ProducedType t = new ProducedType();
+        t.setDeclaration(d);
+        if (getDeclaringType()!=null) {
+            t.setDeclaringType(getDeclaringType());
+        }
+        t.setTypeArguments(getTypeArguments());
+        return t;
+    }
+        
+    private ProducedType replaceDeclaration(Declaration d, 
+            Map<TypeParameter, ProducedType> substitutions) {
         ProducedType t = new ProducedType();
         t.setDeclaration(d);
         if (getDeclaringType()!=null) {
@@ -204,7 +245,6 @@ public class ProducedType extends ProducedReference {
         }
         t.setTypeArguments(sub(substitutions));
         return t;
-        
     }
         
     public ProducedTypedReference getTypedMember(TypedDeclaration td, List<ProducedType> typeArguments) {

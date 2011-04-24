@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -235,6 +236,23 @@ public class Util {
             scope = scope.getContainer();
         }
         return null;
+    }
+
+    public static void addToUnion(List<ProducedType> list, ProducedType pt) {
+        Boolean included = false;
+        for (Iterator<ProducedType> iter = list.iterator(); iter.hasNext();) {
+            ProducedType t = iter.next();
+            if (pt.isSubtypeOf(t)) {
+                included = true;
+                break;
+            }
+            else if (pt.isSupertypeOf(t)) {
+                iter.remove();
+            }
+        }
+        if (!included) {
+            list.add(pt);
+        }
     }
 
 }
