@@ -5,7 +5,7 @@ class Operators() {
     
     class Z() extends Object() {}
     
-    @type["String"] local x1 = "Hello" + " " + "World";
+    @type["String"] local x0 = "Hello" + " " + "World";
     
     @error local x1 = "Hello" + 1;
     
