@@ -1,11 +1,13 @@
 doc "Represents an empty sequence."
-shared object none satisfies Bottom[] {
-
+object empty satisfies Bottom[] {
+    
     shared actual Natural? lastIndex = null;
     
-    shared actual Bottom? value(Natural index) {
-        Bottom? nullValue = null;
-        return nullValue;
-    }
+    shared actual Nothing value(Natural index) {
+        return null;
+    }        
     
 }
+
+doc "Hides the concrete type of empty."  
+shared Bottom[] none = empty;
