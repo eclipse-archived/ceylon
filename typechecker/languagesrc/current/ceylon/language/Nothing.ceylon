@@ -1,3 +1,3 @@
 shared abstract class Nothing() 
-        of null
+        of nothing
         extends Void() {}
