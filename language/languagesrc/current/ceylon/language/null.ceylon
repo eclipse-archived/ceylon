@@ -1,3 +1,5 @@
 doc "Represents a null reference."  
-shared object null 
-        extends Nothing() {}
+object nothing extends Nothing() {}
+
+doc "Hides the concrete type of nothing."  
+shared Nothing null = nothing;
