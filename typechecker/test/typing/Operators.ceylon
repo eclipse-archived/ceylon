@@ -138,5 +138,9 @@ class Operators() {
     @error X()?.doIt();
     
     @type["Nothing"] local nnnn = none[0];
+    Nothing nnnn2 = nnnn;
+    
+    @type["Nothing|String"] local ns = { null, "hello", "world" }[1];
+    String? ns2 = ns;
 
 }
