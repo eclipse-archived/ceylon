@@ -150,7 +150,9 @@ class Operators() {
     @error String ions = ion.string;
     Sequence<Integer|Natural> ins2 = ins;
     Nothing|Integer|Natural ion2 = ion;
-    Nothing|Integer|Natural ion3 { return ion; }
+    Integer?|Natural? ion3 = ion;
+    Nothing|Integer|Natural ion4 { return ion2; }
+    Nothing|Integer|Natural ion5 { return ion3; }
     Integer|Natural defaultIon(Nothing|Integer|Natural x) {
         if (exists x) {
             return x;
