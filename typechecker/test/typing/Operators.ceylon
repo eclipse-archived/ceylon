@@ -148,6 +148,7 @@ class Operators() {
     @type["Sequence<Integer|Natural>"] local ins = { -10, -1, 1, 3 };
     @type["Nothing|Integer|Natural"] local ion = ins[2];
     @error String ions = ion.string;
+    Sequence<Integer|Natural> ins2 = ins;
     Nothing|Integer|Natural ion2 = ion;
     Nothing|Integer|Natural ion3 { return ion; }
     Integer|Natural defaultIon(Nothing|Integer|Natural x) {
