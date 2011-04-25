@@ -102,10 +102,10 @@ class Operators() {
     @error local x44 = sequence["hello"...];
     @error local x45 = sequence[1.."hello"];
     
-    @type["Sequence<Sequence<Character>>"] local x46 = {"hello", "world"}[].characters;
+    @type["Sequence<Empty|Sequence<Character>>"] local x46 = {"hello", "world"}[].characters;
     @type["Sequence<String>"] local x47 = {"hello", "world"}[].uppercase;
-    @type["Nothing|Sequence<Character>"] local x48 = {"hello", "world"}[0]?.characters;
-    @type["Sequence<Sequence<Character>>"] local x49 = {"hello", "world"}[].characters;
+    @type["Nothing|Empty|Sequence<Character>"] local x48 = {"hello", "world"}[0]?.characters;
+    @type["Sequence<Empty|Sequence<Character>>"] local x49 = {"hello", "world"}[].characters;
     @type["Sequence<Iterable<String>>"] local x50 = {"hello", "world"}[].lines();
     @type["Nothing|String"] local x51 = {"hello", "world"}[0]?.normalize(" #");
     @type["Sequence<String>"] local x52 = {"hello", "world"}[].normalize(" #");
