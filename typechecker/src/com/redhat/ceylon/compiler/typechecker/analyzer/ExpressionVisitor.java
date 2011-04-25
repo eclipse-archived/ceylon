@@ -1446,25 +1446,30 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.SequenceEnumeration that) {
         super.visit(that);
-        List<ProducedType> list = new ArrayList<ProducedType>();
-        for (Tree.Expression e: that.getExpressionList().getExpressions()) {
-            if (e.getTypeModel()!=null) {
-                addToUnion(list, e.getTypeModel());
-            }
-        }
         ProducedType et;
-        if (list.isEmpty()) {
-            that.addError("could not infer type of sequence enumeration");
-            return;
-        }
-        else if (list.size()==1) {
-            et = list.get(0);
+        if ( that.getExpressionList()==null ) {
+            et = new BottomType().getType();
         }
         else {
-            UnionType ut = new UnionType();
-            ut.setExtendedType( getObjectDeclaration().getType() );
-            ut.setCaseTypes(list);
-            et = ut.getType(); 
+            List<ProducedType> list = new ArrayList<ProducedType>();
+            for (Tree.Expression e: that.getExpressionList().getExpressions()) {
+                if (e.getTypeModel()!=null) {
+                    addToUnion(list, e.getTypeModel());
+                }
+            }
+            if (list.isEmpty()) {
+                that.addError("could not infer type of sequence enumeration");
+                return;
+            }
+            else if (list.size()==1) {
+                et = list.get(0);
+            }
+            else {
+                UnionType ut = new UnionType();
+                ut.setExtendedType( getObjectDeclaration().getType() );
+                ut.setCaseTypes(list);
+                et = ut.getType(); 
+            }
         }
         that.setTypeModel(getSequenceType(et));
     }

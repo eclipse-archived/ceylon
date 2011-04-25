@@ -763,8 +763,8 @@ selfReference
     ;
 
 enumeration
-    : LBRACE expressions '}'
-    -> ^(SEQUENCE_ENUMERATION[$LBRACE] expressions)
+    : LBRACE expressions? '}'
+    -> ^(SEQUENCE_ENUMERATION[$LBRACE] expressions?)
     ;
 
 primary

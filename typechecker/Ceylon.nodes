@@ -627,7 +627,7 @@ argument list."
 
 "Enumerated elements of a sequence."
 ^(SEQUENCE_ENUMERATION:ATOM 
-    EXPRESSION_LIST)
+    EXPRESSION_LIST?)
 
 "A string template."
 ^(STRING_TEMPLATE:ATOM 
