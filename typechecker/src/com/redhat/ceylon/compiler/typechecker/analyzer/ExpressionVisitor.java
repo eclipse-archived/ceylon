@@ -1126,6 +1126,20 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    private void visitNegativeOperator(Tree.UnaryOperatorExpression that) {
+        ProducedType t = type(that);
+        if ( t!=null ) {
+            ProducedType nt = t.getSupertype(getInvertableDeclaration());
+            if (nt==null) {
+                that.getTerm().addError("must be of type: Invertable");
+            }
+            else {
+                ProducedType at = nt.getTypeArgumentList().get(0);
+                that.setTypeModel(at);
+            }
+        }
+    }
+
     private TypeDeclaration getLanguageDeclaration(String type) {
         return (TypeDeclaration) getLanguageModuleDeclaration(type, context);
     }
@@ -1256,7 +1270,7 @@ public class ExpressionVisitor extends Visitor {
         
     @Override public void visit(Tree.NegativeOp that) {
         super.visit(that);
-        visitUnaryOperator(that, getNumericDeclaration());
+        visitNegativeOperator(that);
     }
         
     @Override public void visit(Tree.FlipOp that) {
@@ -1543,6 +1557,10 @@ public class ExpressionVisitor extends Visitor {
 
     private Interface getNumericDeclaration() {
         return (Interface) getLanguageDeclaration("Numeric");
+    }
+        
+    private Interface getInvertableDeclaration() {
+        return (Interface) getLanguageDeclaration("Invertable");
     }
         
     private Interface getSlotsDeclaration() {
