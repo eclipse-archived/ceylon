@@ -15,7 +15,7 @@ class Operators() {
     
     @type["Float"] local x4 = 2.4 ** 0.5;
     
-    @type["Natural"]  local x5 = 1 + 2 - -3;
+    @type["Integer"]  local x5 = (1 + 2).integer - -3;
     
     @type["Float"]  local x6 = 1.0 * 2.5 ** (-0.5);
     
@@ -144,5 +144,9 @@ class Operators() {
     
     @type["Nothing|String"] local ns = { null, "hello", "world" }[1];
     String? ns2 = ns;
+    
+    @type["Sequence<Integer|Natural>"] local ins = { -10, -1, 1, 3 };
+    @type["Nothing|Integer|Natural"] local ion = ins[2];
+    @error String ions = ion.string;
 
 }
