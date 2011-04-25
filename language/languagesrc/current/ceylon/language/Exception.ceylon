@@ -8,7 +8,7 @@ shared class Exception(Exception? cause=null, String? message=null)
     //shared StackTrace stackTrace { throw; }
     
     shared actual String string {
-        if (nonempty message) {
+        if (exists message) {
             return super.string + ": " + message;
         }
         else {
