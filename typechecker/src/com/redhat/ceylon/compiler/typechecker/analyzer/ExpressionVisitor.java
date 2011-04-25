@@ -623,7 +623,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else if (op instanceof Tree.SpreadOp) {
-            ProducedType st = pt.getSupertype(getSequenceDeclaration());
+            ProducedType st = getNonemptySequenceType(pt);
             if (st==null) {
                 mte.getPrimary().addError("receiver not of type: Sequence");
                 return pt;
@@ -635,6 +635,10 @@ public class ExpressionVisitor extends Visitor {
         else {
             return pt;
         }
+    }
+
+    private ProducedType getNonemptySequenceType(ProducedType pt) {
+        return pt.minus(getEmptyDeclaration()).getSupertype(getSequenceDeclaration());
     }
     
     ProducedType wrap(ProducedType pt, Tree.MemberOrTypeExpression mte) {
@@ -925,10 +929,7 @@ public class ExpressionVisitor extends Visitor {
 
     private ProducedType getIndividualSequencedParameterType(
             ProducedType paramType) {
-        ProducedType seqType = paramType.minus(getEmptyDeclaration()).getSupertype(getSequenceDeclaration());
-        if (seqType==null) {
-            seqType.toString();
-        }
+        ProducedType seqType = getNonemptySequenceType(paramType);
         return seqType.getTypeArgumentList().get(0);
     }
 
