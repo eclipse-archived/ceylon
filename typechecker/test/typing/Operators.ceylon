@@ -148,5 +148,19 @@ class Operators() {
     @type["Sequence<Integer|Natural>"] local ins = { -10, -1, 1, 3 };
     @type["Nothing|Integer|Natural"] local ion = ins[2];
     @error String ions = ion.string;
+    Nothing|Integer|Natural ion2 = ion;
+    Nothing|Integer|Natural ion3 { return ion; }
+    Integer|Natural defaultIon(Nothing|Integer|Natural x) {
+        if (exists x) {
+            return x;
+        }
+        else {
+            return 0;
+        }
+    }
+    //we could make this work by making x?y have type X|Y where x is type X? and y is type Y
+    /*Integer|Natural defaultIon2(Nothing|Integer|Natural x) {
+        return x?0;
+    }*/
 
 }
