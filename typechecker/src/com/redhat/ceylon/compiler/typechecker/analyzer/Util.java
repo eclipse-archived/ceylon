@@ -20,6 +20,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -239,19 +240,27 @@ public class Util {
     }
 
     public static void addToUnion(List<ProducedType> list, ProducedType pt) {
-        Boolean included = false;
-        for (Iterator<ProducedType> iter = list.iterator(); iter.hasNext();) {
-            ProducedType t = iter.next();
-            if (pt.isSubtypeOf(t)) {
-                included = true;
-                break;
-            }
-            else if (pt.isSupertypeOf(t)) {
-                iter.remove();
+        if (pt.getDeclaration() instanceof UnionType) {
+            for (Iterator<ProducedType> iter = pt.getDeclaration().getCaseTypes().iterator(); iter.hasNext();) {
+                ProducedType t = iter.next();
+                addToUnion( list, t.substitute(pt.getTypeArguments()) );
             }
         }
-        if (!included) {
-            list.add(pt);
+        else {
+            Boolean included = false;
+            for (Iterator<ProducedType> iter = list.iterator(); iter.hasNext();) {
+                ProducedType t = iter.next();
+                if (pt.isSubtypeOf(t)) {
+                    included = true;
+                    break;
+                }
+                else if (pt.isSupertypeOf(t)) {
+                    iter.remove();
+                }
+            }
+            if (!included) {
+                list.add(pt);
+            }
         }
     }
 
