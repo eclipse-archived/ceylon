@@ -1,13 +1,13 @@
-shared class String(Sequence<Character> chars)
+shared class String(Character[] chars)
         extends Object()
-        satisfies Sequence<Character> & Comparable<String> {
+        satisfies Comparable<String> & Correspondence<Natural,Character> & Iterable<Character> & Sized {
 
-    shared Sequence<Character> characters;
-    if (is String chars) {
-        characters = chars;
+    shared Character[] characters;
+    if (nonempty chars) {
+        characters = chars.clone;
     }
     else {
-        characters = chars.clone;
+        characters = {};
     }
 
     doc "Split the string into tokens, using the given
@@ -25,14 +25,35 @@ shared class String(Sequence<Character> chars)
 
     doc "Remove the given characters from the beginning
          and end of the string."
-    shared String strip(Character[] whitespace = " \n\f\r\t") { throw; }
+    shared String strip(Iterable<Character> whitespace = " \n\f\r\t") { throw; }
 
     doc "Collapse substrings of the given characters into
          single space characters."
-    shared String normalize(Character[] whitespace = " \n\f\r\t") { throw; }
+    shared String normalize(Iterable<Character> whitespace = " \n\f\r\t") { throw; }
 
     doc "Join the given strings, using this string as
          a separator."
     shared String join(String... strings) { throw; }
+    
+    shared actual Natural size { 
+        return characters.size;
+    }
+    
+    shared actual Iterator<Character> iterator() {
+        if (nonempty characters) { //should not be necessary!
+            return characters.iterator();
+        }
+        else {
+            return emptyIterator;
+        }
+    }
+    
+    shared actual Character? value(Natural index) { 
+        return characters[index]; 
+    }
+    
+    shared actual Comparison compare(String other) { throw; }
+    
+    shared actual Boolean equals(Object that) { throw; }
 
 }
