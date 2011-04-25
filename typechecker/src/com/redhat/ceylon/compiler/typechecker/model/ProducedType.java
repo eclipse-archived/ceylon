@@ -185,7 +185,7 @@ public class ProducedType extends ProducedReference {
             UnionType ut = new UnionType();
             List<ProducedType> types = new ArrayList<ProducedType>();
             for (ProducedType ct: getDeclaration().getCaseTypes()) {
-                if (ct.getDeclaration()!=ci) {
+                if (ct.getSupertype(ci)==null) {
                     addToUnion(types, ct.minus(ci));
                 }
             }

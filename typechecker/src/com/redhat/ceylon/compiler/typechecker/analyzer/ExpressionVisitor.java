@@ -84,8 +84,14 @@ public class ExpressionVisitor extends Visitor {
         if (v!=null) {
             Tree.SpecifierExpression se = v.getSpecifierExpression();
             se.visit(this);
-            inferDefiniteType(v, se);
-            checkOptionalType(v, se);
+            if (that instanceof Tree.ExistsCondition) {
+                inferDefiniteType(v, se);
+                checkOptionalType(v, se);
+            }
+            else if (that instanceof Tree.NonemptyCondition) {
+                inferNonemptyType(v, se);
+                checkEmptyOptionalType(v, se);
+            }
             t = se.getExpression().getTypeModel();
             n = v;
         }
@@ -103,19 +109,23 @@ public class ExpressionVisitor extends Visitor {
                 checkOptional(t, n);
             }
             else if (that instanceof Tree.NonemptyCondition) {
-                ProducedType oct = getEmptyOptionalType(getContainerDeclaration().getType());
-                if (!t.isSubtypeOf(oct)) {
-                    n.addError("expression is not of correct type: " + 
-                            t.getProducedTypeName() + " is not Nothing|Empty|Container");
-                }
+                checkEmpty(t, n);
             }
+        }
+    }
+
+    private void checkEmpty(ProducedType t, Node n) {
+        //ProducedType oct = getEmptyOptionalType(getContainerDeclaration().getType());
+        if (!isEmptyType(t)) {
+            n.addError("expression is not of correct type: " + 
+                    t.getProducedTypeName() + " is not a supertype of: Empty");
         }
     }
 
     private void checkOptional(ProducedType t, Node n) {
         if (!isOptionalType(t)) {
             n.addError("expression is not of optional type: " +
-                    t.getProducedTypeName() + " must be a supertype of: Nothing");
+                    t.getProducedTypeName() + " is not a supertype of: Nothing");
         }
     }
 
@@ -189,6 +199,11 @@ public class ExpressionVisitor extends Visitor {
     private void checkOptionalType(Tree.Variable var, Tree.SpecifierExpression se) {
         ProducedType vt = var.getType().getTypeModel();
         checkType(getOptionalType(vt), se);
+    }
+
+    private void checkEmptyOptionalType(Tree.Variable var, Tree.SpecifierExpression se) {
+        ProducedType vt = var.getType().getTypeModel();
+        checkType(getEmptyOptionalType(vt), se);
     }
 
     private void checkContainedType(Tree.Variable var, Tree.SpecifierExpression se) {
@@ -296,7 +311,20 @@ public class ExpressionVisitor extends Visitor {
         if (that.getType() instanceof Tree.LocalModifier) {
             Tree.LocalModifier local = (Tree.LocalModifier) that.getType();
             if (se!=null) {
-                setTypeFromUnion(local, se, that);
+                setTypeFromOptionalType(local, se, that);
+            }
+            else {
+                local.addError("could not infer type of: " + 
+                        name(that.getIdentifier()));
+            }
+        }
+    }
+
+    private void inferNonemptyType(Tree.Variable that, Tree.SpecifierExpression se) {
+        if (that.getType() instanceof Tree.LocalModifier) {
+            Tree.LocalModifier local = (Tree.LocalModifier) that.getType();
+            if (se!=null) {
+                setTypeFromEmptyType(local, se, that);
             }
             else {
                 local.addError("could not infer type of: " + 
@@ -361,13 +389,29 @@ public class ExpressionVisitor extends Visitor {
                 name(that.getIdentifier()));
     }
     
-    private void setTypeFromUnion(Tree.LocalModifier local, 
+    private void setTypeFromOptionalType(Tree.LocalModifier local, 
             Tree.SpecifierExpression se, 
             Tree.Variable that) {
         ProducedType expressionType = se.getExpression().getTypeModel();
         if (expressionType!=null) {
             if (isOptionalType(expressionType)) {
                 ProducedType t = getDefiniteType(expressionType);
+                local.setTypeModel(t);
+                that.getDeclarationModel().setType(t);
+                return;
+            }
+        }
+        local.addError("could not infer type of: " + 
+                name(that.getIdentifier()));
+    }
+    
+    private void setTypeFromEmptyType(Tree.LocalModifier local, 
+            Tree.SpecifierExpression se, 
+            Tree.Variable that) {
+        ProducedType expressionType = se.getExpression().getTypeModel();
+        if (expressionType!=null) {
+            if (isEmptyType(expressionType)) {
+                ProducedType t = getNonemptyType(expressionType);
                 local.setTypeModel(t);
                 that.getDeclarationModel().setType(t);
                 return;
@@ -625,6 +669,28 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
+    /*private ProducedType getEmptyType(ProducedType pt) {
+        if (pt==null) {
+            return null;
+        }
+        else if (isEmptyType(pt)) {
+            //Nothing|Nothing|T == Nothing|T
+            return pt;
+        }
+        else if (pt.getDeclaration() instanceof BottomType) {
+            //Nothing|0 == Nothing
+            return getEmptyDeclaration().getType();
+        }
+        else {
+            UnionType ut = new UnionType();
+            List<ProducedType> types = new ArrayList<ProducedType>();
+            addToUnion(types,getEmptyDeclaration().getType());
+            addToUnion(types,pt);
+            ut.setCaseTypes(types);
+            return ut.getType();
+        }
+    }*/
+    
     private ProducedType getOptionalType(ProducedType pt) {
         if (pt==null) {
             return null;
@@ -859,7 +925,11 @@ public class ExpressionVisitor extends Visitor {
 
     private ProducedType getIndividualSequencedParameterType(
             ProducedType paramType) {
-        return paramType.minus(getEmptyDeclaration()).getSupertype(getSequenceDeclaration()).getTypeArgumentList().get(0);
+        ProducedType seqType = paramType.minus(getEmptyDeclaration()).getSupertype(getSequenceDeclaration());
+        if (seqType==null) {
+            seqType.toString();
+        }
+        return seqType.getTypeArgumentList().get(0);
     }
 
     private void checkPositionalArgument(Parameter p,
@@ -955,6 +1025,10 @@ public class ExpressionVisitor extends Visitor {
 
     private ProducedType getDefiniteType(ProducedType pt) {
         return pt.minus(getNothingDeclaration());
+    }
+
+    private ProducedType getNonemptyType(ProducedType pt) {
+        return pt.minus(getNothingDeclaration()).minus(getEmptyDeclaration());
     }
 
     private ProducedType type(Tree.PostfixExpression that) {
