@@ -3310,7 +3310,7 @@ shared Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
         given X satisfies Equality<X> {
     shared T interior;
     shared T exterior;
-}
+}]]></programlisting>
 
 <!-- shared Boolean containsAny(Object... objects); ??? -->
 

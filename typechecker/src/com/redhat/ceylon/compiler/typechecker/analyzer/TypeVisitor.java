@@ -208,13 +208,35 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         ProducedType type = that.getType().getTypeModel();
         if (type!=null) {
-            that.setTypeModel(getSequenceType(type));
+            that.setTypeModel(getEmptyType(getSequenceType(type)));
         }
     }
 
     private ProducedType getSequenceType(ProducedType type) {
         return getSequenceDeclaration()
                 .getProducedType(null, Collections.singletonList(type));
+    }
+    
+    private ProducedType getEmptyType(ProducedType pt) {
+        if (pt==null) {
+            return null;
+        }
+        /*else if (isEmptyType(pt)) {
+            //Nothing|Nothing|T == Nothing|T
+            return pt;
+        }
+        else if (pt.getDeclaration() instanceof BottomType) {
+            //Nothing|0 == Nothing
+            return getEmptyDeclaration().getType();
+        }*/
+        else {
+            UnionType ut = new UnionType();
+            List<ProducedType> types = new ArrayList<ProducedType>();
+            addToUnion(types,getEmptyDeclaration().getType());
+            addToUnion(types,pt);
+            ut.setCaseTypes(types);
+            return ut.getType();
+        }
     }
     
     @Override 
@@ -361,6 +383,10 @@ public class TypeVisitor extends Visitor {
     
     private Interface getSequenceDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Sequence", context);
+    }
+
+    private Interface getEmptyDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("Empty", context);
     }
 
     private Class getObjectDeclaration() {

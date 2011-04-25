@@ -265,7 +265,7 @@ annotatedDeclarationStart
 //expressions
 declarationStart
     : declarationKeyword 
-    | type ('...' | LIDENTIFIER)
+    | unionType ('...' | LIDENTIFIER)
     ;
 
 declarationKeyword
@@ -368,7 +368,7 @@ typedMethodOrAttributeDeclaration
     ;
 
 inferrableType
-    : type | 'local'
+    : unionType | 'local'
     ;
 
 interfaceDeclaration
@@ -427,20 +427,20 @@ classBody
 extendedType
     : EXTENDS 
     (
-      producedType positionalArguments
-      -> ^(EXTENDED_TYPE[$EXTENDS] producedType positionalArguments)
+      type positionalArguments
+      -> ^(EXTENDED_TYPE[$EXTENDS] type positionalArguments)
     | SUPER MEMBER_OP typeReference positionalArguments
       -> ^(EXTENDED_TYPE[$EXTENDS] ^(TYPE_EXPRESSION SUPER MEMBER_OP typeReference) positionalArguments)
     )
     ;
 
 satisfiedTypes
-    : SATISFIES producedType ('&' producedType)*
-    -> ^(SATISFIED_TYPES[$SATISFIES] producedType+)
+    : SATISFIES type ('&' type)*
+    -> ^(SATISFIED_TYPES[$SATISFIES] type+)
     ;
 
 abstractedType
-    : 'abstracts'^ producedType
+    : 'abstracts'^ type
     ;
     
 caseTypes
@@ -448,7 +448,7 @@ caseTypes
     ;
 
 caseType 
-    : producedType 
+    : type 
     | memberName -> ^(MEMBER memberName)
     //| (annotations? 'case' memberName) => annotations? 'case' memberName 
     ;
@@ -456,8 +456,8 @@ caseType
 //Support for metatypes
 //Note that we don't need this for now
 metatypes
-    : IS_OP producedType ('&' producedType)* 
-    -> ^(METATYPES[$IS_OP] producedType*)
+    : IS_OP type ('&' type)* 
+    -> ^(METATYPES[$IS_OP] type*)
     ;
 
 typeConstraint
@@ -480,18 +480,20 @@ typeConstraints
     -> ^(TYPE_CONSTRAINT_LIST typeConstraint2+)
     ;
 
-type
-    : (producedType -> producedType)
-    ( ('|' producedType)+
-      -> ^(UNION_TYPE $type producedType+)
+unionType
+    : (type -> type)
+    ( ('|' type)+
+      -> ^(UNION_TYPE $unionType type+)
     )?
     ;
 
-producedType
+type
     : (unabbreviatedType -> unabbreviatedType)
       (
-        sequenceType -> ^(BASE_TYPE sequenceType ^(TYPE_ARGUMENT_LIST $producedType))
-      | optionalType -> ^(UNION_TYPE ^(BASE_TYPE optionalType) $producedType)
+        DEFAULT_OP 
+      -> ^(UNION_TYPE ^(BASE_TYPE ^(IDENTIFIER[$DEFAULT_OP,"Nothing"])) $type)
+      | ARRAY 
+      -> ^(UNION_TYPE ^(BASE_TYPE ^(IDENTIFIER[$ARRAY,"Empty"])) ^(BASE_TYPE ^(IDENTIFIER[$ARRAY,"Sequence"]) ^(TYPE_ARGUMENT_LIST $type)))
       )*
     ;
 
@@ -501,17 +503,6 @@ unabbreviatedType
     | SUBTYPE
     /*| parameterName '.' 'subtype' abbreviation*
     -> ^(TYPE parameterName 'subtype' abbreviation*)*/
-    ;
-
-optionalType
-    : DEFAULT_OP
-    -> ^(IDENTIFIER[$DEFAULT_OP,"Nothing"])
-    ;
-    
-sequenceType
-    : ARRAY 
-    -> ^(IDENTIFIER[$ARRAY,"Sequence"])
-    //| '[' dimension ']'
     ;
 
 typeNameWithArguments
@@ -571,7 +562,7 @@ typeArguments
     ;
 
 typeArgument
-    : type ( '...' -> ^(SEQUENCED_TYPE type) | -> type ) 
+    : unionType ( '...' -> ^(SEQUENCED_TYPE unionType) | -> unionType ) 
     ; /*| '#'! dimension
     ;
 
@@ -627,8 +618,8 @@ specifier
     ;
 
 typeSpecifier
-    : SPECIFY producedType
-    -> ^(TYPE_SPECIFIER[$SPECIFY] producedType)
+    : SPECIFY type
+    -> ^(TYPE_SPECIFIER[$SPECIFY] type)
     ;
 
 nonstringLiteral
@@ -1040,7 +1031,7 @@ annotatedParameter2
     ;
 
 valueParameter
-    : '->' type parameterName
+    : '->' unionType parameterName
     ;
 
 /*
@@ -1067,7 +1058,7 @@ extraParameter
     ;
 
 parameterType
-    : type ( '...' -> ^(SEQUENCED_TYPE type) | -> type )
+    : unionType ( '...' -> ^(SEQUENCED_TYPE unionType) | -> unionType )
     | VOID_MODIFIER -> VOID_MODIFIER
     ;
 
@@ -1105,15 +1096,15 @@ nonemptyCondition
     ;
 
 isCondition
-    : ('(' IS_OP producedType LIDENTIFIER ')') => '(' IS_OP producedType memberName ')'
-    -> ^(IS_CONDITION[$IS_OP] producedType ^(VARIABLE producedType memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(MEMBER memberName)))))
-    | '(' IS_OP producedType (memberName specifier | expression) ')'
-    -> ^(IS_CONDITION[$IS_OP] producedType ^(VARIABLE producedType memberName specifier)? expression?)
+    : ('(' IS_OP type LIDENTIFIER ')') => '(' IS_OP type memberName ')'
+    -> ^(IS_CONDITION[$IS_OP] type ^(VARIABLE type memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(MEMBER memberName)))))
+    | '(' IS_OP type (memberName specifier | expression) ')'
+    -> ^(IS_CONDITION[$IS_OP] type ^(VARIABLE type memberName specifier)? expression?)
     ;
 
 satisfiesCondition
-    : '(' SATISFIES producedType producedType ')'
-    -> ^(SATISFIES_CONDITION[$SATISFIES] producedType+)
+    : '(' SATISFIES type type ')'
+    -> ^(SATISFIES_CONDITION[$SATISFIES] type+)
     ;
 
 controlStructure
@@ -1182,13 +1173,13 @@ expressions
     ;
 
 isCaseCondition
-    : IS_OP producedType
-    -> ^(IS_CASE[$IS_OP] producedType)
+    : IS_OP type
+    -> ^(IS_CASE[$IS_OP] type)
     ;
 
 satisfiesCaseCondition
-    : SATISFIES producedType
-    -> ^(SATISFIES_CASE[$SATISFIES] producedType)
+    : SATISFIES type
+    -> ^(SATISFIES_CASE[$SATISFIES] type)
     ;
 
 forFail

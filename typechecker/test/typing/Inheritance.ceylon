@@ -68,11 +68,11 @@ class Inheritance() {
     
     @type["Natural"] W<Float,Natural>(1.2, 1).getIt();
     
-    object none satisfies Bottom[] {
+    /*object none satisfies Bottom[] {
         shared actual Natural? lastIndex = null;
         shared actual Nothing value(Natural n) {
             return null;
         }
-    }
+    }*/
         
 }

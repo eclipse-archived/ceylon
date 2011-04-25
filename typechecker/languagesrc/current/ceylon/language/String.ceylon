@@ -1,8 +1,8 @@
-shared class String(Character[] chars)
+shared class String(Sequence<Character> chars)
         extends Object()
-        satisfies Character[] & Comparable<String> {
+        satisfies Sequence<Character> & Comparable<String> {
 
-    shared Character[] characters;
+    shared Sequence<Character> characters;
     if (is String chars) {
         characters = chars;
     }

@@ -119,7 +119,7 @@ class Primaries() {
         String s = o.string;
         @type["Sequence<Primaries.A|Primaries.B|String|Sequence<Natural>|Float>"] local p30 = {o, "foo", 3.1, A()};
     }
-    @type["Sequence<String>"] String[] noStrings = {};
-    @type["Sequence<Bottom>"] local none = {};
+    @type["Empty|Sequence<String>"] String[] noStrings = {};
+    @type["Empty"] local none = {};
     
 }

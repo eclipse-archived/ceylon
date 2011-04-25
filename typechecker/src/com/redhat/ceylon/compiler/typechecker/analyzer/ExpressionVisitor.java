@@ -103,10 +103,10 @@ public class ExpressionVisitor extends Visitor {
                 checkOptional(t, n);
             }
             else if (that instanceof Tree.NonemptyCondition) {
-                ProducedType oct = getOptionalType(getContainerDeclaration().getType());
+                ProducedType oct = getEmptyOptionalType(getContainerDeclaration().getType());
                 if (!t.isSubtypeOf(oct)) {
                     n.addError("expression is not of correct type: " + 
-                            t.getProducedTypeName() + " is not Optional<Container>");
+                            t.getProducedTypeName() + " is not Nothing|Empty|Container");
                 }
             }
         }
@@ -606,6 +606,25 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    private ProducedType getEmptyOptionalType(ProducedType pt) {
+        if (pt==null) {
+            return null;
+        }
+        else if (isEmptyType(pt) && isOptionalType(pt)) {
+            //Nothing|Nothing|T == Nothing|T
+            return pt;
+        }
+        else {
+            UnionType ut = new UnionType();
+            List<ProducedType> types = new ArrayList<ProducedType>();
+            addToUnion(types,getNothingDeclaration().getType());
+            addToUnion(types,getEmptyDeclaration().getType());
+            addToUnion(types,pt);
+            ut.setCaseTypes(types);
+            return ut.getType();
+        }
+    }
+    
     private ProducedType getOptionalType(ProducedType pt) {
         if (pt==null) {
             return null;
@@ -769,12 +788,15 @@ public class ExpressionVisitor extends Visitor {
                             p.getName());
                 }
                 else {
-                    ProducedType paramType = pr.getTypedParameter(p).getType().getTypeArgumentList().get(0);
-                    if ( !paramType.getType().isSupertypeOf(argType) ) {
-                        a.addError("sequenced argument not assignable to sequenced parameter type: " + 
-                                p.getName() + " since " +
-                                argType.getProducedTypeName() + " is not " +
-                                paramType.getProducedTypeName());
+                    ProducedType paramType = pr.getTypedParameter(p).getType();
+                    if (paramType!=null) {
+                        ProducedType at = getIndividualSequencedParameterType(paramType);
+                        if ( !at.getType().isSupertypeOf(argType) ) {
+                            a.addError("sequenced argument not assignable to sequenced parameter type: " + 
+                                    p.getName() + " since " +
+                                    argType.getProducedTypeName() + " is not " +
+                                    paramType.getProducedTypeName());
+                        }
                     }
                 }
             }
@@ -814,10 +836,11 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             else if (p.isSequenced()) {
-                for (int j=i; j<args.size(); j++) {
-                    ProducedType paramType = r.getTypedParameter(p).getType();
-                    if (paramType!=null) {
-                        checkPositionalArgument(p, args.get(i), paramType.getTypeArgumentList().get(0));
+                ProducedType paramType = r.getTypedParameter(p).getType();
+                if (paramType!=null) {
+                    ProducedType at = getIndividualSequencedParameterType(paramType);
+                    for (int j=i; j<args.size(); j++) {
+                        checkPositionalArgument(p, args.get(i), at);
                     }
                 }
                 return;
@@ -832,6 +855,11 @@ public class ExpressionVisitor extends Visitor {
         for (int i=params.size(); i<args.size(); i++) {
             args.get(i).addError("no matching parameter for argument");
         }
+    }
+
+    private ProducedType getIndividualSequencedParameterType(
+            ProducedType paramType) {
+        return paramType.minus(getEmptyDeclaration()).getSupertype(getSequenceDeclaration()).getTypeArgumentList().get(0);
     }
 
     private void checkPositionalArgument(Parameter p,
@@ -873,7 +901,8 @@ public class ExpressionVisitor extends Visitor {
                             pt.getProducedTypeName() + " is not Optional");
                 }
             }
-            ProducedType st = pt.getSupertype(getCorrespondenceDeclaration());
+            ProducedType st = pt.minus(getEmptyDeclaration()).getSupertype(getCorrespondenceDeclaration());
+            if (st==null) st = pt.getSupertype(getCorrespondenceDeclaration());
             if (st==null) {
                 that.getPrimary().addError("illegal receiving type for index expression: " +
                         pt.getProducedTypeName() + " is not of type: Correspondence");
@@ -1089,6 +1118,10 @@ public class ExpressionVisitor extends Visitor {
 
     private boolean isOptionalType(ProducedType rhst) {
         return getNothingDeclaration().getType().isSubtypeOf(rhst);
+    }
+    
+    private boolean isEmptyType(ProducedType rhst) {
+        return getEmptyDeclaration().getType().isSubtypeOf(rhst);
     }
     
     private void visitInOperator(Tree.InOp that) {
@@ -1460,11 +1493,12 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.SequenceEnumeration that) {
         super.visit(that);
-        ProducedType et;
+        ProducedType st;
         if ( that.getExpressionList()==null ) {
-            et = new BottomType().getType();
+            st = getEmptyDeclaration().getType();
         }
         else {
+            ProducedType et;
             List<ProducedType> list = new ArrayList<ProducedType>();
             for (Tree.Expression e: that.getExpressionList().getExpressions()) {
                 if (e.getTypeModel()!=null) {
@@ -1484,8 +1518,9 @@ public class ExpressionVisitor extends Visitor {
                 ut.setCaseTypes(list);
                 et = ut.getType(); 
             }
+            st = getSequenceType(et);
         }
-        that.setTypeModel(getSequenceType(et));
+        that.setTypeModel(st);
     }
 
     private ProducedType getSequenceType(ProducedType et) {
@@ -1533,6 +1568,10 @@ public class ExpressionVisitor extends Visitor {
 
     private Class getNothingDeclaration() {
         return (Class) getLanguageDeclaration("Nothing");
+    }
+
+    private Interface getEmptyDeclaration() {
+        return (Interface) getLanguageDeclaration("Empty");
     }
 
     private Interface getSequenceDeclaration() {

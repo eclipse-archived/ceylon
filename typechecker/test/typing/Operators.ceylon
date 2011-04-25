@@ -137,7 +137,7 @@ class Operators() {
     @error X()[].doIt();
     @error X()?.doIt();
     
-    @type["Sequence<Bottom>"] local es = {};
+    @type["Empty"] local es = {};
     
     @type["Nothing"] local nnnn = es[0];
     Nothing nnnn2 = nnnn;

@@ -290,6 +290,9 @@ public class ProducedType extends ProducedReference {
     }
     
     public List<ProducedType> getSupertypes() {
+        if ( getDeclaration() instanceof UnionType && getDeclaration().getCaseTypes().size()==1) {
+            return getDeclaration().getCaseTypes().get(0).getSupertypes();
+        }
         List<ProducedType> list = new ArrayList<ProducedType>();
         list.add(this);
         if (getDeclaration().getExtendedType()!=null) {

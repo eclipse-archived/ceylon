@@ -156,7 +156,7 @@ class Assignability() {
         print(nothing.hello);
     }
     
-    if (exists {X()}.lastIndex) {}
+    if (exists {X()}[0]) {}
     
     //if (exists "Hello") {}
     

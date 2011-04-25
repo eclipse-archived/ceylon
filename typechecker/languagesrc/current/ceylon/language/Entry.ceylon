@@ -1,4 +1,4 @@
-shared abstract class Entry<out U, out V>(U key, V value)
+shared abstract class Entry<U, out V>(U key, V value)
         extends Object()
         satisfies Equality
         given U satisfies Equality
