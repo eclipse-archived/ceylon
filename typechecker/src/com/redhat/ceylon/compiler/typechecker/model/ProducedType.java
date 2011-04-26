@@ -362,6 +362,12 @@ public class ProducedType extends ProducedReference {
             return tp.getDeclaration()==declaration ||
                 ((covariant || !tp.isCovariant()) && (contravariant || !tp.isContravariant()));
         }
+        else if (getDeclaration() instanceof UnionType) {
+            for (ProducedType ct: getDeclaration().getCaseTypes()) {
+                if ( !ct.checkVariance(covariant, contravariant, declaration) ) return false;
+            }
+            return true;
+        }
         else {
             for (TypeParameter tp: getDeclaration().getTypeParameters()) {
                 ProducedType pt = getTypeArguments().get(tp);
