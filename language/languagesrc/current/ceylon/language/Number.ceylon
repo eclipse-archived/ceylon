@@ -1,4 +1,5 @@
-shared interface Number satisfies Equality {
+shared interface Number 
+        satisfies Equality {
     
     doc "Determine if the number represents
          an integer value"

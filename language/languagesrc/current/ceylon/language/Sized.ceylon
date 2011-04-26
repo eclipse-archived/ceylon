@@ -1,4 +1,5 @@
-shared interface Sized satisfies Container {
+shared interface Sized 
+        satisfies Container {
         
     doc "The number of elements or entries belonging to the 
          container."

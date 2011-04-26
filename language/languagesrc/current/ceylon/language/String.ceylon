@@ -1,7 +1,9 @@
 shared class String(Character[] chars)
         extends Object()
-        satisfies Comparable<String> & Correspondence<Natural,Character> & Iterable<Character> & Sized {
-
+        satisfies Comparable<String> & Iterable<Character> &
+                  Correspondence<Natural,Character> & 
+                  Sized & Accumulable<String> {
+    
     shared Character[] characters;
     if (nonempty chars) {
         characters = chars.clone;
