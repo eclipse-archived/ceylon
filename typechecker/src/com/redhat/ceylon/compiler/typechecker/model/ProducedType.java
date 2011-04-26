@@ -4,6 +4,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -290,37 +291,52 @@ public class ProducedType extends ProducedReference {
     }
     
     public List<ProducedType> getSupertypes() {
-        if ( getDeclaration() instanceof UnionType && getDeclaration().getCaseTypes().size()==1) {
-            return getDeclaration().getCaseTypes().get(0).getSupertypes();
-        }
         List<ProducedType> list = new ArrayList<ProducedType>();
         list.add(this);
         if (getDeclaration().getExtendedType()!=null) {
             for (ProducedType et: getDeclaration().getExtendedType().getSupertypes()) {
-                list.add( et.substitute(getTypeArguments()) );
+                addToSupertypes( list, et.substitute(getTypeArguments()) );
             }
         }
         for (ProducedType dst: getDeclaration().getSatisfiedTypes()) {
             for (ProducedType st: dst.getSupertypes()) {
-                list.add( st.substitute(getTypeArguments()) );
+                addToSupertypes( list, st.substitute(getTypeArguments()) );
             }
         }
         if (getDeclaration().getCaseTypes()!=null && !getDeclaration().getCaseTypes().isEmpty()) {
-            List<ProducedType> candidates = getDeclaration().getCaseTypes().get(0).getSupertypes();
-            for (ProducedType st: candidates) {
-                boolean include = true;
-                for (ProducedType ct: getDeclaration().getCaseTypes()) {
-                    if (!ct.isSubtypeOf(st)) {
-                        include = false;
-                        break;
+            for (ProducedType t: getDeclaration().getCaseTypes()) {
+                List<ProducedType> candidates = t.getSupertypes();
+                for (ProducedType st: candidates) {
+                    st = st.substitute(getTypeArguments());
+                    boolean include = true;
+                    for (ProducedType ct: getDeclaration().getCaseTypes()) {
+                        ct = ct.substitute(getTypeArguments());
+                        if (!ct.isSubtypeOf(st)) {
+                            include = false;
+                            break;
+                        }
                     }
-                }
-                if (include) {
-                    list.add(st);
+                    if (include) {
+                        addToSupertypes(list, st);
+                    }
                 }
             }
         }
         return list;
+    }
+
+    private static void addToSupertypes(List<ProducedType> list, ProducedType st) {
+        boolean include = true;
+        for (Iterator<ProducedType> iter = list.iterator(); iter.hasNext();) {
+            ProducedType et = iter.next();
+            if (st.isExactly(et)) {
+                include = false;
+                break;
+            }
+        }
+        if (include) {
+            list.add(st);
+        }
     }
     
     public ProducedType getSupertype(TypeDeclaration genericType) {
