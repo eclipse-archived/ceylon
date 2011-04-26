@@ -1059,7 +1059,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    @Override public void visit(Tree.SumOp that) {
+    /*@Override public void visit(Tree.SumOp that) {
         super.visit( (Tree.BinaryOperatorExpression) that );
         ProducedType lhst = leftType(that);
         if (lhst!=null) {
@@ -1071,7 +1071,7 @@ public class ExpressionVisitor extends Visitor {
                 visitBinaryOperator(that, getNumericDeclaration());
             }
         }
-    }
+    }*/
 
     private void visitComparisonOperator(Tree.BinaryOperatorExpression that, TypeDeclaration type) {
         ProducedType lhst = leftType(that);
@@ -1338,7 +1338,9 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.ArithmeticOp that) {
         super.visit(that);
-        visitBinaryOperator(that, getNumericDeclaration());
+        Interface dec = that instanceof Tree.SumOp ? 
+                getAccumulableDeclaration() : getNumericDeclaration();
+        visitBinaryOperator(that, dec);
     }
 
     @Override public void visit(Tree.BitwiseOp that) {
@@ -1668,7 +1670,11 @@ public class ExpressionVisitor extends Visitor {
     private Interface getIterableDeclaration() {
         return (Interface) getLanguageDeclaration("Iterable");
     }
-
+    
+    private Interface getAccumulableDeclaration() {
+        return (Interface) getLanguageDeclaration("Accumulable");
+    }
+        
     private Interface getNumericDeclaration() {
         return (Interface) getLanguageDeclaration("Numeric");
     }

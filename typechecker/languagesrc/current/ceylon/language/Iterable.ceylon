@@ -1,4 +1,5 @@
-shared interface Iterable<out X> satisfies Container {
+shared interface Iterable<out X> 
+        satisfies Container {
     
     doc "A sequence of objects belonging
          to the container."

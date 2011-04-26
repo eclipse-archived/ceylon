@@ -1,7 +1,8 @@
 shared interface Sequence<out X> 
         //is EnumerableSequence<X>
-        satisfies Correspondence<Natural, X> & Iterable<X> & Sized & Cloneable<Sequence<X>> {
-
+        satisfies Correspondence<Natural, X> & Iterable<X> & 
+                  Sized & Cloneable<Sequence<X>> {
+    
     doc "The index of the last element of the sequence."
     shared formal Natural lastIndex;
     
