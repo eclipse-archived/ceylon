@@ -1,5 +1,5 @@
 shared interface Numeric<N>
-        satisfies Number & Comparable<N> & Accumulable<N>
+        satisfies Number & Comparable<N> & Summable<N>
         given N satisfies Numeric<N> {
 
     doc "The binary |-| operator"

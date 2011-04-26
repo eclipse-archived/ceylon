@@ -1339,7 +1339,7 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.ArithmeticOp that) {
         super.visit(that);
         Interface dec = that instanceof Tree.SumOp ? 
-                getAccumulableDeclaration() : getNumericDeclaration();
+                getSummableDeclaration() : getNumericDeclaration();
         visitBinaryOperator(that, dec);
     }
 
@@ -1671,8 +1671,8 @@ public class ExpressionVisitor extends Visitor {
         return (Interface) getLanguageDeclaration("Iterable");
     }
     
-    private Interface getAccumulableDeclaration() {
-        return (Interface) getLanguageDeclaration("Accumulable");
+    private Interface getSummableDeclaration() {
+        return (Interface) getLanguageDeclaration("Summable");
     }
         
     private Interface getNumericDeclaration() {
