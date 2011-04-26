@@ -908,10 +908,7 @@ public class ExpressionVisitor extends Visitor {
             else if (p.isSequenced()) {
                 ProducedType paramType = r.getTypedParameter(p).getType();
                 if (paramType!=null) {
-                    ProducedType at = getIndividualSequencedParameterType(paramType);
-                    for (int j=i; j<args.size(); j++) {
-                        checkPositionalArgument(p, args.get(i), at);
-                    }
+                    checkSequencedPositionalArgument(p, args, i, paramType);
                 }
                 return;
             }
@@ -924,6 +921,38 @@ public class ExpressionVisitor extends Visitor {
         }
         for (int i=params.size(); i<args.size(); i++) {
             args.get(i).addError("no matching parameter for argument");
+        }
+    }
+
+    private void checkSequencedPositionalArgument(Parameter p,
+            List<Tree.PositionalArgument> args, int i, ProducedType paramType) {
+        ProducedType at = getIndividualSequencedParameterType(paramType);
+        for (int j=i; j<args.size(); j++) {
+            Tree.PositionalArgument a = args.get(i);
+            Tree.Expression e = a.getExpression();
+            if (e==null) {
+                //TODO: this case is temporary until we get support for SPECIAL_ARGUMENTs
+            }
+            else {
+                ProducedType argType = e.getTypeModel();
+                if (argType!=null) {
+                    if (paramType.isSupertypeOf(argType)) {
+                        if (i<args.size()-1) {
+                            a.addError("too many arguments to sequenced parameter: " + p.getName());
+                        }
+                    }
+                    else if (!at.isSupertypeOf(argType)) {
+                        a.addError("argument not assignable to parameter type: " + 
+                                p.getName() + " since " +
+                                argType.getProducedTypeName() + " is not " +
+                                at.getProducedTypeName());
+                    }
+                }
+                else {
+                    a.addError("could not determine assignability of argument to parameter: " +
+                            p.getName());
+                }
+            }
         }
     }
 
