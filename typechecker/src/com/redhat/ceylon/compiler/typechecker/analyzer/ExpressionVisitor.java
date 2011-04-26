@@ -1367,9 +1367,31 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.ArithmeticOp that) {
         super.visit(that);
-        Interface dec = that instanceof Tree.SumOp ? 
-                getSummableDeclaration() : getNumericDeclaration();
-        visitBinaryOperator(that, dec);
+        visitBinaryOperator(that, getArithmeticDeclaration(that));
+    }
+
+    private Interface getArithmeticDeclaration(Tree.ArithmeticOp that) {
+        if (that instanceof Tree.SumOp) {
+            return getSummableDeclaration();
+        }
+        else if (that instanceof Tree.RemainderOp) {
+            return getIntegralDeclaration();
+        }
+        else {
+            return getNumericDeclaration();
+        }
+    }
+
+    private Interface getArithmeticDeclaration(Tree.ArithmeticAssignmentOp that) {
+        if (that instanceof Tree.AddAssignOp) {
+            return getSummableDeclaration();
+        }
+        else if (that instanceof Tree.RemainderAssignOp) {
+            return getIntegralDeclaration();
+        }
+        else {
+            return getNumericDeclaration();
+        }
     }
 
     @Override public void visit(Tree.BitwiseOp that) {
@@ -1430,7 +1452,7 @@ public class ExpressionVisitor extends Visitor {
         
     @Override public void visit(Tree.ArithmeticAssignmentOp that) {
         super.visit(that);
-        visitBinaryOperator(that, getNumericDeclaration());
+        visitBinaryOperator(that, getArithmeticDeclaration(that));
         checkAssignable(that.getLeftTerm());
     }
         
@@ -1706,6 +1728,10 @@ public class ExpressionVisitor extends Visitor {
         
     private Interface getNumericDeclaration() {
         return (Interface) getLanguageDeclaration("Numeric");
+    }
+        
+    private Interface getIntegralDeclaration() {
+        return (Interface) getLanguageDeclaration("Integral");
     }
         
     private Interface getInvertableDeclaration() {
