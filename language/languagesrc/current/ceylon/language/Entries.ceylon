@@ -5,7 +5,7 @@ shared interface Entries<in U, out V>
         given U satisfies Equality
         given V satisfies Equality {}
 
-shared Entries<Natural,X> entries<X>(X[] sequence) 
+shared Entries<Natural,X> entries<X>(X... sequence) 
         given X satisfies Equality {
     
     object sequenceEntries 
