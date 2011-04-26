@@ -13,14 +13,18 @@ class Operators() {
     
     @type["Float"] local x3 = -2.5;
     
+    @type["Integer"] local w0 = -1;
+    
     @type["Float"] local x4 = 2.4 ** 0.5;
     
-    @type["Integer"]  local x5 = (1 + 2).integer - -3;
+    @type["Integer"] local x5 = (1 + 2).integer - -3;
     
     @type["Float"]  local x6 = 1.0 * 2.5 ** (-0.5);
     
     @type["Natural"] local x7 = 10 % 3;
     @type["Natural"] local x8 = 10 / 3;
+    
+    @error local w1 = 4.0 % 2.0;
     
     @error local x9 = 1 + 1.0;
     
