@@ -1,0 +1,1 @@
+shared X[] join<X>(X[]... sequences) { throw; }
