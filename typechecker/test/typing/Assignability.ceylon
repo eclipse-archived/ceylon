@@ -237,6 +237,14 @@ class Assignability() {
     
     for (@error X x -> Y y in 12) {}
     
+    for (Natural i->String s in entries<String>({"hello", "world", "!"})) {
+        print($i + ": " + s);
+    }
+    
+    for (Natural i->String s in entries<String>("hello", "world", "!")) {
+        print($i + ": " + s);
+    }
+    
     //for (@error local x -> local y in 12) {}
     
     void printStrings(String... strings) {}
