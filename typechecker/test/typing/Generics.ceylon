@@ -91,8 +91,8 @@ class Generics() {
         class BadClass(@error X x) {}
         class GoodClass2(Y[] y) {}
         class BadClass2(@error X[] x) {}
-        class GoodClassInheritance() satisfies X[] {}
-        @error class BadClassInheritance() satisfies Y[] {}
+        class GoodClassInheritance() satisfies Sequence<X> {}
+        @error class BadClassInheritance() satisfies Sequence<Y> {}
         class GoodClassInheritance2() extends Producer<X>() {}
         @error class BadClassInheritance2() extends Producer<Y>() {}
         class GoodClassInheritance3() extends Consumer<Y>() {}
@@ -182,7 +182,7 @@ class Generics() {
     class Num() satisfies Comparable<Num> {}
     
     abstract class SortedList<T>(T... elements) 
-        satisfies T[] 
+        satisfies Sequence<T> 
         given T satisfies Comparable<T> {}
     
     interface WithCovariant<out X> {}
@@ -200,13 +200,13 @@ class Generics() {
     @error class Bad4<in T>() satisfies WithContravariant<Consumer<T>> {}
     
     interface SequenceSequence<out T, out X> 
-            satisfies T[]
-            given T satisfies X[] & Equality
+            satisfies Sequence<T>
+            given T satisfies Sequence<X> & Equality
             given X satisfies Equality {}
     
     interface BadSequenceSequence<out T> 
-            satisfies T[]
-            @error given T/*<out X>*/ satisfies X[] & Equality
+            satisfies Sequence<T>
+            @error given T/*<out X>*/ satisfies Sequence<X> & Equality
             @error given X satisfies Equality {}
 
 }

@@ -481,25 +481,25 @@ typeConstraints
     ;
 
 unionType
-    : (type -> type)
-    ( ('|' type)+
-      -> ^(UNION_TYPE $unionType type+)
+    : (abbreviatedType -> abbreviatedType)
+    ( ('|' abbreviatedType)+
+      -> ^(UNION_TYPE $unionType abbreviatedType+)
     )?
     ;
 
-type
-    : (unabbreviatedType -> unabbreviatedType)
+abbreviatedType
+    : (type -> type)
       (
         DEFAULT_OP 
-      -> ^(UNION_TYPE ^(BASE_TYPE ^(IDENTIFIER[$DEFAULT_OP,"Nothing"])) $type)
+      -> ^(UNION_TYPE ^(BASE_TYPE ^(IDENTIFIER[$DEFAULT_OP,"Nothing"])) $abbreviatedType)
       | ARRAY 
-      -> ^(UNION_TYPE ^(BASE_TYPE ^(IDENTIFIER[$ARRAY,"Empty"])) ^(BASE_TYPE ^(IDENTIFIER[$ARRAY,"Sequence"]) ^(TYPE_ARGUMENT_LIST $type)))
+      -> ^(UNION_TYPE ^(BASE_TYPE ^(IDENTIFIER[$ARRAY,"Empty"])) ^(BASE_TYPE ^(IDENTIFIER[$ARRAY,"Sequence"]) ^(TYPE_ARGUMENT_LIST $abbreviatedType)))
       )*
     ;
 
-unabbreviatedType
+type
     : (ot=typeNameWithArguments -> ^(BASE_TYPE $ot))
-      (MEMBER_OP it=typeNameWithArguments -> ^(QUALIFIED_TYPE[$MEMBER_OP] $unabbreviatedType $it))*
+      (MEMBER_OP it=typeNameWithArguments -> ^(QUALIFIED_TYPE[$MEMBER_OP] $type $it))*
     | SUBTYPE
     /*| parameterName '.' 'subtype' abbreviation*
     -> ^(TYPE parameterName 'subtype' abbreviation*)*/
