@@ -6,7 +6,7 @@ class Operators() {
 	Natural power = 2**2;
 	Natural quotient = 2/2;
 	Natural remainder = 3%2;
-	Natural negative = -1;
+	Integer negative = -1;
 	
 	Float parenthesized = (1.0 + 2.0)/3.0 + 0.5;
 	
