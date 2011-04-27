@@ -208,5 +208,20 @@ class Generics() {
             satisfies Sequence<T>
             @error given T/*<out X>*/ satisfies Sequence<X> & Equality
             @error given X satisfies Equality {}
-
+    
+    class Upper<X>(X x)
+            given X satisfies Equality {
+        shared Entry<X,Y> method<Y>(X x, Y y) 
+                given Y satisfies Equality { 
+            return x->y; 
+        }
+        shared class Inner<Y>(X x, Y y) {}
+    }
+    
+    class Lower<W>(W w) extends Upper<W>(w)
+            given W satisfies Equality {}
+     
+    @type["Entry<String,Natural>"] Lower<String>("hello").method<Natural>("world",1);
+    @type["Generics.Upper<String>.Inner<Float>"] Lower<String>("hello").Inner<Float>("world", 2.3);
+    
 }
