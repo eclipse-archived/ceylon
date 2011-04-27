@@ -1,5 +1,4 @@
-shared interface Invertable<I> 
-    given I satisfies Number {
+shared interface Invertable<I> {
     
     doc "The unary |-| operator"
     shared formal I inverse;
