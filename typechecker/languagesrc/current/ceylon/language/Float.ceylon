@@ -1,5 +1,7 @@
 shared class Float(Float f)
         extends Object()
-        satisfies Numeric<Float> & Invertable<Float> {
+        satisfies Castable<Float> &
+                  Numeric<Float> &
+                  Invertable<Float> {
 
 }

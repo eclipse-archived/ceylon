@@ -1,3 +1,5 @@
 shared class Natural(Natural n)
         extends Object()
-        satisfies Integral<Natural> & Invertable<Integer> {}
+        satisfies Castable<Natural|Integer|Float> &
+                  Integral<Natural> &
+                  Invertable<Integer> {}
