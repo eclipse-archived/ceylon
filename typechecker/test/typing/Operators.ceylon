@@ -123,6 +123,8 @@ class Operators() {
     @type["Natural"] ++n;
     @type["Natural"] n+=1;
     @type["Natural"] n/=3;
+    @error n+=1.0;
+    @error n+=-1;
     
     variable Float f:=0.0;
     @type["Float"] f+=1.0;
