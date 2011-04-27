@@ -6,7 +6,12 @@ shared interface Iterable<out X>
     shared formal Iterator<X> iterator();
     
     shared actual default Boolean empty {
-        return !(iterator().head exists);
+        return !(first exists);
+    }
+    
+    doc "The first object."
+    shared default X? first {
+        return iterator().head;
     }
 
 }

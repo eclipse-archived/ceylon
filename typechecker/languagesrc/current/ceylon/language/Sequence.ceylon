@@ -7,7 +7,7 @@ shared interface Sequence<out X>
     shared formal Natural lastIndex;
     
     doc "The first element of the sequence."
-    shared formal X first;
+    shared actual formal X first;
     
     doc "The rest of the sequence, without the first
          element."

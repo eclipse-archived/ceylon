@@ -1,6 +1,6 @@
 shared object process {
 
-    shared String[] args { throw; }
+    shared String[] arguments { throw; }
     
     shared Entry<String, String>[] switches { throw; }
 

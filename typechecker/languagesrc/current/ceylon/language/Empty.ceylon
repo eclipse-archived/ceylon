@@ -25,5 +25,8 @@ shared interface Empty
     shared actual Nothing value(Natural key) {
         return null;
     }
+    shared actual Nothing first {
+        return null;
+    }
     
 }
