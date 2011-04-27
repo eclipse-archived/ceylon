@@ -2,9 +2,9 @@ shared object process {
 
     shared String[] arguments { throw; }
     
-    shared Entry<String, String>[] switches { throw; }
+    shared Entries<String,String> switches { throw; }
 
-    shared Correspondence<String,String> properties  { throw; }
+    shared Entries<String,String> properties  { throw; }
 
     shared void write(String string) { throw; }
     
