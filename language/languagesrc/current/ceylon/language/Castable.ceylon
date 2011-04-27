@@ -1,4 +1,4 @@
 shared interface Castable<in S> {
-    shared formal Y as<Y>()
-        given Y satisfies S;
+    shared formal T as<T>()
+        given T satisfies S;
 }

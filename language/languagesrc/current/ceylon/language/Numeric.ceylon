@@ -1,6 +1,6 @@
 shared interface Numeric<N>
         satisfies Number & Comparable<N> & 
-                  Summable<N> & Castable<N>
+                  Summable<N>
         given N satisfies Numeric<N> {
 
     doc "The binary |-| operator"
@@ -17,7 +17,9 @@ shared interface Numeric<N>
     
 }
 
-shared N plus<N>(Castable<N> x, Castable<N> y)
-        given N satisfies Numeric<N> {
+shared N plus<X,Y,N>(X x, Y y)
+        given N of X|Y satisfies Numeric<N>
+        given X satisfies Castable<N>
+        given Y satisfies Castable<N> {
     return x.as<N>().plus(y.as<N>());
 }       
