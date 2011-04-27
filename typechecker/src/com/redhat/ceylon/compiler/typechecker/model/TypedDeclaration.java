@@ -38,16 +38,8 @@ public abstract class TypedDeclaration extends Declaration {
 	    }
 	}
 
-    public boolean acceptsArguments(List<ProducedType> typeArguments) {
-        return typeArguments.isEmpty();
-    }
-    
     public ProducedTypedReference getProducedTypedReference(ProducedType pt, 
             List<ProducedType> typeArguments) {
-        if (!acceptsArguments(typeArguments)) {
-            throw new RuntimeException( getName() + 
-                    " does not accept given type arguments");
-        }
         ProducedTypedReference ptr = new ProducedTypedReference();
         ptr.setDeclaration(this);
         ptr.setDeclaringType(pt);

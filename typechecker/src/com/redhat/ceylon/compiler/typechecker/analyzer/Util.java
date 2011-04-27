@@ -1,16 +1,13 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Import;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -19,7 +16,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -178,52 +174,6 @@ public class Util {
         return typeArguments;
     }
 
-    static boolean acceptsTypeArguments(Declaration member, List<ProducedType> typeArguments, 
-            Tree.TypeArgumentList tal, Node parent) {
-        return acceptsTypeArguments(null, member, typeArguments, tal, parent);
-    }
-    static boolean acceptsTypeArguments(ProducedType receiver, Declaration member, List<ProducedType> typeArguments, 
-            Tree.TypeArgumentList tal, Node parent) {
-        if (member instanceof Generic) {
-            List<TypeParameter> params = ((Generic) member).getTypeParameters();
-            if ( params.size()==typeArguments.size() ) {
-                for (int i=0; i<params.size(); i++) {
-                    TypeParameter param = params.get(i);
-                    ProducedType arg = typeArguments.get(i);
-                    Map<TypeParameter, ProducedType> self = Collections.singletonMap(param, arg);
-                    for (ProducedType st: param.getSatisfiedTypes()) {
-                        ProducedType sts = receiver==null ? st : st.substitute(receiver.getTypeArguments()); 
-                        sts = sts.substitute(self);
-                        if (arg!=null && !arg.isSubtypeOf(sts)) {
-                            tal.getTypes().get(i).addError("type parameter " + param.getName() 
-                                    + " of declaration " + member.getName()
-                                    + " has argument " + arg.getProducedTypeName() 
-                                    + " not assignable to " + sts.getProducedTypeName());
-                            return false;
-                        }
-                    }
-                }
-                return true;
-            }
-            else {
-                if (tal==null) {
-                    parent.addError("requires type arguments (until we implement type inference)");
-                }
-                else {
-                    tal.addError("wrong number of type arguments");
-                }
-                return false;
-            }
-        }
-        else {
-            boolean empty = typeArguments.isEmpty();
-            if (!empty) {
-                tal.addError("does not accept type arguments");
-            }
-            return empty;
-        }
-    }
-
     static ProducedType getDeclaringType(Declaration d, ProducedType containingType) {
         return containingType.getSupertype((TypeDeclaration) d.getContainer());
     }
@@ -262,10 +212,11 @@ public class Util {
                     included = true;
                     break;
                 }
-                //TODO: put this back in but fix the stack overflow!
-                /*else if (pt.isSupertypeOf(t)) {
+                //TODO: I think in some very rare occasions 
+                //      this can cause stack overflows!
+                else if (pt.isSupertypeOf(t)) {
                     iter.remove();
-                }*/
+                }
             }
             if (!included) {
                 list.add(pt);

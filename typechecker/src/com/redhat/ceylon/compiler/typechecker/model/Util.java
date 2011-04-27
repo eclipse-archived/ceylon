@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class Util {
+public class Util {
 
-    static Map<TypeParameter,ProducedType> arguments(Declaration d, ProducedType declaringType, List<ProducedType> typeArguments) {
+    public static Map<TypeParameter,ProducedType> arguments(Declaration d, ProducedType declaringType, List<ProducedType> typeArguments) {
         Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
         if (declaringType!=null) {
             map.putAll(declaringType.getTypeArguments());

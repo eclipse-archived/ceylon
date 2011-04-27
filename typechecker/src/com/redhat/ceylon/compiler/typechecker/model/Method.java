@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -60,23 +58,4 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
 	    parameterLists.add(pl);
 	}
 
-	@Override
-    public boolean acceptsArguments(List<ProducedType> typeArguments) {
-        //TODO!
-        return this.typeParameters.size()==typeArguments.size();
-    }
-    
-    @Override
-    public ProducedTypedReference getProducedTypedReference(ProducedType dt, List<ProducedType> typeArguments) {
-        if (!acceptsArguments(typeArguments)) {
-            throw new RuntimeException( getName() + 
-                    " does not accept given type arguments");
-        }
-        ProducedTypedReference pt = new ProducedTypedReference();
-        pt.setDeclaration(this);
-        pt.setDeclaringType(dt);
-        pt.setTypeArguments( arguments(this, dt, typeArguments) );
-        return pt;
-    }
-    
 }

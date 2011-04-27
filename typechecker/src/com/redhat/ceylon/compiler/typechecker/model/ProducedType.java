@@ -248,44 +248,39 @@ public class ProducedType extends ProducedReference {
         return t;
     }
         
-    public ProducedTypedReference getTypedMember(TypedDeclaration td, List<ProducedType> typeArguments) {
-        ProducedType declaringType = getSupertype( (TypeDeclaration) td.getContainer() );
-        if (declaringType==null) {
+    public ProducedTypedReference getTypedMember(TypedDeclaration member, List<ProducedType> typeArguments) {
+        ProducedType declaringType = getSupertype( (TypeDeclaration) member.getContainer() );
+        /*if (declaringType==null) {
             return null;
         }
-        else {
-            return declaringType.getDeclaredTypedMember(td, declaringType, typeArguments);
-        }
+        else {*/
+            ProducedTypedReference ptr = new ProducedTypedReference();
+            ptr.setDeclaration(member);
+            ptr.setDeclaringType(declaringType);
+            Map<TypeParameter, ProducedType> map = arguments(member, declaringType, typeArguments);
+            //map.putAll(sub(map));
+            ptr.setTypeArguments(map);
+            return ptr;
+        //}
     }
          
-    ProducedTypedReference getDeclaredTypedMember(TypedDeclaration td, ProducedType declaringType, List<ProducedType> typeArguments) {
-        /*if (!acceptsArguments(td, typeArguments)) {
-            return null;
-        }*/
-        ProducedTypedReference ptr = new ProducedTypedReference();
-        ptr.setDeclaration(td);
-        ptr.setDeclaringType(declaringType);
-        Map<TypeParameter, ProducedType> map = arguments(td, declaringType, typeArguments);
-        map.putAll(sub(map));
-        ptr.setTypeArguments(map);
-        return ptr;
-    }
-         
-    public ProducedType getTypeMember(TypeDeclaration td, List<ProducedType> typeArguments) {
-        //TODO: inherited type members, following pattern above!
-        /*if (!acceptsArguments(td, typeArguments)) {
-            return null;
-        }*/
+    public ProducedType getTypeMember(TypeDeclaration member, List<ProducedType> typeArguments) {
+        ProducedType declaringType = getSupertype( (TypeDeclaration) member.getContainer() );
         ProducedType pt = new ProducedType();
-        pt.setDeclaration(td);
-        ProducedType declaringType = getSupertype( (TypeDeclaration) td.getContainer() );
+        pt.setDeclaration(member);
         pt.setDeclaringType(declaringType);
-        Map<TypeParameter, ProducedType> map = arguments(td, declaringType, typeArguments);
-        map.putAll(sub(map));
+        Map<TypeParameter, ProducedType> map = arguments(member, declaringType, typeArguments);
+        //map.putAll(sub(map));
         pt.setTypeArguments(map);
         return pt;
     }
     
+    public ProducedType getProducedType(ProducedType receiver,
+            Declaration member, List<ProducedType> typeArguments) {
+        ProducedType rst =  (receiver==null) ? null : receiver.getSupertype( (TypeDeclaration) member.getContainer() );
+        return substitute(com.redhat.ceylon.compiler.typechecker.model.Util.arguments(member, rst, typeArguments));
+    }
+
     public ProducedType getType() {
         return this;
     }
@@ -325,6 +320,44 @@ public class ProducedType extends ProducedReference {
         return list;
     }
 
+    public ProducedType getSupertype(TypeDeclaration dec) {
+        if (this.getDeclaration()==dec) {
+            return this;
+        }
+        else if (getDeclaration().getExtendedType()!=null) {
+            ProducedType et = getDeclaration().getExtendedType().getSupertype(dec);
+            if (et!=null) {
+                return et.substitute(getTypeArguments());
+            }
+        }
+        for (ProducedType dst: getDeclaration().getSatisfiedTypes()) {
+            ProducedType st = dst.getSupertype(dec);
+            if (st!=null) {
+                return st.substitute(getTypeArguments());
+            }
+        }
+        if (getDeclaration().getCaseTypes()!=null && !getDeclaration().getCaseTypes().isEmpty()) {
+            for (ProducedType t: getDeclaration().getCaseTypes()) {
+                ProducedType candidate = t.getSupertype(dec);
+                if (candidate!=null) {
+                    ProducedType st = candidate.substitute(getTypeArguments());
+                    boolean include = true;
+                    for (ProducedType ct: getDeclaration().getCaseTypes()) {
+                        ct = ct.substitute(getTypeArguments());
+                        if (!ct.isSubtypeOf(st)) {
+                            include = false;
+                            break;
+                        }
+                    }
+                    if (include) {
+                        return st;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     private static void addToSupertypes(List<ProducedType> list, ProducedType st) {
         boolean include = true;
         for (Iterator<ProducedType> iter = list.iterator(); iter.hasNext();) {
@@ -337,15 +370,6 @@ public class ProducedType extends ProducedReference {
         if (include) {
             list.add(st);
         }
-    }
-    
-    public ProducedType getSupertype(TypeDeclaration genericType) {
-        for (ProducedType st: getSupertypes()) {
-            if (st.getDeclaration()==genericType) {
-                return st;
-            }
-        }
-        return null;
     }
     
     public List<ProducedType> getTypeArgumentList() {

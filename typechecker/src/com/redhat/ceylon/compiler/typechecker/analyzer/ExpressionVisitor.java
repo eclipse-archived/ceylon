@@ -15,6 +15,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -24,6 +25,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -1794,4 +1796,65 @@ public class ExpressionVisitor extends Visitor {
         return (Class) getLanguageDeclaration("Entry");
     }
         
+    private static boolean acceptsTypeArguments(Declaration member, List<ProducedType> typeArguments, 
+            Tree.TypeArgumentList tal, Node parent) {
+        return acceptsTypeArguments(null, member, typeArguments, tal, parent);
+    }
+    
+    private static boolean acceptsTypeArguments(ProducedType receiver, Declaration member, List<ProducedType> typeArguments, 
+            Tree.TypeArgumentList tal, Node parent) {
+        if (member instanceof Generic) {
+            List<TypeParameter> params = ((Generic) member).getTypeParameters();
+            if ( params.size()==typeArguments.size() ) {
+                for (int i=0; i<params.size(); i++) {
+                    TypeParameter param = params.get(i);
+                    ProducedType argType = typeArguments.get(i);
+                    //Map<TypeParameter, ProducedType> self = Collections.singletonMap(param, arg);
+                    for (ProducedType st: param.getSatisfiedTypes()) {
+                        //sts = sts.substitute(self);
+                        ProducedType sts = st.getProducedType(receiver, member, typeArguments);
+                        if (argType!=null && !argType.isSubtypeOf(sts)) {
+                            tal.getTypes().get(i).addError("type parameter " + param.getName() 
+                                    + " of declaration " + member.getName()
+                                    + " has argument " + argType.getProducedTypeName() 
+                                    + " not assignable to " + sts.getProducedTypeName());
+                            return false;
+                        }
+                    }
+                    if (param.getCaseTypes().size()>0) {
+                        boolean found = false;
+                        for (ProducedType ct: param.getCaseTypes()) {
+                            ProducedType cts = ct.getProducedType(receiver, member, typeArguments);
+                            if (argType.isSubtypeOf(cts)) found = true;
+                        }
+                        if (!found) {
+                            tal.getTypes().get(i).addError("type parameter " + param.getName() 
+                                    + " of declaration " + member.getName()
+                                    + " has argument " + argType.getProducedTypeName() 
+                                    + " not one of the listed cases");
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+            else {
+                if (tal==null) {
+                    parent.addError("requires type arguments (until we implement type inference)");
+                }
+                else {
+                    tal.addError("wrong number of type arguments");
+                }
+                return false;
+            }
+        }
+        else {
+            boolean empty = typeArguments.isEmpty();
+            if (!empty) {
+                tal.addError("does not accept type arguments");
+            }
+            return empty;
+        }
+    }
+
 }
