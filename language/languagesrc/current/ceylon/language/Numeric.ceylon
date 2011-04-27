@@ -17,9 +17,9 @@ shared interface Numeric<N>
     
 }
 
-shared N plus<X,Y,N>(X x, Y y)
+/*shared N plus<X,Y,N>(X x, Y y)
         given N of X|Y satisfies Numeric<N>
-        given X satisfies Castable<N>
-        given Y satisfies Castable<N> {
+        given X satisfies Castable<N> & Numeric<X>
+        given Y satisfies Castable<N> & Numeric<Y> {
     return x.as<N>().plus(y.as<N>());
-}       
+}*/      
