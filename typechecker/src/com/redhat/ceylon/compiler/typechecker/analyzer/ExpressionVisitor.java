@@ -223,6 +223,10 @@ public class ExpressionVisitor extends Visitor {
         return getIterableDeclaration().getProducedType(null, Collections.singletonList(et));
     }
 
+    private ProducedType getCastableType(ProducedType et) {
+        return getCastableDeclaration().getProducedType(null, Collections.singletonList(et));
+    }
+
     private ProducedType getEntryType(ProducedType kt, ProducedType vt) {
         return getEntryDeclaration().getProducedType(null, Arrays.asList(new ProducedType[] {kt, vt}));
     }
@@ -1182,6 +1186,46 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
+    private void visitArithmeticOperator(Tree.BinaryOperatorExpression that, TypeDeclaration type) {
+        ProducedType lhst = leftType(that);
+        ProducedType rhst = rightType(that);
+        if ( rhst!=null && lhst!=null ) {
+            ProducedType rhsst = rhst.getSupertype(type);
+            ProducedType lhsst = lhst.getSupertype(type);
+            if (rhsst==null) {
+                that.getRightTerm().addError("must be of type: " + type.getName());
+            }
+            if (lhsst==null) {
+                that.getLeftTerm().addError("must be of type: " + type.getName());
+            }
+            if (rhsst!=null && lhsst!=null) {
+                rhst = rhsst.getTypeArgumentList().get(0);
+                lhst = lhsst.getTypeArgumentList().get(0);
+                ProducedType rt;
+                Tree.Term node;
+                if (lhst.isSubtypeOf(getCastableType(lhst)) && rhst.isSubtypeOf(getCastableType(lhst))) {
+                    rt = lhst;
+                    node = that.getLeftTerm();
+                }
+                else if (lhst.isSubtypeOf(getCastableType(rhst)) && rhst.isSubtypeOf(getCastableType(rhst))) {
+                    rt = rhst;
+                    node = that.getRightTerm();
+                }
+                else {
+                    that.addError("could not promote operands to a common type: " + 
+                            lhst.getProducedTypeName() + ", " + rhst.getProducedTypeName());
+                    return;
+                }
+                if (!rt.isSubtypeOf(type.getProducedType(null, Collections.singletonList(rt)))) {
+                    node.addError("must be of type: " + type.getName());
+                }
+                else {
+                    that.setTypeModel(rt);
+                }
+            }
+        }
+    }
+
     private void visitBinaryOperator(Tree.BinaryOperatorExpression that, TypeDeclaration type) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
@@ -1369,7 +1413,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.ArithmeticOp that) {
         super.visit(that);
-        visitBinaryOperator(that, getArithmeticDeclaration(that));
+        visitArithmeticOperator(that, getArithmeticDeclaration(that));
     }
 
     private Interface getArithmeticDeclaration(Tree.ArithmeticOp that) {
@@ -1722,6 +1766,10 @@ public class ExpressionVisitor extends Visitor {
     
     private Interface getIterableDeclaration() {
         return (Interface) getLanguageDeclaration("Iterable");
+    }
+    
+    private Interface getCastableDeclaration() {
+        return (Interface) getLanguageDeclaration("Castable");
     }
     
     private Interface getSummableDeclaration() {

@@ -2,7 +2,7 @@ shared class String(Character[] chars)
         extends Object()
         satisfies Comparable<String> & Iterable<Character> &
                   Correspondence<Natural,Character> & 
-                  Sized & Summable<String> {
+                  Sized & Summable<String> & Castable<String> {
     
     shared Character[] characters;
     if (nonempty chars) {
