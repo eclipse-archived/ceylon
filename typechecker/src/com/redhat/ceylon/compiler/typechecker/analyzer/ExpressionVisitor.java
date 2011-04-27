@@ -538,7 +538,7 @@ public class ExpressionVisitor extends Visitor {
                             that.getIdentifier().getText());
                 }
                 List<ProducedType> typeArgs = getTypeArguments(that.getTypeArgumentList());
-                if (acceptsTypeArguments(member, typeArgs, that.getTypeArgumentList(), that)) {
+                if (acceptsTypeArguments(pt, member, typeArgs, that.getTypeArgumentList(), that)) {
                     ProducedTypedReference ptr = pt.getTypedMember(member, typeArgs);
                     if (ptr==null) {
                         that.addError("member not found: " + 
@@ -602,7 +602,7 @@ public class ExpressionVisitor extends Visitor {
                             that.getIdentifier().getText());
                 }
                 List<ProducedType> typeArgs = getTypeArguments(that.getTypeArgumentList());
-                if (acceptsTypeArguments(member, typeArgs, that.getTypeArgumentList(), that)) {
+                if (acceptsTypeArguments(pt, member, typeArgs, that.getTypeArgumentList(), that)) {
                     ProducedType t = pt.getTypeMember(member, typeArgs);
                     that.setTypeModel(wrap(t, that)); //TODO: this is not correct, should be Callable
                     that.setTarget(t);

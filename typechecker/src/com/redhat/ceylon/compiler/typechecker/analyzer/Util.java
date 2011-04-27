@@ -178,20 +178,25 @@ public class Util {
         return typeArguments;
     }
 
-    static boolean acceptsTypeArguments(Declaration d, List<ProducedType> typeArguments, 
+    static boolean acceptsTypeArguments(Declaration member, List<ProducedType> typeArguments, 
             Tree.TypeArgumentList tal, Node parent) {
-        if (d instanceof Generic) {
-            List<TypeParameter> params = ((Generic) d).getTypeParameters();
+        return acceptsTypeArguments(null, member, typeArguments, tal, parent);
+    }
+    static boolean acceptsTypeArguments(ProducedType receiver, Declaration member, List<ProducedType> typeArguments, 
+            Tree.TypeArgumentList tal, Node parent) {
+        if (member instanceof Generic) {
+            List<TypeParameter> params = ((Generic) member).getTypeParameters();
             if ( params.size()==typeArguments.size() ) {
                 for (int i=0; i<params.size(); i++) {
                     TypeParameter param = params.get(i);
                     ProducedType arg = typeArguments.get(i);
                     Map<TypeParameter, ProducedType> self = Collections.singletonMap(param, arg);
                     for (ProducedType st: param.getSatisfiedTypes()) {
-                        ProducedType sts = st.substitute(self);
+                        ProducedType sts = receiver==null ? st : st.substitute(receiver.getTypeArguments()); 
+                        sts = sts.substitute(self);
                         if (arg!=null && !arg.isSubtypeOf(sts)) {
                             tal.getTypes().get(i).addError("type parameter " + param.getName() 
-                                    + " of declaration " + d.getName()
+                                    + " of declaration " + member.getName()
                                     + " has argument " + arg.getProducedTypeName() 
                                     + " not assignable to " + sts.getProducedTypeName());
                             return false;
@@ -240,6 +245,9 @@ public class Util {
     }
 
     public static void addToUnion(List<ProducedType> list, ProducedType pt) {
+        if (pt==null) {
+            return;
+        }
         if (pt.getDeclaration() instanceof UnionType) {
             for (Iterator<ProducedType> iter = pt.getDeclaration().getCaseTypes().iterator(); iter.hasNext();) {
                 ProducedType t = iter.next();
@@ -254,9 +262,10 @@ public class Util {
                     included = true;
                     break;
                 }
-                else if (pt.isSupertypeOf(t)) {
+                //TODO: put this back in but fix the stack overflow!
+                /*else if (pt.isSupertypeOf(t)) {
                     iter.remove();
-                }
+                }*/
             }
             if (!included) {
                 list.add(pt);
