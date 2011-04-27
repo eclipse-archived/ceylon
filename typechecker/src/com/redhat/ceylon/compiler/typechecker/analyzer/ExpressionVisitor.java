@@ -1226,6 +1226,25 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    private void visitArithmeticAssignOperator(Tree.BinaryOperatorExpression that, TypeDeclaration type) {
+        ProducedType lhst = leftType(that);
+        ProducedType rhst = rightType(that);
+        if ( rhst!=null && lhst!=null ) {
+            ProducedType nt = lhst.getSupertype(type);
+            if (nt==null) {
+                that.getLeftTerm().addError("must be of type: " + type.getName());
+            }
+            else {
+                ProducedType t = nt.getTypeArguments().isEmpty() ? 
+                        nt : nt.getTypeArgumentList().get(0);
+                that.setTypeModel(t);
+                if (!getCastableType(t).isSupertypeOf(rhst)) {
+                    that.getRightTerm().addError("must be promotable to type: " + nt.getProducedTypeName());
+                }
+            }
+        }
+    }
+
     private void visitBinaryOperator(Tree.BinaryOperatorExpression that, TypeDeclaration type) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
@@ -1498,7 +1517,7 @@ public class ExpressionVisitor extends Visitor {
         
     @Override public void visit(Tree.ArithmeticAssignmentOp that) {
         super.visit(that);
-        visitBinaryOperator(that, getArithmeticDeclaration(that));
+        visitArithmeticAssignOperator(that, getArithmeticDeclaration(that));
         checkAssignable(that.getLeftTerm());
     }
         

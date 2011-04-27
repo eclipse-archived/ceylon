@@ -124,6 +124,12 @@ class Operators() {
     @type["Natural"] n+=1;
     @type["Natural"] n/=3;
     
+    variable Float f:=0.0;
+    @type["Float"] f+=1.0;
+    @type["Float"] f+=1;
+    @type["Float"] f-=4;
+    @type["Float"] f+=-1;
+    
     variable Boolean bb := false;
     @type["Boolean"] bb||=false;
     @type["Boolean"] bb&&=true;
