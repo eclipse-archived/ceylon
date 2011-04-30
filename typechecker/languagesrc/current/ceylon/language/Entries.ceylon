@@ -1,4 +1,4 @@
-shared interface Entries<in U, out V> 
+shared interface Entries<U, out V> 
         //is EnumerableEntries<U,V>
         satisfies Correspondence<U, V> & Iterable<Entry<U,V>> & 
                   Sized & Cloneable<Entries<U,V>> 
