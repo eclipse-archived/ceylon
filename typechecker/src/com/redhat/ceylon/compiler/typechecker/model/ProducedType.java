@@ -403,7 +403,7 @@ public class ProducedType extends ProducedReference {
                         if (!pt.checkVariance(!covariant, !contravariant, declaration)) return false;
                     }
                     else {
-                        pt.checkVariance(false, false, declaration);
+                        if ( !pt.checkVariance(false, false, declaration) ) return false;
                     }
                 }
             }
