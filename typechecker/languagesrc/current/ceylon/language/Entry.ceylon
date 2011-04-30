@@ -10,7 +10,7 @@ shared abstract class Entry<out U, out V>(U key, V value)
     doc "The value associated with the key."
     shared V value = value;
     
-    shared actual Integer hash = key.hash/2.integer + value.hash/2.integer; //TODO: really should be xor 
+    shared actual Integer hash = key.hash/2 + value.hash/2; //TODO: really should be xor 
     
     shared actual Boolean equals(Object that) {
         if (is Entry<Equality,Equality> that) {
