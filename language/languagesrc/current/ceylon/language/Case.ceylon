@@ -1,6 +1,6 @@
 shared abstract class Case(String caseName) {
     
-    shared actual Boolean equals(Object that) {
+    shared actual Boolean equals(Equality that) {
         return super.equals(that);
     }
     

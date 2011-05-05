@@ -12,7 +12,7 @@ shared abstract class Entry<out U, out V>(U key, V value)
     
     shared actual Integer hash = key.hash/2 + value.hash/2; //TODO: really should be xor 
     
-    shared actual Boolean equals(Object that) {
+    shared actual Boolean equals(Equality that) {
         if (is Entry<Equality,Equality> that) {
             return this.key==that.key && this.value==that.value;
         }
