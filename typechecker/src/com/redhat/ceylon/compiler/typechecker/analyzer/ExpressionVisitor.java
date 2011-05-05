@@ -1499,6 +1499,11 @@ public class ExpressionVisitor extends Visitor {
         visitNegativeOperator(that);
     }
         
+    @Override public void visit(Tree.PositiveOp that) {
+        super.visit(that);
+        visitNegativeOperator(that);
+    }
+        
     @Override public void visit(Tree.FlipOp that) {
         super.visit(that);
         visitUnaryOperator(that, getSlotsDeclaration());

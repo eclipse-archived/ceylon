@@ -86,6 +86,7 @@ tokens {
     POSTFIX_INCREMENT_OP;
     POSTFIX_DECREMENT_OP;
     NEGATIVE_OP;
+    POSITIVE_OP;
     FLIP_OP;
     IDENTIFIER;
     VALUE_ITERATOR;
@@ -664,7 +665,7 @@ interpolatedExpressionStart
     ;
 
 prefixOperator
-    : '$' | '-' |'++' | '--' | '~'
+    : '$' | '-' /*| '+'*/ |'++' | '--' | '~'
     ;
 
 expression
@@ -742,6 +743,7 @@ negationComplementExpression
 
 unaryMinusOrComplementOperator
     : DIFFERENCE_OP -> NEGATIVE_OP[$DIFFERENCE_OP]
+    | SUM_OP -> POSITIVE_OP[$SUM_OP]
     | COMPLEMENT_OP -> FLIP_OP[$COMPLEMENT_OP]
     | '$'
     ;
