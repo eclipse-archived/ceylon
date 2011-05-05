@@ -17,6 +17,6 @@ public class Literals() {
     
     Iterable<String> istrings = strings;
     
-    @type["Nothing|Entry<String,String>"] local sw = process.switches[3];
+    @type["Nothing|String"] local sw = process.switches["file"];
     
 }
