@@ -2,7 +2,7 @@ shared abstract class IdentifiableObject()
         extends Object() 
         satisfies Equality {
 
-    shared default actual Boolean equals(Object that) {
+    shared default actual Boolean equals(Equality that) {
         if (is IdentifiableObject that) {
             return this===that;
         }

@@ -116,7 +116,7 @@ shared class Range<X>(X start, X end)
         }
     }
     
-    shared actual Boolean equals(Object that) {
+    shared actual Boolean equals(Equality that) {
         if (is Range<X> that) {
             return that.start==start && that.end==end;
         }

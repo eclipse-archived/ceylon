@@ -56,6 +56,6 @@ shared class String(Character[] chars)
     
     shared actual Comparison compare(String other) { throw; }
     
-    shared actual Boolean equals(Object that) { throw; }
+    shared actual Boolean equals(Equality that) { throw; }
 
 }
