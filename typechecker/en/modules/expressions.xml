@@ -116,11 +116,10 @@ assert() that (semaphore&identical;s); //assertion never fails</programlisting>
         
         <itemizedlist>
         <listitem>
-            <para>The compiler is permitted to emit bytecode that unexpectedly creates or avoids 
-            creating an actual instance of the erasable type <literal>ceylon.language.Optional</literal>, 
-            of <literal>ceylon.language.Gettable</literal>, or of <literal>ceylon.language.Settable</literal>,
-            when an expression is evaluated, as long as this does not affect the execution of 
-            the program.</para>
+            <para>The compiler is permitted to emit bytecode that unexpectedly creates or
+            avoids creating an actual instance of <literal>ceylon.language.Gettable</literal> 
+            or <literal>ceylon.language.Settable</literal>, when an expression is evaluated, 
+            as long as this does not affect the execution of the program.</para>
         </listitem>
         <listitem>
             <para>The compiler is permitted to emit bytecode that produces a new instance of 
@@ -2860,7 +2859,7 @@ createItemMethod.intercept()
             <para>the <emphasis>existence</emphasis> operator
             <literal>exists</literal> evaluates to <literal>true</literal> if 
             its argument expression evaluates to an instance of 
-            <literal>Something</literal>, and <literal>false</literal> 
+            <literal>Object</literal>, and <literal>false</literal> 
             otherwise.</para>
         </listitem>
         -->
@@ -3085,7 +3084,7 @@ createItemMethod.intercept()
                 <para><literal>.</literal> if the expression is of type <literal>X</literal>,</para>
             </listitem>
             <listitem>
-                <para><literal>.?</literal> if the expression is of type <literal>Optional&lt;X&gt;</literal>,
+                <para><literal>.?</literal> if the expression is of type <literal>X?</literal>,
                 or</para>
             </listitem>
             <listitem>
@@ -3369,8 +3368,7 @@ createItemMethod.intercept()
     <section id="nullvalues">
     <title>Operators for handling null values</title>
     
-        <para>These operators make it easy to work with <literal>Optional</literal>
-        values.</para>
+        <para>These operators make it easy to work with optional expressions.</para>
     
     <table>
     <tgroup cols="7">

@@ -828,8 +828,8 @@ else {
             </listitem>
             <listitem>
                 <para>If the <literal>exists</literal> modifier appears, the condition is satisfied 
-                unless the expression evaluates to an instance of <literal>Nothing</literal> 
-                when the control structure is executed.</para>
+                unless the expression evaluates to an instance of <literal>Nothing</literal> when the 
+                control structure is executed.</para>
             </listitem>
             <listitem>
                 <para>If the <literal>nonempty</literal> modifier appears, the condition is satisfied 

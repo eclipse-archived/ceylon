@@ -196,9 +196,7 @@
            
            <itemizedlist>
                <listitem>
-                   <para><literal>Optional&lt;T&gt;</literal>,
-                   <literal>Something&lt;T&gt;</literal> and 
-                   <literal>Nothing&lt;T&gt;</literal> with <literal>T</literal>, 
+                   <para><literal>T?</literal> with <literal>T</literal>, 
                    for any type <literal>T</literal>.</para>
                </listitem>
             </itemizedlist>

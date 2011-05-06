@@ -107,7 +107,7 @@
             <para><literal>Void</literal>, </para>
         </listitem>
         <listitem>
-            <para><literal>Optional&lt;T&gt;</literal></para>
+            <para><literal>Nothing|T</literal></para>
         </listitem>
         <listitem>
             <para><literal>Method&lt;Void, Float, Float&gt;</literal>, and</para>
@@ -220,7 +220,7 @@
                 aliased type, and</para>
             </listitem>
             <listitem>
-                <para>replacing each occurrence of <literal>Optional&lt;T&gt;</literal> in 
+                <para>replacing each occurrence of <literal>T?</literal> in 
                 the signature with <literal>T</literal>, and</para>
             </listitem>
             <listitem>
@@ -356,7 +356,7 @@
             </listitem>
             <!--
             <listitem>
-                <para>Nullsafety: the type <literal>Optional&lt;T&gt;</literal> is 
+                <para>Nullsafety: the type <literal>T?</literal> is 
                 not assignable to <literal>Object</literal>. Nor is its subtype
                 <literal>Nothing</literal>.</para>
             </listitem>
