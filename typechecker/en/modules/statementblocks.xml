@@ -660,12 +660,11 @@ else {
             </listitem>
             <listitem>
                 <para>an <emphasis>existence condition</emphasis> is satisfied when an expression of
-                type <literal>Optional&lt;X&gt;</literal> evaluates to a non-null value,</para>
+                type <literal>X?</literal> evaluates to a non-null value,</para>
             </listitem>
             <listitem>
                 <para>a <emphasis>nonemptiness condition</emphasis> is satisfied when an expression 
-                of type <literal>Optional&lt;Container&gt;</literal> evaluates to a non-null, non-empty 
-                value, and</para>
+                of type <literal>X[]?</literal> evaluates to a non-null, non-empty value, and</para>
             </listitem>
             <listitem>
                 <para>an <emphasis>assignabilty condition</emphasis> is satisfied when an expression
@@ -717,28 +716,43 @@ else {
             </listitem>
             <listitem>
                 <para>If the <literal>exists</literal> modifier appears, the condition expression 
-                must be of type <literal>Optional&lt;X&gt;</literal> for some type 
-                <literal>X</literal>.</para>
+                must be of type <literal>X?</literal> for some type <literal>X</literal>.</para>
             </listitem>
             <listitem>
                 <para>If the <literal>nonempty</literal> modifier appears, the condition must be an 
-                expression of type <literal>Optional&lt;Container&gt;</literal>.</para>
+                expression of type <literal>X[]?</literal> for some type <literal>X</literal>.</para>
             </listitem>
         </itemizedlist>
 
-        <para>For <literal>exists</literal> or <literal>nonempty</literal> conditions:</para>
+        <para>For <literal>exists</literal> conditions:</para>
         
         <itemizedlist>
             <listitem>
                 <para>If the condition declares a variable, the variable must be declared of type 
                 <literal>X</literal>, where the specifier expression is of type 
-                <literal>Optional&lt;X&gt;</literal>.</para>
+                <literal>Nothing|X</literal>.</para>
             </listitem>
             <listitem>
                 <para>If the condition expression is a local, the local will be treated by the 
                 compiler as non-<literal>variable</literal> and as having type <literal>X</literal> 
                 inside the block that follows immediately, where the conditional expression is of 
-                type <literal>Optional&lt;X&gt;</literal>.</para>
+                type <literal>Nothing|X</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>For <literal>nonempty</literal> conditions:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>If the condition declares a variable, the variable must be declared of type 
+                <literal>X</literal>, where the specifier expression is of type 
+                <literal>Nothing|Empty|X</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>If the condition expression is a local, the local will be treated by the 
+                compiler as non-<literal>variable</literal> and as having type <literal>X</literal> 
+                inside the block that follows immediately, where the conditional expression is of 
+                type <literal>Nothing|Empty|X</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -752,21 +766,6 @@ else {
         
         <para>Where the <literal>name</literal> declared by the condition hides the outer declaration
         of <literal>name</literal> inside the block that follows.</para>
-        
-        <comment><para>TODO: Should have a more powerful <literal>nonempty</literal> condition for 
-        a <literal>Sequence&lt;X&gt;</literal>, for example:</para>
-        <programlisting>String join(String[] strings, String with) {
-    if (nonempty String first, String... rest = strings) {
-        return first + with + join(rest, with);
-    }
-}</programlisting>
-        <para>This looks very much like Haskell/ML-style list pattern matching, but it's not any 
-        simpler to write than this idiom:</para>
-        <programlisting>String join(String[] strings, String with) {
-    if (exists String first = strings.first) {
-        return first + with + join(strings.rest, with);
-    }
-}</programlisting></comment>
                         
         <para>For <literal>is</literal> conditions:</para>
         
@@ -829,19 +828,18 @@ else {
             </listitem>
             <listitem>
                 <para>If the <literal>exists</literal> modifier appears, the condition is satisfied 
-                if the expression evaluates to an instance of <literal>Something&lt;X&gt;</literal> 
+                unless the expression evaluates to an instance of <literal>Nothing</literal> 
                 when the control structure is executed.</para>
             </listitem>
             <listitem>
                 <para>If the <literal>nonempty</literal> modifier appears, the condition is satisfied 
-                if the expression evaluates to an instance of <literal>Something&lt;Container&gt;</literal> 
-                for which <literal>value.empty</literal> evaluates to <literal>false</literal>
+                unless the expression evaluates to an instance of <literal>Empty</literal>
                 when the control structure is executed.</para>
             </listitem>
         </itemizedlist>
         
         <para>Note that these are formal definitions. In fact, the compiler erases 
-        <literal>Optional&lt;T&gt;</literal> to <literal>T</literal> before generating bytecode.
+        <literal>Nothing|T</literal> to <literal>T</literal> before generating bytecode.
         So <literal>if (exists x)</literal> is actually processed as <literal>if (x!=null)</literal>
         by the virtual machine.</para>
         
@@ -948,6 +946,7 @@ if (X satisfies Comparable&lt;X&gt;) {
             <programlisting>Cases: CaseItem+ DefaultCaseItem?</programlisting>
 
             <programlisting>CaseItem: "case" "(" Case ")" Block</programlisting>
+            
             <programlisting>DefaultCaseItem: "else" Block</programlisting>
 
             <para>The <literal>switch</literal> expression may be of any type. Each <literal>case</literal> 

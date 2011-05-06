@@ -1038,7 +1038,7 @@ local comp = order(1,-1);</programlisting>
             <para>An instantiation expression for the type <literal>Sequence</literal> may
             be written in an abbreviated form where the type name is eliminated.</para>
         
-            <programlisting>SequenceInstantiation = "{" SequencedArguments "}"</programlisting>
+            <programlisting>SequenceInstantiation = "{" SequencedArguments? "}"</programlisting>
             
             <para>The following expression:</para>
             
@@ -1047,6 +1047,19 @@ local comp = order(1,-1);</programlisting>
             <para>Is equivalent to:</para>
             
             <programlisting>Sequence { "hello", "world" }</programlisting>
+            
+            <para>The type of a sequence instantiation expression is:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <literal>Empty</literal> if there are no argument expressions, or
+                </listitem>
+                <listitem>
+                    <literal>Sequence&lt;X|Y|Z...&gt;</literal> where <literal>X</literal>,
+                    <literal>Y</literal>, <literal>Z</literal> are the types of the argument 
+                    expressions, otherwise.
+                </listitem>
+            </itemizedlist>
             
             <comment><para>TODO: alternatively, we could support a Java-style syntax of form
             <literal>String[] { "hello", "world" }</literal>.</para></comment>
@@ -3387,7 +3400,7 @@ createItemMethod.intercept()
             <entry><!--<literal>?</literal> or --><literal>exists</literal></entry>
             <entry><!--<<literal>lhs?</literal> or --><literal>lhs exists</literal></entry>
             <entry>exists</entry>
-            <entry><literal>lhs.defined</literal></entry>
+            <entry><literal>if (exists lhs) true else false</literal></entry>
             <entry><literal>Object?</literal></entry>
             <entry></entry>
             <entry><literal>Boolean</literal></entry>
@@ -3396,8 +3409,8 @@ createItemMethod.intercept()
             <entry><literal><!--??-->nonempty</literal></entry>
             <entry><literal><!--??-->lhs nonempty</literal></entry>
             <entry>nonempty</entry>
-            <entry><literal>if (exists lhs) !lhs.empty else false</literal></entry>
-            <entry><literal>Container?</literal></entry>
+            <entry><literal>if (nonempty lhs) true else false</literal></entry>
+            <entry><literal>Object[]?</literal></entry>
             <entry></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
