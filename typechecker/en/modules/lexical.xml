@@ -101,7 +101,7 @@
         <para>The following reserved words are not legal identifier names:</para>
         
         <para><literal>
-        import implicit
+        import adapt
         class interface object given
         assign void subtype local
         of extends satisfies abstracts

@@ -40,10 +40,10 @@ TypeConstraints?
         filename extension <literal>.ceylon</literal>.</para>
         
         <para>A compilation unit consists of a list of imported types, attributes, and 
-        methods, followed by one or more toplevel type, attribute, or method definitions.<!--or by a single 
-        toplevel expression:--></para>
+        methods, followed by a list of introductions, followed by one or more toplevel 
+        type, attribute, or method definitions.</para>
         
-        <programlisting>Import* ToplevelDeclaration+</programlisting>
+        <programlisting>Import* Introduction* ToplevelDeclaration+</programlisting>
         
         <section id="topleveldeclarations">
             <title>Toplevel declarations</title>
@@ -130,17 +130,17 @@ TypeConstraints?
         <para>An <literal>import</literal> statement may not contain two import elements
         which refer to the same declaration.</para>
         
-        <para>Note that toplevel types, toplevel methods, toplevel attributes,
-        and extensions in the module <literal>ceylon.language</literal> never need to be 
-        explicitly imported. They are implicitly imported by every compilation unit.</para>
+        <para>Note that toplevel declarations in the module <literal>ceylon.language</literal> 
+        never need to be explicitly imported. They are implicitly imported by every 
+        compilation unit.</para>
                 
         <section id="typeimports">
             <title>Type imports</title>
         
-        <para>An import element that specifies a type name imports the toplevel type with 
-        that name from the given package.</para>
+        <para>An import element that specifies a type name imports the toplevel type 
+        with that name from the given package.</para>
         
-        <programlisting>ImportTypeElement: "implicit"? TypeAlias? TypeName</programlisting>
+        <programlisting>ImportTypeElement: TypeAlias? TypeName</programlisting>
         
         <para>A compilation unit may not import two types with the same name.</para>
         
@@ -154,7 +154,7 @@ TypeConstraints?
         <para>An import element that specifies a method or attribute name imports the 
         toplevel method or attribute with that name from the given package.</para>
         
-        <programlisting>ImportMethodAttributeElement: "implicit"? MethodAttributeAlias? MemberName</programlisting>
+        <programlisting>ImportMethodAttributeElement: MethodAttributeAlias? MemberName</programlisting>
         
         <para>A compilation unit may not import two methods or attributes with the same 
         name.</para>
@@ -162,19 +162,8 @@ TypeConstraints?
         <programlisting>import math { sqr, sqrt, e, pi }</programlisting>
         
         </section>
-                 
-        <section id="implicitimports">
-            <title>Implicit imports</title>
-               
-        <para>If the <literal>implicit</literal> modifier appears, the 
-        <literal>import</literal> statement must specify a toplevel type or method 
-        annotated <literal>extension</literal>.</para>
         
-        <programlisting>import com.acme.formats { implicit ReportFormat, implicit InvoiceFormat }</programlisting>
-        
-        </section>
-                
-         <section id="aliasimports">
+        <section id="aliasimports">
             <title>Alias imports</title>
                
         <para>The optional alias clause in a fully-explicit import allows resolution 
@@ -196,7 +185,7 @@ TypeConstraints?
         
         <comment><para>TODO: Currently, inheritance of two members with the same name
         from different unrelated types always results in a compile error. A similar 
-        problem arises with extensions. We could let you resolve these kinds of problem 
+        problem arises with introductions. We could let you resolve these kinds of problem 
         by renaming a member of a type you're importing. This is a bit similar to what 
         Eiffel does, but it would be a lexical thing, scoped to the compilation unit. 
         For example:</para>
@@ -222,13 +211,84 @@ TypeConstraints?
         <programlisting>import ceylon.collection { ... }</programlisting>
         
         <programlisting>import math { local fib = fibonnacciNumber, ... }</programlisting>
-        
-        <programlisting>import com.acme.currencies { implicit CurrencyToDecimal, ... }</programlisting>
-        
+                
         <para>Overuse of wildcard imports is discouraged.</para>
         
         </section>
         
+        </section>
+    
+        <section id="introductions">
+            <title>Introductions</title>
+            
+            <para>An <emphasis>introduction</emphasis> results in an additional assignability
+            relationship within a certain compilation unit. The <literal>adapt</literal>
+            statement <emphasis>introduces</emphasis> one or more interfaces, called the
+            <emphasis>introduced types</emphasis> to another type, called the
+            <emphasis>adapted type</emphasis>:</para>
+            
+            <programlisting>Introduction: "adapt" Type SatisfiedTypes TypeConstraints? ";"</programlisting>
+            
+            <para>A single compilation unit may not have multiple <literal>adapt</literal>
+            statements for the same adapted type.</para>
+            
+            <para>Every introduced type listed in the <literal>satisfies</literal> clause
+            must satisfy the following:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the introduced type must not be a supertype of the adapted
+                    type,</para>
+                </listitem>
+                <listitem>
+                    <para>for every <literal>formal</literal> member of the introduced 
+                    type, there must be a member of the adapted type such that the two
+                    members refine, directly or indirectly, a common member of a common
+                    supertype, and</para>
+                </listitem>
+                <listitem>
+                    <para>every <literal>actual</literal> member of the introduced type 
+                    must also be declared <literal>default</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>The list of introduced types must satisfy the following:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>if two introduced types both have a member that refines, 
+                    directly or indirectly, a common member of a common supertype, then 
+                    either the adapted type must also have a member that refines the 
+                    common member, directly or indirectly, or one of the introduced type 
+                    members must be declared <literal>formal</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Within the compilation unit that contains an introduction, the adapted
+            type is assignable to the introduced type.</para>
+            
+            <para>At runtime, an operation upon the adapted type (method invocation, member 
+            class instantiation, or attribute evaluation) is dispatched according to the 
+            following rule:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>If the runtime type of the instance of the adapted type declares 
+                    or refines the operation, the operation is dispatched to the runtime
+                    type of the instance.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>Otherwise, the operation is dispatched to the unique introduced 
+                    type that has a concrete definition of the operation.
+                    </para>
+                </listitem>
+            </itemizedlist>
+            
+            <programlisting>adapt Sequence&lt;T&gt; 
+        satisfies SequenceList&lt;T&gt;
+        given T satisfies Equality;</programlisting>
+            
         </section>
     
     <section id="interfaces">
@@ -297,15 +357,7 @@ TypeConstraints?
         <emphasis>member class</emphasis> of the interface. A nested interface or 
         <literal>abstract</literal> class declaration is not part of the schema of the 
         interface type, and is therefore not considered a member of the interface.</para>
-        
-        <!-- 
-        <para>Which is equivalent to the following Java interface:</para>
-
-        <programlisting>shared interface Comparable&lt;T&gt; {
-    Comparison compare(T other);
-}</programlisting>
-        -->
-        
+                
         <section id="interfacemembervisibility">
             <title>Interface member visibility</title>
             
@@ -317,45 +369,25 @@ TypeConstraints?
         
         </section>
         
-        <!--
-        <section id="mutableinterfaces">
-            <title>Mutable and immutable interfaces</title>
-            
-            <para>An interface may be annotated <literal>variable</literal>. If an interface 
-            is not annotated <literal>variable</literal> it is called an <emphasis>immutable 
-            type</emphasis>, and it may not:</para>
-        
-            <itemizedlist>
-                <listitem>
-                    <para>declare or inherit <literal>variable</literal> attributes, or</para>
-                </listitem>
-                <listitem>
-                    <para>extend an interface annotated <literal>variable</literal>.</para>
-                </listitem>
-            </itemizedlist>
-            
-        </section>
-        -->
-        
         <section id="interfaceinheritance">
             <title>Interface inheritance</title>
             
-            <para>An interface may extend any number of other interfaces.</para>
+            <para>An interface may extend any number of other interfaces, and may satisfy
+            a single class.</para>
         
             <programlisting>shared interface List&lt;T&gt;
-        satisfies T[] &amp; Collection&lt;T&gt; {
+        satisfies Sequence&lt;T&gt; &amp; Collection&lt;T&gt; {
     ...
 }</programlisting>
         
             <para>The types listed after the <literal>satisfies</literal> keyword are the 
-            supertypes. All supertypes of an interface must be interfaces. An interface 
-            may not extend the same interface twice (not even with distinct type arguments).</para>
+            supertypes. At most one supertype of the interface may be a class. The remaining 
+            supertypes of an interface must be interfaces. An interface may not extend the 
+            same interface twice (not even with distinct type arguments).</para>
             
-            <!--para>
-            Since every class that implements an interface is a subclass of <literal>lang.Object</literal>,
-            the interface type itself is considered assignable to <literal>lang.Object</literal>.
-            </para-->
-        
+            <para>If an interface does not explicitly declare the class it satisfies, it 
+            satisfies the class <literal>ceylon.language.Object</literal>.</para>
+            
             <para>An interface inherits all members (methods, attributes and member types) 
             of every supertype, except for members refined by the interface or by some 
             supertype of the interface.</para>
@@ -363,23 +395,14 @@ TypeConstraints?
             <para>The schema of the inherited members is formed by substituting type arguments
             specified in the <literal>satisfies</literal> clause.</para>
             
+            <para>An interface may not refine members of the class it satisfies.</para>
+            
             <!--
             <para>An interface may not inherit two non-<literal>formal</literal> members
             of different supertypes that both refine the same member of a third supertype.
             If two supertypes both declare non-<literal>formal</literal> members that
             refine the same member of a third supertype, the interface must also refine
             the member.</para>
-            -->
-            
-            <!--
-            <para>and the above declaration is equivalent to the following 
-            Java declaration: 
-            </para>
-        
-            <programlisting>shared interface List&lt;T&gt; 
-        extends Sequence&lt;T&gt;, Collection&lt;T&gt; {
-    ...
-}</programlisting>
             -->
             
              <para>An interface that extends a nested interface must be a member of the type 
@@ -534,19 +557,6 @@ TypeConstraints?
     shared void inc() { count++; }
 }</programlisting>
         
-        <!--
-        <para>Is equivalent to this Java class:</para>
-
-        <programlisting>public class Key {
-    private final ReadAttribute&lt;Lock&gt; lock;
-    public ReadAttribute&lt;Lock&gt; lock() { return lock; }
-    
-    public Key(Lock lock) {
-        this.lock = new SimpleReadAttribute&lt;Lock&gt;(lock); 
-    }
-    
-}</programlisting>
-         -->
         <para>An initializer parameter may even be used within the body of a method,
         attribute getter, or attribute setter:</para>
         
@@ -559,57 +569,10 @@ TypeConstraints?
     shared void unlock() { lock.disengage(this); }
 }</programlisting>
 
-        <!--
-        <para>Is equivalent to this Java class:</para>
-
-        <programlisting>public class Key {
-    private Lock _lock;
-        
-    private final ReadAttribute&lt;Lock&gt; lock = new ReadAttribute&lt;Lock&gt;() {
-        @Override public Lock get() { return _lock; }
-    };
-    public ReadAttribute&lt;Lock&gt; lock() { return lock; }
-    
-    public Key(Lock lock) { 
-        _lock = lock; 
-    }
-    
-}</programlisting>
-        -->
-        
-
         <comment><para>TODO: should class initializer parameters be allowed to be declared 
         <literal>shared</literal>, allowing a shortcut simple attribute declaration like in 
         Scala?</para></comment>
-                
-        <!--
-        <section>
-        <title>Annotations</title>
         
-        <para>Every annotation is a toplevel (non-void) method call. This Ceylon class:</para>
-        
-        <programlisting>doc "Represents a person"
-by "Gavin"
-shared class Person { ... }</programlisting>
-        
-        <para>Is equivalent to this Java code:</para>
-        
-        <programlisting>public class Person { ... 
-
-    static {
-        Type&lt;Person&gt; type = Type.get(Person.class);
-        type.addAnnotation( doc("Represents a person") );
-        type.addAnnotation( by("Gavin") );
-        type.addAnnotation( shared() );
-    }
-
-    ...
-
-}</programlisting>
-        
-        </section>
-        -->
-
     </section>
 
     <section id="callabletypeofclass">
@@ -658,30 +621,6 @@ shared class Person { ... }</programlisting>
     x = 0.0;
     y = 0.0;
 }</programlisting>
-        
-        <!--
-        <para>So the above class is equivalent to:</para>
-        
-        <programlisting>public class DiagonalPoint extends Point {
-        
-    public DiagonalPoint(final Decimal position) {
-    
-        x = y = sqrt( position.power(2).divided(2) ).times(position.sign);
-        
-        assert_(new F0&lt;String&gt;() {
-                   public String call() { 
-                       return "must have distance " + position + " from origin";
-                   }
-                },
-                new F0&lt;Boolean&gt;() {
-                   public Boolean call() { 
-                       return ( x.power(2) + y.power(2) ).equals( position.power(2) );
-                   }
-                });
-    }
-    
-}</programlisting>
-        -->
         
         <para>The following restrictions apply to statements and declarations that appear 
         within the initializer of a class:</para>
@@ -811,32 +750,7 @@ shared class Person { ... }</programlisting>
         </itemizedlist>
         
     </section>
-    
-    <!--
-    <section id="mutableclasses">
-        <title>Mutable and immutable classes</title>
-        
-        <para>A class may be annotated <literal>variable</literal>. If a class is 
-        annotated <literal>variable</literal> it must (directly or indirectly) extend 
-        <literal>ceylon.language.IdentifiableObject</literal>.</para>
-        
-        <para>If a class is not annotated <literal>variable</literal> it is called an 
-        <emphasis>immutable type</emphasis>, and it may not:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>declare or inherit <literal>variable</literal> attributes,</para>
-            </listitem>
-            <listitem>
-                <para>extend a <literal>variable</literal> superclass, or</para>
-            </listitem>
-            <listitem>
-                <para>implement an interface annotated <literal>variable</literal>.</para>
-            </listitem>
-        </itemizedlist>
-    
-    </section>
-    -->
+
         <section id="classinheritance">
              <title>Class inheritance</title>
         
@@ -873,12 +787,16 @@ shared class Person { ... }</programlisting>
                 <para>must declare or inherit a member that refines each 
                 <literal>formal</literal> member of every interface it implements directly 
                 or indirectly, unless the class is declared <literal>abstract</literal> or
-                <literal>formal</literal>, and</para>
+                <literal>formal</literal>,</para>
             </listitem>
              <listitem>
                 <para>must declare or inherit a member that refines each 
                 <literal>formal</literal> member of its superclass, unless the class is 
-                declared <literal>abstract</literal> or <literal>formal</literal>.</para>
+                declared <literal>abstract</literal> or <literal>formal</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para>must directly or indirectly extend every class satisfied by every 
+                interface it implements directly or indirectly.</para>
             </listitem>
             <!--listitem>
                 <para>is assignable to any type to which any interface it implements is 
@@ -912,46 +830,6 @@ shared class Person { ... }</programlisting>
         extends Key(lock) {
     ...
 }</programlisting>
-
-        <!--
-        <para>Which are equivalent to the Java:</para>
-        
-        <programlisting>public class SpecialKey1 
-        extends Key {
-    public SpecialKey1() { 
-        super( SpecialLock() );
-    }
-    ... 
-}</programlisting>
-
-        <programlisting>public class SpecialKey2 
-        extends Key {
-    public SpecialKey2(Lock lock) { 
-        super(lock);
-    }
-    ... 
-}</programlisting>
-        -->
-        
-        <!-- 
-        <para>and the 
-        above declarations are equivalent to the following Java declarations: 
-        </para>
-        
-        <programlisting>public class Customer 
-        extends Person {
-    public Customer(Name name) { this(name, null); }
-    public Customer(Name name, Organization org) { super(name, org); }
-    ... 
-}</programlisting>
-        
-        <programlisting>class Token 
-        extends Datetime 
-        implements Comparable&lt;Token&gt;, Identifier {
-    public Token() { super(); }
-    ... 
-}</programlisting>
-         -->
          
          <para>A subclass of a nested class must be a member of the type that declares 
          the nested class or of a subtype of the type that declares the nested class. 
@@ -1030,15 +908,16 @@ shared class Person { ... }</programlisting>
         </itemizedlist>
         
         <para>If the class is annotated <literal>formal</literal>, it is called a 
-        <literal>formal</literal> member class, or, sometimes, an
-        <emphasis>abstract member class</emphasis>.</para>
+        <literal>formal</literal> member class, or, sometimes, an <emphasis>abstract 
+        member class</emphasis>.</para>
         
         <para>If the class is annotated <literal>abstract</literal>, it is called an
         <literal>abstract</literal> class, or an <emphasis>abstract nested class</emphasis>.</para>
-                
+        
+        <!-- 
         <para>Alternatively, a class may omit a class body entirely. Then the class must 
         be a member class and must be annotated <literal>formal</literal>.</para>
-        
+         
         <programlisting>shared formal class Buffer(Character...) satisfies Character[];</programlisting>
         
         <para>In this case, also, it is considered a <literal>formal</literal> member 
@@ -1047,6 +926,7 @@ shared class Person { ... }</programlisting>
         <comment><para>TODO: In this case, do we need to limit the class to specifying 
         at most one supertype? Not sure exactly what limitations exist at the bytecode
         level.</para></comment>
+        -->
         
         <para>A class annotated <literal>abstract</literal> may not be instantiated.</para>
         
@@ -1108,14 +988,16 @@ shared class Person { ... }</programlisting>
                 clause, and either</para>
             </listitem>
             <listitem>
-                <para>extends the member class it refines, or, alternatively,</para>
+                <para>extends the member class it refines.</para>
             </listitem>
+            <!--
             <listitem>
                <para>extends the superclass of the member class it refines and 
                implements all interfaces implemented by the member class it 
                refines, where the member class it refines is a 
                <literal>formal</literal> member class with no body.</para>
             </listitem>
+            -->
         </itemizedlist>
         
         <para>Finally, the refined member class must be visible to the member
@@ -1131,10 +1013,7 @@ shared class Person { ... }</programlisting>
         <para>Then instantiation of the member class is polymorphic, and the actual
         subtype instantiated depends upon the concrete type of the containing class
         instance.</para>
-        
-        <para>Note that, according to the rules above, the refining class usually
-        extends the member class it refines:</para>
-        
+                
         <programlisting>shared abstract class Reader() {
     shared formal class Buffer(Character... chars) 
             satisfies Character[] {}
@@ -1150,6 +1029,7 @@ shared class Person { ... }</programlisting>
     ...
 }</programlisting>
         
+        <!--
         <para>But in the special case where the member class it refines does not
         specify a body, the refining class is not required to extend the member 
         class it refines:</para>
@@ -1176,7 +1056,8 @@ shared class Person { ... }</programlisting>
     shared actual class Buffer(Character... chars) = String;
     ...
 }</programlisting>
-        
+        -->
+         
     </section>
     
     <section id="anonymousclasses">
@@ -1239,9 +1120,8 @@ shared class Person { ... }</programlisting>
          
          <para>If the <literal>object</literal> is annotated <literal>shared</literal>, 
          the attribute is <literal>shared</literal>. If the <literal>object</literal>
-         is annotated <literal>actual</literal>, it refines an attribute of a supertype. 
-         If the <literal>object</literal> is annotated <literal>extension</literal>, it 
-         is an extension attribute.</para>
+         is annotated <literal>actual</literal>, it refines an attribute of a 
+         supertype.</para>
          
          <para>The following declaration:</para>
          
@@ -1373,93 +1253,8 @@ shared class Branch&lt;T&gt;(String name, Node&lt;T&gt; left, Node&lt;T&gt; righ
         
     </section>
     
-    <!--  
-    <section id="unions">
-        <title>Unions</title>
-        
-        <comment><para>NOTE: Unions are a proposed feature for a future version 
-        of the language.</para></comment>
-        
-        <para>A <emphasis>union</emphasis> is a type with an enumerated list of
-        subtypes, called the <emphasis>cases</emphasis> of the union. An instance 
-        of any of these cases is an instance of union type. A union may also 
-        <literal>satisfy</literal> one or more interfaces, in which case each case 
-        type of the union must also satisfy these interfaces. A union itself 
-        does not define members.</para>
-        
-        <programlisting>Union: 
-Annotation* 
-"choice" TypeName TypeParams?
-CaseTypes Metatypes? SatisfiedTypes? 
-TypeConstraints?
-";"</programlisting>
-
-        <para>The <literal>of</literal> clause of a union declaration specifies the 
-        list of cases of the union type.</para>
-        
-        <programlisting>shared choice Node of root, Branch, Leaf;</programlisting>
-        
-        <programlisting>choice Container&lt;T&gt; of T[], Set&lt;T&gt;;</programlisting>
-        
-        <para>The cases may be interfaces, classes, or anonymous classes. A case may 
-        be an <literal>abstract</literal> class.</para>
-        
-
-        <para>If an anonymous class is a case of a union type, it must extend
-        <literal>ceylon.language.Case</literal>, directly or indirectly.</para>
-        
-        <programlisting>shared object true extends Case() {}
-shared object false extends Case() {}
-shared choice Boolean of true, false;</programlisting>
-        
-        <section id="mutableunions">
-            <title>Mutable and immutable unions</title>
-            
-            <para>A union may be annotated <literal>variable</literal>. If a union is not 
-            annotated <literal>variable</literal> it is called an <emphasis>immutable 
-            type</emphasis>, and it may not:</para>
-        
-            <itemizedlist>
-                <listitem>
-                    <para>declare a <literal>variable</literal> case, or</para>
-                </listitem>
-                <listitem>
-                    <para>satisfy an interface annotated <literal>variable</literal>.</para>
-                </listitem>
-            </itemizedlist>
-            
-        </section>
-            
-        <section id="unioninheritance">
-            <title>Union inheritance</title>
-            
-            <para>A union may satisfy any number of other interfaces.</para>
-        
-        <programlisting>shared choice Node of root, Branch, Leaf satisfies Observable;</programlisting>
-        
-            <para>The types listed after the <literal>satisfies</literal> keyword are 
-            the supertypes. All supertypes of a union must be interfaces. A union may 
-            not extend the same interface twice (not even with distinct type arguments).</para>
-            
-            <para>Every case of the union must be a subtype of every interface satisfied 
-            by the union type.</para>
-            
-        
-            <para>A union inherits all members (methods, attributes and member types) 
-            of every supertype.</para>
-        
-            <para>The schema of the inherited members is formed by substituting type 
-            arguments specified in the <literal>satisfies</literal> clause.</para>
-            
-            <para>A union may not inherit two non-<literal>abstract</literal> members of 
-            different supertypes that both refine the same member of a third supertype.</para>
-        
-        </section>
-        
-    </section>
-            
-        -->
-        <!-- <programlisting>shared interface TransactionPropagation {
+    
+    <!-- <programlisting>shared interface TransactionPropagation {
     void propagate(Transaction tx);
 }
 
@@ -1666,12 +1461,14 @@ shared choice TransactionPropagationStyle
         given T satisfies Comparable&lt;T&gt; {
     return TreeSet(element);
 }</programlisting>
-
+        
+        <!--
         <programlisting>shared Float[n] float&lt;#n&gt;(Decimal[n] decimals) {
     return Vector&lt;Float,#n&gt;() 
                 containing (Bounded&lt;#n&gt; i) (decimals[i].float);
 }</programlisting>
-
+        -->
+        
         <para>Note that a method which declares the return type <literal>Void</literal>
         is not a <literal>void</literal> method. A method with declared type 
         <literal>Void</literal> must return a value of type <literal>Void</literal> 
@@ -1861,12 +1658,7 @@ Void goodbye() {
     }
     return fullName2;
 }</programlisting>
-        
-        <!--
-        <programlisting>@FormalParameterNames({"x", "y"}) 
-public Integer add(Integer x, Integer y) { ... }</programlisting>
-        -->
-        
+                
         <comment><para>TODO: To be totally complete and regular with attribute getters,
         I suppose we should let any method body return a method reference with the same 
         signature as the method. But I'm not really sure how practically useful this
@@ -2136,13 +1928,6 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         attribute getter or block local method declared earlier withing the containing scope. 
         It may not refer to <literal>variable</literal> locals from the containing scope.</para>
         -->
-        <!--
-        <para>
-        An attribute declaration is equivalent to a Java method declaration together with 
-        a Java field declaration, both of type <literal>lang.Attribute</literal> or
-        <literal>lang.ReadAttribute</literal>, both with the same name as the attribute.
-        </para>
-        -->
         
         <section id="simpleattributesandlocals">
             <title>Simple attributes and locals</title>
@@ -2162,40 +1947,10 @@ public Integer add(Integer x, Integer y) { ... }</programlisting>
         <programlisting>Initializer: ":=" Expression</programlisting>
 
         <para>Parameters of classes and methods are also considered to be locals.</para>
-        
-        <!--
-        <para>For a simple attribute that is not a local, the Java field is initialized to an 
-        instance of <literal>lang.SimpleAttribute</literal> or 
-        <literal>lang.SimpleReadAttribute</literal>. For example:</para> 
-         -->
-        
-        <!--
-        <para>is equivalent to this Java code:</para>
-        
-        <programlisting>private final Attribute&lt;String&gt; firstName = new SimpleAttribute&lt;String&gt;();
-Attribute&lt;String&gt; firstName() { return firstName; }</programlisting>
-
-        <para>While:</para>
-         -->
-         
+                 
         <programlisting>variable Natural count := 0;</programlisting>
         
-        <!--
-        <para>is equivalent to this Java code:</para>
-        
-        <programlisting>private final Attribute&lt;Natural&gt; count = new SimpleAttribute&lt;Natural&gt;(0);
-private Attribute&lt;Natural&gt; count() { return count; }</programlisting>
-
-        <para>And:</para>
-        -->
-        
         <programlisting>shared Integer max = 99;</programlisting>
-        <!--
-        <para>is equivalent to this Java code:</para>
-        
-        <programlisting>private final ReadAttribute&lt;Integer&gt; max = new SimpleReadAttribute&lt;Integer&gt;(99);
-public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
-        -->
 
         <programlisting>shared Decimal pi = calculatePi();</programlisting>
         
@@ -2272,6 +2027,12 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
     version = '3.0.0';
 }</programlisting>
             
+            <!--
+            <comment><para>TODO: should this syntax build a new object each time the attribute 
+            is evaluated, or should it construct the object once and return the same object
+            each time?</para></comment>
+            -->
+             
         </section>
         
          <section id="attributegetters">
@@ -2284,14 +2045,7 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
             
             <para>An attribute getter defines how the value of a derived attribute is
             obtained.</para>
-            
-            <!--
-            <para>For an attribute getter, the Java field is initialized to an instance 
-            of an anonymous inner subclass of <literal>lang.Attribute</literal> or
-            <literal>lang.ReadAttribute</literal> that refines the <literal>get()</literal> 
-            method with the content of the getter block. For example: </para>
-            -->
-                    
+                                
             <programlisting>shared Float total {
     Float sum := 0.0;
     for (LineItem li in lineItems) {
@@ -2303,17 +2057,7 @@ public ReadAttribute&lt;Integer&gt; max() { return max; }</programlisting>
             <para>If an attribute getter has a matching attribute setter, we say that 
             the attribute is <literal>variable</literal>. Otherwise we say it is 
             non-<literal>variable</literal>.</para>
-            
-            <!--
-            <programlisting>shared Float total { return items.totalPrice; }</programlisting>
-            <para>is equivalent to this Java code:</para>
-        
-            <programlisting>private final ReadAttribute&lt;Float&gt; total = new ReadAttribute&lt;Float&gt;() {
-    @Override public Float get() { return items.get().totalPrice; }
-};
-public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
-            -->
-            
+                        
             <para>A block local attribute getter with a single <literal>return</literal>
             directive may be declared using the keyword <literal>local</literal> in place of 
             the explicit type declaration. The type of the local or attribute is inferred to 
@@ -2324,38 +2068,7 @@ public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
 }</programlisting>
                 
         </section>
-        
-        <!--
-        <section id="getterswithnamedarguments">
-            <title>Attribute getters with named argument lists</title>
-            
-            <para>Alternatively, an attribute getter may be a named
-            argument list. A getter with a named argument list must explicitly declare a 
-            non-<literal>abstract</literal> class as the attribute type. The getter simply 
-            instantiates the return type with the specified named arguments and returns 
-            the resulting value.</para>
-            
-            <para>The following declarations are equivalent:</para>
-            
-            <programlisting>Module module {
-    name = 'org.hibernate';
-    version = '3.0.0';
-}</programlisting>
-            
-            <programlisting>Module module {
-    return Module {
-        name = 'org.hibernate';
-        version = '3.0.0';
-    };
-}</programlisting>
-
-            <comment><para>TODO: should this syntax build a new object each time the attribute 
-            is evaluated, or should it construct the object once and return the same object
-            each time?</para></comment>
-        
-        </section>
-        -->
-        
+                
         <section id="attributesetters">
             <title>Attribute setters</title>
                     
@@ -2370,15 +2083,7 @@ public ReadAttribute&lt;Float&gt; total() { return total; }</programlisting>
 
             <programlisting>shared String name { return join(firstName, lastName); }
 shared assign name { firstName = first(name); lastName = last(name); }</programlisting>
-            
-            <!--
-            <para>For an attribute with a setter, the Java field is initialized to an 
-            instance of an anonymous inner subclass of <literal>lang.Attribute</literal> 
-            that refines the <literal>set()</literal> method with the content of the 
-            setter block. For example:
-            </para>
-            -->
-            
+                        
             <comment><para>TODO: should we require that the corresponding getter be 
             annotated <literal>variable</literal>?</para></comment>
             
@@ -2388,15 +2093,6 @@ shared assign name { firstName = first(name); lastName = last(name); }</programl
             </comment>
             -->
             
-            <!--
-            <para>is equivalent to this Java code:</para>
-        
-            <programlisting>private final Attribute&lt;String&gt; name = new Attribute&lt;String&gt;() {
-    @Override public String get() { return join(firstName, lastName); }
-    @Override public void set(String name) { firstName = first(name); lastName = last(name); }
-};
-public Attribute&lt;String&gt; name() { return name; }</programlisting>
-            -->
         </section>
         
         <section id="formalattributes">
@@ -2625,12 +2321,7 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
             </listitem>
             <listitem>
                 <para><literal>variable</literal> specifies that an attribute
-                or local may be assigned.<!--, or that an interface or class has 
-                assignable attributes.--></para>
-            </listitem>
-            <listitem>
-                <para><literal>extension</literal> specifies that a method or
-                attribute getter is a converter, or that a class is a decorator.</para>
+                or local may be assigned.</para>
             </listitem>
             <listitem>
                 <para><literal>deprecated</literal> indicates that a method, 
@@ -2786,314 +2477,6 @@ public Attribute&lt;String&gt; name() { return name; }</programlisting>
         this would justify introducing a literal package name syntax:
         <literal>shared(@org.example.containing.package)</literal>.</para>
         </comment>
-        
-    </section>
-    
-    <section id="extensions">
-        <title>Extensions</title>
-        
-        <para>An extension allows values of one type to be transparently converted to 
-        values of another type. Extensions are declared by annotating a method, attribute 
-        or class <literal>extension</literal>. An extension must be:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>a toplevel method with exactly one parameter named
-                <literal>this</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>a toplevel class with exactly one initialization parameter named
-                <literal>this</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>a member method with no parameters,</para>
-            </listitem>
-            <listitem>
-                <para>a member class with no initializer parameters, or</para>
-            </listitem>
-            <listitem>
-                <para>a member attribute.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>An extension must not be annotated <literal>formal</literal> or 
-        <literal>abstract</literal>.</para>
-        
-        <para>An toplevel extension method is called a <emphasis>converter</emphasis>. 
-        An toplevel extension class is called a <emphasis>decorator</emphasis>.</para>
-                
-        
-        <programlisting>shared extension Log objectToLog(Object this) {
-    return this.log;
-}</programlisting>
-        
-        <programlisting>shared class Person(User user) {
-    ...
-    shared extension User user = user;
-    ...
-}</programlisting>
-
-        <programlisting>shared extension class SequenceUtils&lt;N&gt;(N[] this) 
-        given N extends Number, Comparable&lt;N&gt; {
-    
-    shared N[] positiveElements() {
-        return this.elements() where (N n) (n&gt;0);
-    }
-    
-    shared N[] elementsLessThan(N limit) {
-        return this.elements() where (N n) (n&lt;limit);
-    }
-    
-    ...   
-}</programlisting>
-        
-        <programlisting>shared extension homogeneous&lt;T&gt;(Type&lt;T[]&gt; this)(Natural size, T value) {
-    OpenList&lt;T&gt; result = none;
-    for (Natural i in 0..size-1) {
-        result.append(value);
-    }
-    return result;
-}</programlisting>
-        
-        <para>Extensions apply to a certain <emphasis>extended type</emphasis>:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>for toplevel extension methods, the extended type is the 
-                declared type of the parameter,</para>
-            </listitem>
-            <listitem>
-                <para>for toplevel extension classes, the extended type is the 
-                declared type of the initialization parameter,</para>
-            </listitem>
-            <listitem>
-                <para>for member extension methods, the extended type is the type 
-                that declares the extension method,</para>
-            </listitem>
-            <listitem>
-                <para>for member extension classes, the extended type is the type 
-                that contains the member class, and</para>
-            </listitem>
-            <listitem>
-                <para>for extension attributes, the extended type is the type that 
-                declares the attribute.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Extensions define an <emphasis>introduced type</emphasis>:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>for extension methods, the introduced type is the declared
-                return type of the method,</para>
-            </listitem>
-            <listitem>
-                <para>for extension classes, the introduced type is the class, and</para>
-            </listitem>
-            <listitem>
-                <para>for extension attributes, the introduced type is the declared
-                type of the attribute.</para>
-            </listitem>
-        </itemizedlist>
-        <!--
-        <para>The introduced type may not be a <literal>variable</literal> type.</para>
-        -->
-        <!-- 
-        <comment><para>Note: I actually much prefer the readability of 
-        <literal>User personToUser(extends Person person)</literal> and
-        <literal>SequenceUtils&lt;T&gt;(extends T[] collection)</literal>, 
-        but this doesn't work for attributes and member methods.</para></comment>
-        -->
-        
-        <para>We say that a converter or decorator is <emphasis>enabled</emphasis> in 
-        a compilation unit if the toplevel class or toplevel method is imported by that 
-        compilation unit, and the <literal>import</literal> statement is annotated 
-        <literal>implicit</literal>. If the <literal>import</literal> statement is not 
-        annotated <literal>implicit</literal>, the declaration is imported normally but 
-        the extension is not enabled in the compilation unit.</para>
-        
-        <programlisting>import org.domain.app.extensions { implicit objectToLog }
-import org.domain.utils { implicit SequenceUtils, implicit homogeneous }</programlisting>
-
-        <para>A wildcard <literal>.*</literal>-style import may not be used to import 
-        an extension.</para>
-        
-        <para>An extension attribute, member class, or member method is enabled in every 
-        compilation unit.</para>
-        
-        <para>A type <literal>X</literal> is <emphasis>extendable</emphasis> to a type
-        <literal>Y</literal> in a compilation unit if there exists exactly one possible
-        sequence of enabled extensions 
-        <literal>E0(T0) satisfies U0, E1(T1) satisfies U1, ... En(tn) satisfies Un</literal>, 
-        such that:</para> 
-        
-        <itemizedlist>
-            <listitem>
-                <para>the extensions <literal>E0, E1, ... En</literal> are distinct,</para>
-            </listitem>
-            <listitem>
-                <para>the introduced type <literal>Un</literal> of the last extension 
-                <literal>En</literal> is a subtype of <literal>Y</literal>, and</para>
-            </listitem>
-            <listitem>
-                <para><literal>X</literal> is a subtype of <literal>T0</literal>, the 
-                extended type of the first extension <literal>E0</literal>, and is not
-                a subtype of <literal>U0</literal>, its introduced type,</para>
-            </listitem>
-            <listitem>
-                <para>for <literal>0&lt;=i&lt;n</literal>, the introduced type 
-                <literal>Ui</literal> of the <literal>i</literal>th extension 
-                <literal>Ei</literal> is a subtype of <literal>Ti+1</literal>, the 
-                extended type of the <literal>i+1</literal>th extension 
-                <literal>Ei+1</literal>, and is not a subtype of <literal>Ui+1</literal>, 
-                its introduced type.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>If a type <literal>X</literal> is extendable to a type <literal>Y</literal> 
-        in a compilation unit, then <literal>X</literal> is assignable to <literal>Y</literal> 
-        in that compilation unit. The compiler automatically introduces a chain of extension 
-        invocations where necessary, to produce an instance of <literal>Y</literal> from an
-        instance of <literal>X</literal>.</para>
-        
-        <para>Where an expression of type <literal>X</literal> is assigned to a program 
-        element of type <literal>Y</literal> to which <literal>X</literal> is extendable, 
-        the extension sequence from <literal>X</literal> to <literal>Y</literal> is 
-        automatically introduced by the compiler.</para>
-        
-        <!-- 
-        <itemizedlist>
-            <listitem>
-                <para>if <literal>X</literal> is a subtype of the type of the program 
-                element, the extension sequence is not introduced, but otherwise</para>
-            </listitem>
-            <listitem>
-                <para>if <literal>Y</literal> is a subtype of the type of the program 
-                element, but <literal>X</literal> is not, the extension sequence
-                <emphasis>is</emphasis> introduced.</para>
-            </listitem>
-        </itemizedlist>
-        -->
-        
-        <para>Where a member reference is applied to an expression of type <literal>X</literal>, 
-        an extension sequence may or may not be introduced:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>if <literal>X</literal> has a member to which the reference is 
-                resolveable, and if for every type <literal>Y</literal> to which <literal>X</literal> 
-                is extendable that also has a member to which the reference is resolveable,
-                the member of <literal>X</literal> and the member of <literal>Y</literal>
-                both refine a member of a common supertype, then no extension sequence is 
-                introduced, but</para>
-            </listitem>
-            <listitem>
-                <para>if <literal>X</literal> does not have a member to which the reference 
-                is resolveable, and if there exists exactly one type <literal>Y</literal> 
-                to which <literal>X</literal> is extendable that has a member to which the 
-                reference is resolveable, the extension sequence from <literal>X</literal> 
-                to <literal>Y</literal> <emphasis>is</emphasis> introduced.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Otherwise, the member reference is ambiguous and results in a compiler error.</para>
-        
-        <programlisting>import org.mydomain.myproject.extensions { implicit objectToLog }
-...
-Person person = ...;
-User user = person;
-info("person is a User and this is a Log!");</programlisting>
-        
-        <!--
-        <para>Is equivalent to the following Java code:</para>
-        
-        <programlisting>Person person = ...;
-User user = personToUser(person);</programlisting>
-        -->
-        
-        <programlisting>import org.domain.utils { implicit SequenceUtils }
-...
-Integer[] zeroToOneHundred = 0..100;
-Integer[] oneToNine = zeroToOneHundred.positiveElements().elementsLessThan(10);</programlisting>
-        
-        <!--
-        <para>Is equivalent to this Java code:</para>
-    
-        <programlisting>Collection&lt;Integer&gt; ints = ...;
-Collection&lt;Integer&gt; result = new SequenceUtils(collection).nonZeroElements();</programlisting>
-        -->
-        
-        <comment><para>TODO: You can also introduce <literal>Callable</literal> to a type,
-        in which case there is no member reference, just an argument list.</para></comment>
-        
-        <programlisting>import org.domain.utils { implicit homogeneous }
-...
-Float[] tenZeroes = Sequence(10,0.0);</programlisting>
-        
-        <!-- 
-        <para>An introduced type may result in an ambiguity:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>the introduced type may have a member type with the same name 
-                as a member type of the extended type, or of some other introduced 
-                type, and the two member types may have non-distinct erased signatures,</para>
-            </listitem>
-            <listitem>
-                <para>the introduced type may have a method with the same name as a 
-                method of the extended type, or of some other introduced type, and 
-                the two methods may have non-distinct erased signatures,</para>
-            </listitem>
-            <listitem>
-                <para>the introduced type may have an attribute with the same name 
-                as an attribute or method of the extended type, or of some other 
-                introduced type,</para>
-            </listitem>
-            <listitem>
-                <para>the introduced type may have a method with the same name as 
-                an attribute of the extended type, or of some other introduced type.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>In this case, the member type, method or attribute may not be called. 
-        Any invocation or evaluation of the member results in a compiler error.</para>
-        -->
-         
-        <para>When an introduced extension sequence is executed, for each extension
-        in the sequence:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>First, the instance of the extended type is inspected to determine
-                if the runtime type is a subtype of the introduced type. If so, the
-                instance is cast to the introduced type.</para>
-            </listitem>
-            <listitem>
-                <para>Otherwise, the extension is invoked to produce an instance of the 
-                introduced type that will receive the invocation or evaluation.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>It's even possible to define an extension to a metatype:</para>
-        
-        <programlisting>shared extension class StringType(Type&lt;String&gt; this) {
-    shared String concat(String a, String b) { 
-        return a + " " + b;
-    }
-}</programlisting>
-
-        <para>Resulting in a syntax very much like a Java-style "static" invocation.</para>
-
-        <programlisting>log.info(String.concat(a, b));</programlisting>
-        
-        <!--
-        <comment><para>TODO: extensions are nice, and quite powerful, but they aren't enough to
-        implement an embedded query language like in JPA. Dynamic languages let you implement a
-        method to respond to an unknown member invoked at runtime. Java 6 lets you do a similar
-        thing at compile time using a processor (a compiler plugin). I think we can have the best
-        of both worlds and let you write an extension method that returns a set of members to be
-        introduced to the extended type.</para></comment>
-        -->
         
     </section>
     

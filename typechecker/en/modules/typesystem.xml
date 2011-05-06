@@ -85,9 +85,11 @@
             <para>What is the type of an expression that may be evaluated to produce
             a <literal>String</literal>?</para>
         </listitem>
+        <!--
         <listitem>
             <para>What is the type of a sequence of natural numbers of length <literal>n+1</literal>?</para>
         </listitem>
+        -->
         <listitem>
             <para>What is the type that represents subclasses of <literal>Renderer</literal> 
             which must be provided at instantiation time with a function that accepts an 
@@ -96,9 +98,9 @@
     </itemizedlist>
     
     <para>The answers, as we shall discover, are: <literal>Void</literal>, 
-    <literal>Optional&lt;T&gt;</literal>, <literal>Method&lt;Object, Void, Float, Float&gt;</literal>,
-    <literal>Gettable&lt;String&gt;</literal>, <literal>BoundedSequence&lt;n+1&gt;</literal>, 
-    and <literal>Class&lt;Renderer, Callable&lt;String,Object&gt;&gt;</literal>.</para>
+    <literal>Nothing|T</literal>, <literal>Method&lt;Object,Void,Float,Float&gt;</literal>,
+    <literal>Gettable&lt;String&gt;</literal> and 
+    <literal>Class&lt;Renderer,Callable&lt;String,Object&gt;&gt;</literal>.</para>
     
     <!--itemizedlist>
         <listitem>
@@ -295,45 +297,12 @@
                 and <literal>Y</literal> is a subtype of <literal>Z</literal> then
                 <literal>X</literal> is a subtype of <literal>Z</literal>.</para>
             </listitem>
-            <!--
-            <listitem>
-                <para>Unions: <literal>X</literal> is a subtype of <literal>X|Y</literal> for 
-                any types <literal>X</literal> and <literal>Y</literal>. Furthermore, if both 
-                <literal>X</literal> and <literal>Y</literal> are subtypes of <literal>Z</literal>,
-                then <literal>X|Y</literal> is also a subtype of <literal>Z</literal>.
-                </para>
-            </listitem>
-            -->
-            <listitem>
-                <para>Interfaces <!--and unions--> are objects: all interfaces <!--and unions--> 
-                are subtypes of <literal>ceylon.language.Object</literal>. Conversely, only 
-                a subtype of <literal>ceylon.language.Object</literal> may satisfy an interface.
-                <!-- or be an enumerated subtype of a union.--></para>
-            </listitem>
             <listitem>
                 <para>Single root: all types are subtypes of <literal>ceylon.language.Void</literal>.</para>
             </listitem>
         </itemizedlist>
         
         </section>
-        
-        <!--
-        <section id="unions">
-            <title>Unions</title>
-            
-            <para>For any types <literal>X</literal> and <literal>Y</literal>, a <emphasis>union</emphasis>,
-            <literal>X|Y</literal>, of the types may be formed.</para>
-            
-            <programlisting>Union: Type ("|" Type)*</programlisting>
-            
-            <para>The union type constructor <literal>|</literal> is associative, so the union of 
-            three types may be written <literal>X|Y|Z</literal>.</para>
-            
-            <para>If <literal>X</literal> and <literal>Y</literal> are both subtypes of a third type 
-            <literal>Z</literal>, then <literal>X|Y</literal> inherits all members of <literal>Z</literal>.</para>
-            
-        </section>
-        -->
         
         <section id="assignability">
             <title>Assignability</title>
@@ -395,8 +364,9 @@
         </itemizedlist>
         
         <para>A type <literal>X</literal> may be assignable to a type <literal>Y</literal>
-        even if <literal>X</literal> is not a subtype of <literal>Y</literal> if there is 
-        an enabled extension which introduces <literal>Y</literal> to <literal>X</literal>.</para>
+        even if <literal>X</literal> is not a subtype of <literal>Y</literal> if an 
+        <literal>adapt</literal> statement introduces <literal>Y</literal> to 
+        <literal>X</literal>.</para>
         
         </section>
         
@@ -443,6 +413,92 @@
         
         </section>
         
+        <section id="uniontypes">
+            <title>Union types</title>
+            
+        <para>For any types <literal>X</literal> and <literal>Y</literal>, the <emphasis>union</emphasis>,
+        <literal>X|Y</literal>, of the types may be formed. A union type accepts instances 
+        of either of the given types.</para>
+        
+        <para>The union type constructor <literal>|</literal> is associative, so the union 
+        of three types may be written <literal>X|Y|Z</literal>.</para>
+            
+        <programlisting>UnionType: Type ("|" Type)*</programlisting>
+        
+        <para>If <literal>X</literal> and <literal>Y</literal> are both subtypes of a third type 
+        <literal>Z</literal>, then <literal>X|Y</literal> inherits all members of <literal>Z</literal>.</para>
+
+        <para>Union types satisfy the following rules, for any types <literal>X</literal>,
+        <literal>Y</literal>, and <literal>Z</literal>:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>
+                    Commutativity: <literal>X|Y</literal> is the same 
+                    type as <literal>Y|X</literal>.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    Associativity: <literal>X|(Y|Z)</literal> is the same 
+                    type as <literal>(X|Y)|Z</literal>.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    Union: <literal>X</literal> is a subtype of 
+                    <literal>X|Y</literal>.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    Intersection: if both <literal>X</literal> and
+                    <literal>Y</literal> are subtypes of <literal>Z</literal>, then
+                    <literal>X|Y</literal> as also a subtype <literal>Z</literal>.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    Simplification: if <literal>X</literal> is a subtype 
+                    of <literal>Y</literal>, then <literal>X|Y</literal> is the same 
+                    type as <literal>Y</literal>.
+                </para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The following results follow from these rules:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>
+                    <literal>X|Bottom</literal> is the same  type as <literal>X</literal> 
+                    for any type <literal>X</literal>, and
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    <literal>X|Void</literal> is the same type as <literal>Void</literal>
+                    for any type <literal>X</literal>.
+                </para>
+            </listitem>
+        </itemizedlist>
+        
+        <programlisting>void write(String|Integer|Float value) { ... }</programlisting>
+        
+        <comment>
+        <para>TODO: What about ad hoc intersection types?</para>
+        <programlisting>void store(Persistent&amp;Format&amp;IdentifiableObject object) { ... }</programlisting>
+        </comment>
+        
+        <comment>
+        <para>TODO: We should also probably support aliases for ad hoc union and intersection 
+        types using a syntax something like this:</para>
+        <programlisting>local Printable = String | Integer | Float;</programlisting>
+        <programlisting>local Storable = Persistent &amp; Format &amp; IdentifiableObject;</programlisting>
+        </comment>
+        
+        </section>
+        
         <section id="typenameabbreviations">
             <title>Type name abbreviations</title>
             
@@ -450,33 +506,36 @@
         
         <itemizedlist>
             <listitem>
-                <para><literal>X?</literal> means <literal>Optional&lt;X&gt;</literal> for
-                any type <literal>X</literal>,</para>
+                <para><literal>X?</literal> means <literal>Nothing|X</literal> for any 
+                type <literal>X</literal>,</para>
             </listitem>
             <listitem>
-                <para><literal>X[]</literal> means <literal>Sequence&lt;X&gt;</literal> for
-                any type <literal>X</literal>, and</para>
+                <para><literal>X[]</literal> means <literal>Empty|Sequence&lt;X&gt;</literal> 
+                for any type <literal>X</literal>, and</para>
             </listitem>
+            <!--
             <listitem>
                 <para><literal>X[n]</literal> means <literal>BoundedSequence&lt;X,#n&gt;</literal> 
                 for any type <literal>X</literal> and dimension <literal>n</literal>.</para>
             </listitem>
+             -->
         </itemizedlist>
         
-        <programlisting>Abbreviation: "?" | "[]" | "[" dimension "]"</programlisting>
+        <programlisting>Abbreviation: "?" | "[]"</programlisting>
         
+        <!--
+        <programlisting>Abbreviation: "?" | "[]" | "[" dimension "]"</programlisting>
+        -->
+         
         <para>Abbreviations may be combined:</para>
         
         <programlisting>String?[] words = { "hello", "world", null };
 String? firstWord = words[0];</programlisting>
         
-        <para>When a type appears in an expression, the abbreviations <literal>X?</literal>,
-        <literal>X[]</literal> and <literal>X[n]</literal> cannot be used (they cannot be 
-        disambiguated from operator expressions).</para>
-        
-        <comment><para>TODO: It might be difficult to support <literal>T??</literal>
-        since <literal>Optional</literal> is erased.</para></comment>
-        
+        <para>When a type appears in an expression, the abbreviations <literal>X?</literal>
+        and <literal>X[]</literal> cannot be used (they cannot be disambiguated from operator 
+        expressions).</para>
+                
         <comment><para>TODO: Java lets you put the <literal>[]</literal> after the variable
         name. C requires that. Should we support/require this variation? It is consistent
         with how we declare functional parameters!</para></comment>
@@ -501,11 +560,9 @@ String? firstWord = words[0];</programlisting>
             <listitem>
                 <para>an interface may <emphasis>extend</emphasis> one or more other interfaces,</para>
             </listitem>
-            <!--
             <listitem>
-                <para>a union may <emphasis>satisfy</emphasis> one or more interfaces,</para>
+                <para>an interface may <emphasis>satisfy</emphasis> exactly one class,</para>
             </listitem>
-            -->
             <listitem>
                 <para>a type parameter may <emphasis>satisfy</emphasis> a class and/or one or 
                 more interfaces or type parameters, or</para>
@@ -516,31 +573,11 @@ String? firstWord = words[0];</programlisting>
             </listitem>
         </itemizedlist>
         
-        <!-- 
-        <comment><para>TODO: should we let an interface extend a class other than 
-        <literal>Object</literal>? What this would mean is that every class that implements
-        the interface, and every interface that extends the interface, would need to directly 
-        or indirectly extend the given class, and the interface type would be considered
-        assignable to the class. It would mean some hacking around the VM-level type system,
-        unfortunately.</para></comment>
-        -->
-        
         <para>Ceylon visually distinguishes between a list of types which represents a
         combination (intersection) of the types, and a list of types which represents a 
         choice between (union of) the types. An intersection is written as 
         <literal>X &amp; Y &amp; Z</literal>. A union is written as 
         <literal>X | Y | Z</literal>.</para>
-        
-        <comment><para>Note: Ceylon does not currently support ad hoc union types and/or 
-        intersection types, but this would be the syntax if we ever decided to do so.</para>
-        <programlisting>void write(String|Integer|Float value) { ... }</programlisting>
-        <programlisting>void store(Persistent&amp;Format&amp;IdentifiableObject object) { ... }</programlisting>
-        <para>This syntax is consistent with the interpretation of these operators as set 
-        intersection and union.</para>
-        <para>We would also probably support aliases for ad hoc union and intersection 
-        types using a syntax like this:</para>
-        <programlisting>type Printable = String | Integer | Float;</programlisting>
-        <programlisting>type Storable = Persistent &amp; Format &amp; IdentifiableObject;</programlisting></comment>
         
     <section id="extendedclass">
         <title>Extension</title>
@@ -572,9 +609,7 @@ String? firstWord = words[0];</programlisting>
     
         <para>
         If a class does not explicitly specify a superclass using <literal>extends</literal>,
-        its superclass is <literal>ceylon.language.BaseObject</literal>. <!--There is one exception 
-        to this rule: the built-in class <literal>ceylon.language.Void</literal> which does not have 
-        a superclass.-->
+        its superclass is <literal>ceylon.language.IdentifiableObject</literal>.
         </para>
         
         <para>
@@ -613,8 +648,8 @@ String? firstWord = words[0];</programlisting>
         <title>Satisfaction</title>
     
         <para>A class may implement one or more interfaces. An interface may extend one
-        or more interfaces. <!--A union may satisfy one or more interfaces.--> A type 
-        parameter may satisfy one or more interfaces and, optionally, a class.</para>
+        or more interfaces and satisfy a class. A type parameter may satisfy one or more 
+        interfaces and, optionally, a class.</para>
         
         <programlisting>SatisfiedTypes: "satisfies" Type ("&amp;" Type)*</programlisting>
     
@@ -622,7 +657,7 @@ String? firstWord = words[0];</programlisting>
         a satisfied type is a parameterized type, the <literal>satisfies</literal> clause 
         must specify type arguments.</para>
         
-        <programlisting>satisfies T[] &amp; Collection&lt;T&gt;</programlisting>
+        <programlisting>satisfies Sequence&lt;T&gt; &amp; Collection&lt;T&gt;</programlisting>
         
         <para>Suppose <literal>Y</literal> is an interface and <literal>X</literal> is
         a class or interface.</para>
@@ -662,7 +697,7 @@ String? firstWord = words[0];</programlisting>
         
         <programlisting>Condition: TypeName (Metatypes SatisfiedTypes? | SatisfiedTypes)</programlisting>
         
-        <para>The type parameter must be a covariant or nonvariant type parameter of
+        <para>The type parameter must be a covariant or invariant type parameter of
         the class or interface.</para>
         
         <programlisting>satisfies SequenceEquality&lt;T&gt; if (T satisfies Equality&lt;T&gt;)</programlisting>
@@ -748,8 +783,7 @@ shared interface ElementwiseEquality
         <title>Cases</title>
         
         <para>An interface or <literal>abstract</literal> class may optionally 
-        specify an enumerated list of all its subtypes.<!--A union must specify an 
-        enumerated list of its subtypes.--></para>
+        specify an enumerated list of all its subtypes.</para>
         
         <para>Likewise, a type parameter may specify an enumerated list of all
         types which it accepts as a type argument.</para>
@@ -1011,7 +1045,7 @@ shared S join<S>(S... sequences)
 
 shared class LinkedList<T>(T... elements) 
         is JoinableLinkedList<T> 
-        satisfies T[] { ... }]]></programlisting>
+        satisfies List<T> { ... }]]></programlisting>
         
     </section>
         
@@ -1089,7 +1123,7 @@ shared class LinkedList<T>(T... elements)
         <programlisting>Variance:  ("out" | "in")?</programlisting>
         
         <para>A type parameter declared neither <literal>out</literal> nor <literal>in</literal> 
-        is called <emphasis>nonvariant</emphasis>.</para>
+        is called <emphasis>invariant</emphasis>.</para>
         
         <programlisting>Map&lt;K, V&gt;</programlisting>
         
@@ -1104,7 +1138,7 @@ shared class LinkedList<T>(T... elements)
         
         <para>A covariant type parameter may only appear in covariant positions of the type 
         definition. A contravariant type parameter may only appear in contravariant positions 
-        of the type definition. Nonvariant type parameters may appear in any position.</para>
+        of the type definition. Invariant type parameters may appear in any position.</para>
         
         <itemizedlist>
             <listitem>
@@ -1128,7 +1162,7 @@ shared class LinkedList<T>(T... elements)
                 position.</para>
             </listitem>
             <listitem>
-                <para>The type of a <literal>variable</literal> attribute is a nonvariant 
+                <para>The type of a <literal>variable</literal> attribute is an invariant 
                 position.</para>
             </listitem>
             <listitem>
@@ -1172,7 +1206,7 @@ shared class LinkedList<T>(T... elements)
                 covariant position.</para>
             </listitem>
             <listitem>
-                <para>A nonvariant type argument of a type is a nonvariant position.</para>
+                <para>An invariant type argument of a type is an invariant position.</para>
             </listitem>
             <listitem>
                 <para>A parameter of a callable parameter in a contravariant position is 
@@ -1401,29 +1435,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         </itemizedlist>
         
         <para>Every type parameter has an implicit upper bound of type <literal>Void</literal>.</para>
-        
-        <!--  
-        <comment><para>TODO: eventually we should support the ability to implicitly pass in an
-        extension that is imported by the client code, using a type constraint of form:</para>
-        <programlisting>given extension E(X x) satisfies Format</programlisting>
-        <para>(We would need to define an identity extension in <literal>ceylon.language</literal>.)</para>
-        <para>In the following special case, this lets us implement a Haskell-style type class 
-        as an extension of the metatype:</para>
-        <programlisting>given extension E(Type&lt;X&gt; tx) satisfies Monoid&lt;X&gt;</programlisting>
-        <para>The extension type would be inferred at the point of invocation, using the usual
-        rules for searching for extensions.</para>
-        </comment>
-        -->
-        
-        <!-- 
-        <comment><para>TODO: at some stage it would be very interesting to support "assignability
-        upper bounds", for example <literal>given X is String</literal>, where the client code is
-        required to have an enabled extension that introduces the bound <literal>String</literal>
-        to the type parameter <literal>X</literal>. Under the covers this extension would be passed
-        as a <literal>Callable&lt;String,X&gt;</literal> to the initializer or method that declares 
-        the constrained type parameter. Scala calls this feature "view bounds".</para></comment>
-        -->
-        
+                
         <para>Note that an upper bound type constraint of form:</para>
         
         <programlisting>given X satisfies T</programlisting>
@@ -1455,6 +1467,9 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
        <section id="thesubtypekeyword">
             <title>The <literal>subtype</literal> keyword</title>
             
+        <comment><para>NOTE: <literal>subtype</literal> is a proposed feature for a 
+        future version of the language.</para></comment>
+        
         <para>The keyword <literal>subtype</literal> is used to refer to the runtime 
         type of an object.</para>
             
@@ -1533,7 +1548,7 @@ Entry<Name,Person> entry = named(gavin.name, gavin);]]></programlisting>
         member, <literal>x.type</literal>.</para></comment>
         
         </section>
-        
+    <!--   
     <section id="dimensionaltypeparameters">
         <title>Dimensional type parameters</title>
             
@@ -1563,7 +1578,8 @@ shared interface Successor&lt;out N&gt; satisfies Dimension given N satisfies Di
         inside the declaration.</para></comment>
         
      </section>
-        
+     -->
+     
      <section id="parameterizedtypeparameters">
         <title>Parameterized type parameters</title>
 
@@ -1703,7 +1719,10 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         <para>A type argument list is a list of types and dimensions, and an optional 
         sequenced type argument.</para>
         
+        <programlisting>TypeArguments: "&lt;" (UnionType ",")* (UnionType | SequencedType) "&gt;"</programlisting>
+        <!-- 
         <programlisting>TypeArguments: "&lt;" (TypeArgument ",")* (TypeArgument | SequencedType) "&gt;"</programlisting>
+        -->
         
         <para>A <emphasis>sequenced type argument</emphasis> is either:</para>
         
@@ -1722,10 +1741,12 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
                 
         <programlisting>SequencedType: TypeName "..."</programlisting>
         
+        <!-- 
         <para>A <emphasis>type argument</emphasis> is a type or a dimension:</para>
         
         <programlisting>TypeArgument: Type | Dimension</programlisting>
-        
+         -->
+         
         <para>A type argument may itself be a parameterized type or type parameter.</para>
         
         <programlisting>Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
@@ -1734,51 +1755,12 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         <programlisting>Callable&lt;X,T,P...&gt;</programlisting>
         <programlisting>Callable&lt;String[],Object...&gt;</programlisting>
         
+        <!--
         <programlisting>Vector&lt;#10&gt;</programlisting>
         <programlisting>Matrix&lt;#x,#y&gt;</programlisting>
-        
-        <para>Any type schema in which the special type parameter <literal>subtype</literal> 
-        occurs is considered a parameterized type. Any occurrence of the type is considered 
-        a produced type, where the type argument to the type parameter <literal>subtype</literal> 
-        is:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>the special type <literal>x.subtype</literal>, if the produced type 
-                occurs in the declaration of a method parameter <literal>x</literal>, or</para>
-            </listitem>
-            <listitem>
-                <para>the type itself, otherwise.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Note that in principle the type argument to <literal>subtype</literal> is 
-        always the runtime type of the instance. However, except in the special case of
-        a method argument, there is no syntax for referring to this type.</para>
-        
-        <para>Any method schema in which the special type parameter <literal>x.subtype</literal> 
-        occurs is considered a parameterized method schema. The type argument to the type 
-        parameter <literal>x.subtype</literal> is:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>the special type <literal>y.subtype</literal>, if the argument to
-                <literal>x</literal> is a method parameter <literal>y</literal>, or</para>
-            </listitem>
-            <listitem>
-                <para>the statically determined type of the method argument, otherwise.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Note that in principle the type argument to <literal>x.subtype</literal> is 
-        always the runtime type of the argument. However, except in the special case of
-        a method argument, there is no syntax for referring to this type.</para>
-        
-        <comment><para>TODO: Actually, a better way to define this stuff might be to say
-        that the type <literal>x.subtype</literal> is a legitimate type for any expression
-        <literal>x</literal>, but then severely restrict the use of such types in declaration 
-        schemas.</para></comment>
-        
+        -->
+    
+        <!--
         <section id="dimensions">
             <title>Dimensions</title>
         
@@ -1842,7 +1824,8 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         like <literal>String[1..n]</literal> for sequences.</para></comment>
         
         </section>
-                
+        -->
+         
         <section id="typeargumentconformance">
             <title>Type argument conformance</title>
         
@@ -1854,9 +1837,11 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
                  <para>a type argument that satisfies the constraints of the type parameter 
                  is specified for every ordinary type parameter,</para>
              </listitem>
+             <!--
              <listitem>
                  <para>a dimension is specified for every dimensional type parameter, and</para>
              </listitem>
+             -->
              <listitem>
                  <para>if the type parameter list has no sequenced type parameter, then there
                  are no additional type arguments, and no sequenced type argument.</para>
@@ -1900,7 +1885,7 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
             </listitem>
             <listitem>
                 <para>
-                    If <literal>X</literal> is nonvariant (neither covariant nor contravariant), 
+                    If <literal>X</literal> is invariant (neither covariant nor contravariant), 
                     there is no subtype relationship between <literal>T&lt;A&gt;</literal> and 
                     <literal>T&lt;B&gt;</literal>.
                 </para>
@@ -1933,10 +1918,12 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
             </listitem>
         </itemizedlist>
         
+        <!--
         <para>A dimension is substituted for every appearance of the corresponding 
         dimensional type parameter in the schema of the parameterized declaration.
         The dimension appears as a parenthesized expression in expressions involving
         the dimensional type parameter.</para>
+        -->
         
         <para>In the case of a sequenced type parameter:</para>
         
@@ -2029,16 +2016,18 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
             <listitem>
                 <para>obtaining a <literal>Type</literal> object representing the
                 runtime value of a type argument of an instance using reflection, for 
-                example, <literal>objectList.type.arguments.first</literal>,</para>
+                example, <literal>objectList.type.arguments.first</literal>, and</para>
             </listitem>
             <listitem>
                 <para>instantiating a type parameter with an initialization parameter
-                specification, for example, <literal>T(parent)</literal>, and</para>
+                specification, for example, <literal>T(parent)</literal>.</para>
             </listitem>
+            <!--
             <listitem>
                 <para>obtaining the numeric value of a dimensional type parameter, for
                 example, <literal>for (Natural i in 0..natural&lt;N&gt;())</literal>.</para>
             </listitem>
+            -->
         </itemizedlist>
         
         <para>Sequenced type parameters are not reified. None of the above operations can 
@@ -2049,10 +2038,61 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         implicit type parameter of form <literal>x.subtype</literal> evaluates to the 
         concrete type of the method argument <literal>x</literal>, as determined at runtime. 
         This is different to other type parameters which reify to the type argument 
-        determined at compile time.</para>
+        determined at compile time. <emphasis>Note that support for the <literal>subtype</literal>
+        keyword is a proposed feature for a future version of the language.</emphasis></para>
         
         </section>
                 
+        <section id="subtypetypeargument">
+            <title>The type argument of <literal>subtype</literal></title>
+            
+        <comment><para>NOTE: <literal>subtype</literal> is a proposed feature for a 
+        future version of the language.</para></comment>
+        
+        <para>Any type schema in which the special type parameter <literal>subtype</literal> 
+        occurs is considered a parameterized type. Any occurrence of the type is considered 
+        a produced type, where the type argument to the type parameter <literal>subtype</literal> 
+        is:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the special type <literal>x.subtype</literal>, if the produced type 
+                occurs in the declaration of a method parameter <literal>x</literal>, or</para>
+            </listitem>
+            <listitem>
+                <para>the type itself, otherwise.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Note that in principle the type argument to <literal>subtype</literal> is 
+        always the runtime type of the instance. However, except in the special case of
+        a method argument, there is no syntax for referring to this type.</para>
+        
+        <para>Any method schema in which the special type parameter <literal>x.subtype</literal> 
+        occurs is considered a parameterized method schema. The type argument to the type 
+        parameter <literal>x.subtype</literal> is:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the special type <literal>y.subtype</literal>, if the argument to
+                <literal>x</literal> is a method parameter <literal>y</literal>, or</para>
+            </listitem>
+            <listitem>
+                <para>the statically determined type of the method argument, otherwise.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Note that in principle the type argument to <literal>x.subtype</literal> is 
+        always the runtime type of the argument. However, except in the special case of
+        a method argument, there is no syntax for referring to this type.</para>
+        
+        <comment><para>TODO: Actually, a better way to define this stuff might be to say
+        that the type <literal>x.subtype</literal> is a legitimate type for any expression
+        <literal>x</literal>, but then severely restrict the use of such types in declaration 
+        schemas.</para></comment>
+        
+        </section>
+    
     </section>
     
     <section id="parameters">

@@ -126,8 +126,8 @@ assert() that (semaphore&identical;s); //assertion never fails</programlisting>
             <para>The compiler is permitted to emit bytecode that produces a new instance of 
             certain types in the module <literal>ceylon.language</literal> without execution of 
             the initializer of the class, whenever any expression is evaluated. These types are:
-            any of the the built-in numeric types, <!-- of <literal>Bits&lt;#n&gt;</literal>,--> 
-            <literal>Bounded&lt;#n&gt;</literal>, <literal>Character</literal>, 
+            any of the the built-in numeric types, <!-- of <literal>Bits&lt;#n&gt;</literal>,
+            <literal>Bounded&lt;#n&gt;</literal>-->, <literal>Character</literal>, 
             <literal>Range</literal>, <literal>Entry</literal>, and <literal>String</literal>. 
             Furthermore, it is permitted to use such a newly-produced instance as the value of 
             the expression, as long as the newly-produced instance is equal to the value expected 
@@ -295,18 +295,15 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <title>Natural number literals</title>
         
         <para>A natural number literal <literal>n</literal> is an 
-        expression of type <literal>ceylon.language.Bounded&lt;#n&gt;</literal>.</para>
+        expression of type <literal>ceylon.language.Natural</literal>.</para>
         
-        <programlisting>Bounded&lt;#5&gt; five = 5;</programlisting>
-        
-        <para>An extension supports conversion to the type 
-        <literal>Natural</literal>.</para>
-        
-        <programlisting>Natural m = n + 10;</programlisting>
-        
+        <programlisting>Natural five = 5;</programlisting>
+                
         <para>Negative <literal>Integer</literal> values can be 
-        produced using the unary <literal>-</literal> operator:</para>
+        produced using the unary <literal>+</literal> and 
+        <literal>-</literal> operators:</para>
         
+        <programlisting>Integer zero = +0;</programlisting>
         <programlisting>Integer i = -1;</programlisting>
         
     </section>
@@ -324,12 +321,6 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         we don't want it to go through an intermediate conversion to
         floating point representation.</para></comment>
         
-        <!--
-        <para>Equivalent to this Java code:</para>
-        
-        <programlisting>public final Float pi = new lang.Float(3.14159f);</programlisting>
-        -->
-
     </section>
     
     <section id="character">
@@ -340,11 +331,6 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 
         <programlisting>if ( string[i] &equals; `+` ) { ... }</programlisting>
         
-        <!--
-        <para>Equivalent to this Java code:</para>
-        
-        <programlisting>if ( string.at(i).equals( new lang.Character('+') ) ) { ... }</programlisting>
-        -->        
         <comment><para>TODO: do we really need character literals?</para></comment>
         
     </section>
@@ -362,19 +348,7 @@ span multiple lines
 if you prefer.";</programlisting>
 
         <programlisting>display("Melbourne\tVic\tAustralia\nAtlanta\tGA\tUSA\nGuanajuato\tGto\tMexico\n");</programlisting>
-        
-        <!--
-        <para>Equivalent to the following Java code:</para>
-        
-        <programlisting>person.name().set( new lang.String("Gavin") );</programlisting>
-        
-        <programlisting>log.info( new lang.String( Time(), " ", message ) );</programlisting>
-        
-        <programlisting>final lang.String multiline = new lang.String("Strings may\nspan multiple lines\nif you prefer.");</programlisting>
-        
-        <programlisting>display( new lang.String( "Melbourne\tVic\tAustralia\nAtlanta\tGA\tUSA\nGuanajuato\tGto\tMexico\n") );</programlisting>
-        -->
-        
+                
     </section>
     
     <section id="quoted">
@@ -387,7 +361,7 @@ if you prefer.";</programlisting>
         structured data.</para>
         
         <para>A single quoted literal is an expression of type 
-        <literal>ceylon.language.Quoted</literal>. An extension is responsible for 
+        <literal>ceylon.language.Quoted</literal>. An introduction is responsible for 
         converting it to the appropriate type.</para>
                 
         <programlisting>Date date = '25/03/2005';</programlisting>
@@ -400,21 +374,14 @@ if you prefer.";</programlisting>
         <programlisting>PhoneNumber ph = '+1 (404) 129 3456';</programlisting>
         <programlisting>Duration duration = '1h 30m';</programlisting>
         
-        <para>Extensions that apply to the type <literal>Quoted</literal> are
-        evaluated at compile time for single-quoted literals, alowing compile-time
+        <para>Introductions that apply to the type <literal>Quoted</literal> are
+        evaluated at compile time for single-quoted literals, allowing compile-time
         validation of the contents of the single-quoted string.</para>
         
-        <programlisting>shared extension Date date(Quoted this) { return ... }</programlisting>
-        <programlisting>shared extension class Regex(Quoted this) { return ... }</programlisting>
+        <programlisting>adapt Quoted satisfies Date &amp; Regex;</programlisting>
         
         <comment><para>Note: for now we're only going to support validation against
-        a regex, for example:</para>
-        <programlisting>shared extension Date date(
-        matches('^(19|20)\d\d/(0[1-9]|1[012])/(0[1-9]|[12][0-9]|3[01])$') 
-        Quoted this) { 
-    return ... 
-}</programlisting>
-        </comment>
+        a regex.</para></comment>
         
         <comment><para>TODO: we should try to support interpolated expressions, 
         just like we do for string literals.</para></comment>
@@ -496,12 +463,7 @@ if you prefer.";</programlisting>
         class or interface in which the expression appears), and to the special 
         type <literal>subtype</literal>, which represents the concrete type of the 
         current instance.</para>
-        
-        <para>In a toplevel extension method or class, <literal>this</literal> is 
-        also assignable to the extended type, and when a member of the extended type
-        is used, <literal>this</literal> refers to the instance of the extended type
-        to which the extension is being applied.</para>
-        
+                
         <!--
         <comment><para>TODO: what is the syntax for the current instance
         of a containing class? Here are some options:</para>
@@ -792,7 +754,7 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>Thus, method schemas are covariant in return type, and nonvariant in parameter 
+        <para>Thus, method schemas are covariant in return type, and invariant in parameter 
         types.</para>
         
         <para>The schema also restricts the the argument list that can be specified when the
@@ -2209,63 +2171,6 @@ setPerson(person);</programlisting>
     
     </section>
     
-    <!--
-    <section id="enumeration">
-        <title>Enumeration</title>
-        
-        <para>A sequence may be instantiated by enumerating the elements inside braces:</para>
-        
-        <programlisting>Enumeration: "{" ( Expression ("," Expression)* )? "}"</programlisting>
-        
-        <para>Each enumerated element expression type must be assignable to 
-        <literal>Object</literal>.</para>
-        
-        <para>The type of an enumeration expression is <literal>Gettable&lt;T[n]&gt;</literal> 
-        where <literal>T</literal> is a subtype of <literal>Object</literal> to which all the 
-        enumerated element expression types are assignable and <literal>n</literal> is the number 
-        of element expressions.</para>
-                    
-        <para>Evaluation of an reference object for an enumeration produces an instance of 
-        <literal>T[n]</literal> containing the enumerated elements in the given order. When 
-        an enumeration evaluation is executed, each element expression is evaluated, and the 
-        resulting values collected together into an object that implements <literal>T[n]</literal>. 
-        The concrete type of this object  is not specified here.</para>
-        
-        <programlisting>String[5] names = { "gavin", "max", "emmanuel", "steve", "christian" };</programlisting>
-        
-        <para>Empty braces <literal>{}</literal> are an abbreviation of <literal>None.none</literal>.</para>
-                                
-        <programlisting>OpenList&lt;Connection&gt; connections = {};</programlisting>
-        
-        <para>There is no special syntax for constructing lists, sets or maps. However, the 
-        <literal>..</literal> and <literal>-></literal> operators, together with the 
-        convenient sequence enumeration syntax, and some built-in extensions help us achieve 
-        the desired effect.</para>
-
-        <programlisting>List&lt;String&gt; languages = { "Java", "Ceylon", "Smalltalk", "C#" };</programlisting>
-        <programlisting>List&lt;Natural&gt; numbers = 1..10;</programlisting>
-            
-        <para>Sequences are transparently converted to sets or maps, allowing sets and maps 
-        to be initialized as follows:</para>
-    
-        <programlisting>Map&lt;String, String&gt; map = { "Java"->"Boring...", "Scala"->"Difficult :-(", "Ceylon"->"Fun!" };</programlisting>
-        <programlisting>Set&lt;String&gt; set = { "Java", "Ceylon", "Scala" };</programlisting>
-        <programlisting>OpenList&lt;String&gt; list = {};</programlisting>
-        
-        <comment><para>TODO: an alternative to this syntax would be to allow a comma-separated
-        list of values without braces after <literal>=</literal>, <literal>in</literal> or 
-        <literal>return</literal> and after <literal>:=</literal> in an attribute initializer. 
-        The disadvantage to this approach is that enumerations would not be allowed in 
-        positional argument invocations, or in expressions. It's also less regular. On the 
-        other hand, it is consistent with how we treat sequenced arguments.</para>
-        <programlisting>Map&lt;String, String&gt; map = "Java"->"Boring...", "Scala"->"Difficult :-(", "Ceylon"->"Fun!";</programlisting>
-        <programlisting>for (String lang in "Java", "Ceylon", "Scala", "C#") { ... }</programlisting>
-        <programlisting>join { sep=", "; strings=firstName, initial, lastName; };</programlisting>
-        </comment>
-            
-    </section>
-    -->
-    
     <section id="metamodelreferences">
         <title>Metamodel references</title>
         
@@ -2709,6 +2614,7 @@ createItemMethod.intercept()
             <row>
                 <entry>Negation, slotwise complement, format:</entry>
                 <entry>
+                <literal>+</literal>,
                 <literal>-</literal>, 
                 <literal>~</literal>,
                 <literal>$</literal> 
@@ -2946,32 +2852,9 @@ createItemMethod.intercept()
         </listitem>
         -->
     </itemizedlist>
-    
-    <!--
-    <para>The argument expressions of the identity operator must be of type
-    <literal>ceylon.language.Object</literal>. The argument expression of the 
-    assignability operator may be of any type, not limited to types assignable 
-    to <literal>Object</literal>.</para>
-    -->
-    
+        
     <para>All other operators are defined in terms of other operators and/or
     invocations.</para>
-    
-    <!-- 
-    <comment><para>Note that <literal>exists</literal> is primitive because
-    <literal>is</literal> is undefined for <literal>Optional</literal> and 
-    its subtypes. The reason for this is that the type of a null value is 
-    erased. We can't make the following behave consistently with the type 
-    system:</para>
-    <programlisting>Apple apple = null;
-Void v = apple;
-if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
-    <para>Now, there is a potential workaround. We could define an extension 
-    which converts a null of one type to a null of any other type, which 
-    reflects what the JVM does. Then <literal>is</literal> could be defined 
-    to work consistently for optional types.</para>
-    </comment>
-     -->
     
     <para>In the tables, the following pseudo-code is used, which is not legal
     Ceylon syntax:</para>
@@ -3986,7 +3869,17 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
         
         <row><entry namest="first" nameend="last"><emphasis>Numeric operators</emphasis></entry></row>
         
-        <!-- Unary negative -->
+        <!-- Unary positive and negative -->
+        
+        <row>
+            <entry><literal>+</literal></entry>
+            <entry><literal>+rhs</literal></entry>
+            <entry></entry>
+            <entry><literal>rhs.value</literal></entry>
+            <entry></entry>
+            <entry><literal>Invertable &lt;I&gt;</literal></entry>
+            <entry><literal>I</literal></entry>
+        </row>
         
         <row>
             <entry><literal>-</literal></entry>
@@ -4151,8 +4044,9 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
     </tgroup>
     </table>
     
+        <!--
         <para>Built-in converters allow for type promotion of numeric values used in 
-        expressions. Coverters exist for the following numeric types:</para>
+        expressions. Converters exist for the following numeric types:</para>
         
         <itemizedlist>
             <listitem>
@@ -4177,6 +4071,7 @@ if (v is Nothing&lt;Orange&gt;) { ... }</programlisting>
         the combination <literal>Float</literal> and <literal>Whole</literal>, and that
         <literal>x + y</literal> always produces the same value, with the same type, as
         <literal>y + x</literal>.</para>
+        -->
         
     </section>
     

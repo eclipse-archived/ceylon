@@ -1180,6 +1180,9 @@ if (X satisfies Comparable&lt;X&gt;) {
 ( ClosedBlock | OpenBlock "fail" ClosedBlock )
 </programlisting-->
 
+            <comment><para>TODO: community feedback is that <literal>else</literal> is
+            better than <literal>fail</literal>.</para></comment>
+
             <para>An iteration variable declaration must specify one or two iteration
             variables, and an iterated expression that contains the range of values to 
             be iterated. <!--It may optionally specify one or more iteration constraint 

@@ -9,8 +9,6 @@
 <!ENTITY declarations              SYSTEM "modules/declarations.xml">
 <!ENTITY statementblocks           SYSTEM "modules/statementblocks.xml">
 <!ENTITY expressions               SYSTEM "modules/expressions.xml">
-<!ENTITY types                     SYSTEM "modules/types.xml">
-<!ENTITY transformations           SYSTEM "modules/transformations.xml">
 <!ENTITY modules                   SYSTEM "modules/modules.xml">
 <!ENTITY equals                    "==">
 <!ENTITY assign                    ":=">
@@ -141,8 +139,6 @@
     &declarations;
     &statementblocks;
     &expressions;
-    &types;
-    &transformations;
     &modules;
 
 </book>
