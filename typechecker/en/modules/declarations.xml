@@ -241,6 +241,10 @@ TypeConstraints?
                     type,</para>
                 </listitem>
                 <listitem>
+                    <para>the adapted type must be a subtype of every class satisfied
+                    by the introduced type,</para>
+                </listitem>
+                <listitem>
                     <para>for every <literal>formal</literal> member of the introduced 
                     type, there must be a member of the adapted type such that the two
                     members refine, directly or indirectly, a common member of a common
@@ -385,12 +389,17 @@ TypeConstraints?
             supertypes of an interface must be interfaces. An interface may not extend the 
             same interface twice (not even with distinct type arguments).</para>
             
-            <para>If an interface does not explicitly declare the class it satisfies, it 
-            satisfies the class <literal>ceylon.language.Object</literal>.</para>
+            <para>If an interface does not explicitly declare the class it satisfies using
+            <literal>satisfies</literal>, it satisfies the class 
+            <literal>ceylon.language.Object</literal>.</para>
             
             <para>An interface inherits all members (methods, attributes and member types) 
             of every supertype, except for members refined by the interface or by some 
             supertype of the interface.</para>
+            
+            <para>An interface inherits every class satisfied by every other interface the 
+            interface extends. There must exist a unique satisfied class that is a subclass
+            of all classes satisfied by the interface.</para>
             
             <para>The schema of the inherited members is formed by substituting type arguments
             specified in the <literal>satisfies</literal> clause.</para>
@@ -771,6 +780,11 @@ TypeConstraints?
         implemented interfaces. The type specified after the <literal>extends</literal> 
         keyword is a superclass. A class may not implement the same interface twice (not 
         even with distinct type arguments).</para>
+        
+        <para>
+        If a class does not explicitly specify a superclass using <literal>extends</literal>,
+        its superclass is <literal>ceylon.language.IdentifiableObject</literal>.
+        </para>
         
         <para>A class:</para>
         

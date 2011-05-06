@@ -608,11 +608,6 @@ String? firstWord = words[0];</programlisting>
         <literal>super(Iterable).Iterator()</literal>.</para></comment>
     
         <para>
-        If a class does not explicitly specify a superclass using <literal>extends</literal>,
-        its superclass is <literal>ceylon.language.IdentifiableObject</literal>.
-        </para>
-        
-        <para>
         The root class <literal>ceylon.language.Void</literal> does not have a superclass.
         </para>
         
