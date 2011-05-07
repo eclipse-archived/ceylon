@@ -456,6 +456,31 @@
         
         </section>
         
+        <section id="bottomtype">
+            <title>The bottom type</title>
+            
+            <para>The special type <literal>Bottom</literal> represents:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the intersection of all types, or, equivalently</para>
+                </listitem>
+                <listitem>
+                    <para>the empty set.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para><literal>Bottom</literal> is assignable to all other types, but has
+            no instances.</para>
+            
+            <para>A reference to a members of an expression of type <literal>Bottom</literal>
+            is always an error.</para>
+            
+            <comment><para>TODO: Should the name of this type be a keyword, perhaps
+            <literal>bottom</literal>?</para></comment>
+            
+        </section>
+        
         <section id="typeofaprogramelement">
             <title>Type of a program element</title>
         
@@ -1228,13 +1253,7 @@ shared class LinkedList<T>(T... elements)
         
         <para>These rules apply to members declared by the type, and to members inherited from 
         supertypes.</para>
-        
-        <comment><para>TODO: when working with contravariant type parameters, it would be
-        really nice to have a special <literal>bottom</literal> type, defined as the 
-        intersection of all types. Then, for example, <literal>Sender&lt;bottom&gt;</literal>
-        would be a supertype of <literal>Sender&lt;X&gt;</literal> for every 
-        type argument <literal>X</literal>.</para></comment>
-        
+                
         </section>
         
         <section id="sequencedtypeparameters">
