@@ -147,8 +147,7 @@
                    <literal>java.lang.String</literal>,</para>
                </listitem>
                <listitem>
-                   <para><literal>Integer</literal>,
-                   <literal>Bounded&lt;#n&gt;</literal> and 
+                   <para><literal>Integer</literal> and 
                    <literal>Natural</literal> with
                    <literal>long</literal>,</para>
                </listitem>
@@ -165,8 +164,7 @@
                    <literal>boolean</literal>,</para>
                </listitem>
                <listitem>
-                   <para><literal>Integer?</literal>,
-                   <literal>Bounded&lt;#n&gt;?</literal> and 
+                   <para><literal>Integer?</literal> and 
                    <literal>Natural?</literal> with
                    <literal>java.lang.Long</literal>,</para>
                </listitem>

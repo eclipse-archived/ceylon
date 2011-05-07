@@ -201,7 +201,7 @@ setGreeting(greeting);</programlisting>
     
     <itemizedlist>
         <listitem>
-            <para><literal>Bounded</literal> and <literal>Float</literal>,</para>
+            <para><literal>Natural</literal> and <literal>Float</literal>,</para>
         </listitem>
         <listitem>
             <para><literal>Character</literal>,</para>
@@ -1441,7 +1441,7 @@ local comp = order(1,-1);</programlisting>
         intended invocation syntax? For example:</para>
         <programlisting>shared void assert(Gettable&lt;String&gt; message) Boolean that { ... }</programlisting>
         <programlisting>shared Y when&lt;Y&gt;(Boolean condition) Y then Y otherwise { ... }</programlisting>
-        <programlisting>shared void repeat(Natural repetitions) void times(Integer i) { ... }</programlisting>
+        <programlisting>shared void repeat(Natural repetitions) void times(Natural i) { ... }</programlisting>
         </comment>
         
         <comment><para>TODO: Since this is our solution for "anonymous methods" (lambda 

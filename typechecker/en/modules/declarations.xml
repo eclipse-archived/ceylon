@@ -1968,7 +1968,7 @@ Void goodbye() {
                  
         <programlisting>variable Natural count := 0;</programlisting>
         
-        <programlisting>shared Integer max = 99;</programlisting>
+        <programlisting>shared Integer max = +99;</programlisting>
 
         <programlisting>shared Decimal pi = calculatePi();</programlisting>
         

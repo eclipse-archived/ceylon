@@ -1259,7 +1259,7 @@ if (X satisfies Comparable&lt;X&gt;) {
 }</programlisting>
 
             <programlisting>variable Float sum := 0.0;
-for (Integer i in -10..10) {
+for (Integer i in -10..+10) {
     sum += x[i] ? 0.0;
 }</programlisting>
             
