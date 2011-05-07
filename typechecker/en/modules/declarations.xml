@@ -1780,17 +1780,17 @@ Void goodbye() {
         <section id="refiningmethods">
             <title>Method refinement</title>
             
-            <para>Method refinement is the foundation of polymorphism in Ceylon.</para>
+            <para>Methods may be refined, just like in other object-oriented languages.</para>
             
             <itemizedlist>
             <listitem>
                 <para>A class or interface may refine any <literal>formal</literal> 
-                method or <literal>default</literal> method it inherits, unless it inherits 
+                or <literal>default</literal> method it inherits, unless it inherits 
                 a non-<literal>formal</literal> non-<literal>default</literal> method that 
                 refines the method.</para>
             </listitem>
             <listitem>
-                <para>A concrete class must refine every <literal>formal</literal> method 
+                <para>A concrete class must refine every <literal>formal</literal> 
                 or <literal>definite</literal> method it inherits, unless it inherits a 
                 non-<literal>formal</literal> non-<literal>definite</literal> method that 
                 refines the method.</para>
@@ -2171,13 +2171,13 @@ shared assign name { firstName = first(name); lastName = last(name); }</programl
             <itemizedlist>
             <listitem>
                 <para>A class or interface may refine any <literal>formal</literal> 
-                attribute or <literal>default</literal> attribute it inherits, unless it 
-                inherits a non-<literal>formal</literal> non-<literal>default</literal> 
+                or <literal>default</literal> attribute it inherits, unless it inherits 
+                a non-<literal>formal</literal> non-<literal>default</literal> 
                 attribute that refines the attribute.</para>
             </listitem>
             <listitem>
                 <para>A concrete class must refine every <literal>formal</literal> 
-                attribute, or <literal>definite</literal> attribute it inherits, unless it 
+                or <literal>definite</literal> attribute it inherits, unless it 
                 inherits a non-<literal>formal</literal> non-<literal>definite</literal>
                 attribute that refines the attribute.</para>
             </listitem>

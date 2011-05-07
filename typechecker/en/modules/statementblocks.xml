@@ -636,7 +636,7 @@ else {
         <para>Some control structures allow embedded declaration of a <emphasis>variable</emphasis> 
         that is available inside the control structure body.</para>
         
-        <programlisting>Variable: Type MemberName</programlisting>
+        <programlisting>Variable: UnionType MemberName</programlisting>
         
         <para>In certain cases, the explicit type be omitted, forcing the compiler to infer it, by 
         specifying the keyword <literal>local</literal> where the type usually appears. The type of 
@@ -688,7 +688,7 @@ else {
         
         <para>An assignability condition specifies an expression or variable and a type.</para>
         
-        <programlisting>IsCondition: "is" (Variable Specifier | Type Expression)</programlisting>
+        <programlisting>IsCondition: "is" (Variable Specifier | UnionType Expression)</programlisting>
         
         <para>A subtype condition specifies a <emphasis>specified type</emphasis> (first) and a 
         <emphasis>given type</emphasis> (second).</para>
@@ -968,7 +968,7 @@ if (X satisfies Comparable&lt;X&gt;) {
                 </listitem>
             </itemizedlist>
 
-            <programlisting>Case: Expression ("," Expression)* | "is" Type | "satisfies" Type</programlisting>
+            <programlisting>Case: Expression ("," Expression)* | "is" UnionType | "satisfies" Type</programlisting>
             
             <para>If a <literal>case (null)</literal> occurs, the <literal>switch</literal> expression 
             must be of type <literal>X?</literal>, for some type <literal>X</literal>.</para>
@@ -1434,7 +1434,7 @@ finally {
     try ( Session s = Session() ) {
         return s.get(Person, id);
     }
-    catch (NotFoundException e) {
+    catch (NotFoundException|DeletedException e) {
         return null;
     }
 }</programlisting>

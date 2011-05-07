@@ -370,49 +370,6 @@
         
         </section>
         
-        <section id="typeofaprogramelement">
-            <title>Type of a program element</title>
-        
-        <para>Method, attribute, and parameter declarations must declare a type.</para>
-        
-        <programlisting>Type: UnabbreviatedType Abbreviation*</programlisting>
-        
-        <para>If the type is a class or interface nested inside a containing class or 
-        interface, the type must be fully qualified by its containing types, except when 
-        used inside the body of a containing type.</para>
-        
-        <programlisting>UnabbreviatedType: TypeNameWithArguments ("." TypeNameWithArguments)* | Subtype</programlisting>
-        
-        <para>Unlike Java, the name of a type may not be qualified by the package name.</para>
-        
-        <para>Types are identified by the name of the type (a class, interface, or 
-        type parameter), together with a list of type arguments if the type definition 
-        specifies type parameters.</para>
-        
-        <programlisting>TypeNameWithArguments: TypeName TypeArguments?</programlisting>
-        
-        <para>If a type has type parameters or a sequenced type parameter, a type argument 
-        list must be specified. If a type has no type parameters, and no sequenced type 
-        parameter, no type argument list may be specified.</para>        
-        
-        <para>Certain declarations which usually require an explicit type may omit the type, 
-        forcing the compiler to infer it, by specifying the keyword <literal>local</literal>
-        where the type usually appears.</para>
-        
-        <programlisting>InferableType: Type | "local"</programlisting>
-        
-        <para>Type inference is only allowed for block local declarations. The keyword
-        <literal>local</literal> may not be combined with the <literal>shared</literal>
-        annotation.</para>
-        
-        <comment><para>TODO: should we call this keyword <literal>define</literal>, in
-        case we change our minds later about using it for non-local declarations?</para></comment>
-        
-        <comment><para>TODO: should we let you leave off the type arguments in the type
-        of a local declaration? For example <literal>Sequence names = people[].name;</literal></para></comment>
-        
-        </section>
-        
         <section id="uniontypes">
             <title>Union types</title>
             
@@ -496,6 +453,54 @@
         <programlisting>local Printable = String | Integer | Float;</programlisting>
         <programlisting>local Storable = Persistent &amp; Format &amp; IdentifiableObject;</programlisting>
         </comment>
+        
+        </section>
+        
+        <section id="typeofaprogramelement">
+            <title>Type of a program element</title>
+        
+        <para>Method, attribute, and parameter declarations usually declare a type.</para>
+        
+        <programlisting>Type: UnabbreviatedType Abbreviation*</programlisting>
+        
+        <para>If the type is a class or interface nested inside a containing class or 
+        interface, the type must be fully qualified by its containing types, except when 
+        used inside the body of a containing type.</para>
+        
+        <programlisting>UnabbreviatedType: TypeNameWithArguments ("." TypeNameWithArguments)* | Subtype</programlisting>
+        
+        <para>Unlike Java, the name of a type may not be qualified by the package name.</para>
+        
+        <para>Types are identified by the name of the type (a class, interface, or 
+        type parameter), together with a list of type arguments if the type definition 
+        specifies type parameters.</para>
+        
+        <programlisting>TypeNameWithArguments: TypeName TypeArguments?</programlisting>
+        
+        <para>If a type has type parameters or a sequenced type parameter, a type argument 
+        list must be specified. If a type has no type parameters, and no sequenced type 
+        parameter, no type argument list may be specified.</para>        
+        
+        </section>
+        
+        <section id="typeinference">
+            <title>Type inference</title>
+        
+        <para>Certain declarations which usually require an explicit type may omit the type, 
+        forcing the compiler to infer it, by specifying the keyword <literal>local</literal>
+        where the type usually appears.</para>
+        
+        <programlisting>InferableType: UnionType | "local"</programlisting>
+        
+        <para>Type inference is only allowed for block local declarations. The keyword
+        <literal>local</literal> may not be combined with the <literal>shared</literal>
+        annotation.</para>
+        
+        <comment><para>TODO: should we call this keyword <literal>define</literal>, in
+        case we change our minds later about using it for non-local declarations?</para></comment>
+        
+        <comment><para>TODO: should we let you leave off the type arguments in the type
+        of a local declaration? For example <literal>Sequence names = people[].name;</literal></para></comment>
         
         </section>
         
@@ -1739,7 +1744,7 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         <!-- 
         <para>A <emphasis>type argument</emphasis> is a type or a dimension:</para>
         
-        <programlisting>TypeArgument: Type | Dimension</programlisting>
+        <programlisting>TypeArgument: UnionType | Dimension</programlisting>
          -->
          
         <para>A type argument may itself be a parameterized type or type parameter.</para>
@@ -2112,7 +2117,7 @@ SequencedParam?
         <para>Each parameter is declared with a type and name and may have annotations and/or
         parameters of its own.</para>
         
-        <programlisting>Param: Annotation* (Type | "void") (ParameterName | "this") Params*</programlisting>
+        <programlisting>Param: Annotation* (UnionType | "void") (ParameterName | "this") Params*</programlisting>
         
         <para>A parameter may not be be declared <literal>variable</literal>, and may not be 
         assigned to within the body of the method or class.</para>
@@ -2184,7 +2189,7 @@ SequencedParam?
             </listitem>
         </itemizedlist>
         
-        <programlisting>SequencedParam: Annotation* Type "..." ParameterName</programlisting>
+        <programlisting>SequencedParam: Annotation* UnionType "..." ParameterName</programlisting>
         
         <para>The sequenced parameter or tuple parameter must be the last parameter in the 
         list.</para>
@@ -2200,7 +2205,7 @@ SequencedParam?
         
         <para>A parameter of type <literal>Entry</literal> may be specified as a pair of variables.</para>
         
-        <programlisting>EntryParamPair: Annotation* Type ParameterName "->" Type ParameterName</programlisting>
+        <programlisting>EntryParamPair: Annotation* UnionType ParameterName "->" UnionType ParameterName</programlisting>
         
         <para>A key/value parameter pair declaration of form <literal>U u -> V v</literal> results 
         in a method with a single parameter of type <literal>Entry&lt;U,V&gt;</literal>.</para>
