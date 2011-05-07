@@ -1657,7 +1657,7 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
         parameterized type parameters:</para>
         
         <programlisting><![CDATA[S<T> join<S<E>,T>(S<T>... sequences)
-        given S<E>(E... es) satisfies E[] 
+        given S<E>(E... es) satisfies Sequence<E> 
         given E satisfies Equality<E>
         given T satisfies Equality<T> {
     return S(joinSequences(sequences));
@@ -1685,7 +1685,7 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
         parameterized type parameter?</para>
         
         <programlisting><![CDATA[Comparison compare<S<X>,T>(S<T> x, S<T> y)
-        given S<X> satisfies X[] | X
+        given S<X> satisfies Sequence<X> | X
         given T satisfies PartlyComparable<T> {
     switch (S<T>)
     case (T) {
@@ -1709,8 +1709,8 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
     }
 }]]></programlisting>
 
-        <para>Note that <literal>given S&lt;X&gt; satisfies X[] | X</literal> is a way of writing
-        <literal>given S&lt;X&gt; satisfies X[] | id&lt;X&gt;</literal>. A second example:</para>
+        <para>Note that <literal>given S&lt;X&gt; satisfies Sequence&lt;X&gt; | X</literal> is a way of writing
+        <literal>given S&lt;X&gt; satisfies Sequence&lt;X&gt; | id&lt;X&gt;</literal>. A second example:</para>
         
         <programlisting><![CDATA[X<T> findByKey<X<E>,T,K>(Type<T> type, X<K> keys)
         given X<E> of E | E[]

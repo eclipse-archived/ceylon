@@ -932,7 +932,7 @@ TypeConstraints?
         <para>Alternatively, a class may omit a class body entirely. Then the class must 
         be a member class and must be annotated <literal>formal</literal>.</para>
          
-        <programlisting>shared formal class Buffer(Character...) satisfies Character[];</programlisting>
+        <programlisting>shared formal class Buffer(Character...) satisfies Sequence&lt;Character&gt;;</programlisting>
         
         <para>In this case, also, it is considered a <literal>formal</literal> member 
         class.</para>
@@ -1030,7 +1030,7 @@ TypeConstraints?
                 
         <programlisting>shared abstract class Reader() {
     shared formal class Buffer(Character... chars) 
-            satisfies Character[] {}
+            satisfies Sequence&lt;Character&gt; {}
     ...
 }</programlisting>
 
@@ -1050,14 +1050,14 @@ TypeConstraints?
         
         <programlisting>shared abstract class Reader() {
     shared formal class Buffer(Character... chars) 
-            satisfies Character[];
+            satisfies Sequence&lt;Character&gt;;
     ...
 }</programlisting>
 
         <programlisting>shared class FileReader(File file) 
         extends Reader() {
     shared actual class Buffer(Character... chars) 
-            satisfies Character[] {
+            satisfies Sequence&lt;Character&gt; {
         ...
     }
     ...
