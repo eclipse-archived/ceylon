@@ -256,6 +256,21 @@ TypeConstraints?
                 </listitem>
             </itemizedlist>
             
+            <comment><para>TODO: should we add the following requirements:</para>
+            <itemizedlist>
+                <listitem>
+                    <para>the introduced type must not refine, directly or indirectly, 
+                    a member of the adapted type,</para>
+                </listitem>
+                <listitem>
+                    <para>if the introduced type and the adapted type both refine, 
+                    directly or indirectly, a common member of a common supertype, the 
+                    adapted type must directly or indirectly refine the member of the 
+                    introduced type.</para>
+                </listitem>
+            </itemizedlist>
+            </comment>
+            
             <para>The list of introduced types must satisfy the following:</para>
             
             <itemizedlist>
@@ -404,8 +419,9 @@ TypeConstraints?
             <para>The schema of the inherited members is formed by substituting type arguments
             specified in the <literal>satisfies</literal> clause.</para>
             
+            <!--
             <para>An interface may not refine members of the class it satisfies.</para>
-            
+            -->
             <!--
             <para>An interface may not inherit two non-<literal>formal</literal> members
             of different supertypes that both refine the same member of a third supertype.
