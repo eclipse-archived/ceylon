@@ -2957,17 +2957,15 @@ createItemMethod.intercept()
         any expression to a <literal>String</literal>.</para>
     
     <table>
-    <tgroup cols="7">
-        <colspec colnum="1" colwidth="2.0*" align="center" colname="first"/>
-        <colspec colnum="2" colwidth="4.5*" align="center"/>
-        <colspec colnum="3" colwidth="4.0*" align="center"/>
-        <colspec colnum="4" colwidth="7.0*" align="center"/>
+    <tgroup cols="6">
+        <colspec colnum="1" colwidth="4.5*" align="center" colname="first"/>
+        <colspec colnum="2" colwidth="3.0*" align="center"/>
+        <colspec colnum="3" colwidth="7.0*" align="center"/>
+        <colspec colnum="4" colwidth="4.0*" align="center"/>
         <colspec colnum="5" colwidth="4.0*" align="center"/>
-        <colspec colnum="6" colwidth="3.5*" align="center"/>
-        <colspec colnum="7" colwidth="4.0*" align="center" colname="last"/>
+        <colspec colnum="6" colwidth="4.0*" align="center" colname="last"/>
     <thead>
         <row>
-            <entry>Op</entry>
             <entry>Example</entry>
             <entry>Name</entry>
             <entry>Definition</entry>
@@ -2981,7 +2979,6 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Invocation</emphasis></entry></row>
         
         <row>
-            <entry><literal>.</literal></entry>
             <entry><literal>lhs.member</literal></entry>
             <entry>member</entry>
             <entry></entry>
@@ -2992,7 +2989,6 @@ createItemMethod.intercept()
         </row>
         
         <row>
-            <entry><literal>()</literal> or <literal>{}</literal></entry>
             <entry><literal>lhs(x,y,z)</literal> or 
             <literal>lhs{a=x;b=y;}</literal></entry>
             <entry>invoke</entry>
@@ -3002,26 +2998,10 @@ createItemMethod.intercept()
             <entry><literal>Gettable&lt;T&gt;</literal> or
             <literal>T</literal></entry>
         </row>
-        
-        <!--
-        <row><entry namest="first" nameend="last"><emphasis>Reference</emphasis></entry></row>
-        
-        <row>
-            <entry><literal>&amp;</literal></entry>
-            <entry><literal>&amp;rhs</literal></entry>
-            <entry>rhs.reference</entry>
-            <entry></entry>
-            <entry></entry>
-            <entry><literal>Gettable&lt;X,V&gt;</literal></entry>
-            <entry><literal>Value&lt;X&gt;</literal>
-            or <literal>MutableValue&lt;X&gt;</literal></entry>
-        </row>
-        -->
-        
+                
         <row><entry namest="first" nameend="last"><emphasis>Assignment</emphasis></entry></row>
     
         <row>
-            <entry><literal>:=</literal></entry>
             <entry><literal>lhs := rhs</literal></entry>
             <entry>assign</entry>
             <entry><literal></literal></entry>
@@ -3033,7 +3013,6 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Format</emphasis></entry></row>
         
         <row>
-            <entry><literal>$</literal></entry>
             <entry><literal>$rhs</literal></entry>
             <entry>format</entry>
             <entry><literal>rhs.formatted</literal></entry>
@@ -3045,7 +3024,6 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Compound invocation assignment</emphasis></entry></row>
         
         <row>
-            <entry><literal>.=</literal></entry>
             <entry><literal>lhs.=member</literal></entry>
             <entry>follow</entry>
             <entry><literal>lhs:=lhs.member</literal></entry>
@@ -3055,7 +3033,6 @@ createItemMethod.intercept()
         </row>
 
         <row>
-            <entry><literal>.=</literal></entry>
             <entry><literal>lhs.=member(x,y,z)</literal></entry>
             <entry>apply</entry>
             <entry><literal>lhs:=lhs.member(x,y,z)</literal></entry>
@@ -3124,17 +3101,15 @@ createItemMethod.intercept()
         producing boolean values.</para>
     
     <table>
-    <tgroup cols="7">
-        <colspec colnum="1" colwidth="2.0*" align="center" colname="first"/>
-        <colspec colnum="2" colwidth="4.5*" align="center"/>
-        <colspec colnum="3" colwidth="4.0*" align="center"/>
-        <colspec colnum="4" colwidth="8.5*" align="center"/>
+    <tgroup cols="6">
+        <colspec colnum="1" colwidth="4.5*" align="center" colname="first"/>
+        <colspec colnum="2" colwidth="3.0*" align="center"/>
+        <colspec colnum="3" colwidth="7.0*" align="center"/>
+        <colspec colnum="4" colwidth="4.0*" align="center"/>
         <colspec colnum="5" colwidth="4.0*" align="center"/>
-        <colspec colnum="6" colwidth="3.5*" align="center"/>
-        <colspec colnum="7" colwidth="3.5*" align="center" colname="last"/>
+        <colspec colnum="6" colwidth="4.0*" align="center" colname="last"/>
     <thead>
         <row>
-            <entry>Op</entry>
             <entry>Example</entry>
             <entry>Name</entry>
             <entry>Definition</entry>
@@ -3148,7 +3123,6 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Equality and identity</emphasis></entry></row>
         
         <row>
-            <entry><literal>&identical;</literal></entry>
             <entry><literal>lhs &identical; rhs</literal></entry>
             <entry>identical</entry>
             <entry><literal>identical(lhs,rhs)</literal></entry>
@@ -3157,7 +3131,6 @@ createItemMethod.intercept()
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
-            <entry><literal>&equals;</literal></entry>
             <entry><literal>lhs &equals; rhs</literal></entry>
             <entry>equal</entry>
             <entry><literal>lhs.equals(rhs)</literal></entry>
@@ -3166,7 +3139,6 @@ createItemMethod.intercept()
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
-            <entry><literal>!=</literal></entry>
             <entry><literal>lhs != rhs</literal></entry>
             <entry>not equal</entry>
             <entry><literal>!lhs.equals(rhs)</literal></entry>
@@ -3178,7 +3150,6 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Comparison</emphasis></entry></row>
         
         <row>
-            <entry><literal>&lt;=&gt;</literal></entry>
             <entry><literal>lhs &lt;=&gt; rhs</literal></entry>
             <entry>compare</entry>
             <entry><literal>lhs.compare(rhs)</literal></entry>
@@ -3187,7 +3158,6 @@ createItemMethod.intercept()
             <entry><literal>Comparison</literal></entry>
         </row>
         <row>
-            <entry><literal>&lt;</literal></entry>
             <entry><literal>lhs &lt; rhs</literal></entry>
             <entry>smaller</entry>
             <entry><literal>lhs.smallerThan(rhs)</literal></entry>
@@ -3196,7 +3166,6 @@ createItemMethod.intercept()
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
-            <entry><literal>&gt;</literal></entry>
             <entry><literal>lhs &gt; rhs</literal></entry>
             <entry>larger</entry>
             <entry><literal>lhs.greaterThan(rhs)</literal></entry>
@@ -3205,7 +3174,6 @@ createItemMethod.intercept()
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
-            <entry><literal>&lt;=</literal></entry>
             <entry><literal>lhs &lt;= rhs</literal></entry>
             <entry>small as</entry>
             <entry><literal>lhs.asSmallAs(rhs)</literal></entry>
@@ -3214,7 +3182,6 @@ createItemMethod.intercept()
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
-            <entry><literal>&gt;=</literal></entry>
             <entry><literal>lhs &gt;= rhs</literal></entry>
             <entry>large as</entry>
             <entry><literal>lhs.asLargeAs(rhs)</literal></entry>
@@ -3226,7 +3193,6 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Containment</emphasis></entry></row>
         
         <row>
-            <entry><literal>in</literal></entry>
             <entry><literal>lhs in rhs</literal></entry>
             <entry>in</entry>
             <entry><literal>lhs.element(rhs)</literal></entry>
@@ -3238,7 +3204,6 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Assignability</emphasis></entry></row>
         
         <row>
-            <entry><literal>is</literal></entry>
             <entry><literal>lhs is Rhs</literal></entry>
             <entry>is</entry>
             <entry></entry>
@@ -3251,7 +3216,6 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Inheritance</emphasis></entry></row>
         
         <row>
-            <entry><literal>extends</literal></entry>
             <entry><literal>lhs extends rhs</literal></entry>
             <entry>extends</entry>
             <entry><literal>lhs.extendsType(rhs)</literal></entry>
@@ -3261,7 +3225,6 @@ createItemMethod.intercept()
         </row>
         
         <row>
-            <entry><literal>satisfies</literal></entry>
             <entry><literal>lhs satisfies rhs</literal></entry>
             <entry>satisfies</entry>
             <entry><literal>lhs.satisfiesType(rhs)</literal></entry>
@@ -3286,17 +3249,15 @@ createItemMethod.intercept()
         <para>These are the usual logical operations for boolean values.</para>
     
     <table>
-    <tgroup cols="7">
-        <colspec colnum="1" colwidth="2.0*" align="center" colname="first"/>
-        <colspec colnum="2" colwidth="4.5*" align="center"/>
-        <colspec colnum="3" colwidth="4.0*" align="center"/>
-        <colspec colnum="4" colwidth="8.5*" align="center"/>
+    <tgroup cols="6">
+        <colspec colnum="1" colwidth="4.5*" align="center" colname="first"/>
+        <colspec colnum="2" colwidth="3.0*" align="center"/>
+        <colspec colnum="3" colwidth="7.0*" align="center"/>
+        <colspec colnum="4" colwidth="4.0*" align="center"/>
         <colspec colnum="5" colwidth="4.0*" align="center"/>
-        <colspec colnum="6" colwidth="3.5*" align="center"/>
-        <colspec colnum="7" colwidth="3.5*" align="center" colname="last"/>
+        <colspec colnum="6" colwidth="4.0*" align="center" colname="last"/>
     <thead>
         <row>
-            <entry>Op</entry>
             <entry>Example</entry>
             <entry>Name</entry>
             <entry>Definition</entry>
@@ -3310,7 +3271,6 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Logical operators</emphasis></entry></row>
         
         <row>
-            <entry><literal>!</literal></entry>
             <entry><literal>!rhs</literal></entry>
             <entry>not</entry>
             <entry><literal>if (rhs) false else true</literal></entry>
@@ -3319,7 +3279,6 @@ createItemMethod.intercept()
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
-            <entry><literal>||</literal></entry>
             <entry><literal>lhs || rhs</literal></entry>
             <entry>conditional or</entry>
             <entry><literal>if (lhs) true else rhs</literal></entry>
@@ -3328,7 +3287,6 @@ createItemMethod.intercept()
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
-            <entry><literal>&amp;&amp;</literal></entry>
             <entry><literal>lhs &amp;&amp; rhs</literal></entry>
             <entry>conditional and</entry>
             <entry><literal>if (lhs) rhs else false</literal></entry>
@@ -3340,7 +3298,6 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Logical assignment</emphasis></entry></row>
         
         <row>
-            <entry><literal>||=</literal></entry>
             <entry><literal>lhs ||= rhs</literal></entry>
             <entry>conditional or</entry>
             <entry><literal>if (lhs) true else lhs:=rhs</literal></entry>
@@ -3350,7 +3307,6 @@ createItemMethod.intercept()
         </row>
 
         <row>
-            <entry><literal>&amp;&amp;=</literal></entry>
             <entry><literal>lhs &amp;&amp;= rhs</literal></entry>
             <entry>conditional and</entry>
             <entry><literal>if (lhs) lhs:=rhs else false</literal></entry>
@@ -3371,17 +3327,15 @@ createItemMethod.intercept()
         <para>These operators make it easy to work with optional expressions.</para>
     
     <table>
-    <tgroup cols="7">
-        <colspec colnum="1" colwidth="2.0*" align="center" colname="first"/>
-        <colspec colnum="2" colwidth="4.5*" align="center"/>
-        <colspec colnum="3" colwidth="4.0*" align="center"/>
-        <colspec colnum="4" colwidth="8.5*" align="center"/>
+    <tgroup cols="6">
+        <colspec colnum="1" colwidth="4.5*" align="center" colname="first"/>
+        <colspec colnum="2" colwidth="3.0*" align="center"/>
+        <colspec colnum="3" colwidth="7.0*" align="center"/>
+        <colspec colnum="4" colwidth="4.0*" align="center"/>
         <colspec colnum="5" colwidth="4.0*" align="center"/>
-        <colspec colnum="6" colwidth="3.5*" align="center"/>
-        <colspec colnum="7" colwidth="3.5*" align="center" colname="last"/>
+        <colspec colnum="6" colwidth="4.0*" align="center" colname="last"/>
     <thead>
         <row>
-            <entry>Op</entry>
             <entry>Example</entry>
             <entry>Name</entry>
             <entry>Definition</entry>
@@ -3395,7 +3349,6 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Existence</emphasis></entry></row>
         
         <row>
-            <entry><!--<literal>?</literal> or --><literal>exists</literal></entry>
             <entry><!--<<literal>lhs?</literal> or --><literal>lhs exists</literal></entry>
             <entry>exists</entry>
             <entry><literal>if (exists lhs) true else false</literal></entry>
@@ -3404,7 +3357,6 @@ createItemMethod.intercept()
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
-            <entry><literal><!--??-->nonempty</literal></entry>
             <entry><literal><!--??-->lhs nonempty</literal></entry>
             <entry>nonempty</entry>
             <entry><literal>if (nonempty lhs) true else false</literal></entry>
@@ -3416,7 +3368,6 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Default</emphasis></entry></row>
         
         <row>
-            <entry><literal>?</literal></entry>
             <entry><literal>lhs ? rhs</literal></entry>
             <entry>default</entry>
             <entry><literal>if (exists lhs) lhs else rhs</literal></entry>
@@ -3428,7 +3379,6 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Default assignment</emphasis></entry></row>
         
         <row>
-            <entry><literal>?=</literal></entry>
             <entry><literal>lhs ?= rhs</literal></entry>
             <entry>default assignment</entry>
             <entry><literal>if (exists lhs) lhs else lhs:=rhs</literal></entry>
@@ -3440,7 +3390,6 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Nullafe invocation</emphasis></entry></row>
         
         <row>
-            <entry><literal>?.</literal></entry>
             <entry><literal>lhs?.member</literal></entry>
             <entry>nullsafe member</entry>
             <entry><literal>if (exists lhs) lhs.member else null</literal></entry>
@@ -3450,7 +3399,6 @@ createItemMethod.intercept()
         </row>
 
         <row>
-            <entry><literal>()</literal> or <literal>{}</literal></entry>
             <entry><literal>lhs(x,y,z)</literal> or 
             <literal>lhs{a=x;b=y;}</literal></entry>
             <entry>nullsafe invoke</entry>
@@ -3474,17 +3422,15 @@ createItemMethod.intercept()
         subranges of <literal>Sequence</literal>s.</para>
     
     <table>
-    <tgroup cols="7">
-        <colspec colnum="1" colwidth="2.0*" align="center" colname="first"/>
-        <colspec colnum="2" colwidth="4.5*" align="center"/>
-        <colspec colnum="3" colwidth="4.0*" align="center"/>
-        <colspec colnum="4" colwidth="8.5*" align="center"/>
+    <tgroup cols="6">
+        <colspec colnum="1" colwidth="4.5*" align="center" colname="first"/>
+        <colspec colnum="2" colwidth="3.0*" align="center"/>
+        <colspec colnum="3" colwidth="7.0*" align="center"/>
+        <colspec colnum="4" colwidth="4.0*" align="center"/>
         <colspec colnum="5" colwidth="4.0*" align="center"/>
-        <colspec colnum="6" colwidth="3.5*" align="center"/>
-        <colspec colnum="7" colwidth="3.5*" align="center" colname="last"/>
+        <colspec colnum="6" colwidth="4.0*" align="center" colname="last"/>
     <thead>
         <row>
-            <entry>Op</entry>
             <entry>Example</entry>
             <entry>Name</entry>
             <entry>Definition</entry>
@@ -3498,7 +3444,6 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Keyed element access</emphasis></entry></row>
         
         <row>
-            <entry><literal>[]</literal></entry>
             <entry><literal>lhs[index]</literal></entry>
             <entry>lookup</entry>
             <entry><literal>lhs.value(index)</literal></entry>
@@ -3507,7 +3452,6 @@ createItemMethod.intercept()
             <entry><literal>Gettable &lt;Y?&gt;</literal></entry>
         </row>
         <row>
-            <entry><literal>[]</literal></entry>
             <entry><literal>lhs[index]</literal></entry>
             <entry>lookup</entry>
             <entry><literal>lhs.value(index)</literal></entry>
@@ -3515,8 +3459,8 @@ createItemMethod.intercept()
             <entry><literal>X</literal></entry>
             <entry><literal>Settable &lt;Y?&gt;</literal></entry>
         </row>
+        <!--
         <row>
-            <entry><literal>[]</literal></entry>
             <entry><literal>lhs[index]</literal></entry>
             <entry>bounded lookup</entry>
             <entry><literal>lhs.value(index)</literal></entry>
@@ -3525,7 +3469,6 @@ createItemMethod.intercept()
             <entry><literal>Gettable &lt;Y&gt;</literal></entry>
         </row>
         <row>
-            <entry><literal>[]</literal></entry>
             <entry><literal>lhs[index]</literal></entry>
             <entry>bounded lookup</entry>
             <entry><literal>lhs.value(index)</literal></entry>
@@ -3533,8 +3476,8 @@ createItemMethod.intercept()
             <entry><literal>Bound&lt;#n&gt;</literal></entry>
             <entry><literal>Settable &lt;Y&gt;</literal></entry>
         </row>
+        -->
         <row>
-            <entry><literal>?[]</literal></entry>
             <entry><literal>lhs?[index]</literal></entry>
             <entry>nullsafe lookup</entry>
             <entry><literal>if (exists lhs) lhs[index] else null</literal></entry>
@@ -3543,7 +3486,6 @@ createItemMethod.intercept()
             <entry><literal>Y?</literal></entry>
         </row>
         <row>
-            <entry><literal>[]</literal></entry>
             <entry><literal>lhs[indices]</literal></entry>
             <entry>sequenced lookup</entry>
             <entry><literal>lhs.values(index)</literal></entry>
@@ -3552,7 +3494,6 @@ createItemMethod.intercept()
             <entry><literal>Y[]</literal></entry>
         </row>
         <row>
-            <entry><literal>[]</literal></entry>
             <entry><literal>lhs[indices]</literal></entry>
             <entry>iterated lookup</entry>
             <entry><literal>lhs.values(index)</literal></entry>
@@ -3564,7 +3505,6 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Sequence subranges</emphasis></entry></row>
         
         <row>
-            <entry><literal>[..]</literal></entry>
             <entry><literal>lhs[x..y]</literal></entry>
             <entry>subrange</entry>
             <entry><literal>range(lhs,x,y)</literal></entry>
@@ -3573,7 +3513,6 @@ createItemMethod.intercept()
             <entry><literal>X[]</literal></entry>
         </row>
         <row>
-            <entry><literal>[...]</literal></entry>
             <entry><literal>lhs[x...]</literal></entry>
             <entry>upper range</entry>
             <entry><literal>range(lhs,x)</literal></entry>
@@ -3583,7 +3522,6 @@ createItemMethod.intercept()
         </row>
         <!--
         <row>
-            <entry><literal>[...]</literal></entry>
             <entry><literal>lhs[...y]</literal></entry>
             <entry>lower range</entry>
             <entry><literal>lhs.range(0,y)</literal></entry>
@@ -3592,11 +3530,11 @@ createItemMethod.intercept()
             <entry><literal>List&lt;X&gt;</literal></entry>
         </row>
         -->
-
+        
+        <!--
         <row><entry namest="first" nameend="last"><emphasis>Sequence concatenation</emphasis></entry></row>
         
         <row>
-            <entry><literal>+</literal></entry>
             <entry><literal>lhs + rhs</literal></entry>
             <entry>join</entry>
             <entry><literal>join(lhs, rhs)</literal></entry>
@@ -3604,11 +3542,11 @@ createItemMethod.intercept()
             <entry><literal>X[]</literal></entry>
             <entry><literal>X[]</literal></entry>
         </row>
+        -->
         
         <row><entry namest="first" nameend="last"><emphasis>Spread invocation</emphasis></entry></row>
 
         <row>
-            <entry><literal>[].</literal></entry>
             <entry><literal>lhs[].member</literal></entry>
             <entry>spread member</entry>
             <entry><literal>for (X x in lhs) x.member</literal></entry>
@@ -3618,7 +3556,6 @@ createItemMethod.intercept()
         </row>
         
         <row>
-            <entry><literal>()</literal> or <literal>{}</literal></entry>
             <entry><literal>lhs(x,y,z)</literal> or 
             <literal>lhs{a=x;b=y;}</literal></entry>
             <entry>spread invoke</entry>
@@ -3632,7 +3569,6 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Shift</emphasis></entry></row>
         
         <row>
-            <entry><literal>&lt;&lt;</literal></entry>
             <entry><literal>lhs &lt;&lt; rhs</literal></entry>
             <entry>left shift</entry>
             <entry><literal>lhs.shiftLeft(rhs)</literal></entry>
@@ -3641,7 +3577,6 @@ createItemMethod.intercept()
             <entry><literal>List&lt;X&gt;</literal></entry>
         </row>
         <row>
-            <entry><literal>>></literal></entry>
             <entry><literal>lhs >> rhs</literal></entry>
             <entry>right shift</entry>
             <entry><literal>lhs.shiftRight(rhs)</literal></entry>
@@ -3654,7 +3589,6 @@ createItemMethod.intercept()
         
         <!--
         <row>
-            <entry><literal>*</literal></entry>
             <entry><literal>lhs * rhs</literal></entry>
             <entry>cartesian product</entry>
             <entry><literal>lhs.product(rhs)</literal></entry>
@@ -3664,48 +3598,6 @@ createItemMethod.intercept()
         </row>
         -->
         
-        <!--
-        
-        <row><entry namest="first" nameend="last"><emphasis>Set comparison</emphasis></entry></row>
-        
-        <row>
-            <entry><literal>&lt;=</literal></entry>
-            <entry><literal>lhs &lt;= rhs</literal></entry>
-            <entry>subset</entry>
-            <entry><literal>lhs.subset(rhs)</literal></entry>
-            <entry><literal>Set&lt;X&gt;</literal></entry>
-            <entry><literal>Set&lt;X&gt;</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-        </row>
-        <row>
-            <entry><literal>&gt;=</literal></entry>
-            <entry><literal>lhs &gt;= rhs</literal></entry>
-            <entry>superset</entry>
-            <entry><literal>lhs.superset(rhs)</literal></entry>
-            <entry><literal>Set&lt;X&gt;</literal></entry>
-            <entry><literal>Set&lt;X&gt;</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-        </row>
-        <row>
-            <entry><literal>&lt;</literal></entry>
-            <entry><literal>lhs &lt; rhs</literal></entry>
-            <entry>proper subset</entry>
-            <entry><literal>lhs.properSubset(rhs)</literal></entry>
-            <entry><literal>Set&lt;X&gt;</literal></entry>
-            <entry><literal>Set&lt;X&gt;</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-        </row>
-        <row>
-            <entry><literal>&gt;</literal></entry>
-            <entry><literal>lhs &gt; rhs</literal></entry>
-            <entry>proper superset</entry>
-            <entry><literal>lhs.properSuperset(rhs)</literal></entry>
-            <entry><literal>Set&lt;X&gt;</literal></entry>
-            <entry><literal>Set&lt;X&gt;</literal></entry>
-            <entry><literal>Boolean</literal></entry>
-        </row>
-        
-        -->
     </tbody>
     </tgroup>
     </table>
@@ -3728,17 +3620,15 @@ createItemMethod.intercept()
         used built-in types.</para>
     
     <table>
-    <tgroup cols="7">
-        <colspec colnum="1" colwidth="2.0*" align="center" colname="first"/>
-        <colspec colnum="2" colwidth="4.5*" align="center"/>
-        <colspec colnum="3" colwidth="4.0*" align="center"/>
-        <colspec colnum="4" colwidth="8.5*" align="center"/>
+    <tgroup cols="6">
+        <colspec colnum="1" colwidth="4.5*" align="center" colname="first"/>
+        <colspec colnum="2" colwidth="3.0*" align="center"/>
+        <colspec colnum="3" colwidth="7.0*" align="center"/>
+        <colspec colnum="4" colwidth="4.0*" align="center"/>
         <colspec colnum="5" colwidth="4.0*" align="center"/>
-        <colspec colnum="6" colwidth="3.5*" align="center"/>
-        <colspec colnum="7" colwidth="3.5*" align="center" colname="last"/>
+        <colspec colnum="6" colwidth="4.0*" align="center" colname="last"/>
     <thead>
         <row>
-            <entry>Op</entry>
             <entry>Example</entry>
             <entry>Name</entry>
             <entry>Definition</entry>
@@ -3752,7 +3642,6 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Range and entry constructors</emphasis></entry></row>
 
         <row>
-            <entry><literal>..</literal></entry>
             <entry><literal>lhs .. rhs</literal></entry>
             <entry>range</entry>
             <entry><literal>Range(lhs, rhs)</literal></entry>
@@ -3762,7 +3651,6 @@ createItemMethod.intercept()
         </row>
         
         <row>
-            <entry><literal>-></literal></entry>
             <entry><literal>lhs -> rhs</literal></entry>
             <entry>entry</entry>
             <entry><literal>Entry(lhs, rhs)</literal></entry>
@@ -3776,7 +3664,6 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Datetime and interval constructors</emphasis></entry></row>
 
         <row>
-            <entry><literal>@</literal></entry>
             <entry><literal>lhs @ rhs</literal></entry>
             <entry>datetime</entry>
             <entry><literal>Datetime(lhs, rhs)</literal></entry>
@@ -3786,7 +3673,6 @@ createItemMethod.intercept()
         </row>
         
         <row>
-            <entry><literal>..</literal></entry>
             <entry><literal>lhs .. rhs</literal></entry>
             <entry>interval</entry>
             <entry><literal>Interval(lhs, rhs)</literal></entry>
@@ -3801,9 +3687,6 @@ createItemMethod.intercept()
     </tgroup>
     </table>
     
-        <comment><para>TODO: Should we have a binary <literal>upto</literal> operator
-        for producing ranges of <literal>Bounded&lt;#n&gt;</literal>?</para></comment>
-    
     </section>
     
     <section id="arithmetic">
@@ -3813,17 +3696,15 @@ createItemMethod.intercept()
         numeric values.</para>
     
     <table>
-    <tgroup cols="7">
-        <colspec colnum="1" colwidth="2.0*" align="center" colname="first"/>
-        <colspec colnum="2" colwidth="4.5*" align="center"/>
-        <colspec colnum="3" colwidth="4.0*" align="center"/>
-        <colspec colnum="4" colwidth="8.5*" align="center"/>
+    <tgroup cols="6">
+        <colspec colnum="1" colwidth="4.5*" align="center" colname="first"/>
+        <colspec colnum="2" colwidth="3.0*" align="center"/>
+        <colspec colnum="3" colwidth="7.0*" align="center"/>
+        <colspec colnum="4" colwidth="4.0*" align="center"/>
         <colspec colnum="5" colwidth="4.0*" align="center"/>
-        <colspec colnum="6" colwidth="3.5*" align="center"/>
-        <colspec colnum="7" colwidth="3.5*" align="center" colname="last"/>
+        <colspec colnum="6" colwidth="4.0*" align="center" colname="last"/>
     <thead>
         <row>
-            <entry>Op</entry>
             <entry>Example</entry>
             <entry>Name</entry>
             <entry>Definition</entry>
@@ -3839,7 +3720,6 @@ createItemMethod.intercept()
         <!-- Prefix increment, decrement -->
         
         <row>
-            <entry><literal>++</literal></entry>
             <entry><literal>++rhs</literal></entry>
             <entry>successor</entry>
             <entry><literal>rhs:=rhs.successor</literal></entry>
@@ -3848,7 +3728,6 @@ createItemMethod.intercept()
             <entry><literal>T</literal></entry>
         </row>
         <row>
-            <entry><literal>--</literal></entry>
             <entry><literal>--rhs</literal></entry>
             <entry>predecessor</entry>
             <entry><literal>rhs:=rhs.predecessor</literal></entry>
@@ -3860,7 +3739,6 @@ createItemMethod.intercept()
         <!-- Postfix increment, decrement -->
         
         <row>
-            <entry><literal>++</literal></entry>
             <entry><literal>lhs++</literal></entry>
             <entry>increment</entry>
             <entry><literal>(++lhs).predecessor</literal></entry>
@@ -3869,7 +3747,6 @@ createItemMethod.intercept()
             <entry><literal>T</literal></entry>
         </row>
         <row>
-            <entry><literal>--</literal></entry>
             <entry><literal>lhs--</literal></entry>
             <entry>decrement</entry>
             <entry><literal>(--lhs).successor</literal></entry>
@@ -3883,7 +3760,6 @@ createItemMethod.intercept()
         <!-- Unary positive and negative -->
         
         <row>
-            <entry><literal>+</literal></entry>
             <entry><literal>+rhs</literal></entry>
             <entry></entry>
             <entry><literal>rhs.value</literal></entry>
@@ -3893,7 +3769,6 @@ createItemMethod.intercept()
         </row>
         
         <row>
-            <entry><literal>-</literal></entry>
             <entry><literal>-rhs</literal></entry>
             <entry>negation</entry>
             <entry><literal>rhs.inverse</literal></entry>
@@ -3905,105 +3780,94 @@ createItemMethod.intercept()
         <!-- Numeric -->
         
         <row>
-            <entry><literal>+</literal></entry>
             <entry><literal>lhs + rhs</literal></entry>
             <entry>sum</entry>
-            <entry><literal>lhs.plus(rhs)</literal></entry>
-            <entry><literal>Numeric&lt;N&gt;</literal></entry>
-            <entry><literal>N</literal></entry>
-            <entry><literal>N</literal></entry>
+            <entry><literal>lhs.cast&lt;N&gt;() .plus(rhs.cast&lt;N&gt;())</literal></entry>
+            <entry><literal>X satisfies Castable&lt;N&gt; &amp; Summable&lt;X&gt;</literal></entry>
+            <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Summable&lt;X&gt;</literal></entry>
+            <entry><literal>N of X|Y</literal></entry>
         </row>
         <row>
-            <entry><literal>-</literal></entry>
             <entry><literal>lhs - rhs</literal></entry>
             <entry>difference</entry>
-            <entry><literal>lhs.minus(rhs)</literal></entry>
-            <entry><literal>Numeric&lt;N&gt;</literal></entry>
-            <entry><literal>N</literal></entry>
-            <entry><literal>N</literal></entry>
+            <entry><literal>lhs.cast&lt;N&gt;() .minus(rhs.cast&lt;N&gt;())</literal></entry>
+            <entry><literal>X satisfies Castable&lt;N&gt; &amp; Numeric&lt;X&gt;</literal></entry>
+            <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Numeric&lt;X&gt;</literal></entry>
+            <entry><literal>N of X|Y</literal></entry>
         </row>
         <row>
-            <entry><literal>*</literal></entry>
             <entry><literal>lhs * rhs</literal></entry>
             <entry>product</entry>
-            <entry><literal>lhs.times(rhs)</literal></entry>
-            <entry><literal>Numeric&lt;N&gt;</literal></entry>
-            <entry><literal>N</literal></entry>
-            <entry><literal>N</literal></entry>
+            <entry><literal>lhs.cast&lt;N&gt;() .times(rhs.cast&lt;N&gt;())</literal></entry>
+            <entry><literal>X satisfies Castable&lt;N&gt; &amp; Numeric&lt;X&gt;</literal></entry>
+            <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Numeric&lt;X&gt;</literal></entry>
+            <entry><literal>N of X|Y</literal></entry>
         </row>
         <row>
-            <entry><literal>/</literal></entry>
             <entry><literal>lhs / rhs</literal></entry>
             <entry>quotient</entry>
-            <entry><literal>lhs.divided(rhs)</literal></entry>
-            <entry><literal>Numeric&lt;N&gt;</literal></entry>
-            <entry><literal>N</literal></entry>
-            <entry><literal>N</literal></entry>
+            <entry><literal>lhs.cast&lt;N&gt;() .divided(rhs.cast&lt;N&gt;())</literal></entry>
+            <entry><literal>X satisfies Castable&lt;N&gt; &amp; Numeric&lt;X&gt;</literal></entry>
+            <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Numeric&lt;X&gt;</literal></entry>
+            <entry><literal>N of X|Y</literal></entry>
         </row>
         <row>
-            <entry><literal>%</literal></entry>
             <entry><literal>lhs % rhs</literal></entry>
             <entry>remainder</entry>
-            <entry><literal>lhs.remainder(rhs)</literal></entry>
-            <entry><literal>Integral&lt;N&gt;</literal></entry>
-            <entry><literal>N</literal></entry>
-            <entry><literal>N</literal></entry>
+            <entry><literal>lhs.cast&lt;N&gt;() .remainder(rhs.cast&lt;N&gt;())</literal></entry>
+            <entry><literal>X satisfies Castable&lt;N&gt; &amp; Integral&lt;X&gt;</literal></entry>
+            <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Integral&lt;X&gt;</literal></entry>
+            <entry><literal>N of X|Y</literal></entry>
         </row>
         <row>
-            <entry><literal>**</literal></entry>
             <entry><literal>lhs ** rhs</literal></entry>
             <entry>power</entry>
-            <entry><literal>lhs.power(rhs)</literal></entry>
-            <entry><literal>Numeric&lt;N&gt;</literal></entry>
-            <entry><literal>N</literal></entry>
-            <entry><literal>N</literal></entry>
+            <entry><literal>lhs.cast&lt;N&gt;() .power(rhs.cast&lt;N&gt;())</literal></entry>
+            <entry><literal>X satisfies Castable&lt;N&gt; &amp; Numeric&lt;X&gt;</literal></entry>
+            <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Numeric&lt;X&gt;</literal></entry>
+            <entry><literal>N of X|Y</literal></entry>
         </row>
         
         <row><entry namest="first" nameend="last"><emphasis>Numeric assignment</emphasis></entry></row>
         
         <row>
-            <entry><literal>+=</literal></entry>
             <entry><literal>lhs += rhs</literal></entry>
             <entry>add</entry>
-            <entry><literal>lhs:=lhs+rhs</literal></entry>
+            <entry><literal>lhs:=lhs .plus(rhs.cast&lt;N&gt;())</literal></entry>
             <entry><literal>Settable &lt;Numeric&lt;N&gt;&gt;</literal></entry>
-            <entry><literal>N</literal></entry>
+            <entry><literal>Castable&lt;N&gt;</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
         <row>
-            <entry><literal>-=</literal></entry>
             <entry><literal>lhs -= rhs</literal></entry>
             <entry>subtract</entry>
-            <entry><literal>lhs:=lhs-rhs</literal></entry>
+            <entry><literal>lhs:=lhs .minus(rhs.cast&lt;N&gt;())</literal></entry>
             <entry><literal>Settable &lt;Numeric&lt;N&gt;&gt;</literal></entry>
-            <entry><literal>N</literal></entry>
+            <entry><literal>Castable&lt;N&gt;</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
         <row>
-            <entry><literal>*=</literal></entry>
             <entry><literal>lhs *= rhs</literal></entry>
             <entry>multiply</entry>
-            <entry><literal>lhs:=lhs*rhs</literal></entry>
+            <entry><literal>lhs:=lhs .times(rhs.cast&lt;N&gt;())</literal></entry>
             <entry><literal>Settable &lt;Numeric&lt;N&gt;&gt;</literal></entry>
-            <entry><literal>N</literal></entry>
+            <entry><literal>Castable&lt;N&gt;</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
         <row>
-            <entry><literal>/=</literal></entry>
             <entry><literal>lhs /= rhs</literal></entry>
             <entry>divide</entry>
-            <entry><literal>lhs:=lhs/rhs</literal></entry>
+            <entry><literal>lhs:=lhs .divided(rhs.cast&lt;N&gt;())</literal></entry>
             <entry><literal>Settable &lt;Numeric&lt;N&gt;&gt;</literal></entry>
-            <entry><literal>N</literal></entry>
+            <entry><literal>Castable&lt;N&gt;</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
         <row>
-            <entry><literal>%=</literal></entry>
             <entry><literal>lhs %= rhs</literal></entry>
             <entry>remainder</entry>
-            <entry><literal>lhs:=lhs%rhs</literal></entry>
+            <entry><literal>lhs:=lhs .remainder(rhs.cast&lt;N&gt;())</literal></entry>
             <entry><literal>Settable &lt;Integral&lt;N&gt;&gt;</literal></entry>
-            <entry><literal>N</literal></entry>
+            <entry><literal>Castable&lt;N&gt;</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
         
@@ -4011,7 +3875,6 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Duration arithmetic</emphasis></entry></row>
                 
         <row>
-            <entry><literal>+</literal></entry>
             <entry><literal>lhs + rhs</literal></entry>
             <entry>extend</entry>
             <entry><literal>lhs.extend(rhs)</literal></entry>
@@ -4021,7 +3884,6 @@ createItemMethod.intercept()
         </row>
         
         <row>
-            <entry><literal>-</literal></entry>
             <entry><literal>lhs - rhs</literal></entry>
             <entry>curtail</entry>
             <entry><literal>lhs.curtail(rhs)</literal></entry>
@@ -4031,7 +3893,6 @@ createItemMethod.intercept()
         </row>
         
         <row>
-            <entry><literal>*</literal></entry>
             <entry><literal>lhs * rhs</literal></entry>
             <entry>multiply</entry>
             <entry><literal>lhs.times(rhs)</literal></entry>
@@ -4041,7 +3902,6 @@ createItemMethod.intercept()
         </row>
         
         <row>
-            <entry><literal>/</literal></entry>
             <entry><literal>lhs / rhs</literal></entry>
             <entry>divide</entry>
             <entry><literal>lhs.divide(rhs)</literal></entry>
@@ -4095,9 +3955,9 @@ createItemMethod.intercept()
         
         <itemizedlist>
             <listitem>
-                <para>The interface <literal>Bits&lt;#n&gt;</literal> represents fixed
-                length bit strings. In this case, the operators are the standard bitwise 
-                operators from other C-like languages.</para>
+                <para>The class <literal>Byte</literal> represents a fixed length bit string. 
+                In this case, the operators are the standard bitwise operators from other 
+                C-like languages.</para>
             </listitem>
             <listitem>
                 <para>A <literal>Boolean</literal> can be seen as a bit string of length 
@@ -4105,8 +3965,8 @@ createItemMethod.intercept()
             </listitem>
             <listitem>
                 <para>A <literal>Set&lt;T&gt;</literal>, together with the <literal>in</literal> 
-                operator, may also be viewed in terms of slots, so the operators 
-                apply to <literal>Set</literal>s, where <literal>|</literal>, <literal>&amp;</literal>
+                operator, may also be viewed in terms of slots, so the operators apply to 
+                <literal>Set</literal>s, where <literal>|</literal>, <literal>&amp;</literal>
                 and binary <literal>~</literal> are interpreted as set union, intersection 
                 and complement operators.</para>
             </listitem>
@@ -4118,17 +3978,15 @@ createItemMethod.intercept()
         operators may be applied to a numeric value.</para>
     
     <table>
-    <tgroup cols="7">
-        <colspec colnum="1" colwidth="2.0*" align="center" colname="first"/>
-        <colspec colnum="2" colwidth="4.5*" align="center"/>
-        <colspec colnum="3" colwidth="4.0*" align="center"/>
-        <colspec colnum="4" colwidth="8.5*" align="center"/>
+    <tgroup cols="6">
+        <colspec colnum="1" colwidth="4.5*" align="center" colname="first"/>
+        <colspec colnum="2" colwidth="3.0*" align="center"/>
+        <colspec colnum="3" colwidth="7.0*" align="center"/>
+        <colspec colnum="4" colwidth="4.0*" align="center"/>
         <colspec colnum="5" colwidth="4.0*" align="center"/>
-        <colspec colnum="6" colwidth="3.5*" align="center"/>
-        <colspec colnum="7" colwidth="3.5*" align="center" colname="last"/>
+        <colspec colnum="6" colwidth="4.0*" align="center" colname="last"/>
     <thead>
         <row>
-            <entry>Op</entry>
             <entry>Example</entry>
             <entry>Name</entry>
             <entry>Definition</entry>
@@ -4142,7 +4000,6 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Slotwise operators</emphasis></entry></row>
         
         <row>
-            <entry><literal>~</literal></entry>
             <entry><literal>~rhs</literal></entry>
             <entry>complement</entry>
             <entry><literal>rhs.complement</literal></entry>
@@ -4151,7 +4008,6 @@ createItemMethod.intercept()
             <entry><literal>B</literal></entry>
         </row>
         <row>
-            <entry><literal>|</literal></entry>
             <entry><literal>lhs | rhs</literal></entry>
             <entry>or</entry>
             <entry><literal>lhs.or(rhs)</literal></entry>
@@ -4160,7 +4016,6 @@ createItemMethod.intercept()
             <entry><literal>B</literal></entry>
         </row>
         <row>
-            <entry><literal>&amp;</literal></entry>
             <entry><literal>lhs &amp; rhs</literal></entry>
             <entry>and</entry>
             <entry><literal>lhs.and(rhs)</literal></entry>
@@ -4169,7 +4024,6 @@ createItemMethod.intercept()
             <entry><literal>B</literal></entry>
         </row>
         <row>
-            <entry><literal>^</literal></entry>
             <entry><literal>lhs ^ rhs</literal></entry>
             <entry>exclusive or</entry>
             <entry><literal>lhs.xor(rhs)</literal></entry>
@@ -4178,7 +4032,6 @@ createItemMethod.intercept()
             <entry><literal>B</literal></entry>
         </row>
         <row>
-            <entry><literal>~</literal></entry>
             <entry><literal>lhs ~ rhs</literal></entry>
             <entry>complement in</entry>
             <entry><literal>lhs.complement(rhs)</literal></entry>
@@ -4191,7 +4044,6 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Slotwise assignment</emphasis></entry></row>
         
         <row>
-            <entry><literal>|=</literal></entry>
             <entry><literal>lhs |= rhs</literal></entry>
             <entry>or</entry>
             <entry><literal>lhs:=lhs|rhs</literal></entry>
@@ -4200,7 +4052,6 @@ createItemMethod.intercept()
             <entry><literal>B</literal></entry>
         </row>
         <row>
-            <entry><literal>&amp;=</literal></entry>
             <entry><literal>lhs &amp;= rhs</literal></entry>
             <entry>and</entry>
             <entry><literal>lhs:=lhs&amp;rhs</literal></entry>
@@ -4209,7 +4060,6 @@ createItemMethod.intercept()
             <entry><literal>B</literal></entry>
         </row>
         <row>
-            <entry><literal>^=</literal></entry>
             <entry><literal>lhs ^= rhs</literal></entry>
             <entry>exclusive or</entry>
             <entry><literal>lhs:=lhs^rhs</literal></entry>
@@ -4218,7 +4068,6 @@ createItemMethod.intercept()
             <entry><literal>B</literal></entry>
         </row>
         <row>
-            <entry><literal>~=</literal></entry>
             <entry><literal>lhs ~= rhs</literal></entry>
             <entry>complement in</entry>
             <entry><literal>lhs:=lhs~rhs</literal></entry>
