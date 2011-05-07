@@ -1179,8 +1179,8 @@ if (X satisfies Comparable&lt;X&gt;) {
 ( ClosedBlock | OpenBlock "fail" ClosedBlock )
 </programlisting-->
 
-            <comment><para>TODO: community feedback is that <literal>else</literal> is
-            better than <literal>fail</literal>.</para></comment>
+            <comment><para>TODO: Community feedback is that <literal>else</literal> is
+            better than <literal>fail</literal>, like in Python.</para></comment>
 
             <para>An iteration variable declaration must specify one or two iteration
             variables, and an iterated expression that contains the range of values to 
@@ -1282,9 +1282,6 @@ fail {
     log.info("no adults");
 }
 </programlisting>
-
-            <comment><para>TODO: should we call it <literal>else</literal> instead of
-            <literal>fail</literal>, like in Python?</para></comment>
 
         </section>
         
@@ -1457,12 +1454,7 @@ catch (TransactionTimeoutException e) {
         throw e;
     }
 }</programlisting>
-        
-        <comment><para>TODO: Should we support a catch that handles multiple types:</para>
-        <programlisting>catch (TransactionTimeoutException|RemoteException e) { ... }</programlisting>
-        <para>(This would fall out naturally if we add ad hoc union types.)</para>
-        </comment>
-        
+                
         </section>
          
     </section>

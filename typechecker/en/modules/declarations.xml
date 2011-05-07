@@ -1506,6 +1506,10 @@ Void goodbye() {
         <programlisting>local add(Integer x, Integer y) {
     return x + y;
 }</programlisting>
+
+        <comment><para>TODO: Relax this restriction, allowing type inference for methods
+        with multiple <literal>return</literal>s. The inferred type is the union of the
+        <literal>return</literal>ed expression types.</para></comment>
         
         </section>
         
