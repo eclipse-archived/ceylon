@@ -401,7 +401,7 @@ methodParameters
     
 interfaceParameters
     : typeParameters?
-      caseTypes? metatypes? satisfiedTypes?
+      caseTypes? metatypes? adaptedTypes? satisfiedTypes?
       typeConstraints?
     ;
 
@@ -443,7 +443,11 @@ satisfiedTypes
 abstractedType
     : 'abstracts'^ type
     ;
-    
+
+adaptedTypes
+    : 'adapts'^ type ('&' type)*
+    ;
+
 caseTypes
     : 'of'^ caseType ('|'! caseType)*
     ;
@@ -1432,6 +1436,10 @@ MULTI_COMMENT
         
 ABSTRACTED_TYPE
     :   'abstracts'
+    ;
+
+ADAPTED_TYPES
+    :   'adapts'
     ;
 
 ASSIGN
