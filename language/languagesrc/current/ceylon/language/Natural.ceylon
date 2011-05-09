@@ -1,4 +1,4 @@
-shared class Natural(Natural n)
+shared abstract class Natural()
         extends Object()
         satisfies Castable<Natural|Integer|Float> &
                   Integral<Natural> &

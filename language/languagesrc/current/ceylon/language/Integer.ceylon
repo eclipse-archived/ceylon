@@ -1,4 +1,4 @@
-shared class Integer(Boolean sign, Natural natural)
+shared abstract class Integer()
         extends Object()
         satisfies Castable<Integer|Float> &
                   Integral<Integer> &
