@@ -40,10 +40,9 @@ TypeConstraints?
         filename extension <literal>.ceylon</literal>.</para>
         
         <para>A compilation unit consists of a list of imported types, attributes, and 
-        methods, followed by a list of introductions, followed by one or more toplevel 
-        type, attribute, or method definitions.</para>
+        methods, followed by one or more toplevel type, attribute, or method definitions.</para>
         
-        <programlisting>Import* Introduction* ToplevelDeclaration+</programlisting>
+        <programlisting>Import* ToplevelDeclaration+</programlisting>
         
         <section id="topleveldeclarations">
             <title>Toplevel declarations</title>
