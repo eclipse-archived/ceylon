@@ -377,7 +377,7 @@ if you prefer.";</programlisting>
         evaluated at compile time for single-quoted literals, allowing compile-time
         validation of the contents of the single-quoted string.</para>
         
-        <programlisting>adapt Quoted satisfies Date &amp; Regex;</programlisting>
+        <programlisting>interface QuotedRegex adapts Quoted satisfies Regex { ... }</programlisting>
         
         <comment><para>Note: for now we're only going to support validation against
         a regex.</para></comment>

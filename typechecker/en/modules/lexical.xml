@@ -101,10 +101,10 @@
         <para>The following reserved words are not legal identifier names:</para>
         
         <para><literal>
-        import adapt
+        import
         class interface object given
         assign void subtype local
-        of extends satisfies abstracts
+        of extends satisfies adapts abstracts
         in out
         return break continue throw retry
         if else switch case for fail do while try catch finally

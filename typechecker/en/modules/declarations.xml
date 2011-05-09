@@ -217,7 +217,8 @@ TypeConstraints?
         </section>
         
         </section>
-    
+        
+        <!--
         <section id="introductions">
             <title>Introductions</title>
             
@@ -309,6 +310,7 @@ TypeConstraints?
         given T satisfies Equality;</programlisting>
             
         </section>
+        -->
     
     <section id="interfaces">
         <title>Interfaces</title>
@@ -399,10 +401,27 @@ TypeConstraints?
     ...
 }</programlisting>
         
-            <para>The types listed after the <literal>satisfies</literal> keyword are the 
-            supertypes. At most one supertype of the interface may be a class. The remaining 
-            supertypes of an interface must be interfaces. An interface may not extend the 
-            same interface twice (not even with distinct type arguments).</para>
+            <para>The types listed after the <literal>satisfies</literal> keyword are 
+            supertypes of the interface type. Every extended type must be an interface. 
+            An interface may not extend the same interface twice (not even with distinct 
+            type arguments).</para>
+            
+            <!--At most one supertype of the interface may be a class. The remaining 
+            supertypes of an interface must be interfaces.-->
+            
+            <para>An interface may adapt any number of interfaces, and at most one class.</para>
+            
+            <programlisting>shared interface SequenceList&lt;T&gt;
+        adapts Sequence&lt;T&gt;
+        satisfies List&lt;T&gt; 
+        given T satisfies Equality {
+    ...
+}</programlisting>
+            
+            <para>The types listed after the <literal>adapts</literal> keyword are also
+            supertypes of the interface type. Every adapted type must be an interface or
+            class. At most one adapted type may be a class. An interface may not adapt 
+            the same type twice (not even with distinct type arguments).</para>
             
             <!--
             <para>If an interface does not explicitly declare the class it satisfies using
@@ -420,8 +439,9 @@ TypeConstraints?
             of all classes satisfied by the interface.</para>
             -->
             
-            <para>The schema of the inherited members is formed by substituting type arguments
-            specified in the <literal>satisfies</literal> clause.</para>
+            <para>The schema of the inherited members is formed by substituting type 
+            arguments specified in the <literal>satisfies</literal> or <literal>adapts</literal> 
+            clause.</para>
             
             <!--
             <para>An interface may not inherit two non-<literal>formal</literal> members
@@ -434,7 +454,7 @@ TypeConstraints?
              <para>An interface that extends a nested interface must be a member of the type 
              that declares the nested interface or of a subtype of the type that declares the 
              nested interface.</para>
-         
+             
         </section>
         
     <section id="interfaceswithcases">
@@ -780,12 +800,22 @@ TypeConstraints?
         <section id="classinheritance">
              <title>Class inheritance</title>
         
-        <para>A class may extend another class, and implement any number of interfaces.</para>
+        <para>A class may extend another class.</para>
         
         <programlisting>shared class Customer(Name name, Organization? org = null) 
         extends Person(name, org) { 
     ... 
 }</programlisting>
+
+        <para>The class specified after the <literal>extends</literal> keyword is the
+        superclass of the class.</para>
+
+        <para>
+        If a class does not explicitly specify a superclass using <literal>extends</literal>,
+        its superclass is <literal>ceylon.language.IdentifiableObject</literal>.
+        </para>
+        
+        <para>A class may implement any number of interfaces.</para>
 
         <programlisting>class Token() 
         extends Datetime()
@@ -793,15 +823,9 @@ TypeConstraints?
     ... 
 }</programlisting>
         
-        <para>The types listed after the <literal>satisfies</literal> keyword are the 
-        implemented interfaces. The type specified after the <literal>extends</literal> 
-        keyword is a superclass. A class may not implement the same interface twice (not 
+        <para>The interfaces listed after the <literal>satisfies</literal> keyword are 
+        supertypes of the class. A class may not implement the same interface twice (not 
         even with distinct type arguments).</para>
-        
-        <para>
-        If a class does not explicitly specify a superclass using <literal>extends</literal>,
-        its superclass is <literal>ceylon.language.IdentifiableObject</literal>.
-        </para>
         
         <para>A class:</para>
         

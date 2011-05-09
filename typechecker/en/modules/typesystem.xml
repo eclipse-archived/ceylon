@@ -304,14 +304,7 @@
         
         <para>Every interface type is a subtype of <literal>ceylon.language.Object</literal>.</para>
         
-        </section>
-        
-        <section id="assignability">
-            <title>Assignability</title>
-        
-        <para>In a certain compilation unit, a type may be <emphasis>assignable</emphasis> 
-        to another type. If, in some compilation unit, <literal>X</literal> is assignable 
-        to <literal>Y</literal>, then:</para>
+        <para>If <literal>X</literal> is a subtype of <literal>Y</literal>, then:</para>
         
         <itemizedlist>
             <listitem>
@@ -337,38 +330,8 @@
             </listitem>
         </itemizedlist>
         
-        <para>Assignability obeys the following rules:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>Identity: <literal>X</literal> is assignable to <literal>X</literal>.</para>
-            </listitem>
-            <listitem>
-                <para>Subtyping: if <literal>Y</literal> is a subtype of <literal>X</literal> 
-                then <literal>Y</literal> is assignable to <literal>X</literal>.</para>
-            </listitem>
-            <listitem>
-                <para>Transitivity: if <literal>X</literal> is assignable to <literal>Y</literal>
-                and <literal>Y</literal> is assignable to <literal>Z</literal> then
-                <literal>X</literal> is assignable to <literal>Z</literal>.</para>
-            </listitem>
-            <listitem>
-                <para>Lazy evaluation: the type <literal>Gettable&lt;T&gt;</literal> is 
-                assignable to <literal>T</literal> for every type <literal>T</literal>.</para>
-            </listitem>
-            <!--
-            <listitem>
-                <para>Nullsafety: the type <literal>T?</literal> is 
-                not assignable to <literal>Object</literal>. Nor is its subtype
-                <literal>Nothing</literal>.</para>
-            </listitem>
-            -->
-        </itemizedlist>
-        
-        <para>A type <literal>X</literal> may be assignable to a type <literal>Y</literal>
-        even if <literal>X</literal> is not a subtype of <literal>Y</literal> if an 
-        <literal>adapt</literal> statement introduces <literal>Y</literal> to 
-        <literal>X</literal>.</para>
+        <para>Furthermore, we say that <literal>X</literal> is <emphasis>assignable</emphasis>
+        to <literal>Y</literal>.</para>
         
         </section>
         
@@ -475,8 +438,8 @@
             <para><literal>Bottom</literal> is assignable to all other types, but has
             no instances.</para>
             
-            <para>A reference to a members of an expression of type <literal>Bottom</literal>
-            is always an error.</para>
+            <para>A reference to a member of an expression of type <literal>Bottom</literal>
+            is always an error, since there can never be a receiving instance.</para>
             
             <comment><para>TODO: Should the name of this type be a keyword, perhaps
             <literal>bottom</literal>?</para></comment>
@@ -594,7 +557,7 @@ String? firstWord = words[0];</programlisting>
             </listitem>
             <listitem>
                 <para>an interface may <emphasis>adapt</emphasis> a class and/or one or more 
-                interfaces,</para>
+                other interfaces,</para>
             </listitem>
             <!--
             <listitem>
@@ -810,6 +773,142 @@ shared interface ElementwiseEquality
         </comment>
         -->
         
+    </section>
+    
+    <section id="adaptedtypes">
+        <title>Introduction</title>
+        
+        <para>A toplevel interface may optionally be <emphasis>adapt</emphasis> a 
+        list of types, in which case it is called an <emphasis>introduction</emphasis>.
+        The types are called <emphasis>adapted types</emphasis>.</para>
+        
+        <programlisting>Adapts: "adapts" Type ("&amp;" Type)*</programlisting>
+                
+        <para>Then any type that is a subtype of every adapted type is also a subtype 
+        of the interface type in:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>any compilation unit that imports the interface, and</para>
+            </listitem>
+            <listitem>
+                <para>in the package containing the compilation unit to which the 
+                interface belongs.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The <literal>adapts</literal> clause may specify multiple types. If 
+        a satisfied type is a parameterized type, the <literal>satisfies</literal> 
+        clause must specify type arguments.</para>
+        
+        <programlisting>adapts Iterable&lt;T&gt; &amp; Correspondence&lt;Natural, T&gt;</programlisting>
+        
+        <para>Each adapted types must be class or interface. At most one adapted 
+        type may be a class.</para>
+        
+        <para>Suppose <literal>X</literal> is an interface and <literal>Y</literal> 
+        is a class or interface.</para>
+    
+        <itemizedlist>
+        <listitem>
+            <para>If <literal>X</literal> adapts <literal>Y</literal>, then
+            <literal>X</literal> is a subtype of <literal>Y</literal>.</para>
+        </listitem>
+        <listitem>
+            <para>If <literal>X</literal> adapts <literal>Y&lt;B&gt;</literal>, then
+            <literal>X</literal> is a subtype of <literal>Y&lt;B&gt;</literal>.</para>
+        </listitem>
+        <listitem>
+            <para>If <literal>X&lt;T&gt;</literal> adapts <literal>Y&lt;T&gt;</literal>, 
+            then <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y&lt;B&gt;</literal> 
+            for any type <literal>B</literal>.</para>
+        </listitem>
+        <listitem>
+            <para>If <literal>X&lt;T&gt;</literal> adapts <literal>Y</literal>, 
+            then <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y</literal> 
+            for any type <literal>B</literal>.</para>
+        </listitem>
+        </itemizedlist>
+        
+        <para>Furthermore:</para>
+        
+        <itemizedlist>
+        <listitem>
+            <para>If <literal>X</literal> adapts <literal>Y</literal>, then
+            <literal>Y</literal> is a subtype of <literal>X</literal> in every
+            compilation unit that imports <literal>X</literal>, and in the package
+            to which <literal>X</literal> belongs.</para>
+        </listitem>
+        <listitem>
+            <para>If <literal>X</literal> adapts <literal>Y&lt;B&gt;</literal>, then
+            <literal>Y&lt;B&gt;</literal> is a subtype of <literal>X</literal> in 
+            every compilation unit that imports <literal>X</literal>, and in the 
+            package to which <literal>X</literal> belongs.</para>
+        </listitem>
+        <listitem>
+            <para>If <literal>X&lt;T&gt;</literal> adapts <literal>Y&lt;T&gt;</literal>, 
+            then <literal>Y&lt;B&gt;</literal> is a subtype of <literal>X&lt;B&gt;</literal> 
+            for any type <literal>B</literal> in every compilation unit that imports 
+            <literal>X</literal>, and in the package to which <literal>X</literal> 
+            belongs.</para>
+        </listitem>
+        <listitem>
+            <para>If <literal>X&lt;T&gt;</literal> adapts <literal>Y</literal>, 
+            then <literal>Y</literal> is a subtype of <literal>X&lt;B&gt;</literal> 
+            for any type <literal>B</literal> in every compilation unit that imports 
+            <literal>X</literal>, and in the package to which <literal>X</literal> 
+            belongs.</para>
+        </listitem>
+        </itemizedlist>        
+        
+             <para>An introduction may not:</para>
+             
+             <itemizedlist>
+                 <listitem>
+                     <para>declare or inherit a member that refines a member of any 
+                     adapted type, or</para>
+                 </listitem>
+                 <listitem>
+                     <para>declare or inherit a <literal>formal</literal> or 
+                     non-<literal>default</literal> <literal>actual</literal> member
+                     unless the member is inherited from an adapted type.</para>
+                 </listitem>
+             </itemizedlist>
+         
+            <para>If, in a certain compilation unit, multiple introductions of a certain
+            adapted type declare or inherit a member that refines a common member of a 
+            common supertype then either:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>there must be a unique member from the set of members, called the 
+                    <emphasis>most refined</emphasis> member, that refines all the other 
+                    members, or</para>
+                </listitem>
+                <listitem>
+                    <para>the adapted type must declare or inherit a member that refines all 
+                    the members.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>At runtime, an operation (method invocation, member class instantiation, or 
+            attribute evaluation) upon any type that is a subtype of all the adapted types is 
+            dispatched according to the following rule:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>If the runtime type of the instance of the adapted type declares 
+                    or inherits a member defining the operation, the operation is dispatched 
+                    to the runtime type of the instance.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>Otherwise, the operation is dispatched to the introduction that has 
+                    the most-refined member defining the operation.
+                    </para>
+                </listitem>
+            </itemizedlist>
+            
     </section>
     
     <section id="cases">
