@@ -391,8 +391,8 @@ TypeConstraints?
         <section id="interfaceinheritance">
             <title>Interface inheritance</title>
             
-            <para>An interface may extend any number of other interfaces, and may satisfy
-            a single class.</para>
+            <para>An interface may extend any number of other interfaces.<!--and may satisfy
+            a single class--></para>
         
             <programlisting>shared interface List&lt;T&gt;
         satisfies Sequence&lt;T&gt; &amp; Collection&lt;T&gt; {
@@ -404,24 +404,25 @@ TypeConstraints?
             supertypes of an interface must be interfaces. An interface may not extend the 
             same interface twice (not even with distinct type arguments).</para>
             
+            <!--
             <para>If an interface does not explicitly declare the class it satisfies using
             <literal>satisfies</literal>, it satisfies the class 
             <literal>ceylon.language.Object</literal>.</para>
-            
+            -->
+             
             <para>An interface inherits all members (methods, attributes and member types) 
             of every supertype, except for members refined by the interface or by some 
             supertype of the interface.</para>
             
+            <!--
             <para>An interface inherits every class satisfied by every other interface the 
             interface extends. There must exist a unique satisfied class that is a subclass
             of all classes satisfied by the interface.</para>
+            -->
             
             <para>The schema of the inherited members is formed by substituting type arguments
             specified in the <literal>satisfies</literal> clause.</para>
             
-            <!--
-            <para>An interface may not refine members of the class it satisfies.</para>
-            -->
             <!--
             <para>An interface may not inherit two non-<literal>formal</literal> members
             of different supertypes that both refine the same member of a third supertype.
@@ -817,17 +818,19 @@ TypeConstraints?
                 <para>must declare or inherit a member that refines each 
                 <literal>formal</literal> member of every interface it implements directly 
                 or indirectly, unless the class is declared <literal>abstract</literal> or
-                <literal>formal</literal>,</para>
+                <literal>formal</literal>, and</para>
             </listitem>
              <listitem>
                 <para>must declare or inherit a member that refines each 
                 <literal>formal</literal> member of its superclass, unless the class is 
-                declared <literal>abstract</literal> or <literal>formal</literal>, and</para>
+                declared <literal>abstract</literal> or <literal>formal</literal>.</para>
             </listitem>
+            <!--
             <listitem>
                 <para>must directly or indirectly extend every class satisfied by every 
                 interface it implements directly or indirectly.</para>
             </listitem>
+            -->
             <!--listitem>
                 <para>is assignable to any type to which any interface it implements is 
                 assignable.</para>

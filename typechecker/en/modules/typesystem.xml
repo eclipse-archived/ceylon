@@ -302,6 +302,8 @@
             </listitem>
         </itemizedlist>
         
+        <para>Every interface type is a subtype of <literal>ceylon.language.Object</literal>.</para>
+        
         </section>
         
         <section id="assignability">
@@ -591,8 +593,14 @@ String? firstWord = words[0];</programlisting>
                 <para>an interface may <emphasis>extend</emphasis> one or more other interfaces,</para>
             </listitem>
             <listitem>
+                <para>an interface may <emphasis>adapt</emphasis> a class and/or one or more 
+                interfaces,</para>
+            </listitem>
+            <!--
+            <listitem>
                 <para>an interface may <emphasis>satisfy</emphasis> exactly one class,</para>
             </listitem>
+            -->
             <listitem>
                 <para>a type parameter may <emphasis>satisfy</emphasis> a class and/or one or 
                 more interfaces or type parameters, or</para>
@@ -673,8 +681,8 @@ String? firstWord = words[0];</programlisting>
         <title>Satisfaction</title>
     
         <para>A class may implement one or more interfaces. An interface may extend one
-        or more interfaces and satisfy a class. A type parameter may satisfy one or more 
-        interfaces and, optionally, a class.</para>
+        or more interfaces. <!--and satisfy a class --> A type parameter may satisfy one 
+        or more interfaces and, optionally, a class.</para>
         
         <programlisting>SatisfiedTypes: "satisfies" Type ("&amp;" Type)*</programlisting>
     
