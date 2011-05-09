@@ -442,6 +442,10 @@ TypeConstraints?
             arguments specified in the <literal>satisfies</literal> or <literal>adapts</literal> 
             clause.</para>
             
+            <para>If an interface extends an introduction, the interface must itself be
+            an introduction, and the adapted type of the interface must be a subtype of 
+            the adapted type of the introduction it extends.</para>
+            
             <!--
             <para>An interface may not inherit two non-<literal>formal</literal> members
             of different supertypes that both refine the same member of a third supertype.
@@ -871,8 +875,12 @@ TypeConstraints?
         the member.</para>
         -->
             
-        <para>Furthermore, the initializer of the superclass is always executed before the
-        initializer of the subclass whenever the subclass is instantiated.</para>
+        <para>If a class implements an introduction, the class must be a subtype of the 
+        adapted type of the introduction.</para>
+            
+        <para>The initializer of the superclass of a class is always executed before the 
+        initializer of the class whenever the class or any one of its subclasses is 
+        instantiated.</para>
         
         <para>A subclass must pass values to each superclass initialization parameter in 
         the <literal>extends</literal> clause.</para>
