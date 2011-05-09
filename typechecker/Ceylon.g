@@ -792,11 +792,6 @@ primary
     )*
    ;
 
-postfixOperator
-    : DECREMENT_OP -> ^(POSTFIX_DECREMENT_OP[$DECREMENT_OP])
-    | INCREMENT_OP -> ^(POSTFIX_INCREMENT_OP[$INCREMENT_OP])
-    ;
-
 base 
     : nonstringLiteral
     | stringExpression
@@ -809,6 +804,11 @@ base
     -> ^(MEMBER memberReference)
     | 'subtype' 
     | 'outer'
+    ;
+
+postfixOperator
+    : DECREMENT_OP -> ^(POSTFIX_DECREMENT_OP[$DECREMENT_OP])
+    | INCREMENT_OP -> ^(POSTFIX_INCREMENT_OP[$INCREMENT_OP])
     ;
 
 memberSelectionOperator
