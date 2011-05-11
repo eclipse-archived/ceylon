@@ -52,20 +52,21 @@ TypeConstraints?
         
         <programlisting>ToplevelDeclaration: TypeDeclaration | Method | SimpleAttribute | AttributeGetter</programlisting>
         
-        <para>All toplevel declarations <!--annotated <literal>shared</literal>--> must 
-        have the same name as the compilation unit filename (after removing the file 
-        suffix <literal>.ceylon</literal>). For example, a <!--<literal>shared</literal>--> 
-        toplevel class named <literal>Person</literal> must be defined in a file named 
-        <literal>Person.ceylon</literal>. A <!--<literal>shared</literal>--> toplevel 
-        method named <literal>hello()</literal> must be defined in a file named 
-        <literal>hello.ceylon</literal>. A toplevel attribute named <literal>pi</literal> 
-        must be defined in a file named <literal>pi.ceylon</literal>. <!--Unlike Java, a 
-        compilation unit may contain multiple toplevel class or method declarations with 
-        the same name.--></para>
+        <!--
+        <para>All toplevel declarations annotated <literal>shared</literal> must have the 
+        same name as the compilation unit filename (after removing the file suffix 
+        <literal>.ceylon</literal>). For example, a <literal>shared</literal> toplevel 
+        class named <literal>Person</literal> must be defined in a file named 
+        <literal>Person.ceylon</literal>. A <literal>shared</literal> toplevel method 
+        named <literal>hello()</literal> must be defined in a file named 
+        <literal>hello.ceylon</literal>. A <literal>shared</literal> toplevel attribute 
+        named <literal>pi</literal> must be defined in a file named <literal>pi.ceylon</literal>. 
+        </para>
         
         <comment><para>TODO: This doesn't work on platforms with case-insensitive filenames. 
         If I have a method named <literal>x</literal>, and a class named <literal>X</literal>,
         the filesystem can't distinguish them. We need a workaround!</para></comment>
+        -->
         
         <para>A toplevel declaration may not be annotated <literal>formal</literal>,
         <literal>default</literal>, <literal>definite</literal>, or
