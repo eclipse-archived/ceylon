@@ -2092,8 +2092,8 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         
         <programlisting>Method&lt;Order, Item, Product, Natural&gt;</programlisting>
         
-        <para>A sequenced type in a type argument list results in a sequenced type
-        parameter in a parameter list.</para>
+        <para>A sequenced type in a type argument list results in a sequenced parameter 
+        in a parameter list.</para>
         
         <programlisting>Method&lt;String, Object...&gt;</programlisting>
 
