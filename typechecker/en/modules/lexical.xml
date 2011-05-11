@@ -14,7 +14,7 @@
         <title>Whitespace</title>
         
         <para>Whitespace characters are the ASCII <literal>SP</literal>, 
-        <literal>HT</literal> <literal>FF</literal>, <literal>LF</literal> and 
+        <literal>HT</literal>, <literal>FF</literal>, <literal>LF</literal> and 
         <literal>CR</literal> characters.</para>
         
         <programlisting>Whitespace: " " | Tab | Formfeed | Newline | Return</programlisting>
