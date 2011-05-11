@@ -50,20 +50,21 @@
     
     <para>
     Ceylon features a similar inheritance and generic type model to Java. A type 
-    is either an <emphasis>interface</emphasis>, a <emphasis>class</emphasis>, or
-    a <emphasis>type parameter</emphasis>. An interface may extend an arbitrary 
-    number of other interfaces. A class may implement an arbitrary number of 
-    interfaces and must extend another class. A class or interface may declare 
-    type parameters. A type parameter abstracts the definition of a class or 
-    interface over all types which can be substituted for the type parameter.
+    is either an <emphasis>interface</emphasis>, a <emphasis>class</emphasis>,
+    a <emphasis>type parameter</emphasis>, or a <emphasis>union</emphasis> of
+    other types. An interface may extend an arbitrary number of other interfaces. 
+    A class may implement an arbitrary number of interfaces and must extend another 
+    class. A class or interface may declare type parameters. A type parameter 
+    abstracts the definition of a class or interface over all types which can be 
+    substituted for the type parameter.
     </para>
     
     <para>
     There are no primitive types or arrays in Ceylon&mdash;every Ceylon type can 
     be represented within the language itself. So all values are instances of the 
-    type hierarchy root <literal>ceylon.language.Void</literal>. However, the Ceylon 
-    compiler is permitted to optimize certain code to take advantage of the optimized 
-    performance of primitive types on the JVM.
+    type hierarchy root <literal>ceylon.language.Void</literal>, which is a class. 
+    However, the Ceylon compiler is permitted to optimize certain code to take 
+    advantage of the optimized performance of primitive types on the JVM.
     </para>
     
     <para>
@@ -81,11 +82,6 @@
     </para>
     
     <para>
-    Ceylon supports <emphasis>type aliases</emphasis>, similar to C-style 
-    <literal>typedef</literal>, and ad-hoc union types.
-    </para>
-    
-    <para>
     Ceylon does not support Java-style wildcard type parameters, raw types, or
     any other kind of "existential type". Instead, a type parameter may be marked 
     as covariant or contravariant by the class or interface that declares the 
@@ -93,6 +89,31 @@
     related to type erasure in Java. Ceylon also supports <!--parameterization of type 
     parameters (a form of higher-order polymorphism), and--> a more expressive 
     system of generic type constraints.
+    </para>
+    
+    </section>
+    
+    <section id="adhocuniontypes">
+    <title>Union types</title>
+
+    <para>
+    A union type, for example <literal>String|Number</literal>, may be formed 
+    from two or more types defined elsewhere. Union types make it possible to 
+    write code that operates polymorphically over types defined in disparate 
+    branches of the type heirarchy without the need for intermediate adaptor 
+    classes.
+    </para>
+    
+    </section>
+    
+    <section id="typealiases">   
+    <title>Type aliases and type inference</title>
+    
+    <para>
+    Ceylon supports <emphasis>type aliases</emphasis>, similar to C-style 
+    <literal>typedef</literal>, and type inference for local declarations. Type 
+    aliases and type inference help reduce the verbosity of code which uses 
+    generic types.
     </para>
     
     </section>
@@ -431,8 +452,7 @@
         <title>Parsing and compiling the Ceylon language</title>
         
         <para>The Ceylon language has been shown to be lexable and parseable using 
-        an ANTRL grammar with no hand-coded special cases. Where lookahead was 
-        necessary, this was handled using syntactic predicates.</para>
+        a context-free ANTRL grammar with no hand-coded special cases.</para>
         
         <para>Ceylon is a language for the Java Virtual Machine, therefore Ceylon
         programs compile to a set of platform-independent <literal>.class</literal> 
