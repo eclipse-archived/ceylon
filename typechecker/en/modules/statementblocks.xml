@@ -497,7 +497,7 @@ try (lock) { ... }</programlisting>
         <programlisting>throw Exception();</programlisting>
         <programlisting>retry;</programlisting>
         <programlisting>return x+y;</programlisting>
-        <programlisting>return "Hello"</programlisting>
+        <programlisting>return "Hello";</programlisting>
         <programlisting>break;</programlisting>
         <programlisting>continue;</programlisting>
         
