@@ -266,7 +266,7 @@
         arity.</para></comment>
         -->
         
-        <para>A type may not have:</para>
+        <para>Overloading is illegal in Ceylon. A type may not have:</para>
         
         <itemizedlist>
             <listitem>
@@ -338,7 +338,7 @@
             <listitem>
                 <para>For each member class of <literal>Y</literal>, <literal>X</literal>
                 has a member class of the same name, with a parameter list with the same 
-                signature, that is assignable to the member class of <literal>Y</literal>.</para>
+                signature, that is a subtype of the member class of <literal>Y</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -351,13 +351,14 @@
             <title>Union types</title>
             
         <para>For any types <literal>X</literal> and <literal>Y</literal>, the <emphasis>union</emphasis>,
-        <literal>X|Y</literal>, of the types may be formed. A union type accepts instances 
-        of either of the given types.</para>
+        <literal>X|Y</literal>, of the types may be formed. A union type is a supertype of 
+        both of the given types <literal>X</literal> and <literal>Y</literal>, and an instance
+        of either type is an instance of the union type.</para>
         
         <para>The union type constructor <literal>|</literal> is associative, so the union 
         of three types may be written <literal>X|Y|Z</literal>.</para>
             
-        <programlisting>UnionType: Type ("|" Type)*</programlisting>
+        <programlisting>UnionType: AbbreviatedType ("|" AbbreviatedType)*</programlisting>
         
         <para>If <literal>X</literal> and <literal>Y</literal> are both subtypes of a third type 
         <literal>Z</literal>, then <literal>X|Y</literal> inherits all members of <literal>Z</literal>.</para>
@@ -380,22 +381,23 @@
             </listitem>
             <listitem>
                 <para>
-                    Union: <literal>X</literal> is a subtype of 
+                    Simplification: if <literal>X</literal> is a subtype 
+                    of <literal>Y</literal>, then <literal>X|Y</literal> 
+                    is the same type as <literal>Y</literal>.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    Subtypes: <literal>X</literal> is a subtype of 
                     <literal>X|Y</literal>.
                 </para>
             </listitem>
             <listitem>
                 <para>
-                    Intersection: if both <literal>X</literal> and
-                    <literal>Y</literal> are subtypes of <literal>Z</literal>, then
-                    <literal>X|Y</literal> as also a subtype <literal>Z</literal>.
-                </para>
-            </listitem>
-            <listitem>
-                <para>
-                    Simplification: if <literal>X</literal> is a subtype 
-                    of <literal>Y</literal>, then <literal>X|Y</literal> is the same 
-                    type as <literal>Y</literal>.
+                    Supertypes: if both <literal>X</literal> and 
+                    <literal>Y</literal> are subtypes of <literal>Z</literal>, 
+                    then <literal>X|Y</literal> is also a subtype 
+                    <literal>Z</literal>.
                 </para>
             </listitem>
         </itemizedlist>
@@ -461,27 +463,27 @@
         <section id="typeofaprogramelement">
             <title>Type of a program element</title>
         
-        <para>Method, attribute, and parameter declarations usually declare a type.</para>
+        <para>Method, attribute, and parameter declarations usually declare a type. 
+        Types are identified by the name of the type (a class, interface, or type 
+        parameter), together with a list of type arguments if the type definition 
+        specifies type parameters.</para>
         
-        <programlisting>Type: UnabbreviatedType Abbreviation*</programlisting>
+        <programlisting>TypeNameWithArguments: TypeName TypeArguments?</programlisting>
         
         <para>If the type is a class or interface nested inside a containing class or 
         interface, the type must be fully qualified by its containing types, except when 
         used inside the body of a containing type.</para>
         
-        <programlisting>UnabbreviatedType: TypeNameWithArguments ("." TypeNameWithArguments)* | Subtype</programlisting>
+        <programlisting>Type: TypeNameWithArguments ("." TypeNameWithArguments)* | Subtype</programlisting>
         
         <para>Unlike Java, the name of a type may not be qualified by the package name.</para>
         
-        <para>Types are identified by the name of the type (a class, interface, or 
-        type parameter), together with a list of type arguments if the type definition 
-        specifies type parameters.</para>
-        
-        <programlisting>TypeNameWithArguments: TypeName TypeArguments?</programlisting>
-        
         <para>If a type has type parameters or a sequenced type parameter, a type argument 
         list must be specified. If a type has no type parameters, and no sequenced type 
-        parameter, no type argument list may be specified.</para>        
+        parameter, no type argument list may be specified.</para>
+        
+        <programlisting>BufferedReader.Buffer</programlisting>
+        <programlisting>Entry&lt;Natural,T&gt;</programlisting>
         
         </section>
         
@@ -502,13 +504,24 @@
         case we change our minds later about using it for non-local declarations?</para></comment>
         
         <comment><para>TODO: should we let you leave off the type arguments in the type
-        of a local declaration? For example <literal>Sequence names = people[].name;</literal></para></comment>
+        of a local declaration? For example:</para>
+        <programlisting>Sequence&lt;&gt; names = people[].name;</programlisting></comment>
         
         </section>
         
         <section id="typenameabbreviations">
             <title>Type name abbreviations</title>
-            
+        
+        <para>Two important union types may be written using an abbreviated syntax.</para>
+        
+        <programlisting>AbbreviatedType: Type Abbreviation*</programlisting>
+        
+        <programlisting>Abbreviation: "?" | "[]"</programlisting>
+        
+        <!--
+        <programlisting>Abbreviation: "?" | "[]" | "[" dimension "]"</programlisting>
+        -->
+         
         <para>The following type name abbreviations are supported:</para>
         
         <itemizedlist>
@@ -528,12 +541,6 @@
              -->
         </itemizedlist>
         
-        <programlisting>Abbreviation: "?" | "[]"</programlisting>
-        
-        <!--
-        <programlisting>Abbreviation: "?" | "[]" | "[" dimension "]"</programlisting>
-        -->
-         
         <para>Abbreviations may be combined:</para>
         
         <programlisting>String?[] words = { "hello", "world", null };
@@ -790,9 +797,9 @@ shared interface ElementwiseEquality
     <section id="adaptedtypes">
         <title>Introduction</title>
         
-        <para>A toplevel interface may optionally be <emphasis>adapt</emphasis> a 
-        list of types, in which case it is called an <emphasis>introduction</emphasis>.
-        The types are called <emphasis>adapted types</emphasis>.</para>
+        <para>A toplevel interface may <emphasis>adapt</emphasis> a list of types, 
+        in which case it is called an <emphasis>introduction</emphasis>. The types 
+        are called <emphasis>adapted types</emphasis>.</para>
         
         <programlisting>Adapts: "adapts" Type ("&amp;" Type)*</programlisting>
                 
@@ -804,8 +811,7 @@ shared interface ElementwiseEquality
                 <para>any compilation unit that imports the interface, and</para>
             </listitem>
             <listitem>
-                <para>in the package containing the compilation unit to which the 
-                interface belongs.</para>
+                <para>in the package to which the interface belongs.</para>
             </listitem>
         </itemizedlist>
         
@@ -1532,13 +1538,14 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
                 type which is a subtype of all upper bounds.</para>
             </listitem>
             <listitem>
-                <para>A type argument to a type parameter with a lower bound must be a type 
-                of which all lower bounds are subtypes.</para>
+                <para>A type argument to a type parameter with a lower bound must be a 
+                type of which all lower bounds are subtypes.</para>
             </listitem>
             <listitem>
-                <para>A type argument to a type parameter with an enumerated type bound must 
-                be a subtype of one of the enumerated types, or a type with an enumerated 
-                subtype list that is a subset of the enumerated types of the constraint.</para>
+                <para>A type argument to a type parameter with an enumerated type bound 
+                must be a subtype of one of the enumerated types, or a type with an 
+                enumerated subtype list that is a subset of the enumerated types of the 
+                constraint.</para>
             </listitem>
             <listitem>
                 <para>A type argument to a type parameter with a metatype bound must have 
@@ -1582,13 +1589,17 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
         <programlisting>given X is Type&lt;T&gt;</programlisting>
         
-        <para>and that an initialization parameter specification type constraint of form:</para>
+        <para>and that an initialization parameter specification type constraint of 
+        form:</para>
         
         <programlisting>given X(A a, B b)</programlisting>
         
         <para>is equivalent to a metatype bound of this form:</para>
         
         <programlisting>given X is Callable&lt;X,A,B&gt;</programlisting>
+        
+        <comment><para>Note: I suppose that types introduced to the metatype should be
+        considered to satisfy a metatype bound, allowing type class introduction.</para></comment>
         
         <comment><para>TODO: Should we let you declare a constraint for a sequenced type 
         parameter?</para>

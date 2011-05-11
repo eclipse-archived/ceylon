@@ -2226,7 +2226,7 @@ setPerson(person);</programlisting>
         <para>A <literal>Type</literal> object may be obtained by specifying the full
         type, including type arguments if the type is generic.</para>
         
-        <programlisting>TypeMeta: UnabbreviatedType</programlisting>
+        <programlisting>TypeMeta: Type</programlisting>
         
         <para>The metamodel expression, <literal>X</literal>, for a type, class or interface 
         is:</para>
