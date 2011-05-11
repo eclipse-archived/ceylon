@@ -1268,7 +1268,7 @@ for (Integer i in -10..+10) {
 }</programlisting>
 
             <programlisting>for (String word -> Natural freq in wordFrequencyMap) { 
-    log.info("The frequency of the " word " is " freq "."); 
+    log.info("The frequency of " word " is " freq "."); 
 }</programlisting>
             
             <programlisting>for (Person p in people) {
