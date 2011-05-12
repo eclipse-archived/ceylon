@@ -2,22 +2,35 @@
     <title>Declarations</title>
     
     <para>Ceylon is a statically typed language. Classes, interfaces, methods, attributes 
-    and locals must be declared. This allows the compiler to detect many errors, including:</para>
+    and locals must be declared before use. The declaration of a method, attribute, or
+    local must include an explicit type, or allow the type to be infered. This allows the 
+    compiler to detect many errors, including:</para>
     
     <itemizedlist>
         <listitem><para>typing errors in identifier names,</para></listitem>
-        <listitem><para>references to types which do not exist or are not visible,</para></listitem>
-        <listitem><para>references to type members which do not exist or are not visible,</para></listitem>
+        <listitem><para>references to types which do not exist or are not 
+        visible,</para></listitem>
+        <listitem><para>references to type members which do not exist or are not 
+        visible,</para></listitem>
         <listitem><para>argument lists which do not match parameter lists,</para></listitem>
-        <listitem><para>type argument lists which do not match type parameter lists, and</para></listitem>
+        <listitem><para>type argument lists which do not match type parameter 
+        lists,</para></listitem>
         <listitem><para>incompatible assignment of an expression of one type to a
-        program element of a different type.</para></listitem>
+        program element of a different type,</para></listitem>
+        <listitem><para>evaluation of an attribute or local before its value has been
+        explicitly specified or assigned,</para></listitem>
+        <listitem><para>assignment to a non-<literal>variable</literal> attribute or
+        local,</para></listitem>
+        <listitem><para>failure to refine a <literal>formal</literal> member of a 
+        supertype,</para></listitem>
+        <listitem><para>refinement of a non-<literal>formal</literal>, 
+        non-<literal>default</literal> member of a supertype,</para></listitem>
+        <listitem><para><literal>switch</literal> statements which do not exhaust all
+        values of an enumerated type, and</para></listitem>
+        <listitem><para><literal>switch</literal> statements which do not exhaust all 
+        cases of a type with enumerated subtypes.</para></listitem>
     </itemizedlist>
     
-    <programlisting>Declaration: Method | Attribute | TypeDeclaration</programlisting>
-    
-    <programlisting>TypeDeclaration: Class | Object | Interface</programlisting>
-        
     <para>All declarations follow a general pattern:</para>
         
     <programlisting>Annotation* 
@@ -52,6 +65,8 @@ TypeConstraints?
         
         <programlisting>ToplevelDeclaration: TypeDeclaration | Method | SimpleAttribute | AttributeGetter</programlisting>
         
+        <programlisting>TypeDeclaration: Class | Object | Interface</programlisting>
+        
         <!--
         <para>All toplevel declarations annotated <literal>shared</literal> must have the 
         same name as the compilation unit filename (after removing the file suffix 
@@ -78,6 +93,17 @@ TypeConstraints?
         that it would make toplevel invocations and instantiations polymorphic, obviating
         the need for things like dependency injection.</para></comment>
         
+        </section>
+        
+        <section id="nesteddeclarations">
+            <title>Nested declarations</title>
+            
+            <para>Most toplevel declarations contain nested declarations.</para>
+            
+            <programlisting>Declaration: Method | Attribute | TypeDeclaration</programlisting>
+            
+            <para>Nested declarations are often mixed together with executable statements.</para>
+            
         </section>
         
     </section>
