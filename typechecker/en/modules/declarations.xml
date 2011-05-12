@@ -159,6 +159,8 @@ TypeConstraints?
         <para>Note that toplevel declarations in the module <literal>ceylon.language</literal> 
         never need to be explicitly imported. They are implicitly imported by every 
         compilation unit.</para>
+        
+        <comment><para>Note: an unused import should result in a compiler warning.</para></comment>
                 
         <section id="typeimports">
             <title>Type imports</title>
