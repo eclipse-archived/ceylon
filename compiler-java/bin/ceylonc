@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import ceylonwrap
+import os.path
 
 command = ceylonwrap.Wrapper()
 # XXX start of awful mangling that clearly indicates I misdesigned the wrapper
@@ -9,6 +10,8 @@ command.user_cp = []
 command.addJar("build", "lib", "runtime.jar")
 classpath = command.wrap_cp + classpath
 command.addJar("build", "lib", "compiler.jar")
+command.boot_cp.append(command.wrap_cp[-1])
+command.addJar(os.path.expanduser("~/.ceylon/repo/com/redhat/ceylon/typechecker/0.1/com.redhat.ceylon.typechecker-0.1.jar"))
 command.boot_cp.append(command.wrap_cp[-1])
 command.addJar("lib", "antlrworks-1.3.1.jar")
 command.boot_cp.append(command.wrap_cp[-1])

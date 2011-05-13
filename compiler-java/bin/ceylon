@@ -4,4 +4,5 @@ import ceylonwrap
 
 command = ceylonwrap.Wrapper()
 command.addJar("build", "lib", "runtime.jar")
+command.addJar("build", "classes")
 command.run("ceylon.language.Launcher")
