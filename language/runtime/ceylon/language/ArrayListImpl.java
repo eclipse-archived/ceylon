@@ -58,7 +58,7 @@ public class ArrayListImpl<T>
     public void set(Integer key, T value) {
         data.add(key.intValue(), value);
     }
-
+/*
     public static <T> ArrayList<T> arrayListOf(T... args) {
         ArrayList l = new ArrayList();
         l.data = new java.util.ArrayList<T>(java.util.Arrays.asList(args));
@@ -68,4 +68,5 @@ public class ArrayListImpl<T>
     public Iterator<T> iterator() {
         throw new RuntimeException(this.toString());
     }
+*/
 }

@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -29,8 +30,10 @@ public class Type
         if (seq == null) {
             annotations.put(annoType, annos);
         } else {
-            annotations.put(annoType,
-                            ((ArrayList<T>)seq).append((ArrayList<T>)annos));
+/*            annotations.put(annoType,
+                            ((ArrayList<T>)seq).addAll((ArrayList<T>)annos));
+                            */
+        	throw new RuntimeException("Not implemented");
         }
     }
 
