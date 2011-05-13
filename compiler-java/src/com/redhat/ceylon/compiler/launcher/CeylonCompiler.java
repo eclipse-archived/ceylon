@@ -8,7 +8,7 @@ import org.antlr.runtime.tree.*;
 import com.redhat.ceylon.compiler.tree.*;
 import com.redhat.ceylon.compiler.tree.CeylonTree.Visitor;
 import com.redhat.ceylon.compiler.codegen.Gen;
-import com.redhat.ceylon.compiler.parser.*;
+import com.redhat.ceylon.compiler.typechecker.parser.*;
 
 public class CeylonCompiler
 {
