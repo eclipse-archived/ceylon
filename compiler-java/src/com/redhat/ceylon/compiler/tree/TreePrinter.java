@@ -6,7 +6,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
-import com.redhat.ceylon.compiler.parser.CeylonParser;
+import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
 import com.sun.tools.javac.util.List;
 
 public class TreePrinter extends CeylonTree.Visitor {
