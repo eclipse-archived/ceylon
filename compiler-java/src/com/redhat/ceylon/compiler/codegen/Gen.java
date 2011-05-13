@@ -17,7 +17,6 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 import javax.tools.ToolProvider;
 
-import com.redhat.ceylon.compiler.parser.CeylonParser;
 import com.sun.source.tree.Tree.Kind;
 import com.sun.tools.javac.api.JavacTaskImpl;
 import com.sun.tools.javac.code.Flags;
@@ -60,6 +59,7 @@ import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.tree.CeylonTree;
 import com.redhat.ceylon.compiler.tree.CeylonTree.*;
+import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
 
 public class Gen {
     Context context;
@@ -1046,10 +1046,10 @@ public class Gen {
         int operator = expr.operator.operatorKind;
         String methodName;
         switch (operator) {
-        case CeylonParser.INCREMENT:
+        case CeylonParser.INCREMENT_OP:
             methodName = "postIncrement";
             break;
-        case CeylonParser.DECREMENT:
+        case CeylonParser.DECREMENT_OP:
             methodName = "postDecrement";
             break;
         default:
@@ -1062,14 +1062,14 @@ public class Gen {
         int operator = expr.operator.operatorKind;
         String methodName;
         switch (operator) {
-        case CeylonParser.INCREMENT:
+        case CeylonParser.INCREMENT_OP:
             methodName = "preIncrement";
             break;
-        case CeylonParser.DECREMENT:
+        case CeylonParser.DECREMENT_OP:
             methodName = "preDecrement";
             break;
-        case CeylonParser.MINUS:
-        case CeylonParser.BITWISENOT:
+        case CeylonParser.DIFFERENCE_OP:
+        case CeylonParser.NOT_OP:
             // ????  Make a new operator with expr.operand as its operands.
             // This is rather evil.
             expr.operator.operands = List.of(expr.operand);
@@ -1594,29 +1594,29 @@ public class Gen {
         binaryOperators = new HashMap<Integer, String>();
 
         // Unary operators
-        unaryOperators.put(CeylonParser.MINUS,       "inverse");
-        unaryOperators.put(CeylonParser.BITWISENOT,  "complement");
-        unaryOperators.put(CeylonParser.RENDER,      "string");
+        unaryOperators.put(CeylonParser.NEGATIVE_OP,       "inverse");
+        unaryOperators.put(CeylonParser.NOT_OP,  "complement");
+        unaryOperators.put(CeylonParser.FORMAT_OP,      "string");
 
         // Binary operators that act on types
-        binaryOperators.put(CeylonParser.PLUS,       "plus");
-        binaryOperators.put(CeylonParser.MINUS,      "minus");
-        binaryOperators.put(CeylonParser.TIMES,      "times");
-        binaryOperators.put(CeylonParser.DIVIDED,    "divided");
-        binaryOperators.put(CeylonParser.POWER,      "power");
-        binaryOperators.put(CeylonParser.REMAINDER,  "remainder");
-        binaryOperators.put(CeylonParser.BITWISEAND, "and");
-        binaryOperators.put(CeylonParser.BITWISEOR,  "or");
-        binaryOperators.put(CeylonParser.BITWISEXOR, "xor");
-        binaryOperators.put(CeylonParser.EQEQ,       "equalsXXX");
-        binaryOperators.put(CeylonParser.IDENTICAL,  "identical");
-        binaryOperators.put(CeylonParser.COMPARE,    "compare");
+        binaryOperators.put(CeylonParser.SUM_OP,       "plus");
+        binaryOperators.put(CeylonParser.DIFFERENCE_OP,      "minus");
+        binaryOperators.put(CeylonParser.PRODUCT_OP,      "times");
+        binaryOperators.put(CeylonParser.QUOTIENT_OP,    "divided");
+        binaryOperators.put(CeylonParser.POWER_OP,      "power");
+        binaryOperators.put(CeylonParser.REMAINDER_OP,  "remainder");
+        binaryOperators.put(CeylonParser.AND_OP, "and");
+        binaryOperators.put(CeylonParser.OR_OP,  "or");
+        binaryOperators.put(CeylonParser.XOR_OP, "xor");
+        binaryOperators.put(CeylonParser.EQUAL_OP,       "equalsXXX");
+        binaryOperators.put(CeylonParser.IDENTICAL_OP,  "identical");
+        binaryOperators.put(CeylonParser.COMPARE_OP,    "compare");
 
         // Binary operators that act on intermediary Comparison objects
-        binaryOperators.put(CeylonParser.GT,         "larger");
-        binaryOperators.put(CeylonParser.LT,         "smaller");
-        binaryOperators.put(CeylonParser.GTEQ,       "largeAs");
-        binaryOperators.put(CeylonParser.LTEQ,       "smallAs");
+        binaryOperators.put(CeylonParser.LARGER_OP,         "larger");
+        binaryOperators.put(CeylonParser.SMALLER_OP,         "smaller");
+        binaryOperators.put(CeylonParser.LARGE_AS_OP,       "largeAs");
+        binaryOperators.put(CeylonParser.SMALL_AS_OP,       "smallAs");
     }
 
     JCExpression convert(CeylonTree.Operator op) {
@@ -1628,40 +1628,40 @@ public class Gen {
 
         int operator = op.operatorKind;
         switch (operator) {
-        case CeylonParser.MINUS:
+        case CeylonParser.DIFFERENCE_OP:
             if (operands.length == 1)
                 unary_operator = true;
             else
                 binary_operator = true;
             break;
 
-        case CeylonParser.BITWISENOT:
-        case CeylonParser.RENDER:
+        case CeylonParser.NEGATIVE_OP:
+        case CeylonParser.FORMAT_OP:
             unary_operator = true;
             break;
 
-        case CeylonParser.PLUS:
-        case CeylonParser.TIMES:
-        case CeylonParser.POWER:
-        case CeylonParser.DIVIDED:
-        case CeylonParser.REMAINDER:
-        case CeylonParser.BITWISEAND:
-        case CeylonParser.BITWISEOR:
-        case CeylonParser.BITWISEXOR:
-        case CeylonParser.IDENTICAL:
-        case CeylonParser.COMPARE:
-        case CeylonParser.EQEQ:
+        case CeylonParser.SUM_OP:
+        case CeylonParser.PRODUCT_OP:
+        case CeylonParser.XOR_OP:
+        case CeylonParser.QUOTIENT_OP:
+        case CeylonParser.REMAINDER_OP:
+        case CeylonParser.AND_OP:
+        case CeylonParser.OR_OP:
+        case CeylonParser.POWER_OP:
+        case CeylonParser.IDENTICAL_OP:
+        case CeylonParser.COMPARE_OP:
+        case CeylonParser.EQUAL_OP:
             binary_operator = true;
             break;
 
-        case CeylonParser.NOTEQ:
+        case CeylonParser.NOT_EQUAL_OP:
         {
-            Operator newOp = new Operator(CeylonParser.EQEQ, op.operands);
-            newOp = new Operator(CeylonParser.NOT, List.<CeylonTree>of(newOp));
+            Operator newOp = new Operator(CeylonParser.EQUAL_OP, op.operands);
+            newOp = new Operator(CeylonParser.NOT_OP, List.<CeylonTree>of(newOp));
             return convert(newOp);
         }
 
-        case CeylonParser.NOT:
+        case CeylonParser.NOT_OP:
         {
             return at(op).Apply(null, makeSelect(makeIdent(syms.ceylonBooleanType), "instance"),
                     List.<JCExpression>of(at(op).Conditional(convertExpression(operands[0]),
@@ -1669,16 +1669,16 @@ public class Gen {
                             make.Literal(TypeTags.BOOLEAN, 1))));
         }
 
-        case CeylonParser.LT:
-        case CeylonParser.GT:
-        case CeylonParser.LTEQ:
-        case CeylonParser.GTEQ:
-            operator = CeylonParser.COMPARE;
+        case CeylonParser.SMALLER_OP:
+        case CeylonParser.LARGER_OP:
+        case CeylonParser.SMALL_AS_OP:
+        case CeylonParser.LARGE_AS_OP:
+            operator = CeylonParser.COMPARE_OP;
             binary_operator = true;
             lose_comparison = true;
             break;
 
-        case CeylonParser.COLONEQ:
+        case CeylonParser.ASSIGN_OP:
         {
             JCExpression rhs = convertExpression(operands[1]);
             if (operands[0] instanceof CeylonTree.SubscriptExpression) {
@@ -1698,7 +1698,7 @@ public class Gen {
             }
         }
 
-        case CeylonParser.IS:
+        case CeylonParser.IS_OP:
             // FIXME: Nasty cast here.  We can't call convertExpression()operands[1])
             // because that returns TypeName.class, not simply TypeName.
             CeylonTree.TypeName name = (CeylonTree.TypeName)operands[1];
@@ -1706,7 +1706,7 @@ public class Gen {
                     List.<JCExpression>of(at(op).TypeTest(convertExpression(operands[0]),
                             makeIdent(name.components))));
 
-        case CeylonParser.RANGE:
+        case CeylonParser.RANGE_OP:
             JCExpression lower = convertExpression(operands[0]);
             JCExpression upper = convertExpression(operands[1]);
             return at(op).NewClass(
@@ -1725,7 +1725,7 @@ public class Gen {
         JCExpression result = null;
         if (unary_operator) {
             assert operands.length == 1;
-            if (operands[0] instanceof CeylonTree.NaturalLiteral && operator == CeylonParser.MINUS) {
+            if (operands[0] instanceof CeylonTree.NaturalLiteral && operator == CeylonParser.DIFFERENCE_OP) {
                 CeylonTree.NaturalLiteral lit = (CeylonTree.NaturalLiteral)operands[0];
                 result = at(op).Apply(null, makeSelect(makeIdent(syms.ceylonIntegerType), "instance"),
                         List.<JCExpression>of(make.Literal(-lit.value.longValue())));
