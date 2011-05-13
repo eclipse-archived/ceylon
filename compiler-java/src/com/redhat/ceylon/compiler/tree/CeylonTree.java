@@ -18,7 +18,7 @@ import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.Tree;
 
 import com.redhat.ceylon.compiler.codegen.CeylonFileObject;
-import com.redhat.ceylon.compiler.parser.CeylonParser;
+import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 
@@ -154,14 +154,14 @@ public abstract class CeylonTree {
 
     static {
         classes = new HashMap<Integer, Class<? extends CeylonTree>>();
-
-        classes.put(CeylonParser.ABSTRACT, Abstract.class);
+/*
+        classes.put(CeylonParser.ABSTRACTED_TYPE, Abstract.class);
         classes.put(CeylonParser.ABSTRACTS_LIST, AbstractsList.class);
         classes.put(CeylonParser.ABSTRACT_MEMBER_DECL,
                     AbstractMemberDeclaration.class);
         classes.put(CeylonParser.ALIAS_DECL, AliasDeclaration.class);
-        classes.put(CeylonParser.AND, Operator.class);
-        classes.put(CeylonParser.ANDEQ, Operator.class);
+        classes.put(CeylonParser.AND_OP, Operator.class);
+        classes.put(CeylonParser.INTERSECT_ASSIGN_OP, Operator.class);
         classes.put(CeylonParser.ANNOTATION_LIST, AnnotationList.class);
         classes.put(CeylonParser.ANNOTATION_NAME, AnnotationName.class);
         classes.put(CeylonParser.ANON_METH, AnonymousMethod.class);
@@ -223,35 +223,33 @@ public abstract class CeylonTree {
         classes.put(CeylonParser.FINALLY_BLOCK, FinallyBlock.class);
         classes.put(CeylonParser.FLOATLITERAL, FloatLiteral.class);
         classes.put(CeylonParser.FLOAT_CST, FloatConstant.class);
-        classes.put(CeylonParser.FOR, For.class);
+        classes.put(CeylonParser.FOR_CLAUSE, For.class);
         classes.put(CeylonParser.FORMAL_PARAMETER, FormalParameter.class);
         classes.put(CeylonParser.FORMAL_PARAMETER_LIST, FormalParameterList.class);
         classes.put(CeylonParser.FOR_CONTAINMENT, ForContainment.class);
         classes.put(CeylonParser.FOR_ITERATOR, ForIterator.class);
-        classes.put(CeylonParser.FOR_STMT, ForStatement.class);
+        classes.put(CeylonParser.FOR_STATEMENT, ForStatement.class);
         classes.put(CeylonParser.GET_EXPR, GetExpression.class);
-        classes.put(CeylonParser.GT, Operator.class);
-        classes.put(CeylonParser.GTEQ, Operator.class);
+        classes.put(CeylonParser.LARGER_OP, Operator.class);
+        classes.put(CeylonParser.LARGE_AS_OP, Operator.class);
         classes.put(CeylonParser.HASH, Operator.class);
         classes.put(CeylonParser.IDENTICAL, Operator.class);
-        classes.put(CeylonParser.IF, If.class);
-        classes.put(CeylonParser.IF_FALSE, IfFalse.class);
-        classes.put(CeylonParser.IF_STMT, IfStatement.class);
-        classes.put(CeylonParser.IF_TRUE, IfTrue.class);
+        classes.put(CeylonParser.IF_CLAUSE, If.class);
+        classes.put(CeylonParser.IF_STATEMENT, IfStatement.class);
         classes.put(CeylonParser.IMPLIES, Operator.class);
         classes.put(CeylonParser.IMPORT, Import.class);
         classes.put(CeylonParser.IMPORT_DECL, ImportDeclaration.class);
         classes.put(CeylonParser.IMPORT_LIST, ImportList.class);
         classes.put(CeylonParser.IMPORT_PATH, ImportPath.class);
         classes.put(CeylonParser.IMPORT_WILDCARD, ImportWildcard.class);
-        classes.put(CeylonParser.IN, Operator.class);
-        classes.put(CeylonParser.INCREMENT, Operator.class);
+        classes.put(CeylonParser.IN_OP, Operator.class);
+        classes.put(CeylonParser.INCREMENT_OP, Operator.class);
         classes.put(CeylonParser.INIT_EXPR, InitializerExpression.class);
         classes.put(CeylonParser.INST_DECL, InstanceDeclaration.class);
         classes.put(CeylonParser.INTERFACE, Interface.class);
         classes.put(CeylonParser.INTERFACE_DECL, InterfaceDeclaration.class);
         classes.put(CeylonParser.INT_CST, IntConstant.class);
-        classes.put(CeylonParser.IS, Operator.class);
+        classes.put(CeylonParser.IS_OP, Operator.class);
         classes.put(CeylonParser.IS_EXPR, IsExpression.class);
         classes.put(CeylonParser.LANG_ANNOTATION, LanguageAnnotation.class);
         classes.put(CeylonParser.LBRACE, Operator.class);
@@ -262,13 +260,13 @@ public abstract class CeylonTree {
         classes.put(CeylonParser.LOOP_BLOCK, LoopBlock.class);
         classes.put(CeylonParser.LOWER_BOUND, LowerBound.class);
         classes.put(CeylonParser.LPAREN, Operator.class);
-        classes.put(CeylonParser.LT, Operator.class);
-        classes.put(CeylonParser.LTEQ, Operator.class);
+        classes.put(CeylonParser.SMALLER_OP, Operator.class);
+        classes.put(CeylonParser.SMALL_AS_OP, Operator.class);
         classes.put(CeylonParser.MEMBER_DECL, MemberDeclaration.class);
         classes.put(CeylonParser.MEMBER_NAME, MemberName.class);
         classes.put(CeylonParser.MEMBER_TYPE, MemberType.class);
-        classes.put(CeylonParser.MINUS, Operator.class);
-        classes.put(CeylonParser.MINUSEQ, Operator.class);
+        classes.put(CeylonParser.DIFFERENCE_OP, Operator.class);
+        classes.put(CeylonParser.SUBTRACT_ASSIGN_OP, Operator.class);
         classes.put(CeylonParser.MODULE, Module.class);
         classes.put(CeylonParser.MULTI_COMMENT, MultiLineComment.class);
         classes.put(CeylonParser.MUTABLE, Mutable.class);
@@ -278,11 +276,11 @@ public abstract class CeylonTree {
         classes.put(CeylonParser.NONE, None.class);
         classes.put(CeylonParser.NONEMPTY, Nonempty.class);
         classes.put(CeylonParser.NONEMPTY_EXPR, NonemptyExpression.class);
-        classes.put(CeylonParser.NOT, Operator.class);
-        classes.put(CeylonParser.NOTEQ, Operator.class);
+        classes.put(CeylonParser.NOT_OP, Operator.class);
+        classes.put(CeylonParser.NOT_EQUAL_OP, Operator.class);
         classes.put(CeylonParser.NULL, Null.class);
         classes.put(CeylonParser.OPTIONAL, Optional.class);
-        classes.put(CeylonParser.OR, Operator.class);
+        classes.put(CeylonParser.OR_OP, Operator.class);
         classes.put(CeylonParser.OREQ, Operator.class);
         classes.put(CeylonParser.OUT, Out.class);
         classes.put(CeylonParser.OVERRIDE, Override.class);
@@ -357,6 +355,7 @@ public abstract class CeylonTree {
         classes.put(CeylonParser.WHILE_BLOCK, WhileBlock.class);
         classes.put(CeylonParser.WHILE_STMT, WhileStatement.class);
         classes.put(CeylonParser.WS, Whitespace.class);
+        */
     }
 
     public void bomb() {
@@ -1529,7 +1528,7 @@ public abstract class CeylonTree {
             if (!(expr instanceof Operator)) {
                 return false;
             }
-            return ((Operator) expr).operatorKind == CeylonParser.RANGE;
+            return ((Operator) expr).operatorKind == CeylonParser.RANGE_OP;
         }
 
         public void accept(Visitor v) { v.visit(this); }
@@ -2694,10 +2693,10 @@ public abstract class CeylonTree {
                 public void visit(TypeName t) { self.setName(t); }
                 public void visit(Operator op) {
                     switch (op.operatorKind) {
-                    case CeylonParser.QMARK:
+                    case CeylonParser.QMARKS:
                         self.flags |= OPTIONAL;
                         break;
-                    case CeylonParser.LBRACKET:
+                    case CeylonParser.LBRACKETS:
                         // FIXME: Ignore for now
                         break;
                     case CeylonParser.RBRACKET:
