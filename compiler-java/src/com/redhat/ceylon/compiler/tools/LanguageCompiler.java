@@ -37,10 +37,17 @@ import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.codegen.Gen;
-import com.redhat.ceylon.compiler.parser.CeylonLexer;
-import com.redhat.ceylon.compiler.parser.CeylonParser;
+import com.redhat.ceylon.compiler.codegen.Gen2;
 import com.redhat.ceylon.compiler.tree.CeylonTree;
 import com.redhat.ceylon.compiler.tree.Grok;
+import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
+import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
+import com.redhat.ceylon.compiler.typechecker.parser.LexError;
+import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
+import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
+import com.redhat.ceylon.compiler.typechecker.tree.Builder;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.sun.tools.javac.code.Symbol.CompletionFailure;
 import com.sun.tools.javac.comp.AttrContext;
 import com.sun.tools.javac.comp.Env;
@@ -60,7 +67,7 @@ import com.sun.tools.javac.util.Position.LineMap;
 
 public class LanguageCompiler extends JavaCompiler {
 
-    private Gen gen;
+    private Gen2 gen;
 
     /** Get the JavaCompiler instance for this context. */
     public static JavaCompiler instance(Context context) {
@@ -76,7 +83,7 @@ public class LanguageCompiler extends JavaCompiler {
         super(context);
 
         try {
-            gen = new Gen(context);
+            gen = new Gen2(context);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -124,6 +131,19 @@ public class LanguageCompiler extends JavaCompiler {
             CeylonParser parser = new CeylonParser(tokens);
             CeylonParser.compilationUnit_return r = parser.compilationUnit();
 
+            char[] chars = readSource.toString().toCharArray();
+            LineMap map = Position.makeLineMap(chars, chars.length, false);
+
+        	java.util.List<LexError> lexerErrors = lexer.getErrors();
+        	for (LexError le: lexerErrors) {
+        		printError(le,  le.getMessage(lexer), chars, map);
+        	}
+
+        	java.util.List<ParseError> parserErrors = parser.getErrors();
+        	for (ParseError pe: parserErrors) {
+        		printError(pe,  pe.getMessage(parser), chars, map);
+        	}
+
             CommonTree t = (CommonTree)r.getTree();
 
             if (lexer.getNumberOfSyntaxErrors() != 0) {
@@ -133,6 +153,7 @@ public class LanguageCompiler extends JavaCompiler {
                 log.error("ceylon.parser.failed");
             }
             else {
+            	/*
                 CeylonTree.CompilationUnit cu = CeylonTree.build(t, filename.getName());
                 cu.file = filename;
                 cu.accept(new Grok(log));
@@ -140,8 +161,15 @@ public class LanguageCompiler extends JavaCompiler {
                 char[] chars = readSource.toString().toCharArray();
                 LineMap map = Position.makeLineMap(chars, chars.length, false);
                 gen.setMap(map);
+            	return gen.convert(cu);
 
-                return gen.convert(cu);
+                */
+        		Builder builder = new Builder();
+        		CompilationUnit cu = builder.buildCompilationUnit(t);
+
+                gen.setMap(map);
+
+                return gen.convert(cu, filename);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -153,7 +181,23 @@ public class LanguageCompiler extends JavaCompiler {
         return result;
     }
 
-    public Env<AttrContext> attribute(Env<AttrContext> env) {
+    private void printError(RecognitionError le, String message, char[] chars, LineMap map) {
+    	int lineStart = map.getStartPosition(le.getLine());
+    	int lineEnd = lineStart;
+    	// find the end of the line
+    	for(;chars[lineEnd] != '\n' 
+    		&& chars[lineEnd] != '\r'
+    			&& lineEnd<chars.length;lineEnd++);
+    	String line = new String(chars, lineStart, lineEnd - lineStart);
+    	System.out.println(message);
+    	System.out.println("Near:");
+    	System.out.println(line);
+    	for(int i=0;i<le.getCharacterInLine();i++)
+    		System.out.print('-');
+		System.out.println('^');
+	}
+
+	public Env<AttrContext> attribute(Env<AttrContext> env) {
         if (env.toplevel.sourcefile instanceof CeylonFileObject) {
             try {
                 Context.SourceLanguage.push(Language.CEYLON);
