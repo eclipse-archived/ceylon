@@ -147,6 +147,7 @@ public class Symtab {
     public final Type proprietaryType;
     public final Type systemType;
     public final Type ceylonExtensionType;
+    public final Type ceylonSharedType;
     public final Type ceylonAnyType;
     public final Type ceylonNothingType;
     public final Type ceylonOptionalType;
@@ -454,6 +455,7 @@ public class Symtab {
         suppressWarningsType = enterClass("java.lang.SuppressWarnings");
         inheritedType = enterClass("java.lang.annotation.Inherited");
         systemType = enterClass("java.lang.System");
+        ceylonSharedType = enterClass("ceylon.language.Shared");
         ceylonExtensionType = enterClass("ceylon.language.Extension");
         ceylonAnyType = enterClass("ceylon.language.Any");
         ceylonNothingType = enterClass("ceylon.language.Nothing");
