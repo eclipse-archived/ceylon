@@ -2,13 +2,14 @@ doc "The classic Hello World program"
 shared void helloworld(Process process) {
 
 	MyClass foo = MyClass(2);
+	process.writeLine(foo.method());
 
     /*
     // variables
     Natural i = 2;
     process.writeLine(i);
 
-    Natural j := 2;
+    variable Natural j := 2;
     j := 1;
     process.writeLine(j);
 

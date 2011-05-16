@@ -1,4 +1,4 @@
-shared class Myclass(Integer i) {
+shared class MyClass(Integer i) {
 	Integer j = i;
 	
 	shared Integer method(){
