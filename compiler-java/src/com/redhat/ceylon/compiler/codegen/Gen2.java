@@ -25,16 +25,8 @@ import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.tools.CeyloncTool;
-import com.redhat.ceylon.compiler.tree.CeylonTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Member;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArgumentList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.source.tree.Tree.Kind;
 import com.sun.tools.javac.api.JavacTaskImpl;
@@ -502,7 +494,7 @@ public class Gen2 {
         }
 
         // FIXME: can we have something else?
-        Tree.Member primary = (Member) userAnn.getPrimary();
+        Tree.Member primary = (Tree.Member) userAnn.getPrimary();
         JCExpression result = at(userAnn).Apply(null, makeSelect(primary.getIdentifier().getText(), "run"),
                 values);
         JCIdent addAnnotation = at(userAnn).Ident(names.fromString("addAnnotation"));
