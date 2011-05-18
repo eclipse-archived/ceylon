@@ -19,6 +19,7 @@ import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
@@ -202,7 +203,7 @@ public class ClassGen extends GenPart {
         return classDef;
     }
 
-    int convertDeclFlags(Tree.ClassOrInterface cdecl) {
+    private int convertDeclFlags(Tree.ClassOrInterface cdecl) {
         int result = 0;
 
         /* Standard Java flags.
@@ -287,7 +288,7 @@ public class ClassGen extends GenPart {
         return result.toList();
     }
 
-	public List<JCTree> convert(Tree.ClassOrInterface cdecl,
+	private List<JCTree> convert(Tree.ClassOrInterface cdecl,
             Tree.MethodDefinition decl) {
         final ListBuffer<JCVariableDecl> params =
             new ListBuffer<JCVariableDecl>();
@@ -336,7 +337,7 @@ public class ClassGen extends GenPart {
       return List.<JCTree>of(meth);
     }
 
-    public void methodClass(Tree.ClassOrInterface classDecl,
+    void methodClass(Tree.ClassOrInterface classDecl,
             Tree.MethodDefinition decl, final ListBuffer<JCTree> defs,
             boolean topLevel) {
         // Generate a class with the
@@ -406,7 +407,7 @@ public class ClassGen extends GenPart {
     }
 
     // FIXME: There must be a better way to do this.
-    void processMethodDeclaration(final Tree.ClassOrInterface classDecl,
+    private void processMethodDeclaration(final Tree.ClassOrInterface classDecl,
             final Tree.MethodDefinition decl,
             final ListBuffer<JCVariableDecl> params,
             final Singleton<JCBlock> block,
@@ -431,7 +432,7 @@ public class ClassGen extends GenPart {
         restype.append(gen.convert(decl.getType()));
      }
 
-    void processAnnotations(final Tree.ClassOrInterface classDecl,
+    private void processAnnotations(final Tree.ClassOrInterface classDecl,
             Tree.AnnotationList ceylonAnnos,
             final ListBuffer<JCStatement> annotations,
             final ListBuffer<JCAnnotation> langAnnotations,
@@ -450,7 +451,40 @@ public class ClassGen extends GenPart {
         */
     }
 
-    JCBlock registerAnnotations(List<JCStatement> annos) {
+    // this is due to the above commented code
+    @SuppressWarnings("unused")
+	private JCExpression convert(final Tree.Annotation userAnn,
+            Tree.ClassOrInterface classDecl, String methodName) {
+       List<JCExpression> values = List.<JCExpression>nil();
+       // FIXME: handle named arguments
+        for (Tree.PositionalArgument arg: userAnn.getPositionalArgumentList().getPositionalArguments()) {
+            values = values.append(gen.expressionGen.convertExpression(arg.getExpression()));
+        }
+
+        JCExpression classLiteral;
+        if (classDecl != null) {
+            classLiteral = makeSelect(classDecl.getIdentifier().getText(), "class");
+        } else {
+            classLiteral = makeSelect(methodName, "class");
+        }
+
+        // FIXME: can we have something else?
+        Tree.Member primary = (Tree.Member) userAnn.getPrimary();
+        JCExpression result = at(userAnn).Apply(null, makeSelect(primary.getIdentifier().getText(), "run"),
+                values);
+        JCIdent addAnnotation = at(userAnn).Ident(names().fromString("addAnnotation"));
+        List<JCExpression> args;
+        if (methodName != null)
+            args = List.<JCExpression>of(classLiteral, gen.expressionGen.ceylonLiteral(methodName), result);
+        else
+            args = List.<JCExpression>of(classLiteral, result);
+
+        result = at(userAnn).Apply(null, addAnnotation, args);
+
+        return result;
+    }
+
+    private JCBlock registerAnnotations(List<JCStatement> annos) {
         JCBlock block = make().Block(Flags.STATIC, annos);
         return block;
     }
@@ -538,7 +572,7 @@ public class ClassGen extends GenPart {
 		return decl.getSpecifierOrInitializerExpression() instanceof Tree.InitializerExpression;
 	}
 
-    JCTypeParameter convert(Tree.TypeParameterDeclaration param) {
+	private JCTypeParameter convert(Tree.TypeParameterDeclaration param) {
     	// FIXME: implement this
         if (param.getTypeVariance() != null)
             throw new RuntimeException("Variance not implemented");
@@ -546,7 +580,7 @@ public class ClassGen extends GenPart {
         return at(param).TypeParameter(names().fromString(name.getText()), List.<JCExpression>nil());
     }
 
-    JCVariableDecl convert(Tree.Parameter param) {
+	private JCVariableDecl convert(Tree.Parameter param) {
         at(param);
         Name name = names().fromString(param.getIdentifier().getText());
         JCExpression type = gen.variableType(param.getType(), param.getAnnotationList());

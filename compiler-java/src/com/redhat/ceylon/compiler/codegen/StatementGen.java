@@ -6,7 +6,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
-import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -73,6 +72,7 @@ public class StatementGen extends GenPart {
                                 List.<JCExpression>nil(), null)));
             }
         }
+        // FIXME: I think those should just go in convertExpression no?
         public void visit(Tree.PostfixOperatorExpression expr) {
             stmts.append(at(expr).Exec(gen.expressionGen.convert(expr)));
         }
@@ -90,7 +90,7 @@ public class StatementGen extends GenPart {
             at(block).Block(0, convertStmts(cdecl, block.getStatements()));
     }
 
-    List<JCStatement> convertStmts(Tree.ClassOrInterface cdecl,
+    private List<JCStatement> convertStmts(Tree.ClassOrInterface cdecl,
             java.util.List<Tree.Statement> list) {
         final ListBuffer<JCStatement> buf =
             new ListBuffer<JCStatement>();
@@ -103,7 +103,7 @@ public class StatementGen extends GenPart {
         return buf.toList();
     }
 
-    JCStatement convert(Tree.ClassOrInterface cdecl,
+    private JCStatement convert(Tree.ClassOrInterface cdecl,
             Tree.IfStatement stmt) {
         JCBlock thenPart = convert(cdecl, stmt.getIfClause().getBlock());
         JCBlock elsePart = stmt.getElseClause() != null ? 
@@ -111,13 +111,13 @@ public class StatementGen extends GenPart {
         return convertCondition(stmt.getIfClause().getCondition(), JCTree.IF, thenPart, elsePart);
     }
 
-    JCStatement convert(Tree.ClassOrInterface cdecl,
+    private JCStatement convert(Tree.ClassOrInterface cdecl,
             Tree.WhileStatement stmt) {
         JCBlock thenPart = convert(cdecl, stmt.getWhileClause().getBlock());
         return convertCondition(stmt.getWhileClause().getCondition(), JCTree.WHILELOOP, thenPart, null);
     }
 
-    JCStatement convertCondition(Tree.Condition cond, int tag,
+    private JCStatement convertCondition(Tree.Condition cond, int tag,
             JCBlock thenPart, JCBlock elsePart) {
 
         if (cond instanceof Tree.ExistsCondition) {
@@ -195,7 +195,7 @@ public class StatementGen extends GenPart {
 
             JCExpression expr;
             if (isExpr.getExpression() == null) {
-                expr = gen.convert(name);
+                expr = convert(name);
             } else {
                 expr = gen.expressionGen.convertExpression(isExpr.getExpression());
             }
@@ -251,7 +251,7 @@ public class StatementGen extends GenPart {
         }
     }
 
-    JCStatement convert(Tree.ClassOrInterface cdecl, Tree.ForStatement stmt) {
+    private JCStatement convert(Tree.ClassOrInterface cdecl, Tree.ForStatement stmt) {
         class ForVisitor extends Visitor {
             Tree.Variable variable = null;
 
@@ -333,9 +333,14 @@ public class StatementGen extends GenPart {
         return at(stmt).Block(0, outer);
    }
 
-    JCStatement convert(Tree.Return ret) {
+    private JCStatement convert(Tree.Return ret) {
         Tree.Expression expr = ret.getExpression();
         JCExpression returnExpr = expr != null ? gen.expressionGen.convertExpression(expr) : null;
         return at(ret).Return(returnExpr);
     }
+    
+    private JCIdent convert(Tree.Identifier identifier) {
+        return at(identifier).Ident(names().fromString(identifier.getText()));
+    }
+
 }

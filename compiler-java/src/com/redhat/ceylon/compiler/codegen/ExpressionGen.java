@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.codegen;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -86,10 +88,10 @@ public class ExpressionGen extends GenPart {
             }
             // FIXME: port ReflectedLiteral?
             public void visit(Tree.MemberExpression value) {
-                result = gen.convert(value);
+                result = convert(value);
             }
             public void visit(Tree.Member value) {
-                result = gen.convert(value);
+                result = convert(value);
             }
             // FIXME: port TypeName?
             public void visit(Tree.InitializerExpression value) {
@@ -110,7 +112,7 @@ public class ExpressionGen extends GenPart {
         return v.result;
     }
 
-    JCExpression convertStringExpression(Tree.StringTemplate expr) {
+	private JCExpression convertStringExpression(Tree.StringTemplate expr) {
         ListBuffer<JCExpression> strings = new ListBuffer<JCExpression>();
         for (Tree.Expression t: expr.getExpressions()) {
             strings.append(convertExpression(t));
@@ -154,7 +156,7 @@ public class ExpressionGen extends GenPart {
     }
 
     // FIXME: I'm pretty sure sugar is not supposed to be in there
-    JCExpression convert(Tree.NotEqualOp op) {
+    private JCExpression convert(Tree.NotEqualOp op) {
         Tree.EqualOp newOp = new Tree.EqualOp(op.getAntlrTreeNode());
         newOp.setLeftTerm(op.getLeftTerm());
         newOp.setRightTerm(op.getRightTerm());
@@ -164,14 +166,14 @@ public class ExpressionGen extends GenPart {
     }
     
     // FIXME: I'm pretty sure sugar is not supposed to be in there
-    JCExpression convert(Tree.NotOp op){
+    private JCExpression convert(Tree.NotOp op){
         return at(op).Apply(null, makeSelect(makeIdent(syms().ceylonBooleanType), "instance"),
                 List.<JCExpression>of(at(op).Conditional(convertExpression(op.getTerm()),
                         make().Literal(TypeTags.BOOLEAN, 0),
                         make().Literal(TypeTags.BOOLEAN, 1))));
     }
     
-    JCExpression convert(Tree.AssignOp op){
+    private JCExpression convert(Tree.AssignOp op){
         JCExpression rhs = convertExpression(op.getRightTerm());
         JCExpression lhs = convertExpression(op.getLeftTerm());
         return at(op).Apply(null,
@@ -179,7 +181,7 @@ public class ExpressionGen extends GenPart {
         		List.of(rhs));
     }
     
-    JCExpression convert(Tree.IsOp op){
+    private JCExpression convert(Tree.IsOp op){
     	// FIXME: this is only working for SimpleType
     	// FIXME: Nasty cast here.  We can't call convertExpression()operands[1])
     	// because that returns TypeName.class, not simply TypeName.
@@ -189,7 +191,7 @@ public class ExpressionGen extends GenPart {
     					makeIdent(name.getIdentifier().getText()))));
     }
     
-    JCExpression convert(Tree.RangeOp op){
+    private JCExpression convert(Tree.RangeOp op){
     	JCExpression lower = convertExpression(op.getLeftTerm());
     	JCExpression upper = convertExpression(op.getRightTerm());
     	return at(op).NewClass(
@@ -213,7 +215,7 @@ public class ExpressionGen extends GenPart {
     					List.<JCExpression>nil());
     }
     
-    JCExpression convert(Tree.BinaryOperatorExpression op) {
+    private JCExpression convert(Tree.BinaryOperatorExpression op) {
         JCExpression result = null;
         Class<? extends Tree.OperatorExpression> operatorClass = op.getClass();
         
@@ -251,7 +253,7 @@ public class ExpressionGen extends GenPart {
         return convertMutable(expr.getPrimary(), methodName);
     }
 
-    JCExpression convert(Tree.PrefixOperatorExpression expr) {
+    private JCExpression convert(Tree.PrefixOperatorExpression expr) {
         String methodName;
         if(expr instanceof Tree.IncrementOp)
             methodName = "preIncrement";
@@ -262,7 +264,7 @@ public class ExpressionGen extends GenPart {
         return convertMutable(expr.getTerm(), methodName);
     }
 
-    JCExpression convertMutable(Tree.Term expr, String methodName) {
+    private JCExpression convertMutable(Tree.Term expr, String methodName) {
         JCExpression operand = convertExpression(expr);
         return at(expr).Apply(null, makeSelect(makeIdent(syms().ceylonMutableType), methodName),
                 List.<JCExpression>of(operand));
@@ -279,7 +281,7 @@ public class ExpressionGen extends GenPart {
 
         ce.getPrimary().visit (new Visitor () {
             public void visit(Tree.MemberExpression access) {
-                expr.append(gen.convert(access));
+                expr.append(convert(access));
             }
             public void visit(Tree.Type type) {
                 // A constructor
@@ -289,7 +291,7 @@ public class ExpressionGen extends GenPart {
                 expr.append(convert(chainedCall));
             }
             public void visit(Tree.Member access) {
-                expr.append(gen.convert(access));
+                expr.append(convert(access));
             }
         });
 
@@ -309,10 +311,38 @@ public class ExpressionGen extends GenPart {
                 List.<JCExpression>of(lit));
     }
 
-    JCExpression convert(Tree.StringLiteral string) {
+    private JCExpression convert(Tree.StringLiteral string) {
     	String value = string.getText().substring(1, string.getText().length() - 1); 
         at(string);
         return ceylonLiteral(value);
     }
 
+    private JCExpression convert(final Tree.MemberExpression access)
+    {
+        final Tree.Identifier memberName = access.getIdentifier();
+        final Tree.Primary operand = access.getPrimary();
+
+        class V extends Visitor {
+            public JCExpression result;
+            // FIXME: this list of cases is incomplete from Gen
+            public void visit(Tree.Member op) {
+                result = makeIdent(Arrays.asList(op.getIdentifier().getText(), memberName.getText()));
+            }
+            public void visit(Tree.MemberExpression op) {
+                result = at(access).Select(convert(op), names().fromString(memberName.getText()));
+            }
+            public void visit(Tree.Expression tree) {
+                result = at(access).Select(convertExpression(tree),
+                        names().fromString(memberName.getText()));
+            }
+        }
+
+        V v = new V();
+        operand.visit(v);
+        return v.result;
+    }
+
+    private JCIdent convert(Tree.Member member) {
+        return at(member).Ident(names().fromString(member.getIdentifier().getText()));
+    }
 }

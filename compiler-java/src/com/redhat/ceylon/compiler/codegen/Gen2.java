@@ -1,18 +1,11 @@
 package com.redhat.ceylon.compiler.codegen;
 
-import static com.sun.tools.javac.code.Flags.FINAL;
-import static com.sun.tools.javac.code.Flags.INTERFACE;
-import static com.sun.tools.javac.code.Flags.PUBLIC;
-import static com.sun.tools.javac.code.Flags.STATIC;
 import static com.sun.tools.javac.code.TypeTags.VOID;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import javax.tools.DiagnosticCollector;
 import javax.tools.JavaCompiler;
@@ -23,33 +16,20 @@ import javax.tools.StandardLocation;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 
-import com.redhat.ceylon.compiler.codegen.StatementGen.StatementVisitor;
 import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.sun.source.tree.Tree.Kind;
 import com.sun.tools.javac.api.JavacTaskImpl;
-import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.Symtab;
-import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.comp.Resolve;
 import com.sun.tools.javac.jvm.ClassReader;
 import com.sun.tools.javac.tree.JCTree;
-import com.sun.tools.javac.tree.JCTree.JCAnnotation;
-import com.sun.tools.javac.tree.JCTree.JCBlock;
-import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
-import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCImport;
-import com.sun.tools.javac.tree.JCTree.JCLiteral;
-import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
-import com.sun.tools.javac.tree.JCTree.JCStatement;
-import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
-import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Convert;
@@ -60,23 +40,23 @@ import com.sun.tools.javac.util.Options;
 import com.sun.tools.javac.util.Position.LineMap;
 
 public class Gen2 {
-    Context context;
-    TreeMaker make;
+    private Context context;
+    private TreeMaker make;
     Name.Table names;
-    ClassReader reader;
-    Resolve resolve;
-    JavaCompiler compiler;
-    DiagnosticCollector<JavaFileObject> diagnostics;
-    CeyloncFileManager fileManager;
-    JavacTaskImpl task;
-    Options options;
+    private ClassReader reader;
+    private Resolve resolve;
+    private JavaCompiler compiler;
+    private DiagnosticCollector<JavaFileObject> diagnostics;
+    private CeyloncFileManager fileManager;
+    private JavacTaskImpl task;
+    private Options options;
     private LineMap map;
     Symtab syms;
     ExpressionGen expressionGen = new ExpressionGen(this);
     StatementGen statementGen = new StatementGen(this);
     ClassGen classGen = new ClassGen(this);
 
-    JCCompilationUnit jcCompilationUnit;
+    private JCCompilationUnit jcCompilationUnit;
 
     public Gen2() throws Exception {
         compiler = new CeyloncTool();
@@ -104,12 +84,12 @@ public class Gen2 {
         setup((JavacTaskImpl)aTask);
     }
 
-    void setup (JavacTaskImpl task) {
+    private void setup (JavacTaskImpl task) {
         this.task = task;
         setup (task.getContext());
     }
 
-    void setup (Context context) {
+    private void setup (Context context) {
         this.context = context;
         options = Options.instance(context);
         // It's a bit weird to see "invokedynamic" set here,
@@ -339,7 +319,7 @@ public class Gen2 {
         return result;
     }
 
-    List<JCTree> convert (Tree.ImportList importList) {
+    private List<JCTree> convert (Tree.ImportList importList) {
         final ListBuffer<JCTree> imports = new ListBuffer<JCTree>();
         importList.visit(new Visitor(){
         	// FIXME: handle the rest of the cases here
@@ -351,49 +331,14 @@ public class Gen2 {
         return imports.toList();
     }
 
-    private void log(String string) {
-    	System.out.println(string);
-	}
-
-	class ExpressionVisitor extends Visitor {
+	static class ExpressionVisitor extends Visitor {
         public JCExpression result;
     }
 
-    class ListVisitor<T> extends Visitor {
+    static class ListVisitor<T> extends Visitor {
         public List<T> result = List.<T>nil();
     }
     
-    JCExpression convert(final Tree.Annotation userAnn,
-            Tree.ClassOrInterface classDecl, String methodName) {
-       List<JCExpression> values = List.<JCExpression>nil();
-       // FIXME: handle named arguments
-        for (Tree.PositionalArgument arg: userAnn.getPositionalArgumentList().getPositionalArguments()) {
-            values = values.append(expressionGen.convertExpression(arg.getExpression()));
-        }
-
-        JCExpression classLiteral;
-        if (classDecl != null) {
-            classLiteral = makeSelect(classDecl.getIdentifier().getText(), "class");
-        } else {
-            classLiteral = makeSelect(methodName, "class");
-        }
-
-        // FIXME: can we have something else?
-        Tree.Member primary = (Tree.Member) userAnn.getPrimary();
-        JCExpression result = at(userAnn).Apply(null, makeSelect(primary.getIdentifier().getText(), "run"),
-                values);
-        JCIdent addAnnotation = at(userAnn).Ident(names.fromString("addAnnotation"));
-        List<JCExpression> args;
-        if (methodName != null)
-            args = List.<JCExpression>of(classLiteral, expressionGen.ceylonLiteral(methodName), result);
-        else
-            args = List.<JCExpression>of(classLiteral, result);
-
-        result = at(userAnn).Apply(null, addAnnotation, args);
-
-        return result;
-    }
-
     // FIXME: figure out what CeylonTree.ReflectedLiteral maps to
     
     JCExpression optionalType(JCExpression type) {
@@ -429,40 +374,6 @@ public class Gen2 {
         return result;
     }
 
-
-    JCExpression convert(final Tree.MemberExpression access)
-    {
-        final Tree.Identifier memberName = access.getIdentifier();
-        final Tree.Primary operand = access.getPrimary();
-
-        class V extends Visitor {
-            public JCExpression result;
-            // FIXME: this list of cases is incomplete from Gen
-            public void visit(Tree.Member op) {
-                result = makeIdent(Arrays.asList(op.getIdentifier().getText(), memberName.getText()));
-            }
-            public void visit(Tree.MemberExpression op) {
-                result = at(access).Select(convert(op), names.fromString(memberName.getText()));
-            }
-            public void visit(Tree.Expression tree) {
-                result = at(access).Select(expressionGen.convertExpression(tree),
-                        names.fromString(memberName.getText()));
-            }
-        }
-
-        V v = new V();
-        operand.visit(v);
-        return v.result;
-    }
-
-    JCIdent convert(Tree.Identifier identifier) {
-        return at(identifier).Ident(names.fromString(identifier.getText()));
-    }
-
-    JCIdent convert(Tree.Member member) {
-        return at(member).Ident(names.fromString(member.getIdentifier().getText()));
-    }
-    
 	boolean isOptional(Tree.Type type) {
 		// This should show in the tree as: Nothing|Type, so we just visit
 		class TypeVisitor extends Visitor {
