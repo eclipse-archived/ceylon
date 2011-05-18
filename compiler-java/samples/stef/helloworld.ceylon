@@ -4,7 +4,6 @@ shared void helloworld(Process process) {
 	MyClass foo = MyClass(2);
 	process.writeLine(foo.method());
 
-    /*
     // variables
     Natural i = 2;
     process.writeLine(i);
@@ -64,5 +63,4 @@ shared void helloworld(Process process) {
     }else{
         process.writeLine("OK");
     }
-    */
 }
