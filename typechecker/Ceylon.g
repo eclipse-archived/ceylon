@@ -101,6 +101,7 @@ tokens {
     MEMBER_EXPRESSION;
     TYPE_EXPRESSION;
     OUTER_EXPRESSION;
+    LAMBDA;
 }
 
 @parser::header { package com.redhat.ceylon.compiler.typechecker.parser; }
@@ -795,7 +796,6 @@ primary
 base 
     : nonstringLiteral
     | stringExpression
-    | parExpression
     | enumeration
     | selfReference
     | typeReference
@@ -804,6 +804,13 @@ base
     -> ^(MEMBER memberReference)
     | 'subtype' 
     | 'outer'
+    | (parametersStart) => lambda
+    | parExpression
+    ;
+
+lambda
+    : /*'local'*/ parameters functionalArgumentBody
+    -> ^(LAMBDA parameters functionalArgumentBody)
     ;
 
 postfixOperator
