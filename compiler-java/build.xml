@@ -5,6 +5,7 @@
   <!-- The Java source files for the compiler -->
   <property name="javac.src" location="langtools/src/share/classes"/>
   <property name="ceylonc.src" location="src"/>
+  <property name="test.src" location="test-src"/>
 
   <!-- The Java and Ceylon source files for the runtime -->
   <property name="runtime.src" location="runtime"/>  
@@ -13,8 +14,10 @@
   <property name="build" location="build"/>
   <property name="build.classes" location="${build}/classes"/>
   <property name="build.lib" location="${build}/lib"/>
+  <property name="test.reports" location="${build}/test-reports"/>
 
   <property name="antlr.lib" location="lib/antlrworks-1.3.1.jar"/>
+  <property name="junit.lib" location="lib/junit-4.9b2.jar"/>
 
   <!-- Jarfiles everything ends up in -->
   <property name="compiler.jar" location="${build.lib}/compiler.jar"/>
@@ -26,20 +29,26 @@
   <property name="parser.test.dst" location="${build}/test/parser"/>
 
   <path id="compiler.classpath">
-  	<pathelement path="${typechecker.jar}"/>
-  	<pathelement path="${antlr.lib}"/>
+    <pathelement path="${typechecker.jar}"/>
+    <pathelement path="${antlr.lib}"/>
+  </path>
+
+  <path id="test.classpath">
+    <path refid="compiler.classpath"/>
+    <pathelement path="${build.classes}"/>
+    <pathelement path="${junit.lib}"/>
   </path>
 
   <path id="runtime.classpath">
-  	<pathelement path="${runtime.jar}"/>
-  	<pathelement path="${build.classes}"/>
+    <pathelement path="${runtime.jar}"/>
+    <pathelement path="${build.classes}"/>
   </path>
 
   <!-- Rule to build compiler classes from their Java sources -->
   <target name="compiler.classes">
     <mkdir dir="${build.classes}"/>
     <javac
-       srcdir="${javac.src}:${ceylonc.src}"
+       srcdir="${javac.src}:${ceylonc.src}:${test.src}"
        destdir="${build.classes}"
        debug="true"
        classpathref="compiler.classpath">
@@ -66,7 +75,7 @@
   <!-- Rule to build runtime classes from their Java and Ceylon sources -->
   <target name="runtime.classes" depends="compiler.jar">
 <!--
-  	<taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc">
+    <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc">
       <classpath>
         <pathelement location="${compiler.jar}"/>
       </classpath>
@@ -92,6 +101,7 @@
     </jar>
   </target>
 
+  <!-- FIXME: Historical rule -->
   <!-- Rule to run the parser regression tests -->
   <target name="test.parser" depends="compiler.jar">
     <mkdir dir="${parser.test.dst}"/>
@@ -103,47 +113,46 @@
       <arg value="-d"/>
       <arg value="${parser.test.dst}"/>
       <fileset dir="${parser.test.src}">
-	<include name="*.ceylon"/>
+  <include name="*.ceylon"/>
       </fileset>
     </apply>
     <apply executable="diff" failonerror="true">
       <arg value="-w"/>
       <arg value="${parser.test.dst}"/>
       <fileset dir="${parser.test.src}">
-	<include name="*.ceylon.out"/>
+  <include name="*.ceylon.out"/>
       </fileset>
     </apply>
   </target>
 
+  <!-- FIXME: Historical rule -->
   <!-- Rule to run the compiler regression tests -->
   <target name="test.compiler" depends="compiler.jar,runtime.jar">
     <exec executable="bin/compilertest" failonerror="true"/>
   </target>
 
-  <!-- Rule to just do everything -->
-  <target name="all" depends="test.parser,test.compiler"/>
+  <!-- Rule to compile and test -->
+  <target name="all" depends="test"/>
 
   <!-- Rule to clean everything up -->
   <target name="clean">
     <delete dir="${build}"/>
     <delete dir="${antlr.dst}"/>
   </target>
-	
-  <target name="test" depends="compiler.jar, runtime.jar">
-  	<taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc">
-      <classpath>
-        <pathelement location="${compiler.jar}"/>
-      </classpath>
-    </taskdef>
-  	<delete file="${build.classes}/helloworld.class"/>
-  	<delete file="${build.classes}/MyClass.class"/>
-    <ceylonc
-      compiler="bin/ceylonc"
-      srcdir="samples/stef"
-      destdir="${build.classes}"/>
-    <exec executable="bin/ceylon">
-      <arg value="helloworld"/>
-	</exec>
-  </target>
 
+  <!-- Runs the JUnit tests -->
+  <target name="test" depends="compiler.classes" description="Runs the JUnit tests">
+    <mkdir dir="${test.reports}"/>
+    <junit printsummary="yes" haltonfailure="yes">
+      <classpath refid="test.classpath"/>
+
+      <formatter type="plain"/>
+
+      <batchtest fork="yes" todir="${test.reports}">
+        <fileset dir="${test.src}">
+          <include name="**/*.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
 </project>
