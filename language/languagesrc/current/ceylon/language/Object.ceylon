@@ -1,10 +1,6 @@
 shared abstract class Object() 
-        extends Value() {
+        extends Void() {
         
-    /*shared actual Boolean null {
-        return false;
-    }*/
-    
     doc "A developer-friendly string representing the instance."
     shared formal String string;
     
