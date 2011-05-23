@@ -146,7 +146,7 @@
     <junit printsummary="yes" haltonfailure="no">
       <classpath refid="test.classpath"/>
 
-      <formatter type="plain"/>
+      <formatter type="xml"/>
 
       <batchtest fork="yes" todir="${test.reports}">
         <fileset dir="${test.src}">
@@ -154,5 +154,11 @@
         </fileset>
       </batchtest>
     </junit>
+  	<junitreport todir="${test.reports}">
+  	  <fileset dir="${test.reports}">
+  	    <include name="TEST-*.xml"/>
+  	  </fileset>
+  	  <report format="frames" todir="${test.reports}"/>
+  	</junitreport>
   </target>
 </project>
