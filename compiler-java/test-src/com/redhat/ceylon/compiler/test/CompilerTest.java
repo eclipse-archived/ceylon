@@ -1,10 +1,9 @@
 package com.redhat.ceylon.compiler.test;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
+import java.io.Reader;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,7 +12,6 @@ import javax.tools.JavaCompiler;
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
-import javax.tools.ToolProvider;
 
 import junit.framework.Assert;
 
@@ -58,11 +56,16 @@ public class CompilerTest {
 	}
 
 	private String readFile(File file) throws IOException {
-		BufferedReader reader = new BufferedReader(new FileReader(file));
+		Reader reader = new FileReader(file);
 		StringBuilder strbuf = new StringBuilder();
-		String s;
-		while((s = reader.readLine()) != null)
-			strbuf.append(s).append("\n");
+		try{
+			char[] buf = new char[1024];
+			int read;
+			while((read = reader.read(buf)) > -1)
+				strbuf.append(buf, 0, read);
+		}finally{
+			reader.close();
+		}
 		return strbuf.toString();
 	}
 
