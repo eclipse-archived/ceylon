@@ -43,7 +43,11 @@ public class CompilerTest {
         String pkg = getClass().getPackage().getName().replaceAll("\\.", File.separator);
         path = dir + File.separator + pkg + File.separator;
 	}
-	
+
+	private void compareWithJavaSource(String name) throws IOException{
+		compareWithJavaSource(name+".ceylon", name+".src");
+	}
+
 	private void compareWithJavaSource(String ceylon, String java) throws IOException{
 		List<JavaFileObject> files = List.nil();
         File file = new File(path+ceylon);
@@ -71,7 +75,7 @@ public class CompilerTest {
 
 	@Test
 	public void test() throws IOException{
-        compareWithJavaSource("helloworld/helloworld.ceylon", "helloworld/helloworld.src");
+        compareWithJavaSource("helloworld/helloworld");
 	}
 
 	@Test
