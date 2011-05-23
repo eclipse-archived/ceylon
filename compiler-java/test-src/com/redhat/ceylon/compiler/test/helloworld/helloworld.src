@@ -1,6 +1,0 @@
-public class helloworld extends .ceylon.language.Object {
-    
-    public static void run(final Process process) {
-        process.writeLine(.ceylon.language.String.instance("Hello World"));
-    }
-}

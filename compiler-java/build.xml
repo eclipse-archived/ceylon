@@ -143,7 +143,7 @@
   <!-- Runs the JUnit tests -->
   <target name="test" depends="compiler.classes" description="Runs the JUnit tests">
     <mkdir dir="${test.reports}"/>
-    <junit printsummary="yes" haltonfailure="yes">
+    <junit printsummary="yes" haltonfailure="no">
       <classpath refid="test.classpath"/>
 
       <formatter type="plain"/>
