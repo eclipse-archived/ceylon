@@ -2944,8 +2944,9 @@ createItemMethod.intercept()
         </listitem>
     </itemizedlist>
     
-    <para>Therefore, listeners registered for the method invocations and class instantiations 
-    that define these operators may not be called when the operator expressions are executed.</para>
+    <para>Therefore, listeners registered for the method invocations and class 
+    instantiations that define these operators may not be called when the operator 
+    expressions are executed.</para>
     
     </section>
     
@@ -3207,8 +3208,7 @@ createItemMethod.intercept()
             <entry><literal>lhs is Rhs</literal></entry>
             <entry>is</entry>
             <entry></entry>
-            <!-- Cannot be Void because we have typed nulls whose type is erased -->
-            <entry><literal>Object</literal></entry>
+            <entry><literal>Object?</literal></entry>
             <entry>literal <literal>Type&lt;Void&gt;</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
