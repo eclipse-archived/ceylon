@@ -35,16 +35,18 @@ public class ValueVisitor extends Visitor {
     
     @Override public void visit(Tree.Member that) {
         if (inCapturingScope) {
-            TypedDeclaration d = (TypedDeclaration) getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
-            if (d==declaration) {
-                if (d instanceof Value) {
-                    ((Value) d).setCaptured(true);
-                }
-                else if (d instanceof ValueParameter) {
-                    ((ValueParameter) d).setCaptured(true);
-                }
-                if (!(declaration.getContainer() instanceof Class) && d.isVariable()) {
-                    that.addError("access to variable local from capturing scope: " + declaration.getName());
+            if (that.getIdentifier()!=null) {
+                TypedDeclaration d = (TypedDeclaration) getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
+                if (d==declaration) {
+                    if (d instanceof Value) {
+                        ((Value) d).setCaptured(true);
+                    }
+                    else if (d instanceof ValueParameter) {
+                        ((ValueParameter) d).setCaptured(true);
+                    }
+                    if (!(declaration.getContainer() instanceof Class) && d.isVariable()) {
+                        that.addError("access to variable local from capturing scope: " + declaration.getName());
+                    }
                 }
             }
         }
