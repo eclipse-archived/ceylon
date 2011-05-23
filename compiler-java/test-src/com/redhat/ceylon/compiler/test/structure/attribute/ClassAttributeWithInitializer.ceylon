@@ -1,0 +1,3 @@
+class ClassAttributeWithInitializer(){
+ String f = "";
+}

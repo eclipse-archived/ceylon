@@ -1,0 +1,3 @@
+class ClassVariable(){
+ String f;
+}

@@ -1,0 +1,11 @@
+package com.redhat.ceylon.compiler.test.statement.attribute;
+
+class MethodVariableWithInitializer extends .ceylon.language.Object {
+    
+    void m() {
+        final .ceylon.language.Mutable<String> f = .ceylon.language.String.instance("");
+    }
+    
+    MethodVariableWithInitializer() {
+    }
+}

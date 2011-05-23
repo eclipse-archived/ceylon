@@ -1,0 +1,52 @@
+package com.redhat.ceylon.compiler.test.structure;
+
+import org.junit.Test;
+
+import com.redhat.ceylon.compiler.test.CompilerTest;
+
+public class StructureTest extends CompilerTest {
+	@Test
+	public void testPackage(){
+		compareWithJavaSource("pkg/pkg");
+	}
+	
+	@Test
+	public void testClass(){
+		compareWithJavaSource("klass/Klass");
+	}
+	@Test
+	public void testPublicClass(){
+		compareWithJavaSource("klass/PublicKlass");
+	}
+	@Test
+	public void testInitializerParameter(){
+		compareWithJavaSource("klass/InitializerParameter");
+	}
+
+	@Test
+	public void testMethod(){
+		compareWithJavaSource("method/Method");
+	}
+	@Test
+	public void testPublicMethod(){
+		compareWithJavaSource("method/PublicMethod");
+	}
+
+	@Test
+	public void testClassVariable(){
+		compareWithJavaSource("attribute/ClassVariable");
+	}
+	@Test
+	public void testClassVariableWithInitializer(){
+		compareWithJavaSource("attribute/ClassVariableWithInitializer");
+	}
+	@Test
+	public void testClassAttribute(){
+		// FIXME: this one should fail and we should make sure it fails for the right reason
+		compareWithJavaSource("attribute/ClassAttribute");
+	}
+	@Test
+	public void testClassAttributeWithInitializer(){
+		compareWithJavaSource("attribute/ClassAttributeWithInitializer");
+	}
+}

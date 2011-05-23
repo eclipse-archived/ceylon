@@ -1,0 +1,7 @@
+package com.redhat.ceylon.compiler.test.structure.pkg;
+
+public class f extends .ceylon.language.Object {
+    
+    public static void run() {
+    }
+}

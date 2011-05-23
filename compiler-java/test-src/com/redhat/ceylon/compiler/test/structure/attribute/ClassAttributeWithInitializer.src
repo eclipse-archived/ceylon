@@ -1,0 +1,9 @@
+package com.redhat.ceylon.compiler.test.structure.attribute;
+
+class ClassAttributeWithInitializer extends .ceylon.language.Object {
+    final String f;
+    
+    ClassAttributeWithInitializer() {
+        f = .ceylon.language.String.instance("");
+    }
+}
