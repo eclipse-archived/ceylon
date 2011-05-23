@@ -185,9 +185,10 @@ public class LanguageCompiler extends JavaCompiler {
     	int lineStart = map.getStartPosition(le.getLine());
     	int lineEnd = lineStart;
     	// find the end of the line
-    	for(;chars[lineEnd] != '\n' 
+    	for(;lineEnd<chars.length
+    	    && chars[lineEnd] != '\n' 
     		&& chars[lineEnd] != '\r'
-    			&& lineEnd<chars.length;lineEnd++);
+    			;lineEnd++);
     	String line = new String(chars, lineStart, lineEnd - lineStart);
     	System.out.println(message);
     	System.out.println("Near:");
