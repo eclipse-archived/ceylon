@@ -1,6 +1,10 @@
 shared abstract class Object() 
-        extends Void() {
+        extends Value() {
         
+    /*shared actual Boolean null {
+        return false;
+    }*/
+    
     doc "A developer-friendly string representing the instance."
     shared formal String string;
     
@@ -30,4 +34,5 @@ shared abstract class Object()
             throw; //cannot occur!
         }
     }
+    
 }

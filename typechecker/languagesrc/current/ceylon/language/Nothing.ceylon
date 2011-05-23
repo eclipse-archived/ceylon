@@ -1,3 +1,7 @@
 shared abstract class Nothing() 
         of nothing
-        extends Void() {}
+        extends Value() {
+    /*shared actual Boolean null {
+        return true;
+    }*/
+}
