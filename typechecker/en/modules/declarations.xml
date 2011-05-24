@@ -700,19 +700,37 @@ TypeConstraints?
     y = 0.0;
 }</programlisting>
         
+        <para>Within a class initializer, a <emphasis>self reference to the instance being 
+        initialized</emphasis> is either:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the expression <literal>this</literal>, unless contained in a
+                nested class declaration, or</para>
+            </listitem>
+            <listitem>
+                <para>the expression <literal>outer</literal>, contained in a directly
+                nested class declaration.</para>
+            </listitem>
+        </itemizedlist>
+        
         <para>The following restrictions apply to statements and declarations that appear 
         within the initializer of a class:</para>
         
         <itemizedlist>
            <listitem>
               <para>They may not evaluate attributes or invoke methods that are declared 
-              later in the body of the class upon the instance that is being initialized 
-              (including upon a self reference or outer instance reference).</para>
+              later in the body of the class upon the instance that is being initialized, 
+              including upon a self reference to the instance being initialized.</para>
            </listitem>
            <listitem>
-              <para>They may not pass a reference to the instance that is being initialized 
-              (including a self reference or outer instance reference) as an argument of an 
-              instantiation or method invocation or as the value of an attribute assignment.</para>
+              <para>They may not pass a self reference to the instance that is being 
+              initialized as an argument of an instantiation or method invocation or as the 
+              value of an attribute assignment.</para>
+           </listitem>
+           <listitem>
+              <para>They may not <literal>return</literal> a self reference to the instance 
+              that is being initialized.</para>
            </listitem>
            <!-- 
            <listitem>
@@ -792,14 +810,14 @@ TypeConstraints?
             </listitem>
             <listitem>
                 <para>a specification or initialization statement for a member of the instance 
-                being initialized (including a self reference or outer instance reference).</para>
+                being initialized.</para>
             </listitem>
         </itemizedlist>
         
-        <para>However, the declarations in this second section may freely use <literal>this</literal>, 
-        and may invoke any method or evaluate any attribute of the class or its superclasses. 
-        The usual restriction that a declaration may only be used by code that appears later in 
-        the block containing the declaration is relaxed.</para>
+        <para>However, the declarations in this second section may freely use <literal>this</literal>
+        and <literal>outer</literal>, and may invoke any method or evaluate any attribute of 
+        the class or its superclasses. The usual restriction that a declaration may only be 
+        used by code that appears later in the block containing the declaration is relaxed.</para>
         
         <comment><para>TODO: we could perhaps slightly relax the restrictions here. It's probably
         OK to let you have expression statements and control structures in the second part of the 

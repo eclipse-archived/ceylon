@@ -436,7 +436,7 @@ if you prefer.";</programlisting>
         <para>The type of the following special values depends upon the context 
         in which they appear.</para>
         
-        <programlisting>SelfReference: "this" | "super"</programlisting>
+        <programlisting>SelfReference: "this" | "super" | "outer"</programlisting>
 
         <para>The keyword <literal>super</literal> refers to the current instance 
         (the instance that is being invoked), and has the same members as the 
@@ -462,16 +462,11 @@ if you prefer.";</programlisting>
         class or interface in which the expression appears), and to the special 
         type <literal>subtype</literal>, which represents the concrete type of the 
         current instance.</para>
-                
-        <!--
-        <comment><para>TODO: what is the syntax for the current instance
-        of a containing class? Here are some options:</para>
-        <programlisting>Graph.this.nodes</programlisting>
-        <programlisting>this Graph.nodes</programlisting>
-        <programlisting>this&lt;Graph&gt;.nodes</programlisting>
-        </comment>
-         -->
         
+        <para>The keyword <literal>outer</literal> refers to the current instance
+        of the class or interface which immediately contains the current class or 
+        interface and is assignable to the type of this containing class or interface.</para>
+                
     </section>
     
     <section id="compoundexpressions">
@@ -488,7 +483,7 @@ if you prefer.";</programlisting>
     
         <programlisting>Primary: Atom | Meta | MemberReference | Invocation</programlisting>
 
-        <programlisting>MemberReference: OuterReference | CallableReference | ValueReference</programlisting>
+        <programlisting>MemberReference: CallableReference | ValueReference</programlisting>
     
         <para>More complex expressions are formed by combining expressions using 
         operators, including assignment operators.</para>    
@@ -530,14 +525,17 @@ if you prefer.";</programlisting>
         receiver expression is executed, the receiver expression is evaluated and a 
         reference to the resulting value is held as part of the value reference.</para>
         
+        <!--
         <para>An outer instance reference may also specify a receiver expression. The
         receiver expression must be explicitly specified unless the current instance
         of the current class is the receiver.</para>
+        -->
         
     </section>
         
     </section>
-
+    
+    <!--
     <section id="outerinstancereferences">
         <title>Outer instance references</title>
         
@@ -567,6 +565,7 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
 }</programlisting>
         
     </section>
+    -->
     
     <section id="valuereferences">
         <title>Value references</title>

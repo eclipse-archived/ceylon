@@ -326,8 +326,8 @@ String result = middleObject.string;</programlisting>
         instantiated or invoked&mdash;without explicitly specifying the receiver, or by 
         specifying an outer instance reference <literal>outer</literal> as the receiver.</para>
 
-        <para>A toplevel method or attribute body may not refer to a self reference or outer 
-        instance reference, since there is no current instance.</para>
+        <para>A toplevel method or attribute body may not refer to a self reference, since 
+        there is no current instance.</para>
 
         <para>The body of a method, class, or attribute nested inside the body of another 
         method or attribute may invoke or evaluate any non-<literal>variable</literal> local, 
@@ -350,11 +350,13 @@ String result = middleObject.string;</programlisting>
     String name = name;
     class Schema(String name) {
         String name = name;
+        Catalog catalog { return outer; }
         String catalogName { return outer.name; }
         class Table(String name) {
             String name = name;
+            Schema schema { return outer; }
             String schemaName { return outer.name; }
-            String catalogName { return outer.outer.name; }
+            String catalogName { return catalog.name; }
         }
     }
 }</programlisting>
