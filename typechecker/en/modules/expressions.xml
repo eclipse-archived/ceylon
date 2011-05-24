@@ -2567,8 +2567,8 @@ createItemMethod.intercept()
         
         <para>There is a single exception to this principal: the binary 
         exponentiation operator <literal>**</literal> has a higher precedence than 
-        the prefix negation operator <literal>-</literal>. The reason for this is 
-        that the following expressions should be equivalent:</para>
+        the prefix operators <literal>+</literal> and <literal>-</literal>. The 
+        reason for this is that the following expressions should be equivalent:</para>
         
         <programlisting>-x**2       //means -(x**2)</programlisting>
         <programlisting>0 - x**2    //means 0 - (x**2)</programlisting>
