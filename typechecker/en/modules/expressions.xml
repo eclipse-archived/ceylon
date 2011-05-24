@@ -219,7 +219,7 @@ setGreeting(greeting);</programlisting>
     <literal>true</literal> and <literal>false</literal>. Likewise, <literal>null</literal> 
     is just the singleton value of an anonymous class.</para>
     
-    <programlisting>Literal: NaturalLiteral | FloatLiteral | CharacterLiteral | StringLiteral | QuotedLiteral</programlisting>
+    <programlisting>Literal: NaturalLiteral | FloatLiteral | CharacterLiteral | StringLiteral | TypedQuotedLiteral</programlisting>
 
     <para>All literal values are instances of immutable types. The value of a literal 
     expression is an instance of the type. How this instance is produced is not specified 
@@ -359,28 +359,24 @@ if you prefer.";</programlisting>
         This is an important facility since Ceylon is a language for expressing 
         structured data.</para>
         
-        <para>A single quoted literal is an expression of type 
-        <literal>ceylon.language.Quoted</literal>. An introduction is responsible for 
-        converting it to the appropriate type.</para>
+        <para>A single quoted literal must be combined with an explicit type 
+        annotation to form an expression.</para>
+        
+        <programlisting>TypedQuotedLiteral: TypeName QuotedLiteral</programlisting>
+        
+        <para>The type of the expression is the specified type.</para>
                 
-        <programlisting>Date date = '25/03/2005';</programlisting>
-        <programlisting>Time time = '12:00 AM PST';</programlisting>
-        <programlisting>Boolean isEmail = '^\w+@((\w+)\.)+$'.matches(email);</programlisting>
-        <programlisting>Cron schedule = '0 0 23 ? * MON-FRI';</programlisting>
-        <programlisting>Color color = 'FF3B66';</programlisting>
-        <programlisting>Url url = 'http://jboss.org/ceylon';</programlisting>
-        <programlisting>mail.to:='gavin@hibernate.org';</programlisting>
-        <programlisting>PhoneNumber ph = '+1 (404) 129 3456';</programlisting>
-        <programlisting>Duration duration = '1h 30m';</programlisting>
+        <programlisting>Date date = Date '25/03/2005';</programlisting>
+        <programlisting>Time time = Time '12:00 AM PST';</programlisting>
+        <programlisting>Boolean isEmail = Regex '^\w+@((\w+)\.)+$'.matches(email);</programlisting>
+        <programlisting>Cron schedule = Cron '0 0 23 ? * MON-FRI';</programlisting>
+        <programlisting>Color color = Color 'FF3B66';</programlisting>
+        <programlisting>Url url = Url 'http://jboss.org/ceylon';</programlisting>
+        <programlisting>mail.to := Email 'gavin@hibernate.org';</programlisting>
+        <programlisting>Phone ph = Phone '+1 (404) 129 3456';</programlisting>
+        <programlisting>Duration duration = Duration '1h 30m';</programlisting>
         
-        <para>Introductions that apply to the type <literal>Quoted</literal> are
-        evaluated at compile time for single-quoted literals, allowing compile-time
-        validation of the contents of the single-quoted string.</para>
-        
-        <programlisting>interface QuotedRegex adapts Quoted satisfies Regex { ... }</programlisting>
-        
-        <comment><para>Note: for now we're only going to support validation against
-        a regex.</para></comment>
+        <comment><para>TODO: Exactly how does this facility work?</para></comment>
         
         <comment><para>TODO: we should try to support interpolated expressions, 
         just like we do for string literals.</para></comment>

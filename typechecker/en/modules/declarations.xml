@@ -2603,8 +2603,8 @@ shared assign name { firstName = first(name); lastName = last(name); }</programl
         element or package? Program element is easy, since we already have a
         typesafe syntax for referring to a method or type: 
         <literal>shared(ContainingClass)</literal>. Package is a bit tricker.
-        Of course we could use a single-quoted literal, 
-        <literal>shared('org.example.containing.package')</literal>, but perhaps 
+        Of course we could use a single quoted literal, 
+        <literal>shared(Package 'org.example.containing.package')</literal>, but perhaps 
         this would justify introducing a literal package name syntax:
         <literal>shared(@org.example.containing.package)</literal>.</para>
         </comment>
