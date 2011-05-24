@@ -207,10 +207,10 @@ setGreeting(greeting);</programlisting>
             <para><literal>Character</literal>,</para>
         </listitem>
         <listitem>
-            <para><literal>String</literal>, and</para>
+            <para><literal>String</literal>, along with</para>
         </listitem>
         <listitem>
-            <para><literal>Quoted</literal>.</para>
+            <para>single quoted literals.</para>
         </listitem>
     </itemizedlist>
     
