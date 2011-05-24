@@ -1,0 +1,12 @@
+package com.redhat.ceylon.compiler.test.statement.conditional;
+
+class InitializerIfElse extends .ceylon.language.Object {
+    
+    InitializerIfElse() {
+        if (true) {
+            false;
+        } else {
+            true;
+        }
+    }
+}

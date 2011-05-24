@@ -5,10 +5,17 @@ import org.junit.Test;
 import com.redhat.ceylon.compiler.test.CompilerTest;
 
 public class StructureTest extends CompilerTest {
+	
+	//
+	// Packages
+	
 	@Test
 	public void testPackage(){
 		compareWithJavaSource("pkg/pkg");
 	}
+	
+	//
+	// Classes
 	
 	@Test
 	public void testClass(){
@@ -23,15 +30,27 @@ public class StructureTest extends CompilerTest {
 		compareWithJavaSource("klass/InitializerParameter");
 	}
 
+	//
+	// Methods
+	
 	@Test
 	public void testMethod(){
 		compareWithJavaSource("method/Method");
 	}
+
+	@Test
+	public void testMethodWithParam(){
+		compareWithJavaSource("method/MethodWithParam");
+	}
+
 	@Test
 	public void testPublicMethod(){
 		compareWithJavaSource("method/PublicMethod");
 	}
 
+	//
+	// Attributes
+	
 	@Test
 	public void testClassVariable(){
 		compareWithJavaSource("attribute/ClassVariable");

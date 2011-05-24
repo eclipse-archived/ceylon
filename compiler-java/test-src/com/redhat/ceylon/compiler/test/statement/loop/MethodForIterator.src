@@ -1,0 +1,23 @@
+package com.redhat.ceylon.compiler.test.statement.loop;
+
+class MethodForIterator extends .ceylon.language.Object {
+    
+    public void m(final Iterator<Integer> it) {
+        {
+            .ceylon.language.Iterator<Integer> $ceylontmp0 = it.iterator();
+            while (true) {
+                final .ceylon.language.Optional<Integer> $ceylontmp1 = $ceylontmp0.head();
+                if ($ceylontmp1 != null) {
+                    Integer i = $ceylontmp1.$internalErasedExists();
+                    false;
+                } else {
+                    break;
+                }
+                $ceylontmp0 = $ceylontmp0.tail();
+            }
+        }
+    }
+    
+    MethodForIterator() {
+    }
+}
