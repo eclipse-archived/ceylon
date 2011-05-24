@@ -64,13 +64,13 @@ class Primaries() {
         shared class Inner2() {
             @type["Primaries.Inner.Inner2"] local p6 = this;
             @type["Primaries.Inner"] local p7 = outer;
-            @type["Primaries"] local p8 = outer.outer;
+            //@type["Primaries"] local p8 = outer.outer;
         }
     }
     
     @type["Primaries.Inner.Inner2"] local p18 = Inner(aa).Inner2();
-    @type["Primaries.Inner"] local p19 = Inner(A()).Inner2().outer;
-    @type["Primaries"] local p20 = Inner(aa).Inner2().outer.outer;
+    //@type["Primaries.Inner"] local p19 = Inner(A()).Inner2().outer;
+    //@type["Primaries"] local p20 = Inner(aa).Inner2().outer.outer;
     //@type["A"] Inner(A()).aa;
     
     void method(A arg1, B arg2) {
@@ -84,7 +84,7 @@ class Primaries() {
             @type["Primaries"] local p7 = outer;
         }
         @type["Inner3"] local p8 = Inner3();
-        @type["Primaries"] local p9 = Inner3().outer;
+        //@type["Primaries"] local p9 = Inner3().outer;
     }
     
     interface G satisfies Equality {

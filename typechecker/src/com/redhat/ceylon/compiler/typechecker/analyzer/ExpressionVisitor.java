@@ -578,7 +578,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    @Override public void visit(Tree.OuterExpression that) {
+    /*@Override public void visit(Tree.OuterExpression that) {
         that.getPrimary().visit(this);
         ProducedType pt = that.getPrimary().getTypeModel();
         if (pt!=null) {
@@ -590,7 +590,7 @@ public class ExpressionVisitor extends Visitor {
                 that.addError("can't use outer on a type parameter");
             }
         }
-    }
+    }*/
 
     @Override public void visit(Tree.TypeExpression that) {
         that.getPrimary().visit(this);

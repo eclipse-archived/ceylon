@@ -100,7 +100,6 @@ tokens {
     UNION_TYPE;
     MEMBER_EXPRESSION;
     TYPE_EXPRESSION;
-    OUTER_EXPRESSION;
     LAMBDA;
 }
 
@@ -663,7 +662,6 @@ interpolatedExpressionStart
     | LIDENTIFIER 
     | UIDENTIFIER 
     | selfReference 
-    | 'outer' 
     | 'subtype'
     | nonstringLiteral
     | prefixOperator
@@ -764,7 +762,7 @@ incrementDecrementExpression
     ;
 
 selfReference
-    : 'this' | 'super'
+    : 'this' | 'super' | 'outer'
     ;
 
 enumeration
@@ -779,8 +777,6 @@ primary
         (
           m=memberReference 
       -> ^(MEMBER_EXPRESSION $primary memberSelectionOperator $m)
-        | o='outer'
-      -> ^(OUTER_EXPRESSION $primary memberSelectionOperator $o)
         | t=typeReference
       -> ^(TYPE_EXPRESSION $primary memberSelectionOperator $t)
         )
@@ -803,7 +799,6 @@ base
     | memberReference
     -> ^(MEMBER memberReference)
     | 'subtype' 
-    | 'outer'
     | (parametersStart) => lambda
     | parExpression
     ;
