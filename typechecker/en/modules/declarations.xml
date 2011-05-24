@@ -356,7 +356,7 @@ TypeConstraints?
         
         <programlisting>InterfaceHeader: "interface" TypeName TypeParams? InterfaceInheritance TypeConstraints?</programlisting>
         
-        <programlisting>InterfaceInheritance: CaseTypes? Metatypes? SatisfiedTypes?</programlisting>
+        <programlisting>InterfaceInheritance: CaseTypes? Metatypes? AdaptedTypes? SatisfiedTypes?</programlisting>
         
         <para>To obtain a concrete instance of an interface, it is necessary to define 
         and instantiate a class that implements the interface, or define an object that

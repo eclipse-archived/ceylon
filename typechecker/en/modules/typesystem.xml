@@ -801,7 +801,7 @@ shared interface ElementwiseEquality
         in which case it is called an <emphasis>introduction</emphasis>. The types 
         are called <emphasis>adapted types</emphasis>.</para>
         
-        <programlisting>Adapts: "adapts" Type ("&amp;" Type)*</programlisting>
+        <programlisting>AdaptedTypes: "adapts" Type ("&amp;" Type)*</programlisting>
                 
         <para>Then any type that is a subtype of every adapted type is also a subtype 
         of the interface type in:</para>
