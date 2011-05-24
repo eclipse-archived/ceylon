@@ -1,5 +1,5 @@
 class MethodVariableWithInitializer(){
-   void m(){
+   shared void m(){
        variable String f := "";
    }
 }

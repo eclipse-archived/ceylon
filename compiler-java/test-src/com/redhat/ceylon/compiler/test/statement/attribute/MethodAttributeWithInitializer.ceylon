@@ -1,5 +1,5 @@
 class MethodAttributeWithInitializer(){
-   void m(){
+   shared void m(){
        String f = "";
    }
 }

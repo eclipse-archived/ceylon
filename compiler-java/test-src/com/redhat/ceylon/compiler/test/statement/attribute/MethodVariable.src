@@ -1,7 +1,11 @@
-package com.redhat.ceylon.compiler.test.structure.pkg;
+package com.redhat.ceylon.compiler.test.statement.attribute;
 
-public class f extends .ceylon.language.Object {
+class MethodVariable extends .ceylon.language.Object {
     
-    public static void run() {
+    void m() {
+        // FIXME;
+    }
+    
+    MethodVariable() {
     }
 }
