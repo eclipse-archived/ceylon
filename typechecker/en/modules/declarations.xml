@@ -2473,6 +2473,10 @@ shared assign name { firstName = first(name); lastName = last(name); }</programl
                 be extended.</para>
             </listitem>
              -->
+            <listitem>
+                <para><literal>literal</literal> specifies that a class or 
+                interface has a single quoted literal format.</para>
+            </listitem>
         </itemizedlist>
         
         <para>The following annotation is a hint to the compiler that lets 
@@ -2604,7 +2608,7 @@ shared assign name { firstName = first(name); lastName = last(name); }</programl
         typesafe syntax for referring to a method or type: 
         <literal>shared(ContainingClass)</literal>. Package is a bit tricker.
         Of course we could use a single quoted literal, 
-        <literal>shared(Package 'org.example.containing.package')</literal>, but perhaps 
+        <literal>shared('org.example.containing.package')</literal>, but perhaps 
         this would justify introducing a literal package name syntax:
         <literal>shared(@org.example.containing.package)</literal>.</para>
         </comment>

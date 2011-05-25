@@ -218,7 +218,7 @@ setGreeting(greeting);</programlisting>
     <literal>true</literal> and <literal>false</literal>. Likewise, <literal>null</literal> 
     is just the singleton value of an anonymous class.</para>
     
-    <programlisting>Literal: NaturalLiteral | FloatLiteral | CharacterLiteral | StringLiteral | TypedQuotedLiteral</programlisting>
+    <programlisting>Literal: NaturalLiteral | FloatLiteral | CharacterLiteral | StringLiteral | QuotedLiteral</programlisting>
 
     <para>All literal values are instances of immutable types. The value of a literal 
     expression is an instance of the type. How this instance is produced is not specified 
@@ -358,6 +358,7 @@ if you prefer.";</programlisting>
         This is an important facility since Ceylon is a language for expressing 
         structured data.</para>
         
+        <!--
         <para>A single quoted literal must be combined with an explicit type 
         annotation to form an expression.</para>
         
@@ -374,8 +375,56 @@ if you prefer.";</programlisting>
         <programlisting>mail.to := Email 'gavin@hibernate.org';</programlisting>
         <programlisting>Phone ph = Phone '+1 (404) 129 3456';</programlisting>
         <programlisting>Duration duration = Duration '1h 30m';</programlisting>
+        -->
         
-        <comment><para>TODO: Exactly how does this facility work?</para></comment>
+        <programlisting>Regex regex = '^\w+@((\w+)\.)+$';</programlisting>
+        <programlisting>ph = '+1 (404) 129 3456';</programlisting>
+        <programlisting>Duration duration = '1h 30m';</programlisting>
+        <programlisting>Datetime dt = Datetime('25/03/2005', '12:00 AM PST');</programlisting>
+        <programlisting>Timer { schedule = '0 0 23 ? * MON-FRI'; onTimeout=purge; }.start();</programlisting>
+        <programlisting>Text { color = 'FF3B66'; "Hello World!" }</programlisting>
+        <programlisting>Link { url = 'http://jboss.org/ceylon'; "Powered by Ceylon" }</programlisting>
+        <programlisting>Email { to = 'gavin@hibernate.org'; subject="Ceylon"; text = "Need some help with the compiler?"; }</programlisting>
+        
+        <para>A single quoted literal may only appear in the following positions:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>as the right hand side of a specifier for a local or
+                attribute with an explicitly declared type, or</para>
+            </listitem>
+            <listitem>
+                <para>as an argument of an invocation or instantiation.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>In either case:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the declared type of the local, attribute, or parameter 
+                must be a class or interface annotated <literal>literal</literal>,
+                and</para>
+            </listitem>
+            <listitem>
+                <para>the single quoted literal must match the pattern specified
+                by the <literal>format</literal> argument of the 
+                <literal>literal</literal> annotation.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The type of the literal expression is the declared type of the
+        local, attribute, or parameter. At runtime, an instance of this type
+        is produced by calling the method specified by the <literal>parser</literal>
+        argument of the <literal>literal</literal> annotation.</para>
+        
+        <programlisting>Color parseColor(String literal) { ... }
+
+literal { 
+    format = '[0-9A-F]{6}|red|blue|green|yellow|black|white'; 
+    parser = parseColor;
+}
+shared interface Color { ... }</programlisting>
         
         <comment><para>TODO: we should try to support interpolated expressions, 
         just like we do for string literals.</para></comment>
