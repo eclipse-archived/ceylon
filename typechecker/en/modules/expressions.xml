@@ -1155,11 +1155,11 @@ local comp = order(1,-1);</programlisting>
         
         <programlisting>NamedArgument: SpecifiedNamedArgument | LocalNamedArgument | FunctionalNamedArgument | Object</programlisting>
         
-        <programlisting>SpecifiedNamedArgument: ParameterName Specifier ";"</programlisting>
+        <programlisting>SpecifiedNamedArgument: MemberName Specifier ";"</programlisting>
         
-        <programlisting>LocalNamedArgument: InferableType ParameterName (Block | NamedArguments)</programlisting>
+        <programlisting>LocalNamedArgument: InferableType MemberName (Block | NamedArguments)</programlisting>
         
-        <programlisting>FunctionalNamedArgument: (InferableType | "void") ParameterName Params+ (Block | NamedArguments)</programlisting>
+        <programlisting>FunctionalNamedArgument: (InferableType | "void") MemberName Params+ (Block | NamedArguments)</programlisting>
         
         <para>For example:</para>
         
@@ -1408,7 +1408,7 @@ local comp = order(1,-1);</programlisting>
         of a positional argument invocation. (This is what Ceylon provides instead of
         lambda expressions.)</para>
                 
-        <programlisting>FunctionalArguments: (ParameterName FunctionalBody)+</programlisting>
+        <programlisting>FunctionalArguments: (MemberName FunctionalBody)+</programlisting>
         
         <programlisting>FunctionalBody: Parameters? ( Block | "(" Expression ")" )</programlisting>
         
@@ -1418,11 +1418,11 @@ local comp = order(1,-1);</programlisting>
         
         <programlisting>InferableFormalParam: InferableParam | InferableEntryParamPair | InferableRangeParamPair</programlisting>
         
-        <programlisting>InferableParam: Annotation* (InferableType|"void") ParameterName Params*</programlisting>
+        <programlisting>InferableParam: Annotation* (InferableType|"void") MemberName Params*</programlisting>
         
-        <programlisting>InferableEntryParamPair: Annotation* InferableType ParameterName "->" Type ParameterName</programlisting>
+        <programlisting>InferableEntryParamPair: Annotation* InferableType MemberName "->" Type MemberName</programlisting>
         
-        <programlisting>InferableRangeParamPair: Annotation* InferableType ParameterName ".." ParameterName</programlisting>
+        <programlisting>InferableRangeParamPair: Annotation* InferableType MemberName ".." MemberName</programlisting>
         
         -->
         

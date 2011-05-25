@@ -141,7 +141,6 @@
         <programlisting>PackageName: PIdentifier</programlisting>
         <programlisting>TypeName: UIdentifier</programlisting>
         <programlisting>MemberName: LIdentifier</programlisting>
-        <programlisting>ParameterName: LIdentifier</programlisting>
         
         <para>An underscore <literal>_</literal> is considered a lowercase letter.</para>
         
@@ -1622,7 +1621,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         <para>The keyword <literal>subtype</literal> is used to refer to the runtime 
         type of an object.</para>
             
-        <programlisting>Subtype: "subtype" | ParameterName "." "subtype"</programlisting>
+        <programlisting>Subtype: "subtype" | MemberName "." "subtype"</programlisting>
         
         <para>Every class or interface has an implicit type parameter that never needs 
         to be declared. This special type parameter, referred to using the keyword 
@@ -2268,7 +2267,7 @@ SequencedParam?
         <para>Each parameter is declared with a type and name and may have annotations and/or
         parameters of its own.</para>
         
-        <programlisting>Param: Annotation* (UnionType | "void") (ParameterName | "this") Params*</programlisting>
+        <programlisting>Param: Annotation* (UnionType | "void") (MemberName | "this") Params*</programlisting>
         
         <para>A parameter may not be be declared <literal>variable</literal>, and may not be 
         assigned to within the body of the method or class.</para>
@@ -2340,7 +2339,7 @@ SequencedParam?
             </listitem>
         </itemizedlist>
         
-        <programlisting>SequencedParam: Annotation* UnionType "..." ParameterName</programlisting>
+        <programlisting>SequencedParam: Annotation* UnionType "..." MemberName</programlisting>
         
         <para>The sequenced parameter or tuple parameter must be the last parameter in the 
         list.</para>
@@ -2356,7 +2355,7 @@ SequencedParam?
         
         <para>A parameter of type <literal>Entry</literal> may be specified as a pair of variables.</para>
         
-        <programlisting>EntryParamPair: Annotation* UnionType ParameterName "->" UnionType ParameterName</programlisting>
+        <programlisting>EntryParamPair: Annotation* UnionType MemberName "->" UnionType MemberName</programlisting>
         
         <para>A key/value parameter pair declaration of form <literal>U u -> V v</literal> results 
         in a method with a single parameter of type <literal>Entry&lt;U,V&gt;</literal>.</para>
