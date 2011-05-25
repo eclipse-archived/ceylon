@@ -204,7 +204,7 @@ setGreeting(greeting);</programlisting>
             <para><literal>Natural</literal> and <literal>Float</literal>,</para>
         </listitem>
         <listitem>
-            <para><literal>Character</literal>,</para>
+            <para><literal>Character</literal>, and</para>
         </listitem>
         <listitem>
             <para><literal>String</literal>, along with</para>

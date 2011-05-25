@@ -34,8 +34,8 @@
     <para>All declarations follow a general pattern:</para>
         
     <programlisting>Annotation* 
-(keyword | InferableType) (TypeName | MemberName) TypeParams? Params*
-CaseTypes? Metatypes? ExtendedType? SatisfiedTypes?
+(keyword | UnionType) (TypeName | MemberName) TypeParams? Params*
+CaseTypes? Metatypes? AdaptedTypes? ExtendedType? SatisfiedTypes? AbstractedType?
 TypeConstraints?
 (Definition | ";")</programlisting>
 
