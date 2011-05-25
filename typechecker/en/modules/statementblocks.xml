@@ -219,8 +219,11 @@
             
             <para>The body of a nested class, method, or attribute declaration may invoke, 
             evaluate, or assign any class, method, or attribute whose declaration is in scope 
-            at the nested declaration, except for <literal>variable</literal> locals of a 
-            containing method or attribute.</para>
+            at the nested declaration. <!--except for <literal>variable</literal> locals of a 
+            containing method or attribute.--></para>
+            
+            <comment><para>TODO: is there some good reason to limit capture of 
+            <literal>variable</literal> locals belonging to a containing method or attribute?</para></comment>
             
             <para>If the nested declaration is nested directly or indirectly inside a class or 
             interface declaration, then there is always a <emphasis>current instance</emphasis> 
@@ -330,10 +333,13 @@ String result = middleObject.string;</programlisting>
         there is no current instance.</para>
 
         <para>The body of a method, class, or attribute nested inside the body of another 
-        method or attribute may invoke or evaluate any non-<literal>variable</literal> local, 
-        block local attribute getter or block local method declared earlier within the 
-        containing scope. It may not refer to <literal>variable</literal> locals defined 
-        within the containing method or attribute body.</para>
+        method or attribute may invoke or evaluate any <!--non-<literal>variable</literal>--> 
+        local, block local attribute getter or block local method declared earlier within 
+        the containing scope.</para>
+        
+        <comment><para>TODO: is there a good reason to add the following limitation: It may 
+        not refer to <literal>variable</literal> locals defined within the containing method 
+        or attribute body.</para></comment> 
         
         <para>When a member is hidden by a block local declaration, the member may be
         accessed via the self reference <literal>this</literal> or via the outer instance

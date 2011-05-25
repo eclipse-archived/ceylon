@@ -184,13 +184,12 @@ Float area = pi * radius**2;</programlisting>
 shared variable String greeting := "'sup!";
 setGreeting(greeting);</programlisting>
         
-        <para>A <literal>Gettable</literal> object representing an expression that 
+        <comment><para>TODO: Do we need to say the following:
+        A <literal>Gettable</literal> object representing an expression that 
         contains a reference to a <literal>variable</literal> local may not be assigned 
         to an attribute, passed as a method argument, passed to a control directive, 
         or referred to by a nested method or class. It may be assigned to a local, or 
-        invoked directly inside the block that obtained it.</para>
-                
-        <comment><para>TODO: nail down these rules a little better.</para></comment>
+        invoked directly inside the block that obtained it.</para></comment>
     
     </section>
     
@@ -417,13 +416,14 @@ if you prefer.";</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>An interpolated expression in a string template may not refer to 
-        <literal>variable</literal> locals from the containing scope.</para>
-        
         <para>Interpolated expressions are evaluated when the 
         <literal>Gettable&lt;String&gt;</literal> is evaluated to produce a constant 
         character string.</para>
 
+        <comment><para>TODO: Is there a good reason to add the following limitation: 
+        an interpolated expression in a string template may not refer to 
+        <literal>variable</literal> locals from the containing scope.</para></comment>
+        
     </section>
     
     <section id="selfreferences">
@@ -1554,8 +1554,8 @@ using() resource satisfies Usable {
             <comment><para>NOTE: The following syntax extension is a proposed feature for 
             a future version of the language.</para></comment>
         
-        <para>A specialized invocation syntax is also provided for toplevel methods which define 
-        a variable. If the first parameter of the method is of type <literal>X</literal>,
+        <para>A specialized invocation syntax is also provided for toplevel methods which 
+        define a variable. If the first parameter of the method is of type <literal>X</literal>,
         annotated <literal>specified</literal>, and all remaining parameters are callable
         parameters, then the method may be invoked according to the following protocol:</para>
         
