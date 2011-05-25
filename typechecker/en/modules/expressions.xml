@@ -54,7 +54,7 @@
     </comment>
     
     <comment><para>TODO: Or, if not, we at least need to properly define the scope
-    in which these things are actually executed.</para></comment>
+    in which the above things are actually evaluated.</para></comment>
     
     <section id="objectinstancesidentity">
         <title>Object instances, identity, and reference passing</title>
@@ -1446,6 +1446,15 @@ local comp = order(1,-1);</programlisting>
         
         <para>Arguments must be listed in the same order as the parameters are declared by the 
         method declaration.</para>
+        
+        <comment><para>TODO: Should we provide "true" anonymous function support, according to
+        the same syntax:</para>
+        <programlisting>void logName(Person p) = (Person p) { log.info(p.name); };</programlisting>
+        <programlisting>Boolean adult(Person p) = (Person p) (p.age>18);</programlisting>
+        <para>Perhaps readability would be enhanced by a keyword:</para>
+        <programlisting>void logName(Person p) = void (Person p) { log.info(p.name); };</programlisting>
+        <programlisting>Boolean adult(Person p) = local (Person p) (p.age>18);</programlisting>
+        </comment>
         
         <comment><para>TODO: Should we introduce the ability to declare functional parameters
         outside the parentheses in method and class definitions, in order to better respect the 
