@@ -1048,8 +1048,9 @@ local comp = order(1,-1);</programlisting>
             <programlisting>set(person.name)("Gavin")</programlisting>
             <programlisting>get(process.args)()</programlisting>
             
-            <programlisting>amounts.sort() by (Float x, Float y) ( x&lt;=&gt;y )</programlisting>
+            <programlisting>amounts.sort() by (Float x, Float y) (x&lt;=&gt;y)</programlisting>
             <programlisting>people.each() perform (Person p) { log.info(p.name); }</programlisting>
+            <programlisting>map.filter() by (String key->String value) (value nonempty)</programlisting>
             
             <programlisting>hash(default, firstName, initial, lastName)</programlisting>
             <programlisting>hash { algorithm=default; firstName, initial, lastName }</programlisting>
@@ -1067,10 +1068,7 @@ local comp = order(1,-1);</programlisting>
             <programlisting>check {
     FilePermission {
         path = "/usr/bin";
-        action = { 
-            FileAction.read,
-            FileAction.execute
-        }
+        action = read | execute;
     }
 }</programlisting>
             
@@ -1479,15 +1477,15 @@ local comp = order(1,-1);</programlisting>
         
         <programlisting>where (Person p) (p.age>18)</programlisting>
         
-        <programlisting>by (Float x, Float y) ( x&lt;=&gt;y )</programlisting>
+        <programlisting>by (Float x, Float y) (x&lt;=&gt;y)</programlisting>
         
         <programlisting>ifTrue (x+1)</programlisting>
         
-        <programlisting>each { count+=1; }</programlisting>
+        <programlisting>perform { count+=1; }</programlisting>
         
         <programlisting>perform (Person p) { log.info(p.name); }</programlisting>
         
-        <programlisting>filter (String key->String value) (value nonempty)</programlisting>
+        <programlisting>by (String key->String value) (value nonempty)</programlisting>
         
         <para>Inline callable arguments are listed without any additional punctuation:</para>
         
@@ -1538,7 +1536,7 @@ using() resource satisfies Usable {
         
         <comment><para>TODO: Should we support type inference for the parameters?
         For example:</para>
-        <programlisting>by (local x, y) ( x&lt;=&gt;y )</programlisting>
+        <programlisting>by (local x, y) (x&lt;=&gt;y)</programlisting>
         <programlisting>where (local p) (p.age>18)</programlisting></comment>
 
         </section>
