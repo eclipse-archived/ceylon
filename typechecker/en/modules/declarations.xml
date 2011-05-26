@@ -724,13 +724,13 @@ TypeConstraints?
               including upon a self reference to the instance being initialized.</para>
            </listitem>
            <listitem>
-              <para>They may not pass a self reference to the instance that is being 
-              initialized as an argument of an instantiation or method invocation or as the 
-              value of an attribute assignment.</para>
+              <para>They may not pass a self reference to the instance being initialized 
+              as an argument of an instantiation or method invocation or as the value of 
+              an attribute assignment or specification.</para>
            </listitem>
            <listitem>
               <para>They may not <literal>return</literal> a self reference to the instance 
-              that is being initialized.</para>
+              being initialized.</para>
            </listitem>
            <!-- 
            <listitem>
@@ -743,21 +743,35 @@ TypeConstraints?
            </listitem>
            -->
            <listitem>
-              <para>They may not invoke or evaluate a <literal>formal</literal>, 
-              <literal>default</literal>, or <literal>definite</literal> member of the instance 
-              that is being initialized, except via the special <literal>super</literal> self 
-              reference.</para>
+              <para>They may not invoke or evaluate a member declared in the declaration
+              section of a superclass of the instance being initialized, including upon a 
+              self reference to the instance being initialized.</para>
+           </listitem>
+           <listitem>
+              <para>They may not invoke or evaluate a <literal>formal</literal> or 
+              <literal>definite</literal> member of the instance being initialized, 
+              including upon a self reference to the instance being initialized.</para>
+           </listitem>
+           <listitem>
+              <para>They may not invoke or evaluate a <literal>default</literal> member of 
+              the instance that is being initialized, except via the special 
+              <literal>super</literal> self reference.</para>
            </listitem>
         </itemizedlist>
         
-        <para>It is acceptable to invoke or evaluate a <literal>formal</literal> or 
-        <literal>default</literal> member of a superclass that is refined by a 
-        non-<literal>formal</literal>, non-<literal>default</literal> declaration of a 
-        different superclass or that appears earlier in the body of the class.</para>
+        <para>It is acceptable to invoke or evaluate any member of a superclass that is 
+        refined by a non-<literal>formal</literal>, non-<literal>default</literal>, 
+        non-<literal>definite</literal> declaration appearing earlier in the body of the 
+        class or by a declaration appearing in the declaration section of a different 
+        superclass.</para>
         
-        <para>Non-<literal>formal</literal>, non-<literal>default</literal> superclass 
-        members may be invoked, evaluated or assigned anywhere inside the body of the class. 
-        The superclass initializer is executed before the subclass initializer.</para>
+        <para>Non-<literal>formal</literal>, non-<literal>default</literal>, 
+        non-<literal>definite</literal> members declared in the initializer section of a 
+        superclass may be invoked, evaluated or assigned anywhere inside the body of the 
+        class. The superclass initializer is executed before the subclass initializer.</para>
+        
+        <comment><para>Note: these rules work as if the body of the subclass were inserted
+        between the initializer and declaration sections of the superclass.</para></comment>
         
         <para>For example, the following code fragments are not legal:</para>
         
