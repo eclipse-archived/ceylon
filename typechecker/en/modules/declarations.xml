@@ -776,7 +776,7 @@ TypeConstraints?
         <para>For example, the following code fragments are not legal:</para>
         
         <programlisting>class Graph() {
-    OpenList&lt;Node&gt; nodes = none;
+    OpenList&lt;Node&gt; nodes = ArrayList&lt;Node&gt;();
     class Node() {
         nodes.add(this);    //compiler error (this reference in initializer)
     }
@@ -789,13 +789,13 @@ TypeConstraints?
         nodes.add(node);    //compiler error (forward reference in initializer)
         return node;
     }
-    OpenList&lt;Node&gt; nodes = none;
+    OpenList&lt;Node&gt; nodes = ArrayList&lt;Node&gt;();
 }</programlisting>
 
         <para>But this code fragment is legal:</para>
         
         <programlisting>class Graph() {
-    OpenList&lt;Node&gt; nodes = none;
+    OpenList&lt;Node&gt; nodes = ArrayList&lt;Node&gt;();
     Node createNode() {
         Node node = Node();
         nodes.add(node);
