@@ -835,13 +835,15 @@ TypeConstraints?
         </itemizedlist>
         
         <para>However, the declarations in this second section may freely use <literal>this</literal>
-        and <literal>super</literal>, and may invoke any method or evaluate any attribute of 
-        the class or its superclasses. Furthermore, the usual restriction that a declaration may 
-        only be used by code that appears later in the block containing the declaration is relaxed.</para>
+        and <literal>super</literal>, and may invoke any method, evaluate any attribute, or 
+        instantiate any member class of the class or its superclasses. Furthermore, the usual 
+        restriction that a declaration may only be used by code that appears later in the 
+        block containing the declaration is relaxed.</para>
         
-        <comment><para>TODO: we could perhaps slightly relax the restrictions here. It's probably
-        OK to let you have expression statements and control structures in the second part of the 
-        class body, just not specification or initialization statements.</para></comment>
+        <comment><para>TODO: we could perhaps slightly relax the restrictions here. It's 
+        probably OK to let you have expression statements and control structures in the 
+        second part of the class body, just not specification or initialization 
+        statements.</para></comment>
         
     </section>
            
