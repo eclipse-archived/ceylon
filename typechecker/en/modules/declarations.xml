@@ -835,7 +835,7 @@ TypeConstraints?
         </itemizedlist>
         
         <para>However, the declarations in this second section may freely use <literal>this</literal>
-        and <literal>outer</literal>, and may invoke any method or evaluate any attribute of 
+        and <literal>super</literal>, and may invoke any method or evaluate any attribute of 
         the class or its superclasses. Furthermore, the usual restriction that a declaration may 
         only be used by code that appears later in the block containing the declaration is relaxed.</para>
         
