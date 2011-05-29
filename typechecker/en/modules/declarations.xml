@@ -714,47 +714,49 @@ TypeConstraints?
             </listitem>
         </itemizedlist>
         
-        <para>The following restrictions apply to statements and declarations that appear 
-        within the initializer of a class:</para>
+        <para>A statement or declaration that appears within the initializer of a class
+        may not:</para>
         
         <itemizedlist>
            <listitem>
-              <para>They may not evaluate attributes or invoke methods that are declared 
-              later in the body of the class upon the instance that is being initialized, 
-              including upon a self reference to the instance being initialized.</para>
-           </listitem>
-           <listitem>
-              <para>They may not pass a self reference to the instance being initialized 
-              as an argument of an instantiation or method invocation or as the value of 
-              an attribute assignment or specification.</para>
-           </listitem>
-           <listitem>
-              <para>They may not <literal>return</literal> a self reference to the instance 
+              <para>evaluate attributes, invoke methods, or instantiate member classes 
+              that are declared later in the body of the class upon the instance that 
+              is being initialized, including upon a self reference to the instance 
               being initialized.</para>
+           </listitem>
+           <listitem>
+              <para>pass a self reference to the instance being initialized as an 
+              argument of an instantiation or method invocation or as the value of an 
+              attribute assignment or specification.</para>
+           </listitem>
+           <listitem>
+              <para><literal>return</literal> a self reference to the instance being 
+              initialized.</para>
            </listitem>
            <!-- 
            <listitem>
-              <para>They may not declare an <literal>abstract</literal> member class or an
+              <para>declare an <literal>abstract</literal> member class or an
               abstract method or attribute of the class.</para>
            </listitem>
            <listitem>
-              <para>They may not declare a <literal>default</literal> member class, method, 
+              <para>declare a <literal>default</literal> member class, method, 
               or attribute of the class.</para>
            </listitem>
            -->
            <listitem>
-              <para>They may not invoke or evaluate a member declared in the declaration
-              section of a superclass of the instance being initialized, including upon a 
-              self reference to the instance being initialized.</para>
+              <para>evaluate attributes, invoke methods, or instantiate member classes 
+              declared in the declaration section of a superclass of the instance 
+              being initialized, including upon a self reference to the instance being 
+              initialized.</para>
            </listitem>
            <listitem>
-              <para>They may not invoke or evaluate a <literal>formal</literal> or 
+              <para>invoke or evaluate a <literal>formal</literal> or 
               <literal>definite</literal> member of the instance being initialized, 
               including upon a self reference to the instance being initialized.</para>
            </listitem>
            <listitem>
-              <para>They may not invoke or evaluate a <literal>default</literal> member of 
-              the instance that is being initialized, except via the special 
+              <para>invoke or evaluate a <literal>default</literal> member of the 
+              instance that is being initialized, except via the special 
               <literal>super</literal> self reference.</para>
            </listitem>
         </itemizedlist>
@@ -834,8 +836,8 @@ TypeConstraints?
         
         <para>However, the declarations in this second section may freely use <literal>this</literal>
         and <literal>outer</literal>, and may invoke any method or evaluate any attribute of 
-        the class or its superclasses. The usual restriction that a declaration may only be 
-        used by code that appears later in the block containing the declaration is relaxed.</para>
+        the class or its superclasses. Furthermore, the usual restriction that a declaration may 
+        only be used by code that appears later in the block containing the declaration is relaxed.</para>
         
         <comment><para>TODO: we could perhaps slightly relax the restrictions here. It's probably
         OK to let you have expression statements and control structures in the second part of the 
