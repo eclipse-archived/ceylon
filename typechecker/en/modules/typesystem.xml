@@ -484,6 +484,11 @@
         <programlisting>BufferedReader.Buffer</programlisting>
         <programlisting>Entry&lt;Natural,T&gt;</programlisting>
         
+        <comment><para>TODO: Should we allow the abbreviation <literal>Sequence&lt;&gt;</literal>
+        meaning <literal>Sequence&lt;Object&gt;</literal> for covariant types, and 
+        <literal>Comparable&lt;&gt;</literal> meaning <literal>Comparable&lt;Bottom&gt;</literal>
+        for contravariant types?</para></comment>
+        
         </section>
         
         <section id="typeinference">
