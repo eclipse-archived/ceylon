@@ -2268,14 +2268,23 @@ setPerson(person);</programlisting>
         
         <programlisting>Method&lt;Log, Void, String&gt; infoMethod = Log.info;</programlisting>
         
+        <programlisting>Method&lt;String, Boolean, String&gt; stringSmaller = Comparable&lt;String&gt;.smallerThan;</programlisting>
+        
         <programlisting>Attribute&lt;Person, Name&gt; nameAttribute = Person.name;</programlisting>
         
         <para>A metamodel reference that refers to a generic declaration must specify type
         arguments.</para>
         
-        <comment><para>TODO: Can we just default the type arguments to the upper bounds of 
-        the type parameters if the type arguments are missing? Or do we need some kind of
-        <literal>GenericType</literal> object to represent generic declarations?</para></comment>
+        <comment><para>Note: this restriction results from the lack of existential types. 
+        The expression <literal>Entry</literal> would have the existential type 
+        <literal>ClassConstructor&lt;Entry&lt;U,V&gt;U,V&gt; given U satisfies Equality given V satisfies Equality</literal>.
+        The expression <literal>Comparable.smallerThan</literal> would be of existential type 
+        <literal>MethodConstructor&lt;T, Boolean, T&gt; given T satisfies Comparable&lt;T&gt;</literal>.</para></comment>
+        
+        <comment><para>TODO: Do we anyway need some kind of metamodel objects for type 
+        constructors like <literal>Entry</literal> or even <literal>Comparable.smallerThan</literal>. 
+        These would not support typesafe operations, but would at least allow runtime 
+        reflection.</para></comment>
         
         <comment><para>TODO: Are there metamodel objects for block local declarations? This
         includes block local declarations inside a class body, and block local declarations
@@ -2284,10 +2293,12 @@ setPerson(person);</programlisting>
         <comment><para>TODO: Should we have typesafe metamodel reference expressions for 
         parameters? For example: <literal>Parameter&lt;String&gt; wordsParam = Person.say#words;</literal></para></comment>
         
+        <!--
         <comment><para>TODO: Should we remodel member metamodel references as members of the 
         metatype? Then we can get rid of two of the following sections. The reason to not do 
         this is that member class metamodel references have the wrong case for an 
         attribute.</para></comment>
+        -->
         
         <section id="interfaceandclassmetamodelreferences">
             <title>Interface and class metamodel references</title>
