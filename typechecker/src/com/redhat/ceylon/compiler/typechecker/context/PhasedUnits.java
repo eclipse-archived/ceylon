@@ -43,6 +43,10 @@ public class PhasedUnits {
         this.phasedUnitPerRelativePath.put( phasedUnit.getPathRelativeToSrcDir(), phasedUnit );
     }
 
+    public ModuleBuilder getModuleBuilder() {
+        return moduleBuilder;
+    }
+
     public List<PhasedUnit> getPhasedUnits() {
         return phasedUnits;
     }
