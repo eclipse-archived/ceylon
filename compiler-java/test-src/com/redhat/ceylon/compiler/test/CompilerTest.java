@@ -88,7 +88,7 @@ public abstract class CompilerTest {
 
 	protected void compileAndRun(String ceylon, String main) {
 		Iterable<? extends JavaFileObject> compilationUnits1 =
-			compareFileManager.getJavaFileObjectsFromFiles(Arrays.asList(new File(path+ceylon)));
+			runFileManager.getJavaFileObjectsFromFiles(Arrays.asList(new File(path+ceylon)));
 		runCompiler.getTask(null, runFileManager, null, Arrays.asList("-d", "build/classes"), null, compilationUnits1).call();
 		try{
 			Class<?> klass = Class.forName(main);
