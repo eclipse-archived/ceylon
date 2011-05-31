@@ -39,6 +39,11 @@ public class CeylonEnter extends Enter {
 	@Override
 	public void main(List<JCCompilationUnit> trees) {
 		System.err.println("CeylonEnter main");
+		completeCeylonTrees(trees);
+		super.main(trees);
+	}
+
+	public void completeCeylonTrees(List<JCCompilationUnit> trees) {
 		if(hasRun)
 			throw new RuntimeException("Waaaaa, running twice!!!");
 		hasRun = true;
@@ -52,7 +57,6 @@ public class CeylonEnter extends Enter {
 				System.err.println(ceylonTree.defs);
 			}
 		}
-		super.main(trees);
 	}
 
 	private void typeCheck() {
