@@ -16,6 +16,7 @@ import junit.framework.Assert;
 
 import org.junit.Before;
 
+import com.redhat.ceylon.compiler.codegen.CeylonEnter;
 import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
@@ -29,10 +30,6 @@ public abstract class CompilerTest {
 
 	private String path;
 
-	// for comparing
-	private LanguageCompiler compareCompiler;
-	private CeyloncFileManager compareFileManager;
-
 	// for running
 	private JavaCompiler runCompiler;
 	private CeyloncFileManager runFileManager;
@@ -40,11 +37,6 @@ public abstract class CompilerTest {
 	@Before
 	public void setup(){
 		// for comparing with java source
-		Context context = new Context();
-		CeyloncFileManager.preRegister(context);
-		compareCompiler = (LanguageCompiler) LanguageCompiler.instance(context);
-		compareFileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
-		compareFileManager.setSourcePath(dir);
 		String pkg = getClass().getPackage().getName().replaceAll("\\.", File.separator);
 		path = dir + File.separator + pkg + File.separator;
 		// for running
@@ -58,12 +50,24 @@ public abstract class CompilerTest {
 	}
 
 	protected void compareWithJavaSource(String ceylon, String java) {
+		// Make a new compiler each time
+		Context context = new Context();
+		CeyloncFileManager.preRegister(context);
+		LanguageCompiler compareCompiler = (LanguageCompiler) LanguageCompiler.instance(context);
+		CeyloncFileManager compareFileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
+		compareFileManager.setSourcePath(dir);
+		// add the files to compile
 		List<JavaFileObject> files = List.nil();
 		File file = new File(path+ceylon);
 		for (JavaFileObject fo : compareFileManager.getJavaFileObjectsFromFiles(Collections.singletonList(file)))
 			files = files.prepend(fo);
 		Assert.assertEquals(1, files.size());
+		// we need to parse first
 		JCCompilationUnit compilationUnit = compareCompiler.parse(files.get(0));
+		// then we complete it
+		CeylonEnter enter = (CeylonEnter) CeylonEnter.instance(context);
+		enter.completeCeylonTrees(List.of(compilationUnit));
+		// now look at what we expected
 		String src = readFile(new File(path+java));
 		Assert.assertEquals(src.trim(), compilationUnit.toString().trim());
 	}
