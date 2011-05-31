@@ -426,6 +426,9 @@ literal {
 }
 shared interface Color { ... }</programlisting>
         
+        <comment><para>TODO: Single quoted operator literals should come built-in.
+        For example: <literal>'+'</literal> and <literal>'&lt;='</literal>.</para></comment>
+        
         <comment><para>TODO: we should try to support interpolated expressions, 
         just like we do for string literals.</para></comment>
         
