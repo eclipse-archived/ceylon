@@ -31,7 +31,7 @@ import java.util.Queue;
 
 import javax.tools.JavaFileObject;
 
-import org.antlr.runtime.ANTLRInputStream;
+import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
 
@@ -122,8 +122,8 @@ public class LanguageCompiler extends JavaCompiler {
      private JCCompilationUnit ceylonParse(JavaFileObject filename,
             CharSequence readSource) {
         try {
-            InputStream is = filename.openInputStream();
-            ANTLRInputStream input = new ANTLRInputStream(is);
+        	String source = readSource.toString();
+            ANTLRStringStream input = new ANTLRStringStream(source);
             CeylonLexer lexer = new CeylonLexer(input);
 
             CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -131,7 +131,7 @@ public class LanguageCompiler extends JavaCompiler {
             CeylonParser parser = new CeylonParser(tokens);
             CeylonParser.compilationUnit_return r = parser.compilationUnit();
 
-            char[] chars = readSource.toString().toCharArray();
+            char[] chars = source.toCharArray();
             LineMap map = Position.makeLineMap(chars, chars.length, false);
 
         	java.util.List<LexError> lexerErrors = lexer.getErrors();
