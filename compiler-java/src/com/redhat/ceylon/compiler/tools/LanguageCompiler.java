@@ -83,7 +83,7 @@ public class LanguageCompiler extends JavaCompiler {
         super(context);
 
         try {
-            gen = new Gen2(context);
+            gen = Gen2.getInstance(context);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
