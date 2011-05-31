@@ -25,6 +25,7 @@
 
 package com.redhat.ceylon.compiler.launcher;
 
+import com.redhat.ceylon.compiler.codegen.CeylonEnter;
 import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.sun.tools.javac.util.Options;
@@ -372,7 +373,7 @@ public class Main extends com.sun.tools.javac.main.Main {
 
             if (fileManager instanceof CeyloncFileManager) {
                 CeyloncFileManager ceylonFileManager = (CeyloncFileManager)fileManager;
-                String sourcePath = options.get("-src");
+                String sourcePath = options.get("-sourcepath");
                 if (sourcePath != null)
                     ceylonFileManager.setSourcePath(sourcePath);
             }
