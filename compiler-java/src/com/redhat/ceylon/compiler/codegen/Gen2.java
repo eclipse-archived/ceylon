@@ -3,28 +3,19 @@ package com.redhat.ceylon.compiler.codegen;
 import static com.sun.tools.javac.code.TypeTags.VOID;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 
-import javax.tools.DiagnosticCollector;
-import javax.tools.JavaCompiler;
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
-import javax.tools.StandardLocation;
 
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
-import com.redhat.ceylon.compiler.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.sun.tools.javac.api.JavacTaskImpl;
 import com.sun.tools.javac.code.Symtab;
-import com.sun.tools.javac.comp.Resolve;
-import com.sun.tools.javac.jvm.ClassReader;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -185,11 +176,12 @@ public class Gen2 {
     }
 
     // FIXME: port handleOverloadedToplevelClasses when I figure out what it does
-    
-    public JCCompilationUnit convert(Tree.CompilationUnit t, JavaFileObject file) {
-        System.err.println(t);
-        final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
 
+    /**
+     * This runs after _some_ typechecking has been done
+     */
+    public ListBuffer<JCTree> convertAfterTypeChecking(Tree.CompilationUnit t){
+        final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
         t.visitChildren(new Visitor () {
             public void visit(Tree.ImportList imp) {
                 defs.appendList(convert(imp));
@@ -201,7 +193,14 @@ public class Gen2 {
                 classGen.methodClass(null, decl, defs, true);
             }
         });
+        return defs;
+    }
 
+    /**
+     * In this pass we only make an empty placeholder which we'll fill in the EnterCeylon phase later on
+     */
+    public JCCompilationUnit makeJCCompilationUnitPlaceholder(Tree.CompilationUnit t, JavaFileObject file) {
+        System.err.println(t);
         String[] prefixes = fileManager.getSourcePath();
         JCExpression pkg = null;
 
@@ -218,15 +217,14 @@ public class Gen2 {
                     pkg = getPackage(packageName);
             }
         }
-        JCCompilationUnit topLev =
-            at(t).TopLevel(List.<JCTree.JCAnnotation>nil(),
-                    pkg, defs.toList());
+        at(t);
+        JCCompilationUnit topLev = new CeylonCompilationUnit(List.<JCTree.JCAnnotation>nil(), pkg, List.<JCTree>nil(),
+                null, null, null, null, t);
 
         topLev.lineMap = getMap();
         topLev.sourcefile = file;
         topLev.isCeylonProgram = true;
 
-        System.err.println(topLev);
         return topLev;
     }
 

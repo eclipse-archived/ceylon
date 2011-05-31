@@ -25,8 +25,8 @@
 
 package com.redhat.ceylon.compiler.tools;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Queue;
 
 import javax.tools.JavaFileObject;
@@ -35,44 +35,78 @@ import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
 
+import com.redhat.ceylon.compiler.codegen.CeylonEnter;
 import com.redhat.ceylon.compiler.codegen.CeylonFileObject;
-import com.redhat.ceylon.compiler.codegen.Gen;
 import com.redhat.ceylon.compiler.codegen.Gen2;
-import com.redhat.ceylon.compiler.tree.CeylonTree;
-import com.redhat.ceylon.compiler.tree.Grok;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleBuilder;
+import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
+import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
+import com.redhat.ceylon.compiler.typechecker.io.VFS;
+import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
 import com.redhat.ceylon.compiler.typechecker.parser.LexError;
 import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
 import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
 import com.redhat.ceylon.compiler.typechecker.tree.Builder;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.CustomBuilder;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
-import com.sun.tools.javac.code.Symbol.CompletionFailure;
 import com.sun.tools.javac.comp.AttrContext;
 import com.sun.tools.javac.comp.Env;
-import com.sun.tools.javac.jvm.ClassWriter;
 import com.sun.tools.javac.main.JavaCompiler;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.util.Context;
+import com.sun.tools.javac.util.Context.SourceLanguage.Language;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Options;
 import com.sun.tools.javac.util.Pair;
 import com.sun.tools.javac.util.Position;
-import com.sun.tools.javac.util.Context.SourceLanguage.Language;
 import com.sun.tools.javac.util.Position.LineMap;
 
 public class LanguageCompiler extends JavaCompiler {
 
-    private Gen2 gen;
+    /** The context key for the phasedUnits. */
+    protected static final Context.Key<PhasedUnits> phasedUnitsKey =
+        new Context.Key<PhasedUnits>();
+
+    /** The context key for the ceylon context. */
+    protected static final Context.Key<com.redhat.ceylon.compiler.typechecker.context.Context> ceylonContextKey =
+        new Context.Key<com.redhat.ceylon.compiler.typechecker.context.Context>();
+	
+    private final Gen2 gen;
+	private final PhasedUnits phasedUnits;
+	private final com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext;
+	private final VFS vfs;
+
+    /** Get the PhasedUnits instance for this context. */
+    public static PhasedUnits getPhasedUnitsInstance(Context context) {
+    	PhasedUnits phasedUnits = context.get(phasedUnitsKey);
+    	if(phasedUnits == null){
+    		phasedUnits = new PhasedUnits(getCeylonContextInstance(context));
+    		context.put(phasedUnitsKey, phasedUnits);
+    	}
+    	return phasedUnits;
+    }
+
+    /** Get the Ceylon context instance for this context. */
+    public static com.redhat.ceylon.compiler.typechecker.context.Context getCeylonContextInstance(Context context) {
+    	com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext = context.get(ceylonContextKey);
+    	if(ceylonContext == null){
+    		ceylonContext = new com.redhat.ceylon.compiler.typechecker.context.Context(new VFS());
+    		context.put(ceylonContextKey, ceylonContext);
+    	}
+    	return ceylonContext;
+    }
 
     /** Get the JavaCompiler instance for this context. */
     public static JavaCompiler instance(Context context) {
         Options options = Options.instance(context);
         options.put("-Xprefer", "source");
+        // make sure it's registered
+        CeylonEnter.instance(context);
         JavaCompiler instance = context.get(compilerKey);
         if (instance == null)
             instance = new LanguageCompiler(context);
@@ -81,7 +115,9 @@ public class LanguageCompiler extends JavaCompiler {
 
     public LanguageCompiler(Context context) {
         super(context);
-
+        ceylonContext = getCeylonContextInstance(context);
+        vfs = ceylonContext.getVfs();
+        phasedUnits = getPhasedUnitsInstance(context);
         try {
             gen = Gen2.getInstance(context);
         } catch (Exception e) {
@@ -153,23 +189,20 @@ public class LanguageCompiler extends JavaCompiler {
                 log.error("ceylon.parser.failed");
             }
             else {
-            	/*
-                CeylonTree.CompilationUnit cu = CeylonTree.build(t, filename.getName());
-                cu.file = filename;
-                cu.accept(new Grok(log));
-
-                char[] chars = readSource.toString().toCharArray();
-                LineMap map = Position.makeLineMap(chars, chars.length, false);
-                gen.setMap(map);
-            	return gen.convert(cu);
-
-                */
-        		Builder builder = new Builder();
+        		Builder builder = new CustomBuilder();
         		CompilationUnit cu = builder.buildCompilationUnit(t);
 
+        		ModuleBuilder moduleBuilder = phasedUnits.getModuleBuilder();
+            	com.redhat.ceylon.compiler.typechecker.model.Package p = moduleBuilder.getCurrentPackage();
+            	File sourceFile = new File(filename.toUri().getPath());
+				// FIXME: temporary solution
+            	VirtualFile file = vfs.getFromFile(sourceFile );
+            	VirtualFile srcDir = vfs.getFromFile(getSrcDir(sourceFile));
+                PhasedUnit phasedUnit = new PhasedUnit(file, srcDir, cu, p, moduleBuilder, ceylonContext);
+                phasedUnits.addPhasedUnit(file, phasedUnit);
                 gen.setMap(map);
 
-                return gen.convert(cu, filename);
+                return gen.makeJCCompilationUnitPlaceholder(cu, filename);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -181,7 +214,31 @@ public class LanguageCompiler extends JavaCompiler {
         return result;
     }
 
-    private void printError(RecognitionError le, String message, char[] chars, LineMap map) {
+     // FIXME: this function is terrible 
+    private File getSrcDir(File sourceFile) {
+    	String name = sourceFile.getAbsolutePath();
+    	String[] prefixes = ((CeyloncFileManager)fileManager).getSourcePath();
+    	System.err.println("Prefixes: "+prefixes.length+" name: "+name);
+        for (String prefix: prefixes) {
+            if (prefix != null){
+            	File prefixFile = new File(prefix);
+            	String path;
+				try {
+					path = prefixFile.getCanonicalPath();
+				} catch (IOException e) {
+					// FIXME
+					throw new RuntimeException(e);
+				}
+            	System.err.println("Prefix: "+path);
+            	if(name.startsWith(path)) {
+            		return prefixFile;
+            	}
+            }
+        }
+        throw new RuntimeException("Failed to find source prefix for "+name);
+	}
+
+	private void printError(RecognitionError le, String message, char[] chars, LineMap map) {
     	int lineStart = map.getStartPosition(le.getLine());
     	int lineEnd = lineStart;
     	// find the end of the line
