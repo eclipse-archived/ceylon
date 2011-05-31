@@ -40,75 +40,32 @@ import com.sun.tools.javac.util.Options;
 import com.sun.tools.javac.util.Position.LineMap;
 
 public class Gen2 {
-    private Context context;
     private TreeMaker make;
     Name.Table names;
-    private ClassReader reader;
-    private Resolve resolve;
-    private JavaCompiler compiler;
-    private DiagnosticCollector<JavaFileObject> diagnostics;
     private CeyloncFileManager fileManager;
-    private JavacTaskImpl task;
-    private Options options;
     private LineMap map;
     Symtab syms;
     ExpressionGen expressionGen = new ExpressionGen(this);
     StatementGen statementGen = new StatementGen(this);
     ClassGen classGen = new ClassGen(this);
 
-    private JCCompilationUnit jcCompilationUnit;
-
-    public Gen2() throws Exception {
-        compiler = new CeyloncTool();
-        // compiler = ToolProvider.getSystemJavaCompiler();
-
-        diagnostics =
-            new DiagnosticCollector<JavaFileObject>();
-        fileManager
-            = (CeyloncFileManager)compiler.getStandardFileManager(diagnostics, null, null);
-        fileManager.setLocation(StandardLocation.CLASS_OUTPUT,
-                Arrays.asList(new File("/tmp")));
-
-        fileManager.setLocation(StandardLocation.CLASS_PATH,
-                Arrays.asList(new File("/tmp"), new File(System.getProperty("user.dir") + "/runtime")));
-        Iterable<? extends JavaFileObject> compilationUnits
-        = fileManager.getJavaFileObjectsFromStrings(new ArrayList<String>());
-
-        JavaCompiler.CompilationTask aTask
-        = compiler.getTask(null, fileManager,
-                diagnostics,
-                Arrays.asList("-g"/* , /* "-verbose", */
-                        // "-source", "7", "-XDallowFunctionTypes"
-                ),
-                null, compilationUnits);
-        setup((JavacTaskImpl)aTask);
     }
-
-    private void setup (JavacTaskImpl task) {
-        this.task = task;
-        setup (task.getContext());
+    
+    public Gen2(Context context) {
+        setup(context);
     }
 
     private void setup (Context context) {
-        this.context = context;
-        options = Options.instance(context);
+        Options options = Options.instance(context);
         // It's a bit weird to see "invokedynamic" set here,
         // but it has to be done before Resolve.instance().
         options.put("invokedynamic", "invokedynamic");
         make = TreeMaker.instance(context);
-        Class<?>[] interfaces = {JCTree.Factory.class};
 
         names = Name.Table.instance(context);
-        reader = ClassReader.instance(context);
-        resolve = Resolve.instance(context);
         syms = Symtab.instance(context);
 
         fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
-    }
-
-
-    public Gen2(Context context) {
-        setup(context);
     }
 
    JCTree.Factory at(Node t) {
