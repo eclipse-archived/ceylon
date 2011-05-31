@@ -1,7 +1,8 @@
 doc "The classic Hello World program"
 shared void helloworld(Process process) {
+    process.writeLine("Hello World");
 
-	MyClass foo = MyClass(2);
+/*	MyClass foo = MyClass(2);
 	process.writeLine(foo.method());
 
     // variables
@@ -62,5 +63,5 @@ shared void helloworld(Process process) {
         process.writeLine("KO");
     }else{
         process.writeLine("OK");
-    }
+    }*/
 }
