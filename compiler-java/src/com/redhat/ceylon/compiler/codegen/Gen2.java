@@ -49,6 +49,13 @@ public class Gen2 {
     StatementGen statementGen = new StatementGen(this);
     ClassGen classGen = new ClassGen(this);
 
+    public static Gen2 getInstance(Context context) throws Exception{
+    	Gen2 gen2 = context.get(Gen2.class);
+    	if(gen2 == null){
+    		gen2 = new Gen2(context);
+    		context.put(Gen2.class, gen2);
+    	}
+    	return gen2;
     }
     
     public Gen2(Context context) {
