@@ -89,7 +89,8 @@ public abstract class CompilerTest {
 	protected void compileAndRun(String ceylon, String main) {
 		Iterable<? extends JavaFileObject> compilationUnits1 =
 			runFileManager.getJavaFileObjectsFromFiles(Arrays.asList(new File(path+ceylon)));
-		runCompiler.getTask(null, runFileManager, null, Arrays.asList("-d", "build/classes"), null, compilationUnits1).call();
+		Boolean success = runCompiler.getTask(null, runFileManager, null, Arrays.asList("-d", "build/classes"), null, compilationUnits1).call();
+		Assert.assertTrue(success);
 		try{
 			Class<?> klass = Class.forName(main);
 			Method m = klass.getMethod("run", ceylon.language.Process.class);
