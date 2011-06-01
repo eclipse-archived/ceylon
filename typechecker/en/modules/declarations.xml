@@ -501,9 +501,9 @@ TypeConstraints?
         may be an <literal>abstract</literal> class. Each case must be a subtype of the
         interface type.</para>
         
-        <para>If an anonymous class is a case of an interface type, it must extend
-        <literal>Case</literal> in <literal>ceylon.language</literal>, directly or 
-        indirectly.</para>
+        <para>If an anonymous class is a case of an interface type, it must extend the 
+        class <literal>Case</literal> defined in <literal>ceylon.language</literal>, 
+        directly or indirectly.</para>
         
         <para>If an interface has an <literal>of</literal> clause, then every subtype of 
         the interface must be subtype of one of the enumerated cases.</para>
@@ -885,7 +885,7 @@ TypeConstraints?
 
         <para>
         If a class does not explicitly specify a superclass using <literal>extends</literal>,
-        its superclass is <literal>IdentifiableObject</literal> in 
+        its superclass is the class <literal>IdentifiableObject</literal> defined in 
         <literal>ceylon.language</literal>.
         </para>
         
@@ -972,6 +972,40 @@ TypeConstraints?
          declares the nested interface or of a subtype of the type that declares the 
          nested interface.</para>
          
+        </section>
+        
+        <section>
+            <title>Restrictions on user-defined classes</title>
+            
+            <para>The following classes may not be directly extended by any class defined
+            outside the module <literal>ceylon.language</literal>:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para><literal>Gettable</literal> and <literal>Settable</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>the built-in numeric types: <literal>Natural</literal>,
+                    <literal>Integer</literal>, <literal>Float</literal>, <literal>Whole</literal>, 
+                    and <literal>Decimal</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>Character</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>String</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>Entry</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para><literal>Range</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>This allows the compiler to perform certain optimizations upon these 
+            types.</para>
+            
         </section>
        
         <!--
@@ -1353,8 +1387,8 @@ shared class Branch&lt;T&gt;(String name, Node&lt;T&gt; left, Node&lt;T&gt; righ
         the class.</para>
         
         <para>If an anonymous class is a case of a class, the class must extend
-        <literal>Case</literal> in <literal>ceylon.language</literal>, directly 
-        or indirectly.</para>
+        the class <literal>Case</literal> defined in <literal>ceylon.language</literal>, 
+        directly or indirectly.</para>
         
         <para>If a class has an <literal>of</literal> clause, then every subtype 
         of the class must be a subtype of one of the enumerated cases.</para>
@@ -2059,7 +2093,7 @@ Void goodbye() {
         
         <para>If a class declares or inherits a <literal>variable</literal> attribute, it 
         must (directly or indirectly) extend the class <literal>IdentifiableObject</literal> 
-        in <literal>ceylon.language</literal>.</para>
+        defined in <literal>ceylon.language</literal>.</para>
         
         <para>An attribute of type <literal>Gettable</literal> or <literal>Settable</literal> 
         may not be <literal>variable</literal>.</para>

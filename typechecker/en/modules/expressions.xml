@@ -449,7 +449,7 @@ shared interface Color { ... }</programlisting>
         <programlisting>StringTemplate: StringLiteral (Expression StringLiteral)+</programlisting>
         
         <para>Each interpolated expression contained in the string template must be 
-        an expression of type <literal>Format</literal> in 
+        have a type assignable to the interface <literal>Format</literal> defined in 
         <literal>ceylon.language</literal>.</para>
         
         <para>The entire character string template is an expression of type 

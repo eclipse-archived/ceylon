@@ -31,7 +31,8 @@
     <para>Ceylon, like Java and many other object-oriented languages, supports a single
     inheritance model for classes. A class may directly inherit at most one other class, 
     and all classes eventually inherit, directly or indirectly, the class <literal>Void</literal>
-    in <literal>ceylon.language</literal>, which acts as the root of the class hierarchy.</para>
+    defined in the module <literal>ceylon.language</literal>, which acts as the root of 
+    the class hierarchy.</para>
     
     <para>A truly hierarchical type system is much too restrictive for more abstract 
     programming tasks. Therefore, in addition to classes, Ceylon recognizes the following 
@@ -309,12 +310,13 @@
                 <literal>X</literal> is a subtype of <literal>Z</literal>.</para>
             </listitem>
             <listitem>
-                <para>Single root: all types are subtypes of <literal>ceylon.language.Void</literal>.</para>
+                <para>Single root: all types are subtypes of the class <literal>Void</literal>
+                defined in the module <literal>ceylon.language</literal>.</para>
             </listitem>
         </itemizedlist>
         
-        <para>Every interface type is a subtype of <literal>Object</literal> in 
-        <literal>ceylon.language</literal>.</para>
+        <para>Every interface type is a subtype of the class <literal>Object</literal> 
+        defined in <literal>ceylon.language</literal>.</para>
         
         <para>If <literal>X</literal> is a subtype of <literal>Y</literal>, then:</para>
         
@@ -631,10 +633,10 @@ String? firstWord = words[0];</programlisting>
         in an <literal>import</literal> statement. Another possibility would be to introduce
         a specialized syntax, for example something like 
         <literal>super(Iterable).Iterator()</literal>.</para></comment>
-    
+        
         <para>
-        The root class <literal>Void</literal> in <literal>ceylon.language</literal> does 
-        not have a superclass.
+        The root class <literal>Void</literal> defined in <literal>ceylon.language</literal> 
+        does not have a superclass.
         </para>
         
         <para>Suppose <literal>X</literal> and <literal>Y</literal> are classes.</para>
@@ -660,8 +662,10 @@ String? firstWord = words[0];</programlisting>
         </listitem>
         </itemizedlist>
         
-        <para>A user-defined class must extend <literal>Object</literal> in 
-        <literal>ceylon.language</literal> or one of its subclasses.</para>
+        <!--
+        <para>A user-defined class must extend the class <literal>Object</literal> defined 
+        in <literal>ceylon.language</literal> or one of its subclasses.</para>
+        -->
         
     </section>
     
@@ -960,10 +964,10 @@ shared interface ElementwiseEquality
             </listitem>
             <listitem>
                 <para>the name specified in the <literal>object</literal> 
-                declaration of a toplevel anonymous class that extends 
-                <literal>Case</literal> in <literal>ceylon.language</literal> 
-                and is a subtype of the interface or 
-                <literal>abstract</literal> class.</para>
+                declaration of a toplevel anonymous class that extends the class
+                <literal>Case</literal> defined in <literal>ceylon.language</literal> 
+                and is a subtype of the interface or <literal>abstract</literal> 
+                class.</para>
             </listitem>
         </itemizedlist>
         
