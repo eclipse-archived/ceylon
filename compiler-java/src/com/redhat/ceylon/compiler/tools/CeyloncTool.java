@@ -43,27 +43,16 @@ import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.JavacFileManager;
 import com.sun.tools.javac.util.Log;
 
-public class CeyloncTool extends JavacTool
-    implements JavaCompiler
-{
-    public JavacFileManager getStandardFileManager(
-            DiagnosticListener<? super JavaFileObject> diagnosticListener,
-            Locale locale,
-            Charset charset) {
-            Context context = new Context();
-            if (diagnosticListener != null)
-                context.put(DiagnosticListener.class, diagnosticListener);
-            context.put(Log.outKey, new PrintWriter(System.err, true)); // FIXME
-            return new CeyloncFileManager(context, true, charset);
-        }
+public class CeyloncTool extends JavacTool implements JavaCompiler {
+    public JavacFileManager getStandardFileManager(DiagnosticListener<? super JavaFileObject> diagnosticListener, Locale locale, Charset charset) {
+        Context context = new Context();
+        if (diagnosticListener != null)
+            context.put(DiagnosticListener.class, diagnosticListener);
+        context.put(Log.outKey, new PrintWriter(System.err, true)); // FIXME
+        return new CeyloncFileManager(context, true, charset);
+    }
 
-    public JavacTask getTask(Writer out,
-            JavaFileManager fileManager,
-            DiagnosticListener<? super JavaFileObject> diagnosticListener,
-            Iterable<String> options,
-            Iterable<String> classes,
-            Iterable<? extends JavaFileObject> compilationUnits)
-    {
+    public JavacTask getTask(Writer out, JavaFileManager fileManager, DiagnosticListener<? super JavaFileObject> diagnosticListener, Iterable<String> options, Iterable<String> classes, Iterable<? extends JavaFileObject> compilationUnits) {
         final String kindMsg = "All compilation units must be of SOURCE kind";
         if (options != null)
             for (String option : options)
@@ -75,7 +64,8 @@ public class CeyloncTool extends JavacTool
         }
         if (compilationUnits != null) {
             for (JavaFileObject cu : compilationUnits) {
-                if (cu.getKind() != JavaFileObject.Kind.SOURCE) // implicit null check
+                if (cu.getKind() != JavaFileObject.Kind.SOURCE) // implicit null
+                                                                // check
                     throw new IllegalArgumentException(kindMsg);
             }
         }

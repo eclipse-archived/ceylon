@@ -69,36 +69,34 @@ import com.sun.tools.javac.util.Position.LineMap;
 public class LanguageCompiler extends JavaCompiler {
 
     /** The context key for the phasedUnits. */
-    protected static final Context.Key<PhasedUnits> phasedUnitsKey =
-        new Context.Key<PhasedUnits>();
+    protected static final Context.Key<PhasedUnits> phasedUnitsKey = new Context.Key<PhasedUnits>();
 
     /** The context key for the ceylon context. */
-    protected static final Context.Key<com.redhat.ceylon.compiler.typechecker.context.Context> ceylonContextKey =
-        new Context.Key<com.redhat.ceylon.compiler.typechecker.context.Context>();
-	
+    protected static final Context.Key<com.redhat.ceylon.compiler.typechecker.context.Context> ceylonContextKey = new Context.Key<com.redhat.ceylon.compiler.typechecker.context.Context>();
+
     private final Gen2 gen;
-	private final PhasedUnits phasedUnits;
-	private final com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext;
-	private final VFS vfs;
+    private final PhasedUnits phasedUnits;
+    private final com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext;
+    private final VFS vfs;
 
     /** Get the PhasedUnits instance for this context. */
     public static PhasedUnits getPhasedUnitsInstance(Context context) {
-    	PhasedUnits phasedUnits = context.get(phasedUnitsKey);
-    	if(phasedUnits == null){
-    		phasedUnits = new PhasedUnits(getCeylonContextInstance(context));
-    		context.put(phasedUnitsKey, phasedUnits);
-    	}
-    	return phasedUnits;
+        PhasedUnits phasedUnits = context.get(phasedUnitsKey);
+        if (phasedUnits == null) {
+            phasedUnits = new PhasedUnits(getCeylonContextInstance(context));
+            context.put(phasedUnitsKey, phasedUnits);
+        }
+        return phasedUnits;
     }
 
     /** Get the Ceylon context instance for this context. */
     public static com.redhat.ceylon.compiler.typechecker.context.Context getCeylonContextInstance(Context context) {
-    	com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext = context.get(ceylonContextKey);
-    	if(ceylonContext == null){
-    		ceylonContext = new com.redhat.ceylon.compiler.typechecker.context.Context(new VFS());
-    		context.put(ceylonContextKey, ceylonContext);
-    	}
-    	return ceylonContext;
+        com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext = context.get(ceylonContextKey);
+        if (ceylonContext == null) {
+            ceylonContext = new com.redhat.ceylon.compiler.typechecker.context.Context(new VFS());
+            context.put(ceylonContextKey, ceylonContext);
+        }
+        return ceylonContext;
     }
 
     /** Get the JavaCompiler instance for this context. */
@@ -125,8 +123,9 @@ public class LanguageCompiler extends JavaCompiler {
         }
     }
 
-    /** Parse contents of file.
-     *  @param filename     The name of the file to be parsed.
+    /**
+     * Parse contents of file.
+     * @param filename The name of the file to be parsed.
      */
     public JCTree.JCCompilationUnit parse(JavaFileObject filename) {
         JavaFileObject prev = log.useSource(filename);
@@ -146,8 +145,7 @@ public class LanguageCompiler extends JavaCompiler {
         }
     }
 
-    protected JCCompilationUnit parse(JavaFileObject filename,
-            CharSequence readSource) {
+    protected JCCompilationUnit parse(JavaFileObject filename, CharSequence readSource) {
         // FIXME
         if (filename instanceof CeylonFileObject)
             return ceylonParse(filename, readSource);
@@ -155,10 +153,9 @@ public class LanguageCompiler extends JavaCompiler {
             return super.parse(filename, readSource);
     }
 
-     private JCCompilationUnit ceylonParse(JavaFileObject filename,
-            CharSequence readSource) {
+    private JCCompilationUnit ceylonParse(JavaFileObject filename, CharSequence readSource) {
         try {
-        	String source = readSource.toString();
+            String source = readSource.toString();
             ANTLRStringStream input = new ANTLRStringStream(source);
             CeylonLexer lexer = new CeylonLexer(input);
 
@@ -170,34 +167,32 @@ public class LanguageCompiler extends JavaCompiler {
             char[] chars = source.toCharArray();
             LineMap map = Position.makeLineMap(chars, chars.length, false);
 
-        	java.util.List<LexError> lexerErrors = lexer.getErrors();
-        	for (LexError le: lexerErrors) {
-        		printError(le,  le.getMessage(lexer), chars, map);
-        	}
+            java.util.List<LexError> lexerErrors = lexer.getErrors();
+            for (LexError le : lexerErrors) {
+                printError(le, le.getMessage(lexer), chars, map);
+            }
 
-        	java.util.List<ParseError> parserErrors = parser.getErrors();
-        	for (ParseError pe: parserErrors) {
-        		printError(pe,  pe.getMessage(parser), chars, map);
-        	}
+            java.util.List<ParseError> parserErrors = parser.getErrors();
+            for (ParseError pe : parserErrors) {
+                printError(pe, pe.getMessage(parser), chars, map);
+            }
 
-            CommonTree t = (CommonTree)r.getTree();
+            CommonTree t = (CommonTree) r.getTree();
 
             if (lexer.getNumberOfSyntaxErrors() != 0) {
                 log.error("ceylon.lexer.failed");
-            }
-            else if (parser.getNumberOfSyntaxErrors() != 0) {
+            } else if (parser.getNumberOfSyntaxErrors() != 0) {
                 log.error("ceylon.parser.failed");
-            }
-            else {
-        		Builder builder = new CustomBuilder();
-        		CompilationUnit cu = builder.buildCompilationUnit(t);
+            } else {
+                Builder builder = new CustomBuilder();
+                CompilationUnit cu = builder.buildCompilationUnit(t);
 
-        		ModuleBuilder moduleBuilder = phasedUnits.getModuleBuilder();
-            	com.redhat.ceylon.compiler.typechecker.model.Package p = moduleBuilder.getCurrentPackage();
-            	File sourceFile = new File(filename.toUri().getPath());
-				// FIXME: temporary solution
-            	VirtualFile file = vfs.getFromFile(sourceFile );
-            	VirtualFile srcDir = vfs.getFromFile(getSrcDir(sourceFile));
+                ModuleBuilder moduleBuilder = phasedUnits.getModuleBuilder();
+                com.redhat.ceylon.compiler.typechecker.model.Package p = moduleBuilder.getCurrentPackage();
+                File sourceFile = new File(filename.toUri().getPath());
+                // FIXME: temporary solution
+                VirtualFile file = vfs.getFromFile(sourceFile);
+                VirtualFile srcDir = vfs.getFromFile(getSrcDir(sourceFile));
                 PhasedUnit phasedUnit = new PhasedUnit(file, srcDir, cu, p, moduleBuilder, ceylonContext);
                 phasedUnits.addPhasedUnit(file, phasedUnit);
                 gen.setMap(map);
@@ -208,54 +203,51 @@ public class LanguageCompiler extends JavaCompiler {
             throw new RuntimeException(e);
         }
 
-        JCCompilationUnit result =
-            make.TopLevel(List.<JCAnnotation>nil(), null, List.<JCTree>of(make.Erroneous()));
+        JCCompilationUnit result = make.TopLevel(List.<JCAnnotation> nil(), null, List.<JCTree> of(make.Erroneous()));
         result.sourcefile = filename;
         return result;
     }
 
-     // FIXME: this function is terrible 
+    // FIXME: this function is terrible
     private File getSrcDir(File sourceFile) {
-    	String name = sourceFile.getAbsolutePath();
-    	String[] prefixes = ((CeyloncFileManager)fileManager).getSourcePath();
-    	System.err.println("Prefixes: "+prefixes.length+" name: "+name);
-        for (String prefix: prefixes) {
-            if (prefix != null){
-            	File prefixFile = new File(prefix);
-            	String path;
-				try {
-					path = prefixFile.getCanonicalPath();
-				} catch (IOException e) {
-					// FIXME
-					throw new RuntimeException(e);
-				}
-            	System.err.println("Prefix: "+path);
-            	if(name.startsWith(path)) {
-            		return prefixFile;
-            	}
+        String name = sourceFile.getAbsolutePath();
+        String[] prefixes = ((CeyloncFileManager) fileManager).getSourcePath();
+        System.err.println("Prefixes: " + prefixes.length + " name: " + name);
+        for (String prefix : prefixes) {
+            if (prefix != null) {
+                File prefixFile = new File(prefix);
+                String path;
+                try {
+                    path = prefixFile.getCanonicalPath();
+                } catch (IOException e) {
+                    // FIXME
+                    throw new RuntimeException(e);
+                }
+                System.err.println("Prefix: " + path);
+                if (name.startsWith(path)) {
+                    return prefixFile;
+                }
             }
         }
-        throw new RuntimeException("Failed to find source prefix for "+name);
-	}
+        throw new RuntimeException("Failed to find source prefix for " + name);
+    }
 
-	private void printError(RecognitionError le, String message, char[] chars, LineMap map) {
-    	int lineStart = map.getStartPosition(le.getLine());
-    	int lineEnd = lineStart;
-    	// find the end of the line
-    	for(;lineEnd<chars.length
-    	    && chars[lineEnd] != '\n' 
-    		&& chars[lineEnd] != '\r'
-    			;lineEnd++);
-    	String line = new String(chars, lineStart, lineEnd - lineStart);
-    	System.out.println(message);
-    	System.out.println("Near:");
-    	System.out.println(line);
-    	for(int i=0;i<le.getCharacterInLine();i++)
-    		System.out.print('-');
-		System.out.println('^');
-	}
+    private void printError(RecognitionError le, String message, char[] chars, LineMap map) {
+        int lineStart = map.getStartPosition(le.getLine());
+        int lineEnd = lineStart;
+        // find the end of the line
+        for (; lineEnd < chars.length && chars[lineEnd] != '\n' && chars[lineEnd] != '\r'; lineEnd++)
+            ;
+        String line = new String(chars, lineStart, lineEnd - lineStart);
+        System.out.println(message);
+        System.out.println("Near:");
+        System.out.println(line);
+        for (int i = 0; i < le.getCharacterInLine(); i++)
+            System.out.print('-');
+        System.out.println('^');
+    }
 
-	public Env<AttrContext> attribute(Env<AttrContext> env) {
+    public Env<AttrContext> attribute(Env<AttrContext> env) {
         if (env.toplevel.sourcefile instanceof CeylonFileObject) {
             try {
                 Context.SourceLanguage.push(Language.CEYLON);

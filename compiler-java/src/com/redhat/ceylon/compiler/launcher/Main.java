@@ -47,20 +47,23 @@ import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 import javax.annotation.processing.Processor;
 
-/** This class provides a commandline interface to the GJC compiler.
- *
- *  <p><b>This is NOT part of any supported API.
- *  If you write code that depends on this, you do so at your own risk.
- *  This code and its internal interfaces are subject to change or
- *  deletion without notice.</b>
+/**
+ * This class provides a commandline interface to the GJC compiler.
+ * 
+ * <p>
+ * <b>This is NOT part of any supported API. If you write code that depends on
+ * this, you do so at your own risk. This code and its internal interfaces are
+ * subject to change or deletion without notice.</b>
  */
 public class Main extends com.sun.tools.javac.main.Main {
 
-    /** The name of the compiler, for use in diagnostics.
+    /**
+     * The name of the compiler, for use in diagnostics.
      */
     String ownName;
 
-    /** The writer to use for diagnostic output.
+    /**
+     * The writer to use for diagnostic output.
      */
     PrintWriter out;
 
@@ -69,14 +72,14 @@ public class Main extends com.sun.tools.javac.main.Main {
      */
     boolean fatalErrors;
 
-    /** Result codes.
+    /**
+     * Result codes.
      */
-    static final int
-        EXIT_OK = 0,        // Compilation completed with no errors.
-        EXIT_ERROR = 1,     // Completed but reported errors.
-        EXIT_CMDERR = 2,    // Bad command-line arguments
-        EXIT_SYSERR = 3,    // System error or resource exhaustion.
-        EXIT_ABNORMAL = 4;  // Compiler terminated abnormally
+    static final int EXIT_OK = 0, // Compilation completed with no errors.
+            EXIT_ERROR = 1, // Completed but reported errors.
+            EXIT_CMDERR = 2, // Bad command-line arguments
+            EXIT_SYSERR = 3, // System error or resource exhaustion.
+            EXIT_ABNORMAL = 4; // Compiler terminated abnormally
 
     private Option[] recognizedOptions = RecognizedOptions.getJavaCompilerOptions(new OptionHelper() {
 
@@ -89,11 +92,11 @@ public class Main extends com.sun.tools.javac.main.Main {
         }
 
         public void printVersion() {
-            Log.printLines(out, getLocalizedString("version", ownName,  JavaCompiler.version()));
+            Log.printLines(out, getLocalizedString("version", ownName, JavaCompiler.version()));
         }
 
         public void printFullVersion() {
-            Log.printLines(out, getLocalizedString("fullVersion", ownName,  JavaCompiler.fullVersion()));
+            Log.printLines(out, getLocalizedString("fullVersion", ownName, JavaCompiler.fullVersion()));
         }
 
         public void printHelp() {
@@ -130,38 +133,44 @@ public class Main extends com.sun.tools.javac.main.Main {
         this.ownName = name;
         this.out = out;
     }
-    /** A table of all options that's passed to the JavaCompiler constructor.  */
+
+    /** A table of all options that's passed to the JavaCompiler constructor. */
     private Options options = null;
 
-    /** The list of source files to process
+    /**
+     * The list of source files to process
      */
     public ListBuffer<File> filenames = null; // XXX sb protected
 
-    /** List of class files names passed on the command line
+    /**
+     * List of class files names passed on the command line
      */
     public ListBuffer<String> classnames = null; // XXX sb protected
 
-    /** Print a string that explains usage.
+    /**
+     * Print a string that explains usage.
      */
     void help() {
         Log.printLines(out, getLocalizedString("msg.usage.header", ownName));
-        for (int i=0; i<recognizedOptions.length; i++) {
+        for (int i = 0; i < recognizedOptions.length; i++) {
             recognizedOptions[i].help(out);
         }
         out.println();
     }
 
-    /** Print a string that explains usage for X options.
+    /**
+     * Print a string that explains usage for X options.
      */
     void xhelp() {
-        for (int i=0; i<recognizedOptions.length; i++) {
+        for (int i = 0; i < recognizedOptions.length; i++) {
             recognizedOptions[i].xhelp(out);
         }
         out.println();
         Log.printLines(out, getLocalizedString("msg.usage.nonstandard.footer"));
     }
 
-    /** Report a usage error.
+    /**
+     * Report a usage error.
      */
     void error(String key, Object... args) {
         if (fatalErrors) {
@@ -172,11 +181,11 @@ public class Main extends com.sun.tools.javac.main.Main {
         Log.printLines(out, getLocalizedString("msg.usage", ownName));
     }
 
-    /** Report a warning.
+    /**
+     * Report a warning.
      */
     void warning(String key, Object... args) {
-        Log.printLines(out, ownName + ": "
-                       + getLocalizedString(key, args));
+        Log.printLines(out, ownName + ": " + getLocalizedString(key, args));
     }
 
     public Option getOption(String flag) {
@@ -197,9 +206,10 @@ public class Main extends com.sun.tools.javac.main.Main {
         this.fatalErrors = fatalErrors;
     }
 
-    /** Process command line arguments: store all command line options
-     *  in `options' table and return all source filenames.
-     *  @param flags    The array of command line arguments.
+    /**
+     * Process command line arguments: store all command line options in
+     * `options' table and return all source filenames.
+     * @param flags The array of command line arguments.
      */
     public List<File> processArgs(String[] flags) { // XXX sb protected
         int ac = 0;
@@ -211,9 +221,10 @@ public class Main extends com.sun.tools.javac.main.Main {
             // quick hack to speed up file processing:
             // if the option does not begin with '-', there is no need to check
             // most of the compiler options.
-            int firstOptionToCheck = flag.charAt(0) == '-' ? 0 : recognizedOptions.length-1;
-            for (j=firstOptionToCheck; j<recognizedOptions.length; j++)
-                if (recognizedOptions[j].matches(flag)) break;
+            int firstOptionToCheck = flag.charAt(0) == '-' ? 0 : recognizedOptions.length - 1;
+            for (j = firstOptionToCheck; j < recognizedOptions.length; j++)
+                if (recognizedOptions[j].matches(flag))
+                    break;
 
             if (j == recognizedOptions.length) {
                 error("err.invalid.flag", flag);
@@ -242,29 +253,21 @@ public class Main extends com.sun.tools.javac.main.Main {
             return null;
 
         String sourceString = options.get("-source");
-        Source source = (sourceString != null)
-            ? Source.lookup(sourceString)
-            : Source.DEFAULT;
+        Source source = (sourceString != null) ? Source.lookup(sourceString) : Source.DEFAULT;
         String targetString = options.get("-target");
-        Target target = (targetString != null)
-            ? Target.lookup(targetString)
-            : Target.DEFAULT;
+        Target target = (targetString != null) ? Target.lookup(targetString) : Target.DEFAULT;
         // We don't check source/target consistency for CLDC, as J2ME
         // profiles are not aligned with J2SE targets; moreover, a
-        // single CLDC target may have many profiles.  In addition,
+        // single CLDC target may have many profiles. In addition,
         // this is needed for the continued functioning of the JSR14
         // prototype.
         if (Character.isDigit(target.name.charAt(0))) {
             if (target.compareTo(source.requiredTarget()) < 0) {
                 if (targetString != null) {
                     if (sourceString == null) {
-                        warning("warn.target.default.source.conflict",
-                                targetString,
-                                source.requiredTarget().name);
+                        warning("warn.target.default.source.conflict", targetString, source.requiredTarget().name);
                     } else {
-                        warning("warn.source.target.conflict",
-                                sourceString,
-                                source.requiredTarget().name);
+                        warning("warn.source.target.conflict", sourceString, source.requiredTarget().name);
                     }
                     return null;
                 } else {
@@ -278,60 +281,58 @@ public class Main extends com.sun.tools.javac.main.Main {
         }
         return filenames.toList();
     }
-    // where
-        private boolean checkDirectory(String optName) {
-            String value = options.get(optName);
-            if (value == null)
-                return true;
-            File file = new File(value);
-            if (!file.exists()) {
-                error("err.dir.not.found", value);
-                return false;
-            }
-            if (!file.isDirectory()) {
-                error("err.file.not.directory", value);
-                return false;
-            }
-            return true;
-        }
 
-    /** Programmatic interface for main function.
-     * @param args    The command line parameters.
+    // where
+    private boolean checkDirectory(String optName) {
+        String value = options.get(optName);
+        if (value == null)
+            return true;
+        File file = new File(value);
+        if (!file.exists()) {
+            error("err.dir.not.found", value);
+            return false;
+        }
+        if (!file.isDirectory()) {
+            error("err.file.not.directory", value);
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Programmatic interface for main function.
+     * @param args The command line parameters.
      */
     public int compile(String[] args) {
         Context context = new Context();
-        CeyloncFileManager.preRegister(context); // can't create it until Log has been set up
+        CeyloncFileManager.preRegister(context); // can't create it until Log
+                                                 // has been set up
         int result = compile(args, context);
         if (fileManager instanceof JavacFileManager) {
-            // A fresh context was created above, so jfm must be a JavacFileManager
-            ((JavacFileManager)fileManager).close();
+            // A fresh context was created above, so jfm must be a
+            // JavacFileManager
+            ((JavacFileManager) fileManager).close();
         }
         return result;
     }
 
     public int compile(String[] args, Context context) {
-        return compile(args, context, List.<JavaFileObject>nil(), null);
+        return compile(args, context, List.<JavaFileObject> nil(), null);
     }
 
-    /** Programmatic interface for main function.
-     * @param args    The command line parameters.
+    /**
+     * Programmatic interface for main function.
+     * @param args The command line parameters.
      */
-    public int compile(String[] args,
-                       Context context,
-                       List<JavaFileObject> fileObjects,
-                       Iterable<? extends Processor> processors)
-    {
+    public int compile(String[] args, Context context, List<JavaFileObject> fileObjects, Iterable<? extends Processor> processors) {
         if (options == null)
             options = Options.instance(context); // creates a new one
 
         filenames = new ListBuffer<File>();
         classnames = new ListBuffer<String>();
         JavaCompiler comp = null;
-        /*
-         * TODO: Logic below about what is an acceptable command line
-         * should be updated to take annotation processing semantics
-         * into account.
-         */
+        /* TODO: Logic below about what is an acceptable command line should be
+         * updated to take annotation processing semantics into account. */
         try {
             if (args.length == 0 && fileObjects.isEmpty()) {
                 help();
@@ -345,19 +346,15 @@ public class Main extends com.sun.tools.javac.main.Main {
                     // null signals an error in options, abort
                     return EXIT_CMDERR;
                 } else if (filenames.isEmpty() && fileObjects.isEmpty() && classnames.isEmpty()) {
-                    // it is allowed to compile nothing if just asking for help or version info
-                    if (options.get("-help") != null
-                        || options.get("-X") != null
-                        || options.get("-version") != null
-                        || options.get("-fullversion") != null)
+                    // it is allowed to compile nothing if just asking for help
+                    // or version info
+                    if (options.get("-help") != null || options.get("-X") != null || options.get("-version") != null || options.get("-fullversion") != null)
                         return EXIT_OK;
                     error("err.no.source.files");
                     return EXIT_CMDERR;
                 }
             } catch (java.io.FileNotFoundException e) {
-                Log.printLines(out, ownName + ": " +
-                               getLocalizedString("err.file.not.found",
-                                                  e.getMessage()));
+                Log.printLines(out, ownName + ": " + getLocalizedString("err.file.not.found", e.getMessage()));
                 return EXIT_SYSERR;
             }
 
@@ -372,28 +369,27 @@ public class Main extends com.sun.tools.javac.main.Main {
             fileManager = context.get(JavaFileManager.class);
 
             if (fileManager instanceof CeyloncFileManager) {
-                CeyloncFileManager ceylonFileManager = (CeyloncFileManager)fileManager;
+                CeyloncFileManager ceylonFileManager = (CeyloncFileManager) fileManager;
                 String sourcePath = options.get("-sourcepath");
                 if (sourcePath != null)
                     ceylonFileManager.setSourcePath(sourcePath);
             }
 
             comp = LanguageCompiler.instance(context);
-            if (comp == null) return EXIT_SYSERR;
+            if (comp == null)
+                return EXIT_SYSERR;
 
             if (!filenames.isEmpty()) {
                 // add filenames to fileObjects
                 comp = JavaCompiler.instance(context);
                 List<JavaFileObject> otherFiles = List.nil();
-                JavacFileManager dfm = (JavacFileManager)fileManager;
+                JavacFileManager dfm = (JavacFileManager) fileManager;
                 for (JavaFileObject fo : dfm.getJavaFileObjectsFromFiles(filenames))
                     otherFiles = otherFiles.prepend(fo);
                 for (JavaFileObject fo : otherFiles)
                     fileObjects = fileObjects.prepend(fo);
             }
-            comp.compile(fileObjects,
-                         classnames.toList(),
-                         processors);
+            comp.compile(fileObjects, classnames.toList(), processors);
 
             if (comp.errorCount() != 0)
                 return EXIT_ERROR;
@@ -409,7 +405,7 @@ public class Main extends com.sun.tools.javac.main.Main {
         } catch (FatalError ex) {
             feMessage(ex);
             return EXIT_SYSERR;
-        } catch(AnnotationProcessingError ex) {
+        } catch (AnnotationProcessingError ex) {
             apMessage(ex);
             return EXIT_SYSERR;
         } catch (ClientCodeException ex) {
@@ -419,56 +415,60 @@ public class Main extends com.sun.tools.javac.main.Main {
         } catch (PropagatedException ex) {
             throw ex.getCause();
         } catch (Throwable ex) {
-            // Nasty.  If we've already reported an error, compensate
+            // Nasty. If we've already reported an error, compensate
             // for buggy compiler error recovery by swallowing thrown
             // exceptions.
-            if (comp == null || comp.errorCount() == 0 ||
-                options == null || options.get("dev") != null)
+            if (comp == null || comp.errorCount() == 0 || options == null || options.get("dev") != null)
                 bugMessage(ex);
             return EXIT_ABNORMAL;
         } finally {
-            if (comp != null) comp.close();
+            if (comp != null)
+                comp.close();
             filenames = null;
             options = null;
         }
         return EXIT_OK;
     }
 
-    /** Print a message reporting an internal error.
+    /**
+     * Print a message reporting an internal error.
      */
     void bugMessage(Throwable ex) {
-        Log.printLines(out, getLocalizedString("msg.bug",
-                                               JavaCompiler.version()));
+        Log.printLines(out, getLocalizedString("msg.bug", JavaCompiler.version()));
         ex.printStackTrace(out);
     }
 
-    /** Print a message reporting an fatal error.
+    /**
+     * Print a message reporting an fatal error.
      */
     void feMessage(Throwable ex) {
         Log.printLines(out, ex.getMessage());
     }
 
-    /** Print a message reporting an input/output error.
+    /**
+     * Print a message reporting an input/output error.
      */
     void ioMessage(Throwable ex) {
         Log.printLines(out, getLocalizedString("msg.io"));
         ex.printStackTrace(out);
     }
 
-    /** Print a message reporting an out-of-resources error.
+    /**
+     * Print a message reporting an out-of-resources error.
      */
     void resourceMessage(Throwable ex) {
         Log.printLines(out, getLocalizedString("msg.resource"));
-//      System.out.println("(name buffer len = " + Name.names.length + " " + Name.nc);//DEBUG
+        // System.out.println("(name buffer len = " + Name.names.length + " " +
+        // Name.nc);//DEBUG
         ex.printStackTrace(out);
     }
 
-    /** Print a message reporting an uncaught exception from an
-     * annotation processor.
+    /**
+     * Print a message reporting an uncaught exception from an annotation
+     * processor.
      */
     void apMessage(AnnotationProcessingError ex) {
-        Log.printLines(out,
-                       getLocalizedString("msg.proc.annotation.uncaught.exception"));
+        Log.printLines(out, getLocalizedString("msg.proc.annotation.uncaught.exception"));
         ex.getCause().printStackTrace();
     }
 
@@ -476,18 +476,20 @@ public class Main extends com.sun.tools.javac.main.Main {
 
     /* ************************************************************************
      * Internationalization
-     *************************************************************************/
+     * *********************************************************************** */
 
-    /** Find a localized string in the resource bundle.
-     *  @param key     The key for the localized string.
+    /**
+     * Find a localized string in the resource bundle.
+     * @param key The key for the localized string.
      */
-    public static String getLocalizedString(String key, Object... args) { // FIXME sb private
+    public static String getLocalizedString(String key, Object... args) { // FIXME
+                                                                          // sb
+                                                                          // private
         try {
             if (messages == null)
                 messages = new Messages(javacBundleName);
             return messages.getLocalizedString("javac." + key, args);
-        }
-        catch (MissingResourceException e) {
+        } catch (MissingResourceException e) {
             throw new Error("Fatal Error: Resource for javac is missing", e);
         }
     }
@@ -495,17 +497,16 @@ public class Main extends com.sun.tools.javac.main.Main {
     public static void useRawMessages(boolean enable) {
         if (enable) {
             messages = new Messages(javacBundleName) {
-                    public String getLocalizedString(String key, Object... args) {
-                        return key;
-                    }
-                };
+                public String getLocalizedString(String key, Object... args) {
+                    return key;
+                }
+            };
         } else {
             messages = new Messages(javacBundleName);
         }
     }
 
-    private static final String javacBundleName =
-        "com.sun.tools.javac.resources.javac";
+    private static final String javacBundleName = "com.sun.tools.javac.resources.javac";
 
     private static Messages messages;
 }

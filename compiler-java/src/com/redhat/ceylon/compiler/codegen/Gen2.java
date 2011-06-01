@@ -40,20 +40,20 @@ public class Gen2 {
     StatementGen statementGen = new StatementGen(this);
     ClassGen classGen = new ClassGen(this);
 
-    public static Gen2 getInstance(Context context) throws Exception{
-    	Gen2 gen2 = context.get(Gen2.class);
-    	if(gen2 == null){
-    		gen2 = new Gen2(context);
-    		context.put(Gen2.class, gen2);
-    	}
-    	return gen2;
+    public static Gen2 getInstance(Context context) throws Exception {
+        Gen2 gen2 = context.get(Gen2.class);
+        if (gen2 == null) {
+            gen2 = new Gen2(context);
+            context.put(Gen2.class, gen2);
+        }
+        return gen2;
     }
-    
+
     public Gen2(Context context) {
         setup(context);
     }
 
-    private void setup (Context context) {
+    private void setup(Context context) {
         Options options = Options.instance(context);
         // It's a bit weird to see "invokedynamic" set here,
         // but it has to be done before Resolve.instance().
@@ -66,9 +66,9 @@ public class Gen2 {
         fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
     }
 
-   JCTree.Factory at(Node t) {
-	   CommonTree antlrTreeNode = t.getAntlrTreeNode();
-	   Token token = antlrTreeNode.getToken();
+    JCTree.Factory at(Node t) {
+        CommonTree antlrTreeNode = t.getAntlrTreeNode();
+        Token token = antlrTreeNode.getToken();
         if (token != null) {
             make.at(getMap().getStartPosition(token.getLine()) + token.getCharPositionInLine());
         }
@@ -79,20 +79,34 @@ public class Gen2 {
         return make;
     }
 
-    static class Singleton<T> implements Iterable<T>{
+    static class Singleton<T> implements Iterable<T> {
         private T thing;
-        Singleton() { }
-        Singleton(T t) { thing = t; }
-        List<T> asList() { return List.of(thing); }
+
+        Singleton() {
+        }
+
+        Singleton(T t) {
+            thing = t;
+        }
+
+        List<T> asList() {
+            return List.of(thing);
+        }
+
         void append(T t) {
             if (thing != null)
                 throw new RuntimeException();
             thing = t;
         }
+
         public Iterator<T> iterator() {
             return asList().iterator();
         }
-        public T thing() { return this.thing; }
+
+        public T thing() {
+            return this.thing;
+        }
+
         public String toString() {
             return thing.toString();
         }
@@ -123,7 +137,7 @@ public class Gen2 {
     Name makeName(Iterable<String> components) {
         Iterator<String> iterator = components.iterator();
         String s = iterator.next();
-        assert(!iterator.hasNext());
+        assert (!iterator.hasNext());
         return names.fromString(s);
     }
 
@@ -131,8 +145,7 @@ public class Gen2 {
         StringBuffer buf = new StringBuffer();
         Iterator<String> iterator;
 
-        for (iterator = components.iterator();
-            iterator.hasNext();) {
+        for (iterator = components.iterator(); iterator.hasNext();) {
             buf.append(iterator.next());
             if (iterator.hasNext())
                 buf.append('.');
@@ -175,20 +188,23 @@ public class Gen2 {
         return make.QualIdent(type.tsym);
     }
 
-    // FIXME: port handleOverloadedToplevelClasses when I figure out what it does
+    // FIXME: port handleOverloadedToplevelClasses when I figure out what it
+    // does
 
     /**
      * This runs after _some_ typechecking has been done
      */
-    public ListBuffer<JCTree> convertAfterTypeChecking(Tree.CompilationUnit t){
+    public ListBuffer<JCTree> convertAfterTypeChecking(Tree.CompilationUnit t) {
         final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
-        t.visitChildren(new Visitor () {
+        t.visitChildren(new Visitor() {
             public void visit(Tree.ImportList imp) {
                 defs.appendList(convert(imp));
             }
+
             public void visit(Tree.ClassOrInterface decl) {
                 defs.append(classGen.convert(decl));
             }
+
             public void visit(Tree.MethodDefinition decl) {
                 classGen.methodClass(null, decl, defs, true);
             }
@@ -197,29 +213,30 @@ public class Gen2 {
     }
 
     /**
-     * In this pass we only make an empty placeholder which we'll fill in the EnterCeylon phase later on
+     * In this pass we only make an empty placeholder which we'll fill in the
+     * EnterCeylon phase later on
      */
     public JCCompilationUnit makeJCCompilationUnitPlaceholder(Tree.CompilationUnit t, JavaFileObject file) {
         System.err.println(t);
         String[] prefixes = fileManager.getSourcePath();
         JCExpression pkg = null;
 
-        // Figure out the package name by stripping the "-src" prefix and extracting
+        // Figure out the package name by stripping the "-src" prefix and
+        // extracting
         // the package part of the fullname.
-        for (String prefix: prefixes) {
+        for (String prefix : prefixes) {
             if (prefix != null && file.toString().startsWith(prefix)) {
                 String fullname = file.toString().substring(prefix.length());
                 assert fullname.endsWith(".ceylon");
                 fullname = fullname.substring(0, fullname.length() - ".ceylon".length());
                 fullname = fullname.replace(File.separator, ".");
                 String packageName = Convert.packagePart(fullname);
-                if (! packageName.equals(""))
+                if (!packageName.equals(""))
                     pkg = getPackage(packageName);
             }
         }
         at(t);
-        JCCompilationUnit topLev = new CeylonCompilationUnit(List.<JCTree.JCAnnotation>nil(), pkg, List.<JCTree>nil(),
-                null, null, null, null, t);
+        JCCompilationUnit topLev = new CeylonCompilationUnit(List.<JCTree.JCAnnotation> nil(), pkg, List.<JCTree> nil(), null, null, null, null, t);
 
         topLev.lineMap = getMap();
         topLev.sourcefile = file;
@@ -240,30 +257,28 @@ public class Gen2 {
     JCExpression convert(Tree.Type type) {
         JCExpression result;
 
-        // FIXME: handle sequences 
-        ExpressionVisitor v =
-        	new ExpressionVisitor() {
+        // FIXME: handle sequences
+        ExpressionVisitor v = new ExpressionVisitor() {
 
-        	public void visit(Tree.SimpleType t) {
-        		result = makeIdent(t.getIdentifier().getText());
-        		
+            public void visit(Tree.SimpleType t) {
+                result = makeIdent(t.getIdentifier().getText());
+
                 Tree.TypeArgumentList tal = t.getTypeArgumentList();
                 if (tal != null) {
-                    ListBuffer<JCExpression> typeArgs =
-                        new ListBuffer<JCExpression>();
+                    ListBuffer<JCExpression> typeArgs = new ListBuffer<JCExpression>();
 
-                    for (Tree.Type innerType: tal.getTypes()) {
+                    for (Tree.Type innerType : tal.getTypes()) {
                         typeArgs.add(convert(innerType));
                     }
 
                     result = at(t).TypeApply(result, typeArgs.toList());
                 }
-        	}
-        	
+            }
+
             // FIXME: Add the other primitive types
-        	public void visit(Tree.VoidModifier t){
+            public void visit(Tree.VoidModifier t) {
                 result = make.TypeIdent(VOID);
-        	}
+            }
         };
 
         type.visit(v);
@@ -272,50 +287,45 @@ public class Gen2 {
         if (isOptional(type)) {
             result = optionalType(result);
         }
-        /* FIXME: I'm not sure we can tell from a type if it's mutable
-        if ((type.flags & CeylonTree.MUTABLE) != 0) {
-            result = mutableType(result);
-        }
-        */
+        /* FIXME: I'm not sure we can tell from a type if it's mutable if
+         * ((type.flags & CeylonTree.MUTABLE) != 0) { result =
+         * mutableType(result); } */
 
         return result;
     }
 
-    private List<JCTree> convert (Tree.ImportList importList) {
+    private List<JCTree> convert(Tree.ImportList importList) {
         final ListBuffer<JCTree> imports = new ListBuffer<JCTree>();
-        importList.visit(new Visitor(){
-        	// FIXME: handle the rest of the cases here
-        	public void visit(Tree.ImportPath that) {
+        importList.visit(new Visitor() {
+            // FIXME: handle the rest of the cases here
+            public void visit(Tree.ImportPath that) {
                 JCImport stmt = at(that).Import(makeIdentFromIdentifiers(that.getIdentifiers()), false);
                 imports.append(stmt);
-        	}
+            }
         });
         return imports.toList();
     }
 
-	static class ExpressionVisitor extends Visitor {
+    static class ExpressionVisitor extends Visitor {
         public JCExpression result;
     }
 
     static class ListVisitor<T> extends Visitor {
-        public List<T> result = List.<T>nil();
+        public List<T> result = List.<T> nil();
     }
-    
+
     // FIXME: figure out what CeylonTree.ReflectedLiteral maps to
-    
+
     JCExpression optionalType(JCExpression type) {
-        return make().TypeApply(makeIdent(syms.ceylonOptionalType),
-                                List.<JCExpression>of(type));
+        return make().TypeApply(makeIdent(syms.ceylonOptionalType), List.<JCExpression> of(type));
     }
 
     JCExpression mutableType(JCExpression type) {
-        return make().TypeApply(makeIdent(syms.ceylonMutableType),
-                                List.<JCExpression>of(type));
+        return make().TypeApply(makeIdent(syms.ceylonMutableType), List.<JCExpression> of(type));
     }
 
     JCExpression iteratorType(JCExpression type) {
-        return make().TypeApply(makeIdent(syms.ceylonIteratorType),
-                                List.<JCExpression>of(type));
+        return make().TypeApply(makeIdent(syms.ceylonIteratorType), List.<JCExpression> of(type));
     }
 
     JCExpression variableType(Tree.Type t, Tree.AnnotationList annotations) {
@@ -324,35 +334,36 @@ public class Gen2 {
 
     long counter = 0;
 
-    String tempName () {
+    String tempName() {
         String result = "$ceylontmp" + counter;
         counter++;
         return result;
     }
 
-    String tempName (String s) {
+    String tempName(String s) {
         String result = "$ceylontmp" + s + counter;
         counter++;
         return result;
     }
 
-	boolean isOptional(Tree.Type type) {
-		// This should show in the tree as: Nothing|Type, so we just visit
-		class TypeVisitor extends Visitor {
-			boolean isOptional = false;
-			@Override
-			public void visit(Tree.SimpleType t){
-				isOptional |= isSameType(t.getIdentifier(), syms.ceylonNothingType);
-			}
-		}
-		TypeVisitor visitor = new TypeVisitor();
-		type.visit(visitor);
-		return visitor.isOptional;
-	}
+    boolean isOptional(Tree.Type type) {
+        // This should show in the tree as: Nothing|Type, so we just visit
+        class TypeVisitor extends Visitor {
+            boolean isOptional = false;
 
-	// FIXME: this is ugly and probably wrong
-    boolean isSameType(Tree.Identifier ident, com.sun.tools.javac.code.Type type){
-		return ident.getText().equals(type.tsym.getQualifiedName());
+            @Override
+            public void visit(Tree.SimpleType t) {
+                isOptional |= isSameType(t.getIdentifier(), syms.ceylonNothingType);
+            }
+        }
+        TypeVisitor visitor = new TypeVisitor();
+        type.visit(visitor);
+        return visitor.isOptional;
+    }
+
+    // FIXME: this is ugly and probably wrong
+    boolean isSameType(Tree.Identifier ident, com.sun.tools.javac.code.Type type) {
+        return ident.getText().equals(type.tsym.getQualifiedName());
     }
 
     public void setMap(LineMap map) {

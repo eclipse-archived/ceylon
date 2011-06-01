@@ -75,12 +75,12 @@ public class TreePrinter extends CeylonTree.Visitor {
     private List<NameValuePair> getFields(Class<?> klass, CeylonTree tree) {
         List<NameValuePair> result;
         if (klass == CeylonTree.class)
-            result = List.<NameValuePair>nil();
+            result = List.<NameValuePair> nil();
         else
             result = getFields(klass.getSuperclass(), tree);
 
-        List<NameValuePair> tmpL = List.<NameValuePair>nil();
-        for (Field field: klass.getDeclaredFields()) {
+        List<NameValuePair> tmpL = List.<NameValuePair> nil();
+        for (Field field : klass.getDeclaredFields()) {
             if (Modifier.isStatic(field.getModifiers()))
                 continue;
 
@@ -91,8 +91,7 @@ public class TreePrinter extends CeylonTree.Visitor {
             Object value;
             try {
                 value = field.get(tree);
-            }
-            catch (IllegalAccessException e) {
+            } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
             tmpL = tmpL.append(new NameValuePair(name, value));
@@ -102,7 +101,7 @@ public class TreePrinter extends CeylonTree.Visitor {
         tmpL.toArray(tmpA);
         Arrays.sort(tmpA);
 
-        return result.appendList(List.<NameValuePair>from(tmpA));
+        return result.appendList(List.<NameValuePair> from(tmpA));
     }
 
     public void visitDefault(CeylonTree tree) {
@@ -110,38 +109,32 @@ public class TreePrinter extends CeylonTree.Visitor {
         String shortShortName = getShortShortName(shortName);
 
         enter(shortName);
-        for (NameValuePair field: getFields(tree)) {
+        for (NameValuePair field : getFields(tree)) {
             Object value = field.value;
             if (value == null)
                 continue;
 
             {
-                String source = tree.source != null?
-                        tree.source.line + ":" + tree.source.column :
-                            ":";
+                String source = tree.source != null ? tree.source.line + ":" + tree.source.column : ":";
                 enter("[" + source + "] " + shortShortName + "." + field.name);
             }
 
             if (value instanceof String || value instanceof Boolean) {
                 out.print(" " + value);
-            }
-            else if (value instanceof Number) {
+            } else if (value instanceof Number) {
                 out.print(" ");
                 if (field.name.equals("operatorKind")) {
                     int operatorKind = ((Number) value).intValue();
                     out.print(CeylonParser.tokenNames[operatorKind]);
-                }
-                else {
+                } else {
                     out.print(value);
                 }
-            }
-            else if (value instanceof CeylonTree) {
+            } else if (value instanceof CeylonTree) {
                 ((CeylonTree) value).accept(this);
-            }
-            else if (value instanceof Iterable<?>) {
-                for (Object obj: (Iterable<?>)value) {
+            } else if (value instanceof Iterable<?>) {
+                for (Object obj : (Iterable<?>) value) {
                     if (obj instanceof CeylonTree) {
-                        CeylonTree child = (CeylonTree)obj;
+                        CeylonTree child = (CeylonTree) obj;
                         if (child != null)
                             child.accept(this);
                         else

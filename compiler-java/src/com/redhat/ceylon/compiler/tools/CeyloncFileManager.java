@@ -42,9 +42,7 @@ import com.sun.tools.javac.util.JavacFileManager;
 import com.sun.tools.javac.util.ListBuffer;
 import com.redhat.ceylon.compiler.codegen.CeylonFileObject;
 
-public class CeyloncFileManager extends JavacFileManager
-    implements StandardJavaFileManager
-{
+public class CeyloncFileManager extends JavacFileManager implements StandardJavaFileManager {
     protected String[] sourcePath = new String[0];
 
     public void setSourcePath(String sourcePath) {
@@ -67,9 +65,7 @@ public class CeyloncFileManager extends JavacFileManager
     protected JavaFileObject.Kind getKind(String extension) {
         if (extension.equals(JavaFileObject.Kind.CLASS.extension))
             return JavaFileObject.Kind.CLASS;
-        else if (extension.equals(JavaFileObject.Kind.SOURCE.extension)
-                || extension.equals(".ceylon")
-                )
+        else if (extension.equals(JavaFileObject.Kind.SOURCE.extension) || extension.equals(".ceylon"))
             return JavaFileObject.Kind.SOURCE;
         else if (extension.equals(JavaFileObject.Kind.HTML.extension))
             return JavaFileObject.Kind.HTML;
@@ -88,8 +84,7 @@ public class CeyloncFileManager extends JavacFileManager
         });
     }
 
-    public Iterable<? extends JavaFileObject> getJavaFileObjectsFromFiles(
-            Iterable<? extends File> files) {
+    public Iterable<? extends JavaFileObject> getJavaFileObjectsFromFiles(Iterable<? extends File> files) {
 
         Iterable<? extends JavaFileObject> theCollection = super.getJavaFileObjectsFromFiles(files);
         ArrayList<JavaFileObject> result = new ArrayList<JavaFileObject>();
@@ -103,39 +98,30 @@ public class CeyloncFileManager extends JavacFileManager
         return result;
     }
 
-    public Iterable<JavaFileObject> list(Location location,
-            String packageName,
-            Set<JavaFileObject.Kind> kinds,
-            boolean recurse)
-            throws IOException {
-        Iterable<JavaFileObject> result = super.list(location, packageName,
-                 kinds, recurse);
-         ListBuffer<JavaFileObject> buf = new ListBuffer<JavaFileObject>();
-         for (JavaFileObject f: result) {
-             if (f.getName().endsWith(".ceylon")) {
-                 buf.add(new CeylonFileObject(f));
-             } else {
-                 buf.add(f);
-             }
-         }
-         return buf.toList();
+    public Iterable<JavaFileObject> list(Location location, String packageName, Set<JavaFileObject.Kind> kinds, boolean recurse) throws IOException {
+        Iterable<JavaFileObject> result = super.list(location, packageName, kinds, recurse);
+        ListBuffer<JavaFileObject> buf = new ListBuffer<JavaFileObject>();
+        for (JavaFileObject f : result) {
+            if (f.getName().endsWith(".ceylon")) {
+                buf.add(new CeylonFileObject(f));
+            } else {
+                buf.add(f);
+            }
+        }
+        return buf.toList();
     }
 
     public String inferBinaryName(Location location, JavaFileObject file) {
         if (file instanceof CeylonFileObject) {
-            CeylonFileObject fo = (CeylonFileObject)file;
+            CeylonFileObject fo = (CeylonFileObject) file;
             return super.inferBinaryName(location, fo.getFile());
         }
         return super.inferBinaryName(location, file);
     }
 
-    protected JavaFileObject getFileForOutput(Location location,
-            String fileName,
-            FileObject sibling)
-    throws IOException
-    {
+    protected JavaFileObject getFileForOutput(Location location, String fileName, FileObject sibling) throws IOException {
         if (sibling instanceof CeylonFileObject) {
-            sibling = ((CeylonFileObject)sibling).getFile();
+            sibling = ((CeylonFileObject) sibling).getFile();
         }
         return super.getFileForOutput(location, fileName, sibling);
     }

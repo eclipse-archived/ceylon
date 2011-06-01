@@ -14,8 +14,7 @@ public class CeylonTreePrinter extends CeylonTree.Visitor {
     private void print(String str) {
         try {
             out.append(str);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -41,8 +40,7 @@ public class CeylonTreePrinter extends CeylonTree.Visitor {
             }
             print(")");
             depth--;
-        }
-        else {
+        } else {
             print(" " + tree.getClassName());
         }
     }

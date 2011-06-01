@@ -47,6 +47,7 @@ public class Grok extends CeylonTree.Visitor {
         current.pop();
         current.context.add(decl);
     }
+
     public void visit(CeylonTree.InterfaceDeclaration decl) {
         current.push(decl);
         inner(decl);
@@ -80,8 +81,7 @@ public class Grok extends CeylonTree.Visitor {
         current.pop();
         if (current.context instanceof CeylonTree.Operator) {
             current.context.append(name);
-        }
-        else {
+        } else {
             current.context.setName(name);
         }
     }
@@ -114,10 +114,9 @@ public class Grok extends CeylonTree.Visitor {
         inner(ann);
         current.pop();
         current.context.add(ann);
-     }
+    }
 
-    public void visit(CeylonTree.AnnotationName name)
-    {
+    public void visit(CeylonTree.AnnotationName name) {
         current.push(name);
         inner(name);
         current.pop();
@@ -125,14 +124,14 @@ public class Grok extends CeylonTree.Visitor {
     }
 
     public void visit(CeylonTree.MemberDeclaration member) {
-        visit((CeylonTree.BaseMemberDeclaration)member);
-    }
-    public void visit(CeylonTree.AbstractMemberDeclaration member) {
-        visit((CeylonTree.BaseMemberDeclaration)member);
+        visit((CeylonTree.BaseMemberDeclaration) member);
     }
 
-    public void visit(CeylonTree.BaseMemberDeclaration member)
-    {
+    public void visit(CeylonTree.AbstractMemberDeclaration member) {
+        visit((CeylonTree.BaseMemberDeclaration) member);
+    }
+
+    public void visit(CeylonTree.BaseMemberDeclaration member) {
         // We don't know if this is going to be a method or a field.
         // We resolve this by saying if it has an arg list, it's a method.
         current.push(member);
@@ -141,10 +140,9 @@ public class Grok extends CeylonTree.Visitor {
         // member.setAnnotations(current.annotations);
         // current.annotations = null;
 
-        for (CeylonTree.Annotation ann: member.annotations) {
+        for (CeylonTree.Annotation ann : member.annotations) {
             if (ann instanceof CeylonTree.LanguageAnnotation) {
-                CeylonTree.LanguageAnnotation la =
-                    (CeylonTree.LanguageAnnotation)ann;
+                CeylonTree.LanguageAnnotation la = (CeylonTree.LanguageAnnotation) ann;
                 throw new RuntimeException();
             }
         }
@@ -156,12 +154,12 @@ public class Grok extends CeylonTree.Visitor {
             current.context.append(tmp);
 
         } else if (member.params != null) {
-            // I'm not at all sure that it's worth having both MethodDeclaration and
-            // AbstractMethodDeclaration, since it's trivial to distinguish because
+            // I'm not at all sure that it's worth having both MethodDeclaration
+            // and
+            // AbstractMethodDeclaration, since it's trivial to distinguish
+            // because
             // one has statements; the other has none.
-            CeylonTree.BaseMethodDeclaration decl =
-                member.stmts != null ? new CeylonTree.MethodDeclaration(member)
-                                     : new CeylonTree.AbstractMethodDeclaration(member);
+            CeylonTree.BaseMethodDeclaration decl = member.stmts != null ? new CeylonTree.MethodDeclaration(member) : new CeylonTree.AbstractMethodDeclaration(member);
 
             current.context.add(decl);
         } else {
@@ -169,83 +167,71 @@ public class Grok extends CeylonTree.Visitor {
         }
     }
 
-    public void visit(CeylonTree.MemberName member)
-    {
+    public void visit(CeylonTree.MemberName member) {
         current.push(member);
         inner(member);
         current.pop();
 
         if ((current.context) instanceof CeylonTree.BaseMemberDeclaration) {
             // FIXME: Another kludge
-            CeylonTree.BaseMemberDeclaration decl = (CeylonTree.BaseMemberDeclaration)current.context;
+            CeylonTree.BaseMemberDeclaration decl = (CeylonTree.BaseMemberDeclaration) current.context;
             decl.setName(member);
         } else {
             current.context.append(member);
         }
     }
 
-    public void visit(CeylonTree.MemberType type)
-    {
+    public void visit(CeylonTree.MemberType type) {
         current.push(type);
         inner(type);
         current.pop();
-        CeylonTree.BaseMemberDeclaration decl = (CeylonTree.BaseMemberDeclaration)current.context;
+        CeylonTree.BaseMemberDeclaration decl = (CeylonTree.BaseMemberDeclaration) current.context;
         decl.type = type.type;
     }
 
-    public void visit(CeylonTree.Void v)
-    {
+    public void visit(CeylonTree.Void v) {
         current.context.pushType(v);
     }
 
-    public void visit(CeylonTree.Public v)
-    {
-        CeylonTree.LanguageAnnotation ann = (CeylonTree.LanguageAnnotation)current.context;
+    public void visit(CeylonTree.Public v) {
+        CeylonTree.LanguageAnnotation ann = (CeylonTree.LanguageAnnotation) current.context;
         ann.kind = v;
-   }
+    }
 
-
-    public void visit(CeylonTree.Default v)
-    {
-        CeylonTree.LanguageAnnotation ann = (CeylonTree.LanguageAnnotation)current.context;
+    public void visit(CeylonTree.Default v) {
+        CeylonTree.LanguageAnnotation ann = (CeylonTree.LanguageAnnotation) current.context;
         ann.kind = v;
-   }
+    }
 
-    public void visit(CeylonTree.Package v)
-    {
-        CeylonTree.LanguageAnnotation ann = (CeylonTree.LanguageAnnotation)current.context;
+    public void visit(CeylonTree.Package v) {
+        CeylonTree.LanguageAnnotation ann = (CeylonTree.LanguageAnnotation) current.context;
         ann.kind = v;
-   }
+    }
 
-    public void visit(CeylonTree.Abstract v)
-    {
-        CeylonTree.LanguageAnnotation ann = (CeylonTree.LanguageAnnotation)current.context;
+    public void visit(CeylonTree.Abstract v) {
+        CeylonTree.LanguageAnnotation ann = (CeylonTree.LanguageAnnotation) current.context;
         ann.kind = v;
-   }
+    }
 
-    public void visit(CeylonTree.Module v)
-    {
-        CeylonTree.LanguageAnnotation ann = (CeylonTree.LanguageAnnotation)current.context;
+    public void visit(CeylonTree.Module v) {
+        CeylonTree.LanguageAnnotation ann = (CeylonTree.LanguageAnnotation) current.context;
         ann.kind = v;
-   }
+    }
 
-    public void visit(CeylonTree.Optional v)
-    {
-        CeylonTree.LanguageAnnotation ann = (CeylonTree.LanguageAnnotation)current.context;
+    public void visit(CeylonTree.Optional v) {
+        CeylonTree.LanguageAnnotation ann = (CeylonTree.LanguageAnnotation) current.context;
         ann.kind = v;
-   }
+    }
 
-    public void visit(CeylonTree.Mutable v)
-    {
-        CeylonTree.LanguageAnnotation ann = (CeylonTree.LanguageAnnotation)current.context;
+    public void visit(CeylonTree.Mutable v) {
+        CeylonTree.LanguageAnnotation ann = (CeylonTree.LanguageAnnotation) current.context;
         ann.kind = v;
-   }
+    }
 
-    public void visit(CeylonTree.Extension v)
-    {
-        CeylonTree.LanguageAnnotation ann = (CeylonTree.LanguageAnnotation)current.context;
+    public void visit(CeylonTree.Extension v) {
+        CeylonTree.LanguageAnnotation ann = (CeylonTree.LanguageAnnotation) current.context;
         ann.kind = v;
-   }
+    }
 
     public void visit(CeylonTree.Type type) {
         current.push(type);
@@ -265,7 +251,7 @@ public class Grok extends CeylonTree.Visitor {
         current.push(p);
         inner(p);
         current.pop();
-        CeylonTree.FormalParameterList l = (CeylonTree.FormalParameterList)current.context;
+        CeylonTree.FormalParameterList l = (CeylonTree.FormalParameterList) current.context;
         l.addFormalParameter(p);
     }
 
@@ -299,11 +285,9 @@ public class Grok extends CeylonTree.Visitor {
             // We have something like (expr (call (typename)) typeArgList)
             // We want to turn it into (call (type (typename typeArgList)))
             if (expr.thing instanceof CeylonTree.CallExpression) {
-                CeylonTree.CallExpression ce =
-                    (CeylonTree.CallExpression)expr.thing;
+                CeylonTree.CallExpression ce = (CeylonTree.CallExpression) expr.thing;
                 if (ce.method instanceof CeylonTree.TypeName) {
-                    CeylonTree.TypeName tn =
-                        (CeylonTree.TypeName)ce.method;
+                    CeylonTree.TypeName tn = (CeylonTree.TypeName) ce.method;
                     CeylonTree.Type type = new CeylonTree.Type();
                     type.setName(tn);
                     type.setTypeArgumentList(expr.typeArgumentList);
@@ -367,7 +351,7 @@ public class Grok extends CeylonTree.Visitor {
         current.pop();
 
         // FIXME: is this the right way to remove the arg list?
-        for (CeylonTree t: expr.args()) {
+        for (CeylonTree t : expr.args()) {
             current.context.append(t);
         }
     }
@@ -531,24 +515,24 @@ public class Grok extends CeylonTree.Visitor {
         current.push(expr);
         inner(expr);
         current.pop();
-        CeylonTree.Expression e = (CeylonTree.Expression)current.context;
+        CeylonTree.Expression e = (CeylonTree.Expression) current.context;
         e.addSubscript(expr);
-   }
+    }
 
     public void visit(CeylonTree.OperatorDot expr) {
         expr.operatorKind = expr.token.getType();
         current.push(expr);
         inner(expr);
         current.pop();
-        CeylonTree.Expression e = (CeylonTree.Expression)current.context;
+        CeylonTree.Expression e = (CeylonTree.Expression) current.context;
         e.pushDot(expr);
-   }
+    }
 
-     public void visit(CeylonTree.LowerBound tree) {
+    public void visit(CeylonTree.LowerBound tree) {
         current.push(tree);
         inner(tree);
         current.pop();
-        CeylonTree.SubscriptExpression expr = (CeylonTree.SubscriptExpression)current.context;
+        CeylonTree.SubscriptExpression expr = (CeylonTree.SubscriptExpression) current.context;
         expr.lowerBound = tree;
     }
 
@@ -556,7 +540,7 @@ public class Grok extends CeylonTree.Visitor {
         current.push(tree);
         inner(tree);
         current.pop();
-        CeylonTree.SubscriptExpression expr = (CeylonTree.SubscriptExpression)current.context;
+        CeylonTree.SubscriptExpression expr = (CeylonTree.SubscriptExpression) current.context;
         expr.upperBound = tree;
     }
 
@@ -587,14 +571,14 @@ public class Grok extends CeylonTree.Visitor {
         inner(tree);
         current.pop();
         current.context.addTypeConstraint(tree);
-   }
+    }
 
     public void visit(CeylonTree.AbstractsList tree) {
         current.push(tree);
         inner(tree);
         current.pop();
         current.context.addTypeConstraint(tree);
-   }
+    }
 
     public void visit(CeylonTree.TypeConstraintList tree) {
         inner(tree);
@@ -616,11 +600,11 @@ public class Grok extends CeylonTree.Visitor {
 
     public void visit(CeylonTree.Out tree) {
         current.context.append(tree);
-     }
+    }
 
     public void visit(CeylonTree.ImportList tree) {
         inner(tree);
-      }
+    }
 
     public void visit(CeylonTree.ImportPath tree) {
         current.push(tree);
@@ -664,7 +648,7 @@ public class Grok extends CeylonTree.Visitor {
         current.context.setIfFalse(tree.block);
     }
 
-   public void visit(CeylonTree.AnonymousMethod tree) {
+    public void visit(CeylonTree.AnonymousMethod tree) {
         current.push(tree);
         inner(tree);
         current.pop();
@@ -730,20 +714,17 @@ public class Grok extends CeylonTree.Visitor {
         current.pop();
         current.context.setSuperclass(tree);
     }
+
     public void visit(CeylonTree.InstanceDeclaration tree) {
         current.push(tree);
         inner(tree);
         current.pop();
         current.context.append(tree);
     }
-    /*
-    public void visit(CeylonTree.InstanceDeclaration tree) {
-        current.push(tree);
-        inner(tree);
-        current.pop();
-        current.context.append(tree);
-    }
-    */
+
+    /*public void visit(CeylonTree.InstanceDeclaration tree) {
+     * current.push(tree); inner(tree); current.pop();
+     * current.context.append(tree); } */
 
     public void visit(CeylonTree.Subtype tree) {
         inner(tree);

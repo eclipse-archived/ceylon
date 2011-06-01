@@ -15,15 +15,11 @@ import com.sun.tools.javac.util.List;
  */
 public class CeylonCompilationUnit extends JCCompilationUnit {
 
-	public final CompilationUnit ceylonTree;
+    public final CompilationUnit ceylonTree;
 
-	protected CeylonCompilationUnit(List<JCAnnotation> packageAnnotations,
-			JCExpression pid, List<JCTree> defs, JavaFileObject sourcefile,
-			PackageSymbol packge, Scope namedImportScope, Scope starImportScope,
-			Tree.CompilationUnit ceylonTree) {
-		super(packageAnnotations, pid, defs, sourcefile, packge, namedImportScope,
-				starImportScope);
-		this.ceylonTree = ceylonTree;
-	}
+    protected CeylonCompilationUnit(List<JCAnnotation> packageAnnotations, JCExpression pid, List<JCTree> defs, JavaFileObject sourcefile, PackageSymbol packge, Scope namedImportScope, Scope starImportScope, Tree.CompilationUnit ceylonTree) {
+        super(packageAnnotations, pid, defs, sourcefile, packge, namedImportScope, starImportScope);
+        this.ceylonTree = ceylonTree;
+    }
 
 }
