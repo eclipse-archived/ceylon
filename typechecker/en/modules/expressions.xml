@@ -2293,9 +2293,9 @@ setPerson(person);</programlisting>
         
         <comment><para>Note: this restriction results from the lack of existential types. 
         The expression <literal>Entry</literal> would have the existential type 
-        <literal>ClassConstructor&lt;Entry&lt;U,V&gt;U,V&gt; given U satisfies Equality given V satisfies Equality</literal>.
+        <literal>ClassConstructor&lt;Entry&lt;U,V&gt;,U,V&gt; given U satisfies Equality given V satisfies Equality</literal>.
         The expression <literal>Comparable.smallerThan</literal> would be of existential type 
-        <literal>MethodConstructor&lt;T, Boolean, T&gt; given T satisfies Comparable&lt;T&gt;</literal>.</para></comment>
+        <literal>MethodConstructor&lt;T,Boolean,T&gt; given T satisfies Comparable&lt;T&gt;</literal>.</para></comment>
         
         <comment><para>TODO: Do we anyway need some kind of metamodel objects for type 
         constructors like <literal>Entry</literal> or even <literal>Comparable.smallerThan</literal>. 
