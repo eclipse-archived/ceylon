@@ -117,9 +117,9 @@ assert() that (semaphore&identical;s); //assertion never fails</programlisting>
         <itemizedlist>
         <listitem>
             <para>The compiler is permitted to emit bytecode that unexpectedly creates or
-            avoids creating an actual instance of <literal>ceylon.language.Gettable</literal> 
-            or <literal>ceylon.language.Settable</literal>, when an expression is evaluated, 
-            as long as this does not affect the execution of the program.</para>
+            avoids creating an actual instance of <literal>Gettable</literal> or 
+            <literal>Settable</literal>, when an expression is evaluated, as long as this 
+            does not affect the observable behavior of the program.</para>
         </listitem>
         <listitem>
             <para>The compiler is permitted to emit bytecode that produces a new instance of 
@@ -213,13 +213,16 @@ setGreeting(greeting);</programlisting>
         </listitem>
     </itemizedlist>
     
+    <para><litera>Natural</litera>, <literal>Float</literal>, <literal>Character</literal>,
+    and <literal>String</literal> are defined in the module <literal>ceylon.language</literal>.</para>
+    
     <para>Ceylon does not need a special syntax for <literal>Boolean</literal> literal 
     values, since <literal>Boolean</literal> is just a class with the cases 
     <literal>true</literal> and <literal>false</literal>. Likewise, <literal>null</literal> 
     is just the singleton value of an anonymous class.</para>
     
     <programlisting>Literal: NaturalLiteral | FloatLiteral | CharacterLiteral | StringLiteral | QuotedLiteral</programlisting>
-
+    
     <para>All literal values are instances of immutable types. The value of a literal 
     expression is an instance of the type. How this instance is produced is not specified 
     here.</para>
@@ -293,7 +296,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <title>Natural number literals</title>
         
         <para>A natural number literal <literal>n</literal> is an 
-        expression of type <literal>ceylon.language.Natural</literal>.</para>
+        expression of type <literal>Natural</literal>.</para>
         
         <programlisting>Natural five = 5;</programlisting>
                 
@@ -310,7 +313,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <title>Floating point number literals</title>
         
         <para>A floating point number literal is an expression of 
-        type <literal>ceylon.language.Float</literal>.</para>
+        type <literal>Float</literal>.</para>
         
         <programlisting>shared Float pi = 3.14159;</programlisting>
         
@@ -325,7 +328,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <title>Character literals</title>
         
         <para>A single character literal is an expression of type 
-        <literal>ceylon.language.Character</literal>.</para>
+        <literal>Character</literal>.</para>
                 
         <programlisting>if ( string[i] &equals; `+` ) { ... }</programlisting>
         
@@ -337,7 +340,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <title>Character string literals</title>
         
         <para>A character string literal is an expression of type
-        <literal>ceylon.language.String</literal>.</para>
+        <literal>String</literal>.</para>
         
         <programlisting>person.name := "Gavin King";</programlisting>
         
@@ -445,7 +448,8 @@ shared interface Color { ... }</programlisting>
         <programlisting>StringTemplate: StringLiteral (Expression StringLiteral)+</programlisting>
         
         <para>Each interpolated expression contained in the string template must be 
-        an expression of type <literal>ceylon.language.Format</literal>.</para>
+        an expression of type <literal>Format</literal> in 
+        <literal>ceylon.language</literal>.</para>
         
         <para>The entire character string template is an expression of type 
         <literal>Gettable&lt;String&gt;</literal>.</para>

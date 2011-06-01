@@ -62,9 +62,9 @@
     <para>
     There are no primitive types or arrays in Ceylon&mdash;every Ceylon type can 
     be represented within the language itself. So all values are instances of the 
-    type hierarchy root <literal>ceylon.language.Void</literal>, which is a class. 
-    However, the Ceylon compiler is permitted to optimize certain code to take 
-    advantage of the optimized performance of primitive types on the JVM.
+    type hierarchy root <literal>Void</literal>, which is a class. However, the 
+    Ceylon compiler is permitted to optimize certain code to take advantage of the 
+    optimized performance of primitive types on the JVM.
     </para>
     
     <para>

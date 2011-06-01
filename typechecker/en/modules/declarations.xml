@@ -502,7 +502,8 @@ TypeConstraints?
         interface type.</para>
         
         <para>If an anonymous class is a case of an interface type, it must extend
-        <literal>ceylon.language.Case</literal>, directly or indirectly.</para>
+        <literal>Case</literal> in <literal>ceylon.language</literal>, directly or 
+        indirectly.</para>
         
         <para>If an interface has an <literal>of</literal> clause, then every subtype of 
         the interface must be subtype of one of the enumerated cases.</para>
@@ -884,7 +885,8 @@ TypeConstraints?
 
         <para>
         If a class does not explicitly specify a superclass using <literal>extends</literal>,
-        its superclass is <literal>ceylon.language.IdentifiableObject</literal>.
+        its superclass is <literal>IdentifiableObject</literal> in 
+        <literal>ceylon.language</literal>.
         </para>
         
         <para>A class may implement any number of interfaces.</para>
@@ -1351,7 +1353,8 @@ shared class Branch&lt;T&gt;(String name, Node&lt;T&gt; left, Node&lt;T&gt; righ
         the class.</para>
         
         <para>If an anonymous class is a case of a class, the class must extend
-        <literal>ceylon.language.Case</literal>, directly or indirectly.</para>
+        <literal>Case</literal> in <literal>ceylon.language</literal>, directly 
+        or indirectly.</para>
         
         <para>If a class has an <literal>of</literal> clause, then every subtype 
         of the class must be a subtype of one of the enumerated cases.</para>
@@ -2055,8 +2058,8 @@ Void goodbye() {
         <para>A toplevel attribute may not be <literal>variable</literal>.</para>
         
         <para>If a class declares or inherits a <literal>variable</literal> attribute, it 
-        must (directly or indirectly) extend the class 
-        <literal>ceylon.language.IdentifiableObject</literal>.</para>
+        must (directly or indirectly) extend the class <literal>IdentifiableObject</literal> 
+        in <literal>ceylon.language</literal>.</para>
         
         <para>An attribute of type <literal>Gettable</literal> or <literal>Settable</literal> 
         may not be <literal>variable</literal>.</para>
