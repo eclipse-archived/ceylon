@@ -1,0 +1,39 @@
+class Annotations() {
+    
+    deprecated void noop() {}
+    
+    doc "A class"
+    by "Gavin King"
+       "Emmanuel Bernard"
+    class Class() {}
+    
+    see (Class, Annotations)
+    void accept(Class c) {}
+    
+    class TrimmedString() {}
+    
+    table { name = "people"; 
+            schema = "my"; }
+    class Person() {
+        
+        persistent { column = "fullName";
+                     update = true;
+                     type = TrimmedString; }
+        shared String name = "Gavin King";
+        
+    }
+    
+    class TypeDescription(String desc) 
+        satisfies OptionalAnnotation<TypeDescription,Type<Object>> {}
+    
+    class SequencedDescription(String desc) 
+        satisfies SequencedAnnotation<SequencedDescription,Annotated> {}
+
+    //temporary errors until we got metatypes done 
+    @error Type<Annotations> at = Annotations;
+    @error Type<TypeDescription> tdt = TypeDescription;
+    @error Type<SequencedDescription> sdt = SequencedDescription;
+    TypeDescription? d = annotations<TypeDescription,TypeDescription?,Type<Object>>(tdt, at);
+    SequencedDescription[] ds = annotations<SequencedDescription,SequencedDescription[],Type<Object>>(sdt, at);
+    
+}
