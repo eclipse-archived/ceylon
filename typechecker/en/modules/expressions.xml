@@ -213,8 +213,9 @@ setGreeting(greeting);</programlisting>
         </listitem>
     </itemizedlist>
     
-    <para><litera>Natural</litera>, <literal>Float</literal>, <literal>Character</literal>,
-    and <literal>String</literal> are defined in the module <literal>ceylon.language</literal>.</para>
+    <para>The types <literal>Natural</literal>, <literal>Float</literal>, 
+    <literal>Character</literal>, and <literal>String</literal> are defined in the 
+    module <literal>ceylon.language</literal>.</para>
     
     <para>Ceylon does not need a special syntax for <literal>Boolean</literal> literal 
     values, since <literal>Boolean</literal> is just a class with the cases 
@@ -995,11 +996,19 @@ local comp = order(1,-1);</programlisting>
         
         <programlisting>Arguments: PositionalArguments FunctionalArguments? | NamedArguments</programlisting>
         
-        <para>Arguments to required parameters must be specified. If the invocation 
-        expression is a direct invocation expression, arguments to defaulted parameters may 
-        optionally be specified, and one or more arguments to a sequenced parameter may 
-        optionally be specified. Otherwise, an argument must be specified for each defaulted 
-        parameter, and a single argument must be specified for the sequenced parameter.</para>
+        <para>Arguments to required parameters must be specified.</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>If the invocation expression is a direct invocation expression, 
+                arguments to defaulted parameters may optionally be specified, and one or 
+                more arguments to a sequenced parameter may optionally be specified.</para>
+            </listitem>
+            <listitem>
+                <para>Otherwise, an argument must be specified for each defaulted parameter, 
+                and a single argument must be specified for the sequenced parameter.</para>
+            </listitem>
+        </itemizedlist>
         
         <para>For a required or defaulted parameter of type <literal>T</literal>, the type 
         of the corresponding argument expression must be assignable to <literal>T</literal>.</para>
