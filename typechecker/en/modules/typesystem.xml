@@ -2398,7 +2398,7 @@ by "Gavin King"
    "Andrew Haley"
 throws (DatabaseException 
         -> "if database access fails")
-see (LogoutAction.logout)
+seeAlso (LogoutAction.logout)
 scope (session) 
 action { description="Log In"; url="/login"; }
 shared deprecated</programlisting>

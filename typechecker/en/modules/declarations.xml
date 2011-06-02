@@ -2706,36 +2706,62 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
         
         <para>These annotations are defined by the package <literal>doc</literal>:</para>
         
-        <programlisting>inherited annotation { of=any; occurs = onceEachElement; }
+        <programlisting>shared class Description(String description)
+        satisfies OptionalAnnotation&lt;Description,Annotated&gt; {
+    shared String description = description;
+}
+
 shared Description doc(String description) {
     return Description(description.normalize());
 }</programlisting>
     
-        <programlisting>annotation { of=any; occurs = onceEachElement; }
-shared Author[] by(String... authors) {
-    return from (String author in authors) 
-                select Author(author.normalize());
+        <programlisting>shared class Authors(String... names)
+        satisfies OptionalAnnotation&lt;Authors,Annotated&gt; {
+    shared String[] names = names;
+}
+
+shared Authors by(String... authors) {
+    return Authors( from (String author in authors) select (author.normalize()) );
 }</programlisting>
     
-        <programlisting>annotation { of=any; }
-shared RelatedElement see(ProgramElement pe) {
-    return Related(pe);
+        <programlisting>shared class RelatedElement(Annotated programElement -> String description)
+        satisfies SequencedAnnotation&lt;RelatedElement,Annotated&gt; {
+    shared Annotated programElement = programElement;
+    shared String description = description;
+}
+
+shared RelatedElement see(Annotated programElement -> String description) {
+    return RelatedElement(programElement -> description.normalize());
 }</programlisting>
     
-        <programlisting>annotation { of=any; }
-shared RelatedElement see(ProgramElement pe -> String description) {
-    return Related(pe, description.normalize());
+        <programlisting>shared class RelatedElements(Annotated... programElements)
+        satisfies OptionalAnnotation&lt;RelatedElements,Annotated&gt; {
+    shared Annotated[] programElements = programElements;
+}
+
+shared RelatedElements seeAlso(Annotated... programElements) {
+    return RelatedElements(programElements);
 }</programlisting>
     
-        <programlisting>annotation { of={classes, methods, attributes}; }
-shared Related throws(Type&lt;Exception&gt; type) {
-    return ThrownException(type);
-}</programlisting>
-        
-        <programlisting>shared ThrownException throws(Type&lt;Exception&gt; type -> String description) {
-    return ThrownException(type, description.normalize());
+        <programlisting>shared class ThrownException(Type&lt;Exception&gt; type -> String description)
+        satisfies SequencedAnnotation&lt;ThrownException,Annotated&gt; {
+    shared Type&lt;Exception&gt; type = type;
+    shared String description = description;
+}
+
+shared ThrownException throws(Type&lt;Exception&gt; type -> String description) {
+    return ThrownException(type -> description.normalize());
 }</programlisting>
 
+        <programlisting>shared class ThrownExceptions(Type&lt;Exception&gt;... types)
+        satisfies OptionalAnnotation&lt;ThrownExceptions,Annotated&gt; {
+    shared Type&lt;Exception&gt;[] types = types;
+}
+
+shared ThrownExceptions throwsAlso(Type&lt;Exception&gt;... types) {
+    return ThrownExceptions(types);
+}</programlisting>
+        
         <comment><para>TODO: Should the documentation annotations be erased by 
         the compiler? Perhaps there should be a compiler switch.</para></comment>
         
