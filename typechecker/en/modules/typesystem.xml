@@ -2446,7 +2446,7 @@ shared deprecated</programlisting>
         <section>
             <title>Annotation types</title>
             
-            <para>The return type of the annotation must be a subtype of the interface 
+            <para>The annotation type of an annotation must be a subtype of the interface 
             <literal>ConstrainedAnnotation</literal> defined in the package 
             <literal>ceylon.language.metamodel</literal>. Any type which is a subtype of 
             <literal>ConstrainedAnnotation</literal> is called an <emphasis>annotation 
@@ -2456,19 +2456,26 @@ shared deprecated</programlisting>
         of OptionalAnnotation<T,C> | SequencedAnnotation<T,C>
         satisfies Annotation<T>
         given T satisfies Annotation<T>
-        given C satisfies Annotated {}]]></programlisting>
+        given C satisfies Annotated {
+    shared Boolean occurs(Annotated programElement) {
+        return programElement is C;
+    }
+}]]></programlisting>
         
             <para>The type arguments of this interface express contraints upon how 
             annotations which return the annotation type occur.</para> 
             
-            <programlisting><![CDATA[shared interface Scope
-        of request | session | application
-        satisfies OptionalAnnotation<Scope,Type<Object>> {}]]></programlisting>
+            <para>There are only two direct subtypes of <literal>ConstrainedAnnotation</literal>:</para>
             
-            <programlisting><![CDATA[shared class Todo(String text)
-        satisfies OptionalAnnotation<Todo,Annotated> {
-    shared actual String string = text;
-}]]></programlisting>
+            <programlisting><![CDATA[shared interface OptionalAnnotation<out T, in C>
+        satisfies ConstrainedAnnotation<T,T?,C>
+        given T satisfies Annotation<T>
+        given C satisfies Annotated {}]]></programlisting>
+               
+            <programlisting><![CDATA[shared interface SequencedAnnotation<out T, in C>
+        satisfies ConstrainedAnnotation<T,T[],C>
+        given T satisfies Annotation<T>
+        given C satisfies Annotated {}]]></programlisting>
             
             <para>If <literal>A</literal> is an annotation type then:</para>
             
@@ -2491,6 +2498,15 @@ shared deprecated</programlisting>
                 </listitem>
             </itemizedlist>
                         
+            <programlisting><![CDATA[shared interface Scope
+        of request | session | application
+        satisfies OptionalAnnotation<Scope,Type<Object>> {}]]></programlisting>
+            
+            <programlisting><![CDATA[shared class Todo(String text)
+        satisfies OptionalAnnotation<Todo,Annotated> {
+    shared actual String string = text;
+}]]></programlisting>
+            
             <para>It is perfectly acceptable for multiple toplevel methods to return the same 
             annotation type.</para>
             
