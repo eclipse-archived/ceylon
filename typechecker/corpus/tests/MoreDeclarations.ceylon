@@ -80,7 +80,7 @@ class MoreDeclarations() {
 	}
 	
 	shared String name { return join(firstName, lastName); } 
-	shared assign name { firstName = first(name); lastName = last(name); }
+	shared assign name { firstName := first(name); lastName := last(name); }
 	
 	
 	shared interface Writer { 
