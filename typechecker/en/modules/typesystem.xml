@@ -2462,7 +2462,7 @@ shared deprecated</programlisting>
     }
 }]]></programlisting>
         
-            <para>The type arguments of this interface express contraints upon how 
+            <para>The type arguments of this interface express constraints upon how 
             annotations which return the annotation type occur.</para> 
             
             <para>There are only two direct subtypes of <literal>ConstrainedAnnotation</literal>:</para>
