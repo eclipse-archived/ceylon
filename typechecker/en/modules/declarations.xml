@@ -2673,79 +2673,7 @@ shared assign name { firstName = first(name); lastName = last(name); }</programl
         </comment>
         
     </section>
-    
-    <section id="annotationconstraints">
-        <title>Annotation constraints</title>
         
-        <para>The following meta-annotations provide information to the compiler about the 
-        annotations upon which they appear. They are applied to a toplevel method declaration 
-        that defines an annotation.</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para><literal>inherited</literal> specifies that the annotation is automatically 
-                inherited by subtypes.</para>
-            </listitem>
-            <listitem>
-                <para><literal>annotation</literal> specifies constraints upon the occurence of 
-                an annotation. By default, an annotation may appear multiple times, but may not
-                occur on any kind of program element.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>The meta-annotation <literal>annotation</literal> accepts the following parameters.</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para><literal>occurs</literal> specifies that the annotation may occur at 
-                most once in a certain scope. Its accepts one argument of type
-                <literal>Occurrence</literal>: <literal>onceEachElement</literal>, 
-                <literal>onceEachType</literal>.</para>
-            </listitem>
-            <listitem>
-                <para><literal>of</literal> specifies the kinds of program element 
-                at which the annotation occurs. Its accepts one or more arguments of type
-                <literal>Element</literal>: 
-                <literal>classes</literal>, <literal>interfaces</literal>,
-                <!--literal>aliases</literal,--> <literal>objects</literal>, 
-                <literal>methods</literal>, <literal>attributes</literal>, 
-                <literal>parameters</literal>, <literal>any</literal>.</para>
-            </listitem>
-            <listitem>
-                <para><literal>withType</literal> specifies that the annotation may only 
-                be applied to types that are assignable to the specified type, to
-                attributes or parameters of the specified type, or to methods with the
-                specified return type.</para>
-            </listitem>
-            <listitem>
-                <para><literal>withParameterTypes</literal> specifies that the annotation 
-                may only be applied to methods with the specified parameter types.</para>
-            </listitem>
-            <listitem>
-                <para><literal>withAnnotation</literal> specifies that the annotation may 
-                only be applied to program elements at which the specified annotation occurs.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <programlisting>shared annotation { 
-    of = classes; 
-    occurs = onceEachType; 
-}
-Entity entity(LockMode lockMode) { 
-    return Entity(lockMode);
-}</programlisting>
-
-        <programlisting>shared annotation { 
-    of = { attributes, parameters }; 
-    withType = String; 
-    occurs = onceEachElement; 
-}
-PatternValidator pattern(Regex regex) { 
-    return PatternValidator(regex);
-}</programlisting>
-            
-    </section>
-    
     <section id="documentation">
         <title>Documentation</title>
     
