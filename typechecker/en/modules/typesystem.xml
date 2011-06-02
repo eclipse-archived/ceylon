@@ -2510,6 +2510,10 @@ shared deprecated</programlisting>
             <para>It is perfectly acceptable for multiple toplevel methods to return the same 
             annotation type.</para>
             
+            <comment><para>TODO: should we let an annotation return multiple instances of an
+            annotation type (<literal>A[]</literal> where <literal>A</literal> is an annotation
+            type).</para></comment>
+            
         </section>
         
         <section>
