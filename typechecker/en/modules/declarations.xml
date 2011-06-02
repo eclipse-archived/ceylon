@@ -1351,12 +1351,17 @@ String escapedSearchString = sql.escape(searchString);</programlisting>
         actual void begin() { ... } 
         actual void close() { ... } 
     };</programlisting>
-        <para>This is can be viewed as regular, following the same pattern as a regular class
-        instantiation, which can be written either as <literal>x = X { ... };</literal> or as
-        <literal>X x { ... }</literal>. Here we're letting you write either 
+        <para>This is can be viewed as regular, following the same pattern as a regular 
+        class instantiation, which can be written either as <literal>x = X { ... };</literal> 
+        or as <literal>X x { ... }</literal>. Here we're letting you write either 
         <literal>x = object satisfies X { ... };</literal> or 
         <literal>object x satisfies X { ... }</literal>.</para>
         </comment>
+        
+        <comment><para>TODO: We could add a built-in type constructor to give access to 
+        the concrete type of an <literal>object</literal>. It would look something like
+        <literal>type&lt;sql&gt;</literal> and in theory you could let it accept any
+        expression, even stuff like <literal>type&lt;foo.x+bar.y&gt;</literal>.</para></comment>
         
     </section>
     
