@@ -120,7 +120,7 @@
       <arg value="-w"/>
       <arg value="${parser.test.dst}"/>
       <fileset dir="${parser.test.src}">
-  <include name="*.ceylon.out"/>
+        <include name="*.ceylon.out"/>
       </fileset>
     </apply>
   </target>
@@ -154,11 +154,12 @@
         </fileset>
       </batchtest>
     </junit>
-  	<junitreport todir="${test.reports}">
-  	  <fileset dir="${test.reports}">
-  	    <include name="TEST-*.xml"/>
-  	  </fileset>
-  	  <report format="frames" todir="${test.reports}"/>
-  	</junitreport>
+ 
+    <junitreport todir="${test.reports}">
+      <fileset dir="${test.reports}">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report format="frames" todir="${test.reports}"/>
+    </junitreport>
   </target>
 </project>
