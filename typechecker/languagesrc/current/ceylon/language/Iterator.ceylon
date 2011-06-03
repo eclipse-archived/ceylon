@@ -1,6 +1,6 @@
-shared interface Iterator<out X> {
+shared interface Iterator<out Element> {
 
-    shared formal X? head;
-    shared formal Iterator<X> tail;
+    shared formal Element? head;
+    shared formal Iterator<Element> tail;
 
 }

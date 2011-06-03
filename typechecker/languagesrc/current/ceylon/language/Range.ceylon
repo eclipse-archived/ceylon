@@ -1,13 +1,13 @@
-shared class Range<X>(X start, X end) 
+shared class Range<Element>(Element start, Element end) 
         extends Object() 
-        satisfies Sequence<X> & Equality & Category
-        given X satisfies Ordinal<X> & Comparable<X> { 
+        satisfies Sequence<Element> & Equality & Category
+        given Element satisfies Ordinal<Element> & Comparable<Element> { 
     
     doc "The start of the range."
-    shared X start = start;
+    shared Element start = start;
     
     doc "The end of the range."
-    shared X end = end;
+    shared Element end = end;
     
     shared Boolean decreasing { return end<start; }
     
@@ -16,11 +16,11 @@ shared class Range<X>(X start, X end)
          incrementing by a constant step size,
          until a value outside the range is
          reached."
-    shared X[] by(Natural stepSize) { 
+    shared Element[] by(Natural stepSize) { 
         throw;
     }
     
-    shared Boolean includes(X x) {
+    shared Boolean includes(Element x) {
         if (decreasing) {
             return x<=start && x>=end;
         }
@@ -29,7 +29,7 @@ shared class Range<X>(X start, X end)
         }
     }
     
-    Boolean pastEnd(X x) {
+    Boolean pastEnd(Element x) {
         if (decreasing) {
             return x<end;
         }
@@ -38,7 +38,7 @@ shared class Range<X>(X start, X end)
         }
     }
     
-    X next (X x) {
+    Element next (Element x) {
         if (decreasing) {
             return x.successor;
         }
@@ -47,14 +47,14 @@ shared class Range<X>(X start, X end)
         }
     }
 
-    /*shared Natural? index(X x) {
+    /*shared Natural? index(Element x) {
         if (!includes(x)) {
             return null;
         }
         else {
             //optimize this for numbers!
             variable Natural index:=0;
-            variable X value:=start;
+            variable Element value:=start;
             while (value<x) {
                 ++index;
                 ++value;
@@ -63,10 +63,10 @@ shared class Range<X>(X start, X end)
         }
     }*/
     
-    shared actual Iterator<X> iterator() {
-        class RangeIterator(X x) 
-                satisfies Iterator<X> {
-            shared actual X? head { 
+    shared actual Iterator<Element> iterator() {
+        class RangeIterator(Element x) 
+                satisfies Iterator<Element> {
+            shared actual Element? head { 
                 if (pastEnd(x)) { 
                     return null;
                 } 
@@ -74,7 +74,7 @@ shared class Range<X>(X start, X end)
                     return x;
                 }
             }
-            shared actual Iterator<X> tail {
+            shared actual Iterator<Element> tail {
                 return RangeIterator(next(x));
             }
         }
@@ -82,7 +82,7 @@ shared class Range<X>(X start, X end)
     }
     
     shared actual Boolean contains(Object obj) {
-        if (is X obj) {
+        if (is Element obj) {
             return includes(obj);
         }
         else {
@@ -91,7 +91,7 @@ shared class Range<X>(X start, X end)
     }
     
     variable Natural index:=0;
-    variable X x:=start;
+    variable Element x:=start;
     while (!pastEnd(x)) {
         ++index;
         x:=next(x);
@@ -100,10 +100,10 @@ shared class Range<X>(X start, X end)
     shared actual Natural size = index;
     shared actual Natural lastIndex { return size-1; }
     
-    shared actual X? value(Natural n) {
+    shared actual Element? value(Natural n) {
         //optimize this for numbers!
         variable Natural index:=0;
-        variable X x:=start;
+        variable Element x:=start;
         while (index<n && !pastEnd(x)) {
             ++index;
             x:=next(x);
@@ -117,7 +117,7 @@ shared class Range<X>(X start, X end)
     }
     
     shared actual Boolean equals(Equality that) {
-        if (is Range<X> that) {
+        if (is Range<Element> that) {
             return that.start==start && that.end==end;
         }
         else {

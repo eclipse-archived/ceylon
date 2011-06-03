@@ -1,5 +1,5 @@
-shared Entry<X,Y>[] zip<X,Y>(X[] xs, Y[] ys)
-        given X satisfies Equality
-        given Y satisfies Equality {
+shared Entry<Key,Value>[] zip<Key,Value>(Key[] keys, Value[] values)
+        given Key satisfies Equality
+        given Value satisfies Equality {
     throw;
 }

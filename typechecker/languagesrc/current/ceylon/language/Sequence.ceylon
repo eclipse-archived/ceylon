@@ -1,17 +1,17 @@
-shared interface Sequence<out X> 
-        //is EnumerableSequence<X>
-        satisfies Correspondence<Natural, X> & Iterable<X> & 
-                  Sized & Cloneable<Sequence<X>> {
+shared interface Sequence<out Element> 
+        //is EnumerableSequence<Element>
+        satisfies Correspondence<Natural, Element> & Iterable<Element> & 
+                  Sized & Cloneable<Sequence<Element>> {
     
     doc "The index of the last element of the sequence."
     shared formal Natural lastIndex;
     
     doc "The first element of the sequence."
-    shared actual formal X first;
+    shared actual formal Element first;
     
     doc "The rest of the sequence, without the first
          element."
-    shared formal X[] rest;
+    shared formal Element[] rest;
 
     shared actual Boolean empty {
         return false;
@@ -22,8 +22,8 @@ shared interface Sequence<out X>
     }
     
     doc "The last element of the sequence."
-    shared default X last {
-        if (exists X x = value(lastIndex)) {
+    shared default Element last {
+        if (exists Element x = value(lastIndex)) {
             return x;
         }
         else {
@@ -31,13 +31,13 @@ shared interface Sequence<out X>
         } 
     }
 
-    shared actual default Iterator<X> iterator() {
+    shared actual default Iterator<Element> iterator() {
         class SequenceIterator(Natural from) 
-                satisfies Iterator<X> {
-            shared actual X? head { 
+                satisfies Iterator<Element> {
+            shared actual Element? head { 
                 return value(from);
             }
-            shared actual Iterator<X> tail {
+            shared actual Iterator<Element> tail {
                 return SequenceIterator(from+1);
             }
         }

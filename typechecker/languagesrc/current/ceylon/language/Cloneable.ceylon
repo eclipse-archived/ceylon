@@ -1,4 +1,4 @@
-shared interface Cloneable<out T>
-        given T satisfies Cloneable<T> {
-    shared formal T clone;
+shared interface Cloneable<out Clone>
+        given Clone satisfies Cloneable<Clone> {
+    shared formal Clone clone;
 }

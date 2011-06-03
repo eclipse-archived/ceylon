@@ -1,7 +1,7 @@
-shared interface Summable<T> 
-        given T satisfies Summable<T> {
+shared interface Summable<Other> 
+        given Other satisfies Summable<Other> {
 
     doc "The binary |+| operator"
-    shared formal T plus(T that);
+    shared formal Other plus(Other that);
     
 }
