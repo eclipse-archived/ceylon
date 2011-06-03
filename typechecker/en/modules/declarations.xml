@@ -773,6 +773,10 @@ TypeConstraints?
         superclass may be invoked, evaluated or assigned anywhere inside the body of the 
         class. The superclass initializer is executed before the subclass initializer.</para>
         
+        <comment><para>TODO: The compiler should try to make the initializer section as
+        large as possible, including everything until the first statement or declaration
+        that violates one of these restrictions. Formalize this!</para></comment>
+        
         <comment><para>Note: these rules work as if the body of the subclass were inserted
         between the initializer and declaration sections of the superclass.</para></comment>
         
@@ -841,10 +845,12 @@ TypeConstraints?
         restriction that a declaration may only be used by code that appears later in the 
         block containing the declaration is relaxed.</para>
         
+        <!--
         <comment><para>TODO: we could perhaps slightly relax the restrictions here. It's 
         probably OK to let you have expression statements and control structures in the 
         second part of the class body, just not specification or initialization 
         statements.</para></comment>
+        -->
         
     </section>
            
