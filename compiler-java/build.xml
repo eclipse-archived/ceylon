@@ -33,9 +33,16 @@
     <pathelement path="${antlr.lib}"/>
   </path>
 
-  <path id="test.classpath">
+  <path id="test.compile.classpath">
     <path refid="compiler.classpath"/>
     <pathelement path="${build.classes}"/>
+    <pathelement path="${junit.lib}"/>
+  </path>
+
+  <path id="test.run.classpath">
+    <path refid="compiler.classpath"/>
+    <pathelement path="${compiler.jar}"/>
+    <pathelement path="${runtime.jar}"/>
     <pathelement path="${junit.lib}"/>
   </path>
 
@@ -48,13 +55,25 @@
   <target name="compiler.classes">
     <mkdir dir="${build.classes}"/>
     <javac
-       srcdir="${javac.src}:${ceylonc.src}:${test.src}"
+       srcdir="${javac.src}:${ceylonc.src}"
        destdir="${build.classes}"
        debug="true"
        classpathref="compiler.classpath">
       <include name="com/redhat/**"/>
       <include name="com/sun/tools/javac/**"/>
       <include name="com/sun/source/**"/>
+    </javac>
+  </target>
+
+  <!-- Rule to build compiler test classes from their Java sources -->
+  <target name="test.classes" depends="compiler.classes,runtime.classes">
+    <mkdir dir="${build.classes}"/>
+    <javac
+       srcdir="${test.src}"
+       destdir="${build.classes}"
+       debug="true"
+       classpathref="test.compile.classpath">
+      <include name="com/redhat/ceylon/compiler/test/**"/>
     </javac>
   </target>
 
@@ -141,10 +160,10 @@
   </target>
 
   <!-- Runs the JUnit tests -->
-  <target name="test" depends="compiler.classes" description="Runs the JUnit tests">
+  <target name="test" depends="test.classes,compiler.jar,runtime.jar" description="Runs the JUnit tests">
     <mkdir dir="${test.reports}"/>
     <junit printsummary="yes" haltonfailure="no">
-      <classpath refid="test.classpath"/>
+      <classpath refid="test.run.classpath"/>
 
       <formatter type="xml"/>
 
