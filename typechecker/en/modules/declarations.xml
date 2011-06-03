@@ -359,8 +359,8 @@ TypeConstraints?
         <programlisting>InterfaceInheritance: CaseTypes? Metatypes? AdaptedTypes? SatisfiedTypes?</programlisting>
         
         <para>To obtain a concrete instance of an interface, it is necessary to define 
-        and instantiate a class that implements the interface, or define an object that
-        implements the interface.</para>
+        and instantiate a class that satisfies the interface, or define an anonymous 
+        class that satisfies the interface.</para>
         
         <!--<section id="interfacebodies">
             <title>Interface bodies</title>-->
@@ -421,7 +421,7 @@ TypeConstraints?
         <section id="interfaceinheritance">
             <title>Interface inheritance</title>
             
-            <para>An interface may extend any number of other interfaces.<!--and may satisfy
+            <para>An interface may satisfy any number of other interfaces.<!--and may satisfy
             a single class--></para>
         
             <programlisting>shared interface List&lt;T&gt;
@@ -431,7 +431,7 @@ TypeConstraints?
         
             <para>The types listed after the <literal>satisfies</literal> keyword are 
             supertypes of the interface type. Every extended type must be an interface. 
-            An interface may not extend the same interface twice (not even with distinct 
+            An interface may not satisfy the same interface twice (not even with distinct 
             type arguments).</para>
             
             <!--At most one supertype of the interface may be a class. The remaining 
@@ -463,7 +463,7 @@ TypeConstraints?
             
             <!--
             <para>An interface inherits every class satisfied by every other interface the 
-            interface extends. There must exist a unique satisfied class that is a subclass
+            interface satisfies. There must exist a unique satisfied class that is a subclass
             of all classes satisfied by the interface.</para>
             -->
             
@@ -471,9 +471,9 @@ TypeConstraints?
             arguments specified in the <literal>satisfies</literal> or <literal>adapts</literal> 
             clause.</para>
             
-            <para>If an interface extends an introduction, the interface must itself be
+            <para>If an interface satisfies an introduction, the interface must itself be
             an introduction, and the adapted type of the interface must be a subtype of 
-            the adapted type of the introduction it extends.</para>
+            the adapted type of the introduction it satisfies.</para>
             
             <!--
             <para>An interface may not inherit two non-<literal>formal</literal> members
@@ -483,7 +483,7 @@ TypeConstraints?
             the member.</para>
             -->
             
-             <para>An interface that extends a nested interface must be a member of the type 
+             <para>An interface that satisfies a nested interface must be a member of the type 
              that declares the nested interface or of a subtype of the type that declares the 
              nested interface.</para>
              
@@ -889,7 +889,7 @@ TypeConstraints?
         <literal>ceylon.language</literal>.
         </para>
         
-        <para>A class may implement any number of interfaces.</para>
+        <para>A class may satisfy any number of interfaces.</para>
 
         <programlisting>class Token() 
         extends Datetime()
@@ -898,7 +898,7 @@ TypeConstraints?
 }</programlisting>
         
         <para>The interfaces listed after the <literal>satisfies</literal> keyword are 
-        supertypes of the class. A class may not implement the same interface twice (not 
+        supertypes of the class. A class may not satisfy the same interface twice (not 
         even with distinct type arguments).</para>
         
         <para>A class:</para>
@@ -914,7 +914,7 @@ TypeConstraints?
             </listitem-->
             <listitem>
                 <para>must declare or inherit a member that refines each 
-                <literal>formal</literal> member of every interface it implements directly 
+                <literal>formal</literal> member of every interface it satisfies directly 
                 or indirectly, unless the class is declared <literal>abstract</literal> or
                 <literal>formal</literal>, and</para>
             </listitem>
@@ -926,17 +926,17 @@ TypeConstraints?
             <!--
             <listitem>
                 <para>must directly or indirectly extend every class satisfied by every 
-                interface it implements directly or indirectly.</para>
+                interface it satisfies directly or indirectly.</para>
             </listitem>
             -->
             <!--listitem>
-                <para>is assignable to any type to which any interface it implements is 
+                <para>is assignable to any type to which any interface it satisfies is 
                 assignable.</para>
             </listitem-->
         </itemizedlist>
         
         <para>The schema of the inherited members is formed by substituting type arguments
-        specified in the <literal>extends</literal> clause.</para>
+        specified in the <literal>extends</literal> or <literal>satisfies</literal> clause.</para>
         
         <!--
         <para>A class may not inherit two non-<literal>formal</literal> members of 
@@ -946,7 +946,7 @@ TypeConstraints?
         the member.</para>
         -->
             
-        <para>If a class implements an introduction, the class must be a subtype of the 
+        <para>If a class satisfies an introduction, the class must be a subtype of the 
         adapted type of the introduction.</para>
             
         <para>The initializer of the superclass of a class is always executed before the 
@@ -968,7 +968,7 @@ TypeConstraints?
          
          <para>A subclass of a nested class must be a member of the type that declares 
          the nested class or of a subtype of the type that declares the nested class. 
-         A class that implements a nested interface must be a member of the type that 
+         A class that satisfies a nested interface must be a member of the type that 
          declares the nested interface or of a subtype of the type that declares the 
          nested interface.</para>
          
@@ -1162,7 +1162,7 @@ TypeConstraints?
             <!--
             <listitem>
                <para>extends the superclass of the member class it refines and 
-               implements all interfaces implemented by the member class it 
+               satisfies all interfaces satisfied by the member class it 
                refines, where the member class it refines is a 
                <literal>formal</literal> member class with no body.</para>
             </listitem>
@@ -1325,7 +1325,7 @@ String escapedSearchString = sql.escape(searchString);</programlisting>
         <comment><para>TODO: I'm increasingly inclined to think that this is backwards:
         a class should be an <literal>object</literal> with parameters. We could rewrite
         this stuff so that a <literal>class</literal> is equivalent to an interface with
-        a typeclass that implements <literal>Callable</literal> and returns a nested 
+        a typeclass that satisfies <literal>Callable</literal> and returns a nested 
         <literal>object</literal>. We might have to make an <literal>object</literal> a 
         type, and give it an uppercase name, and/or let you <literal>extend</literal> an
         <literal>object</literal> but that would end up a little more regular anyway, 
@@ -2417,7 +2417,7 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
             <literal>variable</literal> attribute.</para>
             
             <comment><para>TODO: Is that really allowed? It could break the superclass.
-            Should we say that you are allowed to do it when you implement an interface
+            Should we say that you are allowed to do it when you refine an interface
             attribute, but not when you refine a superclass attribute?</para></comment>
             
             <para>Then evaluation and assignment of the attribute is polymorphic, and 

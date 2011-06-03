@@ -44,7 +44,7 @@
             itself be directly instantiated. An interface may define concrete members, but
             these members may not hold references to other objects. A class may 
             <emphasis>implement</emphasis> one or more interfaces. An instance of a class 
-            that implements an interface is also considered an instance of the interface.</para>
+            that satisfies an interface is also considered an instance of the interface.</para>
         </listitem>
         <listitem>
             <para>A <emphasis>generic type parameter</emphasis> is considered a type
@@ -576,10 +576,10 @@ String? firstWord = words[0];</programlisting>
                 <para>a class may <emphasis>extend</emphasis> another class,</para>
             </listitem>
             <listitem>
-                <para>a class may <emphasis>implement</emphasis> one or more interfaces,</para>
+                <para>a class may <emphasis>satisfy</emphasis> one or more interfaces,</para>
             </listitem>
             <listitem>
-                <para>an interface may <emphasis>extend</emphasis> one or more other interfaces,</para>
+                <para>an interface may <emphasis>satisfy</emphasis> one or more other interfaces,</para>
             </listitem>
             <listitem>
                 <para>an interface may <emphasis>adapt</emphasis> a class and/or one or more 
@@ -672,9 +672,8 @@ String? firstWord = words[0];</programlisting>
     <section id="satisfiedinterfaces">
         <title>Satisfaction</title>
     
-        <para>A class may implement one or more interfaces. An interface may extend one
-        or more interfaces. <!--and satisfy a class --> A type parameter may satisfy one 
-        or more interfaces and, optionally, a class.</para>
+        <para>A class or interface may satisfy one or more interfaces. A type parameter 
+        may satisfy one or more interfaces and, optionally, a class.</para>
         
         <programlisting>SatisfiedTypes: "satisfies" Type ("&amp;" Type)*</programlisting>
     
@@ -709,7 +708,7 @@ String? firstWord = words[0];</programlisting>
         </itemizedlist>
         
         <!--
-        <comment><para>TODO: We could let a class or interface conditionally implement or 
+        <comment><para>TODO: We could let a class or interface conditionally satisfy or 
         extend an interface, called a <emphasis>conditional supertype</emphasis>, depending 
         upon the argument of a type parameter.</para>
         
@@ -1161,7 +1160,7 @@ class StringExpression
         of the language.</para></comment>
         
         <para>A class or interface may optionally specify a list of 
-        <emphasis>metatypes</emphasis>, interfaces implemented by the concrete
+        <emphasis>metatypes</emphasis>, interfaces satisfied by the concrete
         metatype of the type. The metatypes may not define <literal>formal</literal> 
         members.</para>
         
@@ -1276,7 +1275,7 @@ shared class LinkedList<T>(T... elements)
         
         <para>Within the body of the declaration it parameterizes, an ordinary type parameter is 
         itself a type. The type parameter is a subtype of every upper bound of the type parameter. 
-        However, a class or interface may not extend or implement a type parameter.</para>
+        However, a class or interface may not extend or satisfy a type parameter.</para>
         
         <para>A <emphasis>covariant</emphasis> type parameter is indicated using <literal>out</literal>.
         A <emphasis>contravariant</emphasis> type parameter is indicated using <literal>in</literal>.</para>
@@ -2135,7 +2134,7 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         <para>In this case, the member class or method may not be called. Any invocation of 
         the member results in a compiler error.</para>
         
-        <para>A type with an ambiguity may never be extended or implemented by another type.
+        <para>A type with an ambiguity may never be extended or satisfied by another type.
         It may not appear in an <literal>extends</literal>, <literal>satisfies</literal> or
         <literal>abstracts</literal> clause.</para>
         -->

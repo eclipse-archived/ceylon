@@ -1260,7 +1260,7 @@ shared abstract class Comparison()
    
 }]]></programlisting>
         
-        <para><literal>Bounded&lt;#n&gt;</literal> does not implement 
+        <para><literal>Bounded&lt;#n&gt;</literal> does not satisfy 
         <literal>Ordinal</literal>, so the type 
         <literal>Range&lt;Bounded&lt;#n&gt;&gt;</literal> does not exist.
         Instead, the following utility method is provided:</para> 
@@ -1639,7 +1639,7 @@ shared object none {
     <section id="range">
         <title>Ranges</title>
         
-        <para>Ranges implement <literal>Sequence</literal>, therefore they 
+        <para>Ranges satisfy <literal>Sequence</literal>, therefore they 
         support the join, subrange, contains and lookup operators, among 
         others. Ranges may be constructed using the <literal>..</literal> 
         operator:</para> 
@@ -1800,7 +1800,7 @@ while (i<=max) {
  
 }]]></programlisting>
         
-        <para><literal>String</literal> implements <literal>Sequence</literal>, 
+        <para><literal>String</literal> satisfies <literal>Sequence</literal>, 
         and therefore supports the join, subrange, contains and lookup operators, 
         among others. Any <literal>Character[]</literal> may be transparently
         converted to <literal>String</literal>.</para> 
@@ -2087,7 +2087,7 @@ while (i<=max) {
     
 }]]></programlisting>
 
-        <comment><para>TODO: I suppose <literal>Numeric</literal> should not extend
+        <comment><para>TODO: I suppose <literal>Numeric</literal> should not satisfy
         <literal>Comparable</literal>, since complex numbers are not comparable.</para></comment>
 
         <para>The subtype <literal>Integral</literal> supports the binary 
@@ -2710,7 +2710,7 @@ removeSayInterceptor();]]></programlisting>
         to produce a <literal>String</literal> representation of a certain object.
         An expression of type <literal>FormattedObject</literal> may be the target
         of the format operator <literal>$</literal> or may be used in a string
-        template. Classes should not implement <literal>FormattedObject</literal> 
+        template. Classes should not satisfy <literal>FormattedObject</literal> 
         directly. Instead, an extension may decorate a class with a representation
         in a particular format.</para>
         
@@ -3326,7 +3326,7 @@ shared Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
     
 }]]></programlisting>
         
-        <para>Mutable collections implement <literal>OpenCollection</literal>:</para>
+        <para>Mutable collections satisfy <literal>OpenCollection</literal>:</para>
         
         <programlisting><![CDATA[shared interface OpenCollection<X> 
         satisfies OpenCategory<X>, Collection<X> 
@@ -3353,7 +3353,7 @@ shared Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
         <section id="sets">
             <title>Sets</title>
             
-            <para>Sets implement the following interface:</para>
+            <para>Sets satisfy the following interface:</para>
             
             <programlisting><![CDATA[shared interface Set<out X> 
         satisfies Collection<X> 
@@ -3429,7 +3429,7 @@ shared Map<U,V> map<X,U,V>(iterated Iterable<X> elements,
         <section id="lists">
             <title>Lists</title>
             
-            <para>Lists implement the following interface, and support the 
+            <para>Lists satisfy the following interface, and support the 
             operators inherited from <literal>Collection</literal> and 
             <literal>Sequence</literal>:</para>
             
@@ -3653,7 +3653,7 @@ shared List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
         <section id="maps">
             <title>Maps</title>
             
-            <para>Maps implement the following interface:</para>
+            <para>Maps satisfy the following interface:</para>
             
             <comment><para>TODO: is it OK that maps are not contravariant 
             in the key type?</para></comment>
@@ -3724,7 +3724,7 @@ shared List<X> quickSort<X>(List<X> list, Boolean byIncreasing(X x, X y)) {
         <section id="bags">
             <title>Bags</title>
             
-            <para>Bags implement the following interface:</para>
+            <para>Bags satisfy the following interface:</para>
             
             <programlisting><![CDATA[shared interface Bag<out X> 
         satisfies Collection<X> 

@@ -52,11 +52,11 @@
     Ceylon features a similar inheritance and generic type model to Java. A type 
     is either an <emphasis>interface</emphasis>, a <emphasis>class</emphasis>,
     a <emphasis>type parameter</emphasis>, or a <emphasis>union</emphasis> of
-    other types. An interface may extend an arbitrary number of other interfaces. 
-    A class may implement an arbitrary number of interfaces and must extend another 
-    class. A class or interface may declare type parameters. A type parameter 
-    abstracts the definition of a class or interface over all types which can be 
-    substituted for the type parameter.
+    other types. An interface may satisfy (extend) an arbitrary number of other 
+    interfaces. A class may satisfy (implement) an arbitrary number of interfaces 
+    and must extend another class. A class or interface may declare type parameters. 
+    A type parameter abstracts the definition of a class or interface over all 
+    types which can be substituted for the type parameter.
     </para>
     
     <para>
@@ -161,9 +161,9 @@
     
     <para>
     <!--In place of constructor overloading, Ceylon allows class names to be 
-    overloaded. Even better,--> Member classes of a class may be overridden by 
-    subclasses. Instantiation is therefore a polymorphic operation in Ceylon, 
-    eliminating the need for factory methods.
+    overloaded. Even better,--> A member class of a class may be refined
+    (overridden) by a subclass of the class. Instantiation is therefore a 
+    polymorphic operation in Ceylon, eliminating the need for factory methods.
     </para>
     
     <para>
@@ -184,7 +184,8 @@
     However, Ceylon classes do not contain fields, at least not in the traditional 
     sense. Instead, Ceylon supports only a higher-level construct: polymorphic 
     attributes, which are similar to C# properties. Attributes abstract the
-    internal representation of the state of an object.
+    internal representation of the state of an object. An attribute of a class may 
+    be refined (overridden) by a subclass of the class.
     </para>
     
     <para>
@@ -302,7 +303,7 @@
     supported by C and Java. True operator overloading is not supported. 
     However, each operator is defined to act upon a certain class or interface 
     type, allowing application of the operator to any class which extends or 
-    implements that type. This is called <emphasis>operator polymorphism</emphasis>.
+    satisfies that type. This is called <emphasis>operator polymorphism</emphasis>.
     </para>
     
     </section>

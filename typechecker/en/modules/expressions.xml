@@ -2490,7 +2490,7 @@ setPerson(person);</programlisting>
                 + "=" + attribute(obj));
 }]]></programlisting>
         
-        <para>The metamodel object for a class, attribute or method implements 
+        <para>The metamodel object for a class, attribute or method satisfies 
         <literal>Callable</literal> and is therefore invokable.</para>
         
         <programlisting>Class&lt;ArrayList&lt;String&gt;,String[]&gt; arrayListClass = ArrayList&lt;String&gt;;
