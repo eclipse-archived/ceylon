@@ -166,11 +166,6 @@
         <programlisting>99E+3  //Error: floating point literals with an exponent must contain a decimal point</programlisting>
         <programlisting>12_34  //Error: digit groups must be of length three</programlisting>
         
-        <comment><para>TODO: The symbol <literal>.</literal> is also an operator. Are
-        expressions like <literal>1.decimal</literal> and <literal>1.0.whole</literal>
-        allowed, or do we force the use of parentheses as in <literal>(1).decimal</literal> 
-        and <literal>(1.0).whole</literal>?</para></comment>
-        
     </section>
     
     <section id="characterliterals">
