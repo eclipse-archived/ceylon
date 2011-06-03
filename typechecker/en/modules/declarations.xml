@@ -1401,6 +1401,9 @@ shared class Branch&lt;T&gt;(String name, Node&lt;T&gt; left, Node&lt;T&gt; righ
         the class <literal>Case</literal> defined in <literal>ceylon.language</literal>, 
         directly or indirectly.</para>
         
+        <comment><para>TODO: Weaken this somehow to allow <literal>null</literal>
+        to not extend <literal>Case</literal>.</para></comment>
+        
         <para>If a class has an <literal>of</literal> clause, then every subtype 
         of the class must be a subtype of one of the enumerated cases.</para>
         
