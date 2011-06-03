@@ -39,20 +39,20 @@ shared interface Number
     shared formal Natural natural;
     
     doc "The magnitude of the number"
-    shared formal subtype magnitude;
+    shared formal Number magnitude;
     
     doc "1 if the number is positive, -1 if it
          is negative, or 0 if it is zero."
-    shared formal subtype sign;
+    shared formal Number sign;
     
     doc "The fractional part of the number,
          after truncation of the integral
          part"
-    shared formal subtype fractionalPart;
+    shared formal Number fractionalPart;
     
     doc "The integral value of the number 
          after truncation of the fractional
          part"
-    shared formal subtype wholePart;
+    shared formal Number wholePart;
 
 }

@@ -1,9 +1,9 @@
-shared X largest<X>(Sequence<X> xs) 
-        given X satisfies Comparable<X> {
-    variable X max := xs.first;
-    for (X y in xs) { 
-        if (y>max) { 
-            max:=y;
+shared Element largest<Element>(Sequence<Element> sequence) 
+        given Element satisfies Comparable<Element> {
+    variable Element max := sequence.first;
+    for (Element element in sequence) { 
+        if (element>max) { 
+            max:=element;
         }
     }
     return max;

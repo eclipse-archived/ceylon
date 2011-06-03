@@ -1,14 +1,14 @@
-shared abstract class Entry<out U, out V>(U key, V value)
+shared abstract class Entry<out Key, out Value>(Key key, Value value)
         extends Object()
         satisfies Equality
-        given U satisfies Equality
-        given V satisfies Equality {
+        given Key satisfies Equality
+        given Value satisfies Equality {
     
     doc "The key used to access the entry."
-    shared U key = key;
+    shared Key key = key;
     
     doc "The value associated with the key."
-    shared V value = value;
+    shared Value value = value;
     
     shared actual Integer hash = key.hash/2 + value.hash/2; //TODO: really should be xor 
     

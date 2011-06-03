@@ -1,3 +1,3 @@
 doc "An annotation."
-shared interface Annotation<out T> 
-        given T satisfies Annotation<T> {}
+shared interface Annotation<out Value> 
+        given Value satisfies Annotation<Value> {}

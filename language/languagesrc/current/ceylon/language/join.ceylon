@@ -1,1 +1,1 @@
-shared X[] join<X>(X[]... sequences) { throw; }
+shared Element[] join<Element>(Element[]... sequences) { throw; }

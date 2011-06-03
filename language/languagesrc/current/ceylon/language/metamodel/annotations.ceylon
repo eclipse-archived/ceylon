@@ -7,22 +7,25 @@
  * 
  */
 
-shared S annotations<T,S,C>(Type<ConstrainedAnnotation<T,S,C>> annotationType,
-                            C programElement)
-           given T satisfies ConstrainedAnnotation<T,S,C>
-           //given S of (T?) | (T[])
-           given C satisfies Annotated { throw; }
+shared Values annotations<Value,Values,ProgramElement>(
+              Type<ConstrainedAnnotation<Value,Values,ProgramElement>> annotationType,
+              ProgramElement programElement)
+           given Value satisfies ConstrainedAnnotation<Value,Values,ProgramElement>
+           //given Values of (Value?) | (Value[])
+           given ProgramElement satisfies Annotated { throw; }
 
-shared T? optionalAnnotation<T,C>(Type<OptionalAnnotation<T,C>> annotationType,
-                                  C programElement)
-        given T satisfies OptionalAnnotation<T,C>
-        given C satisfies Annotated { 
-    return annotations<T,T?,C>(annotationType, programElement); 
+shared Value? optionalAnnotation<Value,ProgramElement>(
+            Type<OptionalAnnotation<Value,ProgramElement>> annotationType,
+            ProgramElement programElement)
+        given Value satisfies OptionalAnnotation<Value,ProgramElement>
+        given ProgramElement satisfies Annotated { 
+    return annotations<Value,Value?,ProgramElement>(annotationType, programElement); 
 }
 
-shared T[] sequencedAnnotations<T,C>(Type<SequencedAnnotation<T,C>> annotationType,
-                                     C programElement)
-        given T satisfies SequencedAnnotation<T,C>
-        given C satisfies Annotated { 
-    return annotations<T,T[],C>(annotationType, programElement); 
+shared Value[] sequencedAnnotations<Value,ProgramElement>(
+            Type<SequencedAnnotation<Value,ProgramElement>> annotationType,
+            ProgramElement programElement)
+        given Value satisfies SequencedAnnotation<Value,ProgramElement>
+        given ProgramElement satisfies Annotated { 
+    return annotations<Value,Value[],ProgramElement>(annotationType, programElement); 
 }

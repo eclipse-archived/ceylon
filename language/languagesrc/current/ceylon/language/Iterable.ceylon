@@ -1,16 +1,16 @@
-shared interface Iterable<out X> 
+shared interface Iterable<out Element> 
         satisfies Container {
     
     doc "A sequence of objects belonging
          to the container."
-    shared formal Iterator<X> iterator();
+    shared formal Iterator<Element> iterator();
     
     shared actual default Boolean empty {
         return !(first exists);
     }
     
     doc "The first object."
-    shared default X? first {
+    shared default Element? first {
         return iterator().head;
     }
 

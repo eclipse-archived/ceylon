@@ -1,6 +1,6 @@
-shared interface Comparable<in T> 
+shared interface Comparable<in Other> 
         satisfies Equality
-        given T satisfies Comparable<T> {
+        given Other satisfies Comparable<Other> {
     
     doc "The binary compare operator |<=>|. Compares this 
          object with the given object. Implementations must
@@ -8,25 +8,25 @@ shared interface Comparable<in T>
          |x<=>y == Comparison.equal|, the constraint that 
          if |x>y| then |y<x|, and the constraint that if 
          |x>y| and |y>z| then |x>z|."
-    shared formal Comparison compare(T other);
+    shared formal Comparison compare(Other other);
     
     doc "The binary |>| operator."
-    shared Boolean largerThan(T other) {
+    shared Boolean largerThan(Other other) {
         return compare(other)==larger;
     }
     
     doc "The binary |<| operator."
-    shared Boolean smallerThan(T other) {
+    shared Boolean smallerThan(Other other) {
         return compare(other)==smaller;
     }
     
     doc "The binary |>=| operator."
-    shared Boolean asLargeAs(T other) {
+    shared Boolean asLargeAs(Other other) {
         return compare(other)!=smaller;
     }
     
     doc "The binary |<=| operator."
-    shared Boolean asSmallAs(T other) {
+    shared Boolean asSmallAs(Other other) {
         return compare(other)!=larger;
     }
     
