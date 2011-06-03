@@ -492,18 +492,20 @@ try (lock) { ... }</programlisting>
             or attribute getter,</listitem>
             <listitem>the <literal>break</literal> directive&mdash;to terminate a loop,</listitem>
             <listitem>the <literal>continue</literal> directive&mdash;to jump to the next iteration 
-            of a loop,</listitem>
-            <listitem>the <literal>throw</literal> directive&mdash;to raise an exception, and</listitem>
+            of a loop, and</listitem>
+            <listitem>the <literal>throw</literal> directive&mdash;to raise an exception.</listitem>
+            <!--
             <listitem>the <literal>retry</literal> directive&mdash;to re-execute a <literal>try</literal> 
             block, reinitializing all resources.</listitem>
+            -->
         </itemizedlist>
                 
-        <programlisting>Directive: Return | Throw | Break | Continue | Retry</programlisting>
+        <programlisting>Directive: Return | Throw | Break | Continue</programlisting>
 
         <para>For example:</para>
         
         <programlisting>throw Exception();</programlisting>
-        <programlisting>retry;</programlisting>
+        <!--programlisting>retry;</programlisting-->
         <programlisting>return x+y;</programlisting>
         <programlisting>return "Hello";</programlisting>
         <programlisting>break;</programlisting>
@@ -541,18 +543,24 @@ try (lock) { ... }</programlisting>
         
         <programlisting>Throw: "throw" Expression?</programlisting>
         
+        <!--
         <comment><para>TODO: Crazy idea: let <literal>...</literal> be a shortcut for
         <literal>throw NotYetImplemented();</literal>. Too cute?</para></comment>
+        -->
         
+        <!--
         <para>A <literal>retry</literal> directive may not appear outside of a
         <literal>catch</literal> block.</para>
         
         <programlisting>Retry: "retry"</programlisting>
+        -->
         
         <!--comment><para>TODO: We could support <literal>for/fail</literal> loops 
         that return a value by supporting a <literal>found expr</literal> directive. 
         We could support conditionals that return a value by adding a 
         <literal>then expr</literal> directive.</para></comment-->
+        
+        <comment><para>TODO: should we have a <literal>retry</literal> directive?</para></comment>
         
         </section>
         
@@ -1444,6 +1452,8 @@ finally {
     }
 }</programlisting>
 
+<!--
+
             <para>The <literal>retry</literal> directive re-evaluates the resource 
             expression, if any, and then re-executes the <literal>try</literal> block, 
             calling <literal>begin()</literal> and <literal>end()</literal>/<literal>abort()</literal> 
@@ -1462,7 +1472,8 @@ catch (TransactionTimeoutException e) {
         throw e;
     }
 }</programlisting>
-                
+
+-->
         </section>
          
     </section>

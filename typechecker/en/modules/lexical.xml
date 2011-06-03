@@ -106,7 +106,7 @@
         assign void subtype local
         of extends satisfies adapts abstracts
         in out
-        return break continue throw retry
+        return break continue throw
         if else switch case for fail do while try catch finally
         this outer super
         is exists nonempty
