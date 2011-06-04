@@ -175,9 +175,8 @@ public class ClassGen extends GenPart {
         return classDef;
     }
 
-    private int convertDeclFlags(Tree.ClassOrInterface cdecl) {
+    private int convertDeclFlags(Tree.Declaration cdecl) {
         int result = 0;
-
 
         result |= isShared(cdecl) ? PUBLIC : 0;
 
@@ -424,29 +423,32 @@ public class ClassGen extends GenPart {
         return result;
     }
 
-    private boolean hasCompilerAnnotation(Tree.Declaration decl, com.sun.tools.javac.code.Type annotationType) {
+    private boolean hasCompilerAnnotation(Tree.Declaration decl, String annotation) {
         if (decl.getAnnotationList() == null)
             return false;
         for (Tree.Annotation a : decl.getAnnotationList().getAnnotations()) {
             if (!(a.getPrimary() instanceof Tree.Member))
                 throw new RuntimeException("Invalid annotation primary: " + a.getPrimary().getNodeType());
             Tree.Member member = (Tree.Member) a.getPrimary();
-            if (gen.isSameType(member.getIdentifier(), annotationType))
+            if (member.getIdentifier().getText().equals(annotation))
                 return true;
         }
         return false;
     }
 
     private boolean isExtension(Tree.Declaration decl) {
-        return hasCompilerAnnotation(decl, syms().ceylonExtensionType);
+        // FIXME
+        return hasCompilerAnnotation(decl, "extension");
     }
 
-    private boolean isShared(Tree.ClassOrInterface cdecl) {
-        return hasCompilerAnnotation(cdecl, syms().ceylonSharedType);
+    private boolean isShared(Tree.Declaration cdecl) {
+        // FIXME
+        return hasCompilerAnnotation(cdecl, "shared");
     }
 
     private boolean isMutable(Tree.AttributeDeclaration decl) {
-        return decl.getSpecifierOrInitializerExpression() instanceof Tree.InitializerExpression;
+        // FIXME
+        return hasCompilerAnnotation(decl, "variable");
     }
 
     private JCTypeParameter convert(Tree.TypeParameterDeclaration param) {
