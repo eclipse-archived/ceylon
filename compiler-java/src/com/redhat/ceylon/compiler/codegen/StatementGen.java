@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.codegen;
 
 import static com.sun.tools.javac.code.Flags.FINAL;
 
+import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.TypeTags;
@@ -22,7 +23,7 @@ public class StatementGen extends GenPart {
         super(gen);
     }
 
-    class StatementVisitor extends Visitor {
+    class StatementVisitor extends Visitor implements NaturalVisitor {
         final ListBuffer<JCStatement> stmts;
         final Tree.ClassOrInterface cdecl;
 
