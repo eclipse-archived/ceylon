@@ -425,7 +425,7 @@ TypeConstraints?
             a single class--></para>
         
             <programlisting>shared interface List&lt;Element&gt;
-        satisfies Sequence&lt;T&gt; &amp; Collection&lt;Element&gt; 
+        satisfies Sequence&lt;Element&gt; &amp; Collection&lt;Element&gt; 
         given Element satisfies Equality {
     ...
 }</programlisting>

@@ -1166,7 +1166,7 @@ if (Element satisfies Comparable&lt;Element&gt;) {
 
             <para>Or, even better:</para>
             
-            <programlisting>shared Value join&lt;T&gt;(Value x, Value y) 
+            <programlisting>shared Value join&lt;Value&gt;(Value x, Value y) 
         given Value of String | Integer {
     switch (Value)
     case (satisfies String) { 

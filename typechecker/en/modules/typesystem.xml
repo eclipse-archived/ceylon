@@ -1812,7 +1812,7 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
         which can be expressed using metatypes are more elegantly expressed using
         parameterized type parameters:</para>
         
-        <programlisting><![CDATA[Many<T> join<Many<X>,Element>(Many<Element>... sequences)
+        <programlisting><![CDATA[Many<Element> join<Many<X>,Element>(Many<Element>... sequences)
         given Many<X>(X... elements) satisfies Sequence<X> 
         given Element satisfies Equality<Element>
         given X satisfies Equality<X> {
