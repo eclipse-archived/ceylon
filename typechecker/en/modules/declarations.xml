@@ -381,15 +381,15 @@ TypeConstraints?
         <para>Unlike the body of a class, method, or attribute, the body of an interface
         is not executable, and does not directly contain procedural code.</para>
 
-        <programlisting>shared interface Comparable&lt;T&gt; {
+        <programlisting>shared interface Comparable&lt;Other&gt; {
     
-    shared formal Comparison compare(T other);
+    shared formal Comparison compare(Other other);
     
-    shared Boolean greaterThan(T other) {
+    shared Boolean greaterThan(Other other) {
         return compare(other)==larger;
     }
     
-    shared Boolean lessThan(T other) {
+    shared Boolean lessThan(Other other) {
         return compare(other)==smaller;
     }
     
@@ -424,8 +424,9 @@ TypeConstraints?
             <para>An interface may satisfy any number of other interfaces.<!--and may satisfy
             a single class--></para>
         
-            <programlisting>shared interface List&lt;T&gt;
-        satisfies Sequence&lt;T&gt; &amp; Collection&lt;T&gt; {
+            <programlisting>shared interface List&lt;Element&gt;
+        satisfies Sequence&lt;T&gt; &amp; Collection&lt;Element&gt; 
+        given Element satisfies Equality {
     ...
 }</programlisting>
         
@@ -439,10 +440,10 @@ TypeConstraints?
             
             <para>An interface may adapt any number of interfaces, and at most one class.</para>
             
-            <programlisting>shared interface SequenceList&lt;T&gt;
-        adapts Sequence&lt;T&gt;
-        satisfies List&lt;T&gt; 
-        given T satisfies Equality {
+            <programlisting>shared interface SequenceList&lt;Element&gt;
+        adapts Sequence&lt;Element&gt;
+        satisfies List&lt;Element&gt; 
+        given Element satisfies Equality {
     ...
 }</programlisting>
             
@@ -495,7 +496,8 @@ TypeConstraints?
         <para>The <literal>of</literal> clause of an interface declaration specifies the 
         list of cases of the interface.</para>
         
-        <programlisting>shared interface Node&lt;T&gt; of Root&lt;T&gt; | Branch&lt;T&gt; | Leaf&lt;T&gt; { ... }</programlisting>
+        <programlisting>shared interface Node&lt;Element&gt; 
+        of Root&lt;Element&gt; | Branch&lt;Element&gt; | Leaf&lt;Element&gt; { ... }</programlisting>
         
         <para>The cases may be interfaces, classes, or toplevel anonymous classes. A case 
         may be an <literal>abstract</literal> class. Each case must be a subtype of the
@@ -525,7 +527,7 @@ TypeConstraints?
         
         <programlisting>shared interface PeopleByName = Map&lt;String,Person&gt;;</programlisting>
         
-        <programlisting>interface Compare&lt;T&gt; = Callable&lt;Comparison,T,T&gt;;</programlisting>
+        <programlisting>interface Compare&lt;Value&gt; = Callable&lt;Comparison,Value,Value&gt;;</programlisting>
                 
         <para>Interface aliases are not reified types. The metamodel reference for an 
         interface alias&mdash;for example, <literal>PeopleByName</literal>&mdash;returns 
@@ -1384,14 +1386,14 @@ String escapedSearchString = sql.escape(searchString);</programlisting>
 shared object true extends Boolean() {}
 shared object false extends Boolean() {}</programlisting>
 
-        <programlisting>shared abstract class Node&lt;T&gt;(String name) 
-        of Branch&lt;T&gt; | Leaf&lt;T&gt; { ... }
+        <programlisting><![CDATA[shared abstract class Node<Element>(String name) 
+        of Branch<Element> | Leaf<Element> { ... }
         
-shared class Leaf&lt;T&gt;(String name, T value) 
-        extends Node&lt;T&gt;(name) { ... }
+shared class Leaf<Element>(String name, Element value) 
+        extends Node<Element>(name) { ... }
         
-shared class Branch&lt;T&gt;(String name, Node&lt;T&gt; left, Node&lt;T&gt; right) 
-        extends Node&lt;T&gt;(name) { ... }</programlisting>
+shared class Branch<Element>(String name, Node<Element> left, Node<Element> right) 
+        extends Node<Element>(name) { ... }]]></programlisting>
                 
         <para>The cases may be classes or toplevel anonymous classes. A case may 
         be an <literal>abstract</literal> class. Each case must be a subclass of 
@@ -1653,14 +1655,14 @@ shared choice TransactionPropagationStyle
     }
 }</programlisting>
 
-        <programlisting>shared void addEntry(V key -> U value) {
+        <programlisting>shared void addEntry(Key key -> Value value) {
     map.define(key,value);
 }</programlisting>
 
-        <programlisting>shared Set&lt;T&gt; singleton&lt;T&gt;(T element) 
-        given T satisfies Comparable&lt;T&gt; {
+        <programlisting><![CDATA[shared Set<Element> singleton<Element>(Element element) 
+        given Element satisfies Comparable<Element> {
     return TreeSet(element);
-}</programlisting>
+}]]></programlisting>
         
         <!--
         <programlisting>shared Float[n] float&lt;#n&gt;(Decimal[n] decimals) {
@@ -1943,7 +1945,7 @@ Void goodbye() {
             <para>A method annotated <literal>formal</literal> may not specify an
             implementation (a block, specifier, or named argument list).</para>
         
-            <programlisting>shared formal U? get(V key);</programlisting>
+            <programlisting>shared formal Value? get(Key key);</programlisting>
             
             <para>A toplevel method may not be annotated <literal>formal</literal> and 
             must have a method implementation (a block of code, or a reference to another 

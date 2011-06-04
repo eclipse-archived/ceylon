@@ -848,13 +848,13 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         method using <literal>=</literal>. The expression type must be assignable to the 
         callable type of the method being defined.</para>
         
-        <programlisting>Comparison order&lt;X&gt;(X x, X y) = reverse;</programlisting>
+        <programlisting>Comparison order&lt;Value&gt;(Value x, Value y) = reverse;</programlisting>
         
         <programlisting>void display(String message) = log.info;</programlisting>
         
         <programlisting>String newString(Character... chars) = String;</programlisting>
         
-        <programlisting>void print&lt;T&gt;(T val) given T of String | Integer | Float = printer.print;</programlisting>
+        <programlisting>void print&lt;Value&gt;(Value value) given Value of String | Integer | Float = printer.print;</programlisting>
         <programlisting>void printStr(String string) = printer.print&lt;String&gt;;</programlisting>
         
         </section>
@@ -1267,13 +1267,13 @@ local comp = order(1,-1);</programlisting>
 }</programlisting>
         
         <programlisting>{ 
-    Comparison by(X x, X y) { return x&lt;=&gt;y; } 
+    Comparison by(Value x, Value y) { return x&lt;=&gt;y; } 
 }</programlisting>
 
         <para>This is simpler using type inference:</para>
 
         <programlisting>{ 
-    local by(X x, X y) { return x&lt;=&gt;y; } 
+    local by(Value x, Value y) { return x&lt;=&gt;y; } 
 }</programlisting>
 
         <comment><para>TODO: should the named argument list be allowed to contain arbitrary 
@@ -1525,7 +1525,7 @@ local comp = order(1,-1);</programlisting>
         outside the parentheses in method and class definitions, in order to better respect the 
         intended invocation syntax? For example:</para>
         <programlisting>shared void assert(Gettable&lt;String&gt; message) Boolean that { ... }</programlisting>
-        <programlisting>shared Y when&lt;Y&gt;(Boolean condition) Y then Y otherwise { ... }</programlisting>
+        <programlisting>shared Value when&lt;Value&gt;(Boolean condition) Value then Value otherwise { ... }</programlisting>
         <programlisting>shared void repeat(Natural repetitions) void times(Natural i) { ... }</programlisting>
         </comment>
         
@@ -1577,9 +1577,9 @@ using() resource satisfies Usable {
         
         <para>For example, for the following method declaration:</para>
         
-        <programlisting>shared List&lt;Y&gt; from&lt;X,Y&gt;(iterated Iterable&lt;X&gt; elements, 
-                         Boolean where(coordinated X x),
-                         Y select(coordinated X x));</programlisting>
+        <programlisting>shared List&lt;Result&gt; from&lt;Element,Result&gt;(iterated Iterable&lt;Element&gt; elements, 
+                                         Boolean where(coordinated Element x),
+                                         Result select(coordinated Element x));</programlisting>
                   
         <para>We may invoke the method as follows:</para>
                   
@@ -1607,9 +1607,9 @@ using() resource satisfies Usable {
         
         <comment><para>TODO: would a declaration which more closely reflects the invocation 
         syntax be easier to understand, something like this, for example:</para>
-        <programlisting>shared List&lt;Y&gt; from&lt;X,Y&gt;(X x in Iterable&lt;X&gt; elements)
-               Boolean where(coordinated X x)
-               Y select(coordinated X x);</programlisting></comment>
+        <programlisting>shared List&lt;Result&gt; from&lt;Element,Result&gt;(Element x in Iterable&lt;Element&gt; elements)
+                                         Boolean where(coordinated Element x)
+                                         Result select(coordinated Element x);</programlisting></comment>
                 
         </section>
         
@@ -1632,9 +1632,10 @@ using() resource satisfies Usable {
         
         <para>For example, for the following method declaration:</para>
         
-        <programlisting>shared Y with&lt;X,Y&gt;(specified X? value, 
-                   Y then(coordinated X x), 
-                   Y otherwise());</programlisting>
+        <programlisting>
+shared Result with&lt;Value,Result&gt;(specified Value? value, 
+                                 Result then(coordinated Value x), 
+                                 Result otherwise());</programlisting>
                   
         <para>We may invoke the method as follows:</para>
                   
@@ -1646,9 +1647,9 @@ using() resource satisfies Usable {
         
         <para>And for the following method declaration:</para>
         
-        <programlisting>shared Y using&lt;X,Y&gt;(specified X resource, 
-                    Y seek(coordinated X x))
-    given X satisfies Usable;</programlisting>
+        <programlisting>shared Result using&lt;Resource,Result&gt;(specified Resource resource, 
+                                     Result seek(coordinated Resource x))
+        given Resource satisfies Usable;</programlisting>
                   
         <para>We may invoke the method as follows:</para>
                   
@@ -1665,9 +1666,9 @@ using() resource satisfies Usable {
         
         <comment><para>TODO: would a declaration which more closely reflects the invocation 
         syntax be easier to understand, something like this, for example:</para>
-        <programlisting>shared Y with&lt;X,Y&gt;(X x = X? value) 
-     Y then(coordinated X x)
-     Y otherwise;</programlisting></comment>
+        <programlisting>shared Result with&lt;Resource,Result&gt;(Resource x = Resource? value) 
+                                    Result then(coordinated Resource x)
+                                    Result otherwise;</programlisting></comment>
                 
         </section>
         

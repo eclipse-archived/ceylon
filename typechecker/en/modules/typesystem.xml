@@ -79,7 +79,7 @@
         </listitem>
         <listitem>
             <para>What is the type of an local that may or may not hold a value of 
-            type <literal>T</literal>?</para>
+            type <literal>Element</literal>?</para>
         </listitem>
         <listitem>
             <para>What is the type of a parameter that accepts either a <literal>String</literal>
@@ -106,7 +106,7 @@
     </itemizedlist>
     
     <para>The answers, as we shall discover, are: <literal>Void</literal>, 
-    <literal>Nothing|T</literal>, <literal>String|String[]</literal>,
+    <literal>Nothing|Element</literal>, <literal>String|String[]</literal>,
     <literal>Method&lt;Object,Void,Float,Float&gt;</literal>,
     <literal>Gettable&lt;String&gt;</literal> and 
     <literal>Class&lt;Renderer,Callable&lt;String,Object&gt;&gt;</literal>.</para>
@@ -485,7 +485,7 @@
         parameter, no type argument list may be specified.</para>
         
         <programlisting>BufferedReader.Buffer</programlisting>
-        <programlisting>Entry&lt;Natural,T&gt;</programlisting>
+        <programlisting>Entry&lt;Natural,Element&gt;</programlisting>
         
         <comment><para>TODO: Should we allow the abbreviation <literal>Sequence&lt;&gt;</literal>
         meaning <literal>Sequence&lt;Object&gt;</literal> for covariant types, and 
@@ -681,7 +681,7 @@ String? firstWord = words[0];</programlisting>
         a satisfied type is a parameterized type, the <literal>satisfies</literal> clause 
         must specify type arguments.</para>
         
-        <programlisting>satisfies Sequence&lt;T&gt; &amp; Collection&lt;T&gt;</programlisting>
+        <programlisting>satisfies Sequence&lt;Element&gt; &amp; Collection&lt;Element&gt;</programlisting>
         
         <para>Suppose <literal>Y</literal> is an interface and <literal>X</literal> is
         a class or interface.</para>
@@ -828,7 +828,7 @@ shared interface ElementwiseEquality
         a satisfied type is a parameterized type, the <literal>satisfies</literal> 
         clause must specify type arguments.</para>
         
-        <programlisting>adapts Iterable&lt;T&gt; &amp; Correspondence&lt;Natural, T&gt;</programlisting>
+        <programlisting>adapts Iterable&lt;Element&gt; &amp; Correspondence&lt;Natural,Element&gt;</programlisting>
         
         <para>Each adapted types must be class or interface. At most one adapted 
         type may be a class.</para>
@@ -972,7 +972,7 @@ shared interface ElementwiseEquality
         
         <programlisting>of larger | smaller | equal</programlisting>
         
-        <programlisting>of Root&lt;T&gt; | Leaf&lt;T&gt; | Branch&lt;T&gt;</programlisting>
+        <programlisting>of Root&lt;Element&gt; | Leaf&lt;Element&gt; | Branch&lt;Element&gt;</programlisting>
         
         <para>An explicit list of cases allows safe use of a type in a 
         <literal>switch</literal> statement. The compiler is able to validate that 
@@ -1061,16 +1061,16 @@ shared interface ElementwiseEquality
         are not part of the parameterized type schema <literal>A&lt;T&gt;</literal>.</para>
         
         <para>In the following example, the generalized algebraic datatype has 
-        more than one case for each value of <literal>T</literal>:</para>
+        more than one case for each value of <literal>Value</literal>:</para>
         
-        <programlisting><![CDATA[interface Expression<T> 
-        of Constant<T> | Sum | Product | Conjunction | Disjunction
-        given T of Number | Boolean { ... }
+        <programlisting><![CDATA[interface Expression<Value> 
+        of Constant<Value> | Sum | Product | Conjunction | Disjunction
+        given Value of Number | Boolean { ... }
         
-class Constant<T>(T value) 
+class Constant<Value>(Value value) 
         extends Case($value)
-        satisfies Expression<T> 
-        given T of Number | Boolean { ... }
+        satisfies Expression<Value> 
+        given Value of Number | Boolean { ... }
 
 class Sum(Expression<Number>... terms) 
         satisfies Expression<Number> { ... }
@@ -1106,15 +1106,15 @@ class Disjunction(Expression<Boolean>... terms)
         -->
         
         <para>In this example, the generalized algebraic datatype has exactly 
-        one case for each value of <literal>T</literal>:</para>
+        one case for each value of <literal>Value</literal>:</para>
         
-        <programlisting><![CDATA[interface Expression<T>
-        of NumericExpression<T> | BooleanExpression | StringExpression
-        given T of Number | Boolean | String { ... }
+        <programlisting><![CDATA[interface Expression<Value>
+        of NumericExpression<Value> | BooleanExpression | StringExpression
+        given Value of Number | Boolean | String { ... }
         
-class NumericExpression<T>
-        satisfies Expression<T>
-        given T satisfies Number { ... }
+class NumericExpression<Value>
+        satisfies Expression<Value>
+        given Value satisfies Number { ... }
 
 class BooleanExpression
         satisfies Expression<Boolean> { ... }
@@ -1128,7 +1128,7 @@ class StringExpression
         
         <para>Then the type <literal>Expression&lt;String&gt;</literal> has the
         attributes <literal>uppercase</literal> and <literal>lowercase</literal>,
-        even though the parameterized type <literal>Expression&lt;T&gt;</literal>
+        even though the parameterized type <literal>Expression&lt;Value&gt;</literal>
         does not declare these members.</para>
         
         <!--  
@@ -1143,12 +1143,12 @@ class StringExpression
         <para>TODO: Actually, a potentially better syntax for GADTs would make the 
         conditions explicit:</para>
         
-        <programlisting><![CDATA[interface Expression<T> 
+        <programlisting><![CDATA[interface Expression<Value> 
         of Constant<Number> | Sum | Product 
-                if (T satisfies Number)
+                if (Value satisfies Number)
         of Constant<Boolean> | Conjunction | Disjunction 
-                if (T satisfies Boolean)
-        given T of Number | Boolean { ... }]]></programlisting>
+                if (Value satisfies Boolean)
+        given Value of Number | Boolean { ... }]]></programlisting>
         </comment>
         
     </section>
@@ -1173,39 +1173,39 @@ class StringExpression
         class of the object to which the expression <literal>T</literal> evaluates.
         The name of this class is not specified here.</para>
         
-        <programlisting>is Monoid&lt;T&gt;</programlisting>
+        <programlisting>is Monoid&lt;String&gt;</programlisting>
         
         <para>Metatypes allow a function to operate polymorphically over the 
         metamodel object that represents a type. For example, a library could
         define the following generic functionality:</para>
         
-        <programlisting><![CDATA[shared interface Joinable<S> {
-    shared formal S empty;
-    shared formal S join(S x, S y); 
+        <programlisting><![CDATA[shared interface Joinable<Value> {
+    shared formal Value empty;
+    shared formal Value join(Value x, Value y); 
 }
 
-shared S join<S>(S... sequences)
-        given S is Joinable<S> {
-    S result := S.empty;
-    for (S s in sequences) {
-        result := S.join(result,s);
+shared Value join<Value>(Value... sequences)
+        given Value is Joinable<Value> {
+    Value result := Value.empty;
+    for (Value s in sequences) {
+        result := Value.join(result,s);
     }
     return result;
 }]]></programlisting>
 
         <para>Which could be utilized as follows:</para>
 
-<programlisting><![CDATA[shared interface JoinableLinkedList<T> 
-        satisfies Joinable<LinkedList<T>> {
-    shared actual LinkedList<T> empty = LinkedList<T>();
-    shared actual LinkedList<T> join(LinkedList<T> x, LinkedList<T> y) {
+<programlisting><![CDATA[shared interface JoinableLinkedList<Element> 
+        satisfies Joinable<LinkedList<Element>> {
+    shared actual LinkedList<Element> empty = LinkedList<Element>();
+    shared actual LinkedList<Element> join(LinkedList<Element> x, LinkedList<Element> y) {
         return x.append(y);
     }
 }
 
-shared class LinkedList<T>(T... elements) 
-        is JoinableLinkedList<T> 
-        satisfies List<T> { ... }]]></programlisting>
+shared class LinkedList<Element>(Element... elements) 
+        is JoinableLinkedList<Element> 
+        satisfies List<Element> { ... }]]></programlisting>
         
     </section>
         
@@ -1262,7 +1262,21 @@ shared class LinkedList<T>(T... elements)
         </listitem>
         </itemizedlist>
         -->
-                
+        
+        <comment><para>Note: by convention, the type parameter names should be constructed from
+        meaningful words. The use of single-letter type parameter names is discouraged. The name
+        of a type parameter should be chosen so that declarations within the body of the 
+        parameterized declaration read naturally. For example, 
+        <literal>class Entry&lt;Key,Value&gt;</literal> is reasonable, since
+        <literal>Key key</literal> and <literal>Value value</literal> read naturally within the
+        body of the <literal>Entry</literal> class.</para>
+        <para>The following identifier names usually refer to a type parameter: 
+        <literal>Element</literal>, <literal>Other</literal>, <literal>Key</literal>, 
+        <literal>Value</literal>, <literal>Argument</literal>
+        and <literal>Result</literal>. Avoid, where reasonable, using these names for interfaces 
+        and classes.</para>
+        </comment>
+        
         <section id="typeparametersandvariance">
             <title>Type parameters and variance</title>
         
@@ -1285,13 +1299,13 @@ shared class LinkedList<T>(T... elements)
         <para>A type parameter declared neither <literal>out</literal> nor <literal>in</literal> 
         is called <emphasis>invariant</emphasis>.</para>
         
-        <programlisting>Map&lt;K, V&gt;</programlisting>
+        <programlisting>Map&lt;Key, Value&gt;</programlisting>
         
-        <programlisting>Sender&lt;in M&gt;</programlisting>
+        <programlisting>Sender&lt;in Message&gt;</programlisting>
         
-        <programlisting>Container&lt;out T&gt;</programlisting>
+        <programlisting>Container&lt;out Element&gt;</programlisting>
         
-        <programlisting>BinaryFunction&lt;in X, in Y, out R&gt;</programlisting>
+        <programlisting>BinaryFunction&lt;in Left, in Right, out Result&gt;</programlisting>
         
         <comment><para>TODO: Would <literal>produces</literal> and <literal>consumes</literal> 
         be better?</para></comment>
@@ -1406,9 +1420,9 @@ shared class LinkedList<T>(T... elements)
         
         <para>Sequenced type parameters are always non-variant.</para>
         
-        <programlisting>Type&lt;X, P...&gt;</programlisting>
-        <programlisting>Method&lt;X, T, P...&gt;</programlisting>
-        <programlisting>Tuple&lt;P...&gt;</programlisting>
+        <programlisting>ConcreteClass&lt;Value, Argument...&gt;</programlisting>
+        <programlisting>Method&lt;Value, Result, Argument...&gt;</programlisting>
+        <programlisting>Tuple&lt;Element...&gt;</programlisting>
         
         <para>Inside the declaration of the parameterized type or method, a sequenced type 
         parameter may be used as a type argument to other types which accept a sequenced 
@@ -1423,15 +1437,15 @@ shared class LinkedList<T>(T... elements)
         sequenced type parameter, and say that method parameter types are contravariant?</para></comment>
         
         <comment><para>TODO: should we let you write things like:</para>
-        <programlisting>class Foo&lt;P...&gt;(Tuple&lt;Bar&lt;P&gt;...&gt; barTup) {
+        <programlisting><![CDATA[class Foo<Element...>(Tuple<Bar<Element>...> barTup) {
     ...
-    void baz(Baz&lt;P&gt;... bazs) {
+    void baz(Baz<Element>... bazs) {
         ...
     }
-}</programlisting>
+}]]></programlisting>
         <para>It's probably only really useful if we also let you do stuff like this:</para>
-        <programlisting><![CDATA[List<T> zip<T,P...>(List<P>... x, T producing(P... args)) {
-    return from (Natural i in 0..min(x.lastIndex...)) select (f(x[i]...));
+        <programlisting><![CDATA[List<Result> zip<Result,Argument...>(List<Argument>... args, Result producing(Argument... args)) {
+    return from (Natural i in 0..min(x.lastIndex...)) select (producing(args[i]...));
 }]]></programlisting></comment>
 
         </section>
@@ -1498,38 +1512,38 @@ shared class LinkedList<T>(T... elements)
         together with an initialization parameter specification. If multiple upper bounds
         are specified, at most one upper bound may be a class.</para>
         
-        <programlisting>given T(Natural n) satisfies IdentifiableObject &amp; Comparable&lt;T&gt;</programlisting>
+        <programlisting><![CDATA[given Value(Natural n) satisfies IdentifiableObject & Comparable<Value>]]></programlisting>
         
-        <programlisting>given X satisfies Number&lt;X&gt;
-given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
+        <programlisting><![CDATA[given Value satisfies Numberic<Value>
+given Result(Natural count) satisfies Numeric<Result>]]></programlisting>
        
-        <programlisting>given S satisfies Correspondence&lt;K,Decimal&gt;</programlisting>
+        <programlisting><![CDATA[given Quantities satisfies Correspondence<Key,Decimal>]]></programlisting>
 
-        <programlisting>given T satisfies Ordinal &amp; Comparable&lt;T&gt; abstracts X</programlisting>
+        <programlisting><![CDATA[given Other satisfies Ordinal & Comparable<Other> abstracts Element]]></programlisting>
         
-        <programlisting>given N is Monoid&lt;N&gt;</programlisting>
+        <programlisting><![CDATA[given Value is Monoid<Value>]]></programlisting>
         
-        <programlisting>given T of String | Natural | Integer | Float</programlisting>
+        <programlisting><![CDATA[given Argument of String | Natural | Integer | Float]]></programlisting>
         
         <para>An initialization parameter specification allows instantiation of the type 
         represented by the type parameter within the body of the declaration.</para>
         
-        <programlisting><![CDATA[T create<T>(Object object) 
-        given T(String s) { 
-    return T(object.string.lowercase);
+        <programlisting><![CDATA[Result create<Result>(Object object) 
+        given Result(String s) { 
+    return Result(object.string.lowercase);
 }]]></programlisting>
         
         <para>An enumerated bound allows the use of an exhaustive <literal>switch</literal>
         with expressions of the parameter type.</para>
         
-        <programlisting><![CDATA[T uppercase<T>(T t) 
-        given T of String | Range<Character> { 
-    switch (T)
+        <programlisting><![CDATA[Characters uppercase<Characters>(Characters chars) 
+        given Characters of String | Range<Character> { 
+    switch (Characters)
     case (satisfies String) { 
-        return t.uppercase;
+        return chars.uppercase;
     }
     case (satisfies Range<Character>) { 
-        return t.first.uppercase..t.last.uppercase;
+        return chars.first.uppercase..chars.last.uppercase;
     }
 }]]></programlisting>
         
@@ -1613,8 +1627,8 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         
         <comment><para>TODO: Should we let you declare a constraint for a sequenced type 
         parameter?</para>
-        <programlisting>class Foo&lt;P...&gt;(P... args) 
-        given P satisfies Comparable&lt;P&gt; {
+        <programlisting>class Foo&lt;Argument...&gt;(Argument... args) 
+        given Argument satisfies Comparable&lt;Argument&gt; {
     ...
 }</programlisting></comment>
 
@@ -1641,7 +1655,7 @@ given Y(Natural count) satisfies Number&lt;Y&gt;</programlisting>
         of the type, and may only appear in covariant positions of the type definition.
         It is upper bounded by the type (and is therefore assignable to the type).</para>
         
-        <programlisting><![CDATA[shared interface Wrapper<out X> {}]]></programlisting>
+        <programlisting><![CDATA[shared interface Wrapper<out Value> {}]]></programlisting>
         
         <programlisting><![CDATA[shared abstract class Wrappable() {
    shared Wrapper<subtype> wrap() {
@@ -1749,7 +1763,7 @@ shared interface Successor&lt;out N&gt; satisfies Dimension given N satisfies Di
         constraint of form <literal>given X&lt;T&gt;</literal>, which specifies that the 
         type parameter is itself a parameterized type.</para>
             
-        <programlisting>given M&lt;T&gt;(T... elements) satisfies Iterable&lt;T&gt;</programlisting>
+        <programlisting>given Container&lt;Element&gt;(Element... elements) satisfies Iterable&lt;Element&gt;</programlisting>
     
         <para>The parameters of a parameterized type parameter may themselves have 
         constraints. These constraints are be defined in the same list of type
@@ -1762,28 +1776,30 @@ shared interface Successor&lt;out N&gt; satisfies Dimension given N satisfies Di
         <para>A parameterized type parameter appears as a produced type (with type 
         arguments) in the body of the declaration.</para>
         
-        <programlisting><![CDATA[R<Entry<U,V>> entry<R<T>,U,V>(R<U> u, R<V> v) 
-        given R<T>(T x) satisfies Reference<T> {
-    return R(u.value->v.value);
+        <programlisting><![CDATA[Indirect<Entry<Key,Value>> entry<Indirect<X>,Key,Value>(Indirect<Key> key, Indirect<Value> value) 
+        given Indirect<X>(X x) satisfies Reference<X> {
+    return Indirect(key.value->value.value);
 }]]></programlisting>
 
         <para>Note that the argument to a parameterized type parameter is not, strictly
         speaking, a type. Rather, it is a parameterized type&mdash;a <emphasis>type
         constructor</emphasis>. For example, in the following, <literal>WeakReference</literal> 
-        is viewed as a function from types <literal>T</literal> to produced types 
-        <literal>WeakReference&lt;T&gt;</literal>:</para>
+        is viewed as a function from types <literal>Anything</literal> to produced types 
+        <literal>WeakReference&lt;Anything&gt;</literal>:</para>
         
         <programlisting><![CDATA[WeakReference<Person> person = ... ;
 WeakReference<Org> org = ... ;
-WeakReference<Entry<Person,Org>> e = entry(person, org);  //infers X==WeakReference, U==Person, V==Org]]></programlisting>
+WeakReference<Entry<Person,Org>> e = entry(person, org);  //infers Indirect==WeakReference, Key==Person, Value==Org]]></programlisting>
         
         <para>Parameterized type parameters allow functions to operate generically 
         over "container" types:</para>
                 
-        <programlisting><![CDATA[M<U> map<M<T>,U,V>(U function(V v), M<V> inputs)
-        given M<T>() satisfies Iterable<T> & Addable<T> {
-    variable M<U> outputs := M<U>();
-    for (V input in inputs) {
+        <programlisting><![CDATA[Many<Result> map<Many<X>,Argument,Result>(
+            Result function(Argument arg), 
+            Many<Argument> inputs)
+        given Many<X>() satisfies Iterable<X> & Addable<X> {
+    variable Many<Result> outputs := Many<Result>();
+    for (Argument input in inputs) {
         outputs.=add(function(input));
     }
     return outputs;
@@ -1796,11 +1812,11 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
         which can be expressed using metatypes are more elegantly expressed using
         parameterized type parameters:</para>
         
-        <programlisting><![CDATA[S<T> join<S<E>,T>(S<T>... sequences)
-        given S<E>(E... es) satisfies Sequence<E> 
-        given E satisfies Equality<E>
-        given T satisfies Equality<T> {
-    return S(joinSequences(sequences));
+        <programlisting><![CDATA[Many<T> join<Many<X>,Element>(Many<Element>... sequences)
+        given Many<X>(X... elements) satisfies Sequence<X> 
+        given Element satisfies Equality<Element>
+        given X satisfies Equality<X> {
+    return Many(joinSequences(sequences));
 }]]></programlisting>
         
         <comment><para>Note: support for type constructors as type arguments of 
@@ -1824,14 +1840,14 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
         <para>Should we allow these type constructors as arguments to a 
         parameterized type parameter?</para>
         
-        <programlisting><![CDATA[Comparison compare<S<X>,T>(S<T> x, S<T> y)
-        given S<X> satisfies Sequence<X> | X
-        given T satisfies PartlyComparable<T> {
-    switch (S<T>)
-    case (T) {
+        <programlisting><![CDATA[Comparison compare<Many<X>,Other>(Many<Other> x, Many<Other> y)
+        given Many<X> satisfies Sequence<X> | X
+        given Other satisfies PartlyComparable<Other> {
+    switch (Many<Other>)
+    case (Other) {
         return x<=>y;
     }
-    case (T[]) {
+    case (Sequence<Other>) {
         for (local i in 0..min(x.size,y.size)) {
             Comparison c = x[i]<=>y[i];
             switch (c)
@@ -1852,15 +1868,15 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
         <para>Note that <literal>given S&lt;X&gt; satisfies Sequence&lt;X&gt; | X</literal> is a way of writing
         <literal>given S&lt;X&gt; satisfies Sequence&lt;X&gt; | id&lt;X&gt;</literal>. A second example:</para>
         
-        <programlisting><![CDATA[X<T> findByKey<X<E>,T,K>(Type<T> type, X<K> keys)
-        given X<E> of E | E[]
-        given K satisfies Equality<K> {
+        <programlisting><![CDATA[Many<Result> findByKey<Many<E>,Result,Key>(Type<Result> type, Many<Key> keys)
+        given Many<E> of E | E[]
+        given Key satisfies Equality<Key> {
     ...
 }]]></programlisting>
         <programlisting>Person p = findByKey(Person, personId);</programlisting>
         <programlisting>Order[] orders = findByKey(Order, orderIds);</programlisting>
-        <programlisting><![CDATA[T[] findManyByIntegerKey<T>(Type<T> type, Integer[] keys) = findByKey<Sequence,T,Integer>;
-T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>;]]></programlisting>
+        <programlisting><![CDATA[Result[] findManyByIntegerKey<Result>(Type<Result> type, Integer[] keys) = findByKey<Sequence,Result,Integer>;
+Result findSingleByIntegerKey<Result>(Type<Result> type, Integer key) = findByKey<id,Result,Integer>;]]></programlisting>
 <para>Or we could keep it simple :-)</para>
         </comment>
         
@@ -1911,7 +1927,7 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         <programlisting>Map&lt;Key, List&lt;Item&gt;&gt;</programlisting>
         <programlisting>Entry&lt;String,Person?&gt;</programlisting>
         <programlisting>Stack&lt;Frame&gt;.Entry</programlisting>
-        <programlisting>Callable&lt;X,T,P...&gt;</programlisting>
+        <programlisting>Callable&lt;Value,Result,Argument...&gt;</programlisting>
         <programlisting>Callable&lt;String[],Object...&gt;</programlisting>
         
         <!--
@@ -2110,7 +2126,7 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
         <para>A reference to a sequenced type parameter in a type argument list results 
         in a tuple parameter in a parameter list.</para>
         
-        <programlisting>Method&lt;String, String, P...&gt;</programlisting>
+        <programlisting>Method&lt;String, String, Argument...&gt;</programlisting>
 
         <comment><para>TODO: should we let you fill in the parameter names, so you can 
         call this thing using named arguments?
@@ -2160,9 +2176,9 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
             </listitem>
             <listitem>
                 <para>testing the runtime value of an instance against a type parameter,
-                for example <literal>x is T</literal>, or against a type with a type 
+                for example <literal>x is Key</literal>, or against a type with a type 
                 parameter as an argument, for example, 
-                <literal>objectList is List&lt;T&gt;</literal>,</para>
+                <literal>objectList is List&lt;Element&gt;</literal>,</para>
             </listitem>
             <listitem>
                 <para>obtaining a <literal>Type</literal> object representing a type with 
@@ -2170,9 +2186,9 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
             </listitem>
             <listitem>
                 <para>obtaining a <literal>Type</literal> object representing the runtime 
-                value of a type parameter, for example, <literal>T</literal>, or of a 
-                type with a type parameter as an argument, for example, 
-                <literal>List&lt;T&gt;</literal>,</para>
+                value of a type parameter, for example, <literal>Element</literal>, or of 
+                a type with a type parameter as an argument, for example, 
+                <literal>List&lt;Element&gt;</literal>,</para>
             </listitem>
             <listitem>
                 <para>obtaining a <literal>Type</literal> object representing the
@@ -2181,7 +2197,7 @@ T findSingleByIntegerKey<T>(Type<T> type, Integer key) = findByKey<id,T,Integer>
             </listitem>
             <listitem>
                 <para>instantiating a type parameter with an initialization parameter
-                specification, for example, <literal>T(parent)</literal>.</para>
+                specification, for example, <literal>Result(parent)</literal>.</para>
             </listitem>
             <!--
             <listitem>
@@ -2296,7 +2312,7 @@ SequencedParam?
             
         <programlisting>(String label, void onClick())</programlisting>
         
-        <programlisting>(Comparison by(X x, X y))</programlisting>
+        <programlisting>(Comparison by(Value x, Value y))</programlisting>
         
         <para>A callable parameter declaration is equivalent to a parameter declaration with 
         no parameter lists where the type is the callable type of the method declaration. So 
@@ -2304,7 +2320,7 @@ SequencedParam?
         
         <programlisting>(String label, Callable&lt;Object&gt; onClick)</programlisting>
         
-        <programlisting>(Callable&lt;Comparison,X,X&gt; by)</programlisting>
+        <programlisting>(Callable&lt;Comparison,Value,Value&gt; by)</programlisting>
         
         </section>
         
@@ -2357,7 +2373,7 @@ SequencedParam?
         
         <programlisting>(Name name, Organization? org=null, Address... addresses)</programlisting>
         
-        <programlisting>(T instance, P... args)</programlisting>
+        <programlisting>(Value instance, Argument... args)</programlisting>
         
         </section>
         
@@ -2451,13 +2467,13 @@ shared deprecated</programlisting>
             <literal>ConstrainedAnnotation</literal> is called an <emphasis>annotation 
             type</emphasis>.</para>
             
-            <programlisting><![CDATA[shared interface ConstrainedAnnotation<out T, out S, in C>
-        of OptionalAnnotation<T,C> | SequencedAnnotation<T,C>
-        satisfies Annotation<T>
-        given T satisfies Annotation<T>
-        given C satisfies Annotated {
+            <programlisting><![CDATA[shared interface ConstrainedAnnotation<out Value, out Values, in ProgramElement>
+        of OptionalAnnotation<Value,ProgramElement> | SequencedAnnotation<Value,ProgramElement>
+        satisfies Annotation<Value>
+        given Value satisfies Annotation<Value>
+        given ProgramElement satisfies Annotated {
     shared Boolean occurs(Annotated programElement) {
-        return programElement is C;
+        return programElement is ProgramElement;
     }
 }]]></programlisting>
         
@@ -2466,15 +2482,15 @@ shared deprecated</programlisting>
             
             <para>There are only two direct subtypes of <literal>ConstrainedAnnotation</literal>:</para>
             
-            <programlisting><![CDATA[shared interface OptionalAnnotation<out T, in C>
-        satisfies ConstrainedAnnotation<T,T?,C>
-        given T satisfies Annotation<T>
-        given C satisfies Annotated {}]]></programlisting>
+            <programlisting><![CDATA[shared interface OptionalAnnotation<out Value, in ProgramElement>
+        satisfies ConstrainedAnnotation<Value,Value?,ProgramElement>
+        given Value satisfies Annotation<Value>
+        given ProgramElement satisfies Annotated {}]]></programlisting>
                
-            <programlisting><![CDATA[shared interface SequencedAnnotation<out T, in C>
-        satisfies ConstrainedAnnotation<T,T[],C>
-        given T satisfies Annotation<T>
-        given C satisfies Annotated {}]]></programlisting>
+            <programlisting><![CDATA[shared interface SequencedAnnotation<out T, in ProgramElement>
+        satisfies ConstrainedAnnotation<Value,Value[],ProgramElement>
+        given Value satisfies Annotation<Value>
+        given ProgramElement satisfies Annotated {}]]></programlisting>
             
             <para>If <literal>A</literal> is an annotation type then:</para>
             
@@ -2490,10 +2506,10 @@ shared deprecated</programlisting>
                     at a given program element.</para>
                 </listitem>
                 <listitem>
-                    <para>If <literal>A</literal> is a subtype of <literal>OptionalAnnotation&lt;A,C&gt;</literal>,
-                    or <literal>SequencedAnnotation&lt;A,C&gt;</literal> then an annotation 
+                    <para>If <literal>A</literal> is a subtype of <literal>OptionalAnnotation&lt;A,P&gt;</literal>,
+                    or <literal>SequencedAnnotation&lt;A,P&gt;</literal> then an annotation 
                     of annotation type <literal>A</literal> may not occur at a program element
-                    whose metamodel expression type is not assignable to <literal>C</literal>.</para>
+                    whose metamodel expression type is not assignable to <literal>P</literal>.</para>
                 </listitem>
             </itemizedlist>
                         
