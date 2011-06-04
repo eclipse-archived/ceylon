@@ -469,7 +469,7 @@ public class ClassGen extends GenPart {
             }
         }
 
-        int modifiers = FINAL;
+        int modifiers = isMutable(decl) ? 0 : FINAL;
         List<JCStatement> result = List.<JCStatement> of(at(decl).VarDef(at(decl).Modifiers(modifiers, langAnnotations.toList()), names().fromString(decl.getIdentifier().getText()), type, initialValue));
 
         if (annotations.length() > 0) {
