@@ -39,6 +39,7 @@ public class ClassGen extends GenPart {
     public JCClassDecl convert(final Tree.ClassOrInterface cdecl) {
         final ListBuffer<JCVariableDecl> params = new ListBuffer<JCVariableDecl>();
         final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
+        final ListBuffer<JCTree> attributeDefs = new ListBuffer<JCTree>();
         final ListBuffer<JCStatement> annotations = new ListBuffer<JCStatement>();
         final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
         final ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
@@ -55,7 +56,7 @@ public class ClassGen extends GenPart {
 
             public void visit(Tree.Parameter param) {
                 JCVariableDecl var = at(cdecl).VarDef(make().Modifiers(0), names().fromString(tempName()), gen.convert(param.getType()), null);
-                JCVariableDecl localVar = at(cdecl).VarDef(make().Modifiers(0), names().fromString(param.getIdentifier().getText()), gen.convert(param.getType()), null);
+                JCVariableDecl localVar = at(cdecl).VarDef(make().Modifiers(FINAL), names().fromString(param.getIdentifier().getText()), gen.convert(param.getType()), null);
                 params.append(var);
                 defs.append(localVar);
                 initStmts.append(at(param).Exec(at(param).Assign(makeSelect("this", localVar.getName().toString()), at(param).Ident(var.getName()))));
@@ -85,6 +86,7 @@ public class ClassGen extends GenPart {
             // Tree.AttributeDeclaration
             public void visit(Tree.AttributeDeclaration mem) {
                 for (JCStatement def : convert(cdecl, mem)) {
+                    attributeDefs.append(def);
                     if (def instanceof JCVariableDecl && ((JCVariableDecl) def).init != null) {
                         JCVariableDecl decl = (JCVariableDecl) def;
                         Name name = decl.name;
@@ -170,7 +172,7 @@ public class ClassGen extends GenPart {
         if (cdecl instanceof Tree.AnyInterface)
             mods |= INTERFACE;
 
-        addGettersAndSetters(defs);
+        addGettersAndSetters(attributeDefs);
         
         JCClassDecl classDef = at(cdecl).ClassDef(at(cdecl).Modifiers(mods, langAnnotations.toList()), 
                 names().fromString(cdecl.getIdentifier().getText()),
