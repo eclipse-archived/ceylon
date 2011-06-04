@@ -1263,19 +1263,17 @@ shared class LinkedList<Element>(Element... elements)
         </itemizedlist>
         -->
         
-        <comment><para>Note: by convention, the type parameter names should be constructed from
-        meaningful words. The use of single-letter type parameter names is discouraged. The name
-        of a type parameter should be chosen so that declarations within the body of the 
-        parameterized declaration read naturally. For example, 
+        <comment><para>Note: by convention, type parameter names should be constructed from
+        meaningful words. The use of single-letter type parameter names is discouraged. The 
+        name of a type parameter should be chosen so that declarations within the body of 
+        the parameterized declaration read naturally. For example, 
         <literal>class Entry&lt;Key,Value&gt;</literal> is reasonable, since
-        <literal>Key key</literal> and <literal>Value value</literal> read naturally within the
-        body of the <literal>Entry</literal> class.</para>
-        <para>The following identifier names usually refer to a type parameter: 
-        <literal>Element</literal>, <literal>Other</literal>, <literal>Key</literal>, 
-        <literal>Value</literal>, <literal>Argument</literal>
-        and <literal>Result</literal>. Avoid, where reasonable, using these names for interfaces 
-        and classes.</para>
-        </comment>
+        <literal>Key key</literal> and <literal>Value value</literal> read naturally within 
+        the body of the <literal>Entry</literal> class. The following identifier names 
+        usually refer to a type parameter: <literal>Element</literal>, <literal>Other</literal>, 
+        <literal>Key</literal>, <literal>Value</literal>, <literal>Argument</literal> and 
+        <literal>Result</literal>. Avoid, where reasonable, using these names for interfaces 
+        and classes.</para></comment>
         
         <section id="typeparametersandvariance">
             <title>Type parameters and variance</title>
