@@ -455,9 +455,11 @@ public class ClassGen extends GenPart {
             type = gen.optionalType(type);
         }
         JCExpression innerType = type;
-        if (isMutable(decl)) {
+        /* FIXME: disabled until we know what to do with it
+         if (isMutable(decl)) {
             type = gen.mutableType(type);
         }
+        */
 
         if (initialValue == null) {
             if (!isMutable(decl))
