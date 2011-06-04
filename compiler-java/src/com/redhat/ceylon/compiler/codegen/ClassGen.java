@@ -178,27 +178,8 @@ public class ClassGen extends GenPart {
     private int convertDeclFlags(Tree.ClassOrInterface cdecl) {
         int result = 0;
 
-        /* Standard Java flags.
-         * 
-         * public static final int PUBLIC = 1<<0; public static final int
-         * PRIVATE = 1<<1; public static final int PROTECTED = 1<<2; public
-         * static final int STATIC = 1<<3; public static final int FINAL = 1<<4;
-         * public static final int SYNCHRONIZED = 1<<5; public static final int
-         * VOLATILE = 1<<6; public static final int TRANSIENT = 1<<7; public
-         * static final int NATIVE = 1<<8; public static final int INTERFACE =
-         * 1<<9; public static final int ABSTRACT = 1<<10; public static final
-         * int STRICTFP = 1<<11; */
 
-        /* Standard Ceylon flags
-         * 
-         * public static final int PUBLIC = 1 << 0; public static final int
-         * DEFAULT = 1 << 1; public static final int PACKAGE = 1 << 2; public
-         * static final int ABSTRACT = 1 << 3; public static final int MODULE =
-         * 1 << 4; public static final int OPTIONAL = 1 << 5; public static
-         * final int MUTABLE = 1 << 6; public static final int EXTENSION = 1 <<
-         * 7; */
-
-        result |= (isShared(cdecl)) ? PUBLIC : 0;
+        result |= isShared(cdecl) ? PUBLIC : 0;
 
         return result;
     }
