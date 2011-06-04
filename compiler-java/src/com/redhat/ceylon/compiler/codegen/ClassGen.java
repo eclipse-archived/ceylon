@@ -170,7 +170,12 @@ public class ClassGen extends GenPart {
         if (cdecl instanceof Tree.AnyInterface)
             mods |= INTERFACE;
 
-        JCClassDecl classDef = at(cdecl).ClassDef(at(cdecl).Modifiers(mods, langAnnotations.toList()), names().fromString(cdecl.getIdentifier().getText()), processTypeConstraints(cdecl.getTypeConstraintList(), typeParams.toList()), superclass, satisfies.toList(), defs.toList());
+        addGettersAndSetters(defs);
+        
+        JCClassDecl classDef = at(cdecl).ClassDef(at(cdecl).Modifiers(mods, langAnnotations.toList()), 
+                names().fromString(cdecl.getIdentifier().getText()),
+                processTypeConstraints(cdecl.getTypeConstraintList(), typeParams.toList()), 
+                superclass, satisfies.toList(), defs.toList());
 
         return classDef;
     }
@@ -181,6 +186,52 @@ public class ClassGen extends GenPart {
         result |= isShared(cdecl) ? PUBLIC : 0;
 
         return result;
+    }
+
+    private void addGettersAndSetters(final ListBuffer<JCTree> defs) {
+        class GetterVisitor extends JCTree.Visitor {
+            @Override
+            public void visitVarDef(JCVariableDecl that) {
+                defs.add(makeGetter(that));
+                if((that.mods.flags & FINAL) == 0)
+                    defs.add(makeSetter(that));
+            }
+            @Override
+            public void visitMethodDef(JCMethodDecl that) {
+            }
+        }
+        JCTree.Visitor v = new GetterVisitor();
+        for(JCTree def : defs){
+            def.accept(v);
+        }
+    }
+
+    private JCTree makeGetter(JCVariableDecl that) {
+        // FIXME: add at() calls?
+        JCBlock body = make().Block(0, List.<JCTree.JCStatement>of(make().Return(make().Select(makeIdent("this"), that.name))));
+        return make().MethodDef(make().Modifiers(0), names().fromString("get"+upperCase(that.name)), 
+                that.vartype, List.<JCTree.JCTypeParameter>nil(), 
+                List.<JCTree.JCVariableDecl>nil(), 
+                List.<JCTree.JCExpression>nil(), 
+                body, null);
+    }
+
+    private JCTree makeSetter(JCVariableDecl that) {
+        // FIXME: add at() calls?
+        JCBlock body = make().Block(0, List.<JCTree.JCStatement>of(
+                make().Exec(
+                        make().Assign(make().Select(makeIdent("this"), that.name),
+                                makeIdent(that.name.toString())))));
+        return make().MethodDef(make().Modifiers(0), names().fromString("set"+upperCase(that.name)), 
+                makeIdent("void"), 
+                List.<JCTree.JCTypeParameter>nil(), 
+                List.<JCTree.JCVariableDecl>of(make().VarDef(make().Modifiers(0), that.name, that.vartype, null)), 
+                List.<JCTree.JCExpression>nil(), 
+                body, null);
+    }
+
+    private String upperCase(Name name) {
+        return Character.toUpperCase(name.charAt(0)) + name.subSequence(1, name.len).toString();
     }
 
     // Rewrite a list of Ceylon-style type constraints into Java trees.
