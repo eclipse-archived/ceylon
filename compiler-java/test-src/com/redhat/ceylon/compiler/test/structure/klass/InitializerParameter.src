@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.test.structure.klass;
 
 class InitializerParameter extends .ceylon.language.Object {
-    String f;
+    final String f;
     
     InitializerParameter(String $ceylontmp0) {
         this.f = $ceylontmp0;

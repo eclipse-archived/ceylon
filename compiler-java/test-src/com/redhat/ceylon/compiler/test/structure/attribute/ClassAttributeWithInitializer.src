@@ -6,4 +6,8 @@ class ClassAttributeWithInitializer extends .ceylon.language.Object {
     ClassAttributeWithInitializer() {
         f = .ceylon.language.String.instance("");
     }
+    
+    String getF() {
+        return this.f;
+    }
 }

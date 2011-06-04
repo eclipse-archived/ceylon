@@ -1,1 +1,17 @@
-// FIXME
+package com.redhat.ceylon.compiler.test.structure.attribute;
+
+class ClassVariable extends .ceylon.language.Object {
+    String f;
+    
+    ClassVariable() {
+        f = null;
+    }
+    
+    String getF() {
+        return this.f;
+    }
+    
+    void setF(String f) {
+        this.f = f;
+    }
+}
