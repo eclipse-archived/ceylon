@@ -305,8 +305,11 @@ public class ClassGen extends GenPart {
         if (gen.isOptional(decl.getType()))
             restype = gen.optionalType(restype);
 
-        JCMethodDecl meth = at(decl).MethodDef(make().Modifiers(PUBLIC, jcAnnotations.toList()), names().fromString(decl.getIdentifier().getText()), restype, processTypeConstraints(decl.getTypeConstraintList(), typeParams.toList()), params.toList(), List.<JCExpression> nil(), body.thing(), null);
-        ;
+        int mods = convertDeclFlags(decl);
+        JCMethodDecl meth = at(decl).MethodDef(make().Modifiers(mods, jcAnnotations.toList()), 
+                names().fromString(decl.getIdentifier().getText()), 
+                restype, processTypeConstraints(decl.getTypeConstraintList(), typeParams.toList()), 
+                params.toList(), List.<JCExpression> nil(), body.thing(), null);
 
         if (annotations.length() > 0) {
             // FIXME: Method annotations.
