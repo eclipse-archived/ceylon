@@ -73,4 +73,8 @@ public class StructureTest extends CompilerTest {
     public void testClassAttributeGetter(){
         compareWithJavaSource("attribute/ClassAttributeGetter");
     }
+    @Test
+    public void testClassAttributeGetterSetter(){
+        compareWithJavaSource("attribute/ClassAttributeGetterSetter");
+    }
 }

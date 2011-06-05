@@ -1,0 +1,14 @@
+package com.redhat.ceylon.compiler.test.structure.attribute;
+
+class ClassAttributeGetterSetter extends .ceylon.language.Object {
+    
+    String getF() {
+        return .ceylon.language.String.instance("");
+    }
+    
+    void setF(String f) {
+    }
+    
+    ClassAttributeGetterSetter() {
+    }
+}
