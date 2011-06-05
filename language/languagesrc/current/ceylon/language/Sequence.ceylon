@@ -31,15 +31,8 @@ shared interface Sequence<out Element>
         } 
     }
     
-    shared actual default Boolean defines(Natural... indices) {
-        for (Natural index in indices) {
-            if (index>lastIndex) {
-                return false;
-            }
-        }
-        fail {
-            return true;
-        }
+    shared actual default Boolean defines(Natural index) {
+        return index<=lastIndex;
     }
     
     //this depends on efficient implementation of rest
