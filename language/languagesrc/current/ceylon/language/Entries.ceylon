@@ -8,11 +8,13 @@ shared interface Entries<Key, out Value>
 shared Entries<Natural,Element> entries<Element>(Element... sequence) 
         given Element satisfies Equality {
     
-    object sequenceEntries 
+    object sequenceEntries
+            extends Object()
             satisfies Entries<Natural,Element> {
         
         shared actual Iterator<Entry<Natural,Element>> iterator {
             class EntryIterator(Natural from) 
+                    extends Object()
                     satisfies Iterator<Entry<Natural,Element>> {
                 shared actual Entry<Natural,Element>? head {
                     if (exists Element x = sequence[from]) {
