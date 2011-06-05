@@ -178,7 +178,7 @@ public class ClassGen extends GenPart {
         if (cdecl instanceof Tree.AnyInterface)
             mods |= INTERFACE;
 
-        addGettersAndSetters(attributeDefs);
+        addGettersAndSetters(defs, attributeDefs);
         
         JCClassDecl classDef = at(cdecl).ClassDef(at(cdecl).Modifiers(mods, langAnnotations.toList()), 
                 names().fromString(cdecl.getIdentifier().getText()),
@@ -206,7 +206,7 @@ public class ClassGen extends GenPart {
         return result;
     }
 
-    private void addGettersAndSetters(final ListBuffer<JCTree> defs) {
+    private void addGettersAndSetters(final ListBuffer<JCTree> defs, ListBuffer<JCTree> attributeDefs) {
         class GetterVisitor extends JCTree.Visitor {
             @Override
             public void visitVarDef(JCVariableDecl that) {
@@ -219,7 +219,7 @@ public class ClassGen extends GenPart {
             }
         }
         JCTree.Visitor v = new GetterVisitor();
-        for(JCTree def : defs){
+        for(JCTree def : attributeDefs){
             def.accept(v);
         }
     }
