@@ -31,7 +31,7 @@ shared interface Sequence<out Element>
         } 
     }
 
-    shared actual default Iterator<Element> iterator() {
+    shared actual default Iterator<Element> iterator {
         class SequenceIterator(Natural from) 
                 satisfies Iterator<Element> {
             shared actual Element? head { 

@@ -35,9 +35,9 @@ shared abstract class String()
         return characters.size;
     }
     
-    shared actual Iterator<Character> iterator() {
+    shared actual Iterator<Character> iterator {
         if (nonempty characters) { //should not be necessary!
-            return characters.iterator();
+            return characters.iterator;
         }
         else {
             return emptyIterator;

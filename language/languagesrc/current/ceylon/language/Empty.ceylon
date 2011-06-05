@@ -19,7 +19,7 @@ shared interface Empty
     shared actual Boolean empty { 
         return true; 
     }
-    shared actual Iterator<Bottom> iterator() {
+    shared actual Iterator<Bottom> iterator {
         return emptyIterator;
     }
     shared actual Nothing value(Natural key) {

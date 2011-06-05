@@ -38,7 +38,7 @@ shared class Range<Element>(Element start, Element end)
         }
     }
     
-    Element next (Element x) {
+    Element next(Element x) {
         if (decreasing) {
             return x.successor;
         }
@@ -63,7 +63,7 @@ shared class Range<Element>(Element start, Element end)
         }
     }*/
     
-    shared actual Iterator<Element> iterator() {
+    shared actual Iterator<Element> iterator {
         class RangeIterator(Element x) 
                 satisfies Iterator<Element> {
             shared actual Element? head { 
