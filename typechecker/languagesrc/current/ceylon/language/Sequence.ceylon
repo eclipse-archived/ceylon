@@ -32,16 +32,18 @@ shared interface Sequence<out Element>
     }
 
     shared actual default Iterator<Element> iterator {
-        class SequenceIterator(Natural from) 
-                satisfies Iterator<Element> {
-            shared actual Element? head { 
-                return value(from);
-            }
-            shared actual Iterator<Element> tail {
-                return SequenceIterator(from+1);
-            }
-        }
         return SequenceIterator(0);
+    }
+    
+    class SequenceIterator(Natural from)
+            extends Object()
+            satisfies Iterator<Element> {
+        shared actual Element? head { 
+            return value(from);
+        }
+        shared actual Iterator<Element> tail {
+            return SequenceIterator(from+1);
+        }
     }
     
 }
