@@ -1238,7 +1238,7 @@ if (Element satisfies Comparable&lt;Element&gt;) {
             <itemizedlist>
                 <listitem>
                     <para><!--if the iterated expression is of type <literal>Iterable</literal>,-->
-                    the iterator is obtained by calling <literal>iterator()</literal>, and 
+                    the iterator is obtained by evaluating <literal>iterator</literal>, and 
                     then</para>
                 </listitem>
                 <listitem>
@@ -1356,7 +1356,7 @@ while (n&lt;=max) {
     n+=step(n);
 }</programlisting>
             
-            <programlisting>Iterator&lt;Person&gt; iter = org.employees.iterator();
+            <programlisting>Iterator&lt;Person&gt; iter = org.employees.iterator;
 while (exists Person p = iter.head) {
     log.info(p.name);
     iter.=tail;

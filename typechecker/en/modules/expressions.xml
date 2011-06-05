@@ -1250,9 +1250,9 @@ local comp = order(1,-1);</programlisting>
 }</programlisting>
 
         <programlisting>{
-    object values satisfies Iterable&lt;Order&gt; {
+    object iterator satisfies Iterator&lt;Order&gt; {
         head = order;
-        shared actual object tail satisfies Iterable&lt;Order&gt; {
+        shared actual object tail satisfies Iterator&lt;Order&gt; {
             head = null;
             tail = this;
         }

@@ -626,13 +626,13 @@ String? firstWord = words[0];</programlisting>
         following class name refers to a member class of the superclass of the class that
         contains the member class annotated <literal>actual</literal>.</para>
         
-        <programlisting>extends super.Iterator()</programlisting>
+        <programlisting>extends super.Buffer()</programlisting>
         
         <comment><para>TODO: This doesn't work if the member class being refined belongs
         to an interface. A solution would be to let you rename the refined member class
         in an <literal>import</literal> statement. Another possibility would be to introduce
         a specialized syntax, for example something like 
-        <literal>super(Iterable).Iterator()</literal>.</para></comment>
+        <literal>super(Reader).Buffer()</literal>.</para></comment>
         
         <para>
         The root class <literal>Void</literal> defined in <literal>ceylon.language</literal> 

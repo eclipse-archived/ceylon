@@ -827,10 +827,10 @@ catch (Exception e) {
     
     doc "A sequence of objects belonging
          to the container."
-    shared formal Iterator<X> iterator();
+    shared formal Iterator<X> iterator;
     
     shared actual default Boolean empty {
-        return !(iterator().head exists);
+        return !(iterator.head exists);
     }
 
 }]]></programlisting>
@@ -848,7 +848,7 @@ catch (Exception e) {
         <para>An <literal>Iterator</literal> is used according to the
         following idiom:</para>
             
-        <programlisting><![CDATA[variable local iter := iterable.iterator();
+        <programlisting><![CDATA[variable local iter := iterable.iterator;
 while (exists local value = iter.head) {
     ...
     iter.=tail;
@@ -883,7 +883,7 @@ while (exists local value = iter.head) {
         iteration:</para>
         <programlisting><![CDATA[shared interface OpenIterable<X> 
         satisfies Iterable<X> {
-    shared actual OpenIterator<X> iterator();
+    shared actual OpenIterator<X> iterator;
 }]]></programlisting>
         <programlisting><![CDATA[shared interface OpenIterator<X> 
         satisfies Iterator<X> {
@@ -1291,7 +1291,7 @@ shared BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>()
          or |null| if the sequence has no elements."
     shared formal Natural? lastIndex;
     
-    shared actual default Iterator<X> iterator() {
+    shared actual default Iterator<X> iterator {
         class SequenceIterator(Natural from) 
                 satisfies Iterator<X> {
             shared actual X? head { 
@@ -1302,7 +1302,7 @@ shared BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>()
             }
         }
         if (is Iterable<X> sequence) {
-            return this.iterator();
+            return this.iterator;
         }
         else {
             return SequenceIterator(0);
@@ -1373,7 +1373,7 @@ shared BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>()
         satisfies Iterable<Entry<Natural,X>> 
         given X satisfies Equality<X> {
         
-    shared actual Iterator<Entry<Natural,X>> iterator() {
+    shared actual Iterator<Entry<Natural,X>> iterator {
         class EntryIterator(Natural from) 
                 satisfies Iterator<Entry<Natural,X>> {
             shared actual Entry<Natural,X>? head {
@@ -1541,7 +1541,7 @@ shared T[] range<T>(T[] sequence, Natural from, Natural? to=sequence.lastIndex)
         given X satisfies Equality<X> 
         given N satisfies Dimension {
         
-    shared actual Iterator<Entry<Bounded<N>,X>> iterator() {
+    shared actual Iterator<Entry<Bounded<N>,X>> iterator {
         class EntryIterator(Bounded<N> from) 
                 satisfies Iterator<Entry<Bounded<N>,X>> {
             shared actual Entry<Bounded<N>,X>? head {
@@ -1682,7 +1682,7 @@ shared object none {
         }
     }
     
-    shared actual Iterator<X> iterator() {
+    shared actual Iterator<X> iterator {
         class RangeIterator(X x) 
                 satisfies Iterator<X> {
             shared actual X? head { 
