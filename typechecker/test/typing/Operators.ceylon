@@ -84,7 +84,7 @@ class Operators() {
     @type["Boolean"] local x33 = 1 in {1, 2};
     
     object cat satisfies Category {
-        shared actual Boolean contains(Object obj) {
+        shared actual Boolean contains(Object... obj) {
             return true;
         }
     }
