@@ -1,1 +1,1 @@
-shared interface Type<out Declaration> satisfies Annotated {}
+shared interface Type<out Instance> satisfies Annotated {}
