@@ -6,12 +6,16 @@ import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 import static com.sun.tools.javac.code.TypeTags.VOID;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.redhat.ceylon.compiler.codegen.Gen2.Singleton;
 import com.redhat.ceylon.compiler.codegen.StatementGen.StatementVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
 import com.sun.source.tree.Tree.Kind;
 import com.sun.tools.javac.code.Flags;
@@ -48,6 +52,8 @@ public class ClassGen extends GenPart {
         final ListBuffer<JCStatement> initStmts = new ListBuffer<JCStatement>();
         final ListBuffer<JCTypeParameter> typeParams = new ListBuffer<JCTypeParameter>();
         final ListBuffer<JCExpression> satisfies = new ListBuffer<JCExpression>();
+        final Map<String, JCTree.JCMethodDecl> getters = new HashMap<String, JCTree.JCMethodDecl>();
+        final Map<String, JCTree.JCMethodDecl> setters = new HashMap<String, JCTree.JCMethodDecl>();
 
         class ClassVisitor extends StatementVisitor {
             Tree.ExtendedType extendedType;
@@ -103,7 +109,15 @@ public class ClassGen extends GenPart {
             }
 
             public void visit(final Tree.AttributeGetterDefinition getter) {
-                defs.append(convert(cdecl, getter));
+                JCTree.JCMethodDecl getterDef = convert(cdecl, getter);
+                defs.append(getterDef);
+                getters.put(getter.getIdentifier().getText(), getterDef);
+            }
+
+            public void visit(final Tree.AttributeSetterDefinition setter) {
+                JCTree.JCMethodDecl setterDef = convert(cdecl, setter);
+                defs.append(setterDef);
+                setters.put(setter.getIdentifier().getText(), setterDef);
             }
 
             public void visit(final Tree.ClassDefinition cdecl) {
@@ -178,6 +192,7 @@ public class ClassGen extends GenPart {
         if (cdecl instanceof Tree.AnyInterface)
             mods |= INTERFACE;
 
+        addSetterTypes(getters, setters);
         addGettersAndSetters(defs, attributeDefs);
         
         JCClassDecl classDef = at(cdecl).ClassDef(at(cdecl).Modifiers(mods, langAnnotations.toList()), 
@@ -188,7 +203,31 @@ public class ClassGen extends GenPart {
         return classDef;
     }
 
-    public JCTree convert(ClassOrInterface classDecl, AttributeGetterDefinition cdecl) {
+    // find the type of each setter by its getter type
+    private void addSetterTypes(Map<String, JCMethodDecl> getters, Map<String, JCMethodDecl> setters) {
+        for(Entry<String, JCMethodDecl> setter : setters.entrySet()){
+            JCMethodDecl getter = getters.get(setter.getKey());
+            // FIXME: this should not throw
+            if(getter == null)
+                throw new RuntimeException("Setter for "+setter.getKey()+" has no matching getter");
+            JCExpression type = getter.restype;
+            // set the first parameter's type
+            setter.getValue().params.head.vartype = type;
+        }
+    }
+
+    private JCTree.JCMethodDecl convert(ClassOrInterface classDecl, AttributeSetterDefinition cdecl) {
+        JCBlock body = gen.statementGen.convert(classDecl, cdecl.getBlock());
+        String name = cdecl.getIdentifier().getText();
+        return make().MethodDef(make().Modifiers(0), names().fromString("set"+upperCase(name)), 
+                makeIdent("void"), 
+                List.<JCTree.JCTypeParameter>nil(), 
+                List.<JCTree.JCVariableDecl>of(make().VarDef(make().Modifiers(0), names().fromString(name), null, null)), 
+                List.<JCTree.JCExpression>nil(), 
+                body, null);
+    }
+
+    public JCTree.JCMethodDecl convert(ClassOrInterface classDecl, AttributeGetterDefinition cdecl) {
         JCBlock body = gen.statementGen.convert(classDecl, cdecl.getBlock());
         return make().MethodDef(make().Modifiers(0), names().fromString("get"+upperCase(cdecl.getIdentifier().getText())), 
                 gen.convert(cdecl.getType()), 
