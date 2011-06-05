@@ -9,7 +9,9 @@ shared class Range<Element>(Element start, Element end)
     doc "The end of the range."
     shared Element end = end;
     
-    shared Boolean decreasing { return end<start; }
+    shared Boolean decreasing { 
+        return end<start; 
+    }
     
     doc "Return a |Sequence| of values in the range, 
          beginning at the first value, and 
@@ -63,6 +65,18 @@ shared class Range<Element>(Element start, Element end)
         }
     }*/
     
+    shared actual Element first {
+        return start;
+    }
+    
+    shared actual Element last {
+        return end;
+    }
+    
+    shared actual Element[] rest {
+        return Range<Element>(next(start),end);
+    }
+    
     shared actual Iterator<Element> iterator {
         class RangeIterator(Element x) 
                 satisfies Iterator<Element> {
@@ -81,12 +95,19 @@ shared class Range<Element>(Element start, Element end)
         return RangeIterator(start);
     }
     
-    shared actual Boolean contains(Object obj) {
-        if (is Element obj) {
-            return includes(obj);
+    shared actual Boolean contains(Object... objects) {
+        for (Object obj in objects) {
+            if (is Element obj) {
+                if ( !includes(obj) ) {
+                    return false;
+                }
+            }
+            else {
+                return false;
+            }
         }
-        else {
-            return false;
+        fail {
+            return true;
         }
     }
     
@@ -125,6 +146,12 @@ shared class Range<Element>(Element start, Element end)
         }
     }
     
-    //TODO
+    shared actual Integer hash {
+        return start.hash/2 + end.hash/2; //TODO: really should be xor
+    }
+    
+    shared actual Sequence<Element> clone {
+        return this;
+    }
     
 }
