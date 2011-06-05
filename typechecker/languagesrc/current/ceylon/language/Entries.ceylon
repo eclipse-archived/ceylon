@@ -11,7 +11,7 @@ shared Entries<Natural,Element> entries<Element>(Element... sequence)
     object sequenceEntries 
             satisfies Entries<Natural,Element> {
         
-        shared actual Iterator<Entry<Natural,Element>> iterator() {
+        shared actual Iterator<Entry<Natural,Element>> iterator {
             class EntryIterator(Natural from) 
                     satisfies Iterator<Entry<Natural,Element>> {
                 shared actual Entry<Natural,Element>? head {
