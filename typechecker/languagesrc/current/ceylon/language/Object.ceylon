@@ -6,7 +6,7 @@ shared abstract class Object()
     
     doc "Determine if this object belongs to the given |Category|.
          The binary |in| operator."
-    shared Boolean element(Category|Iterable<Equality> category) {
+    shared Boolean contained(Category|Iterable<Equality> category) {
         if (is Category category) {
             return category.contains(this);
         }
