@@ -975,6 +975,10 @@ if (Element satisfies Comparable&lt;Element&gt;) {
                     <literal>switch</literal> expression type, or</para>
                 </listitem>
                 <listitem>
+                    <para>if the <literal>switch</literal> expression is of type <literal>X?</literal>, 
+                    for some type <literal>X</literal>, the expression <literal>null</literal>, or</para>
+                </listitem>
+                <listitem>
                     <para>an assignability condition of form <literal>case (is ...)</literal>, or</para>
                 </listitem>
                 <listitem>
@@ -986,9 +990,6 @@ if (Element satisfies Comparable&lt;Element&gt;) {
 
             <programlisting>Case: Expression ("," Expression)* | "is" UnionType | "satisfies" Type</programlisting>
             
-            <para>If a <literal>case (null)</literal> occurs, the <literal>switch</literal> expression 
-            must be of type <literal>X?</literal>, for some type <literal>X</literal>.</para>
-
             <!--
             <para>If the <literal>switch</literal> expression is of type <literal>Optional&lt;X&gt;</literal>, 
             there must be an explicit <literal>case (null)</literal>.</para>
@@ -1031,10 +1032,8 @@ if (Element satisfies Comparable&lt;Element&gt;) {
                 </listitem>
             </itemizedlist>
             
-            <!--
             <para>A <literal>switch</literal> has an <emphasis>exhaustive list of cases of an optional
-            type</emphasis> <literal>T?</literal> where <literal>T</literal> a type with an enumerated 
-            list of cases if:</para>
+            type</emphasis> <literal>T?</literal> if:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1044,7 +1043,6 @@ if (Element satisfies Comparable&lt;Element&gt;) {
                     <para>it has a <literal>case (null)</literal>.</para>
                 </listitem>
             </itemizedlist>
-            -->
             
             <para>A <literal>switch</literal> has an <emphasis>exhaustive list of cases of a metatype</emphasis> 
             <literal>Type&lt;T&gt;</literal> where <literal>T</literal> is a type with an enumerated 
