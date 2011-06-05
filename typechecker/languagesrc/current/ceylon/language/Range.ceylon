@@ -1,16 +1,16 @@
-shared class Range<Element>(Element start, Element end) 
+shared class Range<Element>(Element first, Element last) 
         extends Object() 
         satisfies Sequence<Element> & Equality & Category
         given Element satisfies Ordinal<Element> & Comparable<Element> { 
     
     doc "The start of the range."
-    shared Element start = start;
+    shared actual Element first = first;
     
     doc "The end of the range."
-    shared Element end = end;
+    shared actual Element last = last;
     
     shared Boolean decreasing { 
-        return end<start; 
+        return last<first; 
     }
     
     doc "Return a |Sequence| of values in the range, 
@@ -24,19 +24,19 @@ shared class Range<Element>(Element start, Element end)
     
     shared Boolean includes(Element x) {
         if (decreasing) {
-            return x<=start && x>=end;
+            return x<=first && x>=last;
         }
         else {
-            return x>=start && x<=end;
+            return x>=first && x<=last;
         }
     }
     
     Boolean pastEnd(Element x) {
         if (decreasing) {
-            return x<end;
+            return x<last;
         }
         else {
-            return x>end;
+            return x>last;
         }
     }
     
@@ -56,7 +56,7 @@ shared class Range<Element>(Element start, Element end)
         else {
             //optimize this for numbers!
             variable Natural index:=0;
-            variable Element value:=start;
+            variable Element value:=first;
             while (value<x) {
                 ++index;
                 ++value;
@@ -65,16 +65,8 @@ shared class Range<Element>(Element start, Element end)
         }
     }*/
     
-    shared actual Element first {
-        return start;
-    }
-    
-    shared actual Element last {
-        return end;
-    }
-    
     shared actual Element[] rest {
-        return Range<Element>(next(start),end);
+        return Range<Element>(next(first),last);
     }
     
     shared actual Iterator<Element> iterator {
@@ -92,7 +84,7 @@ shared class Range<Element>(Element start, Element end)
                 return RangeIterator(next(x));
             }
         }
-        return RangeIterator(start);
+        return RangeIterator(first);
     }
     
     shared actual Boolean contains(Object... objects) {
@@ -112,7 +104,7 @@ shared class Range<Element>(Element start, Element end)
     }
     
     variable Natural index:=0;
-    variable Element x:=start;
+    variable Element x:=first;
     while (!pastEnd(x)) {
         ++index;
         x:=next(x);
@@ -124,7 +116,7 @@ shared class Range<Element>(Element start, Element end)
     shared actual Element? value(Natural n) {
         //optimize this for numbers!
         variable Natural index:=0;
-        variable Element x:=start;
+        variable Element x:=first;
         while (index<n && !pastEnd(x)) {
             ++index;
             x:=next(x);
@@ -139,7 +131,7 @@ shared class Range<Element>(Element start, Element end)
     
     shared actual Boolean equals(Equality that) {
         if (is Range<Element> that) {
-            return that.start==start && that.end==end;
+            return that.first==first && that.last==last;
         }
         else {
             return false;
@@ -147,7 +139,7 @@ shared class Range<Element>(Element start, Element end)
     }
     
     shared actual Integer hash {
-        return start.hash/2 + end.hash/2; //TODO: really should be xor
+        return first.hash/2 + last.hash/2; //TODO: really should be xor
     }
     
     shared actual Sequence<Element> clone {
