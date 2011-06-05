@@ -12,11 +12,11 @@ shared interface Sequence<out Element>
     doc "The rest of the sequence, without the first
          element."
     shared formal Element[] rest;
-
+    
     shared actual Boolean empty {
         return false;
     }
-        
+    
     shared actual default Natural size {
         return lastIndex+1;
     }
@@ -41,7 +41,21 @@ shared interface Sequence<out Element>
             return true;
         }
     }
-
+    
+    //this depends on efficient implementation of rest
+    /*
+    shared actual default object iterator 
+            extends Object()
+            satisfies Iterator<Element> {
+        shared actual Element head { 
+            return first;
+        }
+        shared actual Iterator<Element> tail {
+            return rest.iterator;
+        }
+    }
+    */
+    
     shared actual default Iterator<Element> iterator {
         return SequenceIterator(0);
     }
