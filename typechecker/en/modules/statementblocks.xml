@@ -994,14 +994,20 @@ if (Element satisfies Comparable&lt;Element&gt;) {
             there must be an explicit <literal>case (null)</literal>.</para>
             -->
             
-            <para>A <literal>switch</literal> has an <emphasis>exhaustive</emphasis> list of cases
-            of a type <literal>T</literal> with an enumerated list of cases if:</para>
+            <para>We say that a <literal>switch</literal> is <emphasis>exhaustive</emphasis> if it has 
+            an exhaustive list of cases of the switch expression type. If no <literal>else</literal> 
+            block is specified, the <literal>switch</literal> must be exhaustive. Conversely, if the 
+            <literal>switch</literal> is exhaustive, no <literal>else</literal> block may be specified.</para>
+            
+            <para>A <literal>switch</literal> has an <emphasis>exhaustive list of cases of a type</emphasis> 
+            <literal>T</literal> with an enumerated list of cases if:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>every case of <literal>T</literal> which is an anonymous class is explicitly 
-                    listed as an ordinary <literal>case</literal> value of the <literal>switch</literal>,
-                    and</para>
+                    <para>every case of <literal>T</literal> which is an anonymous class directly or
+                    indirectly extends the class <literal>Case</literal> defined in 
+                    <literal>ceylon.language</literal> and is explicitly listed as an ordinary 
+                    <literal>case</literal> value of the <literal>switch</literal>, and</para>
                 </listitem>
                 <listitem>
                     <para>for every other case <literal>U</literal> of the type (every named class or 
@@ -1012,8 +1018,23 @@ if (Element satisfies Comparable&lt;Element&gt;) {
                 </listitem>
             </itemizedlist>
             
-            <para>A <literal>switch</literal> has an exhaustive list of cases of <literal>T?</literal> 
-            where <literal>T</literal> a type with an enumerated list of cases if:</para>
+            <para>A <literal>switch</literal> has an <emphasis>exhaustive list of cases of a union 
+            type</emphasis> <literal>T|U|V|...</literal> if:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>for every type <literal>U</literal> belonging to the union, either 
+                    <literal>U</literal> is explicitly listed as a <literal>case (is U)</literal> 
+                    assignability condition, or, if <literal>U</literal> is also a type with an 
+                    enumerated list of cases, the <literal>switch</literal> has an exhaustive 
+                    list of cases of <literal>U</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <!--
+            <para>A <literal>switch</literal> has an <emphasis>exhaustive list of cases of an optional
+            type</emphasis> <literal>T?</literal> where <literal>T</literal> a type with an enumerated 
+            list of cases if:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1023,10 +1044,11 @@ if (Element satisfies Comparable&lt;Element&gt;) {
                     <para>it has a <literal>case (null)</literal>.</para>
                 </listitem>
             </itemizedlist>
+            -->
             
-            <para>A <literal>switch</literal> has an <emphasis>exhaustive</emphasis> list of cases of 
-            a metatype <literal>Type&lt;T&gt;</literal> where <literal>T</literal> is a type with an 
-            enumerated list of cases if:</para>
+            <para>A <literal>switch</literal> has an <emphasis>exhaustive list of cases of a metatype</emphasis> 
+            <literal>Type&lt;T&gt;</literal> where <literal>T</literal> is a type with an enumerated 
+            list of cases if:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1041,24 +1063,10 @@ if (Element satisfies Comparable&lt;Element&gt;) {
                 </listitem>
             </itemizedlist>
             
-            <!--
-            <para>A <literal>switch</literal> has an <emphasis>exhaustive</emphasis> list of cases
-            of a union type <literal>T|U|V|...</literal> if:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>for every type <literal>U</literal> belonging to the union, either 
-                    <literal>U</literal> is explicitly listed as a <literal>case (is U)</literal> 
-                    assignability condition, or the <literal>switch</literal> has an exhaustive 
-                    list of cases of <literal>U</literal>.</para>
-                </listitem>
-            </itemizedlist>
-            -->
-            
-            <para>We say that a <literal>switch</literal> is exhaustive if it has an exhaustive list 
-            of cases of the switch expression type. If no <literal>else</literal> block is specified, 
-            the <literal>switch</literal> must be exhaustive. Conversely, if the <literal>switch</literal> 
-            is exhaustive, no <literal>else</literal> block may be specified.</para>
+            <comment><para>TODO: for a covariant type like <literal>Sequence&lt;Node&lt;Element&gt;&gt;</literal>,
+            should we treat the cases <literal>Sequence&lt;Root&lt;Element&gt;&gt;</literal>,
+            <literal>Sequence&lt;Branch&lt;Element&gt;&gt;</literal>, and
+            <literal>Sequence&lt;Leaf&lt;Element&gt;&gt;</literal> as an exhaustive list of cases?</para></comment>
             
             <para>When the construct is executed, the <literal>switch</literal> expression is 
             evaluated, and the resulting value is tested against the <literal>case</literal> values 

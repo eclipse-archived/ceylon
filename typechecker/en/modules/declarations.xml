@@ -503,9 +503,11 @@ TypeConstraints?
         may be an <literal>abstract</literal> class. Each case must be a subtype of the
         interface type.</para>
         
+        <!--
         <para>If an anonymous class is a case of an interface type, it must extend the 
         class <literal>Case</literal> defined in <literal>ceylon.language</literal>, 
         directly or indirectly.</para>
+        -->
         
         <para>If an interface has an <literal>of</literal> clause, then every subtype of 
         the interface must be subtype of one of the enumerated cases.</para>
@@ -1399,13 +1401,12 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         be an <literal>abstract</literal> class. Each case must be a subclass of 
         the class.</para>
         
+        <!--
         <para>If an anonymous class is a case of a class, the class must extend
         the class <literal>Case</literal> defined in <literal>ceylon.language</literal>, 
         directly or indirectly.</para>
-        
-        <comment><para>TODO: Weaken this somehow to allow <literal>null</literal>
-        to not extend <literal>Case</literal>.</para></comment>
-        
+        -->
+                
         <para>If a class has an <literal>of</literal> clause, then every subtype 
         of the class must be a subtype of one of the enumerated cases.</para>
         
