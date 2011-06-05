@@ -6,14 +6,40 @@ shared interface Correspondence<in Key, out Value>
          for the given key."
     shared formal Value? value(Key key);
     
-    shared default Boolean defines(Key... keys) {
+    shared default Boolean defines(Key key) {
+        return value(key) exists;
+    }
+    
+    shared default object keys satisfies Category {
+        shared actual Boolean contains(Object value) {
+            if (is Key value) {
+                return defines(value);
+            }
+            else {
+                return false;
+            }
+        }
+    }
+    
+    shared default Boolean definesEvery(Key... keys) {
         for (Key key in keys) {
-            if (!(value(key) exists)) {
+            if (!defines(key)) {
                 return false;
             }
         }
         fail {
             return true;
+        }
+    }
+    
+    shared default Boolean definesAny(Key... keys) {
+        for (Key key in keys) {
+            if (defines(key)) {
+                return true;
+            }
+        }
+        fail {
+            return false;
         }
     }
     
