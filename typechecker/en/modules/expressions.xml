@@ -4041,6 +4041,48 @@ createItemMethod.intercept()
         <literal>y + x</literal>.</para>
         -->
         
+        <para>Ceylon's numeric type system is designed to accommodate the following
+        considerations:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>The system is extensible and new numeric types may be defined
+                by libraries. Numeric types defined by libraries should work the 
+                same as built-in numeric types.</para>
+            </listitem>
+            <listitem>
+                <para>Two values of different numeric types should be combinable
+                using operators without the need for explicit type conversions, 
+                but</para>
+            </listitem>
+            <listitem>
+                <para>implicit type conversions should never lose information
+                and</para>
+            </listitem>
+            <listitem>
+                <para>binary operators must be symmetric.</para>
+            </listitem>
+            <listitem>
+                <para>Furthermore, there should be no special cases in the language 
+                definition or type checker to accommodate numeric types.</para>
+            </listitem>
+            <listitem>
+                <para>However, it must be possible for the compiler to optimize 
+                certain of the built-in numeric types to take advantage of the VM's 
+                native support for numeric types.</para>
+            </listitem>
+            <listitem>
+                <para>It is not necessary to encode information about the limits
+                of the machine's representation of a numeric value into the type
+                system. A single <literal>Integer</literal> class is sufficient
+                to represent 32, 64, or 128 bit integer values. A single 
+                <literal>Float</literal> class is sufficient to represent single
+                and double precision floating point values. It is simply not
+                possible for the compiler to detect numeric overflow or loss of
+                significant precision.</para>
+            </listitem>
+        </itemizedlist>
+        
     </section>
     
     <section id="slotwise">
