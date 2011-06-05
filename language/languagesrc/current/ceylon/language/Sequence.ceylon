@@ -30,6 +30,17 @@ shared interface Sequence<out Element>
             return first; //actually never occurs
         } 
     }
+    
+    shared actual default Boolean defines(Natural... indices) {
+        for (Natural index in indices) {
+            if (index>lastIndex) {
+                return false;
+            }
+        }
+        fail {
+            return true;
+        }
+    }
 
     shared actual default Iterator<Element> iterator {
         return SequenceIterator(0);

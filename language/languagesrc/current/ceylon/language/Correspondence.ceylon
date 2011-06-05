@@ -6,7 +6,18 @@ shared interface Correspondence<in Key, out Value>
          for the given key."
     shared formal Value? value(Key key);
     
-    shared default Value?[] values(Key[] keys) {
+    shared default Boolean defines(Key... keys) {
+        for (Key key in keys) {
+            if (!(value(key) exists)) {
+                return false;
+            }
+        }
+        fail {
+            return true;
+        }
+    }
+    
+    shared default Value?[] values(Key... keys) {
         if (nonempty keys) {
             return Values(keys.clone);
         }
