@@ -854,6 +854,8 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         
         <programlisting>String newString(Character... chars) = String;</programlisting>
         
+        <programlisting>String name(Person p) = Person.name;</programlisting>
+        
         <programlisting>void print&lt;Value&gt;(Value value) given Value of String | Integer | Float = printer.print;</programlisting>
         <programlisting>void printStr(String string) = printer.print&lt;String&gt;;</programlisting>
         
