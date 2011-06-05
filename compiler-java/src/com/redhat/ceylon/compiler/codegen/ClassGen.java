@@ -11,6 +11,8 @@ import java.util.LinkedHashMap;
 import com.redhat.ceylon.compiler.codegen.Gen2.Singleton;
 import com.redhat.ceylon.compiler.codegen.StatementGen.StatementVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
 import com.sun.source.tree.Tree.Kind;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
@@ -100,6 +102,10 @@ public class ClassGen extends GenPart {
                 }
             }
 
+            public void visit(final Tree.AttributeGetterDefinition getter) {
+                defs.append(convert(cdecl, getter));
+            }
+
             public void visit(final Tree.ClassDefinition cdecl) {
                 defs.append(convert(cdecl));
             }
@@ -182,6 +188,16 @@ public class ClassGen extends GenPart {
         return classDef;
     }
 
+    public JCTree convert(ClassOrInterface classDecl, AttributeGetterDefinition cdecl) {
+        JCBlock body = gen.statementGen.convert(classDecl, cdecl.getBlock());
+        return make().MethodDef(make().Modifiers(0), names().fromString("get"+upperCase(cdecl.getIdentifier().getText())), 
+                gen.convert(cdecl.getType()), 
+                List.<JCTree.JCTypeParameter>nil(), 
+                List.<JCTree.JCVariableDecl>nil(), 
+                List.<JCTree.JCExpression>nil(), 
+                body, null);
+    }
+
     private int convertDeclFlags(Tree.Declaration cdecl) {
         int result = 0;
 
@@ -233,7 +249,10 @@ public class ClassGen extends GenPart {
     }
 
     private String upperCase(Name name) {
-        return Character.toUpperCase(name.charAt(0)) + name.subSequence(1, name.len).toString();
+        return upperCase(name.toString());
+    }
+    private String upperCase(String name) {
+        return Character.toUpperCase(name.charAt(0)) + name.substring(1);
     }
 
     // Rewrite a list of Ceylon-style type constraints into Java trees.
