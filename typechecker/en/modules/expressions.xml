@@ -1184,6 +1184,11 @@ local biggerBag = bag.with(1, 2, 5.0);
         <para>Therefore, the inferred type of <literal>ExtraElement</literal> is the 
         union type <literal>Natural|Float|String</literal>.</para>
         
+        <comment><para>TODO: what about lower bounds in which the type  
+        parameter itself appears (the infamous self-type problem with
+        <literal>Comparable</literal> and <literal>Numeric</literal>) 
+        or in which another type parameter appears?</para></comment>
+        
         <comment><para>TODO: this algorithm works fine for type parameters that 
         appear covariantly in the parameter types, and even okay for type
         parameters that appear nonvariantly. It doesn't really work very well 
