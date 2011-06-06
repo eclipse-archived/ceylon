@@ -599,6 +599,162 @@ else {
 
         </section>
         
+        <section id="definitereturn">
+            <title>Definite return</title>
+            
+            <para>The body of a non-<literal>void</literal> method or getter must
+            <emphasis>definitely return</emphasis>.</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>A block definitely returns if it ends in a <literal>return</literal>
+                    or <literal>throw</literal> directive, or in a control structure that
+                    definitely returns.</para>
+                </listitem>
+                <listitem>
+                    <para>An <literal>if</literal> conditional definitely returns if it has
+                    an <literal>else</literal> block and both the <literal>if</literal>
+                    and <literal>else</literal> blocks definitely return.</para>
+                </listitem>
+                <listitem>
+                    <para>A <literal>switch</literal> conditional definitely returns if all
+                    <literal>case</literal> blocks definitely return and the <literal>else</literal> 
+                    block, if any, definitely returns.</para>
+                </listitem>
+                <listitem>
+                    <para>A <literal>for</literal> loop definitely returns if it has a
+                    <literal>fail</literal> block that definitely returns, and there is
+                    no <literal>break</literal> directive in the <literal>for</literal>
+                    block.</para>
+                </listitem>
+                <listitem>
+                    <para>A <literal>while</literal> loop does not definitely return.</para>
+                </listitem>
+                <listitem>
+                    <para>A <literal>do/while</literal> loop definitely returns if the 
+                    <literal>do</literal> block definitely returns.</para>
+                </listitem>
+                <listitem>
+                    <para>A <literal>try/catch</literal> exception manager definitely 
+                    returns if the <literal>try</literal> block definitely returns and
+                    all <literal>catch</literal> blocks definitely return.</para>
+                </listitem>
+            </itemizedlist>
+            
+        </section>
+        
+        <section id="definiteinitialization">
+            <title>Definite initialization</title>
+            
+            <para>A local or simple attribute must be <emphasis>definitely initialized</emphasis>
+            before it may be used in an expression. A simple attribute must be definitely 
+            initialized by the initializer of the class to which it belongs.</para>
+            
+            <para>A local or simple attribute is considered definitely initialized at a certain
+            statement if it is <emphasis>definitely initialized</emphasis> by the sequence of 
+            statements between the declaration of the local or simple attribute and the 
+            statement in question.</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>A sequence of statements definitely initializes a local or simple 
+                    attribute if one of the statements is a specification statement or 
+                    assigment expression for the local or simple attribute or a control 
+                    structure that definitely initializes the local or simple attribute, or 
+                    if the sequence of statements ends in a <literal>return</literal> or 
+                    <literal>throw</literal> directive.</para>
+                </listitem>
+                <listitem>
+                    <para>An <literal>if</literal> conditional definitely initializes a local
+                    or simple attribute if it has an <literal>else</literal> block and both 
+                    the <literal>if</literal> and <literal>else</literal> blocks definitely
+                    initialize the local or simple attribute.</para>
+                </listitem>
+                <listitem>
+                    <para>A <literal>switch</literal> conditional definitely initializes a
+                    local or simple attribute if all <literal>case</literal> blocks definitely 
+                    initialize the local or simple attribute and the <literal>else</literal> 
+                    block, if any, definitely initializes the local or simple attribute.</para>
+                </listitem>
+                <listitem>
+                    <para>A <literal>for</literal> loop definitely local or simple attribute 
+                    if it has a <literal>fail</literal> block that definitely local or simple 
+                    attribute, and there is no <literal>break</literal> directive in the 
+                    <literal>for</literal> block.</para>
+                </listitem>
+                <listitem>
+                    <para>A <literal>while</literal> loop does not definitely specify a local 
+                    or simple attribute.</para>
+                </listitem>
+                <listitem>
+                    <para>A <literal>do/while</literal> loop definitely initializes a local or 
+                    simple attribute if the <literal>do</literal> block definitely initializes
+                    the local or simple attribute.</para>
+                </listitem>
+                <listitem>
+                    <para>A <literal>try/catch</literal> exception manager definitely 
+                    initializes a local or simple attribute if the <literal>try</literal> 
+                    block definitely initializes the local or simple attribute and all 
+                    <literal>catch</literal> blocks definitely initialize the local or simple 
+                    attribute.</para>
+                </listitem>
+            </itemizedlist>
+            
+        </section>
+            
+        <section id="definiteuninitialization">
+            <title>Definite uninitialization</title>
+            
+            <para>A non-<literal>variable</literal> local or simple attribute must be 
+            <emphasis>definitely uninitialized</emphasis> before it may be used in a
+            specification statement.</para>
+            
+            <para>A loop body (a <literal>for</literal>, <literal>do</literal>, or
+            <literal>while</literal> block) may not contain a specifier statement for a
+            local or simple attribute declared outside the loop body. A local or simple
+            attribute declared outside the loop body is <emphasis>never</emphasis>
+            considered definitely uninitialized inside the loop body.</para>
+            
+            <para>Otherwise, a local or simple attribute is considered definitely
+            uninitialized at a certain statement if it is not <emphasis>possibly 
+            initialized</emphasis> by the sequence of statements between the declaration 
+            of the local or simple attribute and the statement in question.</para>
+                        
+            <itemizedlist>
+                <listitem>
+                    <para>A sequence of statements possibly initializes a local or simple 
+                    attribute if one of the statements is a specification statement for 
+                    the local or simple attribute or a control structure that possibly 
+                    initializes the local or simple attribute.</para>
+                </listitem>
+                <listitem>
+                    <para>An <literal>if</literal> conditional possibly initializes a local
+                    or simple attribute if either the <literal>if</literal> block possibly 
+                    initializes the local or simple attribute or if the <literal>else</literal> 
+                    block, if any, possibly initializes the local or simple attribute.</para>
+                </listitem>
+                <listitem>
+                    <para>A <literal>switch</literal> conditional possibly initializes a
+                    local or simple attribute if one of the <literal>case</literal> blocks 
+                    possibly initializes the local or simple attribute or the <literal>else</literal> 
+                    block, if any, possibly initializes the local or simple attribute.</para>
+                </listitem>
+                <listitem>
+                    <para>A <literal>for</literal> loop possibly initializes a local or 
+                    simple attribute if it has a <literal>fail</literal> block that possibly 
+                    initializes the local or simple attribute.</para>
+                </listitem>
+                <listitem>
+                    <para>A <literal>try/catch</literal> exception manager possibly 
+                    initializes a local or simple attribute if the <literal>try</literal> 
+                    block possibly initializes the local or simple attribute or if one of 
+                    the <literal>catch</literal> blocks possibly initializes the local or 
+                    simple attribute.</para>
+                </listitem>
+            </itemizedlist>
+            
+        </section>
+            
     </section>
     
     <section id="controlstructures">
