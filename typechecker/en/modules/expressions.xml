@@ -1193,7 +1193,7 @@ local biggerBag = bag.with(1, 2, 5.0);
         appear covariantly in the parameter types, and even okay for type
         parameters that appear nonvariantly. It doesn't really work very well 
         for type parameters that appear contravariantly, where the constraints
-        are really of form <literal>A abstracts T</literal>, and they should be
+        are really of form <literal>A satisfies T</literal>, and they should be
         combined using intersection, not union.</para></comment>
                 
         </section>
