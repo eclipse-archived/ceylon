@@ -50,13 +50,14 @@
     
     <para>
     Ceylon features a similar inheritance and generic type model to Java. A type 
-    is either an <emphasis>interface</emphasis>, a <emphasis>class</emphasis>,
-    a <emphasis>type parameter</emphasis>, or a <emphasis>union</emphasis> of
-    other types. An interface may satisfy (extend) an arbitrary number of other 
-    interfaces. A class may satisfy (implement) an arbitrary number of interfaces 
-    and must extend another class. A class or interface may declare type parameters. 
-    A type parameter abstracts the definition of a class or interface over all 
-    types which can be substituted for the type parameter.
+    is either a stateless <emphasis>interface</emphasis>, a stateful 
+    <emphasis>class</emphasis>, a <emphasis>type parameter</emphasis>, or a 
+    <emphasis>union</emphasis> of other types. An interface may satisfy (extend) 
+    an arbitrary number of other interfaces. A class may satisfy (implement) an 
+    arbitrary number of interfaces and must extend another class. A class or 
+    interface may declare type parameters. A type parameter abstracts the 
+    definition of a class or interface over all types which can be substituted 
+    for the type parameter.
     </para>
     
     <para>
@@ -71,7 +72,8 @@
     Interfaces may define concrete members, allowing a restricted form of multiple 
     inheritance ("mixin" inheritance), but may not hold state (references to other 
     objects) or initialization logic, which eliminates the problems traditionally 
-    associated with multiple inheritance.
+    associated with multiple inheritance. Ceylon never performs any kind of 
+    "linearization" of the supertypes of a type.
     </para>
     
     <para>
@@ -83,12 +85,12 @@
     
     <para>
     Ceylon does not support Java-style wildcard type parameters, raw types, or
-    any other kind of "existential type". Instead, a type parameter may be marked 
+    any other kind of existential type. Instead, a type parameter may be marked 
     as covariant or contravariant by the class or interface that declares the 
     parameter. Type arguments are reified in Ceylon, eliminating many problems 
-    related to type erasure in Java. Ceylon also supports <!--parameterization of type 
-    parameters (a form of higher-order polymorphism), and--> a more expressive 
-    system of generic type constraints.
+    related to type erasure in Java. Ceylon also supports <!--parameterization 
+    of type parameters (a form of higher-order polymorphism), and--> a more 
+    expressive system of generic type constraints.
     </para>
     
     </section>
@@ -97,11 +99,18 @@
     <title>Union types</title>
 
     <para>
-    A union type, for example <literal>String|Number</literal>, may be formed 
-    from two or more types defined elsewhere. Union types make it possible to 
-    write code that operates polymorphically over types defined in disparate 
-    branches of the type heirarchy without the need for intermediate adaptor 
-    classes.
+    A <emphasis>union type</emphasis>, for example <literal>String|Number</literal>, 
+    may be formed from two or more types defined elsewhere. Union types make it 
+    possible to write code that operates polymorphically over types defined in 
+    disparate branches of the type heirarchy without the need for intermediate 
+    adaptor classes.
+    </para>
+    
+    <para>
+    Unions are used to define <emphasis>optional</emphasis> types&mdash;which 
+    accept null values&mdash;and <emphasis>sequence types</emphasis>&mdash;which 
+    accept multiple values. Union types also play a central role in generic type 
+    argument inference.
     </para>
     
     </section>
@@ -111,9 +120,18 @@
     
     <para>
     Ceylon supports <emphasis>type aliases</emphasis>, similar to C-style 
-    <literal>typedef</literal>, and type inference for local declarations. Type 
-    aliases and type inference help reduce the verbosity of code which uses 
-    generic types.
+    <literal>typedef</literal>, and type inference for local declarations. 
+    Type aliases and type inference help reduce the verbosity of code which 
+    uses generic types, eliminating the need to repeatedly specify generic
+    type arguments.
+    </para>
+    
+    <para>
+    By limiting type inference to local declarations, Ceylon ensures that
+    all types may be inferred by the compiler in a single pass of the source 
+    code. Type inference works in the "forward" and "outward" directions. 
+    Every expression has a decideable type without the need to consider the 
+    rest of the statement or declaration in which it appears.
     </para>
     
     </section>
@@ -122,12 +140,21 @@
     <title>Introductions</title>
     
     <para>
-    Usually, the interfaces inherited by a type are specified as part of the type
-    definition. Ceylon also allows an interface to be <emphasis>introduced</emphasis> 
+    Ceylon doesn't have open classes or any kind of implicit type conversion.
+    Instead, Ceylon features lexically-scoped <emphasis>introduction</emphasis>
+    of interfaces&mdash;a much more powerful cousin of the notion of extension 
+    methods.
+    </para>
+    
+    <para>
+    Usually, the interfaces inherited by a type are specified as part of the 
+    type definition. But a special kind of interface, called an 
+    <emphasis>adapter</emphasis> may be <emphasis>introduced</emphasis> 
     ("mixed in") to a pre-existing type at the point of use. Introduction does 
     not in any way affect the internal behavior of any instance of the type to 
-    which the interface is introduced, but does allows the type to be treated as a 
-    subtype of the introduced interface within the lexical scope of the introduction.
+    which the interface is introduced, but does allows the type to be treated 
+    as a subtype of the introduced interface within the lexical scope of the 
+    introduction.
     </para>
     
     </section>
@@ -141,9 +168,8 @@
     <literal>Liberty</literal> or <literal>RedWine</literal>&mdash;member names 
     and local names with an initial lowercase letter or underscore&mdash;for
     example, <literal>blonde</literal>, <literal>immanentize()</literal> or 
-    <literal>boldlyGo()</literal>. This innovation allows a much cleaner 
-    syntax for program element annotations than the syntax found in either Java 
-    or C#.
+    <literal>boldlyGo()</literal>. This innovation allows a much cleaner syntax 
+    for program element annotations than the syntax found in either Java or C#.
     </para>
     
     </section>
@@ -158,6 +184,8 @@
     reduce verbosity and results in a more regular block structure.
     </para>
     
+    <para>The Ceylon compiler guarantees that the value of any attribute of
+    a class is initialized before it is used in an expression.</para>
     
     <para>
     <!--In place of constructor overloading, Ceylon allows class names to be 
@@ -181,16 +209,20 @@
     <para>
     Ceylon types have members: <emphasis>methods</emphasis> and 
     <emphasis>attributes</emphasis>. Ceylon methods are similar to Java methods. 
-    However, Ceylon classes do not contain fields, at least not in the traditional 
-    sense. Instead, Ceylon supports only a higher-level construct: polymorphic 
-    attributes, which are similar to C# properties. Attributes abstract the
-    internal representation of the state of an object. An attribute of a class may 
-    be refined (overridden) by a subclass of the class.
+    However, Ceylon classes do not contain fields, at least not in the 
+    traditional sense. Instead, Ceylon supports only a higher-level construct: 
+    polymorphic attributes, which are similar to C# properties. Attributes 
+    abstract the internal representation of the state of an object. An attribute 
+    of a class may be refined (overridden) by a subclass of the class.
     </para>
     
+    <para>The Ceylon compiler guarantees that the value of any local declared in 
+    the body of a method or attribute is initialized before it is used in an 
+    expression.</para>
+    
     <para>
-    Ceylon does not support method overloading. Each method of a class has
-    a distinct name.
+    Ceylon does not support method overloading. Each method of a type has a 
+    distinct name.
     </para>
     
     <para>There are no <literal>static</literal> members. Instead, 
@@ -247,10 +279,10 @@
     <title>Immutability by default</title>
     
     <para>
-    By default, Ceylon attributes and locals are immutable. Mutable attributes 
-    and variable locals must be explicitly declared using the <literal>variable</literal> 
-    annotation. An immutable attribute or local may not be assigned after its 
-    initial value is specified.
+    By default, an attribute or local may not be assigned a new value after
+    its initial value has been specified. Mutable attributes and variable 
+    locals must be explicitly declared using the <literal>variable</literal> 
+    annotation.
     </para>
     
     </section>
@@ -259,20 +291,20 @@
     <title>Compile-time safety for optional values and type narrowing</title>
     
     <para>
-    By default, Ceylon attributes and locals do not accept null values. 
-    Optional locals and attributes must be explicitly declared. Optional 
-    expressions are not assignable to non-optional locals or attributes, 
-    except via use of the <literal>if (exists ... )</literal> construct. 
-    Thus, the Ceylon compiler is able to detect illegal use of a null value 
-    at compile time. Therefore, there is no equivalent to Java's 
+    There is no primitive null in Ceylon, and the null value is not assignable 
+    to class or interface types. Only explicit <emphasis>optional types</emphasis>
+    accept the null value. An optional type is not assignable to a non-optional 
+    type except via use of the special-purpose <literal>if (exists ... )</literal> 
+    construct. Thus, the Ceylon compiler is able to detect illegal use of a 
+    null value at compile time. Therefore, there is no equivalent to Java's 
     <literal>NullPointerException</literal> in Ceylon.
     </para>
     
     <para>
-    Ceylon does not feature C-style typecasts. Instead, the 
+    Similarly, there are no C-style typecasts in Ceylon. Instead, the 
     <literal>if (is ... )</literal> and <literal>case (is ... )</literal> 
-    constructs may be used to narrow the type of an object reference 
-    without risk of a <literal>ClassCastException</literal>.
+    constructs may be used to narrow the type of an object reference without 
+    risk of a <literal>ClassCastException</literal>.
     </para>
     
     </section>
@@ -303,7 +335,8 @@
     supported by C and Java. True operator overloading is not supported. 
     However, each operator is defined to act upon a certain class or interface 
     type, allowing application of the operator to any class which extends or 
-    satisfies that type. This is called <emphasis>operator polymorphism</emphasis>.
+    satisfies that type. This approach is called <emphasis>operator 
+    polymorphism</emphasis>.
     </para>
     
     </section>
