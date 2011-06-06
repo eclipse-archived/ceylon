@@ -162,8 +162,10 @@
   <!-- Runs the JUnit tests -->
   <target name="test" depends="test.classes,compiler.jar,runtime.jar" description="Runs the JUnit tests">
     <mkdir dir="${test.reports}"/>
+  	<property name="bootclasspath" refid="test.run.classpath" />
     <junit printsummary="yes" haltonfailure="no">
       <classpath refid="test.run.classpath"/>
+      <jvmarg value="-Xbootclasspath/p:${bootclasspath}"/>
 
       <formatter type="xml"/>
 
