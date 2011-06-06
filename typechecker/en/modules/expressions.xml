@@ -301,8 +301,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         
         <programlisting>Natural five = 5;</programlisting>
                 
-        <para>Negative <literal>Integer</literal> values can be 
-        produced using the unary <literal>+</literal> and 
+        <para><literal>Integer</literal> values can be produced 
+        using the unary prefix <literal>+</literal> and 
         <literal>-</literal> operators:</para>
         
         <programlisting>Integer zero = +0;</programlisting>
