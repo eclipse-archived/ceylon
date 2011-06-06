@@ -40,11 +40,31 @@
         <para>The scope of a declaration is governed by the body or package in 
         which it occurs.</para>
         
+    <section id="declarationnameuniqueness">
+        <title>Declaration name uniqueness</title>
+        
         <para>A package may not contain two toplevel declarations (interfaces, 
         classes, methods, or attributes) with the same name.</para>
         
-        <para>A body may not contain two declarations with the same name.</para>
+        <para>A body may not directly contain two declarations with the same 
+        name, unless one is a parameter of the class body and the other is an 
+        attribute of the class. (However, an inner body may <emphasis>hide</emphasis> 
+        declarations of a containing body.)</para>
         
+        <para>Note that this code is not legal:</para>
+        
+        <programlisting>String uppercase(String string) {
+    String string = string.uppercase;  //compiler error!
+    return string;
+}</programlisting>
+
+        <para>However, this code <emphasis>is</emphasis> legal, since class 
+        initialization parameters and attributes may share a name:</para>
+        
+        <programlisting>shared class Person(String name) {
+    shared String name = name;
+}</programlisting>
+
         <para>A class or interface may not inherit a declaration with the same 
         name as a declaration it contains unless either:</para>
             
@@ -83,6 +103,8 @@
             </listitem>
         </itemizedlist>
         
+    </section>
+        
     <section id="nameresolution">
         <title>Name resolution</title>
         
@@ -105,12 +127,12 @@
             </listitem>
             <listitem>
                 <para>it directly occurs in an interface body, and the program element 
-                also occurs in the interface body, or</para>
+                also occurs in the same interface body, or</para>
             </listitem>
             <listitem>
-                <para>it directly occurs in the second part of a class body, after the 
-                last statement or declaration of the initializer, and the program element 
-                also occurs in the second part of the class body, or</para>
+                <para>it directly occurs in the declaration section of a class body, 
+                and the program element also occurs in the declaration section of the 
+                same class body, or</para>
             </listitem>
             <listitem>
                 <para>it is a declaration imported by the compilation unit containing 
@@ -137,6 +159,11 @@
                 or control structure variable in the outer body,</para>
             </listitem>
             <listitem>
+                <para>a declaration inherited by an nested class hides a declaration,
+                parameter, type parameter, or control structure variable of the containing
+                body, <emphasis>TODO: is this correct?</emphasis></para>
+            </listitem>
+            <listitem>
                 <para>a parameter of a class body hides an attribute of the class,</para>
             </listitem>
             <listitem>
@@ -152,79 +179,67 @@
         <para>If there are multiple unhidden declarations with the specified name, <!--and 
         they are not all overloaded declarations of the same method or class,--> the name 
         is ambiguous, and a compilation error occurs.</para>
+                
+    </section>
+    
+        <section id="nesteddeclarationsinblocksandtypes">
+            <title>Nested declarations</title>
         
-        <para>A body may not contain two declarations with the same name, <!--unless they are 
-        overloaded versions of the same method or class, or--> unless one is a parameter 
-        of the class body and the other is an attribute of the class. A package may not 
-        contain two toplevel declarations with the same name. <!--unless they are overloaded 
-        versions of the same method or class.--></para>
+            <para>Blocks may contain declarations. A declaration that occurs in a block is a 
+            block local declaration&mdash;it is visible only to statements and declarations 
+            that occur later in the same block, and therefore it may not declare a visibility 
+            modifier. Nor may block local declarations be refined. Therefore, a block may not 
+            contain a class, method, or attribute declaration annotated <literal>formal</literal>, 
+            <literal>default</literal>, <literal>definite</literal>, <literal>actual</literal>, 
+            or <literal>shared</literal>.</para>
+            
+            <para>Class and interface bodies also contain declarations. Unlike a declaration 
+            nested inside a block, a declaration directly contained in the body of a class or
+            interface may be annotated <literal>shared</literal>, thus making the member 
+            accessible outside the body of the class or interface. Furthermore, declarations 
+            occurring in an interface body or in the declaration section of a class body are 
+            visible to declarations that occur earlier in the same interface body or 
+            declaration section.</para>
+            
+            <para>The body of a nested class, method, or attribute declaration may instantiate,
+            invoke, evaluate, or assign any class, method, or attribute whose declaration is 
+            visible to the nested declaration. <!--except for <literal>variable</literal> locals 
+            of a containing method or attribute.--></para>
+            
+            <comment><para>TODO: is there some good reason to limit capture of 
+            <literal>variable</literal> locals belonging to a containing method or attribute?</para></comment>
+            
+            <para>Note that this code is not legal, since the body of a method is an ordinary 
+            block:</para>
         
-        <para>Note that this code is not legal:</para>
-        
-        <programlisting>String uppercase(String string) {
-    String string = string.uppercase;  //compiler error!
-    return string;
-}</programlisting>
-
-        <para>However, this code <emphasis>is</emphasis> legal, since class initialization 
-        parameters and attributes may share a name:</para>
-        
-        <programlisting>shared class Person(String name) {
-    shared String name = name;
-}</programlisting>
-
-        <para>Note that this code is not legal:</para>
-        
-        <programlisting>Entry&lt;Float,Float&gt; xy() {
+            <programlisting>Entry&lt;Float,Float&gt; xy() {
     Float x { return y; }  //compiler error!
     Float y { return x; }
     return x->y;
 }</programlisting>
 
-        <para>Nor is this code legal, since all three statements occur inside the
-        initializer of the class:</para>
+            <para>Nor is this code legal, since all three statements occur inside the
+            initializer of the class:</para>
         
-        <programlisting>class Point() {
+            <programlisting>class Point() {
     Float x { return y; }  //compiler error!
     Float y { return x; }
     Entry&lt;Float,Float&gt; xy = x->y;
 }</programlisting>
 
-        <para>However, this code <emphasis>is</emphasis> legal, since the statements do not 
-        occur in the initializer of the class:</para>
+            <para>However, this code <emphasis>is</emphasis> legal, since the statements occur in 
+            the declaration section of the class body:</para>
         
-        <programlisting>class Point() {
+            <programlisting>class Point() {
     Float x { return y; }
     Float y { return x; }
 }</programlisting>
     
-    </section>
-    
-        <section id="nesteddeclarationsandclosure">
-            <title>Nested declarations and closure</title>
+        </section>
         
-            <para>Blocks may contain declarations. A declaration that occurs in a block is a 
-            block local declaration&mdash;it is visible only to statements and declarations 
-            that occur later in the same block, and therefore it may not declare a visibility 
-            modifier.</para>
-            
-            <para>A block may not contain a class, method, or attribute declaration annotated 
-            <literal>formal</literal>, <literal>default</literal>, <literal>definite</literal>, 
-            or <literal>actual</literal>.</para>
-            
-            <para>Class and interface bodies also contain declarations. Unlike a declaration 
-            nested inside a block, a declaration directly contained in the body of a class or
-            interface may be annotated <literal>shared</literal>, thus making the member 
-            accessible outside the body of the class or interface.</para>
-            
-            <para>The body of a nested class, method, or attribute declaration may invoke, 
-            evaluate, or assign any class, method, or attribute whose declaration is in scope 
-            at the nested declaration. <!--except for <literal>variable</literal> locals of a 
-            containing method or attribute.--></para>
-            
-            <comment><para>TODO: is there some good reason to limit capture of 
-            <literal>variable</literal> locals belonging to a containing method or attribute?</para></comment>
-            
+        <section id="closure">
+            <title>Closure</title>
+    
             <para>If the nested declaration is nested directly or indirectly inside a class or 
             interface declaration, then there is always a <emphasis>current instance</emphasis> 
             of the class or interface when the nested declaration body is executed. The current 
@@ -315,11 +330,11 @@ String result = middleObject.string;</programlisting>
         </section>
         
     <section id="containingbodies">
-        <title>Access to declarations of containing bodies</title>
+        <title>References within a closure</title>
 
-        <para>The initializer of a class, or the body of a member of a class may invoke, 
-        evaluate or assign members of the current instance of the class which defines the 
-        initializer or member&mdash;the instance being instantiated or invoked&mdash;without 
+        <para>The initializer of a class, or the body of a member of a class may instantiate,
+        invoke, evaluate or assign members of the current instance of the class which defines 
+        the initializer or member&mdash;the instance being instantiated or invoked&mdash;without 
         explicitly specifying the receiver, or by specifying a self reference 
         <literal>this</literal> as the receiver.</para>
 
@@ -341,9 +356,9 @@ String result = middleObject.string;</programlisting>
         not refer to <literal>variable</literal> locals defined within the containing method 
         or attribute body.</para></comment> 
         
-        <para>When a member is hidden by a block local declaration, the member may be
-        accessed via the self reference <literal>this</literal> or via the outer instance
-        reference <literal>outer</literal>. For example:</para>
+        <para>When a member of a class is hidden by a block local declaration, the member 
+        may be accessed via the self reference <literal>this</literal> or via the outer 
+        instance reference <literal>outer</literal>. For example:</para>
         
         <programlisting>shared class Item(String name) {
     variable String name := name;
@@ -392,19 +407,19 @@ String result = middleObject.string;</programlisting>
 
         <programlisting>Statement: ExpressionStatement | Specification | ControlStructure</programlisting>
         
+        <!-- 
         <para>A simple attribute or local may not be used in an expression until its value 
         has been explicitly specified or initialized. The Ceylon compiler guarantees this
         by evaluating all conditional branches that lead to the first use of an attribute
         of local in an expression. Each conditional branch must specify or assign a value 
         to the simple attribute or local before using it in an expression.</para>
         
-        <para>Every simple attribute of a concrete class must be 
-        explicitly specified or initialized by the initializer of the class or by the
-        initializer of one of its superclasses. The Ceylon compiler guarantees this by 
-        evaluating all conditional branches that lead to termination of the initializer
-        without an uncaught exception. Each conditional branch must specify or assign a 
-        value to the simple attribute before the initializer terminates without an uncaught 
-        exception.</para>
+        <para>Every simple attribute of a concrete class must be explicitly specified or 
+        initialized by the initializer of the class or by the initializer of one of its 
+        superclasses. The Ceylon compiler guarantees this by evaluating all conditional 
+        branches that lead to termination of the initializer without an uncaught exception. 
+        Each conditional branch must specify or assign a value to the simple attribute 
+        before the initializer terminates without an uncaught exception.</para>
         
         <para>A simple attribute or local may not be the target of a specifier expression 
         if its value has already been specified. The Ceylon compiler guarantees this by 
@@ -417,14 +432,11 @@ String result = middleObject.string;</programlisting>
         The Ceylon compiler guarantees this by evaluating all conditional branches that lead 
         to termination of the method. Each conditional branch must end in a 
         <literal>return</literal> or <literal>throw</literal> directive.</para>
+        -->
         
         <para>Every block local declaration must be used somewhere inside the block in which
         it is declared.</para>
-        
-        <comment><para>TODO: chapter 16 of the JLS goes into way more detail about the notion
-        of "definite assignment" and "definite unassignment". We eventually need something
-        more like this level of detail, I suppose.</para></comment>
-        
+                
         <comment><para>TODO: should we allow blocks and control structures to be annotated, 
         for example:</para>
         <programlisting>doc "unsafe assignment" 
