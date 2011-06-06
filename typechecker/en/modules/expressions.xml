@@ -1175,7 +1175,7 @@ local biggerBag = bag.with(1, 2, 5.0);
                 <para><literal>ExtraElement abstracts Float</literal>, and</para>
             </listitem>
             <listitem>
-                <para><literal>Element abstracts String</literal> (formed by
+                <para><literal>ExtraElement abstracts String</literal> (formed by
                 substituting <literal>String</literal> for <literal>Element</literal>
                 in the schema of <literal>Bag</literal>).</para>
             </listitem>
