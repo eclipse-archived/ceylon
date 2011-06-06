@@ -1056,69 +1056,78 @@ local comp = order(1,-1);</programlisting>
         <para>When a direct invocation expression for a generic method or a direct 
         instantiation expression for a generic class does not explicitly specify type 
         arguments, the type arguments are inferred from the argument expression types. 
-        The types of the argument expressions and the the declared types of the 
+        The types of the argument expressions and the declared types of the 
         corresponding parameters determine a <emphasis>constraint set</emphasis> for 
-        the inferred type parameters.</para>
-
+        an inferred type parameter.</para>
+        
         <para>If a list of argument expressions has types <literal>A1,A2,...</literal> 
         and the corresponding list of parameters has declared types <literal>P1,P2,...</literal>, 
-        the constraint set is the union of all constraint sets <literal>Ai</literal> on 
-        <literal>Pi</literal>.</para>
-
+        the constraint set for a type parameter <literal>T</literal> of the generic
+        declaration is the union of all constraint sets <literal>Ai</literal> on 
+        <literal>Pi</literal> for <literal>T</literal>.</para>
+        
         <para>Given types <literal>A</literal> and <literal>P</literal>, we determine 
-        the constraint set <literal>A</literal> on <literal>P</literal> according to 
-        the nature of <literal>P</literal>:</para>
+        the constraint set <literal>A</literal> on <literal>P</literal> for <literal>T</literal> 
+        according to the nature of <literal>P</literal>:</para>
         
         <itemizedlist>
             <listitem>
                 <para>If <literal>P</literal> is a produced type <literal>Q&lt;P1,P2,...&gt;</literal> 
                 of a parameterized type <literal>Q</literal>, and <literal>A</literal> 
                 is a subtype of a produced type <literal>Q&lt;A1,A2,..&gt;</literal>, 
-                the constraint set <literal>A</literal> on <literal>P</literal> is the 
-                union of all constraint sets <literal>Ai</literal> on <literal>Pi</literal>.</para>
+                the constraint set <literal>A</literal> on <literal>P</literal> for 
+                <literal>T</literal> is the union of all constraint sets <literal>Ai</literal> 
+                on <literal>Pi</literal> for <literal>T</literal>.</para>
             </listitem>
             <listitem>
-                <para>If <literal>P</literal> is a type parameter of the generic 
-                declaration, the constraint set <literal>A</literal> on <literal>P</literal> 
-                contains the single constraint that <literal>A satisfies P</literal>.</para>
+                <para>If <literal>P</literal> is exactly <literal>T</literal>, the 
+                constraint set <literal>A</literal> on <literal>P</literal> for 
+                <literal>T</literal> contains the single constraint that 
+                <literal>T abstracts A</literal>.</para>
             </listitem>
             <listitem>
-                <para>If <literal>P</literal> is a union type <literal>Q|R</literal>, and
-                <literal>Q</literal> is neither a produced type nor a type parameter of
-                the generic declaration, and <literal>A</literal> is not assignable to 
-                <literal>Q</literal>, the constraint set <literal>A</literal> on 
-                <literal>P</literal> is the constraint set <literal>A</literal> on 
-                <literal>R</literal>.</para>
+                <para>If <literal>P</literal> is a union type <literal>Q|R</literal>, 
+                and <literal>Q</literal> is neither a produced type nor exactly 
+                <literal>T</literal>, and <literal>A</literal> is not assignable 
+                to <literal>Q</literal>, the constraint set <literal>A</literal> on 
+                <literal>P</literal> for <literal>T</literal> is the constraint set 
+                <literal>A</literal> on <literal>R</literal> for <literal>T</literal>.</para>
             </listitem>
             <listitem>
-                <para>If <literal>P</literal> is a union type <literal>Q|R</literal>, and
-                <literal>Q</literal> is neither a produced type nor a type parameter of
-                the generic declaration, and <literal>A</literal> is a union type 
+                <para>If <literal>P</literal> is a union type <literal>Q|R</literal>, 
+                and <literal>Q</literal> is neither a produced type nor exactly 
+                <literal>T</literal>, and <literal>A</literal> is a union type 
                 <literal>B|C</literal>, and <literal>B</literal> is assignable to 
                 <literal>Q</literal>, the constraint set <literal>A</literal> on 
-                <literal>P</literal> is the constraint set <literal>C</literal> on 
-                <literal>R</literal>.</para>
+                <literal>P</literal> for <literal>T</literal> is the constraint set 
+                <literal>C</literal> on <literal>R</literal> for <literal>T</literal>.</para>
             </listitem>
             <listitem>
-                <para>Otherwise, if <literal>P</literal> is neither a produced type nor 
-                a type parameter of the generic declaration, the constraint set 
-                <literal>A</literal> on <literal>P</literal> is empty.</para>
+                <para>Otherwise, if <literal>P</literal> is neither a produced type 
+                nor exactly <literal>T</literal>, the constraint set <literal>A</literal> 
+                on <literal>P</literal> for <literal>T</literal> is empty.</para>
             </listitem>
         </itemizedlist>
         
-        <para>The inferred type argument to a type parameter <literal>T</literal> of 
-        the generic declaration is:</para>
+        <para>The <emphasis>full constraint set for a type parameter</emphasis> 
+        <literal>T</literal> of the generic declaration is the constraint set for
+        <literal>T</literal>, together with a constraint <literal>T abstracts X</literal> 
+        for every lower bound <literal>X</literal> on <literal>T</literal> in the 
+        generic type constraints on <literal>T</literal> (after substitution of 
+        type arguments into <literal>X</literal>).</para>
+        
+        <para>The inferred type argument to a type parameter <literal>T</literal> 
+        of the generic declaration is:</para>
         
         <itemizedlist>
             <listitem>
-                <para><literal>Bottom</literal>, if there is no constraint of form 
-                <literal>A satisfies T</literal> in the constraint set, or, 
-                otherwise,</para>
+                <para><literal>Bottom</literal>, if the full constraint set for 
+                <literal>T</literal> is empty, or, otherwise,</para>
             </listitem>
             <listitem>
                 <para>the union type of all types <literal>A</literal> where a 
-                constraint of form <literal>A satisfies T</literal> belongs to the 
-                constraint set.</para>
+                constraint of form <literal>T abstracts A</literal> belongs to 
+                the full constraint set for <literal>T</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -1127,22 +1136,60 @@ local comp = order(1,-1);</programlisting>
         
         <para>Consider the following invocation:</para>
         
-        <programlisting>T[] prepend&lt;T&gt;(T head, T[] sequence) { ... }
+        <programlisting>Element[] prepend&lt;T&gt;(Element head, Element[] sequence) { ... }
 local result = prepend(null, {"hello", "world"});</programlisting>
 
-        <para>The constraint set comprises two constraints:</para>
+        <para>The constraint set for <literal>Element</literal> comprises two 
+        constraints:</para>
         
         <itemizedlist>
             <listitem>
-                <para><literal>Nothing satisfies T</literal>, and</para>
+                <para><literal>Element abstracts Nothing</literal>, and</para>
             </listitem>
             <listitem>
-                <para><literal>String satisfies T</literal>.</para>
+                <para><literal>Element abstracts String</literal>.</para>
             </listitem>
         </itemizedlist>
         
-        <para>Therefore, the inferred type of <literal>T</literal> is the union
-        type <literal>T?</literal>.</para>
+        <para>Therefore, the inferred type of <literal>Element</literal> is the 
+        union type <literal>Element?</literal>.</para>
+        
+        <para>Now consider:</para>
+        
+        <programlisting>class Bag&lt;out Element&gt;(Element... elements) {
+    shared Bag&lt;ExtraElement&gt; with(ExtraElement... elements) 
+            given ExtraElement abstracts Element { ... }
+}
+Bag&lt;String&gt; bag = Bag("hello", "world");
+local biggerBag = bag.with(1, 2, 5.0);
+</programlisting>
+        
+        <para>The constraint set for <literal>ExtraElement</literal> comprises 
+        three constraints:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>ExtraElement abstracts Natural</literal>,</para>
+            </listitem>
+            <listitem>
+                <para><literal>ExtraElement abstracts Float</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para><literal>Element abstracts String</literal> (formed by
+                substituting <literal>String</literal> for <literal>Element</literal>
+                in the schema of <literal>Bag</literal>).</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Therefore, the inferred type of <literal>ExtraElement</literal> is the 
+        union type <literal>Natural|Float|String</literal>.</para>
+        
+        <comment><para>TODO: this algorithm works fine for type parameters that 
+        appear covariantly in the parameter types, and even okay for type
+        parameters that appear nonvariantly. It doesn't really work very well 
+        for type parameters that appear contravariantly, where the constraints
+        are really of form <literal>A abstracts T</literal>, and they should be
+        combined using intersection, not union.</para></comment>
                 
         </section>
         
