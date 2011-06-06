@@ -1083,17 +1083,21 @@ local comp = order(1,-1);</programlisting>
                 contains the single constraint that <literal>A satisfies P</literal>.</para>
             </listitem>
             <listitem>
-                <para>If <literal>P</literal> is a union type <literal>Q|R</literal>,
-                and <literal>A</literal> is definitely not assignable to <literal>Q</literal>, 
-                the constraint set <literal>A</literal> on <literal>P</literal> is the
-                constraint set <literal>A</literal> on <literal>R</literal>. BROKEN!</para>
+                <para>If <literal>P</literal> is a union type <literal>Q|R</literal>, and
+                <literal>Q</literal> is neither a produced type nor a type parameter of
+                the generic declaration, and <literal>A</literal> is not assignable to 
+                <literal>Q</literal>, the constraint set <literal>A</literal> on 
+                <literal>P</literal> is the constraint set <literal>A</literal> on 
+                <literal>R</literal>.</para>
             </listitem>
             <listitem>
-                <para>If <literal>P</literal> is a union type <literal>Q|R</literal>,
-                and <literal>A</literal> is a union type <literal>B|C</literal>, and
-                <literal>B</literal> is assignable to <literal>Q</literal>, the 
-                constraint set <literal>A</literal> on <literal>P</literal> is the
-                constraint set <literal>C</literal> on <literal>R</literal>.</para>
+                <para>If <literal>P</literal> is a union type <literal>Q|R</literal>, and
+                <literal>Q</literal> is neither a produced type nor a type parameter of
+                the generic declaration, and <literal>A</literal> is a union type 
+                <literal>B|C</literal>, and <literal>B</literal> is assignable to 
+                <literal>Q</literal>, the constraint set <literal>A</literal> on 
+                <literal>P</literal> is the constraint set <literal>C</literal> on 
+                <literal>R</literal>.</para>
             </listitem>
             <listitem>
                 <para>Otherwise, if <literal>P</literal> is neither a produced type nor 
