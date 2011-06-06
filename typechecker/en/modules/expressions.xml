@@ -1122,6 +1122,9 @@ local comp = order(1,-1);</programlisting>
             </listitem>
         </itemizedlist>
         
+        <para>If the inferred type argument does not satisfy the generic type 
+        constraints on <literal>T</literal>, a compilation error results.</para>
+        
         <para>Consider the following invocation:</para>
         
         <programlisting>T[] prepend&lt;T&gt;(T head, T[] sequence) { ... }
