@@ -1184,17 +1184,25 @@ local biggerBag = bag.with(1, 2, 5.0);
         <para>Therefore, the inferred type of <literal>ExtraElement</literal> is the 
         union type <literal>Natural|Float|String</literal>.</para>
         
-        <comment><para>TODO: what about lower bounds in which the type  
+        <comment><para>TODO: What about lower bounds in which the type  
         parameter itself appears (the infamous self-type problem with
         <literal>Comparable</literal> and <literal>Numeric</literal>) 
         or in which another type parameter appears?</para></comment>
         
-        <comment><para>TODO: this algorithm works fine for type parameters that 
+        <comment><para>TODO: This algorithm works fine for type parameters that 
         appear covariantly in the parameter types, and even okay for type
         parameters that appear nonvariantly. It doesn't really work very well 
         for type parameters that appear contravariantly, where the constraints
         are really of form <literal>A satisfies T</literal>, and they should be
-        combined using intersection, not union.</para></comment>
+        combined using intersection, not union, and where the default should be
+        <literal>Object</literal> not <literal>Bottom</literal>. Unfortunately
+        we don't currently support intersection types in the spec, or have the 
+        machinery to reason about them in the compiler.</para>
+        <para>Note also that there is something a bit conceptually funny about 
+        a type parameter that appears covariantly in a parameter type, and 
+        contravariantly in the return type (or vice-versa), so we probably don't 
+        really need to bother about the case where a type parameter appears both 
+        covariantly <emphasis>and</emphasis> contravariantly.</para></comment>
                 
         </section>
         
