@@ -983,8 +983,7 @@ local comp = order(1,-1);</programlisting>
                 <para>which parameters are defaulted, and their default values, and</para>
             </listitem>
             <listitem>
-                <para>whether the last parameter in the list is a sequenced
-                parameter.</para>
+                <para>whether the last parameter in the list is a sequenced parameter.</para>
             </listitem>
         </itemizedlist>
         
@@ -1050,6 +1049,95 @@ local comp = order(1,-1);</programlisting>
         
         <para>where <literal>R</literal> is the type argument to the first type parameter 
         of the expression type <literal>Callable</literal> (the return type).</para>
+        
+        <section id="typeargumentinference">
+            <title>Type argument inference</title>
+        
+        <para>When a direct invocation expression for a generic method or a direct 
+        instantiation expression for a generic class does not explicitly specify type 
+        arguments, the type arguments are inferred from the argument expression types. 
+        The types of the argument expressions and the the declared types of the 
+        corresponding parameters determine a <emphasis>constraint set</emphasis> for 
+        the inferred type parameters.</para>
+
+        <para>If a list of argument expressions has types <literal>A1,A2,...</literal> 
+        and the corresponding list of parameters has declared types <literal>P1,P2,...</literal>, 
+        the constraint set is the union of all constraint sets <literal>Ai</literal> on 
+        <literal>Pi</literal>.</para>
+
+        <para>Given types <literal>A</literal> and <literal>P</literal>, we determine 
+        the constraint set <literal>A</literal> on <literal>P</literal> according to 
+        the nature of <literal>P</literal>:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>If <literal>P</literal> is a produced type <literal>Q&lt;P1,P2,...&gt;</literal> 
+                of a parameterized type <literal>Q</literal>, and <literal>A</literal> 
+                is a subtype of a produced type <literal>Q&lt;A1,A2,..&gt;</literal>, 
+                the constraint set <literal>A</literal> on <literal>P</literal> is the 
+                union of all constraint sets <literal>Ai</literal> on <literal>Pi</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>If <literal>P</literal> is a type parameter of the generic 
+                declaration, the constraint set <literal>A</literal> on <literal>P</literal> 
+                contains the single constraint that <literal>A satisfies P</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>If <literal>P</literal> is a union type <literal>Q|R</literal>,
+                and <literal>A</literal> is definitely not assignable to <literal>Q</literal>, 
+                the constraint set <literal>A</literal> on <literal>P</literal> is the
+                constraint set <literal>A</literal> on <literal>R</literal>. BROKEN!</para>
+            </listitem>
+            <listitem>
+                <para>If <literal>P</literal> is a union type <literal>Q|R</literal>,
+                and <literal>A</literal> is a union type <literal>B|C</literal>, and
+                <literal>B</literal> is assignable to <literal>Q</literal>, the 
+                constraint set <literal>A</literal> on <literal>P</literal> is the
+                constraint set <literal>C</literal> on <literal>R</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>Otherwise, if <literal>P</literal> is neither a produced type nor 
+                a type parameter of the generic declaration, the constraint set 
+                <literal>A</literal> on <literal>P</literal> is empty.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The inferred type argument to a type parameter <literal>T</literal> of 
+        the generic declaration is:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>Bottom</literal>, if there is no constraint of form 
+                <literal>A satisfies T</literal> in the constraint set, or, 
+                otherwise,</para>
+            </listitem>
+            <listitem>
+                <para>the union type of all types <literal>A</literal> where a 
+                constraint of form <literal>A satisfies T</literal> belongs to the 
+                constraint set.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Consider the following invocation:</para>
+        
+        <programlisting>T[] prepend&lt;T&gt;(T head, T[] sequence) { ... }
+local result = prepend(null, {"hello", "world"});</programlisting>
+
+        <para>The constraint set comprises two constraints:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>Nothing satisfies T</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para><literal>String satisfies T</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Therefore, the inferred type of <literal>T</literal> is the union
+        type <literal>T?</literal>.</para>
+                
+        </section>
         
         <section id="methodinvocation">
             <title>Method invocation</title>
