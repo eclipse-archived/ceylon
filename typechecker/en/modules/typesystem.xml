@@ -457,6 +457,10 @@
             <para>A reference to a member of an expression of type <literal>Bottom</literal>
             is always an error, since there can never be a receiving instance.</para>
             
+            <para><literal>Bottom</literal> is considered to belong to the module
+            <literal>ceylon.language</literal> however, it's definition is actually
+            implemented directly in the compiler.</para>
+            
             <comment><para>TODO: Should the name of this type be a keyword, perhaps
             <literal>bottom</literal>?</para></comment>
             
