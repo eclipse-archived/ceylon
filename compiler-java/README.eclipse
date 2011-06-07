@@ -13,7 +13,7 @@ Setting up Eclipse to build the Ceylon compiler
 
     a2) If you did not check out ceylon-compiler in your Eclipse workspace:
         i) Uncheck "Use default location"
-        ii) Click "Browse" and select your ceylon-compiler checkout folder.
+        ii) Click "Browse" and select your ceylon-compiler checkout folder "ceylon-compiler".
 
     b) Ensure "JRE" and "Project layout" are disabled
 
@@ -21,15 +21,14 @@ Setting up Eclipse to build the Ceylon compiler
 
  4. In the next page of the "New Java Project" dialog:
 
-    a) Click "Link additional source"
-
-    b) In the "Link Source" dialog:
+    a) In the "Source" tab:
 
        i) Remove all "langtools/*" entries from the source path except for "langtools/src/share/classes"
 
        ii) Remove all "test/*" entries from the source path
 
-       ii) Change "Default output folder" to "ceylon-compiler/build/classes"
+       iii) Change "Default output folder" to "ceylon-compiler/build/classes"
+            If Eclipse asks you if you want to delete the "bin" folder, click "No". 
 
  5a. If you have the ceylon-spec project in Eclipse: 
      In the "Projects" tab:
