@@ -1,45 +1,24 @@
-The compiler regression test harness is the file "bin/compilertest".
+All tests are in the "test-src" folder, organised by categories:
 
-You can execute it directly, or by invoking Ant.
+- Misc
+- Structure (classes, methods)
+- Statements (statements, expressions)
 
-Any directory under the top-level directory "test" containing a file
-called "cmdline" and a file called "expect.out" is a test case.  When
-a test case is run, the harness will compile all *.ceylon and *.java
-files under that directory, placing the resulting class files in a
-directory under "build/test/compiler/".  The command specified in the
-"cmdline" file is then executed, and the resulting output is stored in
-a file called "actual.out".  If the contents of actual.out match the
-contents of expect.out then the test passed.
+Every test class should extend CompilerTest, which defines two useful
+methods:
 
-Note that a sneaky way to make a new test is to put the Java and
-Ceylon files into a directory with an empty expect.out, then run
-the test, then rename actual.out as expect.out.
+- compareWithJavaSource(String testName) which compiles Ceylon into its intermediate
+  Java representation and compares it to expected Java source.
+- compileAndRun(String ceylonSource, String mainMethod) which compiles Ceylon and runs
+  the given ceylon main method.
 
-Individual tests can be run by supplying their paths as arguments:
+Some tests currently fail, which means you can start by fixing the compiler to support 
+those tests. Lots of tests are missing, and you can add them, just make sure you write
+a minimal test case that does not depend on more than the one feature you are testing.
+This can be tricky, but it helps because if you have to implement X features to make
+a test run you will likely get lost in the process.
 
-  bin/compilertest test/extensions/003 test/annotations/001
-
-Groups of tests can be run too.  This command runs all tests under
-tests/extensions:
-
-  bin/compilertest test/extensions
-  
-Running the harness with no arguments will result in every test
-being run.
-
-The harness has a single command line option, "-v", which causes
-it to be more verbose.  The option can be specified multiple times,
-to further increase verbosity.  So far:
-
- -v   Prints detailed output when tests do not succeed.
- -vv  As above, but also prints the commands executed by the test
-      harness.  Built files are retained, so all commands printed
-      this way should be repeatable on the command line.
-
-The following tests currently fail:
-
-  test/bugs/000001
-  test/bugs/000002
-  test/expressions/102
-  test/imports/002
-  test/nestedmethods/002
+When you have written a short Ceylon source, add the test call to the proper JUnit test
+class (ex: StructureTest), run the test and see in the console what the current output
+from the compiler (the Java intermediate output) is, and see if this looks correct. If
+it needs correcting, correct it and save it as reference source.
