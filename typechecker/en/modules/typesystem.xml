@@ -609,7 +609,8 @@ String? firstWord = words[0];</programlisting>
     <section id="extendedclass">
         <title>Extension</title>
     
-        <para>A class may extend another class.</para>
+        <para>A class may extend another class, in which case the first class is a subtype
+        of the second class and inherits its members.</para>
         
         <programlisting>ExtendedType: "extends" ("super" ".")? Type PositionalArguments</programlisting>
     
@@ -671,9 +672,21 @@ String? firstWord = words[0];</programlisting>
     
     <section id="satisfiedinterfaces">
         <title>Satisfaction</title>
-    
-        <para>A class or interface may satisfy one or more interfaces. A type parameter 
-        may satisfy one or more interfaces and, optionally, a class.</para>
+       
+        <para>The <literal>satisfies</literal> clause does double duty:</para>
+        
+        <itemizedlist>
+        <listitem>
+        <para>A class or interface may satisfy one or more interfaces, in which case
+        the class or interface is a subtype of the satisfied interfaces, and inherits 
+        their members.</para>
+        </listitem>
+        <listitem>
+        <para>A type parameter may satisfy one or more interfaces and, optionally, a 
+        class. In this case, the satisfies interfaces are interpreted as upper bound
+        type constraints on arguments to the type parameter.</para>
+        </listitem>
+        </itemizedlist>
         
         <programlisting>SatisfiedTypes: "satisfies" Type ("&amp;" Type)*</programlisting>
     
@@ -941,12 +954,21 @@ shared interface ElementwiseEquality
     <section id="cases">
         <title>Cases</title>
         
-        <para>An interface or <literal>abstract</literal> class may optionally 
-        specify an enumerated list of all its subtypes.</para>
+        <para>The <literal>of</literal> clause also does double duty.</para>
         
+        <itemizedlist>
+        <listitem>
+        <para>An interface or <literal>abstract</literal> class may optionally 
+        specify an enumerated list of all its subtypes, in which case no other
+        type may be a direct subtype of the interface or <literal>abstract</literal> 
+        class.</para>
+        </listitem>
+        <listitem>
         <para>Likewise, a type parameter may specify an enumerated list of all
         types which it accepts as a type argument.</para>
-    
+        </listitem>
+        </itemizedlist>
+        
         <programlisting>CaseTypes: "of" CaseType ("|" CaseType)*</programlisting>
         
         <para>The <literal>of</literal> clause may specify multiple types, called
