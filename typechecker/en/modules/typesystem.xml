@@ -1159,24 +1159,38 @@ class StringExpression
         <comment><para>NOTE: Metatypes are a proposed feature for a future version 
         of the language.</para></comment>
         
-        <para>A class or interface may optionally specify a list of 
-        <emphasis>metatypes</emphasis>, interfaces satisfied by the concrete
-        metatype of the type. The metatypes may not define <literal>formal</literal> 
-        members.</para>
+        <para>Metatype inheritance operates at the level of the metamodel.</para>
         
-        <para>Similarly, a type constraint may specify a list of types which 
-        must be supertypes of the metatype of the type argument.</para>
+        <itemizedlist>
+        <listitem>
+        <para>The concrete metatype of a type <literal>T</literal> is the concrete 
+        class of the object to which the expression <literal>T</literal> evaluates.
+        The name of this class is not specified here. A class or interface may 
+        optionally specify a list of additional <emphasis>metatypes</emphasis>, 
+        interfaces satisfied by the concrete metatype of the type. A metatype may 
+        not declare or inherit a <literal>formal</literal> member.</para>
+        </listitem>
+        <listitem>
+        <para>A type constraint may specify a list of <emphasis>metatype bounds</emphasis> 
+        which must be satisfied by the concrete metatype of the type argument.</para>
+        </listitem>
+        <listitem>
+        <para>A class or method declaration may explicitly specify a 
+        <emphasis>declared callable type</emphasis> satisfied by the callable type 
+        of the class or method. The declared callable type must by a produced type
+        for the parameterized type <literal>Callable</literal>.</para>
+        </listitem>
+        </itemizedlist>
         
         <programlisting>Metatypes: "is" Type ("&amp;" Type)*</programlisting>
         
-        <para>The concrete metatype of a type <literal>T</literal> is the concrete 
-        class of the object to which the expression <literal>T</literal> evaluates.
-        The name of this class is not specified here.</para>
+        <para>The <literal>is</literal> clause may specify multiple types, all of
+        which must be interfaces.</para>
         
         <programlisting>is Monoid&lt;String&gt;</programlisting>
         
-        <para>Metatypes allow a function to operate polymorphically over the 
-        metamodel object that represents a type. For example, a library could
+        <para>Metatypes and metatype bounds allow a function to operate polymorphically 
+        over the metamodel object that represents a type. For example, a library could 
         define the following generic functionality:</para>
         
         <programlisting><![CDATA[shared interface Joinable<Value> {
@@ -1206,6 +1220,24 @@ shared Value join<Value>(Value... sequences)
 shared class LinkedList<Element>(Element... elements) 
         is JoinableLinkedList<Element> 
         satisfies List<Element> { ... }]]></programlisting>
+        
+        <para>A declared callable type constrains the types and parameter types of a 
+        declaration. For example, given the following interface alias:</para>
+        
+        <programlisting>shared interface Page = Callable&lt;Html,HttpRequest&gt;;</programlisting>
+        
+        <para>We can explicitly specify the callable type of a method:</para>
+        
+        <programlisting>Html login(HttpRequest request) is Page { ... }</programlisting>
+        
+        <para>Or of a class:</para>
+        
+        <programlisting>class Login(HttpRequest request) is Page extends Html() { ... }</programlisting>
+        
+        <para>This style of declaration is useful when the method is going to be discovered 
+        and invoked reflectively, without a direct dependency from the calling code. The
+        compiler validates the full signature of the method or class against the declared 
+        callable type.</para>
         
     </section>
         

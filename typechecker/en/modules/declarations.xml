@@ -1609,30 +1609,6 @@ shared choice TransactionPropagationStyle
         
         </section>
         
-        <section id="methodswithdeclaredcallabletype">
-            <title>Methods with declared callable type</title>
-            
-            <comment><para>NOTE: Declared callable type is a proposed feature for a future
-            version of the language.</para></comment>
-            
-            <para>A method declaration may explicitly specify the callable type of the method
-            using the <literal>is</literal> clause.</para>
-            
-            <para>For example, given the following interface alias:</para>
-            
-            <programlisting>shared interface Page = Callable&lt;Html,HttpRequest&gt;;</programlisting>
-            
-            <para>We can explicitly specify the callable type of the following method:</para>
-            
-            <programlisting>Html login(HttpRequest request) is Page { ... }</programlisting>
-            
-            <para>This style of declaration is useful when the method is going to be discovered 
-            and invoked reflectively, without a direct dependency from the calling code. The
-            compiler validates the full signature of the method against the declared 
-            callable type.</para>
-            
-        </section>
-        
         <section id="methodswithblocks">
             <title>Methods with blocks</title>
             
