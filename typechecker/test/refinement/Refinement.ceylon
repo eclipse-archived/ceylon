@@ -77,6 +77,12 @@ class Refinement() {
             shared actual class Z() extends super.Z() {}
         }
         
+        void check() {
+            X.Z z1 = Y().Z();
+            Y.Z z2 = Y().Z();
+            @error Y.Z z3 = X().Z();
+        }
+        
     }
     
 }
