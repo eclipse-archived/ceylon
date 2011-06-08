@@ -35,6 +35,11 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
 		this.type = type;
 	}
 	
+    @Override
+    public boolean isParameterized() {
+        return !typeParameters.isEmpty();
+    }
+    
 	public List<TypeParameter> getTypeParameters() {
 		return typeParameters;
 	}

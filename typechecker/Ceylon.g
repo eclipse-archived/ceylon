@@ -57,7 +57,6 @@ tokens {
     TYPE_DECLARATION;
     TYPE_PARAMETER_LIST;
     TYPE_SPECIFIER;
-    MEMBER;
     WHILE_STATEMENT;
     DO_WHILE_STATEMENT;
     SWITCH_STATEMENT;
@@ -98,8 +97,12 @@ tokens {
     BASE_TYPE;
     QUALIFIED_TYPE;
     UNION_TYPE;
-    MEMBER_EXPRESSION;
-    TYPE_EXPRESSION;
+    BASE_TYPE_EXPRESSION;
+    BASE_MEMBER_EXPRESSION;
+    QUALIFIED_MEMBER_EXPRESSION;
+    QUALIFIED_TYPE_EXPRESSION;
+    SUBTYPE_EXPRESSION;
+    SUPER_TYPE;
     LAMBDA;
 }
 
@@ -193,7 +196,7 @@ block
 //finish parsing it
 memberBody[Object mt] options { backtrack=true; memoize=true; }
     : namedArguments //first try to match with no directives or control structures
-    -> ^(BLOCK ^(RETURN ^(EXPRESSION ^(INVOCATION_EXPRESSION {$mt} namedArguments))))
+    -> ^(BLOCK ^(RETURN ^(EXPRESSION ^(INVOCATION_EXPRESSION ^(BASE_TYPE_EXPRESSION { ((CommonTree)$mt).getChild(0) } { ((CommonTree)$mt).getChild(1) } ) namedArguments))))
     | block //if there is a "return" directive or control structure, it must be a block
     //if it doesn't match as a block or as a named argument
     //list, then there must be an error somewhere, so parse
@@ -287,7 +290,7 @@ statement
 
 specificationStatement
     : memberName specifier ';'
-    -> ^(SPECIFIER_STATEMENT ^(MEMBER memberName) specifier)
+    -> ^(SPECIFIER_STATEMENT ^(BASE_MEMBER_EXPRESSION memberName) specifier)
     ;
 
 expressionStatement
@@ -428,10 +431,10 @@ classBody
 extendedType
     : EXTENDS 
     (
-      type positionalArguments
-      -> ^(EXTENDED_TYPE[$EXTENDS] type positionalArguments)
-    | SUPER MEMBER_OP typeReference positionalArguments
-      -> ^(EXTENDED_TYPE[$EXTENDS] ^(TYPE_EXPRESSION SUPER MEMBER_OP typeReference) positionalArguments)
+      bt=typeReference positionalArguments
+      -> ^(EXTENDED_TYPE[$EXTENDS] ^(BASE_TYPE $bt) ^(INVOCATION_EXPRESSION ^(BASE_TYPE_EXPRESSION $bt) positionalArguments))
+    | SUPER MEMBER_OP qt=typeReference positionalArguments
+      -> ^(EXTENDED_TYPE[$EXTENDS] ^(QUALIFIED_TYPE SUPER_TYPE[$SUPER] $qt) ^(INVOCATION_EXPRESSION ^(QUALIFIED_TYPE_EXPRESSION SUPER MEMBER_OP $qt) positionalArguments))
     )
     ;
 
@@ -454,7 +457,7 @@ caseTypes
 
 caseType 
     : type 
-    | memberName -> ^(MEMBER memberName)
+    | memberName -> ^(BASE_MEMBER_EXPRESSION memberName)
     //| (annotations? 'case' memberName) => annotations? 'case' memberName 
     ;
 
@@ -524,9 +527,9 @@ annotations
 //the annotation
 annotation
     : annotationName
-    -> ^(MEMBER annotationName) ^(POSITIONAL_ARGUMENT_LIST)
+    -> ^(BASE_MEMBER_EXPRESSION annotationName) ^(POSITIONAL_ARGUMENT_LIST)
     | annotationName annotationArguments
-    -> ^(MEMBER annotationName) annotationArguments
+    -> ^(BASE_MEMBER_EXPRESSION annotationName) annotationArguments
     ;
 
 compilerAnnotation
@@ -776,9 +779,9 @@ primary
         memberSelectionOperator 
         (
           m=memberReference 
-      -> ^(MEMBER_EXPRESSION $primary memberSelectionOperator $m)
+      -> ^(QUALIFIED_MEMBER_EXPRESSION $primary memberSelectionOperator $m)
         | t=typeReference
-      -> ^(TYPE_EXPRESSION $primary memberSelectionOperator $t)
+      -> ^(QUALIFIED_TYPE_EXPRESSION $primary memberSelectionOperator $t)
         )
       | elementSelectionOperator elementsSpec ']'
       -> ^(elementSelectionOperator $primary elementsSpec)
@@ -795,10 +798,11 @@ base
     | enumeration
     | selfReference
     | typeReference
-    -> ^(BASE_TYPE typeReference)
+    -> ^(BASE_TYPE_EXPRESSION typeReference)
     | memberReference
-    -> ^(MEMBER memberReference)
+    -> ^(BASE_MEMBER_EXPRESSION memberReference)
     | 'subtype' 
+    -> ^(SUBTYPE_EXPRESSION)
     | (parametersStart) => lambda
     | parExpression
     ;
@@ -817,19 +821,11 @@ memberSelectionOperator
     : '.' | '?.' | '[].' 
     ;
 
-typeReference
-    : typeInExpression
-    ;
-
 memberReference
-    : memberInExpression
+    : memberName ((typeArgumentsStart) => typeArguments)? 
     ;
 
-memberInExpression
-    : memberName ((typeArgumentsStart) => typeArguments)?
-    ;
-
-typeInExpression
+typeReference
     : typeName ((typeArgumentsStart) => typeArguments)?
     ;
 
@@ -1105,7 +1101,7 @@ nonemptyCondition
 
 isCondition
     : ('(' IS_OP type LIDENTIFIER ')') => '(' IS_OP type memberName ')'
-    -> ^(IS_CONDITION[$IS_OP] type ^(VARIABLE type memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(MEMBER memberName)))))
+    -> ^(IS_CONDITION[$IS_OP] type ^(VARIABLE type memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName)))))
     | '(' IS_OP type (memberName specifier | expression) ')'
     -> ^(IS_CONDITION[$IS_OP] type ^(VARIABLE type memberName specifier)? expression?)
     ;
@@ -1282,7 +1278,7 @@ variable
 
 impliedVariable
     : memberName 
-    -> ^(VARIABLE LOCAL_MODIFIER memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(MEMBER memberName))))
+    -> ^(VARIABLE LOCAL_MODIFIER memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName))))
     ;
 
 // Lexer

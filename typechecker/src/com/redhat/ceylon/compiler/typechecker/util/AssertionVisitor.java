@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
@@ -19,26 +20,26 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
 
     @Override
     public void visit(Tree.TypedDeclaration that) {
-        checkType(that, that.getType());
+        checkType(that, that.getType().getTypeModel(), that.getType());
         super.visit(that);
     }
 
     @Override
     public void visit(Tree.ExpressionStatement that) {
-        checkType(that, that.getExpression());
+        checkType(that, that.getExpression().getTypeModel(), that.getExpression());
         super.visit(that);
     }
     
-    private void checkType(Tree.Statement that, Tree.Term typedNode) {
+    private void checkType(Tree.Statement that, ProducedType type, Node typedNode) {
         for (Tree.CompilerAnnotation c: that.getCompilerAnnotations()) {
             if (c.getIdentifier().getText().equals("type")) {
                 String expectedType = c.getStringLiteral().getText();
-                if (typedNode==null || typedNode.getTypeModel()==null || 
-                        typedNode.getTypeModel().getDeclaration()==null) {
+                if (typedNode==null || type==null || 
+                        type.getDeclaration()==null) {
                     out(that, "type not known");
                 }
                 else {
-                    String actualType = typedNode.getTypeModel().getProducedTypeName();
+                    String actualType = type.getProducedTypeName();
                     if ( !actualType.equals(expectedType.substring(1,expectedType.length()-1)) )
                         out(that, "type " + actualType + " not of expected type " + expectedType);
                 }

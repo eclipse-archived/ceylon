@@ -15,6 +15,11 @@ public abstract class TypeDeclaration extends Declaration implements Generic, Sc
 	List<ProducedType> caseTypes = Collections.emptyList();
 	List<TypeParameter> typeParameters = Collections.emptyList();
 	
+	@Override
+	public boolean isParameterized() {
+	    return !typeParameters.isEmpty();
+	}
+	
 	public List<TypeParameter> getTypeParameters() {
 		return typeParameters;
 	}
@@ -72,6 +77,11 @@ public abstract class TypeDeclaration extends Declaration implements Generic, Sc
 		this.caseTypes = caseTypes;
 	}
 	
+    @Override
+    public ProducedReference getProducedReference(ProducedType pt, List<ProducedType> typeArguments) {
+        return getProducedType(pt, typeArguments);
+    }
+    
 	public ProducedType getProducedType(ProducedType outerType, List<ProducedType> typeArguments) {
 	    /*if (!acceptsArguments(this, typeArguments)) {
 	        return null;

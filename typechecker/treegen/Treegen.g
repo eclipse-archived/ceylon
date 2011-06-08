@@ -12,17 +12,6 @@ nodeList : {
            println("package com.redhat.ceylon.compiler.typechecker.tree;\n");
            println("import static com.redhat.ceylon.compiler.typechecker.tree.Walker.*;\n");
            println("import org.antlr.runtime.tree.CommonTree;\n");
-           println("import com.redhat.ceylon.compiler.typechecker.model.Class;");
-           println("import com.redhat.ceylon.compiler.typechecker.model.Interface;");
-           println("import com.redhat.ceylon.compiler.typechecker.model.Method;");
-           println("import com.redhat.ceylon.compiler.typechecker.model.Value;");
-           println("import com.redhat.ceylon.compiler.typechecker.model.Getter;");
-           println("import com.redhat.ceylon.compiler.typechecker.model.Setter;");
-           println("import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;");
-           println("import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;");
-           println("import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;");
-           println("import com.redhat.ceylon.compiler.typechecker.model.ProducedType;");
-           println("import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;\n");
            println("import java.util.*;\n");
            println("public class Tree {\n");
            }
@@ -89,9 +78,9 @@ subnode :
         ;
 
 field : t=TYPE_NAME f=FIELD_NAME 
-          { println("        private " + $t.text + " " + $f.text+ ";"); }
-          { println("        public " + $t.text + " get" + initialUpper($f.text) + "() { return " + $f.text + "; }"); }
-          { println("        public void set" + initialUpper($f.text) + "(" + $t.text + " value) { " + $f.text + " = value; }\n"); }
+          { println("        private com.redhat.ceylon.compiler.typechecker.model." + $t.text + " " + $f.text+ ";"); }
+          { println("        public com.redhat.ceylon.compiler.typechecker.model." + $t.text + " get" + initialUpper($f.text) + "() { return " + $f.text + "; }"); }
+          { println("        public void set" + initialUpper($f.text) + "(com.redhat.ceylon.compiler.typechecker.model." + $t.text + " value) { " + $f.text + " = value; }\n"); }
         ';'
       | 'abstract' t=TYPE_NAME f=FIELD_NAME
           { println("        public abstract com.redhat.ceylon.compiler.typechecker.model." + $t.text + " get" + initialUpper($f.text) + "();\n"); }

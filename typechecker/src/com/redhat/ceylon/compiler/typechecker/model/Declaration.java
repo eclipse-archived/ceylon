@@ -34,6 +34,10 @@ public abstract class Declaration extends Element {
 		this.shared = shared;
 	}
 	
+    public boolean isParameterized() {
+        return false;
+    }
+    
 	public List<Annotation> getAnnotations() {
 		return annotations;
 	}
@@ -71,5 +75,7 @@ public abstract class Declaration extends Element {
     public void setDefault(boolean def) {
         this.def = def;
     }
+    
+    public abstract ProducedReference getProducedReference(ProducedType pt, List<ProducedType> typeArguments);
 
 }

@@ -19,7 +19,7 @@ class Generics() {
     @type["Generics.Holder<String>"] Holder<String>("hello");
     @type["String"] local shh = Holder<String>("hello").held;
     
-    @error Holder("hello");
+    @type["Generics.Holder<String>"] Holder("hello");
     
     Holder<String> h1 = Holder<String>("hello");
     String hello = h1.held;
@@ -33,7 +33,7 @@ class Generics() {
     
     @type["Float"] h2.noop<Float>(1.0);
     String s1 = h2.noop<String>("Hi!");
-    @error String s2 = h2.noop("Hi!");
+    String s2 = h2.noop("Hi!");
     
     @type["Generics.Holder<Natural>"] create<Natural>(3);
     Natural nn = create<Natural>(5).held;
@@ -223,5 +223,5 @@ class Generics() {
      
     @type["Entry<String,Natural>"] Lower<String>("hello").method<Natural>("world",1);
     @type["Generics.Upper<String>.Inner<Float>"] Lower<String>("hello").Inner<Float>("world", 2.3);
-    
+        
 }

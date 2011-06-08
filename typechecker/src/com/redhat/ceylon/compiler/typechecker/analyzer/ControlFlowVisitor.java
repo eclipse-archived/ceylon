@@ -342,7 +342,7 @@ public class ControlFlowVisitor extends Visitor {
         if (expr!=null) {
             Tree.Term t = expr.getTerm();
             if (t==null) {
-                expr.addError("malformed expression");
+                expr.addError("malformed expression statement");
             }
             else {
                 if (!(t instanceof Tree.InvocationExpression

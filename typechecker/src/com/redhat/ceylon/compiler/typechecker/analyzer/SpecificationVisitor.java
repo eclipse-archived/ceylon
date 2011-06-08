@@ -8,7 +8,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Member;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -107,12 +106,12 @@ public class SpecificationVisitor extends Visitor {
     public void visit(Tree.AnnotationList that) {}
     
     @Override
-    public void visit(Tree.Member that) {
+    public void visit(Tree.BaseMemberExpression that) {
         visitReference(that, that.getIdentifier());
     }
 
     @Override
-    public void visit(Tree.BaseType that) {
+    public void visit(Tree.BaseTypeExpression that) {
         visitReference(that, that.getIdentifier());
     }
 
@@ -144,8 +143,8 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.AssignOp that) {
         Tree.Term lt = that.getLeftTerm();
-        if (lt instanceof Tree.Member) {
-            Tree.Member m = (Tree.Member) lt;
+        if (lt instanceof Tree.BaseMemberExpression) {
+            Tree.BaseMemberExpression m = (Tree.BaseMemberExpression) lt;
             Declaration member = getDeclaration(m.getScope(), m.getUnit(), m.getIdentifier(), context);
             if (member==declaration) {
                 that.getRightTerm().visit(this);
@@ -178,8 +177,8 @@ public class SpecificationVisitor extends Visitor {
     }
     
     private void checkVariable(Tree.Term term) {
-        if (term instanceof Tree.Member) {
-            Tree.Member m = (Tree.Member) term;
+        if (term instanceof Tree.BaseMemberExpression) {
+            Tree.BaseMemberExpression m = (Tree.BaseMemberExpression) term;
             Declaration member = getDeclaration(m.getScope(), m.getUnit(), m.getIdentifier(), context);
             if (member==declaration) {
                 if (!isVariable()) {
@@ -192,7 +191,7 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.SpecifierStatement that) {
-        Member m = that.getMember();
+        Tree.BaseMemberExpression m = that.getBaseMemberExpression();
         Declaration member = getDeclaration(m.getScope(), m.getUnit(), m.getIdentifier(), context);
         if (member==declaration) {
             that.getSpecifierExpression().visit(this);

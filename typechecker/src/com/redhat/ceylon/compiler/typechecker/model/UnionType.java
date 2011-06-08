@@ -34,5 +34,18 @@ public class UnionType extends TypeDeclaration {
     public List<String> getQualifiedName() {
         return null;
     }
+    
+    @Override
+    public ProducedType getType() {
+        if (getCaseTypes().size()==0) {
+            return new BottomType().getType();
+        }
+        else if (getCaseTypes().size()==1) {
+            return getCaseTypes().get(0).getType();
+        }
+        else {
+            return super.getType();
+        }
+    }
 
 }

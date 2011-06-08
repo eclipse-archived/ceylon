@@ -81,9 +81,16 @@ public class ProducedType extends ProducedReference {
 	            }
 	        }
 	        else {
+	            //TODO: what if this is a union of one type?!
 	            return false;
 	        }
 	    }
+	    /*else if (type.getDeclaration() instanceof UnionType) {
+	        List<ProducedType> otherCases = type.getDeclaration().getCaseTypes();
+	        if (otherCases.size()==1) {
+	            if ( isExactly(otherCases.get(0)) ) return true;
+	        }
+	    }*/
 	    else {
     	    if (type.getDeclaration()!=getDeclaration()) {
     	        return false;

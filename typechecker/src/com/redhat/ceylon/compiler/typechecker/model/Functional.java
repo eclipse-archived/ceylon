@@ -24,5 +24,7 @@ public interface Functional {
 	public ProducedType getType();
 	
 	public String getName();
+	
+	public List<TypeParameter> getTypeParameters();
 
 }

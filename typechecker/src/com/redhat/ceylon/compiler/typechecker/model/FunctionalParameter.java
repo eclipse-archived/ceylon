@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -28,6 +29,11 @@ public class FunctionalParameter extends Parameter implements Scope, Functional 
     @Override
     public List<Declaration> getMembers() {
         return members;
+    }
+    
+    @Override
+    public List<TypeParameter> getTypeParameters() {
+        return Collections.emptyList();
     }
     
 }

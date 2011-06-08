@@ -224,4 +224,21 @@ public class Util {
         }
     }
 
+    public static boolean isVisible(Declaration declaration, Node that) {
+        if (declaration.isShared()) {
+            return true;
+        }
+        else {
+            Scope scope = that.getScope();
+            do {
+                if ( declaration.getContainer()==scope ) {
+                    return true;
+                }
+                scope = scope.getContainer();
+            }
+            while (scope!=null);
+            return false;
+        }
+    }
+
 }

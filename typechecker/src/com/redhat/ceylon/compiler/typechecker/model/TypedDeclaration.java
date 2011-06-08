@@ -47,6 +47,11 @@ public abstract class TypedDeclaration extends Declaration {
         return ptr;
     }
     
+    @Override
+    public ProducedReference getProducedReference(ProducedType pt, List<ProducedType> typeArguments) {
+        return getProducedTypedReference(pt, typeArguments);
+    }
+    
     public boolean isMember() {
         return getContainer() instanceof ClassOrInterface; 
     }

@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -37,8 +38,8 @@ public class TypeArgumentVisitor extends Visitor {
             parameterizedDeclaration = dec.getDeclaration();
             flip();
             if (that.getSatisfiedTypes()!=null) {
-                for (Tree.Type t: that.getSatisfiedTypes().getTypes()) {
-                    check(t, false);
+                for (Tree.Type type: that.getSatisfiedTypes().getTypes()) {
+                    check(type, false);
                 }
             }
             flip();
@@ -68,8 +69,8 @@ public class TypeArgumentVisitor extends Visitor {
     @Override public void visit(Tree.ClassOrInterface that) {
         super.visit(that);
         if (that.getSatisfiedTypes()!=null) {
-            for (Tree.Type t: that.getSatisfiedTypes().getTypes()) {
-                check(t, false);
+            for (Tree.Type type: that.getSatisfiedTypes().getTypes()) {
+                check(type, false);
             }
         }
     }
@@ -80,13 +81,16 @@ public class TypeArgumentVisitor extends Visitor {
             check(that.getExtendedType().getType(), false);
         }
     }
-    
-    private void check(Tree.Primary that, boolean variable) {
+
+    private void check(Tree.Type that, boolean variable) {
         if (that!=null) {
-            ProducedType pt = that.getTypeModel();
-            if ( pt!=null && !pt.checkVariance(!contravariant && !variable, contravariant && !variable, parameterizedDeclaration) ) {
-                that.addError("incorrect variance: " + pt.getProducedTypeName());
-            }
+            check(that.getTypeModel(), that, variable);
+        }
+    }
+    
+    private void check(ProducedType type, Node that, boolean variable) {
+        if ( type!=null && !type.checkVariance(!contravariant && !variable, contravariant && !variable, parameterizedDeclaration) ) {
+            that.addError("incorrect variance: " + type.getProducedTypeName());
         }
     }
     

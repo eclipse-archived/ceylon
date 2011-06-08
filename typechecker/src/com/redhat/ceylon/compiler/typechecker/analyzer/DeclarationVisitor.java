@@ -416,7 +416,7 @@ public class DeclarationVisitor extends Visitor {
     private boolean hasAnnotation(Tree.AnnotationList al, String name) {
         if (al!=null) {
             for (Tree.Annotation a: al.getAnnotations()) {
-                Tree.Member p = (Tree.Member) a.getPrimary();
+                Tree.BaseMemberExpression p = (Tree.BaseMemberExpression) a.getPrimary();
                 if (p!=null) {
                     if ( p.getIdentifier().getText().equals(name)) {
                         return true;

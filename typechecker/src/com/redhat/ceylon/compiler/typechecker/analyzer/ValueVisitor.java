@@ -33,7 +33,7 @@ public class ValueVisitor extends Visitor {
         inCapturingScope = cs;
     }
     
-    @Override public void visit(Tree.Member that) {
+    @Override public void visit(Tree.BaseMemberExpression that) {
         if (inCapturingScope) {
             if (that.getIdentifier()!=null) {
                 TypedDeclaration d = (TypedDeclaration) getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
