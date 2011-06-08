@@ -1,14 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.addToUnion;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getContainingClassOrInterface;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getDeclaringType;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getExternalDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLanguageModuleDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getMemberDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isVisible;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
