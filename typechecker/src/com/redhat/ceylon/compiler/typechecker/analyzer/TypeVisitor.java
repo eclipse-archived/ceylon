@@ -196,14 +196,14 @@ public class TypeVisitor extends Visitor {
         //}
     }
     
-    private void visitExtendedType(Tree.QualifiedType that, ProducedType ot, TypeDeclaration dec) {
+    /*private void visitExtendedType(Tree.QualifiedType that, ProducedType ot, TypeDeclaration dec) {
         Tree.TypeArgumentList tal = that.getTypeArgumentList();
         List<ProducedType> typeArguments = getTypeArguments(tal);
         //if (acceptsTypeArguments(dec, typeArguments, tal, that)) {
             ProducedType pt = dec.getProducedType(ot, typeArguments);
             that.setTypeModel(pt);
         //}
-    }
+    }*/
         
     @Override 
     public void visit(Tree.VoidModifier that) {
@@ -334,7 +334,7 @@ public class TypeVisitor extends Visitor {
             that.addError("malformed extended type");
         }
         else {
-            if (et instanceof Tree.QualifiedType) {
+            /*if (et instanceof Tree.QualifiedType) {
                 Tree.QualifiedType st = (Tree.QualifiedType) et;
                 ProducedType pt = st.getOuterType().getTypeModel();
                 if (pt!=null) {
@@ -347,7 +347,7 @@ public class TypeVisitor extends Visitor {
                         visitExtendedType(st, pt, superclass);
                     }
                 }
-            }
+            }*/
             ProducedType type = et.getTypeModel();
             if (type!=null) {
                 if (type.getDeclaration() instanceof TypeParameter) {
