@@ -673,11 +673,17 @@ public class ExpressionVisitor extends Visitor {
                     ut.setCaseTypes(inferredTypes);
                     typeArgs.add(ut.getType());
                 }
-                ProducedType ot = getDeclaringType(that.getPrimary(), dec);
-                ProducedReference prodRef = dec.getProducedReference(ot, typeArgs);
-                if (acceptsTypeArguments(dec, typeArgs, null, that)) {
-                    pr.setTarget(prodRef);
-                    pr.setTypeModel(prodRef.getType());
+                if (pr instanceof Tree.BaseTypeExpression) {
+                    visitBaseTypeExpression((Tree.BaseTypeExpression) pr, (TypeDeclaration) dec, typeArgs, null);
+                }
+                else if (pr instanceof Tree.QualifiedTypeExpression) {
+                    visitQualifiedTypeExpression((Tree.QualifiedTypeExpression) pr, (TypeDeclaration) dec, typeArgs, null);
+                }
+                else if (pr instanceof Tree.BaseMemberExpression) {
+                    visitBaseMemberExpression((Tree.BaseMemberExpression) pr, (TypedDeclaration) dec, typeArgs, null);
+                }
+                else if (pr instanceof Tree.QualifiedMemberExpression) {
+                    visitQualifiedMemberExpression((Tree.QualifiedMemberExpression) pr, (TypedDeclaration) dec, typeArgs, null);
                 }
             }
             visitInvocation(pal, nal, that, pr);
@@ -1525,20 +1531,9 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             that.setDeclaration(member);
-            ProducedType ot;
-            if ( member.isMember() ) {
-                ot = getDeclaringType(that, member);
-            }
-            else {
-                //it must be a member of an outer scope
-               ot = null;
-            }
             Tree.TypeArgumentList tal = that.getTypeArgumentList();
-            if (!member.isParameterized() || tal!=null) {
-                List<ProducedType> typeArgs = getTypeArguments(tal);
-                if (acceptsTypeArguments(member, typeArgs, tal, that)) {
-                    visitBaseMemberExpression(that, ot, member, typeArgs);
-                }
+            if (explicitTypeArguments(member, tal)) {
+                visitBaseMemberExpression(that, member, getTypeArguments(tal), tal);
             }
             //otherwise infer type arguments later
         }
@@ -1548,8 +1543,7 @@ public class ExpressionVisitor extends Visitor {
         that.getPrimary().visit(this);
         ProducedType pt = that.getPrimary().getTypeModel();
         if (pt!=null && that.getIdentifier()!=null) {
-            pt = unwrap(pt, that);
-            TypedDeclaration member = (TypedDeclaration) getMemberDeclaration(pt.getDeclaration(), that.getIdentifier(), context);
+            TypedDeclaration member = (TypedDeclaration) getMemberDeclaration(unwrap(pt, that).getDeclaration(), that.getIdentifier(), context);
             if (member==null) {
                 that.addError("could not determine target of member reference: " +
                         that.getIdentifier().getText());
@@ -1561,11 +1555,8 @@ public class ExpressionVisitor extends Visitor {
                             that.getIdentifier().getText());
                 }
                 Tree.TypeArgumentList tal = that.getTypeArgumentList();
-                if (!member.isParameterized() || tal!=null) {
-                    List<ProducedType> typeArgs = getTypeArguments(tal);
-                    if (acceptsTypeArguments(pt, member, typeArgs, tal, that)) {
-                        visitQualifiedMemberExpression(that, pt, member, typeArgs);
-                    }
+                if (explicitTypeArguments(member,tal)) {
+                    visitQualifiedMemberExpression(that, member, getTypeArguments(tal), tal);
                 }
                 //otherwise infer type arguments later
             }
@@ -1573,32 +1564,44 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void visitQualifiedMemberExpression(Tree.QualifiedMemberExpression that,
-            ProducedType receiverType, TypedDeclaration member,
-            List<ProducedType> typeArgs) {
-        ProducedTypedReference ptr = receiverType.getTypedMember(member, typeArgs);
-        if (ptr==null) {
-            that.addError("member not found: " + 
-                    member.getName() + " of type " + 
-                    receiverType.getDeclaration().getName());
-        }
-        else {
-            ProducedType t = ptr.getType();
-            that.setTarget(ptr); //TODO: how do we wrap ptr???
-            that.setTypeModel(wrap(t, that)); //TODO: this is not correct, should be Callable
+            TypedDeclaration member, List<ProducedType> typeArgs, Tree.TypeArgumentList tal) {
+        ProducedType receiverType = unwrap(that.getPrimary().getTypeModel(), that);
+        if (acceptsTypeArguments(receiverType, member, typeArgs, tal, that)) {
+            ProducedTypedReference ptr = receiverType.getTypedMember(member, typeArgs);
+            if (ptr==null) {
+                that.addError("member not found: " + 
+                        member.getName() + " of type " + 
+                        receiverType.getDeclaration().getName());
+            }
+            else {
+                ProducedType t = ptr.getType();
+                that.setTarget(ptr); //TODO: how do we wrap ptr???
+                that.setTypeModel(wrap(t, that)); //TODO: this is not correct, should be Callable
+            }
         }
     }
     
-    private void visitBaseMemberExpression(Tree.BaseMemberExpression that, ProducedType outerType,
-        TypedDeclaration member, List<ProducedType> typeArgs) {
-        ProducedTypedReference pr = member.getProducedTypedReference(outerType, typeArgs);
-        that.setTarget(pr);
-        ProducedType t = pr.getType();
-        if (t==null) {
-            that.addError("could not determine type of member reference: " +
-                    that.getIdentifier().getText());
-        }
-        else {
-            that.setTypeModel(t);
+    private void visitBaseMemberExpression(Tree.BaseMemberExpression that, TypedDeclaration member, 
+            List<ProducedType> typeArgs, Tree.TypeArgumentList tal) {
+        ProducedType outerType;
+        if (acceptsTypeArguments(member, typeArgs, tal, that)) {
+            if ( member.isMember() ) {
+                outerType = getDeclaringType(that, member);
+            }
+            else {
+                //it must be a member of an outer scope
+               outerType = null;
+            }
+            ProducedTypedReference pr = member.getProducedTypedReference(outerType, typeArgs);
+            that.setTarget(pr);
+            ProducedType t = pr.getType();
+            if (t==null) {
+                that.addError("could not determine type of member reference: " +
+                        that.getIdentifier().getText());
+            }
+            else {
+                that.setTypeModel(t);
+            }
         }
     }
 
@@ -1611,11 +1614,8 @@ public class ExpressionVisitor extends Visitor {
         else {
             that.setDeclaration(type);
             Tree.TypeArgumentList tal = that.getTypeArgumentList();
-            if (!type.isParameterized() || tal!=null) {
-                List<ProducedType> typeArgs = getTypeArguments(tal);
-                if ( acceptsTypeArguments(type, typeArgs, tal, that) ) {
-                    visitBaseTypeExpression(that, type, typeArgs);
-                }
+            if (explicitTypeArguments(type, tal)) {
+                visitBaseTypeExpression(that, type, getTypeArguments(tal), tal);
             }
             //otherwise infer type arguments later
         }
@@ -1625,8 +1625,7 @@ public class ExpressionVisitor extends Visitor {
         that.getPrimary().visit(this);
         ProducedType pt = that.getPrimary().getTypeModel();
         if (pt!=null) {
-            pt = unwrap(pt, that);
-            TypeDeclaration type = (TypeDeclaration) getMemberDeclaration(pt.getDeclaration(), that.getIdentifier(), context);
+            TypeDeclaration type = (TypeDeclaration) getMemberDeclaration(unwrap(pt, that).getDeclaration(), that.getIdentifier(), context);
             if (type==null) {
                 that.addError("could not determine target of member type reference: " +
                         that.getIdentifier().getText());
@@ -1638,15 +1637,17 @@ public class ExpressionVisitor extends Visitor {
                             that.getIdentifier().getText());
                 }
                 Tree.TypeArgumentList tal = that.getTypeArgumentList();
-                if (!type.isParameterized() || tal!=null) {
-                    List<ProducedType> typeArgs = getTypeArguments(tal);
-                    if (acceptsTypeArguments(pt, type, typeArgs, tal, that)) {
-                        visitQualifiedTypeExpression(that, pt, type, typeArgs);
-                    }
+                if (explicitTypeArguments(type, tal)) {
+                    visitQualifiedTypeExpression(that, type, getTypeArguments(tal), tal);
                     //otherwise infer type arguments later
                 }
             }
         }
+    }
+
+    private boolean explicitTypeArguments(Declaration dec,
+            Tree.TypeArgumentList tal) {
+        return !dec.isParameterized() || tal!=null;
     }
     
     @Override public void visit(Tree.SimpleType that) {
@@ -1664,25 +1665,30 @@ public class ExpressionVisitor extends Visitor {
     }
         
 
-    private void visitQualifiedTypeExpression(Tree.QualifiedTypeExpression that, ProducedType pt,
-            TypeDeclaration type, List<ProducedType> typeArgs) {
-        ProducedType t = pt.getTypeMember(type, typeArgs);
-        that.setTypeModel(wrap(t, that)); //TODO: this is not correct, should be Callable
-        that.setTarget(t);
+    private void visitQualifiedTypeExpression(Tree.QualifiedTypeExpression that,
+            TypeDeclaration type, List<ProducedType> typeArgs, Tree.TypeArgumentList tal) {
+        ProducedType receiverType = unwrap(that.getPrimary().getTypeModel(), that);
+        if (acceptsTypeArguments(receiverType, type, typeArgs, tal, that)) {
+            ProducedType t = receiverType.getTypeMember(type, typeArgs);
+            that.setTypeModel(wrap(t, that)); //TODO: this is not correct, should be Callable
+            that.setTarget(t);
+        }
     }
 
-    private void visitBaseTypeExpression(Tree.BaseTypeExpression that,
-            TypeDeclaration type, List<ProducedType> typeArgs) {
-        ProducedType outerType;
-        if (type.isMemberType()) {
-            outerType = getDeclaringType(that, type);
+    private void visitBaseTypeExpression(Tree.BaseTypeExpression that, TypeDeclaration type, 
+            List<ProducedType> typeArgs, Tree.TypeArgumentList tal) {
+        if ( acceptsTypeArguments(type, typeArgs, tal, that) ) {
+            ProducedType outerType;
+            if (type.isMemberType()) {
+                outerType = getDeclaringType(that, type);
+            }
+            else {
+                outerType = null;
+            }
+            ProducedType t = type.getProducedType(outerType, typeArgs);
+            that.setTypeModel(t); //TODO: this is not correct, should be Callable
+            that.setTarget(t);
         }
-        else {
-            outerType = null;
-        }
-        ProducedType t = type.getProducedType(outerType, typeArgs);
-        that.setTypeModel(t); //TODO: this is not correct, should be Callable
-        that.setTarget(t);
     }
 
     @Override public void visit(Tree.Expression that) {
@@ -2015,7 +2021,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 if (tal==null) {
-                    parent.addError("requires type arguments (until we implement type inference)");
+                    parent.addError("requires type arguments");
                 }
                 else {
                     tal.addError("wrong number of type arguments");
