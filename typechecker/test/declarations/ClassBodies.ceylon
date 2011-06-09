@@ -12,6 +12,16 @@ interface ClassBodies {
         void y() { x(); }
     }
     
+    class Good2WithCircular() {
+        void x() { y(); }
+        void y() { x(); }
+    }
+    
+    object good2WithCircular {
+        void x() { y(); }
+        void y() { x(); }
+    }
+    
     class BadWithCircular() {
         void x() { @error y(); }
         void y() { x(); }
