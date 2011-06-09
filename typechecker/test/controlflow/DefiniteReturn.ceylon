@@ -402,6 +402,46 @@ interface DefiniteReturn {
         }
     }
     
+    X methodWithReturnInIfAndElseAndElseIf() {
+        if (testSomething()) {
+            doSomething();
+            return X();
+        }
+        else if (20>23) {
+            return X();
+        }
+        else {
+            doSomethingElse();
+            return X();
+        }
+    }
+    
+    @error X methodWithReturnInIfAndElseIfOnly() {
+        if (testSomething()) {
+            doSomething();
+            return X();
+        }
+        else if (20>23) {
+            return X();
+        }
+        else {
+            doSomethingElse();
+        }
+    }
+    
+    @error X methodWithReturnInIfAndElseOnly() {
+        if (testSomething()) {
+            doSomething();
+            return X();
+        }
+        else if (20>23) {
+            doSomethingElse();
+        }
+        else {
+            return X();
+        }
+    }
+    
     X methodWithStatementAfterDefiniteReturn() {
         if (testSomething()) {
             doSomething();
