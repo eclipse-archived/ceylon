@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getDeclaration;
 
 import com.redhat.ceylon.compiler.typechecker.context.Context;
-import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
@@ -33,7 +32,6 @@ public class SpecificationVisitor extends Visitor {
     private Context context;
     private Statement lastExecutableStatement;
     private boolean declarationSection = false;
-    private com.redhat.ceylon.compiler.typechecker.model.Class clazz = null;
 
     class SpecificationState {
         boolean definitely;
@@ -139,7 +137,7 @@ public class SpecificationVisitor extends Visitor {
     private void visitReference(Node that, Declaration member) {
         //Declaration member = getDeclaration(that.getScope(), that.getUnit(), id, context);
         //TODO: check superclass members are not in declaration section!
-        if ( member==declaration && !isInherited(member) && !inDeclarationSection() ) {
+        if ( member==declaration && isDefinedInContainingScope(that, member) && !inDeclarationSection() ) {
             if (!declared) {
                 that.addError("not yet declared: " + 
                         member.getName());
@@ -157,20 +155,15 @@ public class SpecificationVisitor extends Visitor {
         }
     }
 
-    private boolean isInherited(Declaration member) {
-        boolean declaredByClass = member.getContainer() instanceof ClassOrInterface;
-        if (declaredByClass) {
-            Scope ci = (Scope) member.getContainer();
-            Scope c = clazz;
-            while (c!=null) {
-                if (ci==c) return false;
-                c = c.getContainer();
+    private boolean isDefinedInContainingScope(Node node, Declaration member) {
+        Scope scope = node.getScope();
+        while (scope!=null) {
+            if (scope.getMembers().contains(member)) {
+                return true;
             }
-            return true;
+            scope = scope.getContainer();
         }
-        else {
-            return false;
-        }
+        return false;
     }
 
     private boolean inDeclarationSection() {
@@ -396,40 +389,31 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ObjectDefinition that) {
-        com.redhat.ceylon.compiler.typechecker.model.Class c = clazz;
-        clazz = (com.redhat.ceylon.compiler.typechecker.model.Class) that.getDeclarationModel().getTypeDeclaration();
         if (that.getDeclarationModel()==declaration) {
             declare();
             specify();
         }
         super.visit(that);
-        clazz = c;
     }
     
     @Override
     public void visit(Tree.ObjectArgument that) {
-        com.redhat.ceylon.compiler.typechecker.model.Class c = clazz;
-        clazz = (com.redhat.ceylon.compiler.typechecker.model.Class) that.getDeclarationModel().getTypeDeclaration();
         if (that.getDeclarationModel()==declaration) {
             declare();
             specify();
         }
         super.visit(that);
-        clazz = c;
     }
     
     @Override
     public void visit(Tree.ClassDefinition that) {
-        com.redhat.ceylon.compiler.typechecker.model.Class c = clazz;
-        clazz = that.getDeclarationModel();
         if (that.getDeclarationModel()==declaration) {
             declare();
             specify();
         }
         super.visit(that);
-        clazz = c;
     }
-        
+    
     @Override
     public void visit(Tree.ClassBody that) {
         Tree.Statement les = null;
@@ -469,9 +453,7 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.Statement that) {
         super.visit(that);
-        if (that==lastExecutableStatement) {
-            declarationSection = true;
-        }
+        declarationSection = declarationSection || (that==lastExecutableStatement);
     }
     
     @Override
