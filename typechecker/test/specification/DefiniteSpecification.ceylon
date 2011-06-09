@@ -186,6 +186,36 @@ interface DefiniteSpecification {
         }
     }
     
+    void badMethodWithSpecInIfAndElseOnly() {
+        X x;
+        if (testSomething()) {
+            doSomething();
+            x = X();
+        }
+        else if (3<20) {
+            doSomethingElse();
+        }
+        else {
+            x = X();
+        }
+        @error use(x);
+    }
+    
+    void badMethodWithSpecInIfAndElseIfOnly() {
+        X x;
+        if (testSomething()) {
+            doSomething();
+            x = X();
+        }
+        else if (3<20) {
+            x = X();
+        }
+        else {
+            doSomethingElse();
+        }
+        @error use(x);
+    }
+    
     void goodMethodWithSpecInNestedIf() {
         X x;
         if (testSomething()) {
@@ -304,6 +334,22 @@ interface DefiniteSpecification {
         X x;
         if (testSomething()) {
             doSomething();
+            x = X();
+        }
+        else {
+            doSomethingElse();
+            x = X();
+        }
+        use(x);
+    }
+    
+    void goodMethodWithSpecInIfAndElseAndElseIf() {
+        X x;
+        if (testSomething()) {
+            doSomething();
+            x = X();
+        }
+        else if (3<20) {
             x = X();
         }
         else {

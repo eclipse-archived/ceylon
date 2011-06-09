@@ -462,9 +462,9 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.IfStatement that) {
+        
         boolean d = beginDeclarationScope();
         SpecificationState as = beginSpecificationScope();
-        
         that.getIfClause().visit(this);
         boolean definitelyAssignedByIfClause = specified.definitely || specified.exited;
         boolean possiblyAssignedByIfClause = specified.possibly;
@@ -474,16 +474,18 @@ public class SpecificationVisitor extends Visitor {
         boolean definitelyAssignedByElseClause;
         boolean possiblyAssignedByElseClause;
         if (that.getElseClause()!=null) {
+            d = beginDeclarationScope();
+            as = beginSpecificationScope();
             that.getElseClause().visit(this);
-            endDeclarationScope(d);
             definitelyAssignedByElseClause = specified.definitely || specified.exited;
             possiblyAssignedByElseClause = specified.possibly;
+            endDeclarationScope(d);
+            endSpecificationScope(as);
         }
         else {
             definitelyAssignedByElseClause = false;
             possiblyAssignedByElseClause = false;
         }
-        endSpecificationScope(as);
         
         specified.definitely = specified.definitely || (definitelyAssignedByIfClause && definitelyAssignedByElseClause);
         specified.possibly = specified.possibly || possiblyAssignedByIfClause || possiblyAssignedByElseClause;
