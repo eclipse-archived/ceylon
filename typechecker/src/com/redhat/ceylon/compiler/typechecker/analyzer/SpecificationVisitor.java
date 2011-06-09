@@ -120,16 +120,20 @@ public class SpecificationVisitor extends Visitor {
 
     @Override
     public void visit(Tree.QualifiedMemberExpression that) {
-        if (that.getPrimary() instanceof Tree.This) {
+        if (isSelfReference(that.getPrimary())) {
             visitReference(that, that.getDeclaration());
         }
     }
 
     @Override
     public void visit(Tree.QualifiedTypeExpression that) {
-        if (that.getPrimary() instanceof Tree.This) {
+        if (isSelfReference(that.getPrimary())) {
             visitReference(that, that.getDeclaration());
         }
+    }
+
+    private boolean isSelfReference(Tree.Primary that) {
+        return that instanceof Tree.This || that instanceof Tree.Outer;
     }
 
     private void visitReference(Node that, Declaration member) {

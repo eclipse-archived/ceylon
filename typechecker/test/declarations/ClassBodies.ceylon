@@ -160,4 +160,84 @@ interface ClassBodies {
         String name = "gavin";
     }
     
+    class Good3WithInner() {
+        String name = "gavin";
+        class Inner() {
+            @type["String"] outer.x();
+            void x() {}
+        }
+        String x() { return "Hell"; }
+    }
+    
+    class Bad3WithInner() {
+        class Inner() {
+            void x() {}
+            @error outer.x();
+        }
+        String x() { return "Hell"; }
+        String name = "gavin";
+    }
+    
+    class Good4WithInner() {
+        String name = "gavin";
+        class Inner() {
+            void x() {}
+            void y() {
+                @type["String"] outer.x();
+            }
+        }
+        String x() { return "Hell"; }
+    }
+    
+    class Bad4WithInner() {
+        class Inner() {
+            void y() {
+                void x() {}
+                @error outer.x();
+            }
+        }
+        String x() { return "Hell"; }
+        String name = "gavin";
+    }
+    
+    object good3WithInner {
+        String name = "gavin";
+        object inner {
+            @type["String"] outer.x();
+            void x() {}
+        }
+        String x() { return "Hell"; }
+    }
+    
+    object bad3WithInner {
+        object inner {
+            void x() {}
+            @error outer.x();
+        }
+        String x() { return "Hell"; }
+        String name = "gavin";
+    }
+    
+    object good4WithInner {
+        String name = "gavin";
+        object inner {
+            void y() {
+                @type["String"] outer.x();
+            }
+            void x() {}
+        }
+        String x() { return "Hell"; }
+    }
+    
+    object bad4WithInner {
+        object inner {
+            void x() {}
+            void y() {
+                @error outer.x();
+            }
+        }
+        String x() { return "Hell"; }
+        String name = "gavin";
+    }
+    
 }
