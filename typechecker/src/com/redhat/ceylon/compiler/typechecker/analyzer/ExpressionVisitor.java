@@ -30,6 +30,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -653,26 +654,9 @@ public class ExpressionVisitor extends Visitor {
             that.addError("malformed invocation expression");
         }
         else {
-            Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
-            Tree.NamedArgumentList nal = that.getNamedArgumentList();
             Declaration dec = pr.getDeclaration();
             if ( pr.getTarget()==null && dec!=null ) {
-                //DO TYPE INFERENCE!
-                List<ProducedType> typeArgs = new ArrayList<ProducedType>();
-                List<Tree.PositionalArgument> args = that.getPositionalArgumentList().getPositionalArguments();
-                Functional functional = (Functional) dec;
-                for (TypeParameter tp: functional.getTypeParameters()) {
-                    List<ProducedType> inferredTypes = new ArrayList<ProducedType>();
-                    List<Parameter> parameters = functional.getParameterLists().get(0).getParameters();
-                    for (int i=0; i<parameters.size(); i++) {
-                        if (parameters.get(i).getType().getDeclaration()==tp) {
-                            addToUnion(inferredTypes, args.get(i).getExpression().getTypeModel());
-                        }
-                    }
-                    UnionType ut = new UnionType();
-                    ut.setCaseTypes(inferredTypes);
-                    typeArgs.add(ut.getType());
-                }
+                List<ProducedType> typeArgs = getInferedTypeArguments(that, dec);
                 if (pr instanceof Tree.BaseTypeExpression) {
                     visitBaseTypeExpression((Tree.BaseTypeExpression) pr, (TypeDeclaration) dec, typeArgs, null);
                 }
@@ -686,8 +670,44 @@ public class ExpressionVisitor extends Visitor {
                     visitQualifiedMemberExpression((Tree.QualifiedMemberExpression) pr, (TypedDeclaration) dec, typeArgs, null);
                 }
             }
-            visitInvocation(pal, nal, that, pr);
+            visitInvocation(that);
         }
+    }
+
+    private List<ProducedType> getInferedTypeArguments(
+            Tree.InvocationExpression that, Declaration dec) {
+        List<ProducedType> typeArgs = new ArrayList<ProducedType>();
+        Functional functional = (Functional) dec;
+        ParameterList parameters = functional.getParameterLists().get(0);
+        for (TypeParameter tp: functional.getTypeParameters()) {
+            List<ProducedType> inferredTypes = new ArrayList<ProducedType>();
+            if (that.getPositionalArgumentList()!=null) {
+                List<Tree.PositionalArgument> args = that.getPositionalArgumentList().getPositionalArguments();
+                for (int i=0; i<parameters.getParameters().size(); i++) {
+                    Parameter parameter = parameters.getParameters().get(i);
+                    if (parameter.getType().getDeclaration()==tp) {
+                        Expression value = args.get(i).getExpression();
+                        addToUnion(inferredTypes, value.getTypeModel());
+                    }
+                }
+            }
+            else if (that.getNamedArgumentList()!=null) {
+                List<Tree.NamedArgument> args = that.getNamedArgumentList().getNamedArguments();
+                for (Tree.NamedArgument arg: args) {
+                    if (arg instanceof Tree.SpecifiedArgument) {
+                        Parameter parameter = getMatchingParameter(parameters, arg);
+                        if (parameter.getType().getDeclaration()==tp) {
+                            Expression value = ((Tree.SpecifiedArgument)arg).getSpecifierExpression().getExpression();
+                            addToUnion(inferredTypes, value.getTypeModel());
+                        }
+                    }
+                }
+            }
+            UnionType ut = new UnionType();
+            ut.setCaseTypes(inferredTypes);
+            typeArgs.add(ut.getType());
+        }
+        return typeArgs;
     }
 
     /*@Override public void visit(Tree.ExtendedType that) {
@@ -702,16 +722,15 @@ public class ExpressionVisitor extends Visitor {
         }
     }*/
 
-    private void visitInvocation(Tree.PositionalArgumentList pal, Tree.NamedArgumentList nal, 
-            Node that, Tree.Primary primary) {
-        ProducedReference mr = primary.getTarget();
+    private void visitInvocation(Tree.InvocationExpression that) {
+        ProducedReference mr = that.getPrimary().getTarget();
         if (mr==null || !mr.isFunctional()) {
             that.addError("receiving expression cannot be invoked");
         }
         else {
             if (that instanceof Tree.InvocationExpression) {
                 //that.setTypeModel(mr.getType()); //THIS IS THE CORRECT ONE!
-                ( (Tree.InvocationExpression) that ).setTypeModel(primary.getTypeModel()); //TODO: THIS IS A TEMPORARY HACK!
+                ( (Tree.InvocationExpression) that ).setTypeModel(that.getPrimary().getTypeModel()); //TODO: THIS IS A TEMPORARY HACK!
             }
             List<ParameterList> pls = ((Functional) mr.getDeclaration()).getParameterLists();
             if (pls.isEmpty()) {
@@ -719,11 +738,11 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 ParameterList pl = pls.get(0);            
-                if ( pal!=null ) {
-                    checkPositionalArguments(pl, mr, pal);
+                if ( that.getPositionalArgumentList()!=null ) {
+                    checkPositionalArguments(pl, mr, that.getPositionalArgumentList());
                 }
-                if (nal!=null) {
-                    checkNamedArguments(pl, mr, nal);
+                if ( that.getNamedArgumentList()!=null ) {
+                    checkNamedArguments(pl, mr, that.getNamedArgumentList());
                 }
             }
         }
