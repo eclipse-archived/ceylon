@@ -134,6 +134,7 @@ public class SpecificationVisitor extends Visitor {
 
     private void visitReference(Node that, Declaration member) {
         //Declaration member = getDeclaration(that.getScope(), that.getUnit(), id, context);
+        //TODO: check superclass members are not in declaration section!
         if ( member==declaration && !isInherited(member) && !inDeclarationSection() ) {
             if (!declared) {
                 that.addError("not yet declared: " + 
