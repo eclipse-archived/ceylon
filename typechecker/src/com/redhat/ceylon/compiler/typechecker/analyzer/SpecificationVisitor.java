@@ -409,7 +409,7 @@ public class SpecificationVisitor extends Visitor {
             }
         }
         if (found) {
-            declarationSection = false;
+            declarationSection = les==null;
             lastExecutableStatement = les;
             super.visit(that);        
             declarationSection = false;
@@ -585,5 +585,5 @@ public class SpecificationVisitor extends Visitor {
         super.visit(that);
         endDeclarationScope(d);
     }
-
+    
 }
