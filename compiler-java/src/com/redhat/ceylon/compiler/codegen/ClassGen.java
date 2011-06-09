@@ -135,10 +135,10 @@ public class ClassGen extends GenPart {
 
             public void visit(Tree.ExtendedType extendedType) {
                 this.extendedType = extendedType;
-                if (extendedType.getPositionalArgumentList() != null) {
+                if (extendedType.getInvocationExpression().getPositionalArgumentList() != null) {
                     List<JCExpression> args = List.<JCExpression> nil();
 
-                    for (Tree.PositionalArgument arg : extendedType.getPositionalArgumentList().getPositionalArguments())
+                    for (Tree.PositionalArgument arg : extendedType.getInvocationExpression().getPositionalArgumentList().getPositionalArguments())
                         args = args.append(gen.expressionGen.convertArg(arg));
 
                     stmts.append(at(extendedType).Exec(at(extendedType).Apply(List.<JCExpression> nil(), at(extendedType).Ident(names()._super), args)));
@@ -475,7 +475,7 @@ public class ClassGen extends GenPart {
         }
 
         // FIXME: can we have something else?
-        Tree.Member primary = (Tree.Member) userAnn.getPrimary();
+        Tree.BaseMemberExpression primary = (Tree.BaseMemberExpression) userAnn.getPrimary();
         JCExpression result = at(userAnn).Apply(null, makeSelect(primary.getIdentifier().getText(), "run"), values);
         JCIdent addAnnotation = at(userAnn).Ident(names().fromString("addAnnotation"));
         List<JCExpression> args;
@@ -543,9 +543,9 @@ public class ClassGen extends GenPart {
         if (decl.getAnnotationList() == null)
             return false;
         for (Tree.Annotation a : decl.getAnnotationList().getAnnotations()) {
-            if (!(a.getPrimary() instanceof Tree.Member))
+            if (!(a.getPrimary() instanceof Tree.BaseMemberExpression))
                 throw new RuntimeException("Invalid annotation primary: " + a.getPrimary().getNodeType());
-            Tree.Member member = (Tree.Member) a.getPrimary();
+            Tree.BaseMemberExpression member = (Tree.BaseMemberExpression) a.getPrimary();
             if (member.getIdentifier().getText().equals(annotation))
                 return true;
         }

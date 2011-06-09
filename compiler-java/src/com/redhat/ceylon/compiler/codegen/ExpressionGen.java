@@ -100,11 +100,11 @@ public class ExpressionGen extends GenPart {
             }
 
             // FIXME: port ReflectedLiteral?
-            public void visit(Tree.MemberExpression value) {
+            public void visit(Tree.BaseMemberExpression value) {
                 result = convert(value);
             }
 
-            public void visit(Tree.Member value) {
+            public void visit(Tree.QualifiedMemberExpression value) {
                 result = convert(value);
             }
 
@@ -192,10 +192,10 @@ public class ExpressionGen extends GenPart {
     }
 
     private JCExpression convert(Tree.IsOp op) {
-        // FIXME: this is only working for SimpleType
+        // FIXME: this is only working for BaseTypeExpression
         // FIXME: Nasty cast here. We can't call convertExpression()operands[1])
         // because that returns TypeName.class, not simply TypeName.
-        Tree.SimpleType name = (Tree.SimpleType) op.getRightTerm();
+        Tree.BaseTypeExpression name = (Tree.BaseTypeExpression) op.getRightTerm();
         return at(op).Apply(null, makeSelect(makeIdent(syms().ceylonBooleanType), "instance"), List.<JCExpression> of(at(op).TypeTest(convertExpression(op.getLeftTerm()), makeIdent(name.getIdentifier().getText()))));
     }
 
@@ -267,7 +267,7 @@ public class ExpressionGen extends GenPart {
             args.append(convertArg(arg));
 
         ce.getPrimary().visit(new Visitor() {
-            public void visit(Tree.MemberExpression access) {
+            public void visit(Tree.QualifiedMemberExpression access) {
                 expr.append(convert(access));
             }
 
@@ -280,7 +280,7 @@ public class ExpressionGen extends GenPart {
                 expr.append(convert(chainedCall));
             }
 
-            public void visit(Tree.Member access) {
+            public void visit(Tree.BaseMemberExpression access) {
                 expr.append(convert(access));
             }
         });
@@ -306,7 +306,7 @@ public class ExpressionGen extends GenPart {
         return ceylonLiteral(value);
     }
 
-    private JCExpression convert(final Tree.MemberExpression access) {
+    private JCExpression convert(final Tree.QualifiedMemberExpression access) {
         final Tree.Identifier memberName = access.getIdentifier();
         final Tree.Primary operand = access.getPrimary();
 
@@ -314,11 +314,11 @@ public class ExpressionGen extends GenPart {
             public JCExpression result;
 
             // FIXME: this list of cases is incomplete from Gen
-            public void visit(Tree.Member op) {
+            public void visit(Tree.BaseMemberExpression op) {
                 result = makeIdent(Arrays.asList(op.getIdentifier().getText(), memberName.getText()));
             }
 
-            public void visit(Tree.MemberExpression op) {
+            public void visit(Tree.QualifiedMemberExpression op) {
                 result = at(access).Select(convert(op), names().fromString(memberName.getText()));
             }
 
@@ -332,7 +332,7 @@ public class ExpressionGen extends GenPart {
         return v.result;
     }
 
-    private JCIdent convert(Tree.Member member) {
+    private JCIdent convert(Tree.BaseMemberExpression member) {
         return at(member).Ident(names().fromString(member.getIdentifier().getText()));
     }
 }
