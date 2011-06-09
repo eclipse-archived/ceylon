@@ -3,8 +3,10 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getDeclaration;
 
 import com.redhat.ceylon.compiler.typechecker.context.Context;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -31,6 +33,7 @@ public class SpecificationVisitor extends Visitor {
     private Context context;
     private Statement lastExecutableStatement;
     private boolean declarationSection = false;
+    private com.redhat.ceylon.compiler.typechecker.model.Class clazz = null;
 
     class SpecificationState {
         boolean definitely;
@@ -107,17 +110,31 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.BaseMemberExpression that) {
-        visitReference(that, that.getIdentifier());
+        visitReference(that, that.getDeclaration());
     }
 
     @Override
     public void visit(Tree.BaseTypeExpression that) {
-        visitReference(that, that.getIdentifier());
+        visitReference(that, that.getDeclaration());
     }
 
-    private void visitReference(Node that, Tree.Identifier id) {
-        Declaration member = getDeclaration(that.getScope(), that.getUnit(), id, context);
-        if (member==declaration && !inDeclarationSection()) {
+    @Override
+    public void visit(Tree.QualifiedMemberExpression that) {
+        if (that.getPrimary() instanceof Tree.This) {
+            visitReference(that, that.getDeclaration());
+        }
+    }
+
+    @Override
+    public void visit(Tree.QualifiedTypeExpression that) {
+        if (that.getPrimary() instanceof Tree.This) {
+            visitReference(that, that.getDeclaration());
+        }
+    }
+
+    private void visitReference(Node that, Declaration member) {
+        //Declaration member = getDeclaration(that.getScope(), that.getUnit(), id, context);
+        if ( member==declaration && !isInherited(member) && !inDeclarationSection() ) {
             if (!declared) {
                 that.addError("not yet declared: " + 
                         member.getName());
@@ -132,6 +149,22 @@ public class SpecificationVisitor extends Visitor {
                             member.getName());
                 }
             }
+        }
+    }
+
+    private boolean isInherited(Declaration member) {
+        boolean declaredByClass = member.getContainer() instanceof ClassOrInterface;
+        if (declaredByClass) {
+            Scope ci = (Scope) member.getContainer();
+            Scope c = clazz;
+            while (c!=null) {
+                if (ci==c) return false;
+                c = c.getContainer();
+            }
+            return true;
+        }
+        else {
+            return false;
         }
     }
 
@@ -358,31 +391,40 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ObjectDefinition that) {
+        com.redhat.ceylon.compiler.typechecker.model.Class c = clazz;
+        clazz = (com.redhat.ceylon.compiler.typechecker.model.Class) that.getDeclarationModel().getTypeDeclaration();
         if (that.getDeclarationModel()==declaration) {
             declare();
             specify();
         }
-        super.visit(that);        
+        super.visit(that);
+        clazz = c;
     }
     
     @Override
     public void visit(Tree.ObjectArgument that) {
+        com.redhat.ceylon.compiler.typechecker.model.Class c = clazz;
+        clazz = (com.redhat.ceylon.compiler.typechecker.model.Class) that.getDeclarationModel().getTypeDeclaration();
         if (that.getDeclarationModel()==declaration) {
             declare();
             specify();
         }
-        super.visit(that);        
+        super.visit(that);
+        clazz = c;
     }
     
     @Override
     public void visit(Tree.ClassDefinition that) {
+        com.redhat.ceylon.compiler.typechecker.model.Class c = clazz;
+        clazz = that.getDeclarationModel();
         if (that.getDeclarationModel()==declaration) {
             declare();
             specify();
         }
-        super.visit(that);        
+        super.visit(that);
+        clazz = c;
     }
-    
+        
     @Override
     public void visit(Tree.ClassBody that) {
         Tree.Statement les = null;

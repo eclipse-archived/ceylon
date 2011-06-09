@@ -82,8 +82,6 @@ public class TypeChecker {
         for (PhasedUnit pu : listOfUnits) {
             pu.validateTree();
             pu.scanDeclarations();
-            pu.validateControlFlow();
-            pu.validateSpecification();
         }
         for (PhasedUnit pu : listOfUnits) {
             pu.scanTypeDeclarations();
@@ -93,6 +91,10 @@ public class TypeChecker {
         }
         for (PhasedUnit pu : listOfUnits) {
             pu.analyseTypes();
+        }
+        for (PhasedUnit pu: listOfUnits) {
+            pu.validateControlFlow();
+            pu.validateSpecification();
         }
         for (PhasedUnit pu : listOfUnits) {
             if (!forceSilence) {
