@@ -278,4 +278,10 @@ class Assignability() {
 
     joinStrings { char=` `; @error strings={1, 2}; };
     
+    void w<W>(W... ws) {}
+    w<String>("foo");
+    w<String>({"foo"});
+    w<String>("foo", "bar");
+    w<String>({"foo", "bar"});
+    
 }
