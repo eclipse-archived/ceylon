@@ -694,11 +694,19 @@ public class ExpressionVisitor extends Visitor {
             else if (that.getNamedArgumentList()!=null) {
                 List<Tree.NamedArgument> args = that.getNamedArgumentList().getNamedArguments();
                 for (Tree.NamedArgument arg: args) {
+                    ProducedType type = null;
                     if (arg instanceof Tree.SpecifiedArgument) {
+                        Expression value = ((Tree.SpecifiedArgument)arg).getSpecifierExpression().getExpression();
+                        type = value.getTypeModel();
+                    }
+                    else if (arg instanceof Tree.TypedArgument) {
+                        //TODO: broken for method args
+                        type = ((Tree.TypedArgument) arg).getType().getTypeModel();
+                    }
+                    if (type!=null) {
                         Parameter parameter = getMatchingParameter(parameters, arg);
                         if (parameter.getType().getDeclaration()==tp) {
-                            Expression value = ((Tree.SpecifiedArgument)arg).getSpecifierExpression().getExpression();
-                            addToUnion(inferredTypes, value.getTypeModel());
+                            addToUnion(inferredTypes, type);
                         }
                     }
                 }
