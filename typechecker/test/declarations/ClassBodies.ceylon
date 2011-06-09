@@ -68,26 +68,6 @@ interface ClassBodies {
         String name = "gavin";
     }
     
-    class GoodWithThis() {
-        String name = "gavin";
-        local get { return this; }
-    }
-    
-    object goodWithThis {
-        String name = "gavin";
-        local get { return this; }
-    }
-    
-    class BadWithThis() {
-        local get { @error return this; }
-        String name = "gavin";
-    }
-    
-    object badWithThis {
-        local get { @error return this; }
-        String name = "gavin";
-    }
-    
     class GoodWithInner() {
         String name = "gavin";
         class Inner() {
@@ -237,6 +217,48 @@ interface ClassBodies {
             }
         }
         String x() { return "Hell"; }
+        String name = "gavin";
+    }
+    
+    class GoodWithThis() {
+        String name = "gavin";
+        local get { return this; }
+    }
+    
+    object goodWithThis {
+        String name = "gavin";
+        local get { return this; }
+    }
+    
+    class BadWithThis() {
+        local get { @error return this; }
+        String name = "gavin";
+    }
+    
+    object badWithThis {
+        local get { @error return this; }
+        String name = "gavin";
+    }
+    
+    void print(Object o) {}
+    
+    class Good2WithThis() {
+        String name = "gavin";
+        void print() { outer.print(this); }
+    }
+    
+    object good2WithThis {
+        String name = "gavin";
+        void print() { outer.print(this); }
+    }
+    
+    class Bad2WithThis() {
+        void print() { @error outer.print(this); }
+        String name = "gavin";
+    }
+    
+    object bad2WithThis {
+        void print() { @error outer.print(this); }
         String name = "gavin";
     }
     

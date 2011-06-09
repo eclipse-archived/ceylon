@@ -62,6 +62,6 @@ abstract class Classes() {
         use(this);
     }
     
-    @error return Classes();
+    //@error return Classes();
     
 }

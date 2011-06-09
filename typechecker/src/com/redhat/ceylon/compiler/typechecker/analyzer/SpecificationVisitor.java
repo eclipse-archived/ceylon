@@ -444,6 +444,7 @@ public class SpecificationVisitor extends Visitor {
             lastExecutableStatement = les;
             super.visit(that);        
             declarationSection = false;
+            lastExecutableStatement = null;
         }
         else {
             super.visit(that);
@@ -469,6 +470,41 @@ public class SpecificationVisitor extends Visitor {
     public void visit(Tree.Return that) {
         super.visit(that);
         exit();
+        //TODO: MOVE TO DIFFERENT VISITOR!
+        if (lastExecutableStatement!=null && 
+                that.getExpression().getTerm() instanceof Tree.This 
+                && !inDeclarationSection()) {
+            that.addError("leaks this reference");
+        }
+        //TODO: specifications and assignments
+    }
+
+    @Override
+    public void visit(Tree.PositionalArgumentList that) {
+        super.visit(that);
+        //TODO: MOVE TO DIFFERENT VISITOR!
+        if (lastExecutableStatement!=null && !inDeclarationSection()) {
+            for ( Tree.PositionalArgument arg: that.getPositionalArguments()) {
+                if (arg.getExpression().getTerm() instanceof Tree.This) {
+                    arg.addError("leaks this reference");
+                }
+            }
+        }
+    }
+
+    @Override
+    public void visit(Tree.NamedArgumentList that) {
+        super.visit(that);
+        //TODO: MOVE TO DIFFERENT VISITOR!
+        if (lastExecutableStatement!=null && !inDeclarationSection()) {
+            for ( Tree.NamedArgument arg: that.getNamedArguments()) {
+                if (arg instanceof Tree.SpecifiedArgument) {
+                    if (((Tree.SpecifiedArgument)arg).getSpecifierExpression().getExpression().getTerm() instanceof Tree.This) {
+                        arg.addError("leaks this reference");
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -614,5 +650,5 @@ public class SpecificationVisitor extends Visitor {
         super.visit(that);
         endDeclarationScope(d);
     }
-    
+      
 }
