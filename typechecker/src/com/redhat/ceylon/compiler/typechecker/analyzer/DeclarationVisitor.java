@@ -464,8 +464,12 @@ public class DeclarationVisitor extends Visitor {
                     for ( Tree.NamedArgument na: a.getNamedArgumentList().getNamedArguments() ) {
                         if (na instanceof Tree.SpecifiedArgument) {
                             Tree.Term t = ((Tree.SpecifiedArgument) na).getSpecifierExpression().getExpression().getTerm();
+                            String param = ((Tree.SpecifiedArgument) na).getIdentifier().getText();
                             if (t instanceof Tree.Literal) {
-                                ann.addNamedArgument( ((Tree.SpecifiedArgument) na).getIdentifier().getText(), ( (Tree.Literal) t ).getText() );
+                                ann.addNamedArgument( param, ( (Tree.Literal) t ).getText() );
+                            }
+                            else if (t instanceof Tree.BaseTypeExpression) {
+                                ann.addNamedArgument( param, ( (Tree.BaseTypeExpression) t ).getIdentifier().getText() );
                             }
                         }                    
                     }
@@ -475,6 +479,9 @@ public class DeclarationVisitor extends Visitor {
                         Tree.Term t = pa.getExpression().getTerm();
                         if (t instanceof Tree.Literal) {
                             ann.addPositionalArgment( ( (Tree.Literal) t ).getText() );
+                        }
+                        else if (t instanceof Tree.BaseTypeExpression) {
+                            ann.addPositionalArgment( ( (Tree.BaseTypeExpression) t ).getIdentifier().getText() );
                         }
                     }
                 }
