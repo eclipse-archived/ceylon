@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Unit extends Model {
+public class Unit {
 	
     Package pkg;
 	List<Import> imports = new ArrayList<Import>();

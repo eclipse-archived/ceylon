@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class ProducedReference extends Model {
+public abstract class ProducedReference {
     
     ProducedReference() {}
 	
