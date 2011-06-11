@@ -7,6 +7,7 @@ import java.io.Reader;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.regex.Matcher;
 
 import javax.tools.JavaCompiler;
 import javax.tools.JavaFileManager;
@@ -37,7 +38,7 @@ public abstract class CompilerTest {
 	@Before
 	public void setup(){
 		// for comparing with java source
-		String pkg = getClass().getPackage().getName().replaceAll("\\.", File.separator);
+		String pkg = getClass().getPackage().getName().replaceAll("\\.", Matcher.quoteReplacement(File.separator));
 		path = dir + File.separator + pkg + File.separator;
 		// for running
 		runCompiler = new CeyloncTool();
@@ -69,7 +70,8 @@ public abstract class CompilerTest {
 		enter.completeCeylonTrees(List.of(compilationUnit));
 		// now look at what we expected
 		String src = readFile(new File(path+java));
-		Assert.assertEquals(src.trim(), compilationUnit.toString().trim());
+		String src2 = normalizeLineEndings(compilationUnit.toString());
+		Assert.assertEquals(src.trim(), src2.trim());
 	}
 
 	private String readFile(File file) {
@@ -90,6 +92,12 @@ public abstract class CompilerTest {
 		}
 	}
 
+	private String normalizeLineEndings(String txt) {
+		String result = txt.replaceAll("\r\n", "\n"); // Windows
+		result = result.replaceAll("\r", "\n"); // Mac (OS<=9)
+		return result;
+	}
+	
 	protected void compileAndRun(String ceylon, String main) {
 		Iterable<? extends JavaFileObject> compilationUnits1 =
 			runFileManager.getJavaFileObjectsFromFiles(Arrays.asList(new File(path+ceylon)));
