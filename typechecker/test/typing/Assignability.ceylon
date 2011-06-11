@@ -251,6 +251,9 @@ class Assignability() {
     for (Natural n in 0..100k) {
         print($n);
     }
+    for (@error Natural i in -10..+10) {
+        print($i);
+    }
     
     //for (@error local x -> local y in 12) {}
     

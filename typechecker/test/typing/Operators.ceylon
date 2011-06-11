@@ -69,6 +69,8 @@ class Operators() {
     
     @type["Range<Integer>"] local x252 = -10..+10;
     
+    @error local x253 = -1..5;
+    
     @error local x26 = 1.2..3.4;
     
     @type["Entry<Natural,Operators.X>"] local x27 = 0->X();
