@@ -24,4 +24,6 @@ void statements() {
     @error { X() }[].hello;
     @error xn?.hello;
     
+    @error true;
+    
 }

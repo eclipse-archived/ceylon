@@ -245,6 +245,13 @@ class Assignability() {
         print($i + ": " + s);
     }
     
+    for (Integer i in -10..+10) {
+        print($i);
+    }
+    for (Natural n in 0..100k) {
+        print($n);
+    }
+    
     //for (@error local x -> local y in 12) {}
     
     void printStrings(String... strings) {}

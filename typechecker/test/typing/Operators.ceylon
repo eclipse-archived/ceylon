@@ -67,6 +67,8 @@ class Operators() {
     
     @type["Range<Natural>"] local x25 = 1..4;
     
+    @type["Range<Integer>"] local x252 = -10..+10;
+    
     @error local x26 = 1.2..3.4;
     
     @type["Entry<Natural,Operators.X>"] local x27 = 0->X();
