@@ -189,7 +189,7 @@ public class LanguageCompiler extends JavaCompiler {
 
                 ModuleBuilder moduleBuilder = phasedUnits.getModuleBuilder();
                 com.redhat.ceylon.compiler.typechecker.model.Package p = moduleBuilder.getCurrentPackage();
-                File sourceFile = new File(filename.toUri().getPath());
+                File sourceFile = new File(filename.toString());
                 // FIXME: temporary solution
                 VirtualFile file = vfs.getFromFile(sourceFile);
                 VirtualFile srcDir = vfs.getFromFile(getSrcDir(sourceFile));
