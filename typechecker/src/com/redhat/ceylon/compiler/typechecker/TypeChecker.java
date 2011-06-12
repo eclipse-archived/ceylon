@@ -36,6 +36,14 @@ public class TypeChecker {
         long time = System.nanoTime()-start;
         System.out.println("Type checker ran in " + time/1000000 + " ms");
     }
+    
+    public PhasedUnits getPhasedUnits() {
+        return phasedUnits;
+    }
+    
+    public Context getContext() {
+        return context;
+    }
 
     /**
      * Return the CompilationUnit for a given relative path.
