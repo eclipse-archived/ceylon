@@ -62,7 +62,8 @@ public class SummaryDoc extends CeylonDoc {
         List<Package> packages = new ArrayList<Package>();
         for(Module m : modules.getListOfModules()){
             for(Package pkg : m.getPackages()){
-                packages.add(pkg);
+                if(pkg.getMembers().size() > 0)
+                    packages.add(pkg);
             }
         }
         Collections.sort(packages, new Comparator<Package>(){
