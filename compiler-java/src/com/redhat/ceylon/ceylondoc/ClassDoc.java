@@ -138,6 +138,8 @@ public class ClassDoc extends CeylonDoc {
 	}
 
 	private void methods() throws IOException {
+        if(methods.isEmpty())
+            return;
         openTable("Methods", "Modifier and Type", "Method and Description");
 		for(Method m : methods){
 		    doc(m);
@@ -146,6 +148,8 @@ public class ClassDoc extends CeylonDoc {
 	}
 
 	private void attributes() throws IOException {
+	    if(attributes.isEmpty())
+	        return;
 	    openTable("Attributes", "Modifier and Type", "Attribute and Description");
 		for(MethodOrValue attribute : attributes){
 		    doc(attribute);
