@@ -63,6 +63,11 @@
       <include name="com/sun/tools/javac/**"/>
       <include name="com/sun/source/**"/>
     </javac>
+  	<copy todir="${build.classes}">
+      <fileset dir="${ceylonc.src}">
+        <include name="com/redhat/**/resources/**"/>
+      </fileset>
+  	</copy>
   </target>
 
   <!-- Rule to build compiler test classes from their Java sources -->

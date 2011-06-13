@@ -1,0 +1,52 @@
+body {
+}
+
+.nav {
+ width: 100%;
+ background: #E5BCA5;
+ padding: 1em;
+ margin-bottom: 2em;
+}
+
+.nav > div {
+ display: inline-block;
+}
+
+.nav .selected {
+ background: #C17D59;
+ font-weight: bold;
+ color: white;
+}
+
+h1 {
+ text-align: center;
+}
+
+table {
+ width: 100%;
+ border: 1px solid black;
+ border-collapse: collapse;
+}
+
+th {
+ border-bottom: 1px solid gray;
+}
+
+h3 {
+ background: #C17D59;
+ text-align: left;
+}
+
+.type-parameter {
+ font-style: italic;
+}
+
+ul.inheritance li {
+ list-style: none;
+}
+
+ul.inheritance ul.inheritance li:before {
+ content: "\2514";
+ display: inline;
+}
+
