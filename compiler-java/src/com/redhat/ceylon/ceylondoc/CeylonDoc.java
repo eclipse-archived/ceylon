@@ -144,4 +144,22 @@ public abstract class CeylonDoc {
 		return stringBuilder.toString();
 	}
 
+	protected void openTable(String title) throws IOException {
+	    open("table");
+	    open("tr class='TableHeadingColor'");
+	    around("th", title);
+	    close("tr");
+	}
+
+	protected void openTable(String title, String firstColumnTitle, String secondColumnTitle) throws IOException {
+	    open("table");
+	    open("tr class='TableHeadingColor'");
+	    around("th colspan='2'", title);
+	    close("tr");
+	    open("tr class='TableSubHeadingColor'");
+	    around("th", firstColumnTitle);
+	    around("th", secondColumnTitle);
+	    close("tr");
+	}
+
 }

@@ -51,12 +51,7 @@ public class SummaryDoc extends CeylonDoc {
     }
 
     private void packages() throws IOException {
-        around("h3", "Packages");
-        open("table");
-        open("tr");
-        around("th", "Package");
-        around("th", "Description");
-        close("tr");
+        openTable("Packages", "Package", "Description");
         for(Package pkg : getPackages()){
             doc(pkg);
         }
@@ -81,7 +76,7 @@ public class SummaryDoc extends CeylonDoc {
     }
 
     private void doc(Package c) throws IOException {
-        open("tr");
+        open("tr class='TableRowColor'");
         open("td");
         around("a href='"+join("/",c.getQualifiedName())+"/index.html'", c.getNameAsString());
         close("td");

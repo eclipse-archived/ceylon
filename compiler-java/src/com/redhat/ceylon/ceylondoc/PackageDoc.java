@@ -79,12 +79,7 @@ public class PackageDoc extends CeylonDoc {
 		close("div");
 	}
 	private void interfaces() throws IOException {
-		around("h3", "Interfaces");
-		open("table");
-		open("tr");
-		around("th", "Interface");
-		around("th", "Description");
-		close("tr");
+	    openTable("Interfaces", "Interface", "Description");
 		for(Interface i : interfaces){
 		    doc(i);
 		}
@@ -92,12 +87,7 @@ public class PackageDoc extends CeylonDoc {
 	}
 
 	private void classes() throws IOException {
-		around("h3", "Classes");
-		open("table");
-		open("tr");
-		around("th", "Class");
-		around("th", "Description");
-		close("tr");
+        openTable("Classes", "Class", "Description");
 		for(Class c : classes){
 		    doc(c);
 		}
@@ -105,7 +95,7 @@ public class PackageDoc extends CeylonDoc {
 	}
 
 	private void doc(ClassOrInterface c) throws IOException {
-		open("tr");
+        open("tr class='TableRowColor'");
 		open("td");
 		link(c.getType());
 		close("td");

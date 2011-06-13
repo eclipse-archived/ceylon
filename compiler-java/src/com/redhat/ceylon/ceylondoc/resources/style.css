@@ -3,19 +3,25 @@ body {
 
 .nav {
  width: 100%;
- background: #E5BCA5;
- padding: 1em;
+ background: #505d60;
  margin-bottom: 2em;
+ color: white;
+ font-weight: bold;
+}
+
+.nav a {
+ color: white;
 }
 
 .nav > div {
+ padding: 1em;
  display: inline-block;
 }
 
+.nav .selected a,
 .nav .selected {
- background: #C17D59;
- font-weight: bold;
- color: white;
+ background: white;
+ color: #505d60;
 }
 
 h1 {
@@ -24,17 +30,27 @@ h1 {
 
 table {
  width: 100%;
- border: 1px solid black;
+ border: 1px solid #E6E7E8;
  border-collapse: collapse;
+ margin: 1em 0;
+}
+
+td, th {
+ padding: 0.2em 0.5em;
 }
 
 th {
  border-bottom: 1px solid gray;
 }
 
-h3 {
- background: #C17D59;
+.TableHeadingColor {
+ background: #505d60;
  text-align: left;
+ color: white;
+}
+
+.TableRowColor {
+ border: 1px solid #E6E7E8;
 }
 
 .type-parameter {
@@ -43,6 +59,14 @@ h3 {
 
 ul.inheritance li {
  list-style: none;
+}
+
+ul.inheritance {
+ padding-left: 0px;
+}
+
+ul.inheritance ul.inheritance {
+ padding-left: 20px;
 }
 
 ul.inheritance ul.inheritance li:before {

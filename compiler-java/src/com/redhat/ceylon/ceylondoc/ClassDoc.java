@@ -130,27 +130,15 @@ public class ClassDoc extends CeylonDoc {
 	}
 
 	private void constructor(Class klass) throws IOException {
-		around("h3", "Constructor");
-		open("table");
-		open("tr");
-		around("th", "Constructor and Description");
-		close("tr");
-		open("tr");
-		open("td");
+		openTable("Constructor");
+		open("tr", "td");
 		write(klass.getName());
 		writeParameterList(klass.getParameterLists());
-		close("td");
-		close("tr");
-		close("table");
+		close("td", "tr", "table");
 	}
 
 	private void methods() throws IOException {
-		around("h3", "Methods");
-		open("table");
-		open("tr");
-		around("th", "Modifier and Type");
-		around("th", "Method and Description");
-		close("tr");
+        openTable("Methods", "Modifier and Type", "Method and Description");
 		for(Method m : methods){
 		    doc(m);
 		}
@@ -158,20 +146,15 @@ public class ClassDoc extends CeylonDoc {
 	}
 
 	private void attributes() throws IOException {
-		around("h3", "Attributes");
-		open("table");
-		open("tr");
-		around("th", "Modifier and Type");
-		around("th", "Attribute and Description");
-		close("tr");
+	    openTable("Attributes", "Modifier and Type", "Attribute and Description");
 		for(MethodOrValue attribute : attributes){
 		    doc(attribute);
 		}
 		close("table");
 	}
 
-	private void doc(Method m) throws IOException {
-		open("tr");
+    private void doc(Method m) throws IOException {
+        open("tr class='TableRowColor'");
 		open("td");
 		link(m.getType());
 		List<TypeParameter> typeParameters = m.getTypeParameters();
@@ -227,7 +210,7 @@ public class ClassDoc extends CeylonDoc {
 	}
 
 	private void doc(MethodOrValue f) throws IOException {
-		open("tr");
+        open("tr class='TableRowColor'");
 		open("td");
 		link(f.getType());
 		close("td");
