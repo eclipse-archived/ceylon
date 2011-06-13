@@ -78,7 +78,10 @@ public class SummaryDoc extends CeylonDoc {
     private void doc(Package c) throws IOException {
         open("tr class='TableRowColor'");
         open("td");
-        around("a href='"+join("/",c.getQualifiedName())+"/index.html'", c.getNameAsString());
+        if(c.getNameAsString().isEmpty())
+            around("a href='index.html'", "default package");
+        else
+            around("a href='"+join("/",c.getQualifiedName())+"/index.html'", c.getNameAsString());
         close("td");
         open("td");
         write(c.getNameAsString());

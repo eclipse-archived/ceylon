@@ -49,7 +49,10 @@ public class PackageDoc extends CeylonDoc {
 		open("html");
 		open("head");
 		around("title", "Package "+pkg.getName());
-		tag("link href='"+getPathToBase(pkg)+"/style.css' rel='stylesheet' type='text/css'");
+		if(pkg.getNameAsString().isEmpty())
+		    tag("link href='style.css' rel='stylesheet' type='text/css'");
+		else
+		    tag("link href='"+getPathToBase(pkg)+"/style.css' rel='stylesheet' type='text/css'");
 		close("head");
 		open("body");
 		summary();
