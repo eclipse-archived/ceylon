@@ -99,7 +99,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         }
     }
 
-    private void out(Node that, String message) {
+    protected void out(Node that, String message) {
         System.err.println(
             message + " at " + 
             that.getAntlrTreeNode().getLine() + ":" +
@@ -116,7 +116,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
             err.getTreeNode().getUnit().getFilename());
     }
 
-    protected void checkErrors(Node that) {
+    private void checkErrors(Node that) {
         if (expectingError) {
             if (foundErrors.size()==0) {
                 out(that, "no error encountered");
