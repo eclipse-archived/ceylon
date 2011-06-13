@@ -107,7 +107,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
             that.getUnit().getFilename());
     }
 
-    private void out(AnalysisError err) {
+    protected void out(AnalysisError err) {
         System.err.println(
             "error encountered [" +
             err.getMessage() + "] at " + 
@@ -116,7 +116,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
             err.getTreeNode().getUnit().getFilename());
     }
 
-    private void checkErrors(Node that) {
+    protected void checkErrors(Node that) {
         if (expectingError) {
             if (foundErrors.size()==0) {
                 out(that, "no error encountered");
