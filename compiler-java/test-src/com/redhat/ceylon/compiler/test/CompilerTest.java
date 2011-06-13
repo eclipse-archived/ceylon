@@ -24,6 +24,7 @@ import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
+import com.sun.tools.javac.util.Log;
 
 public abstract class CompilerTest {
 
@@ -55,6 +56,7 @@ public abstract class CompilerTest {
 		Context context = new Context();
 		CeyloncFileManager.preRegister(context);
 		LanguageCompiler compareCompiler = (LanguageCompiler) LanguageCompiler.instance(context);
+        Log log = Log.instance(context);
 		CeyloncFileManager compareFileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
 		compareFileManager.setSourcePath(dir);
 		// add the files to compile
@@ -68,6 +70,7 @@ public abstract class CompilerTest {
 		// then we complete it
 		CeylonEnter enter = (CeylonEnter) CeylonEnter.instance(context);
 		enter.completeCeylonTrees(List.of(compilationUnit));
+		Assert.assertEquals(0, log.nerrors);
 		// now look at what we expected
 		String src = readFile(new File(path+java));
 		String src2 = normalizeLineEndings(compilationUnit.toString());
