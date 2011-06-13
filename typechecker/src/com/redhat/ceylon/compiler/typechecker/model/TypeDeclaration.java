@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import static com.redhat.ceylon.compiler.typechecker.model.Util.*;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class TypeDeclaration extends Declaration implements Generic, Scope {
+public abstract class TypeDeclaration extends Declaration implements Scope, Generic {
 	
 	ProducedType extendedType;
 	List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>();
@@ -145,4 +145,28 @@ public abstract class TypeDeclaration extends Declaration implements Generic, Sc
         return members;
     }
 
+    @Override
+    public Declaration getMember(boolean includeParameters, String name) {
+        Declaration d = super.getMember(includeParameters, name);
+        if (d!=null) {
+            return d;
+        }
+        else {
+            return this.getSupertypeDeclaration(name);
+        }
+    }
+
+    public Declaration getSupertypeDeclaration(String name) {
+        for (ProducedType st: getType().getSupertypes()) {
+            TypeDeclaration std = st.getDeclaration();
+            if (std!=this) {
+                Declaration d = std.getMember(false, name);
+                if (d!=null && d.isShared()) {
+                    return d;
+                }
+            }
+        }
+        return null;
+    }
+    
 }

@@ -14,4 +14,7 @@ public interface Scope {
 	List<Declaration> getMembers();
 	Scope getContainer();
 	List<String> getQualifiedName();
+	//Declaration getMember(boolean includeParameters, String name);
+	ProducedType getDeclaringType(Declaration d);
+	Declaration getMember(Unit unit, boolean includeParameters, String name);
 }

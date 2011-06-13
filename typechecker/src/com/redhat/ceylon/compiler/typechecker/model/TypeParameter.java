@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,7 +9,6 @@ public class TypeParameter extends TypeDeclaration implements Functional {
 	boolean contravariant;
 	Declaration declaration;
     ParameterList parameterList;
-    List<Declaration> members = new ArrayList<Declaration>(); //only for parameters!
 	
 	public boolean isCovariant() {
 		return covariant;
@@ -35,12 +33,7 @@ public class TypeParameter extends TypeDeclaration implements Functional {
 	public void setDeclaration(Declaration declaration) {
         this.declaration = declaration;
     }
-	
-	@Override
-	public List<Declaration> getMembers() {
-	    return members;
-	}
-	
+		
     public ParameterList getParameterList() {
         return parameterList;
     }

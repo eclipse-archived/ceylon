@@ -39,4 +39,18 @@ public class Unit {
 	    return "Unit[" + filename + "]";
 	}
 	
+    /**
+     * Search the imports of a compilation unit 
+     * for the declaration. 
+     */
+    public Declaration getImportedDeclaration(String name) {
+        for (Import i: getImports()) {
+            Declaration d = i.getDeclaration();
+            if (d.getName().equals(name)) {
+                return d;
+            }
+        }
+        return null;
+    }
+    
 }

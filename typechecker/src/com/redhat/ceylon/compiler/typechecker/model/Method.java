@@ -49,11 +49,6 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     }
 	
 	@Override
-	public List<Declaration> getMembers() {
-	    return members;
-	}
-	
-	@Override
 	public List<ParameterList> getParameterLists() {
 	    return parameterLists;
 	}

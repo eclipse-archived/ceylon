@@ -134,7 +134,7 @@ public class TypeVisitor extends Visitor {
         else {
             ProducedType outerType;
             if (type.isMemberType()) {
-                outerType = getDeclaringType(that, type);
+                outerType = that.getScope().getDeclaringType(type);
             }
             else {
                 outerType = null;
@@ -170,7 +170,7 @@ public class TypeVisitor extends Visitor {
                         that.getIdentifier().getText());
             }
             else {
-                if (!isVisible(type, that)) {
+                if (!type.isVisible(that.getScope())) {
                     that.addError("member type is not shared: " +
                             that.getIdentifier().getText());
                 }

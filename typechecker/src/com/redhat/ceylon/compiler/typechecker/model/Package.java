@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Package implements Scope {
+    
 	List<String> name;
 	Module module;
 	List<Declaration> members = new ArrayList<Declaration>();
@@ -53,4 +54,41 @@ public class Package implements Scope {
 	    return getName();
 	}
 	
+	/**
+	 * Search only inside the package, ignoring imports
+	 */
+	//@Override
+	public Declaration getMember(/*boolean includeParameters,*/String name) {
+        for ( Declaration d: getMembers() ) {
+            //if ( !(d instanceof Setter) && (includeParameters || !(d instanceof Parameter)) ) {
+            if (d.getName()!=null && d.getName().equals(name)) {
+                return d;
+            }
+            //}
+        }
+        return null;
+    }
+	
+	@Override
+	public ProducedType getDeclaringType(Declaration d) {
+	    return null;
+	}
+    
+    /**
+     * Search in the package, taking into account 
+     * imports
+     */
+	@Override
+    public Declaration getMember(Unit unit, boolean includeParameters, String name) {
+        if (unit!=null) {
+            //this implements the rule that imports hide 
+            //toplevel members of a package
+            Declaration d = unit.getImportedDeclaration(name);
+            if (d!=null) {
+                return d;
+            }
+        }
+        return getMember(/*includeParameters,*/ name);
+    }
+
 }

@@ -14,7 +14,6 @@ import java.util.List;
 public class FunctionalParameter extends Parameter implements Scope, Functional {
     
     List<ParameterList> parameterLists = new ArrayList<ParameterList>();
-    List<Declaration> members = new ArrayList<Declaration>(); //only for parameters!
     
     @Override
     public List<ParameterList> getParameterLists() {
@@ -24,11 +23,6 @@ public class FunctionalParameter extends Parameter implements Scope, Functional 
     @Override
     public void addParameterList(ParameterList pl) {
         parameterLists.add(pl);
-    }
-    
-    @Override
-    public List<Declaration> getMembers() {
-        return members;
     }
     
     @Override

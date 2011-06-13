@@ -78,4 +78,20 @@ public abstract class Declaration extends Element {
     
     public abstract ProducedReference getProducedReference(ProducedType pt, List<ProducedType> typeArguments);
 
+    public boolean isVisible(Scope scope) {
+        if (isShared()) {
+            return true;
+        }
+        else {
+            do {
+                if ( getContainer()==scope ) {
+                    return true;
+                }
+                scope = scope.getContainer();
+            }
+            while (scope!=null);
+            return false;
+        }
+    }
+
 }

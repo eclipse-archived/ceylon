@@ -1577,7 +1577,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 that.setDeclaration(member);
-                if (!isVisible(member, that)) {
+                if (!member.isVisible(that.getScope())) {
                     that.addError("target of member reference is not shared: " +
                             that.getIdentifier().getText());
                 }
@@ -1613,7 +1613,7 @@ public class ExpressionVisitor extends Visitor {
         ProducedType outerType;
         if (acceptsTypeArguments(member, typeArgs, tal, that)) {
             if ( member.isMember() ) {
-                outerType = getDeclaringType(that, member);
+                outerType = that.getScope().getDeclaringType(member);
             }
             else {
                 //it must be a member of an outer scope
@@ -1659,7 +1659,7 @@ public class ExpressionVisitor extends Visitor {
             }
             else {
                 that.setDeclaration(type);
-                if (!isVisible(type, that)) {
+                if (!type.isVisible(that.getScope())) {
                     that.addError("target of member type reference is not shared: " +
                             that.getIdentifier().getText());
                 }
@@ -1707,7 +1707,7 @@ public class ExpressionVisitor extends Visitor {
         if ( acceptsTypeArguments(type, typeArgs, tal, that) ) {
             ProducedType outerType;
             if (type.isMemberType()) {
-                outerType = getDeclaringType(that, type);
+                outerType = that.getScope().getDeclaringType(type);
             }
             else {
                 outerType = null;
