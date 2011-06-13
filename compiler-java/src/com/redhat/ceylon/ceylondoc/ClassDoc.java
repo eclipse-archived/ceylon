@@ -174,6 +174,19 @@ public class ClassDoc extends CeylonDoc {
 		open("tr");
 		open("td");
 		link(m.getType());
+		List<TypeParameter> typeParameters = m.getTypeParameters();
+		if(!typeParameters.isEmpty()){
+		    write("&lt;");
+		    boolean first = true;
+		    for(TypeParameter type : typeParameters){
+		        if(first)
+		            first = false;
+		        else
+		            write(", ");
+		        write(type.getName());
+		    }
+            write("&gt;");
+		}
 		close("td");
 		open("td");
 		write(m.getName());
