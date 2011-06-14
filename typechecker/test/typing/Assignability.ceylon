@@ -158,7 +158,8 @@ class Assignability() {
     
     if (exists {X()}[0]) {}
     
-    //if (exists "Hello") {}
+    //if (@error exists "Hello") {}
+    //if (@error exists something) {}
     
     if (exists X x = nothing) {
         print(x.hello);
@@ -229,6 +230,9 @@ class Assignability() {
     if (nonempty ints) {
         Integer i = ints.first;
     }
+    
+    Integer[] noints = {};
+    if (nonempty noints) {}
     
     //for (@error local x in 46 ) {}
     
