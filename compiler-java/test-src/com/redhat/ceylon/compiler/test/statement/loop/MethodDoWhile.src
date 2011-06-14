@@ -1,10 +1,10 @@
 // FIXME This is obviously not correct yet
 class MethodDoWhile extends .ceylon.language.Object {
     
-    public void m() {
-        Natural n = .ceylon.language.Natural.instance(0L);
-        .ceylon.language.Mutable.postIncrement(n);
-        n.compare(.ceylon.language.Natural.instance(10L)).smaller();
+    public Integer m() {
+        return .ceylon.language.Natural.instance(1L);
+        false;
+        return .ceylon.language.Natural.instance(0L);
     }
     
     MethodDoWhile() {

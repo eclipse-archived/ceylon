@@ -1,9 +1,9 @@
 class MethodDoWhile(){
-    shared void m(){
-        variable Natural n:=0;
+    shared Integer m(){
         do {
-            n++;
+            return 1;
         }
-        while (n < 10);
+        while (false);
+        return 0;
     }
 }

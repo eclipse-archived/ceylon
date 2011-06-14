@@ -1,10 +1,10 @@
 class MethodForIterator(){
-    shared void m(){
+    shared Integer m(){
         for(Integer i in {}){
-            false;
+            return 1;
         }
         fail {
-            true;
+            return 0;
         }
     }
 }

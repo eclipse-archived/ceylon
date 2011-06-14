@@ -1,11 +1,11 @@
 // FIXME Is this correct?
 class MethodWhile extends .ceylon.language.Object {
     
-    public void m() {
-        Natural n = .ceylon.language.Natural.instance(0L);
-        while (n.compare(.ceylon.language.Natural.instance(10L)).smaller()) {
-            .ceylon.language.Mutable.postIncrement(n);
+    public Natural m() {
+        while (false) {
+            return .ceylon.language.Natural.instance(1L);
         }
+        return .ceylon.language.Natural.instance(0L);
     }
     
     MethodWhile() {
