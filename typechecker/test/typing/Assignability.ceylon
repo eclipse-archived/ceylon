@@ -217,6 +217,19 @@ class Assignability() {
     
     for (@error X x in 46 ) {}
     
+    for (Integer i in {}) {
+        print($i);
+    }
+    for (Integer i in {-1,+2}) {
+        print($i);
+    }
+    if (nonempty {}) {}
+    @error if (nonempty {-2,+0,+1}) {}
+    Integer[] ints = {-2,+0,+1};
+    if (nonempty ints) {
+        Integer i = ints.first;
+    }
+    
     //for (@error local x in 46 ) {}
     
     for (X x -> Y y in {X()->Y(), X()->Y()}) {
