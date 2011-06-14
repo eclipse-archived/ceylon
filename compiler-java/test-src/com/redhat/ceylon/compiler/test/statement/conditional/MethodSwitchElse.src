@@ -1,0 +1,17 @@
+class MethodSwitchElse extends .ceylon.language.Object {
+    
+    public Integer m(final Integer n) {
+        n;
+        .ceylon.language.Natural.instance(1L);
+        return .ceylon.language.Natural.instance(1L);
+        .ceylon.language.Natural.instance(2L);
+        .ceylon.language.Natural.instance(3L);
+        .ceylon.language.Natural.instance(4L);
+        return n;
+        return .ceylon.language.Natural.instance(0L);
+        return .ceylon.language.Integer.instance(-1L);
+    }
+    
+    MethodSwitchElse() {
+    }
+}
