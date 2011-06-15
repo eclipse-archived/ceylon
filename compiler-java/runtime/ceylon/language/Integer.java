@@ -2,7 +2,7 @@ package ceylon.language;
 
 public final class Integer
     extends Object
-    implements Integral<Integer>, Invertable<Integer>, Case<Integer> {
+    implements Integral<Integer>, Invertable<Integer> {
 
     private final long value;
     private Integer(long l) {

@@ -2,7 +2,7 @@ package ceylon.language;
 
 public final class Natural
     extends Object
-    implements Integral<Natural>, Invertable<Integer>, Case<Natural> {
+    implements Integral<Natural>, Invertable<Integer> {
 
     private final long value;
     private Natural(long l) {
