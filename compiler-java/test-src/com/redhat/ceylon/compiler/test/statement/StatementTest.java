@@ -54,8 +54,33 @@ public class StatementTest extends CompilerTest {
 	}
 
 	@Test
-	public void testMethodElse(){
+	public void testMethodIfElse(){
 		compareWithJavaSource("conditional/MethodIfElse");
+	}
+
+	@Test
+	public void testMethodIfExists(){
+		compareWithJavaSource("conditional/MethodIfExists");
+	}
+
+	@Test
+	public void testMethodIfIs(){
+		compareWithJavaSource("conditional/MethodIfIs");
+	}
+
+	@Test
+	public void testMethodIfSatisfies(){
+		compareWithJavaSource("conditional/MethodIfSatisfies");
+	}
+
+	@Test
+	public void testMethodIfSatisfiesMultiple(){
+		compareWithJavaSource("conditional/MethodIfSatisfiesMultiple");
+	}
+
+	@Test
+	public void testMethodIfNonEmpty(){
+		compareWithJavaSource("conditional/MethodIfNonEmpty");
 	}
 
 	//
