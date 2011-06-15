@@ -1209,7 +1209,7 @@ else {
             
         <programlisting>List&lt;Element&gt; list = ...;
 Element element = ...;
-if (Element satisfies Comparable&lt;Element&gt;) {
+if (satisfies Comparable&lt;Element&gt; Element) {
     Element test;
     if (exists Element first = list.first) {
         test = max(element, first);
