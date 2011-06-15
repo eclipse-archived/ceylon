@@ -1,0 +1,13 @@
+// FIXME Is this correct?
+class MethodWhile extends .ceylon.language.Object {
+    
+    public Natural m() {
+        while (false) {
+            return .ceylon.language.Natural.instance(1L);
+        }
+        return .ceylon.language.Natural.instance(0L);
+    }
+    
+    MethodWhile() {
+    }
+}

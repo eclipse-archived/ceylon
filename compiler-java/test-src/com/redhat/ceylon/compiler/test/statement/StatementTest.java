@@ -54,10 +54,58 @@ public class StatementTest extends CompilerTest {
 	}
 
 	@Test
-	public void testMethodElse(){
+	public void testMethodIfElse(){
 		compareWithJavaSource("conditional/MethodIfElse");
 	}
+
+	@Test
+	public void testMethodIfExists(){
+		compareWithJavaSource("conditional/MethodIfExists");
+	}
+
+	@Test
+	public void testMethodIfIs(){
+		compareWithJavaSource("conditional/MethodIfIs");
+	}
+
+	@Test
+	public void testMethodIfSatisfies(){
+		compareWithJavaSource("conditional/MethodIfSatisfies");
+	}
+
+	@Test
+	public void testMethodIfSatisfiesMultiple(){
+		compareWithJavaSource("conditional/MethodIfSatisfiesMultiple");
+	}
+
+	@Test
+	public void testMethodIfNonEmpty(){
+		compareWithJavaSource("conditional/MethodIfNonEmpty");
+	}
+
+	//
+	// switch / case
 	
+	@Test
+	public void testMethodSwitch(){
+		compareWithJavaSource("conditional/MethodSwitch");
+	}
+
+	@Test
+	public void testMethodSwitchNB(){
+		compareWithJavaSource("conditional/MethodSwitchNB");
+	}
+
+	@Test
+	public void testMethodSwitchElse(){
+		compareWithJavaSource("conditional/MethodSwitchElse");
+	}
+
+	@Test
+	public void testMethodSwitchElseNB(){
+		compareWithJavaSource("conditional/MethodSwitchElseNB");
+	}
+
 	//
 	// for
 
@@ -74,5 +122,23 @@ public class StatementTest extends CompilerTest {
 	@Test
 	public void testMethodForDoubleIterator(){
 		compareWithJavaSource("loop/MethodForDoubleIterator");
+	}
+	
+	@Test
+	public void testMethodForFail(){
+		compareWithJavaSource("loop/MethodForFail");
+	}
+	
+	//
+	// [do] while
+	
+	@Test
+	public void testMethodWhile(){
+		compareWithJavaSource("loop/MethodWhile");
+	}
+	
+	@Test
+	public void testMethodDoWhile(){
+		compareWithJavaSource("loop/MethodDoWhile");
 	}
 }

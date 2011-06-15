@@ -1,0 +1,12 @@
+// FIXME This is obviously not correct yet
+class MethodDoWhile extends .ceylon.language.Object {
+    
+    public Integer m() {
+        return .ceylon.language.Natural.instance(1L);
+        false;
+        return .ceylon.language.Natural.instance(0L);
+    }
+    
+    MethodDoWhile() {
+    }
+}
