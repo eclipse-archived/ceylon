@@ -180,6 +180,19 @@ public class Gen2 {
         return type;
     }
 
+    public JCExpression makeIdent(String... components) {
+
+        JCExpression type = null;
+        for (String component : components) {
+            if (type == null)
+                type = make().Ident(names.fromString(component));
+            else
+                type = make().Select(type, names.fromString(component));
+        }
+
+        return type;
+    }
+
     JCExpression makeIdent(String nameAsString) {
         return makeIdent(List.of(nameAsString));
     }

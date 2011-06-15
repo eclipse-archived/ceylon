@@ -28,6 +28,10 @@ public class GenPart {
         return gen.makeIdent(ident);
     }
 
+    protected JCExpression makeIdent(String... ident) {
+        return gen.makeIdent(ident);
+    }
+
     protected JCExpression makeIdent(Type type) {
         return gen.makeIdent(type);
     }
