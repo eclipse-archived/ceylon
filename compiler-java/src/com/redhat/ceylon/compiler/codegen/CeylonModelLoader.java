@@ -8,6 +8,7 @@ import javax.lang.model.type.TypeKind;
 
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -15,6 +16,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.Symbol;
@@ -26,6 +28,7 @@ import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.jvm.ClassReader;
 import com.sun.tools.javac.util.Context;
+import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Name.Table;
 
@@ -70,31 +73,48 @@ public class CeylonModelLoader implements ModelCompleter {
             return declarationsByName.get(className);
         }
         System.err.println("convertToDeclaration: "+className);
-        com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface klass = makeLazyClassOrInterface(classSymbol);
-        declarationsByName.put(className, klass);
+        Declaration decl = makeDeclaration(classSymbol);
+        declarationsByName.put(className, decl);
         
-        klass.setName(classSymbol.getSimpleName().toString());
-        klass.setShared((classSymbol.flags() & Flags.PUBLIC) != 0);
+        decl.setShared((classSymbol.flags() & Flags.PUBLIC) != 0);
         
         // find its module
         String pkgName = classSymbol.packge().getQualifiedName().toString();
         Module module = findOrCreateModule(pkgName);
         Package pkg = findOrCreatePackage(module, pkgName);
         // and add it there
-        pkg.getMembers().add(klass);
-        klass.setContainer(pkg);
+        pkg.getMembers().add(decl);
+        decl.setContainer(pkg);
         
-        return klass;
+        return decl;
+    }
+
+    private Declaration makeDeclaration(ClassSymbol classSymbol) {
+        String name = classSymbol.getSimpleName().toString();
+        Declaration decl;
+        if(name.indexOf('$') == -1 && name.startsWith("_")){
+            decl = makeToplevelAttribute(classSymbol);
+            decl.setName(name.substring(1));
+        }else{
+            decl = makeLazyClassOrInterface(classSymbol);
+            decl.setName(name);
+        }
+        return decl;
+    }
+
+    private Declaration makeToplevelAttribute(ClassSymbol classSymbol) {
+        Value value = new LazyValue(classSymbol, this);
+        value.setVariable(true);
+        return value;
     }
 
     private ClassOrInterface makeLazyClassOrInterface(ClassSymbol classSymbol) {
         if(!classSymbol.isInterface()){
-            LazyClass klass = new LazyClass(classSymbol, this);
+            Class klass = new LazyClass(classSymbol, this);
             klass.setAbstract((classSymbol.flags() & Flags.ABSTRACT) != 0);
             return klass;
         }else{
-            LazyInterface iface = new LazyInterface(classSymbol, this);
-            return iface;
+            return new LazyInterface(classSymbol, this);
         }
     }
 
@@ -254,4 +274,23 @@ public class CeylonModelLoader implements ModelCompleter {
                 && superClass.getKind() != TypeKind.NONE)
             klass.setExtendedType(getType(superClass));
     }
+    
+    @Override
+    public void complete(LazyValue value) {
+        Type type = null;
+        for(Symbol member : value.classSymbol.members().getElements()){
+            if(member instanceof VarSymbol){
+                VarSymbol var = (VarSymbol) member;
+                if(var.name.toString().equals("value")
+                        && var.isStatic()){
+                    type = var.type;
+                    break;
+                }
+            }
+        }
+        if(type == null)
+            throw new RuntimeException("Failed to find type for toplevel attribute "+value.getName());
+        value.setType(getType(type));
+    }
+
 }
