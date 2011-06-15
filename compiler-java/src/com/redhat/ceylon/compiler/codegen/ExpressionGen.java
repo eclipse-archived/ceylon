@@ -2,15 +2,20 @@ package com.redhat.ceylon.compiler.codegen;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.codegen.Gen2.Singleton;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.tree.JCTree.JCIdent;
+import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -315,7 +320,7 @@ public class ExpressionGen extends GenPart {
 
             // FIXME: this list of cases is incomplete from Gen
             public void visit(Tree.BaseMemberExpression op) {
-                result = makeIdent(Arrays.asList(op.getIdentifier().getText(), memberName.getText()));
+                result = at(access).Select(convert(op), names().fromString(memberName.getText()));
             }
 
             public void visit(Tree.QualifiedMemberExpression op) {
@@ -332,7 +337,19 @@ public class ExpressionGen extends GenPart {
         return v.result;
     }
 
-    private JCIdent convert(Tree.BaseMemberExpression member) {
+    private JCExpression convert(Tree.BaseMemberExpression member) {
+        Declaration decl = member.getDeclaration();
+        if(decl instanceof Value){
+            Scope container = decl.getContainer();
+            if(container instanceof Package){
+                // it's a toplevel attribute
+                java.util.List<String> path = new LinkedList<String>();
+                path.addAll(container.getQualifiedName());
+                path.add("_"+decl.getName());
+                path.add("value");
+                return makeIdent(path);
+            }
+        }
         return at(member).Ident(names().fromString(member.getIdentifier().getText()));
     }
 }
