@@ -1,9 +1,10 @@
 class InitializerIfElseIf(){
    if(true){
-       false;
+       false.equals(false);
    }else if(false){
-       true;
+       true.equals(true);
    }else{
-       false;
+       false.equals(true);
    }
+   true.equals(false);
 }

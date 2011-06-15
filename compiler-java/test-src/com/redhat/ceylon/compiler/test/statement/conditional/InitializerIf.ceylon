@@ -1,5 +1,6 @@
 class InitializerIf(){
-   if(true){
-       false;
-   }
+	if(true){
+		true.equals(true);
+	}
+	false.equals(false);
 }

@@ -1,7 +1,8 @@
 class InitializerIfElse(){
    if(true){
-       false;
+       false.equals(false);
    }else{
-       true;
+       true.equals(true);
    }
+   false.equals(true);
 }
