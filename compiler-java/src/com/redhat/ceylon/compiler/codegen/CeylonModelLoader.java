@@ -221,7 +221,7 @@ public class CeylonModelLoader implements ModelCompleter {
     }
 
     private ProducedType getType(Type type) {
-        return ((LazyClass)convertToDeclaration(type)).getType();
+        return ((ClassOrInterface)convertToDeclaration(type)).getType();
     }
 
     @Override
