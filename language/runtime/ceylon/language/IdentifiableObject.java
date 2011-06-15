@@ -1,23 +1,23 @@
 package ceylon.language;
 
-public abstract class IdentifiableObject extends Object /* FIXME: implements Equality */ {
+public abstract class IdentifiableObject extends Object implements Equality {
 
-/* FIXME:
-   shared default actual Boolean equals(Equality that) {
-        if (is IdentifiableObject that) {
-            return this===that;
+   public Boolean equals(Equality that) {
+        if (that instanceof IdentifiableObject ) {
+            return Boolean.instance(this == that);
         }
         else {
-            return false;
+            return _false.value;
         }
     }
     
+   /* FIXME
     shared default actual Integer hash {
         return identityHash(this);
     }
+    */       
     
-    shared default actual String string {
-        throw; //TODO!
+    public String getString() {
+        throw new RuntimeException(); //TODO!
     }
- */       
 }
