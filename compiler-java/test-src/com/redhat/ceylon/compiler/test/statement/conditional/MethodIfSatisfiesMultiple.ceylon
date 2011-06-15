@@ -1,6 +1,6 @@
-class MethodIfSatisfies() {
-    shared Integer m<T>(T x) {
-        if (satisfies Comparable<Integer> & Invertable<Integer> T) {
+class MethodIfSatisfiesMultiple() {
+    shared Integer m() {
+        if (satisfies Object & Integer Object) {
             return 1;
         }
         return 0;

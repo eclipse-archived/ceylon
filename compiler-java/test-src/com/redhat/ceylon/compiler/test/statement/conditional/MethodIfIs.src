@@ -1,8 +1,7 @@
 // FIXME Not correct yet
 class MethodIfIs extends .ceylon.language.Object {
     
-    public String m() {
-        final Object x = /*missing*/();
+    public String m(final Object x) {
         {
             .ceylon.language.Any $ceylontmpDeletedIs0 = x;
             if (($ceylontmpDeletedIs0 = x) instanceof Exception) {

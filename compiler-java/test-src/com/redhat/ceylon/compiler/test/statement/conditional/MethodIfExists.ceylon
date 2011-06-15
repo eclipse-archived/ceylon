@@ -1,6 +1,5 @@
 class MethodIfExists() {
-    shared Integer m() {
-        variable Integer? x = 5;
+    shared Integer m(Integer? x) {
         if (exists x) {
             return x;
         }

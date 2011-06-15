@@ -1,6 +1,6 @@
 class MethodIfSatisfies() {
-    shared Integer m<T>(T x) {
-        if (satisfies Sequence<Integer> T) {
+    shared Integer m() {
+        if (satisfies Integer Integer) {
             return 1;
         }
         return 0;
