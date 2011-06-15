@@ -70,11 +70,11 @@ public abstract class CompilerTest {
 		// then we complete it
 		CeylonEnter enter = (CeylonEnter) CeylonEnter.instance(context);
 		enter.completeCeylonTrees(List.of(compilationUnit));
-		Assert.assertEquals(0, log.nerrors);
+		Assert.assertEquals("Typechecker errors", 0, log.nerrors);
 		// now look at what we expected
 		String src = readFile(new File(path+java));
 		String src2 = normalizeLineEndings(compilationUnit.toString());
-		Assert.assertEquals(src.trim(), src2.trim());
+		Assert.assertEquals("Source code differs", src.trim(), src2.trim());
 	}
 
 	private String readFile(File file) {
