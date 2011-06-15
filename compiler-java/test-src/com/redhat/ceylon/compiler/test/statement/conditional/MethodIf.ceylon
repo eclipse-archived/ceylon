@@ -1,7 +1,8 @@
 class MethodIf(){
-   shared void m(){
+   shared Integer m(){
        if(true){
-           false;
+           return 1;
        }
+       return 0;
    }
 }
