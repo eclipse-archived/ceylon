@@ -1,23 +1,13 @@
 package ceylon.language;
 
-public final class Boolean extends Object {
-    private final boolean value;
+public abstract class Boolean extends Case {
 
-    private Boolean(boolean b) {
-        value = b;
+    public Boolean(String caseName) {
+        super(caseName);
     }
 
-    public static ceylon.language.Boolean instance(boolean b) {
-        return new ceylon.language.Boolean(b);
+    public static Boolean instance(boolean b) {
+        return b ? _true.value : _false.value;
     }
 
-    @Extension
-    public ceylon.language.String string() {
-        return ceylon.language.String.instance(java.lang.Boolean.toString(value));
-    }
-
-    @Extension
-    public boolean booleanValue() {
-        return value;
-    }
 }
