@@ -1,8 +1,13 @@
 package ceylon.language;
 
-public interface Case<X> {
-    /** Determine if the given value matches
-        this case, returning {true} if the
-        value matches. */
-    public ceylon.language.Boolean test(X value);
+public abstract class Case extends IdentifiableObject {
+    private final String string;
+    
+    public Case(String caseName){
+        this.string = caseName;
+    }
+    
+    public String getString(){
+        return string;
+    }
 }
