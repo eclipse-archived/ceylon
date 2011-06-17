@@ -124,6 +124,10 @@
     shared String name = name;
 }</programlisting>
 
+        <comment><para>TODO: Should we really let a name in control structure
+        body hide a name in the surrounding block? In precisely which cases is
+        hiding really non-harmful?</para></comment>
+
         <para>A class or interface may not inherit a declaration with the same 
         name as a declaration it contains unless either:</para>
             
