@@ -86,6 +86,9 @@
     Float y { return x; }
 }</programlisting>
 
+            <para>A setter declaration must occur later in the same body in which the matching 
+            getter declaration occurs.</para>
+
         <comment><para>TODO: Note that Java does not let you define an interface inside a 
         method, so we should either add the same restriction, or figure out workaround. 
         Java doesn't let you define a method inside a method either, but we can wrap the 
