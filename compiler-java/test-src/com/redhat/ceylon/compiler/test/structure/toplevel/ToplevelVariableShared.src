@@ -1,0 +1,13 @@
+package com.redhat.ceylon.compiler.test.structure.toplevel;
+
+public final class $i {
+    private static Natural value = .ceylon.language.Natural.instance(0L);
+    
+    public static Natural getI() {
+        return value;
+    }
+    
+    public static void setI(Natural value) {
+        $i.value = value;
+    }
+}
