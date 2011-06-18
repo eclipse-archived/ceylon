@@ -9,4 +9,8 @@ public class ExpressionTest extends CompilerTest {
     public void testToplevelAttributeAccess(){
         compareWithJavaSource("attribute/TopLevelAccess");
     }
+    @Test
+    public void testToplevelAttributeAssign(){
+        compareWithJavaSource("attribute/TopLevelAssign");
+    }
 }
