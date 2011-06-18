@@ -218,7 +218,9 @@ public class StatementGen extends GenPart {
         } else if (cond instanceof Tree.BooleanCondition) {
             Tree.BooleanCondition booleanCondition = (Tree.BooleanCondition) cond;
             JCExpression test = gen.expressionGen.convertExpression(booleanCondition.getExpression());
-            test = at(cond).Binary(JCTree.EQ, test, makeIdent("ceylon", "language", "_true", "value"));
+            JCExpression trueValue = at(cond).Apply(List.<JCTree.JCExpression>nil(), 
+                    makeIdent("ceylon", "language", "$true", "getTrue"), List.<JCTree.JCExpression>nil());
+            test = at(cond).Binary(JCTree.EQ, test, trueValue);
             JCStatement result;
 
             switch (tag) {
