@@ -299,44 +299,6 @@ public class Types {
 
             Type base = s.baseType();
 
-            if (t.tsym == syms.ceylonMutableType.tsym &&
-                    t.baseType().tag == CLASS) {
-                ClassType klass = (ClassType)t.baseType();
-                List<Type> typeArgs = klass.getTypeArguments();
-                if (typeArgs.length() == 1) {
-                    Type t1 = typeArgs.last();
-                    if (t1.tag == CLASS) {
-                        return isConvertible(t1, s, warn);
-                    }
-                } else if (typeArgs.length() == 0) {
-                    // Everything is convertible to plain ceylon.Mutable
-                    return true;
-                }
-            }
-
-            if ((s.tsym == syms.ceylonOptionalType.tsym || s.tsym == syms.ceylonMutableType.tsym)
-                    && base.tag == CLASS) {
-
-                if (t == syms.ceylonNothingType)
-                    return true;
-
-                ClassType klass = (ClassType)base;
-                List<Type> typeArgs = klass.getTypeArguments();
-
-                if (typeArgs.length() == 0) {
-                    // Type is already erased
-                    return true;
-                } else if (typeArgs.length() == 1) {
-                    Type s1 = typeArgs.last();
-                    if (s1.tag == CLASS || s1.tag == TYPEVAR) {
-                        return isConvertible(t, s1, warn);
-                    }
-                } else if (typeArgs.length() == 0) {
-                    // Everything is convertible from plain ceylon.Mutable.
-                    return true;
-                }
-            }
-
             // The placeholder type for ceylon temporaries.  It only exists
             // while a temporary is declared, and will be replaced by the
             // type of an expression.
@@ -949,22 +911,6 @@ public class Types {
 
         if (t.isPrimitive() != s.isPrimitive())
             return allowBoxing && isConvertible(t, s, warn);
-
-        if (Context.isCeylon() &&
-                t.tsym == syms.ceylonMutableType.tsym &&
-                t.baseType().tag == CLASS) {
-            ClassType klass = (ClassType)t.baseType();
-            List<Type> typeArgs = klass.getTypeArguments();
-            if (typeArgs.length() == 1) {
-                Type t1 = typeArgs.last();
-                if (t1.tag == CLASS) {
-                    return isCastable(t1, s, warn);
-                }
-            } else if (typeArgs.length() == 0) {
-                // Everything is castable to plain ceylon.Mutable
-                return true;
-            }
-        }
 
         if (warn != warnStack.head) {
             try {

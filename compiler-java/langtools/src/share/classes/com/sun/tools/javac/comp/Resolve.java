@@ -47,8 +47,6 @@ import com.sun.tools.javac.ceylon.ManglingRequiredException;
 import com.sun.tools.javac.ceylon.ExtensionFinder;
 import com.sun.tools.javac.ceylon.ExtensionFinder.Route;
 
-import com.redhat.ceylon.compiler.tree.CeylonTree;
-
 /** Helper class for name resolution, used mostly by the attribution phase.
  *
  *  <p><b>This is NOT part of any supported API.

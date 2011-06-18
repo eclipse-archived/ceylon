@@ -151,7 +151,6 @@ public class Symtab {
     public final Type ceylonAnyType;
     public final Type ceylonNothingType;
     public final Type ceylonOptionalType;
-    public final Type ceylonMutableType;
     public final Type ceylonObjectType;
     public final Type ceylonNaturalType;
     public final Type ceylonFloatType;
@@ -460,7 +459,6 @@ public class Symtab {
         ceylonAnyType = enterClass("ceylon.language.Any");
         ceylonNothingType = enterClass("ceylon.language.Nothing");
         ceylonOptionalType = enterClass("ceylon.language.Optional");
-        ceylonMutableType = enterClass("ceylon.language.Mutable");
         ceylonObjectType = enterClass("ceylon.language.Object");
         ceylonNaturalType = enterClass("ceylon.language.Natural");
         ceylonFloatType = enterClass("ceylon.language.Float");

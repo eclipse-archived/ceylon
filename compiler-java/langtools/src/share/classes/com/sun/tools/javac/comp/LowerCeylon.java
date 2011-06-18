@@ -243,48 +243,6 @@ public class LowerCeylon extends TreeTranslator {
             return ceylonExtensionIfNeeded(tree, dstType);
         }
 
-        // Handle conversions to and from Mutable.
-        // First we strip Mutable from the source by applying get().
-
-        // Mutable -> immutable conversion
-        if (srcType.tsym == syms.ceylonMutableType.tsym &&
-                dstType.tsym != syms.ceylonMutableType.tsym) {
-            // Immutable -> mutable conversion
-            List<Type> l = srcType.getTypeArguments();
-            if (l.length() == 1) {
-                Type t1 = l.last();
-                if (t1.tag == CLASS) {
-                    Scope scope = ((ClassSymbol) srcType.tsym).members();
-                    Scope.Entry entry = scope.lookup(names.fromString("get"));
-                    Symbol sym = entry.sym;
-                    MethodSymbol msym = (MethodSymbol) sym;
-                    tree = make.Apply(null,
-                            make.Select(tree, msym), List.<JCExpression>nil()).setType(t1);
-                    return ceylonExtensionIfNeeded(tree, dstType);
-                }
-            }
-        }
-
-        // Immutable -> mutable conversion
-        if (dstType.tsym == syms.ceylonMutableType.tsym &&
-                srcType.tsym != syms.ceylonMutableType.tsym) {
-            List<Type> l = dstType.getTypeArguments();
-            if (l.length() == 1) {
-                Type t1 = l.last();
-                if (t1.tag == CLASS) {
-                    tree = ceylonExtensionIfNeeded(tree, t1);
-                    Scope scope = ((ClassSymbol) dstType.tsym).members();
-                    Scope.Entry entry = scope.lookup(names.fromString("of"));
-                    Symbol sym = entry.sym;
-                    tree = make.Apply(null, make.Select(make.Type(types.erasure(dstType)), sym),
-                            List.of(tree));
-                    Type newType = new ClassType(Type.noType, List.of(srcType), dstType.tsym);
-                    tree.setType(newType);
-                    return ceylonExtensionIfNeeded(tree, dstType);
-                }
-            }
-        }
-
         return tree;
     }
 
