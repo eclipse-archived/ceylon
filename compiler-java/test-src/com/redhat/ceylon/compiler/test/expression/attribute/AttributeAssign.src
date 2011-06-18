@@ -1,0 +1,21 @@
+package com.redhat.ceylon.compiler.test.expression.attribute;
+
+class AttributeAssign extends .ceylon.language.Object {
+    Boolean b;
+    
+    void m() {
+        setB(ceylon.language.$false.getFalse());
+    }
+    
+    AttributeAssign() {
+        b = ceylon.language.$true.getTrue();
+    }
+    
+    Boolean getB() {
+        return this.b;
+    }
+    
+    void setB(Boolean b) {
+        this.b = b;
+    }
+}

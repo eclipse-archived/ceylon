@@ -1,0 +1,12 @@
+package com.redhat.ceylon.compiler.test.expression.attribute;
+
+class MethodLocalAccess extends .ceylon.language.Object {
+    
+    Boolean m() {
+        final Boolean b = ceylon.language.$true.getTrue();
+        return b;
+    }
+    
+    MethodLocalAccess() {
+    }
+}

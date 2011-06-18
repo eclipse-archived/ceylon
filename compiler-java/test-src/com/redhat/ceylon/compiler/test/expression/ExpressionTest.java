@@ -22,7 +22,19 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("attribute/AttributeAccess");
     }
     @Test
+    public void testAttributeAssign(){
+        compareWithJavaSource("attribute/AttributeAssign");
+    }
+    @Test
     public void testMethodParamAccess(){
         compareWithJavaSource("attribute/MethodParamAccess");
+    }
+    @Test
+    public void testMethodLocalAccess(){
+        compareWithJavaSource("attribute/MethodLocalAccess");
+    }
+    @Test
+    public void testMethodLocalAssign(){
+        compareWithJavaSource("attribute/MethodLocalAssign");
     }
 }
