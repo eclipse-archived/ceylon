@@ -362,6 +362,11 @@ public class ExpressionGen extends GenPart {
                 path.add("$"+decl.getName());
                 path.add(Util.getGetterName(decl.getName()));
                 return at(member).Apply(List.<JCExpression>nil(), makeIdent(path), List.<JCExpression>nil());
+            }else if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
+                // invoke the getter
+                return at(member).Apply(List.<JCExpression>nil(), 
+                        makeIdent(Util.getGetterName(decl.getName())), 
+                        List.<JCExpression>nil());
             }
         }
         return make().Ident(names().fromString(member.getIdentifier().getText()));

@@ -17,4 +17,8 @@ public class ExpressionTest extends CompilerTest {
     public void testInitializerParamAccess(){
         compareWithJavaSource("attribute/InitializerParamAccess");
     }
+    @Test
+    public void testAttributeAccess(){
+        compareWithJavaSource("attribute/AttributeAccess");
+    }
 }

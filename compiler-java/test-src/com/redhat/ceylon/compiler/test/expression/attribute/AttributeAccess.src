@@ -1,0 +1,17 @@
+package com.redhat.ceylon.compiler.test.expression.attribute;
+
+class AttributeAccess extends .ceylon.language.Object {
+    final Boolean b;
+    
+    Boolean m() {
+        return getB();
+    }
+    
+    AttributeAccess() {
+        b = ceylon.language.$true.getTrue();
+    }
+    
+    Boolean getB() {
+        return this.b;
+    }
+}
