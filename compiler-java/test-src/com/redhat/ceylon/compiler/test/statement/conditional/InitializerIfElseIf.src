@@ -3,15 +3,15 @@ package com.redhat.ceylon.compiler.test.statement.conditional;
 class InitializerIfElseIf extends .ceylon.language.Object {
     
     InitializerIfElseIf() {
-        if (ceylon.language._true.value == ceylon.language._true.value) {
-            ceylon.language._false.value.equals(ceylon.language._false.value);
+        if (ceylon.language.$true.getTrue() == ceylon.language.$true.getTrue()) {
+            ceylon.language.$false.getFalse().equals(ceylon.language.$false.getFalse());
         } else {
-            if (ceylon.language._false.value == ceylon.language._true.value) {
-                ceylon.language._true.value.equals(ceylon.language._true.value);
+            if (ceylon.language.$false.getFalse() == ceylon.language.$true.getTrue()) {
+                ceylon.language.$true.getTrue().equals(ceylon.language.$true.getTrue());
             } else {
-                ceylon.language._false.value.equals(ceylon.language._true.value);
+                ceylon.language.$false.getFalse().equals(ceylon.language.$true.getTrue());
             }
         }
-        ceylon.language._true.value.equals(ceylon.language._false.value);
+        ceylon.language.$true.getTrue().equals(ceylon.language.$false.getFalse());
     }
 }

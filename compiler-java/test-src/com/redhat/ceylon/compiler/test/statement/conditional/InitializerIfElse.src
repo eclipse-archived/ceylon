@@ -3,11 +3,11 @@ package com.redhat.ceylon.compiler.test.statement.conditional;
 class InitializerIfElse extends .ceylon.language.Object {
     
     InitializerIfElse() {
-        if (ceylon.language._true.value == ceylon.language._true.value) {
-            ceylon.language._false.value.equals(ceylon.language._false.value);
+        if (ceylon.language.$true.getTrue() == ceylon.language.$true.getTrue()) {
+            ceylon.language.$false.getFalse().equals(ceylon.language.$false.getFalse());
         } else {
-            ceylon.language._true.value.equals(ceylon.language._true.value);
+            ceylon.language.$true.getTrue().equals(ceylon.language.$true.getTrue());
         }
-        ceylon.language._false.value.equals(ceylon.language._true.value);
+        ceylon.language.$false.getFalse().equals(ceylon.language.$true.getTrue());
     }
 }
