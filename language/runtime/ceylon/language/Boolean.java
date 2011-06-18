@@ -7,7 +7,7 @@ public abstract class Boolean extends Case {
     }
 
     public static Boolean instance(boolean b) {
-        return b ? _true.value : _false.value;
+        return b ? $true.getTrue() : $false.getFalse();
     }
 
 }
