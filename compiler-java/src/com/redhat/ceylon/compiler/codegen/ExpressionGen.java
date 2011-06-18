@@ -16,6 +16,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.PostfixOperatorExpressio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PrefixOperatorExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -358,11 +359,11 @@ public class ExpressionGen extends GenPart {
                 // it's a toplevel attribute
                 java.util.List<String> path = new LinkedList<String>();
                 path.addAll(container.getQualifiedName());
-                path.add("_"+decl.getName());
-                path.add("value");
-                return makeIdent(path);
+                path.add("$"+decl.getName());
+                path.add(Util.getGetterName(decl.getName()));
+                return at(member).Apply(List.<JCExpression>nil(), makeIdent(path), List.<JCExpression>nil());
             }
         }
-        return at(member).Ident(names().fromString(member.getIdentifier().getText()));
+        return make().Ident(names().fromString(member.getIdentifier().getText()));
     }
 }
