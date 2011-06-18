@@ -10,7 +10,11 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PostfixOperatorExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PrefixOperatorExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
@@ -239,29 +243,38 @@ public class ExpressionGen extends GenPart {
 
     JCExpression convert(Tree.PostfixOperatorExpression expr) {
         String methodName;
-        if (expr instanceof Tree.PostfixIncrementOp)
-            methodName = "postIncrement";
-        else if (expr instanceof Tree.PostfixDecrementOp)
-            methodName = "postDecrement";
-        else
+        boolean successor;
+        if (expr instanceof Tree.PostfixIncrementOp){
+            successor = true;
+            methodName = "getPredecessor";
+        }else if (expr instanceof Tree.PostfixDecrementOp){
+            successor = false;
+            methodName = "getSuccessor";
+        }else
             throw new RuntimeException("Not implemented: " + expr.getNodeType());
-        return convertMutable(expr.getPrimary(), methodName);
+        JCExpression op = makePrefixOp(expr, expr.getPrimary(), successor);
+        return at(expr).Apply(null, makeSelect(op, methodName), List.<JCExpression>nil());
     }
 
     private JCExpression convert(Tree.PrefixOperatorExpression expr) {
-        String methodName;
+        boolean successor;
         if (expr instanceof Tree.IncrementOp)
-            methodName = "preIncrement";
+            successor = true;
         else if (expr instanceof Tree.DecrementOp)
-            methodName = "preDecrement";
+            successor = false;
         else
             throw new RuntimeException("Not implemented: " + expr.getNodeType());
-        return convertMutable(expr.getTerm(), methodName);
+        return makePrefixOp(expr, expr.getTerm(), successor);
     }
 
-    private JCExpression convertMutable(Tree.Term expr, String methodName) {
-        JCExpression operand = convertExpression(expr);
-        return at(expr).Apply(null, makeSelect(makeIdent(syms().ceylonMutableType), methodName), List.<JCExpression> of(operand));
+    private JCExpression makePrefixOp(Node expr, Term term, boolean successor) {
+        String methodName;
+        if (successor)
+            methodName = "getSuccessor";
+        else
+            methodName = "getPredecessor";
+        JCExpression operand = convertExpression(term);
+        return at(expr).Assign(operand, at(expr).Apply(null, makeSelect(operand, methodName), List.<JCExpression>nil()));
     }
 
     JCExpression convert(Tree.InvocationExpression ce) {
