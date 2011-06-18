@@ -217,6 +217,10 @@ public class Gen2 {
             public void visit(Tree.ClassOrInterface decl) {
                 defs.append(classGen.convert(decl));
             }
+            
+            public void visit(Tree.AttributeDeclaration decl){
+                defs.append(classGen.convert(decl));
+            }
 
             public void visit(Tree.MethodDefinition decl) {
                 classGen.methodClass(null, decl, defs, true);

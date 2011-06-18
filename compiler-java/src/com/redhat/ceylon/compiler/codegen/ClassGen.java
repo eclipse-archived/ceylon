@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.codegen;
 import static com.sun.tools.javac.code.Flags.FINAL;
 import static com.sun.tools.javac.code.Flags.INTERFACE;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
+import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.STATIC;
 import static com.sun.tools.javac.code.TypeTags.VOID;
 
@@ -13,10 +14,13 @@ import java.util.Map.Entry;
 
 import com.redhat.ceylon.compiler.codegen.Gen2.Singleton;
 import com.redhat.ceylon.compiler.codegen.StatementGen.StatementVisitor;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
+import com.redhat.ceylon.compiler.util.Util;
 import com.sun.source.tree.Tree.Kind;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
@@ -580,5 +584,60 @@ public class ClassGen extends GenPart {
         JCVariableDecl v = at(param).VarDef(make().Modifiers(FINAL), name, type, null);
 
         return v;
+    }
+
+    public JCTree convert(AttributeDeclaration decl) {
+        // we make a class for it
+        String name = decl.getIdentifier().getText();
+        String className = "$"+name;
+        String getterName = Util.getGetterName(name);
+        String fieldName = "value";
+        Value model = decl.getDeclarationModel();
+        boolean shared = model.isShared();
+        boolean variable = model.isVariable();
+        JCExpression type = gen.convert(decl.getType());
+        
+        // its value
+        JCExpression initialValue = null;
+        if (decl.getSpecifierOrInitializerExpression() != null)
+            initialValue = gen.expressionGen.convertExpression(decl.getSpecifierOrInitializerExpression().getExpression());
+
+        // make a static var for it
+        int varMods = PRIVATE | (variable ? 0 : FINAL) | STATIC; 
+        JCVariableDecl varDef = at(decl).VarDef(make().Modifiers(varMods), names().fromString(fieldName), 
+                type, initialValue);
+        
+        // now make a getter in any case
+        int methodMods = (shared ? PUBLIC : 0) | STATIC;
+        JCBlock getterBody = make().Block(0, List.<JCTree.JCStatement>of(make().Return(makeIdent(fieldName))));
+        JCMethodDecl getter = make().MethodDef(make().Modifiers(methodMods), names().fromString(getterName), 
+                type, List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(), 
+                List.<JCTree.JCExpression>nil(), getterBody, null);
+
+        JCMethodDecl setter = null;
+        if(variable){
+            String setterName = Util.getSetterName(name);
+            JCBlock setterBody = make().Block(0, 
+                    List.<JCTree.JCStatement>of(
+                            make().Exec(
+                                    make().Assign(makeIdent(className, fieldName), 
+                                            makeIdent(fieldName)))));
+            setter = make().MethodDef(make().Modifiers(methodMods), 
+                    names().fromString(setterName), 
+                    makeIdent("void"), 
+                    List.<JCTree.JCTypeParameter>nil(), 
+                    List.<JCTree.JCVariableDecl>of(make().VarDef(make().Modifiers(0), 
+                            names().fromString(fieldName), type, null)), 
+                    List.<JCTree.JCExpression>nil(), 
+                    setterBody, null);
+        }
+        
+        // and the class
+        List<JCTree> defs = (setter != null) ?
+                List.<JCTree>of(varDef, getter, setter)
+                : List.<JCTree>of(varDef, getter);
+        int classMods = (shared ? PUBLIC : 0) | FINAL;
+        return make().ClassDef(make().Modifiers(classMods), names().fromString(className), 
+                List.<JCTree.JCTypeParameter>nil(), null, List.<JCTree.JCExpression>nil(), defs);
     }
 }
