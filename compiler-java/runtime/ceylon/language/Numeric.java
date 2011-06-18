@@ -1,19 +1,17 @@
 package ceylon.language;
 
-public interface Numeric<N> extends Number, Comparable<N> {
-
-    /** The binary |+| operator. */
-    public N plus(N number);
+public interface Numeric<Other extends Numeric<Other>> 
+ extends Number, Comparable<Other>, Summable<Other> {
 
     /** The binary |-| operator. */
-    public N minus(N number);
+    public Other minus(Other number);
 
     /** The binary |*| operator. */
-    public N times(N number);
+    public Other times(Other number);
 
     /** The binary |/| operator. */
-    public N divided(N number);
+    public Other divided(Other number);
 
     /** The binary |**| operator. */
-    public N power(N number);
+    public Other power(Other number);
 }

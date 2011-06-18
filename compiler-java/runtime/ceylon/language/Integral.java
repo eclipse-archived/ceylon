@@ -1,7 +1,8 @@
 package ceylon.language;
 
-public interface Integral<N> extends Numeric<N>, Ordinal<N> {
+public interface Integral<Other extends Integral<Other>> 
+ extends Numeric<Other>, Ordinal<Other> {
 
     /** The binary |%| operator. */
-    public N remainder(N number);
+    public Other remainder(Other number);
 }
