@@ -1,0 +1,11 @@
+package com.redhat.ceylon.compiler.test.expression.attribute;
+
+class MethodParamAccess extends .ceylon.language.Object {
+    
+    Boolean m(final Boolean b) {
+        return b;
+    }
+    
+    MethodParamAccess() {
+    }
+}
