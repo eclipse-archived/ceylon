@@ -6,6 +6,6 @@ class TopLevelAccess extends .ceylon.language.Object {
         return ceylon.language.$true.getTrue();
     }
     
-    TopLevel() {
+    TopLevelAccess() {
     }
 }
