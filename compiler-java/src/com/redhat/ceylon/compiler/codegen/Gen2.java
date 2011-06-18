@@ -300,9 +300,6 @@ public class Gen2 {
         if (isOptional(type)) {
             result = optionalType(result);
         }
-        /* FIXME: I'm not sure we can tell from a type if it's mutable if
-         * ((type.flags & CeylonTree.MUTABLE) != 0) { result =
-         * mutableType(result); } */
 
         return result;
     }
@@ -331,10 +328,6 @@ public class Gen2 {
 
     JCExpression optionalType(JCExpression type) {
         return make().TypeApply(makeIdent(syms.ceylonOptionalType), List.<JCExpression> of(type));
-    }
-
-    JCExpression mutableType(JCExpression type) {
-        return make().TypeApply(makeIdent(syms.ceylonMutableType), List.<JCExpression> of(type));
     }
 
     JCExpression iteratorType(JCExpression type) {

@@ -514,18 +514,11 @@ public class ClassGen extends GenPart {
         if (gen.isOptional(decl.getType())) {
             type = gen.optionalType(type);
         }
-        JCExpression innerType = type;
-        /* FIXME: disabled until we know what to do with it
-         if (isMutable(decl)) {
-            type = gen.mutableType(type);
-        }
-        */
-
         if (initialValue == null) {
             if (!isMutable(decl))
                 throw new RuntimeException("Member needs a value");
             else {
-                initialValue = at(decl).Apply(List.of(innerType), makeSelect(makeIdent(syms().ceylonMutableType), "of"), List.<JCExpression> of(at(decl).Literal(TypeTags.BOT, null)));
+                initialValue = at(decl).Literal(TypeTags.BOT, null);
             }
         }
 
@@ -583,9 +576,6 @@ public class ClassGen extends GenPart {
         if (gen.isOptional(param.getType())) {
             type = gen.optionalType(type);
         }
-        /* FIXME: I didn't see anywhere in the spec about mutable parameters if
-         * ((param.flags & CeylonTree.MUTABLE) != 0) { type = mutableType(type);
-         * } */
 
         JCVariableDecl v = at(param).VarDef(make().Modifiers(FINAL), name, type, null);
 
