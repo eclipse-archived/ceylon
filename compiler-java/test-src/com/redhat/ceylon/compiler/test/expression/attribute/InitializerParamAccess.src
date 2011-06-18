@@ -1,0 +1,13 @@
+package com.redhat.ceylon.compiler.test.expression.attribute;
+
+class InitializerParamAccess extends .ceylon.language.Object {
+    final Boolean b;
+    
+    Boolean m() {
+        return b;
+    }
+    
+    InitializerParamAccess(Boolean $ceylontmp0) {
+        this.b = $ceylontmp0;
+    }
+}

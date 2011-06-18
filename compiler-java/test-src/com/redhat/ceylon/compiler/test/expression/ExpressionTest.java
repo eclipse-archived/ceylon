@@ -13,4 +13,8 @@ public class ExpressionTest extends CompilerTest {
     public void testToplevelAttributeAssign(){
         compareWithJavaSource("attribute/TopLevelAssign");
     }
+    @Test
+    public void testInitializerParamAccess(){
+        compareWithJavaSource("attribute/InitializerParamAccess");
+    }
 }
