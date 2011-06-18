@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.codegen;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -12,15 +11,12 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PostfixOperatorExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PrefixOperatorExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -196,9 +192,18 @@ public class ExpressionGen extends GenPart {
     }
 
     private JCExpression convert(Tree.AssignOp op) {
+        // right side is easy
         JCExpression rhs = convertExpression(op.getRightTerm());
-        JCExpression lhs = convertExpression(op.getLeftTerm());
-        return at(op).Apply(null, at(op).Select(lhs, names().fromString("set")), List.of(rhs));
+        // left side depends
+        Term leftTerm = op.getLeftTerm();
+        // FIXME: can this be anything else than a Primary?
+        Declaration decl = ((Tree.Primary)leftTerm).getDeclaration();
+        if(Util.isClassAttribute(decl)){
+            // must use the setter
+            return at(op).Apply(List.<JCTree.JCExpression>nil(), makeIdent(Util.getSetterName(decl.getName())), 
+                    List.<JCTree.JCExpression>of(rhs));
+        }else
+            return at(op).Assign(convertExpression(leftTerm), rhs);
     }
 
     private JCExpression convert(Tree.IsOp op) {
