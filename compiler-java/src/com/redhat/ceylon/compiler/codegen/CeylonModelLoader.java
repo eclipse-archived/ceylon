@@ -23,6 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
+import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
@@ -98,7 +99,7 @@ public class CeylonModelLoader implements ModelCompleter {
     private Declaration makeDeclaration(ClassSymbol classSymbol) {
         String name = classSymbol.getSimpleName().toString();
         Declaration decl;
-        if(name.indexOf('$') == -1 && name.startsWith("_")){
+        if(name.lastIndexOf('$') == 0){
             decl = makeToplevelAttribute(classSymbol);
             decl.setName(name.substring(1));
         }else{
@@ -335,11 +336,12 @@ public class CeylonModelLoader implements ModelCompleter {
     public void complete(LazyValue value) {
         Type type = null;
         for(Symbol member : value.classSymbol.members().getElements()){
-            if(member instanceof VarSymbol){
-                VarSymbol var = (VarSymbol) member;
-                if(var.name.toString().equals("value")
-                        && var.isStatic()){
-                    type = var.type;
+            if(member instanceof MethodSymbol){
+                MethodSymbol method = (MethodSymbol) member;
+                if(method.name.toString().equals(Util.getGetterName(value.getName()))
+                        && method.isStatic()
+                        && method.params().size() == 0){
+                    type = method.getReturnType();
                     break;
                 }
             }
