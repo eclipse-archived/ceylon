@@ -109,4 +109,10 @@ public final class Integer
     public ceylon.language.Integer complement() {
         return instance(~value);
     }
+
+    @Override
+    public Boolean equals(Equality that) {
+        // FIXME
+        throw new RuntimeException("Not implemented");
+    }
 }
