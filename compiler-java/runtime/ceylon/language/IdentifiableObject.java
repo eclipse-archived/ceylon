@@ -7,7 +7,7 @@ public abstract class IdentifiableObject extends Object implements Equality {
             return Boolean.instance(this == that);
         }
         else {
-            return _false.value;
+            return $false.getFalse();
         }
     }
     
