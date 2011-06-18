@@ -7,6 +7,6 @@ import com.redhat.ceylon.compiler.test.CompilerTest;
 public class ExpressionTest extends CompilerTest {
     @Test
     public void testToplevelAttributeAccess(){
-        compareWithJavaSource("attribute/TopLevel");
+        compareWithJavaSource("attribute/TopLevelAccess");
     }
 }
