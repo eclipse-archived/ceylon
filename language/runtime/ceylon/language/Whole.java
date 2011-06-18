@@ -64,11 +64,11 @@ public final class Whole
         throw new RuntimeException("not implemented");
     }
 
-    public ceylon.language.Whole predecessor() {
+    public ceylon.language.Whole getPredecessor() {
         throw new RuntimeException("not implemented");
     }
 
-    public ceylon.language.Whole successor() {
+    public ceylon.language.Whole getSuccessor() {
         throw new RuntimeException("not implemented");
     }
 }
