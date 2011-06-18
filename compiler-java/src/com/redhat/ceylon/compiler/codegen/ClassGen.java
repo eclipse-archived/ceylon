@@ -223,7 +223,7 @@ public class ClassGen extends GenPart {
     private JCTree.JCMethodDecl convert(ClassOrInterface classDecl, AttributeSetterDefinition cdecl) {
         JCBlock body = gen.statementGen.convert(classDecl, cdecl.getBlock());
         String name = cdecl.getIdentifier().getText();
-        return make().MethodDef(make().Modifiers(0), names().fromString("set"+upperCase(name)), 
+        return make().MethodDef(make().Modifiers(0), names().fromString(Util.getSetterName(name)), 
                 makeIdent("void"), 
                 List.<JCTree.JCTypeParameter>nil(), 
                 List.<JCTree.JCVariableDecl>of(make().VarDef(make().Modifiers(0), names().fromString(name), null, null)), 
@@ -233,7 +233,7 @@ public class ClassGen extends GenPart {
 
     public JCTree.JCMethodDecl convert(ClassOrInterface classDecl, AttributeGetterDefinition cdecl) {
         JCBlock body = gen.statementGen.convert(classDecl, cdecl.getBlock());
-        return make().MethodDef(make().Modifiers(0), names().fromString("get"+upperCase(cdecl.getIdentifier().getText())), 
+        return make().MethodDef(make().Modifiers(0), names().fromString(Util.getGetterName(cdecl.getIdentifier().getText())), 
                 gen.convert(cdecl.getType()), 
                 List.<JCTree.JCTypeParameter>nil(), 
                 List.<JCTree.JCVariableDecl>nil(), 
@@ -270,7 +270,7 @@ public class ClassGen extends GenPart {
     private JCTree makeGetter(JCVariableDecl that) {
         // FIXME: add at() calls?
         JCBlock body = make().Block(0, List.<JCTree.JCStatement>of(make().Return(make().Select(makeIdent("this"), that.name))));
-        return make().MethodDef(make().Modifiers(0), names().fromString("get"+upperCase(that.name)), 
+        return make().MethodDef(make().Modifiers(0), names().fromString(Util.getGetterName(that.name.toString())), 
                 that.vartype, List.<JCTree.JCTypeParameter>nil(), 
                 List.<JCTree.JCVariableDecl>nil(), 
                 List.<JCTree.JCExpression>nil(), 
@@ -283,19 +283,12 @@ public class ClassGen extends GenPart {
                 make().Exec(
                         make().Assign(make().Select(makeIdent("this"), that.name),
                                 makeIdent(that.name.toString())))));
-        return make().MethodDef(make().Modifiers(0), names().fromString("set"+upperCase(that.name)), 
+        return make().MethodDef(make().Modifiers(0), names().fromString(Util.getSetterName(that.name.toString())), 
                 makeIdent("void"), 
                 List.<JCTree.JCTypeParameter>nil(), 
                 List.<JCTree.JCVariableDecl>of(make().VarDef(make().Modifiers(0), that.name, that.vartype, null)), 
                 List.<JCTree.JCExpression>nil(), 
                 body, null);
-    }
-
-    private String upperCase(Name name) {
-        return upperCase(name.toString());
-    }
-    private String upperCase(String name) {
-        return Character.toUpperCase(name.charAt(0)) + name.substring(1);
     }
 
     // Rewrite a list of Ceylon-style type constraints into Java trees.
