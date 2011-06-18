@@ -71,4 +71,10 @@ public final class Whole
     public ceylon.language.Whole getSuccessor() {
         throw new RuntimeException("not implemented");
     }
+
+    @Override
+    public Boolean equals(Equality that) {
+        // FIXME
+        throw new RuntimeException("Not implemented");
+    }
 }

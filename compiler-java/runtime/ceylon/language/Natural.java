@@ -120,4 +120,10 @@ public final class Natural
     public ceylon.language.Natural xor(ceylon.language.Natural op) {
         return Natural.instance(value ^ op.value);
     }
+
+    @Override
+    public Boolean equals(Equality that) {
+        // FIXME
+        throw new RuntimeException("Not implemented");
+    }
 }
