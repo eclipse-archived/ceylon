@@ -1,16 +1,19 @@
 package com.redhat.ceylon.compiler.test.statement.conditional;
 
-class InitializerIfElseIf extends .ceylon.language.Object {
+class MethodIfElseIf extends .ceylon.language.Object {
     
-    InitializerIfElseIf() {
-        if (true) {
-            false;
+    Natural m() {
+        if (ceylon.language.$true.getTrue() == ceylon.language.$true.getTrue()) {
+            return .ceylon.language.Natural.instance(1L);
         } else {
-            if (false) {
-                true;
+            if (ceylon.language.$false.getFalse() == ceylon.language.$true.getTrue()) {
+                return .ceylon.language.Natural.instance(2L);
             } else {
-                false;
+                return .ceylon.language.Natural.instance(3L);
             }
         }
+    }
+    
+    MethodIfElseIf() {
     }
 }

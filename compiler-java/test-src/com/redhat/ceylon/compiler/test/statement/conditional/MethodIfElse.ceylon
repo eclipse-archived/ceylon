@@ -1,9 +1,9 @@
-class MethodIf(){
-   shared void m(){
+class MethodIfElse(){
+   shared Natural m(){
        if(true){
-           false;
+           return 1;
        }else{
-           true;
+           return 2;
        }
    }
 }

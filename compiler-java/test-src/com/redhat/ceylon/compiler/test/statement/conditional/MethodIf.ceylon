@@ -1,5 +1,5 @@
 class MethodIf(){
-   shared Integer m(){
+   shared Natural m(){
        if(true){
            return 1;
        }

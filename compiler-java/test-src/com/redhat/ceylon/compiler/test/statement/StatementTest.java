@@ -59,6 +59,11 @@ public class StatementTest extends CompilerTest {
 	}
 
 	@Test
+	public void testMethodIfElseIf(){
+	    compareWithJavaSource("conditional/MethodIfElseIf");
+	}
+
+	@Test
 	public void testMethodIfExists(){
 		compareWithJavaSource("conditional/MethodIfExists");
 	}

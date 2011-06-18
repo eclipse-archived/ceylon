@@ -1,11 +1,11 @@
-class InitializerIfElseIf(){
-    void m(){
+class MethodIfElseIf(){
+    Natural m(){
        if(true){
-           false;
+           return 1;
        }else if(false){
-           true;
+           return 2;
        }else{
-           false;
+           return 3;
        }
    }
 }
