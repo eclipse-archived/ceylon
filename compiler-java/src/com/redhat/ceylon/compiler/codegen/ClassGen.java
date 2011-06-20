@@ -511,13 +511,6 @@ public class ClassGen extends GenPart {
         if (gen.isOptional(decl.getType())) {
             type = gen.optionalType(type);
         }
-        if (initialValue == null) {
-            if (!isMutable(decl))
-                throw new RuntimeException("Member needs a value");
-            else {
-                initialValue = at(decl).Literal(TypeTags.BOT, null);
-            }
-        }
 
         int modifiers = isMutable(decl) ? 0 : FINAL;
         List<JCStatement> result = List.<JCStatement> of(at(decl).VarDef(at(decl).Modifiers(modifiers, langAnnotations.toList()), names().fromString(decl.getIdentifier().getText()), type, initialValue));
