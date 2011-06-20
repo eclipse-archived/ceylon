@@ -34,7 +34,12 @@ public class StatementTest extends CompilerTest {
 		compareWithJavaSource("attribute/MethodVariableWithInitializer");
 	}
 
-	//
+    @Test
+    public void testMethodVariableWithLateInitializer(){
+        compareWithJavaSource("attribute/MethodVariableWithLateInitializer");
+    }
+
+    //
 	// if/else
 
 	@Test
