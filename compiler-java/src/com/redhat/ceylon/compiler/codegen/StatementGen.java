@@ -61,6 +61,10 @@ public class StatementGen extends GenPart {
                 stmts.append((JCStatement) def);
         }
 
+        public void visit(Tree.SpecifierStatement op) {
+            stmts.append(convert(op));
+        }
+
         // FIXME: not sure why we don't have just an entry for Tree.Term here...
         public void visit(Tree.OperatorExpression op) {
             stmts.append(at(op).Exec(gen.expressionGen.convertExpression(op)));
@@ -305,6 +309,11 @@ public class StatementGen extends GenPart {
 
     private JCIdent convert(Tree.Identifier identifier) {
         return at(identifier).Ident(names().fromString(identifier.getText()));
+    }
+
+    private JCStatement convert(Tree.SpecifierStatement op) {
+        JCExpression rhs = gen.expressionGen.convertExpression(op.getSpecifierExpression().getExpression());
+        return at(op).Exec(make().Assign(gen.expressionGen.convertExpression(op.getBaseMemberExpression()), rhs));
     }
 
 }
