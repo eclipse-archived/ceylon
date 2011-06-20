@@ -635,9 +635,9 @@ TypeConstraints?
     shared Lock lock = lock;
 }</programlisting>
         
-        <programlisting>shared class Counter(Natural start=0) {
-    shared variable Natural count := start;
-    shared void inc() { count++; }
+        <programlisting>shared class Counter(Natural initialCount=0) {
+    shared variable Natural count := initialCount;
+    shared void increment() { count++; }
 }</programlisting>
         
         <para>An initializer parameter may even be used within the body of a method,
