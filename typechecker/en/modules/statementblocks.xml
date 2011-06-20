@@ -1493,7 +1493,8 @@ if (satisfies Comparable&lt;Element&gt; Element) {
                 <listitem>
                     <para>the <literal>for</literal> block is executed once for each value 
                     of type <literal>X</literal> produced by the iterator, until the iterator 
-                    is exhausted.</para>
+                    is exhausted, or until a <literal>break</literal>, <literal>return</literal>,
+                    or <literal>throw</literal> directive is executed.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1512,11 +1513,12 @@ if (satisfies Comparable&lt;Element&gt; Element) {
                 </listitem>
             </itemizedlist>
             
-            <para>If the loop exits early via execution of one of the control directives 
-            <literal>break</literal>, <literal>return</literal> or <literal>throw</literal>, 
-            the <literal>fail</literal> block is not executed. Otherwise, if the loop completes, 
-            <!--or if the loop exits early via execution of the control directive <literal>break false</literal>,-->
-            the <literal>fail</literal> block, if any, is executed.</para>
+            <para>We say that the loop <emphasis>exits early</emphasis> if it ends via execution 
+            of a <literal>break</literal>, <literal>return</literal>, or <literal>throw</literal>
+            directive. Otherwise, we say that the loop <emphasis>completes</emphasis> normally.</para>
+             
+            <para>If the loop completes normally, the <literal>fail</literal> block is executed. 
+            Otherwise, if the loop exists early, the <literal>fail</literal> block is not executed.</para>
                                 
             <para>For example:</para>
 
@@ -1573,18 +1575,14 @@ fail {
             
             <para>When the construct is executed, the block is executed repeatedly, 
             until the loop condition first evaluates to <literal>false</literal>, 
-            at which point iteration ends. In a <literal>while</literal> loop, the block 
-            is executed after the condition is evaluated. In a <literal>do/while</literal> 
-            loop, the second block is executed before it is evaluated.</para>
+            or until a <literal>break</literal>, <literal>return</literal>, 
+            or <literal>throw</literal> directive is executed. In a <literal>while</literal> 
+            loop, the block is executed after the condition is evaluated. In a 
+            <literal>do/while</literal> loop, the second block is executed before it 
+            is evaluated.</para>
             
             <comment><para>TODO: does <literal>do/while</literal> need a <literal>fail</literal> 
             block? Python has it, but what is the real usecase?</para></comment>
-            
-            <!--para>If the loop exits early via execution of one of the control directives 
-            <literal>found</literal>, <literal>return</literal> or <literal>throw</literal>, 
-            the fail block is not executed. Otherwise, if the loop completes, or if the
-            loop exits early via execution of the control directive <literal>break</literal>, 
-            the fail block is executed, if it is defined.</para-->
             
             <para>For example:</para>
             
