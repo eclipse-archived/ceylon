@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.test.statement.attribute;
 class MethodVariable extends .ceylon.language.Object {
     
     void m() {
-        String f = null;
+        String f;
     }
     
     MethodVariable() {
