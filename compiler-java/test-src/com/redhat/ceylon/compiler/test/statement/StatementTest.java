@@ -11,13 +11,17 @@ public class StatementTest extends CompilerTest {
 	
 	@Test
 	public void testMethodAttribute(){
-		// this one should fail
 		compareWithJavaSource("attribute/MethodAttribute");
 	}
 	
 	@Test
 	public void testMethodAttributeWithInitializer(){
 		compareWithJavaSource("attribute/MethodAttributeWithInitializer");
+	}
+
+	@Test
+	public void testMethodAttributeWithLateInitializer(){
+	    compareWithJavaSource("attribute/MethodAttributeWithLateInitializer");
 	}
 
 	@Test
