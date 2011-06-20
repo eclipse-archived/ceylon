@@ -1,0 +1,11 @@
+package com.redhat.ceylon.compiler.test.statement.attribute;
+
+class MethodAttribute extends .ceylon.language.Object {
+    
+    void m() {
+        final String f;
+    }
+    
+    MethodAttribute() {
+    }
+}
