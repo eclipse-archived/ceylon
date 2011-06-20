@@ -108,10 +108,33 @@
         <para>A package may not contain two toplevel declarations (interfaces, 
         classes, methods, or attributes) with the same name.</para>
         
-        <para>A body may not directly contain two declarations with the same 
-        name, unless one is a parameter of the class body and the other is an 
-        attribute of the class. (However, an inner body may <emphasis>hide</emphasis> 
-        declarations of a containing body.)</para>
+        <para>A body may not directly contain two declarations with the same name, 
+        unless:</para>
+        
+        <itemizedlist>
+          <listitem>
+             <para>the body is a class body,</para>
+          </listitem>
+          <listitem>
+            <para>one declaration is an initializer parameter of the class and the 
+            other is an attribute of the class,</para>
+          </listitem>
+          <listitem>
+            <para>the attribute is a non-<literal>variable</literal> simple 
+            attribute,</para>
+          </listitem>
+          <listitem>
+            <para>the type of the parameter is the same as the type of the attribute,
+            and</para>
+          </listitem>
+          <listitem>
+            <para>the simple attribute declaration has a specifier, and the specifier 
+            expression is a value reference to the initializer parameter.</para>
+          </listitem>
+        </itemizedlist>
+        
+        <para>(Where a parameter or type parameter is considered to be a declaration 
+        that is directly contained by the body of the declaration it parameterizes.)</para>
         
         <para>Note that this code is not legal:</para>
         
@@ -120,13 +143,30 @@
     return string;
 }</programlisting>
 
-        <para>However, this code <emphasis>is</emphasis> legal, since class 
-        initialization parameters and attributes may share a name:</para>
+        <para>However, this code <emphasis>is</emphasis> legal, since, according to 
+        the rules above, an initialization parameter and an attribute may share a 
+        name if they have the same value:</para>
         
-        <programlisting>shared class Person(String name) {
+        <programlisting>class Person(String name) {
     shared String name = name;
 }</programlisting>
 
+        <para>But the following is not legal:</para>
+        
+        <programlisting>class Person(String name) {
+    shared String name = name.lowercase;
+}</programlisting>
+
+        <para>However, an inner body may <emphasis>hide</emphasis> declarations of 
+        a containing body. For example, the following code is legal:</para>
+        
+        <programlisting>class Person(String name) {
+    shared String lowerCaseName {
+        String name = name.lowercase;
+        return name;
+    }
+}</programlisting>
+        
         <comment><para>TODO: Should we really let a name in control structure
         body hide a name in the surrounding block? In precisely which cases is
         hiding really non-harmful?</para></comment>
