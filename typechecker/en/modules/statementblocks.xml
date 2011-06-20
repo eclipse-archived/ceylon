@@ -120,16 +120,18 @@
             other is an attribute of the class,</para>
           </listitem>
           <listitem>
-            <para>the attribute is a non-<literal>variable</literal> simple 
-            attribute,</para>
-          </listitem>
-          <listitem>
             <para>the type of the parameter is the same as the type of the attribute,
-            and</para>
+            and either</para>
           </listitem>
           <listitem>
-            <para>the simple attribute declaration has a specifier, and the specifier 
-            expression is a value reference to the initializer parameter.</para>
+            <para>the attribute is a non-<literal>variable</literal> simple 
+            attribute with a specifier, and the specifier expression is a value 
+            reference to the initializer parameter, or</para>
+          </listitem>
+          <listitem>
+            <para>the attribute is a getter with no matching setter, and the body 
+            of the getter has a single <literal>return</literal> statement, and the 
+            return expression is a value reference to the initializer parameter.</para>
           </listitem>
         </itemizedlist>
         
