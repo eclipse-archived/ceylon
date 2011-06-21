@@ -77,6 +77,16 @@ public class ControlFlowVisitor extends Visitor {
     boolean inLoop() {
         return exitedFromLoop!=null;
     }
+    
+    Boolean pauseLoop() {
+        Boolean efl = exitedFromLoop;
+        exitedFromLoop = null;
+        return efl;
+    }
+    
+    void unpauseLoop(Boolean efl) {
+        exitedFromLoop = efl;
+    }
         
     @Override
     public void visit(Tree.AttributeGetterDefinition that) {
@@ -195,6 +205,13 @@ public class ControlFlowVisitor extends Visitor {
         boolean e = beginStatementScope(!(that instanceof Tree.InterfaceBody));
         super.visit(that);
         endStatementScope(e);
+    }
+    
+    @Override
+    public void visit(Tree.Declaration that) {
+        Boolean efl = pauseLoop();
+        super.visit(that);
+        unpauseLoop(efl);
     }
     
     @Override
