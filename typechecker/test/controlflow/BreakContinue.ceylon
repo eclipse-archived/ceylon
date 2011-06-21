@@ -72,6 +72,10 @@ class BreakContinue() {
         @error return;
     }
     
+    object badReturn {
+        @error return;
+    }
+    
     void badReturnFromClass() {
         class Bad() {
             @error return;
