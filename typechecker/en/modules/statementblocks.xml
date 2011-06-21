@@ -613,12 +613,12 @@ try (lock) { ... }</programlisting>
         <programlisting>continue;</programlisting>
         
         <para>The <literal>return</literal> directive may not appear outside the body of 
-        a method or attribute getter. In the case of a <literal>void</literal> method, no 
-        expression may be specified. In the case of a non-<literal>void</literal> method 
-        or attribute getter, an expression must be specified. The expression type must be 
-        assignable to the return type of the method. When the directive is executed, the 
-        expression is evaluated to determine the return value of the method or attribute 
-        getter.</para>
+        a method, attribute getter, or attribute setter. In the case of a <literal>void</literal> 
+        method or attribute setter, no expression may be specified. In the case of a 
+        non-<literal>void</literal> method or attribute getter, an expression must be 
+        specified. The expression type must be assignable to the return type of the method
+        or the type of the attribute. When the directive is executed, the expression is 
+        evaluated to determine the return value of the method or attribute getter.</para>
         
         <programlisting>Return: "return" Expression?</programlisting>
         
