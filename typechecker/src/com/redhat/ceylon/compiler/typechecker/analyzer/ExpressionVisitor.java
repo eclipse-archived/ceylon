@@ -498,12 +498,12 @@ public class ExpressionVisitor extends Visitor {
             Tree.Expression e = that.getExpression();
             if ( returnType instanceof Tree.VoidModifier ) {
                 if (e!=null) {
-                    that.addError("void methods may not return a value");
+                    that.addError("a void method or setter may not return a value");
                 }
             }
             else if ( !(returnType instanceof Tree.LocalModifier) ) {
                 if (e==null) {
-                    that.addError("non-void methods and getters must return a value");
+                    that.addError("a non-void method or getter must return a value");
                 }
                 else {
                     ProducedType et = returnType.getTypeModel();
