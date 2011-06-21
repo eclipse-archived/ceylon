@@ -1,4 +1,4 @@
-class MethodForIterator(){
+class MethodForFail(){
     shared Natural m(Iterator<Integer> it){
         for(Integer i in it){
             while (true) {

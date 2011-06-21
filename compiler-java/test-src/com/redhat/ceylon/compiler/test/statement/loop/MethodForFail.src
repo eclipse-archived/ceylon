@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.test.statement.loop;
 
-class MethodForIterator extends .ceylon.language.Object {
+class MethodForFail extends .ceylon.language.Object {
     
-    public Integer m(final Iterator<Integer> it) {
+    public Natural m(final Iterator<Integer> it) {
         {
             boolean $ceylontmp0 = true;
             .ceylon.language.Iterator<Integer> $ceylontmp1 = it.iterator();
@@ -10,10 +10,32 @@ class MethodForIterator extends .ceylon.language.Object {
                 final .ceylon.language.Optional<Integer> $ceylontmp2 = $ceylontmp1.head();
                 if ($ceylontmp2 != null) {
                     Integer i = $ceylontmp2.$internalErasedExists();
-                    {
-                        $ceylontmp0 = false;
+                    while (ceylon.language.$true.getTrue() == ceylon.language.$true.getTrue()) {
+                        {
+                            boolean $ceylontmp3 = true;
+                            .ceylon.language.Iterator<Integer> $ceylontmp4 = it.iterator();
+                            while (true) {
+                                final .ceylon.language.Optional<Integer> $ceylontmp5 = $ceylontmp4.head();
+                                if ($ceylontmp5 != null) {
+                                    Integer i = $ceylontmp5.$internalErasedExists();
+                                    $ceylontmp3 = false;
+                                    break;
+                                } else {
+                                    break;
+                                }
+                                $ceylontmp4 = $ceylontmp4.tail();
+                            }
+                            if ($ceylontmp3) {
+                                return .ceylon.language.Natural.instance(1L);
+                            }
+                        }
                         break;
                     }
+                    do {
+                        break;
+                    }                     while (ceylon.language.$true.getTrue() == ceylon.language.$true.getTrue());
+                    $ceylontmp0 = false;
+                    break;
                 } else {
                     break;
                 }
@@ -25,6 +47,6 @@ class MethodForIterator extends .ceylon.language.Object {
         }
     }
     
-    MethodForIterator() {
+    MethodForFail() {
     }
 }

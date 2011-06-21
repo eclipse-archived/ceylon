@@ -41,49 +41,48 @@ public class StatementGen extends GenPart {
         }
 
         public void visit(Tree.InvocationExpression expr) {
-            stmts.append(at(expr).Exec(gen.expressionGen.convert(expr)));
+            append(at(expr).Exec(gen.expressionGen.convert(expr)));
         }
 
         public void visit(Tree.Return ret) {
-            stmts.append(convert(ret));
+            append(convert(ret));
         }
 
         public void visit(Tree.IfStatement stat) {
-            stmts.append(convert(cdecl, stat));
+            append(convert(cdecl, stat));
         }
 
         public void visit(Tree.WhileStatement stat) {
-            stmts.append(convert(cdecl, stat));
+            append(convert(cdecl, stat));
         }
 
         public void visit(Tree.DoWhileStatement stat) {
-            stmts.append(convert(cdecl, stat));
+            append(convert(cdecl, stat));
         }
 
         public void visit(Tree.ForStatement stat) {
-            stmts.append(convert(cdecl, stat));
+            append(convert(cdecl, stat));
         }
 
         public void visit(Tree.Break stat) {
-            stmts.append(convert(cdecl, stat));
+            append(convert(cdecl, stat));
         }
 
         public void visit(Tree.AttributeDeclaration decl) {
-            for (JCTree def : gen.classGen.convert(cdecl, decl))
-                stmts.append((JCStatement) def);
+        	append(gen.classGen.convert(cdecl, decl));
         }
 
         public void visit(Tree.SpecifierStatement op) {
-            stmts.append(convert(op));
+            append(convert(op));
         }
 
         // FIXME: not sure why we don't have just an entry for Tree.Term here...
         public void visit(Tree.OperatorExpression op) {
-            stmts.append(at(op).Exec(gen.expressionGen.convertExpression(op)));
+            append(at(op).Exec(gen.expressionGen.convertExpression(op)));
         }
 
         public void visit(Tree.Expression tree) {
-            stmts.append(at(tree).Exec(gen.expressionGen.convertExpression(tree)));
+            append(at(tree).Exec(gen.expressionGen.convertExpression(tree)));
         }
 
         public void visit(Tree.MethodDefinition decl) {
@@ -99,15 +98,25 @@ public class StatementGen extends GenPart {
 
         // FIXME: I think those should just go in convertExpression no?
         public void visit(Tree.PostfixOperatorExpression expr) {
-            stmts.append(at(expr).Exec(gen.expressionGen.convert(expr)));
+            append(at(expr).Exec(gen.expressionGen.convert(expr)));
         }
 
         public void visit(Tree.PrefixOperatorExpression expr) {
-            stmts.append(at(expr).Exec(gen.expressionGen.convert(expr)));
+            append(at(expr).Exec(gen.expressionGen.convert(expr)));
         }
 
         public void visit(Tree.ExpressionStatement tree) {
-            stmts.append(at(tree).Exec(gen.expressionGen.convertExpression(tree.getExpression())));
+            append(at(tree).Exec(gen.expressionGen.convertExpression(tree.getExpression())));
+        }
+        
+        private void append(JCStatement stmt) {
+        	stmts.append(stmt);
+        }
+        
+        private void append(List<JCStatement> list) {
+            for (JCStatement stmt : list) {
+                stmts.append(stmt);
+            }
         }
     }
 
@@ -126,37 +135,37 @@ public class StatementGen extends GenPart {
         return buf.toList();
     }
 
-    private JCStatement convert(Tree.ClassOrInterface cdecl, Tree.IfStatement stmt) {
+    private List<JCStatement> convert(Tree.ClassOrInterface cdecl, Tree.IfStatement stmt) {
         JCBlock thenPart = convert(cdecl, stmt.getIfClause().getBlock());
         JCBlock elsePart = stmt.getElseClause() != null ? convert(cdecl, stmt.getElseClause().getBlock()) : null;
         return convertCondition(stmt.getIfClause().getCondition(), JCTree.IF, thenPart, elsePart);
     }
 
-    private JCStatement convert(Tree.ClassOrInterface cdecl, Tree.WhileStatement stmt) {
+    private List<JCStatement> convert(Tree.ClassOrInterface cdecl, Tree.WhileStatement stmt) {
         Name tempForFailVariable = currentForFailVariable;
         currentForFailVariable = null;
         
         JCBlock thenPart = convert(cdecl, stmt.getWhileClause().getBlock());
-        JCStatement res = convertCondition(stmt.getWhileClause().getCondition(), JCTree.WHILELOOP, thenPart, null);
+        List<JCStatement> res = convertCondition(stmt.getWhileClause().getCondition(), JCTree.WHILELOOP, thenPart, null);
         
         currentForFailVariable = tempForFailVariable;
         
         return res;
     }
 
-    private JCStatement convert(Tree.ClassOrInterface cdecl, Tree.DoWhileStatement stmt) {
+    private List<JCStatement> convert(Tree.ClassOrInterface cdecl, Tree.DoWhileStatement stmt) {
         Name tempForFailVariable = currentForFailVariable;
         currentForFailVariable = null;
         
         JCBlock thenPart = convert(cdecl, stmt.getDoClause().getBlock());
-        JCStatement res = convertCondition(stmt.getDoClause().getCondition(), JCTree.DOLOOP, thenPart, null);
+        List<JCStatement> res = convertCondition(stmt.getDoClause().getCondition(), JCTree.DOLOOP, thenPart, null);
         
         currentForFailVariable = tempForFailVariable;
         
         return res;
     }
 
-    private JCStatement convertCondition(Tree.Condition cond, int tag, JCBlock thenPart, JCBlock elsePart) {
+    private List<JCStatement> convertCondition(Tree.Condition cond, int tag, JCBlock thenPart, JCBlock elsePart) {
 
         if (cond instanceof Tree.ExistsCondition) {
             Tree.ExistsCondition exists = (Tree.ExistsCondition) cond;
@@ -198,18 +207,19 @@ public class StatementGen extends GenPart {
             switch (tag) {
             case JCTree.IF:
                 cond1 = at(cond).If(test, thenPart, elsePart);
-                return at(cond).Block(0, List.<JCStatement> of(decl, cond1));
+                break;
             case JCTree.WHILELOOP:
                 assert elsePart == null;
                 cond1 = at(cond).WhileLoop(test, thenPart);
-                return at(cond).Block(0, List.<JCStatement> of(decl, cond1));
+                break;
             case JCTree.DOLOOP:
                 assert elsePart == null;
                 cond1 = at(cond).DoLoop(thenPart, test);
-                return at(cond).Block(0, List.<JCStatement> of(decl, cond1));
+                break;
             default:
                 throw new RuntimeException();
             }
+            return List.<JCStatement> of(decl, cond1);
         } else if (cond instanceof Tree.IsCondition) {
             // FIXME: This code has a lot in common with the ExistsExpression
             // above, but it has a niggling few things that are different.
@@ -246,26 +256,27 @@ public class StatementGen extends GenPart {
             switch (tag) {
             case JCTree.IF:
                 cond1 = at(cond).If(test, thenPart, elsePart);
-                return at(cond).Block(0, List.<JCStatement> of(decl, cond1));
+                break;
             case JCTree.WHILELOOP:
                 assert elsePart == null;
                 cond1 = at(cond).WhileLoop(test, thenPart);
-                return at(cond).Block(0, List.<JCStatement> of(decl, cond1));
+                break;
             case JCTree.DOLOOP:
                 assert elsePart == null;
                 cond1 = at(cond).DoLoop(thenPart, test);
-                return at(cond).Block(0, List.<JCStatement> of(decl, cond1));
+                break;
             default:
                 throw new RuntimeException();
             }
+            return List.<JCStatement> of(decl, cond1);
         } else if (cond instanceof Tree.BooleanCondition) {
             Tree.BooleanCondition booleanCondition = (Tree.BooleanCondition) cond;
             JCExpression test = gen.expressionGen.convertExpression(booleanCondition.getExpression());
             JCExpression trueValue = at(cond).Apply(List.<JCTree.JCExpression>nil(), 
                     makeIdent("ceylon", "language", "$true", "getTrue"), List.<JCTree.JCExpression>nil());
             test = at(cond).Binary(JCTree.EQ, test, trueValue);
+            
             JCStatement result;
-
             switch (tag) {
             case JCTree.IF:
                 result = at(cond).If(test, thenPart, elsePart);
@@ -282,7 +293,7 @@ public class StatementGen extends GenPart {
                 throw new RuntimeException();
             }
 
-            return result;
+            return List.<JCStatement> of(result);
         } else {
             throw new RuntimeException("Not implemented: " + cond.getNodeType());
         }
@@ -363,7 +374,7 @@ public class StatementGen extends GenPart {
         return at(stmt).Block(0, outer);
     }
 
-    private JCStatement convert(Tree.ClassOrInterface cdecl, Tree.Break stmt) {
+    private List<JCStatement> convert(Tree.ClassOrInterface cdecl, Tree.Break stmt) {
     	// break;
     	JCStatement brk = at(stmt).Break(null);
     	
@@ -371,9 +382,9 @@ public class StatementGen extends GenPart {
             JCIdent failtest_id = at(stmt).Ident(currentForFailVariable);
             List<JCStatement> list = List.<JCStatement> of(at(stmt).Exec(at(stmt).Assign(failtest_id, makeIdent("false"))));
     		list = list.append(brk);
-            return at(stmt).Block(0, list);
+            return list;
     	} else {
-    		return brk;
+    		return List.<JCStatement> of(brk);
     	}
     }
 
