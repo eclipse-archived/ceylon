@@ -5,6 +5,9 @@ import org.junit.Test;
 import com.redhat.ceylon.compiler.test.CompilerTest;
 
 public class ExpressionTest extends CompilerTest {
+	
+	// Attributes
+	
     @Test
     public void testToplevelAttributeAccess(){
         compareWithJavaSource("attribute/TopLevelAccess");
@@ -36,5 +39,49 @@ public class ExpressionTest extends CompilerTest {
     @Test
     public void testMethodLocalAssign(){
         compareWithJavaSource("attribute/MethodLocalAssign");
+    }
+    
+    // Literals
+    
+    @Test
+    public void testStringLiteral(){
+        compareWithJavaSource("literal/StringLiteral");
+    }
+    @Test
+    public void testNumericLiteral(){
+        compareWithJavaSource("literal/NumericLiteral");
+    }
+    
+    // Method invocation
+    
+    @Test
+    public void testMethodInvocation(){
+        compareWithJavaSource("invoke/MethodInvocation");
+    }
+    
+    // Self references
+    
+    @Test
+    public void testThisReference(){
+        compareWithJavaSource("selfref/ThisReference");
+    }
+    @Test
+    public void testSuperReference(){
+        compareWithJavaSource("selfref/SuperReference");
+    }
+    
+    // Instantiation
+    
+    @Test
+    public void testClassInstantiation(){
+        compareWithJavaSource("instantiation/ClassInstantiation");
+    }
+    @Test
+    public void testSequenceInstantiation(){
+        compareWithJavaSource("instantiation/SequenceInstantiation");
+    }
+    @Test
+    public void testEntryInstantiation(){
+        compareWithJavaSource("instantiation/EntryInstantiation");
     }
 }

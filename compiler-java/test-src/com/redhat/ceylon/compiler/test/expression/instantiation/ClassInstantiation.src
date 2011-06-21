@@ -1,0 +1,11 @@
+package com.redhat.ceylon.compiler.test.expression.instantiation;
+
+class ClassInstantiation extends .ceylon.language.Object {
+    
+    public ClassInstantiation m() {
+        return new ClassInstantiation();
+    }
+    
+    ClassInstantiation() {
+    }
+}

@@ -1,0 +1,12 @@
+package com.redhat.ceylon.compiler.test.expression.literal;
+
+class NumericLiteral extends .ceylon.language.Object {
+    
+    public void m() {
+        final Natural n1 = .ceylon.language.Natural.instance(1L);
+        final Float n4 = .ceylon.language.Float.instance(3.14159);
+    }
+    
+    NumericLiteral() {
+    }
+}
