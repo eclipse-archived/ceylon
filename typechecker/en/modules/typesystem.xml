@@ -1725,8 +1725,8 @@ given Result(Natural count) satisfies Numeric<Result>]]></programlisting>
 Wrapper<Special> wrapper = special.wrap();]]></programlisting>
 
         <para>The only expression assignable to the type <literal>subtype</literal> is
-        the special value <literal>this</literal>, except inside the body of a method or
-        attribute annotated <literal>definite</literal>, where the class that declares 
+        the self reference <literal>this</literal>, except inside the body of a method 
+        or attribute annotated <literal>definite</literal>, where the class that declares 
         the method or attribute is assignable to <literal>subtype</literal>. 
         <emphasis>(Note that <literal>definite</literal> is a proposed feature for a 
         future version of the language.)</emphasis></para>

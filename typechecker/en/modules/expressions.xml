@@ -8,7 +8,7 @@
     
     <itemizedlist>
         <listitem>
-            <para>literal values, special values, and metamodel references,</para>
+            <para>literal values, self references, and metamodel references,</para>
         </listitem>
         <!--
         <listitem>
@@ -486,8 +486,8 @@ shared interface Color { ... }</programlisting>
     <section id="selfreferences">
         <title>Self references</title>
         
-        <para>The type of the following special values depends upon the context 
-        in which they appear.</para>
+        <para>The type of the following expressions depends upon the context in which 
+        they appear.</para>
         
         <programlisting>SelfReference: "this" | "super" | "outer"</programlisting>
         
