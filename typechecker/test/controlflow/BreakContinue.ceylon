@@ -39,9 +39,23 @@ class BreakContinue() {
             }
         }
     }
+    void forBadContinue2() {
+        for (local n in 0..1) {
+            object bad {
+                @error continue;
+            }
+        }
+    }
     void whileBadBreak() {
         while (true) {
             class Bad() {
+                @error break;
+            }
+        }
+    }
+    void whileBadBreak2() {
+        while (true) {
+            object bad {
                 @error break;
             }
         }
@@ -64,6 +78,12 @@ class BreakContinue() {
         }
     }
     
+    void badReturnFromObject() {
+        object bad {
+            @error return;
+        }
+    }
+    
     
     Natural badReturnFromSetter() {
         String bad {
@@ -71,6 +91,16 @@ class BreakContinue() {
         }
         assign bad {
             @error return 0;
+        }
+        return 1;
+    }
+    
+    Natural badReturnFromSetter2() {
+        String bad {
+            return "hello";
+        }
+        assign bad {
+            @error return "goodbye";
         }
         return 1;
     }
