@@ -715,10 +715,6 @@ try (lock) { ... }</programlisting>
         
         <comment><para>TODO: Should we have a <literal>retry</literal> directive?</para></comment>
         
-        <comment><para>TODO: A <literal>return</literal>, <literal>break</literal>, 
-        or <literal>continue</literal> directive can not be used to terminate the
-        initializer of a class. How do we specify this?</para></comment>
-
         </section>
         
         <section id="specificationstatements">
