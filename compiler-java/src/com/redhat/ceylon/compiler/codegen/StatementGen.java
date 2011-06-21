@@ -276,7 +276,8 @@ public class StatementGen extends GenPart {
                 break;
             case JCTree.DOLOOP:
                 assert elsePart == null;
-                return at(cond).DoLoop(thenPart, test);
+                result = at(cond).DoLoop(thenPart, test);
+                break;
             default:
                 throw new RuntimeException();
             }
