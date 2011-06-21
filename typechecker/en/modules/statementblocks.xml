@@ -25,9 +25,11 @@
     
         <para>A <emphasis>body</emphasis> is a block, class body or interface body. Every 
         body is list of semicolon-delimited statements, control structures, and declarations, 
-        surrounded by braces. Some bodies end in a control directive. Every statement, 
-        control structure, declaration, and control directive in the list is said to 
-        <emphasis>directly occur</emphasis> in the body.</para>
+        surrounded by braces. Some bodies end in a control directive. Every program element 
+        in the list is said to <emphasis>directly occur</emphasis> in the body. A program 
+        element <emphasis>directly occurs earlier</emphasis> than a second program element 
+        if both program elements directly occur in a body and the first program element 
+        occurs earlier in the list than the second program element.</para>
         
         <para>A program element <emphasis>(indirectly) occurs</emphasis> in a body if:</para>
         
@@ -41,8 +43,8 @@
             </listitem>
         </itemizedlist>
         
-        <para>A program element <emphasis>(indirectly) occurs earlier</emphasis> than a second 
-        program element if:</para>
+        <para>A program element <emphasis>(indirectly) occurs earlier</emphasis> than a 
+        second program element if:</para>
         
         <itemizedlist>
             <listitem>
@@ -51,9 +53,8 @@
             </listitem>
             <listitem>
                 <para>the second program element indirectly occurs inside the body of a 
-                declaration or control structure that directly occurs in the same body as the 
-                first program element, and the declaration or control structure occurs after 
-                the first program element.</para>
+                declaration or control structure that directly occurs earlier in the same 
+                body as the first program element.</para>
             </listitem>
         </itemizedlist>
         
@@ -69,8 +70,8 @@
             </listitem>
         </itemizedlist>
         
-        <para>A program element <emphasis>sequentially occurs earlier</emphasis> than a second 
-        program element if:</para>
+        <para>A program element <emphasis>sequentially occurs earlier</emphasis> than a 
+        second program element if:</para>
         
         <itemizedlist>
             <listitem>
@@ -79,8 +80,8 @@
             </listitem>
             <listitem>
                 <para>the second program element sequentially occurs inside the body of a 
-                control structure that directly occurs in the same body as the first program 
-                element, and the control structure occurs after the first program element.</para>
+                control structure that directly occurs earlier in the same body as the 
+                first program element.</para>
             </listitem>
         </itemizedlist>
         
@@ -91,15 +92,15 @@
         <itemizedlist>
             <listitem>
                 <para>the sequence of statements that occur directly in the body in which
-                the first program element occurs, beginning from the first program element
-                and ending at second program element, if the second program element occurs
-                directly in the same body as the first program element, or</para>
+                the first program element directly occurs, beginning from the first program 
+                element and ending with the second program element, if the second program 
+                element occurs directly in the same body as the first program element, or</para>
             </listitem>
             <listitem>
                 <para>the sequence of statements that occur directly in the body in which
-                the first program element occurs, beginning from the first program element
-                and ending at the declaration or control structure in whose body the 
-                second program element sequentially occurs, followed by the sequence of 
+                the first program element directly occurs, beginning from the first program 
+                element and ending with the declaration or control structure in whose body 
+                the second program element sequentially occurs, followed by the sequence of 
                 statements from the first statement of the declaration whose body contains 
                 the second program element to the second program element itself, otherwise.</para>
             </listitem>
@@ -461,9 +462,9 @@ String result = middleObject.string;</programlisting>
             <para>In both examples, <literal>result</literal> refers to the value 
             <literal>"hello"</literal>.</para>
             
-            <para>The set of <!--all declarations which belong directly to a containing body of a 
-            nested declaration, together with the --> current instances of containing classes and 
-            interfaces and current frames of containing blocks is called the 
+            <para>The set of <!--all declarations which belong directly to a containing body 
+            of a nested declaration, together with the --> current instances of containing 
+            classes and interfaces and current frames of containing blocks is called the 
             <emphasis>closure</emphasis> of the nested declaration.</para>           
             
         </section>
@@ -529,16 +530,15 @@ String result = middleObject.string;</programlisting>
         <title>Blocks and statements</title>
             
         <para>A <emphasis>block</emphasis> is list of semicolon-delimited statements, 
-        control structures, and declarations, surrounded by braces. Some blocks end in 
-        a control directive.</para>
+        control structures, and declarations, surrounded by braces.</para>
         
-        <programlisting>Block: "{" (Declaration | Statement)* DirectiveStatement? "}"</programlisting>
+        <programlisting>Block: "{" (Declaration | Statement)* "}"</programlisting>
         
         <para>A <emphasis>statement</emphasis> is an assignment or specification, an 
-        invocation of a method, an instantiation of a class, a control structure or a 
-        control directive.</para>
+        invocation of a method, an instantiation of a class, a control structure, or 
+        a control directive.</para>
 
-        <programlisting>Statement: ExpressionStatement | Specification | ControlStructure</programlisting>
+        <programlisting>Statement: ExpressionStatement | Specification | DirectiveStatement | ControlStructure</programlisting>
         
         <para>The statements, local specifiers, and control structures that directly occur
         in a block are executed sequentially in the order that they appear inside the block. 
@@ -755,14 +755,17 @@ else {
         <section id="definitereturn">
             <title>Definite return</title>
             
-            <para>The body of a non-<literal>void</literal> method or getter must
-            <emphasis>definitely return</emphasis>.</para>
+            <para>A sequence of statements may <emphasis>definitely return.</emphasis></para>
             
             <itemizedlist>
                 <listitem>
-                    <para>A block definitely returns if it ends in a <literal>return</literal>
-                    or <literal>throw</literal> directive, or in a control structure that
-                    definitely returns.</para>
+                    <para>A sequence of statements definitely returns if it ends in a 
+                    <literal>return</literal> or <literal>throw</literal> directive, or 
+                    in a control structure that definitely returns.</para>
+                </listitem>
+                <listitem>
+                    <para>A body definitely returns if it contains a list of statements
+                    that definitely returns.</para>
                 </listitem>
                 <listitem>
                     <para>An <literal>if</literal> conditional definitely returns if it has
@@ -794,19 +797,20 @@ else {
                 </listitem>
             </itemizedlist>
             
+            <para>The body of a non-<literal>void</literal> method or getter must definitely 
+            return.</para>
+            
+            <para>A body may not contain an additional statement or control structure 
+            following a sequence of statements that definitely returns. Such a statement or
+            control structure is considered <emphasis>unreachable</emphasis>.</para>
+            
         </section>
         
         <section id="definiteinitialization">
             <title>Definite initialization</title>
             
-            <para>A local or simple attribute must be <emphasis>definitely initialized</emphasis>
-            before it may be used in an expression. A simple attribute must be definitely 
-            initialized by the initializer of the class to which it belongs.</para>
-            
-            <para>A local or simple attribute is considered definitely initialized at a certain
-            statement if it is <emphasis>definitely initialized</emphasis> by the sequence of 
-            statements between the declaration of the local or simple attribute and the 
-            statement in question.</para>
+            <para>A sequence of statements may <emphasis>definitely initialize</emphasis> a
+            local or simple attribute.</para>
             
             <itemizedlist>
                 <listitem>
@@ -853,26 +857,23 @@ else {
                 </listitem>
             </itemizedlist>
             
+            <para>A local or simple attribute is considered <emphasis>definitely initialized</emphasis> 
+            at a certain statement if its declaration has a specifier or if it is definitely 
+            initialized by the sequence of statements from its declaration to the given 
+            statement.</para>
+            
+            <para>A local or simple attribute must be definitely initialized before it may be 
+            used in an expression. A simple attribute must be definitely initialized by the 
+            initializer of the class to which it belongs.</para>
+            
         </section>
             
         <section id="definiteuninitialization">
             <title>Definite uninitialization</title>
             
-            <para>A non-<literal>variable</literal> local or simple attribute must be 
-            <emphasis>definitely uninitialized</emphasis> before it may be used in a
-            specification statement.</para>
+            <para>A sequence of statements may <emphasis>possibly initialize</emphasis> a
+            local or simple attribute.</para>
             
-            <para>A loop body (a <literal>for</literal>, <literal>do</literal>, or
-            <literal>while</literal> block) may not contain a specifier statement for a
-            local or simple attribute declared outside the loop body. A local or simple
-            attribute declared outside the loop body is <emphasis>never</emphasis>
-            considered definitely uninitialized inside the loop body.</para>
-            
-            <para>Otherwise, a local or simple attribute is considered definitely
-            uninitialized at a certain statement if it is not <emphasis>possibly 
-            initialized</emphasis> by the sequence of statements between the declaration 
-            of the local or simple attribute and the statement in question.</para>
-                        
             <itemizedlist>
                 <listitem>
                     <para>A sequence of statements possibly initializes a local or simple 
@@ -905,6 +906,26 @@ else {
                     simple attribute.</para>
                 </listitem>
             </itemizedlist>
+            
+            <para>A local or simple attribute is considered <emphasis>definitely 
+            uninitialized</emphasis> at a certain statement if:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>its declaration does not have a specifier and it is not possibly 
+                    initialized by the sequence of statements from its declaration to the 
+                    given statement, and also</para>
+                </listitem>
+                <listitem>
+                    <para>if the given statement (indirectly) occurs in a loop body 
+                    (a <literal>for</literal>, <literal>do</literal>, or <literal>while</literal> 
+                    block) then the declaration of the local or simple attribute also 
+                    (indirectly) occurs in the loop body.</para>
+                </listitem>
+            </itemizedlist>
+                        
+            <para>A non-<literal>variable</literal> local or simple attribute must be 
+            definitely uninitialized before it may be used in a specification statement.</para>
             
         </section>
             
@@ -1100,8 +1121,8 @@ else {
                 not be assignable to the declared type of the variable, or</para>
             </listitem>
             <listitem>
-                <para>if the condition is a local, the local will be treated by the compiler 
-                as non-<literal>variable</literal> and as having the specified type inside the block 
+                <para>if the condition is a local, the local will be treated by the compiler as 
+                non-<literal>variable</literal> and as having the specified type inside the block 
                 that follows immediately.</para>
             </listitem>
         </itemizedlist>
