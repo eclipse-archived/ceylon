@@ -300,6 +300,11 @@ public class ExpressionGen extends GenPart {
                 expr.append(at(type).NewClass(null, null, gen.convert(type), args.toList(), null));
             }
 
+            public void visit(Tree.BaseTypeExpression typeExp) {
+                // A constructor
+                expr.append(at(typeExp).NewClass(null, null, makeIdent(typeExp.getIdentifier().getText()), args.toList(), null));
+            }
+
             public void visit(Tree.InvocationExpression chainedCall) {
                 expr.append(convert(chainedCall));
             }
