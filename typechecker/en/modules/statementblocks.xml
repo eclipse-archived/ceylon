@@ -20,12 +20,96 @@
     not currently defined that way. The language would be more regular if we decided to 
     just make it a block.</para></comment>
     
-    <section id="declarationvisibilityandblockstructure">
-        <title>Declaration visibility and block structure</title>
+    <section id="blockstructure">
+        <title>Block structure</title>
     
-        <para>A <emphasis>body</emphasis> is a block, class body or interface 
-        body. The scope of a declaration is governed by the body or package in 
-        which it occurs.</para>
+        <para>A <emphasis>body</emphasis> is a block, class body or interface body. Every 
+        body is list of semicolon-delimited statements, control structures, and declarations, 
+        surrounded by braces. Some bodies end in a control directive. Every statement, 
+        control structure, declaration, and control directive in the list is said to 
+        <emphasis>directly occur</emphasis> in the body.</para>
+        
+        <para>A program element <emphasis>(indirectly) occurs</emphasis> in a body if:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the program element directly occurs in the body, or</para>
+            </listitem>
+            <listitem>
+                <para>the program element indirectly occurs inside the body of a declaration
+                or control structure that occurs directly in the body.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>A program element <emphasis>(indirectly) occurs earlier</emphasis> than a second 
+        program element if:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the two program elements both directly occur in the same body, and 
+                the second program element occurs after the first program element, or</para>
+            </listitem>
+            <listitem>
+                <para>the second program element indirectly occurs inside the body of a 
+                declaration or control structure that directly occurs in the same body as the 
+                first program element, and the declaration or control structure occurs after 
+                the first program element.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>A program element <emphasis>sequentially occurs</emphasis> in a body if:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the program element directly occurs in the body, or</para>
+            </listitem>
+            <listitem>
+                <para>the program element sequentially occurs inside the body of a control 
+                structure that occurs directly in the body.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>A program element <emphasis>sequentially occurs earlier</emphasis> than a second 
+        program element if:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the two program elements both directly occur in the same body, and 
+                the second program element occurs after the first program element, or</para>
+            </listitem>
+            <listitem>
+                <para>the second program element sequentially occurs inside the body of a 
+                control structure that directly occurs in the same body as the first program 
+                element, and the control structure occurs after the first program element.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>If a program element sequentially occurs earlier than a second program element, 
+        the <emphasis>sequence of statements</emphasis> from the first program element to the
+        second program element comprises:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the sequence of statements that occur directly in the body in which
+                the first program element occurs, beginning from the first program element
+                and ending at second program element, if the second program element occurs
+                directly in the same body as the first program element, or</para>
+            </listitem>
+            <listitem>
+                <para>the sequence of statements that occur directly in the body in which
+                the first program element occurs, beginning from the first program element
+                and ending at the declaration or control structure in whose body the 
+                second program element sequentially occurs, followed by the sequence of 
+                statements from the first statement of the declaration whose body contains 
+                the second program element to the second program element itself, otherwise.</para>
+            </listitem>
+        </itemizedlist>
+        
+    <section id="declarationvisibility">
+        <title>Declaration visibility</title>
+    
+            <para>The scope of a declaration is governed by the body or package in which it 
+            occurs.</para>
         
             <para>Packages contain toplevel declarations. A declaration that occurs in a 
             package is visible to any program element that occurs in any compilation unit of 
@@ -40,14 +124,14 @@
 
             <programlisting>Float y { return x; }</programlisting>
             
-            <comment><para>TODO: Actually the compiler would currently require that the 
-            two declarations occur in separate compilation units. Who is wrong, spec or
+            <comment><para>TODO: Actually the compiler would currently require that the two 
+            declarations occur in separate compilation units. Who is wrong, spec or 
             compiler?</para></comment>
 
-            <para>Blocks may contain declarations. A declaration that occurs in a block is a 
-            block local declaration&mdash;it is visible to a program element only if it 
-            directly occurs earlier than the program element in the block. Therefore, a 
-            declaration contained in a block may not declare a visibility modifier. Nor may 
+            <para>Blocks may contain declarations. A declaration that (indirectly) occurs in 
+            a block is a block local declaration&mdash;it is visible to a program element only 
+            if it (indirectly) occurs earlier than the program element in the block. Therefore, 
+            a declaration contained in a block may not declare a visibility modifier. Nor may 
             block local declarations be refined. Therefore, a block may not contain a 
             declaration annotated <literal>formal</literal>, <literal>default</literal>, 
             <literal>definite</literal>, <literal>actual</literal>, or 
@@ -102,6 +186,8 @@
         Also consider the related case of a class nested inside an interface nested inside 
         a method.</para></comment>
             
+    </section>
+                
     <section id="declarationnameuniqueness">
         <title>Declaration name uniqueness</title>
         
@@ -230,17 +316,17 @@
                 of a body that contains the program element, or</para>
             </listitem>
             <listitem>
-                <para>it directly occurs earlier in a body that contains the program 
+                <para>it (indirectly) occurs earlier in a body that contains the program 
                 element, or</para>
             </listitem>
             <listitem>
                 <para>it directly occurs in an interface body, and the program element 
-                also occurs in the same interface body, or</para>
+                also (indirectly) occurs in the same interface body, or</para>
             </listitem>
             <listitem>
                 <para>it directly occurs in the declaration section of a class body, 
-                and the program element also occurs in the declaration section of the 
-                same class body, or</para>
+                and the program element also (indirectly) occurs in the declaration 
+                section of the same class body, or</para>
             </listitem>
             <listitem>
                 <para>it is a declaration imported by the compilation unit containing 
@@ -402,8 +488,8 @@ String result = middleObject.string;</programlisting>
 
         <para>The body of a method, class, or attribute nested inside the body of another 
         method or attribute may invoke or evaluate any <!--non-<literal>variable</literal>--> 
-        local, block local attribute getter or block local method declared earlier within 
-        the containing scope.</para>
+        local, block local attribute getter or block local method whose declaration indirectly 
+        occurs earlier within the containing scope.</para>
         
         <comment><para>TODO: is there a good reason to add the following limitation: It may 
         not refer to <literal>variable</literal> locals defined within the containing method 
@@ -443,15 +529,9 @@ String result = middleObject.string;</programlisting>
         <title>Blocks and statements</title>
             
         <para>A <emphasis>block</emphasis> is list of semicolon-delimited statements, 
-        method, attribute and local declarations, and control structures, surrounded by 
-        braces. Some blocks end in a control directive. The statements, local specifiers 
-        and control structures belonging to a block are executed sequentially in the 
-        order that they appear inside the block. Execution of a block begins at the first 
-        statement, local specifier, or control structure of the block. Execution of a block 
-        terminates when the last statement, local specifier, or control structure of the 
-        block finishes executing, when a control directive that terminates the block is 
-        executed, or when an exception is thrown.</para>
-
+        control structures, and declarations, surrounded by braces. Some blocks end in 
+        a control directive.</para>
+        
         <programlisting>Block: "{" (Declaration | Statement)* DirectiveStatement? "}"</programlisting>
         
         <para>A <emphasis>statement</emphasis> is an assignment or specification, an 
@@ -460,6 +540,14 @@ String result = middleObject.string;</programlisting>
 
         <programlisting>Statement: ExpressionStatement | Specification | ControlStructure</programlisting>
         
+        <para>The statements, local specifiers, and control structures that directly occur
+        in a block are executed sequentially in the order that they appear inside the block. 
+        Execution of a block begins at the first statement, local specifier, or control 
+        structure of the block. Execution of a block terminates when the last statement, 
+        local specifier, or control structure of the block finishes executing, when a 
+        control directive that terminates the block is executed, or when an exception is 
+        thrown.</para>
+
         <!-- 
         <para>A simple attribute or local may not be used in an expression until its value 
         has been explicitly specified or initialized. The Ceylon compiler guarantees this
@@ -490,42 +578,6 @@ String result = middleObject.string;</programlisting>
         <para>Every block local declaration must be used somewhere inside the block in which
         it is declared.</para>
         
-        <para>A program element <emphasis>directly occurs earlier</emphasis> than a second 
-        program element if:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>the two program elements both occur directly in the same body, and 
-                the second program element occurs after the first program element, or</para>
-            </listitem>
-            <listitem>
-                <para>the second program element occurs inside the body of a declaration 
-                that occurs directly in the same body as the first program element, and 
-                the declaration occurs after the first program element.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>If a program element directly occurs earlier than a second program element, the 
-        <emphasis>sequence of statements</emphasis> from the first program element to the
-        second program element comprises:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>the sequence of statements that occur directly in the body in which
-                the first program element occurs, beginning from the first program element
-                and ending at second program element, if the second program element occurs
-                directly in the same body as the first program element, or</para>
-            </listitem>
-            <listitem>
-                <para>the sequence of statements that occur directly in the body in which
-                the first program element occurs, beginning from the first program element
-                and ending at the declaration whose body contains the second program element,
-                followed by the sequence of statements from the first statement of
-                the declaration whose body contains the second program element to the 
-                second program element itself, otherwise.</para>
-            </listitem>
-        </itemizedlist>
-                
         <comment><para>TODO: should we allow blocks and control structures to be annotated, 
         for example:</para>
         <programlisting>doc "unsafe assignment" 
@@ -612,8 +664,8 @@ try (lock) { ... }</programlisting>
         <programlisting>break;</programlisting>
         <programlisting>continue;</programlisting>
         
-        <para>The <literal>return</literal> directive may not appear outside the body of 
-        a method, attribute getter, or attribute setter. In the case of a <literal>void</literal> 
+        <para>The <literal>return</literal> directive must sequentially occur in the body 
+        of a method, attribute getter, or attribute setter. In the case of a <literal>void</literal> 
         method or attribute setter, no expression may be specified. In the case of a 
         non-<literal>void</literal> method or attribute getter, an expression must be 
         specified. The expression type must be assignable to the return type of the method
@@ -622,7 +674,7 @@ try (lock) { ... }</programlisting>
         
         <programlisting>Return: "return" Expression?</programlisting>
         
-        <para>The <literal>break</literal> directive may not be appear outside the body 
+        <para>The <literal>break</literal> directive must sequentially occur in the body 
         of a loop.<!--If the loop has no <literal>fail</literal> block, the <literal>break</literal> 
         directive may not specify an expression. If the loop has a <literal>fail</literal> 
         block, the <literal>break</literal> directive must specify an expression of type 
@@ -632,15 +684,15 @@ try (lock) { ... }</programlisting>
         
         <programlisting>Break: "break"</programlisting>
         
-        <para>The <literal>continue</literal> directive may not be appear outside the body 
+        <para>The <literal>continue</literal> directive must sequentially occur in the body 
         of a loop.</para>
         
         <programlisting>Continue: "continue"</programlisting>
         
         <para>A <literal>throw</literal> directive may appear anywhere and may specify an 
-        expression of type <literal>ceylon.language.Exception</literal>. When the directive is executed, 
-        the expression is evaluated and the resulting exception is thrown. If no expression 
-        is specified, the directive is equivalent to <literal>throw Exception()</literal>.</para>
+        expression of type <literal>ceylon.language.Exception</literal>. When the directive 
+        is executed, the expression is evaluated and the resulting exception is thrown. If 
+        no expression is specified, the directive is equivalent to <literal>throw Exception()</literal>.</para>
         
         <programlisting>Throw: "throw" Expression?</programlisting>
         
@@ -673,9 +725,9 @@ try (lock) { ... }</programlisting>
             <title>Specification statements</title>
             
         <para>A specification statement may specify the value of a non-<literal>variable</literal> 
-        attribute or local that has already been declared earlier in the block. It may 
-        even specify a value of type <literal>Callable</literal> for a method that was 
-        declared earlier in the block.</para>
+        attribute or local whose declaration sequentially occurs earlier in the block. 
+        It may even specify a value of type <literal>Callable</literal> for a method 
+        whose declaration sequentially occurs earlier in the block.</para>
         
         <programlisting>Specification: MemberName Specifier ";"</programlisting>
                 
