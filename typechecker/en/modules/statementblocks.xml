@@ -171,8 +171,8 @@
     Float y { return x; }
 }</programlisting>
 
-            <para>A setter declaration must occur later in the same body in which the matching 
-            getter declaration occurs.</para>
+            <para>Every setter declaration must have a matching getter declaration that 
+            directly occurs earlier.</para>
 
         <comment><para>TODO: Note that Java does not let you define an interface inside a 
         method, so we should either add the same restriction, or figure out workaround. 
@@ -800,9 +800,10 @@ else {
             <para>The body of a non-<literal>void</literal> method or getter must definitely 
             return.</para>
             
-            <para>A body may not contain an additional statement or control structure 
-            following a sequence of statements that definitely returns. Such a statement or
-            control structure is considered <emphasis>unreachable</emphasis>.</para>
+            <para>A body may not contain an additional statement, control structure, or
+            declaration following a sequence of statements that definitely returns. Such a 
+            statement, control structure, or declaration is considered 
+            <emphasis>unreachable</emphasis>.</para>
             
         </section>
         
