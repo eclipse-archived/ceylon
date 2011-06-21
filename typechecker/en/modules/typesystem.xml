@@ -480,7 +480,7 @@
         interface, the type must be fully qualified by its containing types, except when 
         used inside the body of a containing type.</para>
         
-        <programlisting>Type: TypeNameWithArguments ("." TypeNameWithArguments)* | Subtype</programlisting>
+        <programlisting>Type: TypeNameWithArguments ("." TypeNameWithArguments)*</programlisting> <!-- | Subtype -->
         
         <para>Unlike Java, the name of a type may not be qualified by the package name.</para>
         
@@ -1693,6 +1693,7 @@ given Result(Natural count) satisfies Numeric<Result>]]></programlisting>
         
     </section>
     
+       <!--
        <section id="thesubtypekeyword">
             <title>The <literal>subtype</literal> keyword</title>
             
@@ -1777,6 +1778,8 @@ Entry<Name,Person> entry = named(gavin.name, gavin);]]></programlisting>
         member, <literal>x.type</literal>.</para></comment>
         
         </section>
+        -->
+        
     <!--   
     <section id="dimensionaltypeparameters">
         <title>Dimensional type parameters</title>
@@ -2266,6 +2269,7 @@ Result findSingleByIntegerKey<Result>(Type<Result> type, Integer key) = findByKe
         <para>Sequenced type parameters are not reified. None of the above operations can 
         be performed with a sequenced type parameter.</para>
         
+        <!--
         <para>The implicit type parameter <literal>subtype</literal> evaluates to the 
         concrete type of the current instance, as determined at runtime. Likewise, an 
         implicit type parameter of form <literal>x.subtype</literal> evaluates to the 
@@ -2273,9 +2277,11 @@ Result findSingleByIntegerKey<Result>(Type<Result> type, Integer key) = findByKe
         This is different to other type parameters which reify to the type argument 
         determined at compile time. <emphasis>Note that support for the <literal>subtype</literal>
         keyword is a proposed feature for a future version of the language.</emphasis></para>
+        -->
         
         </section>
-                
+        
+        <!--
         <section id="subtypetypeargument">
             <title>The type argument of <literal>subtype</literal></title>
             
@@ -2325,6 +2331,7 @@ Result findSingleByIntegerKey<Result>(Type<Result> type, Integer key) = findByKe
         schemas.</para></comment>
         
         </section>
+        -->
     
     </section>
     

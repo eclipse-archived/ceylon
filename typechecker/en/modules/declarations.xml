@@ -84,7 +84,7 @@ TypeConstraints?
         -->
         
         <para>A toplevel declaration may not be annotated <literal>formal</literal>,
-        <literal>default</literal>, <literal>definite</literal>, or
+        <literal>default</literal>, <!--literal>definite</literal--> or
         <literal>actual</literal>.</para>
         
         <comment><para>TODO: In a future version of the language, we might relax this 
@@ -400,7 +400,7 @@ TypeConstraints?
         and member classes. An interface may not declare a concrete simple attribute.
         An interface may not declare a member <literal>object</literal>.</para>
         
-        <para>A member of an interface may not be annotated <literal>definite</literal>.</para>
+        <!--para>A member of an interface may not be annotated <literal>definite</literal>.</para-->
         
         <para>A non-<literal>abstract </literal> nested class declaration is called a
         <emphasis>member class</emphasis> of the interface. A nested interface or 
@@ -755,8 +755,8 @@ TypeConstraints?
               initialized.</para>
            </listitem>
            <listitem>
-              <para>invoke or evaluate a <literal>formal</literal> or 
-              <literal>definite</literal> member of the instance being initialized, 
+              <para>invoke or evaluate a <literal>formal</literal> <!--or 
+              <literal>definite</literal>--> member of the instance being initialized, 
               including upon a self reference to the instance being initialized.</para>
            </listitem>
            <listitem>
@@ -767,13 +767,13 @@ TypeConstraints?
         </itemizedlist>
         
         <para>It is acceptable to invoke or evaluate any member of a superclass that is 
-        refined by a non-<literal>formal</literal>, non-<literal>default</literal>, 
-        non-<literal>definite</literal> declaration appearing earlier in the body of the 
+        refined by a non-<literal>formal</literal>, non-<literal>default</literal> <!--, 
+        non-<literal>definite</literal>--> declaration appearing earlier in the body of the 
         class or by a declaration appearing in the declaration section of a different 
         superclass.</para>
         
-        <para>Non-<literal>formal</literal>, non-<literal>default</literal>, 
-        non-<literal>definite</literal> members declared in the initializer section of a 
+        <para>Non-<literal>formal</literal>, non-<literal>default</literal><!--, 
+        non-<literal>definite</literal>--> members declared in the initializer section of a 
         superclass may be invoked, evaluated or assigned anywhere inside the body of the 
         class. The superclass initializer is executed before the subclass initializer.</para>
         
@@ -1072,7 +1072,7 @@ TypeConstraints?
         -->
         
     <section id="abstractandformalclasses">
-        <title>Abstract and formal classes</title>
+        <title>Abstract, formal, and default classes</title>
         
         <para>A class may contain members annotated <literal>formal</literal>. Then
         the class must be either:</para>
@@ -1111,22 +1111,18 @@ TypeConstraints?
         
         <para>A member class annotated <literal>formal</literal> may be instantiated.</para>
         
+        <!--
         <para>A member of an <literal>abstract</literal> or <literal>formal</literal> class 
         may not be annotated <literal>definite</literal>.</para>
+        -->
         
         <para>A class which is not annotated <literal>abstract</literal> or 
         <literal>formal</literal> is called a <emphasis>concrete</emphasis> class.</para>
         
+        <para>A concrete member class may be annotated <literal>default</literal>.</para>
+
     </section>
-        
-        <section id="defaultclasses">
-            <title>Default classes</title>
             
-            <para>A concrete member class may be annotated <literal>default</literal>,
-            in which case it may be refined by subtypes of the containing type.</para>
-            
-        </section>
-        
     <section id="refiningmemberclasses">
         <title>Member class refinement</title>
         
@@ -1893,7 +1889,7 @@ Void goodbye() {
         -->
         
        <section id="formalmethods">
-            <title>Formal methods</title>
+            <title>Formal and default methods</title>
             
             <para>If there is no method implementation in a method declaration, then
             either:</para>
@@ -1934,18 +1930,12 @@ Void goodbye() {
             <para>A method which is not annotated <literal>formal</literal> is called a 
             <emphasis>concrete</emphasis> method.</para>
         
-        </section>
-        
-        <section id="defaultmethods">
-            <title>Default and definite methods</title>
-            
-            <para>A concrete member method may be annotated <literal>default</literal>
-            or <literal>definite</literal>, in which case it may be refined by subtypes 
-            of the containing type. <emphasis>(Note that <literal>definite</literal> is 
-            a proposed feature for a future version of the language.)</emphasis></para>
+            <para>A concrete member method may be annotated <literal>default</literal>.
+            <!-- or <literal>definite</literal> <emphasis>(Note that <literal>definite</literal> is 
+            a proposed feature for a future version of the language.)</emphasis--></para>            
             
         </section>
-        
+                
         <section id="refiningmethods">
             <title>Method refinement</title>
             
@@ -1960,9 +1950,9 @@ Void goodbye() {
             </listitem>
             <listitem>
                 <para>A concrete class must refine every <literal>formal</literal> 
-                or <literal>definite</literal> method it inherits, unless it inherits a 
-                non-<literal>formal</literal> non-<literal>definite</literal> method that 
-                refines the method.</para>
+                <!--or <literal>definite</literal>--> method it inherits, unless it inherits 
+                a non-<literal>formal</literal> <!--non-<literal>definite</literal>--> 
+                method that refines the method.</para>
             </listitem>
             </itemizedlist>           
             
@@ -1997,8 +1987,8 @@ Void goodbye() {
             
             <para>If a method is annotated <literal>actual</literal>, it must 
             refine some method defined by a supertype, and the method it refines 
-            must be either <literal>formal</literal>, <literal>default</literal>, 
-            or <literal>definite</literal>.</para>
+            must be either <literal>formal</literal> or <literal>default</literal>. 
+            <!--or <literal>definite</literal>.--></para>
             
             <para>A method may not, directly or indirectly, refine two different
             methods not themselves annotated <literal>actual</literal>.</para>
@@ -2279,7 +2269,7 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
         </section>
         
         <section id="formalattributes">
-            <title>Formal attributes</title>
+            <title>Formal and default attributes</title>
             
             <para>If there is no specifier, initializer, or getter implementation, then
             either:</para>
@@ -2319,18 +2309,12 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
             <para>An attribute which is not annotated <literal>formal</literal> is called 
             a <emphasis>concrete</emphasis> attribute.</para>
         
-        </section>
-        
-        <section id="defaultattributes">
-            <title>Default and definite attributes</title>
-            
-            <para>A concrete member attribute may be annotated <literal>default</literal>
-            or <literal>definite</literal>, in which case it may be refined by subtypes 
-            of the containing type. <emphasis>(Note that <literal>definite</literal> is a 
-            proposed feature for a future version of the language.)</emphasis></para>
+            <para>A concrete member attribute may be annotated <literal>default</literal>.
+            <!--or <literal>definite</literal> <emphasis>(Note that <literal>definite</literal> is a 
+            proposed feature for a future version of the language.)</emphasis> --></para>
             
         </section>
-        
+                
         <section id="refiningattributes">
             <title>Attribute refinement</title>
             
@@ -2346,8 +2330,8 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
             </listitem>
             <listitem>
                 <para>A concrete class must refine every <literal>formal</literal> 
-                or <literal>definite</literal> attribute it inherits, unless it 
-                inherits a non-<literal>formal</literal> non-<literal>definite</literal>
+                <!--or <literal>definite</literal>--> attribute it inherits, unless it 
+                inherits a non-<literal>formal</literal> <!--non-<literal>definite</literal>-->
                 attribute that refines the attribute.</para>
             </listitem>
             </itemizedlist>           
@@ -2395,8 +2379,8 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
         
             <para>If an attribute is annotated <literal>actual</literal>, it must 
             refine some attribute defined by a supertype, and the attribute it 
-            refines must be either <literal>formal</literal>, <literal>default</literal>, 
-            or <literal>definite</literal>.</para>
+            refines must be either <literal>formal</literal> or <literal>default</literal>. 
+            <!--or <literal>definite</literal>.--></para>
             
             <para>An attribute may not, directly or indirectly, refine two different
             attributes not themselves annotated <literal>actual</literal>.</para>
@@ -2513,12 +2497,14 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
                 warning when compiling code that depends upon a deprecated
                 program element.</para>
             </listitem>
+            <!--
             <listitem>
                 <para><literal>definite</literal> specifies that a method or
                 attribute must be refined by every concrete subclass. 
                 <emphasis>(Note that <literal>definite</literal> is a proposed 
                 feature for a future version of the language.)</emphasis></para>
             </listitem>
+            -->
             <!-- 
             <listitem>
                 <para><literal>final</literal> specifies that a class may not 
@@ -2596,13 +2582,13 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
     <section id="refinement">
         <title>Refinement modifiers</title>
         
-        <para>A declaration may not have more than one of the following annotations: 
-        <literal>formal</literal>, <literal>default</literal>, 
-        <literal>definite</literal>.</para>
+        <para>A declaration may not be annotated both <literal>formal</literal> 
+        and <literal>default</literal>. <!--<literal>definite</literal>.--></para>
         
         <para>If a declaration is annotated <literal>formal</literal>, 
-        <literal>default</literal>, <literal>definite</literal>, or <literal>actual</literal>
-        then it must also be annotated <literal>shared</literal>.</para>
+        <literal>default</literal>, <!--<literal>definite</literal>,--> or 
+        <literal>actual</literal> then it must also be annotated 
+        <literal>shared</literal>.</para>
         
     </section>
     

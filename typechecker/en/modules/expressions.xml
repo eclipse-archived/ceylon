@@ -496,16 +496,16 @@ shared interface Color { ... }</programlisting>
             
         <para>The keyword <literal>super</literal> refers to the current instance 
         (the instance that is being invoked), and has the same members as the 
-        immediate superclass of the class, except for <literal>definite</literal> 
-        members. Any invocation of this reference is processed by the method or 
+        immediate superclass of the class. <!--except for <literal>definite</literal> 
+        members.--> Any invocation of this reference is processed by the method or 
         attribute defined or inherited by this superclass, bypassing any method 
         declaration that refines the method on the current class or any subclass 
-        of the current class. Invocation of <literal>definite</literal> members upon 
-        <literal>super</literal> is not allowed. The <literal>super</literal> 
+        of the current class. <!--Invocation of <literal>definite</literal> members upon 
+        <literal>super</literal> is not allowed.--> The <literal>super</literal> 
         reference is not assignable to any type. There is no <literal>super</literal>
-        reference in an interface member body. <emphasis>(Note that 
+        reference in an interface member body. <!--<emphasis>(Note that 
         <literal>definite</literal> is a proposed feature for a future version of the 
-        language.)</emphasis></para>
+        language.)</emphasis>--></para>
         
         <comment><para>TODO: <literal>super</literal> doesn't let you call a refined
         member belonging to an interface. A solution would be to let you rename 
@@ -519,10 +519,10 @@ shared interface Color { ... }</programlisting>
             <title><literal>this</literal></title>
             
         <para>The keyword <literal>this</literal> refers to the current instance, 
-        and is assignable to both the type of the current class or interface (the 
-        class or interface in which the expression appears), and to the special 
+        and is assignable to the type of the current class or interface (the class 
+        or interface in which the expression appears).<!--, and to the special 
         type <literal>subtype</literal>, which represents the concrete type of the 
-        current instance.</para>
+        current instance.--></para>
         
         </section>
         
@@ -2642,11 +2642,19 @@ setPerson(person);</programlisting>
             
         <para>The metamodel object for a type allows its members to be iterated:</para>
         
+        <programlisting><![CDATA[for (Attribute<Value,String> attribute 
+            in Value.members(Attribute<Value,String>)) {
+    log.info(attribute.declaringType.name + "." + attribute.name 
+                + "=" + attribute(obj));
+}]]></programlisting>
+        
+        <!--
         <programlisting><![CDATA[for (Attribute<obj.subtype,String> attribute 
             in obj.subtype.members(Attribute<obj.subtype,String>)) {
     log.info(attribute.declaringType.name + "." + attribute.name 
                 + "=" + attribute(obj));
 }]]></programlisting>
+        -->
         
         <para>The metamodel object for a class, attribute or method satisfies 
         <literal>Callable</literal> and is therefore invokable.</para>

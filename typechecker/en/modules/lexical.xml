@@ -103,7 +103,7 @@
         <para><literal>
         import
         class interface object given
-        assign void subtype local
+        assign void local
         of extends satisfies adapts abstracts
         in out
         return break continue throw

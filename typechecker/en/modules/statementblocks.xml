@@ -135,7 +135,7 @@
             a declaration contained in a block may not declare a visibility modifier. Nor may 
             block local declarations be refined. Therefore, a block may not contain a 
             declaration annotated <literal>formal</literal>, <literal>default</literal>, 
-            <literal>definite</literal>, <literal>actual</literal>, or 
+            <!--<literal>definite</literal>,--> <literal>actual</literal>, or 
             <literal>shared</literal>.</para>
             
             <para>This code is not legal, since the body of a method is an ordinary block:</para>
