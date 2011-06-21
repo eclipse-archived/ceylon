@@ -19,7 +19,11 @@ import com.sun.tools.javac.util.Name;
 
 public class StatementGen extends GenPart {
 
-    public StatementGen(Gen2 gen) {
+	// Used to hold the name of the variable associated with the fail-block if the innermost for-loop
+	// Is null if we're currently in a while-loop or not in any loop at all
+    private Name currentForFailVariable = null;
+
+	public StatementGen(Gen2 gen) {
         super(gen);
     }
 
@@ -52,7 +56,15 @@ public class StatementGen extends GenPart {
             stmts.append(convert(cdecl, stat));
         }
 
+        public void visit(Tree.DoWhileStatement stat) {
+            stmts.append(convert(cdecl, stat));
+        }
+
         public void visit(Tree.ForStatement stat) {
+            stmts.append(convert(cdecl, stat));
+        }
+
+        public void visit(Tree.Break stat) {
             stmts.append(convert(cdecl, stat));
         }
 
@@ -121,8 +133,27 @@ public class StatementGen extends GenPart {
     }
 
     private JCStatement convert(Tree.ClassOrInterface cdecl, Tree.WhileStatement stmt) {
+        Name tempForFailVariable = currentForFailVariable;
+        currentForFailVariable = null;
+        
         JCBlock thenPart = convert(cdecl, stmt.getWhileClause().getBlock());
-        return convertCondition(stmt.getWhileClause().getCondition(), JCTree.WHILELOOP, thenPart, null);
+        JCStatement res = convertCondition(stmt.getWhileClause().getCondition(), JCTree.WHILELOOP, thenPart, null);
+        
+        currentForFailVariable = tempForFailVariable;
+        
+        return res;
+    }
+
+    private JCStatement convert(Tree.ClassOrInterface cdecl, Tree.DoWhileStatement stmt) {
+        Name tempForFailVariable = currentForFailVariable;
+        currentForFailVariable = null;
+        
+        JCBlock thenPart = convert(cdecl, stmt.getDoClause().getBlock());
+        JCStatement res = convertCondition(stmt.getDoClause().getCondition(), JCTree.DOLOOP, thenPart, null);
+        
+        currentForFailVariable = tempForFailVariable;
+        
+        return res;
     }
 
     private JCStatement convertCondition(Tree.Condition cond, int tag, JCBlock thenPart, JCBlock elsePart) {
@@ -172,6 +203,10 @@ public class StatementGen extends GenPart {
                 assert elsePart == null;
                 cond1 = at(cond).WhileLoop(test, thenPart);
                 return at(cond).Block(0, List.<JCStatement> of(decl, cond1));
+            case JCTree.DOLOOP:
+                assert elsePart == null;
+                cond1 = at(cond).DoLoop(thenPart, test);
+                return at(cond).Block(0, List.<JCStatement> of(decl, cond1));
             default:
                 throw new RuntimeException();
             }
@@ -216,6 +251,10 @@ public class StatementGen extends GenPart {
                 assert elsePart == null;
                 cond1 = at(cond).WhileLoop(test, thenPart);
                 return at(cond).Block(0, List.<JCStatement> of(decl, cond1));
+            case JCTree.DOLOOP:
+                assert elsePart == null;
+                cond1 = at(cond).DoLoop(thenPart, test);
+                return at(cond).Block(0, List.<JCStatement> of(decl, cond1));
             default:
                 throw new RuntimeException();
             }
@@ -235,6 +274,9 @@ public class StatementGen extends GenPart {
                 assert elsePart == null;
                 result = at(cond).WhileLoop(test, thenPart);
                 break;
+            case JCTree.DOLOOP:
+                assert elsePart == null;
+                return at(cond).DoLoop(thenPart, test);
             default:
                 throw new RuntimeException();
             }
@@ -260,10 +302,19 @@ public class StatementGen extends GenPart {
                 throw new RuntimeException("Not implemented: " + keyValueIterator.getNodeType());
             }
         }
-        ;
-        // FIXME: implement this
-        if (stmt.getFailClause() != null)
-            throw new RuntimeException("Not implemented: " + stmt.getFailClause().getNodeType());
+
+        Name tempForFailVariable = currentForFailVariable;
+        
+        List<JCStatement> outer = List.<JCStatement> nil();
+        if (stmt.getFailClause() != null) {
+        	// boolean $ceylontmpX = true;
+            JCVariableDecl failtest_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(tempName()), makeIdent("boolean"), makeIdent("true"));
+            outer = outer.append(failtest_decl);
+            
+        	currentForFailVariable = failtest_decl.getName();
+        } else {
+        	currentForFailVariable = null;
+        }
 
         ForVisitor visitor = new ForVisitor();
         stmt.getForClause().getForIterator().visit(visitor);
@@ -272,33 +323,57 @@ public class StatementGen extends GenPart {
         // ceylon.language.Iterator<T> $ceylontmpX = ITERABLE.iterator();
         JCExpression containment = gen.expressionGen.convertExpression(stmt.getForClause().getForIterator().getSpecifierExpression().getExpression());
         JCVariableDecl iter_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(tempName()), gen.iteratorType(item_type), at(stmt).Apply(null, at(stmt).Select(containment, names().fromString("iterator")), List.<JCExpression> nil()));
-        List<JCStatement> outer = List.<JCStatement> of(iter_decl);
-        JCIdent iter = at(stmt).Ident(iter_decl.getName());
+        outer = outer.append(iter_decl);
+        JCIdent iter_id = at(stmt).Ident(iter_decl.getName());
 
         // ceylon.language.Optional<T> $ceylontmpY = $ceylontmpX.head();
-        JCVariableDecl optional_item_decl = at(stmt).VarDef(make().Modifiers(FINAL), names().fromString(tempName()), gen.optionalType(item_type), at(stmt).Apply(null, at(stmt).Select(iter, names().fromString("head")), List.<JCExpression> nil()));
+        JCVariableDecl optional_item_decl = at(stmt).VarDef(make().Modifiers(FINAL), names().fromString(tempName()), gen.optionalType(item_type), at(stmt).Apply(null, at(stmt).Select(iter_id, names().fromString("head")), List.<JCExpression> nil()));
         List<JCStatement> while_loop = List.<JCStatement> of(optional_item_decl);
-        JCIdent optional_item = at(stmt).Ident(optional_item_decl.getName());
+        JCIdent optional_item_id = at(stmt).Ident(optional_item_decl.getName());
 
         // T n = $ceylontmpY.t;
-        JCVariableDecl item_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(visitor.variable.getIdentifier().getText()), item_type, at(stmt).Apply(null, at(stmt).Select(optional_item, names().fromString("$internalErasedExists")), List.<JCExpression> nil()));
+        JCVariableDecl item_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(visitor.variable.getIdentifier().getText()), item_type, at(stmt).Apply(null, at(stmt).Select(optional_item_id, names().fromString("$internalErasedExists")), List.<JCExpression> nil()));
         List<JCStatement> inner = List.<JCStatement> of(item_decl);
 
         // The user-supplied contents of the loop
         inner = inner.appendList(convertStmts(cdecl, stmt.getForClause().getBlock().getStatements()));
 
         // if ($ceylontmpY != null) ... else break;
-        JCStatement test = at(stmt).If(at(stmt).Binary(JCTree.NE, optional_item, make().Literal(TypeTags.BOT, null)), at(stmt).Block(0, inner), at(stmt).Block(0, List.<JCStatement> of(at(stmt).Break(null))));
+        JCStatement test = at(stmt).If(at(stmt).Binary(JCTree.NE, optional_item_id, make().Literal(TypeTags.BOT, null)), at(stmt).Block(0, inner), at(stmt).Block(0, List.<JCStatement> of(at(stmt).Break(null))));
         while_loop = while_loop.append(test);
 
         // $ceylontmpX = $ceylontmpX.tail();
-        JCExpression next = at(stmt).Assign(iter, at(stmt).Apply(null, at(stmt).Select(iter, names().fromString("tail")), List.<JCExpression> nil()));
+        JCExpression next = at(stmt).Assign(iter_id, at(stmt).Apply(null, at(stmt).Select(iter_id, names().fromString("tail")), List.<JCExpression> nil()));
         while_loop = while_loop.append(at(stmt).Exec(next));
 
         // while (True)...
         outer = outer.append(at(stmt).WhileLoop(at(stmt).Literal(TypeTags.BOOLEAN, 1), at(stmt).Block(0, while_loop)));
 
+        if (stmt.getFailClause() != null) {
+            // The user-supplied contents of fail block
+        	List<JCStatement> failblock = convertStmts(cdecl, stmt.getFailClause().getBlock().getStatements());
+        	
+        	// if ($ceylontmpX) ...
+            JCIdent failtest_id = at(stmt).Ident(currentForFailVariable);
+            outer = outer.append(at(stmt).If(failtest_id, at(stmt).Block(0, failblock), null));
+        }
+        currentForFailVariable = tempForFailVariable;
+
         return at(stmt).Block(0, outer);
+    }
+
+    private JCStatement convert(Tree.ClassOrInterface cdecl, Tree.Break stmt) {
+    	// break;
+    	JCStatement brk = at(stmt).Break(null);
+    	
+    	if (currentForFailVariable != null) {
+            JCIdent failtest_id = at(stmt).Ident(currentForFailVariable);
+            List<JCStatement> list = List.<JCStatement> of(at(stmt).Exec(at(stmt).Assign(failtest_id, makeIdent("false"))));
+    		list = list.append(brk);
+            return at(stmt).Block(0, list);
+    	} else {
+    		return brk;
+    	}
     }
 
     private JCStatement convert(Tree.Return ret) {

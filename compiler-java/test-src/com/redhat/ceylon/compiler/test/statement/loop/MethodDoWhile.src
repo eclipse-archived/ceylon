@@ -1,9 +1,12 @@
-// FIXME This is obviously not correct yet
+// FIXME Is this correct?
+package com.redhat.ceylon.compiler.test.statement.loop;
+
 class MethodDoWhile extends .ceylon.language.Object {
     
-    public Integer m() {
-        return .ceylon.language.Natural.instance(1L);
-        false;
+    public Natural m() {
+        do {
+            return .ceylon.language.Natural.instance(1L);
+        }         while (ceylon.language.$false.getFalse() == ceylon.language.$true.getTrue());
         return .ceylon.language.Natural.instance(0L);
     }
     
