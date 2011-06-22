@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.codegen;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -21,6 +22,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.util.Util;
@@ -137,8 +139,20 @@ public class CeylonModelLoader implements ModelCompleter {
         case FLOAT:   typeName = "java.lang.Float"; break;
         case DOUBLE:  typeName = "java.lang.Double"; break;
         case ARRAY:
-            // ((Type.ArrayType)type).getComponentType()
-            throw new RuntimeException("Array type not implemented");
+            Type componentType = ((Type.ArrayType)type).getComponentType();
+            //throw new RuntimeException("Array type not implemented");
+            //UnionType[Empty|Sequence<Natural>] casetypes 
+            // producedtypes.typearguments: typeparam[element]->type[natural]
+            TypeDeclaration emptyDecl = (TypeDeclaration)convertToDeclaration("ceylon.language.Empty");
+            TypeDeclaration sequenceDecl = (TypeDeclaration)convertToDeclaration("ceylon.language.Sequence");
+            UnionType unionType = new UnionType();
+            List<ProducedType> caseTypes = new ArrayList<ProducedType>(2);
+            caseTypes.add(emptyDecl.getType());
+            List<ProducedType> typeArguments = new ArrayList<ProducedType>(1);
+            typeArguments.add(getType(componentType, scope));
+            caseTypes.add(sequenceDecl.getProducedType(null, typeArguments));
+            unionType.setCaseTypes(caseTypes);
+            return unionType;
         case DECLARED:
             typeName = type.tsym.getQualifiedName().toString();
             break;
@@ -147,12 +161,16 @@ public class CeylonModelLoader implements ModelCompleter {
         default:
             throw new RuntimeException("Failed to handle type "+type);
         }
+        return convertToDeclaration(typeName);
+    }
+    
+    private Declaration convertToDeclaration(String typeName) {
         ClassSymbol classSymbol = lookupClassSymbol(typeName);
         if(classSymbol == null)
             throw new RuntimeException("Failed to resolve "+typeName);
         return convertToDeclaration(classSymbol);
     }
-    
+
     private TypeParameter lookupTypeParameter(Scope scope, String name) {
         if(scope instanceof Method){
             for(TypeParameter param : ((Method) scope).getTypeParameters()){
