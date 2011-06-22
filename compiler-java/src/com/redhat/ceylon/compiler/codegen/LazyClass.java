@@ -5,6 +5,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
 
 public class LazyClass extends Class {
@@ -35,5 +36,11 @@ public class LazyClass extends Class {
     public ProducedType getExtendedType() {
         load();
         return super.getExtendedType();
+    }
+    
+    @Override
+    public List<TypeParameter> getTypeParameters() {
+        load();
+        return super.getTypeParameters();
     }
 }
