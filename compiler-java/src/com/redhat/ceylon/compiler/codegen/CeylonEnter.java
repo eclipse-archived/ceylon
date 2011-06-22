@@ -34,7 +34,6 @@ public class CeylonEnter extends Enter {
     
     protected CeylonEnter(Context context) {
         super(context);
-        System.err.println("CeylonEnter created");
         try {
             gen = Gen2.getInstance(context);
         } catch (Exception e) {
@@ -49,11 +48,9 @@ public class CeylonEnter extends Enter {
 
     @Override
     public void main(List<JCCompilationUnit> trees) {
-        System.err.println("CeylonEnter main");
         // complete the javac AST with a completed ceylon model
         completeCeylonTrees(trees);
         super.main(trees);
-        System.err.println("CeylonEnter done");
     }
 
     private void printModules() {
@@ -77,7 +74,7 @@ public class CeylonEnter extends Enter {
         // run the type checker
         typeCheck();
         // some debugging
-        printModules();
+        //printModules();
         /*
          * Here we convert the ceylon tree to its javac AST, after the typechecker has run
          */

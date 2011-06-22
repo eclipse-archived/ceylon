@@ -70,7 +70,6 @@ public class CeylonModelLoader implements ModelCompleter {
          * for now the typechecker requires at least ceylon.language to be loaded 
          */
         for(Symbol m : ceylonPkg.members().getElements()){
-            System.err.println("Convert: "+m.getQualifiedName().toString());
             convertToDeclaration(lookupClassSymbol(m.getQualifiedName().toString()));
         }
     }
@@ -80,7 +79,6 @@ public class CeylonModelLoader implements ModelCompleter {
         if(declarationsByName.containsKey(className)){
             return declarationsByName.get(className);
         }
-        System.err.println("convertToDeclaration: "+className);
         Declaration decl = makeDeclaration(classSymbol);
         declarationsByName.put(className, decl);
         
@@ -277,7 +275,6 @@ public class CeylonModelLoader implements ModelCompleter {
     }
 
     private void complete(ClassOrInterface klass, ClassSymbol classSymbol) {
-        System.err.println("Lazy loading class "+klass);
         // do its type parameters first
         setTypeParameters(klass, classSymbol);
         // then its methods
@@ -297,8 +294,6 @@ public class CeylonModelLoader implements ModelCompleter {
                 method.setContainer(klass);
                 method.setName(methodSymbol.name.toString());
                 klass.getMembers().add(method);
-                
-                System.err.println(" Found method "+method.getName());
                 
                 // type params first
                 setTypeParameters(method, methodSymbol);
