@@ -1,0 +1,12 @@
+// FIXME This is obviously wrong
+package com.redhat.ceylon.compiler.test.expression.instantiation;
+
+class SequenceInstantiation extends .ceylon.language.Object {
+    
+    public Object m() {
+        return .ceylon.language.Natural.instance(3L);
+    }
+    
+    SequenceInstantiation() {
+    }
+}

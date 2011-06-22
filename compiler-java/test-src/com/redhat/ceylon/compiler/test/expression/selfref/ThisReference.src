@@ -1,0 +1,11 @@
+package com.redhat.ceylon.compiler.test.expression.selfref;
+
+class ThisReference extends .ceylon.language.Object {
+    
+    public ThisReference m() {
+        return this;
+    }
+    
+    ThisReference() {
+    }
+}

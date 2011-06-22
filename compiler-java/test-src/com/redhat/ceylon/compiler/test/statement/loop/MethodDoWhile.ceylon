@@ -1,5 +1,5 @@
 class MethodDoWhile(){
-    shared Integer m(){
+    shared Natural m(){
         do {
             return 1;
         }

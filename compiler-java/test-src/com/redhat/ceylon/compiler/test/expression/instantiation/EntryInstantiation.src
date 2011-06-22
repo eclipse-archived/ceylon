@@ -1,0 +1,12 @@
+// FIXME This is obviously wrong
+package com.redhat.ceylon.compiler.test.expression.instantiation;
+
+class EntryInstantiation extends .ceylon.language.Object {
+    
+    public void m() {
+        // Compiler generated no output
+    }
+    
+    EntryInstantiation() {
+    }
+}

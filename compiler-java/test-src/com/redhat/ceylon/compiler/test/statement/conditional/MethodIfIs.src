@@ -2,13 +2,11 @@
 class MethodIfIs extends .ceylon.language.Object {
     
     public String m(final Object x) {
-        {
-            .ceylon.language.Any $ceylontmpDeletedIs0 = x;
-            if (($ceylontmpDeletedIs0 = x) instanceof Exception) {
-                final Exception x = (Exception)$ceylontmpDeletedIs0;
-                {
-                    return x.message;
-                }
+        .ceylon.language.Any $ceylontmpDeletedIs0 = x;
+        if (($ceylontmpDeletedIs0 = x) instanceof Exception) {
+            final Exception x = (Exception)$ceylontmpDeletedIs0;
+            {
+                return x.message;
             }
         }
         return .ceylon.language.String.instance("");
