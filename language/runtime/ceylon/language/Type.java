@@ -25,7 +25,7 @@ public class Type
     public <T> void addAnnotations(java.lang.Class<T> unused,
                                    Sequence<T> annos)
     {
-        java.lang.Class annoType = annos.value(Integer.instance(0)).getClass();
+        java.lang.Class annoType = annos.value(Natural.instance(0)).getClass();
         Sequence<T> seq = (Sequence<T>)annotations.get(annoType);
         if (seq == null) {
             annotations.put(annoType, annos);
