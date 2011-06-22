@@ -157,6 +157,10 @@ public class CeylonModelLoader implements ModelCompleter {
             break;
         case TYPEVAR:
             return lookupTypeParameter(scope, type.tsym.getQualifiedName().toString());
+        case WILDCARD:
+            // FIXME: wtf?
+            typeName = "ceylon.language.Nothing";
+            break;
         default:
             throw new RuntimeException("Failed to handle type "+type);
         }
