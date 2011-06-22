@@ -11,6 +11,10 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticAssignmentOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BinaryOperatorExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.IntersectionOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.util.Util;
@@ -67,6 +71,18 @@ public class ExpressionGen extends GenPart {
             }
 
             public void visit(Tree.BinaryOperatorExpression op) {
+                result = convert(op);
+            }
+
+            public void visit(Tree.ArithmeticAssignmentOp op){
+                result = convert(op);
+            }
+
+            public void visit(Tree.BitwiseAssignmentOp op){
+                result = convert(op);
+            }
+
+            public void visit(Tree.LogicalAssignmentOp op){
                 result = convert(op);
             }
 
@@ -227,6 +243,62 @@ public class ExpressionGen extends GenPart {
             return at(op).Apply(null, makeSelect(makeIdent(syms().ceylonIntegerType), "instance"), List.<JCExpression> of(make().Literal(-Long.parseLong(lit.getText()))));
         }
         return at(op).Apply(null, at(op).Select(convertExpression(term), names().fromString(unaryOperators.get(op.getClass()))), List.<JCExpression> nil());
+    }
+
+    private JCExpression convert(Tree.ArithmeticAssignmentOp op){
+        // desugar it
+        Tree.BinaryOperatorExpression newOp;
+        if(op instanceof Tree.AddAssignOp)
+            newOp = new Tree.SumOp(op.getAntlrTreeNode());
+        else if(op instanceof Tree.SubtractAssignOp)
+            newOp = new Tree.DifferenceOp(op.getAntlrTreeNode());
+        else if(op instanceof Tree.MultiplyAssignOp)
+            newOp = new Tree.ProductOp(op.getAntlrTreeNode());
+        else if(op instanceof Tree.DivideAssignOp)
+            newOp = new Tree.QuotientOp(op.getAntlrTreeNode());
+        else if(op instanceof Tree.RemainderAssignOp)
+            newOp = new Tree.RemainderOp(op.getAntlrTreeNode());
+        else
+            throw new RuntimeException("Unsupported operator: "+op);
+        return desugarAssignmentOp(op, newOp);
+    }
+    
+    private JCExpression convert(Tree.BitwiseAssignmentOp op){
+        // desugar it
+        Tree.BinaryOperatorExpression newOp;
+        if(op instanceof Tree.ComplementAssignOp)
+            newOp = new Tree.ComplementOp(op.getAntlrTreeNode());
+        else if(op instanceof Tree.UnionAssignOp)
+            newOp = new Tree.UnionOp(op.getAntlrTreeNode());
+        else if(op instanceof Tree.XorAssignOp)
+            newOp = new Tree.XorOp(op.getAntlrTreeNode());
+        else if(op instanceof Tree.IntersectAssignOp)
+            newOp = new Tree.IntersectionOp(op.getAntlrTreeNode());
+        else
+            throw new RuntimeException("Unsupported operator: "+op);
+        return desugarAssignmentOp(op, newOp);
+    }
+
+    private JCExpression convert(Tree.LogicalAssignmentOp op){
+        // desugar it
+        Tree.BinaryOperatorExpression newOp;
+        if(op instanceof Tree.AndAssignOp)
+            newOp = new Tree.AndOp(op.getAntlrTreeNode());
+        else if(op instanceof Tree.OrAssignOp)
+            newOp = new Tree.OrOp(op.getAntlrTreeNode());
+        else
+            throw new RuntimeException("Unsupported operator: "+op);
+        return desugarAssignmentOp(op, newOp);
+    }
+
+    private JCExpression desugarAssignmentOp(Tree.AssignmentOp op, BinaryOperatorExpression newOp) {
+        newOp.setLeftTerm(op.getLeftTerm());
+        newOp.setRightTerm(op.getRightTerm());
+        
+        AssignOp assignOp = new Tree.AssignOp(op.getAntlrTreeNode());
+        assignOp.setLeftTerm(op.getLeftTerm());
+        assignOp.setRightTerm(newOp);
+        return convert(assignOp);
     }
 
     private JCExpression convert(Tree.BinaryOperatorExpression op) {
