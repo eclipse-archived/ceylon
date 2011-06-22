@@ -1,5 +1,5 @@
 class SuperReference(){
-    shared void m() {
+    shared default void m() {
         SuperReferenceChild x = SuperReferenceChild();
         x.test();
     }
@@ -10,7 +10,7 @@ class SuperReference(){
 }
 
 class SuperReferenceChild() extends SuperReference() {
-    shared void test() {
+    shared actual void test() {
         super.test();
     }
 }

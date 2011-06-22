@@ -84,4 +84,11 @@ public class ExpressionTest extends CompilerTest {
     public void testEntryInstantiation(){
         compareWithJavaSource("instantiation/EntryInstantiation");
     }
+    
+    // Operators
+    
+    @Test
+    public void testNumericOp(){
+        compareWithJavaSource("operator/NumericOp");
+    }
 }

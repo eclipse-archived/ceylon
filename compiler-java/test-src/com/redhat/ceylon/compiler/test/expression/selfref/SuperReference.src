@@ -1,10 +1,8 @@
 // FIXME This is obviously wrong
-package com.redhat.ceylon.compiler.test.expression.selfref;
-
 class SuperReference extends .ceylon.language.Object {
     
     public void m() {
-        final SuperReferenceChild x = /*missing*/();
+        final SuperReferenceChild x = new SuperReferenceChild();
         x.test();
     }
     
