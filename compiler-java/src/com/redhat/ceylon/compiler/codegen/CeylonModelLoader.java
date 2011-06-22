@@ -18,6 +18,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -261,7 +262,16 @@ public class CeylonModelLoader implements ModelCompleter {
     }
 
     private ProducedType getType(Type type, Scope scope) {
-        return ((TypeDeclaration)convertToDeclaration(type, scope)).getType();
+        TypeDeclaration declaration = (TypeDeclaration) convertToDeclaration(type, scope);
+        com.sun.tools.javac.util.List<Type> javacTypeArguments = type.getTypeArguments();
+        if(!javacTypeArguments.isEmpty()){
+            List<ProducedType> typeArguments = new ArrayList<ProducedType>(javacTypeArguments.size());
+            for(Type typeArgument : javacTypeArguments){
+                typeArguments.add((ProducedType) getType(typeArgument, scope));
+            }
+            return declaration.getProducedType(null, typeArguments);
+        }
+        return declaration.getType();
     }
 
     @Override
