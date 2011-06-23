@@ -26,8 +26,20 @@ public class StructureTest extends CompilerTest {
 		compareWithJavaSource("klass/PublicKlass");
 	}
 	@Test
+	public void testInterface(){
+		compareWithJavaSource("klass/Interface");
+	}
+	@Test
 	public void testInitializerParameter(){
 		compareWithJavaSource("klass/InitializerParameter");
+	}
+	@Test
+	public void testExtends(){
+		compareWithJavaSource("klass/Extends");
+	}
+	@Test
+	public void testSatisfies(){
+		compareWithJavaSource("klass/Satisfies");
 	}
 
 	//

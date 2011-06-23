@@ -1,0 +1,13 @@
+package com.redhat.ceylon.compiler.test.structure.klass;
+
+class Extends extends .ceylon.language.Object {
+    
+    Extends() {
+    }
+}
+class ExtendsB extends Extends {
+    
+    ExtendsB() {
+        super();
+    }
+}
