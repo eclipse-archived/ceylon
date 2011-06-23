@@ -1,6 +1,6 @@
 class NumericOp(){
     shared Natural m() {
-        Natural i = 1;
+        variable Natural i := 1;
         i++;
         ++i;
         i--;
