@@ -1,10 +1,19 @@
-// FIXME Does not compile
 package com.redhat.ceylon.compiler.test.expression.operator;
 
 class NumericOp extends .ceylon.language.Object {
     
-    public void m() {
-        // FIXME Does not compile
+    public Natural m() {
+        final Natural i = .ceylon.language.Natural.instance(1L);
+        (i = i.getSuccessor()).getPredecessor();
+        i = i.getSuccessor();
+        (i = i.getPredecessor()).getSuccessor();
+        i = i.getPredecessor();
+        i = i.plus(.ceylon.language.Natural.instance(1L));
+        i = i.minus(.ceylon.language.Natural.instance(1L));
+        i = i.times(.ceylon.language.Natural.instance(1L));
+        i = i.divided(.ceylon.language.Natural.instance(1L));
+        i = i.remainder(.ceylon.language.Natural.instance(100L));
+        return .ceylon.language.Natural.instance(2L).power(.ceylon.language.Natural.instance(3L)).times(.ceylon.language.Natural.instance(1L)).divided(.ceylon.language.Natural.instance(1L)).remainder(.ceylon.language.Natural.instance(100L)).plus(.ceylon.language.Natural.instance(1L)).minus(.ceylon.language.Natural.instance(1L));
     }
     
     NumericOp() {
