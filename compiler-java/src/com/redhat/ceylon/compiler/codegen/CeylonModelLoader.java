@@ -368,7 +368,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         return typeParser .decodeType(value, scope, this);
     }
 
-    private Compound getAnnotation(ClassSymbol classSymbol, String name) {
+    private Compound getAnnotation(Symbol classSymbol, String name) {
         com.sun.tools.javac.util.List<Compound> annotations = classSymbol.getAnnotationMirrors();
         for(Compound annotation : annotations){
             if(annotation.type.tsym.getQualifiedName().toString().equals(name))
@@ -380,11 +380,44 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     private void setTypeParameters(Method method, MethodSymbol methodSymbol) {
         List<TypeParameter> params = new LinkedList<TypeParameter>();
         method.setTypeParameters(params);
-        for(TypeSymbol typeParam : methodSymbol.getTypeParameters()){
+        Compound annotation = getAnnotation(methodSymbol, "com.redhat.ceylon.compiler.metadata.java.TypeParameters");
+        if(annotation != null)
+            setTypeParameters(method, (Array)annotation.member(names.fromString("value")));
+        else
+            setTypeParameters(method, methodSymbol.getTypeParameters());
+    }
+
+    private void setTypeParameters(Method method, Array typeParameters) {
+        for(Attribute attribute : typeParameters.values){
+            Compound typeParam = (Compound) attribute;
+            TypeParameter param = new TypeParameter();
+            param.setContainer(method);
+            param.setName((String)typeParam.member(names.fromString("value")).getValue());
+            method.getTypeParameters().add(param);
+            
+            // FIXME: I'm pretty sure we can have bounds that refer to method 
+            // params, so we need to do this in two phases
+            String satisfies = (String) typeParam.member(names.fromString("satisfies")).getValue();
+            if(!satisfies.isEmpty()){
+                ProducedType satisfiesType = decodeType(satisfies, method);
+                param.getSatisfiedTypes().add(satisfiesType);
+            }
+        }
+    }
+
+    private void setTypeParameters(Method method, com.sun.tools.javac.util.List<TypeSymbol> typeParameters) {
+        for(TypeSymbol typeParam : typeParameters){
             TypeParameter param = new TypeParameter();
             param.setContainer(method);
             param.setName(typeParam.name.toString());
-            params.add(param);
+            method.getTypeParameters().add(param);
+            
+            // FIXME: I'm pretty sure we can have bounds that refer to method 
+            // params, so we need to do this in two phases
+            if(!typeParam.getBounds().isEmpty()){
+                for(Type bound : typeParam.getBounds())
+                    param.getSatisfiedTypes().add(getType(bound, method));
+            }
         }
     }
 
