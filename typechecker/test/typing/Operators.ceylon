@@ -11,6 +11,8 @@ class Operators() {
     
     @type["Float"] local x2 = 1.3 + 2.3;
     
+    @type["Natural"] local w5 = 1 * 1;
+    
     @type["Float"] local x3 = -2.5;
     
     @type["Float"] local w2 = +2.5;
