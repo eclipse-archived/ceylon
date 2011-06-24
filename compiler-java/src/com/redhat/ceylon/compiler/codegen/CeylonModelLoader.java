@@ -156,7 +156,7 @@ public class CeylonModelLoader implements ModelCompleter {
             typeName = type.tsym.getQualifiedName().toString();
             break;
         case TYPEVAR:
-            return lookupTypeParameter(scope, type.tsym.getQualifiedName().toString());
+            return safeLookupTypeParameter(scope, type.tsym.getQualifiedName().toString());
         case WILDCARD:
             // FIXME: wtf?
             typeName = "ceylon.language.Nothing";
@@ -174,6 +174,13 @@ public class CeylonModelLoader implements ModelCompleter {
         return convertToDeclaration(classSymbol);
     }
 
+    private TypeParameter safeLookupTypeParameter(Scope scope, String name) {
+        TypeParameter param = lookupTypeParameter(scope, name);
+        if(param == null)
+            throw new RuntimeException("Type param "+name+" not found in "+scope);
+        return param;
+    }
+    
     private TypeParameter lookupTypeParameter(Scope scope, String name) {
         if(scope instanceof Method){
             for(TypeParameter param : ((Method) scope).getTypeParameters()){
@@ -187,7 +194,8 @@ public class CeylonModelLoader implements ModelCompleter {
                 if(param.getName().equals(name))
                     return param;
             }
-            throw new RuntimeException("Type param "+name+" not found in "+scope);
+            // not found
+            return null;
         }else
             throw new RuntimeException("Type param "+name+" lookup not supported for scope "+scope);
     }
