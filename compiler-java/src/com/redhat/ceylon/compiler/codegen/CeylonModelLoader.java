@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.codegen;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,7 +19,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -27,6 +27,9 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.util.Util;
+import com.sun.tools.javac.code.Attribute;
+import com.sun.tools.javac.code.Attribute.Array;
+import com.sun.tools.javac.code.Attribute.Compound;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
@@ -41,7 +44,7 @@ import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Name.Table;
 
-public class CeylonModelLoader implements ModelCompleter {
+public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     
     private Symtab symtab;
     private Table names;
@@ -49,6 +52,7 @@ public class CeylonModelLoader implements ModelCompleter {
     private ClassReader reader;
     private PhasedUnits phasedUnits;
     private com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext;
+    private TypeParser typeParser = new TypeParser();
     
     public CeylonModelLoader(Context context) {
         phasedUnits = LanguageCompiler.getPhasedUnitsInstance(context);
@@ -339,11 +343,40 @@ public class CeylonModelLoader implements ModelCompleter {
                 && superClass.getKind() != TypeKind.NONE)
             klass.setExtendedType(getType(superClass, klass));
         // and its interfaces
-        for(Type iface : classSymbol.getInterfaces()){
-            klass.getSatisfiedTypes().add(getType(iface, klass));
+        if(klass.getName().equals("Natural"))
+            "".toString();
+        Compound satisfiedTypes = getAnnotation(classSymbol, "com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes");
+        if(satisfiedTypes != null){
+            klass.getSatisfiedTypes().addAll(getSatisfiedTypes(satisfiedTypes, klass));
+        }else{
+            for(Type iface : classSymbol.getInterfaces()){
+                klass.getSatisfiedTypes().add(getType(iface, klass));
+            }
         }
     }
     
+    private Collection<? extends ProducedType> getSatisfiedTypes(Compound satisfiedTypes, Scope scope) {
+        Array types = (Array) satisfiedTypes.member(names.fromString("value"));
+        List<ProducedType> producedTypes = new LinkedList<ProducedType>();
+        for(Attribute type : types.values){
+            producedTypes.add(decodeType((String) type.getValue(), scope));
+        }
+        return producedTypes;
+    }
+
+    private ProducedType decodeType(String value, Scope scope) {
+        return typeParser .decodeType(value, scope, this);
+    }
+
+    private Compound getAnnotation(ClassSymbol classSymbol, String name) {
+        com.sun.tools.javac.util.List<Compound> annotations = classSymbol.getAnnotationMirrors();
+        for(Compound annotation : annotations){
+            if(annotation.type.tsym.getQualifiedName().toString().equals(name))
+                return annotation;
+        }
+        return null;
+    }
+
     private void setTypeParameters(Method method, MethodSymbol methodSymbol) {
         List<TypeParameter> params = new LinkedList<TypeParameter>();
         method.setTypeParameters(params);
@@ -383,6 +416,16 @@ public class CeylonModelLoader implements ModelCompleter {
         if(type == null)
             throw new RuntimeException("Failed to find type for toplevel attribute "+value.getName());
         value.setType(getType(type, null));
+    }
+
+    @Override
+    public ProducedType getType(String name, Scope scope) {
+        if(scope != null){
+            TypeParameter typeParameter = lookupTypeParameter(scope, name);
+            if(typeParameter != null)
+                return typeParameter.getType();
+        }
+        return ((TypeDeclaration)convertToDeclaration(name)).getType();
     }
 
 }
