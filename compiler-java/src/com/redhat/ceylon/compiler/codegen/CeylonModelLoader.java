@@ -374,59 +374,85 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         return null;
     }
 
-    private void setTypeParameters(Method method, MethodSymbol methodSymbol) {
-        List<TypeParameter> params = new LinkedList<TypeParameter>();
-        method.setTypeParameters(params);
-        Compound annotation = getAnnotation(methodSymbol, "com.redhat.ceylon.compiler.metadata.java.TypeParameters");
+    //
+    // Type parameters loading
+
+    private Array getTypeParametersFromAnnotations(Symbol symbol) {
+        Compound annotation = getAnnotation(symbol, "com.redhat.ceylon.compiler.metadata.java.TypeParameters");
         if(annotation != null)
-            setTypeParameters(method, (Array)annotation.member(names.fromString("value")));
-        else
-            setTypeParameters(method, methodSymbol.getTypeParameters());
+            return (Array)annotation.member(names.fromString("value"));
+        return null;
     }
 
-    private void setTypeParameters(Method method, Array typeParameters) {
+    // from our annotation
+    private void setTypeParameters(Scope scope, List<TypeParameter> params, Array typeParameters) {
         for(Attribute attribute : typeParameters.values){
             Compound typeParam = (Compound) attribute;
             TypeParameter param = new TypeParameter();
-            param.setContainer(method);
+            param.setContainer(scope);
             param.setName((String)typeParam.member(names.fromString("value")).getValue());
-            method.getTypeParameters().add(param);
+            params.add(param);
+            
+            Attribute varianceAttribute = typeParam.member(names.fromString("variance"));
+            if(varianceAttribute != null){
+                VarSymbol variance = (VarSymbol) varianceAttribute.getValue();
+                String varianceName = variance.name.toString();
+                if(varianceName.equals("IN")){
+                    param.setContravariant(true);
+                }else if(varianceName.equals("OUT"))
+                    param.setCovariant(true);
+            }
             
             // FIXME: I'm pretty sure we can have bounds that refer to method 
             // params, so we need to do this in two phases
-            String satisfies = (String) typeParam.member(names.fromString("satisfies")).getValue();
-            if(!satisfies.isEmpty()){
-                ProducedType satisfiesType = decodeType(satisfies, method);
-                param.getSatisfiedTypes().add(satisfiesType);
+            Attribute satisfiesAttribute = typeParam.member(names.fromString("satisfies"));
+            if(satisfiesAttribute != null){
+                String satisfies = (String) satisfiesAttribute.getValue();
+                if(!satisfies.isEmpty()){
+                    ProducedType satisfiesType = decodeType(satisfies, scope);
+                    param.getSatisfiedTypes().add(satisfiesType);
+                }
             }
         }
     }
 
-    private void setTypeParameters(Method method, com.sun.tools.javac.util.List<TypeSymbol> typeParameters) {
+    // from java type info
+    private void setTypeParameters(Scope scope, List<TypeParameter> params, com.sun.tools.javac.util.List<TypeSymbol> typeParameters) {
         for(TypeSymbol typeParam : typeParameters){
             TypeParameter param = new TypeParameter();
-            param.setContainer(method);
+            param.setContainer(scope);
             param.setName(typeParam.name.toString());
-            method.getTypeParameters().add(param);
+            params.add(param);
             
             // FIXME: I'm pretty sure we can have bounds that refer to method 
             // params, so we need to do this in two phases
             if(!typeParam.getBounds().isEmpty()){
                 for(Type bound : typeParam.getBounds())
-                    param.getSatisfiedTypes().add(getType(bound, method));
+                    param.getSatisfiedTypes().add(getType(bound, scope));
             }
         }
     }
 
+    // method
+    private void setTypeParameters(Method method, MethodSymbol methodSymbol) {
+        List<TypeParameter> params = new LinkedList<TypeParameter>();
+        method.setTypeParameters(params);
+        Array typeParameters = getTypeParametersFromAnnotations(methodSymbol);
+        if(typeParameters != null)
+            setTypeParameters(method, params, typeParameters);
+        else
+            setTypeParameters(method, params, methodSymbol.getTypeParameters());
+    }
+
+    // class
     private void setTypeParameters(ClassOrInterface klass, ClassSymbol classSymbol) {
         List<TypeParameter> params = new LinkedList<TypeParameter>();
         klass.setTypeParameters(params);
-        for(TypeSymbol typeParam : classSymbol.getTypeParameters()){
-            TypeParameter param = new TypeParameter();
-            param.setContainer(klass);
-            param.setName(typeParam.name.toString());
-            params.add(param);
-        }
+        Array typeParameters = getTypeParametersFromAnnotations(classSymbol);
+        if(typeParameters != null)
+            setTypeParameters(klass, params, typeParameters);
+        else
+            setTypeParameters(klass, params, classSymbol.getTypeParameters());
     }        
 
     @Override
