@@ -1,3 +1,4 @@
+// FIXME THis is not correct yet
 abstract class AbstractFormal() {
     shared void m() {
         test();
