@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.codegen;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,6 +27,9 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.util.Util;
+import com.sun.tools.javac.code.Attribute;
+import com.sun.tools.javac.code.Attribute.Array;
+import com.sun.tools.javac.code.Attribute.Compound;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
@@ -40,7 +44,7 @@ import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Name.Table;
 
-public class CeylonModelLoader implements ModelCompleter {
+public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     
     private Symtab symtab;
     private Table names;
@@ -48,6 +52,7 @@ public class CeylonModelLoader implements ModelCompleter {
     private ClassReader reader;
     private PhasedUnits phasedUnits;
     private com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext;
+    private TypeParser typeParser = new TypeParser();
     
     public CeylonModelLoader(Context context) {
         phasedUnits = LanguageCompiler.getPhasedUnitsInstance(context);
@@ -70,7 +75,6 @@ public class CeylonModelLoader implements ModelCompleter {
          * for now the typechecker requires at least ceylon.language to be loaded 
          */
         for(Symbol m : ceylonPkg.members().getElements()){
-            System.err.println("Convert: "+m.getQualifiedName().toString());
             convertToDeclaration(lookupClassSymbol(m.getQualifiedName().toString()));
         }
     }
@@ -80,7 +84,6 @@ public class CeylonModelLoader implements ModelCompleter {
         if(declarationsByName.containsKey(className)){
             return declarationsByName.get(className);
         }
-        System.err.println("convertToDeclaration: "+className);
         Declaration decl = makeDeclaration(classSymbol);
         declarationsByName.put(className, decl);
         
@@ -157,7 +160,11 @@ public class CeylonModelLoader implements ModelCompleter {
             typeName = type.tsym.getQualifiedName().toString();
             break;
         case TYPEVAR:
-            return lookupTypeParameter(scope, type.tsym.getQualifiedName().toString());
+            return safeLookupTypeParameter(scope, type.tsym.getQualifiedName().toString());
+        case WILDCARD:
+            // FIXME: wtf?
+            typeName = "ceylon.language.Nothing";
+            break;
         default:
             throw new RuntimeException("Failed to handle type "+type);
         }
@@ -171,6 +178,13 @@ public class CeylonModelLoader implements ModelCompleter {
         return convertToDeclaration(classSymbol);
     }
 
+    private TypeParameter safeLookupTypeParameter(Scope scope, String name) {
+        TypeParameter param = lookupTypeParameter(scope, name);
+        if(param == null)
+            throw new RuntimeException("Type param "+name+" not found in "+scope);
+        return param;
+    }
+    
     private TypeParameter lookupTypeParameter(Scope scope, String name) {
         if(scope instanceof Method){
             for(TypeParameter param : ((Method) scope).getTypeParameters()){
@@ -184,7 +198,8 @@ public class CeylonModelLoader implements ModelCompleter {
                 if(param.getName().equals(name))
                     return param;
             }
-            throw new RuntimeException("Type param "+name+" not found in "+scope);
+            // not found
+            return null;
         }else
             throw new RuntimeException("Type param "+name+" lookup not supported for scope "+scope);
     }
@@ -263,7 +278,16 @@ public class CeylonModelLoader implements ModelCompleter {
     }
 
     private ProducedType getType(Type type, Scope scope) {
-        return ((TypeDeclaration)convertToDeclaration(type, scope)).getType();
+        TypeDeclaration declaration = (TypeDeclaration) convertToDeclaration(type, scope);
+        com.sun.tools.javac.util.List<Type> javacTypeArguments = type.getTypeArguments();
+        if(!javacTypeArguments.isEmpty()){
+            List<ProducedType> typeArguments = new ArrayList<ProducedType>(javacTypeArguments.size());
+            for(Type typeArgument : javacTypeArguments){
+                typeArguments.add((ProducedType) getType(typeArgument, scope));
+            }
+            return declaration.getProducedType(null, typeArguments);
+        }
+        return declaration.getType();
     }
 
     @Override
@@ -277,7 +301,6 @@ public class CeylonModelLoader implements ModelCompleter {
     }
 
     private void complete(ClassOrInterface klass, ClassSymbol classSymbol) {
-        System.err.println("Lazy loading class "+klass);
         // do its type parameters first
         setTypeParameters(klass, classSymbol);
         // then its methods
@@ -297,8 +320,6 @@ public class CeylonModelLoader implements ModelCompleter {
                 method.setContainer(klass);
                 method.setName(methodSymbol.name.toString());
                 klass.getMembers().add(method);
-                
-                System.err.println(" Found method "+method.getName());
                 
                 // type params first
                 setTypeParameters(method, methodSymbol);
@@ -322,11 +343,40 @@ public class CeylonModelLoader implements ModelCompleter {
                 && superClass.getKind() != TypeKind.NONE)
             klass.setExtendedType(getType(superClass, klass));
         // and its interfaces
-        for(Type iface : classSymbol.getInterfaces()){
-            klass.getSatisfiedTypes().add(getType(iface, klass));
+        if(klass.getName().equals("Natural"))
+            "".toString();
+        Compound satisfiedTypes = getAnnotation(classSymbol, "com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes");
+        if(satisfiedTypes != null){
+            klass.getSatisfiedTypes().addAll(getSatisfiedTypes(satisfiedTypes, klass));
+        }else{
+            for(Type iface : classSymbol.getInterfaces()){
+                klass.getSatisfiedTypes().add(getType(iface, klass));
+            }
         }
     }
     
+    private Collection<? extends ProducedType> getSatisfiedTypes(Compound satisfiedTypes, Scope scope) {
+        Array types = (Array) satisfiedTypes.member(names.fromString("value"));
+        List<ProducedType> producedTypes = new LinkedList<ProducedType>();
+        for(Attribute type : types.values){
+            producedTypes.add(decodeType((String) type.getValue(), scope));
+        }
+        return producedTypes;
+    }
+
+    private ProducedType decodeType(String value, Scope scope) {
+        return typeParser .decodeType(value, scope, this);
+    }
+
+    private Compound getAnnotation(ClassSymbol classSymbol, String name) {
+        com.sun.tools.javac.util.List<Compound> annotations = classSymbol.getAnnotationMirrors();
+        for(Compound annotation : annotations){
+            if(annotation.type.tsym.getQualifiedName().toString().equals(name))
+                return annotation;
+        }
+        return null;
+    }
+
     private void setTypeParameters(Method method, MethodSymbol methodSymbol) {
         List<TypeParameter> params = new LinkedList<TypeParameter>();
         method.setTypeParameters(params);
@@ -366,6 +416,16 @@ public class CeylonModelLoader implements ModelCompleter {
         if(type == null)
             throw new RuntimeException("Failed to find type for toplevel attribute "+value.getName());
         value.setType(getType(type, null));
+    }
+
+    @Override
+    public ProducedType getType(String name, Scope scope) {
+        if(scope != null){
+            TypeParameter typeParameter = lookupTypeParameter(scope, name);
+            if(typeParameter != null)
+                return typeParameter.getType();
+        }
+        return ((TypeDeclaration)convertToDeclaration(name)).getType();
     }
 
 }

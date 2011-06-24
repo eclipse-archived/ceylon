@@ -1,0 +1,18 @@
+package com.redhat.ceylon.compiler.test.expression.attribute;
+
+class MethodLocalHidingAttribute extends .ceylon.language.Object {
+    final Boolean b;
+    
+    Boolean m() {
+        final Boolean b = ceylon.language.$false.getFalse();
+        return b;
+    }
+    
+    MethodLocalHidingAttribute() {
+        b = ceylon.language.$true.getTrue();
+    }
+    
+    Boolean getB() {
+        return this.b;
+    }
+}

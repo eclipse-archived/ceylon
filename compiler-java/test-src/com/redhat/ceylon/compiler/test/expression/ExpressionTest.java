@@ -40,7 +40,36 @@ public class ExpressionTest extends CompilerTest {
     public void testMethodLocalAssign(){
         compareWithJavaSource("attribute/MethodLocalAssign");
     }
+    @Test
+    public void testInitializerParamAccessInInitializer(){
+        compareWithJavaSource("attribute/InitializerParamAccessInInitializer");
+    }
     
+    //
+    // Scope and hiding
+    
+    @Test
+    public void testInitializerParamHidingAttribute(){
+        compareWithJavaSource("attribute/InitializerParamHidingAttribute");
+    }
+    @Test
+    public void testInitializerParamHidingGetter(){
+        compareWithJavaSource("attribute/InitializerParamHidingGetter");
+    }
+    @Test
+    public void testMethodLocalHidingAttribute(){
+        compareWithJavaSource("attribute/MethodLocalHidingAttribute");
+    }
+    @Test
+    public void testMethodParamHidingAttribute(){
+        compareWithJavaSource("attribute/MethodParamHidingAttribute");
+    }
+    @Test
+    public void testAttributeHidingMethodParam(){
+        compareWithJavaSource("attribute/AttributeHidingMethodParam");
+    }
+
+
     // Literals
     
     @Test

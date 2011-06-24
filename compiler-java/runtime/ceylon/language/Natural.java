@@ -1,8 +1,15 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.metadata.java.*;
+
+@SatisfiedTypes({
+    "ceylon.language.Castable<ceylon.language.Natural|ceylon.language.Integer|ceylon.language.Float>",
+    "ceylon.language.Integral<ceylon.language.Natural>",
+    "ceylon.language.Invertable<ceylon.language.Integer>",
+})
 public final class Natural
     extends Object
-    implements Integral<Natural>, Invertable<Integer> {
+    implements Castable<Numeric>, Integral<Natural>, Invertable<Integer> {
 
     private final long value;
     private Natural(long l) {
@@ -125,5 +132,10 @@ public final class Natural
     public Boolean equals(Equality that) {
         // FIXME
         throw new RuntimeException("Not implemented");
+    }
+
+    @Override
+    public <CastValue extends Numeric> CastValue as() {
+        return (CastValue) this;
     }
 }
