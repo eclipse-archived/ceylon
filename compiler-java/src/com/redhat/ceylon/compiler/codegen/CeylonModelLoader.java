@@ -342,9 +342,6 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         if(!classSymbol.getQualifiedName().toString().equals("language.ceylon.Void")
                 && superClass.getKind() != TypeKind.NONE)
             klass.setExtendedType(getType(superClass, klass));
-        // and its interfaces
-        if(klass.getName().equals("Natural"))
-            "".toString();
         Compound satisfiedTypes = getAnnotation(classSymbol, "com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes");
         if(satisfiedTypes != null){
             klass.getSatisfiedTypes().addAll(getSatisfiedTypes(satisfiedTypes, klass));
