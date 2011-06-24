@@ -10,6 +10,8 @@ import java.util.Map;
 
 import javax.lang.model.type.TypeKind;
 
+import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
+import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -290,6 +292,9 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         return declaration.getType();
     }
 
+    //
+    // ModelCompleter
+    
     @Override
     public void complete(LazyInterface iface) {
         complete(iface, iface.classSymbol);
@@ -310,7 +315,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 
                 if(methodSymbol.isStatic()
                         || methodSymbol.isConstructor()
-                        /* Temporary: if it's not public drop it. */
+                        /* FIXME: Temporary: if it's not public drop it. */
                         || (methodSymbol.flags() & Flags.PUBLIC) == 0)
                     continue;
                 
@@ -342,29 +347,31 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         if(!classSymbol.getQualifiedName().toString().equals("language.ceylon.Void")
                 && superClass.getKind() != TypeKind.NONE)
             klass.setExtendedType(getType(superClass, klass));
-        Compound satisfiedTypes = getAnnotation(classSymbol, "com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes");
-        if(satisfiedTypes != null){
-            klass.getSatisfiedTypes().addAll(getSatisfiedTypes(satisfiedTypes, klass));
-        }else{
-            for(Type iface : classSymbol.getInterfaces()){
-                klass.getSatisfiedTypes().add(getType(iface, klass));
-            }
-        }
+        setSatisfiedTypes(klass, classSymbol);
     }
     
-    private Collection<? extends ProducedType> getSatisfiedTypes(Compound satisfiedTypes, Scope scope) {
-        Array types = (Array) satisfiedTypes.member(names.fromString("value"));
-        List<ProducedType> producedTypes = new LinkedList<ProducedType>();
-        for(Attribute type : types.values){
-            producedTypes.add(decodeType((String) type.getValue(), scope));
+    @Override
+    public void complete(LazyValue value) {
+        Type type = null;
+        for(Symbol member : value.classSymbol.members().getElements()){
+            if(member instanceof MethodSymbol){
+                MethodSymbol method = (MethodSymbol) member;
+                if(method.name.toString().equals(Util.getGetterName(value.getName()))
+                        && method.isStatic()
+                        && method.params().size() == 0){
+                    type = method.getReturnType();
+                    break;
+                }
+            }
         }
-        return producedTypes;
+        if(type == null)
+            throw new RuntimeException("Failed to find type for toplevel attribute "+value.getName());
+        value.setType(getType(type, null));
     }
 
-    private ProducedType decodeType(String value, Scope scope) {
-        return typeParser .decodeType(value, scope, this);
-    }
-
+    //
+    // Utils for loading type info from the model
+    
     private Compound getAnnotation(Symbol classSymbol, String name) {
         com.sun.tools.javac.util.List<Compound> annotations = classSymbol.getAnnotationMirrors();
         for(Compound annotation : annotations){
@@ -374,14 +381,44 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         return null;
     }
 
+    private Array getTypeInfoFromAnnotations(Symbol symbol, String name) {
+        Compound annotation = getAnnotation(symbol, name);
+        if(annotation != null)
+            return (Array)annotation.member(names.fromString("value"));
+        return null;
+    }
+    
+    //
+    // Satisfied Types
+    
+    private Array getSatisfiedTypesFromAnnotations(Symbol symbol) {
+        return getTypeInfoFromAnnotations(symbol, SatisfiedTypes.class.getName());
+    }
+    
+    private void setSatisfiedTypes(ClassOrInterface klass, ClassSymbol classSymbol) {
+        Array satisfiedTypes = getSatisfiedTypesFromAnnotations(classSymbol);
+        if(satisfiedTypes != null){
+            klass.getSatisfiedTypes().addAll(getSatisfiedTypes(satisfiedTypes, klass));
+        }else{
+            for(Type iface : classSymbol.getInterfaces()){
+                klass.getSatisfiedTypes().add(getType(iface, klass));
+            }
+        }
+    }
+
+    private Collection<? extends ProducedType> getSatisfiedTypes(Array satisfiedTypes, Scope scope) {
+        List<ProducedType> producedTypes = new LinkedList<ProducedType>();
+        for(Attribute type : satisfiedTypes.values){
+            producedTypes.add(decodeType((String) type.getValue(), scope));
+        }
+        return producedTypes;
+    }
+
     //
     // Type parameters loading
 
     private Array getTypeParametersFromAnnotations(Symbol symbol) {
-        Compound annotation = getAnnotation(symbol, "com.redhat.ceylon.compiler.metadata.java.TypeParameters");
-        if(annotation != null)
-            return (Array)annotation.member(names.fromString("value"));
-        return null;
+        return getTypeInfoFromAnnotations(symbol, TypeParameters.class.getName());
     }
 
     // from our annotation
@@ -455,23 +492,11 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             setTypeParameters(klass, params, classSymbol.getTypeParameters());
     }        
 
-    @Override
-    public void complete(LazyValue value) {
-        Type type = null;
-        for(Symbol member : value.classSymbol.members().getElements()){
-            if(member instanceof MethodSymbol){
-                MethodSymbol method = (MethodSymbol) member;
-                if(method.name.toString().equals(Util.getGetterName(value.getName()))
-                        && method.isStatic()
-                        && method.params().size() == 0){
-                    type = method.getReturnType();
-                    break;
-                }
-            }
-        }
-        if(type == null)
-            throw new RuntimeException("Failed to find type for toplevel attribute "+value.getName());
-        value.setType(getType(type, null));
+    //
+    // TypeParsing and ModelLoader
+
+    private ProducedType decodeType(String value, Scope scope) {
+        return typeParser .decodeType(value, scope, this);
     }
 
     @Override
