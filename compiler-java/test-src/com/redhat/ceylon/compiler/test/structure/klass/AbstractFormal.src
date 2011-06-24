@@ -1,0 +1,37 @@
+package com.redhat.ceylon.compiler.test.structure.klass;
+
+abstract class AbstractFormal extends .ceylon.language.Object {
+    
+    public void m() {
+        test();
+        test2();
+        test3();
+    }
+    
+    public abstract void test();
+    
+    public void test2() {
+        return;
+    }
+    
+    public void test3() {
+        return;
+    }
+    
+    abstract AbstractFormal() {
+    }
+}
+class ActualKlass extends AbstractFormal {
+    
+    public void test() {
+        return;
+    }
+    
+    public void test3() {
+        return;
+    }
+    
+    ActualKlass() {
+        super();
+    }
+}

@@ -5,6 +5,7 @@ import static com.sun.tools.javac.code.Flags.INTERFACE;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.STATIC;
+import static com.sun.tools.javac.code.Flags.ABSTRACT;
 import static com.sun.tools.javac.code.TypeTags.VOID;
 
 import java.util.HashMap;
@@ -23,7 +24,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.source.tree.Tree.Kind;
 import com.sun.tools.javac.code.Flags;
-import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
@@ -82,8 +82,10 @@ public class ClassGen extends GenPart {
                 defs.appendList(convert(cdecl, meth));
             }
 
-            /* FIXME: public void visit(Tree.MethodDeclaration meth) {
-             * defs.appendList(convert(cdecl, meth)); } */
+            public void visit(Tree.MethodDeclaration meth) {
+            	defs.appendList(convert(cdecl, meth));
+            }
+            
             public void visit(Tree.Annotation ann) {
                 // Handled in processAnnotations
             }
@@ -245,6 +247,8 @@ public class ClassGen extends GenPart {
         int result = 0;
 
         result |= isShared(cdecl) ? PUBLIC : 0;
+        result |= isAbstract(cdecl) ? ABSTRACT : 0;
+        result |= isFormal(cdecl) ? ABSTRACT : 0;
 
         return result;
     }
@@ -340,16 +344,27 @@ public class ClassGen extends GenPart {
     }
 
     private List<JCTree> convert(Tree.ClassOrInterface cdecl, Tree.MethodDefinition decl) {
+        final Singleton<JCBlock> body = new Singleton<JCBlock>();
+        
+        body.append(gen.statementGen.convert(cdecl, decl.getBlock()));
+        
+    	return convertMethod(cdecl, decl, body);
+    }
+
+    private List<JCTree> convert(Tree.ClassOrInterface cdecl, Tree.MethodDeclaration decl) {
+    	return convertMethod(cdecl, decl, null);
+    }
+    
+    private List<JCTree> convertMethod(Tree.ClassOrInterface cdecl, Tree.AnyMethod decl, Singleton<JCBlock> body) {
         final ListBuffer<JCVariableDecl> params = new ListBuffer<JCVariableDecl>();
         final ListBuffer<JCStatement> annotations = new ListBuffer<JCStatement>();
         final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
-        final Singleton<JCBlock> body = new Singleton<JCBlock>();
         Singleton<JCExpression> restypebuf = new Singleton<JCExpression>();
         ListBuffer<JCAnnotation> jcAnnotations = new ListBuffer<JCAnnotation>();
         final ListBuffer<JCTypeParameter> typeParams = new ListBuffer<JCTypeParameter>();
 
-        processMethodDeclaration(cdecl, decl, params, body, restypebuf, typeParams, annotations, langAnnotations);
-
+        processMethodDeclaration(cdecl, decl, params, restypebuf, typeParams, annotations, langAnnotations);
+        
         JCExpression restype = restypebuf.thing();
 
         // FIXME: Handle lots more flags here
@@ -366,7 +381,7 @@ public class ClassGen extends GenPart {
         JCMethodDecl meth = at(decl).MethodDef(make().Modifiers(mods, jcAnnotations.toList()), 
                 names().fromString(decl.getIdentifier().getText()), 
                 restype, processTypeConstraints(decl.getTypeConstraintList(), typeParams.toList()), 
-                params.toList(), List.<JCExpression> nil(), body.thing(), null);
+                params.toList(), List.<JCExpression> nil(), (body != null) ? body.thing() : null, null);
 
         if (annotations.length() > 0) {
             // FIXME: Method annotations.
@@ -376,7 +391,7 @@ public class ClassGen extends GenPart {
 
         return List.<JCTree> of(meth);
     }
-
+    
     void methodClass(Tree.ClassOrInterface classDecl, Tree.MethodDefinition decl, final ListBuffer<JCTree> defs, boolean topLevel) {
         // Generate a class with the
         // name of the method and a corresponding run() method.
@@ -388,7 +403,9 @@ public class ClassGen extends GenPart {
         final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
         final ListBuffer<JCTypeParameter> typeParams = new ListBuffer<JCTypeParameter>();
 
-        processMethodDeclaration(classDecl, decl, params, body, restype, typeParams, annotations, langAnnotations);
+        processMethodDeclaration(classDecl, decl, params, restype, typeParams, annotations, langAnnotations);
+
+        body.append(gen.statementGen.convert(classDecl, decl.getBlock()));
 
         JCMethodDecl meth = at(decl).MethodDef(make().Modifiers((topLevel ? PUBLIC | STATIC : 0)), names().fromString("run"), restype.thing(), processTypeConstraints(decl.getTypeConstraintList(), typeParams.toList()), params.toList(), List.<JCExpression> nil(), body.thing(), null);
 
@@ -427,7 +444,7 @@ public class ClassGen extends GenPart {
     }
 
     // FIXME: There must be a better way to do this.
-    private void processMethodDeclaration(final Tree.ClassOrInterface classDecl, final Tree.MethodDefinition decl, final ListBuffer<JCVariableDecl> params, final Singleton<JCBlock> block, final Singleton<JCExpression> restype, final ListBuffer<JCTypeParameter> typeParams, final ListBuffer<JCStatement> annotations, final ListBuffer<JCAnnotation> langAnnotations) {
+    private void processMethodDeclaration(final Tree.ClassOrInterface classDecl, final Tree.AnyMethod decl, final ListBuffer<JCVariableDecl> params, final Singleton<JCExpression> restype, final ListBuffer<JCTypeParameter> typeParams, final ListBuffer<JCStatement> annotations, final ListBuffer<JCAnnotation> langAnnotations) {
 
         for (Tree.Parameter param : decl.getParameterLists().get(0).getParameters()) {
             params.append(convert(param));
@@ -437,8 +454,6 @@ public class ClassGen extends GenPart {
             for (Tree.TypeParameterDeclaration t : decl.getTypeParameterList().getTypeParameterDeclarations()) {
                 typeParams.append(convert(t));
             }
-
-        block.append(gen.statementGen.convert(classDecl, decl.getBlock()));
 
         processAnnotations(classDecl, decl.getAnnotationList(), annotations, langAnnotations, decl.getIdentifier().getText());
 
@@ -543,6 +558,16 @@ public class ClassGen extends GenPart {
     private boolean isShared(Tree.Declaration cdecl) {
         // FIXME
         return hasCompilerAnnotation(cdecl, "shared");
+    }
+
+    private boolean isAbstract(Tree.Declaration cdecl) {
+        // FIXME
+        return hasCompilerAnnotation(cdecl, "abstract");
+    }
+
+    private boolean isFormal(Tree.Declaration cdecl) {
+        // FIXME
+        return hasCompilerAnnotation(cdecl, "formal");
     }
 
     private boolean isMutable(Tree.AttributeDeclaration decl) {

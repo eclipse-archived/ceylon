@@ -41,6 +41,10 @@ public class StructureTest extends CompilerTest {
 	public void testSatisfies(){
 		compareWithJavaSource("klass/Satisfies");
 	}
+	@Test
+	public void testAbstractFormal(){
+		compareWithJavaSource("klass/AbstractFormal");
+	}
 
 	//
 	// Methods
