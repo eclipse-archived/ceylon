@@ -310,6 +310,8 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         setTypeParameters(klass, classSymbol);
         // then its methods
         for(Symbol member : classSymbol.members().getElements()){
+            // FIXME: deal with constructors
+            // FIXME: could be an attribute
             if(member instanceof MethodSymbol){
                 MethodSymbol methodSymbol = (MethodSymbol) member;
                 
@@ -335,12 +337,15 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 for(VarSymbol paramSymbol : methodSymbol.params()){
                     ValueParameter parameter = new ValueParameter();
                     parameter.setContainer(method);
+                    // FIXME: deal with type override by annotations
                     parameter.setType(getType(paramSymbol.type, method));
                     parameters.getParameters().add(parameter);
                 }
+                // FIXME: deal with type override by annotations
                 method.setType(getType(methodSymbol.getReturnType(), method));
             }
         }
+        // FIXME: deal with type override by annotations
         // look at its super type
         Type superClass = classSymbol.getSuperclass();
         // ceylon.language.Void has no super type. java.lang.Object neither
