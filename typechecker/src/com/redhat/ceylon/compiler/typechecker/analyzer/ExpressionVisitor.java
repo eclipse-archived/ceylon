@@ -3,8 +3,6 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,7 +28,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -217,15 +214,15 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private ProducedType getIterableType(ProducedType et) {
-        return getIterableDeclaration().getProducedType(null, Collections.singletonList(et));
+        return producedType(getIterableDeclaration(), et);
     }
 
     private ProducedType getCastableType(ProducedType et) {
-        return getCastableDeclaration().getProducedType(null, Collections.singletonList(et));
+        return producedType(getCastableDeclaration(), et);
     }
 
     private ProducedType getEntryType(ProducedType kt, ProducedType vt) {
-        return getEntryDeclaration().getProducedType(null, Arrays.asList(new ProducedType[] {kt, vt}));
+        return producedType(getEntryDeclaration(), kt, vt);
     }
 
     @Override public void visit(Tree.AttributeGetterDefinition that) {
@@ -686,7 +683,7 @@ public class ExpressionVisitor extends Visitor {
                 for (int i=0; i<parameters.getParameters().size(); i++) {
                     Parameter parameter = parameters.getParameters().get(i);
                     if (parameter.getType().getDeclaration()==tp) {
-                        Expression value = args.get(i).getExpression();
+                        Tree.Expression value = args.get(i).getExpression();
                         addToUnion(inferredTypes, value.getTypeModel());
                     }
                 }
@@ -696,7 +693,7 @@ public class ExpressionVisitor extends Visitor {
                 for (Tree.NamedArgument arg: args) {
                     ProducedType type = null;
                     if (arg instanceof Tree.SpecifiedArgument) {
-                        Expression value = ((Tree.SpecifiedArgument)arg).getSpecifierExpression().getExpression();
+                        Tree.Expression value = ((Tree.SpecifiedArgument)arg).getSpecifierExpression().getExpression();
                         type = value.getTypeModel();
                     }
                     else if (arg instanceof Tree.TypedArgument) {
@@ -1134,7 +1131,7 @@ public class ExpressionVisitor extends Visitor {
                             t.getProducedTypeName());
                 }
                 else {
-                    that.setTypeModel( getRangeDeclaration().getProducedType( null, Collections.singletonList(t) ) );
+                    that.setTypeModel( producedType(getRangeDeclaration(), t) );
                 }
             }
         }
@@ -1187,7 +1184,7 @@ public class ExpressionVisitor extends Visitor {
                             lhst.getProducedTypeName() + ", " + rhst.getProducedTypeName());
                     return;
                 }
-                if (!rt.isSubtypeOf(type.getProducedType(null, Collections.singletonList(rt)))) {
+                if (!rt.isSubtypeOf(producedType(type,rt))) {
                     node.addError("must be of type: " + type.getName());
                 }
                 else {
@@ -1841,7 +1838,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private ProducedType getSequenceType(ProducedType et) {
-        return getSequenceDeclaration().getProducedType(null, Collections.singletonList(et));
+        return producedType(getSequenceDeclaration(), et);
     }
     
     @Override public void visit(Tree.StringTemplate that) {

@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -91,6 +93,14 @@ public class Util {
             }
         }
         return typeArguments;
+    }
+    
+    public static ProducedType producedType(TypeDeclaration declaration, ProducedType typeArgument) {
+        return declaration.getProducedType(null, Collections.singletonList(typeArgument));
+    }
+
+    public static ProducedType producedType(TypeDeclaration declaration, ProducedType... typeArguments) {
+        return declaration.getProducedType(null, Arrays.asList(typeArguments));
     }
 
     public static void addToUnion(List<ProducedType> list, ProducedType pt) {

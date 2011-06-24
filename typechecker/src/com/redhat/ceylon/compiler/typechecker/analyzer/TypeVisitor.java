@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.context.Context;
@@ -211,8 +210,7 @@ public class TypeVisitor extends Visitor {
     }
 
     private ProducedType getSequenceType(ProducedType type) {
-        return getSequenceDeclaration()
-                .getProducedType(null, Collections.singletonList(type));
+        return producedType(getSequenceDeclaration(), type);
     }
     
     private ProducedType getEmptyType(ProducedType pt) {

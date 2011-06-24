@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.name;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.*;
 
 import java.util.ArrayList;
 import java.util.List;

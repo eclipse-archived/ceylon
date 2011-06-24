@@ -9,7 +9,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -30,7 +29,7 @@ public class SpecificationVisitor extends Visitor {
     private boolean cannotSpecify = true;
     private boolean declared = false;
     private Context context;
-    private Statement lastExecutableStatement;
+    private Tree.Statement lastExecutableStatement;
     private boolean declarationSection = false;
 
     class SpecificationState {
