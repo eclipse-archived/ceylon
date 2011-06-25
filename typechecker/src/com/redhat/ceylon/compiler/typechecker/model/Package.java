@@ -61,10 +61,11 @@ public class Package implements Scope {
 	public Declaration getMember(/*boolean includeParameters,*/String name) {
         for ( Declaration d: getMembers() ) {
             //if ( !(d instanceof Setter) && (includeParameters || !(d instanceof Parameter)) ) {
-            if (d.getName()!=null && d.getName().equals(name)) {
-                return d;
+            if (!(d instanceof Class && Character.isLowerCase(name.charAt(0)))) { //don't return the type associated with an object dec
+                if (d.getName()!=null && d.getName().equals(name)) {
+                    return d;
+                }
             }
-            //}
         }
         return null;
     }

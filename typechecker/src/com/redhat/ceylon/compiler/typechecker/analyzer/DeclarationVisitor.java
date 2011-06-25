@@ -105,39 +105,54 @@ public class DeclarationVisitor extends Visitor {
             return false;
         }
         else {
-            model.setName(internalName(that, model, id));
+            //model.setName(internalName(that, model, id));
+            model.setName(id.getText());
             return true;
             //TODO: check for dupe arg name
         }
     }
 
-    private String internalName(Node that, Declaration model,
+    /*private String internalName(Node that, Declaration model,
             Tree.Identifier id) {
         String n = id.getText();
         if ((that instanceof Tree.ObjectDefinition||that instanceof Tree.ObjectArgument) 
                 && model instanceof Class) {
-            n = "Type_" + n;
+            n = "#" + n;
         }
         return n;
-    }
+    }*/
 
     private void checkForDuplicateDeclaration(Tree.Declaration that, 
             Declaration model) {
-        boolean found = false;
+        boolean foundMatchingGetter = false;
         String name = name(that.getIdentifier());
         for (Declaration member: scope.getMembers()) {
             String dname = member.getName();
             if (dname!=null && dname.equals(name)) {
-                if (model instanceof Setter && member instanceof Getter) {
-                    found = true;
+                //setters can have the same name as
+                //the matching getter
+                if (model instanceof Setter && 
+                    member instanceof Getter) {
+                    foundMatchingGetter = true;
                     Getter g = (Getter) member;
                     g.setVariable(true);
                     ((Setter) model).setGetter(g);
                     continue;
                 }
+                //the type associated with an object dec
+                //has the same name as the matching 
+                //simple attribute
+                else if (that instanceof Tree.ObjectDefinition && 
+                         model instanceof Value && 
+                         member instanceof Class) {
+                    continue;
+                }
                 /*else if (model instanceof Parameter && ((Parameter) model).getDeclaration()!=scope) {
                     //no error
                 }*/
+                //a class can have a getter or simple
+                //attribute with the same name as an
+                //initializer parameter
                 else if ((model instanceof Value || model instanceof Getter || model instanceof Setter) 
                         && member instanceof Parameter 
                         && ((Parameter) member).getDeclaration() instanceof Class) {
@@ -147,7 +162,7 @@ public class DeclarationVisitor extends Visitor {
                 }
             }
         }
-        if (!found && (model instanceof Setter)) {
+        if (model instanceof Setter && !foundMatchingGetter) {
             that.addError("setter with no matching getter: " + name);
         }
     }

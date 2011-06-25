@@ -311,4 +311,10 @@ class Assignability() {
     w<String>("foo", "bar");
     w<String>({"foo", "bar"});
     
+    object o {}
+    @type["Assignability.o"] local oo = o;
+    
+    object x extends X() {}
+    X xx = x;
+    
 }

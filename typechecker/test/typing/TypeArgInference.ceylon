@@ -23,7 +23,7 @@ class TypeArgInference() {
     @type["String"] first{ u="hello"; v="world"; };
     @type["Integer|TypeArgInference.X<String>"] first{ u=+1; v=X{ t="hello"; s="world"; }; };
     
-    @type["TypeArgInference.X<TypeArgInference.Type_t|TypeArgInference.Type_s>"] X { object t {} object s {} }; 
+    @type["TypeArgInference.X<TypeArgInference.t|TypeArgInference.s>"] X { object t {} object s {} }; 
     @type["TypeArgInference.X<Float>"] X { Float t { return 1.0; } Float s { return -1.0; } }; 
     
     @error X x = X(1,2);

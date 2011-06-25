@@ -40,7 +40,9 @@ public abstract class Element {
      */
     public Declaration getMember(boolean includeParameters, String name) {
         for ( Declaration d: getMembers() ) {
-            if ( !(d instanceof Setter) && (includeParameters || !(d instanceof Parameter)) ) {
+            if ( !(d instanceof Setter) && //return getters, not setters
+                 !(d instanceof Class && Character.isLowerCase(name.charAt(0))) && //don't return the type associated with an object dec 
+                 !(d instanceof Parameter && !includeParameters) ) { //don't return parameters unless asked for them
                 if (d.getName()!=null && d.getName().equals(name)) {
                     return d;
                 }
