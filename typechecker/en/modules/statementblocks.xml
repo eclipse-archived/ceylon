@@ -641,8 +641,9 @@ try (lock) { ... }</programlisting>
         <para>Ceylon provides the following control directives:</para>
         
         <itemizedlist>
-            <listitem>the <literal>return</literal> directive&mdash;to return a value from a method 
-            or attribute getter,</listitem>
+            <listitem>the <literal>return</literal> directive&mdash;to return a value from 
+            a non-<literal>void</literal> method or attribute getter or terminate execution 
+            of a <literal>void</literal> method, setter, or class initializer,</listitem>
             <listitem>the <literal>break</literal> directive&mdash;to terminate a loop,</listitem>
             <listitem>the <literal>continue</literal> directive&mdash;to jump to the next iteration 
             of a loop, and</listitem>
@@ -665,12 +666,13 @@ try (lock) { ... }</programlisting>
         <programlisting>continue;</programlisting>
         
         <para>The <literal>return</literal> directive must sequentially occur in the body 
-        of a method, attribute getter, or attribute setter. In the case of a <literal>void</literal> 
-        method or attribute setter, no expression may be specified. In the case of a 
-        non-<literal>void</literal> method or attribute getter, an expression must be 
-        specified. The expression type must be assignable to the return type of the method
-        or the type of the attribute. When the directive is executed, the expression is 
-        evaluated to determine the return value of the method or attribute getter.</para>
+        of a method, attribute getter, attribute setter, or class initializer. In the 
+        case of a <literal>void</literal> method, attribute setter, or class initializer, 
+        no expression may be specified. In the case of a non-<literal>void</literal> method 
+        or attribute getter, an expression must be specified. The expression type must be 
+        assignable to the return type of the method or the type of the attribute. When the 
+        directive is executed, the expression is evaluated to determine the return value of 
+        the method or attribute getter.</para>
         
         <programlisting>Return: "return" Expression?</programlisting>
         
