@@ -7,8 +7,8 @@ class InitializerParamHidingGetter extends .ceylon.language.Object {
         return b;
     }
     
-    InitializerParamHidingGetter(Boolean $ceylontmp0) {
-        this.b = $ceylontmp0;
+    InitializerParamHidingGetter(Boolean b) {
+        this.b = b;
         b.equals(ceylon.language.$true.getTrue());
     }
 }

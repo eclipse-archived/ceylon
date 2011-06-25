@@ -1,5 +1,7 @@
+Boolean toplevel = true;
+
 class TopLevelAccess(){
    Boolean m(){
-       return true;
+       return toplevel;
    }
 }

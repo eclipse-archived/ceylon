@@ -1,3 +1,4 @@
 class ClassVariableWithInitializer(){
- variable String f := "";
+    variable String f := "";
+    shared variable String f2 := "";
 }

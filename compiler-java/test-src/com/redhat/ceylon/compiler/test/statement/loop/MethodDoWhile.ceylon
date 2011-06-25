@@ -1,7 +1,7 @@
 class MethodDoWhile(){
     shared Natural m(){
         do {
-            return 1;
+            // Do stuff here;
         }
         while (false);
         return 0;

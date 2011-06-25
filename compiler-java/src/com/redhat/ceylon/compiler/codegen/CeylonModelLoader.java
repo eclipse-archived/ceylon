@@ -10,8 +10,8 @@ import java.util.Map;
 
 import javax.lang.model.type.TypeKind;
 
-import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
-import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
+//import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
+//import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -397,7 +397,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     // Satisfied Types
     
     private Array getSatisfiedTypesFromAnnotations(Symbol symbol) {
-        return getTypeInfoFromAnnotations(symbol, SatisfiedTypes.class.getName());
+        return getTypeInfoFromAnnotations(symbol, "com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes");
     }
     
     private void setSatisfiedTypes(ClassOrInterface klass, ClassSymbol classSymbol) {
@@ -423,7 +423,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     // Type parameters loading
 
     private Array getTypeParametersFromAnnotations(Symbol symbol) {
-        return getTypeInfoFromAnnotations(symbol, TypeParameters.class.getName());
+        return getTypeInfoFromAnnotations(symbol, "com.redhat.ceylon.compiler.metadata.java.TypeParameters");
     }
 
     // from our annotation

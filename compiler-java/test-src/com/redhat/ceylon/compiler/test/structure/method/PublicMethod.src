@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.test.structure.method;
 
 class Method extends .ceylon.language.Object {
     
-    public void f() {
+    public final void f() {
     }
     
     Method() {

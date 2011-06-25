@@ -1,10 +1,10 @@
 class SuperReference(){
-    shared default void m() {
+    shared void m() {
         SuperReferenceChild x = SuperReferenceChild();
         x.test();
     }
     
-    shared void test() {
+    shared default void test() {
         return;
     }
 }

@@ -1,3 +1,3 @@
 class Method() {
- shared void f() {}
+    shared void f() {}
 }

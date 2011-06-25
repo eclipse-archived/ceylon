@@ -1,12 +1,17 @@
 package com.redhat.ceylon.compiler.test.structure.attribute;
 
 class ClassVariable extends .ceylon.language.Object {
-    final String f;
+    private final String f;
+    private final String f2;
     
     ClassVariable() {
     }
     
-    String getF() {
+    private final String getF() {
         return this.f;
+    }
+    
+    public final String getF2() {
+        return this.f2;
     }
 }
