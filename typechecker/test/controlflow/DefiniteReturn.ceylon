@@ -1039,20 +1039,44 @@ interface DefiniteReturn {
     
     class ClassWithReturn() {
         if (testSomething()) {
-            @error return;
+            return;
         }
         else {
-            @error return;
+            doSomething();
         }
+        doSomethingElse();
+        return;
     }
     
     class ClassWithThrow() {
+        if (testSomething()) {
+            doSomething();
+        }
+        else {
+            throw;
+        }
+        doSomethingElse();
+        throw;
+    }
+    
+    class ClassWithReturns() {
+        if (testSomething()) {
+            return;
+        }
+        else {
+            return;
+        }
+        @error doSomething();
+    }
+    
+    class ClassWithThrows() {
         if (testSomething()) {
             throw;
         }
         else {
             throw;
         }
+        @error return;
     }
     
     X methodWithNestedMethod() {
@@ -1088,6 +1112,9 @@ interface DefiniteReturn {
             if (testSomething()) {
                 @error return X();
             }
+            else {
+                return;
+            }
         }
         return X();
     }
@@ -1096,6 +1123,9 @@ interface DefiniteReturn {
         class Nested() {
             if (testSomething()) {
                 @error return X();
+            }
+            else {
+                return;
             }
         }
         return X();

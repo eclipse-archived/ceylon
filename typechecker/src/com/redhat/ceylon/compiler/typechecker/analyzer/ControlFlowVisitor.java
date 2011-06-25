@@ -166,7 +166,7 @@ public class ControlFlowVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ClassDefinition that) {
-        boolean c = beginReturnScope(false);
+        boolean c = beginReturnScope(true);
         boolean d = beginDefiniteReturnScope();
         super.visit(that);
         endReturnScope(c);
@@ -184,7 +184,7 @@ public class ControlFlowVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ObjectDefinition that) {
-        boolean c = beginReturnScope(false);
+        boolean c = beginReturnScope(true);
         boolean d = beginDefiniteReturnScope();
         super.visit(that);
         endReturnScope(c);
@@ -193,7 +193,7 @@ public class ControlFlowVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ObjectArgument that) {
-        boolean c = beginReturnScope(false);
+        boolean c = beginReturnScope(true);
         boolean d = beginDefiniteReturnScope();
         super.visit(that);
         endReturnScope(c);

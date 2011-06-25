@@ -68,24 +68,26 @@ class BreakContinue() {
         }
     }
     
-    class BadReturn() {
-        @error return;
+    class ReturnFromClass() {
+        return;
     }
     
-    object badReturn {
-        @error return;
+    object returnFromObject {
+        return;
     }
     
-    void badReturnFromClass() {
-        class Bad() {
-            @error return;
+    void returnFromClassInMethod() {
+        class Good() {
+            return;
         }
+        return;
     }
     
-    void badReturnFromObject() {
-        object bad {
-            @error return;
+    void returnFromObjectInMethod() {
+        object good {
+            return;
         }
+        return;
     }
     
     

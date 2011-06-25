@@ -265,6 +265,30 @@ public class ExpressionVisitor extends Visitor {
         inferType(that, that.getBlock());
     }
 
+    @Override public void visit(Tree.ClassDefinition that) {
+        Tree.Type rt = beginReturnScope(new Tree.VoidModifier(that.getAntlrTreeNode()));
+        super.visit(that);
+        endReturnScope(rt);
+    }
+
+    @Override public void visit(Tree.InterfaceDefinition that) {
+        Tree.Type rt = beginReturnScope(null);
+        super.visit(that);
+        endReturnScope(rt);
+    }
+
+    @Override public void visit(Tree.ObjectDefinition that) {
+        Tree.Type rt = beginReturnScope(new Tree.VoidModifier(that.getAntlrTreeNode()));
+        super.visit(that);
+        endReturnScope(rt);
+    }
+
+    @Override public void visit(Tree.ObjectArgument that) {
+        Tree.Type rt = beginReturnScope(new Tree.VoidModifier(that.getAntlrTreeNode()));
+        super.visit(that);
+        endReturnScope(rt);
+    }
+
     //Type inference for members declared "local":
     
     private void inferType(Tree.TypedDeclaration that, Tree.Block block) {
@@ -495,7 +519,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.Expression e = that.getExpression();
             if ( returnType instanceof Tree.VoidModifier ) {
                 if (e!=null) {
-                    that.addError("a void method or setter may not return a value");
+                    that.addError("a void method, setter, or class initializer may not return a value");
                 }
             }
             else if ( !(returnType instanceof Tree.LocalModifier) ) {
