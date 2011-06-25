@@ -2648,7 +2648,7 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
         Of course we could use a single quoted literal, 
         <literal>shared('org.example.containing.package')</literal>, but perhaps 
         this would justify introducing a literal package name syntax:
-        <literal>shared(@org.example.containing.package)</literal>.</para>
+        <literal>shared(:org:example:containing:package)</literal>.</para>
         </comment>
         
     </section>

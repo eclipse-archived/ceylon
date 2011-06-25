@@ -482,14 +482,19 @@
         
         <programlisting>Type: TypeNameWithArguments ("." TypeNameWithArguments)*</programlisting> <!-- | Subtype -->
         
-        <para>Unlike Java, the name of a type may not be qualified by the package name.</para>
-        
         <para>If a type has type parameters or a sequenced type parameter, a type argument 
         list must be specified. If a type has no type parameters, and no sequenced type 
         parameter, no type argument list may be specified.</para>
         
         <programlisting>BufferedReader.Buffer</programlisting>
         <programlisting>Entry&lt;Natural,Element&gt;</programlisting>
+        
+        <para>The name of a type may not be qualified by the package name.</para>
+        
+        <comment><para>TODO: Using <literal>.</literal> as a qualifier makes Java's grammar 
+        context-senstive. Should we introduce a special syntax for qualification of identifiers
+        by package name, for example, <literal>:ceylon:language:metamodel:Class</literal>? This
+        would also allow us to have metamodel references for packages.</para></comment>
         
         <comment><para>TODO: Should we allow the abbreviation <literal>Sequence&lt;&gt;</literal>
         meaning <literal>Sequence&lt;Object&gt;</literal> for covariant types, and 
