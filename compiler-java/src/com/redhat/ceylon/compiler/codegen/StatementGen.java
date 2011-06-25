@@ -114,9 +114,7 @@ public class StatementGen extends GenPart {
         }
         
         private void append(List<JCStatement> list) {
-            for (JCStatement stmt : list) {
-                stmts.append(stmt);
-            }
+            stmts.appendList(list);
         }
     }
 
