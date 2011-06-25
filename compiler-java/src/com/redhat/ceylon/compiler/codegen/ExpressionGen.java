@@ -6,8 +6,6 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.codegen.Gen2.Singleton;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -216,7 +214,14 @@ public class ExpressionGen extends GenPart {
             // must use the setter
             return at(op).Apply(List.<JCTree.JCExpression>nil(), makeIdent(Util.getSetterName(decl.getName())), 
                     List.<JCTree.JCExpression>of(rhs));
-        }else
+        } else if(Util.isToplevelAttribute(decl)){
+	        // must use top level setter
+            java.util.List<String> path = new LinkedList<String>();
+            path.addAll(decl.getContainer().getQualifiedName());
+            path.add("$"+decl.getName());
+            path.add(Util.getSetterName(decl.getName()));
+            return at(op).Apply(List.<JCExpression>nil(), makeIdent(path), List.<JCTree.JCExpression>of(rhs));
+        } else
             return at(op).Assign(convertExpression(leftTerm), rhs);
     }
 
@@ -424,6 +429,10 @@ public class ExpressionGen extends GenPart {
             public void visit(Tree.Expression tree) {
                 result = at(access).Select(convertExpression(tree), names().fromString(memberName.getText()));
             }
+            
+            public void visit(Tree.This op) {
+                result = at(access).Select(makeIdent("this"), names().fromString(memberName.getText()));
+            }
         }
 
         V v = new V();
@@ -434,15 +443,14 @@ public class ExpressionGen extends GenPart {
     private JCExpression convert(Tree.BaseMemberExpression member) {
         Declaration decl = member.getDeclaration();
         if(decl instanceof Value){
-            Scope container = decl.getContainer();
-            if(container instanceof Package){
+            if(Util.isToplevelAttribute(decl)){
                 // it's a toplevel attribute
                 java.util.List<String> path = new LinkedList<String>();
-                path.addAll(container.getQualifiedName());
+                path.addAll(decl.getContainer().getQualifiedName());
                 path.add("$"+decl.getName());
                 path.add(Util.getGetterName(decl.getName()));
                 return at(member).Apply(List.<JCExpression>nil(), makeIdent(path), List.<JCExpression>nil());
-            }else if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
+            }else if(Util.isClassAttribute(decl)){
                 // invoke the getter
                 return at(member).Apply(List.<JCExpression>nil(), 
                         makeIdent(Util.getGetterName(decl.getName())), 

@@ -19,4 +19,9 @@ public class Util {
     public static boolean isClassAttribute(Declaration decl) {
         return decl.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Class;
     }
+
+    // FIXME: add this to Declaration
+    public static boolean isToplevelAttribute(Declaration decl) {
+        return decl.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Package;
+    }
 }

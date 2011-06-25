@@ -66,7 +66,7 @@ public class ClassGen extends GenPart {
 
             public void visit(Tree.Parameter param) {
                 JCVariableDecl var = at(cdecl).VarDef(make().Modifiers(0), names().fromString(param.getIdentifier().getText()), gen.convert(param.getType()), null);
-                JCVariableDecl localVar = at(cdecl).VarDef(make().Modifiers(FINAL), names().fromString(param.getIdentifier().getText()), gen.convert(param.getType()), null);
+                JCVariableDecl localVar = at(cdecl).VarDef(make().Modifiers(FINAL | PRIVATE), names().fromString(param.getIdentifier().getText()), gen.convert(param.getType()), null);
                 params.append(var);
                 defs.append(localVar);
                 initStmts.append(at(param).Exec(at(param).Assign(makeSelect("this", localVar.getName().toString()), at(param).Ident(var.getName()))));
@@ -101,14 +101,15 @@ public class ClassGen extends GenPart {
             	// missing getters and setters later on
             	attributeDecls.append(decl);
 
+            	Name attrName = names().fromString(decl.getIdentifier().getText());
+            	
             	// Only non-formal attributes have corresponding fields
-            	if (!isFormal(decl)) {
-	            	Name atrrName = names().fromString(decl.getIdentifier().getText());
-	            	
+            	// and if a class parameter exists with the same name we skip this part as well
+            	if (!isFormal(decl) && !existsParam(params, attrName)) {
 	                if (decl.getSpecifierOrInitializerExpression() != null) {
 	                	// The attribute's initializer gets moved to the constructor (why?)
 	                	JCExpression initialValue = gen.expressionGen.convertExpression(decl.getSpecifierOrInitializerExpression().getExpression());
-	                    stmts.append(at(decl).Exec(at(decl).Assign(at(decl).Ident(atrrName), initialValue)));
+	                    stmts.append(at(decl).Exec(at(decl).Assign(at(decl).Ident(attrName), initialValue)));
 	                }
 	
 	                final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
@@ -123,7 +124,7 @@ public class ClassGen extends GenPart {
 	                }
 	                
 	                int modifiers = convertAttributeFieldDeclFlags(decl);
-	                defs.append(at(decl).VarDef(at(decl).Modifiers(modifiers, langAnnotations.toList()), atrrName, type, null));
+	                defs.append(at(decl).VarDef(at(decl).Modifiers(modifiers, langAnnotations.toList()), attrName, type, null));
             	}
             }
 
@@ -209,6 +210,15 @@ public class ClassGen extends GenPart {
 
         return classDef;
     }
+
+	public boolean existsParam(ListBuffer<JCVariableDecl> params, Name attrName) {
+		for (JCVariableDecl decl : params) {
+			if (decl.name.equals(attrName)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	private JCTree.JCMethodDecl convert(ClassOrInterface classDecl, AttributeSetterDefinition cdecl) {
         JCBlock body = gen.statementGen.convert(classDecl, cdecl.getBlock());
