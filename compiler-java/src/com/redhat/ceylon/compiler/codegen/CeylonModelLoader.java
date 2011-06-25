@@ -10,6 +10,8 @@ import java.util.Map;
 
 import javax.lang.model.type.TypeKind;
 
+import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
+import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -290,6 +292,9 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         return declaration.getType();
     }
 
+    //
+    // ModelCompleter
+    
     @Override
     public void complete(LazyInterface iface) {
         complete(iface, iface.classSymbol);
@@ -305,12 +310,14 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         setTypeParameters(klass, classSymbol);
         // then its methods
         for(Symbol member : classSymbol.members().getElements()){
+            // FIXME: deal with constructors
+            // FIXME: could be an attribute
             if(member instanceof MethodSymbol){
                 MethodSymbol methodSymbol = (MethodSymbol) member;
                 
                 if(methodSymbol.isStatic()
                         || methodSymbol.isConstructor()
-                        /* Temporary: if it's not public drop it. */
+                        /* FIXME: Temporary: if it's not public drop it. */
                         || (methodSymbol.flags() & Flags.PUBLIC) == 0)
                     continue;
                 
@@ -330,75 +337,24 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 for(VarSymbol paramSymbol : methodSymbol.params()){
                     ValueParameter parameter = new ValueParameter();
                     parameter.setContainer(method);
+                    // FIXME: deal with type override by annotations
                     parameter.setType(getType(paramSymbol.type, method));
                     parameters.getParameters().add(parameter);
                 }
+                // FIXME: deal with type override by annotations
                 method.setType(getType(methodSymbol.getReturnType(), method));
             }
         }
+        // FIXME: deal with type override by annotations
         // look at its super type
         Type superClass = classSymbol.getSuperclass();
         // ceylon.language.Void has no super type. java.lang.Object neither
         if(!classSymbol.getQualifiedName().toString().equals("language.ceylon.Void")
                 && superClass.getKind() != TypeKind.NONE)
             klass.setExtendedType(getType(superClass, klass));
-        // and its interfaces
-        if(klass.getName().equals("Natural"))
-            "".toString();
-        Compound satisfiedTypes = getAnnotation(classSymbol, "com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes");
-        if(satisfiedTypes != null){
-            klass.getSatisfiedTypes().addAll(getSatisfiedTypes(satisfiedTypes, klass));
-        }else{
-            for(Type iface : classSymbol.getInterfaces()){
-                klass.getSatisfiedTypes().add(getType(iface, klass));
-            }
-        }
+        setSatisfiedTypes(klass, classSymbol);
     }
     
-    private Collection<? extends ProducedType> getSatisfiedTypes(Compound satisfiedTypes, Scope scope) {
-        Array types = (Array) satisfiedTypes.member(names.fromString("value"));
-        List<ProducedType> producedTypes = new LinkedList<ProducedType>();
-        for(Attribute type : types.values){
-            producedTypes.add(decodeType((String) type.getValue(), scope));
-        }
-        return producedTypes;
-    }
-
-    private ProducedType decodeType(String value, Scope scope) {
-        return typeParser .decodeType(value, scope, this);
-    }
-
-    private Compound getAnnotation(ClassSymbol classSymbol, String name) {
-        com.sun.tools.javac.util.List<Compound> annotations = classSymbol.getAnnotationMirrors();
-        for(Compound annotation : annotations){
-            if(annotation.type.tsym.getQualifiedName().toString().equals(name))
-                return annotation;
-        }
-        return null;
-    }
-
-    private void setTypeParameters(Method method, MethodSymbol methodSymbol) {
-        List<TypeParameter> params = new LinkedList<TypeParameter>();
-        method.setTypeParameters(params);
-        for(TypeSymbol typeParam : methodSymbol.getTypeParameters()){
-            TypeParameter param = new TypeParameter();
-            param.setContainer(method);
-            param.setName(typeParam.name.toString());
-            params.add(param);
-        }
-    }
-
-    private void setTypeParameters(ClassOrInterface klass, ClassSymbol classSymbol) {
-        List<TypeParameter> params = new LinkedList<TypeParameter>();
-        klass.setTypeParameters(params);
-        for(TypeSymbol typeParam : classSymbol.getTypeParameters()){
-            TypeParameter param = new TypeParameter();
-            param.setContainer(klass);
-            param.setName(typeParam.name.toString());
-            params.add(param);
-        }
-    }        
-
     @Override
     public void complete(LazyValue value) {
         Type type = null;
@@ -416,6 +372,136 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         if(type == null)
             throw new RuntimeException("Failed to find type for toplevel attribute "+value.getName());
         value.setType(getType(type, null));
+    }
+
+    //
+    // Utils for loading type info from the model
+    
+    private Compound getAnnotation(Symbol classSymbol, String name) {
+        com.sun.tools.javac.util.List<Compound> annotations = classSymbol.getAnnotationMirrors();
+        for(Compound annotation : annotations){
+            if(annotation.type.tsym.getQualifiedName().toString().equals(name))
+                return annotation;
+        }
+        return null;
+    }
+
+    private Array getTypeInfoFromAnnotations(Symbol symbol, String name) {
+        Compound annotation = getAnnotation(symbol, name);
+        if(annotation != null)
+            return (Array)annotation.member(names.fromString("value"));
+        return null;
+    }
+    
+    //
+    // Satisfied Types
+    
+    private Array getSatisfiedTypesFromAnnotations(Symbol symbol) {
+        return getTypeInfoFromAnnotations(symbol, SatisfiedTypes.class.getName());
+    }
+    
+    private void setSatisfiedTypes(ClassOrInterface klass, ClassSymbol classSymbol) {
+        Array satisfiedTypes = getSatisfiedTypesFromAnnotations(classSymbol);
+        if(satisfiedTypes != null){
+            klass.getSatisfiedTypes().addAll(getSatisfiedTypes(satisfiedTypes, klass));
+        }else{
+            for(Type iface : classSymbol.getInterfaces()){
+                klass.getSatisfiedTypes().add(getType(iface, klass));
+            }
+        }
+    }
+
+    private Collection<? extends ProducedType> getSatisfiedTypes(Array satisfiedTypes, Scope scope) {
+        List<ProducedType> producedTypes = new LinkedList<ProducedType>();
+        for(Attribute type : satisfiedTypes.values){
+            producedTypes.add(decodeType((String) type.getValue(), scope));
+        }
+        return producedTypes;
+    }
+
+    //
+    // Type parameters loading
+
+    private Array getTypeParametersFromAnnotations(Symbol symbol) {
+        return getTypeInfoFromAnnotations(symbol, TypeParameters.class.getName());
+    }
+
+    // from our annotation
+    private void setTypeParameters(Scope scope, List<TypeParameter> params, Array typeParameters) {
+        for(Attribute attribute : typeParameters.values){
+            Compound typeParam = (Compound) attribute;
+            TypeParameter param = new TypeParameter();
+            param.setContainer(scope);
+            param.setName((String)typeParam.member(names.fromString("value")).getValue());
+            params.add(param);
+            
+            Attribute varianceAttribute = typeParam.member(names.fromString("variance"));
+            if(varianceAttribute != null){
+                VarSymbol variance = (VarSymbol) varianceAttribute.getValue();
+                String varianceName = variance.name.toString();
+                if(varianceName.equals("IN")){
+                    param.setContravariant(true);
+                }else if(varianceName.equals("OUT"))
+                    param.setCovariant(true);
+            }
+            
+            // FIXME: I'm pretty sure we can have bounds that refer to method 
+            // params, so we need to do this in two phases
+            Attribute satisfiesAttribute = typeParam.member(names.fromString("satisfies"));
+            if(satisfiesAttribute != null){
+                String satisfies = (String) satisfiesAttribute.getValue();
+                if(!satisfies.isEmpty()){
+                    ProducedType satisfiesType = decodeType(satisfies, scope);
+                    param.getSatisfiedTypes().add(satisfiesType);
+                }
+            }
+        }
+    }
+
+    // from java type info
+    private void setTypeParameters(Scope scope, List<TypeParameter> params, com.sun.tools.javac.util.List<TypeSymbol> typeParameters) {
+        for(TypeSymbol typeParam : typeParameters){
+            TypeParameter param = new TypeParameter();
+            param.setContainer(scope);
+            param.setName(typeParam.name.toString());
+            params.add(param);
+            
+            // FIXME: I'm pretty sure we can have bounds that refer to method 
+            // params, so we need to do this in two phases
+            if(!typeParam.getBounds().isEmpty()){
+                for(Type bound : typeParam.getBounds())
+                    param.getSatisfiedTypes().add(getType(bound, scope));
+            }
+        }
+    }
+
+    // method
+    private void setTypeParameters(Method method, MethodSymbol methodSymbol) {
+        List<TypeParameter> params = new LinkedList<TypeParameter>();
+        method.setTypeParameters(params);
+        Array typeParameters = getTypeParametersFromAnnotations(methodSymbol);
+        if(typeParameters != null)
+            setTypeParameters(method, params, typeParameters);
+        else
+            setTypeParameters(method, params, methodSymbol.getTypeParameters());
+    }
+
+    // class
+    private void setTypeParameters(ClassOrInterface klass, ClassSymbol classSymbol) {
+        List<TypeParameter> params = new LinkedList<TypeParameter>();
+        klass.setTypeParameters(params);
+        Array typeParameters = getTypeParametersFromAnnotations(classSymbol);
+        if(typeParameters != null)
+            setTypeParameters(klass, params, typeParameters);
+        else
+            setTypeParameters(klass, params, classSymbol.getTypeParameters());
+    }        
+
+    //
+    // TypeParsing and ModelLoader
+
+    private ProducedType decodeType(String value, Scope scope) {
+        return typeParser .decodeType(value, scope, this);
     }
 
     @Override
