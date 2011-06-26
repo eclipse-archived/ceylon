@@ -4,6 +4,7 @@ public class ValueParameter extends Parameter {
     
     boolean captured = true;
     
+    @Override
     public boolean isCaptured() {
         return captured;
     }

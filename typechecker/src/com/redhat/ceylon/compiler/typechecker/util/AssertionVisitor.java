@@ -6,8 +6,6 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -66,34 +64,14 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         for (Tree.CompilerAnnotation c: that.getCompilerAnnotations()) {
             if (c.getIdentifier().getText().equals("captured")) {
                 Declaration d = that.getDeclarationModel();
-                if (d instanceof Value) {
-                     if (!((Value) d).isCaptured() && !d.isShared()) {
-                         out(that, "not captured");
-                     }
-                }
-                else if (d instanceof ValueParameter) {
-                    if (!((ValueParameter) d).isCaptured()) {
-                        out(that, "not captured");
-                    }
-                }
-                else {
-                    out(that, "not a value");
+                if (!d.isCaptured() && !d.isShared()) {
+                    out(that, "not captured");
                 }
             }
             if (c.getIdentifier().getText().equals("uncaptured")) {
                 Declaration d = that.getDeclarationModel();
-                if (d instanceof Value) {
-                     if (((Value) d).isCaptured() || d.isShared()) {
-                         out(that, "captured");
-                     }
-                }
-                else if (d instanceof ValueParameter) {
-                    if (((ValueParameter) d).isCaptured()) {
-                        out(that,"captured");
-                    }
-                }
-                else {
-                    out(that, "not a value");
+                if (d.isCaptured() || d.isShared()) {
+                    out(that, "captured");
                 }
             }
         }

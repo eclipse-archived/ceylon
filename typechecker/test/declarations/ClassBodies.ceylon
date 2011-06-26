@@ -490,8 +490,80 @@ interface ClassBodies {
         }
     }
     
-    abstract class Good3WithUninitialized() {
+    class Good3WithUninitialized() {
+        String name;
+        if (false) {
+            return;
+        }
+        name = "gavin";
+    }
+    
+    abstract class Good4WithUninitialized() {
         shared formal String name;
+    }
+    
+    class Good5WithUninitialized() {
+        String name;
+        void method() {
+            return;
+        }
+    }
+    
+    class Good6WithUninitialized() {
+        String name;
+        String method() {
+            //Note: error not really necessary, 
+            //      because captured by non-shared
+            //      declaration
+            @error return name; 
+        }
+    }
+    
+    class Bad7WithUninitialized() {
+        String name;
+        String method() {
+            @error return name;
+        }
+        method();
+    }
+    
+    class Bad8WithUninitialized() {
+        String name;
+        String method() {
+            @error return name;
+        }
+        if (false) {
+            method();
+        }
+    }
+    
+    class Bad9WithUninitialized() {
+        String name;
+        String method() {
+            @error return name;
+        }
+        shared String attribute {
+            return method();
+        }
+    }
+    
+    class Bad10WithUninitialized() {
+        String name;
+        String method() {
+            @error return name;
+        }
+        void method2() {
+            method();
+        }
+        method2();
+    }
+    
+    class Bad5WithUninitialized() {
+        String name;
+        shared String method() {
+            @error return name;
+        }
+        method();
     }
     
     class BadWithUninitialized() {
@@ -503,6 +575,14 @@ interface ClassBodies {
         if (false) {
             name = "gavin";
         }
+    }
+    
+    class Bad3WithUninitialized() {
+        shared String name;
+        if (false) {
+            @error return;
+        }
+        name = "gavin";
     }
     
 }

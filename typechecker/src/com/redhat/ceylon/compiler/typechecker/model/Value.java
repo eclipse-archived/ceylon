@@ -30,6 +30,7 @@ public class Value extends MethodOrValue {
 		this.variable = variable;
 	}
 	
+	@Override
 	public boolean isCaptured() {
         return captured;
     }

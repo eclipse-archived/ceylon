@@ -94,6 +94,10 @@ public abstract class Declaration extends Element {
         }
     }
     
+    public boolean isCaptured() {
+        return false;
+    }
+    
     public boolean isToplevel() {
         return getContainer() instanceof Package;
     }

@@ -68,6 +68,12 @@ public class ValueVisitor extends Visitor {
         exitCapturingScope(cs);
     }
     
+    @Override public void visit(Tree.ObjectDefinition that) {
+        boolean cs = enterCapturingScope();
+        super.visit(that);
+        exitCapturingScope(cs);
+    }
+    
     @Override public void visit(Tree.MethodDefinition that) {
         boolean cs = enterCapturingScope();
         super.visit(that);

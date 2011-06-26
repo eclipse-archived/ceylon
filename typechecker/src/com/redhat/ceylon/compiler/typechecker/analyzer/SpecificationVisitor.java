@@ -136,19 +136,30 @@ public class SpecificationVisitor extends Visitor {
     private void visitReference(Node that, Declaration member) {
         //Declaration member = getDeclaration(that.getScope(), that.getUnit(), id, context);
         //TODO: check superclass members are not in declaration section!
-        if ( member==declaration && isDefinedInContainingScope(that, member) && !inDeclarationSection() ) {
+        if ( member==declaration && 
+                isDefinedInContainingScope(that, member) ) {
             if (!declared) {
-                that.addError("not yet declared: " + 
-                        member.getName());
+                //you are allowed to refer to later 
+                //declarations in a class declaration
+                //section
+                if ( !inDeclarationSection() ) {
+                    that.addError("not yet declared: " + 
+                            member.getName());
+                }
             }
             else if (!specified.definitely) {
-                if (isVariable()) {
-                    that.addError("not definitely initialized: " + 
-                            member.getName());                    
-                }
-                else {
-                    that.addError("not definitely specified: " + 
-                            member.getName());
+                //you are allowed to refer to formal
+                //declarations in a class declaration
+                //section
+                if (!declaration.isFormal() || !inDeclarationSection()) {
+                    if (isVariable()) {
+                        that.addError("not definitely initialized: " + 
+                                member.getName());                    
+                    }
+                    else {
+                        that.addError("not definitely specified: " + 
+                                member.getName());
+                    }
                 }
             }
         }
@@ -444,7 +455,9 @@ public class SpecificationVisitor extends Visitor {
             super.visit(that);        
             declarationSection = false;
             lastExecutableStatement = null;
-            if (declaration.isShared() && !declaration.isFormal() && !specified.definitely) {
+            //TODO: this does not account for the case where the
+            //      initializer exists early via a return statement
+            if (isSharedDeclarationUninitialized()) {
                 dd.addError("must be definitely specified by class initializer");
             }
         }
@@ -470,7 +483,18 @@ public class SpecificationVisitor extends Visitor {
     
     public void visit(Tree.Return that) {
         super.visit(that);
+        if (!cannotSpecify) {
+            if (isSharedDeclarationUninitialized()) {
+                that.addError(declaration.getName() + " must be definitely specified by class initializer");
+            }
+        }
         exit();
+    }
+
+    private boolean isSharedDeclarationUninitialized() {
+        return (declaration.isShared() || declaration.isCaptured()) && 
+                !declaration.isFormal() && 
+                !specified.definitely;
     }
     
     @Override
