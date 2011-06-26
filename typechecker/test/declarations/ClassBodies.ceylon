@@ -475,4 +475,34 @@ interface ClassBodies {
         }
     }
     
+    class GoodWithInitialized() {
+        shared String name = "gavin";
+    }
+    
+    class GoodWithUninitialized() {
+        String name;
+    }
+    
+    class Good2WithUninitialized() {
+        String name;
+        if (false) {
+            name = "gavin";
+        }
+    }
+    
+    abstract class Good3WithUninitialized() {
+        shared formal String name;
+    }
+    
+    class BadWithUninitialized() {
+        @error shared String name;
+    }
+    
+    class Bad2WithUninitialized() {
+        @error shared String name;
+        if (false) {
+            name = "gavin";
+        }
+    }
+    
 }

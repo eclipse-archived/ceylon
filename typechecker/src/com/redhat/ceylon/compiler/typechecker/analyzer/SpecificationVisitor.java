@@ -416,7 +416,7 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.ClassBody that) {
         Tree.Statement les = null;
-        boolean found = false;
+        Tree.Declaration dd = null;
         for (Tree.Statement s: that.getStatements()) {
             if (s instanceof Tree.ExecutableStatement) {
                 les = s;
@@ -434,16 +434,19 @@ public class SpecificationVisitor extends Visitor {
                     }
                 }
                 if (d.getDeclarationModel()==declaration) {
-                    found = true;
+                    dd = d;
                 }
             }
         }
-        if (found) {
+        if (dd!=null) {
             declarationSection = les==null;
             lastExecutableStatement = les;
             super.visit(that);        
             declarationSection = false;
             lastExecutableStatement = null;
+            if (declaration.isShared() && !declaration.isFormal() && !specified.definitely) {
+                dd.addError("must be definitely specified by class initializer");
+            }
         }
         else {
             super.visit(that);
