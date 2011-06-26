@@ -568,7 +568,7 @@ public class ClassGen extends GenPart {
     }
 
     public JCAnnotation makeOverride() {
-    	return make().Annotation(makeIdent(syms().overrideType), null);
+    	return make().Annotation(makeIdent(syms().overrideType), List.<JCExpression> nil());
 	}
 
     private JCTypeParameter convert(Tree.TypeParameterDeclaration param) {
