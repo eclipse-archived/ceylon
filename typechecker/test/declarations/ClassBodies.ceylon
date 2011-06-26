@@ -475,8 +475,17 @@ interface ClassBodies {
         }
     }
     
+    class GoodWithParameter(String name) {
+        String method() {
+            return name;
+        }
+    }
+    
     class GoodWithInitialized() {
         shared String name = "gavin";
+        String method() {
+            return name;
+        }
     }
     
     class GoodWithUninitialized() {
