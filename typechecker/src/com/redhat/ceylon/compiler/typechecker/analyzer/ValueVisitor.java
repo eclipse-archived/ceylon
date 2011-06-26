@@ -44,7 +44,7 @@ public class ValueVisitor extends Visitor {
                         ((ValueParameter) d).setCaptured(true);
                     }
                     //TODO: remove this once we support capturing variable locals!
-                    if (d.isVariable() && !d.isClassMember() && !d.isInterfaceMember()) {
+                    if (d.isVariable() && !d.isClassMember() && !d.isToplevel()) {
                         that.addError("access to variable local from capturing scope: " + declaration.getName());
                     }
                 }
