@@ -102,6 +102,7 @@ public class TypeChecker {
         }
         for (PhasedUnit pu: listOfUnits) {
             pu.validateControlFlow();
+            pu.validateSelfReferences();
             pu.validateSpecification();
         }
         for (PhasedUnit pu : listOfUnits) {

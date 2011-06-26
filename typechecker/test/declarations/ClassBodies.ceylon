@@ -286,4 +286,56 @@ interface ClassBodies {
         @error local t = this;
     }
     
+    class Good4WithThis() {
+        String name = "gavin";
+        void member() {
+            variable local t := this;
+        }
+    }
+    
+    object good4WithThis {
+        String name = "gavin";
+        void member() {
+            variable local t := this;
+        }
+    }
+    
+    class Bad4WithThis() {
+        String name = "gavin";
+        @error variable local t := this;
+    }
+    
+    object bad4WithThis {
+        String name = "gavin";
+        @error variable local t := this;
+    }
+    
+    class Good5WithThis() {
+        String name = "gavin";
+        variable Good5WithThis? t := null;
+        void member() {
+            t := this;
+        }
+    }
+    
+    object good5WithThis {
+        String name = "gavin";
+        variable Object? t := null;
+        void member() {
+            t := this;
+        }
+    }
+    
+    class Bad5WithThis() {
+        String name = "gavin";
+        variable Bad5WithThis? t := null;
+        @error t := this;
+    }
+    
+    object bad5WithThis {
+        String name = "gavin";
+        variable Object? t := null;
+        @error t := this;
+    }
+    
 }

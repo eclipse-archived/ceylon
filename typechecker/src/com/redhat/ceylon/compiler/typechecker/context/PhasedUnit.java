@@ -67,45 +67,45 @@ public class PhasedUnit {
     }
 
     public void validateTree() {
-        System.out.println("Validating tree for " + fileName);
+        //System.out.println("Validating tree for " + fileName);
         compilationUnit.visit(new Validator());
     }
 
     public void scanDeclarations() {
-        System.out.println("Scan declarations for " + fileName);
+        //System.out.println("Scan declarations for " + fileName);
         DeclarationVisitor dv = new DeclarationVisitor(pkg, fileName);
         compilationUnit.visit(dv);
         unit = dv.getCompilationUnit();
     }
 
     public void scanTypeDeclarations() {
-        System.out.println("Scan type declarations for " + fileName);
+        //System.out.println("Scan type declarations for " + fileName);
         compilationUnit.visit( new TypeVisitor(unit, context) );
     }
 
     public void analyseTypes() {
-        System.out.println("Run analysis phase for " + fileName);
+        //System.out.println("Run analysis phase for " + fileName);
         compilationUnit.visit(new ExpressionVisitor(context));
         compilationUnit.visit(new TypeArgumentVisitor());
     }
     
     public void validateControlFlow() {
-        System.out.println("Validate control flow for " + fileName);
+        //System.out.println("Validate control flow for " + fileName);
         compilationUnit.visit(new ControlFlowVisitor());
     }
 
     public void validateRefinement() {
-        System.out.println("Validate member refinement for " + fileName);
+        //System.out.println("Validate member refinement for " + fileName);
         compilationUnit.visit(new RefinementVisitor());
     }
 
     public void runAssertions() {
-        System.out.println("Running assertions for " + fileName);
+        //System.out.println("Running assertions for " + fileName);
         compilationUnit.visit(new AssertionVisitor());
     }
 
     public void validateSpecification() {
-        System.out.println("Validate specification for " + fileName);
+        //System.out.println("Validate specification for " + fileName);
         for (Declaration d: unit.getDeclarations()) {
             compilationUnit.visit(new SpecificationVisitor(d, context));
             if (d instanceof TypedDeclaration && !(d instanceof Setter)) {
@@ -115,7 +115,7 @@ public class PhasedUnit {
     }
 
     public void validateSelfReferences() {
-        System.out.println("Validate self references for " + fileName);
+        //System.out.println("Validate self references for " + fileName);
         compilationUnit.visit(new SelfReferenceVisitor());
     }
 

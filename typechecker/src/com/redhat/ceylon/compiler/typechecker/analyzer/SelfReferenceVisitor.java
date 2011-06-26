@@ -73,11 +73,23 @@ public class SelfReferenceVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Tree.SpecifierExpression that) {
+    public void visit(Tree.SpecifierOrInitializerExpression that) {
         super.visit(that);
         //TODO: MOVE TO DIFFERENT VISITOR!
         if (lastExecutableStatement!=null &&
                 that.getExpression().getTerm() instanceof Tree.This 
+                && !inDeclarationSection()) {
+            that.addError("leaks this reference");
+        }
+        //TODO: assignments
+    }
+
+    @Override
+    public void visit(Tree.AssignmentOp that) {
+        super.visit(that);
+        //TODO: MOVE TO DIFFERENT VISITOR!
+        if (lastExecutableStatement!=null &&
+                that.getRightTerm() instanceof Tree.This 
                 && !inDeclarationSection()) {
             that.addError("leaks this reference");
         }

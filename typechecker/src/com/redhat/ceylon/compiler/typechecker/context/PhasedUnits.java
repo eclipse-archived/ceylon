@@ -98,7 +98,7 @@ public class PhasedUnits {
     private void parseFile(VirtualFile file, VirtualFile srcDir) throws Exception {
         if ( file.getName().endsWith(".ceylon") ) {
 
-            System.out.println("Parsing " + file.getName());
+            //System.out.println("Parsing " + file.getName());
             InputStream is = file.getInputStream();
             ANTLRInputStream input = new ANTLRInputStream(is);
             CeylonLexer lexer = new CeylonLexer(input);
@@ -110,12 +110,12 @@ public class PhasedUnits {
 
         	List<LexError> lexerErrors = lexer.getErrors();
         	for (LexError le: lexerErrors) {
-                System.out.println("Lexer error: " + le.getMessage(lexer));
+                System.out.println("Lexer error in " + file.getName() + ": " + le.getMessage(lexer));
         	}
 
         	List<ParseError> parserErrors = parser.getErrors();
         	for (ParseError pe: parserErrors) {
-                System.out.println("Parser error: " + pe.getMessage(parser));
+                System.out.println("Parser error in " + file.getName() + ": " + pe.getMessage(parser));
         	}
 
         	com.redhat.ceylon.compiler.typechecker.model.Package p = moduleBuilder.getCurrentPackage();
