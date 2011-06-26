@@ -1,27 +1,33 @@
 package com.redhat.ceylon.compiler.test.structure.attribute;
 
 class ClassVariable extends .ceylon.language.Object {
-    private String f;
-    private String f2;
+    private String publicvar;
+    private String capturedvar;
+    
+    private final void m() {
+        setCapturedvar("new value");
+    }
     
     ClassVariable() {
-        setF(.ceylon.language.String.instance(""));
-        setF2(.ceylon.language.String.instance(""));
+        String uncapturedvar;
+        setPublicvar("");
+        uncapturedvar = "";
+        setCapturedvar("");
     }
     
-    private String getF() {
-        return this.f;
+    public String getPublicvar() {
+        return this.publicvar;
     }
     
-    private void setF(String f) {
-        this.f = f;
+    public void setPublicvar(String publicvar) {
+        this.publicvar = publicvar;
     }
     
-    public String getF2() {
-        return this.f2;
+    private String getCapturedvar() {
+        return this.capturedvar;
     }
     
-    public void setF2(String f2) {
-        this.f2 = f2;
+    private void setCapturedvar(String capturedvar) {
+        this.capturedvar = capturedvar;
     }
 }

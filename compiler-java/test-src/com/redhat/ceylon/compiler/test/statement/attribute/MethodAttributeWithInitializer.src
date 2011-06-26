@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.test.statement.attribute;
 class MethodAttributeWithInitializer extends .ceylon.language.Object {
     
     public final void m() {
-        final String f = .ceylon.language.String.instance("");
+        final String f = "";
     }
     
     MethodAttributeWithInitializer() {

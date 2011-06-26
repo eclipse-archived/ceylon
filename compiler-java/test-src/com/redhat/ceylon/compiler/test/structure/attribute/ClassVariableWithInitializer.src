@@ -1,20 +1,10 @@
 package com.redhat.ceylon.compiler.test.structure.attribute;
 
 class ClassVariableWithInitializer extends .ceylon.language.Object {
-    private String f;
-    private String f2;
+    private String f2 = "";
     
     ClassVariableWithInitializer() {
-        this.f = .ceylon.language.String.instance("");
-        this.f2 = .ceylon.language.String.instance("");
-    }
-    
-    private String getF() {
-        return this.f;
-    }
-    
-    private void setF(String f) {
-        this.f = f;
+        String f = "";
     }
     
     public String getF2() {

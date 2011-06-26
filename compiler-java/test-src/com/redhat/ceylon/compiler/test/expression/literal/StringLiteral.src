@@ -3,9 +3,9 @@ package com.redhat.ceylon.compiler.test.expression.literal;
 class StringLiteral extends .ceylon.language.Object {
     
     public final void m() {
-        final String s1 = .ceylon.language.String.instance("");
-        final String s2 = .ceylon.language.String.instance("This is a test");
-        final String s3 = .ceylon.language.String.instance("This\nis\nanother\ntest");
+        final String s1 = "";
+        final String s2 = "This is a test";
+        final String s3 = "This\nis\nanother\ntest";
     }
     
     StringLiteral() {

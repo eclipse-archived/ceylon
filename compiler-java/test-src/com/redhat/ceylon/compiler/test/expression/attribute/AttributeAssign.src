@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
 class AttributeAssign extends .ceylon.language.Object {
-    private Boolean b;
-    private Boolean b2;
+    private Boolean b = ceylon.language.$true.getTrue();
+    private Boolean b2 = ceylon.language.$true.getTrue();
     
     private final void m() {
         setB(ceylon.language.$false.getFalse());
@@ -10,8 +10,6 @@ class AttributeAssign extends .ceylon.language.Object {
     }
     
     AttributeAssign() {
-        this.b = ceylon.language.$true.getTrue();
-        this.b2 = ceylon.language.$true.getTrue();
     }
     
     private Boolean getB() {

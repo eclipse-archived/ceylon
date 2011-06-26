@@ -1,6 +1,12 @@
 class ClassVariable(){
-    variable String f;
-    shared variable String f2;
-    f := "";
-    f2 := "";
+    shared variable String publicvar;
+    variable String uncapturedvar;
+    variable String capturedvar;
+    publicvar := "";
+    uncapturedvar := "";
+    capturedvar := "";
+    
+    void m() {
+        capturedvar := "new value";
+    }
 }

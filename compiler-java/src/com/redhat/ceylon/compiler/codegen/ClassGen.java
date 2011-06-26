@@ -99,34 +99,41 @@ public class ClassGen extends GenPart {
             // FIXME: Here we've simplified CeylonTree.MemberDeclaration to
             // Tree.AttributeDeclaration
             public void visit(Tree.AttributeDeclaration decl) {
-            	// Remember attribute to be able to generate
-            	// missing getters and setters later on
-            	attributeDecls.append(decl);
-
+            	boolean useField = decl.getDeclarationModel().isCaptured() || isShared(decl);
+            	
             	Name attrName = names().fromString(decl.getIdentifier().getText());
             	
-            	// Only non-formal attributes have corresponding fields
+            	// Only a non-formal attribute has a corresponding field
             	// and if a class parameter exists with the same name we skip this part as well
-            	if (!isFormal(decl) && !existsParam(defs, attrName)) {
+            	if (!isFormal(decl) && !existsParam(params, attrName)) {
+            		JCExpression initialValue = null;
 	                if (decl.getSpecifierOrInitializerExpression() != null) {
-	                	// The attribute's initializer gets moved to the constructor (why?)
-	                	JCExpression initialValue = gen.expressionGen.convertExpression(decl.getSpecifierOrInitializerExpression().getExpression());
-	                    stmts.append(at(decl).Exec(at(decl).Assign(makeSelect("this", decl.getIdentifier().getText()), initialValue)));
+	                	initialValue = gen.expressionGen.convertExpression(decl.getSpecifierOrInitializerExpression().getExpression());
 	                }
 	
 	                final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
 	
 	                JCExpression type = gen.convert(decl.getType());
 	
-	                if (isActual(decl)) {
-	                	langAnnotations.append(makeOverride());
-	                }
 	                if (gen.isOptional(decl.getType())) {
 	                    type = gen.optionalType(type);
 	                }
 	                
-	                int modifiers = convertAttributeFieldDeclFlags(decl);
-	                defs.append(at(decl).VarDef(at(decl).Modifiers(modifiers, langAnnotations.toList()), attrName, type, null));
+                	if (useField) {
+                		// A captured attribute gets turned into a field
+		                int modifiers = convertAttributeFieldDeclFlags(decl);
+		                defs.append(at(decl).VarDef(at(decl).Modifiers(modifiers, langAnnotations.toList()), attrName, type, initialValue));
+                	} else {
+                		// Otherwise it's local to the constructor
+		                int modifiers = convertLocalDeclFlags(decl);
+		                stmts.append(at(decl).VarDef(at(decl).Modifiers(modifiers, langAnnotations.toList()), attrName, type, initialValue));
+                	}
+            	}
+            	
+            	if (useField) {
+                	// Remember attribute to be able to generate
+                	// missing getters and setters later on
+                	attributeDecls.append(decl);
             	}
             }
 
@@ -213,7 +220,7 @@ public class ClassGen extends GenPart {
         return classDef;
     }
 
-	public boolean existsParam(ListBuffer<JCTree> params, Name attrName) {
+	public boolean existsParam(ListBuffer<? extends JCTree> params, Name attrName) {
 		for (JCTree decl : params) {
 			if (decl instanceof JCVariableDecl) {
 				JCVariableDecl var = (JCVariableDecl)decl;
@@ -278,6 +285,14 @@ public class ClassGen extends GenPart {
 
         result |= isMutable(cdecl) ? 0 : FINAL;
         result |= PRIVATE;
+
+        return result;
+    }
+
+    private int convertLocalDeclFlags(Tree.AttributeDeclaration cdecl) {
+        int result = 0;
+
+        result |= isMutable(cdecl) ? 0 : FINAL;
 
         return result;
     }

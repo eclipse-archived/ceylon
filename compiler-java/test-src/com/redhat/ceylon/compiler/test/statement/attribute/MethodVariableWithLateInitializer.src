@@ -4,7 +4,7 @@ class MethodVariableWithInitializer extends .ceylon.language.Object {
     
     public final void m() {
         String f;
-        f = .ceylon.language.String.instance("");
+        f = "";
     }
     
     MethodVariableWithInitializer() {

@@ -1,0 +1,8 @@
+package com.redhat.ceylon.compiler.test.expression.attribute;
+
+class InitializerParamHidingVariable extends .ceylon.language.Object {
+    
+    InitializerParamHidingVariable(Boolean b) {
+        b = ceylon.language.$true.getTrue();
+    }
+}

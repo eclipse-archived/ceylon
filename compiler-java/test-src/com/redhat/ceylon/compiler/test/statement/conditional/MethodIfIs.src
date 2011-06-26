@@ -9,7 +9,7 @@ class MethodIfIs extends .ceylon.language.Object {
                 return x.message;
             }
         }
-        return .ceylon.language.String.instance("");
+        return "";
     }
     
     MethodIfIs() {

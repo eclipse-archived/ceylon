@@ -3,11 +3,11 @@ package com.redhat.ceylon.compiler.test.structure.attribute;
 class ClassAttributeGetter extends .ceylon.language.Object {
     
     String getF() {
-        return .ceylon.language.String.instance("");
+        return "";
     }
     
     String getF2() {
-        return .ceylon.language.String.instance("");
+        return "";
     }
     
     ClassAttributeGetter() {

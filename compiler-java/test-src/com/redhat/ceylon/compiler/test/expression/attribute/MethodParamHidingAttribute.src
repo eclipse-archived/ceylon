@@ -1,17 +1,12 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
 class MethodParamHidingAttribute extends .ceylon.language.Object {
-    private final Boolean b;
     
     private final Boolean m(final Boolean b) {
         return b;
     }
     
     MethodParamHidingAttribute() {
-        this.b = ceylon.language.$true.getTrue();
-    }
-    
-    private final Boolean getB() {
-        return this.b;
+        final Boolean b = ceylon.language.$true.getTrue();
     }
 }

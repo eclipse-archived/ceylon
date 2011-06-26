@@ -53,6 +53,10 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("attribute/InitializerParamHidingAttribute");
     }
     @Test
+    public void testInitializerParamHidingVariable(){
+        compareWithJavaSource("attribute/InitializerParamHidingVariable");
+    }
+    @Test
     public void testInitializerParamHidingGetter(){
         compareWithJavaSource("attribute/InitializerParamHidingGetter");
     }

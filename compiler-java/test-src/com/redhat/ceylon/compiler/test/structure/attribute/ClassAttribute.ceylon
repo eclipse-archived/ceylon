@@ -1,6 +1,12 @@
 class ClassAttribute(){
-    String f;
-    shared String f2;
-    f = "";
-    f2 = "";
+    shared String publicvar;
+    String uncapturedvar;
+    String capturedvar;
+    publicvar = "";
+    uncapturedvar = "";
+    capturedvar = "";
+    
+    String m() {
+        return capturedvar;
+    }
 }

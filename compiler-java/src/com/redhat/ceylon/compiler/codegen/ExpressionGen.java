@@ -213,7 +213,7 @@ public class ExpressionGen extends GenPart {
         // left side depends
         // FIXME: can this be anything else than a Primary?
         Declaration decl = ((Tree.Primary)leftTerm).getDeclaration();
-        if(Util.isClassAttribute(decl)){
+        if(Util.isClassAttribute(decl) /* FIXME && decl.isVariable() */){
             // must use the setter
             return at(op).Apply(List.<JCTree.JCExpression>nil(), makeIdent(Util.getSetterName(decl.getName())), 
                     List.<JCTree.JCExpression>of(rhs));
@@ -403,8 +403,7 @@ public class ExpressionGen extends GenPart {
     }
 
     JCExpression ceylonLiteral(String s) {
-        JCLiteral lit = make().Literal(s);
-        return make().Apply(null, makeSelect(makeIdent(syms().ceylonStringType), "instance"), List.<JCExpression> of(lit));
+        return make().Literal(s);
     }
 
     private JCExpression convert(Tree.StringLiteral string) {
