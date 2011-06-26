@@ -462,4 +462,17 @@ interface ClassBodies {
         String name = "gavin";
     }
     
+    class Super() {
+        shared String name="gavin";
+    }
+    
+    class BadWithSuper() extends Super() {
+        void inner() {
+            String n = super.name;
+            @error Object o = super;
+            @error print(super);
+            @error return super;
+        }
+    }
+    
 }
