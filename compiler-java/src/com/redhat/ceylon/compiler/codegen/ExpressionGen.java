@@ -433,6 +433,10 @@ public class ExpressionGen extends GenPart {
             public void visit(Tree.This op) {
                 result = at(access).Select(makeIdent("this"), names().fromString(memberName.getText()));
             }
+            
+            public void visit(Tree.Super op) {
+                result = at(access).Select(makeIdent("super"), names().fromString(memberName.getText()));
+            }
         }
 
         V v = new V();

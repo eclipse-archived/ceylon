@@ -1,4 +1,5 @@
-// FIXME This is obviously wrong
+package com.redhat.ceylon.compiler.test.expression.selfref;
+
 class SuperReference extends .ceylon.language.Object {
     
     public void m() {
@@ -12,11 +13,12 @@ class SuperReference extends .ceylon.language.Object {
     
     SuperReference() {
     }
-},
+}
 class SuperReferenceChild extends SuperReference {
     
-    public void test() {
-        /*missing*/();
+    @Override
+    public final void test() {
+        super.test();
     }
     
     SuperReferenceChild() {

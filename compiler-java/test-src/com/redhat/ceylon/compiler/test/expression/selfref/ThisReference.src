@@ -6,6 +6,10 @@ class ThisReference extends .ceylon.language.Object {
         return this;
     }
     
+    public final void test() {
+        this.test();
+    }
+    
     ThisReference() {
     }
 }
