@@ -5,12 +5,12 @@ import static com.sun.tools.javac.code.Flags.INTERFACE;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.STATIC;
+import static com.sun.tools.javac.code.Flags.ABSTRACT;
 import static com.sun.tools.javac.code.TypeTags.VOID;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import com.redhat.ceylon.compiler.codegen.Gen2.Singleton;
 import com.redhat.ceylon.compiler.codegen.StatementGen.StatementVisitor;
@@ -20,10 +20,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.source.tree.Tree.Kind;
-import com.sun.tools.javac.code.Flags;
-import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
@@ -49,15 +48,14 @@ public class ClassGen extends GenPart {
     public JCClassDecl convert(final Tree.ClassOrInterface cdecl) {
         final ListBuffer<JCVariableDecl> params = new ListBuffer<JCVariableDecl>();
         final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
-        final ListBuffer<JCTree> attributeDefs = new ListBuffer<JCTree>();
-        final ListBuffer<JCStatement> annotations = new ListBuffer<JCStatement>();
         final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
         final ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
         final ListBuffer<JCStatement> initStmts = new ListBuffer<JCStatement>();
         final ListBuffer<JCTypeParameter> typeParams = new ListBuffer<JCTypeParameter>();
         final ListBuffer<JCExpression> satisfies = new ListBuffer<JCExpression>();
-        final Map<String, JCTree.JCMethodDecl> getters = new HashMap<String, JCTree.JCMethodDecl>();
-        final Map<String, JCTree.JCMethodDecl> setters = new HashMap<String, JCTree.JCMethodDecl>();
+        final ListBuffer<Tree.AttributeDeclaration> attributeDecls = new ListBuffer<Tree.AttributeDeclaration>();
+        final Map<String, Tree.AttributeGetterDefinition> getters = new HashMap<String, Tree.AttributeGetterDefinition>();
+        final Map<String, Tree.AttributeSetterDefinition> setters = new HashMap<String, Tree.AttributeSetterDefinition>();
 
         class ClassVisitor extends StatementVisitor {
             Tree.ExtendedType extendedType;
@@ -67,8 +65,8 @@ public class ClassGen extends GenPart {
             }
 
             public void visit(Tree.Parameter param) {
-                JCVariableDecl var = at(cdecl).VarDef(make().Modifiers(0), names().fromString(tempName()), gen.convert(param.getType()), null);
-                JCVariableDecl localVar = at(cdecl).VarDef(make().Modifiers(FINAL), names().fromString(param.getIdentifier().getText()), gen.convert(param.getType()), null);
+                JCVariableDecl var = at(cdecl).VarDef(make().Modifiers(0), names().fromString(param.getIdentifier().getText()), gen.convert(param.getType()), null);
+                JCVariableDecl localVar = at(cdecl).VarDef(make().Modifiers(FINAL | PRIVATE), names().fromString(param.getIdentifier().getText()), gen.convert(param.getType()), null);
                 params.append(var);
                 defs.append(localVar);
                 initStmts.append(at(param).Exec(at(param).Assign(makeSelect("this", localVar.getName().toString()), at(param).Ident(var.getName()))));
@@ -82,8 +80,10 @@ public class ClassGen extends GenPart {
                 defs.appendList(convert(cdecl, meth));
             }
 
-            /* FIXME: public void visit(Tree.MethodDeclaration meth) {
-             * defs.appendList(convert(cdecl, meth)); } */
+            public void visit(Tree.MethodDeclaration meth) {
+            	defs.appendList(convert(cdecl, meth));
+            }
+            
             public void visit(Tree.Annotation ann) {
                 // Handled in processAnnotations
             }
@@ -96,32 +96,48 @@ public class ClassGen extends GenPart {
 
             // FIXME: Here we've simplified CeylonTree.MemberDeclaration to
             // Tree.AttributeDeclaration
-            public void visit(Tree.AttributeDeclaration mem) {
-                for (JCStatement def : convert(cdecl, mem)) {
-                    attributeDefs.append(def);
-                    if (def instanceof JCVariableDecl && ((JCVariableDecl) def).init != null) {
-                        JCVariableDecl decl = (JCVariableDecl) def;
-                        Name name = decl.name;
-                        JCExpression init = decl.init;
-                        decl.init = null;
-                        defs.append(decl);
-                        stmts.append(at(mem).Exec(at(mem).Assign(at(mem).Ident(name), init)));
-                    } else {
-                        defs.append(def);
-                    }
-                }
+            public void visit(Tree.AttributeDeclaration decl) {
+            	// Remember attribute to be able to generate
+            	// missing getters and setters later on
+            	attributeDecls.append(decl);
+
+            	Name attrName = names().fromString(decl.getIdentifier().getText());
+            	
+            	// Only non-formal attributes have corresponding fields
+            	// and if a class parameter exists with the same name we skip this part as well
+            	if (!isFormal(decl) && !existsParam(params, attrName)) {
+	                if (decl.getSpecifierOrInitializerExpression() != null) {
+	                	// The attribute's initializer gets moved to the constructor (why?)
+	                	JCExpression initialValue = gen.expressionGen.convertExpression(decl.getSpecifierOrInitializerExpression().getExpression());
+	                    stmts.append(at(decl).Exec(at(decl).Assign(at(decl).Ident(attrName), initialValue)));
+	                }
+	
+	                final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
+	
+	                JCExpression type = gen.convert(decl.getType());
+	
+	                if (isActual(decl)) {
+	                	langAnnotations.append(makeOverride());
+	                }
+	                if (gen.isOptional(decl.getType())) {
+	                    type = gen.optionalType(type);
+	                }
+	                
+	                int modifiers = convertAttributeFieldDeclFlags(decl);
+	                defs.append(at(decl).VarDef(at(decl).Modifiers(modifiers, langAnnotations.toList()), attrName, type, null));
+            	}
             }
 
             public void visit(final Tree.AttributeGetterDefinition getter) {
                 JCTree.JCMethodDecl getterDef = convert(cdecl, getter);
                 defs.append(getterDef);
-                getters.put(getter.getIdentifier().getText(), getterDef);
+                getters.put(getter.getIdentifier().getText(), getter);
             }
 
             public void visit(final Tree.AttributeSetterDefinition setter) {
                 JCTree.JCMethodDecl setterDef = convert(cdecl, setter);
                 defs.append(setterDef);
-                setters.put(setter.getIdentifier().getText(), setterDef);
+                setters.put(setter.getIdentifier().getText(), setter);
             }
 
             public void visit(final Tree.ClassDefinition cdecl) {
@@ -157,20 +173,14 @@ public class ClassGen extends GenPart {
         ClassVisitor visitor = new ClassVisitor(cdecl, stmts);
         cdecl.visitChildren(visitor);
 
-        processAnnotations(cdecl, cdecl.getAnnotationList(), annotations, langAnnotations, cdecl.getIdentifier().getText());
-
         if (cdecl instanceof Tree.AnyClass) {
-            JCMethodDecl meth = at(cdecl).MethodDef(make().Modifiers(convertDeclFlags(cdecl)), names().init, at(cdecl).TypeIdent(VOID), List.<JCTypeParameter> nil(), params.toList(), List.<JCExpression> nil(), at(cdecl).Block(0, initStmts.toList().appendList(stmts.toList())), null);
-
+        	// Constructor
+            JCMethodDecl meth = at(cdecl).MethodDef(make().Modifiers(convertConstructorDeclFlags(cdecl)), names().init, at(cdecl).TypeIdent(VOID), List.<JCTypeParameter> nil(), params.toList(), List.<JCExpression> nil(), at(cdecl).Block(0, initStmts.toList().appendList(stmts.toList())), null);
             defs.append(meth);
 
             // FIXME:
             // insertOverloadedClassConstructors(defs,
             // (CeylonTree.ClassDeclaration) cdecl);
-        }
-
-        if (annotations.length() > 0) {
-            defs.append(registerAnnotations(annotations.toList()));
         }
 
         JCTree superclass;
@@ -187,17 +197,11 @@ public class ClassGen extends GenPart {
             }
         }
 
-        if (isExtension(cdecl)) {
-            JCAnnotation ann = make().Annotation(makeIdent(syms().ceylonExtensionType), List.<JCExpression> nil());
-            langAnnotations.append(ann);
-        }
-
-        long mods = convertDeclFlags(cdecl);
+        long mods = convertClassDeclFlags(cdecl);
         if (cdecl instanceof Tree.AnyInterface)
             mods |= INTERFACE;
 
-        addSetterTypes(getters, setters);
-        addGettersAndSetters(defs, attributeDefs);
+        addGettersAndSetters(defs, attributeDecls);
         
         JCClassDecl classDef = at(cdecl).ClassDef(at(cdecl).Modifiers(mods, langAnnotations.toList()), 
                 names().fromString(cdecl.getIdentifier().getText()),
@@ -207,26 +211,22 @@ public class ClassGen extends GenPart {
         return classDef;
     }
 
-    // find the type of each setter by its getter type
-    private void addSetterTypes(Map<String, JCMethodDecl> getters, Map<String, JCMethodDecl> setters) {
-        for(Entry<String, JCMethodDecl> setter : setters.entrySet()){
-            JCMethodDecl getter = getters.get(setter.getKey());
-            // FIXME: this should not throw
-            if(getter == null)
-                throw new RuntimeException("Setter for "+setter.getKey()+" has no matching getter");
-            JCExpression type = getter.restype;
-            // set the first parameter's type
-            setter.getValue().params.head.vartype = type;
-        }
-    }
+	public boolean existsParam(ListBuffer<JCVariableDecl> params, Name attrName) {
+		for (JCVariableDecl decl : params) {
+			if (decl.name.equals(attrName)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-    private JCTree.JCMethodDecl convert(ClassOrInterface classDecl, AttributeSetterDefinition cdecl) {
+	private JCTree.JCMethodDecl convert(ClassOrInterface classDecl, AttributeSetterDefinition cdecl) {
         JCBlock body = gen.statementGen.convert(classDecl, cdecl.getBlock());
         String name = cdecl.getIdentifier().getText();
         return make().MethodDef(make().Modifiers(0), names().fromString(Util.getSetterName(name)), 
                 makeIdent("void"), 
                 List.<JCTree.JCTypeParameter>nil(), 
-                List.<JCTree.JCVariableDecl>of(make().VarDef(make().Modifiers(0), names().fromString(name), null, null)), 
+                List.<JCTree.JCVariableDecl>of(make().VarDef(make().Modifiers(0), names().fromString(name), gen.convert(cdecl.getType()), null)), 
                 List.<JCTree.JCExpression>nil(), 
                 body, null);
     }
@@ -241,7 +241,26 @@ public class ClassGen extends GenPart {
                 body, null);
     }
 
-    private int convertDeclFlags(Tree.Declaration cdecl) {
+    private int convertClassDeclFlags(Tree.Declaration cdecl) {
+        int result = 0;
+
+        result |= isShared(cdecl) ? PUBLIC : 0;
+        result |= isAbstract(cdecl) ? ABSTRACT : 0;
+
+        return result;
+    }
+
+    private int convertMethodDeclFlags(Tree.Declaration cdecl) {
+        int result = 0;
+
+        result |= isShared(cdecl) ? PUBLIC : PRIVATE;
+        result |= isFormal(cdecl) ? ABSTRACT : 0;
+        result |= !(isFormal(cdecl) || isDefault(cdecl)) ? FINAL : 0;
+
+        return result;
+    }
+
+    private int convertConstructorDeclFlags(Tree.Declaration cdecl) {
         int result = 0;
 
         result |= isShared(cdecl) ? PUBLIC : 0;
@@ -249,44 +268,76 @@ public class ClassGen extends GenPart {
         return result;
     }
 
-    private void addGettersAndSetters(final ListBuffer<JCTree> defs, ListBuffer<JCTree> attributeDefs) {
-        class GetterVisitor extends JCTree.Visitor {
-            @Override
-            public void visitVarDef(JCVariableDecl that) {
-                defs.add(makeGetter(that));
-                if((that.mods.flags & FINAL) == 0)
-                    defs.add(makeSetter(that));
-            }
-            @Override
-            public void visitMethodDef(JCMethodDecl that) {
+    private int convertAttributeFieldDeclFlags(Tree.AttributeDeclaration cdecl) {
+        int result = 0;
+
+        result |= isMutable(cdecl) ? 0 : FINAL;
+        result |= PRIVATE;
+
+        return result;
+    }
+
+    private int convertAttributeGetSetDeclFlags(Tree.AttributeDeclaration cdecl) {
+        int result = 0;
+
+        result |= isMutable(cdecl) ? 0 : FINAL;
+        result |= isShared(cdecl) ? PUBLIC : PRIVATE;
+
+        return result;
+    }
+
+    private void addGettersAndSetters(final ListBuffer<JCTree> defs, ListBuffer<Tree.AttributeDeclaration> attributeDecls) {
+        class GetterVisitor extends Visitor {
+            public void visit(Tree.AttributeDeclaration decl) {
+                defs.add(makeGetter(decl));
+                if(isMutable(decl))
+                    defs.add(makeSetter(decl));
             }
         }
-        JCTree.Visitor v = new GetterVisitor();
-        for(JCTree def : attributeDefs){
-            def.accept(v);
+        GetterVisitor v = new GetterVisitor();
+        for(Tree.AttributeDeclaration def : attributeDecls){
+            def.visit(v);
         }
     }
 
-    private JCTree makeGetter(JCVariableDecl that) {
+    private JCTree makeGetter(Tree.AttributeDeclaration decl) {
         // FIXME: add at() calls?
-        JCBlock body = make().Block(0, List.<JCTree.JCStatement>of(make().Return(make().Select(makeIdent("this"), that.name))));
-        return make().MethodDef(make().Modifiers(0), names().fromString(Util.getGetterName(that.name.toString())), 
-                that.vartype, List.<JCTree.JCTypeParameter>nil(), 
+    	Name atrrName = names().fromString(decl.getIdentifier().getText());
+        JCBlock body = make().Block(0, List.<JCTree.JCStatement>of(make().Return(make().Select(makeIdent("this"), atrrName))));
+        
+        int mods = convertAttributeGetSetDeclFlags(decl);
+        final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
+        if (isActual(decl)) {
+        	langAnnotations.append(makeOverride());
+        }
+        
+        return make().MethodDef(make().Modifiers(mods, langAnnotations.toList()),
+        		names().fromString(Util.getGetterName(atrrName.toString())), 
+        		gen.convert(decl.getType()), List.<JCTree.JCTypeParameter>nil(), 
                 List.<JCTree.JCVariableDecl>nil(), 
                 List.<JCTree.JCExpression>nil(), 
                 body, null);
     }
 
-    private JCTree makeSetter(JCVariableDecl that) {
+    private JCTree makeSetter(Tree.AttributeDeclaration decl) {
         // FIXME: add at() calls?
+    	Name atrrName = names().fromString(decl.getIdentifier().getText());
         JCBlock body = make().Block(0, List.<JCTree.JCStatement>of(
                 make().Exec(
-                        make().Assign(make().Select(makeIdent("this"), that.name),
-                                makeIdent(that.name.toString())))));
-        return make().MethodDef(make().Modifiers(0), names().fromString(Util.getSetterName(that.name.toString())), 
+                        make().Assign(make().Select(makeIdent("this"), atrrName),
+                                makeIdent(atrrName.toString())))));
+        
+        int mods = convertAttributeGetSetDeclFlags(decl);
+        final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
+        if (isActual(decl)) {
+        	langAnnotations.append(makeOverride());
+        }
+        
+        return make().MethodDef(make().Modifiers(mods, langAnnotations.toList()),
+        		names().fromString(Util.getSetterName(atrrName.toString())), 
                 makeIdent("void"), 
                 List.<JCTree.JCTypeParameter>nil(), 
-                List.<JCTree.JCVariableDecl>of(make().VarDef(make().Modifiers(0), that.name, that.vartype, null)), 
+                List.<JCTree.JCVariableDecl>of(make().VarDef(make().Modifiers(0), atrrName, gen.convert(decl.getType()), null)), 
                 List.<JCTree.JCExpression>nil(), 
                 body, null);
     }
@@ -340,66 +391,66 @@ public class ClassGen extends GenPart {
     }
 
     private List<JCTree> convert(Tree.ClassOrInterface cdecl, Tree.MethodDefinition decl) {
-        final ListBuffer<JCVariableDecl> params = new ListBuffer<JCVariableDecl>();
-        final ListBuffer<JCStatement> annotations = new ListBuffer<JCStatement>();
-        final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
         final Singleton<JCBlock> body = new Singleton<JCBlock>();
+        
+        body.append(gen.statementGen.convert(cdecl, decl.getBlock()));
+        
+    	return convertMethod(cdecl, decl, body);
+    }
+
+    private List<JCTree> convert(Tree.ClassOrInterface cdecl, Tree.MethodDeclaration decl) {
+    	return convertMethod(cdecl, decl, null);
+    }
+    
+    private List<JCTree> convertMethod(Tree.ClassOrInterface cdecl, Tree.AnyMethod decl, Singleton<JCBlock> body) {
+    	List<JCTree> result = List.<JCTree> nil();
+        final ListBuffer<JCVariableDecl> params = new ListBuffer<JCVariableDecl>();
+        final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
         Singleton<JCExpression> restypebuf = new Singleton<JCExpression>();
         ListBuffer<JCAnnotation> jcAnnotations = new ListBuffer<JCAnnotation>();
         final ListBuffer<JCTypeParameter> typeParams = new ListBuffer<JCTypeParameter>();
 
-        processMethodDeclaration(cdecl, decl, params, body, restypebuf, typeParams, annotations, langAnnotations);
-
+        processMethodDeclaration(cdecl, decl, params, restypebuf, typeParams, langAnnotations);
+        
         JCExpression restype = restypebuf.thing();
 
         // FIXME: Handle lots more flags here
 
-        if (isExtension(decl)) {
-            JCAnnotation ann = make().Annotation(makeIdent(syms().ceylonExtensionType), List.<JCExpression> nil());
-            jcAnnotations.append(ann);
+        if (isActual(decl)) {
+            jcAnnotations.append(makeOverride());
         }
 
-        if (gen.isOptional(decl.getType()))
+        if (gen.isOptional(decl.getType())) {
             restype = gen.optionalType(restype);
+        }
 
-        int mods = convertDeclFlags(decl);
+        int mods = convertMethodDeclFlags(decl);
         JCMethodDecl meth = at(decl).MethodDef(make().Modifiers(mods, jcAnnotations.toList()), 
                 names().fromString(decl.getIdentifier().getText()), 
                 restype, processTypeConstraints(decl.getTypeConstraintList(), typeParams.toList()), 
-                params.toList(), List.<JCExpression> nil(), body.thing(), null);
-
-        if (annotations.length() > 0) {
-            // FIXME: Method annotations.
-            JCBlock b = registerAnnotations(annotations.toList());
-            return List.<JCTree> of(meth, b);
-        }
-
-        return List.<JCTree> of(meth);
+                params.toList(), List.<JCExpression> nil(), (body != null) ? body.thing() : null, null);
+        result = result.append(meth);
+        
+        return result;
     }
-
+    
     void methodClass(Tree.ClassOrInterface classDecl, Tree.MethodDefinition decl, final ListBuffer<JCTree> defs, boolean topLevel) {
         // Generate a class with the
         // name of the method and a corresponding run() method.
 
         final ListBuffer<JCVariableDecl> params = new ListBuffer<JCVariableDecl>();
-        final ListBuffer<JCStatement> annotations = new ListBuffer<JCStatement>();
         final Singleton<JCBlock> body = new Singleton<JCBlock>();
         Singleton<JCExpression> restype = new Singleton<JCExpression>();
         final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
         final ListBuffer<JCTypeParameter> typeParams = new ListBuffer<JCTypeParameter>();
 
-        processMethodDeclaration(classDecl, decl, params, body, restype, typeParams, annotations, langAnnotations);
+        processMethodDeclaration(classDecl, decl, params, restype, typeParams, langAnnotations);
+
+        body.append(gen.statementGen.convert(classDecl, decl.getBlock()));
 
         JCMethodDecl meth = at(decl).MethodDef(make().Modifiers((topLevel ? PUBLIC | STATIC : 0)), names().fromString("run"), restype.thing(), processTypeConstraints(decl.getTypeConstraintList(), typeParams.toList()), params.toList(), List.<JCExpression> nil(), body.thing(), null);
 
         List<JCTree> innerDefs = List.<JCTree> of(meth);
-
-        // FIXME: This is wrong because the annotation registration is done
-        // within the scope of the class, but the annotations are lexically
-        // outside it.
-        if (annotations.length() > 0) {
-            innerDefs = innerDefs.append(registerAnnotations(annotations.toList()));
-        }
 
         // Try and find a class to insert this method into
         JCClassDecl classDef = null;
@@ -427,7 +478,7 @@ public class ClassGen extends GenPart {
     }
 
     // FIXME: There must be a better way to do this.
-    private void processMethodDeclaration(final Tree.ClassOrInterface classDecl, final Tree.MethodDefinition decl, final ListBuffer<JCVariableDecl> params, final Singleton<JCBlock> block, final Singleton<JCExpression> restype, final ListBuffer<JCTypeParameter> typeParams, final ListBuffer<JCStatement> annotations, final ListBuffer<JCAnnotation> langAnnotations) {
+    private void processMethodDeclaration(final Tree.ClassOrInterface classDecl, final Tree.AnyMethod decl, final ListBuffer<JCVariableDecl> params, final Singleton<JCExpression> restype, final ListBuffer<JCTypeParameter> typeParams, final ListBuffer<JCAnnotation> langAnnotations) {
 
         for (Tree.Parameter param : decl.getParameterLists().get(0).getParameters()) {
             params.append(convert(param));
@@ -438,21 +489,7 @@ public class ClassGen extends GenPart {
                 typeParams.append(convert(t));
             }
 
-        block.append(gen.statementGen.convert(classDecl, decl.getBlock()));
-
-        processAnnotations(classDecl, decl.getAnnotationList(), annotations, langAnnotations, decl.getIdentifier().getText());
-
         restype.append(gen.convert(decl.getType()));
-    }
-
-    private void processAnnotations(final Tree.ClassOrInterface classDecl, Tree.AnnotationList ceylonAnnos, final ListBuffer<JCStatement> annotations, final ListBuffer<JCAnnotation> langAnnotations, final String declName) {
-        /* FIXME: this is probably just wrong class V extends Visitor { public
-         * void visit(Tree.Annotation userAnn) {
-         * annotations.append(at(userAnn).Exec(convert(userAnn, classDecl,
-         * declName))); } } V v = new V();
-         * 
-         * if (ceylonAnnos != null) for (Tree.Annotation a:
-         * ceylonAnnos.getAnnotations()) a.visit(v); */
     }
 
     // this is due to the above commented code
@@ -486,69 +523,39 @@ public class ClassGen extends GenPart {
         return result;
     }
 
-    private JCBlock registerAnnotations(List<JCStatement> annos) {
-        JCBlock block = make().Block(Flags.STATIC, annos);
-        return block;
-    }
-
-    List<JCStatement> convert(Tree.ClassOrInterface classDecl, Tree.AttributeDeclaration decl) {
-        at(decl);
-
-        JCExpression initialValue = null;
-        if (decl.getSpecifierOrInitializerExpression() != null)
-            initialValue = gen.expressionGen.convertExpression(decl.getSpecifierOrInitializerExpression().getExpression());
-
-        final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
-        final ListBuffer<JCStatement> annotations = new ListBuffer<JCStatement>();
-        processAnnotations(classDecl, decl.getAnnotationList(), annotations, langAnnotations, decl.getIdentifier().getText());
-
-        JCExpression type = gen.convert(decl.getType());
-
-        if (isExtension(decl)) {
-            JCAnnotation ann = make().Annotation(makeIdent(syms().ceylonExtensionType), List.<JCExpression> nil());
-            langAnnotations.append(ann);
-        }
-        if (gen.isOptional(decl.getType())) {
-            type = gen.optionalType(type);
-        }
-
-        int modifiers = isMutable(decl) ? 0 : FINAL;
-        List<JCStatement> result = List.<JCStatement> of(at(decl).VarDef(at(decl).Modifiers(modifiers, langAnnotations.toList()), names().fromString(decl.getIdentifier().getText()), type, initialValue));
-
-        if (annotations.length() > 0) {
-            result = result.append(registerAnnotations(annotations.toList()));
-        }
-
-        return result;
-    }
-
-    private boolean hasCompilerAnnotation(Tree.Declaration decl, String annotation) {
-        if (decl.getAnnotationList() == null)
-            return false;
-        for (Tree.Annotation a : decl.getAnnotationList().getAnnotations()) {
-            if (!(a.getPrimary() instanceof Tree.BaseMemberExpression))
-                throw new RuntimeException("Invalid annotation primary: " + a.getPrimary().getNodeType());
-            Tree.BaseMemberExpression member = (Tree.BaseMemberExpression) a.getPrimary();
-            if (member.getIdentifier().getText().equals(annotation))
-                return true;
-        }
-        return false;
-    }
-
-    private boolean isExtension(Tree.Declaration decl) {
-        // FIXME
-        return hasCompilerAnnotation(decl, "extension");
-    }
-
     private boolean isShared(Tree.Declaration cdecl) {
         // FIXME
         return hasCompilerAnnotation(cdecl, "shared");
+    }
+
+    private boolean isAbstract(Tree.Declaration cdecl) {
+        // FIXME
+        return hasCompilerAnnotation(cdecl, "abstract");
+    }
+
+    private boolean isDefault(Tree.Declaration cdecl) {
+        // FIXME
+        return hasCompilerAnnotation(cdecl, "default");
+    }
+
+    private boolean isFormal(Tree.Declaration cdecl) {
+        // FIXME
+        return hasCompilerAnnotation(cdecl, "formal");
+    }
+
+    private boolean isActual(Tree.Declaration cdecl) {
+        // FIXME
+        return hasCompilerAnnotation(cdecl, "actual");
     }
 
     private boolean isMutable(Tree.AttributeDeclaration decl) {
         // FIXME
         return hasCompilerAnnotation(decl, "variable");
     }
+
+    public JCAnnotation makeOverride() {
+    	return make().Annotation(makeIdent(syms().overrideType), null);
+	}
 
     private JCTypeParameter convert(Tree.TypeParameterDeclaration param) {
         // FIXME: implement this

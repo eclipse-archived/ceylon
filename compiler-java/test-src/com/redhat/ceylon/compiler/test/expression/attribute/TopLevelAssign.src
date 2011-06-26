@@ -1,0 +1,22 @@
+package com.redhat.ceylon.compiler.test.expression.attribute;
+
+final class $toplevel {
+    private static Boolean value = ceylon.language.$true.getTrue();
+    
+    static Boolean getToplevel() {
+        return value;
+    }
+    
+    static void setToplevel(Boolean value) {
+        $toplevel.value = value;
+    }
+}
+class TopLevelAssign extends .ceylon.language.Object {
+    
+    private final void m() {
+        $toplevel.getToplevel() = ceylon.language.$false.getFalse();
+    }
+    
+    TopLevelAssign() {
+    }
+}

@@ -1,3 +1,4 @@
 class Method() {
- shared void f(Integer i) {}
+    void f(Integer i) {}
+    shared void f2(Integer i) {}
 }

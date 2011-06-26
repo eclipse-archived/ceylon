@@ -5,8 +5,11 @@ import static com.sun.tools.javac.code.Flags.FINAL;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -69,7 +72,7 @@ public class StatementGen extends GenPart {
         }
 
         public void visit(Tree.AttributeDeclaration decl) {
-        	append(gen.classGen.convert(cdecl, decl));
+        	append(convert(cdecl, decl));
         }
 
         public void visit(Tree.SpecifierStatement op) {
@@ -114,9 +117,7 @@ public class StatementGen extends GenPart {
         }
         
         private void append(List<JCStatement> list) {
-            for (JCStatement stmt : list) {
-                stmts.append(stmt);
-            }
+            stmts.appendList(list);
         }
     }
 
@@ -374,6 +375,28 @@ public class StatementGen extends GenPart {
         return at(stmt).Block(0, outer);
     }
 
+    // FIXME There is a similar implementation in ClassGen!
+	public JCStatement convert(ClassOrInterface cdecl, AttributeDeclaration decl) {
+    	Name atrrName = names().fromString(decl.getIdentifier().getText());
+    	
+    	JCExpression initialValue = null;
+        if (decl.getSpecifierOrInitializerExpression() != null) {
+        	// The attribute's initializer gets moved to the constructor (why?)
+        	initialValue = gen.expressionGen.convertExpression(decl.getSpecifierOrInitializerExpression().getExpression());
+        }
+
+        final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
+
+        JCExpression type = gen.convert(decl.getType());
+
+        if (gen.isOptional(decl.getType())) {
+            type = gen.optionalType(type);
+        }
+        
+        int modifiers = convertLocalFieldDeclFlags(decl);
+        return at(decl).VarDef(at(decl).Modifiers(modifiers, langAnnotations.toList()), atrrName, type, initialValue);
+	}
+	
     private List<JCStatement> convert(Tree.ClassOrInterface cdecl, Tree.Break stmt) {
     	// break;
     	JCStatement brk = at(stmt).Break(null);
@@ -403,4 +426,16 @@ public class StatementGen extends GenPart {
         return at(op).Exec(make().Assign(gen.expressionGen.convertExpression(op.getBaseMemberExpression()), rhs));
     }
 
+    private int convertLocalFieldDeclFlags(Tree.AttributeDeclaration cdecl) {
+        int result = 0;
+
+        result |= isMutable(cdecl) ? 0 : FINAL;
+
+        return result;
+    }
+
+    private boolean isMutable(Tree.AttributeDeclaration decl) {
+        // FIXME
+        return hasCompilerAnnotation(decl, "variable");
+    }
 }

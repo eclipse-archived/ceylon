@@ -1,21 +1,32 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
 class AttributeAssign extends .ceylon.language.Object {
-    Boolean b;
+    private Boolean b;
+    private Boolean b2;
     
-    void m() {
+    private final void m() {
         setB(ceylon.language.$false.getFalse());
+        setB2(ceylon.language.$false.getFalse());
     }
     
     AttributeAssign() {
         b = ceylon.language.$true.getTrue();
+        b2 = ceylon.language.$true.getTrue();
     }
     
-    Boolean getB() {
+    private Boolean getB() {
         return this.b;
     }
     
-    void setB(Boolean b) {
+    private void setB(Boolean b) {
         this.b = b;
+    }
+    
+    public Boolean getB2() {
+        return this.b2;
+    }
+    
+    public void setB2(Boolean b2) {
+        this.b2 = b2;
     }
 }

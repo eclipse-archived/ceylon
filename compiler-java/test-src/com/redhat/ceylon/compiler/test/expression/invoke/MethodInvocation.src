@@ -2,21 +2,21 @@ package com.redhat.ceylon.compiler.test.expression.invoke;
 
 class MethodInvocation extends .ceylon.language.Object {
     
-    public void m() {
+    public final void m() {
         n();
         o(.ceylon.language.Natural.instance(1L));
         p();
     }
     
-    void n() {
+    private final void n() {
         return;
     }
     
-    Natural o(final Natural oarg) {
+    private final Natural o(final Natural oarg) {
         return oarg;
     }
     
-    public void p() {
+    public final void p() {
         return;
     }
     

@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.test.expression.attribute;
 
 class MethodLocalAssign extends .ceylon.language.Object {
     
-    void m() {
+    private final void m() {
         Boolean b = ceylon.language.$true.getTrue();
         b = ceylon.language.$false.getFalse();
     }

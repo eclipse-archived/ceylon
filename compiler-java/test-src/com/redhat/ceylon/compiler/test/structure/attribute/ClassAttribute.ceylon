@@ -1,3 +1,4 @@
 class ClassVariable(){
- String f;
+    String f;
+    shared String f2;
 }

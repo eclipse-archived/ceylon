@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.test.expression.instantiation;
 
 class SequenceInstantiation extends .ceylon.language.Object {
     
-    public Object m() {
+    public final Object m() {
         return .ceylon.language.Natural.instance(3L);
     }
     

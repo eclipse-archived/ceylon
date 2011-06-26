@@ -1,7 +1,7 @@
 // FIXME Not correct yet
 class MethodIfExists extends .ceylon.language.Object {
     
-    public Integer m(final Integer x) {
+    public final Integer m(final Integer x) {
         /*missing*/ $ceylontmpDeletedExists0;
         if (($ceylontmpDeletedExists0 = x.$internalErasedExists()) != null) {
             final /*missing*/ x = $ceylontmpDeletedExists0;

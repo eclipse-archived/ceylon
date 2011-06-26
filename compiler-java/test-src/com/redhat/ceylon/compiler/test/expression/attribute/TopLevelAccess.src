@@ -1,9 +1,16 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
+final class $toplevel {
+    private static final Boolean value = ceylon.language.$true.getTrue();
+    
+    static Boolean getToplevel() {
+        return value;
+    }
+}
 class TopLevelAccess extends .ceylon.language.Object {
     
-    Boolean m() {
-        return ceylon.language.$true.getTrue();
+    private final Boolean m() {
+        return $toplevel.getToplevel();
     }
     
     TopLevelAccess() {

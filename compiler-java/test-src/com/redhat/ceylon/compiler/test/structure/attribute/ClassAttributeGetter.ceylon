@@ -1,5 +1,8 @@
 class ClassAttributeGetter(){
- String f {
-  return "";
- }
+    String f {
+        return "";
+    }
+    shared String f2 {
+        return "";
+    }
 }

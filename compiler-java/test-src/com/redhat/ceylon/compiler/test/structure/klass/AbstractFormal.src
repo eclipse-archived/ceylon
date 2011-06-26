@@ -1,0 +1,62 @@
+// FIXME This is not correct yet
+package com.redhat.ceylon.compiler.test.structure.klass;
+
+abstract class AbstractFormal extends .ceylon.language.Object {
+    final Integer attrib;
+    
+    public final void m() {
+        test();
+        test2();
+        test3();
+        test4();
+    }
+    
+    public abstract void test();
+    
+    public void test2() {
+        return;
+    }
+    
+    public void test3() {
+        return;
+    }
+    
+    public void test4() {
+        return;
+    }
+    
+    AbstractFormal() {
+    }
+    
+    Integer getAttrib() {
+        return this.attrib;
+    }
+},
+class ActualKlass extends AbstractFormal {
+    
+    public final void test() {
+        return;
+    }
+    
+    public final void test3() {
+        return;
+    }
+    
+    public void test4() {
+        return;
+    }
+    
+    ActualKlass() {
+        super();
+    }
+},
+class ActualSubKlass extends ActualKlass {
+    
+    public final void test4() {
+        return;
+    }
+    
+    ActualSubKlass() {
+        super();
+    }
+}

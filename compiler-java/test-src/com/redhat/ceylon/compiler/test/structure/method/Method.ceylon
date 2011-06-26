@@ -1,3 +1,3 @@
 class Method() {
- void f() {}
+    void f() {}
 }

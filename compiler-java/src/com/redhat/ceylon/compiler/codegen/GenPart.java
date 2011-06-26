@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.codegen;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.tree.JCTree.Factory;
@@ -62,5 +63,18 @@ public class GenPart {
 
     protected String tempName(String prefix) {
         return gen.tempName(prefix);
+    }
+	
+    protected boolean hasCompilerAnnotation(Tree.Declaration decl, String annotation) {
+        if (decl.getAnnotationList() == null)
+            return false;
+        for (Tree.Annotation a : decl.getAnnotationList().getAnnotations()) {
+            if (!(a.getPrimary() instanceof Tree.BaseMemberExpression))
+                throw new RuntimeException("Invalid annotation primary: " + a.getPrimary().getNodeType());
+            Tree.BaseMemberExpression member = (Tree.BaseMemberExpression) a.getPrimary();
+            if (member.getIdentifier().getText().equals(annotation))
+                return true;
+        }
+        return false;
     }
 }

@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.test.statement.loop;
 
 class MethodForFail extends .ceylon.language.Object {
     
-    public Natural m(final Iterator<Integer> it) {
+    public final Natural m(final Iterator<Integer> it) {
         {
             boolean $ceylontmp0 = true;
             .ceylon.language.Iterator<Integer> $ceylontmp1 = it.iterator();

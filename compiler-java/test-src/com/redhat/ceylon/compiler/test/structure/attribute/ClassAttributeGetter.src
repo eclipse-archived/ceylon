@@ -6,6 +6,10 @@ class ClassAttributeGetter extends .ceylon.language.Object {
         return .ceylon.language.String.instance("");
     }
     
+    String getF2() {
+        return .ceylon.language.String.instance("");
+    }
+    
     ClassAttributeGetter() {
     }
 }

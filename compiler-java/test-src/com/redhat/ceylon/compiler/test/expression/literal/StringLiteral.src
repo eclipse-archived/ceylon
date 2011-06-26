@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.test.expression.literal;
 
 class StringLiteral extends .ceylon.language.Object {
     
-    public void m() {
+    public final void m() {
         final String s1 = .ceylon.language.String.instance("");
         final String s2 = .ceylon.language.String.instance("This is a test");
         final String s3 = .ceylon.language.String.instance("This\nis\nanother\ntest");

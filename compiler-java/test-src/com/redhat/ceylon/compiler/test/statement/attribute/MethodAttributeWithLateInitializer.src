@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.test.statement.attribute;
 
 class MethodAttributeWithLateInitializer extends .ceylon.language.Object {
     
-    public void m() {
+    public final void m() {
         final String f;
         f = .ceylon.language.String.instance("");
     }
