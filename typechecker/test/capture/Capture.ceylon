@@ -117,13 +117,19 @@ class Capture() {
         }
     }
     
-    class WithMultipleParameters(@captured String x, 
+    class WithMultipleParameters(@captured String w,
+                                 @captured String x, 
                                  @uncaptured String y, 
                                  @uncaptured String z) {
         shared String yy = y;
         use(z);
         shared void xx() {
-            use(x);
+            if (true) {
+                use(x);
+            }
+        }
+        shared class Inner() {
+            use(w);
         }
     }
     
