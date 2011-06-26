@@ -1,4 +1,8 @@
+variable Natural n:=0;
+
 class Capture() {
+    
+    n:=12;
     
     void use(Object o) {}
     
@@ -110,6 +114,16 @@ class Capture() {
             void nestedMethod() {
                 use(x);
             }
+        }
+    }
+    
+    class WithMultipleParameters(@captured String x, 
+                                 @uncaptured String y, 
+                                 @uncaptured String z) {
+        shared String yy = y;
+        use(z);
+        shared void xx() {
+            use(x);
         }
     }
     

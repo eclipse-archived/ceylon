@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.model;
 
 public class ValueParameter extends Parameter {
     
-    boolean captured = true;
+    boolean captured = false;
     
     @Override
     public boolean isCaptured() {
