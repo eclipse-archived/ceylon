@@ -1046,6 +1046,9 @@ interface DefiniteReturn {
         }
         doSomethingElse();
         return;
+        ClassWithReturn member() {
+            return this;
+        }
     }
     
     class ClassWithThrow() {
@@ -1057,6 +1060,9 @@ interface DefiniteReturn {
         }
         doSomethingElse();
         throw;
+        ClassWithThrow member() {
+            return this;
+        }
     }
     
     class ClassWithReturns() {
@@ -1067,6 +1073,7 @@ interface DefiniteReturn {
             return;
         }
         @error doSomething();
+        void member() {}
     }
     
     class ClassWithThrows() {
@@ -1076,6 +1083,7 @@ interface DefiniteReturn {
         else {
             throw;
         }
+        void member() {}
         @error return;
     }
     
