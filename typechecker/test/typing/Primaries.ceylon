@@ -56,15 +56,17 @@ class Primaries() {
     @type["String"] local p17 = "Hello";
     
     class Inner(A arg) {
+        Natural n = 0;
         @type["Primaries.A"] local p1 = arg;
         @type["Primaries.A"] local p2 = aa;
         @type["Primaries.C"] local p3 = cc;
-        @type["Primaries"] local p4 = outer;
+        @type["Primaries.A"] local p4 = outer.x1;
         void inner() {
             @type["Primaries.Inner"] local p5 = this;
         }
         shared class Inner2() {
-            @type["Primaries.Inner"] local p7 = outer;
+            @type["Natural"] local p7 = outer.n;
+            @type["Primaries.Inner"] local p8 = outer;
             void inner() {
                 @type["Primaries.Inner.Inner2"] local p6 = this;
             }
@@ -86,7 +88,7 @@ class Primaries() {
         class Inner3() {
             String s = "hello";
             @type["String"] local p6 = this.s;
-            @type["Primaries"] local p7 = outer;
+            @type["Primaries.A"] local p7 = outer.x1;
             void inner() {
                 @type["Inner3"] local t = this;
             }
