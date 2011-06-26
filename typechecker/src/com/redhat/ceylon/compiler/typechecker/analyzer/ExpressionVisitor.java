@@ -1791,9 +1791,9 @@ public class ExpressionVisitor extends Visitor {
         if (inExtendsClause) {
             ClassOrInterface ci = getContainingClassOrInterface(that);
             if (ci!=null) {
-                Scope s = ci.getContainer();
-                if (s instanceof ClassOrInterface) {
-                    ProducedType t = ((ClassOrInterface) s).getExtendedType();
+                if (ci.isClassOrInterfaceMember()) {
+                    ClassOrInterface s = (ClassOrInterface) ci.getContainer();
+                    ProducedType t = s.getExtendedType();
                     //TODO: type arguments
                     that.setTypeModel(t);
                 }

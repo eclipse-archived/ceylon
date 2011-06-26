@@ -146,9 +146,9 @@ public class TypeVisitor extends Visitor {
         //if (inExtendsClause) { //can't appear anywhere else in the tree!
             ClassOrInterface ci = getContainingClassOrInterface(that);
             if (ci!=null) {
-                Scope s = ci.getContainer();
-                if (s instanceof ClassOrInterface) {
-                    ProducedType t = ((ClassOrInterface) s).getExtendedType();
+                if (ci.isClassOrInterfaceMember()) {
+                    ClassOrInterface s = (ClassOrInterface) ci.getContainer();
+                    ProducedType t = s.getExtendedType();
                     //TODO: type arguments
                     that.setTypeModel(t);
                 }

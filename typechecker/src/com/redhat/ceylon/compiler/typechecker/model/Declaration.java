@@ -93,5 +93,21 @@ public abstract class Declaration extends Element {
             return false;
         }
     }
+    
+    public boolean isToplevel() {
+        return getContainer() instanceof Package;
+    }
+
+    public boolean isClassMember() {
+        return getContainer() instanceof Class;
+    }
+
+    public boolean isInterfaceMember() {
+        return getContainer() instanceof Interface;
+    }
+
+    public boolean isClassOrInterfaceMember() {
+        return getContainer() instanceof ClassOrInterface;
+    }
 
 }

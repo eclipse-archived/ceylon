@@ -3,8 +3,6 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getDeclaration;
 
 import com.redhat.ceylon.compiler.typechecker.context.Context;
-import com.redhat.ceylon.compiler.typechecker.model.Class;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -46,9 +44,7 @@ public class ValueVisitor extends Visitor {
                         ((ValueParameter) d).setCaptured(true);
                     }
                     //TODO: remove this once we support capturing variable locals!
-                    if (d.isVariable() && 
-                        !(declaration.getContainer() instanceof Class) && 
-                        !(declaration.getContainer() instanceof Package)) {
+                    if (d.isVariable() && !d.isClassMember() && !d.isInterfaceMember()) {
                         that.addError("access to variable local from capturing scope: " + declaration.getName());
                     }
                 }
