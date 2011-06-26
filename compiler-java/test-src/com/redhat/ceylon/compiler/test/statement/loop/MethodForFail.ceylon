@@ -1,8 +1,8 @@
 class MethodForFail(){
-    shared Natural m(Iterator<Integer> it){
-        for(Integer i in it){
+    shared Natural m(Sequence<Integer> seq){
+        for(Integer i in seq){
             while (true) {
-                for(Integer i in it){
+                for(Integer i in seq){
                     break;
                 }
                 fail {
@@ -18,5 +18,6 @@ class MethodForFail(){
         fail {
             return 0;
         }
+        return 2;
     }
 }

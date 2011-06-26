@@ -122,7 +122,12 @@ public class ClassGen extends GenPart {
                 	if (useField) {
                 		// A captured attribute gets turned into a field
 		                int modifiers = convertAttributeFieldDeclFlags(decl);
-		                defs.append(at(decl).VarDef(at(decl).Modifiers(modifiers, langAnnotations.toList()), attrName, type, initialValue));
+		                defs.append(at(decl).VarDef(at(decl).Modifiers(modifiers, langAnnotations.toList()), attrName, type, null));
+		                if (initialValue != null) {
+		                	// The attribute's initializer gets moved to the constructor
+		                	// because it might be using locals of the initializer
+		                    stmts.append(at(decl).Exec(at(decl).Assign(makeSelect("this", decl.getIdentifier().getText()), initialValue)));
+		                }
                 	} else {
                 		// Otherwise it's local to the constructor
 		                int modifiers = convertLocalDeclFlags(decl);
@@ -552,34 +557,29 @@ public class ClassGen extends GenPart {
         return result;
     }
 
-    private boolean isShared(Tree.Declaration cdecl) {
-        // FIXME
-        return hasCompilerAnnotation(cdecl, "shared");
+    private boolean isShared(Tree.Declaration decl) {
+        return decl.getDeclarationModel().isShared();
     }
 
-    private boolean isAbstract(Tree.Declaration cdecl) {
+    private boolean isAbstract(Tree.Declaration decl) {
         // FIXME
-        return hasCompilerAnnotation(cdecl, "abstract");
+        return hasCompilerAnnotation(decl, "abstract");
     }
 
-    private boolean isDefault(Tree.Declaration cdecl) {
-        // FIXME
-        return hasCompilerAnnotation(cdecl, "default");
+    private boolean isDefault(Tree.Declaration decl) {
+        return decl.getDeclarationModel().isDefault();
     }
 
-    private boolean isFormal(Tree.Declaration cdecl) {
-        // FIXME
-        return hasCompilerAnnotation(cdecl, "formal");
+    private boolean isFormal(Tree.Declaration decl) {
+        return decl.getDeclarationModel().isFormal();
     }
 
-    private boolean isActual(Tree.Declaration cdecl) {
-        // FIXME
-        return hasCompilerAnnotation(cdecl, "actual");
+    private boolean isActual(Tree.Declaration decl) {
+        return decl.getDeclarationModel().isActual();
     }
 
     private boolean isMutable(Tree.AttributeDeclaration decl) {
-        // FIXME
-        return hasCompilerAnnotation(decl, "variable");
+        return decl.getDeclarationModel().isVariable();
     }
 
     public JCAnnotation makeOverride() {

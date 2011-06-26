@@ -10,9 +10,9 @@ class ClassAttribute extends .ceylon.language.Object {
     
     ClassAttribute() {
         final String uncapturedvar;
-        setPublicvar("");
+        publicvar = "";
         uncapturedvar = "";
-        setCapturedvar("");
+        capturedvar = "";
     }
     
     public final String getPublicvar() {

@@ -2,16 +2,11 @@ package com.redhat.ceylon.compiler.codegen;
 
 import static com.sun.tools.javac.code.Flags.FINAL;
 
-import java.util.LinkedList;
-
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
-import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -305,7 +300,7 @@ public class StatementGen extends GenPart {
         }
     }
 
-    private JCStatement convert(Tree.ClassOrInterface cdecl, Tree.ForStatement stmt) {
+    private List<JCStatement> convert(Tree.ClassOrInterface cdecl, Tree.ForStatement stmt) {
         class ForVisitor extends Visitor {
             Tree.Variable variable = null;
 
@@ -377,7 +372,7 @@ public class StatementGen extends GenPart {
         }
         currentForFailVariable = tempForFailVariable;
 
-        return at(stmt).Block(0, outer);
+        return outer;
     }
 
     // FIXME There is a similar implementation in ClassGen!
