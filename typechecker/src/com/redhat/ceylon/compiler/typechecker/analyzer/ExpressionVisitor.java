@@ -1774,7 +1774,6 @@ public class ExpressionVisitor extends Visitor {
             }
             scope = scope.getContainer();
         }
-        that.addError("outer appears outside a nested class or interface definition");
         return null;
     }
     
@@ -1801,6 +1800,7 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             ClassOrInterface ci = getContainingClassOrInterface(that);
+            //TODO: for consistency, move these errors to SelfReferenceVisitor
             if (ci==null) {
                 that.addError("super appears outside a class definition");
             }
@@ -1817,10 +1817,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.This that) {
         ClassOrInterface ci = getContainingClassOrInterface(that);
-        if (ci==null) {
-            that.addError("this appears outside a class or interface definition");
-        }
-        else {
+        if (ci!=null) {
             that.setTypeModel(ci.getType());
         }
     }
