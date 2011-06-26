@@ -133,4 +133,20 @@ class Capture() {
         }
     }
     
+    class UnsharedDuped(@uncaptured String s) {
+        @uncaptured String s = s;
+    }
+    
+    class SharedDuped(@uncaptured String s) {
+        @captured shared String s = s;
+    }
+    
+    class UnsharedDuped2(@captured String s) {
+        String s { return s; }
+    }
+    
+    class SharedDuped2(@captured String s) {
+        shared String s { return s; }
+    }
+    
 }
