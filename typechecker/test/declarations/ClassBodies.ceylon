@@ -594,4 +594,12 @@ interface ClassBodies {
         name = "gavin";
     }
     
+    class Outer() { 
+        String s;  
+        object inner {
+            //TODO: in theory, error not really needed
+            @error s = "hello"; 
+        } 
+    }
+    
 }
