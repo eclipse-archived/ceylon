@@ -5,6 +5,8 @@ class ClassVariable extends .ceylon.language.Object {
     private String f2;
     
     ClassVariable() {
+        setF(.ceylon.language.String.instance(""));
+        setF2(.ceylon.language.String.instance(""));
     }
     
     private String getF() {

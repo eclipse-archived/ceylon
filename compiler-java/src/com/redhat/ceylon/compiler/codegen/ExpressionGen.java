@@ -204,10 +204,13 @@ public class ExpressionGen extends GenPart {
     }
 
     private JCExpression convert(Tree.AssignOp op) {
+        return convertAssignment(op, op.getLeftTerm(), op.getRightTerm());
+    }
+
+    JCExpression convertAssignment(Node op, Term leftTerm, Term rightTerm) {
         // right side is easy
-        JCExpression rhs = convertExpression(op.getRightTerm());
+        JCExpression rhs = convertExpression(rightTerm);
         // left side depends
-        Term leftTerm = op.getLeftTerm();
         // FIXME: can this be anything else than a Primary?
         Declaration decl = ((Tree.Primary)leftTerm).getDeclaration();
         if(Util.isClassAttribute(decl)){

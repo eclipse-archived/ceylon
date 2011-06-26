@@ -8,7 +8,7 @@ class MethodParamHidingAttribute extends .ceylon.language.Object {
     }
     
     MethodParamHidingAttribute() {
-        b = ceylon.language.$true.getTrue();
+        this.b = ceylon.language.$true.getTrue();
     }
     
     private final Boolean getB() {

@@ -9,7 +9,7 @@ class MethodLocalHidingAttribute extends .ceylon.language.Object {
     }
     
     MethodLocalHidingAttribute() {
-        b = ceylon.language.$true.getTrue();
+        this.b = ceylon.language.$true.getTrue();
     }
     
     private final Boolean getB() {

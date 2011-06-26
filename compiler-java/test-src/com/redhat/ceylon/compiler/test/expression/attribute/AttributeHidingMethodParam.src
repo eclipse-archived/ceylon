@@ -8,7 +8,7 @@ class AttributeHidingMethodParam extends .ceylon.language.Object {
     }
     
     AttributeHidingMethodParam() {
-        b = ceylon.language.$true.getTrue();
+        this.b = ceylon.language.$true.getTrue();
     }
     
     private final Boolean getB() {
