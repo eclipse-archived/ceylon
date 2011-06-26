@@ -6,6 +6,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleBuilder;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleImportVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.RefinementVisitor;
+import com.redhat.ceylon.compiler.typechecker.analyzer.SelfReferenceVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.SpecificationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeArgumentVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeVisitor;
@@ -111,6 +112,11 @@ public class PhasedUnit {
                 compilationUnit.visit(new ValueVisitor((TypedDeclaration) d, context));
             }
         }
+    }
+
+    public void validateSelfReferences() {
+        System.out.println("Validate self references for " + fileName);
+        compilationUnit.visit(new SelfReferenceVisitor());
     }
 
     public void display() {

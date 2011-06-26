@@ -262,4 +262,28 @@ interface ClassBodies {
         String name = "gavin";
     }
     
+    class Good3WithThis() {
+        String name = "gavin";
+        void member() {
+            local t = this;
+        }
+    }
+    
+    object good3WithThis {
+        String name = "gavin";
+        void member() {
+            local t = this;
+        }
+    }
+    
+    class Bad3WithThis() {
+        String name = "gavin";
+        @error local t = this;
+    }
+    
+    object bad3WithThis {
+        String name = "gavin";
+        @error local t = this;
+    }
+    
 }
