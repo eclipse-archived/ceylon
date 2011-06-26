@@ -338,4 +338,128 @@ interface ClassBodies {
         @error t := this;
     }
     
+    class GoodWithOuter() {
+        String name = "gavin";
+        class Inner() {
+            GoodWithOuter o { 
+                return outer;
+            }
+        }
+    }
+    
+    class BadWithOuter() {
+        class Inner() {
+            BadWithOuter o { 
+                @error return outer;
+            }
+        }
+        String name = "gavin";
+    }
+    
+    object goodWithOuter {
+        String name = "gavin";
+        object inner {
+            local o { 
+                return outer;
+            }
+        }
+    }
+    
+    object badWithOuter {
+        object inner {
+            local o { 
+                @error return outer;
+            }
+        }
+        String name = "gavin";
+    }
+    
+    class Good2WithOuter() {
+        String name = "gavin";
+        class Inner() {
+            print(outer);
+        }
+    }
+    
+    class Bad2WithOuter() {
+        class Inner() {
+            @error print(outer);
+        }
+        String name = "gavin";
+    }
+    
+    object good2WithOuter {
+        String name = "gavin";
+        object inner {
+            print(outer);
+        }
+    }
+    
+    object bad2WithOuter {
+        object inner {
+            @error print(outer);
+        }
+        String name = "gavin";
+    }
+    
+    class Good3WithOuter() {
+        String name = "gavin";
+        class Inner() {
+            local o = outer;
+        }
+    }
+    
+    class Bad3WithOuter() {
+        class Inner() {
+            @error local o = outer;
+        }
+        String name = "gavin";
+    }
+    
+    object good3WithOuter {
+        String name = "gavin";
+        object inner {
+            local o = outer;
+        }
+    }
+    
+    object bad3WithOuter {
+        object inner {
+            @error local o = outer;
+        }
+        String name = "gavin";
+    }
+    
+    class Good4WithOuter() {
+        String name = "gavin";
+        variable Object? o := null;
+        class Inner() {
+            o := outer;
+        }
+    }
+    
+    class Bad4WithOuter() {
+        variable Object? o := null;
+        class Inner() {
+            @error o := outer;
+        }
+        String name = "gavin";
+    }
+    
+    object good4WithOuter {
+        String name = "gavin";
+        variable Object? o := null;
+        object inner {
+            o := outer;
+        }
+    }
+    
+    object bad4WithOuter {
+        variable Object? o := null;
+        object inner {
+            @error o := outer;
+        }
+        String name = "gavin";
+    }
+    
 }
