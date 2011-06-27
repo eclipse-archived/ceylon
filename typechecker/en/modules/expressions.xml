@@ -1669,6 +1669,9 @@ local biggerBag = bag.with(1, 2, 5.0);
         <para>Arguments must be listed in the same order as the parameters are declared by the 
         method declaration.</para>
         
+        <comment><para>TODO: should we outlaw <literal>return</literal> directives in the body
+        of an inline callable argument?</para></comment>
+        
         <comment><para>TODO: Should we provide "true" anonymous function support, according to
         the same syntax:</para>
         <programlisting>void logName(Person p) = (Person p) { log.info(p.name); };</programlisting>
