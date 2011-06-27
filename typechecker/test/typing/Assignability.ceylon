@@ -321,4 +321,9 @@ class Assignability() {
     X xx = x;
     @error X xxx = o;
     
+    Iterable<Entry<Integer,Integer>>? map = null;
+    if (exists map) {
+        for (Integer i -> Integer j in map) {}
+    }
+    
 }
