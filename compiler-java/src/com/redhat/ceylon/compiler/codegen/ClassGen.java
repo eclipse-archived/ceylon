@@ -59,8 +59,8 @@ public class ClassGen extends GenPart {
         class ClassVisitor extends StatementVisitor {
             Tree.ExtendedType extendedType;
 
-            ClassVisitor(Tree.ClassOrInterface cdecl, ListBuffer<JCStatement> stmts) {
-                super(gen.statementGen, cdecl, stmts);
+            ClassVisitor(ListBuffer<JCStatement> stmts) {
+                super(gen.statementGen, stmts);
             }
 
             public void visit(Tree.Parameter param) {
@@ -82,7 +82,7 @@ public class ClassGen extends GenPart {
             }
 
             public void visit(Tree.MethodDeclaration meth) {
-            	defs.appendList(convert(cdecl, meth));
+                defs.appendList(convert(meth));
             }
             
             public void visit(Tree.Annotation ann) {
@@ -142,13 +142,13 @@ public class ClassGen extends GenPart {
             }
 
             public void visit(final Tree.AttributeGetterDefinition getter) {
-                JCTree.JCMethodDecl getterDef = convert(cdecl, getter);
+                JCTree.JCMethodDecl getterDef = convert(getter);
                 defs.append(getterDef);
                 getters.put(getter.getIdentifier().getText(), getter);
             }
 
             public void visit(final Tree.AttributeSetterDefinition setter) {
-                JCTree.JCMethodDecl setterDef = convert(cdecl, setter);
+                JCTree.JCMethodDecl setterDef = convert(setter);
                 defs.append(setterDef);
                 setters.put(setter.getIdentifier().getText(), setter);
             }
@@ -183,7 +183,7 @@ public class ClassGen extends GenPart {
             }
         }
 
-        ClassVisitor visitor = new ClassVisitor(cdecl, stmts);
+        ClassVisitor visitor = new ClassVisitor(stmts);
         cdecl.visitChildren(visitor);
 
         if (cdecl instanceof Tree.AnyClass) {
@@ -236,8 +236,8 @@ public class ClassGen extends GenPart {
 		return false;
 	}
 
-	private JCTree.JCMethodDecl convert(ClassOrInterface classDecl, AttributeSetterDefinition cdecl) {
-        JCBlock body = gen.statementGen.convert(classDecl, cdecl.getBlock());
+	private JCTree.JCMethodDecl convert(AttributeSetterDefinition cdecl) {
+        JCBlock body = gen.statementGen.convert(cdecl.getBlock());
         String name = cdecl.getIdentifier().getText();
         return make().MethodDef(make().Modifiers(0), names().fromString(Util.getSetterName(name)), 
                 makeIdent("void"), 
@@ -247,8 +247,8 @@ public class ClassGen extends GenPart {
                 body, null);
     }
 
-    public JCTree.JCMethodDecl convert(ClassOrInterface classDecl, AttributeGetterDefinition cdecl) {
-        JCBlock body = gen.statementGen.convert(classDecl, cdecl.getBlock());
+    public JCTree.JCMethodDecl convert(AttributeGetterDefinition cdecl) {
+        JCBlock body = gen.statementGen.convert(cdecl.getBlock());
         return make().MethodDef(make().Modifiers(0), names().fromString(Util.getGetterName(cdecl.getIdentifier().getText())), 
                 gen.convert(cdecl.getType()), 
                 List.<JCTree.JCTypeParameter>nil(), 
@@ -433,16 +433,16 @@ public class ClassGen extends GenPart {
     private List<JCTree> convert(Tree.ClassOrInterface cdecl, Tree.MethodDefinition decl) {
         final Singleton<JCBlock> body = new Singleton<JCBlock>();
         
-        body.append(gen.statementGen.convert(cdecl, decl.getBlock()));
+        body.append(gen.statementGen.convert(decl.getBlock()));
         
-    	return convertMethod(cdecl, decl, body);
+        return convertMethod(decl, body);
     }
 
-    private List<JCTree> convert(Tree.ClassOrInterface cdecl, Tree.MethodDeclaration decl) {
-    	return convertMethod(cdecl, decl, null);
+    private List<JCTree> convert(Tree.MethodDeclaration decl) {
+        return convertMethod(decl, null);
     }
     
-    private List<JCTree> convertMethod(Tree.ClassOrInterface cdecl, Tree.AnyMethod decl, Singleton<JCBlock> body) {
+    private List<JCTree> convertMethod(Tree.AnyMethod decl, Singleton<JCBlock> body) {
     	List<JCTree> result = List.<JCTree> nil();
         final ListBuffer<JCVariableDecl> params = new ListBuffer<JCVariableDecl>();
         final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
@@ -450,7 +450,7 @@ public class ClassGen extends GenPart {
         ListBuffer<JCAnnotation> jcAnnotations = new ListBuffer<JCAnnotation>();
         final ListBuffer<JCTypeParameter> typeParams = new ListBuffer<JCTypeParameter>();
 
-        processMethodDeclaration(cdecl, decl, params, restypebuf, typeParams, langAnnotations);
+        processMethodDeclaration(decl, params, restypebuf, typeParams, langAnnotations);
         
         JCExpression restype = restypebuf.thing();
 
@@ -474,7 +474,7 @@ public class ClassGen extends GenPart {
         return result;
     }
     
-    void methodClass(Tree.ClassOrInterface classDecl, Tree.MethodDefinition decl, final ListBuffer<JCTree> defs, boolean topLevel) {
+    void methodClass(Tree.MethodDefinition decl, final ListBuffer<JCTree> defs, boolean topLevel) {
         // Generate a class with the
         // name of the method and a corresponding run() method.
 
@@ -484,9 +484,9 @@ public class ClassGen extends GenPart {
         final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
         final ListBuffer<JCTypeParameter> typeParams = new ListBuffer<JCTypeParameter>();
 
-        processMethodDeclaration(classDecl, decl, params, restype, typeParams, langAnnotations);
+        processMethodDeclaration(decl, params, restype, typeParams, langAnnotations);
 
-        body.append(gen.statementGen.convert(classDecl, decl.getBlock()));
+        body.append(gen.statementGen.convert(decl.getBlock()));
 
         JCMethodDecl meth = at(decl).MethodDef(make().Modifiers((topLevel ? PUBLIC | STATIC : 0)), names().fromString("run"), restype.thing(), processTypeConstraints(decl.getTypeConstraintList(), typeParams.toList()), params.toList(), List.<JCExpression> nil(), body.thing(), null);
 
@@ -518,7 +518,7 @@ public class ClassGen extends GenPart {
     }
 
     // FIXME: There must be a better way to do this.
-    private void processMethodDeclaration(final Tree.ClassOrInterface classDecl, final Tree.AnyMethod decl, final ListBuffer<JCVariableDecl> params, final Singleton<JCExpression> restype, final ListBuffer<JCTypeParameter> typeParams, final ListBuffer<JCAnnotation> langAnnotations) {
+    private void processMethodDeclaration(final Tree.AnyMethod decl, final ListBuffer<JCVariableDecl> params, final Singleton<JCExpression> restype, final ListBuffer<JCTypeParameter> typeParams, final ListBuffer<JCAnnotation> langAnnotations) {
 
         for (Tree.Parameter param : decl.getParameterLists().get(0).getParameters()) {
             params.append(convert(param));

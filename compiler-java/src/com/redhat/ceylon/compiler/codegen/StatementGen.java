@@ -28,14 +28,14 @@ public class StatementGen extends GenPart {
         super(gen);
     }
 
-    public JCBlock convert(Tree.ClassOrInterface cdecl, Tree.Block block) {
-        return block == null ? null : at(block).Block(0, convertStmts(cdecl, block.getStatements()));
+    public JCBlock convert(Tree.Block block) {
+        return block == null ? null : at(block).Block(0, convertStmts(block.getStatements()));
     }
 
-    private List<JCStatement> convertStmts(Tree.ClassOrInterface cdecl, java.util.List<Tree.Statement> list) {
+    private List<JCStatement> convertStmts(java.util.List<Tree.Statement> list) {
         final ListBuffer<JCStatement> buf = new ListBuffer<JCStatement>();
 
-        StatementVisitor v = new StatementVisitor(this, cdecl, buf);
+        StatementVisitor v = new StatementVisitor(this, buf);
 
         for (Tree.Statement stmt : list)
             stmt.visit(v);
@@ -43,17 +43,17 @@ public class StatementGen extends GenPart {
         return buf.toList();
     }
 
-    List<JCStatement> convert(Tree.ClassOrInterface cdecl, Tree.IfStatement stmt) {
-        JCBlock thenPart = convert(cdecl, stmt.getIfClause().getBlock());
-        JCBlock elsePart = stmt.getElseClause() != null ? convert(cdecl, stmt.getElseClause().getBlock()) : null;
+    List<JCStatement> convert(Tree.IfStatement stmt) {
+        JCBlock thenPart = convert(stmt.getIfClause().getBlock());
+        JCBlock elsePart = stmt.getElseClause() != null ? convert(stmt.getElseClause().getBlock()) : null;
         return convertCondition(stmt.getIfClause().getCondition(), JCTree.IF, thenPart, elsePart);
     }
 
-    List<JCStatement> convert(Tree.ClassOrInterface cdecl, Tree.WhileStatement stmt) {
+    List<JCStatement> convert(Tree.WhileStatement stmt) {
         Name tempForFailVariable = currentForFailVariable;
         currentForFailVariable = null;
         
-        JCBlock thenPart = convert(cdecl, stmt.getWhileClause().getBlock());
+        JCBlock thenPart = convert(stmt.getWhileClause().getBlock());
         List<JCStatement> res = convertCondition(stmt.getWhileClause().getCondition(), JCTree.WHILELOOP, thenPart, null);
         
         currentForFailVariable = tempForFailVariable;
@@ -61,11 +61,11 @@ public class StatementGen extends GenPart {
         return res;
     }
 
-    List<JCStatement> convert(Tree.ClassOrInterface cdecl, Tree.DoWhileStatement stmt) {
+    List<JCStatement> convert(Tree.DoWhileStatement stmt) {
         Name tempForFailVariable = currentForFailVariable;
         currentForFailVariable = null;
         
-        JCBlock thenPart = convert(cdecl, stmt.getDoClause().getBlock());
+        JCBlock thenPart = convert(stmt.getDoClause().getBlock());
         List<JCStatement> res = convertCondition(stmt.getDoClause().getCondition(), JCTree.DOLOOP, thenPart, null);
         
         currentForFailVariable = tempForFailVariable;
@@ -207,7 +207,7 @@ public class StatementGen extends GenPart {
         }
     }
 
-    List<JCStatement> convert(Tree.ClassOrInterface cdecl, Tree.ForStatement stmt) {
+    List<JCStatement> convert(Tree.ForStatement stmt) {
         class ForVisitor extends Visitor {
             Tree.Variable variable = null;
 
@@ -256,7 +256,7 @@ public class StatementGen extends GenPart {
         List<JCStatement> inner = List.<JCStatement> of(item_decl);
 
         // The user-supplied contents of the loop
-        inner = inner.appendList(convertStmts(cdecl, stmt.getForClause().getBlock().getStatements()));
+        inner = inner.appendList(convertStmts(stmt.getForClause().getBlock().getStatements()));
 
         // if ($ceylontmpY != null) ... else break;
         JCStatement test = at(stmt).If(at(stmt).Binary(JCTree.NE, optional_item_id, make().Literal(TypeTags.BOT, null)), at(stmt).Block(0, inner), at(stmt).Block(0, List.<JCStatement> of(at(stmt).Break(null))));
@@ -271,7 +271,7 @@ public class StatementGen extends GenPart {
 
         if (stmt.getFailClause() != null) {
             // The user-supplied contents of fail block
-        	List<JCStatement> failblock = convertStmts(cdecl, stmt.getFailClause().getBlock().getStatements());
+            List<JCStatement> failblock = convertStmts(stmt.getFailClause().getBlock().getStatements());
         	
         	// if ($ceylontmpX) ...
             JCIdent failtest_id = at(stmt).Ident(currentForFailVariable);
@@ -283,7 +283,7 @@ public class StatementGen extends GenPart {
     }
 
     // FIXME There is a similar implementation in ClassGen!
-	public JCStatement convert(ClassOrInterface cdecl, AttributeDeclaration decl) {
+	public JCStatement convert(AttributeDeclaration decl) {
     	Name atrrName = names().fromString(decl.getIdentifier().getText());
     	
     	JCExpression initialValue = null;
@@ -304,7 +304,7 @@ public class StatementGen extends GenPart {
         return at(decl).VarDef(at(decl).Modifiers(modifiers, langAnnotations.toList()), atrrName, type, initialValue);
 	}
 	
-    List<JCStatement> convert(Tree.ClassOrInterface cdecl, Tree.Break stmt) {
+    List<JCStatement> convert(Tree.Break stmt) {
     	// break;
     	JCStatement brk = at(stmt).Break(null);
     	

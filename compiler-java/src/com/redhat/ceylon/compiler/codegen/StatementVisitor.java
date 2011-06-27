@@ -11,13 +11,11 @@ import static com.sun.tools.javac.code.Flags.FINAL;
 
 class StatementVisitor extends Visitor implements NaturalVisitor {
     final ListBuffer<JCTree.JCStatement> stmts;
-    final Tree.ClassOrInterface cdecl;
     private StatementGen statementGen;
     private ExpressionGen expressionGen;
 
-    StatementVisitor(StatementGen statementGen, Tree.ClassOrInterface cdecl, ListBuffer<JCTree.JCStatement> stmts) {
+    StatementVisitor(StatementGen statementGen, ListBuffer<JCTree.JCStatement> stmts) {
         this.stmts = stmts;
-        this.cdecl = cdecl;
         this.statementGen = statementGen;
         this.expressionGen = statementGen.gen.expressionGen;
     }
@@ -35,27 +33,27 @@ class StatementVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.IfStatement stat) {
-        append(statementGen.convert(cdecl, stat));
+        append(statementGen.convert(stat));
     }
 
     public void visit(Tree.WhileStatement stat) {
-        append(statementGen.convert(cdecl, stat));
+        append(statementGen.convert(stat));
     }
 
     public void visit(Tree.DoWhileStatement stat) {
-        append(statementGen.convert(cdecl, stat));
+        append(statementGen.convert(stat));
     }
 
     public void visit(Tree.ForStatement stat) {
-        append(statementGen.convert(cdecl, stat));
+        append(statementGen.convert(stat));
     }
 
     public void visit(Tree.Break stat) {
-        append(statementGen.convert(cdecl, stat));
+        append(statementGen.convert(stat));
     }
 
     public void visit(Tree.AttributeDeclaration decl) {
-        append(statementGen.convert(cdecl, decl));
+        append(statementGen.convert(decl));
     }
 
     public void visit(Tree.SpecifierStatement op) {
@@ -73,7 +71,7 @@ class StatementVisitor extends Visitor implements NaturalVisitor {
 
     public void visit(Tree.MethodDefinition decl) {
         final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
-        statementGen.gen.classGen.methodClass(cdecl, decl, defs, false);
+        statementGen.gen.classGen.methodClass(decl, defs, false);
         for (JCTree def : defs.toList()) {
             JCTree.JCClassDecl innerDecl = (JCTree.JCClassDecl) def;
             stmts.append(innerDecl);

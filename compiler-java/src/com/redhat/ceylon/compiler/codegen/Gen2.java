@@ -227,7 +227,7 @@ public class Gen2 {
             }
 
             public void visit(Tree.MethodDefinition decl) {
-                classGen.methodClass(null, decl, defs, true);
+                classGen.methodClass(decl, defs, true);
             }
         });
         return defs;
