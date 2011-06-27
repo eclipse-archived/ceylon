@@ -107,25 +107,25 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.BaseMemberExpression that) {
-        visitReference(that, that.getDeclaration());
+        visitReference(that);
     }
 
     @Override
     public void visit(Tree.BaseTypeExpression that) {
-        visitReference(that, that.getDeclaration());
+        visitReference(that);
     }
 
     @Override
     public void visit(Tree.QualifiedMemberExpression that) {
         if (isSelfReference(that.getPrimary())) {
-            visitReference(that, that.getDeclaration());
+            visitReference(that);
         }
     }
 
     @Override
     public void visit(Tree.QualifiedTypeExpression that) {
         if (isSelfReference(that.getPrimary())) {
-            visitReference(that, that.getDeclaration());
+            visitReference(that);
         }
     }
 
@@ -133,7 +133,8 @@ public class SpecificationVisitor extends Visitor {
         return that instanceof Tree.This || that instanceof Tree.Outer;
     }
 
-    private void visitReference(Node that, Declaration member) {
+    private void visitReference(Tree.Primary that) {
+        Declaration member  = that.getDeclaration();
         //Declaration member = getDeclaration(that.getScope(), that.getUnit(), id, context);
         //TODO: check superclass members are not in declaration section!
         if ( member==declaration && 

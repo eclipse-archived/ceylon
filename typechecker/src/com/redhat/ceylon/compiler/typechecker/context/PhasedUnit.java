@@ -109,7 +109,7 @@ public class PhasedUnit {
         for (Declaration d: unit.getDeclarations()) {
             compilationUnit.visit(new SpecificationVisitor(d, context));
             if (d instanceof TypedDeclaration && !(d instanceof Setter)) {
-                compilationUnit.visit(new ValueVisitor((TypedDeclaration) d, context));
+                compilationUnit.visit(new ValueVisitor((TypedDeclaration) d));
             }
         }
     }

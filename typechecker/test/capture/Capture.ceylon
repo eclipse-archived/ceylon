@@ -149,4 +149,19 @@ class Capture() {
         shared String s { return s; }
     }
     
+    class WithMultipleAttributes() {
+        @uncaptured String x = "X";
+        @captured String y = "Y";
+        @captured String w = "W";
+        @captured String z = "Z";
+        use(x);
+        void inner() {
+            use(y);
+            use(this.w);
+        }
+        class Inner() {
+            use(outer.z);
+        }
+    }
+    
 }

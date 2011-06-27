@@ -1,8 +1,5 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getDeclaration;
-
-import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -14,12 +11,10 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 public class ValueVisitor extends Visitor {
     
     private TypedDeclaration declaration;
-    private Context context;
     private boolean inCapturingScope = false;
     
-    public ValueVisitor(TypedDeclaration declaration, Context context) {
+    public ValueVisitor(TypedDeclaration declaration) {
         this.declaration = declaration;
-        this.context = context;
     }
     
     private boolean enterCapturingScope() {
@@ -33,25 +28,42 @@ public class ValueVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.BaseMemberExpression that) {
+        visitReference(that);
+        /*if (that.getIdentifier()!=null) {
+            TypedDeclaration d = (TypedDeclaration) getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
+            visitReference(that, d);
+        }*/
+    }
+
+    private void visitReference(Tree.Primary that) {
         if (inCapturingScope) {
-            if (that.getIdentifier()!=null) {
-                TypedDeclaration d = (TypedDeclaration) getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
-                if (d==declaration) {
-                    if (d instanceof Value) {
-                        ((Value) d).setCaptured(true);
-                    }
-                    else if (d instanceof ValueParameter) {
-                        ((ValueParameter) d).setCaptured(true);
-                    }
-                    //TODO: remove this once we support capturing variable locals!
-                    if (d.isVariable() && !d.isClassMember() && !d.isToplevel()) {
-                        that.addError("access to variable local from capturing scope: " + declaration.getName());
-                    }
+            TypedDeclaration d = (TypedDeclaration) that.getDeclaration();
+            if (d==declaration) {
+                if (d instanceof Value) {
+                    ((Value) d).setCaptured(true);
+                }
+                else if (d instanceof ValueParameter) {
+                    ((ValueParameter) d).setCaptured(true);
+                }
+                //TODO: remove this once we support capturing variable locals!
+                if (d.isVariable() && !d.isClassMember() && !d.isToplevel()) {
+                    that.addError("access to variable local from capturing scope: " + declaration.getName());
                 }
             }
         }
     }
     
+    @Override
+    public void visit(Tree.QualifiedMemberExpression that) {
+        if (isSelfReference(that.getPrimary())) {
+            visitReference(that);
+        }
+    }
+
+    private boolean isSelfReference(Tree.Primary that) {
+        return that instanceof Tree.This || that instanceof Tree.Outer;
+    }
+
     @Override public void visit(Tree.Declaration that) {
         Declaration dm = that.getDeclarationModel();
         if (dm==declaration.getContainer() 
