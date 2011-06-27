@@ -18,6 +18,7 @@ public class Class extends ClassOrInterface implements Functional {
 		this.formal = formal;
 	}*/
 
+	@Override
 	public boolean isAbstract() {
 		return abstr;
 	}

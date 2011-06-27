@@ -20,5 +20,7 @@ public abstract class ClassOrInterface extends TypeDeclaration {
             return getContainer().getDeclaringType(d);
         }
     }
+	
+	public abstract boolean isAbstract();
 
 }
