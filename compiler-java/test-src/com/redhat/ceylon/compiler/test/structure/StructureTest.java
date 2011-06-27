@@ -30,6 +30,10 @@ public class StructureTest extends CompilerTest {
 		compareWithJavaSource("klass/Interface");
 	}
 	@Test
+	public void testInterfaceWithMembers(){
+		compareWithJavaSource("klass/InterfaceWithMembers");
+	}
+	@Test
 	public void testInitializerParameter(){
 		compareWithJavaSource("klass/InitializerParameter");
 	}
@@ -40,6 +44,10 @@ public class StructureTest extends CompilerTest {
 	@Test
 	public void testSatisfies(){
 		compareWithJavaSource("klass/Satisfies");
+	}
+	@Test
+	public void testSatisfiesWithMembers(){
+		compareWithJavaSource("klass/SatisfiesWithMembers");
 	}
 	@Test
 	public void testAbstractFormal(){

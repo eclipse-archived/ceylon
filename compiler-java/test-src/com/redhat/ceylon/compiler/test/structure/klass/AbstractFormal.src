@@ -28,17 +28,17 @@ abstract class AbstractFormal extends .ceylon.language.Object {
 }
 class ActualKlass extends AbstractFormal {
     
-    @Override
+    @.java.lang.Override
     public final void test() {
         return;
     }
     
-    @Override
+    @.java.lang.Override
     public final void test3() {
         return;
     }
     
-    @Override
+    @.java.lang.Override
     public void test4() {
         return;
     }
@@ -49,7 +49,7 @@ class ActualKlass extends AbstractFormal {
 }
 class ActualSubKlass extends ActualKlass {
     
-    @Override
+    @.java.lang.Override
     public final void test4() {
         return;
     }

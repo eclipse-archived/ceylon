@@ -1,0 +1,12 @@
+package com.redhat.ceylon.compiler.test.structure.klass;
+
+interface InterfaceWithMembers {
+    
+    public abstract void m();
+    
+    public abstract Boolean getB();
+    
+    public abstract Boolean getB2();
+    
+    public abstract void setB2(Boolean b2);
+}

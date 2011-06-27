@@ -4,15 +4,15 @@ class ClassVariableWithInitializer extends .ceylon.language.Object {
     private String f2;
     
     ClassVariableWithInitializer() {
-        String f = "";
-        this.f2 = "";
+        String f = .ceylon.language.String.instance("");
+        this.f2 = .ceylon.language.String.instance("");
     }
     
-    public String getF2() {
+    public final String getF2() {
         return this.f2;
     }
     
-    public void setF2(String f2) {
+    public final void setF2(String f2) {
         this.f2 = f2;
     }
 }

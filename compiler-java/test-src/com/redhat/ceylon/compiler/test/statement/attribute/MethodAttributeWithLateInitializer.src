@@ -4,7 +4,7 @@ class MethodAttributeWithLateInitializer extends .ceylon.language.Object {
     
     public final void m() {
         final String f;
-        f = "";
+        f = .ceylon.language.String.instance("");
     }
     
     MethodAttributeWithLateInitializer() {

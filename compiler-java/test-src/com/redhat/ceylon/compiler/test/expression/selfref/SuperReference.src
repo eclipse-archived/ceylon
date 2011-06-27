@@ -2,8 +2,7 @@ package com.redhat.ceylon.compiler.test.expression.selfref;
 
 class SuperReference extends .ceylon.language.Object {
     
-    public void m() {
-        final SuperReferenceChild x = new SuperReferenceChild();
+    public void m(final SuperReferenceChild x) {
         x.test();
     }
     
@@ -16,7 +15,7 @@ class SuperReference extends .ceylon.language.Object {
 }
 class SuperReferenceChild extends SuperReference {
     
-    @Override
+    @.java.lang.Override
     public final void test() {
         super.test();
     }

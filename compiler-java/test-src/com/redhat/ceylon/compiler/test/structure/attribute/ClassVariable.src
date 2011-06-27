@@ -5,29 +5,29 @@ class ClassVariable extends .ceylon.language.Object {
     private String capturedvar;
     
     private final void m() {
-        setCapturedvar("new value");
+        setCapturedvar(.ceylon.language.String.instance("new value"));
     }
     
     ClassVariable() {
         String uncapturedvar;
-        setPublicvar("");
-        uncapturedvar = "";
-        setCapturedvar("");
+        setPublicvar(.ceylon.language.String.instance(""));
+        uncapturedvar = .ceylon.language.String.instance("");
+        setCapturedvar(.ceylon.language.String.instance(""));
     }
     
-    public String getPublicvar() {
+    public final String getPublicvar() {
         return this.publicvar;
     }
     
-    public void setPublicvar(String publicvar) {
+    public final void setPublicvar(String publicvar) {
         this.publicvar = publicvar;
     }
     
-    private String getCapturedvar() {
+    private final String getCapturedvar() {
         return this.capturedvar;
     }
     
-    private void setCapturedvar(String capturedvar) {
+    private final void setCapturedvar(String capturedvar) {
         this.capturedvar = capturedvar;
     }
 }

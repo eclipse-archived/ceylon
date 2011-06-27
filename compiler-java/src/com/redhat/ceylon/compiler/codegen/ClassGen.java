@@ -262,7 +262,7 @@ public class ClassGen extends GenPart {
         int result = 0;
 
         result |= isShared(cdecl) ? PUBLIC : 0;
-        result |= isAbstract(cdecl) ? ABSTRACT : 0;
+        result |= isAbstract(cdecl) && (cdecl instanceof Tree.AnyClass) ? ABSTRACT : 0;
 
         return result;
     }
@@ -305,8 +305,9 @@ public class ClassGen extends GenPart {
     private int convertAttributeGetSetDeclFlags(Tree.AttributeDeclaration cdecl) {
         int result = 0;
 
-        result |= isMutable(cdecl) ? 0 : FINAL;
         result |= isShared(cdecl) ? PUBLIC : PRIVATE;
+        result |= isFormal(cdecl) ? ABSTRACT : 0;
+        result |= !(isFormal(cdecl) || isDefault(cdecl)) ? FINAL : 0;
 
         return result;
     }
@@ -337,7 +338,10 @@ public class ClassGen extends GenPart {
     private JCTree makeGetter(Tree.AttributeDeclaration decl) {
         // FIXME: add at() calls?
     	Name atrrName = names().fromString(decl.getIdentifier().getText());
-        JCBlock body = make().Block(0, List.<JCTree.JCStatement>of(make().Return(make().Select(makeIdent("this"), atrrName))));
+        JCBlock body = null;
+        if (!isFormal(decl)) {
+        	body = make().Block(0, List.<JCTree.JCStatement>of(make().Return(make().Select(makeIdent("this"), atrrName))));
+        }
         
         int mods = convertAttributeGetSetDeclFlags(decl);
         final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
@@ -356,10 +360,13 @@ public class ClassGen extends GenPart {
     private JCTree makeSetter(Tree.AttributeDeclaration decl) {
         // FIXME: add at() calls?
     	Name atrrName = names().fromString(decl.getIdentifier().getText());
-        JCBlock body = make().Block(0, List.<JCTree.JCStatement>of(
-                make().Exec(
-                        make().Assign(make().Select(makeIdent("this"), atrrName),
-                                makeIdent(atrrName.toString())))));
+        JCBlock body = null;
+        if (!isFormal(decl)) {
+        	body = make().Block(0, List.<JCTree.JCStatement>of(
+	                make().Exec(
+	                        make().Assign(make().Select(makeIdent("this"), atrrName),
+	                                makeIdent(atrrName.toString())))));
+        }
         
         int mods = convertAttributeGetSetDeclFlags(decl);
         final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
