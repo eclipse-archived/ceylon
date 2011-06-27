@@ -6,8 +6,8 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.codegen.Gen2.Singleton;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
@@ -213,12 +213,12 @@ public class ExpressionGen extends GenPart {
         // left side depends
         // FIXME: can this be anything else than a Primary?
         Declaration decl = ((Tree.Primary)leftTerm).getDeclaration();
-        // FIXME: can this be anything else than a Value or a ValueParameter?
+        // FIXME: can this be anything else than a Value or a TypedDeclaration?
         boolean variable = false;
         if (decl instanceof Value) {
         	variable = ((Value)decl).isVariable();
-        } else if (decl instanceof ValueParameter) {
-        	variable = ((ValueParameter)decl).isVariable();
+        } else if (decl instanceof TypedDeclaration) {
+        	variable = ((TypedDeclaration)decl).isVariable();
         }
         if(Util.isClassAttribute(decl) && variable){
             // must use the setter

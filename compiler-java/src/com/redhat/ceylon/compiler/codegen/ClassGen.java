@@ -258,7 +258,7 @@ public class ClassGen extends GenPart {
                 body, null);
     }
 
-    private int convertClassDeclFlags(Tree.Declaration cdecl) {
+    private int convertClassDeclFlags(Tree.ClassOrInterface cdecl) {
         int result = 0;
 
         result |= isShared(cdecl) ? PUBLIC : 0;
@@ -561,9 +561,8 @@ public class ClassGen extends GenPart {
         return decl.getDeclarationModel().isShared();
     }
 
-    private boolean isAbstract(Tree.Declaration decl) {
-        // FIXME
-        return hasCompilerAnnotation(decl, "abstract");
+    private boolean isAbstract(Tree.ClassOrInterface decl) {
+        return decl.getDeclarationModel().isAbstract();
     }
 
     private boolean isDefault(Tree.Declaration decl) {
