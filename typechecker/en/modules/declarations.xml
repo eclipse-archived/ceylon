@@ -1659,18 +1659,47 @@ Void goodbye() {
     return say("goodbye");
 }</programlisting>
         
-        <para>A block local method with a single <literal>return</literal> directive may 
-        be declared using the keyword <literal>local</literal> in place of the explicit 
-        return type declaration. The type of the method is inferred to be the type of the 
-        returned expression.</para>
+        <para>A non-<literal>void</literal> block local method may be declared using 
+        the keyword <literal>local</literal> in place of the explicit return type 
+        declaration. Then the method return type is inferred:</para>
         
+        <itemizedlist>
+            <listitem>
+                <para>if the method contains no <literal>return</literal> directive,
+                then the return type of the method is <literal>Bottom</literal> (this
+                is the case where the method always terminates in a <literal>throw</literal>
+                directive), or</para>
+            </listitem>
+            <listitem>
+                <para>otherwise, the return type of the method is the union of all 
+                returned expression types of <literal>return</literal> directives
+                of the method body.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>This method has inferred return type <literal>Integer</literal>.</para>
+
         <programlisting>local add(Integer x, Integer y) {
     return x + y;
 }</programlisting>
 
-        <comment><para>TODO: Relax this restriction, allowing type inference for methods
-        with multiple <literal>return</literal>s. The inferred type is the union of the
-        <literal>return</literal>ed expression types.</para></comment>
+        <para>This method has inferred return type <literal>Float|Integer</literal>.</para>
+
+        <programlisting>local unit(Boolean floating=false) {
+    if (floating) {
+        return 1.0;
+    }
+    else {
+        return +1;
+    }
+}</programlisting>
+
+        <para>This method has inferred return type <literal>Bottom</literal>.</para>
+
+        <programlisting>local die() {
+    throw;
+}</programlisting>
+
         
         </section>
         
@@ -2231,10 +2260,25 @@ Void goodbye() {
             the attribute is <literal>variable</literal>. Otherwise we say it is 
             non-<literal>variable</literal>.</para>
                         
-            <para>A block local attribute getter with a single <literal>return</literal>
-            directive may be declared using the keyword <literal>local</literal> in place of 
-            the explicit type declaration. The type of the local or attribute is inferred to 
-            be the type of the returned expression.</para>
+            <para>A block local attribute getter may be declared using the keyword 
+            <literal>local</literal> in place of the explicit type declaration. Then 
+            the attribute type is inferred:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>if the getter contains no <literal>return</literal> directive,
+                then the type of the attribute is <literal>Bottom</literal> (this is 
+                the case where the getter always terminates in a <literal>throw</literal>
+                directive), or</para>
+            </listitem>
+            <listitem>
+                <para>otherwise, the type of the attribute is the union of all returned 
+                expression types of <literal>return</literal> directives of the getter 
+                body.</para>
+            </listitem>
+        </itemizedlist>
+        
+            <para>This attribute has inferred type <literal>Name</literal>.</para>
         
             <programlisting>local name { 
     return Name(firstName, initial, lastName);
