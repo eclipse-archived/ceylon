@@ -13,7 +13,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.codegen.Gen2.Singleton;
-import com.redhat.ceylon.compiler.codegen.StatementGen.StatementVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
@@ -61,7 +60,7 @@ public class ClassGen extends GenPart {
             Tree.ExtendedType extendedType;
 
             ClassVisitor(Tree.ClassOrInterface cdecl, ListBuffer<JCStatement> stmts) {
-                gen.statementGen.super(cdecl, stmts);
+                super(gen.statementGen, cdecl, stmts);
             }
 
             public void visit(Tree.Parameter param) {
