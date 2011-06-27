@@ -48,7 +48,6 @@ public class ClassGen extends GenPart {
         final ListBuffer<JCVariableDecl> params = new ListBuffer<JCVariableDecl>();
         final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
         final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
-        final ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
         final ListBuffer<JCStatement> initStmts = new ListBuffer<JCStatement>();
         final ListBuffer<JCTypeParameter> typeParams = new ListBuffer<JCTypeParameter>();
         final ListBuffer<JCExpression> satisfies = new ListBuffer<JCExpression>();
@@ -59,8 +58,8 @@ public class ClassGen extends GenPart {
         class ClassVisitor extends StatementVisitor {
             Tree.ExtendedType extendedType;
 
-            ClassVisitor(ListBuffer<JCStatement> stmts) {
-                super(gen.statementGen, stmts);
+            ClassVisitor() {
+                super(gen.statementGen);
             }
 
             public void visit(Tree.Parameter param) {
@@ -183,12 +182,12 @@ public class ClassGen extends GenPart {
             }
         }
 
-        ClassVisitor visitor = new ClassVisitor(stmts);
+        ClassVisitor visitor = new ClassVisitor();
         cdecl.visitChildren(visitor);
 
         if (cdecl instanceof Tree.AnyClass) {
         	// Constructor
-            JCMethodDecl meth = at(cdecl).MethodDef(make().Modifiers(convertConstructorDeclFlags(cdecl)), names().init, at(cdecl).TypeIdent(VOID), List.<JCTypeParameter> nil(), params.toList(), List.<JCExpression> nil(), at(cdecl).Block(0, initStmts.toList().appendList(stmts.toList())), null);
+            JCMethodDecl meth = at(cdecl).MethodDef(make().Modifiers(convertConstructorDeclFlags(cdecl)), names().init, at(cdecl).TypeIdent(VOID), List.<JCTypeParameter> nil(), params.toList(), List.<JCExpression> nil(), at(cdecl).Block(0, initStmts.toList().appendList(visitor.stmts().toList())), null);
             defs.append(meth);
 
             // FIXME:

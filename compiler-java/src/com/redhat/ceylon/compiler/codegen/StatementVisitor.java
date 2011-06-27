@@ -10,12 +10,11 @@ import com.sun.tools.javac.util.ListBuffer;
 import static com.sun.tools.javac.code.Flags.FINAL;
 
 class StatementVisitor extends Visitor implements NaturalVisitor {
-    final ListBuffer<JCTree.JCStatement> stmts;
+    final ListBuffer<JCTree.JCStatement> stmts = ListBuffer.lb();
     private StatementGen statementGen;
     private ExpressionGen expressionGen;
 
-    StatementVisitor(StatementGen statementGen, ListBuffer<JCTree.JCStatement> stmts) {
-        this.stmts = stmts;
+    StatementVisitor(StatementGen statementGen) {
         this.statementGen = statementGen;
         this.expressionGen = statementGen.gen.expressionGen;
     }

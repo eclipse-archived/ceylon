@@ -33,14 +33,12 @@ public class StatementGen extends GenPart {
     }
 
     private List<JCStatement> convertStmts(java.util.List<Tree.Statement> list) {
-        final ListBuffer<JCStatement> buf = new ListBuffer<JCStatement>();
-
-        StatementVisitor v = new StatementVisitor(this, buf);
+        StatementVisitor v = new StatementVisitor(this);
 
         for (Tree.Statement stmt : list)
             stmt.visit(v);
 
-        return buf.toList();
+        return v.stmts().toList();
     }
 
     List<JCStatement> convert(Tree.IfStatement stmt) {
