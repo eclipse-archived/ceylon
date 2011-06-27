@@ -5,7 +5,7 @@ import com.redhat.ceylon.compiler.metadata.java.*;
 @SatisfiedTypes({
     "ceylon.language.Castable<ceylon.language.Natural|ceylon.language.Integer|ceylon.language.Float>",
     "ceylon.language.Integral<ceylon.language.Natural>",
-    "ceylon.language.Invertable<ceylon.language.Integer>",
+    "ceylon.language.Invertable<ceylon.language.Integer>"
 })
 public final class Natural
     extends Object
