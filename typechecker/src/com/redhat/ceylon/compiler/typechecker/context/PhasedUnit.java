@@ -89,9 +89,18 @@ public class PhasedUnit {
         compilationUnit.visit(new TypeArgumentVisitor());
     }
     
-    public void validateControlFlow() {
+    public void analyseFlow() {
         //System.out.println("Validate control flow for " + fileName);
         compilationUnit.visit(new ControlFlowVisitor());
+        //System.out.println("Validate self references for " + fileName);
+        compilationUnit.visit(new SelfReferenceVisitor());
+        //System.out.println("Validate specification for " + fileName);
+        for (Declaration d: unit.getDeclarations()) {
+            compilationUnit.visit(new SpecificationVisitor(d, context));
+            if (d instanceof TypedDeclaration && !(d instanceof Setter)) {
+                compilationUnit.visit(new ValueVisitor((TypedDeclaration) d));
+            }
+        }
     }
 
     public void validateRefinement() {
@@ -102,21 +111,6 @@ public class PhasedUnit {
     public void runAssertions() {
         //System.out.println("Running assertions for " + fileName);
         compilationUnit.visit(new AssertionVisitor());
-    }
-
-    public void validateSpecification() {
-        //System.out.println("Validate specification for " + fileName);
-        for (Declaration d: unit.getDeclarations()) {
-            compilationUnit.visit(new SpecificationVisitor(d, context));
-            if (d instanceof TypedDeclaration && !(d instanceof Setter)) {
-                compilationUnit.visit(new ValueVisitor((TypedDeclaration) d));
-            }
-        }
-    }
-
-    public void validateSelfReferences() {
-        //System.out.println("Validate self references for " + fileName);
-        compilationUnit.visit(new SelfReferenceVisitor());
     }
 
     public void display() {

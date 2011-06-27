@@ -101,9 +101,7 @@ public class TypeChecker {
             pu.analyseTypes();
         }
         for (PhasedUnit pu: listOfUnits) {
-            pu.validateControlFlow();
-            pu.validateSelfReferences();
-            pu.validateSpecification();
+            pu.analyseFlow();
         }
         for (PhasedUnit pu : listOfUnits) {
             if (!forceSilence) {
