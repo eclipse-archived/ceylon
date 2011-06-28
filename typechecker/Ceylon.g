@@ -154,10 +154,10 @@ importElements
     ;
 
 importElement
-    : IMPLICIT? memberAlias? memberName
-    -> ^(IMPORT_MEMBER IMPLICIT? memberAlias? memberName)
-    | IMPLICIT? typeAlias? typeName
-    -> ^(IMPORT_TYPE IMPLICIT? typeAlias? typeName)
+    : memberAlias? memberName
+    -> ^(IMPORT_MEMBER memberAlias? memberName)
+    | typeAlias? typeName
+    -> ^(IMPORT_TYPE typeAlias? typeName)
     ;
 
 importWildcard
@@ -166,13 +166,13 @@ importWildcard
     ;
 
 memberAlias
-    : LOCAL_MODIFIER memberName '='
-    -> ^(ALIAS[$LOCAL_MODIFIER] memberName)
+    : memberName '='
+    -> ^(ALIAS memberName)
     ;
 
 typeAlias
-    : LOCAL_MODIFIER typeName '='
-    -> ^(ALIAS[$LOCAL_MODIFIER] typeName)
+    : typeName '='
+    -> ^(ALIAS typeName)
     ;
 
 packagePath
@@ -273,8 +273,9 @@ declarationStart
     ;
 
 declarationKeyword
-    : 'local' 
-    | 'assign' 
+    : 'value'
+    | 'function' 
+    | 'assign'
     | 'void'
     | 'interface' 
     | 'class' 
@@ -336,7 +337,7 @@ retryDirective
 
 objectDeclaration
     : OBJECT_DEFINITION memberName extendedType? satisfiedTypes? classBody
-    -> ^(OBJECT_DEFINITION LOCAL_MODIFIER memberName extendedType? satisfiedTypes? classBody) 
+    -> ^(OBJECT_DEFINITION VALUE_MODIFIER memberName extendedType? satisfiedTypes? classBody) 
     ;
 
 voidMethodDeclaration
@@ -355,24 +356,26 @@ setterDeclaration
     ;
 
 typedMethodOrAttributeDeclaration
-    : inferrableType memberName
+    : inferableType memberName
     ( 
       methodParameters 
       (
-        memberBody[$inferrableType.tree] 
-      -> ^(METHOD_DEFINITION inferrableType memberName methodParameters memberBody)
+        memberBody[$inferableType.tree] 
+      -> ^(METHOD_DEFINITION inferableType memberName methodParameters memberBody)
       | specifier? ';'
-      -> ^(METHOD_DECLARATION inferrableType memberName methodParameters specifier?)
+      -> ^(METHOD_DECLARATION inferableType memberName methodParameters specifier?)
     )
     | (specifier | initializer)? ';'
-    -> ^(ATTRIBUTE_DECLARATION inferrableType memberName specifier? initializer?)
-    | memberBody[$inferrableType.tree]
-    -> ^(ATTRIBUTE_GETTER_DEFINITION inferrableType memberName memberBody)      
+    -> ^(ATTRIBUTE_DECLARATION inferableType memberName specifier? initializer?)
+    | memberBody[$inferableType.tree]
+    -> ^(ATTRIBUTE_GETTER_DEFINITION inferableType memberName memberBody)      
     )
     ;
 
-inferrableType
-    : unionType | 'local'
+inferableType
+    : unionType 
+    | 'value' 
+    | 'function'
     ;
 
 interfaceDeclaration
@@ -808,7 +811,7 @@ base
     ;
 
 lambda
-    : /*'local'*/ parameters functionalArgumentBody
+    : /*'function'*/ parameters functionalArgumentBody
     -> ^(LAMBDA parameters functionalArgumentBody)
     ;
 
@@ -895,7 +898,7 @@ namedArgumentDeclaration
     
 objectArgument
     : OBJECT_DEFINITION memberName extendedType? satisfiedTypes? classBody
-    -> ^(OBJECT_ARGUMENT[$OBJECT_DEFINITION] LOCAL_MODIFIER memberName extendedType? satisfiedTypes? classBody)
+    -> ^(OBJECT_ARGUMENT[$OBJECT_DEFINITION] VALUE_MODIFIER memberName extendedType? satisfiedTypes? classBody)
     ;
 
 voidMethodArgument
@@ -904,12 +907,12 @@ voidMethodArgument
     ;
 
 typedMethodOrGetterArgument
-    : inferrableType memberName
+    : inferableType memberName
     ( 
-      (parameters+ memberBody[$inferrableType.tree])
-    -> ^(METHOD_ARGUMENT inferrableType memberName parameters+ memberBody)
-    | memberBody[$inferrableType.tree]
-    -> ^(ATTRIBUTE_ARGUMENT inferrableType memberName memberBody)      
+      (parameters+ memberBody[$inferableType.tree])
+    -> ^(METHOD_ARGUMENT inferableType memberName parameters+ memberBody)
+    | memberBody[$inferableType.tree]
+    -> ^(ATTRIBUTE_ARGUMENT inferableType memberName memberBody)      
     )
     ;
 
@@ -953,7 +956,7 @@ positionalArgument
 //invocation
 functionalArgument
     : memberName functionalArgumentDefinition
-    -> ^(METHOD_ARGUMENT 'local' memberName functionalArgumentDefinition)
+    -> ^(METHOD_ARGUMENT FUNCTION_MODIFIER memberName functionalArgumentDefinition)
     ;
 
 functionalArgumentDefinition
@@ -973,8 +976,8 @@ functionalArgumentBody
 //Support "T x in arg" in positional argument lists
 //Note that we don't need to support this yet
 specialArgument
-    : inferrableType memberName (containment | specifier)
-    -> ^(SPECIAL_ARGUMENT inferrableType memberName containment? specifier?)
+    : inferableType memberName (containment | specifier)
+    -> ^(SPECIAL_ARGUMENT inferableType memberName containment? specifier?)
     //| isCondition
     //| existsCondition
     ;
@@ -1266,13 +1269,13 @@ variable2
     ;
 
 variable
-    : inferrableType memberName parameters*
-    -> ^(VARIABLE inferrableType memberName parameters*)
+    : inferableType memberName parameters*
+    -> ^(VARIABLE inferableType memberName parameters*)
     ;
 
 impliedVariable
     : memberName 
-    -> ^(VARIABLE LOCAL_MODIFIER memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName))))
+    -> ^(VARIABLE VALUE_MODIFIER memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName))))
     ;
 
 // Lexer
@@ -1502,16 +1505,16 @@ IMPORT
     :   'import'
     ;
 
-IMPLICIT
-    :   'implicit'
-    ;
-
 INTERFACE_DEFINITION
     :   'interface'
     ;
 
-LOCAL_MODIFIER
-    :   'local'
+VALUE_MODIFIER
+    :   'value'
+    ;
+
+FUNCTION_MODIFIER
+    :   'function'
     ;
 
 NONEMPTY

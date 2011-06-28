@@ -19,7 +19,6 @@
     IDENTIFIER*)
 
 ^(IMPORT_MEMBER_OR_TYPE:STATEMENT_OR_ARGUMENT
-    IMPLICIT?
     ALIAS?
     IDENTIFIER)
 ^(IMPORT_MEMBER:IMPORT_MEMBER_OR_TYPE)
@@ -96,7 +95,7 @@
     TYPE_SPECIFIER)
 
 ^(abstract TYPED_DECLARATION:DECLARATION
-    TYPE?(BASE_TYPE QUALIFIED_TYPE UNION_TYPE SUBTYPE LOCAL_MODIFIER VOID_MODIFIER SEQUENCED_TYPE)
+    TYPE?(BASE_TYPE QUALIFIED_TYPE UNION_TYPE SUBTYPE VALUE_MODIFIER FUNCTION_MODIFIER VOID_MODIFIER SEQUENCED_TYPE)
     abstract TypedDeclaration declarationModel;)
 
 ^(abstract ANY_ATTRIBUTE:TYPED_DECLARATION)
@@ -206,8 +205,14 @@
 "The runtime type of the current instance."
 ^(SUBTYPE: TYPE)
 
-"Specifies that the type of a declaration should be inferred."
-^(LOCAL_MODIFIER: TYPE)
+"Specifies that the type of a block local declaration should be inferred."
+^(abstract LOCAL_MODIFIER: TYPE)
+
+"Specifies that the type of a local declaration should be inferred."
+^(VALUE_MODIFIER: LOCAL_MODIFIER)
+
+"Specifies that the type of a method declaration should be inferred."
+^(FUNCTION_MODIFIER: LOCAL_MODIFIER)
 
 "A list of type arguments in a produced type."
 ^(TYPE_ARGUMENT_LIST 
@@ -595,7 +600,7 @@ argument list."
 ^(SPECIFIED_ARGUMENT:NAMED_ARGUMENT
     SPECIFIER_EXPRESSION)
 ^(abstract TYPED_ARGUMENT:NAMED_ARGUMENT
-    TYPE(BASE_TYPE QUALIFIED_TYPE UNION_TYPE VOID_MODIFIER LOCAL_MODIFIER)
+    TYPE(BASE_TYPE QUALIFIED_TYPE UNION_TYPE VOID_MODIFIER VALUE_MODIFIER FUNCTION_MODIFIER)
     abstract TypedDeclaration declarationModel;)
 ^(METHOD_ARGUMENT:TYPED_ARGUMENT
     PARAMETER_LIST*

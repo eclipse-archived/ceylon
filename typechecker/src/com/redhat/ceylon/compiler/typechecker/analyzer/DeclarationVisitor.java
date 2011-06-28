@@ -251,6 +251,17 @@ public class DeclarationVisitor extends Visitor {
         exitScope(o);
         checkMethodParameters(that);
         that.getDeclarationModel().setTypeParameters(getTypeParameters(that.getTypeParameterList()));
+        if (that.getType() instanceof Tree.ValueModifier) {
+            that.getType().addError("methods may not be declared using the keyword value");
+        }
+    }
+    
+    @Override
+    public void visit(Tree.AnyAttribute that) {
+        super.visit(that);
+        if (that.getType() instanceof Tree.FunctionModifier) {
+            that.getType().addError("attributes may not be declared using the keyword function");
+        }
     }
 
     @Override
