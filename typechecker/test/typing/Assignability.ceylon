@@ -156,7 +156,7 @@ class Assignability() {
         print(nothing.hello);
     }
     
-    if (exists {X()}[0]) {}
+    if ({X()}[0] exists) {}
     
     //if (@error exists "Hello") {}
     //if (@error exists something) {}
@@ -182,7 +182,8 @@ class Assignability() {
         @error print(xx.hello);
     }
     
-    @error if (exists something.hello) {}
+    @error if (something.hello exists) {}
+    if (exists @error local h = something.hello) {}
     //@error if (exists something) {}
     
     if (is Y something) {
@@ -193,7 +194,8 @@ class Assignability() {
         print(y.name);
     }
     
-    if (is Y X()) {}
+    if (X() is Y) {}
+    if (is Y x = X()) {}
     
     X[]? seq = null;
     
@@ -224,8 +226,10 @@ class Assignability() {
     for (Integer i in {-1,+2}) {
         print($i);
     }
-    if (nonempty {}) {}
-    @error if (nonempty {-2,+0,+1}) {}
+    if ({} nonempty) {}
+    @error if ({-2,+0,+1} nonempty) {}
+    if (nonempty local e = {}) {}
+    if (nonempty @error local s = {-2,+0,+1}) {}
     Integer[] ints = {-2,+0,+1};
     if (nonempty ints) {
         Integer i = ints.first;
