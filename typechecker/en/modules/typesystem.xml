@@ -516,12 +516,20 @@
         <literal>local</literal> may not be combined with the <literal>shared</literal>
         annotation.</para>
         
-        <comment><para>TODO: should we call this keyword <literal>define</literal>, in
-        case we change our minds later about using it for non-local declarations?</para></comment>
+        <comment><para>TODO: Should we instead introduce the keywords <literal>value</literal>
+        and <literal>function</literal> for declaring local attributes and methods respectively?
+        <!--literal>define</literal--></para>
+        <programlisting>value names = people[].name;</programlisting>
+        <programlisting>function parse(String text) {
+    return text.tokens(" .!?,:;()\n\f\r\t");
+}</programlisting>
+        </comment>
         
-        <comment><para>TODO: should we let you leave off the type arguments in the type
+        <!--
+        <comment><para>TODO: Should we let you leave off the type arguments in the type
         of a local declaration? For example:</para>
         <programlisting>Sequence&lt;&gt; names = people[].name;</programlisting></comment>
+        -->
         
         </section>
         
