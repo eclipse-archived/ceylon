@@ -34,6 +34,19 @@ public class TypeCheckerBuilder {
         return this;
     }
 
+    /**
+     * @deprecated this is bad and a temporary hack
+     *
+     * The problem (which is a temporary one) with this is that it will try to load required modules from the ceylon repo,
+     * as source (such as the ceylon language module) and we want to load them using our javac process and from class files
+     * (or source code to autocompile).
+     * This is a temporary hack until we figure out how to do module loading properly in the compiler (including repos and stuff,
+     * but really, later).
+     *
+     * @author Emmanuel Bernard <emmanuel@hibernate.org>
+     * @author Stephane Epardaud <stephane.epardaud@gmail.com>
+     *
+     */
     public TypeCheckerBuilder skipDependenciesVerification() {
         this.verifyDependencies = false;
         return this;
