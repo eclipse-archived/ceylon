@@ -1,3 +1,11 @@
 package com.redhat.ceylon.compiler.test.structure.toplevel;
 
-// FIXME
+final class x extends .ceylon.language.Object {
+    
+    private final void y() {
+    }
+    
+    x() {
+    }
+    public static final x $INSTANCE = new x();
+}

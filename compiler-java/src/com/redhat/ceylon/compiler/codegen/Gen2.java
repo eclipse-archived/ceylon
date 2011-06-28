@@ -8,6 +8,7 @@ import java.util.Iterator;
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 
+import com.sun.tools.javac.code.Flags;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 
@@ -29,6 +30,7 @@ import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Options;
 import com.sun.tools.javac.util.Position.LineMap;
+import org.omg.CORBA.PUBLIC_MEMBER;
 
 public class Gen2 {
     private TreeMaker make;
@@ -219,7 +221,7 @@ public class Gen2 {
             }
 
             public void visit(Tree.ObjectDefinition decl) {
-                defs.append(classGen.convert(decl));
+                defs.append(classGen.objectClass(decl, true));
             }
             
             public void visit(Tree.AttributeDeclaration decl){

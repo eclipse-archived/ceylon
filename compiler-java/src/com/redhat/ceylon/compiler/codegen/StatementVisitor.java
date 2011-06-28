@@ -75,6 +75,12 @@ class StatementVisitor extends Visitor implements NaturalVisitor {
         stmts.append(defineNewInstance(id, decl));
     }
 
+    @Override
+    public void visit(Tree.ObjectDefinition that) {
+        // TODO
+        super.visit(that);
+    }
+
     private JCTree.JCVariableDecl defineNewInstance(JCTree.JCIdent name, Tree.Declaration decl) {
         return statementGen.at(decl).VarDef(
                 statementGen.make().Modifiers(FINAL),
