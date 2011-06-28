@@ -19,18 +19,18 @@ class Optional() {
     
     if (exists @error Y xxx = x) {}
     
-    local sx = { X() };
-    local sxn = { X(), null };
-    local sy = { Y() };
-    local syn = { Y(), null };
-    local sxy = { X(), Y() };
-    variable local ss := { X(), Y(), null };
+    value sx = { X() };
+    value sxn = { X(), null };
+    value sy = { Y() };
+    value syn = { Y(), null };
+    value sxy = { X(), Y() };
+    variable value ss := { X(), Y(), null };
     ss:=sx;
     ss:=sy;
     ss:=sxy;
     ss:=sxn;
     ss:=syn;
-    local bs = { X(), "foo" };
+    value bs = { X(), "foo" };
     @error ss:=bs;
     
     class Foo<T>() {
@@ -69,12 +69,12 @@ class Optional() {
     
     Character[] somechars = {};
     Natural scs = somechars.size;
-    local sci = somechars.iterator;
+    value sci = somechars.iterator;
     
     @type["Nothing|String|Integer|Sequence<Object>"] String? | String | String? | Integer | Sequence<Object> foobar1 = -1;
     @type["Nothing|Empty|Sequence<String>|Integer"] String[]? | String[] | Sequence<String> | Integer foobar2 = 1.integer;
     
-    @type["Sequence<Nothing|String|Integer|Sequence<Object>|Empty>"] local xyz = { foobar1, foobar2 };
+    @type["Sequence<Nothing|String|Integer|Sequence<Object>|Empty>"] value xyz = { foobar1, foobar2 };
     
     //TODO: I think the type parameter X does
     //      not hide the X defined above - it

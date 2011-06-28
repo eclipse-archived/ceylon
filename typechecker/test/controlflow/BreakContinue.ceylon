@@ -6,12 +6,12 @@ class BreakContinue() {
         @error continue;
     }
     void forBreak() {
-        for (local n in 0..1) {
+        for (value n in 0..1) {
             break;
         }
     }
     void forContinue() {
-        for (local n in 0..1) {
+        for (value n in 0..1) {
             continue;
         }
     }
@@ -26,21 +26,21 @@ class BreakContinue() {
         }
     }
     void forBadBreak() {
-        for (local n in 0..1) {
+        for (value n in 0..1) {
             void bad() {
                 @error break;
             }
         }
     }
     void forBadContinue() {
-        for (local n in 0..1) {
+        for (value n in 0..1) {
             class Bad() {
                 @error continue;
             }
         }
     }
     void forBadContinue2() {
-        for (local n in 0..1) {
+        for (value n in 0..1) {
             object bad {
                 @error continue;
             }

@@ -222,21 +222,21 @@ interface ClassBodies {
     
     class GoodWithThis() {
         String name = "gavin";
-        local get { return this; }
+        value get { return this; }
     }
     
     object goodWithThis {
         String name = "gavin";
-        local get { return this; }
+        value get { return this; }
     }
     
     class BadWithThis() {
-        local get { @error return this; }
+        value get { @error return this; }
         String name = "gavin";
     }
     
     object badWithThis {
-        local get { @error return this; }
+        value get { @error return this; }
         String name = "gavin";
     }
     
@@ -265,49 +265,49 @@ interface ClassBodies {
     class Good3WithThis() {
         String name = "gavin";
         void member() {
-            local t = this;
+            value t = this;
         }
     }
     
     object good3WithThis {
         String name = "gavin";
         void member() {
-            local t = this;
+            value t = this;
         }
     }
     
     class Bad3WithThis() {
         String name = "gavin";
-        @error local t = this;
+        @error value t = this;
     }
     
     object bad3WithThis {
         String name = "gavin";
-        @error local t = this;
+        @error value t = this;
     }
     
     class Good4WithThis() {
         String name = "gavin";
         void member() {
-            variable local t := this;
+            variable value t := this;
         }
     }
     
     object good4WithThis {
         String name = "gavin";
         void member() {
-            variable local t := this;
+            variable value t := this;
         }
     }
     
     class Bad4WithThis() {
         String name = "gavin";
-        @error variable local t := this;
+        @error variable value t := this;
     }
     
     object bad4WithThis {
         String name = "gavin";
-        @error variable local t := this;
+        @error variable value t := this;
     }
     
     class Good5WithThis() {
@@ -359,7 +359,7 @@ interface ClassBodies {
     object goodWithOuter {
         String name = "gavin";
         object inner {
-            local o { 
+            value o { 
                 return outer;
             }
         }
@@ -367,7 +367,7 @@ interface ClassBodies {
     
     object badWithOuter {
         object inner {
-            local o { 
+            value o { 
                 @error return outer;
             }
         }
@@ -405,13 +405,13 @@ interface ClassBodies {
     class Good3WithOuter() {
         String name = "gavin";
         class Inner() {
-            local o = outer;
+            value o = outer;
         }
     }
     
     class Bad3WithOuter() {
         class Inner() {
-            @error local o = outer;
+            @error value o = outer;
         }
         String name = "gavin";
     }
@@ -419,13 +419,13 @@ interface ClassBodies {
     object good3WithOuter {
         String name = "gavin";
         object inner {
-            local o = outer;
+            value o = outer;
         }
     }
     
     object bad3WithOuter {
         object inner {
-            @error local o = outer;
+            @error value o = outer;
         }
         String name = "gavin";
     }

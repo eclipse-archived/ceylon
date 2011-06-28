@@ -9,6 +9,13 @@ interface Declarations {
     
     Y something { return createSomething(); }
     
+    class WithValueArg(@error Object value) {}
+    void withValueArg(@error Object value) {}
+    
+    @error class value() {}
+    //@error void object() {}
+    //@error value function = "hello";
+    
     @error class WithoutArgs {}
     
     @error void withoutArgs {}
@@ -35,8 +42,8 @@ interface Declarations {
     @error class () {}
     @error void () {}
     @error interface {}
-    @error local { return Y(); }
-    @error local () { return Y(); }
+    @error value { return Y(); }
+    @error function () { return Y(); }
     
     object x {
         String hello = "Hello";
@@ -59,10 +66,34 @@ interface Declarations {
     
     class AdvancedHiding(Float x) {
         shared String x = x.string;
-        @type["Float"] local f = x;
+        @type["Float"] value f = x;
     }
     void advancedHiding() {
-        @type["String"] local s = AdvancedHiding(1.0).x;
+        @type["String"] value s = AdvancedHiding(1.0).x;
     }
-
+    
+    class Inference() {
+    
+        @type["String"] function inferredMethod() {
+            return "Hello";
+        }
+        
+        @type["String"] value inferredGetter {
+            return "Hello";
+        }
+        
+        @type["String"] value inferredAttribute = "Hello";
+        
+        @error value brokenInferredMethod() {
+            return "Hello";
+        }
+        
+        @error function brokenInferredGetter {
+            return "Hello";
+        }
+        
+        @error function brokenInferredAttribute = "Hello";
+        
+    }
+    
 }

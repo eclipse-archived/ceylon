@@ -1088,14 +1088,14 @@ interface DefiniteReturn {
     }
     
     X methodWithNestedMethod() {
-        local nestedMethod() {
+        function nestedMethod() {
             return X();
         }
         return nestedMethod();
     }
     
     X getterWithNestedGetter {
-        local nestedGetter {
+        value nestedGetter {
             return X();
         }
         return nestedGetter;

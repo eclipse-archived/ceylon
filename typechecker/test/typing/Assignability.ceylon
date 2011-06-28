@@ -165,7 +165,7 @@ class Assignability() {
         print(x.hello);
     }
     
-    if (exists local xx = nothing) {
+    if (exists value xx = nothing) {
         print(xx.hello);
     }
     
@@ -178,12 +178,12 @@ class Assignability() {
         print(x.hello);
     }
     
-    if (exists @error local xx = something) {
+    if (exists @error value xx = something) {
         @error print(xx.hello);
     }
     
     @error if (something.hello exists) {}
-    if (exists @error local h = something.hello) {}
+    if (exists @error value h = something.hello) {}
     //@error if (exists something) {}
     
     if (is Y something) {
@@ -210,7 +210,7 @@ class Assignability() {
         print(x.hello);
     }
     
-    for (local x in {X(), X()} ) {
+    for (value x in {X(), X()} ) {
         print(x.hello);
     }
     
@@ -228,8 +228,8 @@ class Assignability() {
     }
     if ({} nonempty) {}
     @error if ({-2,+0,+1} nonempty) {}
-    if (nonempty local e = {}) {}
-    if (nonempty @error local s = {-2,+0,+1}) {}
+    if (nonempty value e = {}) {}
+    if (nonempty @error value s = {-2,+0,+1}) {}
     Integer[] ints = {-2,+0,+1};
     if (nonempty ints) {
         Integer i = ints.first;
@@ -238,13 +238,13 @@ class Assignability() {
     Integer[] noints = {};
     if (nonempty noints) {}
     
-    //for (@error local x in 46 ) {}
+    //for (@error value x in 46 ) {}
     
     for (X x -> Y y in {X()->Y(), X()->Y()}) {
         print(x.hello + " " + y.name);
     }
     
-    for (local x -> local y in {X()->Y(), X()->Y()}) {
+    for (value x -> value y in {X()->Y(), X()->Y()}) {
         print(x.hello + " " + y.name);
     }
     
@@ -276,7 +276,7 @@ class Assignability() {
         print($i);
     }
     
-    //for (@error local x -> local y in 12) {}
+    //for (@error value x -> value y in 12) {}
     
     void printStrings(String... strings) {}
     
@@ -316,10 +316,10 @@ class Assignability() {
     w<String>({"foo", "bar"});
     
     object o { shared String hello = "hello"; }
-    @type["Assignability.o"] local oo = o;
+    @type["Assignability.o"] value oo = o;
     Object ooo = o;
-    @type["String"] local so = o.hello;
-    @type["String"] local soo = oo.hello;
+    @type["String"] value so = o.hello;
+    @type["String"] value soo = oo.hello;
     
     object x extends X() {}
     X xx = x;
