@@ -119,6 +119,9 @@ public class CeylonEnter extends Enter {
             pu.validateSpecification();
         }
         for (PhasedUnit pu : listOfUnits) { 
+            pu.analyseFlow();
+        }
+        for (PhasedUnit pu : listOfUnits) { 
             pu.display(); 
             pu.getCompilationUnit().visit(new AssertionVisitor(){
                 // FIXME: use regular javac log.error. We must define a localisation key for that, and 

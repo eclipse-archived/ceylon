@@ -1,5 +1,4 @@
 abstract class AbstractFormal() {
-    shared default Integer attrib;
     shared void m() {
         test();
         test2();

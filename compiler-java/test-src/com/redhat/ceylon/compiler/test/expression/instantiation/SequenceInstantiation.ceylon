@@ -1,5 +1,5 @@
 class SequenceInstantiation(){
-    shared Object m() {
+    shared Sequence<Natural> m() {
         return { 1, 2, 3 };
     }
 }

@@ -6,11 +6,14 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.codegen.Gen2.Singleton;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BinaryOperatorExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequenceEnumeration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.util.Util;
@@ -131,6 +134,10 @@ public class ExpressionGen extends GenPart {
                 result = convertExpression(value.getExpression());
             }
 
+            public void visit(Tree.SequenceEnumeration value) {
+                result = convert(value);
+            }
+
             // FIXME: port Null?
             // FIXME: port Condition?
             // FIXME: port Subscript?
@@ -146,7 +153,7 @@ public class ExpressionGen extends GenPart {
         return v.result;
     }
 
-    private JCExpression convertStringExpression(Tree.StringTemplate expr) {
+	private JCExpression convertStringExpression(Tree.StringTemplate expr) {
         ListBuffer<JCExpression> strings = new ListBuffer<JCExpression>();
         for (Tree.Expression t : expr.getExpressions()) {
             strings.append(convertExpression(t));
@@ -204,13 +211,23 @@ public class ExpressionGen extends GenPart {
     }
 
     private JCExpression convert(Tree.AssignOp op) {
+        return convertAssignment(op, op.getLeftTerm(), op.getRightTerm());
+    }
+
+    JCExpression convertAssignment(Node op, Term leftTerm, Term rightTerm) {
         // right side is easy
-        JCExpression rhs = convertExpression(op.getRightTerm());
+        JCExpression rhs = convertExpression(rightTerm);
         // left side depends
-        Term leftTerm = op.getLeftTerm();
         // FIXME: can this be anything else than a Primary?
         Declaration decl = ((Tree.Primary)leftTerm).getDeclaration();
-        if(Util.isClassAttribute(decl)){
+        // FIXME: can this be anything else than a Value or a TypedDeclaration?
+        boolean variable = false;
+        if (decl instanceof Value) {
+        	variable = ((Value)decl).isVariable();
+        } else if (decl instanceof TypedDeclaration) {
+        	variable = ((TypedDeclaration)decl).isVariable();
+        }
+        if(Util.isClassAttribute(decl) && variable){
             // must use the setter
             return at(op).Apply(List.<JCTree.JCExpression>nil(), makeIdent(Util.getSetterName(decl.getName())), 
                     List.<JCTree.JCExpression>of(rhs));
@@ -222,7 +239,7 @@ public class ExpressionGen extends GenPart {
             path.add(Util.getSetterName(decl.getName()));
             return at(op).Apply(List.<JCExpression>nil(), makeIdent(path), List.<JCTree.JCExpression>of(rhs));
         } else
-            return at(op).Assign(convertExpression(leftTerm), rhs);
+            return at(op).Assign(make().Ident(names().fromString(decl.getName())), rhs);
     }
 
     private JCExpression convert(Tree.IsOp op) {
@@ -244,6 +261,9 @@ public class ExpressionGen extends GenPart {
         if (term instanceof Tree.NaturalLiteral && op instanceof Tree.NegativeOp) {
             Tree.NaturalLiteral lit = (Tree.NaturalLiteral) term;
             return at(op).Apply(null, makeSelect(makeIdent(syms().ceylonIntegerType), "instance"), List.<JCExpression> of(make().Literal(-Long.parseLong(lit.getText()))));
+        } else if (term instanceof Tree.NaturalLiteral && op instanceof Tree.PositiveOp) {
+            Tree.NaturalLiteral lit = (Tree.NaturalLiteral) term;
+            return at(op).Apply(null, makeSelect(makeIdent(syms().ceylonIntegerType), "instance"), List.<JCExpression> of(make().Literal(Long.parseLong(lit.getText()))));
         }
         return at(op).Apply(null, at(op).Select(convertExpression(term), names().fromString(unaryOperators.get(op.getClass()))), List.<JCExpression> nil());
     }
@@ -433,6 +453,10 @@ public class ExpressionGen extends GenPart {
             public void visit(Tree.This op) {
                 result = at(access).Select(makeIdent("this"), names().fromString(memberName.getText()));
             }
+            
+            public void visit(Tree.Super op) {
+                result = at(access).Select(makeIdent("super"), names().fromString(memberName.getText()));
+            }
         }
 
         V v = new V();
@@ -459,4 +483,10 @@ public class ExpressionGen extends GenPart {
         }
         return make().Ident(names().fromString(member.getIdentifier().getText()));
     }
+
+    public JCExpression convert(SequenceEnumeration value) {
+		// FIXME not implemented yet
+    	java.util.List<Expression> list = value.getExpressionList().getExpressions();
+		return null;
+	}
 }

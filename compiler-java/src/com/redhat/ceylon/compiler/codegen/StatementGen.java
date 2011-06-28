@@ -300,7 +300,7 @@ public class StatementGen extends GenPart {
         }
     }
 
-    private JCStatement convert(Tree.ClassOrInterface cdecl, Tree.ForStatement stmt) {
+    private List<JCStatement> convert(Tree.ClassOrInterface cdecl, Tree.ForStatement stmt) {
         class ForVisitor extends Visitor {
             Tree.Variable variable = null;
 
@@ -372,7 +372,7 @@ public class StatementGen extends GenPart {
         }
         currentForFailVariable = tempForFailVariable;
 
-        return at(stmt).Block(0, outer);
+        return outer;
     }
 
     // FIXME There is a similar implementation in ClassGen!
@@ -422,8 +422,7 @@ public class StatementGen extends GenPart {
     }
 
     private JCStatement convert(Tree.SpecifierStatement op) {
-        JCExpression rhs = gen.expressionGen.convertExpression(op.getSpecifierExpression().getExpression());
-        return at(op).Exec(make().Assign(gen.expressionGen.convertExpression(op.getBaseMemberExpression()), rhs));
+        return at(op).Exec(gen.expressionGen.convertAssignment(op, op.getBaseMemberExpression(), op.getSpecifierExpression().getExpression()));
     }
 
     private int convertLocalFieldDeclFlags(Tree.AttributeDeclaration cdecl) {

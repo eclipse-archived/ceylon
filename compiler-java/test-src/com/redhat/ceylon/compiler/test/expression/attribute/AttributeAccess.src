@@ -9,8 +9,8 @@ class AttributeAccess extends .ceylon.language.Object {
     }
     
     AttributeAccess() {
-        b = ceylon.language.$true.getTrue();
-        b2 = ceylon.language.$true.getTrue();
+        this.b = ceylon.language.$true.getTrue();
+        this.b2 = ceylon.language.$true.getTrue();
     }
     
     private final Boolean getB() {

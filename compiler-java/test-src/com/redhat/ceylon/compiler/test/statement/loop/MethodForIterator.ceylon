@@ -1,7 +1,7 @@
 class MethodForIterator(){
-    shared void m(Iterator<Integer> it){
-        for(Integer i in it){
-            false;
+    shared void m(Sequence<Integer> seq){
+        for(Integer i in seq){
+            // Empty
         }
     }
 }

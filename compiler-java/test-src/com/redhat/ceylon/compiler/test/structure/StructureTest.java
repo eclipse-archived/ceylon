@@ -30,6 +30,10 @@ public class StructureTest extends CompilerTest {
 		compareWithJavaSource("klass/Interface");
 	}
 	@Test
+	public void testInterfaceWithMembers(){
+		compareWithJavaSource("klass/InterfaceWithMembers");
+	}
+	@Test
 	public void testInitializerParameter(){
 		compareWithJavaSource("klass/InitializerParameter");
 	}
@@ -42,10 +46,14 @@ public class StructureTest extends CompilerTest {
 		compareWithJavaSource("klass/Satisfies");
 	}
 	@Test
+	public void testSatisfiesWithMembers(){
+		compareWithJavaSource("klass/SatisfiesWithMembers");
+	}
+	@Test
 	public void testAbstractFormal(){
 		compareWithJavaSource("klass/AbstractFormal");
 	}
-
+	
 	//
 	// Methods
 	
@@ -53,12 +61,10 @@ public class StructureTest extends CompilerTest {
 	public void testMethod(){
 		compareWithJavaSource("method/Method");
 	}
-
 	@Test
 	public void testMethodWithParam(){
 		compareWithJavaSource("method/MethodWithParam");
 	}
-
 	@Test
 	public void testPublicMethod(){
 		compareWithJavaSource("method/PublicMethod");
@@ -84,7 +90,6 @@ public class StructureTest extends CompilerTest {
 	public void testClassAttributeWithInitializer(){
 		compareWithJavaSource("attribute/ClassAttributeWithInitializer");
 	}
-
     @Test
     public void testClassAttributeGetter(){
         compareWithJavaSource("attribute/ClassAttributeGetter");
@@ -101,19 +106,20 @@ public class StructureTest extends CompilerTest {
     public void testToplevelAttribute(){
         compareWithJavaSource("toplevel/ToplevelAttribute");
     }
-    
     @Test
     public void testToplevelAttributeShared(){
         compareWithJavaSource("toplevel/ToplevelAttributeShared");
     }
-
     @Test
     public void testToplevelVariable(){
         compareWithJavaSource("toplevel/ToplevelVariable");
     }
-
     @Test
     public void testToplevelVariableShared(){
         compareWithJavaSource("toplevel/ToplevelVariableShared");
+    }
+    @Test
+    public void testToplevelObject(){
+        compareWithJavaSource("toplevel/ToplevelObject");
     }
 }

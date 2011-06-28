@@ -1,0 +1,4 @@
+object x {
+    void y() {
+    }
+}

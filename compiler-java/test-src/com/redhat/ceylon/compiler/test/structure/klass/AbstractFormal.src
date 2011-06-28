@@ -1,8 +1,6 @@
-// FIXME This is not correct yet
 package com.redhat.ceylon.compiler.test.structure.klass;
 
 abstract class AbstractFormal extends .ceylon.language.Object {
-    final Integer attrib;
     
     public final void m() {
         test();
@@ -27,21 +25,20 @@ abstract class AbstractFormal extends .ceylon.language.Object {
     
     AbstractFormal() {
     }
-    
-    Integer getAttrib() {
-        return this.attrib;
-    }
-},
+}
 class ActualKlass extends AbstractFormal {
     
+    @.java.lang.Override
     public final void test() {
         return;
     }
     
+    @.java.lang.Override
     public final void test3() {
         return;
     }
     
+    @.java.lang.Override
     public void test4() {
         return;
     }
@@ -49,9 +46,10 @@ class ActualKlass extends AbstractFormal {
     ActualKlass() {
         super();
     }
-},
+}
 class ActualSubKlass extends ActualKlass {
     
+    @.java.lang.Override
     public final void test4() {
         return;
     }

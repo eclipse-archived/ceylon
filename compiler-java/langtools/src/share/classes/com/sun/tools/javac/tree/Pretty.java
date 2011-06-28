@@ -1205,7 +1205,7 @@ public class Pretty extends JCTree.Visitor {
         try {
             print("@");
             printExpr(tree.annotationType);
-            if (tree.args != null) {
+            if (tree.args.length() > 0) {
 	            print("(");
 	            printExprs(tree.args);
 	            print(")");

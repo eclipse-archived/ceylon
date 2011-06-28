@@ -10,23 +10,23 @@ class AttributeAssign extends .ceylon.language.Object {
     }
     
     AttributeAssign() {
-        b = ceylon.language.$true.getTrue();
-        b2 = ceylon.language.$true.getTrue();
+        this.b = ceylon.language.$true.getTrue();
+        this.b2 = ceylon.language.$true.getTrue();
     }
     
-    private Boolean getB() {
+    private final Boolean getB() {
         return this.b;
     }
     
-    private void setB(Boolean b) {
+    private final void setB(Boolean b) {
         this.b = b;
     }
     
-    public Boolean getB2() {
+    public final Boolean getB2() {
         return this.b2;
     }
     
-    public void setB2(Boolean b2) {
+    public final void setB2(Boolean b2) {
         this.b2 = b2;
     }
 }

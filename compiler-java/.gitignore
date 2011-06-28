@@ -1,5 +1,4 @@
 /bin/*.pyc
 /build/
-/src/com/redhat/ceylon/compiler/parser/
 .classpath
 .project

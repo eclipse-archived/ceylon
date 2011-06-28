@@ -1,6 +1,5 @@
 class SuperReference(){
-    shared void m() {
-        SuperReferenceChild x = SuperReferenceChild();
+    shared default void m(SuperReferenceChild x) {
         x.test();
     }
     
