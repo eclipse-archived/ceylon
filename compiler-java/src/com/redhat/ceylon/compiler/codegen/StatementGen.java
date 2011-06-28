@@ -222,10 +222,6 @@ public class StatementGen extends GenPart {
             // Deactivate the above variable substitution
             gen.removeVariableSubst(origVarName.toString(), prevSubst);
             
-            if (elsePart != null) {
-            	elseBlock = convert(cdecl, elsePart);
-            }
-
             test = at(cond).TypeTest(make().Ident(decl.name), type);
         } else if (cond instanceof Tree.BooleanCondition) {
             Tree.BooleanCondition booleanCondition = (Tree.BooleanCondition) cond;
@@ -236,6 +232,10 @@ public class StatementGen extends GenPart {
             thenBlock = convert(cdecl, thenPart);
         } else {
             throw new RuntimeException("Not implemented: " + cond.getNodeType());
+        }
+        
+        if (elsePart != null) {
+        	elseBlock = convert(cdecl, elsePart);
         }
         
         JCStatement cond1;
