@@ -1,9 +1,9 @@
-shared interface Entries<Key, out Value> 
-        //is EnumerableEntries<Key,Value>
-        satisfies Correspondence<Key, Value> & Iterable<Entry<Key,Value>> & 
-                  Sized & Cloneable<Entries<Key,Value>> 
+shared interface Entries<Key, out Element> 
+        //is EnumerableEntries<Key,Element>
+        satisfies Correspondence<Key, Element> & Iterable<Entry<Key,Element>> & 
+                  Sized & Cloneable<Entries<Key,Element>> 
         given Key satisfies Equality
-        given Value satisfies Equality {}
+        given Element satisfies Equality {}
 
 shared Entries<Natural,Element> entries<Element>(Element... sequence) 
         given Element satisfies Equality {
@@ -31,7 +31,7 @@ shared Entries<Natural,Element> entries<Element>(Element... sequence)
             return EntryIterator(0);
         }
         
-        shared actual Element? value(Natural index) {
+        shared actual Element? element(Natural index) {
             return sequence[index];
         }
         

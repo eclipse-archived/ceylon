@@ -23,7 +23,7 @@ shared interface Sequence<out Element>
     
     doc "The last element of the sequence."
     shared default Element last {
-        if (exists Element x = value(lastIndex)) {
+        if (exists Element x = element(lastIndex)) {
             return x;
         }
         else {
@@ -57,7 +57,7 @@ shared interface Sequence<out Element>
             extends Object()
             satisfies Iterator<Element> {
         shared actual Element? head { 
-            return value(from);
+            return element(from);
         }
         shared actual Iterator<Element> tail {
             return SequenceIterator(from+1);

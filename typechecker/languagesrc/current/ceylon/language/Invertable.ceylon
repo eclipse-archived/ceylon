@@ -1,9 +1,9 @@
 shared interface Invertable<Inverse> {
     
     doc "The unary |-| operator"
-    shared formal Inverse inverse;
+    shared formal Inverse negative;
 
     doc "The unary |+| operator"
-    shared formal Inverse value;
+    shared formal Inverse positive;
 
 }

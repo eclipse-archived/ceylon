@@ -48,7 +48,7 @@ shared class Range<Element>(Element first, Element last)
         return Range<Element>(next(first),last);
     }
     
-    shared actual Element? value(Natural n) {
+    shared actual Element? element(Natural n) {
         //optimize this for numbers!
         variable Natural index:=0;
         variable Element x:=first;
@@ -82,9 +82,9 @@ shared class Range<Element>(Element first, Element last)
         return RangeIterator(first);
     }
     
-    shared actual Boolean contains(Object value) {
-        if (is Element value) {
-            return includes(value);
+    shared actual Boolean contains(Object element) {
+        if (is Element element) {
+            return includes(element);
         }
         else {
             return false;
