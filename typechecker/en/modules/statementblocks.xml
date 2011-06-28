@@ -1025,19 +1025,16 @@ else {
                 subtype of the specified type.</para>
             </listitem>
         </itemizedlist>
-        
-        <comment><para>TODO: does <literal>is</literal> really test assignability, or should it 
-        it test that the value is an instance of a <emphasis>subtype</emphasis> of the given type?</para></comment>
-        
+                
         <programlisting>Condition: Expression | ExistsCondition | IsCondition | SatisfiesCondition</programlisting>
         
-        <para>An existence or nonemptiness condition specifies an expression or variable.</para>
+        <para>An existence or nonemptiness condition specifies a variable or local reference.</para>
         
-        <programlisting>ExistsCondition: ("exists" | "nonempty") (InferableVariable Specifier | Expression)</programlisting>
+        <programlisting>ExistsCondition: ("exists" | "nonempty") (InferableVariable Specifier | MemberName)</programlisting>
         
-        <para>An assignability condition specifies an expression or variable and a type.</para>
+        <para>An assignability condition specifies a type and a variable or local reference.</para>
         
-        <programlisting>IsCondition: "is" (Variable Specifier | UnionType Expression)</programlisting>
+        <programlisting>IsCondition: "is" (Variable Specifier | UnionType MemberName)</programlisting>
         
         <para>A subtype condition specifies a <emphasis>specified type</emphasis> (first) and a 
         <emphasis>given type</emphasis> (second).</para>
@@ -1082,7 +1079,7 @@ else {
                 <literal>Nothing|X</literal>.</para>
             </listitem>
             <listitem>
-                <para>If the condition expression is a local, the local will be treated by the 
+                <para>If the condition refers to a local, the local will be treated by the 
                 compiler as non-<literal>variable</literal> and as having type <literal>X</literal> 
                 inside the block that follows immediately, where the conditional expression is of 
                 type <literal>Nothing|X</literal>.</para>
@@ -1098,7 +1095,7 @@ else {
                 <literal>Nothing|Empty|X</literal>.</para>
             </listitem>
             <listitem>
-                <para>If the condition expression is a local, the local will be treated by the 
+                <para>If the condition refers to a local, the local will be treated by the 
                 compiler as non-<literal>variable</literal> and as having type <literal>X</literal> 
                 inside the block that follows immediately, where the conditional expression is of 
                 type <literal>Nothing|Empty|X</literal>.</para>
@@ -1124,7 +1121,7 @@ else {
                 not be assignable to the declared type of the variable, or</para>
             </listitem>
             <listitem>
-                <para>if the condition is a local, the local will be treated by the compiler as 
+                <para>if the condition refers to a local, the local will be treated by the compiler as 
                 non-<literal>variable</literal> and as having the specified type inside the block 
                 that follows immediately.</para>
             </listitem>
