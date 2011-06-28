@@ -19,6 +19,7 @@ public class MainForLanguage {
                 .verbose(false)
                 .addSrcDirectory(new File("languagesrc/current"))
                 .getTypeChecker();
+        typeChecker.process();
         System.out.print("done");
     }
 }
