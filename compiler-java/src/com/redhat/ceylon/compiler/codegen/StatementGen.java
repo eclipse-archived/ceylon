@@ -5,10 +5,9 @@ import static com.sun.tools.javac.code.Flags.FINAL;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -178,12 +177,11 @@ public class StatementGen extends GenPart {
             Tree.Identifier name = exists.getVariable().getIdentifier();
 
             JCExpression expr;
-            if (exists.getExpression() == null) {
-                Name tmp = names().fromString(name.getText());
-                expr = at(cond).Ident(tmp);
-            } else {
-                expr = gen.expressionGen.convertExpression(exists.getExpression());
-            }
+        	if (exists.getVariable().getSpecifierExpression() == null) {
+        		expr = convert(name);
+        	} else {
+                expr = gen.expressionGen.convertExpression(exists.getVariable().getSpecifierExpression().getExpression());
+        	}
 
             test = at(cond).Binary(JCTree.NE, expr, make().Literal(TypeTags.BOT, null));
             thenBlock = convert(cdecl, thenPart);
@@ -202,18 +200,13 @@ public class StatementGen extends GenPart {
 
             JCExpression expr;
             ProducedType tmpVarType;
-            if (isExpr.getExpression() == null) {
-            	if (isExpr.getVariable().getSpecifierExpression() == null) {
-            		expr = convert(name);
-            		tmpVarType = isExpr.getVariable().getType().getTypeModel();
-            	} else {
-                    expr = gen.expressionGen.convertExpression(isExpr.getVariable().getSpecifierExpression().getExpression());
-                    tmpVarType = isExpr.getVariable().getSpecifierExpression().getExpression().getTypeModel();
-            	}
-            } else {
-                expr = gen.expressionGen.convertExpression(isExpr.getExpression());
-                tmpVarType = isExpr.getExpression().getTypeModel();
-            }
+        	if (isExpr.getVariable().getSpecifierExpression() == null) {
+        		expr = convert(name);
+        		tmpVarType = isExpr.getVariable().getType().getTypeModel();
+        	} else {
+                expr = gen.expressionGen.convertExpression(isExpr.getVariable().getSpecifierExpression().getExpression());
+                tmpVarType = isExpr.getVariable().getSpecifierExpression().getExpression().getTypeModel();
+        	}
 
             // Temporary variable holding the result of the expression/variable to test
             decl = at(cond).VarDef(make().Modifiers(FINAL), tmpVarName, makeIdent(tmpVarType.getProducedTypeName()), expr);
