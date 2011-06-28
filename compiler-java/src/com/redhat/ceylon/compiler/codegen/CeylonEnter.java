@@ -103,8 +103,6 @@ public class CeylonEnter extends Enter {
         for (PhasedUnit pu : listOfUnits) {
             pu.validateTree();
             pu.scanDeclarations();
-            pu.validateControlFlow();
-            pu.validateSpecification();
         }
         for (PhasedUnit pu : listOfUnits) { 
             pu.scanTypeDeclarations(); 
@@ -114,6 +112,11 @@ public class CeylonEnter extends Enter {
         }
         for (PhasedUnit pu : listOfUnits) { 
             pu.analyseTypes(); 
+        }
+        for (PhasedUnit pu: listOfUnits) {
+            pu.validateControlFlow();
+            pu.validateSelfReferences();
+            pu.validateSpecification();
         }
         for (PhasedUnit pu : listOfUnits) { 
             pu.display(); 
