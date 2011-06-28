@@ -52,7 +52,7 @@ tokens {
     SEQUENCED_TYPE_PARAMETER;
     SPECIAL_ARGUMENT;
     TRY_CATCH_STATEMENT;
-    TRY_RESOURCE;
+    SPECIFIED_VARIABLE_OR_EXPRESSION;
     TYPE_ARGUMENT_LIST;
     TYPE_DECLARATION;
     TYPE_PARAMETER_LIST;
@@ -1081,22 +1081,22 @@ booleanCondition
 existsCondition
     : ('(' EXISTS LIDENTIFIER ')') => '(' EXISTS impliedVariable ')'
     -> ^(EXISTS_CONDITION[$EXISTS] impliedVariable)
-    | '(' EXISTS variableOrExpression2 ')'
-    -> ^(EXISTS_CONDITION[$EXISTS] variableOrExpression2)
+    | '(' EXISTS specifiedVariable2 ')'
+    -> ^(EXISTS_CONDITION[$EXISTS] specifiedVariable2)
     ;
     
 nonemptyCondition
     : ('(' NONEMPTY LIDENTIFIER ')') => '(' NONEMPTY impliedVariable ')'
     -> ^(NONEMPTY_CONDITION[$NONEMPTY] impliedVariable)
-    | '(' NONEMPTY variableOrExpression2 ')' 
-    -> ^(NONEMPTY_CONDITION[$NONEMPTY] variableOrExpression2)
+    | '(' NONEMPTY specifiedVariable2 ')' 
+    -> ^(NONEMPTY_CONDITION[$NONEMPTY] specifiedVariable2)
     ;
 
 isCondition
     : ('(' IS_OP type LIDENTIFIER ')') => '(' IS_OP type memberName ')'
     -> ^(IS_CONDITION[$IS_OP] type ^(VARIABLE type memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName)))))
-    | '(' IS_OP type (memberName specifier | expression) ')'
-    -> ^(IS_CONDITION[$IS_OP] type ^(VARIABLE type memberName specifier)? expression?)
+    | '(' IS_OP type (memberName specifier ) ')'
+    -> ^(IS_CONDITION[$IS_OP] type ^(VARIABLE type memberName specifier))
     ;
 
 satisfiesCondition
@@ -1235,7 +1235,7 @@ tryCatchFinally
     ;
 
 tryBlock
-    : 'try'^ ('('! resource ')'!)? block
+    : 'try'^ ('('! specifiedVariableOrExpression ')'!)? block
     ;
 
 catchBlock
@@ -1246,18 +1246,19 @@ finallyBlock
     : 'finally'^ block
     ;
 
-resource
-    : variableOrExpression2
-    -> ^(TRY_RESOURCE variableOrExpression2)
-    ;
-
-variableOrExpression2
-    : compilerAnnotation* variableOrExpression^
-    ;
-
-variableOrExpression
-    : (declarationStart) => variable^ specifier
+specifiedVariableOrExpression
+    : (declarationStart) => specifiedVariable 
+    -> ^(SPECIFIED_VARIABLE_OR_EXPRESSION specifiedVariable)
     | expression
+    -> ^(SPECIFIED_VARIABLE_OR_EXPRESSION expression)
+    ;
+
+specifiedVariable2
+    : compilerAnnotation* specifiedVariable^
+    ;
+
+specifiedVariable
+    : variable^ specifier
     ;
 
 variable2

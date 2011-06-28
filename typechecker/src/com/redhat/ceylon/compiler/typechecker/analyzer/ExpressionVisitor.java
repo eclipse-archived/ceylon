@@ -72,9 +72,9 @@ public class ExpressionVisitor extends Visitor {
         if (that.getVariable()!=null) {
             that.getVariable().getSpecifierExpression().visit(this);
         }
-        if (that.getExpression()!=null) {
+        /*if (that.getExpression()!=null) {
             that.getExpression().visit(this);
-        }
+        }*/
     }
     
     @Override public void visit(Tree.ExistsOrNonemptyCondition that) {
@@ -95,12 +95,12 @@ public class ExpressionVisitor extends Visitor {
             t = se.getExpression().getTypeModel();
             n = v;
         }
-        Tree.Expression e = that.getExpression();
+        /*Tree.Expression e = that.getExpression();
         if (e!=null) {
             e.visit(this);
             t = e.getTypeModel();
             n = e;
-        }
+        }*/
         if (t==null) {
             n.addError("could not determine if expression is of optional type");
         }
@@ -1360,14 +1360,7 @@ public class ExpressionVisitor extends Visitor {
     private void visitNonemptyOperator(Tree.Nonempty that) {
         ProducedType t = type(that);
         if (t!=null) {
-            if (isOptionalType(t)) {
-                if ( !getDefiniteType(t).isSubtypeOf(getContainerDeclaration().getType()) ) {
-                    that.getTerm().addError("must be of type: Optional<Container>");
-                }
-            }
-            else {
-                that.getTerm().addError("must be of type: Optional<Container>");
-            }
+            checkEmpty(t, that);
         }
         that.setTypeModel(getBooleanDeclaration().getType());
     }
@@ -1913,10 +1906,6 @@ public class ExpressionVisitor extends Visitor {
         return (Interface) getLanguageDeclaration("Sequence");
     }
 
-    private Interface getContainerDeclaration() {
-        return (Interface) getLanguageDeclaration("Container");
-    }
-    
     private Class getObjectDeclaration() {
         return (Class) getLanguageDeclaration("Object");
     }
