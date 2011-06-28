@@ -1,4 +1,4 @@
-shared class Singleton<Element>(Element element)
+shared class Singleton<Element>(Element uniqueElement)
         extends Object()
         satisfies Sequence<Element> {
     shared actual Natural lastIndex {
@@ -8,17 +8,17 @@ shared class Singleton<Element>(Element element)
         return 1;
     }
     shared actual Element first {
-        return element;
+        return uniqueElement;
     }
     shared actual Element last {
-        return element;
+        return uniqueElement;
     }
     shared actual Element[] rest {
         return {};
     }
-    shared actual Element? value(Natural index) {
+    shared actual Element? element(Natural index) {
         if (index==0) {
-            return element;
+            return uniqueElement;
         }
         else {
             return null;
@@ -38,4 +38,3 @@ shared class Singleton<Element>(Element element)
         }
     }
 }
-    

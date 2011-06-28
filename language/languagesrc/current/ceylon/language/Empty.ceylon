@@ -22,7 +22,7 @@ shared interface Empty
     shared actual Iterator<Bottom> iterator {
         return emptyIterator;
     }
-    shared actual Nothing value(Natural key) {
+    shared actual Nothing element(Natural key) {
         return null;
     }
     shared actual Nothing first {

@@ -1,19 +1,19 @@
-shared interface Correspondence<in Key, out Value>
+shared interface Correspondence<in Key, out Element>
         given Key satisfies Equality {
     
     doc "Binary lookup operator x[key]. Returns the value defined
          for the given key, or |null| if there is no value defined
          for the given key."
-    shared formal Value? value(Key key);
+    shared formal Element? element(Key key);
     
     shared default Boolean defines(Key key) {
-        return value(key) exists;
+        return element(key) exists;
     }
     
     shared default object keys satisfies Category {
-        shared actual Boolean contains(Object value) {
-            if (is Key value) {
-                return defines(value);
+        shared actual Boolean contains(Object element) {
+            if (is Key element) {
+                return defines(element);
             }
             else {
                 return false;
@@ -43,36 +43,36 @@ shared interface Correspondence<in Key, out Value>
         }
     }
     
-    shared default Value?[] values(Key... keys) {
+    shared default Element?[] elements(Key... keys) {
         if (nonempty keys) {
-            return Values(keys.clone);
+            return Entries(keys.clone);
         }
         else {
             return {};
         }
     }
         
-    class Values(Sequence<Key> keys)
+    class Entries(Sequence<Key> keys)
             extends Object()
-            satisfies Sequence<Value?> {
+            satisfies Sequence<Element?> {
         shared actual Natural lastIndex {
             return keys.lastIndex;
         }
-        shared actual Value? first {
-            return outer.value(keys.first);
+        shared actual Element? first {
+            return outer.element(keys.first);
         }
-        shared actual Value?[] rest {
-            return outer.values(keys.rest);
+        shared actual Element?[] rest {
+            return outer.elements(keys.rest);
         }
-        shared actual Value? value(Natural index) {
-            if (exists Key key = keys.value(index)) {
-                return outer.value(key);
+        shared actual Element? element(Natural index) {
+            if (exists Key key = keys.element(index)) {
+                return outer.element(key);
             }
             else {
                 return null;
             }
         }
-        shared actual Sequence<Value?> clone {
+        shared actual Sequence<Element?> clone {
             return this;
         }
     }
