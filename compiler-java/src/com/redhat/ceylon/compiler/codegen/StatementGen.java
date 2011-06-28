@@ -2,8 +2,10 @@ package com.redhat.ceylon.compiler.codegen;
 
 import static com.sun.tools.javac.code.Flags.FINAL;
 
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
@@ -25,7 +27,7 @@ public class StatementGen extends GenPart {
 	// Used to hold the name of the variable associated with the fail-block if the innermost for-loop
 	// Is null if we're currently in a while-loop or not in any loop at all
     private Name currentForFailVariable = null;
-
+    
 	public StatementGen(Gen2 gen) {
         super(gen);
     }
@@ -137,17 +139,17 @@ public class StatementGen extends GenPart {
     }
 
     private List<JCStatement> convert(Tree.ClassOrInterface cdecl, Tree.IfStatement stmt) {
-        JCBlock thenPart = convert(cdecl, stmt.getIfClause().getBlock());
-        JCBlock elsePart = stmt.getElseClause() != null ? convert(cdecl, stmt.getElseClause().getBlock()) : null;
-        return convertCondition(stmt.getIfClause().getCondition(), JCTree.IF, thenPart, elsePart);
+    	Tree.Block thenPart = stmt.getIfClause().getBlock();
+    	Tree.Block elsePart = stmt.getElseClause() != null ? stmt.getElseClause().getBlock() : null;
+        return convertCondition(cdecl, stmt.getIfClause().getCondition(), JCTree.IF, thenPart, elsePart);
     }
 
     private List<JCStatement> convert(Tree.ClassOrInterface cdecl, Tree.WhileStatement stmt) {
         Name tempForFailVariable = currentForFailVariable;
         currentForFailVariable = null;
         
-        JCBlock thenPart = convert(cdecl, stmt.getWhileClause().getBlock());
-        List<JCStatement> res = convertCondition(stmt.getWhileClause().getCondition(), JCTree.WHILELOOP, thenPart, null);
+        Tree.Block thenPart = stmt.getWhileClause().getBlock();
+        List<JCStatement> res = convertCondition(cdecl, stmt.getWhileClause().getCondition(), JCTree.WHILELOOP, thenPart, null);
         
         currentForFailVariable = tempForFailVariable;
         
@@ -158,145 +160,112 @@ public class StatementGen extends GenPart {
         Name tempForFailVariable = currentForFailVariable;
         currentForFailVariable = null;
         
-        JCBlock thenPart = convert(cdecl, stmt.getDoClause().getBlock());
-        List<JCStatement> res = convertCondition(stmt.getDoClause().getCondition(), JCTree.DOLOOP, thenPart, null);
+        Tree.Block thenPart = stmt.getDoClause().getBlock();
+        List<JCStatement> res = convertCondition(cdecl, stmt.getDoClause().getCondition(), JCTree.DOLOOP, thenPart, null);
         
         currentForFailVariable = tempForFailVariable;
         
         return res;
     }
 
-    private List<JCStatement> convertCondition(Tree.Condition cond, int tag, JCBlock thenPart, JCBlock elsePart) {
-
+    private List<JCStatement> convertCondition(Tree.ClassOrInterface cdecl, Tree.Condition cond, int tag, Tree.Block thenPart, Tree.Block elsePart) {
+    	JCExpression test;
+    	JCVariableDecl decl = null;
+    	JCBlock thenBlock = null;
+    	JCBlock elseBlock = null;
         if (cond instanceof Tree.ExistsCondition) {
             Tree.ExistsCondition exists = (Tree.ExistsCondition) cond;
             Tree.Identifier name = exists.getVariable().getIdentifier();
 
-            // We're going to give this variable an initializer in order to be
-            // able to determine its type, but the initializer will be deleted
-            // in LowerCeylon. Do not change the string "Deleted".
-            Name tmp = names().fromString(tempName("DeletedExists"));
-            Name tmp2 = names().fromString(name.getText());
-
-            JCExpression type;
-            if (exists.getVariable().getType() == null) {
-                type = makeIdent(syms().ceylonAnyType);
-            } else {
-                type = gen.variableType(exists.getVariable().getType(), null);
-            }
-
             JCExpression expr;
             if (exists.getExpression() == null) {
-                expr = at(cond).Ident(tmp2);
+                Name tmp = names().fromString(name.getText());
+                expr = at(cond).Ident(tmp);
             } else {
                 expr = gen.expressionGen.convertExpression(exists.getExpression());
             }
 
-            expr = at(cond).Apply(null, at(cond).Select(expr, names().fromString("$internalErasedExists")), List.<JCExpression> nil());
-
-            // This temp variable really should be SYNTHETIC, but then javac
-            // won't let you use it...
-            JCVariableDecl decl = at(cond).VarDef(make().Modifiers(0), tmp, type, exists.getVariable().getType() == null ? expr : null);
-            JCVariableDecl decl2 = at(cond).VarDef(make().Modifiers(FINAL), tmp2, type, at(cond).Ident(tmp));
-            thenPart = at(cond).Block(0, List.<JCStatement> of(decl2, thenPart));
-
-            JCExpression assignment = at(cond).Assign(make().Ident(decl.name), expr);
-
-            JCTree.JCBinary test = at(cond).Binary(JCTree.NE, assignment, make().Literal(TypeTags.BOT, null));
-
-            JCStatement cond1;
-            switch (tag) {
-            case JCTree.IF:
-                cond1 = at(cond).If(test, thenPart, elsePart);
-                break;
-            case JCTree.WHILELOOP:
-                assert elsePart == null;
-                cond1 = at(cond).WhileLoop(test, thenPart);
-                break;
-            case JCTree.DOLOOP:
-                assert elsePart == null;
-                cond1 = at(cond).DoLoop(thenPart, test);
-                break;
-            default:
-                throw new RuntimeException();
-            }
-            return List.<JCStatement> of(decl, cond1);
+            test = at(cond).Binary(JCTree.NE, expr, make().Literal(TypeTags.BOT, null));
+            thenBlock = convert(cdecl, thenPart);
+        } else if (cond instanceof Tree.NonemptyCondition) {
+            Tree.NonemptyCondition nonempty = (Tree.NonemptyCondition) cond;
+            Tree.Identifier name = nonempty.getVariable().getIdentifier();
+            throw new RuntimeException();
         } else if (cond instanceof Tree.IsCondition) {
-            // FIXME: This code has a lot in common with the ExistsExpression
-            // above, but it has a niggling few things that are different.
-            // It needs to be refactored.
-
             Tree.IsCondition isExpr = (Tree.IsCondition) cond;
             Tree.Identifier name = isExpr.getVariable().getIdentifier();
             JCExpression type = gen.variableType(isExpr.getType(), null);
 
-            // We're going to give this variable an initializer in order to be
-            // able to determine its type, but the initializer will be deleted
-            // in LowerCeylon. Do not change the string "Deleted".
-            Name tmp = names().fromString(tempName("DeletedIs"));
-            Name tmp2 = names().fromString(name.getText());
+            Name tmpVarName = names().fromString(aliasName(name.getText()));
+            Name origVarName = names().fromString(name.getText());
+            Name substVarName = names().fromString(aliasName(name.getText()));
 
             JCExpression expr;
+            ProducedType tmpVarType;
             if (isExpr.getExpression() == null) {
-                expr = convert(name);
+            	if (isExpr.getVariable().getSpecifierExpression() == null) {
+            		expr = convert(name);
+            		tmpVarType = isExpr.getVariable().getType().getTypeModel();
+            	} else {
+                    expr = gen.expressionGen.convertExpression(isExpr.getVariable().getSpecifierExpression().getExpression());
+                    tmpVarType = isExpr.getVariable().getSpecifierExpression().getExpression().getTypeModel();
+            	}
             } else {
                 expr = gen.expressionGen.convertExpression(isExpr.getExpression());
+                tmpVarType = isExpr.getExpression().getTypeModel();
             }
 
-            // This temp variable really should be SYNTHETIC, but then javac
-            // won't let you use it...
-            JCVariableDecl decl = at(cond).VarDef(make().Modifiers(0), tmp, makeIdent(syms().ceylonAnyType), expr);
-            JCVariableDecl decl2 = at(cond).VarDef(make().Modifiers(FINAL), tmp2, type, at(cond).TypeCast(type, at(cond).Ident(tmp)));
-            thenPart = at(cond).Block(0, List.<JCStatement> of(decl2, thenPart));
-
-            JCExpression assignment = at(cond).Assign(make().Ident(decl.name), expr);
-
-            JCExpression test = at(cond).TypeTest(assignment, type);
-
-            JCStatement cond1;
-            switch (tag) {
-            case JCTree.IF:
-                cond1 = at(cond).If(test, thenPart, elsePart);
-                break;
-            case JCTree.WHILELOOP:
-                assert elsePart == null;
-                cond1 = at(cond).WhileLoop(test, thenPart);
-                break;
-            case JCTree.DOLOOP:
-                assert elsePart == null;
-                cond1 = at(cond).DoLoop(thenPart, test);
-                break;
-            default:
-                throw new RuntimeException();
+            // Temporary variable holding the result of the expression/variable to test
+            decl = at(cond).VarDef(make().Modifiers(FINAL), tmpVarName, makeIdent(tmpVarType.getProducedTypeName()), expr);
+            // Substitute variable with the correct type to use in the rest of the code block
+            JCVariableDecl decl2 = at(cond).VarDef(make().Modifiers(FINAL), substVarName, type, at(cond).TypeCast(type, at(cond).Ident(tmpVarName)));
+            
+            // Prepare for variable substitution in the following code block
+            String prevSubst = gen.addVariableSubst(origVarName.toString(), substVarName.toString());
+            
+            thenBlock = convert(cdecl, thenPart);
+            thenBlock = at(cond).Block(0, List.<JCStatement> of(decl2, thenBlock));
+            
+            // Deactivate the above variable substitution
+            gen.removeVariableSubst(origVarName.toString(), prevSubst);
+            
+            if (elsePart != null) {
+            	elseBlock = convert(cdecl, elsePart);
             }
-            return List.<JCStatement> of(decl, cond1);
+
+            test = at(cond).TypeTest(make().Ident(decl.name), type);
         } else if (cond instanceof Tree.BooleanCondition) {
             Tree.BooleanCondition booleanCondition = (Tree.BooleanCondition) cond;
-            JCExpression test = gen.expressionGen.convertExpression(booleanCondition.getExpression());
+            test = gen.expressionGen.convertExpression(booleanCondition.getExpression());
             JCExpression trueValue = at(cond).Apply(List.<JCTree.JCExpression>nil(), 
                     makeIdent("ceylon", "language", "$true", "getTrue"), List.<JCTree.JCExpression>nil());
             test = at(cond).Binary(JCTree.EQ, test, trueValue);
-            
-            JCStatement result;
-            switch (tag) {
-            case JCTree.IF:
-                result = at(cond).If(test, thenPart, elsePart);
-                break;
-            case JCTree.WHILELOOP:
-                assert elsePart == null;
-                result = at(cond).WhileLoop(test, thenPart);
-                break;
-            case JCTree.DOLOOP:
-                assert elsePart == null;
-                result = at(cond).DoLoop(thenPart, test);
-                break;
-            default:
-                throw new RuntimeException();
-            }
-
-            return List.<JCStatement> of(result);
+            thenBlock = convert(cdecl, thenPart);
         } else {
             throw new RuntimeException("Not implemented: " + cond.getNodeType());
+        }
+        
+        JCStatement cond1;
+        switch (tag) {
+        case JCTree.IF:
+            cond1 = at(cond).If(test, thenBlock, elseBlock);
+            break;
+        case JCTree.WHILELOOP:
+            assert elsePart == null;
+            cond1 = at(cond).WhileLoop(test, thenBlock);
+            break;
+        case JCTree.DOLOOP:
+            assert elsePart == null;
+            cond1 = at(cond).DoLoop(thenBlock, test);
+            break;
+        default:
+            throw new RuntimeException();
+        }
+        
+        if (decl != null) {
+        	return List.<JCStatement> of(decl, cond1);
+        } else {
+        	return List.<JCStatement> of(cond1);
         }
     }
 
@@ -418,7 +387,7 @@ public class StatementGen extends GenPart {
     }
 
     private JCIdent convert(Tree.Identifier identifier) {
-        return at(identifier).Ident(names().fromString(identifier.getText()));
+		return at(identifier).Ident(names().fromString(gen.substitute(identifier.getText())));
     }
 
     private JCStatement convert(Tree.SpecifierStatement op) {

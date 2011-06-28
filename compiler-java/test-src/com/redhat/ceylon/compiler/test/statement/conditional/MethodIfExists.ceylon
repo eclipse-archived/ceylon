@@ -1,5 +1,5 @@
 class MethodIfExists() {
-    shared Integer m(Integer? x) {
+    shared Natural m(Natural? x) {
         if (exists x) {
             return x;
         }

@@ -64,6 +64,10 @@ public class GenPart {
     protected String tempName(String prefix) {
         return gen.tempName(prefix);
     }
+
+    protected String aliasName(String name) {
+        return gen.aliasName(name);
+    }
 	
     protected boolean hasCompilerAnnotation(Tree.Declaration decl, String annotation) {
         if (decl.getAnnotationList() == null)

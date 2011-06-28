@@ -1,8 +1,22 @@
+class Foo() {
+    shared void bar() {}
+}
+class FooSub() extends Foo() {
+    shared void baz() {}
+}
 class MethodIfIs() {
-    shared String m(Object x) {
-        if (is Exception x) {
-            return x.message;
+    shared void m(Object x) {
+        if (is Foo x) {
+            x.bar();
+            if (is FooSub x) {
+                x.baz();
+            }
         }
-        return "";
+        if (is FooSub y = give()) {
+            y.bar();
+        }
+    }
+    Foo give() {
+        return FooSub();
     }
 }

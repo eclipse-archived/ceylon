@@ -1,13 +1,10 @@
-// FIXME Not correct yet
+package com.redhat.ceylon.compiler.test.statement.conditional;
+
 class MethodIfExists extends .ceylon.language.Object {
     
-    public final Integer m(final Integer x) {
-        /*missing*/ $ceylontmpDeletedExists0;
-        if (($ceylontmpDeletedExists0 = x.$internalErasedExists()) != null) {
-            final /*missing*/ x = $ceylontmpDeletedExists0;
-            {
-                return x;
-            }
+    public final Natural m(final Natural x) {
+        if (x != null) {
+            return x;
         }
         return .ceylon.language.Natural.instance(0L);
     }

@@ -1,5 +1,5 @@
 class MethodIfNonEmpty() {
-    shared Integer m(Sequence<Integer> x) {
+    shared Natural m(Natural[] x) {
         if (nonempty x) {
             return 1;
         }

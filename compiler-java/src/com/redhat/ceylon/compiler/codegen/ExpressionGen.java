@@ -481,7 +481,7 @@ public class ExpressionGen extends GenPart {
                         List.<JCExpression>nil());
             }
         }
-        return make().Ident(names().fromString(member.getIdentifier().getText()));
+		return at(member).Ident(names().fromString(gen.substitute(member.getIdentifier().getText())));
     }
 
     public JCExpression convert(SequenceEnumeration value) {

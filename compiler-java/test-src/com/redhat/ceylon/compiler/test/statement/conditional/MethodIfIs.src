@@ -1,15 +1,50 @@
-// FIXME Not correct yet
+package com.redhat.ceylon.compiler.test.statement.conditional;
+
+class Foo extends .ceylon.language.Object {
+    
+    public final void bar() {
+    }
+    
+    Foo() {
+    }
+}
+class FooSub extends Foo {
+    
+    public final void baz() {
+    }
+    
+    FooSub() {
+        super();
+    }
+}
 class MethodIfIs extends .ceylon.language.Object {
     
-    public String m(final Object x) {
-        .ceylon.language.Any $ceylontmpDeletedIs0 = x;
-        if (($ceylontmpDeletedIs0 = x) instanceof Exception) {
-            final Exception x = (Exception)$ceylontmpDeletedIs0;
+    public final void m(final Object x) {
+        final Object $x$0 = x;
+        if ($x$0 instanceof Foo) {
+            final Foo $x$1 = (Foo)$x$0;
             {
-                return x.message;
+                $x$1.bar();
+                final Foo $x$2 = $x$1;
+                if ($x$2 instanceof FooSub) {
+                    final FooSub $x$3 = (FooSub)$x$2;
+                    {
+                        $x$3.baz();
+                    }
+                }
             }
         }
-        return "";
+        final Foo $y$4 = give();
+        if ($y$4 instanceof FooSub) {
+            final FooSub $y$5 = (FooSub)$y$4;
+            {
+                $y$5.bar();
+            }
+        }
+    }
+    
+    private final Foo give() {
+        return new FooSub();
     }
     
     MethodIfIs() {

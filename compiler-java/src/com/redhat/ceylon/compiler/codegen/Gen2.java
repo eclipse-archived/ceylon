@@ -3,7 +3,9 @@ package com.redhat.ceylon.compiler.codegen;
 import static com.sun.tools.javac.code.TypeTags.VOID;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
@@ -39,6 +41,7 @@ public class Gen2 {
     ExpressionGen expressionGen = new ExpressionGen(this);
     StatementGen statementGen = new StatementGen(this);
     ClassGen classGen = new ClassGen(this);
+	private Map<String, String> varNameSubst = new HashMap<String, String>();
 
     public static Gen2 getInstance(Context context) throws Exception {
         Gen2 gen2 = context.get(Gen2.class);
@@ -360,6 +363,12 @@ public class Gen2 {
         return result;
     }
 
+    String aliasName(String s) {
+        String result = "$" + s + "$" + counter;
+        counter++;
+        return result;
+    }
+
     boolean isOptional(Tree.Type type) {
         // This should show in the tree as: Nothing|Type, so we just visit
         class TypeVisitor extends Visitor {
@@ -388,4 +397,23 @@ public class Gen2 {
         return map;
     }
 
+    public String addVariableSubst(String origVarName, String substVarName) {
+    	return varNameSubst.put(origVarName, substVarName);
+    }
+
+    public void removeVariableSubst(String origVarName, String prevSubst) {
+        if (prevSubst != null) {
+        	varNameSubst.put(origVarName, prevSubst);
+        } else {
+        	varNameSubst.remove(origVarName);
+        }
+    }
+    
+    public String substitute(String varName) {
+    	if (varNameSubst.containsKey(varName)) {
+    		return varNameSubst.get(varName);    		
+    	} else {
+    		return varName;
+    	}
+    }
 }
