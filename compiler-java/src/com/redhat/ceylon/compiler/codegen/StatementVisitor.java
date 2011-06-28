@@ -69,14 +69,18 @@ class StatementVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.MethodDefinition decl) {
-        final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
-        statementGen.gen.classGen.methodClass(decl, defs, false);
-        for (JCTree def : defs.toList()) {
-            JCTree.JCClassDecl innerDecl = (JCTree.JCClassDecl) def;
-            stmts.append(innerDecl);
-            JCTree.JCExpression id = statementGen.make().Ident(innerDecl.name);
-            stmts.append(statementGen.at(decl).VarDef(statementGen.make().Modifiers(FINAL), statementGen.names().fromString(decl.getIdentifier().getText()), id, statementGen.at(decl).NewClass(null, null, id, List.<JCTree.JCExpression> nil(), null)));
-        }
+        JCTree.JCClassDecl innerDecl = statementGen.gen.classGen.methodClass(decl, false);
+        stmts.append(innerDecl);
+        JCTree.JCIdent id = statementGen.make().Ident(innerDecl.name);
+        stmts.append(defineNewInstance(id, decl));
+    }
+
+    private JCTree.JCVariableDecl defineNewInstance(JCTree.JCIdent name, Tree.Declaration decl) {
+        return statementGen.at(decl).VarDef(
+                statementGen.make().Modifiers(FINAL),
+                statementGen.names().fromString(decl.getIdentifier().getText()),
+                name,
+                statementGen.at(decl).NewClass(null, null, name, List.<JCTree.JCExpression>nil(), null));
     }
 
     // FIXME: I think those should just go in convertExpression no?

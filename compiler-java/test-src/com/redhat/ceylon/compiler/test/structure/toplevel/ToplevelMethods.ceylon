@@ -1,0 +1,5 @@
+void toplevelMethod() {
+}
+
+void anotherToplevelMethod() {
+}

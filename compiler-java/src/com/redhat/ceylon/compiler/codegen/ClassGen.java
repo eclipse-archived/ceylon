@@ -17,11 +17,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ObjectDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.util.Util;
-import com.sun.source.tree.Tree.Kind;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
@@ -473,11 +471,8 @@ public class ClassGen extends GenPart {
         
         return result;
     }
-    
-    void methodClass(Tree.MethodDefinition decl, final ListBuffer<JCTree> defs, boolean topLevel) {
-        // Generate a class with the
-        // name of the method and a corresponding run() method.
 
+    public JCClassDecl methodClass(Tree.MethodDefinition decl, boolean topLevel) {
         final ListBuffer<JCVariableDecl> params = new ListBuffer<JCVariableDecl>();
         final Singleton<JCBlock> body = new Singleton<JCBlock>();
         Singleton<JCExpression> restype = new Singleton<JCExpression>();
@@ -492,29 +487,19 @@ public class ClassGen extends GenPart {
 
         List<JCTree> innerDefs = List.<JCTree> of(meth);
 
-        // Try and find a class to insert this method into
-        JCClassDecl classDef = null;
-        for (JCTree def : defs) {
-            if (def.getKind() == Kind.CLASS) {
-                classDef = (JCClassDecl) def;
-                break;
-            }
-        }
-
         String name;
         if (topLevel)
             name = decl.getIdentifier().getText();
         else
             name = tempName();
 
-        // No class has been made yet so make one
-        if (classDef == null) {
-            classDef = at(decl).ClassDef(at(decl).Modifiers((topLevel ? PUBLIC : 0), List.<JCAnnotation> nil()), names().fromString(name), List.<JCTypeParameter> nil(), makeIdent(syms().ceylonObjectType), List.<JCExpression> nil(), List.<JCTree> nil());
-
-            defs.append(classDef);
-        }
-
-        classDef.defs = classDef.defs.appendList(innerDefs);
+        return at(decl).ClassDef(
+                at(decl).Modifiers((topLevel ? PUBLIC : 0), List.<JCAnnotation> nil()),
+                names().fromString(name),
+                List.<JCTypeParameter> nil(),
+                makeIdent(syms().ceylonObjectType),
+                List.<JCExpression> nil(),
+                innerDefs);
     }
 
     // FIXME: There must be a better way to do this.
