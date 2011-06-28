@@ -715,7 +715,9 @@ try (lock) { ... }</programlisting>
         We could support conditionals that return a value by adding a 
         <literal>then expr</literal> directive.</para></comment-->
         
+        <!--
         <comment><para>TODO: Should we have a <literal>retry</literal> directive?</para></comment>
+        -->
         
         </section>
         
@@ -937,9 +939,9 @@ else {
     <section id="controlstructures">
         <title>Control structures</title>
         
-        <para>Control of execution flow may be achieved using control directives and 
-        control structures. Control structures include conditionals, loops, and 
-        exception management. <!--For many tasks, the use of these traditional control
+        <para>Control of execution flow may be achieved using control directives and control 
+        structures. Control structures include conditionals, loops, and exception management. 
+        <!--For many tasks, the use of these traditional control
         structures is considered bad style, and the use of expressions with functor 
         parameters is preferred. However, control structures support the use of the 
         <literal>return</literal> and <literal>break</literal> directives, whereas 
@@ -951,15 +953,16 @@ else {
         <itemizedlist>
             <listitem>
                 <para>the <literal>if/else</literal> conditional&mdash;for controlling execution 
-                based upon a boolean value, and dealing with null values,</para>
+                based upon a boolean condition, type condition, or check for a non-null or 
+                non-empty value,</para>
             </listitem>
             <listitem>
                 <para>the <literal>switch/case/else</literal> conditional&mdash;for controlling 
-                execution using an enumerated list of values,</para>
+                execution using an enumerated list of values or types,</para>
             </listitem>
             <listitem>
                 <para>the <literal>while</literal> and <literal>do/while</literal> loops&mdash;for 
-                loops which terminate based upon the value of a boolean expression,</para>
+                loops which terminate based a boolean condition,</para>
             </listitem>
             <listitem>
                 <para>the <literal>for/fail</literal> loop&mdash;for looping over elements of a 
@@ -967,7 +970,8 @@ else {
             </listitem>
             <listitem>
                 <para>the <literal>try/catch/finally</literal> exception manager&mdash;for managing 
-                exceptions and controlling the lifecycle of objects which require explicit destruction.</para>
+                exceptions and controlling the lifecycle of objects which require explicit 
+                destruction.</para>
             </listitem>
         </itemizedlist>
                 
@@ -982,8 +986,8 @@ else {
         <section id="controlstructurevariables">
             <title>Control structure variables</title>
        
-        <para>Some control structures allow embedded declaration of a <emphasis>variable</emphasis> 
-        that is available inside the control structure body.</para>
+        <para>Some control structures allow inline declaration of a <emphasis>variable</emphasis>,
+        a local that is scoped to the control structure body.</para>
         
         <programlisting>Variable: UnionType MemberName</programlisting>
         
@@ -992,20 +996,22 @@ else {
         the variable is inferred to be the type of the expression that follows.</para>
         
         <programlisting>InferableVariable: InferableType MemberName Params*</programlisting>
-        
-        <para>A variable is treated as a parameter of the control structure body.</para>
-        
+                
         </section>
         
         <section id="controlstructureconditions">
             <title>Control structure conditions</title>
             
-        <para>Some control structures expect conditions:</para>
+        <para>Some control structures expect conditions. There are five kinds of condition:</para>
         
         <itemizedlist>
             <listitem>
                 <para>a <emphasis>boolean condition</emphasis> is satisfied when a boolean expression
                 evaluates to <literal>true</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>an <emphasis>assignabilty condition</emphasis> is satisfied when an expression
+                 evaluates to an instance of a specified type.</para>
             </listitem>
             <listitem>
                 <para>an <emphasis>existence condition</emphasis> is satisfied when an expression of
@@ -1016,60 +1022,80 @@ else {
                 of type <literal>X[]?</literal> evaluates to a non-null, non-empty value, and</para>
             </listitem>
             <listitem>
-                <para>an <emphasis>assignabilty condition</emphasis> is satisfied when an expression
-                 of type <literal>Object</literal> evaluates to an instance of a type assignable to 
-                 the specified type.</para>
-            </listitem>
-            <listitem>
                 <para>a <emphasis>subtype condition</emphasis> is satisfies when a given type is a 
                 subtype of the specified type.</para>
             </listitem>
         </itemizedlist>
-                
-        <programlisting>Condition: Expression | ExistsCondition | IsCondition | SatisfiesCondition</programlisting>
         
-        <para>An existence or nonemptiness condition specifies a variable or local reference.</para>
+        <programlisting>Condition: BooleanCondition | IsCondition | ExistsOrNonemptyCondition | SatisfiesCondition</programlisting>
         
-        <programlisting>ExistsCondition: ("exists" | "nonempty") (InferableVariable Specifier | MemberName)</programlisting>
+        </section>
         
-        <para>An assignability condition specifies a type and a variable or local reference.</para>
+        <section>
+            <title>Boolean conditions</title>
         
-        <programlisting>IsCondition: "is" (Variable Specifier | UnionType MemberName)</programlisting>
+        <para>A boolean condition is just an expression.</para>
         
-        <para>A subtype condition specifies a <emphasis>specified type</emphasis> (first) and a 
-        <emphasis>given type</emphasis> (second).</para>
+        <programlisting>BooleanCondition: Expression</programlisting>
         
-        <programlisting>SatisfiesCondition: "satisfies" Type Type</programlisting>
-
-        <para>Any condition contains an expression. In the case of existence, nonemptiness and 
-        assignability conditions, the expression may be a specifier of a variable declaration.</para>
-
-        <para>The type of a condition expression depend upon whether the <literal>exists</literal>, 
-        <literal>nonempty</literal> or <literal>is</literal> modifier appears:</para>
-
+        <para>The expression must be of type <literal>Boolean</literal>.</para>
+        
+        <para>The condition is satisfied if the expression evaluates to <literal>true</literal> when 
+        the containing control structure is executed.</para>
+        
+        </section>
+        
+        <section>
+            <title>Assignability, existence, and nonemptiness conditions</title>
+        
+        <para>Assignability, existence, and nonemptiness conditions may either contain:.</para>
+        
         <itemizedlist>
             <listitem>
-                <para>If no <literal>is</literal>, <literal>exists</literal> or <literal>nonempty</literal> 
-                modifier appears, the condition must be an expression of type <literal>Boolean</literal>.</para>
+                <para>an unqualified value reference, or</para>
             </listitem>
             <listitem>
-                <para>If the <literal>is</literal> modifier appears, the condition expression must 
-                be of type <literal>Object</literal>.</para>
-            </listitem>
-            <listitem>
-                <para>If the <literal>satisfies</literal> modifier appears, the condition expression 
-                must be of type <literal>Type&lt;T&gt;</literal> for some type <literal>T</literal>.</para>
-            </listitem>
-            <listitem>
-                <para>If the <literal>exists</literal> modifier appears, the condition expression 
-                must be of type <literal>X?</literal> for some type <literal>X</literal>.</para>
-            </listitem>
-            <listitem>
-                <para>If the <literal>nonempty</literal> modifier appears, the condition must be an 
-                expression of type <literal>X[]?</literal> for some type <literal>X</literal>.</para>
+                <para>an inline variable declaration together with an expression.</para>
             </listitem>
         </itemizedlist>
-
+        
+        <para>In the case of assignability or existence conditions, the type of the variable may be 
+        inferred.</para>
+                
+        <programlisting>IsCondition: "is" (Variable Specifier | UnionType MemberName)</programlisting>
+        
+        <programlisting>ExistsOrNonemptyCondition: ("exists" | "nonempty") (InferableVariable Specifier | MemberName)</programlisting>
+        
+        <para>The type of the value reference or expression must be:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>a subtype of <literal>Object?</literal> for an assignability condition,</para>
+            </listitem>
+            <listitem>
+                <para>of form <literal>X?</literal> for some type <literal>X</literal> for an existence 
+                condition, or</para>
+            </listitem>
+            <listitem>
+                <para>of form <literal>X[]</literal> or <literal>X[]?</literal> for some type 
+                <literal>X</literal> for a nonemptiness condition, or</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Note that an existence or nonemptiness condition is equivalent to&mdash;and may be 
+        considered an abbreviation of&mdash;an assignability condition.</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>if (exists x)</literal> is equivalent to <literal>if (is X x)</literal>
+                where <literal>x</literal> is an expression of type <literal>X?</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para><literal>if (nonempty x)</literal> is equivalent to <literal>if (is Sequence&lt;X&gt; x)</literal>
+                where <literal>x</literal> is an expression of type <literal>X[]?</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
         <para>For <literal>exists</literal> conditions:</para>
         
         <itemizedlist>
@@ -1081,8 +1107,8 @@ else {
             <listitem>
                 <para>If the condition refers to a local, the local will be treated by the 
                 compiler as non-<literal>variable</literal> and as having type <literal>X</literal> 
-                inside the block that follows immediately, where the conditional expression is of 
-                type <literal>Nothing|X</literal>.</para>
+                inside the block that immediately follows the condition, where the conditional 
+                expression is of type <literal>Nothing|X</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -1097,8 +1123,8 @@ else {
             <listitem>
                 <para>If the condition refers to a local, the local will be treated by the 
                 compiler as non-<literal>variable</literal> and as having type <literal>X</literal> 
-                inside the block that follows immediately, where the conditional expression is of 
-                type <literal>Nothing|Empty|X</literal>.</para>
+                inside the block that immediately follows the condition, where the conditional 
+                expression is of type <literal>Nothing|Empty|X</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -1123,7 +1149,7 @@ else {
             <listitem>
                 <para>if the condition refers to a local, the local will be treated by the compiler as 
                 non-<literal>variable</literal> and as having the specified type inside the block 
-                that follows immediately.</para>
+                that immediately follows the condition.</para>
             </listitem>
         </itemizedlist>
                         
@@ -1138,48 +1164,24 @@ else {
         <para>Where the <literal>obj</literal> declared by the condition hides the outer declaration
         of <literal>obj</literal> inside the block that follows.</para>
         
-        <para>For <literal>satisfies</literal> conditions:</para>
+        <para>The condition is satisfied if the value reference or expression evaluates to an 
+        instance of the required type when the control structure containing the condition is
+        executed:</para>
         
         <itemizedlist>
             <listitem>
-                <para>the given type will be treated by the compiler as a subtype of the specified 
-                type inside the block that follows immediately.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <comment><para>TODO: Should we support simultaneous narrowing to multiple types:</para>
-        <programlisting>if (is Format &amp; IdentifiableObject object) { ... }</programlisting>
-        <programlisting>if (satisfies Keyed &amp; Persistent Value) { ... }</programlisting>
-        <para>(This would fall out naturally if we add ad hoc intersection types.)</para>
-        </comment>
-        
-        <para>The semantics of a condition depend upon whether the <literal>exists</literal>, 
-        <literal>nonempty</literal> or <literal>is</literal> modifier appears:</para>
-
-        <itemizedlist>
-            <listitem>
-                <para>If no <literal>is</literal>, <literal>exists</literal> or <literal>nonempty</literal> 
-                modifier appears, the condition is satisfied if the expression evaluates to 
-                <literal>true</literal> when the control structure is executed.</para>
+                <para>for an assignability condition, the condition is satisfied if the expression 
+                evaluates to an instance of the specified type when the control structure is 
+                executed,</para>
             </listitem>
             <listitem>
-                <para>If the <literal>is</literal> modifier appears, the condition is satisfied 
-                if the expression evaluates to an instance of a class that is assignable to the 
-                specified type when the control structure is executed.</para>
+                <para>for an existence condition, the condition is satisfied unless the expression 
+                evaluates to an instance of <literal>Nothing</literal> when the control structure is 
+                executed, or</para>
             </listitem>
             <listitem>
-                <para>If the <literal>satisfies</literal> modifier appears, the condition is satisfied 
-                if the given type is a subtype of the specified type when the control structure is 
-                executed.</para>
-            </listitem>
-            <listitem>
-                <para>If the <literal>exists</literal> modifier appears, the condition is satisfied 
-                unless the expression evaluates to an instance of <literal>Nothing</literal> when the 
-                control structure is executed.</para>
-            </listitem>
-            <listitem>
-                <para>If the <literal>nonempty</literal> modifier appears, the condition is satisfied 
-                unless the expression evaluates to an instance of <literal>Empty</literal>
+                <para>for a nonemptiness expression, the condition is satisfied unless the expression 
+                evaluates to an instance of <literal>Empty</literal> or <literal>Nothing</literal>
                 when the control structure is executed.</para>
             </listitem>
         </itemizedlist>
@@ -1188,6 +1190,28 @@ else {
         <literal>Nothing|T</literal> to <literal>T</literal> before generating bytecode.
         So <literal>if (exists x)</literal> is actually processed as <literal>if (x!=null)</literal>
         by the virtual machine.</para>
+        
+        </section>
+                
+        <section>
+            <title>Subtype conditions</title>
+        
+        <para>A subtype condition specifies a <emphasis>specified type</emphasis> (first) and a 
+        <emphasis>given type</emphasis> (second).</para>
+        
+        <programlisting>SatisfiesCondition: "satisfies" Type Type</programlisting>        
+        
+        <para>The given type will be treated by the compiler as a subtype of the specified type 
+        inside the block that immediately follows the condition.</para>
+        
+        <para>The condition is satisfied if the given type is a subtype of the specified type when 
+        the control structure containing the condition is executed.</para>
+        
+        <comment><para>TODO: Should we support simultaneous narrowing to multiple types:</para>
+        <programlisting>if (is Format &amp; IdentifiableObject object) { ... }</programlisting>
+        <programlisting>if (satisfies Keyed &amp; Persistent Value) { ... }</programlisting>
+        <para>(This would fall out naturally if we add ad hoc intersection types.)</para>
+        </comment>
         
         </section>
         
