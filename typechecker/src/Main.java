@@ -1,5 +1,6 @@
 import java.io.File;
 
+import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 
 /**
@@ -26,10 +27,11 @@ public class Main {
         
         boolean noisy = "true".equals(System.getProperties().getProperty("verbose"));
 
-        new TypeCheckerBuilder()
+        final TypeChecker typeChecker = new TypeCheckerBuilder()
                 .verbose(noisy)
                 .addSrcDirectory(new File(path))
                 .getTypeChecker();
+        typeChecker.process();
         //getting the type checker does process all types in the source directory
     }
 }

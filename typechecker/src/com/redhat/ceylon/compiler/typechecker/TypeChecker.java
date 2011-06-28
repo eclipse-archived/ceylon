@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 
 /**
  * Executes type checking upon construction and retrieve a CompilationUnit object for a given File.
@@ -24,17 +25,21 @@ public class TypeChecker {
     private final Context context;
     private final PhasedUnits phasedUnits;
     private List<PhasedUnits> phasedUnitsOfDependencies;
+    private final boolean verifyDependencies;
+    private final AssertionVisitor assertionVisitor;
 
     //package level
-    TypeChecker(VFS vfs, List<VirtualFile> srcDirectories, boolean verbose) {
+    TypeChecker(VFS vfs, List<VirtualFile> srcDirectories, boolean verifyDependencies, AssertionVisitor assertionVisitor, boolean verbose) {
         long start = System.nanoTime();
         this.srcDirectories = srcDirectories;
         this.verbose = verbose;
         this.context = new Context(vfs);
         this.phasedUnits = new PhasedUnits(context);
-        process();
+        this.verifyDependencies = verifyDependencies;
+        this.assertionVisitor = assertionVisitor;
+        phasedUnits.parseUnits(srcDirectories);
         long time = System.nanoTime()-start;
-        System.out.println("Type checker ran in " + time/1000000 + " ms");
+        System.out.println("Type checker parsing in " + time/1000000 + " ms");
     }
     
     public PhasedUnits getPhasedUnits() {
@@ -72,9 +77,11 @@ public class TypeChecker {
         return phasedUnit.getCompilationUnit();
     }
 
-    private void process() throws RuntimeException {
-        phasedUnits.parseUnits(srcDirectories);
+    public void process() throws RuntimeException {
+        long start = System.nanoTime();
         executePhases(phasedUnits, false);
+        long time = System.nanoTime()-start;
+        System.out.println("Type checker phases execution in " + time/1000000 + " ms");
     }
 
     private void executePhases(PhasedUnits phasedUnits, boolean forceSilence) {
@@ -84,7 +91,9 @@ public class TypeChecker {
         }
 
         final ModuleValidator moduleValidator = new ModuleValidator(context);
-        moduleValidator.verifyModuleDependencyTree();
+        if (verifyDependencies) {
+            moduleValidator.verifyModuleDependencyTree();
+        }
         phasedUnitsOfDependencies = moduleValidator.getPhasedUnitsOfDependencies();
 
         for (PhasedUnit pu : listOfUnits) {
@@ -105,8 +114,15 @@ public class TypeChecker {
         }
         for (PhasedUnit pu : listOfUnits) {
             if (!forceSilence) {
-                if (verbose) pu.display();
-                pu.runAssertions();
+                if (verbose) {
+                    pu.display();
+                }
+                if ( assertionVisitor == null ) {
+                    pu.runAssertions();
+                }
+                else {
+                    pu.getCompilationUnit().visit( assertionVisitor );
+                }
             }
         }
     }
