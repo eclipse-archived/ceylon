@@ -894,28 +894,28 @@ namedArgumentDeclaration
     ;
     
 objectArgument
-    : OBJECT_DEFINITION parameterName extendedType? satisfiedTypes? classBody
-    -> ^(OBJECT_ARGUMENT[$OBJECT_DEFINITION] LOCAL_MODIFIER parameterName extendedType? satisfiedTypes? classBody)
+    : OBJECT_DEFINITION memberName extendedType? satisfiedTypes? classBody
+    -> ^(OBJECT_ARGUMENT[$OBJECT_DEFINITION] LOCAL_MODIFIER memberName extendedType? satisfiedTypes? classBody)
     ;
 
 voidMethodArgument
-    : VOID_MODIFIER parameterName parameters+ block
-    -> ^(METHOD_ARGUMENT VOID_MODIFIER parameterName parameters+ block)
+    : VOID_MODIFIER memberName parameters+ block
+    -> ^(METHOD_ARGUMENT VOID_MODIFIER memberName parameters+ block)
     ;
 
 typedMethodOrGetterArgument
-    : inferrableType parameterName
+    : inferrableType memberName
     ( 
       (parameters+ memberBody[$inferrableType.tree])
-    -> ^(METHOD_ARGUMENT inferrableType parameterName parameters+ memberBody)
+    -> ^(METHOD_ARGUMENT inferrableType memberName parameters+ memberBody)
     | memberBody[$inferrableType.tree]
-    -> ^(ATTRIBUTE_ARGUMENT inferrableType parameterName memberBody)      
+    -> ^(ATTRIBUTE_ARGUMENT inferrableType memberName memberBody)      
     )
     ;
 
 namedSpecifiedArgument
-    : parameterName specifier ';'
-    -> ^(SPECIFIED_ARGUMENT parameterName specifier)
+    : memberName specifier ';'
+    -> ^(SPECIFIED_ARGUMENT memberName specifier)
     ;
 
 //special rule for syntactic predicate
@@ -928,13 +928,6 @@ namedArgumentStart
 //special rule for syntactic predicates
 specificationStart
     : (LIDENTIFIER|'this') '='
-    ;
-
-parameterName
-    : LIDENTIFIER
-    -> ^(IDENTIFIER[$LIDENTIFIER])
-    | THIS 
-    -> ^(IDENTIFIER[$THIS])
     ;
 
 namedArguments
@@ -959,8 +952,8 @@ positionalArgument
 //a smalltalk-style parameter to a positional parameter
 //invocation
 functionalArgument
-    : parameterName functionalArgumentDefinition
-    -> ^(METHOD_ARGUMENT 'local' parameterName functionalArgumentDefinition)
+    : memberName functionalArgumentDefinition
+    -> ^(METHOD_ARGUMENT 'local' memberName functionalArgumentDefinition)
     ;
 
 functionalArgumentDefinition
@@ -1015,12 +1008,12 @@ parametersStart
 // enforce the rule that the ... appears at the end of the parapmeter
 // list in a later pass of the compiler.
 parameter
-    : parameterType parameterName
+    : parameterType memberName
       (
           valueParameter? specifier?
-        -> ^(VALUE_PARAMETER_DECLARATION parameterType parameterName specifier?)
+        -> ^(VALUE_PARAMETER_DECLARATION parameterType memberName specifier?)
         |  parameters+ specifier? //for callable parameters
-        -> ^(FUNCTIONAL_PARAMETER_DECLARATION parameterType parameterName parameters+ specifier?)
+        -> ^(FUNCTIONAL_PARAMETER_DECLARATION parameterType memberName parameters+ specifier?)
       /*| iteratedParameter 
       | (specifiedParameterStart) => specifiedParameter*/
       )
@@ -1035,20 +1028,20 @@ annotatedParameter2
     ;
 
 valueParameter
-    : '->' unionType parameterName
+    : '->' unionType memberName
     ;
 
 /*
 //Support for "X x in Iterable<X> param" in formal parameter lists
 //Note that this is just a TODO in the spec
 iteratedParameter
-    : 'in' type parameterName
+    : 'in' type memberName
     ;
 
 //Support for "X x = X? param" in formal parameter lists
 //Note that this is just a TODO in the spec
 specifiedParameter
-    : '=' type parameterName
+    : '=' type memberName
     ;
 
 //special rule for syntactic predicate
@@ -1058,7 +1051,7 @@ specifiedParameterStart
 */
 
 extraParameter
-    : parameterType parameterName parameters*
+    : parameterType memberName parameters*
     ;
 
 parameterType
