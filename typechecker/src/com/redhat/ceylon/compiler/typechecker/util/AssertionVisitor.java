@@ -18,7 +18,9 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
 
     @Override
     public void visit(Tree.TypedDeclaration that) {
-        checkType(that, that.getType().getTypeModel(), that.getType());
+        if (that.getType()!=null) {
+            checkType(that, that.getType().getTypeModel(), that.getType());
+        }
         super.visit(that);
     }
 

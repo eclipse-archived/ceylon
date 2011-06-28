@@ -64,7 +64,9 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         if (that.getSpecifierExpression()!=null) {
             inferType(that, that.getSpecifierExpression());
-            checkType(that.getType().getTypeModel(), that.getSpecifierExpression());
+            if (that.getType()!=null) {
+                checkType(that.getType().getTypeModel(), that.getSpecifierExpression());
+            }
         }
     }
     
@@ -163,7 +165,9 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.AttributeDeclaration that) {
         super.visit(that);
         inferType(that, that.getSpecifierOrInitializerExpression());
-        checkType(that.getType().getTypeModel(), that.getSpecifierOrInitializerExpression());
+        if (that.getType()!=null) {
+            checkType(that.getType().getTypeModel(), that.getSpecifierOrInitializerExpression());
+        }
     }
 
     @Override public void visit(Tree.SpecifierStatement that) {
@@ -173,7 +177,9 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.Parameter that) {
         super.visit(that);
-        checkType(that.getType().getTypeModel(), that.getSpecifierExpression());
+        if (that.getType()!=null) {
+            checkType(that.getType().getTypeModel(), that.getSpecifierExpression());
+        }
     }
 
     private void checkType(ProducedType declaredType, Tree.SpecifierOrInitializerExpression sie) {
