@@ -37,6 +37,7 @@ import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.codegen.CeylonEnter;
 import com.redhat.ceylon.compiler.codegen.CeylonFileObject;
+import com.redhat.ceylon.compiler.codegen.CeylonModelLoader;
 import com.redhat.ceylon.compiler.codegen.Gen2;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleBuilder;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -60,6 +61,7 @@ import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Context.SourceLanguage.Language;
+import com.sun.tools.javac.util.Convert;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Options;
 import com.sun.tools.javac.util.Pair;
@@ -78,6 +80,8 @@ public class LanguageCompiler extends JavaCompiler {
     private final PhasedUnits phasedUnits;
     private final com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext;
     private final VFS vfs;
+
+	private CeylonModelLoader modelLoader;
 
     /** Get the PhasedUnits instance for this context. */
     public static PhasedUnits getPhasedUnitsInstance(Context context) {
@@ -121,6 +125,7 @@ public class LanguageCompiler extends JavaCompiler {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        modelLoader = CeylonModelLoader.instance(context);
     }
 
     /**
@@ -188,16 +193,18 @@ public class LanguageCompiler extends JavaCompiler {
                 CompilationUnit cu = builder.buildCompilationUnit(t);
 
                 ModuleBuilder moduleBuilder = phasedUnits.getModuleBuilder();
-                com.redhat.ceylon.compiler.typechecker.model.Package p = moduleBuilder.getCurrentPackage();
                 File sourceFile = new File(filename.toString());
                 // FIXME: temporary solution
                 VirtualFile file = vfs.getFromFile(sourceFile);
                 VirtualFile srcDir = vfs.getFromFile(getSrcDir(sourceFile));
+                // FIXME: this is bad in many ways
+                String pkgName = getPackage(filename);
+                com.redhat.ceylon.compiler.typechecker.model.Package p = modelLoader.findOrCreatePackage(modelLoader.findOrCreateModule(pkgName), pkgName);
                 PhasedUnit phasedUnit = new PhasedUnit(file, srcDir, cu, p, moduleBuilder, ceylonContext);
                 phasedUnits.addPhasedUnit(file, phasedUnit);
                 gen.setMap(map);
 
-                return gen.makeJCCompilationUnitPlaceholder(cu, filename);
+                return gen.makeJCCompilationUnitPlaceholder(cu, filename, pkgName);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -208,7 +215,7 @@ public class LanguageCompiler extends JavaCompiler {
         return result;
     }
 
-    // FIXME: this function is terrible
+    // FIXME: this function is terrible, possibly refactor it with getPackage?
     private File getSrcDir(File sourceFile) {
         String name = sourceFile.getAbsolutePath();
         String[] prefixes = ((CeyloncFileManager) fileManager).getSourcePath();
@@ -232,6 +239,28 @@ public class LanguageCompiler extends JavaCompiler {
         throw new RuntimeException("Failed to find source prefix for " + name);
     }
 
+    private String getPackage(JavaFileObject file){
+    	String[] prefixes = ((CeyloncFileManager) fileManager).getSourcePath();
+
+    	// Figure out the package name by stripping the "-src" prefix and
+    	// extracting
+    	// the package part of the fullname.
+    	for (String prefix : prefixes) {
+    		if (prefix != null && file.toString().startsWith(prefix)) {
+    			String fullname = file.toString().substring(prefix.length());
+    			assert fullname.endsWith(".ceylon");
+    			fullname = fullname.substring(0, fullname.length() - ".ceylon".length());
+    			fullname = fullname.replace(File.separator, ".");
+    			if(fullname.startsWith("."))
+    				fullname = fullname.substring(1);
+    			String packageName = Convert.packagePart(fullname);
+    			if (!packageName.equals(""))
+    				return packageName;
+    		}
+    	}
+    	return null;
+    }
+    
     private void printError(RecognitionError le, String message, char[] chars, LineMap map) {
         int lineStart = map.getStartPosition(le.getLine());
         int lineEnd = lineStart;

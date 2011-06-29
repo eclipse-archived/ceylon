@@ -240,25 +240,9 @@ public class Gen2 {
      * In this pass we only make an empty placeholder which we'll fill in the
      * EnterCeylon phase later on
      */
-    public JCCompilationUnit makeJCCompilationUnitPlaceholder(Tree.CompilationUnit t, JavaFileObject file) {
+    public JCCompilationUnit makeJCCompilationUnitPlaceholder(Tree.CompilationUnit t, JavaFileObject file, String pkgName) {
         System.err.println(t);
-        String[] prefixes = fileManager.getSourcePath();
-        JCExpression pkg = null;
-
-        // Figure out the package name by stripping the "-src" prefix and
-        // extracting
-        // the package part of the fullname.
-        for (String prefix : prefixes) {
-            if (prefix != null && file.toString().startsWith(prefix)) {
-                String fullname = file.toString().substring(prefix.length());
-                assert fullname.endsWith(".ceylon");
-                fullname = fullname.substring(0, fullname.length() - ".ceylon".length());
-                fullname = fullname.replace(File.separator, ".");
-                String packageName = Convert.packagePart(fullname);
-                if (!packageName.equals(""))
-                    pkg = getPackage(packageName);
-            }
-        }
+        JCExpression pkg = pkgName != null ? getPackage(pkgName) : null;
         at(t);
         JCCompilationUnit topLev = new CeylonCompilationUnit(List.<JCTree.JCAnnotation> nil(), pkg, List.<JCTree> nil(), null, null, null, null, t);
 
