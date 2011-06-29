@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.codegen.Gen2.Singleton;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -482,19 +483,26 @@ public class ExpressionGen extends GenPart {
 
     private JCExpression convert(Tree.BaseMemberExpression member) {
         Declaration decl = member.getDeclaration();
-        if(decl instanceof Value){
-            if(Util.isToplevelAttribute(decl)){
+        if (decl instanceof Value) {
+            if (Util.isToplevelAttribute(decl)) {
                 // it's a toplevel attribute
                 java.util.List<String> path = new LinkedList<String>();
                 path.addAll(decl.getContainer().getQualifiedName());
                 path.add("$"+decl.getName());
                 path.add(Util.getGetterName(decl.getName()));
                 return at(member).Apply(List.<JCExpression>nil(), makeIdent(path), List.<JCExpression>nil());
-            }else if(Util.isClassAttribute(decl)){
+             } else if(Util.isClassAttribute(decl)) {
                 // invoke the getter
                 return at(member).Apply(List.<JCExpression>nil(), 
                         makeIdent(Util.getGetterName(decl.getName())), 
                         List.<JCExpression>nil());
+            }
+        } else if (decl instanceof Method) {
+            if (Util.isInnerMethod(decl)) {
+                java.util.List<String> path = new LinkedList<String>();
+                path.add(decl.getName());
+                path.add("run");
+                return makeIdent(path);
             }
         }
         return at(member).Ident(names().fromString(gen.substitute(member.getIdentifier().getText())));

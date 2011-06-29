@@ -15,14 +15,19 @@ public class Util {
         return "set"+capitalize(property);
     }
 
-    // FIXME: add this to Declaration
+    // FIXME: add this to Declaration?
     public static boolean isClassAttribute(Declaration decl) {
         return (decl.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Class)
         	 && (decl.isCaptured() || decl.isShared());
     }
 
-    // FIXME: add this to Declaration
+    // FIXME: add this to Declaration?
     public static boolean isToplevelAttribute(Declaration decl) {
         return decl.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Package;
     }
+
+    // FIXME: add this to Declaration?
+	public static boolean isInnerMethod(Declaration decl) {
+        return decl.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Method;
+	}
 }

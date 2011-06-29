@@ -533,7 +533,7 @@ public class ClassGen extends GenPart {
         if (topLevel)
             name = decl.getIdentifier().getText();
         else
-            name = tempName();
+            name = aliasName(decl.getIdentifier().getText() + "$class");
         return names().fromString(name);
     }
 

@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.test.structure.method;
+
+class InnerMethod extends .ceylon.language.Object {
+    
+    private final void m() {
+        
+        class $inner$class$0 extends .ceylon.language.Object {
+            
+            Natural run() {
+                return .ceylon.language.Natural.instance(0L);
+            }
+        }
+        final $inner$class$0 inner = new $inner$class$0();
+        final Natural n = inner.run();
+    }
+    
+    InnerMethod() {
+    }
+}

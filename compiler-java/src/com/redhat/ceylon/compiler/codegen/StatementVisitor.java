@@ -4,6 +4,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 
@@ -70,23 +71,20 @@ class StatementVisitor extends Visitor implements NaturalVisitor {
 
     public void visit(Tree.MethodDefinition decl) {
         JCTree.JCClassDecl innerDecl = statementGen.gen.classGen.methodClass(decl, false);
-        stmts.append(innerDecl);
-        JCTree.JCIdent id = statementGen.make().Ident(innerDecl.name);
-        stmts.append(defineNewInstance(id, decl));
+        append(innerDecl);
+        JCTree.JCIdent name = statementGen.make().Ident(innerDecl.name);
+        JCVariableDecl call = statementGen.at(decl).VarDef(
+                statementGen.make().Modifiers(FINAL),
+                statementGen.names().fromString(decl.getIdentifier().getText()),
+                name,
+                statementGen.at(decl).NewClass(null, null, name, List.<JCTree.JCExpression>nil(), null));
+        append(call);
     }
 
     @Override
     public void visit(Tree.ObjectDefinition that) {
         // TODO
         super.visit(that);
-    }
-
-    private JCTree.JCVariableDecl defineNewInstance(JCTree.JCIdent name, Tree.Declaration decl) {
-        return statementGen.at(decl).VarDef(
-                statementGen.make().Modifiers(FINAL),
-                statementGen.names().fromString(decl.getIdentifier().getText()),
-                name,
-                statementGen.at(decl).NewClass(null, null, name, List.<JCTree.JCExpression>nil(), null));
     }
 
     // FIXME: I think those should just go in convertExpression no?
