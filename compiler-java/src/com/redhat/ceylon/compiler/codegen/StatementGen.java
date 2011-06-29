@@ -6,6 +6,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -214,8 +215,8 @@ public class StatementGen extends GenPart {
         outer = outer.append(iter_decl);
         JCIdent iter_id = at(stmt).Ident(iter_decl.getName());
 
-        // T n = $ceylontmpX.head();
-        JCExpression loop_var_init = at(stmt).Apply(null, at(stmt).Select(iter_id, names().fromString("head")), List.<JCExpression> nil());
+        // T n = $ceylontmpX.getHead();
+        JCExpression loop_var_init = at(stmt).Apply(null, at(stmt).Select(iter_id, names().fromString(Util.getGetterName("head"))), List.<JCExpression> nil());
         JCVariableDecl item_decl = at(stmt).VarDef(make().Modifiers(0, annots), names().fromString(loop_var_name), item_type, loop_var_init );
         List<JCStatement> while_loop = List.<JCStatement> of(item_decl);
 
@@ -226,8 +227,8 @@ public class StatementGen extends GenPart {
         JCStatement test = at(stmt).If(at(stmt).Binary(JCTree.NE, makeIdent(loop_var_name), make().Literal(TypeTags.BOT, null)), at(stmt).Block(0, inner), at(stmt).Block(0, List.<JCStatement> of(at(stmt).Break(null))));
         while_loop = while_loop.append(test);
 
-        // $ceylontmpX = $ceylontmpX.tail();
-        JCExpression next = at(stmt).Assign(iter_id, at(stmt).Apply(null, at(stmt).Select(iter_id, names().fromString("tail")), List.<JCExpression> nil()));
+        // $ceylontmpX = $ceylontmpX.getTail();
+        JCExpression next = at(stmt).Assign(iter_id, at(stmt).Apply(null, at(stmt).Select(iter_id, names().fromString(Util.getGetterName("tail"))), List.<JCExpression> nil()));
         while_loop = while_loop.append(at(stmt).Exec(next));
 
         // while (True)...

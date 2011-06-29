@@ -1,7 +1,7 @@
 class MethodForRange(){
     shared void m(){
-        for(Integer i in -10..10){
-            false;
+        for (Natural i in 1..10) {
+            // Empty
         }
     }
 }

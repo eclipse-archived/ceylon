@@ -253,7 +253,8 @@ public class ExpressionGen extends GenPart {
     private JCExpression convert(Tree.RangeOp op) {
         JCExpression lower = convertExpression(op.getLeftTerm());
         JCExpression upper = convertExpression(op.getRightTerm());
-        return at(op).NewClass(null, null, at(op).TypeApply(makeIdent(syms().ceylonRangeType), List.<JCExpression> of(null)), List.<JCExpression> of(lower, upper), null);
+        JCExpression type = gen.makeJavaType(op.getLeftTerm().getTypeModel());
+        return at(op).NewClass(null, null, at(op).TypeApply(makeIdent(syms().ceylonRangeType), List.<JCExpression> of(type)), List.<JCExpression> of(lower, upper), null);
     }
 
     JCExpression convert(Tree.UnaryOperatorExpression op) {

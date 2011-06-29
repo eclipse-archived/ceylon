@@ -2,19 +2,15 @@ package com.redhat.ceylon.compiler.test.statement.loop;
 
 class MethodForRange extends .ceylon.language.Object {
     
-    public void m() {
-        {
-            .ceylon.language.Iterator<Integer> $ceylontmp0 = new .ceylon.language.Range<Integer>(.ceylon.language.Integer.instance(-10L), .ceylon.language.Natural.instance(10L)).iterator();
-            while (true) {
-                final .ceylon.language.Optional<Integer> $ceylontmp1 = $ceylontmp0.head();
-                if ($ceylontmp1 != null) {
-                    Integer i = $ceylontmp1.$internalErasedExists();
-                    false;
-                } else {
-                    break;
-                }
-                $ceylontmp0 = $ceylontmp0.tail();
+    public final void m() {
+        .ceylon.language.Iterator<Natural> $i$iter$0 = new .ceylon.language.Range<Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(10L)).iterator();
+        while (true) {
+            Natural i = $i$iter$0.head();
+            if (i != null) {
+            } else {
+                break;
             }
+            $i$iter$0 = $i$iter$0.tail();
         }
     }
     
