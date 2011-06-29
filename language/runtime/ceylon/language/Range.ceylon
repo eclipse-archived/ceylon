@@ -1,4 +1,4 @@
-public class Range<X>(X first, X last)
+public class Range<X>(X first, X last) satisfies Iterable<X>
     given X satisfies Ordinal<X>, Comparable<X> {
 
     Iterator<X> iterator() {
