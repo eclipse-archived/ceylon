@@ -159,6 +159,7 @@ public class Symtab {
     public final Type ceylonMethodType;
     public final Type ceylonSequenceType;
     public final Type ceylonArrayListType;
+    public final Type ceylonArraySequenceType;
     public final Type ceylonCharacterType;
     public final Type ceylonBooleanType;
     public final Type ceylonToplevelOverloadType;
@@ -467,6 +468,7 @@ public class Symtab {
         ceylonMethodType = enterClass("ceylon.language.Method");
         ceylonSequenceType = enterClass("ceylon.language.Sequence");
         ceylonArrayListType = enterClass("ceylon.language.ArrayList");
+        ceylonArraySequenceType = enterClass("ceylon.language.ArraySequence");
         ceylonCharacterType = enterClass("ceylon.language.Character");
         ceylonBooleanType = enterClass("ceylon.language.Boolean");
         ceylonToplevelOverloadType = enterClass("ceylon.language.ToplevelOverload");
