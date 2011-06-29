@@ -102,8 +102,7 @@
         
         <para><literal>
         import
-        class interface object given
-        assign void local
+        class interface object given value assign void function
         of extends satisfies adapts abstracts
         in out
         return break continue throw
