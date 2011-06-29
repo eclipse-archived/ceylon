@@ -3,10 +3,8 @@ package com.redhat.ceylon.compiler.codegen;
 import static com.sun.tools.javac.code.Flags.FINAL;
 
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
@@ -90,11 +88,18 @@ public class StatementGen extends GenPart {
         	}
 
             test = at(cond).Binary(JCTree.NE, expr, make().Literal(TypeTags.BOT, null));
-            thenBlock = convert(thenPart);
         } else if (cond instanceof Tree.NonemptyCondition) {
             Tree.NonemptyCondition nonempty = (Tree.NonemptyCondition) cond;
             Tree.Identifier name = nonempty.getVariable().getIdentifier();
-            throw new RuntimeException();
+            
+            JCExpression expr;
+        	if (nonempty.getVariable().getSpecifierExpression() == null) {
+        		expr = convert(name);
+        	} else {
+                expr = gen.expressionGen.convertExpression(nonempty.getVariable().getSpecifierExpression().getExpression());
+        	}
+
+            test = at(cond).Unary(JCTree.NOT, make().Apply(List.<JCTree.JCExpression>nil(), make().Select(expr, names().fromString("isEmpty")), List.<JCTree.JCExpression>nil()));
         } else if (cond instanceof Tree.IsCondition) {
             Tree.IsCondition isExpr = (Tree.IsCondition) cond;
             Tree.Identifier name = isExpr.getVariable().getIdentifier();
@@ -135,12 +140,15 @@ public class StatementGen extends GenPart {
             JCExpression trueValue = at(cond).Apply(List.<JCTree.JCExpression>nil(), 
                     makeIdent("ceylon", "language", "$true", "getTrue"), List.<JCTree.JCExpression>nil());
             test = at(cond).Binary(JCTree.EQ, test, trueValue);
-            thenBlock = convert(thenPart);
         } else {
             throw new RuntimeException("Not implemented: " + cond.getNodeType());
         }
         
-        if (elsePart != null) {
+        // Convert the code blocks (if not already done so above)
+        if (thenPart != null && thenBlock == null) {
+            thenBlock = convert(thenPart);
+        }
+        if (elsePart != null && elseBlock == null) {
         	elseBlock = convert(elsePart);
         }
         
@@ -296,13 +304,8 @@ public class StatementGen extends GenPart {
     private int convertLocalFieldDeclFlags(Tree.AttributeDeclaration cdecl) {
         int result = 0;
 
-        result |= isMutable(cdecl) ? 0 : FINAL;
+        result |= cdecl.getDeclarationModel().isVariable() ? 0 : FINAL;
 
         return result;
-    }
-
-    private boolean isMutable(Tree.AttributeDeclaration decl) {
-        // FIXME
-        return hasCompilerAnnotation(decl, "variable");
     }
 }

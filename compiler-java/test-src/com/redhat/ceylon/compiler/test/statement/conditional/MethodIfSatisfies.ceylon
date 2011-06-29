@@ -1,5 +1,5 @@
 class MethodIfSatisfies() {
-    shared Integer m() {
+    shared Natural m() {
         if (satisfies Integer Integer) {
             return 1;
         }
