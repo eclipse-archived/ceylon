@@ -43,7 +43,7 @@ public class CeylonEnter extends Enter {
         phasedUnits = LanguageCompiler.getPhasedUnitsInstance(context);
         ceylonContext = LanguageCompiler.getCeylonContextInstance(context);
         log = Log.instance(context);
-        modelLoader = new CeylonModelLoader(context);
+        modelLoader = CeylonModelLoader.instance(context);
     }
 
     @Override

@@ -56,6 +56,13 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     private com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext;
     private TypeParser typeParser = new TypeParser();
     
+    public static CeylonModelLoader instance(Context context) {
+        CeylonModelLoader instance = context.get(CeylonModelLoader.class);
+        if (instance == null)
+            instance = new CeylonModelLoader(context);
+        return instance;
+    }
+
     public CeylonModelLoader(Context context) {
         phasedUnits = LanguageCompiler.getPhasedUnitsInstance(context);
         ceylonContext = LanguageCompiler.getCeylonContextInstance(context);
@@ -246,7 +253,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         return classSymbol;
     }
 
-    private Package findOrCreatePackage(Module module, String pkgName) {
+    public Package findOrCreatePackage(Module module, String pkgName) {
         for(Package pkg : module.getPackages()){
             if(pkg.getNameAsString().equals(pkgName))
                 return pkg;
@@ -258,7 +265,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         return pkg;
     }
 
-    private Module findOrCreateModule(String pkgName) {
+    public Module findOrCreateModule(String pkgName) {
         java.util.List<String> moduleName;
         // FIXME: this is a rather simplistic view of the world
         if(pkgName.startsWith("java."))
