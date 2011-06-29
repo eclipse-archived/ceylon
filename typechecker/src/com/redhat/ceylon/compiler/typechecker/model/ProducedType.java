@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -194,7 +195,7 @@ public class ProducedType extends ProducedReference {
             List<ProducedType> types = new ArrayList<ProducedType>();
             for (ProducedType ct: getDeclaration().getCaseTypes()) {
                 if (ct.getSupertype(ci)==null) {
-                    Util.addToUnion(types, ct.minus(ci));
+                    addToUnion(types, ct.minus(ci));
                 }
             }
             ut.setCaseTypes(types);
@@ -216,7 +217,7 @@ public class ProducedType extends ProducedReference {
                     types.add(null);
                 }
                 else {
-                    Util.addToUnion(types, ct.substitute(substitutions));
+                    addToUnion(types, ct.substitute(substitutions));
                 }
             }
             ut.setCaseTypes(types);
@@ -285,7 +286,7 @@ public class ProducedType extends ProducedReference {
     public ProducedType getProducedType(ProducedType receiver,
             Declaration member, List<ProducedType> typeArguments) {
         ProducedType rst =  (receiver==null) ? null : receiver.getSupertype( (TypeDeclaration) member.getContainer() );
-        return substitute(com.redhat.ceylon.compiler.typechecker.model.Util.arguments(member, rst, typeArguments));
+        return substitute(arguments(member, rst, typeArguments));
     }
 
     public ProducedType getType() {

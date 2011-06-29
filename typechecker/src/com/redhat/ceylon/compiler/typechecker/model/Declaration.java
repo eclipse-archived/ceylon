@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.list;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +51,7 @@ public abstract class Declaration extends Element {
 	}
 	
     public List<String> getQualifiedName() {
-        return Util.list( getContainer().getQualifiedName(), getName() );
+        return list( getContainer().getQualifiedName(), getName() );
     }
     
     public boolean isActual() {

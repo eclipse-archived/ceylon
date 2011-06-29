@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.*;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
-import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -114,7 +114,7 @@ public class TypeVisitor extends Visitor {
         UnionType ut = new UnionType();
         List<ProducedType> types = new ArrayList<ProducedType>();
         for (Tree.StaticType st: that.getStaticTypes()) {
-            Util.addToUnion( types, st.getTypeModel() );
+            addToUnion( types, st.getTypeModel() );
         }
         ut.setCaseTypes(types);
         ProducedType pt = ut.getType();
@@ -228,8 +228,8 @@ public class TypeVisitor extends Visitor {
         else {
             UnionType ut = new UnionType();
             List<ProducedType> types = new ArrayList<ProducedType>();
-            Util.addToUnion(types,getEmptyDeclaration().getType());
-            Util.addToUnion(types,pt);
+            addToUnion(types,getEmptyDeclaration().getType());
+            addToUnion(types,pt);
             ut.setCaseTypes(types);
             return ut.getType();
         }
