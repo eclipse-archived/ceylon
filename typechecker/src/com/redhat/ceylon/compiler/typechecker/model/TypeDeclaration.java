@@ -146,8 +146,19 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
     }
 
     @Override
-    public Declaration getMember(boolean includeParameters, String name) {
-        Declaration d = super.getMember(includeParameters, name);
+    public Declaration getMember(String name) {
+        Declaration d = super.getMember(name);
+        if (d!=null) {
+            return d;
+        }
+        else {
+            return this.getSupertypeDeclaration(name);
+        }
+    }
+
+    @Override
+    public Declaration getMemberOrParameter(String name) {
+        Declaration d = super.getMemberOrParameter(name);
         if (d!=null) {
             return d;
         }
@@ -160,7 +171,7 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
         for (ProducedType st: getType().getSupertypes()) {
             TypeDeclaration std = st.getDeclaration();
             if (std!=this) {
-                Declaration d = std.getMember(false, name);
+                Declaration d = std.getMember(name);
                 if (d!=null && d.isShared()) {
                     return d;
                 }

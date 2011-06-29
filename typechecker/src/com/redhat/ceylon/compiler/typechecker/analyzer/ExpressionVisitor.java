@@ -26,6 +26,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
+import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -618,9 +619,9 @@ public class ExpressionVisitor extends Visitor {
         else {
             UnionType ut = new UnionType();
             List<ProducedType> types = new ArrayList<ProducedType>();
-            addToUnion(types,getNothingDeclaration().getType());
-            addToUnion(types,getEmptyDeclaration().getType());
-            addToUnion(types,pt);
+            Util.addToUnion(types,getNothingDeclaration().getType());
+            Util.addToUnion(types,getEmptyDeclaration().getType());
+            Util.addToUnion(types,pt);
             ut.setCaseTypes(types);
             return ut.getType();
         }
@@ -663,8 +664,8 @@ public class ExpressionVisitor extends Visitor {
         else {
             UnionType ut = new UnionType();
             List<ProducedType> types = new ArrayList<ProducedType>();
-            addToUnion(types,getNothingDeclaration().getType());
-            addToUnion(types,pt);
+            Util.addToUnion(types,getNothingDeclaration().getType());
+            Util.addToUnion(types,pt);
             ut.setCaseTypes(types);
             return ut.getType();
         }
@@ -714,7 +715,7 @@ public class ExpressionVisitor extends Visitor {
                     Parameter parameter = parameters.getParameters().get(i);
                     if (parameter.getType().getDeclaration()==tp) {
                         Tree.Expression value = args.get(i).getExpression();
-                        addToUnion(inferredTypes, value.getTypeModel());
+                        Util.addToUnion(inferredTypes, value.getTypeModel());
                     }
                 }
             }
@@ -733,7 +734,7 @@ public class ExpressionVisitor extends Visitor {
                     if (type!=null) {
                         Parameter parameter = getMatchingParameter(parameters, arg);
                         if (parameter.getType().getDeclaration()==tp) {
-                            addToUnion(inferredTypes, type);
+                            Util.addToUnion(inferredTypes, type);
                         }
                     }
                 }
@@ -1571,7 +1572,7 @@ public class ExpressionVisitor extends Visitor {
         //TODO: this does not correctly handle methods
         //      and classes which are not subsequently 
         //      invoked (should return the callable type)
-        TypedDeclaration member = (TypedDeclaration) getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
+        TypedDeclaration member = (TypedDeclaration) getBaseDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
         if (member==null) {
             that.addError("could not determine target of member reference: " +
                     that.getIdentifier().getText());
@@ -1590,7 +1591,7 @@ public class ExpressionVisitor extends Visitor {
         that.getPrimary().visit(this);
         ProducedType pt = that.getPrimary().getTypeModel();
         if (pt!=null && that.getIdentifier()!=null) {
-            TypedDeclaration member = (TypedDeclaration) getMemberDeclaration(unwrap(pt, that).getDeclaration(), that.getIdentifier(), context);
+            TypedDeclaration member = (TypedDeclaration) unwrap(pt, that).getDeclaration().getMember(that.getIdentifier().getText());
             if (member==null) {
                 that.addError("could not determine target of member reference: " +
                         that.getIdentifier().getText());
@@ -1653,7 +1654,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     @Override public void visit(Tree.BaseTypeExpression that) {
-        TypeDeclaration type = (TypeDeclaration) getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
+        TypeDeclaration type = (TypeDeclaration) getBaseDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
         if (type==null) {
             that.addError("could not determine target of type reference: " + 
                     that.getIdentifier().getText());
@@ -1672,7 +1673,7 @@ public class ExpressionVisitor extends Visitor {
         that.getPrimary().visit(this);
         ProducedType pt = that.getPrimary().getTypeModel();
         if (pt!=null) {
-            TypeDeclaration type = (TypeDeclaration) getMemberDeclaration(unwrap(pt, that).getDeclaration(), that.getIdentifier(), context);
+            TypeDeclaration type = (TypeDeclaration) unwrap(pt, that).getDeclaration().getMember(that.getIdentifier().getText());
             if (type==null) {
                 that.addError("could not determine target of member type reference: " +
                         that.getIdentifier().getText());
@@ -1836,7 +1837,7 @@ public class ExpressionVisitor extends Visitor {
             List<ProducedType> list = new ArrayList<ProducedType>();
             for (Tree.Expression e: that.getExpressionList().getExpressions()) {
                 if (e.getTypeModel()!=null) {
-                    addToUnion(list, e.getTypeModel());
+                    Util.addToUnion(list, e.getTypeModel());
                 }
             }
             if (list.isEmpty()) {

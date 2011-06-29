@@ -11,10 +11,11 @@ import java.util.List;
  *
  */
 public interface Scope {
+    @Deprecated
 	List<Declaration> getMembers();
 	Scope getContainer();
 	List<String> getQualifiedName();
-	//Declaration getMember(boolean includeParameters, String name);
 	ProducedType getDeclaringType(Declaration d);
-	Declaration getMember(Unit unit, boolean includeParameters, String name);
+	Declaration getMemberOrParameter(Unit unit, String name);
+	Declaration getMember(String name);
 }

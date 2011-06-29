@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,14 +41,27 @@ public abstract class Element {
      * without considering containing scopes or 
      * imports. 
      */
-    public Declaration getMember(boolean includeParameters, String name) {
+    protected Declaration getMemberOrParameter(String name) {
         for ( Declaration d: getMembers() ) {
-            if ( !(d instanceof Setter) && //return getters, not setters
-                 !(d instanceof Class && Character.isLowerCase(name.charAt(0))) && //don't return the type associated with an object dec 
-                 !(d instanceof Parameter && !includeParameters) ) { //don't return parameters unless asked for them
-                if (d.getName()!=null && d.getName().equals(name)) {
-                    return d;
-                }
+            if ( isResolvable(d) && isNamed(name, d)) {
+                return d;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Search only directly inside the given scope,
+     * without considering containing scopes or 
+     * imports, and ignoring parameters. 
+     */
+    public Declaration getMember(String name) {
+        for ( Declaration d: getMembers() ) {
+            if ( isResolvable(d) 
+                    //&& d.isShared()
+                    && !(d instanceof Parameter) 
+                    && isNamed(name, d)) { //don't return parameters
+                return d;
             }
         }
         return null;
@@ -59,13 +75,13 @@ public abstract class Element {
      * Search in the given scope, taking into account 
      * containing scopes and imports
      */
-    public Declaration getMember(Unit unit, boolean includeParameters, String name) {
-        Declaration d = getMember(includeParameters, name);
+    public Declaration getMemberOrParameter(Unit unit, String name) {
+        Declaration d = getMemberOrParameter(name);
         if (d!=null) {
             return d;
         }
         else if (getContainer()!=null) {
-            return getContainer().getMember(unit, includeParameters, name);
+            return getContainer().getMemberOrParameter(unit, name);
         }
         else {
             //union type or bottom type 

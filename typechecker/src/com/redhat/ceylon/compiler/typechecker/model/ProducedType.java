@@ -1,12 +1,12 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * A type with actual type arguments.
@@ -194,7 +194,7 @@ public class ProducedType extends ProducedReference {
             List<ProducedType> types = new ArrayList<ProducedType>();
             for (ProducedType ct: getDeclaration().getCaseTypes()) {
                 if (ct.getSupertype(ci)==null) {
-                    addToUnion(types, ct.minus(ci));
+                    Util.addToUnion(types, ct.minus(ci));
                 }
             }
             ut.setCaseTypes(types);
@@ -216,7 +216,7 @@ public class ProducedType extends ProducedReference {
                     types.add(null);
                 }
                 else {
-                    addToUnion(types, ct.substitute(substitutions));
+                    Util.addToUnion(types, ct.substitute(substitutions));
                 }
             }
             ut.setCaseTypes(types);

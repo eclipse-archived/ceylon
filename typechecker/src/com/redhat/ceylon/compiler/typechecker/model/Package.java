@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,17 +57,23 @@ public class Package implements Scope {
 	    return getName();
 	}
 	
+    public Declaration getMemberOrParameter(String name) {
+        for ( Declaration d: getMembers() ) {
+            if ( isResolvable(d) && isNamed(name, d) ) {
+                return d;
+            }
+        }
+        return null;
+    }
+    
 	/**
 	 * Search only inside the package, ignoring imports
 	 */
-	//@Override
-	public Declaration getMember(/*boolean includeParameters,*/String name) {
+	@Override
+	public Declaration getMember(String name) {
         for ( Declaration d: getMembers() ) {
-            //if ( !(d instanceof Setter) && (includeParameters || !(d instanceof Parameter)) ) {
-            if (!(d instanceof Class && Character.isLowerCase(name.charAt(0)))) { //don't return the type associated with an object dec
-                if (d.getName()!=null && d.getName().equals(name)) {
-                    return d;
-                }
+            if ( isResolvable(d) && /*d.isShared() &&*/ isNamed(name, d) ) {
+                return d;
             }
         }
         return null;
@@ -80,16 +89,14 @@ public class Package implements Scope {
      * imports
      */
 	@Override
-    public Declaration getMember(Unit unit, boolean includeParameters, String name) {
-        if (unit!=null) {
-            //this implements the rule that imports hide 
-            //toplevel members of a package
-            Declaration d = unit.getImportedDeclaration(name);
-            if (d!=null) {
-                return d;
-            }
+    public Declaration getMemberOrParameter(Unit unit, String name) {
+        //this implements the rule that imports hide 
+        //toplevel members of a package
+        Declaration d = unit.getImportedDeclaration(name);
+        if (d!=null) {
+            return d;
         }
-        return getMember(/*includeParameters,*/ name);
+        return getMemberOrParameter(name);
     }
 
 }

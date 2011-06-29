@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.context.Context;
@@ -15,41 +14,33 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
 public class Util {
 
-    public static Declaration getDeclaration(Scope scope, Unit unit, Tree.Identifier id, Context context) {
-        return getDeclaration(scope, unit, true, id.getText(), context);
+    static Declaration getBaseDeclaration(Scope scope, Unit unit, Tree.Identifier id, Context context) {
+        Declaration d = scope.getMemberOrParameter(unit, id.getText());
+        if (d!=null) {
+            return d;
+        }
+        else {
+            return getLanguageModuleDeclaration(id.getText(), context);
+        }
     }
 
-    public static Declaration getMemberDeclaration(TypeDeclaration scope, Tree.Identifier id, Context context) {
-        return scope.getMember(null, false, id.getText());
-    }
-
-    public static Declaration getExternalDeclaration(Package pkg, Tree.Identifier id, Context context) {
-        return getDeclaration(pkg, null, false, id.getText(), context);
-    }
-
-    private static Declaration getDeclaration(Scope scope, Unit unit, boolean includeParameters, String name, Context context) {
-        Declaration d  = scope.getMember(unit, includeParameters, name);
-        return d==null ? getLanguageModuleDeclaration(name, context) : d;
-    }
-
-    public static Declaration getLanguageModuleDeclaration(String name, Context context) {
+    static Declaration getLanguageModuleDeclaration(String name, Context context) {
         //all elements in ceylon.language are auto-imported
         //traverse all default module packages provided they have not been traversed yet
         if (context==null) return null;
-        final Module languageModule = context.getModules().getLanguageModule();
+        Module languageModule = context.getModules().getLanguageModule();
         if ( languageModule != null && languageModule.isAvailable() ) {
             if ("Bottom".equals(name)) {
                 return new BottomType();
             }
             for (Package languageScope : languageModule.getPackages() ) {
-                final Declaration d = languageScope.getMember(name);
+                Declaration d = languageScope.getMember(name);
                 if (d != null) {
                     return d;
                 }
@@ -58,7 +49,7 @@ public class Util {
         return null;
     }
     
-    public static String name(Tree.Identifier id) {
+    static String name(Tree.Identifier id) {
         if (id==null) {
             return "program element with missing name";
         }
@@ -95,42 +86,12 @@ public class Util {
         return typeArguments;
     }
     
-    public static ProducedType producedType(TypeDeclaration declaration, ProducedType typeArgument) {
+    static ProducedType producedType(TypeDeclaration declaration, ProducedType typeArgument) {
         return declaration.getProducedType(null, Collections.singletonList(typeArgument));
     }
 
-    public static ProducedType producedType(TypeDeclaration declaration, ProducedType... typeArguments) {
+    static ProducedType producedType(TypeDeclaration declaration, ProducedType... typeArguments) {
         return declaration.getProducedType(null, Arrays.asList(typeArguments));
-    }
-
-    public static void addToUnion(List<ProducedType> list, ProducedType pt) {
-        if (pt==null) {
-            return;
-        }
-        if (pt.getDeclaration() instanceof UnionType) {
-            for (Iterator<ProducedType> iter = pt.getDeclaration().getCaseTypes().iterator(); iter.hasNext();) {
-                ProducedType t = iter.next();
-                addToUnion( list, t.substitute(pt.getTypeArguments()) );
-            }
-        }
-        else {
-            Boolean included = false;
-            for (Iterator<ProducedType> iter = list.iterator(); iter.hasNext();) {
-                ProducedType t = iter.next();
-                if (pt.isSubtypeOf(t)) {
-                    included = true;
-                    break;
-                }
-                //TODO: I think in some very rare occasions 
-                //      this can cause stack overflows!
-                else if (pt.isSupertypeOf(t)) {
-                    iter.remove();
-                }
-            }
-            if (!included) {
-                list.add(pt);
-            }
-        }
     }
 
 }

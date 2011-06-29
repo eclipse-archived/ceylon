@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
 
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -169,7 +169,7 @@ public class SpecificationVisitor extends Visitor {
     private boolean isDefinedInContainingScope(Node node, Declaration member) {
         Scope scope = node.getScope();
         while (scope!=null) {
-            if (scope.getMembers().contains(member)) {
+            if (scope==member.getContainer()) {
                 return true;
             }
             scope = scope.getContainer();
@@ -187,7 +187,7 @@ public class SpecificationVisitor extends Visitor {
         Tree.Term lt = that.getLeftTerm();
         if (lt instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression m = (Tree.BaseMemberExpression) lt;
-            Declaration member = getDeclaration(m.getScope(), m.getUnit(), m.getIdentifier(), context);
+            Declaration member = getBaseDeclaration(m.getScope(), m.getUnit(), m.getIdentifier(), context);
             if (member==declaration) {
                 that.getRightTerm().visit(this);
                 checkVariable(lt);
@@ -221,7 +221,7 @@ public class SpecificationVisitor extends Visitor {
     private void checkVariable(Tree.Term term) {
         if (term instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression m = (Tree.BaseMemberExpression) term;
-            Declaration member = getDeclaration(m.getScope(), m.getUnit(), m.getIdentifier(), context);
+            Declaration member = getBaseDeclaration(m.getScope(), m.getUnit(), m.getIdentifier(), context);
             if (member==declaration) {
                 if (!isVariable()) {
                     term.addError("is not a variable: " +
@@ -234,7 +234,7 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.SpecifierStatement that) {
         Tree.BaseMemberExpression m = that.getBaseMemberExpression();
-        Declaration member = getDeclaration(m.getScope(), m.getUnit(), m.getIdentifier(), context);
+        Declaration member = getBaseDeclaration(m.getScope(), m.getUnit(), m.getIdentifier(), context);
         if (member==declaration) {
             that.getSpecifierExpression().visit(this);
             /*if (!declared) {

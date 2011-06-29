@@ -19,6 +19,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -92,7 +93,7 @@ public class TypeVisitor extends Visitor {
         else {
             i.setAlias(alias.getIdentifier().getText());
         }
-        Declaration d = getExternalDeclaration(importedPackage, member.getIdentifier(), context);
+        Declaration d = importedPackage.getMember(member.getIdentifier().getText());
         if (d==null) {
             member.getIdentifier().addError("imported declaration not found: " + 
                     member.getIdentifier().getText());
@@ -113,7 +114,7 @@ public class TypeVisitor extends Visitor {
         UnionType ut = new UnionType();
         List<ProducedType> types = new ArrayList<ProducedType>();
         for (Tree.StaticType st: that.getStaticTypes()) {
-            addToUnion( types, st.getTypeModel() );
+            Util.addToUnion( types, st.getTypeModel() );
         }
         ut.setCaseTypes(types);
         ProducedType pt = ut.getType();
@@ -124,7 +125,7 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.BaseType that) {
         super.visit(that);
-        TypeDeclaration type = (TypeDeclaration) getDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
+        TypeDeclaration type = (TypeDeclaration) getBaseDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
         if (type==null) {
             that.addError("type declaration not found: " + 
                     that.getIdentifier().getText());
@@ -162,7 +163,7 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         ProducedType pt = that.getOuterType().getTypeModel();
         if (pt!=null) {
-            TypeDeclaration type = (TypeDeclaration) getMemberDeclaration(pt.getDeclaration(), that.getIdentifier(), context);
+            TypeDeclaration type = (TypeDeclaration) pt.getDeclaration().getMember(that.getIdentifier().getText());
             if (type==null) {
                 that.addError("member type declaration not found: " + 
                         that.getIdentifier().getText());
@@ -227,8 +228,8 @@ public class TypeVisitor extends Visitor {
         else {
             UnionType ut = new UnionType();
             List<ProducedType> types = new ArrayList<ProducedType>();
-            addToUnion(types,getEmptyDeclaration().getType());
-            addToUnion(types,pt);
+            Util.addToUnion(types,getEmptyDeclaration().getType());
+            Util.addToUnion(types,pt);
             ut.setCaseTypes(types);
             return ut.getType();
         }
