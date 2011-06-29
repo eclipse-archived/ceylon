@@ -5,12 +5,12 @@ class MethodForRange extends .ceylon.language.Object {
     public final void m() {
         .ceylon.language.Iterator<Natural> $i$iter$0 = new .ceylon.language.Range<Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(10L)).iterator();
         while (true) {
-            Natural i = $i$iter$0.head();
+            Natural i = $i$iter$0.getHead();
             if (i != null) {
             } else {
                 break;
             }
-            $i$iter$0 = $i$iter$0.tail();
+            $i$iter$0 = $i$iter$0.getTail();
         }
     }
     

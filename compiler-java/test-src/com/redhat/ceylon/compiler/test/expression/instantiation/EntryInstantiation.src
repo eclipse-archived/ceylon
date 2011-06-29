@@ -1,10 +1,9 @@
-// FIXME This is obviously wrong
 package com.redhat.ceylon.compiler.test.expression.instantiation;
 
 class EntryInstantiation extends .ceylon.language.Object {
     
-    public void m() {
-        // Compiler generated no output
+    public final Object m() {
+        return new .ceylon.language.Entry<Natural, String>(.ceylon.language.Natural.instance(1L), .ceylon.language.String.instance("a"));
     }
     
     EntryInstantiation() {

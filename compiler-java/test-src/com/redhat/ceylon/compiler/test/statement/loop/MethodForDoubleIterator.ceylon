@@ -1,6 +1,6 @@
 class MethodForDoubleIterator(){
-    shared void m(Iterable<Entry<Integer,Integer>> map){
-        for(Integer i -> Integer j in map){
+    shared void m(){
+        for (Natural i -> String s in {1->"a", 2->"b"}) {
             // Empty
         }
     }

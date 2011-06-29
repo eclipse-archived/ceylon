@@ -1,4 +1,5 @@
 /bin/*.pyc
 /build/
+.settings/
 .classpath
 .project

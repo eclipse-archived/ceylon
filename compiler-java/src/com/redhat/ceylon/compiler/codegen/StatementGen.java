@@ -5,6 +5,10 @@ import static com.sun.tools.javac.code.Flags.FINAL;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForIterator;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.TypeTags;
@@ -175,21 +179,6 @@ public class StatementGen extends GenPart {
     }
 
     List<JCStatement> convert(Tree.ForStatement stmt) {
-        class ForVisitor extends Visitor {
-            Tree.Variable variable = null;
-
-            public void visit(Tree.ValueIterator valueIterator) {
-                assert variable == null;
-                variable = valueIterator.getVariable();
-            }
-
-            public void visit(Tree.KeyValueIterator keyValueIterator) {
-                assert variable == null;
-                // FIXME: implement this
-                throw new RuntimeException("Not implemented: " + keyValueIterator.getNodeType());
-            }
-        }
-
         Name tempForFailVariable = currentForFailVariable;
         
         List<JCStatement> outer = List.<JCStatement> nil();
@@ -203,23 +192,49 @@ public class StatementGen extends GenPart {
             currentForFailVariable = null;
         }
 
-        ForVisitor visitor = new ForVisitor();
-        stmt.getForClause().getForIterator().visit(visitor);
-        String loop_var_name = visitor.variable.getIdentifier().getText();
-        JCExpression item_type = gen.makeJavaType(gen.actualType(visitor.variable));
-        List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(gen.actualType(visitor.variable), false);
+        ForIterator iterDecl = stmt.getForClause().getForIterator();
+        Variable variable;
+        Variable variable2;
+		if (iterDecl instanceof ValueIterator) {
+        	variable = ((ValueIterator) iterDecl).getVariable();
+        	variable2 = null;
+        } else if (iterDecl instanceof KeyValueIterator) {
+        	variable = ((KeyValueIterator) iterDecl).getKeyVariable();
+        	variable2 = ((KeyValueIterator) iterDecl).getValueVariable();
+        } else {
+        	throw new RuntimeException("Unknown ForIterator");
+        }
+        
+        String loop_var_name = variable.getIdentifier().getText();
+        JCExpression iter_type = gen.makeJavaType(iterDecl.getSpecifierExpression().getExpression().getTypeModel().getTypeArgumentList().get(0));
+        JCExpression item_type = gen.makeJavaType(gen.actualType(variable));
+        List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(gen.actualType(variable), false);
 
         // ceylon.language.Iterator<T> $ceylontmpX = ITERABLE.iterator();
-        JCExpression containment = gen.expressionGen.convertExpression(stmt.getForClause().getForIterator().getSpecifierExpression().getExpression());
-        JCVariableDecl iter_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(aliasName(loop_var_name + "$iter")), gen.iteratorType(item_type), at(stmt).Apply(null, at(stmt).Select(containment, names().fromString("iterator")), List.<JCExpression> nil()));
+        JCExpression containment = gen.expressionGen.convertExpression(iterDecl.getSpecifierExpression().getExpression());
+        JCVariableDecl iter_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(aliasName(loop_var_name + "$iter")), gen.iteratorType(iter_type), at(stmt).Apply(null, at(stmt).Select(containment, names().fromString("iterator")), List.<JCExpression> nil()));
         outer = outer.append(iter_decl);
         JCIdent iter_id = at(stmt).Ident(iter_decl.getName());
 
-        // T n = $ceylontmpX.getHead();
-        JCExpression loop_var_init = at(stmt).Apply(null, at(stmt).Select(iter_id, names().fromString(Util.getGetterName("head"))), List.<JCExpression> nil());
+        // U n = $ceylontmpX.getHead();
+        JCExpression loop_var_init;
+        if (variable2 == null) {
+        	loop_var_init = at(stmt).Apply(null, at(stmt).Select(iter_id, names().fromString(Util.getGetterName("head"))), List.<JCExpression> nil());
+        } else {
+        	loop_var_init = at(stmt).Apply(null, at(stmt).Select(at(stmt).Apply(null, at(stmt).Select(iter_id, names().fromString(Util.getGetterName("head"))), List.<JCExpression> nil()), names().fromString(Util.getGetterName("key"))), List.<JCExpression> nil());
+        }
         JCVariableDecl item_decl = at(stmt).VarDef(make().Modifiers(0, annots), names().fromString(loop_var_name), item_type, loop_var_init );
         List<JCStatement> while_loop = List.<JCStatement> of(item_decl);
 
+        if (variable2 != null) {
+            // V n = $ceylontmpX.getHead().getElement();
+            JCExpression loop_var_init2 = at(stmt).Apply(null, at(stmt).Select(at(stmt).Apply(null, at(stmt).Select(iter_id, names().fromString(Util.getGetterName("head"))), List.<JCExpression> nil()), names().fromString(Util.getGetterName("element"))), List.<JCExpression> nil());
+            String loop_var_name2 = variable2.getIdentifier().getText();
+            JCExpression item_type2 = gen.makeJavaType(gen.actualType(variable2));
+            JCVariableDecl item_decl2 = at(stmt).VarDef(make().Modifiers(0, annots), names().fromString(loop_var_name2), item_type2, loop_var_init2);
+            while_loop = while_loop.append(item_decl2);
+        }
+        
         // The user-supplied contents of the loop
         List<JCStatement> inner = convertStmts(stmt.getForClause().getBlock().getStatements());
 

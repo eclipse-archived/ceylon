@@ -2,10 +2,19 @@ package com.redhat.ceylon.compiler.test.statement.loop;
 
 class MethodForDoubleIterator extends .ceylon.language.Object {
     
-    public void m(final Iterator<Integer> it) {
-        // FIXME
+    public final void m() {
+        .ceylon.language.Iterator<Entry<Natural, String>> $i$iter$0 = new .ceylon.language.ArraySequence<Entry<Natural, String>>((Entry<Natural, String>[])new Object[]{new .ceylon.language.Entry<Natural, String>(.ceylon.language.Natural.instance(1L), .ceylon.language.String.instance("a")), new .ceylon.language.Entry<Natural, String>(.ceylon.language.Natural.instance(2L), .ceylon.language.String.instance("b"))}, 0L).iterator();
+        while (true) {
+            Natural i = $i$iter$0.getHead().getKey();
+            String s = $i$iter$0.getHead().getElement();
+            if (i != null) {
+            } else {
+                break;
+            }
+            $i$iter$0 = $i$iter$0.getTail();
+        }
     }
     
-    MethodForIterator() {
+    MethodForDoubleIterator() {
     }
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.codegen.Gen2.Singleton;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -62,6 +63,10 @@ public class ExpressionGen extends GenPart {
             }
 
             public void visit(Tree.RangeOp op) {
+                result = convert(op);
+            }
+
+            public void visit(Tree.EntryOp op) {
                 result = convert(op);
             }
 
@@ -257,6 +262,14 @@ public class ExpressionGen extends GenPart {
         return at(op).NewClass(null, null, at(op).TypeApply(makeIdent(syms().ceylonRangeType), List.<JCExpression> of(type)), List.<JCExpression> of(lower, upper), null);
     }
 
+    private JCExpression convert(Tree.EntryOp op) {
+        JCExpression key = convertExpression(op.getLeftTerm());
+        JCExpression elem = convertExpression(op.getRightTerm());
+        JCExpression keyType = gen.makeJavaType(op.getLeftTerm().getTypeModel());
+        JCExpression elemType = gen.makeJavaType(op.getRightTerm().getTypeModel());
+        return at(op).NewClass(null, null, at(op).TypeApply(makeIdent(syms().ceylonEntryType), List.<JCExpression> of(keyType, elemType)), List.<JCExpression> of(key, elem), null);
+    }
+
     JCExpression convert(Tree.UnaryOperatorExpression op) {
         Tree.Term term = op.getTerm();
         if (term instanceof Tree.NaturalLiteral && op instanceof Tree.NegativeOp) {
@@ -334,7 +347,9 @@ public class ExpressionGen extends GenPart {
         if (loseComparison)
             operatorClass = Tree.CompareOp.class;
 
-        result = at(op).Apply(null, at(op).Select(convertExpression(op.getLeftTerm()), names().fromString(binaryOperators.get(operatorClass))), List.of(convertExpression(op.getRightTerm())));
+        JCExpression left = convertExpression(op.getLeftTerm());
+        JCExpression right = convertExpression(op.getRightTerm());
+        result = at(op).Apply(null, at(op).Select(left, names().fromString(binaryOperators.get(operatorClass))), List.of(right));
 
         if (loseComparison) {
             result = at(op).Apply(null, at(op).Select(result, names().fromString(binaryOperators.get(op.getClass()))), List.<JCExpression> nil());
@@ -496,9 +511,10 @@ public class ExpressionGen extends GenPart {
         
         List<JCExpression> dims = List.<JCExpression>nil();
         
-        JCExpression arrayExpr = make().NewArray(gen.makeJavaType(value.getTypeModel().getTypeArgumentList().get(0)), dims , elems.toList());
+        ProducedType t = value.getTypeModel().getTypeArgumentList().get(0);
+		JCExpression arrayExpr = make().TypeCast(make().TypeArray(gen.makeJavaType(t)), make().NewArray(gen.makeJavaType(t.getDeclaration().getExtendedType()), dims , elems.toList()));
         JCExpression indexExpr = make().Literal(Long.valueOf(0));
         List<JCExpression> args = List.<JCExpression> of(arrayExpr, indexExpr );
-        return at(value).NewClass(null, null, makeIdent(syms().ceylonArraySequenceType), args, null);
+        return at(value).NewClass(null, null, at(value).TypeApply(makeIdent(syms().ceylonArraySequenceType), List.<JCExpression> of(gen.makeJavaType(t))), args, null);
     }
 }

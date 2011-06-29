@@ -10,4 +10,6 @@ public abstract class Boolean extends Case {
         return b ? $true.getTrue() : $false.getFalse();
     }
 
+    abstract public boolean booleanValue();
+
 }

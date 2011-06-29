@@ -165,6 +165,7 @@ public class Symtab {
     public final Type ceylonToplevelOverloadType;
     public final Type ceylonIteratorType;
     public final Type ceylonRangeType;
+    public final Type ceylonEntryType;
 
     /** The symbol representing the length field of an array.
      */
@@ -474,6 +475,7 @@ public class Symtab {
         ceylonToplevelOverloadType = enterClass("ceylon.language.ToplevelOverload");
         ceylonIteratorType = enterClass("ceylon.language.Iterator");
         ceylonRangeType = enterClass("ceylon.language.Range");
+        ceylonEntryType = enterClass("ceylon.language.Entry");
 
         synthesizeEmptyInterfaceIfMissing(cloneableType);
         synthesizeEmptyInterfaceIfMissing(serializableType);

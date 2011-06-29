@@ -6,20 +6,20 @@ class MethodForFail extends .ceylon.language.Object {
         boolean $ceylontmp0 = true;
         .ceylon.language.Iterator<Integer> $i$iter$1 = seq.iterator();
         while (true) {
-            Integer i = $i$iter$1.head();
+            Integer i = $i$iter$1.getHead();
             if (i != null) {
                 while (ceylon.language.$true.getTrue() == ceylon.language.$true.getTrue()) {
                     boolean $ceylontmp2 = true;
                     .ceylon.language.Iterator<Integer> $j$iter$3 = seq.iterator();
                     while (true) {
-                        Integer j = $j$iter$3.head();
+                        Integer j = $j$iter$3.getHead();
                         if (j != null) {
                             $ceylontmp2 = false;
                             break;
                         } else {
                             break;
                         }
-                        $j$iter$3 = $j$iter$3.tail();
+                        $j$iter$3 = $j$iter$3.getTail();
                     }
                     if ($ceylontmp2) {
                         return .ceylon.language.Natural.instance(1L);
@@ -34,7 +34,7 @@ class MethodForFail extends .ceylon.language.Object {
             } else {
                 break;
             }
-            $i$iter$1 = $i$iter$1.tail();
+            $i$iter$1 = $i$iter$1.getTail();
         }
         if ($ceylontmp0) {
             return .ceylon.language.Natural.instance(0L);
