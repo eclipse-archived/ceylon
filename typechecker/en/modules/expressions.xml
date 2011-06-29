@@ -1473,7 +1473,7 @@ value biggerBag = bag.with(1, 2, 5.0);
     Input i = Input(),
     Button {
         label = "Hello";
-        action() {
+        void action() {
             log.info(i.value);
         }
     }
