@@ -3,39 +3,21 @@ package ceylon.language;
 public class ArraySequence<Element> implements Sequence<Element> {
 
 	private final Element[] array;
-	private final int first;
+	private final long first;
 
-	public ArraySequence(Element[] array, int first) {
+	public ArraySequence(Element[] array, long first) {
 		this.array = array;
 		this.first = first;
 	}
 
-	public Long lastIndex() {
-		return (getEmpty() == $true.getTrue()) ? null : new Long(array.length - first - 1);
-	}
-
-	public Element value(long index) {
-		return index >= getSize().longValue() ? null : array[(int) index - first];
-	}
-
 	@Override
-	public Boolean getEmpty() {
-		return Boolean.instance(array.length <= first);
+	public Natural getLastIndex() {
+		return (getEmpty() == $true.getTrue()) ? null : Natural.instance(array.length - first - 1);
 	}
 
 	@Override
 	public Element getFirst() {
-		return (getEmpty() == $true.getTrue()) ? null : array[first];
-	}
-
-	@Override
-	public Iterator<Element> iterator() {
-		return new ArraySequenceIterator<Element>(this);
-	}
-
-	@Override
-	public Element getLast() {
-		return (getEmpty() == $true.getTrue()) ? null : array[array.length - 1];
+		return (getEmpty() == $true.getTrue()) ? null : array[(int) first];
 	}
 
 	@Override
@@ -44,8 +26,28 @@ public class ArraySequence<Element> implements Sequence<Element> {
 	}
 
 	@Override
+	public Boolean getEmpty() {
+		return Boolean.instance(array.length <= first);
+	}
+
+	@Override
 	public Natural getSize() {
 		return Natural.instance((getEmpty() == $true.getTrue()) ? 0 : array.length - first);
+	}
+
+	@Override
+	public Element getLast() {
+		return (getEmpty() == $true.getTrue()) ? null : array[array.length - 1];
+	}
+
+	@Override
+	public Boolean defines(Natural index) {
+		throw new RuntimeException("Not implemented yet");
+	}
+
+	@Override
+	public Iterator<Element> iterator() {
+		return new ArraySequenceIterator<Element>(this);
 	}
 
 	public static class ArraySequenceIterator<Element> implements Iterator<Element> {
@@ -70,7 +72,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
 	@Override
 	public Element value(Natural key) {
-		throw new RuntimeException("Not implemented yet");
+		return key.longValue() >= getSize().longValue() ? null : array[(int) (key.longValue() - first)];
 	}
 
 	@Override
@@ -97,15 +99,4 @@ public class ArraySequence<Element> implements Sequence<Element> {
 	public Sequence<Element> getClone() {
 		throw new RuntimeException("Not implemented yet");
 	}
-
-	@Override
-	public Natural getLastIndex() {
-		throw new RuntimeException("Not implemented yet");
-	}
-
-	@Override
-	public Boolean defines(Natural index) {
-		throw new RuntimeException("Not implemented yet");
-	}
-
 }

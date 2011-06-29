@@ -1,7 +1,6 @@
 package ceylon.language;
 
-public final class String extends Object
-{
+public final class String implements Equality {
     public final java.lang.String value;
 
     private String(java.lang.String s) {
@@ -24,8 +23,14 @@ public final class String extends Object
         return instance(value.toLowerCase());
     }
 
-    public ceylon.language.Boolean equalsXXX(String s) {
-        return Boolean.instance(value.equals(s.value));
+	@Override
+    public ceylon.language.Boolean equals(Equality that) {
+		if (that instanceof String) {
+			String s = (String)that;
+			return Boolean.instance(value.equals(s.value));
+		} else {
+			return Boolean.instance(false);
+		}
     }
 
     public static ceylon.language.String instance(java.lang.String... strings) {
