@@ -989,14 +989,33 @@ else {
         <para>Some control structures allow inline declaration of a <emphasis>variable</emphasis>,
         a local that is scoped to the control structure body.</para>
         
-        <programlisting>Variable: UnionType MemberName</programlisting>
+        <programlisting>TypedVariable: UnionType MemberName</programlisting>
         
         <para>In certain cases, the explicit type be omitted, forcing the compiler to infer it, by 
-        specifying the keyword <literal>local</literal> where the type usually appears. The type of 
+        specifying the keyword <literal>value</literal> where the type usually appears. The type of 
         the variable is inferred to be the type of the expression that follows.</para>
         
-        <programlisting>InferableVariable: InferableType MemberName Params*</programlisting>
-                
+        <programlisting>Variable: (UnionType | "value") MemberName</programlisting>
+        
+        </section>
+        
+        <section id="iterationvariables">
+            <title>Iteration variables</title>
+       
+            <para>A <literal>for</literal> loop requires an <emphasis>iteration variable</emphasis> 
+            declaration. An iteration variable declaration must specify an iteration variable.</para>
+
+            <programlisting>IteratorVariable: Variable | CallableVariable | EntryVariablePair</programlisting>
+            
+            <para>An iteration variable may be callable.</para>
+            
+            <programlisting>CallableVariable: (UnionType | "function" | "void") MemberName Params+</programlisting>
+        
+            <para>An iteration variable of type <literal>Entry</literal> may be specified in destructured 
+            form.</para>
+        
+            <programlisting>EntryVariablePair: Variable "->" Variable</programlisting>
+
         </section>
         
         <section id="controlstructureconditions">
@@ -1062,9 +1081,9 @@ else {
         <para>In the case of assignability or existence conditions, the type of the variable may be 
         inferred.</para>
                 
-        <programlisting>IsCondition: "is" (Variable Specifier | UnionType MemberName)</programlisting>
+        <programlisting>IsCondition: "is" (TypedVariable Specifier | UnionType MemberName)</programlisting>
         
-        <programlisting>ExistsOrNonemptyCondition: ("exists" | "nonempty") (InferableVariable Specifier | MemberName)</programlisting>
+        <programlisting>ExistsOrNonemptyCondition: ("exists" | "nonempty") (Variable Specifier | MemberName)</programlisting>
         
         <para>The type of the value reference or expression must be:</para>
         
@@ -1546,14 +1565,11 @@ if (satisfies Comparable&lt;Element&gt; Element) {
             <comment><para>TODO: Community feedback is that <literal>else</literal> is
             better than <literal>fail</literal>, like in Python.</para></comment>
 
-            <para>An iteration variable declaration must specify one or two iteration
-            variables, and an iterated expression that contains the range of values to 
-            be iterated. <!--It may optionally specify one or more iteration constraint 
-            expressions (conditions).--></para>
-
-            <programlisting>ForIterator: InferableVariable ("->" InferableVariable)? "in" Expression</programlisting>
-
-            <!--programlisting>Iteration: FormalParam "in" Expression (":" Condition ("," Condition)*)? </programlisting-->
+            <para>The <literal>for</literal> iterator consists of an iteration variable 
+            declaration and an iterated expression that contains the range of values to 
+            be iterated.</para>
+            
+            <programlisting>ForIterator: IteratorVariable "in" Expression</programlisting>
 
             <para>The type of the iterated expression depends upon the iteration variable 
             declarations:</para>
@@ -1710,7 +1726,7 @@ while (!person.dead);</programlisting>
 
             <programlisting>Try: "try" ("(" Resource ")")? Block</programlisting>
             
-            <programlisting>Catch: "catch" "(" Variable ")" Block</programlisting>
+            <programlisting>Catch: "catch" "(" TypedVariable ")" Block</programlisting>
             
             <programlisting>Finally: "finally" Block</programlisting>
 
@@ -1722,7 +1738,7 @@ while (!person.dead);</programlisting>
             released when execution of the <literal>try</literal> terminates. Each resource 
             expression must be of type assignable to <literal>ceylon.language.Usable</literal>.</para>
             
-            <programlisting>Resource: InferableVariable Specifier | Expression</programlisting>
+            <programlisting>Resource: Variable Specifier | Expression</programlisting>
             
             <para>When the construct is executed:</para>
             

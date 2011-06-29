@@ -507,23 +507,18 @@
             <title>Type inference</title>
         
         <para>Certain declarations which usually require an explicit type may omit the type, 
-        forcing the compiler to infer it, by specifying the keyword <literal>local</literal>
-        where the type usually appears.</para>
+        forcing the compiler to infer it, by specifying the keyword <literal>value</literal>
+        or <literal>function</literal> where the type usually appears.</para>
+                
+        <para>Type inference is only allowed for block local declarations. The keywords
+        <literal>value</literal> and <literal>function</literal> may not be combined with 
+        the <literal>shared</literal> annotation.</para>
         
-        <programlisting>InferableType: UnionType | "local"</programlisting>
-        
-        <para>Type inference is only allowed for block local declarations. The keyword
-        <literal>local</literal> may not be combined with the <literal>shared</literal>
-        annotation.</para>
-        
-        <comment><para>TODO: Should we instead introduce the keywords <literal>value</literal>
-        and <literal>function</literal> for declaring local attributes and methods respectively?
-        <!--literal>define</literal--></para>
         <programlisting>value names = people[].name;</programlisting>
+
         <programlisting>function parse(String text) {
     return text.tokens(" .!?,:;()\n\f\r\t");
 }</programlisting>
-        </comment>
         
         <!--
         <comment><para>TODO: Should we let you leave off the type arguments in the type
@@ -2360,17 +2355,17 @@ Result findSingleByIntegerKey<Result>(Type<Result> type, Integer key) = findByKe
         
         <programlisting>Params: 
 "("
-FormalParam ("," FormalParam)* ("," DefaultParam)* ("," SequencedParam)? | 
+Param ("," Param)* ("," DefaultParam)* ("," SequencedParam)? | 
 DefaultParam ("," DefaultParam)* ("," SequencedParam)? | 
 SequencedParam?
 ")"</programlisting>
 
-        <programlisting>FormalParam: Param | EntryParamPair</programlisting>
-        
         <para>Each parameter is declared with a type and name and may have annotations and/or
         parameters of its own.</para>
         
-        <programlisting>Param: Annotation* (UnionType | "void") MemberName Params*</programlisting>
+        <programlisting>Param: Annotation* (SimpleParam | CallableParam | EntryParamPair)</programlisting>
+        
+        <programlisting>SimpleParam: UnionType MemberName</programlisting>
         
         <para>A parameter may not be be declared <literal>variable</literal>, and may not be 
         assigned to within the body of the method or class.</para>
@@ -2379,9 +2374,12 @@ SequencedParam?
             <title>Callable parameters</title>
         
         <para>A parameter with its own parameter list (or lists) is called a 
-        <emphasis>callable parameter</emphasis>. Think of it as an abstract local method that 
-        must be defined by the caller when the method is invoked or the class is instantiated. 
-        </para>
+        <emphasis>callable parameter</emphasis>.</para>
+        
+        <programlisting>CallableParam: (UnionType | "void") MemberName Params+</programlisting>
+        
+        <para>Think of this as an abstract local method that must be defined by the caller 
+        when the method is invoked or the class is instantiated.</para>
             
         <programlisting>(String label, void onClick())</programlisting>
         
@@ -2402,7 +2400,7 @@ SequencedParam?
         
         <para>Defaulted parameters specify a default argument.</para>
     
-        <programlisting>DefaultParam: FormalParam Specifier</programlisting>
+        <programlisting>DefaultParam: Param Specifier</programlisting>
         
         <para>The <literal>=</literal> specifier is used throughout the language to indicate a 
         value which cannot be reassigned.</para>
@@ -2456,7 +2454,7 @@ SequencedParam?
         <para>A parameter of type <literal>Entry</literal> may be specified in 
         <emphasis>destructured</emphasis> form.</para>
         
-        <programlisting>EntryParamPair: Annotation* UnionType MemberName "->" UnionType MemberName</programlisting>
+        <programlisting>EntryParamPair: SimpleParam "->" SimpleParam</programlisting>
         
         <para>A destructured parameter declaration of form <literal>U u -> V v</literal> 
         results in a method with a single parameter of type <literal>Entry&lt;U,V&gt;</literal>,

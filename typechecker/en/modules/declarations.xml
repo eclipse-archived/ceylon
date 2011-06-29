@@ -197,19 +197,15 @@ TypeConstraints?
         <para>The optional alias clause in a fully-explicit import allows resolution 
         of cross-namespace declaration name collisions.</para>
         
-        <programlisting>TypeAlias: "local" TypeName "="</programlisting>
+        <programlisting>TypeAlias: TypeName "="</programlisting>
         
-        <comment><para>TODO: Should we use <literal>class</literal> and 
-        <literal>interface</literal> for declaring type aliases, instead of
-        <literal>local</literal>? Or should we just drop the keyword altogether?</para></comment>
-
-        <programlisting>MethodAttributeAlias: "local" MemberName "="</programlisting>
+        <programlisting>MethodAttributeAlias: MemberName "="</programlisting>
         
         <para>An alias assigns a different name to the imported declaration.</para>
         
-        <programlisting>import java.util { local JavaMap = Map }</programlisting>
+        <programlisting>import java.util { JavaMap = Map }</programlisting>
         
-        <programlisting>import math { local fib = fibonnacciNumber }</programlisting>
+        <programlisting>import math { fib = fibonnacciNumber }</programlisting>
         
         <comment><para>TODO: Currently, inheritance of two members with the same name
         from different unrelated types always results in a compile error. A similar 
@@ -217,7 +213,7 @@ TypeConstraints?
         by renaming a member of a type you're importing. This is a bit similar to what 
         Eiffel does, but it would be a lexical thing, scoped to the compilation unit. 
         For example:</para>
-        <programlisting>import org.formats { Format { local formatToString = format }, ... }</programlisting>
+        <programlisting>import org.formats { Format { formatToString = format }, ... }</programlisting>
         </comment>
         
         </section>
@@ -238,7 +234,7 @@ TypeConstraints?
         
         <programlisting>import ceylon.collection { ... }</programlisting>
         
-        <programlisting>import math { local fib = fibonnacciNumber, ... }</programlisting>
+        <programlisting>import math { fib = fibonnacciNumber, ... }</programlisting>
                 
         <para>Overuse of wildcard imports is discouraged.</para>
         
@@ -1537,7 +1533,7 @@ shared choice TransactionPropagationStyle
         be <literal>Void</literal>. A method declaration may have a list of type 
         constraints.</para>
         
-        <programlisting>MethodHeader: (InferableType | "void") MemberName TypeParams? Params+ Metatypes? TypeConstraints?</programlisting>
+        <programlisting>MethodHeader: (UnionType | "function" | "void") MemberName TypeParams? Params+ Metatypes? TypeConstraints?</programlisting>
         
         <para>The Ceylon compiler preserves the names of method parameters.</para>
         
@@ -1660,7 +1656,7 @@ Void goodbye() {
 }</programlisting>
         
         <para>A non-<literal>void</literal> block local method may be declared using 
-        the keyword <literal>local</literal> in place of the explicit return type 
+        the keyword <literal>function</literal> in place of the explicit return type 
         declaration. Then the method return type is inferred:</para>
         
         <itemizedlist>
@@ -1679,13 +1675,13 @@ Void goodbye() {
         
         <para>This method has inferred return type <literal>Integer</literal>.</para>
 
-        <programlisting>local add(Integer x, Integer y) {
+        <programlisting>function add(Integer x, Integer y) {
     return x + y;
 }</programlisting>
 
         <para>This method has inferred return type <literal>Float|Integer</literal>.</para>
 
-        <programlisting>local unit(Boolean floating=false) {
+        <programlisting>function unit(Boolean floating=false) {
     if (floating) {
         return 1.0;
     }
@@ -1696,7 +1692,7 @@ Void goodbye() {
 
         <para>This method has inferred return type <literal>Bottom</literal>.</para>
 
-        <programlisting>local die() {
+        <programlisting>function die() {
     throw;
 }</programlisting>
 
@@ -1720,12 +1716,12 @@ Void goodbye() {
         method.</para>
         
         <para>A block local method which specifies a callable object expression may be 
-        declared using the keyword <literal>local</literal> in place of the explicit 
+        declared using the keyword <literal>function</literal> in place of the explicit 
         return type declaration. The return type of the method is inferred to be the
         type of the type argument to the first type parameter of the expression type
         <literal>Callable</literal> (the return type).</para>
         
-        <programlisting>local sqrt(Float x) = 2.root;</programlisting>
+        <programlisting>function sqrt(Float x) = 2.root;</programlisting>
         
         </section>
         
@@ -2095,7 +2091,7 @@ Void goodbye() {
         simple attributes explicitly annotated <literal>variable</literal>, or for 
         attributes with a setter declaration.</para>
             
-        <programlisting>AttributeHeader: InferableType MemberName</programlisting>
+        <programlisting>AttributeHeader: (UnionType | "value") MemberName</programlisting>
         
         <para>Note that an attribute declaration is essentially a method declaration with 
         zero parameter lists. Likewise, an attribute evaluation is essentially a method 
@@ -2198,12 +2194,12 @@ Void goodbye() {
         via reflection.</para>
         
         <para>A block local simple attribute with a specifier or initializer may be declared 
-        using the keyword <literal>local</literal> in place of the explicit type declaration. 
+        using the keyword <literal>value</literal> in place of the explicit type declaration. 
         The type of the local or attribute is inferred to be the type of the specifier or
         initializer expression.</para>
         
-        <programlisting>local names = List&lt;String&gt;();</programlisting>
-        <programlisting>variable local count:=0;</programlisting>
+        <programlisting>value names = List&lt;String&gt;();</programlisting>
+        <programlisting>variable value count:=0;</programlisting>
                 
         </section>
         
@@ -2261,7 +2257,7 @@ Void goodbye() {
             non-<literal>variable</literal>.</para>
                         
             <para>A block local attribute getter may be declared using the keyword 
-            <literal>local</literal> in place of the explicit type declaration. Then 
+            <literal>value</literal> in place of the explicit type declaration. Then 
             the attribute type is inferred:</para>
         
         <itemizedlist>
@@ -2280,7 +2276,7 @@ Void goodbye() {
         
             <para>This attribute has inferred type <literal>Name</literal>.</para>
         
-            <programlisting>local name { 
+            <programlisting>value name { 
     return Name(firstName, initial, lastName);
 }</programlisting>
                 

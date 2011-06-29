@@ -915,11 +915,11 @@ sort(names, reverseAlpha);</programlisting>
 
         <programlisting>Comparison getOrder(Boolean reverse=false)(Natural x, Natural y) {
     if (reverse) {
-        local reverse(Natural x, Natural y) { return y&lt;=&gt;x; }
+        function reverse(Natural x, Natural y) { return y&lt;=&gt;x; }
         return reverse;
     }
     else {
-        local natural(Natural x, Natural y) { return x&lt;=&gt;y; }
+        function natural(Natural x, Natural y) { return x&lt;=&gt;y; }
         return natural;
     }
 }</programlisting>
@@ -932,14 +932,14 @@ Comparison comp = order(1,-1);</programlisting>
 
         <para>This is even simpler using type inference:</para>
 
-        <programlisting>local order(Natural x, Natural y) = getOrder();
-local comp = order(1,-1);</programlisting>
+        <programlisting>function order(Natural x, Natural y) = getOrder();
+value comp = order(1,-1);</programlisting>
 
         <para>Or, if we don't need parameter names, we don't even need to explicitly declare the 
         parameter list:</para>
 
-        <programlisting>local order = getOrder();
-local comp = order(1,-1);</programlisting>
+        <programlisting>value order = getOrder();
+value comp = order(1,-1);</programlisting>
 
         <para>In this case, <literal>order</literal> is actually not a method at all&mdash;it's
         just a local of type <literal>Callable&lt;Comparison,Natural,Natural&gt;</literal>.</para>
@@ -1357,7 +1357,7 @@ local biggerBag = bag.with(1, 2, 5.0);
             <listitem>
                 <para>a local declaration with a getter or named argument list where the name 
                 of the local is the parameter name&mdash;it specifies the type of the attribute 
-                or <literal>local</literal>, and a block or code or named argument list used to 
+                or <literal>value</literal>, and a block or code or named argument list used to 
                 instantiate the return type, or</para>
             </listitem>
             <listitem>
@@ -1367,7 +1367,7 @@ local biggerBag = bag.with(1, 2, 5.0);
             <listitem>
                 <para>only for callable parameters, a local method declaration with a block or
                 named parameter list where the name of the method is the parameter 
-                name&mdash;it specifies the return type or <literal>local</literal>, a 
+                name&mdash;it specifies the return type or <literal>function</literal>, a 
                 parameter list and a block of code or named argument list used to instantiate 
                 the return type.</para>
             </listitem>
@@ -1377,9 +1377,9 @@ local biggerBag = bag.with(1, 2, 5.0);
         
         <programlisting>SpecifiedNamedArgument: MemberName Specifier ";"</programlisting>
         
-        <programlisting>LocalNamedArgument: InferableType MemberName (Block | NamedArguments)</programlisting>
+        <programlisting>LocalNamedArgument: (UnionType | "value") MemberName (Block | NamedArguments)</programlisting>
         
-        <programlisting>FunctionalNamedArgument: (InferableType | "void") MemberName Params+ (Block | NamedArguments)</programlisting>
+        <programlisting>FunctionalNamedArgument: (UnionType | "function" | "void") MemberName Params+ (Block | NamedArguments)</programlisting>
         
         <para>For example:</para>
         
@@ -1434,7 +1434,7 @@ local biggerBag = bag.with(1, 2, 5.0);
         <para>This is simpler using type inference:</para>
 
         <programlisting>{ 
-    local by(Value x, Value y) { 
+    function by(Value x, Value y) { 
         return x&lt;=&gt;y; 
     } 
 }</programlisting>
@@ -1626,7 +1626,7 @@ local biggerBag = bag.with(1, 2, 5.0);
             <!--listitem>
                 <para>parameter declarations may omit the explicit type, 
                 forcing the compiler to infer it, by specifying the keyword 
-                <literal>local</literal> where the type usually appears.</para>
+                <literal>value</literal> where the type usually appears.</para>
             </listitem-->
         </itemizedlist>
         
@@ -1636,22 +1636,8 @@ local biggerBag = bag.with(1, 2, 5.0);
                 
         <programlisting>FunctionalArguments: (MemberName FunctionalBody)+</programlisting>
         
-        <programlisting>FunctionalBody: Parameters? ( Block | "(" Expression ")" )</programlisting>
-        
-        <!--
+        <programlisting>FunctionalBody: Params? ( Block | "(" Expression ")" )</programlisting>
                 
-        <programlisting>InferableFormalParameters: "(" (InferableFormalParam ("," InferableFormalParam))? ")"</programlisting>
-        
-        <programlisting>InferableFormalParam: InferableParam | InferableEntryParamPair | InferableRangeParamPair</programlisting>
-        
-        <programlisting>InferableParam: Annotation* (InferableType|"void") MemberName Params*</programlisting>
-        
-        <programlisting>InferableEntryParamPair: Annotation* InferableType MemberName "->" Type MemberName</programlisting>
-        
-        <programlisting>InferableRangeParamPair: Annotation* InferableType MemberName ".." MemberName</programlisting>
-        
-        -->
-        
         <para>For example:</para>
         
         <programlisting>where (Person p) (p.age>18)</programlisting>
@@ -1718,8 +1704,8 @@ using() resource satisfies Usable {
         
         <comment><para>TODO: Should we support type inference for the parameters?
         For example:</para>
-        <programlisting>by (local x, y) (x&lt;=&gt;y)</programlisting>
-        <programlisting>where (local p) (p.age>18)</programlisting></comment>
+        <programlisting>by (value x, value y) (x&lt;=&gt;y)</programlisting>
+        <programlisting>where (value p) (p.age>18)</programlisting></comment>
 
         </section>
         
@@ -1769,7 +1755,7 @@ using() resource satisfies Usable {
         
         <para>Type inference simplifies this further:</para>
         
-        <programlisting>local names = from (local p in people) where (p.age>18) select (p.name);</programlisting>
+        <programlisting>local names = from (value p in people) where (p.age>18) select (p.name);</programlisting>
         
         <comment><para>TODO: would a declaration which more closely reflects the invocation 
         syntax be easier to understand, something like this, for example:</para>
@@ -1790,7 +1776,7 @@ using() resource satisfies Usable {
         annotated <literal>specified</literal>, and all remaining parameters are callable
         parameters, then the method may be invoked according to the following protocol:</para>
         
-        <programlisting>Primary "(" InferableVariable Specifier ")" FunctionalArguments</programlisting>
+        <programlisting>Primary "(" Variable Specifier ")" FunctionalArguments</programlisting>
         
         <para>And then if a callable parameter has a parameter of type <literal>X</literal> 
         annotated <literal>coordinated</literal>, that parameter need not be declared by its 
@@ -1827,8 +1813,8 @@ shared Result with&lt;Value,Result&gt;(specified Value? value,
         
         <para>Type inference simplifies this further:</para>
         
-        <programlisting>local amount = with (local p = order.payment) then (p.amount) otherwise (0.0);</programlisting>
-        <programlisting>local order = using (local s = Session()) seek (s.get(Order, oid));</programlisting>
+        <programlisting>local amount = with (value p = order.payment) then (p.amount) otherwise (0.0);</programlisting>
+        <programlisting>local order = using (value s = Session()) seek (s.get(Order, oid));</programlisting>
         
         <comment><para>TODO: would a declaration which more closely reflects the invocation 
         syntax be easier to understand, something like this, for example:</para>
