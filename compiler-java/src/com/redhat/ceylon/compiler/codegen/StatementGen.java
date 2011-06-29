@@ -12,7 +12,6 @@ import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
-import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
@@ -31,143 +30,50 @@ public class StatementGen extends GenPart {
         super(gen);
     }
 
-    class StatementVisitor extends Visitor implements NaturalVisitor {
-        final ListBuffer<JCStatement> stmts;
-        final Tree.ClassOrInterface cdecl;
-
-        StatementVisitor(Tree.ClassOrInterface cdecl, ListBuffer<JCStatement> stmts) {
-            this.stmts = stmts;
-            this.cdecl = cdecl;
-        }
-
-        public ListBuffer<JCStatement> stmts() {
-            return stmts;
-        }
-
-        public void visit(Tree.InvocationExpression expr) {
-            append(at(expr).Exec(gen.expressionGen.convert(expr)));
-        }
-
-        public void visit(Tree.Return ret) {
-            append(convert(ret));
-        }
-
-        public void visit(Tree.IfStatement stat) {
-            append(convert(cdecl, stat));
-        }
-
-        public void visit(Tree.WhileStatement stat) {
-            append(convert(cdecl, stat));
-        }
-
-        public void visit(Tree.DoWhileStatement stat) {
-            append(convert(cdecl, stat));
-        }
-
-        public void visit(Tree.ForStatement stat) {
-            append(convert(cdecl, stat));
-        }
-
-        public void visit(Tree.Break stat) {
-            append(convert(cdecl, stat));
-        }
-
-        public void visit(Tree.AttributeDeclaration decl) {
-        	append(convert(cdecl, decl));
-        }
-
-        public void visit(Tree.SpecifierStatement op) {
-            append(convert(op));
-        }
-
-        // FIXME: not sure why we don't have just an entry for Tree.Term here...
-        public void visit(Tree.OperatorExpression op) {
-            append(at(op).Exec(gen.expressionGen.convertExpression(op)));
-        }
-
-        public void visit(Tree.Expression tree) {
-            append(at(tree).Exec(gen.expressionGen.convertExpression(tree)));
-        }
-
-        public void visit(Tree.MethodDefinition decl) {
-            final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
-            gen.classGen.methodClass(cdecl, decl, defs, false);
-            for (JCTree def : defs.toList()) {
-                JCClassDecl innerDecl = (JCClassDecl) def;
-                stmts.append(innerDecl);
-                JCExpression id = make().Ident(innerDecl.name);
-                stmts.append(at(decl).VarDef(make().Modifiers(FINAL), names().fromString(decl.getIdentifier().getText()), id, at(decl).NewClass(null, null, id, List.<JCExpression> nil(), null)));
-            }
-        }
-
-        // FIXME: I think those should just go in convertExpression no?
-        public void visit(Tree.PostfixOperatorExpression expr) {
-            append(at(expr).Exec(gen.expressionGen.convert(expr)));
-        }
-
-        public void visit(Tree.PrefixOperatorExpression expr) {
-            append(at(expr).Exec(gen.expressionGen.convert(expr)));
-        }
-
-        public void visit(Tree.ExpressionStatement tree) {
-            append(at(tree).Exec(gen.expressionGen.convertExpression(tree.getExpression())));
-        }
-        
-        private void append(JCStatement stmt) {
-        	stmts.append(stmt);
-        }
-        
-        private void append(List<JCStatement> list) {
-            stmts.appendList(list);
-        }
+    public JCBlock convert(Tree.Block block) {
+        return block == null ? null : at(block).Block(0, convertStmts(block.getStatements()));
     }
 
-    public JCBlock convert(Tree.ClassOrInterface cdecl, Tree.Block block) {
-        return block == null ? null : at(block).Block(0, convertStmts(cdecl, block.getStatements()));
-    }
-
-    private List<JCStatement> convertStmts(Tree.ClassOrInterface cdecl, java.util.List<Tree.Statement> list) {
-        final ListBuffer<JCStatement> buf = new ListBuffer<JCStatement>();
-
-        StatementVisitor v = new StatementVisitor(cdecl, buf);
+    private List<JCStatement> convertStmts(java.util.List<Tree.Statement> list) {
+        StatementVisitor v = new StatementVisitor(this);
 
         for (Tree.Statement stmt : list)
             stmt.visit(v);
 
-        return buf.toList();
+        return v.stmts().toList();
     }
 
     private List<JCStatement> convert(Tree.ClassOrInterface cdecl, Tree.IfStatement stmt) {
     	Tree.Block thenPart = stmt.getIfClause().getBlock();
     	Tree.Block elsePart = stmt.getElseClause() != null ? stmt.getElseClause().getBlock() : null;
-        return convertCondition(cdecl, stmt.getIfClause().getCondition(), JCTree.IF, thenPart, elsePart);
+        return convertCondition(stmt.getIfClause().getCondition(), JCTree.IF, thenPart, elsePart);
     }
 
-    private List<JCStatement> convert(Tree.ClassOrInterface cdecl, Tree.WhileStatement stmt) {
+    List<JCStatement> convert(Tree.WhileStatement stmt) {
         Name tempForFailVariable = currentForFailVariable;
         currentForFailVariable = null;
         
         Tree.Block thenPart = stmt.getWhileClause().getBlock();
-        List<JCStatement> res = convertCondition(cdecl, stmt.getWhileClause().getCondition(), JCTree.WHILELOOP, thenPart, null);
+        List<JCStatement> res = convertCondition(stmt.getWhileClause().getCondition(), JCTree.WHILELOOP, thenPart, null);
         
         currentForFailVariable = tempForFailVariable;
         
         return res;
     }
 
-    private List<JCStatement> convert(Tree.ClassOrInterface cdecl, Tree.DoWhileStatement stmt) {
+    List<JCStatement> convert(Tree.DoWhileStatement stmt) {
         Name tempForFailVariable = currentForFailVariable;
         currentForFailVariable = null;
         
         Tree.Block thenPart = stmt.getDoClause().getBlock();
-        List<JCStatement> res = convertCondition(cdecl, stmt.getDoClause().getCondition(), JCTree.DOLOOP, thenPart, null);
+        List<JCStatement> res = convertCondition(stmt.getDoClause().getCondition(), JCTree.DOLOOP, thenPart, null);
         
         currentForFailVariable = tempForFailVariable;
         
         return res;
     }
 
-    private List<JCStatement> convertCondition(Tree.ClassOrInterface cdecl, Tree.Condition cond, int tag, Tree.Block thenPart, Tree.Block elsePart) {
+    private List<JCStatement> convertCondition(Tree.Condition cond, int tag, Tree.Block thenPart, Tree.Block elsePart) {
     	JCExpression test;
     	JCVariableDecl decl = null;
     	JCBlock thenBlock = null;
@@ -184,7 +90,7 @@ public class StatementGen extends GenPart {
         	}
 
             test = at(cond).Binary(JCTree.NE, expr, make().Literal(TypeTags.BOT, null));
-            thenBlock = convert(cdecl, thenPart);
+            thenBlock = convert(thenPart);
         } else if (cond instanceof Tree.NonemptyCondition) {
             Tree.NonemptyCondition nonempty = (Tree.NonemptyCondition) cond;
             Tree.Identifier name = nonempty.getVariable().getIdentifier();
@@ -216,7 +122,7 @@ public class StatementGen extends GenPart {
             // Prepare for variable substitution in the following code block
             String prevSubst = gen.addVariableSubst(origVarName.toString(), substVarName.toString());
             
-            thenBlock = convert(cdecl, thenPart);
+            thenBlock = convert(thenPart);
             thenBlock = at(cond).Block(0, List.<JCStatement> of(decl2, thenBlock));
             
             // Deactivate the above variable substitution
@@ -229,13 +135,13 @@ public class StatementGen extends GenPart {
             JCExpression trueValue = at(cond).Apply(List.<JCTree.JCExpression>nil(), 
                     makeIdent("ceylon", "language", "$true", "getTrue"), List.<JCTree.JCExpression>nil());
             test = at(cond).Binary(JCTree.EQ, test, trueValue);
-            thenBlock = convert(cdecl, thenPart);
+            thenBlock = convert(thenPart);
         } else {
             throw new RuntimeException("Not implemented: " + cond.getNodeType());
         }
         
         if (elsePart != null) {
-        	elseBlock = convert(cdecl, elsePart);
+        	elseBlock = convert(elsePart);
         }
         
         JCStatement cond1;
@@ -262,7 +168,7 @@ public class StatementGen extends GenPart {
         }
     }
 
-    private List<JCStatement> convert(Tree.ClassOrInterface cdecl, Tree.ForStatement stmt) {
+    List<JCStatement> convert(Tree.ForStatement stmt) {
         class ForVisitor extends Visitor {
             Tree.Variable variable = null;
 
@@ -311,7 +217,7 @@ public class StatementGen extends GenPart {
         List<JCStatement> inner = List.<JCStatement> of(item_decl);
 
         // The user-supplied contents of the loop
-        inner = inner.appendList(convertStmts(cdecl, stmt.getForClause().getBlock().getStatements()));
+        inner = inner.appendList(convertStmts(stmt.getForClause().getBlock().getStatements()));
 
         // if ($ceylontmpY != null) ... else break;
         JCStatement test = at(stmt).If(at(stmt).Binary(JCTree.NE, optional_item_id, make().Literal(TypeTags.BOT, null)), at(stmt).Block(0, inner), at(stmt).Block(0, List.<JCStatement> of(at(stmt).Break(null))));
@@ -326,7 +232,7 @@ public class StatementGen extends GenPart {
 
         if (stmt.getFailClause() != null) {
             // The user-supplied contents of fail block
-        	List<JCStatement> failblock = convertStmts(cdecl, stmt.getFailClause().getBlock().getStatements());
+            List<JCStatement> failblock = convertStmts(stmt.getFailClause().getBlock().getStatements());
         	
         	// if ($ceylontmpX) ...
             JCIdent failtest_id = at(stmt).Ident(currentForFailVariable);
@@ -338,7 +244,7 @@ public class StatementGen extends GenPart {
     }
 
     // FIXME There is a similar implementation in ClassGen!
-	public JCStatement convert(ClassOrInterface cdecl, AttributeDeclaration decl) {
+	public JCStatement convert(AttributeDeclaration decl) {
     	Name atrrName = names().fromString(decl.getIdentifier().getText());
     	
     	JCExpression initialValue = null;
@@ -359,7 +265,7 @@ public class StatementGen extends GenPart {
         return at(decl).VarDef(at(decl).Modifiers(modifiers, langAnnotations.toList()), atrrName, type, initialValue);
 	}
 	
-    private List<JCStatement> convert(Tree.ClassOrInterface cdecl, Tree.Break stmt) {
+    List<JCStatement> convert(Tree.Break stmt) {
     	// break;
     	JCStatement brk = at(stmt).Break(null);
     	
@@ -373,7 +279,7 @@ public class StatementGen extends GenPart {
     	}
     }
 
-    private JCStatement convert(Tree.Return ret) {
+    JCStatement convert(Tree.Return ret) {
         Tree.Expression expr = ret.getExpression();
         JCExpression returnExpr = expr != null ? gen.expressionGen.convertExpression(expr) : null;
         return at(ret).Return(returnExpr);
@@ -383,7 +289,7 @@ public class StatementGen extends GenPart {
 		return at(identifier).Ident(names().fromString(gen.substitute(identifier.getText())));
     }
 
-    private JCStatement convert(Tree.SpecifierStatement op) {
+    JCStatement convert(Tree.SpecifierStatement op) {
         return at(op).Exec(gen.expressionGen.convertAssignment(op, op.getBaseMemberExpression(), op.getSpecifierExpression().getExpression()));
     }
 
