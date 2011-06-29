@@ -67,12 +67,17 @@ public abstract class Element {
         for ( Declaration d: getMembers() ) {
             if ( isResolvable(d) 
                     //&& d.isShared()
-                    && !(d instanceof Parameter) 
+                    && !isParameter(d)
                     && isNamed(name, d)) { //don't return parameters
                 return d;
             }
         }
         return null;
+    }
+    
+    private boolean isParameter(Declaration d) {
+        return d instanceof Parameter
+            || d instanceof TypeParameter;
     }
     
     public ProducedType getDeclaringType(Declaration d) {
