@@ -1,0 +1,17 @@
+package com.redhat.ceylon.compiler.test.statement.local;
+
+class ValueKeyword extends .ceylon.language.Object {
+    
+    private final void m() {
+        final String f = .ceylon.language.String.instance("");
+        final String l = f;
+        final Natural l2 = test();
+    }
+    
+    private final Natural test() {
+        return .ceylon.language.Natural.instance(0L);
+    }
+    
+    ValueKeyword() {
+    }
+}

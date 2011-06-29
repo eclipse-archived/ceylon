@@ -4,26 +4,24 @@ class MethodForFail extends .ceylon.language.Object {
     
     public final Natural m(final Sequence<Integer> seq) {
         boolean $ceylontmp0 = true;
-        .ceylon.language.Iterator<Integer> $ceylontmp1 = seq.iterator();
+        .ceylon.language.Iterator<Integer> $i$iter$1 = seq.iterator();
         while (true) {
-            final .ceylon.language.Optional<Integer> $ceylontmp2 = $ceylontmp1.head();
-            if ($ceylontmp2 != null) {
-                Integer i = $ceylontmp2.$internalErasedExists();
+            Integer i = $i$iter$1.head();
+            if (i != null) {
                 while (ceylon.language.$true.getTrue() == ceylon.language.$true.getTrue()) {
-                    boolean $ceylontmp3 = true;
-                    .ceylon.language.Iterator<Integer> $ceylontmp4 = seq.iterator();
+                    boolean $ceylontmp2 = true;
+                    .ceylon.language.Iterator<Integer> $j$iter$3 = seq.iterator();
                     while (true) {
-                        final .ceylon.language.Optional<Integer> $ceylontmp5 = $ceylontmp4.head();
-                        if ($ceylontmp5 != null) {
-                            Integer i = $ceylontmp5.$internalErasedExists();
-                            $ceylontmp3 = false;
+                        Integer j = $j$iter$3.head();
+                        if (j != null) {
+                            $ceylontmp2 = false;
                             break;
                         } else {
                             break;
                         }
-                        $ceylontmp4 = $ceylontmp4.tail();
+                        $j$iter$3 = $j$iter$3.tail();
                     }
-                    if ($ceylontmp3) {
+                    if ($ceylontmp2) {
                         return .ceylon.language.Natural.instance(1L);
                     }
                     break;
@@ -36,7 +34,7 @@ class MethodForFail extends .ceylon.language.Object {
             } else {
                 break;
             }
-            $ceylontmp1 = $ceylontmp1.tail();
+            $i$iter$1 = $i$iter$1.tail();
         }
         if ($ceylontmp0) {
             return .ceylon.language.Natural.instance(0L);

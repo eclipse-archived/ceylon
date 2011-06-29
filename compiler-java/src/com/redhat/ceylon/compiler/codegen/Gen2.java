@@ -9,13 +9,16 @@ import java.util.Map;
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 
-import com.sun.tools.javac.code.Flags;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.tree.JCTree;
@@ -31,7 +34,6 @@ import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Options;
 import com.sun.tools.javac.util.Position.LineMap;
-import org.omg.CORBA.PUBLIC_MEMBER;
 
 public class Gen2 {
     private TreeMaker make;
@@ -39,10 +41,12 @@ public class Gen2 {
     private CeyloncFileManager fileManager;
     private LineMap map;
     Symtab syms;
+    CeylonModelLoader modelLoader;
+    private Map<String, String> varNameSubst = new HashMap<String, String>();
+    
     ExpressionGen expressionGen = new ExpressionGen(this);
     StatementGen statementGen = new StatementGen(this);
     ClassGen classGen = new ClassGen(this);
-	private Map<String, String> varNameSubst = new HashMap<String, String>();
 
     public static Gen2 getInstance(Context context) throws Exception {
         Gen2 gen2 = context.get(Gen2.class);
@@ -66,6 +70,7 @@ public class Gen2 {
 
         names = Name.Table.instance(context);
         syms = Symtab.instance(context);
+        modelLoader = CeylonModelLoader.instance(context);
 
         fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
     }
@@ -265,43 +270,6 @@ public class Gen2 {
             return make.Select(getPackage(packagePart), names.fromString(shortName));
     }
 
-    JCExpression convert(Tree.Type type) {
-        JCExpression result;
-
-        // FIXME: handle sequences
-        ExpressionVisitor v = new ExpressionVisitor() {
-
-            public void visit(Tree.SimpleType t) {
-                result = makeIdent(t.getIdentifier().getText());
-
-                Tree.TypeArgumentList tal = t.getTypeArgumentList();
-                if (tal != null) {
-                    ListBuffer<JCExpression> typeArgs = new ListBuffer<JCExpression>();
-
-                    for (Tree.Type innerType : tal.getTypes()) {
-                        typeArgs.add(convert(innerType));
-                    }
-
-                    result = at(t).TypeApply(result, typeArgs.toList());
-                }
-            }
-
-            // FIXME: Add the other primitive types
-            public void visit(Tree.VoidModifier t) {
-                result = make.TypeIdent(VOID);
-            }
-        };
-
-        type.visit(v);
-        result = v.result;
-
-        if (isOptional(type)) {
-            result = optionalType(result);
-        }
-
-        return result;
-    }
-
     private List<JCTree> convert(Tree.ImportList importList) {
         final ListBuffer<JCTree> imports = new ListBuffer<JCTree>();
         importList.visit(new Visitor() {
@@ -324,16 +292,8 @@ public class Gen2 {
 
     // FIXME: figure out what CeylonTree.ReflectedLiteral maps to
 
-    JCExpression optionalType(JCExpression type) {
-        return make().TypeApply(makeIdent(syms.ceylonOptionalType), List.<JCExpression> of(type));
-    }
-
     JCExpression iteratorType(JCExpression type) {
         return make().TypeApply(makeIdent(syms.ceylonIteratorType), List.<JCExpression> of(type));
-    }
-
-    JCExpression variableType(Tree.Type t, Tree.AnnotationList annotations) {
-        return convert(t);
     }
 
     long counter = 0;
@@ -355,20 +315,19 @@ public class Gen2 {
         counter++;
         return result;
     }
-
-    boolean isOptional(Tree.Type type) {
-        // This should show in the tree as: Nothing|Type, so we just visit
-        class TypeVisitor extends Visitor {
-            boolean isOptional = false;
-
-            @Override
-            public void visit(Tree.SimpleType t) {
-                isOptional |= isSameType(t.getIdentifier(), syms.ceylonNothingType);
+    
+    // A type is optional when it is a union of Nothing|Type
+    boolean isOptional(ProducedType type) {
+        // FIXME VERY naive implementation!!
+        // Should be something like type.isSubtypeOf(nothingType)
+        ProducedType nothingType = modelLoader.getType("ceylon.language.Nothing", null);
+        java.util.List<ProducedType> types = type.getDeclaration().getCaseTypes();
+        for (ProducedType t : types) {
+            if (t.isExactly(nothingType)) {
+                return true;
             }
         }
-        TypeVisitor visitor = new TypeVisitor();
-        type.visit(visitor);
-        return visitor.isOptional;
+        return false;
     }
 
     // FIXME: this is ugly and probably wrong
@@ -385,22 +344,80 @@ public class Gen2 {
     }
 
     public String addVariableSubst(String origVarName, String substVarName) {
-    	return varNameSubst.put(origVarName, substVarName);
+        return varNameSubst.put(origVarName, substVarName);
     }
 
     public void removeVariableSubst(String origVarName, String prevSubst) {
         if (prevSubst != null) {
-        	varNameSubst.put(origVarName, prevSubst);
+            varNameSubst.put(origVarName, prevSubst);
         } else {
-        	varNameSubst.remove(origVarName);
+            varNameSubst.remove(origVarName);
         }
     }
     
     public String substitute(String varName) {
-    	if (varNameSubst.containsKey(varName)) {
-    		return varNameSubst.get(varName);    		
-    	} else {
-    		return varName;
-    	}
+        if (varNameSubst.containsKey(varName)) {
+            return varNameSubst.get(varName);            
+        } else {
+            return varName;
+        }
+    }
+
+    public JCExpression makeJavaType(ProducedType type) {
+        if (isOptional(type)) {
+            ProducedType nothingType = modelLoader.getType("ceylon.language.Nothing", null);
+            // Nasty cast because we just so happen to know that nothingType is a Class
+            type = type.minus((ClassOrInterface)(nothingType.getDeclaration()));
+        }
+        
+        ProducedType voidType = modelLoader.getType("ceylon.language.Void", null);
+        if (voidType.isExactly(type)) {
+            return make.TypeIdent(VOID);
+        }
+        
+        JCExpression jt; 
+        if (type.getDeclaration().getCaseTypes().isEmpty()) {
+            java.util.List<ProducedType> tal = type.getTypeArgumentList();
+            if (tal != null && !tal.isEmpty()) {
+                ListBuffer<JCExpression> typeArgs = new ListBuffer<JCExpression>();
+    
+                for (ProducedType innerType : tal) {
+                    typeArgs.add(makeJavaType(innerType));
+                }
+    
+                jt = make().TypeApply(makeIdent(type.getDeclaration().getName()), typeArgs.toList());
+            } else {
+                jt = makeIdent(type.getProducedTypeName());
+            }
+        } else {
+            // FIXME This should return the common base class of all the union types
+            // but we have to wait until this is implemented in the typechecker
+            jt = makeIdent("Object");
+        }
+        
+        return jt;
+    }
+
+    public List<JCTree.JCAnnotation> makeJavaTypeAnnotations(ProducedType type, boolean force) {
+        // For shared types we keep a list of annotations to apply to the resulting Java type
+        // to make reverse engineering of the final class file possible
+        boolean applyAnnotations = false; // FIXME type.getDeclaration().isShared() || force;
+        ListBuffer<JCTree.JCAnnotation> annotations = new ListBuffer<JCTree.JCAnnotation>();
+        
+        if (applyAnnotations) {
+            // Add the original type to the annotations
+            annotations.append(make().Annotation(makeIdent("Type"), List.<JCExpression> of(make().Literal(type.getProducedTypeName()))));
+        }
+        
+        return annotations.toList();
+    }
+
+    public ProducedType actualType(TypedDeclaration decl) {
+        ProducedType t = decl.getType().getTypeModel();
+        if (decl.getType() instanceof LocalModifier) {
+            LocalModifier m = (LocalModifier)(decl.getType());
+            t = m.getTypeModel();
+        }
+        return t;
     }
 }

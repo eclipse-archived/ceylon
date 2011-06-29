@@ -58,8 +58,10 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     
     public static CeylonModelLoader instance(Context context) {
         CeylonModelLoader instance = context.get(CeylonModelLoader.class);
-        if (instance == null)
+        if (instance == null) {
             instance = new CeylonModelLoader(context);
+            context.put(CeylonModelLoader.class, instance);
+        }
         return instance;
     }
 

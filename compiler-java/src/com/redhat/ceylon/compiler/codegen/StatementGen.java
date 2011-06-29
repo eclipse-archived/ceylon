@@ -15,16 +15,15 @@ import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
-import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
 
 public class StatementGen extends GenPart {
 
-	// Used to hold the name of the variable associated with the fail-block if the innermost for-loop
-	// Is null if we're currently in a while-loop or not in any loop at all
+    // Used to hold the name of the variable associated with the fail-block if the innermost for-loop
+    // Is null if we're currently in a while-loop or not in any loop at all
     private Name currentForFailVariable = null;
     
-	public StatementGen(Gen2 gen) {
+    public StatementGen(Gen2 gen) {
         super(gen);
     }
 
@@ -42,8 +41,8 @@ public class StatementGen extends GenPart {
     }
 
     List<JCStatement> convert(Tree.IfStatement stmt) {
-    	Tree.Block thenPart = stmt.getIfClause().getBlock();
-    	Tree.Block elsePart = stmt.getElseClause() != null ? stmt.getElseClause().getBlock() : null;
+        Tree.Block thenPart = stmt.getIfClause().getBlock();
+        Tree.Block elsePart = stmt.getElseClause() != null ? stmt.getElseClause().getBlock() : null;
         return convertCondition(stmt.getIfClause().getCondition(), JCTree.IF, thenPart, elsePart);
     }
 
@@ -72,20 +71,20 @@ public class StatementGen extends GenPart {
     }
 
     private List<JCStatement> convertCondition(Tree.Condition cond, int tag, Tree.Block thenPart, Tree.Block elsePart) {
-    	JCExpression test;
-    	JCVariableDecl decl = null;
-    	JCBlock thenBlock = null;
-    	JCBlock elseBlock = null;
+        JCExpression test;
+        JCVariableDecl decl = null;
+        JCBlock thenBlock = null;
+        JCBlock elseBlock = null;
         if (cond instanceof Tree.ExistsCondition) {
             Tree.ExistsCondition exists = (Tree.ExistsCondition) cond;
             Tree.Identifier name = exists.getVariable().getIdentifier();
 
             JCExpression expr;
-        	if (exists.getVariable().getSpecifierExpression() == null) {
-        		expr = convert(name);
-        	} else {
+            if (exists.getVariable().getSpecifierExpression() == null) {
+                expr = convert(name);
+            } else {
                 expr = gen.expressionGen.convertExpression(exists.getVariable().getSpecifierExpression().getExpression());
-        	}
+            }
 
             test = at(cond).Binary(JCTree.NE, expr, make().Literal(TypeTags.BOT, null));
         } else if (cond instanceof Tree.NonemptyCondition) {
@@ -93,18 +92,18 @@ public class StatementGen extends GenPart {
             Tree.Identifier name = nonempty.getVariable().getIdentifier();
             
             JCExpression expr;
-        	if (nonempty.getVariable().getSpecifierExpression() == null) {
-        		expr = convert(name);
-        	} else {
+            if (nonempty.getVariable().getSpecifierExpression() == null) {
+                expr = convert(name);
+            } else {
                 expr = gen.expressionGen.convertExpression(nonempty.getVariable().getSpecifierExpression().getExpression());
-        	}
+            }
 
-        	test = make().Apply(List.<JCTree.JCExpression>nil(), make().Select(expr, names().fromString("isEmpty")), List.<JCTree.JCExpression>nil());
+            test = make().Apply(List.<JCTree.JCExpression>nil(), make().Select(expr, names().fromString("isEmpty")), List.<JCTree.JCExpression>nil());
             test = makeBooleanTest(test, true);
         } else if (cond instanceof Tree.IsCondition) {
             Tree.IsCondition isExpr = (Tree.IsCondition) cond;
             Tree.Identifier name = isExpr.getVariable().getIdentifier();
-            JCExpression type = gen.variableType(isExpr.getType(), null);
+            JCExpression type = gen.makeJavaType(isExpr.getType().getTypeModel());
 
             Name tmpVarName = names().fromString(aliasName(name.getText()));
             Name origVarName = names().fromString(name.getText());
@@ -112,13 +111,13 @@ public class StatementGen extends GenPart {
 
             JCExpression expr;
             ProducedType tmpVarType;
-        	if (isExpr.getVariable().getSpecifierExpression() == null) {
-        		expr = convert(name);
-        		tmpVarType = isExpr.getVariable().getType().getTypeModel();
-        	} else {
+            if (isExpr.getVariable().getSpecifierExpression() == null) {
+                expr = convert(name);
+                tmpVarType = isExpr.getVariable().getType().getTypeModel();
+            } else {
                 expr = gen.expressionGen.convertExpression(isExpr.getVariable().getSpecifierExpression().getExpression());
                 tmpVarType = isExpr.getVariable().getSpecifierExpression().getExpression().getTypeModel();
-        	}
+            }
 
             // Temporary variable holding the result of the expression/variable to test
             decl = at(cond).VarDef(make().Modifiers(FINAL), tmpVarName, makeIdent(tmpVarType.getProducedTypeName()), expr);
@@ -147,7 +146,7 @@ public class StatementGen extends GenPart {
             thenBlock = convert(thenPart);
         }
         if (elsePart != null && elseBlock == null) {
-        	elseBlock = convert(elsePart);
+            elseBlock = convert(elsePart);
         }
         
         JCStatement cond1;
@@ -168,9 +167,9 @@ public class StatementGen extends GenPart {
         }
         
         if (decl != null) {
-        	return List.<JCStatement> of(decl, cond1);
+            return List.<JCStatement> of(decl, cond1);
         } else {
-        	return List.<JCStatement> of(cond1);
+            return List.<JCStatement> of(cond1);
         }
     }
 
@@ -194,39 +193,37 @@ public class StatementGen extends GenPart {
         
         List<JCStatement> outer = List.<JCStatement> nil();
         if (stmt.getFailClause() != null) {
-        	// boolean $ceylontmpX = true;
+            // boolean $ceylontmpX = true;
             JCVariableDecl failtest_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(tempName()), makeIdent("boolean"), makeIdent("true"));
             outer = outer.append(failtest_decl);
             
-        	currentForFailVariable = failtest_decl.getName();
+            currentForFailVariable = failtest_decl.getName();
         } else {
-        	currentForFailVariable = null;
+            currentForFailVariable = null;
         }
 
         ForVisitor visitor = new ForVisitor();
         stmt.getForClause().getForIterator().visit(visitor);
-        JCExpression item_type = gen.variableType(visitor.variable.getType(), null);
+        String loop_var_name = visitor.variable.getIdentifier().getText();
+        JCExpression item_type = gen.makeJavaType(gen.actualType(visitor.variable));
+        List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(gen.actualType(visitor.variable), false);
 
         // ceylon.language.Iterator<T> $ceylontmpX = ITERABLE.iterator();
         JCExpression containment = gen.expressionGen.convertExpression(stmt.getForClause().getForIterator().getSpecifierExpression().getExpression());
-        JCVariableDecl iter_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(tempName()), gen.iteratorType(item_type), at(stmt).Apply(null, at(stmt).Select(containment, names().fromString("iterator")), List.<JCExpression> nil()));
+        JCVariableDecl iter_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(aliasName(loop_var_name + "$iter")), gen.iteratorType(item_type), at(stmt).Apply(null, at(stmt).Select(containment, names().fromString("iterator")), List.<JCExpression> nil()));
         outer = outer.append(iter_decl);
         JCIdent iter_id = at(stmt).Ident(iter_decl.getName());
 
-        // ceylon.language.Optional<T> $ceylontmpY = $ceylontmpX.head();
-        JCVariableDecl optional_item_decl = at(stmt).VarDef(make().Modifiers(FINAL), names().fromString(tempName()), gen.optionalType(item_type), at(stmt).Apply(null, at(stmt).Select(iter_id, names().fromString("head")), List.<JCExpression> nil()));
-        List<JCStatement> while_loop = List.<JCStatement> of(optional_item_decl);
-        JCIdent optional_item_id = at(stmt).Ident(optional_item_decl.getName());
-
-        // T n = $ceylontmpY.t;
-        JCVariableDecl item_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(visitor.variable.getIdentifier().getText()), item_type, at(stmt).Apply(null, at(stmt).Select(optional_item_id, names().fromString("$internalErasedExists")), List.<JCExpression> nil()));
-        List<JCStatement> inner = List.<JCStatement> of(item_decl);
+        // T n = $ceylontmpX.head();
+        JCExpression loop_var_init = at(stmt).Apply(null, at(stmt).Select(iter_id, names().fromString("head")), List.<JCExpression> nil());
+        JCVariableDecl item_decl = at(stmt).VarDef(make().Modifiers(0, annots), names().fromString(loop_var_name), item_type, loop_var_init );
+        List<JCStatement> while_loop = List.<JCStatement> of(item_decl);
 
         // The user-supplied contents of the loop
-        inner = inner.appendList(convertStmts(stmt.getForClause().getBlock().getStatements()));
+        List<JCStatement> inner = convertStmts(stmt.getForClause().getBlock().getStatements());
 
         // if ($ceylontmpY != null) ... else break;
-        JCStatement test = at(stmt).If(at(stmt).Binary(JCTree.NE, optional_item_id, make().Literal(TypeTags.BOT, null)), at(stmt).Block(0, inner), at(stmt).Block(0, List.<JCStatement> of(at(stmt).Break(null))));
+        JCStatement test = at(stmt).If(at(stmt).Binary(JCTree.NE, makeIdent(loop_var_name), make().Literal(TypeTags.BOT, null)), at(stmt).Block(0, inner), at(stmt).Block(0, List.<JCStatement> of(at(stmt).Break(null))));
         while_loop = while_loop.append(test);
 
         // $ceylontmpX = $ceylontmpX.tail();
@@ -239,8 +236,8 @@ public class StatementGen extends GenPart {
         if (stmt.getFailClause() != null) {
             // The user-supplied contents of fail block
             List<JCStatement> failblock = convertStmts(stmt.getFailClause().getBlock().getStatements());
-        	
-        	// if ($ceylontmpX) ...
+            
+            // if ($ceylontmpX) ...
             JCIdent failtest_id = at(stmt).Ident(currentForFailVariable);
             outer = outer.append(at(stmt).If(failtest_id, at(stmt).Block(0, failblock), null));
         }
@@ -250,39 +247,35 @@ public class StatementGen extends GenPart {
     }
 
     // FIXME There is a similar implementation in ClassGen!
-	public JCStatement convert(AttributeDeclaration decl) {
-    	Name atrrName = names().fromString(decl.getIdentifier().getText());
-    	
-    	JCExpression initialValue = null;
-        if (decl.getSpecifierOrInitializerExpression() != null) {
-        	// The attribute's initializer gets moved to the constructor (why?)
-        	initialValue = gen.expressionGen.convertExpression(decl.getSpecifierOrInitializerExpression().getExpression());
-        }
-
-        final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
-
-        JCExpression type = gen.convert(decl.getType());
-
-        if (gen.isOptional(decl.getType())) {
-            type = gen.optionalType(type);
-        }
+    public JCStatement convert(AttributeDeclaration decl) {
+        Name atrrName = names().fromString(decl.getIdentifier().getText());
         
+        JCExpression initialValue = null;
+        if (decl.getSpecifierOrInitializerExpression() != null) {
+            // The attribute's initializer gets moved to the constructor (why?)
+            initialValue = gen.expressionGen.convertExpression(decl.getSpecifierOrInitializerExpression().getExpression());
+        }
+
+        ProducedType t = gen.actualType(decl);
+        JCExpression type = gen.makeJavaType(t);
+        List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(t, false);
+
         int modifiers = convertLocalFieldDeclFlags(decl);
-        return at(decl).VarDef(at(decl).Modifiers(modifiers, langAnnotations.toList()), atrrName, type, initialValue);
-	}
-	
+        return at(decl).VarDef(at(decl).Modifiers(modifiers, annots), atrrName, type, initialValue);
+    }
+    
     List<JCStatement> convert(Tree.Break stmt) {
-    	// break;
-    	JCStatement brk = at(stmt).Break(null);
-    	
-    	if (currentForFailVariable != null) {
+        // break;
+        JCStatement brk = at(stmt).Break(null);
+        
+        if (currentForFailVariable != null) {
             JCIdent failtest_id = at(stmt).Ident(currentForFailVariable);
             List<JCStatement> list = List.<JCStatement> of(at(stmt).Exec(at(stmt).Assign(failtest_id, makeIdent("false"))));
-    		list = list.append(brk);
+            list = list.append(brk);
             return list;
-    	} else {
-    		return List.<JCStatement> of(brk);
-    	}
+        } else {
+            return List.<JCStatement> of(brk);
+        }
     }
 
     JCStatement convert(Tree.Return ret) {
@@ -292,7 +285,7 @@ public class StatementGen extends GenPart {
     }
 
     private JCIdent convert(Tree.Identifier identifier) {
-		return at(identifier).Ident(names().fromString(gen.substitute(identifier.getText())));
+        return at(identifier).Ident(names().fromString(gen.substitute(identifier.getText())));
     }
 
     JCStatement convert(Tree.SpecifierStatement op) {

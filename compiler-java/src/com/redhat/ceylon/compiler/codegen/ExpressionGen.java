@@ -6,7 +6,6 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.codegen.Gen2.Singleton;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -154,7 +153,7 @@ public class ExpressionGen extends GenPart {
         return v.result;
     }
 
-	private JCExpression convertStringExpression(Tree.StringTemplate expr) {
+    private JCExpression convertStringExpression(Tree.StringTemplate expr) {
         ListBuffer<JCExpression> strings = new ListBuffer<JCExpression>();
         for (Tree.Expression t : expr.getExpressions()) {
             strings.append(convertExpression(t));
@@ -224,16 +223,16 @@ public class ExpressionGen extends GenPart {
         // FIXME: can this be anything else than a Value or a TypedDeclaration?
         boolean variable = false;
         if (decl instanceof Value) {
-        	variable = ((Value)decl).isVariable();
+            variable = ((Value)decl).isVariable();
         } else if (decl instanceof TypedDeclaration) {
-        	variable = ((TypedDeclaration)decl).isVariable();
+            variable = ((TypedDeclaration)decl).isVariable();
         }
         if(Util.isClassAttribute(decl) && variable){
             // must use the setter
             return at(op).Apply(List.<JCTree.JCExpression>nil(), makeIdent(Util.getSetterName(decl.getName())), 
                     List.<JCTree.JCExpression>of(rhs));
         } else if(Util.isToplevelAttribute(decl)){
-	        // must use top level setter
+            // must use top level setter
             java.util.List<String> path = new LinkedList<String>();
             path.addAll(decl.getContainer().getQualifiedName());
             path.add("$"+decl.getName());
@@ -393,7 +392,7 @@ public class ExpressionGen extends GenPart {
 
             public void visit(Tree.Type type) {
                 // A constructor
-                expr.append(at(type).NewClass(null, null, gen.convert(type), args.toList(), null));
+                expr.append(at(type).NewClass(null, null, gen.makeJavaType(type.getTypeModel()), args.toList(), null));
             }
 
             public void visit(Tree.BaseTypeExpression typeExp) {
@@ -482,27 +481,23 @@ public class ExpressionGen extends GenPart {
                         List.<JCExpression>nil());
             }
         }
-		return at(member).Ident(names().fromString(gen.substitute(member.getIdentifier().getText())));
+        return at(member).Ident(names().fromString(gen.substitute(member.getIdentifier().getText())));
     }
 
     public JCExpression convert(SequenceEnumeration value) {
-		// FIXME not implemented yet
-    	
-    	ListBuffer<JCExpression> elems = new ListBuffer<JCExpression>();
-    	java.util.List<Expression> list = value.getExpressionList().getExpressions();
-    	for (Expression expr : list) {
-    		elems.append(convertExpression(expr));
-    	}
-    	
-		List<JCExpression> dims = List.<JCExpression>nil();
-		
-		JCExpression arrayExpr = make().NewArray(javaType(value.getTypeModel()), dims , elems.toList());
-		JCExpression indexExpr = make().Literal(Long.valueOf(0));
-		List<JCExpression> args = List.<JCExpression> of(arrayExpr, indexExpr );
-    	return at(value).NewClass(null, null, makeIdent(syms().ceylonArraySequenceType), args, null);
-	}
-
-	private JCExpression javaType(ProducedType type) {
-		return makeIdent(type.getProducedTypeName());
-	}
+        // FIXME not implemented yet
+        
+        ListBuffer<JCExpression> elems = new ListBuffer<JCExpression>();
+        java.util.List<Expression> list = value.getExpressionList().getExpressions();
+        for (Expression expr : list) {
+            elems.append(convertExpression(expr));
+        }
+        
+        List<JCExpression> dims = List.<JCExpression>nil();
+        
+        JCExpression arrayExpr = make().NewArray(gen.makeJavaType(value.getTypeModel().getTypeArgumentList().get(0)), dims , elems.toList());
+        JCExpression indexExpr = make().Literal(Long.valueOf(0));
+        List<JCExpression> args = List.<JCExpression> of(arrayExpr, indexExpr );
+        return at(value).NewClass(null, null, makeIdent(syms().ceylonArraySequenceType), args, null);
+    }
 }

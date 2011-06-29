@@ -3,15 +3,14 @@ package com.redhat.ceylon.compiler.test.statement.loop;
 class MethodForIterator extends .ceylon.language.Object {
     
     public final void m(final Sequence<Integer> seq) {
-        .ceylon.language.Iterator<Integer> $ceylontmp0 = seq.iterator();
+        .ceylon.language.Iterator<Integer> $i$iter$0 = seq.iterator();
         while (true) {
-            final .ceylon.language.Optional<Integer> $ceylontmp1 = $ceylontmp0.head();
-            if ($ceylontmp1 != null) {
-                Integer i = $ceylontmp1.$internalErasedExists();
+            Integer i = $i$iter$0.head();
+            if (i != null) {
             } else {
                 break;
             }
-            $ceylontmp0 = $ceylontmp0.tail();
+            $i$iter$0 = $i$iter$0.tail();
         }
     }
     

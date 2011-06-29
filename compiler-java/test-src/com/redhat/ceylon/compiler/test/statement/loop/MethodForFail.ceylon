@@ -2,7 +2,7 @@ class MethodForFail(){
     shared Natural m(Sequence<Integer> seq){
         for(Integer i in seq){
             while (true) {
-                for(Integer i in seq){
+                for(Integer j in seq){
                     break;
                 }
                 fail {
