@@ -43,7 +43,7 @@ public class StatementGen extends GenPart {
         return v.stmts().toList();
     }
 
-    private List<JCStatement> convert(Tree.ClassOrInterface cdecl, Tree.IfStatement stmt) {
+    List<JCStatement> convert(Tree.IfStatement stmt) {
     	Tree.Block thenPart = stmt.getIfClause().getBlock();
     	Tree.Block elsePart = stmt.getElseClause() != null ? stmt.getElseClause().getBlock() : null;
         return convertCondition(stmt.getIfClause().getCondition(), JCTree.IF, thenPart, elsePart);
