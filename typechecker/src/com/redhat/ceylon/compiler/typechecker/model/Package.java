@@ -57,7 +57,8 @@ public class Package implements Scope {
 	    return getName();
 	}
 	
-    public Declaration getMemberOrParameter(String name) {
+	@Override
+    public Declaration getDirectMemberOrParameter(String name) {
         for ( Declaration d: getMembers() ) {
             if ( isResolvable(d) && isNamed(name, d) ) {
                 return d;
@@ -71,6 +72,11 @@ public class Package implements Scope {
 	 */
 	@Override
 	public Declaration getMember(String name) {
+	    return getDirectMember(name);
+	}
+	
+	@Override
+	public Declaration getDirectMember(String name) {
         for ( Declaration d: getMembers() ) {
             if ( isResolvable(d) && /*d.isShared() &&*/ isNamed(name, d) ) {
                 return d;
@@ -96,7 +102,7 @@ public class Package implements Scope {
         if (d!=null) {
             return d;
         }
-        return getMemberOrParameter(name);
+        return getDirectMemberOrParameter(name);
     }
 
 }

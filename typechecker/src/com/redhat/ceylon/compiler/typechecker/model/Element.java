@@ -42,6 +42,10 @@ public abstract class Element {
      * imports. 
      */
     protected Declaration getMemberOrParameter(String name) {
+        return getDirectMemberOrParameter(name);
+    }
+    
+    public Declaration getDirectMemberOrParameter(String name) {
         for ( Declaration d: getMembers() ) {
             if ( isResolvable(d) && isNamed(name, d)) {
                 return d;
@@ -56,6 +60,10 @@ public abstract class Element {
      * imports, and ignoring parameters. 
      */
     public Declaration getMember(String name) {
+        return getDirectMember(name);
+    }
+    
+    public Declaration getDirectMember(String name) {
         for ( Declaration d: getMembers() ) {
             if ( isResolvable(d) 
                     //&& d.isShared()

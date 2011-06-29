@@ -16,7 +16,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
@@ -124,46 +123,43 @@ public class DeclarationVisitor extends Visitor {
 
     private void checkForDuplicateDeclaration(Tree.Declaration that, 
             Declaration model) {
-        boolean foundMatchingGetter = false;
-        String name = name(that.getIdentifier());
-        for (Declaration member: scope.getMembers()) {
-            String dname = member.getName();
-            if (dname!=null && dname.equals(name)) {
-                //setters can have the same name as
-                //the matching getter
-                if (model instanceof Setter && 
-                    member instanceof Getter) {
-                    foundMatchingGetter = true;
-                    Getter g = (Getter) member;
-                    g.setVariable(true);
-                    ((Setter) model).setGetter(g);
-                    continue;
+        if (model.getName()!=null) {
+            if (model instanceof Setter) {
+                //a setter must have a matching getter
+                Declaration member = scope.getDirectMember( model.getName() );
+                if (member==null) {
+                    that.addError("setter with no matching getter: " + model.getName());
                 }
-                //the type associated with an object dec
-                //has the same name as the matching 
-                //simple attribute
-                else if (that instanceof Tree.ObjectDefinition && 
-                         model instanceof Value && 
-                         member instanceof Class) {
-                    continue;
-                }
-                /*else if (model instanceof Parameter && ((Parameter) model).getDeclaration()!=scope) {
-                    //no error
-                }*/
-                //a class can have a getter or simple
-                //attribute with the same name as an
-                //initializer parameter
-                else if ((model instanceof Value || model instanceof Getter || model instanceof Setter) 
-                        && member instanceof Parameter 
-                        && ((Parameter) member).getDeclaration() instanceof Class) {
+                else if (!(member instanceof Getter)) {
+                    that.addError("setter name does not resolve to matching getter: " + model.getName());
                 }
                 else {
-                    that.addError("duplicate declaration: " + name);
+                    Getter getter = (Getter) member;
+                    ((Setter) model).setGetter(getter);
+                    if (getter.isVariable()) {
+                        that.addError("duplicate setter for getter: " + model.getName());
+                    }
+                    else {
+                        getter.setVariable(true);
+                    }
                 }
             }
-        }
-        if (model instanceof Setter && !foundMatchingGetter) {
-            that.addError("setter with no matching getter: " + name);
+            else if (model instanceof Getter || model instanceof Value) {
+                //a getter or simple attribute is allowed to have the 
+                //same name as a parameter
+                Declaration member = scope.getDirectMember( model.getName() );
+                if (member!=null) {
+                    that.addError("duplicate declaration: " + model.getName());
+                }
+                //TODO: validate that if it duplicates a parameter,
+                //      the types are the same, and it is non-variable
+            }
+            else {
+                Declaration member = scope.getDirectMemberOrParameter( model.getName() );
+                if (member!=null) {
+                    that.addError("duplicate declaration: " + model.getName());
+                }
+            }
         }
     }
 

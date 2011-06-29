@@ -18,4 +18,6 @@ public interface Scope {
 	ProducedType getDeclaringType(Declaration d);
 	Declaration getMemberOrParameter(Unit unit, String name);
 	Declaration getMember(String name);
+	Declaration getDirectMemberOrParameter(String name);
+    Declaration getDirectMember(String name);
 }
