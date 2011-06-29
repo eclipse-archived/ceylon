@@ -17,6 +17,7 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -359,6 +360,11 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         if(!classSymbol.getQualifiedName().toString().equals("language.ceylon.Void")
                 && superClass.getKind() != TypeKind.NONE)
             klass.setExtendedType(getType(superClass, klass));
+        // interfaces need to have their superclass set to Object
+        else if(superClass.getKind() == TypeKind.NONE
+        		&& klass instanceof Interface){
+        	klass.setExtendedType(getType("ceylon.language.Object", klass));
+        }
         setSatisfiedTypes(klass, classSymbol);
     }
     
