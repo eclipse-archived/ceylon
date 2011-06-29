@@ -59,12 +59,13 @@ public class Package implements Scope {
 	
 	@Override
     public Declaration getDirectMemberOrParameter(String name) {
-        for ( Declaration d: getMembers() ) {
+        /*for ( Declaration d: getMembers() ) {
             if ( isResolvable(d) && isNamed(name, d) ) {
                 return d;
             }
         }
-        return null;
+        return null;*/
+	    return getDirectMember(name);
     }
     
 	/**
