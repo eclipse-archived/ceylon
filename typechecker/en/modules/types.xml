@@ -1399,7 +1399,7 @@ shared BoundedSequence<Bounded<N+#1>,N+#1> zeroTo<N>()
         <para>The compiler is permitted to optimize away the call to these 
         extensions in a loop such as:</para>
         
-        <programlisting><![CDATA[for (local elem in sequence) { 
+        <programlisting><![CDATA[for (value elem in sequence) { 
     ...
 }]]></programlisting>
         
@@ -1758,7 +1758,7 @@ shared object none {
         
         <para>and:</para>
         
-        <programlisting><![CDATA[for (local i in min..max) {
+        <programlisting><![CDATA[for (value i in min..max) {
     ...
 }]]></programlisting>
     

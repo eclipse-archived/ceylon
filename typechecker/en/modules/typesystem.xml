@@ -431,8 +431,8 @@
         <comment>
         <para>TODO: We should also probably support aliases for ad hoc union and intersection 
         types using a syntax something like this:</para>
-        <programlisting>local Printable = String | Integer | Float;</programlisting>
-        <programlisting>local Storable = Persistent &amp; Format &amp; IdentifiableObject;</programlisting>
+        <programlisting>type Printable = String | Integer | Float;</programlisting>
+        <programlisting>type Storable = Persistent &amp; Format &amp; IdentifiableObject;</programlisting>
         </comment>
         
         </section>
@@ -1915,7 +1915,7 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
         return x<=>y;
     }
     case (Sequence<Other>) {
-        for (local i in 0..min(x.size,y.size)) {
+        for (value i in 0..min(x.size,y.size)) {
             Comparison c = x[i]<=>y[i];
             switch (c)
             case (larger) {

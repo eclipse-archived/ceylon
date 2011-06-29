@@ -1137,7 +1137,7 @@ value comp = order(1,-1);</programlisting>
         <para>Consider the following invocation:</para>
         
         <programlisting>Element[] prepend&lt;T&gt;(Element head, Element[] sequence) { ... }
-local result = prepend(null, {"hello", "world"});</programlisting>
+value result = prepend(null, {"hello", "world"});</programlisting>
 
         <para>The constraint set for <literal>Element</literal> comprises two 
         constraints:</para>
@@ -1161,7 +1161,7 @@ local result = prepend(null, {"hello", "world"});</programlisting>
             given ExtraElement abstracts Element { ... }
 }
 Bag&lt;String&gt; bag = Bag("hello", "world");
-local biggerBag = bag.with(1, 2, 5.0);
+value biggerBag = bag.with(1, 2, 5.0);
 </programlisting>
         
         <para>The constraint set for <literal>ExtraElement</literal> comprises 
@@ -1670,7 +1670,7 @@ local biggerBag = bag.with(1, 2, 5.0);
         <programlisting>Boolean adult(Person p) = (Person p) (p.age>18);</programlisting>
         <para>Perhaps readability would be enhanced by a keyword:</para>
         <programlisting>void logName(Person p) = void (Person p) { log.info(p.name); };</programlisting>
-        <programlisting>Boolean adult(Person p) = local (Person p) (p.age>18);</programlisting>
+        <programlisting>Boolean adult(Person p) = function (Person p) (p.age>18);</programlisting>
         </comment>
         
         <comment><para>TODO: Should we introduce the ability to declare functional parameters
@@ -1755,7 +1755,7 @@ using() resource satisfies Usable {
         
         <para>Type inference simplifies this further:</para>
         
-        <programlisting>local names = from (value p in people) where (p.age>18) select (p.name);</programlisting>
+        <programlisting>value names = from (value p in people) where (p.age>18) select (p.name);</programlisting>
         
         <comment><para>TODO: would a declaration which more closely reflects the invocation 
         syntax be easier to understand, something like this, for example:</para>
@@ -1813,8 +1813,8 @@ shared Result with&lt;Value,Result&gt;(specified Value? value,
         
         <para>Type inference simplifies this further:</para>
         
-        <programlisting>local amount = with (value p = order.payment) then (p.amount) otherwise (0.0);</programlisting>
-        <programlisting>local order = using (value s = Session()) seek (s.get(Order, oid));</programlisting>
+        <programlisting>value amount = with (value p = order.payment) then (p.amount) otherwise (0.0);</programlisting>
+        <programlisting>value order = using (value s = Session()) seek (s.get(Order, oid));</programlisting>
         
         <comment><para>TODO: would a declaration which more closely reflects the invocation 
         syntax be easier to understand, something like this, for example:</para>
@@ -2205,7 +2205,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         <programlisting>Iterable&lt;String&gt; tokens = input.Tokens();</programlisting>
         <programlisting>return person.name;</programlisting>
         <programlisting>throw Exception();</programlisting>
-        <programlisting>if (exists local head = iter.head) { ... }</programlisting>
+        <programlisting>if (exists value head = iter.head) { ... }</programlisting>
         
         <para>If a reference object is of type <literal>Settable</literal>, its value may also 
         be <emphasis>assigned</emphasis>. Assignment is performed using the <literal>:=</literal> 
