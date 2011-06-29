@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.*;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,6 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.PrintUtil;
 
 /**
@@ -39,13 +37,19 @@ import com.redhat.ceylon.compiler.typechecker.util.PrintUtil;
  * @author Gavin King
  *
  */
-public class TypeVisitor extends Visitor {
+public class TypeVisitor extends AbstractVisitor {
     
     private Unit unit;
     private Context context;
+    
     public TypeVisitor(Unit u, Context context) {
         unit = u;
         this.context = context;
+    }
+    
+    @Override
+    protected Context getContext() {
+        return context;
     }
     
     @Override
@@ -125,7 +129,7 @@ public class TypeVisitor extends Visitor {
     @Override 
     public void visit(Tree.BaseType that) {
         super.visit(that);
-        TypeDeclaration type = (TypeDeclaration) getBaseDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
+        TypeDeclaration type = getBaseDeclaration(that);
         if (type==null) {
             that.addError("type declaration not found: " + 
                     that.getIdentifier().getText());
@@ -141,7 +145,7 @@ public class TypeVisitor extends Visitor {
             visitSimpleType(that, outerType, type);
         }
     }
-    
+
     public void visit(Tree.SuperType that) {
         //if (inExtendsClause) { //can't appear anywhere else in the tree!
             ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
@@ -373,26 +377,6 @@ public class TypeVisitor extends Visitor {
             }
         }
         td.setSatisfiedTypes(list);
-    }
-    
-    private Interface getSequenceDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Sequence", context);
-    }
-
-    private Interface getEmptyDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Empty", context);
-    }
-
-    private Class getObjectDeclaration() {
-        return (Class) getLanguageModuleDeclaration("Object", context);
-    }
-
-    private Class getVoidDeclaration() {
-        return (Class) getLanguageModuleDeclaration("Void", context);
-    }
-    
-    private Class getIdentifiableObjectDeclaration() {
-        return (Class) getLanguageModuleDeclaration("IdentifiableObject", context);
     }
     
 }

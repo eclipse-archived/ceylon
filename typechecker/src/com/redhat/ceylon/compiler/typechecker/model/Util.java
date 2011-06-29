@@ -1,12 +1,63 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 public class Util {
+
+    /**
+     * Get the class or interface that "this" and "super" 
+     * refer to. 
+     */
+    public static ClassOrInterface getContainingClassOrInterface(Scope scope) {
+        while (!(scope instanceof Package)) {
+            if (scope instanceof ClassOrInterface) {
+                return (ClassOrInterface) scope;
+            }
+            scope = scope.getContainer();
+        }
+        return null;
+    }
+    
+    /**
+     * Get the class or interface that "outer" refers to. 
+     */
+    public static ProducedType getOuterClassOrInterface(Scope scope) {
+        Boolean foundInner = false;
+        while (!(scope instanceof Package)) {
+            if (scope instanceof ClassOrInterface) {
+                if (foundInner) {
+                    return ((ClassOrInterface) scope).getType();
+                }
+                else {
+                    foundInner = true;
+                }
+            }
+            scope = scope.getContainer();
+        }
+        return null;
+    }
+    
+    /**
+     * Convenience method to bind a single type argument 
+     * to a toplevel type declaration.  
+     */
+    public static ProducedType producedType(TypeDeclaration declaration, ProducedType typeArgument) {
+        return declaration.getProducedType(null, Collections.singletonList(typeArgument));
+    }
+
+    /**
+     * Convenience method to bind a list of type arguments
+     * to a toplevel type declaration.  
+     */
+    public static ProducedType producedType(TypeDeclaration declaration, ProducedType... typeArguments) {
+        return declaration.getProducedType(null, Arrays.asList(typeArguments));
+    }
 
     static boolean isResolvable(Declaration declaration) {
         return declaration.getName()!=null &&

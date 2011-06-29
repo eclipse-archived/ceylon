@@ -1,13 +1,10 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
-
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
  * Validates that non-variable values are well-defined
@@ -19,7 +16,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  * @author Gavin King
  *
  */
-public class SpecificationVisitor extends Visitor {
+public class SpecificationVisitor extends AbstractVisitor {
     
     private final Declaration declaration;
     
@@ -44,6 +41,11 @@ public class SpecificationVisitor extends Visitor {
     public SpecificationVisitor(Declaration declaration, Context context) {
         this.declaration = declaration;
         this.context = context;
+    }
+    
+    @Override
+    protected Context getContext() {
+        return context;
     }
     
     private void declare() {
@@ -174,7 +176,7 @@ public class SpecificationVisitor extends Visitor {
         Tree.Term lt = that.getLeftTerm();
         if (lt instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression m = (Tree.BaseMemberExpression) lt;
-            Declaration member = getBaseDeclaration(m.getScope(), m.getUnit(), m.getIdentifier(), context);
+            Declaration member = getBaseDeclaration(m);
             if (member==declaration) {
                 that.getRightTerm().visit(this);
                 checkVariable(lt);
@@ -208,7 +210,7 @@ public class SpecificationVisitor extends Visitor {
     private void checkVariable(Tree.Term term) {
         if (term instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression m = (Tree.BaseMemberExpression) term;
-            Declaration member = getBaseDeclaration(m.getScope(), m.getUnit(), m.getIdentifier(), context);
+            Declaration member = getBaseDeclaration(m);
             if (member==declaration) {
                 if (!isVariable()) {
                     term.addError("is not a variable: " +
@@ -221,7 +223,7 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.SpecifierStatement that) {
         Tree.BaseMemberExpression m = that.getBaseMemberExpression();
-        Declaration member = getBaseDeclaration(m.getScope(), m.getUnit(), m.getIdentifier(), context);
+        Declaration member = getBaseDeclaration(m);
         if (member==declaration) {
             that.getSpecifierExpression().visit(this);
             /*if (!declared) {

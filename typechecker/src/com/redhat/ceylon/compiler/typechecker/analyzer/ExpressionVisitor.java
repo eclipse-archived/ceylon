@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.*;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,7 +27,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
  * Third and final phase of type analysis.
@@ -40,13 +39,18 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  * @author Gavin King
  *
  */
-public class ExpressionVisitor extends Visitor {
+public class ExpressionVisitor extends AbstractVisitor {
     
     private Tree.Type returnType;
     private Context context;
 
     public ExpressionVisitor(Context context) {
         this.context = context;
+    }
+    
+    @Override
+    protected Context getContext() {
+        return context;
     }
     
     private Tree.Type beginReturnScope(Tree.Type t) {
@@ -1339,10 +1343,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private TypeDeclaration getLanguageDeclaration(String type) {
-        return (TypeDeclaration) getLanguageModuleDeclaration(type, context);
-    }
-
     private void visitFormatOperator(Tree.UnaryOperatorExpression that) {
         //TODO: reenable once we have extensions:
         /*ProducedType t = that.getTerm().getTypeModel();
@@ -1570,7 +1570,7 @@ public class ExpressionVisitor extends Visitor {
         //TODO: this does not correctly handle methods
         //      and classes which are not subsequently 
         //      invoked (should return the callable type)
-        TypedDeclaration member = (TypedDeclaration) getBaseDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
+        TypedDeclaration member = getBaseDeclaration(that);
         if (member==null) {
             that.addError("could not determine target of member reference: " +
                     that.getIdentifier().getText());
@@ -1652,7 +1652,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     @Override public void visit(Tree.BaseTypeExpression that) {
-        TypeDeclaration type = (TypeDeclaration) getBaseDeclaration(that.getScope(), that.getUnit(), that.getIdentifier(), context);
+        TypeDeclaration type = getBaseDeclaration(that);
         if (type==null) {
             that.addError("could not determine target of type reference: " + 
                     that.getIdentifier().getText());
@@ -1879,110 +1879,6 @@ public class ExpressionVisitor extends Visitor {
         //don't visit the argument       
     }
 
-    private Interface getCorrespondenceDeclaration() {
-        return (Interface) getLanguageDeclaration("Correspondence");
-    }
-
-    private Class getNothingDeclaration() {
-        return (Class) getLanguageDeclaration("Nothing");
-    }
-
-    private Interface getEmptyDeclaration() {
-        return (Interface) getLanguageDeclaration("Empty");
-    }
-
-    private Interface getSequenceDeclaration() {
-        return (Interface) getLanguageDeclaration("Sequence");
-    }
-
-    private Class getObjectDeclaration() {
-        return (Class) getLanguageDeclaration("Object");
-    }
-    
-    private Interface getCategoryDeclaration() {
-        return (Interface) getLanguageDeclaration("Category");
-    }
-    
-    private Interface getIterableDeclaration() {
-        return (Interface) getLanguageDeclaration("Iterable");
-    }
-    
-    private Interface getCastableDeclaration() {
-        return (Interface) getLanguageDeclaration("Castable");
-    }
-    
-    private Interface getSummableDeclaration() {
-        return (Interface) getLanguageDeclaration("Summable");
-    }
-        
-    private Interface getNumericDeclaration() {
-        return (Interface) getLanguageDeclaration("Numeric");
-    }
-        
-    private Interface getIntegralDeclaration() {
-        return (Interface) getLanguageDeclaration("Integral");
-    }
-        
-    private Interface getInvertableDeclaration() {
-        return (Interface) getLanguageDeclaration("Invertable");
-    }
-        
-    private Interface getSlotsDeclaration() {
-        return (Interface) getLanguageDeclaration("Slots");
-    }
-        
-    private TypeDeclaration getComparisonDeclaration() {
-        return getLanguageDeclaration("Comparison");
-    }
-        
-    private TypeDeclaration getBooleanDeclaration() {
-        return getLanguageDeclaration("Boolean");
-    }
-        
-    private TypeDeclaration getStringDeclaration() {
-        return getLanguageDeclaration("String");
-    }
-        
-    private TypeDeclaration getFloatDeclaration() {
-        return getLanguageDeclaration("Float");
-    }
-        
-    private TypeDeclaration getNaturalDeclaration() {
-        return getLanguageDeclaration("Natural");
-    }
-        
-    private TypeDeclaration getCharacterDeclaration() {
-        return getLanguageDeclaration("Character");
-    }
-        
-    private TypeDeclaration getQuotedDeclaration() {
-        return getLanguageDeclaration("Quoted");
-    }
-        
-    private Interface getEqualityDeclaration() {
-        return (Interface) getLanguageDeclaration("Equality");
-    }
-        
-    private Interface getComparableDeclaration() {
-        return (Interface) getLanguageDeclaration("Comparable");
-    }
-        
-    private Class getIdentifiableObjectDeclaration() {
-        return (Class) getLanguageDeclaration("IdentifiableObject");
-    }
-        
-    private Interface getOrdinalDeclaration() {
-        return (Interface) getLanguageDeclaration("Ordinal");
-    }
-        
-    private Class getRangeDeclaration() {
-        return (Class) getLanguageDeclaration("Range");
-    }
-        
-    private Class getEntryDeclaration() {
-        return (Class) getLanguageDeclaration("Entry");
-    }
-        
     private static boolean acceptsTypeArguments(Declaration member, List<ProducedType> typeArguments, 
             Tree.TypeArgumentList tal, Node parent) {
         return acceptsTypeArguments(null, member, typeArguments, tal, parent);

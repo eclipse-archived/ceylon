@@ -519,7 +519,7 @@ public class DeclarationVisitor extends Visitor {
 
     @Override
     public void visit(Tree.TypeConstraint that) {
-        TypeParameter p = (TypeParameter) getBaseDeclaration(scope, unit, that.getIdentifier(), null);
+        TypeParameter p = (TypeParameter) scope.getMemberOrParameter(unit, that.getIdentifier().getText());
         that.setDeclarationModel(p);
         if (p==null) {
             that.addError("no matching type parameter for constraint: " + 
