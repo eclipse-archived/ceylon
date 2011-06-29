@@ -385,8 +385,8 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         <para>The following method allows a <literal>Gettable&lt;T&gt;</literal>
         to be treated as a <literal>Callable&lt;T&gt;</literal>:</para>
 
-        <programlisting><![CDATA[shared T get<T>(Gettable<T> value)() { 
-    return value;
+        <programlisting><![CDATA[shared T get<T>(Gettable<T> gettable)() { 
+    return gettable;
 }]]></programlisting>
     
         <para>The subtype <literal>Settable</literal> represents a reference
@@ -400,8 +400,8 @@ void say(String words, Person p) = Person.say.shuffle.flatten;</programlisting>
         <para>The following method allows an <literal>Settable&lt;T&gt;</literal>
         to be treated as a <literal>Callable&lt;T,T&gt;</literal>:</para>
 
-        <programlisting><![CDATA[shared T set<T>(Settable<T> value)(T newValue) { 
-    return value := newValue;
+        <programlisting><![CDATA[shared T set<T>(Settable<T> settable)(T newValue) { 
+    return settable := newValue;
 }]]></programlisting>
     
     </section>

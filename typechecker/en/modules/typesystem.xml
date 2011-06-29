@@ -421,7 +421,7 @@
             </listitem>
         </itemizedlist>
         
-        <programlisting>void write(String|Integer|Float value) { ... }</programlisting>
+        <programlisting>void write(String|Integer|Float printable) { ... }</programlisting>
         
         <comment>
         <para>TODO: What about ad hoc intersection types?</para>
@@ -1101,8 +1101,8 @@ shared interface ElementwiseEquality
         of Constant<Value> | Sum | Product | Conjunction | Disjunction
         given Value of Number | Boolean { ... }
         
-class Constant<Value>(Value value) 
-        extends Case($value)
+class Constant<Value>(Value val) 
+        extends Case($val)
         satisfies Expression<Value> 
         given Value of Number | Boolean { ... }
 
@@ -1333,11 +1333,11 @@ shared class LinkedList<Element>(Element... elements)
         meaningful words. The use of single-letter type parameter names is discouraged. The 
         name of a type parameter should be chosen so that declarations within the body of 
         the parameterized declaration read naturally. For example, 
-        <literal>class Entry&lt;Key,Value&gt;</literal> is reasonable, since
-        <literal>Key key</literal> and <literal>Value value</literal> read naturally within 
+        <literal>class Entry&lt;Key,Item&gt;</literal> is reasonable, since
+        <literal>Key key</literal> and <literal>Item item</literal> read naturally within 
         the body of the <literal>Entry</literal> class. The following identifier names 
         usually refer to a type parameter: <literal>Element</literal>, <literal>Other</literal>, 
-        <literal>Key</literal>, <literal>Value</literal>, <literal>Argument</literal> and 
+        <literal>Key</literal>, <literal>Item</literal>, <literal>Argument</literal> and 
         <literal>Result</literal>. Avoid, where reasonable, using these names for interfaces 
         and classes.</para></comment>
         
@@ -1363,7 +1363,7 @@ shared class LinkedList<Element>(Element... elements)
         <para>A type parameter declared neither <literal>out</literal> nor <literal>in</literal> 
         is called <emphasis>invariant</emphasis>.</para>
         
-        <programlisting>Map&lt;Key, Value&gt;</programlisting>
+        <programlisting>Map&lt;Key, Item&gt;</programlisting>
         
         <programlisting>Sender&lt;in Message&gt;</programlisting>
         
@@ -1843,9 +1843,9 @@ shared interface Successor&lt;out N&gt; satisfies Dimension given N satisfies Di
         <para>A parameterized type parameter appears as a produced type (with type 
         arguments) in the body of the declaration.</para>
         
-        <programlisting><![CDATA[Indirect<Entry<Key,Value>> entry<Indirect<X>,Key,Value>(Indirect<Key> key, Indirect<Value> value) 
+        <programlisting><![CDATA[Indirect<Entry<Key,Item>> entry<Indirect<X>,Key,Item>(Indirect<Key> key, Indirect<Item> item) 
         given Indirect<X>(X x) satisfies Reference<X> {
-    return Indirect(key.value->value.value);
+    return Indirect(key.indirectedValue->item.indirectedValue);
 }]]></programlisting>
 
         <para>Note that the argument to a parameterized type parameter is not, strictly
@@ -2458,12 +2458,12 @@ SequencedParam?
         
         <para>A destructured parameter declaration of form <literal>U u -> V v</literal> 
         results in a method with a single parameter of type <literal>Entry&lt;U,V&gt;</literal>,
-        whose <literal>key</literal> and <literal>value</literal> attributes are assigned
+        whose <literal>key</literal> and <literal>item</literal> attributes are assigned
         to <literal>u</literal> and <literal>v</literal> within the body of the method. If
         the method is invoked using a named argument list, it is considered to have two
         separate parameters <literal>u</literal> and <literal>v</literal>.</para>
         
-        <programlisting>(Key key -> Value value)</programlisting>
+        <programlisting>(Key key -> Item item)</programlisting>
         <programlisting>(String name -> String? password = "guest" -> null)</programlisting>
         
         </section>

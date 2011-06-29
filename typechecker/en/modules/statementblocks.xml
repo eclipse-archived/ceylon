@@ -1517,17 +1517,17 @@ if (satisfies Comparable&lt;Element&gt; Element) {
             
             <para>A Java-style overloaded method may be emulated as follows:</para>
             
-            <programlisting>shared void print&lt;Value&gt;(Value value) 
+            <programlisting>shared void print&lt;Printable&gt;(Printable printable) 
         given Value of String | Integer | Float {
-    switch (value)
+    switch (printable)
     case (is String) { 
-        stream.writeLine(value); 
+        stream.writeLine(printable); 
     }
     case (is Integer) { 
-        print($value); 
+        print($printable); 
     }
     case (is Float) { 
-        print( FloatFormat(value, 2) ); 
+        print( FloatFormat(printable, 2) ); 
     }
 }</programlisting>
 
@@ -1788,7 +1788,7 @@ finally {
             
             <programlisting>try (semaphore) {
     if ( !map.defines(key) ) {
-        map[key] := value;
+        map[key] := item;
     }
 }</programlisting>
 

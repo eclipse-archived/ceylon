@@ -856,7 +856,7 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         
         <programlisting>String name(Person p) = Person.name;</programlisting>
         
-        <programlisting>void print&lt;Value&gt;(Value value) given Value of String | Integer | Float = printer.print;</programlisting>
+        <programlisting>void print&lt;Printable&gt;(Printable printable) given Printable of String | Integer | Float = printer.print;</programlisting>
         <programlisting>void printStr(String string) = printer.print&lt;String&gt;;</programlisting>
         
         </section>
@@ -1223,15 +1223,15 @@ value biggerBag = bag.with(1, 2, 5.0);
             
             <programlisting>amounts.sort() by (Float x, Float y) (x&lt;=&gt;y)</programlisting>
             <programlisting>people.each() perform (Person p) { log.info(p.name); }</programlisting>
-            <programlisting>map.filter() by (String key->String value) (value nonempty)</programlisting>
+            <programlisting>map.filter() by (String key->String item) (item nonempty)</programlisting>
             
             <programlisting>hash(default, firstName, initial, lastName)</programlisting>
             <programlisting>hash { algorithm=default; firstName, initial, lastName }</programlisting>
             
             <programlisting>from (people) where (Person p) (p.age>18) select (Person p) (p.name)</programlisting>
             <programlisting>iterate (map) 
-    perform (String name->Object value) { 
-        log.info("Entry: " name "->" value ""); 
+    perform (String name->Object item) { 
+        log.info("Entry: " name "->" item ""); 
     };</programlisting>
     
             <programlisting>performAs (subject) privilegedAction {
@@ -1474,7 +1474,7 @@ value biggerBag = bag.with(1, 2, 5.0);
     Button {
         label = "Hello";
         void action() {
-            log.info(i.value);
+            log.info(i.text);
         }
     }
 }</programlisting>            
@@ -1650,7 +1650,7 @@ value biggerBag = bag.with(1, 2, 5.0);
         
         <programlisting>perform (Person p) { log.info(p.name); }</programlisting>
         
-        <programlisting>by (String key->String value) (value nonempty)</programlisting>
+        <programlisting>by (String key->String item) (item nonempty)</programlisting>
         
         <para>Inline callable arguments are listed without any additional punctuation:</para>
         
@@ -1743,15 +1743,15 @@ using() resource satisfies Usable {
         
         <para>Or, we may invoke the method as follows:</para>
                   
-        <programlisting>List&lt;String&gt; labels = from (Key key -> Value value in namedValues)
+        <programlisting>List&lt;String&gt; labels = from (Key key -> Item item in namedValues)
                       where (user.authorized(key)) 
-                      select ($key + ": " + $value);</programlisting>
+                      select ($key + ": " + $item);</programlisting>
         
         <para>Which is equivalent to:</para>
         
         <programlisting>List&lt;String&gt; labels = from (namedValues)
-                      where (Key key -> Value value) (user.authorized(key)) 
-                      select (Key key -> Value value) ($key + ": " + $value);</programlisting>
+                      where (Key key -> Item item) (user.authorized(key)) 
+                      select (Key key -> Item item) ($key + ": " + $item);</programlisting>
         
         <para>Type inference simplifies this further:</para>
         
@@ -1785,7 +1785,7 @@ using() resource satisfies Usable {
         <para>For example, for the following method declaration:</para>
         
         <programlisting>
-shared Result with&lt;Value,Result&gt;(specified Value? value, 
+shared Result with&lt;Value,Result&gt;(specified Value? val, 
                                  Result then(coordinated Value x), 
                                  Result otherwise());</programlisting>
                   
@@ -1818,7 +1818,7 @@ shared Result with&lt;Value,Result&gt;(specified Value? value,
         
         <comment><para>TODO: would a declaration which more closely reflects the invocation 
         syntax be easier to understand, something like this, for example:</para>
-        <programlisting>shared Result with&lt;Resource,Result&gt;(Resource x = Resource? value) 
+        <programlisting>shared Result with&lt;Resource,Result&gt;(Resource x = Resource? val) 
                                     Result then(coordinated Resource x)
                                     Result otherwise;</programlisting></comment>
                 
@@ -2265,7 +2265,7 @@ String name = getName();</programlisting>
         return value of the attribute getter, as specified by the <literal>return</literal> 
         directive.</para>
 
-        <para>Note that the <literal>value()</literal> method of <literal>Correspondence</literal>
+        <para>Note that the <literal>item()</literal> method of <literal>Correspondence</literal>
         is also defined to return a <literal>Gettable</literal>.</para>
         
         <programlisting>Person? person = people[index];</programlisting>
@@ -2372,7 +2372,7 @@ setName("Gavin");</programlisting>
         <programlisting>Settable&lt;String&gt; getName(Person p) { return p.name; }
 getName(p) := "Gavin";</programlisting>
 
-        <programlisting>setName(Settable&lt;String&gt; name, String value) { name:=value; }
+        <programlisting>setName(Settable&lt;String&gt; name, String arg) { name:=arg; }
 setName(p.name, "Gavin");</programlisting>
         
         <para>When an attribute or local is assigned:</para>
@@ -2401,7 +2401,8 @@ setName(p.name, "Gavin");</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>Note that the <literal>value()</literal> method of <literal>OpenCorrespondence</literal>
+        <!--
+        <para>Note that the <literal>item()</literal> method of <literal>OpenCorrespondence</literal>
         is also defined to return an <literal>Settable</literal>.</para>
         
         <programlisting>people[index] := person;</programlisting>
@@ -2416,6 +2417,7 @@ personRef := person;</programlisting>
         
         <programlisting>Person? setPerson(Person? p) = set(people[index]);
 setPerson(person);</programlisting>
+        -->
         
     </section>
     
@@ -2446,7 +2448,7 @@ setPerson(person);</programlisting>
         
         <comment><para>Note: this restriction results from the lack of existential types. 
         The expression <literal>Entry</literal> would have the existential type 
-        <literal>ClassConstructor&lt;Entry&lt;Key,Value&gt;,Key,Value&gt; given Key satisfies Equality given Value satisfies Equality</literal>.
+        <literal>ClassConstructor&lt;Entry&lt;Key,Item&gt;,Key,Item&gt; given Key satisfies Equality given Item satisfies Equality</literal>.
         The expression <literal>Comparable.smallerThan</literal> would be of existential type 
         <literal>MethodConstructor&lt;Value,Boolean,Value&gt; given Value satisfies Comparable&lt;Value&gt;</literal>.</para></comment>
         
@@ -2682,9 +2684,9 @@ countAttribute.intercept()
     };
     
 countAttribute.intercept() 
-    onSet (Counter c, void proceed(Natural n), Natural value) {
+    onSet (Counter c, void proceed(Natural n), Natural arg) {
         log.debug("setting");
-        proceed(value);
+        proceed(arg);
     };</programlisting>
 
         <programlisting>OpenMethod&lt;Order,Item,Product,Natural&gt; createItemMethod = Order.createItem;
@@ -3698,12 +3700,12 @@ createItemMethod.intercept()
     </thead>
     <tbody>
     
-        <row><entry namest="first" nameend="last"><emphasis>Keyed element access</emphasis></entry></row>
+        <row><entry namest="first" nameend="last"><emphasis>Keyed item access</emphasis></entry></row>
         
         <row>
             <entry><literal>lhs[index]</literal></entry>
             <entry>lookup</entry>
-            <entry><literal>lhs.value(index)</literal></entry>
+            <entry><literal>lhs.item(index)</literal></entry>
             <entry><literal>Correspondence&lt;X,Y&gt;</literal></entry>
             <entry><literal>X</literal></entry>
             <entry><literal>Gettable &lt;Y?&gt;</literal></entry>
@@ -3711,7 +3713,7 @@ createItemMethod.intercept()
         <row>
             <entry><literal>lhs[index]</literal></entry>
             <entry>lookup</entry>
-            <entry><literal>lhs.value(index)</literal></entry>
+            <entry><literal>lhs.item(index)</literal></entry>
             <entry><literal>OpenCorrespondence &lt;X,Y&gt;</literal></entry>
             <entry><literal>X</literal></entry>
             <entry><literal>Settable &lt;Y?&gt;</literal></entry>
@@ -3720,7 +3722,7 @@ createItemMethod.intercept()
         <row>
             <entry><literal>lhs[index]</literal></entry>
             <entry>bounded lookup</entry>
-            <entry><literal>lhs.value(index)</literal></entry>
+            <entry><literal>lhs.item(index)</literal></entry>
             <entry><literal>Y[n]</literal></entry>
             <entry><literal>Bound&lt;#n&gt;</literal></entry>
             <entry><literal>Gettable &lt;Y&gt;</literal></entry>
@@ -3728,7 +3730,7 @@ createItemMethod.intercept()
         <row>
             <entry><literal>lhs[index]</literal></entry>
             <entry>bounded lookup</entry>
-            <entry><literal>lhs.value(index)</literal></entry>
+            <entry><literal>lhs.item(index)</literal></entry>
             <entry><literal>OpenBoundedSequence &lt;Y,n&gt;</literal></entry>
             <entry><literal>Bound&lt;#n&gt;</literal></entry>
             <entry><literal>Settable &lt;Y&gt;</literal></entry>
@@ -3745,7 +3747,7 @@ createItemMethod.intercept()
         <row>
             <entry><literal>lhs[indices]</literal></entry>
             <entry>sequenced lookup</entry>
-            <entry><literal>lhs.values(index)</literal></entry>
+            <entry><literal>lhs.items(index)</literal></entry>
             <entry><literal>Correspondence&lt;X,Y&gt;</literal></entry>
             <entry><literal>X[]</literal></entry>
             <entry><literal>Y[]</literal></entry>
@@ -3753,7 +3755,7 @@ createItemMethod.intercept()
         <row>
             <entry><literal>lhs[indices]</literal></entry>
             <entry>iterated lookup</entry>
-            <entry><literal>lhs.values(index)</literal></entry>
+            <entry><literal>lhs.items(index)</literal></entry>
             <entry><literal>Correspondence&lt;X,Y&gt;</literal></entry>
             <entry><literal>Iterable &lt;X&gt;</literal></entry>
             <entry><literal>Iterable &lt;Y&gt;</literal></entry>
@@ -4019,7 +4021,7 @@ createItemMethod.intercept()
         <row>
             <entry><literal>+rhs</literal></entry>
             <entry></entry>
-            <entry><literal>rhs.value</literal></entry>
+            <entry><literal>rhs.positive</literal></entry>
             <entry></entry>
             <entry><literal>Invertable &lt;I&gt;</literal></entry>
             <entry><literal>I</literal></entry>
@@ -4028,7 +4030,7 @@ createItemMethod.intercept()
         <row>
             <entry><literal>-rhs</literal></entry>
             <entry>negation</entry>
-            <entry><literal>rhs.inverse</literal></entry>
+            <entry><literal>rhs.negative</literal></entry>
             <entry></entry>
             <entry><literal>Invertable &lt;I&gt;</literal></entry>
             <entry><literal>I</literal></entry>

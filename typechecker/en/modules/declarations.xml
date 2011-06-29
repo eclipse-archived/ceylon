@@ -1383,7 +1383,7 @@ shared object false extends Boolean() {}</programlisting>
         <programlisting><![CDATA[shared abstract class Node<Element>(String name) 
         of Branch<Element> | Leaf<Element> { ... }
         
-shared class Leaf<Element>(String name, Element value) 
+shared class Leaf<Element>(String name, Element element) 
         extends Node<Element>(name) { ... }
         
 shared class Branch<Element>(String name, Node<Element> left, Node<Element> right) 
@@ -1624,8 +1624,8 @@ shared choice TransactionPropagationStyle
     }
 }</programlisting>
 
-        <programlisting>shared void addEntry(Key key -> Value value) {
-    map.define(key,value);
+        <programlisting>shared void addEntry(Key key -> Item item) {
+    map.define(key,item);
 }</programlisting>
 
         <programlisting><![CDATA[shared Set<Element> singleton<Element>(Element element) 
@@ -1943,7 +1943,7 @@ Void goodbye() {
             <para>A method annotated <literal>formal</literal> may not specify an
             implementation (a block, specifier, or named argument list).</para>
         
-            <programlisting>shared formal Value? get(Key key);</programlisting>
+            <programlisting>shared formal Item? get(Key key);</programlisting>
             
             <para>A toplevel method may not be annotated <literal>formal</literal> and 
             must have a method implementation (a block of code, or a reference to another 
