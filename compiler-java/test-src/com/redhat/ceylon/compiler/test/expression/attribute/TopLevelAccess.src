@@ -10,7 +10,7 @@ final class $toplevel {
 class TopLevelAccess extends .ceylon.language.Object {
     
     private final Boolean m() {
-        return $toplevel.getToplevel();
+        return com.redhat.ceylon.compiler.test.expression.attribute.$toplevel.getToplevel();
     }
     
     TopLevelAccess() {

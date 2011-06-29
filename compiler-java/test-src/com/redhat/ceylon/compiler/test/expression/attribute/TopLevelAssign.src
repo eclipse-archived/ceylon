@@ -14,7 +14,7 @@ final class $toplevel {
 class TopLevelAssign extends .ceylon.language.Object {
     
     private final void m() {
-        $toplevel.setToplevel(ceylon.language.$false.getFalse());
+        com.redhat.ceylon.compiler.test.expression.attribute.$toplevel.setToplevel(ceylon.language.$false.getFalse());
     }
     
     TopLevelAssign() {
