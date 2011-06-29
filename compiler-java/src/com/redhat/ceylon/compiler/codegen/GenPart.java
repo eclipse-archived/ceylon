@@ -7,7 +7,9 @@ import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.tree.JCTree.Factory;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
+import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.TreeMaker;
+import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Name;
 
 public class GenPart {
@@ -37,6 +39,20 @@ public class GenPart {
         return gen.makeIdent(type);
     }
 
+    protected JCExpression makeBoolean(boolean b) {
+    	JCExpression expr;
+        if (b) {
+        	expr = makeIdent("ceylon", "language", "$true", "getTrue");
+        } else {
+        	expr = makeIdent("ceylon", "language", "$false", "getFalse");
+        }
+        return make().Apply(List.<JCTree.JCExpression>nil(), expr, List.<JCTree.JCExpression>nil());
+    }
+
+    protected JCExpression makeBooleanTest(JCExpression expr, boolean val) {
+        return make().Binary(JCTree.EQ, expr, makeBoolean(val));
+    }
+    
     protected TreeMaker make() {
         return gen.make();
     }

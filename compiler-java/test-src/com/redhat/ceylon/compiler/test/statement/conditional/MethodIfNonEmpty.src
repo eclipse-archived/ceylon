@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.test.statement.conditional;
 class MethodIfNonEmpty extends .ceylon.language.Object {
     
     public final Natural m(final Sequence<Natural> x) {
-        if (!x.isEmpty()) {
+        if (x.isEmpty() == ceylon.language.$true.getTrue()) {
             return .ceylon.language.Natural.instance(1L);
         }
         return .ceylon.language.Natural.instance(0L);

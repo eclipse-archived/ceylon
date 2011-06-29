@@ -1,6 +1,5 @@
 package ceylon.language;
 
-public interface Iterable<T>
-{
-    //Iterator<T> iterator();
+public interface Iterable<Element> {
+    Iterator<Element> iterator();
 }

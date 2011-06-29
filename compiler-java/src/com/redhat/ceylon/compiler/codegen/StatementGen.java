@@ -99,7 +99,8 @@ public class StatementGen extends GenPart {
                 expr = gen.expressionGen.convertExpression(nonempty.getVariable().getSpecifierExpression().getExpression());
         	}
 
-            test = at(cond).Unary(JCTree.NOT, make().Apply(List.<JCTree.JCExpression>nil(), make().Select(expr, names().fromString("isEmpty")), List.<JCTree.JCExpression>nil()));
+        	test = make().Apply(List.<JCTree.JCExpression>nil(), make().Select(expr, names().fromString("isEmpty")), List.<JCTree.JCExpression>nil());
+            test = makeBooleanTest(test, true);
         } else if (cond instanceof Tree.IsCondition) {
             Tree.IsCondition isExpr = (Tree.IsCondition) cond;
             Tree.Identifier name = isExpr.getVariable().getIdentifier();
@@ -136,10 +137,7 @@ public class StatementGen extends GenPart {
             test = at(cond).TypeTest(make().Ident(decl.name), type);
         } else if (cond instanceof Tree.BooleanCondition) {
             Tree.BooleanCondition booleanCondition = (Tree.BooleanCondition) cond;
-            test = gen.expressionGen.convertExpression(booleanCondition.getExpression());
-            JCExpression trueValue = at(cond).Apply(List.<JCTree.JCExpression>nil(), 
-                    makeIdent("ceylon", "language", "$true", "getTrue"), List.<JCTree.JCExpression>nil());
-            test = at(cond).Binary(JCTree.EQ, test, trueValue);
+            test = makeBooleanTest(gen.expressionGen.convertExpression(booleanCondition.getExpression()), true);
         } else {
             throw new RuntimeException("Not implemented: " + cond.getNodeType());
         }

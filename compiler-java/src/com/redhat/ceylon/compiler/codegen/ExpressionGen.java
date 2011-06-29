@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.codegen.Gen2.Singleton;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -486,7 +487,22 @@ public class ExpressionGen extends GenPart {
 
     public JCExpression convert(SequenceEnumeration value) {
 		// FIXME not implemented yet
+    	
+    	ListBuffer<JCExpression> elems = new ListBuffer<JCExpression>();
     	java.util.List<Expression> list = value.getExpressionList().getExpressions();
-		return null;
+    	for (Expression expr : list) {
+    		elems.append(convertExpression(expr));
+    	}
+    	
+		List<JCExpression> dims = List.<JCExpression>nil();
+		
+		JCExpression arrayExpr = make().NewArray(javaType(value.getTypeModel()), dims , elems.toList());
+		JCExpression indexExpr = make().Literal(Long.valueOf(0));
+		List<JCExpression> args = List.<JCExpression> of(arrayExpr, indexExpr );
+    	return at(value).NewClass(null, null, makeIdent(syms().ceylonArraySequenceType), args, null);
+	}
+
+	private JCExpression javaType(ProducedType type) {
+		return makeIdent(type.getProducedTypeName());
 	}
 }
