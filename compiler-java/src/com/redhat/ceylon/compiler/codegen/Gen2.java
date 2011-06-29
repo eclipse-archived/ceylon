@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.codegen;
 
 import static com.sun.tools.javac.code.TypeTags.VOID;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
