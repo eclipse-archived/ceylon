@@ -10,7 +10,10 @@ import java.util.Map;
 
 
 /**
- * A type with actual type arguments.
+ * A produced type with actual type arguments.
+ * This represents something that is actually
+ * considered a "type" in the language 
+ * specification.
  * 
  * @author Gavin King
  *

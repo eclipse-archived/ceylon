@@ -144,7 +144,7 @@ public class TypeVisitor extends Visitor {
     
     public void visit(Tree.SuperType that) {
         //if (inExtendsClause) { //can't appear anywhere else in the tree!
-            ClassOrInterface ci = getContainingClassOrInterface(that);
+            ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
             if (ci!=null) {
                 if (ci.isClassOrInterfaceMember()) {
                     ClassOrInterface s = (ClassOrInterface) ci.getContainer();

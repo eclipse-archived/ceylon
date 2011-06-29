@@ -4,6 +4,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A produced type or produced reference to a 
+ * method or attribute
+ * 
+ * @author Gavin King
+ *
+ */
 public abstract class ProducedReference {
     
     ProducedReference() {}

@@ -2,7 +2,8 @@ package com.redhat.ceylon.compiler.typechecker.model;
 
 
 /**
- * A callable member with actual type arguments.
+ * A produced reference to a method or 
+ * attribute with actual type arguments.
  * 
  * @author Gavin King
  *

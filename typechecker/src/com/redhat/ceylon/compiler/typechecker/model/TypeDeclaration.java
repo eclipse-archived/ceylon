@@ -78,11 +78,26 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
 	}
 	
     @Override
-    public ProducedReference getProducedReference(ProducedType pt, List<ProducedType> typeArguments) {
+    public ProducedReference getProducedReference(ProducedType pt, 
+            List<ProducedType> typeArguments) {
         return getProducedType(pt, typeArguments);
     }
     
-	public ProducedType getProducedType(ProducedType outerType, List<ProducedType> typeArguments) {
+    /**
+     * Get a produced type for this declaration by
+     * binding explicit or inferred type arguments 
+     * and type arguments of the type of which this
+     * declaration is a member, in the case that this 
+     * is a nested type.
+     * 
+     * @param outerType the qualifying produced 
+     *        type or null if this is not a
+     *        nested type declaration
+     * @param typeArguments arguments to the type 
+     *        parameters of this declaration
+     */
+	public ProducedType getProducedType(ProducedType outerType, 
+	        List<ProducedType> typeArguments) {
 	    /*if (!acceptsArguments(this, typeArguments)) {
 	        return null;
 	    }*/
@@ -93,12 +108,24 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
 	    return pt;
 	}
 	
+	/**
+	 * The type of the declaration as seen from 
+	 * within the body of the declaration itself.
+	 * 
+	 * Note that for certain special types which
+	 * we happen to know don't have type arguments, 
+	 * we use this as a convenience method to 
+	 * quickly get a produced type for use outside
+	 * the body of the declaration, but this is not
+	 * really correct!
+	 */
     public ProducedType getType() {
         ProducedType pt = new ProducedType();
         if (isMemberType()) {
             pt.setDeclaringType( ( (ClassOrInterface) getContainer() ).getType() ); 
         }
         pt.setDeclaration(this);
+        //each type parameter is its own argument
         Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
         for (TypeParameter p: getTypeParameters()) {
             ProducedType pta = new ProducedType();

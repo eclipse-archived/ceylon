@@ -5,9 +5,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclar
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -138,7 +136,7 @@ public class SpecificationVisitor extends Visitor {
         //Declaration member = getDeclaration(that.getScope(), that.getUnit(), id, context);
         //TODO: check superclass members are not in declaration section!
         if ( member==declaration && 
-                isDefinedInContainingScope(that, member) ) {
+                member.isDefinedInScope(that.getScope()) ) {
             if (!declared) {
                 //you are allowed to refer to later 
                 //declarations in a class declaration
@@ -164,17 +162,6 @@ public class SpecificationVisitor extends Visitor {
                 }
             }
         }
-    }
-
-    private boolean isDefinedInContainingScope(Node node, Declaration member) {
-        Scope scope = node.getScope();
-        while (scope!=null) {
-            if (scope==member.getContainer()) {
-                return true;
-            }
-            scope = scope.getContainer();
-        }
-        return false;
     }
 
     private boolean inDeclarationSection() {

@@ -16,13 +16,11 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -1758,25 +1756,9 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.Outer that) {
-        that.setTypeModel(getOuterType(that, that.getScope()));
+        that.setTypeModel(getOuterClassOrInterface(that.getScope()));
     }
 
-    private ProducedType getOuterType(Node that, Scope scope) {
-        Boolean foundInner = false;
-        while (!(scope instanceof Package)) {
-            if (scope instanceof ClassOrInterface) {
-                if (foundInner) {
-                    return ((ClassOrInterface) scope).getType();
-                }
-                else {
-                    foundInner = true;
-                }
-            }
-            scope = scope.getContainer();
-        }
-        return null;
-    }
-    
     private boolean inExtendsClause = false;
 
     @Override 
@@ -1788,7 +1770,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.Super that) {
         if (inExtendsClause) {
-            ClassOrInterface ci = getContainingClassOrInterface(that);
+            ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
             if (ci!=null) {
                 if (ci.isClassOrInterfaceMember()) {
                     ClassOrInterface s = (ClassOrInterface) ci.getContainer();
@@ -1799,7 +1781,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else {
-            ClassOrInterface ci = getContainingClassOrInterface(that);
+            ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
             //TODO: for consistency, move these errors to SelfReferenceVisitor
             if (ci==null) {
                 that.addError("super appears outside a class definition");
@@ -1816,7 +1798,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.This that) {
-        ClassOrInterface ci = getContainingClassOrInterface(that);
+        ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
         if (ci!=null) {
             that.setTypeModel(ci.getType());
         }

@@ -15,11 +15,20 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
-import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
 public class Util {
-
+    
+    /**
+     * Search for the declaration referred to by a qualified 
+     * name in containing scopes and imports, finally looking 
+     * in the language module.
+     * 
+     *  TODO: I would just love to make this method go away
+     *        by somehow treating declarations in the language 
+     *        module like any other imported declaration!
+     *        
+     */
     static Declaration getBaseDeclaration(Scope scope, Unit unit, Tree.Identifier id, Context context) {
         Declaration d = scope.getMemberOrParameter(unit, id.getText());
         if (d!=null) {
@@ -29,7 +38,10 @@ public class Util {
             return getLanguageModuleDeclaration(id.getText(), context);
         }
     }
-
+    
+    /**
+     * Search for a declaration in the language module. 
+     */
     static Declaration getLanguageModuleDeclaration(String name, Context context) {
         //all elements in ceylon.language are auto-imported
         //traverse all default module packages provided they have not been traversed yet
@@ -49,20 +61,33 @@ public class Util {
         return null;
     }
     
-    static String name(Tree.Identifier id) {
-        if (id==null) {
-            return "program element with missing name";
-        }
-        else {
-            return id.getText();
-        }
-    }
-
-    static ClassOrInterface getContainingClassOrInterface(Node that) {
-        Scope scope = that.getScope();
+    /**
+     * Get the class or interface that "this" and "super" 
+     * refer to. 
+     */
+    static ClassOrInterface getContainingClassOrInterface(Scope scope) {
         while (!(scope instanceof Package)) {
             if (scope instanceof ClassOrInterface) {
                 return (ClassOrInterface) scope;
+            }
+            scope = scope.getContainer();
+        }
+        return null;
+    }
+    
+    /**
+     * Get the class or interface that "outer" refers to. 
+     */
+    static ProducedType getOuterClassOrInterface(Scope scope) {
+        Boolean foundInner = false;
+        while (!(scope instanceof Package)) {
+            if (scope instanceof ClassOrInterface) {
+                if (foundInner) {
+                    return ((ClassOrInterface) scope).getType();
+                }
+                else {
+                    foundInner = true;
+                }
             }
             scope = scope.getContainer();
         }
@@ -86,12 +111,29 @@ public class Util {
         return typeArguments;
     }
     
+    /**
+     * Convenience method to bind a single type argument 
+     * to a toplevel type declaration.  
+     */
     static ProducedType producedType(TypeDeclaration declaration, ProducedType typeArgument) {
         return declaration.getProducedType(null, Collections.singletonList(typeArgument));
     }
 
+    /**
+     * Convenience method to bind a list of type arguments
+     * to a toplevel type declaration.  
+     */
     static ProducedType producedType(TypeDeclaration declaration, ProducedType... typeArguments) {
         return declaration.getProducedType(null, Arrays.asList(typeArguments));
+    }
+
+    static String name(Tree.Identifier id) {
+        if (id==null) {
+            return "program element with missing name";
+        }
+        else {
+            return id.getText();
+        }
     }
 
 }

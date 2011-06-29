@@ -78,24 +78,43 @@ public abstract class Declaration extends Element {
         this.def = def;
     }
     
-    public abstract ProducedReference getProducedReference(ProducedType pt, List<ProducedType> typeArguments);
-
+    /**
+     * Determine if this declaration is visible
+     * in the given scope, by considering if it
+     * is shared or directly defined in a 
+     * containing scope.
+     * 
+     * Note that this implementation is not quite 
+     * right, since for a shared member 
+     * declaration it does not check if the 
+     * containing declaration is also visible in 
+     * the given scope, but this is okay for now 
+     * because of how this method is used.
+     */
     public boolean isVisible(Scope scope) {
         if (isShared()) {
             return true;
         }
         else {
-            do {
-                if ( getContainer()==scope ) {
-                    return true;
-                }
-                scope = scope.getContainer();
-            }
-            while (scope!=null);
-            return false;
+            return isDefinedInScope(scope);
         }
     }
     
+    /**
+     * Determine if this declaration is directly
+     * defined in a containing scope of the given
+     * scope. 
+     */
+    public boolean isDefinedInScope(Scope scope) {
+        while (scope!=null) {
+            if ( getContainer()==scope ) {
+                return true;
+            }
+            scope = scope.getContainer();
+        }
+        return false;
+    }
+
     public boolean isCaptured() {
         return false;
     }
@@ -115,5 +134,21 @@ public abstract class Declaration extends Element {
     public boolean isClassOrInterfaceMember() {
         return getContainer() instanceof ClassOrInterface;
     }
+
+    /**
+     * Get a produced reference for this declaration 
+     * by binding explicit or inferred type arguments 
+     * and type arguments of the type of which this
+     * declaration is a member, in the case that this 
+     * is a member.
+     * 
+     * @param outerType the qualifying produced 
+     *        type or null if this is not a
+     *        nested type declaration
+     * @param typeArguments arguments to the type 
+     *        parameters of this declaration
+     */
+    public abstract ProducedReference getProducedReference(ProducedType pt, 
+            List<ProducedType> typeArguments);
 
 }

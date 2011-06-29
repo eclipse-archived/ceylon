@@ -38,6 +38,19 @@ public abstract class TypedDeclaration extends Declaration {
 	    }
 	}
 
+    /**
+     * Get a produced reference for this declaration 
+     * by binding explicit or inferred type arguments 
+     * and type arguments of the type of which this
+     * declaration is a member, in the case that this 
+     * is a member.
+     * 
+     * @param outerType the qualifying produced 
+     *        type or null if this is not a
+     *        nested type declaration
+     * @param typeArguments arguments to the type 
+     *        parameters of this declaration
+     */
     public ProducedTypedReference getProducedTypedReference(ProducedType pt, 
             List<ProducedType> typeArguments) {
         ProducedTypedReference ptr = new ProducedTypedReference();
@@ -48,7 +61,8 @@ public abstract class TypedDeclaration extends Declaration {
     }
     
     @Override
-    public ProducedReference getProducedReference(ProducedType pt, List<ProducedType> typeArguments) {
+    public ProducedReference getProducedReference(ProducedType pt, 
+            List<ProducedType> typeArguments) {
         return getProducedTypedReference(pt, typeArguments);
     }
     
