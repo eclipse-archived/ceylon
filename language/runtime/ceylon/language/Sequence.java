@@ -43,7 +43,7 @@ public interface Sequence<Element>
     }
     */
     
-    public Iterator<Element> getIterator();
+    public Iterator<Element> iterator();
         //return SequenceIterator(0);
     
 /*    class SequenceIterator(Natural from)
