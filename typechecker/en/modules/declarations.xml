@@ -843,7 +843,8 @@ TypeConstraints?
         and <literal>super</literal>, and may invoke any method, evaluate any attribute, or 
         instantiate any member class of the class or its superclasses. Furthermore, the usual 
         restriction that a declaration may only be used by code that appears later in the 
-        block containing the declaration is relaxed.</para>
+        block containing the declaration is relaxed unless it is a <literal>value</literal> or 
+        <literal>function</literal> declaration with an inferred type.</para>
         
         <!--
         <comment><para>TODO: we could perhaps slightly relax the restrictions here. It's 
@@ -2166,17 +2167,17 @@ Void goodbye() {
         
         <itemizedlist>
             <listitem>
-                <para>A simple attribute declared inside a block (the body of a method, attribute 
-                getter or attribute setter) is a local.</para>
+                <para>A simple attribute declared inside a block (the body of a method, 
+                attribute getter, attribute setter, or control structure) is a local.</para>
             </listitem>
              <listitem>
-                <para>A block local simple attribute declared inside the body of a class is a 
-                local if it is not used inside a method, attribute setter or attribute getter 
-                declaration.</para>
+                <para>A simple attribute declared inside the body of a class is a local if it 
+                is not used inside a method, attribute setter or attribute getter 
+                declaration and if it is not annotated <literal>shared</literal>.</para>
             </listitem>
            <listitem>
                 <para>A parameter of a class is a local if it is not used inside a method, 
-                attribute setter or attribute getter declaration.</para>
+                attribute setter, or attribute getter declaration.</para>
             </listitem>
             <listitem>
                 <para>A parameter of a method is a local.</para>
@@ -2184,8 +2185,8 @@ Void goodbye() {
         </itemizedlist>
         
         <para>A local is a block local declaration&mdash;it is visible only to statements and 
-        declarations that occur later in the same block or class body, and therefore it may not 
-        be annotated <literal>shared</literal>.</para>
+        declarations that occur within the lexical scope of the declaration (later in the same 
+        block or class body).</para>
         
         <para>The semantics of locals are identical to Java local variables.</para>
         

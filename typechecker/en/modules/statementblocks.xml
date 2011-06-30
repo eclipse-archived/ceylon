@@ -58,6 +58,10 @@
             </listitem>
         </itemizedlist>
         
+        <para>The set of program elements that (indirectly) occur later than a program 
+        element is sometimes called the <emphasis>lexical scope</emphasis> of the program
+        element.</para>
+        
         <para>A program element <emphasis>sequentially occurs</emphasis> in a body if:</para>
         
         <itemizedlist>
@@ -149,10 +153,11 @@
             <para>Class and interface bodies also contain declarations. Unlike a declaration 
             nested inside a block, a declaration directly contained in the body of a class or
             interface may be annotated <literal>shared</literal>, making the member accessible 
-            outside the body of the class or interface. Furthermore, declarations occurring in 
-            an interface body or in the declaration section of a class body are visible to 
-            other program elements that occur in the same interface body or declaration 
-            section.</para>
+            outside the body of the class or interface. Furthermore, a declaration occurring 
+            in an interface body or in the declaration section of a class body is visible to 
+            all other program elements that occur in the same interface body or declaration 
+            section (unless it is a <literal>value</literal> or <literal>function</literal>
+            declaration with an inferred type).</para>
             
             <para>This code is not legal, since all three statements occur in the initializer 
             section of the class body:</para>
@@ -318,16 +323,20 @@
             </listitem>
             <listitem>
                 <para>it (indirectly) occurs earlier in a body that contains the program 
+                element&mdash;that is, it occurs within the lexical scope of the program
                 element, or</para>
             </listitem>
             <listitem>
                 <para>it directly occurs in an interface body, and the program element 
-                also (indirectly) occurs in the same interface body, or</para>
+                also (indirectly) occurs in the same interface body, and it is not 
+                declared using the keyword <literal>value</literal> or 
+                <literal>function</literal>, or</para>
             </listitem>
             <listitem>
                 <para>it directly occurs in the declaration section of a class body, 
                 and the program element also (indirectly) occurs in the declaration 
-                section of the same class body, or</para>
+                section of the same class body, and it is not declared using the
+                keyword <literal>value</literal> or <literal>function</literal>, or</para>
             </listitem>
             <listitem>
                 <para>it is a declaration imported by the compilation unit containing 

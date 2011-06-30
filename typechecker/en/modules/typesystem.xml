@@ -519,6 +519,13 @@
         <programlisting>function parse(String text) {
     return text.tokens(" .!?,:;()\n\f\r\t");
 }</programlisting>
+
+        <para>Type inference is supported for declarations which are are referred to only by 
+        statements and declarations that occur within the lexical scope of the declaration. 
+        Type inference is not supported for <literal>shared</literal> declarations which may 
+        be accessed from outside the body containing the declaration, or for declarations
+        which are referred to by statements or declarations that occur earlier in the body
+        containing of the declation.</para>
         
         <!--
         <comment><para>TODO: Should we let you leave off the type arguments in the type
