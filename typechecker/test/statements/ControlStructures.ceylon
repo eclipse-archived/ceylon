@@ -40,9 +40,9 @@ public class ControlStructures() {
         print(n);
     }
     
-    for (value n in names) {
+    /*for (value n in names) {
         print(n);
-    }
+    }*/
     
     /*for (@error function n in names) {
         print(n);
@@ -52,9 +52,9 @@ public class ControlStructures() {
         print(key + "->" + item);
     }
     
-    for (value key->value item in entries) {
+    /*for (value key->value item in entries) {
         print(key + "->" + item);
-    }
+    }*/
     
     class Transaction() {
         shared void rollbackOnly() {}

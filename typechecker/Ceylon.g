@@ -1269,8 +1269,8 @@ variable2
     ;
 
 variable
-    : inferableType memberName parameters*
-    -> ^(VARIABLE inferableType memberName parameters*)
+    : unionType memberName parameters*
+    -> ^(VARIABLE unionType memberName parameters*)
     | memberName
     -> ^(VARIABLE VALUE_MODIFIER memberName)
     | memberName parameters+
