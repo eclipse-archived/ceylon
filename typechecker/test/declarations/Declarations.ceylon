@@ -119,4 +119,22 @@ interface Declarations {
         @error assign hi {}
     }
     
+    class ForwardTypeInference(){
+        function test(){
+            return 0;    
+        }
+        void m(){
+            value n = test();
+        }
+    }
+    
+    class BackwardTypeInference(){
+        void m(){
+            @error value n = test();
+        }
+        function test(){
+            return 0;    
+        }
+    }
+    
 }
