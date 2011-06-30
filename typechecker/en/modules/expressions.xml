@@ -40,21 +40,21 @@
     to a program element if the type of the expression is assignable to the 
     declared type of the program element.</para>
     
-    <comment><para>TODO: Do we need a definition of "constant expression"? 
+    <comment><para>TODO: We need a definition of a "constant expression".
     We might use it for:</para>
     <itemizedlist>
     <listitem><literal>case</literal> expressions (when are these evaluated?),</listitem>
     <listitem>annotations available at compile time,</listitem>
-    <listitem>default parameter values (when are these evaluated?), and</listitem>
-    <listitem>initializer/specifier expressions in second part of class body.</listitem>
+    <listitem>default parameter values (when are these evaluated?), and even</listitem>
+    <listitem>initializer/specifier expressions in declaration section of class body.</listitem>
     </itemizedlist>
-    <para>For example, a constant expression might be anything formed from
-    literals, metamodel references, the <literal>..</literal> and 
-    <literal>-></literal> operators.</para>
-    </comment>
-    
-    <comment><para>TODO: Or, if not, we at least need to properly define the scope
-    in which the above things are actually evaluated.</para></comment>
+    <para>For example we could follow Java's very restrictive model, and say 
+    that a constant expression must be anything formed from literals, metamodel 
+    references, the <literal>..</literal> and <literal>-></literal> operators.
+    Or we could be much less restrictive and just say that it is any expression 
+    that could be used to initialize a toplevel attribute of the package.</para>
+    <para>At the very least, we need to properly define the scope in which the 
+    above things are actually evaluated.</para></comment>
     
     <section id="objectinstancesidentity">
         <title>Object instances, identity, and reference passing</title>
