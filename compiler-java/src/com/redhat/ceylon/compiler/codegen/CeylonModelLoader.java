@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.codegen;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -263,7 +264,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         }
         Package pkg = new Package();
         pkg.setModule(module);
-        pkg.setName(Arrays.asList(pkgName.split("\\.")));
+        pkg.setName(pkgName == null ? Collections.<String>emptyList() : Arrays.asList(pkgName.split("\\.")));
         module.getPackages().add(pkg);
         return pkg;
     }
@@ -271,7 +272,9 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     public Module findOrCreateModule(String pkgName) {
         java.util.List<String> moduleName;
         // FIXME: this is a rather simplistic view of the world
-        if(pkgName.startsWith("java."))
+        if(pkgName == null)
+        	moduleName = Arrays.asList("<default module>");
+        else if(pkgName.startsWith("java."))
             moduleName = Arrays.asList("java");
         else if(pkgName.startsWith("sun."))
             moduleName = Arrays.asList("sun");
@@ -280,7 +283,8 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
          Module module = phasedUnits.getModuleBuilder().getOrCreateModule(moduleName);
          // make sure that when we load the ceylon language module we set it to where
          // the typechecker will look for it
-         if(pkgName.startsWith("ceylon.language.")
+         if(pkgName != null
+        		 && pkgName.startsWith("ceylon.language.")
                  && ceylonContext.getModules().getLanguageModule() == null){
              ceylonContext.getModules().setLanguageModule(module);
          }
