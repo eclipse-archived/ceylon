@@ -25,4 +25,15 @@ public class Util {
 	public static boolean isInnerMethod(Declaration decl) {
         return decl.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Method;
 	}
+	
+	// FIXME: make this easier in Scope?
+	public static String getQualifiedName(Declaration decl){
+		StringBuffer str = new StringBuffer();
+		for(String part : decl.getQualifiedName()){
+			if(str.length() > 0)
+				str.append(".");
+			str.append(part);
+		}
+		return str.toString();
+	}
 }
