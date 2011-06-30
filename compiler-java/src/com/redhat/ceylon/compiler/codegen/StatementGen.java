@@ -102,7 +102,7 @@ public class StatementGen extends GenPart {
                 expr = gen.expressionGen.convertExpression(nonempty.getVariable().getSpecifierExpression().getExpression());
             }
 
-            test = make().Apply(List.<JCTree.JCExpression>nil(), make().Select(expr, names().fromString("isEmpty")), List.<JCTree.JCExpression>nil());
+            test = make().Apply(List.<JCTree.JCExpression>nil(), gen.makeSelect(expr, "isEmpty"), List.<JCTree.JCExpression>nil());
             test = makeBooleanTest(test, true);
         } else if (cond instanceof Tree.IsCondition) {
             Tree.IsCondition isExpr = (Tree.IsCondition) cond;
@@ -211,24 +211,24 @@ public class StatementGen extends GenPart {
 
         // ceylon.language.Iterator<T> $ceylontmpX = ITERABLE.iterator();
         JCExpression containment = gen.expressionGen.convertExpression(iterDecl.getSpecifierExpression().getExpression());
-        JCVariableDecl iter_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(aliasName(loop_var_name + "$iter")), gen.iteratorType(iter_type), at(stmt).Apply(null, at(stmt).Select(containment, names().fromString("iterator")), List.<JCExpression> nil()));
+        JCVariableDecl iter_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(aliasName(loop_var_name + "$iter")), gen.iteratorType(iter_type), at(stmt).Apply(null, gen.makeSelect(containment, "iterator"), List.<JCExpression> nil()));
         outer = outer.append(iter_decl);
         JCIdent iter_id = at(stmt).Ident(iter_decl.getName());
         
         // final U n = $ceylontmpX.getHead();
-        JCExpression iter_head = at(stmt).Apply(null, at(stmt).Select(iter_id, names().fromString(Util.getGetterName("head"))), List.<JCExpression> nil());
+        JCExpression iter_head = at(stmt).Apply(null, gen.makeSelect(iter_id, Util.getGetterName("head")), List.<JCExpression> nil());
         JCExpression loop_var_init;
         if (variable2 == null) {
             loop_var_init = iter_head;
         } else {
-            loop_var_init = at(stmt).Apply(null, at(stmt).Select(iter_head, names().fromString(Util.getGetterName("key"))), List.<JCExpression> nil());
+            loop_var_init = at(stmt).Apply(null, gen.makeSelect(iter_head, Util.getGetterName("key")), List.<JCExpression> nil());
         }
         JCVariableDecl item_decl = at(stmt).VarDef(make().Modifiers(FINAL, annots), names().fromString(loop_var_name), item_type, loop_var_init );
         List<JCStatement> while_loop = List.<JCStatement> of(item_decl);
 
         if (variable2 != null) {
             // final V n = $ceylontmpX.getHead().getElement();
-            JCExpression loop_var_init2 = at(stmt).Apply(null, at(stmt).Select(at(stmt).Apply(null, at(stmt).Select(iter_id, names().fromString(Util.getGetterName("head"))), List.<JCExpression> nil()), names().fromString(Util.getGetterName("element"))), List.<JCExpression> nil());
+            JCExpression loop_var_init2 = at(stmt).Apply(null, gen.makeSelect(at(stmt).Apply(null, gen.makeSelect(iter_id, Util.getGetterName("head")), List.<JCExpression> nil()), Util.getGetterName("element")), List.<JCExpression> nil());
             String loop_var_name2 = variable2.getIdentifier().getText();
             JCExpression item_type2 = gen.makeJavaType(gen.actualType(variable2));
             JCVariableDecl item_decl2 = at(stmt).VarDef(make().Modifiers(FINAL, annots), names().fromString(loop_var_name2), item_type2, loop_var_init2);
@@ -239,7 +239,7 @@ public class StatementGen extends GenPart {
         while_loop = while_loop.appendList(convertStmts(stmt.getForClause().getBlock().getStatements()));
 
         // $ceylontmpX = $ceylontmpX.getTail();
-        JCExpression next = at(stmt).Assign(iter_id, at(stmt).Apply(null, at(stmt).Select(iter_id, names().fromString(Util.getGetterName("tail"))), List.<JCExpression> nil()));
+        JCExpression next = at(stmt).Assign(iter_id, at(stmt).Apply(null, gen.makeSelect(iter_id, Util.getGetterName("tail")), List.<JCExpression> nil()));
         while_loop = while_loop.append(at(stmt).Exec(next));
 
         // while ($ceylontmpX.getHead() != null)...

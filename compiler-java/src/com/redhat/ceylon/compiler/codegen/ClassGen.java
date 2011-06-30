@@ -365,10 +365,10 @@ public class ClassGen extends GenPart {
 
     private JCTree makeGetter(Tree.AttributeDeclaration decl) {
         // FIXME: add at() calls?
-        Name atrrName = names().fromString(decl.getIdentifier().getText());
+        String atrrName = decl.getIdentifier().getText();
         JCBlock body = null;
         if (!isFormal(decl)) {
-            body = make().Block(0, List.<JCTree.JCStatement>of(make().Return(make().Select(makeIdent("this"), atrrName))));
+            body = make().Block(0, List.<JCTree.JCStatement>of(make().Return(gen.makeSelect("this", atrrName))));
         }
         
         JCExpression type = gen.makeJavaType(gen.actualType(decl));
@@ -389,12 +389,12 @@ public class ClassGen extends GenPart {
 
     private JCTree makeSetter(Tree.AttributeDeclaration decl) {
         // FIXME: add at() calls?
-        Name atrrName = names().fromString(decl.getIdentifier().getText());
+        String atrrName = decl.getIdentifier().getText();
         JCBlock body = null;
         if (!isFormal(decl)) {
             body = make().Block(0, List.<JCTree.JCStatement>of(
                     make().Exec(
-                            make().Assign(make().Select(makeIdent("this"), atrrName),
+                            make().Assign(gen.makeSelect("this", atrrName),
                                     makeIdent(atrrName.toString())))));
         }
         
@@ -410,7 +410,7 @@ public class ClassGen extends GenPart {
                 names().fromString(Util.getSetterName(atrrName.toString())), 
                 makeIdent("void"), 
                 List.<JCTree.JCTypeParameter>nil(), 
-                List.<JCTree.JCVariableDecl>of(make().VarDef(make().Modifiers(0, annots), atrrName, type , null)), 
+                List.<JCTree.JCVariableDecl>of(make().VarDef(make().Modifiers(0, annots), names().fromString(atrrName), type , null)), 
                 List.<JCTree.JCExpression>nil(), 
                 body, null);
     }

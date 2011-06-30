@@ -171,7 +171,7 @@ public class Gen2 {
             if (type == null)
                 type = make().Ident(names.fromString(component.getText()));
             else
-                type = make().Select(type, names.fromString(component.getText()));
+                type = makeSelect(type, component.getText());
         }
 
         return type;
@@ -184,7 +184,7 @@ public class Gen2 {
             if (type == null)
                 type = make().Ident(names.fromString(component));
             else
-                type = make().Select(type, names.fromString(component));
+                type = makeSelect(type, component);
         }
 
         return type;
@@ -197,7 +197,7 @@ public class Gen2 {
             if (type == null)
                 type = make().Ident(names.fromString(component));
             else
-                type = make().Select(type, names.fromString(component));
+                type = makeSelect(type, component);
         }
 
         return type;
@@ -402,7 +402,7 @@ public class Gen2 {
     public List<JCTree.JCAnnotation> makeJavaTypeAnnotations(ProducedType type, boolean force) {
         // For shared types we keep a list of annotations to apply to the resulting Java type
         // to make reverse engineering of the final class file possible
-        boolean applyAnnotations = false; //type.getDeclaration().isShared() || force;
+        boolean applyAnnotations = false; // type.getDeclaration().isShared() || force;
         ListBuffer<JCTree.JCAnnotation> annotations = new ListBuffer<JCTree.JCAnnotation>();
         
         if (applyAnnotations) {

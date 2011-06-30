@@ -280,7 +280,7 @@ public class ExpressionGen extends GenPart {
             Tree.NaturalLiteral lit = (Tree.NaturalLiteral) term;
             return at(op).Apply(null, makeSelect(makeIdent(syms().ceylonIntegerType), "instance"), List.<JCExpression> of(make().Literal(Long.parseLong(lit.getText()))));
         }
-        return at(op).Apply(null, at(op).Select(convertExpression(term), names().fromString(unaryOperators.get(op.getClass()))), List.<JCExpression> nil());
+        return at(op).Apply(null, gen.makeSelect(convertExpression(term), unaryOperators.get(op.getClass())), List.<JCExpression> nil());
     }
 
     private JCExpression convert(Tree.ArithmeticAssignmentOp op){
@@ -350,10 +350,10 @@ public class ExpressionGen extends GenPart {
 
         JCExpression left = convertExpression(op.getLeftTerm());
         JCExpression right = convertExpression(op.getRightTerm());
-        result = at(op).Apply(null, at(op).Select(left, names().fromString(binaryOperators.get(operatorClass))), List.of(right));
+        result = at(op).Apply(null, gen.makeSelect(left, binaryOperators.get(operatorClass)), List.of(right));
 
         if (loseComparison) {
-            result = at(op).Apply(null, at(op).Select(result, names().fromString(binaryOperators.get(op.getClass()))), List.<JCExpression> nil());
+            result = at(op).Apply(null, gen.makeSelect(result, binaryOperators.get(op.getClass())), List.<JCExpression> nil());
         }
 
         return result;
@@ -456,29 +456,30 @@ public class ExpressionGen extends GenPart {
 
             // FIXME: this list of cases is incomplete from Gen
             public void visit(Tree.BaseMemberExpression op) {
-                result = at(access).Select(convert(op), names().fromString(memberName.getText()));
+                result = convert(op);
             }
 
             public void visit(Tree.QualifiedMemberExpression op) {
-                result = at(access).Select(convert(op), names().fromString(memberName.getText()));
+                result = convert(op);
             }
 
             public void visit(Tree.Expression tree) {
-                result = at(access).Select(convertExpression(tree), names().fromString(memberName.getText()));
+                result = convertExpression(tree);
             }
             
             public void visit(Tree.This op) {
-                result = at(access).Select(makeIdent("this"), names().fromString(memberName.getText()));
+                result = makeIdent("this");
             }
             
             public void visit(Tree.Super op) {
-                result = at(access).Select(makeIdent("super"), names().fromString(memberName.getText()));
+                result = makeIdent("super");
             }
         }
 
+        at(access);
         V v = new V();
         operand.visit(v);
-        return v.result;
+        return gen.makeSelect(v.result, memberName.getText());
     }
 
     private JCExpression convert(Tree.BaseMemberExpression member) {
