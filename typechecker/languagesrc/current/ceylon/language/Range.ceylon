@@ -48,7 +48,7 @@ shared class Range<Element>(Element first, Element last)
         return Range<Element>(next(first),last);
     }
     
-    shared actual Element? element(Natural n) {
+    shared actual Element? item(Natural n) {
         //optimize this for numbers!
         variable Natural index:=0;
         variable Element x:=first;
