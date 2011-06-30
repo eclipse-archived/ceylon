@@ -2205,7 +2205,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         <programlisting>Iterable&lt;String&gt; tokens = input.Tokens();</programlisting>
         <programlisting>return person.name;</programlisting>
         <programlisting>throw Exception();</programlisting>
-        <programlisting>if (exists value head = iter.head) { ... }</programlisting>
+        <programlisting>if (exists head = iter.head) { ... }</programlisting>
         
         <para>If a reference object is of type <literal>Settable</literal>, its value may also 
         be <emphasis>assigned</emphasis>. Assignment is performed using the <literal>:=</literal> 

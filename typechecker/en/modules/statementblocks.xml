@@ -1004,9 +1004,10 @@ else {
         specifying the keyword <literal>value</literal> where the type usually appears. The type 
         of the variable is inferred to be the type of the expression that follows.</para>
         
-        <programlisting>Variable: (UnionType | "value")? MemberName</programlisting>
+        <programlisting>Variable: UnionType? MemberName</programlisting>
         
-        <para>The <literal>value</literal> keyword is optional for variables with inferred type.</para>
+        <para>If the type is missing from the declarations, the type of the variables is 
+        inferred.</para>
 
         <comment><para>TODO: write down the rules for inferring the type of control structure
         variables!</para></comment>
@@ -1023,10 +1024,10 @@ else {
             
             <para>An iteration variable may be callable.</para>
             
-            <programlisting>CallableVariable: (UnionType | "function" | "void")? MemberName Params+</programlisting>
+            <programlisting>CallableVariable: (UnionType | "void")? MemberName Params+</programlisting>
         
-            <para>The <literal>function</literal> keyword is optional for callable variables with 
-            inferred type.</para>
+            <para>If the return type is missing from the declaration, the return type of the 
+            callable variable is inferred.</para>
 
             <para>An iteration variable of type <literal>Entry</literal> may be specified in 
             destructured form.</para>

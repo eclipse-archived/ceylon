@@ -125,7 +125,7 @@ class Primaries() {
     //Object[] things = objects;
     @type["Nothing|Primaries.A|Primaries.B|String|Sequence<Natural>"] value p27 = objects[1];
     @type["Nothing|String"] value p28 = objects[1]?.string;
-    if (exists value o = objects[1]) {
+    if (exists o = objects[1]) {
         @type["Primaries.A|Primaries.B|String|Sequence<Natural>"] value p29 = o;
         String s = o.string;
         @type["Sequence<Primaries.A|Primaries.B|String|Sequence<Natural>|Float>"] value p30 = {o, "foo", 3.1, A()};

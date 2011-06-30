@@ -1922,7 +1922,7 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
         return x<=>y;
     }
     case (Sequence<Other>) {
-        for (value i in 0..min(x.size,y.size)) {
+        for (Natural i in 0..min(x.size,y.size)) {
             Comparison c = x[i]<=>y[i];
             switch (c)
             case (larger) {
