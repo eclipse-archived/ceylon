@@ -406,11 +406,24 @@ TypeConstraints?
         <section id="interfacemembervisibility">
             <title>Interface member visibility</title>
             
-            <para>An interface body is not an executable block of code, so the normal
-            visibility rules that apply to declarations inside blocks do not apply.
-            An interface member is always visible to all other members of the
-            interface. An interface member annotated <literal>shared</literal> is 
-            visible wherever the interface itself is visible.</para>
+        <para>An interface body is not an executable block of code, so the normal
+        visibility rules that apply to declarations inside blocks do not apply.
+        Ordinarily, a declaration that occurs in a block of code is a block local
+        declaration&mdash;it is visible only to statements and declarations that 
+        occur within the lexical scope of the declaration. This rule is relaxed for 
+        declarations that occur directly inside the body of an interface:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>any declaration annotated <literal>shared</literal> is 
+                visible wherever the interface itself is visible, and</para>
+            </listitem>
+            <listitem>
+                <para>any declaration not declared using the <literal>value</literal> 
+                or <literal>function</literal> keywords is visible to all other 
+                declarations in the the body of the interface.</para>
+            </listitem>
+        </itemizedlist>
         
         </section>
         
@@ -842,9 +855,9 @@ TypeConstraints?
         <para>However, the declarations in this second section may freely use <literal>this</literal>
         and <literal>super</literal>, and may invoke any method, evaluate any attribute, or 
         instantiate any member class of the class or its superclasses. Furthermore, the usual 
-        restriction that a declaration may only be used by code that appears later in the 
-        block containing the declaration is relaxed unless it is a <literal>value</literal> or 
-        <literal>function</literal> declaration with an inferred type.</para>
+        restriction that a declaration may only be used within the lexical scope of the 
+        declaration is relaxed unless it is a <literal>value</literal> or <literal>function</literal> 
+        declaration with an inferred type.</para>
         
         <!--
         <comment><para>TODO: we could perhaps slightly relax the restrictions here. It's 
@@ -860,18 +873,19 @@ TypeConstraints?
         
         <para>Ordinarily, a declaration that occurs in a block of code is a block local
         declaration&mdash;it is visible only to statements and declarations that occur
-        later in the same block. This rule is relaxed for certain declarations that occur 
-        directly inside the body of a class:</para>
+        within the lexical scope of the declaration. This rule is relaxed for certain 
+        declarations that occur directly inside the body of a class:</para>
         
         <itemizedlist>
             <listitem>
-                <para>declarations annotated <literal>shared</literal>&mdash;which are 
-                visible wherever the class itself is visible, and</para>
+                <para>any declaration annotated <literal>shared</literal> is visible 
+                wherever the class itself is visible, and</para>
             </listitem>
             <listitem>
-                <para>declarations that occur in the second part of the body of the 
-                class, after the last statement of the initializer&mdash;which are visible 
-                to all other declarations in the second part of the body of the class.</para>
+                <para>any declaration that occurs in the declaration section of the body 
+                of the class and is not declared using the <literal>value</literal> 
+                or <literal>function</literal> keywords is visible to all other 
+                declarations in the declaration section.</para>
             </listitem>
         </itemizedlist>
         
