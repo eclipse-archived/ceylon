@@ -2202,8 +2202,6 @@ Void goodbye() {
         declarations that occur within the lexical scope of the declaration (later in the same 
         block or class body).</para>
         
-        <para>The semantics of locals are identical to Java local variables.</para>
-        
         <para>The compiler is permitted to optimize block local simple attributes to a simple 
         Java field declaration or local variable. Block local attributes may not be accessed 
         via reflection.</para>
@@ -2312,6 +2310,11 @@ Void goodbye() {
             <programlisting>shared String name { return join(firstName, lastName); }
 shared assign name { firstName := first(name); lastName := last(name); }</programlisting>
                         
+            <comment><para>TODO: can you really have a <literal>shared</literal> getter
+            with a non-<literal>shared</literal>? Doesn't seem like the most useful 
+            construct. Why not just have the setter inherit the visibility of the 
+            getter.</para></comment>
+            
             <comment><para>TODO: should we require that the corresponding getter be 
             annotated <literal>variable</literal>?</para></comment>
             
@@ -2351,7 +2354,8 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
             attribute</emphasis>.</para>
             
             <para>An attribute annotated <literal>formal</literal> may not specify an
-            implementation (a specifier, initializer, or getter implementation).</para>
+            implementation (a specifier, initializer, or getter implementation). Nor
+            may there be a setter for a formal attribute.</para>
         
             <programlisting>shared formal variable String firstName;</programlisting>
 
@@ -2509,12 +2513,7 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
         
     <section id="declarationmodifiers">
         <title>Declaration modifiers</title>
-        
-        <para>In Ceylon, all declaration modifiers are annotations.</para>
-        
-    <section id="compilerinstructions">
-        <title>Summary of compiler instructions</title>
-        
+                
         <para>The following annotations are compiler instructions:</para>
         
         <itemizedlist>
@@ -2605,9 +2604,7 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
         <comment><para>TODO: how hard would it be to add a <literal>recursive</literal>
         annotation to force the compiler to optimize a tail-recursive method or
         getter?</para></comment>
-        
-    </section>
-       
+               
        <!--
        <para>The following annotations are important to the Ceylon SDK.</para>
         
@@ -2738,7 +2735,8 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
         annotations are parsed by the documentation compiler as Seam Text, a 
         simple ANTLR-based wiki text format.</para>
         
-        <para>These annotations are defined by the package <literal>doc</literal>:</para>
+        <para>These annotations are defined in the package 
+        <literal>ceylon.language.documentation</literal>:</para>
         
         <programlisting>shared class Description(String description)
         satisfies OptionalAnnotation&lt;Description,Annotated&gt; {
