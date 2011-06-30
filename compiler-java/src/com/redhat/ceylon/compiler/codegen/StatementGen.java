@@ -194,14 +194,14 @@ public class StatementGen extends GenPart {
         ForIterator iterDecl = stmt.getForClause().getForIterator();
         Variable variable;
         Variable variable2;
-		if (iterDecl instanceof ValueIterator) {
-        	variable = ((ValueIterator) iterDecl).getVariable();
-        	variable2 = null;
+        if (iterDecl instanceof ValueIterator) {
+            variable = ((ValueIterator) iterDecl).getVariable();
+            variable2 = null;
         } else if (iterDecl instanceof KeyValueIterator) {
-        	variable = ((KeyValueIterator) iterDecl).getKeyVariable();
-        	variable2 = ((KeyValueIterator) iterDecl).getValueVariable();
+            variable = ((KeyValueIterator) iterDecl).getKeyVariable();
+            variable2 = ((KeyValueIterator) iterDecl).getValueVariable();
         } else {
-        	throw new RuntimeException("Unknown ForIterator");
+            throw new RuntimeException("Unknown ForIterator");
         }
         
         String loop_var_name = variable.getIdentifier().getText();
@@ -214,39 +214,36 @@ public class StatementGen extends GenPart {
         JCVariableDecl iter_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(aliasName(loop_var_name + "$iter")), gen.iteratorType(iter_type), at(stmt).Apply(null, at(stmt).Select(containment, names().fromString("iterator")), List.<JCExpression> nil()));
         outer = outer.append(iter_decl);
         JCIdent iter_id = at(stmt).Ident(iter_decl.getName());
-
-        // U n = $ceylontmpX.getHead();
+        
+        // final U n = $ceylontmpX.getHead();
+        JCExpression iter_head = at(stmt).Apply(null, at(stmt).Select(iter_id, names().fromString(Util.getGetterName("head"))), List.<JCExpression> nil());
         JCExpression loop_var_init;
         if (variable2 == null) {
-        	loop_var_init = at(stmt).Apply(null, at(stmt).Select(iter_id, names().fromString(Util.getGetterName("head"))), List.<JCExpression> nil());
+            loop_var_init = iter_head;
         } else {
-        	loop_var_init = at(stmt).Apply(null, at(stmt).Select(at(stmt).Apply(null, at(stmt).Select(iter_id, names().fromString(Util.getGetterName("head"))), List.<JCExpression> nil()), names().fromString(Util.getGetterName("key"))), List.<JCExpression> nil());
+            loop_var_init = at(stmt).Apply(null, at(stmt).Select(iter_head, names().fromString(Util.getGetterName("key"))), List.<JCExpression> nil());
         }
-        JCVariableDecl item_decl = at(stmt).VarDef(make().Modifiers(0, annots), names().fromString(loop_var_name), item_type, loop_var_init );
+        JCVariableDecl item_decl = at(stmt).VarDef(make().Modifiers(FINAL, annots), names().fromString(loop_var_name), item_type, loop_var_init );
         List<JCStatement> while_loop = List.<JCStatement> of(item_decl);
 
         if (variable2 != null) {
-            // V n = $ceylontmpX.getHead().getElement();
+            // final V n = $ceylontmpX.getHead().getElement();
             JCExpression loop_var_init2 = at(stmt).Apply(null, at(stmt).Select(at(stmt).Apply(null, at(stmt).Select(iter_id, names().fromString(Util.getGetterName("head"))), List.<JCExpression> nil()), names().fromString(Util.getGetterName("element"))), List.<JCExpression> nil());
             String loop_var_name2 = variable2.getIdentifier().getText();
             JCExpression item_type2 = gen.makeJavaType(gen.actualType(variable2));
-            JCVariableDecl item_decl2 = at(stmt).VarDef(make().Modifiers(0, annots), names().fromString(loop_var_name2), item_type2, loop_var_init2);
+            JCVariableDecl item_decl2 = at(stmt).VarDef(make().Modifiers(FINAL, annots), names().fromString(loop_var_name2), item_type2, loop_var_init2);
             while_loop = while_loop.append(item_decl2);
         }
-        
-        // The user-supplied contents of the loop
-        List<JCStatement> inner = convertStmts(stmt.getForClause().getBlock().getStatements());
 
-        // if ($ceylontmpY != null) ... else break;
-        JCStatement test = at(stmt).If(at(stmt).Binary(JCTree.NE, makeIdent(loop_var_name), make().Literal(TypeTags.BOT, null)), at(stmt).Block(0, inner), at(stmt).Block(0, List.<JCStatement> of(at(stmt).Break(null))));
-        while_loop = while_loop.append(test);
+        // The user-supplied contents of the loop
+        while_loop = while_loop.appendList(convertStmts(stmt.getForClause().getBlock().getStatements()));
 
         // $ceylontmpX = $ceylontmpX.getTail();
         JCExpression next = at(stmt).Assign(iter_id, at(stmt).Apply(null, at(stmt).Select(iter_id, names().fromString(Util.getGetterName("tail"))), List.<JCExpression> nil()));
         while_loop = while_loop.append(at(stmt).Exec(next));
 
-        // while (True)...
-        outer = outer.append(at(stmt).WhileLoop(at(stmt).Literal(TypeTags.BOOLEAN, 1), at(stmt).Block(0, while_loop)));
+        // while ($ceylontmpX.getHead() != null)...
+        outer = outer.append(at(stmt).WhileLoop(at(stmt).Binary(JCTree.NE, iter_head, make().Literal(TypeTags.BOT, null)), at(stmt).Block(0, while_loop)));
 
         if (stmt.getFailClause() != null) {
             // The user-supplied contents of fail block

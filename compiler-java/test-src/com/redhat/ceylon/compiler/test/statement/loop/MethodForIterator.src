@@ -4,12 +4,8 @@ class MethodForIterator extends .ceylon.language.Object {
     
     public final void m(final Sequence<Integer> seq) {
         .ceylon.language.Iterator<Integer> $i$iter$0 = seq.iterator();
-        while (true) {
-            Integer i = $i$iter$0.getHead();
-            if (i != null) {
-            } else {
-                break;
-            }
+        while ($i$iter$0.getHead() != null) {
+            final Integer i = $i$iter$0.getHead();
             $i$iter$0 = $i$iter$0.getTail();
         }
     }

@@ -50,14 +50,23 @@ public class ClassGen extends GenPart {
             super(gen.statementGen);
         }
 
+        // Class Initializer parameter
         public void visit(Tree.Parameter param) {
+            // Create a parameter for the constructor
+            String name = param.getIdentifier().getText();
             JCExpression type = gen.makeJavaType(param.getType().getTypeModel());
             boolean sharedMethod = ((Declaration)param.getDeclarationModel().getContainer()).isShared();
             List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(param.getType().getTypeModel(), sharedMethod);
-            JCVariableDecl var = at(param).VarDef(make().Modifiers(0, annots), names().fromString(param.getIdentifier().getText()), type, null);
+            if (sharedMethod) {
+//                annots = annots.append(gen.makeAtName(name));
+            }
+            JCVariableDecl var = at(param).VarDef(make().Modifiers(0, annots), names().fromString(name), type, null);
             params.append(var);
+            
+            // Check if the parameter is used outside of the initializer
             if (param.getDeclarationModel().isCaptured()) {
-                JCVariableDecl localVar = at(param).VarDef(make().Modifiers(FINAL | PRIVATE), names().fromString(param.getIdentifier().getText()), type , null);
+                // If so we create a field for it initializing it with the parameter's value
+                JCVariableDecl localVar = at(param).VarDef(make().Modifiers(FINAL | PRIVATE), names().fromString(name), type , null);
                 defs.append(localVar);
                 initStmts.append(at(param).Exec(at(param).Assign(makeSelect("this", localVar.getName().toString()), at(param).Ident(var.getName()))));
             }
@@ -366,7 +375,7 @@ public class ClassGen extends GenPart {
         int mods = convertAttributeGetSetDeclFlags(decl);
         List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(gen.actualType(decl), false);
         if (isActual(decl)) {
-            annots = annots.append(makeOverride());
+            annots = annots.append(gen.makeAtOverride());
         }
         
         return make().MethodDef(make().Modifiers(mods, annots),
@@ -394,7 +403,7 @@ public class ClassGen extends GenPart {
         List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(gen.actualType(decl), false);
         final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
         if (isActual(decl)) {
-            langAnnotations.append(makeOverride());
+            langAnnotations.append(gen.makeAtOverride());
         }
         
         return make().MethodDef(make().Modifiers(mods, langAnnotations.toList()),
@@ -480,7 +489,7 @@ public class ClassGen extends GenPart {
         // FIXME: Handle lots more flags here
 
         if (isActual(decl)) {
-            langAnnotations.append(makeOverride());
+            langAnnotations.append(gen.makeAtOverride());
         }
 
         int mods = convertMethodDeclFlags(decl);
@@ -641,10 +650,6 @@ public class ClassGen extends GenPart {
         return decl.getDeclarationModel().isVariable();
     }
 
-    public JCAnnotation makeOverride() {
-        return make().Annotation(makeIdent(syms().overrideType), List.<JCExpression> nil());
-    }
-
     private JCTypeParameter convert(Tree.TypeParameterDeclaration param) {
         // FIXME: implement this
         if (param.getTypeVariance() != null)
@@ -655,12 +660,14 @@ public class ClassGen extends GenPart {
 
     private JCVariableDecl convert(Tree.Parameter param) {
         at(param);
-        Name name = names().fromString(param.getIdentifier().getText());
+        String name = param.getIdentifier().getText();
         JCExpression type = gen.makeJavaType(gen.actualType(param));
         boolean sharedMethod = ((Declaration)param.getDeclarationModel().getContainer()).isShared();
         List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(gen.actualType(param), sharedMethod );
-
-        JCVariableDecl v = at(param).VarDef(make().Modifiers(FINAL, annots), name, type, null);
+        if (sharedMethod) {
+//            annots = annots.append(gen.makeAtName(name));
+        }
+        JCVariableDecl v = at(param).VarDef(make().Modifiers(FINAL, annots), names().fromString(name), type, null);
 
         return v;
     }

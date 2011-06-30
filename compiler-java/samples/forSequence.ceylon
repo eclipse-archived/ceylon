@@ -1,7 +1,6 @@
 doc "Test a sequence and a loop"
 shared void forSequence(Process process) {
-    for (Natural i in { 1, 2, 3 }) {
+    for (Natural i -> String s in {1->"a", 2->"b"}) {
         process.writeLine("Hello World");
     }
 }
-

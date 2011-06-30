@@ -22,6 +22,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
@@ -401,12 +402,12 @@ public class Gen2 {
     public List<JCTree.JCAnnotation> makeJavaTypeAnnotations(ProducedType type, boolean force) {
         // For shared types we keep a list of annotations to apply to the resulting Java type
         // to make reverse engineering of the final class file possible
-        boolean applyAnnotations = false; // FIXME type.getDeclaration().isShared() || force;
+        boolean applyAnnotations = false; //type.getDeclaration().isShared() || force;
         ListBuffer<JCTree.JCAnnotation> annotations = new ListBuffer<JCTree.JCAnnotation>();
         
         if (applyAnnotations) {
             // Add the original type to the annotations
-            annotations.append(make().Annotation(makeIdent("Type"), List.<JCExpression> of(make().Literal(type.getProducedTypeName()))));
+            annotations.append(makeAtType(type.getProducedTypeName()));
         }
         
         return annotations.toList();
@@ -419,5 +420,19 @@ public class Gen2 {
             t = m.getTypeModel();
         }
         return t;
+    }
+
+    public JCAnnotation makeAtOverride() {
+        return make().Annotation(makeIdent(syms.overrideType), List.<JCExpression> nil());
+    }
+
+    public JCAnnotation makeAtName(String name) {
+        // FIXME Using plain "Name" is probably not correct
+        return make().Annotation(makeIdent("Name"), List.<JCExpression> of(make().Literal(name)));
+    }
+
+    public JCAnnotation makeAtType(String name) {
+        // FIXME Using plain "TypeInfo" is probably not correct
+        return make().Annotation(makeIdent("TypeInfo"), List.<JCExpression> of(make().Literal(name)));
     }
 }

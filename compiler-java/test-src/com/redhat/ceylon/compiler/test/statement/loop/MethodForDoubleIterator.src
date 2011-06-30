@@ -3,14 +3,10 @@ package com.redhat.ceylon.compiler.test.statement.loop;
 class MethodForDoubleIterator extends .ceylon.language.Object {
     
     public final void m() {
-        .ceylon.language.Iterator<Entry<Natural, String>> $i$iter$0 = new .ceylon.language.ArraySequence<Entry<Natural, String>>((Entry<Natural, String>[])new Object[]{new .ceylon.language.Entry<Natural, String>(.ceylon.language.Natural.instance(1L), .ceylon.language.String.instance("a")), new .ceylon.language.Entry<Natural, String>(.ceylon.language.Natural.instance(2L), .ceylon.language.String.instance("b"))}, 0L).iterator();
-        while (true) {
-            Natural i = $i$iter$0.getHead().getKey();
-            String s = $i$iter$0.getHead().getElement();
-            if (i != null) {
-            } else {
-                break;
-            }
+        .ceylon.language.Iterator<Entry<Natural, String>> $i$iter$0 = new .ceylon.language.ArraySequence<Entry<Natural, String>>(new .ceylon.language.Entry<Natural, String>(.ceylon.language.Natural.instance(1L), .ceylon.language.String.instance("a")), new .ceylon.language.Entry<Natural, String>(.ceylon.language.Natural.instance(2L), .ceylon.language.String.instance("b"))).iterator();
+        while ($i$iter$0.getHead() != null) {
+            final Natural i = $i$iter$0.getHead().getKey();
+            final String s = $i$iter$0.getHead().getElement();
             $i$iter$0 = $i$iter$0.getTail();
         }
     }

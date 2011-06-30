@@ -509,20 +509,13 @@ public class ExpressionGen extends GenPart {
     }
 
     public JCExpression convert(SequenceEnumeration value) {
-        // FIXME not implemented yet
-        
         ListBuffer<JCExpression> elems = new ListBuffer<JCExpression>();
         java.util.List<Expression> list = value.getExpressionList().getExpressions();
         for (Expression expr : list) {
             elems.append(convertExpression(expr));
         }
         
-        List<JCExpression> dims = List.<JCExpression>nil();
-        
         ProducedType t = value.getTypeModel().getTypeArgumentList().get(0);
-		JCExpression arrayExpr = make().TypeCast(make().TypeArray(gen.makeJavaType(t)), make().NewArray(gen.makeJavaType(t.getDeclaration().getExtendedType()), dims , elems.toList()));
-        JCExpression indexExpr = make().Literal(Long.valueOf(0));
-        List<JCExpression> args = List.<JCExpression> of(arrayExpr, indexExpr );
-        return at(value).NewClass(null, null, at(value).TypeApply(makeIdent(syms().ceylonArraySequenceType), List.<JCExpression> of(gen.makeJavaType(t))), args, null);
+        return at(value).NewClass(null, null, at(value).TypeApply(makeIdent(syms().ceylonArraySequenceType), List.<JCExpression> of(gen.makeJavaType(t))), elems.toList(), null);
     }
 }
