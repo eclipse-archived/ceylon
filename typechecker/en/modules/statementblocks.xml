@@ -1000,11 +1000,16 @@ else {
         
         <programlisting>TypedVariable: UnionType MemberName</programlisting>
         
-        <para>In certain cases, the explicit type be omitted, forcing the compiler to infer it, by 
-        specifying the keyword <literal>value</literal> where the type usually appears. The type of 
-        the variable is inferred to be the type of the expression that follows.</para>
+        <para>In most cases, the explicit type be omitted, forcing the compiler to infer it, by 
+        specifying the keyword <literal>value</literal> where the type usually appears. The type 
+        of the variable is inferred to be the type of the expression that follows.</para>
         
-        <programlisting>Variable: (UnionType | "value") MemberName</programlisting>
+        <programlisting>Variable: (UnionType | "value")? MemberName</programlisting>
+        
+        <para>The <literal>value</literal> keyword is optional for variables with inferred type.</para>
+
+        <comment><para>TODO: write down the rules for inferring the type of control structure
+        variables!</para></comment>
         
         </section>
         
@@ -1018,13 +1023,16 @@ else {
             
             <para>An iteration variable may be callable.</para>
             
-            <programlisting>CallableVariable: (UnionType | "function" | "void") MemberName Params+</programlisting>
+            <programlisting>CallableVariable: (UnionType | "function" | "void")? MemberName Params+</programlisting>
         
-            <para>An iteration variable of type <literal>Entry</literal> may be specified in destructured 
-            form.</para>
+            <para>The <literal>function</literal> keyword is optional for callable variables with 
+            inferred type.</para>
+
+            <para>An iteration variable of type <literal>Entry</literal> may be specified in 
+            destructured form.</para>
         
             <programlisting>EntryVariablePair: Variable "->" Variable</programlisting>
-
+            
         </section>
         
         <section id="controlstructureconditions">
@@ -1735,12 +1743,14 @@ while (!person.dead);</programlisting>
 
             <programlisting>Try: "try" ("(" Resource ")")? Block</programlisting>
             
-            <programlisting>Catch: "catch" "(" TypedVariable ")" Block</programlisting>
+            <programlisting>Catch: "catch" "(" Variable ")" Block</programlisting>
             
             <programlisting>Finally: "finally" Block</programlisting>
 
             <para>The type of each <literal>catch</literal> variable declaration must be 
-            assignable to <literal>ceylon.language.Exception</literal>.</para>
+            assignable to <literal>ceylon.language.Exception</literal>. If no type is
+            explicitly specified, the type is inferred to be 
+            <literal>ceylon.language.Exception</literal>.</para>
             
             <para>The <literal>try</literal> block may declare a <emphasis>resource</emphasis>
             expression. A resource expresson produces a heavyweight object that must be 
