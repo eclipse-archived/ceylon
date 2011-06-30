@@ -1,5 +1,5 @@
-shared Entry<Key,Element>[] zip<Key,Element>(Key[] keys, Element[] elements)
+shared Entry<Key,Item>[] zip<Key,Item>(Key[] keys, Item[] items)
         given Key satisfies Equality
-        given Element satisfies Equality {
+        given Item satisfies Equality {
     throw;
 }
