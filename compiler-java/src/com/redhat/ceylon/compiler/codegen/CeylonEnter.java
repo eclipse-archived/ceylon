@@ -20,8 +20,10 @@ public class CeylonEnter extends Enter {
 
     public static Enter instance(Context context) {
         Enter instance = context.get(enterKey);
-        if (instance == null)
+        if (instance == null){
             instance = new CeylonEnter(context);
+            context.put(enterKey, instance);
+        }
         return instance;
     }
 
