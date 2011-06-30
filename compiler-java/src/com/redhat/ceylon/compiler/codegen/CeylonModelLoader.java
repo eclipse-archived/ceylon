@@ -49,6 +49,7 @@ import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.jvm.ClassReader;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.util.Context;
+import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Name.Table;
 
@@ -61,6 +62,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     private PhasedUnits phasedUnits;
     private com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext;
     private TypeParser typeParser = new TypeParser();
+    private Log log;
     
     public static CeylonModelLoader instance(Context context) {
         CeylonModelLoader instance = context.get(CeylonModelLoader.class);
@@ -77,6 +79,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         symtab = Symtab.instance(context);
         names = Name.Table.instance(context);
         reader = ClassReader.instance(context);
+        log = Log.instance(context);
     }
 
     public void loadRequiredModules(com.sun.tools.javac.util.List<JCCompilationUnit> trees) {
