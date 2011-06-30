@@ -17,6 +17,7 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -361,21 +362,36 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     }
 
     private void complete(ClassOrInterface klass, ClassSymbol classSymbol) {
+        // FIXME: deal with toplevel methods and attributes
         // do its type parameters first
         setTypeParameters(klass, classSymbol);
+        int constructorCount = 0;
         // then its methods
         for(Symbol member : classSymbol.members().getElements()){
-            // FIXME: deal with constructors
+            // FIXME: deal with multiple constructors
             // FIXME: could be an attribute
             if(member instanceof MethodSymbol){
                 MethodSymbol methodSymbol = (MethodSymbol) member;
                 
                 if(methodSymbol.isStatic()
-                        || methodSymbol.isConstructor()
                         /* FIXME: Temporary: if it's not public drop it. */
                         || (methodSymbol.flags() & Flags.PUBLIC) == 0)
                     continue;
                 
+                if(methodSymbol.isConstructor()){
+                    constructorCount++;
+                    // ignore the non-first ones
+                    if(constructorCount > 1){
+                        // only warn once
+                        if(constructorCount == 2)
+                            log.rawWarning(0, "Has multiple constructors: "+classSymbol.getQualifiedName());
+                        continue;
+                    }
+                    setParameters((Class)klass, methodSymbol);
+                    continue;
+                }
+                
+                // normal method
                 Method method = new Method();
                 
                 method.setShared((methodSymbol.flags() & Flags.PUBLIC) != 0);
@@ -387,19 +403,16 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 setTypeParameters(method, methodSymbol);
 
                 // now its parameters
-                ParameterList parameters = new ParameterList();
-                method.addParameterList(parameters);
-                for(VarSymbol paramSymbol : methodSymbol.params()){
-                    ValueParameter parameter = new ValueParameter();
-                    parameter.setContainer(method);
-                    // FIXME: deal with type override by annotations
-                    parameter.setType(getType(paramSymbol.type, method));
-                    parameters.getParameters().add(parameter);
-                }
+                setParameters(method, methodSymbol);
                 // FIXME: deal with type override by annotations
                 method.setType(getType(methodSymbol.getReturnType(), method));
             }
         }
+        if(klass instanceof Class && constructorCount == 0){
+            // must be a default constructor
+            ((Class)klass).setParameterList(new ParameterList());
+        }
+        
         // FIXME: deal with type override by annotations
         // look at its super type
         Type superClass = classSymbol.getSuperclass();
@@ -409,12 +422,24 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             klass.setExtendedType(getType(superClass, klass));
         // interfaces need to have their superclass set to Object
         else if(superClass.getKind() == TypeKind.NONE
-        		&& klass instanceof Interface){
-        	klass.setExtendedType(getType("ceylon.language.Object", klass));
+                && klass instanceof Interface){
+            klass.setExtendedType(getType("ceylon.language.Object", klass));
         }
         setSatisfiedTypes(klass, classSymbol);
     }
     
+    private void setParameters(Functional klass, MethodSymbol methodSymbol) {
+        ParameterList parameters = new ParameterList();
+        klass.addParameterList(parameters);
+        for(VarSymbol paramSymbol : methodSymbol.params()){
+            ValueParameter parameter = new ValueParameter();
+            parameter.setContainer((Scope) klass);
+            // FIXME: deal with type override by annotations
+            parameter.setType(getType(paramSymbol.type, (Scope) klass));
+            parameters.getParameters().add(parameter);
+        }
+    }
+
     @Override
     public void complete(LazyValue value) {
         Type type = null;
