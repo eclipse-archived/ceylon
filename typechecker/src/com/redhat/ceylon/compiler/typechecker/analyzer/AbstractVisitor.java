@@ -107,6 +107,10 @@ public abstract class AbstractVisitor extends Visitor {
         return (Class) getLanguageDeclaration("IdentifiableObject");
     }
     
+    protected Class getExceptionDeclaration() {
+        return (Class) getLanguageDeclaration("Exception");
+    }
+
     protected Interface getCategoryDeclaration() {
         return (Interface) getLanguageDeclaration("Category");
     }

@@ -1844,6 +1844,23 @@ public class ExpressionVisitor extends AbstractVisitor {
         return producedType(getSequenceDeclaration(), et);
     }
     
+    @Override public void visit(Tree.CatchClause that) {
+        super.visit(that);
+        ProducedType et = getExceptionDeclaration().getType();
+        if (that.getVariable().getType() instanceof Tree.LocalModifier) {
+            that.getVariable().getType().setTypeModel( et );
+        }
+        else {
+            ProducedType dt = that.getVariable().getType().getTypeModel();
+            if (dt==null) {
+                that.getVariable().getType().addError("can not determine if caught type is an exception type");
+            }
+            else if (!et.isSupertypeOf(dt)) {
+                that.getVariable().getType().addError("must be of type: Exception");
+            }
+        }
+    }
+    
     @Override public void visit(Tree.StringTemplate that) {
         super.visit(that);
         //TODO: validate that the subexpression types are Formattable

@@ -1098,7 +1098,7 @@ nonemptyCondition
 isCondition
     : ('(' IS_OP type LIDENTIFIER ')') => '(' IS_OP type memberName ')'
     -> ^(IS_CONDITION[$IS_OP] type ^(VARIABLE type memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName)))))
-    | '(' IS_OP type (memberName specifier ) ')'
+    | '(' IS_OP type (memberName specifier) ')'
     -> ^(IS_CONDITION[$IS_OP] type ^(VARIABLE type memberName specifier))
     ;
 
@@ -1250,7 +1250,7 @@ finallyBlock
     ;
 
 specifiedVariableOrExpression
-    : (declarationStart) => specifiedVariable 
+    : (declarationStart|LIDENTIFIER SPECIFY) => specifiedVariable 
     -> ^(SPECIFIED_VARIABLE_OR_EXPRESSION specifiedVariable)
     | expression
     -> ^(SPECIFIED_VARIABLE_OR_EXPRESSION expression)
@@ -1271,6 +1271,10 @@ variable2
 variable
     : inferableType memberName parameters*
     -> ^(VARIABLE inferableType memberName parameters*)
+    | memberName
+    -> ^(VARIABLE VALUE_MODIFIER memberName)
+    | memberName parameters+
+    -> ^(VARIABLE FUNCTION_MODIFIER memberName parameters+)
     ;
 
 impliedVariable

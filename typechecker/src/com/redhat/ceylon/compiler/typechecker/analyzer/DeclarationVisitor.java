@@ -415,12 +415,26 @@ public class DeclarationVisitor extends Visitor {
         Value v = new Value();
         that.setDeclarationModel(v);
         visitDeclaration(that, v);
-        that.getType().visit(this);
-        that.getIdentifier().visit(this);
+        if (that.getType()!=null) {
+            that.getType().visit(this);
+        }
+        if (that.getIdentifier()!=null) {
+            that.getIdentifier().visit(this);
+        }
         if (that.getAnnotationList()!=null) {
             that.getAnnotationList().visit(this);
         }
         //TODO: parameters of callable variables?!
+        if (that.getParameterLists().size()==0) {
+            if (that.getType() instanceof Tree.FunctionModifier) {
+                that.getType().addError("variables with no parameters may not be declared using the keyword function");
+            }
+        }
+        else {
+            if (that.getType() instanceof Tree.ValueModifier) {
+                that.getType().addError("variables with parameters may not be declared using the keyword value");
+            }
+        }
         that.setScope(scope);
         that.setUnit(unit);
     }

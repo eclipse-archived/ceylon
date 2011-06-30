@@ -510,7 +510,9 @@ public class SpecificationVisitor extends AbstractVisitor {
         
         boolean d = beginDeclarationScope();
         SpecificationState as = beginSpecificationScope();
-        that.getIfClause().visit(this);
+        if (that.getIfClause()!=null) {
+            that.getIfClause().visit(this);
+        }
         boolean definitelyAssignedByIfClause = specified.definitely || specified.exited;
         boolean possiblyAssignedByIfClause = specified.possibly;
         endDeclarationScope(d);
