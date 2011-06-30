@@ -101,18 +101,18 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         }
         
         for(final JCCompilationUnit tree : trees){
-        	CompilationUnit ceylonTree = ((CeylonCompilationUnit)tree).ceylonTree;
-        	final String pkgName = tree.getPackageName().toString();
-        	
-        	ceylonTree.visit(new Visitor(){
-        		@Override
-        		public void visit(ClassDefinition that) {
-        			String name = that.getIdentifier().getText();
-        			String fqn = pkgName.isEmpty() ? name : pkgName+"."+name;
-        			ClassSymbol classSymbol = reader.enterClass(names.fromString(fqn), tree.getSourceFile());
-        			super.visit(that);
-        		}
-        	});
+            CompilationUnit ceylonTree = ((CeylonCompilationUnit)tree).ceylonTree;
+            final String pkgName = tree.getPackageName().toString();
+            
+            ceylonTree.visit(new Visitor(){
+                @Override
+                public void visit(ClassDefinition that) {
+                    String name = that.getIdentifier().getText();
+                    String fqn = pkgName.isEmpty() ? name : pkgName+"."+name;
+                    ClassSymbol classSymbol = reader.enterClass(names.fromString(fqn), tree.getSourceFile());
+                    super.visit(that);
+                }
+            });
         }
     }
 
@@ -287,25 +287,27 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 return pkg;
         }
         Package pkg = new Package(){
-        	@Override
-        	public Declaration getDirectMember(String name) {
-        		System.err.println("Lazy-loading "+name+" from "+pkgName);
-        		String className = pkgName.isEmpty() ? name : pkgName + "." + name;
+            @Override
+            public Declaration getDirectMember(String name) {
+                // FIXME: some refactoring needed
+                String className = pkgName.isEmpty() ? name : pkgName + "." + name;
+                // we need its package ready first
                 PackageSymbol javaPkg = reader.enterPackage(names.fromString(pkgName));
                 javaPkg.complete();
                 ClassSymbol classSymbol = lookupClassSymbol(className);
                 // only get it from the classpath if we're not compiling it
                 if(classSymbol != null && classSymbol.classfile.getKind() != Kind.SOURCE)
-                	return convertToDeclaration(className);
-        		return super.getDirectMember(name);
-        	}
-        	@Override
-        	public Declaration getDirectMemberOrParameter(String name) {
-        		// FIXME: what's the difference?
-        		return getDirectMember(name);
-        	}
+                    return convertToDeclaration(className);
+                return super.getDirectMember(name);
+            }
+            @Override
+            public Declaration getDirectMemberOrParameter(String name) {
+                // FIXME: what's the difference?
+                return getDirectMember(name);
+            }
         };
         pkg.setModule(module);
+        // FIXME: some refactoring needed
         pkg.setName(pkgName == null ? Collections.<String>emptyList() : Arrays.asList(pkgName.split("\\.")));
         module.getPackages().add(pkg);
         return pkg;
@@ -315,7 +317,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         java.util.List<String> moduleName;
         // FIXME: this is a rather simplistic view of the world
         if(pkgName == null)
-        	moduleName = Arrays.asList("<default module>");
+            moduleName = Arrays.asList("<default module>");
         else if(pkgName.startsWith("java."))
             moduleName = Arrays.asList("java");
         else if(pkgName.startsWith("sun."))
@@ -326,7 +328,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
          // make sure that when we load the ceylon language module we set it to where
          // the typechecker will look for it
          if(pkgName != null
-        		 && pkgName.startsWith("ceylon.language.")
+                 && pkgName.startsWith("ceylon.language.")
                  && ceylonContext.getModules().getLanguageModule() == null){
              ceylonContext.getModules().setLanguageModule(module);
          }
