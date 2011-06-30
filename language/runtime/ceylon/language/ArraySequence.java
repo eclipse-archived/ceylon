@@ -5,10 +5,15 @@ public class ArraySequence<Element> implements Sequence<Element> {
 	private final Element[] array;
 	private final long first;
 
-	public ArraySequence(Element[] array, long first) {
+	public ArraySequence(Element... array) {
 		this.array = array;
-		this.first = first;
+		this.first = 0;
 	}
+
+    public ArraySequence(Element[] array, long first) {
+        this.array = array;
+        this.first = first;
+    }
 
 	@Override
 	public Natural getLastIndex() {
