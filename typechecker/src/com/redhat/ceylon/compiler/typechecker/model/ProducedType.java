@@ -113,16 +113,24 @@ public class ProducedType extends ProducedReference {
 	            }
 	        }
 	        else {
-	            //TODO: what if this is a union of one type?!
-	            return false;
+	            if (getDeclaration().getCaseTypes().size()==1) {
+	                ProducedType st = getDeclaration().getCaseTypes().get(0).substitute(getTypeArguments());
+	                return st.isExactly(type);
+	            }
+	            else {
+	                return false;
+	            }
 	        }
 	    }
-	    /*else if (type.getDeclaration() instanceof UnionType) {
-	        List<ProducedType> otherCases = type.getDeclaration().getCaseTypes();
-	        if (otherCases.size()==1) {
-	            if ( isExactly(otherCases.get(0)) ) return true;
-	        }
-	    }*/
+	    else if (type.getDeclaration() instanceof UnionType) {
+            if (type.getDeclaration().getCaseTypes().size()==1) {
+                ProducedType st = type.getDeclaration().getCaseTypes().get(0).substitute(getTypeArguments());
+                return this.isExactly(st);
+            }
+            else {
+                return false;
+            }
+	    }
 	    else {
     	    if (type.getDeclaration()!=getDeclaration()) {
     	        return false;
