@@ -2422,6 +2422,10 @@ SequencedParam?
         <para>The type of the default argument expression must be assignable to the declared
         type of the parameter.</para>
         
+        <para>If the declared type of the parameter is an optional type (a subtype of
+        <literal>Nothing</literal>) then the default argument expression must be a value
+        reference to <literal>null</literal>.</para>
+        
         </section>
         
         <section id="sequencedandtupleparameters">
