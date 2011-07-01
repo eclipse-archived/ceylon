@@ -222,15 +222,23 @@ public class ProducedType extends ProducedReference {
             return replaceDeclaration( new BottomType() );
         }
         else if (getDeclaration() instanceof UnionType) {
-            UnionType ut = new UnionType();
             List<ProducedType> types = new ArrayList<ProducedType>();
             for (ProducedType ct: getDeclaration().getCaseTypes()) {
                 if (ct.getSupertype(ci)==null) {
                     addToUnion(types, ct.minus(ci));
                 }
             }
-            ut.setCaseTypes(types);
-            return replaceDeclaration(ut);
+            ProducedType pt;
+            if (types.size()==1) {
+                //TODO: I *think* this is correct!
+                pt = types.get(0).substitute(getTypeArguments());
+            }
+            else {
+                UnionType ut = new UnionType();
+                ut.setCaseTypes(types);
+                pt = replaceDeclaration(ut);
+            }
+            return pt;
         }
         else {
             return this;
