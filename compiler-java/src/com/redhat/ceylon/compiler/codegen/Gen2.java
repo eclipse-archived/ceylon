@@ -15,6 +15,7 @@ import org.antlr.runtime.tree.CommonTree;
 import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
@@ -377,7 +378,16 @@ public class Gen2 {
         }
         
         JCExpression jt; 
-        if (type.getDeclaration().getCaseTypes().isEmpty()) {
+        if (type.getDeclaration() instanceof UnionType && type.getDeclaration().getCaseTypes().size() > 1) {
+            // FIXME This should return the common base class of all the union types
+            // but we have to wait until this is implemented in the typechecker
+            jt = makeIdent("Object");
+        } else {
+            if (type.getDeclaration() instanceof UnionType && type.getDeclaration().getCaseTypes().size() == 1) {
+                // Special case when the Union contains only a single CaseType
+                // FIXME This is not correct! We might lose information about type arguments!
+                type = type.getDeclaration().getCaseTypes().get(0);
+            }
             java.util.List<ProducedType> tal = type.getTypeArgumentList();
             if (tal != null && !tal.isEmpty()) {
                 ListBuffer<JCExpression> typeArgs = new ListBuffer<JCExpression>();
@@ -390,10 +400,6 @@ public class Gen2 {
             } else {
                 jt = makeIdent(type.getProducedTypeName());
             }
-        } else {
-            // FIXME This should return the common base class of all the union types
-            // but we have to wait until this is implemented in the typechecker
-            jt = makeIdent("Object");
         }
         
         return jt;
