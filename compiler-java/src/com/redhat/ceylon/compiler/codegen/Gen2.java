@@ -407,7 +407,7 @@ public class Gen2 {
         
         if (applyAnnotations) {
             // Add the original type to the annotations
-            annotations.append(makeAtType(type.getProducedTypeName()));
+            annotations.append(makeAtType(type.getProducedTypeQualifiedName()));
         }
         
         return annotations.toList();
