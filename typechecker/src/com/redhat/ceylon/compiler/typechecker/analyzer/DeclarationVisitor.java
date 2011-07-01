@@ -425,7 +425,7 @@ public class DeclarationVisitor extends Visitor {
             that.getAnnotationList().visit(this);
         }
         //TODO: parameters of callable variables?!
-        if (that.getParameterLists().size()==0) {
+        /*if (that.getParameterLists().size()==0) {
             if (that.getType() instanceof Tree.FunctionModifier) {
                 that.getType().addError("variables with no parameters may not be declared using the keyword function");
             }
@@ -434,7 +434,7 @@ public class DeclarationVisitor extends Visitor {
             if (that.getType() instanceof Tree.ValueModifier) {
                 that.getType().addError("variables with parameters may not be declared using the keyword value");
             }
-        }
+        }*/
         that.setScope(scope);
         that.setUnit(unit);
     }
