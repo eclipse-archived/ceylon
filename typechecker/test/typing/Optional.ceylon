@@ -86,4 +86,44 @@ class Optional() {
         }
     }*/
     
+    class WithOptional<T>(T? val) {
+        shared T? val = val;
+        shared T[]? seq;
+        if (exists val) {
+            seq = {val};
+        }
+        else {
+            seq = null;
+        }
+    }
+    
+    if (exists s = WithOptional<String>("hello").val) {
+        @type["String"] value ss = s;
+    }
+    
+    if (exists seq = WithOptional<String>("goodbye").seq) {
+        @type["Empty|Sequence<String>"] value sseq = seq;
+    }
+    
+    if (nonempty seq = WithOptional<String>("hello again").seq) {
+        @type["Sequence<String>"] value sseq = seq;
+    }
+    
+    class WithOptionalString(String? val)
+            extends WithOptional<String>(val) {
+        
+        if (exists val) {
+            @type["String"] value ss = val;
+        }
+        
+        if (exists seq) {
+            @type["Empty|Sequence<String>"] value sseq = seq;
+        }
+        
+        if (nonempty seq) {
+            @type["Sequence<String>"] value sseq = seq;
+        }
+        
+    }
+    
 }
