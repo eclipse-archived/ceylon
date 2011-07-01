@@ -237,7 +237,7 @@ public class ExpressionGen extends GenPart {
             // must use the setter
             return at(op).Apply(List.<JCTree.JCExpression>nil(), makeIdent(Util.getSetterName(decl.getName())), 
                     List.<JCTree.JCExpression>of(rhs));
-        } else if(Util.isToplevelAttribute(decl)){
+        } else if(decl.isToplevel()){
             // must use top level setter
             java.util.List<String> path = new LinkedList<String>();
             path.addAll(decl.getContainer().getQualifiedName());
@@ -488,13 +488,19 @@ public class ExpressionGen extends GenPart {
     private JCExpression convert(Tree.BaseMemberExpression member) {
         Declaration decl = member.getDeclaration();
         if (decl instanceof Value) {
-            if (Util.isToplevelAttribute(decl)) {
-                // it's a toplevel attribute
-                java.util.List<String> path = new LinkedList<String>();
-                path.addAll(decl.getContainer().getQualifiedName());
-                path.add("$"+decl.getName());
-                path.add(Util.getGetterName(decl.getName()));
-                return at(member).Apply(List.<JCExpression>nil(), makeIdent(path), List.<JCExpression>nil());
+            if (decl.isToplevel()) {
+                if ("null".equals(decl.getName())) {
+                    // ERASURE
+                    // FIXME this is a pretty brain-dead way to go about erase I think
+                    return at(member).Ident(names().fromString("null"));
+                } else {
+                    // it's a toplevel attribute
+                    java.util.List<String> path = new LinkedList<String>();
+                    path.addAll(decl.getContainer().getQualifiedName());
+                    path.add("$"+decl.getName());
+                    path.add(Util.getGetterName(decl.getName()));
+                    return at(member).Apply(List.<JCExpression>nil(), makeIdent(path), List.<JCExpression>nil());
+                }
              } else if(Util.isClassAttribute(decl)) {
                 // invoke the getter
                 return at(member).Apply(List.<JCExpression>nil(), 

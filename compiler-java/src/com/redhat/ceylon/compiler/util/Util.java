@@ -22,11 +22,6 @@ public class Util {
     }
 
     // FIXME: add this to Declaration?
-    public static boolean isToplevelAttribute(Declaration decl) {
-        return decl.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Package;
-    }
-
-    // FIXME: add this to Declaration?
 	public static boolean isInnerMethod(Declaration decl) {
         return decl.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Method;
 	}

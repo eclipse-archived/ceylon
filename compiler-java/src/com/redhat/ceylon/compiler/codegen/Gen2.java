@@ -50,6 +50,9 @@ public class Gen2 {
     StatementGen statementGen = new StatementGen(this);
     ClassGen classGen = new ClassGen(this);
 
+    ProducedType nothingPType;
+    ProducedType voidPType;
+    
     public static Gen2 getInstance(Context context) throws Exception {
         Gen2 gen2 = context.get(Gen2.class);
         if (gen2 == null) {
@@ -75,6 +78,9 @@ public class Gen2 {
         modelLoader = CeylonModelLoader.instance(context);
 
         fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
+        
+        nothingPType = modelLoader.getType("ceylon.language.Nothing", null);
+        voidPType = modelLoader.getType("ceylon.language.Void", null);
     }
 
     JCTree.Factory at(Node t) {
@@ -320,8 +326,7 @@ public class Gen2 {
     
     // A type is optional when it is a union of Nothing|Type...
     boolean isOptional(ProducedType type) {
-        ProducedType nothingType = modelLoader.getType("ceylon.language.Nothing", null);
-        return (type.getDeclaration() instanceof UnionType && type.getDeclaration().getCaseTypes().size() > 1 && nothingType.isSubtypeOf(type));
+        return (type.getDeclaration() instanceof UnionType && type.getDeclaration().getCaseTypes().size() > 1 && nothingPType.isSubtypeOf(type));
     }
 
     // FIXME: this is ugly and probably wrong
@@ -359,13 +364,13 @@ public class Gen2 {
 
     public JCExpression makeJavaType(ProducedType type) {
         if (isOptional(type)) {
-            ProducedType nothingType = modelLoader.getType("ceylon.language.Nothing", null);
+            // ERASURE
             // Nasty cast because we just so happen to know that nothingType is a Class
-            type = type.minus((ClassOrInterface)(nothingType.getDeclaration()));
+            type = type.minus((ClassOrInterface)(nothingPType.getDeclaration()));
         }
         
-        ProducedType voidType = modelLoader.getType("ceylon.language.Void", null);
-        if (voidType.isExactly(type)) {
+        if (voidPType.isExactly(type)) {
+            // ERASURE
             return make.TypeIdent(VOID);
         }
         
