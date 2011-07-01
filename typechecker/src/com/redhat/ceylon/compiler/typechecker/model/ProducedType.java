@@ -124,7 +124,7 @@ public class ProducedType extends ProducedReference {
 	    }
 	    else if (type.getDeclaration() instanceof UnionType) {
             if (type.getDeclaration().getCaseTypes().size()==1) {
-                ProducedType st = type.getDeclaration().getCaseTypes().get(0).substitute(getTypeArguments());
+                ProducedType st = type.getDeclaration().getCaseTypes().get(0).substitute(type.getTypeArguments());
                 return this.isExactly(st);
             }
             else {
