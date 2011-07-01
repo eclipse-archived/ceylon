@@ -2258,7 +2258,7 @@ Void goodbye() {
             obtained.</para>
                                 
             <programlisting>shared Float total {
-    Float sum := 0.0;
+    variable Float sum := 0.0;
     for (LineItem li in lineItems) {
         sum += li.amount;
     }

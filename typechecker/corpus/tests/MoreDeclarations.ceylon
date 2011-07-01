@@ -72,7 +72,7 @@ class MoreDeclarations() {
 	shared Natural[] evenDigits = {0,2,4,6,8};
 	
 	shared Float total { 
-		Float sum := 0.0; 
+		variable Float sum := 0.0; 
 		for (LineItem li in lineItems) {
 			sum += li.amount; 
 			return sum;
