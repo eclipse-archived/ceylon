@@ -130,4 +130,16 @@ public class StructureTest extends CompilerTest {
     public void testToplevelMethods(){
         compareWithJavaSource("toplevel/ToplevelMethods");
     }
+    
+    //
+    // Type
+    
+    @Test
+    public void testOptionalType(){
+        compareWithJavaSource("type/OptionalType");
+    }
+    @Test
+    public void testSequenceType(){
+        compareWithJavaSource("type/SequenceType");
+    }
 }
