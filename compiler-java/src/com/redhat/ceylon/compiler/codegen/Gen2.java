@@ -318,18 +318,10 @@ public class Gen2 {
         return result;
     }
     
-    // A type is optional when it is a union of Nothing|Type
+    // A type is optional when it is a union of Nothing|Type...
     boolean isOptional(ProducedType type) {
-        // FIXME VERY naive implementation!!
-        // Should be something like type.isSubtypeOf(nothingType)
         ProducedType nothingType = modelLoader.getType("ceylon.language.Nothing", null);
-        java.util.List<ProducedType> types = type.getDeclaration().getCaseTypes();
-        for (ProducedType t : types) {
-            if (t.isExactly(nothingType)) {
-                return true;
-            }
-        }
-        return false;
+        return (type.getDeclaration() instanceof UnionType && type.getDeclaration().getCaseTypes().size() > 1 && nothingType.isSubtypeOf(type));
     }
 
     // FIXME: this is ugly and probably wrong
