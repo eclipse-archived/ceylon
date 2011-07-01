@@ -109,13 +109,7 @@ public class LowerCeylon extends TreeTranslator {
     public void visitTypeApply(JCTypeApply tree) {
         tree.clazz = translate(tree.clazz);
         tree.arguments = translate(tree.arguments);
-        if (tree.type.tsym == syms.ceylonOptionalType.tsym) {
-            // Check that arguments are well-formed
-            Type t = nonOptionalTypeFor(tree.type);
-            result = make.Ident(t.tsym);
-        } else {
-            result = tree;
-        }
+        result = tree;
     }
 
     public void visitAssign(JCAssign tree) {
@@ -233,9 +227,6 @@ public class LowerCeylon extends TreeTranslator {
         if (srcType.isPrimitive())
             return tree;
 
-        srcType = nonOptionalTypeFor(srcType);
-        dstType = nonOptionalTypeFor(dstType);
-
         Route route = types.getCeylonExtension(srcType, dstType);
         if (route != null) {
             make.at(tree.pos());
@@ -244,22 +235,6 @@ public class LowerCeylon extends TreeTranslator {
         }
 
         return tree;
-    }
-
-    private Type nonOptionalTypeFor(Type t) {
-        // We need to compare symbols (tsym) here rather
-        // than directly comparing types because t has type
-        // parameters and syms.ceylonOptionalType does not.
-        while (t.tsym == syms.ceylonOptionalType.tsym) {
-            List<Type> l = t.getTypeArguments();
-            assert l.length() == 1;
-            t = l.last();
-        }
-        if (t.tag == TypeTags.TYPEVAR) {
-            t = t.getUpperBound();
-        }
-
-        return t;
     }
 
     List<JCExpression> lowerArgs(List<Type> parameters, List<JCExpression> _args, Type varargsElement) {
