@@ -27,7 +27,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 
 /**
  * Third and final phase of type analysis.
@@ -75,8 +74,15 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
     
     @Override public void visit(Tree.IsCondition that) {
+        //don't recurse to the Variable, since we don't
+        //want to check that the specifier expression is
+        //assignable to the declared variable type
+        //(nor is it possible to infer the variable type)
         if (that.getVariable()!=null) {
-            that.getVariable().getSpecifierExpression().visit(this);
+            Tree.SpecifierExpression se = that.getVariable().getSpecifierExpression();
+            if (se!=null) {
+                se.visit(this);
+            }
         }
         /*if (that.getExpression()!=null) {
             that.getExpression().visit(this);
@@ -187,7 +193,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         if (that.getSpecifierExpression()!=null) {
             if (that.getType().getTypeModel()!=null) {
                 if (isOptionalType(that.getType().getTypeModel())) {
-                    Term t = that.getSpecifierExpression().getExpression().getTerm();
+                    Tree.Term t = that.getSpecifierExpression().getExpression().getTerm();
                     if (t instanceof Tree.BaseMemberExpression) {
                         ProducedReference pr = ((Tree.BaseMemberExpression) t).getTarget();
                         if (pr==null || pr.getDeclaration()!=getNullDeclaration()) {
