@@ -44,6 +44,7 @@
     <pathelement path="${compiler.jar}"/>
     <pathelement path="${runtime.jar}"/>
     <pathelement path="${junit.lib}"/>
+    <pathelement path="${build.classes}"/>
   </path>
 
   <path id="runtime.classpath">

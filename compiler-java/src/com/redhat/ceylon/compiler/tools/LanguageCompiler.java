@@ -217,7 +217,13 @@ public class LanguageCompiler extends JavaCompiler {
 
     // FIXME: this function is terrible, possibly refactor it with getPackage?
     private File getSrcDir(File sourceFile) {
-        String name = sourceFile.getAbsolutePath();
+        String name;
+        try {
+            name = sourceFile.getCanonicalPath();
+        } catch (IOException e) {
+            // FIXME
+            throw new RuntimeException(e);
+        }
         String[] prefixes = ((CeyloncFileManager) fileManager).getSourcePath();
         System.err.println("Prefixes: " + prefixes.length + " name: " + name);
         for (String prefix : prefixes) {
