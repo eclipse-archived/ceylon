@@ -27,6 +27,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 
 /**
  * Third and final phase of type analysis.
@@ -182,6 +183,24 @@ public class ExpressionVisitor extends AbstractVisitor {
         super.visit(that);
         if (that.getType()!=null) {
             checkType(that.getType().getTypeModel(), that.getSpecifierExpression());
+        }
+        if (that.getSpecifierExpression()!=null) {
+            if (that.getType().getTypeModel()!=null) {
+                if (isOptionalType(that.getType().getTypeModel())) {
+                    Term t = that.getSpecifierExpression().getExpression().getTerm();
+                    if (t instanceof Tree.BaseMemberExpression) {
+                        ProducedReference pr = ((Tree.BaseMemberExpression) t).getTarget();
+                        if (pr==null || pr.getDeclaration()!=getNullDeclaration()) {
+                            that.getSpecifierExpression().getExpression()
+                                    .addError("defaulted parameters of optional type must have the default value null");
+                        }
+                    }
+                    else {
+                        that.getSpecifierExpression().getExpression()
+                                .addError("defaulted parameters of optional type must have the default value null");
+                    }
+                }
+            }
         }
     }
 

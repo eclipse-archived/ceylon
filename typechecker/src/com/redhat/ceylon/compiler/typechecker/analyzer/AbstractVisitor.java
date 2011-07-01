@@ -15,6 +15,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -75,120 +76,120 @@ public abstract class AbstractVisitor extends Visitor {
         return null;
     }
     
-    private TypeDeclaration getLanguageDeclaration(String type) {
-        return (TypeDeclaration) getLanguageModuleDeclaration(type);
-    }
-
     protected Interface getCorrespondenceDeclaration() {
-        return (Interface) getLanguageDeclaration("Correspondence");
+        return (Interface) ((TypeDeclaration) getLanguageModuleDeclaration("Correspondence"));
     }
 
     protected Class getVoidDeclaration() {
-        return (Class) getLanguageDeclaration("Void");
+        return (Class) ((TypeDeclaration) getLanguageModuleDeclaration("Void"));
     }
     
     protected Class getNothingDeclaration() {
-        return (Class) getLanguageDeclaration("Nothing");
+        return (Class) ((TypeDeclaration) getLanguageModuleDeclaration("Nothing"));
+    }
+
+    protected Value getNullDeclaration() {
+        return (Value) getLanguageModuleDeclaration("null");
     }
 
     protected Interface getEmptyDeclaration() {
-        return (Interface) getLanguageDeclaration("Empty");
+        return (Interface) ((TypeDeclaration) getLanguageModuleDeclaration("Empty"));
     }
 
     protected Interface getSequenceDeclaration() {
-        return (Interface) getLanguageDeclaration("Sequence");
+        return (Interface) ((TypeDeclaration) getLanguageModuleDeclaration("Sequence"));
     }
 
     protected Class getObjectDeclaration() {
-        return (Class) getLanguageDeclaration("Object");
+        return (Class) ((TypeDeclaration) getLanguageModuleDeclaration("Object"));
     }
     
     protected Class getIdentifiableObjectDeclaration() {
-        return (Class) getLanguageDeclaration("IdentifiableObject");
+        return (Class) ((TypeDeclaration) getLanguageModuleDeclaration("IdentifiableObject"));
     }
     
     protected Class getExceptionDeclaration() {
-        return (Class) getLanguageDeclaration("Exception");
+        return (Class) ((TypeDeclaration) getLanguageModuleDeclaration("Exception"));
     }
 
     protected Interface getCategoryDeclaration() {
-        return (Interface) getLanguageDeclaration("Category");
+        return (Interface) ((TypeDeclaration) getLanguageModuleDeclaration("Category"));
     }
     
     protected Interface getIterableDeclaration() {
-        return (Interface) getLanguageDeclaration("Iterable");
+        return (Interface) ((TypeDeclaration) getLanguageModuleDeclaration("Iterable"));
     }
     
     protected Interface getCastableDeclaration() {
-        return (Interface) getLanguageDeclaration("Castable");
+        return (Interface) ((TypeDeclaration) getLanguageModuleDeclaration("Castable"));
     }
     
     protected Interface getSummableDeclaration() {
-        return (Interface) getLanguageDeclaration("Summable");
+        return (Interface) ((TypeDeclaration) getLanguageModuleDeclaration("Summable"));
     }
         
     protected Interface getNumericDeclaration() {
-        return (Interface) getLanguageDeclaration("Numeric");
+        return (Interface) ((TypeDeclaration) getLanguageModuleDeclaration("Numeric"));
     }
         
     protected Interface getIntegralDeclaration() {
-        return (Interface) getLanguageDeclaration("Integral");
+        return (Interface) ((TypeDeclaration) getLanguageModuleDeclaration("Integral"));
     }
         
     protected Interface getInvertableDeclaration() {
-        return (Interface) getLanguageDeclaration("Invertable");
+        return (Interface) ((TypeDeclaration) getLanguageModuleDeclaration("Invertable"));
     }
         
     protected Interface getSlotsDeclaration() {
-        return (Interface) getLanguageDeclaration("Slots");
+        return (Interface) ((TypeDeclaration) getLanguageModuleDeclaration("Slots"));
     }
         
     protected TypeDeclaration getComparisonDeclaration() {
-        return getLanguageDeclaration("Comparison");
+        return (TypeDeclaration) getLanguageModuleDeclaration("Comparison");
     }
         
     protected TypeDeclaration getBooleanDeclaration() {
-        return getLanguageDeclaration("Boolean");
+        return (TypeDeclaration) getLanguageModuleDeclaration("Boolean");
     }
         
     protected TypeDeclaration getStringDeclaration() {
-        return getLanguageDeclaration("String");
+        return (TypeDeclaration) getLanguageModuleDeclaration("String");
     }
         
     protected TypeDeclaration getFloatDeclaration() {
-        return getLanguageDeclaration("Float");
+        return (TypeDeclaration) getLanguageModuleDeclaration("Float");
     }
         
     protected TypeDeclaration getNaturalDeclaration() {
-        return getLanguageDeclaration("Natural");
+        return (TypeDeclaration) getLanguageModuleDeclaration("Natural");
     }
         
     protected TypeDeclaration getCharacterDeclaration() {
-        return getLanguageDeclaration("Character");
+        return (TypeDeclaration) getLanguageModuleDeclaration("Character");
     }
         
     protected TypeDeclaration getQuotedDeclaration() {
-        return getLanguageDeclaration("Quoted");
+        return (TypeDeclaration) getLanguageModuleDeclaration("Quoted");
     }
         
     protected Interface getEqualityDeclaration() {
-        return (Interface) getLanguageDeclaration("Equality");
+        return (Interface) ((TypeDeclaration) getLanguageModuleDeclaration("Equality"));
     }
         
     protected Interface getComparableDeclaration() {
-        return (Interface) getLanguageDeclaration("Comparable");
+        return (Interface) ((TypeDeclaration) getLanguageModuleDeclaration("Comparable"));
     }
         
     protected Interface getOrdinalDeclaration() {
-        return (Interface) getLanguageDeclaration("Ordinal");
+        return (Interface) ((TypeDeclaration) getLanguageModuleDeclaration("Ordinal"));
     }
         
     protected Class getRangeDeclaration() {
-        return (Class) getLanguageDeclaration("Range");
+        return (Class) ((TypeDeclaration) getLanguageModuleDeclaration("Range"));
     }
         
     protected Class getEntryDeclaration() {
-        return (Class) getLanguageDeclaration("Entry");
+        return (Class) ((TypeDeclaration) getLanguageModuleDeclaration("Entry"));
     }
     
     protected static List<ProducedType> getTypeArguments(Tree.TypeArgumentList tal) {
