@@ -228,17 +228,21 @@ public class ProducedType extends ProducedReference {
                     addToUnion(types, ct.minus(ci));
                 }
             }
-            ProducedType pt;
+            //if we would have a union of just one type, 
+            //just return the type itself!
             if (types.size()==1) {
-                //TODO: I *think* this is correct!
-                pt = types.get(0).substitute(getTypeArguments());
+                //TODO: I *think* that it is correct to call
+                //      substitute here, but apparently the
+                //      rest of the system never creates a
+                //      produced type with type args from a
+                //      union type, so no way to test this!
+                return types.get(0).substitute(getTypeArguments());
             }
             else {
                 UnionType ut = new UnionType();
                 ut.setCaseTypes(types);
-                pt = replaceDeclaration(ut);
+                return replaceDeclaration(ut);
             }
-            return pt;
         }
         else {
             return this;
