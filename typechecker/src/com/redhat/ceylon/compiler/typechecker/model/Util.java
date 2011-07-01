@@ -139,5 +139,14 @@ public class Util {
             }
         }
     }
+    
+    static String format(List<String> path) {
+        StringBuilder sb = new StringBuilder();
+        for (int i=0; i<path.size(); i++) {
+            sb.append(path.get(i));
+            if (i<path.size()-1) sb.append('.');
+        }
+        return sb.toString();
+    }
 
 }

@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.format;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -59,6 +60,33 @@ public class ProducedType extends ProducedReference {
 		return producedTypeName;
 	}
 	
+    public String getProducedTypeQualifiedName() {
+        if (getDeclaration() == null) {
+            //unknown type
+            return null;
+        }
+        String producedTypeName = "";
+        if (getDeclaration().isMemberType()) {
+            producedTypeName += getDeclaringType().getProducedTypeQualifiedName();
+            producedTypeName += ".";
+        }
+        producedTypeName += format(getDeclaration().getQualifiedName());
+        if (!getTypeArgumentList().isEmpty()) {
+            producedTypeName+="<";
+            for (ProducedType t: getTypeArgumentList()) {
+                if (t==null) {
+                    producedTypeName+="?,";
+                }
+                else {
+                    producedTypeName+=t.getProducedTypeQualifiedName() + ",";
+                }
+            }
+            producedTypeName+=">";
+            producedTypeName = producedTypeName.replace(",>", ">");
+        }
+        return producedTypeName;
+    }
+    
 	public boolean isExactly(ProducedType type) {
 	    if (getDeclaration() instanceof BottomType) {
 	        return type.getDeclaration() instanceof BottomType;

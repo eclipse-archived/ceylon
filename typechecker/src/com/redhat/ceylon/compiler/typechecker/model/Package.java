@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.format;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,12 +40,7 @@ public class Package implements Scope {
 	}
 	
 	public String getNameAsString() {
-	    StringBuilder sb = new StringBuilder();
-	    for (int i=0; i<name.size(); i++) {
-	        sb.append(name.get(i));
-	        if (i<name.size()-1) sb.append('.');
-	    }
-	    return sb.toString();
+	    return format(name);
 	}
 	
 	@Override
