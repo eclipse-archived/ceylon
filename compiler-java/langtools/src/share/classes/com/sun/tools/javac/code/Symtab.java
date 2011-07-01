@@ -166,6 +166,9 @@ public class Symtab {
     public final Type ceylonIteratorType;
     public final Type ceylonRangeType;
     public final Type ceylonEntryType;
+    public final Type ceylonAtCeylonType;
+    public final Type ceylonAtNameType;
+    public final Type ceylonAtTypeInfoType;
 
     /** The symbol representing the length field of an array.
      */
@@ -476,6 +479,9 @@ public class Symtab {
         ceylonIteratorType = enterClass("ceylon.language.Iterator");
         ceylonRangeType = enterClass("ceylon.language.Range");
         ceylonEntryType = enterClass("ceylon.language.Entry");
+        ceylonAtCeylonType = enterClass("com.redhat.ceylon.compiler.metadata.java.Ceylon");
+        ceylonAtNameType = enterClass("com.redhat.ceylon.compiler.metadata.java.Name");
+        ceylonAtTypeInfoType = enterClass("com.redhat.ceylon.compiler.metadata.java.TypeInfo");
 
         synthesizeEmptyInterfaceIfMissing(cloneableType);
         synthesizeEmptyInterfaceIfMissing(serializableType);

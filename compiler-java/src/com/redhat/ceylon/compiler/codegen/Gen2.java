@@ -427,12 +427,10 @@ public class Gen2 {
     }
 
     public JCAnnotation makeAtName(String name) {
-        // FIXME Using plain "Name" is probably not correct
-        return make().Annotation(makeIdent("Name"), List.<JCExpression> of(make().Literal(name)));
+        return make().Annotation(makeIdent(syms.ceylonAtNameType), List.<JCExpression> of(make().Literal(name)));
     }
 
     public JCAnnotation makeAtType(String name) {
-        // FIXME Using plain "TypeInfo" is probably not correct
-        return make().Annotation(makeIdent("TypeInfo"), List.<JCExpression> of(make().Literal(name)));
+        return make().Annotation(makeIdent(syms.ceylonAtTypeInfoType), List.<JCExpression> of(make().Literal(name)));
     }
 }
