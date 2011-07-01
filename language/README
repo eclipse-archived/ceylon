@@ -1,13 +1,22 @@
 The Ceylon language specification.
 ==================================
 
-To build the pdf and html specifications, 
-type "ant" from the root directory.
+Specification
+-------------
+To build the PDF and HTML specifications,:
+- type 'ant' from the root directory
 
-Type system model
------------------
+To build just the PDF:
+- type 'ant pdf.doc'
+
+Type analyzer
+-------------
+To run the type analyzer tests:
+ - type 'ant test'
+
 The code is stored under src/
 The dependencies are under lib/
+The Ceylon code of the language module is under languagesrc/
 You need also some generated classes:
  - generated in gensrc/
  - by running 'ant clean tree'
@@ -24,5 +33,7 @@ ant publish - publish both ceylon.language template and type checker jar
 Note on the ant build system (UNSTABLE)
 ---------------------------------------
 antlr.parser: generates the parser for the language
-antlr.tree: generates the parser for the Ceylon.nodes file hich contains a specification of the tree structure
-the typesafe tree is generated from the Ceylon.nodes specification
+              from the Ceylon.g ANTLR grammar file
+antlr.tree: generates the parser and typesafe syntax tree
+            for the Ceylon.nodes file which contains a 
+            specification of the tree structure
