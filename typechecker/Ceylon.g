@@ -930,7 +930,7 @@ namedArgumentStart
 
 //special rule for syntactic predicates
 specificationStart
-    : (LIDENTIFIER|'this') '='
+    : LIDENTIFIER '='
     ;
 
 namedArguments
@@ -1250,7 +1250,7 @@ finallyBlock
     ;
 
 specifiedVariableOrExpression
-    : (declarationStart|LIDENTIFIER SPECIFY) => specifiedVariable 
+    : (declarationStart|specificationStart) => specifiedVariable 
     -> ^(SPECIFIED_VARIABLE_OR_EXPRESSION specifiedVariable)
     | expression
     -> ^(SPECIFIED_VARIABLE_OR_EXPRESSION expression)
