@@ -442,7 +442,10 @@ public class ExpressionGen extends GenPart {
     }
 
     private JCExpression convert(Tree.StringLiteral string) {
-        String value = string.getText().substring(1, string.getText().length() - 1);
+        String value = string
+                .getText()
+                .substring(1, string.getText().length() - 1)
+                .replace("\r\n", "\n");
         at(string);
         return ceylonLiteral(value);
     }
