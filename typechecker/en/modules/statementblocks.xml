@@ -1068,7 +1068,7 @@ else {
         
         </section>
         
-        <section>
+        <section id="booleanconditions">
             <title>Boolean conditions</title>
         
         <para>A boolean condition is just an expression.</para>
@@ -1082,14 +1082,15 @@ else {
         
         </section>
         
-        <section>
+        <section id="assignabilityexistencenonemptinessconditions">
             <title>Assignability, existence, and nonemptiness conditions</title>
         
-        <para>Assignability, existence, and nonemptiness conditions may either contain:.</para>
+        <para>Assignability, existence, and nonemptiness conditions may either contain:</para>
         
         <itemizedlist>
             <listitem>
-                <para>an unqualified value reference, or</para>
+                <para>an unqualified value reference to a non-<literal>variable</literal>
+                attribute or local, or</para>
             </listitem>
             <listitem>
                 <para>an inline variable declaration together with an expression.</para>
@@ -1230,7 +1231,7 @@ else {
         
         </section>
                 
-        <section>
+        <section id="subtypeconditions">
             <title>Subtype conditions</title>
         
         <para>A subtype condition specifies a <emphasis>specified type</emphasis> (first) and a 
