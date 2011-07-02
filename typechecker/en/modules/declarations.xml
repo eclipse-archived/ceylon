@@ -683,9 +683,10 @@ TypeConstraints?
     <section id="initializersection">
         <title>Initializer section</title>
     
-        <para>The initial part of the body of a class is called the <emphasis>initializer</emphasis> 
-        and contains a mix of declarations, statements and control structures. The initializer 
-        is executed every time the class is instantiated.</para>
+        <para>The initial part of the body of a class is called the 
+        <emphasis>initializer</emphasis> of the class and contains a mix of declarations, 
+        statements and control structures. The initializer is executed every time the 
+        class is instantiated.</para>
            
         <para>A class initializer is responsible for initializing the state of the new 
         instance of the class, before a reference to the new instance is available to 
@@ -714,8 +715,8 @@ TypeConstraints?
     y = 0.0;
 }</programlisting>
         
-        <para>Within a class initializer, a <emphasis>self reference to the instance being 
-        initialized</emphasis> is either:</para>
+        <para>Within a class initializer, a <emphasis>self reference to the instance 
+        being initialized</emphasis> is either:</para>
         
         <itemizedlist>
             <listitem>
@@ -734,9 +735,9 @@ TypeConstraints?
         <itemizedlist>
            <listitem>
               <para>evaluate attributes, invoke methods, or instantiate member classes 
-              that are declared later in the body of the class upon the instance that 
-              is being initialized, including upon a self reference to the instance 
-              being initialized.</para>
+              that are declared later in the body of the class upon the instance being 
+              initialized, including upon a self reference to the instance being 
+              initialized.</para>
            </listitem>
            <listitem>
               <para>pass a self reference to the instance being initialized as an 
@@ -758,10 +759,10 @@ TypeConstraints?
            </listitem>
            -->
            <listitem>
-              <para>evaluate attributes, invoke methods, or instantiate member classes 
-              declared in the declaration section of a superclass of the instance 
-              being initialized, including upon a self reference to the instance being 
-              initialized.</para>
+              <para>evaluate inherited attributes, invoke inherited methods, or 
+              instantiate inherited member classes declared by an interface or in the 
+              declaration section of a superclass upon the instance being initialized, 
+              including upon a self reference to the instance being initialized.</para>
            </listitem>
            <listitem>
               <para>invoke or evaluate a <literal>formal</literal> <!--or 
@@ -778,8 +779,7 @@ TypeConstraints?
         <para>It is acceptable to invoke or evaluate any member of a superclass that is 
         refined by a non-<literal>formal</literal>, non-<literal>default</literal> <!--, 
         non-<literal>definite</literal>--> declaration appearing earlier in the body of the 
-        class or by a declaration appearing in the declaration section of a different 
-        superclass.</para>
+        class or in the initializer section of a different superclass.</para>
         
         <para>Non-<literal>formal</literal>, non-<literal>default</literal><!--, 
         non-<literal>definite</literal>--> members declared in the initializer section of a 
