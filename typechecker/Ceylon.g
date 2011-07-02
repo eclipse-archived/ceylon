@@ -104,6 +104,7 @@ tokens {
     SUBTYPE_EXPRESSION;
     SUPER_TYPE;
     LAMBDA;
+    SYNTHETIC_VARIABLE;
 }
 
 @parser::header { package com.redhat.ceylon.compiler.typechecker.parser; }
@@ -1097,7 +1098,7 @@ nonemptyCondition
 
 isCondition
     : ('(' IS_OP type LIDENTIFIER ')') => '(' IS_OP type memberName ')'
-    -> ^(IS_CONDITION[$IS_OP] type ^(VARIABLE type memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName)))))
+    -> ^(IS_CONDITION[$IS_OP] type ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName)))))
     | '(' IS_OP type (memberName specifier) ')'
     -> ^(IS_CONDITION[$IS_OP] type ^(VARIABLE type memberName specifier))
     ;
@@ -1279,7 +1280,7 @@ variable
 
 impliedVariable
     : memberName 
-    -> ^(VARIABLE VALUE_MODIFIER memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName))))
+    -> ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName))))
     ;
 
 // Lexer

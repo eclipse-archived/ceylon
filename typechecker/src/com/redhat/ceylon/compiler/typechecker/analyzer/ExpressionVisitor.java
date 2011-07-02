@@ -78,34 +78,46 @@ public class ExpressionVisitor extends AbstractVisitor {
         //want to check that the specifier expression is
         //assignable to the declared variable type
         //(nor is it possible to infer the variable type)
-        if (that.getVariable()!=null) {
-            Tree.SpecifierExpression se = that.getVariable().getSpecifierExpression();
+        Tree.Variable v = that.getVariable();
+        if (v!=null) {
+            if (v.getType() instanceof Tree.SyntheticVariable) {
+                //this is a bit ugly (the parser sends us a SyntheticVariable
+                //instead of the real StaticType which it very well knows!
+                ProducedType type = that.getType().getTypeModel();
+                v.getType().setTypeModel(type);
+                v.getDeclarationModel().setType(type);
+            }
+            Tree.SpecifierExpression se = v.getSpecifierExpression();
             if (se!=null) {
                 se.visit(this);
+                checkReferenceIsNonVariable(v, se);
             }
         }
         /*if (that.getExpression()!=null) {
             that.getExpression().visit(this);
         }*/
     }
-    
+
     @Override public void visit(Tree.ExistsOrNonemptyCondition that) {
         ProducedType t = null;
         Node n = that;
         Tree.Variable v = that.getVariable();
         if (v!=null) {
             Tree.SpecifierExpression se = v.getSpecifierExpression();
-            se.visit(this);
-            if (that instanceof Tree.ExistsCondition) {
-                inferDefiniteType(v, se);
-                checkOptionalType(v, se);
+            if (se!=null) {
+                se.visit(this);
+                if (that instanceof Tree.ExistsCondition) {
+                    inferDefiniteType(v, se);
+                    checkOptionalType(v, se);
+                }
+                else if (that instanceof Tree.NonemptyCondition) {
+                    inferNonemptyType(v, se);
+                    checkEmptyOptionalType(v, se);
+                }
+                t = se.getExpression().getTypeModel();
+                n = v;
+                checkReferenceIsNonVariable(v, se);
             }
-            else if (that instanceof Tree.NonemptyCondition) {
-                inferNonemptyType(v, se);
-                checkEmptyOptionalType(v, se);
-            }
-            t = se.getExpression().getTypeModel();
-            n = v;
         }
         /*Tree.Expression e = that.getExpression();
         if (e!=null) {
@@ -126,6 +138,18 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }
 
+    private void checkReferenceIsNonVariable(Tree.Variable v,
+            Tree.SpecifierExpression se) {
+        if (v.getType() instanceof Tree.SyntheticVariable) {
+            Tree.BaseMemberExpression ref = (Tree.BaseMemberExpression) se.getExpression().getTerm();
+            if (ref.getDeclaration()!=null) {
+                if ( ( (TypedDeclaration) ref.getDeclaration() ).isVariable() ) {
+                    ref.addError("referenced value is variable");
+                }
+            }
+        }
+    }
+    
     private void checkEmpty(ProducedType t, Node n) {
         //ProducedType oct = getEmptyOptionalType(getContainerDeclaration().getType());
         if (!isEmptyType(t)) {
