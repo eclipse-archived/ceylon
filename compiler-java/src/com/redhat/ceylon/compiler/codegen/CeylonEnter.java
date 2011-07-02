@@ -70,7 +70,7 @@ public class CeylonEnter extends Enter {
             throw new RuntimeException("Waaaaa, running twice!!!");
         hasRun = true;
         // load modules required by the typechecker
-        modelLoader.loadRequiredModules();
+        modelLoader.loadRequiredModules(trees);
         // run the type checker
         typeCheck();
         // some debugging

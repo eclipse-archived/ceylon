@@ -11,8 +11,6 @@ import java.util.Map;
 
 import javax.lang.model.type.TypeKind;
 
-//import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
-//import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -30,6 +28,10 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseType;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.Attribute;
 import com.sun.tools.javac.code.Attribute.Array;
@@ -44,6 +46,7 @@ import com.sun.tools.javac.code.Symbol.VarSymbol;
 import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.jvm.ClassReader;
+import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Name.Table;
@@ -75,7 +78,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         reader = ClassReader.instance(context);
     }
 
-    public void loadRequiredModules() {
+    public void loadRequiredModules(com.sun.tools.javac.util.List<JCCompilationUnit> trees) {
         /*
          * We start by loading java.lang and ceylon.language because we will need them no matter what.
          */
@@ -83,12 +86,28 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         ceylonPkg.complete();
         PackageSymbol javaPkg = reader.enterPackage(names.fromString("java.lang"));
         javaPkg.complete();
+        
         /*
          * Eventually this will go away as we get a hook from the typechecker to load on demand, but
          * for now the typechecker requires at least ceylon.language to be loaded 
          */
         for(Symbol m : ceylonPkg.members().getElements()){
             convertToDeclaration(lookupClassSymbol(m.getQualifiedName().toString()));
+        }
+        
+        for(final JCCompilationUnit tree : trees){
+        	CompilationUnit ceylonTree = ((CeylonCompilationUnit)tree).ceylonTree;
+        	final String pkgName = tree.getPackageName().toString();
+        	
+        	ceylonTree.visit(new Visitor(){
+        		@Override
+        		public void visit(ClassDefinition that) {
+        			String name = that.getIdentifier().getText();
+        			String fqn = pkgName.isEmpty() ? name : pkgName+"."+name;
+        			ClassSymbol classSymbol = reader.enterClass(names.fromString(fqn), tree.getSourceFile());
+        			super.visit(that);
+        		}
+        	});
         }
     }
 
