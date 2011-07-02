@@ -109,7 +109,7 @@ public abstract class CompilerTest {
 		Boolean success = getCompilerTask(ceylon).call();
 		Assert.assertTrue(success);
 		try{
-			Class<?> klass = Class.forName(main);
+			java.lang.Class<?> klass = java.lang.Class.forName(main);
 			Method m = klass.getMethod("run", ceylon.language.Process.class);
 			m.invoke(null, new ceylon.language.Process());
 		}catch(Exception x){
