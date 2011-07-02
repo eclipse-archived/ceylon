@@ -556,8 +556,12 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             // FIXME: I'm pretty sure we can have bounds that refer to method 
             // params, so we need to do this in two phases
             if(!typeParam.getBounds().isEmpty()){
-                for(Type bound : typeParam.getBounds())
+                for(Type bound : typeParam.getBounds()){
+                    // we turn java's default upper bound java.lang.Object into ceylon.language.Object
+                    if(bound.tsym == symtab.objectType.tsym)
+                        bound = symtab.ceylonObjectType;
                     param.getSatisfiedTypes().add(getType(bound, scope));
+                }
             }
         }
     }
