@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.lang.model.type.TypeKind;
+import javax.tools.JavaFileObject.Kind;
 
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -276,12 +277,30 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         return classSymbol;
     }
 
-    public Package findOrCreatePackage(Module module, String pkgName) {
+    public Package findOrCreatePackage(Module module, final String pkgName) {
         for(Package pkg : module.getPackages()){
             if(pkg.getNameAsString().equals(pkgName))
                 return pkg;
         }
-        Package pkg = new Package();
+        Package pkg = new Package(){
+        	@Override
+        	public Declaration getDirectMember(String name) {
+        		System.err.println("Lazy-loading "+name+" from "+pkgName);
+        		String className = pkgName.isEmpty() ? name : pkgName + "." + name;
+                PackageSymbol javaPkg = reader.enterPackage(names.fromString(pkgName));
+                javaPkg.complete();
+                ClassSymbol classSymbol = lookupClassSymbol(className);
+                // only get it from the classpath if we're not compiling it
+                if(classSymbol != null && classSymbol.classfile.getKind() != Kind.SOURCE)
+                	return convertToDeclaration(className);
+        		return super.getDirectMember(name);
+        	}
+        	@Override
+        	public Declaration getDirectMemberOrParameter(String name) {
+        		// FIXME: what's the difference?
+        		return getDirectMember(name);
+        	}
+        };
         pkg.setModule(module);
         pkg.setName(pkgName == null ? Collections.<String>emptyList() : Arrays.asList(pkgName.split("\\.")));
         module.getPackages().add(pkg);
