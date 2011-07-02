@@ -419,7 +419,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         // look at its super type
         Type superClass = classSymbol.getSuperclass();
         // ceylon.language.Void has no super type. java.lang.Object neither
-        if(!classSymbol.getQualifiedName().toString().equals("language.ceylon.Void")
+        if(!classSymbol.getQualifiedName().toString().equals("ceylon.language.Void")
                 && superClass.getKind() != TypeKind.NONE)
             klass.setExtendedType(getType(superClass, klass));
         // interfaces need to have their superclass set to Object
