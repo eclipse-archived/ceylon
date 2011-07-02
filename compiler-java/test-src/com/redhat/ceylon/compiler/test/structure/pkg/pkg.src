@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.structure.pkg;
 
-public class f extends .ceylon.language.Object {
+public class f extends .ceylon.language.IdentifiableObject {
     
     public static void run() {
     }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.statement.loop;
 
-class MethodWhile extends .ceylon.language.Object {
+class MethodWhile extends .ceylon.language.IdentifiableObject {
     
     public final Natural m() {
         while (ceylon.language.$false.getFalse() == ceylon.language.$true.getTrue()) {

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.statement.attribute;
 
-class MethodVariable extends .ceylon.language.Object {
+class MethodVariable extends .ceylon.language.IdentifiableObject {
     
     private final void m() {
         String f;

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.expression.operator;
 
-class NumericOp extends .ceylon.language.Object {
+class NumericOp extends .ceylon.language.IdentifiableObject {
     
     public final Natural m() {
         Natural i = .ceylon.language.Natural.instance(1L);

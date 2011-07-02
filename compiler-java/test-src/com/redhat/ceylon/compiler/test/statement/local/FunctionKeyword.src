@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.statement.local;
 
-class FunctionKeyword extends .ceylon.language.Object {
+class FunctionKeyword extends .ceylon.language.IdentifiableObject {
     
     private final Natural test() {
         return .ceylon.language.Natural.instance(0L);

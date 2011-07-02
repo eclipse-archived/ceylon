@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.structure.klass;
 
-class Klass extends .ceylon.language.Object {
+class Klass extends .ceylon.language.IdentifiableObject {
     
     Klass() {
     }

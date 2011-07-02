@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.structure.toplevel;
 
-final class x extends .ceylon.language.Object {
+final class x extends .ceylon.language.IdentifiableObject {
     
     private final void y() {
     }

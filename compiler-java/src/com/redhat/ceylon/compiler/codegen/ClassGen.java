@@ -229,7 +229,7 @@ public class ClassGen extends GenPart {
     private JCTree convertExtendedType(Tree.ExtendedType extendedType) {
         JCTree superclass;
         if (extendedType == null)
-            superclass = makeIdent(syms().ceylonObjectType);
+            superclass = makeIdent(syms().ceylonIdentifiableObjectType);
         else {
             superclass = gen.makeJavaType(extendedType.getType().getTypeModel());
         }
@@ -524,7 +524,7 @@ public class ClassGen extends GenPart {
                 at(decl).Modifiers((topLevel ? PUBLIC : 0), List.<JCAnnotation>nil()),
                 generateClassName(decl, topLevel),
                 List.<JCTypeParameter>nil(),
-                makeIdent(syms().ceylonObjectType),
+                makeIdent(syms().ceylonIdentifiableObjectType),
                 List.<JCExpression>nil(),
                 List.<JCTree>of(meth));
     }

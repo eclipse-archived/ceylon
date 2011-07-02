@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
-class AttributeAssign extends .ceylon.language.Object {
+class AttributeAssign extends .ceylon.language.IdentifiableObject {
     private Boolean b;
     private Boolean b2;
     

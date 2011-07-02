@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.structure.method;
 
-class Method extends .ceylon.language.Object {
+class Method extends .ceylon.language.IdentifiableObject {
     
     private final void f() {
     }

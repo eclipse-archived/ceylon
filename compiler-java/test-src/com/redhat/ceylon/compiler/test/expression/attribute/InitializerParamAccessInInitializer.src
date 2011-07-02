@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
-class InitializerParamAccessInInitializer extends .ceylon.language.Object {
+class InitializerParamAccessInInitializer extends .ceylon.language.IdentifiableObject {
     
     InitializerParamAccessInInitializer(Boolean b) {
         b.equals(ceylon.language.$true.getTrue());

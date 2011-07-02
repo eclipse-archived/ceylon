@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.statement.loop;
 
-class MethodForRange extends .ceylon.language.Object {
+class MethodForRange extends .ceylon.language.IdentifiableObject {
     
     public final void m() {
         .ceylon.language.Iterator<Natural> $i$iter$0 = new .ceylon.language.Range<Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(10L)).iterator();
