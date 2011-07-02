@@ -20,6 +20,7 @@ import org.junit.Before;
 
 import com.redhat.ceylon.compiler.codegen.CeylonEnter;
 import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
+import com.redhat.ceylon.compiler.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
@@ -105,9 +106,7 @@ public abstract class CompilerTest {
 	}
 	
 	protected void compileAndRun(String ceylon, String main) {
-		Iterable<? extends JavaFileObject> compilationUnits1 =
-			runFileManager.getJavaFileObjectsFromFiles(Arrays.asList(new File(path+ceylon)));
-		Boolean success = runCompiler.getTask(null, runFileManager, null, Arrays.asList("-d", "build/classes"), null, compilationUnits1).call();
+		Boolean success = getCompilerTask(ceylon).call();
 		Assert.assertTrue(success);
 		try{
 			Class<?> klass = Class.forName(main);
@@ -116,5 +115,15 @@ public abstract class CompilerTest {
 		}catch(Exception x){
 			throw new RuntimeException(x);
 		}
+	}
+	
+	protected CeyloncTaskImpl getCompilerTask(String... sourcePaths){
+	    java.util.List<File> sourceFiles = new ArrayList<File>(sourcePaths.length);
+	    for(String file : sourcePaths){
+	        sourceFiles.add(new File(path+file));
+	    }
+        Iterable<? extends JavaFileObject> compilationUnits1 =
+            runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
+        return (CeyloncTaskImpl) runCompiler.getTask(null, runFileManager, null, Arrays.asList("-d", "build/classes"), null, compilationUnits1);
 	}
 }
