@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.regex.Matcher;
@@ -30,11 +31,11 @@ public abstract class CompilerTest {
 
 	private final static String dir = "test-src";
 
-	private String path;
+	protected String path;
 
 	// for running
-	private JavaCompiler runCompiler;
-	private CeyloncFileManager runFileManager;
+	protected JavaCompiler runCompiler;
+	protected CeyloncFileManager runFileManager;
 
 	private String pkg;
 
