@@ -36,10 +36,12 @@ public abstract class CompilerTest {
 	private JavaCompiler runCompiler;
 	private CeyloncFileManager runFileManager;
 
+	private String pkg;
+
 	@Before
 	public void setup(){
 		// for comparing with java source
-		String pkg = getClass().getPackage().getName().replaceAll("\\.", Matcher.quoteReplacement(File.separator));
+		pkg = getClass().getPackage().getName().replaceAll("\\.", Matcher.quoteReplacement(File.separator));
 		path = dir + File.separator + pkg + File.separator;
 		// for running
 		runCompiler = new CeyloncTool();
