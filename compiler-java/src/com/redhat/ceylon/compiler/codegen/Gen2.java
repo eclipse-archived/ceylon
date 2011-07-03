@@ -49,6 +49,7 @@ public class Gen2 {
     ExpressionGen expressionGen = new ExpressionGen(this);
     StatementGen statementGen = new StatementGen(this);
     ClassGen classGen = new ClassGen(this);
+    GlobalGen globalGen = new GlobalGen(this);
 
     ProducedType nothingPType;
     ProducedType voidPType;
@@ -94,6 +95,10 @@ public class Gen2 {
 
     TreeMaker make() {
         return make;
+    }
+
+    public GlobalGen globalGen() {
+        return globalGen;
     }
 
     static class Singleton<T> implements Iterable<T> {
