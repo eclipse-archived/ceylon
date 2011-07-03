@@ -1,6 +1,6 @@
 import imports.package { 
-    method, attribute, 
-    Class, Interface, Dupe 
+    method, attribute,
+    Class, Interface, Dupe, Alias
 }
 
 class Test() {
@@ -12,4 +12,6 @@ class Test() {
     d.hello();
     String hello = attribute;
     @error d.goodbye();
+    Alias strings = { "hello", "world" };
+    for (String s in strings) {}
 }
