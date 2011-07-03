@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class BottomType extends TypeDeclaration {
@@ -9,9 +10,14 @@ public class BottomType extends TypeDeclaration {
         return "Bottom";
     }
     
-    @Override
+    @Override @Deprecated
     public List<String> getQualifiedName() {
-        return null;
+        return Arrays.asList("ceylon","language","Bottom");
+    }
+
+    @Override
+    public String getQualifiedNameString() {
+        return "ceylon.language.Bottom";
     }
 
 }

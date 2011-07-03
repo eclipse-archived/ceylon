@@ -48,11 +48,16 @@ public class Package implements Scope {
 		return "Package[" + getNameAsString() + "]";
 	}
 	
-	@Override
+	@Override @Deprecated
 	public List<String> getQualifiedName() {
 	    return getName();
 	}
 	
+    @Override
+    public String getQualifiedNameString() {
+        return getNameAsString();
+    }
+    
 	@Override
     public Declaration getDirectMemberOrParameter(String name) {
         /*for ( Declaration d: getMembers() ) {

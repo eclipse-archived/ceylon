@@ -32,6 +32,11 @@ public abstract class Element {
         return members;
     }
     
+    public String getQualifiedNameString() {
+        return getContainer().getQualifiedNameString();
+    }
+
+    @Deprecated
     public List<String> getQualifiedName() {
         return getContainer().getQualifiedName();
     }

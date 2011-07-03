@@ -20,13 +20,28 @@ public class UnionType extends TypeDeclaration {
     }
     
     @Override
+    public String getQualifiedNameString() {
+        String name = "";
+        for (ProducedType pt: caseTypes) {
+            if (pt==null) {
+                name+="<unknown>";
+            }
+            else {
+                name+=pt.getProducedTypeQualifiedName();
+            }
+            name+="|";
+        }
+        return name.substring(0,name.length()-1);
+    }
+    
+    @Override
     public String toString() {
         return "UnionType[" + getName() + "]";
     }
     
     @Override
     public List<String> getQualifiedName() {
-        return null;
+        throw new UnsupportedOperationException();
     }
     
     @Override

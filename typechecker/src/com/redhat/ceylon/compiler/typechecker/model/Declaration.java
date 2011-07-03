@@ -50,8 +50,14 @@ public abstract class Declaration extends Element {
 			"[" + name + "]";
 	}
 	
+	@Override @Deprecated
     public List<String> getQualifiedName() {
         return list( getContainer().getQualifiedName(), getName() );
+    }
+    
+	@Override
+	public String getQualifiedNameString() {
+        return getContainer().getQualifiedNameString() + "." + getName();
     }
     
     public boolean isActual() {

@@ -13,11 +13,13 @@ import java.util.List;
 public interface Scope {
     @Deprecated
 	List<Declaration> getMembers();
-	Scope getContainer();
+	@Deprecated
 	List<String> getQualifiedName();
+	String getQualifiedNameString();
 	ProducedType getDeclaringType(Declaration d);
 	Declaration getMemberOrParameter(Unit unit, String name);
 	Declaration getMember(String name);
 	Declaration getDirectMemberOrParameter(String name);
     Declaration getDirectMember(String name);
+    Scope getContainer();
 }

@@ -70,7 +70,7 @@ public class ProducedType extends ProducedReference {
             producedTypeName += getDeclaringType().getProducedTypeQualifiedName();
             producedTypeName += ".";
         }
-        producedTypeName += format(getDeclaration().getQualifiedName());
+        producedTypeName += getDeclaration().getQualifiedNameString();
         if (!getTypeArgumentList().isEmpty()) {
             producedTypeName+="<";
             for (ProducedType t: getTypeArgumentList()) {
