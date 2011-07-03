@@ -185,7 +185,8 @@ public final class GlobalGen extends GenPart {
         }
 
         /**
-         * Sets the visibility of the generated getter.
+         * Sets the visibility of the generated getter. If no getter is generated the visibility will be silently
+         * ignored.
          * @param getterVisibility a visibility flag (see {@link Flags})
          * @return this instance for method chaining
          */
@@ -195,7 +196,8 @@ public final class GlobalGen extends GenPart {
         }
 
         /**
-         * Sets the visibility of the generated setter.
+         * Sets the visibility of the generated setter. If no setter is generated the visibility will be silently
+         * ignored.
          * @param setterVisibility a visibility flag (see {@link Flags})
          * @return this instance for method chaining
          */
