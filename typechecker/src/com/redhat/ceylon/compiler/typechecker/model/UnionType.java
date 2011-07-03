@@ -39,7 +39,7 @@ public class UnionType extends TypeDeclaration {
         return "UnionType[" + getName() + "]";
     }
     
-    @Override
+    @Override @Deprecated
     public List<String> getQualifiedName() {
         throw new UnsupportedOperationException();
     }
