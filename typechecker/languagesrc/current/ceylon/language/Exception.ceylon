@@ -1,9 +1,9 @@
 shared class Exception(Exception? cause=null, String? message=null) 
         extends IdentifiableObject() {
     
-    shared String message = message ? cause?.message ? "";
+    shared String? message = message ? cause?.message;
     
-    shared Exception cause = cause ? this;
+    shared Exception? cause = cause;
     
     //shared StackTrace stackTrace { throw; }
     
