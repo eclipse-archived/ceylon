@@ -46,7 +46,7 @@ public class Unit {
     public Declaration getImportedDeclaration(String name) {
         for (Import i: getImports()) {
             Declaration d = i.getDeclaration();
-            if (d.getName().equals(name)) {
+            if (i.getAlias().equals(name)) {
                 return d;
             }
         }

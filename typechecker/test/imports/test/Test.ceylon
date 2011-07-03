@@ -1,4 +1,7 @@
-import imports.package { method, attribute, Class, Interface, Dupe }
+import imports.package { 
+    method, attribute, 
+    Class, Interface, Dupe 
+}
 
 class Test() {
     method();
