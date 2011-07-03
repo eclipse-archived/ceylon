@@ -347,7 +347,27 @@ public class ExpressionVisitor extends AbstractVisitor {
         endReturnScope(rt);
     }
 
-    //Type inference for members declared "local":
+    @Override public void visit(Tree.ClassDeclaration that) {
+        super.visit(that);
+        Class alias = that.getDeclarationModel();
+        Class c = alias.getExtendedTypeDeclaration();
+        //that.getTypeSpecifier().getType().get
+        ProducedType at = alias.getExtendedType();
+        int cps = c.getParameterList().getParameters().size();
+        int aps = alias.getParameterList().getParameters().size();
+        if (cps!=aps) {
+            that.addError("wrong number of initializer parameters declared by class alias: " + alias.getName());
+        }
+        for (int i=0; i<(cps<=aps ? cps : aps); i++) {
+            Parameter ap = alias.getParameterList().getParameters().get(i);
+            Parameter cp = c.getParameterList().getParameters().get(i);
+            ProducedType pt = at.getTypedParameter(cp).getType();
+            if ( !ap.getType().isSubtypeOf(pt) ) {
+                that.addError("alias parameter is not assignable to corresponding class parameter: " +
+                        ap.getName() + " is not of type " + pt.getProducedTypeName());
+            }
+        }
+    }
     
     private void inferType(Tree.TypedDeclaration that, Tree.Block block) {
         if (that.getType() instanceof Tree.LocalModifier) {
@@ -815,10 +835,8 @@ public class ExpressionVisitor extends AbstractVisitor {
             that.addError("receiving expression cannot be invoked");
         }
         else {
-            if (that instanceof Tree.InvocationExpression) {
-                //that.setTypeModel(mr.getType()); //THIS IS THE CORRECT ONE!
-                ( (Tree.InvocationExpression) that ).setTypeModel(that.getPrimary().getTypeModel()); //TODO: THIS IS A TEMPORARY HACK!
-            }
+            //that.setTypeModel(mr.getType()); //THIS IS THE CORRECT ONE!
+            that.setTypeModel(that.getPrimary().getTypeModel()); //TODO: THIS IS A TEMPORARY HACK!
             List<ParameterList> pls = ((Functional) mr.getDeclaration()).getParameterLists();
             if (pls.isEmpty()) {
                 that.addError("receiver does not define a parameter list");
@@ -1682,8 +1700,8 @@ public class ExpressionVisitor extends AbstractVisitor {
     
     private void visitBaseMemberExpression(Tree.BaseMemberExpression that, TypedDeclaration member, 
             List<ProducedType> typeArgs, Tree.TypeArgumentList tal) {
-        ProducedType outerType;
         if (acceptsTypeArguments(member, typeArgs, tal, that)) {
+            ProducedType outerType;
             if ( member.isMember() ) {
                 outerType = that.getScope().getDeclaringType(member);
             }
@@ -1728,7 +1746,8 @@ public class ExpressionVisitor extends AbstractVisitor {
             that.getTypeArgumentList().visit(this);
         ProducedType pt = that.getPrimary().getTypeModel();
         if (pt!=null) {
-            TypeDeclaration type = (TypeDeclaration) unwrap(pt, that).getDeclaration().getMember(that.getIdentifier().getText());
+            TypeDeclaration type = (TypeDeclaration) unwrap(pt, that).getDeclaration()
+                    .getMember(that.getIdentifier().getText());
             if (type==null) {
                 that.addError("could not determine target of member type reference: " +
                         that.getIdentifier().getText());
@@ -1748,8 +1767,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }
 
-    private boolean explicitTypeArguments(Declaration dec,
-            Tree.TypeArgumentList tal) {
+    private boolean explicitTypeArguments(Declaration dec, Tree.TypeArgumentList tal) {
         return !dec.isParameterized() || tal!=null;
     }
     
