@@ -246,7 +246,7 @@ public class Gen2 {
             public void visit(Tree.MethodDefinition decl) {
                 // Generate a class with the
                 // name of the method and a corresponding run() method.
-                defs.append(classGen.methodClass(decl, true));
+                defs.append(classGen.methodClass(decl));
             }
         });
         return defs;

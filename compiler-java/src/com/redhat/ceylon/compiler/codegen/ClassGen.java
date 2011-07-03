@@ -13,7 +13,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.codegen.Gen2.Singleton;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.*;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
@@ -502,12 +503,14 @@ public class ClassGen extends GenPart {
         return result;
     }
 
-    public JCClassDecl methodClass(Tree.MethodDefinition decl, boolean topLevel) {
+    public JCClassDecl methodClass(Tree.MethodDefinition decl) {
         final ListBuffer<JCVariableDecl> params = new ListBuffer<JCVariableDecl>();
         final Singleton<JCBlock> body = new Singleton<JCBlock>();
         Singleton<JCExpression> restype = new Singleton<JCExpression>();
         final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
         final ListBuffer<JCTypeParameter> typeParams = new ListBuffer<JCTypeParameter>();
+
+        final boolean topLevel = decl.getScope().getContainer() instanceof Package;
 
         processMethodDeclaration(decl, params, restype, typeParams, langAnnotations);
 
