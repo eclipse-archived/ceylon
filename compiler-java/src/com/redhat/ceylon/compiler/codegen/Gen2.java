@@ -46,10 +46,10 @@ public class Gen2 {
     CeylonModelLoader modelLoader;
     private Map<String, String> varNameSubst = new HashMap<String, String>();
     
-    ExpressionGen expressionGen = new ExpressionGen(this);
-    StatementGen statementGen = new StatementGen(this);
-    ClassGen classGen = new ClassGen(this);
-    GlobalGen globalGen = new GlobalGen(this);
+    ExpressionGen expressionGen;
+    StatementGen statementGen;
+    ClassGen classGen;
+    GlobalGen globalGen;
 
     ProducedType nothingPType;
     ProducedType voidPType;
@@ -65,6 +65,10 @@ public class Gen2 {
 
     public Gen2(Context context) {
         setup(context);
+        expressionGen = new ExpressionGen(this);
+        statementGen = new StatementGen(this);
+        classGen = new ClassGen(this);
+        globalGen = new GlobalGen(this);
     }
 
     private void setup(Context context) {
