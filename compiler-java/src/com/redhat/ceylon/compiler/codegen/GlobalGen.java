@@ -7,19 +7,38 @@ import com.sun.tools.javac.util.Name;
 
 public final class GlobalGen extends GenPart {
 
+    private final Name fieldName;
+    private final Name getterName;
+    private final Name setterName;
+
     public GlobalGen(Gen2 gen) {
         super(gen);
+        fieldName = names().fromString("value");
+        getterName = names().fromString("getValue");
+        setterName = names().fromString("setValue");
     }
 
-    public DefinitionBuilder defineGlobal(JCTree.JCExpression type, Name name) {
-        return new DefinitionBuilder(type, name);
+    public DefinitionBuilder defineGlobal(JCTree.JCExpression variableType, Name variableName) {
+        return new DefinitionBuilder(variableType, variableName);
+    }
+
+    public JCTree.JCExpression getGlobalValue(JCTree.JCExpression packageName, Name variableName) {
+        // packageName.variableName.getValue()
+        return make().Apply(
+                List.<JCTree.JCExpression>nil(),
+                make().Select(make().Select(packageName, variableName), getterName),
+                List.<JCTree.JCExpression>nil());
+    }
+
+    public JCTree.JCExpression setGlobalValue(JCTree.JCExpression packageName, Name variableName, JCTree.JCExpression newValue) {
+        // packageName.variableName.setValue(newValue)
+        return make().Apply(
+                List.<JCTree.JCExpression>nil(),
+                make().Select(make().Select(packageName, variableName), setterName),
+                List.of(newValue));
     }
 
     public class DefinitionBuilder {
-        private final Name fieldName = names().fromString("value");
-        private final Name getterName = names().fromString("getValue");
-        private final Name setterName = names().fromString("setValue");
-
         private final JCTree.JCExpression variableType;
         private final Name variableName;
 

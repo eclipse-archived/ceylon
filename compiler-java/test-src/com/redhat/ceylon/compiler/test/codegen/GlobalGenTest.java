@@ -92,6 +92,34 @@ public class GlobalGenTest {
         assertThat(result, not(containsString("setValue")));
     }
 
+    @Test
+    public void testGetValue() {
+        JCTree.JCExpression packageName = make.Select(
+                make.Ident(toName("some")),
+                toName("pkg"));
+        Name variableName = toName("variableName");
+
+        JCTree.JCExpression expr = globalGen.getGlobalValue(packageName, variableName);
+        String result = toCanonicalString(expr);
+
+        assertThat(result, is("some.pkg.variableName.getValue()"));
+    }
+
+    @Test
+    public void testSetValue() {
+        JCTree.JCExpression packageName = make.Select(
+                make.Ident(toName("some")),
+                toName("pkg"));
+        Name variableName = toName("variableName");
+
+        JCTree.JCExpression newValue = make.Ident(toName("newVariableValue"));
+
+        JCTree.JCExpression expr = globalGen.setGlobalValue(packageName, variableName, newValue);
+        String result = toCanonicalString(expr);
+
+        assertThat(result, is("some.pkg.variableName.setValue(newVariableValue)"));
+    }
+
     private JCTree.JCIdent toType(String type) {
         return make.Ident(names.fromString(type));
     }
