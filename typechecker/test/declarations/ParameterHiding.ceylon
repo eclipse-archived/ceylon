@@ -1,5 +1,21 @@
 interface ParameterHiding {
 
+    class Super(String name) {
+        shared String name = name;
+        class Nested1(Sequence<Character> name) {
+            @type["Sequence<Character>"] value n = name;
+        }
+        class Nested2() {
+            Sequence<Character> name = { `g`, `a`, `v` };
+            @type["Sequence<Character>"] value n = name;
+        }
+    }
+    
+    class Sub(Sequence<Character> name) 
+            extends Super("gavin") {
+        @type["Sequence<Character>"] value n = name;
+    }
+
     class Hiding(String name) {
         shared String name = name;
     }
