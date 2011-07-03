@@ -75,7 +75,7 @@ public class GlobalGenTest {
     }
 
     @Test
-    public void testReadOnly() {
+    public void testImmutableAndInitialValue() {
         JCTree.JCExpression variableType = toType("VariableType");
         Name variableName = toName("variableName");
 
@@ -83,7 +83,8 @@ public class GlobalGenTest {
 
         JCTree tree = globalGen
                 .defineGlobal(variableType, variableName)
-                .immutableWithInitialValue(initialValue)
+                .immutable()
+                .initialValue(initialValue)
                 .build();
 
         String result = toCanonicalString(tree);

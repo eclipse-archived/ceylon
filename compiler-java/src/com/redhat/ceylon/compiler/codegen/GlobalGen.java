@@ -205,13 +205,21 @@ public final class GlobalGen extends GenPart {
         }
 
         /**
-         * Causes the generated global to be immutable. The <tt>value</tt> field is declared <tt>final</tt> with the
-         * initial value given by the parameter, and no setter is generated.
+         * Causes the generated global to be immutable. The <tt>value</tt> field is declared <tt>final</tt> and no
+         * setter is generated.
+         * @return this instance for method chaining
+         */
+        public DefinitionBuilder immutable() {
+            this.writable = false;
+            return this;
+        }
+
+        /**
+         * The <tt>value</tt> field will be declared with the initial value given by the parameter
          * @param initialValue the initial value of the global.
          * @return this instance for method chaining
          */
-        public DefinitionBuilder immutableWithInitialValue(JCTree.JCExpression initialValue) {
-            this.writable = false;
+        public DefinitionBuilder initialValue(JCTree.JCExpression initialValue) {
             this.variableInit = initialValue;
             return this;
         }
