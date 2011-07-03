@@ -202,6 +202,10 @@ public class ExpressionVisitor extends AbstractVisitor {
         if (that.getType()!=null) {
             checkType(that.getType().getTypeModel(), that.getSpecifierOrInitializerExpression());
         }
+        validateHiddenAttribute(that);
+    }
+
+    private void validateHiddenAttribute(Tree.AnyAttribute that) {
         if (that.getDeclarationModel().isClassMember()) {
             Class c = (Class) that.getDeclarationModel().getContainer();
             Parameter param = (Parameter) c.getParameter( that.getDeclarationModel().getName() );
@@ -306,6 +310,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         super.visit(that);
         inferType(that, that.getBlock());
         endReturnScope(rt);
+        validateHiddenAttribute(that);
     }
 
     @Override public void visit(Tree.AttributeArgument that) {
