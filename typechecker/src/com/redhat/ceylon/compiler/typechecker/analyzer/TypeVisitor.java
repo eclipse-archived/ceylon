@@ -297,39 +297,24 @@ public class TypeVisitor extends AbstractVisitor {
     @Override 
     public void visit(Tree.ObjectDefinition that) {
         Class c = (Class) that.getDeclarationModel().getTypeDeclaration();
-        if (c==null) {
-            //TODO: this case is temporary until we get aliases
-        }
-        else {
+        defaultSuperclass(that.getExtendedType(), c);
+        super.visit(that);
+    }
+
+    @Override 
+    public void visit(Tree.ClassDefinition that) {
+        Class c = that.getDeclarationModel();
+        Class vd = getVoidDeclaration();
+        if (c!=vd) {
             defaultSuperclass(that.getExtendedType(), c);
         }
         super.visit(that);
     }
 
     @Override 
-    public void visit(Tree.AnyClass that) {
-        Class c = that.getDeclarationModel();
-        if (c==null) {
-            //TODO: this case is temporary until we get aliases
-        }
-        else {
-            Class vd = getVoidDeclaration();
-            if (c!=vd) {
-                defaultSuperclass(that.getExtendedType(), c);
-            }
-        }
-        super.visit(that);
-    }
-
-    @Override 
-    public void visit(Tree.AnyInterface that) {
+    public void visit(Tree.InterfaceDefinition that) {
         Interface i = that.getDeclarationModel();
-        if (i==null) {
-            //TODO: this case is temporary until we get aliases
-        }
-        else {
-            i.setExtendedType(getObjectDeclaration().getType());
-        }
+        i.setExtendedType(getObjectDeclaration().getType());
         super.visit(that);
     }
 
