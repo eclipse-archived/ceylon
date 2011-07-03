@@ -1,0 +1,1 @@
+shared String attribute = "hello";
