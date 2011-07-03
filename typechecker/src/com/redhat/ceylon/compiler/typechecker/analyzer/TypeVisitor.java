@@ -3,7 +3,9 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -56,8 +58,24 @@ public class TypeVisitor extends AbstractVisitor {
     public void visit(Tree.Import that) {
         Package importedPackage = getPackage(that.getImportPath());
         if (importedPackage!=null) {
+            Set<String> names = new HashSet<String>();
             for (Tree.ImportMemberOrType member: that.getImportMemberOrTypes()) {
-                importMember(member, importedPackage);
+                String name = importMember(member, importedPackage);
+                names.add(name);
+            }
+            if (that.getImportWildcard()!=null) {
+                importAllMembers(importedPackage, names);
+            }
+        }
+    }
+
+    private void importAllMembers(Package importedPackage, Set<String> ignoredMembers) {
+        for (Declaration dec: importedPackage.getMembers()) {
+            if (dec.isShared() && !ignoredMembers.contains(dec.getName())) {
+                Import i = new Import();
+                i.setAlias(dec.getName());
+                i.setDeclaration(dec);
+                unit.getImports().add(i);
             }
         }
     }
@@ -88,28 +106,30 @@ public class TypeVisitor extends AbstractVisitor {
         }
     }
     
-    private void importMember(Tree.ImportMemberOrType member, Package importedPackage) {
+    private String importMember(Tree.ImportMemberOrType member, Package importedPackage) {
         Import i = new Import();
         Tree.Alias alias = member.getAlias();
+        String name = member.getIdentifier().getText();
         if (alias==null) {
-            i.setAlias(member.getIdentifier().getText());
+            i.setAlias(name);
         }
         else {
             i.setAlias(alias.getIdentifier().getText());
         }
-        Declaration d = importedPackage.getMember(member.getIdentifier().getText());
+        Declaration d = importedPackage.getMember(name);
         if (d==null) {
             member.getIdentifier().addError("imported declaration not found: " + 
-                    member.getIdentifier().getText());
+                    name);
         }
         else {
             if (!d.isShared()) {
                 member.getIdentifier().addError("imported declaration is not shared: " +
-                        member.getIdentifier().getText());
+                        name);
             }
             i.setDeclaration(d);
             unit.getImports().add(i);
         }
+        return name;
     }
         
     @Override 
