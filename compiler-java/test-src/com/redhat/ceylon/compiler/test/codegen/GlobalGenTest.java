@@ -33,7 +33,7 @@ public class GlobalGenTest {
     }
 
     @Test
-    public void testSimple() {
+    public void testDefineSimple() {
         JCTree.JCExpression variableType = toType("VariableType");
         Name variableName = toName("variableName");
 
@@ -56,7 +56,7 @@ public class GlobalGenTest {
     }
 
     @Test
-    public void testVisibilities() {
+    public void testDefineVisibilities() {
         JCTree.JCExpression variableType = toType("VariableType");
         Name variableName = toName("variableName");
 
@@ -75,7 +75,7 @@ public class GlobalGenTest {
     }
 
     @Test
-    public void testImmutableAndInitialValue() {
+    public void testDefineImmutableAndInitialValue() {
         JCTree.JCExpression variableType = toType("VariableType");
         Name variableName = toName("variableName");
 
