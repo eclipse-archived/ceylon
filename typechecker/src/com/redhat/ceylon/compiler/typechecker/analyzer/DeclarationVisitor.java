@@ -81,11 +81,11 @@ public class DeclarationVisitor extends Visitor {
     }
     
     private void visitDeclaration(Tree.Declaration that, Declaration model) {
+        visitElement(that, model);
         Tree.Identifier id = that.getIdentifier();
         if ( setModelName(that, model, id) ) {
             checkForDuplicateDeclaration(that, model);
         }
-        visitElement(that, model);
         //that.setDeclarationModel(model);
         unit.getDeclarations().add(model);
         scope.getMembers().add(model);
@@ -146,15 +146,14 @@ public class DeclarationVisitor extends Visitor {
                     }
                 }
             }
-            else if (model instanceof Getter || model instanceof Value) {
+            else if ((model instanceof Getter || model instanceof Value) 
+                        && model.isClassMember()) {
                 //a getter or simple attribute is allowed to have the 
-                //same name as a parameter
+                //same name as a class initialization parameter
                 Declaration member = scope.getDirectMember( model.getName() );
                 if (member!=null) {
                     that.addError("duplicate declaration: " + model.getName());
                 }
-                //TODO: validate that if it duplicates a parameter,
-                //      the types are the same, and it is non-variable
             }
             else {
                 Declaration member = scope.getDirectMemberOrParameter( model.getName() );
