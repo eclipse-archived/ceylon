@@ -458,7 +458,7 @@
             is always an error, since there can never be a receiving instance.</para>
             
             <para><literal>Bottom</literal> is considered to belong to the module
-            <literal>ceylon.language</literal> however, it's definition is actually
+            <literal>ceylon.language</literal>. However, it's definition is actually
             implemented directly in the compiler.</para>
             
             <comment><para>TODO: Should the name of this type be a keyword, perhaps
