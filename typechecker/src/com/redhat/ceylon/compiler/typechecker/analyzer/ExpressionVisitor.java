@@ -1619,6 +1619,8 @@ public class ExpressionVisitor extends AbstractVisitor {
         //TODO: this does not correctly handle methods
         //      and classes which are not subsequently 
         //      invoked (should return the callable type)
+        if (that.getTypeArgumentList()!=null)
+            that.getTypeArgumentList().visit(this);
         TypedDeclaration member = getBaseDeclaration(that);
         if (member==null) {
             that.addError("could not determine target of member reference: " +
@@ -1636,6 +1638,8 @@ public class ExpressionVisitor extends AbstractVisitor {
 
     @Override public void visit(Tree.QualifiedMemberExpression that) {
         that.getPrimary().visit(this);
+        if (that.getTypeArgumentList()!=null)
+            that.getTypeArgumentList().visit(this);
         ProducedType pt = that.getPrimary().getTypeModel();
         if (pt!=null && that.getIdentifier()!=null) {
             TypedDeclaration member = (TypedDeclaration) unwrap(pt, that).getDeclaration().getMember(that.getIdentifier().getText());
@@ -1701,6 +1705,8 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
 
     @Override public void visit(Tree.BaseTypeExpression that) {
+        if (that.getTypeArgumentList()!=null)
+            that.getTypeArgumentList().visit(this);
         TypeDeclaration type = getBaseDeclaration(that);
         if (type==null) {
             that.addError("could not determine target of type reference: " + 
@@ -1718,6 +1724,8 @@ public class ExpressionVisitor extends AbstractVisitor {
         
     @Override public void visit(Tree.QualifiedTypeExpression that) {
         that.getPrimary().visit(this);
+        if (that.getTypeArgumentList()!=null)
+            that.getTypeArgumentList().visit(this);
         ProducedType pt = that.getPrimary().getTypeModel();
         if (pt!=null) {
             TypeDeclaration type = (TypeDeclaration) unwrap(pt, that).getDeclaration().getMember(that.getIdentifier().getText());
@@ -1748,6 +1756,7 @@ public class ExpressionVisitor extends AbstractVisitor {
     @Override public void visit(Tree.SimpleType that) {
         //this one is a declaration, not an expression!
         //we are only validating type arguments here
+        super.visit(that);
         ProducedType pt = that.getTypeModel();
         if (pt!=null) {
             TypeDeclaration type = pt.getDeclaration();
@@ -1950,9 +1959,14 @@ public class ExpressionVisitor extends AbstractVisitor {
         return acceptsTypeArguments(null, member, typeArguments, tal, parent);
     }
     
+    private static boolean isGeneric(Declaration member) {
+        return member instanceof Generic && 
+            !((Generic) member).getTypeParameters().isEmpty();
+    }
+    
     private static boolean acceptsTypeArguments(ProducedType receiver, Declaration member, List<ProducedType> typeArguments, 
             Tree.TypeArgumentList tal, Node parent) {
-        if (member instanceof Generic) {
+        if (isGeneric(member)) {
             List<TypeParameter> params = ((Generic) member).getTypeParameters();
             if ( params.size()==typeArguments.size() ) {
                 for (int i=0; i<params.size(); i++) {
@@ -2006,10 +2020,10 @@ public class ExpressionVisitor extends AbstractVisitor {
             }
             else {
                 if (tal==null) {
-                    parent.addError("requires type arguments");
+                    parent.addError("requires type arguments: " + member.getName());
                 }
                 else {
-                    tal.addError("wrong number of type arguments");
+                    tal.addError("wrong number of type arguments to: " + member.getName());
                 }
                 return false;
             }
@@ -2017,7 +2031,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         else {
             boolean empty = typeArguments.isEmpty();
             if (!empty) {
-                tal.addError("does not accept type arguments");
+                tal.addError("does not accept type arguments: " + member.getName());
             }
             return empty;
         }

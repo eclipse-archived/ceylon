@@ -361,6 +361,9 @@ public class TypeVisitor extends AbstractVisitor {
         TypeDeclaration td = (TypeDeclaration) that.getScope();
         List<ProducedType> list = new ArrayList<ProducedType>();
         if (that!=null) {
+            if ( that.getTypes().isEmpty() ) {
+                that.addError("missing types in satisfies");
+            }
             for (Tree.StaticType t: that.getTypes()) {
                 ProducedType type = t.getTypeModel();
                 if (type!=null) {

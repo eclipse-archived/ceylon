@@ -223,5 +223,49 @@ class Generics() {
      
     @type["Entry<String,Natural>"] Lower<String>("hello").method<Natural>("world",1);
     @type["Generics.Upper<String>.Inner<Float>"] Lower<String>("hello").Inner<Float>("world", 2.3);
-        
+    
+    void method<X>() {}
+
+    @error Producer<Holder>();
+    @error Producer<Holder> hp = Producer<Holder>();
+    @error Producer<Holder>? ohp = null;
+    @error Generics.Producer<Holder>();
+    @error Generics.Producer<Holder> ghp = Generics.Producer<Holder>();
+    @error Generics.Producer<Holder>? gohp = null;
+    
+    @error object wc satisfies WithCovariant {}
+    @error object wch satisfies WithCovariant<Holder> {}
+    @error object gwc satisfies Generics.WithCovariant {}
+    @error object gwch satisfies Generics.WithCovariant<Holder> {}
+    
+    @error method<Holder>();
+    @error this.method<Holder>();
+    
+    @error Producer<Holder<String,String>>();
+    @error Producer<Holder<String,String>> hpss = Producer<Holder<String,String>>();
+    @error Producer<Holder<String,String>>? ohpss = null;
+    @error Generics.Producer<Holder<String,String>>();
+    @error Generics.Producer<Holder<String,String>> ghpss = Generics.Producer<Holder<String,String>>();
+    @error Generics.Producer<Holder<String,String>>? gohpss = null;
+    
+    @error object wchss satisfies WithCovariant<Holder<String,String>> {}
+    
+    @error method<Holder<String,String>>();
+    @error this.method<Holder<String,String>>();
+    
+    @error Producer<String<String,String>>();
+    @error Producer<String<String,String>> spss = Producer<String<String,String>>();
+    @error Producer<String<String,String>>? ospss = null;
+    @error Generics.Producer<String<String,String>>();
+    @error Generics.Producer<String<String,String>> gspss = Generics.Producer<String<String,String>>();
+    @error Generics.Producer<String<String,String>>? gospss = null;
+    
+    @error object wcsss satisfies WithCovariant<String<String,String>> {}
+    
+    @error method<String<String,String>>();
+    @error this.method<String<String,String>>();
+    
+    @error Producer<Holder<Holder>>();
+    @error method<Holder<Holder>>();
+    
 }
