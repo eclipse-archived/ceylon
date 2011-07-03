@@ -202,6 +202,24 @@ public class ExpressionVisitor extends AbstractVisitor {
         if (that.getType()!=null) {
             checkType(that.getType().getTypeModel(), that.getSpecifierOrInitializerExpression());
         }
+        if (that.getDeclarationModel().isClassMember()) {
+            Class c = (Class) that.getDeclarationModel().getContainer();
+            Parameter param = (Parameter) c.getParameter( that.getDeclarationModel().getName() );
+            if ( param!=null ) {
+                //if it duplicates a parameter, then it must be is non-variable
+                if ( that.getDeclarationModel().isVariable()) {
+                    that.addError("member hidden by parameter may not be variable: " + 
+                            that.getDeclarationModel().getName());
+                }
+                //if it duplicates a parameter, then it must have the same type
+                //as the parameter
+                if ( !that.getDeclarationModel().getType().isExactly(param.getType())) {
+                    that.addError("member hidden by parameter must have same type as parameter: " +
+                            that.getDeclarationModel().getName() + " is not " +
+                            param.getType().getProducedTypeName());
+                }
+            }
+        }
     }
 
     @Override public void visit(Tree.SpecifierStatement that) {

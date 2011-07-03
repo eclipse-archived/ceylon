@@ -80,7 +80,7 @@ public abstract class Element {
         return null;
     }
     
-    private boolean isParameter(Declaration d) {
+    protected boolean isParameter(Declaration d) {
         return d instanceof Parameter
             || d instanceof TypeParameter;
     }
