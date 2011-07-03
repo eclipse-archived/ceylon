@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
@@ -14,6 +15,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
+import com.redhat.ceylon.compiler.typechecker.model.InterfaceAlias;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -197,8 +199,9 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.ClassDefinition that) {
-        Class c = new Class();
+    public void visit(Tree.AnyClass that) {
+        Class c = that instanceof Tree.ClassDefinition ?
+                new Class() : new ClassAlias();
         that.setDeclarationModel(c);
         visitDeclaration(that, c);
         Scope o = enterScope(c);
@@ -214,8 +217,9 @@ public class DeclarationVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Tree.InterfaceDefinition that) {
-        Interface i = new Interface();
+    public void visit(Tree.AnyInterface that) {
+        Interface i = that instanceof Tree.InterfaceDefinition ?
+                new Interface() : new InterfaceAlias();
         that.setDeclarationModel(i);
         visitDeclaration(that, i);
         Scope o = enterScope(i);

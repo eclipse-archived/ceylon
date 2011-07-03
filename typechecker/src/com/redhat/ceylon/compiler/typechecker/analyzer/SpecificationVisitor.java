@@ -406,7 +406,7 @@ public class SpecificationVisitor extends AbstractVisitor {
     }
     
     @Override
-    public void visit(Tree.ClassDefinition that) {
+    public void visit(Tree.AnyClass that) {
         if (that.getDeclarationModel()==declaration) {
             declare();
             specify();
@@ -463,7 +463,7 @@ public class SpecificationVisitor extends AbstractVisitor {
     }
     
     @Override
-    public void visit(Tree.InterfaceDefinition that) {
+    public void visit(Tree.AnyInterface that) {
         if (that.getDeclarationModel()==declaration) {
             declare();
             specify();

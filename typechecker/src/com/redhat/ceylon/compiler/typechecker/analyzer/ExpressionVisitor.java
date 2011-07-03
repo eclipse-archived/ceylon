@@ -1759,7 +1759,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         super.visit(that);
         ProducedType pt = that.getTypeModel();
         if (pt!=null) {
-            TypeDeclaration type = pt.getDeclaration();
+            TypeDeclaration type = that.getDeclarationModel();//pt.getDeclaration()
             Tree.TypeArgumentList tal = that.getTypeArgumentList();
             //No type inference for declarations
             List<ProducedType> typeArguments = getTypeArguments(tal);

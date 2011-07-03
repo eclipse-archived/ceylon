@@ -208,6 +208,7 @@ public class TypeVisitor extends AbstractVisitor {
         //if (acceptsTypeArguments(dec, typeArguments, tal, that)) {
             ProducedType pt = dec.getProducedType(ot, typeArguments);
             that.setTypeModel(pt);
+            that.setDeclarationModel(dec);
         //}
     }
     
@@ -322,6 +323,42 @@ public class TypeVisitor extends AbstractVisitor {
     public void visit(Tree.TypeParameterDeclaration that) {
         that.getDeclarationModel().setExtendedType(getVoidDeclaration().getType());
         super.visit(that);
+    }
+    
+    @Override 
+    public void visit(Tree.ClassDeclaration that) {
+        super.visit(that);
+        Tree.SimpleType et = that.getTypeSpecifier().getType();
+        if (et==null) {
+            that.addError("malformed aliased class");
+        }
+        else {
+            ProducedType type = et.getTypeModel();
+            if (type!=null) {
+                if (!(type.getDeclaration() instanceof Class)) {
+                    et.addError("not a class: " + type.getDeclaration().getName());
+                }
+                that.getDeclarationModel().setExtendedType(type);
+            }
+        }
+    }
+    
+    @Override 
+    public void visit(Tree.InterfaceDeclaration that) {
+        super.visit(that);
+        Tree.SimpleType et = that.getTypeSpecifier().getType();
+        if (et==null) {
+            that.addError("malformed aliased interface");
+        }
+        else {
+            ProducedType type = et.getTypeModel();
+            if (type!=null) {
+                if (!(type.getDeclaration() instanceof Interface)) {
+                    et.addError("not an interface: " + type.getDeclaration().getName());
+                }
+                that.getDeclarationModel().setExtendedType(type);
+            }
+        }
     }
     
     @Override 

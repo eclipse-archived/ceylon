@@ -207,4 +207,8 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
         return null;
     }
     
+    public boolean isAlias() {
+        return false;
+    }
+    
 }
