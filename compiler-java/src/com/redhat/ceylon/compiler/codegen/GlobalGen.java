@@ -89,6 +89,7 @@ public final class GlobalGen extends GenPart {
 
         private boolean writable = true;
         private long setterVisibility;
+        private List<JCTree.JCAnnotation> valueAnnotations = List.nil();
 
         public DefinitionBuilder(JCTree.JCExpression variableType, Name variableName) {
             this.variableType = variableType;
@@ -140,7 +141,7 @@ public final class GlobalGen extends GenPart {
                     make().Return(make().Ident(fieldName))
             ));
             return make().MethodDef(
-                    make().Modifiers(Flags.STATIC | getterVisibility),
+                    make().Modifiers(Flags.STATIC | getterVisibility, valueAnnotations),
                     getterName,
                     variableType,
                     List.<JCTree.JCTypeParameter>nil(),
@@ -166,7 +167,7 @@ public final class GlobalGen extends GenPart {
                     makeIdent("void"),
                     List.<JCTree.JCTypeParameter>nil(),
                     List.<JCTree.JCVariableDecl>of(
-                            make().VarDef(make().Modifiers(0), paramName, variableType, null)
+                            make().VarDef(make().Modifiers(0, valueAnnotations), paramName, variableType, null)
                     ),
                     List.<JCTree.JCExpression>nil(),
                     body,
@@ -223,6 +224,16 @@ public final class GlobalGen extends GenPart {
          */
         public DefinitionBuilder initialValue(JCTree.JCExpression initialValue) {
             this.variableInit = initialValue;
+            return this;
+        }
+
+        /**
+         * Applies the given <tt>valueAnnotations</tt> to the getter method and to the parameter of the setter method.
+         * @param valueAnnotations the annotations to apply.
+         * @return this instance for method chaining
+         */
+        public DefinitionBuilder valueAnnotations(List<JCTree.JCAnnotation> valueAnnotations) {
+            this.valueAnnotations = valueAnnotations;
             return this;
         }
     }

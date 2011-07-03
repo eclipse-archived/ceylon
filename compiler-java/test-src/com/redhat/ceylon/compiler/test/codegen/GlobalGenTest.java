@@ -7,9 +7,12 @@ import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.util.Context;
+import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Name;
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.matchers.JUnitMatchers;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
@@ -91,6 +94,33 @@ public class GlobalGenTest {
 
         assertThat(result, containsString("value = initialValue;"));
         assertThat(result, not(containsString("setValue")));
+    }
+
+    @Test
+    public void testDefineValueAnnotations() {
+        JCTree.JCExpression variableType = toType("VariableType");
+        Name variableName = toName("variableName");
+
+        JCTree tree = globalGen
+                .defineGlobal(variableType, variableName)
+                .valueAnnotations(List.of(createAnnotationWithType("AnnotationType")))
+                .build();
+
+        String result = toCanonicalString(tree);
+
+        assertThat("annotation applied to getter", result,
+                containsString(lines(
+                        "@AnnotationType",
+                        "    static VariableType getValue")));
+        assertThat("annotation applied to setter parameter", result,
+                containsString(lines(
+                        "setValue(@AnnotationType",
+                        "    VariableType newValue")));
+    }
+
+    private JCTree.JCAnnotation createAnnotationWithType(String annotationType) {
+        return make.Annotation(make.Ident(toName(annotationType)),
+                List.<JCTree.JCExpression>nil());
     }
 
     @Test
