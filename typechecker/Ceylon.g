@@ -385,8 +385,8 @@ interfaceDeclaration
       (
         interfaceBody
       -> ^(INTERFACE_DEFINITION typeName interfaceParameters? interfaceBody)
-      | typeSpecifier ';'
-      -> ^(INTERFACE_DECLARATION[$INTERFACE_DEFINITION] typeName interfaceParameters? typeSpecifier)
+      | typeSpecifier? ';'
+      -> ^(INTERFACE_DECLARATION[$INTERFACE_DEFINITION] typeName interfaceParameters? typeSpecifier?)
       )
     ;
 

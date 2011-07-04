@@ -29,6 +29,9 @@ interface Declarations {
     @error X getterWithoutReturn {
         doSomething();
     }
+    
+    @error class WithoutClassDef();
+    @error interface WithoutInterfaceDef;
 
     /*class Foo(String bar) {}
     @error Foo getFoo() {}

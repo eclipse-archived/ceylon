@@ -374,20 +374,22 @@ public class ExpressionVisitor extends AbstractVisitor {
         super.visit(that);
         Class alias = that.getDeclarationModel();
         Class c = alias.getExtendedTypeDeclaration();
-        //that.getTypeSpecifier().getType().get
-        ProducedType at = alias.getExtendedType();
-        int cps = c.getParameterList().getParameters().size();
-        int aps = alias.getParameterList().getParameters().size();
-        if (cps!=aps) {
-            that.addError("wrong number of initializer parameters declared by class alias: " + alias.getName());
-        }
-        for (int i=0; i<(cps<=aps ? cps : aps); i++) {
-            Parameter ap = alias.getParameterList().getParameters().get(i);
-            Parameter cp = c.getParameterList().getParameters().get(i);
-            ProducedType pt = at.getTypedParameter(cp).getType();
-            if ( !ap.getType().isSubtypeOf(pt) ) {
-                that.addError("alias parameter is not assignable to corresponding class parameter: " +
-                        ap.getName() + " is not of type " + pt.getProducedTypeName());
+        if (c!=null) {
+            //that.getTypeSpecifier().getType().get
+            ProducedType at = alias.getExtendedType();
+            int cps = c.getParameterList().getParameters().size();
+            int aps = alias.getParameterList().getParameters().size();
+            if (cps!=aps) {
+                that.addError("wrong number of initializer parameters declared by class alias: " + alias.getName());
+            }
+            for (int i=0; i<(cps<=aps ? cps : aps); i++) {
+                Parameter ap = alias.getParameterList().getParameters().get(i);
+                Parameter cp = c.getParameterList().getParameters().get(i);
+                ProducedType pt = at.getTypedParameter(cp).getType();
+                if ( !ap.getType().isSubtypeOf(pt) ) {
+                    that.addError("alias parameter is not assignable to corresponding class parameter: " +
+                            ap.getName() + " is not of type " + pt.getProducedTypeName());
+                }
             }
         }
     }

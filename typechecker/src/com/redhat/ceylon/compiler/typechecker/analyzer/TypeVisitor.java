@@ -328,17 +328,22 @@ public class TypeVisitor extends AbstractVisitor {
     @Override 
     public void visit(Tree.ClassDeclaration that) {
         super.visit(that);
-        Tree.SimpleType et = that.getTypeSpecifier().getType();
-        if (et==null) {
-            that.addError("malformed aliased class");
+        if (that.getTypeSpecifier()==null) {
+            that.addError("missing class body or aliased class reference");
         }
         else {
-            ProducedType type = et.getTypeModel();
-            if (type!=null) {
-                if (!(type.getDeclaration() instanceof Class)) {
-                    et.addError("not a class: " + type.getDeclaration().getName());
+            Tree.SimpleType et = that.getTypeSpecifier().getType();
+            if (et==null) {
+                that.addError("malformed aliased class");
+            }
+            else {
+                ProducedType type = et.getTypeModel();
+                if (type!=null) {
+                    if (!(type.getDeclaration() instanceof Class)) {
+                        et.addError("not a class: " + type.getDeclaration().getName());
+                    }
+                    that.getDeclarationModel().setExtendedType(type);
                 }
-                that.getDeclarationModel().setExtendedType(type);
             }
         }
     }
@@ -346,17 +351,22 @@ public class TypeVisitor extends AbstractVisitor {
     @Override 
     public void visit(Tree.InterfaceDeclaration that) {
         super.visit(that);
-        Tree.SimpleType et = that.getTypeSpecifier().getType();
-        if (et==null) {
-            that.addError("malformed aliased interface");
+        if (that.getTypeSpecifier()==null) {
+            that.addError("missing interface body or aliased interface reference");
         }
         else {
-            ProducedType type = et.getTypeModel();
-            if (type!=null) {
-                if (!(type.getDeclaration() instanceof Interface)) {
-                    et.addError("not an interface: " + type.getDeclaration().getName());
+            Tree.SimpleType et = that.getTypeSpecifier().getType();
+            if (et==null) {
+                that.addError("malformed aliased interface");
+            }
+            else {
+                ProducedType type = et.getTypeModel();
+                if (type!=null) {
+                    if (!(type.getDeclaration() instanceof Interface)) {
+                        et.addError("not an interface: " + type.getDeclaration().getName());
+                    }
+                    that.getDeclarationModel().setExtendedType(type);
                 }
-                that.getDeclarationModel().setExtendedType(type);
             }
         }
     }
