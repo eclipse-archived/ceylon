@@ -124,7 +124,7 @@ public class StatementGen extends GenPart {
             }
 
             // Temporary variable holding the result of the expression/variable to test
-            decl = at(cond).VarDef(make().Modifiers(FINAL), tmpVarName, makeIdent(tmpVarType.getProducedTypeName()), expr);
+            decl = at(cond).VarDef(make().Modifiers(FINAL), tmpVarName, gen.makeJavaType(tmpVarType, false), expr);
             // Substitute variable with the correct type to use in the rest of the code block
             JCVariableDecl decl2 = at(cond).VarDef(make().Modifiers(FINAL), substVarName, type, at(cond).TypeCast(type, at(cond).Ident(tmpVarName)));
             
