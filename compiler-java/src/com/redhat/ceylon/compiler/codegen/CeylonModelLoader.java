@@ -439,6 +439,10 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         for(VarSymbol paramSymbol : methodSymbol.params()){
             ValueParameter parameter = new ValueParameter();
             parameter.setContainer((Scope) klass);
+            String paramName = getAnnotationStringValue(paramSymbol, "com.redhat.ceylon.compiler.metadata.java.Name");
+            // use whatever param name we find as default
+            if(paramName == null)
+                parameter.setName(paramSymbol.name.toString());
             // FIXME: deal with type override by annotations
             parameter.setType(getType(paramSymbol.type, (Scope) klass));
             parameters.getParameters().add(parameter);
@@ -482,7 +486,14 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             return (Array)annotation.member(names.fromString("value"));
         return null;
     }
-    
+
+    private String getAnnotationStringValue(Symbol symbol, String name) {
+        Compound annotation = getAnnotation(symbol, name);
+        if(annotation != null)
+            return (String)annotation.member(names.fromString("value")).getValue();
+        return null;
+    }
+
     //
     // Satisfied Types
     
