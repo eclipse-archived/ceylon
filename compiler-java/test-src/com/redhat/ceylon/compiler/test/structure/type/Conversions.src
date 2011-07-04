@@ -1,0 +1,48 @@
+package com.redhat.ceylon.compiler.test.structure.type;
+
+class Foo extends .ceylon.language.IdentifiableObject {
+    
+    public final void a() {
+    }
+    
+    Foo() {
+    }
+}
+class Bar extends Foo {
+    
+    public final void b() {
+    }
+    
+    Bar() {
+        super();
+    }
+}
+class Baz extends Foo {
+    
+    public final void c() {
+    }
+    
+    Baz() {
+        super();
+    }
+}
+class Conversions extends .ceylon.language.IdentifiableObject {
+    
+    public final void m() {
+        final Foo c1 = new Foo();
+        c1.a();
+        final Object u1 = new Bar();
+        u1.a(); // FIXME This is not correct
+        final Object $u1$0 = u1;
+        if ($u1$0 instanceof Bar) {
+            final Bar $u1$1 = (Bar)$u1$0;
+            {
+                $u1$1.a();
+                $u1$1.b();
+            }
+        }
+    }
+    
+    Conversions() {
+    }
+}

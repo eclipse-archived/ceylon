@@ -142,4 +142,8 @@ public class StructureTest extends CompilerTest {
     public void testTypSequenceType(){
         compareWithJavaSource("type/SequenceType");
     }
+    @Test
+    public void testTypConversions(){
+        compareWithJavaSource("type/Conversions");
+    }
 }
