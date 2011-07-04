@@ -555,7 +555,7 @@ TypeConstraints?
         <para>A <emphasis>class</emphasis> is a stateful, instantiable type. It is a 
         type schema, together with implementation details of the members of the type.</para>
 
-        <programlisting>Class: Annotation* ClassHeader (ClassBody | TypeSpecifier? ";")</programlisting>
+        <programlisting>Class: Annotation* ClassHeader (ClassBody | TypeSpecifier ";")</programlisting>
         
         <para>An ordinary class declaration specifies a list of parameters required to 
         instantiate the type, and, optionally a list of type parameters.  A class 
