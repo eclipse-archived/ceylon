@@ -203,8 +203,10 @@ public class LowerCeylon extends TreeTranslator {
 
     public <T extends JCTree> T translate(T tree, Type type) {
         tree = translate(tree);
+/* Disabled (stef) because it threw an NPE when @Name was on a param for some reason
         if (tree != null) tree =
             (T)ceylonExtensionIfNeeded((JCExpression)tree, type);
+*/
         return tree;
     }
 
