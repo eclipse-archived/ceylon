@@ -108,13 +108,13 @@ public class PhasedUnit {
         compilationUnit.visit(new RefinementVisitor());
     }
 
-    public void runAssertions() {
+    public void runAssertions(AssertionVisitor av) {
         //System.out.println("Running assertions for " + fileName);
-        compilationUnit.visit(new AssertionVisitor());
+        compilationUnit.visit(av);
     }
 
     public void display() {
-        System.out.println("Display " + fileName);
+        System.out.println("Displaying " + fileName);
         compilationUnit.visit(new PrintVisitor());
     }
     

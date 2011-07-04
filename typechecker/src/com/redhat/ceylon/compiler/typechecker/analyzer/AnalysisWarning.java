@@ -2,12 +2,12 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 
-public class AnalysisError implements AnalysisMessage {
+public class AnalysisWarning implements AnalysisMessage {
     
     private Node treeNode;
     private String message;
     
-    public AnalysisError(Node treeNode, String message) {
+    public AnalysisWarning(Node treeNode, String message) {
         this.treeNode = treeNode;
         this.message = message;
     }

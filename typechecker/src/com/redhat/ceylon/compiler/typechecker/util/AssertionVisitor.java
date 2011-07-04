@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
+import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisMessage;
+import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
@@ -14,7 +16,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 public class AssertionVisitor extends Visitor implements NaturalVisitor {
     
     boolean expectingError = false;
-    List<AnalysisError> foundErrors = new ArrayList<AnalysisError>();
+    List<AnalysisMessage> foundErrors = new ArrayList<AnalysisMessage>();
 
     @Override
     public void visit(Tree.TypedDeclaration that) {
@@ -50,9 +52,9 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
     @Override
     public void visit(Tree.StatementOrArgument that) {
         boolean b = expectingError;
-        List<AnalysisError> f = foundErrors;
+        List<AnalysisMessage> f = foundErrors;
         expectingError = false;
-        foundErrors = new ArrayList<AnalysisError>();
+        foundErrors = new ArrayList<AnalysisMessage>();
         initExpectingError(that);
         super.visit(that);
         checkErrors(that);
@@ -96,6 +98,15 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
             err.getTreeNode().getUnit().getFilename());
     }
 
+    protected void out(AnalysisWarning err) {
+        System.out.println(
+            "warning encountered [" +
+            err.getMessage() + "] at " + 
+            err.getTreeNode().getAntlrTreeNode().getLine() + ":" +
+            err.getTreeNode().getAntlrTreeNode().getCharPositionInLine() + " of " +
+            err.getTreeNode().getUnit().getFilename());
+    }
+
     private void checkErrors(Node that) {
         if (expectingError) {
             if (foundErrors.size()==0) {
@@ -103,8 +114,15 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
             }
         }
         else {
-            for (AnalysisError err: foundErrors) {
-                out(err);
+            for (AnalysisMessage err: foundErrors) {
+                if (err instanceof AnalysisError) {
+                    out( (AnalysisError) err );
+                }
+                else if (err instanceof AnalysisWarning) {
+                    if (includeWarnings()) {
+                        out( (AnalysisWarning) err );
+                    }
+                }
             }
         }
     }
@@ -115,6 +133,10 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
                 expectingError = true;
             }
         }
+    }
+    
+    protected boolean includeWarnings() {
+        return true;
     }
     
     @Override

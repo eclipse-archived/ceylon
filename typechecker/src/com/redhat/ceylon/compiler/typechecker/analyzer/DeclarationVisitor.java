@@ -8,6 +8,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
@@ -198,20 +199,28 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.ClassOrInterface that) {
+        super.visit(that);
+        if ( that.getCaseTypes()!=null ) {
+            that.addWarning("types with enumerated cases not yet supported");
+        }
+    }
+    
+    @Override
     public void visit(Tree.AnyClass that) {
         Class c = that instanceof Tree.ClassDefinition ?
                 new Class() : new ClassAlias();
         that.setDeclarationModel(c);
         visitDeclaration(that, c);
+        if (hasAnnotation(that.getAnnotationList(), "abstract")) {
+            c.setAbstract(true);
+        }
         Scope o = enterScope(c);
         super.visit(that);
         exitScope(o);
         if (that.getParameterList()==null) {
             that.addError("missing parameter list in class declaration: " + 
                     name(that.getIdentifier()) );
-        }
-        if (hasAnnotation(that.getAnnotationList(), "abstract")) {
-            c.setAbstract(true);
         }
     }
 
@@ -225,7 +234,15 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
     }
-
+    
+    @Override
+    public void visit(Tree.InterfaceDefinition that) {
+        super.visit(that);
+        if (that.getAdaptedTypes()!=null) {
+            that.addWarning("introductions are not yet supported");
+        }
+    }
+    
     @Override
     public void visit(Tree.TypeParameterDeclaration that) {
         TypeParameter p = new TypeParameter();
@@ -279,12 +296,18 @@ public class DeclarationVisitor extends Visitor {
             that.addError("missing parameter list in method declaration: " + 
                     name(that.getIdentifier()) );
         }
+        if ( that.getParameterLists().size()>1 ) {
+            that.addWarning("higher-order methods are not yet supported");
+        }
     }
 
     private void checkMethodArgumentParameters(Tree.MethodArgument that) {
         if (that.getParameterLists().isEmpty()) {
             that.addError("missing parameter list in named argument declaration: " + 
                     name(that.getIdentifier()) );
+        }
+        if ( that.getParameterLists().size()>1 ) {
+            that.addWarning("higher-order methods are not yet supported");
         }
     }
 
@@ -315,7 +338,7 @@ public class DeclarationVisitor extends Visitor {
         that.getType().setTypeModel(c.getType());
         v.setType(c.getType());
     }
-
+    
     @Override
     public void visit(Tree.AttributeDeclaration that) {
         Value v = new Value();
@@ -325,8 +348,19 @@ public class DeclarationVisitor extends Visitor {
             v.setVariable(true);
         }
         super.visit(that);
+        if ( v.isInterfaceMember() && !v.isFormal()) {
+            that.addError("interfaces may not have simple attributes");
+        }
     }
 
+    @Override
+    public void visit(Tree.MethodDeclaration that) {
+        super.visit(that);
+        if ( that.getSpecifierExpression()!=null ) {
+            that.addWarning("method definition by reference is not yet supported");
+        }
+    }
+    
     @Override
     public void visit(Tree.AttributeGetterDefinition that) {
         Getter g = new Getter();
@@ -380,6 +414,7 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
         parameterList.getParameters().add(p);
+        that.addWarning("higher order methods are not yet supported");
     }
 
     @Override
@@ -490,6 +525,26 @@ public class DeclarationVisitor extends Visitor {
         
         super.visit(that);
         endDeclaration(d);
+
+        if (d!=null) {
+            checkFormalMember(that, d);
+        }
+        
+    }
+
+    private void checkFormalMember(Tree.Declaration that, Declaration d) {
+        
+        if ( d.isFormal() && 
+                ( !(d.getContainer() instanceof ClassOrInterface) || 
+                !( (ClassOrInterface) d.getContainer() ).isAbstract()) ) {
+            that.addError("formal member does not belong to an interface or abstract class");
+        }
+        
+        if ( !d.isFormal() && 
+                ( d.getContainer() instanceof Interface) ) {
+            that.addWarning("concrete members of interfaces not yet supported");
+        }
+        
     }
 
     private void buildAnnotations(Tree.AnnotationList al) {
@@ -548,6 +603,33 @@ public class DeclarationVisitor extends Visitor {
             super.visit(that);
             exitScope(o);
         }
+        if ( that.getAbstractedType()!=null ) {
+            that.addWarning("lower bound type constraints are not yet supported");
+        }
+        if ( that.getCaseTypes()!=null ) {
+            that.addWarning("enumerated type constraints are not yet supported");
+        }
+        if ( that.getParameterList()!=null ) {
+            that.addWarning("initialization parameter specifications are not yet supported");
+        }
+    }
+    
+    @Override
+    public void visit(Tree.TryCatchStatement that) {
+        super.visit(that);
+        that.addWarning("try statements are not yet supported");
+    }
+
+    @Override
+    public void visit(Tree.SwitchStatement that) {
+        super.visit(that);
+        that.addWarning("switch statements are not yet supported");
+    }
+
+    @Override
+    public void visit(Tree.SatisfiesCondition that) {
+        super.visit(that);
+        that.addWarning("satisfies conditions are not yet supported");
     }
 
 }

@@ -117,12 +117,7 @@ public class TypeChecker {
                 if (verbose) {
                     pu.display();
                 }
-                if ( assertionVisitor == null ) {
-                    pu.runAssertions();
-                }
-                else {
-                    pu.getCompilationUnit().visit( assertionVisitor );
-                }
+                pu.runAssertions(assertionVisitor);
             }
         }
     }

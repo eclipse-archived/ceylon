@@ -24,7 +24,11 @@ public class TypeCheckerBuilder {
     private List<VirtualFile> srcDirectories = new ArrayList<VirtualFile>();
     private final VFS vfs = new VFS();
     private boolean verifyDependencies = true;
-    private AssertionVisitor assertionVisitor;
+    private AssertionVisitor assertionVisitor = new AssertionVisitor() { 
+        @Override protected boolean includeWarnings() {
+            return false;
+        }
+    };
 
     public TypeCheckerBuilder() {
     }

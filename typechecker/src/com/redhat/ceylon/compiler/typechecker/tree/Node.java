@@ -8,6 +8,8 @@ import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
+import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisMessage;
+import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.util.PrintVisitor;
@@ -18,7 +20,7 @@ public abstract class Node {
     private final CommonTree antlrTreeNode;
     private Scope scope;
     private Unit unit;
-    private List<AnalysisError> errors = new ArrayList<AnalysisError>();
+    private List<AnalysisMessage> errors = new ArrayList<AnalysisMessage>();
     
     protected Node(CommonTree antlrTreeNode) {
         this.antlrTreeNode = antlrTreeNode; 
@@ -72,12 +74,16 @@ public abstract class Node {
     /**
      * The compilation errors belonging to this node.
      */
-    public List<AnalysisError> getErrors() {
+    public List<AnalysisMessage> getErrors() {
         return errors;
     }
     
     public void addError(String message) {
         errors.add( new AnalysisError(this, message) );
+    }
+    
+    public void addWarning(String message) {
+        errors.add( new AnalysisWarning(this, message) );
     }
     
     public abstract void visitChildren(Visitor visitor);
