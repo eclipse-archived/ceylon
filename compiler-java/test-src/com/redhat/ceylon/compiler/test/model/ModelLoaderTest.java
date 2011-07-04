@@ -1,8 +1,10 @@
 package com.redhat.ceylon.compiler.test.model;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import junit.framework.Assert;
 
@@ -23,6 +25,9 @@ import com.sun.tools.javac.api.JavacTaskImpl;
 import com.sun.tools.javac.util.Context;
 
 public class ModelLoaderTest extends CompilerTest {
+    
+    private Set<Declaration> validDeclarations = new HashSet<Declaration>();
+    
     protected void verifyClassLoading(String ceylon){
         // now compile the ceylon decl file
         CeyloncTaskImpl task = getCompilerTask(ceylon);
@@ -63,6 +68,8 @@ public class ModelLoaderTest extends CompilerTest {
     }
 
     private void compareDeclarations(Declaration validDeclaration, Declaration modelDeclaration) {
+        if(!validDeclarations.add(validDeclaration))
+            return;
         Assert.assertEquals(validDeclaration.getQualifiedName()+" [name]", validDeclaration.getName(), modelDeclaration.getName());
         Assert.assertEquals(validDeclaration.getQualifiedName()+" [shared]", validDeclaration.isShared(), modelDeclaration.isShared());
         if(validDeclaration instanceof Class){
