@@ -30,6 +30,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
@@ -105,12 +106,20 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             final String pkgName = tree.getPackageName().toString();
             
             ceylonTree.visit(new Visitor(){
-                @Override
-                public void visit(ClassDefinition that) {
-                    String name = that.getIdentifier().getText();
+                
+                void loadFromSource(Tree.Declaration decl){
+                    String name = decl.getIdentifier().getText();
                     String fqn = pkgName.isEmpty() ? name : pkgName+"."+name;
-                    ClassSymbol classSymbol = reader.enterClass(names.fromString(fqn), tree.getSourceFile());
-                    super.visit(that);
+                    reader.enterClass(names.fromString(fqn), tree.getSourceFile());
+                }
+                
+                @Override
+                public void visit(Tree.ClassDefinition that) {
+                    loadFromSource(that);
+                }
+                
+                public void visit(Tree.MethodDefinition that) {
+                    loadFromSource(that);
                 }
             });
         }
