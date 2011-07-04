@@ -178,6 +178,7 @@
       <batchtest fork="yes" todir="${test.reports}">
         <fileset dir="${test.src}">
           <include name="**/*Test.java"/>
+          <exclude name="com/redhat/ceylon/compiler/test/CompilerTest.java"/>
         </fileset>
       </batchtest>
     </junit>
