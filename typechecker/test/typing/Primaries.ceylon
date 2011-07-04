@@ -3,7 +3,7 @@ class Primaries() {
     class C() extends IdentifiableObject() {}
     
     class B() extends IdentifiableObject() {
-        shared C c() = C();
+        shared C c() { return C(); }
     }
     
     class A() extends IdentifiableObject() {
