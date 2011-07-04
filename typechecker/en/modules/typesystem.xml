@@ -310,8 +310,20 @@
                 <literal>X</literal> is a subtype of <literal>Z</literal>.</para>
             </listitem>
             <listitem>
+                <para>Noncircularity: if <literal>X</literal> is a subtype of <literal>Y</literal>
+                and <literal>Y</literal> is a subtype of <literal>X</literal> then
+                <literal>Y</literal> and <literal>X</literal> are the same type.</para>
+            </listitem>
+            <listitem>
                 <para>Single root: all types are subtypes of the class <literal>Void</literal>
                 defined in the module <literal>ceylon.language</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>Generic consistency: If <literal>Y</literal> is a parameterized type, and 
+                <literal>X</literal> is a subtype of both <literal>Y&lt;U&gt;</literal> and 
+                <literal>Y&lt;V&gt;</literal> then either <literal>Y&lt;U&gt;</literal> is a 
+                subtype of <literal>Y&lt;V&gt;</literal> or <literal>Y&lt;V&gt;</literal> is a 
+                subtype of <literal>Y&lt;U&gt;</literal>.</para>
             </listitem>
         </itemizedlist>
         
