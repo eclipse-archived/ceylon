@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.format;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -383,38 +382,48 @@ public class ProducedType extends ProducedReference {
         if (this.getDeclaration()==dec) {
             return this;
         }
-        else if (getDeclaration().getExtendedType()!=null) {
+        //search for the most-specific supertype 
+        //for the given declaration
+        ProducedType result = null;
+        if (getDeclaration().getExtendedType()!=null) {
             ProducedType et = getDeclaration().getExtendedType().getSupertype(dec);
             if (et!=null) {
-                return et.substitute(getTypeArguments());
+                result = et.substitute(getTypeArguments());
             }
         }
         for (ProducedType dst: getDeclaration().getSatisfiedTypes()) {
             ProducedType st = dst.getSupertype(dec);
             if (st!=null) {
-                return st.substitute(getTypeArguments());
+                ProducedType possibleResult = st.substitute(getTypeArguments());
+                if (result==null || possibleResult.isSubtypeOf(result)) {
+                    result = possibleResult;
+                }
             }
         }
-        if (getDeclaration().getCaseTypes()!=null && !getDeclaration().getCaseTypes().isEmpty()) {
+        //consider types which are supertypes 
+        //of all cases
+        if (getDeclaration().getCaseTypes()!=null /*&& !getDeclaration().getCaseTypes().isEmpty()*/) {
             for (ProducedType t: getDeclaration().getCaseTypes()) {
                 ProducedType candidate = t.getSupertype(dec);
                 if (candidate!=null) {
-                    ProducedType st = candidate.substitute(getTypeArguments());
+                    ProducedType candidateResult = candidate.substitute(getTypeArguments());
                     boolean include = true;
                     for (ProducedType ct: getDeclaration().getCaseTypes()) {
                         ct = ct.substitute(getTypeArguments());
-                        if (!ct.isSubtypeOf(st)) {
+                        if (!ct.isSubtypeOf(candidateResult)) {
                             include = false;
                             break;
                         }
                     }
                     if (include) {
-                        return st;
+                        if (result==null || candidateResult.isSubtypeOf(result)) {
+                            result = candidateResult;
+                        }
                     }
                 }
             }
         }
-        return null;
+        return result;
     }
 
     private static void addToSupertypes(List<ProducedType> list, ProducedType st) {

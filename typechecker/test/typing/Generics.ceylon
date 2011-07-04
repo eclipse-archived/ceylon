@@ -224,6 +224,24 @@ class Generics() {
     @type["Entry<String,Natural>"] Lower<String>("hello").method<Natural>("world",1);
     @type["Generics.Upper<String>.Inner<Float>"] Lower<String>("hello").Inner<Float>("world", 2.3);
     
+    interface Some<out X> {}
+    class Foo1() satisfies Some<Object> {}
+    class Bar1() extends Foo1() satisfies Some<String> {}
+    Some<String> bar1 = Bar1();
+    class Foo2() satisfies Some<String> {}
+    class Bar2() extends Foo2() satisfies Some<Object> {}
+    Some<String> bar2 = Bar2();
+    interface Foo3 satisfies Some<Object> {}
+    interface Bar3 satisfies Some<String> {}
+    class Baz3() satisfies Foo3 & Bar3 {}
+    Some<String> baz3 = Baz3();
+    class Foo4() satisfies Some<Object> {}
+    class Baz4() extends Foo4() satisfies Some<String> {}
+    Some<String> baz4 = Baz4();
+    class Foo5() satisfies Some<String> {}
+    class Baz5() extends Foo5() satisfies Some<Object> {}
+    Some<String> baz5 = Baz5();
+    
     void method<X>() {}
 
     @error Producer<Holder>();
