@@ -476,7 +476,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         return null;
     }
 
-    private Array getTypeInfoFromAnnotations(Symbol symbol, String name) {
+    private Array getAnnotationArrayValue(Symbol symbol, String name) {
         Compound annotation = getAnnotation(symbol, name);
         if(annotation != null)
             return (Array)annotation.member(names.fromString("value"));
@@ -487,7 +487,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     // Satisfied Types
     
     private Array getSatisfiedTypesFromAnnotations(Symbol symbol) {
-        return getTypeInfoFromAnnotations(symbol, "com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes");
+        return getAnnotationArrayValue(symbol, "com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes");
     }
     
     private void setSatisfiedTypes(ClassOrInterface klass, ClassSymbol classSymbol) {
@@ -513,7 +513,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     // Type parameters loading
 
     private Array getTypeParametersFromAnnotations(Symbol symbol) {
-        return getTypeInfoFromAnnotations(symbol, "com.redhat.ceylon.compiler.metadata.java.TypeParameters");
+        return getAnnotationArrayValue(symbol, "com.redhat.ceylon.compiler.metadata.java.TypeParameters");
     }
 
     // from our annotation
