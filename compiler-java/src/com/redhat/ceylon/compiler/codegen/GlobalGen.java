@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.codegen;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.util.JCDiagnostic;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Name;
 
@@ -104,6 +105,7 @@ public final class GlobalGen extends GenPart {
         private boolean writable = true;
         private long setterVisibility;
         private List<JCTree.JCAnnotation> valueAnnotations = List.nil();
+        private List<JCTree.JCAnnotation> classAnnotations = List.nil();
 
         public DefinitionBuilder(JCTree.JCExpression variableType, String variableName) {
             this.variableType = variableType;
@@ -128,7 +130,7 @@ public final class GlobalGen extends GenPart {
             }
 
             return make().ClassDef(
-                    make().Modifiers(Flags.FINAL | classVisibility),
+                    make().Modifiers(Flags.FINAL | classVisibility, classAnnotations),
                     getClassName(variableName),
                     List.<JCTree.JCTypeParameter>nil(),
                     null,
@@ -248,6 +250,11 @@ public final class GlobalGen extends GenPart {
          */
         public DefinitionBuilder valueAnnotations(List<JCTree.JCAnnotation> valueAnnotations) {
             this.valueAnnotations = valueAnnotations;
+            return this;
+        }
+
+        public DefinitionBuilder classAnnotations(List<JCTree.JCAnnotation> classAnnotations) {
+            this.classAnnotations = classAnnotations;
             return this;
         }
     }

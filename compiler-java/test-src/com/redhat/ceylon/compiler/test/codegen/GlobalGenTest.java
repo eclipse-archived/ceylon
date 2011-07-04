@@ -110,6 +110,24 @@ public class GlobalGenTest {
     }
 
     @Test
+    public void testDefineClassAnnotations() {
+        JCTree.JCExpression variableType = toType("VariableType");
+        String variableName = "variableName";
+
+        JCTree tree = globalGen
+                .defineGlobal(variableType, variableName)
+                .classAnnotations(List.of(createAnnotationWithType("AnnotationType")))
+                .build();
+
+        String result = toCanonicalString(tree);
+
+        assertThat("annotation applied to class", result,
+                containsString(lines(
+                        "@AnnotationType",
+                        "final class variableName")));
+    }
+
+    @Test
     public void testDefineValueAnnotations() {
         JCTree.JCExpression variableType = toType("VariableType");
         String variableName = "variableName";
