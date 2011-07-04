@@ -62,6 +62,24 @@ public class ExpressionVisitor extends AbstractVisitor {
     private void endReturnScope(Tree.Type t) {
         returnType = t;
     }
+    
+    @Override public void visit(Tree.TypeDeclaration that) {
+        super.visit(that);
+        List<ProducedType> supertypes = that.getDeclarationModel().getType().getSupertypes();
+        for (int i=0; i<supertypes.size(); i++) {
+            for (int j=i+1; j<supertypes.size(); j++) {
+                ProducedType st1 = supertypes.get(i);
+                ProducedType st2 = supertypes.get(j);
+                if (st1.getDeclaration()==st2.getDeclaration() && !st1.isExactly(st2)) {
+                    if (!st1.isSupertypeOf(st2) && !st2.isSupertypeOf(st1)) {
+                        that.addError("type " + that.getDeclarationModel().getName() +
+                                " has the same supertype twice with incompatible type arguments: " +
+                                st1.getProducedTypeName() + " and " + st2.getProducedTypeName());
+                    }
+                }
+            }
+        }
+    }
 
     @Override public void visit(Tree.Variable that) {
         super.visit(that);
