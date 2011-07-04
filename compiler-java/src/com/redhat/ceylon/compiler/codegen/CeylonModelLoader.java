@@ -375,11 +375,14 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             if(member instanceof MethodSymbol){
                 MethodSymbol methodSymbol = (MethodSymbol) member;
                 
-                if(methodSymbol.isStatic()
-                        /* FIXME: Temporary: if it's not public drop it. */
-                        || (methodSymbol.flags() & Flags.PUBLIC) == 0)
+                if(methodSymbol.isStatic())
                     continue;
-                
+                // FIXME: temporary, because some private classes from the jdk are referenced in private methods but not
+                // available
+                if(classSymbol.getQualifiedName().toString().startsWith("java.")
+                        && (methodSymbol.flags() & Flags.PUBLIC) == 0)
+                    continue;
+
                 if(methodSymbol.isConstructor()){
                     constructorCount++;
                     // ignore the non-first ones
