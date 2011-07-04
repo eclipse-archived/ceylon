@@ -222,7 +222,7 @@ public class ControlFlowVisitor extends Visitor {
 
     private void checkExecutableStatementAllowed(Node that) {
         if (!canExecute) {
-            that.addError("misplaced statement");
+            that.addError("misplaced statement or initializer");
         }
     }
     
