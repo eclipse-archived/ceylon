@@ -1,0 +1,1 @@
+KlassWithMethods k = KlassWithMethods();
