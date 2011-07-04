@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.test.model;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -18,6 +19,9 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.util.Util;
@@ -79,8 +83,12 @@ public class ModelLoaderTest extends CompilerTest {
         if(validDeclaration instanceof Class){
             Assert.assertTrue("[Class]", modelDeclaration instanceof Class);
             compareClassDeclarations((Class)validDeclaration, (Class)modelDeclaration);
+        }else if(validDeclaration instanceof Method){
+            Assert.assertTrue("[Method]", modelDeclaration instanceof Method);
+            compareMethodDeclarations((Method)validDeclaration, (Method)modelDeclaration);
         }
     }
+    
     private void compareClassDeclarations(Class validDeclaration, Class modelDeclaration) {
         Assert.assertEquals(validDeclaration.getQualifiedName()+" [abstract]", validDeclaration.isAbstract(), modelDeclaration.isAbstract());
         if(validDeclaration.getExtendedTypeDeclaration() == null)
@@ -98,6 +106,27 @@ public class ModelLoaderTest extends CompilerTest {
             Declaration validMember = validDeclaration.getMember(modelMember.getName());
             Assert.assertNotNull(modelMember.getQualifiedName()+" [extra member]", validMember);
         }
+    }
+    
+    private void compareMethodDeclarations(Method validDeclaration, Method modelDeclaration) {
+        // make sure it has every parameter list required
+        List<ParameterList> validParameterLists = validDeclaration.getParameterLists();
+        List<ParameterList> modelParameterLists = modelDeclaration.getParameterLists();
+        Assert.assertEquals(validDeclaration.getQualifiedName()+" [param lists count]", validParameterLists.size(), modelParameterLists.size());
+        for(int i=0;i<validParameterLists.size();i++){
+            List<Parameter> validParameterList = validParameterLists.get(i).getParameters();
+            List<Parameter> modelParameterList = modelParameterLists.get(i).getParameters();
+            Assert.assertEquals(validDeclaration.getQualifiedName()+" [param lists "+i+" count]", 
+                    validParameterList.size(), modelParameterList.size());
+            for(int p=0;p<validParameterList.size();p++){
+                Parameter validParameter = validParameterList.get(i);
+                Parameter modelParameter = modelParameterList.get(i);
+                // make sure they have the same name and type
+                compareDeclarations(validParameter, modelParameter);
+            }
+        }
+        // now same for return type
+        compareDeclarations(validDeclaration.getType().getDeclaration(), modelDeclaration.getType().getDeclaration());
     }
 
 	@Test
