@@ -87,6 +87,17 @@ public class ModelLoaderTest extends CompilerTest {
             Assert.assertTrue(validDeclaration.getQualifiedName()+" [null supertype]", modelDeclaration.getExtendedTypeDeclaration() == null);
         else
             compareDeclarations(validDeclaration.getExtendedTypeDeclaration(), modelDeclaration.getExtendedTypeDeclaration());
+        // make sure it has every member required
+        for(Declaration validMember : validDeclaration.getMembers()){
+            Declaration modelMember = modelDeclaration.getMember(validMember.getName());
+            Assert.assertNotNull(validMember.getQualifiedName()+" [member]", modelMember);
+            compareDeclarations(validMember, modelMember);
+        }
+        // and not more
+        for(Declaration modelMember : modelDeclaration.getMembers()){
+            Declaration validMember = validDeclaration.getMember(modelMember.getName());
+            Assert.assertNotNull(modelMember.getQualifiedName()+" [extra member]", validMember);
+        }
     }
 
 	@Test
