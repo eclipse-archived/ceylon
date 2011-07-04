@@ -78,7 +78,10 @@ public class ModelLoaderTest extends CompilerTest {
         // let's not check java stuff for now, due to missing types in the jdk's private methods
         if(Util.getQualifiedName(validDeclaration).startsWith("java."))
             return;
-        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [name]", validDeclaration.getName(), modelDeclaration.getName());
+        // only compare parameter names for public methods
+        if(!(validDeclaration instanceof Parameter)
+                || validDeclaration.isShared())
+            Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [name]", validDeclaration.getName(), modelDeclaration.getName());
         Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [shared]", validDeclaration.isShared(), modelDeclaration.isShared());
         if(validDeclaration instanceof Class){
             Assert.assertTrue("[Class]", modelDeclaration instanceof Class);
