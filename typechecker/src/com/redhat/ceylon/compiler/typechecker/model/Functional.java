@@ -3,28 +3,27 @@ package com.redhat.ceylon.compiler.typechecker.model;
 import java.util.List;
 
 /**
- * Represents a construct which may have a 
+ * Represents a construct which may have a
  * list of parameters or more than one:
  * a formal parameter or method. We don't
- * include classes here because they can 
+ * include classes here because they can
  * have only one list of parameters.
- * 
+ * <p/>
  * TODO: do we need a type to abstract
- *       classes, parameters, and methods?
- * 
- * @author Gavin King
+ * classes, parameters, and methods?
  *
+ * @author Gavin King
  */
 public interface Functional {
-	
-	public List<ParameterList> getParameterLists();
-	
-	public void addParameterList(ParameterList pl);
-	
-	public ProducedType getType();
-	
-	public String getName();
-	
-	public List<TypeParameter> getTypeParameters();
+
+    public List<ParameterList> getParameterLists();
+
+    public void addParameterList(ParameterList pl);
+
+    public ProducedType getType();
+
+    public String getName();
+
+    public List<TypeParameter> getTypeParameters();
 
 }

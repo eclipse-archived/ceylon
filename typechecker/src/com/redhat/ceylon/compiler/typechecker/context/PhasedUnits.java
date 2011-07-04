@@ -1,5 +1,11 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleBuilder;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
@@ -12,12 +18,6 @@ import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Contains phased units
  *
@@ -25,8 +25,8 @@ import java.util.Map;
  */
 public class PhasedUnits {
     private List<PhasedUnit> phasedUnits = new ArrayList<PhasedUnit>();
-    private Map<VirtualFile,PhasedUnit> phasedUnitPerFile = new HashMap<VirtualFile,PhasedUnit>();
-    private Map<String,PhasedUnit> phasedUnitPerRelativePath = new HashMap<String,PhasedUnit>();
+    private Map<VirtualFile, PhasedUnit> phasedUnitPerFile = new HashMap<VirtualFile, PhasedUnit>();
+    private Map<String, PhasedUnit> phasedUnitPerRelativePath = new HashMap<String, PhasedUnit>();
     private final Context context;
     private final ModuleBuilder moduleBuilder;
 
@@ -40,7 +40,7 @@ public class PhasedUnits {
         //TODO do we need the ordering??, we could get rid of the List and use map.valueSet()
         this.phasedUnits.add(phasedUnit);
         this.phasedUnitPerFile.put(unitFile, phasedUnit);
-        this.phasedUnitPerRelativePath.put( phasedUnit.getPathRelativeToSrcDir(), phasedUnit );
+        this.phasedUnitPerRelativePath.put(phasedUnit.getPathRelativeToSrcDir(), phasedUnit);
     }
 
     public ModuleBuilder getModuleBuilder() {
@@ -56,14 +56,14 @@ public class PhasedUnits {
     }
 
     public PhasedUnit getPhasedUnitFromRelativePath(String relativePath) {
-        if ( relativePath.startsWith("/") ) {
+        if (relativePath.startsWith("/")) {
             relativePath = relativePath.substring(1);
         }
         return phasedUnitPerRelativePath.get(relativePath);
     }
 
     public void parseUnits(List<VirtualFile> srcDirectories) {
-        for ( VirtualFile file : srcDirectories ) {
+        for (VirtualFile file : srcDirectories) {
             parseUnit(file, file);
         }
     }
@@ -74,9 +74,9 @@ public class PhasedUnits {
 
     public void parseUnit(VirtualFile file, VirtualFile srcDir) {
         try {
-            if ( file.isFolder() ) {
+            if (file.isFolder()) {
                 //root directory is the src dir => start from here
-                for ( VirtualFile subfile : file.getChildren() ) {
+                for (VirtualFile subfile : file.getChildren()) {
                     parseFileOrDirectory(subfile, srcDir);
                 }
             }
@@ -91,12 +91,12 @@ public class PhasedUnits {
             throw e;
         }
         catch (Exception e) {
-            throw new RuntimeException("Error while parsing the source directory: " + file.toString() ,e);
+            throw new RuntimeException("Error while parsing the source directory: " + file.toString(), e);
         }
     }
 
     private void parseFile(VirtualFile file, VirtualFile srcDir) throws Exception {
-        if ( file.getName().endsWith(".ceylon") ) {
+        if (file.getName().endsWith(".ceylon")) {
 
             //System.out.println("Parsing " + file.getName());
             InputStream is = file.getInputStream();
@@ -108,17 +108,17 @@ public class PhasedUnits {
             CeylonParser parser = new CeylonParser(tokens);
             CeylonParser.compilationUnit_return r = parser.compilationUnit();
 
-        	List<LexError> lexerErrors = lexer.getErrors();
-        	for (LexError le: lexerErrors) {
+            List<LexError> lexerErrors = lexer.getErrors();
+            for (LexError le : lexerErrors) {
                 System.out.println("Lexer error in " + file.getName() + ": " + le.getMessage(lexer));
-        	}
+            }
 
-        	List<ParseError> parserErrors = parser.getErrors();
-        	for (ParseError pe: parserErrors) {
+            List<ParseError> parserErrors = parser.getErrors();
+            for (ParseError pe : parserErrors) {
                 System.out.println("Parser error in " + file.getName() + ": " + pe.getMessage(parser));
-        	}
+            }
 
-        	com.redhat.ceylon.compiler.typechecker.model.Package p = moduleBuilder.getCurrentPackage();
+            com.redhat.ceylon.compiler.typechecker.model.Package p = moduleBuilder.getCurrentPackage();
             CommonTree t = (CommonTree) r.getTree();
             Tree.CompilationUnit cu = new CustomBuilder().buildCompilationUnit(t);
             PhasedUnit phasedUnit = new PhasedUnit(file, srcDir, cu, p, moduleBuilder, context);
@@ -137,14 +137,14 @@ public class PhasedUnits {
     }
 
     private void processDirectory(VirtualFile dir, VirtualFile srcDir) throws Exception {
-        moduleBuilder.push( dir.getName() );
+        moduleBuilder.push(dir.getName());
         final List<VirtualFile> files = dir.getChildren();
-        for (VirtualFile file: files) {
-            if ( ModuleBuilder.MODULE_FILE.equals( file.getName() ) ) {
+        for (VirtualFile file : files) {
+            if (ModuleBuilder.MODULE_FILE.equals(file.getName())) {
                 moduleBuilder.visitModuleFile();
             }
         }
-        for (VirtualFile file: files) {
+        for (VirtualFile file : files) {
             parseFileOrDirectory(file, srcDir);
         }
         moduleBuilder.pop();

@@ -2063,7 +2063,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                         if (!found) {
                             if (tal==null) {
                                 parent.addError("inferred type argument " + argType.getProducedTypeName()
-                                		+ " to type parameter " + param.getName()
+                                        + " to type parameter " + param.getName()
                                         + " of declaration " + member.getName()
                                         + " not one of the listed cases");
                             }
