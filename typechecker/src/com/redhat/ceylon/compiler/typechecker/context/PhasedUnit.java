@@ -9,6 +9,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.RefinementVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.SelfReferenceVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.SpecificationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeArgumentVisitor;
+import com.redhat.ceylon.compiler.typechecker.analyzer.TypeHierarchyVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.TypeVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ValueVisitor;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
@@ -87,8 +88,9 @@ public class PhasedUnit {
         //System.out.println("Run analysis phase for " + fileName);
         compilationUnit.visit(new ExpressionVisitor(context));
         compilationUnit.visit(new TypeArgumentVisitor());
+        compilationUnit.visit(new TypeHierarchyVisitor());
     }
-    
+
     public void analyseFlow() {
         //System.out.println("Validate control flow for " + fileName);
         compilationUnit.visit(new ControlFlowVisitor());
