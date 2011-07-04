@@ -351,6 +351,9 @@ public class DeclarationVisitor extends Visitor {
         if ( v.isInterfaceMember() && !v.isFormal()) {
             that.addError("interfaces may not have simple attributes");
         }
+        if ( v.isFormal() && that.getSpecifierOrInitializerExpression()!=null ) {
+            that.addError("formal attributes may not have a value");
+        }
     }
 
     @Override
@@ -502,7 +505,8 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.Declaration that) {
-        Declaration d = beginDeclaration(that.getDeclarationModel());
+        Declaration model = that.getDeclarationModel();
+        Declaration d = beginDeclaration(model);
         if (declaration!=null) {
             
             Tree.AnnotationList al = that.getAnnotationList();
@@ -526,8 +530,8 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         endDeclaration(d);
 
-        if (d!=null) {
-            checkFormalMember(that, d);
+        if (model!=null) {
+            checkFormalMember(that, model);
         }
         
     }
@@ -538,6 +542,13 @@ public class DeclarationVisitor extends Visitor {
                 ( !(d.getContainer() instanceof ClassOrInterface) || 
                 !( (ClassOrInterface) d.getContainer() ).isAbstract()) ) {
             that.addError("formal member does not belong to an interface or abstract class");
+        }
+        
+        if ( d.isFormal() && 
+                !(that instanceof Tree.AttributeDeclaration) && 
+                !(that instanceof Tree.MethodDeclaration) &&
+                !(that instanceof Tree.ClassDefinition)) {
+            that.addError("formal member may not have a body");
         }
         
         if ( !d.isFormal() && 
