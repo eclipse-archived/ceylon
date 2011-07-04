@@ -2,7 +2,8 @@ package com.redhat.ceylon.compiler.test.statement.loop;
 
 class MethodForFail extends .ceylon.language.IdentifiableObject {
     
-    public final Natural m(final Sequence<Integer> seq) {
+    public final Natural m(@.com.redhat.ceylon.compiler.metadata.java.Name("seq")
+    final Sequence<Integer> seq) {
         boolean $ceylontmp0 = true;
         .ceylon.language.Iterator<Integer> $i$iter$1 = seq.iterator();
         while ($i$iter$1.getHead() != null) {

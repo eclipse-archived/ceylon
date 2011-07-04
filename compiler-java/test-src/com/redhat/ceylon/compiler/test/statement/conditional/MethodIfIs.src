@@ -19,7 +19,8 @@ class FooSub extends Foo {
 }
 class MethodIfIs extends .ceylon.language.IdentifiableObject {
     
-    public final void m(final Object x) {
+    public final void m(@.com.redhat.ceylon.compiler.metadata.java.Name("x")
+    final Object x) {
         final Object $x$0 = x;
         if ($x$0 instanceof Foo) {
             final Foo $x$1 = (Foo)$x$0;

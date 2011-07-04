@@ -5,7 +5,8 @@ class Method extends .ceylon.language.IdentifiableObject {
     private final void f(final Integer i) {
     }
     
-    public final void f2(final Integer i) {
+    public final void f2(@.com.redhat.ceylon.compiler.metadata.java.Name("i")
+    final Integer i) {
     }
     
     Method() {

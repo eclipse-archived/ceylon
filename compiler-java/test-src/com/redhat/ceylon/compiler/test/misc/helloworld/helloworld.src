@@ -2,7 +2,8 @@ package com.redhat.ceylon.compiler.test.misc.helloworld;
 
 public class helloworld extends .ceylon.language.IdentifiableObject {
     
-    public static void run(final Process process) {
+    public static void run(@.com.redhat.ceylon.compiler.metadata.java.Name("process")
+    final Process process) {
         process.writeLine(.ceylon.language.String.instance("Hello World"));
     }
 }

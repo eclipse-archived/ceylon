@@ -2,7 +2,8 @@ package com.redhat.ceylon.compiler.test.statement.loop;
 
 class MethodForIterator extends .ceylon.language.IdentifiableObject {
     
-    public final void m(final Sequence<Integer> seq) {
+    public final void m(@.com.redhat.ceylon.compiler.metadata.java.Name("seq")
+    final Sequence<Integer> seq) {
         .ceylon.language.Iterator<Integer> $i$iter$0 = seq.iterator();
         while ($i$iter$0.getHead() != null) {
             final Integer i = $i$iter$0.getHead();
