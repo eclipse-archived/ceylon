@@ -467,8 +467,8 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     //
     // Utils for loading type info from the model
     
-    private Compound getAnnotation(Symbol classSymbol, String name) {
-        com.sun.tools.javac.util.List<Compound> annotations = classSymbol.getAnnotationMirrors();
+    private Compound getAnnotation(Symbol symbol, String name) {
+        com.sun.tools.javac.util.List<Compound> annotations = symbol.getAnnotationMirrors();
         for(Compound annotation : annotations){
             if(annotation.type.tsym.getQualifiedName().toString().equals(name))
                 return annotation;
