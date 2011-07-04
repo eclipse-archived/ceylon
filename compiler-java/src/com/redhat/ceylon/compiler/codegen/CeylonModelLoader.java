@@ -369,7 +369,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         setTypeParameters(klass, classSymbol);
         int constructorCount = 0;
         // then its methods
-        for(Symbol member : classSymbol.members().getElements()){
+        for(Symbol member : classSymbol.getEnclosedElements()){
             // FIXME: deal with multiple constructors
             // FIXME: could be an attribute
             if(member instanceof MethodSymbol){
