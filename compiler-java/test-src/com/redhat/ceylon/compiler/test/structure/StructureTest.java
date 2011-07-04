@@ -10,7 +10,7 @@ public class StructureTest extends CompilerTest {
     // Packages
     
     @Test
-    public void testPackage(){
+    public void testPkgPackage(){
         compareWithJavaSource("pkg/pkg");
     }
     
@@ -18,39 +18,39 @@ public class StructureTest extends CompilerTest {
     // Classes
     
     @Test
-    public void testClass(){
+    public void testKlsClass(){
         compareWithJavaSource("klass/Klass");
     }
     @Test
-    public void testPublicClass(){
+    public void testKlsPublicClass(){
         compareWithJavaSource("klass/PublicKlass");
     }
     @Test
-    public void testInterface(){
+    public void testKlsInterface(){
         compareWithJavaSource("klass/Interface");
     }
     @Test
-    public void testInterfaceWithMembers(){
+    public void testKlsInterfaceWithMembers(){
         compareWithJavaSource("klass/InterfaceWithMembers");
     }
     @Test
-    public void testInitializerParameter(){
+    public void testKlsInitializerParameter(){
         compareWithJavaSource("klass/InitializerParameter");
     }
     @Test
-    public void testExtends(){
+    public void testKlsExtends(){
         compareWithJavaSource("klass/Extends");
     }
     @Test
-    public void testSatisfies(){
+    public void testKlsSatisfies(){
         compareWithJavaSource("klass/Satisfies");
     }
     @Test
-    public void testSatisfiesWithMembers(){
+    public void testKlsSatisfiesWithMembers(){
         compareWithJavaSource("klass/SatisfiesWithMembers");
     }
     @Test
-    public void testAbstractFormal(){
+    public void testKlsAbstractFormal(){
         compareWithJavaSource("klass/AbstractFormal");
     }
     
@@ -58,19 +58,19 @@ public class StructureTest extends CompilerTest {
     // Methods
     
     @Test
-    public void testMethod(){
+    public void testMthMethod(){
         compareWithJavaSource("method/Method");
     }
     @Test
-    public void testMethodWithParam(){
+    public void testMthMethodWithParam(){
         compareWithJavaSource("method/MethodWithParam");
     }
     @Test
-    public void testPublicMethod(){
+    public void testMthPublicMethod(){
         compareWithJavaSource("method/PublicMethod");
     }
     @Test
-    public void testInnerMethod(){
+    public void testMthInnerMethod(){
         compareWithJavaSource("method/InnerMethod");
     }
 
@@ -78,28 +78,28 @@ public class StructureTest extends CompilerTest {
     // Attributes
     
     @Test
-    public void testClassVariable(){
+    public void testAtrClassVariable(){
         compareWithJavaSource("attribute/ClassVariable");
     }
     @Test
-    public void testClassVariableWithInitializer(){
+    public void testAtrClassVariableWithInitializer(){
         compareWithJavaSource("attribute/ClassVariableWithInitializer");
     }
     @Test
-    public void testClassAttribute(){
+    public void testAtrClassAttribute(){
         // FIXME: this one should fail and we should make sure it fails for the right reason
         compareWithJavaSource("attribute/ClassAttribute");
     }
     @Test
-    public void testClassAttributeWithInitializer(){
+    public void testAtrClassAttributeWithInitializer(){
         compareWithJavaSource("attribute/ClassAttributeWithInitializer");
     }
     @Test
-    public void testClassAttributeGetter(){
+    public void testAtrClassAttributeGetter(){
         compareWithJavaSource("attribute/ClassAttributeGetter");
     }
     @Test
-    public void testClassAttributeGetterSetter(){
+    public void testAtrClassAttributeGetterSetter(){
         compareWithJavaSource("attribute/ClassAttributeGetterSetter");
     }
     
@@ -107,27 +107,27 @@ public class StructureTest extends CompilerTest {
     // Toplevel
     
     @Test
-    public void testToplevelAttribute(){
+    public void testTopToplevelAttribute(){
         compareWithJavaSource("toplevel/ToplevelAttribute");
     }
     @Test
-    public void testToplevelAttributeShared(){
+    public void testTopToplevelAttributeShared(){
         compareWithJavaSource("toplevel/ToplevelAttributeShared");
     }
     @Test
-    public void testToplevelVariable(){
+    public void testTopToplevelVariable(){
         compareWithJavaSource("toplevel/ToplevelVariable");
     }
     @Test
-    public void testToplevelVariableShared(){
+    public void testTopToplevelVariableShared(){
         compareWithJavaSource("toplevel/ToplevelVariableShared");
     }
     @Test
-    public void testToplevelObject(){
+    public void testTopToplevelObject(){
         compareWithJavaSource("toplevel/ToplevelObject");
     }
     @Test
-    public void testToplevelMethods(){
+    public void testTopToplevelMethods(){
         compareWithJavaSource("toplevel/ToplevelMethods");
     }
     
@@ -135,11 +135,11 @@ public class StructureTest extends CompilerTest {
     // Type
     
     @Test
-    public void testOptionalType(){
+    public void testTypOptionalType(){
         compareWithJavaSource("type/OptionalType");
     }
     @Test
-    public void testSequenceType(){
+    public void testTypSequenceType(){
         compareWithJavaSource("type/SequenceType");
     }
 }

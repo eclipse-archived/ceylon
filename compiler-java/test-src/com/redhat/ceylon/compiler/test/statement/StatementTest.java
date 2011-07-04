@@ -11,32 +11,32 @@ public class StatementTest extends CompilerTest {
     // Method attributes and variables
     
     @Test
-    public void testMethodAttribute(){
+    public void testAtrMethodAttribute(){
         compareWithJavaSource("attribute/MethodAttribute");
     }
     
     @Test
-    public void testMethodAttributeWithInitializer(){
+    public void testAtrMethodAttributeWithInitializer(){
         compareWithJavaSource("attribute/MethodAttributeWithInitializer");
     }
 
     @Test
-    public void testMethodAttributeWithLateInitializer(){
+    public void testAtrMethodAttributeWithLateInitializer(){
         compareWithJavaSource("attribute/MethodAttributeWithLateInitializer");
     }
 
     @Test
-    public void testMethodVariable(){
+    public void testAtrMethodVariable(){
         compareWithJavaSource("attribute/MethodVariable");
     }
 
     @Test
-    public void testMethodVariableWithInitializer(){
+    public void testAtrMethodVariableWithInitializer(){
         compareWithJavaSource("attribute/MethodVariableWithInitializer");
     }
 
     @Test
-    public void testMethodVariableWithLateInitializer(){
+    public void testAtrMethodVariableWithLateInitializer(){
         compareWithJavaSource("attribute/MethodVariableWithLateInitializer");
     }
 
@@ -44,59 +44,59 @@ public class StatementTest extends CompilerTest {
     // if/else
 
     @Test
-    public void testInitializerIf(){
+    public void testConInitializerIf(){
         compareWithJavaSource("conditional/InitializerIf");
     }
 
     @Test
-    public void testInitializerIfElse(){
+    public void testConInitializerIfElse(){
         compareWithJavaSource("conditional/InitializerIfElse");
     }
 
     @Test
-    public void testInitializerIfElseIf(){
+    public void testConInitializerIfElseIf(){
         compareWithJavaSource("conditional/InitializerIfElseIf");
     }
 
     @Test
-    public void testMethodIf(){
+    public void testConMethodIf(){
         compareWithJavaSource("conditional/MethodIf");
     }
 
     @Test
-    public void testMethodIfElse(){
+    public void testConMethodIfElse(){
         compareWithJavaSource("conditional/MethodIfElse");
     }
 
     @Test
-    public void testMethodIfElseIf(){
+    public void testConMethodIfElseIf(){
         compareWithJavaSource("conditional/MethodIfElseIf");
     }
 
     @Test
-    public void testMethodIfExists(){
+    public void testConMethodIfExists(){
         compareWithJavaSource("conditional/MethodIfExists");
     }
 
     @Test
-    public void testMethodIfIs(){
+    public void testConMethodIfIs(){
         compareWithJavaSource("conditional/MethodIfIs");
     }
 
     @Test
     @Ignore //M3
-    public void testMethodIfSatisfies(){
+    public void testConMethodIfSatisfies(){
         compareWithJavaSource("conditional/MethodIfSatisfies");
     }
 
     @Test
     @Ignore //M3
-    public void testMethodIfSatisfiesMultiple(){
+    public void testConMethodIfSatisfiesMultiple(){
         compareWithJavaSource("conditional/MethodIfSatisfiesMultiple");
     }
 
     @Test
-    public void testMethodIfNonEmpty(){
+    public void testConMethodIfNonEmpty(){
         compareWithJavaSource("conditional/MethodIfNonEmpty");
     }
 
@@ -105,25 +105,25 @@ public class StatementTest extends CompilerTest {
     
     @Test
     @Ignore //M2
-    public void testMethodSwitch(){
+    public void testConMethodSwitch(){
         compareWithJavaSource("conditional/MethodSwitch");
     }
 
     @Test
     @Ignore //M2
-    public void testMethodSwitchNB(){
+    public void testConMethodSwitchNB(){
         compareWithJavaSource("conditional/MethodSwitchNB");
     }
 
     @Test
     @Ignore //M2
-    public void testMethodSwitchElse(){
+    public void testConMethodSwitchElse(){
         compareWithJavaSource("conditional/MethodSwitchElse");
     }
 
     @Test
     @Ignore //M2
-    public void testMethodSwitchElseNB(){
+    public void testConMethodSwitchElseNB(){
         compareWithJavaSource("conditional/MethodSwitchElseNB");
     }
 
@@ -131,22 +131,22 @@ public class StatementTest extends CompilerTest {
     // for
 
     @Test
-    public void testMethodForRange(){
+    public void testLopMethodForRange(){
         compareWithJavaSource("loop/MethodForRange");
     }
     
     @Test
-    public void testMethodForIterator(){
+    public void testLopMethodForIterator(){
         compareWithJavaSource("loop/MethodForIterator");
     }
     
     @Test
-    public void testMethodForDoubleIterator(){
+    public void testLopMethodForDoubleIterator(){
         compareWithJavaSource("loop/MethodForDoubleIterator");
     }
     
     @Test
-    public void testMethodForFail(){
+    public void testLopMethodForFail(){
         compareWithJavaSource("loop/MethodForFail");
     }
     
@@ -154,12 +154,12 @@ public class StatementTest extends CompilerTest {
     // [do] while
     
     @Test
-    public void testMethodWhile(){
+    public void testLopMethodWhile(){
         compareWithJavaSource("loop/MethodWhile");
     }
     
     @Test
-    public void testMethodDoWhile(){
+    public void testLopMethodDoWhile(){
         compareWithJavaSource("loop/MethodDoWhile");
     }
     
@@ -167,17 +167,17 @@ public class StatementTest extends CompilerTest {
     // Locals (value / function)
     
     @Test
-    public void testValueKeyword(){
+    public void testLocValueKeyword(){
         compareWithJavaSource("local/ValueKeyword");
     }
     
     @Test
-    public void testFunctionKeyword(){
+    public void testLocFunctionKeyword(){
         compareWithJavaSource("local/FunctionKeyword");
     }
     
     @Test
-    public void testFunctionAndValueKeyword(){
+    public void testLocFunctionAndValueKeyword(){
         compareWithJavaSource("local/FunctionAndValueKeyword");
     }
     

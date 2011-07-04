@@ -9,39 +9,39 @@ public class ExpressionTest extends CompilerTest {
 	// Attributes
 	
     @Test
-    public void testToplevelAttributeAccess(){
+    public void testAtrToplevelAttributeAccess(){
         compareWithJavaSource("attribute/TopLevelAccess");
     }
     @Test
-    public void testToplevelAttributeAssign(){
+    public void testAtrToplevelAttributeAssign(){
         compareWithJavaSource("attribute/TopLevelAssign");
     }
     @Test
-    public void testInitializerParamAccess(){
+    public void testAtrInitializerParamAccess(){
         compareWithJavaSource("attribute/InitializerParamAccess");
     }
     @Test
-    public void testAttributeAccess(){
+    public void testAtrAttributeAccess(){
         compareWithJavaSource("attribute/AttributeAccess");
     }
     @Test
-    public void testAttributeAssign(){
+    public void testAtrAttributeAssign(){
         compareWithJavaSource("attribute/AttributeAssign");
     }
     @Test
-    public void testMethodParamAccess(){
+    public void testAtrMethodParamAccess(){
         compareWithJavaSource("attribute/MethodParamAccess");
     }
     @Test
-    public void testMethodLocalAccess(){
+    public void testAtrMethodLocalAccess(){
         compareWithJavaSource("attribute/MethodLocalAccess");
     }
     @Test
-    public void testMethodLocalAssign(){
+    public void testAtrMethodLocalAssign(){
         compareWithJavaSource("attribute/MethodLocalAssign");
     }
     @Test
-    public void testInitializerParamAccessInInitializer(){
+    public void testAtrInitializerParamAccessInInitializer(){
         compareWithJavaSource("attribute/InitializerParamAccessInInitializer");
     }
     
@@ -49,23 +49,23 @@ public class ExpressionTest extends CompilerTest {
     // Scope and hiding
     
     @Test
-    public void testInitializerParamHidingAttribute(){
+    public void testAtrInitializerParamHidingAttribute(){
         compareWithJavaSource("attribute/InitializerParamHidingAttribute");
     }
     @Test
-    public void testInitializerParamHidingGetter(){
+    public void testAtrInitializerParamHidingGetter(){
         compareWithJavaSource("attribute/InitializerParamHidingGetter");
     }
     @Test
-    public void testMethodLocalHidingAttribute(){
+    public void testAtrMethodLocalHidingAttribute(){
         compareWithJavaSource("attribute/MethodLocalHidingAttribute");
     }
     @Test
-    public void testMethodParamHidingAttribute(){
+    public void testAtrMethodParamHidingAttribute(){
         compareWithJavaSource("attribute/MethodParamHidingAttribute");
     }
     @Test
-    public void testAttributeHidingMethodParam(){
+    public void testAtrAttributeHidingMethodParam(){
         compareWithJavaSource("attribute/AttributeHidingMethodParam");
     }
 
@@ -73,51 +73,51 @@ public class ExpressionTest extends CompilerTest {
     // Literals
     
     @Test
-    public void testStringLiteral(){
+    public void testLitStringLiteral(){
         compareWithJavaSource("literal/StringLiteral");
     }
     @Test
-    public void testNumericLiteral(){
+    public void testLitNumericLiteral(){
         compareWithJavaSource("literal/NumericLiteral");
     }
     
     // Method invocation
     
     @Test
-    public void testMethodInvocation(){
+    public void testInvMethodInvocation(){
         compareWithJavaSource("invoke/MethodInvocation");
     }
     
     // Self references
     
     @Test
-    public void testThisReference(){
+    public void testSlfThisReference(){
         compareWithJavaSource("selfref/ThisReference");
     }
     @Test
-    public void testSuperReference(){
+    public void testSlfSuperReference(){
         compareWithJavaSource("selfref/SuperReference");
     }
     
     // Instantiation
     
     @Test
-    public void testClassInstantiation(){
+    public void testInsClassInstantiation(){
         compareWithJavaSource("instantiation/ClassInstantiation");
     }
     @Test
-    public void testSequenceInstantiation(){
+    public void testInsSequenceInstantiation(){
         compareWithJavaSource("instantiation/SequenceInstantiation");
     }
     @Test
-    public void testEntryInstantiation(){
+    public void testInsEntryInstantiation(){
         compareWithJavaSource("instantiation/EntryInstantiation");
     }
     
     // Operators
     
     @Test
-    public void testNumericOp(){
+    public void testOprNumericOp(){
         compareWithJavaSource("operator/NumericOp");
     }
 }
