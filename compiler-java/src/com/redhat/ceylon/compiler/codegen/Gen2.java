@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 
+import com.sun.tools.javac.parser.Keywords;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 
@@ -43,6 +44,7 @@ public class Gen2 {
     private CeyloncFileManager fileManager;
     private LineMap map;
     Symtab syms;
+    Keywords keywords;
     CeylonModelLoader modelLoader;
     private Map<String, String> varNameSubst = new HashMap<String, String>();
     
@@ -80,6 +82,7 @@ public class Gen2 {
 
         names = Name.Table.instance(context);
         syms = Symtab.instance(context);
+        keywords = Keywords.instance(context);
         modelLoader = CeylonModelLoader.instance(context);
 
         fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
@@ -444,5 +447,19 @@ public class Gen2 {
 
     public JCAnnotation makeAtType(String name) {
         return make().Annotation(makeIdent(syms.ceylonAtTypeInfoType), List.<JCExpression> of(make().Literal(name)));
+    }
+
+    protected boolean isJavaKeyword(Name name) {
+        return keywords.key(name) != com.sun.tools.javac.parser.Token.IDENTIFIER;
+    }
+
+    protected Name quoteName(String text) {
+        Name name = names.fromString(text);
+
+        if (isJavaKeyword(name)) {
+            return names.fromString('$' + text);
+        }
+
+        return name;
     }
 }
