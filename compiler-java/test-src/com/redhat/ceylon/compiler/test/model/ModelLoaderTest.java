@@ -78,8 +78,8 @@ public class ModelLoaderTest extends CompilerTest {
         // let's not check java stuff for now, due to missing types in the jdk's private methods
         if(Util.getQualifiedName(validDeclaration).startsWith("java."))
             return;
-        Assert.assertEquals(validDeclaration.getQualifiedName()+" [name]", validDeclaration.getName(), modelDeclaration.getName());
-        Assert.assertEquals(validDeclaration.getQualifiedName()+" [shared]", validDeclaration.isShared(), modelDeclaration.isShared());
+        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [name]", validDeclaration.getName(), modelDeclaration.getName());
+        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [shared]", validDeclaration.isShared(), modelDeclaration.isShared());
         if(validDeclaration instanceof Class){
             Assert.assertTrue("[Class]", modelDeclaration instanceof Class);
             compareClassDeclarations((Class)validDeclaration, (Class)modelDeclaration);
@@ -90,21 +90,21 @@ public class ModelLoaderTest extends CompilerTest {
     }
     
     private void compareClassDeclarations(Class validDeclaration, Class modelDeclaration) {
-        Assert.assertEquals(validDeclaration.getQualifiedName()+" [abstract]", validDeclaration.isAbstract(), modelDeclaration.isAbstract());
+        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [abstract]", validDeclaration.isAbstract(), modelDeclaration.isAbstract());
         if(validDeclaration.getExtendedTypeDeclaration() == null)
-            Assert.assertTrue(validDeclaration.getQualifiedName()+" [null supertype]", modelDeclaration.getExtendedTypeDeclaration() == null);
+            Assert.assertTrue(validDeclaration.getQualifiedNameString()+" [null supertype]", modelDeclaration.getExtendedTypeDeclaration() == null);
         else
             compareDeclarations(validDeclaration.getExtendedTypeDeclaration(), modelDeclaration.getExtendedTypeDeclaration());
         // make sure it has every member required
         for(Declaration validMember : validDeclaration.getMembers()){
             Declaration modelMember = modelDeclaration.getMember(validMember.getName());
-            Assert.assertNotNull(validMember.getQualifiedName()+" [member]", modelMember);
+            Assert.assertNotNull(validMember.getQualifiedNameString()+" [member]", modelMember);
             compareDeclarations(validMember, modelMember);
         }
         // and not more
         for(Declaration modelMember : modelDeclaration.getMembers()){
             Declaration validMember = validDeclaration.getMember(modelMember.getName());
-            Assert.assertNotNull(modelMember.getQualifiedName()+" [extra member]", validMember);
+            Assert.assertNotNull(modelMember.getQualifiedNameString()+" [extra member]", validMember);
         }
     }
     
@@ -112,11 +112,11 @@ public class ModelLoaderTest extends CompilerTest {
         // make sure it has every parameter list required
         List<ParameterList> validParameterLists = validDeclaration.getParameterLists();
         List<ParameterList> modelParameterLists = modelDeclaration.getParameterLists();
-        Assert.assertEquals(validDeclaration.getQualifiedName()+" [param lists count]", validParameterLists.size(), modelParameterLists.size());
+        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [param lists count]", validParameterLists.size(), modelParameterLists.size());
         for(int i=0;i<validParameterLists.size();i++){
             List<Parameter> validParameterList = validParameterLists.get(i).getParameters();
             List<Parameter> modelParameterList = modelParameterLists.get(i).getParameters();
-            Assert.assertEquals(validDeclaration.getQualifiedName()+" [param lists "+i+" count]", 
+            Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [param lists "+i+" count]", 
                     validParameterList.size(), modelParameterList.size());
             for(int p=0;p<validParameterList.size();p++){
                 Parameter validParameter = validParameterList.get(i);
