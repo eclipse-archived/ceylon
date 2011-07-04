@@ -29,6 +29,10 @@ interface Declarations {
     @error X getterWithoutReturn {
         doSomething();
     }
+
+    /*class Foo(String bar) {}
+    @error Foo getFoo() {}
+    @error Foo foo {}*/
     
     void duplicate() {}
     @error void duplicate(Y y) {}
