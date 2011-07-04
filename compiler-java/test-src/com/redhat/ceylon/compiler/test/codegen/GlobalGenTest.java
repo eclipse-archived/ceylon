@@ -21,14 +21,13 @@ import static org.junit.matchers.JUnitMatchers.containsString;
 
 public class GlobalGenTest {
 
-    private Context context;
     private TreeMaker make;
     private Name.Table names;
     private GlobalGen globalGen;
 
     @Before
     public void setUp() throws Exception {
-        context = new Context();
+        Context context = new Context();
         CeyloncFileManager.preRegister(context);
         make = TreeMaker.instance(context);
         names = Name.Table.instance(context);
@@ -38,7 +37,7 @@ public class GlobalGenTest {
     @Test
     public void testDefineSimple() {
         JCTree.JCExpression variableType = toType("VariableType");
-        Name variableName = toName("variableName");
+        String variableName = "variableName";
 
         JCTree result = globalGen
                 .defineGlobal(variableType, variableName)
@@ -48,20 +47,34 @@ public class GlobalGenTest {
                 "final class variableName {",
                 "    private static VariableType value;",
                 "    ",
-                "    static VariableType getValue() {",
+                "    static VariableType getVariableName() {",
                 "        return value;",
                 "    }",
                 "    ",
-                "    static void setValue(VariableType newValue) {",
+                "    static void setVariableName(VariableType newValue) {",
                 "        value = newValue;",
                 "    }",
                 "}")));
     }
 
     @Test
+    public void testDefineReservedWordShouldBeQuotedInClassNameOnly() {
+        JCTree.JCExpression variableType = toType("VariableType");
+        String variableName = "true";
+
+        JCTree result = globalGen
+                .defineGlobal(variableType, variableName)
+                .build();
+
+        assertThat(toCanonicalString(result), containsString("class $true"));
+        assertThat(toCanonicalString(result), containsString("getTrue("));
+        assertThat(toCanonicalString(result), containsString("setTrue("));
+    }
+
+    @Test
     public void testDefineVisibilities() {
         JCTree.JCExpression variableType = toType("VariableType");
-        Name variableName = toName("variableName");
+        String variableName = "variableName";
 
         JCTree tree = globalGen
                 .defineGlobal(variableType, variableName)
@@ -73,14 +86,14 @@ public class GlobalGenTest {
         String result = toCanonicalString(tree);
 
         assertThat(result, containsString("public final class variableName"));
-        assertThat(result, containsString("protected static VariableType getValue("));
-        assertThat(result, containsString("private static void setValue("));
+        assertThat(result, containsString("protected static VariableType getVariableName("));
+        assertThat(result, containsString("private static void setVariableName("));
     }
 
     @Test
     public void testDefineImmutableAndInitialValue() {
         JCTree.JCExpression variableType = toType("VariableType");
-        Name variableName = toName("variableName");
+        String variableName = "variableName";
 
         JCTree.JCExpression initialValue = make.Ident(names.fromString("initialValue"));
 
@@ -93,13 +106,13 @@ public class GlobalGenTest {
         String result = toCanonicalString(tree);
 
         assertThat(result, containsString("value = initialValue;"));
-        assertThat(result, not(containsString("setValue")));
+        assertThat(result, not(containsString("setVariableName")));
     }
 
     @Test
     public void testDefineValueAnnotations() {
         JCTree.JCExpression variableType = toType("VariableType");
-        Name variableName = toName("variableName");
+        String variableName = "variableName";
 
         JCTree tree = globalGen
                 .defineGlobal(variableType, variableName)
@@ -111,10 +124,10 @@ public class GlobalGenTest {
         assertThat("annotation applied to getter", result,
                 containsString(lines(
                         "@AnnotationType",
-                        "    static VariableType getValue")));
+                        "    static VariableType getVariableName")));
         assertThat("annotation applied to setter parameter", result,
                 containsString(lines(
-                        "setValue(@AnnotationType",
+                        "setVariableName(@AnnotationType",
                         "    VariableType newValue")));
     }
 
@@ -124,31 +137,31 @@ public class GlobalGenTest {
     }
 
     @Test
-    public void testGetValue() {
+    public void testGetter() {
         JCTree.JCExpression packageName = make.Select(
                 make.Ident(toName("some")),
                 toName("pkg"));
-        Name variableName = toName("variableName");
+        String variableName = "variableName";
 
         JCTree.JCExpression expr = globalGen.getGlobalValue(packageName, variableName);
         String result = toCanonicalString(expr);
 
-        assertThat(result, is("some.pkg.variableName.getValue()"));
+        assertThat(result, is("some.pkg.variableName.getVariableName()"));
     }
 
     @Test
-    public void testSetValue() {
+    public void testSetter() {
         JCTree.JCExpression packageName = make.Select(
                 make.Ident(toName("some")),
                 toName("pkg"));
-        Name variableName = toName("variableName");
+        String variableName = "variableName";
 
         JCTree.JCExpression newValue = make.Ident(toName("newVariableValue"));
 
         JCTree.JCExpression expr = globalGen.setGlobalValue(packageName, variableName, newValue);
         String result = toCanonicalString(expr);
 
-        assertThat(result, is("some.pkg.variableName.setValue(newVariableValue)"));
+        assertThat(result, is("some.pkg.variableName.setVariableName(newVariableValue)"));
     }
 
     private JCTree.JCIdent toType(String type) {

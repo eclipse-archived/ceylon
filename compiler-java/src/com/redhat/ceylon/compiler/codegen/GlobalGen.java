@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.codegen;
 
+import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.util.List;
@@ -11,23 +12,16 @@ import com.sun.tools.javac.util.Name;
  * attribute definitions are also translated as a global variable.
  *
  * All these global variables are represented by a class with name matching that of the variable exactly (no mangling is
- * done). The generated class contains a <tt>private static</tt> field named <tt>value</tt> and static methods
- * <tt>getValue()</tt> and <tt>setValue()</tt>. It is possible to customize the generated class in certain ways.
+ * done). The generated class contains a <tt>private static</tt> field named <tt>value</tt> and static accessors
+ * <tt>get<em>VariableName</em>()</tt> and <tt>set<em>VariableName</em>()</tt>. It is possible to customize the
+ * generated class.
  *
- * Methods are also provided to generate expressions to get and set the global value using the <tt>get/setValue()</tt>
- * methods.
+ * Methods are also provided to generate expressions to get and set the global value using the accessors.
  */
 public final class GlobalGen extends GenPart {
 
-    private final Name fieldName;
-    private final Name getterName;
-    private final Name setterName;
-
     public GlobalGen(Gen2 gen) {
         super(gen);
-        fieldName = names().fromString("value");
-        getterName = names().fromString("getValue");
-        setterName = names().fromString("setValue");
     }
 
     /**
@@ -38,7 +32,7 @@ public final class GlobalGen extends GenPart {
      * @param variableName the name of the global
      * @return a {@link DefinitionBuilder} to customize the class further before generating it.
      */
-    public DefinitionBuilder defineGlobal(JCTree.JCExpression variableType, Name variableName) {
+    public DefinitionBuilder defineGlobal(JCTree.JCExpression variableType, String variableName) {
         return new DefinitionBuilder(variableType, variableName);
     }
 
@@ -48,11 +42,12 @@ public final class GlobalGen extends GenPart {
      * @param variableName the name of the variable
      * @return the expression tree to get the variable value.
      */
-    public JCTree.JCExpression getGlobalValue(JCTree.JCExpression packageName, Name variableName) {
+    public JCTree.JCExpression getGlobalValue(JCTree.JCExpression packageName, String variableName) {
         // packageName.variableName.getValue()
+        Name methodName = getGetterName(variableName);
         return make().Apply(
                 List.<JCTree.JCExpression>nil(),
-                make().Select(make().Select(packageName, variableName), getterName),
+                getClassMethod(packageName, variableName, methodName),
                 List.<JCTree.JCExpression>nil());
     }
 
@@ -63,12 +58,29 @@ public final class GlobalGen extends GenPart {
      * @param newValue the value to set the variable to.
      * @return the expression tree to set the variable value.
      */
-    public JCTree.JCExpression setGlobalValue(JCTree.JCExpression packageName, Name variableName, JCTree.JCExpression newValue) {
+    public JCTree.JCExpression setGlobalValue(JCTree.JCExpression packageName, String variableName, JCTree.JCExpression newValue) {
         // packageName.variableName.setValue(newValue)
+        Name methodName = getSetterName(variableName);
         return make().Apply(
                 List.<JCTree.JCExpression>nil(),
-                make().Select(make().Select(packageName, variableName), setterName),
+                getClassMethod(packageName, variableName, methodName),
                 List.of(newValue));
+    }
+
+    private JCTree.JCFieldAccess getClassMethod(JCTree.JCExpression packageName, String variableName, Name methodName) {
+        return make().Select(make().Select(packageName, getClassName(variableName)), methodName);
+    }
+
+    private Name getClassName(String variableName) {
+        return gen.quoteName(variableName);
+    }
+
+    private Name getGetterName(String variableName) {
+        return names().fromString(Util.getGetterName(variableName));
+    }
+
+    private Name getSetterName(String variableName) {
+        return names().fromString(Util.getSetterName(variableName));
     }
 
     /**
@@ -77,8 +89,10 @@ public final class GlobalGen extends GenPart {
      * The generated class can be customized by calling methods of this class.
      */
     public class DefinitionBuilder {
+        private final Name fieldName = names().fromString("value");
+
         private final JCTree.JCExpression variableType;
-        private final Name variableName;
+        private final String variableName;
 
         private long classVisibility;
 
@@ -91,7 +105,7 @@ public final class GlobalGen extends GenPart {
         private long setterVisibility;
         private List<JCTree.JCAnnotation> valueAnnotations = List.nil();
 
-        public DefinitionBuilder(JCTree.JCExpression variableType, Name variableName) {
+        public DefinitionBuilder(JCTree.JCExpression variableType, String variableName) {
             this.variableType = variableType;
             this.variableName = variableName;
         }
@@ -115,7 +129,7 @@ public final class GlobalGen extends GenPart {
 
             return make().ClassDef(
                     make().Modifiers(Flags.FINAL | classVisibility),
-                    variableName,
+                    getClassName(variableName),
                     List.<JCTree.JCTypeParameter>nil(),
                     null,
                     List.<JCTree.JCExpression>nil(),
@@ -142,7 +156,7 @@ public final class GlobalGen extends GenPart {
             ));
             return make().MethodDef(
                     make().Modifiers(Flags.STATIC | getterVisibility, valueAnnotations),
-                    getterName,
+                    getGetterName(variableName),
                     variableType,
                     List.<JCTree.JCTypeParameter>nil(),
                     List.<JCTree.JCVariableDecl>nil(),
@@ -163,7 +177,7 @@ public final class GlobalGen extends GenPart {
             ));
             return make().MethodDef(
                     make().Modifiers(Flags.STATIC | setterVisibility),
-                    setterName,
+                    getSetterName(variableName),
                     makeIdent("void"),
                     List.<JCTree.JCTypeParameter>nil(),
                     List.<JCTree.JCVariableDecl>of(
