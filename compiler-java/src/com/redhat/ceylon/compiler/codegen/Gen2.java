@@ -443,45 +443,49 @@ public class Gen2 {
         JCExpression jt;
         type = simplifyType(type);
         java.util.List<ProducedType> tal = type.getTypeArgumentList();
-        if (tal != null && !tal.isEmpty() && !hasUnion(tal)) {
-            // GENERIC TYPES
-            TypeDeclaration tdecl = type.getDeclaration();
-            
-            ListBuffer<JCExpression> typeArgs = new ListBuffer<JCExpression>();
-
-            int idx = 0;
-            for (ProducedType ta : tal) {
-                JCExpression jta;
-                if (isSatisfiesOrExtends) {
-                    // For an ordinary class or interface type T:
-                    // - The Ceylon type Foo<T> appearing in an extends or satisfies clause
-                    //   results in the Java type Foo<T>
-                    jta = makeJavaType(ta, true);
-                } else {
-                    // For an ordinary class or interface type T:
-                    // - The Ceylon type Foo<T> appearing anywhere else results in the Java type
-                    // - Foo<T> if Foo is invariant in T,
-                    // - Foo<? extends T> if Foo is covariant in T, or
-                    // - Foo<? super T> if Foo is contravariant in T
-                    TypeParameter tp = tdecl.getTypeParameters().get(idx);
-                    if (tp.isContravariant()) {
-                        jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), makeJavaType(ta, false));
-                    } else if (tp.isCovariant()) {
-                        jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), makeJavaType(ta, false));
+        if (tal != null && !tal.isEmpty()) {
+            if (!hasUnion(tal)) {
+                // GENERIC TYPES
+                TypeDeclaration tdecl = type.getDeclaration();
+                
+                ListBuffer<JCExpression> typeArgs = new ListBuffer<JCExpression>();
+    
+                int idx = 0;
+                for (ProducedType ta : tal) {
+                    JCExpression jta;
+                    if (isSatisfiesOrExtends) {
+                        // For an ordinary class or interface type T:
+                        // - The Ceylon type Foo<T> appearing in an extends or satisfies clause
+                        //   results in the Java type Foo<T>
+                        jta = makeJavaType(ta, true);
                     } else {
-                        jta = makeJavaType(ta, false);
+                        // For an ordinary class or interface type T:
+                        // - The Ceylon type Foo<T> appearing anywhere else results in the Java type
+                        // - Foo<T> if Foo is invariant in T,
+                        // - Foo<? extends T> if Foo is covariant in T, or
+                        // - Foo<? super T> if Foo is contravariant in T
+                        TypeParameter tp = tdecl.getTypeParameters().get(idx);
+                        if (tp.isContravariant()) {
+                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), makeJavaType(ta, false));
+                        } else if (tp.isCovariant()) {
+                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), makeJavaType(ta, false));
+                        } else {
+                            jta = makeJavaType(ta, false);
+                        }
                     }
+                    typeArgs.add(jta);
+                    idx++;
                 }
-                typeArgs.add(jta);
-                idx++;
+    
+                jt = make().TypeApply(makeIdent(tdecl.getName()), typeArgs.toList());
+            } else {
+                // For any other union type U|V (U nor V is Optional):
+                // - The Ceylon type Foo<U|V> results in the raw Java type Foo.
+                jt = makeIdent(type.getDeclaration().getName());
             }
-
-            jt = make().TypeApply(makeIdent(tdecl.getName()), typeArgs.toList());
         } else {
             // For an ordinary class or interface type T:
             // - The Ceylon type T results in the Java type T
-            // For any other union type U|V (U nor V is Optional):
-            // - The Ceylon type Foo<U|V> results in the raw Java type Foo.
             jt = makeIdent(type.getProducedTypeName());
         }
         
