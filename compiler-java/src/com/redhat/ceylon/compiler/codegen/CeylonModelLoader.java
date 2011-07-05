@@ -121,6 +121,10 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 public void visit(Tree.MethodDefinition that) {
                     loadFromSource(that);
                 }
+
+                public void visit(Tree.AttributeDeclaration that) {
+                    loadFromSource(that);
+                }
             });
         }
     }
