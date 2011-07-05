@@ -1549,21 +1549,25 @@ shared class LinkedList<Element>(Element... elements)
         
         <programlisting>AbstractedType: "abstracts" Type</programlisting>
         
-        <para>Note that the syntax for a type constraint is essentially the same syntax used 
-        for other type declarations such as class and interface declarations.</para>
+        <!--
+        <programlisting>ConcreteType: "this" "is"</programlisting>
+       -->
         
-        <para>There are five kinds of type constraint:</para>
+        <para>Note that the syntax for a type constraint is essentially the same syntax 
+        used for other type declarations such as class and interface declarations.</para>
+        
+        <para>There are six kinds of type constraint:</para>
         
         <itemizedlist>
             <listitem>
                 <para>an <emphasis>upper bound</emphasis>, <literal>given X satisfies T</literal>, 
-                specifies that the type parameter <literal>X</literal> is a subtype of a 
-                given type <literal>T</literal>,</para>
+                specifies that the type parameter <literal>X</literal> is a subtype of 
+                a given type <literal>T</literal>,</para>
             </listitem>
             <listitem>
                 <para>a <emphasis>lower bound</emphasis>, <literal>given X abstracts T</literal>, 
-                specifies that a given type <literal>T</literal> is a subtype of the type 
-                parameter <literal>X</literal>,</para>
+                specifies that a given type <literal>T</literal> is a subtype of the 
+                type parameter <literal>X</literal>,</para>
             </listitem>
             <!--listitem>
                 <para>a subtype bound, <literal>X = subtype</literal>, specifies that 
@@ -1572,14 +1576,24 @@ shared class LinkedList<Element>(Element... elements)
             </listitem-->
             <listitem>
                 <para>an <emphasis>enumerated bound</emphasis>, <literal>given X of T | U | V</literal>
-                specifies that the type parameter <literal>X</literal> represents one of 
-                the enumerated types,</para>
+                specifies that the type parameter <literal>X</literal> represents one 
+                of the enumerated types,</para>
             </listitem>
+            <!--
+            <listitem>
+                <para>a <emphasis>concrete type bound</emphasis>, <literal>given this is X</literal>
+                is permitted only for type parameters of parameterized interfaces and 
+                <literal>abstract</literal> classes, and specifies that every concrete 
+                subclass of the interface or <literal>abstract</literal> class is a 
+                subtype of the argument to the type parameter <literal>X</literal>,</para>
+            </listitem>
+            -->
             <listitem>
                 <para>a <emphasis>metatype bound</emphasis>, <literal>given X is T</literal>, 
-                specifies that the concrete metatype of the type parameter is a subtype of 
-                a given type <literal>T</literal> <emphasis>(note that metatypes are a 
-                proposed feature for a future version of the language)</emphasis>, and</para>
+                specifies that the concrete metatype of the type parameter is a subtype 
+                of a given type <literal>T</literal> <emphasis>(note that metatypes are 
+                a proposed feature for a future version of the language)</emphasis>, 
+                and</para>
             </listitem>
             <listitem>
                 <para>an <emphasis>initialization parameter specification</emphasis>, 
@@ -1608,8 +1622,8 @@ given Result(Natural count) satisfies Numeric<Result>]]></programlisting>
         
         <programlisting><![CDATA[given Argument of String | Natural | Integer | Float]]></programlisting>
         
-        <para>An initialization parameter specification allows instantiation of the type 
-        represented by the type parameter within the body of the declaration.</para>
+        <para>An initialization parameter specification allows instantiation of the 
+        type represented by the type parameter within the body of the declaration.</para>
         
         <programlisting><![CDATA[Result create<Result>(Object object) 
         given Result(String s) { 
@@ -1629,7 +1643,46 @@ given Result(Natural count) satisfies Numeric<Result>]]></programlisting>
         return chars.first.uppercase..chars.last.uppercase;
     }
 }]]></programlisting>
+
+        <para>A <emphasis>self-referential lower bound</emphasis> of a type
+        parameter is a lower bound which specifies a produced type of the 
+        parameterized type which declares the type parameter. The type arguments 
+        of the produced type must be the type parameters declared by the 
+        parameterized type.</para>
         
+        <para>Then the parameterized type itself is assignable to the type 
+        parameter with the self-referential lower bound within the body of the 
+        declaration.</para>
+        
+        <programlisting><![CDATA[shared abstract class Comparable<in Other>() 
+        given Other satisfies Comparable<Other> 
+                    abstracts Comparable<Other> { //self-referential lower bound
+    
+    shared formal Integer compare(Other that);
+    
+    shared Integer reverseCompare(Other that) {    
+        return that.compare(this); //this is Other
+    }
+    
+}]]></programlisting>
+        
+        <para>Furthermore, any produced type of the parameterized type is assignable 
+        to the type argument of the type parameter with the self-referential lower 
+        bound.</para>
+        
+        <programlisting>Comparable&lt;Item&gt; comp = ... ;
+Item item = comp;</programlisting>
+        
+        <!--programlisting><![CDATA[Value max<Value>(Comparable<Value> x, Comparable<Value> y) 
+        given Value satisfies Comparable<Value> {
+    if (x.compare(y)>0) {
+        return x;
+    }
+    else {
+        return y;
+    }
+}]]></programlisting-->
+
         <!--
         <para>Subtype bounds are needed since the special type <literal>subtype</literal>
         cannot appear in a contravariant position. A subtype bound cannot be applied to
@@ -1654,6 +1707,14 @@ given Result(Natural count) satisfies Numeric<Result>]]></programlisting>
                 enumerated subtype list that is a subset of the enumerated types of the 
                 constraint.</para>
             </listitem>
+            <!--
+            <listitem>
+                <para>A type argument to a type parameter with a concrete type bound must
+                be a supertype of the type being declared when the parameterized type
+                appears in a <literal>extends</literal> or <literal>satisfies</literal>
+                clause.</para>
+            </listitem>
+            -->
             <listitem>
                 <para>A type argument to a type parameter with a metatype bound must have 
                 a metatype assignable to all metatype bounds.</para>
@@ -1684,6 +1745,12 @@ given Result(Natural count) satisfies Numeric<Result>]]></programlisting>
                 <para>A type parameter is considered a supertype of its enumerated type
                 bounds.</para>
             </listitem>
+            <!--
+            <listitem>
+                <para>A parameterized type is considered a subtype of any type parameter of 
+                the type with a concrete type bound.</para>
+            </listitem>
+             -->
         </itemizedlist>
         
         <para>Every type parameter has an implicit upper bound of type <literal>Void</literal>.</para>
@@ -2104,8 +2171,8 @@ Result findSingleByIntegerKey<Result>(Type<Result> type, Integer key) = findByKe
              </listitem>
              -->
              <listitem>
-                 <para>if the type parameter list has no sequenced type parameter, then there
-                 are no additional type arguments, and no sequenced type argument.</para>
+                 <para>if the type parameter list has no sequenced type parameter, then 
+                 there are no additional type arguments, and no sequenced type argument.</para>
              </listitem>
         </itemizedlist>
         
@@ -2154,6 +2221,14 @@ Result findSingleByIntegerKey<Result>(Type<Result> type, Integer key) = findByKe
                 </para>
             </listitem>
         </itemizedlist>
+        
+        <para>A produced type is a subtype of the type argument to any type parameter 
+        with a self-referential lower bound constraint. If <literal>X</literal> is a 
+        type parameter of the parameterized type <literal>T&lt;X&gt;</literal> with a
+        lower bound constraint <literal>given X abstracts T&lt;X&gt;</literal>, then 
+        <literal>T&lt;A&gt;</literal> is assignable to <literal>A</literal> for every 
+        type argument <literal>A</literal> which satisfies the other type constraints 
+        on <literal>X</literal>.</para>
         
         </section>
                 
