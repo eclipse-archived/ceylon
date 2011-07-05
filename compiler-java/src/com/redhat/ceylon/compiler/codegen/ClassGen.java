@@ -14,6 +14,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.codegen.Gen2.Singleton;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
@@ -655,11 +656,15 @@ public class ClassGen extends GenPart {
     }
 
     private JCTypeParameter convert(Tree.TypeParameterDeclaration param) {
-        // FIXME: implement this
-        if (param.getTypeVariance() != null)
-            throw new RuntimeException("Variance not implemented");
         Tree.Identifier name = param.getIdentifier();
-        return at(param).TypeParameter(names().fromString(name.getText()), List.<JCExpression> nil());
+        ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
+        java.util.List<ProducedType> types = param.getDeclarationModel().getSatisfiedTypes();
+        for (ProducedType t : types) {
+            if (gen.willErase(t)) {
+                bounds.append(gen.makeJavaType(t, false));
+            }
+        }
+        return at(param).TypeParameter(names().fromString(name.getText()), bounds.toList());
     }
 
     private JCVariableDecl convert(Tree.Parameter param) {
