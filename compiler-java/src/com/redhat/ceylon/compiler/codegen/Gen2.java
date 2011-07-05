@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 
+import com.sun.tools.javac.parser.Keywords;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 
@@ -43,12 +44,14 @@ public class Gen2 {
     private CeyloncFileManager fileManager;
     private LineMap map;
     Symtab syms;
+    Keywords keywords;
     CeylonModelLoader modelLoader;
     private Map<String, String> varNameSubst = new HashMap<String, String>();
     
-    ExpressionGen expressionGen = new ExpressionGen(this);
-    StatementGen statementGen = new StatementGen(this);
-    ClassGen classGen = new ClassGen(this);
+    ExpressionGen expressionGen;
+    StatementGen statementGen;
+    ClassGen classGen;
+    GlobalGen globalGen;
 
     ProducedType nothingPType;
     ProducedType voidPType;
@@ -64,6 +67,10 @@ public class Gen2 {
 
     public Gen2(Context context) {
         setup(context);
+        expressionGen = new ExpressionGen(this);
+        statementGen = new StatementGen(this);
+        classGen = new ClassGen(this);
+        globalGen = new GlobalGen(this);
     }
 
     private void setup(Context context) {
@@ -75,6 +82,7 @@ public class Gen2 {
 
         names = Name.Table.instance(context);
         syms = Symtab.instance(context);
+        keywords = Keywords.instance(context);
         modelLoader = CeylonModelLoader.instance(context);
 
         fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
@@ -94,6 +102,15 @@ public class Gen2 {
 
     TreeMaker make() {
         return make;
+    }
+
+    public GlobalGen globalGen() {
+        return globalGen;
+    }
+
+    public GlobalGen globalGenAt(Node t) {
+        at(t);
+        return globalGen;
     }
 
     static class Singleton<T> implements Iterable<T> {
@@ -246,7 +263,7 @@ public class Gen2 {
             public void visit(Tree.MethodDefinition decl) {
                 // Generate a class with the
                 // name of the method and a corresponding run() method.
-                defs.append(classGen.methodClass(decl, true));
+                defs.append(classGen.methodClass(decl));
             }
         });
         return defs;
@@ -435,5 +452,19 @@ public class Gen2 {
 
     public JCAnnotation makeAtType(String name) {
         return make().Annotation(makeIdent(syms.ceylonAtTypeInfoType), List.<JCExpression> of(make().Literal(name)));
+    }
+
+    protected boolean isJavaKeyword(Name name) {
+        return keywords.key(name) != com.sun.tools.javac.parser.Token.IDENTIFIER;
+    }
+
+    protected Name quoteName(String text) {
+        Name name = names.fromString(text);
+
+        if (isJavaKeyword(name)) {
+            return names.fromString('$' + text);
+        }
+
+        return name;
     }
 }

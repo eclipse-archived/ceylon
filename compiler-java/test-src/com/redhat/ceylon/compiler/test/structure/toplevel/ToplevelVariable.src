@@ -1,13 +1,15 @@
 package com.redhat.ceylon.compiler.test.structure.toplevel;
 
-final class $i {
+@com.redhat.ceylon.compiler.metadata.java.Attribute
+@com.redhat.ceylon.compiler.metadata.java.Ceylon
+final class i {
     private static Natural value = .ceylon.language.Natural.instance(0L);
     
     static Natural getI() {
         return value;
     }
     
-    static void setI(Natural value) {
-        $i.value = value;
+    static void setI(Natural newValue) {
+        value = newValue;
     }
 }
