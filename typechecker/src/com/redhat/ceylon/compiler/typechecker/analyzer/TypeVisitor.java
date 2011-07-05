@@ -340,7 +340,8 @@ public class TypeVisitor extends AbstractVisitor {
                 ProducedType type = et.getTypeModel();
                 if (type!=null) {
                     if (!(type.getDeclaration() instanceof Class)) {
-                        et.addError("not a class: " + type.getDeclaration().getName());
+                        et.addError("not a class: " + 
+                                type.getDeclaration().getName());
                     }
                     that.getDeclarationModel().setExtendedType(type);
                 }
@@ -363,7 +364,8 @@ public class TypeVisitor extends AbstractVisitor {
                 ProducedType type = et.getTypeModel();
                 if (type!=null) {
                     if (!(type.getDeclaration() instanceof Interface)) {
-                        et.addError("not an interface: " + type.getDeclaration().getName());
+                        et.addError("not an interface: " + 
+                                type.getDeclaration().getName());
                     }
                     that.getDeclarationModel().setExtendedType(type);
                 }
@@ -397,12 +399,16 @@ public class TypeVisitor extends AbstractVisitor {
             ProducedType type = et.getTypeModel();
             if (type!=null) {
                 if (type.getDeclaration() instanceof TypeParameter) {
-                    et.addError("directly extends a type parameter");
+                    et.addError("directly extends a type parameter: " + 
+                            type.getProducedTypeName());
                 }
-                if (type.getDeclaration() instanceof Interface) {
-                    et.addError("extends an interface");
+                else if (type.getDeclaration() instanceof Interface) {
+                    et.addError("extends an interface: " + 
+                            type.getProducedTypeName());
                 }
-                td.setExtendedType(type);
+                else {
+                    td.setExtendedType(type);
+                }
             }
         }
     }
@@ -421,10 +427,14 @@ public class TypeVisitor extends AbstractVisitor {
                 if (type!=null) {
                     if (!(td instanceof TypeParameter)) {
                         if (type.getDeclaration() instanceof TypeParameter) {
-                            t.addError("directly satisfies type parameter");
+                            t.addError("directly satisfies type parameter: " + 
+                                    type.getProducedTypeName());
+                            continue;
                         }
                         if (type.getDeclaration() instanceof Class) {
-                            t.addError("satisfies a class");
+                            t.addError("satisfies a class: " + 
+                                    type.getProducedTypeName());
+                            continue;
                         }
                     }
                     list.add(type);
