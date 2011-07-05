@@ -37,4 +37,7 @@ shared class Singleton<Element>(Element element)
             return emptyIterator;
         }
     }
+    shared actual String string {
+        return "{ " first " }";
+    }
 }

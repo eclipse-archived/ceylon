@@ -62,6 +62,9 @@ shared interface Sequence<out Element>
         shared actual Iterator<Element> tail {
             return SequenceIterator(from+1);
         }
+        shared actual String string {
+            return "{ " head " ... }";
+        }
     }
     
 }

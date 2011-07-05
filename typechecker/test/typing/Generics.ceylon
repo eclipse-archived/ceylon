@@ -91,7 +91,13 @@ class Generics() {
         class BadClass(@error X x) {}
         class GoodClass2(Y[] y) {}
         class BadClass2(@error X[] x) {}
-        class GoodClassInheritance() satisfies Sequence<X> {}
+        class GoodClassInheritance() satisfies Sequence<X> {
+            //fake implementations
+            shared actual Natural lastIndex = 0;
+            shared actual X[] rest = {};
+            shared actual GoodClassInheritance clone = GoodClassInheritance();
+            shared actual X? item(Natural key) { return null; }
+        }
         @error class BadClassInheritance() satisfies Sequence<Y> {}
         class GoodClassInheritance2() extends Producer<X>() {}
         @error class BadClassInheritance2() extends Producer<Y>() {}
@@ -179,7 +185,10 @@ class Generics() {
     @type["Generics.Outer<Natural>.Inner<String>"] value aaa = aa;
     @type["Entry<Natural,String>"] aa.getIt();
     
-    class Num() satisfies Comparable<Num> {}
+    class Num() satisfies Comparable<Num> {
+        //fake implementation
+        shared actual Comparison compare(Num other) {throw;};
+    }
     
     abstract class SortedList<T>(T... elements) 
         satisfies Sequence<T> 

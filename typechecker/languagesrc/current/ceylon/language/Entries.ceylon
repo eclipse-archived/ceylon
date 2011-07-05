@@ -27,6 +27,9 @@ shared Entries<Natural,Element> entries<Element>(Element... sequence)
                 shared actual Iterator<Entry<Natural,Element>> tail {
                     return EntryIterator(from+1);
                 }
+                shared actual String string {
+                    return "" sequence.string " from " from;
+                }
             }
             return EntryIterator(0);
         }

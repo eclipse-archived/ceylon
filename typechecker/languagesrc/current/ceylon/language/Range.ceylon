@@ -8,6 +8,10 @@ shared class Range<Element>(Element first, Element last)
     
     doc "The end of the range."
     shared actual Element last = last;
+
+    shared actual String string {
+        return "[" first ".." last "]";
+    }
     
     shared Boolean decreasing { 
         return last<first; 

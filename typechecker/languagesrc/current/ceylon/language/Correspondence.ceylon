@@ -72,6 +72,18 @@ shared interface Correspondence<in Key, out Item>
                 return null;
             }
         }
+        shared actual String string {
+            //fake impl
+            variable String result := "{ ";
+            for (Key key in keys) {
+                Item? element = outer.item(key);
+                if (is Object element) {
+                    result += element.string ", ";
+                }
+            }
+            result += " }";
+            return result;
+        }
         shared actual Sequence<Item?> clone {
             return this;
         }

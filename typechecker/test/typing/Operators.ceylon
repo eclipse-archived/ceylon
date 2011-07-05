@@ -3,7 +3,10 @@ class Operators() {
     class X() {}
     class Y() {}
     
-    class Z() extends Object() {}
+    class Z() extends Object() {
+        //fake impl
+        shared actual String string = "Z()";
+    }
     
     @type["String"] value x0 = "Hello" + " " + "World";
     
