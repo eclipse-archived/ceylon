@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
-final class $toplevel {
+@com.redhat.ceylon.compiler.metadata.java.Attribute
+@com.redhat.ceylon.compiler.metadata.java.Ceylon
+final class toplevel {
     private static final Boolean value = ceylon.language.$true.getTrue();
     
     static Boolean getToplevel() {
@@ -10,7 +12,7 @@ final class $toplevel {
 class TopLevelAccess extends .ceylon.language.IdentifiableObject {
     
     private final Boolean m() {
-        return com.redhat.ceylon.compiler.test.expression.attribute.$toplevel.getToplevel();
+        return com.redhat.ceylon.compiler.test.expression.attribute.toplevel.getToplevel();
     }
     
     TopLevelAccess() {

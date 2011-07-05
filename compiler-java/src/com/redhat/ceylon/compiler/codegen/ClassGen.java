@@ -37,6 +37,9 @@ import com.sun.tools.javac.util.Name;
 
 public class ClassGen extends GenPart {
 
+    private static final String[] CEYLON_ANNOTATION = "com.redhat.ceylon.compiler.metadata.java.Ceylon".split("\\.");
+    private static final String[] ATTRIBUTE_ANNOTATION = "com.redhat.ceylon.compiler.metadata.java.Attribute".split("\\.");
+
     class ClassVisitor extends StatementVisitor {
         final ListBuffer<JCVariableDecl> params = new ListBuffer<JCVariableDecl>();
         final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
@@ -676,57 +679,35 @@ public class ClassGen extends GenPart {
     }
 
     public JCTree convert(AttributeDeclaration decl) {
-        // we make a class for it
-        String name = decl.getIdentifier().getText();
-        String className = "$"+name;
-        String getterName = Util.getGetterName(name);
-        String fieldName = "value";
-        boolean shared = isShared(decl);
-        boolean variable = isMutable(decl);
-        JCExpression type = gen.makeJavaType(gen.actualType(decl));
-        List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(gen.actualType(decl), false);
-        
-        // its value
-        JCExpression initialValue = null;
-        if (decl.getSpecifierOrInitializerExpression() != null)
-            initialValue = gen.expressionGen.convertExpression(decl.getSpecifierOrInitializerExpression().getExpression());
+        GlobalGen.DefinitionBuilder builder = gen.globalGenAt(decl)
+            .defineGlobal(
+                    gen.makeJavaType(gen.actualType(decl)),
+                    decl.getIdentifier().getText());
 
-        // make a static var for it
-        int varMods = PRIVATE | (variable ? 0 : FINAL) | STATIC; 
-        JCVariableDecl varDef = at(decl).VarDef(make().Modifiers(varMods), names().fromString(fieldName), 
-                type, initialValue);
-        
-        // now make a getter in any case
-        int methodMods = (shared ? PUBLIC : 0) | STATIC;
-        JCBlock getterBody = make().Block(0, List.<JCTree.JCStatement>of(make().Return(makeIdent(fieldName))));
-        JCMethodDecl getter = make().MethodDef(make().Modifiers(methodMods, annots), names().fromString(getterName), 
-                type, List.<JCTree.JCTypeParameter>nil(), List.<JCTree.JCVariableDecl>nil(), 
-                List.<JCTree.JCExpression>nil(), getterBody, null);
+        // Add @Ceylon @Attribute
+        builder.classAnnotations(List.of(
+                gen.make().Annotation(gen.makeIdent(ATTRIBUTE_ANNOTATION), List.<JCExpression>nil()),
+                gen.make().Annotation(gen.makeIdent(CEYLON_ANNOTATION), List.<JCExpression>nil())
+        ));
 
-        JCMethodDecl setter = null;
-        if(variable){
-            String setterName = Util.getSetterName(name);
-            JCBlock setterBody = make().Block(0, 
-                    List.<JCTree.JCStatement>of(
-                            make().Exec(
-                                    make().Assign(makeIdent(className, fieldName), 
-                                            makeIdent(fieldName)))));
-            setter = make().MethodDef(make().Modifiers(methodMods), 
-                    names().fromString(setterName), 
-                    makeIdent("void"), 
-                    List.<JCTree.JCTypeParameter>nil(), 
-                    List.<JCTree.JCVariableDecl>of(make().VarDef(make().Modifiers(0, annots), 
-                            names().fromString(fieldName), type, null)), 
-                    List.<JCTree.JCExpression>nil(), 
-                    setterBody, null);
+        builder.valueAnnotations(gen.makeJavaTypeAnnotations(gen.actualType(decl), false));
+
+        if (isShared(decl)) {
+            builder
+                    .classVisibility(PUBLIC)
+                    .getterVisibility(PUBLIC)
+                    .setterVisibility(PUBLIC);
         }
-        
-        // and the class
-        List<JCTree> defs = (setter != null) ?
-                List.<JCTree>of(varDef, getter, setter)
-                : List.<JCTree>of(varDef, getter);
-        int classMods = (shared ? PUBLIC : 0) | FINAL;
-        return make().ClassDef(make().Modifiers(classMods), names().fromString(className), 
-                List.<JCTree.JCTypeParameter>nil(), null, List.<JCTree.JCExpression>nil(), defs);
+
+        if (!isMutable(decl)) {
+            builder.immutable();
+        }
+
+        if (decl.getSpecifierOrInitializerExpression() != null) {
+            builder.initialValue(gen.expressionGen.convertExpression(
+                    decl.getSpecifierOrInitializerExpression().getExpression()));
+        }
+
+        return builder.build();
     }
 }

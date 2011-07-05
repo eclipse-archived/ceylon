@@ -65,6 +65,9 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     private com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext;
     private TypeParser typeParser = new TypeParser();
     private Log log;
+
+    private final Name metadataJavaAttribute; // com.redhat.ceylon.compiler.metadata.java.Attribute
+
     
     public static CeylonModelLoader instance(Context context) {
         CeylonModelLoader instance = context.get(CeylonModelLoader.class);
@@ -82,6 +85,8 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         names = Name.Table.instance(context);
         reader = ClassReader.instance(context);
         log = Log.instance(context);
+
+        metadataJavaAttribute = names.fromString("com.redhat.ceylon.compiler.metadata.java.Attribute");
     }
 
     public void loadRequiredModules(com.sun.tools.javac.util.List<JCCompilationUnit> trees) {
@@ -153,14 +158,28 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     private Declaration makeDeclaration(ClassSymbol classSymbol) {
         String name = classSymbol.getSimpleName().toString();
         Declaration decl;
-        if(name.lastIndexOf('$') == 0){
+        if(isCeylonToplevelAttribute(classSymbol)){
             decl = makeToplevelAttribute(classSymbol);
-            decl.setName(name.substring(1));
+            decl.setName(unquote(name));
         }else{
             decl = makeLazyClassOrInterface(classSymbol);
             decl.setName(name);
         }
         return decl;
+    }
+
+    private String unquote(String name) {
+        if (name.startsWith("$")) {
+            return name.substring(1);
+        }
+
+        return name;
+    }
+
+    private boolean isCeylonToplevelAttribute(ClassSymbol classSymbol) {
+        Symbol attributeSymbol = symtab.classes.get(metadataJavaAttribute);
+        // symbol will be null if not yet encountered => the class cannot be annotated with it anyway
+        return attributeSymbol != null && classSymbol.attribute(attributeSymbol) != null;
     }
 
     private Declaration makeToplevelAttribute(ClassSymbol classSymbol) {
@@ -256,6 +275,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
 
     private ClassSymbol lookupClassSymbol(String name) {
         ClassSymbol classSymbol;
+
         String outerName = name;
         /*
          * This madness here tries to look for a class, and if it fails, tries to resolve it 
