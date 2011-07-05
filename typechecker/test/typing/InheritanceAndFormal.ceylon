@@ -26,7 +26,30 @@ class InheritanceAndFormal() {
         shared actual String name = hostname;
     }
 
-    class Horse() satisfies Named {
-        shared Boolean mammal = true;
+    class Horse() extends Animal() {
+        shared actual Boolean mammal = true;
     }
+
+    interface A {
+        shared formal Boolean a;
+        shared String b() { return "b"; }
+        shared formal Boolean d;
+    }
+
+    interface B satisfies A {
+        shared String c() { return "c"; }
+    }
+
+    abstract class C() {
+        shared Boolean d = true;
+    }
+
+    @error class D() extends C() satisfies B {
+
+    }
+
+    class E() extends C() satisfies B {
+        shared actual Boolean a = false;
+    }
+
 }
