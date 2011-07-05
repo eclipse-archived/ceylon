@@ -78,7 +78,7 @@ shared interface Correspondence<in Key, out Item>
             for (Key key in keys) {
                 Item? element = outer.item(key);
                 if (is Object element) {
-                    result += element.string ", ";
+                    result += element.string + ", ";
                 }
             }
             result += " }";
