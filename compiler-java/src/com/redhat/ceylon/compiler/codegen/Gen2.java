@@ -420,29 +420,32 @@ public class Gen2 {
         return false;
     }
     
-    public JCExpression makeJavaType(ProducedType type, boolean isSatisfiesOrExtends) {
+    // Determines if a type will be erased once converted to Java
+    public boolean willErase(ProducedType type) {
         type = simplifyType(type);
-        if (isUnion(type)) {
+        return (toPType(syms.ceylonVoidType).isExactly(type) || toPType(syms.ceylonObjectType).isExactly(type)
+                || toPType(syms.ceylonNothingType).isExactly(type) || toPType(syms.ceylonEqualityType).isExactly(type)
+                || toPType(syms.ceylonIdentifiableObjectType).isExactly(type)
+                || type.getDeclaration() instanceof BottomType
+                || isUnion(type));
+    }
+    
+    public JCExpression makeJavaType(ProducedType type, boolean isSatisfiesOrExtends) {
+        if (willErase(type)) {
+            // For an erased type:
+            // - Any of the Ceylon types Void, Object, Nothing, Equality,
+            //   IdentifiableObject, and Bottom result in the Java type Object
             // For any other union type U|V (U nor V is Optional):
             // - The Ceylon type U|V results in the Java type Object
             return makeIdent("Object");
         }
         
-        TypeDeclaration tdecl = type.getDeclaration();
-        if (toPType(syms.ceylonVoidType).isExactly(type) || toPType(syms.ceylonObjectType).isExactly(type)
-        		|| toPType(syms.ceylonNothingType).isExactly(type) || toPType(syms.ceylonEqualityType).isExactly(type)
-        		|| toPType(syms.ceylonIdentifiableObjectType).isExactly(type)
-        		|| tdecl instanceof BottomType) {
-            // For an erased type:
-            // - Any of the Ceylon types Void, Object, Nothing, Equality,
-            //   IdentifiableObject, and Bottom result in the Java type Object
-            return makeIdent("Object");
-        }
-        
         JCExpression jt;
+        type = simplifyType(type);
         java.util.List<ProducedType> tal = type.getTypeArgumentList();
         if (tal != null && !tal.isEmpty() && !hasUnion(tal)) {
             // GENERIC TYPES
+            TypeDeclaration tdecl = type.getDeclaration();
             
             ListBuffer<JCExpression> typeArgs = new ListBuffer<JCExpression>();
 

@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.codegen;
 
+import java.awt.PageAttributes.OriginType;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -481,7 +482,16 @@ public class ExpressionGen extends GenPart {
         at(access);
         V v = new V();
         operand.visit(v);
-        return gen.makeSelect(v.result, memberName.getText());
+        
+        JCExpression expr;
+        if (gen.willErase(operand.getTypeModel())) {
+            // Erased types need a type cast
+            JCExpression targetType = gen.makeJavaType(access.getTarget().getDeclaringType(), false);
+            expr = gen.makeSelect(make().TypeCast(targetType, v.result), memberName.getText());
+        } else {
+            expr = gen.makeSelect(v.result, memberName.getText());
+        }
+        return expr;
     }
 
     private JCExpression convert(Tree.BaseMemberExpression member) {
