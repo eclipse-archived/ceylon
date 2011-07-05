@@ -187,7 +187,9 @@ class Generics() {
     
     class Num() satisfies Comparable<Num> {
         //fake implementation
-        shared actual Comparison compare(Num other) {throw;};
+        shared actual Comparison compare(Num other) {
+            throw;
+        }
     }
     
     abstract class SortedList<T>(T... elements) 
