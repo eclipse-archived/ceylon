@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.name;
+
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -32,7 +34,8 @@ public class TypeHierarchyVisitor extends Visitor {
             final Map<String, Declaration> superFormalsCopy = new HashMap<String, Declaration>(superFormals);
             boolean failure = false;
             if (superFormalsCopy.size()!=0) {
-                StringBuilder sb = new StringBuilder("formal member(s) of superclasses not implemented: ");
+                StringBuilder sb = new StringBuilder("formal member(s) of superclasses not implemented in [");
+                sb.append(name(that.getIdentifier())).append("]: ");
                 for (Declaration member : clazz.getMembers()) {
                     //subclass member override superclass member
                     if (!member.isFormal()&&superFormalsCopy.containsKey(member.getName())) {
