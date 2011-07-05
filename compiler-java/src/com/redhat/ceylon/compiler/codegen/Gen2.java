@@ -108,6 +108,11 @@ public class Gen2 {
         return globalGen;
     }
 
+    public GlobalGen globalGenAt(Node t) {
+        at(t);
+        return globalGen;
+    }
+
     static class Singleton<T> implements Iterable<T> {
         private T thing;
 
