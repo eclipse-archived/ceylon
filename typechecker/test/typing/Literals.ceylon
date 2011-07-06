@@ -24,6 +24,7 @@ public class Literals() {
     @type["Float"] value ff = 1.float;
     @type["Integer"] value ii = 1.0.integer;
     @type["Boolean"] value bb = 1.0.positive;
+    @type["Integer"] value iii = 3.positiveValue;
     
     @type["Natural"] value nnn = 2.minus(1);
     @type["Float"] value fff = 2.0.times(-3.0);
