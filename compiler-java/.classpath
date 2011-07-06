@@ -4,12 +4,10 @@
 	<classpathentry excluding="**/*.ceylon" kind="src" path="runtime"/>
 	<classpathentry excluding="**/*.ceylon" kind="src" path="langtools/src/share/classes"/>
 	<classpathentry kind="src" path="test-src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="build/lib/compiler.jar"/>
-	<classpathentry kind="lib" path="build/lib/runtime.jar"/>
 	<classpathentry kind="lib" path="lib/ant-1.8.2.jar"/>
 	<classpathentry kind="lib" path="lib/antlrworks-1.3.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-spec"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
