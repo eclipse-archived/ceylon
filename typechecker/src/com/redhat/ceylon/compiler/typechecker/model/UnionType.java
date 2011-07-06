@@ -7,7 +7,7 @@ public class UnionType extends TypeDeclaration {
     @Override
     public String getName() {
         String name = "";
-        for (ProducedType pt: caseTypes) {
+        for (ProducedType pt: getCaseTypes()) {
             if (pt==null) {
                 name+="<unknown>";
             }
@@ -22,7 +22,7 @@ public class UnionType extends TypeDeclaration {
     @Override
     public String getQualifiedNameString() {
         String name = "";
-        for (ProducedType pt: caseTypes) {
+        for (ProducedType pt: getCaseTypes()) {
             if (pt==null) {
                 name+="<unknown>";
             }

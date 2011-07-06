@@ -444,4 +444,17 @@ public class TypeVisitor extends AbstractVisitor {
         td.setSatisfiedTypes(list);
     }
     
+    @Override 
+    public void visit(Tree.TypeConstraint that) {
+        super.visit(that);
+        if (that.getAbstractedType()!=null) {
+            ProducedType at = that.getAbstractedType().getType().getTypeModel();
+            TypeDeclaration td = (TypeDeclaration) that.getScope().getContainer();
+            if (td.getType().isExactly(at)) {
+                td.setSelfType(that.getDeclarationModel().getType());
+            }
+        }
+    }
+
+    
 }

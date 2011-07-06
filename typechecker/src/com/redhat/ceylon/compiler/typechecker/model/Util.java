@@ -149,4 +149,14 @@ public class Util {
         return sb.toString();
     }
 
+    static boolean addToSupertypes(List<ProducedType> list, ProducedType st) {
+        for (ProducedType et: list) {
+            if (st.isExactly(et)) {
+                return false;
+            }
+        }
+        list.add(st);
+        return true;
+    }
+
 }

@@ -10,10 +10,11 @@ import java.util.Map;
 
 public abstract class TypeDeclaration extends Declaration implements Scope, Generic {
 
-    ProducedType extendedType;
-    List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>();
-    List<ProducedType> caseTypes = Collections.emptyList();
-    List<TypeParameter> typeParameters = Collections.emptyList();
+    private ProducedType extendedType;
+    private List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>();
+    private List<ProducedType> caseTypes = Collections.emptyList();
+    private List<TypeParameter> typeParameters = Collections.emptyList();
+    private ProducedType selfType;
 
     @Override
     public boolean isParameterized() {
@@ -155,12 +156,14 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
 
     public List<Declaration> getInheritedMembers(String name) {
         List<Declaration> members = new ArrayList<Declaration>();
-        for (ProducedType t : getSatisfiedTypes()) {
-            for (Declaration d : t.getDeclaration().getMembers(name)) {
-                if (d.isShared()) {
-                    members.add(d);
+        for (TypeDeclaration t : getSatisfiedTypeDeclarations()) {
+            //if ( !(t instanceof TypeParameter) ) { //don't look for members in a type parameter with a self-referential lower bound
+                for (Declaration d : t.getMembers(name)) {
+                    if (d.isShared()) {
+                        members.add(d);
+                    }
                 }
-            }
+            //}
         }
         if (getExtendedType()!=null) {
             for (Declaration d : getExtendedType().getDeclaration().getMembers(name)) {
@@ -174,33 +177,43 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
 
     @Override
     public Declaration getMember(String name) {
+        return getMember(name, new ArrayList<ProducedType>());
+    }
+    
+    protected Declaration getMember(String name, List<ProducedType> list) {
         Declaration d = super.getMember(name);
         if (d!=null) {
             return d;
         }
         else {
-            return this.getSupertypeDeclaration(name);
+            return getSupertypeDeclaration(name, list);
         }
     }
 
     @Override
     public Declaration getMemberOrParameter(String name) {
+        return getMemberOrParameter(name, new ArrayList<ProducedType>());
+    }
+    
+    protected Declaration getMemberOrParameter(String name, List<ProducedType> list) {
         Declaration d = super.getMemberOrParameter(name);
         if (d!=null) {
             return d;
         }
         else {
-            return this.getSupertypeDeclaration(name);
+            return getSupertypeDeclaration(name, list);
         }
     }
 
-    public Declaration getSupertypeDeclaration(String name) {
+    Declaration getSupertypeDeclaration(String name, List<ProducedType> list) {
         for (ProducedType st : getType().getSupertypes()) {
-            TypeDeclaration std = st.getDeclaration();
-            if (std!=this) {
-                Declaration d = std.getMember(name);
-                if (d!=null && d.isShared()) {
-                    return d;
+            if ( Util.addToSupertypes(list, st) ) {
+                TypeDeclaration std = st.getDeclaration();
+                if (std!=this) {
+                    Declaration d = std.getMember(name, list);
+                    if (d!=null && d.isShared()) {
+                        return d;
+                    }
                 }
             }
         }
@@ -209,6 +222,14 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
 
     public boolean isAlias() {
         return false;
+    }
+
+    public void setSelfType(ProducedType selfType) {
+        this.selfType = selfType;
+    }
+
+    public ProducedType getSelfType() {
+        return selfType;
     }
 
 }
