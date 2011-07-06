@@ -70,7 +70,7 @@ class StatementVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.MethodDefinition decl) {
-        JCTree.JCClassDecl innerDecl = statementGen.gen.classGen.methodClass(decl, false);
+        JCTree.JCClassDecl innerDecl = statementGen.gen.classGen.methodClass(decl);
         append(innerDecl);
         JCTree.JCIdent name = statementGen.make().Ident(innerDecl.name);
         JCVariableDecl call = statementGen.at(decl).VarDef(

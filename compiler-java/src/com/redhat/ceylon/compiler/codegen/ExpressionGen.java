@@ -239,11 +239,10 @@ public class ExpressionGen extends GenPart {
                     List.<JCTree.JCExpression>of(rhs));
         } else if(decl.isToplevel()){
             // must use top level setter
-            java.util.List<String> path = new LinkedList<String>();
-            path.addAll(decl.getContainer().getQualifiedName());
-            path.add("$"+decl.getName());
-            path.add(Util.getSetterName(decl.getName()));
-            return at(op).Apply(List.<JCExpression>nil(), makeIdent(path), List.<JCTree.JCExpression>of(rhs));
+            return gen.globalGenAt(op).setGlobalValue(
+                    makeIdent(decl.getContainer().getQualifiedName()),
+                    decl.getName(),
+                    rhs);
         } else
             return at(op).Assign(make().Ident(names().fromString(decl.getName())), rhs);
     }
@@ -495,11 +494,9 @@ public class ExpressionGen extends GenPart {
                     return at(member).Ident(names().fromString("null"));
                 } else {
                     // it's a toplevel attribute
-                    java.util.List<String> path = new LinkedList<String>();
-                    path.addAll(decl.getContainer().getQualifiedName());
-                    path.add("$"+decl.getName());
-                    path.add(Util.getGetterName(decl.getName()));
-                    return at(member).Apply(List.<JCExpression>nil(), makeIdent(path), List.<JCExpression>nil());
+                    return gen.globalGenAt(member).getGlobalValue(
+                            makeIdent(decl.getContainer().getQualifiedName()),
+                            decl.getName());
                 }
              } else if(Util.isClassAttribute(decl)) {
                 // invoke the getter
