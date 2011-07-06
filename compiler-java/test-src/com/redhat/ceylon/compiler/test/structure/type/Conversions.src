@@ -26,13 +26,63 @@ class Baz extends Foo {
         super();
     }
 }
+class GenInv<T> extends .ceylon.language.IdentifiableObject {
+    
+    public final void a() {
+    }
+    
+    GenInv() {
+    }
+}
+class GenCov<T> extends .ceylon.language.IdentifiableObject {
+    
+    public final void a() {
+    }
+    
+    GenCov() {
+    }
+}
+class GenCon<T> extends .ceylon.language.IdentifiableObject {
+    
+    public final void a() {
+    }
+    
+    GenCon() {
+    }
+}
+interface ISats {
+    
+    public abstract void a();
+}
+class Sats<T extends ISats> extends .ceylon.language.IdentifiableObject {
+    
+    public final void a() {
+    }
+    
+    Sats() {
+    }
+}
+class ExtVoid extends GenInv<Object> {
+    
+    ExtVoid() {
+        super();
+    }
+}
+class ExtBottom extends GenInv {
+    
+    ExtBottom() {
+        super();
+    }
+}
 class Conversions extends .ceylon.language.IdentifiableObject {
     
     public final void m() {
         final Foo c1 = new Foo();
         c1.a();
+        final Natural n1 = .ceylon.language.Natural.instance(1L);
+        final Natural n2 = null;
         final Object u1 = new Bar();
-        u1.a(); // FIXME This is not correct
+        ((Foo)u1).a();
         final Object $u1$0 = u1;
         if ($u1$0 instanceof Bar) {
             final Bar $u1$1 = (Bar)$u1$0;
@@ -41,6 +91,23 @@ class Conversions extends .ceylon.language.IdentifiableObject {
                 $u1$1.b();
             }
         }
+        final Object e1;
+        final Object e2;
+        final Object e3;
+        final Object e4;
+        final Object e5;
+        final Object e6;
+        final GenInv<String> g1;
+        final GenCov<? extends String> g2;
+        final GenCon<? super String> g3;
+        final GenInv g4;
+        final GenInv g5;
+        final GenInv<Object> v1;
+        final GenCov<?> v2;
+        final GenCon<Object> v3;
+        final GenInv b1;
+        final GenCov b2;
+        final GenCon<?> b3;
     }
     
     Conversions() {
