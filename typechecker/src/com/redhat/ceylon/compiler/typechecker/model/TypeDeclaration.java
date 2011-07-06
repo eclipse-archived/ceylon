@@ -177,47 +177,54 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
 
     @Override
     public Declaration getMember(String name) {
-        return getMember(name, new ArrayList<ProducedType>());
-    }
-    
-    protected Declaration getMember(String name, List<ProducedType> list) {
-        Declaration d = super.getMember(name);
+        //first search for the member in the local
+        //scope, including non-shared declarations
+        Declaration d = getDirectMember(name);
         if (d!=null) {
             return d;
         }
         else {
-            return getSupertypeDeclaration(name, list);
+            //now look for inherited shared declarations
+            return getSupertypeDeclaration(name);
         }
     }
-
+    
     @Override
     public Declaration getMemberOrParameter(String name) {
-        return getMemberOrParameter(name, new ArrayList<ProducedType>());
-    }
-    
-    protected Declaration getMemberOrParameter(String name, List<ProducedType> list) {
-        Declaration d = super.getMemberOrParameter(name);
+        //first search for the member or parameter 
+        //in the local scope, including non-shared 
+        //declarations
+        Declaration d = getDirectMemberOrParameter(name);
         if (d!=null) {
             return d;
         }
         else {
-            return getSupertypeDeclaration(name, list);
+            //now look for inherited shared declarations
+            return getSupertypeDeclaration(name);
         }
     }
 
-    Declaration getSupertypeDeclaration(String name, List<ProducedType> list) {
-        for (ProducedType st : getType().getSupertypes()) {
-            if ( Util.addToSupertypes(list, st) ) {
-                TypeDeclaration std = st.getDeclaration();
-                if (std!=this) {
-                    Declaration d = std.getMember(name, list);
-                    if (d!=null && d.isShared()) {
-                        return d;
-                    }
+    Declaration getSupertypeDeclaration(final String name) {
+        class Criteria implements ProducedType.Criteria {
+            @Override
+            public boolean satisfies(TypeDeclaration td) {
+                Declaration d = td.getDirectMember(name);
+                if (d!=null && d.isShared()) {
+                    return true;
+                }
+                else {
+                    return false;
                 }
             }
+        };
+        Criteria c = new Criteria();
+        ProducedType st = getType().getSupertype(c);
+        if (st!=null) {
+            return st.getDeclaration().getDirectMember(name);
         }
-        return null;
+        else {
+            return null;
+        }
     }
 
     public boolean isAlias() {

@@ -355,21 +355,12 @@ public class ProducedType extends ProducedReference {
         if ( Util.addToSupertypes(list, this) ) {
             if (getDeclaration().getExtendedType()!=null) {
                 getDeclaration().getExtendedType().substitute(getTypeArguments()).getSupertypes(list);
-                //for (ProducedType et : getDeclaration().getExtendedType().substitute(getTypeArguments()).getSupertypes(list)) {
-                    //Util.addToSupertypes(list, et.substitute(getTypeArguments()));
-                //}
             }
             for (ProducedType dst : getDeclaration().getSatisfiedTypes()) {
                 dst.substitute(getTypeArguments()).getSupertypes(list);
-                //for (ProducedType st : new ArrayList<ProducedType>(dst.getSupertypes(list))) {
-                    //Util.addToSupertypes(list, st.substitute(getTypeArguments())));
-                //}
             }
             if (getDeclaration().getSelfType()!=null) {
                 getDeclaration().getSelfType().substitute(getTypeArguments()).getSupertypes(list);
-                //for (ProducedType st : getDeclaration().getSelfType().substitute(getTypeArguments()).getSupertypes(list)) {
-                    //Util.addToSupertypes(list, st.substitute(getTypeArguments()));
-                //}
             }
             if (getDeclaration().getCaseTypes()!=null /*&& !getDeclaration().getCaseTypes().isEmpty()*/) {
                 for (ProducedType t : getDeclaration().getCaseTypes()) {
@@ -392,12 +383,26 @@ public class ProducedType extends ProducedReference {
         return list;
     }
 
-    public ProducedType getSupertype(TypeDeclaration dec) {
-        return getSupertype(dec, new ArrayList<ProducedType>());
+    public ProducedType getSupertype(final TypeDeclaration dec) {
+        Criteria c = new Criteria() {
+            @Override
+            public boolean satisfies(TypeDeclaration td) {
+                return td==dec;
+            }
+        };
+        return getSupertype(c);
     }
     
-    ProducedType getSupertype(TypeDeclaration dec, List<ProducedType> list) {
-        if (getDeclaration()==dec) {
+    ProducedType getSupertype(Criteria c) {
+        return getSupertype(c, new ArrayList<ProducedType>());
+    }
+    
+    static interface Criteria {
+        boolean satisfies(TypeDeclaration td);
+    }
+    
+    ProducedType getSupertype(Criteria c, List<ProducedType> list) {
+        if (c.satisfies(getDeclaration())) {
             return this;
         }
         if ( Util.addToSupertypes(list, this) ) {
@@ -407,7 +412,7 @@ public class ProducedType extends ProducedReference {
             if (getDeclaration().getExtendedType()!=null) {
                 //TODO: I would prefer to substitute type args before 
                 //      recursing, but I got some stack overflows
-                ProducedType possibleResult = getDeclaration().getExtendedType().getSupertype(dec, list);
+                ProducedType possibleResult = getDeclaration().getExtendedType().getSupertype(c, list);
                 if (possibleResult!=null) {
                     possibleResult = possibleResult.substitute(getTypeArguments());
                     result = possibleResult;
@@ -416,7 +421,7 @@ public class ProducedType extends ProducedReference {
             for (ProducedType dst : getDeclaration().getSatisfiedTypes()) {
                 //TODO: I would prefer to substitute type args before 
                 //      recursing, but I got some stack overflows
-                ProducedType possibleResult = dst.getSupertype(dec, list);
+                ProducedType possibleResult = dst.getSupertype(c, list);
                 if (possibleResult!=null) {
                     possibleResult = possibleResult.substitute(getTypeArguments());
                     if (result==null || possibleResult.isSubtypeOf(result)) {
@@ -431,11 +436,11 @@ public class ProducedType extends ProducedReference {
                 //      we substituted type args 
                 //      first before recursing
                 ProducedType actualSelfType = getTypeArguments().get(getDeclaration().getSelfType().getDeclaration());
-                if (actualSelfType!=null && actualSelfType.getDeclaration()==dec) {
+                if (actualSelfType!=null && c.satisfies(actualSelfType.getDeclaration())) {
                     possibleResult = getDeclaration().getSelfType();
                 }
                 else {
-                    possibleResult = getDeclaration().getSelfType().getSupertype(dec, list);
+                    possibleResult = getDeclaration().getSelfType().getSupertype(c, list);
                 }
                 //end ugly
                 if (possibleResult!=null) {
@@ -445,23 +450,27 @@ public class ProducedType extends ProducedReference {
                     }
                 }
             }
-            //consider types which are supertypes
-            //of all cases
-            if (getDeclaration().getCaseTypes()!=null /*&& !getDeclaration().getCaseTypes().isEmpty()*/) {
+            //consider types which are supertypes of 
+            //all cases (do we really absolutely need 
+            //to iterate *all* supertypes of every 
+            //case type or is there a smarter way?)
+            if (getDeclaration().getCaseTypes()!=null && !getDeclaration().getCaseTypes().isEmpty()) {
                 for (ProducedType t: getDeclaration().getCaseTypes()) {
-                    ProducedType candidateResult = t.getSupertype(dec);
-                    if (candidateResult!=null) {
-                        candidateResult = candidateResult.substitute(getTypeArguments());
-                        boolean include = true;
-                        for (ProducedType ct : getDeclaration().getCaseTypes()) {
-                            if (!ct.substitute(getTypeArguments()).isSubtypeOf(candidateResult)) {
-                                include = false;
-                                break;
+                    for (ProducedType st: t.substitute(getTypeArguments()).getSupertypes()) {
+                        ProducedType candidateResult = st.getSupertype(c, list);
+                        if (candidateResult!=null) {
+                            //candidateResult = candidateResult;
+                            boolean include = true;
+                            for (ProducedType ct : getDeclaration().getCaseTypes()) {
+                                if (!ct.substitute(getTypeArguments()).isSubtypeOf(candidateResult)) {
+                                    include = false;
+                                    break;
+                                }
                             }
-                        }
-                        if (include) {
-                            if (result==null || candidateResult.isSubtypeOf(result)) {
-                                result = candidateResult;
+                            if (include) {
+                                if (result==null || candidateResult.isSubtypeOf(result)) {
+                                    result = candidateResult;
+                                }
                             }
                         }
                     }
