@@ -253,6 +253,33 @@ class Generics() {
     class Baz5() extends Foo5() satisfies Some<Object> {}
     Some<String> baz5 = Baz5();
     
+    interface Self<out T> {
+        shared formal T get;
+    }
+    
+    class Super() 
+            satisfies Self<Super> {
+        shared actual default Super get {
+            return this;
+        }
+    }
+    
+    class Sub() 
+            extends Super() 
+            satisfies Self<Sub> {
+        shared actual Sub get {
+            return this;
+        }
+    }
+    
+    @error class Wrong() 
+            extends Super() 
+            satisfies Self<String> {
+        @error shared actual String get {
+            return "hello";
+        }
+    }
+
     void method<X>() {}
 
     @error Producer<Holder>();
