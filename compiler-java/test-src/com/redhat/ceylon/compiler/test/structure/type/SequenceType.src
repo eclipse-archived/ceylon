@@ -1,3 +1,12 @@
 package com.redhat.ceylon.compiler.test.structure.type;
 
-// To be defined
+class SequenceType extends Object {
+    
+    public final void m() {
+        final Object s1 = new .ceylon.language.ArraySequence<Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L));
+        final Object s2 = ceylon.language.$empty.getEmpty();
+    }
+    
+    SequenceType() {
+    }
+}

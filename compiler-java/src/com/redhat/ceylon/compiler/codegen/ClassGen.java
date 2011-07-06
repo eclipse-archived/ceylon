@@ -196,7 +196,7 @@ public class ClassGen extends GenPart {
         return at(def).ClassDef(
                 at(def).Modifiers((long) convertClassDeclFlags(def), visitor.langAnnotations.toList()),
                 names().fromString(def.getIdentifier().getText()),
-                processTypeConstraints(def.getTypeConstraintList(), visitor.typeParams.toList()),
+                visitor.typeParams.toList(),
                 getSuperclass(def),
                 convertSatisfiedTypes(def.getDeclarationModel().getSatisfiedTypes()),
                 visitor.defs.toList());
@@ -405,54 +405,6 @@ public class ClassGen extends GenPart {
                 body, null);
     }
 
-    // Rewrite a list of Ceylon-style type constraints into Java trees.
-    // class TypeWithParameter<X, Y>()
-    // given X satisfies List
-    // given Y satisfies Comparable
-    // becomes
-    // class TypeWithParameter<X extends List, Y extends Comparable> extends
-    // ceylon.Object {
-    private List<JCTypeParameter> processTypeConstraints(Tree.TypeConstraintList typeConstraintList, List<JCTypeParameter> typeParams) {
-        if (typeConstraintList == null)
-            return typeParams;
-
-        LinkedHashMap<String, JCTypeParameter> symtab = new LinkedHashMap<String, JCTypeParameter>();
-        for (JCTypeParameter item : typeParams) {
-            symtab.put(item.getName().toString(), item);
-        }
-
-        for (final Tree.TypeConstraint tc : typeConstraintList.getTypeConstraints()) {
-            String name = tc.getIdentifier().getText();
-            JCTypeParameter tp = symtab.get(name);
-            if (tp == null)
-                throw new RuntimeException("Class \"" + name + "\" in satisfies list not found");
-
-            ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
-            if (tc.getSatisfiedTypes() != null) {
-                for (Tree.Type type : tc.getSatisfiedTypes().getTypes())
-                    bounds.add(gen.makeJavaType(type.getTypeModel(), true));
-
-                if (tp.getBounds() != null) {
-                    tp.bounds = tp.getBounds().appendList(bounds.toList());
-                } else {
-                    JCTypeParameter newTp = at(tc).TypeParameter(names().fromString(name), bounds.toList());
-                    symtab.put(name, newTp);
-                }
-            }
-
-            if (tc.getAbstractedType() != null)
-                throw new RuntimeException("\"abstracts\" not supported yet");
-        }
-
-        // FIXME: This just converts a map to a List. There ought to be a
-        // better way to do it
-        ListBuffer<JCTypeParameter> result = new ListBuffer<JCTypeParameter>();
-        for (JCTypeParameter p : symtab.values()) {
-            result.add(p);
-        }
-        return result.toList();
-    }
-
     private List<JCTree> convert(Tree.MethodDefinition decl) {
         final Singleton<JCBlock> body = new Singleton<JCBlock>();
         
@@ -485,7 +437,7 @@ public class ClassGen extends GenPart {
         int mods = convertMethodDeclFlags(decl);
         JCMethodDecl meth = at(decl).MethodDef(make().Modifiers(mods, langAnnotations.toList()), 
                 names().fromString(decl.getIdentifier().getText()), 
-                restype, processTypeConstraints(decl.getTypeConstraintList(), typeParams.toList()), 
+                restype, typeParams.toList(), 
                 params.toList(), List.<JCExpression> nil(), (body != null) ? body.thing() : null, null);
         result = result.append(meth);
         
@@ -509,7 +461,7 @@ public class ClassGen extends GenPart {
                 make().Modifiers((method.isToplevel() ? STATIC  : 0) | (method.isShared() ? PUBLIC : 0), langAnnotations.toList()),
                 names().fromString("run"),
                 restype.thing(),
-                processTypeConstraints(decl.getTypeConstraintList(), typeParams.toList()),
+                typeParams.toList(),
                 params.toList(), List.<JCExpression>nil(), body.thing(), null);
 
         return at(decl).ClassDef(
@@ -652,7 +604,7 @@ public class ClassGen extends GenPart {
         ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
         java.util.List<ProducedType> types = param.getDeclarationModel().getSatisfiedTypes();
         for (ProducedType t : types) {
-            if (gen.willErase(t)) {
+            if (!gen.willErase(t)) {
                 bounds.append(gen.makeJavaType(t, false));
             }
         }

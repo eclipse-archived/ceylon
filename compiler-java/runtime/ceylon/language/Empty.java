@@ -1,14 +1,14 @@
 package ceylon.language;
 
-public interface Empty extends Correspondence<Natural, Object>, 
-    Iterable<Object> , Sized{
+public interface Empty extends Correspondence<Natural, Nothing>, 
+    Iterable<Nothing> , Sized{
     public Natural getSize(); 
         //return 0; 
     public Boolean getEmpty();
         //return true; 
-    public Iterator<Object> getIterator();
+    public Iterator<Nothing> iterator();
         //return emptyIterator;
-    public Object value(Natural key);
+    public Nothing value(Natural key);
         //return null;
     public Nothing getFirst();
         //return null;

@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.codegen;
 
-import java.awt.PageAttributes.OriginType;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -527,12 +526,15 @@ public class ExpressionGen extends GenPart {
 
     public JCExpression convert(SequenceEnumeration value) {
         ListBuffer<JCExpression> elems = new ListBuffer<JCExpression>();
-        java.util.List<Expression> list = value.getExpressionList().getExpressions();
-        for (Expression expr : list) {
-            elems.append(convertExpression(expr));
+        if (value.getExpressionList() == null) {
+            return gen.globalGen.getGlobalValue(makeIdent("ceylon", "language"), "$empty");
+        } else {
+            java.util.List<Expression> list = value.getExpressionList().getExpressions();
+            for (Expression expr : list) {
+                elems.append(convertExpression(expr));
+            }
+            ProducedType t = value.getTypeModel().getTypeArgumentList().get(0);
+            return at(value).NewClass(null, null, at(value).TypeApply(makeIdent(syms().ceylonArraySequenceType), List.<JCExpression> of(gen.makeJavaType(t, false))), elems.toList(), null);
         }
-        
-        ProducedType t = value.getTypeModel().getTypeArgumentList().get(0);
-        return at(value).NewClass(null, null, at(value).TypeApply(makeIdent(syms().ceylonArraySequenceType), List.<JCExpression> of(gen.makeJavaType(t, false))), elems.toList(), null);
     }
 }

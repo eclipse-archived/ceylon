@@ -3,16 +3,20 @@ package com.redhat.ceylon.compiler.util;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 
 public class Util {
+    public static String strip(String str){
+        return (str.charAt(0) == '$') ? str.substring(1) : str;
+    }
+
     public static String capitalize(String str){
         return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 
     public static String getGetterName(String property){
-        return "get"+capitalize(property);
+        return "get"+capitalize(strip(property));
     }
 
     public static String getSetterName(String property){
-        return "set"+capitalize(property);
+        return "set"+capitalize(strip(property));
     }
 
     // FIXME: add this to Declaration?
