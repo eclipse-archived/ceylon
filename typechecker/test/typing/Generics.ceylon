@@ -254,7 +254,7 @@ class Generics() {
     Some<String> baz5 = Baz5();
     
     interface Self<out T> 
-            given T abstracts Self<T> {
+            given this is T {
         shared default T get {
             return this;
         }
