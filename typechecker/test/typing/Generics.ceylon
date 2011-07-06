@@ -253,21 +253,32 @@ class Generics() {
     class Baz5() extends Foo5() satisfies Some<Object> {}
     Some<String> baz5 = Baz5();
     
-    interface Self<out T> {
-        shared formal T get;
+    interface Self<out T> 
+            given T abstracts Self<T> {
+        shared default T get {
+            return this;
+        }
     }
     
     class Super() 
             satisfies Self<Super> {
-        shared actual default Super get {
+        /*shared actual default Super get {
             return this;
-        }
+        }*/
     }
     
     class Sub() 
             extends Super() 
             satisfies Self<Sub> {
-        shared actual Sub get {
+        /*shared actual Sub get {
+            return this;
+        }*/
+    }
+    
+    class SubSub()
+            extends Sub() 
+            satisfies Self<SubSub> {
+        shared actual SubSub get {
             return this;
         }
     }
@@ -275,10 +286,14 @@ class Generics() {
     @error class Wrong() 
             extends Super() 
             satisfies Self<String> {
-        @error shared actual String get {
+        /*@error shared actual String get {
             return "hello";
-        }
+        }*/
     }
+    
+    Super self1 = Super().get;
+    Sub self2 = Sub().get;
+    SubSub self3 = SubSub().get;
 
     void method<X>() {}
 
