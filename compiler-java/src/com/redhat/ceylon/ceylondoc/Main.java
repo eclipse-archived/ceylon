@@ -29,6 +29,7 @@ public class Main {
         }
         
         TypeChecker typeChecker = new TypeCheckerBuilder().addSrcDirectory(new File(srcDir)).getTypeChecker();
+        typeChecker.process();
         CeylonDocTool ceylonDocTool = new CeylonDocTool(typeChecker.getPhasedUnits().getPhasedUnits(), typeChecker.getContext().getModules());
         ceylonDocTool.setDestDir(destDir);
         ceylonDocTool.makeDoc();
