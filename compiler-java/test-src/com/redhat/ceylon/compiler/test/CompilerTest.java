@@ -46,7 +46,12 @@ public abstract class CompilerTest {
 		pkg = getClass().getPackage().getName().replaceAll("\\.", Matcher.quoteReplacement(File.separator));
 		path = dir + File.separator + pkg + File.separator;
 		// for running
-		runCompiler = new CeyloncTool();
+		try {
+			runCompiler = new CeyloncTool();
+		} catch (VerifyError e) {
+			System.err.println("ERROR: Cannot run tests! Did you maybe forget to configure the -Xbootclasspath/p: parameter?");
+			throw e;
+		}
 		runFileManager = (CeyloncFileManager)runCompiler.getStandardFileManager(null, null, null);
 		runFileManager.setSourcePath(dir);
 	}
