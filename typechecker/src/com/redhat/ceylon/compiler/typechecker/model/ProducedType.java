@@ -405,6 +405,8 @@ public class ProducedType extends ProducedReference {
             //for the given declaration
             ProducedType result = null;
             if (getDeclaration().getExtendedType()!=null) {
+                //TODO: I would prefer to substitute type args before 
+                //      recursing, but I got some stack overflows
                 ProducedType possibleResult = getDeclaration().getExtendedType().getSupertype(dec, list);
                 if (possibleResult!=null) {
                     possibleResult = possibleResult.substitute(getTypeArguments());
@@ -412,6 +414,8 @@ public class ProducedType extends ProducedReference {
                 }
             }
             for (ProducedType dst : getDeclaration().getSatisfiedTypes()) {
+                //TODO: I would prefer to substitute type args before 
+                //      recursing, but I got some stack overflows
                 ProducedType possibleResult = dst.getSupertype(dec, list);
                 if (possibleResult!=null) {
                     possibleResult = possibleResult.substitute(getTypeArguments());
@@ -421,7 +425,19 @@ public class ProducedType extends ProducedReference {
                 }
             }
             if (getDeclaration().getSelfType()!=null) {
-                ProducedType possibleResult = getDeclaration().getSelfType().getSupertype(dec, list);
+                ProducedType possibleResult;
+                //TODO: the following is super-ugly
+                //      it would be much better if
+                //      we substituted type args 
+                //      first before recursing
+                ProducedType actualSelfType = getTypeArguments().get(getDeclaration().getSelfType().getDeclaration());
+                if (actualSelfType!=null && actualSelfType.getDeclaration()==dec) {
+                    possibleResult = getDeclaration().getSelfType();
+                }
+                else {
+                    possibleResult = getDeclaration().getSelfType().getSupertype(dec, list);
+                }
+                //end ugly
                 if (possibleResult!=null) {
                     possibleResult = possibleResult.substitute(getTypeArguments());
                     if (result==null || possibleResult.isSubtypeOf(result)) {

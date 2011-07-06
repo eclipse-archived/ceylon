@@ -105,6 +105,7 @@ tokens {
     SUPER_TYPE;
     LAMBDA;
     SYNTHETIC_VARIABLE;
+    SELF_TYPE;
 }
 
 @parser::header { package com.redhat.ceylon.compiler.typechecker.parser; }
@@ -472,8 +473,14 @@ metatypes
     -> ^(METATYPES[$IS_OP] type*)
     ;
 
+selfType
+    : 'this' 'is'
+    -> ^(SELF_TYPE)
+    ;
+
 typeConstraint
     : 'given'^
+      selfType?
       typeName 
       typeParameters? 
       parameters? 

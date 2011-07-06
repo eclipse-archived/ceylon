@@ -407,6 +407,7 @@ public class TypeVisitor extends AbstractVisitor {
                             type.getProducedTypeName());
                 }
                 else {
+                    checkSelfTypes(et, td, type);
                     td.setExtendedType(type);
                 }
             }
@@ -436,6 +437,7 @@ public class TypeVisitor extends AbstractVisitor {
                                     type.getProducedTypeName());
                             continue;
                         }
+                        checkSelfTypes(t, td, type);
                     }
                     list.add(type);
                 }
@@ -444,15 +446,27 @@ public class TypeVisitor extends AbstractVisitor {
         td.setSatisfiedTypes(list);
     }
     
+    private void checkSelfTypes(Node that, TypeDeclaration td, ProducedType type) {
+        List<TypeParameter> params = type.getDeclaration().getTypeParameters();
+        List<ProducedType> args = type.getTypeArgumentList();
+        for (int i=0; i<params.size(); i++) {
+            if ( params.get(i).isSelfType() && args.size()<=i+1 ) {
+                if ( !td.getType().isSubtypeOf(args.get(i)) ) {
+                    that.addError("does not satisfy self type constraint on type parameter: " + 
+                            params.get(i).getName() + " of " + type.getDeclaration().getName() +
+                            " since " + td.getName() + " is not " + args.get(i).getProducedTypeName() );
+                }
+            }
+        }
+    }
+    
     @Override 
     public void visit(Tree.TypeConstraint that) {
         super.visit(that);
-        if (that.getAbstractedType()!=null) {
-            ProducedType at = that.getAbstractedType().getType().getTypeModel();
+        if (that.getSelfType()!=null) {
             TypeDeclaration td = (TypeDeclaration) that.getScope().getContainer();
-            if (td.getType().isExactly(at)) {
-                td.setSelfType(that.getDeclarationModel().getType());
-            }
+            td.setSelfType(that.getDeclarationModel().getType());
+            that.getDeclarationModel().setSelfType(true);
         }
     }
 

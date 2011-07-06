@@ -5,10 +5,11 @@ import java.util.List;
 
 public class TypeParameter extends TypeDeclaration implements Functional {
 
-    boolean covariant;
-    boolean contravariant;
-    Declaration declaration;
-    ParameterList parameterList;
+    private boolean covariant;
+    private boolean contravariant;
+    private Declaration declaration;
+    private ParameterList parameterList;
+    private boolean selfType;
 
     public boolean isCovariant() {
         return covariant;
@@ -24,6 +25,14 @@ public class TypeParameter extends TypeDeclaration implements Functional {
 
     public void setContravariant(boolean contravariant) {
         this.contravariant = contravariant;
+    }
+    
+    public boolean isSelfType() {
+        return selfType;
+    }
+    
+    public void setSelfType(boolean selfType) {
+        this.selfType = selfType;
     }
 
     public Declaration getDeclaration() {
