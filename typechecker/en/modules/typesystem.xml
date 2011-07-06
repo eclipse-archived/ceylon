@@ -1078,8 +1078,8 @@ shared interface ElementwiseEquality
         <literal>C&lt;X&gt;</literal> is the <emphasis>produced case</emphasis> 
         of the produced type <literal>A&lt;X&gt;</literal>.</para>
         
-        <para>The cases of a produced type <literal>A&lt;X&gt;</literal> 
-        for a simple algebraic datatype <literal>A&lt;T&gt;</literal> and a type 
+        <para>The cases of a produced type <literal>A&lt;X&gt;</literal> for a 
+        simple algebraic datatype <literal>A&lt;T&gt;</literal> and a type 
         argument <literal>X</literal> include exactly every produced case 
         <literal>C&lt;X&gt;</literal> for a case <literal>C&lt;T&gt;</literal> 
         of <literal>A&lt;T&gt;</literal>. Therefore, for every case of the simple 
@@ -1532,263 +1532,9 @@ shared class LinkedList<Element>(Element... elements)
 }]]></programlisting></comment>
 
         </section>
-        
-    <section id="generictypeconstraints">
-    <title>Generic type constraints</title>
-
-        <para>A parameterized method, class, or interface declaration may declare constraints 
-        upon ordinary type parameters using the <literal>given</literal> clause.</para>
-        
-        <programlisting>TypeConstraints: TypeConstraint+</programlisting>
-        
-        <para>There may be at most one <literal>given</literal> clause per type parameter.</para>
-        
-        <programlisting>TypeConstraint: "given" TypeName TypeParams? Params? TypeConstraintInheritance</programlisting>
-        
-        <programlisting>TypeConstraintInheritance: CaseTypes? Metatypes? SatisfiedTypes? AbstractedType?</programlisting>
-        
-        <programlisting>AbstractedType: "abstracts" Type</programlisting>
-        
+            
         <!--
-        <programlisting>ConcreteType: "this" "is"</programlisting>
-       -->
-        
-        <para>Note that the syntax for a type constraint is essentially the same syntax 
-        used for other type declarations such as class and interface declarations.</para>
-        
-        <para>There are six kinds of type constraint:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>an <emphasis>upper bound</emphasis>, <literal>given X satisfies T</literal>, 
-                specifies that the type parameter <literal>X</literal> is a subtype of 
-                a given type <literal>T</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>a <emphasis>lower bound</emphasis>, <literal>given X abstracts T</literal>, 
-                specifies that a given type <literal>T</literal> is a subtype of the 
-                type parameter <literal>X</literal>,</para>
-            </listitem>
-            <!--listitem>
-                <para>a subtype bound, <literal>X = subtype</literal>, specifies that 
-                the type parameter <literal>X</literal> represents the concrete type
-                of the current instance, and</para>
-            </listitem-->
-            <listitem>
-                <para>an <emphasis>enumerated bound</emphasis>, <literal>given X of T | U | V</literal>
-                specifies that the type parameter <literal>X</literal> represents one 
-                of the enumerated types,</para>
-            </listitem>
-            <!--
-            <listitem>
-                <para>a <emphasis>concrete type bound</emphasis>, <literal>given this is X</literal>
-                is permitted only for type parameters of parameterized interfaces and 
-                <literal>abstract</literal> classes, and specifies that every concrete 
-                subclass of the interface or <literal>abstract</literal> class is a 
-                subtype of the argument to the type parameter <literal>X</literal>,</para>
-            </listitem>
-            -->
-            <listitem>
-                <para>a <emphasis>metatype bound</emphasis>, <literal>given X is T</literal>, 
-                specifies that the concrete metatype of the type parameter is a subtype 
-                of a given type <literal>T</literal> <emphasis>(note that metatypes are 
-                a proposed feature for a future version of the language)</emphasis>, 
-                and</para>
-            </listitem>
-            <listitem>
-                <para>an <emphasis>initialization parameter specification</emphasis>, 
-                <literal>given X(...)</literal> specifies that the type parameter 
-                <literal>X</literal> is a class with the given parameter types.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>A constraint may not refer to a sequenced type parameter.</para>
-        
-        <para>A single <literal>given</literal> clause may specify multiple constraints
-        on a certain type parameter. For example, it may specify multiple upper bounds
-        together with an initialization parameter specification. If multiple upper bounds
-        are specified, at most one upper bound may be a class.</para>
-        
-        <programlisting><![CDATA[given Value(Natural n) satisfies IdentifiableObject & Comparable<Value>]]></programlisting>
-        
-        <programlisting><![CDATA[given Value satisfies Numberic<Value>
-given Result(Natural count) satisfies Numeric<Result>]]></programlisting>
-       
-        <programlisting><![CDATA[given Quantities satisfies Correspondence<Key,Decimal>]]></programlisting>
-
-        <programlisting><![CDATA[given Other satisfies Ordinal & Comparable<Other> abstracts Element]]></programlisting>
-        
-        <programlisting><![CDATA[given Value is Monoid<Value>]]></programlisting>
-        
-        <programlisting><![CDATA[given Argument of String | Natural | Integer | Float]]></programlisting>
-        
-        <para>An initialization parameter specification allows instantiation of the 
-        type represented by the type parameter within the body of the declaration.</para>
-        
-        <programlisting><![CDATA[Result create<Result>(Object object) 
-        given Result(String s) { 
-    return Result(object.string.lowercase);
-}]]></programlisting>
-        
-        <para>An enumerated bound allows the use of an exhaustive <literal>switch</literal>
-        with expressions of the parameter type.</para>
-        
-        <programlisting><![CDATA[Characters uppercase<Characters>(Characters chars) 
-        given Characters of String | Range<Character> { 
-    switch (Characters)
-    case (satisfies String) { 
-        return chars.uppercase;
-    }
-    case (satisfies Range<Character>) { 
-        return chars.first.uppercase..chars.last.uppercase;
-    }
-}]]></programlisting>
-
-        <para>A <emphasis>self-referential lower bound</emphasis> of a type
-        parameter is a lower bound which specifies a produced type of the 
-        parameterized type which declares the type parameter. The type arguments 
-        of the produced type must be the type parameters declared by the 
-        parameterized type.</para>
-        
-        <para>Then the parameterized type itself is assignable to the type 
-        parameter with the self-referential lower bound within the body of the 
-        declaration.</para>
-        
-        <programlisting><![CDATA[shared abstract class Comparable<in Other>() 
-        given Other satisfies Comparable<Other> 
-                    abstracts Comparable<Other> { //self-referential lower bound
-    
-    shared formal Integer compare(Other that);
-    
-    shared Integer reverseCompare(Other that) {    
-        return that.compare(this); //this is Other
-    }
-    
-}]]></programlisting>
-        
-        <para>Furthermore, any produced type of the parameterized type is assignable 
-        to the type argument of the type parameter with the self-referential lower 
-        bound.</para>
-        
-        <programlisting>Comparable&lt;Item&gt; comp = ... ;
-Item item = comp;</programlisting>
-        
-        <!--programlisting><![CDATA[Value max<Value>(Comparable<Value> x, Comparable<Value> y) 
-        given Value satisfies Comparable<Value> {
-    if (x.compare(y)>0) {
-        return x;
-    }
-    else {
-        return y;
-    }
-}]]></programlisting-->
-
-        <!--
-        <para>Subtype bounds are needed since the special type <literal>subtype</literal>
-        cannot appear in a contravariant position. A subtype bound cannot be applied to
-        a covariant or contravariant type parameter.</para>
-        -->
-        
-        <para>A constraint affects the type arguments that can be assigned to a type
-        parameter:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>A type argument to a type parameter with an upper bound must be a 
-                type which is a subtype of all upper bounds.</para>
-            </listitem>
-            <listitem>
-                <para>A type argument to a type parameter with a lower bound must be a 
-                type of which all lower bounds are subtypes.</para>
-            </listitem>
-            <listitem>
-                <para>A type argument to a type parameter with an enumerated type bound 
-                must be a subtype of one of the enumerated types, or a type with an 
-                enumerated subtype list that is a subset of the enumerated types of the 
-                constraint.</para>
-            </listitem>
-            <!--
-            <listitem>
-                <para>A type argument to a type parameter with a concrete type bound must
-                be a supertype of the type being declared when the parameterized type
-                appears in a <literal>extends</literal> or <literal>satisfies</literal>
-                clause.</para>
-            </listitem>
-            -->
-            <listitem>
-                <para>A type argument to a type parameter with a metatype bound must have 
-                a metatype assignable to all metatype bounds.</para>
-            </listitem>
-            <listitem>
-                <para>A type argument to a type parameter with an initialization parameter
-                specification must be a class with the given initialization parameter
-                types.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Within the body of the declaration, a constraint affects the assignability of 
-        a type parameter:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>A type parameter is considered a subtype of its upper bound.</para>
-            </listitem>
-            <listitem>
-                <para>The lower bound of a type parameter is considered a subtype of the
-                type parameter.</para>
-            </listitem>
-            <listitem>
-                <para>A metamodel reference to the type parameter is assignable to the
-                metatype bound.</para>
-            </listitem>
-            <listitem>
-                <para>A type parameter is considered a supertype of its enumerated type
-                bounds.</para>
-            </listitem>
-            <!--
-            <listitem>
-                <para>A parameterized type is considered a subtype of any type parameter of 
-                the type with a concrete type bound.</para>
-            </listitem>
-             -->
-        </itemizedlist>
-        
-        <para>Every type parameter has an implicit upper bound of type <literal>Void</literal>.</para>
-                
-        <para>Note that an upper bound type constraint of form:</para>
-        
-        <programlisting>given X satisfies T</programlisting>
-        
-        <para>is equivalent to a metatype bound of this form:</para>
-        
-        <programlisting>given X is Type&lt;T&gt;</programlisting>
-        
-        <para>and that an initialization parameter specification type constraint of 
-        form:</para>
-        
-        <programlisting>given X(A a, B b)</programlisting>
-        
-        <para>is equivalent to a metatype bound of this form:</para>
-        
-        <programlisting>given X is Callable&lt;X,A,B&gt;</programlisting>
-        
-        <comment><para>Note: I suppose that types introduced to the metatype should be
-        considered to satisfy a metatype bound, allowing type class introduction.</para></comment>
-        
-        <comment><para>TODO: Should we let you declare a constraint for a sequenced type 
-        parameter?</para>
-        <programlisting>class Foo&lt;Argument...&gt;(Argument... args) 
-        given Argument satisfies Comparable&lt;Argument&gt; {
-    ...
-}</programlisting></comment>
-
-        <comment><para>TODO: Should we inherit generic type constraints from supertypes, 
-        like in C#, or require them to be re-declared, like in Java?</para></comment>
-        
-    </section>
-    
-       <!--
-       <section id="thesubtypekeyword">
+        <section id="thesubtypekeyword">
             <title>The <literal>subtype</literal> keyword</title>
             
         <comment><para>NOTE: <literal>subtype</literal> is a proposed feature for a 
@@ -2037,6 +1783,283 @@ Result findSingleByIntegerKey<Result>(Type<Result> type, Integer key) = findByKe
     
     </section>
 
+    <section id="generictypeconstraints">
+    <title>Generic type constraints</title>
+
+        <para>A parameterized method, class, or interface declaration may declare constraints 
+        upon ordinary type parameters using the <literal>given</literal> clause.</para>
+        
+        <programlisting>TypeConstraints: TypeConstraint+</programlisting>
+        
+        <para>There may be at most one <literal>given</literal> clause per type parameter.</para>
+        
+        <programlisting>TypeConstraint: "given" TypeName TypeParams? Params? TypeConstraintInheritance</programlisting>
+        
+        <programlisting>TypeConstraintInheritance: CaseTypes? Metatypes? SatisfiedTypes? AbstractedType?</programlisting>
+        
+        <programlisting>AbstractedType: "abstracts" Type</programlisting>
+        
+        <!--
+        <programlisting>ConcreteType: "this" "is"</programlisting>
+       -->
+        
+        <para>Note that the syntax for a type constraint is essentially the same syntax 
+        used for other type declarations such as class and interface declarations.</para>
+        
+        <para>There are five different kinds of type constraint:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>an <emphasis>upper bound</emphasis>, <literal>given X satisfies T</literal>, 
+                specifies that the type parameter <literal>X</literal> is a subtype of 
+                a given type <literal>T</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>a <emphasis>lower bound</emphasis>, <literal>given X abstracts T</literal>, 
+                specifies that a given type <literal>T</literal> is a subtype of the 
+                type parameter <literal>X</literal>,</para>
+            </listitem>
+            <!--listitem>
+                <para>a subtype bound, <literal>X = subtype</literal>, specifies that 
+                the type parameter <literal>X</literal> represents the concrete type
+                of the current instance, and</para>
+            </listitem-->
+            <listitem>
+                <para>an <emphasis>enumerated bound</emphasis>, <literal>given X of T | U | V</literal>
+                specifies that the type parameter <literal>X</literal> represents one 
+                of the enumerated types,</para>
+            </listitem>
+            <!--
+            <listitem>
+                <para>a <emphasis>concrete type bound</emphasis>, <literal>given this is X</literal>
+                is permitted only for type parameters of parameterized interfaces and 
+                <literal>abstract</literal> classes, and specifies that every concrete 
+                subclass of the interface or <literal>abstract</literal> class is a 
+                subtype of the argument to the type parameter <literal>X</literal>,</para>
+            </listitem>
+            -->
+            <listitem>
+                <para>a <emphasis>metatype bound</emphasis>, <literal>given X is T</literal>, 
+                specifies that the concrete metatype of the type parameter is a subtype 
+                of a given type <literal>T</literal> <emphasis>(note that metatypes are 
+                a proposed feature for a future version of the language)</emphasis>, 
+                and</para>
+            </listitem>
+            <listitem>
+                <para>an <emphasis>initialization parameter specification</emphasis>, 
+                <literal>given X(...)</literal> specifies that the type parameter 
+                <literal>X</literal> is a class with the given parameter types.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>A constraint may not refer to a sequenced type parameter.</para>
+        
+        <para>A single <literal>given</literal> clause may specify multiple constraints
+        on a certain type parameter. For example, it may specify multiple upper bounds
+        together with an initialization parameter specification. If multiple upper bounds
+        are specified, at most one upper bound may be a class.</para>
+        
+        <programlisting><![CDATA[given Value(Natural n) satisfies IdentifiableObject & Comparable<Value>]]></programlisting>
+        
+        <programlisting><![CDATA[given Value satisfies Numberic<Value>
+given Result(Natural count) satisfies Numeric<Result>]]></programlisting>
+       
+        <programlisting><![CDATA[given Quantities satisfies Correspondence<Key,Decimal>]]></programlisting>
+
+        <programlisting><![CDATA[given Other satisfies Ordinal & Comparable<Other> abstracts Element]]></programlisting>
+        
+        <programlisting><![CDATA[given Value is Monoid<Value>]]></programlisting>
+        
+        <programlisting><![CDATA[given Argument of String | Natural | Integer | Float]]></programlisting>
+        
+        <comment><para>TODO: Should we let you declare a constraint for a sequenced type 
+        parameter?</para>
+        <programlisting>class Foo&lt;Argument...&gt;(Argument... args) 
+        given Argument satisfies Comparable&lt;Argument&gt; {
+    ...
+}</programlisting></comment>
+
+        <comment><para>TODO: Should we inherit generic type constraints from supertypes, 
+        like in C#, or require them to be re-declared, like in Java?</para></comment>
+            
+    <section>
+        <title>Upper bounds</title>
+        
+        <para>An upper bound constraint makes the type parameter assignable to the
+        upper bound type, and allows operations of the upper bound type to be called
+        upon expressions whose type is the type parameter.</para>
+        
+        <programlisting><![CDATA[class Holder<Value>(Value value) 
+        satisfies Equality
+        given Value satisfies Equality {
+    shared Value value = value;
+    shared actual Boolean equals(Object that) {
+        if (is Holder<Value> that) {
+            return value==that.value;
+        }
+    }
+    shared actual Integer hash {
+        return value.hash;
+    }
+}]]></programlisting>
+        
+        <para>Every type parameter has an implicit upper bound of type <literal>Void</literal>.</para>
+                
+    </section>
+    
+    <section>
+        <title>Lower bounds</title>
+        
+        <para>A lower bound constraint makes the lower bound type assignable to the
+        type parameter. The most common usecase is to work around the restriction that 
+        a covariant type parameter may not appear in a contravariant position of the
+        schema of the parameterized type.</para>
+        
+        <programlisting><![CDATA[shared class Set<out Element>(Element... elements)
+        given Element satisfies Equality {
+    ...
+     
+    shared Set<UnionElement> union(Set<UnionElement> set)
+            given UnionElement abstracts Element {
+        return ...
+    }
+     
+}]]></programlisting>
+        
+    </section>
+            
+    <section>
+        <title>Enumerated bounds</title>
+       
+        <para>An enumerated bound allows the use of an exhaustive <literal>switch</literal>
+        with expressions of the parameter type.</para>
+        
+        <programlisting><![CDATA[Characters uppercase<Characters>(Characters chars) 
+       given Characters of String | Range<Character> { 
+    switch (Characters)
+    case (satisfies String) { 
+        return chars.uppercase;
+    }
+    case (satisfies Range<Character>) { 
+        return chars.first.uppercase..chars.last.uppercase;
+    }
+}]]></programlisting>
+
+    </section>
+    
+    <section>
+        <title>Self-referential lower bounds</title>
+        
+        <para>A <emphasis>self-referential lower bound</emphasis> of a type
+        parameter is a lower bound which specifies a produced type of the 
+        parameterized type which declares the type parameter. The type arguments 
+        of the produced type must be the type parameters declared by the 
+        parameterized type.</para>
+        
+        <para>Then the parameterized type itself is assignable to the type 
+        parameter with the self-referential lower bound within the body of the 
+        declaration.</para>
+        
+        <programlisting><![CDATA[shared abstract class Comparable<in Other>() 
+        given Other satisfies Comparable<Other> 
+                    abstracts Comparable<Other> { //self-referential lower bound
+    
+    shared formal Integer compare(Other that);
+    
+    shared Integer reverseCompare(Other that) {    
+        return that.compare(this); //this is Other
+    }
+    
+}]]></programlisting>
+        
+        <para>Furthermore, any produced type of the parameterized type is assignable 
+        to the type argument of the type parameter with the self-referential lower 
+        bound.</para>
+        
+        <programlisting>Comparable&lt;Item&gt; comp = ... ;
+Item item = comp;</programlisting>
+
+        <comment><para>TODO: would <literal>given this is Other</literal> be a better
+        syntax for this?</para></comment>
+                
+    </section>
+    
+    <section>
+        <title>Metatype bounds</title>
+        
+        <comment><para>NOTE: Metatypes are a proposed feature for a future version of 
+        the language.</para></comment>
+        
+        <para>Note that an upper bound type constraint of form:</para>
+        
+        <programlisting>given X satisfies T</programlisting>
+        
+        <para>is equivalent to a metatype bound of this form:</para>
+        
+        <programlisting>given X is Type&lt;T&gt;</programlisting>
+        
+        <para>and that an initialization parameter specification type constraint of 
+        form:</para>
+        
+        <programlisting>given X(A a, B b)</programlisting>
+        
+        <para>is equivalent to a metatype bound of this form:</para>
+        
+        <programlisting>given X is Callable&lt;X,A,B&gt;</programlisting>
+        
+        <comment><para>Note: I suppose that types introduced to the metatype should 
+        be considered to satisfy a metatype bound, allowing type class introduction.
+        </para></comment>
+        
+    </section>
+    
+    <section>
+        <title>Initialization parameter specifications</title>
+
+        <para>An initialization parameter specification allows instantiation of the 
+        type represented by the type parameter within the body of the declaration.</para>
+        
+        <programlisting><![CDATA[Result create<Result>(Object object) 
+        given Result(String s) { 
+    return Result(object.string.lowercase);
+}]]></programlisting>
+
+    </section>
+    
+    <section>
+        <title>Generic type constraints and assignability</title>
+            
+        <para>Within the body of the declaration, a generic type constraint affects the 
+        assignability of a type parameter:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>A type parameter is considered a subtype of its upper bound.</para>
+            </listitem>
+            <listitem>
+                <para>The lower bound of a type parameter is considered a subtype of the
+                type parameter.</para>
+            </listitem>
+            <listitem>
+                <para>A metamodel reference to the type parameter is assignable to the
+                metatype bound.</para>
+            </listitem>
+            <listitem>
+                <para>A type parameter is considered a supertype of its enumerated type
+                bounds.</para>
+            </listitem>
+            <!--
+            <listitem>
+                <para>A parameterized type is considered a subtype of any type parameter of 
+                the type with a concrete type bound.</para>
+            </listitem>
+             -->
+        </itemizedlist>
+        
+        </section>
+    
+    </section>
+    
     <section id="generictypearguments">
         <title>Generic type arguments</title>
             
@@ -2154,6 +2177,48 @@ Result findSingleByIntegerKey<Result>(Type<Result> type, Integer key) = findByKe
         </section>
         -->
          
+    <section>
+        <title>Type arguments and type constraints</title>
+    
+        <para>A generic type constraint affects the type arguments that can be assigned 
+        to a type parameter:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>A type argument to a type parameter with an upper bound must be a 
+                type which is a subtype of all upper bounds.</para>
+            </listitem>
+            <listitem>
+                <para>A type argument to a type parameter with a lower bound must be a 
+                type of which all lower bounds are subtypes.</para>
+            </listitem>
+            <listitem>
+                <para>A type argument to a type parameter with an enumerated type bound 
+                must be a subtype of one of the enumerated types, or a type with an 
+                enumerated subtype list that is a subset of the enumerated types of the 
+                constraint.</para>
+            </listitem>
+            <!--
+            <listitem>
+                <para>A type argument to a type parameter with a concrete type bound must
+                be a supertype of the type being declared when the parameterized type
+                appears in a <literal>extends</literal> or <literal>satisfies</literal>
+                clause.</para>
+            </listitem>
+            -->
+            <listitem>
+                <para>A type argument to a type parameter with a metatype bound must have 
+                a metatype assignable to all metatype bounds.</para>
+            </listitem>
+            <listitem>
+                <para>A type argument to a type parameter with an initialization parameter
+                specification must be a class with the given initialization parameter
+                types.</para>
+            </listitem>
+        </itemizedlist>
+    
+    </section>
+            
         <section id="typeargumentconformance">
             <title>Type argument conformance</title>
         
