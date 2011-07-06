@@ -18,8 +18,7 @@ import java.util.Map;
  */
 public class ProducedType extends ProducedReference {
 
-    ProducedType() {
-    }
+    ProducedType() {}
 
     @Override
     public TypeDeclaration getDeclaration() {
