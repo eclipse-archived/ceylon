@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
-class MethodLocalAssign extends .ceylon.language.IdentifiableObject {
+class MethodLocalAssign extends Object {
     
     private final void m() {
         Boolean b = ceylon.language.$true.getTrue();

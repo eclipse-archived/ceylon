@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.statement.loop;
 
-class MethodDoWhile extends .ceylon.language.IdentifiableObject {
+class MethodDoWhile extends Object {
     
     public final Natural m() {
         do {

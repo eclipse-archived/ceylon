@@ -1,4 +1,4 @@
-class MethodSwitchElse extends .ceylon.language.IdentifiableObject {
+class MethodSwitchElse extends Object {
     
     public Integer m(final Integer n) {
         n;

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.statement.loop;
 
-class MethodForDoubleIterator extends .ceylon.language.IdentifiableObject {
+class MethodForDoubleIterator extends Object {
     
     public final void m() {
         .ceylon.language.Iterator<Entry<Natural, String>> $i$iter$0 = new .ceylon.language.ArraySequence<Entry<Natural, String>>(new .ceylon.language.Entry<Natural, String>(.ceylon.language.Natural.instance(1L), .ceylon.language.String.instance("a")), new .ceylon.language.Entry<Natural, String>(.ceylon.language.Natural.instance(2L), .ceylon.language.String.instance("b"))).iterator();

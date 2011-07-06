@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.structure.attribute;
 
-class ClassVariableWithInitializer extends .ceylon.language.IdentifiableObject {
+class ClassVariableWithInitializer extends Object {
     private String f2;
     
     ClassVariableWithInitializer() {

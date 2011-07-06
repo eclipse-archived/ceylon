@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.test.structure.toplevel;
 
-class toplevelMethod extends .ceylon.language.IdentifiableObject {
+class toplevelMethod extends Object {
     
     static void run() {
     }
 }
-class anotherToplevelMethod extends .ceylon.language.IdentifiableObject {
+class anotherToplevelMethod extends Object {
     
     static void run() {
     }

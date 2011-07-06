@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.statement.local;
 
-class ValueKeyword extends .ceylon.language.IdentifiableObject {
+class ValueKeyword extends Object {
     
     private final void m() {
         final String f = .ceylon.language.String.instance("");

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.expression.literal;
 
-class StringLiteral extends .ceylon.language.IdentifiableObject {
+class StringLiteral extends Object {
     
     public final void m() {
         final String s1 = .ceylon.language.String.instance("");

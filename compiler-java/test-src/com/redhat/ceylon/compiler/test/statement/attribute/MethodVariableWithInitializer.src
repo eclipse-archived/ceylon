@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.statement.attribute;
 
-class MethodVariableWithInitializer extends .ceylon.language.IdentifiableObject {
+class MethodVariableWithInitializer extends Object {
     
     public final void m() {
         String f = .ceylon.language.String.instance("");

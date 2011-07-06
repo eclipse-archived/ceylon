@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.expression.instantiation;
 
-class ClassInstantiation extends .ceylon.language.IdentifiableObject {
+class ClassInstantiation extends Object {
     
     public final ClassInstantiation m() {
         return new ClassInstantiation();

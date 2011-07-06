@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
-class AttributeAccess extends .ceylon.language.IdentifiableObject {
+class AttributeAccess extends Object {
     private final Boolean b;
     private final Boolean b2;
     

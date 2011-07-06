@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.structure.klass;
 
-class InitializerParameter extends .ceylon.language.IdentifiableObject {
+class InitializerParameter extends Object {
     
     InitializerParameter(String f) {
     }

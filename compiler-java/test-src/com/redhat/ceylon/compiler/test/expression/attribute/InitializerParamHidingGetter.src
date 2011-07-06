@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
-class InitializerParamHidingGetter extends .ceylon.language.IdentifiableObject {
+class InitializerParamHidingGetter extends Object {
     private final Boolean b;
     
     Boolean getB() {

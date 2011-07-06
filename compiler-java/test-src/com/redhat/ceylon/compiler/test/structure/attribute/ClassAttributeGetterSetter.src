@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.structure.attribute;
 
-class ClassAttributeGetterSetter extends .ceylon.language.IdentifiableObject {
+class ClassAttributeGetterSetter extends Object {
     
     String getF() {
         return .ceylon.language.String.instance("");

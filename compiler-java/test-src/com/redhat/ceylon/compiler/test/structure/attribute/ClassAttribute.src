@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.structure.attribute;
 
-class ClassAttribute extends .ceylon.language.IdentifiableObject {
+class ClassAttribute extends Object {
     private final String publicvar;
     private final String capturedvar;
     

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.structure.type;
 
-class Foo extends .ceylon.language.IdentifiableObject {
+class Foo extends Object {
     
     public final void a() {
     }
@@ -26,7 +26,7 @@ class Baz extends Foo {
         super();
     }
 }
-class GenInv<T> extends .ceylon.language.IdentifiableObject {
+class GenInv<T> extends Object {
     
     public final void a() {
     }
@@ -34,7 +34,7 @@ class GenInv<T> extends .ceylon.language.IdentifiableObject {
     GenInv() {
     }
 }
-class GenCov<T> extends .ceylon.language.IdentifiableObject {
+class GenCov<T> extends Object {
     
     public final void a() {
     }
@@ -42,7 +42,7 @@ class GenCov<T> extends .ceylon.language.IdentifiableObject {
     GenCov() {
     }
 }
-class GenCon<T> extends .ceylon.language.IdentifiableObject {
+class GenCon<T> extends Object {
     
     public final void a() {
     }
@@ -54,7 +54,7 @@ interface ISats {
     
     public abstract void a();
 }
-class Sats<T extends ISats> extends .ceylon.language.IdentifiableObject {
+class Sats<T extends ISats> extends Object {
     
     public final void a() {
     }
@@ -74,7 +74,7 @@ class ExtBottom extends GenInv {
         super();
     }
 }
-class Conversions extends .ceylon.language.IdentifiableObject {
+class Conversions extends Object {
     
     public final void m() {
         final Foo c1 = new Foo();

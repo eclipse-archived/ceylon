@@ -1,5 +1,5 @@
 // FIXME Obviously not correct
-class MethodSwitch extends .ceylon.language.IdentifiableObject {
+class MethodSwitch extends Object {
     
     public Integer m(final Integer n) {
         n;

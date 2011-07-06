@@ -15,6 +15,7 @@ import java.util.Map;
 import com.redhat.ceylon.compiler.codegen.Gen2.Singleton;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
@@ -176,14 +177,14 @@ public class ClassGen extends GenPart {
 
     // FIXME: figure out what insertOverloadedClassConstructors does and port it
 
-    public JCClassDecl convert(final Tree.ClassOrInterface cdecl) {
+    public JCClassDecl convert(final Tree.ClassOrInterface def) {
 
         ClassVisitor visitor = new ClassVisitor();
-        cdecl.visitChildren(visitor);
+        def.visitChildren(visitor);
 
-        if (cdecl instanceof Tree.AnyClass) {
+        if (def instanceof Tree.AnyClass) {
             // Constructor
-            visitor.defs.append(createConstructor(cdecl, visitor));
+            visitor.defs.append(createConstructor(def, visitor));
 
             // FIXME:
             // insertOverloadedClassConstructors(defs,
@@ -192,23 +193,23 @@ public class ClassGen extends GenPart {
 
         addGettersAndSetters(visitor.defs, visitor.attributeDecls);
 
-        return at(cdecl).ClassDef(
-                at(cdecl).Modifiers((long) convertClassDeclFlags(cdecl), visitor.langAnnotations.toList()),
-                names().fromString(cdecl.getIdentifier().getText()),
-                processTypeConstraints(cdecl.getTypeConstraintList(), visitor.typeParams.toList()),
-                getSuperclass(cdecl),
-                convertSatisfiedTypes(cdecl.getSatisfiedTypes()),
+        return at(def).ClassDef(
+                at(def).Modifiers((long) convertClassDeclFlags(def), visitor.langAnnotations.toList()),
+                names().fromString(def.getIdentifier().getText()),
+                processTypeConstraints(def.getTypeConstraintList(), visitor.typeParams.toList()),
+                getSuperclass(def),
+                convertSatisfiedTypes(def.getDeclarationModel().getSatisfiedTypes()),
                 visitor.defs.toList());
     }
 
-    private List<JCExpression> convertSatisfiedTypes(Tree.SatisfiedTypes satisfiedTypes) {
-        if (satisfiedTypes == null) {
+    private List<JCExpression> convertSatisfiedTypes(java.util.List<ProducedType> list) {
+        if (list == null) {
             return List.nil();
         }
 
         ListBuffer<JCExpression> satisfies = new ListBuffer<JCExpression>();
-        for (Tree.Type t : satisfiedTypes.getTypes()) {
-            satisfies.append(gen.makeJavaType(t.getTypeModel(), true));
+        for (ProducedType t : list) {
+            satisfies.append(gen.makeJavaType(t, true));
         }
         return satisfies.toList();
     }
@@ -221,17 +222,7 @@ public class ClassGen extends GenPart {
             // superclass
             superclass = makeIdent(syms().objectType);
         } else {
-            superclass = convertExtendedType(((Tree.AnyClass) cdecl).getExtendedType());
-        }
-        return superclass;
-    }
-
-    private JCTree convertExtendedType(Tree.ExtendedType extendedType) {
-        JCTree superclass;
-        if (extendedType == null)
-            superclass = makeIdent(syms().ceylonIdentifiableObjectType);
-        else {
-            superclass = gen.makeJavaType(extendedType.getType().getTypeModel(), true);
+            superclass = gen.makeJavaType(((Tree.AnyClass) cdecl).getDeclarationModel().getExtendedType(), true);
         }
         return superclass;
     }
@@ -525,7 +516,7 @@ public class ClassGen extends GenPart {
                 at(decl).Modifiers((method.isShared() ? PUBLIC : 0), List.<JCAnnotation>nil()),
                 generateClassName(decl, method.isToplevel()),
                 List.<JCTypeParameter>nil(),
-                makeIdent(syms().ceylonIdentifiableObjectType),
+                makeIdent("Object"),
                 List.<JCExpression>nil(),
                 List.<JCTree>of(meth));
     }
@@ -567,15 +558,15 @@ public class ClassGen extends GenPart {
         }
     }
 
-    public JCClassDecl objectClass(Tree.ObjectDefinition decl, boolean topLevel) {
+    public JCClassDecl objectClass(Tree.ObjectDefinition def, boolean topLevel) {
         ClassVisitor visitor = new ClassVisitor();
-        decl.visitChildren(visitor);
+        def.visitChildren(visitor);
 
-        visitor.defs.append(createConstructor(decl, visitor));
+        visitor.defs.append(createConstructor(def, visitor));
 
         addGettersAndSetters(visitor.defs, visitor.attributeDecls);
 
-        Name name = generateClassName(decl, topLevel);
+        Name name = generateClassName(def, topLevel);
 
         if (topLevel) {
             // TODO: This seems like a hack. If decl is a top-level definition, we create the singleton to hold the
@@ -583,19 +574,20 @@ public class ClassGen extends GenPart {
             // alongside the class.
             JCIdent nameIdent = make().Ident(name);
             visitor.defs.append(
-                    at(decl).VarDef(
-                            at(decl).Modifiers(PUBLIC | STATIC | FINAL, List.<JCTree.JCAnnotation>nil()),
+                    at(def).VarDef(
+                            at(def).Modifiers(PUBLIC | STATIC | FINAL, List.<JCTree.JCAnnotation>nil()),
                             names().fromString("$INSTANCE"),
                             nameIdent,
-                            at(decl).NewClass(null, List.<JCExpression>nil(), nameIdent, List.<JCExpression>nil(), null)
+                            at(def).NewClass(null, List.<JCExpression>nil(), nameIdent, List.<JCExpression>nil(), null)
                             ));
         }
 
-        return at(decl).ClassDef(
-                at(decl).Modifiers((long) convertObjectDeclFlags(decl), visitor.langAnnotations.toList()),
+        TypeDeclaration decl = def.getDeclarationModel().getType().getDeclaration();
+        return at(def).ClassDef(
+                at(def).Modifiers((long) convertObjectDeclFlags(def), visitor.langAnnotations.toList()),
                 name,
                 List.<JCTypeParameter>nil(),
-                convertExtendedType(decl.getExtendedType()),
+                gen.makeJavaType(decl.getExtendedType(), true),
                 convertSatisfiedTypes(decl.getSatisfiedTypes()),
                 visitor.defs.toList());
     }

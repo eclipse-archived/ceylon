@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.expression.invoke;
 
-class MethodInvocation extends .ceylon.language.IdentifiableObject {
+class MethodInvocation extends Object {
     
     public final void m() {
         n();

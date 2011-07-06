@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.structure.klass;
 
-abstract class AbstractFormal extends .ceylon.language.IdentifiableObject {
+abstract class AbstractFormal extends Object {
     
     public final void m() {
         test();

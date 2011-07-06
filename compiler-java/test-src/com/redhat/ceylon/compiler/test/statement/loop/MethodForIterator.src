@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.statement.loop;
 
-class MethodForIterator extends .ceylon.language.IdentifiableObject {
+class MethodForIterator extends Object {
     
     public final void m(final Sequence<Integer> seq) {
         .ceylon.language.Iterator<Integer> $i$iter$0 = seq.iterator();
