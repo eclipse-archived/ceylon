@@ -6,14 +6,14 @@ class ClassAttributeGetterSetter extends Object {
         return .ceylon.language.String.instance("");
     }
     
-    void setF(void f) {
+    void setF(Object f) {
     }
     
     String getF2() {
         return .ceylon.language.String.instance("");
     }
     
-    void setF2(void f2) {
+    void setF2(Object f2) {
     }
     
     ClassAttributeGetterSetter() {
