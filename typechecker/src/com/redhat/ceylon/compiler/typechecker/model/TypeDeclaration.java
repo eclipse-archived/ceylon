@@ -207,8 +207,8 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
     Declaration getSupertypeDeclaration(final String name) {
         class Criteria implements ProducedType.Criteria {
             @Override
-            public boolean satisfies(TypeDeclaration td) {
-                Declaration d = td.getDirectMember(name);
+            public boolean satisfies(ProducedType type) {
+                Declaration d = type.getDeclaration().getDirectMember(name);
                 if (d!=null && d.isShared()) {
                     return true;
                 }

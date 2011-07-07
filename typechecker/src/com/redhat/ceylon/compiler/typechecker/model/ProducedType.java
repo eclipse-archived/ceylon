@@ -98,8 +98,9 @@ public class ProducedType extends ProducedReference {
                 else {
                     for (ProducedType c : cases) {
                         boolean found = false;
+                        ProducedType ct = c.substitute(getTypeArguments());
                         for (ProducedType oc : otherCases) {
-                            if (c.isExactly(oc)) {
+                            if (ct.isExactly(oc.substitute(getTypeArguments()))) {
                                 found = true;
                                 break;
                             }
@@ -163,7 +164,8 @@ public class ProducedType extends ProducedReference {
         }
         else if (getDeclaration() instanceof UnionType) {
             for (ProducedType ct : getDeclaration().getCaseTypes()) {
-                if (ct==null || !ct.isSubtypeOf(type)) {
+                //TODO: is the call to substituteInternal() really needed?
+                if (ct==null || !ct.substituteInternal(getTypeArguments()).isSubtypeOf(type)) {
                     return false;
                 }
             }
@@ -171,7 +173,8 @@ public class ProducedType extends ProducedReference {
         }
         else if (type.getDeclaration() instanceof UnionType) {
             for (ProducedType ct : type.getDeclaration().getCaseTypes()) {
-                if (ct!=null && this.isSubtypeOf(ct)) {
+                //TODO: is the call to substituteInternal() really needed?
+                if (ct!=null && isSubtypeOf(ct.substituteInternal(type.getTypeArguments()))) {
                     return true;
                 }
             }
@@ -240,11 +243,6 @@ public class ProducedType extends ProducedReference {
             //if we would have a union of just one type, 
             //just return the type itself!
             if (types.size()==1) {
-                //TODO: I *think* that it is correct to call
-                //      substitute here, but apparently the
-                //      rest of the system never creates a
-                //      produced type with type args from a
-                //      union type, so no way to test this!
                 return types.get(0).substitute(getTypeArguments());
             }
             else {
@@ -289,6 +287,35 @@ public class ProducedType extends ProducedReference {
 
     }
 
+    //TODO: ugh, horrible code duplication from above!
+    ProducedType substituteInternal(Map<TypeParameter, ProducedType> substitutions) {
+
+        Declaration d;
+        if (getDeclaration() instanceof UnionType) {
+            UnionType ut = new UnionType();
+            List<ProducedType> types = new ArrayList<ProducedType>();
+            for (ProducedType ct : getDeclaration().getCaseTypes()) {
+                if (ct!=null) {
+                    types.add(ct.substituteInternal(substitutions));
+                }
+            }
+            ut.setCaseTypes(types);
+            d = ut;
+        }
+        else {
+            if (getDeclaration() instanceof TypeParameter) {
+                ProducedType sub = substitutions.get(getDeclaration());
+                if (sub!=null) {
+                    return sub;
+                }
+            }
+            d = getDeclaration();
+        }
+
+        return replaceDeclarationInternal(d, substitutions);
+
+    }
+
     private ProducedType replaceDeclaration(Declaration d) {
         ProducedType t = new ProducedType();
         t.setDeclaration(d);
@@ -307,6 +334,18 @@ public class ProducedType extends ProducedReference {
             t.setDeclaringType(getDeclaringType().substitute(substitutions));
         }
         t.setTypeArguments(sub(substitutions));
+        return t;
+    }
+    
+    //TODO: ugh, horrible code duplication from above!
+    private ProducedType replaceDeclarationInternal(Declaration d,
+            Map<TypeParameter, ProducedType> substitutions) {
+        ProducedType t = new ProducedType();
+        t.setDeclaration(d);
+        if (getDeclaringType()!=null) {
+            t.setDeclaringType(getDeclaringType().substituteInternal(substitutions));
+        }
+        t.setTypeArguments(subInternal(substitutions));
         return t;
     }
 
@@ -385,8 +424,8 @@ public class ProducedType extends ProducedReference {
     public ProducedType getSupertype(final TypeDeclaration dec) {
         Criteria c = new Criteria() {
             @Override
-            public boolean satisfies(TypeDeclaration td) {
-                return td==dec;
+            public boolean satisfies(ProducedType type) {
+                return type.getDeclaration()==dec;
             }
         };
         return getSupertype(c);
@@ -397,11 +436,11 @@ public class ProducedType extends ProducedReference {
     }
     
     static interface Criteria {
-        boolean satisfies(TypeDeclaration td);
+        boolean satisfies(ProducedType type);
     }
     
-    ProducedType getSupertype(Criteria c, List<ProducedType> list) {
-        if (c.satisfies(getDeclaration())) {
+    ProducedType getSupertype(final Criteria c, List<ProducedType> list) {
+        if (c.satisfies(this)) {
             return this;
         }
         if ( Util.addToSupertypes(list, this) ) {
@@ -409,68 +448,52 @@ public class ProducedType extends ProducedReference {
             //for the given declaration
             ProducedType result = null;
             if (getDeclaration().getExtendedType()!=null) {
-                //TODO: I would prefer to substitute type args before 
-                //      recursing, but I got some stack overflows
-                ProducedType possibleResult = getDeclaration().getExtendedType().getSupertype(c, list);
+                ProducedType possibleResult = getDeclaration().getExtendedType()
+                        .substituteInternal(getTypeArguments()).getSupertype(c, list);
                 if (possibleResult!=null) {
-                    possibleResult = possibleResult.substitute(getTypeArguments());
                     result = possibleResult;
                 }
             }
             for (ProducedType dst : getDeclaration().getSatisfiedTypes()) {
-                //TODO: I would prefer to substitute type args before 
-                //      recursing, but I got some stack overflows
-                ProducedType possibleResult = dst.getSupertype(c, list);
+                ProducedType possibleResult = dst.substituteInternal(getTypeArguments()).getSupertype(c, list);
                 if (possibleResult!=null) {
-                    possibleResult = possibleResult.substitute(getTypeArguments());
                     if (result==null || possibleResult.isSubtypeOf(result)) {
                         result = possibleResult;
                     }
                 }
             }
             if (getDeclaration().getSelfType()!=null) {
-                ProducedType possibleResult;
-                //TODO: the following is super-ugly
-                //      it would be much better if
-                //      we substituted type args 
-                //      first before recursing
-                ProducedType actualSelfType = getTypeArguments().get(getDeclaration().getSelfType().getDeclaration());
-                if (actualSelfType!=null && c.satisfies(actualSelfType.getDeclaration())) {
-                    possibleResult = getDeclaration().getSelfType();
-                }
-                else {
-                    possibleResult = getDeclaration().getSelfType().getSupertype(c, list);
-                }
-                //end ugly
+                ProducedType possibleResult = getDeclaration().getSelfType()
+                        .substituteInternal(getTypeArguments()).getSupertype(c, list);
                 if (possibleResult!=null) {
-                    possibleResult = possibleResult.substitute(getTypeArguments());
                     if (result==null || possibleResult.isSubtypeOf(result)) {
                         result = possibleResult;
                     }
                 }
             }
-            //consider types which are supertypes of 
-            //all cases (do we really absolutely need 
-            //to iterate *all* supertypes of every 
-            //case type or is there a smarter way?)
-            if (getDeclaration().getCaseTypes()!=null && !getDeclaration().getCaseTypes().isEmpty()) {
-                for (ProducedType t: getDeclaration().getCaseTypes()) {
-                    for (ProducedType st: t.substitute(getTypeArguments()).getSupertypes()) {
-                        ProducedType candidateResult = st.getSupertype(c, list);
-                        if (candidateResult!=null) {
-                            //candidateResult = candidateResult;
-                            boolean include = true;
-                            for (ProducedType ct : getDeclaration().getCaseTypes()) {
-                                if (!ct.substitute(getTypeArguments()).isSubtypeOf(candidateResult)) {
-                                    include = false;
-                                    break;
+            final List<ProducedType> caseTypes = getDeclaration().getCaseTypes();
+            if (caseTypes!=null /*&& !caseTypes.isEmpty()*/) {
+                Criteria c2 = new Criteria() {
+                    @Override
+                    public boolean satisfies(ProducedType type) {
+                        if ( c.satisfies(type) ) {
+                            for (ProducedType ct: caseTypes) {
+                                if (!ct.substituteInternal(getTypeArguments()).isSubtypeOf(type)) {
+                                    return false;
                                 }
                             }
-                            if (include) {
-                                if (result==null || candidateResult.isSubtypeOf(result)) {
-                                    result = candidateResult;
-                                }
-                            }
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+                };
+                for (ProducedType t: caseTypes) {
+                    ProducedType candidateResult = t.substituteInternal(getTypeArguments()).getSupertype(c2, list);
+                    if (candidateResult!=null) {
+                        if (result==null || candidateResult.isSubtypeOf(result)) {
+                            result = candidateResult;
                         }
                     }
                 }

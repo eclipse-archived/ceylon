@@ -56,6 +56,19 @@ public abstract class ProducedReference {
         return map;
     }
 
+    Map<TypeParameter, ProducedType> subInternal(Map<TypeParameter, ProducedType> substitutions) {
+        Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
+        for (Map.Entry<TypeParameter, ProducedType> e : getTypeArguments().entrySet()) {
+            if (e.getValue()!=null) {
+                map.put(e.getKey(), e.getValue().substituteInternal(substitutions));
+            }
+        }
+        if (getDeclaringType()!=null) {
+            map.putAll(getDeclaringType().subInternal(substitutions));
+        }
+        return map;
+    }
+
     public abstract ProducedType getType();
 
     public boolean isFunctional() {
