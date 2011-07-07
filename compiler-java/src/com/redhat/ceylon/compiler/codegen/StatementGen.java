@@ -207,7 +207,7 @@ public class StatementGen extends GenPart {
         String loop_var_name = variable.getIdentifier().getText();
         JCExpression iter_type = gen.makeJavaType(iterDecl.getSpecifierExpression().getExpression().getTypeModel().getTypeArgumentList().get(0));
         JCExpression item_type = gen.makeJavaType(gen.actualType(variable));
-        List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(gen.actualType(variable), false);
+        List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(variable.getDeclarationModel(), gen.actualType(variable));
 
         // ceylon.language.Iterator<T> $ceylontmpX = ITERABLE.iterator();
         JCExpression containment = gen.expressionGen.convertExpression(iterDecl.getSpecifierExpression().getExpression());
@@ -270,7 +270,7 @@ public class StatementGen extends GenPart {
 
         ProducedType t = gen.actualType(decl);
         JCExpression type = gen.makeJavaType(t);
-        List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(t, false);
+        List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(decl.getDeclarationModel(), t);
 
         int modifiers = convertLocalFieldDeclFlags(decl);
         return at(decl).VarDef(at(decl).Modifiers(modifiers, annots), atrrName, type, initialValue);

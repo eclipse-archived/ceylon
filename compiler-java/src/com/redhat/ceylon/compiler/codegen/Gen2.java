@@ -14,9 +14,16 @@ import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Getter;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
@@ -419,18 +426,40 @@ public class Gen2 {
         return jt;
     }
 
-    public List<JCTree.JCAnnotation> makeJavaTypeAnnotations(ProducedType type, boolean force) {
-        // For shared types we keep a list of annotations to apply to the resulting Java type
-        // to make reverse engineering of the final class file possible
-        boolean applyAnnotations = false; // type.getDeclaration().isShared() || force;
-        ListBuffer<JCTree.JCAnnotation> annotations = new ListBuffer<JCTree.JCAnnotation>();
+    public List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Method decl, ProducedType type) {
+        return makeJavaTypeAnnotations(type, decl.isShared() || decl.isToplevel());
+    }
+
+    public List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Parameter decl, ProducedType type) {
+        Scope container = decl.getContainer();
+        List<JCTree.JCAnnotation> ret;
+        // if method, rely on method rules
+        if(container instanceof Method)
+            ret = makeJavaTypeAnnotations((Method) container, type);
+        else
+            // if not method must be a Class, so always true
+            ret = makeJavaTypeAnnotations(type, true);
         
-        if (applyAnnotations) {
-            // Add the original type to the annotations
-            annotations.append(makeAtType(type.getProducedTypeQualifiedName()));
-        }
-        
-        return annotations.toList();
+        return ret;
+    }
+
+    public List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Value decl, ProducedType type) {
+        return makeJavaTypeAnnotations(type, decl.isToplevel() || (decl.isClassOrInterfaceMember() && decl.isShared()));
+    }
+
+    public List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Getter decl, ProducedType type) {
+        return makeJavaTypeAnnotations(type, decl.isToplevel() || (decl.isClassOrInterfaceMember() && decl.isShared()));
+    }
+
+    public List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Setter decl, ProducedType type) {
+        return makeJavaTypeAnnotations(type, decl.isToplevel() || (decl.isClassOrInterfaceMember() && decl.isShared()));
+    }
+
+    private List<JCTree.JCAnnotation> makeJavaTypeAnnotations(ProducedType type, boolean required) {
+        if(!required)
+            return List.nil();
+        // Add the original type to the annotations
+        return List.of(makeAtType(type.getProducedTypeQualifiedName()));
     }
 
     public ProducedType actualType(TypedDeclaration decl) {

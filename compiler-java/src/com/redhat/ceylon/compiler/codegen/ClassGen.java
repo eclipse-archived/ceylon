@@ -14,6 +14,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.codegen.Gen2.Singleton;
 import com.redhat.ceylon.compiler.typechecker.model.*;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
@@ -60,7 +61,7 @@ public class ClassGen extends GenPart {
             String name = param.getIdentifier().getText();
             JCExpression type = gen.makeJavaType(param.getType().getTypeModel());
             boolean sharedMethod = ((Declaration)param.getDeclarationModel().getContainer()).isShared();
-            List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(param.getType().getTypeModel(), sharedMethod);
+            List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(param.getDeclarationModel(), param.getType().getTypeModel());
             if (sharedMethod) {
                 annots = annots.append(gen.makeAtName(name));
             }
@@ -279,7 +280,7 @@ public class ClassGen extends GenPart {
 
     public JCTree.JCMethodDecl convert(AttributeGetterDefinition decl) {
         JCBlock body = gen.statementGen.convert(decl.getBlock());
-        List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(gen.actualType(decl), false);
+        List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(decl.getDeclarationModel(), gen.actualType(decl));
         return make().MethodDef(make().Modifiers(0, annots),
                 names().fromString(Util.getGetterName(decl.getIdentifier().getText())), 
                 gen.makeJavaType(gen.actualType(decl)), 
@@ -377,7 +378,7 @@ public class ClassGen extends GenPart {
         
         JCExpression type = gen.makeJavaType(gen.actualType(decl));
         int mods = convertAttributeGetSetDeclFlags(decl);
-        List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(gen.actualType(decl), false);
+        List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(decl.getDeclarationModel(), gen.actualType(decl));
         if (isActual(decl)) {
             annots = annots.append(gen.makeAtOverride());
         }
@@ -404,7 +405,7 @@ public class ClassGen extends GenPart {
         
         JCExpression type = gen.makeJavaType(gen.actualType(decl));
         int mods = convertAttributeGetSetDeclFlags(decl);
-        List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(gen.actualType(decl), false);
+        List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(decl.getDeclarationModel(), gen.actualType(decl));
         final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
         if (isActual(decl)) {
             langAnnotations.append(gen.makeAtOverride());
@@ -565,7 +566,7 @@ public class ClassGen extends GenPart {
             }
 
         restype.append(gen.makeJavaType(gen.actualType(decl)));
-        langAnnotations.appendList(gen.makeJavaTypeAnnotations(gen.actualType(decl), false));
+        langAnnotations.appendList(gen.makeJavaTypeAnnotations(decl.getDeclarationModel(), gen.actualType(decl)));
     }
 
     public JCClassDecl objectClass(Tree.ObjectDefinition decl, boolean topLevel) {
@@ -669,7 +670,7 @@ public class ClassGen extends GenPart {
         String name = param.getIdentifier().getText();
         JCExpression type = gen.makeJavaType(gen.actualType(param));
         boolean sharedMethod = ((Declaration)param.getDeclarationModel().getContainer()).isShared();
-        List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(gen.actualType(param), sharedMethod );
+        List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(param.getDeclarationModel(), gen.actualType(param));
         if (sharedMethod) {
             annots = annots.append(gen.makeAtName(name));
         }
@@ -690,7 +691,7 @@ public class ClassGen extends GenPart {
                 gen.make().Annotation(gen.makeIdent(CEYLON_ANNOTATION), List.<JCExpression>nil())
         ));
 
-        builder.valueAnnotations(gen.makeJavaTypeAnnotations(gen.actualType(decl), false));
+        builder.valueAnnotations(gen.makeJavaTypeAnnotations(decl.getDeclarationModel(), gen.actualType(decl)));
 
         if (isShared(decl)) {
             builder
