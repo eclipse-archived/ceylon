@@ -85,4 +85,17 @@ class Refinement() {
         
     }
     
+    interface Duplicate {
+        
+        interface X {
+            shared String hello { return "hello"; }
+        }
+        
+        interface Y {
+            shared String hello { return "hi"; }
+        }
+        
+        class Z() satisfies X & Y {}
+    }
+    
 }

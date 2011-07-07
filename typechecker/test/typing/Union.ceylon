@@ -58,10 +58,26 @@ class Union() {
     @error BadContainer<String> bss  = bcb;
     
     class Foo<T>(T t) {
-        shared T|String hello = t;
+        shared T|S|String hello<S>(S s) { return t; }
     }
     class Bar(String s) extends Foo<String>(s) {}
     Bar f = Bar("hello");
-    String fh = f.hello;
+    String fh = f.hello("hi");
+    
+    T?[] method<T>() { return {null}; }
+    
+    String?[] mr = method<String>();
+    
+    if (exists s = method<String>().first) {
+        writeLine(s);
+    }
+    
+    T[]? method2<T>() { return {}; }
+    
+    String[]? mr2 = method2<String>();
+    
+    if (exists s = method2<String>()) {
+        String? f = s.first;
+    }
     
 }
