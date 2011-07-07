@@ -264,11 +264,10 @@ public class ClassGen extends GenPart {
         JCBlock body = gen.statementGen.convert(decl.getBlock());
         String name = decl.getIdentifier().getText();
         JCExpression type = gen.makeJavaType(gen.actualType(decl));
-        List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(gen.actualType(decl), false);
         return make().MethodDef(make().Modifiers(0), names().fromString(Util.getSetterName(name)), 
                 makeIdent("void"), 
                 List.<JCTree.JCTypeParameter>nil(), 
-                List.<JCTree.JCVariableDecl>of(make().VarDef(make().Modifiers(0, annots), names().fromString(name), type, null)), 
+                List.<JCTree.JCVariableDecl>of(make().VarDef(make().Modifiers(0), names().fromString(name), type, null)), 
                 List.<JCTree.JCExpression>nil(), 
                 body, null);
     }
