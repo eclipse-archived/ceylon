@@ -407,7 +407,6 @@ public class TypeVisitor extends AbstractVisitor {
                             type.getProducedTypeName());
                 }
                 else {
-                    checkSelfTypes(et, td, type);
                     td.setExtendedType(type);
                 }
             }
@@ -419,54 +418,43 @@ public class TypeVisitor extends AbstractVisitor {
         super.visit(that);
         TypeDeclaration td = (TypeDeclaration) that.getScope();
         List<ProducedType> list = new ArrayList<ProducedType>();
-        if (that!=null) {
-            if ( that.getTypes().isEmpty() ) {
-                that.addError("missing types in satisfies");
-            }
-            for (Tree.StaticType t: that.getTypes()) {
-                ProducedType type = t.getTypeModel();
-                if (type!=null) {
-                    if (!(td instanceof TypeParameter)) {
-                        if (type.getDeclaration() instanceof TypeParameter) {
-                            t.addError("directly satisfies type parameter: " + 
-                                    type.getProducedTypeName());
-                            continue;
-                        }
-                        if (type.getDeclaration() instanceof Class) {
-                            t.addError("satisfies a class: " + 
-                                    type.getProducedTypeName());
-                            continue;
-                        }
-                        checkSelfTypes(t, td, type);
+        if ( that.getTypes().isEmpty() ) {
+            that.addError("missing types in satisfies");
+        }
+        for (Tree.StaticType t: that.getTypes()) {
+            ProducedType type = t.getTypeModel();
+            if (type!=null) {
+                if (!(td instanceof TypeParameter)) {
+                    if (type.getDeclaration() instanceof TypeParameter) {
+                        t.addError("directly satisfies type parameter: " + 
+                                type.getProducedTypeName());
+                        continue;
                     }
-                    list.add(type);
+                    if (type.getDeclaration() instanceof Class) {
+                        t.addError("satisfies a class: " + 
+                                type.getProducedTypeName());
+                        continue;
+                    }
                 }
+                list.add(type);
             }
         }
         td.setSatisfiedTypes(list);
-    }
-    
-    private void checkSelfTypes(Node that, TypeDeclaration td, ProducedType type) {
-        List<TypeParameter> params = type.getDeclaration().getTypeParameters();
-        List<ProducedType> args = type.getTypeArgumentList();
-        for (int i=0; i<params.size(); i++) {
-            if ( params.get(i).isSelfType() && args.size()<=i+1 ) {
-                if ( !td.getType().isSubtypeOf(args.get(i)) ) {
-                    that.addError("does not satisfy self type constraint on type parameter: " + 
-                            params.get(i).getName() + " of " + type.getDeclaration().getName() +
-                            " since " + td.getName() + " is not " + args.get(i).getProducedTypeName() );
-                }
-            }
-        }
     }
     
     @Override 
     public void visit(Tree.TypeConstraint that) {
         super.visit(that);
         if (that.getSelfType()!=null) {
-            TypeDeclaration td = (TypeDeclaration) that.getScope().getContainer();
-            td.setSelfType(that.getDeclarationModel().getType());
-            that.getDeclarationModel().setSelfType(true);
+            TypeDeclaration td = (TypeDeclaration) that.getSelfType().getScope();
+            TypeParameter tp = that.getDeclarationModel();
+            td.setSelfType(tp.getType());
+            if (tp.isSelfType()) {
+                that.addError("type parameter may not act as self type for two different types");
+            }
+            else {
+                tp.setSelfTypedDeclaration(td);
+            }
         }
     }
 

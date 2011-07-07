@@ -1880,13 +1880,6 @@ public class ExpressionVisitor extends AbstractVisitor {
 
     private boolean inExtendsClause = false;
 
-    @Override 
-    public void visit(Tree.ExtendedType that) {
-        inExtendsClause = true;
-        super.visit(that);
-        inExtendsClause = false;
-    }
-    
     @Override public void visit(Tree.Super that) {
         if (inExtendsClause) {
             ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
@@ -2098,4 +2091,57 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }
 
+    @Override 
+    public void visit(Tree.ExtendedType that) {
+        inExtendsClause = true;
+        super.visit(that);
+        inExtendsClause = false;
+
+        TypeDeclaration td = (TypeDeclaration) that.getScope();
+        Tree.SimpleType et = that.getType();
+        if (et!=null) {
+            ProducedType type = et.getTypeModel();
+            if (type!=null) {
+                checkSelfTypes(et, td, type);
+            }
+        }
+    }
+    
+    @Override 
+    public void visit(Tree.SatisfiedTypes that) {
+        super.visit(that);
+        TypeDeclaration td = (TypeDeclaration) that.getScope();
+        for (Tree.StaticType t: that.getTypes()) {
+            ProducedType type = t.getTypeModel();
+            if (type!=null) {
+                checkSelfTypes(t, td, type);
+            }
+        }
+    }
+    
+    private void checkSelfTypes(Node that, TypeDeclaration td, ProducedType type) {
+        List<TypeParameter> params = type.getDeclaration().getTypeParameters();
+        List<ProducedType> args = type.getTypeArgumentList();
+        for (int i=0; i<params.size(); i++) {
+            TypeParameter param = params.get(i);
+            if ( param.isSelfType() && args.size()>i ) {
+                ProducedType arg = args.get(i);
+                Declaration std = param.getSelfTypedDeclaration();
+                ProducedType at;
+                if (std==param.getContainer()) {
+                    at = td.getType();
+                }
+                else {
+                    //TODO: lots wrong here?
+                    at = ( (TypeDeclaration) td.getMember(std.getName()) ).getType();
+                }
+                if ( !at.isSubtypeOf(arg, true) ) {
+                    that.addError("does not satisfy self type constraint on type parameter: " + 
+                            param.getName() + " of " + type.getDeclaration().getName() +
+                            " since " + at.getProducedTypeName() + 
+                            " is not " + arg.getProducedTypeName() );
+                }
+            }
+        }
+    }
 }

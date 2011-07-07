@@ -156,6 +156,10 @@ public class ProducedType extends ProducedReference {
     }
 
     public boolean isSubtypeOf(ProducedType type) {
+        return isSubtypeOf(type, false);
+    }
+    
+    public boolean isSubtypeOf(ProducedType type, boolean ignoringSelftype) {
         if (getDeclaration() instanceof BottomType) {
             return true;
         }
@@ -165,7 +169,7 @@ public class ProducedType extends ProducedReference {
         else if (getDeclaration() instanceof UnionType) {
             for (ProducedType ct : getDeclaration().getCaseTypes()) {
                 //TODO: is the call to substituteInternal() really needed?
-                if (ct==null || !ct.substituteInternal(getTypeArguments()).isSubtypeOf(type)) {
+                if (ct==null || !ct.substituteInternal(getTypeArguments()).isSubtypeOf(type, ignoringSelftype)) {
                     return false;
                 }
             }
@@ -174,7 +178,7 @@ public class ProducedType extends ProducedReference {
         else if (type.getDeclaration() instanceof UnionType) {
             for (ProducedType ct : type.getDeclaration().getCaseTypes()) {
                 //TODO: is the call to substituteInternal() really needed?
-                if (ct!=null && isSubtypeOf(ct.substituteInternal(type.getTypeArguments()))) {
+                if (ct!=null && isSubtypeOf(ct.substituteInternal(type.getTypeArguments()), ignoringSelftype)) {
                     return true;
                 }
             }
@@ -190,7 +194,7 @@ public class ProducedType extends ProducedReference {
                     }
                 }
             }
-            ProducedType st = getSupertype(type.getDeclaration());
+            ProducedType st = getSupertype(type.getDeclaration(), ignoringSelftype);
             if (st==null) {
                 return false;
             }
@@ -420,26 +424,30 @@ public class ProducedType extends ProducedReference {
         }
         return list;
     }
-
-    public ProducedType getSupertype(final TypeDeclaration dec) {
+    
+    public ProducedType getSupertype(TypeDeclaration dec) {
+        return getSupertype(dec, false);
+    }
+    
+    public ProducedType getSupertype(final TypeDeclaration dec, boolean ignoringSelftype) {
         Criteria c = new Criteria() {
             @Override
             public boolean satisfies(ProducedType type) {
                 return type.getDeclaration()==dec;
             }
         };
-        return getSupertype(c);
+        return getSupertype(c, new ArrayList<ProducedType>(), ignoringSelftype);
     }
     
     ProducedType getSupertype(Criteria c) {
-        return getSupertype(c, new ArrayList<ProducedType>());
+        return getSupertype(c, new ArrayList<ProducedType>(), false);
     }
     
     static interface Criteria {
         boolean satisfies(ProducedType type);
     }
     
-    ProducedType getSupertype(final Criteria c, List<ProducedType> list) {
+    ProducedType getSupertype(final Criteria c, List<ProducedType> list, final boolean ignoringSelftype) {
         if (c.satisfies(this)) {
             return this;
         }
@@ -449,24 +457,24 @@ public class ProducedType extends ProducedReference {
             ProducedType result = null;
             if (getDeclaration().getExtendedType()!=null) {
                 ProducedType possibleResult = getDeclaration().getExtendedType()
-                        .substituteInternal(getTypeArguments()).getSupertype(c, list);
+                        .substituteInternal(getTypeArguments()).getSupertype(c, list, ignoringSelftype);
                 if (possibleResult!=null) {
                     result = possibleResult;
                 }
             }
             for (ProducedType dst : getDeclaration().getSatisfiedTypes()) {
-                ProducedType possibleResult = dst.substituteInternal(getTypeArguments()).getSupertype(c, list);
+                ProducedType possibleResult = dst.substituteInternal(getTypeArguments()).getSupertype(c, list, ignoringSelftype);
                 if (possibleResult!=null) {
-                    if (result==null || possibleResult.isSubtypeOf(result)) {
+                    if (result==null || possibleResult.isSubtypeOf(result, ignoringSelftype)) {
                         result = possibleResult;
                     }
                 }
             }
-            if (getDeclaration().getSelfType()!=null) {
+            if (!ignoringSelftype && getDeclaration().getSelfType()!=null) {
                 ProducedType possibleResult = getDeclaration().getSelfType()
-                        .substituteInternal(getTypeArguments()).getSupertype(c, list);
+                        .substituteInternal(getTypeArguments()).getSupertype(c, list, ignoringSelftype);
                 if (possibleResult!=null) {
-                    if (result==null || possibleResult.isSubtypeOf(result)) {
+                    if (result==null || possibleResult.isSubtypeOf(result, ignoringSelftype)) {
                         result = possibleResult;
                     }
                 }
@@ -478,7 +486,7 @@ public class ProducedType extends ProducedReference {
                     public boolean satisfies(ProducedType type) {
                         if ( c.satisfies(type) ) {
                             for (ProducedType ct: caseTypes) {
-                                if (!ct.substituteInternal(getTypeArguments()).isSubtypeOf(type)) {
+                                if (!ct.substituteInternal(getTypeArguments()).isSubtypeOf(type, ignoringSelftype)) {
                                     return false;
                                 }
                             }
@@ -490,9 +498,9 @@ public class ProducedType extends ProducedReference {
                     }
                 };
                 for (ProducedType t: caseTypes) {
-                    ProducedType candidateResult = t.substituteInternal(getTypeArguments()).getSupertype(c2, list);
+                    ProducedType candidateResult = t.substituteInternal(getTypeArguments()).getSupertype(c2, list, ignoringSelftype);
                     if (candidateResult!=null) {
-                        if (result==null || candidateResult.isSubtypeOf(result)) {
+                        if (result==null || candidateResult.isSubtypeOf(result, ignoringSelftype)) {
                             result = candidateResult;
                         }
                     }

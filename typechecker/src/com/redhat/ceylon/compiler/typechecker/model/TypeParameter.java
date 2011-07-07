@@ -9,7 +9,7 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     private boolean contravariant;
     private Declaration declaration;
     private ParameterList parameterList;
-    private boolean selfType;
+    private TypeDeclaration selfTypedDeclaration;
 
     public boolean isCovariant() {
         return covariant;
@@ -28,11 +28,15 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     }
     
     public boolean isSelfType() {
-        return selfType;
+        return selfTypedDeclaration!=null;
     }
     
-    public void setSelfType(boolean selfType) {
-        this.selfType = selfType;
+    public TypeDeclaration getSelfTypedDeclaration() {
+        return selfTypedDeclaration;
+    }
+    
+    public void setSelfTypedDeclaration(TypeDeclaration selfTypedDeclaration) {
+        this.selfTypedDeclaration = selfTypedDeclaration;
     }
 
     public Declaration getDeclaration() {
