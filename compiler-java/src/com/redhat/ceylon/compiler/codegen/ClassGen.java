@@ -60,11 +60,7 @@ public class ClassGen extends GenPart {
             // Create a parameter for the constructor
             String name = param.getIdentifier().getText();
             JCExpression type = gen.makeJavaType(param.getType().getTypeModel());
-            boolean sharedMethod = ((Declaration)param.getDeclarationModel().getContainer()).isShared();
             List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(param.getDeclarationModel(), param.getType().getTypeModel());
-            if (sharedMethod) {
-                annots = annots.append(gen.makeAtName(name));
-            }
             JCVariableDecl var = at(param).VarDef(make().Modifiers(0, annots), names().fromString(name), type, null);
             params.append(var);
             
@@ -669,11 +665,7 @@ public class ClassGen extends GenPart {
         at(param);
         String name = param.getIdentifier().getText();
         JCExpression type = gen.makeJavaType(gen.actualType(param));
-        boolean sharedMethod = ((Declaration)param.getDeclarationModel().getContainer()).isShared();
         List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(param.getDeclarationModel(), gen.actualType(param));
-        if (sharedMethod) {
-            annots = annots.append(gen.makeAtName(name));
-        }
         JCVariableDecl v = at(param).VarDef(make().Modifiers(FINAL, annots), names().fromString(name), type, null);
 
         return v;

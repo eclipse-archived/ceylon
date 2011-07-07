@@ -440,6 +440,8 @@ public class Gen2 {
             // if not method must be a Class, so always true
             ret = makeJavaTypeAnnotations(type, true);
         
+        if(!ret.isEmpty())
+            ret = ret.prepend(makeAtName(decl.getName()));
         return ret;
     }
 
