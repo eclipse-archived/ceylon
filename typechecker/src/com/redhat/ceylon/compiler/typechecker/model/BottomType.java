@@ -20,4 +20,9 @@ public class BottomType extends TypeDeclaration {
         return "ceylon.language.Bottom";
     }
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
+    
 }
