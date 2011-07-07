@@ -105,12 +105,11 @@ public class ClassGen extends GenPart {
                 }
 
                 JCExpression type = gen.makeJavaType(gen.actualType(decl));
-                List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(gen.actualType(decl), false);
 
                 if (useField) {
                     // A captured attribute gets turned into a field
                     int modifiers = convertAttributeFieldDeclFlags(decl);
-                    defs.append(at(decl).VarDef(at(decl).Modifiers(modifiers, annots), attrName, type, null));
+                    defs.append(at(decl).VarDef(at(decl).Modifiers(modifiers, List.<JCTree.JCAnnotation>nil()), attrName, type, null));
                     if (initialValue != null) {
                         // The attribute's initializer gets moved to the constructor
                         // because it might be using locals of the initializer
@@ -119,7 +118,7 @@ public class ClassGen extends GenPart {
                 } else {
                     // Otherwise it's local to the constructor
                     int modifiers = convertLocalDeclFlags(decl);
-                    stmts.append(at(decl).VarDef(at(decl).Modifiers(modifiers, annots), attrName, type, initialValue));
+                    stmts.append(at(decl).VarDef(at(decl).Modifiers(modifiers, List.<JCTree.JCAnnotation>nil()), attrName, type, initialValue));
                 }
             }
 
