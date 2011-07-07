@@ -22,6 +22,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Validator;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.PrintVisitor;
+import com.redhat.ceylon.compiler.typechecker.util.StatisticsVisitor;
 
 /**
  * Represent a unit and each of the type checking phases
@@ -110,6 +111,10 @@ public class PhasedUnit {
         compilationUnit.visit(new RefinementVisitor());
     }
 
+    public void generateStatistics(StatisticsVisitor statsVisitor) {
+        compilationUnit.visit(statsVisitor);
+    }
+    
     public void runAssertions(AssertionVisitor av) {
         //System.out.println("Running assertions for " + fileName);
         compilationUnit.visit(av);
@@ -146,4 +151,5 @@ public class PhasedUnit {
     public Tree.CompilationUnit getCompilationUnit() {
         return compilationUnit;
     }
+
 }

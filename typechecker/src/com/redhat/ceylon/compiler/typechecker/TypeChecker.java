@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
+import com.redhat.ceylon.compiler.typechecker.util.StatisticsVisitor;
 
 /**
  * Executes type checking upon construction and retrieve a CompilationUnit object for a given File.
@@ -27,6 +28,7 @@ public class TypeChecker {
     private List<PhasedUnits> phasedUnitsOfDependencies;
     private final boolean verifyDependencies;
     private final AssertionVisitor assertionVisitor;
+    private final StatisticsVisitor statsVisitor;
 
     //package level
     TypeChecker(VFS vfs, List<VirtualFile> srcDirectories, boolean verifyDependencies, AssertionVisitor assertionVisitor, boolean verbose) {
@@ -37,6 +39,7 @@ public class TypeChecker {
         this.phasedUnits = new PhasedUnits(context);
         this.verifyDependencies = verifyDependencies;
         this.assertionVisitor = assertionVisitor;
+        statsVisitor = new StatisticsVisitor();
         phasedUnits.parseUnits(srcDirectories);
         long time = System.nanoTime()-start;
         System.out.println("Type checker parsing in " + time/1000000 + " ms");
@@ -113,14 +116,17 @@ public class TypeChecker {
             pu.analyseFlow();
         }
 
-
-        for (PhasedUnit pu : listOfUnits) {
-            if (!forceSilence) {
+        if (!forceSilence) {
+            for (PhasedUnit pu : listOfUnits) {
                 if (verbose) {
                     pu.display();
                 }
+                pu.generateStatistics(statsVisitor);
                 pu.runAssertions(assertionVisitor);
             }
+            statsVisitor.print();
+            assertionVisitor.print();
         }
+        
     }
 }
