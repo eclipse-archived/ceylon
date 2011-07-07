@@ -1,4 +1,8 @@
 class Union() {
+    String[] strings = {};
+    Iterator<String> it1 = strings.iterator;
+    Iterable<String> it2 = strings; 
+
     interface Hello {
         shared formal String hello;
     }
@@ -23,8 +27,11 @@ class Union() {
     class V() satisfies Container<Bottom> {
         shared actual String hello = "hola";
     }
+    class W<T>() satisfies Container<T> {
+        shared actual String hello = "hi";
+    }
     
-    U|V uv = U();
+    U|V|W<String> uv = U();
     
     String uvs = uv.hello;
     Container<String> c = uv;
@@ -49,5 +56,12 @@ class Union() {
     
     BadContainer<Bottom> bcb = BadV();
     @error BadContainer<String> bss  = bcb;
-
+    
+    class Foo<T>(T t) {
+        shared T|String hello = t;
+    }
+    class Bar(String s) extends Foo<String>(s) {}
+    Bar f = Bar("hello");
+    String fh = f.hello;
+    
 }
