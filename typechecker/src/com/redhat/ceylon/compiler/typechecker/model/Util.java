@@ -115,8 +115,7 @@ public class Util {
             return;
         }
         if (pt.getDeclaration() instanceof UnionType) {
-            for (Iterator<ProducedType> iter = pt.getDeclaration().getCaseTypes().iterator(); iter.hasNext();) {
-                ProducedType t = iter.next();
+            for (ProducedType t: pt.getDeclaration().getCaseTypes() ) {
                 addToUnion( list, t.substitute(pt.getTypeArguments()) );
             }
         }
