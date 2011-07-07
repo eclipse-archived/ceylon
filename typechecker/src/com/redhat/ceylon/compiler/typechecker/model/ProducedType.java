@@ -156,10 +156,10 @@ public class ProducedType extends ProducedReference {
     }
 
     public boolean isSubtypeOf(ProducedType type) {
-        return isSubtypeOf(type, false);
+        return isSubtypeOf(type, null);
     }
     
-    public boolean isSubtypeOf(ProducedType type, boolean ignoringSelftype) {
+    public boolean isSubtypeOf(ProducedType type, TypeDeclaration ignoringSelftype) {
         if (getDeclaration() instanceof BottomType) {
             return true;
         }
@@ -426,10 +426,10 @@ public class ProducedType extends ProducedReference {
     }
     
     public ProducedType getSupertype(TypeDeclaration dec) {
-        return getSupertype(dec, false);
+        return getSupertype(dec, null);
     }
     
-    public ProducedType getSupertype(final TypeDeclaration dec, boolean ignoringSelftype) {
+    public ProducedType getSupertype(final TypeDeclaration dec, TypeDeclaration ignoringSelftype) {
         Criteria c = new Criteria() {
             @Override
             public boolean satisfies(ProducedType type) {
@@ -440,14 +440,14 @@ public class ProducedType extends ProducedReference {
     }
     
     ProducedType getSupertype(Criteria c) {
-        return getSupertype(c, new ArrayList<ProducedType>(), false);
+        return getSupertype(c, new ArrayList<ProducedType>(), null);
     }
     
     static interface Criteria {
         boolean satisfies(ProducedType type);
     }
     
-    ProducedType getSupertype(final Criteria c, List<ProducedType> list, final boolean ignoringSelftype) {
+    ProducedType getSupertype(final Criteria c, List<ProducedType> list, final TypeDeclaration ignoringSelftype) {
         if (c.satisfies(this)) {
             return this;
         }
@@ -470,7 +470,7 @@ public class ProducedType extends ProducedReference {
                     }
                 }
             }
-            if (!ignoringSelftype && getDeclaration().getSelfType()!=null) {
+            if (getDeclaration()!=ignoringSelftype && getDeclaration().getSelfType()!=null) {
                 ProducedType possibleResult = getDeclaration().getSelfType()
                         .substituteInternal(getTypeArguments()).getSupertype(c, list, ignoringSelftype);
                 if (possibleResult!=null) {
