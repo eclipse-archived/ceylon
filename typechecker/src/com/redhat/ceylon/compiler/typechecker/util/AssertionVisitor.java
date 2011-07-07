@@ -15,8 +15,10 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public class AssertionVisitor extends Visitor implements NaturalVisitor {
     
-    boolean expectingError = false;
-    List<AnalysisMessage> foundErrors = new ArrayList<AnalysisMessage>();
+    private boolean expectingError = false;
+    private List<AnalysisMessage> foundErrors = new ArrayList<AnalysisMessage>();
+    private int errors = 0;
+    private int warnings = 0;
 
     @Override
     public void visit(Tree.TypedDeclaration that) {
@@ -90,6 +92,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
     }
 
     protected void out(AnalysisError err) {
+        errors++;
         System.err.println(
             "error encountered [" +
             err.getMessage() + "] at " + 
@@ -99,6 +102,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
     }
 
     protected void out(AnalysisWarning err) {
+        warnings++;
         System.out.println(
             "warning encountered [" +
             err.getMessage() + "] at " + 
@@ -143,6 +147,10 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
     public void visitAny(Node that) {
         foundErrors.addAll(that.getErrors());
         super.visitAny(that);
+    }
+    
+    public void print() {
+        System.out.println(errors + " errors, " + warnings + " warnings");
     }
     
 }
