@@ -508,22 +508,22 @@ public class ClassGen extends GenPart {
         final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
         final ListBuffer<JCTypeParameter> typeParams = new ListBuffer<JCTypeParameter>();
 
-        final boolean topLevel = decl.getScope().getContainer() instanceof Package;
+        Method method = decl.getDeclarationModel();
 
         processMethodDeclaration(decl, params, restype, typeParams, langAnnotations);
 
         body.append(gen.statementGen.convert(decl.getBlock()));
 
         JCMethodDecl meth = at(decl).MethodDef(
-                make().Modifiers((topLevel ? PUBLIC | STATIC : 0),langAnnotations.toList()),
+                make().Modifiers(STATIC  | (method.isShared() ? PUBLIC : 0), langAnnotations.toList()),
                 names().fromString("run"),
                 restype.thing(),
                 processTypeConstraints(decl.getTypeConstraintList(), typeParams.toList()),
                 params.toList(), List.<JCExpression>nil(), body.thing(), null);
 
         return at(decl).ClassDef(
-                at(decl).Modifiers((topLevel ? PUBLIC : 0), List.<JCAnnotation>nil()),
-                generateClassName(decl, topLevel),
+                at(decl).Modifiers((method.isShared() ? PUBLIC : 0), List.<JCAnnotation>nil()),
+                generateClassName(decl, method.isToplevel()),
                 List.<JCTypeParameter>nil(),
                 makeIdent(syms().ceylonIdentifiableObjectType),
                 List.<JCExpression>nil(),
