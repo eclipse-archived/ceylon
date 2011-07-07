@@ -98,6 +98,14 @@ subnode : n=NODE_NAME '?'? f=FIELD_NAME
           { println("                continue;"); }
           { println("            }"); }
           )+ ')' 
+        | mn=NODE_NAME '*' f=FIELD_NAME
+          '(' (
+          s=NODE_NAME
+          { println("            if (childTreeNode.getType()==" + $s.text + ") {"); }
+          { println("                node.add" + initialUpper($f.text) + "(build" + className($s.text) + "(childTreeNode));"); }
+          { println("                continue;"); }
+          { println("            }"); }
+          )+ ')' 
         ;
 
 field : 'abstract'? t=TYPE_NAME f=FIELD_NAME ';'
