@@ -1,6 +1,6 @@
-interface Subject<S,O>
+interface Subject<S,O> of S
         given O satisfies Observer<S,O> 
-        given this is S satisfies Subject<S,O> {
+        given S satisfies Subject<S,O> {
     
     shared formal List<O> observers;
     

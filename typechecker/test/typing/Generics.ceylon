@@ -253,8 +253,7 @@ class Generics() {
     class Baz5() extends Foo5() satisfies Some<Object> {}
     Some<String> baz5 = Baz5();
     
-    interface Self<out T> 
-            given this is T {
+    interface Self<out T> of T {
         shared default T get {
             return this;
         }

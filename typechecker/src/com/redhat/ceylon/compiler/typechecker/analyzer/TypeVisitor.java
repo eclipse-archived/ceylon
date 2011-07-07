@@ -442,7 +442,7 @@ public class TypeVisitor extends AbstractVisitor {
         td.setSatisfiedTypes(list);
     }
     
-    @Override 
+    /*@Override 
     public void visit(Tree.TypeConstraint that) {
         super.visit(that);
         if (that.getSelfType()!=null) {
@@ -456,7 +456,33 @@ public class TypeVisitor extends AbstractVisitor {
                 tp.setSelfTypedDeclaration(td);
             }
         }
-    }
+    }*/
 
+    @Override 
+    public void visit(Tree.CaseTypes that) {
+        super.visit(that);
+        if (that.getTypes()!=null) {
+            for (Tree.SimpleType st: that.getTypes()) {
+                if (st.getTypeModel().getDeclaration() instanceof TypeParameter) {
+                    TypeDeclaration td = (TypeDeclaration) that.getScope();
+                    if (!(td instanceof TypeParameter)) {
+                        if (st.getTypeModel()!=null) {
+                            TypeParameter tp = (TypeParameter) st.getTypeModel().getDeclaration();
+                            td.setSelfType(st.getTypeModel());
+                            if (tp.isSelfType()) {
+                                st.addError("type parameter may not act as self type for two different types");
+                            }
+                            else {
+                                tp.setSelfTypedDeclaration(td);
+                            }
+                            if (that.getTypes().size()>1) {
+                                st.addError("a type may not have more than one self type");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
     
 }

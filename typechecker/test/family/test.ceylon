@@ -35,4 +35,7 @@ void testGraph() {
     //TODO: get rid of explicit type args once we 
     //      improve the type arg inference algorithm
     OnOffGraph.Edge e = method2<OnOffGraph.Node,OnOffGraph.Edge>(OnOffGraph());
+
+    Graph<BasicGraph.Node, BasicGraph.Edge>.Node nn = BasicGraph().Node();
+    BasicGraph.Node nnn = nn;
 }

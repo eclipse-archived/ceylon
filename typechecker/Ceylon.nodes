@@ -66,12 +66,9 @@
 
 "A set of type constraints on a certain type parameter."
 ^(TYPE_CONSTRAINT:TYPE_DECLARATION
-    SELF_TYPE?
     PARAMETER_LIST? 
     ABSTRACTED_TYPE?
     TypeParameter declarationModel;)
-
-^(SELF_TYPE)
 
 ^(TYPE_SPECIFIER 
     BASE_TYPE type)

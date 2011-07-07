@@ -1,5 +1,5 @@
-shared abstract class Comparable2<in Other>() 
-        given this is Other satisfies Comparable2<Other> {
+shared abstract class Comparable2<in Other>() of Other
+        given Other satisfies Comparable2<Other> {
     
     shared formal Integer compare(Other that);
     

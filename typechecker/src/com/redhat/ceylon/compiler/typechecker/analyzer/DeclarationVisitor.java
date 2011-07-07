@@ -615,9 +615,6 @@ public class DeclarationVisitor extends Visitor {
             Scope o = enterScope(p);
             super.visit(that);
             exitScope(o);
-            if (that.getSelfType()!=null) {
-                that.getSelfType().setScope(o);
-            }
         }
         if ( that.getAbstractedType()!=null ) {
             that.addWarning("lower bound type constraints are not yet supported");
