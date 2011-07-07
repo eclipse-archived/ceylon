@@ -1174,7 +1174,7 @@ TypeConstraints?
                 clause, and either</para>
             </listitem>
             <listitem>
-                <para>extends the member class it refines.</para>
+                <para>directly or indirectly extends the member class it refines.</para>
             </listitem>
             <!--
             <listitem>
