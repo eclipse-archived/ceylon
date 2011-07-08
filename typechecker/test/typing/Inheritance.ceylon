@@ -87,5 +87,44 @@ class Inheritance() {
             return null;
         }
     }*/
-        
+    
+    class Outer() {
+        void print(String s) {}
+        shared interface Inner {
+            shared formal void hello();
+            shared formal void hi();
+        }
+        shared interface Inner2 satisfies Inner {
+            shared actual void hello() {
+                print("hello");
+            }
+        }
+        shared class Inner3() satisfies Outer.Inner2 {
+            shared actual void hi() { 
+                hello(); 
+            }
+        }
+        shared Inner2 inner1 = Inner3();
+        Outer.Inner2 inner2 = Inner3();
+    }
+    
+    @error class Outer2() satisfies Outer.Inner2 {
+        shared actual void hi() { 
+            hello(); 
+        }
+    }
+    
+    @error Outer.Inner2 oi2 = Outer2();
+    Outer.Inner2 oi3 = Outer().Inner3();
+    Outer.Inner2 oi4 = Outer().inner1;
+    
+    void method<T>(T x) 
+            given T satisfies Outer.Inner2 {
+        x.hello();
+    }
+    
+    method(Outer().Inner3());
+    method(Outer().inner1);
+    method(oi3);
+    
 }
