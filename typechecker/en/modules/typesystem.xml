@@ -713,16 +713,17 @@ String? firstWord = words[0];</programlisting>
         their members.</para>
         </listitem>
         <listitem>
-        <para>A type parameter may satisfy one or more interfaces and, optionally, a 
-        class. In this case, the satisfies interfaces are interpreted as upper bound
-        type constraints on arguments to the type parameter.</para>
+        <para>A type parameter may satisfy one or more interfaces, optionally, a class,
+        and optionally, another type parameter. In this case, the satisfied types are 
+        interpreted as upper bound type constraints on arguments to the type 
+        parameter.</para>
         </listitem>
         </itemizedlist>
         
         <programlisting>SatisfiedTypes: "satisfies" Type ("&amp;" Type)*</programlisting>
     
-        <para>The <literal>satisfies</literal> clause may specify multiple types. If 
-        a satisfied type is a parameterized type, the <literal>satisfies</literal> clause 
+        <para>The <literal>satisfies</literal> clause may specify multiple types. If a 
+        satisfied type is a parameterized type, the <literal>satisfies</literal> clause 
         must specify type arguments.</para>
         
         <programlisting>satisfies Sequence&lt;Element&gt; &amp; Collection&lt;Element&gt;</programlisting>
@@ -985,7 +986,7 @@ shared interface ElementwiseEquality
     <section id="cases">
         <title>Cases</title>
         
-        <para>The <literal>of</literal> clause also does double duty.</para>
+        <para>The <literal>of</literal> clause does triple duty.</para>
         
         <itemizedlist>
         <listitem>
@@ -998,6 +999,10 @@ shared interface ElementwiseEquality
         <para>Likewise, a type parameter may specify an enumerated list of all
         types which it accepts as a type argument.</para>
         </listitem>
+        <listitem>
+        <para>An interface or <literal>abstract</literal> class may specify a 
+        single type parameter of itself or of the immediately containing type.</para>
+        </listitem>
         </itemizedlist>
         
         <programlisting>CaseTypes: "of" CaseType ("|" CaseType)*</programlisting>
@@ -1007,7 +1012,39 @@ shared interface ElementwiseEquality
         
         <programlisting>CaseType: MemberName | Type</programlisting>
         
-        <para>Each case is either:</para>
+        <para>If there is exactly one case, and it is a type parameter, then:</para> 
+        
+        <itemizedlist>
+            <listitem>
+                <para>the declared type is considered a subtype of the type parameter
+                within the body of the declaration,</para>
+            </listitem>
+            <listitem>
+                <para>every produced type of the declared type is considered a subtype 
+                of the type argument to the type parameter in the produced type, and</para>
+            </listitem>
+            <listitem>
+                <para>every type which extends or satisfies a produced type of the 
+                declared type must also directly or indirectly extend or satisfy the 
+                type argument to the type parameter in the produced type.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <programlisting><![CDATA[shared abstract class Comparable<Other>() of Other 
+        given Other satisfies Comparable<Other> {
+    
+    shared formal Integer compare(Other that);
+    
+    shared Integer reverseCompare(Other that) {    
+        return that.compare(this); //this is Other
+    }
+    
+}]]></programlisting>
+        
+        <programlisting>Comparable&lt;Item&gt; comp = ... ;
+Item item = comp;</programlisting>
+    
+        <para>Otherwise, there may be multiple cases, and each case is either:</para>
         
         <itemizedlist>
             <listitem>
@@ -1044,9 +1081,9 @@ shared interface ElementwiseEquality
                  <para>A <emphasis>simple algebraic datatype</emphasis> is a 
                  parameterized type <literal>A&lt;T&gt;</literal> with a list 
                  of cases where every case <literal>C&lt;T&gt;</literal> is 
-                 parameterized by <literal>T</literal> and for every possible type 
-                 argument <literal>X</literal> satisfying the constraints on 
-                 <literal>T</literal> declared by <literal>A</literal>, 
+                 parameterized by <literal>T</literal> and for every possible 
+                 type argument <literal>X</literal> satisfying the constraints 
+                 on <literal>T</literal> declared by <literal>A</literal>, 
                  <literal>C&lt;X&gt;</literal> is a legal produced type where 
                  <literal>X</literal> also satisfies the constraints on 
                  <literal>T</literal> declared by <literal>C</literal> and the
@@ -1054,8 +1091,8 @@ shared interface ElementwiseEquality
                  the produced type <literal>A&lt;X&gt;</literal>.</para>
             </listitem>
             <listitem>
-                 <para>A <emphasis>generalized algebraic datatype</emphasis> is a 
-                 parameterized type <literal>A&lt;T&gt;</literal> with a list 
+                 <para>A <emphasis>generalized algebraic datatype</emphasis> is 
+                 a parameterized type <literal>A&lt;T&gt;</literal> with a list 
                  of cases where either (a) at least one case is not parameterized 
                  by <literal>T</literal>&mdash;and is therefore assignable to 
                  <literal>A&lt;Y&gt;</literal> only for some values of the type 
@@ -1948,43 +1985,6 @@ given Result(Natural count) satisfies Numeric<Result>]]></programlisting>
     </section>
     
     <section>
-        <title>Self-referential lower bounds</title>
-        
-        <para>A <emphasis>self-referential lower bound</emphasis> of a type
-        parameter is a lower bound which specifies a produced type of the 
-        parameterized type which declares the type parameter. The type arguments 
-        of the produced type must be the type parameters declared by the 
-        parameterized type.</para>
-        
-        <para>Then the parameterized type itself is assignable to the type 
-        parameter with the self-referential lower bound within the body of the 
-        declaration.</para>
-        
-        <programlisting><![CDATA[shared abstract class Comparable<in Other>() 
-        given Other satisfies Comparable<Other> 
-                    abstracts Comparable<Other> { //self-referential lower bound
-    
-    shared formal Integer compare(Other that);
-    
-    shared Integer reverseCompare(Other that) {    
-        return that.compare(this); //this is Other
-    }
-    
-}]]></programlisting>
-        
-        <para>Furthermore, any produced type of the parameterized type is assignable 
-        to the type argument of the type parameter with the self-referential lower 
-        bound.</para>
-        
-        <programlisting>Comparable&lt;Item&gt; comp = ... ;
-Item item = comp;</programlisting>
-
-        <comment><para>TODO: would <literal>given this is Other</literal> be a better
-        syntax for this?</para></comment>
-                
-    </section>
-    
-    <section>
         <title>Metatype bounds</title>
         
         <comment><para>NOTE: Metatypes are a proposed feature for a future version of 
@@ -2288,12 +2288,11 @@ Item item = comp;</programlisting>
         </itemizedlist>
         
         <para>A produced type is a subtype of the type argument to any type parameter 
-        with a self-referential lower bound constraint. If <literal>X</literal> is a 
-        type parameter of the parameterized type <literal>T&lt;X&gt;</literal> with a
-        lower bound constraint <literal>given X abstracts T&lt;X&gt;</literal>, then 
-        <literal>T&lt;A&gt;</literal> is assignable to <literal>A</literal> for every 
-        type argument <literal>A</literal> which satisfies the other type constraints 
-        on <literal>X</literal>.</para>
+        that appears in the <literal>of</literal> clause of the type declaration. If 
+        <literal>X</literal> is a type parameter of the parameterized type 
+        <literal>T&lt;X&gt; of X</literal>, then <literal>T&lt;A&gt;</literal> is 
+        assignable to <literal>A</literal> for every type argument <literal>A</literal> 
+        which satisfies the other type constraints on <literal>X</literal>.</para>
         
         </section>
                 
