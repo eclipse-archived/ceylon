@@ -104,8 +104,16 @@ class Inheritance() {
                 hello(); 
             }
         }
+        shared class Inner4() satisfies Inheritance.Outer.Inner2 {
+            shared actual void hi() { 
+                hello(); 
+            }
+        }
         shared Inner2 inner1 = Inner3();
         Outer.Inner2 inner2 = Inner3();
+        Outer.Inner2 inner3 = Outer.Inner3();
+        Inner2 inner4 = Outer.Inner3();
+        Inheritance.Outer.Inner2 inner5 = Inheritance.Outer.Inner3();
     }
     
     @error class Outer2() satisfies Outer.Inner2 {
