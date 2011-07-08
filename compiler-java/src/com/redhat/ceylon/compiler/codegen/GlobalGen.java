@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.codegen;
 
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.Flags;
+import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -186,7 +187,7 @@ public final class GlobalGen extends GenPart {
             return make().MethodDef(
                     make().Modifiers(Flags.STATIC | setterVisibility),
                     getSetterName(variableName),
-                    makeIdent("void"),
+                    make().TypeIdent(TypeTags.VOID),
                     List.<JCTree.JCTypeParameter>nil(),
                     List.<JCTree.JCVariableDecl>of(
                             make().VarDef(make().Modifiers(0, valueAnnotations), paramName, variableType, null)

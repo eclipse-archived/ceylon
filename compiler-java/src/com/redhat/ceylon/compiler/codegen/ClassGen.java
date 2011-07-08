@@ -20,6 +20,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinitio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.util.Util;
+import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
@@ -261,7 +262,7 @@ public class ClassGen extends GenPart {
         String name = decl.getIdentifier().getText();
         JCExpression type = gen.makeJavaType(gen.actualType(decl), false);
         return make().MethodDef(make().Modifiers(0), names().fromString(Util.getSetterName(name)), 
-                makeIdent("void"), 
+                make().TypeIdent(TypeTags.VOID),
                 List.<JCTree.JCTypeParameter>nil(), 
                 List.<JCTree.JCVariableDecl>of(make().VarDef(make().Modifiers(0), names().fromString(name), type, null)), 
                 List.<JCTree.JCExpression>nil(), 
@@ -413,7 +414,7 @@ public class ClassGen extends GenPart {
         
         return make().MethodDef(make().Modifiers(mods, langAnnotations.toList()),
                 names().fromString(Util.getSetterName(atrrName.toString())), 
-                makeIdent("void"), 
+                make().TypeIdent(TypeTags.VOID), 
                 List.<JCTree.JCTypeParameter>nil(), 
                 List.<JCTree.JCVariableDecl>of(make().VarDef(make().Modifiers(0, annots), names().fromString(atrrName), type , null)), 
                 List.<JCTree.JCExpression>nil(), 
