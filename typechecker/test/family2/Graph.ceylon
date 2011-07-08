@@ -6,12 +6,14 @@ abstract class Graph<G,N,E>() of G
     shared formal class Edge(N n1, N n2) of E {
         shared N n1 = n1;
         shared N n2 = n2;
+        shared Boolean touches(N node) {
+            return n1==node || n2==node;
+        }
     }
 
     shared formal class Node() of N {
         shared default Boolean touches(E edge) {
-            return edge.n1 == this || 
-                   edge.n2 == this;
+            return edge.touches(this);
         }
     }
 
