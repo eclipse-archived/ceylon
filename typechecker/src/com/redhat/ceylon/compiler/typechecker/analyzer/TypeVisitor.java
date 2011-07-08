@@ -16,7 +16,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -188,7 +187,8 @@ public class TypeVisitor extends AbstractVisitor {
         super.visit(that);
         ProducedType pt = that.getOuterType().getTypeModel();
         if (pt!=null) {
-            TypeDeclaration type = (TypeDeclaration) pt.getDeclaration().getMember(that.getIdentifier().getText());
+            TypeDeclaration type = (TypeDeclaration) pt.getDeclaration()
+                        .getMember(that.getIdentifier().getText());
             if (type==null) {
                 that.addError("member type declaration not found: " + 
                         that.getIdentifier().getText());
@@ -437,7 +437,7 @@ public class TypeVisitor extends AbstractVisitor {
                         continue;
                     }
                     if (t instanceof Tree.QualifiedType) {
-                        checkTypeBelongsToContainingScope(td, t, type);
+                        checkTypeBelongsToContainingScope(type, td.getContainer(), t);
                     }
                 }
                 list.add(type);
@@ -446,18 +446,7 @@ public class TypeVisitor extends AbstractVisitor {
         td.setSatisfiedTypes(list);
     }
 
-    private void checkTypeBelongsToContainingScope(Scope s,
-            Tree.StaticType t, ProducedType type) {
-        //TODO: this does not account for types 
-        //      inherited by a containing scope!
-        while ((s=s.getContainer())!=null) {
-            if (type.getDeclaration().getContainer()==s) {
-                return;
-            }
-        }
-        t.addError("satisfied type may not be a qualified type: " + 
-                type.getProducedTypeName());
-    }
+    
     
     /*@Override 
     public void visit(Tree.TypeConstraint that) {

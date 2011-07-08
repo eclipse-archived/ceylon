@@ -1807,6 +1807,11 @@ public class ExpressionVisitor extends AbstractVisitor {
                     //otherwise infer type arguments later
                 }
             }
+            //TODO: this is temporary until we get metamodel reference expressions!
+            if (that.getPrimary() instanceof Tree.BaseTypeExpression ||
+                    that.getPrimary() instanceof Tree.QualifiedTypeExpression) {
+                checkTypeBelongsToContainingScope(that.getTypeModel(), that.getScope(), that);
+            }
         }
     }
 

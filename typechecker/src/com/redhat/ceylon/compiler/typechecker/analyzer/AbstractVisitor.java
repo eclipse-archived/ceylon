@@ -16,6 +16,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -192,6 +193,20 @@ public abstract class AbstractVisitor extends Visitor {
         return (Class) ((TypeDeclaration) getLanguageModuleDeclaration("Entry"));
     }
     
+    protected void checkTypeBelongsToContainingScope(ProducedType type,
+            Scope s, Node that) {
+                //TODO: this does not account for types 
+                //      inherited by a containing scope!
+                while (s!=null) {
+                    if (type.getDeclaration().getContainer()==s) {
+                        return;
+                    }
+                    s=s.getContainer();
+                }
+                that.addError("illegal use of qualified type outside scope of qualifying type: " + 
+                        type.getProducedTypeName());
+            }
+
     protected static List<ProducedType> getTypeArguments(Tree.TypeArgumentList tal) {
         List<ProducedType> typeArguments = new ArrayList<ProducedType>();
         if (tal!=null) {
