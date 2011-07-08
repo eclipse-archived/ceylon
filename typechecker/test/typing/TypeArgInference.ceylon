@@ -37,6 +37,6 @@ class TypeArgInference() {
     
     @error first("hello");
     @error first("ullo", "ullo", "ullo");
-    @error first { u="hi"; }
+    @error first { u="hi"; };
 
 }

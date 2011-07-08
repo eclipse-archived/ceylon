@@ -1,6 +1,10 @@
 abstract class Animal<ActualFood>() 
         given ActualFood satisfies Food {
     shared void eat(ActualFood food) {}
+    shared void eatALot(ActualFood food) {
+        eat(food);
+        eat(food);
+    }
     shared formal ActualFood diet();
 }
 
