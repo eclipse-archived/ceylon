@@ -34,5 +34,9 @@ class TypeArgInference() {
     class Const<T,S>(T t) given T satisfies Numeric<T> {}
     @type["TypeArgInference.Const<Natural,Bottom>"] Const(1);
     @error Const("hello");
+    
+    @error first("hello");
+    @error first("ullo", "ullo", "ullo");
+    @error first { u="hi"; }
 
 }
