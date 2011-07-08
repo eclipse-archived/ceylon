@@ -2,12 +2,15 @@ import visibility.package { @error Unit3, Unit4 }
 
 class Unit1() {
     
+    void print(String s) {}
+    
     shared String hello = "Hello";
     String goodbye = "Goodbye";
     
     shared class Inner() {
         shared String hello = "Hello";
         String goodbye = "Goodbye";
+        print(Inner().goodbye);
         void method() {
             say(outer.hello);
             say(outer.goodbye);
@@ -17,10 +20,10 @@ class Unit1() {
         void say(String s) {}
     }
     
-    void print(String s) {}
-    
     print(Inner().hello);
     @error print(Inner().goodbye);
+    Unit1 u1 = Unit1();
+    u1.print(u1.goodbye);
     
     @error print(Unit2().Inner().hello);
     @error print(Unit2().Inner().goodbye); 
