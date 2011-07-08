@@ -1,9 +1,18 @@
 @nomodel
 class AttributeAccess(){
-   Boolean b = true;
-   shared Boolean b2 = true;
+    Boolean b1 = true;
+    shared Boolean b2 = true;
+    Boolean b3 {
+        return true;
+    }
+    shared Boolean b4 {
+        return true;
+    }
    
-   Boolean m(){
-       return b;
-   }
+    void m(){
+        Boolean bb1 = b;
+        Boolean bb2 = b2;
+        Boolean bb3 = b3;
+        Boolean bb4 = b4;
+    }
 }
