@@ -1011,6 +1011,9 @@ TypeConstraints?
                     and <literal>Decimal</literal>,</para>
                 </listitem>
                 <listitem>
+                    <para><literal>Boolean</literal>,</para>
+                </listitem>
+                <listitem>
                     <para><literal>Character</literal>,</para>
                 </listitem>
                 <listitem>
