@@ -827,7 +827,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                 List<Tree.PositionalArgument> args = that.getPositionalArgumentList().getPositionalArguments();
                 for (int i=0; i<parameters.getParameters().size(); i++) {
                     Parameter parameter = parameters.getParameters().get(i);
-                    if (parameter.getType().getDeclaration()==tp) {
+                    if (parameter.getType().getDeclaration()==tp && args.size()>i) {
                         Tree.Expression value = args.get(i).getExpression();
                         addToUnion(inferredTypes, value.getTypeModel());
                     }
