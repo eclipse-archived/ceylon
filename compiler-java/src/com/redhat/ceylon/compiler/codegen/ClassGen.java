@@ -515,7 +515,7 @@ public class ClassGen extends GenPart {
         body.append(gen.statementGen.convert(decl.getBlock()));
 
         JCMethodDecl meth = at(decl).MethodDef(
-                make().Modifiers(STATIC  | (method.isShared() ? PUBLIC : 0), langAnnotations.toList()),
+                make().Modifiers((method.isToplevel() ? STATIC  : 0) | (method.isShared() ? PUBLIC : 0), langAnnotations.toList()),
                 names().fromString("run"),
                 restype.thing(),
                 processTypeConstraints(decl.getTypeConstraintList(), typeParams.toList()),
