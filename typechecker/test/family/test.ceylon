@@ -37,5 +37,5 @@ void testGraph() {
     OnOffGraph.Edge e = method2<OnOffGraph.Node,OnOffGraph.Edge>(OnOffGraph());
 
     Graph<BasicGraph.Node, BasicGraph.Edge>.Node nn = BasicGraph().Node();
-    BasicGraph.Node nnn = nn;
+    @error BasicGraph.Node nnn = nn;
 }
