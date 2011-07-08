@@ -1,3 +1,4 @@
+@nomodel
 class ClassAttributeGetter(){
     String f {
         return "";

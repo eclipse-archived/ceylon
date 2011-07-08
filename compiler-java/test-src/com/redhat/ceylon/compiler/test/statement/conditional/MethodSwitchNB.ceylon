@@ -1,3 +1,4 @@
+@nomodel
 class MethodSwitchNB() {
     shared Integer m(Integer n) {
         switch(n)

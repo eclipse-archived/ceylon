@@ -1,3 +1,4 @@
+@nomodel
 class StringLiteral(){
     shared void m() {
         String s1 = "";

@@ -1,3 +1,4 @@
+@nomodel
 class AttributeHidingMethodParam(){
    Boolean b = true;
    Boolean m(Boolean b){

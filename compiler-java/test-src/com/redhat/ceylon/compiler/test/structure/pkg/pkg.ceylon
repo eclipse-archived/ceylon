@@ -1,1 +1,2 @@
+@nomodel
 shared void f(){}

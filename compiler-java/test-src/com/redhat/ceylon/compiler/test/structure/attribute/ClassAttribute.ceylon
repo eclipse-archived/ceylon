@@ -1,3 +1,4 @@
+@nomodel
 class ClassAttribute(){
     shared String publicvar;
     String uncapturedvar;

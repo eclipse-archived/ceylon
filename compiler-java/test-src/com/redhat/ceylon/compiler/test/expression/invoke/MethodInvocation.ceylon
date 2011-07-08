@@ -1,3 +1,4 @@
+@nomodel
 class MethodInvocation(){
     shared void m() {
         n();

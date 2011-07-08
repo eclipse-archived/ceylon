@@ -1,1 +1,2 @@
+@nomodel
 class Klass() {}

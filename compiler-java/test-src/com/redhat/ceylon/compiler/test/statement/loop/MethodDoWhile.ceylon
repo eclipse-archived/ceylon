@@ -1,3 +1,4 @@
+@nomodel
 class MethodDoWhile(){
     shared Natural m(){
         do {

@@ -1,3 +1,4 @@
+@nomodel
 class MethodIfExists() {
     shared Natural m(Natural? x) {
         if (exists x) {

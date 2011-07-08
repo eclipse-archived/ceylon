@@ -1,3 +1,4 @@
+@nomodel
 class MethodSwitchElse() {
     shared Integer m(Integer n) {
         switch(n) {

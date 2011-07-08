@@ -1,3 +1,4 @@
+@nomodel
 class NumericOp(){
     shared Natural m() {
         variable Natural i := 1;

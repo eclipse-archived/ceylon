@@ -1,3 +1,4 @@
+@nomodel
 class OptionalType() {
     shared void m() {
         Natural? n1 = 1;

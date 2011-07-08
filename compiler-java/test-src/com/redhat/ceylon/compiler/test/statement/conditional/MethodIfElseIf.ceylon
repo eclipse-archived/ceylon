@@ -1,3 +1,4 @@
+@nomodel
 class MethodIfElseIf(){
     Natural m(){
        if(true){

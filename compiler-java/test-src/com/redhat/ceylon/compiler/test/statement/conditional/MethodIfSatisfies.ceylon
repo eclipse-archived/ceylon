@@ -1,3 +1,4 @@
+@nomodel
 class MethodIfSatisfies() {
     shared Natural m() {
         if (satisfies Integer Integer) {

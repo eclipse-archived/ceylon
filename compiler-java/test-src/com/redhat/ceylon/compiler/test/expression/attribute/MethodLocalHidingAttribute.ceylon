@@ -1,3 +1,4 @@
+@nomodel
 class MethodLocalHidingAttribute(){
    Boolean b = true;
    Boolean m(){

@@ -14,8 +14,10 @@ import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
+import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -26,6 +28,7 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -62,6 +65,7 @@ public class Gen2 {
 
     ProducedType nothingPType;
     ProducedType voidPType;
+    private boolean disableModelAnnotations = false;
     
     public static Gen2 getInstance(Context context) throws Exception {
         Gen2 gen2 = context.get(Gen2.class);
@@ -250,27 +254,45 @@ public class Gen2 {
      */
     public ListBuffer<JCTree> convertAfterTypeChecking(Tree.CompilationUnit t) {
         final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
+        disableModelAnnotations = false;
         t.visitChildren(new Visitor() {
             public void visit(Tree.ImportList imp) {
                 defs.appendList(convert(imp));
             }
 
+            private void checkCompilerAnnotations(Tree.Declaration decl){
+                if(hasCompilerAnnotation(decl, "nomodel"))
+                    disableModelAnnotations  = true;
+            }
+
+            private void resetCompilerAnnotations(){
+                disableModelAnnotations = false;
+            }
+            
             public void visit(Tree.ClassOrInterface decl) {
+                checkCompilerAnnotations(decl);
                 defs.append(classGen.convert(decl));
+                resetCompilerAnnotations();
             }
 
             public void visit(Tree.ObjectDefinition decl) {
+                checkCompilerAnnotations(decl);
                 defs.append(classGen.objectClass(decl, true));
+                resetCompilerAnnotations();
             }
             
             public void visit(Tree.AttributeDeclaration decl){
+                checkCompilerAnnotations(decl);
                 defs.append(classGen.convert(decl));
+                resetCompilerAnnotations();
             }
 
             public void visit(Tree.MethodDefinition decl) {
+                checkCompilerAnnotations(decl);
                 // Generate a class with the
                 // name of the method and a corresponding run() method.
                 defs.append(classGen.methodClass(decl));
+                resetCompilerAnnotations();
             }
         });
         return defs;
@@ -458,7 +480,7 @@ public class Gen2 {
     }
 
     private List<JCTree.JCAnnotation> makeJavaTypeAnnotations(ProducedType type, boolean required) {
-        if(!required)
+        if(!required || disableModelAnnotations)
             return List.nil();
         // Add the original type to the annotations
         return List.of(makeAtType(type.getProducedTypeQualifiedName()));
@@ -497,5 +519,13 @@ public class Gen2 {
         }
 
         return name;
+    }
+    
+    protected boolean hasCompilerAnnotation(Tree.Declaration decl, String name){
+        for(CompilerAnnotation annotation : decl.getCompilerAnnotations()){
+            if(annotation.getIdentifier().getText().equals(name))
+                return true;
+        }
+        return false;
     }
 }

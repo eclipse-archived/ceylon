@@ -1,3 +1,4 @@
+@nomodel
 class InitializerIfElseIf(){
    if(true){
        false.equals(false);

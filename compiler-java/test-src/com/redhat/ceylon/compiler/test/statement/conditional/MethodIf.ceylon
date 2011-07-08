@@ -1,3 +1,4 @@
+@nomodel
 class MethodIf(){
    shared Natural m(){
        if(true){

@@ -1,3 +1,4 @@
+@nomodel
 class FunctionKeyword(){
     function test(){
         return 0;    

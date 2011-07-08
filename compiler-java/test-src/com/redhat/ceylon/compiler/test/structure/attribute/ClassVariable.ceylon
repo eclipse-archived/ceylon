@@ -1,3 +1,4 @@
+@nomodel
 class ClassVariable(){
     shared variable String publicvar;
     variable String uncapturedvar;

@@ -1,3 +1,4 @@
+@nomodel
 class SuperReference(){
     shared default void m(SuperReferenceChild x) {
         x.test();
@@ -8,6 +9,7 @@ class SuperReference(){
     }
 }
 
+@nomodel
 class SuperReferenceChild() extends SuperReference() {
     shared actual void test() {
         super.test();

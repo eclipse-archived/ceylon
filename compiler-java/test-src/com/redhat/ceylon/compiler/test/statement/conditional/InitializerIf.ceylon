@@ -1,3 +1,4 @@
+@nomodel
 class InitializerIf(){
 	if(true){
 		true.equals(true);

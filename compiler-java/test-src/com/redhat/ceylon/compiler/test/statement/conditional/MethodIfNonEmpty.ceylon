@@ -1,3 +1,4 @@
+@nomodel
 class MethodIfNonEmpty() {
     shared Natural m(Natural[] x) {
         if (nonempty x) {

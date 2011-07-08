@@ -1,3 +1,4 @@
+@nomodel
 class NumericLiteral(){
     shared void m() {
         Natural n1 = 1;

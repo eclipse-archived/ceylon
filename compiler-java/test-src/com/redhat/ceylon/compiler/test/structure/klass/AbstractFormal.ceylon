@@ -1,3 +1,4 @@
+@nomodel
 abstract class AbstractFormal() {
     shared void m() {
         test();
@@ -10,11 +11,13 @@ abstract class AbstractFormal() {
     shared default void test3() { return; }
     shared default void test4() { return; }
 }
+@nomodel
 class ActualKlass() extends AbstractFormal() {
     shared actual void test() { return; }
     shared actual void test3() { return; }
     shared actual default void test4() { return; }
 }
+@nomodel
 class ActualSubKlass() extends ActualKlass() {
     shared actual void test4() { return; }
 }

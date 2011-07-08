@@ -1,3 +1,4 @@
+@nomodel
 class MethodForFail(){
     shared Natural m(Sequence<Integer> seq){
         for(Integer i in seq){

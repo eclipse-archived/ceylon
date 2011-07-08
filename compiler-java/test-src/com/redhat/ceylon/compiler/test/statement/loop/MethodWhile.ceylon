@@ -1,3 +1,4 @@
+@nomodel
 class MethodWhile(){
     shared Natural m(){
         while (false) {

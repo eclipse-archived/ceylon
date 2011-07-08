@@ -1,3 +1,4 @@
+@nomodel
 class ValueKeyword(){
     void m(){
         String f = "";
