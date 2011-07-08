@@ -97,6 +97,8 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         ceylonPkg.complete();
         PackageSymbol javaPkg = reader.enterPackage(names.fromString("java.lang"));
         javaPkg.complete();
+        PackageSymbol modelPkg = reader.enterPackage(names.fromString("com.redhat.ceylon.compiler.metadata.java"));
+        modelPkg.complete();
         
         /*
          * Eventually this will go away as we get a hook from the typechecker to load on demand, but
