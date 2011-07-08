@@ -127,6 +127,7 @@ class Inheritance() {
     Outer.Inner2 oi4 = Outer().inner1;
     @error Outer.Inner2 oi5 = Outer.Inner3();
     @error Inheritance.Outer.Inner2 oi6 = Inheritance.Outer.Inner3();
+    @error Object foo = Outer.Foo.Bar();
     
     void method<T>(T x) 
             given T satisfies Outer.Inner2 {
