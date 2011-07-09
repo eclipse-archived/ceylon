@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.codegen;
 
-import static com.sun.tools.javac.code.TypeTags.VOID;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -9,21 +7,20 @@ import java.util.Map;
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 
-import com.sun.tools.javac.parser.Keywords;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
-import com.redhat.ceylon.compiler.typechecker.model.Annotation;
-import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -32,7 +29,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.sun.tools.javac.code.BoundKind;
 import com.sun.tools.javac.code.Symtab;
+import com.sun.tools.javac.parser.Keywords;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
@@ -63,8 +62,6 @@ public class Gen2 {
     ClassGen classGen;
     GlobalGen globalGen;
 
-    ProducedType nothingPType;
-    ProducedType voidPType;
     private boolean disableModelAnnotations = false;
     
     public static Gen2 getInstance(Context context) throws Exception {
@@ -97,9 +94,6 @@ public class Gen2 {
         modelLoader = CeylonModelLoader.instance(context);
 
         fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
-        
-        nothingPType = modelLoader.getType("ceylon.language.Nothing", null);
-        voidPType = modelLoader.getType("ceylon.language.Void", null);
     }
 
     JCTree.Factory at(Node t) {
@@ -372,7 +366,7 @@ public class Gen2 {
     
     // A type is optional when it is a union of Nothing|Type...
     boolean isOptional(ProducedType type) {
-        return (type.getDeclaration() instanceof UnionType && type.getDeclaration().getCaseTypes().size() > 1 && nothingPType.isSubtypeOf(type));
+        return (type.getDeclaration() instanceof UnionType && type.getDeclaration().getCaseTypes().size() > 1 && toPType(syms.ceylonNothingType).isSubtypeOf(type));
     }
 
     // FIXME: this is ugly and probably wrong
@@ -408,41 +402,84 @@ public class Gen2 {
         }
     }
 
-    public JCExpression makeJavaType(ProducedType type) {
-        if (isOptional(type)) {
-            // ERASURE
-            // Nasty cast because we just so happen to know that nothingType is a Class
-            type = type.minus((ClassOrInterface)(nothingPType.getDeclaration()));
-        }
-        
-        if (voidPType.isExactly(type)) {
-            // ERASURE
-            return make.TypeIdent(VOID);
-        }
-        
-        JCExpression jt; 
-        if (type.getDeclaration() instanceof UnionType && type.getDeclaration().getCaseTypes().size() > 1) {
-            // FIXME This should return the common base class of all the union types
-            // but we have to wait until this is implemented in the typechecker
-            jt = makeIdent("Object");
-        } else {
-            if (type.getDeclaration() instanceof UnionType && type.getDeclaration().getCaseTypes().size() == 1) {
-                // Special case when the Union contains only a single CaseType
-                // FIXME This is not correct! We might lose information about type arguments!
-                type = type.getDeclaration().getCaseTypes().get(0);
-            }
-            java.util.List<ProducedType> tal = type.getTypeArgumentList();
-            if (tal != null && !tal.isEmpty()) {
-                ListBuffer<JCExpression> typeArgs = new ListBuffer<JCExpression>();
+    private ProducedType toPType(com.sun.tools.javac.code.Type t) {
+        return modelLoader.getType(t.tsym.getQualifiedName().toString(), null);
+    }
     
-                for (ProducedType innerType : tal) {
-                    typeArgs.add(makeJavaType(innerType));
+    private boolean isUnion(ProducedType type) {
+        TypeDeclaration tdecl = type.getDeclaration();
+        return (tdecl instanceof UnionType && tdecl.getCaseTypes().size() > 1);
+    }
+    
+    private boolean hasUnion(java.util.List<ProducedType> types) {
+        for (ProducedType t : types) {
+            if (isUnion(simplifyType(t))) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public JCExpression makeJavaType(ProducedType type, boolean isSatisfiesOrExtends) {
+        type = simplifyType(type);
+        if (isUnion(type)) {
+            // For any other union type U|V (U nor V is Optional):
+            // - The Ceylon type U|V results in the Java type Object
+            return makeIdent("Object");
+        }
+        
+        TypeDeclaration tdecl = type.getDeclaration();
+        if (toPType(syms.ceylonVoidType).isExactly(type) || toPType(syms.ceylonObjectType).isExactly(type)
+        		|| toPType(syms.ceylonNothingType).isExactly(type) || toPType(syms.ceylonEqualityType).isExactly(type)
+        		|| toPType(syms.ceylonIdentifiableObjectType).isExactly(type)
+        		|| tdecl instanceof BottomType) {
+            // For an erased type:
+            // - Any of the Ceylon types Void, Object, Nothing, Equality,
+            //   IdentifiableObject, and Bottom result in the Java type Object
+            return makeIdent("Object");
+        }
+        
+        JCExpression jt;
+        java.util.List<ProducedType> tal = type.getTypeArgumentList();
+        if (tal != null && !tal.isEmpty() && !hasUnion(tal)) {
+            // GENERIC TYPES
+            
+            ListBuffer<JCExpression> typeArgs = new ListBuffer<JCExpression>();
+
+            int idx = 0;
+            for (ProducedType ta : tal) {
+                JCExpression jta;
+                if (isSatisfiesOrExtends) {
+                    // For an ordinary class or interface type T:
+                    // - The Ceylon type Foo<T> appearing in an extends or satisfies clause
+                    //   results in the Java type Foo<T>
+                    jta = makeJavaType(ta, true);
+                } else {
+                    // For an ordinary class or interface type T:
+                    // - The Ceylon type Foo<T> appearing anywhere else results in the Java type
+                    // - Foo<T> if Foo is invariant in T,
+                    // - Foo<? extends T> if Foo is covariant in T, or
+                    // - Foo<? super T> if Foo is contravariant in T
+                    TypeParameter tp = tdecl.getTypeParameters().get(idx);
+                    if (tp.isContravariant()) {
+                        jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), makeJavaType(ta, false));
+                    } else if (tp.isCovariant()) {
+                        jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), makeJavaType(ta, false));
+                    } else {
+                        jta = makeJavaType(ta, false);
+                    }
                 }
-    
-                jt = make().TypeApply(makeIdent(type.getDeclaration().getName()), typeArgs.toList());
-            } else {
-                jt = makeIdent(type.getProducedTypeName());
+                typeArgs.add(jta);
+                idx++;
             }
+
+            jt = make().TypeApply(makeIdent(tdecl.getName()), typeArgs.toList());
+        } else {
+            // For an ordinary class or interface type T:
+            // - The Ceylon type T results in the Java type T
+            // For any other union type U|V (U nor V is Optional):
+            // - The Ceylon type Foo<U|V> results in the raw Java type Foo.
+            jt = makeIdent(type.getProducedTypeName());
         }
         
         return jt;
@@ -485,7 +522,25 @@ public class Gen2 {
         // Add the original type to the annotations
         return List.of(makeAtType(type.getProducedTypeQualifiedName()));
     }
-
+    
+    private ProducedType simplifyType(ProducedType type) {
+        if (isOptional(type)) {
+            // For an optional type T?:
+            //  - The Ceylon type T? results in the Java type T
+            // Nasty cast because we just so happen to know that nothingType is a Class
+            type = type.minus((ClassOrInterface)(toPType(syms.ceylonNothingType).getDeclaration()));
+        }
+        
+        TypeDeclaration tdecl = type.getDeclaration();
+        if (tdecl instanceof UnionType && tdecl.getCaseTypes().size() == 1) {
+            // Special case when the Union contains only a single CaseType
+            // FIXME This is not correct! We might lose information about type arguments!
+            type = tdecl.getCaseTypes().get(0);
+        }
+        
+        return type;
+    }
+    
     public ProducedType actualType(TypedDeclaration decl) {
         ProducedType t = decl.getType().getTypeModel();
         if (decl.getType() instanceof LocalModifier) {

@@ -258,15 +258,15 @@ public class ExpressionGen extends GenPart {
     private JCExpression convert(Tree.RangeOp op) {
         JCExpression lower = convertExpression(op.getLeftTerm());
         JCExpression upper = convertExpression(op.getRightTerm());
-        JCExpression type = gen.makeJavaType(op.getLeftTerm().getTypeModel());
+        JCExpression type = gen.makeJavaType(op.getLeftTerm().getTypeModel(), false);
         return at(op).NewClass(null, null, at(op).TypeApply(makeIdent(syms().ceylonRangeType), List.<JCExpression> of(type)), List.<JCExpression> of(lower, upper), null);
     }
 
     private JCExpression convert(Tree.EntryOp op) {
         JCExpression key = convertExpression(op.getLeftTerm());
         JCExpression elem = convertExpression(op.getRightTerm());
-        JCExpression keyType = gen.makeJavaType(op.getLeftTerm().getTypeModel());
-        JCExpression elemType = gen.makeJavaType(op.getRightTerm().getTypeModel());
+        JCExpression keyType = gen.makeJavaType(op.getLeftTerm().getTypeModel(), false);
+        JCExpression elemType = gen.makeJavaType(op.getRightTerm().getTypeModel(), false);
         return at(op).NewClass(null, null, at(op).TypeApply(makeIdent(syms().ceylonEntryType), List.<JCExpression> of(keyType, elemType)), List.<JCExpression> of(key, elem), null);
     }
 
@@ -408,7 +408,7 @@ public class ExpressionGen extends GenPart {
 
             public void visit(Tree.Type type) {
                 // A constructor
-                expr.append(at(type).NewClass(null, null, gen.makeJavaType(type.getTypeModel()), args.toList(), null));
+                expr.append(at(type).NewClass(null, null, gen.makeJavaType(type.getTypeModel(), false), args.toList(), null));
             }
 
             public void visit(Tree.BaseTypeExpression typeExp) {
@@ -523,6 +523,6 @@ public class ExpressionGen extends GenPart {
         }
         
         ProducedType t = value.getTypeModel().getTypeArgumentList().get(0);
-        return at(value).NewClass(null, null, at(value).TypeApply(makeIdent(syms().ceylonArraySequenceType), List.<JCExpression> of(gen.makeJavaType(t))), elems.toList(), null);
+        return at(value).NewClass(null, null, at(value).TypeApply(makeIdent(syms().ceylonArraySequenceType), List.<JCExpression> of(gen.makeJavaType(t, false))), elems.toList(), null);
     }
 }
