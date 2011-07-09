@@ -2,18 +2,18 @@ package com.redhat.ceylon.compiler.test.structure.attribute;
 
 class ClassAttributeGetterSetter {
     
-    String getF() {
+    private final String getF() {
         return .ceylon.language.String.instance("");
     }
     
-    void setF(.java.lang.Object f) {
+    private final void setF(.java.lang.Object f) {
     }
     
-    String getF2() {
+    public final String getF2() {
         return .ceylon.language.String.instance("");
     }
     
-    void setF2(.java.lang.Object f2) {
+    private final void setF2(.java.lang.Object f2) {
     }
     
     ClassAttributeGetterSetter() {

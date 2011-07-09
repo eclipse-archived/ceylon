@@ -1,20 +1,31 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
 class AttributeAccess {
-    private final Boolean b;
+    private final Boolean b1;
     private final Boolean b2;
     
-    private final Boolean m() {
-        return getB();
+    private final Boolean getB3() {
+        return ceylon.language.$true.getTrue();
+    }
+    
+    public final Boolean getB4() {
+        return ceylon.language.$true.getTrue();
+    }
+    
+    private final void m() {
+        final Boolean bb1 = getB1();
+        final Boolean bb2 = getB2();
+        final Boolean bb3 = getB3();
+        final Boolean bb4 = getB4();
     }
     
     AttributeAccess() {
-        this.b = ceylon.language.$true.getTrue();
+        this.b1 = ceylon.language.$true.getTrue();
         this.b2 = ceylon.language.$true.getTrue();
     }
     
-    private final Boolean getB() {
-        return this.b;
+    private final Boolean getB1() {
+        return this.b1;
     }
     
     public final Boolean getB2() {

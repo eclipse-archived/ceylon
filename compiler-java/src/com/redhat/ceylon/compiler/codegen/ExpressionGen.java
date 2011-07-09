@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.codegen.Gen2.Singleton;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -247,7 +248,7 @@ public class ExpressionGen extends GenPart {
         } else if (decl instanceof TypedDeclaration) {
             variable = ((TypedDeclaration)decl).isVariable();
         }
-        if(Util.isClassAttribute(decl) && variable){
+        if((decl instanceof Getter) || (Util.isClassAttribute(decl) && variable)){
             // must use the setter
             return at(op).Apply(List.<JCTree.JCExpression>nil(), makeIdent(Util.getSetterName(decl.getName())), 
                     List.<JCTree.JCExpression>of(rhs));
@@ -257,8 +258,9 @@ public class ExpressionGen extends GenPart {
                     makeIdent(decl.getContainer().getQualifiedName()),
                     decl.getName(),
                     rhs);
-        } else
+        } else {
             return at(op).Assign(make().Ident(names().fromString(decl.getName())), rhs);
+        }
     }
 
     private JCExpression convert(Tree.IsOp op) {
@@ -547,6 +549,11 @@ public class ExpressionGen extends GenPart {
                         makeIdent(Util.getGetterName(decl.getName())), 
                         List.<JCExpression>nil());
             }
+        } else if (decl instanceof Getter) {
+            // invoke the getter
+            return at(member).Apply(List.<JCExpression>nil(), 
+                    makeIdent(Util.getGetterName(decl.getName())), 
+                    List.<JCExpression>nil());
         } else if (decl instanceof Method) {
             if (Util.isInnerMethod(decl)) {
                 java.util.List<String> path = new LinkedList<String>();

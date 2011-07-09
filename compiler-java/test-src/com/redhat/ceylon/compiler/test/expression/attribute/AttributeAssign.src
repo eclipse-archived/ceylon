@@ -1,25 +1,41 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
 class AttributeAssign {
-    private Boolean b;
+    private Boolean b1;
     private Boolean b2;
     
+    private final Boolean getB3() {
+        return ceylon.language.$true.getTrue();
+    }
+    
+    private final void setB3(.java.lang.Object b3) {
+    }
+    
+    public final Boolean getB4() {
+        return ceylon.language.$true.getTrue();
+    }
+    
+    private final void setB4(.java.lang.Object b4) {
+    }
+    
     private final void m() {
-        setB(ceylon.language.$false.getFalse());
+        setB1(ceylon.language.$false.getFalse());
         setB2(ceylon.language.$false.getFalse());
+        setB3(ceylon.language.$false.getFalse());
+        setB4(ceylon.language.$false.getFalse());
     }
     
     AttributeAssign() {
-        this.b = ceylon.language.$true.getTrue();
+        this.b1 = ceylon.language.$true.getTrue();
         this.b2 = ceylon.language.$true.getTrue();
     }
     
-    private final Boolean getB() {
-        return this.b;
+    private final Boolean getB1() {
+        return this.b1;
     }
     
-    private final void setB(Boolean b) {
-        this.b = b;
+    private final void setB1(Boolean b1) {
+        this.b1 = b1;
     }
     
     public final Boolean getB2() {

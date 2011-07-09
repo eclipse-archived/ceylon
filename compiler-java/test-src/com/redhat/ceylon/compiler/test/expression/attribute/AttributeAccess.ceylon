@@ -10,7 +10,7 @@ class AttributeAccess(){
     }
    
     void m(){
-        Boolean bb1 = b;
+        Boolean bb1 = b1;
         Boolean bb2 = b2;
         Boolean bb3 = b3;
         Boolean bb4 = b4;

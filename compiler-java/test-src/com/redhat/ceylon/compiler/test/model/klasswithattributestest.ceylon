@@ -1,0 +1,1 @@
+KlassWithAttributes k = KlassWithAttributes();

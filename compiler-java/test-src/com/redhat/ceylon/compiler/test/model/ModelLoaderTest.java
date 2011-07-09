@@ -141,4 +141,9 @@ public class ModelLoaderTest extends CompilerTest {
     public void loadClassWithMethods(){
         verifyClassLoading("KlassWithMethods.ceylon");
     }
+
+    @Test
+    public void loadClassWithAttributes(){
+        verifyClassLoading("KlassWithAttributes.ceylon");
+    }
 }

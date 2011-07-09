@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.test.expression.attribute;
 class InitializerParamHidingGetter {
     private final Boolean b;
     
-    Boolean getB() {
+    private final Boolean getB() {
         return b;
     }
     

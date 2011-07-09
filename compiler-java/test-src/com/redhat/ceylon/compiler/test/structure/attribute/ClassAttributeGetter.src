@@ -1,12 +1,16 @@
 package com.redhat.ceylon.compiler.test.structure.attribute;
 
-class ClassAttributeGetter {
+abstract class ClassAttributeGetter {
     
-    String getF() {
+    private final String getF() {
         return .ceylon.language.String.instance("");
     }
     
-    String getF2() {
+    public final String getF2() {
+        return .ceylon.language.String.instance("");
+    }
+    
+    public String getF3() {
         return .ceylon.language.String.instance("");
     }
     

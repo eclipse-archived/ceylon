@@ -261,7 +261,7 @@ public class ClassGen extends GenPart {
         JCBlock body = gen.statementGen.convert(decl.getBlock());
         String name = decl.getIdentifier().getText();
         JCExpression type = gen.makeJavaType(gen.actualType(decl), false);
-        return make().MethodDef(make().Modifiers(0), names().fromString(Util.getSetterName(name)), 
+        return make().MethodDef(make().Modifiers(convertAttributeGetSetDeclFlags(decl)), names().fromString(Util.getSetterName(name)), 
                 make().TypeIdent(TypeTags.VOID),
                 List.<JCTree.JCTypeParameter>nil(), 
                 List.<JCTree.JCVariableDecl>of(make().VarDef(make().Modifiers(0), names().fromString(name), type, null)), 
@@ -272,7 +272,7 @@ public class ClassGen extends GenPart {
     public JCTree.JCMethodDecl convert(AttributeGetterDefinition decl) {
         JCBlock body = gen.statementGen.convert(decl.getBlock());
         List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(decl.getDeclarationModel(), gen.actualType(decl));
-        return make().MethodDef(make().Modifiers(0, annots),
+        return make().MethodDef(make().Modifiers(convertAttributeGetSetDeclFlags(decl), annots),
                 names().fromString(Util.getGetterName(decl.getIdentifier().getText())), 
                 gen.makeJavaType(gen.actualType(decl), false), 
                 List.<JCTree.JCTypeParameter>nil(), 
@@ -301,7 +301,7 @@ public class ClassGen extends GenPart {
             result |= isShared(def) ? PUBLIC : 0;
         } else {
             result |= isShared(def) ? PUBLIC : PRIVATE;
-            result |= isFormal(def) ? ABSTRACT : 0;
+            result |= (isFormal(def) && !isDefault(def)) ? ABSTRACT : 0;
             result |= !(isFormal(def) || isDefault(def)) ? FINAL : 0;
         }
 
@@ -336,11 +336,11 @@ public class ClassGen extends GenPart {
         return result;
     }
 
-    private int convertAttributeGetSetDeclFlags(Tree.AttributeDeclaration cdecl) {
+    private int convertAttributeGetSetDeclFlags(Tree.TypedDeclaration cdecl) {
         int result = 0;
 
         result |= isShared(cdecl) ? PUBLIC : PRIVATE;
-        result |= isFormal(cdecl) ? ABSTRACT : 0;
+        result |= (isFormal(cdecl) && !isDefault(cdecl)) ? ABSTRACT : 0;
         result |= !(isFormal(cdecl) || isDefault(cdecl)) ? FINAL : 0;
 
         return result;
