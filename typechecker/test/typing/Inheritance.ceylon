@@ -138,4 +138,19 @@ class Inheritance() {
     method(Outer().inner1);
     method(oi3);
     
+    abstract class A() {
+        shared formal void hello();
+        shared formal class C() {}
+    }
+    
+    class B() extends A() {
+        @error super.hello();
+        @error super.C();
+        shared actual void hello() {
+            @error super.hello();
+        }
+        shared actual class C() 
+            extends super.C() {}
+    }
+    
 }

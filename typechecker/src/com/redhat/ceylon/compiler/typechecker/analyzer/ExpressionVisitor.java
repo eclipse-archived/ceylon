@@ -1723,6 +1723,11 @@ public class ExpressionVisitor extends AbstractVisitor {
                 }
                 //otherwise infer type arguments later
             }
+            if (that.getPrimary() instanceof Tree.Super) {
+                if (member.isFormal()) {
+                    that.addError("superclass member is formal");
+                }
+            }
         }
     }
 
@@ -1815,6 +1820,11 @@ public class ExpressionVisitor extends AbstractVisitor {
                     that.getPrimary() instanceof Tree.QualifiedTypeExpression) {
                 checkTypeBelongsToContainingScope(that.getTypeModel(), that.getScope(), that);
             }
+            if (!inExtendsClause && that.getPrimary() instanceof Tree.Super) {
+                if (type.isFormal()) {
+                    that.addError("superclass member class is formal");
+                }
+            }
         }
     }
 
@@ -1895,7 +1905,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                 if (ci.isClassOrInterfaceMember()) {
                     ClassOrInterface s = (ClassOrInterface) ci.getContainer();
                     ProducedType t = s.getExtendedType();
-                    //TODO: type arguments
+                    //TODO: type arguments??
                     that.setTypeModel(t);
                 }
             }
@@ -1922,10 +1932,6 @@ public class ExpressionVisitor extends AbstractVisitor {
         if (ci!=null) {
             that.setTypeModel(ci.getType());
         }
-    }
-    
-    @Override public void visit(Tree.Subtype that) {
-        //TODO!
     }
     
     @Override public void visit(Tree.SequenceEnumeration that) {
