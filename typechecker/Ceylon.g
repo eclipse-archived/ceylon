@@ -1103,10 +1103,10 @@ nonemptyCondition
     ;
 
 isCondition
-    : ('(' IS_OP type LIDENTIFIER ')') => '(' IS_OP type memberName ')'
-    -> ^(IS_CONDITION[$IS_OP] type ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName)))))
-    | '(' IS_OP type (memberName specifier) ')'
-    -> ^(IS_CONDITION[$IS_OP] type ^(VARIABLE type memberName specifier))
+    : ('(' IS_OP unionType LIDENTIFIER ')') => '(' IS_OP unionType memberName ')'
+    -> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName)))))
+    | '(' IS_OP unionType (memberName specifier) ')'
+    -> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE unionType memberName specifier))
     ;
 
 satisfiesCondition
@@ -1180,8 +1180,8 @@ expressions
     ;
 
 isCaseCondition
-    : IS_OP type
-    -> ^(IS_CASE[$IS_OP] type)
+    : IS_OP unionType
+    -> ^(IS_CASE[$IS_OP] unionType)
     ;
 
 satisfiesCaseCondition

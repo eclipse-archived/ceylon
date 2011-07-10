@@ -80,4 +80,19 @@ class Union() {
         String? f = s.first;
     }
     
+    class S() {
+        shared void hello() {}
+    }
+    class A() {}
+    class B() extends S() {}
+    class C() extends S() {}
+    
+    A|B|C abc = A();
+    if (is B|C abc) {
+        abc.hello();
+    }
+    
+    @type["Union.S|Union.A"] S|A|B|C sabc = S();
+    @type["Union.A|Union.S"] A|B|C|S abcs = S();
+    
 }
