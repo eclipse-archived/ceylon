@@ -337,17 +337,17 @@ retryDirective
     ;
 
 objectDeclaration
-    : OBJECT_DEFINITION memberName extendedType? satisfiedTypes? classBody
-    -> ^(OBJECT_DEFINITION VALUE_MODIFIER memberName extendedType? satisfiedTypes? classBody) 
+    : OBJECT_DEFINITION memberName extendedType? satisfiedTypes? (classBody|';')
+    -> ^(OBJECT_DEFINITION VALUE_MODIFIER memberName extendedType? satisfiedTypes? classBody?) 
     ;
 
 voidMethodDeclaration
-    : VOID_MODIFIER memberName methodParameters 
+    : VOID_MODIFIER memberName methodParameters?
       ( 
         block 
-      -> ^(METHOD_DEFINITION VOID_MODIFIER memberName methodParameters block)   
+      -> ^(METHOD_DEFINITION VOID_MODIFIER memberName methodParameters? block)   
       | specifier? ';'
-      -> ^(METHOD_DECLARATION VOID_MODIFIER memberName methodParameters specifier?)   
+      -> ^(METHOD_DECLARATION VOID_MODIFIER memberName methodParameters? specifier?)   
       )
     ;
 
@@ -391,17 +391,17 @@ interfaceDeclaration
     ;
 
 classDeclaration
-    : CLASS_DEFINITION typeName classParameters
+    : CLASS_DEFINITION typeName classParameters?
       (
         classBody
-      -> ^(CLASS_DEFINITION typeName classParameters classBody)
+      -> ^(CLASS_DEFINITION typeName classParameters? classBody)
       | typeSpecifier? ';'
-      -> ^(CLASS_DECLARATION[$CLASS_DEFINITION] typeName classParameters typeSpecifier?)
+      -> ^(CLASS_DECLARATION[$CLASS_DEFINITION] typeName classParameters? typeSpecifier?)
       )
     ;
 
 methodParameters
-    : typeParameters? parameters+ extraParameters? 
+    : typeParameters? parameters extraParameters? 
       metatypes? 
       typeConstraints?
     ;
@@ -904,13 +904,13 @@ namedArgumentDeclaration
     ;
     
 objectArgument
-    : OBJECT_DEFINITION memberName extendedType? satisfiedTypes? classBody
-    -> ^(OBJECT_ARGUMENT[$OBJECT_DEFINITION] VALUE_MODIFIER memberName extendedType? satisfiedTypes? classBody)
+    : OBJECT_DEFINITION memberName extendedType? satisfiedTypes? (classBody|';')
+    -> ^(OBJECT_ARGUMENT[$OBJECT_DEFINITION] VALUE_MODIFIER memberName extendedType? satisfiedTypes? classBody?)
     ;
 
 voidMethodArgument
-    : VOID_MODIFIER memberName parameters+ block
-    -> ^(METHOD_ARGUMENT VOID_MODIFIER memberName parameters+ block)
+    : VOID_MODIFIER memberName parameters* block
+    -> ^(METHOD_ARGUMENT VOID_MODIFIER memberName parameters* block)
     ;
 
 typedMethodOrGetterArgument
