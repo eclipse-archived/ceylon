@@ -799,7 +799,7 @@ public class ExpressionVisitor extends AbstractVisitor {
             Declaration dec = pr.getDeclaration();
             Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) pr;
             if ( mte.getTarget()==null && dec!=null ) {
-                List<ProducedType> typeArgs = getInferedTypeArguments(that, dec);
+                List<ProducedType> typeArgs = getInferedTypeArguments(that, (Functional) dec);
                 if (pr instanceof Tree.BaseTypeExpression) {
                     visitBaseTypeExpression((Tree.BaseTypeExpression) pr, (TypeDeclaration) dec, typeArgs, null);
                 }
@@ -821,47 +821,59 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
 
     private List<ProducedType> getInferedTypeArguments(
-            Tree.InvocationExpression that, Declaration dec) {
+            Tree.InvocationExpression that, Functional dec) {
         List<ProducedType> typeArgs = new ArrayList<ProducedType>();
-        Functional functional = (Functional) dec;
-        ParameterList parameters = functional.getParameterLists().get(0);
-        for (TypeParameter tp: functional.getTypeParameters()) {
-            List<ProducedType> inferredTypes = new ArrayList<ProducedType>();
-            if (that.getPositionalArgumentList()!=null) {
-                List<Tree.PositionalArgument> args = that.getPositionalArgumentList().getPositionalArguments();
-                for (int i=0; i<parameters.getParameters().size(); i++) {
-                    Parameter parameter = parameters.getParameters().get(i);
-                    if (parameter.getType().getDeclaration()==tp && args.size()>i) {
-                        Tree.Expression value = args.get(i).getExpression();
-                        addToUnion(inferredTypes, value.getTypeModel());
-                    }
-                }
-            }
-            else if (that.getNamedArgumentList()!=null) {
-                List<Tree.NamedArgument> args = that.getNamedArgumentList().getNamedArguments();
-                for (Tree.NamedArgument arg: args) {
-                    ProducedType type = null;
-                    if (arg instanceof Tree.SpecifiedArgument) {
-                        Tree.Expression value = ((Tree.SpecifiedArgument)arg).getSpecifierExpression().getExpression();
-                        type = value.getTypeModel();
-                    }
-                    else if (arg instanceof Tree.TypedArgument) {
-                        //TODO: broken for method args
-                        type = ((Tree.TypedArgument) arg).getType().getTypeModel();
-                    }
-                    if (type!=null) {
-                        Parameter parameter = getMatchingParameter(parameters, arg);
-                        if (parameter.getType().getDeclaration()==tp) {
-                            addToUnion(inferredTypes, type);
-                        }
-                    }
-                }
-            }
-            UnionType ut = new UnionType();
-            ut.setCaseTypes(inferredTypes);
-            typeArgs.add(ut.getType());
+        ParameterList parameters = dec.getParameterLists().get(0);
+        for (TypeParameter tp: dec.getTypeParameters()) {
+            typeArgs.add(inferTypeArgument(that, tp, parameters));
         }
         return typeArgs;
+    }
+
+    private ProducedType inferTypeArgument(Tree.InvocationExpression that,
+            TypeParameter tp, ParameterList parameters) {
+        List<ProducedType> inferredTypes = new ArrayList<ProducedType>();
+        if (that.getPositionalArgumentList()!=null) {
+            inferTypeArgument(tp, parameters, that.getPositionalArgumentList(), inferredTypes);
+        }
+        else if (that.getNamedArgumentList()!=null) {
+            inferTypeArgument(tp, parameters, that.getNamedArgumentList(), inferredTypes);
+        }
+        UnionType ut = new UnionType();
+        ut.setCaseTypes(inferredTypes);
+        return ut.getType();
+    }
+
+    private void inferTypeArgument(TypeParameter tp, ParameterList parameters,
+            Tree.NamedArgumentList args, List<ProducedType> inferredTypes) {
+        for (Tree.NamedArgument arg: args.getNamedArguments()) {
+            ProducedType type = null;
+            if (arg instanceof Tree.SpecifiedArgument) {
+                Tree.Expression value = ((Tree.SpecifiedArgument)arg).getSpecifierExpression().getExpression();
+                type = value.getTypeModel();
+            }
+            else if (arg instanceof Tree.TypedArgument) {
+                //TODO: broken for method args
+                type = ((Tree.TypedArgument) arg).getType().getTypeModel();
+            }
+            if (type!=null) {
+                Parameter parameter = getMatchingParameter(parameters, arg);
+                if (parameter.getType().getDeclaration()==tp) {
+                    addToUnion(inferredTypes, type);
+                }
+            }
+        }
+    }
+
+    private void inferTypeArgument(TypeParameter tp, ParameterList parameters,
+            Tree.PositionalArgumentList args, List<ProducedType> inferredTypes) {
+        for (int i=0; i<parameters.getParameters().size(); i++) {
+            Parameter parameter = parameters.getParameters().get(i);
+            if (parameter.getType().getDeclaration()==tp && args.getPositionalArguments().size()>i) {
+                Tree.Expression value = args.getPositionalArguments().get(i).getExpression();
+                addToUnion(inferredTypes, value.getTypeModel());
+            }
+        }
     }
 
     /*@Override public void visit(Tree.ExtendedType that) {
