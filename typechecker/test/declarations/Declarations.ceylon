@@ -12,12 +12,11 @@ interface Declarations {
     class WithValueArg(@error Object value) {}
     void withValueArg(@error Object value) {}
     
-    @error class value() {}
+    //@error class value() {}
     //@error void object() {}
     //@error value function = "hello";
     
     @error class WithoutArgs {}
-    
     @error void withoutArgs {}
     
     @error assign withoutGetter {}
@@ -32,6 +31,7 @@ interface Declarations {
     
     @error class WithoutClassDef();
     @error interface WithoutInterfaceDef;
+    @error object withoutObjectDef;
 
     /*class Foo(String bar) {}
     @error Foo getFoo() {}
