@@ -83,7 +83,9 @@ class Union() {
     class S() {
         shared void hello() {}
     }
-    class A() {}
+    class A() {
+        shared void hi() {}
+    }
     class B() extends S() {}
     class C() extends S() {}
     
@@ -94,5 +96,33 @@ class Union() {
     
     @type["Union.S|Union.A"] S|A|B|C sabc = S();
     @type["Union.A|Union.S"] A|B|C|S abcs = S();
+    
+    @type ["Nothing|Union.A|Union.B|Union.C"] A?|B?|C? oabc = null;
+    if (is A|B|C oabc) {
+        //@error if (exists oabc) {}
+    }
+    if (is B|C oabc) {
+        oabc.hello();
+    }
+    if (is A? oabc) {
+        if (exists oabc) {
+            oabc.hi();
+        }
+    }
+    
+    String[]? strs = null;
+    
+    if (is String[] strs) {
+        for (s in strs) {}
+        if (is Sequence<String> strs) {}
+    }
+    
+    String?[] ostrs = {null};
+    
+    if (is Sequence<String?> strs) {
+        for (s in strs) {
+            if (is String s) {}
+        }
+    }
     
 }
