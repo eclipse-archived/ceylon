@@ -15,7 +15,9 @@ class Formal() {
         @error shared formal void badHello() {}
         String goodName = "gavin";
     }
-    
+
+    //formal member not implemented in concrete class
+    @error
     class Class() {
         @error shared formal String name;
         @error shared formal void hello();

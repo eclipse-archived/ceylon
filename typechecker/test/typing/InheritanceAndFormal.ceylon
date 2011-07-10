@@ -4,7 +4,7 @@ class InheritanceAndFormal() {
         shared String nick() { return name; }
     }
 
-    abstract class Animal() {
+    abstract class Animal() extends IdentifiableObject() {
         shared formal Boolean mammal;
     }
 
@@ -30,6 +30,7 @@ class InheritanceAndFormal() {
         shared actual Boolean mammal = true;
     }
 
+    //formal members non implemented
     interface A {
         shared formal Boolean a;
         shared String b() { return "b"; }
@@ -44,12 +45,22 @@ class InheritanceAndFormal() {
         shared Boolean d = true;
     }
 
+    //does not implement A.a and A.d
     @error class D() extends C() satisfies B {
 
     }
 
-    class E() extends C() satisfies B {
+    //does not implement A.d (C.d is not an implementation of A.d)
+    @error class E() extends C() satisfies B {
         shared actual Boolean a = false;
     }
+
+    //avoid cycles in hierarchy
+    @error class CycleA() extends CycleB() {}
+    @error class CycleB() extends CycleA() {}
+    interface CycleC satisfies CycleE {}
+    interface CycleD satisfies CycleC {}
+    interface CycleE satisfies CycleD {}
+    @error class CycleF() satisfies CycleE {}
 
 }
