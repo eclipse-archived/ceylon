@@ -28,7 +28,7 @@ public class RefinementVisitor extends Visitor {
         Declaration dec = that.getDeclarationModel();
         if (dec!=null) {
             boolean toplevel = dec.getContainer() instanceof Package;
-            boolean member = (dec.getContainer() instanceof ClassOrInterface) && 
+            boolean member = dec.isClassOrInterfaceMember() && 
                     !(dec instanceof Parameter) &&
                     !(dec instanceof TypeParameter); //TODO: what about nested interfaces and abstract classes?!
             
@@ -188,13 +188,13 @@ public class RefinementVisitor extends Visitor {
 
     private void checkNonMember(Tree.Declaration that, Declaration dec) {
         if (dec.isActual()) {
-            that.addError("actual declaration is not a member of a class, interface, or package");
+            that.addError("actual declaration is not a member of a class or interface");
         }
         if (dec.isFormal()) {
-            that.addError("formal declaration is not a member of a class, interface, or package");
+            that.addError("formal declaration is not a member of a class or interface");
         }
         if (dec.isDefault()) {
-            that.addError("default declaration is not a member of a class, interface, or package");
+            that.addError("default declaration is not a member of a class or interface");
         }
     }
 

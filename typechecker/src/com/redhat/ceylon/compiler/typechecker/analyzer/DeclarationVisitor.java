@@ -212,9 +212,6 @@ public class DeclarationVisitor extends Visitor {
                 new Class() : new ClassAlias();
         that.setDeclarationModel(c);
         visitDeclaration(that, c);
-        if (hasAnnotation(that.getAnnotationList(), "abstract")) {
-            c.setAbstract(true);
-        }
         Scope o = enterScope(c);
         super.visit(that);
         exitScope(o);
@@ -344,9 +341,6 @@ public class DeclarationVisitor extends Visitor {
         Value v = new Value();
         that.setDeclarationModel(v);
         visitDeclaration(that, v);
-        if (hasAnnotation(that.getAnnotationList(), "variable")) {
-            v.setVariable(true);
-        }
         super.visit(that);
         if ( v.isInterfaceMember() && !v.isFormal()) {
             that.addError("interfaces may not have simple attributes");
@@ -511,16 +505,38 @@ public class DeclarationVisitor extends Visitor {
             
             Tree.AnnotationList al = that.getAnnotationList();
             if (hasAnnotation(al, "shared")) {
-                declaration.setShared(true);
+                model.setShared(true);
             }
             if (hasAnnotation(al, "default")) {
-                declaration.setDefault(true);
+                model.setDefault(true);
+                if (that instanceof Tree.ObjectDefinition) {
+                    that.addError("object declarations may not be default");
+                }
             }
             if (hasAnnotation(al, "formal")) {
-                declaration.setFormal(true);
+                model.setFormal(true);
+                if (that instanceof Tree.ObjectDefinition) {
+                    that.addError("object declarations may not be formal");
+                }
             }
             if (hasAnnotation(al, "actual")) {
-                declaration.setActual(true);
+                model.setActual(true);
+            }
+            if (hasAnnotation(al, "abstract")) {
+                if (model instanceof Class) {
+                    ((Class) declaration).setAbstract(true);
+                }
+                else {
+                    that.addError("declaration is not a class, and may not be abstract");
+                }
+            }
+            if (hasAnnotation(al, "variable")) {
+                if (model instanceof Value) {
+                    ((Value) model).setVariable(true);
+                }
+                else {
+                    that.addError("declaration is not a value, and may not be variable");
+                }
             }
             
             buildAnnotations(al);
