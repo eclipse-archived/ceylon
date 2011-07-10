@@ -795,9 +795,10 @@ public class ExpressionVisitor extends AbstractVisitor {
         if (pr==null) {
             that.addError("malformed invocation expression");
         }
-        else {
+        else if (pr instanceof Tree.MemberOrTypeExpression) {
             Declaration dec = pr.getDeclaration();
-            if ( pr.getTarget()==null && dec!=null ) {
+            Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) pr;
+            if ( mte.getTarget()==null && dec!=null ) {
                 List<ProducedType> typeArgs = getInferedTypeArguments(that, dec);
                 if (pr instanceof Tree.BaseTypeExpression) {
                     visitBaseTypeExpression((Tree.BaseTypeExpression) pr, (TypeDeclaration) dec, typeArgs, null);
@@ -812,7 +813,10 @@ public class ExpressionVisitor extends AbstractVisitor {
                     visitQualifiedMemberExpression((Tree.QualifiedMemberExpression) pr, (TypedDeclaration) dec, typeArgs, null);
                 }
             }
-            visitInvocation(that);
+            visitInvocation(that, mte.getTarget());
+        }
+        else {
+            that.addWarning("direct invocation of Callable objects not yet supported");
         }
     }
 
@@ -872,9 +876,8 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }*/
 
-    private void visitInvocation(Tree.InvocationExpression that) {
-        ProducedReference mr = that.getPrimary().getTarget();
-        if (mr==null || !mr.isFunctional()) {
+    private void visitInvocation(Tree.InvocationExpression that, ProducedReference prf) {
+        if (prf==null || !prf.isFunctional()) {
             that.addError("receiving expression cannot be invoked");
         }
         else {
@@ -887,10 +890,10 @@ public class ExpressionVisitor extends AbstractVisitor {
             else {
                 ParameterList pl = pls.get(0);            
                 if ( that.getPositionalArgumentList()!=null ) {
-                    checkPositionalArguments(pl, mr, that.getPositionalArgumentList());
+                    checkPositionalArguments(pl, prf, that.getPositionalArgumentList());
                 }
                 if ( that.getNamedArgumentList()!=null ) {
-                    checkNamedArguments(pl, mr, that.getNamedArgumentList());
+                    checkNamedArguments(pl, prf, that.getNamedArgumentList());
                 }
             }
         }
