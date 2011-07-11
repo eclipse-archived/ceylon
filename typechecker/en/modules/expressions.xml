@@ -1365,10 +1365,9 @@ value biggerBag = bag.with(1, 2, 5.0);
             </listitem>
             <listitem>
                 <para>only for callable parameters, a local method declaration with a block or
-                named parameter list where the name of the method is the parameter 
-                name&mdash;it specifies the return type or <literal>function</literal>, a 
-                parameter list and a block of code or named argument list used to instantiate 
-                the return type.</para>
+                named parameter list where the name of the method is the parameter name&mdash;it 
+                specifies the return type or <literal>function</literal>, a parameter list and a 
+                block of code or named argument list used to instantiate the return type.</para>
             </listitem>
         </itemizedlist>
         
@@ -1438,10 +1437,29 @@ value biggerBag = bag.with(1, 2, 5.0);
     } 
 }</programlisting>
 
-        <comment><para>TODO: should the named argument list be allowed to contain arbitrary 
+        <comment><para>TODO: Should the named argument list be allowed to contain arbitrary 
         statements? This is more regular, since you can do it in the body of a class, and 
         attribute/method refinement is the model that we are following here. And it could be 
         very useful when defining structured data.</para></comment>
+        
+        <comment><para>TODO: Especially, should we support <literal>if/else</literal> and
+        <literal>for</literal> in a named argument list. This might be super-useful for
+        templating, for example:</para>
+        <programlisting>ul { 
+    if (error) { 
+        color = red;
+        li { "oops, something bad happened!" }
+    } 
+    else { 
+        color = yellow;
+        for (r in results) {
+            li { r.successMessage }
+        }
+    } 
+}</programlisting>
+        <para>But the truth is that this would actually be a generally useful part of the 
+        expression syntax.</para>
+        </comment>
         
         <comment><para>TODO: Should we let you define a getter/setter pair for parameters of 
         type <literal>Settable</literal>?</para></comment>
