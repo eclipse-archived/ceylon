@@ -75,4 +75,22 @@ class InheritanceAndFormal() {
     class ActualC() satisfies ActualA & ActualB {
     }
 
+    interface ActualD {
+        shared formal String hello;
+    }
+    interface ActualE satisfies ActualD {
+        shared actual default String hello { return "Hi" }
+    }
+
+    interface ActualF satisfies ActualD {
+        shared actual default String hello { return "Bonjour" }
+    }
+
+    @error //inherit two declarations with the same name (from same common ancestor but do not override)
+    class ActualG() satisfies ActualE & ActualF {
+    }
+
+    class ActualH() satisfies ActualE & ActualF {
+        shared actual String hello { return "Wazza" }
+    }
 }

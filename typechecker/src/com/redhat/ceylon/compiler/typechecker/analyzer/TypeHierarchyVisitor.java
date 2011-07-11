@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.name;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,9 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -50,6 +49,7 @@ public class TypeHierarchyVisitor extends Visitor {
             List<Type> orderedTypes = sortDAGAndBuildMetadata(classOrInterface, that);
             checkForFormalsNotImplemented(that, orderedTypes);
             checkForDoubleMemberInheritanceWoCommonAncestor(that, orderedTypes);
+            checkForDoubleMemberInheritanceNotOverridden(that, orderedTypes);
         }
     }
 
@@ -66,8 +66,8 @@ public class TypeHierarchyVisitor extends Visitor {
                     aggregateType.membersByName.put(name,aggregateMembers);
                 }
                 else {
-                    boolean sameMemberInherited = currentType.declaration.getInheritedMembers(name).size()!=0;
-                    if (!sameMemberInherited) {
+                    boolean isMemberNameOnAncestor = isMemberNameOnAncestor(currentType, name);
+                    if (!isMemberNameOnAncestor) {
                         StringBuilder sb = new StringBuilder("may not inherit two declarations with the same name that do not share a common supertype: ");
                         sb.append("[").append(currentType.declaration.getQualifiedNameString()).append("#").append(name).append("]");
                         String otherTypeName = getTypeDeclarationFor(aggregateMembers);
@@ -81,6 +81,67 @@ public class TypeHierarchyVisitor extends Visitor {
                 aggregateMembers.defaults.addAll(currentTypeMembers.defaults);
             }
         }
+    }
+
+    private boolean isMemberNameOnAncestor(Type currentType, String name) {
+        List<Declaration> inheritedMembers = currentType.declaration.getInheritedMembers(name);
+        boolean sameMemberInherited = false;
+        for(Declaration d:inheritedMembers) {
+            if (!(d instanceof Parameter)) {
+                sameMemberInherited = true;
+                break;
+            }
+        }
+        return sameMemberInherited;
+    }
+
+    private void checkForDoubleMemberInheritanceNotOverridden(Tree.ClassOrInterface that, List<Type> orderedTypes) {
+        Type aggregateType = new Type();
+        int size = orderedTypes.size();
+        for(int index = size -1;index>=0;index--) {
+            Type currentType = orderedTypes.get(index);
+            for (Type.Members currentTypeMembers:currentType.membersByName.values()) {
+                String name = currentTypeMembers.name;
+                Type.Members aggregateMembers = aggregateType.membersByName.get(name);
+                if (aggregateMembers==null) {
+                    //not accumulated yet, no need to check
+                    aggregateMembers = new Type.Members();
+                    aggregateMembers.name = name;
+                    aggregateType.membersByName.put(name,aggregateMembers);
+                }
+                else {
+
+                    boolean isMemberRefined = isMemberRefined(orderedTypes,index,name,currentTypeMembers);
+                    if (!isMemberRefined) {
+                        StringBuilder sb = new StringBuilder("may not inherit two declarations with the same name unless redefined in subclass: ");
+                        sb.append("[").append(currentType.declaration.getQualifiedNameString()).append("#").append(name).append("]");
+                        String otherTypeName = getTypeDeclarationFor(aggregateMembers);
+                        sb.append(" and [").append(otherTypeName).append("#").append(name).append("]");
+                        that.addError(sb.toString());
+                    }
+                }
+                aggregateMembers.nonFormalsNonDefaults.addAll(currentTypeMembers.nonFormalsNonDefaults);
+                aggregateMembers.actuals.addAll(currentTypeMembers.actuals);
+                aggregateMembers.formals.addAll(currentTypeMembers.formals);
+                aggregateMembers.defaults.addAll(currentTypeMembers.defaults);
+            }
+        }
+    }
+
+    private boolean isMemberRefined(List<Type> orderedTypes, int index, String name, Type.Members currentTypeMembers) {
+        int size = orderedTypes.size();
+        Declaration declarationOfSupertypeMember = getMemberDeclaration(currentTypeMembers);
+        for (int subIndex = size-1 ; subIndex>index;subIndex--) {
+            Type type = orderedTypes.get(subIndex);
+            //has a direct member and su[ertype as inherited members
+            Declaration directMember = type.declaration.getDirectMember(name);
+            boolean isMemberRefined = directMember!=null && !(directMember instanceof Parameter);
+            isMemberRefined = isMemberRefined && type.declaration.getInheritedMembers(name).contains(declarationOfSupertypeMember);
+            if (isMemberRefined) {
+                return true;
+            };
+        }
+        return false;
     }
 
     private String getTypeDeclarationFor(Type.Members aggregateMembers) {
@@ -200,6 +261,9 @@ public class TypeHierarchyVisitor extends Visitor {
             type = new Type();
             type.declaration = declaration;
             for (Declaration member : declaration.getMembers()) {
+                if (!(member instanceof MethodOrValue)) {
+                    continue;
+                }
                 final String name = member.getName();
                 Type.Members members = type.membersByName.get(name);
                 if (members==null) {

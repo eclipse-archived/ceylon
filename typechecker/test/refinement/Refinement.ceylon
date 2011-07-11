@@ -99,7 +99,7 @@ class Refinement() {
             shared String hello { return "hi"; }
         }
         
-        class Z() satisfies X & Y {}
+        @error class Z() satisfies X & Y {}
     }
     
 }
