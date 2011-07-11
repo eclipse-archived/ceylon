@@ -453,21 +453,44 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             ((Class)klass).setParameterList(new ParameterList());
         }
         
-        // FIXME: deal with type override by annotations
-        // look at its super type
-        Type superClass = classSymbol.getSuperclass();
-        // ceylon.language.Void has no super type. java.lang.Object neither
-        if(!classSymbol.getQualifiedName().toString().equals("ceylon.language.Void")
-                && superClass.getKind() != TypeKind.NONE)
-            klass.setExtendedType(getType(superClass, klass));
-        // interfaces need to have their superclass set to Object
-        else if(superClass.getKind() == TypeKind.NONE
-                && klass instanceof Interface){
-            klass.setExtendedType(getType("ceylon.language.Object", klass));
-        }
+        setExtendedType(klass, classSymbol);
         setSatisfiedTypes(klass, classSymbol);
     }
     
+    private void setExtendedType(ClassOrInterface klass, ClassSymbol classSymbol) {
+        // look at its super type
+        Type superClass = classSymbol.getSuperclass();
+        ProducedType extendedType = null;
+        
+        if(klass instanceof Interface){
+            // interfaces need to have their superclass set to Object
+            if(superClass.getKind() == TypeKind.NONE)
+                extendedType = getType("ceylon.language.Object", klass);
+            else
+                extendedType = getType(superClass, klass);
+        }else{
+            String className = classSymbol.getQualifiedName().toString();
+            if(className.equals("ceylon.language.Void")){
+                // ceylon.language.Void has no super type
+            }else if(className.equals("java.lang.Object")){
+                // we pretend its superclass is something else, but note that in theory we shouldn't 
+                // be seeing j.l.Object at all due to unerasure
+                extendedType = getType("ceylon.language.IdentifiableObject", klass);
+            }else{
+                // now deal with type erasure, avoid having Object as superclass
+                String superClassName = superClass.tsym.getQualifiedName().toString();
+                if(superClassName.equals("java.lang.Object")){
+                    // FIXME: deal with @TypeInfo
+                    extendedType = getType("ceylon.language.IdentifiableObject", klass);
+                }else{
+                    extendedType = getType(superClass, klass);
+                }
+            }
+        }
+        if(extendedType != null)
+            klass.setExtendedType(extendedType);
+    }
+
     private void setParameters(Functional klass, MethodSymbol methodSymbol) {
         ParameterList parameters = new ParameterList();
         klass.addParameterList(parameters);
