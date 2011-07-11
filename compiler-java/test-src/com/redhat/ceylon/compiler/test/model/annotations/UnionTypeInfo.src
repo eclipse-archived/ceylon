@@ -1,0 +1,100 @@
+package com.redhat.ceylon.compiler.test.model.annotations;
+
+class Foo extends Object {
+    
+    Foo() {
+    }
+}
+class Bar extends Object {
+    
+    Bar() {
+    }
+}
+class UnionTypeInfo extends Object {
+    private final Object sharedAttr;
+    
+    Object getGetter() {
+        return new Foo();
+    }
+    
+    void setGetter(Object getter) {
+    }
+    
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("com.redhat.ceylon.compiler.test.model.annotations.Foo|com.redhat.ceylon.compiler.test.model.annotations.Bar")
+    Object getSharedGetter() {
+        return new Foo();
+    }
+    
+    void setSharedGetter(Object sharedGetter) {
+    }
+    
+    private final Object method(final Object methodParam) {
+        final Object val = new Foo();
+        return val;
+    }
+    
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("com.redhat.ceylon.compiler.test.model.annotations.Foo|com.redhat.ceylon.compiler.test.model.annotations.Bar")
+    public final Object sharedMethod(@.com.redhat.ceylon.compiler.metadata.java.Name("methodParam")
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("com.redhat.ceylon.compiler.test.model.annotations.Foo|com.redhat.ceylon.compiler.test.model.annotations.Bar")
+    final Object methodParam) {
+        final Object val = new Foo();
+        return val;
+    }
+    
+    UnionTypeInfo(@.com.redhat.ceylon.compiler.metadata.java.Name("param")
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("com.redhat.ceylon.compiler.test.model.annotations.Foo|com.redhat.ceylon.compiler.test.model.annotations.Bar")
+    Object param) {
+        final Object attr;
+        this.sharedAttr = new Foo();
+    }
+    
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("com.redhat.ceylon.compiler.test.model.annotations.Foo|com.redhat.ceylon.compiler.test.model.annotations.Bar")
+    public final Object getSharedAttr() {
+        return this.sharedAttr;
+    }
+}
+public class SharedUnionTypeInfo extends Object {
+    
+    public SharedUnionTypeInfo(@.com.redhat.ceylon.compiler.metadata.java.Name("param")
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("com.redhat.ceylon.compiler.test.model.annotations.Foo|com.redhat.ceylon.compiler.test.model.annotations.Bar")
+    Object param) {
+    }
+}
+@com.redhat.ceylon.compiler.metadata.java.Attribute
+@com.redhat.ceylon.compiler.metadata.java.Ceylon
+final class toplevelAttribute {
+    private static final Object value;
+    
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("com.redhat.ceylon.compiler.test.model.annotations.Foo|com.redhat.ceylon.compiler.test.model.annotations.Bar")
+    static Object getToplevelAttribute() {
+        return value;
+    }
+}
+@com.redhat.ceylon.compiler.metadata.java.Attribute
+@com.redhat.ceylon.compiler.metadata.java.Ceylon
+public final class sharedToplevelAttribute {
+    private static final Object value;
+    
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("com.redhat.ceylon.compiler.test.model.annotations.Foo|com.redhat.ceylon.compiler.test.model.annotations.Bar")
+    public static Object getSharedToplevelAttribute() {
+        return value;
+    }
+}
+class toplevelMethod extends Object {
+    
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("com.redhat.ceylon.compiler.test.model.annotations.Foo|com.redhat.ceylon.compiler.test.model.annotations.Bar")
+    static Object run(@.com.redhat.ceylon.compiler.metadata.java.Name("param")
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("com.redhat.ceylon.compiler.test.model.annotations.Foo|com.redhat.ceylon.compiler.test.model.annotations.Bar")
+    final Object param) {
+        return new Foo();
+    }
+}
+public class sharedToplevelMethod extends Object {
+    
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("com.redhat.ceylon.compiler.test.model.annotations.Foo|com.redhat.ceylon.compiler.test.model.annotations.Bar")
+    public static Object run(@.com.redhat.ceylon.compiler.metadata.java.Name("param")
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("com.redhat.ceylon.compiler.test.model.annotations.Foo|com.redhat.ceylon.compiler.test.model.annotations.Bar")
+    final Object param) {
+        return new Foo();
+    }
+}
