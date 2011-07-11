@@ -884,6 +884,16 @@ public class ExpressionVisitor extends AbstractVisitor {
         if (paramType.getDeclaration()==tp) {
             addToUnion(inferredTypes, argType);
         }
+        else if (paramType.getDeclaration() instanceof UnionType) {
+            for (ProducedType ct: paramType.getDeclaration().getCaseTypes()) {
+                inferTypeArg(tp, ct.substitute(paramType.getTypeArguments()), argType, inferredTypes);
+            }
+        }
+        else if (argType.getDeclaration() instanceof UnionType) {
+            for (ProducedType ct: argType.getDeclaration().getCaseTypes()) {
+                inferTypeArg(tp, paramType, ct.substitute(paramType.getTypeArguments()), inferredTypes);
+            }
+        }
         else {
             ProducedType st = argType.getSupertype(paramType.getDeclaration());
             if (st!=null) {
