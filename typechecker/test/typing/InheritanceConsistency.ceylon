@@ -1,4 +1,4 @@
-class InheritanceAndFormal() {
+class InheritanceConsistency() {
     interface Named {
         shared formal String name;
         shared String nick() { return name; }
@@ -64,11 +64,11 @@ class InheritanceAndFormal() {
 
     //avoid parallel member definition in a class hierarchy
     interface ActualA {
-        shared default String hello { return "Hi" }
+        shared default String hello { return "Hi"; }
     }
 
     interface ActualB {
-        shared default String hello { return "Bonjour" }
+        shared default String hello { return "Bonjour"; }
     }
 
     @error //may not inherit two declarations with the same name that do not share a common supertype
@@ -79,11 +79,11 @@ class InheritanceAndFormal() {
         shared formal String hello;
     }
     interface ActualE satisfies ActualD {
-        shared actual default String hello { return "Hi" }
+        shared actual default String hello { return "Hi"; }
     }
 
     interface ActualF satisfies ActualD {
-        shared actual default String hello { return "Bonjour" }
+        shared actual default String hello { return "Bonjour"; }
     }
 
     @error //inherit two declarations with the same name (from same common ancestor but do not override)
@@ -91,6 +91,6 @@ class InheritanceAndFormal() {
     }
 
     class ActualH() satisfies ActualE & ActualF {
-        shared actual String hello { return "Wazza" }
+        shared actual String hello { return "Wazza"; }
     }
 }
