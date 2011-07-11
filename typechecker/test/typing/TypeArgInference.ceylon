@@ -59,5 +59,9 @@ class TypeArgInference() {
     @type["Sequence<Sequence<Integer>>"] value ints = {{-1}};
     @type["Integer"] value i = corner(ints);
     @type["Integer"] value ii = corner { matrix = ints; };
+    
+    T method<T>(String|Sequence<T> s) { throw; }
+    @type["String"] method({"hello"});
+    @type["Bottom"] method("hello");
 
 }
