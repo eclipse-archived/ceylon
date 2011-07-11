@@ -1,0 +1,15 @@
+package com.redhat.ceylon.compiler.test.expression.operator;
+
+class LogicalOp extends Object {
+    
+    public final Boolean m() {
+        final Boolean b1 = ceylon.language.$true.getTrue();
+        final Boolean b2 = ceylon.language.$false.getFalse();
+        final Boolean b3 = Boolean.instance(b1.booleanValue() && b2.booleanValue());
+        final Boolean b4 = Boolean.instance(b2.booleanValue() || b3.booleanValue());
+        return ceylon.language.$true.getTrue();
+    }
+    
+    LogicalOp() {
+    }
+}
