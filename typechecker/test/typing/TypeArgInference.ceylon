@@ -39,7 +39,7 @@ class TypeArgInference() {
     @error first("ullo", "ullo", "ullo");
     @error first { u="hi"; };
     
-    /*T? firstElem<T>(T[]? sequence) {
+    T? firstElem<T>(T[]? sequence) {
         if (exists sequence) {
             return sequence.first;
         }
@@ -48,14 +48,14 @@ class TypeArgInference() {
         }
     }
     
-    String[]? strings = {"hello"};
-    String? s = firstElem(strings);*/
+    @type["Nothing|Empty|Sequence<String>"] String[]? strings = {"hello", "goodbye"};
+    @type["Nothing|String"] value s = firstElem(strings);
 
     T corner<T>(Sequence<Sequence<T>> sequence) {
         return sequence.first.first;
     }
     
-    value ints = {{-1}};
-    Integer i = corner(ints);
+    @type["Sequence<Sequence<Integer>>"] value ints = {{-1}};
+    @type["Integer"] value i = corner(ints);
 
 }
