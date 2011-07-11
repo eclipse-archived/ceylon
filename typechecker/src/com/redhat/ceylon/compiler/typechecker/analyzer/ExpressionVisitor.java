@@ -798,7 +798,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         else if (pr instanceof Tree.MemberOrTypeExpression) {
             Declaration dec = pr.getDeclaration();
             Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) pr;
-            if ( mte.getTarget()==null && dec!=null ) {
+            if ( mte.getTarget()==null && dec!=null && mte.getTypeArgumentList()==null ) {
                 List<ProducedType> typeArgs = getInferedTypeArguments(that, (Functional) dec);
                 if (pr instanceof Tree.BaseTypeExpression) {
                     visitBaseTypeExpression((Tree.BaseTypeExpression) pr, (TypeDeclaration) dec, typeArgs, null);
@@ -849,7 +849,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         for (Tree.NamedArgument arg: args.getNamedArguments()) {
             ProducedType type = null;
             if (arg instanceof Tree.SpecifiedArgument) {
-                Tree.Expression value = ((Tree.SpecifiedArgument)arg).getSpecifierExpression().getExpression();
+                Tree.Expression value = ((Tree.SpecifiedArgument) arg).getSpecifierExpression().getExpression();
                 type = value.getTypeModel();
             }
             else if (arg instanceof Tree.TypedArgument) {
@@ -869,9 +869,30 @@ public class ExpressionVisitor extends AbstractVisitor {
             Tree.PositionalArgumentList args, List<ProducedType> inferredTypes) {
         for (int i=0; i<parameters.getParameters().size(); i++) {
             Parameter parameter = parameters.getParameters().get(i);
-            if (parameter.getType().getDeclaration()==tp && args.getPositionalArguments().size()>i) {
-                Tree.Expression value = args.getPositionalArguments().get(i).getExpression();
-                addToUnion(inferredTypes, value.getTypeModel());
+            if (args.getPositionalArguments().size()>i) {
+                ProducedType argType = args.getPositionalArguments().get(i)
+                        .getExpression().getTypeModel();
+                if (argType!=null) {
+                    inferTypeArg(tp, parameter.getType(), argType, inferredTypes);
+                }
+            }
+        }
+    }
+
+    private void inferTypeArg(TypeParameter tp, ProducedType paramType,
+            ProducedType argType, List<ProducedType> inferredTypes) {
+        if (paramType.getDeclaration()==tp) {
+            addToUnion(inferredTypes, argType);
+        }
+        else {
+            ProducedType st = argType.getSupertype(paramType.getDeclaration());
+            if (st!=null) {
+                for (int j=0; j<paramType.getTypeArgumentList().size(); j++) {
+                    if (st.getTypeArgumentList().size()>j) {
+                        inferTypeArg(tp, paramType.getTypeArgumentList().get(j), 
+                                st.getTypeArgumentList().get(j), inferredTypes);
+                    }
+                }
             }
         }
     }
