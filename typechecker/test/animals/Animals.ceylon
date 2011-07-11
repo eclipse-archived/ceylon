@@ -39,14 +39,13 @@ void test() {
         a.eat(f);
     }
     feed(Wolf(), Meat());
-    feed<Food>(Devil(), Meat());//TODO:remove explicit type arg once we fix the type inference algo!
+    feed(Devil(), Meat());
     @error feed(Cow(), Meat());
     void feedAutomatically<ActualFood>(Animal<ActualFood> a) 
             given ActualFood satisfies Food {
         a.eat(a.diet());
     }
-    //TODO:remove explicit type arg once we fix the type inference algo!
-    feedAutomatically<Meat>(Wolf());
-    feedAutomatically<Grass>(Cow());
-    feedAutomatically<Food>(Devil());
+    feedAutomatically(Wolf());
+    feedAutomatically(Cow());
+    feedAutomatically(Devil());
 }
