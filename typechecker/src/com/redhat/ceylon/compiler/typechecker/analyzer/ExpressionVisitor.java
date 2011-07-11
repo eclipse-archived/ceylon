@@ -601,12 +601,22 @@ public class ExpressionVisitor extends AbstractVisitor {
     private void setType(Tree.LocalModifier local, 
             Tree.Block block, 
             Tree.TypedDeclaration that) {
+        //TODO: search for return statements
+        //      in the whole block and form
+        //      a union type from them
         int s = block.getStatements().size();
         Tree.Statement d = s==0 ? null : block.getStatements().get(s-1);
-        if (d!=null && (d instanceof Tree.Return)) {
-            ProducedType t = ((Tree.Return) d).getExpression().getTypeModel();
-            local.setTypeModel(t);
-            that.getDeclarationModel().setType(t);
+        if (d!=null) { 
+            if (d instanceof Tree.Return) {
+                ProducedType rt = ((Tree.Return) d).getExpression().getTypeModel();
+                local.setTypeModel(rt);
+                that.getDeclarationModel().setType(rt);
+            }
+            else {
+                ProducedType bt = new BottomType().getType();
+                local.setTypeModel(bt);
+                that.getDeclarationModel().setType(bt);
+            }
         }
         else {
             local.addError("could not infer type of: " + 

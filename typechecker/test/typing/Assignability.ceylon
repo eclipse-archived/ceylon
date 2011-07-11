@@ -330,4 +330,6 @@ class Assignability() {
         for (Integer i -> Integer j in map) {}
     }
     
+    function foo() { throw; }
+    @type["Bottom"] foo();
 }
