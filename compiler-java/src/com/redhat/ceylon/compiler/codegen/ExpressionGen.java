@@ -12,15 +12,18 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AndOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BinaryOperatorExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.OrOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequenceEnumeration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.util.List;
@@ -68,6 +71,10 @@ public class ExpressionGen extends GenPart {
             }
 
             public void visit(Tree.EntryOp op) {
+                result = convert(op);
+            }
+
+            public void visit(Tree.LogicalOp op) {
                 result = convert(op);
             }
 
@@ -358,6 +365,26 @@ public class ExpressionGen extends GenPart {
         return result;
     }
 
+    private JCExpression convert(Tree.LogicalOp op) {
+        JCExpression result = null;
+        JCExpression left = convertExpression(op.getLeftTerm());
+        JCExpression right = convertExpression(op.getRightTerm());
+        JCExpression arg1 = gen.makeSelect("Boolean", "instance");
+        JCExpression field1 = at(op.getLeftTerm()).Apply(null, makeSelect(left, "booleanValue"), List.<JCExpression>nil());
+        JCExpression field2 = at(op.getRightTerm()).Apply(null, makeSelect(right, "booleanValue"), List.<JCExpression>nil());
+
+        JCBinary jcb = null;
+        if (op instanceof AndOp) {
+            jcb = at(op).Binary(JCTree.AND, field1, field2);
+        }
+        if (op instanceof OrOp) {
+            jcb = at(op).Binary(JCTree.OR, field1, field2);
+        }
+        List<JCExpression> arg2= List.of((JCExpression)jcb);
+        result = at(op).Apply(null, arg1, arg2);
+        return result;
+    }
+    
     JCExpression convert(Tree.PostfixOperatorExpression expr) {
         String methodName;
         boolean successor;
