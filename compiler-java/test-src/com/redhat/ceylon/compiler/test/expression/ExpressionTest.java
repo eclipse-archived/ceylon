@@ -117,6 +117,10 @@ public class ExpressionTest extends CompilerTest {
     // Operators
     
     @Test
+    public void testLogialOp(){
+        compareWithJavaSource("operator/LogicalOp");
+    }
+    @Test
     public void testNumericOp(){
         compareWithJavaSource("operator/NumericOp");
     }
