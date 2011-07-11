@@ -858,9 +858,7 @@ public class ExpressionVisitor extends AbstractVisitor {
             }
             if (type!=null) {
                 Parameter parameter = getMatchingParameter(parameters, arg);
-                if (parameter.getType().getDeclaration()==tp) {
-                    addToUnion(inferredTypes, type);
-                }
+                inferTypeArg(tp, parameter.getType(), type, inferredTypes);
             }
         }
     }

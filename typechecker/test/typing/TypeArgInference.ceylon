@@ -50,12 +50,14 @@ class TypeArgInference() {
     
     @type["Nothing|Empty|Sequence<String>"] String[]? strings = {"hello", "goodbye"};
     @type["Nothing|String"] value s = firstElem(strings);
+    @type["Nothing|String"] value ss = firstElem { sequence=strings; };
 
-    T corner<T>(Sequence<Sequence<T>> sequence) {
-        return sequence.first.first;
+    T corner<T>(Sequence<Sequence<T>> matrix) {
+        return matrix.first.first;
     }
     
     @type["Sequence<Sequence<Integer>>"] value ints = {{-1}};
     @type["Integer"] value i = corner(ints);
+    @type["Integer"] value ii = corner { matrix = ints; };
 
 }
