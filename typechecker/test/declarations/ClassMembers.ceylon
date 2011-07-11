@@ -23,6 +23,10 @@ abstract class Classes() {
         return x.uppercase;
     }
     
+    String str {
+        return super.string;
+    }
+    
     printLine("Hi!");
     
     @error x = 0;

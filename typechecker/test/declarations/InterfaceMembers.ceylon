@@ -22,6 +22,10 @@ interface Interfaces {
         return x.uppercase;
     }
     
+    String str {
+        @error return super.string;
+    }
+    
     @error printLine("Hi!");
     
     interface NestedInterface {
