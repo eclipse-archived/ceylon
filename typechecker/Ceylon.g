@@ -101,7 +101,7 @@ tokens {
     BASE_MEMBER_EXPRESSION;
     QUALIFIED_MEMBER_EXPRESSION;
     QUALIFIED_TYPE_EXPRESSION;
-    SUBTYPE_EXPRESSION;
+    //SUBTYPE_EXPRESSION;
     SUPER_TYPE;
     LAMBDA;
     SYNTHETIC_VARIABLE;
@@ -313,7 +313,7 @@ directive
     | throwDirective
     | breakDirective
     | continueDirective
-    | retryDirective
+    //| retryDirective
     ;
 
 returnDirective
@@ -332,9 +332,9 @@ continueDirective
     : 'continue'^
     ;
 
-retryDirective
+/*retryDirective
     : 'retry'^
-    ;
+    ;*/
 
 objectDeclaration
     : OBJECT_DEFINITION memberName extendedType? satisfiedTypes? (classBody|';')
@@ -518,7 +518,7 @@ abbreviatedType
 type
     : (ot=typeNameWithArguments -> ^(BASE_TYPE $ot))
       (MEMBER_OP it=typeNameWithArguments -> ^(QUALIFIED_TYPE[$MEMBER_OP] $type $it))*
-    | SUBTYPE
+    //| SUBTYPE
     /*| parameterName '.' 'subtype' abbreviation*
     -> ^(TYPE parameterName 'subtype' abbreviation*)*/
     ;
@@ -675,7 +675,7 @@ interpolatedExpressionStart
     | LIDENTIFIER 
     | UIDENTIFIER 
     | selfReference 
-    | 'subtype'
+    //| 'subtype'
     | nonstringLiteral
     | prefixOperator
     ;
@@ -811,8 +811,8 @@ base
     -> ^(BASE_TYPE_EXPRESSION typeReference)
     | memberReference
     -> ^(BASE_MEMBER_EXPRESSION memberReference)
-    | 'subtype' 
-    -> ^(SUBTYPE_EXPRESSION)
+    //| 'subtype' 
+    //-> ^(SUBTYPE_EXPRESSION)
     | (parametersStart) => lambda
     | parExpression
     ;
@@ -851,8 +851,8 @@ typeInExpressionStart
 //type argument list
 typeArgumentsStart
     : '<' 
-      (UIDENTIFIER ('.' UIDENTIFIER)* | 'subtype') 
-      (DEFAULT_OP|ARRAY)*
+      UIDENTIFIER ('.' UIDENTIFIER)* /*| 'subtype')*/ (DEFAULT_OP|ARRAY)*
+      ('|' UIDENTIFIER ('.' UIDENTIFIER)* /*| 'subtype')*/ (DEFAULT_OP|ARRAY)*)*
       ('>'|'<'|','|'...')
     ;
 
@@ -1564,9 +1564,9 @@ OUT
     :   'out'
     ;
 
-SUBTYPE
+/*SUBTYPE
     :   'subtype'
-    ;
+    ;*/
 
 THROW
     :   'throw'
@@ -1576,9 +1576,9 @@ TRY_CLAUSE
     :   'try'
     ;
 
-RETRY
+/*RETRY
     :   'retry'
-    ;
+    ;*/
 
 VOID_MODIFIER
     :   'void'
