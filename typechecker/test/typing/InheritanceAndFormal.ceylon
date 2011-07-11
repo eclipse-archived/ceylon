@@ -42,7 +42,6 @@ class InheritanceAndFormal() {
     }
 
     abstract class C() {
-        shared Boolean d = true;
     }
 
     //does not implement A.a and A.d
@@ -62,5 +61,18 @@ class InheritanceAndFormal() {
     interface CycleD satisfies CycleC {}
     interface CycleE satisfies CycleD {}
     @error class CycleF() satisfies CycleE {}
+
+    //avoid parallel member definition in a class hierarchy
+    interface ActualA {
+        shared default String hello { return "Hi" }
+    }
+
+    interface ActualB {
+        shared default String hello { return "Bonjour" }
+    }
+
+    @error //may not inherit two declarations with the same name that do not share a common supertype
+    class ActualC() satisfies ActualA & ActualB {
+    }
 
 }

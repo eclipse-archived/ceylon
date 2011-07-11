@@ -48,32 +48,94 @@ public class TypeHierarchyVisitor extends Visitor {
         boolean concrete = !classOrInterface.isAbstract() && !classOrInterface.isFormal();
         if (concrete) {
             List<Type> orderedTypes = sortDAGAndBuildMetadata(classOrInterface, that);
-            int size = orderedTypes.size();
-            Type aggregation = new Type();
-            for (int index = size-1;index>=0;index--) {
-                Type current = orderedTypes.get(index);
-                for (Type.Members currentMembers:current.membersByName.values()) {
-                    Type.Members aggregateMembers = aggregation.membersByName.get(currentMembers.name);
-                    if (aggregateMembers==null) {
-                        aggregateMembers = new Type.Members();
-                        aggregateMembers.name = currentMembers.name;
-                        aggregation.membersByName.put(currentMembers.name,aggregateMembers);
+            checkForFormalsNotImplemented(that, orderedTypes);
+            checkForDoubleMemberInheritanceWoCommonAncestor(that, orderedTypes);
+        }
+    }
+
+    private void checkForDoubleMemberInheritanceWoCommonAncestor(Tree.ClassOrInterface that, List<Type> orderedTypes) {
+        Type aggregateType = new Type();
+        for(Type currentType : orderedTypes) {
+            for (Type.Members currentTypeMembers:currentType.membersByName.values()) {
+                String name = currentTypeMembers.name;
+                Type.Members aggregateMembers = aggregateType.membersByName.get(name);
+                if (aggregateMembers==null) {
+                    //not accumulated yet, no need to check
+                    aggregateMembers = new Type.Members();
+                    aggregateMembers.name = name;
+                    aggregateType.membersByName.put(name,aggregateMembers);
+                }
+                else {
+                    boolean sameMemberInherited = currentType.declaration.getInheritedMembers(name).size()!=0;
+                    if (!sameMemberInherited) {
+                        StringBuilder sb = new StringBuilder("may not inherit two declarations with the same name that do not share a common supertype: ");
+                        sb.append("[").append(currentType.declaration.getQualifiedNameString()).append("#").append(name).append("]");
+                        String otherTypeName = getTypeDeclarationFor(aggregateMembers);
+                        sb.append(" and [").append(otherTypeName).append("#").append(name).append("]");
+                        that.addError(sb.toString());
                     }
-                    aggregateMembers.nonFormalsNonDefaults.addAll(currentMembers.nonFormalsNonDefaults);
-                    aggregateMembers.actuals.addAll(currentMembers.actuals);
-                    aggregateMembers.formals.addAll(currentMembers.formals);
-                    aggregateMembers.defaults.addAll(currentMembers.defaults);
                 }
-            }
-            //verify hierarchy sanity
-            for (Type.Members members:aggregation.membersByName.values()) {
-                if (members.formals.size()!=0&&members.actuals.size()==0) {
-                    that.addError("formal member " + members.name + " not implemented in class hierarchy");
-                }
+                aggregateMembers.nonFormalsNonDefaults.addAll(currentTypeMembers.nonFormalsNonDefaults);
+                aggregateMembers.actuals.addAll(currentTypeMembers.actuals);
+                aggregateMembers.formals.addAll(currentTypeMembers.formals);
+                aggregateMembers.defaults.addAll(currentTypeMembers.defaults);
             }
         }
     }
 
+    private String getTypeDeclarationFor(Type.Members aggregateMembers) {
+        Declaration memberDeclaration = getMemberDeclaration(aggregateMembers);
+        return memberDeclaration == null ? null : memberDeclaration.getDeclaringType(memberDeclaration).getDeclaration().getQualifiedNameString();
+    }
+
+    private Declaration getMemberDeclaration(Type.Members aggregateMembers) {
+        if (!aggregateMembers.formals.isEmpty()) {
+            return aggregateMembers.formals.iterator().next();
+        }
+        if (!aggregateMembers.defaults.isEmpty()) {
+            return aggregateMembers.defaults.iterator().next();
+        }
+        if (!aggregateMembers.actuals.isEmpty()) {
+            return aggregateMembers.actuals.iterator().next();
+        }
+        if (!aggregateMembers.nonFormalsNonDefaults.isEmpty()) {
+            return aggregateMembers.nonFormalsNonDefaults.iterator().next();
+        }
+        return null;
+    }
+
+    private void checkForFormalsNotImplemented(Tree.ClassOrInterface that, List<Type> orderedTypes) {
+        Type aggregation = buildAggregatedType(orderedTypes);
+        for (Type.Members members:aggregation.membersByName.values()) {
+            if (members.formals.size()!=0&&members.actuals.size()==0) {
+                that.addError("formal member " + members.name + " not implemented in class hierarchy");
+            }
+        }
+    }
+
+    //accumulate all members of a type hierarchy
+    private Type buildAggregatedType(List<Type> orderedTypes) {
+        int size = orderedTypes.size();
+        Type aggregation = new Type();
+        for (int index = size-1;index>=0;index--) {
+            Type current = orderedTypes.get(index);
+            for (Type.Members currentMembers:current.membersByName.values()) {
+                Type.Members aggregateMembers = aggregation.membersByName.get(currentMembers.name);
+                if (aggregateMembers==null) {
+                    aggregateMembers = new Type.Members();
+                    aggregateMembers.name = currentMembers.name;
+                    aggregation.membersByName.put(currentMembers.name,aggregateMembers);
+                }
+                aggregateMembers.nonFormalsNonDefaults.addAll(currentMembers.nonFormalsNonDefaults);
+                aggregateMembers.actuals.addAll(currentMembers.actuals);
+                aggregateMembers.formals.addAll(currentMembers.formals);
+                aggregateMembers.defaults.addAll(currentMembers.defaults);
+            }
+        }
+        return aggregation;
+    }
+
+    //sort type hierarchy from most abstract to most concrete
     private List<Type> sortDAGAndBuildMetadata(TypeDeclaration declaration, Node errorReporter) {
         //Apply a partial sort on the class hierarchy which is a Directed Acyclic Graph (DAG)
         // with subclasses pointing to superclasses or interfaces
