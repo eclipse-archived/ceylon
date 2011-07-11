@@ -17,7 +17,11 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
- * Check that all former members of superclasses and interfaces are implemented in concrete classes
+ * Checks associated to the traversal of the hierarchy:
+ * - detect circularity in inheritance
+ * - All formal must be implemented as actual by concrete classes
+ * - may not inherit two declarations with the same name that do not share a common supertype
+ * - may not inherit two declarations with the same name unless redefined in subclass
  *
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
@@ -45,12 +49,12 @@ public class TypeHierarchyVisitor extends Visitor {
         super.visit(that);
         final ClassOrInterface classOrInterface = that.getDeclarationModel();
         boolean concrete = !classOrInterface.isAbstract() && !classOrInterface.isFormal();
+        List<Type> orderedTypes = sortDAGAndBuildMetadata(classOrInterface, that);
         if (concrete) {
-            List<Type> orderedTypes = sortDAGAndBuildMetadata(classOrInterface, that);
             checkForFormalsNotImplemented(that, orderedTypes);
-            checkForDoubleMemberInheritanceWoCommonAncestor(that, orderedTypes);
             checkForDoubleMemberInheritanceNotOverridden(that, orderedTypes);
         }
+        checkForDoubleMemberInheritanceWoCommonAncestor(that, orderedTypes);
     }
 
     private void checkForDoubleMemberInheritanceWoCommonAncestor(Tree.ClassOrInterface that, List<Type> orderedTypes) {
@@ -225,7 +229,9 @@ public class TypeHierarchyVisitor extends Visitor {
         Type type = getOrBuildType(declaration);
 
         stackOfProcessedType.add(declaration);
-        visitDAGNode(declaration.getExtendedTypeDeclaration(), sortedDag, visited, stackOfProcessedType, errorReporter);
+        if (declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+            visitDAGNode(declaration.getExtendedTypeDeclaration(), sortedDag, visited, stackOfProcessedType, errorReporter);
+        }
         for (TypeDeclaration superSatisfiedType : declaration.getSatisfiedTypeDeclarations()) {
             visitDAGNode(superSatisfiedType, sortedDag, visited, stackOfProcessedType, errorReporter);
         }
