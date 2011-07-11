@@ -10,15 +10,18 @@ shared interface Correspondence<in Key, out Item>
         return item(key) exists;
     }
     
-    shared default object keys satisfies Category {
-        shared actual Boolean contains(Object key) {
-            if (is Key key) {
-                return defines(key);
-            }
-            else {
-                return false;
+    shared default Category keys {
+        object keys satisfies Category {
+            shared actual Boolean contains(Object key) {
+                if (is Key key) {
+                    return defines(key);
+                }
+                else {
+                    return false;
+                }
             }
         }
+        return keys;
     }
     
     shared default Boolean definesEvery(Key... keys) {

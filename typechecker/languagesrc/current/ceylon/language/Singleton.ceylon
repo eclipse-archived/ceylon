@@ -27,7 +27,7 @@ shared class Singleton<Element>(Element element)
     shared actual Sequence<Element> clone {
         return this;
     }
-    shared actual default object iterator 
+    shared actual object iterator 
             extends Object()
             satisfies Iterator<Element> {
         shared actual Element head { 
