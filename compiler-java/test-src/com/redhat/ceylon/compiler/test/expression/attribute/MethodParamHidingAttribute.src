@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
-class MethodParamHidingAttribute extends Object {
+class MethodParamHidingAttribute {
     
     private final Boolean m(final Boolean b) {
         return b;

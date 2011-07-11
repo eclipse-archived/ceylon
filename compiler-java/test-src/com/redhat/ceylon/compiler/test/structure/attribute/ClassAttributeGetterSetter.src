@@ -1,19 +1,19 @@
 package com.redhat.ceylon.compiler.test.structure.attribute;
 
-class ClassAttributeGetterSetter extends Object {
+class ClassAttributeGetterSetter {
     
     String getF() {
         return .ceylon.language.String.instance("");
     }
     
-    void setF(Object f) {
+    void setF(.java.lang.Object f) {
     }
     
     String getF2() {
         return .ceylon.language.String.instance("");
     }
     
-    void setF2(Object f2) {
+    void setF2(.java.lang.Object f2) {
     }
     
     ClassAttributeGetterSetter() {

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.structure.klass;
 
-abstract class AbstractFormal extends Object {
+abstract class AbstractFormal {
     
     public final void m() {
         test();

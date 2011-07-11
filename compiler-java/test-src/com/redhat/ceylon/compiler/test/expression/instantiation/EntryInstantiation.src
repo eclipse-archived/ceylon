@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.test.expression.instantiation;
 
-class EntryInstantiation extends Object {
+class EntryInstantiation {
     
-    public final Object m() {
+    public final .java.lang.Object m() {
         return new .ceylon.language.Entry<Natural, String>(.ceylon.language.Natural.instance(1L), .ceylon.language.String.instance("a"));
     }
     

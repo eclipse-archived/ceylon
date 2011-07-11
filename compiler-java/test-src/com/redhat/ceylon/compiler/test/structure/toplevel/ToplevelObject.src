@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.structure.toplevel;
 
-final class x extends Object {
+final class x {
     
     private final void y() {
     }

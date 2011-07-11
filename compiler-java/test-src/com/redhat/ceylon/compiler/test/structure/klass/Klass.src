@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.structure.klass;
 
-class Klass extends Object {
+class Klass {
     
     Klass() {
     }

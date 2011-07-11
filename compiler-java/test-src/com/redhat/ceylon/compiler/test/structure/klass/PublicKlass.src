@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.structure.klass;
 
-public class PublicKlass extends Object {
+public class PublicKlass {
     
     public PublicKlass() {
     }

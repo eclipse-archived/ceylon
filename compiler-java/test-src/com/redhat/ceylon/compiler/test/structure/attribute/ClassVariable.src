@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.structure.attribute;
 
-class ClassVariable extends Object {
+class ClassVariable {
     private String publicvar;
     private String capturedvar;
     

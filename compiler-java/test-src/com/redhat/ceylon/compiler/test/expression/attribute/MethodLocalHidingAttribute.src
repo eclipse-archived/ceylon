@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
-class MethodLocalHidingAttribute extends Object {
+class MethodLocalHidingAttribute {
     
     private final Boolean m() {
         final Boolean b = ceylon.language.$false.getFalse();

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
-class AttributeAssign extends Object {
+class AttributeAssign {
     private Boolean b;
     private Boolean b2;
     

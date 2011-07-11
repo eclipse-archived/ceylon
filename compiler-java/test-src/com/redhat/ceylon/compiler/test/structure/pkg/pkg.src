@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.structure.pkg;
 
-public class f extends Object {
+public class f {
     
     public static void run() {
     }

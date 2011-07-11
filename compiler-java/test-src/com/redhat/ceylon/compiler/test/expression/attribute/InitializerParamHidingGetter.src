@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
-class InitializerParamHidingGetter extends Object {
+class InitializerParamHidingGetter {
     private final Boolean b;
     
     Boolean getB() {

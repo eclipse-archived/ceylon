@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.expression.selfref;
 
-class ThisReference extends Object {
+class ThisReference {
     
     public final ThisReference m() {
         return this;

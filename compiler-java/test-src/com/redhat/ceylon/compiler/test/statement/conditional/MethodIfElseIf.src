@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.statement.conditional;
 
-class MethodIfElseIf extends Object {
+class MethodIfElseIf {
     
     private final Natural m() {
         if (ceylon.language.$true.getTrue() == ceylon.language.$true.getTrue()) {

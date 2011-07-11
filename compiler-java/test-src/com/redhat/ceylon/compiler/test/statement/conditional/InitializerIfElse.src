@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.statement.conditional;
 
-class InitializerIfElse extends Object {
+class InitializerIfElse {
     
     InitializerIfElse() {
         if (ceylon.language.$true.getTrue() == ceylon.language.$true.getTrue()) {

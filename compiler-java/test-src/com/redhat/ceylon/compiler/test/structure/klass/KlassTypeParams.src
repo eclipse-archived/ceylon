@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.structure.klass;
 
-class KlassTypeParams<U, V> extends Object {
+class KlassTypeParams<U, V> {
     
     KlassTypeParams() {
     }

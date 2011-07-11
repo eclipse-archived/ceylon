@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.statement.attribute;
 
-class MethodVariableWithInitializer extends Object {
+class MethodVariableWithInitializer {
     
     public final void m() {
         String f;

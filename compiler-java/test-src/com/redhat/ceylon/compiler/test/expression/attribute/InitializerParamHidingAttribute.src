@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
-class InitializerParamHidingAttribute extends Object {
+class InitializerParamHidingAttribute {
     
     InitializerParamHidingAttribute(Boolean b) {
         b.equals(ceylon.language.$true.getTrue());

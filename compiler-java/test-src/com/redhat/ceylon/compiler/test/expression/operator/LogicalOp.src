@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.expression.operator;
 
-class LogicalOp extends Object {
+class LogicalOp {
     
     public final Boolean m() {
         final Boolean b1 = ceylon.language.$true.getTrue();

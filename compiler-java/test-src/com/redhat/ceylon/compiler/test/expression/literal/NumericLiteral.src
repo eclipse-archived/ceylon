@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.expression.literal;
 
-class NumericLiteral extends Object {
+class NumericLiteral {
     
     public final void m() {
         final Natural n1 = .ceylon.language.Natural.instance(1L);

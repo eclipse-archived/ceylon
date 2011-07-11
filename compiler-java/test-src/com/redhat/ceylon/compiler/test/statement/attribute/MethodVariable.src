@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.statement.attribute;
 
-class MethodVariable extends Object {
+class MethodVariable {
     
     private final void m() {
         String f;

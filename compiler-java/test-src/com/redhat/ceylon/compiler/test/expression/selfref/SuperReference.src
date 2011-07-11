@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.expression.selfref;
 
-class SuperReference extends Object {
+class SuperReference {
     
     public void m(final SuperReferenceChild x) {
         x.test();
