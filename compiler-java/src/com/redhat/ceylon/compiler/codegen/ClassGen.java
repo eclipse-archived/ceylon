@@ -9,7 +9,6 @@ import static com.sun.tools.javac.code.Flags.STATIC;
 import static com.sun.tools.javac.code.TypeTags.VOID;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.codegen.Gen2.Singleton;
@@ -38,9 +37,6 @@ import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
 
 public class ClassGen extends GenPart {
-
-    private static final String[] CEYLON_ANNOTATION = "com.redhat.ceylon.compiler.metadata.java.Ceylon".split("\\.");
-    private static final String[] ATTRIBUTE_ANNOTATION = "com.redhat.ceylon.compiler.metadata.java.Attribute".split("\\.");
 
     class ClassVisitor extends StatementVisitor {
         final ListBuffer<JCVariableDecl> params = new ListBuffer<JCVariableDecl>();
@@ -638,8 +634,8 @@ public class ClassGen extends GenPart {
 
         // Add @Ceylon @Attribute
         builder.classAnnotations(List.of(
-                gen.make().Annotation(gen.makeIdent(ATTRIBUTE_ANNOTATION), List.<JCExpression>nil()),
-                gen.make().Annotation(gen.makeIdent(CEYLON_ANNOTATION), List.<JCExpression>nil())
+                gen.makeAtAttribute(),
+                gen.makeAtCeylon()
         ));
 
         builder.valueAnnotations(gen.makeJavaTypeAnnotations(decl.getDeclarationModel(), gen.actualType(decl)));

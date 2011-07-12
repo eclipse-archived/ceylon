@@ -600,12 +600,20 @@ public class Gen2 {
         return make().Annotation(makeIdent(syms.overrideType), List.<JCExpression> nil());
     }
 
+    public JCAnnotation makeAtCeylon() {
+        return make().Annotation(makeIdent(syms.ceylonAtCeylonType), List.<JCExpression> nil());
+    }
+
     public JCAnnotation makeAtName(String name) {
         return make().Annotation(makeIdent(syms.ceylonAtNameType), List.<JCExpression> of(make().Literal(name)));
     }
 
     public JCAnnotation makeAtType(String name) {
         return make().Annotation(makeIdent(syms.ceylonAtTypeInfoType), List.<JCExpression> of(make().Literal(name)));
+    }
+
+    public JCAnnotation makeAtAttribute() {
+        return make().Annotation(makeIdent(syms.ceylonAtAttributeType), List.<JCExpression> nil());
     }
 
     protected boolean isJavaKeyword(Name name) {
