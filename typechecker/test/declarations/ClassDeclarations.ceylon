@@ -3,8 +3,12 @@ abstract class ClassDeclarations() {
     void use(String s) {}
     
     shared formal String hello;
+    shared formal void greet();
     void sayHello() {
         @error use(hello);
+    }
+    void performGreeting() {
+        @error greet();
     }
     
     void foo() {
@@ -19,6 +23,7 @@ abstract class ClassDeclarations() {
     @error use(goodbye);
     
     @error use(hello);
+    @error greet();
     sayHello();
     
     shared formal String goodbye;
@@ -33,5 +38,9 @@ abstract class ClassDeclarations() {
     void qux() {
         baz();
     }
+    
+    void z() { x(); }
+    shared formal void x();
+    void y() { x(); }
     
 }
