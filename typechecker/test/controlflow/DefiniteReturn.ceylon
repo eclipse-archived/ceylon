@@ -1157,6 +1157,8 @@ interface DefiniteReturn {
         return X();
     }
     
+    class E() extends Exception() {}
+    
     void try1() {
         try {
             return;
@@ -1224,7 +1226,7 @@ interface DefiniteReturn {
         try {
             return;
         }
-        catch (Exception e) {
+        catch (E e) {
             return;
         }
         catch (Exception e) {
@@ -1237,7 +1239,7 @@ interface DefiniteReturn {
         try {
             return;
         }
-        catch (Exception e) {
+        catch (E e) {
         }
         catch (Exception e) {
             return;

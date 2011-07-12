@@ -395,6 +395,8 @@ interface DefiniteAssignment {
         while (testSomething());
     }
     
+    class E() extends Exception() {}
+    
     void try1() {
         variable X x;
         try {
@@ -443,7 +445,7 @@ interface DefiniteAssignment {
         try {
             x := X();
         }
-        catch (Exception e) {
+        catch (E e) {
             x := X();
         }
         catch (Exception e) {
@@ -457,7 +459,7 @@ interface DefiniteAssignment {
         try {
             x := X();
         }
-        catch (Exception e) {
+        catch (E e) {
             x := X();
         }
         catch (Exception e) {

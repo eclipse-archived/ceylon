@@ -471,6 +471,8 @@ interface DefiniteSpecification {
         while (testSomething());
     }
     
+    class E() extends Exception() {}
+    
     void try1() {
         X x;
         try {
@@ -516,7 +518,7 @@ interface DefiniteSpecification {
         try {
             x = X();
         }
-        catch (Exception e) {
+        catch (E e) {
             @error x = X();
         }
         catch (Exception e) {
@@ -530,7 +532,7 @@ interface DefiniteSpecification {
         try {
             x = X();
         }
-        catch (Exception e) {
+        catch (E e) {
             @error x = X();
         }
         catch (Exception e) {
