@@ -1157,4 +1157,79 @@ interface DefiniteReturn {
         return X();
     }
     
+    void tryFinally1() {
+        try {
+        }
+        catch (Exception e) {
+        }
+        finally {
+            return;
+        }
+        @error testSomething();
+    }
+    
+    void tryFinally2() {
+        try {
+        }
+        catch (Exception e) {
+            return;
+        }
+        finally {
+        }
+        testSomething();
+    }
+    
+    void tryCatch1() {
+        try {
+            return;
+        }
+        catch (Exception e) {
+            return;
+        }
+        @error testSomething();
+    }
+    
+    void tryCatch2() {
+        try {
+        }
+        catch (Exception e) {
+            return;
+        }
+        testSomething();
+    }
+    
+    void tryCatch3() {
+        try {
+            return;
+        }
+        catch (Exception e) {
+        }
+        testSomething();
+    }
+    
+    void tryCatchCatch1() {
+        try {
+            return;
+        }
+        catch (Exception e) {
+            return;
+        }
+        catch (Exception e) {
+            return;
+        }
+        @error testSomething();
+    }
+    
+    void tryCatchCatch2() {
+        try {
+            return;
+        }
+        catch (Exception e) {
+        }
+        catch (Exception e) {
+            return;
+        }
+        testSomething();
+    }
+    
 }
