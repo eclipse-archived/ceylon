@@ -222,8 +222,17 @@ public class ClassGen extends GenPart {
             // superclass
             superclass = makeIdent(syms().objectType);
         } else {
-            superclass = gen.makeJavaType(((Tree.AnyClass) cdecl).getDeclarationModel().getExtendedType(), true);
+            superclass = getSuperclass(((Tree.AnyClass) cdecl).getDeclarationModel().getExtendedType());
         }
+        return superclass;
+    }
+
+    private JCTree getSuperclass(ProducedType extendedType) {
+        JCExpression superclass = gen.makeJavaType(extendedType, true);
+        // simplify if we can
+        if(superclass instanceof JCTree.JCFieldAccess
+                && ((JCTree.JCFieldAccess)superclass).sym.type == syms().objectType)
+            superclass = null;
         return superclass;
     }
 
@@ -468,7 +477,7 @@ public class ClassGen extends GenPart {
                 at(decl).Modifiers((method.isShared() ? PUBLIC : 0), List.<JCAnnotation>nil()),
                 generateClassName(decl, method.isToplevel()),
                 List.<JCTypeParameter>nil(),
-                makeIdent("Object"),
+                null,
                 List.<JCExpression>nil(),
                 List.<JCTree>of(meth));
     }
@@ -539,7 +548,7 @@ public class ClassGen extends GenPart {
                 at(def).Modifiers((long) convertObjectDeclFlags(def), visitor.langAnnotations.toList()),
                 name,
                 List.<JCTypeParameter>nil(),
-                gen.makeJavaType(decl.getExtendedType(), true),
+                getSuperclass(decl.getExtendedType()),
                 convertSatisfiedTypes(decl.getSatisfiedTypes()),
                 visitor.defs.toList());
     }

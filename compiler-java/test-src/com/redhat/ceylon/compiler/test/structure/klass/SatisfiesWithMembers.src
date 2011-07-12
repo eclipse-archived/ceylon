@@ -10,7 +10,7 @@ interface SatisfiesWithMembers {
     
     public abstract void setB2(Boolean b2);
 }
-class SatisfiesWithMembersClass extends Object implements SatisfiesWithMembers {
+class SatisfiesWithMembersClass implements SatisfiesWithMembers {
     private final Boolean b;
     private Boolean b2;
     

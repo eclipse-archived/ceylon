@@ -428,7 +428,7 @@ public class Gen2 {
             //   IdentifiableObject, and Bottom result in the Java type Object
             // For any other union type U|V (U nor V is Optional):
             // - The Ceylon type U|V results in the Java type Object
-            return makeIdent("Object");
+            return make.Type(syms.objectType);
         }
         
         JCExpression jt;
@@ -455,7 +455,7 @@ public class Gen2 {
                     if (isSatisfiesOrExtends) {
                         // - The Ceylon type Foo<Void> appearing in an extends or satisfies
                         //   clause results in the Java raw type Foo<Object>
-                        jta = makeIdent("Object");
+                        jta = make.Type(syms.objectType);
                     } else {
                         // - The Ceylon type Foo<Void> appearing anywhere else results in the Java type
                         // - Foo<Object> if Foo<T> is invariant in T
@@ -463,11 +463,11 @@ public class Gen2 {
                         // - Foo<Object> if Foo<T> is contravariant in T
                         TypeParameter tp = tdecl.getTypeParameters().get(idx);
                         if (tp.isContravariant()) {
-                            jta = makeIdent("Object");
+                            jta = make.Type(syms.objectType);
                         } else if (tp.isCovariant()) {
                             jta = make().Wildcard(make().TypeBoundKind(BoundKind.UNBOUND), makeJavaType(ta, false));
                         } else {
-                            jta = makeIdent("Object");
+                            jta = make.Type(syms.objectType);
                         }
                     }
                 } else if (ta.getDeclaration() instanceof BottomType) {

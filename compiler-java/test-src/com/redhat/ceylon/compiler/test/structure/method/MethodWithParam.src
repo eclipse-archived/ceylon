@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.structure.method;
 
-class Method extends Object {
+class Method {
     
     private final void f(final Integer i) {
     }

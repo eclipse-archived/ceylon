@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
-class InitializerParamAccess extends Object {
+class InitializerParamAccess {
     private final Boolean b;
     
     private final Boolean m() {

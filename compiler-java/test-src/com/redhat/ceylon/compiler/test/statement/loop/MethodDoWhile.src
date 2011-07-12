@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.statement.loop;
 
-class MethodDoWhile extends Object {
+class MethodDoWhile {
     
     public final Natural m() {
         do {

@@ -1,5 +1,5 @@
 // FIXME Obviously not correct
-class MethodSwitch extends Object {
+class MethodSwitch {
     
     public Integer m(final Integer n) {
         n;

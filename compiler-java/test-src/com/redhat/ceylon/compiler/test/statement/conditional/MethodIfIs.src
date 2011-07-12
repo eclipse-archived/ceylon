@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.statement.conditional;
 
-class Foo extends Object {
+class Foo {
     
     public final void bar() {
     }
@@ -17,10 +17,10 @@ class FooSub extends Foo {
         super();
     }
 }
-class MethodIfIs extends Object {
+class MethodIfIs {
     
-    public final void m(final Object x) {
-        final Object $x$0 = x;
+    public final void m(final .java.lang.Object x) {
+        final .java.lang.Object $x$0 = x;
         if ($x$0 instanceof Foo) {
             final Foo $x$1 = (Foo)$x$0;
             {

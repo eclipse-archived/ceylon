@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.test.structure.toplevel;
 
-class toplevelMethod extends Object {
+class toplevelMethod {
     
     static void run() {
     }
 }
-class anotherToplevelMethod extends Object {
+class anotherToplevelMethod {
     
     static void run() {
     }

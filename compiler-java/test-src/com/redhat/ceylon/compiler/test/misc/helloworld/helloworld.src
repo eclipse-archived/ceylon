@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.misc.helloworld;
 
-public class helloworld extends Object {
+public class helloworld {
     
     public static void run(final Process process) {
         process.writeLine(.ceylon.language.String.instance("Hello World"));

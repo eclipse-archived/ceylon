@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.statement.attribute;
 
-class MethodAttributeWithLateInitializer extends Object {
+class MethodAttributeWithLateInitializer {
     
     public final void m() {
         final String f;

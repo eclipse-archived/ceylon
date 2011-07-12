@@ -1,4 +1,4 @@
-class MethodSwitchElse extends Object {
+class MethodSwitchElse {
     
     public Integer m(final Integer n) {
         n;

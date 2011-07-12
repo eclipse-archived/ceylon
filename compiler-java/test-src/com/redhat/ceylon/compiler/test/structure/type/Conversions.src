@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.structure.type;
 
-class Foo extends Object {
+class Foo {
     
     public final void a() {
     }
@@ -26,7 +26,7 @@ class Baz extends Foo {
         super();
     }
 }
-class GenInv<T> extends Object {
+class GenInv<T> {
     
     public final void a() {
     }
@@ -34,7 +34,7 @@ class GenInv<T> extends Object {
     GenInv() {
     }
 }
-class GenCov<T> extends Object {
+class GenCov<T> {
     
     public final void a() {
     }
@@ -42,7 +42,7 @@ class GenCov<T> extends Object {
     GenCov() {
     }
 }
-class GenCon<T> extends Object {
+class GenCon<T> {
     
     public final void a() {
     }
@@ -54,7 +54,7 @@ interface ISats {
     
     public abstract void a();
 }
-class Sats<T extends ISats> extends Object {
+class Sats<T extends ISats> {
     
     public final void a() {
     }
@@ -62,7 +62,7 @@ class Sats<T extends ISats> extends Object {
     Sats() {
     }
 }
-class ExtVoid extends GenInv<Object> {
+class ExtVoid extends GenInv<.java.lang.Object> {
     
     ExtVoid() {
         super();
@@ -74,16 +74,16 @@ class ExtBottom extends GenInv {
         super();
     }
 }
-class Conversions extends Object {
+class Conversions {
     
     public final void m() {
         final Foo c1 = new Foo();
         c1.a();
         final Natural n1 = .ceylon.language.Natural.instance(1L);
         final Natural n2 = null;
-        final Object u1 = new Bar();
+        final .java.lang.Object u1 = new Bar();
         ((Foo)u1).a();
-        final Object $u1$0 = u1;
+        final .java.lang.Object $u1$0 = u1;
         if ($u1$0 instanceof Bar) {
             final Bar $u1$1 = (Bar)$u1$0;
             {
@@ -91,20 +91,20 @@ class Conversions extends Object {
                 $u1$1.b();
             }
         }
-        final Object e1;
-        final Object e2;
-        final Object e3;
-        final Object e4;
-        final Object e5;
-        final Object e6;
+        final .java.lang.Object e1;
+        final .java.lang.Object e2;
+        final .java.lang.Object e3;
+        final .java.lang.Object e4;
+        final .java.lang.Object e5;
+        final .java.lang.Object e6;
         final GenInv<String> g1;
         final GenCov<? extends String> g2;
         final GenCon<? super String> g3;
         final GenInv g4;
         final GenInv g5;
-        final GenInv<Object> v1;
+        final GenInv<.java.lang.Object> v1;
         final GenCov<?> v2;
-        final GenCon<Object> v3;
+        final GenCon<.java.lang.Object> v3;
         final GenInv b1;
         final GenCov b2;
         final GenCon<?> b3;

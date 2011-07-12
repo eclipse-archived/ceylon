@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.statement.loop;
 
-class MethodForFail extends Object {
+class MethodForFail {
     
     public final Natural m(final Sequence<Integer> seq) {
         boolean $ceylontmp0 = true;
