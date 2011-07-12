@@ -1157,6 +1157,19 @@ interface DefiniteReturn {
         return X();
     }
     
+    void try1() {
+        try {
+            return;
+        }
+        @error testSomething();
+    }
+    
+    void try2() {
+        try {
+        }
+        testSomething();
+    }
+    
     void tryFinally1() {
         try {
         }
