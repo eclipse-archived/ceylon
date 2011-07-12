@@ -868,7 +868,8 @@ else {
                     initializes a local or simple attribute if the <literal>try</literal> 
                     block definitely initializes the local or simple attribute and all 
                     <literal>catch</literal> blocks definitely initialize the local or simple 
-                    attribute.</para>
+                    attribute or if the <literal>finally</literal> block definitely initializes
+                    the local or simple attribute.</para>
                 </listitem>
             </itemizedlist>
             
@@ -916,9 +917,10 @@ else {
                 <listitem>
                     <para>A <literal>try/catch</literal> exception manager possibly 
                     initializes a local or simple attribute if the <literal>try</literal> 
-                    block possibly initializes the local or simple attribute or if one of 
+                    block possibly initializes the local or simple attribute, if one of 
                     the <literal>catch</literal> blocks possibly initializes the local or 
-                    simple attribute.</para>
+                    simple attribute, or if the <literal>finally</literal> block possibly 
+                    initializes the local or simple attribute.</para>
                 </listitem>
             </itemizedlist>
             
