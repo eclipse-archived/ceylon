@@ -181,6 +181,10 @@ public abstract class AbstractVisitor extends Visitor {
         return (Interface) ((TypeDeclaration) getLanguageModuleDeclaration("Comparable"));
     }
         
+    protected Interface getCloseableDeclaration() {
+        return (Interface) ((TypeDeclaration) getLanguageModuleDeclaration("Closeable"));
+    }
+        
     protected Interface getOrdinalDeclaration() {
         return (Interface) ((TypeDeclaration) getLanguageModuleDeclaration("Ordinal"));
     }

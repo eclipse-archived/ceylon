@@ -200,6 +200,23 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }
 
+    @Override public void visit(Tree.Resource that) {
+        super.visit(that);
+        if (that.getExpression()!=null) {
+            ProducedType t = that.getExpression().getTypeModel();
+            if (t==null) {
+                that.addError("could not determine if expression is of closeable type");
+            }
+            else {
+                ProducedType ct = getCloseableDeclaration().getType();
+                if (!ct.isSupertypeOf(t)) {
+                    that.addError("expression is not of closeable type: " +
+                            t.getProducedTypeName() + " is not Closeable");
+                }
+            }
+        }
+    }
+
     @Override public void visit(Tree.ValueIterator that) {
         super.visit(that);
         inferContainedType(that.getVariable(), that.getSpecifierExpression());
