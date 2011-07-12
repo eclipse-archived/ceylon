@@ -346,14 +346,32 @@ public class ControlFlowVisitor extends Visitor {
     @Override
     public void visit(Tree.TryCatchStatement that) {
         checkExecutableStatementAllowed(that);
-        //TODO!
-        //if the try and every catch definitely returns, 
-        //then it is has definitely returned after the 
-        //try/catch statement
-        //or if the finally definitely returns, then it 
-        //has definitely returned after the try/catch 
-        //statement
-        super.visit(that);
+        boolean d = beginIndefiniteReturnScope();
+        
+        if( that.getTryClause()!=null ) {
+            that.getTryClause().visit(this);
+        }
+        boolean definitelyReturnsFromTry = definitelyReturns;
+        endDefiniteReturnScope(d);
+        
+        boolean definitelyReturnsFromEveryCatch = true;
+        for (Tree.CatchClause cc: that.getCatchClauses()) {
+            cc.visit(this);
+            definitelyReturnsFromEveryCatch = definitelyReturnsFromEveryCatch && definitelyReturns;
+            endDefiniteReturnScope(d);
+        }
+        
+        boolean definitelyReturnsFromFinally;
+        if (that.getFinallyClause()!=null) {
+            that.getFinallyClause().visit(this);
+            definitelyReturnsFromFinally = definitelyReturns;
+        }
+        else {
+            definitelyReturnsFromFinally = false;
+        }
+        
+        definitelyReturns = d || (definitelyReturnsFromTry && definitelyReturnsFromEveryCatch) 
+                || definitelyReturnsFromFinally;
     }
     
     @Override
