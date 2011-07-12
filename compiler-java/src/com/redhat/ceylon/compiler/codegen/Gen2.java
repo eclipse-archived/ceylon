@@ -13,11 +13,11 @@ import org.antlr.runtime.tree.CommonTree;
 import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -536,11 +536,10 @@ public class Gen2 {
     }
 
     public List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Parameter decl, ProducedType type) {
-        Scope container = decl.getContainer();
         List<JCTree.JCAnnotation> ret;
         // if method, rely on method rules
-        if(container instanceof Method)
-            ret = makeJavaTypeAnnotations((Method) container, type);
+        if (isInner(decl))
+            ret = makeJavaTypeAnnotations((Method) decl.getContainer(), type);
         else
             // if not method must be a Class, so always true
             ret = makeJavaTypeAnnotations(type, true);
@@ -622,6 +621,10 @@ public class Gen2 {
         if (disableModelAnnotations)
             return List.nil();
         return List.<JCAnnotation> of(make().Annotation(makeIdent(syms.ceylonAtAttributeType), List.<JCExpression> nil()));
+    }
+
+    public boolean isInner(Declaration decl) {
+        return decl.getContainer() instanceof Method;
     }
 
     protected boolean isJavaKeyword(Name name) {

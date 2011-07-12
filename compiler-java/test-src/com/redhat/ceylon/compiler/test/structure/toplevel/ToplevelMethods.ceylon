@@ -3,5 +3,6 @@ void toplevelMethod() {
 }
 
 @nomodel
-void anotherToplevelMethod() {
+Natural anotherToplevelMethod(Natural n) {
+    return 0;
 }

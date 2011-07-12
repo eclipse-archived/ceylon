@@ -7,6 +7,7 @@ class toplevelMethod {
 }
 class anotherToplevelMethod {
     
-    static void run() {
+    static Natural run(final Natural n) {
+        return .ceylon.language.Natural.instance(0L);
     }
 }

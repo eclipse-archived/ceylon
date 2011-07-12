@@ -11,8 +11,6 @@ import static com.sun.tools.javac.code.TypeTags.VOID;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.redhat.ceylon.compiler.codegen.Gen2.Singleton;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -292,12 +290,19 @@ public class ClassGen extends GenPart {
         return result;
     }
 
-    private int convertMethodDeclFlags(Tree.Declaration cdecl) {
+    private int convertMethodDeclFlags(Tree.AnyMethod def) {
         int result = 0;
 
-        result |= isShared(cdecl) ? PUBLIC : PRIVATE;
-        result |= isFormal(cdecl) ? ABSTRACT : 0;
-        result |= !(isFormal(cdecl) || isDefault(cdecl)) ? FINAL : 0;
+        if (isToplevel(def)) {
+            result |= isShared(def) ? PUBLIC : 0;
+            result |= STATIC;
+        } else if (isInner(def)) {
+            result |= isShared(def) ? PUBLIC : 0;
+        } else {
+            result |= isShared(def) ? PUBLIC : PRIVATE;
+            result |= isFormal(def) ? ABSTRACT : 0;
+            result |= !(isFormal(def) || isDefault(def)) ? FINAL : 0;
+        }
 
         return result;
     }
@@ -412,72 +417,61 @@ public class ClassGen extends GenPart {
                 body, null);
     }
 
-    private List<JCTree> convert(Tree.MethodDefinition decl) {
-        final Singleton<JCBlock> body = new Singleton<JCBlock>();
-        
-        body.append(gen.statementGen.convert(decl.getBlock()));
-        
-        return convertMethod(decl, body);
-    }
-
-    private List<JCTree> convert(Tree.MethodDeclaration decl) {
-        return convertMethod(decl, null);
-    }
-    
-    private List<JCTree> convertMethod(Tree.AnyMethod decl, Singleton<JCBlock> body) {
+    private List<JCTree> convert(Tree.AnyMethod def) {
         List<JCTree> result = List.<JCTree> nil();
         final ListBuffer<JCVariableDecl> params = new ListBuffer<JCVariableDecl>();
         final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
-        Singleton<JCExpression> restypebuf = new Singleton<JCExpression>();
         final ListBuffer<JCTypeParameter> typeParams = new ListBuffer<JCTypeParameter>();
+        JCExpression restype;
 
-        processMethodDeclaration(decl, params, restypebuf, typeParams, langAnnotations);
+        for (Tree.Parameter param : def.getParameterLists().get(0).getParameters()) {
+            params.append(convert(param));
+        }
+
+        if (def.getTypeParameterList() != null) {
+            for (Tree.TypeParameterDeclaration t : def.getTypeParameterList().getTypeParameterDeclarations()) {
+                typeParams.append(convert(t));
+            }
+        }
+
+        if (def.getType() instanceof VoidModifier) {
+            restype = make().TypeIdent(VOID);
+        } else {
+            restype = gen.makeJavaType(gen.actualType(def), false);
+            langAnnotations.appendList(gen.makeJavaTypeAnnotations(def.getDeclarationModel(), gen.actualType(def)));
+        }
         
-        JCExpression restype = restypebuf.thing();
-
         // FIXME: Handle lots more flags here
 
-        if (isActual(decl)) {
+        if (isActual(def)) {
             langAnnotations.appendList(gen.makeAtOverride());
         }
 
-        int mods = convertMethodDeclFlags(decl);
-        JCMethodDecl meth = at(decl).MethodDef(make().Modifiers(mods, langAnnotations.toList()), 
-                names().fromString(decl.getIdentifier().getText()), 
+        JCBlock body = null;
+        if (def instanceof Tree.MethodDefinition) {
+            body = gen.statementGen.convert(((Tree.MethodDefinition)def).getBlock());
+        }
+                
+        String name = (isToplevel(def) || isInner(def)) ? "run" : def.getIdentifier().getText();
+        int mods = convertMethodDeclFlags(def);
+        JCMethodDecl meth = at(def).MethodDef(make().Modifiers(mods, langAnnotations.toList()), 
+                names().fromString(name), 
                 restype, typeParams.toList(), 
-                params.toList(), List.<JCExpression> nil(), (body != null) ? body.thing() : null, null);
+                params.toList(), List.<JCExpression> nil(), body, null);
         result = result.append(meth);
         
         return result;
     }
 
-    public JCClassDecl methodClass(Tree.MethodDefinition decl) {
-        final ListBuffer<JCVariableDecl> params = new ListBuffer<JCVariableDecl>();
-        final Singleton<JCBlock> body = new Singleton<JCBlock>();
-        Singleton<JCExpression> restype = new Singleton<JCExpression>();
-        final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
-        final ListBuffer<JCTypeParameter> typeParams = new ListBuffer<JCTypeParameter>();
-
-        Method method = decl.getDeclarationModel();
-
-        processMethodDeclaration(decl, params, restype, typeParams, langAnnotations);
-
-        body.append(gen.statementGen.convert(decl.getBlock()));
-
-        JCMethodDecl meth = at(decl).MethodDef(
-                make().Modifiers((method.isToplevel() ? STATIC  : 0) | (method.isShared() ? PUBLIC : 0), langAnnotations.toList()),
-                names().fromString("run"),
-                restype.thing(),
-                typeParams.toList(),
-                params.toList(), List.<JCExpression>nil(), body.thing(), null);
-
-        return at(decl).ClassDef(
-                at(decl).Modifiers((method.isShared() ? PUBLIC : 0), List.<JCAnnotation>nil()),
-                generateClassName(decl, method.isToplevel()),
+    public JCClassDecl methodClass(Tree.MethodDefinition def) {
+        List<JCTree> meth = convert(def);
+        return at(def).ClassDef(
+                at(def).Modifiers((isShared(def) ? PUBLIC : 0), List.<JCAnnotation>nil()),
+                generateClassName(def, isToplevel(def)),
                 List.<JCTypeParameter>nil(),
                 null,
                 List.<JCExpression>nil(),
-                List.<JCTree>of(meth));
+                meth);
     }
 
     /**
@@ -495,26 +489,6 @@ public class ClassGen extends GenPart {
         else
             name = aliasName(decl.getIdentifier().getText() + "$class");
         return names().fromString(name);
-    }
-
-    // FIXME: There must be a better way to do this.
-    private void processMethodDeclaration(final Tree.AnyMethod decl, final ListBuffer<JCVariableDecl> params, final Singleton<JCExpression> restype, final ListBuffer<JCTypeParameter> typeParams, final ListBuffer<JCAnnotation> langAnnotations) {
-
-        for (Tree.Parameter param : decl.getParameterLists().get(0).getParameters()) {
-            params.append(convert(param));
-        }
-
-        if (decl.getTypeParameterList() != null)
-            for (Tree.TypeParameterDeclaration t : decl.getTypeParameterList().getTypeParameterDeclarations()) {
-                typeParams.append(convert(t));
-            }
-
-        if (decl.getType() instanceof VoidModifier) {
-            restype.append(make().TypeIdent(VOID));
-        } else {
-            restype.append(gen.makeJavaType(gen.actualType(decl), false));
-            langAnnotations.appendList(gen.makeJavaTypeAnnotations(decl.getDeclarationModel(), gen.actualType(decl)));
-        }
     }
 
     public JCClassDecl objectClass(Tree.ObjectDefinition def, boolean topLevel) {
@@ -606,6 +580,14 @@ public class ClassGen extends GenPart {
 
     private boolean isMutable(Tree.AttributeDeclaration decl) {
         return decl.getDeclarationModel().isVariable();
+    }
+
+    private boolean isToplevel(Tree.Declaration decl) {
+        return decl.getDeclarationModel().isToplevel();
+    }
+
+    private boolean isInner(Tree.Declaration decl) {
+        return gen.isInner(decl.getDeclarationModel());
     }
 
     private JCTypeParameter convert(Tree.TypeParameterDeclaration param) {
