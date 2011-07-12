@@ -540,6 +540,9 @@ public class DeclarationVisitor extends Visitor {
                 if (model instanceof Value) {
                     ((Value) model).setVariable(true);
                 }
+                else if (model instanceof ValueParameter) {
+                    that.addError("parameter may not be variable: " + model.getName());
+                }
                 else {
                     that.addError("declaration is not a value, and may not be variable");
                 }
