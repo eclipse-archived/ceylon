@@ -98,6 +98,25 @@ public class ControlStructures() {
         
     }
     
+    try {}
+    catch (Exception1 e1) {}
+    catch (Exception2 e2) {}
+    catch (Exception e) {}
+    
+    try {}
+    catch (Exception1 e1) {}
+    catch (@error Exception1 e2) {}
+    
+    try {}
+    catch (Exception1 e1) {}
+    catch (Exception e) {}
+    catch (@error Exception2 e2) {}
+    
+    try {}
+    catch (Exception1 e1) {}
+    catch (Exception1|Exception2 e) {}
+    catch (@error Exception2 e2) {}
+    
     @error try ("hello") {}
     
     @error while ("hello") {}
