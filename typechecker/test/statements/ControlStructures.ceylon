@@ -67,8 +67,9 @@ public class ControlStructures() {
         print(key + "->" + item);
     }*/
     
-    class Transaction() {
+    class Transaction() satisfies Closeable {
         shared void rollbackOnly() {}
+        shared actual void close(Exception? e) {}
     }
 
     try (Transaction()) {}
@@ -96,4 +97,8 @@ public class ControlStructures() {
     catch (@error String s) {
         
     }
+    
+    @error try ("hello") {}
+    
+    @error while ("hello") {}
 }
