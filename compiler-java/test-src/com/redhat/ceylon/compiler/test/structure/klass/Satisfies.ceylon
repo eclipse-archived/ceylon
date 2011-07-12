@@ -1,3 +1,4 @@
+@nomodel
 interface Satisfies {}
 
 @nomodel

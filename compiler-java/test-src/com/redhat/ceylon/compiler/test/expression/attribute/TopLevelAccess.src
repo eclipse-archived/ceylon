@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
-@com.redhat.ceylon.compiler.metadata.java.Attribute
-@com.redhat.ceylon.compiler.metadata.java.Ceylon
 final class toplevel {
     private static final Boolean value = ceylon.language.$true.getTrue();
     

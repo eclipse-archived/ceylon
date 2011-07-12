@@ -189,6 +189,8 @@ public class ClassGen extends GenPart {
 
         addGettersAndSetters(visitor.defs, visitor.attributeDecls);
 
+        visitor.langAnnotations.appendList(gen.makeAtCeylon());
+        
         return at(def).ClassDef(
                 at(def).Modifiers((long) convertClassDeclFlags(def), visitor.langAnnotations.toList()),
                 names().fromString(def.getIdentifier().getText()),
@@ -370,7 +372,7 @@ public class ClassGen extends GenPart {
         int mods = convertAttributeGetSetDeclFlags(decl);
         List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(decl.getDeclarationModel(), gen.actualType(decl));
         if (isActual(decl)) {
-            annots = annots.append(gen.makeAtOverride());
+            annots = annots.appendList(gen.makeAtOverride());
         }
         
         return make().MethodDef(make().Modifiers(mods, annots),
@@ -398,7 +400,7 @@ public class ClassGen extends GenPart {
         List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(decl.getDeclarationModel(), gen.actualType(decl));
         final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
         if (isActual(decl)) {
-            langAnnotations.append(gen.makeAtOverride());
+            langAnnotations.appendList(gen.makeAtOverride());
         }
         
         return make().MethodDef(make().Modifiers(mods, langAnnotations.toList()),
@@ -436,7 +438,7 @@ public class ClassGen extends GenPart {
         // FIXME: Handle lots more flags here
 
         if (isActual(decl)) {
-            langAnnotations.append(gen.makeAtOverride());
+            langAnnotations.appendList(gen.makeAtOverride());
         }
 
         int mods = convertMethodDeclFlags(decl);
@@ -539,6 +541,8 @@ public class ClassGen extends GenPart {
                             ));
         }
 
+        visitor.langAnnotations.appendList(gen.makeAtCeylon());
+        
         TypeDeclaration decl = def.getDeclarationModel().getType().getDeclaration();
         return at(def).ClassDef(
                 at(def).Modifiers((long) convertObjectDeclFlags(def), visitor.langAnnotations.toList()),
@@ -632,11 +636,8 @@ public class ClassGen extends GenPart {
                     gen.makeJavaType(gen.actualType(decl), false),
                     decl.getIdentifier().getText());
 
-        // Add @Ceylon @Attribute
-        builder.classAnnotations(List.of(
-                gen.makeAtAttribute(),
-                gen.makeAtCeylon()
-        ));
+        // Add @Attribute (@Ceylon gets added by default)
+        builder.classAnnotations(gen.makeAtAttribute());
 
         builder.valueAnnotations(gen.makeJavaTypeAnnotations(decl.getDeclarationModel(), gen.actualType(decl)));
 

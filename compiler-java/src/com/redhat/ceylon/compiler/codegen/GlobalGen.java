@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.codegen;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
-import com.sun.tools.javac.util.JCDiagnostic;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Name;
 
@@ -130,7 +129,7 @@ public final class GlobalGen extends GenPart {
             }
 
             return make().ClassDef(
-                    make().Modifiers(Flags.FINAL | classVisibility, classAnnotations),
+                    make().Modifiers(Flags.FINAL | classVisibility, classAnnotations.prependList(gen.makeAtCeylon())),
                     getClassName(variableName),
                     List.<JCTree.JCTypeParameter>nil(),
                     null,

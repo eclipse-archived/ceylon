@@ -1,1 +1,2 @@
+@nomodel
 interface Interface {}

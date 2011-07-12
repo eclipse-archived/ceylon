@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.test.structure.toplevel;
 
-@com.redhat.ceylon.compiler.metadata.java.Attribute
-@com.redhat.ceylon.compiler.metadata.java.Ceylon
 final class i {
     private static final Natural value = .ceylon.language.Natural.instance(0L);
     

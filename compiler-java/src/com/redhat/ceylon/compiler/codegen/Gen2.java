@@ -546,7 +546,7 @@ public class Gen2 {
             ret = makeJavaTypeAnnotations(type, true);
         
         if(!ret.isEmpty())
-            ret = ret.prepend(makeAtName(decl.getName()));
+            ret = ret.prependList(makeAtName(decl.getName()));
         return ret;
     }
 
@@ -563,10 +563,10 @@ public class Gen2 {
     }
 
     private List<JCTree.JCAnnotation> makeJavaTypeAnnotations(ProducedType type, boolean required) {
-        if(!required || disableModelAnnotations)
+        if (!required)
             return List.nil();
         // Add the original type to the annotations
-        return List.of(makeAtType(type.getProducedTypeQualifiedName()));
+        return makeAtType(type.getProducedTypeQualifiedName());
     }
     
     private ProducedType simplifyType(ProducedType type) {
@@ -596,24 +596,32 @@ public class Gen2 {
         return t;
     }
 
-    public JCAnnotation makeAtOverride() {
-        return make().Annotation(makeIdent(syms.overrideType), List.<JCExpression> nil());
+    public List<JCAnnotation> makeAtOverride() {
+        return List.<JCAnnotation> of(make().Annotation(makeIdent(syms.overrideType), List.<JCExpression> nil()));
     }
 
-    public JCAnnotation makeAtCeylon() {
-        return make().Annotation(makeIdent(syms.ceylonAtCeylonType), List.<JCExpression> nil());
+    public List<JCAnnotation> makeAtCeylon() {
+        if (disableModelAnnotations)
+            return List.nil();
+        return List.<JCAnnotation> of(make().Annotation(makeIdent(syms.ceylonAtCeylonType), List.<JCExpression> nil()));
     }
 
-    public JCAnnotation makeAtName(String name) {
-        return make().Annotation(makeIdent(syms.ceylonAtNameType), List.<JCExpression> of(make().Literal(name)));
+    public List<JCAnnotation> makeAtName(String name) {
+        if (disableModelAnnotations)
+            return List.nil();
+        return List.<JCAnnotation> of(make().Annotation(makeIdent(syms.ceylonAtNameType), List.<JCExpression> of(make().Literal(name))));
     }
 
-    public JCAnnotation makeAtType(String name) {
-        return make().Annotation(makeIdent(syms.ceylonAtTypeInfoType), List.<JCExpression> of(make().Literal(name)));
+    public List<JCAnnotation> makeAtType(String name) {
+        if (disableModelAnnotations)
+            return List.nil();
+        return List.<JCAnnotation> of(make().Annotation(makeIdent(syms.ceylonAtTypeInfoType), List.<JCExpression> of(make().Literal(name))));
     }
 
-    public JCAnnotation makeAtAttribute() {
-        return make().Annotation(makeIdent(syms.ceylonAtAttributeType), List.<JCExpression> nil());
+    public List<JCAnnotation> makeAtAttribute() {
+        if (disableModelAnnotations)
+            return List.nil();
+        return List.<JCAnnotation> of(make().Annotation(makeIdent(syms.ceylonAtAttributeType), List.<JCExpression> nil()));
     }
 
     protected boolean isJavaKeyword(Name name) {
