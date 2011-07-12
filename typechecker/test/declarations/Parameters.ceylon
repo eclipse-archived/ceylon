@@ -11,4 +11,5 @@ class Parameters() {
     void d4(@error Natural count="World") {}
     void d5(String? name=null) {}
     void d6(@error String? name="World") {}
+    void d7(@error variable String s) {}
 }
