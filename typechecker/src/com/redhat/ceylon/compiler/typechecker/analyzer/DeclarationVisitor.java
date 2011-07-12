@@ -667,4 +667,10 @@ public class DeclarationVisitor extends Visitor {
         that.addWarning("satisfies conditions are not yet supported");
     }
 
+    @Override
+    public void visit(Tree.CaseTypes that) {
+        super.visit(that);
+        that.addWarning("of clause not yet supported");
+    }
+
 }
