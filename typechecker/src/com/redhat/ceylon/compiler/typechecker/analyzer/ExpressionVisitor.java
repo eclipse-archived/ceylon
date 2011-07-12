@@ -2097,6 +2097,29 @@ public class ExpressionVisitor extends AbstractVisitor {
     public void visit(Tree.CompilerAnnotation that) {
         //don't visit the argument       
     }
+    
+    @Override
+    public void visit(Tree.TryCatchStatement that) {
+        super.visit(that);
+        for (Tree.CatchClause cc: that.getCatchClauses()) {
+            if (cc.getVariable()!=null) {
+                ProducedType ct = cc.getVariable().getType().getTypeModel();
+                if (ct!=null) {
+                    for (Tree.CatchClause ecc: that.getCatchClauses()) {
+                        if (ecc.getVariable()!=null) {
+                            if (cc==ecc) break;
+                            ProducedType ect = ecc.getVariable().getType().getTypeModel();
+                            //TODO: better handling for union types in catch
+                            if (ect!=null && ect.isSupertypeOf(ct)) {
+                                cc.getVariable().getType()
+                                        .addError("exception type is already handled by earlier catch clause");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     private static boolean acceptsTypeArguments(Declaration member, List<ProducedType> typeArguments, 
             Tree.TypeArgumentList tal, Node parent) {
