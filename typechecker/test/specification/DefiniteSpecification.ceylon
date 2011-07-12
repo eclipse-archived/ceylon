@@ -471,4 +471,128 @@ interface DefiniteSpecification {
         while (testSomething());
     }
     
+    void try1() {
+        X x;
+        try {
+            x = X();
+        }
+        use(x);
+    }
+
+    void tryCatch1() {
+        X x;
+        try {
+            x = X();
+            use(x);
+        }
+        catch (Exception e) {
+            @error x = X();
+        }
+        @error use(x);
+    }
+
+    void tryCatch2() {
+        X x;
+        try {
+        }
+        catch (Exception e) {
+            x = X();
+        }
+        @error use(x);
+    }
+
+    void tryCatch3() {
+        X x;
+        try {
+            x = X();
+        }
+        catch (Exception e) {
+        }
+        @error use(x);
+    }
+
+    void tryCatchCatch1() {
+        X x;
+        try {
+            x = X();
+        }
+        catch (Exception e) {
+            @error x = X();
+        }
+        catch (Exception e) {
+            @error x = X();
+        }
+        @error use(x);
+    }
+
+    void tryCatchCatch2() {
+        X x;
+        try {
+            x = X();
+        }
+        catch (Exception e) {
+            @error x = X();
+        }
+        catch (Exception e) {
+        }
+        @error use(x);
+    }
+
+    void tryFinally1() {
+        X x;
+        try {
+        }
+        finally {
+            x = X();
+        }
+        use(x);
+    }
+
+    void tryFinally2() {
+        X x;
+        try {
+            x = X();
+        }
+        finally {
+            @error x = X();
+        }
+        use(x);
+    }
+
+    void tryFinally3() {
+        X x;
+        try {
+            x = X();
+        }
+        finally {
+            @error use(x);
+        }
+        use(x);
+    }
+
+    void tryCatchFinally1() {
+        X x;
+        try {
+        }
+        catch (Exception e) {
+        }
+        finally {
+            x = X();
+        }
+        use(x);
+    }
+
+    void tryCatchFinally2() {
+        X x;
+        try {
+        }
+        catch (Exception e) {
+            x = X();
+        }
+        finally {
+            @error x = X();
+        }
+        @error use(x);
+    }
+
 }

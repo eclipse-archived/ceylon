@@ -395,4 +395,131 @@ interface DefiniteAssignment {
         while (testSomething());
     }
     
+    void try1() {
+        variable X x;
+        try {
+            x := X();
+        }
+        use(x);
+    }
+
+    void tryCatch1() {
+        variable X x;
+        try {
+            x := X();
+            use(x);
+        }
+        catch (Exception e) {
+            x := X();
+            use(x);
+        }
+        use(x);
+    }
+
+    void tryCatch2() {
+        variable X x;
+        try {
+        }
+        catch (Exception e) {
+            x := X();
+            use(x);
+        }
+        @error use(x);
+    }
+
+    void tryCatch3() {
+        variable X x;
+        try {
+            x := X();
+            use(x);
+        }
+        catch (Exception e) {
+        }
+        @error use(x);
+    }
+
+    void tryCatchCatch1() {
+        variable X x;
+        try {
+            x := X();
+        }
+        catch (Exception e) {
+            x := X();
+        }
+        catch (Exception e) {
+            x := X();
+        }
+        use(x);
+    }
+
+    void tryCatchCatch2() {
+        variable X x;
+        try {
+            x := X();
+        }
+        catch (Exception e) {
+            x := X();
+        }
+        catch (Exception e) {
+        }
+        @error use(x);
+    }
+
+    void tryFinally1() {
+        variable X x;
+        try {
+        }
+        finally {
+            x := X();
+        }
+        use(x);
+    }
+
+    void tryFinally2() {
+        variable X x;
+        try {
+            x := X();
+        }
+        finally {
+            x := X();
+        }
+        use(x);
+    }
+
+    void tryFinally3() {
+        variable X x;
+        try {
+            x := X();
+        }
+        finally {
+            @error use(x);
+        }
+        use(x);
+    }
+
+    void tryCatchFinally1() {
+        variable X x;
+        try {
+        }
+        catch (Exception e) {
+        }
+        finally {
+            x := X();
+        }
+        use(x);
+    }
+
+    void tryCatchFinally2() {
+        variable X x;
+        try {
+        }
+        catch (Exception e) {
+            x := X();
+        }
+        finally {
+            x := X();
+        }
+        use(x);
+    }
+    
 }
