@@ -465,8 +465,9 @@ public class ClassGen extends GenPart {
 
     public JCClassDecl methodClass(Tree.MethodDefinition def) {
         List<JCTree> meth = convert(def);
+        List<JCAnnotation> annots = gen.makeAtCeylon().appendList(gen.makeAtMethod());
         return at(def).ClassDef(
-                at(def).Modifiers((isShared(def) ? PUBLIC : 0), List.<JCAnnotation>nil()),
+                at(def).Modifiers((isShared(def) ? PUBLIC : 0), annots),
                 generateClassName(def, isToplevel(def)),
                 List.<JCTypeParameter>nil(),
                 null,

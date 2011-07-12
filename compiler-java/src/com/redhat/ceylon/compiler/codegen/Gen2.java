@@ -623,6 +623,12 @@ public class Gen2 {
         return List.<JCAnnotation> of(make().Annotation(makeIdent(syms.ceylonAtAttributeType), List.<JCExpression> nil()));
     }
 
+    public List<JCAnnotation> makeAtMethod() {
+        if (disableModelAnnotations)
+            return List.nil();
+        return List.<JCAnnotation> of(make().Annotation(makeIdent(syms.ceylonAtMethodType), List.<JCExpression> nil()));
+    }
+
     public boolean isInner(Declaration decl) {
         return decl.getContainer() instanceof Method;
     }
