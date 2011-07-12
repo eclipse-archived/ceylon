@@ -52,7 +52,7 @@ tokens {
     SEQUENCED_TYPE_PARAMETER;
     SPECIAL_ARGUMENT;
     TRY_CATCH_STATEMENT;
-    SPECIFIED_VARIABLE_OR_EXPRESSION;
+    RESOURCE;
     TYPE_ARGUMENT_LIST;
     TYPE_DECLARATION;
     TYPE_PARAMETER_LIST;
@@ -1258,9 +1258,9 @@ finallyBlock
 
 specifiedVariableOrExpression
     : (declarationStart|specificationStart) => specifiedVariable 
-    -> ^(SPECIFIED_VARIABLE_OR_EXPRESSION specifiedVariable)
+    -> ^(RESOURCE specifiedVariable)
     | expression
-    -> ^(SPECIFIED_VARIABLE_OR_EXPRESSION expression)
+    -> ^(RESOURCE expression)
     ;
 
 specifiedVariable2
