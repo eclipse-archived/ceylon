@@ -806,7 +806,8 @@ else {
                 <listitem>
                     <para>A <literal>try/catch</literal> exception manager definitely 
                     returns if the <literal>try</literal> block definitely returns and
-                    all <literal>catch</literal> blocks definitely return.</para>
+                    all <literal>catch</literal> blocks definitely return or if the
+                    <literal>finally</literal> block definitely returns.</para>
                 </listitem>
             </itemizedlist>
             
