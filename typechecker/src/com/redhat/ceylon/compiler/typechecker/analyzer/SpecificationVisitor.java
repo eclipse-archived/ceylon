@@ -152,7 +152,7 @@ public class SpecificationVisitor extends AbstractVisitor {
                 //you are allowed to refer to formal
                 //declarations in a class declaration
                 //section
-                if (!declaration.isFormal() || !inDeclarationSection()) {
+                if (!declaration.isFormal()) {
                     if (isVariable()) {
                         that.addError("not definitely initialized: " + 
                                 member.getName());                    
@@ -161,6 +161,10 @@ public class SpecificationVisitor extends AbstractVisitor {
                         that.addError("not definitely specified: " + 
                                 member.getName());
                     }
+                }
+                else if (!inDeclarationSection()) {
+                    that.addError("formal member may not be used in initializer: " + 
+                            member.getName());                    
                 }
             }
         }
@@ -292,9 +296,6 @@ public class SpecificationVisitor extends AbstractVisitor {
     
     @Override
     public void visit(Tree.MethodDeclaration that) {
-        //TODO: allow references to un-assigned things
-        //      in interface bodies or the declaration
-        //      section of class bodies.
         super.visit(that);
         if (that.getDeclarationModel()==declaration &&
                 that.getSpecifierExpression()!=null) {
@@ -308,9 +309,6 @@ public class SpecificationVisitor extends AbstractVisitor {
             declare();
             specify();
         }
-        //TODO: allow references to un-assigned things
-        //      in interface bodies or the declaration
-        //      section of class bodies.
         super.visit(that);
     }
     
@@ -320,9 +318,6 @@ public class SpecificationVisitor extends AbstractVisitor {
             declare();
             specify();
         }
-        //TODO: allow references to un-assigned things
-        //      in interface bodies or the declaration
-        //      section of class bodies.
         super.visit(that);
     }
     
@@ -446,7 +441,7 @@ public class SpecificationVisitor extends AbstractVisitor {
             declarationSection = false;
             lastExecutableStatement = null;
             //TODO: this does not account for the case where the
-            //      initializer exists early via a return statement
+            //      initializer exits early via a return statement
             if (isSharedDeclarationUninitialized()) {
                 dd.addError("must be definitely specified by class initializer");
             }
@@ -539,11 +534,59 @@ public class SpecificationVisitor extends AbstractVisitor {
     }
     
     @Override
+    public void visit(Tree.TryCatchStatement that) {
+        boolean d = beginDeclarationScope();
+        
+        SpecificationState as = beginSpecificationScope();
+        if( that.getTryClause()!=null ) {
+            that.getTryClause().visit(this);
+        }
+        boolean definitelyAssignedByTryClause = specified.definitely || specified.exited;
+        boolean possiblyAssignedByTryClause = specified.possibly;
+        endDeclarationScope(d);
+        endSpecificationScope(as);
+        specified.possibly = specified.possibly || possiblyAssignedByTryClause;
+        
+        boolean definitelyAssignedByEveryCatchClause = true;
+        boolean possiblyAssignedBySomeCatchClause = false;
+        for (Tree.CatchClause cc: that.getCatchClauses()) {
+            d = beginDeclarationScope();
+            as = beginSpecificationScope();
+            cc.visit(this);
+            definitelyAssignedByEveryCatchClause = definitelyAssignedByEveryCatchClause && (specified.definitely || specified.exited);
+            possiblyAssignedBySomeCatchClause = possiblyAssignedBySomeCatchClause || specified.possibly;
+            endDeclarationScope(d);
+            endSpecificationScope(as);
+        }
+        specified.possibly = specified.possibly || possiblyAssignedBySomeCatchClause;
+        
+        boolean definitelyAssignedByFinallyClause;
+        boolean possiblyAssignedByFinallyClause;
+        if (that.getFinallyClause()!=null) {
+            d = beginDeclarationScope();
+            as = beginSpecificationScope();
+            that.getFinallyClause().visit(this);
+            definitelyAssignedByFinallyClause = specified.definitely || specified.exited;
+            possiblyAssignedByFinallyClause = specified.possibly;
+            endDeclarationScope(d);
+            endSpecificationScope(as);
+        }
+        else {
+            definitelyAssignedByFinallyClause = false;
+            possiblyAssignedByFinallyClause = false;
+        }
+        specified.possibly = specified.possibly || possiblyAssignedByFinallyClause;
+        specified.definitely = specified.definitely || definitelyAssignedByFinallyClause
+                || (definitelyAssignedByTryClause && definitelyAssignedByEveryCatchClause);
+    }
+    
+    @Override
     public void visit(Tree.SwitchStatement that) {
         //TODO!!!
         //if every case and the default case definitely
         //assigns, then it is definitely assigned after
         //the switch statement
+        super.visit(that);
     }
     
     @Override
@@ -601,35 +644,6 @@ public class SpecificationVisitor extends AbstractVisitor {
         boolean d = beginDeclarationScope();
         super.visit(that);
         endIndefiniteSpecificationScope(o);
-        endDeclarationScope(d);
-    }
-
-    @Override
-    public void visit(Tree.TryClause that) {
-        //TODO: this isn't correct - if there are 
-        //      no catch clauses, and the try clause 
-        //      definitely assigns, it is definitely
-        //      assigned after the try
-        boolean o = beginIndefiniteSpecificationScope();
-        boolean d = beginDeclarationScope();
-        super.visit(that);
-        endIndefiniteSpecificationScope(o);
-        endDeclarationScope(d);
-    }
-
-    @Override
-    public void visit(Tree.CatchClause that) {
-        boolean o = beginIndefiniteSpecificationScope();
-        boolean d = beginDeclarationScope();
-        super.visit(that);
-        endIndefiniteSpecificationScope(o);
-        endDeclarationScope(d);
-    }
-    
-    @Override
-    public void visit(Tree.FinallyClause that) {
-        boolean d = beginDeclarationScope();
-        super.visit(that);
         endDeclarationScope(d);
     }
       
