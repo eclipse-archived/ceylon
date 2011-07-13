@@ -25,4 +25,9 @@ public class BottomType extends TypeDeclaration {
         return getClass().getSimpleName();
     }
     
+    @Override
+    public boolean isShared() {
+        return true;
+    }
+    
 }
