@@ -26,6 +26,7 @@ import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
+import com.sun.tools.javac.tree.JCTree.JCUnary;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 
@@ -218,9 +219,15 @@ public class ExpressionGen extends GenPart {
         return convert(newNotOp);
     }
 
-    // FIXME: I'm pretty sure sugar is not supposed to be in there
     private JCExpression convert(Tree.NotOp op) {
-        return at(op).Apply(null, makeSelect(makeIdent(syms().ceylonBooleanType), "instance"), List.<JCExpression> of(at(op).Conditional(convertExpression(op.getTerm()), make().Literal(TypeTags.BOOLEAN, 0), make().Literal(TypeTags.BOOLEAN, 1))));
+        JCExpression result = null;
+        JCExpression term = convertExpression(op.getTerm());
+        JCExpression arg1 = gen.makeSelect("Boolean", "instance");
+        JCExpression field1 = at(op.getTerm()).Apply(null, makeSelect(term, "booleanValue"), List.<JCExpression>nil());
+        JCUnary jcu = at(op).Unary(JCTree.NOT, field1);
+        List<JCExpression> arg2= List.of((JCExpression)jcu);
+        result = at(op).Apply(null, arg1, arg2);
+        return result;
     }
 
     private JCExpression convert(Tree.AssignOp op) {
