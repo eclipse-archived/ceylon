@@ -53,6 +53,12 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
     
     @Override
     public void visit(Tree.StatementOrArgument that) {
+        if (that instanceof Tree.Variable) {
+            if ( ( (Tree.Variable) that ).getType() instanceof Tree.SyntheticVariable ) {
+                super.visit(that);
+                return;
+            }
+        }
         boolean b = expectingError;
         List<AnalysisMessage> f = foundErrors;
         expectingError = false;
