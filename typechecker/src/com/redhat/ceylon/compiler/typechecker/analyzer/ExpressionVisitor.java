@@ -960,26 +960,28 @@ public class ExpressionVisitor extends AbstractVisitor {
 
     private void inferTypeArg(TypeParameter tp, ProducedType paramType,
             ProducedType argType, List<ProducedType> inferredTypes) {
-        if (paramType.getDeclaration()==tp) {
-            addToUnion(inferredTypes, argType);
-        }
-        else if (paramType.getDeclaration() instanceof UnionType) {
-            for (ProducedType ct: paramType.getDeclaration().getCaseTypes()) {
-                inferTypeArg(tp, ct.substitute(paramType.getTypeArguments()), argType, inferredTypes);
+        if (paramType!=null) {
+            if (paramType.getDeclaration()==tp) {
+                addToUnion(inferredTypes, argType);
             }
-        }
-        else if (argType.getDeclaration() instanceof UnionType) {
-            for (ProducedType ct: argType.getDeclaration().getCaseTypes()) {
-                inferTypeArg(tp, paramType, ct.substitute(paramType.getTypeArguments()), inferredTypes);
+            else if (paramType.getDeclaration() instanceof UnionType) {
+                for (ProducedType ct: paramType.getDeclaration().getCaseTypes()) {
+                    inferTypeArg(tp, ct.substitute(paramType.getTypeArguments()), argType, inferredTypes);
+                }
             }
-        }
-        else {
-            ProducedType st = argType.getSupertype(paramType.getDeclaration());
-            if (st!=null) {
-                for (int j=0; j<paramType.getTypeArgumentList().size(); j++) {
-                    if (st.getTypeArgumentList().size()>j) {
-                        inferTypeArg(tp, paramType.getTypeArgumentList().get(j), 
-                                st.getTypeArgumentList().get(j), inferredTypes);
+            else if (argType.getDeclaration() instanceof UnionType) {
+                for (ProducedType ct: argType.getDeclaration().getCaseTypes()) {
+                    inferTypeArg(tp, paramType, ct.substitute(paramType.getTypeArguments()), inferredTypes);
+                }
+            }
+            else {
+                ProducedType st = argType.getSupertype(paramType.getDeclaration());
+                if (st!=null) {
+                    for (int j=0; j<paramType.getTypeArgumentList().size(); j++) {
+                        if (st.getTypeArgumentList().size()>j) {
+                            inferTypeArg(tp, paramType.getTypeArgumentList().get(j), 
+                                    st.getTypeArgumentList().get(j), inferredTypes);
+                        }
                     }
                 }
             }
@@ -1069,7 +1071,7 @@ public class ExpressionVisitor extends AbstractVisitor {
     private void checkNamedArgument(Tree.NamedArgument a, ProducedReference pr, 
             Parameter p) {
         if (p.getType()==null) {
-            a.addError("parameter type not known: " + name(a.getIdentifier()));
+            a.addError("parameter type not known: " + p.getName());
         }
         else {
             ProducedType argType = null;
@@ -1098,7 +1100,7 @@ public class ExpressionVisitor extends AbstractVisitor {
     private void checkSequencedArgument(Tree.SequencedArgument a, ProducedReference pr, 
             Parameter p) {
         if (p.getType()==null) {
-            a.addError("sequenced parameter type not known");
+            a.addError("sequenced parameter type not known: " + p.getName());
         }
         else {
             for (Tree.Expression e: a.getExpressionList().getExpressions()) {
@@ -1157,14 +1159,20 @@ public class ExpressionVisitor extends AbstractVisitor {
             }
             else if (p.isSequenced()) {
                 ProducedType paramType = r.getTypedParameter(p).getType();
-                if (paramType!=null) {
+                if (paramType==null) {
+                    args.get(i).addError("sequenced parameter type not known: " + p.getName());
+                }
+                else {
                     checkSequencedPositionalArgument(p, args, i, paramType);
                 }
                 return;
             }
             else {
                 ProducedType paramType = r.getTypedParameter(p).getType();
-                if (paramType!=null) {
+                if (paramType==null) {
+                    args.get(i).addError("parameter type not known: " + p.getName());
+                }
+                else {
                     checkPositionalArgument(p, args.get(i), paramType);
                 }
             }
