@@ -27,15 +27,18 @@ shared class Singleton<Element>(Element element)
     shared actual Sequence<Element> clone {
         return this;
     }
-    shared actual object iterator 
-            extends Object()
-            satisfies Iterator<Element> {
-        shared actual Element head { 
-            return first;
+    shared actual Iterator<Element> iterator {
+        object singletonIterator 
+                extends Object()
+                satisfies Iterator<Element> {
+            shared actual Element head { 
+                return first;
+            }
+            shared actual Iterator<Element> tail {
+                return emptyIterator;
+            }
         }
-        shared actual Iterator<Element> tail {
-            return emptyIterator;
-        }
+        return singletonIterator;
     }
     shared actual String string {
         return "{ " first " }";
