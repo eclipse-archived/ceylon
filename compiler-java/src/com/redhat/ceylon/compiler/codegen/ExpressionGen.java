@@ -544,7 +544,7 @@ public class ExpressionGen extends GenPart {
             if (Util.isInnerMethod(decl)) {
                 java.util.List<String> path = new LinkedList<String>();
                 path.add(decl.getName());
-                path.add("run");
+                path.add(decl.getName());
                 return makeIdent(path);
             }
         }

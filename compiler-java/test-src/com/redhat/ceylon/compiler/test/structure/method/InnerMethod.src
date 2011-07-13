@@ -6,12 +6,12 @@ class InnerMethod {
         
         class $inner$class$0 {
             
-            Natural run() {
+            Natural inner() {
                 return .ceylon.language.Natural.instance(0L);
             }
         }
         final $inner$class$0 inner = new $inner$class$0();
-        final Natural n = inner.run();
+        final Natural n = inner.inner();
     }
     
     InnerMethod() {

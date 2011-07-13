@@ -115,7 +115,7 @@ public abstract class CompilerTest {
 		Assert.assertTrue(success);
 		try{
 			java.lang.Class<?> klass = java.lang.Class.forName(main);
-			Method m = klass.getMethod("run", ceylon.language.Process.class);
+			Method m = klass.getMethod(klass.getSimpleName(), ceylon.language.Process.class);
 			m.invoke(null, new ceylon.language.Process());
 		}catch(Exception x){
 			throw new RuntimeException(x);

@@ -452,7 +452,7 @@ public class ClassGen extends GenPart {
             body = gen.statementGen.convert(((Tree.MethodDefinition)def).getBlock());
         }
                 
-        String name = (isToplevel(def) || isInner(def)) ? "run" : def.getIdentifier().getText();
+        String name = def.getIdentifier().getText();
         int mods = convertMethodDeclFlags(def);
         JCMethodDecl meth = at(def).MethodDef(make().Modifiers(mods, langAnnotations.toList()), 
                 names().fromString(name), 
@@ -546,7 +546,8 @@ public class ClassGen extends GenPart {
 
         // FIXME: can we have something else?
         Tree.BaseMemberExpression primary = (Tree.BaseMemberExpression) userAnn.getPrimary();
-        JCExpression result = at(userAnn).Apply(null, makeSelect(primary.getIdentifier().getText(), "run"), values);
+        String name = primary.getIdentifier().getText();
+        JCExpression result = at(userAnn).Apply(null, makeSelect(name , name), values);
         JCIdent addAnnotation = at(userAnn).Ident(names().fromString("addAnnotation"));
         List<JCExpression> args;
         if (methodName != null)
