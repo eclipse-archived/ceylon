@@ -916,6 +916,19 @@ public class ExpressionVisitor extends AbstractVisitor {
                 inferTypeArg(tp, parameter.getType(), type, inferredTypes);
             }
         }
+        Tree.SequencedArgument sa = args.getSequencedArgument();
+        if (sa!=null) {
+            Parameter sp = getSequencedParameter(parameters);
+            if (sp!=null) {
+                ProducedType spt = getIndividualSequencedParameterType(sp.getType());
+                for (Tree.Expression e: args.getSequencedArgument().getExpressionList().getExpressions()) {
+                    ProducedType sat = e.getTypeModel();
+                    if (sat!=null) {
+                        inferTypeArg(tp, spt, sat, inferredTypes);
+                    }
+                }
+            }
+        }            
     }
 
     private void inferTypeArgument(TypeParameter tp, ParameterList parameters,
@@ -931,7 +944,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                         for (int k=i; k<args.getPositionalArguments().size(); k++) {
                             ProducedType sat = args.getPositionalArguments().get(k)
                                     .getExpression().getTypeModel();
-                            if (argType!=null) {
+                            if (sat!=null) {
                                 inferTypeArg(tp, spt, sat, inferredTypes);
                             }
                         }
