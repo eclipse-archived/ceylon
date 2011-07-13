@@ -113,9 +113,12 @@ public class ControlStructures() {
     catch (@error Exception2 e2) {}
     
     try {}
-    catch (Exception1 e1) {}
     catch (Exception1|Exception2 e) {}
     catch (@error Exception2 e2) {}
+    
+    try {}
+    catch (Exception1 e1) {}
+    catch (@error Exception1|Exception2 e) {}
     
     @error try ("hello") {}
     
