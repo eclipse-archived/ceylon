@@ -323,6 +323,7 @@ public class DeclarationVisitor extends Visitor {
         exitScope(o);
         that.getType().setTypeModel(c.getType());
         v.setType(c.getType());
+        c.setShared(v.isShared());
     }
 
     @Override
