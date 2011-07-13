@@ -926,7 +926,20 @@ public class ExpressionVisitor extends AbstractVisitor {
                 ProducedType argType = args.getPositionalArguments().get(i)
                         .getExpression().getTypeModel();
                 if (argType!=null) {
-                    inferTypeArg(tp, parameter.getType(), argType, inferredTypes);
+                    if (parameter.isSequenced() && !parameter.getType().isSupertypeOf(argType)) {
+                        ProducedType spt = getIndividualSequencedParameterType(parameter.getType());
+                        for (int k=i; k<args.getPositionalArguments().size(); k++) {
+                            ProducedType sat = args.getPositionalArguments().get(k)
+                                    .getExpression().getTypeModel();
+                            if (argType!=null) {
+                                inferTypeArg(tp, spt, sat, inferredTypes);
+                            }
+                        }
+                        break;
+                    }
+                    else {
+                        inferTypeArg(tp, parameter.getType(), argType, inferredTypes);
+                    }
                 }
             }
         }
