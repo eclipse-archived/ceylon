@@ -69,7 +69,7 @@ class TypeArgInference() {
     }
     @type["Nothing|String"] firstElt("hello", "world");
     @type["Nothing|Sequence<String>"] firstElt({"hello", "world"});
-    @type["Nothing|String"] firstElt<String>({"hello", "world"});
+    @type["Nothing|String"] firstElt({"hello", "world"}...);
     @type["Nothing|String"] firstElt { "hello", "world" };
     @type["Nothing|Sequence<String>"] firstElt {{"hello", "world"}};
     @type["Nothing|String"] firstElt { args = {"hello", "world"}; };

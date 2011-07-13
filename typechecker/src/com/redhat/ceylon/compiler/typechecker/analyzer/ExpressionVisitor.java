@@ -1032,21 +1032,21 @@ public class ExpressionVisitor extends AbstractVisitor {
         for (int i=0; i<parameters.getParameters().size(); i++) {
             Parameter parameter = parameters.getParameters().get(i);
             if (args.getPositionalArguments().size()>i) {
-                ProducedType argType = args.getPositionalArguments().get(i)
-                        .getExpression().getTypeModel();
-                if (argType!=null) {
-                    if (parameter.isSequenced() && !parameter.getType().isSupertypeOf(argType)) {
-                        ProducedType spt = getIndividualSequencedParameterType(parameter.getType());
-                        for (int k=i; k<args.getPositionalArguments().size(); k++) {
-                            ProducedType sat = args.getPositionalArguments().get(k)
-                                    .getExpression().getTypeModel();
-                            if (sat!=null) {
-                                inferTypeArg(tp, spt, sat, inferredTypes);
-                            }
+                if (parameter.isSequenced() && args.getEllipsis()==null) {
+                    ProducedType spt = getIndividualSequencedParameterType(parameter.getType());
+                    for (int k=i; k<args.getPositionalArguments().size(); k++) {
+                        ProducedType sat = args.getPositionalArguments().get(k)
+                                .getExpression().getTypeModel();
+                        if (sat!=null) {
+                            inferTypeArg(tp, spt, sat, inferredTypes);
                         }
-                        break;
                     }
-                    else {
+                    break;
+                }
+                else {
+                    ProducedType argType = args.getPositionalArguments().get(i)
+                            .getExpression().getTypeModel();
+                    if (argType!=null) {
                         inferTypeArg(tp, parameter.getType(), argType, inferredTypes);
                     }
                 }
@@ -1259,7 +1259,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                     args.get(i).addError("sequenced parameter type not known: " + p.getName());
                 }
                 else {
-                    checkSequencedPositionalArgument(p, args, i, paramType);
+                    checkSequencedPositionalArgument(p, pal, i, paramType);
                 }
                 return;
             }
@@ -1276,10 +1276,14 @@ public class ExpressionVisitor extends AbstractVisitor {
         for (int i=params.size(); i<args.size(); i++) {
             args.get(i).addError("no matching parameter for argument");
         }
+        if (pal.getEllipsis()!=null && (params.isEmpty() || !params.get(params.size()-1).isSequenced())) {
+            pal.getEllipsis().addError("parameter list does not have a sequenced parameter");
+        }
     }
 
     private void checkSequencedPositionalArgument(Parameter p,
-            List<Tree.PositionalArgument> args, int i, ProducedType paramType) {
+            Tree.PositionalArgumentList pal, int i, ProducedType paramType) {
+        List<Tree.PositionalArgument> args = pal.getPositionalArguments();
         ProducedType at = getIndividualSequencedParameterType(paramType);
         for (int j=i; j<args.size(); j++) {
             Tree.PositionalArgument a = args.get(i);
@@ -1290,16 +1294,24 @@ public class ExpressionVisitor extends AbstractVisitor {
             else {
                 ProducedType argType = e.getTypeModel();
                 if (argType!=null) {
-                    if (paramType.isSupertypeOf(argType)) {
+                    if (pal.getEllipsis()!=null) {
                         if (i<args.size()-1) {
                             a.addError("too many arguments to sequenced parameter: " + p.getName());
                         }
+                        if (!paramType.isSupertypeOf(argType)) {
+                            a.addError("argument not assignable to parameter type: " + 
+                                    p.getName() + " since " +
+                                    argType.getProducedTypeName() + " is not " +
+                                    paramType.getProducedTypeName());
+                        }
                     }
-                    else if (!at.isSupertypeOf(argType)) {
-                        a.addError("argument not assignable to parameter type: " + 
-                                p.getName() + " since " +
-                                argType.getProducedTypeName() + " is not " +
-                                at.getProducedTypeName());
+                    else {
+                        if (!at.isSupertypeOf(argType)) {
+                            a.addError("argument not assignable to sequenced parameter type: " + 
+                                    p.getName() + " since " +
+                                    argType.getProducedTypeName() + " is not " +
+                                    at.getProducedTypeName());
+                        }
                     }
                 }
                 else {

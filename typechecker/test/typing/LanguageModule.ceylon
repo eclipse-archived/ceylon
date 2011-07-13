@@ -16,8 +16,8 @@ class LanguageModule() {
     //@error plus<Natural, Integer, Float>(1, -2);
     //@error plus<Natural, Natural, Integer>(1, 2);
 
-    entries<String>("hello", "world");
-    entries<String>({"hello", "world"});
-    for (Natural i->String s in entries<String>("hello", "world", "!")) {}
+    @type["Entries<Natural,String>"] entries("hello", "world");
+    @type["Entries<Natural,String>"] entries({"hello", "world"}...);
+    for (Natural i->String s in entries("hello", "world", "!")) {}
 
 }

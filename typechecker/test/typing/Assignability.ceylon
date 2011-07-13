@@ -258,7 +258,7 @@ class Assignability() {
     
     for (@error X x -> Y y in 12) {}
     
-    for (Natural i->String s in entries<String>({"hello", "world", "!"})) {
+    for (Natural i->String s in entries<String>({"hello", "world", "!"}...)) {
         print($i + ": " + s);
     }
     
@@ -266,7 +266,7 @@ class Assignability() {
         print($i + ": " + s);
     }
     
-    for (i->s in entries<String>({"hello", "world", "!"})) {
+    for (i->s in entries({"hello", "world", "!"}...)) {
         print($i + ": " + s);
     }
     
@@ -319,9 +319,13 @@ class Assignability() {
     
     void w<W>(W... ws) {}
     w<String>("foo");
-    w<String>({"foo"});
+    w<String>({"foo"}...);
     w<String>("foo", "bar");
-    w<String>({"foo", "bar"});
+    w<String>({"foo", "bar"}...);
+    w("foo");
+    w({"foo"}...);
+    w("foo", "bar");
+    w({"foo", "bar"}...);
     
     object o { shared String hello = "hello"; }
     @type["Assignability.o"] value oo = o;
