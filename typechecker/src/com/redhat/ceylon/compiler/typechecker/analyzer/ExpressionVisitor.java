@@ -16,11 +16,13 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -79,6 +81,100 @@ public class ExpressionVisitor extends AbstractVisitor {
                 }
             }
         }
+    }
+    
+    @Override public void visit(Tree.TypedDeclaration that) {
+        super.visit(that);
+        TypedDeclaration td = that.getDeclarationModel();
+        if ( td.getType()!=null && !isCompletelyVisible(td,td.getType()) ) {
+            that.getType().addError("type of declaration is not visible everywhere declaration is visible: " 
+                        + td.getName());
+        }
+    }
+    
+    @Override
+    public void visit(Tree.AnyMethod that) {
+        super.visit(that);
+        TypedDeclaration td = that.getDeclarationModel();
+        for (Tree.ParameterList list: that.getParameterLists()) {
+            for (Tree.Parameter tp: list.getParameters()) {
+                Parameter p = tp.getDeclarationModel();
+                if (p.getType()!=null && !isCompletelyVisible(td, p.getType())) {
+                    tp.getType().addError("type of parameter is not visible everywhere declaration is visible: " 
+                            + p.getName());
+                }
+            }
+        }
+    }
+    
+    @Override
+    public void visit(Tree.AnyClass that) {
+        super.visit(that);
+        TypeDeclaration td = that.getDeclarationModel();
+        if (that.getParameterList()!=null) {
+            for (Tree.Parameter tp: that.getParameterList().getParameters()) {
+                Parameter p = tp.getDeclarationModel();
+                if (p.getType()!=null && !isCompletelyVisible(td, p.getType())) {
+                    tp.getType().addError("type of parameter is not visible everywhere declaration is visible: " 
+                            + p.getName());
+                }
+            }
+        }
+    }
+    
+    private boolean isCompletelyVisible(Declaration member, ProducedType pt) {
+        if (pt.getDeclaration() instanceof UnionType) {
+            for (ProducedType ct: pt.getDeclaration().getCaseTypes()) {
+                if ( !isCompletelyVisible(member, ct.substitute(pt.getTypeArguments())) ) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        else {
+            if (!isVisible(member, pt.getDeclaration())) {
+                return false;
+            }
+            for (ProducedType at: pt.getTypeArgumentList()) {
+                if ( at!=null && !isCompletelyVisible(member, at) ) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    private boolean isVisible(Declaration member, TypeDeclaration type) {
+        if (!member.isShared()) {
+            return true;
+        }
+        if (type instanceof TypeParameter) {
+            return true;
+        }
+        boolean shared = true;
+        Scope ts = type;
+        while (ts!=null) {
+            if (member.getContainer()==ts) {
+                return shared;
+            }
+            if (!(ts instanceof ClassOrInterface && ((ClassOrInterface) ts).isShared())
+                    && !(ts instanceof Package)) {
+                shared = false;
+            }
+            ts=ts.getContainer();
+        }
+        Scope ms = member.getContainer();
+        while (ms!=null) {
+            if (!(ms instanceof ClassOrInterface && ((ClassOrInterface) ms).isShared())
+                    && !(ms instanceof Package)) {
+                return true;
+            }
+            else if (type.getContainer()==ms) {
+                return type.isShared();
+            }
+            ms=ms.getContainer();
+        }
+        return true;
     }
 
     @Override public void visit(Tree.Variable that) {
