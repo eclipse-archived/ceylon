@@ -2109,10 +2109,21 @@ public class ExpressionVisitor extends AbstractVisitor {
                         if (ecc.getVariable()!=null) {
                             if (cc==ecc) break;
                             ProducedType ect = ecc.getVariable().getType().getTypeModel();
-                            //TODO: better handling for union types in catch
-                            if (ect!=null && ect.isSupertypeOf(ct)) {
-                                cc.getVariable().getType()
-                                        .addError("exception type is already handled by earlier catch clause");
+                            if (ect!=null) {
+                                if (ct.isSubtypeOf(ect)) {
+                                    cc.getVariable().getType()
+                                            .addError("exception type is already handled by earlier catch clause:" 
+                                                    + ct.getProducedTypeName());
+                                }
+                                if (ct.getDeclaration() instanceof UnionType) {
+                                    for (ProducedType ut: ct.getDeclaration().getCaseTypes()) {
+                                        if ( ut.substitute(ct.getTypeArguments()).isSubtypeOf(ect) ) {
+                                            cc.getVariable().getType()
+                                                    .addError("exception type is already handled by earlier catch clause: "
+                                                            + ut.getProducedTypeName());
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
