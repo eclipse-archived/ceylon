@@ -78,6 +78,11 @@ public class ControlStructures() {
         tx.rollbackOnly();
     }
     
+    Transaction tx = Transaction();
+    @error try (tx) {}
+    try (@error t = tx) {}
+    try (@error Transaction t = tx) {}
+    
     try {
         writeLine("hello");
     }
@@ -121,6 +126,11 @@ public class ControlStructures() {
     catch (@error Exception1|Exception2 e) {}
     
     @error try ("hello") {}
+    @error try (Exception()) {}
+    try (@error s = "hello") {}
+    try (@error e = Exception()) {}
+    try (@error Object t = Transaction()) {}
+    try (@error Transaction tx) {}
     
     @error while ("hello") {}
 }
