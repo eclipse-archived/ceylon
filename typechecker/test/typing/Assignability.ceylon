@@ -266,11 +266,11 @@ class Assignability() {
         print($i + ": " + s);
     }
     
-    for (i->s in entries({"hello", "world", "!"})) {
+    for (i->s in entries<String>({"hello", "world", "!"})) {
         print($i + ": " + s);
     }
     
-    for (i->s in entries<String>("hello", "world", "!")) { //TODO: remove type arg when we support inference from sequenced args
+    for (i->s in entries("hello", "world", "!")) {
         print($i + ": " + s);
     }
     
