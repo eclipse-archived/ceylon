@@ -1087,7 +1087,7 @@ booleanCondition
     : '(' expression ')'
     -> ^(BOOLEAN_CONDITION expression)
     ;
-        
+    
 existsCondition
     : ('(' EXISTS LIDENTIFIER ')') => '(' EXISTS impliedVariable ')'
     -> ^(EXISTS_CONDITION[$EXISTS] impliedVariable)
