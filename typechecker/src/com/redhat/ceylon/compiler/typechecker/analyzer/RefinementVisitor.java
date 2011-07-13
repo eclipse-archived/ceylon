@@ -21,6 +21,14 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
+/**
+ * Validates some simple rules relating to refinement.
+ * 
+ * @see TypeHierarchyVisitor for the fancy stuff!
+ * 
+ * @author Gavin King
+ *
+ */
 public class RefinementVisitor extends Visitor {
     
     @Override public void visit(Tree.Declaration that) {

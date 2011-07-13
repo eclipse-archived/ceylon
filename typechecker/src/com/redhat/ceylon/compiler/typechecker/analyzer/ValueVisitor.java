@@ -8,6 +8,18 @@ import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
+/**
+ * Determines if a value is "captured" by 
+ * block nested in the same containing scope.
+ * 
+ * For example, a captured value in a class
+ * body is an attribute. A captured value in
+ * a method body can outlive the execution of
+ * the method.
+ * 
+ * @author Gavin King
+ *
+ */
 public class ValueVisitor extends Visitor {
     
     private TypedDeclaration declaration;

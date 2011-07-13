@@ -20,6 +20,13 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
+/**
+ * Bucket for some helper methods used by various
+ * visitors.
+ * 
+ * @author Gavin King
+ *
+ */
 public abstract class AbstractVisitor extends Visitor {
 
     protected abstract Context getContext();
