@@ -110,7 +110,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         
         for(final JCCompilationUnit tree : trees){
             CompilationUnit ceylonTree = ((CeylonCompilationUnit)tree).ceylonTree;
-            final String pkgName = tree.getPackageName().toString();
+            final String pkgName = tree.getPackageName() != null ? tree.getPackageName().toString() : "";
             
             ceylonTree.visit(new Visitor(){
                 
