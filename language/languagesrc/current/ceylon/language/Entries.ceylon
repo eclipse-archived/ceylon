@@ -44,10 +44,10 @@ shared Entries<Natural,Element> entries<Element>(Element... sequence)
         
         shared actual Entries<Natural,Element> clone {
             if (nonempty sequence) {
-                return entries<Element>(sequence.clone);
+                return entries<Element>(sequence.clone...);
             }
             else {
-                return entries<Element>({});
+                return entries<Element>();
             }
         }
         

@@ -65,7 +65,7 @@ shared interface Correspondence<in Key, out Item>
             return outer.item(keys.first);
         }
         shared actual Item?[] rest {
-            return outer.items(keys.rest);
+            return outer.items(keys.rest...);
         }
         shared actual Item? item(Natural index) {
             if (exists Key key = keys.item(index)) {
