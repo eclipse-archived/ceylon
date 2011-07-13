@@ -15,4 +15,8 @@ public class MiscTest extends CompilerTest {
 		compileAndRun("helloworld/helloworld.ceylon", "com.redhat.ceylon.compiler.test.misc.helloworld.helloworld");
 	}
 
+    @Test
+    public void testDefaultPackage(){
+        compareWithJavaSource("defaultPackage", path);
+    }
 }
