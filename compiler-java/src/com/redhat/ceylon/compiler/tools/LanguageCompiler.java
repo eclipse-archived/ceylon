@@ -199,7 +199,7 @@ public class LanguageCompiler extends JavaCompiler {
                 VirtualFile srcDir = vfs.getFromFile(getSrcDir(sourceFile));
                 // FIXME: this is bad in many ways
                 String pkgName = getPackage(filename);
-                com.redhat.ceylon.compiler.typechecker.model.Package p = modelLoader.findOrCreatePackage(modelLoader.findOrCreateModule(pkgName), pkgName);
+                com.redhat.ceylon.compiler.typechecker.model.Package p = modelLoader.findOrCreatePackage(modelLoader.findOrCreateModule(pkgName), pkgName == null ? "" : pkgName);
                 PhasedUnit phasedUnit = new PhasedUnit(file, srcDir, cu, p, moduleBuilder, ceylonContext);
                 phasedUnits.addPhasedUnit(file, phasedUnit);
                 gen.setMap(map);
