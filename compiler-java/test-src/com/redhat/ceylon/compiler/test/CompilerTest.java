@@ -58,10 +58,14 @@ public abstract class CompilerTest {
 	}
 
 	protected void compareWithJavaSource(String name) {
-		compareWithJavaSource(name+".ceylon", name+".src");
+	    compareWithJavaSource(name, dir);
 	}
 
-	protected void compareWithJavaSource(String ceylon, String java) {
+	protected void compareWithJavaSource(String name, String dir) {
+		compareWithJavaSource(name+".ceylon", name+".src", dir);
+	}
+
+	protected void compareWithJavaSource(String ceylon, String java, String dir) {
 		// Make a new compiler each time
 		Context context = new Context();
 		CeyloncFileManager.preRegister(context);
