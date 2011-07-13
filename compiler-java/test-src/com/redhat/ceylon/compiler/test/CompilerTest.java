@@ -43,7 +43,8 @@ public abstract class CompilerTest {
 	@Before
 	public void setup(){
 		// for comparing with java source
-		pkg = getClass().getPackage().getName().replaceAll("\\.", Matcher.quoteReplacement(File.separator));
+	    Package pakage = getClass().getPackage();
+		pkg = pakage == null ? "" : pakage.getName().replaceAll("\\.", Matcher.quoteReplacement(File.separator));
 		path = dir + File.separator + pkg + File.separator;
 		// for running
 		try {
