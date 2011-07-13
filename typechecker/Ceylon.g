@@ -1245,7 +1245,7 @@ tryCatchFinally
     ;
 
 tryBlock
-    : 'try'^ ('('! specifiedVariableOrExpression ')'!)? block
+    : 'try'^ ('('! resource ')'!)? block
     ;
 
 catchBlock
@@ -1256,9 +1256,9 @@ finallyBlock
     : 'finally'^ block
     ;
 
-specifiedVariableOrExpression
-    : (declarationStart|specificationStart) => specifiedVariable 
-    -> ^(RESOURCE specifiedVariable)
+resource
+    : ('@'|declarationStart|specificationStart) => specifiedVariable2
+    -> ^(RESOURCE specifiedVariable2)
     | expression
     -> ^(RESOURCE expression)
     ;
@@ -1268,7 +1268,7 @@ specifiedVariable2
     ;
 
 specifiedVariable
-    : variable^ specifier
+    : variable^ specifier?
     ;
 
 variable2
