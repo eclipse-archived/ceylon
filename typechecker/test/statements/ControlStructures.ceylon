@@ -15,7 +15,7 @@ public class ControlStructures() {
     }
     
     variable String? var := "gavin"; 
-    //if (exists var) {}
+    @error if (exists var) {}
     if (exists v = var) {}
     
     if (nonempty names) {
@@ -33,7 +33,7 @@ public class ControlStructures() {
     }
     
     variable String[] varseq := {};
-    //if (nonempty varseq) {}
+    @error if (nonempty varseq) {}
     if (nonempty vs = varseq) {}
     
     if (is String something) {
@@ -45,7 +45,7 @@ public class ControlStructures() {
     }
     
     variable Object o := "hello";
-    //if (is String o) {}
+    @error if (is String o) {}
 
     for (n in names) {
         print(n);

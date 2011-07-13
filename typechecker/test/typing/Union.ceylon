@@ -99,7 +99,7 @@ class Union() {
     
     @type ["Nothing|Union.A|Union.B|Union.C"] A?|B?|C? oabc = null;
     if (is A|B|C oabc) {
-        //@error if (exists oabc) {}
+        @error if (exists oabc) {}
     }
     if (is B|C oabc) {
         oabc.hello();

@@ -158,8 +158,9 @@ class Assignability() {
     
     if ({X()}[0] exists) {}
     
-    //if (@error exists "Hello") {}
-    //if (@error exists something) {}
+    //@error if (exists "Hello") {}
+    @error if (exists something) {}
+    if (exists @error s = something) {}
     
     if (exists X x = nothing) {
         print(x.hello);
@@ -184,7 +185,6 @@ class Assignability() {
     
     @error if (something.hello exists) {}
     if (exists @error h = something.hello) {}
-    //@error if (exists something) {}
     
     if (is Y something) {
         print(something.name);
@@ -203,8 +203,8 @@ class Assignability() {
         print(seq.size.string);
     }
     
-    //Natural? nat = null;
-    //@error if (nonempty nat) {} 
+    Natural? nat = null;
+    @error if (nonempty nat) {} 
     
     for (X x in {X(), X()} ) {
         print(x.hello);
@@ -266,6 +266,14 @@ class Assignability() {
         print($i + ": " + s);
     }
     
+    for (i->s in entries({"hello", "world", "!"})) {
+        print($i + ": " + s);
+    }
+    
+    for (i->s in entries<String>("hello", "world", "!")) { //TODO: remove type arg when we support inference from sequenced args
+        print($i + ": " + s);
+    }
+    
     for (Integer i in -10..+10) {
         print($i);
     }
@@ -276,7 +284,7 @@ class Assignability() {
         print($i);
     }
     
-    //for (@error value x -> value y in 12) {}
+    //for (@error x -> y in 12) {}
     
     void printStrings(String... strings) {}
     
