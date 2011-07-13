@@ -202,15 +202,43 @@ public class ExpressionVisitor extends AbstractVisitor {
 
     @Override public void visit(Tree.Resource that) {
         super.visit(that);
+        Tree.Expression e = null;
+        ProducedType t = null;
+        Node typedNode = null;
         if (that.getExpression()!=null) {
-            ProducedType t = that.getExpression().getTypeModel();
+            e = that.getExpression();
+            t = e.getTypeModel();
+            typedNode = e;
+        }
+        else if (that.getVariable()!=null) {
+            Tree.SpecifierExpression se = that.getVariable().getSpecifierExpression();
+            if (se!=null) {
+                e = se.getExpression();
+                t = that.getVariable().getType().getTypeModel();
+                typedNode = that.getVariable().getType();
+            }
+            else {
+                that.getVariable().addError("missing resource specifier");
+            }
+        }
+        if (e!=null) {
+            if (e.getTerm() instanceof Tree.InvocationExpression) {
+                Tree.InvocationExpression ie = (Tree.InvocationExpression) e.getTerm();
+                if (!(ie.getPrimary() instanceof Tree.BaseTypeExpression 
+                        || ie.getPrimary() instanceof Tree.QualifiedTypeExpression)) {
+                    e.addError("resource expression is not an instantiation");
+                }
+            }
+            else {
+                e.addError("resource expression is not an instantiation");
+            }
             if (t==null) {
-                that.addError("could not determine if expression is of closeable type");
+                typedNode.addError("could not determine if resource is of closeable type");
             }
             else {
                 ProducedType ct = getCloseableDeclaration().getType();
                 if (!ct.isSupertypeOf(t)) {
-                    that.addError("expression is not of closeable type: " +
+                    typedNode.addError("resource is not of closeable type: " +
                             t.getProducedTypeName() + " is not Closeable");
                 }
             }
