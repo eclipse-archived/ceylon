@@ -12,4 +12,16 @@ class Parameters() {
     void d5(String? name=null) {}
     void d6(@error String? name="World") {}
     void d7(@error variable String s) {}
+    
+    void broken1(@error Unknown p) {}
+    @error broken1("hello");
+    void broken2<T>(T t, @error Unknown p) {}
+    @error broken2("hello", "goodbye");
+    void broken3(@error Unknown... p) {}
+    @error broken3("hello");
+    void broken4(@error Unknown[]... p) {}
+    @error broken4({"hello"});
+    void broken5<T>(@error Entry<T,Unknown> e) {}
+    @error broken5("hello"->"goodbye");
+
 }
