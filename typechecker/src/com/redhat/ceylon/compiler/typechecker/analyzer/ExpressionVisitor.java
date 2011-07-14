@@ -1111,7 +1111,10 @@ public class ExpressionVisitor extends AbstractVisitor {
     }*/
 
     private void visitInvocation(Tree.InvocationExpression that, ProducedReference prf) {
-        if (prf==null || !prf.isFunctional()) {
+        if (prf==null) {
+            //that.addError("could not determine if receiving expression can be invoked");
+        }
+        else if (!prf.isFunctional()) {
             that.addError("receiving expression cannot be invoked");
         }
         else {
