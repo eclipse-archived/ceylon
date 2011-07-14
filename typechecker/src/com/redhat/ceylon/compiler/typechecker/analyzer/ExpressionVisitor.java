@@ -572,8 +572,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                 setType(local, block, that);
             }
             else {
-                local.addError("could not infer type of: " + 
-                        name(that.getIdentifier()));
+//                local.addError("could not infer type of: " + 
+//                        name(that.getIdentifier()));
             }
         }
     }
@@ -586,8 +586,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                 setType(local, block, that);
             }
             else {
-                local.addError("could not infer type of: " + 
-                        name(that.getIdentifier()));
+//                local.addError("could not infer type of: " + 
+//                        name(that.getIdentifier()));
             }
         }
     }
@@ -599,8 +599,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                 setType(local, spec, that);
             }
             else {
-                local.addError("could not infer type of: " + 
-                        name(that.getIdentifier()));
+//                local.addError("could not infer type of: " + 
+//                        name(that.getIdentifier()));
             }
         }
     }
@@ -612,8 +612,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                 setTypeFromOptionalType(local, se, that);
             }
             else {
-                local.addError("could not infer type of: " + 
-                        name(that.getIdentifier()));
+//                local.addError("could not infer type of: " + 
+//                        name(that.getIdentifier()));
             }
         }
     }
@@ -625,8 +625,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                 setTypeFromEmptyType(local, se, that);
             }
             else {
-                local.addError("could not infer type of: " + 
-                        name(that.getIdentifier()));
+//                local.addError("could not infer type of: " + 
+//                        name(that.getIdentifier()));
             }
         }
     }
@@ -638,8 +638,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                 setTypeFromTypeArgument(local, se, that);
             }
             else {
-                local.addError("could not infer type of: " + 
-                        name(that.getIdentifier()));
+//                local.addError("could not infer type of: " + 
+//                        name(that.getIdentifier()));
             }
         }
     }
@@ -651,8 +651,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                 setTypeFromTypeArgument(local, se, key, 0);
             }
             else {
-                local.addError("could not infer type of key: " + 
-                        name(key.getIdentifier()));
+//                local.addError("could not infer type of key: " + 
+//                        name(key.getIdentifier()));
             }
         }
     }
@@ -664,8 +664,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                 setTypeFromTypeArgument(local, se, value, 1);
             }
             else {
-                local.addError("could not infer type of value: " + 
-                        name(value.getIdentifier()));
+//                local.addError("could not infer type of value: " + 
+//                        name(value.getIdentifier()));
             }
         }
     }
@@ -683,8 +683,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                 return;
             }
         }
-        local.addError("could not infer type of: " + 
-                name(that.getIdentifier()));
+//        local.addError("could not infer type of: " + 
+//                name(that.getIdentifier()));
     }
     
     private void setTypeFromOptionalType(Tree.LocalModifier local, 
@@ -699,8 +699,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                 return;
             }
         }
-        local.addError("could not infer type of: " + 
-                name(that.getIdentifier()));
+//        local.addError("could not infer type of: " + 
+//                name(that.getIdentifier()));
     }
     
     private void setTypeFromEmptyType(Tree.LocalModifier local, 
@@ -715,8 +715,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                 return;
             }
         }
-        local.addError("could not infer type of: " + 
-                name(that.getIdentifier()));
+//        local.addError("could not infer type of: " + 
+//                name(that.getIdentifier()));
     }
     
     private void setTypeFromTypeArgument(Tree.LocalModifier local,
@@ -739,8 +739,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                 }
             }
         }
-        local.addError("could not infer type of: " + 
-                name(that.getIdentifier()));
+//        local.addError("could not infer type of: " + 
+//                name(that.getIdentifier()));
     }
     
     private void setType(Tree.LocalModifier local, 
@@ -772,8 +772,8 @@ public class ExpressionVisitor extends AbstractVisitor {
             }
         }
         else {
-            local.addError("could not infer type of: " + 
-                    name(that.getIdentifier()));
+//            local.addError("could not infer type of: " + 
+//                    name(that.getIdentifier()));
         }
     }
     
@@ -789,8 +789,8 @@ public class ExpressionVisitor extends AbstractVisitor {
             that.getDeclarationModel().setType(t);
         }
         else {
-            local.addError("could not infer type of: " + 
-                    name(that.getIdentifier()));
+//            local.addError("could not infer type of: " + 
+//                    name(that.getIdentifier()));
         }
     }
     
@@ -2213,7 +2213,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                 }
             }
             if (list.isEmpty()) {
-                that.addError("could not infer type of sequence enumeration");
+//                that.addError("could not infer type of sequence enumeration");
                 return;
             }
             else if (list.size()==1) {
