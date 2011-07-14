@@ -29,18 +29,18 @@ interface TypeInference {
             return 0;    
         }
         void m(){
-            value n = test();
+            @type["Natural"] value n = test();
         }
-        function f() {
+        @type["Natural"] function f() {
             return test();
         }
     }
     
     class BackwardTypeInference(){
         void m(){
-            @error value n = test();
+            @type["Void"] @error value n = test();
         }
-        function f() {
+        @type["Void"] function f() {
             @error return test();
         }
         function test(){
