@@ -266,7 +266,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         }*/
         v.getType().visit(this);
         if (v.getDeclarationModel().getType()==null) {
-            v.getDeclarationModel().setType( getVoidDeclaration().getType() );
+            v.getDeclarationModel().setType( defaultType() );
         }
     }
 
@@ -2462,13 +2462,17 @@ public class ExpressionVisitor extends AbstractVisitor {
     
     @Override public void visit(Tree.Term that) {
         super.visit(that);
-        that.setTypeModel( getVoidDeclaration().getType() );
+        that.setTypeModel( defaultType() );
     }
 
     @Override public void visit(Tree.Type that) {
         super.visit(that);
         if (that.getTypeModel()==null) {
-            that.setTypeModel( getVoidDeclaration().getType() );
+            that.setTypeModel( defaultType() );
         }
+    }
+
+    private ProducedType defaultType() {
+        return getVoidDeclaration().getType();
     }
 }
