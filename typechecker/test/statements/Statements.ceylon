@@ -7,6 +7,11 @@ void statements() {
     void y() {}
     X x { return x; }
     
+    @error x();
+    @error X().hello();
+    @error z();
+    @error X().z();
+    
     X();
     y();
     X().doIt();
@@ -25,5 +30,5 @@ void statements() {
     @error xn?.hello;
     
     @error true;
-    
+        
 }
