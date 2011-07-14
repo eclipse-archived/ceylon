@@ -457,6 +457,7 @@ public class DeclarationVisitor extends Visitor {
         Value v = new Value();
         that.setDeclarationModel(v);
         visitDeclaration(that, v);
+        setVisibleScope(v);
         if (that.getType()!=null) {
             that.getType().visit(this);
         }
@@ -593,6 +594,9 @@ public class DeclarationVisitor extends Visitor {
                 /*if (!((Package) s).isShared()) {
                     model.setVisibleScope(s);
                 }*/
+                if (!model.isShared()) {
+                    model.setVisibleScope(s);
+                }
                 //null visible scope means visible everywhere
                 break;
             }
