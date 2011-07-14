@@ -77,7 +77,21 @@ interface TypeInference {
         }
         
         @error @type["Void"] function g() = burp;
-                
+        
+        @error @type["Sequence<Void>"] value seq = { burp };
+        
+        @type["Sequence<Void>"] function createSeq() {
+            @error @type["Sequence<Void>"] return { hi };
+        }
+        
+        Sequence<T> singleton<T>(T element) {
+            return {element};
+        }
+        
+        @type["Sequence<Void>"] @error value sing = singleton(hi);
+        
+        value hi = "hi";
+        
     }
 
 }
