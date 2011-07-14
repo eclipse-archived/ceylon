@@ -194,6 +194,8 @@ public class ExpressionVisitor extends AbstractVisitor {
         //(nor is it possible to infer the variable type)
         Tree.Variable v = that.getVariable();
         if (v!=null) {
+            //v.getType().visit(this);
+            defaultTypeToVoid(v);
             if (v.getType() instanceof Tree.SyntheticVariable) {
                 //this is a bit ugly (the parser sends us a SyntheticVariable
                 //instead of the real StaticType which it very well knows!
@@ -213,10 +215,16 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
 
     @Override public void visit(Tree.ExistsOrNonemptyCondition that) {
+        //don't recurse to the Variable, since we don't
+        //want to check that the specifier expression is
+        //assignable to the declared variable type
+        //(nor is it possible to infer the variable type)
         ProducedType t = null;
         Node n = that;
         Tree.Variable v = that.getVariable();
         if (v!=null) {
+            //v.getType().visit(this);
+            defaultTypeToVoid(v);
             Tree.SpecifierExpression se = v.getSpecifierExpression();
             if (se!=null) {
                 se.visit(this);
@@ -249,6 +257,16 @@ public class ExpressionVisitor extends AbstractVisitor {
             else if (that instanceof Tree.NonemptyCondition) {
                 checkEmpty(t, n);
             }
+        }
+    }
+
+    private void defaultTypeToVoid(Tree.Variable v) {
+        /*if (v.getType().getTypeModel()==null) {
+            v.getType().setTypeModel( getVoidDeclaration().getType() );
+        }*/
+        v.getType().visit(this);
+        if (v.getDeclarationModel().getType()==null) {
+            v.getDeclarationModel().setType( getVoidDeclaration().getType() );
         }
     }
 
@@ -779,7 +797,9 @@ public class ExpressionVisitor extends AbstractVisitor {
     @Override public void visit(Tree.Return that) {
         super.visit(that);
         if (returnType==null) {
-            that.addError("could not determine expected return type");
+            //misplaced return statements are already handled by ControlFlowVisitor
+            //missing return types declarations already handled by TypeVisitor
+            //that.addError("could not determine expected return type");
         } 
         else {
             Tree.Expression e = that.getExpression();
@@ -1923,11 +1943,12 @@ public class ExpressionVisitor extends AbstractVisitor {
         //TODO: this does not correctly handle methods
         //      and classes which are not subsequently 
         //      invoked (should return the callable type)
-        if (that.getTypeArgumentList()!=null)
-            that.getTypeArgumentList().visit(this);
+        /*if (that.getTypeArgumentList()!=null)
+            that.getTypeArgumentList().visit(this);*/
+        super.visit(that);
         TypedDeclaration member = getBaseDeclaration(that);
         if (member==null) {
-            that.addError("could not determine target of member reference: " +
+            that.addError("member does not exist: " +
                     that.getIdentifier().getText());
         }
         else {
@@ -1941,14 +1962,15 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
 
     @Override public void visit(Tree.QualifiedMemberExpression that) {
-        that.getPrimary().visit(this);
+        /*that.getPrimary().visit(this);
         if (that.getTypeArgumentList()!=null)
-            that.getTypeArgumentList().visit(this);
+            that.getTypeArgumentList().visit(this);*/
+        super.visit(that);
         ProducedType pt = that.getPrimary().getTypeModel();
         if (pt!=null && that.getIdentifier()!=null) {
             TypedDeclaration member = (TypedDeclaration) unwrap(pt, that).getDeclaration().getMember(that.getIdentifier().getText());
             if (member==null) {
-                that.addError("could not determine target of member reference: " +
+                that.addError("member does not exist: " +
                         that.getIdentifier().getText());
             }
             else {
@@ -1977,7 +1999,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         if (acceptsTypeArguments(receiverType, member, typeArgs, tal, that)) {
             ProducedTypedReference ptr = receiverType.getTypedMember(member, typeArgs);
             if (ptr==null) {
-                that.addError("member not found: " + 
+                that.addError("member does not exist: " + 
                         member.getName() + " of type " + 
                         receiverType.getDeclaration().getName());
             }
@@ -2014,11 +2036,12 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
 
     @Override public void visit(Tree.BaseTypeExpression that) {
-        if (that.getTypeArgumentList()!=null)
-            that.getTypeArgumentList().visit(this);
+        super.visit(that);
+        /*if (that.getTypeArgumentList()!=null)
+            that.getTypeArgumentList().visit(this);*/
         TypeDeclaration type = getBaseDeclaration(that);
         if (type==null) {
-            that.addError("could not determine target of type reference: " + 
+            that.addError("type does not exist: " + 
                     that.getIdentifier().getText());
         }
         else {
@@ -2032,15 +2055,16 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
         
     @Override public void visit(Tree.QualifiedTypeExpression that) {
-        that.getPrimary().visit(this);
+        super.visit(that);
+        /*that.getPrimary().visit(this);
         if (that.getTypeArgumentList()!=null)
-            that.getTypeArgumentList().visit(this);
+            that.getTypeArgumentList().visit(this);*/
         ProducedType pt = that.getPrimary().getTypeModel();
         if (pt!=null) {
             TypeDeclaration type = (TypeDeclaration) unwrap(pt, that).getDeclaration()
                     .getMember(that.getIdentifier().getText());
             if (type==null) {
-                that.addError("could not determine target of member type reference: " +
+                that.addError("member type does not exist: " +
                         that.getIdentifier().getText());
             }
             else {
@@ -2124,7 +2148,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         else {
             ProducedType t = term.getTypeModel();
             if (t==null) {
-                that.addError("could not determine type of expression");
+                //that.addError("could not determine type of expression");
             }
             else {
                 that.setTypeModel(t);
@@ -2433,6 +2457,18 @@ public class ExpressionVisitor extends AbstractVisitor {
                     }
                 }
             }
+        }
     }
+    
+    @Override public void visit(Tree.Term that) {
+        super.visit(that);
+        that.setTypeModel( getVoidDeclaration().getType() );
+    }
+
+    @Override public void visit(Tree.Type that) {
+        super.visit(that);
+        if (that.getTypeModel()==null) {
+            that.setTypeModel( getVoidDeclaration().getType() );
+        }
     }
 }
