@@ -12,9 +12,9 @@ interface TypeInference {
         
         @type["String"] value inferredAttribute = "Hello";
         
-        @error value brokenInferredMethod() {
+        /*@error value brokenInferredMethod() {
             return "Hello";
-        }
+        }*/
         
         @error function brokenInferredGetter {
             return "Hello";
@@ -46,6 +46,38 @@ interface TypeInference {
         function test(){
             return 0;    
         }
+    }
+    
+    class BrokenInference() {
+        
+        @error value x;
+        
+        @error value y {}
+        
+        @error function f() {}
+        
+        @error function g();
+        
+        @error class C();
+        
+        @error interface I;
+        
+    }
+
+    class UnknownInference() {
+        
+        @error @type["Void"] value x = burp;
+        
+        @type["Void"] value y {
+            @error return burp;
+        }
+        
+        @type["Void"] function f() {
+            @error return burp;
+        }
+        
+        @error @type["Void"] function g() = burp;
+                
     }
 
 }
