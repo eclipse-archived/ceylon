@@ -145,36 +145,8 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
 
     private boolean isVisible(Declaration member, TypeDeclaration type) {
-        if (!member.isShared()) {
-            return true;
-        }
-        if (type instanceof TypeParameter) {
-            return true;
-        }
-        boolean shared = true;
-        Scope ts = type;
-        while (ts!=null) {
-            if (member.getContainer()==ts) {
-                return shared;
-            }
-            if (!(ts instanceof ClassOrInterface && ((ClassOrInterface) ts).isShared())
-                    && !(ts instanceof Package)) {
-                shared = false;
-            }
-            ts=ts.getContainer();
-        }
-        Scope ms = member.getContainer();
-        while (ms!=null) {
-            if (!(ms instanceof ClassOrInterface && ((ClassOrInterface) ms).isShared())
-                    && !(ms instanceof Package)) {
-                return true;
-            }
-            else if (type.getContainer()==ms) {
-                return type.isShared();
-            }
-            ms=ms.getContainer();
-        }
-        return true;
+        return type instanceof TypeParameter || 
+                type.isVisible(member.getVisibleScope());
     }
 
     @Override public void visit(Tree.Variable that) {
