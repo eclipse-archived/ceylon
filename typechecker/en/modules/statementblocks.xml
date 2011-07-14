@@ -1146,10 +1146,10 @@ else {
                 <literal>Nothing|X</literal>.</para>
             </listitem>
             <listitem>
-                <para>If the condition refers to a local, the local will be treated by the 
-                compiler as non-<literal>variable</literal> and as having type <literal>X</literal> 
-                inside the block that immediately follows the condition, where the conditional 
-                expression is of type <literal>Nothing|X</literal>.</para>
+                <para>If the condition contains a value reference, the local will be treated by the 
+                compiler as having type <literal>X</literal> inside the block that immediately 
+                follows the condition, where the conditional expression is of type 
+                <literal>Nothing|X</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -1162,10 +1162,10 @@ else {
                 <literal>Nothing|Empty|X</literal>.</para>
             </listitem>
             <listitem>
-                <para>If the condition refers to a local, the local will be treated by the 
-                compiler as non-<literal>variable</literal> and as having type <literal>X</literal> 
-                inside the block that immediately follows the condition, where the conditional 
-                expression is of type <literal>Nothing|Empty|X</literal>.</para>
+                <para>If the condition contains a value reference, the value will be treated by the 
+                compiler as having type <literal>X</literal> inside the block that immediately 
+                follows the condition, where the conditional expression is of type 
+                <literal>Nothing|Empty|X</literal>.</para>
             </listitem>
         </itemizedlist>
         
@@ -1184,13 +1184,13 @@ else {
         
         <itemizedlist>
             <listitem>
-                <para>If the condition declares a variable, the specifier expression type need 
-                not be assignable to the declared type of the variable, or</para>
+                <para>If the condition declares a variable, the specifier expression type need not be 
+                assignable to the declared type of the variable, or</para>
             </listitem>
             <listitem>
-                <para>if the condition refers to a local, the local will be treated by the compiler as 
-                non-<literal>variable</literal> and as having the specified type inside the block 
-                that immediately follows the condition.</para>
+                <para>if the condition contains a value reference, the value will be treated by the 
+                compiler as having the specified type inside the block that immediately follows the 
+                condition.</para>
             </listitem>
         </itemizedlist>
                         
@@ -1758,11 +1758,21 @@ while (!person.dead);</programlisting>
             <literal>ceylon.language.Exception</literal>.</para>
             
             <para>The <literal>try</literal> block may declare a <emphasis>resource</emphasis>
-            expression. A resource expresson produces a heavyweight object that must be 
-            released when execution of the <literal>try</literal> terminates. Each resource 
-            expression must be of type assignable to <literal>ceylon.language.Usable</literal>.</para>
+            expression, which may be either:</para>
             
-            <programlisting>Resource: Variable Specifier | Expression</programlisting>
+            <itemizedlist>
+                <listitem><para>an unqualified value reference to a non-<literal>variable</literal> 
+                attribute or local,</para></listitem>
+                <listitem><para>an instantiation expression, or</para></listitem>
+                <listitem><para>an inline variable declaration together with an expression.</para></listitem>
+            </itemizedlist>
+            
+            <para>A resource expresson produces a heavyweight object that must be 
+            released when execution of the <literal>try</literal> terminates. Each 
+            resource expression must be of type assignable to 
+            <literal>ceylon.language.Resource</literal>.</para>
+            
+            <programlisting>Resource: MemberName | InitializerReference Arguments | Variable Specifier </programlisting>
             
             <para>When the construct is executed:</para>
             
