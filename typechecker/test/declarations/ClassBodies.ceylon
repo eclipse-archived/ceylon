@@ -602,4 +602,16 @@ interface ClassBodies {
         } 
     }
     
+    class Class() {
+        interface Interface {
+            @error return;
+        }
+    }
+    
+    void method() {
+        interface Interface {
+            @error return;
+        }
+    }
+    
 }
