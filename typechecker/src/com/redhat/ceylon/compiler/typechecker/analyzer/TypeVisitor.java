@@ -374,6 +374,24 @@ public class TypeVisitor extends AbstractVisitor {
         }
     }
     
+    @Override
+    public void visit(Tree.MethodDeclaration that) {
+        super.visit(that);
+        if (that.getSpecifierExpression()==null
+                && that.getType() instanceof Tree.FunctionModifier) {
+            that.getType().addError("method must specify an explicit return type");
+        }
+    }
+    
+    @Override
+    public void visit(Tree.AttributeDeclaration that) {
+        super.visit(that);
+        if (that.getSpecifierOrInitializerExpression()==null
+                && that.getType() instanceof Tree.ValueModifier) {
+            that.getType().addError("attribute must specify an explicit type");
+        }
+    }
+    
     @Override 
     public void visit(Tree.ExtendedType that) {
         super.visit(that);
