@@ -298,45 +298,39 @@ public class ExpressionVisitor extends AbstractVisitor {
 
     @Override public void visit(Tree.Resource that) {
         super.visit(that);
-        Tree.Expression e = null;
         ProducedType t = null;
         Node typedNode = null;
         if (that.getExpression()!=null) {
-            e = that.getExpression();
+            Tree.Expression e = that.getExpression();
             t = e.getTypeModel();
             typedNode = e;
-        }
-        else if (that.getVariable()!=null) {
-            Tree.SpecifierExpression se = that.getVariable().getSpecifierExpression();
-            if (se!=null) {
-                e = se.getExpression();
-                t = that.getVariable().getType().getTypeModel();
-                typedNode = that.getVariable().getType();
-            }
-            else {
-                that.getVariable().addError("missing resource specifier");
-            }
-        }
-        if (e!=null) {
             if (e.getTerm() instanceof Tree.InvocationExpression) {
                 Tree.InvocationExpression ie = (Tree.InvocationExpression) e.getTerm();
                 if (!(ie.getPrimary() instanceof Tree.BaseTypeExpression 
                         || ie.getPrimary() instanceof Tree.QualifiedTypeExpression)) {
-                    e.addError("resource expression is not an instantiation");
+                    e.addError("resource expression is not an unqualified value reference or instantiation");
                 }
             }
-            else {
-                e.addError("resource expression is not an instantiation");
+            else if (!(e.getTerm() instanceof Tree.BaseMemberExpression)){
+                e.addError("resource expression is not an unqualified value reference or instantiation");
             }
-            if (t==null) {
-                typedNode.addError("could not determine if resource is of closeable type");
+        }
+        else if (that.getVariable()!=null) {
+            t = that.getVariable().getType().getTypeModel();
+            typedNode = that.getVariable().getType();
+            Tree.SpecifierExpression se = that.getVariable().getSpecifierExpression();
+            if (se==null) {
+                that.getVariable().addError("missing resource specifier");
             }
-            else {
-                ProducedType ct = getCloseableDeclaration().getType();
-                if (!ct.isSupertypeOf(t)) {
-                    typedNode.addError("resource is not of closeable type: " +
-                            t.getProducedTypeName() + " is not Closeable");
-                }
+        }
+        if (t==null) {
+            that.addError("could not determine if resource is of closeable type");
+        }
+        else {
+            ProducedType ct = getCloseableDeclaration().getType();
+            if (!ct.isSupertypeOf(t)) {
+                typedNode.addError("resource is not of closeable type: " +
+                        t.getProducedTypeName() + " is not Closeable");
             }
         }
     }

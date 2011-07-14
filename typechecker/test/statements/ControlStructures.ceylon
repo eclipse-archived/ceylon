@@ -79,9 +79,16 @@ public class ControlStructures() {
     }
     
     Transaction tx = Transaction();
-    @error try (tx) {}
-    try (@error t = tx) {}
-    try (@error Transaction t = tx) {}
+    function trans() { return tx; }
+    try (tx) {}
+    try (t = tx) {}
+    try (Transaction t = tx) {}
+    try (Transaction()) {}
+    try (t = Transaction()) {}
+    try (Transaction t = Transaction()) {}
+    @error try (trans()) {}
+    try (t = trans()) {}
+    try (Transaction t = trans()) {}
     
     try {
         writeLine("hello");
