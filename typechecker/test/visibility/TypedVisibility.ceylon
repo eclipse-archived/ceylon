@@ -15,6 +15,9 @@ shared void vy(Y y) {}
 shared void vcz(@error Class.Z cz) {}
 shared void vscz(SharedClass.Z scz) {}
 
+@error shared X getX() { return X(); }
+@error shared Class.Z getZ() { return Class().Z(); }
+
 class Class() {
     class W() {}
     shared class Z() {}
