@@ -31,11 +31,17 @@ interface TypeInference {
         void m(){
             value n = test();
         }
+        function f() {
+            return test();
+        }
     }
     
     class BackwardTypeInference(){
         void m(){
             @error value n = test();
+        }
+        function f() {
+            @error return test();
         }
         function test(){
             return 0;    
