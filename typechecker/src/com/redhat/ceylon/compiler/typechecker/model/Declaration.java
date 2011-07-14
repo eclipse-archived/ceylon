@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.list;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.contains;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,15 @@ public abstract class Declaration extends Element {
     boolean actual;
     boolean def;
     List<Annotation> annotations = new ArrayList<Annotation>();
+    Scope visibleScope;
+
+    public Scope getVisibleScope() {
+        return visibleScope;
+    }
+
+    public void setVisibleScope(Scope visibleScope) {
+        this.visibleScope = visibleScope;
+    }
 
     public String getName() {
         return name;
@@ -90,21 +100,28 @@ public abstract class Declaration extends Element {
      * in the given scope, by considering if it
      * is shared or directly defined in a
      * containing scope.
-     * <p/>
-     * Note that this implementation is not quite
-     * right, since for a shared member
-     * declaration it does not check if the
-     * containing declaration is also visible in
-     * the given scope, but this is okay for now
-     * because of how this method is used.
      */
     public boolean isVisible(Scope scope) {
-        if (isShared()) {
+        if (getVisibleScope()==null) {
+            return true;
+        }
+        else {
+            return contains(getVisibleScope(), scope);
+        }
+        /*
+        * Note that this implementation is not quite
+        * right, since for a shared member
+        * declaration it does not check if the
+        * containing declaration is also visible in
+        * the given scope, but this is okay for now
+        * because of how this method is used.
+        */
+        /*if (isShared()) {
             return true;
         }
         else {
             return isDefinedInScope(scope);
-        }
+        }*/
     }
 
     /**

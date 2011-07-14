@@ -11,6 +11,19 @@ import java.util.Map;
 public class Util {
 
     /**
+     * Is the second scope contained by the first scope?
+     */
+    public static boolean contains(Scope outer, Scope inner) {
+        while (inner!=null) {
+            if (inner==outer) {
+                return true;
+            }
+            inner = inner.getContainer();
+        }
+        return false;
+    }
+    
+    /**
      * Get the class or interface that "this" and "super" 
      * refer to. 
      */

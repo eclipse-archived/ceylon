@@ -180,13 +180,22 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
         //first search for the member in the local
         //scope, including non-shared declarations
         Declaration d = getDirectMember(name);
-        if (d!=null) {
+        if (d!=null && d.isShared()) {
+            //if it's shared, it's what we're 
+            //looking for, return it
             return d;
         }
         else {
             //now look for inherited shared declarations
-            return getSupertypeDeclaration(name);
+            Declaration s = getSupertypeDeclaration(name);
+            if (s!=null) {
+                return s;
+            }
         }
+        //finally return the non-shared member we
+        //found earlier, so that the caller give a
+        //nice error message
+        return d;
     }
     
     @Override

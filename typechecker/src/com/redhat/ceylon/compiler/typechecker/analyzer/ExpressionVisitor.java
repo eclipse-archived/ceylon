@@ -1971,7 +1971,8 @@ public class ExpressionVisitor extends AbstractVisitor {
         super.visit(that);
         ProducedType pt = that.getPrimary().getTypeModel();
         if (pt!=null && that.getIdentifier()!=null) {
-            TypedDeclaration member = (TypedDeclaration) unwrap(pt, that).getDeclaration().getMember(that.getIdentifier().getText());
+            TypedDeclaration member = (TypedDeclaration) unwrap(pt, that).getDeclaration()
+                    .getMember(that.getIdentifier().getText());
             if (member==null) {
                 that.addError("member does not exist: " +
                         that.getIdentifier().getText());
@@ -1979,7 +1980,7 @@ public class ExpressionVisitor extends AbstractVisitor {
             else {
                 that.setDeclaration(member);
                 if (!member.isVisible(that.getScope())) {
-                    that.addError("target of member reference is not shared: " +
+                    that.addError("member is not visible: " +
                             that.getIdentifier().getText());
                 }
                 Tree.TypeArgumentList tal = that.getTypeArgumentList();
@@ -2073,7 +2074,7 @@ public class ExpressionVisitor extends AbstractVisitor {
             else {
                 that.setDeclaration(type);
                 if (!type.isVisible(that.getScope())) {
-                    that.addError("target of member type reference is not shared: " +
+                    that.addError("member type is not visible: " +
                             that.getIdentifier().getText());
                 }
                 Tree.TypeArgumentList tal = that.getTypeArgumentList();

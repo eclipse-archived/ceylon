@@ -51,7 +51,7 @@ public abstract class Element {
     }
 
     public Declaration getDirectMemberOrParameter(String name) {
-        for (Declaration d : getMembers()) {
+        for (Declaration d: getMembers()) {
             if (isResolvable(d) && isNamed(name, d)) {
                 return d;
             }
@@ -69,7 +69,7 @@ public abstract class Element {
     }
 
     public Declaration getDirectMember(String name) {
-        for (Declaration d : getMembers()) {
+        for (Declaration d: getMembers()) {
             if (isResolvable(d)
                     //&& d.isShared()
                     && !isParameter(d)

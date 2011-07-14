@@ -114,7 +114,6 @@ public class TypeHierarchyVisitor extends Visitor {
                     aggregateType.membersByName.put(name,aggregateMembers);
                 }
                 else {
-
                     boolean isMemberRefined = isMemberRefined(orderedTypes,index,name,currentTypeMembers);
                     if (!isMemberRefined) {
                         StringBuilder sb = new StringBuilder("may not inherit two declarations with the same name unless redefined in subclass: ");
@@ -137,7 +136,7 @@ public class TypeHierarchyVisitor extends Visitor {
         Declaration declarationOfSupertypeMember = getMemberDeclaration(currentTypeMembers);
         for (int subIndex = size-1 ; subIndex>index;subIndex--) {
             Type type = orderedTypes.get(subIndex);
-            //has a direct member and su[ertype as inherited members
+            //has a direct member and supertype as inherited members
             Declaration directMember = type.declaration.getDirectMember(name);
             boolean isMemberRefined = directMember!=null && !(directMember instanceof Parameter);
             isMemberRefined = isMemberRefined && type.declaration.getInheritedMembers(name).contains(declarationOfSupertypeMember);

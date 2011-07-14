@@ -195,7 +195,7 @@ public class TypeVisitor extends AbstractVisitor {
             }
             else {
                 if (!type.isVisible(that.getScope())) {
-                    that.addError("member type is not shared: " +
+                    that.addError("member type is not visible: " +
                             that.getIdentifier().getText());
                 }
                 visitSimpleType(that, pt, type);

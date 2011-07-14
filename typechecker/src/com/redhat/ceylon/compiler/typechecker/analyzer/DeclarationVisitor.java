@@ -24,6 +24,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
@@ -318,12 +319,11 @@ public class DeclarationVisitor extends Visitor {
         Value v = new Value();
         that.setDeclarationModel(v);
         visitDeclaration(that, v);
+        that.getType().setTypeModel(c.getType());
+        v.setType(c.getType());
         Scope o = enterScope(c);
         super.visit(that);
         exitScope(o);
-        that.getType().setTypeModel(c.getType());
-        v.setType(c.getType());
-        c.setShared(v.isShared());
     }
 
     @Override
@@ -336,11 +336,11 @@ public class DeclarationVisitor extends Visitor {
         Value v = new Value();
         that.setDeclarationModel(v);
         visitArgument(that, v);
+        that.getType().setTypeModel(c.getType());
+        v.setType(c.getType());
         Scope o = enterScope(c);
         super.visit(that);
         exitScope(o);
-        that.getType().setTypeModel(c.getType());
-        v.setType(c.getType());
     }
     
     @Override
@@ -551,6 +551,11 @@ public class DeclarationVisitor extends Visitor {
             
             buildAnnotations(al);
             
+            //TODO: ugh, hate doing this here!
+            if (that instanceof Tree.ObjectDefinition) {
+                ((TypedDeclaration) model).getType().getDeclaration().setShared(model.isShared());
+            }
+            
         }
         
         super.visit(that);
@@ -560,6 +565,43 @@ public class DeclarationVisitor extends Visitor {
             checkFormalMember(that, model);
         }
         
+      //TODO: ugh, hate doing this here!
+        if (that instanceof Tree.ObjectDefinition) {
+            setVisibleScope(((TypedDeclaration) model).getType().getDeclaration());
+        }
+        setVisibleScope(model);        
+        
+    }
+
+    private void setVisibleScope(Declaration model) {
+        Scope s=model.getContainer();
+        while (s!=null) {
+            if (s instanceof Declaration) {
+                if (model.isShared()) {
+                    if (!((Declaration) s).isShared()) {
+                        model.setVisibleScope(s.getContainer());
+                        break;
+                    }
+                }
+                else {
+                    model.setVisibleScope(s);
+                    break;
+                }
+            }
+            else if (s instanceof Package) {
+                //TODO: unshared packages!
+                /*if (!((Package) s).isShared()) {
+                    model.setVisibleScope(s);
+                }*/
+                //null visible scope means visible everywhere
+                break;
+            }
+            else {
+                model.setVisibleScope(s);
+                break;
+            }    
+            s = s.getContainer();
+        }
     }
 
     private void checkFormalMember(Tree.Declaration that, Declaration d) {
