@@ -357,26 +357,34 @@ setterDeclaration
     ;
 
 typedMethodOrAttributeDeclaration
-    : inferableType memberName
-    ( 
-      methodParameters 
-      (
-        memberBody[$inferableType.tree] 
-      -> ^(METHOD_DEFINITION inferableType memberName methodParameters memberBody)
+    : FUNCTION_MODIFIER memberName methodParameters?
+      ( 
+        block
+      -> ^(METHOD_DEFINITION FUNCTION_MODIFIER memberName methodParameters? block)
       | specifier? ';'
-      -> ^(METHOD_DECLARATION inferableType memberName methodParameters specifier?)
-    )
-    | (specifier | initializer)? ';'
-    -> ^(ATTRIBUTE_DECLARATION inferableType memberName specifier? initializer?)
-    | memberBody[$inferableType.tree]
-    -> ^(ATTRIBUTE_GETTER_DEFINITION inferableType memberName memberBody)      
-    )
-    ;
-
-inferableType
-    : unionType 
-    | 'value' 
-    | 'function'
+      -> ^(METHOD_DECLARATION FUNCTION_MODIFIER memberName methodParameters? specifier?)
+       )
+    | VALUE_MODIFIER memberName
+      ( 
+        (specifier | initializer)? ';'
+        -> ^(ATTRIBUTE_DECLARATION VALUE_MODIFIER memberName specifier? initializer?)
+        | block
+        -> ^(ATTRIBUTE_GETTER_DEFINITION VALUE_MODIFIER memberName block)
+      )
+    | unionType memberName
+      ( 
+        methodParameters 
+        ( 
+          memberBody[$unionType.tree] 
+        -> ^(METHOD_DEFINITION unionType memberName methodParameters memberBody)
+        | specifier? ';'
+        -> ^(METHOD_DECLARATION unionType memberName methodParameters specifier?)
+        )
+      | (specifier | initializer)? ';'
+      -> ^(ATTRIBUTE_DECLARATION unionType memberName specifier? initializer?)
+      | memberBody[$unionType.tree]
+      -> ^(ATTRIBUTE_GETTER_DEFINITION unionType memberName memberBody)      
+      )
     ;
 
 interfaceDeclaration
@@ -401,7 +409,7 @@ classDeclaration
     ;
 
 methodParameters
-    : typeParameters? parameters extraParameters? 
+    : typeParameters? parameters+ extraParameters? 
       metatypes? 
       typeConstraints?
     ;
@@ -914,13 +922,17 @@ voidMethodArgument
     ;
 
 typedMethodOrGetterArgument
-    : inferableType memberName
-    ( 
-      (parameters+ memberBody[$inferableType.tree])
-    -> ^(METHOD_ARGUMENT inferableType memberName parameters+ memberBody)
-    | memberBody[$inferableType.tree]
-    -> ^(ATTRIBUTE_ARGUMENT inferableType memberName memberBody)      
-    )
+    : FUNCTION_MODIFIER memberName parameters* block
+      -> ^(METHOD_ARGUMENT FUNCTION_MODIFIER memberName parameters* block)      
+    | VALUE_MODIFIER memberName block
+      -> ^(ATTRIBUTE_ARGUMENT VALUE_MODIFIER memberName block)      
+    | unionType memberName
+      ( 
+        (parameters+ memberBody[$unionType.tree])
+      -> ^(METHOD_ARGUMENT unionType memberName parameters+ memberBody)
+      | memberBody[$unionType.tree]
+      -> ^(ATTRIBUTE_ARGUMENT unionType memberName memberBody)      
+      )
     ;
 
 namedSpecifiedArgument
@@ -983,8 +995,8 @@ functionalArgumentBody
 //Support "T x in arg" in positional argument lists
 //Note that we don't need to support this yet
 specialArgument
-    : inferableType memberName (containment | specifier)
-    -> ^(SPECIAL_ARGUMENT inferableType memberName containment? specifier?)
+    : unionType memberName (containment | specifier)
+    -> ^(SPECIAL_ARGUMENT unionType memberName containment? specifier?)
     //| isCondition
     //| existsCondition
     ;
