@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 
+import com.sun.tools.javac.code.Type;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 
@@ -599,34 +600,34 @@ public class Gen2 {
         return List.<JCAnnotation> of(make().Annotation(makeIdent(syms.overrideType), List.<JCExpression> nil()));
     }
 
-    public List<JCAnnotation> makeAtCeylon() {
+    private List<JCAnnotation> makeModelAnnotation(Type annotationType, List<JCExpression> annotationArgs) {
         if (disableModelAnnotations)
             return List.nil();
-        return List.<JCAnnotation> of(make().Annotation(makeIdent(syms.ceylonAtCeylonType), List.<JCExpression> nil()));
+        return List.of(make().Annotation(makeIdent(annotationType), annotationArgs));
+    }
+
+    private List<JCAnnotation> makeModelAnnotation(Type annotationType) {
+        return makeModelAnnotation(annotationType, List.<JCExpression>nil());
+    }
+
+    public List<JCAnnotation> makeAtCeylon() {
+        return makeModelAnnotation(syms.ceylonAtCeylonType);
     }
 
     public List<JCAnnotation> makeAtName(String name) {
-        if (disableModelAnnotations)
-            return List.nil();
-        return List.<JCAnnotation> of(make().Annotation(makeIdent(syms.ceylonAtNameType), List.<JCExpression> of(make().Literal(name))));
+        return makeModelAnnotation(syms.ceylonAtNameType, List.<JCExpression>of(make().Literal(name)));
     }
 
     public List<JCAnnotation> makeAtType(String name) {
-        if (disableModelAnnotations)
-            return List.nil();
-        return List.<JCAnnotation> of(make().Annotation(makeIdent(syms.ceylonAtTypeInfoType), List.<JCExpression> of(make().Literal(name))));
+        return makeModelAnnotation(syms.ceylonAtTypeInfoType, List.<JCExpression>of(make().Literal(name)));
     }
 
     public List<JCAnnotation> makeAtAttribute() {
-        if (disableModelAnnotations)
-            return List.nil();
-        return List.<JCAnnotation> of(make().Annotation(makeIdent(syms.ceylonAtAttributeType), List.<JCExpression> nil()));
+        return makeModelAnnotation(syms.ceylonAtAttributeType);
     }
 
     public List<JCAnnotation> makeAtMethod() {
-        if (disableModelAnnotations)
-            return List.nil();
-        return List.<JCAnnotation> of(make().Annotation(makeIdent(syms.ceylonAtMethodType), List.<JCExpression> nil()));
+        return makeModelAnnotation(syms.ceylonAtMethodType);
     }
 
     public boolean isInner(Declaration decl) {
