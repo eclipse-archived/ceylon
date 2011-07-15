@@ -612,6 +612,7 @@ public class DeclarationVisitor extends Visitor {
         
         if ( !d.isFormal() && 
                 d.getContainer() instanceof Interface && 
+                !(that instanceof Tree.TypeParameterDeclaration) &&
                 !(that instanceof Tree.ClassDeclaration) &&
                 !(that instanceof Tree.InterfaceDeclaration)) {
             that.addWarning("concrete members of interfaces not yet supported");
