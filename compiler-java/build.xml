@@ -159,6 +159,9 @@
   <!-- Rule to compile and test -->
   <target name="all" depends="test"/>
 
+  <!-- Rule to compile and test -->
+  <target name="build" depends="compiler.jar,runtime.jar"/>
+
   <!-- Rule to clean everything up -->
   <target name="clean">
     <delete dir="${build}"/>
