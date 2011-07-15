@@ -630,6 +630,10 @@ public class Gen2 {
         return makeModelAnnotation(syms.ceylonAtMethodType);
     }
 
+    public List<JCAnnotation> makeAtObject() {
+        return makeModelAnnotation(syms.ceylonAtObjectType);
+    }
+
     public boolean isInner(Declaration decl) {
         return decl.getContainer() instanceof Method;
     }
