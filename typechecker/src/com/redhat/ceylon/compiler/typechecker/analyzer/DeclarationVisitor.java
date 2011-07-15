@@ -84,13 +84,18 @@ public class DeclarationVisitor extends Visitor {
     
     private void visitDeclaration(Tree.Declaration that, Declaration model) {
         visitElement(that, model);
-        Tree.Identifier id = that.getIdentifier();
-        if ( setModelName(that, model, id) ) {
+        if ( setModelName(that, model, that.getIdentifier()) ) {
             checkForDuplicateDeclaration(that, model);
         }
         //that.setDeclarationModel(model);
         unit.getDeclarations().add(model);
         scope.getMembers().add(model);
+
+        handleDeclarationAnnotations(that, model);        
+
+        setVisibleScope(model);
+
+        checkFormalMember(that, model);
     }
 
     private void visitArgument(Tree.NamedArgument that, Declaration model) {
@@ -101,7 +106,7 @@ public class DeclarationVisitor extends Visitor {
         unit.getDeclarations().add(model);
     }
 
-    private boolean setModelName(Node that, Declaration model,
+    private static boolean setModelName(Node that, Declaration model,
             Tree.Identifier id) {
         if (id==null || id.getText().startsWith("<missing")) {
             that.addError("missing declaration name");
@@ -125,12 +130,12 @@ public class DeclarationVisitor extends Visitor {
         return n;
     }*/
 
-    private void checkForDuplicateDeclaration(Tree.Declaration that, 
-            Declaration model) {
+    private static void checkForDuplicateDeclaration(Tree.Declaration that, 
+            final Declaration model) {
         if (model.getName()!=null) {
             if (model instanceof Setter) {
                 //a setter must have a matching getter
-                Declaration member = scope.getDirectMember( model.getName() );
+                Declaration member = model.getContainer().getDirectMember( model.getName() );
                 if (member==null) {
                     that.addError("setter with no matching getter: " + model.getName());
                 }
@@ -152,13 +157,13 @@ public class DeclarationVisitor extends Visitor {
                         && model.isClassMember()) {
                 //a getter or simple attribute is allowed to have the 
                 //same name as a class initialization parameter
-                Declaration member = scope.getDirectMember( model.getName() );
+                Declaration member = model.getContainer().getDirectMember( model.getName() );
                 if (member!=null) {
                     that.addError("duplicate declaration: " + model.getName());
                 }
             }
             else {
-                Declaration member = scope.getDirectMemberOrParameter( model.getName() );
+                Declaration member = model.getContainer().getDirectMemberOrParameter( model.getName() );
                 if (member!=null) {
                     that.addError("duplicate declaration: " + model.getName());
                 }
@@ -289,7 +294,7 @@ public class DeclarationVisitor extends Visitor {
         checkMethodArgumentParameters(that);
     }
 
-    private void checkMethodParameters(Tree.AnyMethod that) {
+    private static void checkMethodParameters(Tree.AnyMethod that) {
         if (that.getParameterLists().isEmpty()) {
             that.addError("missing parameter list in method declaration: " + 
                     name(that.getIdentifier()) );
@@ -299,7 +304,7 @@ public class DeclarationVisitor extends Visitor {
         }
     }
 
-    private void checkMethodArgumentParameters(Tree.MethodArgument that) {
+    private static void checkMethodArgumentParameters(Tree.MethodArgument that) {
         if (that.getParameterLists().isEmpty()) {
             that.addError("missing parameter list in named argument declaration: " + 
                     name(that.getIdentifier()) );
@@ -482,7 +487,7 @@ public class DeclarationVisitor extends Visitor {
         that.setUnit(unit);
     }
     
-    private List<TypeParameter> getTypeParameters(Tree.TypeParameterList tpl) {
+    private static List<TypeParameter> getTypeParameters(Tree.TypeParameterList tpl) {
         List<TypeParameter> typeParameters = new ArrayList<TypeParameter>();
         if (tpl!=null) {
             for (Tree.TypeParameterDeclaration tp: tpl.getTypeParameterDeclarations()) {
@@ -492,7 +497,7 @@ public class DeclarationVisitor extends Visitor {
         return typeParameters;
     }
     
-    private boolean hasAnnotation(Tree.AnnotationList al, String name) {
+    private static boolean hasAnnotation(Tree.AnnotationList al, String name) {
         if (al!=null) {
             for (Tree.Annotation a: al.getAnnotations()) {
                 Tree.BaseMemberExpression p = (Tree.BaseMemberExpression) a.getPrimary();
@@ -509,72 +514,55 @@ public class DeclarationVisitor extends Visitor {
     @Override public void visit(Tree.Declaration that) {
         Declaration model = that.getDeclarationModel();
         Declaration d = beginDeclaration(model);
-        if (declaration!=null) {
-            
-            Tree.AnnotationList al = that.getAnnotationList();
-            if (hasAnnotation(al, "shared")) {
-                model.setShared(true);
-            }
-            if (hasAnnotation(al, "default")) {
-                model.setDefault(true);
-                if (that instanceof Tree.ObjectDefinition) {
-                    that.addError("object declarations may not be default");
-                }
-            }
-            if (hasAnnotation(al, "formal")) {
-                model.setFormal(true);
-                if (that instanceof Tree.ObjectDefinition) {
-                    that.addError("object declarations may not be formal");
-                }
-            }
-            if (hasAnnotation(al, "actual")) {
-                model.setActual(true);
-            }
-            if (hasAnnotation(al, "abstract")) {
-                if (model instanceof Class) {
-                    ((Class) declaration).setAbstract(true);
-                }
-                else {
-                    that.addError("declaration is not a class, and may not be abstract");
-                }
-            }
-            if (hasAnnotation(al, "variable")) {
-                if (model instanceof Value) {
-                    ((Value) model).setVariable(true);
-                }
-                else if (model instanceof ValueParameter) {
-                    that.addError("parameter may not be variable: " + model.getName());
-                }
-                else {
-                    that.addError("declaration is not a value, and may not be variable");
-                }
-            }
-            
-            buildAnnotations(al);
-            
-            //TODO: ugh, hate doing this here!
-            if (that instanceof Tree.ObjectDefinition) {
-                ((TypedDeclaration) model).getType().getDeclaration().setShared(model.isShared());
-            }
-            
-        }
-        
         super.visit(that);
         endDeclaration(d);
-
-        if (model!=null) {
-            checkFormalMember(that, model);
-        }
-        
-      //TODO: ugh, hate doing this here!
-        if (that instanceof Tree.ObjectDefinition) {
-            setVisibleScope(((TypedDeclaration) model).getType().getDeclaration());
-        }
-        setVisibleScope(model);        
-        
     }
 
-    private void setVisibleScope(Declaration model) {
+    private static void handleDeclarationAnnotations(Tree.Declaration that,
+            Declaration model) {
+        Tree.AnnotationList al = that.getAnnotationList();
+        if (hasAnnotation(al, "shared")) {
+            model.setShared(true);
+        }
+        if (hasAnnotation(al, "default")) {
+            model.setDefault(true);
+            if (that instanceof Tree.ObjectDefinition) {
+                that.addError("object declarations may not be default");
+            }
+        }
+        if (hasAnnotation(al, "formal")) {
+            model.setFormal(true);
+            if (that instanceof Tree.ObjectDefinition) {
+                that.addError("object declarations may not be formal");
+            }
+        }
+        if (hasAnnotation(al, "actual")) {
+            model.setActual(true);
+        }
+        if (hasAnnotation(al, "abstract")) {
+            if (model instanceof Class) {
+                ((Class) model).setAbstract(true);
+            }
+            else {
+                that.addError("declaration is not a class, and may not be abstract");
+            }
+        }
+        if (hasAnnotation(al, "variable")) {
+            if (model instanceof Value) {
+                ((Value) model).setVariable(true);
+            }
+            else if (model instanceof ValueParameter) {
+                that.addError("parameter may not be variable: " + model.getName());
+            }
+            else {
+                that.addError("declaration is not a value, and may not be variable");
+            }
+        }
+        
+        buildAnnotations(al, model.getAnnotations());        
+    }
+
+    private static void setVisibleScope(Declaration model) {
         Scope s=model.getContainer();
         while (s!=null) {
             if (s instanceof Declaration) {
@@ -608,7 +596,7 @@ public class DeclarationVisitor extends Visitor {
         }
     }
 
-    private void checkFormalMember(Tree.Declaration that, Declaration d) {
+    private static void checkFormalMember(Tree.Declaration that, Declaration d) {
         
         if ( d.isFormal() && 
                 ( !(d.getContainer() instanceof ClassOrInterface) || 
@@ -632,7 +620,7 @@ public class DeclarationVisitor extends Visitor {
         
     }
 
-    private void buildAnnotations(Tree.AnnotationList al) {
+    private static void buildAnnotations(Tree.AnnotationList al, List<Annotation> annotations) {
         if (al!=null) {
             for (Tree.Annotation a: al.getAnnotations()) {
                 Annotation ann = new Annotation();
@@ -663,7 +651,7 @@ public class DeclarationVisitor extends Visitor {
                         }
                     }
                 }
-                declaration.getAnnotations().add(ann);
+                annotations.add(ann);
             }
         }
     }
