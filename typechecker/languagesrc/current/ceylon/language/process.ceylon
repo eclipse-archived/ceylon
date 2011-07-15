@@ -4,7 +4,7 @@ shared object process {
     
     shared Entries<String,String> switches { throw; }
 
-    shared Entries<String,String> properties  { throw; }
+    shared Entries<String,String> properties { throw; }
 
     shared void write(String string) { throw; }
     
