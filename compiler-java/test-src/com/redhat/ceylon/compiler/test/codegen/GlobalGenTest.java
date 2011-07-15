@@ -44,6 +44,7 @@ public class GlobalGenTest {
                 .build();
 
         assertThat(toCanonicalString(result), is(lines(
+                "@.com.redhat.ceylon.compiler.metadata.java.Ceylon",
                 "final class variableName {",
                 "    private static VariableType value;",
                 "    ",
