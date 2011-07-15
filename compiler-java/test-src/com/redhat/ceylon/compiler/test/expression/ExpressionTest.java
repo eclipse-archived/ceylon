@@ -89,6 +89,11 @@ public class ExpressionTest extends CompilerTest {
     }
 
     @Test
+    public void testInvToplevelMethodInvocation(){
+        compareWithJavaSource("invoke/ToplevelMethodInvocation");
+    }
+
+    @Test
     public void testInvChainedInvocations(){
         compareWithJavaSource("invoke/ChainedInvocations");
     }

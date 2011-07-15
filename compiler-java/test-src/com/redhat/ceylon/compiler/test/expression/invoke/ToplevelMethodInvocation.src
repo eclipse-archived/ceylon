@@ -1,0 +1,23 @@
+package com.redhat.ceylon.compiler.test.expression.invoke;
+
+class foo {
+    
+    static void foo() {
+    }
+}
+class bar {
+    
+    static Natural bar(final Natural i, final String j) {
+        return .ceylon.language.Natural.instance(1L);
+    }
+}
+class ToplevelMethodInvocation {
+    
+    private final Natural m() {
+        foo.foo();
+        return bar.bar(.ceylon.language.Natural.instance(1L), .ceylon.language.String.instance(""));
+    }
+    
+    ToplevelMethodInvocation() {
+    }
+}
