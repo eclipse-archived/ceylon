@@ -25,6 +25,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
@@ -1750,8 +1751,21 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
 
     private void checkAssignable(Tree.Term that) {
-        //TODO: what about QualifiedMemberExpression?!
-        if (!(that instanceof Tree.BaseMemberExpression)) {
+        if (that instanceof Tree.BaseMemberExpression ||
+                that instanceof Tree.QualifiedMemberExpression) {
+            ProducedReference pr = ((Tree.MemberOrTypeExpression) that).getTarget();
+            if (pr!=null) {
+                if (!(pr.getDeclaration() instanceof Value)) {
+                    that.addError("member cannot be assigned: " 
+                            + pr.getDeclaration().getName());
+                }
+                else if ( !((Value) pr.getDeclaration()).isVariable() ) {
+                    that.addError("member is not variable: " 
+                            + pr.getDeclaration().getName());
+                }
+            }
+        }
+        else {
             that.addError("expression cannot be assigned");
         }
     }
