@@ -8,6 +8,7 @@ import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
+import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
@@ -44,6 +45,7 @@ public class GlobalGenTest {
                 .build();
 
         assertThat(toCanonicalString(result), is(lines(
+                "@.com.redhat.ceylon.compiler.metadata.java.Ceylon",
                 "final class variableName {",
                 "    private static VariableType value;",
                 "    ",
@@ -54,6 +56,32 @@ public class GlobalGenTest {
                 "    static void setVariableName(VariableType newValue) {",
                 "        value = newValue;",
                 "    }",
+                "}")));
+    }
+
+    @Test
+    public void testDefineAddToDefs() {
+        JCTree.JCExpression variableType = toType("VariableType");
+        String variableName = "variableName";
+
+        ListBuffer<JCTree> defsBuf = ListBuffer.lb();
+
+        globalGen
+                .defineGlobal(variableType, variableName)
+                .appendDefinitionsTo(defsBuf);
+
+        List<JCTree> defs = defsBuf.toList();
+
+        assertThat(defs.size(), is(3));
+        assertThat(toCanonicalString(defs.get(0)), is(lines("private static VariableType value")));
+        assertThat(toCanonicalString(defs.get(1)), is(lines(
+                "static VariableType getVariableName() {",
+                "    return value;",
+                "}")));
+
+        assertThat(toCanonicalString(defs.get(2)), is(lines(
+                "static void setVariableName(VariableType newValue) {",
+                "    value = newValue;",
                 "}")));
     }
 
