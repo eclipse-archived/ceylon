@@ -1,4 +1,4 @@
-shared interface Summable<Other> 
+shared interface Summable<Other> of Other
         given Other satisfies Summable<Other> {
 
     doc "The binary |+| operator"

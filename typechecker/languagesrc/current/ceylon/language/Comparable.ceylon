@@ -1,4 +1,4 @@
-shared interface Comparable<in Other> 
+shared interface Comparable<in Other> of Other 
         satisfies Equality
         given Other satisfies Comparable<Other> {
     
