@@ -9,3 +9,21 @@ class ClassInstantiation {
     ClassInstantiation() {
     }
 }
+class ClassInstantiationWithParam {
+    
+    public final ClassInstantiationWithParam m() {
+        return new ClassInstantiationWithParam(.ceylon.language.Natural.instance(2L));
+    }
+    
+    ClassInstantiationWithParam(Natural i) {
+    }
+}
+class ClassInstantiationWithParams {
+    
+    public final ClassInstantiationWithParams m() {
+        return new ClassInstantiationWithParams(.ceylon.language.Natural.instance(2L), .ceylon.language.String.instance(""));
+    }
+    
+    ClassInstantiationWithParams(Natural i, String j) {
+    }
+}
