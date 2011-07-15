@@ -2,10 +2,20 @@ package com.redhat.ceylon.compiler.test.structure.toplevel;
 
 final class x {
     
-    private final void y() {
+    public final void y() {
     }
     
-    x() {
+    private x() {
     }
-    public static final x $INSTANCE = new x();
+    private static final x value = new x();
+    
+    static x getX() {
+        return value;
+    }
+}
+class accessX {
+    
+    static void accessX() {
+        com.redhat.ceylon.compiler.test.structure.toplevel.x.getX().y();
+    }
 }

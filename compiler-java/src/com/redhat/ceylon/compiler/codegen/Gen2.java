@@ -275,7 +275,7 @@ public class Gen2 {
                 defs.append(classGen.objectClass(decl, true));
                 resetCompilerAnnotations();
             }
-            
+
             public void visit(Tree.AttributeDeclaration decl){
                 checkCompilerAnnotations(decl);
                 defs.append(classGen.convert(decl));

@@ -1,5 +1,10 @@
 @nomodel
 object x {
-    void y() {
+    shared void y() {
     }
+}
+
+@nomodel
+void accessX() {
+    x.y();
 }
