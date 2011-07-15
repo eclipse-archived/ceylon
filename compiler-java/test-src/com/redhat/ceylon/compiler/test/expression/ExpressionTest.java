@@ -29,6 +29,14 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("attribute/AttributeAssign");
     }
     @Test
+    public void testAtrQualifiedAttributeAccess(){
+        compareWithJavaSource("attribute/QualifiedAttributeAccess");
+    }
+    @Test
+    public void testAtrQualifiedAttributeAssign(){
+        compareWithJavaSource("attribute/QualifiedAttributeAssign");
+    }
+    @Test
     public void testAtrMethodParamAccess(){
         compareWithJavaSource("attribute/MethodParamAccess");
     }
