@@ -69,8 +69,8 @@ public class ExpressionVisitor extends AbstractVisitor {
         super.visit(that);
         List<ProducedType> supertypes = that.getDeclarationModel().getType().getSupertypes();
         for (int i=0; i<supertypes.size(); i++) {
+            ProducedType st1 = supertypes.get(i);
             for (int j=i+1; j<supertypes.size(); j++) {
-                ProducedType st1 = supertypes.get(i);
                 ProducedType st2 = supertypes.get(j);
                 if (st1.getDeclaration()==st2.getDeclaration() && !st1.isExactly(st2)) {
                     if (!st1.isSupertypeOf(st2) && !st2.isSupertypeOf(st1)) {
@@ -79,6 +79,10 @@ public class ExpressionVisitor extends AbstractVisitor {
                                 st1.getProducedTypeName() + " and " + st2.getProducedTypeName());
                     }
                 }
+            }
+            if (!isCompletelyVisible(that.getDeclarationModel(), st1)) {
+                that.addError("supertype of type is not visible everywhere type is visible: "
+                        + st1.getProducedTypeName());
             }
         }
     }
