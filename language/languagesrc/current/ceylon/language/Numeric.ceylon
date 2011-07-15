@@ -1,4 +1,4 @@
-shared interface Numeric<Other>
+shared interface Numeric<Other> of Other
         satisfies Number & Comparable<Other> & 
                   Summable<Other>
         given Other satisfies Numeric<Other> {

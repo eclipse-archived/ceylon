@@ -1,4 +1,4 @@
-shared interface Integral<Other>
+shared interface Integral<Other> of Other
         satisfies Numeric<Other> & Ordinal<Other>
         given Other satisfies Integral<Other> {
 
