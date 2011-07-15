@@ -87,7 +87,12 @@ public class ExpressionTest extends CompilerTest {
     public void testInvMethodInvocation(){
         compareWithJavaSource("invoke/MethodInvocation");
     }
-    
+
+    @Test
+    public void testInvChainedInvocations(){
+        compareWithJavaSource("invoke/ChainedInvocations");
+    }
+
     // Self references
     
     @Test

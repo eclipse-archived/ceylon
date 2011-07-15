@@ -1,0 +1,15 @@
+package com.redhat.ceylon.compiler.test.expression.invoke;
+
+class ChainedInvocations {
+    
+    private final Natural m() {
+        return new ChainedInvocations().foo();
+    }
+    
+    private final Natural foo() {
+        return .ceylon.language.Natural.instance(1L);
+    }
+    
+    ChainedInvocations() {
+    }
+}
