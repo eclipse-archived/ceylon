@@ -43,7 +43,7 @@ abstract class Classes() {
     
     class MemberClass() {
         shared String goodbye = upper("goodbye");
-        shared Natural times = 1;
+        shared variable Natural times := 1;
     }
     
     MemberClass();
@@ -51,6 +51,8 @@ abstract class Classes() {
     printLine(MemberClass().goodbye);
     @error MemberClass().goodbye = "Foo";
     @error MemberClass().goodbye := "Foo";
+    @error MemberClass().times := "Foo";
+    MemberClass().times := 5;
     
     MemberClass create() {
         return MemberClass();
