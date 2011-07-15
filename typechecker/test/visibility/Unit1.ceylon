@@ -28,7 +28,7 @@ class Unit1() {
     @error print(Unit2().Inner().hello);
     @error print(Unit2().Inner().goodbye); 
     
-    class Subclass1() extends Unit3() {}
+    @error class Subclass1() extends Unit3() {}
     class Subclass2() extends Unit4() {}
     
     @error Unit3 u3 = Unit3();

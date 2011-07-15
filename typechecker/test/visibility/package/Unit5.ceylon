@@ -1,0 +1,1 @@
+@error shared class Unit5() extends Unit3() {}
