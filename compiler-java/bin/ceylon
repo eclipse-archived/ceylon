@@ -1,8 +1,11 @@
-#!/usr/bin/env python
+#! /bin/bash
+source $(dirname $0)/args.sh
 
-import ceylonwrap
+# Classes required by the launcher and by the code being launched
+JAVA_CP="$CEYLON_HOME/build/lib/runtime.jar:$USER_CP"
 
-command = ceylonwrap.Wrapper()
-command.addJar("build", "lib", "runtime.jar")
-command.addJar("build", "classes")
-command.run("ceylon.language.Launcher")
+java \
+	-enableassertions \
+	-classpath "$JAVA_CP" \
+	ceylon.language.Launcher \
+	$ARGS
