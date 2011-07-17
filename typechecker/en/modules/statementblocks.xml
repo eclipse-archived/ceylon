@@ -367,15 +367,12 @@
             </listitem>
             <listitem>
                 <para>the declaration directly occurs in an interface body, and the program 
-                element also (indirectly) occurs in the same interface body, and the 
-                declaration is not declared using the keyword <literal>value</literal> or 
-                <literal>function</literal>, or</para>
+                element also (indirectly) occurs in the same interface body, or</para>
             </listitem>
             <listitem>
                 <para>the declaration directly occurs in the declaration section of a class 
                 body, and the program element also (indirectly) occurs in the declaration 
-                section of the same class body, and the declaration is not declared using 
-                the keyword <literal>value</literal> or <literal>function</literal>, or</para>
+                section of the same class body, or</para>
             </listitem>
             <listitem>
                 <para>the declaration is imported by the compilation unit containing the 
@@ -387,14 +384,21 @@
             </listitem>
         </itemizedlist>
         
+        <para>Where:</para>
+        
+        <itemizedlist>
+        <listitem>
         <para>A control structure variable or iteration variable <emphasis>belongs</emphasis> 
         to a block of a control structure if the block immediately follows the declaration 
         of the variable.</para>
-        
+        </listitem>
+        <listitem>
         <para>A program element <emphasis>belongs</emphasis> to a declaration if it occurs
         in the <literal>extends</literal>, <literal>satisfies</literal>, <literal>of</literal>,
         <literal>given</literal>, <literal>abstracts</literal>, <literal>adapts</literal> or
         <literal>is</literal> clause of the declaration.</para>
+        </listitem>
+        </itemizedlist>
         
         <para>A specifier or initializer expression of a declaration or control structure
         variable does not belong to the declaration, and is not contained in the body of 
@@ -402,12 +406,11 @@
         at its own specifier or initializer expression. Likewise, an iteration variable 
         declaration is <emphasis>not</emphasis> in scope at its own iterated expression.</para>
         
-        <para>If there is no declaration with the specified name in scope at the program
-        element where the specified name occurs, a compilation error results.</para>
-        
-        <para>If multiple declarations with the specified name are in scope at the program
-        element where the specified name occurs, the name refers to the declaration which
-        is not <emphasis>hidden</emphasis> by another declaration:</para>
+        <para>If a certain identifier name occurs at a program element, there must be at 
+        least one declaration with the given name in scope at the program element. If 
+        multiple declarations with the given name are in scope at the program element where 
+        the given name occurs, then there must be exactly one such declaration which is not 
+        <emphasis>hidden</emphasis> by another declaration:</para>
         
         <itemizedlist>
             <listitem>
@@ -434,9 +437,18 @@
             </listitem>
         </itemizedlist>
         
-        <para>If there are multiple unhidden declarations with the specified name, <!--and 
-        they are not all overloaded declarations of the same method or class,--> the name 
-        is ambiguous, and a compilation error results.</para>
+        <para>Then the given name refers to this unique unhidden declaration, and either:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the program element must occur within the lexical scope of this 
+                declaration, or</para>
+            </listitem>
+            <listitem>
+                <para>this declaration must not be declared using the keyword 
+                <literal>value</literal> or <literal>function</literal>.</para>
+            </listitem>
+        </itemizedlist>
                 
     </section>
             
