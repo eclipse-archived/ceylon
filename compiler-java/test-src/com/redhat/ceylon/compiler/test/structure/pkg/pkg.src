@@ -1,10 +1,10 @@
 package com.redhat.ceylon.compiler.test.structure.pkg;
 
-public class f {
+public class pkg {
     
-    private f() {
+    private pkg() {
     }
     
-    public static void f() {
+    public static void pkg() {
     }
 }

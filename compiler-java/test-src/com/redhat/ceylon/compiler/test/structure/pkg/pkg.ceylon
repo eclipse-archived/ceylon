@@ -1,2 +1,2 @@
 @nomodel
-shared void f(){}
+shared void pkg(){}
