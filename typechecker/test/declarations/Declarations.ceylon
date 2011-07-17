@@ -61,4 +61,17 @@ interface Declarations {
     
     void dup(String name, @error String name) {}
     
+    void method() {
+        String hello = "hi";
+        for (c in hello.characters) {
+            if (c==`h`) {
+                try {
+                    @error Natural hello = 1;
+                }
+            }
+        }
+        Natural? count = null;
+        if (exists count) {}
+    }
+    
 }
