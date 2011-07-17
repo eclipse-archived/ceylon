@@ -1,5 +1,8 @@
 public class defaultPackage {
     
+    private defaultPackage() {
+    }
+    
     public static void defaultPackage(final Process process) {
     }
 }

@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.test.misc.helloworld;
 
 public class helloworld {
     
+    private helloworld() {
+    }
+    
     public static void helloworld(final Process process) {
         process.writeLine(.ceylon.language.String.instance("Hello World"));
     }

@@ -6,6 +6,9 @@ class InnerMethod {
         
         class $inner$class$0 {
             
+            private $inner$class$0() {
+            }
+            
             Natural inner() {
                 return .ceylon.language.Natural.instance(0L);
             }

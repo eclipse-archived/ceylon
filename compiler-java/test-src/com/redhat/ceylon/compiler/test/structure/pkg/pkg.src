@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.test.structure.pkg;
 
 public class f {
     
+    private f() {
+    }
+    
     public static void f() {
     }
 }
