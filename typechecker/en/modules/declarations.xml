@@ -2706,6 +2706,30 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
         <literal>shared(:org:example:containing:package)</literal>.</para>
         </comment>
         
+        <para>We say that a produced type is <emphasis>visible</emphasis> to a
+        certain program element if it is formed from type parameters and types 
+        whose declarations are visible to the program element. For 
+        <literal>shared</literal> declarations:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>The type of an attribute must be visible everywhere the 
+                attribute itself is visible.</para>
+            </listitem>
+            <listitem>
+                <para>The return type of a method must be visible everywhere the 
+                method itself is visible.</para>
+            </listitem>
+            <listitem>
+                <para>The satisfied interfaces of a class or interface must be 
+                visible everywhere the class or interface itself is visible.</para>
+            </listitem>
+            <listitem>
+                <para>The superclass of a class must be visible everywhere the 
+                class itself is visible.</para>
+            </listitem>
+        </itemizedlist>
+        
     </section>
         
     <section id="documentation">
