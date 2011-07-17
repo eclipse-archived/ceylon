@@ -145,6 +145,16 @@ public final class GlobalGen extends GenPart {
             if (writable) {
                 defs.append(generateSetter());
             }
+            
+            // make a private constructor
+            defs.append(make().MethodDef(make().Modifiers(Flags.PRIVATE),
+                    names().init,
+                    make().TypeIdent(VOID),
+                    List.<JCTree.JCTypeParameter>nil(),
+                    List.<JCTree.JCVariableDecl>nil(),
+                    List.<JCTree.JCExpression>nil(),
+                    make().Block(0, List.<JCTree.JCStatement>nil()),
+                    null));
         }
 
         private JCTree generateField() {

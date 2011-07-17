@@ -468,11 +468,23 @@ public class ClassGen extends GenPart {
     }
 
     public JCClassDecl methodClass(Tree.MethodDefinition def) {
+        Name name = generateClassName(def, isToplevel(def));
         List<JCTree> meth = convert(def);
+        // make a private constructor
+        JCMethodDecl constr = make().MethodDef(make().Modifiers(Flags.PRIVATE),
+                names().init,
+                make().TypeIdent(VOID),
+                List.<JCTree.JCTypeParameter>nil(),
+                List.<JCTree.JCVariableDecl>nil(),
+                List.<JCTree.JCExpression>nil(),
+                make().Block(0, List.<JCTree.JCStatement>nil()),
+                null);
+        meth = meth.prepend(constr);
+        
         List<JCAnnotation> annots = gen.makeAtCeylon().appendList(gen.makeAtMethod());
         return at(def).ClassDef(
                 at(def).Modifiers((isShared(def) ? PUBLIC : 0), annots),
-                generateClassName(def, isToplevel(def)),
+                name,
                 List.<JCTypeParameter>nil(),
                 null,
                 List.<JCExpression>nil(),
