@@ -23,6 +23,10 @@ import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
+import com.sun.source.tree.CompilationUnitTree;
+import com.sun.source.util.TaskEvent;
+import com.sun.source.util.TaskEvent.Kind;
+import com.sun.source.util.TaskListener;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
@@ -66,29 +70,42 @@ public abstract class CompilerTest {
 	}
 
 	protected void compareWithJavaSource(String ceylon, String java, String dir) {
-		// Make a new compiler each time
-		Context context = new Context();
-		CeyloncFileManager.preRegister(context);
-		LanguageCompiler compareCompiler = (LanguageCompiler) LanguageCompiler.instance(context);
-        Log log = Log.instance(context);
-		CeyloncFileManager compareFileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
-		compareFileManager.setSourcePath(dir);
-		// add the files to compile
-		List<JavaFileObject> files = List.nil();
-		File file = new File(path+ceylon);
-		for (JavaFileObject fo : compareFileManager.getJavaFileObjectsFromFiles(Collections.singletonList(file)))
-			files = files.prepend(fo);
-		Assert.assertEquals(1, files.size());
-		// we need to parse first
-		JCCompilationUnit compilationUnit = compareCompiler.parse(files.get(0));
-		// then we complete it
-		CeylonEnter enter = (CeylonEnter) CeylonEnter.instance(context);
-		enter.completeCeylonTrees(List.of(compilationUnit));
-		Assert.assertEquals("Typechecker errors", 0, log.nerrors);
+
+	    // make a compiler task
+        runFileManager.setSourcePath(dir);
+	    CeyloncTaskImpl task = getCompilerTask(ceylon);
+	    
+	    // grab the CU after we've completed it
+	    class Listener implements TaskListener{
+            JCCompilationUnit compilationUnit;
+            private String compilerSrc;
+            @Override
+            public void started(TaskEvent e) {
+            }
+
+            @Override
+            public void finished(TaskEvent e) {
+                if(e.getKind() == Kind.ENTER){
+                    if(compilationUnit != null)
+                        throw new RuntimeException("Compilation unit already grabbed, are we compiling more than one file?");
+                    compilationUnit = (JCCompilationUnit) e.getCompilationUnit();
+                    // for some reason compilationUnit is full here in the listener, but empty as soon
+                    // as the compile task is done. probably to clean up for the gc?
+                    compilerSrc = normalizeLineEndings(compilationUnit.toString());
+                }
+            }
+        }
+	    Listener listener = new Listener();
+	    task.setTaskListener(listener);
+	    
+	    // now compile it all the way
+	    Boolean success = task.call();
+	    
+	    Assert.assertTrue(success);
+
 		// now look at what we expected
-		String src = normalizeLineEndings(readFile(new File(path+java)));
-		String src2 = normalizeLineEndings(compilationUnit.toString());
-		Assert.assertEquals("Source code differs", src.trim(), src2.trim());
+		String expectedSrc = normalizeLineEndings(readFile(new File(path+java)));
+		Assert.assertEquals("Source code differs", expectedSrc.trim(), listener.compilerSrc.trim());
 	}
 
 	private String readFile(File file) {
