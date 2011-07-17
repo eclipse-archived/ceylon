@@ -31,6 +31,13 @@
         if both program elements directly occur in a body and the first program element 
         occurs earlier in the list than the second program element.</para>
         
+        <!--
+        <para>As a special case, the <literal>while</literal> condition of a <literal>do/while</literal> 
+        loop is considered to directly occur in the <literal>do</literal> block. All other
+        statements and declarations of the <literal>do</literal> block are considered to
+        directly occur earlier than the <literal>while</literal> condition.</para>
+        -->
+        
         <para>A program element <emphasis>(indirectly) occurs</emphasis> in a body if:</para>
         
         <itemizedlist>
@@ -42,6 +49,9 @@
                 or control structure that occurs directly in the body.</para>
             </listitem>
         </itemizedlist>
+        
+        <para>We sometimes say that the body <emphasis>contains</emphasis> the program 
+        element if the program element (indirectly) occurs in the body.</para>
         
         <para>A program element <emphasis>(indirectly) occurs earlier</emphasis> than a 
         second program element if:</para>
@@ -200,12 +210,32 @@
         <para>A package may not contain two toplevel declarations (interfaces, 
         classes, methods, or attributes) with the same name.</para>
         
-        <para>A body may not directly contain two declarations with the same name, 
-        unless:</para>
+        <para>A declaration is contained within the <emphasis>namespace</emphasis> 
+        of a second declaration if either:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>it is a parameter or type parameter of the second declaration,</para>
+            </listitem>
+            <listitem>
+                <para>it directly occurs in the body of the second declaration,</para>
+            </listitem>
+            <listitem>
+                <para>it is a control structure variable of a control structure 
+                contained within the namespace of the second declaration, or</para>
+            </listitem>
+            <listitem>
+                <para>it directly occurs in the body of a control structure contained
+                within the namespace of the second declaration.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>A declaration namespace may not contain two declarations with the same 
+        name, unless:</para>
         
         <itemizedlist>
           <listitem>
-             <para>the body is a class body,</para>
+             <para>the declaration is a class,</para>
           </listitem>
           <listitem>
             <para>one declaration is an initializer parameter of the class and the 
@@ -261,10 +291,6 @@
     }
 }</programlisting>
         
-        <comment><para>TODO: Should we really let a name in control structure
-        body hide a name in the surrounding block? In precisely which cases is
-        hiding really non-harmful?</para></comment>
-
         <para>A class or interface may not inherit a declaration with the same 
         name as a declaration it contains unless either:</para>
             
@@ -318,35 +344,63 @@
         
         <itemizedlist>
             <listitem>
-                <para>it is a parameter, type parameter, or control structure variable 
-                of a body that contains the program element, or</para>
+                <para>the declaration is a parameter or type parameter of a declaration 
+                whose body contains the program element, or</para>
             </listitem>
             <listitem>
-                <para>it (indirectly) occurs earlier in a body that contains the program 
-                element&mdash;that is, it occurs within the lexical scope of the program
-                element, or</para>
+                <para>the program element belongs to the declaration itself, or</para>
             </listitem>
             <listitem>
-                <para>it directly occurs in an interface body, and the program element 
-                also (indirectly) occurs in the same interface body, and it is not 
-                declared using the keyword <literal>value</literal> or 
+                <para>the declaration is a control structure variable or iteration 
+                variable belonging to a block of a control structure that contains the 
+                program element, or</para>
+            </listitem>
+            <listitem>
+                <para>the program element is the <literal>while</literal> condition of a 
+                <literal>do/while</literal> loop and the <literal>do</literal> block of 
+                the loop contains the declaration, or</para>
+            </listitem>
+            <listitem>
+                <para>the declaration (indirectly) occurs earlier in a body that contains 
+                the program element&mdash;that is, it occurs within the lexical scope of 
+                the program element, or</para>
+            </listitem>
+            <listitem>
+                <para>the declaration directly occurs in an interface body, and the program 
+                element also (indirectly) occurs in the same interface body, and the 
+                declaration is not declared using the keyword <literal>value</literal> or 
                 <literal>function</literal>, or</para>
             </listitem>
             <listitem>
-                <para>it directly occurs in the declaration section of a class body, 
-                and the program element also (indirectly) occurs in the declaration 
-                section of the same class body, and it is not declared using the
-                keyword <literal>value</literal> or <literal>function</literal>, or</para>
+                <para>the declaration directly occurs in the declaration section of a class 
+                body, and the program element also (indirectly) occurs in the declaration 
+                section of the same class body, and the declaration is not declared using 
+                the keyword <literal>value</literal> or <literal>function</literal>, or</para>
             </listitem>
             <listitem>
-                <para>it is a declaration imported by the compilation unit containing 
-                the program element and is visible to the program element, or</para>
+                <para>the declaration is imported by the compilation unit containing the 
+                program element and is visible to the program element, or</para>
             </listitem>
             <listitem>
-                <para>it is a toplevel declaration in the package containing the program
-                element.</para>
+                <para>the declaration is a toplevel declaration in the package containing 
+                the program element.</para>
             </listitem>
         </itemizedlist>
+        
+        <para>A control structure variable or iteration variable <emphasis>belongs</emphasis> 
+        to a block of a control structure if the block immediately follows the declaration 
+        of the variable.</para>
+        
+        <para>A program element <emphasis>belongs</emphasis> to a declaration if it occurs
+        in the <literal>extends</literal>, <literal>satisfies</literal>, <literal>of</literal>,
+        <literal>given</literal>, <literal>abstracts</literal>, <literal>adapts</literal> or
+        <literal>is</literal> clause of the declaration.</para>
+        
+        <para>A specifier or initializer expression of a declaration or control structure
+        variable does not belong to the declaration, and is not contained in the body of 
+        the declaration, and therefore the declaration is <emphasis>not</emphasis> in scope 
+        at its own specifier or initializer expression. Likewise, an iteration variable 
+        declaration is <emphasis>not</emphasis> in scope at its own iterated expression.</para>
         
         <para>If there is no declaration with the specified name in scope at the program
         element where the specified name occurs, a compilation error results.</para>
