@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.codegen;
 
 import static com.sun.tools.javac.code.Flags.FINAL;
 
+import ceylon.language.Type;
+
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
@@ -183,7 +185,7 @@ public class StatementGen extends GenPart {
         List<JCStatement> outer = List.<JCStatement> nil();
         if (stmt.getFailClause() != null) {
             // boolean $ceylontmpX = true;
-            JCVariableDecl failtest_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(tempName()), makeIdent("boolean"), makeIdent("true"));
+            JCVariableDecl failtest_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(tempName()), make().TypeIdent(TypeTags.BOOLEAN), make().Literal(TypeTags.BOOLEAN, 1));
             outer = outer.append(failtest_decl);
             
             currentForFailVariable = failtest_decl.getName();
@@ -282,7 +284,7 @@ public class StatementGen extends GenPart {
         
         if (currentForFailVariable != null) {
             JCIdent failtest_id = at(stmt).Ident(currentForFailVariable);
-            List<JCStatement> list = List.<JCStatement> of(at(stmt).Exec(at(stmt).Assign(failtest_id, makeIdent("false"))));
+            List<JCStatement> list = List.<JCStatement> of(at(stmt).Exec(at(stmt).Assign(failtest_id, make().Literal(TypeTags.BOOLEAN, 0))));
             list = list.append(brk);
             return list;
         } else {

@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.codegen;
 
+import static com.sun.tools.javac.code.TypeTags.VOID;
+
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
