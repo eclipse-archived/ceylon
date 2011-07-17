@@ -82,9 +82,13 @@ public class DeclarationVisitor extends Visitor {
     }
     
     private void visitDeclaration(Tree.Declaration that, Declaration model) {
+        visitDeclaration(that,  model, true);
+    }
+    
+    private void visitDeclaration(Tree.Declaration that, Declaration model, boolean checkDupe) {
         visitElement(that, model);
         if ( setModelName(that, model, that.getIdentifier()) ) {
-            checkForDuplicateDeclaration(that, model);
+            if (checkDupe) checkForDuplicateDeclaration(that, model);
         }
         //that.setDeclarationModel(model);
         unit.getDeclarations().add(model);
@@ -162,10 +166,17 @@ public class DeclarationVisitor extends Visitor {
                 }
             }
             else {
-                Declaration member = model.getContainer().getDirectMemberOrParameter( model.getName() );
-                if (member!=null) {
-                    that.addError("duplicate declaration: " + model.getName());
+                Scope s = model.getContainer();
+                boolean isControl;
+                do {
+                    isControl = s instanceof ControlBlock;
+                    Declaration member = s.getDirectMemberOrParameter( model.getName() );
+                    if (member!=null) {
+                        that.addError("duplicate declaration: " + model.getName());
+                    }
+                    s = s.getContainer();
                 }
+                while (isControl);
             }
         }
     }
@@ -482,7 +493,7 @@ public class DeclarationVisitor extends Visitor {
         }
         Value v = new Value();
         that.setDeclarationModel(v);
-        visitDeclaration(that, v);
+        visitDeclaration(that, v, !(that.getType() instanceof Tree.SyntheticVariable));
         setVisibleScope(v);
         if (that.getType()!=null) {
             that.getType().visit(this);
