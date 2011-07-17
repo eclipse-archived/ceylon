@@ -140,4 +140,22 @@ public class ControlStructures() {
     try (@error Transaction tx) {}
     
     @error while ("hello") {}
+    
+    do {
+        Boolean test = false;
+    }
+    while (test); //TODO: is this allowed?
+    
+    variable Boolean test;
+    do {
+        test := false;
+    }
+    while (test);
+
+    Boolean test2;
+    @error do {
+        @error test2 = false;
+    }
+    while (test2);
+
 }
