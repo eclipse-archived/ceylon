@@ -536,7 +536,7 @@ public class ExpressionGen extends GenPart {
                 if ("null".equals(decl.getName())) {
                     // ERASURE
                     // FIXME this is a pretty brain-dead way to go about erase I think
-                    return at(member).Ident(names().fromString("null"));
+                    return at(member).Literal(TypeTags.BOT, null);
                 } else {
                     // it's a toplevel attribute
                     return gen.globalGenAt(member).getGlobalValue(
