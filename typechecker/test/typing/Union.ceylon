@@ -77,7 +77,7 @@ class Union() {
     String[]? mr2 = method2<String>();
     
     if (exists s = method2<String>()) {
-        String? f = s.first;
+        String? fs = s.first;
     }
     
     class S() {

@@ -98,7 +98,7 @@ class Optional() {
     }
     
     if (exists s = WithOptional<String>("hello").val) {
-        @type["String"] value ss = s;
+        @type["String"] value es = s;
     }
     
     if (exists seq = WithOptional<String>("goodbye").seq) {
