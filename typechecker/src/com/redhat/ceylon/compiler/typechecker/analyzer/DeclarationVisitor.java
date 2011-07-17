@@ -439,6 +439,28 @@ public class DeclarationVisitor extends Visitor {
             f.addParameterList(parameterList);
         }
         parameterList = pl;
+        
+        boolean foundSequenced = false;
+        boolean foundDefault = false;
+        for (Tree.Parameter p: that.getParameters()) {
+            if (p.getSpecifierExpression()!=null) {
+                if (foundSequenced) {
+                    p.addError("default parameter must occur before sequenced parameter");
+                }
+                foundDefault = true;
+            }
+            else if (p.getType() instanceof Tree.SequencedType) {
+                foundSequenced = true;
+            }
+            else {
+                if (foundDefault) {
+                    p.addError("required parameter must occur before default parameters");
+                }
+                if (foundSequenced) {
+                    p.addError("required parameter must occur before sequenced parameter");
+                }
+            }
+        }
     }
     
     @Override
