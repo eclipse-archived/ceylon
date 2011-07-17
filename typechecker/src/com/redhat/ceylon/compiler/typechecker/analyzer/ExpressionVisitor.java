@@ -1244,8 +1244,11 @@ public class ExpressionVisitor extends AbstractVisitor {
                 if (!p.isDefaulted() && !p.isSequenced()) {
                     pal.addError("no argument to parameter: " + p.getName());
                 }
+                if (p.isSequenced() && pal.getEllipsis()!=null) {
+                    pal.addError("missing argument to sequenced parameter: " + p.getName());
+                }
             }
-            else if (p.isSequenced()) {
+            else if (p.isSequenced() && pal.getEllipsis()==null) {
                 ProducedType paramType = r.getTypedParameter(p).getType();
                 if (paramType==null) {
                     args.get(i).addError("sequenced parameter type not known: " + p.getName());
@@ -1286,7 +1289,7 @@ public class ExpressionVisitor extends AbstractVisitor {
             else {
                 ProducedType argType = e.getTypeModel();
                 if (argType!=null) {
-                    if (pal.getEllipsis()!=null) {
+                    /*if (pal.getEllipsis()!=null) {
                         if (i<args.size()-1) {
                             a.addError("too many arguments to sequenced parameter: " + p.getName());
                         }
@@ -1297,14 +1300,14 @@ public class ExpressionVisitor extends AbstractVisitor {
                                     paramType.getProducedTypeName());
                         }
                     }
-                    else {
+                    else {*/
                         if (!at.isSupertypeOf(argType)) {
                             a.addError("argument not assignable to sequenced parameter type: " + 
                                     p.getName() + " since " +
                                     argType.getProducedTypeName() + " is not " +
                                     at.getProducedTypeName());
                         }
-                    }
+                    //}
                 }
                 else {
                     a.addError("could not determine assignability of argument to parameter: " +
