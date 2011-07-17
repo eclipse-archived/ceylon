@@ -162,18 +162,17 @@ public class DeclarationVisitor extends Visitor {
                 //same name as a class initialization parameter
                 Declaration member = model.getContainer().getDirectMember( model.getName() );
                 if (member!=null) {
-                    that.addError("duplicate declaration: " + model.getName());
+                    that.addError("duplicate declaration name: " + model.getName());
                 }
             }
             else {
                 Scope s = model.getContainer();
                 boolean isControl;
                 do {
-                    isControl = s instanceof ControlBlock;
-                    Declaration member = s.getDirectMemberOrParameter( model.getName() );
-                    if (member!=null) {
-                        that.addError("duplicate declaration: " + model.getName());
+                    if ( s.getDirectMemberOrParameter(model.getName())!=null ) {
+                        that.addError("duplicate declaration name: " + model.getName());
                     }
+                    isControl = s instanceof ControlBlock;
                     s = s.getContainer();
                 }
                 while (isControl);
