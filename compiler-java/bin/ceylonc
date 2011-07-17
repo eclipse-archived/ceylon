@@ -1,21 +1,18 @@
-#!/usr/bin/env python
+#! /bin/bash
+source $(dirname $0)/args.sh
 
-import ceylonwrap
-import os.path
+# JAVA_CP are classes required by the compiler to run. They have to go to the boot class path on Mac OS X
+# so just put it there for all (Linux) OSes for consistency.
+JAVA_CP="$CEYLON_HOME/build/lib/compiler.jar"
+JAVA_CP="$JAVA_CP:$HOME/.ceylon/repo/com/redhat/ceylon/typechecker/0.1/com.redhat.ceylon.typechecker-0.1.jar"
+JAVA_CP="$JAVA_CP:$CEYLON_HOME/lib/antlrworks-1.3.1.jar"
 
-command = ceylonwrap.Wrapper()
-# XXX start of awful mangling that clearly indicates I misdesigned the wrapper
-classpath = command.user_cp
-command.user_cp = []
-command.addJar("build", "lib", "runtime.jar")
-classpath = command.wrap_cp + classpath
-command.addJar("build", "lib", "compiler.jar")
-command.boot_cp.append(command.wrap_cp[-1])
-command.addJar(os.path.expanduser("~/.ceylon/repo/com/redhat/ceylon/typechecker/0.1/com.redhat.ceylon.typechecker-0.1.jar"))
-command.boot_cp.append(command.wrap_cp[-1])
-command.addJar("lib", "antlrworks-1.3.1.jar")
-command.boot_cp.append(command.wrap_cp[-1])
-command.args.insert(0, "-cp")
-command.args.insert(1, ":".join(classpath))
-# XXX end of awful mangling
-command.run("com.redhat.ceylon.compiler.Main")
+# COMPILE_CP are classes required by the code being compiled
+COMPILE_CP="$CEYLON_HOME/build/lib/runtime.jar:$USER_CP"
+
+java \
+	-enableassertions \
+	-Xbootclasspath/p:"$JAVA_CP" \
+	com.redhat.ceylon.compiler.Main \
+	-classpath "$COMPILE_CP" \
+	$ARGS
