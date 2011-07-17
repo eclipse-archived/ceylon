@@ -5,6 +5,10 @@ class Parameters() {
     void x4(@type["Nothing|String"] String? s) {}
     void x5(@type["Empty|Sequence<String>"] String... s) {}
     
+    void x6(String s="hello", @error Natural n) {}
+    void x7(String... s, @error Natural n) {}
+    void x8(String... s, @error Natural n=0) {}
+    
     void d1(String name="World") {}
     void d2(Natural count=0) {}
     void d3(@error String name=0) {}
