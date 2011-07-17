@@ -4,7 +4,7 @@ import com.redhat.ceylon.compiler.metadata.java.Attribute;
 import com.redhat.ceylon.compiler.metadata.java.Ceylon;
 
 @Ceylon @Attribute
-class $empty {
+public class $empty {
     private final static Empty value = new Empty(){
 
         @Override
@@ -70,7 +70,7 @@ class $empty {
         }
     };
     
-    static Empty getEmpty(){
+    public static Empty getEmpty(){
         return value;
     }
 }
