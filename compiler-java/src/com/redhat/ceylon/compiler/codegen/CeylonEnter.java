@@ -10,9 +10,14 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
+import com.sun.tools.javac.code.Type;
+import com.sun.tools.javac.comp.AttrContext;
 import com.sun.tools.javac.comp.Enter;
+import com.sun.tools.javac.comp.Env;
+import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.util.Context;
+import com.sun.tools.javac.util.Context.SourceLanguage.Language;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Log;
 
@@ -55,6 +60,19 @@ public class CeylonEnter extends Enter {
         super.main(trees);
     }
 
+    @Override
+    protected Type classEnter(JCTree tree, Env<AttrContext> env) {
+        if(tree instanceof CeylonCompilationUnit){
+            Context.SourceLanguage.push(Language.CEYLON);
+            try{
+                return super.classEnter(tree, env);
+            }finally{
+                Context.SourceLanguage.pop();
+            }
+        }else
+            return super.classEnter(tree, env);
+    }
+    
     private void printModules() {
         for(Module module : ceylonContext.getModules().getListOfModules()){
             System.err.println("Found module: "+module.getNameAsString());

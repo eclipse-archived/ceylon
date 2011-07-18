@@ -341,7 +341,8 @@ public class Enter extends JCTree.Visitor {
                 q.flags_field |= EXISTS;
             c = reader.enterClass(tree.name, packge);
             packge.members().enterIfAbsent(c);
-            if ((tree.mods.flags & PUBLIC) != 0 && !classNameMatchesFileName(c, env)) {
+            if ((tree.mods.flags & PUBLIC) != 0 && !classNameMatchesFileName(c, env)
+                    && !Context.isCeylon()) {
                 log.error(tree.pos(),
                           "class.public.should.be.in.file", tree.name);
             }
