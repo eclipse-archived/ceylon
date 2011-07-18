@@ -245,7 +245,7 @@ public class Enter extends JCTree.Visitor {
      *  @param tree    The tree to be visited.
      *  @param env     The environment visitor argument.
      */
-    Type classEnter(JCTree tree, Env<AttrContext> env) {
+    protected Type classEnter(JCTree tree, Env<AttrContext> env) {
         Env<AttrContext> prevEnv = this.env;
         try {
             this.env = env;
