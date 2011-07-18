@@ -38,6 +38,7 @@ public class TypeHierarchyVisitor extends Visitor {
             public Set<Declaration> actuals = new HashSet<Declaration>();
             public Set<Declaration> defaults = new HashSet<Declaration>();
             public Set<Declaration> nonFormalsNonDefaults = new HashSet<Declaration>();
+			public Set<Declaration> shared = new HashSet<Declaration>();
         }
 
         @Override public String toString() {
@@ -70,24 +71,30 @@ public class TypeHierarchyVisitor extends Visitor {
                     aggregateType.membersByName.put(name,aggregateMembers);
                 }
                 else {
-                    boolean isMemberNameOnAncestor = isMemberNameOnAncestor(currentType, name);
-                    if (!isMemberNameOnAncestor) {
-                        StringBuilder sb = new StringBuilder("may not inherit two declarations with the same name that do not share a common supertype: ");
-                        sb.append("[").append(currentType.declaration.getQualifiedNameString()).append("#").append(name).append("]");
-                        String otherTypeName = getTypeDeclarationFor(aggregateMembers);
-                        sb.append(" and [").append(otherTypeName).append("#").append(name).append("]");
-                        that.addError(sb.toString());
+                    boolean superMemberIsShared = !aggregateMembers.shared.isEmpty();
+                    boolean currentMemberIsShared = !currentTypeMembers.shared.isEmpty();
+                    if (superMemberIsShared && currentMemberIsShared) {
+                        boolean isMemberNameOnAncestor = isMemberNameOnAncestor(currentType, name);
+                        if (!isMemberNameOnAncestor) {
+                            StringBuilder sb = new StringBuilder("may not inherit two declarations with the same name that do not share a common supertype: ");
+                            sb.append("[").append(currentType.declaration.getQualifiedNameString()).append("#").append(name).append("]");
+                            String otherTypeName = getTypeDeclarationFor(aggregateMembers);
+                            sb.append(" and [").append(otherTypeName).append("#").append(name).append("]");
+                            that.addError(sb.toString());
+                        }
                     }
                 }
                 aggregateMembers.nonFormalsNonDefaults.addAll(currentTypeMembers.nonFormalsNonDefaults);
                 aggregateMembers.actuals.addAll(currentTypeMembers.actuals);
                 aggregateMembers.formals.addAll(currentTypeMembers.formals);
                 aggregateMembers.defaults.addAll(currentTypeMembers.defaults);
+                aggregateMembers.shared.addAll(currentTypeMembers.shared);
             }
         }
     }
 
     private boolean isMemberNameOnAncestor(Type currentType, String name) {
+        //retrieve inherited members (shared)
         List<Declaration> inheritedMembers = currentType.declaration.getInheritedMembers(name);
         boolean sameMemberInherited = false;
         for(Declaration d:inheritedMembers) {
@@ -114,19 +121,24 @@ public class TypeHierarchyVisitor extends Visitor {
                     aggregateType.membersByName.put(name,aggregateMembers);
                 }
                 else {
-                    boolean isMemberRefined = isMemberRefined(orderedTypes,index,name,currentTypeMembers);
-                    if (!isMemberRefined) {
-                        StringBuilder sb = new StringBuilder("may not inherit two declarations with the same name unless redefined in subclass: ");
-                        sb.append("[").append(currentType.declaration.getQualifiedNameString()).append("#").append(name).append("]");
-                        String otherTypeName = getTypeDeclarationFor(aggregateMembers);
-                        sb.append(" and [").append(otherTypeName).append("#").append(name).append("]");
-                        that.addError(sb.toString());
+                    boolean subtypeMemberIsShared = !aggregateMembers.shared.isEmpty();
+                    boolean currentMemberIsShared = !currentTypeMembers.shared.isEmpty();
+                    if (subtypeMemberIsShared && currentMemberIsShared) {
+                        boolean isMemberRefined = isMemberRefined(orderedTypes,index,name,currentTypeMembers);
+                        if (!isMemberRefined) {
+                            StringBuilder sb = new StringBuilder("may not inherit two declarations with the same name unless redefined in subclass: ");
+                            sb.append("[").append(currentType.declaration.getQualifiedNameString()).append("#").append(name).append("]");
+                            String otherTypeName = getTypeDeclarationFor(aggregateMembers);
+                            sb.append(" and [").append(otherTypeName).append("#").append(name).append("]");
+                            that.addError(sb.toString());
+                        }
                     }
                 }
                 aggregateMembers.nonFormalsNonDefaults.addAll(currentTypeMembers.nonFormalsNonDefaults);
                 aggregateMembers.actuals.addAll(currentTypeMembers.actuals);
                 aggregateMembers.formals.addAll(currentTypeMembers.formals);
                 aggregateMembers.defaults.addAll(currentTypeMembers.defaults);
+                aggregateMembers.shared.addAll(currentTypeMembers.shared);
             }
         }
     }
@@ -138,7 +150,7 @@ public class TypeHierarchyVisitor extends Visitor {
             Type type = orderedTypes.get(subIndex);
             //has a direct member and supertype as inherited members
             Declaration directMember = type.declaration.getDirectMember(name);
-            boolean isMemberRefined = directMember!=null && !(directMember instanceof Parameter);
+            boolean isMemberRefined = directMember!=null && directMember.isShared() && !(directMember instanceof Parameter);
             isMemberRefined = isMemberRefined && type.declaration.getInheritedMembers(name).contains(declarationOfSupertypeMember);
             if (isMemberRefined) {
                 return true;
@@ -194,6 +206,7 @@ public class TypeHierarchyVisitor extends Visitor {
                 aggregateMembers.actuals.addAll(currentMembers.actuals);
                 aggregateMembers.formals.addAll(currentMembers.formals);
                 aggregateMembers.defaults.addAll(currentMembers.defaults);
+                aggregateMembers.shared.addAll(currentMembers.shared);
             }
         }
         return aggregation;
@@ -287,6 +300,9 @@ public class TypeHierarchyVisitor extends Visitor {
                 }
                 if (!member.isFormal()&&!member.isDefault()) {
                     members.nonFormalsNonDefaults.add(member);
+                }
+                if (member.isShared()) {
+                    members.shared.add(member);
                 }
             }
             types.put(declaration,type);
