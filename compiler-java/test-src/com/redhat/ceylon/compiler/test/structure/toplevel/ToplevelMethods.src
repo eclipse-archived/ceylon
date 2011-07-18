@@ -2,10 +2,16 @@ package com.redhat.ceylon.compiler.test.structure.toplevel;
 
 final class toplevelMethod {
     
+    private toplevelMethod() {
+    }
+    
     static void toplevelMethod() {
     }
 }
 final class anotherToplevelMethod {
+    
+    private anotherToplevelMethod() {
+    }
     
     static Natural anotherToplevelMethod(final Natural n) {
         return .ceylon.language.Natural.instance(0L);

@@ -15,6 +15,9 @@ final class x {
 }
 final class accessX {
     
+    private accessX() {
+    }
+    
     static void accessX() {
         com.redhat.ceylon.compiler.test.structure.toplevel.x.getX().y();
     }

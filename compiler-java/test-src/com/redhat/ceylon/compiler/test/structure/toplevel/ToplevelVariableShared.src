@@ -10,4 +10,7 @@ public final class i {
     public static void setI(Natural newValue) {
         value = newValue;
     }
+    
+    private i() {
+    }
 }

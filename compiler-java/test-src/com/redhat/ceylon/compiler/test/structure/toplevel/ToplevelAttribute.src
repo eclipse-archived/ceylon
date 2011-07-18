@@ -6,4 +6,7 @@ final class i {
     static Natural getI() {
         return value;
     }
+    
+    private i() {
+    }
 }
