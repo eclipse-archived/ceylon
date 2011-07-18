@@ -3,6 +3,9 @@ class Assignment() {
     this.name:="stef";
     name:="tako";
     Assignment().name:="emmanuel";
+    value count { return 0; }
+    assign count {}
+    count:=1;
 }
 
 class SequencedArguments() {
