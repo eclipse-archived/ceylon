@@ -483,7 +483,7 @@ public class ClassGen extends GenPart {
         
         List<JCAnnotation> annots = gen.makeAtCeylon().appendList(gen.makeAtMethod());
         return at(def).ClassDef(
-                at(def).Modifiers((isShared(def) ? PUBLIC : 0), annots),
+                at(def).Modifiers(FINAL | (isShared(def) ? PUBLIC : 0), annots),
                 name,
                 List.<JCTypeParameter>nil(),
                 null,
