@@ -6,6 +6,9 @@ final class toplevel {
     static Boolean getToplevel() {
         return value;
     }
+    
+    private toplevel() {
+    }
 }
 class TopLevelAccess {
     

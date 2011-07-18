@@ -10,6 +10,9 @@ final class toplevel {
     static void setToplevel(Boolean newValue) {
         value = newValue;
     }
+    
+    private toplevel() {
+    }
 }
 class TopLevelAssign {
     
