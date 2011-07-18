@@ -6,6 +6,10 @@ class Assignment() {
     value count { return 0; }
     assign count {}
     count:=1;
+    function hello() { return "hello"; }
+    @error hello:="goodbye";
+    value org { return "JBoss"; }
+    org:="Red Hat";
 }
 
 class SequencedArguments() {
