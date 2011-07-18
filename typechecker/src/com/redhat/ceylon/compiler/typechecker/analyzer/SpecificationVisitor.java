@@ -212,12 +212,15 @@ public class SpecificationVisitor extends AbstractVisitor {
     }
     
     private void checkVariable(Tree.Term term) {
+        //TODO: we don't really need this error check here,
+        //      since it duplicates a check done more 
+        //      completely in ExpressionVisitor.checkAssignable()
         if (term instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression m = (Tree.BaseMemberExpression) term;
             Declaration member = getBaseDeclaration(m);
             if (member==declaration) {
                 if (!isVariable()) {
-                    term.addError("is not a variable: " +
+                    term.addError("not a variable: " +
                             member.getName());
                 }
             }
