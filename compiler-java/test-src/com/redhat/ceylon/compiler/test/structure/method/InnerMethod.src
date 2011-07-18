@@ -4,7 +4,7 @@ class InnerMethod {
     
     private final void m() {
         
-        class $inner$class$0 {
+        final class $inner$class$0 {
             
             private $inner$class$0() {
             }

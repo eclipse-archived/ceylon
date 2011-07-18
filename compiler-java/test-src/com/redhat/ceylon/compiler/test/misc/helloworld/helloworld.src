@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.misc.helloworld;
 
-public class helloworld {
+public final class helloworld {
     
     private helloworld() {
     }

@@ -13,7 +13,7 @@ final class x {
         return value;
     }
 }
-class accessX {
+final class accessX {
     
     static void accessX() {
         com.redhat.ceylon.compiler.test.structure.toplevel.x.getX().y();

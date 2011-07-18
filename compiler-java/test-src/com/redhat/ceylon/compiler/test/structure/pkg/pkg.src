@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.structure.pkg;
 
-public class pkg {
+public final class pkg {
     
     private pkg() {
     }

@@ -1,4 +1,4 @@
-public class defaultPackage {
+public final class defaultPackage {
     
     private defaultPackage() {
     }
