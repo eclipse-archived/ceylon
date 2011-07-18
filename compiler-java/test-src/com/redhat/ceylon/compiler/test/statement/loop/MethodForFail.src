@@ -4,17 +4,14 @@ class MethodForFail {
     
     public final Natural m(final Sequence<Integer> seq) {
         boolean $ceylontmp0 = true;
-        .ceylon.language.Iterator<Integer> $i$iter$1 = seq.iterator();
-        while ($i$iter$1.getHead() != null) {
+        for (.ceylon.language.Iterator<Integer> $i$iter$1 = seq.iterator(); $i$iter$1.getHead() != null ; $i$iter$1 = $i$iter$1.getTail()) {
             final Integer i = $i$iter$1.getHead();
             while (ceylon.language.$true.getTrue() == ceylon.language.$true.getTrue()) {
                 boolean $ceylontmp2 = true;
-                .ceylon.language.Iterator<Integer> $j$iter$3 = seq.iterator();
-                while ($j$iter$3.getHead() != null) {
+                for (.ceylon.language.Iterator<Integer> $j$iter$3 = seq.iterator(); $j$iter$3.getHead() != null; $j$iter$3 = $j$iter$3.getTail()) {
                     final Integer j = $j$iter$3.getHead();
                     $ceylontmp2 = false;
                     break;
-                    $j$iter$3 = $j$iter$3.getTail();
                 }
                 if ($ceylontmp2) {
                     return .ceylon.language.Natural.instance(1L);
@@ -26,7 +23,6 @@ class MethodForFail {
             }             while (ceylon.language.$true.getTrue() == ceylon.language.$true.getTrue());
             $ceylontmp0 = false;
             break;
-            $i$iter$1 = $i$iter$1.getTail();
         }
         if ($ceylontmp0) {
             return .ceylon.language.Natural.instance(0L);
