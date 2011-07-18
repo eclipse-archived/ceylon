@@ -15,6 +15,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
+import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -1758,13 +1759,14 @@ public class ExpressionVisitor extends AbstractVisitor {
                 that instanceof Tree.QualifiedMemberExpression) {
             ProducedReference pr = ((Tree.MemberOrTypeExpression) that).getTarget();
             if (pr!=null) {
-                if (!(pr.getDeclaration() instanceof Value)) {
+                Declaration dec = pr.getDeclaration();
+                if (!(dec instanceof Value | dec instanceof Getter)) {
                     that.addError("member cannot be assigned: " 
-                            + pr.getDeclaration().getName());
+                            + dec.getName());
                 }
-                else if ( !((Value) pr.getDeclaration()).isVariable() ) {
-                    that.addError("member is not variable: " 
-                            + pr.getDeclaration().getName());
+                else if ( !((TypedDeclaration) dec).isVariable() ) {
+                    that.addError("value is not variable: " 
+                            + dec.getName());
                 }
             }
         }
