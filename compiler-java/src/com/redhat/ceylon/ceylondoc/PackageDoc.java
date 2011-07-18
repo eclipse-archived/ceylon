@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
@@ -19,7 +20,8 @@ public class PackageDoc extends CeylonDoc {
 	private Package pkg;
     private List<Class> classes;
     private List<Interface> interfaces;
-    private ArrayList<Value> attributes;
+    private List<Value> attributes;
+    private List<Method> methods;
 
 	public PackageDoc(String destDir, Package pkg) throws IOException {
 		super(destDir);
@@ -31,14 +33,16 @@ public class PackageDoc extends CeylonDoc {
 	    classes = new ArrayList<Class>();
         interfaces = new ArrayList<Interface>();
         attributes = new ArrayList<Value>();
+        methods = new ArrayList<Method>();
         for(Declaration m : pkg.getMembers()){
             if(m instanceof Interface)
                 interfaces.add((Interface) m);
             else if(m instanceof Class)
                 classes.add((Class) m);
-            else if(m instanceof Value){
+            else if(m instanceof Value)
                 attributes.add((Value)m);
-            }
+            else if(m instanceof Method)
+                methods.add((Method)m);
         }
         Comparator<Declaration> comparator = new Comparator<Declaration>(){
             @Override
@@ -49,6 +53,7 @@ public class PackageDoc extends CeylonDoc {
         Collections.sort(classes, comparator );
         Collections.sort(interfaces, comparator );
         Collections.sort(attributes, comparator );
+        Collections.sort(methods, comparator );
     }
 
     public void generate() throws IOException {
@@ -64,6 +69,7 @@ public class PackageDoc extends CeylonDoc {
 		open("body");
 		summary();
 		attributes();
+        methods();
         interfaces();
 		classes();
 		close("body");
@@ -90,7 +96,15 @@ public class PackageDoc extends CeylonDoc {
 		close("div");
 	}
 	
-	private void attributes() throws IOException {
+    private void methods() throws IOException {
+        openTable("Methods", "Method", "Description");
+        for(Method m : methods){
+            doc(m);
+        }
+        close("table");
+    }
+
+    private void attributes() throws IOException {
 	    openTable("Attributes", "Attribute", "Description");
 	    for(Value v : attributes){
 	        doc(v);
@@ -132,6 +146,17 @@ public class PackageDoc extends CeylonDoc {
 	    close("td");
 	    open("td");
 	    write(c.getName());
+	    close("td");
+	    close("tr");
+	}
+
+	private void doc(Method m) throws IOException {
+	    open("tr class='TableRowColor'");
+	    open("td");
+	    link(m.getType());
+	    close("td");
+	    open("td");
+	    write(m.getName());
 	    close("td");
 	    close("tr");
 	}
