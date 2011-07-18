@@ -131,6 +131,11 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 }
                 
                 @Override
+                public void visit(Tree.ObjectDefinition that) {
+                    loadFromSource(that);
+                }
+
+                @Override
                 public void visit(Tree.MethodDefinition that) {
                     loadFromSource(that);
                 }
