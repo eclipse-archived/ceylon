@@ -110,6 +110,8 @@ public final class GlobalGen extends GenPart {
         private List<JCTree.JCAnnotation> valueAnnotations = List.nil();
         private List<JCTree.JCAnnotation> classAnnotations = List.nil();
 
+        private boolean skipConstructor;
+
         public DefinitionBuilder(JCTree.JCExpression variableType, String variableName) {
             this.variableType = variableType;
             this.variableName = variableName;
@@ -146,15 +148,17 @@ public final class GlobalGen extends GenPart {
                 defs.append(generateSetter());
             }
             
-            // make a private constructor
-            defs.append(make().MethodDef(make().Modifiers(Flags.PRIVATE),
-                    names().init,
-                    make().TypeIdent(VOID),
-                    List.<JCTree.JCTypeParameter>nil(),
-                    List.<JCTree.JCVariableDecl>nil(),
-                    List.<JCTree.JCExpression>nil(),
-                    make().Block(0, List.<JCTree.JCStatement>nil()),
-                    null));
+            if(!skipConstructor){
+                // make a private constructor
+                defs.append(make().MethodDef(make().Modifiers(Flags.PRIVATE),
+                        names().init,
+                        make().TypeIdent(VOID),
+                        List.<JCTree.JCTypeParameter>nil(),
+                        List.<JCTree.JCVariableDecl>nil(),
+                        List.<JCTree.JCExpression>nil(),
+                        make().Block(0, List.<JCTree.JCStatement>nil()),
+                        null));
+            }
         }
 
         private JCTree generateField() {
@@ -274,6 +278,11 @@ public final class GlobalGen extends GenPart {
 
         public DefinitionBuilder classAnnotations(List<JCTree.JCAnnotation> classAnnotations) {
             this.classAnnotations = classAnnotations;
+            return this;
+        }
+
+        public DefinitionBuilder skipConstructor() {
+            this.skipConstructor = true;
             return this;
         }
     }

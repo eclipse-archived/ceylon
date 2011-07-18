@@ -543,6 +543,7 @@ public class ClassGen extends GenPart {
                 .classAnnotations(gen.makeAtObject())
                 .valueAnnotations(gen.makeJavaTypeAnnotations(decl.getDeclarationModel(), gen.actualType(decl)))
                 .immutable()
+                .skipConstructor()
                 .initialValue(make().NewClass(null, List.<JCExpression>nil(), generatedClassName, List.<JCExpression>nil(), null));
 
         if (isShared(decl)) {
