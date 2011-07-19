@@ -19,13 +19,29 @@ interface GettersSetters {
         @error assign hi {}
     }
     
-    class SettersWithDupeAttributs() {
+    class SettersWithDupeAttributes() {
         String hi; 
         String howdy;
         @error String hi { return "hi"; }
         @error assign hi {}
         @error assign howdy {  }
         @error assign hi {}
+    }
+    
+    class SharedGetterSetter() {
+        shared String name {
+            return "gavin";
+        }
+        assign name {}
+        String greeting {
+            return "hello";
+        }
+        assign greeting {}
+    }
+    
+    void test() {
+        SharedGetterSetter().name := "world";
+        @error SharedGetterSetter().greeting := "hi";
     }
     
 }

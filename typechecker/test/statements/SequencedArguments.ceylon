@@ -9,7 +9,7 @@ class Assignment() {
     function hello() { return "hello"; }
     @error hello:="goodbye";
     value org { return "JBoss"; }
-    org:="Red Hat";
+    @error org:="Red Hat";
 }
 
 class SequencedArguments() {

@@ -74,4 +74,19 @@ interface Declarations {
         if (exists count) {}
     }
     
+    class SharedInference() {
+    
+        @error shared value sharedInferredSimple = "bad";
+        @error shared value sharedInferredGetter { return "bad"; }
+        @error shared function sharedInferredMethod() { return "bad"; }
+        
+    }
+    
+    shared String getterForSharedSetter {
+        return "hello";
+    }
+    
+    @error shared assign getterForSharedSetter {
+    }
+    
 }
