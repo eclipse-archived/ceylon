@@ -556,20 +556,33 @@ public class DeclarationVisitor extends Visitor {
             if (that instanceof Tree.AttributeSetterDefinition) {
                 that.addError("setters may not be annotated shared");
             }
+            else if (that instanceof Tree.TypedDeclaration && !(that instanceof Tree.ObjectDefinition)) {
+                Tree.Type t =  ((Tree.TypedDeclaration) that).getType();
+                if (t instanceof Tree.ValueModifier || t instanceof Tree.FunctionModifier) {
+                    that.addError("shared declarations must explicitly specify a type");
+                }
+                else {
+                    model.setShared(true);
+                }
+            }
             else {
                 model.setShared(true);
             }
         }
         if (hasAnnotation(al, "default")) {
-            model.setDefault(true);
             if (that instanceof Tree.ObjectDefinition) {
                 that.addError("object declarations may not be default");
             }
+            else {
+                model.setDefault(true);
+            }
         }
         if (hasAnnotation(al, "formal")) {
-            model.setFormal(true);
             if (that instanceof Tree.ObjectDefinition) {
                 that.addError("object declarations may not be formal");
+            }
+            else {
+                model.setFormal(true);
             }
         }
         if (hasAnnotation(al, "actual")) {
