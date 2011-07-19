@@ -268,10 +268,10 @@ public class ControlFlowVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.WhileClause that) {
+    public void visit(Tree.WhileStatement that) {
         boolean d = beginIndefiniteReturnScope();
         Boolean b = beginLoop();
-        super.visit(that);
+        that.getWhileClause().visit(this);
         endDefiniteReturnScope(d);
         endLoop(b);
     }
@@ -322,8 +322,8 @@ public class ControlFlowVisitor extends Visitor {
         endDefiniteReturnScope(d);
         
         boolean definitelyReturnsFromFail;
-        if (that.getFailClause()!=null) {
-            that.getFailClause().visit(this);
+        if (that.getElseClause()!=null) {
+            that.getElseClause().visit(this);
             definitelyReturnsFromFail = definitelyReturns;
         }
         else {

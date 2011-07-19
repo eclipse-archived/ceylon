@@ -1211,7 +1211,7 @@ forBlock
     ;
 
 failBlock
-    : 'fail'^ block
+    : 'else'^ block
     ;
 
 forIterator2
@@ -1508,9 +1508,9 @@ FOR_CLAUSE
     :   'for'
     ;
 
-FAIL_CLAUSE
+/*FAIL_CLAUSE
     :   'fail'
-    ;
+    ;*/
 
 TYPE_CONSTRAINT
     :   'given'

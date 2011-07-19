@@ -602,16 +602,16 @@ public class SpecificationVisitor extends AbstractVisitor {
     }
     
     @Override
-    public void visit(Tree.WhileClause that) {
+    public void visit(Tree.WhileStatement that) {
         if (isVariable()) {
             boolean d = beginDeclarationScope();
-            super.visit(that);
+            that.getWhileClause().visit(this);
             endDeclarationScope(d);
         }
         else {
             boolean c = beginDisabledSpecificationScope();
             boolean d = beginDeclarationScope();
-            super.visit(that);
+            that.getWhileClause().visit(this);
             endDisabledSpecificationScope(c);
             endDeclarationScope(d);
         }
@@ -634,29 +634,28 @@ public class SpecificationVisitor extends AbstractVisitor {
     }*/
 
     @Override
-    public void visit(Tree.ForClause that) {
-        if (isVariable()) {
+    public void visit(Tree.ForStatement that) {
+        if (that.getForClause()!=null) {
+            if (isVariable()) {
+                boolean d = beginDeclarationScope();
+                that.getForClause().visit(this);
+                endDeclarationScope(d);
+            }
+            else {
+                boolean c = beginDisabledSpecificationScope();
+                boolean d = beginDeclarationScope();        
+                that.getForClause().visit(this);
+                endDisabledSpecificationScope(c);
+                endDeclarationScope(d);
+            }
+        }
+        if (that.getElseClause()!=null) {
+            boolean o = beginIndefiniteSpecificationScope();
             boolean d = beginDeclarationScope();
-            super.visit(that);
+            that.getElseClause().visit(this);
+            endIndefiniteSpecificationScope(o);
             endDeclarationScope(d);
         }
-        else {
-            boolean c = beginDisabledSpecificationScope();
-            boolean d = beginDeclarationScope();        
-            super.visit(that);
-            endDisabledSpecificationScope(c);
-            endDeclarationScope(d);
-        }
-    }
-    
-
-    @Override
-    public void visit(Tree.FailClause that) {
-        boolean o = beginIndefiniteSpecificationScope();
-        boolean d = beginDeclarationScope();
-        super.visit(that);
-        endIndefiniteSpecificationScope(o);
-        endDeclarationScope(d);
     }
       
 }
