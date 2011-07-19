@@ -403,7 +403,7 @@ interface DefiniteSpecification {
         for (X x in {X()}) {
             doSomething();
         }
-        fail {
+        else {
             doSomethingElse();
             y = X();
         }
@@ -415,7 +415,7 @@ interface DefiniteSpecification {
             X y;
             doSomething();
         }
-        fail {
+        else {
             doSomethingElse();
             @error y = X();
         }
@@ -427,7 +427,7 @@ interface DefiniteSpecification {
         for (X x in {X()}) {
             doSomething();
         }
-        fail {
+        else {
             doSomethingElse();
             y = X();
         }

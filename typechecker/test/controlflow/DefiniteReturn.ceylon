@@ -185,7 +185,7 @@ interface DefiniteReturn {
             doSomething();
             return;
         }
-        fail {
+        else {
             doSomethingElse();
         }
         doNothing();
@@ -196,7 +196,7 @@ interface DefiniteReturn {
             doSomething();
             return;
         }
-        fail {
+        else {
             doSomethingElse();
             return;
         }
@@ -478,7 +478,7 @@ interface DefiniteReturn {
         for (X x in {X()}) {
             doSomething();
         }
-        fail {
+        else {
             doNothing();
             return X();
         }
@@ -489,7 +489,7 @@ interface DefiniteReturn {
             doSomething();
             break;
         }
-        fail {
+        else {
             return X();
         }
         doNothing();
@@ -500,7 +500,7 @@ interface DefiniteReturn {
             doSomething();
             return X();
         }
-        fail {
+        else {
             doSomethingElse();
         }
         doNothing();
@@ -511,7 +511,7 @@ interface DefiniteReturn {
             doSomething();
             return X();
         }
-        fail {
+        else {
             doSomethingElse();
         }
         doNothing();
@@ -523,7 +523,7 @@ interface DefiniteReturn {
             doSomething();
             return X();
         }
-        fail {
+        else {
             doSomethingElse();
             return X();
         }
@@ -742,7 +742,7 @@ interface DefiniteReturn {
             doSomething();
             return X();
         }
-        fail {
+        else {
             doSomethingElse();
         }
         doNothing();
@@ -753,7 +753,7 @@ interface DefiniteReturn {
             doSomething();
             return X();
         }
-        fail {
+        else {
             doSomethingElse();
         }
         doNothing();
@@ -765,7 +765,7 @@ interface DefiniteReturn {
             doSomething();
             return X();
         }
-        fail {
+        else {
             doSomethingElse();
             return X();
         }
@@ -984,7 +984,7 @@ interface DefiniteReturn {
             doSomething();
             return;
         }
-        fail {
+        else {
             doSomethingElse();
         }
         doNothing();
@@ -995,7 +995,7 @@ interface DefiniteReturn {
             doSomething();
             return;
         }
-        fail {
+        else {
             doSomethingElse();
             return;
         }

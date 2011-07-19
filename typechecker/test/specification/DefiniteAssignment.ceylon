@@ -327,7 +327,7 @@ interface DefiniteAssignment {
         for (X x in {X()}) {
             doSomething();
         }
-        fail {
+        else {
             doSomethingElse();
             y := X();
         }
@@ -339,7 +339,7 @@ interface DefiniteAssignment {
             variable X y;
             doSomething();
         }
-        fail {
+        else {
             doSomethingElse();
             @error y := X();
         }
@@ -351,7 +351,7 @@ interface DefiniteAssignment {
         for (X x in {X()}) {
             doSomething();
         }
-        fail {
+        else {
             doSomethingElse();
             y := X();
         }
