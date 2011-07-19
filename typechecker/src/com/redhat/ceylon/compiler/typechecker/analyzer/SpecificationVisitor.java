@@ -377,6 +377,15 @@ public class SpecificationVisitor extends AbstractVisitor {
     }
     
     @Override
+    public void visit(Tree.AttributeSetterDefinition that) {
+        if (that.getDeclarationModel()==declaration) {
+            declare();
+            specify();
+        }
+        super.visit(that);        
+    }
+    
+    @Override
     public void visit(Tree.AttributeArgument that) {
         if (that.getDeclarationModel()==declaration) {
             declare();
