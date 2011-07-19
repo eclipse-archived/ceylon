@@ -792,7 +792,7 @@ try (lock) { ... }</programlisting>
         <programlisting>Retry: "retry"</programlisting>
         -->
         
-        <!--comment><para>TODO: We could support <literal>for/fail</literal> loops 
+        <!--comment><para>TODO: We could support <literal>for/else</literal> loops 
         that return a value by supporting a <literal>found expr</literal> directive. 
         We could support conditionals that return a value by adding a 
         <literal>then expr</literal> directive.</para></comment-->
@@ -1050,7 +1050,7 @@ else {
                 boolean condition,</para>
             </listitem>
             <listitem>
-                <para>the <literal>for/fail</literal> loop&mdash;for looping over elements of a 
+                <para>the <literal>for/else</literal> loop&mdash;for looping over elements of a 
                 collection, and</para>
             </listitem>
             <listitem>
