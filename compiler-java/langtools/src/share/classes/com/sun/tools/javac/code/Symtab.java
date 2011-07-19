@@ -174,6 +174,8 @@ public class Symtab {
     public final Type ceylonAtAttributeType;
     public final Type ceylonAtMethodType;
     public final Type ceylonAtObjectType;
+    public final Type ceylonAtSatisfiedTypes;
+    public final Type ceylonAtTypeParameters;
 
     /** The symbol representing the length field of an array.
      */
@@ -492,6 +494,8 @@ public class Symtab {
         ceylonAtAttributeType = enterClass("com.redhat.ceylon.compiler.metadata.java.Attribute");
         ceylonAtMethodType = enterClass("com.redhat.ceylon.compiler.metadata.java.Method");
         ceylonAtObjectType = enterClass("com.redhat.ceylon.compiler.metadata.java.Object");
+        ceylonAtSatisfiedTypes = enterClass("com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes");
+        ceylonAtTypeParameters = enterClass("com.redhat.ceylon.compiler.metadata.java.TypeParameters");
 
         synthesizeEmptyInterfaceIfMissing(cloneableType);
         synthesizeEmptyInterfaceIfMissing(serializableType);
