@@ -15,7 +15,7 @@ class AttributeAssign {
         return ceylon.language.$true.getTrue();
     }
     
-    private final void setB4(.java.lang.Object b4) {
+    public final void setB4(.java.lang.Object b4) {
     }
     
     private final void m() {

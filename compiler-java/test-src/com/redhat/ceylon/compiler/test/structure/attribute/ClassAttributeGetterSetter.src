@@ -13,7 +13,7 @@ class ClassAttributeGetterSetter {
         return .ceylon.language.String.instance("");
     }
     
-    private final void setF2(.java.lang.Object f2) {
+    public final void setF2(.java.lang.Object f2) {
     }
     
     ClassAttributeGetterSetter() {

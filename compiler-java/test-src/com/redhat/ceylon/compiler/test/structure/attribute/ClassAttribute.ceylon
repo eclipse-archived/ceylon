@@ -7,7 +7,6 @@ abstract class ClassAttribute(){
     publicvar = "";
     uncapturedvar = "";
     capturedvar = "";
-    formalvar = "";
     
     String m() {
         return capturedvar;

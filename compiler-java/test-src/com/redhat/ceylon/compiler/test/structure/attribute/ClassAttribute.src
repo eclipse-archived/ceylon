@@ -13,7 +13,6 @@ abstract class ClassAttribute {
         publicvar = .ceylon.language.String.instance("");
         uncapturedvar = .ceylon.language.String.instance("");
         capturedvar = .ceylon.language.String.instance("");
-        formalvar = .ceylon.language.String.instance("");
     }
     
     public final String getPublicvar() {
