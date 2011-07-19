@@ -872,7 +872,7 @@ while (exists local value = iter.head) {
                 return false;
             }
         }
-        fail {
+        else {
             return true;
         }
     }
@@ -1034,7 +1034,7 @@ while (exists local value = indexed.indexedValue(i)) {
                 return false;
             }
         }
-        fail {
+        else {
             return true;
         }
     }
@@ -1713,7 +1713,7 @@ shared object none {
                 return false;
             }
         }
-        fail {
+        else {
             return true;
         } 
     }

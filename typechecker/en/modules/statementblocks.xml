@@ -666,9 +666,7 @@ String result = middleObject.string;</programlisting>
         for example:</para>
         <programlisting>doc "unsafe assignment" 
 suppressWarnings(typesafety)
-do { 
-    apple = orange;
-}</programlisting>
+if (it.walksLikeADuck) { Duck duck = it; }</programlisting>
 <programlisting>doc "synchronize on the lock"
 try (lock) { ... }</programlisting>
 </comment>
@@ -1643,24 +1641,21 @@ if (satisfies Comparable&lt;Element&gt; Element) {
             
         </section>
         
-        <section id="forfail">
-            <title><literal>for/fail</literal></title>
+        <section id="forelse">
+            <title><literal>for/else</literal></title>
             
-             <para>The <literal>for/fail</literal> loop has the following form:</para>
+             <para>The <literal>for/else</literal> loop has the following form:</para>
              
             <programlisting>ForFail: For Fail?</programlisting>
 
             <programlisting>For: "for" "(" ForIterator ")" Block</programlisting>
             
-            <programlisting>Fail: "fail" Block</programlisting>
+            <programlisting>Fail: "else" Block</programlisting>
 
             <!--programlisting>ForFail :=
 "for" "(" Iteration (";" Iteration)* ")" 
 ( ClosedBlock | OpenBlock "fail" ClosedBlock )
 </programlisting-->
-
-            <comment><para>TODO: Community feedback is that <literal>else</literal> is
-            better than <literal>fail</literal>, like in Python.</para></comment>
 
             <para>The <literal>for</literal> iterator consists of an iteration variable 
             declaration and an iterated expression that contains the range of values to 
@@ -1723,8 +1718,8 @@ if (satisfies Comparable&lt;Element&gt; Element) {
             of a <literal>break</literal>, <literal>return</literal>, or <literal>throw</literal>
             directive. Otherwise, we say that the loop <emphasis>completes</emphasis> normally.</para>
              
-            <para>If the loop completes normally, the <literal>fail</literal> block is executed. 
-            Otherwise, if the loop exists early, the <literal>fail</literal> block is not executed.</para>
+            <para>If the loop completes normally, the <literal>else</literal> block is executed. 
+            Otherwise, if the loop exists early, the <literal>else</literal> block is not executed.</para>
                                 
             <para>For example:</para>
 
@@ -1752,7 +1747,7 @@ for (Integer i in -10..+10) {
         break;
     }
 }
-fail {
+else {
     log.info("no adults");
 }
 </programlisting>
