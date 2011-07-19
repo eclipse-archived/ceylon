@@ -15,7 +15,7 @@ class ControlStructures() {
 				break;
 			}
 		}
-		fail {
+		else {
 			log.info("not found");
 		}
 		
@@ -109,10 +109,10 @@ class ControlStructures() {
 			log.info("hello");
 		}
 		
-		do {
+		/*do {
 			log.info("hello");
 		}
-		while (true);
+		while (true);*/
 		
         variable Integer n:=0;
 		while (n<10) {
@@ -120,12 +120,12 @@ class ControlStructures() {
 			n++;
 		}
 		
-		variable Integer m:=0;
+		/*variable Integer m:=0;
 		do {
 			log.info(m);
 			m++;
 		}
-		while (m<10);
+		while (m<10);*/
 
 		String text = "Hello World!";
 		Iterator<String> tokens = text.tokens().iterator();

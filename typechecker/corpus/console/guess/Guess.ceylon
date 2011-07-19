@@ -35,7 +35,7 @@ void guess() {
 		}
 		
 	}
-	fail {
+	else {
 		process.writeLine("You ran out of guesses!");
 	}
 	
