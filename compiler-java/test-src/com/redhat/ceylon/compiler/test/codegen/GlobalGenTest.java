@@ -56,6 +56,9 @@ public class GlobalGenTest {
                 "    static void setVariableName(VariableType newValue) {",
                 "        value = newValue;",
                 "    }",
+                "    ",
+                "    private variableName() {",
+                "    }",
                 "}")));
     }
 
@@ -72,7 +75,7 @@ public class GlobalGenTest {
 
         List<JCTree> defs = defsBuf.toList();
 
-        assertThat(defs.size(), is(3));
+        assertThat(defs.size(), is(4));
         assertThat(toCanonicalString(defs.get(0)), is(lines("private static VariableType value")));
         assertThat(toCanonicalString(defs.get(1)), is(lines(
                 "static VariableType getVariableName() {",
@@ -82,6 +85,10 @@ public class GlobalGenTest {
         assertThat(toCanonicalString(defs.get(2)), is(lines(
                 "static void setVariableName(VariableType newValue) {",
                 "    value = newValue;",
+                "}")));
+
+        assertThat(toCanonicalString(defs.get(3)), is(lines(
+                "private <init>() {",
                 "}")));
     }
 
