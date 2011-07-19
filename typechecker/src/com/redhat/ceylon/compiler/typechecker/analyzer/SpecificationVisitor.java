@@ -300,9 +300,14 @@ public class SpecificationVisitor extends AbstractVisitor {
     @Override
     public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
-        if (that.getDeclarationModel()==declaration &&
-                that.getSpecifierExpression()!=null) {
-            specify();
+        if (that.getDeclarationModel()==declaration) {
+            if (that.getSpecifierExpression()!=null) {
+                specify();
+            }
+            else if (declaration.isToplevel()) {
+                that.addError("toplevel function must be specified: " +
+                        declaration.getName());
+            }
         }
     }
     
@@ -351,19 +356,32 @@ public class SpecificationVisitor extends AbstractVisitor {
     @Override
     public void visit(Tree.AttributeDeclaration that) {
         super.visit(that);        
-        if (that.getDeclarationModel()==declaration &&
-                that.getSpecifierOrInitializerExpression()!=null) {
-            if (isVariable()) {
-                if (that.getSpecifierOrInitializerExpression() instanceof Tree.SpecifierExpression) {
-                    that.addError("variable values must be initialized using \":=\": " + that.getIdentifier().getText());
+        if (that.getDeclarationModel()==declaration) {
+            if (that.getSpecifierOrInitializerExpression()!=null) {
+                if (isVariable()) {
+                    if (that.getSpecifierOrInitializerExpression() instanceof Tree.SpecifierExpression) {
+                        that.addError("variable values must be initialized using \":=\": " + 
+                                declaration.getName());
+                    }
+                }
+                else {
+                    if (that.getSpecifierOrInitializerExpression() instanceof Tree.InitializerExpression) {
+                        that.addError("non-variable values must be specified using \"=\": " + 
+                                declaration.getName());
+                    }
+                }
+                specify();
+            }
+            else if (declaration.isToplevel()) {
+                if (isVariable()) {
+                    that.addError("toplevel variable value must be initialized: " +
+                            declaration.getName());
+                }
+                else {
+                    that.addError("toplevel value must be specified: " +
+                            declaration.getName());
                 }
             }
-            else {
-                if (that.getSpecifierOrInitializerExpression() instanceof Tree.InitializerExpression) {
-                    that.addError("non-variable values must be specified using \"=\": " + that.getIdentifier().getText());
-                }
-            }
-            specify();
         }
     }
     
