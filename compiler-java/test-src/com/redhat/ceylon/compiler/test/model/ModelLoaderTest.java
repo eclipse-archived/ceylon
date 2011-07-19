@@ -19,11 +19,15 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.api.JavacTaskImpl;
 import com.sun.tools.javac.util.Context;
@@ -89,6 +93,9 @@ public class ModelLoaderTest extends CompilerTest {
         }else if(validDeclaration instanceof Method){
             Assert.assertTrue("[Method]", modelDeclaration instanceof Method);
             compareMethodDeclarations((Method)validDeclaration, (Method)modelDeclaration);
+        }else if(validDeclaration instanceof Value || validDeclaration instanceof Getter || validDeclaration instanceof Setter){
+            Assert.assertTrue("[Method]", modelDeclaration instanceof Value);
+            compareAttributeDeclarations((MethodOrValue)validDeclaration, (Value)modelDeclaration);
         }
     }
     
@@ -129,6 +136,18 @@ public class ModelLoaderTest extends CompilerTest {
             }
         }
         // now same for return type
+        compareDeclarations(validDeclaration.getType().getDeclaration(), modelDeclaration.getType().getDeclaration());
+    }
+
+    private void compareAttributeDeclarations(MethodOrValue validDeclaration, Value modelDeclaration) {
+        // FIXME Setter.isVariable() should really return true IMO so we can get rid of this
+        if (validDeclaration instanceof Setter) {
+            validDeclaration = ((Setter)validDeclaration).getGetter();
+        }
+        
+        // make sure the flags are the same
+        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [variable]", validDeclaration.isVariable(), modelDeclaration.isVariable());
+        // compare the types
         compareDeclarations(validDeclaration.getType().getDeclaration(), modelDeclaration.getType().getDeclaration());
     }
 

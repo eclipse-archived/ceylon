@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +32,6 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseType;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.util.Util;
@@ -411,6 +410,8 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     }
 
     private void complete(ClassOrInterface klass, ClassSymbol classSymbol) {
+        HashSet<String> variables = new HashSet<String>();
+        
         // FIXME: deal with toplevel methods and attributes
         // do its type parameters first
         setTypeParameters(klass, classSymbol);
@@ -418,7 +419,6 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         // then its methods
         for(Symbol member : classSymbol.getEnclosedElements()){
             // FIXME: deal with multiple constructors
-            // FIXME: could be an attribute
             if(member instanceof MethodSymbol){
                 MethodSymbol methodSymbol = (MethodSymbol) member;
                 
@@ -443,23 +443,50 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                     continue;
                 }
                 
-                // normal method
-                Method method = new Method();
-                
-                method.setShared((methodSymbol.flags() & Flags.PUBLIC) != 0);
-                method.setContainer(klass);
-                method.setName(methodSymbol.name.toString());
-                klass.getMembers().add(method);
-                
-                // type params first
-                setTypeParameters(method, methodSymbol);
-
-                // now its parameters
-                setParameters(method, methodSymbol);
-                // FIXME: deal with type override by annotations
-                method.setType(getType(methodSymbol.getReturnType(), method));
+                if(isGetter(methodSymbol)) {
+                    // simple attribute
+                    Value value = new Value();
+                    
+                    value.setShared((methodSymbol.flags() & Flags.PUBLIC) != 0);
+                    value.setContainer(klass);
+                    value.setName(attributeName(methodSymbol));
+                    klass.getMembers().add(value);
+                    
+                    // FIXME: deal with type override by annotations
+                    value.setType(getType(methodSymbol.getReturnType(), klass));
+                } else if(isSetter(methodSymbol)) {
+                    // We skip setters for now and handle them later
+                    variables.add(attributeName(methodSymbol));
+                } else {
+                    // normal method
+                    Method method = new Method();
+                    
+                    method.setShared((methodSymbol.flags() & Flags.PUBLIC) != 0);
+                    method.setContainer(klass);
+                    method.setName(methodSymbol.name.toString());
+                    klass.getMembers().add(method);
+                    
+                    // type params first
+                    setTypeParameters(method, methodSymbol);
+    
+                    // now its parameters
+                    setParameters(method, methodSymbol);
+                    // FIXME: deal with type override by annotations
+                    method.setType(getType(methodSymbol.getReturnType(), method));
+                }
             }
         }
+        
+        // Now mark all Values for which Setters exist as variable
+        for(String var : variables){
+            Declaration decl = klass.getMember(var);
+            if (decl != null && decl instanceof Value) {
+                ((Value)decl).setVariable(true);
+            } else {
+                log.rawWarning(0, "Has conflicting attribute and method name '" + var + "': "+classSymbol.getQualifiedName());
+            }
+        }
+        
         if(klass instanceof Class && constructorCount == 0){
             // must be a default constructor
             ((Class)klass).setParameterList(new ParameterList());
@@ -468,7 +495,29 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         setExtendedType(klass, classSymbol);
         setSatisfiedTypes(klass, classSymbol);
     }
+
+    private boolean isGetter(MethodSymbol methodSymbol) {
+        String name = methodSymbol.name.toString();
+        boolean matchesGet = name.length() > 3 && name.startsWith("get") && Character.isUpperCase(name.charAt(3));
+        boolean matchesIs = name.length() > 2 && name.startsWith("is") && Character.isUpperCase(name.charAt(2));
+        boolean hasNoParams = methodSymbol.getParameters().size() == 0;
+        boolean hasNonVoidReturn = (methodSymbol.getReturnType().getKind() != TypeKind.VOID);
+        return (matchesGet || matchesIs) && hasNoParams && hasNonVoidReturn;
+    }
     
+    private boolean isSetter(MethodSymbol methodSymbol) {
+        String name = methodSymbol.name.toString();
+        boolean matchesSet = name.length() > 3 && name.startsWith("set") && Character.isUpperCase(name.charAt(3));
+        boolean hasOneParam = methodSymbol.getParameters().size() == 1;
+        boolean hasVoidReturn = (methodSymbol.getReturnType().getKind() == TypeKind.VOID);
+        return matchesSet && hasOneParam && hasVoidReturn;
+    }
+    
+    private String attributeName(MethodSymbol methodSymbol) {
+        String name = methodSymbol.name.toString();
+        return Character.toLowerCase(name.charAt(3)) + name.substring(4);
+    }
+
     private void setExtendedType(ClassOrInterface klass, ClassSymbol classSymbol) {
         // look at its super type
         Type superClass = classSymbol.getSuperclass();
