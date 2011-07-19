@@ -1,13 +1,13 @@
 package com.redhat.ceylon.compiler.test.model.annotations;
 
-class Foo {
+public class Foo {
     
-    Foo() {
+    public Foo() {
     }
 }
-class Bar {
+public class Bar {
     
-    Bar() {
+    public Bar() {
     }
 }
 class UnionTypeInfo {
