@@ -11,7 +11,7 @@ shared interface Category {
                 return false;
             }
         }
-        fail {
+        else {
             return true;
         }
     }
@@ -22,7 +22,7 @@ shared interface Category {
                 return true;
             }
         }
-        fail {
+        else {
             return false;
         }
     }
