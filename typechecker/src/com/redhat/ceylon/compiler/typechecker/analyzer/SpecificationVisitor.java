@@ -470,8 +470,6 @@ public class SpecificationVisitor extends AbstractVisitor {
             super.visit(that);        
             declarationSection = false;
             lastExecutableStatement = null;
-            //TODO: this does not account for the case where the
-            //      initializer exits early via a return statement
             if (isSharedDeclarationUninitialized()) {
                 dd.addError("must be definitely specified by class initializer");
             }
