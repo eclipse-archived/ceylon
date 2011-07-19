@@ -617,7 +617,7 @@ public class SpecificationVisitor extends AbstractVisitor {
         }
     }
     
-    @Override
+    /*@Override
     public void visit(Tree.DoClause that) {
         if (isVariable()) {
             boolean d = beginDeclarationScope();
@@ -631,7 +631,7 @@ public class SpecificationVisitor extends AbstractVisitor {
             endDisabledSpecificationScope(c);
             endDeclarationScope(d);
         }
-    }
+    }*/
 
     @Override
     public void visit(Tree.ForClause that) {

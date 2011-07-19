@@ -58,7 +58,7 @@ tokens {
     TYPE_PARAMETER_LIST;
     TYPE_SPECIFIER;
     WHILE_STATEMENT;
-    DO_WHILE_STATEMENT;
+    //DO_WHILE_STATEMENT;
     SWITCH_STATEMENT;
     SWITCH_CASE_LIST;
     TYPE_CONSTRAINT_LIST;
@@ -1129,8 +1129,8 @@ satisfiesCondition
 controlStructure
     : ifElse 
     | switchCaseElse 
-    | simpleWhile 
-    | doWhile 
+    | whileLoop 
+    //| doWhile 
     | forFail 
     | tryCatchFinally
     ;
@@ -1233,12 +1233,12 @@ containment
     -> ^(SPECIFIER_EXPRESSION expression)
     ;
     
-doWhile
+/*doWhile
     : doBlock ';'
     -> ^(DO_WHILE_STATEMENT doBlock)
-    ;
+    ;*/
 
-simpleWhile
+whileLoop
     : whileBlock
     -> ^(WHILE_STATEMENT whileBlock)
     ;
@@ -1247,9 +1247,9 @@ whileBlock
     : 'while'^ controlCondition block
     ;
 
-doBlock
+/*doBlock
     : 'do'^ block 'while'! controlCondition
-    ;
+    ;*/
 
 tryCatchFinally
     : tryBlock catchBlock* finallyBlock?
@@ -1484,9 +1484,9 @@ CONTINUE
     :   'continue'
     ;
 
-DO_CLAUSE
+/*DO_CLAUSE
     :   'do'
-    ;
+    ;*/
     
 ELSE_CLAUSE
     :   'else'

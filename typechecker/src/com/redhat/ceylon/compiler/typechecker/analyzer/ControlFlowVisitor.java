@@ -276,14 +276,14 @@ public class ControlFlowVisitor extends Visitor {
         endLoop(b);
     }
 
-    @Override
+    /*@Override
     public void visit(Tree.DoClause that) {
         boolean d = beginIndefiniteReturnScope();
         Boolean b = beginLoop();
         super.visit(that);
         definitelyReturns = d || (definitelyReturns && !exitedFromLoop);
         endLoop(b);
-    }
+    }*/
 
     @Override
     public void visit(Tree.IfStatement that) {
