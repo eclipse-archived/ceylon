@@ -22,7 +22,7 @@ shared abstract class Object()
                         return true;
                     }
                 }
-                fail {
+                else {
                     return false;
                 }
             }

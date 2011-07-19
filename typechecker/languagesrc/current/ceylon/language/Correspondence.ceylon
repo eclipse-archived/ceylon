@@ -30,7 +30,7 @@ shared interface Correspondence<in Key, out Item>
                 return false;
             }
         }
-        fail {
+        else {
             return true;
         }
     }
@@ -41,7 +41,7 @@ shared interface Correspondence<in Key, out Item>
                 return true;
             }
         }
-        fail {
+        else {
             return false;
         }
     }
