@@ -453,7 +453,7 @@ interface DefiniteSpecification {
         doSomethingElse();
     }
     
-    void goodMethodWithSpecInDo() {
+    /*void goodMethodWithSpecInDo() {
         do {
             X x;
             doSomething();
@@ -469,7 +469,7 @@ interface DefiniteSpecification {
             @error x = X();
         }
         while (testSomething());
-    }
+    }*/
     
     class E() extends Exception() {}
     

@@ -377,7 +377,7 @@ interface DefiniteAssignment {
         doSomethingElse();
     }
     
-    void goodMethodWithSpecInDo() {
+    /*void goodMethodWithSpecInDo() {
         do {
             variable X x;
             doSomething();
@@ -393,7 +393,7 @@ interface DefiniteAssignment {
             x := X();
         }
         while (testSomething());
-    }
+    }*/
     
     class E() extends Exception() {}
     

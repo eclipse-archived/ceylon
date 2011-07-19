@@ -141,21 +141,21 @@ public class ControlStructures() {
     
     @error while ("hello") {}
     
-    do {
+    /*do {
         Boolean test = false;
     }
-    while (test); //TODO: is this allowed?
+    while (test); //TODO: is this allowed?*/
     
-    variable Boolean test;
+    /*variable Boolean test;
     do {
         test := false;
     }
-    while (test);
+    while (test);*/
 
-    Boolean test2;
+    /*Boolean test2;
     @error do {
         @error test2 = false;
     }
-    while (test2);
+    while (test2);*/
 
 }

@@ -219,7 +219,7 @@ interface DefiniteReturn {
         return;
     }
     
-    void voidMethodWithReturnInDo() {
+    /*void voidMethodWithReturnInDo() {
         do {
             doSomething();
             return;
@@ -234,7 +234,7 @@ interface DefiniteReturn {
         }
         while (testSomething());
         @error doSomethingElse();
-    }
+    }*/
     
     //non-void methods
     
@@ -546,7 +546,7 @@ interface DefiniteReturn {
         return X();
     }
     
-    X methodWithReturnInDo() {
+    /*X methodWithReturnInDo() {
         do {
             doSomething();
             return X();
@@ -561,7 +561,7 @@ interface DefiniteReturn {
         }
         while (testSomething());
         @error doSomethingElse();
-    }
+    }*/
     
     //getters
     
@@ -788,7 +788,7 @@ interface DefiniteReturn {
         return X();
     }
     
-    X getterWithReturnInDo {
+    /*X getterWithReturnInDo {
         do {
             doSomething();
             return X();
@@ -803,7 +803,7 @@ interface DefiniteReturn {
         }
         while (testSomething());
         @error doSomethingElse();
-    }
+    }*/
     
     //setters
     
@@ -1018,7 +1018,7 @@ interface DefiniteReturn {
         return;
     }
     
-    assign getterWithReturnInDo {
+    /*assign getterWithReturnInDo {
         do {
             doSomething();
             return;
@@ -1033,7 +1033,7 @@ interface DefiniteReturn {
         }
         while (testSomething());
         @error doSomethingElse();
-    }
+    }*/
     
     //misc combinations
     
