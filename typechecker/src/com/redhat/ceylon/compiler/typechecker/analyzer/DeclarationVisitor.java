@@ -553,7 +553,12 @@ public class DeclarationVisitor extends Visitor {
             Declaration model) {
         Tree.AnnotationList al = that.getAnnotationList();
         if (hasAnnotation(al, "shared")) {
-            model.setShared(true);
+            if (that instanceof Tree.AttributeSetterDefinition) {
+                that.addError("setters may not be annotated shared");
+            }
+            else {
+                model.setShared(true);
+            }
         }
         if (hasAnnotation(al, "default")) {
             model.setDefault(true);

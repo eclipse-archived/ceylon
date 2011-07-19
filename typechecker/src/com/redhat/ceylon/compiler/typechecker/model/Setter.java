@@ -28,5 +28,15 @@ public class Setter extends MethodOrValue implements Scope {
     public String getQualifiedNameString() {
         return getter.getQualifiedNameString();
     }
-
+    
+    @Override
+    public boolean isShared() {
+        if (getter!=null) {
+            return getter.isShared();
+        }
+        else {
+            return super.isShared();
+        }
+    }
+    
 }
