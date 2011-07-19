@@ -1048,8 +1048,8 @@ else {
                 execution using an enumerated list of values or types,</para>
             </listitem>
             <listitem>
-                <para>the <literal>while</literal> and <literal>do/while</literal> loops&mdash;for 
-                loops which terminate based a boolean condition,</para>
+                <para>the <literal>while</literal> loop&mdash;for loops which terminate based a 
+                boolean condition,</para>
             </listitem>
             <listitem>
                 <para>the <literal>for/fail</literal> loop&mdash;for looping over elements of a 
@@ -1062,7 +1062,7 @@ else {
             </listitem>
         </itemizedlist>
                 
-        <programlisting>ControlStructure: IfElse | SwitchCaseElse | While | DoWhile | ForFail | TryCatchFinally</programlisting>
+        <programlisting>ControlStructure: IfElse | SwitchCaseElse | While | ForFail | TryCatchFinally</programlisting>
        
         <para>Control structures are not considered to be expressions, and therefore do not evaluate
         to a value.</para>
@@ -1759,17 +1759,13 @@ fail {
 
         </section>
         
-        <section id="dowhile">
-            <title><literal>while</literal> and <literal>do/while</literal></title>
+        <section id="while">
+            <title><literal>while</literal></title>
             
             <para>The <literal>while</literal> loop has the form:</para>
             
             <programlisting>While: LoopCondition Block</programlisting>
-
-            <para>The <literal>do/while</literal> loop has the form:</para>
             
-            <programlisting>DoWhile: "do" Block LoopCondition ";"</programlisting>
-
             <para>The loop condition determines when the loop terminates.</para>
             
             <programlisting>LoopCondition: "while" "(" Condition ")"</programlisting>
@@ -1779,15 +1775,12 @@ fail {
 "while" "(" Condition ("," Condition)* ")" 
 ( ";" | ClosedBlock | OpenBlock? "fail" ClosedBlock )</programlisting-->
             
-            <para>When the construct is executed, the block is executed repeatedly, 
-            until the loop condition first evaluates to <literal>false</literal>, 
-            or until a <literal>break</literal>, <literal>return</literal>, 
-            or <literal>throw</literal> directive is executed. In a <literal>while</literal> 
-            loop, the block is executed after the condition is evaluated. In a 
-            <literal>do/while</literal> loop, the second block is executed before it 
-            is evaluated.</para>
+            <para>When the construct is executed, the loop condition is evaluated repeatedly
+            until the first time the condition is not satisfied, or until a <literal>break</literal>, 
+            <literal>return</literal>, or <literal>throw</literal> directive is executed. 
+            Each time the condition is satisfied, the block is executed.</para>
             
-            <comment><para>TODO: does <literal>do/while</literal> need a <literal>fail</literal> 
+            <comment><para>TODO: does <literal>while</literal> need a <literal>fail</literal> 
             block? Python has it, but what is the real usecase?</para></comment>
             
             <para>For example:</para>
@@ -1805,13 +1798,6 @@ while (exists Person p = iter.head) {
     iter.=tail;
 }</programlisting>
                   
-            <programlisting>variable Person person := ....;
-do {
-    log.info(person.name);
-    person.=parent;
-} 
-while (!person.dead);</programlisting>
-
         </section>
 
         <section id="trycatchfinally">
