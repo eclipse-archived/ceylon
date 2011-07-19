@@ -39,4 +39,9 @@ public class Setter extends MethodOrValue implements Scope {
         }
     }
     
+    @Override
+    public boolean isVariable() {
+        return true;
+    }
+    
 }
