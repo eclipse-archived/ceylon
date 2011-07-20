@@ -1743,6 +1743,31 @@ Void goodbye() {
         
         </section>
         
+        <section id="methodforwarddeclaration">
+            <title>Forward declaration of methods</title>
+            
+            <para>The declaration of a method may be separated from the specification
+            of the callable object. If a method declaration does have a specifier, named 
+            arguments, or a block, it is a <emphasis>forward-declared</emphasis>
+            method.</para>
+            
+        <programlisting>Comparison order(Value x, Value y);
+if (reverseOrder) {
+    function reverse(Value x, Value y) { return y&lt;=&gt;x; }
+    order = reverse;
+}
+else {
+    function natural(Value x, Value y) { return x&lt;=&gt;y; }
+    order = natural;
+}</programlisting>
+            
+            <para>Forward-declared methods must explicitly specify a type. They may not 
+            be declared using the keyword <literal>function</literal>.</para>
+        
+            <para>A toplevel attribute may not be forward-declared.</para>
+            
+        </section>
+        
         <section id="methodswithnamedarguments">
             <title>Methods with named argument lists</title>
             
@@ -2217,6 +2242,34 @@ Void goodbye() {
         <programlisting>value names = List&lt;String&gt;();</programlisting>
         <programlisting>variable value count:=0;</programlisting>
                 
+        </section>
+        
+        <section id="attributeforwarddeclaration">
+            <title>Forward declaration of simple attributes</title>
+            
+            <para>The declaration of a simple attribute or local may be separated from the 
+            specification or initialization of its value. If an attribute declaration does
+            have a specifier, initializer, named arguments, or a block, it is a 
+            <emphasis>forward-declared</emphasis> simple attribute or local.</para>
+            
+            <programlisting>String greeting;
+switch (language)
+case ("en") {
+    greeting = "Hello";
+}
+case ("es") {
+    greeting = "Hola";
+}
+else {
+    throw LanguageNotSupported();
+}
+writeLine(greeting);</programlisting>
+            
+            <para>Forward-declared simple attributes must explicitly specify a type. They 
+            may not be declared using the keyword <literal>value</literal>.</para>
+        
+            <para>A toplevel attribute may not be forward-declared.</para>
+            
         </section>
         
         <section id="attributeswithnamedarguments">
