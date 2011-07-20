@@ -159,6 +159,7 @@ public class StatementTest extends CompilerTest {
     }
     
     @Test
+    @Ignore //Might be removed
     public void testLopMethodDoWhile(){
         compareWithJavaSource("loop/MethodDoWhile");
     }
