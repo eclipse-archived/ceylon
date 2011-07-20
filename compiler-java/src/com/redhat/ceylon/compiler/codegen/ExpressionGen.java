@@ -478,7 +478,8 @@ public class ExpressionGen extends GenPart {
         String value = string
                 .getText()
                 .substring(1, string.getText().length() - 1)
-                .replace("\r\n", "\n");
+                .replace("\r\n", "\n")
+                .replace("\r", "\n");
         at(string);
         return ceylonLiteral(value);
     }
