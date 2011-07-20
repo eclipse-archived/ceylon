@@ -40,9 +40,9 @@ class StatementVisitor extends Visitor implements NaturalVisitor {
         append(statementGen.convert(stat));
     }
 
-    public void visit(Tree.DoWhileStatement stat) {
-        append(statementGen.convert(stat));
-    }
+//    public void visit(Tree.DoWhileStatement stat) {
+//        append(statementGen.convert(stat));
+//    }
 
     public void visit(Tree.ForStatement stat) {
         append(statementGen.convert(stat));

@@ -62,17 +62,17 @@ public class StatementGen extends GenPart {
         return res;
     }
 
-    List<JCStatement> convert(Tree.DoWhileStatement stmt) {
-        Name tempForFailVariable = currentForFailVariable;
-        currentForFailVariable = null;
-        
-        Tree.Block thenPart = stmt.getDoClause().getBlock();
-        List<JCStatement> res = convertCondition(stmt.getDoClause().getCondition(), JCTree.DOLOOP, thenPart, null);
-        
-        currentForFailVariable = tempForFailVariable;
-        
-        return res;
-    }
+//    List<JCStatement> convert(Tree.DoWhileStatement stmt) {
+//        Name tempForFailVariable = currentForFailVariable;
+//        currentForFailVariable = null;
+//        
+//        Tree.Block thenPart = stmt.getDoClause().getBlock();
+//        List<JCStatement> res = convertCondition(stmt.getDoClause().getCondition(), JCTree.DOLOOP, thenPart, null);
+//        
+//        currentForFailVariable = tempForFailVariable;
+//        
+//        return res;
+//    }
 
     private List<JCStatement> convertCondition(Tree.Condition cond, int tag, Tree.Block thenPart, Tree.Block elsePart) {
         JCExpression test;
@@ -181,7 +181,7 @@ public class StatementGen extends GenPart {
         Name tempForFailVariable = currentForFailVariable;
         
         List<JCStatement> outer = List.<JCStatement> nil();
-        if (stmt.getFailClause() != null) {
+        if (stmt.getElseClause() != null) {
             // boolean $ceylontmpX = true;
             JCVariableDecl failtest_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(tempName()), make().TypeIdent(TypeTags.BOOLEAN), make().Literal(TypeTags.BOOLEAN, 1));
             outer = outer.append(failtest_decl);
@@ -245,9 +245,9 @@ public class StatementGen extends GenPart {
         // while ($ceylontmpX.getHead() != null)...
         outer = outer.append(at(stmt).WhileLoop(at(stmt).Binary(JCTree.NE, iter_head, make().Literal(TypeTags.BOT, null)), at(stmt).Block(0, while_loop)));
 
-        if (stmt.getFailClause() != null) {
+        if (stmt.getElseClause() != null) {
             // The user-supplied contents of fail block
-            List<JCStatement> failblock = convertStmts(stmt.getFailClause().getBlock().getStatements());
+            List<JCStatement> failblock = convertStmts(stmt.getElseClause().getBlock().getStatements());
             
             // if ($ceylontmpX) ...
             JCIdent failtest_id = at(stmt).Ident(currentForFailVariable);
