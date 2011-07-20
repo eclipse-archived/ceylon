@@ -1,5 +1,5 @@
-class Foo() {}
-class Bar() {}
+shared class Foo() {}
+shared class Bar() {}
 
 class UnionTypeInfo(Foo|Bar param){
  Foo|Bar attr;
