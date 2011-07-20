@@ -6,17 +6,14 @@ class MethodForFail(){
                 for(Integer j in seq){
                     break;
                 }
-                fail {
+                else {
                     return 1;
                 }
                 break;
             }
-            do {
-                break;
-            } while (true);
             break;
         }
-        fail {
+        else {
             return 0;
         }
         return 2;
