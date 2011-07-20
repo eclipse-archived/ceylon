@@ -112,7 +112,7 @@ assert() that (semaphore&identical;s); //assertion never fails</programlisting>
         that an object has been destroyed by the virtual machine (unlike Java, Ceylon
         does not provide object finalizers).</para>
         
-        <para>A a special exception to the rules defined above:</para>
+        <para>As a special exception to the rules defined above:</para>
         
         <itemizedlist>
         <listitem>
