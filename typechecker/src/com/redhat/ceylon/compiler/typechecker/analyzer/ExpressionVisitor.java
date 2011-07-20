@@ -999,7 +999,9 @@ public class ExpressionVisitor extends AbstractVisitor {
             }
             if (type!=null) {
                 Parameter parameter = getMatchingParameter(parameters, arg);
-                inferTypeArg(tp, parameter.getType(), type, inferredTypes);
+                if (parameter!=null) {
+                    inferTypeArg(tp, parameter.getType(), type, inferredTypes);
+                }
             }
         }
         Tree.SequencedArgument sa = args.getSequencedArgument();
