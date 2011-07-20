@@ -1295,19 +1295,19 @@ public class Attr extends JCTree.Visitor {
                 JCIdent id = (JCIdent)tree.meth;
                 Symbol site = rs.findIdent(env, id.name, VAR);
                 if (site.exists()) {
-                    Symbol sym = rs.resolveQualifiedMethod(tree.pos(), env, site.type, names.fromString("run"),
+                    Symbol sym = rs.resolveQualifiedMethod(tree.pos(), env, site.type, site.getSimpleName(),
                             argtypes, typeargtypes);
                     if (sym.exists()) {
-                        tree.meth = make.at(tree).Select(id, names.fromString("run"));
+                        tree.meth = make.at(tree).Select(id, site.getSimpleName());
                     }
                 } else {
                     // Look for a top-level method
                     site = rs.findIdent(env, id.name, TYP);
                     if (site.exists()) {
-                        Symbol sym = rs.resolveQualifiedMethod(tree.pos(), env, site.type, names.fromString("run"),
+                        Symbol sym = rs.resolveQualifiedMethod(tree.pos(), env, site.type, site.getSimpleName(),
                                 argtypes, typeargtypes);
                         if (sym.exists()) {
-                            tree.meth = make.at(tree).Select(id, names.fromString("run"));
+                            tree.meth = make.at(tree).Select(id, site.getSimpleName());
                         }
                     }
                 }
