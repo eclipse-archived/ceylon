@@ -3,8 +3,7 @@ package com.redhat.ceylon.compiler.test.statement.conditional;
 class MethodIfNonEmpty {
     
     public final Natural m(final .java.lang.Object x) {
-        // FIXME: make sure erasure works and make sure there's a reason why x is Object
-        if (x instanceof ceylon.language.Sequence && ((ceylon.language.Sequence)x).isEmpty() == ceylon.language.$true.getTrue()) {
+        if (((.ceylon.language.Container)x).isEmpty() == ceylon.language.$true.getTrue()) {
             return .ceylon.language.Natural.instance(1L);
         }
         return .ceylon.language.Natural.instance(0L);
