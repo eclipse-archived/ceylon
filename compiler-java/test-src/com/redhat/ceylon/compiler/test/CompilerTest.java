@@ -7,30 +7,22 @@ import java.io.Reader;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.regex.Matcher;
 
 import javax.tools.JavaCompiler;
-import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 
 import junit.framework.Assert;
 
 import org.junit.Before;
 
-import com.redhat.ceylon.compiler.codegen.CeylonEnter;
 import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.tools.CeyloncTool;
-import com.redhat.ceylon.compiler.tools.LanguageCompiler;
-import com.sun.source.tree.CompilationUnitTree;
 import com.sun.source.util.TaskEvent;
 import com.sun.source.util.TaskEvent.Kind;
 import com.sun.source.util.TaskListener;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
-import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.List;
-import com.sun.tools.javac.util.Log;
 
 public abstract class CompilerTest {
 
@@ -104,8 +96,9 @@ public abstract class CompilerTest {
 	    Assert.assertTrue(success);
 
 		// now look at what we expected
-		String expectedSrc = normalizeLineEndings(readFile(new File(path+java)));
-		Assert.assertEquals("Source code differs", expectedSrc.trim(), listener.compilerSrc.trim());
+		String expectedSrc = normalizeLineEndings(readFile(new File(path+java))).trim();
+        String compiledSrc = listener.compilerSrc.trim();
+		Assert.assertEquals("Source code differs", expectedSrc, compiledSrc);
 	}
 
 	private String readFile(File file) {

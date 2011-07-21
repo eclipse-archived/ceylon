@@ -30,8 +30,8 @@ class UnionTypeInfo(Foo|Bar param){
 shared class SharedUnionTypeInfo(Foo|Bar param){
 }
 
-Foo|Bar toplevelAttribute;
-shared Foo|Bar sharedToplevelAttribute;
+Foo|Bar toplevelAttribute = Foo();
+shared Foo|Bar sharedToplevelAttribute = Bar();
 
 Foo|Bar toplevelGetter {
  return Foo();
