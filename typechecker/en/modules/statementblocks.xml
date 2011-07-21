@@ -871,8 +871,8 @@ else {
                     block, if any, definitely returns.</para>
                 </listitem>
                 <listitem>
-                    <para>A <literal>for</literal> loop definitely returns if it has a
-                    <literal>fail</literal> block that definitely returns, and there is
+                    <para>A <literal>for</literal> loop definitely returns if it has an
+                    <literal>else</literal> block that definitely returns, and there is
                     no <literal>break</literal> directive in the <literal>for</literal>
                     block.</para>
                 </listitem>
@@ -931,7 +931,7 @@ else {
                 </listitem>
                 <listitem>
                     <para>A <literal>for</literal> loop definitely local, simple attribute, or 
-                    method if it has a <literal>fail</literal> block that definitely initializes
+                    method if it has an <literal>else</literal> block that definitely initializes
                     the local, simple attribute, or method, and there is no <literal>break</literal> 
                     directive in the <literal>for</literal> block.</para>
                 </listitem>
@@ -947,9 +947,9 @@ else {
                 </listitem>
                 -->
                 <listitem>
-                    <para>A <literal>try/catch</literal> exception manager definitely 
-                    initializes a local, simple attribute, or method if the <literal>try</literal> 
-                    block definitely initializes the local, simple attribute, or method and all 
+                    <para>A <literal>try/catch</literal> exception manager definitely initializes 
+                    a local, simple attribute, or method if the <literal>try</literal> block 
+                    definitely initializes the local, simple attribute, or method and all 
                     <literal>catch</literal> blocks definitely initialize the local, simple 
                     attribute, or method or if the <literal>finally</literal> block definitely 
                     initializes the local, simple attribute, or method.</para>
@@ -977,6 +977,11 @@ else {
                     specification statement of the initializer of the containing class.</para>
                 </listitem>
             </itemizedlist>
+            
+            <para>A specification statement for a method or non-<literal>variable</literal> simple 
+            attribute or local may not (indirectly) occur in a <literal>for</literal> or 
+            <literal>while</literal> block unless the declaration itself occurs within the same
+            <literal>for</literal> or <literal>while</literal> block.</para>
 
         </section>
             
@@ -1008,7 +1013,7 @@ else {
                 <listitem>
                     <para>A <literal>for</literal> loop possibly initializes a local, simple attribute, 
                     or method if the <literal>for</literal> block possibly initializes the local, simple 
-                    attribute, or method or if it has a <literal>fail</literal> block that possibly 
+                    attribute, or method or if it has an <literal>else</literal> block that possibly 
                     initializes the local, simple attribute, or method.</para>
                 </listitem>
                 <listitem>
@@ -1032,15 +1037,22 @@ else {
             <itemizedlist>
                 <listitem>
                     <para>it is not possibly initialized by the sequence of statements from its declaration 
-                    to the given statement, and either</para>
+                    to the given statement,</para>
                 </listitem>
                 <listitem>
-                    <para>it is a <literal>variable</literal> local or simple attribute, or</para>
+                    <para>the statement does not (indirectly) occur in the <literal>else</literal> block of 
+                    a <literal>for</literal> loop with a <literal>for</literal> block that possibly 
+                    initializes it,</para>
                 </listitem>
                 <listitem>
-                    <para>if the given statement (indirectly) occurs in a loop body (a <literal>for</literal>, 
-                    <literal>do</literal>, or <literal>while</literal> block) then the declaration of the 
-                    local or simple attribute also (indirectly) occurs in the loop body.</para>
+                    <para>the statement does not (indirectly) occur in a <literal>catch</literal> block 
+                    of a <literal>try/catch</literal> exception manager with a <literal>for</literal> block 
+                    that possibly initializes it, and</para>
+                </listitem>
+                <listitem>
+                    <para>the statement does not (indirectly) occur in the <literal>finally</literal> block 
+                    of a <literal>try/catch</literal> exception manager with a <literal>for</literal> block 
+                    or <literal>catch</literal> block that possibly initializes it.</para>
                 </listitem>
             </itemizedlist>
                         
