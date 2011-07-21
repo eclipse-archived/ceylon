@@ -94,7 +94,7 @@ public class ModelLoaderTest extends CompilerTest {
             Assert.assertTrue("[Method]", modelDeclaration instanceof Method);
             compareMethodDeclarations((Method)validDeclaration, (Method)modelDeclaration);
         }else if(validDeclaration instanceof Value || validDeclaration instanceof Getter || validDeclaration instanceof Setter){
-            Assert.assertTrue("[Method]", modelDeclaration instanceof Value);
+            Assert.assertTrue("[Attribute]", modelDeclaration instanceof Value);
             compareAttributeDeclarations((MethodOrValue)validDeclaration, (Value)modelDeclaration);
         }
     }
@@ -164,5 +164,10 @@ public class ModelLoaderTest extends CompilerTest {
     @Test
     public void loadClassWithAttributes(){
         verifyClassLoading("KlassWithAttributes.ceylon");
+    }
+
+    @Test
+    public void loadToplevelMethods(){
+        verifyClassLoading("ToplevelMethods.ceylon");
     }
 }

@@ -18,7 +18,11 @@ public class Util {
     public static String getSetterName(String property){
         return "set"+capitalize(strip(property));
     }
-
+    
+    public static String getAttributeName(String getterName) {
+        return Character.toLowerCase(getterName.charAt(3)) + getterName.substring(4);
+    }
+    
     // FIXME: add this to Declaration?
     public static boolean isClassAttribute(Declaration decl) {
         return (decl.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Class)
