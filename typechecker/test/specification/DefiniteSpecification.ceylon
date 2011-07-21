@@ -408,8 +408,9 @@ interface DefiniteSpecification {
             y = X();
         }
         doNothing();
+        use (y);
     }
-    
+        
     void badMethodWithSpecInFail() {
         for (X x in {X()}) {
             X y;
@@ -426,6 +427,7 @@ interface DefiniteSpecification {
         X y;
         for (X x in {X()}) {
             doSomething();
+            break;
         }
         else {
             doSomethingElse();

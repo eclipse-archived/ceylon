@@ -332,6 +332,21 @@ interface DefiniteAssignment {
             y := X();
         }
         doNothing();
+        use (y);
+    }
+    
+    void goodMethodWithSpecInFail2() {
+        variable X y;
+        for (X x in {X()}) {
+            doSomething();
+            y := X();
+        }
+        else {
+            doSomethingElse();
+            y := X();
+        }
+        doNothing();
+        use (y);
     }
     
     void badMethodWithSpecInFail() {
@@ -346,10 +361,11 @@ interface DefiniteAssignment {
         doNothing();
     }
     
-    void badMethodWithSpecInFail2() {
+    void badMethodWithSpecInFail3() {
         variable X y;
         for (X x in {X()}) {
             doSomething();
+            break;
         }
         else {
             doSomethingElse();
@@ -375,6 +391,18 @@ interface DefiniteAssignment {
             x := X();
         }
         doSomethingElse();
+        @error use (x);
+    }
+    
+    void goodMethodWithSpecInWhile2() {
+        variable X x;
+        while (testSomething()) {
+            doSomething();
+            x := X();
+        }
+        x := X();
+        doSomethingElse();
+        use (x);
     }
     
     /*void goodMethodWithSpecInDo() {
