@@ -168,6 +168,7 @@ public class Symtab {
     public final Type ceylonIteratorType;
     public final Type ceylonRangeType;
     public final Type ceylonEntryType;
+    public final Type ceylonContainerType;
     public final Type ceylonAtCeylonType;
     public final Type ceylonAtNameType;
     public final Type ceylonAtTypeInfoType;
@@ -488,6 +489,7 @@ public class Symtab {
         ceylonIteratorType = enterClass("ceylon.language.Iterator");
         ceylonRangeType = enterClass("ceylon.language.Range");
         ceylonEntryType = enterClass("ceylon.language.Entry");
+        ceylonContainerType = enterClass("ceylon.language.Container");
         ceylonAtCeylonType = enterClass("com.redhat.ceylon.compiler.metadata.java.Ceylon");
         ceylonAtNameType = enterClass("com.redhat.ceylon.compiler.metadata.java.Name");
         ceylonAtTypeInfoType = enterClass("com.redhat.ceylon.compiler.metadata.java.TypeInfo");

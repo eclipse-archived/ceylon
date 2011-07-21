@@ -102,7 +102,7 @@ public class StatementGen extends GenPart {
                 expr = gen.expressionGen.convertExpression(nonempty.getVariable().getSpecifierExpression().getExpression());
             }
 
-            test = make().Apply(List.<JCTree.JCExpression>nil(), gen.makeSelect(expr, "isEmpty"), List.<JCTree.JCExpression>nil());
+            test = make().Apply(List.<JCTree.JCExpression>nil(), gen.makeSelect(make().TypeCast(syms().ceylonContainerType, expr), "isEmpty"), List.<JCTree.JCExpression>nil());
             test = makeBooleanTest(test, true);
         } else if (cond instanceof Tree.IsCondition) {
             Tree.IsCondition isExpr = (Tree.IsCondition) cond;
