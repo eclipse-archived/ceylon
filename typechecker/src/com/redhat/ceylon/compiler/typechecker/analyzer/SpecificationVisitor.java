@@ -619,18 +619,22 @@ public class SpecificationVisitor extends AbstractVisitor {
     
     @Override
     public void visit(Tree.WhileStatement that) {
+        boolean d = beginDeclarationScope();
+        SpecificationState as = beginSpecificationScope();
         if (isVariable()) {
-            boolean d = beginDeclarationScope();
             that.getWhileClause().visit(this);
-            endDeclarationScope(d);
         }
         else {
             boolean c = beginDisabledSpecificationScope();
-            boolean d = beginDeclarationScope();
             that.getWhileClause().visit(this);
             endDisabledSpecificationScope(c);
-            endDeclarationScope(d);
         }
+        boolean possiblyAssignedByWhileClause = specified.possibly;
+        
+        endDeclarationScope(d);
+        endSpecificationScope(as);
+        
+        specified.possibly = specified.possibly || possiblyAssignedByWhileClause;
     }
     
     /*@Override
@@ -651,27 +655,42 @@ public class SpecificationVisitor extends AbstractVisitor {
 
     @Override
     public void visit(Tree.ForStatement that) {
+        boolean d = beginDeclarationScope();
+        SpecificationState as = beginSpecificationScope();
         if (that.getForClause()!=null) {
             if (isVariable()) {
-                boolean d = beginDeclarationScope();
                 that.getForClause().visit(this);
-                endDeclarationScope(d);
             }
             else {
                 boolean c = beginDisabledSpecificationScope();
-                boolean d = beginDeclarationScope();        
                 that.getForClause().visit(this);
                 endDisabledSpecificationScope(c);
-                endDeclarationScope(d);
             }
         }
+        boolean possiblyExitedFromForClause = specified.exited;
+        boolean possiblyAssignedByForClause = specified.possibly;
+
+        endDeclarationScope(d);
+        endSpecificationScope(as);
+
+        boolean definitelyAssignedByElseClause;
+        boolean possiblyAssignedByElseClause;
         if (that.getElseClause()!=null) {
-            boolean o = beginIndefiniteSpecificationScope();
-            boolean d = beginDeclarationScope();
+            d = beginDeclarationScope();
+            as = beginSpecificationScope();
             that.getElseClause().visit(this);
-            endIndefiniteSpecificationScope(o);
+            definitelyAssignedByElseClause = specified.definitely || specified.exited;
+            possiblyAssignedByElseClause = specified.possibly;
             endDeclarationScope(d);
+            endSpecificationScope(as);
         }
+        else {
+            definitelyAssignedByElseClause = false;
+            possiblyAssignedByElseClause = false;
+        }
+        
+        specified.definitely = specified.definitely || (!possiblyExitedFromForClause && definitelyAssignedByElseClause);
+        specified.possibly = specified.possibly || possiblyAssignedByForClause || possiblyAssignedByElseClause;
     }
       
 }
