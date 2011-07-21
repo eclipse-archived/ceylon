@@ -17,12 +17,12 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
 	@Override
 	public Natural getLastIndex() {
-		return (getEmpty() == $true.getTrue()) ? null : Natural.instance(array.length - first - 1);
+		return (isEmpty() == $true.getTrue()) ? null : Natural.instance(array.length - first - 1);
 	}
 
 	@Override
 	public Element getFirst() {
-		return (getEmpty() == $true.getTrue()) ? null : array[(int) first];
+		return (isEmpty() == $true.getTrue()) ? null : array[(int) first];
 	}
 
 	@Override
@@ -31,18 +31,18 @@ public class ArraySequence<Element> implements Sequence<Element> {
 	}
 
 	@Override
-	public Boolean getEmpty() {
+	public Boolean isEmpty() {
 		return Boolean.instance(array.length <= first);
 	}
 
 	@Override
 	public Natural getSize() {
-		return Natural.instance((getEmpty() == $true.getTrue()) ? 0 : array.length - first);
+		return Natural.instance((isEmpty() == $true.getTrue()) ? 0 : array.length - first);
 	}
 
 	@Override
 	public Element getLast() {
-		return (getEmpty() == $true.getTrue()) ? null : array[array.length - 1];
+		return (isEmpty() == $true.getTrue()) ? null : array[array.length - 1];
 	}
 
 	@Override

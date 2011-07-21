@@ -4,7 +4,7 @@ public interface Empty extends Correspondence<Natural, Nothing>,
     Iterable<Nothing> , Sized{
     public Natural getSize(); 
         //return 0; 
-    public Boolean getEmpty();
+    public Boolean isEmpty();
         //return true; 
     public Iterator<Nothing> iterator();
         //return emptyIterator;
