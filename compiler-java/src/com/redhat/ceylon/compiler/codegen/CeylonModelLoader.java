@@ -168,20 +168,15 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         Declaration decl;
         if(isCeylonToplevelAttribute(classSymbol)){
             decl = makeToplevelAttribute(classSymbol);
-            decl.setName(unquote(name));
+            decl.setName(Util.strip(name));
+        }else if(isCeylonToplevelMethod(classSymbol)){
+            decl = makeToplevelMethod(classSymbol);
+            decl.setName(Util.strip(name));
         }else{
             decl = makeLazyClassOrInterface(classSymbol);
             decl.setName(name);
         }
         return decl;
-    }
-
-    private String unquote(String name) {
-        if (name.startsWith("$")) {
-            return name.substring(1);
-        }
-
-        return name;
     }
 
     private boolean isCeylonToplevelAttribute(ClassSymbol classSymbol) {
@@ -194,6 +189,15 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         return value;
     }
 
+    private boolean isCeylonToplevelMethod(ClassSymbol classSymbol) {
+        return classSymbol.attribute(symtab.ceylonAtMethodType.tsym) != null;
+    }
+
+    private Declaration makeToplevelMethod(ClassSymbol classSymbol) {
+        LazyMethod method = new LazyMethod(classSymbol.name.toString(), classSymbol, this);
+        return method;
+    }
+    
     private ClassOrInterface makeLazyClassOrInterface(ClassSymbol classSymbol) {
         if(!classSymbol.isInterface()){
             Class klass = new LazyClass(classSymbol, this);
@@ -414,6 +418,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             // FIXME: deal with multiple constructors
             if(member instanceof MethodSymbol){
                 MethodSymbol methodSymbol = (MethodSymbol) member;
+                String methodName = methodSymbol.name.toString();
                 
                 if(methodSymbol.isStatic())
                     continue;
@@ -442,21 +447,21 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                     
                     value.setShared((methodSymbol.flags() & Flags.PUBLIC) != 0);
                     value.setContainer(klass);
-                    value.setName(attributeName(methodSymbol));
+                    value.setName(Util.getAttributeName(methodName));
                     klass.getMembers().add(value);
                     
                     // FIXME: deal with type override by annotations
                     value.setType(getType(methodSymbol.getReturnType(), klass));
                 } else if(isSetter(methodSymbol)) {
                     // We skip setters for now and handle them later
-                    variables.add(attributeName(methodSymbol));
+                    variables.add(Util.getAttributeName(methodName));
                 } else {
                     // normal method
                     Method method = new Method();
                     
                     method.setShared((methodSymbol.flags() & Flags.PUBLIC) != 0);
                     method.setContainer(klass);
-                    method.setName(methodSymbol.name.toString());
+                    method.setName(methodName);
                     klass.getMembers().add(method);
                     
                     // type params first
@@ -506,11 +511,6 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         return matchesSet && hasOneParam && hasVoidReturn;
     }
     
-    private String attributeName(MethodSymbol methodSymbol) {
-        String name = methodSymbol.name.toString();
-        return Character.toLowerCase(name.charAt(3)) + name.substring(4);
-    }
-
     private void setExtendedType(ClassOrInterface klass, ClassSymbol classSymbol) {
         // look at its super type
         Type superClass = classSymbol.getSuperclass();
@@ -563,23 +563,54 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
 
     @Override
     public void complete(LazyValue value) {
-        Type type = null;
-        for(Symbol member : value.classSymbol.members().getElements()){
+        MethodSymbol meth = null;
+         for(Symbol member : value.classSymbol.members().getElements()){
+             if(member instanceof MethodSymbol){
+                MethodSymbol m = (MethodSymbol) member;
+                if(m.name.toString().equals(Util.getGetterName(value.getName()))
+                        && m.isStatic()
+                        && m.params().size() == 0){
+                    meth = m;
+                     break;
+                 }
+             }
+         }
+        if(meth == null || meth.getReturnType() == null)
+            throw new RuntimeException("Failed to find toplevel attribute "+value.getName());
+        
+        value.setShared((meth.flags() & Flags.PUBLIC) != 0);
+        
+        // FIXME: deal with type override by annotations
+        value.setType(getType(meth.getReturnType(), null));
+    }
+
+    @Override
+    public void complete(LazyMethod method) {
+        MethodSymbol meth = null;
+        for(Symbol member : method.classSymbol.members().getElements()){
             if(member instanceof MethodSymbol){
-                MethodSymbol method = (MethodSymbol) member;
-                if(method.name.toString().equals(Util.getGetterName(value.getName()))
-                        && method.isStatic()
-                        && method.params().size() == 0){
-                    type = method.getReturnType();
+                MethodSymbol m = (MethodSymbol) member;
+                if(m.name.toString().equals(method.getName())){
+                    meth = m;
                     break;
                 }
             }
         }
-        if(type == null)
-            throw new RuntimeException("Failed to find type for toplevel attribute "+value.getName());
-        value.setType(getType(type, null));
-    }
+        if(meth == null || meth.getReturnType() == null)
+            throw new RuntimeException("Failed to find toplevel method "+method.getName());
+        
+        method.setShared((meth.flags() & Flags.PUBLIC) != 0);
+        method.setName(meth.name.toString());
+        
+        // type params first
+        setTypeParameters(method, meth);
 
+        // now its parameters
+        setParameters(method, meth);
+        // FIXME: deal with type override by annotations
+        method.setType(getType(meth.getReturnType(), method));
+     }
+    
     //
     // Utils for loading type info from the model
     

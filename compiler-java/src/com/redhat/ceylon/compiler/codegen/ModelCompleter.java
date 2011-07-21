@@ -7,4 +7,6 @@ public interface ModelCompleter {
     void complete(LazyInterface lazyInterface);
 
     void complete(LazyValue lazyValue);
+    
+    void complete(LazyMethod lazyMethod);
 }
