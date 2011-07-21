@@ -1088,25 +1088,37 @@ TypeConstraints?
     <section id="abstractandformalclasses">
         <title>Abstract, formal, and default classes</title>
         
-        <para>A class may contain members annotated <literal>formal</literal>. Then
-        the class must be either:</para>
+        <para>A toplevel or nested class may be annotated <literal>abstract</literal>
+        and is called an <literal>abstract</literal> class.</para>
+                
+        <para>If a class annotated <literal>shared</literal> is a member of a containing 
+        class or interface, then the class may be annotated <literal>formal</literal>
+        and is called a <literal>formal</literal> member class, or, sometimes, an 
+        <emphasis>abstract member class</emphasis>.</para>
         
-        <itemizedlist>
-            <listitem>
-                <para>a toplevel or nested class annotated <literal>abstract</literal>,</para>
-            </listitem>
-            <listitem>
-                <para>a member class annotated <literal>formal</literal>.</para>
-            </listitem>
-        </itemizedlist>
+        <para>An <literal>abstract</literal> class or <literal>formal</literal> member
+        class may have <literal>formal</literal> members.</para>
         
-        <para>If the class is annotated <literal>formal</literal>, it is called a 
-        <literal>formal</literal> member class, or, sometimes, an <emphasis>abstract 
-        member class</emphasis>.</para>
+        <para>An <literal>abstract</literal> class may not be instantiated.</para>
         
-        <para>If the class is annotated <literal>abstract</literal>, it is called an
-        <literal>abstract</literal> class, or an <emphasis>abstract nested class</emphasis>.</para>
+        <para>A <literal>formal</literal> member class may be instantiated.</para>
         
+        <para>A class which is not annotated <literal>formal</literal> or <literal>abstract</literal>
+        is called a <emphasis>concrete</emphasis> class.</para>
+                
+        <para>A concrete class may not have <literal>formal</literal> members.</para>
+        
+        <para>If a concrete class annotated <literal>shared</literal> is a member of a 
+        containing class or interface, then the class may be annotated 
+        <literal>default</literal> and is called a <literal>default</literal> member
+        class.</para>
+        
+        <para>A toplevel class may not be annotated <literal>formal</literal> or 
+        <literal>default</literal>.</para>
+        
+        <para>A block local class may not be annotated <literal>formal</literal> or 
+        <literal>default</literal>.</para>
+
         <!-- 
         <para>Alternatively, a class may omit a class body entirely. Then the class must 
         be a member class and must be annotated <literal>formal</literal>.</para>
@@ -1121,20 +1133,11 @@ TypeConstraints?
         level.</para></comment>
         -->
         
-        <para>A class annotated <literal>abstract</literal> may not be instantiated.</para>
-        
-        <para>A member class annotated <literal>formal</literal> may be instantiated.</para>
-        
         <!--
         <para>A member of an <literal>abstract</literal> or <literal>formal</literal> class 
         may not be annotated <literal>definite</literal>.</para>
         -->
-        
-        <para>A class which is not annotated <literal>abstract</literal> or 
-        <literal>formal</literal> is called a <emphasis>concrete</emphasis> class.</para>
-        
-        <para>A concrete member class may be annotated <literal>default</literal>.</para>
-
+                
     </section>
             
     <section id="refiningmemberclasses">
@@ -1748,8 +1751,8 @@ Void goodbye() {
             
             <para>The declaration of a method may be separated from the specification
             of the callable object. If a method declaration does have a specifier, named 
-            arguments, or a block, it is a <emphasis>forward-declared</emphasis>
-            method.</para>
+            arguments, or a block, and is not annotated <literal>formal</literal>, it is 
+            a <emphasis>forward-declared</emphasis> method.</para>
             
         <programlisting>Comparison order(Value x, Value y);
 if (reverseOrder) {
@@ -1761,8 +1764,8 @@ else {
     order = natural;
 }</programlisting>
             
-            <para>Forward-declared methods must explicitly specify a type. They may not 
-            be declared using the keyword <literal>function</literal>.</para>
+            <para>Every forward-declared method must explicitly specify a type. It may 
+            not be declared using the keyword <literal>function</literal>.</para>
         
             <para>A toplevel attribute may not be forward-declared.</para>
             
@@ -1959,49 +1962,56 @@ else {
        <section id="formalmethods">
             <title>Formal and default methods</title>
             
-            <para>If there is no method implementation in a method declaration, then
+            <para>If a method declaration does have a specifier, named arguments, or a 
+            block, and is annotated <literal>shared</literal>, and is a member of 
             either:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>the implementation of the method must be specified later in 
-                    the body containing the method declaration,</para>
+                    <para>an interface, or</para>
                 </listitem>
                 <listitem>
-                    <para>the method must be a member of an interface, and the method
-                    must be annotated <literal>formal</literal>, or</para>
-                </listitem>
-                <listitem>
-                    <para>the method must be a member of a class, the method must be 
-                    annotated <literal>formal</literal>, and the class that declares 
-                    the method must be annotated <literal>formal</literal> or
-                    <literal>abstract</literal>.</para>
+                    <para>a class annotated <literal>abstract</literal> or 
+                    <literal>formal</literal>,</para>
                 </listitem>
             </itemizedlist> 
             
-            <para>If the method is annotated <literal>formal</literal>, it is called a 
-            <literal>formal</literal> method, or, sometimes, an <emphasis>abstract 
-            method</emphasis>.</para>
+            <para>then the method declaration may be annotated <literal>formal</literal>, 
+            and is called a <literal>formal</literal> method, or, sometimes, an 
+            <emphasis>abstract method</emphasis>.</para>
             
-            <para>A method annotated <literal>formal</literal> may not specify an
-            implementation (a block, specifier, or named argument list).</para>
-        
             <programlisting>shared formal Item? get(Key key);</programlisting>
-            
-            <para>A toplevel method may not be annotated <literal>formal</literal> and 
-            must have a method implementation (a block of code, or a reference to another 
-            method).</para>
-            
-            <para>A block local method may not be annotated <literal>formal</literal> 
-            and must have a method implementation.</para>
 
-            <para>A method which is not annotated <literal>formal</literal> is called a 
-            <emphasis>concrete</emphasis> method.</para>
+            <para>A method which is not annotated <literal>formal</literal> is called 
+            a <emphasis>concrete</emphasis> method.</para>
         
-            <para>A concrete member method may be annotated <literal>default</literal>.
-            <!-- or <literal>definite</literal> <emphasis>(Note that <literal>definite</literal> is 
-            a proposed feature for a future version of the language.)</emphasis--></para>            
+            <para>If a concrete method is annotated <literal>shared</literal>, and is 
+            a member of a class or interface, then it may be annotated <literal>default</literal>
+            and is called a <literal>default</literal> method.
+            <!--or <literal>definite</literal> <emphasis>(Note that <literal>definite</literal> is a 
+            proposed feature for a future version of the language.)</emphasis> --></para>
             
+            <programlisting>shared default void writeLine(String line) {
+    write(line);
+    write("\n");
+}</programlisting>
+
+            <para>A method annotated <literal>formal</literal> may not specify an
+            implementation (a specifier, named arguments, or a block).</para>
+        
+            <para>A method annotated <literal>default</literal> may specify an
+            implementation (a specifier, initializer, named arguments, or a block), or
+            may be forward-declared.</para>
+        
+            <para>Every <literal>formal</literal> method must explicitly specify a type. 
+            It may not be declared using the keyword <literal>function</literal>.</para>
+        
+            <para>A toplevel method may not be annotated <literal>formal</literal> or
+            <literal>default</literal>.</para>
+
+            <para>A block local method may not be annotated <literal>formal</literal> or
+            <literal>default</literal>.</para>
+                  
         </section>
                 
         <section id="refiningmethods">
@@ -2249,8 +2259,9 @@ else {
             
             <para>The declaration of a simple attribute or local may be separated from the 
             specification or initialization of its value. If an attribute declaration does
-            have a specifier, initializer, named arguments, or a block, it is a 
-            <emphasis>forward-declared</emphasis> simple attribute or local.</para>
+            have a specifier, initializer, named arguments, or a block, and if it is not
+            annotated <literal>formal</literal>, it is a <emphasis>forward-declared</emphasis> 
+            simple attribute or local.</para>
             
             <programlisting>String greeting;
 switch (language)
@@ -2265,8 +2276,8 @@ else {
 }
 writeLine(greeting);</programlisting>
             
-            <para>Forward-declared simple attributes must explicitly specify a type. They 
-            may not be declared using the keyword <literal>value</literal>.</para>
+            <para>Every forward-declared simple attribute must explicitly specify a type.
+            It may not be declared using the keyword <literal>value</literal>.</para>
         
             <para>A toplevel attribute may not be forward-declared.</para>
             
@@ -2354,8 +2365,8 @@ writeLine(greeting);</programlisting>
         <section id="attributesetters">
             <title>Attribute setters</title>
                     
-            <para>An attribute setter is a callable block of code that accepts a
-            single value and does not return a value.</para>
+            <para>An attribute setter is a callable block of code that accepts a single 
+            value and does not return a value.</para>
             
             <programlisting>AttributeSetter: "assign" MemberName Block</programlisting>
 
@@ -2366,10 +2377,10 @@ writeLine(greeting);</programlisting>
             <programlisting>shared String name { return join(firstName, lastName); }
 shared assign name { firstName := first(name); lastName := last(name); }</programlisting>
                         
-            <comment><para>TODO: can you really have a <literal>shared</literal> getter
-            with a non-<literal>shared</literal>? Doesn't seem like the most useful 
-            construct. Why not just have the setter inherit the visibility of the 
-            getter.</para></comment>
+            <para>A setter may not be annotated <literal>shared</literal>, 
+            <literal>default</literal> or <literal>actual</literal>. The visibility 
+            and refinement modifiers of an attribute with a setter are specified by 
+            annotating the matching getter.</para>
             
             <comment><para>TODO: should we require that the corresponding getter be 
             annotated <literal>variable</literal>?</para></comment>
@@ -2385,49 +2396,54 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
         <section id="formalattributes">
             <title>Formal and default attributes</title>
             
-            <para>If there is no specifier, initializer, or getter implementation, then
-            either:</para>
+            <para>If an attribute declaration does have a specifier, initializer, named 
+            arguments, or a block, and is annotated <literal>shared</literal>, and is a 
+            member of either:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>the value or implementation of the attribute must be specified 
-                    later in the body containing the attribute declaration,</para>
+                    <para>an interface, or</para>
                 </listitem>
                 <listitem>
-                    <para>the attribute must be a member of an interface, and the 
-                    attribute must be annotated <literal>formal</literal>, or</para>
-                </listitem>
-                <listitem>
-                    <para>the attribute must be a member of a class, the attribute must 
-                    be annotated <literal>formal</literal>, and the class that declares 
-                    the attribute must be annotated <literal>formal</literal> or
-                    <literal>abstract</literal>.</para>
+                    <para>a class annotated <literal>abstract</literal> or 
+                    <literal>formal</literal>,</para>
                 </listitem>
             </itemizedlist> 
             
-            <para>If the attribute is annotated <literal>formal</literal>, it is called 
-            a <literal>formal</literal> attribute, or, sometimes, an <emphasis>abstract 
-            attribute</emphasis>.</para>
+            <para>then the attribute declaration may be annotated <literal>formal</literal>, 
+            and is called a <literal>formal</literal> attribute, or, sometimes, an 
+            <emphasis>abstract attribute</emphasis>.</para>
             
-            <para>An attribute annotated <literal>formal</literal> may not specify an
-            implementation (a specifier, initializer, or getter implementation). Nor
-            may there be a setter for a formal attribute.</para>
-        
             <programlisting>shared formal variable String firstName;</programlisting>
-
-            <para>A toplevel attribute declaration may not be annotated <literal>formal</literal> 
-            and must have a specifier or getter implementation.</para>
-
-            <para>A block local attribute may not be annotated <literal>formal</literal> 
-            and must have a specifier or getter implementation.</para>
 
             <para>An attribute which is not annotated <literal>formal</literal> is called 
             a <emphasis>concrete</emphasis> attribute.</para>
         
-            <para>A concrete member attribute may be annotated <literal>default</literal>.
+            <para>If a concrete attribute is annotated <literal>shared</literal>, and is 
+            a member of a class or interface, then it may be annotated <literal>default</literal>
+            and is called a <literal>default</literal> attribute.
             <!--or <literal>definite</literal> <emphasis>(Note that <literal>definite</literal> is a 
             proposed feature for a future version of the language.)</emphasis> --></para>
             
+            <programlisting>shared default String greeting = "Hello";</programlisting>
+
+            <para>An attribute annotated <literal>formal</literal> may not specify an
+            implementation (a specifier, initializer, named arguments, or a block). Nor
+            may there be a setter for a formal attribute.</para>
+        
+            <para>An attribute annotated <literal>default</literal> may specify an
+            implementation (a specifier, initializer, named arguments, or a block), or
+            may be forward-declared.</para>
+        
+            <para>Every <literal>formal</literal> attribute must explicitly specify a type. 
+            It may not be declared using the keyword <literal>function</literal>.</para>
+        
+            <para>A toplevel attribute may not be annotated <literal>formal</literal> or
+            <literal>default</literal>.</para>
+
+            <para>A block local attribute may not be annotated <literal>formal</literal> or
+            <literal>default</literal>.</para>
+
         </section>
                 
         <section id="refiningattributes">
