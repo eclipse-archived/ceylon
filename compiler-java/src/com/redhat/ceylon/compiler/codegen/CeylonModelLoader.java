@@ -64,9 +64,6 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     private com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext;
     private TypeParser typeParser = new TypeParser();
     private Log log;
-
-    private final Name metadataJavaAttribute; // com.redhat.ceylon.compiler.metadata.java.Attribute
-
     
     public static CeylonModelLoader instance(Context context) {
         CeylonModelLoader instance = context.get(CeylonModelLoader.class);
@@ -84,8 +81,6 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         names = Name.Table.instance(context);
         reader = ClassReader.instance(context);
         log = Log.instance(context);
-
-        metadataJavaAttribute = names.fromString("com.redhat.ceylon.compiler.metadata.java.Attribute");
     }
 
     public void loadRequiredModules(com.sun.tools.javac.util.List<JCCompilationUnit> trees) {
@@ -190,9 +185,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     }
 
     private boolean isCeylonToplevelAttribute(ClassSymbol classSymbol) {
-        Symbol attributeSymbol = symtab.classes.get(metadataJavaAttribute);
-        // symbol will be null if not yet encountered => the class cannot be annotated with it anyway
-        return attributeSymbol != null && classSymbol.attribute(attributeSymbol) != null;
+        return classSymbol.attribute(symtab.ceylonAtAttributeType.tsym) != null;
     }
 
     private Declaration makeToplevelAttribute(ClassSymbol classSymbol) {
