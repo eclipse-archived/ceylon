@@ -1019,6 +1019,27 @@ shared interface ElementwiseEquality
         
         <programlisting>CaseType: MemberName | Type</programlisting>
         
+        <para>The compiler is able to infer certain subtyping relationships from the 
+        types listed in the <literal>of</literal> clause.</para>
+        
+        <itemizedlist>
+        <listitem>
+            <para>If every case of a type <literal>X</literal> is a suptype of a type 
+            <literal>Y</literal> then <literal>X</literal> is a subtype of <literal>Y</literal>.</para>
+        </listitem>
+        <listitem>  
+            <para>If every case of a parameterized type <literal>X&lt;T&gt;</literal> 
+            is a subtype of a type <literal>Y</literal> then <literal>X&lt;B&gt;</literal> 
+            is a subtype of <literal>Y</literal> for any type <literal>B</literal>.</para>
+        </listitem>
+        <listitem>  
+            <para>If every case of a parameterized type <literal>X&lt;T&gt;</literal> 
+            is a subtype of a produced type <literal>Y&lt;T&gt;</literal> then 
+            <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y&lt;B&gt;</literal> 
+            for any type <literal>B</literal>.</para>
+        </listitem>
+        </itemizedlist>
+        
         <para>If there is exactly one case, and it is a type parameter, then:</para> 
         
         <itemizedlist>
