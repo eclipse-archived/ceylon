@@ -137,11 +137,6 @@ public class ModelLoaderTest extends CompilerTest {
     }
 
     private void compareAttributeDeclarations(MethodOrValue validDeclaration, Value modelDeclaration) {
-        // FIXME Setter.isVariable() should really return true IMO so we can get rid of this
-        if (validDeclaration instanceof Setter) {
-            validDeclaration = ((Setter)validDeclaration).getGetter();
-        }
-        
         // make sure the flags are the same
         Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [variable]", validDeclaration.isVariable(), modelDeclaration.isVariable());
         // compare the types
