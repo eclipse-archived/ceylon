@@ -137,6 +137,7 @@ public class DeclarationVisitor extends Visitor {
             final Declaration model) {
         if (model.getName()!=null) {
             if (model instanceof Setter) {
+                Setter setter = (Setter) model;
                 //a setter must have a matching getter
                 Declaration member = model.getContainer().getDirectMember( model.getName() );
                 if (member==null) {
@@ -147,7 +148,8 @@ public class DeclarationVisitor extends Visitor {
                 }
                 else {
                     Getter getter = (Getter) member;
-                    ((Setter) model).setGetter(getter);
+                    setter.setGetter(getter);
+                    getter.setSetter(setter);
                     if (getter.isVariable()) {
                         that.addError("duplicate setter for getter: " + model.getName());
                     }
