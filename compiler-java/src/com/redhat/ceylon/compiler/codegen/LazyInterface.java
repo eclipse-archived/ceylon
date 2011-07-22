@@ -17,6 +17,7 @@ public class LazyInterface extends Interface {
     public LazyInterface(ClassSymbol classSymbol, ModelCompleter completer) {
         this.classSymbol = classSymbol;
         this.completer = completer;
+        setName(classSymbol.getSimpleName().toString());
     }
 
     @Override

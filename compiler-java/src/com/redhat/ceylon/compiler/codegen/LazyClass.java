@@ -6,6 +6,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.util.Util;
+import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
 
 public class LazyClass extends Class {
@@ -17,6 +19,9 @@ public class LazyClass extends Class {
     public LazyClass(ClassSymbol classSymbol, ModelCompleter completer) {
         this.classSymbol = classSymbol;
         this.completer = completer;
+        // FIXME Using flatName() instead of just getSimpleName() is for anonymous classes, but do we need them?
+        setName(Util.getSimpleName(classSymbol.flatName().toString()));
+        setAbstract((classSymbol.flags() & Flags.ABSTRACT) != 0);
     }
 
     @Override

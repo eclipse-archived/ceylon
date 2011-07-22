@@ -44,4 +44,8 @@ public class Util {
 		}
 		return str.toString();
 	}
+
+    public static String getSimpleName(String name) {
+        return name.substring(name.lastIndexOf('.') + 1);
+    }
 }

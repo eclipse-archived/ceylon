@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.codegen;
 
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
 
 public class LazyValue extends Value {
@@ -12,6 +13,7 @@ public class LazyValue extends Value {
     public LazyValue(ClassSymbol classSymbol, ModelCompleter completer) {
         this.classSymbol = classSymbol;
         this.completer = completer;
+        setName(Util.strip(classSymbol.getSimpleName().toString()));
     }
 
     private void load() {
