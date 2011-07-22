@@ -15,6 +15,7 @@ import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -212,7 +213,6 @@ public class StatementGen extends GenPart {
         // ceylon.language.Iterator<T> $ceylontmpX = ITERABLE.iterator();
         JCExpression containment = gen.expressionGen.convertExpression(iterDecl.getSpecifierExpression().getExpression());
         JCVariableDecl iter_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(aliasName(loop_var_name + "$iter")), gen.iteratorType(iter_type), at(stmt).Apply(null, gen.makeSelect(containment, "iterator"), List.<JCExpression> nil()));
-        outer = outer.append(iter_decl);
         JCIdent iter_id = at(stmt).Ident(iter_decl.getName());
         
         // final U n = $ceylontmpX.getHead();
@@ -224,7 +224,7 @@ public class StatementGen extends GenPart {
             loop_var_init = at(stmt).Apply(null, gen.makeSelect(iter_head, Util.getGetterName("key")), List.<JCExpression> nil());
         }
         JCVariableDecl item_decl = at(stmt).VarDef(make().Modifiers(FINAL, annots), names().fromString(loop_var_name), item_type, loop_var_init );
-        List<JCStatement> while_loop = List.<JCStatement> of(item_decl);
+        List<JCStatement> for_loop = List.<JCStatement> of(item_decl);
 
         if (variable2 != null) {
             // final V n = $ceylontmpX.getHead().getElement();
@@ -232,18 +232,31 @@ public class StatementGen extends GenPart {
             String loop_var_name2 = variable2.getIdentifier().getText();
             JCExpression item_type2 = gen.makeJavaType(gen.actualType(variable2), false);
             JCVariableDecl item_decl2 = at(stmt).VarDef(make().Modifiers(FINAL, annots), names().fromString(loop_var_name2), item_type2, loop_var_init2);
-            while_loop = while_loop.append(item_decl2);
+            for_loop = for_loop.append(item_decl2);
         }
 
         // The user-supplied contents of the loop
-        while_loop = while_loop.appendList(convertStmts(stmt.getForClause().getBlock().getStatements()));
+        for_loop = for_loop.appendList(convertStmts(stmt.getForClause().getBlock().getStatements()));
 
         // $ceylontmpX = $ceylontmpX.getTail();
         JCExpression next = at(stmt).Assign(iter_id, at(stmt).Apply(null, gen.makeSelect(iter_id, Util.getGetterName("tail")), List.<JCExpression> nil()));
-        while_loop = while_loop.append(at(stmt).Exec(next));
-
+        
         // while ($ceylontmpX.getHead() != null)...
-        outer = outer.append(at(stmt).WhileLoop(at(stmt).Binary(JCTree.NE, iter_head, make().Literal(TypeTags.BOT, null)), at(stmt).Block(0, while_loop)));
+        // init: .ceylon.language.Iterator<Integer> $i$iter$1 = seq.iterator()
+        List<JCStatement> init = List.<JCStatement>of(iter_decl);
+        
+        // cond: $i$iter$1.getHead() != null;
+        JCExpression cond = at(stmt).Binary(JCTree.NE, iter_head, make().Literal(TypeTags.BOT, null));
+        
+        // step: $i$iter$1 = $i$iter$1.getTail()
+        List<JCExpressionStatement> step = List.<JCExpressionStatement>of(at(stmt).Exec(next));
+        
+        // for (.ceylon.language.Iterator<Integer> $ceylontmpX = seq.iterator(); $ceylontmpX.getHead() != null; $ceylontmpX = $ceylontmpX.getTail()) {
+        outer = outer.append(at(stmt).ForLoop(
+	        init, 
+	        cond, 
+	        step, 
+	        at(stmt).Block(0, for_loop)));
 
         if (stmt.getElseClause() != null) {
             // The user-supplied contents of fail block

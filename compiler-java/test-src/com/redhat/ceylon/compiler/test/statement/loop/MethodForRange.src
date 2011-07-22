@@ -3,10 +3,8 @@ package com.redhat.ceylon.compiler.test.statement.loop;
 class MethodForRange {
     
     public final void m() {
-        .ceylon.language.Iterator<Natural> $i$iter$0 = new .ceylon.language.Range<Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(10L)).iterator();
-        while ($i$iter$0.getHead() != null) {
+        for (.ceylon.language.Iterator<Natural> $i$iter$0 = new .ceylon.language.Range<Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(10L)).iterator(); $i$iter$0.getHead() != null; $i$iter$0 = $i$iter$0.getTail()) {
             final Natural i = $i$iter$0.getHead();
-            $i$iter$0 = $i$iter$0.getTail();
         }
     }
     

@@ -4,7 +4,7 @@ class MethodForFail {
     
     public final Natural m(final Sequence<Integer> seq) {
         boolean $ceylontmp0 = true;
-        for (.ceylon.language.Iterator<Integer> $i$iter$1 = seq.iterator(); $i$iter$1.getHead() != null ; $i$iter$1 = $i$iter$1.getTail()) {
+        for (.ceylon.language.Iterator<Integer> $i$iter$1 = seq.iterator(); $i$iter$1.getHead() != null; $i$iter$1 = $i$iter$1.getTail()) {
             final Integer i = $i$iter$1.getHead();
             while (ceylon.language.$true.getTrue() == ceylon.language.$true.getTrue()) {
                 boolean $ceylontmp2 = true;
@@ -18,9 +18,6 @@ class MethodForFail {
                 }
                 break;
             }
-            do {
-                break;
-            }             while (ceylon.language.$true.getTrue() == ceylon.language.$true.getTrue());
             $ceylontmp0 = false;
             break;
         }
