@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.test.statement.loop;
 
-package com.redhat.ceylon.compiler.test.statement.loop;
-
 class MethodForFail {
     
     public final Natural m(final Sequence<Integer> seq) {
