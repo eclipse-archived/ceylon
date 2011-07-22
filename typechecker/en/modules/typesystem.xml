@@ -997,18 +997,18 @@ shared interface ElementwiseEquality
         
         <itemizedlist>
         <listitem>
-        <para>An interface or <literal>abstract</literal> class may optionally 
-        specify an enumerated list of all its subtypes, in which case no other
-        type may be a direct subtype of the interface or <literal>abstract</literal> 
-        class.</para>
+            <para>An interface or <literal>abstract</literal> class may optionally 
+            specify an enumerated list of all its subtypes, in which case no other
+            type may be a direct subtype of the interface or <literal>abstract</literal> 
+            class.</para>
         </listitem>
         <listitem>
-        <para>Likewise, a type parameter may specify an enumerated list of all
-        types which it accepts as a type argument.</para>
+            <para>Likewise, a type parameter may specify an enumerated list of all
+            types which it accepts as a type argument.</para>
         </listitem>
         <listitem>
-        <para>An interface or <literal>abstract</literal> class may specify a 
-        single type parameter of itself or of the immediately containing type.</para>
+            <para>An interface or <literal>abstract</literal> class may specify a 
+            single type parameter of itself or of the immediately containing type.</para>
         </listitem>
         </itemizedlist>
         
