@@ -36,7 +36,7 @@ public class StatementGen extends GenPart {
         return block == null ? null : at(block).Block(0, convertStmts(block.getStatements()));
     }
 
-    private List<JCStatement> convertStmts(java.util.List<Tree.Statement> list) {
+    List<JCStatement> convertStmts(java.util.List<Tree.Statement> list) {
         StatementVisitor v = new StatementVisitor(this);
 
         for (Tree.Statement stmt : list)
@@ -273,7 +273,6 @@ public class StatementGen extends GenPart {
         
         JCExpression initialValue = null;
         if (decl.getSpecifierOrInitializerExpression() != null) {
-            // The attribute's initializer gets moved to the constructor (why?)
             initialValue = gen.expressionGen.convertExpression(decl.getSpecifierOrInitializerExpression().getExpression());
         }
 

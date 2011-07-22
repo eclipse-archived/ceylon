@@ -28,6 +28,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedDeclaration;
@@ -38,6 +39,7 @@ import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.parser.Keywords;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
+import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
@@ -285,6 +287,12 @@ public class Gen2 {
                 resetCompilerAnnotations();
             }
 
+            public void visit(Tree.AttributeGetterDefinition decl){
+                checkCompilerAnnotations(decl);
+                defs.append(convert(decl));
+                resetCompilerAnnotations();
+            }
+
             public void visit(Tree.MethodDefinition decl) {
                 checkCompilerAnnotations(decl);
                 // Generate a wrapper class for the method
@@ -359,6 +367,34 @@ public class Gen2 {
             builder.initialValue(expressionGen.convertExpression(
                     decl.getSpecifierOrInitializerExpression().getExpression()));
         }
+
+        return builder.build();
+    }
+
+    private JCTree convert(AttributeGetterDefinition decl) {
+        GlobalGen.DefinitionBuilder builder = globalGenAt(decl)
+            .defineGlobal(
+                    makeJavaType(actualType(decl), false),
+                    decl.getIdentifier().getText());
+
+        // Add @Attribute (@Ceylon gets added by default)
+        builder.classAnnotations(makeAtAttribute());
+
+        builder.valueAnnotations(makeJavaTypeAnnotations(decl.getDeclarationModel(), actualType(decl)));
+
+        if (decl.getDeclarationModel().isShared()) {
+            builder
+                    .classVisibility(PUBLIC)
+                    .getterVisibility(PUBLIC)
+                    .setterVisibility(PUBLIC);
+        }
+
+        if (!decl.getDeclarationModel().isVariable()) {
+            builder.immutable();
+        }
+
+        JCBlock block = make().Block(0, statementGen.convertStmts(decl.getBlock().getStatements()));
+        builder.getterBlock(block);
 
         return builder.build();
     }

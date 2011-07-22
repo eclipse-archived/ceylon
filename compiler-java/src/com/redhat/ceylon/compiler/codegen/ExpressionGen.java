@@ -248,16 +248,16 @@ public class ExpressionGen extends GenPart {
         } else if (decl instanceof TypedDeclaration) {
             variable = ((TypedDeclaration)decl).isVariable();
         }
-        if((decl instanceof Getter) || (Util.isClassAttribute(decl) && variable)){
-            // must use the setter
-            return at(op).Apply(List.<JCTree.JCExpression>nil(), makeIdent(Util.getSetterName(decl.getName())), 
-                    List.<JCTree.JCExpression>of(rhs));
-        } else if(decl.isToplevel()){
+        if(decl.isToplevel()){
             // must use top level setter
             return gen.globalGenAt(op).setGlobalValue(
                     makeIdent(decl.getContainer().getQualifiedName()),
                     decl.getName(),
                     rhs);
+        } else if((decl instanceof Getter) || (Util.isClassAttribute(decl) && variable)){
+            // must use the setter
+            return at(op).Apply(List.<JCTree.JCExpression>nil(), makeIdent(Util.getSetterName(decl.getName())), 
+                    List.<JCTree.JCExpression>of(rhs));
         } else {
             return at(op).Assign(make().Ident(names().fromString(decl.getName())), rhs);
         }
@@ -552,9 +552,15 @@ public class ExpressionGen extends GenPart {
             }
         } else if (decl instanceof Getter) {
             // invoke the getter
-            return at(member).Apply(List.<JCExpression>nil(), 
-                    makeIdent(Util.getGetterName(decl.getName())), 
-                    List.<JCExpression>nil());
+            if (decl.isToplevel()) {
+                return gen.globalGenAt(member).getGlobalValue(
+                        makeIdent(decl.getContainer().getQualifiedName()),
+                        decl.getName());
+            } else {
+                return at(member).Apply(List.<JCExpression>nil(), 
+                        makeIdent(Util.getGetterName(decl.getName())), 
+                        List.<JCExpression>nil());
+            }
         } else if (decl instanceof Method) {
             if (Util.isInnerMethod(decl)) {
                 java.util.List<String> path = new LinkedList<String>();
