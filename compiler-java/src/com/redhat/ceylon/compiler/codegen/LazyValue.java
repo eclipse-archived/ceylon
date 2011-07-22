@@ -24,6 +24,12 @@ public class LazyValue extends Value {
     }
 
     @Override
+    public boolean isVariable() {
+        load();
+        return super.isVariable();
+    }
+    
+    @Override
     public ProducedType getType() {
         load();
         return super.getType();

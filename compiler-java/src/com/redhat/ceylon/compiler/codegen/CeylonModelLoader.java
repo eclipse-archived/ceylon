@@ -138,6 +138,11 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 public void visit(Tree.AttributeDeclaration that) {
                     loadFromSource(that);
                 }
+
+                @Override
+                public void visit(Tree.AttributeGetterDefinition that) {
+                    loadFromSource(that);
+                }
             });
         }
     }
@@ -557,21 +562,21 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     @Override
     public void complete(LazyValue value) {
         MethodSymbol meth = null;
-         for(Symbol member : value.classSymbol.members().getElements()){
-             if(member instanceof MethodSymbol){
-                 MethodSymbol m = (MethodSymbol) member;
-                 if(m.name.toString().equals(Util.getGetterName(value.getName()))
-                        && m.isStatic()
-                        && m.params().size() == 0){
-                     meth = m;
-                 }
-                 if(m.name.toString().equals(Util.getSetterName(value.getName()))
-                         && m.isStatic()
-                         && m.params().size() == 1){
-                     value.setVariable(true);
-                  }
-             }
-         }
+        for (Symbol member : value.classSymbol.members().getElements()) {
+            if (member instanceof MethodSymbol) {
+                MethodSymbol m = (MethodSymbol) member;
+                if (m.name.toString().equals(
+                        Util.getGetterName(value.getName()))
+                        && m.isStatic() && m.params().size() == 0) {
+                    meth = m;
+                }
+                if (m.name.toString().equals(
+                        Util.getSetterName(value.getName()))
+                        && m.isStatic() && m.params().size() == 1) {
+                    value.setVariable(true);
+                }
+            }
+        }
         if(meth == null || meth.getReturnType() == null)
             throw new RuntimeException("Failed to find toplevel attribute "+value.getName());
         
