@@ -638,6 +638,32 @@ String? firstWord = words[0];</programlisting>
             </listitem>
         </itemizedlist>
         
+        <para>If a type extends, satisfies, or adapts a second type, we say it <emphasis>inherits</emphasis>
+        the second type.</para>
+        
+        <itemizedlist>
+        <listitem>
+            <para>If a type <literal>X</literal> inherits a type <literal>Y</literal>, 
+            then <literal>X</literal> is a subtype of <literal>Y</literal>.</para>
+        </listitem>
+        <listitem>  
+            <para>If a parameterized type <literal>X&lt;T&gt;</literal> inherits a type 
+            <literal>Y</literal>, then the produced type <literal>X&lt;B&gt;</literal> 
+            is a subtype of <literal>Y</literal> for any type <literal>B</literal>.</para>
+        </listitem>
+        <listitem>  
+            <para>If a parameterized type <literal>X&lt;T&gt;</literal> inherits a 
+            produced type <literal>Y&lt;T&gt;</literal> that depends upon the type
+            parameter <literal>T</literal>, then the produced type <literal>X&lt;B&gt;</literal> 
+            is a subtype of the produced type <literal>Y&lt;B&gt;</literal> formed by 
+            substituting <literal>B</literal> for <literal>T</literal> for any type 
+            <literal>B</literal>.</para>
+        </listitem>
+        </itemizedlist>
+        
+        <comment><para>TODO: these rules need to be formalized into the language of
+        type constructors (functions from types to types).</para></comment>
+        
         <para>Ceylon visually distinguishes between a list of types which represents a
         combination (intersection) of the types, and a list of types which represents a 
         choice between (union of) the types. An intersection is written as 
@@ -678,29 +704,6 @@ String? firstWord = words[0];</programlisting>
         does not have a superclass.
         </para>
         
-        <para>Suppose <literal>X</literal> and <literal>Y</literal> are classes.</para>
-    
-        <itemizedlist>
-        <listitem>
-            <para>If <literal>X</literal> extends <literal>Y</literal>, then
-            <literal>X</literal> is a subtype of <literal>Y</literal>.</para>
-        </listitem>
-        <listitem>
-            <para>If <literal>X</literal> extends <literal>Y&lt;B&gt;</literal>, then
-            <literal>X</literal> is a subtype of <literal>Y&lt;B&gt;</literal>.</para>
-        </listitem>
-        <listitem>
-            <para>If <literal>X&lt;T&gt;</literal> extends <literal>Y&lt;T&gt;</literal>, 
-            then <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y&lt;B&gt;</literal> 
-            for any type <literal>B</literal>.</para>
-        </listitem>
-        <listitem>
-            <para>If <literal>X&lt;T&gt;</literal> extends <literal>Y</literal>, 
-            then <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y</literal> 
-            for any type <literal>B</literal>.</para>
-        </listitem>
-        </itemizedlist>
-        
         <!--
         <para>A user-defined class must extend the class <literal>Object</literal> defined 
         in <literal>ceylon.language</literal> or one of its subclasses.</para>
@@ -734,31 +737,7 @@ String? firstWord = words[0];</programlisting>
         must specify type arguments.</para>
         
         <programlisting>satisfies Sequence&lt;Element&gt; &amp; Collection&lt;Element&gt;</programlisting>
-        
-        <para>Suppose <literal>Y</literal> is an interface and <literal>X</literal> is
-        a class or interface.</para>
-    
-        <itemizedlist>
-        <listitem>
-            <para>If <literal>X</literal> satisfies <literal>Y</literal>, then
-            <literal>X</literal> is a subtype of <literal>Y</literal>.</para>
-        </listitem>
-        <listitem>
-            <para>If <literal>X</literal> satisfies <literal>Y&lt;B&gt;</literal>, then
-            <literal>X</literal> is a subtype of <literal>Y&lt;B&gt;</literal>.</para>
-        </listitem>
-        <listitem>
-            <para>If <literal>X&lt;T&gt;</literal> satisfies <literal>Y&lt;T&gt;</literal>, 
-            then <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y&lt;B&gt;</literal> 
-            for any type <literal>B</literal>.</para>
-        </listitem>
-        <listitem>
-            <para>If <literal>X&lt;T&gt;</literal> satisfies <literal>Y</literal>, 
-            then <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y</literal> 
-            for any type <literal>B</literal>.</para>
-        </listitem>
-        </itemizedlist>
-        
+                
         <!--
         <comment><para>TODO: We could let a class or interface conditionally satisfy or 
         extend an interface, called a <emphasis>conditional supertype</emphasis>, depending 
@@ -864,81 +843,53 @@ shared interface ElementwiseEquality
         
         <programlisting>AdaptedTypes: "adapts" Type ("&amp;" Type)*</programlisting>
                 
-        <para>Then any type that is a subtype of every adapted type is also a subtype 
-        of the interface type in:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>any compilation unit that imports the interface, and</para>
-            </listitem>
-            <listitem>
-                <para>in the package to which the interface belongs.</para>
-            </listitem>
-        </itemizedlist>
-        
         <para>The <literal>adapts</literal> clause may specify multiple types. If 
         a satisfied type is a parameterized type, the <literal>satisfies</literal> 
         clause must specify type arguments.</para>
         
         <programlisting>adapts Iterable&lt;Element&gt; &amp; Correspondence&lt;Natural,Element&gt;</programlisting>
         
-        <para>Each adapted types must be class or interface. At most one adapted 
+        <para>Each adapted type must be class or interface. At most one adapted 
         type may be a class.</para>
         
-        <para>Suppose <literal>X</literal> is an interface and <literal>Y</literal> 
-        is a class or interface.</para>
-    
+        <para>An introduction <emphasis>introduces</emphasis> new types to every 
+        type that is a subtype of all the adapted types in:</para>
+        
         <itemizedlist>
-        <listitem>
-            <para>If <literal>X</literal> adapts <literal>Y</literal>, then
-            <literal>X</literal> is a subtype of <literal>Y</literal>.</para>
-        </listitem>
-        <listitem>
-            <para>If <literal>X</literal> adapts <literal>Y&lt;B&gt;</literal>, then
-            <literal>X</literal> is a subtype of <literal>Y&lt;B&gt;</literal>.</para>
-        </listitem>
-        <listitem>
-            <para>If <literal>X&lt;T&gt;</literal> adapts <literal>Y&lt;T&gt;</literal>, 
-            then <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y&lt;B&gt;</literal> 
-            for any type <literal>B</literal>.</para>
-        </listitem>
-        <listitem>
-            <para>If <literal>X&lt;T&gt;</literal> adapts <literal>Y</literal>, 
-            then <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y</literal> 
-            for any type <literal>B</literal>.</para>
-        </listitem>
+            <listitem>
+                <para>any compilation unit that imports the introduction, and</para>
+            </listitem>
+            <listitem>
+                <para>the package to which the introduction belongs.</para>
+            </listitem>
         </itemizedlist>
         
-        <para>Furthermore:</para>
+        <para>Specifically:</para>
         
         <itemizedlist>
         <listitem>
-            <para>If <literal>X</literal> adapts <literal>Y</literal>, then
-            <literal>Y</literal> is a subtype of <literal>X</literal> in every
-            compilation unit that imports <literal>X</literal>, and in the package
-            to which <literal>X</literal> belongs.</para>
-        </listitem>
-        <listitem>
-            <para>If <literal>X</literal> adapts <literal>Y&lt;B&gt;</literal>, then
-            <literal>Y&lt;B&gt;</literal> is a subtype of <literal>X</literal> in 
-            every compilation unit that imports <literal>X</literal>, and in the 
+            <para>If a type <literal>X</literal> adapts a type <literal>Y</literal>, 
+            then <literal>Y</literal> is a subtype of <literal>X</literal> in 
+            every compilation unit that imports <literal>X</literal> and in the 
             package to which <literal>X</literal> belongs.</para>
         </listitem>
-        <listitem>
-            <para>If <literal>X&lt;T&gt;</literal> adapts <literal>Y&lt;T&gt;</literal>, 
-            then <literal>Y&lt;B&gt;</literal> is a subtype of <literal>X&lt;B&gt;</literal> 
-            for any type <literal>B</literal> in every compilation unit that imports 
-            <literal>X</literal>, and in the package to which <literal>X</literal> 
-            belongs.</para>
+        <listitem>  
+            <para>If a parameterized type <literal>X&lt;T&gt;</literal> inherits a 
+            type <literal>Y</literal>, then <literal>Y</literal> is a subtype of the 
+            produced type <literal>X&lt;B&gt;</literal> for any type <literal>B</literal>
+            in every compilation unit that imports <literal>X</literal> and in the 
+            package to which <literal>X</literal> belongs.</para>
         </listitem>
-        <listitem>
-            <para>If <literal>X&lt;T&gt;</literal> adapts <literal>Y</literal>, 
-            then <literal>Y</literal> is a subtype of <literal>X&lt;B&gt;</literal> 
-            for any type <literal>B</literal> in every compilation unit that imports 
-            <literal>X</literal>, and in the package to which <literal>X</literal> 
-            belongs.</para>
+        <listitem>  
+            <para>If a parameterized type <literal>X&lt;T&gt;</literal> inherits a 
+            produced type <literal>Y&lt;T&gt;</literal> that depends upon the type
+            parameter <literal>T</literal>, then the produced type <literal>Y&lt;B&gt;</literal> 
+            formed by substituting <literal>B</literal> for <literal>T</literal> is a
+            subtype of the produced type <literal>X&lt;B&gt;</literal> for any type 
+            <literal>B</literal> in every compilation unit that imports <literal>X</literal>
+            and in the package to which <literal>X</literal> belongs.</para>
         </listitem>
-        </itemizedlist>        
+        </itemizedlist>
         
              <para>An introduction may not:</para>
              
@@ -1025,21 +976,25 @@ shared interface ElementwiseEquality
         <itemizedlist>
         <listitem>
             <para>If every case of a type <literal>X</literal> is a suptype of a type 
-            <literal>Y</literal> then <literal>X</literal> is a subtype of <literal>Y</literal>.</para>
+            <literal>Y</literal>, then <literal>X</literal> is a subtype of 
+            <literal>Y</literal>.</para>
+        </listitem>
+        <listitem>  
+            <para>If every case ofa parameterized type <literal>X&lt;T&gt;</literal> 
+            is a suptype of a type <literal>Y</literal>, then the produced type 
+            <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y</literal> for 
+            any type <literal>B</literal>.</para>
         </listitem>
         <listitem>  
             <para>If every case of a parameterized type <literal>X&lt;T&gt;</literal> 
-            is a subtype of a type <literal>Y</literal> then <literal>X&lt;B&gt;</literal> 
-            is a subtype of <literal>Y</literal> for any type <literal>B</literal>.</para>
-        </listitem>
-        <listitem>  
-            <para>If every case of a parameterized type <literal>X&lt;T&gt;</literal> 
-            is a subtype of a produced type <literal>Y&lt;T&gt;</literal> then 
-            <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y&lt;B&gt;</literal> 
-            for any type <literal>B</literal>.</para>
+            is a suptype of a produced type <literal>Y&lt;T&gt;</literal> that depends 
+            upon the type parameter <literal>T</literal>, then the produced type 
+            <literal>X&lt;B&gt;</literal> is a subtype of the produced type
+            <literal>Y&lt;B&gt;</literal> formed by substituting <literal>B</literal> 
+            for <literal>T</literal> for any type <literal>B</literal>.</para>
         </listitem>
         </itemizedlist>
-        
+               
         <para>If there is exactly one case, and it is a type parameter, then:</para> 
         
         <itemizedlist>
