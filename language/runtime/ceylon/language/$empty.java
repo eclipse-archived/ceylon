@@ -55,7 +55,7 @@ public class $empty {
         }
 
         @Override
-        public Boolean isEmpty() {
+        public Boolean getEmpty() {
             return $true.getTrue();
         }
 

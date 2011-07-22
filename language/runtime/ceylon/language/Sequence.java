@@ -10,7 +10,7 @@ public interface Sequence<Element>
     
     public Sequence<Element> getRest();
     
-    public Boolean isEmpty();
+    public Boolean getEmpty();
         // return false;
     
     public Natural getSize();
