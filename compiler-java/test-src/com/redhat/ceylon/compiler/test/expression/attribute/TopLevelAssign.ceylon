@@ -7,12 +7,14 @@ Boolean b3 {
     return true;
 }
 assign b3 {
+    throw;
 }
 @nomodel
 shared Boolean b4 {
     return true;
 }
 assign b4 {
+    throw;
 }
 
 @nomodel

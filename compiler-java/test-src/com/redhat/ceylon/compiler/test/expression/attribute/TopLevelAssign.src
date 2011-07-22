@@ -1,23 +1,64 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
-final class toplevel {
+final class b1 {
     private static Boolean value = ceylon.language.$true.getTrue();
     
-    static Boolean getToplevel() {
+    static Boolean getB1() {
         return value;
     }
     
-    static void setToplevel(Boolean newValue) {
+    static void setB1(Boolean newValue) {
         value = newValue;
     }
     
-    private toplevel() {
+    private b1() {
+    }
+}
+public final class b2 {
+    private static Boolean value = ceylon.language.$true.getTrue();
+    
+    public static Boolean getB2() {
+        return value;
+    }
+    
+    public static void setB2(Boolean newValue) {
+        value = newValue;
+    }
+    
+    private b2() {
+    }
+}
+final class b3 {
+    
+    static Boolean getB3() {
+        return ceylon.language.$true.getTrue();
+    }
+    
+    static void setB3(Boolean newValue) {
+    }
+    
+    private b3() {
+    }
+}
+public final class b4 {
+    
+    public static Boolean getB4() {
+        return ceylon.language.$true.getTrue();
+    }
+    
+    public static void setB4(Boolean newValue) {
+    }
+    
+    private b4() {
     }
 }
 class TopLevelAssign {
     
     private final void m() {
-        com.redhat.ceylon.compiler.test.expression.attribute.toplevel.setToplevel(ceylon.language.$false.getFalse());
+        com.redhat.ceylon.compiler.test.expression.attribute.b1.setB1(ceylon.language.$false.getFalse());
+        com.redhat.ceylon.compiler.test.expression.attribute.b2.setB2(ceylon.language.$false.getFalse());
+        com.redhat.ceylon.compiler.test.expression.attribute.b3.setB3(ceylon.language.$false.getFalse());
+        com.redhat.ceylon.compiler.test.expression.attribute.b4.setB4(ceylon.language.$false.getFalse());
     }
     
     TopLevelAssign() {

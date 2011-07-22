@@ -1,11 +1,17 @@
 package com.redhat.ceylon.compiler.test.expression.invoke;
 
-class foo {
+final class foo {
+    
+    private foo() {
+    }
     
     static void foo() {
     }
 }
-class bar {
+final class bar {
+    
+    private bar() {
+    }
     
     static Natural bar(final Natural i, final String j) {
         return .ceylon.language.Natural.instance(1L);
