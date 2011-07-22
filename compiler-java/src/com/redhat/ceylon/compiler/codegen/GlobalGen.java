@@ -102,11 +102,14 @@ public final class GlobalGen extends GenPart {
 
         private boolean readable = true;
         private long getterVisibility;
+        private JCTree.JCBlock getterBlock;
 
         private JCTree.JCExpression variableInit;
 
         private boolean writable = true;
         private long setterVisibility;
+        private JCTree.JCBlock setterBlock;
+        
         private List<JCTree.JCAnnotation> valueAnnotations = List.nil();
         private List<JCTree.JCAnnotation> classAnnotations = List.nil();
 
@@ -138,7 +141,9 @@ public final class GlobalGen extends GenPart {
          * @param defs a {@link ListBuffer} to which the definitions will be appended.
          */
         public void appendDefinitionsTo(ListBuffer<JCTree> defs) {
-            defs.append(generateField());
+            if (getterBlock == null) {
+                defs.append(generateField());
+            }
 
             if (readable) {
                 defs.append(generateGetter());
@@ -176,7 +181,7 @@ public final class GlobalGen extends GenPart {
         }
 
         private JCTree generateGetter() {
-            JCTree.JCBlock body = make().Block(0L, List.<JCTree.JCStatement>of(
+            JCTree.JCBlock body = (getterBlock != null) ? getterBlock : make().Block(0L, List.<JCTree.JCStatement>of(
                     make().Return(make().Ident(fieldName))
             ));
             return make().MethodDef(
@@ -194,11 +199,14 @@ public final class GlobalGen extends GenPart {
         private JCTree generateSetter() {
             Name paramName = names().fromString("newValue");
 
-            JCTree.JCBlock body = make().Block(0L, List.<JCTree.JCStatement>of(
-                    make().Exec(
-                            make().Assign(
-                                    make().Ident(fieldName),
-                                    make().Ident(paramName)))
+            JCTree.JCBlock body = (getterBlock != null) ?
+                    ((setterBlock != null) ? setterBlock : make().Block(0L, List.<JCTree.JCStatement>nil()))
+                :
+                    make().Block(0L, List.<JCTree.JCStatement>of(
+                        make().Exec(
+                                make().Assign(
+                                        make().Ident(fieldName),
+                                        make().Ident(paramName)))
             ));
             return make().MethodDef(
                     make().Modifiers(Flags.STATIC | setterVisibility),
@@ -236,6 +244,17 @@ public final class GlobalGen extends GenPart {
         }
 
         /**
+         * Sets the code block to use for the generated getter. If no getter is generated the code block will be
+         * silently ignored.
+         * @param getterBlock a code block
+         * @return this instance for method chaining
+         */
+        public DefinitionBuilder getterBlock(JCTree.JCBlock getterBlock) {
+            this.getterBlock = getterBlock;
+            return this;
+        }
+
+        /**
          * Sets the visibility of the generated setter. If no setter is generated the visibility will be silently
          * ignored.
          * @param setterVisibility a visibility flag (see {@link Flags})
@@ -243,6 +262,17 @@ public final class GlobalGen extends GenPart {
          */
         public DefinitionBuilder setterVisibility(long setterVisibility) {
             this.setterVisibility = setterVisibility;
+            return this;
+        }
+
+        /**
+         * Sets the code block to use for the generated setter. If no setter is generated the code block will be
+         * silently ignored.
+         * @param getterBlock a code block
+         * @return this instance for method chaining
+         */
+        public DefinitionBuilder setterBlock(JCTree.JCBlock setterBlock) {
+            this.setterBlock = setterBlock;
             return this;
         }
 
