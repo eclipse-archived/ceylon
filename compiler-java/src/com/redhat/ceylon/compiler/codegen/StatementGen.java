@@ -181,10 +181,11 @@ public class StatementGen extends GenPart {
     List<JCStatement> convert(Tree.ForStatement stmt) {
         Name tempForFailVariable = currentForFailVariable;
         
+        at(stmt);
         List<JCStatement> outer = List.<JCStatement> nil();
         if (stmt.getElseClause() != null) {
-            // boolean $ceylontmpX = true;
-            JCVariableDecl failtest_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(tempName()), make().TypeIdent(TypeTags.BOOLEAN), make().Literal(TypeTags.BOOLEAN, 1));
+            // boolean $doforelse$X = true;
+            JCVariableDecl failtest_decl = make().VarDef(make().Modifiers(0), names().fromString(aliasName("doforelse")), make().TypeIdent(TypeTags.BOOLEAN), make().Literal(TypeTags.BOOLEAN, 1));
             outer = outer.append(failtest_decl);
             
             currentForFailVariable = failtest_decl.getName();
@@ -210,12 +211,14 @@ public class StatementGen extends GenPart {
         JCExpression item_type = gen.makeJavaType(gen.actualType(variable), false);
         List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(variable.getDeclarationModel(), gen.actualType(variable));
 
-        // ceylon.language.Iterator<T> $ceylontmpX = ITERABLE.iterator();
+        // ceylon.language.Iterator<T> $V$iter$X = ITERABLE.iterator();
         JCExpression containment = gen.expressionGen.convertExpression(iterDecl.getSpecifierExpression().getExpression());
         JCVariableDecl iter_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(aliasName(loop_var_name + "$iter")), gen.iteratorType(iter_type), at(stmt).Apply(null, gen.makeSelect(containment, "iterator"), List.<JCExpression> nil()));
         JCIdent iter_id = at(stmt).Ident(iter_decl.getName());
         
-        // final U n = $ceylontmpX.getHead();
+        // final U n = $V$iter$X.getHead();
+        // or
+        // final U n = $V$iter$X.getHead().getKey();
         JCExpression iter_head = at(stmt).Apply(null, gen.makeSelect(iter_id, Util.getGetterName("head")), List.<JCExpression> nil());
         JCExpression loop_var_init;
         if (variable2 == null) {
@@ -227,7 +230,7 @@ public class StatementGen extends GenPart {
         List<JCStatement> for_loop = List.<JCStatement> of(item_decl);
 
         if (variable2 != null) {
-            // final V n = $ceylontmpX.getHead().getElement();
+            // final V n = $V$iter$X.getHead().getElement();
             JCExpression loop_var_init2 = at(stmt).Apply(null, gen.makeSelect(at(stmt).Apply(null, gen.makeSelect(iter_id, Util.getGetterName("head")), List.<JCExpression> nil()), Util.getGetterName("element")), List.<JCExpression> nil());
             String loop_var_name2 = variable2.getIdentifier().getText();
             JCExpression item_type2 = gen.makeJavaType(gen.actualType(variable2), false);
@@ -238,31 +241,24 @@ public class StatementGen extends GenPart {
         // The user-supplied contents of the loop
         for_loop = for_loop.appendList(convertStmts(stmt.getForClause().getBlock().getStatements()));
 
-        // $ceylontmpX = $ceylontmpX.getTail();
-        JCExpression next = at(stmt).Assign(iter_id, at(stmt).Apply(null, gen.makeSelect(iter_id, Util.getGetterName("tail")), List.<JCExpression> nil()));
+        // $V$iter$X = $V$iter$X.getTail();
+        JCExpression step = at(stmt).Assign(iter_id, at(stmt).Apply(null, gen.makeSelect(iter_id, Util.getGetterName("tail")), List.<JCExpression> nil()));
         
-        // while ($ceylontmpX.getHead() != null)...
-        // init: .ceylon.language.Iterator<Integer> $i$iter$1 = seq.iterator()
-        List<JCStatement> init = List.<JCStatement>of(iter_decl);
-        
-        // cond: $i$iter$1.getHead() != null;
+        // $i$iter$1.getHead() != null;
         JCExpression cond = at(stmt).Binary(JCTree.NE, iter_head, make().Literal(TypeTags.BOT, null));
         
-        // step: $i$iter$1 = $i$iter$1.getTail()
-        List<JCExpressionStatement> step = List.<JCExpressionStatement>of(at(stmt).Exec(next));
-        
-        // for (.ceylon.language.Iterator<Integer> $ceylontmpX = seq.iterator(); $ceylontmpX.getHead() != null; $ceylontmpX = $ceylontmpX.getTail()) {
+        // for (.ceylon.language.Iterator<T> $V$iter$X = ITERABLE.iterator(); $V$iter$X.getHead() != null; $V$iter$X = $V$iter$X.getTail()) {
         outer = outer.append(at(stmt).ForLoop(
-	        init, 
+            List.<JCStatement>of(iter_decl), 
 	        cond, 
-	        step, 
+	        List.<JCExpressionStatement>of(at(stmt).Exec(step)), 
 	        at(stmt).Block(0, for_loop)));
 
         if (stmt.getElseClause() != null) {
             // The user-supplied contents of fail block
             List<JCStatement> failblock = convertStmts(stmt.getElseClause().getBlock().getStatements());
             
-            // if ($ceylontmpX) ...
+            // if ($doforelse$X) ...
             JCIdent failtest_id = at(stmt).Ident(currentForFailVariable);
             outer = outer.append(at(stmt).If(failtest_id, at(stmt).Block(0, failblock), null));
         }

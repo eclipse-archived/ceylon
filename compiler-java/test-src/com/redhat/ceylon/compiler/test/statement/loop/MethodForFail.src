@@ -1,27 +1,29 @@
 package com.redhat.ceylon.compiler.test.statement.loop;
 
+package com.redhat.ceylon.compiler.test.statement.loop;
+
 class MethodForFail {
     
     public final Natural m(final Sequence<Integer> seq) {
-        boolean $ceylontmp0 = true;
+        boolean $doforelse$0 = true;
         for (.ceylon.language.Iterator<Integer> $i$iter$1 = seq.iterator(); $i$iter$1.getHead() != null; $i$iter$1 = $i$iter$1.getTail()) {
             final Integer i = $i$iter$1.getHead();
             while (ceylon.language.$true.getTrue() == ceylon.language.$true.getTrue()) {
-                boolean $ceylontmp2 = true;
+                boolean $doforelse$2 = true;
                 for (.ceylon.language.Iterator<Integer> $j$iter$3 = seq.iterator(); $j$iter$3.getHead() != null; $j$iter$3 = $j$iter$3.getTail()) {
                     final Integer j = $j$iter$3.getHead();
-                    $ceylontmp2 = false;
+                    $doforelse$2 = false;
                     break;
                 }
-                if ($ceylontmp2) {
+                if ($doforelse$2) {
                     return .ceylon.language.Natural.instance(1L);
                 }
                 break;
             }
-            $ceylontmp0 = false;
+            $doforelse$0 = false;
             break;
         }
-        if ($ceylontmp0) {
+        if ($doforelse$0) {
             return .ceylon.language.Natural.instance(0L);
         }
         return .ceylon.language.Natural.instance(2L);
