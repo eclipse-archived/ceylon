@@ -14,7 +14,6 @@ import java.util.Map;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
@@ -641,35 +640,4 @@ public class ClassGen extends GenPart {
 
         return v;
     }
-
-    public JCTree convert(AttributeDeclaration decl) {
-        GlobalGen.DefinitionBuilder builder = gen.globalGenAt(decl)
-            .defineGlobal(
-                    gen.makeJavaType(gen.actualType(decl), false),
-                    decl.getIdentifier().getText());
-
-        // Add @Attribute (@Ceylon gets added by default)
-        builder.classAnnotations(gen.makeAtAttribute());
-
-        builder.valueAnnotations(gen.makeJavaTypeAnnotations(decl.getDeclarationModel(), gen.actualType(decl)));
-
-        if (isShared(decl)) {
-            builder
-                    .classVisibility(PUBLIC)
-                    .getterVisibility(PUBLIC)
-                    .setterVisibility(PUBLIC);
-        }
-
-        if (!isMutable(decl)) {
-            builder.immutable();
-        }
-
-        if (decl.getSpecifierOrInitializerExpression() != null) {
-            builder.initialValue(gen.expressionGen.convertExpression(
-                    decl.getSpecifierOrInitializerExpression().getExpression()));
-        }
-
-        return builder.build();
-    }
-
 }

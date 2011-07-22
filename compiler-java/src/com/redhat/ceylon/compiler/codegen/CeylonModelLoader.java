@@ -181,7 +181,6 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
 
     private Declaration makeToplevelAttribute(ClassSymbol classSymbol) {
         Value value = new LazyValue(classSymbol, this);
-        value.setVariable(true);
         return value;
     }
 
@@ -205,7 +204,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     private Declaration convertToDeclaration(Type type, Scope scope) {
         String typeName;
         switch(type.getKind()){
-        case VOID:    typeName = "java.lang.Void";    break;
+        case VOID:    typeName = "ceylon.language.Void"; break;
         case BOOLEAN: typeName = "java.lang.Boolean"; break;
         case BYTE:    typeName = "java.lang.Byte"; break;
         case CHAR:    typeName = "java.lang.Character"; break;
@@ -560,20 +559,24 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         MethodSymbol meth = null;
          for(Symbol member : value.classSymbol.members().getElements()){
              if(member instanceof MethodSymbol){
-                MethodSymbol m = (MethodSymbol) member;
-                if(m.name.toString().equals(Util.getGetterName(value.getName()))
+                 MethodSymbol m = (MethodSymbol) member;
+                 if(m.name.toString().equals(Util.getGetterName(value.getName()))
                         && m.isStatic()
                         && m.params().size() == 0){
-                    meth = m;
-                     break;
+                     meth = m;
                  }
+                 if(m.name.toString().equals(Util.getSetterName(value.getName()))
+                         && m.isStatic()
+                         && m.params().size() == 1){
+                     value.setVariable(true);
+                  }
              }
          }
         if(meth == null || meth.getReturnType() == null)
             throw new RuntimeException("Failed to find toplevel attribute "+value.getName());
         
         value.setShared((meth.flags() & Flags.PUBLIC) != 0);
-        
+
         // FIXME: deal with type override by annotations
         value.setType(getType(meth.getReturnType(), null));
     }

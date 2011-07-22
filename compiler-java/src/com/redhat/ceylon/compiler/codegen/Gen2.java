@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.codegen;
 
+import static com.sun.tools.javac.code.Flags.PUBLIC;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -7,7 +9,6 @@ import java.util.Map;
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 
-import com.sun.tools.javac.code.Type;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 
@@ -26,12 +27,14 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.BoundKind;
 import com.sun.tools.javac.code.Symtab;
+import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.parser.Keywords;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -278,14 +281,13 @@ public class Gen2 {
 
             public void visit(Tree.AttributeDeclaration decl){
                 checkCompilerAnnotations(decl);
-                defs.append(classGen.convert(decl));
+                defs.append(convert(decl));
                 resetCompilerAnnotations();
             }
 
             public void visit(Tree.MethodDefinition decl) {
                 checkCompilerAnnotations(decl);
-                // Generate a class with the
-                // name of the method and a corresponding run() method.
+                // Generate a wrapper class for the method
                 defs.append(classGen.methodClass(decl));
                 resetCompilerAnnotations();
             }
@@ -329,6 +331,36 @@ public class Gen2 {
             }
         });
         return imports.toList();
+    }
+
+    private JCTree convert(AttributeDeclaration decl) {
+        GlobalGen.DefinitionBuilder builder = globalGenAt(decl)
+            .defineGlobal(
+                    makeJavaType(actualType(decl), false),
+                    decl.getIdentifier().getText());
+
+        // Add @Attribute (@Ceylon gets added by default)
+        builder.classAnnotations(makeAtAttribute());
+
+        builder.valueAnnotations(makeJavaTypeAnnotations(decl.getDeclarationModel(), actualType(decl)));
+
+        if (decl.getDeclarationModel().isShared()) {
+            builder
+                    .classVisibility(PUBLIC)
+                    .getterVisibility(PUBLIC)
+                    .setterVisibility(PUBLIC);
+        }
+
+        if (!decl.getDeclarationModel().isVariable()) {
+            builder.immutable();
+        }
+
+        if (decl.getSpecifierOrInitializerExpression() != null) {
+            builder.initialValue(expressionGen.convertExpression(
+                    decl.getSpecifierOrInitializerExpression().getExpression()));
+        }
+
+        return builder.build();
     }
 
     static class ExpressionVisitor extends Visitor {
