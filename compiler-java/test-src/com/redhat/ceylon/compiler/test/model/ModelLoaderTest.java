@@ -24,9 +24,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.api.JavacTaskImpl;
@@ -68,9 +66,8 @@ public class ModelLoaderTest extends CompilerTest {
         CeylonModelLoader modelLoader = CeylonModelLoader.instance(context2);
         // now see if we can find our declarations
         for(Entry<String, Declaration> entry : decls.entrySet()){
-            ProducedType producedType = modelLoader.getType(entry.getKey(), null);
-            Assert.assertNotNull(producedType);
-            TypeDeclaration modelDeclaration = producedType.getDeclaration();
+            Declaration modelDeclaration = modelLoader.getDeclaration(entry.getKey());
+            Assert.assertNotNull(modelDeclaration);
             // make sure we loaded them exactly the same
             compareDeclarations(entry.getValue(), modelDeclaration);
         }

@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.redhat.ceylon.compiler.codegen.ModelLoader;
 import com.redhat.ceylon.compiler.codegen.TypeParser;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
@@ -36,6 +37,11 @@ public class TypeParserTest {
                 klass.setTypeParameters(typeParameters );
             }
             return klass.getType();
+        }
+
+        @Override
+        public Declaration getDeclaration(String typeName) {
+            throw new RuntimeException("Not yet implemented");
         }
         
     }

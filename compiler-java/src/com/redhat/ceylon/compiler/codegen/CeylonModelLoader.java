@@ -164,17 +164,13 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     }
 
     private Declaration makeDeclaration(ClassSymbol classSymbol) {
-        String name = classSymbol.getSimpleName().toString();
         Declaration decl;
         if(isCeylonToplevelAttribute(classSymbol)){
             decl = makeToplevelAttribute(classSymbol);
-            decl.setName(Util.strip(name));
         }else if(isCeylonToplevelMethod(classSymbol)){
             decl = makeToplevelMethod(classSymbol);
-            decl.setName(Util.strip(name));
         }else{
             decl = makeLazyClassOrInterface(classSymbol);
-            decl.setName(name);
         }
         return decl;
     }
@@ -200,9 +196,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     
     private ClassOrInterface makeLazyClassOrInterface(ClassSymbol classSymbol) {
         if(!classSymbol.isInterface()){
-            Class klass = new LazyClass(classSymbol, this);
-            klass.setAbstract((classSymbol.flags() & Flags.ABSTRACT) != 0);
-            return klass;
+            return new LazyClass(classSymbol, this);
         }else{
             return new LazyInterface(classSymbol, this);
         }
@@ -750,6 +744,11 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
 
     private ProducedType decodeType(String value, Scope scope) {
         return typeParser .decodeType(value, scope, this);
+    }
+    
+    @Override
+    public Declaration getDeclaration(String typeName) {
+        return convertToDeclaration(typeName);
     }
 
     @Override
