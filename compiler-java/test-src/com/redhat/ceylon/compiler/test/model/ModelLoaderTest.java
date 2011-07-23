@@ -167,4 +167,9 @@ public class ModelLoaderTest extends CompilerTest {
     public void loadToplevelAttributes(){
         verifyClassLoading("ToplevelAttributes.ceylon");
     }
+
+    @Test
+    public void loadToplevelObjects(){
+        verifyClassLoading("ToplevelObjects.ceylon");
+    }
 }
