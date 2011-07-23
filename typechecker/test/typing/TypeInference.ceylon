@@ -137,12 +137,12 @@ interface TypeInference {
         function join(String x, String y, String f(String z)) {
             return f(x+" "+y);
         }
-        join {
+        @type["String"] value hw = join {
             value x { return "Hello"; }
             value y { return "Hello"; }
             function f(String z) { return z.uppercase; }
         };
-        join {
+        @type["String"] value broken = join {
             value x { return "Hello"; }
             @error value y { return 0; }
             @error function f(Natural z) { return z; }
