@@ -106,6 +106,11 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("invoke/ChainedInvocations");
     }
 
+    @Test
+    public void testInvNamedArgumentInvocation(){
+        compareWithJavaSource("invoke/NamedArgumentInvocation");
+    }
+
     // Self references
     
     @Test
