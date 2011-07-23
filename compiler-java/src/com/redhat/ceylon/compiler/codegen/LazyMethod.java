@@ -10,7 +10,7 @@ public class LazyMethod extends Method {
     private ModelCompleter completer;
     private boolean isLoaded = false;
 
-    public LazyMethod(String name, ClassSymbol classSymbol, ModelCompleter completer) {
+    public LazyMethod(ClassSymbol classSymbol, ModelCompleter completer) {
         this.classSymbol = classSymbol;
         this.completer = completer;
         setName(Util.strip(classSymbol.getSimpleName().toString()));

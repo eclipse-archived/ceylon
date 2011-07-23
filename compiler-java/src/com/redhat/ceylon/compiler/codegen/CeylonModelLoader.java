@@ -194,7 +194,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     }
 
     private Declaration makeToplevelMethod(ClassSymbol classSymbol) {
-        LazyMethod method = new LazyMethod(classSymbol.name.toString(), classSymbol, this);
+        LazyMethod method = new LazyMethod(classSymbol, this);
         return method;
     }
     
@@ -379,7 +379,8 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     }
 
     private ProducedType getType(Type type, Scope scope) {
-        TypeDeclaration declaration = (TypeDeclaration) convertToDeclaration(type, scope);
+        Declaration decl = convertToDeclaration(type, scope);
+        TypeDeclaration declaration = (TypeDeclaration) decl;
         com.sun.tools.javac.util.List<Type> javacTypeArguments = type.getTypeArguments();
         if(!javacTypeArguments.isEmpty()){
             List<ProducedType> typeArguments = new ArrayList<ProducedType>(javacTypeArguments.size());
