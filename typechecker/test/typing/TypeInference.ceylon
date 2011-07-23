@@ -132,5 +132,21 @@ interface TypeInference {
         }
         
     }
+    
+    class NamedArgTypeInference() {
+        function join(String x, String y, String f(String z)) {
+            return f(x+" "+y);
+        }
+        join {
+            value x { return "Hello"; }
+            value y { return "Hello"; }
+            function f(String z) { return z.uppercase; }
+        };
+        join {
+            value x { return "Hello"; }
+            @error value y { return 0; }
+            @error function f(Natural z) { return z; }
+        };
+    }
 
 }
