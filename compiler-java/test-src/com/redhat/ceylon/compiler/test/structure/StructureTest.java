@@ -135,6 +135,18 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("toplevel/ToplevelObject");
     }
     @Test
+    public void testTopToplevelObjectShared(){
+        compareWithJavaSource("toplevel/ToplevelObjectShared");
+    }
+    @Test
+    public void testTopToplevelObjectWithMembers(){
+        compareWithJavaSource("toplevel/ToplevelObjectWithMembers");
+    }
+    @Test
+    public void testTopToplevelObjectWithSupertypes(){
+        compareWithJavaSource("toplevel/ToplevelObjectWithSupertypes");
+    }
+    @Test
     public void testTopToplevelMethods(){
         compareWithJavaSource("toplevel/ToplevelMethods");
     }

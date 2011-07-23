@@ -1,0 +1,27 @@
+package com.redhat.ceylon.compiler.test.structure.toplevel;
+
+class C {
+    
+    C(Natural n) {
+    }
+}
+interface I {
+    
+    public abstract Boolean id(final Boolean x);
+}
+public final class x extends C implements I {
+    
+    @.java.lang.Override
+    public final Boolean id(final Boolean x) {
+        return x;
+    }
+    
+    private x() {
+        super(.ceylon.language.Natural.instance(2L));
+    }
+    private static final x value = new x();
+    
+    public static x getX() {
+        return value;
+    }
+}

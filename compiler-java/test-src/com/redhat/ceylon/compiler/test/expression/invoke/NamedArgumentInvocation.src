@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.test.expression.invoke;
+
+class NamedArgumentInvocation {
+    
+    private final Boolean m() {
+        return new com.redhat.ceylon.compiler.impl.NamedArgumentCall<NamedArgumentInvocation>(this, "foo", 2) {
+            final Boolean f() {
+                return instance.f((Natural) args[1], (String) args[0]);
+            }
+         }.f();
+    }
+    
+    private final Boolean f(final Natural n, final String s) {
+        return ceylon.language.$true.getTrue();
+    }
+    
+    NamedArgumentInvocation() {
+    }
+}

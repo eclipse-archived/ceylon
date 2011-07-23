@@ -1,0 +1,25 @@
+package com.redhat.ceylon.compiler.test.structure.toplevel;
+
+public final class x {
+    
+    public final void y() {
+    }
+    
+    private x() {
+    }
+    private static final x value = new x();
+    
+    public static x getX() {
+        return value;
+    }
+}
+final class accessX {
+    
+    private accessX() {
+    }
+    
+    static void accessX() {
+        com.redhat.ceylon.compiler.test.structure.toplevel.x.getX().y();
+    }
+}
+

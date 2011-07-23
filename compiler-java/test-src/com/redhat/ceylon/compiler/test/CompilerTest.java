@@ -89,11 +89,11 @@ public abstract class CompilerTest {
         }
 	    Listener listener = new Listener();
 	    task.setTaskListener(listener);
-	    
+
 	    // now compile it all the way
 	    Boolean success = task.call();
 	    
-	    Assert.assertTrue(success);
+	    Assert.assertTrue("Compilation failed", success);
 
 		// now look at what we expected
 		String expectedSrc = normalizeLineEndings(readFile(new File(path+java))).trim();

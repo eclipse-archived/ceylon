@@ -562,7 +562,8 @@ public class ExpressionGen extends GenPart {
                         List.<JCExpression>nil());
             }
         } else if (decl instanceof Method) {
-            if (Util.isInnerMethod(decl)) {
+            if (Util.isInnerMethod(decl)
+            		|| decl.isToplevel()) {
                 java.util.List<String> path = new LinkedList<String>();
                 path.add(decl.getName());
                 path.add(decl.getName());
