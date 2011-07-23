@@ -58,10 +58,18 @@ public class ExpressionVisitor extends AbstractVisitor {
     private Tree.Type beginReturnScope(Tree.Type t) {
         Tree.Type ort = returnType;
         returnType = t;
+        if (returnType instanceof Tree.FunctionModifier || 
+                returnType instanceof Tree.ValueModifier) {
+            returnType.setTypeModel( new BottomType().getType() );
+        }
         return ort;
     }
     
-    private void endReturnScope(Tree.Type t) {
+    private void endReturnScope(Tree.Type t, TypedDeclaration td) {
+        if (returnType instanceof Tree.FunctionModifier || 
+                returnType instanceof Tree.ValueModifier) {
+            td.setType( returnType.getTypeModel() );
+        }
         returnType = t;
     }
     
@@ -455,23 +463,20 @@ public class ExpressionVisitor extends AbstractVisitor {
     @Override public void visit(Tree.AttributeGetterDefinition that) {
         Tree.Type rt = beginReturnScope(that.getType());
         super.visit(that);
-        inferType(that, that.getBlock());
-        endReturnScope(rt);
+        endReturnScope(rt, that.getDeclarationModel());
         validateHiddenAttribute(that);
     }
 
     @Override public void visit(Tree.AttributeArgument that) {
         Tree.Type rt = beginReturnScope(that.getType());
         super.visit(that);
-        //TODO: inferType(that, that.getBlock());
-        endReturnScope(rt);
+        endReturnScope(rt, that.getDeclarationModel());
     }
 
     @Override public void visit(Tree.AttributeSetterDefinition that) {
         Tree.Type rt = beginReturnScope(that.getType());
         super.visit(that);
-        inferType(that, that.getBlock());
-        endReturnScope(rt);
+        endReturnScope(rt, that.getDeclarationModel());
     }
 
     @Override public void visit(Tree.MethodDeclaration that) {
@@ -482,39 +487,37 @@ public class ExpressionVisitor extends AbstractVisitor {
     @Override public void visit(Tree.MethodDefinition that) {
         Tree.Type rt = beginReturnScope(that.getType());           
         super.visit(that);
-        endReturnScope(rt);
-        inferType(that, that.getBlock());
+        endReturnScope(rt, that.getDeclarationModel());
     }
 
     @Override public void visit(Tree.MethodArgument that) {
         Tree.Type rt = beginReturnScope(that.getType());           
         super.visit(that);
-        endReturnScope(rt);
-        inferType(that, that.getBlock());
+        endReturnScope(rt, that.getDeclarationModel());
     }
 
     @Override public void visit(Tree.ClassDefinition that) {
         Tree.Type rt = beginReturnScope(new Tree.VoidModifier(that.getAntlrTreeNode()));
         super.visit(that);
-        endReturnScope(rt);
+        endReturnScope(rt, null);
     }
 
     @Override public void visit(Tree.InterfaceDefinition that) {
         Tree.Type rt = beginReturnScope(null);
         super.visit(that);
-        endReturnScope(rt);
+        endReturnScope(rt, null);
     }
 
     @Override public void visit(Tree.ObjectDefinition that) {
         Tree.Type rt = beginReturnScope(new Tree.VoidModifier(that.getAntlrTreeNode()));
         super.visit(that);
-        endReturnScope(rt);
+        endReturnScope(rt, null);
     }
 
     @Override public void visit(Tree.ObjectArgument that) {
         Tree.Type rt = beginReturnScope(new Tree.VoidModifier(that.getAntlrTreeNode()));
         super.visit(that);
-        endReturnScope(rt);
+        endReturnScope(rt, null);
     }
 
     @Override public void visit(Tree.ClassDeclaration that) {
@@ -541,33 +544,6 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }
     
-    private void inferType(Tree.TypedDeclaration that, Tree.Block block) {
-        if (that.getType() instanceof Tree.LocalModifier) {
-            Tree.LocalModifier local = (Tree.LocalModifier) that.getType();
-            if (block!=null) {
-                setType(local, block, that);
-            }
-            else {
-//                local.addError("could not infer type of: " + 
-//                        name(that.getIdentifier()));
-            }
-        }
-    }
-
-    //TODO: fix copy/paste code duplication
-    private void inferType(Tree.MethodArgument that, Tree.Block block) {
-        if (that.getType() instanceof Tree.LocalModifier) {
-            Tree.LocalModifier local = (Tree.LocalModifier) that.getType();
-            if (block!=null) {
-                setType(local, block, that);
-            }
-            else {
-//                local.addError("could not infer type of: " + 
-//                        name(that.getIdentifier()));
-            }
-        }
-    }
-
     private void inferType(Tree.TypedDeclaration that, Tree.SpecifierOrInitializerExpression spec) {
         if (that.getType() instanceof Tree.LocalModifier) {
             Tree.LocalModifier local = (Tree.LocalModifier) that.getType();
@@ -726,50 +702,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         local.setTypeModel(t);
         that.getDeclarationModel().setType(t);
     }
-    
-    private void setType(Tree.LocalModifier local, 
-            Tree.Block block, 
-            Tree.TypedDeclaration that) {
-        //TODO: search for return statements
-        //      in the whole block and form
-        //      a union type from them
-        int s = block.getStatements().size();
-        Tree.Statement d = s==0 ? null : block.getStatements().get(s-1);
-        if (d!=null) { 
-            if (d instanceof Tree.Return) {
-                ProducedType rt = ((Tree.Return) d).getExpression().getTypeModel();
-                local.setTypeModel(rt);
-                that.getDeclarationModel().setType(rt);
-            }
-            else {
-                ProducedType bt = new BottomType().getType();
-                local.setTypeModel(bt);
-                that.getDeclarationModel().setType(bt);
-            }
-        }
-        else {
-//            local.addError("could not infer type of: " + 
-//                    name(that.getIdentifier()));
-        }
-    }
-    
-    //TODO: fix copy/paste code duplication
-    private void setType(Tree.LocalModifier local, 
-            Tree.Block block, 
-            Tree.MethodArgument that) {
-        int s = block.getStatements().size();
-        Tree.Statement d = s==0 ? null : block.getStatements().get(s-1);
-        if (d!=null && (d instanceof Tree.Return)) {
-            ProducedType t = ((Tree.Return) d).getExpression().getTypeModel();
-            local.setTypeModel(t);
-            that.getDeclarationModel().setType(t);
-        }
-        else {
-//            local.addError("could not infer type of: " + 
-//                    name(that.getIdentifier()));
-        }
-    }
-    
+        
     @Override public void visit(Tree.Return that) {
         super.visit(that);
         if (returnType==null) {
@@ -779,18 +712,35 @@ public class ExpressionVisitor extends AbstractVisitor {
         } 
         else {
             Tree.Expression e = that.getExpression();
-            if ( returnType instanceof Tree.VoidModifier ) {
-                if (e!=null) {
-                    that.addError("a void method, setter, or class initializer may not return a value");
-                }
-            }
-            else if ( !(returnType instanceof Tree.LocalModifier) ) {
-                if (e==null) {
+            if (e==null) {
+                if (!(returnType instanceof Tree.VoidModifier)) {
                     that.addError("a non-void method or getter must return a value");
                 }
+            }
+            else {
+                ProducedType et = returnType.getTypeModel();
+                ProducedType at = e.getTypeModel();
+                if (returnType instanceof Tree.VoidModifier) {
+                    that.addError("a void method, setter, or class initializer may not return a value");
+                }
+                else if (returnType instanceof Tree.LocalModifier) {
+                    if (at!=null) {
+                        if (et==null || et.isSubtypeOf(at)) {
+                            returnType.setTypeModel(at);
+                        }
+                        else {
+                            if (!at.isSubtypeOf(et)) {
+                                UnionType ut = new UnionType();
+                                List<ProducedType> list = new ArrayList<ProducedType>();
+                                addToUnion(list, et);
+                                addToUnion(list, at);
+                                ut.setCaseTypes(list);
+                                returnType.setTypeModel( ut.getType() );
+                            }
+                        }
+                    }
+                }
                 else {
-                    ProducedType et = returnType.getTypeModel();
-                    ProducedType at = e.getTypeModel();
                     if (et!=null && at!=null) {
                         if ( !et.isSupertypeOf(at) ) {
                             that.addError("returned expression not assignable to expected return type: " +
@@ -2461,7 +2411,9 @@ public class ExpressionVisitor extends AbstractVisitor {
     
     @Override public void visit(Tree.Term that) {
         super.visit(that);
-        that.setTypeModel( defaultType() );
+        if (that.getTypeModel()==null) {
+            that.setTypeModel( defaultType() );
+        }
     }
 
     @Override public void visit(Tree.Type that) {
