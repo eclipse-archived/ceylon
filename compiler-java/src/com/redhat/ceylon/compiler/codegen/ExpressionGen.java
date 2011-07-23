@@ -18,7 +18,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AndOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BinaryOperatorExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.OrOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PostfixExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequenceEnumeration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.util.Util;
@@ -461,10 +463,11 @@ public class ExpressionGen extends GenPart {
             }
         });
 
-        if (expr.thing() instanceof JCTree.JCNewClass)
+        if (expr.thing() instanceof JCTree.JCNewClass) {
             return expr.thing();
-        else
+        } else {
             return at(ce).Apply(null, expr.thing(), args.toList());
+        }
     }
 
     JCExpression convertArg(Tree.PositionalArgument arg) {
@@ -504,6 +507,10 @@ public class ExpressionGen extends GenPart {
 
             public void visit(Tree.Expression tree) {
                 result = convertExpression(tree);
+            }
+            
+            public void visit(InvocationExpression that) { 
+            	result = convert(that);
             }
             
             public void visit(Tree.This op) {
@@ -556,9 +563,13 @@ public class ExpressionGen extends GenPart {
                 return gen.globalGenAt(member).getGlobalValue(
                         makeIdent(decl.getContainer().getQualifiedName()),
                         decl.getName());
-            } else {
-                return at(member).Apply(List.<JCExpression>nil(), 
+            } else if (decl.isClassMember()) {
+            	return at(member).Apply(List.<JCExpression>nil(), 
                         makeIdent(Util.getGetterName(decl.getName())), 
+                        List.<JCExpression>nil());
+            } else {// method local attr
+                return at(member).Apply(List.<JCExpression>nil(), 
+                        makeIdent(decl.getName(), Util.getGetterName(decl.getName())), 
                         List.<JCExpression>nil());
             }
         } else if (decl instanceof Method) {
