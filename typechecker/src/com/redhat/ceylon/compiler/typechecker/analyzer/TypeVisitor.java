@@ -289,7 +289,7 @@ public class TypeVisitor extends AbstractVisitor {
         }
     }
     
-    private void defaultSuperclass(Tree.ExtendedType et, Class c) {
+    private void defaultSuperclass(Tree.ExtendedType et, TypeDeclaration c) {
         if (et==null) {
             //TODO: should be BaseObject, according to the spec!
             c.setExtendedType(getIdentifiableObjectDeclaration().getType());
@@ -298,8 +298,15 @@ public class TypeVisitor extends AbstractVisitor {
 
     @Override 
     public void visit(Tree.ObjectDefinition that) {
-        Class c = (Class) that.getDeclarationModel().getTypeDeclaration();
-        defaultSuperclass(that.getExtendedType(), c);
+        defaultSuperclass(that.getExtendedType(), 
+                that.getDeclarationModel().getTypeDeclaration());
+        super.visit(that);
+    }
+
+    @Override 
+    public void visit(Tree.ObjectArgument that) {
+        defaultSuperclass(that.getExtendedType(), 
+                that.getDeclarationModel().getTypeDeclaration());
         super.visit(that);
     }
 
@@ -315,8 +322,7 @@ public class TypeVisitor extends AbstractVisitor {
 
     @Override 
     public void visit(Tree.InterfaceDefinition that) {
-        Interface i = that.getDeclarationModel();
-        i.setExtendedType(getObjectDeclaration().getType());
+        that.getDeclarationModel().setExtendedType(getObjectDeclaration().getType());
         super.visit(that);
     }
 
