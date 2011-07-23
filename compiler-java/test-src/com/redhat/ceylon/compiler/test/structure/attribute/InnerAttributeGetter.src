@@ -1,0 +1,23 @@
+package com.redhat.ceylon.compiler.test.structure.attribute;
+
+class InnerAttributeGetter {
+    
+    private final void m() {
+        
+        final class innerGetter {
+            private static final Natural value = .ceylon.language.Natural.instance(0L);
+            
+            private innerGetter {
+            }
+            
+            Natural getInnerGetter() {
+                return value;
+            }
+        }
+        final innerGetter innerGetter = new innerGetter();
+        final Natural n = innerGetter.getInnerGetter();
+    }
+    
+    InnerAttributeGetter() {
+    }
+}

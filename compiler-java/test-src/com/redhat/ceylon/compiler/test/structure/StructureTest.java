@@ -110,6 +110,14 @@ public class StructureTest extends CompilerTest {
     public void testAtrClassAttributeGetterSetter(){
         compareWithJavaSource("attribute/ClassAttributeGetterSetter");
     }
+    @Test
+    public void testAtrInnerAttributeGetter(){
+        compareWithJavaSource("attribute/InnerAttributeGetter");
+    }
+    @Test
+    public void testAtrInnerAttributeGetterSetter(){
+        compareWithJavaSource("attribute/InnerAttributeGetterSetter");
+    }
     
     //
     // Toplevel
