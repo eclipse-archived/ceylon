@@ -93,5 +93,44 @@ interface TypeInference {
         value hi = "hi";
         
     }
+    
+    class MultipleReturnTypeInference() {
+        
+        @type["String|Natural"] function inferredMethod() {
+            if (true) {
+                return "Hello";
+            }
+            else {
+                return 0;
+            }
+        }
+        
+        @type["String|Integer"] value inferredGetter {
+            if (true) {
+                return "Hello";
+            }
+            else {
+                return +1;
+            }
+        }
+        
+        @type["String|Natural|Integer"] function method() {
+            if (1==0) {
+                return inferredMethod();
+            }
+            else {
+                return inferredGetter;
+            }
+        }
+        
+        @type["Bottom"] function f() {
+            throw;
+        }
+        
+        @type["Bottom"] value v {
+            throw;
+        }
+        
+    }
 
 }
