@@ -162,7 +162,7 @@ public class ClassWriter extends ClassFile {
 
     /** Construct a class writer, given an options table.
      */
-    private ClassWriter(Context context) {
+    protected ClassWriter(Context context) {
         context.put(classWriterKey, this);
 
         log = Log.instance(context);
