@@ -208,6 +208,7 @@ public abstract class AbstractVisitor extends Visitor {
             Scope s, Node that) {
         //TODO: this does not account for types 
         //      inherited by a containing scope!
+        //TODO: what if the type arguments don't match?!
         while (s!=null) {
             if (type.getDeclaration().getContainer()==s) {
                 return;

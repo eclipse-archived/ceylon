@@ -886,9 +886,9 @@ public class ExpressionVisitor extends AbstractVisitor {
         if (pr==null) {
             that.addError("malformed invocation expression");
         }
-        else if (pr instanceof Tree.MemberOrTypeExpression) {
+        else if (pr instanceof Tree.StaticMemberOrTypeExpression) {
             Declaration dec = pr.getDeclaration();
-            Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) pr;
+            Tree.StaticMemberOrTypeExpression mte = (Tree.StaticMemberOrTypeExpression) pr;
             if ( mte.getTarget()==null && dec!=null && mte.getTypeArgumentList()==null ) {
                 List<ProducedType> typeArgs = getInferedTypeArguments(that, (Functional) dec);
                 if (pr instanceof Tree.BaseTypeExpression) {
@@ -905,6 +905,9 @@ public class ExpressionVisitor extends AbstractVisitor {
                 }
             }
             visitInvocation(that, mte.getTarget());
+        }
+        else if (pr instanceof Tree.ExtendedTypeExpression) {
+            visitInvocation(that, ((Tree.ExtendedTypeExpression) pr).getTarget());
         }
         else {
             that.addWarning("direct invocation of Callable objects not yet supported");

@@ -101,6 +101,7 @@ tokens {
     BASE_MEMBER_EXPRESSION;
     QUALIFIED_MEMBER_EXPRESSION;
     QUALIFIED_TYPE_EXPRESSION;
+    EXTENDED_TYPE_EXPRESSION;
     //SUBTYPE_EXPRESSION;
     SUPER_TYPE;
     LAMBDA;
@@ -443,10 +444,10 @@ classBody
 extendedType
     : EXTENDS 
     (
-      bt=typeReference positionalArguments
-      -> ^(EXTENDED_TYPE[$EXTENDS] ^(BASE_TYPE $bt) ^(INVOCATION_EXPRESSION ^(BASE_TYPE_EXPRESSION $bt) positionalArguments))
-    | SUPER MEMBER_OP qt=typeReference positionalArguments
-      -> ^(EXTENDED_TYPE[$EXTENDS] ^(QUALIFIED_TYPE SUPER_TYPE[$SUPER] $qt) ^(INVOCATION_EXPRESSION ^(QUALIFIED_TYPE_EXPRESSION SUPER MEMBER_OP $qt) positionalArguments))
+      type positionalArguments
+      -> ^(EXTENDED_TYPE[$EXTENDS] type ^(INVOCATION_EXPRESSION ^(EXTENDED_TYPE_EXPRESSION) positionalArguments))
+    | SUPER MEMBER_OP typeReference positionalArguments
+      -> ^(EXTENDED_TYPE[$EXTENDS] ^(QUALIFIED_TYPE SUPER_TYPE[$SUPER] typeReference) ^(INVOCATION_EXPRESSION ^(EXTENDED_TYPE_EXPRESSION) positionalArguments))
     )
     ;
 

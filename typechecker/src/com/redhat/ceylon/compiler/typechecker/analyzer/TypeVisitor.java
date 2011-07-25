@@ -423,6 +423,17 @@ public class TypeVisitor extends AbstractVisitor {
             }*/
             ProducedType type = et.getTypeModel();
             if (type!=null) {
+                if (et instanceof Tree.QualifiedType) {
+                    if ( !(((Tree.QualifiedType) et).getOuterType() instanceof Tree.SuperType) ) {
+                        checkTypeBelongsToContainingScope(type, td.getContainer(), et);
+                    }
+                }
+                Tree.Primary pr = that.getInvocationExpression().getPrimary();
+                if (pr instanceof Tree.ExtendedTypeExpression) {
+                    pr.setTypeModel(type);
+                    pr.setDeclaration(type.getDeclaration());
+                    ( (Tree.ExtendedTypeExpression) pr).setTarget(type);
+                }
                 if (type.getDeclaration() instanceof TypeParameter) {
                     et.addError("directly extends a type parameter: " + 
                             type.getProducedTypeName());
