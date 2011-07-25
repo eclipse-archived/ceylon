@@ -78,7 +78,7 @@ public class ModelLoaderTest extends CompilerTest {
         if(!validDeclarations.add(validDeclaration))
             return;
         // let's not check java stuff for now, due to missing types in the jdk's private methods
-        if(Util.getQualifiedName(validDeclaration).startsWith("java."))
+        if(validDeclaration.getQualifiedNameString().startsWith("java."))
             return;
         // only compare parameter names for public methods
         if(!(validDeclaration instanceof Parameter)
