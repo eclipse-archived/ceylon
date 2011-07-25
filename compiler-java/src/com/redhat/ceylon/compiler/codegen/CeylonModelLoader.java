@@ -147,41 +147,83 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         }
     }
 
+    enum ClassType {
+        ATTRIBUTE, METHOD, OBJECT, CLASS, INTERFACE;
+    }
+    
     private Declaration convertToDeclaration(ClassSymbol classSymbol) {
         String className = classSymbol.className();
-        if(declarationsByName.containsKey(className)){
-            return declarationsByName.get(className);
+        ClassType type;
+        String prefix;
+        if(isCeylonToplevelAttribute(classSymbol)){
+            type = ClassType.ATTRIBUTE;
+            prefix = "V";
+        }else if(isCeylonToplevelMethod(classSymbol)){
+            type = ClassType.METHOD;
+            prefix = "V";
+        }else if(isCeylonToplevelObject(classSymbol)){
+            type = ClassType.OBJECT;
+            prefix = "C";
+        }else if(classSymbol.isInterface()){
+            type = ClassType.INTERFACE;
+            prefix = "C";
+        }else{
+            type = ClassType.CLASS;
+            prefix = "C";
         }
-        Declaration decl = makeDeclaration(classSymbol);
-        declarationsByName.put(className, decl);
+        String key = prefix + className;
+        // see if we already have it
+        if(declarationsByName.containsKey(key)){
+            return declarationsByName.get(key);
+        }
         
-        decl.setShared((classSymbol.flags() & Flags.PUBLIC) != 0);
-        
+        // make it
+        Declaration decl = null;
+        List<Declaration> decls = new ArrayList<Declaration>(2);
+        switch(type){
+        case ATTRIBUTE:
+            decl = makeToplevelAttribute(classSymbol);
+            break;
+        case METHOD:
+            decl = makeToplevelMethod(classSymbol);
+            break;
+        case OBJECT:
+            // we first make an attribute
+            decl = makeToplevelAttribute(classSymbol);
+            declarationsByName.put("V"+className, decl);
+            decls.add(decl);
+            // then we make a class for it, so we fall-through:
+        case CLASS:
+        case INTERFACE:
+            decl = makeLazyClassOrInterface(classSymbol);
+            break;
+        }
+
+        declarationsByName.put(key, decl);
+        decls.add(decl);
+
         // find its module
         String pkgName = classSymbol.packge().getQualifiedName().toString();
         Module module = findOrCreateModule(pkgName);
         Package pkg = findOrCreatePackage(module, pkgName);
-        // and add it there
-        pkg.getMembers().add(decl);
-        decl.setContainer(pkg);
-        
-        return decl;
-    }
 
-    private Declaration makeDeclaration(ClassSymbol classSymbol) {
-        Declaration decl;
-        if(isCeylonToplevelAttribute(classSymbol)){
-            decl = makeToplevelAttribute(classSymbol);
-        }else if(isCeylonToplevelMethod(classSymbol)){
-            decl = makeToplevelMethod(classSymbol);
-        }else{
-            decl = makeLazyClassOrInterface(classSymbol);
+        for(Declaration d : decls){
+            d.setShared((classSymbol.flags() & Flags.PUBLIC) != 0);
+        
+            // add it to its package
+            pkg.getMembers().add(d);
+            d.setContainer(pkg);
         }
+        
         return decl;
     }
 
     private boolean isCeylonToplevelAttribute(ClassSymbol classSymbol) {
         return classSymbol.attribute(symtab.ceylonAtAttributeType.tsym) != null;
+    }
+
+    private boolean isCeylonToplevelObject(ClassSymbol classSymbol) {
+        return classSymbol.attribute(symtab.ceylonAtObjectType.tsym) != null;
     }
 
     private Declaration makeToplevelAttribute(ClassSymbol classSymbol) {
