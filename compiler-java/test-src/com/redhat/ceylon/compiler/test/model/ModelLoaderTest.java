@@ -50,8 +50,9 @@ public class ModelLoaderTest extends CompilerTest {
         PhasedUnit phasedUnit = phasedUnits.getPhasedUnits().get(0);
         Map<String,Declaration> decls = new HashMap<String,Declaration>();
         for(Declaration decl : phasedUnit.getUnit().getDeclarations()){
-            if(decl.isToplevel())
-                decls.put(Util.getQualifiedName(decl), decl);
+            if(decl.isToplevel()){
+                decls.put(Util.getQualifiedPrefixedName(decl), decl);
+            }
         }
         
         // now compile the ceylon usage file

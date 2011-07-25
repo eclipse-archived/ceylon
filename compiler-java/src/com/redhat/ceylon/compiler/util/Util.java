@@ -1,6 +1,11 @@
 package com.redhat.ceylon.compiler.util;
 
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Getter;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 public class Util {
     public static String strip(String str){
@@ -34,15 +39,22 @@ public class Util {
         return decl.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Method;
 	}
 	
-	// FIXME: make this easier in Scope?
-	public static String getQualifiedName(Declaration decl){
-		StringBuffer str = new StringBuffer();
-		for(String part : decl.getQualifiedName()){
-			if(str.length() > 0)
-				str.append(".");
-			str.append(part);
-		}
-		return str.toString();
+	public static String getQualifiedPrefixedName(Declaration decl){
+	    String name = decl.getQualifiedNameString();
+	    String prefix;
+	    if(decl instanceof ClassOrInterface)
+	        prefix = "C";
+	    else if(decl instanceof Value)
+	        prefix = "V";
+        else if(decl instanceof Getter)
+            prefix = "G";
+        else if(decl instanceof Setter)
+            prefix = "S";
+        else if(decl instanceof Method)
+            prefix = "M";
+        else
+            throw new RuntimeException("Don't know how to prefix decl: "+decl);
+	    return prefix + name;
 	}
 
     public static String getSimpleName(String name) {
