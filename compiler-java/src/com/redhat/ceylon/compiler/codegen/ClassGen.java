@@ -518,7 +518,9 @@ public class ClassGen extends GenPart {
 
         Name name = generateClassName(def, topLevel);
 
-        visitor.langAnnotations.appendList(gen.makeAtCeylon());
+        ListBuffer<JCAnnotation> langAnnotations = visitor.langAnnotations;
+        langAnnotations.appendList(gen.makeAtCeylon());
+        langAnnotations.appendList(gen.makeAtObject());
         
         TypeDeclaration decl = def.getDeclarationModel().getType().getDeclaration();
 
@@ -527,7 +529,7 @@ public class ClassGen extends GenPart {
         }
 
         return at(def).ClassDef(
-                at(def).Modifiers((long) convertObjectDeclFlags(def), visitor.langAnnotations.toList()),
+                at(def).Modifiers((long) convertObjectDeclFlags(def), langAnnotations.toList()),
                 name,
                 List.<JCTypeParameter>nil(),
                 getSuperclass(decl.getExtendedType()),
@@ -539,8 +541,6 @@ public class ClassGen extends GenPart {
         GlobalGen.DefinitionBuilder builder = gen
                 .globalGenAt(decl)
                 .defineGlobal(generatedClassName, decl.getIdentifier().getText())
-                // Add @Object
-                .classAnnotations(gen.makeAtObject())
                 .valueAnnotations(gen.makeJavaTypeAnnotations(decl.getDeclarationModel(), gen.actualType(decl)))
                 .immutable()
                 .skipConstructor()
