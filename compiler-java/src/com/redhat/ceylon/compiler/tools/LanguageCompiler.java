@@ -35,6 +35,7 @@ import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
 
+import com.redhat.ceylon.compiler.codegen.CeylonClassWriter;
 import com.redhat.ceylon.compiler.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.codegen.CeylonTransformer;
 import com.redhat.ceylon.compiler.loader.CeylonEnter;
@@ -111,6 +112,7 @@ public class LanguageCompiler extends JavaCompiler {
         options.put("-Xprefer", "source");
         // make sure it's registered
         CeylonEnter.instance(context);
+        CeylonClassWriter.instance(context);
         JavaCompiler instance = context.get(compilerKey);
         if (instance == null)
             instance = new LanguageCompiler(context);
