@@ -99,8 +99,7 @@ public final class GlobalGen extends GenPart {
         private final String variableName;
 
         private long classVisibility;
-        private List<JCTree> classDefs = List.nil();
-        
+
         private boolean readable = true;
         private long getterVisibility;
         private JCTree.JCBlock getterBlock;
@@ -142,8 +141,6 @@ public final class GlobalGen extends GenPart {
          * @param defs a {@link ListBuffer} to which the definitions will be appended.
          */
         public void appendDefinitionsTo(ListBuffer<JCTree> defs) {
-            defs.appendList(classDefs);
-            
             if (getterBlock == null) {
                 defs.append(generateField());
             }
@@ -236,16 +233,6 @@ public final class GlobalGen extends GenPart {
         }
 
         /**
-         * Adds definitions to the body of the generated class
-         * @param defs definitions to add
-         * @return this instance for method chaining
-         */
-        public DefinitionBuilder classBody(List<JCTree> defs) {
-            this.classDefs = this.classDefs.appendList(defs);
-            return this;
-        }
-
-        /**
          * Sets the visibility of the generated getter. If no getter is generated the visibility will be silently
          * ignored.
          * @param getterVisibility a visibility flag (see {@link Flags})
@@ -315,12 +302,12 @@ public final class GlobalGen extends GenPart {
          * @return this instance for method chaining
          */
         public DefinitionBuilder valueAnnotations(List<JCTree.JCAnnotation> valueAnnotations) {
-            this.valueAnnotations = this.valueAnnotations.appendList(valueAnnotations);
+            this.valueAnnotations = valueAnnotations;
             return this;
         }
 
         public DefinitionBuilder classAnnotations(List<JCTree.JCAnnotation> classAnnotations) {
-            this.classAnnotations = this.classAnnotations.appendList(classAnnotations);
+            this.classAnnotations = classAnnotations;
             return this;
         }
 

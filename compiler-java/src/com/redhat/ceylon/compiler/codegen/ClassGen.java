@@ -350,7 +350,6 @@ public class ClassGen extends GenPart {
         int result = 0;
 
         result |= FINAL;
-        result |= STATIC;
         result |= isShared(cdecl) ? PUBLIC : 0;
 
         return result;
@@ -509,7 +508,7 @@ public class ClassGen extends GenPart {
         return names().fromString(name);
     }
 
-    private JCClassDecl objectClass(Tree.ObjectDefinition def, String typeName) {
+    public JCClassDecl objectClass(Tree.ObjectDefinition def, boolean topLevel) {
         ClassVisitor visitor = new ClassVisitor();
         def.visitChildren(visitor);
 
@@ -517,16 +516,18 @@ public class ClassGen extends GenPart {
 
         addGettersAndSetters(visitor.defs, visitor.attributeDecls);
 
-        Name name = names().fromString(typeName);
+        Name name = generateClassName(def, topLevel);
 
         visitor.langAnnotations.appendList(gen.makeAtCeylon());
-        visitor.langAnnotations.appendList(gen.makeAtObject());
         
         TypeDeclaration decl = def.getDeclarationModel().getType().getDeclaration();
-        
-        long mods = convertObjectDeclFlags(def);
+
+        if (topLevel) {
+            appendObjectGlobal(visitor.defs, def, make().Ident(name));
+        }
+
         return at(def).ClassDef(
-                at(def).Modifiers(mods, visitor.langAnnotations.toList()),
+                at(def).Modifiers((long) convertObjectDeclFlags(def), visitor.langAnnotations.toList()),
                 name,
                 List.<JCTypeParameter>nil(),
                 getSuperclass(decl.getExtendedType()),
@@ -534,17 +535,16 @@ public class ClassGen extends GenPart {
                 visitor.defs.toList());
     }
 
-    public JCTree makeObject(Tree.ObjectDefinition decl) {
-        String name = decl.getIdentifier().getText();
-        String typeName = "$" + name;
+    public void appendObjectGlobal(ListBuffer<JCTree> defs, Tree.ObjectDefinition decl, JCExpression generatedClassName) {
         GlobalGen.DefinitionBuilder builder = gen
                 .globalGenAt(decl)
-                .defineGlobal(makeIdent(typeName), decl.getIdentifier().getText())
-                .classAnnotations(gen.makeAtAttribute())
+                .defineGlobal(generatedClassName, decl.getIdentifier().getText())
+                // Add @Object
+                .classAnnotations(gen.makeAtObject())
                 .valueAnnotations(gen.makeJavaTypeAnnotations(decl.getDeclarationModel(), gen.actualType(decl)))
                 .immutable()
-                .classBody(List.<JCTree> of(objectClass(decl, typeName)))
-                .initialValue(make().NewClass(null, List.<JCExpression>nil(), makeIdent(typeName), List.<JCExpression>nil(), null));
+                .skipConstructor()
+                .initialValue(make().NewClass(null, List.<JCExpression>nil(), generatedClassName, List.<JCExpression>nil(), null));
 
         if (isShared(decl)) {
             builder
@@ -553,9 +553,8 @@ public class ClassGen extends GenPart {
                     .setterVisibility(PUBLIC);
         }
 
-        return builder.build();
+        builder.appendDefinitionsTo(defs);
     }
-    
     // this is due to the above commented code
     @SuppressWarnings("unused")
     private JCExpression convert(final Tree.Annotation userAnn, Tree.ClassOrInterface classDecl, String methodName) {
