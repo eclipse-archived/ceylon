@@ -62,7 +62,7 @@ public class ModelLoaderTest extends CompilerTest {
         // get the context to grab the declarations
         Context context2 = task2.getContext();
         success = task2.call();
-        Assert.assertTrue(success);
+        Assert.assertTrue("Compilation failed", success);
         
         CeylonModelLoader modelLoader = CeylonModelLoader.instance(context2);
         // now see if we can find our declarations
