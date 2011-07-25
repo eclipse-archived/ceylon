@@ -99,7 +99,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
          * for now the typechecker requires at least ceylon.language to be loaded 
          */
         for(Symbol m : ceylonPkg.members().getElements()){
-            convertToDeclaration(lookupClassSymbol(m.getQualifiedName().toString()));
+            convertToDeclaration(lookupClassSymbol(m.getQualifiedName().toString()), DeclarationType.VALUE);
         }
         
         for(final JCCompilationUnit tree : trees){
@@ -151,7 +151,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         ATTRIBUTE, METHOD, OBJECT, CLASS, INTERFACE;
     }
     
-    private Declaration convertToDeclaration(ClassSymbol classSymbol) {
+    private Declaration convertToDeclaration(ClassSymbol classSymbol, DeclarationType declarationType) {
         String className = classSymbol.className();
         ClassType type;
         String prefix;
@@ -163,7 +163,8 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             prefix = "V";
         }else if(isCeylonToplevelObject(classSymbol)){
             type = ClassType.OBJECT;
-            prefix = "C";
+            // depends on which one we want
+            prefix = declarationType == DeclarationType.TYPE ? "C" : "V";
         }else if(classSymbol.isInterface()){
             type = ClassType.INTERFACE;
             prefix = "C";
@@ -188,11 +189,14 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             decl = makeToplevelMethod(classSymbol);
             break;
         case OBJECT:
-            // we first make an attribute
-            decl = makeToplevelAttribute(classSymbol);
-            declarationsByName.put("V"+className, decl);
+            // we first make a class
+            decl = makeLazyClassOrInterface(classSymbol);
+            declarationsByName.put("C"+className, decl);
             decls.add(decl);
-            // then we make a class for it, so we fall-through:
+            // then we make a value for it
+            decl = makeToplevelAttribute(classSymbol);
+            key = "V"+className;
+            break;
         case CLASS:
         case INTERFACE:
             decl = makeLazyClassOrInterface(classSymbol);
@@ -248,7 +252,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         }
     }
 
-    private Declaration convertToDeclaration(Type type, Scope scope) {
+    private Declaration convertToDeclaration(Type type, Scope scope, DeclarationType declarationType) {
         String typeName;
         switch(type.getKind()){
         case VOID:    typeName = "ceylon.language.Void"; break;
@@ -265,8 +269,8 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             //throw new RuntimeException("Array type not implemented");
             //UnionType[Empty|Sequence<Natural>] casetypes 
             // producedtypes.typearguments: typeparam[element]->type[natural]
-            TypeDeclaration emptyDecl = (TypeDeclaration)convertToDeclaration("ceylon.language.Empty");
-            TypeDeclaration sequenceDecl = (TypeDeclaration)convertToDeclaration("ceylon.language.Sequence");
+            TypeDeclaration emptyDecl = (TypeDeclaration)convertToDeclaration("ceylon.language.Empty", DeclarationType.TYPE);
+            TypeDeclaration sequenceDecl = (TypeDeclaration)convertToDeclaration("ceylon.language.Sequence", DeclarationType.TYPE);
             UnionType unionType = new UnionType();
             List<ProducedType> caseTypes = new ArrayList<ProducedType>(2);
             caseTypes.add(emptyDecl.getType());
@@ -287,14 +291,14 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         default:
             throw new RuntimeException("Failed to handle type "+type);
         }
-        return convertToDeclaration(typeName);
+        return convertToDeclaration(typeName, declarationType);
     }
     
-    private Declaration convertToDeclaration(String typeName) {
+    private Declaration convertToDeclaration(String typeName, DeclarationType declarationType) {
         ClassSymbol classSymbol = lookupClassSymbol(typeName);
         if(classSymbol == null)
             throw new RuntimeException("Failed to resolve "+typeName);
-        return convertToDeclaration(classSymbol);
+        return convertToDeclaration(classSymbol, declarationType);
     }
 
     private TypeParameter safeLookupTypeParameter(Scope scope, String name) {
@@ -380,7 +384,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 ClassSymbol classSymbol = lookupClassSymbol(className);
                 // only get it from the classpath if we're not compiling it
                 if(classSymbol != null && classSymbol.classfile.getKind() != Kind.SOURCE)
-                    return convertToDeclaration(className);
+                    return convertToDeclaration(className, DeclarationType.VALUE);
                 return super.getDirectMember(name);
             }
             @Override
@@ -421,7 +425,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     }
 
     private ProducedType getType(Type type, Scope scope) {
-        Declaration decl = convertToDeclaration(type, scope);
+        Declaration decl = convertToDeclaration(type, scope, DeclarationType.TYPE);
         TypeDeclaration declaration = (TypeDeclaration) decl;
         com.sun.tools.javac.util.List<Type> javacTypeArguments = type.getTypeArguments();
         if(!javacTypeArguments.isEmpty()){
@@ -798,8 +802,8 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     }
     
     @Override
-    public Declaration getDeclaration(String typeName) {
-        return convertToDeclaration(typeName);
+    public Declaration getDeclaration(String typeName, DeclarationType declarationType) {
+        return convertToDeclaration(typeName, declarationType);
     }
 
     @Override
@@ -809,7 +813,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             if(typeParameter != null)
                 return typeParameter.getType();
         }
-        return ((TypeDeclaration)convertToDeclaration(name)).getType();
+        return ((TypeDeclaration)convertToDeclaration(name, DeclarationType.TYPE)).getType();
     }
 
 }

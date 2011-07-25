@@ -12,6 +12,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.codegen.CeylonModelLoader;
+import com.redhat.ceylon.compiler.codegen.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.test.CompilerTest;
 import com.redhat.ceylon.compiler.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
@@ -67,7 +68,8 @@ public class ModelLoaderTest extends CompilerTest {
         CeylonModelLoader modelLoader = CeylonModelLoader.instance(context2);
         // now see if we can find our declarations
         for(Entry<String, Declaration> entry : decls.entrySet()){
-            Declaration modelDeclaration = modelLoader.getDeclaration(entry.getKey());
+            Declaration modelDeclaration = modelLoader.getDeclaration(entry.getKey().substring(1), 
+                    entry.getValue() instanceof Value ? DeclarationType.VALUE : DeclarationType.TYPE);
             Assert.assertNotNull(modelDeclaration);
             // make sure we loaded them exactly the same
             compareDeclarations(entry.getValue(), modelDeclaration);

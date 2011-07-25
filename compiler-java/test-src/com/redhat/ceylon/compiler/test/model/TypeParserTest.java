@@ -40,7 +40,7 @@ public class TypeParserTest {
         }
 
         @Override
-        public Declaration getDeclaration(String typeName) {
+        public Declaration getDeclaration(String typeName, DeclarationType declarationType) {
             throw new RuntimeException("Not yet implemented");
         }
         

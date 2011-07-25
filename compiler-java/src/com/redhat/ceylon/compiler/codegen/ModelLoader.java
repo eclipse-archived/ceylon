@@ -5,6 +5,11 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 
 public interface ModelLoader {
-    public Declaration getDeclaration(String typeName);
+    
+    enum DeclarationType {
+        TYPE, VALUE;
+    }
+    
+    public Declaration getDeclaration(String typeName, DeclarationType declarationType);
     public ProducedType getType(String name, Scope scope);
 }
