@@ -1,0 +1,14 @@
+package com.redhat.ceylon.compiler.test.expression.invoke;
+
+class SequencedParameterInvocation {
+    
+    private final void m(final String a, final Sequence<Natural> i) {
+    }
+    
+    private final void f() {
+        m(.ceylon.language.String.instance("foo"), new .ceylon.language.ArraySequence<Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L)));
+    }
+    
+    SequencedParameterInvocation() {
+    }
+}
