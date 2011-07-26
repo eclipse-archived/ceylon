@@ -61,6 +61,10 @@ public class StructureTest extends CompilerTest {
     public void testKlsKlassTypeParamsSatisfies(){
         compareWithJavaSource("klass/KlassTypeParamsSatisfies");
     }
+    @Test
+    public void testKlsInnerClass(){
+        compareWithJavaSource("klass/InnerClass");
+    }
     
     //
     // Methods

@@ -1,0 +1,13 @@
+package com.redhat.ceylon.compiler.test.structure.klass;
+
+class OuterClass {
+    
+    class InnerClass {
+        
+        InnerClass() {
+        }
+    }
+    
+    OuterClass() {
+    }
+}
