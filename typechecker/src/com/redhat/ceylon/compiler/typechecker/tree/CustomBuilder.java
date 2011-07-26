@@ -3,14 +3,58 @@ package com.redhat.ceylon.compiler.typechecker.tree;
 import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionalParameterDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueParameterDeclaration;
 
 public class CustomBuilder extends Builder {
+    
+    @Override
+    public BaseTypeExpression buildBaseTypeExpression(CommonTree treeNode) {
+        BaseTypeExpression node = new BaseTypeExpression(treeNode);
+        buildBaseTypeExpression(treeNode, node);
+        if (node.getTypeArguments()==null) {
+            node.setTypeArguments( new Tree.InferredTypeArguments(treeNode) );
+        }
+        return node;
+    }
+    
+    @Override
+    public BaseMemberExpression buildBaseMemberExpression(CommonTree treeNode) {
+        BaseMemberExpression node = new BaseMemberExpression(treeNode);
+        buildBaseMemberExpression(treeNode, node);
+        if (node.getTypeArguments()==null) {
+            node.setTypeArguments( new Tree.InferredTypeArguments(treeNode) );
+        }
+        return node;
+    }
+    
+    @Override
+    public QualifiedTypeExpression buildQualifiedTypeExpression(CommonTree treeNode) {
+        QualifiedTypeExpression node = new QualifiedTypeExpression(treeNode);
+        buildQualifiedTypeExpression(treeNode, node);
+        if (node.getTypeArguments()==null) {
+            node.setTypeArguments( new Tree.InferredTypeArguments(treeNode) );
+        }
+        return node;
+    }
+    
+    @Override
+    public QualifiedMemberExpression buildQualifiedMemberExpression(CommonTree treeNode) {
+        QualifiedMemberExpression node = new QualifiedMemberExpression(treeNode);
+        buildQualifiedMemberExpression(treeNode, node);
+        if (node.getTypeArguments()==null) {
+            node.setTypeArguments( new Tree.InferredTypeArguments(treeNode) );
+        }
+        return node;
+    }
     
     @Override
     public AttributeDeclaration buildAttributeDeclaration(CommonTree treeNode) {

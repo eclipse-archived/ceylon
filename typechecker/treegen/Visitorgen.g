@@ -40,7 +40,7 @@ field : 'abstract'? TYPE_NAME FIELD_NAME ';';
 NODE_NAME : ('A'..'Z'|'_')+;
 
 FIELD_NAME : ('a'..'z') ('a'..'z'|'A'..'Z')*;
-TYPE_NAME : ('A'..'Z') ('a'..'z'|'A'..'Z')*;
+TYPE_NAME : ('A'..'Z') ('a'..'z'|'A'..'Z'|'<'|'>')*;
 
 WS : (' ' | '\n' | '\t' | '\r' | '\u000C') { skip(); };
 

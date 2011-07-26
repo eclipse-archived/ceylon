@@ -106,6 +106,7 @@ tokens {
     SUPER_TYPE;
     LAMBDA;
     SYNTHETIC_VARIABLE;
+    INFERRED_TYPE_ARGUMENTS;
 }
 
 @parser::header { package com.redhat.ceylon.compiler.typechecker.parser; }

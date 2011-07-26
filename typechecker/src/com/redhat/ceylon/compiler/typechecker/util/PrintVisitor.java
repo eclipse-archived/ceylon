@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.util;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -95,6 +96,19 @@ public class PrintVisitor extends Visitor implements NaturalVisitor {
             ProducedType type = ((Tree.Type) node).getTypeModel();
             if (type!=null) {
                 print(" -> " + type.getProducedTypeName());
+            }
+        }
+        if (node instanceof Tree.TypeArguments) {
+            List<ProducedType> types = ((Tree.TypeArguments) node).getTypeArguments();
+            if (types!=null) {
+                print(" -> ");
+                int i=0;
+                for (ProducedType pt: types) {
+                    print(pt.getProducedTypeName());
+                    if (++i!=types.size()) {
+                        print(", ");
+                    }
+                }
             }
         }
         if (!node.getErrors().isEmpty()) {

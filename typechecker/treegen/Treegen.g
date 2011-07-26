@@ -38,7 +38,7 @@ node : '^' '('
        { println("            catch (Exception e) {" ); }
        { println("                this.addError(visitor.getClass().getSimpleName() +" ); }
        { println("                              \" caused an exception visiting " + className($n.text) + " node: \" +" ); }
-       { println("                              e + \" at \" + e.getStackTrace()[0]);" ); }
+       { println("                              e + \" at \" + (e.getStackTrace().length>0 ? e.getStackTrace()[0].toString() : \"unknown\"));" ); }
        { println("            }" ); }
        { println("        }\n" ); }
        { println("        @Override public void visitChildren(Visitor visitor) {" ); }
@@ -84,10 +84,15 @@ subnode :
           { println("        public void add" + initialUpper($f.text) + "(" + className($mn.text) + " node) { " + $f.text + "s.add(node); }\n"); }
         ;
 
-field : t=TYPE_NAME f=FIELD_NAME 
+field : t=TYPE_NAME f=FIELD_NAME
           { println("        private com.redhat.ceylon.compiler.typechecker.model." + $t.text + " " + $f.text+ ";"); }
           { println("        public com.redhat.ceylon.compiler.typechecker.model." + $t.text + " get" + initialUpper($f.text) + "() { return " + $f.text + "; }"); }
           { println("        public void set" + initialUpper($f.text) + "(com.redhat.ceylon.compiler.typechecker.model." + $t.text + " value) { " + $f.text + " = value; }\n"); }
+        ';'
+      | l=TYPE_NAME '<' t=TYPE_NAME '>' f=FIELD_NAME
+          { println("        private " + $l.text + "<com.redhat.ceylon.compiler.typechecker.model." + $t.text + "> " + $f.text+ ";"); }
+          { println("        public " + $l.text + "<com.redhat.ceylon.compiler.typechecker.model." + $t.text + "> get" + initialUpper($f.text) + "() { return " + $f.text + "; }"); }
+          { println("        public void set" + initialUpper($f.text) + "(" + $l.text + "<com.redhat.ceylon.compiler.typechecker.model." + $t.text + "> value) { " + $f.text + " = value; }\n"); }
         ';'
       | 'abstract' t=TYPE_NAME f=FIELD_NAME
           { println("        public abstract com.redhat.ceylon.compiler.typechecker.model." + $t.text + " get" + initialUpper($f.text) + "();\n"); }
