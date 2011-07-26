@@ -11,8 +11,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import com.redhat.ceylon.compiler.codegen.CeylonModelLoader;
-import com.redhat.ceylon.compiler.codegen.ModelLoader.DeclarationType;
+import com.redhat.ceylon.compiler.loader.CeylonModelLoader;
+import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.test.CompilerTest;
 import com.redhat.ceylon.compiler.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;

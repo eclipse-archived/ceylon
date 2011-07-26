@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.codegen;
+package com.redhat.ceylon.compiler.loader;
 
 public interface ModelCompleter {
 

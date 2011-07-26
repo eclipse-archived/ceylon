@@ -35,10 +35,10 @@ import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
 
-import com.redhat.ceylon.compiler.codegen.CeylonEnter;
 import com.redhat.ceylon.compiler.codegen.CeylonFileObject;
-import com.redhat.ceylon.compiler.codegen.CeylonModelLoader;
 import com.redhat.ceylon.compiler.codegen.Gen2;
+import com.redhat.ceylon.compiler.loader.CeylonEnter;
+import com.redhat.ceylon.compiler.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleBuilder;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;

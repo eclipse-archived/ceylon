@@ -7,8 +7,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import com.redhat.ceylon.compiler.codegen.ModelLoader;
-import com.redhat.ceylon.compiler.codegen.TypeParser;
+import com.redhat.ceylon.compiler.loader.ModelLoader;
+import com.redhat.ceylon.compiler.loader.TypeParser;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;

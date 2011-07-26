@@ -12,6 +12,7 @@ import javax.tools.JavaFileObject;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 
+import com.redhat.ceylon.compiler.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;

@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.codegen;
+package com.redhat.ceylon.compiler.loader;
 
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;

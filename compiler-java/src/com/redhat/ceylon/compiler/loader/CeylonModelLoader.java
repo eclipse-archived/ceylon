@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.codegen;
+package com.redhat.ceylon.compiler.loader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.lang.model.type.TypeKind;
 import javax.tools.JavaFileObject.Kind;
 
+import com.redhat.ceylon.compiler.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
