@@ -889,8 +889,10 @@ public class ExpressionVisitor extends AbstractVisitor {
         else if (pr instanceof Tree.StaticMemberOrTypeExpression) {
             Declaration dec = pr.getDeclaration();
             Tree.StaticMemberOrTypeExpression mte = (Tree.StaticMemberOrTypeExpression) pr;
-            if ( mte.getTarget()==null && dec!=null && mte.getTypeArgumentList()==null ) {
+            if ( mte.getTarget()==null && dec!=null && 
+                    mte.getTypeArguments() instanceof Tree.InferredTypeArguments ) {
                 List<ProducedType> typeArgs = getInferedTypeArguments(that, (Functional) dec);
+                mte.getTypeArguments().setTypeArguments(typeArgs);
                 if (pr instanceof Tree.BaseTypeExpression) {
                     visitBaseTypeExpression((Tree.BaseTypeExpression) pr, (TypeDeclaration) dec, typeArgs, null);
                 }
@@ -914,8 +916,8 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }
 
-    private List<ProducedType> getInferedTypeArguments(
-            Tree.InvocationExpression that, Functional dec) {
+    private List<ProducedType> getInferedTypeArguments(Tree.InvocationExpression that, 
+            Functional dec) {
         List<ProducedType> typeArgs = new ArrayList<ProducedType>();
         ParameterList parameters = dec.getParameterLists().get(0);
         for (TypeParameter tp: dec.getTypeParameters()) {
@@ -1900,13 +1902,15 @@ public class ExpressionVisitor extends AbstractVisitor {
         TypedDeclaration member = getBaseDeclaration(that);
         if (member==null) {
             that.addError("member does not exist: " +
-                    that.getIdentifier().getText());
+                    name(that.getIdentifier()));
         }
         else {
             that.setDeclaration(member);
-            Tree.TypeArgumentList tal = that.getTypeArgumentList();
+            Tree.TypeArguments tal = that.getTypeArguments();
             if (explicitTypeArguments(member, tal)) {
-                visitBaseMemberExpression(that, member, getTypeArguments(tal), tal);
+                List<ProducedType> ta = getTypeArguments(tal);
+                tal.setTypeArguments(ta);
+                visitBaseMemberExpression(that, member, ta, tal);
             }
             //otherwise infer type arguments later
         }
@@ -1931,9 +1935,11 @@ public class ExpressionVisitor extends AbstractVisitor {
                     that.addError("member is not visible: " +
                             that.getIdentifier().getText());
                 }
-                Tree.TypeArgumentList tal = that.getTypeArgumentList();
+                Tree.TypeArguments tal = that.getTypeArguments();
                 if (explicitTypeArguments(member,tal)) {
-                    visitQualifiedMemberExpression(that, member, getTypeArguments(tal), tal);
+                    List<ProducedType> ta = getTypeArguments(tal);
+                    tal.setTypeArguments(ta);
+                    visitQualifiedMemberExpression(that, member, ta, tal);
                 }
                 //otherwise infer type arguments later
             }
@@ -1946,7 +1952,7 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
 
     private void visitQualifiedMemberExpression(Tree.QualifiedMemberExpression that,
-            TypedDeclaration member, List<ProducedType> typeArgs, Tree.TypeArgumentList tal) {
+            TypedDeclaration member, List<ProducedType> typeArgs, Tree.TypeArguments tal) {
         ProducedType receiverType = unwrap(that.getPrimary().getTypeModel(), that);
         if (acceptsTypeArguments(receiverType, member, typeArgs, tal, that)) {
             ProducedTypedReference ptr = receiverType.getTypedMember(member, typeArgs);
@@ -1964,7 +1970,7 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
     
     private void visitBaseMemberExpression(Tree.BaseMemberExpression that, TypedDeclaration member, 
-            List<ProducedType> typeArgs, Tree.TypeArgumentList tal) {
+            List<ProducedType> typeArgs, Tree.TypeArguments tal) {
         if (acceptsTypeArguments(member, typeArgs, tal, that)) {
             ProducedType outerType;
             if ( member.isMember() ) {
@@ -1998,9 +2004,11 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
         else {
             that.setDeclaration(type);
-            Tree.TypeArgumentList tal = that.getTypeArgumentList();
+            Tree.TypeArguments tal = that.getTypeArguments();
             if (explicitTypeArguments(type, tal)) {
-                visitBaseTypeExpression(that, type, getTypeArguments(tal), tal);
+                List<ProducedType> ta = getTypeArguments(tal);
+                tal.setTypeArguments(ta);
+                visitBaseTypeExpression(that, type, ta, tal);
             }
             //otherwise infer type arguments later
         }
@@ -2025,9 +2033,11 @@ public class ExpressionVisitor extends AbstractVisitor {
                     that.addError("member type is not visible: " +
                             that.getIdentifier().getText());
                 }
-                Tree.TypeArgumentList tal = that.getTypeArgumentList();
+                Tree.TypeArguments tal = that.getTypeArguments();
                 if (explicitTypeArguments(type, tal)) {
-                    visitQualifiedTypeExpression(that, type, getTypeArguments(tal), tal);
+                    List<ProducedType> ta = getTypeArguments(tal);
+                    tal.setTypeArguments(ta);
+                    visitQualifiedTypeExpression(that, type, ta, tal);
                     //otherwise infer type arguments later
                 }
             }
@@ -2044,8 +2054,8 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }
 
-    private boolean explicitTypeArguments(Declaration dec, Tree.TypeArgumentList tal) {
-        return !dec.isParameterized() || tal!=null;
+    private boolean explicitTypeArguments(Declaration dec, Tree.TypeArguments tal) {
+        return !dec.isParameterized() || tal instanceof Tree.TypeArgumentList;
     }
     
     @Override public void visit(Tree.SimpleType that) {
@@ -2057,15 +2067,14 @@ public class ExpressionVisitor extends AbstractVisitor {
             TypeDeclaration type = that.getDeclarationModel();//pt.getDeclaration()
             Tree.TypeArgumentList tal = that.getTypeArgumentList();
             //No type inference for declarations
-            List<ProducedType> typeArguments = getTypeArguments(tal);
-            acceptsTypeArguments(type, typeArguments, tal, that);
+            acceptsTypeArguments(type, getTypeArguments(tal), tal, that);
             //the type has already been set by TypeVisitor
         }
     }
         
 
     private void visitQualifiedTypeExpression(Tree.QualifiedTypeExpression that,
-            TypeDeclaration type, List<ProducedType> typeArgs, Tree.TypeArgumentList tal) {
+            TypeDeclaration type, List<ProducedType> typeArgs, Tree.TypeArguments tal) {
         ProducedType receiverType = unwrap(that.getPrimary().getTypeModel(), that);
         if (acceptsTypeArguments(receiverType, type, typeArgs, tal, that)) {
             ProducedType t = receiverType.getTypeMember(type, typeArgs);
@@ -2075,7 +2084,7 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
 
     private void visitBaseTypeExpression(Tree.BaseTypeExpression that, TypeDeclaration type, 
-            List<ProducedType> typeArgs, Tree.TypeArgumentList tal) {
+            List<ProducedType> typeArgs, Tree.TypeArguments tal) {
         if ( acceptsTypeArguments(type, typeArgs, tal, that) ) {
             ProducedType outerType;
             if (type.isMemberType()) {
@@ -2273,7 +2282,7 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
 
     private static boolean acceptsTypeArguments(Declaration member, List<ProducedType> typeArguments, 
-            Tree.TypeArgumentList tal, Node parent) {
+            Tree.TypeArguments tal, Node parent) {
         return acceptsTypeArguments(null, member, typeArguments, tal, parent);
     }
     
@@ -2283,7 +2292,7 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
     
     private static boolean acceptsTypeArguments(ProducedType receiver, Declaration member, List<ProducedType> typeArguments, 
-            Tree.TypeArgumentList tal, Node parent) {
+            Tree.TypeArguments tal, Node parent) {
         if (isGeneric(member)) {
             List<TypeParameter> params = ((Generic) member).getTypeParameters();
             if ( params.size()==typeArguments.size() ) {
@@ -2295,7 +2304,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                         //sts = sts.substitute(self);
                         ProducedType sts = st.getProducedType(receiver, member, typeArguments);
                         if (argType!=null && !argType.isSubtypeOf(sts)) {
-                            if (tal==null) {
+                            if (tal instanceof Tree.InferredTypeArguments) {
                                 argType.isSubtypeOf(sts);
                                 parent.addError("inferred type argument " + argType.getProducedTypeName()
                                         + " to type parameter " + param.getName()
@@ -2303,7 +2312,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                                         + " not assignable to " + sts.getProducedTypeName());
                             }
                             else {
-                                tal.getTypes().get(i).addError("type parameter " + param.getName() 
+                                ( (Tree.TypeArgumentList) tal ).getTypes()
+                                        .get(i).addError("type parameter " + param.getName() 
                                         + " of declaration " + member.getName()
                                         + " has argument " + argType.getProducedTypeName() 
                                         + " not assignable to " + sts.getProducedTypeName());
@@ -2318,14 +2328,15 @@ public class ExpressionVisitor extends AbstractVisitor {
                             if (argType.isSubtypeOf(cts)) found = true;
                         }
                         if (!found) {
-                            if (tal==null) {
+                            if (tal instanceof Tree.InferredTypeArguments) {
                                 parent.addError("inferred type argument " + argType.getProducedTypeName()
                                         + " to type parameter " + param.getName()
                                         + " of declaration " + member.getName()
                                         + " not one of the listed cases");
                             }
                             else {
-                                tal.getTypes().get(i).addError("type parameter " + param.getName() 
+                                ( (Tree.TypeArgumentList) tal ).getTypes()
+                                        .get(i).addError("type parameter " + param.getName() 
                                         + " of declaration " + member.getName()
                                         + " has argument " + argType.getProducedTypeName() 
                                         + " not one of the listed cases");
@@ -2337,7 +2348,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                 return true;
             }
             else {
-                if (tal==null) {
+                if (tal instanceof Tree.InferredTypeArguments) {
                     parent.addError("requires type arguments: " + member.getName());
                 }
                 else {

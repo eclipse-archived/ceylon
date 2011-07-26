@@ -221,10 +221,10 @@ public abstract class AbstractVisitor extends Visitor {
                 type.getProducedTypeName());
     }
 
-    protected static List<ProducedType> getTypeArguments(Tree.TypeArgumentList tal) {
+    protected static List<ProducedType> getTypeArguments(Tree.TypeArguments tal) {
         List<ProducedType> typeArguments = new ArrayList<ProducedType>();
-        if (tal!=null) {
-            for (Tree.Type ta: tal.getTypes()) {
+        if (tal instanceof Tree.TypeArgumentList) {
+            for (Tree.Type ta: ( (Tree.TypeArgumentList) tal ).getTypes()) {
                 ProducedType t = ta.getTypeModel();
                 if (t==null) {
                     ta.addError("could not resolve type argument");
