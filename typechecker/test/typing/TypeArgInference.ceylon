@@ -78,5 +78,9 @@ class TypeArgInference() {
         return null;
     }
     @type["Nothing"] value opt = createNull();
+    
+    void print(String s) {}
+    print("Hello");
+    @error print<String>("Hello");
 
 }
