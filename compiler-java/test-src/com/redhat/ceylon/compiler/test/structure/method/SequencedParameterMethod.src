@@ -1,0 +1,13 @@
+package com.redhat.ceylon.compiler.test.structure.method;
+
+class SequencedParameterMethod {
+    
+    private final void f(final String a, final Sequence<Integer> i) {
+    }
+    
+    public final void f2(final String a, final Sequence<Integer> i) {
+    }
+    
+    SequencedParameterMethod() {
+    }
+}

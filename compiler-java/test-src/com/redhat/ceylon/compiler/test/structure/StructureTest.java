@@ -89,6 +89,10 @@ public class StructureTest extends CompilerTest {
     public void testMthInnerMethod(){
         compareWithJavaSource("method/InnerMethod");
     }
+    @Test
+    public void testMthSequencedParameterMethod(){
+        compareWithJavaSource("method/SequencedParameterMethod");
+    }
 
     //
     // Attributes
