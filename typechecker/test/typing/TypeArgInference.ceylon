@@ -73,5 +73,10 @@ class TypeArgInference() {
     @type["Nothing|String"] firstElt { "hello", "world" };
     @type["Nothing|Sequence<String>"] firstElt {{"hello", "world"}};
     @type["Nothing|String"] firstElt { args = {"hello", "world"}; };
+    
+    T? createNull<T>() {
+        return null;
+    }
+    @type["Nothing"] value opt = createNull();
 
 }
