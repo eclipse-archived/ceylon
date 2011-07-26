@@ -65,6 +65,10 @@ public class StructureTest extends CompilerTest {
     public void testKlsInnerClass(){
         compareWithJavaSource("klass/InnerClass");
     }
+    @Test
+    public void testKlsLocalClass(){
+        compareWithJavaSource("klass/LocalClass");
+    }
     
     //
     // Methods
