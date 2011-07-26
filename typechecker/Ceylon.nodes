@@ -217,7 +217,7 @@
 ^(SYNTHETIC_VARIABLE: VALUE_MODIFIER)
 
 ^(TYPE_ARGUMENTS
-    List<ProducedType> typeArguments;)
+    List<ProducedType> typeModels;)
 
 "A list of type arguments in a produced type."
 ^(TYPE_ARGUMENT_LIST:TYPE_ARGUMENTS

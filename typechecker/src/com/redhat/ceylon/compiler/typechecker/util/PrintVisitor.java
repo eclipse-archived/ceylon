@@ -99,7 +99,7 @@ public class PrintVisitor extends Visitor implements NaturalVisitor {
             }
         }
         if (node instanceof Tree.TypeArguments) {
-            List<ProducedType> types = ((Tree.TypeArguments) node).getTypeArguments();
+            List<ProducedType> types = ((Tree.TypeArguments) node).getTypeModels();
             if (types!=null) {
                 print(" -> ");
                 int i=0;
