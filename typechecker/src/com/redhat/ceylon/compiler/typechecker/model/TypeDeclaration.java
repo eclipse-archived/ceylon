@@ -48,7 +48,7 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
 
     public List<TypeDeclaration> getSatisfiedTypeDeclarations() {
         List<TypeDeclaration> list = new ArrayList<TypeDeclaration>();
-        for (ProducedType pt : getSatisfiedTypes()) {
+        for (ProducedType pt: getSatisfiedTypes()) {
             list.add(pt.getDeclaration());
         }
         return list;
@@ -64,7 +64,7 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
 
     public List<TypeDeclaration> getCaseTypeDeclarations() {
         List<TypeDeclaration> list = new ArrayList<TypeDeclaration>();
-        for (ProducedType pt : getCaseTypes()) {
+        for (ProducedType pt: getCaseTypes()) {
             list.add(pt.getDeclaration());
         }
         return list;
@@ -128,7 +128,7 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
         pt.setDeclaration(this);
         //each type parameter is its own argument
         Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
-        for (TypeParameter p : getTypeParameters()) {
+        for (TypeParameter p: getTypeParameters()) {
             ProducedType pta = new ProducedType();
             pta.setDeclaration(p);
             map.put(p, pta);
@@ -141,32 +141,43 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
         return false;
     }
 
-    private List<Declaration> getMembers(String name) {
-        List<Declaration> members = new ArrayList<Declaration>();
-        for (Declaration d : getMembers()) {
-            if (d.getName().equals(name)) {
-                members.add(d);
+    private List<Declaration> getMembers(String name, List<TypeDeclaration> visited) {
+        if (visited.contains(this)) {
+            return Collections.emptyList();
+        }
+        else {
+            visited.add(this);
+            List<Declaration> members = new ArrayList<Declaration>();
+            for (Declaration d: getMembers()) {
+                if (d.getName().equals(name)) {
+                    members.add(d);
+                }
             }
+            if (members.isEmpty()) {
+                members.addAll(getInheritedMembers(name));
+            }
+            return members;
         }
-        if (members.isEmpty()) {
-            members.addAll(getInheritedMembers(name));
-        }
-        return members;
     }
-
+    
     public List<Declaration> getInheritedMembers(String name) {
+        return getInheritedMembers(name, new ArrayList<TypeDeclaration>());
+    }
+    
+    private List<Declaration> getInheritedMembers(String name, List<TypeDeclaration> visited) {
         List<Declaration> members = new ArrayList<Declaration>();
-        for (TypeDeclaration t : getSatisfiedTypeDeclarations()) {
+        for (TypeDeclaration t: getSatisfiedTypeDeclarations()) {
             //if ( !(t instanceof TypeParameter) ) { //don't look for members in a type parameter with a self-referential lower bound
-                for (Declaration d : t.getMembers(name)) {
+                for (Declaration d: t.getMembers(name, visited)) {
                     if (d.isShared()) {
                         members.add(d);
                     }
                 }
             //}
         }
-        if (getExtendedType()!=null) {
-            for (Declaration d : getExtendedType().getDeclaration().getMembers(name)) {
+        ProducedType et = getExtendedType();
+        if (et!=null) {
+            for (Declaration d: et.getDeclaration().getMembers(name, visited)) {
                 if (d.isShared()) {
                     members.add(d);
                 }
