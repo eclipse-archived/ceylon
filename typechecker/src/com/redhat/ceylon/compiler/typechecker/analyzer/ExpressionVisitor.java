@@ -1994,7 +1994,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         TypeDeclaration type = getBaseDeclaration(that);
         if (type==null) {
             that.addError("type does not exist: " + 
-                    that.getIdentifier().getText());
+                    name(that.getIdentifier()));
         }
         else {
             that.setDeclaration(type);
@@ -2017,7 +2017,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                     .getMember(that.getIdentifier().getText());
             if (type==null) {
                 that.addError("member type does not exist: " +
-                        that.getIdentifier().getText());
+                        name(that.getIdentifier()));
             }
             else {
                 that.setDeclaration(type);

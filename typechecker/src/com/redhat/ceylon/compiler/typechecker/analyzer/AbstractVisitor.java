@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.name;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,16 +53,16 @@ public abstract class AbstractVisitor extends Visitor {
         }
     }
     
-    protected TypedDeclaration getBaseDeclaration(Tree.BaseMemberExpression m) {
-        return (TypedDeclaration) getBaseDeclaration(m.getScope(), m.getUnit(), m.getIdentifier().getText());
+    protected TypedDeclaration getBaseDeclaration(Tree.BaseMemberExpression bme) {
+        return (TypedDeclaration) getBaseDeclaration(bme.getScope(), bme.getUnit(), name(bme.getIdentifier()));
     }
     
-    protected TypeDeclaration getBaseDeclaration(Tree.BaseType that) {
-        return (TypeDeclaration) getBaseDeclaration(that.getScope(), that.getUnit(), that.getIdentifier().getText());
+    protected TypeDeclaration getBaseDeclaration(Tree.BaseType bt) {
+        return (TypeDeclaration) getBaseDeclaration(bt.getScope(), bt.getUnit(), name(bt.getIdentifier()));
     }
     
-    protected TypeDeclaration getBaseDeclaration(Tree.BaseTypeExpression that) {
-        return (TypeDeclaration) getBaseDeclaration(that.getScope(), that.getUnit(), that.getIdentifier().getText());
+    protected TypeDeclaration getBaseDeclaration(Tree.BaseTypeExpression bte) {
+        return (TypeDeclaration) getBaseDeclaration(bte.getScope(), bte.getUnit(), name(bte.getIdentifier()));
     }
     
     /**
