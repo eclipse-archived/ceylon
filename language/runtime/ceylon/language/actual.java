@@ -5,10 +5,9 @@ import com.redhat.ceylon.compiler.metadata.java.Method;
 
 @Ceylon
 @Method
-public final class doc
-{
-    public static Nothing doc(ceylon.language.String description) {
+public final class actual {
+    public static Nothing actual(){
         return null;
     }
-    private doc(){}
+    private actual(){}
 }
