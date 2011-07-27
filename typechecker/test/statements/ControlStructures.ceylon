@@ -1,4 +1,4 @@
-public class ControlStructures() {
+class ControlStructures() {
     Object something = "hello";
     String? name = null;
     String[] names = {};

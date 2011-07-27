@@ -1,4 +1,4 @@
-public class Literals() {
+class Literals() {
     
     @type["String"] value s = "Hello";
     @type["Natural"] value n = 1;
