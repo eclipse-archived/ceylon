@@ -28,6 +28,8 @@ class Annotations() {
         
     }
     
+    @error print "hello" class Broken() {}
+    
     class TypeDescription(String desc) 
         satisfies OptionalAnnotation<TypeDescription,Type<Object>> {}
     

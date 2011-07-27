@@ -1300,6 +1300,13 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }
     
+    @Override public void visit(Tree.Annotation that) {
+        super.visit(that);
+        Declaration dec = that.getPrimary().getDeclaration();
+        if (dec!=null && !dec.isToplevel()) {
+            that.getPrimary().addError("annotation must be a toplevel method reference");
+        }
+    }
     @Override public void visit(Tree.IndexExpression that) {
         super.visit(that);
         ProducedType pt = type(that);
