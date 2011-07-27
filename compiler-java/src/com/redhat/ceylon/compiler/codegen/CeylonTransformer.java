@@ -6,14 +6,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.loader.CeylonModelLoader;
-import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -60,11 +58,10 @@ import com.sun.tools.javac.util.Position.LineMap;
 public class CeylonTransformer {
     private TreeMaker make;
     Name.Table names;
-    private CeyloncFileManager fileManager;
     private LineMap map;
     Symtab syms;
-    Keywords keywords;
-    CeylonModelLoader modelLoader;
+    private Keywords keywords;
+    private CeylonModelLoader modelLoader;
     private Map<String, String> varNameSubst = new HashMap<String, String>();
     
     ExpressionTransformer expressionGen;
@@ -102,8 +99,77 @@ public class CeylonTransformer {
         syms = Symtab.instance(context);
         keywords = Keywords.instance(context);
         modelLoader = CeylonModelLoader.instance(context);
+    }
 
-        fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
+    /**
+     * In this pass we only make an empty placeholder which we'll fill in the
+     * EnterCeylon phase later on
+     */
+    public JCCompilationUnit makeJCCompilationUnitPlaceholder(Tree.CompilationUnit t, JavaFileObject file, String pkgName) {
+        System.err.println(t);
+        JCExpression pkg = pkgName != null ? getPackage(pkgName) : null;
+        at(t);
+        JCCompilationUnit topLev = new CeylonCompilationUnit(List.<JCTree.JCAnnotation> nil(), pkg, List.<JCTree> nil(), null, null, null, null, t);
+
+        topLev.lineMap = getMap();
+        topLev.sourcefile = file;
+        topLev.isCeylonProgram = true;
+
+        return topLev;
+    }
+
+    /**
+     * This runs after _some_ typechecking has been done
+     */
+    public ListBuffer<JCTree> convertAfterTypeChecking(Tree.CompilationUnit t) {
+        final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
+        disableModelAnnotations = false;
+        t.visitChildren(new Visitor() {
+            public void visit(Tree.ImportList imp) {
+                defs.appendList(convert(imp));
+            }
+
+            private void checkCompilerAnnotations(Tree.Declaration decl){
+                if(hasCompilerAnnotation(decl, "nomodel"))
+                    disableModelAnnotations  = true;
+            }
+
+            private void resetCompilerAnnotations(){
+                disableModelAnnotations = false;
+            }
+            
+            public void visit(Tree.ClassOrInterface decl) {
+                checkCompilerAnnotations(decl);
+                defs.append(classGen.convert(decl));
+                resetCompilerAnnotations();
+            }
+
+            public void visit(Tree.ObjectDefinition decl) {
+                checkCompilerAnnotations(decl);
+                defs.append(classGen.objectClass(decl, true));
+                resetCompilerAnnotations();
+            }
+
+            public void visit(Tree.AttributeDeclaration decl){
+                checkCompilerAnnotations(decl);
+                defs.append(convert(decl));
+                resetCompilerAnnotations();
+            }
+
+            public void visit(Tree.AttributeGetterDefinition decl){
+                checkCompilerAnnotations(decl);
+                defs.append(convert(decl));
+                resetCompilerAnnotations();
+            }
+
+            public void visit(Tree.MethodDefinition decl) {
+                checkCompilerAnnotations(decl);
+                // Generate a wrapper class for the method
+                defs.append(classGen.methodClass(decl));
+                resetCompilerAnnotations();
+            }
+        });
+        return defs;
     }
 
     JCTree.Factory at(Node t) {
@@ -119,11 +185,11 @@ public class CeylonTransformer {
         return make;
     }
 
-    public GlobalTransformer globalGen() {
+    GlobalTransformer globalGen() {
         return globalGen;
     }
 
-    public GlobalTransformer globalGenAt(Node t) {
+    GlobalTransformer globalGenAt(Node t) {
         at(t);
         return globalGen;
     }
@@ -203,7 +269,7 @@ public class CeylonTransformer {
         return buf.toString();
     }
 
-    public JCExpression makeIdentFromIdentifiers(Iterable<Tree.Identifier> components) {
+    JCExpression makeIdentFromIdentifiers(Iterable<Tree.Identifier> components) {
 
         JCExpression type = null;
         for (Tree.Identifier component : components) {
@@ -216,7 +282,7 @@ public class CeylonTransformer {
         return type;
     }
 
-    public JCExpression makeIdent(Iterable<String> components) {
+    JCExpression makeIdent(Iterable<String> components) {
 
         JCExpression type = null;
         for (String component : components) {
@@ -229,7 +295,7 @@ public class CeylonTransformer {
         return type;
     }
 
-    public JCExpression makeIdent(String... components) {
+    JCExpression makeIdent(String... components) {
 
         JCExpression type = null;
         for (String component : components) {
@@ -252,77 +318,6 @@ public class CeylonTransformer {
 
     // FIXME: port handleOverloadedToplevelClasses when I figure out what it
     // does
-
-    /**
-     * This runs after _some_ typechecking has been done
-     */
-    public ListBuffer<JCTree> convertAfterTypeChecking(Tree.CompilationUnit t) {
-        final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
-        disableModelAnnotations = false;
-        t.visitChildren(new Visitor() {
-            public void visit(Tree.ImportList imp) {
-                defs.appendList(convert(imp));
-            }
-
-            private void checkCompilerAnnotations(Tree.Declaration decl){
-                if(hasCompilerAnnotation(decl, "nomodel"))
-                    disableModelAnnotations  = true;
-            }
-
-            private void resetCompilerAnnotations(){
-                disableModelAnnotations = false;
-            }
-            
-            public void visit(Tree.ClassOrInterface decl) {
-                checkCompilerAnnotations(decl);
-                defs.append(classGen.convert(decl));
-                resetCompilerAnnotations();
-            }
-
-            public void visit(Tree.ObjectDefinition decl) {
-                checkCompilerAnnotations(decl);
-                defs.append(classGen.objectClass(decl, true));
-                resetCompilerAnnotations();
-            }
-
-            public void visit(Tree.AttributeDeclaration decl){
-                checkCompilerAnnotations(decl);
-                defs.append(convert(decl));
-                resetCompilerAnnotations();
-            }
-
-            public void visit(Tree.AttributeGetterDefinition decl){
-                checkCompilerAnnotations(decl);
-                defs.append(convert(decl));
-                resetCompilerAnnotations();
-            }
-
-            public void visit(Tree.MethodDefinition decl) {
-                checkCompilerAnnotations(decl);
-                // Generate a wrapper class for the method
-                defs.append(classGen.methodClass(decl));
-                resetCompilerAnnotations();
-            }
-        });
-        return defs;
-    }
-
-    /**
-     * In this pass we only make an empty placeholder which we'll fill in the
-     * EnterCeylon phase later on
-     */
-    public JCCompilationUnit makeJCCompilationUnitPlaceholder(Tree.CompilationUnit t, JavaFileObject file, String pkgName) {
-        System.err.println(t);
-        JCExpression pkg = pkgName != null ? getPackage(pkgName) : null;
-        at(t);
-        JCCompilationUnit topLev = new CeylonCompilationUnit(List.<JCTree.JCAnnotation> nil(), pkg, List.<JCTree> nil(), null, null, null, null, t);
-
-        topLev.lineMap = getMap();
-        topLev.sourcefile = file;
-        topLev.isCeylonProgram = true;
-
-        return topLev;
-    }
 
     private JCExpression getPackage(String fullname) {
         String shortName = Convert.shortName(fullname);
@@ -455,11 +450,11 @@ public class CeylonTransformer {
         return map;
     }
 
-    public String addVariableSubst(String origVarName, String substVarName) {
+    String addVariableSubst(String origVarName, String substVarName) {
         return varNameSubst.put(origVarName, substVarName);
     }
 
-    public void removeVariableSubst(String origVarName, String prevSubst) {
+    void removeVariableSubst(String origVarName, String prevSubst) {
         if (prevSubst != null) {
             varNameSubst.put(origVarName, prevSubst);
         } else {
@@ -467,7 +462,7 @@ public class CeylonTransformer {
         }
     }
     
-    public String substitute(String varName) {
+    String substitute(String varName) {
         if (varNameSubst.containsKey(varName)) {
             return varNameSubst.get(varName);            
         } else {
@@ -485,7 +480,7 @@ public class CeylonTransformer {
     }
     
     // Determines if a type will be erased once converted to Java
-    public boolean willErase(ProducedType type) {
+    boolean willErase(ProducedType type) {
         type = simplifyType(type);
         return (toPType(syms.ceylonVoidType).isExactly(type) || toPType(syms.ceylonObjectType).isExactly(type)
                 || toPType(syms.ceylonNothingType).isExactly(type) || toPType(syms.ceylonEqualityType).isExactly(type)
@@ -494,7 +489,7 @@ public class CeylonTransformer {
                 || isUnion(type));
     }
     
-    public JCExpression makeJavaType(ProducedType type, boolean isSatisfiesOrExtends) {
+    JCExpression makeJavaType(ProducedType type, boolean isSatisfiesOrExtends) {
         if (willErase(type)) {
             // For an erased type:
             // - Any of the Ceylon types Void, Object, Nothing, Equality,
@@ -604,11 +599,11 @@ public class CeylonTransformer {
         return jt;
     }
 
-    public List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Method decl, ProducedType type) {
+    List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Method decl, ProducedType type) {
         return makeJavaTypeAnnotations(type, decl.isShared() || decl.isToplevel());
     }
 
-    public List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Parameter decl, ProducedType type) {
+    List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Parameter decl, ProducedType type) {
         List<JCTree.JCAnnotation> ret;
         // if method, rely on method rules
         if (isInner(decl))
@@ -622,15 +617,15 @@ public class CeylonTransformer {
         return ret;
     }
 
-    public List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Value decl, ProducedType type) {
+    List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Value decl, ProducedType type) {
         return makeJavaTypeAnnotations(type, decl.isToplevel() || (decl.isClassOrInterfaceMember() && decl.isShared()));
     }
 
-    public List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Getter decl, ProducedType type) {
+    List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Getter decl, ProducedType type) {
         return makeJavaTypeAnnotations(type, decl.isToplevel() || (decl.isClassOrInterfaceMember() && decl.isShared()));
     }
 
-    public List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Setter decl, ProducedType type) {
+    List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Setter decl, ProducedType type) {
         return makeJavaTypeAnnotations(type, decl.isToplevel() || (decl.isClassOrInterfaceMember() && decl.isShared()));
     }
 
@@ -659,7 +654,7 @@ public class CeylonTransformer {
         return type;
     }
     
-    public ProducedType actualType(TypedDeclaration decl) {
+    ProducedType actualType(TypedDeclaration decl) {
         ProducedType t = decl.getType().getTypeModel();
         if (decl.getType() instanceof LocalModifier) {
             LocalModifier m = (LocalModifier)(decl.getType());
@@ -668,7 +663,7 @@ public class CeylonTransformer {
         return t;
     }
 
-    public List<JCAnnotation> makeAtOverride() {
+    List<JCAnnotation> makeAtOverride() {
         return List.<JCAnnotation> of(make().Annotation(makeIdent(syms.overrideType), List.<JCExpression> nil()));
     }
 
@@ -682,35 +677,35 @@ public class CeylonTransformer {
         return makeModelAnnotation(annotationType, List.<JCExpression>nil());
     }
 
-    public List<JCAnnotation> makeAtCeylon() {
+    List<JCAnnotation> makeAtCeylon() {
         return makeModelAnnotation(syms.ceylonAtCeylonType);
     }
 
-    public List<JCAnnotation> makeAtName(String name) {
+    List<JCAnnotation> makeAtName(String name) {
         return makeModelAnnotation(syms.ceylonAtNameType, List.<JCExpression>of(make().Literal(name)));
     }
 
-    public List<JCAnnotation> makeAtType(String name) {
+    List<JCAnnotation> makeAtType(String name) {
         return makeModelAnnotation(syms.ceylonAtTypeInfoType, List.<JCExpression>of(make().Literal(name)));
     }
 
-    public List<JCAnnotation> makeAtAttribute() {
+    List<JCAnnotation> makeAtAttribute() {
         return makeModelAnnotation(syms.ceylonAtAttributeType);
     }
 
-    public List<JCAnnotation> makeAtMethod() {
+    List<JCAnnotation> makeAtMethod() {
         return makeModelAnnotation(syms.ceylonAtMethodType);
     }
 
-    public List<JCAnnotation> makeAtObject() {
+    List<JCAnnotation> makeAtObject() {
         return makeModelAnnotation(syms.ceylonAtObjectType);
     }
 
-    public boolean isInner(Declaration decl) {
+    boolean isInner(Declaration decl) {
         return decl.getContainer() instanceof Method;
     }
 
-    protected boolean isJavaKeyword(Name name) {
+    private boolean isJavaKeyword(Name name) {
         return keywords.key(name) != com.sun.tools.javac.parser.Token.IDENTIFIER;
     }
 
