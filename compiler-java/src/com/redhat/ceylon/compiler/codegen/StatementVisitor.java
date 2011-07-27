@@ -25,48 +25,48 @@ class StatementVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.InvocationExpression expr) {
-        append(statementGen.at(expr).Exec(expressionGen.convert(expr)));
+        append(statementGen.at(expr).Exec(expressionGen.transform(expr)));
     }
 
     public void visit(Tree.Return ret) {
-        append(statementGen.convert(ret));
+        append(statementGen.transform(ret));
     }
 
     public void visit(Tree.IfStatement stat) {
-        append(statementGen.convert(stat));
+        append(statementGen.transform(stat));
     }
 
     public void visit(Tree.WhileStatement stat) {
-        append(statementGen.convert(stat));
+        append(statementGen.transform(stat));
     }
 
 //    public void visit(Tree.DoWhileStatement stat) {
-//        append(statementGen.convert(stat));
+//        append(statementGen.transform(stat));
 //    }
 
     public void visit(Tree.ForStatement stat) {
-        append(statementGen.convert(stat));
+        append(statementGen.transform(stat));
     }
 
     public void visit(Tree.Break stat) {
-        append(statementGen.convert(stat));
+        append(statementGen.transform(stat));
     }
 
     public void visit(Tree.AttributeDeclaration decl) {
-        append(statementGen.convert(decl));
+        append(statementGen.transform(decl));
     }
 
     public void visit(Tree.SpecifierStatement op) {
-        append(statementGen.convert(op));
+        append(statementGen.transform(op));
     }
 
     // FIXME: not sure why we don't have just an entry for Tree.Term here...
     public void visit(Tree.OperatorExpression op) {
-        append(statementGen.at(op).Exec(expressionGen.convertExpression(op)));
+        append(statementGen.at(op).Exec(expressionGen.transformExpression(op)));
     }
 
     public void visit(Tree.Expression tree) {
-        append(statementGen.at(tree).Exec(expressionGen.convertExpression(tree)));
+        append(statementGen.at(tree).Exec(expressionGen.transformExpression(tree)));
     }
 
     public void visit(Tree.MethodDefinition decl) {
@@ -87,17 +87,17 @@ class StatementVisitor extends Visitor implements NaturalVisitor {
         super.visit(that);
     }
 
-    // FIXME: I think those should just go in convertExpression no?
+    // FIXME: I think those should just go in transformExpression no?
     public void visit(Tree.PostfixOperatorExpression expr) {
-        append(statementGen.at(expr).Exec(expressionGen.convert(expr)));
+        append(statementGen.at(expr).Exec(expressionGen.transform(expr)));
     }
 
     public void visit(Tree.PrefixOperatorExpression expr) {
-        append(statementGen.at(expr).Exec(expressionGen.convert(expr)));
+        append(statementGen.at(expr).Exec(expressionGen.transform(expr)));
     }
 
     public void visit(Tree.ExpressionStatement tree) {
-        append(statementGen.at(tree).Exec(expressionGen.convertExpression(tree.getExpression())));
+        append(statementGen.at(tree).Exec(expressionGen.transformExpression(tree.getExpression())));
     }
 
     private void append(JCTree.JCStatement stmt) {

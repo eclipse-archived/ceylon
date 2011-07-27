@@ -121,12 +121,12 @@ public class CeylonTransformer {
     /**
      * This runs after _some_ typechecking has been done
      */
-    public ListBuffer<JCTree> convertAfterTypeChecking(Tree.CompilationUnit t) {
+    public ListBuffer<JCTree> transformAfterTypeChecking(Tree.CompilationUnit t) {
         final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
         disableModelAnnotations = false;
         t.visitChildren(new Visitor() {
             public void visit(Tree.ImportList imp) {
-                defs.appendList(convert(imp));
+                defs.appendList(transform(imp));
             }
 
             private void checkCompilerAnnotations(Tree.Declaration decl){
@@ -140,7 +140,7 @@ public class CeylonTransformer {
             
             public void visit(Tree.ClassOrInterface decl) {
                 checkCompilerAnnotations(decl);
-                defs.append(classGen.convert(decl));
+                defs.append(classGen.transform(decl));
                 resetCompilerAnnotations();
             }
 
@@ -152,13 +152,13 @@ public class CeylonTransformer {
 
             public void visit(Tree.AttributeDeclaration decl){
                 checkCompilerAnnotations(decl);
-                defs.append(convert(decl));
+                defs.append(transform(decl));
                 resetCompilerAnnotations();
             }
 
             public void visit(Tree.AttributeGetterDefinition decl){
                 checkCompilerAnnotations(decl);
-                defs.append(convert(decl));
+                defs.append(transform(decl));
                 resetCompilerAnnotations();
             }
 
@@ -185,7 +185,7 @@ public class CeylonTransformer {
         return make;
     }
 
-    GlobalTransformer globalGen() {
+    public GlobalTransformer globalGen() {
         return globalGen;
     }
 
@@ -328,7 +328,7 @@ public class CeylonTransformer {
             return make.Select(getPackage(packagePart), names.fromString(shortName));
     }
 
-    private List<JCTree> convert(Tree.ImportList importList) {
+    private List<JCTree> transform(Tree.ImportList importList) {
         final ListBuffer<JCTree> imports = new ListBuffer<JCTree>();
         importList.visit(new Visitor() {
             // FIXME: handle the rest of the cases here
@@ -340,7 +340,7 @@ public class CeylonTransformer {
         return imports.toList();
     }
 
-    private JCTree convert(AttributeDeclaration decl) {
+    private JCTree transform(AttributeDeclaration decl) {
         GlobalTransformer.DefinitionBuilder builder = globalGenAt(decl)
             .defineGlobal(
                     makeJavaType(actualType(decl), false),
@@ -363,14 +363,14 @@ public class CeylonTransformer {
         }
 
         if (decl.getSpecifierOrInitializerExpression() != null) {
-            builder.initialValue(expressionGen.convertExpression(
+            builder.initialValue(expressionGen.transformExpression(
                     decl.getSpecifierOrInitializerExpression().getExpression()));
         }
 
         return builder.build();
     }
 
-    private JCTree convert(AttributeGetterDefinition decl) {
+    private JCTree transform(AttributeGetterDefinition decl) {
         GlobalTransformer.DefinitionBuilder builder = globalGenAt(decl)
             .defineGlobal(
                     makeJavaType(actualType(decl), false),
@@ -392,7 +392,7 @@ public class CeylonTransformer {
             builder.immutable();
         }
 
-        JCBlock block = make().Block(0, statementGen.convertStmts(decl.getBlock().getStatements()));
+        JCBlock block = make().Block(0, statementGen.transformStmts(decl.getBlock().getStatements()));
         builder.getterBlock(block);
 
         return builder.build();

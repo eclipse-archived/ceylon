@@ -104,7 +104,7 @@ public class CeylonEnter extends Enter {
             if (tree instanceof CeylonCompilationUnit) {
                 CeylonCompilationUnit ceylonTree = (CeylonCompilationUnit) tree;
                 gen.setMap(ceylonTree.lineMap);
-                ceylonTree.defs = gen.convertAfterTypeChecking(ceylonTree.ceylonTree).toList();
+                ceylonTree.defs = gen.transformAfterTypeChecking(ceylonTree.ceylonTree).toList();
                 System.err.println(ceylonTree);
             }
         }
