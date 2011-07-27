@@ -876,10 +876,6 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }
     
-    @Override public void visit(Tree.Annotation that) {
-        //TODO: ignore annotations for now
-    }
-    
     @Override public void visit(Tree.InvocationExpression that) {
         super.visit(that);
         Tree.Primary pr = that.getPrimary();
@@ -1901,7 +1897,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         super.visit(that);
         TypedDeclaration member = getBaseDeclaration(that);
         if (member==null) {
-            that.addError("member does not exist: " +
+            that.addError("method or attribute does not exist: " +
                     name(that.getIdentifier()));
         }
         else {
@@ -1926,13 +1922,13 @@ public class ExpressionVisitor extends AbstractVisitor {
             TypedDeclaration member = (TypedDeclaration) unwrap(pt, that).getDeclaration()
                     .getMember(that.getIdentifier().getText());
             if (member==null) {
-                that.addError("member does not exist: " +
+                that.addError("member method or attribute does not exist: " +
                         that.getIdentifier().getText());
             }
             else {
                 that.setDeclaration(member);
                 if (!member.isVisible(that.getScope())) {
-                    that.addError("member is not visible: " +
+                    that.addError("member method or attribute is not visible: " +
                             that.getIdentifier().getText());
                 }
                 Tree.TypeArguments tal = that.getTypeArguments();
@@ -1957,7 +1953,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         if (acceptsTypeArguments(receiverType, member, typeArgs, tal, that)) {
             ProducedTypedReference ptr = receiverType.getTypedMember(member, typeArgs);
             if (ptr==null) {
-                that.addError("member does not exist: " + 
+                that.addError("member method or attribute does not exist: " + 
                         member.getName() + " of type " + 
                         receiverType.getDeclaration().getName());
             }
@@ -1984,7 +1980,7 @@ public class ExpressionVisitor extends AbstractVisitor {
             that.setTarget(pr);
             ProducedType t = pr.getType();
             if (t==null) {
-                that.addError("could not determine type of member reference: " +
+                that.addError("could not determine type of method or attribute reference: " +
                         that.getIdentifier().getText());
             }
             else {
