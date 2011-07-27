@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.loader;
 
 import com.redhat.ceylon.compiler.codegen.CeylonCompilationUnit;
-import com.redhat.ceylon.compiler.codegen.Gen2;
+import com.redhat.ceylon.compiler.codegen.CeylonTransformer;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleValidator;
@@ -34,7 +34,7 @@ public class CeylonEnter extends Enter {
         return instance;
     }
 
-    private Gen2 gen;
+    private CeylonTransformer gen;
     private boolean hasRun = false;
     private PhasedUnits phasedUnits;
     private com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext;
@@ -44,7 +44,7 @@ public class CeylonEnter extends Enter {
     protected CeylonEnter(Context context) {
         super(context);
         try {
-            gen = Gen2.getInstance(context);
+            gen = CeylonTransformer.getInstance(context);
         } catch (Exception e) {
             // FIXME
             e.printStackTrace();

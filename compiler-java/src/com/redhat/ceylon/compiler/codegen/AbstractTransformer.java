@@ -12,10 +12,10 @@ import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Name;
 
-public class GenPart {
-    protected Gen2 gen;
+public class AbstractTransformer {
+    protected CeylonTransformer gen;
 
-    public GenPart(Gen2 gen) {
+    public AbstractTransformer(CeylonTransformer gen) {
         this.gen = gen;
     }
 

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import com.redhat.ceylon.compiler.codegen.Gen2.Singleton;
+import com.redhat.ceylon.compiler.codegen.CeylonTransformer.Singleton;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -33,9 +33,9 @@ import com.sun.tools.javac.tree.JCTree.JCUnary;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 
-public class ExpressionGen extends GenPart {
+public class ExpressionTransformer extends AbstractTransformer {
 
-    public ExpressionGen(Gen2 gen) {
+    public ExpressionTransformer(CeylonTransformer gen) {
         super(gen);
     }
 

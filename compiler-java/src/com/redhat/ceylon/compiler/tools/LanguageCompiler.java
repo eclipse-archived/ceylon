@@ -36,7 +36,7 @@ import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.codegen.CeylonFileObject;
-import com.redhat.ceylon.compiler.codegen.Gen2;
+import com.redhat.ceylon.compiler.codegen.CeylonTransformer;
 import com.redhat.ceylon.compiler.loader.CeylonEnter;
 import com.redhat.ceylon.compiler.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleBuilder;
@@ -76,7 +76,7 @@ public class LanguageCompiler extends JavaCompiler {
     /** The context key for the ceylon context. */
     protected static final Context.Key<com.redhat.ceylon.compiler.typechecker.context.Context> ceylonContextKey = new Context.Key<com.redhat.ceylon.compiler.typechecker.context.Context>();
 
-    private final Gen2 gen;
+    private final CeylonTransformer gen;
     private final PhasedUnits phasedUnits;
     private final com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext;
     private final VFS vfs;
@@ -121,7 +121,7 @@ public class LanguageCompiler extends JavaCompiler {
         vfs = ceylonContext.getVfs();
         phasedUnits = getPhasedUnitsInstance(context);
         try {
-            gen = Gen2.getInstance(context);
+            gen = CeylonTransformer.getInstance(context);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

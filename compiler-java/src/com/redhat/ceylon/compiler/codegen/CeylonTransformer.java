@@ -54,7 +54,7 @@ import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Options;
 import com.sun.tools.javac.util.Position.LineMap;
 
-public class Gen2 {
+public class CeylonTransformer {
     private TreeMaker make;
     Name.Table names;
     private CeyloncFileManager fileManager;
@@ -64,28 +64,28 @@ public class Gen2 {
     CeylonModelLoader modelLoader;
     private Map<String, String> varNameSubst = new HashMap<String, String>();
     
-    ExpressionGen expressionGen;
-    StatementGen statementGen;
-    ClassGen classGen;
-    GlobalGen globalGen;
+    ExpressionTransformer expressionGen;
+    StatementTransformer statementGen;
+    ClassTransformer classGen;
+    GlobalTransformer globalGen;
 
     private boolean disableModelAnnotations = false;
     
-    public static Gen2 getInstance(Context context) throws Exception {
-        Gen2 gen2 = context.get(Gen2.class);
+    public static CeylonTransformer getInstance(Context context) throws Exception {
+        CeylonTransformer gen2 = context.get(CeylonTransformer.class);
         if (gen2 == null) {
-            gen2 = new Gen2(context);
-            context.put(Gen2.class, gen2);
+            gen2 = new CeylonTransformer(context);
+            context.put(CeylonTransformer.class, gen2);
         }
         return gen2;
     }
 
-    public Gen2(Context context) {
+    public CeylonTransformer(Context context) {
         setup(context);
-        expressionGen = new ExpressionGen(this);
-        statementGen = new StatementGen(this);
-        classGen = new ClassGen(this);
-        globalGen = new GlobalGen(this);
+        expressionGen = new ExpressionTransformer(this);
+        statementGen = new StatementTransformer(this);
+        classGen = new ClassTransformer(this);
+        globalGen = new GlobalTransformer(this);
     }
 
     private void setup(Context context) {
@@ -116,11 +116,11 @@ public class Gen2 {
         return make;
     }
 
-    public GlobalGen globalGen() {
+    public GlobalTransformer globalGen() {
         return globalGen;
     }
 
-    public GlobalGen globalGenAt(Node t) {
+    public GlobalTransformer globalGenAt(Node t) {
         at(t);
         return globalGen;
     }
@@ -343,7 +343,7 @@ public class Gen2 {
     }
 
     private JCTree convert(AttributeDeclaration decl) {
-        GlobalGen.DefinitionBuilder builder = globalGenAt(decl)
+        GlobalTransformer.DefinitionBuilder builder = globalGenAt(decl)
             .defineGlobal(
                     makeJavaType(actualType(decl), false),
                     decl.getIdentifier().getText());
@@ -373,7 +373,7 @@ public class Gen2 {
     }
 
     private JCTree convert(AttributeGetterDefinition decl) {
-        GlobalGen.DefinitionBuilder builder = globalGenAt(decl)
+        GlobalTransformer.DefinitionBuilder builder = globalGenAt(decl)
             .defineGlobal(
                     makeJavaType(actualType(decl), false),
                     decl.getIdentifier().getText());

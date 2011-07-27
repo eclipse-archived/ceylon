@@ -22,16 +22,16 @@ import com.sun.tools.javac.util.Name;
  *
  * Methods are also provided to generate expressions to get and set the global value using the accessors.
  */
-public final class GlobalGen extends GenPart {
+public final class GlobalTransformer extends AbstractTransformer {
 
-    public GlobalGen(Gen2 gen) {
+    public GlobalTransformer(CeylonTransformer gen) {
         super(gen);
     }
 
     /**
      * Returns a {@link DefinitionBuilder} instance through which the global class can be customized and then generated.
      * For details of possible customizations see the documentation of <tt>DefinitionBuilder</tt>. To finish the
-     * generation, call {@link com.redhat.ceylon.compiler.codegen.GlobalGen.DefinitionBuilder#build()}.
+     * generation, call {@link com.redhat.ceylon.compiler.codegen.GlobalTransformer.DefinitionBuilder#build()}.
      * @param variableType the type of the global
      * @param variableName the name of the global
      * @return a {@link DefinitionBuilder} to customize the class further before generating it.
@@ -88,7 +88,7 @@ public final class GlobalGen extends GenPart {
     }
 
     /**
-     * Builds a class for global variables. See {@link GlobalGen} for an overview.
+     * Builds a class for global variables. See {@link GlobalTransformer} for an overview.
      *
      * The generated class can be customized by calling methods of this class.
      */

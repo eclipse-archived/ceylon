@@ -35,7 +35,7 @@ import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
 
-public class ClassGen extends GenPart {
+public class ClassTransformer extends AbstractTransformer {
 
     class ClassVisitor extends StatementVisitor {
         final ListBuffer<JCVariableDecl> params = new ListBuffer<JCVariableDecl>();
@@ -166,7 +166,7 @@ public class ClassGen extends GenPart {
         }
     }
 
-    public ClassGen(Gen2 gen) {
+    public ClassTransformer(CeylonTransformer gen) {
         super(gen);
     }
 
@@ -538,7 +538,7 @@ public class ClassGen extends GenPart {
     }
 
     public void appendObjectGlobal(ListBuffer<JCTree> defs, Tree.ObjectDefinition decl, JCExpression generatedClassName) {
-        GlobalGen.DefinitionBuilder builder = gen
+        GlobalTransformer.DefinitionBuilder builder = gen
                 .globalGenAt(decl)
                 .defineGlobal(generatedClassName, decl.getIdentifier().getText())
                 .valueAnnotations(gen.makeJavaTypeAnnotations(decl.getDeclarationModel(), gen.actualType(decl)))

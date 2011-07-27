@@ -22,13 +22,13 @@ import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Name;
 
-public class StatementGen extends GenPart {
+public class StatementTransformer extends AbstractTransformer {
 
     // Used to hold the name of the variable associated with the fail-block if the innermost for-loop
     // Is null if we're currently in a while-loop or not in any loop at all
     private Name currentForFailVariable = null;
     
-    public StatementGen(Gen2 gen) {
+    public StatementTransformer(CeylonTransformer gen) {
         super(gen);
     }
 

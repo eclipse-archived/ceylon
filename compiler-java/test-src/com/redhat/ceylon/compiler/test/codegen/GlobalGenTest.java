@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.test.codegen;
 
-import com.redhat.ceylon.compiler.codegen.Gen2;
-import com.redhat.ceylon.compiler.codegen.GlobalGen;
+import com.redhat.ceylon.compiler.codegen.CeylonTransformer;
+import com.redhat.ceylon.compiler.codegen.GlobalTransformer;
 import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
@@ -24,7 +24,7 @@ public class GlobalGenTest {
 
     private TreeMaker make;
     private Name.Table names;
-    private GlobalGen globalGen;
+    private GlobalTransformer globalGen;
 
     @Before
     public void setUp() throws Exception {
@@ -32,7 +32,7 @@ public class GlobalGenTest {
         CeyloncFileManager.preRegister(context);
         make = TreeMaker.instance(context);
         names = Name.Table.instance(context);
-        globalGen = Gen2.getInstance(context).globalGen();
+        globalGen = CeylonTransformer.getInstance(context).globalGen();
     }
 
     @Test
