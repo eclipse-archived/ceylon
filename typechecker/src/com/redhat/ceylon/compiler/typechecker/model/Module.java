@@ -6,6 +6,7 @@ import java.util.List;
 public class Module {
 
     private List<String> name;
+	private String version;
     private List<Package> packages = new ArrayList<Package>();
     private List<Module> dependencies = new ArrayList<Module>();
     private boolean available;
@@ -38,7 +39,15 @@ public class Module {
         return dependencies;
     }
 
-    public List<Package> getAllPackages() {
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public List<Package> getAllPackages() {
         List<Package> list = new ArrayList<Package>();
         list.addAll(packages);
         for (Module m : dependencies) {
