@@ -35,6 +35,9 @@ import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
 
+/**
+ * This transformer deals with class/interface declarations
+ */
 public class ClassTransformer extends AbstractTransformer {
 
     class ClassVisitor extends StatementVisitor {

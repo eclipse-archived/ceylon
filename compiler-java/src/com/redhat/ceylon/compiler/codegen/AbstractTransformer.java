@@ -12,6 +12,9 @@ import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Name;
 
+/**
+ * Base class for all delegating transformers
+ */
 public class AbstractTransformer {
     protected CeylonTransformer gen;
 

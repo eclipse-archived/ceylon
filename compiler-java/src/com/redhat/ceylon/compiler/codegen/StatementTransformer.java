@@ -22,6 +22,9 @@ import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Name;
 
+/**
+ * This transformer deals with statements only
+ */
 public class StatementTransformer extends AbstractTransformer {
 
     // Used to hold the name of the variable associated with the fail-block if the innermost for-loop

@@ -54,6 +54,9 @@ import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Options;
 import com.sun.tools.javac.util.Position.LineMap;
 
+/**
+ * Main transformer that delegates all transforming of ceylon to java to auxiliary classes.
+ */
 public class CeylonTransformer {
     private TreeMaker make;
     Name.Table names;

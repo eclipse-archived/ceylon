@@ -33,6 +33,9 @@ import com.sun.tools.javac.tree.JCTree.JCUnary;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 
+/**
+ * This transformer deals with expressions only
+ */
 public class ExpressionTransformer extends AbstractTransformer {
 
     public ExpressionTransformer(CeylonTransformer gen) {
