@@ -4,7 +4,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.ControlFlowVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleBuilder;
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleImportVisitor;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.RefinementVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.SelfReferenceVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.SpecificationVisitor;
@@ -63,7 +63,7 @@ public class PhasedUnit {
 
     public void buildModuleImport() {
         if ( ModuleBuilder.MODULE_FILE.equals(fileName) ) {
-            final ModuleImportVisitor v = new ModuleImportVisitor(moduleBuilder, context);
+            final ModuleVisitor v = new ModuleVisitor(moduleBuilder, context);
             compilationUnit.visit(v);
         }
     }

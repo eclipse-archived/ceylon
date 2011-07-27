@@ -18,7 +18,7 @@ import com.sun.org.apache.xerces.internal.impl.Version;
  *
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
-public class ModuleImportVisitor extends Visitor {
+public class ModuleVisitor extends Visitor {
     private final Context context;
     /**
      * are we truly in a module?
@@ -33,7 +33,7 @@ public class ModuleImportVisitor extends Visitor {
     private final ModuleBuilder moduleBuilder;
 
 
-    public ModuleImportVisitor(ModuleBuilder moduleBuilder, Context context) {
+    public ModuleVisitor(ModuleBuilder moduleBuilder, Context context) {
         this.moduleBuilder = moduleBuilder;
         this.context = context;
     }
