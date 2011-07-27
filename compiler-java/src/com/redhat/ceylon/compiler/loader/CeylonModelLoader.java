@@ -635,10 +635,11 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     @Override
     public void complete(LazyMethod method) {
         MethodSymbol meth = null;
+        String lookupName = Util.quoteIfJavaKeyword(method.getName());
         for(Symbol member : method.classSymbol.members().getElements()){
             if(member instanceof MethodSymbol){
                 MethodSymbol m = (MethodSymbol) member;
-                if(m.name.toString().equals(method.getName())){
+                if(m.name.toString().equals(lookupName)){
                     meth = m;
                     break;
                 }
