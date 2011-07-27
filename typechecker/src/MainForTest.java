@@ -1,5 +1,6 @@
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
 import java.io.File;
@@ -27,6 +28,14 @@ public class MainForTest {
         compilationUnit = typeChecker.getCompilationUnitFromRelativePath("capture/Capture.ceylon");
         if ( compilationUnit == null ) {
             throw new RuntimeException("Failed to pass getCompilationUnitFromRelativePath for files in real src dir");
+        }
+        compilationUnit = typeChecker.getCompilationUnitFromRelativePath("com/redhat/sample/multisource/Boo.ceylon");
+        Module module = compilationUnit.getUnit().getPackage().getModule();
+        if ( !"com.redhat.sample.multisource".equals( module.getNameAsString() ) ) {
+            throw new RuntimeException("Unable to extract module name");
+        }
+        if ( !"0.2".equals( module.getVersion() ) ) {
+            throw new RuntimeException("Unable to extract module version");
         }
         typeChecker = new TypeCheckerBuilder()
                 .verbose(false)
