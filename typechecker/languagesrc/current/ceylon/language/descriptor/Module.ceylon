@@ -1,20 +1,22 @@
-doc "A module descriptor."
+import ceylon.language { desc = doc }
+
+desc "A module descriptor."
 shared class Module(
 
-        doc "The name of the module."
+        desc "The name of the module."
         Quoted name,
 
-        doc "The version id of the module."
+        desc "The version id of the module."
         Quoted version,
 
-        doc "A description of the module."
+        desc "A description of the module."
         String doc = "",
         
-        doc "The names of the authors of the
+        desc "The names of the authors of the
              module"
         String[] authors = {},
 
-        doc "The license under which the module
+        desc "The license under which the module
              is distributed."
         Quoted? license = null,
 
@@ -28,7 +30,7 @@ shared class Module(
              module."
         void run() = notRunnable,*/
 
-        doc "Modules used by this module."
+        desc "Modules used by this module."
         Import... dependencies) {
 
     //TODO finish
