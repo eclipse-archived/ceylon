@@ -628,8 +628,6 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         if(meth == null || meth.getReturnType() == null)
             throw new RuntimeException("Failed to find toplevel attribute "+value.getName());
         
-        value.setShared((meth.flags() & Flags.PUBLIC) != 0);
-
         // FIXME: deal with type override by annotations
         value.setType(getType(meth.getReturnType(), null));
     }
@@ -648,9 +646,6 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         }
         if(meth == null || meth.getReturnType() == null)
             throw new RuntimeException("Failed to find toplevel method "+method.getName());
-        
-        method.setShared((meth.flags() & Flags.PUBLIC) != 0);
-        method.setName(meth.name.toString());
         
         // type params first
         setTypeParameters(method, meth);
