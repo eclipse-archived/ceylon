@@ -6,8 +6,24 @@ import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.sun.tools.javac.parser.Token;
 
 public class Util {
+    public static String quoteIfJavaKeyword(String name){
+        if(isJavaKeyword(name))
+            return "$"+name;
+        return name;
+    }
+    
+    private static boolean isJavaKeyword(String name) {
+        try{
+            Token token = Token.valueOf(name.toUpperCase());
+            return token != null && token.name != null && token.name.equals(name);
+        }catch(IllegalArgumentException x){
+            return false;
+        }
+    }
+
     public static String strip(String str){
         return (str.charAt(0) == '$') ? str.substring(1) : str;
     }
