@@ -91,7 +91,9 @@ class Generics() {
         class BadClass(@error X x) {}
         class GoodClass2(Y[] y) {}
         class BadClass2(@error X[] x) {}
-        class GoodClassInheritance() satisfies Sequence<X> {
+        class GoodClassInheritance() 
+                extends Object() 
+                satisfies Sequence<X> {
             //fake implementations
             shared actual Natural lastIndex = 0;
             shared actual X[] rest = {};

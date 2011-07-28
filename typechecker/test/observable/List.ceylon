@@ -1,4 +1,5 @@
 class List<T>() 
+        extends Object()
         satisfies Sequence<T> {
     shared void add(T t) {}
     shared actual Natural lastIndex {
