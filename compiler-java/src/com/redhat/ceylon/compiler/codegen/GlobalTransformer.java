@@ -11,12 +11,11 @@ import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
 
 /**
- * Helper class to generate definitions of global variables. Top-level object and method definitions are generally
- * translated as a new class, handled elsewhere, and a global variable of the class, handled by this class. Top-level
- * attribute definitions are also translated as a global variable.
+ * Helper class to generate definitions of globals (singletons), as required by translations of top-level object and
+ * attribute definitions.
  *
- * All these global variables are represented by a class with name matching that of the variable exactly (no mangling is
- * done). The generated class contains a <tt>private static</tt> field named <tt>value</tt> and static accessors
+ * Global variables are represented by a class with name matching that of the variable exactly (no mangling is done).
+ * The generated class contains a <tt>private static</tt> field named <tt>value</tt> and static accessors
  * <tt>get<em>VariableName</em>()</tt> and <tt>set<em>VariableName</em>()</tt>. It is possible to customize the
  * generated class.
  *
@@ -181,9 +180,10 @@ public final class GlobalTransformer extends AbstractTransformer {
         }
 
         private JCTree generateGetter() {
-            JCTree.JCBlock body = (getterBlock != null) ? getterBlock : make().Block(0L, List.<JCTree.JCStatement>of(
-                    make().Return(make().Ident(fieldName))
-            ));
+            JCTree.JCBlock body = getterBlock != null
+                    ? getterBlock
+                    : generateDefaultGetterBlock();
+
             return make().MethodDef(
                     make().Modifiers(Flags.STATIC | getterVisibility, valueAnnotations),
                     getGetterName(variableName),
@@ -196,18 +196,19 @@ public final class GlobalTransformer extends AbstractTransformer {
             );
         }
 
+        private JCTree.JCBlock generateDefaultGetterBlock() {
+            return make().Block(0L, List.<JCTree.JCStatement>of(make().Return(make().Ident(fieldName))));
+        }
+
         private JCTree generateSetter() {
             Name paramName = names().fromString("newValue");
 
-            JCTree.JCBlock body = (getterBlock != null) ?
-                    ((setterBlock != null) ? setterBlock : make().Block(0L, List.<JCTree.JCStatement>nil()))
-                :
-                    make().Block(0L, List.<JCTree.JCStatement>of(
-                        make().Exec(
-                                make().Assign(
-                                        make().Ident(fieldName),
-                                        make().Ident(paramName)))
-            ));
+            JCTree.JCBlock body;
+            if (getterBlock != null) {
+                body = setterBlock != null ? setterBlock : createEmptyBlock();
+            } else {
+                body = generateDefaultSetterBlock(paramName);
+            }
             return make().MethodDef(
                     make().Modifiers(Flags.STATIC | setterVisibility),
                     getSetterName(variableName),
@@ -220,6 +221,18 @@ public final class GlobalTransformer extends AbstractTransformer {
                     body,
                     null
             );
+        }
+
+        private JCTree.JCBlock createEmptyBlock() {
+            return make().Block(0L, List.<JCTree.JCStatement>nil());
+        }
+
+        private JCTree.JCBlock generateDefaultSetterBlock(Name paramName) {
+            return make().Block(0L, List.<JCTree.JCStatement>of(
+                    make().Exec(
+                            make().Assign(
+                                    make().Ident(fieldName),
+                                    make().Ident(paramName)))));
         }
 
         /**
@@ -268,7 +281,7 @@ public final class GlobalTransformer extends AbstractTransformer {
         /**
          * Sets the code block to use for the generated setter. If no setter is generated the code block will be
          * silently ignored.
-         * @param getterBlock a code block
+         * @param setterBlock a code block
          * @return this instance for method chaining
          */
         public DefinitionBuilder setterBlock(JCTree.JCBlock setterBlock) {
