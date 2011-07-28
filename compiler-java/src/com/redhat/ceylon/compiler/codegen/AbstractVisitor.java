@@ -24,7 +24,7 @@ import com.sun.tools.javac.util.Name;
  *
  * @param <J> The type of JCTree in the result list.
  */
-public class AbstractVisitor<J extends JCTree> extends Visitor {
+public abstract class AbstractVisitor<J extends JCTree> extends Visitor {
 
     protected final CeylonTransformer gen;
 
