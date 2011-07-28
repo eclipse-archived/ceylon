@@ -50,8 +50,8 @@ public class ClassTransformer extends AbstractTransformer {
         final Map<String, Tree.AttributeGetterDefinition> getters = new HashMap<String, Tree.AttributeGetterDefinition>();
         final Map<String, Tree.AttributeSetterDefinition> setters = new HashMap<String, Tree.AttributeSetterDefinition>();
 
-        ClassVisitor() {
-            super(gen.statementGen);
+        ClassVisitor(CeylonTransformer gen) {
+            super(gen);
         }
 
         // Class Initializer parameter
@@ -112,12 +112,12 @@ public class ClassTransformer extends AbstractTransformer {
                     if (initialValue != null) {
                         // The attribute's initializer gets moved to the constructor
                         // because it might be using locals of the initializer
-                        stmts.append(at(decl).Exec(at(decl).Assign(makeSelect("this", decl.getIdentifier().getText()), initialValue)));
+                        append(at(decl).Exec(at(decl).Assign(makeSelect("this", decl.getIdentifier().getText()), initialValue)));
                     }
                 } else {
                     // Otherwise it's local to the constructor
                     int modifiers = transformLocalDeclFlags(decl);
-                    stmts.append(at(decl).VarDef(at(decl).Modifiers(modifiers, List.<JCTree.JCAnnotation>nil()), attrName, type, initialValue));
+                    append(at(decl).VarDef(at(decl).Modifiers(modifiers, List.<JCTree.JCAnnotation>nil()), attrName, type, initialValue));
                 }
             }
 
@@ -160,7 +160,7 @@ public class ClassTransformer extends AbstractTransformer {
                 for (Tree.PositionalArgument arg : extendedType.getInvocationExpression().getPositionalArgumentList().getPositionalArguments())
                     args = args.append(gen.expressionGen.transformArg(arg));
 
-                stmts.append(at(extendedType).Exec(at(extendedType).Apply(List.<JCExpression> nil(), at(extendedType).Ident(names()._super), args)));
+                append(at(extendedType).Exec(at(extendedType).Apply(List.<JCExpression> nil(), at(extendedType).Ident(names()._super), args)));
             }
         }
 
@@ -177,7 +177,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     public JCClassDecl transform(final Tree.ClassOrInterface def) {
 
-        ClassVisitor visitor = new ClassVisitor();
+        ClassVisitor visitor = new ClassVisitor(gen);
         def.visitChildren(visitor);
 
         if (def instanceof Tree.AnyClass) {
@@ -244,7 +244,7 @@ public class ClassTransformer extends AbstractTransformer {
                 List.<JCTypeParameter>nil(),
                 visitor.params.toList(),
                 List.<JCExpression>nil(),
-                at(cdecl).Block(0, visitor.initStmts.toList().appendList(visitor.stmts().toList())),
+                at(cdecl).Block(0, visitor.initStmts.toList().appendList(visitor.getResult().toList())),
                 null);
     }
 
@@ -358,15 +358,23 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
 
-    private void addGettersAndSetters(final ListBuffer<JCTree> defs, ListBuffer<Tree.AttributeDeclaration> attributeDecls) {
-        class GetterVisitor extends Visitor {
-            public void visit(Tree.AttributeDeclaration decl) {
-                defs.add(makeGetter(decl));
-                if(isMutable(decl))
-                    defs.add(makeSetter(decl));
+    static class GetterVisitor extends AbstractVisitor {
+        
+
+		public GetterVisitor(ClassTransformer transformer, ListBuffer<JCTree> defs) {
+		    super(transformer.gen, defs);
+		}
+
+		public void visit(Tree.AttributeDeclaration decl) {
+			add(classGen.makeGetter(decl));
+            if(classGen.isMutable(decl)) {
+            	add(classGen.makeSetter(decl));
             }
         }
-        GetterVisitor v = new GetterVisitor();
+    }
+    
+    private void addGettersAndSetters(ListBuffer<JCTree> defs, ListBuffer<Tree.AttributeDeclaration> attributeDecls) {
+        GetterVisitor v = new GetterVisitor(this, defs);
         for(Tree.AttributeDeclaration def : attributeDecls){
             def.visit(v);
         }
@@ -512,7 +520,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     public JCClassDecl objectClass(Tree.ObjectDefinition def, boolean topLevel) {
-        ClassVisitor visitor = new ClassVisitor();
+        ClassVisitor visitor = new ClassVisitor(gen);
         def.visitChildren(visitor);
 
         visitor.defs.append(createConstructor(def, visitor));

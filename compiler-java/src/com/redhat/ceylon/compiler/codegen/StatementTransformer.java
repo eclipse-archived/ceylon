@@ -40,12 +40,12 @@ public class StatementTransformer extends AbstractTransformer {
     }
 
     List<JCStatement> transformStmts(java.util.List<Tree.Statement> list) {
-        StatementVisitor v = new StatementVisitor(this);
+        StatementVisitor v = new StatementVisitor(this.gen);
 
         for (Tree.Statement stmt : list)
             stmt.visit(v);
 
-        return v.stmts().toList();
+        return v.getResult().toList();
     }
 
     List<JCStatement> transform(Tree.IfStatement stmt) {

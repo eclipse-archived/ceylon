@@ -122,54 +122,10 @@ public class CeylonTransformer {
      * This runs after _some_ typechecking has been done
      */
     public ListBuffer<JCTree> transformAfterTypeChecking(Tree.CompilationUnit t) {
-        final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
         disableModelAnnotations = false;
-        t.visitChildren(new Visitor() {
-            public void visit(Tree.ImportList imp) {
-                defs.appendList(transform(imp));
-            }
-
-            private void checkCompilerAnnotations(Tree.Declaration decl){
-                if(hasCompilerAnnotation(decl, "nomodel"))
-                    disableModelAnnotations  = true;
-            }
-
-            private void resetCompilerAnnotations(){
-                disableModelAnnotations = false;
-            }
-            
-            public void visit(Tree.ClassOrInterface decl) {
-                checkCompilerAnnotations(decl);
-                defs.append(classGen.transform(decl));
-                resetCompilerAnnotations();
-            }
-
-            public void visit(Tree.ObjectDefinition decl) {
-                checkCompilerAnnotations(decl);
-                defs.append(classGen.objectClass(decl, true));
-                resetCompilerAnnotations();
-            }
-
-            public void visit(Tree.AttributeDeclaration decl){
-                checkCompilerAnnotations(decl);
-                defs.append(transform(decl));
-                resetCompilerAnnotations();
-            }
-
-            public void visit(Tree.AttributeGetterDefinition decl){
-                checkCompilerAnnotations(decl);
-                defs.append(transform(decl));
-                resetCompilerAnnotations();
-            }
-
-            public void visit(Tree.MethodDefinition decl) {
-                checkCompilerAnnotations(decl);
-                // Generate a wrapper class for the method
-                defs.append(classGen.methodClass(decl));
-                resetCompilerAnnotations();
-            }
-        });
-        return defs;
+        CompilationUnitVisitor visitor = new CompilationUnitVisitor(this);
+        t.visitChildren(visitor);
+        return visitor.getResult();
     }
 
     JCTree.Factory at(Node t) {
@@ -194,38 +150,69 @@ public class CeylonTransformer {
         return globalGen;
     }
 
-    static class Singleton<T> implements Iterable<T> {
-        private T thing;
+    private static final class CompilationUnitVisitor extends AbstractVisitor {
+		
+		private CompilationUnitVisitor(CeylonTransformer ceylonTransformer) {
+			super(ceylonTransformer);
+		}
 
-        Singleton() {
-        }
+		public void visit(Tree.ImportList imp) {
+		    appendList(gen.transform(imp));
+		}
 
-        Singleton(T t) {
-            thing = t;
-        }
+		private void checkCompilerAnnotations(Tree.Declaration decl){
+		    if(gen.hasCompilerAnnotation(decl, "nomodel"))
+		        gen.disableModelAnnotations  = true;
+		}
 
-        List<T> asList() {
-            return List.of(thing);
-        }
+		private void resetCompilerAnnotations(){
+		    gen.disableModelAnnotations = false;
+		}
 
-        void append(T t) {
-            if (thing != null)
-                throw new RuntimeException();
-            thing = t;
-        }
+		public void visit(Tree.ClassOrInterface decl) {
+		    checkCompilerAnnotations(decl);
+		    append(gen.classGen.transform(decl));
+		    resetCompilerAnnotations();
+		}
 
-        public Iterator<T> iterator() {
-            return asList().iterator();
-        }
+		public void visit(Tree.ObjectDefinition decl) {
+		    checkCompilerAnnotations(decl);
+		    append(gen.classGen.objectClass(decl, true));
+		    resetCompilerAnnotations();
+		}
 
-        public T thing() {
-            return this.thing;
-        }
+		public void visit(Tree.AttributeDeclaration decl){
+		    checkCompilerAnnotations(decl);
+		    append(gen.transform(decl));
+		    resetCompilerAnnotations();
+		}
 
-        public String toString() {
-            return thing.toString();
-        }
-    }
+		public void visit(Tree.AttributeGetterDefinition decl){
+		    checkCompilerAnnotations(decl);
+		    append(gen.transform(decl));
+		    resetCompilerAnnotations();
+		}
+
+		public void visit(Tree.MethodDefinition decl) {
+		    checkCompilerAnnotations(decl);
+		    // Generate a wrapper class for the method
+		    append(gen.classGen.methodClass(decl));
+		    resetCompilerAnnotations();
+		}
+	}
+
+	private static final class ImportListVisitor extends AbstractVisitor {
+		
+		private ImportListVisitor(CeylonTransformer ceylonTransformer) {
+			super(ceylonTransformer);
+		}
+
+		// FIXME: handle the rest of the cases here
+		public void visit(Tree.ImportPath that) {
+		    JCImport stmt = at(that).Import(gen.makeIdentFromIdentifiers(that.getIdentifiers()), false);
+		    append(stmt);
+		}
+	}
 
     JCFieldAccess makeSelect(JCExpression s1, String s2) {
         return make().Select(s1, names.fromString(s2));
@@ -329,15 +316,10 @@ public class CeylonTransformer {
     }
 
     private List<JCTree> transform(Tree.ImportList importList) {
-        final ListBuffer<JCTree> imports = new ListBuffer<JCTree>();
-        importList.visit(new Visitor() {
-            // FIXME: handle the rest of the cases here
-            public void visit(Tree.ImportPath that) {
-                JCImport stmt = at(that).Import(makeIdentFromIdentifiers(that.getIdentifiers()), false);
-                imports.append(stmt);
-            }
-        });
-        return imports.toList();
+        
+        ImportListVisitor visitor = new ImportListVisitor(this);
+        importList.visit(visitor);
+        return visitor.getResult().toList();
     }
 
     private JCTree transform(AttributeDeclaration decl) {
@@ -396,14 +378,6 @@ public class CeylonTransformer {
         builder.getterBlock(block);
 
         return builder.build();
-    }
-
-    static class ExpressionVisitor extends Visitor {
-        public JCExpression result;
-    }
-
-    static class ListVisitor<T> extends Visitor {
-        public List<T> result = List.<T> nil();
     }
 
     // FIXME: figure out what CeylonTree.ReflectedLiteral maps to
