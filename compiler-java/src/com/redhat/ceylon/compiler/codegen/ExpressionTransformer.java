@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import com.redhat.ceylon.compiler.codegen.CeylonTransformer.Singleton;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -38,139 +37,178 @@ import com.sun.tools.javac.util.ListBuffer;
  */
 public class ExpressionTransformer extends AbstractTransformer {
 
-    public ExpressionTransformer(CeylonTransformer gen) {
+    private static final class InvocationExpressionVisitor extends AbstractVisitor<JCExpression> {
+		private final ListBuffer<JCExpression> args;
+
+		private InvocationExpressionVisitor(ExpressionTransformer transformer, 
+				ListBuffer<JCExpression> args) {
+		    super(transformer.gen);
+			this.args = args;
+		}
+
+		public void visit(Tree.QualifiedMemberExpression access) {
+		    append(expressionGen.transform(access));
+		}
+
+		public void visit(Tree.Type type) {
+		    // A constructor
+		    append(at(type).NewClass(null, null, gen.makeJavaType(type.getTypeModel(), false), args.toList(), null));
+		}
+
+		public void visit(Tree.BaseTypeExpression typeExp) {
+		    // A constructor
+		    append(at(typeExp).NewClass(null, null, makeIdent(typeExp.getIdentifier().getText()), args.toList(), null));
+		}
+
+		public void visit(Tree.InvocationExpression chainedCall) {
+		    append(expressionGen.transform(chainedCall));
+		}
+
+		public void visit(Tree.BaseMemberExpression access) {
+		    append(expressionGen.transform(access));
+		}
+	}
+
+	public ExpressionTransformer(CeylonTransformer gen) {
         super(gen);
     }
 
-    JCExpression transformExpression(final Tree.Term expr) {
-        class V extends Visitor {
-            public JCExpression result;
+	static class TermVisitor extends AbstractVisitor<JCExpression> {
+        //private ExpressionTransformer transformer;
+		private Term expr;
 
-            public void visit(Tree.This expr) {
-                at(expr);
-                result = makeIdent("this");
-            }
+        public TermVisitor(ExpressionTransformer transformer,
+				Term expr) {
+            super(transformer.gen);
+        	this.expr = expr;
+		}
 
-            public void visit(Tree.Super expr) {
-                at(expr);
-                result = makeIdent("super");
-            }
-
-            // FIXME: port dot operator?
-            public void visit(Tree.NotEqualOp op) {
-                result = transform(op);
-            }
-
-            public void visit(Tree.NotOp op) {
-                result = transform(op);
-            }
-
-            public void visit(Tree.AssignOp op) {
-                result = transform(op);
-            }
-
-            public void visit(Tree.IsOp op) {
-                result = transform(op);
-            }
-
-            public void visit(Tree.RangeOp op) {
-                result = transform(op);
-            }
-
-            public void visit(Tree.EntryOp op) {
-                result = transform(op);
-            }
-
-            public void visit(Tree.LogicalOp op) {
-                result = transform(op);
-            }
-
-            public void visit(Tree.UnaryOperatorExpression op) {
-                result = transform(op);
-            }
-
-            public void visit(Tree.BinaryOperatorExpression op) {
-                result = transform(op);
-            }
-
-            public void visit(Tree.ArithmeticAssignmentOp op){
-                result = transform(op);
-            }
-
-            public void visit(Tree.BitwiseAssignmentOp op){
-                result = transform(op);
-            }
-
-            public void visit(Tree.LogicalAssignmentOp op){
-                result = transform(op);
-            }
-
-            public void visit(Tree.PrefixOperatorExpression op) {
-                result = transform(op);
-            }
-
-            public void visit(Tree.PostfixOperatorExpression op) {
-                result = transform(op);
-            }
-
-            // NB spec 1.3.11 says "There are only two types of numeric
-            // literals: literals for Naturals and literals for Floats."
-            public void visit(Tree.NaturalLiteral lit) {
-                JCExpression n = make().Literal(Long.parseLong(lit.getText()));
-                result = at(expr).Apply(null, makeSelect(makeIdent(syms().ceylonNaturalType), "instance"), List.of(n));
-            }
-
-            public void visit(Tree.FloatLiteral lit) {
-                JCExpression n = make().Literal(Double.parseDouble(lit.getText()));
-                result = at(expr).Apply(null, makeSelect(makeIdent(syms().ceylonFloatType), "instance"), List.of(n));
-            }
-
-            public void visit(Tree.CharLiteral lit) {
-                JCExpression n = make().Literal(TypeTags.CHAR, (int) lit.getText().charAt(1));
-                // XXX make().Literal(lit.value) doesn't work here... something
-                // broken in javac?
-                result = at(expr).Apply(null, makeSelect(makeIdent(syms().ceylonCharacterType), "instance"), List.of(n));
-            }
-
-            public void visit(Tree.StringLiteral string) {
-                result = transform(string);
-            }
-
-            public void visit(Tree.InvocationExpression call) {
-                result = transform(call);
-            }
-
-            // FIXME: port ReflectedLiteral?
-            public void visit(Tree.BaseMemberExpression value) {
-                result = transform(value);
-            }
-
-            public void visit(Tree.QualifiedMemberExpression value) {
-                result = transform(value);
-            }
-
-            // FIXME: port TypeName?
-            public void visit(Tree.InitializerExpression value) {
-                result = transformExpression(value.getExpression());
-            }
-
-            public void visit(Tree.SequenceEnumeration value) {
-                result = transform(value);
-            }
-
-            // FIXME: port Null?
-            // FIXME: port Condition?
-            // FIXME: port Subscript?
-            // FIXME: port LowerBoud?
-            // FIXME: port EnumList?
-            public void visit(Tree.StringTemplate expr) {
-                result = transformStringExpression(expr);
-            }
+		public void visit(Tree.This expr) {
+			at(expr);
+            append(makeIdent("this"));
         }
 
-        V v = new V();
+        public void visit(Tree.Super expr) {
+        	at(expr);
+            append(makeIdent("super"));
+        }
+
+        // FIXME: port dot operator?
+        public void visit(Tree.NotEqualOp op) {
+            append(expressionGen.transform(op));
+        }
+
+        public void visit(Tree.NotOp op) {
+            append(expressionGen.transform(op));
+        }
+
+        public void visit(Tree.AssignOp op) {
+            append(expressionGen.transform(op));
+        }
+
+        public void visit(Tree.IsOp op) {
+            append(expressionGen.transform(op));
+        }
+
+        public void visit(Tree.RangeOp op) {
+            append(expressionGen.transform(op));
+        }
+
+        public void visit(Tree.EntryOp op) {
+            append(expressionGen.transform(op));
+        }
+
+        public void visit(Tree.LogicalOp op) {
+            append(expressionGen.transform(op));
+        }
+
+        public void visit(Tree.UnaryOperatorExpression op) {
+            append(expressionGen.transform(op));
+        }
+
+        public void visit(Tree.BinaryOperatorExpression op) {
+            append(expressionGen.transform(op));
+        }
+
+        public void visit(Tree.ArithmeticAssignmentOp op){
+            append(expressionGen.transform(op));
+        }
+
+        public void visit(Tree.BitwiseAssignmentOp op){
+            append(expressionGen.transform(op));
+        }
+
+        public void visit(Tree.LogicalAssignmentOp op){
+            append(expressionGen.transform(op));
+        }
+
+        public void visit(Tree.PrefixOperatorExpression op) {
+            append(expressionGen.transform(op));
+        }
+
+        public void visit(Tree.PostfixOperatorExpression op) {
+            append(expressionGen.transform(op));
+        }
+
+        // NB spec 1.3.11 says "There are only two types of numeric
+        // literals: literals for Naturals and literals for Floats."
+        public void visit(Tree.NaturalLiteral lit) {
+            JCExpression n = make().Literal(Long.parseLong(lit.getText()));
+            append(at(expr).Apply(null, makeSelect(makeIdent(syms().ceylonNaturalType), "instance"), List.of(n)));
+        }
+
+        public void visit(Tree.FloatLiteral lit) {
+            JCExpression n = make().Literal(Double.parseDouble(lit.getText()));
+            append(at(expr).Apply(null, makeSelect(makeIdent(syms().ceylonFloatType), "instance"), List.of(n)));
+        }
+
+        public void visit(Tree.CharLiteral lit) {
+            JCExpression n = make().Literal(TypeTags.CHAR, (int) lit.getText().charAt(1));
+            // XXX make().Literal(lit.value) doesn't work here... something
+            // broken in javac?
+            append(at(expr).Apply(null, makeSelect(makeIdent(syms().ceylonCharacterType), "instance"), List.of(n)));
+        }
+
+        public void visit(Tree.StringLiteral string) {
+            append(expressionGen.transform(string));
+        }
+
+        public void visit(Tree.InvocationExpression call) {
+            append(expressionGen.transform(call));
+        }
+
+        // FIXME: port ReflectedLiteral?
+        public void visit(Tree.BaseMemberExpression value) {
+            append(expressionGen.transform(value));
+        }
+
+        public void visit(Tree.QualifiedMemberExpression value) {
+            append(expressionGen.transform(value));
+        }
+
+        // FIXME: port TypeName?
+        public void visit(Tree.InitializerExpression value) {
+            append(expressionGen.transformExpression(value.getExpression()));
+        }
+
+        public void visit(Tree.SequenceEnumeration value) {
+            append(expressionGen.transform(value));
+        }
+
+        // FIXME: port Null?
+        // FIXME: port Condition?
+        // FIXME: port Subscript?
+        // FIXME: port LowerBoud?
+        // FIXME: port EnumList?
+        public void visit(Tree.StringTemplate expr) {
+            append(expressionGen.transformStringExpression(expr));
+        }
+    }
+	
+    JCExpression transformExpression(final Tree.Term expr) {
+        TermVisitor v = new TermVisitor(this, expr);
         expr.visit(v);
-        return v.result;
+        return v.getSingleResult();
     }
 
     private JCExpression transformStringExpression(Tree.StringTemplate expr) {
@@ -436,40 +474,21 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     JCExpression transform(Tree.InvocationExpression ce) {
-        final Singleton<JCExpression> expr = new Singleton<JCExpression>();
         final ListBuffer<JCExpression> args = new ListBuffer<JCExpression>();
 
         for (Tree.PositionalArgument arg : ce.getPositionalArgumentList().getPositionalArguments())
             args.append(transformArg(arg));
 
-        ce.getPrimary().visit(new Visitor() {
-            public void visit(Tree.QualifiedMemberExpression access) {
-                expr.append(transform(access));
-            }
+        InvocationExpressionVisitor visitor = new InvocationExpressionVisitor(this, args);
+		ce.getPrimary().visit(visitor);
 
-            public void visit(Tree.Type type) {
-                // A constructor
-                expr.append(at(type).NewClass(null, null, gen.makeJavaType(type.getTypeModel(), false), args.toList(), null));
-            }
-
-            public void visit(Tree.BaseTypeExpression typeExp) {
-                // A constructor
-                expr.append(at(typeExp).NewClass(null, null, makeIdent(typeExp.getIdentifier().getText()), args.toList(), null));
-            }
-
-            public void visit(Tree.InvocationExpression chainedCall) {
-                expr.append(transform(chainedCall));
-            }
-
-            public void visit(Tree.BaseMemberExpression access) {
-                expr.append(transform(access));
-            }
-        });
-
-        if (expr.thing() instanceof JCTree.JCNewClass) {
-            return expr.thing();
+		JCExpression expr = visitor.getSingleResult();
+		if (expr == null) {
+			throw new RuntimeException();
+		} else if (expr instanceof JCTree.JCNewClass) {
+            return expr;
         } else {
-            return at(ce).Apply(null, expr.thing(), args.toList());
+            return at(ce).Apply(null, expr, args.toList());
         }
     }
 
@@ -492,50 +511,57 @@ public class ExpressionTransformer extends AbstractTransformer {
         return ceylonLiteral(value);
     }
 
+    static class QualifiedMemberExpressionVisitor extends AbstractVisitor<JCExpression> {
+    	
+    	//private ExpressionTransformer transformer;
+
+        public QualifiedMemberExpressionVisitor(ExpressionTransformer transformer) {
+            super(transformer.gen);
+        	//this.transformer = transformer;
+        }
+        
+        // FIXME: this list of cases is incomplete from Gen
+        public void visit(Tree.BaseMemberExpression op) {
+            append(expressionGen.transform(op));
+        }
+
+        public void visit(Tree.QualifiedMemberExpression op) {
+            append(expressionGen.transform(op));
+        }
+
+        public void visit(Tree.Expression tree) {
+            append(expressionGen.transformExpression(tree));
+        }
+        
+        public void visit(InvocationExpression that) { 
+        	append(expressionGen.transform(that));
+        }
+        
+        public void visit(Tree.This op) {
+            append(expressionGen.makeIdent("this"));
+        }
+        
+        public void visit(Tree.Super op) {
+            append(expressionGen.makeIdent("super"));
+        }
+    }
+
+    
     private JCExpression transform(final Tree.QualifiedMemberExpression access) {
         final Tree.Identifier memberName = access.getIdentifier();
         final Tree.Primary operand = access.getPrimary();
 
-        class V extends Visitor {
-            public JCExpression result;
-
-            // FIXME: this list of cases is incomplete from Gen
-            public void visit(Tree.BaseMemberExpression op) {
-                result = transform(op);
-            }
-
-            public void visit(Tree.QualifiedMemberExpression op) {
-                result = transform(op);
-            }
-
-            public void visit(Tree.Expression tree) {
-                result = transformExpression(tree);
-            }
-            
-            public void visit(InvocationExpression that) { 
-            	result = transform(that);
-            }
-            
-            public void visit(Tree.This op) {
-                result = makeIdent("this");
-            }
-            
-            public void visit(Tree.Super op) {
-                result = makeIdent("super");
-            }
-        }
-
         at(access);
-        V v = new V();
+        QualifiedMemberExpressionVisitor v = new QualifiedMemberExpressionVisitor(this);
         operand.visit(v);
         
         JCExpression expr;
         if (gen.willErase(operand.getTypeModel())) {
             // Erased types need a type cast
             JCExpression targetType = gen.makeJavaType(access.getTarget().getDeclaringType(), false);
-            expr = gen.makeSelect(make().TypeCast(targetType, v.result), memberName.getText());
+            expr = gen.makeSelect(make().TypeCast(targetType, v.getSingleResult()), memberName.getText());
         } else {
-            expr = gen.makeSelect(v.result, memberName.getText());
+            expr = gen.makeSelect(v.getSingleResult(), memberName.getText());
         }
         return expr;
     }

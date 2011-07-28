@@ -1,31 +1,22 @@
 package com.redhat.ceylon.compiler.codegen;
 
-import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.sun.tools.javac.tree.JCTree;
-import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
-import com.sun.tools.javac.util.List;
-import com.sun.tools.javac.util.ListBuffer;
-
 import static com.sun.tools.javac.code.Flags.FINAL;
 
-class StatementVisitor extends Visitor implements NaturalVisitor {
-    final ListBuffer<JCTree.JCStatement> stmts = ListBuffer.lb();
-    private StatementTransformer statementGen;
-    private ExpressionTransformer expressionGen;
+import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
+import com.sun.tools.javac.util.List;
 
-    StatementVisitor(StatementTransformer statementGen) {
-        this.statementGen = statementGen;
-        this.expressionGen = statementGen.gen.expressionGen;
-    }
+class StatementVisitor extends AbstractVisitor<JCStatement> implements NaturalVisitor {
 
-    public ListBuffer<JCTree.JCStatement> stmts() {
-        return stmts;
+    StatementVisitor(CeylonTransformer gen) {
+        super(gen);
     }
 
     public void visit(Tree.InvocationExpression expr) {
-        append(statementGen.at(expr).Exec(expressionGen.transform(expr)));
+        append(at(expr).Exec(expressionGen.transform(expr)));
     }
 
     public void visit(Tree.Return ret) {
@@ -33,11 +24,11 @@ class StatementVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.IfStatement stat) {
-        append(statementGen.transform(stat));
+        appendList(statementGen.transform(stat));
     }
 
     public void visit(Tree.WhileStatement stat) {
-        append(statementGen.transform(stat));
+        appendList(statementGen.transform(stat));
     }
 
 //    public void visit(Tree.DoWhileStatement stat) {
@@ -45,11 +36,11 @@ class StatementVisitor extends Visitor implements NaturalVisitor {
 //    }
 
     public void visit(Tree.ForStatement stat) {
-        append(statementGen.transform(stat));
+        appendList(statementGen.transform(stat));
     }
 
     public void visit(Tree.Break stat) {
-        append(statementGen.transform(stat));
+        appendList(statementGen.transform(stat));
     }
 
     public void visit(Tree.AttributeDeclaration decl) {
@@ -62,22 +53,22 @@ class StatementVisitor extends Visitor implements NaturalVisitor {
 
     // FIXME: not sure why we don't have just an entry for Tree.Term here...
     public void visit(Tree.OperatorExpression op) {
-        append(statementGen.at(op).Exec(expressionGen.transformExpression(op)));
+        append(at(op).Exec(expressionGen.transformExpression(op)));
     }
 
     public void visit(Tree.Expression tree) {
-        append(statementGen.at(tree).Exec(expressionGen.transformExpression(tree)));
+        append(at(tree).Exec(expressionGen.transformExpression(tree)));
     }
 
     public void visit(Tree.MethodDefinition decl) {
-        JCTree.JCClassDecl innerDecl = statementGen.gen.classGen.methodClass(decl);
+        JCTree.JCClassDecl innerDecl = classGen.methodClass(decl);
         append(innerDecl);
-        JCTree.JCIdent name = statementGen.make().Ident(innerDecl.name);
-        JCVariableDecl call = statementGen.at(decl).VarDef(
-                statementGen.make().Modifiers(FINAL),
-                statementGen.names().fromString(decl.getIdentifier().getText()),
+        JCTree.JCIdent name = make().Ident(innerDecl.name);
+        JCVariableDecl call = at(decl).VarDef(
+                make().Modifiers(FINAL),
+                names().fromString(decl.getIdentifier().getText()),
                 name,
-                statementGen.at(decl).NewClass(null, null, name, List.<JCTree.JCExpression>nil(), null));
+                at(decl).NewClass(null, null, name, List.<JCTree.JCExpression>nil(), null));
         append(call);
     }
 
@@ -89,22 +80,14 @@ class StatementVisitor extends Visitor implements NaturalVisitor {
 
     // FIXME: I think those should just go in transformExpression no?
     public void visit(Tree.PostfixOperatorExpression expr) {
-        append(statementGen.at(expr).Exec(expressionGen.transform(expr)));
+        append(at(expr).Exec(expressionGen.transform(expr)));
     }
 
     public void visit(Tree.PrefixOperatorExpression expr) {
-        append(statementGen.at(expr).Exec(expressionGen.transform(expr)));
+        append(at(expr).Exec(expressionGen.transform(expr)));
     }
 
     public void visit(Tree.ExpressionStatement tree) {
-        append(statementGen.at(tree).Exec(expressionGen.transformExpression(tree.getExpression())));
-    }
-
-    private void append(JCTree.JCStatement stmt) {
-        stmts.append(stmt);
-    }
-
-    private void append(List<JCTree.JCStatement> list) {
-        stmts.appendList(list);
+        append(at(tree).Exec(expressionGen.transformExpression(tree.getExpression())));
     }
 }
