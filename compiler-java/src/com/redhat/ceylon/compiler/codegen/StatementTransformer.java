@@ -45,7 +45,7 @@ public class StatementTransformer extends AbstractTransformer {
         for (Tree.Statement stmt : list)
             stmt.visit(v);
 
-        return v.getResult().toList();
+        return (List<JCStatement>) v.getResult().toList();
     }
 
     List<JCStatement> transform(Tree.IfStatement stmt) {

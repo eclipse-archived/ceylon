@@ -22,6 +22,11 @@ final class x {
         this.varShared = ceylon.language.$false.getFalse();
         this.varCaptured = ceylon.language.$false.getFalse();
     }
+    private static final x value = new x();
+    
+    static x getX() {
+        return value;
+    }
     
     public final Boolean getValShared() {
         return this.valShared;
@@ -45,10 +50,5 @@ final class x {
     
     private final void setVarCaptured(Boolean varCaptured) {
         this.varCaptured = varCaptured;
-    }
-    private static final x value = new x();
-    
-    static x getX() {
-        return value;
     }
 }

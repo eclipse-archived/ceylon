@@ -27,7 +27,6 @@ import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
-import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
@@ -38,37 +37,20 @@ import com.sun.tools.javac.util.Name;
  * This transformer deals with class/interface declarations
  */
 public class ClassTransformer extends AbstractTransformer {
-
     class ClassVisitor extends StatementVisitor {
-        final ListBuffer<JCVariableDecl> params = new ListBuffer<JCVariableDecl>();
-        final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
-        final ListBuffer<JCAnnotation> langAnnotations = new ListBuffer<JCAnnotation>();
-        final ListBuffer<JCStatement> initStmts = new ListBuffer<JCStatement>();
-        final ListBuffer<JCTypeParameter> typeParams = new ListBuffer<JCTypeParameter>();
+        final ClassDefinitionBuilder classBuilder;
         final ListBuffer<Tree.AttributeDeclaration> attributeDecls = new ListBuffer<Tree.AttributeDeclaration>();
         final Map<String, Tree.AttributeGetterDefinition> getters = new HashMap<String, Tree.AttributeGetterDefinition>();
         final Map<String, Tree.AttributeSetterDefinition> setters = new HashMap<String, Tree.AttributeSetterDefinition>();
 
-        ClassVisitor(CeylonTransformer gen) {
+        ClassVisitor(CeylonTransformer gen, ClassDefinitionBuilder classBuilder) {
             super(gen);
+            this.classBuilder = classBuilder;
         }
 
         // Class Initializer parameter
         public void visit(Tree.Parameter param) {
-            // Create a parameter for the constructor
-            String name = param.getIdentifier().getText();
-            JCExpression type = gen.makeJavaType(param.getType().getTypeModel(), false);
-            List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(param.getDeclarationModel(), param.getType().getTypeModel());
-            JCVariableDecl var = at(param).VarDef(make().Modifiers(0, annots), names().fromString(name), type, null);
-            params.append(var);
-            
-            // Check if the parameter is used outside of the initializer
-            if (param.getDeclarationModel().isCaptured()) {
-                // If so we create a field for it initializing it with the parameter's value
-                JCVariableDecl localVar = at(param).VarDef(make().Modifiers(FINAL | PRIVATE), names().fromString(name), type , null);
-                defs.append(localVar);
-                initStmts.append(at(param).Exec(at(param).Assign(makeSelect("this", localVar.getName().toString()), at(param).Ident(var.getName()))));
-            }
+            classBuilder.parameter(param);
         }
 
         public void visit(Tree.Block b) {
@@ -76,11 +58,11 @@ public class ClassTransformer extends AbstractTransformer {
         }
 
         public void visit(Tree.MethodDefinition meth) {
-            defs.appendList(transform(meth));
+            classBuilder.defs(transform(meth));
         }
 
         public void visit(Tree.MethodDeclaration meth) {
-            defs.appendList(transform(meth));
+            classBuilder.defs(transform(meth));
         }
 
         public void visit(Tree.Annotation ann) {
@@ -96,7 +78,7 @@ public class ClassTransformer extends AbstractTransformer {
 
             // Only a non-formal attribute has a corresponding field
             // and if a class parameter exists with the same name we skip this part as well
-            if (!isFormal(decl) && !existsParam(params, attrName)) {
+            if (!isFormal(decl) && !classBuilder.existsParam(attrName.toString())) {
                 JCExpression initialValue = null;
                 if (decl.getSpecifierOrInitializerExpression() != null) {
                     initialValue = gen.expressionGen.transformExpression(decl.getSpecifierOrInitializerExpression().getExpression());
@@ -107,7 +89,7 @@ public class ClassTransformer extends AbstractTransformer {
                 if (useField) {
                     // A captured attribute gets turned into a field
                     int modifiers = transformAttributeFieldDeclFlags(decl);
-                    defs.append(at(decl).VarDef(at(decl).Modifiers(modifiers, List.<JCTree.JCAnnotation>nil()), attrName, type, null));
+                    classBuilder.defs(at(decl).VarDef(at(decl).Modifiers(modifiers, List.<JCTree.JCAnnotation>nil()), attrName, type, null));
                     if (initialValue != null) {
                         // The attribute's initializer gets moved to the constructor
                         // because it might be using locals of the initializer
@@ -129,27 +111,27 @@ public class ClassTransformer extends AbstractTransformer {
 
         public void visit(final Tree.AttributeGetterDefinition getter) {
             JCTree.JCMethodDecl getterDef = transform(getter);
-            defs.append(getterDef);
+            classBuilder.defs(getterDef);
             getters.put(getter.getIdentifier().getText(), getter);
         }
 
         public void visit(final Tree.AttributeSetterDefinition setter) {
             JCTree.JCMethodDecl setterDef = transform(setter);
-            defs.append(setterDef);
+            classBuilder.defs(setterDef);
             setters.put(setter.getIdentifier().getText(), setter);
         }
 
         public void visit(final Tree.ClassDefinition cdecl) {
-            defs.append(transform(cdecl));
+            classBuilder.defs(transform(cdecl));
         }
 
         public void visit(final Tree.InterfaceDefinition cdecl) {
-            defs.append(transform(cdecl));
+            classBuilder.defs(transform(cdecl));
         }
 
         // FIXME: also support Tree.SequencedTypeParameter
         public void visit(Tree.TypeParameterDeclaration param) {
-            typeParams.append(transform(param));
+            classBuilder.typeParameter(param);
         }
 
         public void visit(Tree.ExtendedType extendedType) {
@@ -159,8 +141,9 @@ public class ClassTransformer extends AbstractTransformer {
                 for (Tree.PositionalArgument arg : extendedType.getInvocationExpression().getPositionalArgumentList().getPositionalArguments())
                     args = args.append(gen.expressionGen.transformArg(arg));
 
-                append(at(extendedType).Exec(at(extendedType).Apply(List.<JCExpression> nil(), at(extendedType).Ident(names()._super), args)));
+                classBuilder.initBody(at(extendedType).Exec(at(extendedType).Apply(List.<JCExpression> nil(), at(extendedType).Ident(names()._super), args)));
             }
+            classBuilder.extending(extendedType.getType().getTypeModel());
         }
 
         // FIXME: implement
@@ -175,91 +158,22 @@ public class ClassTransformer extends AbstractTransformer {
     // FIXME: figure out what insertOverloadedClassConstructors does and port it
 
     public JCClassDecl transform(final Tree.ClassOrInterface def) {
-
-        ClassVisitor visitor = new ClassVisitor(gen);
+        String className = def.getIdentifier().getText();
+        ClassDefinitionBuilder classBuilder = new ClassDefinitionBuilder(gen, className);
+        
+        ClassVisitor visitor = new ClassVisitor(gen, classBuilder);
         def.visitChildren(visitor);
 
-        if (def instanceof Tree.AnyClass) {
-            // Constructor
-            visitor.defs.append(createConstructor(def, visitor));
-
-            // FIXME:
-            // insertOverloadedClassConstructors(defs,
-            // (CeylonTree.ClassDeclaration) cdecl);
-        }
-
-        addGettersAndSetters(visitor.defs, visitor.attributeDecls);
-
-        visitor.langAnnotations.appendList(gen.makeAtCeylon());
-        
-        return at(def).ClassDef(
-                at(def).Modifiers((long) transformClassDeclFlags(def), visitor.langAnnotations.toList()),
-                names().fromString(def.getIdentifier().getText()),
-                visitor.typeParams.toList(),
-                getSuperclass(def),
-                transformSatisfiedTypes(def.getDeclarationModel().getSatisfiedTypes()),
-                visitor.defs.toList());
+        classBuilder
+            .modifiers(transformClassDeclFlags(def))
+            .satisfies(def.getDeclarationModel().getSatisfiedTypes())
+            .initBody(visitor.getResult().toList())
+            .body(makeGettersAndSetters(visitor.attributeDecls).toList());
+    
+        return classBuilder.build();
     }
 
-    private List<JCExpression> transformSatisfiedTypes(java.util.List<ProducedType> list) {
-        if (list == null) {
-            return List.nil();
-        }
-
-        ListBuffer<JCExpression> satisfies = new ListBuffer<JCExpression>();
-        for (ProducedType t : list) {
-            satisfies.append(gen.makeJavaType(t, true));
-        }
-        return satisfies.toList();
-    }
-
-
-    private JCTree getSuperclass(Tree.ClassOrInterface cdecl) {
-        JCTree superclass;
-        if (cdecl instanceof Tree.AnyInterface) {
-            // The VM insists that interfaces have java.lang.Object as their
-            // superclass
-            superclass = makeIdent(syms().objectType);
-        } else {
-            superclass = getSuperclass(((Tree.AnyClass) cdecl).getDeclarationModel().getExtendedType());
-        }
-        return superclass;
-    }
-
-    private JCTree getSuperclass(ProducedType extendedType) {
-        JCExpression superclass = gen.makeJavaType(extendedType, true);
-        // simplify if we can
-        if(superclass instanceof JCTree.JCFieldAccess
-                && ((JCTree.JCFieldAccess)superclass).sym.type == syms().objectType)
-            superclass = null;
-        return superclass;
-    }
-
-    private JCMethodDecl createConstructor(Tree.Declaration cdecl, ClassVisitor visitor) {
-        return at(cdecl).MethodDef(
-                make().Modifiers(transformConstructorDeclFlags(cdecl)),
-                names().init,
-                at(cdecl).TypeIdent(VOID),
-                List.<JCTypeParameter>nil(),
-                visitor.params.toList(),
-                List.<JCExpression>nil(),
-                at(cdecl).Block(0, visitor.initStmts.toList().appendList(visitor.getResult().toList())),
-                null);
-    }
-
-    public boolean existsParam(ListBuffer<? extends JCTree> params, Name attrName) {
-        for (JCTree decl : params) {
-            if (decl instanceof JCVariableDecl) {
-                JCVariableDecl var = (JCVariableDecl)decl;
-                if (var.name.equals(attrName)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private JCTree.JCMethodDecl transform(AttributeSetterDefinition decl) {
+    public JCTree.JCMethodDecl transform(AttributeSetterDefinition decl) {
         JCBlock body = gen.statementGen.transform(decl.getBlock());
         String name = decl.getIdentifier().getText();
         JCExpression type = gen.makeJavaType(gen.actualType(decl), false);
@@ -306,17 +220,6 @@ public class ClassTransformer extends AbstractTransformer {
             result |= (isFormal(def) && !isDefault(def)) ? ABSTRACT : 0;
             result |= !(isFormal(def) || isDefault(def)) ? FINAL : 0;
         }
-
-        return result;
-    }
-
-    private int transformConstructorDeclFlags(Tree.Declaration cdecl) {
-        int result = 0;
-
-        if (cdecl instanceof Tree.ObjectDefinition)
-            result |= PRIVATE;
-        else if (isShared(cdecl))
-            result |= PUBLIC;
 
         return result;
     }
@@ -372,11 +275,13 @@ public class ClassTransformer extends AbstractTransformer {
         }
     }
     
-    private void addGettersAndSetters(ListBuffer<JCTree> defs, ListBuffer<Tree.AttributeDeclaration> attributeDecls) {
+    private ListBuffer<JCTree> makeGettersAndSetters(ListBuffer<Tree.AttributeDeclaration> attributeDecls) {
+        ListBuffer<JCTree> defs = ListBuffer.lb();
         GetterVisitor v = new GetterVisitor(this, defs);
         for(Tree.AttributeDeclaration def : attributeDecls){
             def.visit(v);
         }
+        return defs;
     }
 
     private JCTree makeGetter(Tree.AttributeDeclaration decl) {
@@ -519,35 +424,31 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     public JCClassDecl objectClass(Tree.ObjectDefinition def, boolean topLevel) {
-        ClassVisitor visitor = new ClassVisitor(gen);
+        Name name = generateClassName(def, topLevel);
+        ClassDefinitionBuilder classBuilder = new ClassDefinitionBuilder(gen, name.toString());
+        
+        ClassVisitor visitor = new ClassVisitor(gen, classBuilder);
         def.visitChildren(visitor);
 
-        visitor.defs.append(createConstructor(def, visitor));
-
-        addGettersAndSetters(visitor.defs, visitor.attributeDecls);
-
-        Name name = generateClassName(def, topLevel);
-
-        ListBuffer<JCAnnotation> langAnnotations = visitor.langAnnotations;
-        langAnnotations.appendList(gen.makeAtCeylon());
-        langAnnotations.appendList(gen.makeAtObject());
-        
         TypeDeclaration decl = def.getDeclarationModel().getType().getDeclaration();
 
         if (topLevel) {
-            appendObjectGlobal(visitor.defs, def, make().Ident(name));
+            classBuilder.body(makeObjectGlobal(def, make().Ident(name)).toList());
         }
 
-        return at(def).ClassDef(
-                at(def).Modifiers((long) transformObjectDeclFlags(def), langAnnotations.toList()),
-                name,
-                List.<JCTypeParameter>nil(),
-                getSuperclass(decl.getExtendedType()),
-                transformSatisfiedTypes(decl.getSatisfiedTypes()),
-                visitor.defs.toList());
+        classBuilder
+            .annotations(gen.makeAtObject())
+            .modifiers(transformObjectDeclFlags(def))
+            .initModifiers(PRIVATE)
+            .satisfies(decl.getSatisfiedTypes())
+            .initBody(visitor.getResult().toList())
+            .body(makeGettersAndSetters(visitor.attributeDecls).toList());
+    
+        return classBuilder.build();
     }
 
-    public void appendObjectGlobal(ListBuffer<JCTree> defs, Tree.ObjectDefinition decl, JCExpression generatedClassName) {
+    public ListBuffer<JCTree> makeObjectGlobal(Tree.ObjectDefinition decl, JCExpression generatedClassName) {
+        ListBuffer<JCTree> defs = ListBuffer.lb();
         GlobalTransformer.DefinitionBuilder builder = gen
                 .globalGenAt(decl)
                 .defineGlobal(generatedClassName, decl.getIdentifier().getText())
@@ -564,7 +465,9 @@ public class ClassTransformer extends AbstractTransformer {
         }
 
         builder.appendDefinitionsTo(defs);
+        return defs;
     }
+    
     // this is due to the above commented code
     @SuppressWarnings("unused")
     private JCExpression transform(final Tree.Annotation userAnn, Tree.ClassOrInterface classDecl, String methodName) {

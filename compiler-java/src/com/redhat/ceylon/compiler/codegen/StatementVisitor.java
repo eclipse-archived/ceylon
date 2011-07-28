@@ -72,6 +72,14 @@ class StatementVisitor extends AbstractVisitor<JCStatement> implements NaturalVi
         append(call);
     }
 
+    public void visit(final Tree.ClassDefinition cdecl) {
+        append(classGen.transform(cdecl));
+    }
+
+    public void visit(final Tree.AttributeGetterDefinition getter) {
+        append((JCStatement) gen.transform(getter));
+    }
+
     @Override
     public void visit(Tree.ObjectDefinition that) {
         // TODO

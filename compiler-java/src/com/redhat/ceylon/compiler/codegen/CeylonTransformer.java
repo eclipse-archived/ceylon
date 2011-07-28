@@ -351,7 +351,7 @@ public class CeylonTransformer {
         return builder.build();
     }
 
-    private JCTree transform(AttributeGetterDefinition decl) {
+    public JCTree transform(AttributeGetterDefinition decl) {
         GlobalTransformer.DefinitionBuilder builder = globalGenAt(decl)
             .defineGlobal(
                     makeJavaType(actualType(decl), false),
@@ -602,7 +602,7 @@ public class CeylonTransformer {
         return makeJavaTypeAnnotations(type, decl.isToplevel() || (decl.isClassOrInterfaceMember() && decl.isShared()));
     }
 
-    private List<JCTree.JCAnnotation> makeJavaTypeAnnotations(ProducedType type, boolean required) {
+    List<JCTree.JCAnnotation> makeJavaTypeAnnotations(ProducedType type, boolean required) {
         if (!required)
             return List.nil();
         // Add the original type to the annotations

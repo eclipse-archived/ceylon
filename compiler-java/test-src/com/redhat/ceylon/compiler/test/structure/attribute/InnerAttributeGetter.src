@@ -5,13 +5,12 @@ class InnerAttributeGetter {
     private final void m() {
         
         final class innerGetter {
-            private static final Natural value = .ceylon.language.Natural.instance(0L);
-            
-            private innerGetter {
-            }
             
             Natural getInnerGetter() {
-                return value;
+                return .ceylon.language.Natural.instance(0L);
+            }
+            
+            private innerGetter {
             }
         }
         final innerGetter innerGetter = new innerGetter();
