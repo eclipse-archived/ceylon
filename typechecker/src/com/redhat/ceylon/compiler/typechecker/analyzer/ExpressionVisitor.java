@@ -2221,11 +2221,10 @@ public class ExpressionVisitor extends AbstractVisitor {
         for (Tree.Expression e: that.getExpressions()) {
             ProducedType et = e.getTypeModel();
             if (et!=null && !getFormatDeclaration().getType().isSupertypeOf(et)) {
-                that.addError("interpolated expression not formattable to a string: " +
+                e.addError("interpolated expression not formattable to a string: " +
                         et.getProducedTypeName() + " is not Format");
             }
         }
-        //TODO: validate that the subexpression types are Formattable
         setLiteralType(that, getStringDeclaration());
     }
     
