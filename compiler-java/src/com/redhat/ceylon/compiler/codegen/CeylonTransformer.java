@@ -31,7 +31,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinitio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.BoundKind;
 import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.code.Type;
@@ -150,7 +149,7 @@ public class CeylonTransformer {
         return globalGen;
     }
 
-    private static final class CompilationUnitVisitor extends AbstractVisitor {
+    private static final class CompilationUnitVisitor extends AbstractVisitor<JCTree> {
 		
 		private CompilationUnitVisitor(CeylonTransformer ceylonTransformer) {
 			super(ceylonTransformer);
@@ -201,7 +200,7 @@ public class CeylonTransformer {
 		}
 	}
 
-	private static final class ImportListVisitor extends AbstractVisitor {
+	private static final class ImportListVisitor extends AbstractVisitor<JCTree> {
 		
 		private ImportListVisitor(CeylonTransformer ceylonTransformer) {
 			super(ceylonTransformer);

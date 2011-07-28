@@ -17,7 +17,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
@@ -358,7 +357,7 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
 
-    static class GetterVisitor extends AbstractVisitor {
+    static class GetterVisitor extends AbstractVisitor<JCTree> {
         
 
 		public GetterVisitor(ClassTransformer transformer, ListBuffer<JCTree> defs) {
