@@ -63,8 +63,35 @@ shared interface Sequence<out Element>
             return SequenceIterator(from+1);
         }
         shared actual String string {
-            return "{ " head " ... }";
+            return "SequenceIterator";
         }
     }
     
+    shared default actual String string {
+        return "{ " elementsString " }";
+    }
+    
+    String elementsString {
+
+        String firstString {
+            if (is Object first) {
+                return first.string;
+            }
+            else if (is Nothing first) {
+                return "null";
+            }
+            else {
+                return "Element";
+            }
+        }
+        
+        if (nonempty rest) {
+            return firstString + ", " + 
+                    rest.elementsString;
+        }
+        else {
+            return firstString;
+        }
+        
+    }
 }

@@ -1,5 +1,5 @@
 shared interface Number 
-        satisfies Equality {
+        satisfies Equality & Format {
     
     doc "Determine if the number represents
          an integer value"
