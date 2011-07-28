@@ -10,7 +10,7 @@ shared class Range<Element>(Element first, Element last)
     shared actual Element last = last;
 
     shared actual String string {
-        return "[" first ".." last "]";
+        return "[" first.string ".." last.string "]";
     }
     
     shared Boolean decreasing { 

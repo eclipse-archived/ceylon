@@ -1,7 +1,7 @@
 shared abstract class String()
         extends Object()
         satisfies Comparable<String> & Iterable<Character> &
-                  Correspondence<Natural,Character> & 
+                  Correspondence<Natural,Character> & Format &
                   Sized & Summable<String> & Castable<String> {
     
     shared formal Character[] characters;

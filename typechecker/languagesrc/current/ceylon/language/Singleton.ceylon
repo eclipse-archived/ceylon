@@ -41,6 +41,14 @@ shared class Singleton<Element>(Element element)
         return singletonIterator;
     }
     shared actual String string {
-        return "{ " first " }";
+        if (is Object first) {
+            return "{ " first.string " }";
+        }
+        else if (is Nothing first) {
+            return "{ null }";
+        }
+        else {
+            return "{ Element }";
+        }
     }
 }
