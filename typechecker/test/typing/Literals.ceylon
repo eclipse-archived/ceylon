@@ -29,4 +29,6 @@ class Literals() {
     @type["Natural"] value nnn = 2.minus(1);
     @type["Float"] value fff = 2.0.times(-3.0);
     
+    @type["String"] @error value st2 = "( " this " )";
+    
 }
