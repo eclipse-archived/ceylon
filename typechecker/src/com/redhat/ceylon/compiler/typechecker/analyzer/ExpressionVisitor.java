@@ -361,20 +361,21 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
 
     private void validateHiddenAttribute(Tree.AnyAttribute that) {
-        if (that.getDeclarationModel().isClassMember()) {
-            Class c = (Class) that.getDeclarationModel().getContainer();
-            Parameter param = (Parameter) c.getParameter( that.getDeclarationModel().getName() );
+        TypedDeclaration dec = that.getDeclarationModel();
+        if (dec!=null && dec.isClassMember()) {
+            Class c = (Class) dec.getContainer();
+            Parameter param = (Parameter) c.getParameter( dec.getName() );
             if ( param!=null ) {
                 //if it duplicates a parameter, then it must be is non-variable
-                if ( that.getDeclarationModel().isVariable()) {
+                if ( dec.isVariable()) {
                     that.addError("member hidden by parameter may not be variable: " + 
-                            that.getDeclarationModel().getName());
+                            dec.getName());
                 }
                 //if it duplicates a parameter, then it must have the same type
                 //as the parameter
-                if ( !that.getDeclarationModel().getType().isExactly(param.getType())) {
+                if ( !dec.getType().isExactly(param.getType())) {
                     that.addError("member hidden by parameter must have same type as parameter: " +
-                            that.getDeclarationModel().getName() + " is not " +
+                            dec.getName() + " is not " +
                             param.getType().getProducedTypeName());
                 }
             }
@@ -2217,6 +2218,13 @@ public class ExpressionVisitor extends AbstractVisitor {
     
     @Override public void visit(Tree.StringTemplate that) {
         super.visit(that);
+        for (Tree.Expression e: that.getExpressions()) {
+            ProducedType et = e.getTypeModel();
+            if (et!=null && !getFormatDeclaration().getType().isSupertypeOf(et)) {
+                that.addError("interpolated expression not formattable to a string: " +
+                        et.getProducedTypeName() + " is not Format");
+            }
+        }
         //TODO: validate that the subexpression types are Formattable
         setLiteralType(that, getStringDeclaration());
     }

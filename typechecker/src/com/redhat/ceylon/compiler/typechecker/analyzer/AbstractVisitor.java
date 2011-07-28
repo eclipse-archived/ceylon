@@ -182,6 +182,10 @@ public abstract class AbstractVisitor extends Visitor {
         return (TypeDeclaration) getLanguageModuleDeclaration("Quoted");
     }
         
+    protected TypeDeclaration getFormatDeclaration() {
+        return (TypeDeclaration) getLanguageModuleDeclaration("Format");
+    }
+        
     protected Interface getEqualityDeclaration() {
         return (Interface) ((TypeDeclaration) getLanguageModuleDeclaration("Equality"));
     }
