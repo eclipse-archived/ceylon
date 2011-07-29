@@ -176,6 +176,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         //want to check that the specifier expression is
         //assignable to the declared variable type
         //(nor is it possible to infer the variable type)
+        that.getType().visit(this);
         Tree.Variable v = that.getVariable();
         if (v!=null) {
             //v.getType().visit(this);
@@ -2358,7 +2359,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                 return true;
             }
             else {
-                if (tal instanceof Tree.InferredTypeArguments) {
+                if (tal==null || tal instanceof Tree.InferredTypeArguments) {
                     parent.addError("requires type arguments: " + member.getName());
                 }
                 else {
