@@ -1,0 +1,36 @@
+package com.redhat.ceylon.compiler.test.statement.conditional;
+
+interface Base<T> {
+    
+    public abstract void baseMethod();
+}
+interface A<T> extends Base<T> {
+    
+    public abstract void aMethod();
+}
+interface B<T> extends Base<T> {
+    
+    public abstract void bMethod();
+}
+class MethodIfIsGeneric {
+    
+    public final void m(final .java.lang.Object x) {
+        final .java.lang.Object $x$0 = x;
+        if ($x$0 instanceof Base) {
+            final Base<Integer> $x$1 = (Base<Integer>)$x$0;
+            {
+                $x$1.baseMethod();
+            }
+        }
+        final .java.lang.Object $x$2 = x;
+        if ($x$2 instanceof .java.lang.Object) {
+            final .java.lang.Object $x$3 = (.java.lang.Object)$x$2;
+            {
+                ((Base<Integer>)$x$3).baseMethod();
+            }
+        }
+    }
+    
+    MethodIfIsGeneric() {
+    }
+}

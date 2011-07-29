@@ -84,6 +84,11 @@ public class StatementTest extends CompilerTest {
     }
 
     @Test
+    public void testConMethodIfIsGeneric(){
+        compareWithJavaSource("conditional/MethodIfIsGeneric");
+    }
+
+    @Test
     @Ignore //M3
     public void testConMethodIfSatisfies(){
         compareWithJavaSource("conditional/MethodIfSatisfies");

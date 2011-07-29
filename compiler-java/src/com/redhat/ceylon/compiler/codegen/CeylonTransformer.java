@@ -411,7 +411,11 @@ public class CeylonTransformer {
                 || isUnion(type));
     }
     
-    JCExpression makeJavaType(ProducedType type, boolean isSatisfiesOrExtends) {
+    JCExpression makeJavaType(ProducedType producedType, boolean isSatisfiesOrExtends) {
+        return makeJavaType(producedType, isSatisfiesOrExtends, false);
+    }
+
+    JCExpression makeJavaType(ProducedType type, boolean isSatisfiesOrExtends, boolean wantRawType) {
         if (willErase(type)) {
             // For an erased type:
             // - Any of the Ceylon types Void, Object, Nothing, Equality,
@@ -425,7 +429,8 @@ public class CeylonTransformer {
         type = simplifyType(type);
         TypeDeclaration tdecl = type.getDeclaration();
         java.util.List<ProducedType> tal = type.getTypeArgumentList();
-        if (tal != null && !tal.isEmpty()) {
+
+        if (!wantRawType && tal != null && !tal.isEmpty()) {
             // GENERIC TYPES
             
             ListBuffer<JCExpression> typeArgs = new ListBuffer<JCExpression>();
@@ -515,7 +520,7 @@ public class CeylonTransformer {
         } else {
             // For an ordinary class or interface type T:
             // - The Ceylon type T results in the Java type T
-            jt = makeIdent(type.getProducedTypeName());
+            jt = makeIdent(tdecl.getName());
         }
         
         return jt;

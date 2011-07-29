@@ -113,6 +113,9 @@ public class StatementTransformer extends AbstractTransformer {
             Tree.Identifier name = isExpr.getVariable().getIdentifier();
             JCExpression type = gen.makeJavaType(isExpr.getType().getTypeModel(), false);
 
+            // Want raw type for instanceof since it can't be used with generic types
+            JCExpression rawType = gen.makeJavaType(isExpr.getType().getTypeModel(), false, true);
+
             Name tmpVarName = names().fromString(aliasName(name.getText()));
             Name origVarName = names().fromString(name.getText());
             Name substVarName = names().fromString(aliasName(name.getText()));
@@ -141,7 +144,7 @@ public class StatementTransformer extends AbstractTransformer {
             // Deactivate the above variable substitution
             gen.removeVariableSubst(origVarName.toString(), prevSubst);
             
-            test = at(cond).TypeTest(make().Ident(decl.name), type);
+            test = at(cond).TypeTest(make().Ident(decl.name), rawType);
         } else if (cond instanceof Tree.BooleanCondition) {
             Tree.BooleanCondition booleanCondition = (Tree.BooleanCondition) cond;
             test = makeBooleanTest(gen.expressionGen.transformExpression(booleanCondition.getExpression()), true);
