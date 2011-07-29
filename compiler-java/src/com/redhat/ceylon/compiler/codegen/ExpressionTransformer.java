@@ -154,15 +154,15 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.RangeOp op) {
         JCExpression lower = transformExpression(op.getLeftTerm());
         JCExpression upper = transformExpression(op.getRightTerm());
-        JCExpression type = gen.makeJavaType(op.getLeftTerm().getTypeModel(), false);
+        JCExpression type = gen.makeJavaType(op.getLeftTerm().getTypeModel());
         return at(op).NewClass(null, null, at(op).TypeApply(makeIdent(syms().ceylonRangeType), List.<JCExpression> of(type)), List.<JCExpression> of(lower, upper), null);
     }
 
     public JCExpression transform(Tree.EntryOp op) {
         JCExpression key = transformExpression(op.getLeftTerm());
         JCExpression elem = transformExpression(op.getRightTerm());
-        JCExpression keyType = gen.makeJavaType(op.getLeftTerm().getTypeModel(), false);
-        JCExpression elemType = gen.makeJavaType(op.getRightTerm().getTypeModel(), false);
+        JCExpression keyType = gen.makeJavaType(op.getLeftTerm().getTypeModel());
+        JCExpression elemType = gen.makeJavaType(op.getRightTerm().getTypeModel());
         return at(op).NewClass(null, null, at(op).TypeApply(makeIdent(syms().ceylonEntryType), List.<JCExpression> of(keyType, elemType)), List.<JCExpression> of(key, elem), null);
     }
 
@@ -359,7 +359,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression expr;
         if (gen.willErase(operand.getTypeModel())) {
             // Erased types need a type cast
-            JCExpression targetType = gen.makeJavaType(access.getTarget().getDeclaringType(), false);
+            JCExpression targetType = gen.makeJavaType(access.getTarget().getDeclaringType());
             expr = gen.makeSelect(make().TypeCast(targetType, (JCExpression) v.getSingleResult()), memberName.getText());
         } else {
             expr = gen.makeSelect((JCExpression) v.getSingleResult(), memberName.getText());
@@ -424,7 +424,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 elems.append(transformExpression(expr));
             }
             ProducedType t = value.getTypeModel().getTypeArgumentList().get(0);
-            return at(value).NewClass(null, null, at(value).TypeApply(makeIdent(syms().ceylonArraySequenceType), List.<JCExpression> of(gen.makeJavaType(t, false))), elems.toList(), null);
+            return at(value).NewClass(null, null, at(value).TypeApply(makeIdent(syms().ceylonArraySequenceType), List.<JCExpression> of(gen.makeJavaType(t))), elems.toList(), null);
         }
     }
 }

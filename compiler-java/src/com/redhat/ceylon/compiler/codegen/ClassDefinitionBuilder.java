@@ -95,7 +95,7 @@ public class ClassDefinitionBuilder {
     private JCTree getSuperclass(ProducedType extendedType) {
         JCExpression superclass;
         if (extendedType != null) {
-            superclass = gen.makeJavaType(extendedType, true);
+            superclass = gen.makeJavaType(extendedType, CeylonTransformer.SATISFIES_OR_EXTENDS);
             // simplify if we can
             if (superclass instanceof JCTree.JCFieldAccess 
             && ((JCTree.JCFieldAccess)superclass).sym.type == gen.syms.objectType) {
@@ -119,7 +119,7 @@ public class ClassDefinitionBuilder {
 
         ListBuffer<JCExpression> satisfies = new ListBuffer<JCExpression>();
         for (ProducedType t : list) {
-            satisfies.append(gen.makeJavaType(t, true));
+            satisfies.append(gen.makeJavaType(t, CeylonTransformer.SATISFIES_OR_EXTENDS));
         }
         return satisfies.toList();
     }
@@ -165,7 +165,7 @@ public class ClassDefinitionBuilder {
         ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
         for (ProducedType t : types) {
             if (!gen.willErase(t)) {
-                bounds.append(gen.makeJavaType(t, false));
+                bounds.append(gen.makeJavaType(t));
             }
         }
         typeParams.append(gen.make().TypeParameter(gen.names.fromString(name), bounds.toList()));
@@ -207,7 +207,7 @@ public class ClassDefinitionBuilder {
 
     public ClassDefinitionBuilder parameter(String name, ProducedType paramType, boolean isCaptured) {
         // Create a parameter for the constructor
-        JCExpression type = gen.makeJavaType(paramType, false);
+        JCExpression type = gen.makeJavaType(paramType);
         List<JCAnnotation> annots = gen.makeAtName(name);
         annots = annots.appendList(gen.makeJavaTypeAnnotations(paramType, true));
         JCVariableDecl var = gen.make().VarDef(gen.make().Modifiers(0, annots), gen.names.fromString(name), type, null);

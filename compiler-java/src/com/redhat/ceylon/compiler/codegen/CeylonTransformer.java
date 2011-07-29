@@ -273,7 +273,7 @@ public class CeylonTransformer {
     public JCTree transform(AttributeDeclaration decl) {
         GlobalTransformer.DefinitionBuilder builder = globalGenAt(decl)
             .defineGlobal(
-                    makeJavaType(actualType(decl), false),
+                    makeJavaType(actualType(decl)),
                     decl.getIdentifier().getText());
 
         // Add @Attribute (@Ceylon gets added by default)
@@ -303,7 +303,7 @@ public class CeylonTransformer {
     public JCTree transform(AttributeGetterDefinition decl) {
         GlobalTransformer.DefinitionBuilder builder = globalGenAt(decl)
             .defineGlobal(
-                    makeJavaType(actualType(decl), false),
+                    makeJavaType(actualType(decl)),
                     decl.getIdentifier().getText());
 
         // Add @Attribute (@Ceylon gets added by default)
@@ -410,12 +410,15 @@ public class CeylonTransformer {
                 || type.getDeclaration() instanceof BottomType
                 || isUnion(type));
     }
-    
-    JCExpression makeJavaType(ProducedType producedType, boolean isSatisfiesOrExtends) {
-        return makeJavaType(producedType, isSatisfiesOrExtends, false);
+
+    static final int SATISFIES_OR_EXTENDS = 1 << 0;
+    static final int WANT_RAW_TYPE = 1 << 1;
+
+    JCExpression makeJavaType(ProducedType producedType) {
+        return makeJavaType(producedType, 0);
     }
 
-    JCExpression makeJavaType(ProducedType type, boolean isSatisfiesOrExtends, boolean wantRawType) {
+    JCExpression makeJavaType(ProducedType type, int flags) {
         if (willErase(type)) {
             // For an erased type:
             // - Any of the Ceylon types Void, Object, Nothing, Equality,
@@ -430,8 +433,10 @@ public class CeylonTransformer {
         TypeDeclaration tdecl = type.getDeclaration();
         java.util.List<ProducedType> tal = type.getTypeArgumentList();
 
-        if (!wantRawType && tal != null && !tal.isEmpty()) {
+        if (((flags & WANT_RAW_TYPE) == 0) && tal != null && !tal.isEmpty()) {
             // GENERIC TYPES
+
+            boolean isSatisfiesOrExtends = ((flags & SATISFIES_OR_EXTENDS) != 0);
             
             ListBuffer<JCExpression> typeArgs = new ListBuffer<JCExpression>();
 
@@ -460,7 +465,7 @@ public class CeylonTransformer {
                         if (tp.isContravariant()) {
                             jta = make.Type(syms.objectType);
                         } else if (tp.isCovariant()) {
-                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.UNBOUND), makeJavaType(ta, false));
+                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.UNBOUND), makeJavaType(ta));
                         } else {
                             jta = make.Type(syms.objectType);
                         }
@@ -480,7 +485,7 @@ public class CeylonTransformer {
                         // - Foo<?> if Foo<T> is contravariant in T
                         TypeParameter tp = tdecl.getTypeParameters().get(idx);
                         if (tp.isContravariant()) {
-                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.UNBOUND), makeJavaType(ta, false));
+                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.UNBOUND), makeJavaType(ta));
                         } else {
                             // A bit ugly, but we need to escape from the loop and create a raw type, no generics
                             typeArgs = null;
@@ -492,7 +497,7 @@ public class CeylonTransformer {
                     if (isSatisfiesOrExtends) {
                         // - The Ceylon type Foo<T> appearing in an extends or satisfies clause
                         //   results in the Java type Foo<T>
-                        jta = makeJavaType(ta, true);
+                        jta = makeJavaType(ta, SATISFIES_OR_EXTENDS);
                     } else {
                         // - The Ceylon type Foo<T> appearing anywhere else results in the Java type
                         // - Foo<T> if Foo is invariant in T,
@@ -500,11 +505,11 @@ public class CeylonTransformer {
                         // - Foo<? super T> if Foo is contravariant in T
                         TypeParameter tp = tdecl.getTypeParameters().get(idx);
                         if (tp.isContravariant()) {
-                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), makeJavaType(ta, false));
+                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), makeJavaType(ta));
                         } else if (tp.isCovariant()) {
-                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), makeJavaType(ta, false));
+                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), makeJavaType(ta));
                         } else {
-                            jta = makeJavaType(ta, false);
+                            jta = makeJavaType(ta);
                         }
                     }
                 }

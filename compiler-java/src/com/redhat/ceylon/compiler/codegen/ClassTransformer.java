@@ -62,7 +62,7 @@ public class ClassTransformer extends AbstractTransformer {
                 initialValue = gen.expressionGen.transformExpression(decl.getSpecifierOrInitializerExpression().getExpression());
             }
 
-            JCExpression type = gen.makeJavaType(gen.actualType(decl), false);
+            JCExpression type = gen.makeJavaType(gen.actualType(decl));
 
             if (useField) {
                 // A captured attribute gets turned into a field

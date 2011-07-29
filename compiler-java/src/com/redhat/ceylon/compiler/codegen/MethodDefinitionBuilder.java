@@ -102,7 +102,7 @@ public class MethodDefinitionBuilder {
         if (resultType == null) {
             return gen.make().TypeIdent(VOID);
         } else {
-            return gen.makeJavaType(resultType, false);
+            return gen.makeJavaType(resultType);
         }
     }
 
@@ -128,7 +128,7 @@ public class MethodDefinitionBuilder {
         ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
         for (ProducedType t : types) {
             if (!gen.willErase(t)) {
-                bounds.append(gen.makeJavaType(t, false));
+                bounds.append(gen.makeJavaType(t));
             }
         }
         typeParams.append(gen.make().TypeParameter(gen.names.fromString(name), bounds.toList()));
@@ -152,7 +152,7 @@ public class MethodDefinitionBuilder {
     }
     
     public MethodDefinitionBuilder parameter(long modifiers, String name, ProducedType paramType) {
-        JCExpression type = gen.makeJavaType(paramType, false);
+        JCExpression type = gen.makeJavaType(paramType);
         List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(paramType, true);
         return parameter(gen.make().VarDef(gen.make().Modifiers(modifiers, annots), gen.names.fromString(name), type, null));
     }

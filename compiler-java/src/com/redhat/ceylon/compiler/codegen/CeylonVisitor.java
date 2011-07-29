@@ -220,7 +220,7 @@ public class CeylonVisitor extends AbstractVisitor<JCTree> {
 
     public void visit(Tree.Type type) {
         // A constructor
-        append(at(type).NewClass(null, null, gen.makeJavaType(type.getTypeModel(), false), args.toList(), null));
+        append(at(type).NewClass(null, null, gen.makeJavaType(type.getTypeModel()), args.toList(), null));
     }
 
     public void visit(Tree.BaseTypeExpression typeExp) {
