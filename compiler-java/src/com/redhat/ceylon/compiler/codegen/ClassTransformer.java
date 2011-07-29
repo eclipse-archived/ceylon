@@ -9,6 +9,7 @@ import static com.sun.tools.javac.code.Flags.STATIC;
 
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
@@ -26,105 +27,6 @@ import com.sun.tools.javac.util.Name;
  * This transformer deals with class/interface declarations
  */
 public class ClassTransformer extends AbstractTransformer {
-    class ClassVisitor extends StatementVisitor {
-        final ClassDefinitionBuilder classBuilder;
-
-        ClassVisitor(CeylonTransformer gen, ClassDefinitionBuilder classBuilder) {
-            super(gen);
-            this.classBuilder = classBuilder;
-        }
-
-        // Class Initializer parameter
-        public void visit(Tree.Parameter param) {
-            classBuilder.parameter(param);
-        }
-
-        public void visit(Tree.Block b) {
-            b.visitChildren(this);
-        }
-
-        public void visit(Tree.MethodDefinition meth) {
-            classBuilder.defs(transform(meth));
-        }
-
-        public void visit(Tree.MethodDeclaration meth) {
-            classBuilder.defs(transform(meth));
-        }
-
-        public void visit(Tree.Annotation ann) {
-            // Handled in processAnnotations
-        }
-
-        // FIXME: Here we've simplified CeylonTree.MemberDeclaration to
-        // Tree.AttributeDeclaration
-        public void visit(Tree.AttributeDeclaration decl) {
-            boolean useField = decl.getDeclarationModel().isCaptured() || isShared(decl);
-
-            Name attrName = names().fromString(decl.getIdentifier().getText());
-
-            // Only a non-formal attribute has a corresponding field
-            // and if a class parameter exists with the same name we skip this part as well
-            if (!isFormal(decl) && !classBuilder.existsParam(attrName.toString())) {
-                JCExpression initialValue = null;
-                if (decl.getSpecifierOrInitializerExpression() != null) {
-                    initialValue = gen.expressionGen.transformExpression(decl.getSpecifierOrInitializerExpression().getExpression());
-                }
-
-                JCExpression type = gen.makeJavaType(gen.actualType(decl), false);
-
-                if (useField) {
-                    // A captured attribute gets turned into a field
-                    int modifiers = transformAttributeFieldDeclFlags(decl);
-                    classBuilder.defs(at(decl).VarDef(at(decl).Modifiers(modifiers, List.<JCTree.JCAnnotation>nil()), attrName, type, null));
-                    if (initialValue != null) {
-                        // The attribute's initializer gets moved to the constructor
-                        // because it might be using locals of the initializer
-                        classBuilder.init(at(decl).Exec(at(decl).Assign(makeSelect("this", decl.getIdentifier().getText()), initialValue)));
-                    }
-                } else {
-                    // Otherwise it's local to the constructor
-                    int modifiers = transformLocalDeclFlags(decl);
-                    classBuilder.init(at(decl).VarDef(at(decl).Modifiers(modifiers, List.<JCTree.JCAnnotation>nil()), attrName, type, initialValue));
-                }
-            }
-
-            if (useField) {
-                classBuilder.defs(makeGetter(decl));
-                if (isMutable(decl)) {
-                    classBuilder.defs(makeSetter(decl));
-                }
-            }
-        }
-
-        public void visit(final Tree.AttributeGetterDefinition getter) {
-            classBuilder.defs(transform(getter));
-        }
-
-        public void visit(final Tree.AttributeSetterDefinition setter) {
-            classBuilder.defs(transform(setter));
-        }
-
-        public void visit(final Tree.ClassDefinition cdecl) {
-            classBuilder.defs(transform(cdecl));
-        }
-
-        public void visit(final Tree.InterfaceDefinition cdecl) {
-            classBuilder.defs(transform(cdecl));
-        }
-
-        // FIXME: also support Tree.SequencedTypeParameter
-        public void visit(Tree.TypeParameterDeclaration param) {
-            classBuilder.typeParameter(param);
-        }
-
-        public void visit(Tree.ExtendedType extendedType) {
-            classBuilder.extending(extendedType);
-        }
-
-        // FIXME: implement
-        public void visit(Tree.TypeConstraint l) {
-        }
-    }
 
     public ClassTransformer(CeylonTransformer gen) {
         super(gen);
@@ -146,6 +48,45 @@ public class ClassTransformer extends AbstractTransformer {
             .build();
     }
 
+    public void transform(AttributeDeclaration decl, ClassDefinitionBuilder classBuilder) {
+        boolean useField = decl.getDeclarationModel().isCaptured() || isShared(decl);
+
+        Name attrName = names().fromString(decl.getIdentifier().getText());
+
+        // Only a non-formal attribute has a corresponding field
+        // and if a class parameter exists with the same name we skip this part as well
+        if (!isFormal(decl) && !classBuilder.existsParam(attrName.toString())) {
+            JCExpression initialValue = null;
+            if (decl.getSpecifierOrInitializerExpression() != null) {
+                initialValue = gen.expressionGen.transformExpression(decl.getSpecifierOrInitializerExpression().getExpression());
+            }
+
+            JCExpression type = gen.makeJavaType(gen.actualType(decl), false);
+
+            if (useField) {
+                // A captured attribute gets turned into a field
+                int modifiers = transformAttributeFieldDeclFlags(decl);
+                classBuilder.defs(at(decl).VarDef(at(decl).Modifiers(modifiers, List.<JCTree.JCAnnotation>nil()), attrName, type, null));
+                if (initialValue != null) {
+                    // The attribute's initializer gets moved to the constructor
+                    // because it might be using locals of the initializer
+                    classBuilder.init(at(decl).Exec(at(decl).Assign(makeSelect("this", decl.getIdentifier().getText()), initialValue)));
+                }
+            } else {
+                // Otherwise it's local to the constructor
+                int modifiers = transformLocalDeclFlags(decl);
+                classBuilder.init(at(decl).VarDef(at(decl).Modifiers(modifiers, List.<JCTree.JCAnnotation>nil()), attrName, type, initialValue));
+            }
+        }
+
+        if (useField) {
+            classBuilder.defs(makeGetter(decl));
+            if (isMutable(decl)) {
+                classBuilder.defs(makeSetter(decl));
+            }
+        }        
+    }
+    
     public JCTree.JCMethodDecl transform(AttributeSetterDefinition decl) {
         JCBlock body = gen.statementGen.transform(decl.getBlock());
         String name = decl.getIdentifier().getText();
@@ -229,7 +170,7 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
 
-    private JCTree makeGetter(Tree.AttributeDeclaration decl) {
+    public JCTree makeGetter(Tree.AttributeDeclaration decl) {
         at(decl);
         String atrrName = decl.getIdentifier().getText();
         JCBlock body = null;
@@ -245,7 +186,7 @@ public class ClassTransformer extends AbstractTransformer {
             .build();
     }
 
-    private JCTree makeSetter(Tree.AttributeDeclaration decl) {
+    public JCTree makeSetter(Tree.AttributeDeclaration decl) {
         at(decl);
         String atrrName = decl.getIdentifier().getText();
         JCBlock body = null;
@@ -264,7 +205,7 @@ public class ClassTransformer extends AbstractTransformer {
             .build();
     }
 
-    private JCMethodDecl transform(Tree.AnyMethod def) {
+    public JCMethodDecl transform(Tree.AnyMethod def) {
         String name = def.getIdentifier().getText();
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(gen, name);
         
