@@ -4,6 +4,7 @@ import com.redhat.ceylon.compiler.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.codegen.CeylonTransformer;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
+import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleValidator;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -147,6 +148,13 @@ public class CeylonEnter extends Enter {
                 @Override
                 protected void out(AnalysisError err) {
                     log.rawError(0, err.getMessage() + "\n at " + 
+                            err.getTreeNode().getAntlrTreeNode().getLine() + ":" +
+                            err.getTreeNode().getAntlrTreeNode().getCharPositionInLine() + " of " +
+                            err.getTreeNode().getUnit().getFilename());
+                }
+                @Override
+                protected void out(AnalysisWarning err) {
+                    log.rawWarning(0, err.getMessage() + "\n at " + 
                             err.getTreeNode().getAntlrTreeNode().getLine() + ":" +
                             err.getTreeNode().getAntlrTreeNode().getCharPositionInLine() + " of " +
                             err.getTreeNode().getUnit().getFilename());
