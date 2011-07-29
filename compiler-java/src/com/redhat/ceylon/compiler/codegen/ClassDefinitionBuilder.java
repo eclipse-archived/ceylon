@@ -21,7 +21,12 @@ import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 
 /**
- * Builder for Java Classes
+ * Builder for Java Classes. The specific properties of the "framework" of the
+ * class like its name, superclass, interfaces etc can be set directly.
+ * There are also three freely definable "zones" where any code can be inserted:
+ * the "defs" that go at the top of the class body, the "body" that goes at
+ * the bottom and the "init" the goes inside the constructor in the middle.
+ * (the reason for these 3 zones is mostly historical, 2 would do just as well)
  * 
  * @author Tako Schotanus
  */
@@ -31,7 +36,7 @@ public class ClassDefinitionBuilder {
     private final String name;
     
     private long modifiers;
-    private long initModifiers = -1;
+    private long constructorModifiers = -1;
     
     private ProducedType extending;
     private final ListBuffer<ProducedType> satisfies = ListBuffer.lb();
@@ -43,7 +48,7 @@ public class ClassDefinitionBuilder {
     
     private final ListBuffer<JCTree> defs = ListBuffer.lb();
     private final ListBuffer<JCTree> body = ListBuffer.lb();
-    private final ListBuffer<JCStatement> initBody = ListBuffer.lb();
+    private final ListBuffer<JCStatement> init = ListBuffer.lb();
     
     public ClassDefinitionBuilder(CeylonTransformer gen, String name) {
         super();
@@ -118,7 +123,7 @@ public class ClassDefinitionBuilder {
     }
 
     private JCMethodDecl createConstructor() {
-        long mods = initModifiers;
+        long mods = constructorModifiers;
         if (mods == -1) {
             // The modifiers were never explicitly set
             // so we try to come up with some good defaults
@@ -131,7 +136,7 @@ public class ClassDefinitionBuilder {
                 List.<JCTypeParameter>nil(),
                 params.toList(),
                 List.<JCExpression>nil(),
-                gen.make().Block(0, initBody.toList()),
+                gen.make().Block(0, init.toList()),
                 null);
     }
     
@@ -148,12 +153,12 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
-    public ClassDefinitionBuilder initModifiers(long... initModifiers) {
+    public ClassDefinitionBuilder constructorModifiers(long... constructorModifiers) {
         long mods = 0;
-        for (long mod : initModifiers) {
+        for (long mod : constructorModifiers) {
             mods |= mod;
         }
-        this.initModifiers = mods;
+        this.constructorModifiers = mods;
         return this;
     }
 
@@ -202,7 +207,7 @@ public class ClassDefinitionBuilder {
             // If so we create a field for it initializing it with the parameter's value
             JCVariableDecl localVar = gen.make().VarDef(gen.make().Modifiers(FINAL | PRIVATE), gen.names.fromString(name), type , null);
             defs.append(localVar);
-            initBody.append(gen.make().Exec(gen.make().Assign(gen.makeSelect("this", localVar.getName().toString()), gen.make().Ident(var.getName()))));
+            init.append(gen.make().Exec(gen.make().Assign(gen.makeSelect("this", localVar.getName().toString()), gen.make().Ident(var.getName()))));
         }
         
         return this;
@@ -234,13 +239,13 @@ public class ClassDefinitionBuilder {
         return this;
     }
     
-    public ClassDefinitionBuilder initBody(JCStatement statement) {
-        this.initBody.append(statement);
+    public ClassDefinitionBuilder init(JCStatement statement) {
+        this.init.append(statement);
         return this;
     }
     
-    public ClassDefinitionBuilder initBody(List<JCStatement> initBody) {
-        this.initBody.appendList(initBody);
+    public ClassDefinitionBuilder init(List<JCStatement> init) {
+        this.init.appendList(init);
         return this;
     }
 

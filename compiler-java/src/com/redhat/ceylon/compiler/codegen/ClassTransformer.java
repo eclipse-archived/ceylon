@@ -131,7 +131,7 @@ public class ClassTransformer extends AbstractTransformer {
                 for (Tree.PositionalArgument arg : extendedType.getInvocationExpression().getPositionalArgumentList().getPositionalArguments())
                     args = args.append(gen.expressionGen.transformArg(arg));
 
-                classBuilder.initBody(at(extendedType).Exec(at(extendedType).Apply(List.<JCExpression> nil(), at(extendedType).Ident(names()._super), args)));
+                classBuilder.init(at(extendedType).Exec(at(extendedType).Apply(List.<JCExpression> nil(), at(extendedType).Ident(names()._super), args)));
             }
             classBuilder.extending(extendedType.getType().getTypeModel());
         }
@@ -157,7 +157,7 @@ public class ClassTransformer extends AbstractTransformer {
         classBuilder
             .modifiers(transformClassDeclFlags(def))
             .satisfies(def.getDeclarationModel().getSatisfiedTypes())
-            .initBody(visitor.getResult().toList())
+            .init(visitor.getResult().toList())
             .body(makeGettersAndSetters(visitor.attributeDecls).toList());
     
         return classBuilder.build();
@@ -378,7 +378,7 @@ public class ClassTransformer extends AbstractTransformer {
         return (new ClassDefinitionBuilder(gen, name.toString()))
             .annotations(gen.makeAtMethod())
             .modifiers(FINAL, isShared(def) ? PUBLIC : 0)
-            .initModifiers(PRIVATE)
+            .constructorModifiers(PRIVATE)
             .body(meth)
             .build();
     }
@@ -416,9 +416,9 @@ public class ClassTransformer extends AbstractTransformer {
         classBuilder
             .annotations(gen.makeAtObject())
             .modifiers(transformObjectDeclFlags(def))
-            .initModifiers(PRIVATE)
+            .constructorModifiers(PRIVATE)
             .satisfies(decl.getSatisfiedTypes())
-            .initBody(visitor.getResult().toList())
+            .init(visitor.getResult().toList())
             .body(makeGettersAndSetters(visitor.attributeDecls).toList());
     
         return classBuilder.build();
