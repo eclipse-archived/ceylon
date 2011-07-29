@@ -28,7 +28,6 @@ import com.sun.tools.javac.util.Name;
 public class ClassTransformer extends AbstractTransformer {
     class ClassVisitor extends StatementVisitor {
         final ClassDefinitionBuilder classBuilder;
-        final ListBuffer<Tree.AttributeDeclaration> attributeDecls = new ListBuffer<Tree.AttributeDeclaration>();
 
         ClassVisitor(CeylonTransformer gen, ClassDefinitionBuilder classBuilder) {
             super(gen);
@@ -80,19 +79,20 @@ public class ClassTransformer extends AbstractTransformer {
                     if (initialValue != null) {
                         // The attribute's initializer gets moved to the constructor
                         // because it might be using locals of the initializer
-                        append(at(decl).Exec(at(decl).Assign(makeSelect("this", decl.getIdentifier().getText()), initialValue)));
+                        classBuilder.init(at(decl).Exec(at(decl).Assign(makeSelect("this", decl.getIdentifier().getText()), initialValue)));
                     }
                 } else {
                     // Otherwise it's local to the constructor
                     int modifiers = transformLocalDeclFlags(decl);
-                    append(at(decl).VarDef(at(decl).Modifiers(modifiers, List.<JCTree.JCAnnotation>nil()), attrName, type, initialValue));
+                    classBuilder.init(at(decl).VarDef(at(decl).Modifiers(modifiers, List.<JCTree.JCAnnotation>nil()), attrName, type, initialValue));
                 }
             }
 
             if (useField) {
-                // Remember attribute to be able to generate
-                // missing getters and setters later on
-                attributeDecls.append(decl);
+                classBuilder.defs(makeGetter(decl));
+                if (isMutable(decl)) {
+                    classBuilder.defs(makeSetter(decl));
+                }
             }
         }
 
@@ -139,13 +139,11 @@ public class ClassTransformer extends AbstractTransformer {
         ClassVisitor visitor = new ClassVisitor(gen, classBuilder);
         def.visitChildren(visitor);
 
-        classBuilder
+        return classBuilder
             .modifiers(transformClassDeclFlags(def))
             .satisfies(def.getDeclarationModel().getSatisfiedTypes())
             .init(visitor.getResult().toList())
-            .body(makeGettersAndSetters(visitor.attributeDecls).toList());
-    
-        return classBuilder.build();
+            .build();
     }
 
     public JCTree.JCMethodDecl transform(AttributeSetterDefinition decl) {
@@ -229,30 +227,6 @@ public class ClassTransformer extends AbstractTransformer {
         result |= isShared(cdecl) ? PUBLIC : 0;
 
         return result;
-    }
-
-    static class GetterVisitor extends AbstractVisitor<JCTree> {
-        
-
-		public GetterVisitor(ClassTransformer transformer, ListBuffer<JCTree> defs) {
-		    super(transformer.gen, defs);
-		}
-
-		public void visit(Tree.AttributeDeclaration decl) {
-			add(classGen.makeGetter(decl));
-            if(classGen.isMutable(decl)) {
-            	add(classGen.makeSetter(decl));
-            }
-        }
-    }
-    
-    private ListBuffer<JCTree> makeGettersAndSetters(ListBuffer<Tree.AttributeDeclaration> attributeDecls) {
-        ListBuffer<JCTree> defs = ListBuffer.lb();
-        GetterVisitor v = new GetterVisitor(this, defs);
-        for(Tree.AttributeDeclaration def : attributeDecls){
-            def.visit(v);
-        }
-        return defs;
     }
 
     private JCTree makeGetter(Tree.AttributeDeclaration decl) {
@@ -360,15 +334,13 @@ public class ClassTransformer extends AbstractTransformer {
             classBuilder.body(makeObjectGlobal(def, make().Ident(names().fromString(name))).toList());
         }
 
-        classBuilder
+        return classBuilder
             .annotations(gen.makeAtObject())
             .modifiers(transformObjectDeclFlags(def))
             .constructorModifiers(PRIVATE)
             .satisfies(decl.getSatisfiedTypes())
             .init(visitor.getResult().toList())
-            .body(makeGettersAndSetters(visitor.attributeDecls).toList());
-    
-        return classBuilder.build();
+            .build();
     }
 
     public ListBuffer<JCTree> makeObjectGlobal(Tree.ObjectDefinition decl, JCExpression generatedClassName) {

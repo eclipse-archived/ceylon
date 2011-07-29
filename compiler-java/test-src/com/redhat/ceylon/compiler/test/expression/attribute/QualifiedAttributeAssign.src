@@ -2,7 +2,23 @@ package com.redhat.ceylon.compiler.test.expression.attribute;
 
 class QualifiedAttributeAssign {
     private Boolean b;
+    
+    private final Boolean getB() {
+        return this.b;
+    }
+    
+    private final void setB(Boolean b) {
+        this.b = b;
+    }
     private Boolean b2;
+    
+    public final Boolean getB2() {
+        return this.b2;
+    }
+    
+    public final void setB2(Boolean b2) {
+        this.b2 = b2;
+    }
     
     private final void m() {
         setB(ceylon.language.$false.getFalse());
@@ -14,21 +30,5 @@ class QualifiedAttributeAssign {
     QualifiedAttributeAssign() {
         this.b = ceylon.language.$true.getTrue();
         this.b2 = ceylon.language.$true.getTrue();
-    }
-    
-    private final Boolean getB() {
-        return this.b;
-    }
-    
-    private final void setB(Boolean b) {
-        this.b = b;
-    }
-    
-    public final Boolean getB2() {
-        return this.b2;
-    }
-    
-    public final void setB2(Boolean b2) {
-        this.b2 = b2;
     }
 }

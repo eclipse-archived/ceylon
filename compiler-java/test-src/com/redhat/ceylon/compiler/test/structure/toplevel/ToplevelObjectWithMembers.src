@@ -2,9 +2,33 @@ package com.redhat.ceylon.compiler.test.structure.toplevel;
 
 final class x {
     private final Boolean valShared;
+    
+    public final Boolean getValShared() {
+        return this.valShared;
+    }
     private final Boolean valCaptured;
+    
+    private final Boolean getValCaptured() {
+        return this.valCaptured;
+    }
     private Boolean varShared;
+    
+    public final Boolean getVarShared() {
+        return this.varShared;
+    }
+    
+    public final void setVarShared(Boolean varShared) {
+        this.varShared = varShared;
+    }
     private Boolean varCaptured;
+    
+    private final Boolean getVarCaptured() {
+        return this.varCaptured;
+    }
+    
+    private final void setVarCaptured(Boolean varCaptured) {
+        this.varCaptured = varCaptured;
+    }
     
     private final Boolean y() {
         return getValCaptured();
@@ -26,29 +50,5 @@ final class x {
     
     static x getX() {
         return value;
-    }
-    
-    public final Boolean getValShared() {
-        return this.valShared;
-    }
-    
-    private final Boolean getValCaptured() {
-        return this.valCaptured;
-    }
-    
-    public final Boolean getVarShared() {
-        return this.varShared;
-    }
-    
-    public final void setVarShared(Boolean varShared) {
-        this.varShared = varShared;
-    }
-    
-    private final Boolean getVarCaptured() {
-        return this.varCaptured;
-    }
-    
-    private final void setVarCaptured(Boolean varCaptured) {
-        this.varCaptured = varCaptured;
     }
 }
