@@ -148,8 +148,7 @@ public class Symtab {
     public final Type inheritedType;
     public final Type proprietaryType;
     public final Type systemType;
-    public final Type ceylonExtensionType;
-    public final Type ceylonSharedType;
+
     public final Type ceylonSmallType;
     public final Type ceylonAnyType;
     public final Type ceylonVoidType;
@@ -167,11 +166,11 @@ public class Symtab {
     public final Type ceylonArraySequenceType;
     public final Type ceylonCharacterType;
     public final Type ceylonBooleanType;
-    public final Type ceylonToplevelOverloadType;
     public final Type ceylonIteratorType;
     public final Type ceylonRangeType;
     public final Type ceylonEntryType;
     public final Type ceylonContainerType;
+
     public final Type ceylonAtCeylonType;
     public final Type ceylonAtNameType;
     public final Type ceylonAtTypeInfoType;
@@ -472,9 +471,8 @@ public class Symtab {
         suppressWarningsType = enterClass("java.lang.SuppressWarnings");
         inheritedType = enterClass("java.lang.annotation.Inherited");
         systemType = enterClass("java.lang.System");
-        ceylonSharedType = enterClass("ceylon.language.Shared");
+        
         ceylonSmallType = enterClass("ceylon.language.Small");
-        ceylonExtensionType = enterClass("ceylon.language.Extension");
         ceylonAnyType = enterClass("ceylon.language.Any");
         ceylonVoidType = enterClass("ceylon.language.Void");
         ceylonNothingType = enterClass("ceylon.language.Nothing");
@@ -491,11 +489,11 @@ public class Symtab {
         ceylonArraySequenceType = enterClass("ceylon.language.ArraySequence");
         ceylonCharacterType = enterClass("ceylon.language.Character");
         ceylonBooleanType = enterClass("ceylon.language.Boolean");
-        ceylonToplevelOverloadType = enterClass("ceylon.language.ToplevelOverload");
         ceylonIteratorType = enterClass("ceylon.language.Iterator");
         ceylonRangeType = enterClass("ceylon.language.Range");
         ceylonEntryType = enterClass("ceylon.language.Entry");
         ceylonContainerType = enterClass("ceylon.language.Container");
+        
         ceylonAtCeylonType = enterClass("com.redhat.ceylon.compiler.metadata.java.Ceylon");
         ceylonAtNameType = enterClass("com.redhat.ceylon.compiler.metadata.java.Name");
         ceylonAtTypeInfoType = enterClass("com.redhat.ceylon.compiler.metadata.java.TypeInfo");

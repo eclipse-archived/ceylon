@@ -42,11 +42,6 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ElementVisitor;
 import javax.lang.model.type.TypeKind;
 
-import com.sun.tools.javac.ceylon.ExtensionRequiredException;
-import com.sun.tools.javac.ceylon.ManglingRequiredException;
-import com.sun.tools.javac.ceylon.ExtensionFinder;
-import com.sun.tools.javac.ceylon.ExtensionFinder.Route;
-
 /** Helper class for name resolution, used mostly by the attribution phase.
  *
  *  <p><b>This is NOT part of any supported API.
@@ -69,7 +64,6 @@ public class Resolve {
     public final boolean boxingEnabled; // = source.allowBoxing();
     public final boolean varargsEnabled; // = source.allowVarargs();
     private final boolean debugResolve;
-    ExtensionFinder extensionFinder;
 
     public static Resolve instance(Context context) {
         Resolve instance = context.get(resolveKey);
@@ -105,7 +99,6 @@ public class Resolve {
         varargsEnabled = source.allowVarargs();
         Options options = Options.instance(context);
         debugResolve = options.get("debugresolve") != null;
-        extensionFinder = ExtensionFinder.instance(context);
     }
 
     /** error symbols, which are returned when resolution fails
@@ -1233,13 +1226,6 @@ public class Resolve {
                 name,
                 argtypes,
                 typeargtypes);
-        if (Context.isCeylon() && sym.kind >= AMBIGUOUS) {
-            Route extension = extensionFinder.findUniqueRoute(
-                site, name, argtypes, typeargtypes, env);
-            if (extension != null) {
-                throw new ExtensionRequiredException(extension);
-            }
-        }
         if (sym.kind >= AMBIGUOUS) {
             sym = access(sym, pos, site, name, true, argtypes, typeargtypes);
         }
@@ -1302,24 +1288,6 @@ public class Resolve {
             sym = resolveConstructor(pos, env, site, argtypes, typeargtypes, true, false);
             if (sym.kind >= WRONG_MTHS)
                 sym = resolveConstructor(pos, env, site, argtypes, typeargtypes, true, env.info.varArgs=true);
-        }
-        if (Context.isCeylon() && sym.attribute(syms.ceylonToplevelOverloadType.tsym) != null) {
-            assert sym.getKind() == ElementKind.CONSTRUCTOR;
-            MethodSymbol marker_symbol = (MethodSymbol) sym;
-            assert site.getKind() == TypeKind.DECLARED;
-            ClassType siteclass = (ClassType) site;
-            Name sitename = siteclass.tsym.getQualifiedName();
-            assert !sitename.toString().contains("$$");
-            StringBuilder builder = new StringBuilder("$$");
-            for (VarSymbol arg: marker_symbol.params()) {
-                String type = arg.type.tsym.getQualifiedName().toString().replace('.', '$');
-                builder.append(type.length());
-                builder.append(type);
-            }
-            Name mangled_name = sitename.append(names.fromString(builder.toString()));
-            Symbol mangled_symbol = loadClass(env, mangled_name);
-            assert mangled_symbol.getKind() == ElementKind.CLASS;
-            throw new ManglingRequiredException(mangled_symbol);
         }
         if (sym.kind >= AMBIGUOUS) {
             sym = access(sym, pos, site, names.init, true, argtypes, typeargtypes);

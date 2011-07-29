@@ -4,7 +4,6 @@ import static com.sun.tools.javac.code.TypeTags.CLASS;
 
 import java.util.ArrayList;
 
-import com.sun.tools.javac.ceylon.ExtensionFinder.Route;
 import com.sun.tools.javac.code.Scope;
 import com.sun.tools.javac.code.Source;
 import com.sun.tools.javac.code.Symbol;
@@ -214,29 +213,12 @@ public class LowerCeylon extends TreeTranslator {
         // Convert (Nothing)null to just null
         tree.clazz = translate(tree.clazz);
         tree.expr = translate(tree.expr);
-        tree.expr = ceylonExtensionIfNeeded(tree.expr, tree.clazz.type);
 
         if (tree.expr.type.tag == TypeTags.BOT
                 && tree.type == syms.ceylonNothingType)
             result = tree.expr;
         else
             result = tree;
-    }
-
-    /** Convert using a Ceylon extension if needed */
-    JCExpression ceylonExtensionIfNeeded(JCExpression tree, Type dstType) {
-        Type srcType = tree.type;
-        if (srcType.isPrimitive())
-            return tree;
-
-        Route route = types.getCeylonExtension(srcType, dstType);
-        if (route != null) {
-            make.at(tree.pos());
-            tree = route.apply(tree, make) ;
-            return ceylonExtensionIfNeeded(tree, dstType);
-        }
-
-        return tree;
     }
 
     List<JCExpression> lowerArgs(List<Type> parameters, List<JCExpression> _args, Type varargsElement) {

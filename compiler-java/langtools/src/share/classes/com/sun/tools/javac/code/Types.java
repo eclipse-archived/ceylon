@@ -36,8 +36,6 @@ import com.sun.tools.javac.jvm.ClassReader;
 import com.sun.tools.javac.comp.Infer;
 import com.sun.tools.javac.comp.Check;
 
-import com.sun.tools.javac.ceylon.ExtensionFinder;
-
 import static com.sun.tools.javac.code.Type.*;
 import static com.sun.tools.javac.code.TypeTags.*;
 import static com.sun.tools.javac.code.Symbol.*;
@@ -79,7 +77,6 @@ public class Types {
     final Check chk;
     List<Warner> warnStack = List.nil();
     final Name capturedName;
-    final ExtensionFinder extensionFinder;
 
     // <editor-fold defaultstate="collapsed" desc="Instantiating">
     public static Types instance(Context context) {
@@ -98,7 +95,6 @@ public class Types {
         source = Source.instance(context);
         chk = Check.instance(context);
         capturedName = names.fromString("<captured wildcard>");
-        extensionFinder = ExtensionFinder.instance(context);
     }
     // </editor-fold>
 
@@ -281,30 +277,9 @@ public class Types {
             : isSubtype(unboxedType(t), s);
      }
 
-    public ExtensionFinder.Route getCeylonExtension(Type t, Type s) {
-        if (isSubtype(t, s))
-            return null;
-        if (isSameType(s, syms.objectType))
-            return null;
-        return extensionFinder.findUniqueRoute(t, s);
-    }
-
     public boolean isConvertible(Type t, Type s, Warner warn) {
         if (isConvertibleNotOptional(t, s, warn))
             return true;
-
-        if (Context.isCeylon()) {
-            if (getCeylonExtension(t, s) != null)
-                return true;
-
-            Type base = s.baseType();
-
-            // The placeholder type for ceylon temporaries.  It only exists
-            // while a temporary is declared, and will be replaced by the
-            // type of an expression.
-            if (base == syms.ceylonAnyType)
-                return true;
-        }
 
         return false;
     }
