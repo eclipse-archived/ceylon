@@ -140,7 +140,6 @@ public class CeylonEnter extends Enter {
             pu.analyseFlow();
         }
         for (PhasedUnit pu : listOfUnits) { 
-            pu.display(); 
             pu.getCompilationUnit().visit(new AssertionVisitor(){
                 // FIXME: use regular javac log.error. We must define a localisation key for that, and 
                 // be able to access the javac AST we generated for a given CU because it holds the 
