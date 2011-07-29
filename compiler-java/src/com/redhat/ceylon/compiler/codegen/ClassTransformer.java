@@ -8,9 +8,6 @@ import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 import static com.sun.tools.javac.code.TypeTags.VOID;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -18,7 +15,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinitio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
 import com.redhat.ceylon.compiler.util.Util;
-import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -40,8 +36,6 @@ public class ClassTransformer extends AbstractTransformer {
     class ClassVisitor extends StatementVisitor {
         final ClassDefinitionBuilder classBuilder;
         final ListBuffer<Tree.AttributeDeclaration> attributeDecls = new ListBuffer<Tree.AttributeDeclaration>();
-        final Map<String, Tree.AttributeGetterDefinition> getters = new HashMap<String, Tree.AttributeGetterDefinition>();
-        final Map<String, Tree.AttributeSetterDefinition> setters = new HashMap<String, Tree.AttributeSetterDefinition>();
 
         ClassVisitor(CeylonTransformer gen, ClassDefinitionBuilder classBuilder) {
             super(gen);
@@ -110,15 +104,11 @@ public class ClassTransformer extends AbstractTransformer {
         }
 
         public void visit(final Tree.AttributeGetterDefinition getter) {
-            JCTree.JCMethodDecl getterDef = transform(getter);
-            classBuilder.defs(getterDef);
-            getters.put(getter.getIdentifier().getText(), getter);
+            classBuilder.defs(transform(getter));
         }
 
         public void visit(final Tree.AttributeSetterDefinition setter) {
-            JCTree.JCMethodDecl setterDef = transform(setter);
-            classBuilder.defs(setterDef);
-            setters.put(setter.getIdentifier().getText(), setter);
+            classBuilder.defs(transform(setter));
         }
 
         public void visit(final Tree.ClassDefinition cdecl) {
@@ -385,25 +375,12 @@ public class ClassTransformer extends AbstractTransformer {
     public JCClassDecl methodClass(Tree.MethodDefinition def) {
         Name name = generateClassName(def, isToplevel(def));
         List<JCTree> meth = transform(def);
-        // make a private constructor
-        JCMethodDecl constr = make().MethodDef(make().Modifiers(Flags.PRIVATE),
-                names().init,
-                make().TypeIdent(VOID),
-                List.<JCTree.JCTypeParameter>nil(),
-                List.<JCTree.JCVariableDecl>nil(),
-                List.<JCTree.JCExpression>nil(),
-                make().Block(0, List.<JCTree.JCStatement>nil()),
-                null);
-        meth = meth.prepend(constr);
-        
-        List<JCAnnotation> annots = gen.makeAtCeylon().appendList(gen.makeAtMethod());
-        return at(def).ClassDef(
-                at(def).Modifiers(FINAL | (isShared(def) ? PUBLIC : 0), annots),
-                name,
-                List.<JCTypeParameter>nil(),
-                null,
-                List.<JCExpression>nil(),
-                meth);
+        return (new ClassDefinitionBuilder(gen, name.toString()))
+            .annotations(gen.makeAtMethod())
+            .modifiers(FINAL, isShared(def) ? PUBLIC : 0)
+            .initModifiers(PRIVATE)
+            .body(meth)
+            .build();
     }
 
     /**
