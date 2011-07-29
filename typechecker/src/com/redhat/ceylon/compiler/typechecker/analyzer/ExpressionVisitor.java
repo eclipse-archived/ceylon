@@ -197,11 +197,21 @@ public class ExpressionVisitor extends AbstractVisitor {
         /*if (that.getExpression()!=null) {
             that.getExpression().visit(this);
         }*/
-        if (type!=null && isGeneric(type.getDeclaration())) {
-            that.addWarning("generic types in subtype conditions not yet supported (until we implement reified generics)");
+        checkReified(that, type);
+    }
+
+    private void checkReified(Node that, ProducedType type) {
+        TypeDeclaration dec = type.getDeclaration();
+        if (type!=null && (isGeneric(dec) || dec instanceof TypeParameter) ) {
+            that.addWarning("generic types in assignability conditions not yet supported (until we implement reified generics)");
         }
     }
 
+    @Override public void visit(Tree.SatisfiesCondition that) {
+        super.visit(that);
+        that.addWarning("satisfies conditions not yet supported");
+    }
+    
     @Override public void visit(Tree.ExistsOrNonemptyCondition that) {
         //don't recurse to the Variable, since we don't
         //want to check that the specifier expression is
@@ -1691,16 +1701,17 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
     
     private void visitIsOperator(Tree.IsOp that) {
-        ProducedType t = leftType(that);
+        ProducedType t = type(that);
         if (t!=null) {
+            //TODO: spec says is works for Object?
             if (!t.isSubtypeOf(getObjectDeclaration().getType())) {
-                that.getLeftTerm().addError("must be of type: Object");
+                that.getTerm().addError("must be of type: Object");
             }
         }
-        Tree.Term rt = that.getRightTerm();
+        Tree.Type rt = that.getType();
         if (rt!=null) {
-            if (!(rt instanceof Tree.BaseTypeExpression)) {
-                rt.addError("must be a literal type");
+            if (rt.getTypeModel()!=null) {
+                checkReified(that, rt.getTypeModel());
             }
         }
         that.setTypeModel(getBooleanDeclaration().getType());
@@ -1891,6 +1902,16 @@ public class ExpressionVisitor extends AbstractVisitor {
     @Override public void visit(Tree.IsOp that) {
         super.visit(that);
         visitIsOperator(that);
+    }
+        
+    @Override public void visit(Tree.Extends that) {
+        super.visit(that);
+        that.addWarning("extends operator not yet supported");
+    }
+        
+    @Override public void visit(Tree.Satisfies that) {
+        super.visit(that);
+        that.addWarning("satisfies operator not yet supported");
     }
         
     @Override public void visit(Tree.InOp that) {
