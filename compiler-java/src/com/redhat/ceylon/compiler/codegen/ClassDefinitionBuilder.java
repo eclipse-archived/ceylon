@@ -5,7 +5,6 @@ import static com.sun.tools.javac.code.Flags.INTERFACE;
 import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.PROTECTED;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
-import static com.sun.tools.javac.code.TypeTags.VOID;
 
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -50,8 +49,11 @@ public class ClassDefinitionBuilder {
     private final ListBuffer<JCTree> body = ListBuffer.lb();
     private final ListBuffer<JCStatement> init = ListBuffer.lb();
     
-    public ClassDefinitionBuilder(CeylonTransformer gen, String name) {
-        super();
+    public static ClassDefinitionBuilder klass(CeylonTransformer gen, String name) {
+        return new ClassDefinitionBuilder(gen, name);
+    }
+    
+    private ClassDefinitionBuilder(CeylonTransformer gen, String name) {
         this.gen = gen;
         this.name = name;
         
@@ -129,15 +131,12 @@ public class ClassDefinitionBuilder {
             // so we try to come up with some good defaults
             mods = modifiers & (PUBLIC | PRIVATE | PROTECTED);
         }
-        return gen.make().MethodDef(
-                gen.make().Modifiers(mods),
-                gen.names.init,
-                gen.make().TypeIdent(VOID),
-                List.<JCTypeParameter>nil(),
-                params.toList(),
-                List.<JCExpression>nil(),
-                gen.make().Block(0, init.toList()),
-                null);
+        return MethodDefinitionBuilder
+            .constructor(gen)
+            .modifiers(mods)
+            .parameters(params.toList())
+            .body(init.toList())
+            .build();
     }
     
     /*
@@ -184,6 +183,18 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
+    public ClassDefinitionBuilder extending(Tree.ExtendedType extendedType) {
+        if (extendedType.getInvocationExpression().getPositionalArgumentList() != null) {
+            List<JCExpression> args = List.<JCExpression> nil();
+
+            for (Tree.PositionalArgument arg : extendedType.getInvocationExpression().getPositionalArgumentList().getPositionalArguments())
+                args = args.append(gen.expressionGen.transformArg(arg));
+
+            init(gen.at(extendedType).Exec(gen.make().Apply(List.<JCExpression> nil(), gen.make().Ident(gen.names._super), args)));
+        }
+        return extending(extendedType.getType().getTypeModel());
+    }
+    
     public ClassDefinitionBuilder satisfies(java.util.List<ProducedType> satisfies) {
         this.satisfies.addAll(satisfies);
         return this;
