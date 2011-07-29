@@ -178,13 +178,13 @@ public class ExpressionVisitor extends AbstractVisitor {
         //(nor is it possible to infer the variable type)
         that.getType().visit(this);
         Tree.Variable v = that.getVariable();
+        ProducedType type = that.getType().getTypeModel();
         if (v!=null) {
             //v.getType().visit(this);
             defaultTypeToVoid(v);
             if (v.getType() instanceof Tree.SyntheticVariable) {
                 //this is a bit ugly (the parser sends us a SyntheticVariable
                 //instead of the real StaticType which it very well knows!
-                ProducedType type = that.getType().getTypeModel();
                 v.getType().setTypeModel(type);
                 v.getDeclarationModel().setType(type);
             }
@@ -197,6 +197,9 @@ public class ExpressionVisitor extends AbstractVisitor {
         /*if (that.getExpression()!=null) {
             that.getExpression().visit(this);
         }*/
+        if (type!=null && isGeneric(type.getDeclaration())) {
+            that.addWarning("generic types in subtype conditions not yet supported (until we implement reified generics)");
+        }
     }
 
     @Override public void visit(Tree.ExistsOrNonemptyCondition that) {
