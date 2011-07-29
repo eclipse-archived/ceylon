@@ -4,7 +4,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import com.redhat.ceylon.compiler.test.codegen.GlobalGenTest;
 import com.redhat.ceylon.compiler.test.expression.ExpressionTest;
 import com.redhat.ceylon.compiler.test.misc.MiscTest;
 import com.redhat.ceylon.compiler.test.model.AnnotationsTest;
@@ -21,7 +20,6 @@ import com.redhat.ceylon.compiler.test.structure.StructureTest;
 	ExpressionTest.class,
 	TypeParserTest.class,
 	ModelLoaderTest.class,
-	GlobalGenTest.class,
 	AnnotationsTest.class
 })
 public class AllTests {
