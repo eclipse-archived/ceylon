@@ -19,6 +19,7 @@ import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
+import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
@@ -38,13 +39,13 @@ public class ClassTransformer extends AbstractTransformer {
         String className = def.getIdentifier().getText();
         ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder.klass(gen, className);
         
-        ClassVisitor visitor = new ClassVisitor(gen, classBuilder);
+        CeylonVisitor visitor = new CeylonVisitor(gen, classBuilder);
         def.visitChildren(visitor);
 
         return classBuilder
             .modifiers(transformClassDeclFlags(def))
             .satisfies(def.getDeclarationModel().getSatisfiedTypes())
-            .init(visitor.getResult().toList())
+            .init((List<JCStatement>)visitor.getResult().toList())
             .build();
     }
 
@@ -266,7 +267,7 @@ public class ClassTransformer extends AbstractTransformer {
         String name = generateClassName(def, topLevel);
         ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder.klass(gen, name);
         
-        ClassVisitor visitor = new ClassVisitor(gen, classBuilder);
+        CeylonVisitor visitor = new CeylonVisitor(gen, classBuilder);
         def.visitChildren(visitor);
 
         TypeDeclaration decl = def.getDeclarationModel().getType().getDeclaration();
@@ -280,7 +281,7 @@ public class ClassTransformer extends AbstractTransformer {
             .modifiers(transformObjectDeclFlags(def))
             .constructorModifiers(PRIVATE)
             .satisfies(decl.getSatisfiedTypes())
-            .init(visitor.getResult().toList())
+            .init((List<JCStatement>)visitor.getResult().toList())
             .build();
     }
 

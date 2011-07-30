@@ -40,7 +40,7 @@ public class StatementTransformer extends AbstractTransformer {
     }
 
     List<JCStatement> transformStmts(java.util.List<Tree.Statement> list) {
-        StatementVisitor v = new StatementVisitor(this.gen);
+        CeylonVisitor v = new CeylonVisitor(this.gen);
 
         for (Tree.Statement stmt : list)
             stmt.visit(v);

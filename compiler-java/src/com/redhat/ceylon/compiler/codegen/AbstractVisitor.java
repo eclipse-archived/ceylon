@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.codegen;
 
 import java.util.Collection;
 
+import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.Symtab;
@@ -24,7 +25,7 @@ import com.sun.tools.javac.util.Name;
  *
  * @param <J> The type of JCTree in the result list.
  */
-public abstract class AbstractVisitor<J extends JCTree> extends Visitor {
+public abstract class AbstractVisitor<J extends JCTree> extends Visitor implements NaturalVisitor {
 
     protected final CeylonTransformer gen;
 
@@ -58,7 +59,7 @@ public abstract class AbstractVisitor<J extends JCTree> extends Visitor {
      * 
      * @see #getSingleResult()
      */
-    public ListBuffer<J> getResult() {
+    public ListBuffer<? extends J> getResult() {
         return defs;
     }
     
@@ -68,11 +69,11 @@ public abstract class AbstractVisitor<J extends JCTree> extends Visitor {
      * 
      * @see #getResult()
      */
-    public J getSingleResult() {
+    public <K extends J> K getSingleResult() {
         if (defs.size() != 1) {
             throw new RuntimeException();
         }
-        return defs.first();
+        return (K) defs.first();
     }
     
     public boolean addAll(Collection<? extends J> c) {
@@ -87,12 +88,18 @@ public abstract class AbstractVisitor<J extends JCTree> extends Visitor {
         return defs.append(x);
     }
 
-    public ListBuffer<J> appendList(List<J> xs) {
-        return defs.appendList(xs);
+    public ListBuffer<J> appendList(List<? extends J> xs) {
+        for (J x : xs) {
+            append(x);
+        }
+        return defs;
     }
     
-    public ListBuffer<J> appendList(ListBuffer<J> xs) {
-        return defs.appendList(xs);
+    public ListBuffer<J> appendList(ListBuffer<? extends J> xs) {
+        for (J x : xs) {
+            append(x);
+        }
+        return defs;
     }
 
     public ListBuffer<J> appendArray(J[] xs) {

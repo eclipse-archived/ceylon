@@ -68,7 +68,7 @@ public class CeylonTransformer {
     ClassTransformer classGen;
     GlobalTransformer globalGen;
 
-    private boolean disableModelAnnotations = false;
+    public boolean disableModelAnnotations = false;
     
     public static CeylonTransformer getInstance(Context context) throws Exception {
         CeylonTransformer gen2 = context.get(CeylonTransformer.class);
@@ -122,9 +122,9 @@ public class CeylonTransformer {
      */
     public ListBuffer<JCTree> transformAfterTypeChecking(Tree.CompilationUnit t) {
         disableModelAnnotations = false;
-        CompilationUnitVisitor visitor = new CompilationUnitVisitor(this);
+        CeylonVisitor visitor = new CeylonVisitor(this);
         t.visitChildren(visitor);
-        return visitor.getResult();
+        return (ListBuffer<JCTree>) visitor.getResult();
     }
 
     JCTree.Factory at(Node t) {
@@ -148,57 +148,6 @@ public class CeylonTransformer {
         at(t);
         return globalGen;
     }
-
-    private static final class CompilationUnitVisitor extends AbstractVisitor<JCTree> {
-		
-		private CompilationUnitVisitor(CeylonTransformer ceylonTransformer) {
-			super(ceylonTransformer);
-		}
-
-		public void visit(Tree.ImportList imp) {
-		    appendList(gen.transform(imp));
-		}
-
-		private void checkCompilerAnnotations(Tree.Declaration decl){
-		    if(gen.hasCompilerAnnotation(decl, "nomodel"))
-		        gen.disableModelAnnotations  = true;
-		}
-
-		private void resetCompilerAnnotations(){
-		    gen.disableModelAnnotations = false;
-		}
-
-		public void visit(Tree.ClassOrInterface decl) {
-		    checkCompilerAnnotations(decl);
-		    append(gen.classGen.transform(decl));
-		    resetCompilerAnnotations();
-		}
-
-		public void visit(Tree.ObjectDefinition decl) {
-		    checkCompilerAnnotations(decl);
-		    append(gen.classGen.objectClass(decl, true));
-		    resetCompilerAnnotations();
-		}
-
-		public void visit(Tree.AttributeDeclaration decl){
-		    checkCompilerAnnotations(decl);
-		    append(gen.transform(decl));
-		    resetCompilerAnnotations();
-		}
-
-		public void visit(Tree.AttributeGetterDefinition decl){
-		    checkCompilerAnnotations(decl);
-		    append(gen.transform(decl));
-		    resetCompilerAnnotations();
-		}
-
-		public void visit(Tree.MethodDefinition decl) {
-		    checkCompilerAnnotations(decl);
-		    // Generate a wrapper class for the method
-		    append(gen.classGen.methodClass(decl));
-		    resetCompilerAnnotations();
-		}
-	}
 
 	private static final class ImportListVisitor extends AbstractVisitor<JCTree> {
 		
@@ -314,14 +263,14 @@ public class CeylonTransformer {
             return make.Select(getPackage(packagePart), names.fromString(shortName));
     }
 
-    private List<JCTree> transform(Tree.ImportList importList) {
+    public List<JCTree> transform(Tree.ImportList importList) {
         
         ImportListVisitor visitor = new ImportListVisitor(this);
         importList.visit(visitor);
-        return visitor.getResult().toList();
+        return (List<JCTree>) visitor.getResult().toList();
     }
 
-    private JCTree transform(AttributeDeclaration decl) {
+    public JCTree transform(AttributeDeclaration decl) {
         GlobalTransformer.DefinitionBuilder builder = globalGenAt(decl)
             .defineGlobal(
                     makeJavaType(actualType(decl), false),
