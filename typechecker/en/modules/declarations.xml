@@ -745,6 +745,12 @@ TypeConstraints?
               attribute assignment or specification,</para>
            </listitem>
            <listitem>
+              <para>evaluate inherited attributes, invoke inherited methods, or 
+              instantiate inherited member classes declared by an interface or 
+              superclass upon the instance being initialized, including upon a self 
+              reference to the instance being initialized,</para>
+           </listitem>
+           <listitem>
               <para><literal>return</literal> a self reference to the instance being 
               initialized,</para>
            </listitem>
@@ -758,12 +764,6 @@ TypeConstraints?
               attribute of the class.</para>
            </listitem>
            -->
-           <listitem>
-              <para>evaluate inherited attributes, invoke inherited methods, or 
-              instantiate inherited member classes declared by an interface or 
-              superclass upon the instance being initialized, including upon a self 
-              reference to the instance being initialized,</para>
-           </listitem>
            <listitem>
               <para>invoke or evaluate a <literal>formal</literal> <!--or 
               <literal>definite</literal>--> member of the instance being initialized, 
