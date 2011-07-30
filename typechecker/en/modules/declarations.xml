@@ -768,20 +768,28 @@ TypeConstraints?
            </listitem>
         </itemizedlist>
         
+        <para>A member class contained in the initializer of a class may not 
+        <literal>extend</literal> a member or nested class of an interface or 
+        superclass of the class.</para>
+        
         <para>Furthermore, a statement or declaration that contained in the initializer 
         of a class may not:</para>
         
         <itemizedlist>
            <listitem>
               <para>pass a self reference to the instance being initialized as an 
-              argument of an instantiation or method invocation or as the value of an 
-              attribute assignment or specification, or</para>
+              argument of an instantiation, method invocation, or <literal>extends</literal> 
+              clause expression or as the value of an attribute assignment or specification, 
+              or</para>
            </listitem>
            <listitem>
               <para><literal>return</literal> a self reference to the instance being 
               initialized.</para>
            </listitem>
         </itemizedlist>
+        
+        <para>Nor may the a class pass a self reference to the instance being initialized
+        as an argument of its own <literal>extends</literal> clause expression, if any.</para>
         
         <para>The initializer of a class is executed after the initializer of its 
         superclass.</para>
