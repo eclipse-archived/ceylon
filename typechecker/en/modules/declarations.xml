@@ -737,16 +737,16 @@ TypeConstraints?
               <para>evaluate attributes, invoke methods, or instantiate member classes 
               that are declared later in the body of the class upon the instance being 
               initialized, including upon a self reference to the instance being 
-              initialized.</para>
+              initialized,</para>
            </listitem>
            <listitem>
               <para>pass a self reference to the instance being initialized as an 
               argument of an instantiation or method invocation or as the value of an 
-              attribute assignment or specification.</para>
+              attribute assignment or specification,</para>
            </listitem>
            <listitem>
               <para><literal>return</literal> a self reference to the instance being 
-              initialized.</para>
+              initialized,</para>
            </listitem>
            <!-- 
            <listitem>
@@ -762,12 +762,13 @@ TypeConstraints?
               <para>evaluate inherited attributes, invoke inherited methods, or 
               instantiate inherited member classes declared by an interface or 
               superclass upon the instance being initialized, including upon a self 
-              reference to the instance being initialized.</para>
+              reference to the instance being initialized,</para>
            </listitem>
            <listitem>
               <para>invoke or evaluate a <literal>formal</literal> <!--or 
               <literal>definite</literal>--> member of the instance being initialized, 
-              including upon a self reference to the instance being initialized.</para>
+              including upon a self reference to the instance being initialized, 
+              or</para>
            </listitem>
            <listitem>
               <para>invoke or evaluate a <literal>default</literal> member of the 
