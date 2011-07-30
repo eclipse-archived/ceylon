@@ -754,15 +754,15 @@ TypeConstraints?
               abstract method or attribute of the class.</para>
            </listitem>
            <listitem>
-              <para>declare a <literal>default</literal> member class, method, 
-              or attribute of the class.</para>
+              <para>declare a <literal>default</literal> member class, method, or 
+              attribute of the class.</para>
            </listitem>
            -->
            <listitem>
               <para>evaluate inherited attributes, invoke inherited methods, or 
-              instantiate inherited member classes declared by an interface or in the 
-              declaration section of a superclass upon the instance being initialized, 
-              including upon a self reference to the instance being initialized.</para>
+              instantiate inherited member classes declared by an interface or 
+              superclass upon the instance being initialized, including upon a self 
+              reference to the instance being initialized.</para>
            </listitem>
            <listitem>
               <para>invoke or evaluate a <literal>formal</literal> <!--or 
