@@ -393,8 +393,8 @@ TypeConstraints?
 
         <para>An interface may declare <literal>formal</literal> methods, attributes,
         and member classes, and concrete methods, attribute getters, attribute setters, 
-        and member classes. An interface may not declare a concrete simple attribute.
-        An interface may not declare a member <literal>object</literal>.</para>
+        and member classes. An interface may not declare a concrete simple attribute or 
+        member <literal>object</literal>.</para>
         
         <!--para>A member of an interface may not be annotated <literal>definite</literal>.</para-->
         
@@ -402,7 +402,27 @@ TypeConstraints?
         <emphasis>member class</emphasis> of the interface. A nested interface or 
         <literal>abstract</literal> class declaration is not part of the schema of the 
         interface type, and is therefore not considered a member of the interface.</para>
-                
+        
+        <section id="interfacebodies">
+            <title>Interface bodies</title>
+            
+        <para>The body of an interface consists purely of declarations. The following 
+        constructs may not occur sequentially in the body of an interface:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>a statement or control structure,</para>
+            </listitem>
+            <listitem>
+                <para>a declaration with a specifier or initializer, or</para>
+            </listitem>
+            <listitem>
+                <para>an <literal>object</literal> declaration.</para>
+            </listitem>
+        </itemizedlist>
+        
+        </section>
+        
         <section id="interfacemembervisibility">
             <title>Interface member visibility</title>
             
@@ -729,71 +749,43 @@ TypeConstraints?
             </listitem>
         </itemizedlist>
         
-        <para>A statement or declaration that appears within the initializer of a class
-        may not:</para>
+        <para>A statement or declaration contained in the initializer of a class may 
+        not evaluate an attribute, invoke a method, or instantiate a member class upon 
+        the instance being initialized, including upon a self reference to the instance 
+        being initialized if the attribute, method, or member class:</para>
         
         <itemizedlist>
            <listitem>
-              <para>evaluate attributes, invoke methods, or instantiate member classes 
-              that are declared later in the body of the class upon the instance being 
-              initialized, including upon a self reference to the instance being 
-              initialized,</para>
+              <para>occurs later in the body of the class,</para>
            </listitem>
            <listitem>
-              <para>pass a self reference to the instance being initialized as an 
-              argument of an instantiation or method invocation or as the value of an 
-              attribute assignment or specification,</para>
-           </listitem>
-           <listitem>
-              <para>evaluate inherited attributes, invoke inherited methods, or 
-              instantiate inherited member classes declared by an interface or 
-              superclass upon the instance being initialized, including upon a self 
-              reference to the instance being initialized,</para>
-           </listitem>
-           <listitem>
-              <para><literal>return</literal> a self reference to the instance being 
-              initialized,</para>
-           </listitem>
-           <!-- 
-           <listitem>
-              <para>declare an <literal>abstract</literal> member class or an
-              abstract method or attribute of the class.</para>
-           </listitem>
-           <listitem>
-              <para>declare a <literal>default</literal> member class, method, or 
-              attribute of the class.</para>
-           </listitem>
-           -->
-           <listitem>
-              <para>invoke or evaluate a <literal>formal</literal> <!--or 
-              <literal>definite</literal>--> member of the instance being initialized, 
-              including upon a self reference to the instance being initialized, 
+              <para>is annotated <literal>formal</literal> or <literal>default</literal>,
               or</para>
            </listitem>
            <listitem>
-              <para>invoke or evaluate a <literal>default</literal> member of the 
-              instance that is being initialized, except via the special 
-              <literal>super</literal> self reference.</para>
+              <para>is inherited from an interface or superclass, and is not refined by 
+              a declaration occurring earlier in the body of the class.</para>
            </listitem>
         </itemizedlist>
         
-        <para>It is acceptable to invoke or evaluate any member of a superclass that is 
-        refined by a non-<literal>formal</literal>, non-<literal>default</literal> <!--, 
-        non-<literal>definite</literal>--> declaration appearing earlier in the body of the 
-        class or in the initializer section of a different superclass.</para>
+        <para>Furthermore, a statement or declaration that contained in the initializer 
+        of a class may not:</para>
         
-        <para>Non-<literal>formal</literal>, non-<literal>default</literal><!--, 
-        non-<literal>definite</literal>--> members declared in the initializer section of a 
-        superclass may be invoked, evaluated or assigned anywhere inside the body of the 
-        class. The superclass initializer is executed before the subclass initializer.</para>
+        <itemizedlist>
+           <listitem>
+              <para>pass a self reference to the instance being initialized as an 
+              argument of an instantiation or method invocation or as the value of an 
+              attribute assignment or specification, or</para>
+           </listitem>
+           <listitem>
+              <para><literal>return</literal> a self reference to the instance being 
+              initialized.</para>
+           </listitem>
+        </itemizedlist>
         
-        <comment><para>TODO: The compiler should try to make the initializer section as
-        large as possible, including everything until the first statement or declaration
-        that violates one of these restrictions. Formalize this!</para></comment>
-        
-        <comment><para>Note: these rules work as if the body of the subclass were inserted
-        between the initializer and declaration sections of the superclass.</para></comment>
-        
+        <para>The initializer of a class is executed after the initializer of its 
+        superclass.</para>
+                
         <para>For example, the following code fragments are not legal:</para>
         
         <programlisting>class Graph() {
@@ -830,35 +822,30 @@ TypeConstraints?
     <section id="declarationsection">
         <title>Declaration section</title>
         
-        <para>The remainder of the body of the class consists purely of declarations, similar 
-        to the body of an interface. <!--including <literal>abstract</literal> and 
-        <literal>default</literal> methods and attributes. --> It may not contain:</para>
+        <para>The remainder of the body of the class consists purely of declarations, 
+        similar to the body of an interface. The following constructs may not occur 
+        sequentially in the declaration section:</para>
         
         <itemizedlist>
             <listitem>
-                <para>a statement or control structure, unless it is nested inside a method,
-                attribute, nested class, or nested interface declaration,</para>
+                <para>a statement or control structure,</para>
             </listitem>
             <listitem>
-                <para>a declaration with a specifier or initializer, unless it is nested inside 
-                a method, attribute, nested class, or nested interface declaration,</para>
+                <para>a declaration with a specifier or initializer, or</para>
             </listitem>
             <listitem>
-                <para>an <literal>object</literal> declaration with a non-empty initializer
-                section, or</para>
-            </listitem>
-            <listitem>
-                <para>a specification or initialization statement for a member of the instance 
-                being initialized.</para>
+                <para>an <literal>object</literal> declaration with a non-empty 
+                initializer section.</para>
             </listitem>
         </itemizedlist>
         
-        <para>However, the declarations in this second section may freely use <literal>this</literal>
-        and <literal>super</literal>, and may invoke any method, evaluate any attribute, or 
-        instantiate any member class of the class or its superclasses. Furthermore, the usual 
-        restriction that a declaration may only be used within the lexical scope of the 
-        declaration is relaxed unless it is a <literal>value</literal> or <literal>function</literal> 
-        declaration with an inferred type.</para>
+        <para>However, the declarations in this second section may freely use 
+        <literal>this</literal> and <literal>super</literal>, and may invoke any method, 
+        evaluate any attribute, or instantiate any member class of the class or its 
+        superclasses. <!--Furthermore, the usual restriction that a declaration may only be 
+        used within the lexical scope of the declaration is relaxed unless it is a 
+        <literal>value</literal> or <literal>function</literal> declaration with an 
+        inferred type.--></para>
         
         <!--
         <comment><para>TODO: we could perhaps slightly relax the restrictions here. It's 
