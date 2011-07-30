@@ -791,6 +791,10 @@ TypeConstraints?
         <para>Nor may the a class pass a self reference to the instance being initialized
         as an argument of its own <literal>extends</literal> clause expression, if any.</para>
         
+        <para>Finally, the initializer of a class may not attempt to narrow the type of a
+        self reference to the instance being initialized using the <literal>if (is ...)</literal>
+        construct.</para>
+        
         <para>The initializer of a class is executed after the initializer of its 
         superclass.</para>
                 
@@ -846,6 +850,9 @@ TypeConstraints?
                 initializer section.</para>
             </listitem>
         </itemizedlist>
+        
+        <comment><para>TODO: limit the arguments to the <literal>extends</literal>
+        clause of the <literal>object</literal> declaration!</para></comment>
         
         <para>However, the declarations in this second section may freely use 
         <literal>this</literal> and <literal>super</literal>, and may invoke any method, 
