@@ -23,6 +23,20 @@ public class SelfReferenceVisitor extends Visitor {
     public void visit(Tree.AnnotationList that) {}
 
     @Override
+    public void visit(Tree.ExtendedTypeExpression that) {
+        super.visit(that);
+        Declaration member  = that.getDeclaration();
+        if (member!=null && !inOuterDeclarationSection() && 
+                !member.isToplevel() && 
+                !member.isDefinedInScope(that.getScope().getContainer())) {
+            //then it must be an inherited member class?
+            //TODO: is that logic exactly correct?
+            that.addError("inherited member class may not be extended in initializer: " + 
+                            member.getName());
+        }
+    }
+
+    @Override
     public void visit(Tree.BaseMemberExpression that) {
         super.visit(that);
         visitReference(that);
