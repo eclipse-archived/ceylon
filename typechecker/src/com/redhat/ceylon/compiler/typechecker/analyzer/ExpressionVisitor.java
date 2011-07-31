@@ -75,22 +75,25 @@ public class ExpressionVisitor extends AbstractVisitor {
     
     @Override public void visit(Tree.TypeDeclaration that) {
         super.visit(that);
-        List<ProducedType> supertypes = that.getDeclarationModel().getType().getSupertypes();
-        for (int i=0; i<supertypes.size(); i++) {
-            ProducedType st1 = supertypes.get(i);
-            for (int j=i+1; j<supertypes.size(); j++) {
-                ProducedType st2 = supertypes.get(j);
-                if (st1.getDeclaration()==st2.getDeclaration() && !st1.isExactly(st2)) {
-                    if (!st1.isSupertypeOf(st2) && !st2.isSupertypeOf(st1)) {
-                        that.addError("type " + that.getDeclarationModel().getName() +
-                                " has the same supertype twice with incompatible type arguments: " +
-                                st1.getProducedTypeName() + " and " + st2.getProducedTypeName());
+        TypeDeclaration td = that.getDeclarationModel();
+        if (td!=null) {
+            List<ProducedType> supertypes = td.getType().getSupertypes();
+            for (int i=0; i<supertypes.size(); i++) {
+                ProducedType st1 = supertypes.get(i);
+                for (int j=i+1; j<supertypes.size(); j++) {
+                    ProducedType st2 = supertypes.get(j);
+                    if (st1.getDeclaration()==st2.getDeclaration() && !st1.isExactly(st2)) {
+                        if (!st1.isSupertypeOf(st2) && !st2.isSupertypeOf(st1)) {
+                            that.addError("type " + td.getName() +
+                                    " has the same supertype twice with incompatible type arguments: " +
+                                    st1.getProducedTypeName() + " and " + st2.getProducedTypeName());
+                        }
                     }
                 }
-            }
-            if (!isCompletelyVisible(that.getDeclarationModel(), st1)) {
-                that.addError("supertype of type is not visible everywhere type is visible: "
-                        + st1.getProducedTypeName());
+                if (!isCompletelyVisible(td, st1)) {
+                    that.addError("supertype of type is not visible everywhere type is visible: "
+                            + st1.getProducedTypeName());
+                }
             }
         }
     }
@@ -905,16 +908,16 @@ public class ExpressionVisitor extends AbstractVisitor {
                 List<ProducedType> typeArgs = getInferedTypeArguments(that, (Functional) dec);
                 mte.getTypeArguments().setTypeModels(typeArgs);
                 if (pr instanceof Tree.BaseTypeExpression) {
-                    visitBaseTypeExpression((Tree.BaseTypeExpression) pr, (TypeDeclaration) dec, typeArgs, null);
+                    visitBaseTypeExpression((Tree.BaseTypeExpression) pr, (TypeDeclaration) dec, typeArgs, mte.getTypeArguments());
                 }
                 else if (pr instanceof Tree.QualifiedTypeExpression) {
-                    visitQualifiedTypeExpression((Tree.QualifiedTypeExpression) pr, (TypeDeclaration) dec, typeArgs, null);
+                    visitQualifiedTypeExpression((Tree.QualifiedTypeExpression) pr, (TypeDeclaration) dec, typeArgs, mte.getTypeArguments());
                 }
                 else if (pr instanceof Tree.BaseMemberExpression) {
-                    visitBaseMemberExpression((Tree.BaseMemberExpression) pr, (TypedDeclaration) dec, typeArgs, null);
+                    visitBaseMemberExpression((Tree.BaseMemberExpression) pr, (TypedDeclaration) dec, typeArgs, mte.getTypeArguments());
                 }
                 else if (pr instanceof Tree.QualifiedMemberExpression) {
-                    visitQualifiedMemberExpression((Tree.QualifiedMemberExpression) pr, (TypedDeclaration) dec, typeArgs, null);
+                    visitQualifiedMemberExpression((Tree.QualifiedMemberExpression) pr, (TypedDeclaration) dec, typeArgs, mte.getTypeArguments());
                 }
             }
             visitInvocation(that, mte.getTarget());
@@ -1985,16 +1988,16 @@ public class ExpressionVisitor extends AbstractVisitor {
         ProducedType receiverType = unwrap(that.getPrimary().getTypeModel(), that);
         if (acceptsTypeArguments(receiverType, member, typeArgs, tal, that)) {
             ProducedTypedReference ptr = receiverType.getTypedMember(member, typeArgs);
-            if (ptr==null) {
+            /*if (ptr==null) {
                 that.addError("member method or attribute does not exist: " + 
                         member.getName() + " of type " + 
                         receiverType.getDeclaration().getName());
             }
-            else {
+            else {*/
                 ProducedType t = ptr.getType();
                 that.setTarget(ptr); //TODO: how do we wrap ptr???
                 that.setTypeModel(wrap(t, that)); //TODO: this is not correct, should be Callable
-            }
+            //}
         }
     }
     
@@ -2328,6 +2331,7 @@ public class ExpressionVisitor extends AbstractVisitor {
     
     private static boolean acceptsTypeArguments(ProducedType receiver, Declaration member, List<ProducedType> typeArguments, 
             Tree.TypeArguments tal, Node parent) {
+        if (member==null) return false;
         if (isGeneric(member)) {
             List<TypeParameter> params = ((Generic) member).getTypeParameters();
             if ( params.size()==typeArguments.size() ) {
