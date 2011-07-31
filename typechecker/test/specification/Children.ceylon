@@ -70,7 +70,7 @@ class Graph3() {
 }
 
 class SuperGraph() {
-    shared class Node() {}
+    shared default class Node() {}
     shared List<Node> nodes = List<Node>();
 }
 
@@ -90,3 +90,25 @@ class Graph9() extends SuperGraph() {
     }
     createNode();
 }
+
+class Graph10() extends SuperGraph() {
+    shared actual class Node() 
+            extends super.Node() {}
+    Node createNode() {
+        Node node = Node();
+        nodes.add(node);
+        return node;
+    }
+}
+
+class Graph11() extends SuperGraph() {
+    @error shared actual class Node() 
+            extends super.Node() {}
+    Node createNode() {
+        Node node = Node();
+        @error nodes.add(node);
+        return node;
+    }
+    createNode();
+}
+
