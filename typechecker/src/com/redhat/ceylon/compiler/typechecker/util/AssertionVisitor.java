@@ -119,9 +119,12 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
 
     private void checkErrors(Node that) {
         if (expectingError) {
-            if (foundErrors.size()==0) {
-                out(that, "no error encountered");
+            for (AnalysisMessage err: foundErrors) {
+                if (err instanceof AnalysisError) {
+                    return;
+                }
             }
+            out(that, "no error encountered");
         }
         else {
             for (AnalysisMessage err: foundErrors) {
