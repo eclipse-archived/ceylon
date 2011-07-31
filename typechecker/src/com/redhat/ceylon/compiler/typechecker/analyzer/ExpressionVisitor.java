@@ -1329,7 +1329,7 @@ public class ExpressionVisitor extends AbstractVisitor {
             that.addError("could not determine type of receiver");
         }
         else {
-            if (that instanceof Tree.SafeIndexOp) {
+            if (that.getIndexOperator() instanceof Tree.SafeIndexOp) {
                 if (isOptionalType(pt)) {
                     pt = getDefiniteType(pt);
                 }

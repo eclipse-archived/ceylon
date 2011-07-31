@@ -810,13 +810,13 @@ primary
     ( 
         memberSelectionOperator 
         (
-          m=memberReference 
-      -> ^(QUALIFIED_MEMBER_EXPRESSION $primary memberSelectionOperator $m)
-        | t=typeReference
-      -> ^(QUALIFIED_TYPE_EXPRESSION $primary memberSelectionOperator $t)
+          memberReference 
+      -> ^(QUALIFIED_MEMBER_EXPRESSION $primary memberSelectionOperator memberReference)
+        | typeReference
+      -> ^(QUALIFIED_TYPE_EXPRESSION $primary memberSelectionOperator typeReference)
         )
       | elementSelectionOperator elementsSpec ']'
-      -> ^(elementSelectionOperator $primary elementsSpec)
+      -> ^(INDEX_EXPRESSION $primary elementSelectionOperator elementsSpec)
       /*| postfixOperator 
       -> ^(postfixOperator $primary)*/
       | argumentsWithFunctionalArguments
