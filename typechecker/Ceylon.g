@@ -972,7 +972,7 @@ parExpression
     
 positionalArguments
     : LPAREN ( positionalArgument (',' positionalArgument)* ELLIPSIS? )? ')'
-    -> ^(POSITIONAL_ARGUMENT_LIST[$LPAREN] ^(POSITIONAL_ARGUMENT positionalArgument)* ELLIPSIS? )
+    -> ^(POSITIONAL_ARGUMENT_LIST[$LPAREN] ^(POSITIONAL_ARGUMENT positionalArgument)* ELLIPSIS?)
     ;
 
 positionalArgument
