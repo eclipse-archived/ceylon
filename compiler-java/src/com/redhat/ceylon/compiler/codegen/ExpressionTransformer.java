@@ -144,11 +144,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.IsOp op) {
-        // FIXME: this is only working for BaseTypeExpression
-        // FIXME: Nasty cast here. We can't call transformExpression()operands[1])
-        // because that returns TypeName.class, not simply TypeName.
-        Tree.BaseTypeExpression name = (Tree.BaseTypeExpression) op.getRightTerm();
-        return at(op).Apply(null, makeSelect(makeIdent(syms().ceylonBooleanType), "instance"), List.<JCExpression> of(at(op).TypeTest(transformExpression(op.getLeftTerm()), makeIdent(name.getIdentifier().getText()))));
+        JCExpression type = gen.makeJavaType(op.getType().getTypeModel());
+        return at(op).Apply(null, makeSelect(makeIdent(syms().ceylonBooleanType), "instance"), List.<JCExpression> of(at(op).TypeTest(transformExpression(op.getTerm()), type)));
     }
 
     public JCExpression transform(Tree.RangeOp op) {
@@ -285,7 +282,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             methodName = "getSuccessor";
         }else
             throw new RuntimeException("Not implemented: " + expr.getNodeType());
-        JCExpression op = makePrefixOp(expr, expr.getPrimary(), successor);
+        JCExpression op = makePrefixOp(expr, expr.getTerm(), successor);
         return at(expr).Apply(null, makeSelect(op, methodName), List.<JCExpression>nil());
     }
 
