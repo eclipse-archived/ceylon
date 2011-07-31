@@ -20,7 +20,7 @@ class Primaries() {
     
     @type["Primaries.A"] value p5 = (A());
     
-    @error value p6 = A()();
+    value p6 = A()();
     
     @type["Primaries.A"] A aa = A();
     
@@ -36,7 +36,7 @@ class Primaries() {
     
     @type["Primaries.C"] value p11 = bb.c();
     
-    @error value p12 = bb.c()();
+    value p12 = bb.c()();
     
     @type["Primaries.C"] value p13 = aa.b.c();
     
