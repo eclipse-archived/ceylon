@@ -796,34 +796,6 @@ postfixOperator
     | INCREMENT_OP -> ^(POSTFIX_INCREMENT_OP[$INCREMENT_OP])
     ;
 
-selfReference
-    : 'this' | 'super' | 'outer'
-    ;
-
-enumeration
-    : LBRACE expressions? '}'
-    -> ^(SEQUENCE_ENUMERATION[$LBRACE] expressions?)
-    ;
-
-primary
-    : (base -> base)
-    ( 
-        memberSelectionOperator 
-        (
-          memberReference 
-      -> ^(QUALIFIED_MEMBER_EXPRESSION $primary memberSelectionOperator memberReference)
-        | typeReference
-      -> ^(QUALIFIED_TYPE_EXPRESSION $primary memberSelectionOperator typeReference)
-        )
-      | elementSelectionOperator elementsSpec ']'
-      -> ^(INDEX_EXPRESSION $primary elementSelectionOperator elementsSpec)
-      /*| postfixOperator 
-      -> ^(postfixOperator $primary)*/
-      | argumentsWithFunctionalArguments
-      -> ^(INVOCATION_EXPRESSION $primary argumentsWithFunctionalArguments)
-    )*
-   ;
-
 base 
     : nonstringLiteral
     | stringExpression
@@ -839,13 +811,56 @@ base
     | parExpression
     ;
 
-lambda
-    : /*'function'*/ parameters functionalArgumentBody
-    -> ^(LAMBDA parameters functionalArgumentBody)
+primary
+    : (base -> base)
+    (          
+        qualifiedMemberReference
+      -> ^(QUALIFIED_MEMBER_EXPRESSION $primary qualifiedMemberReference)
+      | qualifiedTypeReference
+      -> ^(QUALIFIED_TYPE_EXPRESSION $primary qualifiedTypeReference)
+      | indexExpression
+      -> ^(INDEX_EXPRESSION $primary indexExpression)
+      | invocationExpression
+      -> ^(INVOCATION_EXPRESSION $primary invocationExpression)
+    )*
+    ;
+   
+qualifiedMemberReference
+    : memberSelectionOperator memberReference
+    ;
+
+qualifiedTypeReference
+    : memberSelectionOperator typeReference
+    ;
+
+invocationExpression
+    : arguments functionalArguments?
+    ;
+
+indexExpression
+    : elementSelectionOperator indexOrIndexRange ']'!
     ;
 
 memberSelectionOperator
     : '.' | '?.' | '[].' 
+    ;
+
+elementSelectionOperator
+    : '?[' | '['
+    ;
+
+selfReference
+    : 'this' | 'super' | 'outer'
+    ;
+
+enumeration
+    : LBRACE expressions? '}'
+    -> ^(SEQUENCE_ENUMERATION[$LBRACE] expressions?)
+    ;
+
+lambda
+    : /*'function'*/ parameters functionalArgumentBody
+    -> ^(LAMBDA parameters functionalArgumentBody)
     ;
 
 memberReference
@@ -854,13 +869,6 @@ memberReference
 
 typeReference
     : typeName ((typeArgumentsStart) => typeArguments)?
-    ;
-
-//special rule for syntactic predicate so
-//that qualified type names are consumed
-//greedily into a single TYPE_REF node
-typeInExpressionStart
-    : '.' typeName
     ;
 
 //special rule for syntactic predicate to 
@@ -873,11 +881,7 @@ typeArgumentsStart
       ('>'|'<'|','|'...')
     ;
 
-elementSelectionOperator
-    : '?[' | '['
-    ;
-
-elementsSpec
+indexOrIndexRange
     : l=index
     (
       -> ^(ELEMENT $l)
@@ -891,10 +895,6 @@ elementsSpec
 index
     : additiveExpression 
     -> ^(EXPRESSION additiveExpression)
-    ;
-
-argumentsWithFunctionalArguments
-    : arguments functionalArguments?
     ;
 
 functionalArguments
