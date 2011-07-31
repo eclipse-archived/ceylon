@@ -110,6 +110,16 @@ public class SelfReferenceVisitor extends Visitor {
         outerDeclarationSection = ods;
     }
     
+    @Override
+    public void visit(Tree.ExtendedType that) {
+        Boolean ods = outerDeclarationSection;
+        outerDeclarationSection = declarationSection;
+        declarationSection = false;
+        super.visit(that);
+        declarationSection = outerDeclarationSection;
+        outerDeclarationSection = ods;
+    }
+    
     boolean inClassOrInterfaceBody() {
         return declarationSection!=null;
     }
