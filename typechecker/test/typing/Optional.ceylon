@@ -116,14 +116,27 @@ class Optional() {
             @type["String"] value ss = val;
         }
         
-        if (exists seq) {
-            @type["Empty|Sequence<String>"] value sseq = seq;
+        void method() {
+        
+            if (exists seq = WithOptionalString("hello").seq) {
+                @type["Empty|Sequence<String>"] value sseq = seq;
+            }
+            
+            if (nonempty seq = WithOptionalString("hello").seq) {
+                @type["Sequence<String>"] value sseq = seq;
+            }
+            
         }
         
-        if (nonempty seq) {
-            @type["Sequence<String>"] value sseq = seq;
-        }
-        
+    }
+    
+    
+    if (exists seq = WithOptionalString("hello").seq) {
+        @type["Empty|Sequence<String>"] value sseq = seq;
+    }
+    
+    if (nonempty seq = WithOptionalString("hello").seq) {
+        @type["Sequence<String>"] value sseq = seq;
     }
     
 }

@@ -68,3 +68,25 @@ class Graph3() {
     }
     class Node() {}
 }
+
+class SuperGraph() {
+    shared class Node() {}
+    shared List<Node> nodes = List<Node>();
+}
+
+class Graph8() extends SuperGraph() {
+    Node createNode() {
+        Node node = Node();
+        nodes.add(node);
+        return node;
+    }
+}
+
+class Graph9() extends SuperGraph() {
+    Node createNode() {
+        @error Node node = Node();
+        @error nodes.add(node);
+        return node;
+    }
+    createNode();
+}

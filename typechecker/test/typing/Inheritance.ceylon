@@ -18,14 +18,18 @@ class Inheritance() {
     
     class Z() 
             extends X<String>("Hello") {
-        String sss = getIt();
-        Boolean b = isIt("hi");
+        void method() {
+            String sss = getIt();
+            Boolean b = isIt("hi");
+        }
     }
     
     class W<U,V>(U u, V v) 
             extends X<V>(v) 
             given V satisfies Comparable<V> {
-        V vv = getIt();
+        void method() {
+            V vv = getIt();
+        }
     }
     
     class ZZ(Natural n) 
