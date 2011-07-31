@@ -598,5 +598,10 @@ interface DefiniteSpecification {
         }
         @error use(x);
     }
+    
+    class Super(String s) {}
+    @error class Sub() extends Super(name) {
+        String name = "gavin";
+    }
 
 }
