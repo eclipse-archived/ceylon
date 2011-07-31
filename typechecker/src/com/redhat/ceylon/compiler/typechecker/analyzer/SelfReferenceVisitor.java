@@ -5,11 +5,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
- * Validates that non-variable values are well-defined
- * within the local scope in which they occur. Checks
- * that they are not used before they are defined, that
- * they are always specified before they are used, and
- * that they are never specified twice.
+ * Validates that the initializer of a class does
+ * not leak self-references to the instance being
+ * initialized.
  * 
  * @author Gavin King
  *
