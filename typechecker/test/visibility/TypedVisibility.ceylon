@@ -1,23 +1,6 @@
 class X() {}
 shared class Y() {}
 
-@error shared X x = X();
-X x2 = X();
-shared Y y = Y();
-@error shared Class.Z cz = Class().Z();
-Class.Z cz2 = Class().Z();
-shared SharedClass.Z scz = SharedClass().Z();
-@error shared Class.W? cw = null;
-@error shared SharedClass.W? scw = null;
-
-shared void vx(@error X x) {}
-shared void vy(Y y) {}
-shared void vcz(@error Class.Z cz) {}
-shared void vscz(SharedClass.Z scz) {}
-
-@error shared X getX() { return X(); }
-@error shared Class.Z getZ() { return Class().Z(); }
-
 class Class() {
     class W() {}
     shared class Z() {}
@@ -90,4 +73,22 @@ shared class SharedClass() {
         shared class Vw(@error W w) {}
         shared class Vz(Z z) {}
     }
+
 }
+
+@error shared X x = X();
+X x2 = X();
+shared Y y = Y();
+@error shared Class.Z cz = Class().Z();
+Class.Z cz2 = Class().Z();
+shared SharedClass.Z scz = SharedClass().Z();
+@error shared Class.W? cw = null;
+@error shared SharedClass.W? scw = null;
+
+shared void vx(@error X x) {}
+shared void vy(Y y) {}
+shared void vcz(@error Class.Z cz) {}
+shared void vscz(SharedClass.Z scz) {}
+
+@error shared X getX() { return X(); }
+@error shared Class.Z getZ() { return Class().Z(); }
