@@ -107,16 +107,19 @@ public class SpecificationVisitor extends AbstractVisitor {
     
     @Override
     public void visit(Tree.BaseMemberExpression that) {
+        super.visit(that);
         visitReference(that);
     }
 
     @Override
     public void visit(Tree.BaseTypeExpression that) {
+        super.visit(that);
         visitReference(that);
     }
 
     @Override
     public void visit(Tree.QualifiedMemberExpression that) {
+        super.visit(that);
         if (isSelfReference(that.getPrimary())) {
             visitReference(that);
         }
@@ -124,6 +127,7 @@ public class SpecificationVisitor extends AbstractVisitor {
 
     @Override
     public void visit(Tree.QualifiedTypeExpression that) {
+        super.visit(that);
         if (isSelfReference(that.getPrimary())) {
             visitReference(that);
         }
