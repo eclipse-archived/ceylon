@@ -1,0 +1,8 @@
+package com.redhat.ceylon.compiler.test.structure.klass;
+
+class InitializerVarargs {
+    
+    InitializerParameter(String f, final .java.lang.Object fs) {
+        // FIXME
+    }
+}

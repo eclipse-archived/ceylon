@@ -69,6 +69,10 @@ public class StructureTest extends CompilerTest {
     public void testKlsLocalClass(){
         compareWithJavaSource("klass/LocalClass");
     }
+    @Test
+    public void testKlsInitializerVarargs(){
+        compareWithJavaSource("klass/InitializerVarargs");
+    }
     
     //
     // Methods
@@ -92,6 +96,14 @@ public class StructureTest extends CompilerTest {
     @Test
     public void testMthSequencedParameterMethod(){
         compareWithJavaSource("method/SequencedParameterMethod");
+    }
+    @Test
+    public void testMthMethodWithVarargs(){
+        compareWithJavaSource("method/MethodWithVarargs");
+    }
+    @Test
+    public void testMthMethodErasure(){
+        compareWithJavaSource("method/MethodErasure");
     }
 
     //

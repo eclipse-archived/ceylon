@@ -90,16 +90,6 @@ public class ExpressionTest extends CompilerTest {
     }
     
     // Method invocation
-    
-    @Test
-    public void testInvMethodInvocation(){
-        compareWithJavaSource("invoke/MethodInvocation");
-    }
-
-    @Test
-    public void testInvToplevelMethodInvocation(){
-        compareWithJavaSource("invoke/ToplevelMethodInvocation");
-    }
 
     @Test
     public void testInvChainedInvocations(){
@@ -107,8 +97,13 @@ public class ExpressionTest extends CompilerTest {
     }
 
     @Test
-    public void testInvNamedArgumentInvocation(){
-        compareWithJavaSource("invoke/NamedArgumentInvocation");
+    public void testInvInvocationErasure(){
+        compareWithJavaSource("invoke/InvocationErasure");
+    }
+    
+    @Test
+    public void testInvMethodInvocation(){
+        compareWithJavaSource("invoke/MethodInvocation");
     }
 
     @Test
@@ -117,8 +112,18 @@ public class ExpressionTest extends CompilerTest {
     }
 
     @Test
+    public void testInvNamedArgumentInvocation(){
+        compareWithJavaSource("invoke/NamedArgumentInvocation");
+    }
+
+    @Test
     public void testInvSequencedParameterInvocation(){
         compareWithJavaSource("invoke/SequencedParameterInvocation");
+    }
+
+    @Test
+    public void testInvToplevelMethodInvocation(){
+        compareWithJavaSource("invoke/ToplevelMethodInvocation");
     }
 
     // Self references
