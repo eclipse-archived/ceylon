@@ -167,6 +167,12 @@ public class SpecificationVisitor extends AbstractVisitor {
                             member.getName());                    
                 }
             }
+            else {
+                if ( member.isDefault() && !inDeclarationSection() ) {
+                    that.addError("default member may not be used in initializer: " + 
+                            member.getName());                    
+                }
+            }
         }
     }
 
@@ -482,7 +488,7 @@ public class SpecificationVisitor extends AbstractVisitor {
     @Override
     public void visit(Tree.Statement that) {
         super.visit(that);
-        declarationSection = declarationSection || (that==lastExecutableStatement);
+        declarationSection = declarationSection || that==lastExecutableStatement;
     }
     
     @Override
