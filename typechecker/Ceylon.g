@@ -784,7 +784,16 @@ exponentiationExpression
 
 incrementDecrementExpression
     : ('++'^ | '--'^) incrementDecrementExpression
-    | primary
+    | postfixIncrementDecrementExpression
+    ;
+
+postfixIncrementDecrementExpression
+    : primary (postfixOperator^)*
+    ;
+
+postfixOperator
+    : DECREMENT_OP -> ^(POSTFIX_DECREMENT_OP[$DECREMENT_OP])
+    | INCREMENT_OP -> ^(POSTFIX_INCREMENT_OP[$INCREMENT_OP])
     ;
 
 selfReference
@@ -808,8 +817,8 @@ primary
         )
       | elementSelectionOperator elementsSpec ']'
       -> ^(elementSelectionOperator $primary elementsSpec)
-      | postfixOperator 
-      -> ^(postfixOperator $primary)
+      /*| postfixOperator 
+      -> ^(postfixOperator $primary)*/
       | argumentsWithFunctionalArguments
       -> ^(INVOCATION_EXPRESSION $primary argumentsWithFunctionalArguments)
     )*
@@ -833,11 +842,6 @@ base
 lambda
     : /*'function'*/ parameters functionalArgumentBody
     -> ^(LAMBDA parameters functionalArgumentBody)
-    ;
-
-postfixOperator
-    : DECREMENT_OP -> ^(POSTFIX_DECREMENT_OP[$DECREMENT_OP])
-    | INCREMENT_OP -> ^(POSTFIX_INCREMENT_OP[$INCREMENT_OP])
     ;
 
 memberSelectionOperator

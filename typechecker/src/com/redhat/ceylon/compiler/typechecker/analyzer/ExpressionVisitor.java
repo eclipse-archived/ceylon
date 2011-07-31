@@ -1405,8 +1405,8 @@ public class ExpressionVisitor extends AbstractVisitor {
     
     @Override public void visit(Tree.PostfixOperatorExpression that) {
         super.visit(that);
-        visitIncrementDecrement(that, type(that), that.getPrimary());
-        checkAssignable(that.getPrimary());
+        visitIncrementDecrement(that, type(that), that.getTerm());
+        checkAssignable(that.getTerm());
     }
 
     @Override public void visit(Tree.PrefixOperatorExpression that) {

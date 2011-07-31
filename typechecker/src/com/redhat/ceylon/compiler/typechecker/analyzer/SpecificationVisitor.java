@@ -202,7 +202,7 @@ public class SpecificationVisitor extends AbstractVisitor {
     @Override
     public void visit(Tree.PostfixOperatorExpression that) {
         super.visit(that);
-        checkVariable(that.getPrimary());
+        checkVariable(that.getTerm());
     }
     
     @Override
