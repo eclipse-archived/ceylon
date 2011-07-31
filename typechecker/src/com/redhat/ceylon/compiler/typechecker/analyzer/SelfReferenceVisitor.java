@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -21,6 +22,50 @@ public class SelfReferenceVisitor extends Visitor {
     @Override
     public void visit(Tree.AnnotationList that) {}
 
+    @Override
+    public void visit(Tree.BaseMemberExpression that) {
+        super.visit(that);
+        visitReference(that);
+    }
+
+    @Override
+    public void visit(Tree.BaseTypeExpression that) {
+        super.visit(that);
+        visitReference(that);
+    }
+
+    @Override
+    public void visit(Tree.QualifiedMemberExpression that) {
+        super.visit(that);
+        if (isSelfReference(that.getPrimary())) {
+            visitReference(that);
+        }
+    }
+
+    @Override
+    public void visit(Tree.QualifiedTypeExpression that) {
+        super.visit(that);
+        if (isSelfReference(that.getPrimary())) {
+            visitReference(that);
+        }
+    }
+
+    private boolean isSelfReference(Tree.Primary that) {
+        return that instanceof Tree.This || that instanceof Tree.Outer;
+    }
+
+    private void visitReference(Tree.Primary that) {
+        Declaration member  = that.getDeclaration();
+        if (member!=null && !inDeclarationSection() && 
+                !member.isToplevel() && 
+                !member.isDefinedInScope(that.getScope())) {
+            //then it must be an inherited member?
+            //TODO: is that logic exactly correct?
+            that.addError("inherited member may not be used in initializer: " + 
+                            member.getName());
+        }
+    }
+    
     @Override
     public void visit(Tree.InterfaceBody that) {
         Tree.Statement oles = lastExecutableStatement;
