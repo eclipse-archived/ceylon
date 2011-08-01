@@ -81,4 +81,26 @@ interface SelfReference {
         }
     }
     
+    abstract class Abstract() {
+        shared String hello = "hello";
+        /*if (is Concrete conc = this) {}
+        void method() {
+            if (is Object sup = super) {}
+        }*/
+    }
+    
+    class Concrete() extends Abstract() {
+        @error writeLine(hello);
+        @error writeLine(super.hello);
+        @error writeLine(this.hello);
+        void method() {
+            writeLine(hello);
+            writeLine(super.hello);
+            writeLine(this.hello);
+        }
+        class Class() {
+            writeLine(hello);
+            writeLine(outer.hello);
+        }
+    }
 }
