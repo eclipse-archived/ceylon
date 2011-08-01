@@ -309,15 +309,20 @@
         
         <itemizedlist>
             <listitem>
-                <para>the declaration directly occurs in a body containing the program
-                element,</para>
-            </listitem>
-            <listitem>
                 <para>the declaration is a parameter or type parameter of a declaration 
                 whose body contains the program element,</para>
             </listitem>
             <listitem>
-                <para>the program element belongs to the declaration itself,</para>
+                <para>the program element belongs to or is contained in the body of the 
+                declaration itself,</para>
+            </listitem>
+            <listitem>
+                <para>the program element belongs to or is contained in the body of a 
+                class or interface which inherits the declaration,</para>
+            </listitem>
+            <listitem>
+                <para>the declaration directly occurs in a body containing the program
+                element,</para>
             </listitem>
             <listitem>
                 <para>the declaration is a control structure variable or iteration 
@@ -329,10 +334,6 @@
                 <literal>do/while</literal> loop and the <literal>do</literal> block of 
                 the loop contains the declaration,</para>
             </listitem-->
-            <listitem>
-                <para>the program element belongs to or is contained in the body of a 
-                class or interface which inherits the declaration,</para>
-            </listitem>
             <listitem>
                 <para>the declaration is imported by the compilation unit containing the 
                 program element and is visible to the program element, or</para>
@@ -417,30 +418,31 @@
         
     </section>
     
-    <section id="accessibilityofdeclaration">
-        <title>Accessibility of a declaration</title>
+    <section id="referenceabilityofdeclaration">
+        <title>Referenceability of a declaration</title>
         
-        <para>A declaration may be in scope at a program element, but may not be 
-        <emphasis>accessible</emphasis> at the program element. A declaration is accessible 
-        at a program element if the declaration is in scope at the program element and 
-        either:</para>
+        <para>A declaration may be in scope at a program element, but not 
+        <emphasis>referenceable</emphasis> at the program element. A declaration is 
+        referenceable at a program element if the declaration is in scope at the program 
+        element and either:</para>
         
         <itemizedlist>
             <listitem>
-                <para>the declaration is a toplevel declaration (of the package containing
-                the program element or imported by the compilation unit containing the 
-                program element),</para>
+                <para>the declaration is a parameter or type parameter of a declaration 
+                whose body contains the program element,</para>
+            </listitem>
+            <listitem>
+                <para>the program element belongs to or is contained in the body of the 
+                declaration itself,</para>
             </listitem>
             <listitem>
                 <para>the program element belongs to or is contained in the body of a 
                 class or interface which inherits the declaration,</para>
             </listitem>
             <listitem>
-                <para>the declaration is a parameter or type parameter of a declaration 
-                whose body contains the program element,</para>
-            </listitem>
-            <listitem>
-                <para>the program element belongs to the declaration itself,</para>
+                <para>the declaration is a control structure variable or iteration 
+                variable belonging to a block of a control structure that contains the 
+                program element,</para>
             </listitem>
             <listitem>
                 <para>the program element occurs within the lexical scope of the 
@@ -448,18 +450,23 @@
             </listitem>
             <listitem>
                 <para>the declaration directly occurs in an interface body that contains
-                the program element, or</para>
+                the program element,</para>
             </listitem>
             <listitem>
                 <para>the declaration directly occurs in the declaration section of a class 
                 body, and either the program element directly occurs in this declaration
                 section, or some declaration directly occurring in this declaration section 
-                contains the program element.</para>
+                contains the program element, or</para>
+            </listitem>
+            <listitem>
+                <para>the declaration is a toplevel declaration (of the package containing
+                the program element or imported by the compilation unit containing the 
+                program element).</para>
             </listitem>
         </itemizedlist>
         
-        <comment><para>TODO: accessibility rules for toplevel declarations that occur in
-        different compilation units!</para></comment>
+        <comment><para>TODO: fix the referenceability rules for toplevel declarations that 
+        occur in different compilation units!</para></comment>
         
         <para>The following toplevel method declarations, belonging to the same package, 
         are legal:</para>
@@ -475,7 +482,7 @@
         <para>This code is not legal, since the body of a method is an ordinary block:</para>
     
         <programlisting>Entry&lt;Float,Float&gt; xy() {
-    Float x { return y; }  //compiler error!
+    Float x { return y; }  //compiler error: y is not referenceable
     Float y { return x; }
     return x->y;
 }</programlisting>
@@ -484,7 +491,7 @@
         section of the class body:</para>
     
         <programlisting>class Point() {
-    Float x { return y; }  //compiler error!
+    Float x { return y; }  //compiler error: y is not referenceable
     Float y { return x; }
     Entry&lt;Float,Float&gt; xy = x->y;
 }</programlisting>
@@ -500,10 +507,12 @@
     </section>
     
     <section id="typedetermination">
-        <title>Type determination of a declaration</title>
+        <title>Type determinability of a declaration</title>
         
-        <para>The type of a declaration is <emphasis>determined</emphasis> at a program 
-        element if the declaration is in scope at the program element and either:</para>
+        <para>A declaration may be in scope at a program element, but its type may
+        not be <emphasis>determinable</emphasis> at the program element. The type 
+        of a declaration is determinable at a program element if the declaration is 
+        in scope at the program element and either:</para>
         
         <itemizedlist>
             <listitem>
@@ -515,6 +524,20 @@
                 <literal>value</literal> or <literal>function</literal>.</para>
             </listitem>
         </itemizedlist>
+        
+        <para>The following code is not legal:</para>
+        
+        <programlisting>interface Point {
+    value x { return y; }  //compiler error: type of y is not determinable
+    value y { return x; }
+}</programlisting>
+        
+        <para>However, this code is legal:</para>
+        
+        <programlisting>interface Point {
+    value x { return y; }
+    Float y { return x; }
+}</programlisting>
         
     </section>
         
@@ -531,8 +554,8 @@
         If multiple declarations with the given name are in scope at the program element where 
         the given name occurs, then there must be exactly one such declaration which is not 
         hidden by another declaration. Then the given name refers to this unique unhidden 
-        declaration, and this declaration must be accessible to the program element, and the 
-        declaration must have a determined type at the program elememt.</para>
+        declaration, and this declaration must be referenceable to the program element, and 
+        the type of the declaration must be determinable at the program elememt.</para>
         
     </section>
             
@@ -553,7 +576,8 @@
         member. If the program element is contained in the body of a class or interface, and 
         the member declaration directly occurs in the body of the class or interface, and the 
         qualifying expression is a self reference to the instance being initialized, the member 
-        declaration must be accessible and have a determined type at the program element.</para>
+        declaration must be referenceable and the type of the declaration must be determinable 
+        at the program element.</para>
     
     </section>
             
