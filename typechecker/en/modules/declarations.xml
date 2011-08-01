@@ -489,8 +489,8 @@ TypeConstraints?
             -->
              
             <para>An interface inherits all members (methods, attributes and member types) 
-            of every supertype, except for members refined by the interface or by some 
-            supertype of the interface.</para>
+            of every supertype.<!--except for members refined by the interface or by some 
+            supertype of the interface.--></para>
             
             <!--
             <para>An interface inherits every class satisfied by every other interface the 
@@ -935,8 +935,8 @@ TypeConstraints?
         <itemizedlist>
             <listitem>
                 <para>inherits all members (methods, attributes, and member types) of every 
-                supertype, except for members refined by the class or by some supertype 
-                of the class,</para>
+                supertype, <!--except for members refined by the class or by some supertype 
+                of the class,--></para>
             </listitem>
             <!--listitem>
                 <para>is assignable to any type to which its superclass is assignable,</para>
