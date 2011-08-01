@@ -2380,7 +2380,9 @@ writeLine(greeting);</programlisting>
 
             <para>An attribute setter defines how the value of a derived attribute is
             assigned. Every attribute setter must have a corresponding getter with the
-            same name.</para>
+            same name. The getter declaration must directly occur earlier in the body
+            containing the setter declaration.</para>
+
 
             <programlisting>shared String name { return join(firstName, lastName); }
 shared assign name { firstName := first(name); lastName := last(name); }</programlisting>

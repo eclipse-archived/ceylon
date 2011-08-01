@@ -154,8 +154,8 @@
             </listitem>
             -->
             <listitem>
-                <para>it is a control structure variable of a control structure 
-                contained in the namespace of the declaration, or</para>
+                <para>it is a control structure variable or iteration variable of a 
+                control structure contained in the namespace of the declaration, or</para>
             </listitem>
             <listitem>
                 <para>it directly occurs in the body of a control structure contained
@@ -266,7 +266,8 @@
         </itemizedlist>
         
     </section>
-        
+    
+    <!--
     <section id="declarationvisibility">
         <title>Declaration visibility</title>
     
@@ -279,34 +280,14 @@
             in which case it is also visible to compilation units in other packages that 
             <literal>import</literal> it.</para>
         
-            <para>This following toplevel method declarations, belonging to the same package, 
-            are legal:</para>
-        
-            <programlisting>Float x { return y; }</programlisting>
-
-            <programlisting>Float y { return x; }</programlisting>
-            
-            <comment><para>TODO: Actually the compiler would currently require that the two 
-            declarations occur in separate compilation units. Who is wrong, spec or 
-            compiler?</para></comment>
-
             <para>Blocks may contain declarations. A declaration that (indirectly) occurs in 
             a block is a block local declaration&mdash;it is visible to a program element only 
-            if it (indirectly) occurs earlier than the program element in the block. Therefore, 
-            a declaration contained in a block may not declare a visibility modifier. Nor may 
-            block local declarations be refined. Therefore, a block may not contain a 
+            if the program element occurs withing the lexical scope of the declaration. 
+            Therefore, a declaration contained in a block may not declare a visibility modifier. 
+            Nor may block local declarations be refined. Therefore, a block may not contain a 
             declaration annotated <literal>formal</literal>, <literal>default</literal>, 
-            <!--<literal>definite</literal>,--> <literal>actual</literal>, or 
-            <literal>shared</literal>.</para>
+            <literal>actual</literal>, or <literal>shared</literal>.</para>
             
-            <para>This code is not legal, since the body of a method is an ordinary block:</para>
-        
-            <programlisting>Entry&lt;Float,Float&gt; xy() {
-    Float x { return y; }  //compiler error!
-    Float y { return x; }
-    return x->y;
-}</programlisting>
-
             <para>Class and interface bodies also contain declarations. Unlike a declaration 
             nested inside a block, a declaration directly contained in the body of a class or
             interface may be annotated <literal>shared</literal>, making the member accessible 
@@ -316,43 +297,17 @@
             section (unless it is a <literal>value</literal> or <literal>function</literal>
             declaration with an inferred type).</para>
             
-            <para>This code is not legal, since all three statements occur in the initializer 
-            section of the class body:</para>
-        
-            <programlisting>class Point() {
-    Float x { return y; }  //compiler error!
-    Float y { return x; }
-    Entry&lt;Float,Float&gt; xy = x->y;
-}</programlisting>
-
-            <para>However, this code <emphasis>is</emphasis> legal, since the statements occur 
-            in the declaration section of the class body:</para>
-        
-            <programlisting>class Point() {
-    Float x { return y; }
-    Float y { return x; }
-}</programlisting>
-
-            <para>Every setter declaration must have a matching getter declaration that 
-            directly occurs earlier.</para>
-
-        <comment><para>TODO: Note that Java does not let you define an interface inside a 
-        method, so we should either add the same restriction, or figure out workaround. 
-        Java doesn't let you define a method inside a method either, but we can wrap the 
-        nested method in an anonymous class.</para></comment>
-        
-        <comment><para>TODO: Note that in Java, all nested classes of interfaces are 
-        considered static inner classes. This results in a very funny semantic for a class 
-        nested inside an interface nested inside another class: the class does not have 
-        access to the members of the containing class. In Ceylon, a nested class is allowed 
-        to invoke all its containing types. We need to figure out how to implement this. 
-        Also consider the related case of a class nested inside an interface nested inside 
-        a method.</para></comment>
-            
     </section>
-                
+   -->
+    
     <section id="scopeofdeclaration">
         <title>Scope of a declaration</title>
+        
+        <para>The scope of a declaration is governed by the body or package in which it 
+        occurs. A declaration that occurs directly in a package or in a class or interface 
+        body may be annotated <literal>shared</literal>, making it visible outside the 
+        package or body in which it occurs. A declaration that directly occurs in a block 
+        may not be annotated <literal>shared</literal>.</para> 
         
         <para>A declaration is <emphasis>in scope</emphasis> at a program element if
         and only if either:</para>
@@ -370,15 +325,14 @@
                 variable belonging to a block of a control structure that contains the 
                 program element,</para>
             </listitem>
-            <listitem>
+            <!--listitem>
                 <para>the program element is the <literal>while</literal> condition of a 
                 <literal>do/while</literal> loop and the <literal>do</literal> block of 
                 the loop contains the declaration,</para>
-            </listitem>
+            </listitem-->
             <listitem>
-                <para>the declaration (indirectly) occurs earlier in a body that contains 
-                the program element&mdash;that is, it occurs within the lexical scope of 
-                the program element,</para>
+                <para>the program element occurs within the lexical scope of the 
+                declaration,</para>
             </listitem>
             <listitem>
                 <para>the declaration directly occurs in an interface body, and the program 
@@ -421,6 +375,42 @@
         at its own specifier or initializer expression. Likewise, an iteration variable 
         declaration is <emphasis>not</emphasis> in scope at its own iterated expression.</para>
         
+            <para>The following toplevel method declarations, belonging to the same package, 
+            are legal:</para>
+        
+            <programlisting>Float x { return y; }</programlisting>
+
+            <programlisting>Float y { return x; }</programlisting>
+            
+            <comment><para>TODO: Actually the compiler would currently require that the two 
+            declarations occur in separate compilation units. Who is wrong, spec or 
+            compiler?</para></comment>
+
+            <para>This code is not legal, since the body of a method is an ordinary block:</para>
+        
+            <programlisting>Entry&lt;Float,Float&gt; xy() {
+    Float x { return y; }  //compiler error!
+    Float y { return x; }
+    return x->y;
+}</programlisting>
+
+            <para>This code is not legal, since all three statements occur in the initializer 
+            section of the class body:</para>
+        
+            <programlisting>class Point() {
+    Float x { return y; }  //compiler error!
+    Float y { return x; }
+    Entry&lt;Float,Float&gt; xy = x->y;
+}</programlisting>
+
+            <para>However, this code <emphasis>is</emphasis> legal, since the statements occur 
+            in the declaration section of the class body:</para>
+        
+            <programlisting>class Point() {
+    Float x { return y; }
+    Float y { return x; }
+}</programlisting>
+
     </section>
         
     <section id="nameresolution">
@@ -690,6 +680,19 @@ if (it.walksLikeADuck) { Duck duck = it; }</programlisting>
 <programlisting>doc "synchronize on the lock"
 try (lock) { ... }</programlisting>
 </comment>
+        
+        <comment><para>TODO: Note that Java does not let you define an interface inside a 
+        method, so we should either add the same restriction, or figure out workaround. 
+        Java doesn't let you define a method inside a method either, but we can wrap the 
+        nested method in an anonymous class.</para></comment>
+        
+        <comment><para>TODO: Note that in Java, all nested classes of interfaces are 
+        considered static inner classes. This results in a very funny semantic for a class 
+        nested inside an interface nested inside another class: the class does not have 
+        access to the members of the containing class. In Ceylon, a nested class is allowed 
+        to invoke all its containing types. We need to figure out how to implement this. 
+        Also consider the related case of a class nested inside an interface nested inside 
+        a method.</para></comment>
         
         <section id="expressionstatements">
             <title>Expression statements</title>
