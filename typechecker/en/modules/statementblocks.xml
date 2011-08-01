@@ -335,39 +335,39 @@
         <title>Scope of a declaration</title>
         
         <para>A declaration is <emphasis>in scope</emphasis> at a program element if
-        and only if:</para>
+        and only if either:</para>
         
         <itemizedlist>
             <listitem>
                 <para>the declaration is a parameter or type parameter of a declaration 
-                whose body contains the program element, or</para>
+                whose body contains the program element,</para>
             </listitem>
             <listitem>
-                <para>the program element belongs to the declaration itself, or</para>
+                <para>the program element belongs to the declaration itself,</para>
             </listitem>
             <listitem>
                 <para>the declaration is a control structure variable or iteration 
                 variable belonging to a block of a control structure that contains the 
-                program element, or</para>
+                program element,</para>
             </listitem>
             <listitem>
                 <para>the program element is the <literal>while</literal> condition of a 
                 <literal>do/while</literal> loop and the <literal>do</literal> block of 
-                the loop contains the declaration, or</para>
+                the loop contains the declaration,</para>
             </listitem>
             <listitem>
                 <para>the declaration (indirectly) occurs earlier in a body that contains 
                 the program element&mdash;that is, it occurs within the lexical scope of 
-                the program element, or</para>
+                the program element,</para>
             </listitem>
             <listitem>
                 <para>the declaration directly occurs in an interface body, and the program 
-                element also (indirectly) occurs in the same interface body, or</para>
+                element also (indirectly) occurs in the same interface body,</para>
             </listitem>
             <listitem>
                 <para>the declaration directly occurs in the declaration section of a class 
                 body, and the program element also (indirectly) occurs in the declaration 
-                section of the same class body, or</para>
+                section of the same class body,</para>
             </listitem>
             <listitem>
                 <para>the declaration is imported by the compilation unit containing the 
@@ -930,10 +930,10 @@ else {
                     simple attribute, or method.</para>
                 </listitem>
                 <listitem>
-                    <para>A <literal>for</literal> loop definitely local, simple attribute, or 
-                    method if it has an <literal>else</literal> block that definitely initializes
-                    the local, simple attribute, or method, and there is no <literal>break</literal> 
-                    directive in the <literal>for</literal> block.</para>
+                    <para>A <literal>for</literal> loop definitely initializes a local, simple 
+                    attribute, or method if it has an <literal>else</literal> block that 
+                    definitely initializes the local, simple attribute, or method, and there is 
+                    no <literal>break</literal> directive in the <literal>for</literal> block.</para>
                 </listitem>
                 <listitem>
                     <para>A <literal>while</literal> loop does not definitely initialize a local, 
@@ -957,9 +957,9 @@ else {
             </itemizedlist>
             
             <para>A local, simple attribute, or method is considered <emphasis>definitely 
-            initialized</emphasis> at a certain statement if its declaration has a specifier or 
-            if it is definitely initialized by the sequence of statements from its declaration to 
-            the given statement.</para>
+            initialized</emphasis> at a certain statement or declaration if its declaration has 
+            a specifier or initilalizer or if it is definitely initialized by the sequence of 
+            statements from its declaration to the given statement or declaration.</para>
             
             <para>A local, simple attribute, or method must be definitely initialized wherever any 
             value reference to it occurs as an expression within the body in which it is declared.</para>
@@ -1032,12 +1032,12 @@ else {
             </itemizedlist>
             
             <para>A forward-declared local, simple attribute, or method is considered <emphasis>definitely 
-            uninitialized</emphasis> at a certain statement if:</para>
+            uninitialized</emphasis> at a certain statement or declaration if:</para>
             
             <itemizedlist>
                 <listitem>
                     <para>it is not possibly initialized by the sequence of statements from its declaration 
-                    to the given statement,</para>
+                    to the given statement or declaration,</para>
                 </listitem>
                 <listitem>
                     <para>the statement does not (indirectly) occur in the <literal>else</literal> block of 
