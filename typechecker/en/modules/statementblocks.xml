@@ -883,6 +883,10 @@ String result = middleObject.string;</programlisting>
         control directive that terminates the block is executed, or when an exception is 
         thrown.</para>
 
+        <para>A statement or declaration contained in a block may not evaluate an attribute
+        or local, invoke a method, instantiate a class, or extend a class whose declaration 
+        occurs later in the block.</para>
+        
         <!-- 
         <para>A simple attribute or local may not be used in an expression until its value 
         has been explicitly specified or initialized. The Ceylon compiler guarantees this
