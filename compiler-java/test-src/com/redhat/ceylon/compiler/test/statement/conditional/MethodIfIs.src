@@ -8,7 +8,7 @@ class Foo {
     Foo() {
     }
 }
-class FooSub extends Foo {
+class FooSub extends com.redhat.ceylon.compiler.test.statement.conditional.Foo {
     
     public final void baz() {
     }
@@ -21,29 +21,29 @@ class MethodIfIs {
     
     public final void m(final .java.lang.Object x) {
         final .java.lang.Object $x$0 = x;
-        if ($x$0 instanceof Foo) {
-            final Foo $x$1 = (Foo)$x$0;
+        if ($x$0 instanceof com.redhat.ceylon.compiler.test.statement.conditional.Foo) {
+            final com.redhat.ceylon.compiler.test.statement.conditional.Foo $x$1 = (com.redhat.ceylon.compiler.test.statement.conditional.Foo)$x$0;
             {
                 $x$1.bar();
-                final Foo $x$2 = $x$1;
-                if ($x$2 instanceof FooSub) {
-                    final FooSub $x$3 = (FooSub)$x$2;
+                final com.redhat.ceylon.compiler.test.statement.conditional.Foo $x$2 = $x$1;
+                if ($x$2 instanceof com.redhat.ceylon.compiler.test.statement.conditional.FooSub) {
+                    final com.redhat.ceylon.compiler.test.statement.conditional.FooSub $x$3 = (com.redhat.ceylon.compiler.test.statement.conditional.FooSub)$x$2;
                     {
                         $x$3.baz();
                     }
                 }
             }
         }
-        final Foo $y$4 = give();
-        if ($y$4 instanceof FooSub) {
-            final FooSub $y$5 = (FooSub)$y$4;
+        final com.redhat.ceylon.compiler.test.statement.conditional.Foo $y$4 = give();
+        if ($y$4 instanceof com.redhat.ceylon.compiler.test.statement.conditional.FooSub) {
+            final com.redhat.ceylon.compiler.test.statement.conditional.FooSub $y$5 = (com.redhat.ceylon.compiler.test.statement.conditional.FooSub)$y$4;
             {
                 $y$5.bar();
             }
         }
     }
     
-    private final Foo give() {
+    private final com.redhat.ceylon.compiler.test.statement.conditional.Foo give() {
         return new FooSub();
     }
     

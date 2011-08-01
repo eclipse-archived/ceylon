@@ -1,15 +1,15 @@
 package com.redhat.ceylon.compiler.test.statement.loop;
 
-class MethodForFail {
+class MethodForElse {
     
-    public final Natural m(final Sequence<Integer> seq) {
+    public final ceylon.language.Natural m(final ceylon.language.Sequence<ceylon.language.Integer> seq) {
         boolean $doforelse$0 = true;
-        for (.ceylon.language.Iterator<Integer> $i$iter$1 = seq.iterator(); $i$iter$1.getHead() != null; $i$iter$1 = $i$iter$1.getTail()) {
-            final Integer i = $i$iter$1.getHead();
+        for (.ceylon.language.Iterator<ceylon.language.Integer> $i$iter$1 = seq.iterator(); $i$iter$1.getHead() != null; $i$iter$1 = $i$iter$1.getTail()) {
+            final ceylon.language.Integer i = $i$iter$1.getHead();
             while (ceylon.language.$true.getTrue() == ceylon.language.$true.getTrue()) {
                 boolean $doforelse$2 = true;
-                for (.ceylon.language.Iterator<Integer> $j$iter$3 = seq.iterator(); $j$iter$3.getHead() != null; $j$iter$3 = $j$iter$3.getTail()) {
-                    final Integer j = $j$iter$3.getHead();
+                for (.ceylon.language.Iterator<ceylon.language.Integer> $j$iter$3 = seq.iterator(); $j$iter$3.getHead() != null; $j$iter$3 = $j$iter$3.getTail()) {
+                    final ceylon.language.Integer j = $j$iter$3.getHead();
                     $doforelse$2 = false;
                     break;
                 }
@@ -27,6 +27,6 @@ class MethodForFail {
         return .ceylon.language.Natural.instance(2L);
     }
     
-    MethodForFail() {
+    MethodForElse() {
     }
 }

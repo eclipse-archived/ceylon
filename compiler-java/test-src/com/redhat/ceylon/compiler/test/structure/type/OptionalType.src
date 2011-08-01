@@ -3,8 +3,8 @@ package com.redhat.ceylon.compiler.test.structure.type;
 class OptionalType {
     
     public final void m() {
-        final Natural n1 = .ceylon.language.Natural.instance(1L);
-        final Natural n2 = null;
+        final ceylon.language.Natural n1 = .ceylon.language.Natural.instance(1L);
+        final ceylon.language.Natural n2 = null;
     }
     
     OptionalType() {

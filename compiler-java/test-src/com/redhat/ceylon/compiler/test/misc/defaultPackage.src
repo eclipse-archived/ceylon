@@ -3,6 +3,6 @@ public final class defaultPackage {
     private defaultPackage() {
     }
     
-    public static void defaultPackage(final Process process) {
+    public static void defaultPackage(final ceylon.language.Process process) {
     }
 }

@@ -2,15 +2,15 @@ package com.redhat.ceylon.compiler.test.expression.invoke;
 
 class NamedArgumentInvocation {
     
-    private final Boolean m() {
+    private final ceylon.language.Boolean m() {
         return new com.redhat.ceylon.compiler.impl.NamedArgumentCall<NamedArgumentInvocation>(this, "foo", 2) {
-            final Boolean f() {
-                return instance.f((Natural) args[1], (String) args[0]);
+            final ceylon.language.Boolean f() {
+                return instance.f((ceylon.language.Natural) args[1], (ceylon.language.String) args[0]);
             }
          }.f();
     }
     
-    private final Boolean f(final Natural n, final String s) {
+    private final ceylon.language.Boolean f(final ceylon.language.Natural n, final ceylon.language.String s) {
         return ceylon.language.$true.getTrue();
     }
     

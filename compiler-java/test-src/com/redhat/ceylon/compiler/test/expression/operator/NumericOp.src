@@ -2,8 +2,8 @@ package com.redhat.ceylon.compiler.test.expression.operator;
 
 class NumericOp {
     
-    public final Natural m() {
-        Natural i = .ceylon.language.Natural.instance(1L);
+    public final ceylon.language.Natural m() {
+        ceylon.language.Natural i = .ceylon.language.Natural.instance(1L);
         (i = i.getSuccessor()).getPredecessor();
         i = i.getSuccessor();
         (i = i.getPredecessor()).getSuccessor();

@@ -5,7 +5,7 @@ class Extends {
     Extends() {
     }
 }
-class ExtendsB extends Extends {
+class ExtendsB extends com.redhat.ceylon.compiler.test.structure.klass.Extends {
     
     ExtendsB() {
         super();

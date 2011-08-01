@@ -2,12 +2,12 @@ package com.redhat.ceylon.compiler.test.statement.local;
 
 class FunctionKeyword {
     
-    private final Natural test() {
+    private final ceylon.language.Natural test() {
         return .ceylon.language.Natural.instance(0L);
     }
     
     private final void m() {
-        final Natural n = test();
+        final ceylon.language.Natural n = test();
     }
     
     FunctionKeyword() {

@@ -6,7 +6,7 @@ class InnerAttributeGetter {
         
         final class innerGetter {
             
-            Natural getInnerGetter() {
+            ceylon.language.Natural getInnerGetter() {
                 return .ceylon.language.Natural.instance(0L);
             }
             
@@ -14,7 +14,7 @@ class InnerAttributeGetter {
             }
         }
         final innerGetter innerGetter = new innerGetter();
-        final Natural n = innerGetter.getInnerGetter();
+        final ceylon.language.Natural n = innerGetter.getInnerGetter();
     }
     
     InnerAttributeGetter() {

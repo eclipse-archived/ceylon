@@ -1,25 +1,25 @@
 package com.redhat.ceylon.compiler.test.structure.attribute;
 
 abstract class ClassAttribute {
-    private final String publicvar;
+    private final ceylon.language.String publicvar;
     
-    public final String getPublicvar() {
+    public final ceylon.language.String getPublicvar() {
         return this.publicvar;
     }
-    private final String capturedvar;
+    private final ceylon.language.String capturedvar;
     
-    private final String getCapturedvar() {
+    private final ceylon.language.String getCapturedvar() {
         return this.capturedvar;
     }
     
-    public abstract String getFormalvar();
+    public abstract ceylon.language.String getFormalvar();
     
-    private final String m() {
+    private final ceylon.language.String m() {
         return getCapturedvar();
     }
     
     ClassAttribute() {
-        final String uncapturedvar;
+        final ceylon.language.String uncapturedvar;
         publicvar = .ceylon.language.String.instance("");
         uncapturedvar = .ceylon.language.String.instance("");
         capturedvar = .ceylon.language.String.instance("");

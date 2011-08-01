@@ -2,14 +2,14 @@ package com.redhat.ceylon.compiler.test.expression.attribute;
 
 class MethodLocalAccess {
     
-    private final Natural m() {
-        final Natural n1 = .ceylon.language.Natural.instance(1L);
+    private final ceylon.language.Natural m() {
+        final ceylon.language.Natural n1 = .ceylon.language.Natural.instance(1L);
         final class n2 {
             
             private n2() {
             }
             
-            Natural getN2() {
+            ceylon.language.Natural getN2() {
                 return .ceylon.language.Natural.instance(0L);
             }
         }

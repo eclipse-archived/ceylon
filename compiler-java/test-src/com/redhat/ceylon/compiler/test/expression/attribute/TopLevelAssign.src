@@ -1,13 +1,13 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
 final class b1 {
-    private static Boolean value = ceylon.language.$true.getTrue();
+    private static ceylon.language.Boolean value = ceylon.language.$true.getTrue();
     
-    static Boolean getB1() {
+    static ceylon.language.Boolean getB1() {
         return value;
     }
     
-    static void setB1(Boolean newValue) {
+    static void setB1(ceylon.language.Boolean newValue) {
         value = newValue;
     }
     
@@ -15,13 +15,13 @@ final class b1 {
     }
 }
 public final class b2 {
-    private static Boolean value = ceylon.language.$true.getTrue();
+    private static ceylon.language.Boolean value = ceylon.language.$true.getTrue();
     
-    public static Boolean getB2() {
+    public static ceylon.language.Boolean getB2() {
         return value;
     }
     
-    public static void setB2(Boolean newValue) {
+    public static void setB2(ceylon.language.Boolean newValue) {
         value = newValue;
     }
     
@@ -30,11 +30,11 @@ public final class b2 {
 }
 final class b3 {
     
-    static Boolean getB3() {
+    static ceylon.language.Boolean getB3() {
         return ceylon.language.$true.getTrue();
     }
     
-    static void setB3(Boolean newValue) {
+    static void setB3(ceylon.language.Boolean newValue) {
     }
     
     private b3() {
@@ -42,11 +42,11 @@ final class b3 {
 }
 public final class b4 {
     
-    public static Boolean getB4() {
+    public static ceylon.language.Boolean getB4() {
         return ceylon.language.$true.getTrue();
     }
     
-    public static void setB4(Boolean newValue) {
+    public static void setB4(ceylon.language.Boolean newValue) {
     }
     
     private b4() {

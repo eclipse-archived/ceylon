@@ -12,7 +12,7 @@ class MethodInvocation {
         return;
     }
     
-    private final Natural o(final Natural oarg) {
+    private final ceylon.language.Natural o(final ceylon.language.Natural oarg) {
         return oarg;
     }
     

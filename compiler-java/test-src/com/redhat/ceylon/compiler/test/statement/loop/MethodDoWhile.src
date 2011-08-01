@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.test.statement.loop;
 
 class MethodDoWhile {
     
-    public final Natural m() {
+    public final ceylon.language.Natural m() {
         do {
         }         while (ceylon.language.$false.getFalse() == ceylon.language.$true.getTrue());
         return .ceylon.language.Natural.instance(0L);

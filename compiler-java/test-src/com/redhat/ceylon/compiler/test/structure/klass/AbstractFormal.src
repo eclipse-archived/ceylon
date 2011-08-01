@@ -26,7 +26,7 @@ abstract class AbstractFormal {
     AbstractFormal() {
     }
 }
-class ActualKlass extends AbstractFormal {
+class ActualKlass extends com.redhat.ceylon.compiler.test.structure.klass.AbstractFormal {
     
     @.java.lang.Override
     public final void test() {
@@ -47,7 +47,7 @@ class ActualKlass extends AbstractFormal {
         super();
     }
 }
-class ActualSubKlass extends ActualKlass {
+class ActualSubKlass extends com.redhat.ceylon.compiler.test.structure.klass.ActualKlass {
     
     @.java.lang.Override
     public final void test4() {

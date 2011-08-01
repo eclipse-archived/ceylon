@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.test.expression.attribute;
 
 class MethodParamAccess {
     
-    private final Boolean m(final Boolean b) {
+    private final ceylon.language.Boolean m(final ceylon.language.Boolean b) {
         return b;
     }
     

@@ -244,7 +244,7 @@ public class CeylonTransformer {
     }
 
     JCExpression makeIdent(String nameAsString) {
-        return makeIdent(List.of(nameAsString));
+        return makeIdent(nameAsString.split("\\."));
     }
 
     JCExpression makeIdent(com.sun.tools.javac.code.Type type) {
@@ -518,14 +518,14 @@ public class CeylonTransformer {
             }
 
             if (typeArgs != null && typeArgs.size() > 0) {
-                jt = make().TypeApply(makeIdent(tdecl.getName()), typeArgs.toList());
+                jt = make().TypeApply(makeIdent(tdecl.getQualifiedNameString()), typeArgs.toList());
             } else {
-                jt = makeIdent(tdecl.getName());
+                jt = makeIdent(tdecl.getQualifiedNameString());
             }
         } else {
             // For an ordinary class or interface type T:
             // - The Ceylon type T results in the Java type T
-            jt = makeIdent(tdecl.getName());
+            jt = makeIdent(tdecl.getQualifiedNameString());
         }
         
         return jt;

@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.test.expression.instantiation;
 
 class ClassInstantiation {
     
-    public final ClassInstantiation m() {
+    public final com.redhat.ceylon.compiler.test.expression.instantiation.ClassInstantiation m() {
         return new ClassInstantiation();
     }
     
@@ -11,19 +11,19 @@ class ClassInstantiation {
 }
 class ClassInstantiationWithParam {
     
-    public final ClassInstantiationWithParam m() {
+    public final com.redhat.ceylon.compiler.test.expression.instantiation.ClassInstantiationWithParam m() {
         return new ClassInstantiationWithParam(.ceylon.language.Natural.instance(2L));
     }
     
-    ClassInstantiationWithParam(Natural i) {
+    ClassInstantiationWithParam(ceylon.language.Natural i) {
     }
 }
 class ClassInstantiationWithParams {
     
-    public final ClassInstantiationWithParams m() {
+    public final com.redhat.ceylon.compiler.test.expression.instantiation.ClassInstantiationWithParams m() {
         return new ClassInstantiationWithParams(.ceylon.language.Natural.instance(2L), .ceylon.language.String.instance(""));
     }
     
-    ClassInstantiationWithParams(Natural i, String j) {
+    ClassInstantiationWithParams(ceylon.language.Natural i, ceylon.language.String j) {
     }
 }

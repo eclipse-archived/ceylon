@@ -4,11 +4,11 @@ interface Base<T> {
     
     public abstract void baseMethod();
 }
-interface A<T> extends Base<T> {
+interface A<T> extends com.redhat.ceylon.compiler.test.statement.conditional.Base<T> {
     
     public abstract void aMethod();
 }
-interface B<T> extends Base<T> {
+interface B<T> extends com.redhat.ceylon.compiler.test.statement.conditional.Base<T> {
     
     public abstract void bMethod();
 }
@@ -16,8 +16,8 @@ class MethodIfIsGeneric {
     
     public final void m(final .java.lang.Object x) {
         final .java.lang.Object $x$0 = x;
-        if ($x$0 instanceof Base) {
-            final Base<Integer> $x$1 = (Base<Integer>)$x$0;
+        if ($x$0 instanceof com.redhat.ceylon.compiler.test.statement.conditional.Base) {
+            final com.redhat.ceylon.compiler.test.statement.conditional.Base<ceylon.language.Integer> $x$1 = (com.redhat.ceylon.compiler.test.statement.conditional.Base<ceylon.language.Integer>)$x$0;
             {
                 $x$1.baseMethod();
             }
@@ -26,7 +26,7 @@ class MethodIfIsGeneric {
         if ($x$2 instanceof .java.lang.Object) {
             final .java.lang.Object $x$3 = (.java.lang.Object)$x$2;
             {
-                ((Base<Integer>)$x$3).baseMethod();
+                ((com.redhat.ceylon.compiler.test.statement.conditional.Base<ceylon.language.Integer>)$x$3).baseMethod();
             }
         }
     }

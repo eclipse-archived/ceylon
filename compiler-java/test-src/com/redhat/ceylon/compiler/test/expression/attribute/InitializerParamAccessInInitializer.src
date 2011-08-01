@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.test.expression.attribute;
 
 class InitializerParamAccessInInitializer {
     
-    InitializerParamAccessInInitializer(Boolean b) {
+    InitializerParamAccessInInitializer(ceylon.language.Boolean b) {
         b.equals(ceylon.language.$true.getTrue());
     }
 }

@@ -8,7 +8,7 @@ class Foo {
     Foo() {
     }
 }
-class Bar extends Foo {
+class Bar extends com.redhat.ceylon.compiler.test.structure.type.Foo {
     
     public final void b() {
     }
@@ -17,7 +17,7 @@ class Bar extends Foo {
         super();
     }
 }
-class Baz extends Foo {
+class Baz extends com.redhat.ceylon.compiler.test.structure.type.Foo {
     
     public final void c() {
     }
@@ -54,7 +54,7 @@ interface ISats {
     
     public abstract void a();
 }
-class Sats<T extends ISats> {
+class Sats<T extends com.redhat.ceylon.compiler.test.structure.type.ISats> {
     
     public final void a() {
     }
@@ -62,13 +62,13 @@ class Sats<T extends ISats> {
     Sats() {
     }
 }
-class ExtVoid extends GenInv<.java.lang.Object> {
+class ExtVoid extends com.redhat.ceylon.compiler.test.structure.type.GenInv<.java.lang.Object> {
     
     ExtVoid() {
         super();
     }
 }
-class ExtBottom extends GenInv {
+class ExtBottom extends com.redhat.ceylon.compiler.test.structure.type.GenInv {
     
     ExtBottom() {
         super();
@@ -77,15 +77,15 @@ class ExtBottom extends GenInv {
 class Conversions {
     
     public final void m() {
-        final Foo c1 = new Foo();
+        final com.redhat.ceylon.compiler.test.structure.type.Foo c1 = new Foo();
         c1.a();
-        final Natural n1 = .ceylon.language.Natural.instance(1L);
-        final Natural n2 = null;
+        final ceylon.language.Natural n1 = .ceylon.language.Natural.instance(1L);
+        final ceylon.language.Natural n2 = null;
         final .java.lang.Object u1 = new Bar();
-        ((Foo)u1).a();
+        ((com.redhat.ceylon.compiler.test.structure.type.Foo)u1).a();
         final .java.lang.Object $u1$0 = u1;
-        if ($u1$0 instanceof Bar) {
-            final Bar $u1$1 = (Bar)$u1$0;
+        if ($u1$0 instanceof com.redhat.ceylon.compiler.test.structure.type.Bar) {
+            final com.redhat.ceylon.compiler.test.structure.type.Bar $u1$1 = (com.redhat.ceylon.compiler.test.structure.type.Bar)$u1$0;
             {
                 $u1$1.a();
                 $u1$1.b();
@@ -97,17 +97,17 @@ class Conversions {
         final .java.lang.Object e4;
         final .java.lang.Object e5;
         final .java.lang.Object e6;
-        final GenInv<String> g1;
-        final GenCov<? extends String> g2;
-        final GenCon<? super String> g3;
-        final GenInv g4;
-        final GenInv g5;
-        final GenInv<.java.lang.Object> v1;
-        final GenCov<?> v2;
-        final GenCon<.java.lang.Object> v3;
-        final GenInv b1;
-        final GenCov b2;
-        final GenCon<?> b3;
+        final com.redhat.ceylon.compiler.test.structure.type.GenInv<ceylon.language.String> g1;
+        final com.redhat.ceylon.compiler.test.structure.type.GenCov<? extends ceylon.language.String> g2;
+        final com.redhat.ceylon.compiler.test.structure.type.GenCon<? super ceylon.language.String> g3;
+        final com.redhat.ceylon.compiler.test.structure.type.GenInv g4;
+        final com.redhat.ceylon.compiler.test.structure.type.GenInv g5;
+        final com.redhat.ceylon.compiler.test.structure.type.GenInv<.java.lang.Object> v1;
+        final com.redhat.ceylon.compiler.test.structure.type.GenCov<?> v2;
+        final com.redhat.ceylon.compiler.test.structure.type.GenCon<.java.lang.Object> v3;
+        final com.redhat.ceylon.compiler.test.structure.type.GenInv b1;
+        final com.redhat.ceylon.compiler.test.structure.type.GenCov b2;
+        final com.redhat.ceylon.compiler.test.structure.type.GenCon<?> b3;
     }
     
     Conversions() {

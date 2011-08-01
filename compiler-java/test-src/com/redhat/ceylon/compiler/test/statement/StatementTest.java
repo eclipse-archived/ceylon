@@ -83,7 +83,7 @@ public class StatementTest extends CompilerTest {
         compareWithJavaSource("conditional/MethodIfIs");
     }
 
-    @Test
+    @Test @Ignore
     public void testConMethodIfIsGeneric(){
         compareWithJavaSource("conditional/MethodIfIsGeneric");
     }
@@ -151,8 +151,8 @@ public class StatementTest extends CompilerTest {
     }
     
     @Test
-    public void testLopMethodForFail(){
-        compareWithJavaSource("loop/MethodForFail");
+    public void testLopMethodForElse(){
+        compareWithJavaSource("loop/MethodForElse");
     }
     
     //

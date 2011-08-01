@@ -97,10 +97,11 @@ public class ClassDefinitionBuilder {
         if (extendedType != null) {
             superclass = gen.makeJavaType(extendedType, CeylonTransformer.SATISFIES_OR_EXTENDS);
             // simplify if we can
-            if (superclass instanceof JCTree.JCFieldAccess 
-            && ((JCTree.JCFieldAccess)superclass).sym.type == gen.syms.objectType) {
-                superclass = null;
-            }
+// FIXME superclass.sym can be null
+//            if (superclass instanceof JCTree.JCFieldAccess 
+//            && ((JCTree.JCFieldAccess)superclass).sym.type == gen.syms.objectType) {
+//                superclass = null;
+//            }
         } else {
             if ((modifiers & INTERFACE) != 0) {
                 // The VM insists that interfaces have java.lang.Object as their superclass

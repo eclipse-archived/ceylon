@@ -1,34 +1,34 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
 class QualifiedAttributeAccess {
-    private final Boolean b;
+    private final ceylon.language.Boolean b;
     
-    private final Boolean getB() {
+    private final ceylon.language.Boolean getB() {
         return this.b;
     }
-    private Boolean b2;
+    private ceylon.language.Boolean b2;
     
-    private final Boolean getB2() {
+    private final ceylon.language.Boolean getB2() {
         return this.b2;
     }
     
-    private final void setB2(Boolean b2) {
+    private final void setB2(ceylon.language.Boolean b2) {
         this.b2 = b2;
     }
     
-    private final Boolean m() {
+    private final ceylon.language.Boolean m() {
         return this.b;
     }
     
-    private final Boolean m2() {
+    private final ceylon.language.Boolean m2() {
         return this.b2;
     }
     
-    private final Boolean qm() {
+    private final ceylon.language.Boolean qm() {
         return new QualifiedAttributeAccess().getB();
     }
     
-    private final Boolean qm2() {
+    private final ceylon.language.Boolean qm2() {
         return new QualifiedAttributeAccess().getB2();
     }
     

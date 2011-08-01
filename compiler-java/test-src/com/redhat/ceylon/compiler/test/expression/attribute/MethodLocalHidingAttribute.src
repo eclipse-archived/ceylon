@@ -2,12 +2,12 @@ package com.redhat.ceylon.compiler.test.expression.attribute;
 
 class MethodLocalHidingAttribute {
     
-    private final Boolean m() {
-        final Boolean b = ceylon.language.$false.getFalse();
+    private final ceylon.language.Boolean m() {
+        final ceylon.language.Boolean b = ceylon.language.$false.getFalse();
         return b;
     }
     
     MethodLocalHidingAttribute() {
-        final Boolean b = ceylon.language.$true.getTrue();
+        final ceylon.language.Boolean b = ceylon.language.$true.getTrue();
     }
 }

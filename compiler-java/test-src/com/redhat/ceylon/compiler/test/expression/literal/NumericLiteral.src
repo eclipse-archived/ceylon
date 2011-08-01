@@ -3,10 +3,10 @@ package com.redhat.ceylon.compiler.test.expression.literal;
 class NumericLiteral {
     
     public final void m() {
-        final Natural n1 = .ceylon.language.Natural.instance(1L);
-        final Integer n2 = .ceylon.language.Integer.instance(1L);
-        final Integer n3 = .ceylon.language.Integer.instance(-1L);
-        final Float n4 = .ceylon.language.Float.instance(3.14159);
+        final ceylon.language.Natural n1 = .ceylon.language.Natural.instance(1L);
+        final ceylon.language.Integer n2 = .ceylon.language.Integer.instance(1L);
+        final ceylon.language.Integer n3 = .ceylon.language.Integer.instance(-1L);
+        final ceylon.language.Float n4 = .ceylon.language.Float.instance(3.14159);
     }
     
     NumericLiteral() {

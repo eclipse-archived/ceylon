@@ -1,35 +1,35 @@
 package com.redhat.ceylon.compiler.test.structure.attribute;
 
 abstract class ClassVariable {
-    private String publicvar;
+    private ceylon.language.String publicvar;
     
-    public final String getPublicvar() {
+    public final ceylon.language.String getPublicvar() {
         return this.publicvar;
     }
     
-    public final void setPublicvar(String publicvar) {
+    public final void setPublicvar(ceylon.language.String publicvar) {
         this.publicvar = publicvar;
     }
-    private String capturedvar;
+    private ceylon.language.String capturedvar;
     
-    private final String getCapturedvar() {
+    private final ceylon.language.String getCapturedvar() {
         return this.capturedvar;
     }
     
-    private final void setCapturedvar(String capturedvar) {
+    private final void setCapturedvar(ceylon.language.String capturedvar) {
         this.capturedvar = capturedvar;
     }
     
-    public abstract String getFormalvar();
+    public abstract ceylon.language.String getFormalvar();
     
-    public abstract void setFormalvar(String formalvar);
+    public abstract void setFormalvar(ceylon.language.String formalvar);
     
     private final void m() {
         setCapturedvar(.ceylon.language.String.instance("new value"));
     }
     
     ClassVariable() {
-        String uncapturedvar;
+        ceylon.language.String uncapturedvar;
         setPublicvar(.ceylon.language.String.instance(""));
         uncapturedvar = .ceylon.language.String.instance("");
         setCapturedvar(.ceylon.language.String.instance(""));

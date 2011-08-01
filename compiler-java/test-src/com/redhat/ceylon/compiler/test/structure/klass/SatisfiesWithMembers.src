@@ -2,30 +2,30 @@ package com.redhat.ceylon.compiler.test.structure.klass;
 
 interface SatisfiesWithMembers {
     
-    public abstract Boolean getB();
+    public abstract ceylon.language.Boolean getB();
     
-    public abstract Boolean getB2();
+    public abstract ceylon.language.Boolean getB2();
     
-    public abstract void setB2(Boolean b2);
+    public abstract void setB2(ceylon.language.Boolean b2);
     
     public abstract void m();
 }
-class SatisfiesWithMembersClass implements SatisfiesWithMembers {
-    private final Boolean b;
+class SatisfiesWithMembersClass implements com.redhat.ceylon.compiler.test.structure.klass.SatisfiesWithMembers {
+    private final ceylon.language.Boolean b;
     
     @.java.lang.Override
-    public final Boolean getB() {
+    public final ceylon.language.Boolean getB() {
         return this.b;
     }
-    private Boolean b2;
+    private ceylon.language.Boolean b2;
     
     @.java.lang.Override
-    public Boolean getB2() {
+    public ceylon.language.Boolean getB2() {
         return this.b2;
     }
     
     @.java.lang.Override
-    public void setB2(Boolean b2) {
+    public void setB2(ceylon.language.Boolean b2) {
         this.b2 = b2;
     }
     

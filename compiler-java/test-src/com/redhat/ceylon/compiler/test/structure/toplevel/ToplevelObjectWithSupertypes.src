@@ -2,17 +2,17 @@ package com.redhat.ceylon.compiler.test.structure.toplevel;
 
 class C {
     
-    C(Natural n) {
+    C(ceylon.language.Natural n) {
     }
 }
 interface I {
     
-    public abstract Boolean id(final Boolean x);
+    public abstract ceylon.language.Boolean id(final ceylon.language.Boolean x);
 }
-public final class x extends C implements I {
+public final class x extends com.redhat.ceylon.compiler.test.structure.toplevel.C implements com.redhat.ceylon.compiler.test.structure.toplevel.I {
     
     @.java.lang.Override
-    public final Boolean id(final Boolean x) {
+    public final ceylon.language.Boolean id(final ceylon.language.Boolean x) {
         return x;
     }
     

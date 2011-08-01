@@ -1,5 +1,5 @@
 @nomodel
-class MethodForFail(){
+class MethodForElse(){
     shared Natural m(Sequence<Integer> seq){
         for(Integer i in seq){
             while (true) {
