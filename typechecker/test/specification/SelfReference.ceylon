@@ -71,4 +71,14 @@ interface SelfReference {
         use("hello");
     }
     
+    class Ok() {
+        String hello = "hello";
+        void method() {
+            writeLine(this.hello);
+        }
+        class Inner() {
+            writeLine(outer.hello);
+        }
+    }
+    
 }
