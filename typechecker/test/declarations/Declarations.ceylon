@@ -74,6 +74,26 @@ interface Declarations {
         if (exists count) {}
     }
     
+    class Outer() {
+        String s = "hello";
+        if (true) {
+            @error writeLine(s);
+            @error String s = "goodbye";
+        }
+        for (x in {}) {
+            @error writeLine(s);
+            @error String s = "goodbye";
+        }
+        class Inner() {
+            @error writeLine(s);
+            String s = "hello again";
+        }
+        void member() {
+            @error writeLine(s);
+            String s = "hello again";
+        }
+    }
+    
     class SharedInference() {
     
         @error shared value sharedInferredSimple = "bad";
