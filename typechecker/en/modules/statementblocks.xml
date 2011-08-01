@@ -544,13 +544,21 @@
         <itemizedlist>
             <listitem>
                 <para>the program element occurs within the lexical scope of the 
-                declaration, or</para>
+                declaration,</para>
+            </listitem>
+            <listitem>
+                <para>the declaration is a control structure variable or iteration 
+                variable belonging to a block of a control structure that contains the 
+                program element, or</para>
             </listitem>
             <listitem>
                 <para>the declaration is not be declared using the keyword 
                 <literal>value</literal> or <literal>function</literal>.</para>
             </listitem>
         </itemizedlist>
+        
+        <comment><para>TODO: Can we infer the type of a declaration inside the body
+        of the declaration itself?</para></comment>
         
         <para>The following code is not legal:</para>
         
