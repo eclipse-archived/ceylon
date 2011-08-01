@@ -64,8 +64,10 @@ public class SelfReferenceVisitor extends Visitor {
         }
     }
 
-    private boolean isSelfReference(Tree.Primary that) {
-        return that instanceof Tree.This || that instanceof Tree.Outer;
+    private boolean isSelfReference(Tree.Term that) {
+        return that instanceof Tree.This || 
+            that instanceof Tree.Outer || 
+            that instanceof Tree.Super;
     }
 
     private void visitReference(Tree.Primary that) {
@@ -77,6 +79,22 @@ public class SelfReferenceVisitor extends Visitor {
             //TODO: is that logic exactly correct?
             that.addError("inherited member may not be used in initializer: " + 
                             member.getName());
+        }
+    }
+    
+    @Override
+    public void visit(Tree.IsCondition that) {
+        super.visit(that);
+        if (that.getVariable().getSpecifierExpression()!=null) {
+            Tree.Term term = that.getVariable().getSpecifierExpression().getExpression().getTerm();
+            if ( isSelfReference(term) ) {
+                if (term instanceof Tree.Super ) {
+                    term.addError("cannot narrow super");
+                }
+                else if ( !inDeclarationSection() ) {
+                    term.addError("cannot narrow self-reference in initializer");
+                }
+            }
         }
     }
     
