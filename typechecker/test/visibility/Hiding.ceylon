@@ -27,6 +27,35 @@ class Hiding() {
             String? oh = outer.hello;
             helloWorld();
         }
+        
+    }
+    
+    class Super() {
+        shared String hello = "hello";
+    }
+    
+    class OuterWithParameter() {
+        
+        Object hello = "hello";
+        
+        class InnerWithAttribute() {
+            String hello = "hello";
+            void method() {
+                @type["String"] value s = hello;
+            }
+        }
+        
+        class InnerWithSuper() extends Super() {
+            void method() {
+                @type["String"] value s = hello;
+            }
+        }
+        
+        class InnerWithParameter(String hello) {
+            void method() {
+                @type["String"] value s = hello;
+            }
+        }
     }
     
     void method() {
