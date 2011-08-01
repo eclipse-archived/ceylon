@@ -367,18 +367,37 @@
         <para>If two declarations with the same name are both in scope at a certain program 
         element, then one declaration may <emphasis>hide</emphasis> the other declaration.</para>
         
+        <!--
+        <itemizedlist>
+            <listitem>
+                <para>A declaration that directly occurs in the inner body hides a declaration, 
+                parameter, type parameter or control structure variable of the outer body.</para>
+            </listitem>
+            <listitem>
+                <para>If the inner body is a class or interface, a declaration inherited by the 
+                inner body hides a declaration, parameter, type parameter or control structure 
+                variable of the outer body.</para>
+            </listitem>
+            <listitem>
+                <para>If the inner body is a control structure, a control structure or iteration 
+                variable of the inner body hides any declaration in scope the outer body.</para>
+            </listitem>
+        </itemizedlist>
+        
+         -->
+         
         <itemizedlist>
             <listitem>
                 <para>If an inner body is contained (directly or indirectly) in an outer 
-                body, a declaration, parameter, type parameter or control structure 
-                variable of the inner body hides a declaration, parameter, type parameter 
-                or control structure variable in the outer body.</para>
+                body, a declaration that is in scope in the inner body but is not in 
+                scope in the outer body hides a declaration that is in scope in the outer 
+                body.</para>
             </listitem>
-            <listitem>
+            <!--listitem>
                 <para>A declaration inherited by a nested class hides a declaration,
                 parameter, type parameter, or control structure variable of the containing
                 body. <emphasis>TODO: is this the best thing to do?</emphasis></para>
-            </listitem>
+            </listitem-->
             <listitem>
                 <para>A parameter of a class body hides an attribute of the class.</para>
             </listitem>
