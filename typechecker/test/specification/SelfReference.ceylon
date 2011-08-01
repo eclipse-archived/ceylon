@@ -103,4 +103,12 @@ interface SelfReference {
             writeLine(outer.hello);
         }
     }
+    
+    class Outer() {
+        Inner get(Inner i) { return i; }
+        class Inner() {
+            Inner get() { @error return get(this); }
+            Inner ii = get();
+        }
+    }
 }
