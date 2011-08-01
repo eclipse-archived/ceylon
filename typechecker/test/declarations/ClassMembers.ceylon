@@ -23,10 +23,6 @@ abstract class Classes() {
         return x.uppercase;
     }
     
-    String str {
-        return super.string;
-    }
-    
     printLine("Hi!");
     
     @error x = 0;
@@ -66,6 +62,10 @@ abstract class Classes() {
         void use(Object o) {}
         @error use(super);
         use(this);
+    }
+    
+    String str {
+        return super.string;
     }
     
     //@error return Classes();
