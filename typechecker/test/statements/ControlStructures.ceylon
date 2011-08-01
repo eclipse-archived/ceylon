@@ -137,7 +137,7 @@ class ControlStructures() {
     try (@error s = "hello") {}
     try (@error e = Exception()) {}
     try (@error Object t = Transaction()) {}
-    try (@error Transaction tx) {}
+    try (@error Transaction trx) {}
     
     @error while ("hello") {}
     
