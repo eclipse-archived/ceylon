@@ -400,7 +400,7 @@
                 body. <emphasis>TODO: is this the best thing to do?</emphasis></para>
             </listitem-->
             <listitem>
-                <para>A parameter of a class body hides an attribute of the class.</para>
+                <para>An initializer parameter of a class hides an attribute of the class.</para>
             </listitem>
             <listitem>
                 <para>An <literal>actual</literal> declaration hides the declaration it
