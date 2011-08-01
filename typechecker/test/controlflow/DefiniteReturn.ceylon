@@ -484,7 +484,7 @@ interface DefiniteReturn {
         }
     }
     
-    @error X methodWithReturnInFail() {
+    @error X methodWithReturnInFail2() {
         for (X x in {X()}) {
             doSomething();
             break;
