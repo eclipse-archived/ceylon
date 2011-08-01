@@ -541,8 +541,8 @@
         
     </section>
         
-    <section id="referenceresolution">
-        <title>Reference resolution</title>
+    <section id="unqualifiedreferenceresolution">
+        <title>Unqualified reference resolution</title>
         
         <para>An <emphasis>unqualified reference</emphasis> is:</para>
         
@@ -576,15 +576,29 @@
                 program element where the given name occurs, then there must be exactly 
                 one such declaration which is not hidden by another declaration.</para>
             </listitem>
+        </itemizedlist>
+        
+        <para>Then the given name refers to this unique unhidden declaration, and:</para> 
+        
+        <itemizedlist>
             <listitem>
-                <para>Then the given name refers to this unique unhidden declaration, and 
-                this declaration must be referenceable at the program element, the 
-                type of the declaration must be determinable at the program element,
-                and if the declaration is forward-declared, it must be definitely
+                <para>the declaration must be referenceable at the program element,</para>
+            </listitem>
+            <listitem>
+                <para>the type of the declaration must be determinable at the program 
+                element, and</para>
+            </listitem>
+            <listitem>
+                <para>if the declaration is forward-declared, it must be definitely
                 initialized at the program element.</para>
             </listitem>
         </itemizedlist>
-                
+    
+    </section>
+           
+    <section id="qualifiedreferenceresolution">
+        <title>Qualified reference resolution</title>
+        
         <para>A <emphasis>qualified reference</emphasis> is:</para>
         
         <itemizedlist>
@@ -628,15 +642,26 @@
                 it is guaranteed by the type system that there is exactly one such 
                 member which is not refined by another member.</para>
             </listitem>
+        </itemizedlist>
+        
+        <para>Then the given name refers to this unique member. If the program element 
+        is contained in the body of a class or interface, and the member declaration 
+        directly occurs in the body of the class or interface, and the qualified reference
+        is a value reference or callable reference, and the receiver expression is a self 
+        reference to the instance being initialized, then:</para>
+        
+        <itemizedlist>
             <listitem>
-                <para>Then the given name refers to this unique member. If the program 
-                element is contained in the body of a class or interface, and the member 
-                declaration directly occurs in the body of the class or interface, and 
-                the receiver expression is a self reference to the instance being 
-                initialized, the member declaration must be referenceable, the type of 
-                the declaration must be determinable at the program element, and if the 
-                declaration is forward-declared, it must be definitely initialized at 
-                the program element.</para>
+                <para>the member declaration must be referenceable at the program
+                element,</para>
+            </listitem>
+            <listitem>
+                <para>the type of the member must be determinable at the program 
+                element, and</para>
+            </listitem>
+            <listitem>
+                <para>if the member declaration is forward-declared, it must be 
+                definitely initialized at the program element.</para>
             </listitem>
         </itemizedlist>
                 
