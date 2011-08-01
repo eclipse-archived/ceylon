@@ -126,28 +126,48 @@
         <para>A package may not contain two toplevel declarations (interfaces, 
         classes, methods, or attributes) with the same name.</para>
         
-        <para>A declaration is contained within the <emphasis>namespace</emphasis> 
-        of a second declaration if either:</para>
+        <para>A program element is contained within the <emphasis>namespace</emphasis> 
+        of a declaration if either:</para>
         
         <itemizedlist>
             <listitem>
-                <para>it is a parameter or type parameter of the second declaration,</para>
+                <para>it directly occurs in the body in which the declaration 
+                directly occurs,</para>
             </listitem>
             <listitem>
-                <para>it directly occurs in the body of the second declaration,</para>
+                <para>the declaration is a parameter or type parameter, and it 
+                directly occurs in the body of the declaration which the 
+                declaration parameterizes,</para>
             </listitem>
+            <!--
+            <listitem>
+                <para>it is a type parameter of the declaration,</para>
+            </listitem>
+            <listitem>
+                <para>it indirectly occurs in the body of the declaration, and the 
+                declaration is a class or interface,</para>
+            </listitem>
+            <listitem>
+                <para>it is a type parameter of a declaration that indirectly occurs 
+                in the body of the declaration, and the declaration is a class or 
+                interface,</para>
+            </listitem>
+            -->
             <listitem>
                 <para>it is a control structure variable of a control structure 
-                contained within the namespace of the second declaration, or</para>
+                contained in the namespace of the declaration, or</para>
             </listitem>
             <listitem>
                 <para>it directly occurs in the body of a control structure contained
-                within the namespace of the second declaration.</para>
+                in the namespace of the declaration.</para>
             </listitem>
         </itemizedlist>
         
-        <para>A declaration namespace may not contain two declarations with the same 
-        name, unless:</para>
+        <comment><para>TODO: Java prohibits a type name from hiding the name of an outer
+        type. Can we easily work around this limitation?</para></comment>
+        
+        <para>The namespace of a declaration may not contain a second declaration with 
+        the same name, unless:</para>
         
         <itemizedlist>
           <listitem>
