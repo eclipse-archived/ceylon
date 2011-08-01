@@ -313,6 +313,11 @@
                 whose body contains the program element,</para>
             </listitem>
             <listitem>
+                <para>the declaration is a control structure variable or iteration 
+                variable belonging to a block of a control structure that contains the 
+                program element,</para>
+            </listitem>
+            <listitem>
                 <para>the program element belongs to or is contained in the body of the 
                 declaration itself,</para>
             </listitem>
@@ -323,11 +328,6 @@
             <listitem>
                 <para>the declaration directly occurs in a body containing the program
                 element,</para>
-            </listitem>
-            <listitem>
-                <para>the declaration is a control structure variable or iteration 
-                variable belonging to a block of a control structure that contains the 
-                program element,</para>
             </listitem>
             <!--listitem>
                 <para>the program element is the <literal>while</literal> condition of a 
@@ -432,17 +432,17 @@
                 whose body contains the program element,</para>
             </listitem>
             <listitem>
+                <para>the declaration is a control structure variable or iteration 
+                variable belonging to a block of a control structure that contains the 
+                program element,</para>
+            </listitem>
+            <listitem>
                 <para>the program element belongs to or is contained in the body of the 
                 declaration itself,</para>
             </listitem>
             <listitem>
                 <para>the program element belongs to or is contained in the body of a 
                 class or interface which inherits the declaration,</para>
-            </listitem>
-            <listitem>
-                <para>the declaration is a control structure variable or iteration 
-                variable belonging to a block of a control structure that contains the 
-                program element,</para>
             </listitem>
             <listitem>
                 <para>the program element occurs within the lexical scope of the 
@@ -466,7 +466,26 @@
         </itemizedlist>
         
         <comment><para>TODO: fix the referenceability rules for toplevel declarations that 
-        occur in different compilation units!</para></comment>
+        occur in different compilation units! Outlaw simple toplevel attributes?</para></comment>
+        
+        <para>Note that these rules have very different consequences for:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>declarations that occur in blocks and class initializer sections, and
+                </para>
+            </listitem>
+            <listitem>
+                <para>toplevel declarations, and declarations that occur in class declaration 
+                sections and interface bodies.</para>
+            </listitem>
+        </itemizedlist> 
+        
+        <para>Declarations that occurs in a block or class initializer section are interspersed
+        with procedural code that initializes simple attributes or locals. Therefore, a program 
+        element in a block or initializer may not refer to a declaration that occurs later in
+        the block or class body. This restriction does not apply to declarations that occur
+        in an interface body or class declaration section.</para>
         
         <para>The following toplevel method declarations, belonging to the same package, 
         are legal:</para>
@@ -500,6 +519,14 @@
         in the declaration section of the class body:</para>
     
         <programlisting>class Point() {
+    Float x { return y; }
+    Float y { return x; }
+}</programlisting>
+
+        <para>Likewise, this code is legal, since the statements occur in an interface 
+        body:</para>
+    
+        <programlisting>interface Point {
     Float x { return y; }
     Float y { return x; }
 }</programlisting>
