@@ -424,7 +424,7 @@ TypeConstraints?
         
         </section>
         
-        <section id="interfacemembervisibility">
+        <!--section id="interfacemembervisibility">
             <title>Interface member visibility</title>
             
         <para>An interface body is not an executable block of code, so the normal
@@ -446,7 +446,7 @@ TypeConstraints?
             </listitem>
         </itemizedlist>
         
-        </section>
+        </section-->
         
         <section id="interfaceinheritance">
             <title>Interface inheritance</title>
@@ -876,7 +876,7 @@ TypeConstraints?
         
     </section>
            
-    <section id="classmembervisibility">
+    <!--section id="classmembervisibility">
         <title>Class member visibility</title>
         
         <para>Ordinarily, a declaration that occurs in a block of code is a block local
@@ -897,7 +897,7 @@ TypeConstraints?
             </listitem>
         </itemizedlist>
         
-    </section>
+    </section-->
 
         <section id="classinheritance">
              <title>Class inheritance</title>

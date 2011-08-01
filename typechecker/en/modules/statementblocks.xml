@@ -304,15 +304,14 @@
         <title>Scope of a declaration</title>
         
         <para>The scope of a declaration is governed by the body or package in which it 
-        occurs. A declaration that occurs directly in a package or in a class or interface 
-        body may be annotated <literal>shared</literal>, making it visible outside the 
-        package or body in which it occurs. A declaration that directly occurs in a block 
-        may not be annotated <literal>shared</literal>.</para> 
-        
-        <para>A declaration is <emphasis>in scope</emphasis> at a program element if
+        occurs. A declaration is <emphasis>in scope</emphasis> at a program element if
         and only if either:</para>
         
         <itemizedlist>
+            <listitem>
+                <para>the declaration directly occurs in a body containing the program
+                element,</para>
+            </listitem>
             <listitem>
                 <para>the declaration is a parameter or type parameter of a declaration 
                 whose body contains the program element,</para>
@@ -331,17 +330,8 @@
                 the loop contains the declaration,</para>
             </listitem-->
             <listitem>
-                <para>the program element occurs within the lexical scope of the 
-                declaration,</para>
-            </listitem>
-            <listitem>
-                <para>the declaration directly occurs in an interface body, and the program 
-                element also (indirectly) occurs in the same interface body,</para>
-            </listitem>
-            <listitem>
-                <para>the declaration directly occurs in the declaration section of a class 
-                body, and the program element also (indirectly) occurs in the declaration 
-                section of the same class body,</para>
+                <para>the program element belongs to or is contained in the body of a 
+                class or interface which inherits the declaration,</para>
             </listitem>
             <listitem>
                 <para>the declaration is imported by the compilation unit containing the 
@@ -369,102 +359,179 @@
         </listitem>
         </itemizedlist>
         
-        <para>A specifier or initializer expression of a declaration or control structure
-        variable does not belong to the declaration, and is not contained in the body of 
-        the declaration, and therefore the declaration is <emphasis>not</emphasis> in scope 
-        at its own specifier or initializer expression. Likewise, an iteration variable 
-        declaration is <emphasis>not</emphasis> in scope at its own iterated expression.</para>
+    </section>
+    
+    <section id="hidingdeclaration">
+        <title>Hiding a declaration</title>
+    
+        <para>If two declarations with the same name are both in scope at a certain program 
+        element, then one declaration may <emphasis>hide</emphasis> the other declaration.</para>
         
-            <para>The following toplevel method declarations, belonging to the same package, 
-            are legal:</para>
+        <itemizedlist>
+            <listitem>
+                <para>If an inner body is contained (directly or indirectly) in an outer 
+                body, a declaration, parameter, type parameter or control structure 
+                variable of the inner body hides a declaration, parameter, type parameter 
+                or control structure variable in the outer body.</para>
+            </listitem>
+            <listitem>
+                <para>A declaration inherited by a nested class hides a declaration,
+                parameter, type parameter, or control structure variable of the containing
+                body. <emphasis>TODO: is this the best thing to do?</emphasis></para>
+            </listitem>
+            <listitem>
+                <para>A parameter of a class body hides an attribute of the class.</para>
+            </listitem>
+            <listitem>
+                <para>A declaration occurring in a body containing the program element 
+                hides a declaration imported by the compilation unit.</para>
+            </listitem>
+            <listitem>
+                <para>A declaration imported by the compilation unit hides a toplevel 
+                declaration of the package containing the program element.</para>
+            </listitem>
+        </itemizedlist>
         
-            <programlisting>Float x { return y; }</programlisting>
+    </section>
+    
+    <section id="accessibilityofdeclaration">
+        <title>Accessibility of a declaration</title>
+        
+        <para>A declaration may be in scope at a program element, but may not be 
+        <emphasis>accessible</emphasis> at the program element. A declaration is accessible 
+        at a program element if the declaration is in scope at the program element and 
+        either:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the declaration is a toplevel declaration (of the package containing
+                the program element or imported by the compilation unit containing the 
+                program element),</para>
+            </listitem>
+            <listitem>
+                <para>the program element belongs to or is contained in the body of a 
+                class or interface which inherits the declaration,</para>
+            </listitem>
+            <listitem>
+                <para>the declaration is a parameter or type parameter of a declaration 
+                whose body contains the program element,</para>
+            </listitem>
+            <listitem>
+                <para>the program element belongs to the declaration itself,</para>
+            </listitem>
+            <listitem>
+                <para>the program element occurs within the lexical scope of the 
+                declaration,</para>
+            </listitem>
+            <listitem>
+                <para>the declaration directly occurs in an interface body that contains
+                the program element, or</para>
+            </listitem>
+            <listitem>
+                <para>the declaration directly occurs in the declaration section of a class 
+                body, and either the program element directly occurs in this declaration
+                section, or some declaration directly occurring in this declaration section 
+                contains the program element.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <comment><para>TODO: accessibility rules for toplevel declarations that occur in
+        different compilation units!</para></comment>
+        
+        <para>The following toplevel method declarations, belonging to the same package, 
+        are legal:</para>
+    
+        <programlisting>Float x { return y; }</programlisting>
 
-            <programlisting>Float y { return x; }</programlisting>
-            
-            <comment><para>TODO: Actually the compiler would currently require that the two 
-            declarations occur in separate compilation units. Who is wrong, spec or 
-            compiler?</para></comment>
-
-            <para>This code is not legal, since the body of a method is an ordinary block:</para>
+        <programlisting>Float y { return x; }</programlisting>
         
-            <programlisting>Entry&lt;Float,Float&gt; xy() {
+        <comment><para>TODO: Actually the compiler would currently require that the two 
+        declarations occur in separate compilation units. Who is wrong, spec or 
+        compiler?</para></comment>
+
+        <para>This code is not legal, since the body of a method is an ordinary block:</para>
+    
+        <programlisting>Entry&lt;Float,Float&gt; xy() {
     Float x { return y; }  //compiler error!
     Float y { return x; }
     return x->y;
 }</programlisting>
 
-            <para>This code is not legal, since all three statements occur in the initializer 
-            section of the class body:</para>
-        
-            <programlisting>class Point() {
+        <para>This code is not legal, since all three statements occur in the initializer 
+        section of the class body:</para>
+    
+        <programlisting>class Point() {
     Float x { return y; }  //compiler error!
     Float y { return x; }
     Entry&lt;Float,Float&gt; xy = x->y;
 }</programlisting>
 
-            <para>However, this code <emphasis>is</emphasis> legal, since the statements occur 
-            in the declaration section of the class body:</para>
-        
-            <programlisting>class Point() {
+        <para>However, this code <emphasis>is</emphasis> legal, since the statements occur 
+        in the declaration section of the class body:</para>
+    
+        <programlisting>class Point() {
     Float x { return y; }
     Float y { return x; }
 }</programlisting>
 
     </section>
+    
+    <section id="typedetermination">
+        <title>Type determination of a declaration</title>
         
-    <section id="nameresolution">
-        <title>Name resolution</title>
-                
-        <para>An unqualified identifier (an identifier not preceded by <literal>.</literal>,
-        <literal>[].</literal> or <literal>?.</literal>) that appears in a program 
-        element refers to a named declaration elsewhere: a class, interface, type 
-        parameter, method, attribute, or local.</para>
-        
-        <para>If a certain identifier name occurs at a program element, there must be at 
-        least one declaration with the given name in scope at the program element. If 
-        multiple declarations with the given name are in scope at the program element where 
-        the given name occurs, then there must be exactly one such declaration which is not 
-        <emphasis>hidden</emphasis> by another declaration:</para>
+        <para>The type of a declaration is <emphasis>determined</emphasis> at a program 
+        element if the declaration is in scope at the program element and either:</para>
         
         <itemizedlist>
             <listitem>
-                <para>if an inner body is contained (directly or indirectly) in an outer 
-                body, a declaration, parameter, type parameter or control structure 
-                variable of the inner body hides a declaration, parameter, type parameter 
-                or control structure variable in the outer body,</para>
-            </listitem>
-            <listitem>
-                <para>a declaration inherited by an nested class hides a declaration,
-                parameter, type parameter, or control structure variable of the containing
-                body, <emphasis>TODO: is this correct?</emphasis></para>
-            </listitem>
-            <listitem>
-                <para>a parameter of a class body hides an attribute of the class,</para>
-            </listitem>
-            <listitem>
-                <para>a declaration occurring in a body containing the program element 
-                hides a declaration imported by the compilation unit, and</para>
-            </listitem>
-            <listitem>
-                <para>a declaration imported by the compilation unit hides a toplevel 
-                declaration of the package containing the program element.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Then the given name refers to this unique unhidden declaration, and either:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>the program element must occur within the lexical scope of this 
+                <para>the program element occurs within the lexical scope of the 
                 declaration, or</para>
             </listitem>
             <listitem>
-                <para>this declaration must not be declared using the keyword 
+                <para>the declaration is not be declared using the keyword 
                 <literal>value</literal> or <literal>function</literal>.</para>
             </listitem>
         </itemizedlist>
+        
+    </section>
+        
+    <section id="resolutionofunqualifiedidentifiers">
+        <title>Resolution of unqualified identifiers</title>
                 
+        <para>An unqualified identifier (an identifier not preceded by <literal>.</literal>,
+        <literal>[].</literal> or <literal>?.</literal>) that appears in a program element 
+        refers to a named declaration elsewhere: a class, interface, type parameter, method, 
+        attribute, or local.</para>
+        
+        <para>If a certain identifier name occurs unqualified at a program element, there 
+        must be at least one declaration with the given name in scope at the program element. 
+        If multiple declarations with the given name are in scope at the program element where 
+        the given name occurs, then there must be exactly one such declaration which is not 
+        hidden by another declaration. Then the given name refers to this unique unhidden 
+        declaration, and this declaration must be accessible to the program element, and the 
+        declaration must have a determined type at the program elememt.</para>
+        
+    </section>
+            
+    <section id="resolutionofqualifiedidentifiers">
+        <title>Resolution of qualified identifiers</title>
+                
+        <para>A qualified identifier (an identifier preceded by <literal>.</literal>,
+        <literal>[].</literal> or <literal>?.</literal>) that appears in a program element 
+        refers to a member of the qualifying type or of the type of the qualifying 
+        expression: a member class, method, or attribute.</para>
+        
+        <comment><para>TODO: what about "inherited" interfaces and <literal>abstract</literal>
+        classes? Currently the compiler allows this!</para></comment>
+        
+        <para>If a certain identifier name occurs qualified at a program element, the 
+        qualifying type or the type of the qualifying expression must have a member with the 
+        given name which is visible at the program element. Then the given name refers to this
+        member. If the program element is contained in the body of a class or interface, and 
+        the member declaration directly occurs in the body of the class or interface, and the 
+        qualifying expression is a self reference to the instance being initialized, the member 
+        declaration must be accessible and have a determined type at the program element.</para>
+    
     </section>
             
         <section id="closure">
