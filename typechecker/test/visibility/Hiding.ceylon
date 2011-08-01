@@ -73,4 +73,15 @@ class Hiding() {
         }
     }
     
+    class OuterSuperclass() {
+        shared interface InnerInterface {}
+        shared abstract class InnerAbstractClass() {}
+    }
+    
+    class OuterClass() extends OuterSuperclass() {
+        class Inner() 
+            extends InnerAbstractClass()
+            satisfies InnerInterface {}
+    }
+    
 }
