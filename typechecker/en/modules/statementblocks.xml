@@ -428,13 +428,22 @@
         
         <itemizedlist>
             <listitem>
-                <para>the declaration is a parameter or type parameter of a declaration 
-                whose body contains the program element,</para>
+                <para>the program element occurs within the lexical scope of the 
+                declaration, or</para>
+            </listitem>
+            <listitem>
+                <para>the declaration does not directly occur in a block or in the
+                initializer section of a class body.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <!--itemizedlist>
+            <listitem>
+                <para>the declaration is a parameter or type parameter,</para>
             </listitem>
             <listitem>
                 <para>the declaration is a control structure variable or iteration 
-                variable belonging to a block of a control structure that contains the 
-                program element,</para>
+                variable,</para>
             </listitem>
             <listitem>
                 <para>the program element belongs to or is contained in the body of the 
@@ -449,21 +458,16 @@
                 declaration,</para>
             </listitem>
             <listitem>
-                <para>the declaration directly occurs in an interface body that contains
-                the program element,</para>
+                <para>the declaration directly occurs in an interface body,</para>
             </listitem>
             <listitem>
                 <para>the declaration directly occurs in the declaration section of a class 
-                body, and either the program element directly occurs in this declaration
-                section, or some declaration directly occurring in this declaration section 
-                contains the program element, or</para>
+                body, or</para>
             </listitem>
             <listitem>
-                <para>the declaration is a toplevel declaration (of the package containing
-                the program element or imported by the compilation unit containing the 
-                program element).</para>
+                <para>the declaration is a toplevel declaration.</para>
             </listitem>
-        </itemizedlist>
+        </itemizedlist-->
         
         <comment><para>TODO: fix the referenceability rules for toplevel declarations that 
         occur in different compilation units! Outlaw simple toplevel attributes?</para></comment>
@@ -548,11 +552,10 @@
             </listitem>
             <listitem>
                 <para>the declaration is a control structure variable or iteration 
-                variable belonging to a block of a control structure that contains the 
-                program element, or</para>
+                variable, or</para>
             </listitem>
             <listitem>
-                <para>the declaration is not be declared using the keyword 
+                <para>the declaration is not declared using the keyword 
                 <literal>value</literal> or <literal>function</literal>.</para>
             </listitem>
         </itemizedlist>
