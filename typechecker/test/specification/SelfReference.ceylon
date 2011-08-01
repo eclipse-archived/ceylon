@@ -105,10 +105,13 @@ interface SelfReference {
     }
     
     class Outer() {
-        Inner get(Inner i) { return i; }
         class Inner() {
-            Inner get() { @error return get(this); }
-            Inner ii = get();
+            Inner getInner() { @error return getInn(this); }
+            Outer getOuter() { return getOut(outer); }
+            Inner ii = getInner();
+            Outer oo = getOuter();
         }
+        Inner getInn(Inner i) { return i; }
+        Outer getOut(Outer o) { return o; }
     }
 }
