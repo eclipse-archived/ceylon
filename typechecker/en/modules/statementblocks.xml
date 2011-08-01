@@ -541,44 +541,104 @@
         
     </section>
         
-    <section id="resolutionofunqualifiedidentifiers">
-        <title>Resolution of unqualified identifiers</title>
+    <section id="referenceresolution">
+        <title>Reference resolution</title>
+        
+        <para>An <emphasis>unqualified reference</emphasis> is:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the type name in an unqualified type declaration, for example 
+                <literal>String</literal> or <literal>Sequence</literal> in
+                <literal>Sequence&lt;String&gt;</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>the member name an unqualified value reference, for example
+                <literal>counter</literal> in <literal>counter.count</literal>, 
+                or</para>
+            </listitem>
+            <listitem>
+                <para>the member name or type name in an unqualified callable 
+                reference, for example <literal>entries</literal> in 
+                <literal>entries(people[].name)</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>If a program element contains an unqualified reference:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>There must be at least one declaration with the given name in scope 
+                at the program element.</para>
+            </listitem>
+            <listitem>
+                <para>If multiple declarations with the given name are in scope at the 
+                program element where the given name occurs, then there must be exactly 
+                one such declaration which is not hidden by another declaration.</para>
+            </listitem>
+            <listitem>
+                <para>Then the given name refers to this unique unhidden declaration, and 
+                this declaration must be referenceable at the program element, and the 
+                type of the declaration must be determinable at the program elememt.</para>
+            </listitem>
+        </itemizedlist>
                 
-        <para>An unqualified identifier (an identifier not preceded by <literal>.</literal>,
-        <literal>[].</literal> or <literal>?.</literal>) that appears in a program element 
-        refers to a named declaration elsewhere: a class, interface, type parameter, method, 
-        attribute, or local.</para>
+        <para>A <emphasis>qualified reference</emphasis> is:</para>
         
-        <para>If a certain identifier name occurs unqualified at a program element, there 
-        must be at least one declaration with the given name in scope at the program element. 
-        If multiple declarations with the given name are in scope at the program element where 
-        the given name occurs, then there must be exactly one such declaration which is not 
-        hidden by another declaration. Then the given name refers to this unique unhidden 
-        declaration, and this declaration must be referenceable to the program element, and 
-        the type of the declaration must be determinable at the program elememt.</para>
+        <itemizedlist>
+            <listitem>
+                <para>the type name in a qualified type declaration, for example 
+                <literal>Buffer</literal> in <literal>BufferedReader.Buffer</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>the member name a qualified value reference, for example
+                <literal>count</literal> in <literal>counter.count</literal>, or</para>
+            </listitem>
+            <listitem>
+                <para>the member name or type name in a qualified callable 
+                reference, for example <literal>name</literal> in 
+                <literal>entries(people[].name)</literal>.</para>
+            </listitem>
+        </itemizedlist>
         
-    </section>
-            
-    <section id="resolutionofqualifiedidentifiers">
-        <title>Resolution of qualified identifiers</title>
+        <para>Every qualified reference has a qualifying type:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>For a type declaration, the qualifying type is the full
+                qualified type the qualifies the type name.</para>
+            </listitem>
+            <listitem>
+                <para>For a value reference or callable reference, the 
+                qualifying type is the type of the receiver expression.</para>
+            </listitem>
+        </itemizedlist>
                 
-        <para>A qualified identifier (an identifier preceded by <literal>.</literal>,
-        <literal>[].</literal> or <literal>?.</literal>) that appears in a program element 
-        refers to a member of the qualifying type or of the type of the qualifying 
-        expression: a member class, method, or attribute.</para>
+        <para>If a program element contains a qualified reference:</para>
         
+        <itemizedlist>
+            <listitem>
+                <para>The qualifying type must have at least one member with the given 
+                name which is visible at the program element.</para>
+            </listitem>
+            <listitem>
+                <para>If there are multiple visible members with the given name, then 
+                it is guaranteed by the type system that there is exactly one such 
+                member which is not refined by another member.</para>
+            </listitem>
+            <listitem>
+                <para>Then the given name refers to this unique member. If the program 
+                element is contained in the body of a class or interface, and the member 
+                declaration directly occurs in the body of the class or interface, and 
+                the receiver expression is a self reference to the instance being 
+                initialized, the member declaration must be referenceable and the type 
+                of the declaration must be determinable at the program element.</para>
+            </listitem>
+        </itemizedlist>
+                
         <comment><para>TODO: what about "inherited" interfaces and <literal>abstract</literal>
         classes? Currently the compiler allows this!</para></comment>
         
-        <para>If a certain identifier name occurs qualified at a program element, the 
-        qualifying type or the type of the qualifying expression must have a member with the 
-        given name which is visible at the program element. Then the given name refers to this
-        member. If the program element is contained in the body of a class or interface, and 
-        the member declaration directly occurs in the body of the class or interface, and the 
-        qualifying expression is a self reference to the instance being initialized, the member 
-        declaration must be referenceable and the type of the declaration must be determinable 
-        at the program element.</para>
-    
     </section>
             
         <section id="closure">
