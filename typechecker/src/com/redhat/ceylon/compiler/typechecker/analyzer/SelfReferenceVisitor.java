@@ -19,21 +19,37 @@ public class SelfReferenceVisitor extends Visitor {
     private Boolean declarationSection = null;
     private Boolean outerDeclarationSection = null;
 
+    private void visitExtendedType(Tree.ExtendedTypeExpression that) {
+        Declaration member  = that.getDeclaration();
+        if (member!=null && !inOuterDeclarationSection() && 
+                !member.isToplevel() && 
+                !member.isDefinedInScope(that.getScope().getContainer())) {
+            //then it must be an inherited member class?
+            //TODO: this logic is broken!
+            that.addError("inherited member class may not be extended in initializer: " + 
+                            member.getName());
+        }
+    }
+
+    private void visitReference(Tree.Primary that) {
+        Declaration member  = that.getDeclaration();
+        if (member!=null && !inDeclarationSection() && 
+                !member.isToplevel() && 
+                !member.isDefinedInScope(that.getScope())) {
+            //then it must be an inherited member?
+            //TODO: this logic is broken!
+            that.addError("inherited member may not be used in initializer: " + 
+                            member.getName());
+        }
+    }
+    
     @Override
     public void visit(Tree.AnnotationList that) {}
 
     @Override
     public void visit(Tree.ExtendedTypeExpression that) {
         super.visit(that);
-        Declaration member  = that.getDeclaration();
-        if (member!=null && !inOuterDeclarationSection() && 
-                !member.isToplevel() && 
-                !member.isDefinedInScope(that.getScope().getContainer())) {
-            //then it must be an inherited member class?
-            //TODO: is that logic exactly correct?
-            that.addError("inherited member class may not be extended in initializer: " + 
-                            member.getName());
-        }
+        visitExtendedType(that);
     }
 
     @Override
@@ -70,18 +86,6 @@ public class SelfReferenceVisitor extends Visitor {
             that instanceof Tree.Super;
     }
 
-    private void visitReference(Tree.Primary that) {
-        Declaration member  = that.getDeclaration();
-        if (member!=null && !inDeclarationSection() && 
-                !member.isToplevel() && 
-                !member.isDefinedInScope(that.getScope())) {
-            //then it must be an inherited member?
-            //TODO: is that logic exactly correct?
-            that.addError("inherited member may not be used in initializer: " + 
-                            member.getName());
-        }
-    }
-    
     @Override
     public void visit(Tree.IsCondition that) {
         super.visit(that);
