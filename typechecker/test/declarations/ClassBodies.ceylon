@@ -183,7 +183,17 @@ interface ClassBodies {
     object good3WithInner {
         String name = "gavin";
         object inner {
-            @type["String"] outer.x();
+            void x() {
+                @type["String"] outer.x();
+            }
+        }
+        String x() { return "Hell"; }
+    }
+    
+    object bad8WithInner {
+        String name = "gavin";
+        object inner {
+            @error outer.x();
             void x() {}
         }
         String x() { return "Hell"; }
@@ -391,7 +401,16 @@ interface ClassBodies {
     object good2WithOuter {
         String name = "gavin";
         object inner {
-            print(outer);
+            void method() {
+                print(outer);
+            }
+        }
+    }
+    
+    object bad5WithOuter {
+        String name = "gavin";
+        object inner {
+            @error print(outer);
         }
     }
     
@@ -419,7 +438,16 @@ interface ClassBodies {
     object good3WithOuter {
         String name = "gavin";
         object inner {
-            value o = outer;
+            void method() {
+                value o = outer;
+            }
+        }
+    }
+    
+    object bad6WithOuter {
+        String name = "gavin";
+        object inner {
+            @error value o = outer;
         }
     }
     
@@ -450,7 +478,17 @@ interface ClassBodies {
         String name = "gavin";
         variable Object? o := null;
         object inner {
-            o := outer;
+            void method() {
+                o := outer;
+            }
+        }
+    }
+    
+    object bad7WithOuter {
+        String name = "gavin";
+        variable Object? o := null;
+        object inner {
+            @error o := outer;
         }
     }
     
