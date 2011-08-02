@@ -33,8 +33,20 @@ public class TypeCheckerBuilder {
     public TypeCheckerBuilder() {
     }
 
+	/**
+	 * Let's you add a directory or a file.
+	 * Directories are better as the type checker can extract the context like module name, package etc
+	 */
     public TypeCheckerBuilder addSrcDirectory(File srcDirectory) {
-        srcDirectories.add( vfs.getFromFile( srcDirectory ) );
+        return addSrcDirectory( vfs.getFromFile( srcDirectory ) );
+    }
+
+	/**
+	 * Let's you add a directory or a file.
+	 * Directories are better as the type checker can extract the context like module name, package etc
+	 */
+	public TypeCheckerBuilder addSrcDirectory(VirtualFile srcDirectory) {
+        srcDirectories.add( srcDirectory);
         return this;
     }
 
