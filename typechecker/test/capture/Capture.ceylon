@@ -164,4 +164,41 @@ class Capture() {
         }
     }
     
+    class WithNamedArgument() {
+        @uncaptured String hello = "hello";
+        use { o=hello; };
+    }
+    
+    class WithNamedArgumentInMethod() {
+        @captured String hello = "hello";
+        void method() {
+            use { o=hello; };
+        }
+    }
+    
+    class WithNamedArgumentInClass() {
+        @captured String hello = "hello";
+        class Class() {
+            use { o=hello; };
+        }
+    }
+    
+    class WithAttributeArgument() {
+        @captured String hello = "hello";
+        use {
+            value o {
+                return hello;
+            }
+        };
+    }
+    
+    class WithObjectArgument() {
+        @captured String hello = "hello";
+        use {
+            object o {
+                writeLine(hello);
+            }
+        };
+    }
+    
 }
