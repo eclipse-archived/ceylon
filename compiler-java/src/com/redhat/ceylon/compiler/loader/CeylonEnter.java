@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.loader;
 
 import com.redhat.ceylon.compiler.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.codegen.CeylonTransformer;
+import com.redhat.ceylon.compiler.tools.CeylonPhasedUnit;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
@@ -139,11 +140,15 @@ public class CeylonEnter extends Enter {
         for (PhasedUnit pu : listOfUnits) { 
             pu.analyseFlow();
         }
-        for (PhasedUnit pu : listOfUnits) { 
+        for (PhasedUnit pu : listOfUnits) {
+            final CeylonPhasedUnit cpu = (CeylonPhasedUnit) pu;
             pu.getCompilationUnit().visit(new AssertionVisitor(){
-                // FIXME: use regular javac log.error. We must define a localisation key for that, and 
-                // be able to access the javac AST we generated for a given CU because it holds the 
-                // source file object for javac 
+                private int getPosition(Node node) {
+                    int pos = cpu.getLineMap().getStartPosition(node.getAntlrTreeNode().getLine())
+                    + node.getAntlrTreeNode().getCharPositionInLine();
+                    log.useSource(cpu.getFileObject());
+                    return pos;
+                }
                 @Override
                 protected void out(AnalysisError err) {
                     log.rawError(0, err.getMessage() + "\n at " + 
