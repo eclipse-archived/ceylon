@@ -502,8 +502,9 @@ shared interface Color { ... }</programlisting>
         attribute defined or inherited by the superclass, bypassing any method 
         declaration that refines the method on the current class or any subclass 
         of the current class. The <literal>super</literal> reference is not assignable 
-        to any type. There is no <literal>super</literal> reference in an interface 
-        member body. <!--<emphasis>(Note that <literal>definite</literal> is a proposed 
+        to any type. Nor may not be narrowed to any type using <literal>if (is ...)</literal>.
+        There is no <literal>super</literal> reference in an interface member body. 
+        <!--<emphasis>(Note that <literal>definite</literal> is a proposed 
         feature for a future version of the language.)</emphasis>--></para>
         
         <comment><para>TODO: <literal>super</literal> doesn't let you call a refined
