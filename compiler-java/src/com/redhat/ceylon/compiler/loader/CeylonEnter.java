@@ -18,12 +18,14 @@ import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.comp.AttrContext;
 import com.sun.tools.javac.comp.Enter;
 import com.sun.tools.javac.comp.Env;
+import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Context.SourceLanguage.Language;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Log;
+import com.sun.tools.javac.util.Options;
 
 public class CeylonEnter extends Enter {
 
@@ -42,6 +44,7 @@ public class CeylonEnter extends Enter {
     private com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext;
     private Log log;
     private CeylonModelLoader modelLoader;
+    private Options options;
     
     protected CeylonEnter(Context context) {
         super(context);
@@ -55,6 +58,7 @@ public class CeylonEnter extends Enter {
         ceylonContext = LanguageCompiler.getCeylonContextInstance(context);
         log = Log.instance(context);
         modelLoader = CeylonModelLoader.instance(context);
+        options = Options.instance(context);
     }
 
     @Override
@@ -107,7 +111,8 @@ public class CeylonEnter extends Enter {
                 CeylonCompilationUnit ceylonTree = (CeylonCompilationUnit) tree;
                 gen.setMap(ceylonTree.lineMap);
                 ceylonTree.defs = gen.transformAfterTypeChecking(ceylonTree.ceylonTree).toList();
-                System.err.println(ceylonTree);
+                if(options.get(OptionName.VERBOSE) != null)
+                    System.err.println(ceylonTree);
             }
         }
     }

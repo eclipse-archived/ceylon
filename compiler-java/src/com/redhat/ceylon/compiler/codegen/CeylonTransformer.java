@@ -23,11 +23,13 @@ import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Options;
+import com.sun.tools.javac.main.OptionName;
 
 /**
  * Main transformer that delegates all transforming of ceylon to java to auxiliary classes.
  */
 public class CeylonTransformer extends AbstractTransformer {
+    private Options options;
     
     public static CeylonTransformer getInstance(Context context) {
         CeylonTransformer trans = context.get(CeylonTransformer.class);
@@ -44,7 +46,7 @@ public class CeylonTransformer extends AbstractTransformer {
     }
 
     private void setup(Context context) {
-        Options options = Options.instance(context);
+        options = Options.instance(context);
         // It's a bit weird to see "invokedynamic" set here,
         // but it has to be done before Resolve.instance().
         options.put("invokedynamic", "invokedynamic");
@@ -55,7 +57,8 @@ public class CeylonTransformer extends AbstractTransformer {
      * EnterCeylon phase later on
      */
     public JCCompilationUnit makeJCCompilationUnitPlaceholder(Tree.CompilationUnit t, JavaFileObject file, String pkgName) {
-        System.err.println(t);
+        if(options.get(OptionName.VERBOSE) != null)
+            System.err.println(t);
         JCExpression pkg = pkgName != null ? getPackage(pkgName) : null;
         at(t);
         JCCompilationUnit topLev = new CeylonCompilationUnit(List.<JCTree.JCAnnotation> nil(), pkg, List.<JCTree> nil(), null, null, null, null, t);
