@@ -32,6 +32,7 @@ import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.code.Symbol.*;
 import com.sun.tools.javac.code.Type.*;
 import com.sun.tools.javac.jvm.*;
+import com.sun.tools.javac.main.OptionName;
 
 import static com.sun.tools.javac.jvm.ByteCodes.*;
 import static com.sun.tools.javac.code.Flags.*;
@@ -149,27 +150,27 @@ public class Symtab {
     public final Type proprietaryType;
     public final Type systemType;
 
-    public final Type ceylonSmallType;
-    public final Type ceylonAnyType;
-    public final Type ceylonVoidType;
-    public final Type ceylonNothingType;
-    public final Type ceylonObjectType;
-    public final Type ceylonIdentifiableObjectType;
-    public final Type ceylonEqualityType;
-    public final Type ceylonNaturalType;
-    public final Type ceylonFloatType;
-    public final Type ceylonIntegerType;
-    public final Type ceylonStringType;
-    public final Type ceylonMethodType;
-    public final Type ceylonSequenceType;
-    public final Type ceylonArrayListType;
-    public final Type ceylonArraySequenceType;
-    public final Type ceylonCharacterType;
-    public final Type ceylonBooleanType;
-    public final Type ceylonIteratorType;
-    public final Type ceylonRangeType;
-    public final Type ceylonEntryType;
-    public final Type ceylonContainerType;
+    public  Type ceylonSmallType;
+    public  Type ceylonAnyType;
+    public  Type ceylonVoidType;
+    public  Type ceylonNothingType;
+    public  Type ceylonObjectType;
+    public  Type ceylonIdentifiableObjectType;
+    public  Type ceylonEqualityType;
+    public  Type ceylonNaturalType;
+    public  Type ceylonFloatType;
+    public  Type ceylonIntegerType;
+    public  Type ceylonStringType;
+    public  Type ceylonMethodType;
+    public  Type ceylonSequenceType;
+    public  Type ceylonArrayListType;
+    public  Type ceylonArraySequenceType;
+    public  Type ceylonCharacterType;
+    public  Type ceylonBooleanType;
+    public  Type ceylonIteratorType;
+    public  Type ceylonRangeType;
+    public  Type ceylonEntryType;
+    public  Type ceylonContainerType;
 
     public final Type ceylonAtCeylonType;
     public final Type ceylonAtNameType;
@@ -471,28 +472,11 @@ public class Symtab {
         suppressWarningsType = enterClass("java.lang.SuppressWarnings");
         inheritedType = enterClass("java.lang.annotation.Inherited");
         systemType = enterClass("java.lang.System");
-        
-        ceylonSmallType = enterClass("ceylon.language.Small");
-        ceylonAnyType = enterClass("ceylon.language.Any");
-        ceylonVoidType = enterClass("ceylon.language.Void");
-        ceylonNothingType = enterClass("ceylon.language.Nothing");
-        ceylonObjectType = enterClass("ceylon.language.Object");
-        ceylonIdentifiableObjectType = enterClass("ceylon.language.IdentifiableObject");
-        ceylonEqualityType = enterClass("ceylon.language.Equality");
-        ceylonNaturalType = enterClass("ceylon.language.Natural");
-        ceylonFloatType = enterClass("ceylon.language.Float");
-        ceylonIntegerType = enterClass("ceylon.language.Integer");
-        ceylonStringType = enterClass("ceylon.language.String");
-        ceylonMethodType = enterClass("ceylon.language.Method");
-        ceylonSequenceType = enterClass("ceylon.language.Sequence");
-        ceylonArrayListType = enterClass("ceylon.language.ArrayList");
-        ceylonArraySequenceType = enterClass("ceylon.language.ArraySequence");
-        ceylonCharacterType = enterClass("ceylon.language.Character");
-        ceylonBooleanType = enterClass("ceylon.language.Boolean");
-        ceylonIteratorType = enterClass("ceylon.language.Iterator");
-        ceylonRangeType = enterClass("ceylon.language.Range");
-        ceylonEntryType = enterClass("ceylon.language.Entry");
-        ceylonContainerType = enterClass("ceylon.language.Container");
+
+        // Only load the ceylon symbols from class files if we're not boostrapping it
+        if(Options.instance(context).get(OptionName.BOOTSTRAPCEYLON) == null){
+            loadCeylonSymbols();
+        }
         
         ceylonAtCeylonType = enterClass("com.redhat.ceylon.compiler.metadata.java.Ceylon");
         ceylonAtNameType = enterClass("com.redhat.ceylon.compiler.metadata.java.Name");
@@ -697,5 +681,29 @@ public class Symtab {
 
         enterBinop("&&", booleanType, booleanType, booleanType, bool_and);
         enterBinop("||", booleanType, booleanType, booleanType, bool_or);
+    }
+
+    public void loadCeylonSymbols() {
+        ceylonSmallType = enterClass("ceylon.language.Small");
+        ceylonAnyType = enterClass("ceylon.language.Any");
+        ceylonVoidType = enterClass("ceylon.language.Void");
+        ceylonNothingType = enterClass("ceylon.language.Nothing");
+        ceylonObjectType = enterClass("ceylon.language.Object");
+        ceylonIdentifiableObjectType = enterClass("ceylon.language.IdentifiableObject");
+        ceylonEqualityType = enterClass("ceylon.language.Equality");
+        ceylonNaturalType = enterClass("ceylon.language.Natural");
+        ceylonFloatType = enterClass("ceylon.language.Float");
+        ceylonIntegerType = enterClass("ceylon.language.Integer");
+        ceylonStringType = enterClass("ceylon.language.String");
+        ceylonMethodType = enterClass("ceylon.language.Method");
+        ceylonSequenceType = enterClass("ceylon.language.Sequence");
+        ceylonArrayListType = enterClass("ceylon.language.ArrayList");
+        ceylonArraySequenceType = enterClass("ceylon.language.ArraySequence");
+        ceylonCharacterType = enterClass("ceylon.language.Character");
+        ceylonBooleanType = enterClass("ceylon.language.Boolean");
+        ceylonIteratorType = enterClass("ceylon.language.Iterator");
+        ceylonRangeType = enterClass("ceylon.language.Range");
+        ceylonEntryType = enterClass("ceylon.language.Entry");
+        ceylonContainerType = enterClass("ceylon.language.Container");
     }
 }
