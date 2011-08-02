@@ -225,7 +225,6 @@ public class LanguageCompiler extends JavaCompiler {
             throw new RuntimeException(e);
         }
         String[] prefixes = ((CeyloncFileManager) fileManager).getSourcePath();
-        System.err.println("Prefixes: " + prefixes.length + " name: " + name);
         for (String prefix : prefixes) {
             if (prefix != null) {
                 File prefixFile = new File(prefix);
@@ -236,7 +235,6 @@ public class LanguageCompiler extends JavaCompiler {
                     // FIXME
                     throw new RuntimeException(e);
                 }
-                System.err.println("Prefix: " + path);
                 if (name.startsWith(path)) {
                     return prefixFile;
                 }
