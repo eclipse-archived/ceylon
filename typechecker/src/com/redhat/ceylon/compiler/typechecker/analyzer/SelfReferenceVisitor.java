@@ -1,8 +1,9 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -14,15 +15,20 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  *
  */
 public class SelfReferenceVisitor extends Visitor {
-        
+    
+    private final TypeDeclaration typeDeclaration;
     private Tree.Statement lastExecutableStatement;
-    private Boolean declarationSection = null;
-    private Boolean outerDeclarationSection = null;
+    private boolean declarationSection = false;
+    private int nestedLevel = -1;
+    
+    public SelfReferenceVisitor(TypeDeclaration td) {
+        typeDeclaration = td;
+    }
 
     private void visitExtendedType(Tree.ExtendedTypeExpression that) {
         Declaration member = that.getDeclaration();
         if (member!=null) {
-            if ( !inOuterDeclarationSection() && that.getScope().isInherited(member) ) {
+            if ( !declarationSection && that.getScope().getInheritingDeclaration(member)==typeDeclaration ) {
                 //TODO: this logic is broken!
                 that.addError("inherited member class may not be extended in initializer: " + 
                         member.getName() + " of " + that.getScope().getInheritingDeclaration(member).getName());
@@ -33,7 +39,7 @@ public class SelfReferenceVisitor extends Visitor {
     private void visitReference(Tree.Primary that) {
         Declaration member  = that.getDeclaration();
         if (member!=null) {
-            if ( !inDeclarationSection() && that.getScope().isInherited(member) ) {
+            if ( !declarationSection && that.getScope().getInheritingDeclaration(member)==typeDeclaration ) {
                 //TODO: this logic is broken!
                 that.addError("inherited member may not be used in initializer: " + 
                             member.getName() + " of " + that.getScope().getInheritingDeclaration(member).getName());
@@ -79,9 +85,8 @@ public class SelfReferenceVisitor extends Visitor {
     }
 
     private boolean isSelfReference(Tree.Term that) {
-        return that instanceof Tree.This || 
-            that instanceof Tree.Outer || 
-            that instanceof Tree.Super;
+        return (nestedLevel==0 && (that instanceof Tree.This || that instanceof Tree.Super))
+            || (nestedLevel==1 && that instanceof Tree.Outer);
     }
 
     @Override
@@ -93,7 +98,10 @@ public class SelfReferenceVisitor extends Visitor {
                 if (term instanceof Tree.Super ) {
                     term.addError("cannot narrow super");
                 }
-                else if ( !inDeclarationSection() ) {
+                else if ( mayNotLeakThis() ) {
+                    term.addError("cannot narrow self-reference in initializer");
+                }
+                else if ( mayNotLeakOuter() ) {
                     term.addError("cannot narrow self-reference in initializer");
                 }
             }
@@ -101,150 +109,167 @@ public class SelfReferenceVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.ObjectDefinition that) {
+        if (that.getDeclarationModel().getTypeDeclaration()==typeDeclaration) {
+            nestedLevel=0;
+            super.visit(that);
+            nestedLevel=-1;
+        }
+        else if (nestedLevel>=0){
+            nestedLevel++;
+            super.visit(that);
+            nestedLevel--;
+        }
+        else {
+            super.visit(that);
+        }
+    }
+    
+    @Override
+    public void visit(Tree.ObjectArgument that) {
+        if (that.getDeclarationModel().getTypeDeclaration()==typeDeclaration) {
+            nestedLevel=0;
+            super.visit(that);
+            nestedLevel=-1;
+        }
+        else if (nestedLevel>=0){
+            nestedLevel++;
+            super.visit(that);
+            nestedLevel--;
+        }
+        else {
+            super.visit(that);
+        }
+    }
+    
+    @Override
+    public void visit(Tree.TypeDeclaration that) {
+        if (that.getDeclarationModel()==typeDeclaration) {
+            nestedLevel=0;
+            declarationSection = false;
+            super.visit(that);
+            nestedLevel=-1;
+        }
+        else if (nestedLevel>=0){
+            nestedLevel++;
+            super.visit(that);
+            nestedLevel--;
+        }
+        else {
+            super.visit(that);
+        }
+    }
+    
+    @Override
     public void visit(Tree.InterfaceBody that) {
-        Tree.Statement oles = lastExecutableStatement;
-        Boolean ods = outerDeclarationSection;
-        outerDeclarationSection = declarationSection;
-        declarationSection = true;
-        lastExecutableStatement = null;
-        super.visit(that);
-        declarationSection = outerDeclarationSection;
-        outerDeclarationSection = ods;
-        lastExecutableStatement = oles;
+        if (nestedLevel==0) {
+            declarationSection = true;
+            lastExecutableStatement = null;
+            super.visit(that);
+            declarationSection = false;
+        }
+        else {
+            super.visit(that);
+        }
     }
     
     @Override
     public void visit(Tree.ClassBody that) {
-        Tree.Statement les = null;
-        for (Tree.Statement s: that.getStatements()) {
-            if (s instanceof Tree.ExecutableStatement) {
-                les = s;
-            }
-            else {
-                if (s instanceof Tree.AttributeDeclaration) {
-                    if ( ((Tree.AttributeDeclaration) s).getSpecifierOrInitializerExpression()!=null ) {
-                        les = s;
+        if (nestedLevel==0) {
+            Tree.Statement les = null;
+            for (Tree.Statement s: that.getStatements()) {
+                if (s instanceof Tree.ExecutableStatement) {
+                    les = s;
+                }
+                else {
+                    if (s instanceof Tree.AttributeDeclaration) {
+                        if ( ((Tree.AttributeDeclaration) s).getSpecifierOrInitializerExpression()!=null ) {
+                            les = s;
+                        }
+                    }
+                    if (s instanceof Tree.MethodDeclaration) {
+                        if ( ((Tree.MethodDeclaration) s).getSpecifierExpression()!=null ) {
+                            les = s;
+                        }
                     }
                 }
-                if (s instanceof Tree.MethodDeclaration) {
-                    if ( ((Tree.MethodDeclaration) s).getSpecifierExpression()!=null ) {
-                        les = s;
-                    }
-                }
             }
+            declarationSection = les==null;
+            lastExecutableStatement = les;
+            super.visit(that);
+            lastExecutableStatement = null;
+            declarationSection = false;
         }
-        Tree.Statement oles = lastExecutableStatement;
-        Boolean ods = outerDeclarationSection;
-        outerDeclarationSection = declarationSection;
-        declarationSection = les==null;
-        lastExecutableStatement = les;
-        super.visit(that);
-        lastExecutableStatement = oles;
-        declarationSection = outerDeclarationSection;
-        outerDeclarationSection = ods;
+        else {
+            super.visit(that);
+        }
+    }
+            
+    boolean mayNotLeakThis() {
+        return !declarationSection && nestedLevel==0;
     }
     
-    @Override
-    public void visit(Tree.ExtendedType that) {
-        Boolean ods = outerDeclarationSection;
-        outerDeclarationSection = declarationSection;
-        declarationSection = false;
-        super.visit(that);
-        declarationSection = outerDeclarationSection;
-        outerDeclarationSection = ods;
+    boolean mayNotLeakOuter() {
+        return !declarationSection && nestedLevel==1;
     }
     
-    boolean inClassOrInterfaceBody() {
-        return declarationSection!=null;
-    }
-    
-    boolean inNestedClassOrInterfaceBody() {
-        return outerDeclarationSection!=null;
-    }
-    
-    boolean inDeclarationSection() {
-        return declarationSection!=null && declarationSection;
-    }
-    
-    boolean inOuterDeclarationSection() {
-        return outerDeclarationSection!=null && outerDeclarationSection;
+    boolean inBody() {
+        return nestedLevel>=0;
     }
     
     @Override
     public void visit(Tree.Statement that) {
         super.visit(that);
-        if (inClassOrInterfaceBody()) {
+        if (nestedLevel==0) {
             declarationSection = declarationSection || 
                     that==lastExecutableStatement;
         }
     }
     
+    private void checkSelfReference(Node that, Tree.Term term) {
+        if ( term instanceof Tree.Super ) {
+            that.addError("leaks super reference");
+        }    
+        if ( mayNotLeakThis() &&
+                term instanceof Tree.This ) {
+            that.addError("leaks this reference");
+        }    
+        if ( mayNotLeakOuter() &&
+                term instanceof Tree.Outer ) {
+            that.addError("leaks outer reference");
+        }
+    }
+
     @Override
     public void visit(Tree.Return that) {
         super.visit(that);
-        if ( that.getExpression()!=null ) {
-            if ( that.getExpression().getTerm() instanceof Tree.Super ) {
-                that.addError("leaks super reference");
-            }    
-            if ( !inDeclarationSection() &&
-                    that.getExpression().getTerm() instanceof Tree.This ) {
-                that.addError("leaks this reference");
-            }    
-            if ( !inOuterDeclarationSection() &&
-                    that.getExpression().getTerm() instanceof Tree.Outer ) {
-                that.addError("leaks outer reference");
-            }    
+        if ( that.getExpression()!=null && inBody() ) {
+            checkSelfReference(that, that.getExpression().getTerm());    
         }
     }
 
     @Override
     public void visit(Tree.SpecifierOrInitializerExpression that) {
         super.visit(that);
-        if ( that.getExpression().getTerm() instanceof Tree.Super ) {
-            that.addError("leaks super reference");
-        }    
-        if ( !inDeclarationSection() && 
-                that.getExpression().getTerm() instanceof Tree.This ) {
-            that.addError("leaks this reference");
+        if ( inBody() ) {
+            checkSelfReference(that, that.getExpression().getTerm());    
         }
-        if (!inOuterDeclarationSection() &&
-                that.getExpression().getTerm() instanceof Tree.Outer ) {
-            that.addError("leaks outer reference");
-        }    
     }
 
     @Override
     public void visit(Tree.AssignmentOp that) {
         super.visit(that);
-        if ( that.getRightTerm() instanceof Tree.Super ) {
-            that.addError("leaks super reference");
-        }    
-        if ( !inDeclarationSection() &&
-                that.getRightTerm() instanceof Tree.This ) {
-            that.addError("leaks this reference");
+        if ( inBody() ) {
+            checkSelfReference(that, that.getRightTerm());    
         }
-        if (!inOuterDeclarationSection() &&
-                that.getRightTerm() instanceof Tree.Outer ) {
-            that.addError("leaks outer reference");
-        }    
     }
 
     @Override
     public void visit(Tree.PositionalArgumentList that) {
         super.visit(that);
-        if ( inClassOrInterfaceBody() ) {
+        if ( inBody() ) {
             for ( Tree.PositionalArgument arg: that.getPositionalArguments()) {
-                if ( arg.getExpression().getTerm() instanceof Tree.Super ) {
-                    that.addError("leaks super reference");
-                }    
-                if (arg.getExpression().getTerm() instanceof Tree.This
-                        && !inDeclarationSection()) {
-                    arg.addError("leaks this reference");
-                }
-                if (arg.getExpression().getTerm() instanceof Tree.Outer
-                        && !inOuterDeclarationSection()) {
-                    arg.addError("leaks outer reference");
-                }
+                checkSelfReference(arg, arg.getExpression().getTerm());    
             }
         }
     }
@@ -252,35 +277,13 @@ public class SelfReferenceVisitor extends Visitor {
     @Override
     public void visit(Tree.NamedArgumentList that) {
         super.visit(that);
-        if ( inClassOrInterfaceBody() ) {
+        if ( inBody() ) {
             for ( Tree.NamedArgument arg: that.getNamedArguments()) {
                 if (arg instanceof Tree.SpecifiedArgument) {
-                    SpecifierExpression se = ((Tree.SpecifiedArgument) arg).getSpecifierExpression();
-                    if ( se.getExpression().getTerm() instanceof Tree.Super ) {
-                        that.addError("leaks super reference");
-                    }    
-                    if (se.getExpression().getTerm() instanceof Tree.This
-                            && !inDeclarationSection()) {
-                        arg.addError("leaks this reference");
-                    }
-                    if (se.getExpression().getTerm() instanceof Tree.Outer
-                            && !inOuterDeclarationSection()) {
-                        arg.addError("leaks outer reference");
-                    }
+                    Tree.SpecifierExpression se = ((Tree.SpecifiedArgument) arg).getSpecifierExpression();
+                    checkSelfReference(se, se.getExpression().getTerm());    
                 }
             }
-        }
-    }
-
-    @Override public void visit(Tree.Outer that) {
-        if ( !inNestedClassOrInterfaceBody() ) {
-            that.addError("outer appears outside a nested class or interface body");
-        }
-    }
-    
-    @Override public void visit(Tree.This that) {
-        if ( !inClassOrInterfaceBody() ) {
-            that.addError("this appears outside a class class or interface body");
         }
     }
 

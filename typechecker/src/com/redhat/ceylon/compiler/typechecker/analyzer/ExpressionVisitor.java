@@ -2150,7 +2150,13 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
     
     @Override public void visit(Tree.Outer that) {
-        that.setTypeModel(getOuterClassOrInterface(that.getScope()));
+        ProducedType ci = getOuterClassOrInterface(that.getScope());
+        if (ci==null) {
+            that.addError("outer appears outside a nested class or interface definition");
+        }
+        else {
+            that.setTypeModel(ci);
+        }
     }
 
     private boolean inExtendsClause = false;
@@ -2186,7 +2192,10 @@ public class ExpressionVisitor extends AbstractVisitor {
     
     @Override public void visit(Tree.This that) {
         ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
-        if (ci!=null) {
+        if (ci==null) {
+            that.addError("this appears outside a class or interface definition");
+        }
+        else {
             that.setTypeModel(ci.getType());
         }
     }
