@@ -106,5 +106,15 @@ public class Package implements Scope {
         }
         return getDirectMemberOrParameter(name);
     }
+    
+    @Override
+    public boolean isInherited(Declaration d) {
+        return false;
+    }
+    
+    @Override
+    public TypeDeclaration getInheritingDeclaration(Declaration d) {
+        return null;
+    }
 
 }

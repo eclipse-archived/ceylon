@@ -20,26 +20,24 @@ public class SelfReferenceVisitor extends Visitor {
     private Boolean outerDeclarationSection = null;
 
     private void visitExtendedType(Tree.ExtendedTypeExpression that) {
-        Declaration member  = that.getDeclaration();
-        if (member!=null && !inOuterDeclarationSection() && 
-                !member.isToplevel() && 
-                !member.isDefinedInScope(that.getScope().getContainer())) {
-            //then it must be an inherited member class?
-            //TODO: this logic is broken!
-            that.addError("inherited member class may not be extended in initializer: " + 
-                            member.getName());
+        Declaration member = that.getDeclaration();
+        if (member!=null) {
+            if ( !inOuterDeclarationSection() && that.getScope().isInherited(member) ) {
+                //TODO: this logic is broken!
+                that.addError("inherited member class may not be extended in initializer: " + 
+                        member.getName() + " of " + that.getScope().getInheritingDeclaration(member).getName());
+            }
         }
     }
 
     private void visitReference(Tree.Primary that) {
         Declaration member  = that.getDeclaration();
-        if (member!=null && !inDeclarationSection() && 
-                !member.isToplevel() && 
-                !member.isDefinedInScope(that.getScope())) {
-            //then it must be an inherited member?
-            //TODO: this logic is broken!
-            that.addError("inherited member may not be used in initializer: " + 
-                            member.getName());
+        if (member!=null) {
+            if ( !inDeclarationSection() && that.getScope().isInherited(member) ) {
+                //TODO: this logic is broken!
+                that.addError("inherited member may not be used in initializer: " + 
+                            member.getName() + " of " + that.getScope().getInheritingDeclaration(member).getName());
+            }
         }
     }
     

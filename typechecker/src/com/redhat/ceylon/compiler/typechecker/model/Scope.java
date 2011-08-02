@@ -26,5 +26,8 @@ public interface Scope {
 
     Declaration getDirectMember(String name);
 
+    boolean isInherited(Declaration d);
+    public TypeDeclaration getInheritingDeclaration(Declaration d);
+
     Scope getContainer();
 }

@@ -224,7 +224,62 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
         }
     }
 
-    Declaration getSupertypeDeclaration(final String name) {
+    @Override
+    public boolean isInherited(Declaration d) {
+        if (d.getContainer()==this) {
+            return false;
+        }
+        else if (getDeclaringSupertype(d)!=null) {
+            return true;
+        }
+        else if (getContainer()!=null) {
+            return getContainer().isInherited(d);
+        }
+        else {
+            return false;
+        }
+    }
+
+    @Override
+    public TypeDeclaration getInheritingDeclaration(Declaration d) {
+        if (d.getContainer()==this) {
+            return null;
+        }
+        else {
+            TypeDeclaration st = getDeclaringSupertype(d);
+            if (st!=null) {
+                return st;
+            }
+            else if (getContainer()!=null) {
+                return getContainer().getInheritingDeclaration(d);
+            }
+            else {
+                return null;
+            }
+        }
+    }
+
+    private TypeDeclaration getDeclaringSupertype(final Declaration member) {
+        class Criteria implements ProducedType.Criteria {
+            @Override
+            public boolean satisfies(ProducedType type) {
+                if (type.getDeclaration()==TypeDeclaration.this) {
+                    return false;
+                }
+                Declaration d = type.getDeclaration().getDirectMember(member.getName());
+                if (d==member) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        };
+        ProducedType st = getType().getSupertype(new Criteria());
+        return st==null ? null : st.getDeclaration();
+    }
+
+    private Declaration getSupertypeDeclaration(final String name) {
         class Criteria implements ProducedType.Criteria {
             @Override
             public boolean satisfies(ProducedType type) {
@@ -237,8 +292,7 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
                 }
             }
         };
-        Criteria c = new Criteria();
-        ProducedType st = getType().getSupertype(c);
+        ProducedType st = getType().getSupertype(new Criteria());
         if (st!=null) {
             return st.getDeclaration().getDirectMember(name);
         }

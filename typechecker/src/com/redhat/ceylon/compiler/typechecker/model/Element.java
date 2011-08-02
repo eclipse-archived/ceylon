@@ -106,5 +106,28 @@ public abstract class Element {
             return null;
         }
     }
-
+    
+    public boolean isInherited(Declaration d) {
+        if (d.getContainer()==this) {
+            return false;
+        }
+        else if (getContainer()!=null) {
+            return getContainer().isInherited(d);
+        }
+        else {
+            return false;
+        }
+    }
+    
+    public TypeDeclaration getInheritingDeclaration(Declaration d) {
+        if (d.getContainer()==this) {
+            return null;
+        }
+        else if (getContainer()!=null) {
+            return getContainer().getInheritingDeclaration(d);
+        }
+        else {
+            return null;
+        }
+    }
 }
