@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.name;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +20,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassBody;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -212,16 +210,16 @@ public abstract class AbstractVisitor extends Visitor {
         return (Class) ((TypeDeclaration) getLanguageModuleDeclaration("Entry"));
     }
     
-    protected void checkTypeBelongsToContainingScope(ProducedType type,
-            Scope s, Node that) {
+    protected static void checkTypeBelongsToContainingScope(ProducedType type,
+            Scope scope, Node that) {
         //TODO: this does not account for types 
         //      inherited by a containing scope!
         //TODO: what if the type arguments don't match?!
-        while (s!=null) {
-            if (type.getDeclaration().getContainer()==s) {
+        while (scope!=null) {
+            if (type.getDeclaration().getContainer()==scope) {
                 return;
             }
-            s=s.getContainer();
+            scope=scope.getContainer();
         }
         that.addError("illegal use of qualified type outside scope of qualifying type: " + 
                 type.getProducedTypeName());
@@ -245,7 +243,7 @@ public abstract class AbstractVisitor extends Visitor {
     }
     
     protected Tree.Statement getLastExecutableStatement(Tree.ClassBody that) {
-        List<Statement> statements = that.getStatements();
+        List<Tree.Statement> statements = that.getStatements();
         for (int i=statements.size()-1; i>=0; i--) {
             Tree.Statement s = statements.get(i);
             if (s instanceof Tree.ExecutableStatement) {

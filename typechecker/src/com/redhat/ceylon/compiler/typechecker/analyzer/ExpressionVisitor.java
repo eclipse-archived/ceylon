@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.*;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.*;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -1186,8 +1186,9 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
     
     private Parameter getMatchingParameter(ParameterList pl, Tree.NamedArgument na) {
+        String name = name(na.getIdentifier());
         for (Parameter p: pl.getParameters()) {
-            if (p.getName().equals(na.getIdentifier().getText())) {
+            if (p.getName().equals(name)) {
                 return p;
             }
         }
@@ -1956,16 +1957,16 @@ public class ExpressionVisitor extends AbstractVisitor {
         ProducedType pt = that.getPrimary().getTypeModel();
         if (pt!=null && that.getIdentifier()!=null) {
             TypedDeclaration member = (TypedDeclaration) unwrap(pt, that).getDeclaration()
-                    .getMember(that.getIdentifier().getText());
+                    .getMember(name(that.getIdentifier()));
             if (member==null) {
                 that.addError("member method or attribute does not exist: " +
-                        that.getIdentifier().getText());
+                        name(that.getIdentifier()));
             }
             else {
                 that.setDeclaration(member);
                 if (!member.isVisible(that.getScope())) {
                     that.addError("member method or attribute is not visible: " +
-                            that.getIdentifier().getText());
+                            name(that.getIdentifier()));
                 }
                 Tree.TypeArguments tal = that.getTypeArguments();
                 if (explicitTypeArguments(member,tal)) {
@@ -2017,7 +2018,7 @@ public class ExpressionVisitor extends AbstractVisitor {
             ProducedType t = pr.getType();
             if (t==null) {
                 that.addError("could not determine type of method or attribute reference: " +
-                        that.getIdentifier().getText());
+                        name(that.getIdentifier()));
             }
             else {
                 that.setTypeModel(t);
@@ -2054,7 +2055,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         ProducedType pt = that.getPrimary().getTypeModel();
         if (pt!=null) {
             TypeDeclaration type = (TypeDeclaration) unwrap(pt, that).getDeclaration()
-                    .getMember(that.getIdentifier().getText());
+                    .getMember(name(that.getIdentifier()));
             if (type==null) {
                 that.addError("member type does not exist: " +
                         name(that.getIdentifier()));
@@ -2063,7 +2064,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                 that.setDeclaration(type);
                 if (!type.isVisible(that.getScope())) {
                     that.addError("member type is not visible: " +
-                            that.getIdentifier().getText());
+                            name(that.getIdentifier()));
                 }
                 Tree.TypeArguments tal = that.getTypeArguments();
                 if (explicitTypeArguments(type, tal)) {

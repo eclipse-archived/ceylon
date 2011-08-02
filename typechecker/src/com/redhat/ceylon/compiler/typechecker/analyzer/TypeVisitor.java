@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.*;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -95,7 +96,7 @@ public class TypeVisitor extends AbstractVisitor {
     private boolean hasName(List<Tree.Identifier> importPath, Package mp) {
         if (mp.getName().size()==importPath.size()) {
             for (int i=0; i<mp.getName().size(); i++) {
-                if (!mp.getName().get(i).equals(importPath.get(i).getText())) {
+                if (!mp.getName().get(i).equals(name(importPath.get(i)))) {
                     return false;
                 }
             }
@@ -109,12 +110,12 @@ public class TypeVisitor extends AbstractVisitor {
     private String importMember(Tree.ImportMemberOrType member, Package importedPackage) {
         Import i = new Import();
         Tree.Alias alias = member.getAlias();
-        String name = member.getIdentifier().getText();
+        String name = name(member.getIdentifier());
         if (alias==null) {
             i.setAlias(name);
         }
         else {
-            i.setAlias(alias.getIdentifier().getText());
+            i.setAlias(name(alias.getIdentifier()));
         }
         Declaration d = importedPackage.getMember(name);
         if (d==null) {
@@ -152,7 +153,7 @@ public class TypeVisitor extends AbstractVisitor {
         TypeDeclaration type = getBaseDeclaration(that);
         if (type==null) {
             that.addError("type declaration not found: " + 
-                    that.getIdentifier().getText());
+                    name(that.getIdentifier()));
         }
         else {
             ProducedType outerType;
@@ -188,15 +189,15 @@ public class TypeVisitor extends AbstractVisitor {
         ProducedType pt = that.getOuterType().getTypeModel();
         if (pt!=null) {
             TypeDeclaration type = (TypeDeclaration) pt.getDeclaration()
-                        .getMember(that.getIdentifier().getText());
+                        .getMember(name(that.getIdentifier()));
             if (type==null) {
                 that.addError("member type declaration not found: " + 
-                        that.getIdentifier().getText());
+                        name(that.getIdentifier()));
             }
             else {
                 if (!type.isVisible(that.getScope())) {
                     that.addError("member type is not visible: " +
-                            that.getIdentifier().getText());
+                            name(that.getIdentifier()));
                 }
                 visitSimpleType(that, pt, type);
             }

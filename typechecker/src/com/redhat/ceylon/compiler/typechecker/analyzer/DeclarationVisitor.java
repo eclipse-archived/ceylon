@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.*;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -535,7 +535,7 @@ public class DeclarationVisitor extends Visitor {
             for (Tree.Annotation a: al.getAnnotations()) {
                 Tree.BaseMemberExpression p = (Tree.BaseMemberExpression) a.getPrimary();
                 if (p!=null) {
-                    if ( p.getIdentifier().getText().equals(name)) {
+                    if ( name(p.getIdentifier()).equals(name) ) {
                         return true;
                     }
                 }
@@ -716,7 +716,7 @@ public class DeclarationVisitor extends Visitor {
 
     @Override
     public void visit(Tree.TypeConstraint that) {
-        TypeParameter p = (TypeParameter) scope.getMemberOrParameter(unit, that.getIdentifier().getText());
+        TypeParameter p = (TypeParameter) scope.getMemberOrParameter(unit, name(that.getIdentifier()));
         that.setDeclarationModel(p);
         if (p==null ) {
             that.addError("no matching type parameter for constraint: " + 
