@@ -3,13 +3,13 @@ package ceylon.language;
 public interface Correspondence<Key extends Equality,Value> {
     public Value value(Key key);
 
-    public Boolean defines(Key key);
+    public boolean defines(Key key);
 //   return value(key) exists;
 
     public Category getKeys();
     /*
 shared default object keys satisfies Category {
-   shared actual Boolean contains(Object value) {
+   shared actual boolean contains(Object value) {
        if (is Key value) {
            return defines(value);
        }
@@ -19,7 +19,7 @@ shared default object keys satisfies Category {
    }
 }*/
 
-    public Boolean definesEvery(Key... keys);
+    public boolean definesEvery(Key... keys);
     /*
    for (Key key in keys) {
        if (!defines(key)) {
@@ -31,7 +31,7 @@ shared default object keys satisfies Category {
    }
 }*/
 
-    public Boolean definesAny(Key... keys);/* {
+    public boolean definesAny(Key... keys);/* {
    for (Key key in keys) {
        if (defines(key)) {
            return true;

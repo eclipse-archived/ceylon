@@ -41,8 +41,8 @@ public final class Integer
         return instance(-value);
     }
 
-    public ceylon.language.Boolean test(ceylon.language.Integer op) {
-        return ceylon.language.Boolean.instance(value == op.value);
+    public boolean test(ceylon.language.Integer op) {
+        return value == op.value;
     }
 
     public ceylon.language.Comparison compare(ceylon.language.Integer op) {
@@ -52,8 +52,12 @@ public final class Integer
             ((x == y) ? Comparison.EQUAL : Comparison.LARGER);
     }
 
-    public ceylon.language.Boolean equalsXXX(ceylon.language.Integer s) {
-        return Boolean.instance(value == s.value);
+    public boolean equals(ceylon.language.Integer s) {
+        if (s instanceof Integer) {
+            return value == s.value;
+        } else {
+            return false;
+        }
     }
 
     @Extension
@@ -111,7 +115,7 @@ public final class Integer
     }
 
     @Override
-    public Boolean equals(Equality that) {
+    public boolean equals(Equality that) {
         // FIXME
         throw new RuntimeException("Not implemented");
     }

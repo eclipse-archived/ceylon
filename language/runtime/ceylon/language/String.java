@@ -24,12 +24,12 @@ public final class String implements Equality {
     }
 
 	@Override
-    public ceylon.language.Boolean equals(Equality that) {
+    public boolean equals(Equality that) {
 		if (that instanceof String) {
 			String s = (String)that;
-			return Boolean.instance(value.equals(s.value));
+			return value.equals(s.value);
 		} else {
-			return Boolean.instance(false);
+			return false;
 		}
     }
 

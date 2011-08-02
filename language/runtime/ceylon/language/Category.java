@@ -1,9 +1,9 @@
 package ceylon.language;
 
 public interface Category {
-    public Boolean contains(Object value);
+    public boolean contains(Object value);
     
-    public Boolean containsEvery(Object... objects);/* {
+    public boolean containsEvery(Object... objects);/* {
         for (Object obj in objects) {
             if (!contains(obj)) {
                 return false;
@@ -14,7 +14,7 @@ public interface Category {
         }
     }*/
 
-    public Boolean containsAny(Object... objects); /*{
+    public boolean containsAny(Object... objects); /*{
         for (Object obj in objects) {
             if (contains(obj)) {
                 return true;

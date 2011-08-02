@@ -1,6 +1,6 @@
 package ceylon.language;
 
-public class Entry<K extends Equality, E extends Equality> extends Object implements Equality {
+public class Entry<K extends java.lang.Object /* Equality */, E extends java.lang.Object /* Equality */> extends Object implements Equality {
 	private K key;
 	private E element;
 	
@@ -20,12 +20,12 @@ public class Entry<K extends Equality, E extends Equality> extends Object implem
 	// shared actual Integer hash
 	
 	@Override
-	public Boolean equals(Equality that) {
+	public boolean equals(Equality that) {
 		if (that instanceof Entry) {
 			Entry<K, E> that2 = (Entry)that;
-			return Boolean.instance((this.key.equals(that2.key).booleanValue() && this.element.equals(that2.element).booleanValue()));
+			return (this.key.equals(that2.key) && this.element.equals(that2.element));
 		} else {
-			return Boolean.instance(false);
+			return false;
 		}
 	}
 }

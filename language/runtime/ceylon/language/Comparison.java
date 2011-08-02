@@ -5,28 +5,28 @@ public class Comparison extends Object {
     public static final Comparison SMALLER = new Comparison();
     public static final Comparison EQUAL = new Comparison();
 
-    public ceylon.language.Boolean larger() {
-        return ceylon.language.Boolean.instance(this == LARGER);
+    public boolean larger() {
+        return this == LARGER;
     }
 
-    public ceylon.language.Boolean smaller() {
-        return ceylon.language.Boolean.instance(this == SMALLER);
+    public boolean smaller() {
+        return this == SMALLER;
     }
 
-    public ceylon.language.Boolean equal() {
-        return ceylon.language.Boolean.instance(this == EQUAL);
+    public boolean equal() {
+        return this == EQUAL;
     }
 
-    public ceylon.language.Boolean unequal() {
-        return ceylon.language.Boolean.instance(this != EQUAL);
+    public boolean unequal() {
+        return this != EQUAL;
     }
 
-    public ceylon.language.Boolean largeAs() {
-        return ceylon.language.Boolean.instance(this != SMALLER);
+    public boolean largeAs() {
+        return this != SMALLER;
     }
 
-    public ceylon.language.Boolean smallAs() {
-        return ceylon.language.Boolean.instance(this != LARGER);
+    public boolean smallAs() {
+        return this != LARGER;
     }
 
     @Extension

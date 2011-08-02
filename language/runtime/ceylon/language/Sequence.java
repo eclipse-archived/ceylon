@@ -10,7 +10,7 @@ public interface Sequence<Element>
     
     public Sequence<Element> getRest();
     
-    public Boolean getEmpty();
+    public boolean getEmpty();
         // return false;
     
     public Natural getSize();
@@ -26,7 +26,7 @@ public interface Sequence<Element>
         } 
     }*/
     
-    public Boolean defines(Natural index);
+    public boolean defines(Natural index);
 //        return index<=lastIndex;
     
     //this depends on efficient implementation of rest
