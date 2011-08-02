@@ -33,7 +33,7 @@ public final class Decimal
     }
 
     @Extension
-    public ceylon.language.String string() {
+    public java.lang.String toString() {
         throw new RuntimeException("not implemented");
     }
 

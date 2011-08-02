@@ -37,7 +37,7 @@ public final class Whole
     }
 
     @Extension
-    public ceylon.language.String string() {
+    public java.lang.String toString() {
         throw new RuntimeException("not implemented");
     }
 

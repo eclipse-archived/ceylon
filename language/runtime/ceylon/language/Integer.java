@@ -57,8 +57,8 @@ public final class Integer
     }
 
     @Extension
-    public ceylon.language.String string() {
-        return ceylon.language.String.instance(java.lang.Long.toString(value));
+    public java.lang.String toString() {
+        return java.lang.Long.toString(value);
     }
 
     // Conversions between numeric types

@@ -2,9 +2,8 @@ package ceylon.language;
 
 public abstract class Object extends Void {
 
-    /** A developer-friendly string representing the instance. */
-    public ceylon.language.String getString() {
-        return String.instance("");
+    public java.lang.String toString() {
+        return super.toString();
     }
 
     public synchronized static void addAnnotation(java.lang.Class klass,
@@ -13,8 +12,8 @@ public abstract class Object extends Void {
     }
 
     public synchronized static void addAnnotation(java.lang.Class klass,
-                                         String memberName,
-                                         Sequence<?> annos) {
+                                                  java.lang.String memberName,
+                                                  Sequence<?> annos) {
         Types.create(klass).addAnnotations(klass, annos);
     }
 

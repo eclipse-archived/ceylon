@@ -17,7 +17,7 @@ public abstract class IdentifiableObject extends Object implements Equality {
     }
     */       
     
-    public String getString() {
+    public java.lang.String toString() {
         throw new RuntimeException(); //TODO!
     }
 }

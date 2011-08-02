@@ -1,13 +1,13 @@
 package ceylon.language;
 
 public abstract class Case extends IdentifiableObject {
-    private final String string;
+    private final java.lang.String string;
     
-    public Case(String caseName){
+    public Case(java.lang.String caseName){
         this.string = caseName;
     }
     
-    public String getString(){
+    public java.lang.String toString(){
         return string;
     }
 }

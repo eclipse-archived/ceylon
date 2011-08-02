@@ -37,7 +37,7 @@ public class Type
         }
     }
 
-    public String asString() {
-        return String.instance(klass.toString());
+    public java.lang.String toString() {
+        return klass.toString();
     }
 }
