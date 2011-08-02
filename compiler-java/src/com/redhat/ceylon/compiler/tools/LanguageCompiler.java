@@ -200,7 +200,7 @@ public class LanguageCompiler extends JavaCompiler {
                 // FIXME: this is bad in many ways
                 String pkgName = getPackage(filename);
                 com.redhat.ceylon.compiler.typechecker.model.Package p = modelLoader.findOrCreatePackage(modelLoader.findOrCreateModule(pkgName), pkgName == null ? "" : pkgName);
-                PhasedUnit phasedUnit = new PhasedUnit(file, srcDir, cu, p, moduleBuilder, ceylonContext);
+                PhasedUnit phasedUnit = new CeylonPhasedUnit(file, srcDir, cu, p, moduleBuilder, ceylonContext, filename, map);
                 phasedUnits.addPhasedUnit(file, phasedUnit);
                 gen.setMap(map);
 
