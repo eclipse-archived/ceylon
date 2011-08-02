@@ -45,8 +45,8 @@ public final class Float
     }
 
     @Extension
-    public ceylon.language.String string() {
-        return ceylon.language.String.instance(java.lang.Double.toString(value));
+    public java.lang.String toString() {
+        return java.lang.Double.toString(value);
     }
 
     // Conversions between numeric types

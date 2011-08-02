@@ -20,8 +20,7 @@ public final class Character extends Object
         return instance(java.lang.Character.toUpperCase(value));
     }
 
-    @Extension
-    public ceylon.language.String string() {
-        return ceylon.language.String.instance(java.lang.Character.toString(value));
+    public java.lang.String toString() {
+        return java.lang.Character.toString(value);
     }
 }

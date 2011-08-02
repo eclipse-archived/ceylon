@@ -13,7 +13,7 @@ final class bar {
     private bar() {
     }
     
-    static ceylon.language.Natural bar(final ceylon.language.Natural i, final ceylon.language.String j) {
+    static ceylon.language.Natural bar(final ceylon.language.Natural i, final java.lang.String j) {
         return .ceylon.language.Natural.instance(1L);
     }
 }
@@ -21,7 +21,7 @@ class ToplevelMethodInvocation {
     
     private final ceylon.language.Natural m() {
         foo.foo();
-        return bar.bar(.ceylon.language.Natural.instance(1L), .ceylon.language.String.instance(""));
+        return bar.bar(.ceylon.language.Natural.instance(1L), "");
     }
     
     ToplevelMethodInvocation() {

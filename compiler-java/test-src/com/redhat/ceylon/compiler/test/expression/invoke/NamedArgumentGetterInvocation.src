@@ -4,15 +4,15 @@ class NamedArgumentGetterInvocation {
     
     private final ceylon.language.Boolean m() {
         return new com.redhat.ceylon.compiler.impl.NamedArgumentCall<NamedArgumentInvocation>(this, 
-            new Object(){ ceylon.language.String get(){ return "foo"; } }.get(), 
+            new Object(){ java.lang.String get(){ return "foo"; } }.get(), 
             new Object(){ ceylon.language.Natural get(){ return 2; } }.get()) {
             final ceylon.language.Boolean f() {
-                return instance.f((ceylon.language.Natural) args[1], (ceylon.language.String) args[0]);
+                return instance.f((ceylon.language.Natural) args[1], (java.lang.String) args[0]);
             }
          }.f();
     }
     
-    private final ceylon.language.Boolean f(final ceylon.language.Natural n, final ceylon.language.String s) {
+    private final ceylon.language.Boolean f(final ceylon.language.Natural n, final java.lang.String s) {
         return ceylon.language.$true.getTrue();
     }
     

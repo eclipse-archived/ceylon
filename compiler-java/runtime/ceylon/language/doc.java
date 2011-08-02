@@ -7,7 +7,7 @@ import com.redhat.ceylon.compiler.metadata.java.Method;
 @Method
 public final class doc
 {
-    public static Nothing doc(ceylon.language.String description) {
+    public static Nothing doc(java.lang.String description) {
         return null;
     }
     private doc(){}

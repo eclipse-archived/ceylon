@@ -6,6 +6,6 @@ public final class helloworld {
     }
     
     public static void helloworld(final ceylon.language.Process process) {
-        process.writeLine(.ceylon.language.String.instance("Hello World"));
+        process.writeLine("Hello World");
     }
 }

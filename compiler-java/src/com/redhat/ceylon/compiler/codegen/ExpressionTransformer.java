@@ -332,7 +332,8 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     JCExpression ceylonLiteral(String s) {
         JCLiteral lit = make().Literal(s);
-        return make().Apply(null, makeSelect(makeIdent(syms().ceylonStringType), "instance"), List.<JCExpression> of(lit));
+//        return make().Apply(null, makeSelect(makeIdent(syms().ceylonStringType), "instance"), List.<JCExpression> of(lit));
+        return lit;
     }
 
     public JCExpression transform(Tree.StringLiteral string) {
@@ -354,7 +355,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         operand.visit(v);
         
         JCExpression expr;
-        if (gen.willErase(operand.getTypeModel())) {
+        if (gen.willEraseToObject(operand.getTypeModel())) {
             // Erased types need a type cast
             JCExpression targetType = gen.makeJavaType(access.getTarget().getDeclaringType());
             expr = gen.makeSelect(make().TypeCast(targetType, (JCExpression) v.getSingleResult()), memberName.getText());

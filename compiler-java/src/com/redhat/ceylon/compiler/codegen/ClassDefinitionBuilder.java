@@ -165,7 +165,7 @@ public class ClassDefinitionBuilder {
     public ClassDefinitionBuilder typeParameter(String name, java.util.List<ProducedType> types) {
         ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
         for (ProducedType t : types) {
-            if (!gen.willErase(t)) {
+            if (!gen.willEraseToObject(t)) {
                 bounds.append(gen.makeJavaType(t));
             }
         }

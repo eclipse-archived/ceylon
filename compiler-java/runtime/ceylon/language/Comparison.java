@@ -30,7 +30,7 @@ public class Comparison extends Object {
     }
 
     @Extension
-    public ceylon.language.String string() {
+    public java.lang.String toString() {
         java.lang.String result;
         if (this == LARGER)
             result = "LARGER";
@@ -39,6 +39,6 @@ public class Comparison extends Object {
         else
             result = "EQUAL";
 
-        return ceylon.language.String.instance(result);
+        return result;
     }
 }

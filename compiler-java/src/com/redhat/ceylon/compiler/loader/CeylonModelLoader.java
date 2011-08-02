@@ -296,6 +296,9 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     }
     
     private Declaration convertToDeclaration(String typeName, DeclarationType declarationType) {
+        if ("ceylon.language.String".equals(typeName)) {
+            typeName = "java.lang.String";
+        }
         ClassSymbol classSymbol = lookupClassSymbol(typeName);
         if(classSymbol == null)
             throw new RuntimeException("Failed to resolve "+typeName);

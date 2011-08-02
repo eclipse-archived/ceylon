@@ -3,8 +3,8 @@ package com.redhat.ceylon.compiler.test.statement.attribute;
 class MethodVariableWithInitializer {
     
     public final void m() {
-        ceylon.language.String f;
-        f = .ceylon.language.String.instance("");
+        java.lang.String f;
+        f = "";
     }
     
     MethodVariableWithInitializer() {

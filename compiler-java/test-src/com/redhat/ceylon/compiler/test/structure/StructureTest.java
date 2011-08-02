@@ -42,6 +42,10 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("klass/Extends");
     }
     @Test
+    public void testKlsExtendsErasure(){
+        compareWithJavaSource("klass/ExtendsErasure");
+    }
+    @Test
     public void testKlsSatisfies(){
         compareWithJavaSource("klass/Satisfies");
     }

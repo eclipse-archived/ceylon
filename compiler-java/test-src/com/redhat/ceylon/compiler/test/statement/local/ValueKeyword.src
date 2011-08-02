@@ -3,8 +3,8 @@ package com.redhat.ceylon.compiler.test.statement.local;
 class ValueKeyword {
     
     private final void m() {
-        final ceylon.language.String f = .ceylon.language.String.instance("");
-        final ceylon.language.String l = f;
+        final java.lang.String f = "";
+        final java.lang.String l = f;
         final ceylon.language.Natural l2 = test();
     }
     

@@ -401,14 +401,20 @@ public class CeylonTransformer {
         return (tdecl instanceof UnionType && tdecl.getCaseTypes().size() > 1);
     }
     
-    // Determines if a type will be erased once converted to Java
-    boolean willErase(ProducedType type) {
+    // Determines if a type will be erased to java.lang.Object once converted to Java
+    boolean willEraseToObject(ProducedType type) {
         type = simplifyType(type);
         return (toPType(syms.ceylonVoidType).isExactly(type) || toPType(syms.ceylonObjectType).isExactly(type)
                 || toPType(syms.ceylonNothingType).isExactly(type) || toPType(syms.ceylonEqualityType).isExactly(type)
                 || toPType(syms.ceylonIdentifiableObjectType).isExactly(type)
                 || type.getDeclaration() instanceof BottomType
                 || isUnion(type));
+    }
+    
+    // Determine if the type is a Ceylon String (which will be erased to a Java String)
+    boolean willEraseToString(ProducedType type) {
+        type = simplifyType(type);
+        return (toPType(syms.ceylonVoidType).isExactly(type));
     }
 
     static final int SATISFIES_OR_EXTENDS = 1 << 0;
@@ -419,13 +425,15 @@ public class CeylonTransformer {
     }
 
     JCExpression makeJavaType(ProducedType type, int flags) {
-        if (willErase(type)) {
+        if (willEraseToObject(type)) {
             // For an erased type:
             // - Any of the Ceylon types Void, Object, Nothing, Equality,
             //   IdentifiableObject, and Bottom result in the Java type Object
             // For any other union type U|V (U nor V is Optional):
             // - The Ceylon type U|V results in the Java type Object
             return make.Type(syms.objectType);
+        } else if (willEraseToString(type)) {
+            return make.Type(syms.stringType);
         }
         
         JCExpression jt;

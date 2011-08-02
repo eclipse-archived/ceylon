@@ -1,38 +1,38 @@
 package com.redhat.ceylon.compiler.test.structure.attribute;
 
 abstract class ClassVariable {
-    private ceylon.language.String publicvar;
+    private java.lang.String publicvar;
     
-    public final ceylon.language.String getPublicvar() {
+    public final java.lang.String getPublicvar() {
         return this.publicvar;
     }
     
-    public final void setPublicvar(ceylon.language.String publicvar) {
+    public final void setPublicvar(java.lang.String publicvar) {
         this.publicvar = publicvar;
     }
-    private ceylon.language.String capturedvar;
+    private java.lang.String capturedvar;
     
-    private final ceylon.language.String getCapturedvar() {
+    private final java.lang.String getCapturedvar() {
         return this.capturedvar;
     }
     
-    private final void setCapturedvar(ceylon.language.String capturedvar) {
+    private final void setCapturedvar(java.lang.String capturedvar) {
         this.capturedvar = capturedvar;
     }
     
-    public abstract ceylon.language.String getFormalvar();
+    public abstract java.lang.String getFormalvar();
     
-    public abstract void setFormalvar(ceylon.language.String formalvar);
+    public abstract void setFormalvar(java.lang.String formalvar);
     
     private final void m() {
-        setCapturedvar(.ceylon.language.String.instance("new value"));
+        setCapturedvar("new value");
     }
     
     ClassVariable() {
-        ceylon.language.String uncapturedvar;
-        setPublicvar(.ceylon.language.String.instance(""));
-        uncapturedvar = .ceylon.language.String.instance("");
-        setCapturedvar(.ceylon.language.String.instance(""));
-        setFormalvar(.ceylon.language.String.instance(""));
+        java.lang.String uncapturedvar;
+        setPublicvar("");
+        uncapturedvar = "";
+        setCapturedvar("");
+        setFormalvar("");
     }
 }

@@ -5,7 +5,7 @@ import com.redhat.ceylon.compiler.metadata.java.Ceylon;
 
 @Ceylon @Attribute
 public class $true {
-    private final static Boolean value = new Boolean(String.instance("true")){
+    private final static Boolean value = new Boolean("true"){
 			@Override
 			public boolean booleanValue() {
 				return true;

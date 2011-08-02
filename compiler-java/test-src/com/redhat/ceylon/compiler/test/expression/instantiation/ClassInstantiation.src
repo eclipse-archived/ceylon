@@ -21,9 +21,9 @@ class ClassInstantiationWithParam {
 class ClassInstantiationWithParams {
     
     public final com.redhat.ceylon.compiler.test.expression.instantiation.ClassInstantiationWithParams m() {
-        return new ClassInstantiationWithParams(.ceylon.language.Natural.instance(2L), .ceylon.language.String.instance(""));
+        return new ClassInstantiationWithParams(.ceylon.language.Natural.instance(2L), "");
     }
     
-    ClassInstantiationWithParams(ceylon.language.Natural i, ceylon.language.String j) {
+    ClassInstantiationWithParams(ceylon.language.Natural i, java.lang.String j) {
     }
 }

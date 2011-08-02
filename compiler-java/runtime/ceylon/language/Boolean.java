@@ -2,7 +2,7 @@ package ceylon.language;
 
 public abstract class Boolean extends Case {
 
-    public Boolean(String caseName) {
+    public Boolean(java.lang.String caseName) {
         super(caseName);
     }
 
