@@ -229,7 +229,7 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
         if (d.getContainer()==this) {
             return false;
         }
-        else if (getDeclaringSupertype(d)!=null) {
+        else if (isInheritedFromSupertype(d)) {
             return true;
         }
         else if (getContainer()!=null) {
@@ -245,38 +245,26 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
         if (d.getContainer()==this) {
             return null;
         }
+        else if (isInheritedFromSupertype(d)) {
+            return this;
+        }
+        else if (getContainer()!=null) {
+            return getContainer().getInheritingDeclaration(d);
+        }
         else {
-            TypeDeclaration st = getDeclaringSupertype(d);
-            if (st!=null) {
-                return st;
-            }
-            else if (getContainer()!=null) {
-                return getContainer().getInheritingDeclaration(d);
-            }
-            else {
-                return null;
-            }
+            return null;
         }
     }
 
-    private TypeDeclaration getDeclaringSupertype(final Declaration member) {
+    private boolean isInheritedFromSupertype(final Declaration member) {
         class Criteria implements ProducedType.Criteria {
             @Override
             public boolean satisfies(ProducedType type) {
-                if (type.getDeclaration()==TypeDeclaration.this) {
-                    return false;
-                }
-                Declaration d = type.getDeclaration().getDirectMember(member.getName());
-                if (d==member) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
+                return type.getDeclaration()!=TypeDeclaration.this &&
+                    type.getDeclaration().getDirectMember(member.getName())==member;
             }
         };
-        ProducedType st = getType().getSupertype(new Criteria());
-        return st==null ? null : st.getDeclaration();
+        return getType().getSupertype(new Criteria())!=null;
     }
 
     private Declaration getSupertypeDeclaration(final String name) {
