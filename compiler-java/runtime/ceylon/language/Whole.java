@@ -73,7 +73,7 @@ public final class Whole
     }
 
     @Override
-    public Boolean equals(Equality that) {
+    public boolean equals(Equality that) {
         // FIXME
         throw new RuntimeException("Not implemented");
     }

@@ -17,12 +17,12 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
 	@Override
 	public Natural getLastIndex() {
-		return (getEmpty() == $true.getTrue()) ? null : Natural.instance(array.length - first - 1);
+		return (getEmpty() == true) ? null : Natural.instance(array.length - first - 1);
 	}
 
 	@Override
 	public Element getFirst() {
-		return (getEmpty() == $true.getTrue()) ? null : array[(int) first];
+		return (getEmpty() == true) ? null : array[(int) first];
 	}
 
 	@Override
@@ -31,22 +31,22 @@ public class ArraySequence<Element> implements Sequence<Element> {
 	}
 
 	@Override
-	public Boolean getEmpty() {
-		return Boolean.instance(array.length <= first);
+	public boolean getEmpty() {
+		return array.length <= first;
 	}
 
 	@Override
 	public Natural getSize() {
-		return Natural.instance((getEmpty() == $true.getTrue()) ? 0 : array.length - first);
+		return Natural.instance((getEmpty() == true) ? 0 : array.length - first);
 	}
 
 	@Override
 	public Element getLast() {
-		return (getEmpty() == $true.getTrue()) ? null : array[array.length - 1];
+		return (getEmpty() == true) ? null : array[array.length - 1];
 	}
 
 	@Override
-	public Boolean defines(Natural index) {
+	public boolean defines(Natural index) {
 		throw new RuntimeException("Not implemented yet");
 	}
 
@@ -86,12 +86,12 @@ public class ArraySequence<Element> implements Sequence<Element> {
 	}
 
 	@Override
-	public Boolean definesEvery(Natural... keys) {
+	public boolean definesEvery(Natural... keys) {
 		throw new RuntimeException("Not implemented yet");
 	}
 
 	@Override
-	public Boolean definesAny(Natural... keys) {
+	public boolean definesAny(Natural... keys) {
 		throw new RuntimeException("Not implemented yet");
 	}
 

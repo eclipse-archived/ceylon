@@ -1,7 +1,7 @@
 // FIXME Obviously not correct
 class MethodSwitch {
     
-    public ceylon.language.Integer m(final ceylon.language.Integer n) {
+    public int m(final int n) {
         n;
         .ceylon.language.Natural.instance(1L);
         return .ceylon.language.Natural.instance(1L);
@@ -9,7 +9,7 @@ class MethodSwitch {
         .ceylon.language.Natural.instance(3L);
         .ceylon.language.Natural.instance(4L);
         return n;
-        return .ceylon.language.Integer.instance(-1L);
+        return -1;
     }
     
     MethodSwitch() {

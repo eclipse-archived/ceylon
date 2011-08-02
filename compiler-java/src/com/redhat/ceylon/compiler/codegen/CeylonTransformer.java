@@ -12,6 +12,7 @@ import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.loader.CeylonModelLoader;
+import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -34,6 +35,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedDeclaration;
 import com.sun.tools.javac.code.BoundKind;
 import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.code.Type;
+import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.parser.Keywords;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -251,6 +253,34 @@ public class CeylonTransformer {
         return make.QualIdent(type.tsym);
     }
 
+    JCExpression makeInteger(long i) {
+        // FIXME Using Integer only to make hashCode() work!!
+        // We should introduce "small"!!
+        return make.Literal(Integer.valueOf((int)i));
+    }
+    
+    JCExpression makeBoolean(boolean b) {
+        JCExpression expr;
+        if (b) {
+            expr = make.Literal(TypeTags.BOOLEAN, Integer.valueOf(1));
+        } else {
+            expr = make.Literal(TypeTags.BOOLEAN, Integer.valueOf(0));
+        }
+        return expr;
+    }
+
+    JCExpression makeBooleanTest(JCExpression expr, boolean val) {
+        return make().Binary(JCTree.EQ, expr, makeBoolean(val));
+    }
+    
+    boolean isBooleanTrue(Declaration decl) {
+        return decl == modelLoader.getDeclaration("ceylon.language.$true", DeclarationType.VALUE);
+    }
+    
+    boolean isBooleanFalse(Declaration decl) {
+        return decl == modelLoader.getDeclaration("ceylon.language.$false", DeclarationType.VALUE);
+    }
+    
     // FIXME: port handleOverloadedToplevelClasses when I figure out what it
     // does
 
@@ -384,6 +414,10 @@ public class CeylonTransformer {
         }
     }
     
+    /*
+     * Checks a global map of variable name substitutions and returns
+     * either the original name if none was found or the substitute.
+     */
     String substitute(String varName) {
         if (varNameSubst.containsKey(varName)) {
             return varNameSubst.get(varName);            
@@ -392,7 +426,7 @@ public class CeylonTransformer {
         }
     }
 
-    private ProducedType toPType(com.sun.tools.javac.code.Type t) {
+    public ProducedType toPType(com.sun.tools.javac.code.Type t) {
         return modelLoader.getType(t.tsym.getQualifiedName().toString(), null);
     }
     
@@ -414,26 +448,59 @@ public class CeylonTransformer {
     // Determine if the type is a Ceylon String (which will be erased to a Java String)
     boolean willEraseToString(ProducedType type) {
         type = simplifyType(type);
-        return (toPType(syms.ceylonVoidType).isExactly(type));
+        return (toPType(syms.ceylonStringType).isExactly(type));
+    }
+    
+    // Determine if the type is a Ceylon Boolean (which will be erased to a Java Boolean/boolean)
+    boolean willEraseToBoolean(ProducedType type) {
+        type = simplifyType(type);
+        return (toPType(syms.ceylonBooleanType).isExactly(type));
+    }
+    
+    // Determine if the type is a Ceylon Integer (which will be erased to a Java Integer/int)
+    boolean willEraseToInteger(ProducedType type) {
+        type = simplifyType(type);
+        return (toPType(syms.ceylonIntegerType).isExactly(type));
     }
 
-    static final int SATISFIES_OR_EXTENDS = 1 << 0;
-    static final int WANT_RAW_TYPE = 1 << 1;
+    static final int SATISFIES = 1 << 0;
+    static final int EXTENDS = 1 << 1;
+    static final int TYPE_PARAM = 1 << 2;
+    static final int WANT_RAW_TYPE = 1 << 3;
 
     JCExpression makeJavaType(ProducedType producedType) {
         return makeJavaType(producedType, 0);
     }
 
     JCExpression makeJavaType(ProducedType type, int flags) {
+        int satisfiesOrExtends = flags & (SATISFIES | EXTENDS | TYPE_PARAM);
+        
+        // ERASURE
         if (willEraseToObject(type)) {
             // For an erased type:
             // - Any of the Ceylon types Void, Object, Nothing, Equality,
             //   IdentifiableObject, and Bottom result in the Java type Object
             // For any other union type U|V (U nor V is Optional):
             // - The Ceylon type U|V results in the Java type Object
-            return make.Type(syms.objectType);
+            if ((satisfiesOrExtends & SATISFIES) != 0) {
+                return null;
+            } else {
+                return make.Type(syms.objectType);
+            }
         } else if (willEraseToString(type)) {
             return make.Type(syms.stringType);
+        } else if (willEraseToBoolean(type)) {
+            if (satisfiesOrExtends != 0 || isOptional(type)) {
+                return make.Type(syms.booleanObjectType);
+            } else {
+                return make.TypeIdent(TypeTags.BOOLEAN);
+            }
+        } else if (willEraseToInteger(type)) {
+            if (satisfiesOrExtends != 0 || isOptional(type)) {
+                return make.Type(syms.integerObjectType);
+            } else {
+                return make.TypeIdent(TypeTags.INT);
+            }
         }
         
         JCExpression jt;
@@ -444,8 +511,6 @@ public class CeylonTransformer {
         if (((flags & WANT_RAW_TYPE) == 0) && tal != null && !tal.isEmpty()) {
             // GENERIC TYPES
 
-            boolean isSatisfiesOrExtends = ((flags & SATISFIES_OR_EXTENDS) != 0);
-            
             ListBuffer<JCExpression> typeArgs = new ListBuffer<JCExpression>();
 
             int idx = 0;
@@ -460,7 +525,7 @@ public class CeylonTransformer {
                 JCExpression jta;
                 if (ta.isExactly(toPType(syms.ceylonVoidType))) {
                     // For the root type Void:
-                    if (isSatisfiesOrExtends) {
+                    if (satisfiesOrExtends != 0) {
                         // - The Ceylon type Foo<Void> appearing in an extends or satisfies
                         //   clause results in the Java raw type Foo<Object>
                         jta = make.Type(syms.objectType);
@@ -480,7 +545,7 @@ public class CeylonTransformer {
                     }
                 } else if (ta.getDeclaration() instanceof BottomType) {
                     // For the bottom type Bottom:
-                    if (isSatisfiesOrExtends) {
+                    if (satisfiesOrExtends != 0) {
                         // - The Ceylon type Foo<Bottom> appearing in an extends or satisfies
                         //   clause results in the Java raw type Foo
                         // A bit ugly, but we need to escape from the loop and create a raw type, no generics
@@ -502,10 +567,10 @@ public class CeylonTransformer {
                     }
                 } else {
                     // For an ordinary class or interface type T:
-                    if (isSatisfiesOrExtends) {
+                    if (satisfiesOrExtends != 0) {
                         // - The Ceylon type Foo<T> appearing in an extends or satisfies clause
                         //   results in the Java type Foo<T>
-                        jta = makeJavaType(ta, SATISFIES_OR_EXTENDS);
+                        jta = makeJavaType(ta, satisfiesOrExtends);
                     } else {
                         // - The Ceylon type Foo<T> appearing anywhere else results in the Java type
                         // - Foo<T> if Foo is invariant in T,
@@ -513,11 +578,11 @@ public class CeylonTransformer {
                         // - Foo<? super T> if Foo is contravariant in T
                         TypeParameter tp = tdecl.getTypeParameters().get(idx);
                         if (tp.isContravariant()) {
-                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), makeJavaType(ta));
+                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), makeJavaType(ta, TYPE_PARAM));
                         } else if (tp.isCovariant()) {
-                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), makeJavaType(ta));
+                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), makeJavaType(ta, TYPE_PARAM));
                         } else {
-                            jta = makeJavaType(ta);
+                            jta = makeJavaType(ta, TYPE_PARAM);
                         }
                     }
                 }

@@ -7,12 +7,12 @@ class C {
 }
 interface I {
     
-    public abstract ceylon.language.Boolean id(final ceylon.language.Boolean x);
+    public abstract boolean id(final boolean x);
 }
 public final class x extends com.redhat.ceylon.compiler.test.structure.toplevel.C implements com.redhat.ceylon.compiler.test.structure.toplevel.I {
     
     @.java.lang.Override
-    public final ceylon.language.Boolean id(final ceylon.language.Boolean x) {
+    public final boolean id(final boolean x) {
         return x;
     }
     

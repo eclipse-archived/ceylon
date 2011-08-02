@@ -1,9 +1,9 @@
 @nomodel
 class InitializerIfElse(){
-   if(true){
-       false.equals(false);
-   }else{
-       true.equals(true);
-   }
-   false.equals(true);
+    variable Boolean b;
+    if(true){
+        b := true;
+    }else{
+        b := false;
+    }
 }

@@ -8,10 +8,10 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.tree.JCTree;
-import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.tree.JCTree.Factory;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
+import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
@@ -125,20 +125,6 @@ public abstract class AbstractVisitor<J extends JCTree> extends Visitor implemen
     protected JCExpression makeIdent(Type type) {
         return gen.makeIdent(type);
     }
-
-    protected JCExpression makeBoolean(boolean b) {
-        JCExpression expr;
-        if (b) {
-            expr = makeIdent("ceylon", "language", "$true", "getTrue");
-        } else {
-            expr = makeIdent("ceylon", "language", "$false", "getFalse");
-        }
-        return make().Apply(List.<JCTree.JCExpression>nil(), expr, List.<JCTree.JCExpression>nil());
-    }
-
-    protected JCExpression makeBooleanTest(JCExpression expr, boolean val) {
-        return make().Binary(JCTree.EQ, expr, makeBoolean(val));
-    }
     
     protected TreeMaker make() {
         return gen.make();
@@ -158,18 +144,6 @@ public abstract class AbstractVisitor<J extends JCTree> extends Visitor implemen
 
     protected Name.Table names() {
         return gen.names;
-    }
-
-    protected String tempName() {
-        return gen.tempName();
-    }
-
-    protected String tempName(String prefix) {
-        return gen.tempName(prefix);
-    }
-
-    protected String aliasName(String name) {
-        return gen.aliasName(name);
     }
     
 }

@@ -1,4 +1,4 @@
 @nomodel
 class InitializerParamAccessInInitializer(Boolean b){
-   b.equals(true);
+    Boolean b2 = b;
 }

@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.test.statement.attribute;
 class MethodAttributeWithLateInitializer {
     
     public final void m() {
-        final java.lang.String f;
+        final .java.lang.String f;
         f = "";
     }
     

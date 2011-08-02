@@ -118,6 +118,8 @@ public class Symtab {
     public final Type stringType;
     public final Type stringBufferType;
     public final Type stringBuilderType;
+    public final Type booleanObjectType;    
+    public final Type integerObjectType;    
     public final Type cloneableType;
     public final Type serializableType;
     public final Type throwableType;
@@ -431,6 +433,8 @@ public class Symtab {
         stringType = enterClass("java.lang.String");
         stringBufferType = enterClass("java.lang.StringBuffer");
         stringBuilderType = enterClass("java.lang.StringBuilder");
+        booleanObjectType = enterClass("java.lang.Boolean");
+        integerObjectType = enterClass("java.lang.Integer");
         cloneableType = enterClass("java.lang.Cloneable");
         throwableType = enterClass("java.lang.Throwable");
         serializableType = enterClass("java.io.Serializable");

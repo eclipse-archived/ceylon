@@ -1,13 +1,13 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
 final class b1 {
-    private static ceylon.language.Boolean value = ceylon.language.$true.getTrue();
+    private static boolean value = true;
     
-    static ceylon.language.Boolean getB1() {
+    static boolean getB1() {
         return value;
     }
     
-    static void setB1(ceylon.language.Boolean newValue) {
+    static void setB1(boolean newValue) {
         value = newValue;
     }
     
@@ -15,13 +15,13 @@ final class b1 {
     }
 }
 public final class b2 {
-    private static ceylon.language.Boolean value = ceylon.language.$true.getTrue();
+    private static boolean value = true;
     
-    public static ceylon.language.Boolean getB2() {
+    public static boolean getB2() {
         return value;
     }
     
-    public static void setB2(ceylon.language.Boolean newValue) {
+    public static void setB2(boolean newValue) {
         value = newValue;
     }
     
@@ -30,11 +30,11 @@ public final class b2 {
 }
 final class b3 {
     
-    static ceylon.language.Boolean getB3() {
-        return ceylon.language.$true.getTrue();
+    static boolean getB3() {
+        return true;
     }
     
-    static void setB3(ceylon.language.Boolean newValue) {
+    static void setB3(boolean newValue) {
     }
     
     private b3() {
@@ -42,11 +42,11 @@ final class b3 {
 }
 public final class b4 {
     
-    public static ceylon.language.Boolean getB4() {
-        return ceylon.language.$true.getTrue();
+    public static boolean getB4() {
+        return true;
     }
     
-    public static void setB4(ceylon.language.Boolean newValue) {
+    public static void setB4(boolean newValue) {
     }
     
     private b4() {
@@ -55,10 +55,10 @@ public final class b4 {
 class TopLevelAssign {
     
     private final void m() {
-        com.redhat.ceylon.compiler.test.expression.attribute.b1.setB1(ceylon.language.$false.getFalse());
-        com.redhat.ceylon.compiler.test.expression.attribute.b2.setB2(ceylon.language.$false.getFalse());
-        com.redhat.ceylon.compiler.test.expression.attribute.b3.setB3(ceylon.language.$false.getFalse());
-        com.redhat.ceylon.compiler.test.expression.attribute.b4.setB4(ceylon.language.$false.getFalse());
+        com.redhat.ceylon.compiler.test.expression.attribute.b1.setB1(false);
+        com.redhat.ceylon.compiler.test.expression.attribute.b2.setB2(false);
+        com.redhat.ceylon.compiler.test.expression.attribute.b3.setB3(false);
+        com.redhat.ceylon.compiler.test.expression.attribute.b4.setB4(false);
     }
     
     TopLevelAssign() {

@@ -1,6 +1,6 @@
 class MethodSwitchElse {
     
-    public ceylon.language.Integer m(final ceylon.language.Integer n) {
+    public int m(final int n) {
         n;
         .ceylon.language.Natural.instance(1L);
         return .ceylon.language.Natural.instance(1L);
@@ -9,7 +9,7 @@ class MethodSwitchElse {
         .ceylon.language.Natural.instance(4L);
         return n;
         return .ceylon.language.Natural.instance(0L);
-        return .ceylon.language.Integer.instance(-1L);
+        return -1;
     }
     
     MethodSwitchElse() {

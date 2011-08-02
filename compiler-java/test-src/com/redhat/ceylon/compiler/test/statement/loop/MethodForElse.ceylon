@@ -1,9 +1,9 @@
 @nomodel
 class MethodForElse(){
-    shared Natural m(Sequence<Integer> seq){
-        for(Integer i in seq){
+    shared Natural m(Sequence<String> seq){
+        for(String s in seq){
             while (true) {
-                for(Integer j in seq){
+                for(String t in seq){
                     break;
                 }
                 else {

@@ -296,9 +296,15 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     }
     
     private Declaration convertToDeclaration(String typeName, DeclarationType declarationType) {
+        // ERASURE
         if ("ceylon.language.String".equals(typeName)) {
             typeName = "java.lang.String";
+        } else if ("ceylon.language.Boolean".equals(typeName)) {
+            typeName = "java.lang.Boolean";
+        } else if ("ceylon.language.Integer".equals(typeName)) {
+            typeName = "java.lang.Integer";
         }
+        
         ClassSymbol classSymbol = lookupClassSymbol(typeName);
         if(classSymbol == null)
             throw new RuntimeException("Failed to resolve "+typeName);
@@ -492,26 +498,34 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 
                 if(isGetter(methodSymbol)) {
                     // simple attribute
-                    Value value = new Value();
-                    
-                    value.setShared((methodSymbol.flags() & Flags.PUBLIC) != 0);
-                    value.setContainer(klass);
-                    value.setName(Util.getAttributeName(methodName));
-                    klass.getMembers().add(value);
-                    
-                    // FIXME: deal with type override by annotations
-                    value.setType(getType(methodSymbol.getReturnType(), klass));
+                    addValue(klass, methodSymbol, Util.getAttributeName(methodName));
                 } else if(isSetter(methodSymbol)) {
                     // We skip setters for now and handle them later
                     variables.add(Util.getAttributeName(methodName));
+                } else if(isHashAttribute(methodSymbol)) {
+                    // ERASURE
+                    // Un-erasing 'hash' attribute from 'hashCode' method
+                    addValue(klass, methodSymbol, "hash");
+                } else if(isStringAttribute(methodSymbol)) {
+                    // ERASURE
+                    // Un-erasing 'string' attribute from 'toString' method
+                    addValue(klass, methodSymbol, "string");
                 } else {
                     // normal method
                     Method method = new Method();
                     
-                    method.setShared((methodSymbol.flags() & Flags.PUBLIC) != 0);
                     method.setContainer(klass);
                     method.setName(methodName);
-                    klass.getMembers().add(method);
+                    
+                    method.setShared((methodSymbol.flags() & Flags.PUBLIC) != 0);
+                    if((methodSymbol.flags() & Flags.ABSTRACT) != 0 || klass instanceof Interface) {
+                        method.setFormal(true);
+                    } else {
+                        method.setActual(true);
+                        if ((methodSymbol.flags() & Flags.FINAL) == 0) {
+                            method.setFormal(true);
+                        }
+                    }
                     
                     // type params first
                     setTypeParameters(method, methodSymbol);
@@ -520,6 +534,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                     setParameters(method, methodSymbol);
                     // FIXME: deal with type override by annotations
                     method.setType(getType(methodSymbol.getReturnType(), method));
+                    klass.getMembers().add(method);
                 }
             }
         }
@@ -558,6 +573,38 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         boolean hasOneParam = methodSymbol.getParameters().size() == 1;
         boolean hasVoidReturn = (methodSymbol.getReturnType().getKind() == TypeKind.VOID);
         return matchesSet && hasOneParam && hasVoidReturn;
+    }
+
+    private boolean isHashAttribute(MethodSymbol methodSymbol) {
+        String name = methodSymbol.name.toString();
+        boolean matchesName = "hashCode".equals(name);
+        boolean hasNoParams = methodSymbol.getParameters().size() == 0;
+        return matchesName && hasNoParams;
+    }
+    
+    private boolean isStringAttribute(MethodSymbol methodSymbol) {
+        String name = methodSymbol.name.toString();
+        boolean matchesName = "toString".equals(name);
+        boolean hasNoParams = methodSymbol.getParameters().size() == 0;
+        return matchesName && hasNoParams;
+    }
+    
+    private void addValue(ClassOrInterface klass, MethodSymbol methodSymbol, String methodName) {
+        Value value = new Value();
+        value.setContainer(klass);
+        value.setName(methodName);
+        value.setShared((methodSymbol.flags() & Flags.PUBLIC) != 0);
+        if((methodSymbol.flags() & Flags.ABSTRACT) != 0 || klass instanceof Interface) {
+            value.setFormal(true);
+        } else {
+            value.setActual(true);
+            if ((methodSymbol.flags() & Flags.FINAL) == 0) {
+                value.setFormal(true);
+            }
+        }
+        // FIXME: deal with type override by annotations
+        value.setType(getType(methodSymbol.getReturnType(), klass));
+        klass.getMembers().add(value);
     }
     
     private void setExtendedType(ClassOrInterface klass, ClassSymbol classSymbol) {

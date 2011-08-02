@@ -1,13 +1,13 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
 class InitializerParamAccess {
-    private final ceylon.language.Boolean b;
+    private final boolean b;
     
-    private final ceylon.language.Boolean m() {
+    private final boolean m() {
         return b;
     }
     
-    InitializerParamAccess(ceylon.language.Boolean b) {
+    InitializerParamAccess(boolean b) {
         this.b = b;
     }
 }

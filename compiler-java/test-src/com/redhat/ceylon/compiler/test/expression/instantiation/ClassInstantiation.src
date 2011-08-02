@@ -24,6 +24,6 @@ class ClassInstantiationWithParams {
         return new ClassInstantiationWithParams(.ceylon.language.Natural.instance(2L), "");
     }
     
-    ClassInstantiationWithParams(ceylon.language.Natural i, java.lang.String j) {
+    ClassInstantiationWithParams(ceylon.language.Natural i, .java.lang.String j) {
     }
 }

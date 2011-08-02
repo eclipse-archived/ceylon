@@ -33,6 +33,15 @@ public class Util {
     }
 
     public static String getGetterName(String property){
+        // ERASURE
+        if ("hash".equals(property)) {
+            // FIXME This is NOT the way to handle this, we should check that we're
+            // actually trying to override the hash attribute defined in Equality
+            return "hashCode";
+        } else if ("string".equals(property)) {
+            return "toString";
+        }
+        
         return "get"+capitalize(strip(property));
     }
 

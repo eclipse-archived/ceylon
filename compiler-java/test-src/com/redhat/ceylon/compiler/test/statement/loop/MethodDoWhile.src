@@ -4,7 +4,7 @@ class MethodDoWhile {
     
     public final ceylon.language.Natural m() {
         do {
-        }         while (ceylon.language.$false.getFalse() == ceylon.language.$true.getTrue());
+        }         while (false == true);
         return .ceylon.language.Natural.instance(0L);
     }
     

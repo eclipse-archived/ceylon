@@ -34,6 +34,7 @@ public class MethodDefinitionBuilder {
     private boolean isActual;
     
     private ProducedType resultType;
+    private JCExpression resultTypeExpr;
     
     private final ListBuffer<JCAnnotation> annotations = ListBuffer.lb();
     
@@ -64,6 +65,8 @@ public class MethodDefinitionBuilder {
     private MethodDefinitionBuilder(CeylonTransformer gen, String name) {
         this.gen = gen;
         this.name = name;
+        
+        resultTypeExpr = makeResultType(null);
     }
     
     public JCTree.JCMethodDecl build() {
@@ -78,7 +81,7 @@ public class MethodDefinitionBuilder {
         return gen.make().MethodDef(
                 gen.make().Modifiers(modifiers, annotations.toList()), 
                 makeName(name),
-                makeResultType(resultType),
+                resultTypeExpr,
                 typeParams.toList(), 
                 params.toList(),
                 List.<JCExpression> nil(),
@@ -194,6 +197,7 @@ public class MethodDefinitionBuilder {
 
     public MethodDefinitionBuilder resultType(ProducedType resultType) {
         this.resultType = resultType;
+        this.resultTypeExpr = makeResultType(resultType);
         return this;
     }
 }

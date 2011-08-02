@@ -2,11 +2,11 @@ package com.redhat.ceylon.compiler.test.structure.klass;
 
 interface InterfaceWithMembers {
     
-    public abstract ceylon.language.Boolean getB();
+    public abstract boolean getB();
     
-    public abstract ceylon.language.Boolean getB2();
+    public abstract boolean getB2();
     
-    public abstract void setB2(ceylon.language.Boolean b2);
+    public abstract void setB2(boolean b2);
     
     public abstract void m();
 }

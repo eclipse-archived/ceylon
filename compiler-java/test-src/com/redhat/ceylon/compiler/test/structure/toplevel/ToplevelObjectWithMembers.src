@@ -1,50 +1,50 @@
 package com.redhat.ceylon.compiler.test.structure.toplevel;
 
 final class x {
-    private final ceylon.language.Boolean valShared;
+    private final boolean valShared;
     
-    public final ceylon.language.Boolean getValShared() {
+    public final boolean getValShared() {
         return this.valShared;
     }
-    private final ceylon.language.Boolean valCaptured;
+    private final boolean valCaptured;
     
-    private final ceylon.language.Boolean getValCaptured() {
+    private final boolean getValCaptured() {
         return this.valCaptured;
     }
-    private ceylon.language.Boolean varShared;
+    private boolean varShared;
     
-    public final ceylon.language.Boolean getVarShared() {
+    public final boolean getVarShared() {
         return this.varShared;
     }
     
-    public final void setVarShared(ceylon.language.Boolean varShared) {
+    public final void setVarShared(boolean varShared) {
         this.varShared = varShared;
     }
-    private ceylon.language.Boolean varCaptured;
+    private boolean varCaptured;
     
-    private final ceylon.language.Boolean getVarCaptured() {
+    private final boolean getVarCaptured() {
         return this.varCaptured;
     }
     
-    private final void setVarCaptured(ceylon.language.Boolean varCaptured) {
+    private final void setVarCaptured(boolean varCaptured) {
         this.varCaptured = varCaptured;
     }
     
-    private final ceylon.language.Boolean y() {
+    private final boolean y() {
         return getValCaptured();
     }
     
-    public final ceylon.language.Boolean yShared() {
+    public final boolean yShared() {
         return getVarCaptured();
     }
     
     private x() {
-        final ceylon.language.Boolean val = ceylon.language.$true.getTrue();
-        this.valShared = ceylon.language.$true.getTrue();
-        this.valCaptured = ceylon.language.$true.getTrue();
-        ceylon.language.Boolean var = ceylon.language.$false.getFalse();
-        this.varShared = ceylon.language.$false.getFalse();
-        this.varCaptured = ceylon.language.$false.getFalse();
+        final boolean val = true;
+        this.valShared = true;
+        this.valCaptured = true;
+        boolean var = false;
+        this.varShared = false;
+        this.varCaptured = false;
     }
     private static final x value = new x();
     

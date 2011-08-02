@@ -3,9 +3,9 @@ package com.redhat.ceylon.compiler.test.statement.conditional;
 class InitializerIf {
     
     InitializerIf() {
-        if (ceylon.language.$true.getTrue() == ceylon.language.$true.getTrue()) {
-            ceylon.language.$true.getTrue().equals(ceylon.language.$true.getTrue());
+        boolean b = false;
+        if (true == true) {
+            b = true;
         }
-        ceylon.language.$false.getFalse().equals(ceylon.language.$false.getFalse());
     }
 }

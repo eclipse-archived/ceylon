@@ -37,8 +37,8 @@ public class ClassDefinitionBuilder {
     private long modifiers;
     private long constructorModifiers = -1;
     
-    private ProducedType extending;
-    private final ListBuffer<ProducedType> satisfies = ListBuffer.lb();
+    private JCExpression extending;
+    private final ListBuffer<JCExpression> satisfies = ListBuffer.lb();
     private final ListBuffer<JCTypeParameter> typeParams = ListBuffer.lb();
     
     private final ListBuffer<JCAnnotation> annotations = ListBuffer.lb();
@@ -57,6 +57,7 @@ public class ClassDefinitionBuilder {
         this.gen = gen;
         this.name = name;
         
+        extending = getSuperclass(null);
         annotations(gen.makeAtCeylon());
     }
 
@@ -79,8 +80,8 @@ public class ClassDefinitionBuilder {
                 gen.make().Modifiers(modifiers, annotations.toList()),
                 gen.names.fromString(Util.quoteIfJavaKeyword(name)),
                 typeParams.toList(),
-                getSuperclass(extending),
-                transformSatisfiedTypes(satisfies.toList()),
+                extending,
+                satisfies.toList(),
                 defs.toList());
     }
 
@@ -92,10 +93,10 @@ public class ClassDefinitionBuilder {
         defs.appendList(body);
     }
 
-    private JCTree getSuperclass(ProducedType extendedType) {
+    private JCExpression getSuperclass(ProducedType extendedType) {
         JCExpression superclass;
         if (extendedType != null) {
-            superclass = gen.makeJavaType(extendedType, CeylonTransformer.SATISFIES_OR_EXTENDS);
+            superclass = gen.makeJavaType(extendedType, CeylonTransformer.EXTENDS);
             // simplify if we can
 // FIXME superclass.sym can be null
 //            if (superclass instanceof JCTree.JCFieldAccess 
@@ -113,14 +114,17 @@ public class ClassDefinitionBuilder {
         return superclass;
     }
 
-    private List<JCExpression> transformSatisfiedTypes(List<ProducedType> list) {
+    private List<JCExpression> transformSatisfiedTypes(java.util.List<ProducedType> list) {
         if (list == null) {
             return List.nil();
         }
 
         ListBuffer<JCExpression> satisfies = new ListBuffer<JCExpression>();
         for (ProducedType t : list) {
-            satisfies.append(gen.makeJavaType(t, CeylonTransformer.SATISFIES_OR_EXTENDS));
+            JCExpression jt = gen.makeJavaType(t, CeylonTransformer.SATISFIES);
+            if (jt != null) {
+                satisfies.append(jt);
+            }
         }
         return satisfies.toList();
     }
@@ -179,8 +183,8 @@ public class ClassDefinitionBuilder {
         return typeParameter(name, param.getDeclarationModel().getSatisfiedTypes());
     }
 
-    public ClassDefinitionBuilder extending(ProducedType extending) {
-        this.extending = extending;
+    public ClassDefinitionBuilder extending(ProducedType extendingType) {
+        this.extending = getSuperclass(extendingType);
         return this;
     }
 
@@ -197,7 +201,7 @@ public class ClassDefinitionBuilder {
     }
     
     public ClassDefinitionBuilder satisfies(java.util.List<ProducedType> satisfies) {
-        this.satisfies.addAll(satisfies);
+        this.satisfies.addAll(transformSatisfiedTypes(satisfies));
         return this;
     }
 

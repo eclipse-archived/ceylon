@@ -2,15 +2,15 @@ package com.redhat.ceylon.compiler.test.expression.operator;
 
 class LogicalOp {
     
-    public final ceylon.language.Boolean m() {
-        final ceylon.language.Boolean b1 = ceylon.language.$true.getTrue();
-        final ceylon.language.Boolean b2 = ceylon.language.$false.getFalse();
-        final ceylon.language.Boolean b3 = Boolean.instance(b1.booleanValue() && b2.booleanValue());
-        ceylon.language.Boolean b4 = Boolean.instance(b2.booleanValue() || b3.booleanValue());
-        ceylon.language.Boolean b5 = Boolean.instance(!b4.booleanValue());
-        b4 = Boolean.instance(b4.booleanValue() && b3.booleanValue());
-        b5 = Boolean.instance(b5.booleanValue() || b4.booleanValue());
-        return ceylon.language.$true.getTrue();
+    public final boolean m() {
+        final boolean b1 = true;
+        final boolean b2 = false;
+        final boolean b3 = b1 && b2;
+        boolean b4 = b2 || b3;
+        boolean b5 = !b4;
+        b4 = b4 && b3;
+        b5 = b5 || b4;
+        return true;
     }
     
     LogicalOp() {

@@ -54,6 +54,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             strings.append(transformExpression(t));
         }
 
+        // FIXME Do something with a StringBuffer and multiple appends()s
         return make().Apply(null, makeSelect(makeIdent(syms().ceylonStringType), "instance"), strings.toList());
     }
 
@@ -101,14 +102,9 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.NotOp op) {
-        JCExpression result = null;
         JCExpression term = transformExpression(op.getTerm());
-        JCExpression arg1 = gen.makeSelect("Boolean", "instance");
-        JCExpression field1 = at(op.getTerm()).Apply(null, makeSelect(term, "booleanValue"), List.<JCExpression>nil());
-        JCUnary jcu = at(op).Unary(JCTree.NOT, field1);
-        List<JCExpression> arg2= List.of((JCExpression)jcu);
-        result = at(op).Apply(null, arg1, arg2);
-        return result;
+        JCUnary jcu = at(op).Unary(JCTree.NOT, term);
+        return jcu;
     }
 
     public JCExpression transform(Tree.AssignOp op) {
@@ -145,7 +141,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCExpression transform(Tree.IsOp op) {
         JCExpression type = gen.makeJavaType(op.getType().getTypeModel());
-        return at(op).Apply(null, makeSelect(makeIdent(syms().ceylonBooleanType), "instance"), List.<JCExpression> of(at(op).TypeTest(transformExpression(op.getTerm()), type)));
+        return at(op).TypeTest(transformExpression(op.getTerm()), type);
     }
 
     public JCExpression transform(Tree.RangeOp op) {
@@ -164,15 +160,16 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.UnaryOperatorExpression op) {
+        at(op);
         Tree.Term term = op.getTerm();
         if (term instanceof Tree.NaturalLiteral && op instanceof Tree.NegativeOp) {
             Tree.NaturalLiteral lit = (Tree.NaturalLiteral) term;
-            return at(op).Apply(null, makeSelect(makeIdent(syms().ceylonIntegerType), "instance"), List.<JCExpression> of(make().Literal(-Long.parseLong(lit.getText()))));
+            return gen.makeInteger(-Long.parseLong(lit.getText()));
         } else if (term instanceof Tree.NaturalLiteral && op instanceof Tree.PositiveOp) {
             Tree.NaturalLiteral lit = (Tree.NaturalLiteral) term;
-            return at(op).Apply(null, makeSelect(makeIdent(syms().ceylonIntegerType), "instance"), List.<JCExpression> of(make().Literal(Long.parseLong(lit.getText()))));
+            return gen.makeInteger(Long.parseLong(lit.getText()));
         }
-        return at(op).Apply(null, gen.makeSelect(transformExpression(term), unaryOperators.get(op.getClass())), List.<JCExpression> nil());
+        return make().Apply(null, gen.makeSelect(transformExpression(term), unaryOperators.get(op.getClass())), List.<JCExpression> nil());
     }
 
     public JCExpression transform(Tree.ArithmeticAssignmentOp op){
@@ -252,23 +249,17 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.LogicalOp op) {
-        JCExpression result = null;
         JCExpression left = transformExpression(op.getLeftTerm());
         JCExpression right = transformExpression(op.getRightTerm());
-        JCExpression arg1 = gen.makeSelect("Boolean", "instance");
-        JCExpression field1 = at(op.getLeftTerm()).Apply(null, makeSelect(left, "booleanValue"), List.<JCExpression>nil());
-        JCExpression field2 = at(op.getRightTerm()).Apply(null, makeSelect(right, "booleanValue"), List.<JCExpression>nil());
 
         JCBinary jcb = null;
         if (op instanceof AndOp) {
-            jcb = at(op).Binary(JCTree.AND, field1, field2);
+            jcb = at(op).Binary(JCTree.AND, left, right);
         }
         if (op instanceof OrOp) {
-            jcb = at(op).Binary(JCTree.OR, field1, field2);
+            jcb = at(op).Binary(JCTree.OR, left, right);
         }
-        List<JCExpression> arg2= List.of((JCExpression)jcb);
-        result = at(op).Apply(null, arg1, arg2);
-        return result;
+        return jcb;
     }
     
     JCExpression transform(Tree.PostfixOperatorExpression expr) {
@@ -332,7 +323,6 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     JCExpression ceylonLiteral(String s) {
         JCLiteral lit = make().Literal(s);
-//        return make().Apply(null, makeSelect(makeIdent(syms().ceylonStringType), "instance"), List.<JCExpression> of(lit));
         return lit;
     }
 
@@ -369,10 +359,14 @@ public class ExpressionTransformer extends AbstractTransformer {
         Declaration decl = member.getDeclaration();
         if (decl instanceof Value) {
             if (decl.isToplevel()) {
+                // ERASURE
                 if ("null".equals(decl.getName())) {
-                    // ERASURE
                     // FIXME this is a pretty brain-dead way to go about erase I think
                     return at(member).Literal(TypeTags.BOT, null);
+                } else if (gen.isBooleanTrue(decl)) {
+                    return makeBoolean(true);
+                } else if (gen.isBooleanFalse(decl)) {
+                    return makeBoolean(false);
                 } else {
                     // it's a toplevel attribute
                     return gen.globalGenAt(member).getGlobalValue(

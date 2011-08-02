@@ -3,8 +3,8 @@ package com.redhat.ceylon.compiler.test.expression.attribute;
 class MethodLocalAssign {
     
     private final void m() {
-        ceylon.language.Boolean b = ceylon.language.$true.getTrue();
-        b = ceylon.language.$false.getFalse();
+        boolean b = true;
+        b = false;
     }
     
     MethodLocalAssign() {

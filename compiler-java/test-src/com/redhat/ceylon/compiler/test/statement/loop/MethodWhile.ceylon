@@ -1,8 +1,9 @@
 @nomodel
 class MethodWhile(){
     shared Natural m(){
-        while (false) {
-            return 1;
+        variable Boolean cont := true;
+        while (cont) {
+            cont := false;
         }
         return 0;
     }

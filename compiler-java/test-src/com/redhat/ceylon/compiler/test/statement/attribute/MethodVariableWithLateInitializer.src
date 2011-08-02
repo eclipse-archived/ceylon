@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.test.statement.attribute;
 class MethodVariableWithInitializer {
     
     public final void m() {
-        java.lang.String f;
+        .java.lang.String f;
         f = "";
     }
     

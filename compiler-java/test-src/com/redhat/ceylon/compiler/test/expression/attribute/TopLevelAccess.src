@@ -1,9 +1,9 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
 final class b1 {
-    private static final ceylon.language.Boolean value = ceylon.language.$true.getTrue();
+    private static final boolean value = true;
     
-    static ceylon.language.Boolean getB1() {
+    static boolean getB1() {
         return value;
     }
     
@@ -11,9 +11,9 @@ final class b1 {
     }
 }
 public final class b2 {
-    private static final ceylon.language.Boolean value = ceylon.language.$true.getTrue();
+    private static final boolean value = true;
     
-    public static ceylon.language.Boolean getB2() {
+    public static boolean getB2() {
         return value;
     }
     
@@ -22,8 +22,8 @@ public final class b2 {
 }
 final class b3 {
     
-    static ceylon.language.Boolean getB3() {
-        return ceylon.language.$true.getTrue();
+    static boolean getB3() {
+        return true;
     }
     
     private b3() {
@@ -31,8 +31,8 @@ final class b3 {
 }
 public final class b4 {
     
-    public static ceylon.language.Boolean getB4() {
-        return ceylon.language.$true.getTrue();
+    public static boolean getB4() {
+        return true;
     }
     
     private b4() {
@@ -41,10 +41,10 @@ public final class b4 {
 class TopLevelAccess {
     
     private final void m() {
-        final ceylon.language.Boolean bb1 = com.redhat.ceylon.compiler.test.expression.attribute.b1.getB1();
-        final ceylon.language.Boolean bb2 = com.redhat.ceylon.compiler.test.expression.attribute.b2.getB2();
-        final ceylon.language.Boolean bb3 = com.redhat.ceylon.compiler.test.expression.attribute.b3.getB3();
-        final ceylon.language.Boolean bb4 = com.redhat.ceylon.compiler.test.expression.attribute.b4.getB4();
+        final boolean bb1 = com.redhat.ceylon.compiler.test.expression.attribute.b1.getB1();
+        final boolean bb2 = com.redhat.ceylon.compiler.test.expression.attribute.b2.getB2();
+        final boolean bb3 = com.redhat.ceylon.compiler.test.expression.attribute.b3.getB3();
+        final boolean bb4 = com.redhat.ceylon.compiler.test.expression.attribute.b4.getB4();
     }
     
     TopLevelAccess() {

@@ -1,12 +1,20 @@
 package com.redhat.ceylon.compiler.test.structure.klass;
 
-class SatisfiesErasure extends .java.lang.Object {
+class SatisfiesErasure {
     
-    public final ceylon.language.Boolean equals(final .java.lang.Object that) {
+    @.java.lang.Override
+    public final boolean equals(final .java.lang.Object that) {
         return false;
     }
     
+    public final int hashCode() {
+        return 0;
+    }
+    
+    public final .java.lang.String toString() {
+        return "An SatisfiesErasure object";
+    }
+    
     SatisfiesErasure() {
-        super();
     }
 }

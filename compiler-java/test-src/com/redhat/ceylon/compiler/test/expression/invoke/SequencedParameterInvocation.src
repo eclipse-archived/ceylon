@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.test.expression.invoke;
 
 class SequencedParameterInvocation {
     
-    private final void m(final java.lang.String a, final Sequence<Natural> i) {
+    private final void m(final .java.lang.String a, final Sequence<Natural> i) {
     }
     
     private final void f() {

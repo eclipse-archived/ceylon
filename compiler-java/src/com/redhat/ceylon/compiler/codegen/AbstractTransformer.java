@@ -1,15 +1,12 @@
 package com.redhat.ceylon.compiler.codegen;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.code.Type;
-import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.Factory;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.TreeMaker;
-import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Name;
 
 /**
@@ -43,17 +40,11 @@ public class AbstractTransformer {
     }
 
     protected JCExpression makeBoolean(boolean b) {
-    	JCExpression expr;
-        if (b) {
-        	expr = makeIdent("ceylon", "language", "$true", "getTrue");
-        } else {
-        	expr = makeIdent("ceylon", "language", "$false", "getFalse");
-        }
-        return make().Apply(List.<JCTree.JCExpression>nil(), expr, List.<JCTree.JCExpression>nil());
+        return gen.makeBoolean(b);
     }
 
     protected JCExpression makeBooleanTest(JCExpression expr, boolean val) {
-        return make().Binary(JCTree.EQ, expr, makeBoolean(val));
+        return gen.makeBooleanTest(expr, val);
     }
     
     protected TreeMaker make() {
@@ -86,18 +77,5 @@ public class AbstractTransformer {
 
     protected String aliasName(String name) {
         return gen.aliasName(name);
-    }
-	
-    protected boolean hasCompilerAnnotation(Tree.Declaration decl, String annotation) {
-        if (decl.getAnnotationList() == null)
-            return false;
-        for (Tree.Annotation a : decl.getAnnotationList().getAnnotations()) {
-            if (!(a.getPrimary() instanceof Tree.BaseMemberExpression))
-                throw new RuntimeException("Invalid annotation primary: " + a.getPrimary().getNodeType());
-            Tree.BaseMemberExpression member = (Tree.BaseMemberExpression) a.getPrimary();
-            if (member.getIdentifier().getText().equals(annotation))
-                return true;
-        }
-        return false;
     }
 }

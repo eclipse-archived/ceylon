@@ -2,15 +2,15 @@ package com.redhat.ceylon.compiler.test.structure.attribute;
 
 abstract class ClassAttributeGetter {
     
-    private final java.lang.String getF() {
+    private final .java.lang.String getF() {
         return "";
     }
     
-    public final java.lang.String getF2() {
+    public final .java.lang.String getF2() {
         return "";
     }
     
-    public java.lang.String getF3() {
+    public .java.lang.String getF3() {
         return "";
     }
     

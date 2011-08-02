@@ -2,9 +2,9 @@ package com.redhat.ceylon.compiler.test.statement.loop;
 
 class MethodForIterator {
     
-    public final void m(final ceylon.language.Sequence<ceylon.language.Integer> seq) {
-        for (.ceylon.language.Iterator<ceylon.language.Integer> $i$iter$0 = seq.iterator(); $i$iter$0.getHead() != null; $i$iter$0 = $i$iter$0.getTail()) {
-            final ceylon.language.Integer i = $i$iter$0.getHead();
+    public final void m(final ceylon.language.Sequence<.java.lang.String> seq) {
+        for (.ceylon.language.Iterator<.java.lang.String> $s$iter$0 = seq.iterator(); $s$iter$0.getHead() != null; $s$iter$0 = $s$iter$0.getTail()) {
+            final .java.lang.String s = $s$iter$0.getHead();
         }
     }
     

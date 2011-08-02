@@ -8,8 +8,8 @@ public class $empty {
     private final static Empty value = new Empty(){
 
         @Override
-        public Boolean defines(Natural key) {
-            return $false.getFalse();
+        public boolean defines(Natural key) {
+            return false;
         }
 
         @Override
@@ -18,13 +18,13 @@ public class $empty {
         }
 
         @Override
-        public Boolean definesEvery(Natural... keys) {
-            return $false.getFalse();
+        public boolean definesEvery(Natural... keys) {
+            return false;
         }
 
         @Override
-        public Boolean definesAny(Natural... keys) {
-            return $false.getFalse();
+        public boolean definesAny(Natural... keys) {
+            return false;
         }
 
         @Override
@@ -55,8 +55,8 @@ public class $empty {
         }
 
         @Override
-        public Boolean getEmpty() {
-            return $true.getTrue();
+        public boolean getEmpty() {
+            return false;
         }
 
         @Override

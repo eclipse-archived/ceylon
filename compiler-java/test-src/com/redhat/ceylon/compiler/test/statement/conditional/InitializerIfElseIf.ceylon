@@ -1,11 +1,11 @@
 @nomodel
 class InitializerIfElseIf(){
-   if(true){
-       false.equals(false);
-   }else if(false){
-       true.equals(true);
-   }else{
-       false.equals(true);
-   }
-   true.equals(false);
+    variable Boolean b;
+    if(true){
+        b := true;
+    }else if(false){
+        b := false;
+    }else{
+        b := true;
+    }
 }

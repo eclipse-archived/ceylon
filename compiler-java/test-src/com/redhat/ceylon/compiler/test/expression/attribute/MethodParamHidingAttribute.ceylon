@@ -1,7 +1,7 @@
 @nomodel
 class MethodParamHidingAttribute(){
    Boolean b = true;
-   Boolean m(Boolean b){
-       return b;
+   void m(Boolean b){
+       Boolean b2 = b;
    }
 }

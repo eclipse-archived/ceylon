@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.test.statement.conditional;
 class MethodIfElse {
     
     public final ceylon.language.Natural m() {
-        if (ceylon.language.$true.getTrue() == ceylon.language.$true.getTrue()) {
+        if (true == true) {
             return .ceylon.language.Natural.instance(1L);
         } else {
             return .ceylon.language.Natural.instance(2L);

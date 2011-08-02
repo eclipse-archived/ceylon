@@ -3,8 +3,9 @@ package com.redhat.ceylon.compiler.test.statement.loop;
 class MethodWhile {
     
     public final ceylon.language.Natural m() {
-        while (ceylon.language.$false.getFalse() == ceylon.language.$true.getTrue()) {
-            return .ceylon.language.Natural.instance(1L);
+        boolean cont = true;
+        while (cont == true) {
+            cont = false;
         }
         return .ceylon.language.Natural.instance(0L);
     }

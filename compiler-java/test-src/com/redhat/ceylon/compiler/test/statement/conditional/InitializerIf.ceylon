@@ -1,7 +1,7 @@
 @nomodel
 class InitializerIf(){
+    variable Boolean b := false;
 	if(true){
-		true.equals(true);
+		b := true;
 	}
-	false.equals(false);
 }

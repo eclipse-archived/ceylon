@@ -13,7 +13,7 @@ final class bar {
     private bar() {
     }
     
-    static ceylon.language.Natural bar(final ceylon.language.Natural i, final java.lang.String j) {
+    static ceylon.language.Natural bar(final ceylon.language.Natural i, final .java.lang.String j) {
         return .ceylon.language.Natural.instance(1L);
     }
 }

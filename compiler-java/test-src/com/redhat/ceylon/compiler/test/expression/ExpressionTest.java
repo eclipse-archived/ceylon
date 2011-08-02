@@ -159,7 +159,7 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("operator/NumericOp");
     }
     @Test
-    public void testOprLogialOp(){
+    public void testOprLogicalOp(){
         compareWithJavaSource("operator/LogicalOp");
     }
 }

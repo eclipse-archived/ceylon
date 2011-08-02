@@ -2,11 +2,11 @@ package com.redhat.ceylon.compiler.test.expression.attribute;
 
 class MethodParamHidingAttribute {
     
-    private final ceylon.language.Boolean m(final ceylon.language.Boolean b) {
-        return b;
+    private final void m(final boolean b) {
+        final boolean b2 = b;
     }
     
     MethodParamHidingAttribute() {
-        final ceylon.language.Boolean b = ceylon.language.$true.getTrue();
+        final boolean b = true;
     }
 }

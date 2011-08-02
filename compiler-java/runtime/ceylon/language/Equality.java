@@ -1,5 +1,6 @@
 package ceylon.language;
 
 public interface Equality {
-    public Boolean equals(Equality that);
+    public boolean equals(Equality that);
+    public int hashCode();
 }

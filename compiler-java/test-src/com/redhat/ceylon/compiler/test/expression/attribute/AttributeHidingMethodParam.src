@@ -1,17 +1,17 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
 class AttributeHidingMethodParam {
-    private final ceylon.language.Boolean b;
+    private final boolean b;
     
-    private final ceylon.language.Boolean getB() {
+    private final boolean getB() {
         return this.b;
     }
     
-    private final ceylon.language.Boolean m(final ceylon.language.Boolean b) {
+    private final boolean m(final boolean b) {
         return this.b;
     }
     
     AttributeHidingMethodParam() {
-        this.b = ceylon.language.$true.getTrue();
+        this.b = true;
     }
 }

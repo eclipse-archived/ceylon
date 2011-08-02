@@ -2,14 +2,14 @@ package com.redhat.ceylon.compiler.test.structure.attribute;
 
 class ClassAttributeGetterSetter {
     
-    private final java.lang.String getF() {
+    private final .java.lang.String getF() {
         return "";
     }
     
     private final void setF(.java.lang.Object f) {
     }
     
-    public final java.lang.String getF2() {
+    public final .java.lang.String getF2() {
         return "";
     }
     

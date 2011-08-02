@@ -1,5 +1,5 @@
 @nomodel
 class InitializerParamHidingAttribute(Boolean b){
    Boolean b = b;
-   b.equals(true);
+   Boolean b2 = b;
 }
