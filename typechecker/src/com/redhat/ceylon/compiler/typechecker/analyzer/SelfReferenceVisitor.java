@@ -31,7 +31,7 @@ public class SelfReferenceVisitor extends Visitor {
             if ( !declarationSection && that.getScope().getInheritingDeclaration(member)==typeDeclaration ) {
                 //TODO: this logic is broken!
                 that.addError("inherited member class may not be extended in initializer: " + 
-                        member.getName() + " of " + that.getScope().getInheritingDeclaration(member).getName());
+                        member.getName());
             }
         }
     }
@@ -42,7 +42,7 @@ public class SelfReferenceVisitor extends Visitor {
             if ( !declarationSection && that.getScope().getInheritingDeclaration(member)==typeDeclaration ) {
                 //TODO: this logic is broken!
                 that.addError("inherited member may not be used in initializer: " + 
-                            member.getName() + " of " + that.getScope().getInheritingDeclaration(member).getName());
+                            member.getName());
             }
         }
     }
