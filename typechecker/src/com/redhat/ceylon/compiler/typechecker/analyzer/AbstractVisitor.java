@@ -20,6 +20,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassBody;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -242,4 +244,43 @@ public abstract class AbstractVisitor extends Visitor {
         return typeArguments;
     }
     
+    protected Tree.Statement getLastExecutableStatement(Tree.ClassBody that) {
+        List<Statement> statements = that.getStatements();
+        for (int i=statements.size()-1; i>=0; i--) {
+            Tree.Statement s = statements.get(i);
+            if (s instanceof Tree.ExecutableStatement) {
+                return s;
+            }
+            else {
+                if (s instanceof Tree.AttributeDeclaration) {
+                    if ( ((Tree.AttributeDeclaration) s).getSpecifierOrInitializerExpression()!=null ) {
+                        return s;
+                    }
+                }
+                if (s instanceof Tree.MethodDeclaration) {
+                    if ( ((Tree.MethodDeclaration) s).getSpecifierExpression()!=null ) {
+                        return s;
+                    }
+                }
+                if (s instanceof Tree.ObjectDefinition) {
+                    Tree.ObjectDefinition o = (Tree.ObjectDefinition) s;
+                    if (o.getExtendedType()!=null) {
+                        ProducedType et = o.getExtendedType().getType().getTypeModel();
+                        if (et!=null 
+                                && et.getDeclaration()!=getObjectDeclaration()
+                                && et.getDeclaration()!=getIdentifiableObjectDeclaration()) {
+                            return s;
+                        }
+                    }
+                    if (o.getClassBody()!=null) {
+                        if (getLastExecutableStatement(o.getClassBody())!=null) {
+                            return s;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+            
 }

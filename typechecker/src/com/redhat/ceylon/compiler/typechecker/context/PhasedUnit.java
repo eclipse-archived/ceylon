@@ -104,7 +104,7 @@ public class PhasedUnit {
                 compilationUnit.visit(new ValueVisitor((TypedDeclaration) d));
             }
             else if (d instanceof TypeDeclaration) {
-                compilationUnit.visit(new SelfReferenceVisitor((TypeDeclaration) d));
+                compilationUnit.visit(new SelfReferenceVisitor((TypeDeclaration) d, context));
             }
         }
     }

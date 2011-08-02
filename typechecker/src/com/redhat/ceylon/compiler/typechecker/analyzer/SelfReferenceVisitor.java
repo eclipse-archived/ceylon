@@ -1,10 +1,10 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
  * Validates that the initializer of a class does
@@ -14,17 +14,24 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  * @author Gavin King
  *
  */
-public class SelfReferenceVisitor extends Visitor {
+public class SelfReferenceVisitor extends AbstractVisitor {
     
     private final TypeDeclaration typeDeclaration;
     private Tree.Statement lastExecutableStatement;
     private boolean declarationSection = false;
     private int nestedLevel = -1;
+    private Context context;
     
-    public SelfReferenceVisitor(TypeDeclaration td) {
+    public SelfReferenceVisitor(TypeDeclaration td, Context context) {
         typeDeclaration = td;
+        this.context = context;
     }
 
+    @Override
+    protected Context getContext() {
+        return context;
+    }
+    
     private void visitExtendedType(Tree.ExtendedTypeExpression that) {
         Declaration member = that.getDeclaration();
         if (member!=null) {
@@ -115,7 +122,8 @@ public class SelfReferenceVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ObjectDefinition that) {
-        if (that.getDeclarationModel().getTypeDeclaration()==typeDeclaration) {
+        TypeDeclaration dec = that.getDeclarationModel().getTypeDeclaration();
+        if (dec==typeDeclaration) {
             nestedLevel=0;
             super.visit(that);
             nestedLevel=-1;
@@ -185,24 +193,7 @@ public class SelfReferenceVisitor extends Visitor {
     @Override
     public void visit(Tree.ClassBody that) {
         if (directlyInBody()) {
-            Tree.Statement les = null;
-            for (Tree.Statement s: that.getStatements()) {
-                if (s instanceof Tree.ExecutableStatement) {
-                    les = s;
-                }
-                else {
-                    if (s instanceof Tree.AttributeDeclaration) {
-                        if ( ((Tree.AttributeDeclaration) s).getSpecifierOrInitializerExpression()!=null ) {
-                            les = s;
-                        }
-                    }
-                    if (s instanceof Tree.MethodDeclaration) {
-                        if ( ((Tree.MethodDeclaration) s).getSpecifierExpression()!=null ) {
-                            les = s;
-                        }
-                    }
-                }
-            }
+            Tree.Statement les = getLastExecutableStatement(that);
             declarationSection = les==null;
             lastExecutableStatement = les;
             super.visit(that);
@@ -213,7 +204,7 @@ public class SelfReferenceVisitor extends Visitor {
             super.visit(that);
         }
     }
-            
+
     boolean mayNotLeakThis() {
         return !declarationSection && directlyInBody();
     }

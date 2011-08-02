@@ -89,14 +89,6 @@ public class SpecificationVisitor extends AbstractVisitor {
         specified = as;
     }
     
-    private boolean beginIndefiniteSpecificationScope() {
-        return specified.definitely;
-    }
-    
-    private void endIndefiniteSpecificationScope(boolean da) {
-        specified.definitely = da;
-    }
-    
     private boolean isVariable() {
         return (declaration instanceof TypedDeclaration)
             && ((TypedDeclaration) declaration).isVariable();
@@ -451,42 +443,33 @@ public class SpecificationVisitor extends AbstractVisitor {
     
     @Override
     public void visit(Tree.ClassBody that) {
-        Tree.Statement les = null;
-        Tree.Declaration dd = null;
-        for (Tree.Statement s: that.getStatements()) {
-            if (s instanceof Tree.ExecutableStatement) {
-                les = s;
-            }
-            else {
-                Tree.Declaration d = (Tree.Declaration) s;
-                if (s instanceof Tree.AttributeDeclaration) {
-                    if ( ((Tree.AttributeDeclaration) s).getSpecifierOrInitializerExpression()!=null ) {
-                        les = s;
-                    }
-                }
-                if (s instanceof Tree.MethodDeclaration) {
-                    if ( ((Tree.MethodDeclaration) s).getSpecifierExpression()!=null ) {
-                        les = s;
-                    }
-                }
-                if (d.getDeclarationModel()==declaration) {
-                    dd = d;
-                }
-            }
-        }
-        if (dd!=null) {
+        Tree.Statement les = getLastExecutableStatement(that);
+        Tree.Declaration d = getDeclaration(that);
+        if (d!=null) {
             declarationSection = les==null;
             lastExecutableStatement = les;
             super.visit(that);        
             declarationSection = false;
             lastExecutableStatement = null;
             if (isSharedDeclarationUninitialized()) {
-                dd.addError("must be definitely specified by class initializer");
+                d.addError("must be definitely specified by class initializer");
             }
         }
         else {
             super.visit(that);
         }
+    }
+
+    private Tree.Declaration getDeclaration(Tree.ClassBody that) {
+        for (Tree.Statement s: that.getStatements()) {
+            if (s instanceof Tree.Declaration) {
+                Tree.Declaration d = (Tree.Declaration) s;
+                if (d.getDeclarationModel()==declaration) {
+                    return d;
+                }
+            }
+        }
+        return null;
     }
     
     @Override
