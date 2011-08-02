@@ -1,6 +1,15 @@
 package ceylon.language;
 
-public interface Sequence<Element> 
+import com.redhat.ceylon.compiler.metadata.java.Ceylon;
+import com.redhat.ceylon.compiler.metadata.java.TypeParameter;
+import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
+import com.redhat.ceylon.compiler.metadata.java.Variance;
+
+@Ceylon
+@TypeParameters({
+    @TypeParameter(value = "Element", variance = Variance.OUT)
+ })
+ public interface Sequence<Element> 
     extends Correspondence<Natural, Element>, Iterable<Element>, 
         Sized, Cloneable<Sequence<Element>> {
     

@@ -1,5 +1,15 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.metadata.java.Ceylon;
+import com.redhat.ceylon.compiler.metadata.java.TypeParameter;
+import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
+import com.redhat.ceylon.compiler.metadata.java.Variance;
+
+@Ceylon
+@TypeParameters({
+    @TypeParameter(value = "K", variance = Variance.OUT),
+    @TypeParameter(value = "E", variance = Variance.OUT)
+ })
 public class Entry<K extends java.lang.Object /* Equality */, E extends java.lang.Object /* Equality */> extends Object implements Equality {
 	private K key;
 	private E element;
