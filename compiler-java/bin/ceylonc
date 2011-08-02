@@ -8,7 +8,12 @@ JAVA_CP="$JAVA_CP:$HOME/.ceylon/repo/com/redhat/ceylon/typechecker/0.1/com.redha
 JAVA_CP="$JAVA_CP:$CEYLON_HOME/lib/antlrworks-1.3.1.jar"
 
 # COMPILE_CP are classes required by the code being compiled
-COMPILE_CP="$CEYLON_HOME/build/lib/runtime.jar:$USER_CP"
+# Do not add the hand-made runtime if we're bootstrapping it
+if test "$BOOTSTRAP" = "true"
+then
+    COMPILE_CP="$CEYLON_HOME/build/lib/runtime.jar:$USER_CP"
+fi
+COMPILE_CP="$USER_CP"
 
 java \
 	-enableassertions \

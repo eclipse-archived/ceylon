@@ -5,6 +5,7 @@ CEYLON_HOME=$(dirname $0)/..
 
 unset USER_CP
 unset ARGS
+unset BOOTSTRAP
 
 while (( $# > 0 ))
 do
@@ -14,6 +15,11 @@ do
         shift
     else
         ARGS="$ARGS $1"
+    fi
+
+    if [[ $1 == -Xbootstrapceylon ]]
+    then
+        BOOTSTRAP=true
     fi
 
     shift
