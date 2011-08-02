@@ -1,12 +1,12 @@
 package com.redhat.ceylon.compiler.test.structure.klass;
 
-class ExtendsErasure extends .java.lang.Object {
+class SatisfiesErasure extends .java.lang.Object {
     
     public final ceylon.language.Boolean equals(final .java.lang.Object that) {
-        return ceylon.language.$false.getFalse();
+        return false;
     }
     
-    ExtendsErasure() {
+    SatisfiesErasure() {
         super();
     }
 }
