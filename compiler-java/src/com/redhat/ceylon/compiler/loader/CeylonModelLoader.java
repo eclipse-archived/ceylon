@@ -50,11 +50,13 @@ import com.sun.tools.javac.code.Symbol.VarSymbol;
 import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.jvm.ClassReader;
+import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Name.Table;
+import com.sun.tools.javac.util.Options;
 
 public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     
@@ -66,6 +68,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     private com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext;
     private TypeParser typeParser;
     private Log log;
+    private boolean isBootstrap;
     
     public static CeylonModelLoader instance(Context context) {
         CeylonModelLoader instance = context.get(CeylonModelLoader.class);
@@ -84,25 +87,31 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         reader = ClassReader.instance(context);
         log = Log.instance(context);
         typeParser = new TypeParser(this);
+        isBootstrap = Options.instance(context).get(OptionName.BOOTSTRAPCEYLON) != null;
     }
 
     public void loadRequiredModules(com.sun.tools.javac.util.List<JCCompilationUnit> trees) {
         /*
          * We start by loading java.lang and ceylon.language because we will need them no matter what.
          */
-        PackageSymbol ceylonPkg = reader.enterPackage(names.fromString("ceylon.language"));
-        ceylonPkg.complete();
         PackageSymbol javaPkg = reader.enterPackage(names.fromString("java.lang"));
         javaPkg.complete();
         PackageSymbol modelPkg = reader.enterPackage(names.fromString("com.redhat.ceylon.compiler.metadata.java"));
         modelPkg.complete();
         
         /*
-         * Eventually this will go away as we get a hook from the typechecker to load on demand, but
-         * for now the typechecker requires at least ceylon.language to be loaded 
+         * We do not load the ceylon.language module from class files if we're bootstrapping it
          */
-        for(Symbol m : ceylonPkg.members().getElements()){
-            convertToDeclaration(lookupClassSymbol(m.getQualifiedName().toString()), DeclarationType.VALUE);
+        if(!isBootstrap){
+            PackageSymbol ceylonPkg = reader.enterPackage(names.fromString("ceylon.language"));
+            ceylonPkg.complete();
+            /*
+             * Eventually this will go away as we get a hook from the typechecker to load on demand, but
+             * for now the typechecker requires at least ceylon.language to be loaded 
+             */
+            for(Symbol m : ceylonPkg.members().getElements()){
+                convertToDeclaration(lookupClassSymbol(m.getQualifiedName().toString()), DeclarationType.VALUE);
+            }
         }
         
         for(final JCCompilationUnit tree : trees){
@@ -148,6 +157,9 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 }
             });
         }
+        // If we're bootstrapping the Ceylon language now load the symbols from the source CU
+        if(isBootstrap)
+            symtab.loadCeylonSymbols();
     }
 
     enum ClassType {
