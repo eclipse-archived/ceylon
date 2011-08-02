@@ -652,4 +652,40 @@ interface ClassBodies {
         }
     }
     
+    class GoodClassWithObject() {
+        object foo {
+            void method() {
+                bar();
+            }
+        }
+        void bar() {}
+    }
+    
+    class BadClassWithObject() {
+        object foo {
+            @error bar();
+        }
+        void bar() {}
+    }
+    
+    class BadClassWithObject2() {
+        object foo {
+            void method() {
+                @error bar();
+            }
+        }
+        writeLine("hello");
+        void bar() {}
+    }
+    
+    class BadClassWithObject3() {
+        object foo {
+            writeLine("hello");
+            void method() {
+                @error bar();
+            }
+        }
+        void bar() {}
+    }
+    
 }
