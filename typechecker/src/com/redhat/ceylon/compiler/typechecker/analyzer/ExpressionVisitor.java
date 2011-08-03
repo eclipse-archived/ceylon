@@ -187,7 +187,7 @@ public class ExpressionVisitor extends AbstractVisitor {
             defaultTypeToVoid(v);
             if (v.getType() instanceof Tree.SyntheticVariable) {
                 //this is a bit ugly (the parser sends us a SyntheticVariable
-                //instead of the real StaticType which it very well knows!
+                //instead of the real StaticType which it very well knows!)
                 v.getType().setTypeModel(type);
                 v.getDeclarationModel().setType(type);
             }
@@ -195,6 +195,10 @@ public class ExpressionVisitor extends AbstractVisitor {
             if (se!=null) {
                 se.visit(this);
                 checkReferenceIsNonVariable(v, se);
+                /*checkAssignable( se.getExpression().getTypeModel(), 
+                        getOptionalType(getObjectDeclaration().getType()), 
+                        se.getExpression(), 
+                        "expression may not be of void type");*/
             }
         }
         /*if (that.getExpression()!=null) {
@@ -248,16 +252,11 @@ public class ExpressionVisitor extends AbstractVisitor {
             t = e.getTypeModel();
             n = e;
         }*/
-        if (t==null) {
-            n.addError("could not determine if expression is of optional type");
+        if (that instanceof Tree.ExistsCondition) {
+            checkOptional(t, n);
         }
-        else {
-            if (that instanceof Tree.ExistsCondition) {
-                checkOptional(t, n);
-            }
-            else if (that instanceof Tree.NonemptyCondition) {
-                checkEmpty(t, n);
-            }
+        else if (that instanceof Tree.NonemptyCondition) {
+            checkEmpty(t, n);
         }
     }
 
@@ -284,16 +283,21 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
     
     private void checkEmpty(ProducedType t, Node n) {
-        //ProducedType oct = getEmptyOptionalType(getContainerDeclaration().getType());
-        if (!isEmptyType(t)) {
-            n.addError("expression is not of correct type: " + 
+        if (t==null) {
+            n.addError("expression must be of sequence type: type not known");
+        }
+        else if (!isEmptyType(t)) {
+            n.addError("expression must be of sequence type: " + 
                     t.getProducedTypeName() + " is not a supertype of: Empty");
         }
     }
 
     private void checkOptional(ProducedType t, Node n) {
-        if (!isOptionalType(t)) {
-            n.addError("expression is not of optional type: " +
+        if (t==null) {
+            n.addError("expression must be of optional type: type not known");
+        }
+        else if (!isOptionalType(t)) {
+            n.addError("expression must be of optional type: " +
                     t.getProducedTypeName() + " is not a supertype of: Nothing");
         }
     }
@@ -301,17 +305,9 @@ public class ExpressionVisitor extends AbstractVisitor {
     @Override public void visit(Tree.BooleanCondition that) {
         super.visit(that);
         if (that.getExpression()!=null) {
-            ProducedType t = that.getExpression().getTypeModel();
-            if (t==null) {
-                that.addError("could not determine if expression is of boolean type");
-            }
-            else {
-                ProducedType bt = getBooleanDeclaration().getType();
-                if (!bt.isSupertypeOf(t)) {
-                    that.addError("expression is not of boolean type: " +
-                            t.getProducedTypeName() + " is not Boolean");
-                }
-            }
+            checkAssignable(that.getExpression().getTypeModel(), 
+                    getBooleanDeclaration().getType(), that, 
+                    "expression must be of boolean type");
         }
     }
 
@@ -342,16 +338,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                 that.getVariable().addError("missing resource specifier");
             }
         }
-        if (t==null) {
-            that.addError("could not determine if resource is of closeable type");
-        }
-        else {
-            ProducedType ct = getCloseableDeclaration().getType();
-            if (!ct.isSupertypeOf(t)) {
-                typedNode.addError("resource is not of closeable type: " +
-                        t.getProducedTypeName() + " is not Closeable");
-            }
-        }
+        checkAssignable(t, getCloseableDeclaration().getType(), typedNode, 
+                "resource must be closeable");
     }
 
     @Override public void visit(Tree.ValueIterator that) {
@@ -390,11 +378,9 @@ public class ExpressionVisitor extends AbstractVisitor {
                 }
                 //if it duplicates a parameter, then it must have the same type
                 //as the parameter
-                if ( !dec.getType().isExactly(param.getType())) {
-                    that.addError("member hidden by parameter must have same type as parameter: " +
-                            dec.getName() + " is not " +
-                            param.getType().getProducedTypeName());
-                }
+                checkIsExactly(dec.getType(), param.getType(), that, 
+                        "member hidden by parameter must have same type as parameter " +
+                        param.getName());
             }
         }
     }
@@ -431,17 +417,8 @@ public class ExpressionVisitor extends AbstractVisitor {
 
     private void checkType(ProducedType declaredType, Tree.SpecifierOrInitializerExpression sie) {
         if (sie!=null) {
-            ProducedType expressionType = sie.getExpression().getTypeModel();
-            if ( expressionType!=null && declaredType!=null) {
-                if ( !declaredType.isSupertypeOf(expressionType) ) {
-                    sie.addError("specifier expression not assignable to expected type: " + 
-                            expressionType.getProducedTypeName() + " is not " + 
-                            declaredType.getProducedTypeName());
-                }
-            }
-            else {
-                sie.addError("could not determine assignability of specified expression to expected type");
-            }
+            checkAssignable(sie.getExpression().getTypeModel(), declaredType, sie, 
+                    "specified expression must be assignable to declared type");
         }
     }
 
@@ -548,16 +525,16 @@ public class ExpressionVisitor extends AbstractVisitor {
             int cps = c.getParameterList().getParameters().size();
             int aps = alias.getParameterList().getParameters().size();
             if (cps!=aps) {
-                that.addError("wrong number of initializer parameters declared by class alias: " + alias.getName());
+                that.addError("wrong number of initializer parameters declared by class alias: " + 
+                        alias.getName());
             }
             for (int i=0; i<(cps<=aps ? cps : aps); i++) {
                 Parameter ap = alias.getParameterList().getParameters().get(i);
                 Parameter cp = c.getParameterList().getParameters().get(i);
                 ProducedType pt = at.getTypedParameter(cp).getType();
-                if ( !ap.getType().isSubtypeOf(pt) ) {
-                    that.addError("alias parameter is not assignable to corresponding class parameter: " +
-                            ap.getName() + " is not of type " + pt.getProducedTypeName());
-                }
+                checkAssignable(ap.getType(), pt, that, "alias parameter " + 
+                        ap.getName() + " must be assignable to corresponding class parameter " +
+                        cp.getName());
             }
         }
     }
@@ -759,16 +736,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                     }
                 }
                 else {
-                    if (et!=null && at!=null) {
-                        if ( !et.isSupertypeOf(at) ) {
-                            that.addError("returned expression not assignable to expected return type: " +
-                                    at.getProducedTypeName() + " is not " +
-                                    et.getProducedTypeName());
-                        }
-                    }
-                    else {
-                        that.addError("could not determine assignability of returned expression to expected return type");
-                    }
+                    checkAssignable(at, et, that.getExpression(), 
+                            "returned expression must be assignable to expected return type");
                 }
             }
         }
@@ -1121,7 +1090,8 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
             
         for (Parameter p: pl.getParameters()) {
-            if (!foundParameters.contains(p) && !p.isDefaulted() && !p.isSequenced()) {
+            if (!foundParameters.contains(p) && 
+                    !p.isDefaulted() && !p.isSequenced()) {
                 nal.addError("missing named argument to parameter: " + 
                         p.getName());
             }
@@ -1130,58 +1100,26 @@ public class ExpressionVisitor extends AbstractVisitor {
 
     private void checkNamedArgument(Tree.NamedArgument a, ProducedReference pr, 
             Parameter p) {
-        if (p.getType()==null) {
-            a.addError("parameter type not known: " + p.getName());
+        ProducedType argType = null;
+        if (a instanceof Tree.SpecifiedArgument) {
+            argType = ((Tree.SpecifiedArgument) a).getSpecifierExpression()
+                    .getExpression().getTypeModel();
         }
-        else {
-            ProducedType argType = null;
-            if (a instanceof Tree.SpecifiedArgument) {
-                argType = ((Tree.SpecifiedArgument) a).getSpecifierExpression().getExpression().getTypeModel();
-            }
-            else if (a instanceof Tree.TypedArgument) {
-                argType = ((Tree.TypedArgument) a).getType().getTypeModel();
-            }
-            if (argType==null) {
-                a.addError("could not determine assignability of argument to parameter: " +
-                        p.getName());
-            }
-            else {
-                ProducedType paramType = pr.getTypedParameter(p).getType();
-                if ( !paramType.getType().isSupertypeOf(argType) ) {
-                    a.addError("named argument not assignable to parameter type: " + 
-                            p.getName() + " since " +
-                            argType.getProducedTypeName() + " is not " +
-                            paramType.getProducedTypeName());
-                }
-            }
+        else if (a instanceof Tree.TypedArgument) {
+            argType = ((Tree.TypedArgument) a).getType().getTypeModel();
         }
+        checkAssignable(argType, pr.getTypedParameter(p).getType(), a,
+                "named argument must be assignable to parameter " + 
+                p.getName());
     }
     
     private void checkSequencedArgument(Tree.SequencedArgument a, ProducedReference pr, 
             Parameter p) {
-        if (p.getType()==null) {
-            a.addError("sequenced parameter type not known: " + p.getName());
-        }
-        else {
-            for (Tree.Expression e: a.getExpressionList().getExpressions()) {
-                ProducedType argType = e.getTypeModel();    
-                if (argType==null) {
-                    a.addError("could not determine assignability of argument to parameter: " +
-                            p.getName());
-                }
-                else {
-                    ProducedType paramType = pr.getTypedParameter(p).getType();
-                    if (paramType!=null) {
-                        ProducedType at = getIndividualSequencedParameterType(paramType);
-                        if ( !at.getType().isSupertypeOf(argType) ) {
-                            a.addError("sequenced argument not assignable to sequenced parameter type: " + 
-                                    p.getName() + " since " +
-                                    argType.getProducedTypeName() + " is not " +
-                                    paramType.getProducedTypeName());
-                        }
-                    }
-                }
-            }
+        for (Tree.Expression e: a.getExpressionList().getExpressions()) {
+            ProducedType paramType = pr.getTypedParameter(p).getType();
+            checkAssignable(e.getTypeModel(), getIndividualSequencedParameterType(paramType), a, 
+                    "sequenced argument must be assignable to sequenced parameter " + 
+                    p.getName());
         }
     }
     
@@ -1260,32 +1198,23 @@ public class ExpressionVisitor extends AbstractVisitor {
                 //TODO: this case is temporary until we get support for SPECIAL_ARGUMENTs
             }
             else {
-                ProducedType argType = e.getTypeModel();
-                if (argType!=null) {
-                    /*if (pal.getEllipsis()!=null) {
-                        if (i<args.size()-1) {
-                            a.addError("too many arguments to sequenced parameter: " + p.getName());
-                        }
-                        if (!paramType.isSupertypeOf(argType)) {
-                            a.addError("argument not assignable to parameter type: " + 
-                                    p.getName() + " since " +
-                                    argType.getProducedTypeName() + " is not " +
-                                    paramType.getProducedTypeName());
-                        }
+                /*if (pal.getEllipsis()!=null) {
+                    if (i<args.size()-1) {
+                        a.addError("too many arguments to sequenced parameter: " + 
+                                p.getName());
                     }
-                    else {*/
-                        if (!at.isSupertypeOf(argType)) {
-                            a.addError("argument not assignable to sequenced parameter type: " + 
-                                    p.getName() + " since " +
-                                    argType.getProducedTypeName() + " is not " +
-                                    at.getProducedTypeName());
-                        }
-                    //}
+                    if (!paramType.isSupertypeOf(argType)) {
+                        a.addError("argument not assignable to parameter type: " + 
+                                p.getName() + " since " +
+                                argType.getProducedTypeName() + " is not " +
+                                paramType.getProducedTypeName());
+                    }
                 }
-                else {
-                    a.addError("could not determine assignability of argument to parameter: " +
+                else {*/
+                    checkAssignable(e.getTypeModel(), at, a, 
+                            "argument must be assignable to sequenced parameter " + 
                             p.getName());
-                }
+                //}
             }
         }
     }
@@ -1303,19 +1232,8 @@ public class ExpressionVisitor extends AbstractVisitor {
             //TODO: this case is temporary until we get support for SPECIAL_ARGUMENTs
         }
         else {
-            ProducedType argType = e.getTypeModel();
-            if (argType!=null) {
-                if (!paramType.isSupertypeOf(argType)) {
-                    a.addError("argument not assignable to parameter type: " + 
-                            p.getName() + " since " +
-                            argType.getProducedTypeName() + " is not " +
-                            paramType.getProducedTypeName());
-                }
-            }
-            else {
-                a.addError("could not determine assignability of argument to parameter: " +
-                        p.getName());
-            }
+            checkAssignable(e.getTypeModel(), paramType, a, 
+                    "argument must be assignable to parameter " + p.getName());
         }
     }
     
@@ -1338,7 +1256,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                     pt = getDefiniteType(pt);
                 }
                 else {
-                    that.getPrimary().addError("receving type not of optional type: " +
+                    that.getPrimary().addError("receiving type not of optional type: " +
                             pt.getProducedTypeName() + " is not Optional");
                 }
             }
@@ -1359,32 +1277,20 @@ public class ExpressionVisitor extends AbstractVisitor {
                     ProducedType rt;
                     if (that.getElementOrRange() instanceof Tree.Element) {
                         Tree.Element e = (Tree.Element) that.getElementOrRange();
-                        ProducedType et = e.getExpression().getTypeModel();
-                        if (et!=null) {
-                            if (!kt.isSupertypeOf(et)) {
-                                e.addError("index must be of type: " +
-                                        kt.getProducedTypeName());
-                            }
-                        }
+                        checkAssignable(e.getExpression().getTypeModel(), kt, 
+                                e.getExpression(), 
+                                "index must be assignable to key type");
                         rt = getOptionalType(vt);
                     }
                     else {
                         Tree.ElementRange er = (Tree.ElementRange) that.getElementOrRange();
-                        ProducedType lbt = er.getLowerBound().getTypeModel();
-                        if (lbt!=null) {
-                            if (!kt.isSupertypeOf(lbt)) {
-                                er.getLowerBound().addError("lower bound must be of type: " +
-                                        kt.getProducedTypeName());
-                            }
-                        }
+                        checkAssignable(er.getLowerBound().getTypeModel(), kt, 
+                                er.getLowerBound(), 
+                                "lower bound must be assignable to key type");
                         if (er.getUpperBound()!=null) {
-                            ProducedType ubt = er.getUpperBound().getTypeModel();
-                            if (ubt!=null) {
-                                if (!kt.isSupertypeOf(ubt)) {
-                                    er.getUpperBound().addError("upper bound must be of type: " +
-                                            kt.getProducedTypeName());
-                                }
-                            }
+                            checkAssignable(er.getUpperBound().getTypeModel(), kt, 
+                                    er.getUpperBound(), 
+                                    "upper bound must be assignable to key type");
                         }
                         rt = getSequenceType(vt);
                     }
@@ -1689,29 +1595,20 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
     
     private void visitExistsOperator(Tree.Exists that) {
-        ProducedType t = type(that);
-        if (t!=null) {
-            checkOptional(t, that);
-        }
+        checkOptional(type(that), that);
         that.setTypeModel(getBooleanDeclaration().getType());
     }
     
     private void visitNonemptyOperator(Tree.Nonempty that) {
-        ProducedType t = type(that);
-        if (t!=null) {
-            checkEmpty(t, that);
-        }
+        checkEmpty(type(that), that);
         that.setTypeModel(getBooleanDeclaration().getType());
     }
     
     private void visitIsOperator(Tree.IsOp that) {
-        ProducedType t = type(that);
-        if (t!=null) {
-            //TODO: spec says is works for Object?
-            if (!t.isSubtypeOf(getObjectDeclaration().getType())) {
-                that.getTerm().addError("must be of type: Object");
-            }
-        }
+        /*checkAssignable( type(that), 
+                getOptionalType(getObjectDeclaration().getType()), 
+                that.getTerm(), 
+                "expression may not be of void type");*/
         Tree.Type rt = that.getType();
         if (rt!=null) {
             if (rt.getTypeModel()!=null) {
@@ -1731,7 +1628,6 @@ public class ExpressionVisitor extends AbstractVisitor {
             }
         }
         that.setTypeModel(rhst);
-
     }
 
     private void checkAssignable(Tree.Term that) {
@@ -2241,27 +2137,20 @@ public class ExpressionVisitor extends AbstractVisitor {
         super.visit(that);
         ProducedType et = getExceptionDeclaration().getType();
         if (that.getVariable().getType() instanceof Tree.LocalModifier) {
-            that.getVariable().getType().setTypeModel( et );
+            that.getVariable().getType().setTypeModel(et);
         }
         else {
-            ProducedType dt = that.getVariable().getType().getTypeModel();
-            if (dt==null) {
-                that.getVariable().getType().addError("can not determine if caught type is an exception type");
-            }
-            else if (!et.isSupertypeOf(dt)) {
-                that.getVariable().getType().addError("must be of type: Exception");
-            }
+            checkAssignable(that.getVariable().getType().getTypeModel(), et, 
+                    that.getVariable().getType(), 
+                    "type must be an exception type");
         }
     }
     
     @Override public void visit(Tree.StringTemplate that) {
         super.visit(that);
         for (Tree.Expression e: that.getExpressions()) {
-            ProducedType et = e.getTypeModel();
-            if (et!=null && !getFormatDeclaration().getType().isSupertypeOf(et)) {
-                e.addError("interpolated expression not formattable to a string: " +
-                        et.getProducedTypeName() + " is not Format");
-            }
+            checkAssignable(e.getTypeModel(), getFormatDeclaration().getType(), e, 
+                    "interpolated expression must be formattable");
         }
         setLiteralType(that, getStringDeclaration());
     }
@@ -2352,25 +2241,28 @@ public class ExpressionVisitor extends AbstractVisitor {
                     for (ProducedType st: param.getSatisfiedTypes()) {
                         //sts = sts.substitute(self);
                         ProducedType sts = st.getProducedType(receiver, member, typeArguments);
-                        if (argType!=null && !argType.isSubtypeOf(sts)) {
-                            if (tal instanceof Tree.InferredTypeArguments) {
-                                argType.isSubtypeOf(sts);
-                                parent.addError("inferred type argument " + argType.getProducedTypeName()
-                                        + " to type parameter " + param.getName()
-                                        + " of declaration " + member.getName()
-                                        + " not assignable to " + sts.getProducedTypeName());
+                        if (argType!=null) {
+                            if (!argType.isSubtypeOf(sts)) {
+                                if (tal instanceof Tree.InferredTypeArguments) {
+                                    parent.addError("inferred type argument " + argType.getProducedTypeName()
+                                            + " to type parameter " + param.getName()
+                                            + " of declaration " + member.getName()
+                                            + " not assignable to " + sts.getProducedTypeName());
+                                }
+                                else {
+                                    ( (Tree.TypeArgumentList) tal ).getTypes()
+                                            .get(i).addError("type parameter " + param.getName() 
+                                            + " of declaration " + member.getName()
+                                            + " has argument " + argType.getProducedTypeName() 
+                                            + " not assignable to " + sts.getProducedTypeName());
+                                }
+                                return false;
                             }
-                            else {
-                                ( (Tree.TypeArgumentList) tal ).getTypes()
-                                        .get(i).addError("type parameter " + param.getName() 
-                                        + " of declaration " + member.getName()
-                                        + " has argument " + argType.getProducedTypeName() 
-                                        + " not assignable to " + sts.getProducedTypeName());
-                            }
-                            return false;
                         }
                     }
                     if (param.getCaseTypes().size()>0) {
+                        //TODO: what if the arg type has the exact same 
+                        //      cases as the param type?
                         boolean found = false;
                         for (ProducedType ct: param.getCaseTypes()) {
                             ProducedType cts = ct.getProducedType(receiver, member, typeArguments);
@@ -2460,13 +2352,9 @@ public class ExpressionVisitor extends AbstractVisitor {
                         //TODO: lots wrong here?
                         at = ( (TypeDeclaration) td.getMember(std.getName()) ).getType();
                     }
-                    if ( !at.isSubtypeOf(arg, std) ) {
-                        at.isSubtypeOf(arg, std);
-                        that.addError("does not satisfy self type constraint on type parameter: " + 
-                                param.getName() + " of " + type.getDeclaration().getName() +
-                                " since " + at.getProducedTypeName() + 
-                                " is not " + arg.getProducedTypeName() );
-                    }
+                    checkAssignable(at, arg, std, that, 
+                            "does not satisfy self type constraint on type parameter: " + 
+                                param.getName() + " of " + type.getDeclaration().getName());
                 }
             }
         }
@@ -2489,4 +2377,5 @@ public class ExpressionVisitor extends AbstractVisitor {
     private ProducedType defaultType() {
         return getVoidDeclaration().getType();
     }
+    
 }

@@ -111,7 +111,7 @@ public class PhasedUnit {
 
     public void validateRefinement() {
         //System.out.println("Validate member refinement for " + fileName);
-        compilationUnit.visit(new RefinementVisitor());
+        compilationUnit.visit(new RefinementVisitor(context));
     }
 
     public void generateStatistics(StatisticsVisitor statsVisitor) {

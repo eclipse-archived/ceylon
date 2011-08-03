@@ -281,4 +281,37 @@ public abstract class AbstractVisitor extends Visitor {
         return null;
     }
             
+    protected static void checkAssignable(ProducedType type, ProducedType supertype, 
+            Node node, String message) {
+        if (type==null||supertype==null) {
+            node.addError(message);
+        }
+        else if (!type.isSubtypeOf(supertype)) {
+            node.addError(message + ": " + type.getProducedTypeName() + 
+                    " is not assignable to " + supertype.getProducedTypeName());
+        }
+    }
+
+    protected static void checkAssignable(ProducedType type, ProducedType supertype, 
+            TypeDeclaration td, Node node, String message) {
+        if (type==null||supertype==null) {
+            node.addError(message);
+        }
+        else if (!type.isSubtypeOf(supertype, td)) {
+            node.addError(message + ": " + type.getProducedTypeName() + 
+                    " is not assignable to " + supertype.getProducedTypeName());
+        }
+    }
+
+    protected static void checkIsExactly(ProducedType type, ProducedType supertype, 
+            Node node, String message) {
+        if (type==null||supertype==null) {
+            node.addError(message + ": type not known");
+        }
+        else if (!type.isExactly(supertype)) {
+            node.addError(message + ": " + type.getProducedTypeName() + 
+                    " is not exactly " + supertype.getProducedTypeName());
+        }
+    }
+
 }

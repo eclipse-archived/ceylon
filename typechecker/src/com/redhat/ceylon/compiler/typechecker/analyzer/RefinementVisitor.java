@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import java.util.Collections;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -19,7 +20,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
  * Validates some simple rules relating to refinement.
@@ -29,7 +29,18 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  * @author Gavin King
  *
  */
-public class RefinementVisitor extends Visitor {
+public class RefinementVisitor extends AbstractVisitor {
+    
+    private Context context;
+    
+    public RefinementVisitor(Context context) {
+        this.context = context;
+    }
+    
+    @Override
+    protected Context getContext() {
+        return context;
+    }
     
     @Override public void visit(Tree.Declaration that) {
         super.visit(that);
@@ -108,17 +119,9 @@ public class RefinementVisitor extends Visitor {
                     TypedDeclaration trefined = (TypedDeclaration) refined;
                     ProducedTypedReference typedMember = ci.getType().getTypedMember(trefined, Collections.<ProducedType>emptyList());
                     ProducedType refinedType = typedMember.getType();
-                    if (type!=null) {
-                        if (refinedType==null) {
-                            that.addError("could not determine type of refined member");
-                        }
-                        else if (!type.isSubtypeOf(refinedType)) {
-                            ((Tree.TypedDeclaration) that).getType().addError(
-                                    "member type is not a subtype of refined member type: " +
-                                    type.getProducedTypeName() + " is not " + 
-                                    refinedType.getProducedTypeName());
-                        }
-                    }
+                    Tree.TypedDeclaration ttd = (Tree.TypedDeclaration) that;
+                    checkAssignable(type, refinedType, ttd.getType(), 
+                            "member type must be assignable to refined member type");
                     if (dec instanceof Method) {
                        if (!(refined instanceof Method)) {
                            that.addError("method refines an attribute");
@@ -213,20 +216,20 @@ public class RefinementVisitor extends Visitor {
         }
         else {
             for (int i=0; i<params.getParameters().size(); i++) {
-                ProducedType refinedParameterType = pr.getTypedParameter( refinedParams.getParameters().get(i) ).getType();
-                ProducedType parameterType = params.getParameters().get(i).getType();
+                Parameter rparam = refinedParams.getParameters().get(i);
+                ProducedType refinedParameterType = pr.getTypedParameter(rparam).getType();
+                Parameter param = params.getParameters().get(i);
+                ProducedType parameterType = param.getType();
                 Tree.Type type = getParameterList(that).getParameters().get(i).getType(); //some kind of syntax error
                 if (type!=null) {
                     if (refinedParameterType==null || parameterType==null) {
                         type.addError("could not determine if parameter type is the same as the corresponding parameter of refined member");
                     }
-                    else if (!parameterType.isExactly(refinedParameterType)) {
+                    else {
                         //TODO: consider type parameter substitution!!!
-                        type.addError("type of parameter " + 
-                                        params.getParameters().get(i).getName() + " is different to type of corresponding parameter " +
-                                        refinedParams.getParameters().get(i).getName() + " of refined member: " +
-                                        parameterType.getProducedTypeName() + " is not exactly " +
-                                        refinedParameterType.getProducedTypeName());
+                        checkIsExactly(parameterType, refinedParameterType, type, "type of parameter " + 
+                                param.getName() + " is different to type of corresponding parameter " +
+                                rparam.getName() + " of refined member");
                     }
                 }
             }

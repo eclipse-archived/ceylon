@@ -75,9 +75,9 @@ public abstract class ProducedReference {
         return declaration instanceof Functional;
     }
 
-    public ProducedTypedReference getTypedParameter(Parameter td) {
+    public ProducedTypedReference getTypedParameter(Parameter p) {
         ProducedTypedReference ptr = new ProducedTypedReference();
-        ptr.setDeclaration(td);
+        ptr.setDeclaration(p);
         ptr.setDeclaringType(getDeclaringType());
         ptr.setTypeArguments(getTypeArguments());
         return ptr;
