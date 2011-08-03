@@ -15,11 +15,11 @@ public final class String implements Equality {
         return new ceylon.language.String(s);
     }
 
-    public String uppercase() {
+    public ceylon.language.String uppercase() {
         return instance(value.toUpperCase());
     }
 
-    public String lowercase() {
+    public ceylon.language.String lowercase() {
         return instance(value.toLowerCase());
     }
 
