@@ -1349,18 +1349,21 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }*/
 
-    private void visitComparisonOperator(Tree.BinaryOperatorExpression that, TypeDeclaration type) {
+    private void visitComparisonOperator(Tree.BinaryOperatorExpression that, 
+            TypeDeclaration type) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
             ProducedType nt = lhst.getSupertype(type);
             if (nt==null) {
-                that.getLeftTerm().addError("must be of type: " + type.getName());
+                that.getLeftTerm().addError("must be of type: " + 
+                        type.getName());
             }
             else {
                 that.setTypeModel( getBooleanDeclaration().getType() );            
                 if (!nt.isSupertypeOf(rhst)) {
-                    that.getRightTerm().addError("must be of type: " + nt.getProducedTypeName());
+                    that.getRightTerm().addError("must be of type: " + 
+                            nt.getProducedTypeName());
                 }
             }
         }
@@ -1377,7 +1380,8 @@ public class ExpressionVisitor extends AbstractVisitor {
             else {
                 that.setTypeModel( getComparisonDeclaration().getType() );            
                 if (!nt.isSupertypeOf(rhst)) {
-                    that.getRightTerm().addError("must be of type: " + nt.getProducedTypeName());
+                    that.getRightTerm().addError("must be of type: " + 
+                            nt.getProducedTypeName());
                 }
             }
         }
@@ -1427,7 +1431,8 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }
     
-    private void visitArithmeticOperator(Tree.BinaryOperatorExpression that, TypeDeclaration type) {
+    private void visitArithmeticOperator(Tree.BinaryOperatorExpression that, 
+            TypeDeclaration type) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
@@ -1444,17 +1449,20 @@ public class ExpressionVisitor extends AbstractVisitor {
                 lhst = lhsst.getTypeArgumentList().get(0);
                 ProducedType rt;
                 Tree.Term node;
-                if (lhst.isSubtypeOf(getCastableType(lhst)) && rhst.isSubtypeOf(getCastableType(lhst))) {
+                if (lhst.isSubtypeOf(getCastableType(lhst)) && 
+                        rhst.isSubtypeOf(getCastableType(lhst))) {
                     rt = lhst;
                     node = that.getLeftTerm();
                 }
-                else if (lhst.isSubtypeOf(getCastableType(rhst)) && rhst.isSubtypeOf(getCastableType(rhst))) {
+                else if (lhst.isSubtypeOf(getCastableType(rhst)) && 
+                        rhst.isSubtypeOf(getCastableType(rhst))) {
                     rt = rhst;
                     node = that.getRightTerm();
                 }
                 else {
                     that.addError("could not promote operands to a common type: " + 
-                            lhst.getProducedTypeName() + ", " + rhst.getProducedTypeName());
+                            lhst.getProducedTypeName() + ", " + 
+                            rhst.getProducedTypeName());
                     return;
                 }
                 if (!rt.isSubtypeOf(producedType(type,rt))) {
@@ -1467,7 +1475,8 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }
 
-    private void visitArithmeticAssignOperator(Tree.BinaryOperatorExpression that, TypeDeclaration type) {
+    private void visitArithmeticAssignOperator(Tree.BinaryOperatorExpression that, 
+            TypeDeclaration type) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
@@ -1480,13 +1489,15 @@ public class ExpressionVisitor extends AbstractVisitor {
                         nt : nt.getTypeArgumentList().get(0);
                 that.setTypeModel(t);
                 if (!getCastableType(t).isSupertypeOf(rhst)) {
-                    that.getRightTerm().addError("must be promotable to type: " + nt.getProducedTypeName());
+                    that.getRightTerm().addError("must be promotable to type: " + 
+                            nt.getProducedTypeName());
                 }
             }
         }
     }
 
-    private void visitBinaryOperator(Tree.BinaryOperatorExpression that, TypeDeclaration type) {
+    private void visitBinaryOperator(Tree.BinaryOperatorExpression that, 
+            TypeDeclaration type) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
@@ -1499,7 +1510,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                         nt : nt.getTypeArgumentList().get(0);
                 that.setTypeModel(t);
                 if (!nt.isSupertypeOf(rhst)) {
-                    that.getRightTerm().addError("must be of type: " + nt.getProducedTypeName());
+                    that.getRightTerm().addError("must be of type: " + 
+                            nt.getProducedTypeName());
                 }
             }
         }
@@ -1521,7 +1533,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                 ot = getOptionalType(rhst);
             }
             if (!lhst.isSubtypeOf(ot)) {
-                that.getLeftTerm().addError("must be of type: " + ot.getProducedTypeName());
+                that.getLeftTerm().addError("must be of type: " + 
+                        ot.getProducedTypeName());
             }
         }
     }
@@ -1543,10 +1556,10 @@ public class ExpressionVisitor extends AbstractVisitor {
             }
             if ( !rhst.isSubtypeOf(getCategoryDeclaration().getType()) ) {
                 ProducedType it = rhst.getSupertype(getIterableDeclaration());
-                if (it==null) {
-                    that.getRightTerm().addError("must be of type: Category | Iterable<Equality>");
-                }
-                else if ( !it.getTypeArgumentList().get(0).isSubtypeOf(getEqualityDeclaration().getType()) ){
+                boolean err = it==null || 
+                    !it.getTypeArgumentList().get(0)
+                            .isSubtypeOf(getEqualityDeclaration().getType());
+                if ( err ){
                     that.getRightTerm().addError("must be of type: Category | Iterable<Equality>");
                 }
             }
@@ -1554,12 +1567,14 @@ public class ExpressionVisitor extends AbstractVisitor {
         that.setTypeModel( getBooleanDeclaration().getType() );
     }
     
-    private void visitUnaryOperator(Tree.UnaryOperatorExpression that, TypeDeclaration type) {
+    private void visitUnaryOperator(Tree.UnaryOperatorExpression that, 
+            TypeDeclaration type) {
         ProducedType t = type(that);
         if ( t!=null ) {
             ProducedType nt = t.getSupertype(type);
             if (nt==null) {
-                that.getTerm().addError("must be of type: " + type.getName());
+                that.getTerm().addError("must be of type: " + 
+                        type.getName());
             }
             else {
                 ProducedType at = nt.getTypeArguments().isEmpty() ? 
