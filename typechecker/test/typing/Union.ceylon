@@ -125,4 +125,18 @@ class Union() {
         }
     }
     
+    Sequence<String>|Sequence<Natural> sssn = { "hello" };
+    String|Natural sssnf = sssn.first;
+    
+    function first<T>(T... args) {
+        if (nonempty args) {
+            return args.first; 
+        }
+        else {
+            throw;
+        }
+    }
+    @type["String|Integer|Float"] value ff1 = first({"hello", "world"}, {+1, -1}, {1.0}).first;
+    @type["String|Integer|Float"] value ff2 = first({"hello", "world"}, {+1, -1, 1.0}).first;
+    
 }

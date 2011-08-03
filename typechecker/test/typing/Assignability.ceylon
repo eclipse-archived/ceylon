@@ -344,4 +344,16 @@ class Assignability() {
     
     function foo() { throw; }
     @type["Bottom"] foo();
+    
+    function f<T>(T a, T b) {
+        if (true) {
+            return a;
+        }
+        else {
+            return b;
+        }
+    }
+    @type["Sequence<String>|Sequence<Natural>"] value ut = f({ "aaa" },{ 1 });
+    Sequence<Object> st = ut;
+    value item = ut[0];
 }

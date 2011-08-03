@@ -432,8 +432,8 @@ public class ProducedType extends ProducedReference {
     public ProducedType getSupertype(final TypeDeclaration dec, TypeDeclaration ignoringSelftype) {
         Criteria c = new Criteria() {
             @Override
-            public boolean satisfies(ProducedType type) {
-                return type.getDeclaration()==dec;
+            public boolean satisfies(TypeDeclaration type) {
+                return type==dec;
             }
         };
         return getSupertype(c, new ArrayList<ProducedType>(), ignoringSelftype);
@@ -444,11 +444,11 @@ public class ProducedType extends ProducedReference {
     }
     
     static interface Criteria {
-        boolean satisfies(ProducedType type);
+        boolean satisfies(TypeDeclaration type);
     }
     
     ProducedType getSupertype(final Criteria c, List<ProducedType> list, final TypeDeclaration ignoringSelftype) {
-        if (c.satisfies(this)) {
+        if (c.satisfies(getDeclaration())) {
             return this;
         }
         if ( isWellDefined() && Util.addToSupertypes(list, this) ) {
@@ -480,13 +480,17 @@ public class ProducedType extends ProducedReference {
                 }
             }
             final List<ProducedType> caseTypes = getDeclaration().getCaseTypes();
-            if (caseTypes!=null /*&& !caseTypes.isEmpty()*/) {
+            if (caseTypes!=null && !caseTypes.isEmpty()) {
                 Criteria c2 = new Criteria() {
                     @Override
-                    public boolean satisfies(ProducedType type) {
+                    public boolean satisfies(TypeDeclaration type) {
                         if ( c.satisfies(type) ) {
                             for (ProducedType ct: caseTypes) {
-                                if (!ct.substituteInternal(getTypeArguments()).isSubtypeOf(type, ignoringSelftype)) {
+                                ProducedType pt = ct.substituteInternal(getTypeArguments()).getSupertype(type, ignoringSelftype);
+                                /*if (!ct.substituteInternal(getTypeArguments()).isSubtypeOf(type, ignoringSelftype)) {
+                                    return false;
+                                }*/
+                                if (pt==null) {
                                     return false;
                                 }
                             }
@@ -497,11 +501,38 @@ public class ProducedType extends ProducedReference {
                         }
                     }
                 };
-                for (ProducedType t: caseTypes) {
-                    ProducedType candidateResult = t.substituteInternal(getTypeArguments()).getSupertype(c2, list, ignoringSelftype);
-                    if (candidateResult!=null) {
+                //first find a common supertype declaration 
+                //that satisfies the criteria
+                ProducedType stc = caseTypes.get(0).substituteInternal(getTypeArguments())
+                        .getSupertype(c2, list, ignoringSelftype);
+                if (stc!=null) {
+                    TypeDeclaration dec = stc.getDeclaration();
+                    //now try to construct a common produced
+                    //type that is a common supertype
+                    List<ProducedType> args = new ArrayList<ProducedType>();
+                    for (TypeParameter tp: dec.getTypeParameters()) {
+                        //TODO: construct an intersection!
+                        //if (tp.isContravariant()) { ..... }
+                        List<ProducedType> list2 = new ArrayList<ProducedType>();
+                        for (ProducedType pt: caseTypes) {
+                            ProducedType st = pt.substituteInternal(getTypeArguments()).getSupertype(dec, ignoringSelftype);
+                            if (st==null) return null;
+                            Util.addToUnion(list2, st.getTypeArguments().get(tp));
+                        }
+                        UnionType ut = new UnionType();
+                        ut.setCaseTypes(list2);
+                        args.add(ut.getType());
+                    }
+                    //TODO: outer type might have its own type args
+                    //      do we need to find a common outer type?
+                    ProducedType candidateResult = dec.getProducedType(stc.getDeclaringType(), args);
+                    //TODO: now check that the constructed type is 
+                    //      *actually* a common supertype!  
+                    //TODO: do we need to check against type constraints here?
+                    if (true) {
                         if (result==null || candidateResult.isSubtypeOf(result, ignoringSelftype)) {
                             result = candidateResult;
+                            result.toString();
                         }
                     }
                 }
@@ -512,7 +543,7 @@ public class ProducedType extends ProducedReference {
             return null;
         }
     }
-
+    
     public List<ProducedType> getTypeArgumentList() {
         List<ProducedType> lpt = new ArrayList<ProducedType>();
         for (TypeParameter tp : getDeclaration().getTypeParameters()) {
