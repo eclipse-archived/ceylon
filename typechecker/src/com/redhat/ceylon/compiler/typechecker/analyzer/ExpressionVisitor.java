@@ -415,29 +415,34 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }
 
-    private void checkType(ProducedType declaredType, Tree.SpecifierOrInitializerExpression sie) {
+    private void checkType(ProducedType declaredType, 
+            Tree.SpecifierOrInitializerExpression sie) {
         if (sie!=null) {
             checkAssignable(sie.getExpression().getTypeModel(), declaredType, sie, 
                     "specified expression must be assignable to declared type");
         }
     }
 
-    private void checkOptionalType(Tree.Variable var, Tree.SpecifierExpression se) {
+    private void checkOptionalType(Tree.Variable var, 
+            Tree.SpecifierExpression se) {
         ProducedType vt = var.getType().getTypeModel();
         checkType(getOptionalType(vt), se);
     }
 
-    private void checkEmptyOptionalType(Tree.Variable var, Tree.SpecifierExpression se) {
+    private void checkEmptyOptionalType(Tree.Variable var, 
+            Tree.SpecifierExpression se) {
         ProducedType vt = var.getType().getTypeModel();
         checkType(getEmptyOptionalType(vt), se);
     }
 
-    private void checkContainedType(Tree.Variable var, Tree.SpecifierExpression se) {
+    private void checkContainedType(Tree.Variable var, 
+            Tree.SpecifierExpression se) {
         ProducedType vt = var.getType().getTypeModel();
         checkType(getIterableType(vt), se);
     }
 
-    private void checkKeyValueType(Tree.Variable key, Tree.Variable value, Tree.SpecifierExpression se) {
+    private void checkKeyValueType(Tree.Variable key, Tree.Variable value, 
+            Tree.SpecifierExpression se) {
         ProducedType kt = key.getType().getTypeModel();
         ProducedType vt = value.getType().getTypeModel();
         checkType(getIterableType(getEntryType(kt, vt)), se);
@@ -539,7 +544,8 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }
     
-    private void inferType(Tree.TypedDeclaration that, Tree.SpecifierOrInitializerExpression spec) {
+    private void inferType(Tree.TypedDeclaration that, 
+            Tree.SpecifierOrInitializerExpression spec) {
         if (that.getType() instanceof Tree.LocalModifier) {
             Tree.LocalModifier local = (Tree.LocalModifier) that.getType();
             if (spec!=null) {
@@ -552,7 +558,8 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }
 
-    private void inferDefiniteType(Tree.Variable that, Tree.SpecifierExpression se) {
+    private void inferDefiniteType(Tree.Variable that, 
+            Tree.SpecifierExpression se) {
         if (that.getType() instanceof Tree.LocalModifier) {
             Tree.LocalModifier local = (Tree.LocalModifier) that.getType();
             if (se!=null) {
@@ -565,7 +572,8 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }
 
-    private void inferNonemptyType(Tree.Variable that, Tree.SpecifierExpression se) {
+    private void inferNonemptyType(Tree.Variable that, 
+            Tree.SpecifierExpression se) {
         if (that.getType() instanceof Tree.LocalModifier) {
             Tree.LocalModifier local = (Tree.LocalModifier) that.getType();
             if (se!=null) {
@@ -578,7 +586,8 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }
 
-    private void inferContainedType(Tree.Variable that, Tree.SpecifierExpression se) {
+    private void inferContainedType(Tree.Variable that, 
+            Tree.SpecifierExpression se) {
         if (that.getType() instanceof Tree.LocalModifier) {
             Tree.LocalModifier local = (Tree.LocalModifier) that.getType();
             if (se!=null) {
@@ -591,7 +600,8 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }
 
-    private void inferKeyType(Tree.Variable key, Tree.SpecifierExpression se) {
+    private void inferKeyType(Tree.Variable key, 
+            Tree.SpecifierExpression se) {
         if (key.getType() instanceof Tree.LocalModifier) {
             Tree.LocalModifier local = (Tree.LocalModifier) key.getType();
             if (se!=null) {
@@ -604,7 +614,8 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }
 
-    private void inferValueType(Tree.Variable value, Tree.SpecifierExpression se) {
+    private void inferValueType(Tree.Variable value, 
+            Tree.SpecifierExpression se) {
         if (value.getType() instanceof Tree.LocalModifier) {
             Tree.LocalModifier local = (Tree.LocalModifier) value.getType();
             if (se!=null) {
@@ -618,8 +629,7 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
 
     private void setTypeFromTypeArgument(Tree.LocalModifier local, 
-            Tree.SpecifierExpression se, 
-            Tree.Variable that) {
+            Tree.SpecifierExpression se, Tree.Variable that) {
         ProducedType expressionType = se.getExpression().getTypeModel();
         if (expressionType!=null) {
             ProducedType st = expressionType.getSupertype(getIterableDeclaration());
@@ -635,8 +645,7 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
     
     private void setTypeFromOptionalType(Tree.LocalModifier local, 
-            Tree.SpecifierExpression se, 
-            Tree.Variable that) {
+            Tree.SpecifierExpression se, Tree.Variable that) {
         ProducedType expressionType = se.getExpression().getTypeModel();
         if (expressionType!=null) {
             if (isOptionalType(expressionType)) {
@@ -651,8 +660,7 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
     
     private void setTypeFromEmptyType(Tree.LocalModifier local, 
-            Tree.SpecifierExpression se, 
-            Tree.Variable that) {
+            Tree.SpecifierExpression se, Tree.Variable that) {
         ProducedType expressionType = se.getExpression().getTypeModel();
         if (expressionType!=null) {
             if (isEmptyType(expressionType)) {
@@ -667,8 +675,7 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
     
     private void setTypeFromTypeArgument(Tree.LocalModifier local,
-            Tree.SpecifierExpression se, 
-            Tree.Variable that,
+            Tree.SpecifierExpression se, Tree.Variable that,
             int index) {
         ProducedType expressionType = se.getExpression().getTypeModel();
         if (expressionType!=null) {
@@ -877,16 +884,20 @@ public class ExpressionVisitor extends AbstractVisitor {
                 List<ProducedType> typeArgs = getInferedTypeArguments(that, (Functional) dec);
                 mte.getTypeArguments().setTypeModels(typeArgs);
                 if (pr instanceof Tree.BaseTypeExpression) {
-                    visitBaseTypeExpression((Tree.BaseTypeExpression) pr, (TypeDeclaration) dec, typeArgs, mte.getTypeArguments());
+                    visitBaseTypeExpression((Tree.BaseTypeExpression) pr, (TypeDeclaration) dec, 
+                            typeArgs, mte.getTypeArguments());
                 }
                 else if (pr instanceof Tree.QualifiedTypeExpression) {
-                    visitQualifiedTypeExpression((Tree.QualifiedTypeExpression) pr, (TypeDeclaration) dec, typeArgs, mte.getTypeArguments());
+                    visitQualifiedTypeExpression((Tree.QualifiedTypeExpression) pr, (TypeDeclaration) dec, 
+                            typeArgs, mte.getTypeArguments());
                 }
                 else if (pr instanceof Tree.BaseMemberExpression) {
-                    visitBaseMemberExpression((Tree.BaseMemberExpression) pr, (TypedDeclaration) dec, typeArgs, mte.getTypeArguments());
+                    visitBaseMemberExpression((Tree.BaseMemberExpression) pr, (TypedDeclaration) dec, 
+                            typeArgs, mte.getTypeArguments());
                 }
                 else if (pr instanceof Tree.QualifiedMemberExpression) {
-                    visitQualifiedMemberExpression((Tree.QualifiedMemberExpression) pr, (TypedDeclaration) dec, typeArgs, mte.getTypeArguments());
+                    visitQualifiedMemberExpression((Tree.QualifiedMemberExpression) pr, (TypedDeclaration) dec, 
+                            typeArgs, mte.getTypeArguments());
                 }
             }
             visitInvocation(that, mte.getTarget());
