@@ -1264,7 +1264,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                 }
                 else {
                     that.getPrimary().addError("receiving type not of optional type: " +
-                            pt.getProducedTypeName() + " is not Optional");
+                            pt.getDeclaration().getName() + " is not a subtype of Optional");
                 }
             }
             ProducedType st = pt.minus(getEmptyDeclaration())
@@ -1274,16 +1274,16 @@ public class ExpressionVisitor extends AbstractVisitor {
             }
             if (st==null) {
                 that.getPrimary().addError("illegal receiving type for index expression: " +
-                        pt.getProducedTypeName() + " is not of type Correspondence");
+                        pt.getDeclaration().getName() + " is not a of subtype of Correspondence");
             }
             else {
-                List<ProducedType> args = st.getTypeArgumentList();
-                ProducedType kt = args.get(0);
-                ProducedType vt = args.get(1);
                 if (that.getElementOrRange()==null) {
                     that.addError("malformed index expression");
                 }
                 else {
+                    List<ProducedType> args = st.getTypeArgumentList();
+                    ProducedType kt = args.get(0);
+                    ProducedType vt = args.get(1);
                     ProducedType rt;
                     if (that.getElementOrRange() instanceof Tree.Element) {
                         Tree.Element e = (Tree.Element) that.getElementOrRange();
@@ -1334,13 +1334,40 @@ public class ExpressionVisitor extends AbstractVisitor {
         visitIncrementDecrement(that, type(that), that.getTerm());
         checkAssignable(that.getTerm());
     }
+    
+    private ProducedType getUnionType(ProducedType lhst, ProducedType rhst) {
+        List<ProducedType> list = new ArrayList<ProducedType>();
+        addToUnion(list, rhst);
+        addToUnion(list, lhst);
+        if (list.size()==1) {
+            return list.get(0);
+        }
+        else {
+            UnionType ut = new UnionType();
+            ut.setCaseTypes(list);
+            return ut.getType();
+        }
+    }
+    
+    private void checkOperandType(ProducedType pt, TypeDeclaration td, 
+            Node node, String message) {
+        if (pt.getSupertype(td)==null) {
+            node.addError(message + ": " + pt.getDeclaration().getName() +
+                    " is not a subtype of " + td.getName());
+        }
+    }
+
+    private void checkOperandTypes(ProducedType lhst, ProducedType rhst, 
+            TypeDeclaration td, Node node, String message) {
+        ProducedType ut = getUnionType(lhst, rhst);
+        checkOperandType(ut, td, node, message);
+    }
 
     private void visitIncrementDecrement(Tree.Term that,
             ProducedType pt, Tree.Term term) {
         if (pt!=null) {
-            if (pt.getSupertype(getOrdinalDeclaration())==null) {
-                term.addError("must be of type: Ordinal");
-            }
+            checkOperandType(pt, getOrdinalDeclaration(), term,
+                    "operand expression must be of ordinal type");
             that.setTypeModel(pt);
         }
     }
@@ -1364,62 +1391,36 @@ public class ExpressionVisitor extends AbstractVisitor {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            ProducedType nt = lhst.getSupertype(type);
-            if (nt==null) {
-                that.getLeftTerm().addError("must be of type: " + 
-                        type.getName());
-            }
-            else {
-                that.setTypeModel( getBooleanDeclaration().getType() );            
-                if (!nt.isSupertypeOf(rhst)) {
-                    that.getRightTerm().addError("must be of type: " + 
-                            nt.getProducedTypeName());
-                }
-            }
+            checkOperandTypes(lhst, rhst, type, that, 
+                    "operand expressions must be comparable");
         }
+        that.setTypeModel( getBooleanDeclaration().getType() );            
     }
     
     private void visitCompareOperator(Tree.CompareOp that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            ProducedType nt = lhst.getSupertype(getComparableDeclaration());
-            if (nt==null) {
-                that.getLeftTerm().addError("must be of type: Comparable");
-            }
-            else {
-                that.setTypeModel( getComparisonDeclaration().getType() );            
-                if (!nt.isSupertypeOf(rhst)) {
-                    that.getRightTerm().addError("must be of type: " + 
-                            nt.getProducedTypeName());
-                }
-            }
+            checkOperandTypes(lhst, rhst, getComparableDeclaration(), that, 
+                    "operand expressions must be comparable");
         }
+        that.setTypeModel( getComparisonDeclaration().getType() );            
     }
     
     private void visitRangeOperator(Tree.RangeOp that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            if ( lhst.getSupertype(getOrdinalDeclaration())==null) {
-                that.getLeftTerm().addError("must be of type: Ordinal");
-            }
-            if ( rhst.getSupertype(getOrdinalDeclaration())==null) {
-                that.getRightTerm().addError("must be of type: Ordinal");
-            }
-            ProducedType ct = lhst.getSupertype(getComparableDeclaration());
-            if ( ct==null) {
-                that.getLeftTerm().addError("must be of type: Comparable");
-            }
-            else {
-                ProducedType t = ct.getTypeArgumentList().get(0);
-                if ( !rhst.isSubtypeOf(t)) {
-                    that.getRightTerm().addError("must be of type: " + 
-                            t.getProducedTypeName());
-                }
-                else {
-                    that.setTypeModel( producedType(getRangeDeclaration(), t) );
-                }
+            checkOperandTypes(lhst, rhst, getOrdinalDeclaration(), that,
+                    "operand expressions must be of compatible ordinal type");
+            checkOperandTypes(lhst, rhst, getComparableDeclaration(), that, 
+                    "operand expressions must be comparable");
+            ProducedType ct = getUnionType(lhst, rhst)
+                    .getSupertype(getComparableDeclaration());
+            if (ct!=null) {
+                ProducedType pt = producedType(getRangeDeclaration(), 
+                        ct.getTypeArgumentList().get(0));
+                that.setTypeModel(pt);
             }
         }
     }
@@ -1428,14 +1429,10 @@ public class ExpressionVisitor extends AbstractVisitor {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            ProducedType let = lhst.getSupertype(getEqualityDeclaration());
-            ProducedType ret = rhst.getSupertype(getEqualityDeclaration());
-            if ( let==null) {
-                that.getLeftTerm().addError("must be of type: Equality");
-            }
-            if ( ret==null) {
-                that.getRightTerm().addError("must be of type: Equality");
-            }
+            checkOperandType(lhst, getEqualityDeclaration(), that.getLeftTerm(), 
+                    "operand expression must support equality");
+            checkOperandType(rhst, getEqualityDeclaration(), that.getRightTerm(), 
+                    "operand expression must support equality");
             ProducedType et = getEntryType(lhst, rhst);
             that.setTypeModel(et);
         }
@@ -1446,44 +1443,33 @@ public class ExpressionVisitor extends AbstractVisitor {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
+            checkOperandType(lhst, type, that.getLeftTerm(), 
+                    "operand expression must be of numeric type");
+            checkOperandType(rhst, type, that.getRightTerm(), 
+                    "operand expression must be of numeric type");
             ProducedType rhsst = rhst.getSupertype(type);
             ProducedType lhsst = lhst.getSupertype(type);
-            if (rhsst==null) {
-                that.getRightTerm().addError("must be of type: " + 
-                        type.getName());
-            }
-            if (lhsst==null) {
-                that.getLeftTerm().addError("must be of type: " + 
-                        type.getName());
-            }
             if (rhsst!=null && lhsst!=null) {
                 rhst = rhsst.getTypeArgumentList().get(0);
                 lhst = lhsst.getTypeArgumentList().get(0);
                 ProducedType rt;
-                Tree.Term node;
                 if (lhst.isSubtypeOf(getCastableType(lhst)) && 
                         rhst.isSubtypeOf(getCastableType(lhst))) {
                     rt = lhst;
-                    node = that.getLeftTerm();
                 }
                 else if (lhst.isSubtypeOf(getCastableType(rhst)) && 
                         rhst.isSubtypeOf(getCastableType(rhst))) {
                     rt = rhst;
-                    node = that.getRightTerm();
                 }
                 else {
-                    that.addError("could not promote operands to a common type: " + 
+                    that.addError("operand expressions must be promotable to common numeric type: " + 
                             lhst.getProducedTypeName() + ", " + 
                             rhst.getProducedTypeName());
                     return;
                 }
-                if (!rt.isSubtypeOf(producedType(type,rt))) {
-                    node.addError("must be of type: " + 
-                            type.getName());
-                }
-                else {
-                    that.setTypeModel(rt);
-                }
+                checkAssignable(rt, producedType(type,rt), that, 
+                        "operands must be compatible numeric types");
+                that.setTypeModel(rt);
             }
         }
     }
@@ -1493,16 +1479,15 @@ public class ExpressionVisitor extends AbstractVisitor {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
+            checkOperandType(lhst, type, that.getLeftTerm(), 
+                    "operand expression must be of numeric type");
             ProducedType nt = lhst.getSupertype(type);
-            if (nt==null) {
-                that.getLeftTerm().addError("must be of type: " + type.getName());
-            }
-            else {
+            if (nt!=null) {
                 ProducedType t = nt.getTypeArguments().isEmpty() ? 
                         nt : nt.getTypeArgumentList().get(0);
                 that.setTypeModel(t);
-                if (!getCastableType(t).isSupertypeOf(rhst)) {
-                    that.getRightTerm().addError("must be promotable to type: " + 
+                if (!rhst.isSubtypeOf(getCastableType(t))) {
+                    that.getRightTerm().addError("operand expression must be promotable to common numeric type: " + 
                             nt.getProducedTypeName());
                 }
             }
@@ -1514,19 +1499,13 @@ public class ExpressionVisitor extends AbstractVisitor {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            ProducedType nt = lhst.getSupertype(type);
-            if (nt==null) {
-                that.getLeftTerm().addError("must be of type: " + 
-                        type.getName());
-            }
-            else {
-                ProducedType t = nt.getTypeArguments().isEmpty() ? 
-                        nt : nt.getTypeArgumentList().get(0);
+            checkOperandTypes(lhst, rhst, type, that, 
+                    "operand expressions must be compatible");
+            ProducedType ut = getUnionType(lhst, rhst).getSupertype(type);
+            if (ut!=null) {
+                ProducedType t = ut.getTypeArguments().isEmpty() ? 
+                        ut : ut.getTypeArgumentList().get(0);
                 that.setTypeModel(t);
-                if (!nt.isSupertypeOf(rhst)) {
-                    that.getRightTerm().addError("must be of type: " + 
-                            nt.getProducedTypeName());
-                }
             }
         }
     }
@@ -1535,10 +1514,21 @@ public class ExpressionVisitor extends AbstractVisitor {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            that.setTypeModel(rhst);
             if (!isOptionalType(lhst)) {
                 that.getLeftTerm().addError("must be of optional type");
             }
+            List<ProducedType> list = new ArrayList<ProducedType>();
+            addToUnion(list, rhst);
+            addToUnion(list, lhst.minus(getNothingDeclaration()));
+            if (list.size()==1) {
+                that.setTypeModel(list.get(0));
+            }
+            else {
+                UnionType ut = new UnionType();
+                ut.setCaseTypes(list);
+                that.setTypeModel(ut.getType());
+            }
+            /*that.setTypeModel(rhst);
             ProducedType ot;
             if (isOptionalType(rhst)) {
                 ot = rhst;
@@ -1549,7 +1539,7 @@ public class ExpressionVisitor extends AbstractVisitor {
             if (!lhst.isSubtypeOf(ot)) {
                 that.getLeftTerm().addError("must be of type: " + 
                         ot.getProducedTypeName());
-            }
+            }*/
         }
     }
 
@@ -1565,18 +1555,12 @@ public class ExpressionVisitor extends AbstractVisitor {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            if ( !lhst.isSubtypeOf(getObjectDeclaration().getType())) {
-                that.getLeftTerm().addError("must be of type: Object");
-            }
-            if ( !rhst.isSubtypeOf(getCategoryDeclaration().getType()) ) {
-                ProducedType it = rhst.getSupertype(getIterableDeclaration());
-                boolean err = it==null || 
-                    !it.getTypeArgumentList().get(0)
-                            .isSubtypeOf(getEqualityDeclaration().getType());
-                if ( err ){
-                    that.getRightTerm().addError("must be of type: Category | Iterable<Equality>");
-                }
-            }
+            checkAssignable(lhst, getObjectDeclaration().getType(), that.getLeftTerm(), 
+                    "operand expression must be an object type");
+            ProducedType ut = getUnionType(getCategoryDeclaration().getType(), 
+                    producedType(getIterableDeclaration(),getEqualityDeclaration().getType()));
+            checkAssignable(rhst, ut, that.getRightTerm(), 
+                    "operand expression must be a category or iterator");
         }
         that.setTypeModel( getBooleanDeclaration().getType() );
     }
@@ -1584,29 +1568,13 @@ public class ExpressionVisitor extends AbstractVisitor {
     private void visitUnaryOperator(Tree.UnaryOperatorExpression that, 
             TypeDeclaration type) {
         ProducedType t = type(that);
-        if ( t!=null ) {
+        if (t!=null) {
+            checkOperandType(t, type, that.getTerm(), 
+                    "operand expression must be of correct type");
             ProducedType nt = t.getSupertype(type);
-            if (nt==null) {
-                that.getTerm().addError("must be of type: " + 
-                        type.getName());
-            }
-            else {
+            if (nt!=null) {
                 ProducedType at = nt.getTypeArguments().isEmpty() ? 
                         nt : nt.getTypeArgumentList().get(0);
-                that.setTypeModel(at);
-            }
-        }
-    }
-
-    private void visitNegativeOperator(Tree.UnaryOperatorExpression that) {
-        ProducedType t = type(that);
-        if ( t!=null ) {
-            ProducedType nt = t.getSupertype(getInvertableDeclaration());
-            if (nt==null) {
-                that.getTerm().addError("must be of type: Invertable");
-            }
-            else {
-                ProducedType at = nt.getTypeArgumentList().get(0);
                 that.setTypeModel(at);
             }
         }
@@ -1651,10 +1619,8 @@ public class ExpressionVisitor extends AbstractVisitor {
         ProducedType rhst = rightType(that);
         ProducedType lhst = leftType(that);
         if ( rhst!=null && lhst!=null ) {
-            if ( !rhst.isSubtypeOf(lhst) ) {
-                that.getRightTerm().addError("must be of type " +
-                        lhst.getProducedTypeName());
-            }
+            checkAssignable(rhst, lhst, that.getRightTerm(), 
+                    "assigned expression must be assignable to declared type");
         }
         that.setTypeModel(rhst);
     }
@@ -1761,12 +1727,12 @@ public class ExpressionVisitor extends AbstractVisitor {
         
     @Override public void visit(Tree.NegativeOp that) {
         super.visit(that);
-        visitNegativeOperator(that);
+        visitUnaryOperator(that, getInvertableDeclaration());
     }
         
     @Override public void visit(Tree.PositiveOp that) {
         super.visit(that);
-        visitNegativeOperator(that);
+        visitUnaryOperator(that, getInvertableDeclaration());
     }
         
     @Override public void visit(Tree.FlipOp that) {
