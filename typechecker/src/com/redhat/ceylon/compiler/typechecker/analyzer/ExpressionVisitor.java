@@ -1302,7 +1302,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                                     er.getUpperBound(), 
                                     "upper bound must be assignable to key type");
                         }
-                        rt = getSequenceType(vt);
+                        rt = unionType(getSequenceType(vt), getEmptyDeclaration().getType());
                     }
                     that.setTypeModel(rt);
                 }
