@@ -1079,7 +1079,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         for (Tree.NamedArgument a: na) {
             Parameter p = getMatchingParameter(pl, a);
             if (p==null) {
-                a.addError("no matching parameter for named argument: " + 
+                a.addError("no matching parameter for named argument " + 
                         name(a.getIdentifier()));
             }
             else {
@@ -1103,7 +1103,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         for (Parameter p: pl.getParameters()) {
             if (!foundParameters.contains(p) && 
                     !p.isDefaulted() && !p.isSequenced()) {
-                nal.addError("missing named argument to parameter: " + 
+                nal.addError("missing named argument to parameter " + 
                         p.getName());
             }
         }
@@ -1164,26 +1164,19 @@ public class ExpressionVisitor extends AbstractVisitor {
             Parameter p = params.get(i);
             if (i>=args.size()) {
                 if (!p.isDefaulted() && !p.isSequenced()) {
-                    pal.addError("no argument to parameter: " + p.getName());
+                    pal.addError("missing argument to parameter " + 
+                            p.getName());
                 }
                 if (p.isSequenced() && pal.getEllipsis()!=null) {
-                    pal.addError("missing argument to sequenced parameter: " + p.getName());
+                    pal.addError("missing argument to sequenced parameter " + 
+                            p.getName());
                 }
-            }
-            else if (p.isSequenced() && pal.getEllipsis()==null) {
-                ProducedType paramType = r.getTypedParameter(p).getType();
-                if (paramType==null) {
-                    args.get(i).addError("sequenced parameter type not known: " + p.getName());
-                }
-                else {
-                    checkSequencedPositionalArgument(p, pal, i, paramType);
-                }
-                return;
-            }
+            } 
             else {
                 ProducedType paramType = r.getTypedParameter(p).getType();
-                if (paramType==null) {
-                    args.get(i).addError("parameter type not known: " + p.getName());
+                if (p.isSequenced() && pal.getEllipsis()==null) {
+                    checkSequencedPositionalArgument(p, pal, i, paramType);
+                    return;
                 }
                 else {
                     checkPositionalArgument(p, args.get(i), paramType);
@@ -1193,7 +1186,8 @@ public class ExpressionVisitor extends AbstractVisitor {
         for (int i=params.size(); i<args.size(); i++) {
             args.get(i).addError("no matching parameter for argument");
         }
-        if (pal.getEllipsis()!=null && (params.isEmpty() || !params.get(params.size()-1).isSequenced())) {
+        if (pal.getEllipsis()!=null && 
+                (params.isEmpty() || !params.get(params.size()-1).isSequenced())) {
             pal.getEllipsis().addError("parameter list does not have a sequenced parameter");
         }
     }
@@ -1201,7 +1195,8 @@ public class ExpressionVisitor extends AbstractVisitor {
     private void checkSequencedPositionalArgument(Parameter p,
             Tree.PositionalArgumentList pal, int i, ProducedType paramType) {
         List<Tree.PositionalArgument> args = pal.getPositionalArguments();
-        ProducedType at = getIndividualSequencedParameterType(paramType);
+        ProducedType at = paramType==null ? null : 
+                getIndividualSequencedParameterType(paramType);
         for (int j=i; j<args.size(); j++) {
             Tree.PositionalArgument a = args.get(i);
             Tree.Expression e = a.getExpression();
@@ -1244,7 +1239,8 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
         else {
             checkAssignable(e.getTypeModel(), paramType, a, 
-                    "argument must be assignable to parameter " + p.getName());
+                    "argument must be assignable to parameter " + 
+                    p.getName());
         }
     }
     
@@ -1271,11 +1267,14 @@ public class ExpressionVisitor extends AbstractVisitor {
                             pt.getProducedTypeName() + " is not Optional");
                 }
             }
-            ProducedType st = pt.minus(getEmptyDeclaration()).getSupertype(getCorrespondenceDeclaration());
-            if (st==null) st = pt.getSupertype(getCorrespondenceDeclaration());
+            ProducedType st = pt.minus(getEmptyDeclaration())
+                        .getSupertype(getCorrespondenceDeclaration());
+            if (st==null) {
+                st = pt.getSupertype(getCorrespondenceDeclaration());
+            }
             if (st==null) {
                 that.getPrimary().addError("illegal receiving type for index expression: " +
-                        pt.getProducedTypeName() + " is not of type: Correspondence");
+                        pt.getProducedTypeName() + " is not of type Correspondence");
             }
             else {
                 List<ProducedType> args = st.getTypeArgumentList();
@@ -1450,10 +1449,12 @@ public class ExpressionVisitor extends AbstractVisitor {
             ProducedType rhsst = rhst.getSupertype(type);
             ProducedType lhsst = lhst.getSupertype(type);
             if (rhsst==null) {
-                that.getRightTerm().addError("must be of type: " + type.getName());
+                that.getRightTerm().addError("must be of type: " + 
+                        type.getName());
             }
             if (lhsst==null) {
-                that.getLeftTerm().addError("must be of type: " + type.getName());
+                that.getLeftTerm().addError("must be of type: " + 
+                        type.getName());
             }
             if (rhsst!=null && lhsst!=null) {
                 rhst = rhsst.getTypeArgumentList().get(0);
@@ -1477,7 +1478,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                     return;
                 }
                 if (!rt.isSubtypeOf(producedType(type,rt))) {
-                    node.addError("must be of type: " + type.getName());
+                    node.addError("must be of type: " + 
+                            type.getName());
                 }
                 else {
                     that.setTypeModel(rt);
@@ -1514,7 +1516,8 @@ public class ExpressionVisitor extends AbstractVisitor {
         if ( rhst!=null && lhst!=null ) {
             ProducedType nt = lhst.getSupertype(type);
             if (nt==null) {
-                that.getLeftTerm().addError("must be of type: " + type.getName());
+                that.getLeftTerm().addError("must be of type: " + 
+                        type.getName());
             }
             else {
                 ProducedType t = nt.getTypeArguments().isEmpty() ? 
