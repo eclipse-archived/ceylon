@@ -48,7 +48,7 @@ shared class Singleton<Element>(Element element)
             return "{ null }";
         }
         else {
-            return "{ Element }";
+            throw;
         }
     }
 }

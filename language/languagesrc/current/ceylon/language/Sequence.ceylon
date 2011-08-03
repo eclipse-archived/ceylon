@@ -81,7 +81,7 @@ shared interface Sequence<out Element>
                 return "null";
             }
             else {
-                return "Element";
+                throw;
             }
         }
         
