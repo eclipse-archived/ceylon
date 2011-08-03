@@ -112,8 +112,8 @@ class Operators() {
     String[]? noSequence = null;
     
     @type["Nothing|Operators.X"] value x38 = sequence[0];
-    @type["Sequence<Operators.X>"] value x39 = sequence[0..1];
-    @type["Sequence<Operators.X>"] value x40 = sequence[1+1...];
+    @type["Empty|Sequence<Operators.X>"] value x39 = sequence[0..1];
+    @type["Empty|Sequence<Operators.X>"] value x40 = sequence[1+1...];
     @type["Nothing|Operators.X"] value x41 = {nothing}[0];
     @type["Nothing|String"] value x42 = noSequence?[0];
     
