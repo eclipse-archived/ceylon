@@ -15,12 +15,12 @@ public final class String implements Equality {
         return new ceylon.language.String(s);
     }
 
-    public java.lang.String uppercase() {
-        return value.toUpperCase();
+    public String uppercase() {
+        return instance(value.toUpperCase());
     }
 
-    public java.lang.String lowercase() {
-        return value.toLowerCase();
+    public String lowercase() {
+        return instance(value.toLowerCase());
     }
 
 	@Override
