@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.codegen;
 
-import static com.sun.tools.javac.code.Flags.PUBLIC;
+import static com.sun.tools.javac.code.Flags.*;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -310,12 +310,16 @@ public class CeylonTransformer {
         builder.classAnnotations(makeAtAttribute());
 
         builder.valueAnnotations(makeJavaTypeAnnotations(decl.getDeclarationModel(), actualType(decl)));
-
+        
+        builder.classFlags(FINAL)
+            .getterFlags(STATIC)
+            .setterFlags(STATIC);
+        
         if (decl.getDeclarationModel().isShared()) {
             builder
-                    .classVisibility(PUBLIC)
-                    .getterVisibility(PUBLIC)
-                    .setterVisibility(PUBLIC);
+                    .addClassFlags(PUBLIC)
+                    .addGetterFlags(PUBLIC)
+                    .addSetterFlags(PUBLIC);
         }
 
         if (!decl.getDeclarationModel().isVariable()) {
@@ -341,11 +345,14 @@ public class CeylonTransformer {
 
         builder.valueAnnotations(makeJavaTypeAnnotations(decl.getDeclarationModel(), actualType(decl)));
 
+        builder.classFlags(FINAL)
+            .getterFlags(STATIC)
+            .setterFlags(STATIC);
+        
         if (decl.getDeclarationModel().isShared()) {
-            builder
-                    .classVisibility(PUBLIC)
-                    .getterVisibility(PUBLIC)
-                    .setterVisibility(PUBLIC);
+            builder.addClassFlags(PUBLIC)
+                .addGetterFlags(PUBLIC)
+                .addSetterFlags(PUBLIC);
         }
 
         if (!decl.getDeclarationModel().isVariable()) {

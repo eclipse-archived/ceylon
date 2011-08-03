@@ -97,16 +97,16 @@ public final class GlobalTransformer extends AbstractTransformer {
         private final JCTree.JCExpression variableType;
         private final String variableName;
 
-        private long classVisibility;
+        private long classFlags;
 
         private boolean readable = true;
-        private long getterVisibility;
+        private long getterFlags;
         private JCTree.JCBlock getterBlock;
 
         private JCTree.JCExpression variableInit;
 
         private boolean writable = true;
-        private long setterVisibility;
+        private long setterFlags;
         private JCTree.JCBlock setterBlock;
         
         private List<JCTree.JCAnnotation> valueAnnotations = List.nil();
@@ -127,7 +127,7 @@ public final class GlobalTransformer extends AbstractTransformer {
             ListBuffer<JCTree> defs = ListBuffer.lb();
             appendDefinitionsTo(defs);
             return make().ClassDef(
-                    make().Modifiers(Flags.FINAL | classVisibility, classAnnotations.prependList(gen.makeAtCeylon())),
+                    make().Modifiers(classFlags, classAnnotations.prependList(gen.makeAtCeylon())),
                     getClassName(variableName),
                     List.<JCTree.JCTypeParameter>nil(),
                     null,
@@ -185,7 +185,7 @@ public final class GlobalTransformer extends AbstractTransformer {
                     : generateDefaultGetterBlock();
 
             return make().MethodDef(
-                    make().Modifiers(Flags.STATIC | getterVisibility, valueAnnotations),
+                    make().Modifiers(getterFlags, valueAnnotations),
                     getGetterName(variableName),
                     variableType,
                     List.<JCTree.JCTypeParameter>nil(),
@@ -210,7 +210,7 @@ public final class GlobalTransformer extends AbstractTransformer {
                 body = generateDefaultSetterBlock(paramName);
             }
             return make().MethodDef(
-                    make().Modifiers(Flags.STATIC | setterVisibility),
+                    make().Modifiers(setterFlags),
                     getSetterName(variableName),
                     make().TypeIdent(TypeTags.VOID),
                     List.<JCTree.JCTypeParameter>nil(),
@@ -236,23 +236,33 @@ public final class GlobalTransformer extends AbstractTransformer {
         }
 
         /**
-         * Sets the visibility of the generated class.
-         * @param classVisibility a visibility flag (see {@link Flags})
+         * Sets the modifier flags of the generated class.
+         * @param classFlags the modifier flags (see {@link Flags})
          * @return this instance for method chaining
          */
-        public DefinitionBuilder classVisibility(long classVisibility) {
-            this.classVisibility = classVisibility;
+        public DefinitionBuilder classFlags(long classFlags) {
+            this.classFlags = classFlags;
+            return this;
+        }
+        
+        public DefinitionBuilder addClassFlags(long classFlags) {
+            this.classFlags = this.classFlags | classFlags;
             return this;
         }
 
         /**
-         * Sets the visibility of the generated getter. If no getter is generated the visibility will be silently
+         * Sets the modifier flags of the generated getter. If no getter is generated the modifier flags will be silently
          * ignored.
-         * @param getterVisibility a visibility flag (see {@link Flags})
+         * @param getterFlags the modifier flags (see {@link Flags})
          * @return this instance for method chaining
          */
-        public DefinitionBuilder getterVisibility(long getterVisibility) {
-            this.getterVisibility = getterVisibility;
+        public DefinitionBuilder getterFlags(long getterFlags) {
+            this.getterFlags = getterFlags;
+            return this;
+        }
+        
+        public DefinitionBuilder addGetterFlags(long getterFlags) {
+            this.getterFlags = this.getterFlags | getterFlags;
             return this;
         }
 
@@ -268,13 +278,18 @@ public final class GlobalTransformer extends AbstractTransformer {
         }
 
         /**
-         * Sets the visibility of the generated setter. If no setter is generated the visibility will be silently
+         * Sets the modifier flags of the generated setter. If no setter is generated the modifier flags will be silently
          * ignored.
-         * @param setterVisibility a visibility flag (see {@link Flags})
+         * @param setterFlags the modifier flags (see {@link Flags})
          * @return this instance for method chaining
          */
-        public DefinitionBuilder setterVisibility(long setterVisibility) {
-            this.setterVisibility = setterVisibility;
+        public DefinitionBuilder setterFlags(long setterFlags) {
+            this.setterFlags = setterFlags;
+            return this;
+        }
+        
+        public DefinitionBuilder addSetterFlags(long setterFlags) {
+            this.setterFlags = this.setterFlags | setterFlags;
             return this;
         }
 
