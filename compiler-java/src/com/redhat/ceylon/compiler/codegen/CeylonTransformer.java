@@ -430,6 +430,10 @@ public class CeylonTransformer {
         return modelLoader.getType(t.tsym.getQualifiedName().toString(), null);
     }
     
+    public boolean sameType(Type t1, ProducedType t2) {
+        return toPType(t1).isExactly(t2);
+    }
+    
     private boolean isUnion(ProducedType type) {
         TypeDeclaration tdecl = type.getDeclaration();
         return (tdecl instanceof UnionType && tdecl.getCaseTypes().size() > 1);
@@ -438,9 +442,9 @@ public class CeylonTransformer {
     // Determines if a type will be erased to java.lang.Object once converted to Java
     boolean willEraseToObject(ProducedType type) {
         type = simplifyType(type);
-        return (toPType(syms.ceylonVoidType).isExactly(type) || toPType(syms.ceylonObjectType).isExactly(type)
-                || toPType(syms.ceylonNothingType).isExactly(type) || toPType(syms.ceylonEqualityType).isExactly(type)
-                || toPType(syms.ceylonIdentifiableObjectType).isExactly(type)
+        return (sameType(syms.ceylonVoidType, type) || sameType(syms.ceylonObjectType, type)
+                || sameType(syms.ceylonNothingType, type) || sameType(syms.ceylonEqualityType, type)
+                || sameType(syms.ceylonIdentifiableObjectType, type)
                 || type.getDeclaration() instanceof BottomType
                 || isUnion(type));
     }
@@ -448,19 +452,19 @@ public class CeylonTransformer {
     // Determine if the type is a Ceylon String (which will be erased to a Java String)
     boolean willEraseToString(ProducedType type) {
         type = simplifyType(type);
-        return (toPType(syms.ceylonStringType).isExactly(type));
+        return (sameType(syms.ceylonStringType, type));
     }
     
     // Determine if the type is a Ceylon Boolean (which will be erased to a Java Boolean/boolean)
     boolean willEraseToBoolean(ProducedType type) {
         type = simplifyType(type);
-        return (toPType(syms.ceylonBooleanType).isExactly(type));
+        return (sameType(syms.ceylonBooleanType, type));
     }
     
     // Determine if the type is a Ceylon Integer (which will be erased to a Java Integer/int)
     boolean willEraseToInteger(ProducedType type) {
         type = simplifyType(type);
-        return (toPType(syms.ceylonIntegerType).isExactly(type));
+        return (sameType(syms.ceylonIntegerType, type));
     }
 
     static final int SATISFIES = 1 << 0;
@@ -523,7 +527,7 @@ public class CeylonTransformer {
                     break;
                 }
                 JCExpression jta;
-                if (ta.isExactly(toPType(syms.ceylonVoidType))) {
+                if (sameType(syms.ceylonVoidType, ta)) {
                     // For the root type Void:
                     if (satisfiesOrExtends != 0) {
                         // - The Ceylon type Foo<Void> appearing in an extends or satisfies
@@ -604,33 +608,11 @@ public class CeylonTransformer {
         return jt;
     }
 
-    List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Method decl, ProducedType type) {
-        return makeJavaTypeAnnotations(type, decl.isShared() || decl.isToplevel());
-    }
-
-    List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Parameter decl, ProducedType type) {
-        List<JCTree.JCAnnotation> ret;
-        // if method, rely on method rules
-        if (isInner(decl))
-            ret = makeJavaTypeAnnotations((Method) decl.getContainer(), type);
-        else
-            // if not method must be a Class, so always true
-            ret = makeJavaTypeAnnotations(type, true);
-        
-        if(!ret.isEmpty())
-            ret = ret.prependList(makeAtName(decl.getName()));
-        return ret;
-    }
-
     List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Value decl, ProducedType type) {
         return makeJavaTypeAnnotations(type, decl.isToplevel() || (decl.isClassOrInterfaceMember() && decl.isShared()));
     }
 
     List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Getter decl, ProducedType type) {
-        return makeJavaTypeAnnotations(type, decl.isToplevel() || (decl.isClassOrInterfaceMember() && decl.isShared()));
-    }
-
-    List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Setter decl, ProducedType type) {
         return makeJavaTypeAnnotations(type, decl.isToplevel() || (decl.isClassOrInterfaceMember() && decl.isShared()));
     }
 
