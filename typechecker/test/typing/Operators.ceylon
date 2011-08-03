@@ -88,7 +88,7 @@ class Operators() {
     
     @type["Boolean"] value x31 = 1 is Natural;
     
-    @error value x32 = nothing is Natural;
+    @type["Boolean"] value x32 = nothing is Natural;
     
     @type["Boolean"] value x33 = 1 in {1, 2};
     
