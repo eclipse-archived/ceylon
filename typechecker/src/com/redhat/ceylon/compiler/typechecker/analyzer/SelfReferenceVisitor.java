@@ -113,7 +113,7 @@ public class SelfReferenceVisitor extends AbstractVisitor {
                             typeDeclaration.getName());
                 }
                 else if (mayNotLeakOuter() && term instanceof Tree.Outer) {
-                    term.addError("narrows outer in initializer of : " + 
+                    term.addError("narrows outer in initializer: " + 
                             typeDeclaration.getName());
                 }
             }
@@ -232,15 +232,15 @@ public class SelfReferenceVisitor extends AbstractVisitor {
     
     private void checkSelfReference(Node that, Tree.Term term) {
         if (directlyInBody() && term instanceof Tree.Super) {
-            that.addError("leaks super reference in body of: " + 
+            that.addError("leaks super reference in body: " + 
                     typeDeclaration.getName());
         }    
         if (mayNotLeakThis() && term instanceof Tree.This) {
-            that.addError("leaks this reference in initializer of: " + 
+            that.addError("leaks this reference in initializer: " + 
                     typeDeclaration.getName());
         }    
         if (mayNotLeakOuter() && term instanceof Tree.Outer) {
-            that.addError("leaks outer reference in initializer of: " + 
+            that.addError("leaks outer reference in initializer: " + 
                     typeDeclaration.getName());
         }
     }
