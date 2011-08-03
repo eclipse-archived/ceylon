@@ -487,9 +487,6 @@ public class ProducedType extends ProducedReference {
                         if ( c.satisfies(type) ) {
                             for (ProducedType ct: caseTypes) {
                                 ProducedType pt = ct.substituteInternal(getTypeArguments()).getSupertype(type, ignoringSelftype);
-                                /*if (!ct.substituteInternal(getTypeArguments()).isSubtypeOf(type, ignoringSelftype)) {
-                                    return false;
-                                }*/
                                 if (pt==null) {
                                     return false;
                                 }
@@ -508,7 +505,8 @@ public class ProducedType extends ProducedReference {
                 if (stc!=null) {
                     TypeDeclaration dec = stc.getDeclaration();
                     //now try to construct a common produced
-                    //type that is a common supertype
+                    //type that is a common supertype by taking
+                    //the type args and unioning them
                     List<ProducedType> args = new ArrayList<ProducedType>();
                     for (TypeParameter tp: dec.getTypeParameters()) {
                         //TODO: construct an intersection!
@@ -516,24 +514,36 @@ public class ProducedType extends ProducedReference {
                         List<ProducedType> list2 = new ArrayList<ProducedType>();
                         for (ProducedType pt: caseTypes) {
                             ProducedType st = pt.substituteInternal(getTypeArguments()).getSupertype(dec, ignoringSelftype);
-                            if (st==null) return null;
+                            if (st==null) return result;
                             Util.addToUnion(list2, st.getTypeArguments().get(tp));
                         }
                         UnionType ut = new UnionType();
                         ut.setCaseTypes(list2);
                         args.add(ut.getType());
                     }
+                    //check that the unioned type args
+                    //satisfy the type constraints
+                    for (int i=0; i<args.size(); i++) {
+                        TypeParameter tp = dec.getTypeParameters().get(i);
+                        for (ProducedType ub: tp.getSatisfiedTypes()) {
+                            if (!args.get(i).isSubtypeOf(ub)) {
+                                return result;
+                            }
+                        }
+                    }
                     //TODO: outer type might have its own type args
                     //      do we need to find a common outer type?
+                    //make the resulting type
                     ProducedType candidateResult = dec.getProducedType(stc.getDeclaringType(), args);
-                    //TODO: now check that the constructed type is 
-                    //      *actually* a common supertype!  
-                    //TODO: do we need to check against type constraints here?
-                    if (true) {
-                        if (result==null || candidateResult.isSubtypeOf(result, ignoringSelftype)) {
-                            result = candidateResult;
-                            result.toString();
+                    //check the the resulting type is *really*
+                    //a subtype (take variance into account)
+                    for (ProducedType pt: caseTypes) {
+                        if (!pt.substituteInternal(getTypeArguments()).isSubtypeOf(candidateResult)) {
+                            return result;
                         }
+                    }
+                    if (result==null || candidateResult.isSubtypeOf(result, ignoringSelftype)) {
+                        result = candidateResult;
                     }
                 }
             }
