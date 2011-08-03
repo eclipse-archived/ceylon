@@ -1468,7 +1468,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                     return;
                 }
                 checkAssignable(rt, producedType(type,rt), that, 
-                        "operands must be compatible numeric types");
+                        "operands must be of compatible numeric type");
                 that.setTypeModel(rt);
             }
         }
