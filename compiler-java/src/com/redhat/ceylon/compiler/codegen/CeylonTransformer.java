@@ -301,7 +301,7 @@ public class CeylonTransformer {
     }
 
     public JCTree transform(AttributeDeclaration decl) {
-        GlobalTransformer.DefinitionBuilder builder = globalGenAt(decl)
+        AttributeBuilder builder = globalGenAt(decl)
             .defineGlobal(
                     makeJavaType(actualType(decl)),
                     decl.getIdentifier().getText());
@@ -335,7 +335,7 @@ public class CeylonTransformer {
     }
 
     public JCTree transform(AttributeGetterDefinition decl) {
-        GlobalTransformer.DefinitionBuilder builder = globalGenAt(decl)
+        AttributeBuilder builder = globalGenAt(decl)
             .defineGlobal(
                     makeJavaType(actualType(decl)),
                     decl.getIdentifier().getText());
