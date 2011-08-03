@@ -288,7 +288,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
         else if (!isEmptyType(t)) {
             n.addError("expression must be of sequence type: " + 
-                    t.getProducedTypeName() + " is not a supertype of: Empty");
+                    t.getProducedTypeName() + " is not a supertype of Empty");
         }
     }
 
@@ -298,7 +298,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
         else if (!isOptionalType(t)) {
             n.addError("expression must be of optional type: " +
-                    t.getProducedTypeName() + " is not a supertype of: Nothing");
+                    t.getProducedTypeName() + " is not a supertype of Nothing");
         }
     }
 
