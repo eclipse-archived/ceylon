@@ -83,9 +83,8 @@ public class ModelLoaderTest extends CompilerTest {
         if(validDeclaration.getQualifiedNameString().startsWith("java."))
             return;
         // only compare parameter names for public methods
-        if(!(validDeclaration instanceof Parameter)
-                || validDeclaration.isShared())
-            Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [name]", validDeclaration.getName(), modelDeclaration.getName());
+        if(!(validDeclaration instanceof Parameter) || validDeclaration.isShared())
+            Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [name]", validDeclaration.getQualifiedNameString(), modelDeclaration.getQualifiedNameString());
         Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [shared]", validDeclaration.isShared(), modelDeclaration.isShared());
         if(validDeclaration instanceof Class){
             Assert.assertTrue("[Class]", modelDeclaration instanceof Class);
@@ -108,13 +107,13 @@ public class ModelLoaderTest extends CompilerTest {
         // make sure it has every member required
         for(Declaration validMember : validDeclaration.getMembers()){
             Declaration modelMember = modelDeclaration.getMember(validMember.getName());
-            Assert.assertNotNull(validMember.getQualifiedNameString()+" [member]", modelMember);
+            Assert.assertNotNull(validMember.getQualifiedNameString()+" [member] not found in loaded model", modelMember);
             compareDeclarations(validMember, modelMember);
         }
         // and not more
         for(Declaration modelMember : modelDeclaration.getMembers()){
             Declaration validMember = validDeclaration.getMember(modelMember.getName());
-            Assert.assertNotNull(modelMember.getQualifiedNameString()+" [extra member]", validMember);
+            Assert.assertNotNull(modelMember.getQualifiedNameString()+" [extra member] encountered in loaded model", validMember);
         }
     }
     

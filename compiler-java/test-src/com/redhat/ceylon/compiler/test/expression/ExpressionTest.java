@@ -81,12 +81,16 @@ public class ExpressionTest extends CompilerTest {
     // Boxing and unboxing
     
     @Test
-    public void testBoxStringBoxing(){
-        compareWithJavaSource("boxing/StringBoxing");
+    public void testBoxBooleanBoxing(){
+        compareWithJavaSource("boxing/BooleanBoxing");
     }
     @Test
     public void testBoxIntegerBoxing(){
         compareWithJavaSource("boxing/IntegerBoxing");
+    }
+    @Test
+    public void testBoxStringBoxing(){
+        compareWithJavaSource("boxing/StringBoxing");
     }
 
 

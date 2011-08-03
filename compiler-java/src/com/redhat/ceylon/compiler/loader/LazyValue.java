@@ -22,6 +22,14 @@ public class LazyValue extends Value {
             completer.complete(this);
         }
     }
+    
+    @Override
+    public String toString() {
+        if (!isLoaded) {
+            return "UNLOADED:" + super.toString();
+        }
+        return super.toString();
+    }
 
     @Override
     public boolean isVariable() {

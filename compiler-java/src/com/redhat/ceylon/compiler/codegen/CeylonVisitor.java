@@ -5,7 +5,6 @@ import static com.sun.tools.javac.code.Flags.FINAL;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -220,12 +219,12 @@ public class CeylonVisitor extends AbstractVisitor<JCTree> {
 
     public void visit(Tree.Type type) {
         // A constructor
-        append(at(type).NewClass(null, null, gen.makeJavaType(type.getTypeModel()), args.toList(), null));
+        append(expressionGen.transform(type, args.toList()));
     }
 
     public void visit(Tree.BaseTypeExpression typeExp) {
         // A constructor
-        append(at(typeExp).NewClass(null, null, makeIdent(typeExp.getIdentifier().getText()), args.toList(), null));
+        append(expressionGen.transform(typeExp, args.toList()));
     }
 
     public void visit(Tree.BaseMemberExpression access) {
@@ -298,20 +297,15 @@ public class CeylonVisitor extends AbstractVisitor<JCTree> {
     // NB spec 1.3.11 says "There are only two types of numeric
     // literals: literals for Naturals and literals for Floats."
     public void visit(Tree.NaturalLiteral lit) {
-        JCExpression n = make().Literal(Long.parseLong(lit.getText()));
-        append(at(lit).Apply(null, makeSelect(makeIdent(syms().ceylonNaturalType), "instance"), List.of(n)));
+        append(expressionGen.transform(lit));
     }
 
     public void visit(Tree.FloatLiteral lit) {
-        JCExpression n = make().Literal(Double.parseDouble(lit.getText()));
-        append(at(lit).Apply(null, makeSelect(makeIdent(syms().ceylonFloatType), "instance"), List.of(n)));
+        append(expressionGen.transform(lit));
     }
 
     public void visit(Tree.CharLiteral lit) {
-        JCExpression n = make().Literal(TypeTags.CHAR, (int) lit.getText().charAt(1));
-        // XXX make().Literal(lit.value) doesn't work here... something
-        // broken in javac?
-        append(at(lit).Apply(null, makeSelect(makeIdent(syms().ceylonCharacterType), "instance"), List.of(n)));
+        append(expressionGen.transform(lit));
     }
 
     public void visit(Tree.StringLiteral string) {

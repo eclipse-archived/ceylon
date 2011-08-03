@@ -48,7 +48,7 @@ public class TypeParserTest {
     
     @Test
     public void testUnion(){
-        ProducedType type = new TypeParser().decodeType("a|b|c", null, MockLoader.instance);
+        ProducedType type = new TypeParser(MockLoader.instance).decodeType("a|b|c", null);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
@@ -65,7 +65,7 @@ public class TypeParserTest {
 
     @Test
     public void testParams(){
-        ProducedType type = new TypeParser().decodeType("t2<b,c>", null, MockLoader.instance);
+        ProducedType type = new TypeParser(MockLoader.instance).decodeType("t2<b,c>", null);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
@@ -80,7 +80,7 @@ public class TypeParserTest {
 
     @Test
     public void testUnionParams(){
-        ProducedType type = new TypeParser().decodeType("a|t2<b|c,t2<d,e|f>>", null, MockLoader.instance);
+        ProducedType type = new TypeParser(MockLoader.instance).decodeType("a|t2<b|c,t2<d,e|f>>", null);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);

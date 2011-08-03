@@ -9,10 +9,16 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 
 public class TypeParser {
+    private ModelLoader loader;
+    
+    public TypeParser(ModelLoader loader) {
+        this.loader = loader;
+    }
+    
     /** 
      * Format: spec: type(<spec(,spec)*>)?(\|type(<spec(,spec)*>)?)
      */
-    public ProducedType decodeType(String value, Scope scope, ModelLoader loader) {
+    public ProducedType decodeType(String value, Scope scope) {
         // stack of lists of union or param types 
         Deque<LinkedList<ProducedType>> types = new LinkedList<LinkedList<ProducedType>>();
         types.push(new LinkedList<ProducedType>());

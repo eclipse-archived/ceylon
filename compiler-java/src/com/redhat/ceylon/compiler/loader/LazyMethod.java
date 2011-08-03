@@ -22,6 +22,14 @@ public class LazyMethod extends Method {
             completer.complete(this);
         }
     }
+    
+    @Override
+    public String toString() {
+        if (!isLoaded) {
+            return "UNLOADED:" + super.toString();
+        }
+        return super.toString();
+    }
 
     @Override
     public ProducedType getType() {

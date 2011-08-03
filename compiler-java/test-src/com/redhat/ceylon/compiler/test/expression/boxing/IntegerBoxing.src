@@ -1,21 +1,17 @@
-package com.redhat.ceylon.compiler.test.expression.operator;
+package com.redhat.ceylon.compiler.test.expression.boxing;
 
-class NumericOp {
+class IntegerBoxing {
     
-    public final ceylon.language.Natural m() {
-        ceylon.language.Natural i = .ceylon.language.Natural.instance(1L);
-        (i = i.getSuccessor()).getPredecessor();
-        i = i.getSuccessor();
-        (i = i.getPredecessor()).getSuccessor();
-        i = i.getPredecessor();
-        i = i.plus(.ceylon.language.Natural.instance(1L));
-        i = i.minus(.ceylon.language.Natural.instance(1L));
-        i = i.times(.ceylon.language.Natural.instance(1L));
-        i = i.divided(.ceylon.language.Natural.instance(1L));
-        i = i.remainder(.ceylon.language.Natural.instance(100L));
-        return .ceylon.language.Natural.instance(2L).power(.ceylon.language.Natural.instance(3L)).times(.ceylon.language.Natural.instance(1L)).divided(.ceylon.language.Natural.instance(1L)).remainder(.ceylon.language.Natural.instance(100L)).plus(.ceylon.language.Natural.instance(1L)).minus(.ceylon.language.Natural.instance(1L));
+    private final void m() {
+        final int i1 = 0;
+        final int i2 = ceylon.language.Integer.instance(i1).plus(5).intValue();
+        final int i3 = double(i2);
     }
     
-    NumericOp() {
+    private final int double(final int i) {
+        return ceylon.language.Integer.instance(i).times(2);
+    }
+    
+    IntegerBoxing() {
     }
 }

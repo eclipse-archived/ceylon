@@ -19,6 +19,10 @@ class KlassWithAttributes() {
     }
     assign n8 {
     }
+    shared variable String s := ""; 
+    shared variable Integer i := +1; 
+    shared variable Boolean b := true; 
+    shared variable Float f := 1.0; 
     
     void capture() {
         value x = n1;

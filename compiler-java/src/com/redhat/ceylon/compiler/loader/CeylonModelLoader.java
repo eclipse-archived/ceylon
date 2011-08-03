@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.loader;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -63,7 +65,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     private ClassReader reader;
     private PhasedUnits phasedUnits;
     private com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext;
-    private TypeParser typeParser = new TypeParser();
+    private TypeParser typeParser;
     private Log log;
     
     public static CeylonModelLoader instance(Context context) {
@@ -82,6 +84,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         names = Name.Table.instance(context);
         reader = ClassReader.instance(context);
         log = Log.instance(context);
+        typeParser = new TypeParser(this);
     }
 
     public void loadRequiredModules(com.sun.tools.javac.util.List<JCCompilationUnit> trees) {
@@ -296,15 +299,6 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     }
     
     private Declaration convertToDeclaration(String typeName, DeclarationType declarationType) {
-        // ERASURE
-        if ("ceylon.language.String".equals(typeName)) {
-            typeName = "java.lang.String";
-        } else if ("ceylon.language.Boolean".equals(typeName)) {
-            typeName = "java.lang.Boolean";
-        } else if ("ceylon.language.Integer".equals(typeName)) {
-            typeName = "java.lang.Integer";
-        }
-        
         ClassSymbol classSymbol = lookupClassSymbol(typeName);
         if(classSymbol == null)
             throw new RuntimeException("Failed to resolve "+typeName);
@@ -320,12 +314,18 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     
     private TypeParameter lookupTypeParameter(Scope scope, String name) {
         if(scope instanceof Method){
-            for(TypeParameter param : ((Method) scope).getTypeParameters()){
+            Method m = (Method) scope;
+            for(TypeParameter param : m.getTypeParameters()){
                 if(param.getName().equals(name))
                     return param;
             }
-            // look it up in its class
-            return lookupTypeParameter(scope.getContainer(), name);
+            if (!m.isToplevel()) {
+                // look it up in its class
+                return lookupTypeParameter(scope.getContainer(), name);
+            } else {
+                // not found
+                return null;
+            }
         }else if(scope instanceof ClassOrInterface){
             for(TypeParameter param : ((ClassOrInterface) scope).getTypeParameters()){
                 if(param.getName().equals(name))
@@ -457,8 +457,22 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     }
 
     @Override
+    public void completeTypeParameters(LazyInterface iface) {
+        completeTypeParameters(iface, iface.classSymbol);
+    }
+
+    @Override
     public void complete(LazyClass klass) {
         complete(klass, klass.classSymbol);
+    }
+
+    @Override
+    public void completeTypeParameters(LazyClass klass) {
+        completeTypeParameters(klass, klass.classSymbol);
+    }
+
+    private void completeTypeParameters(ClassOrInterface klass, ClassSymbol classSymbol) {
+        setTypeParameters(klass, classSymbol);
     }
 
     private void complete(ClassOrInterface klass, ClassSymbol classSymbol) {
@@ -498,10 +512,10 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 
                 if(isGetter(methodSymbol)) {
                     // simple attribute
-                    addValue(klass, methodSymbol, Util.getAttributeName(methodName));
+                    addValue(klass, methodSymbol, getJavaAttributeName(methodName));
                 } else if(isSetter(methodSymbol)) {
                     // We skip setters for now and handle them later
-                    variables.add(Util.getAttributeName(methodName));
+                    variables.add(getJavaAttributeName(methodName));
                 } else if(isHashAttribute(methodSymbol)) {
                     // ERASURE
                     // Un-erasing 'hash' attribute from 'hashCode' method
@@ -532,8 +546,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     
                     // now its parameters
                     setParameters(method, methodSymbol);
-                    // FIXME: deal with type override by annotations
-                    method.setType(getType(methodSymbol.getReturnType(), method));
+                    method.setType(obtainType(methodSymbol.getReturnType(), methodSymbol, method));
                     klass.getMembers().add(method);
                 }
             }
@@ -589,6 +602,17 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         return matchesName && hasNoParams;
     }
     
+    private String getJavaAttributeName(String getterName) {
+        if (getterName.startsWith("get") || getterName.startsWith("set")) {
+            return Character.toLowerCase(getterName.charAt(3)) + getterName.substring(4);
+        } else if (getterName.startsWith("is")) {
+            // Starts with "is"
+            return Character.toLowerCase(getterName.charAt(2)) + getterName.substring(3);
+        } else {
+            throw new RuntimeException("Illegal java getter/setter name");
+        }
+    }
+    
     private void addValue(ClassOrInterface klass, MethodSymbol methodSymbol, String methodName) {
         Value value = new Value();
         value.setContainer(klass);
@@ -602,11 +626,10 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 value.setFormal(true);
             }
         }
-        // FIXME: deal with type override by annotations
-        value.setType(getType(methodSymbol.getReturnType(), klass));
+        value.setType(obtainType(methodSymbol.getReturnType(), methodSymbol, klass));
         klass.getMembers().add(value);
     }
-    
+
     private void setExtendedType(ClassOrInterface klass, ClassSymbol classSymbol) {
         // look at its super type
         Type superClass = classSymbol.getSuperclass();
@@ -615,7 +638,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         if(klass instanceof Interface){
             // interfaces need to have their superclass set to Object
             if(superClass.getKind() == TypeKind.NONE)
-                extendedType = getType("ceylon.language.Object", klass);
+                extendedType = getType(symtab.ceylonObjectType, klass);
             else
                 extendedType = getType(superClass, klass);
         }else{
@@ -625,13 +648,13 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             }else if(className.equals("java.lang.Object")){
                 // we pretend its superclass is something else, but note that in theory we shouldn't 
                 // be seeing j.l.Object at all due to unerasure
-                extendedType = getType("ceylon.language.IdentifiableObject", klass);
+                extendedType = getType(symtab.ceylonIdentifiableObjectType, klass);
             }else{
                 // now deal with type erasure, avoid having Object as superclass
                 String superClassName = superClass.tsym.getQualifiedName().toString();
                 if(superClassName.equals("java.lang.Object")){
                     // FIXME: deal with @TypeInfo
-                    extendedType = getType("ceylon.language.IdentifiableObject", klass);
+                    extendedType = getType(symtab.ceylonIdentifiableObjectType, klass);
                 }else{
                     extendedType = getType(superClass, klass);
                 }
@@ -651,8 +674,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             // use whatever param name we find as default
             if(paramName == null)
                 parameter.setName(paramSymbol.name.toString());
-            // FIXME: deal with type override by annotations
-            parameter.setType(getType(paramSymbol.type, (Scope) klass));
+            parameter.setType(obtainType(paramSymbol.type, paramSymbol, (Scope) klass));
             parameters.getParameters().add(parameter);
         }
     }
@@ -678,8 +700,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         if(meth == null || meth.getReturnType() == null)
             throw new RuntimeException("Failed to find toplevel attribute "+value.getName());
         
-        // FIXME: deal with type override by annotations
-        value.setType(getType(meth.getReturnType(), null));
+        value.setType(obtainType(meth.getReturnType(), meth, null));
     }
 
     @Override
@@ -703,8 +724,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
 
         // now its parameters
         setParameters(method, meth);
-        // FIXME: deal with type override by annotations
-        method.setType(getType(meth.getReturnType(), method));
+        method.setType(obtainType(meth.getReturnType(), meth, method));
      }
     
     //
@@ -845,9 +865,46 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     // TypeParsing and ModelLoader
 
     private ProducedType decodeType(String value, Scope scope) {
-        return typeParser .decodeType(value, scope, this);
+        return typeParser.decodeType(value, scope);
     }
     
+    private ProducedType obtainType(Type type, Symbol symbol, Scope scope) {
+        String typeName = getAnnotationStringValue(symbol, symtab.ceylonAtTypeInfoType);
+        if (typeName != null) {
+            return decodeType(typeName, scope);
+        } else {
+            // ERASURE
+            if (sameType(type, symtab.stringType)) {
+                type = makeOptional(symtab.ceylonStringType);
+            } else if (sameType(type, symtab.booleanType)) {
+                type = symtab.ceylonBooleanType;
+            } else if (sameType(type, symtab.booleanObjectType)) {
+                type = makeOptional(symtab.ceylonBooleanType);
+            } else if (sameType(type, symtab.intType)) {
+                type = symtab.ceylonIntegerType;
+            } else if (sameType(type, symtab.integerObjectType)) {
+                type = makeOptional(symtab.ceylonIntegerType);
+            }
+            
+            return getType(type, scope);
+        }
+    }
+    
+    private boolean sameType(Type t1, Type t2) {
+        return t1.asElement().equals(t2.asElement());
+    }
+    
+    private Type makeOptional(Type type) {
+//        UnionType ut = new UnionType();
+//        List<ProducedType> types = new ArrayList<ProducedType>();
+//        addToUnion(types,getNothingDeclaration().getType());
+//        addToUnion(types,pt);
+//        ut.setCaseTypes(types);
+//        return ut.getType();
+        // FIXME Implement conversion to optional type!!
+        return type;
+    }
+
     @Override
     public Declaration getDeclaration(String typeName, DeclarationType declarationType) {
         return convertToDeclaration(typeName, declarationType);
