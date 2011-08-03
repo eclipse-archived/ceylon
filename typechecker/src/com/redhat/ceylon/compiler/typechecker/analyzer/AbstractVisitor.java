@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -314,4 +317,91 @@ public abstract class AbstractVisitor extends Visitor {
         }
     }
 
+    protected ProducedType unionType(ProducedType lhst, ProducedType rhst) {
+        List<ProducedType> list = new ArrayList<ProducedType>();
+        addToUnion(list, rhst);
+        addToUnion(list, lhst);
+        UnionType ut = new UnionType();
+        ut.setCaseTypes(list);
+        return ut.getType();
+    }
+    
+    protected ProducedType getEmptyType(ProducedType pt) {
+        if (pt==null) {
+            return null;
+        }
+        else {
+            return unionType(pt, getEmptyDeclaration().getType());
+        }
+        /*else if (isEmptyType(pt)) {
+            //Nothing|Nothing|T == Nothing|T
+            return pt;
+        }
+        else if (pt.getDeclaration() instanceof BottomType) {
+            //Nothing|0 == Nothing
+            return getEmptyDeclaration().getType();
+        }
+        else {
+            UnionType ut = new UnionType();
+            List<ProducedType> types = new ArrayList<ProducedType>();
+            addToUnion(types,getEmptyDeclaration().getType());
+            addToUnion(types,pt);
+            ut.setCaseTypes(types);
+            return ut.getType();
+        }*/
+    }
+    
+    protected ProducedType getOptionalType(ProducedType pt) {
+        if (pt==null) {
+            return null;
+        }
+        else {
+            return unionType(pt, getNothingDeclaration().getType());
+        }
+        /*else if (isOptionalType(pt)) {
+            //Nothing|Nothing|T == Nothing|T
+            return pt;
+        }
+        else if (pt.getDeclaration() instanceof BottomType) {
+            //Nothing|0 == Nothing
+            return getNothingDeclaration().getType();
+        }
+        else {
+            UnionType ut = new UnionType();
+            List<ProducedType> types = new ArrayList<ProducedType>();
+            addToUnion(types,getNothingDeclaration().getType());
+            addToUnion(types,pt);
+            ut.setCaseTypes(types);
+            return ut.getType();
+        }*/
+    }
+    
+    protected ProducedType getSequenceType(ProducedType et) {
+        return producedType(getSequenceDeclaration(), et);
+    }
+    
+    protected ProducedType getIterableType(ProducedType et) {
+        return producedType(getIterableDeclaration(), et);
+    }
+
+    protected ProducedType getCastableType(ProducedType et) {
+        return producedType(getCastableDeclaration(), et);
+    }
+
+    protected ProducedType getEntryType(ProducedType kt, ProducedType vt) {
+        return producedType(getEntryDeclaration(), kt, vt);
+    }
+
+    protected ProducedType getDefiniteType(ProducedType pt) {
+        return pt.minus(getNothingDeclaration());
+    }
+
+    protected ProducedType getNonemptyType(ProducedType pt) {
+        return pt.minus(getNothingDeclaration()).minus(getEmptyDeclaration());
+    }
+
+    protected ProducedType getNonemptySequenceType(ProducedType pt) {
+        return pt.minus(getEmptyDeclaration()).getSupertype(getSequenceDeclaration());
+    }
+    
 }

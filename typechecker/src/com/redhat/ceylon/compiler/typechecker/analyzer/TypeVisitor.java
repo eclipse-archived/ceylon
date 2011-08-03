@@ -237,32 +237,6 @@ public class TypeVisitor extends AbstractVisitor {
         }
     }
 
-    private ProducedType getSequenceType(ProducedType type) {
-        return producedType(getSequenceDeclaration(), type);
-    }
-    
-    private ProducedType getEmptyType(ProducedType pt) {
-        if (pt==null) {
-            return null;
-        }
-        /*else if (isEmptyType(pt)) {
-            //Nothing|Nothing|T == Nothing|T
-            return pt;
-        }
-        else if (pt.getDeclaration() instanceof BottomType) {
-            //Nothing|0 == Nothing
-            return getEmptyDeclaration().getType();
-        }*/
-        else {
-            UnionType ut = new UnionType();
-            List<ProducedType> types = new ArrayList<ProducedType>();
-            addToUnion(types,getEmptyDeclaration().getType());
-            addToUnion(types,pt);
-            ut.setCaseTypes(types);
-            return ut.getType();
-        }
-    }
-    
     @Override 
     public void visit(Tree.TypedDeclaration that) {
         super.visit(that);

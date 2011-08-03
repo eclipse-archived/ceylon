@@ -432,7 +432,7 @@ public class ExpressionVisitor extends AbstractVisitor {
     private void checkEmptyOptionalType(Tree.Variable var, 
             Tree.SpecifierExpression se) {
         ProducedType vt = var.getType().getTypeModel();
-        checkType(getEmptyOptionalType(vt), se);
+        checkType(getOptionalType(getEmptyType(vt)), se);
     }
 
     private void checkContainedType(Tree.Variable var, 
@@ -446,18 +446,6 @@ public class ExpressionVisitor extends AbstractVisitor {
         ProducedType kt = key.getType().getTypeModel();
         ProducedType vt = value.getType().getTypeModel();
         checkType(getIterableType(getEntryType(kt, vt)), se);
-    }
-
-    private ProducedType getIterableType(ProducedType et) {
-        return producedType(getIterableDeclaration(), et);
-    }
-
-    private ProducedType getCastableType(ProducedType et) {
-        return producedType(getCastableDeclaration(), et);
-    }
-
-    private ProducedType getEntryType(ProducedType kt, ProducedType vt) {
-        return producedType(getEntryDeclaration(), kt, vt);
     }
 
     @Override public void visit(Tree.AttributeGetterDefinition that) {
@@ -790,10 +778,6 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }
 
-    private ProducedType getNonemptySequenceType(ProducedType pt) {
-        return pt.minus(getEmptyDeclaration()).getSupertype(getSequenceDeclaration());
-    }
-    
     ProducedType wrap(ProducedType pt, Tree.QualifiedMemberOrTypeExpression mte) {
         Tree.MemberOperator op = mte.getMemberOperator();
         if (op instanceof Tree.SafeMemberOp)  {
@@ -807,69 +791,6 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }
 
-    private ProducedType getEmptyOptionalType(ProducedType pt) {
-        if (pt==null) {
-            return null;
-        }
-        else if (isEmptyType(pt) && isOptionalType(pt)) {
-            //Nothing|Nothing|T == Nothing|T
-            return pt;
-        }
-        else {
-            UnionType ut = new UnionType();
-            List<ProducedType> types = new ArrayList<ProducedType>();
-            addToUnion(types,getNothingDeclaration().getType());
-            addToUnion(types,getEmptyDeclaration().getType());
-            addToUnion(types,pt);
-            ut.setCaseTypes(types);
-            return ut.getType();
-        }
-    }
-    
-    /*private ProducedType getEmptyType(ProducedType pt) {
-        if (pt==null) {
-            return null;
-        }
-        else if (isEmptyType(pt)) {
-            //Nothing|Nothing|T == Nothing|T
-            return pt;
-        }
-        else if (pt.getDeclaration() instanceof BottomType) {
-            //Nothing|0 == Nothing
-            return getEmptyDeclaration().getType();
-        }
-        else {
-            UnionType ut = new UnionType();
-            List<ProducedType> types = new ArrayList<ProducedType>();
-            addToUnion(types,getEmptyDeclaration().getType());
-            addToUnion(types,pt);
-            ut.setCaseTypes(types);
-            return ut.getType();
-        }
-    }*/
-    
-    private ProducedType getOptionalType(ProducedType pt) {
-        if (pt==null) {
-            return null;
-        }
-        else if (isOptionalType(pt)) {
-            //Nothing|Nothing|T == Nothing|T
-            return pt;
-        }
-        else if (pt.getDeclaration() instanceof BottomType) {
-            //Nothing|0 == Nothing
-            return getNothingDeclaration().getType();
-        }
-        else {
-            UnionType ut = new UnionType();
-            List<ProducedType> types = new ArrayList<ProducedType>();
-            addToUnion(types,getNothingDeclaration().getType());
-            addToUnion(types,pt);
-            ut.setCaseTypes(types);
-            return ut.getType();
-        }
-    }
-    
     @Override public void visit(Tree.InvocationExpression that) {
         super.visit(that);
         Tree.Primary pr = that.getPrimary();
@@ -1302,20 +1223,12 @@ public class ExpressionVisitor extends AbstractVisitor {
                                     er.getUpperBound(), 
                                     "upper bound must be assignable to key type");
                         }
-                        rt = unionType(getSequenceType(vt), getEmptyDeclaration().getType());
+                        rt = getEmptyType(getSequenceType(vt));
                     }
                     that.setTypeModel(rt);
                 }
             }
         }
-    }
-
-    private ProducedType getDefiniteType(ProducedType pt) {
-        return pt.minus(getNothingDeclaration());
-    }
-
-    private ProducedType getNonemptyType(ProducedType pt) {
-        return pt.minus(getNothingDeclaration()).minus(getEmptyDeclaration());
     }
 
     private ProducedType type(Tree.PostfixExpression that) {
@@ -1333,15 +1246,6 @@ public class ExpressionVisitor extends AbstractVisitor {
         super.visit(that);
         visitIncrementDecrement(that, type(that), that.getTerm());
         checkAssignable(that.getTerm());
-    }
-    
-    private ProducedType unionType(ProducedType lhst, ProducedType rhst) {
-        List<ProducedType> list = new ArrayList<ProducedType>();
-        addToUnion(list, rhst);
-        addToUnion(list, lhst);
-        UnionType ut = new UnionType();
-        ut.setCaseTypes(list);
-        return ut.getType();
     }
     
     private void checkOperandType(ProducedType pt, TypeDeclaration td, 
@@ -2119,10 +2023,6 @@ public class ExpressionVisitor extends AbstractVisitor {
         that.setTypeModel(st);
     }
 
-    private ProducedType getSequenceType(ProducedType et) {
-        return producedType(getSequenceDeclaration(), et);
-    }
-    
     @Override public void visit(Tree.CatchClause that) {
         super.visit(that);
         ProducedType et = getExceptionDeclaration().getType();
