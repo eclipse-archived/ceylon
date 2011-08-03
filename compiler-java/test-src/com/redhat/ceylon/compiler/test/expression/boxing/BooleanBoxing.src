@@ -6,10 +6,27 @@ class BooleanBoxing {
         final boolean b1 = true;
         final boolean b2 = !b1;
         final boolean b3 = negate(b2);
+        final .java.lang.Boolean b4 = negate2(b3);
+        final boolean b5 = negate3(b4);
     }
     
     private final boolean negate(final boolean b) {
         return !b;
+    }
+    
+    private final .java.lang.Boolean negate2(final .java.lang.Boolean b) {
+        if (b != null) {
+            return !b;
+        }
+        return b;
+    }
+    
+    private final boolean negate3(final .java.lang.Boolean b) {
+        if (b != null) {
+            return !b;
+        } else {
+            return false;
+        }
     }
     
     BooleanBoxing() {

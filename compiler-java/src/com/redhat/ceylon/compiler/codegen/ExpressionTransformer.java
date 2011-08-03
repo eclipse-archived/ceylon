@@ -354,7 +354,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     public JCExpression transform(final Tree.QualifiedMemberExpression access) {
-        final Tree.Identifier memberName = access.getIdentifier();
+        final String memberName = access.getIdentifier().getText();
         final Tree.Primary operand = access.getPrimary();
 
         at(access);
@@ -366,25 +366,30 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (gen.willEraseToObject(operand.getTypeModel())) {
             // Erased types need a type cast
             JCExpression targetType = gen.makeJavaType(access.getTarget().getDeclaringType());
-            result = gen.makeSelect(make().TypeCast(targetType, expr), memberName.getText());
+            result = gen.makeSelect(make().TypeCast(targetType, expr), memberName);
         } else if (gen.sameType(syms().ceylonStringType, operand.getTypeModel())) {
             // Java Strings need to be boxed
-            expr = make().Parens(make().Apply(null, makeSelect(makeIdent(syms().ceylonStringType), "instance"), List.of(expr)));
-            result = gen.makeSelect(expr, memberName.getText());
+            result = makeBoxUnbox(syms().ceylonStringType, expr, memberName, "toJavaString");
         } else if (gen.sameType(syms().ceylonBooleanType, operand.getTypeModel())) {
             // Java native types need to be boxed
-            expr = make().Parens(make().Apply(null, makeSelect(makeIdent(syms().ceylonBooleanType), "instance"), List.of(expr)));
-            result = gen.makeSelect(expr, memberName.getText());
+            result = makeBoxUnbox(syms().ceylonBooleanType, expr, memberName, "booleanValue");
         } else if (gen.sameType(syms().ceylonIntegerType, operand.getTypeModel())) {
             // Java native types need to be boxed
-            expr = make().Parens(make().Apply(null, makeSelect(makeIdent(syms().ceylonIntegerType), "instance"), List.of(expr)));
-            result = gen.makeSelect(expr, memberName.getText());
+            result = makeBoxUnbox(syms().ceylonIntegerType, expr, memberName, "intValue");
         } else {
-            result = gen.makeSelect(expr, memberName.getText());
+            result = gen.makeSelect(expr, memberName);
         }
         return result;
     }
 
+    private JCExpression makeBoxUnbox(com.sun.tools.javac.code.Type type, JCExpression expr, String memberName, String unboxMemberName) {
+        JCExpression result = makeSelect(makeIdent(type), "instance");
+        result = make().Parens(make().Apply(null, result, List.of(expr)));
+        result = make().Apply(null, gen.makeSelect(result, memberName), List.<JCExpression>nil());
+        result = gen.makeSelect(result, unboxMemberName);
+        return result;
+    }
+    
     public JCExpression transform(Tree.BaseMemberExpression member) {
         JCExpression result = null;
         Declaration decl = member.getDeclaration();
