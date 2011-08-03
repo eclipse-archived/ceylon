@@ -133,17 +133,19 @@ public class Util {
             }
         }
         else {
-            Boolean included = false;
-            for (Iterator<ProducedType> iter = list.iterator(); iter.hasNext();) {
-                ProducedType t = iter.next();
-                if (pt.isSubtypeOf(t)) {
-                    included = true;
-                    break;
-                }
-                //TODO: I think in some very rare occasions 
-                //      this can cause stack overflows!
-                else if (pt.isSupertypeOf(t)) {
-                    iter.remove();
+            Boolean included = !pt.isWellDefined();
+            if (!included) {
+                for (Iterator<ProducedType> iter = list.iterator(); iter.hasNext();) {
+                    ProducedType t = iter.next();
+                    if (pt.isSubtypeOf(t)) {
+                        included = true;
+                        break;
+                    }
+                    //TODO: I think in some very rare occasions 
+                    //      this can cause stack overflows!
+                    else if (pt.isSupertypeOf(t)) {
+                        iter.remove();
+                    }
                 }
             }
             if (!included) {

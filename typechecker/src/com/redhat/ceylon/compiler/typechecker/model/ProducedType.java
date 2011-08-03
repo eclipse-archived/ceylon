@@ -394,7 +394,7 @@ public class ProducedType extends ProducedReference {
     }
     
     List<ProducedType> getSupertypes(List<ProducedType> list) {
-        if ( Util.addToSupertypes(list, this) ) {
+        if ( isWellDefined() && Util.addToSupertypes(list, this) ) {
             if (getDeclaration().getExtendedType()!=null) {
                 getDeclaration().getExtendedType().substitute(getTypeArguments()).getSupertypes(list);
             }
@@ -451,7 +451,7 @@ public class ProducedType extends ProducedReference {
         if (c.satisfies(this)) {
             return this;
         }
-        if ( Util.addToSupertypes(list, this) ) {
+        if ( isWellDefined() && Util.addToSupertypes(list, this) ) {
             //search for the most-specific supertype 
             //for the given declaration
             ProducedType result = null;
@@ -558,6 +558,15 @@ public class ProducedType extends ProducedReference {
             }
             return true;
         }
+    }
+
+    public boolean isWellDefined() {
+        for (ProducedType at: getTypeArgumentList()) {
+            if (at==null || !at.isWellDefined() ) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
