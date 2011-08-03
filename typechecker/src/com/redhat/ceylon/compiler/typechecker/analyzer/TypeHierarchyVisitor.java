@@ -254,7 +254,7 @@ public class TypeHierarchyVisitor extends Visitor {
     private boolean checkCyclicInheritance(TypeDeclaration declaration, List<TypeDeclaration> stackOfProcessedType, Node errorReporter) {
         final int matchingIndex = stackOfProcessedType.indexOf(declaration);
         if (matchingIndex!=-1) {
-            StringBuilder sb = new StringBuilder("Cyclical dependencies in ");
+            StringBuilder sb = new StringBuilder("cyclical dependencies in ");
             sb.append(declaration.getQualifiedNameString());
             sb.append(" (involving ");
             for (int index = stackOfProcessedType.size()-1;index>matchingIndex;index--) {
