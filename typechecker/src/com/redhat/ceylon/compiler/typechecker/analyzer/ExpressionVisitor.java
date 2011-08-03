@@ -1335,18 +1335,13 @@ public class ExpressionVisitor extends AbstractVisitor {
         checkAssignable(that.getTerm());
     }
     
-    private ProducedType getUnionType(ProducedType lhst, ProducedType rhst) {
+    private ProducedType unionType(ProducedType lhst, ProducedType rhst) {
         List<ProducedType> list = new ArrayList<ProducedType>();
         addToUnion(list, rhst);
         addToUnion(list, lhst);
-        if (list.size()==1) {
-            return list.get(0);
-        }
-        else {
-            UnionType ut = new UnionType();
-            ut.setCaseTypes(list);
-            return ut.getType();
-        }
+        UnionType ut = new UnionType();
+        ut.setCaseTypes(list);
+        return ut.getType();
     }
     
     private void checkOperandType(ProducedType pt, TypeDeclaration td, 
@@ -1359,7 +1354,7 @@ public class ExpressionVisitor extends AbstractVisitor {
 
     private void checkOperandTypes(ProducedType lhst, ProducedType rhst, 
             TypeDeclaration td, Node node, String message) {
-        ProducedType ut = getUnionType(lhst, rhst);
+        ProducedType ut = unionType(lhst, rhst);
         checkOperandType(ut, td, node, message);
     }
 
@@ -1415,7 +1410,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                     "operand expressions must be of compatible ordinal type");
             checkOperandTypes(lhst, rhst, getComparableDeclaration(), that, 
                     "operand expressions must be comparable");
-            ProducedType ct = getUnionType(lhst, rhst)
+            ProducedType ct = unionType(lhst, rhst)
                     .getSupertype(getComparableDeclaration());
             if (ct!=null) {
                 ProducedType pt = producedType(getRangeDeclaration(), 
@@ -1501,7 +1496,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         if ( rhst!=null && lhst!=null ) {
             checkOperandTypes(lhst, rhst, type, that, 
                     "operand expressions must be compatible");
-            ProducedType ut = getUnionType(lhst, rhst).getSupertype(type);
+            ProducedType ut = unionType(lhst, rhst).getSupertype(type);
             if (ut!=null) {
                 ProducedType t = ut.getTypeArguments().isEmpty() ? 
                         ut : ut.getTypeArgumentList().get(0);
@@ -1557,7 +1552,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         if ( rhst!=null && lhst!=null ) {
             checkAssignable(lhst, getObjectDeclaration().getType(), that.getLeftTerm(), 
                     "operand expression must be an object type");
-            ProducedType ut = getUnionType(getCategoryDeclaration().getType(), 
+            ProducedType ut = unionType(getCategoryDeclaration().getType(), 
                     producedType(getIterableDeclaration(),getEqualityDeclaration().getType()));
             checkAssignable(rhst, ut, that.getRightTerm(), 
                     "operand expression must be a category or iterator");
