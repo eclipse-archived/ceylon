@@ -21,14 +21,17 @@ class QualifiedAttributeAssign {
     }
     
     private final void m() {
-        setB(false);
-        setB2(false);
-        new QualifiedAttributeAssign().setB(true);
-        new QualifiedAttributeAssign().setB2(true);
+        b = false;
+        b2 = false;
+        b = true;
+        b2 = true;
+        q.b = false;
+        q.b2 = false;
     }
     
     QualifiedAttributeAssign() {
         this.b = true;
         this.b2 = true;
+        final com.redhat.ceylon.compiler.test.expression.attribute.QualifiedAttributeAccess q = new QualifiedAttributeAccess();
     }
 }

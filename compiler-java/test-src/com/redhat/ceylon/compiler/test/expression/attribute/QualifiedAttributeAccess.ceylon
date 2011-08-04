@@ -2,6 +2,7 @@
 class QualifiedAttributeAccess(){
    Boolean b = true;
    variable Boolean b2 := true;
+   QualifiedAttributeAccess q = QualifiedAttributeAccess();
    
    Boolean m(){
        return this.b;
@@ -17,5 +18,13 @@ class QualifiedAttributeAccess(){
 
    Boolean qm2(){
        return QualifiedAttributeAccess().b2;
+   }
+
+   Boolean qm3(){
+       return q.b;
+   }
+
+   Boolean qm4(){
+       return q.b2;
    }
 }

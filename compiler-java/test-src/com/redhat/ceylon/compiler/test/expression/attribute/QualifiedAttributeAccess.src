@@ -25,15 +25,24 @@ class QualifiedAttributeAccess {
     }
     
     private final boolean qm() {
-        return new QualifiedAttributeAccess().getB();
+        return new QualifiedAttributeAccess().b;
     }
     
     private final boolean qm2() {
-        return new QualifiedAttributeAccess().getB2();
+        return new QualifiedAttributeAccess().b2;
+    }
+    
+    private final boolean qm3() {
+        return q.b;
+    }
+    
+    private final boolean qm4() {
+        return q.b2;
     }
     
     QualifiedAttributeAccess() {
         this.b = true;
         this.b2 = true;
+        final com.redhat.ceylon.compiler.test.expression.attribute.QualifiedAttributeAccess q = new QualifiedAttributeAccess();
     }
 }
