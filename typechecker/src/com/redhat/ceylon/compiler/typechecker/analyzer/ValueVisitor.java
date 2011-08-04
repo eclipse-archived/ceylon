@@ -67,6 +67,7 @@ public class ValueVisitor extends Visitor {
     
     @Override
     public void visit(Tree.QualifiedMemberExpression that) {
+        super.visit(that);
         if (isSelfReference(that.getPrimary())) {
             visitReference(that);
         }
