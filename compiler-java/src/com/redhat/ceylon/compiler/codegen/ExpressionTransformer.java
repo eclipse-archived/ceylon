@@ -369,24 +369,23 @@ public class ExpressionTransformer extends AbstractTransformer {
             result = gen.makeSelect(make().TypeCast(targetType, expr), memberName);
         } else if (gen.sameType(syms().ceylonStringType, operand.getTypeModel())) {
             // Java Strings need to be boxed
-            result = makeBoxUnbox(syms().ceylonStringType, expr, memberName, "toJavaString");
+            result = makeBox(syms().ceylonStringType, expr, memberName);
         } else if (gen.sameType(syms().ceylonBooleanType, operand.getTypeModel())) {
             // Java native types need to be boxed
-            result = makeBoxUnbox(syms().ceylonBooleanType, expr, memberName, "booleanValue");
+            result = makeBox(syms().ceylonBooleanType, expr, memberName);
         } else if (gen.sameType(syms().ceylonIntegerType, operand.getTypeModel())) {
             // Java native types need to be boxed
-            result = makeBoxUnbox(syms().ceylonIntegerType, expr, memberName, "intValue");
+            result = makeBox(syms().ceylonIntegerType, expr, memberName);
         } else {
             result = gen.makeSelect(expr, memberName);
         }
         return result;
     }
 
-    private JCExpression makeBoxUnbox(com.sun.tools.javac.code.Type type, JCExpression expr, String memberName, String unboxMemberName) {
+    private JCExpression makeBox(com.sun.tools.javac.code.Type type, JCExpression expr, String memberName) {
         JCExpression result = makeSelect(makeIdent(type), "instance");
         result = make().Parens(make().Apply(null, result, List.of(expr)));
-        result = make().Apply(null, gen.makeSelect(result, memberName), List.<JCExpression>nil());
-        result = gen.makeSelect(result, unboxMemberName);
+        result = gen.makeSelect(result, memberName);
         return result;
     }
     
