@@ -117,6 +117,7 @@ public class RefinementVisitor extends AbstractVisitor {
                     TypedDeclaration tdec = (TypedDeclaration) dec;
                     ProducedType type = tdec.getType();
                     TypedDeclaration trefined = (TypedDeclaration) refined;
+                    //TODO: is it really correct to pass no type args here?
                     ProducedTypedReference typedMember = ci.getType().getTypedMember(trefined, Collections.<ProducedType>emptyList());
                     ProducedType refinedType = typedMember.getType();
                     Tree.TypedDeclaration ttd = (Tree.TypedDeclaration) that;
@@ -151,12 +152,13 @@ public class RefinementVisitor extends AbstractVisitor {
                         Class tdec = (Class) dec;
                         ProducedType type = tdec.getType();
                         Class trefined = (Class) refined;
-                        ProducedType typedMember = ci.getType().getTypeMember(trefined, Collections.<ProducedType>emptyList());
+                        //TODO: are these really the correct type arguments?
+                        ProducedType typedMember = ci.getType().getTypeMember(trefined, tdec.getExtendedType().getTypeArgumentList());
                         ProducedType refinedType = typedMember.getType();
                         if (!type.isSubtypeOf(refinedType)) {
                             that.addError("member class is not a subclass of refined class: " +
-                                    dec.getName() + " is not " + 
-                                    refined.getName());
+                                    type.getProducedTypeName() + " is not a subtype of " + 
+                                    refinedType.getProducedTypeName());
                         }
                         ParameterList params = tdec.getParameterList();
                         ParameterList refinedParams = trefined.getParameterList();
