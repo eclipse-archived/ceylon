@@ -144,6 +144,6 @@ public abstract class CompilerTest {
 	    }
         Iterable<? extends JavaFileObject> compilationUnits1 =
             runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
-        return (CeyloncTaskImpl) runCompiler.getTask(null, runFileManager, null, Arrays.asList("-d", "build/classes"), null, compilationUnits1);
+        return (CeyloncTaskImpl) runCompiler.getTask(null, runFileManager, null, Arrays.asList("-d", "build/classes", "-verbose"), null, compilationUnits1);
 	}
 }
