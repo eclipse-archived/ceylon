@@ -312,16 +312,9 @@ public class CeylonTransformer {
 
         builder.valueAnnotations(makeJavaTypeAnnotations(decl.getDeclarationModel(), actualType(decl)));
         
-        builder.classFlags(FINAL)
-            .getterFlags(STATIC)
-            .setterFlags(STATIC);
-        
-        if (decl.getDeclarationModel().isShared()) {
-            builder
-                    .addClassFlags(PUBLIC)
-                    .addGetterFlags(PUBLIC)
-                    .addSetterFlags(PUBLIC);
-        }
+        builder.classIsFinal(true).classIsPublic(decl.getDeclarationModel().isShared());
+        builder.getterIsStatic(true).getterIsPublic(decl.getDeclarationModel().isShared());
+        builder.setterIsStatic(true).setterIsPublic(decl.getDeclarationModel().isShared());
 
         if (!decl.getDeclarationModel().isVariable()) {
             builder.immutable();
@@ -346,13 +339,10 @@ public class CeylonTransformer {
 
         builder.valueAnnotations(makeJavaTypeAnnotations(decl.getDeclarationModel(), actualType(decl)));
 
-        builder.classFlags(FINAL);
-        
-        if (decl.getDeclarationModel().isShared()) {
-            builder.addClassFlags(PUBLIC)
-                .addGetterFlags(PUBLIC)
-                .addSetterFlags(PUBLIC);
-        }
+        boolean isMethodLocal = decl.getDeclarationModel().getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Method;
+        builder.classIsFinal(true).classIsPublic(decl.getDeclarationModel().isShared());
+        builder.getterIsPublic(decl.getDeclarationModel().isShared()).getterIsStatic(!isMethodLocal);
+        builder.setterIsPublic(decl.getDeclarationModel().isShared()).setterIsStatic(!isMethodLocal);
 
         if (!decl.getDeclarationModel().isVariable()) {
             builder.immutable();
@@ -361,8 +351,7 @@ public class CeylonTransformer {
         JCBlock block = make().Block(0, statementGen.transformStmts(decl.getBlock().getStatements()));
         builder.getterBlock(block);
 
-        Scope container = decl.getDeclarationModel().getContainer();
-        if (container instanceof com.redhat.ceylon.compiler.typechecker.model.Method) {
+        if (isMethodLocal) {
             // Add a "foo foo = new foo();" at the decl site
             JCTree.JCIdent name = make().Ident(names.fromString(decl.getIdentifier().getText()));
             
@@ -378,7 +367,6 @@ public class CeylonTransformer {
             
             return List.of(builder.build(), var);
         } else {
-            builder.getterFlags(STATIC).setterFlags(STATIC);
             return List.of(builder.build());
         }
     }

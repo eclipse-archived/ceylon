@@ -164,18 +164,109 @@ public class AttributeDefinitionBuilder {
     }
 
     /**
-     * Sets the modifier flags of the generated class.
+     * Adds to the modifier flags of the generated class.
      * @param classFlags the modifier flags (see {@link Flags})
      * @return this instance for method chaining
      */
-    public AttributeDefinitionBuilder classFlags(long classFlags) {
-        this.classFlags = classFlags;
+    public AttributeDefinitionBuilder classModifiers(long classFlags) {
+        this.classFlags |= classFlags;
         return this;
     }
     
-    public AttributeDefinitionBuilder addClassFlags(long classFlags) {
-        this.classFlags = this.classFlags | classFlags;
+    private AttributeDefinitionBuilder classIs(boolean is, long mod) {
+        if (is) {
+            classModifiers(mod);
+        } else {
+            this.classFlags &= ~mod;
+        }
         return this;
+    }
+    
+    /**
+     * Sets the class STATIC flag.
+     * @param isStatic true to set the flag, false to clear it
+     * @return this instance for method chaining
+     * 
+     * @see #classModifiers(long)
+     */
+    public AttributeDefinitionBuilder classIsStatic(boolean isStatic) {
+        return classIs(isStatic, Flags.STATIC);
+    }
+    
+    /**
+     * Sets the class FINAL flag.
+     * @param isFinal true to set the flag, false to clear it
+     * @return this instance for method chaining
+     * 
+     * @see #classModifiers(long)
+     */
+    public AttributeDefinitionBuilder classIsFinal(boolean isFinal) {
+        return classIs(isFinal, Flags.FINAL);
+    }
+    
+    /**
+     * Sets the class PUBLIC flag.
+     * @param isPublic true to set the flag, false to clear it
+     * @return this instance for method chaining
+     * 
+     * @see #classModifiers(long)
+     */
+    public AttributeDefinitionBuilder classIsPublic(boolean isPublic) {
+        return classIs(isPublic, Flags.PUBLIC);
+    }
+
+    /**
+     * Adds to the modifier flags of the generated getter. 
+     * If no getter is generated the modifier flags will be silently
+     * ignored.
+     * @param getterFlags the modifier flags (see {@link Flags})
+     * @return this instance for method chaining
+     */
+    public AttributeDefinitionBuilder getterModifiers(long getterFlags) {
+        this.getterFlags |= getterFlags;
+        return this;
+    }
+
+    private AttributeDefinitionBuilder getterIs(boolean is, long mod) {
+        if (is) {
+            getterModifiers(mod);
+        } else {
+            this.getterFlags &= ~mod;
+        }
+        return this;
+    }
+    
+    /**
+     * Sets the setter STATIC flag.
+     * @param isStatic true to set the flag, false to clear it
+     * @return this instance for method chaining
+     * 
+     * @see #getterModifiers(long)
+     */
+    public AttributeDefinitionBuilder getterIsStatic(boolean isStatic) {
+        return getterIs(isStatic, Flags.STATIC);
+    }
+    
+    /**
+     * Sets the getter FINAL flag.
+     * @param isFinal true to set the flag, false to clear it
+     * @return this instance for method chaining
+     * 
+     * @see #getterModifiers(long)
+     */
+    public AttributeDefinitionBuilder getterIsFinal(boolean isFinal) {
+        return getterIs(isFinal, Flags.FINAL);
+    }
+    
+    /**
+     * Sets the getter PUBLIC flag.
+     * @param isPublic true to set the flag, false to clear it
+     * @return this instance for method chaining
+     * 
+     * @see #getterModifiers(long)
+     */
+    public AttributeDefinitionBuilder getterIsPublic(boolean isPublic) {
+        return getterIs(isPublic, Flags.PUBLIC);
     }
 
     /**
@@ -206,19 +297,57 @@ public class AttributeDefinitionBuilder {
     }
 
     /**
-     * Sets the modifier flags of the generated setter. If no setter is generated the modifier flags will be silently
+     * Adds to the modifier flags of the generated setter. 
+     * If no setter is generated the modifier flags will be silently
      * ignored.
      * @param setterFlags the modifier flags (see {@link Flags})
      * @return this instance for method chaining
      */
-    public AttributeDefinitionBuilder setterFlags(long setterFlags) {
-        this.setterFlags = setterFlags;
+    public AttributeDefinitionBuilder setterModifiers(long setterFlags) {
+        this.setterFlags |= setterFlags;
+        return this;
+    }
+
+    private AttributeDefinitionBuilder setterIs(boolean is, long mod) {
+        if (is) {
+            setterModifiers(mod);
+        } else {
+            this.setterFlags &= ~mod;
+        }
         return this;
     }
     
-    public AttributeDefinitionBuilder addSetterFlags(long setterFlags) {
-        this.setterFlags = this.setterFlags | setterFlags;
-        return this;
+    /**
+     * Sets the setter STATIC flag.
+     * @param isStatic true to set the flag, false to clear it
+     * @return this instance for method chaining
+     * 
+     * @see #setterModifiers(long)
+     */
+    public AttributeDefinitionBuilder setterIsStatic(boolean isStatic) {
+        return setterIs(isStatic, Flags.STATIC);
+    }
+    
+    /**
+     * Sets the setter FINAL flag.
+     * @param isFinal true to set the flag, false to clear it
+     * @return this instance for method chaining
+     * 
+     * @see #setterModifiers(long)
+     */
+    public AttributeDefinitionBuilder setterIsFinal(boolean isFinal) {
+        return setterIs(isFinal, Flags.FINAL);
+    }
+    
+    /**
+     * Sets the setter PUBLIC flag.
+     * @param isPublic true to set the flag, false to clear it
+     * @return this instance for method chaining
+     * 
+     * @see #setterModifiers(long)
+     */
+    public AttributeDefinitionBuilder setterIsPublic(boolean isPublic) {
+        return setterIs(isPublic, Flags.PUBLIC);
     }
 
     /**
