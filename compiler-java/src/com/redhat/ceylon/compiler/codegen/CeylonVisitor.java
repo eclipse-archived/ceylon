@@ -86,8 +86,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
      * Compilation Unit
      */
     
-    public void visit(Tree.ImportPath that) {
-        append(gen.transform(that));
+    public void visit(Tree.ImportList that) {
+        //append(gen.transform(that));
     }
     
     private boolean checkCompilerAnnotations(Tree.Declaration decl){
