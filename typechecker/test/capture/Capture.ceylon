@@ -209,4 +209,14 @@ class Capture() {
         }
     }
     
+    class WithQualifiedRefToThis() {
+        @captured String hello = "hello";
+        function t() { 
+            return this; 
+        }
+        function f() { 
+            return t().hello;
+        }
+    }
+    
 }
