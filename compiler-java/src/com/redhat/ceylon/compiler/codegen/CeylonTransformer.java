@@ -1,8 +1,6 @@
 package com.redhat.ceylon.compiler.codegen;
 
 import static com.sun.tools.javac.code.Flags.FINAL;
-import static com.sun.tools.javac.code.Flags.PUBLIC;
-import static com.sun.tools.javac.code.Flags.STATIC;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,16 +16,14 @@ import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
@@ -301,56 +297,37 @@ public class CeylonTransformer {
         return (List<JCTree>) visitor.getResult().toList();
     }
 
-    public JCTree transform(AttributeDeclaration decl) {
+    public List<JCTree> transform(AnyAttribute decl) {
         AttributeDefinitionBuilder builder = globalGenAt(decl)
-            .defineGlobal(
-                    makeJavaType(actualType(decl)),
-                    decl.getIdentifier().getText());
+            .defineGlobal(makeJavaType(actualType(decl)), decl.getIdentifier().getText())
+            .classAnnotations(makeAtAttribute())
+            .valueAnnotations(makeJavaTypeAnnotations(decl.getDeclarationModel(), actualType(decl)))
+            .classIsFinal(true);
 
-        // Add @Attribute (@Ceylon gets added by default)
-        builder.classAnnotations(makeAtAttribute());
-
-        builder.valueAnnotations(makeJavaTypeAnnotations(decl.getDeclarationModel(), actualType(decl)));
+        if (decl.getDeclarationModel().isShared()) {
+            builder
+                .classIsPublic(true)
+                .getterIsPublic(true)
+                .setterIsPublic(true);
+        }
         
-        builder.classIsFinal(true).classIsPublic(decl.getDeclarationModel().isShared());
-        builder.getterIsStatic(true).getterIsPublic(decl.getDeclarationModel().isShared());
-        builder.setterIsStatic(true).setterIsPublic(decl.getDeclarationModel().isShared());
-
         if (!decl.getDeclarationModel().isVariable()) {
             builder.immutable();
         }
 
-        if (decl.getSpecifierOrInitializerExpression() != null) {
-            builder.initialValue(expressionGen.transformExpression(
-                    decl.getSpecifierOrInitializerExpression().getExpression()));
+        if (decl instanceof AttributeDeclaration) {
+            AttributeDeclaration adecl = (AttributeDeclaration)decl;
+            if (adecl.getSpecifierOrInitializerExpression() != null) {
+                builder.initialValue(expressionGen.transformExpression(
+                        adecl.getSpecifierOrInitializerExpression().getExpression()));
+            }
+        } else {
+            AttributeGetterDefinition gdef = (AttributeGetterDefinition)decl;
+            JCBlock block = make().Block(0, statementGen.transformStmts(gdef.getBlock().getStatements()));
+            builder.getterBlock(block);
         }
-
-        return builder.build();
-    }
-
-    public List<JCTree> transform(AttributeGetterDefinition decl) {
-        AttributeDefinitionBuilder builder = globalGenAt(decl)
-            .defineGlobal(
-                    makeJavaType(actualType(decl)),
-                    decl.getIdentifier().getText());
-
-        // Add @Attribute (@Ceylon gets added by default)
-        builder.classAnnotations(makeAtAttribute());
-
-        builder.valueAnnotations(makeJavaTypeAnnotations(decl.getDeclarationModel(), actualType(decl)));
 
         boolean isMethodLocal = decl.getDeclarationModel().getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Method;
-        builder.classIsFinal(true).classIsPublic(decl.getDeclarationModel().isShared());
-        builder.getterIsPublic(decl.getDeclarationModel().isShared()).getterIsStatic(!isMethodLocal);
-        builder.setterIsPublic(decl.getDeclarationModel().isShared()).setterIsStatic(!isMethodLocal);
-
-        if (!decl.getDeclarationModel().isVariable()) {
-            builder.immutable();
-        }
-
-        JCBlock block = make().Block(0, statementGen.transformStmts(decl.getBlock().getStatements()));
-        builder.getterBlock(block);
-
         if (isMethodLocal) {
             // Add a "foo foo = new foo();" at the decl site
             JCTree.JCIdent name = make().Ident(names.fromString(decl.getIdentifier().getText()));
@@ -367,6 +344,9 @@ public class CeylonTransformer {
             
             return List.of(builder.build(), var);
         } else {
+            builder
+                .getterIsStatic(true)
+                .setterIsStatic(true);
             return List.of(builder.build());
         }
     }
@@ -490,7 +470,8 @@ public class CeylonTransformer {
     }
 
     JCExpression makeJavaType(ProducedType type, int flags) {
-        int satisfiesOrExtends = flags & (SATISFIES | EXTENDS | TYPE_PARAM);
+        int satisfiesOrExtendsOrTypeParam = flags & (SATISFIES | EXTENDS | TYPE_PARAM);
+        int satisfiesOrExtends = flags & (SATISFIES | EXTENDS);
         
         // ERASURE
         if (willEraseToObject(type)) {
@@ -499,7 +480,7 @@ public class CeylonTransformer {
             //   IdentifiableObject, and Bottom result in the Java type Object
             // For any other union type U|V (U nor V is Optional):
             // - The Ceylon type U|V results in the Java type Object
-            if ((satisfiesOrExtends & SATISFIES) != 0) {
+            if ((flags & SATISFIES) != 0) {
                 return null;
             } else {
                 return make.Type(syms.objectType);
@@ -507,13 +488,13 @@ public class CeylonTransformer {
         } else if (willEraseToString(type)) {
             return make.Type(syms.stringType);
         } else if (willEraseToBoolean(type)) {
-            if (satisfiesOrExtends != 0 || isOptional(type)) {
+            if (satisfiesOrExtendsOrTypeParam != 0 || isOptional(type)) {
                 return make.Type(syms.booleanObjectType);
             } else {
                 return make.TypeIdent(TypeTags.BOOLEAN);
             }
         } else if (willEraseToInteger(type)) {
-            if (satisfiesOrExtends != 0 || isOptional(type)) {
+            if (satisfiesOrExtendsOrTypeParam != 0 || isOptional(type)) {
                 return make.Type(syms.integerObjectType);
             } else {
                 return make.TypeIdent(TypeTags.INT);
@@ -621,11 +602,7 @@ public class CeylonTransformer {
         return jt;
     }
 
-    List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Value decl, ProducedType type) {
-        return makeJavaTypeAnnotations(type, decl.isToplevel() || (decl.isClassOrInterfaceMember() && decl.isShared()));
-    }
-
-    List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Getter decl, ProducedType type) {
+    List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Declaration decl, ProducedType type) {
         return makeJavaTypeAnnotations(type, decl.isToplevel() || (decl.isClassOrInterfaceMember() && decl.isShared()));
     }
 
