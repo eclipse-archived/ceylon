@@ -15,6 +15,11 @@ class QualifiedAttributeAccess {
     private final void setB2(boolean b2) {
         this.b2 = b2;
     }
+    private final com.redhat.ceylon.compiler.test.expression.attribute.QualifiedAttributeAccess q;
+    
+    private final com.redhat.ceylon.compiler.test.expression.attribute.QualifiedAttributeAccess getQ() {
+        return this.q;
+    }
     
     private final boolean m() {
         return this.b;
@@ -33,16 +38,16 @@ class QualifiedAttributeAccess {
     }
     
     private final boolean qm3() {
-        return q.b;
+        return getQ().b;
     }
     
     private final boolean qm4() {
-        return q.b2;
+        return getQ().b2;
     }
     
     QualifiedAttributeAccess() {
         this.b = true;
         this.b2 = true;
-        final com.redhat.ceylon.compiler.test.expression.attribute.QualifiedAttributeAccess q = new QualifiedAttributeAccess();
+        this.q = new QualifiedAttributeAccess();
     }
 }
