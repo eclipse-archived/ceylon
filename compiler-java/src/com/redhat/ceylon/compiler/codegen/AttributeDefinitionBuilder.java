@@ -270,22 +270,6 @@ public class AttributeDefinitionBuilder {
     }
 
     /**
-     * Sets the modifier flags of the generated getter. If no getter is generated the modifier flags will be silently
-     * ignored.
-     * @param getterFlags the modifier flags (see {@link Flags})
-     * @return this instance for method chaining
-     */
-    public AttributeDefinitionBuilder getterFlags(int getterFlags) {
-        this.getterFlags = getterFlags;
-        return this;
-    }
-    
-    public AttributeDefinitionBuilder addGetterFlags(int getterFlags) {
-        this.getterFlags = this.getterFlags | getterFlags;
-        return this;
-    }
-
-    /**
      * Sets the code block to use for the generated getter. If no getter is generated the code block will be
      * silently ignored.
      * @param getterBlock a code block
