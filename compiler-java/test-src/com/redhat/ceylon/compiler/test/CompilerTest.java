@@ -125,7 +125,7 @@ public abstract class CompilerTest {
 		return result;
 	}
 	
-	protected void compileAndRun(String main, String ceylon) {
+	protected void compileAndRun(String main, String... ceylon) {
 		Boolean success = getCompilerTask(ceylon).call();
 		Assert.assertTrue(success);
 		try{
