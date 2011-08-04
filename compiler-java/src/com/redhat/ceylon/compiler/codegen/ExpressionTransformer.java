@@ -157,16 +157,17 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.RangeOp op) {
         JCExpression lower = transformExpression(op.getLeftTerm());
         JCExpression upper = transformExpression(op.getRightTerm());
-        JCExpression type = gen.makeJavaType(op.getLeftTerm().getTypeModel());
-        return at(op).NewClass(null, null, at(op).TypeApply(makeIdent(syms().ceylonRangeType), List.<JCExpression> of(type)), List.<JCExpression> of(lower, upper), null);
+        ProducedType rangeType = gen.typeFact.getRangeType(op.getLeftTerm().getTypeModel());
+        JCExpression typeExpr = gen.makeJavaType(rangeType, CeylonTransformer.CLASS_NEW);
+        return at(op).NewClass(null, null, typeExpr, List.<JCExpression> of(lower, upper), null);
     }
 
     public JCExpression transform(Tree.EntryOp op) {
         JCExpression key = transformExpression(op.getLeftTerm());
         JCExpression elem = transformExpression(op.getRightTerm());
-        JCExpression keyType = gen.makeJavaType(op.getLeftTerm().getTypeModel());
-        JCExpression elemType = gen.makeJavaType(op.getRightTerm().getTypeModel());
-        return at(op).NewClass(null, null, at(op).TypeApply(makeIdent(syms().ceylonEntryType), List.<JCExpression> of(keyType, elemType)), List.<JCExpression> of(key, elem), null);
+        ProducedType entryType = gen.typeFact.getEntryType(op.getLeftTerm().getTypeModel(), op.getRightTerm().getTypeModel());
+        JCExpression typeExpr = gen.makeJavaType(entryType, CeylonTransformer.CLASS_NEW);
+        return at(op).NewClass(null, null, typeExpr , List.<JCExpression> of(key, elem), null);
     }
 
     public JCExpression transform(Tree.UnaryOperatorExpression op) {
@@ -473,8 +474,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             for (Expression expr : list) {
                 elems.append(transformExpression(expr));
             }
-            ProducedType t = value.getTypeModel().getTypeArgumentList().get(0);
-            return at(value).NewClass(null, null, at(value).TypeApply(makeIdent(syms().ceylonArraySequenceType), List.<JCExpression> of(gen.makeJavaType(t, CeylonTransformer.TYPE_PARAM))), elems.toList(), null);
+            ProducedType seqElemType = value.getTypeModel().getTypeArgumentList().get(0);
+            ProducedType seqType = gen.typeFact.getDefaultSequenceType(seqElemType);
+            JCExpression typeExpr = gen.makeJavaType(seqType, CeylonTransformer.CLASS_NEW);
+            return at(value).NewClass(null, null, typeExpr, elems.toList(), null);
         }
     }
 }

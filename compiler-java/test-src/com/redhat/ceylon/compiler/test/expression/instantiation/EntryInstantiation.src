@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.test.expression.instantiation;
 class EntryInstantiation {
     
     public final .java.lang.Object m() {
-        return new .ceylon.language.Entry<ceylon.language.Natural, .java.lang.String>(.ceylon.language.Natural.instance(1L), "a");
+        return new ceylon.language.Entry<ceylon.language.Natural, .java.lang.String>(.ceylon.language.Natural.instance(1L), "a");
     }
     
     EntryInstantiation() {

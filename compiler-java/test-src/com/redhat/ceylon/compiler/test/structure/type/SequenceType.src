@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.test.structure.type;
 class SequenceType {
     
     public final void m() {
-        final .java.lang.Object s1 = new .ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L));
+        final .java.lang.Object s1 = new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L));
         final .java.lang.Object s2 = ceylon.language.$empty.getEmpty();
     }
     

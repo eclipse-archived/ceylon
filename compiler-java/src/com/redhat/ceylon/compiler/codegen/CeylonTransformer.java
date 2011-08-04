@@ -13,6 +13,8 @@ import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
+import com.redhat.ceylon.compiler.loader.TypeFactory;
+import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -41,7 +43,6 @@ import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCImport;
-import com.sun.tools.javac.tree.JCTree.JCWildcard;
 import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Convert;
@@ -67,6 +68,7 @@ public class CeylonTransformer {
     StatementTransformer statementGen;
     ClassTransformer classGen;
     GlobalTransformer globalGen;
+    TypeFactory typeFact;
 
     public boolean disableModelAnnotations = false;
     
@@ -85,6 +87,7 @@ public class CeylonTransformer {
         statementGen = new StatementTransformer(this);
         classGen = new ClassTransformer(this);
         globalGen = new GlobalTransformer(this);
+        typeFact = new TypeFactory(LanguageCompiler.getCeylonContextInstance(context));
     }
 
     private void setup(Context context) {
@@ -354,23 +357,6 @@ public class CeylonTransformer {
 
     // FIXME: figure out what CeylonTree.ReflectedLiteral maps to
 
-    /** 
-     * Generates {@code Iterator<T>}
-     * @param type The type representing T 
-     */
-    JCExpression iteratorType(JCExpression type) {
-        return make().TypeApply(makeIdent(syms.ceylonIteratorType), List.<JCExpression> of(type));
-    }
-    
-    /** 
-     * Generates {@code Iterator<? extends T>}
-     * @param type The type representing T 
-     */
-    JCExpression iteratorTypeExtends(JCExpression type) {
-        JCWildcard wildcard = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), type);
-        return make().TypeApply(makeIdent(syms.ceylonIteratorType), List.<JCExpression> of(wildcard));
-    }
-
     long counter = 0;
 
     String tempName() {
@@ -477,6 +463,7 @@ public class CeylonTransformer {
     static final int SATISFIES = 1 << 0;
     static final int EXTENDS = 1 << 1;
     static final int TYPE_PARAM = 1 << 2;
+    static final int CLASS_NEW = 1 << 1; // Yes, same as EXTENDS
     static final int WANT_RAW_TYPE = 1 << 3;
 
     JCExpression makeJavaType(ProducedType producedType) {

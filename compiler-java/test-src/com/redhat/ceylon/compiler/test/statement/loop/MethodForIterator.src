@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.test.statement.loop;
 class MethodForIterator {
     
     public final void m(final ceylon.language.Sequence<? extends .java.lang.String> seq) {
-        for (.ceylon.language.Iterator<? extends .java.lang.String> $s$iter$0 = seq.iterator(); $s$iter$0.getHead() != null; $s$iter$0 = $s$iter$0.getTail()) {
+        for (ceylon.language.Iterator<? extends .java.lang.String> $s$iter$0 = seq.iterator(); $s$iter$0.getHead() != null; $s$iter$0 = $s$iter$0.getTail()) {
             final .java.lang.String s = $s$iter$0.getHead();
         }
     }
