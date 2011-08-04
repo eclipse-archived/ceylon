@@ -645,7 +645,7 @@ public class Check {
             implicit |= sym.owner.flags_field & STRICTFP;
             break;
         default:
-            throw new AssertionError();
+            throw new AssertionError("Unknown symbol type "+sym+" kind: "+sym.kind);
         }
         long illegal = flags & StandardFlags & ~mask;
         if (illegal != 0) {
