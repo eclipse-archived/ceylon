@@ -114,8 +114,10 @@ public class CeylonEnter extends Enter {
                 CeylonCompilationUnit ceylonTree = (CeylonCompilationUnit) tree;
                 gen.setMap(ceylonTree.lineMap);
                 ceylonTree.defs = gen.transformAfterTypeChecking(ceylonTree.ceylonTree).toList();
-                if(options.get(OptionName.VERBOSE) != null)
+                if(options.get(OptionName.VERBOSE) != null){
+                    System.err.println("Java code generated for "+tree.getSourceFile());
                     System.err.println(ceylonTree);
+                }
             }
         }
     }
