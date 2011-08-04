@@ -24,15 +24,15 @@ public final class GlobalTransformer extends AbstractTransformer {
     }
 
     /**
-     * Returns a {@link AttributeBuilder} instance through which the global class can be customized and then generated.
+     * Returns a {@link AttributeDefinitionBuilder} instance through which the global class can be customized and then generated.
      * For details of possible customizations see the documentation of <tt>DefinitionBuilder</tt>. To finish the
-     * generation, call {@link com.redhat.ceylon.compiler.codegen.AttributeBuilder#build()}.
+     * generation, call {@link com.redhat.ceylon.compiler.codegen.AttributeDefinitionBuilder#build()}.
      * @param variableType the type of the global
      * @param variableName the name of the global
-     * @return a {@link AttributeBuilder} to customize the class further before generating it.
+     * @return a {@link AttributeDefinitionBuilder} to customize the class further before generating it.
      */
-    public AttributeBuilder defineGlobal(JCTree.JCExpression variableType, String variableName) {
-        return new AttributeBuilder(this, variableType, variableName);
+    public AttributeDefinitionBuilder defineGlobal(JCTree.JCExpression variableType, String variableName) {
+        return new AttributeDefinitionBuilder(this, variableType, variableName);
     }
 
     /**

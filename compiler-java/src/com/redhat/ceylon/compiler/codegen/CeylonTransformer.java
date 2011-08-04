@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.codegen;
 
-import static com.sun.tools.javac.code.Flags.*;
+import static com.sun.tools.javac.code.Flags.FINAL;
+import static com.sun.tools.javac.code.Flags.PUBLIC;
+import static com.sun.tools.javac.code.Flags.STATIC;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,10 +20,8 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
-import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
@@ -302,7 +302,7 @@ public class CeylonTransformer {
     }
 
     public JCTree transform(AttributeDeclaration decl) {
-        AttributeBuilder builder = globalGenAt(decl)
+        AttributeDefinitionBuilder builder = globalGenAt(decl)
             .defineGlobal(
                     makeJavaType(actualType(decl)),
                     decl.getIdentifier().getText());
@@ -335,8 +335,8 @@ public class CeylonTransformer {
         return builder.build();
     }
 
-    public JCTree transform(AttributeGetterDefinition decl) {
-        AttributeBuilder builder = globalGenAt(decl)
+    public List<JCTree> transform(AttributeGetterDefinition decl) {
+        AttributeDefinitionBuilder builder = globalGenAt(decl)
             .defineGlobal(
                     makeJavaType(actualType(decl)),
                     decl.getIdentifier().getText());
@@ -346,13 +346,6 @@ public class CeylonTransformer {
 
         builder.valueAnnotations(makeJavaTypeAnnotations(decl.getDeclarationModel(), actualType(decl)));
 
-        Scope container = decl.getDeclarationModel().getContainer();
-        if (container instanceof com.redhat.ceylon.compiler.typechecker.model.Method) {
-            // not static
-        } else {
-            builder.getterFlags(STATIC).setterFlags(STATIC);
-        }
-        
         builder.classFlags(FINAL);
         
         if (decl.getDeclarationModel().isShared()) {
@@ -368,7 +361,26 @@ public class CeylonTransformer {
         JCBlock block = make().Block(0, statementGen.transformStmts(decl.getBlock().getStatements()));
         builder.getterBlock(block);
 
-        return builder.build();
+        Scope container = decl.getDeclarationModel().getContainer();
+        if (container instanceof com.redhat.ceylon.compiler.typechecker.model.Method) {
+            // Add a "foo foo = new foo();" at the decl site
+            JCTree.JCIdent name = make().Ident(names.fromString(decl.getIdentifier().getText()));
+            
+            JCExpression initValue = at(decl).NewClass(null, null, name, List.<JCTree.JCExpression>nil(), null);
+            List<JCAnnotation> annots2 = List.<JCAnnotation>nil();
+    
+            int modifiers = decl.getDeclarationModel().isShared() ? 0 : FINAL;
+            JCTree.JCVariableDecl var = at(decl).VarDef(at(decl)
+                    .Modifiers(modifiers, annots2), 
+                    names.fromString(decl.getIdentifier().getText()), 
+                    name, 
+                    initValue);
+            
+            return List.of(builder.build(), var);
+        } else {
+            builder.getterFlags(STATIC).setterFlags(STATIC);
+            return List.of(builder.build());
+        }
     }
 
     // FIXME: figure out what CeylonTree.ReflectedLiteral maps to
