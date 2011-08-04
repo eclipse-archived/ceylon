@@ -419,11 +419,14 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 return getDirectMember(name);
             }
         };
-        pkg.setModule(module);
         packagesByName.put(pkgName, pkg);
         // FIXME: some refactoring needed
         pkg.setName(pkgName == null ? Collections.<String>emptyList() : Arrays.asList(pkgName.split("\\.")));
-        module.getPackages().add(pkg);
+        // only bind it if we already have a module
+        if(module != null){
+            pkg.setModule(module);
+            module.getPackages().add(pkg);
+        }
         return pkg;
     }
 
