@@ -1,0 +1,23 @@
+package com.redhat.ceylon.compiler.test.expression.attribute;
+
+class MethodLocalAccessValue {
+    
+    private final void hello() {
+       @.com.redhat.ceylon.compiler.metadata.java.Ceylon
+       @.com.redhat.ceylon.compiler.metadata.java.Attribute
+       final class gavin {
+           
+           String getGavin() {
+               return .ceylon.language.String.instance("gavin");
+           }
+           
+           private gavin() {
+           }
+       }
+       final gavin gavin = new gavin();
+       final String g = gavin.getGavin();
+    }
+    
+    MethodLocalAccessValue() {
+    }
+}

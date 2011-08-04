@@ -20,6 +20,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -345,9 +346,14 @@ public class CeylonTransformer {
 
         builder.valueAnnotations(makeJavaTypeAnnotations(decl.getDeclarationModel(), actualType(decl)));
 
-        builder.classFlags(FINAL)
-            .getterFlags(STATIC)
-            .setterFlags(STATIC);
+        Scope container = decl.getDeclarationModel().getContainer();
+        if (container instanceof com.redhat.ceylon.compiler.typechecker.model.Method) {
+            // not static
+        } else {
+            builder.getterFlags(STATIC).setterFlags(STATIC);
+        }
+        
+        builder.classFlags(FINAL);
         
         if (decl.getDeclarationModel().isShared()) {
             builder.addClassFlags(PUBLIC)
