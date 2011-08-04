@@ -37,6 +37,10 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("attribute/QualifiedAttributeAssign");
     }
     @Test
+    public void testAtrIndirectQualifiedAttributeAccess(){
+        compareWithJavaSource("attribute/IndirectQualifiedAttributeAccess");
+    }
+    @Test
     public void testAtrMethodParamAccess(){
         compareWithJavaSource("attribute/MethodParamAccess");
     }

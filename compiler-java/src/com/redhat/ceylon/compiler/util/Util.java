@@ -9,6 +9,20 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.sun.tools.javac.parser.Token;
 
 public class Util {
+    public static String quoteMethodName(String name){
+        if ("hash".equals(name)) {
+            return "hashCode";
+        } else if ("string".equals(name)) {
+            return "toString";
+        } else if ("hashCode".equals(name)) {
+            return "$hashCode";
+        } else if ("toString".equals(name)) {
+            return "$toString";
+        } else {
+            return quoteIfJavaKeyword(name);
+        }
+    }
+    
     public static String quoteIfJavaKeyword(String name){
         if(isJavaKeyword(name))
             return "$"+name;

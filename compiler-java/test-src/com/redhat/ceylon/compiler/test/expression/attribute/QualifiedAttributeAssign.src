@@ -19,19 +19,23 @@ class QualifiedAttributeAssign {
     public final void setB2(boolean b2) {
         this.b2 = b2;
     }
+    private final com.redhat.ceylon.compiler.test.expression.attribute.QualifiedAttributeAssign q;
+    
+    private final com.redhat.ceylon.compiler.test.expression.attribute.QualifiedAttributeAssign getQ() {
+        return this.q;
+    }
     
     private final void m() {
-        b = false;
-        b2 = false;
-        b = true;
-        b2 = true;
-        q.b = false;
-        q.b2 = false;
+        setB(false);
+        setB2(false);
+        setB(true);
+        setB2(true);
+        setB(getQ().b2);
     }
     
     QualifiedAttributeAssign() {
         this.b = true;
         this.b2 = true;
-        final com.redhat.ceylon.compiler.test.expression.attribute.QualifiedAttributeAccess q = new QualifiedAttributeAccess();
+        this.q = new QualifiedAttributeAssign();
     }
 }
