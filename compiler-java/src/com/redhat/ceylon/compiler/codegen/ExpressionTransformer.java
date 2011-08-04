@@ -474,7 +474,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 elems.append(transformExpression(expr));
             }
             ProducedType t = value.getTypeModel().getTypeArgumentList().get(0);
-            return at(value).NewClass(null, null, at(value).TypeApply(makeIdent(syms().ceylonArraySequenceType), List.<JCExpression> of(gen.makeJavaType(t))), elems.toList(), null);
+            return at(value).NewClass(null, null, at(value).TypeApply(makeIdent(syms().ceylonArraySequenceType), List.<JCExpression> of(gen.makeJavaType(t, CeylonTransformer.TYPE_PARAM))), elems.toList(), null);
         }
     }
 }
