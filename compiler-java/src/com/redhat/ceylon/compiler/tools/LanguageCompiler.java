@@ -174,12 +174,12 @@ public class LanguageCompiler extends JavaCompiler {
 
             java.util.List<LexError> lexerErrors = lexer.getErrors();
             for (LexError le : lexerErrors) {
-                printError(le, le.getMessage(), chars, map);
+                printError(le, le.getMessage(), "ceylon.lexer", map);
             }
 
             java.util.List<ParseError> parserErrors = parser.getErrors();
             for (ParseError pe : parserErrors) {
-                printError(pe, pe.getMessage(), chars, map);
+                printError(pe, pe.getMessage(), "ceylon.parser", map);
             }
 
             CommonTree t = (CommonTree) r.getTree();
@@ -266,19 +266,9 @@ public class LanguageCompiler extends JavaCompiler {
     	return null;
     }
     
-    private void printError(RecognitionError le, String message, char[] chars, LineMap map) {
-        int lineStart = map.getStartPosition(le.getLine());
-        int lineEnd = lineStart;
-        // find the end of the line
-        for (; lineEnd < chars.length && chars[lineEnd] != '\n' && chars[lineEnd] != '\r'; lineEnd++)
-            ;
-        String line = new String(chars, lineStart, lineEnd - lineStart);
-        System.out.println(message);
-        System.out.println("Near:");
-        System.out.println(line);
-        for (int i = 0; i < le.getCharacterInLine(); i++)
-            System.out.print('-');
-        System.out.println('^');
+    private void printError(RecognitionError le, String message, String key, LineMap map) {
+        int pos = map.getStartPosition(le.getLine()) + le.getCharacterInLine();
+        log.error(pos, key, message);
     }
 
     public Env<AttrContext> attribute(Env<AttrContext> env) {
