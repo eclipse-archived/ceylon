@@ -295,15 +295,9 @@ public class ClassTransformer extends AbstractTransformer {
                 .skipConstructor()
                 .initialValue(make().NewClass(null, List.<JCExpression>nil(), generatedClassName, List.<JCExpression>nil(), null));
 
-        builder.classFlags(FINAL)
-            .getterFlags(STATIC)
-            .setterFlags(STATIC);
-        
-        if (isShared(decl)) {
-            builder.addClassFlags(PUBLIC)
-                    .addGetterFlags(PUBLIC)
-                    .addSetterFlags(PUBLIC);
-        } 
+        builder.classIsFinal(true).classIsPublic(isShared(decl));
+        builder.getterIsStatic(true).getterIsPublic(isShared(decl));
+        builder.setterIsStatic(true).setterIsPublic(isShared(decl)); 
 
         builder.appendDefinitionsTo(defs);
         return defs;
