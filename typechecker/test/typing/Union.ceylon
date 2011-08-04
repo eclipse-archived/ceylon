@@ -143,6 +143,9 @@ class Union() {
         shared default class Inner<out U>(U u) {
             shared String hello = "hello";
             shared U u = u;
+            shared Inner<U> get {
+                return this;
+            }
         }
     }
     class SubOuter<out T>() extends Outer<T>() {
@@ -159,13 +162,19 @@ class Union() {
     Outer<String>.Inner<Natural>|Outer<Float>.Inner<Integer> foobar1 = Outer<String>().Inner<Natural>(1);
     String foobarhello1 = foobar1.hello;
     @type["Natural|Integer"] value foobaru1 = foobar1.u;
+    Outer<String|Float>.Inner<Natural|Integer> foobart1 = foobar1;
+    @type["Union.Outer<String|Float>.Inner<Natural|Integer>"] value foobarts1 = foobar1.get;
     
     SubOuter<String>.Inner<Natural>|Outer<Float>.Inner<Integer> foobar2 = SubOuter<String>().Inner<Natural>(1);
     String foobarhello2 = foobar2.hello;
     @type["Natural|Integer"] value foobaru2 = foobar2.u;
+    Outer<String|Float>.Inner<Natural|Integer> foobart2 = foobar2;
+    @type["Union.Outer<String|Float>.Inner<Natural|Integer>"] value foobarts2 = foobar2.get;
     
     SubOuter<String>.Inner<Natural>|SpecialOuter<Float>.Inner<Integer> foobar3 = SubOuter<String>().Inner<Natural>(1);
     String foobarhello3 = foobar3.hello;
     @type["Natural|Integer"] value foobaru3 = foobar2.u;
+    Outer<String|Float>.Inner<Natural|Integer> foobart3 = foobar3;
+    @type["Union.Outer<String|Float>.Inner<Natural|Integer>"] value foobarts3 = foobar3.get;
     
 }
