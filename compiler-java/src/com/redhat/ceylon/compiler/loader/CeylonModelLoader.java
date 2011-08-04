@@ -393,12 +393,13 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         return classSymbol;
     }
 
+    private final Map<String,Package> packagesByName = new HashMap<String,Package>();
+    
     public Package findOrCreatePackage(Module module, final String pkgName) {
-        for(Package pkg : module.getPackages()){
-            if(pkg.getNameAsString().equals(pkgName))
-                return pkg;
-        }
-        Package pkg = new Package(){
+        Package pkg = packagesByName.get(pkgName);
+        if(pkg != null)
+            return pkg;
+        pkg = new Package(){
             @Override
             public Declaration getDirectMember(String name) {
                 // FIXME: some refactoring needed
@@ -419,6 +420,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             }
         };
         pkg.setModule(module);
+        packagesByName.put(pkgName, pkg);
         // FIXME: some refactoring needed
         pkg.setName(pkgName == null ? Collections.<String>emptyList() : Arrays.asList(pkgName.split("\\.")));
         module.getPackages().add(pkg);
