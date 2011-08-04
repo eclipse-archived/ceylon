@@ -168,7 +168,8 @@ public class RecognizedOptions {
         XD,
         SOURCEFILE,
         SRC,
-        DEBUGCEYLON);
+        DEBUGCEYLON,
+        BOOTSTRAPCEYLON);
 
     static Set<OptionName> javacFileManagerOptions = EnumSet.of(
         CLASSPATH,
@@ -518,6 +519,9 @@ public class RecognizedOptions {
 
         // output source after type erasure
         new HiddenOption(DEBUGCEYLON),
+
+        // allow us to compile ceylon.language
+        new HiddenOption(BOOTSTRAPCEYLON),
 
         // output shrouded class files
         // new Option("-scramble",                              "opt.scramble"),
