@@ -68,10 +68,16 @@ public class CeylonVisitor extends AbstractVisitor<JCTree> {
         boolean annots = checkCompilerAnnotations(decl);
         Scope container = decl.getDeclarationModel().getContainer();
         if (container instanceof com.redhat.ceylon.compiler.typechecker.model.Package) {
-            append(gen.transform(decl));
+            // Toplevel attributes
+            appendList(gen.transform(decl));
         } else if (container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) {
+            // Class attributes
             classGen.transform(decl, classBuilder);
+        } else if ((container instanceof Method) && decl.getDeclarationModel().isCaptured()) {
+            // Captured local attributes get turned into an inner getter/setter class
+            appendList(gen.transform(decl));
         } else {
+            // All other local attributes
             append(statementGen.transform(decl));
         }
         resetCompilerAnnotations(annots);
