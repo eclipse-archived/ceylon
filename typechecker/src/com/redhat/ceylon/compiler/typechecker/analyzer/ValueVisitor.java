@@ -49,19 +49,22 @@ public class ValueVisitor extends Visitor {
 
     private void visitReference(Tree.Primary that) {
         if (inCapturingScope) {
-            TypedDeclaration d = (TypedDeclaration) that.getDeclaration();
-            if (d==declaration) {
-                if (d instanceof Value) {
-                    ((Value) d).setCaptured(true);
-                }
-                else if (d instanceof ValueParameter) {
-                    ((ValueParameter) d).setCaptured(true);
-                }
-                //TODO: remove this once we support capturing variable locals!
-                if (d.isVariable() && !d.isClassMember() && !d.isToplevel()) {
-                    that.addError("access to variable local from capturing scope: " + declaration.getName());
-                }
+            capture(that);
+        }
+    }
+
+    private void capture(Tree.Primary that) {
+        TypedDeclaration d = (TypedDeclaration) that.getDeclaration();
+        if (d==declaration) {
+            if (d instanceof Value) {
+                ((Value) d).setCaptured(true);
             }
+            else if (d instanceof ValueParameter) {
+                ((ValueParameter) d).setCaptured(true);
+            }
+            /*if (d.isVariable() && !d.isClassMember() && !d.isToplevel()) {
+                that.addError("access to variable local from capturing scope: " + declaration.getName());
+            }*/
         }
     }
     
@@ -70,6 +73,9 @@ public class ValueVisitor extends Visitor {
         super.visit(that);
         if (isSelfReference(that.getPrimary())) {
             visitReference(that);
+        }
+        else {
+            capture(that);
         }
     }
 
