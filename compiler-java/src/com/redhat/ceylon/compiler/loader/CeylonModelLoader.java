@@ -937,7 +937,16 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             if(typeParameter != null)
                 return typeParameter.getType();
         }
-        return ((TypeDeclaration)convertToDeclaration(name, DeclarationType.TYPE)).getType();
+        if(!isBootstrap || !name.startsWith("ceylon.language"))
+            return ((TypeDeclaration)convertToDeclaration(name, DeclarationType.TYPE)).getType();
+        // we're bootstrapping ceylon.language so we need to return the ProducedTypes straight from the model we're compiling
+        Module languageModule = ceylonContext.getModules().getLanguageModule();
+        for(Package pkg : languageModule.getPackages()){
+            Declaration member = pkg.getDirectMember(name);
+            if(member != null)
+                return ((TypeDeclaration)member).getType();
+        }
+        throw new RuntimeException("Failed to look up given type in language module while bootstrapping: "+name);
     }
 
 }
