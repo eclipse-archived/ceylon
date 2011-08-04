@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
@@ -97,6 +98,8 @@ public class CeylonEnter extends Enter {
         if (hasRun)
             throw new RuntimeException("Waaaaa, running twice!!!");
         hasRun = true;
+        // load the modules we are compiling first
+        loadCompiledModules();
         // load modules required by the typechecker
         modelLoader.loadRequiredModules(trees);
         // run the type checker
@@ -117,11 +120,48 @@ public class CeylonEnter extends Enter {
         }
     }
 
-    private void typeCheck() {
+    private void loadCompiledModules() {
         final java.util.List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
+        // FIXME: handle loading modules from compiled class
         for (PhasedUnit pu : listOfUnits) {
             pu.buildModuleImport();
         }
+        Modules modules = ceylonContext.getModules();
+        // at this point every module should be available
+        for(Module m : modules.getListOfModules()){
+            m.setAvailable(true);
+        }
+        // now make sure the phase units have their modules and packages set correctly
+        for (PhasedUnit pu : listOfUnits) {
+            Package pkg = pu.getPackage();
+            // skip it if we already resolved the package
+            if(pkg.getModule() != null)
+                continue;
+            String pkgName = pkg.getQualifiedNameString();
+            Module module = null;
+            // do we have a module for this package?
+            if(pkgName.isEmpty())
+                module = modules.getDefaultModule();
+            else{
+                for(Module m : modules.getListOfModules()){
+                    if(pkgName.startsWith(m.getNameAsString())){
+                        module = m;
+                        break;
+                    }
+                }
+                if(module == null){
+                    // no declaration for it, must be the default module
+                    module = modules.getDefaultModule();
+                }
+            }
+            // bind module and package together
+            pkg.setModule(module);
+            module.getPackages().add(pkg);
+        }
+    }
+
+    private void typeCheck() {
+        final java.util.List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
 
         final ModuleValidator moduleValidator = new ModuleValidator(ceylonContext);
         // FIXME: this breaks because it tries to load dependencies on its own
