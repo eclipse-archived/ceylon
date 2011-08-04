@@ -94,7 +94,11 @@ public class CeylonVisitor extends AbstractVisitor<JCTree> {
 
     public void visit(Tree.ClassOrInterface decl) {
         boolean annots = checkCompilerAnnotations(decl);
-        append(gen.classGen.transform(decl));
+        if (withinClass(decl)) {
+            classBuilder.defs(gen.classGen.transform(decl));
+        } else {
+            append(gen.classGen.transform(decl));
+        }
         resetCompilerAnnotations(annots);
     }
 
