@@ -201,4 +201,12 @@ class Capture() {
         };
     }
     
+    class WithQualifiedRef() {
+        @captured String hello = "hello";
+        @captured value q = WithQualifiedRef();
+        function f() { 
+            return q.hello;
+        }
+    }
+    
 }
