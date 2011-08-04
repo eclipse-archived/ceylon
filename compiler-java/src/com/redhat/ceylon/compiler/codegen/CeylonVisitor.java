@@ -33,6 +33,46 @@ public class CeylonVisitor extends AbstractVisitor<JCTree> {
         this.args = args;
     }
 
+    /**
+     * Determines whether the declaration's containing scope is a method
+     * @param decl The declaration
+     * @return true if the declaration is within a method
+     */
+    private boolean withinMethod(Tree.Declaration decl) {
+        Scope container = decl.getDeclarationModel().getContainer();
+        return container instanceof Method;
+    }
+    
+    /**
+     * Determines whether the declaration's containing scope is a package
+     * @param decl The declaration
+     * @return true if the declaration is within a package
+     */
+    private boolean withinPackage(Tree.Declaration decl) {
+        Scope container = decl.getDeclarationModel().getContainer();
+        return container instanceof com.redhat.ceylon.compiler.typechecker.model.Package;
+    }
+    
+    /**
+     * Determines whether the declaration's containing scope is a class
+     * @param decl The declaration
+     * @return true if the declaration is within a class
+     */
+    private boolean withinClass(Tree.Declaration decl) {
+        Scope container = decl.getDeclarationModel().getContainer();
+        return container instanceof com.redhat.ceylon.compiler.typechecker.model.Class;
+    }
+    
+    /**
+     * Determines whether the declaration's containing scope is a class or interface
+     * @param decl The declaration
+     * @return true if the declaration is within a class or interface
+     */
+    private boolean withinClassOrInterface(Tree.Declaration decl) {
+        Scope container = decl.getDeclarationModel().getContainer();
+        return container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+    }
+    
     /*
      * Compilation Unit
      */
@@ -63,17 +103,16 @@ public class CeylonVisitor extends AbstractVisitor<JCTree> {
         append(gen.classGen.objectClass(decl, true));
         resetCompilerAnnotations(annots);
     }
-
+    
     public void visit(Tree.AttributeDeclaration decl){
         boolean annots = checkCompilerAnnotations(decl);
-        Scope container = decl.getDeclarationModel().getContainer();
-        if (container instanceof com.redhat.ceylon.compiler.typechecker.model.Package) {
+        if (withinPackage(decl)) {
             // Toplevel attributes
             appendList(gen.transform(decl));
-        } else if (container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) {
+        } else if (withinClassOrInterface(decl)) {
             // Class attributes
             classGen.transform(decl, classBuilder);
-        } else if ((container instanceof Method) && decl.getDeclarationModel().isCaptured()) {
+        } else if (withinMethod(decl) && decl.getDeclarationModel().isCaptured()) {
             // Captured local attributes get turned into an inner getter/setter class
             appendList(gen.transform(decl));
         } else {
@@ -85,8 +124,7 @@ public class CeylonVisitor extends AbstractVisitor<JCTree> {
 
     public void visit(Tree.AttributeGetterDefinition decl){
         boolean annots = checkCompilerAnnotations(decl);
-        Scope container = decl.getDeclarationModel().getContainer();
-        if (container instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+        if (withinClass(decl)) {
             classBuilder.defs(classGen.transform(decl));
         } else {
             appendList(gen.transform(decl));
@@ -95,22 +133,20 @@ public class CeylonVisitor extends AbstractVisitor<JCTree> {
     }
 
     public void visit(final Tree.AttributeSetterDefinition decl) {
-        Scope container = decl.getDeclarationModel().getContainer();
-        if (container instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+        if (withinClass(decl)) {
             classBuilder.defs(classGen.transform(decl));
         }
     }
 
     public void visit(Tree.MethodDefinition decl) {
         boolean annots = checkCompilerAnnotations(decl);
-        Scope container = decl.getDeclarationModel().getContainer();
-        if (container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) {
+        if (withinClassOrInterface(decl)) {
             classBuilder.defs(classGen.transform(decl));
         } else {
             // Generate a wrapper class for the method
             JCTree.JCClassDecl innerDecl = classGen.methodClass(decl);
             append(innerDecl);
-            if (container instanceof Method) {
+            if (withinMethod(decl)) {
                 JCTree.JCIdent name = make().Ident(innerDecl.name);
                 JCVariableDecl call = at(decl).VarDef(
                         make().Modifiers(FINAL),
