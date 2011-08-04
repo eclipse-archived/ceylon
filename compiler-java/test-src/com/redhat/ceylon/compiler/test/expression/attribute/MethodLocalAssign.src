@@ -3,8 +3,38 @@ package com.redhat.ceylon.compiler.test.expression.attribute;
 class MethodLocalAssign {
     
     private final void m() {
-        boolean b = true;
-        b = false;
+        
+        final class b1 {
+            private boolean value = true;
+            
+            boolean getB1() {
+                return value;
+            }
+            
+            void setB1(boolean newValue) {
+                value = newValue;
+            }
+            
+            private b1() {
+            }
+        }
+        final b1 b1 = new b1();
+        setB1(false);
+        
+        final class b2 {
+            
+            boolean getB2() {
+                return b1.getB1();
+            }
+            
+            void setB2(boolean newValue) {
+                b1.setB2(newValue);
+            }
+            
+            private b2() {
+            }
+        }
+        final b2 b2 = new b2();
     }
     
     MethodLocalAssign() {

@@ -130,7 +130,17 @@ public class ExpressionTransformer extends AbstractTransformer {
                     makeIdent(decl.getContainer().getQualifiedNameString()),
                     decl.getName(),
                     rhs);
-        } else if((decl instanceof Getter) || (Util.isClassAttribute(decl) && variable)){
+        } else if (decl instanceof Getter) {
+            // must use the setter
+            if (decl.getContainer() instanceof Method){
+                return at(op).Apply(List.<JCTree.JCExpression>nil(), makeIdent(((Getter)decl).getName(), Util.getSetterName(decl.getName())), 
+                        List.<JCTree.JCExpression>of(rhs));
+                
+            } else {
+                return at(op).Apply(List.<JCTree.JCExpression>nil(), makeIdent(Util.getSetterName(decl.getName())), 
+                        List.<JCTree.JCExpression>of(rhs));            
+            }
+        } else if(variable && (Util.isClassAttribute(decl) || decl.isCaptured())){
             // must use the setter
             return at(op).Apply(List.<JCTree.JCExpression>nil(), makeIdent(Util.getSetterName(decl.getName())), 
                     List.<JCTree.JCExpression>of(rhs));
@@ -408,7 +418,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                             makeIdent(decl.getContainer().getQualifiedNameString()),
                             decl.getName());
                 }
-             } else if(Util.isClassAttribute(decl)) {
+             } else if(Util.isClassAttribute(decl) || decl.isCaptured()) {
                  // invoke the getter
                  result = at(member).Apply(List.<JCExpression>nil(), 
                         makeIdent(Util.getGetterName(decl.getName())), 

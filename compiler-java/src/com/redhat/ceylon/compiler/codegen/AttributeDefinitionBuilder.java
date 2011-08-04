@@ -24,13 +24,13 @@ public class AttributeDefinitionBuilder {
     private long classFlags;
 
     private boolean readable = true;
-    private long getterFlags;
+    private int getterFlags;
     private JCTree.JCBlock getterBlock;
 
     private JCTree.JCExpression variableInit;
 
     private boolean writable = true;
-    private long setterFlags;
+    private int setterFlags;
     private JCTree.JCBlock setterBlock;
     
     private List<JCTree.JCAnnotation> valueAnnotations = List.nil();
@@ -94,7 +94,7 @@ public class AttributeDefinitionBuilder {
     }
 
     private JCTree generateField() {
-        int flags = Flags.PRIVATE | Flags.STATIC;
+        int flags = Flags.PRIVATE | (getterFlags & Flags.STATIC);
         if (!writable) {
             flags |= Flags.FINAL;
         }
@@ -275,12 +275,12 @@ public class AttributeDefinitionBuilder {
      * @param getterFlags the modifier flags (see {@link Flags})
      * @return this instance for method chaining
      */
-    public AttributeDefinitionBuilder getterFlags(long getterFlags) {
+    public AttributeDefinitionBuilder getterFlags(int getterFlags) {
         this.getterFlags = getterFlags;
         return this;
     }
     
-    public AttributeDefinitionBuilder addGetterFlags(long getterFlags) {
+    public AttributeDefinitionBuilder addGetterFlags(int getterFlags) {
         this.getterFlags = this.getterFlags | getterFlags;
         return this;
     }
