@@ -41,6 +41,7 @@ import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCImport;
+import com.sun.tools.javac.tree.JCTree.JCWildcard;
 import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Convert;
@@ -353,8 +354,21 @@ public class CeylonTransformer {
 
     // FIXME: figure out what CeylonTree.ReflectedLiteral maps to
 
+    /** 
+     * Generates {@code Iterator<T>}
+     * @param type The type representing T 
+     */
     JCExpression iteratorType(JCExpression type) {
         return make().TypeApply(makeIdent(syms.ceylonIteratorType), List.<JCExpression> of(type));
+    }
+    
+    /** 
+     * Generates {@code Iterator<? extends T>}
+     * @param type The type representing T 
+     */
+    JCExpression iteratorTypeExtends(JCExpression type) {
+        JCWildcard wildcard = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), type);
+        return make().TypeApply(makeIdent(syms.ceylonIteratorType), List.<JCExpression> of(wildcard));
     }
 
     long counter = 0;

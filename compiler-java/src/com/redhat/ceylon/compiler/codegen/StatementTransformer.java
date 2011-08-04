@@ -219,7 +219,7 @@ public class StatementTransformer extends AbstractTransformer {
 
         // ceylon.language.Iterator<T> $V$iter$X = ITERABLE.iterator();
         JCExpression containment = gen.expressionGen.transformExpression(iterDecl.getSpecifierExpression().getExpression());
-        JCVariableDecl iter_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(aliasName(loop_var_name + "$iter")), gen.iteratorType(iter_type), at(stmt).Apply(null, gen.makeSelect(containment, "iterator"), List.<JCExpression> nil()));
+        JCVariableDecl iter_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(aliasName(loop_var_name + "$iter")), gen.iteratorTypeExtends(iter_type), at(stmt).Apply(null, gen.makeSelect(containment, "iterator"), List.<JCExpression> nil()));
         JCIdent iter_id = at(stmt).Ident(iter_decl.getName());
         
         // final U n = $V$iter$X.getHead();

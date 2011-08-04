@@ -2,13 +2,13 @@ package com.redhat.ceylon.compiler.test.statement.loop;
 
 class MethodForElse {
     
-    public final ceylon.language.Natural m(final ceylon.language.Sequence<.java.lang.String> seq) {
+    public final ceylon.language.Natural m(final ceylon.language.Sequence<? extends .java.lang.String> seq) {
         boolean $doforelse$0 = true;
-        for (.ceylon.language.Iterator<.java.lang.String> $s$iter$1 = seq.iterator(); $s$iter$1.getHead() != null; $s$iter$1 = $s$iter$1.getTail()) {
+        for (.ceylon.language.Iterator<? extends .java.lang.String> $s$iter$1 = seq.iterator(); $s$iter$1.getHead() != null; $s$iter$1 = $s$iter$1.getTail()) {
             final .java.lang.String s = $s$iter$1.getHead();
             while (true == true) {
                 boolean $doforelse$2 = true;
-                for (.ceylon.language.Iterator<.java.lang.String> $t$iter$3 = seq.iterator(); $t$iter$3.getHead() != null; $t$iter$3 = $t$iter$3.getTail()) {
+                for (.ceylon.language.Iterator<? extends .java.lang.String> $t$iter$3 = seq.iterator(); $t$iter$3.getHead() != null; $t$iter$3 = $t$iter$3.getTail()) {
                     final .java.lang.String t = $t$iter$3.getHead();
                     $doforelse$2 = false;
                     break;
