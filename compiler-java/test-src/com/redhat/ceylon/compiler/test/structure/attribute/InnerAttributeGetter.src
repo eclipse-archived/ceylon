@@ -10,7 +10,7 @@ class InnerAttributeGetter {
                 return .ceylon.language.Natural.instance(0L);
             }
             
-            private innerGetter {
+            private innerGetter() {
             }
         }
         final innerGetter innerGetter = new innerGetter();

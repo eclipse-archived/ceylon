@@ -4,13 +4,14 @@ class MethodLocalAccess {
     
     private final ceylon.language.Natural m() {
         final ceylon.language.Natural n1 = .ceylon.language.Natural.instance(1L);
+        
         final class n2 {
             
-            private n2() {
+            ceylon.language.Natural getN2() {
+                return .ceylon.language.Natural.instance(1L);
             }
             
-            ceylon.language.Natural getN2() {
-                return .ceylon.language.Natural.instance(0L);
+            private n2() {
             }
         }
         final n2 n2 = new n2();

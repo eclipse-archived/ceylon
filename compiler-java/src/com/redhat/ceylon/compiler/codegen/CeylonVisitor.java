@@ -93,7 +93,7 @@ public class CeylonVisitor extends AbstractVisitor<JCTree> {
             JCExpression initValue = at(decl).NewClass(null, null, name, List.<JCTree.JCExpression>nil(), null);
             ProducedType t = gen.actualType(decl);
             JCExpression type = name;
-            List<JCAnnotation> annots2 = gen.makeJavaTypeAnnotations(decl.getDeclarationModel(), t);
+            List<JCAnnotation> annots2 = List.<JCAnnotation>nil();
 
             int modifiers = decl.getDeclarationModel().isShared() ? 0 : FINAL;
             append(at(decl).VarDef(at(decl)

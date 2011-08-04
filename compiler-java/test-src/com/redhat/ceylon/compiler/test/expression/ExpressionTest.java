@@ -45,10 +45,6 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("attribute/MethodLocalAccess");
     }
     @Test
-    public void testAtrMethodLocalAccessValue(){
-        compareWithJavaSource("attribute/MethodLocalAccessValue");
-    }
-    @Test
     public void testAtrMethodLocalAssign(){
         compareWithJavaSource("attribute/MethodLocalAssign");
     }
