@@ -9,19 +9,19 @@ class Capture() {
     class X() {}
     
     void methodWithVariable() {
-        variable X x := X();
+        @captured variable X x := X();
         void innerMethod() {
-            @error use(x);
+            use(x);
         }
         X innerGetter {
-            @error return x;
+            return x;
         }
         assign innerGetter {
-            @error x:=innerGetter;
+            x:=innerGetter;
         }
         void containingMethod() {
             void nestedMethod() {
-                @error x:=X();
+                x:=X();
             }
         }
     }
@@ -62,19 +62,19 @@ class Capture() {
     }
     
     X getterWithVariable {
-        variable X x := X();
+        @captured variable X x := X();
         void innerMethod() {
-            @error use(x);
+            use(x);
         }
         X innerGetter {
-            @error return x;
+            return x;
         }
         assign innerGetter {
-            @error x:=innerGetter;
+            x:=innerGetter;
         }
         void containingMethod() {
             void nestedMethod() {
-                @error x:=X();
+                x:=X();
             }
         }
         return x;
