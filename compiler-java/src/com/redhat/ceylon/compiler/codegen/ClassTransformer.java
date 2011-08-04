@@ -287,7 +287,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     public ListBuffer<JCTree> makeObjectGlobal(Tree.ObjectDefinition decl, JCExpression generatedClassName) {
         ListBuffer<JCTree> defs = ListBuffer.lb();
-        GlobalTransformer.DefinitionBuilder builder = gen
+        AttributeBuilder builder = gen
                 .globalGenAt(decl)
                 .defineGlobal(generatedClassName, decl.getIdentifier().getText())
                 .valueAnnotations(gen.makeJavaTypeAnnotations(decl.getDeclarationModel(), gen.actualType(decl)))
@@ -295,12 +295,15 @@ public class ClassTransformer extends AbstractTransformer {
                 .skipConstructor()
                 .initialValue(make().NewClass(null, List.<JCExpression>nil(), generatedClassName, List.<JCExpression>nil(), null));
 
+        builder.classFlags(FINAL)
+            .getterFlags(STATIC)
+            .setterFlags(STATIC);
+        
         if (isShared(decl)) {
-            builder
-                    .classVisibility(PUBLIC)
-                    .getterVisibility(PUBLIC)
-                    .setterVisibility(PUBLIC);
-        }
+            builder.addClassFlags(PUBLIC)
+                    .addGetterFlags(PUBLIC)
+                    .addSetterFlags(PUBLIC);
+        } 
 
         builder.appendDefinitionsTo(defs);
         return defs;

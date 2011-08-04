@@ -3,13 +3,16 @@ package com.redhat.ceylon.compiler.codegen;
 import static com.sun.tools.javac.code.Flags.FINAL;
 
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
+import com.sun.tools.javac.util.Name;
 
 public class CeylonVisitor extends AbstractVisitor<JCTree> {
     final ClassDefinitionBuilder classBuilder;
@@ -82,6 +85,24 @@ public class CeylonVisitor extends AbstractVisitor<JCTree> {
         Scope container = decl.getDeclarationModel().getContainer();
         if (container instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
             classBuilder.defs(classGen.transform(decl));
+        } else if (container instanceof com.redhat.ceylon.compiler.typechecker.model.Method) {
+            append(gen.transform(decl));
+            // Add a "foo foo = new foo();" at the decl site
+            JCTree.JCIdent name = make().Ident(names().fromString(decl.getIdentifier().getText()));
+            
+            JCExpression initValue = at(decl).NewClass(null, null, name, List.<JCTree.JCExpression>nil(), null);
+            ProducedType t = gen.actualType(decl);
+            JCExpression type = name;
+            List<JCAnnotation> annots2 = List.<JCAnnotation>nil();
+
+            int modifiers = decl.getDeclarationModel().isShared() ? 0 : FINAL;
+            append(at(decl).VarDef(at(decl)
+                    .Modifiers(modifiers, annots2), 
+                    names().fromString(decl.getIdentifier().getText()), 
+                    type, 
+                    initValue));
+            
+            
         } else {
             append(gen.transform(decl));
         }
