@@ -139,4 +139,33 @@ class Union() {
     @type["String|Integer|Float"] value ff1 = first({"hello", "world"}, {+1, -1}, {1.0}).first;
     @type["String|Integer|Float"] value ff2 = first({"hello", "world"}, {+1, -1, 1.0}).first;
     
+    class Outer<out T>() {
+        shared default class Inner<out U>(U u) {
+            shared String hello = "hello";
+            shared U u = u;
+        }
+    }
+    class SubOuter<out T>() extends Outer<T>() {
+        shared actual class Inner<out U>(U u) 
+                extends super.Inner<U>(u) {}
+    }
+    class SpecialOuter<out T>() extends Outer<T>() {}
+    
+    class BadSubOuter<out T>() extends Outer<T>() {
+        shared actual class Inner(String s) 
+                extends super.Inner<String>(s) {}
+    }
+    
+    Outer<String>.Inner<Natural>|Outer<Float>.Inner<Integer> foobar1 = Outer<String>().Inner<Natural>(1);
+    String foobarhello1 = foobar1.hello;
+    @type["Natural|Integer"] value foobaru1 = foobar1.u;
+    
+    SubOuter<String>.Inner<Natural>|Outer<Float>.Inner<Integer> foobar2 = SubOuter<String>().Inner<Natural>(1);
+    String foobarhello2 = foobar2.hello;
+    @type["Natural|Integer"] value foobaru2 = foobar2.u;
+    
+    SubOuter<String>.Inner<Natural>|SpecialOuter<Float>.Inner<Integer> foobar3 = SubOuter<String>().Inner<Natural>(1);
+    String foobarhello3 = foobar3.hello;
+    @type["Natural|Integer"] value foobaru3 = foobar2.u;
+    
 }
