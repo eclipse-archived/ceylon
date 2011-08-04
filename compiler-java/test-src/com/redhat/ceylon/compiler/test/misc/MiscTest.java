@@ -12,7 +12,7 @@ public class MiscTest extends CompilerTest {
 	
 	@Test
 	public void runHelloWorld() throws Exception{
-		compileAndRun("helloworld/helloworld.ceylon", "com.redhat.ceylon.compiler.test.misc.helloworld.helloworld");
+		compileAndRun("com.redhat.ceylon.compiler.test.misc.helloworld.helloworld", "helloworld/helloworld.ceylon");
 	}
 
     @Test
