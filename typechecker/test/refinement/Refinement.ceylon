@@ -102,4 +102,42 @@ class Refinement() {
         @error class Z() satisfies X & Y {}
     }
     
+    abstract class WithParamMember() {
+        shared formal T[] seq<T>(T t);
+        shared default class Inner<T>(T t) {}
+    }
+    
+    class SubclassWithParamMember1() 
+            extends WithParamMember() {
+        shared actual T[] seq<T>(T t) { return {t}; }
+        shared actual class Inner<T>(T t) 
+                extends super.Inner<T>(t) {}
+    }
+    
+    class SubclassWithParamMember2() 
+            extends WithParamMember() {
+        shared actual Sequence<T> seq<T>(T t) { return {t}; }
+    }
+
+    class BadSubclassWithParamMember1() 
+            extends WithParamMember() {
+        @error shared actual T[] seq<T,U>(T t) { return {t}; }
+        @error shared actual class Inner<T,U>(T t) 
+                extends super.Inner<T>(t) {}
+    }
+
+    class BadSubclassWithParamMember2() 
+            extends WithParamMember() {
+        @error shared actual String[] seq(@error String s) { return {s}; }
+        @error shared actual class Inner(@error String s) 
+                extends super.Inner<String>(s) {}
+    }
+
+    class BadSubclassWithParamMember3() 
+            extends WithParamMember() {
+        @error shared actual Void[] seq<T>(T t) { return {t}; }
+        @error shared actual class Inner<T>(T t) 
+                extends super.Inner<String>("hello") {}
+    }
+
 }
