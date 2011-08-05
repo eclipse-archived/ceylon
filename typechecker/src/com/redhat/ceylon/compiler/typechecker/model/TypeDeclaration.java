@@ -149,7 +149,7 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
             visited.add(this);
             List<Declaration> members = new ArrayList<Declaration>();
             for (Declaration d: getMembers()) {
-                if (d.getName().equals(name)) {
+                if (d.getName()!=null && d.getName().equals(name)) {
                     members.add(d);
                 }
             }
