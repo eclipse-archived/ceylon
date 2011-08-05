@@ -122,6 +122,7 @@ public class PhasedUnits {
             CommonTree t = (CommonTree) r.getTree();
             Tree.CompilationUnit cu = new CustomBuilder().buildCompilationUnit(t);
             PhasedUnit phasedUnit = new PhasedUnit(file, srcDir, cu, p, moduleBuilder, context);
+            phasedUnit.setParser(parser);
             addPhasedUnit(file, phasedUnit);
 
         }

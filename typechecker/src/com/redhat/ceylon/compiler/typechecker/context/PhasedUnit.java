@@ -19,6 +19,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Validator;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
@@ -39,6 +40,7 @@ public class PhasedUnit {
     private final ModuleBuilder moduleBuilder;
     private final Context context;
     private final String pathRelativeToSrcDir;
+    private CeylonParser parser; 
 
     public PhasedUnit(VirtualFile unitFile, VirtualFile srcDir, Tree.CompilationUnit cu, Package p, ModuleBuilder moduleBuilder, Context context) {
         this.compilationUnit = cu;
@@ -153,6 +155,14 @@ public class PhasedUnit {
 
     public Tree.CompilationUnit getCompilationUnit() {
         return compilationUnit;
+    }
+
+    public void setParser(CeylonParser parser) {
+      this.parser = parser;
+    }
+
+    public CeylonParser getParser() {
+      return parser;
     }
 
 }
