@@ -66,6 +66,10 @@ public class Util {
     public static String getAttributeName(String getterName) {
         return Character.toLowerCase(getterName.charAt(3)) + getterName.substring(4);
     }
+
+    public static String getConcreteMemberInterfaceImplementationName(String name){
+        return name + "$impl";
+    }
     
     // FIXME: add this to Declaration?
     public static boolean isClassAttribute(Declaration decl) {
