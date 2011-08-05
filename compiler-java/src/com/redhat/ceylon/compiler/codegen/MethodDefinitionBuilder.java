@@ -196,7 +196,7 @@ public class MethodDefinitionBuilder {
         return this;
     }
 
-    private MethodDefinitionBuilder noBody() {
+    MethodDefinitionBuilder noBody() {
         this.body = null;
         return this;
     }
