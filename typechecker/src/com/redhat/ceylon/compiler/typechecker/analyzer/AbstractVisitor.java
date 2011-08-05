@@ -392,6 +392,36 @@ public abstract class AbstractVisitor extends Visitor {
         return producedType(getEntryDeclaration(), kt, vt);
     }
 
+    protected ProducedType getKeyType(ProducedType type) {
+        ProducedType st = type.getSupertype(getEntryDeclaration());
+        if (st!=null && st.getTypeArguments().size()==2) {
+        	return st.getTypeArgumentList().get(0);
+        }
+        else {
+        	return null;
+        }
+    }
+
+    protected ProducedType getValueType(ProducedType type) {
+        ProducedType st = type.getSupertype(getEntryDeclaration());
+        if (st!=null && st.getTypeArguments().size()==2) {
+        	return st.getTypeArgumentList().get(1);
+        }
+        else {
+        	return null;
+        }
+    }
+
+    protected ProducedType getIteratedType(ProducedType type) {
+        ProducedType st = type.getSupertype(getIterableDeclaration());
+        if (st!=null && st.getTypeArguments().size()==1) {
+        	return st.getTypeArgumentList().get(0);
+        }
+        else {
+        	return null;
+        }
+    }
+
     protected ProducedType getDefiniteType(ProducedType pt) {
         return pt.minus(getNothingDeclaration());
     }
@@ -402,6 +432,22 @@ public abstract class AbstractVisitor extends Visitor {
 
     protected ProducedType getNonemptySequenceType(ProducedType pt) {
         return pt.minus(getEmptyDeclaration()).getSupertype(getSequenceDeclaration());
+    }
+    
+    protected boolean isEntryType(ProducedType rhst) {
+        return rhst.getSupertype(getEntryDeclaration())!=null;
+    }
+    
+    protected boolean isIterableType(ProducedType rhst) {
+        return rhst.getSupertype(getIterableDeclaration())!=null;
+    }
+    
+    protected boolean isOptionalType(ProducedType rhst) {
+        return getNothingDeclaration().getType().isSubtypeOf(rhst);
+    }
+    
+    protected boolean isEmptyType(ProducedType rhst) {
+        return getEmptyDeclaration().getType().isSubtypeOf(rhst);
     }
     
 }

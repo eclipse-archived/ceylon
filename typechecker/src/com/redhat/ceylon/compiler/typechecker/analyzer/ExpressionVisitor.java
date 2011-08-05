@@ -588,7 +588,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         if (that.getType() instanceof Tree.LocalModifier) {
             Tree.LocalModifier local = (Tree.LocalModifier) that.getType();
             if (se!=null) {
-                setTypeFromTypeArgument(local, se, that);
+                setTypeFromIterableType(local, se, that);
             }
             else {
 //                local.addError("could not infer type of: " + 
@@ -602,7 +602,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         if (key.getType() instanceof Tree.LocalModifier) {
             Tree.LocalModifier local = (Tree.LocalModifier) key.getType();
             if (se!=null) {
-                setTypeFromTypeArgument(local, se, key, 0);
+                setTypeFromKeyType(local, se, key);
             }
             else {
 //                local.addError("could not infer type of key: " + 
@@ -616,29 +616,13 @@ public class ExpressionVisitor extends AbstractVisitor {
         if (value.getType() instanceof Tree.LocalModifier) {
             Tree.LocalModifier local = (Tree.LocalModifier) value.getType();
             if (se!=null) {
-                setTypeFromTypeArgument(local, se, value, 1);
+                setTypeFromValueType(local, se, value);
             }
             else {
 //                local.addError("could not infer type of value: " + 
 //                        name(value.getIdentifier()));
             }
         }
-    }
-
-    private void setTypeFromTypeArgument(Tree.LocalModifier local, 
-            Tree.SpecifierExpression se, Tree.Variable that) {
-        ProducedType expressionType = se.getExpression().getTypeModel();
-        if (expressionType!=null) {
-            ProducedType st = expressionType.getSupertype(getIterableDeclaration());
-            if (st!=null && st.getTypeArguments().size()==1) {
-                ProducedType t = st.getTypeArgumentList().get(0);
-                local.setTypeModel(t);
-                that.getDeclarationModel().setType(t);
-                return;
-            }
-        }
-//        local.addError("could not infer type of: " + 
-//                name(that.getIdentifier()));
     }
     
     private void setTypeFromOptionalType(Tree.LocalModifier local, 
@@ -671,22 +655,54 @@ public class ExpressionVisitor extends AbstractVisitor {
 //                name(that.getIdentifier()));
     }
     
-    private void setTypeFromTypeArgument(Tree.LocalModifier local,
-            Tree.SpecifierExpression se, Tree.Variable that,
-            int index) {
+    private void setTypeFromIterableType(Tree.LocalModifier local, 
+            Tree.SpecifierExpression se, Tree.Variable that) {
         ProducedType expressionType = se.getExpression().getTypeModel();
         if (expressionType!=null) {
-            ProducedType it = expressionType.getSupertype(getIterableDeclaration());
-            if (it!=null && it.getTypeArguments().size()==1) {
-                ProducedType entryType = it.getTypeArgumentList().get(0);
+        	if (isIterableType(expressionType)) {
+        		ProducedType t = getIteratedType(expressionType);
+                local.setTypeModel(t);
+                that.getDeclarationModel().setType(t);
+                return;
+        	}
+        }
+//        local.addError("could not infer type of: " + 
+//                name(that.getIdentifier()));
+    }
+    
+    private void setTypeFromKeyType(Tree.LocalModifier local,
+            Tree.SpecifierExpression se, Tree.Variable that) {
+        ProducedType expressionType = se.getExpression().getTypeModel();
+        if (expressionType!=null) {
+        	if (isIterableType(expressionType)) {
+        		ProducedType entryType = getIteratedType(expressionType);
                 if (entryType!=null) {
-                    ProducedType et = entryType.getSupertype(getEntryDeclaration());
-                    if (et!=null && et.getTypeArguments().size()==2) {
-                        ProducedType kt = et.getTypeArgumentList().get(index);
-                        local.setTypeModel(kt);
-                        that.getDeclarationModel().setType(kt);
+                	if (isEntryType(entryType)) {
+	                    ProducedType et = getKeyType(entryType);
+                        local.setTypeModel(et);
+                        that.getDeclarationModel().setType(et);
                         return;
-                    }
+                	}
+                }
+            }
+        }
+//        local.addError("could not infer type of: " + 
+//                name(that.getIdentifier()));
+    }
+    
+    private void setTypeFromValueType(Tree.LocalModifier local,
+            Tree.SpecifierExpression se, Tree.Variable that) {
+        ProducedType expressionType = se.getExpression().getTypeModel();
+        if (expressionType!=null) {
+        	if (isIterableType(expressionType)) {
+        		ProducedType entryType = getIteratedType(expressionType);
+                if (entryType!=null) {
+                	if (isEntryType(entryType)) {
+	                    ProducedType et = getValueType(entryType);
+                        local.setTypeModel(et);
+                        that.getDeclarationModel().setType(et);
+                        return;
+                	}
                 }
             }
         }
@@ -1451,14 +1467,6 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }
 
-    private boolean isOptionalType(ProducedType rhst) {
-        return getNothingDeclaration().getType().isSubtypeOf(rhst);
-    }
-    
-    private boolean isEmptyType(ProducedType rhst) {
-        return getEmptyDeclaration().getType().isSubtypeOf(rhst);
-    }
-    
     private void visitInOperator(Tree.InOp that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
@@ -1466,7 +1474,7 @@ public class ExpressionVisitor extends AbstractVisitor {
             checkAssignable(lhst, getObjectDeclaration().getType(), that.getLeftTerm(), 
                     "operand expression must be an object type");
             ProducedType ut = unionType(getCategoryDeclaration().getType(), 
-                    producedType(getIterableDeclaration(),getEqualityDeclaration().getType()));
+                    producedType(getIterableDeclaration(), getEqualityDeclaration().getType()));
             checkAssignable(rhst, ut, that.getRightTerm(), 
                     "operand expression must be a category or iterator");
         }
