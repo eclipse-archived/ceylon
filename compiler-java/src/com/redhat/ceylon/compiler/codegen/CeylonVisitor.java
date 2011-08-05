@@ -216,6 +216,13 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.TypeConstraint l) {
     }
 
+    public void visit(Tree.CaseTypes t){
+        // FIXME: ignore for now, probably we'll need to add an annotation for it in M2.
+        // no need to warn here since the typechecker already warns for M1's unsupported status
+        // we do need to avoid visiting its children since that leads to invalid code otherwise as
+        // other node types are handled as if they were the body of the class
+    }
+    
     /*
      * Statements
      */
