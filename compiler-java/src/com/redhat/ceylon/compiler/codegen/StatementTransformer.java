@@ -223,7 +223,7 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         String loop_var_name = variable.getIdentifier().getText();
-        ProducedType sequenceElementType = iterDecl.getSpecifierExpression().getExpression().getTypeModel().getTypeArgumentList().get(0);
+        ProducedType sequenceElementType = typeFact().getIteratedType(iterDecl.getSpecifierExpression().getExpression().getTypeModel());
         ProducedType item_type = typeFact().getIteratorType(sequenceElementType );
         JCExpression iter_type_expr = makeJavaType(item_type , CeylonTransformer.TYPE_PARAM);
         JCExpression item_type_expr = makeJavaType(actualType(variable));

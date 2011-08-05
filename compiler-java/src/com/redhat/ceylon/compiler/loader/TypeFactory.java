@@ -161,6 +161,15 @@ public class TypeFactory {
     public ProducedType getIterableType(ProducedType et) {
         return producedType(getIterableDeclaration(), et);
     }
+    
+    public ProducedType getIteratedType(ProducedType type) {
+        ProducedType st = type.getSupertype(getIterableDeclaration());
+        if (st!=null && st.getTypeArguments().size()==1) {
+                return st.getTypeArgumentList().get(0);
+        } else {
+                return null;
+        }
+    }
 
     public ProducedType getIteratorType(ProducedType et) {
         return producedType(getIteratorDeclaration(), et);
@@ -189,5 +198,4 @@ public class TypeFactory {
     public ProducedType getNonemptySequenceType(ProducedType pt) {
         return pt.minus(getEmptyDeclaration()).getSupertype(getSequenceDeclaration());
     }
-    
 }
