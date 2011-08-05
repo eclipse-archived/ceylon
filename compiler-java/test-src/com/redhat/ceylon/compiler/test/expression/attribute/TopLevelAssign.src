@@ -35,6 +35,7 @@ final class b3 {
     }
     
     static void setB3(boolean newValue) {
+        // FIXME
     }
     
     private b3() {
@@ -47,6 +48,7 @@ public final class b4 {
     }
     
     public static void setB4(boolean newValue) {
+        // FIXME
     }
     
     private b4() {

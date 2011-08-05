@@ -130,19 +130,23 @@ public class ExpressionTransformer extends AbstractTransformer {
                     makeIdent(decl.getContainer().getQualifiedNameString()),
                     decl.getName(),
                     rhs);
-        } else if (decl instanceof Getter) {
+        } else if ((decl instanceof Getter)) {
             // must use the setter
             if (decl.getContainer() instanceof Method){
-                return at(op).Apply(List.<JCTree.JCExpression>nil(), makeIdent(((Getter)decl).getName(), Util.getSetterName(decl.getName())), 
+                return at(op).Apply(List.<JCTree.JCExpression>nil(), makeIdent(decl.getName(), Util.getSetterName(decl.getName())), 
                         List.<JCTree.JCExpression>of(rhs));
                 
             } else {
                 return at(op).Apply(List.<JCTree.JCExpression>nil(), makeIdent(Util.getSetterName(decl.getName())), 
                         List.<JCTree.JCExpression>of(rhs));            
             }
-        } else if(variable && (Util.isClassAttribute(decl) || decl.isCaptured())){
+        } else if(variable && (Util.isClassAttribute(decl))){
             // must use the setter
             return at(op).Apply(List.<JCTree.JCExpression>nil(), makeIdent(Util.getSetterName(decl.getName())), 
+                    List.<JCTree.JCExpression>of(rhs));
+        } else if(variable && decl.isCaptured()){
+            // must use the qualified setter
+            return at(op).Apply(List.<JCTree.JCExpression>nil(), makeIdent(decl.getName(), Util.getSetterName(decl.getName())), 
                     List.<JCTree.JCExpression>of(rhs));
         } else {
             return at(op).Assign(make().Ident(names().fromString(decl.getName())), rhs);
@@ -403,7 +407,22 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.BaseMemberExpression member) {
         JCExpression result = null;
         Declaration decl = member.getDeclaration();
-        if (decl instanceof Value) {
+        if (decl instanceof Getter) {
+            // invoke the getter
+            if (decl.isToplevel()) {
+                result = gen.globalGenAt(member).getGlobalValue(
+                        makeIdent(decl.getContainer().getQualifiedNameString()),
+                        decl.getName());
+            } else if (decl.isClassMember()) {
+                result =  at(member).Apply(List.<JCExpression>nil(), 
+                        makeIdent(Util.getGetterName(decl.getName())), 
+                        List.<JCExpression>nil());
+            } else {// method local attr
+                result = at(member).Apply(List.<JCExpression>nil(), 
+                        makeIdent(decl.getName(), Util.getGetterName(decl.getName())), 
+                        List.<JCExpression>nil());
+            }
+        } else if (decl instanceof Value) {
             if (decl.isToplevel()) {
                 // ERASURE
                 if ("null".equals(decl.getName())) {
@@ -419,24 +438,14 @@ public class ExpressionTransformer extends AbstractTransformer {
                             makeIdent(decl.getContainer().getQualifiedNameString()),
                             decl.getName());
                 }
-             } else if(Util.isClassAttribute(decl) || decl.isCaptured()) {
-                 // invoke the getter
-                 result = at(member).Apply(List.<JCExpression>nil(), 
-                        makeIdent(Util.getGetterName(decl.getName())), 
-                        List.<JCExpression>nil());
-            }
-        } else if (decl instanceof Getter) {
-            // invoke the getter
-            if (decl.isToplevel()) {
-                result = gen.globalGenAt(member).getGlobalValue(
-                        makeIdent(decl.getContainer().getQualifiedNameString()),
-                        decl.getName());
-            } else if (decl.isClassMember()) {
-                result =  at(member).Apply(List.<JCExpression>nil(), 
-                        makeIdent(Util.getGetterName(decl.getName())), 
-                        List.<JCExpression>nil());
-            } else {// method local attr
+            } else if(Util.isClassAttribute(decl)) {
+                // invoke the getter
                 result = at(member).Apply(List.<JCExpression>nil(), 
+                       makeIdent(Util.getGetterName(decl.getName())), 
+                       List.<JCExpression>nil());
+             } else if(decl.isCaptured()) {
+                 // invoke the qualified getter
+                 result = at(member).Apply(List.<JCExpression>nil(), 
                         makeIdent(decl.getName(), Util.getGetterName(decl.getName())), 
                         List.<JCExpression>nil());
             }
