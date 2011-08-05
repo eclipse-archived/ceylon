@@ -445,7 +445,7 @@ public class ProducedType extends ProducedReference {
         }
     }
 
-    private ProducedType getCommonSupertype(final List<ProducedType> caseTypes,
+    private static ProducedType getCommonSupertype(final List<ProducedType> caseTypes,
             TypeDeclaration dec, final TypeDeclaration selfTypeToIgnore) {
         //now try to construct a common produced
         //type that is a common supertype by taking
