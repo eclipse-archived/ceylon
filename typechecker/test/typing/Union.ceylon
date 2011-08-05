@@ -168,8 +168,14 @@ class Union() {
     
     SubOuter<String>.Inner<Natural>|SpecialOuter<Float>.Inner<Integer> foobar3 = SubOuter<String>().Inner<Natural>(1);
     String foobarhello3 = foobar3.hello;
-    @type["Natural|Integer"] value foobaru3 = foobar2.u;
+    @type["Natural|Integer"] value foobaru3 = foobar3.u;
     Outer<String|Float>.Inner<Natural|Integer> foobart3 = foobar3;
     @type["Union.Outer<String|Float>.Inner<Natural|Integer>"] value foobarts3 = foobar3.get;
+    
+    SubOuter<Object>.Inner<Natural>|SpecialOuter<Float>.Inner<Object> foobar4 = SubOuter<String>().Inner<Natural>(1);
+    String foobarhello4 = foobar4.hello;
+    @type["Object"] value foobaru4 = foobar4.u;
+    Outer<Object>.Inner<Object> foobart4 = foobar4;
+    @type["Union.Outer<Object>.Inner<Object>"] value foobarts4 = foobar4.get;
     
 }
