@@ -35,6 +35,10 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("klass/InterfaceWithMembers");
     }
     @Test
+    public void testKlsInterfaceWithConcreteMembers(){
+        compareWithJavaSource("klass/InterfaceWithConcreteMembers");
+    }
+    @Test
     public void testKlsInitializerParameter(){
         compareWithJavaSource("klass/InitializerParameter");
     }
