@@ -8,7 +8,7 @@ public class $empty {
     private final static Empty value = new Empty(){
 
         @Override
-        public boolean defines(Natural key) {
+        public boolean defines(Equality key) {
             return false;
         }
 
@@ -18,31 +18,31 @@ public class $empty {
         }
 
         @Override
-        public boolean definesEvery(Natural... keys) {
+        public boolean definesEvery(Equality... keys) {
             return false;
         }
 
         @Override
-        public boolean definesAny(Natural... keys) {
+        public boolean definesAny(Equality... keys) {
             return false;
         }
 
         @Override
-        public Nothing[] values(Natural... keys) {
+        public java.lang.Object[] values(Equality... keys) {
             return null;
         }
 
         @Override
-        public Iterator<Nothing> iterator() {
-            return new Iterator<Nothing>() {
+        public Iterator iterator() {
+            return new Iterator() {
 
                 @Override
-                public Nothing getHead() {
-                    return $nothing.getNothing();
+                public java.lang.Object getHead() {
+                    return null;
                 }
 
                 @Override
-                public Iterator<Nothing> getTail() {
+                public Iterator getTail() {
                     return this;
                 }
                 
@@ -60,13 +60,13 @@ public class $empty {
         }
 
         @Override
-        public Nothing value(Natural key) {
-            return $nothing.getNothing();
+        public java.lang.Object value(Equality key) {
+            return null;
         }
 
         @Override
-        public Nothing getFirst() {
-            return $nothing.getNothing();
+        public java.lang.Object getFirst() {
+            return null;
         }
     };
     
