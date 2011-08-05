@@ -7,8 +7,8 @@ public final class i {
         return value;
     }
     
-    public static void setI(ceylon.language.Natural newValue) {
-        value = newValue;
+    public static void setI(ceylon.language.Natural i) {
+        value = i;
     }
     
     private i() {

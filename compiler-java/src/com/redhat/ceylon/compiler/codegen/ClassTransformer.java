@@ -301,7 +301,6 @@ public class ClassTransformer extends AbstractTransformer {
                 .defineGlobal(generatedClassName, decl.getIdentifier().getText())
                 .valueAnnotations(makeJavaTypeAnnotations(decl.getDeclarationModel(), actualType(decl)))
                 .immutable()
-                .skipConstructor()
                 .initialValue(make().NewClass(null, List.<JCExpression>nil(), generatedClassName, List.<JCExpression>nil(), null));
 
         builder.classIsFinal(true).classIsPublic(isShared(decl));

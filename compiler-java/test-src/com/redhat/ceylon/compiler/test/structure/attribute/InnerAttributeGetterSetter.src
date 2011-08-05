@@ -10,7 +10,7 @@ class InnerAttributeGetterSetter {
                 return .ceylon.language.Natural.instance(0L);
             }
             
-            void setInnerGetterSetter(ceylon.language.Natural newValue) {
+            void setInnerGetterSetter(ceylon.language.Natural innerGetterSetter) {
             }
             
             private innerGetterSetter() {

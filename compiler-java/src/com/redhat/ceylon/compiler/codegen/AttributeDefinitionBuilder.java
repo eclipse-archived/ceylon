@@ -1,10 +1,6 @@
 package com.redhat.ceylon.compiler.codegen;
 
-import static com.sun.tools.javac.code.TypeTags.VOID;
-
-import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.Flags;
-import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -36,8 +32,6 @@ public class AttributeDefinitionBuilder {
     private List<JCTree.JCAnnotation> valueAnnotations = List.nil();
     private List<JCTree.JCAnnotation> classAnnotations = List.nil();
 
-    private boolean skipConstructor;
-
     private AbstractTransformer owner;
 
     public AttributeDefinitionBuilder(AbstractTransformer owner, JCTree.JCExpression variableType, String variableName) {
@@ -54,13 +48,13 @@ public class AttributeDefinitionBuilder {
     public JCTree build() {
         ListBuffer<JCTree> defs = ListBuffer.lb();
         appendDefinitionsTo(defs);
-        return owner.make().ClassDef(
-                owner.make().Modifiers(classFlags, classAnnotations.prependList(owner.makeAtCeylon())),
-                getClassName(variableName),
-                List.<JCTree.JCTypeParameter>nil(),
-                null,
-                List.<JCTree.JCExpression>nil(),
-                defs.toList());
+        return ClassDefinitionBuilder
+            .klass(owner, variableName)
+            .modifiers(classFlags)
+            .constructorModifiers(Flags.PRIVATE)
+            .annotations(classAnnotations)
+            .defs(defs.toList())
+            .build();
     }
 
     /**
@@ -79,18 +73,6 @@ public class AttributeDefinitionBuilder {
         if (writable) {
             defs.append(generateSetter());
         }
-        
-        if(!skipConstructor){
-            // make a private constructor
-            defs.append(owner.make().MethodDef(owner.make().Modifiers(Flags.PRIVATE),
-                    owner.names().init,
-                    owner.make().TypeIdent(VOID),
-                    List.<JCTree.JCTypeParameter>nil(),
-                    List.<JCTree.JCVariableDecl>nil(),
-                    List.<JCTree.JCExpression>nil(),
-                    owner.make().Block(0, List.<JCTree.JCStatement>nil()),
-                    null));
-        }
     }
 
     private JCTree generateField() {
@@ -108,54 +90,46 @@ public class AttributeDefinitionBuilder {
     }
 
     private JCTree generateGetter() {
-        JCTree.JCBlock body = getterBlock != null
-                ? getterBlock
-                : generateDefaultGetterBlock();
-
-        return owner.make().MethodDef(
-                owner.make().Modifiers(getterFlags, valueAnnotations),
-                getGetterName(variableName),
-                variableType,
-                List.<JCTree.JCTypeParameter>nil(),
-                List.<JCTree.JCVariableDecl>nil(),
-                List.<JCTree.JCExpression>nil(),
-                body,
-                null
-        );
+        return MethodDefinitionBuilder
+            .getter(owner, variableName, variableType)
+            .modifiers(getterFlags)
+            .annotations(valueAnnotations)
+            .block(makeGetterBlock())
+            .build();
     }
 
+    private JCTree.JCBlock makeGetterBlock() {
+        return getterBlock != null
+            ? getterBlock
+            : generateDefaultGetterBlock();
+    }
+    
     private JCTree.JCBlock generateDefaultGetterBlock() {
         return owner.make().Block(0L, List.<JCTree.JCStatement>of(owner.make().Return(owner.make().Ident(fieldName))));
     }
 
     private JCTree generateSetter() {
-        Name paramName = owner.names().fromString("newValue");
-
-        JCTree.JCBlock body;
-        if (getterBlock != null) {
-            body = setterBlock != null ? setterBlock : createEmptyBlock();
-        } else {
-            body = generateDefaultSetterBlock(paramName);
-        }
-        return owner.make().MethodDef(
-                owner.make().Modifiers(setterFlags),
-                getSetterName(variableName),
-                owner.make().TypeIdent(TypeTags.VOID),
-                List.<JCTree.JCTypeParameter>nil(),
-                List.<JCTree.JCVariableDecl>of(
-                        owner.make().VarDef(owner.make().Modifiers(0, valueAnnotations), paramName, variableType, null)
-                ),
-                List.<JCTree.JCExpression>nil(),
-                body,
-                null
-        );
+        return MethodDefinitionBuilder
+            .setter(owner, variableName, variableType, valueAnnotations)
+            .modifiers(getterFlags)
+            .block(makeSetterBlock())
+            .build();
     }
 
+    private JCTree.JCBlock makeSetterBlock() {
+        if (getterBlock != null) {
+            return setterBlock != null ? setterBlock : createEmptyBlock();
+        } else {
+            return generateDefaultSetterBlock();
+        }
+    }
+    
     private JCTree.JCBlock createEmptyBlock() {
         return owner.make().Block(0L, List.<JCTree.JCStatement>nil());
     }
 
-    private JCTree.JCBlock generateDefaultSetterBlock(Name paramName) {
+    private JCTree.JCBlock generateDefaultSetterBlock() {
+        Name paramName = owner.names().fromString(variableName);
         return owner.make().Block(0L, List.<JCTree.JCStatement>of(
                 owner.make().Exec(
                         owner.make().Assign(
@@ -378,22 +352,5 @@ public class AttributeDefinitionBuilder {
     public AttributeDefinitionBuilder classAnnotations(List<JCTree.JCAnnotation> classAnnotations) {
         this.classAnnotations = classAnnotations;
         return this;
-    }
-
-    public AttributeDefinitionBuilder skipConstructor() {
-        this.skipConstructor = true;
-        return this;
-    }
-    
-    private Name getClassName(String variableName) {
-        return owner.names().fromString(Util.quoteIfJavaKeyword(variableName));
-    }
-
-    private Name getGetterName(String variableName) {
-        return owner.names().fromString(Util.getGetterName(variableName));
-    }
-
-    private Name getSetterName(String variableName) {
-        return owner.names().fromString(Util.getSetterName(variableName));
     }
 }

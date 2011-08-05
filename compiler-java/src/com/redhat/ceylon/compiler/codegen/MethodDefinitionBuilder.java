@@ -57,9 +57,19 @@ public class MethodDefinitionBuilder {
             .resultType(attrType);
     }
     
+    public static MethodDefinitionBuilder getter(AbstractTransformer gen, String name, JCExpression attrType) {
+        return method(gen, Util.getGetterName(name))
+            .resultType(attrType);
+    }
+    
     public static MethodDefinitionBuilder setter(AbstractTransformer gen, String name, ProducedType attrType) {
         return method(gen, Util.getSetterName(name))
             .parameter(0, name, attrType);
+    }
+    
+    public static MethodDefinitionBuilder setter(AbstractTransformer gen, String name, JCExpression attrType, List<JCAnnotation> annots) {
+        return method(gen, Util.getSetterName(name))
+            .parameter(0, name, attrType, annots);
     }
     
     private MethodDefinitionBuilder(AbstractTransformer gen, String name) {
@@ -160,6 +170,10 @@ public class MethodDefinitionBuilder {
         return parameter(gen.make().VarDef(gen.make().Modifiers(modifiers, annots), gen.names().fromString(name), type, null));
     }
     
+    public MethodDefinitionBuilder parameter(long modifiers, String name, JCExpression paramType, List<JCAnnotation> annots) {
+        return parameter(gen.make().VarDef(gen.make().Modifiers(modifiers, annots), gen.names().fromString(name), paramType, null));
+    }
+    
     public MethodDefinitionBuilder parameter(Tree.Parameter param) {
         gen.at(param);
         String name = param.getIdentifier().getText();
@@ -198,6 +212,12 @@ public class MethodDefinitionBuilder {
     public MethodDefinitionBuilder resultType(ProducedType resultType) {
         this.resultType = resultType;
         this.resultTypeExpr = makeResultType(resultType);
+        return this;
+    }
+
+    public MethodDefinitionBuilder resultType(JCExpression resultType) {
+        this.resultType = null;
+        this.resultTypeExpr = resultType;
         return this;
     }
 }

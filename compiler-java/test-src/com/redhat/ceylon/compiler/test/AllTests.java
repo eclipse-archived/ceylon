@@ -14,13 +14,13 @@ import com.redhat.ceylon.compiler.test.structure.StructureTest;
 
 @RunWith(Suite.class) 
 @SuiteClasses({
+    AnnotationsTest.class,
+    ExpressionTest.class,
 	MiscTest.class,
+    ModelLoaderTest.class,
+    StatementTest.class,
 	StructureTest.class,
-	StatementTest.class,
-	ExpressionTest.class,
-	TypeParserTest.class,
-	ModelLoaderTest.class,
-	AnnotationsTest.class
+	TypeParserTest.class
 })
 public class AllTests {
 }
