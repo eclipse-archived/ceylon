@@ -226,7 +226,8 @@ public class RecognizedOptions {
         XPREFER,
         O,
         XJCOV,
-        XD);
+        XD,
+        BOOTSTRAPCEYLON);
 
     public static Option[] getJavaCompilerOptions(OptionHelper helper) {
         return getOptions(helper, javacOptions);
