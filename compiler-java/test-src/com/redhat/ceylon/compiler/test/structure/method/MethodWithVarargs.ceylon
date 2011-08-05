@@ -1,10 +1,10 @@
 @nomodel
 class MethodWithVarargs() {
     shared void f1(Natural... ns) {
-        for (Integer n in ns) { }
+        for (Natural n in ns) { }
     }
     shared void f2(Natural i, Natural... ns) {
-        for (Integer n in ns) { }
+        for (Natural n in ns) { }
     }
     void m() {
         f1(1, 2, 3);
