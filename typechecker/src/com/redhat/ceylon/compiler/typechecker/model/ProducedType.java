@@ -4,6 +4,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -258,66 +259,6 @@ public class ProducedType extends ProducedReference {
         }
     }
 
-    public ProducedType substitute(Map<TypeParameter, ProducedType> substitutions) {
-
-        Declaration d;
-        if (getDeclaration() instanceof UnionType) {
-            UnionType ut = new UnionType();
-            List<ProducedType> types = new ArrayList<ProducedType>();
-            for (ProducedType ct: getDeclaration().getCaseTypes()) {
-                if (ct==null) {
-                    types.add(null);
-                }
-                else {
-                    addToUnion(types, ct.substitute(substitutions));
-                }
-            }
-            ut.setCaseTypes(types);
-            d = ut;
-        }
-        else {
-            if (getDeclaration() instanceof TypeParameter) {
-                ProducedType sub = substitutions.get(getDeclaration());
-                if (sub!=null) {
-                    return sub;
-                }
-            }
-            d = getDeclaration();
-        }
-
-        return replaceDeclaration(d, substitutions);
-
-    }
-
-    //TODO: ugh, horrible code duplication from above!
-    ProducedType substituteInternal(Map<TypeParameter, ProducedType> substitutions) {
-
-        Declaration d;
-        if (getDeclaration() instanceof UnionType) {
-            UnionType ut = new UnionType();
-            List<ProducedType> types = new ArrayList<ProducedType>();
-            for (ProducedType ct: getDeclaration().getCaseTypes()) {
-                if (ct!=null) {
-                    types.add(ct.substituteInternal(substitutions));
-                }
-            }
-            ut.setCaseTypes(types);
-            d = ut;
-        }
-        else {
-            if (getDeclaration() instanceof TypeParameter) {
-                ProducedType sub = substitutions.get(getDeclaration());
-                if (sub!=null) {
-                    return sub;
-                }
-            }
-            d = getDeclaration();
-        }
-
-        return replaceDeclarationInternal(d, substitutions);
-
-    }
-
     private ProducedType replaceDeclaration(Declaration d) {
         ProducedType t = new ProducedType();
         t.setDeclaration(d);
@@ -328,29 +269,14 @@ public class ProducedType extends ProducedReference {
         return t;
     }
 
-    private ProducedType replaceDeclaration(Declaration d,
-            Map<TypeParameter, ProducedType> substitutions) {
-        ProducedType t = new ProducedType();
-        t.setDeclaration(d);
-        if (getDeclaringType()!=null) {
-            t.setDeclaringType(getDeclaringType().substitute(substitutions));
-        }
-        t.setTypeArguments(sub(substitutions));
-        return t;
+    public ProducedType substitute(Map<TypeParameter, ProducedType> substitutions) {
+        return new Substitution().substitute(this, substitutions);
     }
-    
-    //TODO: ugh, horrible code duplication from above!
-    private ProducedType replaceDeclarationInternal(Declaration d,
-            Map<TypeParameter, ProducedType> substitutions) {
-        ProducedType t = new ProducedType();
-        t.setDeclaration(d);
-        if (getDeclaringType()!=null) {
-            t.setDeclaringType(getDeclaringType().substituteInternal(substitutions));
-        }
-        t.setTypeArguments(subInternal(substitutions));
-        return t;
+
+    public ProducedType substituteInternal(Map<TypeParameter, ProducedType> substitutions) {
+        return new InternalSubstitution().substitute(this, substitutions);
     }
-    
+
     public ProducedReference getTypedReference(Declaration member, List<ProducedType> typeArguments) {
         if (member instanceof TypeDeclaration) {
             return getTypeMember( (TypeDeclaration) member, typeArguments );
@@ -390,7 +316,7 @@ public class ProducedType extends ProducedReference {
     public ProducedType getProducedType(ProducedType receiver,
             Declaration member, List<ProducedType> typeArguments) {
         ProducedType rst = (receiver==null) ? null : receiver.getSupertype((TypeDeclaration) member.getContainer());
-        return substitute(arguments(member, rst, typeArguments));
+        return new Substitution().substitute(this, arguments(member, rst, typeArguments));
     }
 
     public ProducedType getType() {
@@ -702,6 +628,101 @@ public class ProducedType extends ProducedReference {
             }
             return caseTypes;
         }
+    }
+
+    /**
+     * Substitutes type arguments for type parameters.
+     * This default strategy eliminates duplicate types
+     * from unions after substituting arguments.
+     * @author Gavin King
+     */
+    static class Substitution {
+        
+        void addCaseToUnion(ProducedType ct,
+                Map<TypeParameter, ProducedType> substitutions,
+                List<ProducedType> types) {
+            if (ct==null) {
+                types.add(null);
+            }
+            else {
+                addToUnion(types, substitute(ct, substitutions));
+            }
+        }
+
+        private Map<TypeParameter, ProducedType> substituted(ProducedType pt, Map<TypeParameter, ProducedType> substitutions) {
+            Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
+            for (Map.Entry<TypeParameter, ProducedType> e : pt.getTypeArguments().entrySet()) {
+                if (e.getValue()!=null) {
+                    map.put(e.getKey(), substitute(e.getValue(), substitutions));
+                }
+            }
+            if (pt.getDeclaringType()!=null) {
+                map.putAll(substituted(pt.getDeclaringType(), substitutions));
+            }
+            return map;
+        }
+
+        private ProducedType replaceDeclaration(ProducedType pt, Declaration d,
+                Map<TypeParameter, ProducedType> substitutions) {
+            ProducedType t = new ProducedType();
+            t.setDeclaration(d);
+            if (pt.getDeclaringType()!=null) {
+                t.setDeclaringType(substitute(pt.getDeclaringType(), substitutions));
+            }
+            t.setTypeArguments(substituted(pt, substitutions));
+            return t;
+        }
+            
+        public ProducedType substitute(ProducedType pt, 
+                Map<TypeParameter, ProducedType> substitutions) {
+    
+            Declaration d;
+            if (pt.getDeclaration() instanceof UnionType) {
+                UnionType ut = new UnionType();
+                List<ProducedType> types = new ArrayList<ProducedType>();
+                for (ProducedType ct: pt.getDeclaration().getCaseTypes()) {
+                    addCaseToUnion(ct, substitutions, types);
+                }
+                ut.setCaseTypes(types);
+                d = ut;
+            }
+            else {
+                if (pt.getDeclaration() instanceof TypeParameter) {
+                    ProducedType sub = substitutions.get(pt.getDeclaration());
+                    if (sub!=null) {
+                        return sub;
+                    }
+                }
+                d = pt.getDeclaration();
+            }
+            
+            return replaceDeclaration(pt, d, substitutions);
+    
+        }
+
+    }
+    
+    /**
+     * This special strategy for internal use by the 
+     * containing class does not eliminate duplicate 
+     * types from unions after substituting arguments.
+     * This is to avoid a stack overflow that otherwise
+     * results! (Determining if a union contains 
+     * duplicates requires recursion to the argument
+     * substitution code via some very difficult-to-
+     * understand flow.)
+     * @author Gavin King
+     */
+    static class InternalSubstitution extends Substitution {
+    
+        @Override public void addCaseToUnion(ProducedType ct,
+                Map<TypeParameter, ProducedType> substitutions,
+                List<ProducedType> types) {
+            if (ct!=null) {
+                types.add(substitute(ct, substitutions));
+            }
+        }
+        
     }
 
 }

@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -12,8 +11,7 @@ import java.util.Map;
  */
 public abstract class ProducedReference {
 
-    ProducedReference() {
-    }
+    ProducedReference() {}
 
     private Map<TypeParameter, ProducedType> typeArguments = Collections.emptyMap();
     private Declaration declaration;
@@ -43,32 +41,6 @@ public abstract class ProducedReference {
         this.typeArguments = typeArguments;
     }
 
-    Map<TypeParameter, ProducedType> sub(Map<TypeParameter, ProducedType> substitutions) {
-        Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
-        for (Map.Entry<TypeParameter, ProducedType> e : getTypeArguments().entrySet()) {
-            if (e.getValue()!=null) {
-                map.put(e.getKey(), e.getValue().substitute(substitutions));
-            }
-        }
-        if (getDeclaringType()!=null) {
-            map.putAll(getDeclaringType().sub(substitutions));
-        }
-        return map;
-    }
-
-    Map<TypeParameter, ProducedType> subInternal(Map<TypeParameter, ProducedType> substitutions) {
-        Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
-        for (Map.Entry<TypeParameter, ProducedType> e : getTypeArguments().entrySet()) {
-            if (e.getValue()!=null) {
-                map.put(e.getKey(), e.getValue().substituteInternal(substitutions));
-            }
-        }
-        if (getDeclaringType()!=null) {
-            map.putAll(getDeclaringType().subInternal(substitutions));
-        }
-        return map;
-    }
-
     public abstract ProducedType getType();
 
     public boolean isFunctional() {
@@ -82,5 +54,5 @@ public abstract class ProducedReference {
         ptr.setTypeArguments(getTypeArguments());
         return ptr;
     }
-
+    
 }
