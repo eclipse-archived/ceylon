@@ -1,16 +1,23 @@
 package ceylon.language;
 
-public interface Empty extends Correspondence<Natural, Nothing>, 
-    Iterable<Nothing> , Sized{
+import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
+
+@SatisfiedTypes({
+    "ceylon.language.Correspondence<ceylon.language.Natural,ceylon.language.Bottom>",
+    "ceylon.language.Iterable<ceylon.language.Bottom>",
+    "ceylon.language.Sized"
+})
+public interface Empty extends Correspondence, 
+    Iterable , Sized{
     public Natural getSize(); 
         //return 0; 
     public boolean getEmpty();
         //return true; 
-    public Iterator<Nothing> iterator();
+    public Iterator iterator();
         //return emptyIterator;
-    public Nothing value(Natural key);
+    public java.lang.Object value(Equality key);
         //return null;
-    public Nothing getFirst();
+    public java.lang.Object getFirst();
         //return null;
 
 }
