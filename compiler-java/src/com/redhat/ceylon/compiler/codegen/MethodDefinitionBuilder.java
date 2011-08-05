@@ -4,6 +4,7 @@ import static com.sun.tools.javac.code.Flags.ABSTRACT;
 import static com.sun.tools.javac.code.Flags.FINAL;
 import static com.sun.tools.javac.code.TypeTags.VOID;
 
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.util.Util;
@@ -179,6 +180,11 @@ public class MethodDefinitionBuilder {
         String name = param.getIdentifier().getText();
         ProducedType paramType = gen.actualType(param);
         return parameter(FINAL, name, paramType);
+    }
+
+    public MethodDefinitionBuilder parameter(Parameter param) {
+        String name = param.getName();
+        return parameter(FINAL, name, param.getType());
     }
 
     public MethodDefinitionBuilder isActual(boolean isActual) {
