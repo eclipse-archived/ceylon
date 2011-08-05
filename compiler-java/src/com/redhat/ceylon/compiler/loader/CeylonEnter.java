@@ -30,8 +30,8 @@ import com.sun.tools.javac.util.Options;
 
 public class CeylonEnter extends Enter {
 
-    public static Enter instance(Context context) {
-        Enter instance = context.get(enterKey);
+    public static CeylonEnter instance(Context context) {
+        CeylonEnter instance = (CeylonEnter)context.get(enterKey);
         if (instance == null){
             instance = new CeylonEnter(context);
             context.put(enterKey, instance);
