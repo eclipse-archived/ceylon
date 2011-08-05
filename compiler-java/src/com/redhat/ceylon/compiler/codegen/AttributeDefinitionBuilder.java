@@ -55,7 +55,7 @@ public class AttributeDefinitionBuilder {
         ListBuffer<JCTree> defs = ListBuffer.lb();
         appendDefinitionsTo(defs);
         return owner.make().ClassDef(
-                owner.make().Modifiers(classFlags, classAnnotations.prependList(owner.gen.makeAtCeylon())),
+                owner.make().Modifiers(classFlags, classAnnotations.prependList(owner.makeAtCeylon())),
                 getClassName(variableName),
                 List.<JCTree.JCTypeParameter>nil(),
                 null,
@@ -386,7 +386,7 @@ public class AttributeDefinitionBuilder {
     }
     
     private Name getClassName(String variableName) {
-        return owner.gen.quoteName(variableName);
+        return owner.names().fromString(Util.quoteIfJavaKeyword(variableName));
     }
 
     private Name getGetterName(String variableName) {

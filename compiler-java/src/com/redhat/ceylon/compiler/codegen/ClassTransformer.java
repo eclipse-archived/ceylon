@@ -20,6 +20,7 @@ import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
@@ -29,17 +30,26 @@ import com.sun.tools.javac.util.Name;
  */
 public class ClassTransformer extends AbstractTransformer {
 
-    public ClassTransformer(CeylonTransformer gen) {
-        super(gen);
+    public static ClassTransformer getInstance(Context context) {
+        ClassTransformer trans = context.get(ClassTransformer.class);
+        if (trans == null) {
+            trans = new ClassTransformer(context);
+            context.put(ClassTransformer.class, trans);
+        }
+        return trans;
+    }
+
+    private ClassTransformer(Context context) {
+        super(context);
     }
 
     // FIXME: figure out what insertOverloadedClassConstructors does and port it
 
     public JCClassDecl transform(final Tree.ClassOrInterface def) {
         String className = def.getIdentifier().getText();
-        ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder.klass(gen, className);
+        ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder.klass(this, className);
         
-        CeylonVisitor visitor = new CeylonVisitor(gen, classBuilder);
+        CeylonVisitor visitor = new CeylonVisitor(gen(), classBuilder);
         def.visitChildren(visitor);
 
         return classBuilder
@@ -59,10 +69,10 @@ public class ClassTransformer extends AbstractTransformer {
         if (!isFormal(decl) && !classBuilder.existsParam(attrName.toString())) {
             JCExpression initialValue = null;
             if (decl.getSpecifierOrInitializerExpression() != null) {
-                initialValue = gen.expressionGen.transformExpression(decl.getSpecifierOrInitializerExpression().getExpression());
+                initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression());
             }
 
-            JCExpression type = gen.makeJavaType(gen.actualType(decl));
+            JCExpression type = makeJavaType(actualType(decl));
 
             if (useField) {
                 // A captured attribute gets turned into a field
@@ -89,10 +99,10 @@ public class ClassTransformer extends AbstractTransformer {
     }
     
     public JCTree.JCMethodDecl transform(AttributeSetterDefinition decl) {
-        JCBlock body = gen.statementGen.transform(decl.getBlock());
+        JCBlock body = statementGen().transform(decl.getBlock());
         String name = decl.getIdentifier().getText();
         return MethodDefinitionBuilder
-            .setter(gen, name, gen.actualType(decl))
+            .setter(this, name, actualType(decl))
             .modifiers(transformAttributeGetSetDeclFlags(decl))
             .block(body)
             .build();
@@ -100,9 +110,9 @@ public class ClassTransformer extends AbstractTransformer {
 
     public JCTree.JCMethodDecl transform(AttributeGetterDefinition decl) {
         String name = decl.getIdentifier().getText();
-        JCBlock body = gen.statementGen.transform(decl.getBlock());
+        JCBlock body = statementGen().transform(decl.getBlock());
         return MethodDefinitionBuilder
-            .getter(gen, name, gen.actualType(decl))
+            .getter(this, name, actualType(decl))
             .modifiers(transformAttributeGetSetDeclFlags(decl))
             .block(body)
             .build();
@@ -176,11 +186,11 @@ public class ClassTransformer extends AbstractTransformer {
         String atrrName = decl.getIdentifier().getText();
         JCBlock body = null;
         if (!isFormal(decl)) {
-            body = make().Block(0, List.<JCTree.JCStatement>of(make().Return(gen.makeSelect("this", atrrName))));
+            body = make().Block(0, List.<JCTree.JCStatement>of(make().Return(makeSelect("this", atrrName))));
         }
         
         return MethodDefinitionBuilder
-            .getter(gen, atrrName, gen.actualType(decl))
+            .getter(this, atrrName, actualType(decl))
             .modifiers(transformAttributeGetSetDeclFlags(decl))
             .isActual(isActual(decl))
             .block(body)
@@ -194,12 +204,12 @@ public class ClassTransformer extends AbstractTransformer {
         if (!isFormal(decl)) {
             body = make().Block(0, List.<JCTree.JCStatement>of(
                     make().Exec(
-                            make().Assign(gen.makeSelect("this", atrrName),
+                            make().Assign(makeSelect("this", atrrName),
                                     makeIdent(atrrName.toString())))));
         }
         
         return MethodDefinitionBuilder
-            .setter(gen, atrrName, gen.actualType(decl))
+            .setter(this, atrrName, actualType(decl))
             .modifiers(transformAttributeGetSetDeclFlags(decl))
             .isActual(isActual(decl))
             .block(body)
@@ -208,7 +218,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     public JCMethodDecl transform(Tree.AnyMethod def) {
         String name = def.getIdentifier().getText();
-        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(gen, name);
+        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, name);
         
         for (Tree.Parameter param : def.getParameterLists().get(0).getParameters()) {
             methodBuilder.parameter(param);
@@ -221,11 +231,11 @@ public class ClassTransformer extends AbstractTransformer {
         }
 
         if (!(def.getType() instanceof VoidModifier)) {
-            methodBuilder.resultType(gen.actualType(def));
+            methodBuilder.resultType(actualType(def));
         }
         
         if (def instanceof Tree.MethodDefinition) {
-            JCBlock body = gen.statementGen.transform(((Tree.MethodDefinition)def).getBlock());
+            JCBlock body = statementGen().transform(((Tree.MethodDefinition)def).getBlock());
             methodBuilder.block(body);
         }
                 
@@ -238,8 +248,8 @@ public class ClassTransformer extends AbstractTransformer {
     public JCClassDecl methodClass(Tree.MethodDefinition def) {
         String name = generateClassName(def, isToplevel(def));
         JCMethodDecl meth = transform(def);
-        return ClassDefinitionBuilder.klass(gen, name)
-            .annotations(gen.makeAtMethod())
+        return ClassDefinitionBuilder.klass(this, name)
+            .annotations(makeAtMethod())
             .modifiers(FINAL, isShared(def) ? PUBLIC : 0)
             .constructorModifiers(PRIVATE)
             .body(meth)
@@ -265,9 +275,9 @@ public class ClassTransformer extends AbstractTransformer {
 
     public JCClassDecl objectClass(Tree.ObjectDefinition def, boolean topLevel) {
         String name = generateClassName(def, topLevel);
-        ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder.klass(gen, name);
+        ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder.klass(this, name);
         
-        CeylonVisitor visitor = new CeylonVisitor(gen, classBuilder);
+        CeylonVisitor visitor = new CeylonVisitor(gen(), classBuilder);
         def.visitChildren(visitor);
 
         TypeDeclaration decl = def.getDeclarationModel().getType().getDeclaration();
@@ -277,7 +287,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
 
         return classBuilder
-            .annotations(gen.makeAtObject())
+            .annotations(makeAtObject())
             .modifiers(transformObjectDeclFlags(def))
             .constructorModifiers(PRIVATE)
             .satisfies(decl.getSatisfiedTypes())
@@ -287,10 +297,9 @@ public class ClassTransformer extends AbstractTransformer {
 
     public ListBuffer<JCTree> makeObjectGlobal(Tree.ObjectDefinition decl, JCExpression generatedClassName) {
         ListBuffer<JCTree> defs = ListBuffer.lb();
-        AttributeDefinitionBuilder builder = gen
-                .globalGenAt(decl)
+        AttributeDefinitionBuilder builder = globalGen()
                 .defineGlobal(generatedClassName, decl.getIdentifier().getText())
-                .valueAnnotations(gen.makeJavaTypeAnnotations(decl.getDeclarationModel(), gen.actualType(decl)))
+                .valueAnnotations(makeJavaTypeAnnotations(decl.getDeclarationModel(), actualType(decl)))
                 .immutable()
                 .skipConstructor()
                 .initialValue(make().NewClass(null, List.<JCExpression>nil(), generatedClassName, List.<JCExpression>nil(), null));
@@ -309,7 +318,7 @@ public class ClassTransformer extends AbstractTransformer {
         List<JCExpression> values = List.<JCExpression> nil();
         // FIXME: handle named arguments
         for (Tree.PositionalArgument arg : userAnn.getPositionalArgumentList().getPositionalArguments()) {
-            values = values.append(gen.expressionGen.transformExpression(arg.getExpression()));
+            values = values.append(expressionGen().transformExpression(arg.getExpression()));
         }
 
         JCExpression classLiteral;
@@ -326,7 +335,7 @@ public class ClassTransformer extends AbstractTransformer {
         JCIdent addAnnotation = at(userAnn).Ident(names().fromString("addAnnotation"));
         List<JCExpression> args;
         if (methodName != null)
-            args = List.<JCExpression> of(classLiteral, gen.expressionGen.ceylonLiteral(methodName), result);
+            args = List.<JCExpression> of(classLiteral, expressionGen().ceylonLiteral(methodName), result);
         else
             args = List.<JCExpression> of(classLiteral, result);
 
@@ -335,35 +344,4 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
 
-    private boolean isShared(Tree.Declaration decl) {
-        return decl.getDeclarationModel().isShared();
-    }
-
-    private boolean isAbstract(Tree.ClassOrInterface decl) {
-        return decl.getDeclarationModel().isAbstract();
-    }
-
-    private boolean isDefault(Tree.Declaration decl) {
-        return decl.getDeclarationModel().isDefault();
-    }
-
-    private boolean isFormal(Tree.Declaration decl) {
-        return decl.getDeclarationModel().isFormal();
-    }
-
-    private boolean isActual(Tree.Declaration decl) {
-        return decl.getDeclarationModel().isActual();
-    }
-
-    private boolean isMutable(Tree.AttributeDeclaration decl) {
-        return decl.getDeclarationModel().isVariable();
-    }
-
-    private boolean isToplevel(Tree.Declaration decl) {
-        return decl.getDeclarationModel().isToplevel();
-    }
-
-    private boolean isInner(Tree.Declaration decl) {
-        return gen.isInner(decl.getDeclarationModel());
-    }
 }

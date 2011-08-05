@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -22,12 +23,21 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 public class TypeFactory {
     private Context context;
 
-    public Context getContext() {
-        return context;
+    public static TypeFactory instance(com.sun.tools.javac.util.Context context) {
+        TypeFactory instance = context.get(TypeFactory.class);
+        if (instance == null) {
+            instance = new TypeFactory(LanguageCompiler.getCeylonContextInstance(context));
+            context.put(TypeFactory.class, instance);
+        }
+        return instance;
     }
     
     public TypeFactory(Context context) {
         this.context = context;
+    }
+    
+    public Context getContext() {
+        return context;
     }
     
     /**

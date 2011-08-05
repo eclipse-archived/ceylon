@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.codegen;
 
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Name;
 
@@ -19,8 +20,17 @@ import com.sun.tools.javac.util.Name;
  */
 public final class GlobalTransformer extends AbstractTransformer {
 
-    public GlobalTransformer(CeylonTransformer gen) {
-        super(gen);
+    public static GlobalTransformer getInstance(Context context) {
+        GlobalTransformer trans = context.get(GlobalTransformer.class);
+        if (trans == null) {
+            trans = new GlobalTransformer(context);
+            context.put(GlobalTransformer.class, trans);
+        }
+        return trans;
+    }
+
+    private GlobalTransformer(Context context) {
+        super(context);
     }
 
     /**
@@ -71,7 +81,7 @@ public final class GlobalTransformer extends AbstractTransformer {
     }
 
     private Name getClassName(String variableName) {
-        return gen.quoteName(variableName);
+        return names().fromString(Util.quoteIfJavaKeyword(variableName));
     }
 
     private Name getGetterName(String variableName) {

@@ -30,7 +30,7 @@ import com.sun.tools.javac.util.ListBuffer;
  * @author Tako Schotanus
  */
 public class ClassDefinitionBuilder {
-    private final CeylonTransformer gen;
+    private final AbstractTransformer gen;
     
     private final String name;
     
@@ -49,11 +49,11 @@ public class ClassDefinitionBuilder {
     private final ListBuffer<JCTree> body = ListBuffer.lb();
     private final ListBuffer<JCStatement> init = ListBuffer.lb();
     
-    public static ClassDefinitionBuilder klass(CeylonTransformer gen, String name) {
+    public static ClassDefinitionBuilder klass(AbstractTransformer gen, String name) {
         return new ClassDefinitionBuilder(gen, name);
     }
     
-    private ClassDefinitionBuilder(CeylonTransformer gen, String name) {
+    private ClassDefinitionBuilder(AbstractTransformer gen, String name) {
         this.gen = gen;
         this.name = name;
         
@@ -78,7 +78,7 @@ public class ClassDefinitionBuilder {
         appendDefinitionsTo(defs);
         return gen.make().ClassDef(
                 gen.make().Modifiers(modifiers, annotations.toList()),
-                gen.names.fromString(Util.quoteIfJavaKeyword(name)),
+                gen.names().fromString(Util.quoteIfJavaKeyword(name)),
                 typeParams.toList(),
                 extending,
                 satisfies.toList(),
@@ -106,7 +106,7 @@ public class ClassDefinitionBuilder {
         } else {
             if ((modifiers & INTERFACE) != 0) {
                 // The VM insists that interfaces have java.lang.Object as their superclass
-                superclass = gen.makeIdent(gen.syms.objectType);
+                superclass = gen.makeIdent(gen.syms().objectType);
             } else {
                 superclass = null;
             }
@@ -173,7 +173,7 @@ public class ClassDefinitionBuilder {
                 bounds.append(gen.makeJavaType(t));
             }
         }
-        typeParams.append(gen.make().TypeParameter(gen.names.fromString(name), bounds.toList()));
+        typeParams.append(gen.make().TypeParameter(gen.names().fromString(name), bounds.toList()));
         return this;
     }
 
@@ -193,9 +193,9 @@ public class ClassDefinitionBuilder {
             List<JCExpression> args = List.<JCExpression> nil();
 
             for (Tree.PositionalArgument arg : extendedType.getInvocationExpression().getPositionalArgumentList().getPositionalArguments())
-                args = args.append(gen.expressionGen.transformArg(arg));
+                args = args.append(gen.expressionGen().transformArg(arg));
 
-            init(gen.at(extendedType).Exec(gen.make().Apply(List.<JCExpression> nil(), gen.make().Ident(gen.names._super), args)));
+            init(gen.at(extendedType).Exec(gen.make().Apply(List.<JCExpression> nil(), gen.make().Ident(gen.names()._super), args)));
         }
         return extending(extendedType.getType().getTypeModel());
     }
@@ -215,13 +215,13 @@ public class ClassDefinitionBuilder {
         JCExpression type = gen.makeJavaType(paramType);
         List<JCAnnotation> annots = gen.makeAtName(name);
         annots = annots.appendList(gen.makeJavaTypeAnnotations(paramType, true));
-        JCVariableDecl var = gen.make().VarDef(gen.make().Modifiers(0, annots), gen.names.fromString(name), type, null);
+        JCVariableDecl var = gen.make().VarDef(gen.make().Modifiers(0, annots), gen.names().fromString(name), type, null);
         params.append(var);
         
         // Check if the parameter is used outside of the initializer
         if (isCaptured) {
             // If so we create a field for it initializing it with the parameter's value
-            JCVariableDecl localVar = gen.make().VarDef(gen.make().Modifiers(FINAL | PRIVATE), gen.names.fromString(name), type , null);
+            JCVariableDecl localVar = gen.make().VarDef(gen.make().Modifiers(FINAL | PRIVATE), gen.names().fromString(name), type , null);
             defs.append(localVar);
             init.append(gen.make().Exec(gen.make().Assign(gen.makeSelect("this", localVar.getName().toString()), gen.make().Ident(var.getName()))));
         }

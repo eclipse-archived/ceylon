@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.loader;
 
-import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;

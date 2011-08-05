@@ -19,6 +19,7 @@ import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
+import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Name;
 
@@ -31,8 +32,17 @@ public class StatementTransformer extends AbstractTransformer {
     // Is null if we're currently in a while-loop or not in any loop at all
     private Name currentForFailVariable = null;
     
-    public StatementTransformer(CeylonTransformer gen) {
-        super(gen);
+    public static StatementTransformer getInstance(Context context) {
+        StatementTransformer trans = context.get(StatementTransformer.class);
+        if (trans == null) {
+            trans = new StatementTransformer(context);
+            context.put(StatementTransformer.class, trans);
+        }
+        return trans;
+    }
+
+    private StatementTransformer(Context context) {
+        super(context);
     }
 
     public JCBlock transform(Tree.Block block) {
@@ -40,7 +50,7 @@ public class StatementTransformer extends AbstractTransformer {
     }
 
     List<JCStatement> transformStmts(java.util.List<Tree.Statement> list) {
-        CeylonVisitor v = new CeylonVisitor(this.gen);
+        CeylonVisitor v = new CeylonVisitor(gen());
 
         for (Tree.Statement stmt : list)
             stmt.visit(v);
@@ -91,7 +101,7 @@ public class StatementTransformer extends AbstractTransformer {
             if (exists.getVariable().getSpecifierExpression() == null) {
                 expr = transform(name);
             } else {
-                expr = gen.expressionGen.transformExpression(exists.getVariable().getSpecifierExpression().getExpression());
+                expr = expressionGen().transformExpression(exists.getVariable().getSpecifierExpression().getExpression());
             }
 
             test = at(cond).Binary(JCTree.NE, expr, make().Literal(TypeTags.BOT, null));
@@ -103,18 +113,18 @@ public class StatementTransformer extends AbstractTransformer {
             if (nonempty.getVariable().getSpecifierExpression() == null) {
                 expr = transform(name);
             } else {
-                expr = gen.expressionGen.transformExpression(nonempty.getVariable().getSpecifierExpression().getExpression());
+                expr = expressionGen().transformExpression(nonempty.getVariable().getSpecifierExpression().getExpression());
             }
 
-            test = make().Apply(List.<JCTree.JCExpression>nil(), gen.makeSelect(make().TypeCast(syms().ceylonContainerType, expr), "getEmpty"), List.<JCTree.JCExpression>nil());
+            test = make().Apply(List.<JCTree.JCExpression>nil(), makeSelect(make().TypeCast(syms().ceylonContainerType, expr), "getEmpty"), List.<JCTree.JCExpression>nil());
             test = makeBooleanTest(test, true);
         } else if (cond instanceof Tree.IsCondition) {
             Tree.IsCondition isExpr = (Tree.IsCondition) cond;
             Tree.Identifier name = isExpr.getVariable().getIdentifier();
-            JCExpression type = gen.makeJavaType(isExpr.getType().getTypeModel());
+            JCExpression type = makeJavaType(isExpr.getType().getTypeModel());
 
             // Want raw type for instanceof since it can't be used with generic types
-            JCExpression rawType = gen.makeJavaType(isExpr.getType().getTypeModel(), CeylonTransformer.WANT_RAW_TYPE);
+            JCExpression rawType = makeJavaType(isExpr.getType().getTypeModel(), CeylonTransformer.WANT_RAW_TYPE);
 
             Name tmpVarName = names().fromString(aliasName(name.getText()));
             Name origVarName = names().fromString(name.getText());
@@ -126,28 +136,28 @@ public class StatementTransformer extends AbstractTransformer {
                 expr = transform(name);
                 tmpVarType = isExpr.getVariable().getType().getTypeModel();
             } else {
-                expr = gen.expressionGen.transformExpression(isExpr.getVariable().getSpecifierExpression().getExpression());
+                expr = expressionGen().transformExpression(isExpr.getVariable().getSpecifierExpression().getExpression());
                 tmpVarType = isExpr.getVariable().getSpecifierExpression().getExpression().getTypeModel();
             }
 
             // Temporary variable holding the result of the expression/variable to test
-            decl = at(cond).VarDef(make().Modifiers(FINAL), tmpVarName, gen.makeJavaType(tmpVarType), expr);
+            decl = at(cond).VarDef(make().Modifiers(FINAL), tmpVarName, makeJavaType(tmpVarType), expr);
             // Substitute variable with the correct type to use in the rest of the code block
             JCVariableDecl decl2 = at(cond).VarDef(make().Modifiers(FINAL), substVarName, type, at(cond).TypeCast(type, at(cond).Ident(tmpVarName)));
             
             // Prepare for variable substitution in the following code block
-            String prevSubst = gen.addVariableSubst(origVarName.toString(), substVarName.toString());
+            String prevSubst = addVariableSubst(origVarName.toString(), substVarName.toString());
             
             thenBlock = transform(thenPart);
             thenBlock = at(cond).Block(0, List.<JCStatement> of(decl2, thenBlock));
             
             // Deactivate the above variable substitution
-            gen.removeVariableSubst(origVarName.toString(), prevSubst);
+            removeVariableSubst(origVarName.toString(), prevSubst);
             
             test = at(cond).TypeTest(make().Ident(decl.name), rawType);
         } else if (cond instanceof Tree.BooleanCondition) {
             Tree.BooleanCondition booleanCondition = (Tree.BooleanCondition) cond;
-            test = makeBooleanTest(gen.expressionGen.transformExpression(booleanCondition.getExpression()), true);
+            test = makeBooleanTest(expressionGen().transformExpression(booleanCondition.getExpression()), true);
         } else {
             throw new RuntimeException("Not implemented: " + cond.getNodeType());
         }
@@ -214,34 +224,34 @@ public class StatementTransformer extends AbstractTransformer {
         
         String loop_var_name = variable.getIdentifier().getText();
         ProducedType sequenceElementType = iterDecl.getSpecifierExpression().getExpression().getTypeModel().getTypeArgumentList().get(0);
-        ProducedType item_type = gen.typeFact.getIteratorType(sequenceElementType );
-        JCExpression iter_type_expr = gen.makeJavaType(item_type , CeylonTransformer.TYPE_PARAM);
-        JCExpression item_type_expr = gen.makeJavaType(gen.actualType(variable));
-        List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(variable.getDeclarationModel(), gen.actualType(variable));
+        ProducedType item_type = typeFact().getIteratorType(sequenceElementType );
+        JCExpression iter_type_expr = makeJavaType(item_type , CeylonTransformer.TYPE_PARAM);
+        JCExpression item_type_expr = makeJavaType(actualType(variable));
+        List<JCAnnotation> annots = makeJavaTypeAnnotations(variable.getDeclarationModel(), actualType(variable));
 
         // ceylon.language.Iterator<T> $V$iter$X = ITERABLE.iterator();
-        JCExpression containment = gen.expressionGen.transformExpression(iterDecl.getSpecifierExpression().getExpression());
-        JCVariableDecl iter_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(aliasName(loop_var_name + "$iter")), iter_type_expr, at(stmt).Apply(null, gen.makeSelect(containment, "iterator"), List.<JCExpression> nil()));
+        JCExpression containment = expressionGen().transformExpression(iterDecl.getSpecifierExpression().getExpression());
+        JCVariableDecl iter_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(aliasName(loop_var_name + "$iter")), iter_type_expr, at(stmt).Apply(null, makeSelect(containment, "iterator"), List.<JCExpression> nil()));
         JCIdent iter_id = at(stmt).Ident(iter_decl.getName());
         
         // final U n = $V$iter$X.getHead();
         // or
         // final U n = $V$iter$X.getHead().getKey();
-        JCExpression iter_head = at(stmt).Apply(null, gen.makeSelect(iter_id, Util.getGetterName("head")), List.<JCExpression> nil());
+        JCExpression iter_head = at(stmt).Apply(null, makeSelect(iter_id, Util.getGetterName("head")), List.<JCExpression> nil());
         JCExpression loop_var_init;
         if (variable2 == null) {
             loop_var_init = iter_head;
         } else {
-            loop_var_init = at(stmt).Apply(null, gen.makeSelect(iter_head, Util.getGetterName("key")), List.<JCExpression> nil());
+            loop_var_init = at(stmt).Apply(null, makeSelect(iter_head, Util.getGetterName("key")), List.<JCExpression> nil());
         }
         JCVariableDecl item_decl = at(stmt).VarDef(make().Modifiers(FINAL, annots), names().fromString(loop_var_name), item_type_expr, loop_var_init );
         List<JCStatement> for_loop = List.<JCStatement> of(item_decl);
 
         if (variable2 != null) {
             // final V n = $V$iter$X.getHead().getElement();
-            JCExpression loop_var_init2 = at(stmt).Apply(null, gen.makeSelect(at(stmt).Apply(null, gen.makeSelect(iter_id, Util.getGetterName("head")), List.<JCExpression> nil()), Util.getGetterName("element")), List.<JCExpression> nil());
+            JCExpression loop_var_init2 = at(stmt).Apply(null, makeSelect(at(stmt).Apply(null, makeSelect(iter_id, Util.getGetterName("head")), List.<JCExpression> nil()), Util.getGetterName("element")), List.<JCExpression> nil());
             String loop_var_name2 = variable2.getIdentifier().getText();
-            JCExpression item_type_expr2 = gen.makeJavaType(gen.actualType(variable2));
+            JCExpression item_type_expr2 = makeJavaType(actualType(variable2));
             JCVariableDecl item_decl2 = at(stmt).VarDef(make().Modifiers(FINAL, annots), names().fromString(loop_var_name2), item_type_expr2, loop_var_init2);
             for_loop = for_loop.append(item_decl2);
         }
@@ -250,7 +260,7 @@ public class StatementTransformer extends AbstractTransformer {
         for_loop = for_loop.appendList(transformStmts(stmt.getForClause().getBlock().getStatements()));
 
         // $V$iter$X = $V$iter$X.getTail();
-        JCExpression step = at(stmt).Assign(iter_id, at(stmt).Apply(null, gen.makeSelect(iter_id, Util.getGetterName("tail")), List.<JCExpression> nil()));
+        JCExpression step = at(stmt).Assign(iter_id, at(stmt).Apply(null, makeSelect(iter_id, Util.getGetterName("tail")), List.<JCExpression> nil()));
         
         // $i$iter$1.getHead() != null;
         JCExpression cond = at(stmt).Binary(JCTree.NE, iter_head, make().Literal(TypeTags.BOT, null));
@@ -281,12 +291,12 @@ public class StatementTransformer extends AbstractTransformer {
         
         JCExpression initialValue = null;
         if (decl.getSpecifierOrInitializerExpression() != null) {
-            initialValue = gen.expressionGen.transformExpression(decl.getSpecifierOrInitializerExpression().getExpression());
+            initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression());
         }
 
-        ProducedType t = gen.actualType(decl);
-        JCExpression type = gen.makeJavaType(t);
-        List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(decl.getDeclarationModel(), t);
+        ProducedType t = actualType(decl);
+        JCExpression type = makeJavaType(t);
+        List<JCAnnotation> annots = makeJavaTypeAnnotations(decl.getDeclarationModel(), t);
 
         int modifiers = transformLocalFieldDeclFlags(decl);
         return at(decl).VarDef(at(decl).Modifiers(modifiers, annots), atrrName, type, initialValue);
@@ -308,16 +318,16 @@ public class StatementTransformer extends AbstractTransformer {
 
     JCStatement transform(Tree.Return ret) {
         Tree.Expression expr = ret.getExpression();
-        JCExpression returnExpr = expr != null ? gen.expressionGen.transformExpression(expr) : null;
+        JCExpression returnExpr = expr != null ? expressionGen().transformExpression(expr) : null;
         return at(ret).Return(returnExpr);
     }
 
     private JCIdent transform(Tree.Identifier identifier) {
-        return at(identifier).Ident(names().fromString(gen.substitute(identifier.getText())));
+        return at(identifier).Ident(names().fromString(substitute(identifier.getText())));
     }
 
     JCStatement transform(Tree.SpecifierStatement op) {
-        return at(op).Exec(gen.expressionGen.transformAssignment(op, op.getBaseMemberExpression(), op.getSpecifierExpression().getExpression()));
+        return at(op).Exec(expressionGen().transformAssignment(op, op.getBaseMemberExpression(), op.getSpecifierExpression().getExpression()));
     }
 
     private int transformLocalFieldDeclFlags(Tree.AttributeDeclaration cdecl) {

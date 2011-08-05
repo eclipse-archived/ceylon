@@ -25,7 +25,7 @@ import com.sun.tools.javac.util.Name;
  * @author Tako Schotanus
  */
 public class MethodDefinitionBuilder {
-    private final CeylonTransformer gen;
+    private final AbstractTransformer gen;
     
     private final String name;
     
@@ -44,25 +44,25 @@ public class MethodDefinitionBuilder {
     
     private ListBuffer<JCStatement> body = ListBuffer.lb();
 
-    public static MethodDefinitionBuilder method(CeylonTransformer gen, String name) {
+    public static MethodDefinitionBuilder method(AbstractTransformer gen, String name) {
         return new MethodDefinitionBuilder(gen, name);
     }
     
-    public static MethodDefinitionBuilder constructor(CeylonTransformer gen) {
+    public static MethodDefinitionBuilder constructor(AbstractTransformer gen) {
         return new MethodDefinitionBuilder(gen, null);
     }
     
-    public static MethodDefinitionBuilder getter(CeylonTransformer gen, String name, ProducedType attrType) {
+    public static MethodDefinitionBuilder getter(AbstractTransformer gen, String name, ProducedType attrType) {
         return method(gen, Util.getGetterName(name))
             .resultType(attrType);
     }
     
-    public static MethodDefinitionBuilder setter(CeylonTransformer gen, String name, ProducedType attrType) {
+    public static MethodDefinitionBuilder setter(AbstractTransformer gen, String name, ProducedType attrType) {
         return method(gen, Util.getSetterName(name))
             .parameter(0, name, attrType);
     }
     
-    private MethodDefinitionBuilder(CeylonTransformer gen, String name) {
+    private MethodDefinitionBuilder(AbstractTransformer gen, String name) {
         this.gen = gen;
         this.name = name;
         
@@ -91,9 +91,9 @@ public class MethodDefinitionBuilder {
 
     private Name makeName(String name) {
         if (name != null) {
-            return gen.names.fromString(name);
+            return gen.names().fromString(name);
         } else {
-            return gen.names.init;
+            return gen.names().init;
         }
     }
 
@@ -134,7 +134,7 @@ public class MethodDefinitionBuilder {
                 bounds.append(gen.makeJavaType(t));
             }
         }
-        typeParams.append(gen.make().TypeParameter(gen.names.fromString(name), bounds.toList()));
+        typeParams.append(gen.make().TypeParameter(gen.names().fromString(name), bounds.toList()));
         return this;
     }
 
@@ -157,7 +157,7 @@ public class MethodDefinitionBuilder {
     public MethodDefinitionBuilder parameter(long modifiers, String name, ProducedType paramType) {
         JCExpression type = gen.makeJavaType(paramType);
         List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(paramType, true);
-        return parameter(gen.make().VarDef(gen.make().Modifiers(modifiers, annots), gen.names.fromString(name), type, null));
+        return parameter(gen.make().VarDef(gen.make().Modifiers(modifiers, annots), gen.names().fromString(name), type, null));
     }
     
     public MethodDefinitionBuilder parameter(Tree.Parameter param) {

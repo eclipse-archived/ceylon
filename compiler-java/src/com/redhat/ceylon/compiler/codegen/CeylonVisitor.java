@@ -4,31 +4,40 @@ import static com.sun.tools.javac.code.Flags.FINAL;
 
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 
-public class CeylonVisitor extends AbstractVisitor<JCTree> {
+public class CeylonVisitor extends Visitor implements NaturalVisitor {
+    protected final CeylonTransformer gen;
+    private final ListBuffer<JCTree> defs;
+    
     final ClassDefinitionBuilder classBuilder;
     final ListBuffer<JCExpression> args;
     
     public CeylonVisitor(CeylonTransformer ceylonTransformer) {
-        super(ceylonTransformer);
+        this.gen = ceylonTransformer;
+        this.defs = new ListBuffer<JCTree>();
         this.classBuilder = null;
         this.args = null;
     }
 
     public CeylonVisitor(CeylonTransformer ceylonTransformer, ClassDefinitionBuilder classBuilder) {
-        super(ceylonTransformer);
+        this.gen = ceylonTransformer;
+        this.defs = new ListBuffer<JCTree>();
         this.classBuilder = classBuilder;
         this.args = null;
     }
 
     public CeylonVisitor(CeylonTransformer ceylonTransformer, ListBuffer<JCExpression> args) {
-        super(ceylonTransformer);
+        this.gen = ceylonTransformer;
+        this.defs = new ListBuffer<JCTree>();
         this.classBuilder = null;
         this.args = args;
     }
@@ -77,15 +86,23 @@ public class CeylonVisitor extends AbstractVisitor<JCTree> {
      * Compilation Unit
      */
     
-    public void visit(Tree.ImportList imp) {
-        appendList(gen.transform(imp));
+    public void visit(Tree.ImportPath that) {
+        append(gen.transform(that));
     }
-
+    
     private boolean checkCompilerAnnotations(Tree.Declaration decl){
         boolean old = gen.disableModelAnnotations;
-        if(gen.hasCompilerAnnotation(decl, "nomodel"))
+        if(hasCompilerAnnotation(decl, "nomodel"))
             gen.disableModelAnnotations  = true;
         return old;
+    }
+
+    private boolean hasCompilerAnnotation(Tree.Declaration decl, String name){
+        for(CompilerAnnotation annotation : decl.getCompilerAnnotations()){
+            if(annotation.getIdentifier().getText().equals(name))
+                return true;
+        }
+        return false;
     }
 
     private void resetCompilerAnnotations(boolean value){
@@ -95,16 +112,16 @@ public class CeylonVisitor extends AbstractVisitor<JCTree> {
     public void visit(Tree.ClassOrInterface decl) {
         boolean annots = checkCompilerAnnotations(decl);
         if (withinClass(decl)) {
-            classBuilder.defs(gen.classGen.transform(decl));
+            classBuilder.defs(gen.classGen().transform(decl));
         } else {
-            append(gen.classGen.transform(decl));
+            append(gen.classGen().transform(decl));
         }
         resetCompilerAnnotations(annots);
     }
 
     public void visit(Tree.ObjectDefinition decl) {
         boolean annots = checkCompilerAnnotations(decl);
-        append(gen.classGen.objectClass(decl, true));
+        append(gen.classGen().objectClass(decl, true));
         resetCompilerAnnotations(annots);
     }
     
@@ -115,13 +132,13 @@ public class CeylonVisitor extends AbstractVisitor<JCTree> {
             appendList(gen.transform(decl));
         } else if (withinClassOrInterface(decl)) {
             // Class attributes
-            classGen.transform(decl, classBuilder);
+            gen.classGen().transform(decl, classBuilder);
         } else if (withinMethod(decl) && decl.getDeclarationModel().isCaptured()) {
             // Captured local attributes get turned into an inner getter/setter class
             appendList(gen.transform(decl));
         } else {
             // All other local attributes
-            append(statementGen.transform(decl));
+            append(gen.statementGen().transform(decl));
         }
         resetCompilerAnnotations(annots);
     }
@@ -129,7 +146,7 @@ public class CeylonVisitor extends AbstractVisitor<JCTree> {
     public void visit(Tree.AttributeGetterDefinition decl){
         boolean annots = checkCompilerAnnotations(decl);
         if (withinClass(decl)) {
-            classBuilder.defs(classGen.transform(decl));
+            classBuilder.defs(gen.classGen().transform(decl));
         } else {
             appendList(gen.transform(decl));
         }
@@ -138,25 +155,25 @@ public class CeylonVisitor extends AbstractVisitor<JCTree> {
 
     public void visit(final Tree.AttributeSetterDefinition decl) {
         if (withinClass(decl)) {
-            classBuilder.defs(classGen.transform(decl));
+            classBuilder.defs(gen.classGen().transform(decl));
         }
     }
 
     public void visit(Tree.MethodDefinition decl) {
         boolean annots = checkCompilerAnnotations(decl);
         if (withinClassOrInterface(decl)) {
-            classBuilder.defs(classGen.transform(decl));
+            classBuilder.defs(gen.classGen().transform(decl));
         } else {
             // Generate a wrapper class for the method
-            JCTree.JCClassDecl innerDecl = classGen.methodClass(decl);
+            JCTree.JCClassDecl innerDecl = gen.classGen().methodClass(decl);
             append(innerDecl);
             if (withinMethod(decl)) {
-                JCTree.JCIdent name = make().Ident(innerDecl.name);
-                JCVariableDecl call = at(decl).VarDef(
-                        make().Modifiers(FINAL),
-                        names().fromString(decl.getIdentifier().getText()),
+                JCTree.JCIdent name = gen.make().Ident(innerDecl.name);
+                JCVariableDecl call = gen.at(decl).VarDef(
+                        gen.make().Modifiers(FINAL),
+                        gen.names().fromString(decl.getIdentifier().getText()),
                         name,
-                        at(decl).NewClass(null, null, name, List.<JCTree.JCExpression>nil(), null));
+                        gen.at(decl).NewClass(null, null, name, List.<JCTree.JCExpression>nil(), null));
                 append(call);
             }
         }
@@ -177,7 +194,7 @@ public class CeylonVisitor extends AbstractVisitor<JCTree> {
     }
 
     public void visit(Tree.MethodDeclaration meth) {
-        classBuilder.defs(classGen.transform(meth));
+        classBuilder.defs(gen.classGen().transform(meth));
     }
 
     public void visit(Tree.Annotation ann) {
@@ -202,53 +219,53 @@ public class CeylonVisitor extends AbstractVisitor<JCTree> {
      */
 
     public void visit(Tree.Return ret) {
-        append(statementGen.transform(ret));
+        append(gen.statementGen().transform(ret));
     }
 
     public void visit(Tree.IfStatement stat) {
-        appendList(statementGen.transform(stat));
+        appendList(gen.statementGen().transform(stat));
     }
 
     public void visit(Tree.WhileStatement stat) {
-        appendList(statementGen.transform(stat));
+        appendList(gen.statementGen().transform(stat));
     }
 
 //    public void visit(Tree.DoWhileStatement stat) {
-//        append(statementGen.transform(stat));
+//        append(gen.statementGen().transform(stat));
 //    }
 
     public void visit(Tree.ForStatement stat) {
-        appendList(statementGen.transform(stat));
+        appendList(gen.statementGen().transform(stat));
     }
 
     public void visit(Tree.Break stat) {
-        appendList(statementGen.transform(stat));
+        appendList(gen.statementGen().transform(stat));
     }
 
     public void visit(Tree.SpecifierStatement op) {
-        append(statementGen.transform(op));
+        append(gen.statementGen().transform(op));
     }
 
     // FIXME: not sure why we don't have just an entry for Tree.Term here...
     public void visit(Tree.OperatorExpression op) {
-        append(at(op).Exec(expressionGen.transformExpression(op)));
+        append(gen.at(op).Exec(gen.expressionGen().transformExpression(op)));
     }
 
     public void visit(Tree.Expression tree) {
-        append(at(tree).Exec(expressionGen.transformExpression(tree)));
+        append(gen.at(tree).Exec(gen.expressionGen().transformExpression(tree)));
     }
 
     // FIXME: I think those should just go in transformExpression no?
     public void visit(Tree.PostfixOperatorExpression expr) {
-        append(expressionGen.transform(expr));
+        append(gen.expressionGen().transform(expr));
     }
 
     public void visit(Tree.PrefixOperatorExpression expr) {
-        append(expressionGen.transform(expr));
+        append(gen.expressionGen().transform(expr));
     }
 
     public void visit(Tree.ExpressionStatement tree) {
-        append(at(tree).Exec(expressionGen.transformExpression(tree.getExpression())));
+        append(gen.at(tree).Exec(gen.expressionGen().transformExpression(tree.getExpression())));
     }
     
     /*
@@ -256,25 +273,25 @@ public class CeylonVisitor extends AbstractVisitor<JCTree> {
      */
     
     public void visit(Tree.InvocationExpression expr) {
-        append(expressionGen.transform(expr));
+        append(gen.expressionGen().transform(expr));
     }
     
     public void visit(Tree.QualifiedMemberExpression access) {
-        append(expressionGen.transform(access));
+        append(gen.expressionGen().transform(access));
     }
 
     public void visit(Tree.Type type) {
         // A constructor
-        append(expressionGen.transform(type, args.toList()));
+        append(gen.expressionGen().transform(type, args.toList()));
     }
 
     public void visit(Tree.BaseTypeExpression typeExp) {
         // A constructor
-        append(expressionGen.transform(typeExp, args.toList()));
+        append(gen.expressionGen().transform(typeExp, args.toList()));
     }
 
     public void visit(Tree.BaseMemberExpression access) {
-        append(expressionGen.transform(access));
+        append(gen.expressionGen().transform(access));
     }
     
     /*
@@ -282,89 +299,89 @@ public class CeylonVisitor extends AbstractVisitor<JCTree> {
      */
     
     public void visit(Tree.This expr) {
-        at(expr);
-        append(makeIdent("this"));
+        gen.at(expr);
+        append(gen.makeIdent("this"));
     }
 
     public void visit(Tree.Super expr) {
-        at(expr);
-        append(makeIdent("super"));
+        gen.at(expr);
+        append(gen.makeIdent("super"));
     }
 
     // FIXME: port dot operator?
     public void visit(Tree.NotEqualOp op) {
-        append(expressionGen.transform(op));
+        append(gen.expressionGen().transform(op));
     }
 
     public void visit(Tree.NotOp op) {
-        append(expressionGen.transform(op));
+        append(gen.expressionGen().transform(op));
     }
 
     public void visit(Tree.AssignOp op) {
-        append(expressionGen.transform(op));
+        append(gen.expressionGen().transform(op));
     }
 
     public void visit(Tree.IsOp op) {
-        append(expressionGen.transform(op));
+        append(gen.expressionGen().transform(op));
     }
 
     public void visit(Tree.RangeOp op) {
-        append(expressionGen.transform(op));
+        append(gen.expressionGen().transform(op));
     }
 
     public void visit(Tree.EntryOp op) {
-        append(expressionGen.transform(op));
+        append(gen.expressionGen().transform(op));
     }
 
     public void visit(Tree.LogicalOp op) {
-        append(expressionGen.transform(op));
+        append(gen.expressionGen().transform(op));
     }
 
     public void visit(Tree.UnaryOperatorExpression op) {
-        append(expressionGen.transform(op));
+        append(gen.expressionGen().transform(op));
     }
 
     public void visit(Tree.BinaryOperatorExpression op) {
-        append(expressionGen.transform(op));
+        append(gen.expressionGen().transform(op));
     }
 
     public void visit(Tree.ArithmeticAssignmentOp op){
-        append(expressionGen.transform(op));
+        append(gen.expressionGen().transform(op));
     }
 
     public void visit(Tree.BitwiseAssignmentOp op){
-        append(expressionGen.transform(op));
+        append(gen.expressionGen().transform(op));
     }
 
     public void visit(Tree.LogicalAssignmentOp op){
-        append(expressionGen.transform(op));
+        append(gen.expressionGen().transform(op));
     }
 
     // NB spec 1.3.11 says "There are only two types of numeric
     // literals: literals for Naturals and literals for Floats."
     public void visit(Tree.NaturalLiteral lit) {
-        append(expressionGen.transform(lit));
+        append(gen.expressionGen().transform(lit));
     }
 
     public void visit(Tree.FloatLiteral lit) {
-        append(expressionGen.transform(lit));
+        append(gen.expressionGen().transform(lit));
     }
 
     public void visit(Tree.CharLiteral lit) {
-        append(expressionGen.transform(lit));
+        append(gen.expressionGen().transform(lit));
     }
 
     public void visit(Tree.StringLiteral string) {
-        append(expressionGen.transform(string));
+        append(gen.expressionGen().transform(string));
     }
 
     // FIXME: port TypeName?
     public void visit(Tree.InitializerExpression value) {
-        append(expressionGen.transformExpression(value.getExpression()));
+        append(gen.expressionGen().transformExpression(value.getExpression()));
     }
 
     public void visit(Tree.SequenceEnumeration value) {
-        append(expressionGen.transform(value));
+        append(gen.expressionGen().transform(value));
     }
 
     // FIXME: port Null?
@@ -373,6 +390,40 @@ public class CeylonVisitor extends AbstractVisitor<JCTree> {
     // FIXME: port LowerBoud?
     // FIXME: port EnumList?
     public void visit(Tree.StringTemplate expr) {
-        append(expressionGen.transformStringExpression(expr));
+        append(gen.expressionGen().transformStringExpression(expr));
+    }
+    
+    /**
+     * Gets all the results which were appended during the visit
+     * @return The results
+     * 
+     * @see #getSingleResult()
+     */
+    public ListBuffer<? extends JCTree> getResult() {
+        return defs;
+    }
+    
+    /**
+     * Asserts that there's a single result, and returns it
+     * @return The result
+     * 
+     * @see #getResult()
+     */
+    public <K extends JCTree> K getSingleResult() {
+        if (defs.size() != 1) {
+            throw new RuntimeException();
+        }
+        return (K) defs.first();
+    }
+    
+    private ListBuffer<JCTree> append(JCTree x) {
+        return defs.append(x);
+    }
+
+    private ListBuffer<JCTree> appendList(List<? extends JCTree> xs) {
+        for (JCTree x : xs) {
+            append(x);
+        }
+        return defs;
     }
 }
