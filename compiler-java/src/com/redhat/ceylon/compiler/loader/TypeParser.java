@@ -34,7 +34,7 @@ public class TypeParser {
             case '<':
                 if(i > nameStart){
                     // we're adding one simple type
-                    typeName = new String(chars, nameStart, i-nameStart);
+                    typeName = new String(chars, nameStart, i-nameStart).trim();
                     unify(types.peek(), loader.getType(typeName, scope), expectingUnion);
                 }// else it has already been added on the way down
                 nameStart = i+1;
@@ -73,7 +73,7 @@ public class TypeParser {
         // at any last simple type
         if(nameStart < chars.length){
             // we're adding one simple type
-            String typeName = new String(chars, nameStart, chars.length - nameStart);
+            String typeName = new String(chars, nameStart, chars.length - nameStart).trim();
             unify(types.peek(), loader.getType(typeName, scope), expectingUnion);
         }// else it has already been added on the way down 
 
