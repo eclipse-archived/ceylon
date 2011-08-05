@@ -1,0 +1,40 @@
+package com.redhat.ceylon.compiler.test.structure.klass;
+
+@.com.redhat.ceylon.compiler.metadata.java.Ceylon
+@.com.redhat.ceylon.compiler.metadata.java.Object
+public final class foo extends com.redhat.ceylon.compiler.test.structure.klass.CaseTypes {
+    
+    private foo() {
+        super("foo");
+    }
+    private static final foo value = new foo();
+    
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("com.redhat.ceylon.compiler.test.structure.klass.foo")
+    public static foo getFoo() {
+        return value;
+    }
+}
+@.com.redhat.ceylon.compiler.metadata.java.Ceylon
+@.com.redhat.ceylon.compiler.metadata.java.Object
+public final class bar extends com.redhat.ceylon.compiler.test.structure.klass.CaseTypes {
+    
+    private bar() {
+        super("bar");
+    }
+    private static final bar value = new bar();
+    
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("com.redhat.ceylon.compiler.test.structure.klass.bar")
+    public static bar getBar() {
+        return value;
+    }
+}
+@.com.redhat.ceylon.compiler.metadata.java.Ceylon
+@.com.redhat.ceylon.compiler.metadata.java.Of({"com.redhat.ceylon.compiler.metadata.java.foo", "com.redhat.ceylon.compiler.metadata.java.bar"})
+public abstract class CaseTypes extends ceylon.language.Case {
+    
+    public CaseTypes(@.com.redhat.ceylon.compiler.metadata.java.Name("name")
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("java.lang.String")
+    java.lang.String name) {
+        super(name);
+    }
+}

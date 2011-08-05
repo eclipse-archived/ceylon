@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.test.structure;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.test.CompilerTest;
@@ -76,6 +77,11 @@ public class StructureTest extends CompilerTest {
     @Test
     public void testKlsInitializerVarargs(){
         compareWithJavaSource("klass/InitializerVarargs");
+    }
+    @Ignore("M2")
+    @Test
+    public void testKlsCaseTypes(){
+        compareWithJavaSource("klass/CaseTypes");
     }
     
     //
