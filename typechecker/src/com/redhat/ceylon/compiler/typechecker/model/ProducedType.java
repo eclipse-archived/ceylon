@@ -293,7 +293,7 @@ public class ProducedType extends ProducedReference {
         return getSupertype(dec, null);
     }
     
-    public ProducedType getSupertype(final TypeDeclaration dec, 
+    private ProducedType getSupertype(final TypeDeclaration dec, 
             TypeDeclaration selfTypeToIgnore) {
         Criteria c = new Criteria() {
             @Override
