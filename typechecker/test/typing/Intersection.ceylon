@@ -60,4 +60,13 @@ class Intersection() {
         }
     }
     
+    class Consumer<in T>() {
+        shared void consume(T t) {}
+    }
+    
+    Consumer<X>|Consumer<Y> consumer = Consumer<X>();
+    Consumer<X&Y> c = consumer;
+    consumer.consume(xy);
+    @error consumer.consume(xOnly);
+    
 }

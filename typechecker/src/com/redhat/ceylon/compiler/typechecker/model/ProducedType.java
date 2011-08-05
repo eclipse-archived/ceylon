@@ -452,19 +452,33 @@ public class ProducedType extends ProducedReference {
         //the type args and unioning them
         List<ProducedType> args = new ArrayList<ProducedType>();
         for (TypeParameter tp: dec.getTypeParameters()) {
-            //TODO: construct an intersection!
-            //if (tp.isContravariant()) { ..... }
             List<ProducedType> list2 = new ArrayList<ProducedType>();
-            for (ProducedType pt: caseTypes) {
-                ProducedType st = pt.getSupertype(dec, selfTypeToIgnore);
-                if (st==null) {
-                    return null;
+            ProducedType result;
+            if (tp.isContravariant()) { 
+                for (ProducedType pt: caseTypes) {
+                    ProducedType st = pt.getSupertype(dec, selfTypeToIgnore);
+                    if (st==null) {
+                        return null;
+                    }
+                    addToIntersection(list2, st.getTypeArguments().get(tp));
                 }
-                Util.addToUnion(list2, st.getTypeArguments().get(tp));
+                IntersectionType it = new IntersectionType();
+                it.setSatisfiedTypes(list2);
+                result = it.getType();
             }
-            UnionType ut = new UnionType();
-            ut.setCaseTypes(list2);
-            args.add(ut.getType());
+            else {
+                for (ProducedType pt: caseTypes) {
+                    ProducedType st = pt.getSupertype(dec, selfTypeToIgnore);
+                    if (st==null) {
+                        return null;
+                    }
+                    addToUnion(list2, st.getTypeArguments().get(tp));
+                }
+                UnionType ut = new UnionType();
+                ut.setCaseTypes(list2);
+                result = ut.getType();
+            }
+            args.add(result);
         }
         //check that the unioned type args
         //satisfy the type constraints
