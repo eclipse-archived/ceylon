@@ -14,6 +14,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Import;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -143,6 +144,20 @@ public class TypeVisitor extends AbstractVisitor {
         }
         ut.setCaseTypes(types);
         ProducedType pt = ut.getType();
+        that.setTypeModel(pt);
+        //that.setTarget(pt);
+    }
+
+    @Override 
+    public void visit(Tree.IntersectionType that) {
+        super.visit(that);
+        IntersectionType it = new IntersectionType();
+        List<ProducedType> types = new ArrayList<ProducedType>();
+        for (Tree.StaticType st: that.getStaticTypes()) {
+            addToIntersection( types, st.getTypeModel() );
+        }
+        it.setSatisfiedTypes(types);
+        ProducedType pt = it.getType();
         that.setTypeModel(pt);
         //that.setTarget(pt);
     }

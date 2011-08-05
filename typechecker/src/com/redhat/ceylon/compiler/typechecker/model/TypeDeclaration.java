@@ -12,7 +12,7 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
 
     private ProducedType extendedType;
     private List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>();
-    private List<ProducedType> caseTypes = Collections.emptyList();
+    private List<ProducedType> caseTypes = null;
     private List<TypeParameter> typeParameters = Collections.emptyList();
     private ProducedType selfType;
 

@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
 
 import java.util.ArrayList;
@@ -53,20 +54,59 @@ public class ProducedType extends ProducedReference {
                     return true;
                 }
             }
+            else if (cases.size()==1) {
+                ProducedType st = cases.get(0);
+                return st.isExactly(type);
+            }
             else {
-                if (cases.size()==1) {
-                    ProducedType st = cases.get(0);
-                    return st.isExactly(type);
-                }
-                else {
+                return false;
+            }
+        }
+        else if (getDeclaration() instanceof IntersectionType) {
+            List<ProducedType> types = getSatisfiedTypes();
+            if (type.getDeclaration() instanceof IntersectionType) {
+                List<ProducedType> otherTypes = type.getSatisfiedTypes();
+                if (types.size()!=otherTypes.size()) {
                     return false;
                 }
+                else {
+                    for (ProducedType c: types) {
+                        boolean found = false;
+                        for (ProducedType oc: otherTypes) {
+                            if (c.isExactly(oc)) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            }
+            else if (types.size()==1) {
+                ProducedType st = types.get(0);
+                return st.isExactly(type);
+            }
+            else {
+                return false;
             }
         }
         else if (type.getDeclaration() instanceof UnionType) {
             List<ProducedType> otherCases = type.getCaseTypes();
             if (otherCases.size()==1) {
                 ProducedType st = otherCases.get(0);
+                return this.isExactly(st);
+            }
+            else {
+                return false;
+            }
+        }
+        else if (type.getDeclaration() instanceof IntersectionType) {
+            List<ProducedType> otherTypes = type.getSatisfiedTypes();
+            if (otherTypes.size()==1) {
+                ProducedType st = otherTypes.get(0);
                 return this.isExactly(st);
             }
             else {
@@ -123,6 +163,22 @@ public class ProducedType extends ProducedReference {
         else if (type.getDeclaration() instanceof UnionType) {
             for (ProducedType ct: type.getInternalCaseTypes()) {
                 if (ct!=null && isSubtypeOf(ct, selfTypeToIgnore)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        else if (type.getDeclaration() instanceof IntersectionType) {
+            for (ProducedType ct: type.getInternalSatisfiedTypes()) {
+                if (ct!=null && !isSubtypeOf(ct, selfTypeToIgnore)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        else if (getDeclaration() instanceof IntersectionType) {
+            for (ProducedType ct: getInternalSatisfiedTypes()) {
+                if (ct==null || ct.isSubtypeOf(type, selfTypeToIgnore)) {
                     return true;
                 }
             }
@@ -470,6 +526,14 @@ public class ProducedType extends ProducedReference {
             }
             return true;
         }
+        else if (getDeclaration() instanceof IntersectionType) {
+            for (ProducedType ct: getSatisfiedTypes()) {
+                if (!ct.checkVariance(covariant, contravariant, declaration)) {
+                    return false;
+                }
+            }
+            return true;
+        }
         else {
             for (TypeParameter tp: getDeclaration().getTypeParameters()) {
                 ProducedType pt = getTypeArguments().get(tp);
@@ -581,10 +645,19 @@ public class ProducedType extends ProducedReference {
                 UnionType ut = new UnionType();
                 List<ProducedType> types = new ArrayList<ProducedType>();
                 for (ProducedType ct: pt.getDeclaration().getCaseTypes()) {
-                    addCaseToUnion(ct, substitutions, types);
+                    addTypeToUnion(ct, substitutions, types);
                 }
                 ut.setCaseTypes(types);
                 dec = ut;
+            }
+            else if (pt.getDeclaration() instanceof IntersectionType) {
+                IntersectionType it = new IntersectionType();
+                List<ProducedType> types = new ArrayList<ProducedType>();
+                for (ProducedType ct: pt.getDeclaration().getSatisfiedTypes()) {
+                    addTypeToIntersection(ct, substitutions, types);
+                }
+                it.setSatisfiedTypes(types);
+                dec = it;
             }
             else {
                 if (pt.getDeclaration() instanceof TypeParameter) {
@@ -598,13 +671,23 @@ public class ProducedType extends ProducedReference {
             return replaceDeclaration(pt, dec, substitutions);
         }
 
-        void addCaseToUnion(ProducedType ct, Map<TypeParameter, ProducedType> substitutions,
+        void addTypeToUnion(ProducedType ct, Map<TypeParameter, ProducedType> substitutions,
                 List<ProducedType> types) {
             if (ct==null) {
                 types.add(null);
             }
             else {
                 addToUnion(types, substitute(ct, substitutions));
+            }
+        }
+
+        void addTypeToIntersection(ProducedType ct, Map<TypeParameter, ProducedType> substitutions,
+                List<ProducedType> types) {
+            if (ct==null) {
+                types.add(null);
+            }
+            else {
+                addToIntersection(types, substitute(ct, substitutions));
             }
         }
 
@@ -648,12 +731,24 @@ public class ProducedType extends ProducedReference {
      */
     static class InternalSubstitution extends Substitution {
     
-        @Override void addCaseToUnion(ProducedType ct,
+        private void addType(ProducedType ct,
                 Map<TypeParameter, ProducedType> substitutions,
                 List<ProducedType> types) {
             if (ct!=null) {
                 types.add(substitute(ct, substitutions));
             }
+        }
+        
+        @Override void addTypeToUnion(ProducedType ct,
+                Map<TypeParameter, ProducedType> substitutions,
+                List<ProducedType> types) {
+            addType(ct, substitutions, types);
+        }
+
+        @Override void addTypeToIntersection(ProducedType ct,
+                Map<TypeParameter, ProducedType> substitutions,
+                List<ProducedType> types) {
+            addType(ct, substitutions, types);
         }
         
     }

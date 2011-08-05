@@ -127,18 +127,18 @@ public class Util {
         if (pt==null) {
             return;
         }
-        if (pt.getDeclaration() instanceof UnionType) {
+        else if (pt.getDeclaration() instanceof UnionType) {
             for (ProducedType t: pt.getDeclaration().getCaseTypes() ) {
                 addToUnion( list, t.substitute(pt.getTypeArguments()) );
             }
         }
         else {
-            Boolean included = !pt.isWellDefined();
-            if (!included) {
+            Boolean included = pt.isWellDefined();
+            if (included) {
                 for (Iterator<ProducedType> iter = list.iterator(); iter.hasNext();) {
                     ProducedType t = iter.next();
                     if (pt.isSubtypeOf(t)) {
-                        included = true;
+                        included = false;
                         break;
                     }
                     //TODO: I think in some very rare occasions 
@@ -148,7 +148,44 @@ public class Util {
                     }
                 }
             }
-            if (!included) {
+            if (included) {
+                list.add(pt);
+            }
+        }
+    }
+    
+    /**
+     * Helper method for eliminating duplicate types from
+     * lists of types that form an intersection type, taking 
+     * into account that a supertype is a "duplicate" of its
+     * subtype.
+     */
+    public static void addToIntersection(List<ProducedType> list, ProducedType pt) {
+        if (pt==null) {
+            return;
+        }
+        else if (pt.getDeclaration() instanceof IntersectionType) {
+            for (ProducedType t: pt.getDeclaration().getSatisfiedTypes() ) {
+                addToIntersection( list, t.substitute(pt.getTypeArguments()) );
+            }
+        }
+        else {
+            Boolean included = pt.isWellDefined();
+            if (included) {
+                for (Iterator<ProducedType> iter = list.iterator(); iter.hasNext();) {
+                    ProducedType t = iter.next();
+                    if (pt.isSupertypeOf(t)) {
+                        included = false;
+                        break;
+                    }
+                    //TODO: I think in some very rare occasions 
+                    //      this can cause stack overflows!
+                    else if (pt.isSubtypeOf(t)) {
+                        iter.remove();
+                    }
+                }
+            }
+            if (included) {
                 list.add(pt);
             }
         }

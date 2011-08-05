@@ -17,6 +17,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
@@ -140,6 +141,14 @@ public class ExpressionVisitor extends AbstractVisitor {
     private boolean isCompletelyVisible(Declaration member, ProducedType pt) {
         if (pt.getDeclaration() instanceof UnionType) {
             for (ProducedType ct: pt.getDeclaration().getCaseTypes()) {
+                if ( !isCompletelyVisible(member, ct.substitute(pt.getTypeArguments())) ) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        else if (pt.getDeclaration() instanceof IntersectionType) {
+            for (ProducedType ct: pt.getDeclaration().getSatisfiedTypes()) {
                 if ( !isCompletelyVisible(member, ct.substitute(pt.getTypeArguments())) ) {
                     return false;
                 }
@@ -2150,11 +2159,14 @@ public class ExpressionVisitor extends AbstractVisitor {
                             }
                         }
                     }
-                    if (param.getCaseTypes().size()>0) {
+                    //TODO: there are no tests for this stuff
+                    //      and it could easily be broken!
+                    List<ProducedType> caseTypes = param.getCaseTypes();
+                    if (caseTypes!=null) {
                         //TODO: what if the arg type has the exact same 
                         //      cases as the param type?
                         boolean found = false;
-                        for (ProducedType ct: param.getCaseTypes()) {
+                        for (ProducedType ct: caseTypes) {
                             ProducedType cts = ct.getProducedType(receiver, member, typeArguments);
                             if (argType.isSubtypeOf(cts)) found = true;
                         }
