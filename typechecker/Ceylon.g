@@ -97,6 +97,7 @@ tokens {
     BASE_TYPE;
     QUALIFIED_TYPE;
     UNION_TYPE;
+    INTERSECTION_TYPE;
     BASE_TYPE_EXPRESSION;
     BASE_MEMBER_EXPRESSION;
     QUALIFIED_MEMBER_EXPRESSION;
@@ -509,9 +510,16 @@ typeConstraints
     ;
 
 unionType
+    : (intersectionType -> intersectionType)
+    ( ('|' intersectionType)+
+      -> ^(UNION_TYPE $unionType intersectionType+)
+    )?
+    ;
+
+intersectionType
     : (abbreviatedType -> abbreviatedType)
-    ( ('|' abbreviatedType)+
-      -> ^(UNION_TYPE $unionType abbreviatedType+)
+    ( ('&' abbreviatedType)+
+      -> ^(INTERSECTION_TYPE $intersectionType abbreviatedType+)
     )?
     ;
 
@@ -877,7 +885,7 @@ typeReference
 typeArgumentsStart
     : '<' 
       UIDENTIFIER ('.' UIDENTIFIER)* /*| 'subtype')*/ (DEFAULT_OP|ARRAY)*
-      ('|' UIDENTIFIER ('.' UIDENTIFIER)* /*| 'subtype')*/ (DEFAULT_OP|ARRAY)*)*
+      (('|'|'&') UIDENTIFIER ('.' UIDENTIFIER)* /*| 'subtype')*/ (DEFAULT_OP|ARRAY)*)*
       ('>'|'<'|','|'...')
     ;
 
@@ -1440,11 +1448,11 @@ WS
 LINE_COMMENT
     :   '//' ~('\n'|'\r')*  ('\r\n' | '\r' | '\n') 
         {
-            skip();
+            $channel = HIDDEN;
         }
     |   '//' ~('\n'|'\r')*
         {
-            skip();
+            $channel = HIDDEN;
         }
     ;   
 
@@ -1457,7 +1465,7 @@ MULTI_COMMENT
         )*
         '*/'
         {
-            skip();
+            $channel = HIDDEN;
         }
         ;
         
