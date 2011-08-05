@@ -941,8 +941,9 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             return ((TypeDeclaration)convertToDeclaration(name, DeclarationType.TYPE)).getType();
         // we're bootstrapping ceylon.language so we need to return the ProducedTypes straight from the model we're compiling
         Module languageModule = ceylonContext.getModules().getLanguageModule();
+        String simpleName = name.substring(name.lastIndexOf(".")+1);
         for(Package pkg : languageModule.getPackages()){
-            Declaration member = pkg.getDirectMember(name);
+            Declaration member = pkg.getDirectMember(simpleName);
             if(member != null)
                 return ((TypeDeclaration)member).getType();
         }
