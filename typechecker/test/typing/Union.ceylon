@@ -154,11 +154,6 @@ class Union() {
     }
     class SpecialOuter<out T>() extends Outer<T>() {}
     
-    class BadSubOuter<out T>() extends Outer<T>() {
-        shared actual class Inner(String s) 
-                extends super.Inner<String>(s) {}
-    }
-    
     Outer<String>.Inner<Natural>|Outer<Float>.Inner<Integer> foobar1 = Outer<String>().Inner<Natural>(1);
     String foobarhello1 = foobar1.hello;
     @type["Natural|Integer"] value foobaru1 = foobar1.u;
