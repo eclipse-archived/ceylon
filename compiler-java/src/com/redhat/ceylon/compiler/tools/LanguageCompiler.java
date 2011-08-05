@@ -83,6 +83,8 @@ public class LanguageCompiler extends JavaCompiler {
 
 	private CeylonModelLoader modelLoader;
 
+    private CeylonEnter ceylonEnter;
+
     /** Get the PhasedUnits instance for this context. */
     public static PhasedUnits getPhasedUnitsInstance(Context context) {
         PhasedUnits phasedUnits = context.get(phasedUnitsKey);
@@ -126,6 +128,7 @@ public class LanguageCompiler extends JavaCompiler {
             throw new RuntimeException(e);
         }
         modelLoader = CeylonModelLoader.instance(context);
+        ceylonEnter = CeylonEnter.instance(context);
     }
 
     /**
@@ -159,6 +162,8 @@ public class LanguageCompiler extends JavaCompiler {
     }
 
     private JCCompilationUnit ceylonParse(JavaFileObject filename, CharSequence readSource) {
+        if(ceylonEnter.hasRun())
+            throw new RuntimeException("Trying to load new source file after CeylonEnter has been called: "+filename);
         try {
             String source = readSource.toString();
             ANTLRStringStream input = new ANTLRStringStream(source);
