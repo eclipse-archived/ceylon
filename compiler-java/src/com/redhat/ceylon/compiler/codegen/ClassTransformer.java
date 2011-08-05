@@ -47,7 +47,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     // FIXME: figure out what insertOverloadedClassConstructors does and port it
 
-    public JCClassDecl transform(final Tree.ClassOrInterface def) {
+    public List<JCTree> transform(final Tree.ClassOrInterface def) {
         String className = def.getIdentifier().getText();
         ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder.klass(this, className);
         
@@ -279,7 +279,7 @@ public class ClassTransformer extends AbstractTransformer {
             .build();
     }
 
-    public JCClassDecl methodClass(Tree.MethodDefinition def) {
+    public List<JCTree> methodClass(Tree.MethodDefinition def) {
         String name = generateClassName(def, isToplevel(def));
         JCMethodDecl meth = transform(def, false);
         return ClassDefinitionBuilder.klass(this, name)
@@ -307,7 +307,7 @@ public class ClassTransformer extends AbstractTransformer {
         return name;
     }
 
-    public JCClassDecl objectClass(Tree.ObjectDefinition def, boolean topLevel) {
+    public List<JCTree> objectClass(Tree.ObjectDefinition def, boolean topLevel) {
         String name = generateClassName(def, topLevel);
         ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder.klass(this, name);
         

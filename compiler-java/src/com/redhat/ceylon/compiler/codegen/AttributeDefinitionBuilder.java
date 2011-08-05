@@ -46,7 +46,7 @@ public class AttributeDefinitionBuilder {
      * Generates the class and returns the generated tree.
      * @return the generated class tree, to be added to the appropriate {@link JCTree.JCCompilationUnit}.
      */
-    public JCTree build() {
+    public List<JCTree> build() {
         ListBuffer<JCTree> defs = ListBuffer.lb();
         appendDefinitionsTo(defs);
         return ClassDefinitionBuilder

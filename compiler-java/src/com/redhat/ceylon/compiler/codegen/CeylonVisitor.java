@@ -9,6 +9,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.util.Util;
+import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -115,14 +116,14 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         if (withinClass(decl)) {
             classBuilder.defs(gen.classGen().transform(decl));
         } else {
-            append(gen.classGen().transform(decl));
+            appendList(gen.classGen().transform(decl));
         }
         resetCompilerAnnotations(annots);
     }
 
     public void visit(Tree.ObjectDefinition decl) {
         boolean annots = checkCompilerAnnotations(decl);
-        append(gen.classGen().objectClass(decl, true));
+        appendList(gen.classGen().objectClass(decl, true));
         resetCompilerAnnotations(annots);
     }
     
@@ -168,10 +169,12 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         if (container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) {
             boolean isInterface = container instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
             classBuilder.defs(gen.classGen().transform(decl, isInterface));
+            if(isInterface && decl.getBlock() != null)
+                classBuilder.concreteInterfaceMemberDefs(gen.classGen().transformConcreteInterfaceMember(decl, ((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)container).getType()));
         } else {
             // Generate a wrapper class for the method
-            JCTree.JCClassDecl innerDecl = gen.classGen().methodClass(decl);
-            append(innerDecl);
+            List<JCTree> innerDecl = gen.classGen().methodClass(decl);
+            appendList(innerDecl);
             if (withinMethod(decl)) {
                 JCTree.JCIdent name = gen.make().Ident(gen.names().fromString(Util.quoteIfJavaKeyword(decl.getIdentifier().getText())));
                 JCVariableDecl call = gen.at(decl).VarDef(

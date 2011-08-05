@@ -199,12 +199,12 @@ public class CeylonTransformer extends AbstractTransformer {
                     name, 
                     initValue);
             
-            return List.of(builder.build(), var);
+            return builder.build().append(var);
         } else {
             builder
                 .getterIsStatic(true)
                 .setterIsStatic(true);
-            return List.of(builder.build());
+            return builder.build();
         }
     }
 }

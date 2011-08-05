@@ -6,13 +6,19 @@ import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.PROTECTED;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
+import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -46,6 +52,7 @@ public class ClassDefinitionBuilder {
     private final ListBuffer<JCVariableDecl> params = ListBuffer.lb();
     
     private final ListBuffer<JCTree> defs = ListBuffer.lb();
+    private final ListBuffer<JCTree> concreteInterfaceMemberDefs = ListBuffer.lb();
     private final ListBuffer<JCTree> body = ListBuffer.lb();
     private final ListBuffer<JCStatement> init = ListBuffer.lb();
     
@@ -73,16 +80,27 @@ public class ClassDefinitionBuilder {
         return false;
     }
 
-    public JCTree.JCClassDecl build() {
+    public List<JCTree> build() {
         ListBuffer<JCTree> defs = ListBuffer.lb();
         appendDefinitionsTo(defs);
-        return gen.make().ClassDef(
+        JCTree.JCClassDecl klass = gen.make().ClassDef(
                 gen.make().Modifiers(modifiers, annotations.toList()),
                 gen.names().fromString(Util.quoteIfJavaKeyword(name)),
                 typeParams.toList(),
                 extending,
                 satisfies.toList(),
                 defs.toList());
+        if(concreteInterfaceMemberDefs.isEmpty())
+            return List.<JCTree>of(klass);
+        JCTree.JCClassDecl concreteInterfaceKlass = gen.make().ClassDef(
+                gen.make().Modifiers(PUBLIC | FINAL),
+                gen.names().fromString(Util.getConcreteMemberInterfaceImplementationName(name)),
+                // FIXME: type params probably have to get added to the method type params
+                typeParams.toList(),
+                (JCTree)null,
+                List.<JCTree.JCExpression>nil(),
+                concreteInterfaceMemberDefs.toList());
+        return List.<JCTree>of(klass, concreteInterfaceKlass);
     }
 
     private void appendDefinitionsTo(ListBuffer<JCTree> defs) {
@@ -91,6 +109,44 @@ public class ClassDefinitionBuilder {
             defs.append(createConstructor());
         }
         defs.appendList(body);
+    }
+
+    private List<JCTree> appendConcreteInterfaceMembers(java.util.List<ProducedType> satisfies) {
+        ListBuffer<JCTree> members = new ListBuffer<JCTree>();
+        // FIXME: recurse in parent interfaces
+        // FIXME: do not produce method if we override it
+        for(ProducedType type : satisfies){
+            TypeDeclaration decl = type.getDeclaration();
+            for(Declaration member : decl.getMembers()){
+                if(member instanceof Method && !member.isFormal()){
+                    // this member has a body so we need to add a definition for it
+                    MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(gen, member.getName());
+                    Method method = (Method) member;
+                    ListBuffer<JCTree.JCExpression> params = ListBuffer.lb();
+                    params.append(gen.makeIdent("this"));
+                    for(Parameter param : method.getParameterLists().get(0).getParameters()){
+                        methodBuilder.parameter(param);
+                        params.append(gen.makeIdent(param.getName()));
+                    }
+                    
+                    boolean isVoid = method.getType().getProducedTypeQualifiedName().equals("ceylon.language.Void");
+                    JCMethodInvocation expr = gen.make().Apply(/*FIXME*/List.<JCTree.JCExpression>nil(), 
+                            gen.makeIdent(Util.getConcreteMemberInterfaceImplementationName(decl.getName())+"."+method.getName()), 
+                            params.toList());
+                    JCTree.JCStatement body;
+                    if (!isVoid) {
+                        methodBuilder.resultType(method.getType());
+                        body = gen.make().Return(expr);
+                    }else{
+                        body = gen.make().Exec(expr);
+                    }
+                    methodBuilder.body(body);
+                    methodBuilder.modifiers(PUBLIC);
+                    members.add(methodBuilder.build());
+                }
+            }
+        }
+        return members.toList();
     }
 
     private JCExpression getSuperclass(ProducedType extendedType) {
@@ -202,6 +258,7 @@ public class ClassDefinitionBuilder {
     
     public ClassDefinitionBuilder satisfies(java.util.List<ProducedType> satisfies) {
         this.satisfies.addAll(transformSatisfiedTypes(satisfies));
+        this.defs.addAll(appendConcreteInterfaceMembers(satisfies));
         return this;
     }
 
@@ -262,6 +319,12 @@ public class ClassDefinitionBuilder {
     
     public ClassDefinitionBuilder init(List<JCStatement> init) {
         this.init.appendList(init);
+        return this;
+    }
+
+    public ClassDefinitionBuilder concreteInterfaceMemberDefs(
+            JCMethodDecl concreteInterfaceMember) {
+        this.concreteInterfaceMemberDefs.append(concreteInterfaceMember);
         return this;
     }
 
