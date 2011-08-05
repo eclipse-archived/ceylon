@@ -16,6 +16,7 @@ import javax.tools.JavaFileObject.Kind;
 import com.redhat.ceylon.compiler.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
+import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -297,9 +298,13 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     }
     
     private Declaration convertToDeclaration(String typeName, DeclarationType declarationType) {
+        if ("ceylon.language.Bottom".equals(typeName)) {
+            return new BottomType();
+        }
         ClassSymbol classSymbol = lookupClassSymbol(typeName);
-        if(classSymbol == null)
+        if (classSymbol == null) {
             throw new RuntimeException("Failed to resolve "+typeName);
+        }
         return convertToDeclaration(classSymbol, declarationType);
     }
 
