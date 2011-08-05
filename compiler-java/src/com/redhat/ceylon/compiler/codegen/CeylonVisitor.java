@@ -8,6 +8,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
+import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -163,14 +164,16 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
 
     public void visit(Tree.MethodDefinition decl) {
         boolean annots = checkCompilerAnnotations(decl);
-        if (withinClassOrInterface(decl)) {
-            classBuilder.defs(gen.classGen().transform(decl));
+        Scope container = decl.getDeclarationModel().getContainer();
+        if (container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) {
+            boolean isInterface = container instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
+            classBuilder.defs(gen.classGen().transform(decl, isInterface));
         } else {
             // Generate a wrapper class for the method
             JCTree.JCClassDecl innerDecl = gen.classGen().methodClass(decl);
             append(innerDecl);
             if (withinMethod(decl)) {
-                JCTree.JCIdent name = gen.make().Ident(innerDecl.name);
+                JCTree.JCIdent name = gen.make().Ident(gen.names().fromString(Util.quoteIfJavaKeyword(decl.getIdentifier().getText())));
                 JCVariableDecl call = gen.at(decl).VarDef(
                         gen.make().Modifiers(FINAL),
                         gen.names().fromString(decl.getIdentifier().getText()),
@@ -196,7 +199,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.MethodDeclaration meth) {
-        classBuilder.defs(gen.classGen().transform(meth));
+        classBuilder.defs(gen.classGen().transform(meth, false));
     }
 
     public void visit(Tree.Annotation ann) {

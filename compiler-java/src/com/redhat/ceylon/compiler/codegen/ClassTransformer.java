@@ -7,11 +7,13 @@ import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
@@ -216,7 +218,7 @@ public class ClassTransformer extends AbstractTransformer {
             .build();
     }
 
-    public JCMethodDecl transform(Tree.AnyMethod def) {
+    public JCMethodDecl transform(Tree.AnyMethod def, boolean isInterface) {
         String name = def.getIdentifier().getText();
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, name);
         
@@ -235,8 +237,11 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         if (def instanceof Tree.MethodDefinition) {
-            JCBlock body = statementGen().transform(((Tree.MethodDefinition)def).getBlock());
-            methodBuilder.block(body);
+            if(!isInterface){
+                JCBlock body = statementGen().transform(((Tree.MethodDefinition)def).getBlock());
+                methodBuilder.block(body);
+            }else
+                methodBuilder.noBody();
         }
                 
         return methodBuilder
@@ -245,9 +250,38 @@ public class ClassTransformer extends AbstractTransformer {
             .build();
     }
 
+    public JCMethodDecl transformConcreteInterfaceMember(MethodDefinition def, ProducedType type) {
+        String name = def.getIdentifier().getText();
+        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(gen(), name);
+        
+        methodBuilder.parameter(FINAL, "$this", type);
+        for (Tree.Parameter param : def.getParameterLists().get(0).getParameters()) {
+            methodBuilder.parameter(param);
+        }
+
+        if (def.getTypeParameterList() != null) {
+            for (Tree.TypeParameterDeclaration t : def.getTypeParameterList().getTypeParameterDeclarations()) {
+                methodBuilder.typeParameter(t);
+            }
+        }
+
+        if (!(def.getType() instanceof VoidModifier)) {
+            methodBuilder.resultType(gen().actualType(def));
+        }
+        
+        // FIXME: this needs rewriting to map non-qualified refs to $this
+        JCBlock body = statementGen().transform(def.getBlock());
+        methodBuilder.block(body);
+                
+        return methodBuilder
+            .modifiers(transformMethodDeclFlags(def) | STATIC)
+            .isActual(isActual(def))
+            .build();
+    }
+
     public JCClassDecl methodClass(Tree.MethodDefinition def) {
         String name = generateClassName(def, isToplevel(def));
-        JCMethodDecl meth = transform(def);
+        JCMethodDecl meth = transform(def, false);
         return ClassDefinitionBuilder.klass(this, name)
             .annotations(makeAtMethod())
             .modifiers(FINAL, isShared(def) ? PUBLIC : 0)
