@@ -1,12 +1,14 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -15,7 +17,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -107,70 +108,60 @@ public class RefinementVisitor extends AbstractVisitor {
         }
         else {
             for (Declaration refined: others) {
-                if (!dec.isActual()) {
-                    that.addError("non-actual member refines an inherited member");
-                }
-                if (!refined.isDefault() && !refined.isFormal()) {
-                    that.addError("member refines a non-default, non-formal member");
-                }
-                if (dec instanceof TypedDeclaration) {
-                    TypedDeclaration tdec = (TypedDeclaration) dec;
-                    ProducedType type = tdec.getType();
-                    TypedDeclaration trefined = (TypedDeclaration) refined;
-                    //TODO: is it really correct to pass no type args here?
-                    ProducedTypedReference typedMember = ci.getType().getTypedMember(trefined, Collections.<ProducedType>emptyList());
-                    ProducedType refinedType = typedMember.getType();
-                    Tree.TypedDeclaration ttd = (Tree.TypedDeclaration) that;
-                    checkAssignable(type, refinedType, ttd.getType(), 
-                            "member type must be assignable to refined member type");
-                    if (dec instanceof Method) {
-                       if (!(refined instanceof Method)) {
-                           that.addError("method refines an attribute");
-                       }
-                       else {
-                           ParameterList params = ((Method) dec).getParameterLists().get(0);
-                           ParameterList refinedParams = ((Method) refined).getParameterLists().get(0);
-                           checkParameterTypes(that, typedMember, params, refinedParams);
-                       }
-                    }
-                    else {
-                        if (refined instanceof Method) {
-                            that.addError("attribute refines a method");
-                        }
-                        else {
-                            if (trefined.isVariable() && !tdec.isVariable()) {
-                                that.addError("non-variable attribute refines a variable attribute");
-                            }
-                        }
+                if (dec instanceof Method) {
+                    if (!(refined instanceof Method)) {
+                        that.addError("refined declaration is not a method");
                     }
                 }
                 else if (dec instanceof Class) {
                     if (!(refined instanceof Class)) {
                         that.addError("refined declaration is not a class");
                     }
-                    else {
-                        Class tdec = (Class) dec;
-                        ProducedType type = tdec.getType();
-                        Class trefined = (Class) refined;
-                        //TODO: are these really the correct type arguments?
-                        ProducedType typedMember = ci.getType().getTypeMember(trefined, tdec.getExtendedType().getTypeArgumentList());
-                        ProducedType refinedType = typedMember.getType();
-                        if (!type.isSubtypeOf(refinedType)) {
-                            that.addError("member class is not a subclass of refined class: " +
-                                    type.getProducedTypeName() + " is not a subtype of " + 
-                                    refinedType.getProducedTypeName());
+                }
+                else if (dec instanceof TypedDeclaration) {
+                    if (refined instanceof Class || refined instanceof Method) {
+                        that.addError("refined declaration is not an attribute");
+                    }
+                    else if (refined instanceof TypedDeclaration) {
+                        if ( ((TypedDeclaration) refined).isVariable() && 
+                                !((TypedDeclaration) dec).isVariable()) {
+                            that.addError("non-variable attribute refines a variable attribute");
                         }
-                        ParameterList params = tdec.getParameterList();
-                        ParameterList refinedParams = trefined.getParameterList();
-                        checkParameterTypes(that, typedMember, params, refinedParams);
                     }
                 }
+                if (!dec.isActual()) {
+                    that.addError("non-actual member refines an inherited member");
+                }
+                if (!refined.isDefault() && !refined.isFormal()) {
+                    that.addError("member refines a non-default, non-formal member");
+                }
+                List<ProducedType> typeArgs = new ArrayList<ProducedType>();
+                if (refined instanceof Generic && dec instanceof Generic) {
+                    List<TypeParameter> refinedTypeParams = ((Generic) refined).getTypeParameters();
+                    List<TypeParameter> refiningTypeParams = ((Generic) dec).getTypeParameters();
+                    if (refiningTypeParams.size()!=refinedTypeParams.size()) {
+                        that.addError("member does not have the same number of type parameters as refined member");
+                    }
+                    //TODO: check that these args satisfy
+                    //      the constraints on the type
+                    //      parameters of the refining 
+                    //      member, after substituting
+                    //      args from subclass extends to
+                    //      superclass
+                    for (TypeParameter tp: refinedTypeParams) {
+                        typeArgs.add(tp.getType());
+                    }
+                }
+                ProducedReference refinedMember = ci.getType().getTypedReference(refined, typeArgs);
+                ProducedReference refiningMember = ci.getType().getTypedReference(dec, typeArgs);
+                checkAssignable(refiningMember.getType(), refinedMember.getType(), that,
+                        "member type must be assignable to refined member type");
+                if (dec instanceof Functional && refined instanceof Functional) {
+                   ParameterList refiningParams = ((Functional) dec).getParameterLists().get(0);
+                   ParameterList refinedParams = ((Functional) refined).getParameterLists().get(0);
+                   checkParameterTypes(that, refiningMember, refinedMember, refiningParams, refinedParams);
+                }
             }
-            /*if (others.size()>1) {
-                //TODO: this is broken for recursive refinement
-                that.addError("member refines multiple inherited members: " + 
-                        dec.getName());
-            }*/
         }
     }
 
@@ -211,7 +202,8 @@ public class RefinementVisitor extends AbstractVisitor {
         }
     }
 
-    private void checkParameterTypes(Tree.Declaration that, ProducedReference pr,
+    private void checkParameterTypes(Tree.Declaration that,
+            ProducedReference member, ProducedReference refinedMember,
             ParameterList params, ParameterList refinedParams) {
         if (params.getParameters().size()!=refinedParams.getParameters().size()) {
            that.addError("member does not have the same number of parameters as the member it refines");
@@ -219,9 +211,9 @@ public class RefinementVisitor extends AbstractVisitor {
         else {
             for (int i=0; i<params.getParameters().size(); i++) {
                 Parameter rparam = refinedParams.getParameters().get(i);
-                ProducedType refinedParameterType = pr.getTypedParameter(rparam).getType();
+                ProducedType refinedParameterType = refinedMember.getTypedParameter(rparam).getType();
                 Parameter param = params.getParameters().get(i);
-                ProducedType parameterType = param.getType();
+                ProducedType parameterType = member.getTypedParameter(param).getType();
                 Tree.Type type = getParameterList(that).getParameters().get(i).getType(); //some kind of syntax error
                 if (type!=null) {
                     if (refinedParameterType==null || parameterType==null) {

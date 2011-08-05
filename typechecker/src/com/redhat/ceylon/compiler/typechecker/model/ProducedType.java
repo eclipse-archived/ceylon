@@ -352,6 +352,15 @@ public class ProducedType extends ProducedReference {
         t.setTypeArguments(subInternal(substitutions));
         return t;
     }
+    
+    public ProducedReference getTypedReference(Declaration member, List<ProducedType> typeArguments) {
+        if (member instanceof TypeDeclaration) {
+            return getTypeMember( (TypeDeclaration) member, typeArguments );
+        }
+        else {
+            return getTypedMember( (TypedDeclaration) member, typeArguments);
+        }
+    }
 
     public ProducedTypedReference getTypedMember(TypedDeclaration member, List<ProducedType> typeArguments) {
         ProducedType declaringType = getSupertype((TypeDeclaration) member.getContainer());
