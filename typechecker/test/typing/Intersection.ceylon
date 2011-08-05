@@ -68,5 +68,12 @@ class Intersection() {
     Consumer<X&Y> c = consumer;
     consumer.consume(xy);
     @error consumer.consume(xOnly);
+    @error Consumer<X>&Consumer<Y> errc = c;
+    
+    Sequence<X&Y> seqxy = { XY(), XY() };
+    Sequence<X>&Sequence<Y> useq = seqxy;
+    
+    Consumer<X|Y> consxy = Consumer<X|Y>();
+    Consumer<X>&Consumer<Y> ucons = consxy;
     
 }
