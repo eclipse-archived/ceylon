@@ -140,4 +140,13 @@ class Refinement() {
                 extends super.Inner<String>("hello") {}
     }
 
+    class BadSubclassWithParamMember4() 
+            extends WithParamMember() {
+        @error shared actual T[] seq<T>(T t) 
+                given T satisfies String { return {t}; }
+        @error shared actual class Inner<T>(T t) 
+                extends super.Inner<T>(t) 
+                given T satisfies String {}
+}
+
 }

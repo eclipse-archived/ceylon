@@ -139,17 +139,21 @@ public class RefinementVisitor extends AbstractVisitor {
                 if (refined instanceof Generic && dec instanceof Generic) {
                     List<TypeParameter> refinedTypeParams = ((Generic) refined).getTypeParameters();
                     List<TypeParameter> refiningTypeParams = ((Generic) dec).getTypeParameters();
-                    if (refiningTypeParams.size()!=refinedTypeParams.size()) {
+                    int refiningSize = refiningTypeParams.size();
+                    int refinedSize = refinedTypeParams.size();
+                    if (refiningSize!=refinedSize) {
                         that.addError("member does not have the same number of type parameters as refined member");
                     }
-                    //TODO: check that these args satisfy
-                    //      the constraints on the type
-                    //      parameters of the refining 
-                    //      member, after substituting
-                    //      args from subclass extends to
-                    //      superclass
-                    for (TypeParameter tp: refinedTypeParams) {
-                        typeArgs.add(tp.getType());
+                    for (int i=0; i<(refiningSize<=refinedSize ? refiningSize : refinedSize); i++) {
+                        TypeParameter refinedTypParam = refinedTypeParams.get(i);
+                        TypeParameter refiningTypeParam = refiningTypeParams.get(i);
+                        for (ProducedType t: refiningTypeParam.getSatisfiedTypes()) {
+                            checkAssignable(refinedTypParam.getType(), t, that, 
+                                "member type parameter " + refiningTypeParam.getName() +
+                                " has constraint which refined member type parameter " + refinedTypParam.getName() +
+                                " does not satisfy");
+                        }
+                        typeArgs.add(refinedTypParam.getType());
                     }
                 }
                 ProducedReference refinedMember = ci.getType().getTypedReference(refined, typeArgs);
