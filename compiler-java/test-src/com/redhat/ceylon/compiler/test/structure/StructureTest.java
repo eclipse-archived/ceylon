@@ -200,7 +200,7 @@ public class StructureTest extends CompilerTest {
     //
     // Type
     
-    @Test
+    @Test @Ignore
     public void testTypBasicTypes(){
         compareWithJavaSource("type/BasicTypes");
     }
