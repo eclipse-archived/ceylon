@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
@@ -174,9 +175,11 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         } else {
             // Generate a wrapper class for the method
             List<JCTree> innerDecl = gen.classGen().methodClass(decl);
+            // This is a bit lame, but we know that for a methodClass we have only one decl and it's a ClassDecl
+            JCTree.JCClassDecl classDecl = (JCClassDecl) innerDecl.get(0);
             appendList(innerDecl);
             if (withinMethod(decl)) {
-                JCTree.JCIdent name = gen.make().Ident(gen.names().fromString(Util.quoteIfJavaKeyword(decl.getIdentifier().getText())));
+                JCTree.JCIdent name = gen.make().Ident(classDecl.name);
                 JCVariableDecl call = gen.at(decl).VarDef(
                         gen.make().Modifiers(FINAL),
                         gen.names().fromString(decl.getIdentifier().getText()),
