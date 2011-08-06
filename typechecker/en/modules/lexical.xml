@@ -36,15 +36,16 @@
                 and extends until <literal>*/</literal>, and</para>
             </listitem>
             <listitem>
-                <para>an end-of-line comment begins with <literal>//</literal> and 
-                extends until a line terminator: an ASCII <literal>LF</literal>,
-                <literal>CR</literal> or <literal>CR LF</literal>.</para>
+                <para>an end-of-line comment begins with <literal>//</literal> 
+                or <literal>#!</literal> and extends until a line terminator: an 
+                ASCII <literal>LF</literal>, <literal>CR</literal> or 
+                <literal>CR LF</literal>.</para>
             </listitem>
         </itemizedlist>
         
         <para>Both kinds of comments can be nested.</para>
         
-        <programlisting>LineComment: "//" ~(Newline|Return)* (Return Newline | Return | Newline)</programlisting>
+        <programlisting>LineComment: ("//"|"#!") ~(Newline|Return)* (Return Newline | Return | Newline)?</programlisting>
         
         <programlisting>MultilineComment: "/*" ( MultilineCommmentCharacter | MultilineComment )* "*/"</programlisting>
         
@@ -59,6 +60,8 @@
    multiple lines
 */</programlisting>
   
+        <programlisting>#!/usr/bin/ceylon</programlisting>
+        
         <para>Comments are treated as whitespace by both the compiler and documentation
         compiler. Comments may act as token separators, but their content is immediately 
         discarded by the lexer.</para>
