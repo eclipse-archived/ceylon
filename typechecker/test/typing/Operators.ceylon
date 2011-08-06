@@ -1,3 +1,4 @@
+@error;
 class Operators() {
     
     class X() {}

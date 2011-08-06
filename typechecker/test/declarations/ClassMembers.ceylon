@@ -1,3 +1,4 @@
+@error;
 abstract class Classes() {
     
     variable Natural count := 0;

@@ -1,3 +1,4 @@
+@error;
 class Primaries() {
     
     class C() extends IdentifiableObject() {}

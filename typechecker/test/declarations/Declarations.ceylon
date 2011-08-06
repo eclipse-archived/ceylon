@@ -1,3 +1,4 @@
+@error;
 interface Declarations {
     
     class Y() {}
