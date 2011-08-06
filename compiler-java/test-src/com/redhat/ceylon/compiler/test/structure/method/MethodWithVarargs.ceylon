@@ -9,7 +9,7 @@ class MethodWithVarargs() {
     void m() {
         f1(1, 2, 3);
         f2(1, 2, 3);
-        f1(1);
+        f1();
         f2(1);
     }
 }

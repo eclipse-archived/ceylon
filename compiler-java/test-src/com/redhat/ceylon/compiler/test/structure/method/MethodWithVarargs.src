@@ -1,7 +1,26 @@
 package com.redhat.ceylon.compiler.test.structure.method;
 
 class MethodWithVarargs {
-    //FIXME
+    
+    public final void f1(final .java.lang.Object ns) {
+        for (ceylon.language.Iterator<? extends ceylon.language.Natural> $n$iter$0 = /* CAST - TALK TO TAKO */ns.iterator(); $n$iter$0.getHead() != null; $n$iter$0 = $n$iter$0.getTail()) {
+            final ceylon.language.Natural n = $n$iter$0.getHead();
+        }
+    }
+    
+    public final void f2(final ceylon.language.Natural i, final .java.lang.Object ns) {
+        for (ceylon.language.Iterator<? extends ceylon.language.Natural> $n$iter$1 = /* CAST - TALK TO TAKO */ns.iterator(); $n$iter$1.getHead() != null; $n$iter$1 = $n$iter$1.getTail()) {
+            final ceylon.language.Natural n = $n$iter$1.getHead();
+        }
+    }
+    
+    private final void m() {
+        f1(CREATE_SEQUENCE_HERE(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L)));
+        f2(.ceylon.language.Natural.instance(1L), CREATE_SEQUENCE_HERE(.ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L)));
+        f1(PASS_EMPTY_HERE);
+        f2(.ceylon.language.Natural.instance(1L), PASS_EMPTY_HERE);
+    }
+    
     MethodWithVarargs() {
     }
 }
