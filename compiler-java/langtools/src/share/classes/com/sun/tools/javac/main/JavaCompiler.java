@@ -263,10 +263,6 @@ public class JavaCompiler implements ClassReader.SourceCompleter {
      */
     protected TransTypes transTypes;
 
-    /** The Ceylon lowerer.
-     */
-    protected LowerCeylon lowerCeylon;
-
     /** The syntactic sugar desweetener.
      */
     protected Lower lower;
@@ -350,7 +346,6 @@ public class JavaCompiler implements ClassReader.SourceCompleter {
         flow = Flow.instance(context);
         transTypes = TransTypes.instance(context);
         lower = Lower.instance(context);
-        lowerCeylon = LowerCeylon.instance(context);
         annotate = Annotate.instance(context);
         types = Types.instance(context);
         taskListener = context.get(TaskListener.class);
@@ -1287,9 +1282,6 @@ public class JavaCompiler implements ClassReader.SourceCompleter {
 
             make.at(Position.FIRSTPOS);
             TreeMaker localMake = make.forToplevel(env.toplevel);
-
-            if (Context.isCeylon())
-                env.tree = lowerCeylon.translateTopLevelClass(env.tree, localMake);
 
             if (env.tree instanceof JCCompilationUnit) {
                 if (!(stubOutput || sourceOutput || printFlat)) {
