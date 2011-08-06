@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
-import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisMessage;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.parser.LexError;
+import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
+import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -16,7 +18,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 public class AssertionVisitor extends Visitor implements NaturalVisitor {
     
     private boolean expectingError = false;
-    private List<AnalysisMessage> foundErrors = new ArrayList<AnalysisMessage>();
+    private List<Message> foundErrors = new ArrayList<Message>();
     private int errors = 0;
     private int warnings = 0;
 
@@ -60,14 +62,26 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
             }
         }
         boolean b = expectingError;
-        List<AnalysisMessage> f = foundErrors;
+        List<Message> f = foundErrors;
         expectingError = false;
-        foundErrors = new ArrayList<AnalysisMessage>();
-        initExpectingError(that);
+        foundErrors = new ArrayList<Message>();
+        initExpectingError(that.getCompilerAnnotations());
         super.visit(that);
         checkErrors(that);
         expectingError = b;
         foundErrors = f;
+    }
+    
+    @Override
+    public void visit(Tree.CompilationUnit that) {
+    	expectingError = false;
+        foundErrors = new ArrayList<Message>();
+    	initExpectingError(that.getCompilerAnnotations());
+        foundErrors.addAll(that.getErrors());
+        checkErrors(that);
+        foundErrors = new ArrayList<Message>();
+    	expectingError = false;
+    	super.visitAny(that);
     }
     
     @Override
@@ -97,6 +111,24 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
             that.getUnit().getFilename());
     }
 
+    protected void out(Node that, LexError err) {
+        errors++;
+        System.err.println(
+            "lex error encountered [" +
+            err.getMessage() + "] at " + 
+            err.getHeader() + " of " + 
+            that.getUnit().getFilename());
+    }
+
+    protected void out(Node that, ParseError err) {
+        errors++;
+        System.err.println(
+            "parse error encountered [" +
+            err.getMessage() + "] at " + 
+            err.getHeader() + " of " + 
+            that.getUnit().getFilename());
+    }
+
     protected void out(AnalysisError err) {
         errors++;
         System.err.println(
@@ -119,16 +151,24 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
 
     private void checkErrors(Node that) {
         if (expectingError) {
-            for (AnalysisMessage err: foundErrors) {
-                if (err instanceof AnalysisError) {
+            for (Message err: foundErrors) {
+                if (err instanceof AnalysisError ||
+                		err instanceof LexError ||
+                		err instanceof ParseError) {
                     return;
                 }
             }
             out(that, "no error encountered");
         }
         else {
-            for (AnalysisMessage err: foundErrors) {
-                if (err instanceof AnalysisError) {
+            for (Message err: foundErrors) {
+                if (err instanceof LexError) {
+                    out( that, (LexError) err );
+                }
+                else if (err instanceof ParseError) {
+                    out( that, (ParseError) err );
+                }
+                else if (err instanceof AnalysisError) {
                     out( (AnalysisError) err );
                 }
                 else if (err instanceof AnalysisWarning) {
@@ -140,8 +180,8 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         }
     }
     
-    private void initExpectingError(Tree.StatementOrArgument that) {
-        for (Tree.CompilerAnnotation c: that.getCompilerAnnotations()) {
+    private void initExpectingError(List<Tree.CompilerAnnotation> annotations) {
+        for (Tree.CompilerAnnotation c: annotations) {
             if (c.getIdentifier().getText().equals("error")) {
                 expectingError = true;
             }

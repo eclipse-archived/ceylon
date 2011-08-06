@@ -1,8 +1,9 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 
-public class AnalysisWarning implements AnalysisMessage {
+public class AnalysisWarning implements Message {
     
     private Node treeNode;
     private String message;

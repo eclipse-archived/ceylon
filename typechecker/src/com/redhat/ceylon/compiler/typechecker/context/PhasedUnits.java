@@ -108,22 +108,26 @@ public class PhasedUnits {
             CeylonParser parser = new CeylonParser(tokens);
             CeylonParser.compilationUnit_return r = parser.compilationUnit();
 
-            List<LexError> lexerErrors = lexer.getErrors();
-            for (LexError le : lexerErrors) {
-                System.out.println("Lexer error in " + file.getName() + ": " + le.getMessage(lexer));
-            }
-
-            List<ParseError> parserErrors = parser.getErrors();
-            for (ParseError pe : parserErrors) {
-                System.out.println("Parser error in " + file.getName() + ": " + pe.getMessage(parser));
-            }
-
             com.redhat.ceylon.compiler.typechecker.model.Package p = moduleBuilder.getCurrentPackage();
             CommonTree t = (CommonTree) r.getTree();
             Tree.CompilationUnit cu = new CustomBuilder().buildCompilationUnit(t);
             PhasedUnit phasedUnit = new PhasedUnit(file, srcDir, cu, p, moduleBuilder, context);
             phasedUnit.setParser(parser);
             addPhasedUnit(file, phasedUnit);
+
+            List<LexError> lexerErrors = lexer.getErrors();
+            for (LexError le : lexerErrors) {
+                //System.out.println("Lexer error in " + file.getName() + ": " + le.getMessage());
+                cu.addLexError(le);
+            }
+            lexerErrors.clear();
+
+            List<ParseError> parserErrors = parser.getErrors();
+            for (ParseError pe : parserErrors) {
+                //System.out.println("Parser error in " + file.getName() + ": " + pe.getMessage());
+                cu.addParseError(pe);
+            }
+            parserErrors.clear();
 
         }
     }

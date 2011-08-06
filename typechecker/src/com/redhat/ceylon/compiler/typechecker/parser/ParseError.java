@@ -2,19 +2,33 @@ package com.redhat.ceylon.compiler.typechecker.parser;
 
 import org.antlr.runtime.RecognitionException;
 
-public class ParseError extends RecognitionError {
+import com.redhat.ceylon.compiler.typechecker.tree.Message;
+
+public class ParseError extends RecognitionError implements Message {
 	
-	public ParseError(RecognitionException re, String[] tn) {
+	private CeylonParser parser;
+	
+	public ParseError(CeylonParser parser, RecognitionException re, String[] tn) {
 		super(re, tn);
+		this.parser = parser;
 	}
 
 	public String getToken() {
 		return recognitionException.token.getText();
 	}
 	
-	public String getMessage(CeylonParser parser) {
-		return parser.getErrorHeader(recognitionException) + " - " +
-			parser.getErrorMessage(recognitionException, tokenNames);
+	public String getHeader() {
+		return parser.getErrorHeader(recognitionException);
+	}
+	
+	@Override 
+	public String getMessage() {
+		return parser.getErrorMessage(recognitionException, tokenNames);
+	}
+	
+	@Override
+	public String toString() {
+		return getMessage();
 	}
 	
 }

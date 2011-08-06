@@ -31,7 +31,8 @@ public class TypeChecker {
     private final StatisticsVisitor statsVisitor;
 
     //package level
-    TypeChecker(VFS vfs, List<VirtualFile> srcDirectories, boolean verifyDependencies, AssertionVisitor assertionVisitor, boolean verbose) {
+    TypeChecker(VFS vfs, List<VirtualFile> srcDirectories, boolean verifyDependencies, 
+    		AssertionVisitor assertionVisitor, boolean verbose) {
         long start = System.nanoTime();
         this.srcDirectories = srcDirectories;
         this.verbose = verbose;

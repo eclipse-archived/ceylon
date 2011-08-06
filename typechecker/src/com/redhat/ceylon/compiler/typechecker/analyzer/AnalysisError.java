@@ -1,8 +1,9 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 
-public class AnalysisError implements AnalysisMessage {
+public class AnalysisError implements Message {
     
     private Node treeNode;
     private String message;

@@ -8,10 +8,11 @@ import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
-import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisMessage;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.parser.LexError;
+import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
 import com.redhat.ceylon.compiler.typechecker.util.PrintVisitor;
 
 public abstract class Node {
@@ -20,7 +21,7 @@ public abstract class Node {
     private final CommonTree antlrTreeNode;
     private Scope scope;
     private Unit unit;
-    private List<AnalysisMessage> errors = new ArrayList<AnalysisMessage>();
+    private List<Message> errors = new ArrayList<Message>();
     
     protected Node(CommonTree antlrTreeNode) {
         this.antlrTreeNode = antlrTreeNode; 
@@ -74,7 +75,7 @@ public abstract class Node {
     /**
      * The compilation errors belonging to this node.
      */
-    public List<AnalysisMessage> getErrors() {
+    public List<Message> getErrors() {
         return errors;
     }
     
@@ -84,6 +85,14 @@ public abstract class Node {
     
     public void addWarning(String message) {
         errors.add( new AnalysisWarning(this, message) );
+    }
+    
+    public void addParseError(ParseError error) {
+        errors.add(error);
+    }
+    
+    public void addLexError(LexError error) {
+        errors.add(error);
     }
     
     public abstract void visitChildren(Visitor visitor);

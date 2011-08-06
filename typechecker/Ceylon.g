@@ -118,7 +118,7 @@ tokens {
             = new java.util.ArrayList<ParseError>();
     @Override public void displayRecognitionError(String[] tn,
             RecognitionException re) {
-        errors.add(new ParseError(re, tn));
+        errors.add(new ParseError(this, re, tn));
     }
     public java.util.List<ParseError> getErrors() {
         return errors;
@@ -130,7 +130,7 @@ tokens {
             = new java.util.ArrayList<LexError>();
     @Override public void displayRecognitionError(String[] tn,
             RecognitionException re) {
-        errors.add(new LexError(re, tn));
+        errors.add(new LexError(this, re, tn));
     }
     public java.util.List<LexError> getErrors() {
         return errors;
@@ -138,10 +138,11 @@ tokens {
 }
 
 compilationUnit
-    : importDeclaration*
+    : (compilerAnnotation+ ';')?
+      importDeclaration*
       annotatedDeclaration2+
       EOF
-    -> ^(COMPILATION_UNIT ^(IMPORT_LIST importDeclaration+)? annotatedDeclaration2+)
+    -> ^(COMPILATION_UNIT compilerAnnotation* ^(IMPORT_LIST importDeclaration+)? annotatedDeclaration2+)
     ;
 
 importDeclaration
