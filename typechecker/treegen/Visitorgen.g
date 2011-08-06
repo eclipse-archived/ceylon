@@ -12,6 +12,7 @@ nodeList : {
            println("package com.redhat.ceylon.compiler.typechecker.tree;\n");
            println("import static com.redhat.ceylon.compiler.typechecker.tree.Tree.*;\n");
            println("public abstract class Visitor {\n");
+           println("    public void handleException(Exception e, Node that) { that.handleException(e, this); }\n");
            println("    public void visitAny(Node that) { that.visitChildren(this); }\n");
            }
            (DESCRIPTION? node)+ 

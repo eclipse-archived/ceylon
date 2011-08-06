@@ -163,5 +163,20 @@ public abstract class Node {
         return token.getLine()!=0 || 
                 token.getCharPositionInLine()!=-1;
     }
+    
+    public void handleException(Exception e, Visitor visitor) {
+	    addError(getMessage(e, visitor));
+    }
+
+    public String getMessage(Exception e, Visitor visitor) {
+		return visitor.getClass().getSimpleName() +
+	            " caused an exception visiting " + getNodeType() + 
+	            " node: " + e + " at " + getLocationInfo(e);
+	}
+
+	private String getLocationInfo(Exception e) {
+		return e.getStackTrace().length>0 ? 
+				e.getStackTrace()[0].toString() : "unknown";
+	}
 
 }

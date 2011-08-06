@@ -36,9 +36,7 @@ node : '^' '('
        { println("                visitor.visit(this);" ); }
        { println("            }" ); }
        { println("            catch (Exception e) {" ); }
-       { println("                this.addError(visitor.getClass().getSimpleName() +" ); }
-       { println("                              \" caused an exception visiting " + className($n.text) + " node: \" +" ); }
-       { println("                              e + \" at \" + (e.getStackTrace().length>0 ? e.getStackTrace()[0].toString() : \"unknown\"));" ); }
+       { println("                visitor.handleException(e, this);"); }
        { println("            }" ); }
        { println("        }\n" ); }
        { println("        @Override public void visitChildren(Visitor visitor) {" ); }
