@@ -7,6 +7,7 @@ import java.util.Map;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -17,6 +18,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BinaryOperatorExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.OrOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequenceEnumeration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.util.Util;
@@ -330,8 +332,52 @@ public class ExpressionTransformer extends AbstractTransformer {
     JCExpression transform(Tree.InvocationExpression ce) {
         final ListBuffer<JCExpression> args = new ListBuffer<JCExpression>();
 
-        for (Tree.PositionalArgument arg : ce.getPositionalArgumentList().getPositionalArguments())
-            args.append(transformArg(arg));
+        boolean isVarargs = false;
+        Declaration primaryDecl = ce.getPrimary().getDeclaration();
+        if (primaryDecl instanceof Method) {
+            Method methodDecl = (Method)primaryDecl;
+            java.util.List<Parameter> declaredParams = methodDecl.getParameterLists().get(0).getParameters();
+            int numDeclared = declaredParams.size();
+            java.util.List<PositionalArgument> passedArguments = ce.getPositionalArgumentList().getPositionalArguments();
+            int numPassed = passedArguments.size();
+            ProducedType lastDeclaredParamType = declaredParams.isEmpty() ? null : declaredParams.get(declaredParams.size() - 1).getType();
+            ProducedType lastPassedParamType = passedArguments.isEmpty() ? null : passedArguments.get(passedArguments.size() - 1).getExpression().getTypeModel();
+            if (numPassed != numDeclared
+                    || (lastDeclaredParamType != null
+                        && lastPassedParamType != null
+                        && lastDeclaredParamType.isSupertypeOf(typeFact().makeEmptyType(typeFact().makeSequenceType(lastPassedParamType))))) {
+                // => call to a varargs method
+                isVarargs = true;
+                // first, append the normal args
+                for (int ii = 0; ii < numDeclared - 1; ii++) {
+                    Tree.PositionalArgument arg = ce.getPositionalArgumentList().getPositionalArguments().get(ii);
+                    args.append(transformArg(arg));
+                }
+                JCExpression boxed;
+                // then, box the remaining passed arguments
+                if (numDeclared -1 == numPassed) {
+                    // box as Empty
+                    boxed = globalGen().getGlobalValue(makeIdent("ceylon", "language"), "$empty");
+                } else {
+                    // box with an ArraySequence<T>
+                    List<JCExpression> x = List.<JCExpression>nil();
+                    for (int ii = numDeclared - 1; ii < numPassed; ii++) {
+                        Tree.PositionalArgument arg = ce.getPositionalArgumentList().getPositionalArguments().get(ii);
+                        x = x.append(transformArg(arg));
+                    }
+                    ProducedType seqElemType = typeFact().getIteratedType(lastDeclaredParamType);//((UnionType)lastDeclaredParamType.getDeclaration()).getCaseTypes().get(1).getTypeArgumentList().get(0);
+                    ProducedType seqType = typeFact().makeDefaultSequenceType(seqElemType);
+                    JCExpression typeExpr = makeJavaType(seqType, CeylonTransformer.CLASS_NEW);
+                    boxed = make().NewClass(null, null, typeExpr, x, null);
+                }
+                args.append(boxed);
+            }
+        }
+
+        if (!isVarargs) {
+            for (Tree.PositionalArgument arg : ce.getPositionalArgumentList().getPositionalArguments())
+                args.append(transformArg(arg));
+        }
 
         CeylonVisitor visitor = new CeylonVisitor(gen(), args);
 		ce.getPrimary().visit(visitor);
