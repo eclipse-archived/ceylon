@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
@@ -127,9 +128,25 @@ public class CeylonTransformer extends AbstractTransformer {
     }
     
     public List<JCTree> transform(AnyAttribute decl) {
+        return transformAttribute(decl);
+    }
+
+    public List<JCTree> transform(Tree.AttributeSetterDefinition decl) {
+        return transformAttribute(decl);
+    }
+    
+    private List<JCTree> transformAttribute(Tree.TypedDeclaration decl) {
         at(decl);
+        String attrName = decl.getIdentifier().getText();
+        String attrClassName = attrName;
+        if (decl instanceof AttributeGetterDefinition) {
+            attrClassName += "$getter";
+        } else if (decl instanceof AttributeSetterDefinition) {
+            attrClassName += "$setter";
+        }
         AttributeDefinitionBuilder builder = globalGen()
-            .defineGlobal(makeJavaType(actualType(decl)), decl.getIdentifier().getText())
+            .defineGlobal(makeJavaType(actualType(decl)), attrName)
+            .className(attrClassName)
             .classAnnotations(makeAtAttribute())
             .valueAnnotations(makeJavaTypeAnnotations(decl.getDeclarationModel(), actualType(decl)))
             .classIsFinal(true);
@@ -141,26 +158,33 @@ public class CeylonTransformer extends AbstractTransformer {
                 .setterIsPublic(true);
         }
         
-        if (!decl.getDeclarationModel().isVariable()) {
-            builder.immutable();
-        }
-
-        if (decl instanceof AttributeDeclaration) {
-            AttributeDeclaration adecl = (AttributeDeclaration)decl;
-            if (adecl.getSpecifierOrInitializerExpression() != null) {
-                builder.initialValue(expressionGen().transformExpression(
-                        adecl.getSpecifierOrInitializerExpression().getExpression()));
-            }
+        if (decl instanceof AttributeSetterDefinition) {
+            AttributeSetterDefinition sdef = (AttributeSetterDefinition)decl;
+            JCBlock block = make().Block(0, statementGen().transformStmts(sdef.getBlock().getStatements()));
+            builder.setterBlock(block);
+            builder.skipGetter();
         } else {
-            AttributeGetterDefinition gdef = (AttributeGetterDefinition)decl;
-            JCBlock block = make().Block(0, statementGen().transformStmts(gdef.getBlock().getStatements()));
-            builder.getterBlock(block);
+            if (decl instanceof AttributeDeclaration) {
+                if (!decl.getDeclarationModel().isVariable()) {
+                    builder.immutable();
+                }
+                AttributeDeclaration adecl = (AttributeDeclaration)decl;
+                if (adecl.getSpecifierOrInitializerExpression() != null) {
+                    builder.initialValue(expressionGen().transformExpression(
+                            adecl.getSpecifierOrInitializerExpression().getExpression()));
+                }
+            } else {
+                AttributeGetterDefinition gdef = (AttributeGetterDefinition)decl;
+                JCBlock block = make().Block(0, statementGen().transformStmts(gdef.getBlock().getStatements()));
+                builder.getterBlock(block);
+                builder.immutable();
+            }
         }
 
         boolean isMethodLocal = decl.getDeclarationModel().getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Method;
         if (isMethodLocal) {
             // Add a "foo foo = new foo();" at the decl site
-            JCTree.JCIdent name = make().Ident(names().fromString(decl.getIdentifier().getText()));
+            JCTree.JCIdent name = make().Ident(names().fromString(attrClassName));
             
             JCExpression initValue = at(decl).NewClass(null, null, name, List.<JCTree.JCExpression>nil(), null);
             List<JCAnnotation> annots2 = List.<JCAnnotation>nil();
@@ -168,7 +192,7 @@ public class CeylonTransformer extends AbstractTransformer {
             int modifiers = decl.getDeclarationModel().isShared() ? 0 : FINAL;
             JCTree.JCVariableDecl var = at(decl).VarDef(at(decl)
                     .Modifiers(modifiers, annots2), 
-                    names().fromString(decl.getIdentifier().getText()), 
+                    names().fromString(attrClassName), 
                     name, 
                     initValue);
             
@@ -180,6 +204,4 @@ public class CeylonTransformer extends AbstractTransformer {
             return List.of(builder.build());
         }
     }
-
-    // FIXME: figure out what CeylonTree.ReflectedLiteral maps to
 }

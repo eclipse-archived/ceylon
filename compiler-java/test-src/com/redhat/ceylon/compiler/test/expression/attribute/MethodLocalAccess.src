@@ -5,17 +5,17 @@ class MethodLocalAccess {
     private final ceylon.language.Natural m() {
         final ceylon.language.Natural n1 = .ceylon.language.Natural.instance(1L);
         
-        final class n2 {
+        final class n2$getter {
             
             ceylon.language.Natural getN2() {
                 return .ceylon.language.Natural.instance(1L);
             }
             
-            private n2() {
+            private n2$getter() {
             }
         }
-        final n2 n2 = new n2();
-        return n1.plus(n2.getN2());
+        final n2$getter n2$getter = new n2$getter();
+        return n1.plus(n2$getter.getN2());
     }
     
     MethodLocalAccess() {

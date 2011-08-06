@@ -143,9 +143,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if ((decl instanceof Getter)) {
             // must use the setter
             if (decl.getContainer() instanceof Method){
-                return at(op).Apply(List.<JCTree.JCExpression>nil(), makeIdent(decl.getName(), Util.getSetterName(decl.getName())), 
+                return at(op).Apply(List.<JCTree.JCExpression>nil(), makeIdent(decl.getName() + "$setter", Util.getSetterName(decl.getName())), 
                         List.<JCTree.JCExpression>of(rhs));
-                
             } else {
                 return at(op).Apply(List.<JCTree.JCExpression>nil(), makeIdent(Util.getSetterName(decl.getName())), 
                         List.<JCTree.JCExpression>of(rhs));            
@@ -429,7 +428,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         List.<JCExpression>nil());
             } else {// method local attr
                 result = at(member).Apply(List.<JCExpression>nil(), 
-                        makeIdent(decl.getName(), Util.getGetterName(decl.getName())), 
+                        makeIdent(decl.getName() + "$getter", Util.getGetterName(decl.getName())), 
                         List.<JCExpression>nil());
             }
         } else if (decl instanceof Value) {

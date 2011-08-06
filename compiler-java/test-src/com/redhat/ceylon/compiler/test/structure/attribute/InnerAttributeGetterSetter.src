@@ -4,21 +4,29 @@ class InnerAttributeGetterSetter {
     
     private final void m() {
         
-        final class innerGetterSetter {
+        final class innerGetterSetter$getter {
             
             ceylon.language.Natural getInnerGetterSetter() {
                 return .ceylon.language.Natural.instance(0L);
             }
             
-            void setInnerGetterSetter(ceylon.language.Natural innerGetterSetter) {
-            }
-            
-            private innerGetterSetter() {
+            private innerGetterSetter$getter() {
             }
         }
-        final innerGetterSetter innerGetterSetter = new innerGetterSetter();
-        final ceylon.language.Natural n = innerGetterSetter.getInnerGetterSetter();
-        innerGetterSetter.setInnerGetterSetter(.ceylon.language.Natural.instance(1L));
+        final innerGetterSetter$getter innerGetterSetter$getter = new innerGetterSetter$getter();
+        
+        final class innerGetterSetter$setter {
+            private .java.lang.Object value;
+            
+            void setInnerGetterSetter(.java.lang.Object innerGetterSetter) {
+            }
+            
+            private innerGetterSetter$setter() {
+            }
+        }
+        final innerGetterSetter$setter innerGetterSetter$setter = new innerGetterSetter$setter();
+        final ceylon.language.Natural n = innerGetterSetter$getter.getInnerGetterSetter();
+        innerGetterSetter$setter.setInnerGetterSetter(.ceylon.language.Natural.instance(1L));
     }
     
     InnerAttributeGetterSetter() {

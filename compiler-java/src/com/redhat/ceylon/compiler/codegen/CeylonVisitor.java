@@ -156,6 +156,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(final Tree.AttributeSetterDefinition decl) {
         if (withinClass(decl)) {
             classBuilder.defs(gen.classGen().transform(decl));
+        } else {
+            appendList(gen.transform(decl));
         }
     }
 

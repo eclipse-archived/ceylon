@@ -16,6 +16,7 @@ public class AttributeDefinitionBuilder {
 
     private final JCTree.JCExpression variableType;
     private final String variableName;
+    private String className;
 
     private long classFlags;
 
@@ -37,7 +38,7 @@ public class AttributeDefinitionBuilder {
     public AttributeDefinitionBuilder(AbstractTransformer owner, JCTree.JCExpression variableType, String variableName) {
         this.owner = owner;
         this.variableType = variableType;
-        this.variableName = variableName;
+        this.className = this.variableName = variableName;
         this.fieldName = owner.names().fromString("value");
     }
 
@@ -49,7 +50,7 @@ public class AttributeDefinitionBuilder {
         ListBuffer<JCTree> defs = ListBuffer.lb();
         appendDefinitionsTo(defs);
         return ClassDefinitionBuilder
-            .klass(owner, variableName)
+            .klass(owner, className)
             .modifiers(classFlags)
             .constructorModifiers(Flags.PRIVATE)
             .annotations(classAnnotations)
@@ -117,7 +118,7 @@ public class AttributeDefinitionBuilder {
     }
 
     private JCTree.JCBlock makeSetterBlock() {
-        if (getterBlock != null) {
+        if (setterBlock != null) {
             return setterBlock != null ? setterBlock : createEmptyBlock();
         } else {
             return generateDefaultSetterBlock();
@@ -137,6 +138,17 @@ public class AttributeDefinitionBuilder {
                                 owner.make().Ident(paramName)))));
     }
 
+    /**
+     * Sets the name for generated class.
+     * If not used will use the same name as for the variable.
+     * @param className the new class name
+     * @return this instance for method chaining
+     */
+    public AttributeDefinitionBuilder className(String className) {
+        this.className = className;
+        return this;
+    }
+    
     /**
      * Adds to the modifier flags of the generated class.
      * @param classFlags the modifier flags (see {@link Flags})
@@ -252,6 +264,14 @@ public class AttributeDefinitionBuilder {
     public AttributeDefinitionBuilder getterBlock(JCTree.JCBlock getterBlock) {
         this.getterBlock = getterBlock;
         return this;
+    }
+
+    /**
+     * Causes no getter to be generated.
+     * @return this instance for method chaining
+     */
+    public void skipGetter() {
+        this.readable = false;
     }
 
     /**

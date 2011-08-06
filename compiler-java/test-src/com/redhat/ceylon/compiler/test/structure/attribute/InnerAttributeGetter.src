@@ -4,17 +4,17 @@ class InnerAttributeGetter {
     
     private final void m() {
         
-        final class innerGetter {
+        final class innerGetter$getter {
             
             ceylon.language.Natural getInnerGetter() {
                 return .ceylon.language.Natural.instance(0L);
             }
             
-            private innerGetter() {
+            private innerGetter$getter() {
             }
         }
-        final innerGetter innerGetter = new innerGetter();
-        final ceylon.language.Natural n = innerGetter.getInnerGetter();
+        final innerGetter$getter innerGetter$getter = new innerGetter$getter();
+        final ceylon.language.Natural n = innerGetter$getter.getInnerGetter();
     }
     
     InnerAttributeGetter() {

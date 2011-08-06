@@ -11,30 +11,39 @@ class MethodLocalAssign {
                 return value;
             }
             
-            void setB1(boolean newValue) {
-                value = newValue;
+            void setB1(boolean b1) {
+                value = b1;
             }
             
             private b1() {
             }
         }
         final b1 b1 = new b1();
-        setB1(false);
+        b1.setB1(false);
         
-        final class b2 {
+        final class b2$getter {
             
             boolean getB2() {
                 return b1.getB1();
             }
             
-            void setB2(boolean newValue) {
-                b1.setB2(newValue);
-            }
-            
-            private b2() {
+            private b2$getter() {
             }
         }
-        final b2 b2 = new b2();
+        final b2$getter b2$getter = new b2$getter();
+        
+        final class b2$setter {
+            private .java.lang.Object value;
+            
+            void setB2(.java.lang.Object b2) {
+                b1.setB1(b2$getter.getB2());
+            }
+            
+            private b2$setter() {
+            }
+        }
+        final b2$setter b2$setter = new b2$setter();
+        b2$setter.setB2(true);
     }
     
     MethodLocalAssign() {
