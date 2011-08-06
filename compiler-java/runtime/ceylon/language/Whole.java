@@ -55,12 +55,7 @@ public final class Whole
         return this;
     }
 
-    public ceylon.language.Float floatXXX() {
-        throw new RuntimeException("not implemented");
-    }
-
-    @Extension
-    public ceylon.language.Decimal decimal() {
+    public ceylon.language.Float toFloat() {
         throw new RuntimeException("not implemented");
     }
 

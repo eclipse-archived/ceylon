@@ -63,13 +63,8 @@ public final class Float
         throw new RuntimeException("not implemented");
     }
 
-    public ceylon.language.Float floatXXX() {
+    public ceylon.language.Float toFloat() {
         return this;
-    }
-
-    @Extension
-    public ceylon.language.Decimal decimal() {
-        throw new RuntimeException("not implemented");
     }
 
     public ceylon.language.Float pred() {

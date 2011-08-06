@@ -1,0 +1,115 @@
+package com.redhat.ceylon.compiler.test.structure.type;
+
+class Foo {
+    
+    public final void a() {
+    }
+    
+    Foo() {
+    }
+}
+class Bar extends com.redhat.ceylon.compiler.test.structure.type.Foo {
+    
+    public final void b() {
+    }
+    
+    Bar() {
+        super();
+    }
+}
+class Baz extends com.redhat.ceylon.compiler.test.structure.type.Foo {
+    
+    public final void c() {
+    }
+    
+    Baz() {
+        super();
+    }
+}
+class GenInv<T> {
+    
+    public final void a() {
+    }
+    
+    GenInv() {
+    }
+}
+class GenCov<T> {
+    
+    public final void a() {
+    }
+    
+    GenCov() {
+    }
+}
+class GenCon<T> {
+    
+    public final void a() {
+    }
+    
+    GenCon() {
+    }
+}
+interface ISats {
+    
+    public abstract void a();
+}
+class Sats<T extends com.redhat.ceylon.compiler.test.structure.type.ISats> {
+    
+    public final void a() {
+    }
+    
+    Sats() {
+    }
+}
+class ExtVoid extends com.redhat.ceylon.compiler.test.structure.type.GenInv<.java.lang.Object> {
+    
+    ExtVoid() {
+        super();
+    }
+}
+class ExtBottom extends com.redhat.ceylon.compiler.test.structure.type.GenInv {
+    
+    ExtBottom() {
+        super();
+    }
+}
+class Conversions {
+    
+    public final void m() {
+        final com.redhat.ceylon.compiler.test.structure.type.Foo c1 = new Foo();
+        c1.a();
+        final ceylon.language.Natural n1 = .ceylon.language.Natural.instance(1L);
+        final ceylon.language.Natural n2 = null;
+        final .java.lang.Object u1 = new Bar();
+        ((com.redhat.ceylon.compiler.test.structure.type.Foo)u1).a();
+        final .java.lang.Object $u1$0 = u1;
+        if ($u1$0 instanceof com.redhat.ceylon.compiler.test.structure.type.Bar) {
+            final com.redhat.ceylon.compiler.test.structure.type.Bar $u1$1 = (com.redhat.ceylon.compiler.test.structure.type.Bar)$u1$0;
+            {
+                $u1$1.a();
+                $u1$1.b();
+            }
+        }
+        final .java.lang.Object e1;
+        final .java.lang.Object e2;
+        final .java.lang.Object e3;
+        final .java.lang.Object e4;
+        final .java.lang.Object e5;
+        final .java.lang.Object e6;
+        final com.redhat.ceylon.compiler.test.structure.type.GenInv<.java.lang.String> g1;
+        final com.redhat.ceylon.compiler.test.structure.type.GenCov<? extends .java.lang.String> g2;
+        final com.redhat.ceylon.compiler.test.structure.type.GenCon<? super .java.lang.String> g3;
+        final com.redhat.ceylon.compiler.test.structure.type.GenInv g4;
+        final com.redhat.ceylon.compiler.test.structure.type.GenInv g5;
+        final com.redhat.ceylon.compiler.test.structure.type.GenInv<.java.lang.Object> v1;
+        final com.redhat.ceylon.compiler.test.structure.type.GenCov<?> v2;
+        final com.redhat.ceylon.compiler.test.structure.type.GenCon<.java.lang.Object> v3;
+        final com.redhat.ceylon.compiler.test.structure.type.GenInv b1;
+        final com.redhat.ceylon.compiler.test.structure.type.GenCov b2;
+        final com.redhat.ceylon.compiler.test.structure.type.GenCon<?> b3;
+    }
+    
+    Conversions() {
+    }
+}

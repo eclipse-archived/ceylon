@@ -81,13 +81,8 @@ public final class Integer
     }
 
     @Extension
-    public ceylon.language.Float floatXXX() {
+    public ceylon.language.Float toFloat() {
         return ceylon.language.Float.instance(value);
-    }
-
-    @Extension
-    public ceylon.language.Decimal decimal() {
-        throw new RuntimeException("not implemented");
     }
 
     // Just a kludge til we have full autoboxing
