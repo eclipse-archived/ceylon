@@ -32,8 +32,30 @@ void testGraph() {
         return g.Edge(n1,n2);
     }
     
-    OnOffGraph.Edge e = method2(OnOffGraph());
+    OnOffGraph.Edge e2 = method2(OnOffGraph());
+
+    Edge method3<ActualGraph, Node, Edge>(ActualGraph g) 
+            given ActualGraph satisfies Graph<Node,Edge> 
+            given Node satisfies ActualGraph.Node 
+            given Edge satisfies ActualGraph.Edge {
+    	Node n1 = g.Node();
+    	Node n2 = g.Node();
+        return g.Edge(n1,n2);
+    }
+
+    OnOffGraph.Edge e3 = method3(OnOffGraph());
+
+    //it would be nice to make this work, if only we
+    //could resolve the circularity in this constraint:
+    //"given ActualGraph satisfies Graph<ActualGraph.Node,ActualGraph.Edge>"
+    /*ActualGraph.Edge method4<ActualGraph>(ActualGraph g) 
+            given ActualGraph satisfies Graph<ActualGraph.Node,ActualGraph.Edge> {
+        ActualGraph.Node n1 = g.Node();
+        ActualGraph.Node n2 = g.Node();
+        return g.Edge(n1,n2);
+    }*/
 
     Graph<BasicGraph.Node, BasicGraph.Edge>.Node nn = BasicGraph().Node();
     @error BasicGraph.Node nnn = nn;
+    
 }
