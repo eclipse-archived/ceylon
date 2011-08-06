@@ -1447,11 +1447,7 @@ WS
     ;
 
 LINE_COMMENT
-    :   '//' ~('\n'|'\r')*  ('\r\n' | '\r' | '\n') 
-        {
-            $channel = HIDDEN;
-        }
-    |   '//' ~('\n'|'\r')*
+    :   ('//'|'#!') ~('\n'|'\r')*  ('\r\n' | '\r' | '\n')?
         {
             $channel = HIDDEN;
         }
@@ -1653,14 +1649,6 @@ SEMICOLON
 
 COMMA
     :   ','
-    ;
-
-HASH
-    :   '#'
-    ;
-
-COLON
-    :   ':'
     ;
     
 SPECIFY
