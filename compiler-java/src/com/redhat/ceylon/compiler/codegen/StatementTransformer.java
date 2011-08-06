@@ -116,7 +116,8 @@ public class StatementTransformer extends AbstractTransformer {
                 expr = expressionGen().transformExpression(nonempty.getVariable().getSpecifierExpression().getExpression());
             }
 
-            test = make().Apply(List.<JCTree.JCExpression>nil(), makeSelect(make().TypeCast(syms().ceylonContainerType, expr), "getEmpty"), List.<JCTree.JCExpression>nil());
+            JCExpression emptyType = makeJavaType(typeFact().getEmptyDeclaration().getType(), CeylonTransformer.WANT_RAW_TYPE);
+            test = make().Parens(make().TypeTest(expr, emptyType));
             test = makeBooleanTest(test, true);
         } else if (cond instanceof Tree.IsCondition) {
             Tree.IsCondition isExpr = (Tree.IsCondition) cond;

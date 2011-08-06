@@ -2,8 +2,8 @@ package com.redhat.ceylon.compiler.test.statement.conditional;
 
 class MethodIfNonEmpty {
     
-    public final ceylon.language.Natural m(final .java.lang.Object x) {
-        if (((.ceylon.language.Container)x).getEmpty() == true) {
+    public final ceylon.language.Natural m(final ceylon.language.Iterable<? extends ceylon.language.Natural> x) {
+        if ((x instanceof ceylon.language.Empty) == true) {
             return .ceylon.language.Natural.instance(1L);
         }
         return .ceylon.language.Natural.instance(0L);
