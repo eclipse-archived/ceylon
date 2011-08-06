@@ -174,12 +174,12 @@ public class LanguageCompiler extends JavaCompiler {
 
             java.util.List<LexError> lexerErrors = lexer.getErrors();
             for (LexError le : lexerErrors) {
-                printError(le, le.getMessage(lexer), chars, map);
+                printError(le, le.getMessage(), chars, map);
             }
 
             java.util.List<ParseError> parserErrors = parser.getErrors();
             for (ParseError pe : parserErrors) {
-                printError(pe, pe.getMessage(parser), chars, map);
+                printError(pe, pe.getMessage(), chars, map);
             }
 
             CommonTree t = (CommonTree) r.getTree();
