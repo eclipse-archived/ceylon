@@ -150,6 +150,7 @@ public class Symtab {
     public final Type systemType;
     public final Type ceylonExtensionType;
     public final Type ceylonSharedType;
+    public final Type ceylonSmallType;
     public final Type ceylonAnyType;
     public final Type ceylonVoidType;
     public final Type ceylonNothingType;
@@ -472,6 +473,7 @@ public class Symtab {
         inheritedType = enterClass("java.lang.annotation.Inherited");
         systemType = enterClass("java.lang.System");
         ceylonSharedType = enterClass("ceylon.language.Shared");
+        ceylonSmallType = enterClass("ceylon.language.Small");
         ceylonExtensionType = enterClass("ceylon.language.Extension");
         ceylonAnyType = enterClass("ceylon.language.Any");
         ceylonVoidType = enterClass("ceylon.language.Void");

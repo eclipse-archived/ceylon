@@ -187,15 +187,19 @@ public class StructureTest extends CompilerTest {
     // Type
     
     @Test
+    public void testTypBasicTypes(){
+        compareWithJavaSource("type/BasicTypes");
+    }
+    @Test
+    public void testTypConversions(){
+        compareWithJavaSource("type/Conversions");
+    }
+    @Test
     public void testTypOptionalType(){
         compareWithJavaSource("type/OptionalType");
     }
     @Test
     public void testTypSequenceType(){
         compareWithJavaSource("type/SequenceType");
-    }
-    @Test
-    public void testTypConversions(){
-        compareWithJavaSource("type/Conversions");
     }
 }
