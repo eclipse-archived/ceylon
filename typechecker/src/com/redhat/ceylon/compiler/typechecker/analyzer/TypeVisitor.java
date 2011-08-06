@@ -495,21 +495,20 @@ public class TypeVisitor extends AbstractVisitor {
         super.visit(that);
         if (that.getTypes()!=null) {
             for (Tree.SimpleType st: that.getTypes()) {
-                if (st.getTypeModel().getDeclaration() instanceof TypeParameter) {
+                ProducedType stt = st.getTypeModel();
+				if (stt!=null && stt.getDeclaration() instanceof TypeParameter) {
                     TypeDeclaration td = (TypeDeclaration) that.getScope();
                     if (!(td instanceof TypeParameter)) {
-                        if (st.getTypeModel()!=null) {
-                            TypeParameter tp = (TypeParameter) st.getTypeModel().getDeclaration();
-                            td.setSelfType(st.getTypeModel());
-                            if (tp.isSelfType()) {
-                                st.addError("type parameter may not act as self type for two different types");
-                            }
-                            else {
-                                tp.setSelfTypedDeclaration(td);
-                            }
-                            if (that.getTypes().size()>1) {
-                                st.addError("a type may not have more than one self type");
-                            }
+                        TypeParameter tp = (TypeParameter) stt.getDeclaration();
+                        td.setSelfType(stt);
+                        if (tp.isSelfType()) {
+                            st.addError("type parameter may not act as self type for two different types");
+                        }
+                        else {
+                            tp.setSelfTypedDeclaration(td);
+                        }
+                        if (that.getTypes().size()>1) {
+                            st.addError("a type may not have more than one self type");
                         }
                     }
                 }
