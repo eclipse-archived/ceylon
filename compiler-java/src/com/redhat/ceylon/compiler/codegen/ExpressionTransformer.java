@@ -365,7 +365,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         Tree.PositionalArgument arg = ce.getPositionalArgumentList().getPositionalArguments().get(ii);
                         x = x.append(transformArg(arg));
                     }
-                    ProducedType seqElemType = typeFact().getIteratedType(lastDeclaredParamType);//((UnionType)lastDeclaredParamType.getDeclaration()).getCaseTypes().get(1).getTypeArgumentList().get(0);
+                    ProducedType seqElemType = typeFact().getIteratedType(lastDeclaredParamType);
                     ProducedType seqType = typeFact().makeDefaultSequenceType(seqElemType);
                     JCExpression typeExpr = makeJavaType(seqType, CeylonTransformer.CLASS_NEW);
                     boxed = make().NewClass(null, null, typeExpr, x, null);
