@@ -132,7 +132,20 @@ public class TypeFactory {
         return ut.getType();
     }
     
-    public ProducedType getEmptyType(ProducedType pt) {
+    public boolean isUnion(ProducedType pt) {
+        TypeDeclaration tdecl = pt.getDeclaration();
+        return (tdecl instanceof UnionType && tdecl.getCaseTypes().size() > 1);
+    }
+    
+    public boolean isUnionWithEmpty(ProducedType pt) {
+        TypeDeclaration tdecl = pt.getDeclaration();
+        if (tdecl instanceof UnionType && tdecl.getCaseTypes().size() == 2) {
+            return !(pt.minus(getEmptyDeclaration()).getDeclaration() instanceof UnionType);
+        }
+        return false;
+    }
+    
+    public ProducedType makeEmptyType(ProducedType pt) {
         if (pt==null) {
             return null;
         }
@@ -141,7 +154,7 @@ public class TypeFactory {
         }
     }
     
-    public ProducedType getOptionalType(ProducedType pt) {
+    public ProducedType makeOptionalType(ProducedType pt) {
         if (pt==null) {
             return null;
         }
@@ -150,15 +163,15 @@ public class TypeFactory {
         }
     }
     
-    public ProducedType getSequenceType(ProducedType et) {
+    public ProducedType makeSequenceType(ProducedType et) {
         return producedType(getSequenceDeclaration(), et);
     }
     
-    public ProducedType getDefaultSequenceType(ProducedType et) {
+    public ProducedType makeDefaultSequenceType(ProducedType et) {
         return producedType(getDefaultSequenceDeclaration(), et);
     }
     
-    public ProducedType getIterableType(ProducedType et) {
+    public ProducedType makeIterableType(ProducedType et) {
         return producedType(getIterableDeclaration(), et);
     }
     
@@ -171,19 +184,19 @@ public class TypeFactory {
         }
     }
 
-    public ProducedType getIteratorType(ProducedType et) {
+    public ProducedType makeIteratorType(ProducedType et) {
         return producedType(getIteratorDeclaration(), et);
     }
 
-    public ProducedType getCastableType(ProducedType et) {
+    public ProducedType makeCastableType(ProducedType et) {
         return producedType(getCastableDeclaration(), et);
     }
 
-    public ProducedType getEntryType(ProducedType kt, ProducedType vt) {
+    public ProducedType makeEntryType(ProducedType kt, ProducedType vt) {
         return producedType(getEntryDeclaration(), kt, vt);
     }
 
-    public ProducedType getRangeType(ProducedType rt) {
+    public ProducedType makeRangeType(ProducedType rt) {
         return producedType(getRangeDeclaration(), rt);
     }
 
@@ -197,5 +210,9 @@ public class TypeFactory {
 
     public ProducedType getNonemptySequenceType(ProducedType pt) {
         return pt.minus(getEmptyDeclaration()).getSupertype(getSequenceDeclaration());
+    }
+
+    public ProducedType getNonemptyIterableType(ProducedType pt) {
+        return pt.minus(getEmptyDeclaration()).getSupertype(getIterableDeclaration());
     }
 }

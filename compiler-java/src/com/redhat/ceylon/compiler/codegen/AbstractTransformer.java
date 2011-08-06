@@ -286,7 +286,7 @@ public abstract class AbstractTransformer implements Transformation {
             // For an optional type T?:
             //  - The Ceylon type T? results in the Java type T
             // Nasty cast because we just so happen to know that nothingType is a Class
-            type = type.minus((ClassOrInterface)(toPType(syms().ceylonNothingType).getDeclaration()));
+            type = typeFact().getDefiniteType(type);
         }
         
         TypeDeclaration tdecl = type.getDeclaration();
@@ -316,11 +316,6 @@ public abstract class AbstractTransformer implements Transformation {
         return toPType(t1).isExactly(t2);
     }
     
-    private boolean isUnion(ProducedType type) {
-        TypeDeclaration tdecl = type.getDeclaration();
-        return (tdecl instanceof UnionType && tdecl.getCaseTypes().size() > 1);
-    }
-    
     // Determines if a type will be erased to java.lang.Object once converted to Java
     protected boolean willEraseToObject(ProducedType type) {
         type = simplifyType(type);
@@ -328,7 +323,7 @@ public abstract class AbstractTransformer implements Transformation {
                 || sameType(syms().ceylonNothingType, type) || sameType(syms().ceylonEqualityType, type)
                 || sameType(syms().ceylonIdentifiableObjectType, type)
                 || type.getDeclaration() instanceof BottomType
-                || isUnion(type));
+                || typeFact().isUnion(type));
     }
     
     // Determine if the type is a Ceylon String (which will be erased to a Java String)
@@ -374,10 +369,16 @@ public abstract class AbstractTransformer implements Transformation {
             //   IdentifiableObject, and Bottom result in the Java type Object
             // For any other union type U|V (U nor V is Optional):
             // - The Ceylon type U|V results in the Java type Object
-            if ((flags & SATISFIES) != 0) {
-                return null;
+            ProducedType iterType = typeFact().getNonemptyIterableType(typeFact().getDefiniteType(type));
+            if (iterType != null) {
+                // We special case the erasure of X[] and X[]?
+                type = iterType;
             } else {
-                return make().Type(syms().objectType);
+                if ((flags & SATISFIES) != 0) {
+                    return null;
+                } else {
+                    return make().Type(syms().objectType);
+                }
             }
         } else if (willEraseToString(type)) {
             return make().Type(syms().stringType);
@@ -407,7 +408,7 @@ public abstract class AbstractTransformer implements Transformation {
 
             int idx = 0;
             for (ProducedType ta : tal) {
-                if (isUnion(ta)) {
+                if (typeFact().isUnion(ta)) {
                     // For any other union type U|V (U nor V is Optional):
                     // - The Ceylon type Foo<U|V> results in the raw Java type Foo.
                     // A bit ugly, but we need to escape from the loop and create a raw type, no generics
