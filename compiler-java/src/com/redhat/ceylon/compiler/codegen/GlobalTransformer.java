@@ -61,6 +61,22 @@ public final class GlobalTransformer extends AbstractTransformer {
     }
 
     /**
+     * Generates and returns the code to get the value of the global variable.
+     * @param packageName the package of the variable
+     * @param className the name of the variable
+     * @param variableName the name of the variable
+     * @return the expression tree to get the variable value.
+     */
+    public JCTree.JCExpression getGlobalValue(JCTree.JCExpression packageName, String className, String variableName) {
+        // packageName.variableName.getValue()
+        Name methodName = getGetterName(variableName);
+        return make().Apply(
+                List.<JCTree.JCExpression>nil(),
+                getClassMethod(packageName, className, methodName),
+                List.<JCTree.JCExpression>nil());
+    }
+
+    /**
      * Generates and returns the code to set the value of the global variable.
      * @param packageName the package of the variable
      * @param variableName the name of the variable
@@ -73,6 +89,23 @@ public final class GlobalTransformer extends AbstractTransformer {
         return make().Apply(
                 List.<JCTree.JCExpression>nil(),
                 getClassMethod(packageName, variableName, methodName),
+                List.of(newValue));
+    }
+
+    /**
+     * Generates and returns the code to set the value of the global variable.
+     * @param packageName the package of the variable
+     * @param className the name of the variable
+     * @param variableName the name of the variable
+     * @param newValue the value to set the variable to.
+     * @return the expression tree to set the variable value.
+     */
+    public JCTree.JCExpression setGlobalValue(JCTree.JCExpression packageName, String className, String variableName, JCTree.JCExpression newValue) {
+        // packageName.variableName.setValue(newValue)
+        Name methodName = getSetterName(variableName);
+        return make().Apply(
+                List.<JCTree.JCExpression>nil(),
+                getClassMethod(packageName, className, methodName),
                 List.of(newValue));
     }
 

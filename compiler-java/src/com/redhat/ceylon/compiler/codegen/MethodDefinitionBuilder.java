@@ -45,7 +45,7 @@ public class MethodDefinitionBuilder {
     private ListBuffer<JCStatement> body = ListBuffer.lb();
 
     public static MethodDefinitionBuilder method(AbstractTransformer gen, String name) {
-        return new MethodDefinitionBuilder(gen, name);
+        return new MethodDefinitionBuilder(gen, Util.quoteMethodName(name));
     }
     
     public static MethodDefinitionBuilder constructor(AbstractTransformer gen) {
@@ -53,22 +53,22 @@ public class MethodDefinitionBuilder {
     }
     
     public static MethodDefinitionBuilder getter(AbstractTransformer gen, String name, ProducedType attrType) {
-        return method(gen, Util.getGetterName(name))
+        return new MethodDefinitionBuilder(gen, Util.getGetterName(name))
             .resultType(attrType);
     }
     
     public static MethodDefinitionBuilder getter(AbstractTransformer gen, String name, JCExpression attrType) {
-        return method(gen, Util.getGetterName(name))
+        return new MethodDefinitionBuilder(gen, Util.getGetterName(name))
             .resultType(attrType);
     }
     
     public static MethodDefinitionBuilder setter(AbstractTransformer gen, String name, ProducedType attrType) {
-        return method(gen, Util.getSetterName(name))
+        return new MethodDefinitionBuilder(gen, Util.getSetterName(name))
             .parameter(0, name, attrType);
     }
     
     public static MethodDefinitionBuilder setter(AbstractTransformer gen, String name, JCExpression attrType, List<JCAnnotation> annots) {
-        return method(gen, Util.getSetterName(name))
+        return new MethodDefinitionBuilder(gen, Util.getSetterName(name))
             .parameter(0, name, attrType, annots);
     }
     

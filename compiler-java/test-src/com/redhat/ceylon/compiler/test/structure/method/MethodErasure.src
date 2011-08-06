@@ -1,7 +1,23 @@
 package com.redhat.ceylon.compiler.test.structure.method;
 
 class MethodErasure {
-    // FIXME
+    
+    public final .java.lang.String toString() {
+        return "foo";
+    }
+    
+    public final int hashCode() {
+        return 0;
+    }
+    
+    private final .java.lang.String $hashCode() {
+        return "bar";
+    }
+    
+    private final ceylon.language.Natural $toString() {
+        return .ceylon.language.Natural.instance(0L);
+    }
+    
     MethodErasure() {
     }
 }

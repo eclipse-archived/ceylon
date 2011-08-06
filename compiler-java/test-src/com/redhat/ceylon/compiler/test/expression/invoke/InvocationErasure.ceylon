@@ -1,7 +1,12 @@
+@nomodel
 class MethodErasure() {
-    void m() {
-        hash;
-        string;
+    Integer m1() {
+        return hash;
+    }
+    String m2() {
+        return string;
+    }
+    void m3() {
         hashCode();
         toString();
     }

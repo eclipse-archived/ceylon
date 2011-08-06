@@ -1,8 +1,9 @@
+@nomodel
 class MethodErasure() {
-    String string() {
+    shared actual String string {
         return "foo";
     }
-    Integer hash() {
+    shared actual Integer hash {
         return +0;
     }
     String hashCode() {

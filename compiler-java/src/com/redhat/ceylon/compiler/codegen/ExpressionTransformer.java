@@ -136,10 +136,15 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         if(decl.isToplevel()){
             // must use top level setter
-            return globalGen().setGlobalValue(
+            if ((decl instanceof Getter)) {
+                return globalGen().setGlobalValue(
                     makeIdent(decl.getContainer().getQualifiedNameString()),
-                    decl.getName(),
-                    rhs);
+                    decl.getName() + "$setter", decl.getName(), rhs);
+            } else {
+                return globalGen().setGlobalValue(
+                    makeIdent(decl.getContainer().getQualifiedNameString()),
+                    decl.getName(), rhs);
+            }
         } else if ((decl instanceof Getter)) {
             // must use the setter
             if (decl.getContainer() instanceof Method){
@@ -421,7 +426,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (decl.isToplevel()) {
                 result = globalGen().getGlobalValue(
                         makeIdent(decl.getContainer().getQualifiedNameString()),
-                        decl.getName());
+                        decl.getName() + "$getter", decl.getName());
             } else if (decl.isClassMember()) {
                 result =  at(member).Apply(List.<JCExpression>nil(), 
                         makeIdent(Util.getGetterName(decl.getName())), 
@@ -465,6 +470,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 path.add(decl.getName());
                 path.add(decl.getName());
                 result = makeIdent(path);
+            } else {
+                result = at(member).Ident(names().fromString(Util.quoteMethodName(member.getIdentifier().getText())));
             }
         }
         if (result == null) {

@@ -7,8 +7,8 @@ final class b1 {
         return value;
     }
     
-    static void setB1(boolean newValue) {
-        value = newValue;
+    static void setB1(boolean b1) {
+        value = b1;
     }
     
     private b1() {
@@ -21,37 +21,53 @@ public final class b2 {
         return value;
     }
     
-    public static void setB2(boolean newValue) {
-        value = newValue;
+    public static void setB2(boolean b2) {
+        value = b2;
     }
     
     private b2() {
     }
 }
-final class b3 {
+final class b3$getter {
     
     static boolean getB3() {
         return true;
     }
     
-    static void setB3(boolean newValue) {
-        // FIXME
-    }
-    
-    private b3() {
+    private b3$getter() {
     }
 }
-public final class b4 {
+@.com.redhat.ceylon.compiler.metadata.java.Ceylon
+@.com.redhat.ceylon.compiler.metadata.java.Attribute
+final class b3$setter {
+    private static .java.lang.Object value;
+    
+    static void setB3(@.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Void")
+    .java.lang.Object b3) {
+    }
+    
+    private b3$setter() {
+    }
+}
+public final class b4$getter {
     
     public static boolean getB4() {
         return true;
     }
     
-    public static void setB4(boolean newValue) {
-        // FIXME
+    private b4$getter() {
+    }
+}
+@.com.redhat.ceylon.compiler.metadata.java.Ceylon
+@.com.redhat.ceylon.compiler.metadata.java.Attribute
+public final class b4$setter {
+    private static .java.lang.Object value;
+    
+    public static void setB4(@.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Void")
+    .java.lang.Object b4) {
     }
     
-    private b4() {
+    private b4$setter() {
     }
 }
 class TopLevelAssign {
@@ -59,8 +75,8 @@ class TopLevelAssign {
     private final void m() {
         com.redhat.ceylon.compiler.test.expression.attribute.b1.setB1(false);
         com.redhat.ceylon.compiler.test.expression.attribute.b2.setB2(false);
-        com.redhat.ceylon.compiler.test.expression.attribute.b3.setB3(false);
-        com.redhat.ceylon.compiler.test.expression.attribute.b4.setB4(false);
+        com.redhat.ceylon.compiler.test.expression.attribute.b3$setter.setB3(false);
+        com.redhat.ceylon.compiler.test.expression.attribute.b4$setter.setB4(false);
     }
     
     TopLevelAssign() {
