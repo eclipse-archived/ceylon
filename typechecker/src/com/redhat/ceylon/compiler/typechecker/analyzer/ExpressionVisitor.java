@@ -895,7 +895,8 @@ public class ExpressionVisitor extends AbstractVisitor {
             if (type!=null) {
                 Parameter parameter = getMatchingParameter(parameters, arg);
                 if (parameter!=null) {
-                    inferTypeArg(tp, parameter.getType(), type, inferredTypes);
+                    inferTypeArg(tp, parameter.getType(), type, inferredTypes,
+                    		new ArrayList<TypeParameter>());
                 }
             }
         }
@@ -907,7 +908,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                 for (Tree.Expression e: args.getSequencedArgument().getExpressionList().getExpressions()) {
                     ProducedType sat = e.getTypeModel();
                     if (sat!=null) {
-                        inferTypeArg(tp, spt, sat, inferredTypes);
+                        inferTypeArg(tp, spt, sat, inferredTypes,
+                        		new ArrayList<TypeParameter>());
                     }
                 }
             }
@@ -925,7 +927,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                         ProducedType sat = args.getPositionalArguments().get(k)
                                 .getExpression().getTypeModel();
                         if (sat!=null) {
-                            inferTypeArg(tp, spt, sat, inferredTypes);
+                            inferTypeArg(tp, spt, sat, inferredTypes,
+                            		new ArrayList<TypeParameter>());
                         }
                     }
                     break;
@@ -934,28 +937,51 @@ public class ExpressionVisitor extends AbstractVisitor {
                     ProducedType argType = args.getPositionalArguments().get(i)
                             .getExpression().getTypeModel();
                     if (argType!=null) {
-                        inferTypeArg(tp, parameter.getType(), argType, inferredTypes);
+                        inferTypeArg(tp, parameter.getType(), argType, inferredTypes,
+                        		new ArrayList<TypeParameter>());
                     }
                 }
             }
         }
     }
-
+    
     private void inferTypeArg(TypeParameter tp, ProducedType paramType,
-            ProducedType argType, List<ProducedType> inferredTypes) {
+            ProducedType argType, List<ProducedType> inferredTypes, 
+            List<TypeParameter> visited) {
         if (paramType!=null) {
             if (paramType.getDeclaration()==tp) {
                 addToUnion(inferredTypes, argType);
             }
             else if (paramType.getDeclaration() instanceof UnionType) {
                 for (ProducedType ct: paramType.getDeclaration().getCaseTypes()) {
-                    inferTypeArg(tp, ct.substitute(paramType.getTypeArguments()), argType, inferredTypes);
+                    inferTypeArg(tp, ct.substitute(paramType.getTypeArguments()), argType, 
+                    		inferredTypes, visited);
                 }
             }
             else if (argType.getDeclaration() instanceof UnionType) {
                 for (ProducedType ct: argType.getDeclaration().getCaseTypes()) {
-                    inferTypeArg(tp, paramType, ct.substitute(paramType.getTypeArguments()), inferredTypes);
+                    inferTypeArg(tp, paramType, ct.substitute(paramType.getTypeArguments()), 
+                    		inferredTypes, visited);
                 }
+            }
+            else if (paramType.getDeclaration() instanceof TypeParameter) {
+            	TypeParameter tp2 = (TypeParameter) paramType.getDeclaration();
+            	if (!visited.contains(tp2)) {
+	            	visited.add(tp2);
+		            for (ProducedType pt: tp2.getSatisfiedTypes()) {
+		                inferTypeArg(tp, pt, argType, inferredTypes, visited);
+		            	ProducedType st = argType.getSupertype(pt.getDeclaration());
+		                if (st!=null) {
+		                    for (int j=0; j<pt.getTypeArgumentList().size(); j++) {
+		                        if (st.getTypeArgumentList().size()>j) {
+		                            inferTypeArg(tp, pt.getTypeArgumentList().get(j), 
+		                                    st.getTypeArgumentList().get(j), 
+		                                    inferredTypes, visited);
+		                        }
+		                    }
+		                }
+		            }
+	            }
             }
             else {
                 ProducedType st = argType.getSupertype(paramType.getDeclaration());
@@ -963,7 +989,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                     for (int j=0; j<paramType.getTypeArgumentList().size(); j++) {
                         if (st.getTypeArgumentList().size()>j) {
                             inferTypeArg(tp, paramType.getTypeArgumentList().get(j), 
-                                    st.getTypeArgumentList().get(j), inferredTypes);
+                                    st.getTypeArgumentList().get(j), inferredTypes, visited);
                         }
                     }
                 }
