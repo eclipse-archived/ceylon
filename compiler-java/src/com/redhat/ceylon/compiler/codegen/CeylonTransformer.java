@@ -23,6 +23,7 @@ import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Options;
+import com.sun.tools.javac.util.Position.LineMap;
 import com.sun.tools.javac.main.OptionName;
 
 /**
@@ -30,6 +31,7 @@ import com.sun.tools.javac.main.OptionName;
  */
 public class CeylonTransformer extends AbstractTransformer {
     private Options options;
+    private LineMap map;
     
     public static CeylonTransformer getInstance(Context context) {
         CeylonTransformer trans = context.get(CeylonTransformer.class);
@@ -50,6 +52,16 @@ public class CeylonTransformer extends AbstractTransformer {
         // It's a bit weird to see "invokedynamic" set here,
         // but it has to be done before Resolve.instance().
         options.put("invokedynamic", "invokedynamic");
+    }
+
+    @Override
+    public void setMap(LineMap map) {
+        this.map = map;
+    }
+
+    @Override
+    protected LineMap getMap() {
+        return map;
     }
 
     /**

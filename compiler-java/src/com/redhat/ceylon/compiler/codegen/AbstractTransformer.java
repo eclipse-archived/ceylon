@@ -94,11 +94,11 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     public void setMap(LineMap map) {
-        context.put(LineMap.class, map);
+        gen().setMap(map);
     }
 
     protected LineMap getMap() {
-        return context.get(LineMap.class);
+        return gen().getMap();
     }
 
     @Override
