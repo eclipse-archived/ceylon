@@ -2,6 +2,10 @@ package com.redhat.ceylon.compiler.test.structure.klass;
 
 class KlassTypeParams<U, V> {
     
+    private final U foo(final U u, final V v) {
+        return u;
+    }
+    
     KlassTypeParams() {
     }
 }
