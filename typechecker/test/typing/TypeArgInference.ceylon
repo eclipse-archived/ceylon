@@ -83,4 +83,16 @@ class TypeArgInference() {
     print("Hello");
     @error print<String>("Hello");
 
+    V f1<U,V>(U u) 
+            given U satisfies V {
+    	return u;
+    }
+    
+    V f2<U,V>(U u) 
+            given U satisfies Sequence<V> {
+    	return u.first;
+    }
+    
+    @type["String"] f1("hello");
+    @type["Natural"] f2({1,2,3});
 }
