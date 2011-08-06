@@ -10,7 +10,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -346,7 +345,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (numPassed != numDeclared
                     || (lastDeclaredParamType != null
                         && lastPassedParamType != null
-                        && !lastDeclaredParamType.isExactly(lastPassedParamType))) {
+                        && lastDeclaredParamType.isSupertypeOf(typeFact().makeEmptyType(typeFact().makeSequenceType(lastPassedParamType))))) {
                 // => call to a varargs method
                 isVarargs = true;
                 // first, append the normal args
