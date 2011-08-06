@@ -1,0 +1,11 @@
+package com.redhat.ceylon.compiler.test.structure.method;
+
+class MethodTypeParams {
+    
+    private final <U, V>U f(final U u, final V v) {
+        return u;
+    }
+    
+    MethodTypeParams() {
+    }
+}

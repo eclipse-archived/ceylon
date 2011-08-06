@@ -491,7 +491,10 @@ public abstract class AbstractTransformer implements Transformation {
         } else {
             // For an ordinary class or interface type T:
             // - The Ceylon type T results in the Java type T
-            jt = makeIdent(tdecl.getQualifiedNameString());
+            if(tdecl instanceof TypeParameter)
+                jt = makeIdent(tdecl.getName());
+            else
+                jt = makeIdent(tdecl.getQualifiedNameString());
         }
         
         return jt;

@@ -115,6 +115,10 @@ public class StructureTest extends CompilerTest {
     public void testMthMethodErasure(){
         compareWithJavaSource("method/MethodErasure");
     }
+    @Test
+    public void testMthMethodTypeParams(){
+        compareWithJavaSource("method/MethodTypeParams");
+    }
 
     //
     // Attributes
