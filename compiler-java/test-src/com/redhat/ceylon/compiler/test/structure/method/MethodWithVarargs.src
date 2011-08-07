@@ -14,11 +14,23 @@ class MethodWithVarargs {
         }
     }
     
+    public final void f3(final ceylon.language.Iterable<? extends .java.lang.Object> os) {
+        for (ceylon.language.Iterator<? extends .java.lang.Object> $o$iter$2 = os.iterator(); $o$iter$2.getHead() != null; $o$iter$2 = $o$iter$2.getTail()) {
+            final .java.lang.Object o = $o$iter$2.getHead();
+        }
+    }
+    
     private final void m() {
         f1(new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L)));
         f2(.ceylon.language.Natural.instance(1L), new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L)));
         f1(ceylon.language.$empty.getEmpty());
         f2(.ceylon.language.Natural.instance(1L), ceylon.language.$empty.getEmpty());
+        f1(new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L)));
+        f2(.ceylon.language.Natural.instance(1L), new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L)));
+        f3(new ceylon.language.ArraySequence<.java.lang.Object>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L)));
+        f3(new ceylon.language.ArraySequence<.java.lang.Object>(new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L))));
+        f3(new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L)));
+        f3(new ceylon.language.ArraySequence<.java.lang.Object>(.ceylon.language.Natural.instance(1L), "foo", .ceylon.language.Float.instance(5.0)));
     }
     
     MethodWithVarargs() {
