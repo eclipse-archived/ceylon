@@ -19,6 +19,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.BinaryOperatorExpression
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.OrOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequenceEnumeration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.util.Util;
@@ -334,23 +335,25 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         boolean isVarargs = false;
         Declaration primaryDecl = ce.getPrimary().getDeclaration();
+        PositionalArgumentList positional = ce.getPositionalArgumentList();
         if (primaryDecl instanceof Method) {
             Method methodDecl = (Method)primaryDecl;
             java.util.List<Parameter> declaredParams = methodDecl.getParameterLists().get(0).getParameters();
             int numDeclared = declaredParams.size();
-            java.util.List<PositionalArgument> passedArguments = ce.getPositionalArgumentList().getPositionalArguments();
+            java.util.List<PositionalArgument> passedArguments = positional.getPositionalArguments();
             int numPassed = passedArguments.size();
             ProducedType lastDeclaredParamType = declaredParams.isEmpty() ? null : declaredParams.get(declaredParams.size() - 1).getType();
             ProducedType lastPassedParamType = passedArguments.isEmpty() ? null : passedArguments.get(passedArguments.size() - 1).getExpression().getTypeModel();
-            if (numPassed != numDeclared
-                    || (lastDeclaredParamType != null
-                        && lastPassedParamType != null
-                        && lastDeclaredParamType.isSupertypeOf(typeFact().makeEmptyType(typeFact().makeSequenceType(lastPassedParamType))))) {
+            if (positional.getEllipsis() == null // foo(sequence...) syntax => no need to box
+                    && (numPassed != numDeclared
+                        || (lastDeclaredParamType != null
+                            && lastPassedParamType != null
+                            && lastDeclaredParamType.isSupertypeOf(typeFact().makeEmptyType(typeFact().makeSequenceType(lastPassedParamType)))))) {
                 // => call to a varargs method
                 isVarargs = true;
                 // first, append the normal args
                 for (int ii = 0; ii < numDeclared - 1; ii++) {
-                    Tree.PositionalArgument arg = ce.getPositionalArgumentList().getPositionalArguments().get(ii);
+                    Tree.PositionalArgument arg = positional.getPositionalArguments().get(ii);
                     args.append(transformArg(arg));
                 }
                 JCExpression boxed;
@@ -362,7 +365,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     // box with an ArraySequence<T>
                     List<JCExpression> x = List.<JCExpression>nil();
                     for (int ii = numDeclared - 1; ii < numPassed; ii++) {
-                        Tree.PositionalArgument arg = ce.getPositionalArgumentList().getPositionalArguments().get(ii);
+                        Tree.PositionalArgument arg = positional.getPositionalArguments().get(ii);
                         x = x.append(transformArg(arg));
                     }
                     ProducedType seqElemType = typeFact().getIteratedType(lastDeclaredParamType);
@@ -375,7 +378,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
 
         if (!isVarargs) {
-            for (Tree.PositionalArgument arg : ce.getPositionalArgumentList().getPositionalArguments())
+            for (Tree.PositionalArgument arg : positional.getPositionalArguments())
                 args.append(transformArg(arg));
         }
 
