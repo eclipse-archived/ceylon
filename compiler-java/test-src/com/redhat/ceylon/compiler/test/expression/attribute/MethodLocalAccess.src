@@ -2,20 +2,24 @@ package com.redhat.ceylon.compiler.test.expression.attribute;
 
 class MethodLocalAccess {
     
-    private final ceylon.language.Natural m() {
-        final ceylon.language.Natural n1 = .ceylon.language.Natural.instance(1L);
+    private final long m1() {
+        final long n1 = 1L;
+        return n1;
+    }
+    
+    private final long m2() {
         
         final class n2$getter {
             
-            ceylon.language.Natural getN2() {
-                return .ceylon.language.Natural.instance(1L);
+            long getN2() {
+                return 1L;
             }
             
             private n2$getter() {
             }
         }
         final n2$getter n2$getter = new n2$getter();
-        return n1.plus(n2$getter.getN2());
+        return n2$getter.getN2();
     }
     
     MethodLocalAccess() {

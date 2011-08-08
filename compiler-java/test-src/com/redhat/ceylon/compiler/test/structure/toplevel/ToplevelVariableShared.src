@@ -1,13 +1,13 @@
 package com.redhat.ceylon.compiler.test.structure.toplevel;
 
 public final class i {
-    private static ceylon.language.Natural value = .ceylon.language.Natural.instance(0L);
+    private static long value = 0L;
     
-    public static ceylon.language.Natural getI() {
+    public static long getI() {
         return value;
     }
     
-    public static void setI(ceylon.language.Natural i) {
+    public static void setI(long i) {
         value = i;
     }
     

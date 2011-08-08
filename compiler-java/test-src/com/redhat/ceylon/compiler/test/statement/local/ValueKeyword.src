@@ -5,11 +5,11 @@ class ValueKeyword {
     private final void m() {
         final .java.lang.String f = "";
         final .java.lang.String l = f;
-        final ceylon.language.Natural l2 = test();
+        final long l2 = test();
     }
     
-    private final ceylon.language.Natural test() {
-        return .ceylon.language.Natural.instance(0L);
+    private final long test() {
+        return 0L;
     }
     
     ValueKeyword() {

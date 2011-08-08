@@ -3,11 +3,11 @@ class MethodSwitch {
     
     public int m(final int n) {
         n;
-        .ceylon.language.Natural.instance(1L);
-        return .ceylon.language.Natural.instance(1L);
-        .ceylon.language.Natural.instance(2L);
-        .ceylon.language.Natural.instance(3L);
-        .ceylon.language.Natural.instance(4L);
+        1L;
+        return 1L;
+        2L;
+        3L;
+        4L;
         return n;
         return -1;
     }

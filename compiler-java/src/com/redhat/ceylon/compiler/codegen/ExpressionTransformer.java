@@ -427,8 +427,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.NaturalLiteral lit) {
-        JCExpression n = make().Literal(Long.parseLong(lit.getText()));
-        return at(lit).Apply(null, makeSelect(makeIdent(syms().ceylonNaturalType), "instance"), List.of(n));
+        JCExpression expr = make().Literal(Long.parseLong(lit.getText()));
+        return expr;
     }
     
     public JCExpression transform(final Tree.QualifiedMemberExpression access) {

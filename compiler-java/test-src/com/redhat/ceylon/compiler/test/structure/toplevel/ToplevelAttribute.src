@@ -1,9 +1,9 @@
 package com.redhat.ceylon.compiler.test.structure.toplevel;
 
 final class i {
-    private static final ceylon.language.Natural value = .ceylon.language.Natural.instance(0L);
+    private static final long value = 0L;
     
-    static ceylon.language.Natural getI() {
+    static long getI() {
         return value;
     }
     

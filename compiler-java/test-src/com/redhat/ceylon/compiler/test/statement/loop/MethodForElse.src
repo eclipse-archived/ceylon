@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.test.statement.loop;
 
 class MethodForElse {
     
-    public final ceylon.language.Natural m(final ceylon.language.Sequence<? extends .java.lang.String> seq) {
+    public final long m(final ceylon.language.Sequence<? extends .java.lang.String> seq) {
         boolean $doforelse$0 = true;
         for (ceylon.language.Iterator<? extends .java.lang.String> $s$iter$1 = seq.iterator(); $s$iter$1.getHead() != null; $s$iter$1 = $s$iter$1.getTail()) {
             final .java.lang.String s = $s$iter$1.getHead();
@@ -14,7 +14,7 @@ class MethodForElse {
                     break;
                 }
                 if ($doforelse$2) {
-                    return .ceylon.language.Natural.instance(1L);
+                    return 1L;
                 }
                 break;
             }
@@ -22,9 +22,9 @@ class MethodForElse {
             break;
         }
         if ($doforelse$0) {
-            return .ceylon.language.Natural.instance(0L);
+            return 0L;
         }
-        return .ceylon.language.Natural.instance(2L);
+        return 2L;
     }
     
     MethodForElse() {

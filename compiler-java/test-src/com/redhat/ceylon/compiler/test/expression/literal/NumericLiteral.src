@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.test.expression.literal;
 class NumericLiteral {
     
     public final void m() {
-        final ceylon.language.Natural n1 = .ceylon.language.Natural.instance(1L);
+        final long n1 = 1L;
         final int n2 = 1;
         final int n3 = -1;
         final double n4 = 3.14159;

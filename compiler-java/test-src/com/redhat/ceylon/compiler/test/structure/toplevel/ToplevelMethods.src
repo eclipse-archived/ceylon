@@ -13,7 +13,7 @@ final class anotherToplevelMethod {
     private anotherToplevelMethod() {
     }
     
-    static ceylon.language.Natural anotherToplevelMethod(final ceylon.language.Natural n) {
-        return .ceylon.language.Natural.instance(0L);
+    static long anotherToplevelMethod(final long n) {
+        return 0L;
     }
 }

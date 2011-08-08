@@ -6,8 +6,8 @@ class InnerAttributeGetterSetter {
         
         final class innerGetterSetter$getter {
             
-            ceylon.language.Natural getInnerGetterSetter() {
-                return .ceylon.language.Natural.instance(0L);
+            long getInnerGetterSetter() {
+                return 0L;
             }
             
             private innerGetterSetter$getter() {
@@ -25,8 +25,8 @@ class InnerAttributeGetterSetter {
             }
         }
         final innerGetterSetter$setter innerGetterSetter$setter = new innerGetterSetter$setter();
-        final ceylon.language.Natural n = innerGetterSetter$getter.getInnerGetterSetter();
-        innerGetterSetter$setter.setInnerGetterSetter(.ceylon.language.Natural.instance(1L));
+        final long n = innerGetterSetter$getter.getInnerGetterSetter();
+        innerGetterSetter$setter.setInnerGetterSetter(1L);
     }
     
     InnerAttributeGetterSetter() {

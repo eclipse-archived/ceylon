@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.test.structure.klass;
 
 interface InterfaceWithConcreteMembers {
     
-    public ceylon.language.Natural foo(final boolean b);
+    public long foo(final boolean b);
 }
 public final class InterfaceWithConcreteMembers$impl {
     
@@ -10,13 +10,13 @@ public final class InterfaceWithConcreteMembers$impl {
         super();
     }
     
-    public static ceylon.language.Natural foo(final com.redhat.ceylon.compiler.test.structure.klass.InterfaceWithConcreteMembers $this, final boolean b) {
-        return .ceylon.language.Natural.instance(1L);
+    public static long foo(final com.redhat.ceylon.compiler.test.structure.klass.InterfaceWithConcreteMembers $this, final boolean b) {
+        return 1L;
     }
 }
 class Impl implements com.redhat.ceylon.compiler.test.structure.klass.InterfaceWithConcreteMembers {
     
-    public ceylon.language.Natural foo(final boolean b) {
+    public long foo(final boolean b) {
         return InterfaceWithConcreteMembers$impl.foo(this, b);
     }
     

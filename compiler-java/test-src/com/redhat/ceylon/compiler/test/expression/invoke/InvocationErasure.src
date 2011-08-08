@@ -19,8 +19,8 @@ class MethodErasure {
         return "bar";
     }
     
-    private final ceylon.language.Natural $toString() {
-        return .ceylon.language.Natural.instance(0L);
+    private final long $toString() {
+        return 0L;
     }
     
     MethodErasure() {

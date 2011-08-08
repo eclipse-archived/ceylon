@@ -13,15 +13,15 @@ final class bar {
     private bar() {
     }
     
-    static ceylon.language.Natural bar(final ceylon.language.Natural i, final .java.lang.String j) {
-        return .ceylon.language.Natural.instance(1L);
+    static long bar(final long i, final .java.lang.String j) {
+        return 1L;
     }
 }
 class ToplevelMethodInvocation {
     
-    private final ceylon.language.Natural m() {
+    private final long m() {
         foo.foo();
-        return bar.bar(.ceylon.language.Natural.instance(1L), "");
+        return bar.bar(1L, "");
     }
     
     ToplevelMethodInvocation() {

@@ -9,12 +9,12 @@ class InnerMethod {
             private $inner$class$0() {
             }
             
-            ceylon.language.Natural inner() {
-                return .ceylon.language.Natural.instance(0L);
+            long inner() {
+                return 0L;
             }
         }
         final $inner$class$0 inner = new $inner$class$0();
-        final ceylon.language.Natural n = inner.inner();
+        final long n = inner.inner();
     }
     
     InnerMethod() {

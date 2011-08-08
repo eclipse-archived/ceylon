@@ -12,18 +12,18 @@ class ClassInstantiation {
 class ClassInstantiationWithParam {
     
     public final com.redhat.ceylon.compiler.test.expression.instantiation.ClassInstantiationWithParam m() {
-        return new ClassInstantiationWithParam(.ceylon.language.Natural.instance(2L));
+        return new ClassInstantiationWithParam(2L);
     }
     
-    ClassInstantiationWithParam(ceylon.language.Natural i) {
+    ClassInstantiationWithParam(long i) {
     }
 }
 class ClassInstantiationWithParams {
     
     public final com.redhat.ceylon.compiler.test.expression.instantiation.ClassInstantiationWithParams m() {
-        return new ClassInstantiationWithParams(.ceylon.language.Natural.instance(2L), "");
+        return new ClassInstantiationWithParams(2L, "");
     }
     
-    ClassInstantiationWithParams(ceylon.language.Natural i, .java.lang.String j) {
+    ClassInstantiationWithParams(long i, .java.lang.String j) {
     }
 }

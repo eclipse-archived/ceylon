@@ -336,6 +336,12 @@ public abstract class AbstractTransformer implements Transformation {
         return (sameType(syms().ceylonBooleanType, type));
     }
     
+    // Determine if the type is a Ceylon Natural (which will be erased to a Java Long/long)
+    protected boolean willEraseToNatural(ProducedType type) {
+        type = simplifyType(type);
+        return (sameType(syms().ceylonNaturalType, type));
+    }
+    
     // Determine if the type is a Ceylon Integer (which will be erased to a Java Integer/int)
     protected boolean willEraseToInteger(ProducedType type) {
         type = simplifyType(type);
@@ -397,6 +403,12 @@ public abstract class AbstractTransformer implements Transformation {
                 return make().Type(syms().booleanObjectType);
             } else {
                 return make().TypeIdent(TypeTags.BOOLEAN);
+            }
+        } else if (willEraseToNatural(type)) {
+            if (satisfiesOrExtendsOrTypeParam != 0 || isOptional(type)) {
+                return make().Type(syms().longObjectType);
+            } else {
+                return make().TypeIdent(TypeTags.LONG);
             }
         } else if (willEraseToInteger(type)) {
             if (satisfiesOrExtendsOrTypeParam != 0 || isOptional(type)) {

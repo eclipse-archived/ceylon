@@ -2,18 +2,18 @@ package com.redhat.ceylon.compiler.test.expression.operator;
 
 class NumericOp {
     
-    public final ceylon.language.Natural m() {
-        ceylon.language.Natural i = .ceylon.language.Natural.instance(1L);
+    public final long m() {
+        long i = 1L;
         (i = i.getSuccessor()).getPredecessor();
         i = i.getSuccessor();
         (i = i.getPredecessor()).getSuccessor();
         i = i.getPredecessor();
-        i = i.plus(.ceylon.language.Natural.instance(1L));
-        i = i.minus(.ceylon.language.Natural.instance(1L));
-        i = i.times(.ceylon.language.Natural.instance(1L));
-        i = i.divided(.ceylon.language.Natural.instance(1L));
-        i = i.remainder(.ceylon.language.Natural.instance(100L));
-        return .ceylon.language.Natural.instance(2L).power(.ceylon.language.Natural.instance(3L)).times(.ceylon.language.Natural.instance(1L)).divided(.ceylon.language.Natural.instance(1L)).remainder(.ceylon.language.Natural.instance(100L)).plus(.ceylon.language.Natural.instance(1L)).minus(.ceylon.language.Natural.instance(1L));
+        i = i.plus(1L);
+        i = i.minus(1L);
+        i = i.times(1L);
+        i = i.divided(1L);
+        i = i.remainder(100L);
+        return 2L.power(3L).times(1L).divided(1L).remainder(100L).plus(1L).minus(1L);
     }
     
     NumericOp() {

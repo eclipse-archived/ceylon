@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.test.structure.toplevel;
 
 class C {
     
-    C(ceylon.language.Natural n) {
+    C(long n) {
     }
 }
 interface I {
@@ -17,7 +17,7 @@ public final class x extends com.redhat.ceylon.compiler.test.structure.toplevel.
     }
     
     private x() {
-        super(.ceylon.language.Natural.instance(2L));
+        super(2L);
     }
     private static final x value = new x();
     

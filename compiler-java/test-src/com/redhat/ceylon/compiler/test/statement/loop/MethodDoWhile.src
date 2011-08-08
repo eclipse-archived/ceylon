@@ -2,10 +2,10 @@ package com.redhat.ceylon.compiler.test.statement.loop;
 
 class MethodDoWhile {
     
-    public final ceylon.language.Natural m() {
+    public final long m() {
         do {
         }         while (false == true);
-        return .ceylon.language.Natural.instance(0L);
+        return 0L;
     }
     
     MethodDoWhile() {

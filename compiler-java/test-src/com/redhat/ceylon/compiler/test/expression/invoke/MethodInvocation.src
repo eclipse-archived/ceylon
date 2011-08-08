@@ -4,7 +4,7 @@ class MethodInvocation {
     
     public final void m() {
         n();
-        o(.ceylon.language.Natural.instance(1L));
+        o(1L);
         p();
     }
     
@@ -12,7 +12,7 @@ class MethodInvocation {
         return;
     }
     
-    private final ceylon.language.Natural o(final ceylon.language.Natural oarg) {
+    private final long o(final long oarg) {
         return oarg;
     }
     

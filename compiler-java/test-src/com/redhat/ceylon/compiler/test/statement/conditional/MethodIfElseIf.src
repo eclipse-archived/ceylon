@@ -2,14 +2,14 @@ package com.redhat.ceylon.compiler.test.statement.conditional;
 
 class MethodIfElseIf {
     
-    private final ceylon.language.Natural m() {
+    private final long m() {
         if (true == true) {
-            return .ceylon.language.Natural.instance(1L);
+            return 1L;
         } else {
             if (false == true) {
-                return .ceylon.language.Natural.instance(2L);
+                return 2L;
             } else {
-                return .ceylon.language.Natural.instance(3L);
+                return 3L;
             }
         }
     }
