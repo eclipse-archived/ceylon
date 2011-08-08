@@ -95,6 +95,8 @@ public abstract class Node {
         errors.add(error);
     }
     
+    public abstract void visit(Visitor visitor);
+    
     public abstract void visitChildren(Visitor visitor);
     
     @Override
