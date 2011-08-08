@@ -340,4 +340,6 @@ class Generics() {
     @error Producer<Holder<Holder>>();
     @error method<Holder<Holder>>();
     
+    @error Holder<String>.X wrong;
+    
 }
