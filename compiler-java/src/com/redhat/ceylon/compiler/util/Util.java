@@ -10,6 +10,7 @@ import com.sun.tools.javac.parser.Token;
 
 public class Util {
     public static String quoteMethodName(String name){
+        // ERASURE
         if ("hash".equals(name)) {
             return "hashCode";
         } else if ("string".equals(name)) {

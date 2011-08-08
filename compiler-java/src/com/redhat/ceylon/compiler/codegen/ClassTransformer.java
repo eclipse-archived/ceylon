@@ -17,7 +17,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
-import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
@@ -345,8 +344,6 @@ public class ClassTransformer extends AbstractTransformer {
         return defs;
     }
     
-    // this is due to the above commented code
-    @SuppressWarnings("unused")
     private JCExpression transform(final Tree.Annotation userAnn, Tree.ClassOrInterface classDecl, String methodName) {
         List<JCExpression> values = List.<JCExpression> nil();
         // FIXME: handle named arguments

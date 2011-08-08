@@ -5,6 +5,7 @@ import static com.sun.tools.javac.code.Flags.FINAL;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
@@ -76,6 +77,7 @@ public class StatementTransformer extends AbstractTransformer {
         return res;
     }
 
+// FIXME Seems this really has gone the way of the Dodo, maybe remove it forgood?
 //    List<JCStatement> transform(Tree.DoWhileStatement stmt) {
 //        Name tempForFailVariable = currentForFailVariable;
 //        currentForFailVariable = null;
@@ -95,67 +97,53 @@ public class StatementTransformer extends AbstractTransformer {
         JCBlock elseBlock = null;
         if (cond instanceof Tree.ExistsCondition) {
             Tree.ExistsCondition exists = (Tree.ExistsCondition) cond;
-            Tree.Identifier name = exists.getVariable().getIdentifier();
 
-            JCExpression expr;
-            if (exists.getVariable().getSpecifierExpression() == null) {
-                expr = transform(name);
-            } else {
-                expr = expressionGen().transformExpression(exists.getVariable().getSpecifierExpression().getExpression());
-            }
+            JCExpression expr = expressionGen().transformExpression(exists.getVariable().getSpecifierExpression().getExpression());
 
             test = at(cond).Binary(JCTree.NE, expr, make().Literal(TypeTags.BOT, null));
-        } else if (cond instanceof Tree.NonemptyCondition) {
-            Tree.NonemptyCondition nonempty = (Tree.NonemptyCondition) cond;
-            Tree.Identifier name = nonempty.getVariable().getIdentifier();
-            
-            JCExpression expr;
-            if (nonempty.getVariable().getSpecifierExpression() == null) {
-                expr = transform(name);
+        } else if ((cond instanceof Tree.IsCondition) || (cond instanceof Tree.NonemptyCondition)) {
+            String name;
+            ProducedType toType;
+            Expression specifierExpr;
+            if (cond instanceof Tree.IsCondition) {
+                Tree.IsCondition isdecl = (Tree.IsCondition) cond;
+                name = isdecl.getVariable().getIdentifier().getText();
+                toType = isdecl.getType().getTypeModel();
+                specifierExpr = isdecl.getVariable().getSpecifierExpression().getExpression();
             } else {
-                expr = expressionGen().transformExpression(nonempty.getVariable().getSpecifierExpression().getExpression());
+                Tree.NonemptyCondition nonempty = (Tree.NonemptyCondition) cond;
+                name = nonempty.getVariable().getIdentifier().getText();
+                toType = nonempty.getVariable().getType().getTypeModel();
+                specifierExpr = nonempty.getVariable().getSpecifierExpression().getExpression();
             }
-
-            JCExpression emptyType = makeJavaType(typeFact().getEmptyDeclaration().getType(), CeylonTransformer.WANT_RAW_TYPE);
-            test = make().Parens(make().TypeTest(expr, emptyType));
-            test = makeBooleanTest(test, false);
-        } else if (cond instanceof Tree.IsCondition) {
-            Tree.IsCondition isExpr = (Tree.IsCondition) cond;
-            Tree.Identifier name = isExpr.getVariable().getIdentifier();
-            JCExpression type = makeJavaType(isExpr.getType().getTypeModel());
+            
+            JCExpression toTypeExpr = makeJavaType(toType);
 
             // Want raw type for instanceof since it can't be used with generic types
-            JCExpression rawType = makeJavaType(isExpr.getType().getTypeModel(), CeylonTransformer.WANT_RAW_TYPE);
+            JCExpression rawToTypeExpr = makeJavaType(toType, CeylonTransformer.WANT_RAW_TYPE);
 
-            Name tmpVarName = names().fromString(aliasName(name.getText()));
-            Name origVarName = names().fromString(name.getText());
-            Name substVarName = names().fromString(aliasName(name.getText()));
+            Name tmpVarName = names().fromString(aliasName(name));
+            Name origVarName = names().fromString(name);
+            Name substVarName = names().fromString(aliasName(name));
 
-            JCExpression expr;
-            ProducedType tmpVarType;
-            if (isExpr.getVariable().getSpecifierExpression() == null) {
-                expr = transform(name);
-                tmpVarType = isExpr.getVariable().getType().getTypeModel();
-            } else {
-                expr = expressionGen().transformExpression(isExpr.getVariable().getSpecifierExpression().getExpression());
-                tmpVarType = isExpr.getVariable().getSpecifierExpression().getExpression().getTypeModel();
-            }
+            JCExpression expr = expressionGen().transformExpression(specifierExpr);
+            ProducedType tmpVarType = specifierExpr.getTypeModel();
 
             // Temporary variable holding the result of the expression/variable to test
             decl = at(cond).VarDef(make().Modifiers(FINAL), tmpVarName, makeJavaType(tmpVarType), expr);
             // Substitute variable with the correct type to use in the rest of the code block
-            JCVariableDecl decl2 = at(cond).VarDef(make().Modifiers(FINAL), substVarName, type, at(cond).TypeCast(type, at(cond).Ident(tmpVarName)));
+            JCVariableDecl decl2 = at(cond).VarDef(make().Modifiers(FINAL), substVarName, toTypeExpr, at(cond).TypeCast(toTypeExpr, at(cond).Ident(tmpVarName)));
             
             // Prepare for variable substitution in the following code block
             String prevSubst = addVariableSubst(origVarName.toString(), substVarName.toString());
             
             thenBlock = transform(thenPart);
-            thenBlock = at(cond).Block(0, List.<JCStatement> of(decl2, thenBlock));
+            thenBlock = at(cond).Block(0, (List.<JCStatement> of(decl2)).appendList(thenBlock.getStatements()));
             
             // Deactivate the above variable substitution
             removeVariableSubst(origVarName.toString(), prevSubst);
             
-            test = at(cond).TypeTest(make().Ident(decl.name), rawType);
+            test = at(cond).TypeTest(make().Ident(decl.name), rawToTypeExpr);
         } else if (cond instanceof Tree.BooleanCondition) {
             Tree.BooleanCondition booleanCondition = (Tree.BooleanCondition) cond;
             test = makeBooleanTest(expressionGen().transformExpression(booleanCondition.getExpression()), true);
@@ -163,6 +151,7 @@ public class StatementTransformer extends AbstractTransformer {
             throw new RuntimeException("Not implemented: " + cond.getNodeType());
         }
         
+        at(cond);
         // Convert the code blocks (if not already done so above)
         if (thenPart != null && thenBlock == null) {
             thenBlock = transform(thenPart);
@@ -174,15 +163,13 @@ public class StatementTransformer extends AbstractTransformer {
         JCStatement cond1;
         switch (tag) {
         case JCTree.IF:
-            cond1 = at(cond).If(test, thenBlock, elseBlock);
+            cond1 = make().If(test, thenBlock, elseBlock);
             break;
         case JCTree.WHILELOOP:
-            assert elsePart == null;
-            cond1 = at(cond).WhileLoop(test, thenBlock);
+            cond1 = make().WhileLoop(test, thenBlock);
             break;
         case JCTree.DOLOOP:
-            assert elsePart == null;
-            cond1 = at(cond).DoLoop(thenBlock, test);
+            cond1 = make().DoLoop(thenBlock, test);
             break;
         default:
             throw new RuntimeException();
