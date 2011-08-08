@@ -1,10 +1,12 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public abstract class Element {
 
@@ -130,4 +132,16 @@ public abstract class Element {
             return null;
         }
     }
+    
+    public Map<String, Declaration> getMatchingDeclarations(Unit unit, String startingWith) {
+    	Map<String, Declaration> result = getContainer()
+    			.getMatchingDeclarations(unit, startingWith);
+        for (Declaration d: getMembers()) {
+            if (isResolvable(d) && isNameMatching(startingWith, d)) {
+                result.put(d.getName(), d);
+            }
+        }
+    	return result;
+    }
+
 }

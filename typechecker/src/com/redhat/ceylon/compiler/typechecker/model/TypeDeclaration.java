@@ -1,12 +1,15 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public abstract class TypeDeclaration extends Declaration implements Scope, Generic {
 
@@ -300,5 +303,31 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
     public ProducedType getSelfType() {
         return selfType;
     }
+    
+    @Override
+    public Map<String, Declaration> getMatchingDeclarations(Unit unit, String startingWith) {
+    	Map<String, Declaration> result = getMatchingMemberDeclarations(startingWith);
+    	result.putAll(super.getMatchingDeclarations(unit, startingWith));
+    	return result;
+    }
+
+	public Map<String, Declaration> getMatchingMemberDeclarations(String startingWith) {
+		Map<String, Declaration> result = new TreeMap<String, Declaration>();
+        TypeDeclaration et = getExtendedTypeDeclaration();
+    	if (et!=null) {
+    		result.putAll(et.getMatchingMemberDeclarations(startingWith));
+    	}
+    	for (TypeDeclaration st: getSatisfiedTypeDeclarations()) {
+    		result.putAll(st.getMatchingMemberDeclarations(startingWith));
+    	}
+        for (Declaration d: getMembers()) {
+            if (isResolvable(d) && d.isShared() && 
+            		isNameMatching(startingWith, d)) {
+                result.put(d.getName(), d);
+            }
+        }
+    	//TODO: self type?
+    	return result;
+	}
 
 }

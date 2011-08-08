@@ -1,11 +1,14 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.format;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Package implements Scope {
 
@@ -79,7 +82,7 @@ public class Package implements Scope {
 
     @Override
     public Declaration getDirectMember(String name) {
-        for (Declaration d : getMembers()) {
+        for (Declaration d: getMembers()) {
             if (isResolvable(d) && /*d.isShared() &&*/ isNamed(name, d)) {
                 return d;
             }
@@ -115,6 +118,18 @@ public class Package implements Scope {
     @Override
     public TypeDeclaration getInheritingDeclaration(Declaration d) {
         return null;
+    }
+    
+    @Override
+    public Map<String, Declaration> getMatchingDeclarations(Unit unit, String startingWith) {
+    	Map<String, Declaration> result = new TreeMap<String, Declaration>();
+        for (Declaration d: getMembers()) {
+            if (isResolvable(d) && isNameMatching(startingWith, d)) {
+                result.put(d.getName(), d);
+            }
+        }
+    	result.putAll(unit.getMatchingImportedDeclarations(startingWith));
+    	return result;
     }
 
 }

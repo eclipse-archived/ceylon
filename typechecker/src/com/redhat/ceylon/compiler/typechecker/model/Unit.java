@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.typechecker.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Unit {
 
@@ -44,13 +46,22 @@ public class Unit {
      * for the declaration.
      */
     public Declaration getImportedDeclaration(String name) {
-        for (Import i : getImports()) {
-            Declaration d = i.getDeclaration();
+        for (Import i: getImports()) {
             if (i.getAlias().equals(name)) {
-                return d;
+                return i.getDeclaration();
             }
         }
         return null;
+    }
+    
+    public Map<String, Declaration> getMatchingImportedDeclarations(String startingWith) {
+    	Map<String, Declaration> result = new TreeMap<String, Declaration>();
+        for (Import i: getImports()) {
+            if (i.getAlias().startsWith(startingWith)) {
+                result.put(i.getAlias(), i.getDeclaration());
+            }
+        }
+        return result;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a namespace which contains named
@@ -30,4 +31,7 @@ public interface Scope {
     public TypeDeclaration getInheritingDeclaration(Declaration d);
 
     Scope getContainer();
+    
+    Map<String, Declaration> getMatchingDeclarations(Unit unit, String startingWith);
+    
 }

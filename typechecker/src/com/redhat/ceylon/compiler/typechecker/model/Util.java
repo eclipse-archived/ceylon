@@ -83,6 +83,10 @@ public class Util {
         return d.getName()!=null && d.getName().equals(name);
     }
     
+    static boolean isNameMatching(String startingWith, Declaration d) {
+    	return d.getName()!=null && d.getName().startsWith(startingWith);
+    }
+    
     /**
      * Produce a map of type parameter to type argument
      * given a list of type arguments to a declaration 
