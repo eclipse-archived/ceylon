@@ -7,11 +7,9 @@ import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.loader.CeylonModelLoader;
-import com.redhat.ceylon.compiler.loader.TypeFactory;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
-import com.redhat.ceylon.compiler.tools.LanguageCompiler;
+import com.redhat.ceylon.compiler.loader.TypeFactory;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
-import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -343,6 +341,18 @@ public abstract class AbstractTransformer implements Transformation {
         type = simplifyType(type);
         return (sameType(syms().ceylonIntegerType, type));
     }
+    
+    // Determine if the type is a Ceylon Float (which will be erased to a Java Double/double)
+    protected boolean willEraseToFloat(ProducedType type) {
+        type = simplifyType(type);
+        return (sameType(syms().ceylonFloatType, type));
+    }
+    
+    // Determine if the type is a Ceylon Character (which will be erased to a Java Character/char)
+    protected boolean willEraseToCharacter(ProducedType type) {
+        type = simplifyType(type);
+        return (sameType(syms().ceylonCharacterType, type));
+    }
 
     /*
      * Java Type creation
@@ -393,6 +403,18 @@ public abstract class AbstractTransformer implements Transformation {
                 return make().Type(syms().integerObjectType);
             } else {
                 return make().TypeIdent(TypeTags.INT);
+            }
+        } else if (willEraseToFloat(type)) {
+            if (satisfiesOrExtendsOrTypeParam != 0 || isOptional(type)) {
+                return make().Type(syms().doubleObjectType);
+            } else {
+                return make().TypeIdent(TypeTags.DOUBLE);
+            }
+        } else if (willEraseToCharacter(type)) {
+            if (satisfiesOrExtendsOrTypeParam != 0 || isOptional(type)) {
+                return make().Type(syms().characterObjectType);
+            } else {
+                return make().TypeIdent(TypeTags.CHAR);
             }
         }
         
@@ -560,6 +582,7 @@ public abstract class AbstractTransformer implements Transformation {
      * Variable name substitution
      */
     
+    @SuppressWarnings("serial")
     protected static class VarMapper extends HashMap<String, String> {
     }
     

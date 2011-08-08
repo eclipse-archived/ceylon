@@ -415,15 +415,15 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.CharLiteral lit) {
-        JCExpression n = make().Literal(TypeTags.CHAR, (int) lit.getText().charAt(1));
+        JCExpression expr = make().Literal(TypeTags.CHAR, (int) lit.getText().charAt(1));
         // XXX make().Literal(lit.value) doesn't work here... something
         // broken in javac?
-        return at(lit).Apply(null, makeSelect(makeIdent(syms().ceylonCharacterType), "instance"), List.of(n));
+        return expr;
     }
 
     public JCExpression transform(Tree.FloatLiteral lit) {
-        JCExpression n = make().Literal(Double.parseDouble(lit.getText()));
-        return at(lit).Apply(null, makeSelect(makeIdent(syms().ceylonFloatType), "instance"), List.of(n));
+        JCExpression expr = make().Literal(Double.parseDouble(lit.getText()));
+        return expr;
     }
 
     public JCExpression transform(Tree.NaturalLiteral lit) {

@@ -6,7 +6,7 @@ class NumericLiteral {
         final ceylon.language.Natural n1 = .ceylon.language.Natural.instance(1L);
         final int n2 = 1;
         final int n3 = -1;
-        final ceylon.language.Float n4 = .ceylon.language.Float.instance(3.14159);
+        final double n4 = 3.14159;
     }
     
     NumericLiteral() {

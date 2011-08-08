@@ -901,9 +901,29 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             } else if (sameType(type, symtab.booleanObjectType)) {
                 type = makeOptional(symtab.ceylonBooleanType);
             } else if (sameType(type, symtab.intType)) {
+                // FIXME Really needs "small" annotation
                 type = symtab.ceylonIntegerType;
             } else if (sameType(type, symtab.integerObjectType)) {
+                // FIXME Really needs "small" annotation
                 type = makeOptional(symtab.ceylonIntegerType);
+            } else if (sameType(type, symtab.longType)) {
+                type = symtab.ceylonIntegerType;
+            } else if (sameType(type, symtab.longObjectType)) {
+                type = makeOptional(symtab.ceylonIntegerType);
+            } else if (sameType(type, symtab.floatType)) {
+                // FIXME Really needs "small" annotation
+                type = symtab.ceylonFloatType;
+            } else if (sameType(type, symtab.floatObjectType)) {
+                // FIXME Really needs "small" annotation
+                type = makeOptional(symtab.ceylonFloatType);
+            } else if (sameType(type, symtab.doubleType)) {
+                type = symtab.ceylonFloatType;
+            } else if (sameType(type, symtab.doubleObjectType)) {
+                type = makeOptional(symtab.ceylonFloatType);
+            } else if (sameType(type, symtab.charType)) {
+                type = symtab.ceylonCharacterType;
+            } else if (sameType(type, symtab.characterObjectType)) {
+                type = makeOptional(symtab.ceylonCharacterType);
             }
             
             return getType(type, scope);
