@@ -23,6 +23,7 @@ public class FindReferenceVisitor extends Visitor {
 	
 	@Override
 	public void visit(Tree.MemberOrTypeExpression that) {
+		//TODO: handle refinement!
 		if (that.getDeclaration()==declaration) {
 			nodes.add(that);
 		}
