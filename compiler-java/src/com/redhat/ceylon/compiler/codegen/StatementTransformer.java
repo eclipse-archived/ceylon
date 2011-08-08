@@ -138,7 +138,9 @@ public class StatementTransformer extends AbstractTransformer {
             String prevSubst = addVariableSubst(origVarName.toString(), substVarName.toString());
             
             thenBlock = transform(thenPart);
-            thenBlock = at(cond).Block(0, (List.<JCStatement> of(decl2)).appendList(thenBlock.getStatements()));
+            List<JCStatement> stats = List.<JCStatement> of(decl2);
+            stats.appendList(thenBlock.getStatements());
+            thenBlock = at(cond).Block(0, stats);
             
             // Deactivate the above variable substitution
             removeVariableSubst(origVarName.toString(), prevSubst);
