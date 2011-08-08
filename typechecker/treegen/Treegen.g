@@ -31,7 +31,7 @@ node : '^' '('
        { println("        public " + className($n.text) + "(CommonTree treeNode) {" ); }
        { println("            super(treeNode);" ); }
        { println("        }\n" ); }
-       { println("        public void visit(Visitor visitor) {" ); }
+       { println("        @Override public void visit(Visitor visitor) {" ); }
        { println("            try {" ); }
        { println("                visitor.visit(this);" ); }
        { println("            }" ); }
