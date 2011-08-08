@@ -11,7 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public class ErrorCollectionVisitor extends Visitor implements NaturalVisitor {
     
-    private List<Message> errors = new ArrayList<Message>();
+    private final List<Message> errors = new ArrayList<Message>();
     private boolean withinDeclaration;
     private boolean includingChildren;
     

@@ -7,7 +7,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public class FindDeclarationVisitor extends Visitor {
 	
-	private Declaration declaration;
+	private final Declaration declaration;
 	private Tree.Declaration declarationNode;
 	
 	public FindDeclarationVisitor(Declaration declaration) {
