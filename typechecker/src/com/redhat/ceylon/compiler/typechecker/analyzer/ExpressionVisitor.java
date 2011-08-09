@@ -674,7 +674,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         ProducedType expressionType = se.getExpression().getTypeModel();
         if (expressionType!=null) {
             if (isEmptyType(expressionType)) {
-                ProducedType t = getNonemptyType(expressionType);
+                ProducedType t = getNonemptyDefiniteType(expressionType);
                 local.setTypeModel(t);
                 that.getDeclarationModel().setType(t);
                 return;
@@ -863,20 +863,20 @@ public class ExpressionVisitor extends AbstractVisitor {
                 List<ProducedType> typeArgs = getInferedTypeArguments(that, (Functional) dec);
                 mte.getTypeArguments().setTypeModels(typeArgs);
                 if (pr instanceof Tree.BaseTypeExpression) {
-                    visitBaseTypeExpression((Tree.BaseTypeExpression) pr, (TypeDeclaration) dec, 
-                            typeArgs, mte.getTypeArguments());
+                    visitBaseTypeExpression((Tree.BaseTypeExpression) pr, 
+                    		(TypeDeclaration) dec, typeArgs, mte.getTypeArguments());
                 }
                 else if (pr instanceof Tree.QualifiedTypeExpression) {
-                    visitQualifiedTypeExpression((Tree.QualifiedTypeExpression) pr, (TypeDeclaration) dec, 
-                            typeArgs, mte.getTypeArguments());
+                    visitQualifiedTypeExpression((Tree.QualifiedTypeExpression) pr, 
+                    		(TypeDeclaration) dec, typeArgs, mte.getTypeArguments());
                 }
                 else if (pr instanceof Tree.BaseMemberExpression) {
-                    visitBaseMemberExpression((Tree.BaseMemberExpression) pr, (TypedDeclaration) dec, 
-                            typeArgs, mte.getTypeArguments());
+                    visitBaseMemberExpression((Tree.BaseMemberExpression) pr, 
+                    		(TypedDeclaration) dec, typeArgs, mte.getTypeArguments());
                 }
                 else if (pr instanceof Tree.QualifiedMemberExpression) {
-                    visitQualifiedMemberExpression((Tree.QualifiedMemberExpression) pr, (TypedDeclaration) dec, 
-                            typeArgs, mte.getTypeArguments());
+                    visitQualifiedMemberExpression((Tree.QualifiedMemberExpression) pr, 
+                    		(TypedDeclaration) dec, typeArgs, mte.getTypeArguments());
                 }
             }
             visitInvocation(that, mte.getTarget());
@@ -918,8 +918,8 @@ public class ExpressionVisitor extends AbstractVisitor {
         for (Tree.NamedArgument arg: args.getNamedArguments()) {
             ProducedType type = null;
             if (arg instanceof Tree.SpecifiedArgument) {
-                Tree.Expression value = ((Tree.SpecifiedArgument) arg).getSpecifierExpression().getExpression();
-                type = value.getTypeModel();
+                type = ((Tree.SpecifiedArgument) arg).getSpecifierExpression()
+                				.getExpression().getTypeModel();
             }
             else if (arg instanceof Tree.TypedArgument) {
                 //TODO: broken for method args
@@ -938,7 +938,8 @@ public class ExpressionVisitor extends AbstractVisitor {
             Parameter sp = getSequencedParameter(parameters);
             if (sp!=null) {
                 ProducedType spt = getIndividualSequencedParameterType(sp.getType());
-                for (Tree.Expression e: args.getSequencedArgument().getExpressionList().getExpressions()) {
+                for (Tree.Expression e: args.getSequencedArgument()
+                				.getExpressionList().getExpressions()) {
                     ProducedType sat = e.getTypeModel();
                     if (sat!=null) {
                         inferTypeArg(tp, spt, sat, inferredTypes,
@@ -1237,10 +1238,8 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }
 
-    private ProducedType getIndividualSequencedParameterType(
-            ProducedType paramType) {
-        ProducedType seqType = getNonemptySequenceType(paramType);
-        return seqType.getTypeArgumentList().get(0);
+    private ProducedType getIndividualSequencedParameterType(ProducedType paramType) {
+        return getNonemptySequenceType(paramType).getTypeArgumentList().get(0);
     }
 
     private void checkPositionalArgument(Parameter p, ProducedReference pr,

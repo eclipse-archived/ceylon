@@ -426,7 +426,7 @@ public abstract class AbstractVisitor extends Visitor {
         return pt.minus(getNothingDeclaration());
     }
 
-    protected ProducedType getNonemptyType(ProducedType pt) {
+    protected ProducedType getNonemptyDefiniteType(ProducedType pt) {
         return pt.minus(getNothingDeclaration()).minus(getEmptyDeclaration());
     }
 
