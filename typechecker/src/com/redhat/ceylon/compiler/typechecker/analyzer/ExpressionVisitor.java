@@ -1484,14 +1484,14 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }
 
-    private void visitBinaryOperator(Tree.BinaryOperatorExpression that, 
-            TypeDeclaration type) {
+    private void visitBitwiseOperator(Tree.BinaryOperatorExpression that) {
+    	TypeDeclaration sd = getSlotsDeclaration();
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            checkOperandTypes(lhst, rhst, type, that, 
+            checkOperandTypes(lhst, rhst, sd, that, 
                     "operand expressions must be compatible");
-            ProducedType ut = unionType(lhst, rhst).getSupertype(type);
+            ProducedType ut = unionType(lhst, rhst).getSupertype(sd);
             if (ut!=null) {
                 ProducedType t = ut.getTypeArguments().isEmpty() ? 
                         ut : ut.getTypeArgumentList().get(0);
@@ -1683,7 +1683,7 @@ public class ExpressionVisitor extends AbstractVisitor {
 
     @Override public void visit(Tree.BitwiseOp that) {
         super.visit(that);
-        visitBinaryOperator(that, getSlotsDeclaration());
+        visitBitwiseOperator(that);
     }
 
     @Override public void visit(Tree.LogicalOp that) {
@@ -1756,7 +1756,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         
     @Override public void visit(Tree.BitwiseAssignmentOp that) {
         super.visit(that);
-        visitBinaryOperator(that, getSlotsDeclaration());
+        visitBitwiseOperator(that);
         checkAssignable(that.getLeftTerm());
     }
         
