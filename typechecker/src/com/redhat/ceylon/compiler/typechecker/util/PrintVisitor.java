@@ -6,6 +6,7 @@ import java.io.Writer;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -71,19 +72,19 @@ public class PrintVisitor extends Visitor implements NaturalVisitor {
         if (node instanceof Tree.Primary) {
             Declaration d = ((Tree.Primary) node).getDeclaration();
             if (d!=null) {
-                print("  #" + d);
+                print(" -- " + d);
             }
         }
         if (node instanceof Tree.Declaration) {
             Declaration d = ((Tree.Declaration) node).getDeclarationModel();
             if (d!=null) {
-                print("  #" + d);
+                print(" -- " + d);
             }
         }
         if (node instanceof Tree.SimpleType) {
             Declaration d = ((Tree.SimpleType) node).getDeclarationModel();
             if (d!=null) {
-                print("  #" + d);
+                print(" -- " + d);
             }
         }
         if (node instanceof Tree.Term) {
@@ -110,6 +111,30 @@ public class PrintVisitor extends Visitor implements NaturalVisitor {
                     }
                 }
             }
+        }
+        if (node instanceof Tree.Return) {
+        	Declaration d = ((Tree.Return) node).getDeclaration();
+			if (d!=null) {
+				print(" -- " + d);
+			}
+        }
+        if (node instanceof Tree.PositionalArgument) {
+        	Parameter p = ((Tree.PositionalArgument) node).getParameter();
+			if (p!=null) {
+				print(" -- " + p);
+			}
+        }
+        if (node instanceof Tree.NamedArgument) {
+        	Parameter p = ((Tree.NamedArgument) node).getParameter();
+			if (p!=null) {
+				print(" -- " + p);
+			}
+        }
+        if (node instanceof Tree.SequencedArgument) {
+        	Parameter p = ((Tree.SequencedArgument) node).getParameter();
+			if (p!=null) {
+				print(" -- " + p);
+			}
         }
         if (!node.getErrors().isEmpty()) {
             print(" <-- ** " + node.getErrors() + " **");
