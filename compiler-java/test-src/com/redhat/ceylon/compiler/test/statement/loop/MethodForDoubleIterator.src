@@ -4,7 +4,7 @@ class MethodForDoubleIterator {
     
     public final void m() {
         for (ceylon.language.Iterator<? extends ceylon.language.Entry<? extends .java.lang.Long, ? extends .java.lang.String>> $i$iter$0 = new ceylon.language.ArraySequence<ceylon.language.Entry<.java.lang.Long, .java.lang.String>>(new ceylon.language.Entry<.java.lang.Long, .java.lang.String>(1L, "a"), new ceylon.language.Entry<.java.lang.Long, .java.lang.String>(2L, "b")).iterator(); $i$iter$0.getHead() != null; $i$iter$0 = $i$iter$0.getTail()) {
-            final long i = $i$iter$0.getHead().getKey();
+            final .java.lang.Long i = $i$iter$0.getHead().getKey();
             final .java.lang.String s = $i$iter$0.getHead().getElement();
         }
     }
