@@ -67,6 +67,8 @@ class Operators() {
     
     @type["Operators.X"] value x22 = nothing ? nothing ? X();
     
+    @type["Operators.Y|Operators.X"] value x60 = nothing ? Y();
+    
     @error value x23 = X() ? X();
     
     @error value x24 = X() ? nothing;
@@ -189,9 +191,16 @@ class Operators() {
             return 0;
         }
     }
-    //we could make this work by making x?y have type X|Y where x is type X? and y is type Y
-    /*Integer|Natural defaultIon2(Nothing|Integer|Natural x) {
+    Integer|Natural defaultIon2(Nothing|Integer|Natural x) {
         return x?0;
-    }*/
+    }
 
+    Boolean b1 = true;
+    Boolean b2 = false;
+    Boolean b3 = b1 && b2;
+    variable Boolean b4 := b2 || b3;
+    variable Boolean b5 := !b4;
+    b4 &&= b3;
+    b5 ||= b4;
+    
 }
