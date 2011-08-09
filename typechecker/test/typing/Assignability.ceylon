@@ -301,6 +301,12 @@ class Assignability() {
 
     printStrings { @error strings={1, 2}; };
     
+    @error printStrings("hello", 1);
+    
+    printStrings { @error "hello", 1 };
+    
+    printStrings { @error strings={"hello", 1}; };
+    
     
     String joinStrings(Character char, String... strings) { throw; }
     
