@@ -45,6 +45,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 public class ExpressionVisitor extends AbstractVisitor {
     
     private Tree.Type returnType;
+    private Declaration returnDeclaration;
     private Context context;
 
     public ExpressionVisitor(Context context) {
@@ -54,6 +55,16 @@ public class ExpressionVisitor extends AbstractVisitor {
     @Override
     protected Context getContext() {
         return context;
+    }
+    
+    private Declaration beginReturnDeclaration(Declaration d) {
+    	Declaration od = returnDeclaration;
+    	returnDeclaration = d;
+    	return od;
+    }
+    
+    private void endReturnDeclaration(Declaration od) {
+    	returnDeclaration = od;
     }
     
     private Tree.Type beginReturnScope(Tree.Type t) {
@@ -459,20 +470,26 @@ public class ExpressionVisitor extends AbstractVisitor {
 
     @Override public void visit(Tree.AttributeGetterDefinition that) {
         Tree.Type rt = beginReturnScope(that.getType());
+        Declaration od = beginReturnDeclaration(that.getDeclarationModel());
         super.visit(that);
         endReturnScope(rt, that.getDeclarationModel());
+        endReturnDeclaration(od);
         validateHiddenAttribute(that);
     }
 
     @Override public void visit(Tree.AttributeArgument that) {
         Tree.Type rt = beginReturnScope(that.getType());
+        Declaration od = beginReturnDeclaration(that.getDeclarationModel());
         super.visit(that);
+        endReturnDeclaration(od);
         endReturnScope(rt, that.getDeclarationModel());
     }
 
     @Override public void visit(Tree.AttributeSetterDefinition that) {
         Tree.Type rt = beginReturnScope(that.getType());
+        Declaration od = beginReturnDeclaration(that.getDeclarationModel());
         super.visit(that);
+        endReturnDeclaration(od);
         endReturnScope(rt, that.getDeclarationModel());
     }
 
@@ -483,37 +500,49 @@ public class ExpressionVisitor extends AbstractVisitor {
 
     @Override public void visit(Tree.MethodDefinition that) {
         Tree.Type rt = beginReturnScope(that.getType());           
+        Declaration od = beginReturnDeclaration(that.getDeclarationModel());
         super.visit(that);
+        endReturnDeclaration(od);
         endReturnScope(rt, that.getDeclarationModel());
     }
 
     @Override public void visit(Tree.MethodArgument that) {
         Tree.Type rt = beginReturnScope(that.getType());           
+        Declaration od = beginReturnDeclaration(that.getDeclarationModel());
         super.visit(that);
+        endReturnDeclaration(od);
         endReturnScope(rt, that.getDeclarationModel());
     }
 
     @Override public void visit(Tree.ClassDefinition that) {
         Tree.Type rt = beginReturnScope(new Tree.VoidModifier(that.getAntlrTreeNode()));
+        Declaration od = beginReturnDeclaration(that.getDeclarationModel());
         super.visit(that);
+        endReturnDeclaration(od);
         endReturnScope(rt, null);
     }
 
     @Override public void visit(Tree.InterfaceDefinition that) {
         Tree.Type rt = beginReturnScope(null);
+        Declaration od = beginReturnDeclaration(that.getDeclarationModel());
         super.visit(that);
+        endReturnDeclaration(od);
         endReturnScope(rt, null);
     }
 
     @Override public void visit(Tree.ObjectDefinition that) {
         Tree.Type rt = beginReturnScope(new Tree.VoidModifier(that.getAntlrTreeNode()));
+        Declaration od = beginReturnDeclaration(that.getDeclarationModel());
         super.visit(that);
+        endReturnDeclaration(od);
         endReturnScope(rt, null);
     }
 
     @Override public void visit(Tree.ObjectArgument that) {
         Tree.Type rt = beginReturnScope(new Tree.VoidModifier(that.getAntlrTreeNode()));
+        Declaration od = beginReturnDeclaration(that.getDeclarationModel());
         super.visit(that);
+        endReturnDeclaration(od);
         endReturnScope(rt, null);
     }
 
@@ -726,17 +755,20 @@ public class ExpressionVisitor extends AbstractVisitor {
             //that.addError("could not determine expected return type");
         } 
         else {
+        	that.setDeclaration(returnDeclaration);
             Tree.Expression e = that.getExpression();
             if (e==null) {
                 if (!(returnType instanceof Tree.VoidModifier)) {
-                    that.addError("a non-void method or getter must return a value");
+                    that.addError("a non-void method or getter must return a value: " +
+                    		returnDeclaration.getName());
                 }
             }
             else {
                 ProducedType et = returnType.getTypeModel();
                 ProducedType at = e.getTypeModel();
                 if (returnType instanceof Tree.VoidModifier) {
-                    that.addError("a void method, setter, or class initializer may not return a value");
+                    that.addError("a void method, setter, or class initializer may not return a value: " +
+                    		returnDeclaration.getName());
                 }
                 else if (returnType instanceof Tree.LocalModifier) {
                     if (at!=null) {
@@ -757,7 +789,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                 }
                 else {
                     checkAssignable(at, et, that.getExpression(), 
-                            "returned expression must be assignable to expected return type");
+                            "returned expression must be assignable to return type of " +
+                    		returnDeclaration.getName());
                 }
             }
         }
