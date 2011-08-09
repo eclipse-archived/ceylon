@@ -1205,7 +1205,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         ProducedType at = paramType==null ? null : 
                 getIndividualSequencedParameterType(paramType);
         for (int j=i; j<args.size(); j++) {
-            Tree.PositionalArgument a = args.get(i);
+            Tree.PositionalArgument a = args.get(j);
             a.setParameter(p);
             Tree.Expression e = a.getExpression();
             if (e==null) {
