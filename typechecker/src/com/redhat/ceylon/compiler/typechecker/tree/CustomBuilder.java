@@ -16,12 +16,20 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueParameterDeclaratio
 
 public class CustomBuilder extends Builder {
     
-    @Override
+    private static final class InferredTypeArguments 
+    	extends Tree.InferredTypeArguments {
+		private InferredTypeArguments(CommonTree treeNode) {
+			super(treeNode);
+			setText("<>");
+		}
+	}
+
+	@Override
     public BaseTypeExpression buildBaseTypeExpression(CommonTree treeNode) {
         BaseTypeExpression node = new BaseTypeExpression(treeNode);
         buildBaseTypeExpression(treeNode, node);
         if (node.getTypeArguments()==null) {
-            node.setTypeArguments( new Tree.InferredTypeArguments(treeNode) );
+            node.setTypeArguments( new InferredTypeArguments(treeNode) );
         }
         return node;
     }
@@ -31,7 +39,7 @@ public class CustomBuilder extends Builder {
         BaseMemberExpression node = new BaseMemberExpression(treeNode);
         buildBaseMemberExpression(treeNode, node);
         if (node.getTypeArguments()==null) {
-            node.setTypeArguments( new Tree.InferredTypeArguments(treeNode) );
+            node.setTypeArguments( new InferredTypeArguments(treeNode) );
         }
         return node;
     }
@@ -41,7 +49,7 @@ public class CustomBuilder extends Builder {
         QualifiedTypeExpression node = new QualifiedTypeExpression(treeNode);
         buildQualifiedTypeExpression(treeNode, node);
         if (node.getTypeArguments()==null) {
-            node.setTypeArguments( new Tree.InferredTypeArguments(treeNode) );
+            node.setTypeArguments( new InferredTypeArguments(treeNode) );
         }
         return node;
     }
@@ -51,7 +59,7 @@ public class CustomBuilder extends Builder {
         QualifiedMemberExpression node = new QualifiedMemberExpression(treeNode);
         buildQualifiedMemberExpression(treeNode, node);
         if (node.getTypeArguments()==null) {
-            node.setTypeArguments( new Tree.InferredTypeArguments(treeNode) );
+            node.setTypeArguments( new InferredTypeArguments(treeNode) );
         }
         return node;
     }
