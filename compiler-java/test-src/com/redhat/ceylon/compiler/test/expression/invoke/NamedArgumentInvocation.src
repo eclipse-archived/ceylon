@@ -2,16 +2,26 @@ package com.redhat.ceylon.compiler.test.expression.invoke;
 
 class NamedArgumentInvocation {
     
-    private final boolean m() {
-        return new com.redhat.ceylon.compiler.impl.NamedArgumentCall<NamedArgumentInvocation>(this, "foo", 2) {
-            final boolean f() {
-                return instance.f((long) args[1], (.java.lang.String) args[0]);
-            }
-         }.f();
-    }
-    
     private final boolean f(final long n, final .java.lang.String s) {
         return true;
+    }
+    
+    private final boolean m1() {
+        return new .ceylon.language.NamedArgumentCall<.java.lang.Boolean, com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocation>(this, "foo", .ceylon.language.Natural.instance(1L)){
+            
+            public .java.lang.Boolean call() {
+                return this.instance.f((ceylon.language.Natural)this.args[1], (.java.lang.String)this.args[0]);
+            }
+        }.call();
+    }
+    
+    private final boolean m2() {
+        return new .ceylon.language.NamedArgumentCall<.java.lang.Boolean, com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocation>(new NamedArgumentInvocation(), "bar", .ceylon.language.Natural.instance(2L)){
+            
+            public .java.lang.Boolean call() {
+                return this.instance.f((ceylon.language.Natural)this.args[1], (.java.lang.String)this.args[0]);
+            }
+        }.call();
     }
     
     NamedArgumentInvocation() {

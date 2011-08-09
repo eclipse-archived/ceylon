@@ -76,8 +76,7 @@ public class MethodDefinitionBuilder {
     private MethodDefinitionBuilder(AbstractTransformer gen, String name) {
         this.gen = gen;
         this.name = name;
-        
-        resultTypeExpr = makeResultType(null);
+        resultTypeExpr = makeResultType(null, 0);
     }
     
     public JCTree.JCMethodDecl build() {
@@ -112,11 +111,11 @@ public class MethodDefinitionBuilder {
         return ((body != null) && ((modifiers & ABSTRACT) == 0)) ? gen.make().Block(0, body.toList()) : null;
     }
 
-    private JCExpression makeResultType(ProducedType resultType) {
+    private JCExpression makeResultType(ProducedType resultType, int flags) {
         if (resultType == null) {
             return gen.make().TypeIdent(VOID);
         } else {
-            return gen.makeJavaType(resultType);
+            return gen.makeJavaType(resultType, flags);
         }
     }
 
@@ -216,8 +215,12 @@ public class MethodDefinitionBuilder {
     }
 
     public MethodDefinitionBuilder resultType(ProducedType resultType) {
+        return resultType(resultType, 0);
+    }
+
+    public MethodDefinitionBuilder resultType(ProducedType resultType, int flags) {
         this.resultType = resultType;
-        this.resultTypeExpr = makeResultType(resultType);
+        this.resultTypeExpr = makeResultType(resultType, flags);
         return this;
     }
 
