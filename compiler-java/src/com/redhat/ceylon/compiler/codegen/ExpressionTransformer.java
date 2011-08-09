@@ -342,13 +342,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             int numDeclared = declaredParams.size();
             java.util.List<PositionalArgument> passedArguments = positional.getPositionalArguments();
             int numPassed = passedArguments.size();
-            ProducedType lastDeclaredParamType = declaredParams.isEmpty() ? null : declaredParams.get(declaredParams.size() - 1).getType();
-            ProducedType lastPassedParamType = passedArguments.isEmpty() ? null : passedArguments.get(passedArguments.size() - 1).getExpression().getTypeModel();
-            if (positional.getEllipsis() == null // foo(sequence...) syntax => no need to box
-                    && (numPassed != numDeclared
-                        || (lastDeclaredParamType != null
-                            && lastPassedParamType != null
-                            && lastDeclaredParamType.isSupertypeOf(typeFact().makeEmptyType(typeFact().makeSequenceType(lastPassedParamType)))))) {
+            Parameter lastDeclaredParam = declaredParams.isEmpty() ? null : declaredParams.get(declaredParams.size() - 1); 
+            if (lastDeclaredParam != null 
+                    && lastDeclaredParam.isSequenced()
+                    && positional.getEllipsis() == null) {// foo(sequence...) syntax => no need to box
                 // => call to a varargs method
                 isVarargs = true;
                 // first, append the normal args
@@ -368,6 +365,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         Tree.PositionalArgument arg = positional.getPositionalArguments().get(ii);
                         x = x.append(transformArg(arg));
                     }
+                    ProducedType lastDeclaredParamType = declaredParams.isEmpty() ? null : declaredParams.get(declaredParams.size() - 1).getType();
                     ProducedType seqElemType = typeFact().getIteratedType(lastDeclaredParamType);
                     ProducedType seqType = typeFact().makeDefaultSequenceType(seqElemType);
                     JCExpression typeExpr = makeJavaType(seqType, CeylonTransformer.CLASS_NEW);
