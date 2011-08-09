@@ -1500,6 +1500,15 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }
 
+    private void visitLogicalOperator(Tree.BinaryOperatorExpression that) {
+        ProducedType bt = getBooleanDeclaration().getType();
+        checkAssignable(leftType(that), bt, that, 
+                "logical operand expression must be a boolean value");
+        checkAssignable(rightType(that), bt, that, 
+                "logical operand expression must be a boolean value");
+        that.setTypeModel(bt);
+    }
+
     private void visitDefaultOperator(Tree.DefaultOp that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
@@ -1679,7 +1688,7 @@ public class ExpressionVisitor extends AbstractVisitor {
 
     @Override public void visit(Tree.LogicalOp that) {
         super.visit(that);
-        visitBinaryOperator(that, getBooleanDeclaration());
+        visitLogicalOperator(that);
     }
 
     @Override public void visit(Tree.EqualityOp that) {
@@ -1741,7 +1750,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         
     @Override public void visit(Tree.LogicalAssignmentOp that) {
         super.visit(that);
-        visitBinaryOperator(that, getBooleanDeclaration());
+        visitLogicalOperator(that);
         checkAssignable(that.getLeftTerm());
     }
         
