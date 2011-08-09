@@ -112,7 +112,7 @@ public class AttributeDefinitionBuilder {
     private JCTree generateSetter() {
         return MethodDefinitionBuilder
             .setter(owner, variableName, variableType, valueAnnotations)
-            .modifiers(getterFlags)
+            .modifiers(setterFlags)
             .block(makeSetterBlock())
             .build();
     }
