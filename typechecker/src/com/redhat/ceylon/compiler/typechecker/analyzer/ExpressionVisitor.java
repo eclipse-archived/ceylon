@@ -1083,6 +1083,7 @@ public class ExpressionVisitor extends AbstractVisitor {
 
     private void checkNamedArgument(Tree.NamedArgument a, ProducedReference pr, 
             Parameter p) {
+    	a.setParameter(p);
         ProducedType argType = null;
         if (a instanceof Tree.SpecifiedArgument) {
             argType = ((Tree.SpecifiedArgument) a).getSpecifierExpression()
@@ -1098,6 +1099,7 @@ public class ExpressionVisitor extends AbstractVisitor {
     
     private void checkSequencedArgument(Tree.SequencedArgument a, ProducedReference pr, 
             Parameter p) {
+    	a.setParameter(p);
         for (Tree.Expression e: a.getExpressionList().getExpressions()) {
             ProducedType paramType = pr.getTypedParameter(p).getType();
             checkAssignable(e.getTypeModel(), getIndividualSequencedParameterType(paramType), a, 
@@ -1171,6 +1173,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                 getIndividualSequencedParameterType(paramType);
         for (int j=i; j<args.size(); j++) {
             Tree.PositionalArgument a = args.get(i);
+            a.setParameter(p);
             Tree.Expression e = a.getExpression();
             if (e==null) {
                 //TODO: this case is temporary until we get support for SPECIAL_ARGUMENTs
@@ -1205,6 +1208,7 @@ public class ExpressionVisitor extends AbstractVisitor {
 
     private void checkPositionalArgument(Parameter p,
             Tree.PositionalArgument a, ProducedType paramType) {
+    	a.setParameter(p);
         Tree.Expression e = a.getExpression();
         if (e==null) {
             //TODO: this case is temporary until we get support for SPECIAL_ARGUMENTs
