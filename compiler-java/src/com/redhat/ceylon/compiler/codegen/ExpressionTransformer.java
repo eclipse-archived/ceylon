@@ -15,19 +15,28 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AndOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BinaryOperatorExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.OrOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequenceEnumeration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.util.Util;
+import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
+import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
+import com.sun.tools.javac.tree.JCTree.JCNewClass;
+import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCUnary;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
@@ -331,6 +340,107 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     JCExpression transform(Tree.InvocationExpression ce) {
+        if (ce.getPositionalArgumentList() != null) {
+            return transformPositionalInvocation(ce);
+        } else if (ce.getNamedArgumentList() != null) {
+            return transformNamedInvocation(ce);
+        } else {
+            throw new RuntimeException("Illegal State");
+        }
+    }
+
+    private JCExpression transformNamedInvocation(InvocationExpression ce) {
+        final ListBuffer<JCExpression> callArgs = new ListBuffer<JCExpression>();
+        final ListBuffer<JCExpression> passArgs = new ListBuffer<JCExpression>();
+        final ProducedType resultType;
+        final String methodName;
+        java.util.List<NamedArgument> namedArguments = ce.getNamedArgumentList().getNamedArguments();
+        final Primary primary = ce.getPrimary();
+        final Declaration primaryDecl = primary.getDeclaration();
+        if (primaryDecl instanceof Method) {
+            Method methodDecl = (Method)primaryDecl;
+            methodName = methodDecl.getName();
+            resultType = methodDecl.getType();
+            java.util.List<Parameter> declaredParams = methodDecl.getParameterLists().get(0).getParameters();
+            for (Parameter declaredParam : declaredParams) {
+                boolean found = false;
+                int index = 0;
+                for (NamedArgument namedArg : namedArguments) {
+                    if (declaredParam.getName().equals(namedArg.getIdentifier().getText())) {
+                        callArgs.append(make().TypeCast(makeJavaType(declaredParam.getType(), this.TYPE_PARAM), make().Indexed(makeSelect("this", "args"), makeInteger(index))));
+                        found = true;
+                        break;
+                    }
+                    index += 1;
+                }
+                if (!found) {
+                    throw new RuntimeException("No value specified for argument '" + declaredParam.getName()+ "' and default values not implemented yet");
+                }
+            }
+
+            for (NamedArgument namedArg : namedArguments) {
+                passArgs.append(transformArg(namedArg));
+            }
+        } else {
+            throw new RuntimeException("Illegal State");
+        }
+
+        // Here I need to get everything 'but the last bit' from the Primary
+        // e.g. f() -> this
+        //   foo().bar() -> foo()
+        //   bar("fdfklvnjk").baz() -> bar("fdfklvnjk")
+        JCExpression fn;
+        ProducedType targetType = null;
+
+        if (primary instanceof BaseMemberExpression) {
+            BaseMemberExpression memberExpr = (BaseMemberExpression)primary;
+            fn = makeIdent("this");
+            targetType = memberExpr.getDeclaration().getDeclaringType(memberExpr.getDeclaration());
+        } else if (primary instanceof QualifiedMemberExpression) {
+            QualifiedMemberExpression memberExpr = (QualifiedMemberExpression)primary;
+            CeylonVisitor visitor = new CeylonVisitor(gen(), callArgs);
+            memberExpr.getPrimary().visit(visitor);
+            fn = visitor.getSingleResult();
+            targetType = memberExpr.getPrimary().getTypeModel();
+        } else {
+            // TODO: Handle all the other possibilities: Should use visitor?
+            throw new RuntimeException("Not Implemented: Named argument calls on a non-member expression");
+        }
+
+        passArgs.prepend(fn);
+
+        // Construct the call() method
+        MethodDefinitionBuilder callMethod = MethodDefinitionBuilder.method(gen(), "call");
+        callMethod.modifiers(Flags.PUBLIC);
+        callMethod.resultType(resultType, this.TYPE_PARAM);
+        callMethod.body(make().Return(make().Apply(null,
+                makeSelect("this", "instance", methodName), callArgs.toList())));
+
+        // Construct the class
+        JCExpression namedArgsClass = make().TypeApply(makeIdent(syms().ceylonNamedArgumentCall),
+                List.<JCExpression>of(makeJavaType(resultType, this.TYPE_PARAM), 
+                        makeJavaType(targetType, this.TYPE_PARAM)));
+
+        JCClassDecl classDecl = make().ClassDef(make().Modifiers(0),
+                names().empty,
+                List.<JCTypeParameter>nil(),
+                namedArgsClass,
+                List.<JCExpression>nil(),
+                List.<JCTree>of(callMethod.build()));
+
+        // Create an instance of the class
+        JCNewClass newClass = make().NewClass(null,
+                null,
+                namedArgsClass,
+                passArgs.toList(),
+                classDecl);
+
+        // Call the call() method
+        return make().Apply(null,
+                makeSelect(newClass, "call"), List.<JCExpression>nil());
+    }
+
+    private JCExpression transformPositionalInvocation(InvocationExpression ce) {
         final ListBuffer<JCExpression> args = new ListBuffer<JCExpression>();
 
         boolean isVarargs = false;
@@ -383,12 +493,12 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
 
         CeylonVisitor visitor = new CeylonVisitor(gen(), args);
-		ce.getPrimary().visit(visitor);
+        ce.getPrimary().visit(visitor);
 
-		JCExpression expr = visitor.getSingleResult();
-		if (expr == null) {
-			throw new RuntimeException();
-		} else if (expr instanceof JCTree.JCNewClass) {
+        JCExpression expr = visitor.getSingleResult();
+        if (expr == null) {
+            throw new RuntimeException();
+        } else if (expr instanceof JCTree.JCNewClass) {
             return expr;
         } else {
             return at(ce).Apply(null, expr, args.toList());
@@ -397,6 +507,16 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     JCExpression transformArg(Tree.PositionalArgument arg) {
         return transformExpression(arg.getExpression());
+    }
+
+    JCExpression transformArg(Tree.NamedArgument arg) {
+        if (arg instanceof Tree.SpecifiedArgument) {
+            return transformExpression(((Tree.SpecifiedArgument)arg).getSpecifierExpression().getExpression());
+        } else if (arg instanceof Tree.TypedArgument) {
+            throw new RuntimeException("Not yet implemented");
+        } else {
+            throw new RuntimeException("Illegal State");
+        }
     }
 
     JCExpression ceylonLiteral(String s) {
