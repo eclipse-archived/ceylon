@@ -79,8 +79,8 @@ class Conversions {
     public final void m() {
         final com.redhat.ceylon.compiler.test.structure.type.Foo c1 = new Foo();
         c1.a();
-        final .java.lang.Long n1 = 1L;
-        final .java.lang.Long n2 = null;
+        final ceylon.language.Natural n1 = .ceylon.language.Natural.instance(1L);
+        final ceylon.language.Natural n2 = null;
         final .java.lang.Object u1 = new Bar();
         ((com.redhat.ceylon.compiler.test.structure.type.Foo)u1).a();
         final .java.lang.Object $u1$0 = u1;
@@ -95,10 +95,10 @@ class Conversions {
         final .java.lang.Object e4;
         final .java.lang.Object e5;
         final .java.lang.Object e6;
-        final com.redhat.ceylon.compiler.test.structure.type.GenInv<.java.lang.String> g1;
-        final com.redhat.ceylon.compiler.test.structure.type.GenCov<? extends .java.lang.String> g2;
-        final com.redhat.ceylon.compiler.test.structure.type.GenCon<? super .java.lang.String> g3;
-        final com.redhat.ceylon.compiler.test.structure.type.GenInv g4;
+        final com.redhat.ceylon.compiler.test.structure.type.GenInv<ceylon.language.String> g1;
+        final com.redhat.ceylon.compiler.test.structure.type.GenCov<? extends ceylon.language.String> g2;
+        final com.redhat.ceylon.compiler.test.structure.type.GenCon<? super ceylon.language.String> g3;
+        final com.redhat.ceylon.compiler.test.structure.type.GenInv<ceylon.language.String> g4;
         final com.redhat.ceylon.compiler.test.structure.type.GenInv g5;
         final com.redhat.ceylon.compiler.test.structure.type.GenInv<.java.lang.Object> v1;
         final com.redhat.ceylon.compiler.test.structure.type.GenCov<?> v2;

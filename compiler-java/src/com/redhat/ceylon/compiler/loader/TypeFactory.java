@@ -185,7 +185,7 @@ public class TypeFactory {
     
     /**
      * Determines whether the given ProducedType is {@code Empty|T}
-     * @param pt The ProducedType corresponding to {@code T}
+     * @param pt The ProducedType to check
      * @return whether the type is a union type with empty
      */
     public boolean isUnionWithEmpty(ProducedType pt) {
@@ -194,6 +194,16 @@ public class TypeFactory {
             return !(pt.minus(getEmptyDeclaration()).getDeclaration() instanceof UnionType);
         }
         return false;
+    }
+    
+    /**
+     * Determines whether the given ProducedType is optional ({@code Nothing|T})
+     * @param pt The ProducedType to check
+     * @return whether the type is optional
+     */
+    public boolean isOptional(ProducedType pt) {
+        TypeDeclaration tdecl = pt.getDeclaration();
+        return (tdecl instanceof UnionType && tdecl.getCaseTypes().size() > 1 && getNothingDeclaration().getType().isSubtypeOf(pt));
     }
     
     /**

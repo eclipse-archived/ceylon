@@ -2,9 +2,24 @@ package com.redhat.ceylon.compiler.test.statement.loop;
 
 class MethodForIterator {
     
-    public final void m(final ceylon.language.Sequence<? extends .java.lang.String> seq) {
-        for (ceylon.language.Iterator<? extends .java.lang.String> $s$iter$0 = seq.iterator(); $s$iter$0.getHead() != null; $s$iter$0 = $s$iter$0.getTail()) {
-            final .java.lang.String s = $s$iter$0.getHead();
+    public final void m(final ceylon.language.Sequence<? extends ceylon.language.String> seq) {
+        for (ceylon.language.Iterator<? extends ceylon.language.String> $s$iter$0 = seq.iterator(); $s$iter$0.getHead() != null; $s$iter$0 = $s$iter$0.getTail()) {
+            final .java.lang.String s = $s$iter$0.getHead().toString();
+        }
+    }
+    
+    public final void m2() {
+        for (ceylon.language.Iterator<? extends ceylon.language.String> $s$iter$1 = new ceylon.language.ArraySequence<ceylon.language.String>(.ceylon.language.String.instance("aap"), .ceylon.language.String.instance("noot"), .ceylon.language.String.instance("mies")).iterator(); $s$iter$1.getHead() != null; $s$iter$1 = $s$iter$1.getTail()) {
+            final .java.lang.String s = $s$iter$1.getHead().toString();
+        }
+        for (ceylon.language.Iterator<? extends ceylon.language.String> $s$iter$2 = new ceylon.language.ArraySequence<ceylon.language.String>(.ceylon.language.String.instance("aap"), null, .ceylon.language.String.instance("mies")).iterator(); $s$iter$2.getHead() != null; $s$iter$2 = $s$iter$2.getTail()) {
+            final ceylon.language.String s = $s$iter$2.getHead();
+        }
+        for (ceylon.language.Iterator<? extends ceylon.language.Natural> $n$iter$3 = new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L)).iterator(); $n$iter$3.getHead() != null; $n$iter$3 = $n$iter$3.getTail()) {
+            final long n = $n$iter$3.getHead().longValue();
+        }
+        for (ceylon.language.Iterator<? extends ceylon.language.Natural> $n$iter$4 = new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(1L), null, .ceylon.language.Natural.instance(3L)).iterator(); $n$iter$4.getHead() != null; $n$iter$4 = $n$iter$4.getTail()) {
+            final ceylon.language.Natural n = $n$iter$4.getHead();
         }
     }
     

@@ -6,4 +6,10 @@ class MethodIfExists() {
         }
         return 0;
     }
+    shared Natural m2(Natural? x) {
+        if (exists y = x) {
+            return y;
+        }
+        return 0;
+    }
 }

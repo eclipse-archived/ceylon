@@ -3,9 +3,9 @@ package com.redhat.ceylon.compiler.test.statement.loop;
 class MethodForDoubleIterator {
     
     public final void m() {
-        for (ceylon.language.Iterator<? extends ceylon.language.Entry<? extends .java.lang.Long, ? extends .java.lang.String>> $i$iter$0 = new ceylon.language.ArraySequence<ceylon.language.Entry<.java.lang.Long, .java.lang.String>>(new ceylon.language.Entry<.java.lang.Long, .java.lang.String>(1L, "a"), new ceylon.language.Entry<.java.lang.Long, .java.lang.String>(2L, "b")).iterator(); $i$iter$0.getHead() != null; $i$iter$0 = $i$iter$0.getTail()) {
-            final .java.lang.Long i = $i$iter$0.getHead().getKey();
-            final .java.lang.String s = $i$iter$0.getHead().getElement();
+        for (ceylon.language.Iterator<? extends ceylon.language.Entry<? extends ceylon.language.Natural, ? extends ceylon.language.String>> $i$iter$0 = new ceylon.language.ArraySequence<ceylon.language.Entry<ceylon.language.Natural, ceylon.language.String>>(new ceylon.language.Entry<ceylon.language.Natural, ceylon.language.String>(.ceylon.language.Natural.instance(1L), .ceylon.language.String.instance("a")), new ceylon.language.Entry<ceylon.language.Natural, ceylon.language.String>(.ceylon.language.Natural.instance(2L), .ceylon.language.String.instance("b")), new ceylon.language.Entry<ceylon.language.Natural, ceylon.language.String>(.ceylon.language.Natural.instance(3L), .ceylon.language.String.instance("c"))).iterator(); $i$iter$0.getHead() != null; $i$iter$0 = $i$iter$0.getTail()) {
+            final long i = $i$iter$0.getHead().getKey().longValue();
+            final .java.lang.String s = $i$iter$0.getHead().getElement().toString();
         }
     }
     

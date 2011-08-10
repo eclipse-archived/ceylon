@@ -2,15 +2,15 @@ package com.redhat.ceylon.compiler.test.structure.method;
 
 class MethodWithVarargs {
     
-    public final void f1(final ceylon.language.Iterable<? extends .java.lang.Long> ns) {
-        for (ceylon.language.Iterator<? extends .java.lang.Long> $n$iter$0 = ns.iterator(); $n$iter$0.getHead() != null; $n$iter$0 = $n$iter$0.getTail()) {
-            final .java.lang.Long n = $n$iter$0.getHead();
+    public final void f1(final ceylon.language.Iterable<? extends ceylon.language.Natural> ns) {
+        for (ceylon.language.Iterator<? extends ceylon.language.Natural> $n$iter$0 = ns.iterator(); $n$iter$0.getHead() != null; $n$iter$0 = $n$iter$0.getTail()) {
+            final long n = $n$iter$0.getHead().longValue();
         }
     }
     
-    public final void f2(final long i, final ceylon.language.Iterable<? extends .java.lang.Long> ns) {
-        for (ceylon.language.Iterator<? extends .java.lang.Long> $n$iter$1 = ns.iterator(); $n$iter$1.getHead() != null; $n$iter$1 = $n$iter$1.getTail()) {
-            final .java.lang.Long n = $n$iter$1.getHead();
+    public final void f2(final long i, final ceylon.language.Iterable<? extends ceylon.language.Natural> ns) {
+        for (ceylon.language.Iterator<? extends ceylon.language.Natural> $n$iter$1 = ns.iterator(); $n$iter$1.getHead() != null; $n$iter$1 = $n$iter$1.getTail()) {
+            final long n = $n$iter$1.getHead().longValue();
         }
     }
     
@@ -21,16 +21,16 @@ class MethodWithVarargs {
     }
     
     private final void m() {
-        f1(new ceylon.language.ArraySequence<.java.lang.Long>(1L, 2L, 3L));
-        f2(1L, new ceylon.language.ArraySequence<.java.lang.Long>(2L, 3L));
+        f1(new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L)));
+        f2(1L, new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L)));
         f1(ceylon.language.$empty.getEmpty());
         f2(1L, ceylon.language.$empty.getEmpty());
-        f1(new ceylon.language.ArraySequence<.java.lang.Long>(1L, 2L, 3L));
-        f2(1L, new ceylon.language.ArraySequence<.java.lang.Long>(2L, 3L));
-        f3(new ceylon.language.ArraySequence<.java.lang.Object>(1L, 2L, 3L));
-        f3(new ceylon.language.ArraySequence<.java.lang.Object>(new ceylon.language.ArraySequence<.java.lang.Long>(1L, 2L, 3L)));
-        f3(new ceylon.language.ArraySequence<.java.lang.Long>(1L, 2L, 3L));
-        f3(new ceylon.language.ArraySequence<.java.lang.Object>(1L, "foo", 5.0));
+        f1(new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L)));
+        f2(1L, new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L)));
+        f3(new ceylon.language.ArraySequence<.java.lang.Object>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L)));
+        f3(new ceylon.language.ArraySequence<.java.lang.Object>(new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L))));
+        f3(new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L)));
+        f3(new ceylon.language.ArraySequence<.java.lang.Object>(.ceylon.language.Natural.instance(1L), .ceylon.language.String.instance("foo"), .ceylon.language.Float.instance(5.0)));
     }
     
     MethodWithVarargs() {

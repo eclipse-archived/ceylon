@@ -6,7 +6,7 @@ class StringBoxing {
         final .java.lang.String s1 = "TEST";
         final .java.lang.String s2 = (.ceylon.language.String.instance(s1)).lowercase();
         final .java.lang.String s3 = upper(s2);
-        final .java.lang.String s4 = upper2(s3);
+        final ceylon.language.String s4 = upper2(.ceylon.language.String.instance(s3));
         final .java.lang.String s5 = upper3(s4);
         final .java.lang.String s6 = (.ceylon.language.String.instance(upper3(s4))).uppercase();
     }
@@ -15,16 +15,20 @@ class StringBoxing {
         return (.ceylon.language.String.instance(s)).uppercase();
     }
     
-    private final .java.lang.String upper2(final .java.lang.String s) {
-        if (s != null) {
-            return (.ceylon.language.String.instance(s)).uppercase();
+    private final ceylon.language.String upper2(final ceylon.language.String s) {
+        final ceylon.language.String $s$0 = s;
+        if ($s$0 != null) {
+            final .java.lang.String $s$1 = $s$0.toString();
+            return .ceylon.language.String.instance((.ceylon.language.String.instance($s$1)).uppercase());
         }
         return null;
     }
     
-    private final .java.lang.String upper3(final .java.lang.String s) {
-        if (s != null) {
-            return (.ceylon.language.String.instance(s)).uppercase();
+    private final .java.lang.String upper3(final ceylon.language.String s) {
+        final ceylon.language.String $s$2 = s;
+        if ($s$2 != null) {
+            final .java.lang.String $s$3 = $s$2.toString();
+            return (.ceylon.language.String.instance($s$3)).uppercase();
         } else {
             return "";
         }

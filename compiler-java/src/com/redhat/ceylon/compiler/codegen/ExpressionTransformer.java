@@ -70,6 +70,15 @@ public class ExpressionTransformer extends AbstractTransformer {
         return v.getSingleResult();
     }
 
+    JCExpression transformExpression(final Tree.Term expr, ProducedType targetType) {
+        JCExpression result = transformExpression(expr);
+        
+        ProducedType exprType = expr.getTypeModel();
+        result = boxUnboxIfNecessary(result, exprType, targetType);
+        
+        return result;
+    }
+    
     public JCExpression transformStringExpression(Tree.StringTemplate expr) {
         ListBuffer<JCExpression> strings = new ListBuffer<JCExpression>();
         for (Tree.Expression t : expr.getExpressions()) {
@@ -135,10 +144,12 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     JCExpression transformAssignment(Node op, Term leftTerm, Term rightTerm) {
         // right side is easy
-        JCExpression rhs = transformExpression(rightTerm);
+        JCExpression rhs = transformExpression(rightTerm, leftTerm.getTypeModel());
+        
         // left side depends
         // FIXME: can this be anything else than a Primary?
         Declaration decl = ((Tree.Primary)leftTerm).getDeclaration();
+
         // FIXME: can this be anything else than a Value or a TypedDeclaration?
         boolean variable = false;
         if (decl instanceof Value) {
@@ -185,16 +196,16 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.RangeOp op) {
-        JCExpression lower = transformExpression(op.getLeftTerm());
-        JCExpression upper = transformExpression(op.getRightTerm());
+        JCExpression lower = boxType(transformExpression(op.getLeftTerm()), op.getLeftTerm().getTypeModel());
+        JCExpression upper = boxType(transformExpression(op.getRightTerm()), op.getRightTerm().getTypeModel());
         ProducedType rangeType = typeFact().makeRangeType(op.getLeftTerm().getTypeModel());
         JCExpression typeExpr = makeJavaType(rangeType, CeylonTransformer.CLASS_NEW);
         return at(op).NewClass(null, null, typeExpr, List.<JCExpression> of(lower, upper), null);
     }
 
     public JCExpression transform(Tree.EntryOp op) {
-        JCExpression key = transformExpression(op.getLeftTerm());
-        JCExpression elem = transformExpression(op.getRightTerm());
+        JCExpression key = boxType(transformExpression(op.getLeftTerm()), op.getLeftTerm().getTypeModel());
+        JCExpression elem = boxType(transformExpression(op.getRightTerm()), op.getRightTerm().getTypeModel());
         ProducedType entryType = typeFact().makeEntryType(op.getLeftTerm().getTypeModel(), op.getRightTerm().getTypeModel());
         JCExpression typeExpr = makeJavaType(entryType, CeylonTransformer.CLASS_NEW);
         return at(op).NewClass(null, null, typeExpr , List.<JCExpression> of(key, elem), null);
@@ -259,6 +270,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return desugarAssignmentOp(op, newOp);
     }
 
+    // FIXME GET RID OF THIS, IT'S WRONG!!
     private JCExpression desugarAssignmentOp(Tree.AssignmentOp op, BinaryOperatorExpression newOp) {
         newOp.setLeftTerm(op.getLeftTerm());
         newOp.setRightTerm(op.getRightTerm());
@@ -266,6 +278,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         AssignOp assignOp = new Tree.AssignOp(op.getAntlrTreeNode());
         assignOp.setLeftTerm(op.getLeftTerm());
         assignOp.setRightTerm(newOp);
+        assignOp.setTypeModel(op.getTypeModel());
+        newOp.setTypeModel(op.getTypeModel());
         return transform(assignOp);
     }
 
@@ -467,19 +481,16 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // then, box the remaining passed arguments
                 if (numDeclared -1 == numPassed) {
                     // box as Empty
-                    boxed = globalGen().getGlobalValue(makeIdent("ceylon", "language"), "$empty");
+                    boxed = makeEmpty();
                 } else {
                     // box with an ArraySequence<T>
-                    List<JCExpression> x = List.<JCExpression>nil();
+                    List<Expression> x = List.<Expression>nil();
                     for (int ii = numDeclared - 1; ii < numPassed; ii++) {
                         Tree.PositionalArgument arg = positional.getPositionalArguments().get(ii);
-                        x = x.append(transformArg(arg));
+                        x = x.append(arg.getExpression());
                     }
-                    ProducedType lastDeclaredParamType = declaredParams.isEmpty() ? null : declaredParams.get(declaredParams.size() - 1).getType();
-                    ProducedType seqElemType = typeFact().getIteratedType(lastDeclaredParamType);
-                    ProducedType seqType = typeFact().makeDefaultSequenceType(seqElemType);
-                    JCExpression typeExpr = makeJavaType(seqType, CeylonTransformer.CLASS_NEW);
-                    boxed = make().NewClass(null, null, typeExpr, x, null);
+                    ProducedType seqElemType = typeFact().getIteratedType(lastDeclaredParam.getType());
+                    boxed = makeSequence(x, seqElemType);
                 }
                 args.append(boxed);
             }
@@ -504,12 +515,12 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     JCExpression transformArg(Tree.PositionalArgument arg) {
-        return transformExpression(arg.getExpression());
+        return transformExpression(arg.getExpression(), arg.getParameter().getType());
     }
 
     JCExpression transformArg(Tree.NamedArgument arg) {
         if (arg instanceof Tree.SpecifiedArgument) {
-            return transformExpression(((Tree.SpecifiedArgument)arg).getSpecifierExpression().getExpression());
+            return transformExpression(((Tree.SpecifiedArgument)arg).getSpecifierExpression().getExpression(), arg.getParameter().getType());
         } else if (arg instanceof Tree.TypedArgument) {
             throw new RuntimeException("Not yet implemented");
         } else {
@@ -658,18 +669,13 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(SequenceEnumeration value) {
-        ListBuffer<JCExpression> elems = new ListBuffer<JCExpression>();
+        at(value);
         if (value.getExpressionList() == null) {
-            return globalGen().getGlobalValue(makeIdent("ceylon", "language"), "$empty");
+            return makeEmpty();
         } else {
             java.util.List<Expression> list = value.getExpressionList().getExpressions();
-            for (Expression expr : list) {
-                elems.append(transformExpression(expr));
-            }
             ProducedType seqElemType = value.getTypeModel().getTypeArgumentList().get(0);
-            ProducedType seqType = typeFact().makeDefaultSequenceType(seqElemType);
-            JCExpression typeExpr = makeJavaType(seqType, CeylonTransformer.CLASS_NEW);
-            return at(value).NewClass(null, null, typeExpr, elems.toList(), null);
+            return makeSequence(list, seqElemType);
         }
     }
 }

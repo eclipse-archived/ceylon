@@ -1,7 +1,7 @@
 @nomodel
 class MethodForDoubleIterator(){
     shared void m(){
-        for (Natural i -> String s in {1->"a", 2->"b"}) {
+        for (Natural i -> String s in {1->"a", 2->"b", 3->"c"}) {
             // Empty
         }
     }

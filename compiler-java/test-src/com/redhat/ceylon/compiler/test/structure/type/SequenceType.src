@@ -3,8 +3,10 @@ package com.redhat.ceylon.compiler.test.structure.type;
 class SequenceType {
     
     public final void m() {
-        final ceylon.language.Iterable<? extends .java.lang.Long> s1 = new ceylon.language.ArraySequence<.java.lang.Long>(1L, 2L, 3L);
-        final ceylon.language.Iterable<? extends .java.lang.Long> s2 = ceylon.language.$empty.getEmpty();
+        final ceylon.language.Iterable<? extends ceylon.language.Natural> s1 = new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L));
+        final ceylon.language.Iterable<? extends ceylon.language.Natural> s2 = ceylon.language.$empty.getEmpty();
+        final ceylon.language.Iterable<? extends com.redhat.ceylon.compiler.test.structure.type.SequenceType> s3 = new ceylon.language.ArraySequence<com.redhat.ceylon.compiler.test.structure.type.SequenceType>(this, this, this);
+        final ceylon.language.Iterable<? extends com.redhat.ceylon.compiler.test.structure.type.SequenceType> s4 = ceylon.language.$empty.getEmpty();
     }
     
     SequenceType() {
