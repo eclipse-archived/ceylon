@@ -1,6 +1,12 @@
 package ceylon.language;
 
-public final class String implements Equality {
+import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
+
+@SatisfiedTypes({
+    "ceylon.language.Equality",
+    "ceylon.language.Comparable<ceylon.language.String>"
+})
+public final class String extends Object implements Equality, Comparable<String> {
     public final java.lang.String value;
 
     private String(java.lang.String s) {
@@ -45,6 +51,13 @@ public final class String implements Equality {
         for (String s: strings)
             buf.append(s.value);
         return new ceylon.language.String(buf.toString());
+    }
+
+    @Override
+    public Comparison compare(String other) {
+        int c = value.compareTo(other.value);
+        return (c < 0) ? Comparison.SMALLER :
+            ((c == 0) ? Comparison.EQUAL : Comparison.LARGER);
     }
 
 }
