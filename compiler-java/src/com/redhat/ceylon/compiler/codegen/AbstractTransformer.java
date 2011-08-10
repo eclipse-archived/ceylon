@@ -418,10 +418,9 @@ public abstract class AbstractTransformer implements Transformation {
             int idx = 0;
             for (ProducedType ta : tal) {
                 if (isOptional(ta)) {
-                    ProducedType defta = typeFact().getDefiniteType(ta);
-                    if (isCeylonBasicType(defta)) {
-                        ta = defta;
-                    }
+                    // For an optional type T?:
+                    // - The Ceylon type Foo<T?> results in the Java type Foo<T>.
+                    ta = typeFact().getDefiniteType(ta);
                 }
                 if (typeFact().isUnion(ta)) {
                     // For any other union type U|V (U nor V is Optional):
