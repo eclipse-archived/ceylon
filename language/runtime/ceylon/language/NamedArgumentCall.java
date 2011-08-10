@@ -14,5 +14,4 @@ public abstract class NamedArgumentCall<R,X> {
         this.instance = instance;
         this.args = args;
     }
-    public abstract R call();
 }
