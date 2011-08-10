@@ -31,4 +31,10 @@ public abstract class Parameter extends TypedDeclaration {
         this.declaration = declaration;
     }
     
+    @Override
+    public String toString() {
+        return super.toString().replace("[", 
+        		"[" + declaration.getName() + "#");
+    }
+    
 }
