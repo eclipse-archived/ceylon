@@ -7,6 +7,7 @@ class StringBoxing(){
         String? s4 = upper2(s3);
         String s5 = upper3(s4);
         String s6 = upper3(s4).uppercase();
+        s6.compare(s5);
     }
     String upper(String s) {
         return s.uppercase();

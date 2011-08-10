@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -515,17 +516,27 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     JCExpression transformArg(Tree.PositionalArgument arg) {
-        return transformExpression(arg.getExpression(), arg.getParameter().getType());
+        return transformExpression(arg.getExpression(), refinedParameter(arg.getParameter()).getType());
     }
 
     JCExpression transformArg(Tree.NamedArgument arg) {
         if (arg instanceof Tree.SpecifiedArgument) {
-            return transformExpression(((Tree.SpecifiedArgument)arg).getSpecifierExpression().getExpression(), arg.getParameter().getType());
+            return transformExpression(((Tree.SpecifiedArgument)arg).getSpecifierExpression().getExpression(), refinedParameter(arg.getParameter()).getType());
         } else if (arg instanceof Tree.TypedArgument) {
             throw new RuntimeException("Not yet implemented");
         } else {
             throw new RuntimeException("Illegal State");
         }
+    }
+
+    private Parameter refinedParameter(Parameter parameter) {
+        java.util.List<Parameter> params = ((Functional)parameter.getDeclaration().getRefinedDeclaration()).getParameterLists().get(0).getParameters();
+        for (Parameter p : params) {
+            if (p.getName().equals(parameter.getName())) {
+                return p;
+            }
+        }
+        throw new RuntimeException("Parameter not found in refined declaration!"); // Should never happen
     }
 
     JCExpression ceylonLiteral(String s) {
@@ -561,7 +572,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     public JCExpression transform(final Tree.QualifiedMemberExpression access) {
-        final String memberName = access.getIdentifier().getText();
+        final String memberName = Util.quoteMethodName(access.getIdentifier().getText());
         final Tree.Primary operand = access.getPrimary();
 
         at(access);

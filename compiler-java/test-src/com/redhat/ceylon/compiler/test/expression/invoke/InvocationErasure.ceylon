@@ -3,12 +3,20 @@ class MethodErasure() {
     Integer m1() {
         return hash;
     }
-    String m2() {
+    Integer m2() {
+        return this.hash;
+    }
+    String m3() {
         return string;
     }
-    void m3() {
+    String m4() {
+        return this.string;
+    }
+    void m5() {
         hashCode();
+        this.hashCode();
         toString();
+        this.toString();
     }
     String hashCode() {
         return "bar";
