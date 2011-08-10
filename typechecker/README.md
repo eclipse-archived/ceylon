@@ -1,5 +1,5 @@
-title: Ceylon specification and type analyzer
-author: Gavin King
+Title: Ceylon specification and type analyzer
+Author: Gavin King
         Emmanuel Bernard
 
 Specification
