@@ -86,6 +86,8 @@ public class RefinementVisitor extends AbstractVisitor {
             
             if (member) {
                 checkMember(that, dec);
+                Declaration refined = ((ClassOrInterface) dec.getContainer()).getRefinedDeclaration(dec.getName());
+                dec.setRefinedDeclaration(refined);
             }
 
         }
@@ -108,9 +110,6 @@ public class RefinementVisitor extends AbstractVisitor {
         }
         else {
             for (Declaration refined: others) {
-            	if ( !refined.isActual() ) {
-            		dec.setRefinedDeclaration(refined);
-            	}
                 if (dec instanceof Method) {
                     if (!(refined instanceof Method)) {
                         that.addError("refined declaration is not a method");
