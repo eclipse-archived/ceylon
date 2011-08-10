@@ -75,5 +75,20 @@ class GenericRefinement() {
         }
         
     }
+    
+    interface GenericRefinesConcrete {
+    	abstract class WithNumber() {
+    		shared formal Number num;
+    	}
+    	class WithNumeric<T>(Numeric<T> n) 
+    	        extends WithNumber() 
+    	        given T satisfies Numeric<T> {
+    		shared actual default Numeric<T> num = n;
+    	}
+    	class WithFloat(Float f) 
+    	        extends WithNumeric<Float>(f) {
+    		shared actual Float num = f;
+    	}
+    }
 
 }
