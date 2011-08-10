@@ -6,8 +6,22 @@
 	</projects>
 	<buildSpec>
 		<buildCommand>
+			<name>com.redhat.ceylon.eclipse.ui.ceylon.imp.builder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
 			<name>org.eclipse.jdt.core.javabuilder</name>
 			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.imp.smapifier.SmapieBuilder</name>
+			<arguments>
+				<dictionary>
+					<key>exten</key>
+					<value>ceylon</value>
+				</dictionary>
 			</arguments>
 		</buildCommand>
 		<buildCommand>
@@ -19,5 +33,7 @@
 	<natures>
 		<nature>org.jboss.ide.eclipse.archives.core.archivesNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
+		<nature>com.redhat.ceylon.eclipse.ui.imp.nature</nature>
+		<nature>org.eclipse.imp.smapifier.smapinature</nature>
 	</natures>
 </projectDescription>
