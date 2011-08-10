@@ -99,9 +99,9 @@ public class LazyClass extends Class {
     }
 
     @Override
-    public boolean isMemberType() {
+    public boolean isMember() {
         load();
-        return super.isMemberType();
+        return super.isMember();
     }
 
     @Override

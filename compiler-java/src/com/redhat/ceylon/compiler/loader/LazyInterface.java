@@ -76,9 +76,9 @@ public class LazyInterface extends Interface {
     }
 
     @Override
-    public boolean isMemberType() {
+    public boolean isMember() {
         load();
-        return super.isMemberType();
+        return super.isMember();
     }
 
     @Override
