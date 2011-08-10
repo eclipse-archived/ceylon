@@ -181,6 +181,7 @@ public class TypeHierarchyVisitor extends Visitor {
     }
 
     private void checkForFormalsNotImplemented(Tree.ClassOrInterface that, List<Type> orderedTypes) {
+    	//TODO: this is broken, see failing test FormalActual.ceylon
         Type aggregation = buildAggregatedType(orderedTypes);
         for (Type.Members members:aggregation.membersByName.values()) {
             if (members.formals.size()!=0&&members.actuals.size()==0) {
