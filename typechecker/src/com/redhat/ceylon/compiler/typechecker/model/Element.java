@@ -88,7 +88,12 @@ public abstract class Element {
     }
 
     public ProducedType getDeclaringType(Declaration d) {
-        return getContainer().getDeclaringType(d);
+    	if (d.isMember()) {
+    		return getContainer().getDeclaringType(d);
+    	}
+    	else {
+    		return null;
+    	}
     }
 
     /**

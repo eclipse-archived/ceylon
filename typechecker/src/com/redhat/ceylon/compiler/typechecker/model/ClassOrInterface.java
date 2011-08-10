@@ -8,7 +8,7 @@ import java.util.List;
 public abstract class ClassOrInterface extends TypeDeclaration {
 
     @Override
-    public boolean isMemberType() {
+    public boolean isMember() {
         return getContainer() instanceof ClassOrInterface;
     }
 
@@ -16,13 +16,19 @@ public abstract class ClassOrInterface extends TypeDeclaration {
     public ProducedType getDeclaringType(Declaration d) {
         //look for it as a declared or inherited 
         //member of the current class or interface
-        ProducedType st = getType().getSupertype((TypeDeclaration) d.getContainer());
-        if (st!=null) {
-            return st;
-        }
-        else {
-            return getContainer().getDeclaringType(d);
-        }
+    	if (d.isMember()) {
+	        ProducedType st = getType().getSupertype((TypeDeclaration) d.getContainer());
+	        //return st;
+	        if (st!=null) {
+	            return st;
+	        }
+	        else {
+	            return getContainer().getDeclaringType(d);
+	        }
+    	}
+    	else {
+    		return null;
+    	}
     }
 
     public abstract boolean isAbstract();

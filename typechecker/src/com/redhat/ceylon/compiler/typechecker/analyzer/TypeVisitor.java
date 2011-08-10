@@ -171,13 +171,7 @@ public class TypeVisitor extends AbstractVisitor {
                     name(that.getIdentifier()));
         }
         else {
-            ProducedType outerType;
-            if (type.isMemberType()) {
-                outerType = that.getScope().getDeclaringType(type);
-            }
-            else {
-                outerType = null;
-            }
+            ProducedType outerType = that.getScope().getDeclaringType(type);
             visitSimpleType(that, outerType, type);
         }
     }

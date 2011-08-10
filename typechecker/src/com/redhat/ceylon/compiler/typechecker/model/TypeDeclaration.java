@@ -125,7 +125,7 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
      */
     public ProducedType getType() {
         ProducedType pt = new ProducedType();
-        if (isMemberType()) {
+        if (isMember()) {
             pt.setDeclaringType(((ClassOrInterface) getContainer()).getType());
         }
         pt.setDeclaration(this);
@@ -138,10 +138,6 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
         }
         pt.setTypeArguments(map);
         return pt;
-    }
-
-    public boolean isMemberType() {
-        return false;
     }
 
     private List<Declaration> getMembers(String name, List<TypeDeclaration> visited) {

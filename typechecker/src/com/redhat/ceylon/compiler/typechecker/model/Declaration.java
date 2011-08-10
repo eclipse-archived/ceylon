@@ -167,6 +167,10 @@ public abstract class Declaration extends Element {
     public boolean isClassOrInterfaceMember() {
         return getContainer() instanceof ClassOrInterface;
     }
+    
+    public boolean isMember() {
+    	return false;
+    }
 
     /**
      * Get a produced reference for this declaration

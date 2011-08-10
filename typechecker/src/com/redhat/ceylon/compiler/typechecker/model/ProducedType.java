@@ -185,9 +185,9 @@ public class ProducedType extends ProducedReference {
             return false;
         }
         else {
-            boolean isInner = getDeclaration().isMemberType();
+            boolean isInner = getDeclaration().isMember();
             if (isInner) {
-                boolean isOtherInner = type.getDeclaration().isMemberType();
+                boolean isOtherInner = type.getDeclaration().isMember();
                 if (isOtherInner) {
                     if (!getDeclaringType().isSubtypeOf(type.getDeclaringType())) {
                         return false;
@@ -492,7 +492,7 @@ public class ProducedType extends ProducedReference {
         }
         //recurse to the qualifying type
         ProducedType outerType;
-        if (dec.isMemberType()) {
+        if (dec.isMember()) {
             TypeDeclaration outer = (TypeDeclaration) dec.getContainer();
             List<ProducedType> list = new ArrayList<ProducedType>();
             for (ProducedType pt: caseTypes) {
@@ -778,7 +778,7 @@ public class ProducedType extends ProducedReference {
             return null;
         }
         String producedTypeName = "";
-        if (getDeclaration().isMemberType()) {
+        if (getDeclaration().isMember()) {
             producedTypeName += getDeclaringType().getProducedTypeName();
             producedTypeName += ".";
         }
@@ -805,7 +805,7 @@ public class ProducedType extends ProducedReference {
             return null;
         }
         String producedTypeName = "";
-        if (getDeclaration().isMemberType()) {
+        if (getDeclaration().isMember()) {
             producedTypeName += getDeclaringType().getProducedTypeQualifiedName();
             producedTypeName += ".";
         }

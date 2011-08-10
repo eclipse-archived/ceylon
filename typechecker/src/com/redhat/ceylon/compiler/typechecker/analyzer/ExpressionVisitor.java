@@ -1887,14 +1887,7 @@ public class ExpressionVisitor extends AbstractVisitor {
     private void visitBaseMemberExpression(Tree.BaseMemberExpression that, TypedDeclaration member, 
             List<ProducedType> typeArgs, Tree.TypeArguments tal) {
         if (acceptsTypeArguments(member, typeArgs, tal, that)) {
-            ProducedType outerType;
-            if ( member.isMember() ) {
-                outerType = that.getScope().getDeclaringType(member);
-            }
-            else {
-                //it must be a member of an outer scope
-               outerType = null;
-            }
+            ProducedType outerType = that.getScope().getDeclaringType(member);
             ProducedTypedReference pr = member.getProducedTypedReference(outerType, typeArgs);
             that.setTarget(pr);
             ProducedType t = pr.getType();
@@ -2001,13 +1994,7 @@ public class ExpressionVisitor extends AbstractVisitor {
     private void visitBaseTypeExpression(Tree.BaseTypeExpression that, TypeDeclaration type, 
             List<ProducedType> typeArgs, Tree.TypeArguments tal) {
         if ( acceptsTypeArguments(type, typeArgs, tal, that) ) {
-            ProducedType outerType;
-            if (type.isMemberType()) {
-                outerType = that.getScope().getDeclaringType(type);
-            }
-            else {
-                outerType = null;
-            }
+            ProducedType outerType = that.getScope().getDeclaringType(type);
             ProducedType t = type.getProducedType(outerType, typeArgs);
             that.setTypeModel(t); //TODO: this is not correct, should be Callable
             that.setTarget(t);
