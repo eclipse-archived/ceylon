@@ -1,0 +1,31 @@
+package com.redhat.ceylon.compiler.test.expression.invoke;
+
+class NamedArgumentInvocationInit {
+    
+    class Inner {
+        
+        public final void m2() {
+        }
+        
+        Inner(boolean x, .java.lang.String y, int z) {
+        }
+    }
+    
+    private final void m() {
+        new .ceylon.language.NamedArgumentCall<com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocationInit, java.lang.Void>(null, 13L, "a"){
+            
+            public com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocationInit call$() {
+                return new com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocationInit((.java.lang.String)this.args[1], (.java.lang.Long)this.args[0]);
+            }
+        }.call$().m();
+        new .ceylon.language.NamedArgumentCall<com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocationInit.Inner, java.lang.Void>(null, "", -4, true){
+            
+            public com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocationInit.Inner call$() {
+                return new com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocationInit.Inner((.java.lang.Boolean)this.args[2], (.java.lang.String)this.args[0], (.java.lang.Integer)this.args[1]);
+            }
+        }.call$().m2();
+    }
+    
+    NamedArgumentInvocationInit(.java.lang.String a, long b) {
+    }
+}

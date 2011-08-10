@@ -325,31 +325,31 @@ public abstract class AbstractTransformer implements Transformation {
                 || typeFact().isUnion(type));
     }
     
-    private boolean isCeylonString(ProducedType type) {
+    protected boolean isCeylonString(ProducedType type) {
         return (sameType(syms().ceylonStringType, type));
     }
     
-    private boolean isCeylonBoolean(ProducedType type) {
+    protected boolean isCeylonBoolean(ProducedType type) {
         return (sameType(syms().ceylonBooleanType, type));
     }
     
-    private boolean isCeylonNatural(ProducedType type) {
+    protected boolean isCeylonNatural(ProducedType type) {
         return (sameType(syms().ceylonNaturalType, type));
     }
     
-    private boolean isCeylonInteger(ProducedType type) {
+    protected boolean isCeylonInteger(ProducedType type) {
         return (sameType(syms().ceylonIntegerType, type));
     }
     
-    private boolean isCeylonFloat(ProducedType type) {
+    protected boolean isCeylonFloat(ProducedType type) {
         return (sameType(syms().ceylonFloatType, type));
     }
     
-    private boolean isCeylonCharacter(ProducedType type) {
+    protected boolean isCeylonCharacter(ProducedType type) {
         return (sameType(syms().ceylonCharacterType, type));
     }
 
-    private boolean isCeylonBasicType(ProducedType type) {
+    protected boolean isCeylonBasicType(ProducedType type) {
         return (isCeylonString(type) || isCeylonBoolean(type) || isCeylonNatural(type) || isCeylonInteger(type) || isCeylonFloat(type) || isCeylonCharacter(type));
     }
 

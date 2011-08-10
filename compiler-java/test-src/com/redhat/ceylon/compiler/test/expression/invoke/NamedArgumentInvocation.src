@@ -6,24 +6,39 @@ class NamedArgumentInvocation {
         return true;
     }
     
-    private final boolean m1() {
-        return new .ceylon.language.NamedArgumentCall<.java.lang.Boolean, com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocation>(this, "foo", 1L){
+    private final boolean simple1() {
+        return new .ceylon.language.NamedArgumentCall<.java.lang.Boolean, java.lang.Void>(null, "foo", 1L){
             
-            public .java.lang.Boolean call() {
-                return this.instance.f((.java.lang.Long)this.args[1], (.java.lang.String)this.args[0]);
+            public .java.lang.Boolean call$() {
+                return f((.java.lang.Long)this.args[1], (.java.lang.String)this.args[0]);
             }
-        }.call();
+        }.call$();
     }
     
-    private final boolean m2() {
-        return new .ceylon.language.NamedArgumentCall<.java.lang.Boolean, com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocation>(new NamedArgumentInvocation(), "bar", 2L){
+    private final boolean simple2() {
+        return new .ceylon.language.NamedArgumentCall<.java.lang.Boolean, com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocation>(this, "bar", 2L){
             
-            public .java.lang.Boolean call() {
+            public .java.lang.Boolean call$() {
                 return this.instance.f((.java.lang.Long)this.args[1], (.java.lang.String)this.args[0]);
             }
-        }.call();
+        }.call$();
+    }
+    
+    private final boolean qualified() {
+        return new .ceylon.language.NamedArgumentCall<.java.lang.Boolean, com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocation>(new NamedArgumentInvocation(), "bar", 2L){
+            
+            public .java.lang.Boolean call$() {
+                return this.instance.f((.java.lang.Long)this.args[1], (.java.lang.String)this.args[0]);
+            }
+        }.call$();
     }
     
     NamedArgumentInvocation() {
+        new .ceylon.language.NamedArgumentCall<.java.lang.Boolean, java.lang.Void>(null, "foo", 0L){
+            
+            public .java.lang.Boolean call$() {
+                return f((.java.lang.Long)this.args[1], (.java.lang.String)this.args[0]);
+            }
+        }.call$();
     }
 }
