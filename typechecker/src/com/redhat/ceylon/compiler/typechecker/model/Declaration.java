@@ -22,6 +22,7 @@ public abstract class Declaration extends Element {
     boolean def;
     List<Annotation> annotations = new ArrayList<Annotation>();
     Scope visibleScope;
+    Declaration refinedDeclaration = this;
 
     public Scope getVisibleScope() {
         return visibleScope;
@@ -94,6 +95,14 @@ public abstract class Declaration extends Element {
     public void setDefault(boolean def) {
         this.def = def;
     }
+    
+    public Declaration getRefinedDeclaration() {
+		return refinedDeclaration;
+	}
+    
+    public void setRefinedDeclaration(Declaration refinedDeclaration) {
+		this.refinedDeclaration = refinedDeclaration;
+	}
 
     /**
      * Determine if this declaration is visible
