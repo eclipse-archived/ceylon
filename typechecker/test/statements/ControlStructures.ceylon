@@ -139,6 +139,17 @@ class ControlStructures() {
     try (@error Object t = Transaction()) {}
     try (@error Transaction trx) {}
     
+    try (t = Transaction()) {
+    	//do something
+    	t.rollbackOnly();
+    }
+    catch (Exception e) {
+    	@error t.rollbackOnly();
+    }
+    finally {
+    	@error t.rollbackOnly();
+    }
+    
     @error while ("hello") {}
     
     /*do {
