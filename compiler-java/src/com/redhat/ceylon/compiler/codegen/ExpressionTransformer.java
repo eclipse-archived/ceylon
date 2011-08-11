@@ -648,9 +648,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             result = makeBox(syms().ceylonIntegerType, expr, memberName);
         } else {
             result = makeSelect(expr, memberName);
-            if (Util.isErasedAttribute(access.getIdentifier().getText())) {
-                result = make().Apply(null, result, List.<JCExpression>nil());
-            }
+        }
+        if (Util.isErasedAttribute(access.getIdentifier().getText())) {
+            result = make().Apply(null, result, List.<JCExpression>nil());
         }
         return result;
     }
