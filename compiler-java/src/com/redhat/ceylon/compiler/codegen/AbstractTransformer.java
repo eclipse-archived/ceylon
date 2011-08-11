@@ -263,7 +263,7 @@ public abstract class AbstractTransformer implements Transformation {
         return decl.getDeclarationModel().isToplevel();
     }
     
-    protected boolean isInner(Tree.AnyMethod decl) {
+    protected boolean isInner(Tree.Declaration decl) {
         return decl.getDeclarationModel().getContainer() instanceof Method;
     }
 

@@ -23,6 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -120,7 +121,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             
             ceylonTree.visit(new Visitor(){
                 
-                void loadFromSource(Tree.Declaration decl){
+                void loadFromSource(Tree.Declaration decl) {
                     String name = decl.getIdentifier().getText();
                     String fqn = pkgName.isEmpty() ? name : pkgName+"."+name;
                     reader.enterClass(names.fromString(fqn), tree.getSourceFile());
@@ -550,16 +551,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                     
                     method.setContainer(klass);
                     method.setName(methodName);
-                    
-                    method.setShared((methodSymbol.flags() & Flags.PUBLIC) != 0);
-                    if((methodSymbol.flags() & Flags.ABSTRACT) != 0 || klass instanceof Interface) {
-                        method.setFormal(true);
-                    } else {
-                        method.setActual(true);
-                        if ((methodSymbol.flags() & Flags.FINAL) == 0) {
-                            method.setFormal(true);
-                        }
-                    }
+                    setMethodOrValueFlags(klass, methodSymbol, method);
                     
                     // type params first
                     setTypeParameters(method, methodSymbol);
@@ -637,19 +629,23 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         Value value = new Value();
         value.setContainer(klass);
         value.setName(methodName);
-        value.setShared((methodSymbol.flags() & Flags.PUBLIC) != 0);
-        if((methodSymbol.flags() & Flags.ABSTRACT) != 0 || klass instanceof Interface) {
-            value.setFormal(true);
-        } else {
-            value.setActual(true);
-            if ((methodSymbol.flags() & Flags.FINAL) == 0) {
-                value.setFormal(true);
-            }
-        }
+        setMethodOrValueFlags(klass, methodSymbol, value);
         value.setType(obtainType(methodSymbol.getReturnType(), methodSymbol, klass));
         klass.getMembers().add(value);
     }
 
+    private void setMethodOrValueFlags(ClassOrInterface klass, MethodSymbol methodSymbol, MethodOrValue decl) {
+        decl.setShared((methodSymbol.flags() & Flags.PUBLIC) != 0);
+        if((methodSymbol.flags() & Flags.ABSTRACT) != 0 || klass instanceof Interface) {
+            decl.setFormal(true);
+        } else {
+            decl.setActual(true);
+            if ((methodSymbol.flags() & Flags.FINAL) == 0) {
+                decl.setFormal(true);
+            }
+        }
+    }
+    
     private void setExtendedType(ClassOrInterface klass, ClassSymbol classSymbol) {
         // look at its super type
         Type superClass = classSymbol.getSuperclass();
@@ -684,17 +680,18 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             klass.setExtendedType(extendedType);
     }
 
-    private void setParameters(Functional klass, MethodSymbol methodSymbol) {
+    private void setParameters(Functional decl, MethodSymbol methodSymbol) {
         ParameterList parameters = new ParameterList();
-        klass.addParameterList(parameters);
+        decl.addParameterList(parameters);
         for(VarSymbol paramSymbol : methodSymbol.params()){
             ValueParameter parameter = new ValueParameter();
-            parameter.setContainer((Scope) klass);
+            parameter.setContainer((Scope) decl);
             String paramName = getAnnotationStringValue(paramSymbol, symtab.ceylonAtNameType);
             // use whatever param name we find as default
             if(paramName == null)
                 parameter.setName(paramSymbol.name.toString());
-            parameter.setType(obtainType(paramSymbol.type, paramSymbol, (Scope) klass));
+            parameter.setType(obtainType(paramSymbol.type, paramSymbol, (Scope) decl));
+            parameter.setDeclaration((Declaration) decl);
             parameters.getParameters().add(parameter);
         }
     }

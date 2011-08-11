@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
+import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
@@ -24,7 +25,6 @@ import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Options;
 import com.sun.tools.javac.util.Position.LineMap;
-import com.sun.tools.javac.main.OptionName;
 
 /**
  * Main transformer that delegates all transforming of ceylon to java to auxiliary classes.
@@ -87,9 +87,15 @@ public class CeylonTransformer extends AbstractTransformer {
      */
     public ListBuffer<JCTree> transformAfterTypeChecking(Tree.CompilationUnit t) {
         disableModelAnnotations = false;
-        CeylonVisitor visitor = new CeylonVisitor(this);
+        ToplevelAttributesDefinitionBuilder builder = new ToplevelAttributesDefinitionBuilder(this);
+        CeylonVisitor visitor = new CeylonVisitor(this, builder);
         t.visitChildren(visitor);
-        return (ListBuffer<JCTree>) visitor.getResult();
+        
+        ListBuffer<JCTree> result = ListBuffer.lb();
+        result.appendList((ListBuffer<JCTree>) visitor.getResult());
+        result.appendList(builder.build());
+        
+        return result;
     }
 
     // Make a name from a list of strings, using only the first component.
@@ -143,21 +149,23 @@ public class CeylonTransformer extends AbstractTransformer {
     }
     
     public List<JCTree> transform(AnyAttribute decl) {
-        return transformAttribute(decl);
+        return transformAttribute(decl, null);
     }
 
     public List<JCTree> transform(Tree.AttributeSetterDefinition decl) {
-        return transformAttribute(decl);
+        return transformAttribute(decl, null);
     }
     
-    private List<JCTree> transformAttribute(Tree.TypedDeclaration decl) {
+    public List<JCTree> transformAttribute(Tree.TypedDeclaration decl, AttributeSetterDefinition setterDecl) {
         at(decl);
         String attrName = decl.getIdentifier().getText();
         String attrClassName = attrName;
-        if (decl instanceof AttributeGetterDefinition) {
-            attrClassName += "$getter";
-        } else if (decl instanceof AttributeSetterDefinition) {
-            attrClassName += "$setter";
+        if (isInner(decl)) {
+            if (decl instanceof AttributeGetterDefinition) {
+                attrClassName += "$getter";
+            } else if (decl instanceof AttributeSetterDefinition) {
+                attrClassName += "$setter";
+            }
         }
         AttributeDefinitionBuilder builder = globalGen()
             .defineGlobal(makeJavaType(actualType(decl)), attrName)
@@ -174,12 +182,14 @@ public class CeylonTransformer extends AbstractTransformer {
         }
         
         if (decl instanceof AttributeSetterDefinition) {
+            // For inner setters
             AttributeSetterDefinition sdef = (AttributeSetterDefinition)decl;
-            JCBlock block = make().Block(0, statementGen().transformStmts(sdef.getBlock().getStatements()));
-            builder.setterBlock(block);
+            JCBlock setterBlock = make().Block(0, statementGen().transformStmts(sdef.getBlock().getStatements()));
+            builder.setterBlock(setterBlock);
             builder.skipGetter();
         } else {
             if (decl instanceof AttributeDeclaration) {
+                // For inner and toplevel value attributes
                 if (!decl.getDeclarationModel().isVariable()) {
                     builder.immutable();
                 }
@@ -189,13 +199,26 @@ public class CeylonTransformer extends AbstractTransformer {
                             adecl.getSpecifierOrInitializerExpression().getExpression()));
                 }
             } else {
+                // For inner and toplevel getters
                 AttributeGetterDefinition gdef = (AttributeGetterDefinition)decl;
-                JCBlock block = make().Block(0, statementGen().transformStmts(gdef.getBlock().getStatements()));
-                builder.getterBlock(block);
-                builder.immutable();
+                JCBlock getterBlock = make().Block(0, statementGen().transformStmts(gdef.getBlock().getStatements()));
+                builder.getterBlock(getterBlock);
+                
+                if (isInner(decl)) {
+                    // For inner getters
+                    builder.immutable();
+                } else {
+                    // For toplevel getters
+                    if (setterDecl != null) {
+                        JCBlock setterBlock = make().Block(0, statementGen().transformStmts(setterDecl.getBlock().getStatements()));
+                        builder.setterBlock(setterBlock);
+                    } else {
+                        builder.immutable();
+                    }
+                }
             }
         }
-
+        
         boolean isMethodLocal = decl.getDeclarationModel().getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Method;
         if (isMethodLocal) {
             // Add a "foo foo = new foo();" at the decl site

@@ -6,10 +6,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
-import com.redhat.ceylon.compiler.util.Util;
-import com.sun.tools.javac.code.TypeTags;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -21,12 +19,22 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     protected final CeylonTransformer gen;
     private final ListBuffer<JCTree> defs;
     
+    final ToplevelAttributesDefinitionBuilder topattrBuilder;
     final ClassDefinitionBuilder classBuilder;
     final ListBuffer<JCExpression> args;
     
     public CeylonVisitor(CeylonTransformer ceylonTransformer) {
         this.gen = ceylonTransformer;
         this.defs = new ListBuffer<JCTree>();
+        this.topattrBuilder = null;
+        this.classBuilder = null;
+        this.args = null;
+    }
+
+    public CeylonVisitor(CeylonTransformer ceylonTransformer, ToplevelAttributesDefinitionBuilder topattrBuilder) {
+        this.gen = ceylonTransformer;
+        this.defs = new ListBuffer<JCTree>();
+        this.topattrBuilder = topattrBuilder;
         this.classBuilder = null;
         this.args = null;
     }
@@ -34,6 +42,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public CeylonVisitor(CeylonTransformer ceylonTransformer, ClassDefinitionBuilder classBuilder) {
         this.gen = ceylonTransformer;
         this.defs = new ListBuffer<JCTree>();
+        this.topattrBuilder = null;
         this.classBuilder = classBuilder;
         this.args = null;
     }
@@ -41,6 +50,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public CeylonVisitor(CeylonTransformer ceylonTransformer, ListBuffer<JCExpression> args) {
         this.gen = ceylonTransformer;
         this.defs = new ListBuffer<JCTree>();
+        this.topattrBuilder = null;
         this.classBuilder = null;
         this.args = args;
     }
@@ -150,18 +160,24 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         boolean annots = checkCompilerAnnotations(decl);
         if (withinClass(decl)) {
             classBuilder.defs(gen.classGen().transform(decl));
-        } else {
+        } else if (withinMethod(decl)) {
             appendList(gen.transform(decl));
+        } else {
+            topattrBuilder.add(decl);
         }
         resetCompilerAnnotations(annots);
     }
 
     public void visit(final Tree.AttributeSetterDefinition decl) {
+        boolean annots = checkCompilerAnnotations(decl);
         if (withinClass(decl)) {
             classBuilder.defs(gen.classGen().transform(decl));
-        } else {
+        } else if (withinMethod(decl)) {
             appendList(gen.transform(decl));
+        } else {
+            topattrBuilder.add(decl);
         }
+        resetCompilerAnnotations(annots);
     }
 
     public void visit(Tree.MethodDefinition decl) {

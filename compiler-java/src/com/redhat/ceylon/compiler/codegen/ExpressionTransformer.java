@@ -163,15 +163,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         if(decl.isToplevel()){
             // must use top level setter
-            if ((decl instanceof Getter)) {
-                return globalGen().setGlobalValue(
-                    makeIdent(decl.getContainer().getQualifiedNameString()),
-                    decl.getName() + "$setter", decl.getName(), rhs);
-            } else {
-                return globalGen().setGlobalValue(
-                    makeIdent(decl.getContainer().getQualifiedNameString()),
-                    decl.getName(), rhs);
-            }
+            return globalGen().setGlobalValue(
+                makeIdent(decl.getContainer().getQualifiedNameString()),
+                decl.getName(), rhs);
         } else if ((decl instanceof Getter)) {
             // must use the setter
             if (decl.getContainer() instanceof Method){
@@ -670,7 +664,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (decl.isToplevel()) {
                 result = globalGen().getGlobalValue(
                         makeIdent(decl.getContainer().getQualifiedNameString()),
-                        decl.getName() + "$getter", decl.getName());
+                        decl.getName(), decl.getName());
             } else if (decl.isClassMember()) {
                 result =  at(member).Apply(List.<JCExpression>nil(), 
                         makeIdent(Util.getGetterName(decl.getName())), 
