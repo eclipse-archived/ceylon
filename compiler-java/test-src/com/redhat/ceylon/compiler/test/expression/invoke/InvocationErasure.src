@@ -6,13 +6,23 @@ class MethodErasure {
         return hashCode();
     }
     
-    private final .java.lang.String m2() {
+    private final int m2() {
+        return this.hashCode();
+    }
+    
+    private final .java.lang.String m3() {
         return toString();
     }
     
-    private final void m3() {
+    private final .java.lang.String m4() {
+        return this.toString();
+    }
+    
+    private final void m5() {
         $hashCode();
+        this.$hashCode();
         $toString();
+        this.$toString();
     }
     
     private final .java.lang.String $hashCode() {

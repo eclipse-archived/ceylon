@@ -9,6 +9,11 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.sun.tools.javac.parser.Token;
 
 public class Util {
+    public static boolean isErasedAttribute(String name){
+        // ERASURE
+        return "hash".equals(name) || "string".equals(name);
+    }
+    
     public static String quoteMethodName(String name){
         // ERASURE
         if ("hash".equals(name)) {
