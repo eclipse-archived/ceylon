@@ -2,7 +2,9 @@ package com.redhat.ceylon.compiler.typechecker.parser;
 
 import org.antlr.runtime.RecognitionException;
 
-public class RecognitionError {
+import com.redhat.ceylon.compiler.typechecker.tree.Message;
+
+public abstract class RecognitionError implements Message {
 	
 	RecognitionException recognitionException;
 	String[] tokenNames;

@@ -4,7 +4,7 @@ import org.antlr.runtime.RecognitionException;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 
-public class LexError extends RecognitionError implements Message {
+public class LexError extends RecognitionError {
 	
 	private CeylonLexer lexer;
 	

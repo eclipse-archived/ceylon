@@ -4,7 +4,7 @@ import org.antlr.runtime.RecognitionException;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 
-public class ParseError extends RecognitionError implements Message {
+public class ParseError extends RecognitionError {
 	
 	private CeylonParser parser;
 	
