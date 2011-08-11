@@ -1,0 +1,21 @@
+package com.redhat.ceylon.compiler.test.expression.selfref;
+
+class OuterReference {
+    
+    class Inner {
+        
+        private final boolean inner() {
+        	return OuterReference.this.test();
+        }
+        
+        Inner() {
+        }
+    }
+    
+    public final boolean test() {
+        return true;
+    }
+    
+    OuterReference() {
+    }
+}
