@@ -333,13 +333,15 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
      */
     
     public void visit(Tree.This expr) {
-        gen.at(expr);
-        append(gen.makeIdent("this"));
+        append(gen.expressionGen().transform(expr));
     }
 
     public void visit(Tree.Super expr) {
-        gen.at(expr);
-        append(gen.makeIdent("super"));
+        append(gen.expressionGen().transform(expr));
+    }
+
+    public void visit(Tree.Outer expr) {
+        append(gen.expressionGen().transform(expr));
     }
 
     // FIXME: port dot operator?

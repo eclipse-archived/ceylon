@@ -5,7 +5,7 @@ class OuterReference {
     class Inner {
         
         private final boolean inner() {
-        	return OuterReference.this.test();
+            return OuterReference.this.test();
         }
         
         Inner() {

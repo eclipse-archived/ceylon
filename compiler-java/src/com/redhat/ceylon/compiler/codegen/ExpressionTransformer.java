@@ -24,13 +24,16 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.OrOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Outer;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequenceEnumeration;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.This;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
@@ -737,5 +740,21 @@ public class ExpressionTransformer extends AbstractTransformer {
             ProducedType seqElemType = value.getTypeModel().getTypeArgumentList().get(0);
             return makeSequence(list, seqElemType);
         }
+    }
+
+    public JCTree transform(This expr) {
+        at(expr);
+        return makeIdent("this");
+    }
+
+    public JCTree transform(Super expr) {
+        at(expr);
+        return makeIdent("super");
+    }
+
+    public JCTree transform(Outer expr) {
+        at(expr);
+        ProducedType outerClass = com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface(expr.getScope());
+        return makeIdent(outerClass.getDeclaration().getName(), "this");
     }
 }
