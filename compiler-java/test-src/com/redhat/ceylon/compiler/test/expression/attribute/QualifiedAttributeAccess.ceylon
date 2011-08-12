@@ -12,19 +12,27 @@ class QualifiedAttributeAccess(){
        return this.b2;
    }
 
-   Boolean qm(){
+   Boolean m3(){
        return QualifiedAttributeAccess().b;
    }
 
-   Boolean qm2(){
+   Boolean m4(){
        return QualifiedAttributeAccess().b2;
    }
 
-   Boolean qm3(){
+   Boolean m5(){
        return q.b;
    }
 
-   Boolean qm4(){
+   Boolean m6(){
        return q.b2;
    }
+
+   Boolean m7(Foo f){
+       return f.b;
+   }
+}
+@nomodel
+class Foo() {
+   shared Boolean b = true;
 }

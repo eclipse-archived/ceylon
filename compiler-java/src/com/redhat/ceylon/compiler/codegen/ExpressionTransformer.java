@@ -150,10 +150,20 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     JCExpression transformAssignment(Node op, Term leftTerm, Term rightTerm) {
+        JCExpression result = null;
+        
         // right side is easy
         JCExpression rhs = transformExpression(rightTerm, leftTerm.getTypeModel());
         
         // left side depends
+        
+        JCExpression expr = null;
+        CeylonVisitor v = new CeylonVisitor(gen());
+        leftTerm.visitChildren(v);
+        if (v.hasResult()) {
+            expr = v.getSingleResult();
+        }
+        
         // FIXME: can this be anything else than a Primary?
         Declaration decl = ((Tree.Primary)leftTerm).getDeclaration();
 
@@ -166,29 +176,36 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         if(decl.isToplevel()){
             // must use top level setter
-            return globalGen().setGlobalValue(
-                makeIdent(decl.getContainer().getQualifiedNameString()),
-                decl.getName(), rhs);
+            result = globalGen().setGlobalValue(
+                    makeIdentOrSelect(expr, decl.getContainer().getQualifiedNameString()),
+                    decl.getName(),
+                    rhs);
         } else if ((decl instanceof Getter)) {
             // must use the setter
             if (decl.getContainer() instanceof Method){
-                return at(op).Apply(List.<JCTree.JCExpression>nil(), makeIdent(decl.getName() + "$setter", Util.getSetterName(decl.getName())), 
+                result = at(op).Apply(List.<JCTree.JCExpression>nil(),
+                        makeIdentOrSelect(expr, decl.getName() + "$setter", Util.getSetterName(decl.getName())),
                         List.<JCTree.JCExpression>of(rhs));
             } else {
-                return at(op).Apply(List.<JCTree.JCExpression>nil(), makeIdent(Util.getSetterName(decl.getName())), 
+                result = at(op).Apply(List.<JCTree.JCExpression>nil(),
+                        makeIdentOrSelect(expr, Util.getSetterName(decl.getName())),
                         List.<JCTree.JCExpression>of(rhs));            
             }
         } else if(variable && (Util.isClassAttribute(decl))){
             // must use the setter
-            return at(op).Apply(List.<JCTree.JCExpression>nil(), makeIdent(Util.getSetterName(decl.getName())), 
+            result = at(op).Apply(List.<JCTree.JCExpression>nil(),
+                    makeIdentOrSelect(expr, Util.getSetterName(decl.getName())), 
                     List.<JCTree.JCExpression>of(rhs));
         } else if(variable && decl.isCaptured()){
             // must use the qualified setter
-            return at(op).Apply(List.<JCTree.JCExpression>nil(), makeIdent(decl.getName(), Util.getSetterName(decl.getName())), 
+            result = at(op).Apply(List.<JCTree.JCExpression>nil(),
+                    makeIdentOrSelect(expr, decl.getName(), Util.getSetterName(decl.getName())), 
                     List.<JCTree.JCExpression>of(rhs));
         } else {
-            return at(op).Assign(make().Ident(names().fromString(decl.getName())), rhs);
+            result = at(op).Assign(makeIdentOrSelect(expr, decl.getName()), rhs);
         }
+        
+        return result;
     }
 
     public JCExpression transform(Tree.IsOp op) {
@@ -624,60 +641,60 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     public JCExpression transform(final Tree.QualifiedMemberExpression access) {
-        final String memberName = Util.quoteMethodName(access.getIdentifier().getText());
-        final Tree.Primary operand = access.getPrimary();
-
-        at(access);
-        CeylonVisitor v = new CeylonVisitor(gen());
-        operand.visit(v);
-        JCExpression expr = v.getSingleResult();
-        
-        JCExpression result;
-        if (willEraseToObject(operand.getTypeModel())) {
-            // Erased types need a type cast
-            JCExpression targetType = makeJavaType(access.getTarget().getDeclaringType());
-            result = makeSelect(make().TypeCast(targetType, expr), memberName);
-        } else if (sameType(syms().ceylonStringType, operand.getTypeModel())) {
-            // Java Strings need to be boxed
-            result = makeBox(syms().ceylonStringType, expr, memberName);
-        } else if (sameType(syms().ceylonBooleanType, operand.getTypeModel())) {
-            // Java native types need to be boxed
-            result = makeBox(syms().ceylonBooleanType, expr, memberName);
-        } else if (sameType(syms().ceylonIntegerType, operand.getTypeModel())) {
-            // Java native types need to be boxed
-            result = makeBox(syms().ceylonIntegerType, expr, memberName);
-        } else {
-            result = makeSelect(expr, memberName);
-        }
-        if (Util.isErasedAttribute(access.getIdentifier().getText())) {
-            result = make().Apply(null, result, List.<JCExpression>nil());
-        }
-        return result;
+        return transformMemberExpression(access, access.getDeclaration());
     }
 
-    private JCExpression makeBox(com.sun.tools.javac.code.Type type, JCExpression expr, String memberName) {
+    private JCExpression makeBox(com.sun.tools.javac.code.Type type, JCExpression expr) {
         JCExpression result = makeSelect(makeIdent(type), "instance");
         result = make().Parens(make().Apply(null, result, List.of(expr)));
-        result = makeSelect(result, memberName);
         return result;
     }
     
     public JCExpression transform(Tree.BaseMemberExpression member) {
+        return transformMemberExpression(null, member.getDeclaration());
+    }
+    
+    private JCExpression transformMemberExpression(Tree.QualifiedMemberExpression expr, Declaration decl) {
         JCExpression result = null;
-        Declaration decl = member.getDeclaration();
+        
+        JCExpression primaryExpr = null;
+        if (expr != null) {
+            Tree.Primary primary = expr.getPrimary();
+            
+            CeylonVisitor v = new CeylonVisitor(gen());
+            primary.visit(v);
+            primaryExpr = v.getSingleResult();
+            
+            if (willEraseToObject(primary.getTypeModel())) {
+                // Erased types need a type cast
+                JCExpression targetType = makeJavaType(expr.getTarget().getDeclaringType());
+                primaryExpr = make().TypeCast(targetType, primaryExpr);
+            } else if (sameType(syms().ceylonStringType, primary.getTypeModel())) {
+                // Java Strings need to be boxed
+                primaryExpr = makeBox(syms().ceylonStringType, primaryExpr);
+            } else if (sameType(syms().ceylonBooleanType, primary.getTypeModel())) {
+                // Java native types need to be boxed
+                primaryExpr = makeBox(syms().ceylonBooleanType, primaryExpr);
+            } else if (sameType(syms().ceylonIntegerType, primary.getTypeModel())) {
+                // Java native types need to be boxed
+                primaryExpr = makeBox(syms().ceylonIntegerType, primaryExpr);
+            }
+        }
+        
         if (decl instanceof Getter) {
             // invoke the getter
             if (decl.isToplevel()) {
                 result = globalGen().getGlobalValue(
-                        makeIdent(decl.getContainer().getQualifiedNameString()),
-                        decl.getName(), decl.getName());
+                        makeIdentOrSelect(primaryExpr, decl.getContainer().getQualifiedNameString()),
+                        decl.getName(),
+                        decl.getName());
             } else if (decl.isClassMember()) {
-                result =  at(member).Apply(List.<JCExpression>nil(), 
-                        makeIdent(Util.getGetterName(decl.getName())), 
+                result =  make().Apply(List.<JCExpression>nil(), 
+                        makeIdentOrSelect(primaryExpr, Util.getGetterName(decl.getName())),
                         List.<JCExpression>nil());
             } else {// method local attr
-                result = at(member).Apply(List.<JCExpression>nil(), 
-                        makeIdent(decl.getName() + "$getter", Util.getGetterName(decl.getName())), 
+                result = make().Apply(List.<JCExpression>nil(), 
+                        makeIdentOrSelect(primaryExpr, decl.getName() + "$getter", Util.getGetterName(decl.getName())),
                         List.<JCExpression>nil());
             }
         } else if (decl instanceof Value) {
@@ -685,7 +702,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // ERASURE
                 if ("null".equals(decl.getName())) {
                     // FIXME this is a pretty brain-dead way to go about erase I think
-                    result = at(member).Literal(TypeTags.BOT, null);
+                    result = make().Literal(TypeTags.BOT, null);
                 } else if (isBooleanTrue(decl)) {
                     result = makeBoolean(true);
                 } else if (isBooleanFalse(decl)) {
@@ -693,37 +710,51 @@ public class ExpressionTransformer extends AbstractTransformer {
                 } else {
                     // it's a toplevel attribute
                     result = globalGen().getGlobalValue(
-                            makeIdent(decl.getContainer().getQualifiedNameString()),
+                            makeIdentOrSelect(primaryExpr, decl.getContainer().getQualifiedNameString()),
                             decl.getName());
                 }
             } else if(Util.isClassAttribute(decl)) {
                 // invoke the getter
-                result = at(member).Apply(List.<JCExpression>nil(), 
-                       makeIdent(Util.getGetterName(decl.getName())), 
+                result = make().Apply(List.<JCExpression>nil(), 
+                       makeIdentOrSelect(primaryExpr, Util.getGetterName(decl.getName())),
                        List.<JCExpression>nil());
              } else if(decl.isCaptured()) {
                  // invoke the qualified getter
-                 result = at(member).Apply(List.<JCExpression>nil(), 
-                        makeIdent(decl.getName(), Util.getGetterName(decl.getName())), 
+                 result = make().Apply(List.<JCExpression>nil(), 
+                        makeIdentOrSelect(primaryExpr, decl.getName(), Util.getGetterName(decl.getName())),
                         List.<JCExpression>nil());
             }
         } else if (decl instanceof Method) {
-            if (Util.isInnerMethod(decl)
-            		|| decl.isToplevel()) {
+            if (Util.isInnerMethod(decl) || decl.isToplevel()) {
                 java.util.List<String> path = new LinkedList<String>();
                 path.add(decl.getName());
                 path.add(decl.getName());
                 result = makeIdent(path);
             } else {
-                result = at(member).Ident(names().fromString(Util.quoteMethodName(member.getIdentifier().getText())));
+                result = makeIdentOrSelect(primaryExpr, Util.quoteMethodName(decl.getName()));
             }
         }
         if (result == null) {
-            result = at(member).Ident(names().fromString(substitute(member.getIdentifier().getText())));
+            if (Util.isErasedAttribute(decl.getName())) {
+                result = make().Apply(null,
+                        makeIdentOrSelect(primaryExpr, Util.quoteMethodName(decl.getName())),
+                        List.<JCExpression>nil());
+            } else {
+                result = makeIdentOrSelect(primaryExpr, substitute(decl.getName()));
+            }
         }
+        
         return result;
     }
 
+    private JCExpression makeIdentOrSelect(JCExpression expr, String... names) {
+        if (expr != null) {
+            return makeSelect(expr, names);
+        } else {
+            return makeIdent(names);
+        }
+    }
+    
     public JCExpression transform(Tree.Type type, List<JCExpression> args) {
         // A constructor
         return at(type).NewClass(null, null, makeJavaType(type.getTypeModel()), args, null);

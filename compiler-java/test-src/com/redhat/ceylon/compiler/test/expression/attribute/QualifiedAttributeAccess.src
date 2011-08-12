@@ -22,32 +22,47 @@ class QualifiedAttributeAccess {
     }
     
     private final boolean m() {
-        return this.b;
+        return this.getB();
     }
     
     private final boolean m2() {
-        return this.b2;
+        return this.getB2();
     }
     
-    private final boolean qm() {
-        return new QualifiedAttributeAccess().b;
+    private final boolean m3() {
+        return new QualifiedAttributeAccess().getB();
     }
     
-    private final boolean qm2() {
-        return new QualifiedAttributeAccess().b2;
+    private final boolean m4() {
+        return new QualifiedAttributeAccess().getB2();
     }
     
-    private final boolean qm3() {
-        return getQ().b;
+    private final boolean m5() {
+        return getQ().getB();
     }
     
-    private final boolean qm4() {
-        return getQ().b2;
+    private final boolean m6() {
+        return getQ().getB2();
+    }
+    
+    private final boolean m7(final com.redhat.ceylon.compiler.test.expression.attribute.Foo f) {
+        return f.getB();
     }
     
     QualifiedAttributeAccess() {
         this.b = true;
         this.b2 = true;
         this.q = new QualifiedAttributeAccess();
+    }
+}
+class Foo {
+    private final boolean b;
+    
+    public final boolean getB() {
+        return this.b;
+    }
+    
+    Foo() {
+        this.b = true;
     }
 }

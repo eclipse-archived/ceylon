@@ -13,7 +13,7 @@ class IndirectQualifiedAttributeAccess {
     }
     
     private final boolean test() {
-        return getQ().b;
+        return getQ().getB();
     }
     
     IndirectQualifiedAttributeAccess() {

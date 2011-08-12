@@ -179,6 +179,14 @@ public abstract class AbstractTransformer implements Transformation {
         return make().Select(s1, names().fromString(s2));
     }
 
+    protected JCExpression makeSelect(JCExpression s1, String... rest) {
+        JCExpression result = s1;
+        for (String s : rest) {
+            result = makeSelect(result, s);
+        }
+        return result;
+    }
+
     protected JCFieldAccess makeSelect(String s1, String s2) {
         return makeSelect(make().Ident(names().fromString(s1)), s2);
     }
