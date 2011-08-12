@@ -1130,6 +1130,11 @@ value comp = order(1,-1);</programlisting>
         the result of the algorithm in some very rare cases, due to the weirdness 
         of the fourth rule? (In which case the compiler's approach is better!)</para></comment>
         
+        <comment><para>TODO: Nor does this do justice the the compiler's handling 
+        of type parameters which have upper bounds involving other type parameters.
+        In fact, the compiler is also able to infer a type for the type parameter 
+        that appears in the upper bound.</para></comment>
+        
         <para>The <emphasis>full constraint set for a type parameter</emphasis> 
         <literal>T</literal> of the generic declaration is the constraint set for
         <literal>T</literal>, together with a constraint <literal>T abstracts X</literal> 
