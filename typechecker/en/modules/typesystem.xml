@@ -135,6 +135,10 @@
     code that operates on instances of these types in a typesafe way is what makes
     Ceylon a <emphasis>higher order</emphasis> language.</para>
     
+    <para>Every legal Ceylon expression has a unique, computable, well-defined type 
+    without reference to how the expression is used or to what type it is assigned.
+    This is the case even when type inference or type argument inference is used.</para>
+    
     <para>Neither this specification nor the internal implementation of the Ceylon 
     compiler itself use any kind of "non-denoteable" types. Every type mentioned 
     here or inferred internally by the compiler has a representation within the 
@@ -829,7 +833,9 @@ String? firstWord = words[0];</programlisting>
     <section id="satisfiedinterfaces">
         <title>Satisfaction</title>
        
-        <para>The <literal>satisfies</literal> clause does double duty:</para>
+        <para>The <literal>satisfies</literal> clause does double duty. It's used to 
+        specify that a type is a subtype of an interface, and to specify upper bound
+        type constraints.</para>
         
         <itemizedlist>
         <listitem>
@@ -1059,7 +1065,8 @@ shared interface ElementwiseEquality
     <section id="cases">
         <title>Cases</title>
         
-        <para>The <literal>of</literal> clause does triple duty.</para>
+        <para>The <literal>of</literal> clause does triple duty. It's used to define
+        self types and type families, algebraic types, and enumerated type constraints.</para>
         
         <itemizedlist>
         <listitem>
