@@ -509,7 +509,7 @@
                 <para>
                     Simplification: if <literal>X</literal> is a subtype 
                     of <literal>Y</literal>, then <literal>X&amp;Y</literal> 
-                    is the same type as <literal>Y</literal>.
+                    is the same type as <literal>X</literal>.
                 </para>
             </listitem>
             <listitem>
