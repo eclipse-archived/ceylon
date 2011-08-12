@@ -2187,6 +2187,11 @@ while (exists Person p = iter.head) {
                 </listitem>
             </itemizedlist>
             
+            <comment><para>TODO: Precisely what happens if <literal>end()</literal> or
+            <literal>abort()</literal> throws an exception? Wrap and rethrow the 
+            exception as a <literal>ResourceException</literal>, bypassing any handler
+            for the exception from the <literal>try</literal> block?</para></comment>
+            
             <para>For example:</para>
             
             <programlisting>try ( File file = File(name) ) {
