@@ -140,7 +140,7 @@
     This is the case even when type inference or type argument inference is used.</para>
     
     <para>Neither this specification nor the internal implementation of the Ceylon 
-    compiler itself use any kind of "non-denoteable" types. Every type mentioned 
+    compiler itself use any kind of "non-denotable" types. Every type mentioned 
     here or inferred internally by the compiler has a representation within the 
     language itself. Thus, the programmer is never exposed to confusing error 
     messages referring to mysterious types that are not part of the syntax of the 

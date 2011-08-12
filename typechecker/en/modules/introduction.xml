@@ -52,12 +52,12 @@
     Ceylon features a similar inheritance and generic type model to Java. A type 
     is either a stateless <emphasis>interface</emphasis>, a stateful 
     <emphasis>class</emphasis>, a <emphasis>type parameter</emphasis>, or a 
-    <emphasis>union</emphasis> of other types. An interface may satisfy (extend) 
-    an arbitrary number of other interfaces. A class may satisfy (implement) an 
-    arbitrary number of interfaces and must extend another class. A class or 
-    interface may declare type parameters. A type parameter abstracts the 
-    definition of a class or interface over all types which can be substituted 
-    for the type parameter.
+    <emphasis>union</emphasis> or <emphasis>intersection</emphasis> of other types. 
+    An interface may satisfy (extend) an arbitrary number of other interfaces. A 
+    class may satisfy (implement) an arbitrary number of interfaces and must extend 
+    another class. A class may be abstract. A class or interface may declare type 
+    parameters. A type parameter abstracts the definition of a class or interface 
+    over all types which can be substituted for the type parameter.
     </para>
     
     <para>
@@ -80,7 +80,9 @@
     Ceylon does not feature enumerated types as a first-class construct. Instead,
     any abstract type may specify its <emphasis>cases</emphasis>&mdash;an 
     enumerated list of subtypes. This facility may be used to simulate both
-    enumerated types and functional-style algebraic data types.  
+    enumerated types and functional-style algebraic types. A closely related
+    feature is support for <emphasis>self types</emphasis> and <emphasis>type 
+    families</emphasis>.
     </para>
     
     <para>
@@ -90,22 +92,28 @@
     parameter. Type arguments are reified in Ceylon, eliminating many problems 
     related to type erasure in Java. Ceylon also supports <!--parameterization 
     of type parameters (a form of higher-order polymorphism), and--> a more 
-    expressive system of generic type constraints.
+    expressive system of generic type constraints with a much cleaner, more
+    regular syntax.
     </para>
+    
+    <para>The Ceylon compiler never even uses any kind of "non-denotable" type
+    to reason about the type system.</para>
     
     </section>
     
-    <section id="adhocuniontypes">
-    <title>Union types</title>
+    <section id="unionandintersectiontypes">
+    <title>Union and intersection types</title>
 
     <para>
     A <emphasis>union type</emphasis>, for example <literal>String|Number</literal>, 
+    or <emphasis>intersection type</emphasis>, for example <literal>String&amp;Number</literal>,
     may be formed from two or more types defined elsewhere. Union types make it 
     possible to write code that operates polymorphically over types defined in 
     disparate branches of the type heirarchy without the need for intermediate 
-    adaptor classes.
+    adaptor classes. Intersection types make it possible to operate polymorphically
+    over all subtypes of a list of types.
     </para>
-    
+        
     <para>
     Unions are used to define <emphasis>optional</emphasis> types&mdash;which 
     accept null values&mdash;and <emphasis>sequence types</emphasis>&mdash;which 
@@ -127,10 +135,10 @@
     </para>
     
     <para>
-    By limiting type inference to local declarations, Ceylon ensures that
-    all types may be inferred by the compiler in a single pass of the source 
-    code. Type inference works in the "forward" and "outward" directions. 
-    Every expression has a decideable type without the need to consider the 
+    By limiting type inference to local declarations, Ceylon ensures that all 
+    types may be inferred by the compiler in a single pass of the source code. 
+    Type inference works in the "forward" and "outward" directions. Every 
+    expression has a unique decidable type without the need to consider the 
     rest of the statement or declaration in which it appears.
     </para>
     
@@ -187,11 +195,10 @@
     <para>The Ceylon compiler guarantees that the value of any attribute of
     a class is initialized before it is used in an expression.</para>
     
-    <para>
-    <!--In place of constructor overloading, Ceylon allows class names to be 
-    overloaded. Even better,--> A member class of a class may be refined
-    (overridden) by a subclass of the class. Instantiation is therefore a 
-    polymorphic operation in Ceylon, eliminating the need for factory methods.
+    <para>A class may be a member of an outer class. A member class may be 
+    refined (overridden) by a subclass of the outer class. Instantiation is 
+    therefore a polymorphic operation in Ceylon, eliminating the need for 
+    factory methods.
     </para>
     
     <para>
