@@ -13,6 +13,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public class AssertionVisitor extends Visitor implements NaturalVisitor {
@@ -129,6 +130,16 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
             that.getUnit().getFilename());
     }
 
+    protected void out(UnexpectedError err) {
+        errors++;
+        System.err.println(
+            "unexpected error encountered [" +
+            err.getMessage() + "] at " + 
+            err.getTreeNode().getAntlrTreeNode().getLine() + ":" +
+            err.getTreeNode().getAntlrTreeNode().getCharPositionInLine() + " of " +
+            err.getTreeNode().getUnit().getFilename());
+    }
+
     protected void out(AnalysisError err) {
         errors++;
         System.err.println(
@@ -150,7 +161,12 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
     }
 
     private void checkErrors(Node that) {
-        if (expectingError) {
+    	for (Message err: foundErrors) {
+            if (err instanceof UnexpectedError) {
+                out( (UnexpectedError) err );
+            }
+    	}
+    	if (expectingError) {
             for (Message err: foundErrors) {
                 if (err instanceof AnalysisError ||
                 		err instanceof LexError ||
