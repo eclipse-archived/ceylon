@@ -76,4 +76,10 @@ class Intersection() {
     Consumer<X|Y> consxy = Consumer<X|Y>();
     Consumer<X>&Consumer<Y> ucons = consxy;
     
+    interface WithParam<T> {}
+    class WithUnionArg<U,V>() satisfies WithParam<U|V> {}
+    class WithIntersectionArg<U,V>() satisfies WithParam<U&V> {}
+    WithParam<String&X|String&Y> wp1 = WithIntersectionArg<String,X|Y>();
+    WithParam<String&X|String&Y> wp2 = WithUnionArg<String&X,String&Y>();
+    
 }
