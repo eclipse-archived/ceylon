@@ -1184,8 +1184,9 @@ value comp = order(1,-1);</programlisting>
         <para>If the inferred type argument does not satisfy the generic type 
         constraints on <literal>T</literal>, a compilation error results.</para>
         
-        <comment><para>Note that the basis of this rule is the notion that:</para>
-<programlisting>T abstracts A &amp;&amp; T abstracts B => T abstracts A|B</programlisting></comment>
+        <comment><para>Note that the basis for this rule is:</para>
+<programlisting>T abstracts A &amp;&amp; T abstracts B => T abstracts A|B</programlisting>
+<programlisting>T abstracts A || T abstracts B => T abstracts A&amp;B</programlisting></comment>
         
         <para>Consider the following invocation:</para>
         
