@@ -168,12 +168,16 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("instantiation/ClassInstantiation");
     }
     @Test
-    public void testInsSequenceInstantiation(){
-        compareWithJavaSource("instantiation/SequenceInstantiation");
+    public void testInsGenericClassInstantiation(){
+        compareWithJavaSource("instantiation/GenericClassInstantiation");
     }
     @Test
     public void testInsEntryInstantiation(){
         compareWithJavaSource("instantiation/EntryInstantiation");
+    }
+    @Test
+    public void testInsSequenceInstantiation(){
+        compareWithJavaSource("instantiation/SequenceInstantiation");
     }
     
     // Operators

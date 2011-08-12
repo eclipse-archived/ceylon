@@ -5,7 +5,35 @@ class KlassTypeParams<U, V> {
     private final U foo(final U u, final V v) {
         return u;
     }
+    private final U attr;
     
-    KlassTypeParams() {
+    private final U getAttr() {
+        return this.attr;
+    }
+    private V var;
+    
+    private final V getVar() {
+        return this.var;
+    }
+    
+    private final void setVar(V var) {
+        this.var = var;
+    }
+    
+    private final U getGetter() {
+        return getAttr();
+    }
+    
+    private final V getGetset() {
+        return getVar();
+    }
+    
+    private final void setGetset(.java.lang.Object getset) {
+        setVar(getGetset());
+    }
+    
+    KlassTypeParams(U uu, V vv) {
+        this.attr = uu;
+        this.var = vv;
     }
 }

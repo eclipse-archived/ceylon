@@ -63,6 +63,10 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("klass/AbstractFormal");
     }
     @Test
+    public void testKlsKlassMethodTypeParams(){
+        compareWithJavaSource("klass/KlassMethodTypeParams");
+    }
+    @Test
     public void testKlsKlassTypeParams(){
         compareWithJavaSource("klass/KlassTypeParams");
     }
