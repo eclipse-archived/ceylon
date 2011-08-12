@@ -1081,11 +1081,10 @@ value comp = order(1,-1);</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para>If <literal>A</literal> is a union type <literal>B|C</literal>, 
-                the constraint set <literal>A</literal> on <literal>P</literal> for 
-                <literal>T</literal> is the union of the constraint set <literal>B</literal> 
-                on <literal>P</literal> for <literal>T</literal> with the constraint 
-                set <literal>C</literal> on <literal>P</literal> for <literal>T</literal>.</para>
+                <para>If <literal>P</literal> is exactly <literal>T</literal>, the 
+                constraint set <literal>A</literal> on <literal>P</literal> for 
+                <literal>T</literal> contains the single constraint that 
+                <literal>T abstracts A</literal>.</para>
             </listitem>
             <listitem>
                 <para>If <literal>P</literal> is a produced type <literal>Q&lt;P1,P2,...&gt;</literal> 
@@ -1096,10 +1095,18 @@ value comp = order(1,-1);</programlisting>
                 on <literal>Pi</literal> for <literal>T</literal>.</para>
             </listitem>
             <listitem>
-                <para>If <literal>P</literal> is exactly <literal>T</literal>, the 
-                constraint set <literal>A</literal> on <literal>P</literal> for 
-                <literal>T</literal> contains the single constraint that 
-                <literal>T abstracts A</literal>.</para>
+                <para>If <literal>A</literal> is a union type <literal>B|C</literal>, 
+                the constraint set <literal>A</literal> on <literal>P</literal> for 
+                <literal>T</literal> is the union of the constraint set <literal>B</literal> 
+                on <literal>P</literal> for <literal>T</literal> with the constraint 
+                set <literal>C</literal> on <literal>P</literal> for <literal>T</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>If <literal>A</literal> is an intersection type <literal>B&amp;C</literal>, 
+                the constraint set <literal>A</literal> on <literal>P</literal> for 
+                <literal>T</literal> is the union of the constraint set <literal>B</literal> 
+                on <literal>P</literal> for <literal>T</literal> with the constraint 
+                set <literal>C</literal> on <literal>P</literal> for <literal>T</literal>.</para>
             </listitem>
             <listitem>
                 <para>If <literal>P</literal> is a union type <literal>Q|R</literal>, 
@@ -1110,14 +1117,29 @@ value comp = order(1,-1);</programlisting>
                 for <literal>T</literal>.</para>
             </listitem>
             <listitem>
-                <para>Otherwise, if <literal>A</literal> is not a union, and if 
-                <literal>P</literal> is neither a produced type, a union, nor exactly 
-                <literal>T</literal>, the constraint set <literal>A</literal> on 
-                <literal>P</literal> for <literal>T</literal> is empty.</para>
+                <para>If <literal>P</literal> is an intersection type <literal>Q&amp;R</literal>, 
+                the constraint set <literal>A</literal> on <literal>P</literal> for 
+                <literal>T</literal> is the union of the constraint set 
+                <literal>A</literal> on <literal>Q</literal> for <literal>T</literal> 
+                with the constraint set <literal>A</literal> on <literal>R</literal> 
+                for <literal>T</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>Otherwise, if <literal>A</literal> is not a union or intersection, 
+                and if <literal>P</literal> is neither a produced type, a union, or an
+                intersection, nor exactly <literal>T</literal>, the constraint set 
+                <literal>A</literal> on <literal>P</literal> for <literal>T</literal> is 
+                empty.</para>
             </listitem>
         </itemizedlist>
         
         <comment><para>TODO: The fourth rule is intuitively wrong: the constraints 
+        should be combined as a disjunction not a conjunction. But this only affects 
+        the result if both <literal>B</literal> and <literal>C</literal> are subtypes 
+        of <literal>P</literal>, and if <literal>P</literal> involves <literal>T</literal>, 
+        which is going to be an extremely uncommon case.</para></comment>
+        
+        <comment><para>TODO: Likewise, the fifth rule is intuitively wrong: the constraints 
         should be combined as a disjunction not a conjunction. But this only affects 
         the result if <literal>A</literal> is a subtype of both <literal>Q</literal> 
         and <literal>R</literal>, and if both <literal>Q</literal> and <literal>R</literal> 
@@ -1125,10 +1147,11 @@ value comp = order(1,-1);</programlisting>
         case.</para></comment>
         
         <comment><para>TODO: This incorrectly describes the algorithm used by the 
-        actual compiler for union types. Actually what happens is that the compiler 
-        always reduces any union type to a simplest canonical form. This affects 
-        the result of the algorithm in some very rare cases, due to the weirdness 
-        of the fourth rule? (In which case the compiler's approach is better!)</para></comment>
+        actual compiler for union and intersection types. Actually what happens is 
+        that the compiler always reduces any union or intersection type to a simplest 
+        canonical form. This affects the result of the algorithm in some very rare 
+        cases, due to the weirdness of the fourth and fifth rules. (In which case 
+        the compiler's approach is better!)</para></comment>
         
         <comment><para>TODO: Nor does this do justice the the compiler's handling 
         of type parameters which have upper bounds involving other type parameters.
