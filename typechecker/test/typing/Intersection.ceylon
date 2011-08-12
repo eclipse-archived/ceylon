@@ -76,7 +76,9 @@ class Intersection() {
     Consumer<X|Y> consxy = Consumer<X|Y>();
     Consumer<X>&Consumer<Y> ucons = consxy;
     
-    interface WithParam<T> {}
+    interface WithParam<T> {
+    	shared T get() { throw; }
+    }
     class WithUnionArg<U,V>() satisfies WithParam<U|V> {}
     class WithIntersectionArg<U,V>() satisfies WithParam<U&V> {}
     class WithMoreIntersectionArg<U,V,W>() satisfies WithParam<U&V&W> {}
@@ -84,5 +86,8 @@ class Intersection() {
     WithParam<String&X|String&Y> wp2 = WithUnionArg<String&X,String&Y>();
     WithParam<String&X|String&Y|Float&X|Float&Y> wp3 = WithIntersectionArg<String|Float,X|Y>();
     WithParam<String&X&Float|String&Y&Float|String&X&Natural|String&Y&Natural> wp4 = WithMoreIntersectionArg<String,X|Y,Float|Natural>();
+    
+    @type["String&Intersection.X|String&Intersection.Y"] WithIntersectionArg<String,X|Y>().get();
+    @type["String&Intersection.X|String&Intersection.Y|Float&Intersection.X|Float&Intersection.Y"] WithIntersectionArg<String|Float,X|Y>().get();
     
 }
