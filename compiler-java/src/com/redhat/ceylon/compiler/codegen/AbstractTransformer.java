@@ -506,9 +506,9 @@ public abstract class AbstractTransformer implements Transformation {
             }
 
             if (typeArgs != null && typeArgs.size() > 0) {
-                jt = make().TypeApply(makeIdent(tdecl.getQualifiedNameString()), typeArgs.toList());
+                jt = make().TypeApply(makeIdent(getDeclarationName(tdecl)), typeArgs.toList());
             } else {
-                jt = makeIdent(tdecl.getQualifiedNameString());
+                jt = makeIdent(getDeclarationName(tdecl));
             }
         } else {
             // For an ordinary class or interface type T:
@@ -516,10 +516,18 @@ public abstract class AbstractTransformer implements Transformation {
             if(tdecl instanceof TypeParameter)
                 jt = makeIdent(tdecl.getName());
             else
-                jt = makeIdent(tdecl.getQualifiedNameString());
+                jt = makeIdent(getDeclarationName(tdecl));
         }
         
         return jt;
+    }
+    
+    private String getDeclarationName(Declaration decl) {
+        if (decl.getContainer() instanceof Method) {
+            return decl.getName();
+        } else {
+            return decl.getQualifiedNameString();
+        }
     }
     
     /*
@@ -584,12 +592,12 @@ public abstract class AbstractTransformer implements Transformation {
     
     protected JCExpression boxUnboxIfNecessary(JCExpression expr, ProducedType exprType, ProducedType targetType) {
         if (isBoxed(targetType) && !isBoxed(exprType)) {
-            if (simplifyType(targetType).isExactly(exprType)) {
+            if (isTypeParameter(targetType) || simplifyType(targetType).isExactly(exprType)) {
                 // box
                 expr = boxType(expr, exprType);
             }
         } else if (!isBoxed(targetType) && isBoxed(exprType)) {
-            if (targetType.isExactly(simplifyType(exprType))) {
+            if (isTypeParameter(exprType) || targetType.isExactly(simplifyType(exprType))) {
                 // unbox
                 expr = unboxType(expr, targetType);
             }
@@ -601,7 +609,11 @@ public abstract class AbstractTransformer implements Transformation {
     // It's more like: IF we would assign a value to a
     // variable of this type it would need to be boxed
     private boolean isBoxed(ProducedType type) {
-        return (type  != null) && (isOptional(type) || type.getDeclaration() instanceof TypeParameter);
+        return (type  != null) && (isOptional(type) || isTypeParameter(type));
+    }
+    
+    private boolean isTypeParameter(ProducedType type) {
+        return type.getDeclaration() instanceof TypeParameter;
     }
     
     protected JCExpression unboxType(JCExpression expr, ProducedType targetType) {
