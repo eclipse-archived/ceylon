@@ -992,9 +992,9 @@ public class ExpressionVisitor extends AbstractVisitor {
     	if (types.isEmpty()) {
     		return null;
     	}
-    	IntersectionType ut = new IntersectionType();
-    	ut.setSatisfiedTypes(types);
-    	return ut.getType();
+    	IntersectionType it = new IntersectionType();
+    	it.setSatisfiedTypes(types);
+    	return it.canonicalize().getType();
     }
     
     private ProducedType inferTypeArg(TypeParameter tp, ProducedType paramType,

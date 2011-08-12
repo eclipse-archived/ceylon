@@ -464,7 +464,7 @@ public class ProducedType extends ProducedReference {
                 }
                 IntersectionType it = new IntersectionType();
                 it.setSatisfiedTypes(list2);
-                result = it.getType();
+                result = it.canonicalize().getType();
             }
             else {
                 for (ProducedType pt: caseTypes) {
@@ -671,7 +671,7 @@ public class ProducedType extends ProducedReference {
                     addTypeToIntersection(ct, substitutions, types);
                 }
                 it.setSatisfiedTypes(types);
-                dec = it;
+                dec = it.canonicalize();
             }
             else {
                 if (pt.getDeclaration() instanceof TypeParameter) {

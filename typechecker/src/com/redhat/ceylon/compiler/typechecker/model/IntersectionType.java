@@ -1,5 +1,9 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class IntersectionType extends TypeDeclaration {
@@ -57,5 +61,34 @@ public class IntersectionType extends TypeDeclaration {
             return super.getType();
         }
     }
+
+    /**
+     * Apply the distributive rule X&(Y|Z) == X&Y|X&Z to simplify the 
+     * intersection to a canonical form with no parens. The result is 
+     * a union of intersections, instead of an intersection of unions.
+     */
+	public TypeDeclaration canonicalize() {
+		for (ProducedType st: getSatisfiedTypes()) {
+			if (st.getDeclaration() instanceof UnionType) {
+				TypeDeclaration result = new UnionType();
+				List<ProducedType> ulist = new ArrayList<ProducedType>();
+				for (ProducedType ct: st.getDeclaration().getCaseTypes()) {
+					List<ProducedType> ilist = new ArrayList<ProducedType>();
+					addToIntersection(ilist, ct);
+					for (ProducedType pt: getSatisfiedTypes()) {
+						if (pt!=st) {
+							addToIntersection(ilist, pt);
+						}
+					}
+					IntersectionType it = new IntersectionType();
+					it.setSatisfiedTypes(ilist);
+					addToUnion(ulist, it.canonicalize().getType());
+				}
+				result.setCaseTypes(ulist);
+				return result;
+			}
+		}
+		return this;
+	}
 
 }
