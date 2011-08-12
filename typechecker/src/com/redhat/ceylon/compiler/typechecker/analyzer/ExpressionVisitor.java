@@ -987,6 +987,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                 addToUnion(inferredTypes, argType);
             }
             else if (paramType.getDeclaration() instanceof UnionType) {
+            	//TODO: combine the constraints using intersection instead
+            	//      of union
                 for (ProducedType ct: paramType.getDeclaration().getCaseTypes()) {
                     inferTypeArg(tp, ct.substitute(paramType.getTypeArguments()), argType, 
                     		inferredTypes, visited);
@@ -1005,6 +1007,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                 }
             }
             else if (argType.getDeclaration() instanceof IntersectionType) {
+            	//TODO: combine the constraints using intersection instead
+            	//      of union
                 for (ProducedType ct: argType.getDeclaration().getSatisfiedTypes()) {
                     inferTypeArg(tp, paramType, ct.substitute(paramType.getTypeArguments()), 
                     		inferredTypes, visited);
