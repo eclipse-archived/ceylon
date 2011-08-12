@@ -105,4 +105,23 @@ class TypeArgInference() {
     
     @type["TypeArgInference.X<Natural>&TypeArgInference.Z"] g(xzn);
     @type["TypeArgInference.X<Natural>&TypeArgInference.Z"] g(zxn);
+    
+    interface One<out T> {}
+    interface Two<out T> {}
+    
+    object test1 satisfies One<Natural> & Two<Float> {}
+    object test2 satisfies One<Number> & Two<Natural&String> {}
+    
+    T? acceptOneTwo<T>(One<T>&Two<T> arg) {
+    	return null;
+    }
+    T? acceptOneOrTwo<T>(One<T>|Two<T> arg) {
+    	return null;
+    }
+    
+    @type["Nothing|Natural|Float"] acceptOneTwo(test1);
+    @type["Nothing|Number"] acceptOneTwo(test2);
+    @type["Nothing|Natural&Float"] @error acceptOneOrTwo(test1);
+    @type["Nothing|Natural&String"] acceptOneOrTwo(test2);
+
 }
