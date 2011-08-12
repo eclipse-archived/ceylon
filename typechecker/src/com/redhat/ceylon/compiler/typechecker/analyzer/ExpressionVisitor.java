@@ -928,8 +928,8 @@ public class ExpressionVisitor extends AbstractVisitor {
             if (type!=null) {
                 Parameter parameter = getMatchingParameter(parameters, arg);
                 if (parameter!=null) {
-                    inferTypeArg(tp, parameter.getType(), type, inferredTypes,
-                    		new ArrayList<TypeParameter>());
+                	addToUnion(inferredTypes, inferTypeArg(tp, parameter.getType(), 
+                			type, new ArrayList<TypeParameter>()));
                 }
             }
         }
@@ -942,8 +942,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                 				.getExpressionList().getExpressions()) {
                     ProducedType sat = e.getTypeModel();
                     if (sat!=null) {
-                        inferTypeArg(tp, spt, sat, inferredTypes,
-                        		new ArrayList<TypeParameter>());
+                    	addToUnion(inferredTypes, inferTypeArg(tp, spt, sat,
+                        		new ArrayList<TypeParameter>()));
                     }
                 }
             }
@@ -961,8 +961,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                         ProducedType sat = args.getPositionalArguments().get(k)
                                 .getExpression().getTypeModel();
                         if (sat!=null) {
-                            inferTypeArg(tp, spt, sat, inferredTypes,
-                            		new ArrayList<TypeParameter>());
+                            addToUnion(inferredTypes, inferTypeArg(tp, spt, sat,
+                            		new ArrayList<TypeParameter>()));
                         }
                     }
                     break;
@@ -971,79 +971,120 @@ public class ExpressionVisitor extends AbstractVisitor {
                     ProducedType argType = args.getPositionalArguments().get(i)
                             .getExpression().getTypeModel();
                     if (argType!=null) {
-                        inferTypeArg(tp, parameter.getType(), argType, inferredTypes,
-                        		new ArrayList<TypeParameter>());
+                    	addToUnion(inferredTypes, inferTypeArg(tp, parameter.getType(), 
+                    			argType, new ArrayList<TypeParameter>()));
                     }
                 }
             }
         }
     }
     
-    private void inferTypeArg(TypeParameter tp, ProducedType paramType,
-            ProducedType argType, List<ProducedType> inferredTypes, 
-            List<TypeParameter> visited) {
+    private ProducedType union(List<ProducedType> types) {
+    	if (types.isEmpty()) {
+    		return null;
+    	}
+    	UnionType ut = new UnionType();
+    	ut.setCaseTypes(types);
+    	return ut.getType();
+    }
+    
+    private ProducedType intersection(List<ProducedType> types) {
+    	if (types.isEmpty()) {
+    		return null;
+    	}
+    	IntersectionType ut = new IntersectionType();
+    	ut.setSatisfiedTypes(types);
+    	return ut.getType();
+    }
+    
+    private ProducedType inferTypeArg(TypeParameter tp, ProducedType paramType,
+            ProducedType argType, List<TypeParameter> visited) {
         if (paramType!=null) {
             if (paramType.getDeclaration()==tp) {
-                addToUnion(inferredTypes, argType);
+            	return argType;
             }
             else if (paramType.getDeclaration() instanceof UnionType) {
-            	//TODO: combine the constraints using intersection instead
-            	//      of union
+            	List<ProducedType> list = new ArrayList<ProducedType>();
                 for (ProducedType ct: paramType.getDeclaration().getCaseTypes()) {
-                    inferTypeArg(tp, ct.substitute(paramType.getTypeArguments()), argType, 
-                    		inferredTypes, visited);
+                	addToIntersection(list, inferTypeArg(tp, 
+                			ct.substitute(paramType.getTypeArguments()), 
+                    		argType, visited));
                 }
+                return intersection(list);
             }
             else if (paramType.getDeclaration() instanceof IntersectionType) {
+            	List<ProducedType> list = new ArrayList<ProducedType>();
                 for (ProducedType ct: paramType.getDeclaration().getSatisfiedTypes()) {
-                    inferTypeArg(tp, ct.substitute(paramType.getTypeArguments()), argType, 
-                    		inferredTypes, visited);
+                	addToUnion(list, inferTypeArg(tp, 
+                			ct.substitute(paramType.getTypeArguments()), 
+                    		argType, visited));
                 }
+                return union(list);
             }
             else if (argType.getDeclaration() instanceof UnionType) {
+            	List<ProducedType> list = new ArrayList<ProducedType>();
                 for (ProducedType ct: argType.getDeclaration().getCaseTypes()) {
-                    inferTypeArg(tp, paramType, ct.substitute(paramType.getTypeArguments()), 
-                    		inferredTypes, visited);
+                	addToUnion(list, inferTypeArg(tp, paramType, 
+                			ct.substitute(paramType.getTypeArguments()), 
+                    		visited));
                 }
+                return union(list);
             }
             else if (argType.getDeclaration() instanceof IntersectionType) {
-            	//TODO: combine the constraints using intersection instead
-            	//      of union
+            	List<ProducedType> list = new ArrayList<ProducedType>();
                 for (ProducedType ct: argType.getDeclaration().getSatisfiedTypes()) {
-                    inferTypeArg(tp, paramType, ct.substitute(paramType.getTypeArguments()), 
-                    		inferredTypes, visited);
+                	addToIntersection(list, inferTypeArg(tp, paramType, 
+                			ct.substitute(paramType.getTypeArguments()), 
+                    		visited));
                 }
+                return intersection(list);
             }
             else if (paramType.getDeclaration() instanceof TypeParameter) {
             	TypeParameter tp2 = (TypeParameter) paramType.getDeclaration();
             	if (!visited.contains(tp2)) {
 	            	visited.add(tp2);
+                	List<ProducedType> list = new ArrayList<ProducedType>();
 		            for (ProducedType pt: tp2.getSatisfiedTypes()) {
-		                inferTypeArg(tp, pt, argType, inferredTypes, visited);
+		                addToUnion(list, inferTypeArg(tp, pt, argType, visited) );
 		            	ProducedType st = argType.getSupertype(pt.getDeclaration());
 		                if (st!=null) {
 		                    for (int j=0; j<pt.getTypeArgumentList().size(); j++) {
 		                        if (st.getTypeArgumentList().size()>j) {
-		                            inferTypeArg(tp, pt.getTypeArgumentList().get(j), 
+		                        	addToUnion(list, inferTypeArg(tp, 
+		                        			pt.getTypeArgumentList().get(j), 
 		                                    st.getTypeArgumentList().get(j), 
-		                                    inferredTypes, visited);
+		                                    visited));
 		                        }
 		                    }
 		                }
 		            }
+                    return union(list);
 	            }
+            	else {
+            		return null;
+            	}
             }
             else {
                 ProducedType st = argType.getSupertype(paramType.getDeclaration());
                 if (st!=null) {
+                	List<ProducedType> list = new ArrayList<ProducedType>();
                     for (int j=0; j<paramType.getTypeArgumentList().size(); j++) {
                         if (st.getTypeArgumentList().size()>j) {
-                            inferTypeArg(tp, paramType.getTypeArgumentList().get(j), 
-                                    st.getTypeArgumentList().get(j), inferredTypes, visited);
+                        	addToUnion(list, inferTypeArg(tp, 
+                        			paramType.getTypeArgumentList().get(j), 
+                                    st.getTypeArgumentList().get(j), 
+                                    visited));
                         }
                     }
+                    return union(list);
+                }
+                else {
+                	return null;
                 }
             }
+        }
+        else {
+        	return null;
         }
     }
 
