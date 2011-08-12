@@ -74,9 +74,11 @@ public class IntersectionType extends TypeDeclaration {
 				List<ProducedType> ulist = new ArrayList<ProducedType>();
 				for (ProducedType ct: st.getDeclaration().getCaseTypes()) {
 					List<ProducedType> ilist = new ArrayList<ProducedType>();
-					addToIntersection(ilist, ct);
 					for (ProducedType pt: getSatisfiedTypes()) {
-						if (pt!=st) {
+						if (pt==st) {
+							addToIntersection(ilist, ct);
+						}
+						else {
 							addToIntersection(ilist, pt);
 						}
 					}
