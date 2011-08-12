@@ -694,6 +694,17 @@ public abstract class AbstractTransformer implements Transformation {
         return make().Apply(null, makeSelect(value, unboxMethodName), List.<JCExpression>nil());
     }
     
+    protected ProducedType determineExpressionType(Tree.Expression expr) {
+        ProducedType exprType = expr.getTypeModel();
+        if (expr.getTerm() instanceof Tree.InvocationExpression) {
+            Declaration decl = ((Tree.InvocationExpression)expr.getTerm()).getPrimary().getDeclaration().getRefinedDeclaration();
+            if (decl instanceof Method) {
+                exprType = ((Method)decl).getType();
+            }
+        }
+        return exprType;
+    }
+    
     /*
      * Sequences
      */

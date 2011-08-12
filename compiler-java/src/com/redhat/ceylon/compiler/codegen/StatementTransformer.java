@@ -326,7 +326,8 @@ public class StatementTransformer extends AbstractTransformer {
             if (ret.getDeclaration() instanceof TypedDeclaration) {
                 targetType = ((TypedDeclaration)ret.getDeclaration()).getType();
             }
-            returnExpr = boxUnboxIfNecessary(expressionGen().transformExpression(expr), expr.getTypeModel(), targetType);
+            ProducedType exprType = determineExpressionType(expr);
+            returnExpr = boxUnboxIfNecessary(expressionGen().transformExpression(expr), exprType, targetType);
         }
         return at(ret).Return(returnExpr);
     }
