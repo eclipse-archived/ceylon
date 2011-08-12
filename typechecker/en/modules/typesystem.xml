@@ -60,6 +60,10 @@
             <para>A <emphasis>union type</emphasis> is a type to which each of an 
             enumerated list of produced types is assignable.</para>
         </listitem>
+        <listitem>
+            <para>An <emphasis>intersection type</emphasis> is a type which is assignable 
+            to each of an enumerated list of produced types.</para>
+        </listitem>
     </itemizedlist>
     
     <para>Although we often use the term <emphasis>parameterized type</emphasis> or even
@@ -371,7 +375,8 @@
         <section id="uniontypes">
             <title>Union types</title>
             
-        <para>For any types <literal>X</literal> and <literal>Y</literal>, the <emphasis>union</emphasis>,
+        <para>For any types <literal>X</literal> and <literal>Y</literal>, the 
+        <emphasis>union</emphasis>, or <emphasis>disjunction</emphasis>,
         <literal>X|Y</literal>, of the types may be formed. A union type is a supertype of 
         both of the given types <literal>X</literal> and <literal>Y</literal>, and an instance
         of either type is an instance of the union type.</para>
@@ -379,11 +384,13 @@
         <para>The union type constructor <literal>|</literal> is associative, so the union 
         of three types may be written <literal>X|Y|Z</literal>.</para>
             
-        <programlisting>UnionType: AbbreviatedType ("|" AbbreviatedType)*</programlisting>
+        <programlisting>UnionType: IntersectionType ("|" IntersectionType)*</programlisting>
         
         <para>If <literal>X</literal> and <literal>Y</literal> are both subtypes of a third type 
         <literal>Z</literal>, then <literal>X|Y</literal> inherits all members of <literal>Z</literal>.</para>
 
+        <programlisting>void write(String|Integer|Float printable) { ... }</programlisting>
+        
         <para>Union types satisfy the following rules, for any types <literal>X</literal>,
         <literal>Y</literal>, and <literal>Z</literal>:</para>
         
@@ -440,13 +447,121 @@
             </listitem>
         </itemizedlist>
         
-        <programlisting>void write(String|Integer|Float printable) { ... }</programlisting>
+        <para>Finally:</para>
         
-        <comment>
-        <para>TODO: What about ad hoc intersection types?</para>
+        <itemizedlist>
+            <listitem>
+                <para>If <literal>X&lt;T&gt;</literal> is covariant in the type parameter 
+                <literal>T</literal>, then <literal>X&lt;U&gt;|X&lt;V&gt;</literal> is a
+                subtype of <literal>X&lt;U|V&gt;</literal> for any types <literal>U</literal>
+                and <literal>V</literal> that satisfy the type constraints on <literal>T</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>If <literal>X&lt;T&gt;</literal> is contravariant in the type parameter 
+                <literal>T</literal>, then <literal>X&lt;U&gt;|X&lt;V&gt;</literal> is a
+                subtype of <literal>X&lt;U&amp;V&gt;</literal> for any types <literal>U</literal>
+                and <literal>V</literal> that satisfy the type constraints on <literal>T</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        </section>
+        
+        <section id="intersectiontypes">
+            <title>Intersection types</title>
+            
+        <para>For any types <literal>X</literal> and <literal>Y</literal>, the 
+        <emphasis>intersection</emphasis>, or <emphasis>conjunction</emphasis>,
+        <literal>X&amp;Y</literal>, of the types may be formed. An intersection type is a subtype 
+        of both of the given types <literal>X</literal> and <literal>Y</literal>, and any object
+        which is an instance of both types is an instance of the union type.</para>
+        
+        <para>The union type constructor <literal>&amp;</literal> is associative, so the union 
+        of three types may be written <literal>X&amp;Y&amp;Z</literal>.</para>
+            
+        <programlisting>IntersectionType: AbbreviatedType ("&amp;" AbbreviatedType)*</programlisting>
+        
+        <para>The intersection <literal>X&amp;Y</literal> inherits all members of both
+        <literal>X</literal> and <literal>Y</literal>.</para>
+        
         <programlisting>void store(Persistent&amp;Format&amp;IdentifiableObject object) { ... }</programlisting>
-        </comment>
         
+        <para>Intersection types satisfy the following rules, for any types <literal>X</literal>,
+        <literal>Y</literal>, and <literal>Z</literal>:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>
+                    Commutativity: <literal>X&amp;Y</literal> is the same 
+                    type as <literal>Y&amp;X</literal>.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    Associativity: <literal>X&amp;(Y&amp;Z)</literal> is the same 
+                    type as <literal>(X&amp;Y)&amp;Z</literal>.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    Simplification: if <literal>X</literal> is a subtype 
+                    of <literal>Y</literal>, then <literal>X&amp;Y</literal> 
+                    is the same type as <literal>Y</literal>.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    Supertypes: <literal>X</literal> is a supertype of 
+                    <literal>X&amp;Y</literal>.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    Subtypes: if both <literal>X</literal> and 
+                    <literal>Y</literal> are supertypes of <literal>Z</literal>, 
+                    then <literal>X&amp;Y</literal> is also a supertype 
+                    <literal>Z</literal>.
+                </para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The following results follow from these rules:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>
+                    <literal>X&amp;Bottom</literal> is the same type as <literal>Bottom</literal> 
+                    for any type <literal>X</literal>, and
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    <literal>X&amp;Void</literal> is the same type as <literal>X</literal>
+                    for any type <literal>X</literal>.
+                </para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Finally:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>If <literal>X&lt;T&gt;</literal> is covariant in the type parameter 
+                <literal>T</literal>, then <literal>X&lt;U&gt;&amp;X&lt;V&gt;</literal> is a
+                supertype of <literal>X&lt;U&amp;V&gt;</literal> for any types <literal>U</literal>
+                and <literal>V</literal> that satisfy the type constraints on <literal>T</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>If <literal>X&lt;T&gt;</literal> is contravariant in the type parameter 
+                <literal>T</literal>, then <literal>X&lt;U&gt;&amp;X&lt;V&gt;</literal> is a
+                supertype of <literal>X&lt;U|V&gt;</literal> for any types <literal>U</literal>
+                and <literal>V</literal> that satisfy the type constraints on <literal>T</literal>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <comment><para>TODO: There are certain intersection types which are proveably empty,
+        for example, <literal>String&amp;Natural</literal>. The compiler should reason that these 
+        types are equivalent to <literal>Bottom</literal>.</para></comment>
+                
         <comment>
         <para>TODO: We should also probably support aliases for ad hoc union and intersection 
         types using a syntax something like this:</para>
