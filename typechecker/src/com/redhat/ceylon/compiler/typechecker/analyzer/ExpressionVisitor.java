@@ -992,8 +992,20 @@ public class ExpressionVisitor extends AbstractVisitor {
                     		inferredTypes, visited);
                 }
             }
+            else if (paramType.getDeclaration() instanceof IntersectionType) {
+                for (ProducedType ct: paramType.getDeclaration().getSatisfiedTypes()) {
+                    inferTypeArg(tp, ct.substitute(paramType.getTypeArguments()), argType, 
+                    		inferredTypes, visited);
+                }
+            }
             else if (argType.getDeclaration() instanceof UnionType) {
                 for (ProducedType ct: argType.getDeclaration().getCaseTypes()) {
+                    inferTypeArg(tp, paramType, ct.substitute(paramType.getTypeArguments()), 
+                    		inferredTypes, visited);
+                }
+            }
+            else if (argType.getDeclaration() instanceof IntersectionType) {
+                for (ProducedType ct: argType.getDeclaration().getSatisfiedTypes()) {
                     inferTypeArg(tp, paramType, ct.substitute(paramType.getTypeArguments()), 
                     		inferredTypes, visited);
                 }
