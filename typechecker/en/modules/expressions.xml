@@ -1134,14 +1134,14 @@ value comp = order(1,-1);</programlisting>
         </itemizedlist>
         
         <comment><para>TODO: The fourth rule is intuitively wrong: the constraints 
-        should be combined as a conjunction not a disconjunction. But this only affects 
+        should be combined as a disjunction not a conjunction. But this only affects 
         the result if both <literal>B</literal> and <literal>C</literal> are subtypes 
         of <literal>P</literal>, and if <literal>P</literal> involves <literal>T</literal>, 
         and <literal>B</literal> and <literal>C</literal> supply different type arguments
         to <literal>T</literal>, which is going to be an extremely uncommon case.</para></comment>
         
         <comment><para>TODO: Likewise, the fifth rule is intuitively wrong: the constraints 
-        should be combined as a conjunction not a disconjunction. But this only affects 
+        should be combined as a disjunction not a conjunction. But this only affects 
         the result if <literal>A</literal> is a subtype of both <literal>Q</literal> 
         and <literal>R</literal>, and if both <literal>Q</literal> and <literal>R</literal> 
         involve <literal>T</literal>, which is going to be an extremely uncommon 
@@ -1183,6 +1183,9 @@ value comp = order(1,-1);</programlisting>
         
         <para>If the inferred type argument does not satisfy the generic type 
         constraints on <literal>T</literal>, a compilation error results.</para>
+        
+        <comment><para>Note that the basis of this rule is the notion that:</para>
+<programlisting>T abstracts A &amp;&amp; T abstracts B => T abstracts A|B</programlisting></comment>
         
         <para>Consider the following invocation:</para>
         
