@@ -95,4 +95,14 @@ class TypeArgInference() {
     
     @type["String"] f1("hello");
     @type["Natural"] f2({1,2,3});
+    
+    interface Z {}
+    interface W {}
+    object xzn extends X<Natural>(0, 1) satisfies Z&W {}
+    Z&X<Natural> zxn = xzn;
+    
+    function g<T>(X<T>&Z x) { return x; }
+    
+    @type["TypeArgInference.X<Natural>&TypeArgInference.Z"] g(xzn);
+    @type["TypeArgInference.X<Natural>&TypeArgInference.Z"] g(zxn);
 }
