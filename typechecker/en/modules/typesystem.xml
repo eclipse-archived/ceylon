@@ -428,7 +428,7 @@
                 <para>
                     Supertypes: if both <literal>X</literal> and 
                     <literal>Y</literal> are subtypes of <literal>Z</literal>, 
-                    then <literal>X|Y</literal> is also a subtype 
+                    then <literal>X|Y</literal> is also a subtype of
                     <literal>Z</literal>.
                 </para>
             </listitem>
@@ -522,7 +522,7 @@
                 <para>
                     Subtypes: if both <literal>X</literal> and 
                     <literal>Y</literal> are supertypes of <literal>Z</literal>, 
-                    then <literal>X&amp;Y</literal> is also a supertype 
+                    then <literal>X&amp;Y</literal> is also a supertype of
                     <literal>Z</literal>.
                 </para>
             </listitem>
