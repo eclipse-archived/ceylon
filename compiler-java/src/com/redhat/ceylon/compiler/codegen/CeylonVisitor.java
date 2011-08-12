@@ -5,8 +5,10 @@ import static com.sun.tools.javac.code.Flags.FINAL;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
+import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
@@ -93,6 +95,11 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     private boolean withinClassOrInterface(Tree.Declaration decl) {
         Scope container = decl.getDeclarationModel().getContainer();
         return container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+    }
+    
+    public void handleException(Exception e, Node that) {
+        e.printStackTrace();// just for now
+        that.getErrors().add(new CodeGenError(that, e.getMessage(), e)); 
     }
     
     /*
