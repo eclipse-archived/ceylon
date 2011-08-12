@@ -1137,7 +1137,8 @@ value comp = order(1,-1);</programlisting>
         should be combined as a conjunction not a disconjunction. But this only affects 
         the result if both <literal>B</literal> and <literal>C</literal> are subtypes 
         of <literal>P</literal>, and if <literal>P</literal> involves <literal>T</literal>, 
-        which is going to be an extremely uncommon case.</para></comment>
+        and <literal>B</literal> and <literal>C</literal> supply different type arguments
+        to <literal>T</literal>, which is going to be an extremely uncommon case.</para></comment>
         
         <comment><para>TODO: Likewise, the fifth rule is intuitively wrong: the constraints 
         should be combined as a conjunction not a disconjunction. But this only affects 
