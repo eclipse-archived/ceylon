@@ -1007,11 +1007,13 @@ TypeConstraints?
             <title>Restrictions on user-defined classes</title>
             
             <para>The following classes may not be directly extended by any class defined
-            outside the module <literal>ceylon.language</literal>:</para>
+            outside the module <literal>ceylon.language</literal> or appear as an upper
+            bound of any type parameter:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para><literal>Gettable</literal> and <literal>Settable</literal>,</para>
+                    <para><literal>Gettable</literal> and <literal>Settable</literal>,
+                    <emphasis>TODO: is this correct?</emphasis></para>
                 </listitem>
                 <listitem>
                     <para>the built-in numeric types: <literal>Natural</literal>,
