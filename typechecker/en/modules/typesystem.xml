@@ -526,6 +526,12 @@
                     <literal>Z</literal>.
                 </para>
             </listitem>
+            <listitem>
+                <para>
+                    Distributivity over union: <literal>X&amp;(Y|Z)</literal> is the same 
+                    type as <literal>(X&amp;Y)|(X&amp;Z)</literal>.
+                </para>
+            </listitem>
         </itemizedlist>
         
         <para>The following results follow from these rules:</para>
