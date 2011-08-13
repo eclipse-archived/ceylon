@@ -118,6 +118,9 @@ public class ModelLoaderTest extends CompilerTest {
     }
     
     private void compareMethodDeclarations(Method validDeclaration, Method modelDeclaration) {
+        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [formal]", validDeclaration.isFormal(), modelDeclaration.isFormal());
+        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [actual]", validDeclaration.isActual(), modelDeclaration.isActual());
+        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [default]", validDeclaration.isDefault(), modelDeclaration.isDefault());
         // make sure it has every parameter list required
         List<ParameterList> validParameterLists = validDeclaration.getParameterLists();
         List<ParameterList> modelParameterLists = modelDeclaration.getParameterLists();
