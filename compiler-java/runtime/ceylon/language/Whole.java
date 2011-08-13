@@ -68,7 +68,7 @@ public final class Whole
     }
 
     @Override
-    public boolean equals(Equality that) {
+    public boolean equals(java.lang.Object that) {
         // FIXME
         throw new RuntimeException("Not implemented");
     }

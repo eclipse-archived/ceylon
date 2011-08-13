@@ -62,14 +62,6 @@ public final class Natural
             ((x == y) ? Comparison.EQUAL : Comparison.LARGER);
     }
 
-    public boolean equals(Object s) {
-        if (s instanceof Natural) {
-            return value == ((Natural)s).value;
-        } else {
-            return false;
-        }
-    }
-
     @Extension
     public java.lang.String toString() {
         return java.lang.Long.toString(value);
@@ -128,9 +120,12 @@ public final class Natural
     }
 
     @Override
-    public boolean equals(Equality that) {
-        // FIXME
-        throw new RuntimeException("Not implemented");
+    public boolean equals(java.lang.Object s) {
+        if (s instanceof Natural) {
+            return value == ((Natural)s).value;
+        } else {
+            return false;
+        }
     }
 
     @Override

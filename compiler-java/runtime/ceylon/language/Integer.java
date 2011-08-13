@@ -52,14 +52,6 @@ public final class Integer
             ((x == y) ? Comparison.EQUAL : Comparison.LARGER);
     }
 
-    public boolean equals(ceylon.language.Integer s) {
-        if (s instanceof Integer) {
-            return value == s.value;
-        } else {
-            return false;
-        }
-    }
-
     @Extension
     public java.lang.String toString() {
         return java.lang.Long.toString(value);
@@ -110,8 +102,11 @@ public final class Integer
     }
 
     @Override
-    public boolean equals(Equality that) {
-        // FIXME
-        throw new RuntimeException("Not implemented");
+    public boolean equals(java.lang.Object s) {
+        if (s instanceof Integer) {
+            return value == ((Integer)s).value;
+        } else {
+            return false;
+        }
     }
 }
