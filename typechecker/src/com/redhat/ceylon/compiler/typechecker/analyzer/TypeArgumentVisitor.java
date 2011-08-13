@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -43,7 +42,8 @@ public class TypeArgumentVisitor extends Visitor {
             flip();
             if (that.getSatisfiedTypes()!=null) {
                 for (Tree.Type type: that.getSatisfiedTypes().getTypes()) {
-                    check(type, false, true);
+                    check(type, false);
+                    checkSupertype(type);
                 }
             }
             flip();
@@ -57,7 +57,7 @@ public class TypeArgumentVisitor extends Visitor {
             parameterizedDeclaration = that.getDeclarationModel().getDeclaration();
         }
         super.visit(that);
-        check(that.getType(), false, false);
+        check(that.getType(), false);
         if (topLevel) {
             parameterizedDeclaration = null;
         }
@@ -66,7 +66,7 @@ public class TypeArgumentVisitor extends Visitor {
     @Override public void visit(Tree.TypedDeclaration that) {
         super.visit(that);
         if (!(that instanceof Tree.Variable)) { //TODO: is this really the correct condition?!
-            check(that.getType(), that.getDeclarationModel().isVariable(), false);
+            check(that.getType(), that.getDeclarationModel().isVariable());
         }
     }
     
@@ -74,7 +74,8 @@ public class TypeArgumentVisitor extends Visitor {
         super.visit(that);
         if (that.getSatisfiedTypes()!=null) {
             for (Tree.Type type: that.getSatisfiedTypes().getTypes()) {
-                check(type, false, true);
+                check(type, false);
+                checkSupertype(type);
             }
         }
     }
@@ -82,26 +83,54 @@ public class TypeArgumentVisitor extends Visitor {
     @Override public void visit(Tree.AnyClass that) {
         super.visit(that);
         if (that.getExtendedType()!=null) {
-            check(that.getExtendedType().getType(), false, true);
+            check(that.getExtendedType().getType(), false);
+            checkSupertype(that.getExtendedType().getType());
         }
     }
 
-    private void check(Tree.Type that, boolean variable, boolean supertype) {
+    private void check(Tree.Type that, boolean variable) {
         if (that!=null) {
-            check(that.getTypeModel(), that, variable, supertype);
+            check(that.getTypeModel(), that, variable);
         }
     }
     
-    private void check(ProducedType type, Node that, boolean variable, boolean supertype) {
-        List<TypeDeclaration> errors = new ArrayList<TypeDeclaration>();
-        //TODO: fix this to allow reporting multiple errors!
-		if ( type!=null && !type.checkVariance(!contravariant && !variable, 
-        			contravariant && !variable, supertype, true,
-        			parameterizedDeclaration, errors) ) {
-			//TODO: differentiate b/w TypeParameters and other declarations
-			//      in the message
-            that.addError("incorrect variance in " + type.getProducedTypeName() + 
-            				" at " + errors.get(0).getName());
+    private void check(ProducedType type, Node that, boolean variable) {
+        if (type!=null) {
+        	List<TypeParameter> errors = type.checkVariance(!contravariant && !variable, 
+        			contravariant && !variable, parameterizedDeclaration);
+            for (TypeParameter td: errors) {
+            	String var; String loc;
+            	if ( td.isContravariant() ) {
+            		var = "contravariant";
+            		loc = "covariant";
+            	}
+            	else if ( td.isCovariant() ) {
+            		var = "covariant";
+            		loc = "contravariant";
+            	}
+            	else {
+            		throw new RuntimeException();
+            	}
+                that.addError(var + " type parameter " + td.getName() + 
+                		" appears in " + loc + " location in type: " + 
+                		type.getProducedTypeName());
+            }
+        }
+    }
+
+    private void checkSupertype(Tree.Type that) {
+        if (that!=null) {
+            checkSupertype(that.getTypeModel(), that);
+        }
+    }
+    
+    private void checkSupertype(ProducedType type, Node that) {
+        if (type!=null) {
+        	List<TypeDeclaration> errors = type.checkDecidability();
+            for (TypeDeclaration td: errors) {
+                that.addError("type with contravariant type parameter " + td.getName() + 
+                		" appears in contravariant location in supertype: " + type.getProducedTypeName());
+            }
         }
     }
 
