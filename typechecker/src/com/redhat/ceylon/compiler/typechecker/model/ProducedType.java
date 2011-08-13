@@ -573,7 +573,10 @@ public class ProducedType extends ProducedReference {
                         }
                     }
                     else if (tp.isContravariant()) {
-                        if (!pt.checkDecidability(!covariant, !contravariant, errors)) {
+                    	if (covariant) { covariant=false; contravariant=true; }
+                    	else if (contravariant) { covariant=true; contravariant=false; }
+                    	//else if we are in a nonvariant position, it stays nonvariant
+                        if (!pt.checkDecidability(covariant, contravariant, errors)) {
                             return false;
                         }
                     }
@@ -639,7 +642,10 @@ public class ProducedType extends ProducedReference {
                         }
                     }
                     else if (tp.isContravariant()) {
-                        if (!pt.checkVariance(!covariant, !contravariant,
+                    	if (covariant) { covariant=false; contravariant=true; }
+                    	else if (contravariant) { covariant=true; contravariant=false; }
+                    	//else if we are in a nonvariant position, it stays nonvariant
+                        if (!pt.checkVariance(covariant, contravariant,
                                 declaration, errors)) {
                             return false;
                         }
