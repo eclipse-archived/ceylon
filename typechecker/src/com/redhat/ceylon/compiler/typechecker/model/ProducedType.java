@@ -214,7 +214,7 @@ public class ProducedType extends ProducedReference {
                         }
                     }
                     else if (p.isContravariant()) {
-                        if (!arg.isSupertypeOf(otherArg)) {
+                        if (!otherArg.isSubtypeOf(arg)) {
                             return false;
                         }
                     }

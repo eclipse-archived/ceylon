@@ -208,7 +208,7 @@ class Generics() {
     interface WithContravariant<in X> {}
     class Good4<T>() satisfies WithContravariant<T> {}
     class Good5<in T>() satisfies WithContravariant<Producer<T>> {}
-    class Good6<out T>() satisfies WithContravariant<Consumer<T>> {}
+    @error class Bad6<out T>() satisfies WithContravariant<Consumer<T>> {}
     @error class Bad3<out T>() satisfies WithContravariant<T> {}
     @error class Bad4<in T>() satisfies WithContravariant<Consumer<T>> {}
     
@@ -342,19 +342,6 @@ class Generics() {
     
     @error Holder<String>.X wrong;
     
-    interface Inter1<in T> {
-    	shared void put(T t) { throw; }
-    }
-    interface Inter2<out T> {
-    	shared T get() { throw; }
-    }
-    class Cla() satisfies Inter1<Inter1<Cla>> & Inter2<Inter2<Cla>> {}
-    @error Inter2<Cla> cla2 = Cla();
-    //Inter1<Cla> cla1 = Cla();
-    class Clazz<T>() satisfies Inter1<Inter1<T>> & Inter2<Inter2<T>> {}
-    @error Inter2<Clazz<Void>> clazz2 = Clazz<Void>();
-    @error Inter1<Clazz<Void>> clazz1 = Clazz<Void>();
-    
     T choose<T>(Boolean b, T first, T second) {
     	if (b) {
     		return first;
@@ -400,12 +387,13 @@ class Generics() {
     	}
     }
     
-    /*interface Interface<in T> {}
-    class Bang<T>() satisfies Interface<Interface<Bang<Bang<T>>>> {}
-    void bang() {
-        Interface<Bang<String>> bang = Bang<String>();
-    }*/
-    
+    interface Inter1<in T> {
+    	shared void put(T t) { throw; }
+    }
+    interface Inter2<out T> {
+    	shared T get() { throw; }
+    }
+
     interface Super1 satisfies Inter1<Bottom> & Inter2<String> {}
     interface Super2 satisfies Inter1<Natural> & Inter2<Object> {}
     class Impl() satisfies Super1 & Super2 {}
