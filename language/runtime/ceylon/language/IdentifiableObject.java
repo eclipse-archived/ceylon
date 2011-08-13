@@ -2,7 +2,7 @@ package ceylon.language;
 
 public abstract class IdentifiableObject extends Object implements Equality {
 
-   public boolean equals(Equality that) {
+   public boolean equals(java.lang.Object that) {
         if (that instanceof IdentifiableObject ) {
             return this == that;
         } else {

@@ -30,7 +30,7 @@ public final class String extends Object implements Equality, Comparable<String>
     }
 
 	@Override
-    public boolean equals(Equality that) {
+    public boolean equals(java.lang.Object that) {
 		if (that instanceof String) {
 			String s = (String)that;
 			return value.equals(s.value);

@@ -30,7 +30,7 @@ public class Entry<K extends java.lang.Object /* Equality */, E extends java.lan
 	// shared actual Integer hash
 	
 	@Override
-	public boolean equals(Equality that) {
+	public boolean equals(java.lang.Object that) {
 		if (that instanceof Entry) {
 			Entry<K, E> that2 = (Entry)that;
 			return (this.key.equals(that2.key) && this.element.equals(that2.element));
