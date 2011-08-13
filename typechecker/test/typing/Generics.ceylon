@@ -342,4 +342,93 @@ class Generics() {
     
     @error Holder<String>.X wrong;
     
+    interface Inter1<in T> {
+    	shared void put(T t) { throw; }
+    }
+    interface Inter2<out T> {
+    	shared T get() { throw; }
+    }
+    class Cla() satisfies Inter1<Inter1<Cla>> & Inter2<Inter2<Cla>> {}
+    @error Inter2<Cla> cla2 = Cla();
+    //Inter1<Cla> cla1 = Cla();
+    class Clazz<T>() satisfies Inter1<Inter1<T>> & Inter2<Inter2<T>> {}
+    @error Inter2<Clazz<Void>> clazz2 = Clazz<Void>();
+    @error Inter1<Clazz<Void>> clazz1 = Clazz<Void>();
+    
+    T choose<T>(Boolean b, T first, T second) {
+    	if (b) {
+    		return first;
+    	}
+    	else {
+    		return second;
+    	}
+    }
+    
+    P getFirst<P>(Sequence<P> list) {
+        return list.first;
+    } 
+    Number getFirstNumber(Sequence<Number> nums) {
+        return getFirst(nums);
+    } 
+    Object getFirstNonEmpty(Sequence<String> strs, Sequence<Object> obs) {
+        return getFirst(choose(true, strs, obs));
+    	/*if (nonempty strs) {
+            return getFirst(strs);
+        }
+        else {
+            return getFirst(obs);
+        }*/
+    }
+    Object getFirstNonEmpty2(Sequence<String> strs, Sequence<Integer> ints) {
+        return getFirst(choose(false, strs, ints));
+        /*if (nonempty strs) {
+            return getFirst(strs);
+        }
+        else {
+            return getFirst(ints);
+        }*/
+    }
+    
+    interface Addable<in T> {
+    	shared formal void add(T t);
+    }
+    class Var() { 
+    	Boolean bool = true; 
+    	void addTo(Addable<Var> trues, Addable<Var> falses) {
+    		choose(bool, trues, falses).add(this);
+    		//if (mValue) { trues.add(this); } else { falses.add(this); }
+    	}
+    }
+    
+    /*interface Interface<in T> {}
+    class Bang<T>() satisfies Interface<Interface<Bang<Bang<T>>>> {}
+    void bang() {
+        Interface<Bang<String>> bang = Bang<String>();
+    }*/
+    
+    interface Super1 satisfies Inter1<Bottom> & Inter2<String> {}
+    interface Super2 satisfies Inter1<Natural> & Inter2<Object> {}
+    class Impl() satisfies Super1 & Super2 {}
+    value impl = Impl();
+    String implget1 = impl.get();
+    @error Natural implget2 = impl.get();
+    impl.put(1);
+    @error impl.put("hello");
+    Inter1<Natural> inter1 = impl;
+    Inter2<String> inter2 = impl;
+    Inter1<Bottom> inter1b = impl;
+    Inter2<Object> inter2o = impl;
+
+    interface Super3 satisfies Inter1<Object> & Inter2<String> {}
+    interface Super4 satisfies Inter1<Natural> & Inter2<Bottom> {}
+    class Conc() satisfies Super3 & Super4 {}
+    value conc = Conc();
+    String concget1 = conc.get();
+    Natural concget2 = conc.get();
+    conc.put(1);
+    conc.put("hello");
+    Inter1<Natural> inter3 = conc;
+    Inter2<String> inter4 = conc;
+    Inter1<Bottom> inter3b = conc;
+    Inter2<Object> inter4o = conc;
 }
