@@ -29,10 +29,9 @@ public class LazyInterface extends Interface {
     
     private void load() {
         if(!isLoaded){
-            isTypeParamsLoaded = true;
             isLoaded = true;
-            completer.completeTypeParameters(this);
             completer.complete(this);
+            loadTypeParams();
         }
     }
 
