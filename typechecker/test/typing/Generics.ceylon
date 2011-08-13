@@ -105,6 +105,16 @@ class Generics() {
         @error class BadClassInheritance2() extends Producer<Y>() {}
         class GoodClassInheritance3() extends Consumer<Y>() {}
         @error class BadClassInheritance3() extends Consumer<X>() {}
+        class BadParameterizedClassGiven1<T>(T t) @error given T satisfies X {}
+        class GoodParameterizedClassGiven2<T>(T t) given T satisfies Y {}
+        class GoodParameterizedClassGiven3<in T>(T t) given T satisfies Y {}
+        class GoodParameterizedClassGiven4<out T>(T t) given T satisfies Y {}
+        class OKParameterizedClassGiven1<out T>(T t) given T satisfies Y {
+        	shared T get() { return t; }
+        }
+        class OKParameterizedClassGiven2<in T>(T t) given T satisfies Y {
+        	shared void put(T t) {}
+        }
         class GoodParameterizedClass<out T>(T t) {}
         class GoodParameterizedClass2<out T>(Producer<T> t) {}
         class GoodParameterizedClass3<out T>(Consumer<T> t) {}
