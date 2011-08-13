@@ -42,7 +42,9 @@ import com.sun.tools.javac.code.Attribute;
 import com.sun.tools.javac.code.Attribute.Array;
 import com.sun.tools.javac.code.Attribute.Compound;
 import com.sun.tools.javac.code.Flags;
+import com.sun.tools.javac.code.Scope.Entry;
 import com.sun.tools.javac.code.Symbol;
+import com.sun.tools.javac.code.Types;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
 import com.sun.tools.javac.code.Symbol.MethodSymbol;
 import com.sun.tools.javac.code.Symbol.PackageSymbol;
@@ -70,6 +72,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     private TypeParser typeParser;
     private Log log;
     private boolean isBootstrap;
+    private Types types;
     
     public static CeylonModelLoader instance(Context context) {
         CeylonModelLoader instance = context.get(CeylonModelLoader.class);
@@ -87,6 +90,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         names = Name.Table.instance(context);
         reader = ClassReader.instance(context);
         log = Log.instance(context);
+        types = Types.instance(context);
         typeParser = new TypeParser(this);
         isBootstrap = Options.instance(context).get(OptionName.BOOTSTRAPCEYLON) != null;
     }
@@ -583,6 +587,27 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         setSatisfiedTypes(klass, classSymbol);
     }
 
+    private MethodSymbol getOverriddenMethod(MethodSymbol method, Types types) {
+        MethodSymbol impl = null;
+        for (Type superType = types.supertype(method.owner.type);
+                impl == null && superType.tsym != null;
+                superType = types.supertype(superType)) {
+            TypeSymbol i = superType.tsym;
+            for (Entry e = i.members().lookup(method.name);
+                    impl == null && e.scope != null;
+                    e = e.next()) {
+                if (method.overrides(e.sym, (TypeSymbol)method.owner, types, true) &&
+                        // FIXME: I suspect the following requires a
+                        // subst() for a parametric return type.
+                        types.isSameType(method.type.getReturnType(),
+                                types.memberType(method.owner.type, e.sym).getReturnType())) {
+                    impl = (MethodSymbol) e.sym;
+                }
+            }
+        }
+        return impl;
+    }
+
     private boolean isGetter(MethodSymbol methodSymbol) {
         String name = methodSymbol.name.toString();
         boolean matchesGet = name.length() > 3 && name.startsWith("get") && Character.isUpperCase(name.charAt(3));
@@ -639,10 +664,12 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         if((methodSymbol.flags() & Flags.ABSTRACT) != 0 || klass instanceof Interface) {
             decl.setFormal(true);
         } else {
-            decl.setActual(true);
             if ((methodSymbol.flags() & Flags.FINAL) == 0) {
-                decl.setFormal(true);
+                decl.setDefault(true);
             }
+        }
+        if(getOverriddenMethod(methodSymbol, types) != null){
+            decl.setActual(true);
         }
     }
     
