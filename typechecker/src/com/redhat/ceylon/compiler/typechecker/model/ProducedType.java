@@ -525,16 +525,25 @@ public class ProducedType extends ProducedReference {
     }
 
     public boolean checkVariance(boolean covariant, boolean contravariant, 
-            Declaration declaration) {
+    		boolean supertype, boolean outer, Declaration declaration, 
+    		List<TypeDeclaration> errors) {
+    	//TODO: fix this to allow reporting multiple errors!
         if (getDeclaration() instanceof TypeParameter) {
             TypeParameter tp = (TypeParameter) getDeclaration();
-            return tp.getDeclaration()==declaration ||
+            boolean ok = tp.getDeclaration()==declaration ||
                     ((covariant || !tp.isCovariant()) && 
                             (contravariant || !tp.isContravariant()));
+            if (!ok) {
+            	//a covariant type parameter appears in a contravariant location, or
+            	//a contravariant type parameter appears in a covariant location.
+            	errors.add(tp);
+            }
+        	return ok;
         }
         else if (getDeclaration() instanceof UnionType) {
             for (ProducedType ct: getCaseTypes()) {
-                if (!ct.checkVariance(covariant, contravariant, declaration)) {
+                if (!ct.checkVariance(covariant, contravariant, 
+                		supertype, false, declaration, errors)) {
                     return false;
                 }
             }
@@ -542,7 +551,8 @@ public class ProducedType extends ProducedReference {
         }
         else if (getDeclaration() instanceof IntersectionType) {
             for (ProducedType ct: getSatisfiedTypes()) {
-                if (!ct.checkVariance(covariant, contravariant, declaration)) {
+                if (!ct.checkVariance(covariant, contravariant, 
+                		supertype, false, declaration, errors)) {
                     return false;
                 }
             }
@@ -550,20 +560,29 @@ public class ProducedType extends ProducedReference {
         }
         else {
             for (TypeParameter tp: getDeclaration().getTypeParameters()) {
+                if (supertype && !outer && contravariant && tp.isContravariant()) {
+                	//a type with contravariant parameters appears at
+                	//a contravariant location in satisfies / extends
+                	errors.add(getDeclaration());
+                	return false;
+                }
                 ProducedType pt = getTypeArguments().get(tp);
                 if (pt!=null) {
                     if (tp.isCovariant()) {
-                        if (!pt.checkVariance(covariant, contravariant, declaration)) {
+                        if (!pt.checkVariance(covariant, contravariant, 
+                        		supertype, false, declaration, errors)) {
                             return false;
                         }
                     }
                     else if (tp.isContravariant()) {
-                        if (!pt.checkVariance(!covariant, !contravariant, declaration)) {
+                        if (!pt.checkVariance(!covariant, !contravariant, 
+                        		supertype, false, declaration, errors)) {
                             return false;
                         }
                     }
                     else {
-                        if (!pt.checkVariance(false, false, declaration)) {
+                        if (!pt.checkVariance(false, false, 
+                        		supertype, false, declaration, errors)) {
                             return false;
                         }
                     }
