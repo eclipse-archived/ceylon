@@ -427,10 +427,6 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         List<JCExpression> typeArgs = transformTypeArguments(ce);
         
-        // Here I need to get everything 'but the last bit' from the Primary
-        // e.g. f() -> this
-        //   foo().bar() -> foo()
-        //   bar("fdfklvnjk").baz() -> bar("fdfklvnjk")
         JCExpression receiverType;
         final boolean generateNew;
         final boolean haveInstance;
@@ -448,7 +444,6 @@ public class ExpressionTransformer extends AbstractTransformer {
             generateNew = primary instanceof QualifiedTypeExpression;
             haveInstance = true;
         } else {
-            // TODO: Handle all the other possibilities: Should use visitor?
             throw new RuntimeException("Not Implemented: Named argument calls only implemented on member and type expressions");
         }
 
