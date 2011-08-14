@@ -108,8 +108,8 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("method/PublicMethod");
     }
     @Test
-    public void testMthInnerMethod(){
-        compareWithJavaSource("method/InnerMethod");
+    public void testMthLocalMethod(){
+        compareWithJavaSource("method/LocalMethod");
     }
     @Test
     public void testMthMethodWithVarargs(){

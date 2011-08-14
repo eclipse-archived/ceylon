@@ -4,16 +4,16 @@ class InnerMethod {
     
     private final void m() {
         
-        final class $inner$class$0 {
+        final class inner {
             
-            private $inner$class$0() {
+            private inner() {
             }
             
             long inner() {
                 return 0L;
             }
         }
-        final $inner$class$0 inner = new $inner$class$0();
+        final inner inner = new inner();
         final long n = inner.inner();
     }
     
