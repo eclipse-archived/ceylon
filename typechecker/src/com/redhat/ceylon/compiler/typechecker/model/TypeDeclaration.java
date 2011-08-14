@@ -168,7 +168,7 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
         for (TypeDeclaration t: getSatisfiedTypeDeclarations()) {
             //if ( !(t instanceof TypeParameter) ) { //don't look for members in a type parameter with a self-referential lower bound
                 for (Declaration d: t.getMembers(name, visited)) {
-                    if (d.isShared()) {
+                    if (d.isShared() && isResolvable(d)) {
                         members.add(d);
                     }
                 }
@@ -177,7 +177,7 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
         ProducedType et = getExtendedType();
         if (et!=null) {
             for (Declaration d: et.getDeclaration().getMembers(name, visited)) {
-                if (d.isShared()) {
+                if (d.isShared() && isResolvable(d)) {
                     members.add(d);
                 }
             }
