@@ -1,0 +1,25 @@
+package com.redhat.ceylon.compiler.test.expression.invoke;
+
+class MethodInvocation {
+    
+    public final void m() {
+        n();
+        o(1L);
+        p();
+    }
+    
+    private final void n() {
+        return;
+    }
+    
+    private final long o(final long oarg) {
+        return oarg;
+    }
+    
+    public final void p() {
+        return;
+    }
+    
+    MethodInvocation() {
+    }
+}

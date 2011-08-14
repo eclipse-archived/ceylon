@@ -112,6 +112,11 @@ public class ExpressionTest extends CompilerTest {
     }
 
     @Test
+    public void testInvGenericMethodInvocation(){
+        compareWithJavaSource("invoke/GenericMethodInvocation");
+    }
+
+    @Test
     public void testInvInvocationErasure(){
         compareWithJavaSource("invoke/InvocationErasure");
     }
