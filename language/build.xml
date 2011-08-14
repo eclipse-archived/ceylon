@@ -7,7 +7,7 @@
    language, or you can call lang.revdiff to get a difference report for a particular
    language, compared with the English reference.
 -->
-<project name="Project Ceylon" default="all.doc" basedir=".">
+<project name="Project Ceylon" default="doc" basedir=".">
     <property file="build.properties"/>
     <!-- Allow this to be overriden by others importing this project. -->
     <dirname property="imported.basedir" file="${ant.file.ReferenceDocumentation}"/>
@@ -53,7 +53,7 @@
 
     <!-- ################################################################## -->
 
-    <target name="all.doc"
+    <target name="doc"
             depends="clean.doc"
             description="Compile documentation for all languages and all formats.">
 
@@ -64,7 +64,7 @@
 
     </target>
 
-    <target name="pdf.doc"
+    <target name="pdf"
             depends="clean.doc"
             description="Compile PDF documentation for all languages.">
 
@@ -77,7 +77,7 @@
 
     </target>
 
-    <target name="all.revdiff"
+    <target name="revdiff"
             description="Generates a diff report for all translated versions.">
 
         <!-- TRANSLATOR: Duplicate this line for your language -->
