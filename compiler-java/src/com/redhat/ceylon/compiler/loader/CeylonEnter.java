@@ -14,6 +14,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.comp.AttrContext;
@@ -197,25 +198,20 @@ public class CeylonEnter extends Enter {
                     return pos;
                 }
                 @Override
+                protected void out(UnexpectedError err) {
+                    log.error(getPosition(err.getTreeNode()), "ceylon", err.getMessage());
+                }
+                @Override
                 protected void out(AnalysisError err) {
-                    log.rawError(0, err.getMessage() + "\n at " + 
-                            err.getTreeNode().getAntlrTreeNode().getLine() + ":" +
-                            err.getTreeNode().getAntlrTreeNode().getCharPositionInLine() + " of " +
-                            err.getTreeNode().getUnit().getFilename());
+                    log.error(getPosition(err.getTreeNode()), "ceylon", err.getMessage());
                 }
                 @Override
                 protected void out(AnalysisWarning err) {
-                    log.rawWarning(0, err.getMessage() + "\n at " + 
-                            err.getTreeNode().getAntlrTreeNode().getLine() + ":" +
-                            err.getTreeNode().getAntlrTreeNode().getCharPositionInLine() + " of " +
-                            err.getTreeNode().getUnit().getFilename());
+                    log.warning(getPosition(err.getTreeNode()), "ceylon", err.getMessage());
                 }
                 @Override
                 protected void out(Node that, String message) {
-                    log.rawError(0, message + "\n at " + 
-                            that.getAntlrTreeNode().getLine() + ":" +
-                            that.getAntlrTreeNode().getCharPositionInLine() + " of " +
-                            that.getUnit().getFilename());
+                    log.error(getPosition(that), "ceylon", message);
                 }
             });
         }
