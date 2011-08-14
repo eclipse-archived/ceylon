@@ -6,7 +6,17 @@ class NamedArgumentInvocation {
         return true;
     }
     
+    private final void v(final long n, final .java.lang.String s) {
+    }
+    
     private final boolean simple1() {
+        new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, .ceylon.language.String.instance("foo"), .ceylon.language.Natural.instance(1L)){
+            
+            public .java.lang.Object call$() {
+                v(((ceylon.language.Natural)this.args[1]).longValue(), ((ceylon.language.String)this.args[0]).toString());
+                return null;
+            }
+        }.call$();
         return new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, .ceylon.language.String.instance("foo"), .ceylon.language.Natural.instance(1L)){
             
             public boolean call$() {
@@ -16,6 +26,13 @@ class NamedArgumentInvocation {
     }
     
     private final boolean simple2() {
+        new .ceylon.language.NamedArgumentCall<com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocation>(this, .ceylon.language.String.instance("bar"), .ceylon.language.Natural.instance(2L)){
+            
+            public .java.lang.Object call$() {
+                this.instance.v(((ceylon.language.Natural)this.args[1]).longValue(), ((ceylon.language.String)this.args[0]).toString());
+                return null;
+            }
+        }.call$();
         return new .ceylon.language.NamedArgumentCall<com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocation>(this, .ceylon.language.String.instance("bar"), .ceylon.language.Natural.instance(2L)){
             
             public boolean call$() {
@@ -25,6 +42,13 @@ class NamedArgumentInvocation {
     }
     
     private final boolean qualified() {
+        new .ceylon.language.NamedArgumentCall<com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocation>(new NamedArgumentInvocation(), .ceylon.language.String.instance("bar"), .ceylon.language.Natural.instance(2L)){
+            
+            public .java.lang.Object call$() {
+                this.instance.v(((ceylon.language.Natural)this.args[1]).longValue(), ((ceylon.language.String)this.args[0]).toString());
+                return null;
+            }
+        }.call$();
         return new .ceylon.language.NamedArgumentCall<com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocation>(new NamedArgumentInvocation(), .ceylon.language.String.instance("bar"), .ceylon.language.Natural.instance(2L)){
             
             public boolean call$() {
@@ -34,6 +58,13 @@ class NamedArgumentInvocation {
     }
     
     NamedArgumentInvocation() {
+        new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, .ceylon.language.String.instance("foo"), .ceylon.language.Natural.instance(0L)){
+            
+            public .java.lang.Object call$() {
+                v(((ceylon.language.Natural)this.args[1]).longValue(), ((ceylon.language.String)this.args[0]).toString());
+                return null;
+            }
+        }.call$();
         new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, .ceylon.language.String.instance("foo"), .ceylon.language.Natural.instance(0L)){
             
             public boolean call$() {

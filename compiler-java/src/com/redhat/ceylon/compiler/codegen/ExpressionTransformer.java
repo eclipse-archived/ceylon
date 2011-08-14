@@ -43,6 +43,7 @@ import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
+import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCUnary;
 import com.sun.tools.javac.util.Context;
@@ -448,6 +449,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
 
         // Construct the call$() method
+        boolean isVoid = ce.getTypeModel().isExactly(typeFact().getVoidDeclaration().getType());
         JCExpression resultType = makeJavaType(ce.getTypeModel(), (isTypeParameter(determineExpressionType(ce))) ? this.TYPE_PARAM: 0);
         final String callMethodName = "call$";
         MethodDefinitionBuilder callMethod = MethodDefinitionBuilder.method(gen(), callMethodName);
@@ -456,11 +458,17 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (generateNew) {
             callMethod.body(make().Return(make().NewClass(null, null, resultType, callArgs.toList(), null)));
         } else {
+            JCExpression expr;
             if (haveInstance) {
-                JCExpression expr = make().Apply(null, makeSelect("this", "instance", methodName), callArgs.toList());
-                callMethod.body(make().Return(expr));
+                expr = make().Apply(null, makeSelect("this", "instance", methodName), callArgs.toList());
             } else {
-                JCExpression expr = make().Apply(null, makeIdent(methodName), callArgs.toList());
+                expr = make().Apply(null, makeIdent(methodName), callArgs.toList());
+            }
+            if (isVoid) {
+                callMethod.body(List.<JCStatement>of(
+                        make().Exec(expr),
+                        make().Return(make().Literal(TypeTags.BOT, null))));
+            } else {
                 callMethod.body(make().Return(expr));
             }
         }
