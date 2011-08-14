@@ -1,0 +1,50 @@
+package com.redhat.ceylon.compiler.test.expression.invoke;
+
+public final class f {
+    
+    private f() {
+    }
+    
+    public static long f(final long n, final .java.lang.String s) {
+        return n;
+    }
+}
+public final class v {
+    
+    private v() {
+    }
+    
+    public static void v(final long n, final .java.lang.String s) {
+    }
+}
+final class x {
+    private static final long value = new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, .ceylon.language.String.instance("abc"), .ceylon.language.Natural.instance(123L)){
+        
+        public long call$() {
+            return f.f(((ceylon.language.Natural)this.args[1]).longValue(), ((ceylon.language.String)this.args[0]).toString());
+        }
+    }.call$();
+    
+    static long getX() {
+        return value;
+    }
+    
+    private x() {
+    }
+}
+final class y {
+    private static final .java.lang.Object value = new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, .ceylon.language.String.instance("abc"), .ceylon.language.Natural.instance(123L)){
+        
+        public .java.lang.Object call$() {
+            v.v(((ceylon.language.Natural)this.args[1]).longValue(), ((ceylon.language.String)this.args[0]).toString());
+            return null;
+        }
+    }.call$();
+    
+    static .java.lang.Object getY() {
+        return value;
+    }
+    
+    private y() {
+    }
+}

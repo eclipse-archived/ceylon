@@ -140,6 +140,16 @@ public class ExpressionTest extends CompilerTest {
     public void testInvNamedArgumentInvocationInit(){
         compareWithJavaSource("invoke/NamedArgumentInvocationInit");
     }
+    
+    @Test
+    public void testInvNamedArgumentInvocationTopLevel(){
+        compareWithJavaSource("invoke/NamedArgumentInvocationTopLevel");
+    }
+    
+    @Test
+    public void testInvNamedArgumentInvocationLocal(){
+        compareWithJavaSource("invoke/NamedArgumentInvocationLocal");
+    }
 
     @Test
     public void testInvSequencedParameterInvocation(){

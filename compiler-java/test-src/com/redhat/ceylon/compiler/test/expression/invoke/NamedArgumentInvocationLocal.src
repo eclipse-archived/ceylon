@@ -1,0 +1,44 @@
+package com.redhat.ceylon.compiler.test.expression.invoke;
+
+public class NamedArgumentInvocationLocal {
+    
+    public final void f() {
+        
+        final class m {
+            
+            private m() {
+            }
+            
+            long m(final long n, final .java.lang.String s) {
+                return n;
+            }
+        }
+        final m m = new m();
+        
+        final class v {
+            
+            private v() {
+            }
+            
+            void v(final long n, final .java.lang.String s) {
+            }
+        }
+        final v v = new v();
+        new .ceylon.language.NamedArgumentCall<v>(v, .ceylon.language.String.instance("abc"), .ceylon.language.Natural.instance(123L)){
+            
+            public .java.lang.Object call$() {
+                this.instance.v(((ceylon.language.Natural)this.args[1]).longValue(), ((ceylon.language.String)this.args[0]).toString());
+                return null;
+            }
+        }.call$();
+        final long x = new .ceylon.language.NamedArgumentCall<m>(m, .ceylon.language.String.instance("abc"), .ceylon.language.Natural.instance(123L)){
+            
+            public long call$() {
+                return this.instance.m(((ceylon.language.Natural)this.args[1]).longValue(), ((ceylon.language.String)this.args[0]).toString());
+            }
+        }.call$();
+    }
+    
+    public NamedArgumentInvocationLocal() {
+    }
+}

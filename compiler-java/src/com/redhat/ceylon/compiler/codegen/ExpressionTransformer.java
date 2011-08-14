@@ -429,21 +429,33 @@ public class ExpressionTransformer extends AbstractTransformer {
         List<JCExpression> typeArgs = transformTypeArguments(ce);
         
         JCExpression receiverType;
+        final JCExpression receiver;
         final boolean generateNew;
-        final boolean haveInstance;
         if (primary instanceof BaseMemberOrTypeExpression) {
-            passArgs.prepend(make().Literal(TypeTags.BOT, null));
-            receiverType = makeIdent("java.lang.Void");
+            BaseMemberOrTypeExpression memberExpr = (BaseMemberOrTypeExpression)primary;
             generateNew = primary instanceof BaseTypeExpression;
-            haveInstance = false;
+            if (memberExpr.getDeclaration().isToplevel()) {
+                passArgs.prepend(make().Literal(TypeTags.BOT, null));
+                receiverType = makeIdent("java.lang.Void");
+                receiver = makeSelect(memberExpr.getDeclaration().getName(), methodName);// TODO encapsulate this
+            } else if (!memberExpr.getDeclaration().isClassMember()) {// local
+                passArgs.prepend(makeIdent(memberExpr.getDeclaration().getName())); // TODO Check it's as simple as this, and encapsulat
+                receiverType = makeIdent(memberExpr.getDeclaration().getName());// TODO: get the generated name somehow
+                receiver = makeSelect("this", "instance", methodName);
+            } else {
+                passArgs.prepend(make().Literal(TypeTags.BOT, null));
+                receiverType = makeIdent("java.lang.Void");
+                receiver = makeIdent(methodName);
+            }
         } else if (primary instanceof QualifiedMemberOrTypeExpression) {
             QualifiedMemberOrTypeExpression memberExpr = (QualifiedMemberOrTypeExpression)primary;
             CeylonVisitor visitor = new CeylonVisitor(gen(), typeArgs, callArgs);
             memberExpr.getPrimary().visit(visitor);
             passArgs.prepend((JCExpression)visitor.getSingleResult());
             receiverType = makeJavaType(memberExpr.getPrimary().getTypeModel(), this.TYPE_PARAM);
+            receiver = makeSelect("this", "instance", methodName);
             generateNew = primary instanceof QualifiedTypeExpression;
-            haveInstance = true;
+            
         } else {
             throw new RuntimeException("Not Implemented: Named argument calls only implemented on member and type expressions");
         }
@@ -458,12 +470,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (generateNew) {
             callMethod.body(make().Return(make().NewClass(null, null, resultType, callArgs.toList(), null)));
         } else {
-            JCExpression expr;
-            if (haveInstance) {
-                expr = make().Apply(null, makeSelect("this", "instance", methodName), callArgs.toList());
-            } else {
-                expr = make().Apply(null, makeIdent(methodName), callArgs.toList());
-            }
+            JCExpression expr = make().Apply(null, receiver, callArgs.toList());;
+            
             if (isVoid) {
                 callMethod.body(List.<JCStatement>of(
                         make().Exec(expr),
