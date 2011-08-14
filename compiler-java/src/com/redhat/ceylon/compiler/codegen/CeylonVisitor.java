@@ -102,7 +102,6 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
     
     public void handleException(Exception e, Node that) {
-        e.printStackTrace();// just for now
         that.getErrors().add(new CodeGenError(that, e.getMessage(), e)); 
     }
     

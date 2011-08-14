@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.loader;
 
 import com.redhat.ceylon.compiler.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.codegen.CeylonTransformer;
+import com.redhat.ceylon.compiler.codegen.CodeGenError;
 import com.redhat.ceylon.compiler.tools.CeylonPhasedUnit;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
@@ -121,6 +122,7 @@ public class CeylonEnter extends Enter {
                 }
             }
         }
+        printGeneratorErrors();
     }
 
     private void loadCompiledModules() {
@@ -189,14 +191,7 @@ public class CeylonEnter extends Enter {
             pu.analyseFlow();
         }
         for (PhasedUnit pu : listOfUnits) {
-            final CeylonPhasedUnit cpu = (CeylonPhasedUnit) pu;
-            pu.getCompilationUnit().visit(new AssertionVisitor(){
-                private int getPosition(Node node) {
-                    int pos = cpu.getLineMap().getStartPosition(node.getAntlrTreeNode().getLine())
-                    + node.getAntlrTreeNode().getCharPositionInLine();
-                    log.useSource(cpu.getFileObject());
-                    return pos;
-                }
+            pu.getCompilationUnit().visit(new JavacAssertionVisitor((CeylonPhasedUnit) pu){
                 @Override
                 protected void out(UnexpectedError err) {
                     log.error(getPosition(err.getTreeNode()), "ceylon", err.getMessage());
@@ -214,6 +209,43 @@ public class CeylonEnter extends Enter {
                     log.error(getPosition(that), "ceylon", message);
                 }
             });
+        }
+    }
+
+    private void printGeneratorErrors() {
+        final java.util.List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
+
+        for (PhasedUnit pu : listOfUnits) {
+            pu.getCompilationUnit().visit(new JavacAssertionVisitor((CeylonPhasedUnit) pu){
+                @Override
+                protected void out(UnexpectedError err) {
+                    if(err instanceof CodeGenError){
+                        CodeGenError error = ((CodeGenError)err);
+                        log.error(getPosition(err.getTreeNode()), "ceylon", "Compiler error: "+error.getCause());
+                        error.getCause().printStackTrace();
+                    }
+                }
+                // Ignore those
+                @Override
+                protected void out(AnalysisError err) {}
+                @Override
+                protected void out(AnalysisWarning err) {}
+                @Override
+                protected void out(Node that, String message) {}
+            });
+        }
+    }
+
+    private class JavacAssertionVisitor extends AssertionVisitor {
+        private CeylonPhasedUnit cpu;
+        JavacAssertionVisitor(CeylonPhasedUnit cpu){
+            this.cpu = cpu;
+        }
+        protected int getPosition(Node node) {
+            int pos = cpu.getLineMap().getStartPosition(node.getAntlrTreeNode().getLine())
+            + node.getAntlrTreeNode().getCharPositionInLine();
+            log.useSource(cpu.getFileObject());
+            return pos;
         }
     }
     
