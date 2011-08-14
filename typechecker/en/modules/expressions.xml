@@ -1066,40 +1066,41 @@ value comp = order(1,-1);</programlisting>
         instantiation expression for a generic class does not explicitly specify type 
         arguments, the type arguments are inferred from the argument expression types. 
         The types of the argument expressions and the declared types of the 
-        corresponding parameters determine a <emphasis>lower bound</emphasis> for 
-        each inferred type parameter.</para>
+        corresponding parameters determine an <emphasis>inferred lower bound</emphasis> 
+        for each type parameter.</para>
         
         <para>If a list of argument expressions has types <literal>A1,A2,...</literal> 
         and the corresponding list of parameters has declared types <literal>P1,P2,...</literal>, 
-        the lower bound for a type parameter <literal>T</literal> of the generic
-        declaration is the union of:</para>
+        the inferred lower bound for a type parameter <literal>T</literal> of the generic
+        declaration is the conjunction of:</para>
         
         <itemizedlist>
             <listitem>
-                <para>the lower bound <literal>X</literal> declared by a type constraint 
-                on <literal>T</literal> of form <literal>given T abstracts X</literal>, 
+                <para>the lower bound <literal>X</literal> explicitly declared by a type 
+                constraint on <literal>T</literal> of form <literal>given T abstracts X</literal>, 
                 if any, with</para>
             </listitem>
             <listitem>
-                <para>all lower bounds <literal>Ai</literal> on <literal>Pi</literal> 
+                <para>all inferred lower bounds <literal>Ai</literal> on <literal>Pi</literal> 
                 for <literal>T</literal>.</para>
             </listitem>
         </itemizedlist>
         
         <para>Given types <literal>A</literal> and <literal>P</literal>, we determine 
-        the lower bound <literal>A</literal> on <literal>P</literal> for <literal>T</literal> 
-        according to the nature of <literal>A</literal> and <literal>P</literal>:</para>
+        the <emphasis>inferred lower bound</emphasis> <literal>A</literal> on 
+        <literal>P</literal> for <literal>T</literal> according to the nature of 
+        <literal>A</literal> and <literal>P</literal>:</para>
         
         <itemizedlist>
             <listitem>
                 <para>If <literal>P</literal> is exactly <literal>T</literal>, the 
-                lower bound <literal>A</literal> on <literal>P</literal> for 
-                <literal>T</literal> is <literal>A</literal>.</para>
+                inferred lower bound <literal>A</literal> on <literal>P</literal> for 
+                <literal>T</literal> is <literal>T abstracts A</literal>.</para>
             </listitem>
             <listitem>
                 <para>If <literal>P</literal> is a union type <literal>Q|R</literal>, 
                 the lower bound <literal>A</literal> on <literal>P</literal> for 
-                <literal>T</literal> is the intersection of the lower bound 
+                <literal>T</literal> is the disjunction of the lower bound 
                 <literal>A</literal> on <literal>Q</literal> for <literal>T</literal> 
                 with the lower bound <literal>A</literal> on <literal>R</literal> 
                 for <literal>T</literal>.</para>
@@ -1107,7 +1108,7 @@ value comp = order(1,-1);</programlisting>
             <listitem>
                 <para>If <literal>P</literal> is an intersection type <literal>Q&amp;R</literal>, 
                 the lower bound <literal>A</literal> on <literal>P</literal> for 
-                <literal>T</literal> is the union of the lower bound 
+                <literal>T</literal> is the conjunction of the lower bound 
                 <literal>A</literal> on <literal>Q</literal> for <literal>T</literal> 
                 with the lower bound <literal>A</literal> on <literal>R</literal> 
                 for <literal>T</literal>.</para>
@@ -1115,14 +1116,14 @@ value comp = order(1,-1);</programlisting>
             <listitem>
                 <para>If <literal>A</literal> is a union type <literal>B|C</literal>, 
                 the lower bound <literal>A</literal> on <literal>P</literal> for 
-                <literal>T</literal> is the union of the lower bound <literal>B</literal> 
+                <literal>T</literal> is the conjunction of the lower bound <literal>B</literal> 
                 on <literal>P</literal> for <literal>T</literal> with the lower bound 
                 <literal>C</literal> on <literal>P</literal> for <literal>T</literal>.</para>
             </listitem>
             <listitem>
                 <para>If <literal>A</literal> is an intersection type <literal>B&amp;C</literal>, 
                 the lower bound <literal>A</literal> on <literal>P</literal> for 
-                <literal>T</literal> is the intersection of the lower bound <literal>B</literal> 
+                <literal>T</literal> is the disjunction of the lower bound <literal>B</literal> 
                 on <literal>P</literal> for <literal>T</literal> with the lower bound 
                 <literal>C</literal> on <literal>P</literal> for <literal>T</literal>.</para>
             </listitem>
@@ -1131,16 +1132,45 @@ value comp = order(1,-1);</programlisting>
                 of a parameterized type <literal>Q</literal>, and <literal>A</literal> 
                 is a subtype of a produced type <literal>Q&lt;A1,A2,..&gt;</literal>, 
                 the lower bound <literal>A</literal> on <literal>P</literal> for 
-                <literal>T</literal> is the union of all lower bounds <literal>Ai</literal> 
+                <literal>T</literal> is the conjunction of all lower bounds <literal>Ai</literal> 
                 on <literal>Pi</literal> for <literal>T</literal>.</para>
             </listitem>
             <listitem>
                 <para>Otherwise, if <literal>A</literal> is not a union or intersection, 
                 and if <literal>P</literal> is neither a produced type, a union, or an
-                intersection, nor exactly <literal>T</literal>, there is no lower bound 
-                <literal>A</literal> on <literal>P</literal> for <literal>T</literal>.</para>
+                intersection, nor exactly <literal>T</literal>, the lower bound 
+                <literal>A</literal> on <literal>P</literal> for <literal>T</literal>
+                is <emphasis>null</emphasis>.</para>
             </listitem>
         </itemizedlist>
+        
+        <para>Where:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the conjunction a lower bound <literal>T abstracts A</literal>
+                with a lower bound <literal>T abstracts B</literal> is the lower bound 
+                <literal>T abstracts A|B</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>the disjunction a lower bound <literal>T abstracts A</literal>
+                with a lower bound <literal>T abstracts B</literal> is the lower bound 
+                <literal>T abstracts A&amp;B</literal>,</para>
+            </listitem>
+            <listitem>
+                <para>the conjunction or disjunction of a lower bound <literal>T abstracts A</literal>
+                with a null lower bound is <literal>T abstracts A</literal>, and</para>
+            </listitem>
+            <listitem>
+                <para>the conjunction or disjunction of two null lower bounds is null.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <!--
+        <comment><para>Note that the basis for this algorithm is:</para>
+<programlisting>T abstracts A &amp;&amp; T abstracts B => T abstracts A|B</programlisting>
+<programlisting>T abstracts A || T abstracts B => T abstracts A&amp;B</programlisting></comment>
+        -->
         
         <!--        
         <comment><para>TODO: This incorrectly describes the algorithm used by the 
@@ -1171,20 +1201,17 @@ value comp = order(1,-1);</programlisting>
         
         <itemizedlist>
             <listitem>
-                <para><literal>Bottom</literal>, if there is no lower bound for 
-                <literal>T</literal>, or, otherwise,</para>
+                <para><literal>Bottom</literal>, if the inferred lower bound for 
+                <literal>T</literal> is null, or, otherwise,</para>
             </listitem>
             <listitem>
-                <para>the lower bound for <literal>T</literal>.</para>
+                <para>the type <literal>A</literal>, where the inferred lower bound for 
+                <literal>T</literal> is <literal>T abstracts A</literal>.</para>
             </listitem>
         </itemizedlist>
         
         <para>If the inferred type argument does not satisfy the generic type 
         constraints on <literal>T</literal>, a compilation error results.</para>
-        
-        <comment><para>Note that the basis for this algorithm is:</para>
-<programlisting>T abstracts A &amp;&amp; T abstracts B => T abstracts A|B</programlisting>
-<programlisting>T abstracts A || T abstracts B => T abstracts A&amp;B</programlisting></comment>
         
         <para>Consider the following invocation:</para>
         
