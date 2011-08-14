@@ -13,7 +13,7 @@ The specification is compiled into `build/en`.
 
 To build just the PDF, type:
 
-    ant pdf.doc
+    ant pdf
 
 The PDF specification is compiled then copied into the 
 root directory.
