@@ -7,7 +7,7 @@ package ceylon.language;
  * @param <R> The type of result
  * @param <X> The type of the thing being called
  */
-public abstract class NamedArgumentCall<R,X> {
+public abstract class NamedArgumentCall<X> {
     protected final X instance;
     protected final java.lang.Object[] args;
     public NamedArgumentCall(final X instance, java.lang.Object... args) {

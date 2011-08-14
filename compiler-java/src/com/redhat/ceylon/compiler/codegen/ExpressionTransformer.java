@@ -381,43 +381,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
     
-    /**
-     * <p>Converts a type to the corresponding Java type 
-     * <strong>suitable for a named argument invocation</strong>.</p> 
-     * 
-     * <p>The rules for converting to Java types for invocation are different to 
-     * elsewhere, because we need to produce Java wrapper types 
-     * (for the purposes of casts and type parameters) for Ceylon types which 
-     * would otherwise be erased to Java primitive types. For example
-     * given {@code ceylon.language.Natural} this method will return 
-     * {@code java.lang.Long}, whereas {@link #makeJavaType(ProducedType, int)} 
-     * would return either {@code long} or {@code ceylon.language.Natural} 
-     * depending on the flags.</p>
-     *   
-     * @param type The type to convert
-     * @return The converted type
-     */
-    private JCExpression makeJavaTypeForInvocation(ProducedType type) {
-        if (!typeFact().isOptional(type)) {
-            if (isCeylonBoolean(type)) {
-                return make().Type(syms().booleanObjectType);
-            } else if (isCeylonNatural(type)) {
-                return make().Type(syms().longObjectType);
-            } else if (isCeylonInteger(type)) {
-                return make().Type(syms().integerObjectType);
-            } else if (isCeylonFloat(type)) {
-                return make().Type(syms().doubleObjectType);
-            } else if (isCeylonCharacter(type)) {
-                return make().Type(syms().characterObjectType);
-            }
-        }
-        return makeJavaType(type);
-    }
-
     private JCExpression transformNamedInvocation(InvocationExpression ce) {
         final ListBuffer<JCExpression> callArgs = new ListBuffer<JCExpression>();
         final ListBuffer<JCExpression> passArgs = new ListBuffer<JCExpression>();
-        final ProducedType resultType;
         final String methodName;
         final java.util.List<ParameterList> parameterLists;
         final Primary primary = ce.getPrimary();
@@ -425,12 +391,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (primaryDecl instanceof Method) {
             Method methodDecl = (Method)primaryDecl;
             methodName = methodDecl.getName();
-            resultType = methodDecl.getType();
             parameterLists = methodDecl.getParameterLists();
         } else if (primaryDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
             com.redhat.ceylon.compiler.typechecker.model.Class methodDecl = (com.redhat.ceylon.compiler.typechecker.model.Class)primaryDecl;
             methodName = methodDecl.getName();
-            resultType = methodDecl.getType();
             parameterLists = methodDecl.getParameterLists();
         } else {
             throw new RuntimeException("Illegal State: " + (primaryDecl != null ? primaryDecl.getClass() : "null"));
@@ -442,7 +406,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             int index = 0;
             for (NamedArgument namedArg : namedArguments) {
                 if (declaredParam.getName().equals(namedArg.getIdentifier().getText())) {
-                    callArgs.append(make().TypeCast(makeJavaTypeForInvocation(declaredParam.getType()), make().Indexed(makeSelect("this", "args"), makeInteger(index))));
+                    JCExpression argExpr = make().Indexed(makeSelect("this", "args"), makeInteger(index));
+                    argExpr = make().TypeCast(makeJavaType(namedArgType(namedArg), this.TYPE_PARAM), argExpr);
+                    callArgs.append(unboxType(argExpr, declaredParam.getType()));
                     found = true;
                     break;
                 }
@@ -457,6 +423,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             passArgs.append(transformArg(namedArg));
         }
 
+        List<JCExpression> typeArgs = transformTypeArguments(ce);
+        
         // Here I need to get everything 'but the last bit' from the Primary
         // e.g. f() -> this
         //   foo().bar() -> foo()
@@ -471,7 +439,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             haveInstance = false;
         } else if (primary instanceof QualifiedMemberOrTypeExpression) {
             QualifiedMemberOrTypeExpression memberExpr = (QualifiedMemberOrTypeExpression)primary;
-            CeylonVisitor visitor = new CeylonVisitor(gen(), callArgs);
+            CeylonVisitor visitor = new CeylonVisitor(gen(), typeArgs, callArgs);
             memberExpr.getPrimary().visit(visitor);
             passArgs.prepend((JCExpression)visitor.getSingleResult());
             receiverType = makeJavaType(memberExpr.getPrimary().getTypeModel(), this.TYPE_PARAM);
@@ -483,27 +451,26 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
 
         // Construct the call$() method
+        JCExpression resultType = makeJavaType(ce.getTypeModel(), (isTypeParameter(determineExpressionType(ce))) ? this.TYPE_PARAM: 0);
         final String callMethodName = "call$";
         MethodDefinitionBuilder callMethod = MethodDefinitionBuilder.method(gen(), callMethodName);
         callMethod.modifiers(Flags.PUBLIC);
-        callMethod.resultType(makeJavaTypeForInvocation(resultType));
+        callMethod.resultType(resultType);
         if (generateNew) {
-            callMethod.body(make().Return(make().NewClass(null,
-                    null, makeJavaTypeForInvocation(resultType), callArgs.toList(), null)));
+            callMethod.body(make().Return(make().NewClass(null, null, resultType, callArgs.toList(), null)));
         } else {
             if (haveInstance) {
-                callMethod.body(make().Return(make().Apply(null,
-                        makeSelect("this", "instance", methodName), callArgs.toList())));
+                JCExpression expr = make().Apply(null, makeSelect("this", "instance", methodName), callArgs.toList());
+                callMethod.body(make().Return(expr));
             } else {
-                callMethod.body(make().Return(make().Apply(null,
-                        makeIdent(methodName), callArgs.toList())));
+                JCExpression expr = make().Apply(null, makeIdent(methodName), callArgs.toList());
+                callMethod.body(make().Return(expr));
             }
         }
 
         // Construct the class
         JCExpression namedArgsClass = make().TypeApply(makeIdent(syms().ceylonNamedArgumentCall),
-                List.<JCExpression>of(makeJavaTypeForInvocation(resultType), 
-                        receiverType));
+                List.<JCExpression>of(receiverType));
 
         JCClassDecl classDecl = make().ClassDef(make().Modifiers(0),
                 names().empty,
@@ -571,7 +538,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 args.append(transformArg(arg));
         }
 
-        CeylonVisitor visitor = new CeylonVisitor(gen(), args);
+        List<JCExpression> typeArgs = transformTypeArguments(ce);
+                    
+        CeylonVisitor visitor = new CeylonVisitor(gen(), typeArgs, args);
         ce.getPrimary().visit(visitor);
 
         JCExpression expr = visitor.getSingleResult();
@@ -580,17 +549,40 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if (expr instanceof JCTree.JCNewClass) {
             return expr;
         } else {
-            return at(ce).Apply(null, expr, args.toList());
+            return at(ce).Apply(typeArgs, expr, args.toList());
         }
     }
 
+    List<JCExpression> transformTypeArguments(Tree.InvocationExpression def) {
+        List<JCExpression> result = List.<JCExpression> nil();
+        if (def.getPrimary() instanceof Tree.StaticMemberOrTypeExpression) {
+            Tree.StaticMemberOrTypeExpression expr = (Tree.StaticMemberOrTypeExpression)def.getPrimary();
+            java.util.List<ProducedType> args = expr.getTypeArguments().getTypeModels();
+            for (ProducedType arg : args) {
+                result = result.append(makeJavaType(arg, AbstractTransformer.TYPE_PARAM));
+            }
+        }
+        return result;
+    }
+    
     JCExpression transformArg(Tree.PositionalArgument arg) {
         return transformExpression(arg.getExpression(), refinedParameter(arg.getParameter()).getType());
     }
 
     JCExpression transformArg(Tree.NamedArgument arg) {
         if (arg instanceof Tree.SpecifiedArgument) {
-            return transformExpression(((Tree.SpecifiedArgument)arg).getSpecifierExpression().getExpression(), refinedParameter(arg.getParameter()).getType());
+            Expression expr = ((Tree.SpecifiedArgument)arg).getSpecifierExpression().getExpression();
+            return boxType(transformExpression(expr), expr.getTypeModel());
+        } else if (arg instanceof Tree.TypedArgument) {
+            throw new RuntimeException("Not yet implemented");
+        } else {
+            throw new RuntimeException("Illegal State");
+        }
+    }
+
+    ProducedType namedArgType(Tree.NamedArgument arg) {
+        if (arg instanceof Tree.SpecifiedArgument) {
+            return ((Tree.SpecifiedArgument)arg).getSpecifierExpression().getExpression().getTypeModel();
         } else if (arg instanceof Tree.TypedArgument) {
             throw new RuntimeException("Not yet implemented");
         } else {
@@ -755,14 +747,14 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
     
-    public JCExpression transform(Tree.Type type, List<JCExpression> args) {
+    public JCExpression transform(Tree.Type type, List<JCExpression> typeArgs, List<JCExpression> args) {
         // A constructor
-        return at(type).NewClass(null, null, makeJavaType(type.getTypeModel()), args, null);
+        return at(type).NewClass(null, typeArgs, makeJavaType(type.getTypeModel()), args, null);
     }
 
-    public JCExpression transform(Tree.BaseTypeExpression typeExp, List<JCExpression> args) {
+    public JCExpression transform(Tree.BaseTypeExpression typeExp, List<JCExpression> typeArgs, List<JCExpression> args) {
         // A constructor
-        return at(typeExp).NewClass(null, null, makeIdent(typeExp.getIdentifier().getText()), args, null);
+        return at(typeExp).NewClass(null, typeArgs, makeIdent(typeExp.getIdentifier().getText()), args, null);
     }
 
     public JCExpression transform(SequenceEnumeration value) {

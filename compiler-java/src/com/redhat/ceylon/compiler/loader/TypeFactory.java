@@ -62,6 +62,14 @@ public class TypeFactory {
     }
     
     /**
+     * Gets the declaration of {@code Void}
+     * @return The declaration
+     */
+    public Class getVoidDeclaration() {
+        return (Class) ((TypeDeclaration) getLanguageModuleDeclaration("Void"));
+    }
+    
+    /**
      * Gets the declaration of {@code Nothing}
      * @return The declaration
      */

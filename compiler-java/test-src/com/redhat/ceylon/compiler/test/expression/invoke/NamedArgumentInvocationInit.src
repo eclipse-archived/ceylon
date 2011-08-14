@@ -12,16 +12,16 @@ class NamedArgumentInvocationInit {
     }
     
     private final void m() {
-        new .ceylon.language.NamedArgumentCall<com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocationInit, java.lang.Void>(null, 13L, "a"){
+        new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, .ceylon.language.Natural.instance(13L), .ceylon.language.String.instance("a")){
             
             public com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocationInit call$() {
-                return new com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocationInit((.java.lang.String)this.args[1], (.java.lang.Long)this.args[0]);
+                return new com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocationInit(((ceylon.language.String)this.args[1]).toString(), ((ceylon.language.Natural)this.args[0]).longValue());
             }
         }.call$().m();
-        new .ceylon.language.NamedArgumentCall<com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocationInit.Inner, java.lang.Void>(null, "", -4, true){
+        new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, .ceylon.language.String.instance(""), .ceylon.language.Integer.instance(-4), .ceylon.language.Boolean.instance(true)){
             
             public com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocationInit.Inner call$() {
-                return new com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocationInit.Inner((.java.lang.Boolean)this.args[2], (.java.lang.String)this.args[0], (.java.lang.Integer)this.args[1]);
+                return new com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocationInit.Inner(((ceylon.language.Boolean)this.args[2]).booleanValue(), ((ceylon.language.String)this.args[0]).toString(), ((ceylon.language.Integer)this.args[1]).intValue());
             }
         }.call$().m2();
     }

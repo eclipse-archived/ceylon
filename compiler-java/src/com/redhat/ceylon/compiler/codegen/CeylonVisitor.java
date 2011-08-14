@@ -8,7 +8,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
-import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
@@ -21,15 +20,17 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     protected final CeylonTransformer gen;
     private final ListBuffer<JCTree> defs;
     
-    final ToplevelAttributesDefinitionBuilder topattrBuilder;
-    final ClassDefinitionBuilder classBuilder;
-    final ListBuffer<JCExpression> args;
+    private final ToplevelAttributesDefinitionBuilder topattrBuilder;
+    private final ClassDefinitionBuilder classBuilder;
+    private final List<JCExpression> typeArgs;
+    private final ListBuffer<JCExpression> args;
     
     public CeylonVisitor(CeylonTransformer ceylonTransformer) {
         this.gen = ceylonTransformer;
         this.defs = new ListBuffer<JCTree>();
         this.topattrBuilder = null;
         this.classBuilder = null;
+        this.typeArgs = null;
         this.args = null;
     }
 
@@ -38,6 +39,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         this.defs = new ListBuffer<JCTree>();
         this.topattrBuilder = topattrBuilder;
         this.classBuilder = null;
+        this.typeArgs = null;
         this.args = null;
     }
 
@@ -46,14 +48,16 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         this.defs = new ListBuffer<JCTree>();
         this.topattrBuilder = null;
         this.classBuilder = classBuilder;
+        this.typeArgs = null;
         this.args = null;
     }
 
-    public CeylonVisitor(CeylonTransformer ceylonTransformer, ListBuffer<JCExpression> args) {
+    public CeylonVisitor(CeylonTransformer ceylonTransformer, List<JCExpression> typeArgs, ListBuffer<JCExpression> args) {
         this.gen = ceylonTransformer;
         this.defs = new ListBuffer<JCTree>();
         this.topattrBuilder = null;
         this.classBuilder = null;
+        this.typeArgs = typeArgs;
         this.args = args;
     }
 
@@ -323,12 +327,12 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
 
     public void visit(Tree.Type type) {
         // A constructor
-        append(gen.expressionGen().transform(type, args.toList()));
+        append(gen.expressionGen().transform(type, typeArgs, args.toList()));
     }
 
     public void visit(Tree.BaseTypeExpression typeExp) {
         // A constructor
-        append(gen.expressionGen().transform(typeExp, args.toList()));
+        append(gen.expressionGen().transform(typeExp, typeArgs, args.toList()));
     }
 
     public void visit(Tree.BaseMemberExpression access) {

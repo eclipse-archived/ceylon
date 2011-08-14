@@ -1,25 +1,31 @@
 package com.redhat.ceylon.compiler.test.expression.invoke;
 
-class MethodInvocation {
+public class KlassMethodTypeParams {
     
-    public final void m() {
-        n();
-        o(1L);
-        p();
+    public final <U, V>U bar(final U u, final V v) {
+        return u;
     }
     
-    private final void n() {
-        return;
+    public KlassMethodTypeParams() {
+    }
+}
+class GenericMethodInvocation {
+    
+    public final .java.lang.String m() {
+        final com.redhat.ceylon.compiler.test.expression.invoke.KlassMethodTypeParams k = new KlassMethodTypeParams();
+        return k.<ceylon.language.String, ceylon.language.Natural>bar(.ceylon.language.String.instance("hello"), .ceylon.language.Natural.instance(1L)).toString();
     }
     
-    private final long o(final long oarg) {
-        return oarg;
+    public final .java.lang.String m2() {
+        final com.redhat.ceylon.compiler.test.expression.invoke.KlassMethodTypeParams k = new KlassMethodTypeParams();
+        return new .ceylon.language.NamedArgumentCall<com.redhat.ceylon.compiler.test.expression.invoke.KlassMethodTypeParams>(k, .ceylon.language.String.instance("hello"), .ceylon.language.Natural.instance(1L)){
+            
+            public ceylon.language.String call$() {
+                return this.instance.bar((ceylon.language.String)this.args[0], (ceylon.language.Natural)this.args[1]);
+            }
+        }.call$().toString();
     }
     
-    public final void p() {
-        return;
-    }
-    
-    MethodInvocation() {
+    GenericMethodInvocation() {
     }
 }
