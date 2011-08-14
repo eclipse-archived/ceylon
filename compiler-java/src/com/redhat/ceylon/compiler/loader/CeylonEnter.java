@@ -215,8 +215,6 @@ public class CeylonEnter extends Enter {
                 }
             });
         }
-        /*
-        */
     }
     
     public boolean hasRun(){
