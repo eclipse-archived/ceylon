@@ -457,7 +457,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
      */
     public <K extends JCTree> K getSingleResult() {
         if (defs.size() != 1) {
-            throw new RuntimeException();
+            throw new RuntimeException("Got "+defs.size()+" results instead of 1");
         }
         return (K) defs.first();
     }
