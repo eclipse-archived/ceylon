@@ -552,7 +552,7 @@ public class ProducedType extends ProducedReference {
         }
         else {
             for (TypeParameter tp: getDeclaration().getTypeParameters()) {
-                if ( contravariant && tp.isContravariant()) {
+                if (!covariant && tp.isContravariant()) {
                     //a type with contravariant parameters appears at
                     //a contravariant location in satisfies / extends
                     errors.add(getDeclaration());
