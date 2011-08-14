@@ -279,7 +279,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     public List<JCTree> methodClass(Tree.MethodDefinition def) {
-        String name = generateClassName(def, isToplevel(def));
+        String name = def.getIdentifier().getText();
         JCMethodDecl meth = transform(def, false);
         return ClassDefinitionBuilder.klass(this, name)
             .annotations(makeAtMethod())
@@ -289,25 +289,8 @@ public class ClassTransformer extends AbstractTransformer {
             .build();
     }
 
-    /**
-     * Generates the class name for a method, object or attribute definition. If <tt>topLevel</tt> is <tt>true</tt>,
-     * uses the declaration name, otherwise uses a generated name.
-     *
-     * @param decl the Ceylon declaration (actually a definition) to generate the class name for.
-     * @param topLevel a boolean indicating whether the declaration is a top-level one.
-     * @return the generated name.
-     */
-    private String generateClassName(Tree.Declaration decl, boolean topLevel) {
-        String name;
-        if (topLevel)
-            name = decl.getIdentifier().getText();
-        else
-            name = aliasName(decl.getIdentifier().getText() + "$class");
-        return name;
-    }
-
     public List<JCTree> objectClass(Tree.ObjectDefinition def, boolean topLevel) {
-        String name = generateClassName(def, topLevel);
+        String name = def.getIdentifier().getText();
         ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder.klass(this, name);
         
         CeylonVisitor visitor = new CeylonVisitor(gen(), classBuilder);
