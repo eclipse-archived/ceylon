@@ -1,5 +1,5 @@
 @nomodel
-shared class KlassTypeParams<U,V>() {
+shared class KlassTypeParams<U,V>(U u, V v) {
     shared U foo(U u, V v){
         return u;
     }
@@ -8,10 +8,10 @@ shared class KlassTypeParams<U,V>() {
 @nomodel
 class KlassTypeParamsInstantiation(){
     shared KlassTypeParams<String, Natural> m() {
-        return KlassTypeParams<String, Natural>();
+        return KlassTypeParams<String, Natural>("foo", 2);
     }
     shared String m2() {
-        value k = KlassTypeParams<String, Natural>();
+        value k = KlassTypeParams<String, Natural>("foo", 2);
         return k.foo("hello", 1);
     }
     shared String m3() {
