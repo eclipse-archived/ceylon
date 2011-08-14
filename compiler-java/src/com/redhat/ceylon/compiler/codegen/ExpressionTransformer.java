@@ -405,6 +405,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             boolean found = false;
             int index = 0;
             for (NamedArgument namedArg : namedArguments) {
+                at(namedArg);
                 if (declaredParam.getName().equals(namedArg.getIdentifier().getText())) {
                     JCExpression argExpr = make().Indexed(makeSelect("this", "args"), makeInteger(index));
                     argExpr = make().TypeCast(makeJavaType(namedArgType(namedArg), this.TYPE_PARAM), argExpr);
@@ -418,10 +419,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                 throw new RuntimeException("No value specified for argument '" + declaredParam.getName()+ "' and default values not implemented yet");
             }
         }
-
         for (NamedArgument namedArg : namedArguments) {
+            at(namedArg);
             passArgs.append(transformArg(namedArg));
         }
+        at(ce);
 
         List<JCExpression> typeArgs = transformTypeArguments(ce);
         
