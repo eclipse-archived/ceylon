@@ -222,6 +222,11 @@ public class ModelLoaderTest extends CompilerTest {
     }
 
     @Test
+    public void loadTypeParameters(){
+        verifyClassLoading("TypeParameters.ceylon");
+    }
+
+    @Test
     public void loadToplevelMethods(){
         verifyClassLoading("ToplevelMethods.ceylon");
     }
