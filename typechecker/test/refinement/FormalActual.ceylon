@@ -15,3 +15,17 @@ class WithActual() extends WithActualFormal() {
 }
 
 @error class WithoutActual() extends WithActualFormal() {}
+
+
+abstract class Super2() {
+    shared default Natural defaultGetterSetter {
+        return 2;
+    } 
+    assign defaultGetterSetter {}
+}
+
+abstract class Super1() extends Super2() {
+	 // we make a default attr formal
+    shared variable actual formal Natural defaultGetterSetter;
+}
+
