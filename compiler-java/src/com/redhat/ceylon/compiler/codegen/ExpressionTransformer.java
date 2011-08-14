@@ -80,7 +80,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     JCExpression transformExpression(final Tree.Term expr, ProducedType targetType) {
         JCExpression result = transformExpression(expr);
         
-        ProducedType exprType = expr.getTypeModel();
+        ProducedType exprType = determineExpressionType(expr);
         result = boxUnboxIfNecessary(result, exprType, targetType);
         
         return result;
@@ -153,7 +153,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression result = null;
         
         // right side is easy
-        JCExpression rhs = transformExpression(rightTerm, leftTerm.getTypeModel());
+        JCExpression rhs = transformExpression(rightTerm, determineExpressionType(leftTerm));
         
         // left side depends
         
@@ -214,16 +214,16 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.RangeOp op) {
-        JCExpression lower = boxType(transformExpression(op.getLeftTerm()), op.getLeftTerm().getTypeModel());
-        JCExpression upper = boxType(transformExpression(op.getRightTerm()), op.getRightTerm().getTypeModel());
+        JCExpression lower = boxType(transformExpression(op.getLeftTerm()), determineExpressionType(op.getLeftTerm()));
+        JCExpression upper = boxType(transformExpression(op.getRightTerm()), determineExpressionType(op.getRightTerm()));
         ProducedType rangeType = typeFact().makeRangeType(op.getLeftTerm().getTypeModel());
         JCExpression typeExpr = makeJavaType(rangeType, CeylonTransformer.CLASS_NEW);
         return at(op).NewClass(null, null, typeExpr, List.<JCExpression> of(lower, upper), null);
     }
 
     public JCExpression transform(Tree.EntryOp op) {
-        JCExpression key = boxType(transformExpression(op.getLeftTerm()), op.getLeftTerm().getTypeModel());
-        JCExpression elem = boxType(transformExpression(op.getRightTerm()), op.getRightTerm().getTypeModel());
+        JCExpression key = boxType(transformExpression(op.getLeftTerm()), determineExpressionType(op.getLeftTerm()));
+        JCExpression elem = boxType(transformExpression(op.getRightTerm()), determineExpressionType(op.getRightTerm()));
         ProducedType entryType = typeFact().makeEntryType(op.getLeftTerm().getTypeModel(), op.getRightTerm().getTypeModel());
         JCExpression typeExpr = makeJavaType(entryType, CeylonTransformer.CLASS_NEW);
         return at(op).NewClass(null, null, typeExpr , List.<JCExpression> of(key, elem), null);

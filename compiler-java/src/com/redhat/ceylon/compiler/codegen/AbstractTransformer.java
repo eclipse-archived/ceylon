@@ -695,9 +695,13 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     protected ProducedType determineExpressionType(Tree.Expression expr) {
-        ProducedType exprType = expr.getTypeModel();
-        if (expr.getTerm() instanceof Tree.InvocationExpression) {
-            Declaration decl = ((Tree.InvocationExpression)expr.getTerm()).getPrimary().getDeclaration().getRefinedDeclaration();
+        return determineExpressionType(expr.getTerm());
+    }
+    
+    protected ProducedType determineExpressionType(Tree.Term term) {
+        ProducedType exprType = term.getTypeModel();
+        if (term instanceof Tree.InvocationExpression) {
+            Declaration decl = ((Tree.InvocationExpression)term).getPrimary().getDeclaration().getRefinedDeclaration();
             if (decl instanceof Method) {
                 exprType = ((Method)decl).getType();
             }
@@ -712,7 +716,7 @@ public abstract class AbstractTransformer implements Transformation {
     protected JCExpression makeSequence(java.util.List<Expression> list, ProducedType seqElemType) {
         ListBuffer<JCExpression> elems = new ListBuffer<JCExpression>();
         for (Expression expr : list) {
-            elems.append(boxType(expressionGen().transformExpression(expr), expr.getTypeModel()));
+            elems.append(boxType(expressionGen().transformExpression(expr), determineExpressionType(expr)));
         }
         ProducedType seqType = typeFact().makeDefaultSequenceType(seqElemType);
         JCExpression typeExpr = makeJavaType(seqType, CeylonTransformer.CLASS_NEW);
