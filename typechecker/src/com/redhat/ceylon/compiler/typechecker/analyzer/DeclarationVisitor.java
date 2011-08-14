@@ -149,12 +149,11 @@ public class DeclarationVisitor extends Visitor {
                 else {
                     Getter getter = (Getter) member;
                     setter.setGetter(getter);
-                    getter.setSetter(setter);
                     if (getter.isVariable()) {
                         that.addError("duplicate setter for getter: " + model.getName());
                     }
                     else {
-                        getter.setVariable(true);
+                        getter.setSetter(setter);
                     }
                 }
             }

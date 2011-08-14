@@ -8,7 +8,6 @@ package com.redhat.ceylon.compiler.typechecker.model;
  */
 public class Getter extends MethodOrValue implements Scope {
 
-    boolean variable;
     Setter setter;
 
     public Setter getSetter() {
@@ -21,11 +20,7 @@ public class Getter extends MethodOrValue implements Scope {
 
     @Override
     public boolean isVariable() {
-        return variable;
-    }
-
-    public void setVariable(boolean variable) {
-        this.variable = variable;
+        return setter!=null;
     }
     
 }
