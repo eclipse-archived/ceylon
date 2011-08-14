@@ -583,6 +583,8 @@ public abstract class AbstractTransformer implements Transformation {
         if (!required)
             return List.nil();
         // Add the original type to the annotations
+        if(isTypeParameter(type))
+            return makeAtType(type.getProducedTypeName());
         return makeAtType(type.getProducedTypeQualifiedName());
     }
     
