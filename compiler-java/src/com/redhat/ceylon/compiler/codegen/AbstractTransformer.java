@@ -612,7 +612,7 @@ public abstract class AbstractTransformer implements Transformation {
         return (type  != null) && (isOptional(type) || isTypeParameter(type));
     }
     
-    private boolean isTypeParameter(ProducedType type) {
+    protected boolean isTypeParameter(ProducedType type) {
         return type.getDeclaration() instanceof TypeParameter;
     }
     
@@ -627,6 +627,8 @@ public abstract class AbstractTransformer implements Transformation {
             expr = unboxString(expr);
         } else if (isCeylonCharacter(targetType)) {
             expr = unboxCharacter(expr);
+        } else if (isCeylonBoolean(targetType)) {
+            expr = unboxBoolean(expr);
         }
         return expr;
     }
@@ -642,6 +644,8 @@ public abstract class AbstractTransformer implements Transformation {
             expr = boxString(expr);
         } else if (isCeylonCharacter(exprType)) {
             expr = boxCharacter(expr);
+        } else if (isCeylonBoolean(exprType)) {
+            expr = boxBoolean(expr);
         }
         return expr;
     }
@@ -666,6 +670,10 @@ public abstract class AbstractTransformer implements Transformation {
         return makeBoxType(value, syms().ceylonCharacterType);
     }
     
+    private JCTree.JCMethodInvocation boxBoolean(JCExpression value) {
+        return makeBoxType(value, syms().ceylonBooleanType);
+    }
+    
     private JCTree.JCMethodInvocation makeBoxType(JCExpression value, Type type) {
         return make().Apply(null, makeSelect(makeIdent(type), "instance"), List.<JCExpression>of(value));
     }
@@ -688,6 +696,10 @@ public abstract class AbstractTransformer implements Transformation {
     
     private JCTree.JCMethodInvocation unboxCharacter(JCExpression value) {
         return makeUnboxType(value, "charValue");
+    }
+    
+    private JCTree.JCMethodInvocation unboxBoolean(JCExpression value) {
+        return makeUnboxType(value, "booleanValue");
     }
     
     private JCTree.JCMethodInvocation makeUnboxType(JCExpression value, String unboxMethodName) {
