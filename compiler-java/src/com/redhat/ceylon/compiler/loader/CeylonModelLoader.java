@@ -837,6 +837,11 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             Compound typeParam = (Compound) attribute;
             TypeParameter param = new TypeParameter();
             param.setContainer(scope);
+            // let's not trigger the lazy-loading if we're completing a LazyClass/LazyInterface
+            if(scope instanceof LazyElement)
+                ((LazyElement)scope).addMember(param);
+            else // must be a method
+                scope.getMembers().add(param);
             param.setName((String)typeParam.member(names.fromString("value")).getValue());
             params.add(param);
             
@@ -868,6 +873,11 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         for(TypeSymbol typeParam : typeParameters){
             TypeParameter param = new TypeParameter();
             param.setContainer(scope);
+            // let's not trigger the lazy-loading if we're completing a LazyClass/LazyInterface
+            if(scope instanceof LazyElement)
+                ((LazyElement)scope).addMember(param);
+            else // must be a method
+                scope.getMembers().add(param);
             param.setName(typeParam.name.toString());
             params.add(param);
             
