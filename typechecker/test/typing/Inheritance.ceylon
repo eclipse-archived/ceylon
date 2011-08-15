@@ -129,7 +129,7 @@ class Inheritance() {
         }
     }
     
-    @error Outer.Inner2 oi2 = Outer2();
+    Outer.Inner2 oi2 = Outer2();
     Outer.Inner2 oi3 = Outer().Inner3();
     Outer.Inner2 oi4 = Outer().inner1;
     @error Outer.Inner2 oi5 = Outer.Inner3();
