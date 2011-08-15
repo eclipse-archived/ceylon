@@ -785,7 +785,7 @@ public class ProducedType extends ProducedReference {
                 }
                 dec = pt.getDeclaration();
             }
-            return replaceDeclaration(pt, dec, substitutions);
+            return substitutedType(dec, pt, substitutions);
         }
 
         void addTypeToUnion(ProducedType ct, Map<TypeParameter, ProducedType> substitutions,
@@ -808,7 +808,7 @@ public class ProducedType extends ProducedReference {
             }
         }
 
-        private Map<TypeParameter, ProducedType> substituted(ProducedType pt, 
+        private Map<TypeParameter, ProducedType> substitutedTypeArguments(ProducedType pt, 
                 Map<TypeParameter, ProducedType> substitutions) {
             Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
             for (Map.Entry<TypeParameter, ProducedType> e: pt.getTypeArguments().entrySet()) {
@@ -816,13 +816,14 @@ public class ProducedType extends ProducedReference {
                     map.put(e.getKey(), substitute(e.getValue(), substitutions));
                 }
             }
-            if (pt.getDeclaringType()!=null) {
-                map.putAll(substituted(pt.getDeclaringType(), substitutions));
-            }
+            /*ProducedType dt = pt.getDeclaringType();
+			if (dt!=null) {
+                map.putAll(substituted(dt, substitutions));
+            }*/
             return map;
         }
 
-        private ProducedType replaceDeclaration(ProducedType pt, Declaration dec,
+        private ProducedType substitutedType(Declaration dec, ProducedType pt,
                 Map<TypeParameter, ProducedType> substitutions) {
             ProducedType type = new ProducedType();
             type.setDeclaration(dec);
@@ -830,7 +831,7 @@ public class ProducedType extends ProducedReference {
             if (dt!=null) {
                 type.setDeclaringType(substitute(dt, substitutions));
             }
-            type.setTypeArguments(substituted(pt, substitutions));
+            type.setTypeArguments(substitutedTypeArguments(pt, substitutions));
             return type;
         }
             
