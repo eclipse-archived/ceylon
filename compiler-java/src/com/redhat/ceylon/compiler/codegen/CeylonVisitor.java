@@ -324,11 +324,6 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         append(gen.expressionGen().transform(access));
     }
 
-    public void visit(Tree.Type type) {
-        // A constructor
-        append(gen.expressionGen().transform(type, typeArgs, args.toList()));
-    }
-
     public void visit(Tree.BaseTypeExpression typeExp) {
         // A constructor
         append(gen.expressionGen().transform(typeExp, typeArgs, args.toList()));
