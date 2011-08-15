@@ -42,9 +42,9 @@
         <listitem>
             <para>An <emphasis>interface</emphasis> is an abstract type schema that cannot
             itself be directly instantiated. An interface may define concrete members, but
-            these members may not hold references to other objects. A class may 
-            <emphasis>implement</emphasis> one or more interfaces. An instance of a class 
-            that satisfies an interface is also considered an instance of the interface.</para>
+            these members may not hold references to other objects. A class may inherit one 
+            or more interfaces. An instance of a class that inherits an interface is also 
+            considered an instance of the interface.</para>
         </listitem>
         <listitem>
             <para>A <emphasis>generic type parameter</emphasis> is considered a type
@@ -90,6 +90,10 @@
             or a sequence of <literal>String</literal>s?</para>
         </listitem>
         <listitem>
+            <para>What is the type of a parameter that accepts values which are instances 
+            of both <literal>Persistent</literal> and <literal>Printable</literal>?</para>
+        </listitem>
+        <listitem>
             <para>What is the type that represents methods that accept two <literal>Float</literal>
             values?</para>
         </listitem>
@@ -111,6 +115,7 @@
     
     <para>The answers, as we shall discover, are: <literal>Void</literal>, 
     <literal>Nothing|Element</literal>, <literal>String|String[]</literal>,
+    <literal>Persistent&amp;Printable</literal>,
     <literal>Method&lt;Object,Void,Float,Float&gt;</literal>,
     <literal>Gettable&lt;String&gt;</literal> and 
     <literal>Class&lt;Renderer,Callable&lt;String,Object&gt;&gt;</literal>.</para>
@@ -335,12 +340,15 @@
             </listitem>
             <listitem>
                 <para>Generic consistency: If <literal>Y</literal> is a parameterized type, and 
-                <literal>X</literal> is a subtype of both <literal>Y&lt;U&gt;</literal> and 
-                <literal>Y&lt;V&gt;</literal> then either <literal>Y&lt;U&gt;</literal> is a 
+                a class or interface <literal>X</literal> is a subtype of both <literal>Y&lt;U&gt;</literal> 
+                and <literal>Y&lt;V&gt;</literal> then either <literal>Y&lt;U&gt;</literal> is a 
                 subtype of <literal>Y&lt;V&gt;</literal> or <literal>Y&lt;V&gt;</literal> is a 
                 subtype of <literal>Y&lt;U&gt;</literal>.</para>
             </listitem>
         </itemizedlist>
+        
+        <comment><para>Note: intersections and <literal>Bottom</literal> don't satisfy the last of 
+        these rules.</para></comment>
         
         <para>Every interface type is a subtype of the class <literal>Object</literal> 
         defined in <literal>ceylon.language</literal>.</para>
