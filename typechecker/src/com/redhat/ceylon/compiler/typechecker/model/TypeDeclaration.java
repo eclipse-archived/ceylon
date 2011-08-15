@@ -186,9 +186,12 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
     }
     
     public Declaration getRefinedDeclaration(String name) {
-    	Declaration ed = getExtendedTypeDeclaration().getDirectMember(name);
-    	if (ed!=null) {
-    		return ed;
+    	Class et = getExtendedTypeDeclaration();
+    	if (et!=null) {
+			Declaration ed = et.getDirectMember(name);
+	    	if (ed!=null) {
+	    		return ed;
+	    	}
     	}
 		for (TypeDeclaration td: getSatisfiedTypeDeclarations()) {
 			Declaration sd = td.getDirectMember(name);
