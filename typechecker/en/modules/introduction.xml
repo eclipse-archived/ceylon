@@ -201,7 +201,7 @@
     scope of the introduction.
     </para>
     
-    <programlisting>List&lt;Character&gt; chars = "Hello, World!"</programlisting>
+    <programlisting>List&lt;Character&gt; chars = "Hello, World!";</programlisting>
     
     </section>
     
