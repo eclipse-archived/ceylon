@@ -718,7 +718,8 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             String paramName = getAnnotationStringValue(paramSymbol, symtab.ceylonAtNameType);
             // use whatever param name we find as default
             if(paramName == null)
-                parameter.setName(paramSymbol.name.toString());
+                paramName = paramSymbol.name.toString();
+            parameter.setName(paramName);
             parameter.setType(obtainType(paramSymbol.type, paramSymbol, (Scope) decl));
             parameter.setDeclaration((Declaration) decl);
             parameters.getParameters().add(parameter);
