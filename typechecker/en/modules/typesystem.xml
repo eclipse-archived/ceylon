@@ -476,6 +476,12 @@
             </listitem>
         </itemizedlist>
         
+        <comment>
+        <para>TODO: We should probably support aliases for union types using a syntax something 
+        like this:</para>
+        <programlisting>type Printable = String | Integer | Float;</programlisting>
+        </comment>
+        
         </section>
         
         <section id="intersectiontypes">
@@ -576,14 +582,9 @@
             </listitem>
         </itemizedlist>
         
-        <comment><para>TODO: There are certain intersection types which are proveably empty,
-        for example, <literal>String&amp;Natural</literal>. The compiler should reason that these 
-        types are equivalent to <literal>Bottom</literal>.</para></comment>
-                
         <comment>
-        <para>TODO: We should probably support aliases for ad hoc union and intersection 
-        types using a syntax something like this:</para>
-        <programlisting>type Printable = String | Integer | Float;</programlisting>
+        <para>TODO: We should probably support aliases for intersection types using a syntax 
+        something like this:</para>
         <programlisting>type Storable = Persistent &amp; Format &amp; IdentifiableObject;</programlisting>
         </comment>
         
@@ -616,6 +617,10 @@
             <comment><para>TODO: Should the name of this type be a keyword, perhaps
             <literal>bottom</literal>?</para></comment>
             
+            <comment><para>TODO: There are certain intersection types which are proveably 
+            empty, for example, <literal>String&amp;Natural</literal>. The compiler should 
+            reason that these types are equivalent to <literal>Bottom</literal>.</para></comment>
+                
         </section>
         
         <section id="typeofaprogramelement">
@@ -643,10 +648,11 @@
         
         <para>The name of a type may not be qualified by the package name.</para>
         
-        <comment><para>TODO: Using <literal>.</literal> as a qualifier makes Java's grammar 
-        context-senstive. Should we introduce a special syntax for qualification of identifiers
-        by package name, for example, <literal>:ceylon:language:metamodel:Class</literal>? This
-        would also allow us to have metamodel references for packages.</para></comment>
+        <comment><para>TODO: Should we introduce a special syntax for qualification of 
+        identifiers by package name, for example, <literal>:ceylon:language:metamodel:Class</literal>? 
+        This would also allow us to have metamodel references for packages. Using 
+        <literal>.</literal> as a qualifier is not an option, since it would make 
+        the grammar context-senstive like in Java.</para></comment>
         
         <!--
         <comment><para>TODO: Should we allow the abbreviation <literal>Sequence&lt;&gt;</literal>
