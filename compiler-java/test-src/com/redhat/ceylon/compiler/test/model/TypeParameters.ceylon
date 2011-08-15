@@ -1,5 +1,5 @@
 class TypeParameters <T,U> (T t, U u) {
- T attr;
+ shared T attr = t;
  T method(T t, U u){
   return t;
  }
