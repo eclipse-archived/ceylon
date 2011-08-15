@@ -1536,13 +1536,13 @@ shared class LinkedList<Element>(Element... elements)
         <section id="typeparametersandvariance">
             <title>Type parameters and variance</title>
         
-        <para>A type parameter allows a declaration to be abstracted over a constrained set of 
-        types.</para>
+        <para>An <emphasis>ordinary type parameter</emphasis> allows a declaration to be 
+        abstracted over a constrained set of types.</para>
         
         <programlisting>TypeParam: Variance? TypeName</programlisting>
         
-        <para>Every type parameter has a name. A parameter of a class or interface declaration 
-        has a specified <emphasis>variance</emphasis>.</para> 
+        <para>Every ordinary type parameter has a name. A parameter of a class or interface 
+        declaration has a specified <emphasis>variance</emphasis>.</para> 
         
         <itemizedlist>
             <listitem>
@@ -1558,8 +1558,8 @@ shared class LinkedList<Element>(Element... elements)
             </listitem>
         </itemizedlist>
         
-        <para>A type parameter of a method declaration may not specify an explicit variance and, 
-        for the purposes of this section, are considered invariant</para>
+        <para>An ordinary type parameter of a method declaration may not specify an explicit 
+        variance and, for the purposes of this section, are considered invariant</para>
         
         <programlisting>Variance: "out" | "in"</programlisting>
         
@@ -1586,6 +1586,13 @@ shared class LinkedList<Element>(Element... elements)
         type parameters may appear in any position. As a special exception to this rule, any
         type parameter or a method or class may appear in any position in the parameter list of
         the method or class itself.</para>
+        
+        <para>Furthermore, a type with a contravariant type parameter may only appear in a
+        covariant position in an extended type, satisfied type, case type, or upper bound
+        type constraint.</para>
+        
+        <comment><para>Note: this restriction exists to eliminate certain undecidable cases
+        described in Tate et al.</para></comment>
         
         <para>To determine if a type expression occurs in a covariant or contravariant position,
         we first consider how the type occurs syntactically.</para> 
