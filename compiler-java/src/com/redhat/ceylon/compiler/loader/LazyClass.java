@@ -34,9 +34,9 @@ public class LazyClass extends Class implements LazyElement {
     
     private void load() {
         if(!isLoaded){
+            loadTypeParams();
             isLoaded = true;
             completer.complete(this);
-            loadTypeParams();
         }
     }
 

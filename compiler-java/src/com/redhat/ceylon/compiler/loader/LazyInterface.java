@@ -29,9 +29,9 @@ public class LazyInterface extends Interface implements LazyElement {
     
     private void load() {
         if(!isLoaded){
+            loadTypeParams();
             isLoaded = true;
             completer.complete(this);
-            loadTypeParams();
         }
     }
 
