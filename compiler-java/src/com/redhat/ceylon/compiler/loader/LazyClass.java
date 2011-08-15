@@ -17,7 +17,7 @@ import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
 
-public class LazyClass extends Class {
+public class LazyClass extends Class implements LazyElement {
 
     public ClassSymbol classSymbol;
     private ModelCompleter completer;
@@ -307,5 +307,11 @@ public class LazyClass extends Class {
     public Declaration getMemberOrParameter(Unit unit, String name) {
         load();
         return super.getMemberOrParameter(unit, name);
+    }
+
+    @Override
+    public void addMember(Declaration decl) {
+        // do this without lazy-loading
+        super.getMembers().add(decl);
     }
 }

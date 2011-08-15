@@ -14,7 +14,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
 
-public class LazyInterface extends Interface {
+public class LazyInterface extends Interface implements LazyElement {
 
     public ClassSymbol classSymbol;
     private ModelCompleter completer;
@@ -284,5 +284,11 @@ public class LazyInterface extends Interface {
     public Declaration getMemberOrParameter(Unit unit, String name) {
         load();
         return super.getMemberOrParameter(unit, name);
+    }
+
+    @Override
+    public void addMember(Declaration decl) {
+        // do this without lazy-loading
+        super.getMembers().add(decl);
     }
 }
