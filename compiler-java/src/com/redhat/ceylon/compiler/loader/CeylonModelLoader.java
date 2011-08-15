@@ -504,8 +504,6 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         HashSet<String> variables = new HashSet<String>();
         
         // FIXME: deal with toplevel methods and attributes
-        // do its type parameters first
-        setTypeParameters(klass, classSymbol);
         int constructorCount = 0;
         // then its methods
         for(Symbol member : classSymbol.getEnclosedElements()){
