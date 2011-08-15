@@ -56,6 +56,18 @@ void testGraph() {
     }*/
 
     Graph<BasicGraph.Node, BasicGraph.Edge>.Node nn = BasicGraph().Node();
-    @error BasicGraph.Node nnn = nn;
+    BasicGraph.Node nnn1 = nn;
+    @error OnOffGraph.Node nnn2 = nn;
+    @error Graph<OnOffGraph.Node, OnOffGraph.Edge>.Node nn3 = nnn1;
+    Graph<BasicGraph.Node, BasicGraph.Edge>.Node nn2 = nnn1;
     
+    Graph<OnOffGraph.Node, OnOffGraph.Edge>.Edge ee = OnOffGraph().Edge(on1, on2);
+    @error BasicGraph.Edge eee1 = ee;
+    OnOffGraph.Edge eee2 = ee;
+    Graph<OnOffGraph.Node, OnOffGraph.Edge>.Edge ee3 = eee2;
+    @error Graph<BasicGraph.Node, BasicGraph.Edge>.Edge ee2 = eee2;
+    
+    Graph<BasicGraph.Node, BasicGraph.Edge> gbg = BasicGraph();
+    BasicGraph.Node bgn = gbg.Node();
+    BasicGraph.Edge bge = gbg.Edge(bgn,bgn);
 }
