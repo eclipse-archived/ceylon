@@ -98,16 +98,13 @@ public class Util {
      * @param typeArguments explicit or inferred type 
      *        arguments of the declaration
      */
-    static Map<TypeParameter,ProducedType> arguments(Declaration declaration, ProducedType declaringType, List<ProducedType> typeArguments) {
+    static Map<TypeParameter,ProducedType> arguments(Declaration declaration, 
+    		ProducedType declaringType, List<ProducedType> typeArguments) {
         Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
-        if (declaringType!=null) {
-            map.putAll(declaringType.getTypeArguments());
-            //TODO: this needs to be recursive (use a while loop 
-            //      that walks the chain of declaringTypes)
-            ProducedType dt = declaringType.getDeclaringType();
-			if (dt!=null) {
-            	map.putAll(dt.getTypeArguments());
-            }
+        ProducedType dt = declaringType;
+        while (dt!=null) {
+            map.putAll(dt.getTypeArguments());
+            dt = dt.getDeclaringType();
         }
         if (declaration instanceof Generic) {
             Generic g = (Generic) declaration;
