@@ -80,9 +80,14 @@
     Ceylon does not feature enumerated types as a first-class construct. Instead,
     any abstract type may specify its <emphasis>cases</emphasis>&mdash;an 
     enumerated list of subtypes. This facility may be used to simulate both
-    enumerated types and functional-style algebraic types. A closely related
-    feature is support for <emphasis>self types</emphasis> and <emphasis>type 
-    families</emphasis>.
+    enumerated types and functional-style algebraic types. 
+    </para>
+    
+    <programlisting>interface Identity of Person | Organization { ... }</programlisting>
+    
+    <para>
+    A closely related feature is support for <emphasis>self types</emphasis> 
+    and <emphasis>type families</emphasis>.
     </para>
     
     <para>
@@ -96,8 +101,13 @@
     regular syntax.
     </para>
     
-    <para>The Ceylon compiler never even uses any kind of "non-denotable" type
-    to reason about the type system.</para>
+    <programlisting>interface Producer&lt;in Input, out Value&gt; 
+        given Value(Input input) satisfies Equality { ... }</programlisting>
+    
+    <para>
+    The Ceylon compiler never even uses any kind of "non-denotable" type to 
+    reason about the type system.
+    </para>
     
     </section>
     
@@ -107,18 +117,19 @@
     <para>
     A <emphasis>union type</emphasis>, for example <literal>String|Number</literal>, 
     or <emphasis>intersection type</emphasis>, for example <literal>String&amp;Number</literal>,
-    may be formed from two or more types defined elsewhere. Union types make it 
-    possible to write code that operates polymorphically over types defined in 
-    disparate branches of the type heirarchy without the need for intermediate 
-    adaptor classes. Intersection types make it possible to operate polymorphically
-    over all subtypes of a list of types.
+    may be formed from two or more types defined elsewhere. 
+    </para>
+    
+    <para>
+    Union types make it possible to write code that operates polymorphically 
+    over types defined in disparate branches of the type heirarchy without the 
+    need for intermediate adaptor classes. Intersection types make it possible 
+    to operate polymorphically over all subtypes of a list of types.
     </para>
         
     <para>
-    Unions are used to define <emphasis>optional</emphasis> types&mdash;which 
-    accept null values&mdash;and <emphasis>sequence types</emphasis>&mdash;which 
-    accept multiple values. Union types also play a central role in generic type 
-    argument inference.
+    Union and intersection types play a central role in generic type argument 
+    inference.
     </para>
     
     </section>
@@ -126,13 +137,31 @@
     <section id="typealiases">   
     <title>Type aliases and type inference</title>
     
-    <para>
-    Ceylon supports <emphasis>type aliases</emphasis>, similar to C-style 
-    <literal>typedef</literal>, and type inference for local declarations. 
+    <para>    
     Type aliases and type inference help reduce the verbosity of code which 
     uses generic types, eliminating the need to repeatedly specify generic
     type arguments.
     </para>
+
+    <para>
+    <emphasis>A type alias</emphasis> is similar to a C-style <literal>typedef</literal>.
+    </para>
+    
+    <programlisting>interface Strings = Sequence&lt;String&gt;;</programlisting>
+    
+    <para>
+    The type of a block-local attribute or method may be inferred from its 
+    definition. The keyword <literal>value</literal> or <literal>function</literal> 
+    must appear in place of the type declaration.
+    </para>
+    
+    <programlisting>value name = person.name;</programlisting>
+    <programlisting>function sqrt(Float x) { return x**0.5; }</programlisting>
+    
+    <para>The type of a control-structure variable also may be inferred.</para>
+    
+    <programlisting>for (n in 0..max) { ... }</programlisting>
+    <programlisting>try (tx = Transaction()) { ... }</programlisting>
     
     <para>
     By limiting type inference to local declarations, Ceylon ensures that all 
@@ -158,12 +187,21 @@
     Usually, the interfaces inherited by a type are specified as part of the 
     type definition. But a special kind of interface, called an 
     <emphasis>adapter</emphasis> may be <emphasis>introduced</emphasis> 
-    ("mixed in") to a pre-existing type at the point of use. Introduction does 
-    not in any way affect the internal behavior of any instance of the type to 
-    which the interface is introduced, but does allows the type to be treated 
-    as a subtype of the introduced interface within the lexical scope of the 
-    introduction.
+    ("mixed in") to a pre-existing type at the point of use. 
     </para>
+    
+    <programlisting>interface StringCharacters
+        adapts String
+        satisfies List&lt;Character&gt; { ... }</programlisting>
+    
+    <para>
+    Introduction does not in any way affect the internal behavior of any instance 
+    of the type to which the interface is introduced, but does allows the type 
+    to be treated as a subtype of the introduced interface within the lexical 
+    scope of the introduction.
+    </para>
+    
+    <programlisting>List&lt;Character&gt; chars = "Hello, World!"</programlisting>
     
     </section>
     
@@ -192,6 +230,8 @@
     reduce verbosity and results in a more regular block structure.
     </para>
     
+    <programlisting>class Point(Float x, Float y) { ... }</programlisting>
+    
     <para>The Ceylon compiler guarantees that the value of any attribute of
     a class is initialized before it is used in an expression.</para>
     
@@ -208,6 +248,8 @@
     objects or method-local interface implementations. 
     </para>
     
+    <programlisting>object origin extends Point(0.0, 0.0) {}</programlisting>
+    
     </section>
     
    <section id="methodsandattributes">
@@ -222,6 +264,10 @@
     abstract the internal representation of the state of an object. An attribute 
     of a class may be refined (overridden) by a subclass of the class.
     </para>
+    
+    <programlisting>String name {
+    return firstName + " " + lastName;
+}</programlisting>
     
     <para>The Ceylon compiler guarantees that the value of any local declared in 
     the body of a method or attribute is initialized before it is used in an 
@@ -260,12 +306,20 @@
     Ceylon supports first-class function types and higher-order functions, 
     with minimal extensions to the traditional C syntax. A method declaration 
     may specify a <emphasis>callable parameter</emphasis> that accepts 
-    references to other methods with a certain signature. The argument of such 
-    a callable parameter may be either a reference to a named method declared 
-    elsewhere, or a new method defined inline as part of the method invocation. 
-    A method may even return an invocable reference to another method. Finally, 
-    nested method declarations receive a closure of immutable references defined 
-    in the surrounding scope.
+    references to other methods with a certain signature. 
+    </para>
+    
+    <programlisting>String find(Boolean where(String string), String... strings) { ... }</programlisting>
+    
+    <para>
+    The argument of such a callable parameter may be either a reference to a 
+    named method declared elsewhere, or a new method defined inline as part of 
+    the method invocation. A method may even return an invocable reference to 
+    another method.</para>
+    
+    <para>
+    Finally, nested method declarations receive a closure of 
+    immutable references defined in the surrounding scope.
     </para>
     
     </section>
@@ -298,13 +352,16 @@
     <title>Compile-time safety for optional values and type narrowing</title>
     
     <para>
-    There is no primitive null in Ceylon, and the null value is not assignable 
-    to class or interface types. Only explicit <emphasis>optional types</emphasis>
-    accept the null value. An optional type is not assignable to a non-optional 
-    type except via use of the special-purpose <literal>if (exists ... )</literal> 
-    construct. Thus, the Ceylon compiler is able to detect illegal use of a 
-    null value at compile time. Therefore, there is no equivalent to Java's 
-    <literal>NullPointerException</literal> in Ceylon.
+    There is no primitive null in Ceylon. The null value is an instance of 
+    the class <literal>Nothing</literal> that is not assignable to user-defined 
+    class or interface types. An <emphasis>optional type</emphasis> is a 
+    union type like <literal>Nothing|String</literal>, which may be abbreviated
+    to <literal>String?</literal>. An optional type is not assignable to a 
+    non-optional type except via use of the special-purpose 
+    <literal>if (exists ... )</literal> construct. Thus, the Ceylon compiler 
+    is able to detect illegal use of a null value at compile time. Therefore, 
+    there is no equivalent to Java's <literal>NullPointerException</literal> 
+    in Ceylon.
     </para>
     
     <para>
@@ -313,6 +370,28 @@
     constructs may be used to narrow the type of an object reference without 
     risk of a <literal>ClassCastException</literal>.
     </para>
+    
+    </section>
+    
+    <section id="sequences">
+    <title>Sequences</title>
+    
+    <para>Sequences are Ceylon's version of arrays. However, the
+    <literal>Sequence</literal> interface does not provide operations for
+    mutating the elements of the sequence.</para>
+    
+    <para>Ceylon distinguishes between empty and nonempty sequences. An 
+    instance of <literal>Sequence</literal> is has at least one element. An 
+    empty sequence is an instance of the type <literal>Empty</literal>.
+    It's very common to work with a <emphasis>sequence type</emphasis> like
+    <literal>Empty|Sequence&lt;String&gt;</literal>,
+    which may be abbreviated <literal>String[]</literal>. The special-purpose
+    <literal>if (nonempty ... )</literal> construct narrows a sequence type
+    to an instance of <literal>Sequence</literal>.</para>
+    
+    <para>Sequences may be instantiated using a streamlined syntax.</para>
+    
+    <programlisting>String[] languages = { "Java", "Python", "Ceylon", "Smalltalk", "ML" };</programlisting>
     
     </section>
     
@@ -388,6 +467,18 @@
     built-in support for program element annotations.
     </para>
     
+    <programlisting>Html page {
+    Head head { 
+        title="Hello"; 
+    }
+    Body body { 
+        P {
+            css = "greeting"; 
+            "Hello, World!" 
+        } 
+    }
+}</programlisting>
+    
     </section>
     
     <section id="metaprogramming">
@@ -427,6 +518,7 @@
     
     </section>
     
+    <!-- 
     <section id="sdkmodules">
         <title>Modules included in the SDK</title>
     
@@ -488,6 +580,8 @@
             code</para>
         </listitem>
     </itemizedlist>
+    </section>
+    -->
     
     <section id="parsingceylon">
         <title>Parsing and compiling the Ceylon language</title>
@@ -500,9 +594,25 @@
         files that comply with the published specification for the Java class file 
         format.</para>
         
+        <para>The Ceylon compiler consists of:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>a generated parser and syntax tree,</para>
+            </listitem>
+            <listitem>
+                <para>a handwritten type analyzer and type checker, and</para>
+            </listitem>
+            <listitem>
+                <para>a backend that integrates the type analyzer with <literal>javac</literal>
+                by transforming the Ceylon syntax tree to a Java syntax tree.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The type analyzer and backend are developed completely independently,
+        and the parser, syntax tree, and type analyzer may be reused separately.</para>
+        
     </section>
     
-    </section>
- 
     
 </chapter>
