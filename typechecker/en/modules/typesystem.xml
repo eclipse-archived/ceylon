@@ -1759,6 +1759,7 @@ shared class LinkedList<Element>(Element... elements)
         This is useful for modelling tuples. Should we allow you to declare a contravariant
         sequenced type parameter, and say that method parameter types are contravariant?</para></comment>
         
+        <!--
         <comment><para>TODO: should we let you write things like:</para>
         <programlisting><![CDATA[class Foo<Element...>(Tuple<Bar<Element>...> barTup) {
     ...
@@ -1770,7 +1771,8 @@ shared class LinkedList<Element>(Element... elements)
         <programlisting><![CDATA[List<Result> zip<Result,Argument...>(List<Argument>... args, Result producing(Argument... args)) {
     return from (Natural i in 0..min(x.lastIndex...)) select (producing(args[i]...));
 }]]></programlisting></comment>
-
+        -->
+        
         </section>
             
         <!--
