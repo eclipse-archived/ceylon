@@ -1,6 +1,6 @@
 class OuterTypeArgs() {
-	class Foo<T>() {
-		shared default class Bar<S>() {
+	class Foo<T>() given T satisfies Equality {
+		shared default class Bar<S>() given S satisfies Equality {
 			Bar<S> b0 = Bar<S>();
 			@error Bar<S> b1 = Foo<Natural>().Bar<S>();
 			Bar<S> b2 = Foo<T>().Bar<S>();
@@ -14,12 +14,16 @@ class OuterTypeArgs() {
 				shared Bar<S> bar {
 					return outer;
 				}
+				shared Entry<T,S> entry(T t, S s) {
+					return t->s;
+				}
 			}
 		}
 	}
-	class Baz<T>() extends Foo<T>() {}
-	class Fum<T>() extends Foo<T>() {
-		shared actual class Bar<S>() extends super.Bar<S>() {
+	class Baz<T>() extends Foo<T>() given T satisfies Equality {}
+	class Fum<T>() extends Foo<T>() given T satisfies Equality {
+		shared actual class Bar<S>() extends super.Bar<S>() 
+		        given S satisfies Equality {
 			shared actual Bar<S> get() {
 				return this;
 			}
@@ -30,11 +34,13 @@ class OuterTypeArgs() {
 	@type["String"] value fbgt = foobar.getT();
 	Baz<Float>.Bar<String>.Qux<Object> foobarqux = Baz<Float>().Bar<String>().Qux<Object>();
 	@type["OuterTypeArgs.Foo<Float>.Bar<String>"] value fbqg = foobarqux.bar;
+	@type["Entry<Float,String>"] foobarqux.entry(1.0, "hello");
 
 	Fum<String>.Bar<Natural> fumbar = Fum<String>().Bar<Natural>();
 	@type["OuterTypeArgs.Fum<String>.Bar<Natural>"] value fmbg = fumbar.get();
 	Fum<String>.Bar<Natural>.Qux<Integer> fumbarqux = Fum<String>().Bar<Natural>().Qux<Integer>();
 	@type["OuterTypeArgs.Foo<String>.Bar<Natural>"] value fmbqg = fumbarqux.bar;
+	@type["Entry<String,Natural>"] fumbarqux.entry("given", 30);
 	
 	Foo<String>.Bar<Natural> fb1 = fmbg;
 	Foo<String>.Bar<Natural> fb2 = fbg; 
