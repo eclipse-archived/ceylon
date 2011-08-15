@@ -713,11 +713,11 @@
         <itemizedlist>
             <listitem>
                 <para><literal>X?</literal> means <literal>Nothing|X</literal> for any 
-                type <literal>X</literal>,</para>
+                type <literal>X</literal>, and</para>
             </listitem>
             <listitem>
                 <para><literal>X[]</literal> means <literal>Empty|Sequence&lt;X&gt;</literal> 
-                for any type <literal>X</literal>, and</para>
+                for any type <literal>X</literal>.</para>
             </listitem>
             <!--
             <listitem>
