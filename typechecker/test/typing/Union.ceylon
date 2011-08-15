@@ -153,6 +153,10 @@ class Union() {
                 extends super.Inner<U>(u) {}
     }
     class SpecialOuter<out T>() extends Outer<T>() {}
+    class ReallySpecialOuter<out T>() extends Outer<T>() {
+        shared actual class Inner<out U>(U u) 
+        extends super.Inner<U>(u) {}
+    }
     
     Outer<String>.Inner<Natural>|Outer<Float>.Inner<Integer> foobar1 = Outer<String>().Inner<Natural>(1);
     String foobarhello1 = foobar1.hello;
@@ -173,9 +177,17 @@ class Union() {
     @type["Union.Outer<String|Float>.Inner<Natural|Integer>"] value foobarts3 = foobar3.get;
     
     SubOuter<Object>.Inner<Natural>|SpecialOuter<Float>.Inner<Object> foobar4 = SubOuter<String>().Inner<Natural>(1);
+    @type["Union.SubOuter<Object>.Inner<Natural>|Union.SpecialOuter<Float>.Inner<Object>"] value foobar4check = foobar4;
     String foobarhello4 = foobar4.hello;
     @type["Object"] value foobaru4 = foobar4.u;
     Outer<Object>.Inner<Object> foobart4 = foobar4;
     @type["Union.Outer<Object>.Inner<Object>"] value foobarts4 = foobar4.get;
+    
+    SubOuter<Object>.Inner<Natural>|ReallySpecialOuter<Float>.Inner<Object> foobar5 = SubOuter<String>().Inner<Natural>(1);
+    @type["Union.SubOuter<Object>.Inner<Natural>|Union.ReallySpecialOuter<Float>.Inner<Object>"] value foobar5check = foobar5;
+    String foobarhello5 = foobar5.hello;
+    @type["Object"] value foobaru5 = foobar5.u;
+    Outer<Object>.Inner<Object> foobart5 = foobar5;
+    @type["Union.Outer<Object>.Inner<Object>"] value foobarts5 = foobar5.get;
     
 }
