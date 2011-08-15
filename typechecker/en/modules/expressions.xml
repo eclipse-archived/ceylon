@@ -147,7 +147,7 @@ assert() that (semaphore&identical;s); //assertion never fails</programlisting>
     </section>
     
     <section id="lazyevaluation">
-        <title>Lazy evaluation</title>
+        <title>PROPOSAL: Lazy evaluation</title>
         
         <comment><para>NOTE: Lazy evaluation of expressions is a proposed feature for 
         a future version of the language.</para></comment>
@@ -690,7 +690,7 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         </section>
         
         <section id="passbyreference">
-            <title>Pass by reference</title>
+            <title>PROPOSAL: Pass by reference</title>
             
             <comment><para>NOTE: Lazy evaluation and pass by reference is a proposed feature for 
             a future version of the language.</para></comment>
@@ -1606,7 +1606,7 @@ using() resource satisfies Usable {
         </section>
         
         <section id="iteration">
-            <title>Iteration</title>
+            <title>PROPOSAL: Iteration</title>
             
             <comment><para>NOTE: The following syntax extension is a proposed feature for 
             a future version of the language.</para></comment>
@@ -1662,7 +1662,7 @@ using() resource satisfies Usable {
         </section>
         
         <section id="localdefinition">
-            <title>Variable definition</title>
+            <title>PROPOSAL: Variable definition</title>
             
             <comment><para>NOTE: The following syntax extension is a proposed feature for 
             a future version of the language.</para></comment>
@@ -2409,8 +2409,8 @@ setPerson(person);</programlisting>
         
         <para>Furthermore, the expression type is assignable to all metatypes of the 
         type&mdash;the types listed in the <literal>is</literal> clause of the type 
-        definition. <emphasis>(Note that metatypes are a proposed feature for a 
-        future version of the language.)</emphasis></para>
+        definition. <emphasis>(Note that metatypes are a proposed feature for a future 
+        version of the language.)</emphasis></para>
         
         </section>
         

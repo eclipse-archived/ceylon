@@ -1187,7 +1187,15 @@ Item item = comp;</programlisting>
         or class is a subtype of that type?</para></comment>
         
         <para>Therefore, the <literal>of</literal> declaration is used to simulate 
-        enumerated types and algebraic datatypes.</para>
+        enumerated types and algebraic types.</para>
+        
+    </section>
+    
+    <section>
+        <title>PROPOSAL: Generalized algebraic types</title>
+        
+        <comment><para>NOTE: Support for generalized algebraic types is a 
+        proposed feature for a future version of the language.</para></comment>
         
         <itemizedlist>
             <listitem>
@@ -1218,9 +1226,6 @@ Item item = comp;</programlisting>
                  <literal>T</literal> declared by <literal>C</literal>.</para>
             </listitem>
         </itemizedlist>
-        
-        <comment><para>NOTE: Support for generalized algebraic datatypes is a 
-        proposed feature for a future version of the language.</para></comment>
         
         <para>Given a parameterized type <literal>A&lt;T&gt;</literal>, a case 
         <literal>C&lt;T&gt;</literal> of <literal>A&lt;T&gt;</literal>, and a
@@ -1301,7 +1306,7 @@ class Disjunction(Expression<Boolean>... terms)
         type argument to <literal>T</literal>.</para>
         
         <para>However, initially we can support only enumerated types and plain
-        old algebraic datatypes, simply by imposing the restriction that each case
+        old algebraic types, simply by imposing the restriction that each case
         must include all the type parameters of the type.</para>
         
         <para>We can even use this as the basis for a kind of "conditional"
@@ -1357,7 +1362,7 @@ class StringExpression
     </section>
     
     <section id="metatypes">
-        <title>Metatypes</title>
+        <title>PROPOSAL: Metatypes</title>
         
         <comment><para>NOTE: Metatypes are a proposed feature for a future version 
         of the language.</para></comment>
@@ -1548,7 +1553,7 @@ shared class LinkedList<Element>(Element... elements)
         itself a type. The type parameter is a subtype of every upper bound of the type parameter. 
         However, a class or interface may not extend or satisfy a type parameter.</para>
         
-        <programlisting>Map&lt;Key, Item&gt;</programlisting>
+        <programlisting>Map&lt;Key, out Item&gt;</programlisting>
         
         <programlisting>Sender&lt;in Message&gt;</programlisting>
         
@@ -1566,7 +1571,7 @@ shared class LinkedList<Element>(Element... elements)
         <emphasis>contravariant positions</emphasis> of the parameterized declaration. Invariant 
         type parameters may appear in any position. As a special exception to this rule, any
         type parameter or a method or class may appear in any position in the parameter list of
-        the method or class.</para>
+        the method or class itself.</para>
         
         <para>To determine if a type expression occurs in a covariant or contravariant position,
         we first consider how the type occurs syntactically.</para> 
@@ -1756,7 +1761,7 @@ shared class LinkedList<Element>(Element... elements)
             
         <!--
         <section id="thesubtypekeyword">
-            <title>The <literal>subtype</literal> keyword</title>
+            <title>PROPOSAL: The <literal>subtype</literal> keyword</title>
             
         <comment><para>NOTE: <literal>subtype</literal> is a proposed feature for a 
         future version of the language.</para></comment>
@@ -1843,7 +1848,7 @@ Entry<Name,Person> entry = named(gavin.name, gavin);]]></programlisting>
         
     <!--   
     <section id="dimensionaltypeparameters">
-        <title>Dimensional type parameters</title>
+        <title>PROPOSAL: Dimensional type parameters</title>
             
         <comment><para>NOTE: dimensional type parameters are a proposed feature for a 
         future version of the language.</para></comment>
@@ -1874,7 +1879,7 @@ shared interface Successor&lt;out N&gt; satisfies Dimension given N satisfies Di
      -->
      
      <section id="parameterizedtypeparameters">
-        <title>Parameterized type parameters</title>
+        <title>PROPOSAL: Parameterized type parameters</title>
 
         <comment><para>NOTE: Parameterized type parameters is a proposed feature for a 
         future version of the language.</para></comment>
@@ -1909,7 +1914,8 @@ shared interface Successor&lt;out N&gt; satisfies Dimension given N satisfies Di
         
         <programlisting><![CDATA[WeakReference<Person> person = ... ;
 WeakReference<Org> org = ... ;
-WeakReference<Entry<Person,Org>> e = entry(person, org);  //infers Indirect==WeakReference, Key==Person, Value==Org]]></programlisting>
+//infers Indirect==WeakReference, Key==Person, Value==Org:
+WeakReference<Entry<Person,Org>> e = entry(person, org);]]></programlisting>
         
         <para>Parameterized type parameters allow functions to operate generically 
         over "container" types:</para>
@@ -1939,14 +1945,16 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
     return Many(joinSequences(sequences));
 }]]></programlisting>
         
-        <comment><para>Note: support for type constructors as type arguments of 
-        classes and interfaces, is called "higher kinds". But I'm not especially
-        keen on this. I think you can get most of the practical value by limiting 
-        this feature to method type parameters only.</para></comment>
+        <comment><para>Note: I think you can get most of the practical value by limiting 
+        type constructor parameterization to methods only. Supporting type constructor 
+        parameterization of classes and interfaces means that you have to be able to 
+        reason about types whose arguments are type constructors. It seems to me that 
+        you don't need to be able to do this if the feature is limited to methods. On the
+        other hand, regularity argues for supporting both.</para></comment>
         
         <comment>
-        <para>TODO: There are at least two other interesting functions which map
-        types to types:</para>
+        <para>TODO: There are at least two other interesting functions which map types to 
+        types:</para>
         <itemizedlist>
             <listitem>
                  <para>the identity type constructor <literal>id&lt;T&gt; == T</literal>, 
@@ -1957,8 +1965,8 @@ Set&lt;String&gt; names = map(Person.name, people);</programlisting>
                 example, <literal>String&lt;T&gt; == String</literal>.</para>
             </listitem>
         </itemizedlist>
-        <para>Should we allow these type constructors as arguments to a 
-        parameterized type parameter?</para>
+        <para>Should we allow these type constructors as arguments to a parameterized type 
+        parameter?</para>
         
         <programlisting><![CDATA[Comparison compare<Many<X>,Other>(Many<Other> x, Many<Other> y)
         given Many<X> satisfies Sequence<X> | X
@@ -2169,10 +2177,10 @@ given Result(Natural count) satisfies Numeric<Result>]]></programlisting>
     </section>
     
     <section>
-        <title>Metatype bounds</title>
+        <title>PROPOSAL: Metatype bounds</title>
         
-        <comment><para>NOTE: Metatypes are a proposed feature for a future version of 
-        the language.</para></comment>
+        <comment><para>NOTE: Metatypes are a proposed feature for a future version 
+        of the language.</para></comment>
         
         <para>Note that an upper bound type constraint of form:</para>
         
@@ -2297,7 +2305,7 @@ given Result(Natural count) satisfies Numeric<Result>]]></programlisting>
     
         <!--
         <section id="dimensions">
-            <title>Dimensions</title>
+            <title>PROPOSAL: Dimensions</title>
         
             <comment><para>NOTE: dimensional type parameters are a proposed feature
             for a future version of the language.</para></comment>
@@ -2633,7 +2641,7 @@ given Result(Natural count) satisfies Numeric<Result>]]></programlisting>
         
         <!--
         <section id="subtypetypeargument">
-            <title>The type argument of <literal>subtype</literal></title>
+            <title>PROPOSAL: The type argument of <literal>subtype</literal></title>
             
         <comment><para>NOTE: <literal>subtype</literal> is a proposed feature for a 
         future version of the language.</para></comment>
