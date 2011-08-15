@@ -15,7 +15,7 @@ class KlassTypeParamsInstantiation(){
         return k.foo("hello", 1);
     }
     shared String m3() {
-        value k = KlassTypeParams<String, Natural>();
+        value k = KlassTypeParams<String, Natural>("foo", 2);
         return k.foo{u = "hello"; v = 1;};
     }
 }
