@@ -713,6 +713,8 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         for(VarSymbol paramSymbol : methodSymbol.params()){
             ValueParameter parameter = new ValueParameter();
             parameter.setContainer((Scope) decl);
+            if(decl instanceof Class)
+                ((Class)decl).getMembers().add(parameter);
             String paramName = getAnnotationStringValue(paramSymbol, symtab.ceylonAtNameType);
             // use whatever param name we find as default
             if(paramName == null)
