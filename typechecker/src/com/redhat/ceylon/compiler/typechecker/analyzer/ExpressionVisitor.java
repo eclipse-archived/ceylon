@@ -59,13 +59,13 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
     
     private Declaration beginReturnDeclaration(Declaration d) {
-    	Declaration od = returnDeclaration;
-    	returnDeclaration = d;
-    	return od;
+        Declaration od = returnDeclaration;
+        returnDeclaration = d;
+        return od;
     }
     
     private void endReturnDeclaration(Declaration od) {
-    	returnDeclaration = od;
+        returnDeclaration = od;
     }
     
     private Tree.Type beginReturnScope(Tree.Type t) {
@@ -689,12 +689,12 @@ public class ExpressionVisitor extends AbstractVisitor {
             Tree.SpecifierExpression se, Tree.Variable that) {
         ProducedType expressionType = se.getExpression().getTypeModel();
         if (expressionType!=null) {
-        	if (isIterableType(expressionType)) {
-        		ProducedType t = getIteratedType(expressionType);
+            if (isIterableType(expressionType)) {
+                ProducedType t = getIteratedType(expressionType);
                 local.setTypeModel(t);
                 that.getDeclarationModel().setType(t);
                 return;
-        	}
+            }
         }
 //        local.addError("could not infer type of: " + 
 //                name(that.getIdentifier()));
@@ -704,15 +704,15 @@ public class ExpressionVisitor extends AbstractVisitor {
             Tree.SpecifierExpression se, Tree.Variable that) {
         ProducedType expressionType = se.getExpression().getTypeModel();
         if (expressionType!=null) {
-        	if (isIterableType(expressionType)) {
-        		ProducedType entryType = getIteratedType(expressionType);
+            if (isIterableType(expressionType)) {
+                ProducedType entryType = getIteratedType(expressionType);
                 if (entryType!=null) {
-                	if (isEntryType(entryType)) {
-	                    ProducedType et = getKeyType(entryType);
+                    if (isEntryType(entryType)) {
+                        ProducedType et = getKeyType(entryType);
                         local.setTypeModel(et);
                         that.getDeclarationModel().setType(et);
                         return;
-                	}
+                    }
                 }
             }
         }
@@ -724,15 +724,15 @@ public class ExpressionVisitor extends AbstractVisitor {
             Tree.SpecifierExpression se, Tree.Variable that) {
         ProducedType expressionType = se.getExpression().getTypeModel();
         if (expressionType!=null) {
-        	if (isIterableType(expressionType)) {
-        		ProducedType entryType = getIteratedType(expressionType);
+            if (isIterableType(expressionType)) {
+                ProducedType entryType = getIteratedType(expressionType);
                 if (entryType!=null) {
-                	if (isEntryType(entryType)) {
-	                    ProducedType et = getValueType(entryType);
+                    if (isEntryType(entryType)) {
+                        ProducedType et = getValueType(entryType);
                         local.setTypeModel(et);
                         that.getDeclarationModel().setType(et);
                         return;
-                	}
+                    }
                 }
             }
         }
@@ -756,12 +756,12 @@ public class ExpressionVisitor extends AbstractVisitor {
             //that.addError("could not determine expected return type");
         } 
         else {
-        	that.setDeclaration(returnDeclaration);
+            that.setDeclaration(returnDeclaration);
             Tree.Expression e = that.getExpression();
             if (e==null) {
                 if (!(returnType instanceof Tree.VoidModifier)) {
                     that.addError("a non-void method or getter must return a value: " +
-                    		returnDeclaration.getName());
+                            returnDeclaration.getName());
                 }
             }
             else {
@@ -769,7 +769,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                 ProducedType at = e.getTypeModel();
                 if (returnType instanceof Tree.VoidModifier) {
                     that.addError("a void method, setter, or class initializer may not return a value: " +
-                    		returnDeclaration.getName());
+                            returnDeclaration.getName());
                 }
                 else if (returnType instanceof Tree.LocalModifier) {
                     if (at!=null) {
@@ -791,7 +791,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                 else {
                     checkAssignable(at, et, that.getExpression(), 
                             "returned expression must be assignable to return type of " +
-                    		returnDeclaration.getName());
+                            returnDeclaration.getName());
                 }
             }
         }
@@ -865,19 +865,19 @@ public class ExpressionVisitor extends AbstractVisitor {
                 mte.getTypeArguments().setTypeModels(typeArgs);
                 if (pr instanceof Tree.BaseTypeExpression) {
                     visitBaseTypeExpression((Tree.BaseTypeExpression) pr, 
-                    		(TypeDeclaration) dec, typeArgs, mte.getTypeArguments());
+                            (TypeDeclaration) dec, typeArgs, mte.getTypeArguments());
                 }
                 else if (pr instanceof Tree.QualifiedTypeExpression) {
                     visitQualifiedTypeExpression((Tree.QualifiedTypeExpression) pr, 
-                    		(TypeDeclaration) dec, typeArgs, mte.getTypeArguments());
+                            (TypeDeclaration) dec, typeArgs, mte.getTypeArguments());
                 }
                 else if (pr instanceof Tree.BaseMemberExpression) {
                     visitBaseMemberExpression((Tree.BaseMemberExpression) pr, 
-                    		(TypedDeclaration) dec, typeArgs, mte.getTypeArguments());
+                            (TypedDeclaration) dec, typeArgs, mte.getTypeArguments());
                 }
                 else if (pr instanceof Tree.QualifiedMemberExpression) {
                     visitQualifiedMemberExpression((Tree.QualifiedMemberExpression) pr, 
-                    		(TypedDeclaration) dec, typeArgs, mte.getTypeArguments());
+                            (TypedDeclaration) dec, typeArgs, mte.getTypeArguments());
                 }
             }
             visitInvocation(that, mte.getTarget());
@@ -920,7 +920,7 @@ public class ExpressionVisitor extends AbstractVisitor {
             ProducedType type = null;
             if (arg instanceof Tree.SpecifiedArgument) {
                 type = ((Tree.SpecifiedArgument) arg).getSpecifierExpression()
-                				.getExpression().getTypeModel();
+                                .getExpression().getTypeModel();
             }
             else if (arg instanceof Tree.TypedArgument) {
                 //TODO: broken for method args
@@ -929,8 +929,8 @@ public class ExpressionVisitor extends AbstractVisitor {
             if (type!=null) {
                 Parameter parameter = getMatchingParameter(parameters, arg);
                 if (parameter!=null) {
-                	addToUnion(inferredTypes, inferTypeArg(tp, parameter.getType(), 
-                			type, new ArrayList<TypeParameter>()));
+                    addToUnion(inferredTypes, inferTypeArg(tp, parameter.getType(), 
+                            type, new ArrayList<TypeParameter>()));
                 }
             }
         }
@@ -940,11 +940,11 @@ public class ExpressionVisitor extends AbstractVisitor {
             if (sp!=null) {
                 ProducedType spt = getIndividualSequencedParameterType(sp.getType());
                 for (Tree.Expression e: args.getSequencedArgument()
-                				.getExpressionList().getExpressions()) {
+                                .getExpressionList().getExpressions()) {
                     ProducedType sat = e.getTypeModel();
                     if (sat!=null) {
-                    	addToUnion(inferredTypes, inferTypeArg(tp, spt, sat,
-                        		new ArrayList<TypeParameter>()));
+                        addToUnion(inferredTypes, inferTypeArg(tp, spt, sat,
+                                new ArrayList<TypeParameter>()));
                     }
                 }
             }
@@ -963,7 +963,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                                 .getExpression().getTypeModel();
                         if (sat!=null) {
                             addToUnion(inferredTypes, inferTypeArg(tp, spt, sat,
-                            		new ArrayList<TypeParameter>()));
+                                    new ArrayList<TypeParameter>()));
                         }
                     }
                     break;
@@ -972,8 +972,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                     ProducedType argType = args.getPositionalArguments().get(i)
                             .getExpression().getTypeModel();
                     if (argType!=null) {
-                    	addToUnion(inferredTypes, inferTypeArg(tp, parameter.getType(), 
-                    			argType, new ArrayList<TypeParameter>()));
+                        addToUnion(inferredTypes, inferTypeArg(tp, parameter.getType(), 
+                                argType, new ArrayList<TypeParameter>()));
                     }
                 }
             }
@@ -981,98 +981,98 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
     
     private ProducedType union(List<ProducedType> types) {
-    	if (types.isEmpty()) {
-    		return null;
-    	}
-    	UnionType ut = new UnionType();
-    	ut.setCaseTypes(types);
-    	return ut.getType();
+        if (types.isEmpty()) {
+            return null;
+        }
+        UnionType ut = new UnionType();
+        ut.setCaseTypes(types);
+        return ut.getType();
     }
     
     private ProducedType intersection(List<ProducedType> types) {
-    	if (types.isEmpty()) {
-    		return null;
-    	}
-    	IntersectionType it = new IntersectionType();
-    	it.setSatisfiedTypes(types);
-    	return it.canonicalize().getType();
+        if (types.isEmpty()) {
+            return null;
+        }
+        IntersectionType it = new IntersectionType();
+        it.setSatisfiedTypes(types);
+        return it.canonicalize().getType();
     }
     
     private ProducedType inferTypeArg(TypeParameter tp, ProducedType paramType,
             ProducedType argType, List<TypeParameter> visited) {
         if (paramType!=null) {
             if (paramType.getDeclaration()==tp) {
-            	return argType;
+                return argType;
             }
             else if (paramType.getDeclaration() instanceof UnionType) {
-            	List<ProducedType> list = new ArrayList<ProducedType>();
+                List<ProducedType> list = new ArrayList<ProducedType>();
                 for (ProducedType ct: paramType.getDeclaration().getCaseTypes()) {
-                	addToIntersection(list, inferTypeArg(tp, 
-                			ct.substitute(paramType.getTypeArguments()), 
-                    		argType, visited));
+                    addToIntersection(list, inferTypeArg(tp, 
+                            ct.substitute(paramType.getTypeArguments()), 
+                            argType, visited));
                 }
                 return intersection(list);
             }
             else if (paramType.getDeclaration() instanceof IntersectionType) {
-            	List<ProducedType> list = new ArrayList<ProducedType>();
+                List<ProducedType> list = new ArrayList<ProducedType>();
                 for (ProducedType ct: paramType.getDeclaration().getSatisfiedTypes()) {
-                	addToUnion(list, inferTypeArg(tp, 
-                			ct.substitute(paramType.getTypeArguments()), 
-                    		argType, visited));
+                    addToUnion(list, inferTypeArg(tp, 
+                            ct.substitute(paramType.getTypeArguments()), 
+                            argType, visited));
                 }
                 return union(list);
             }
             else if (argType.getDeclaration() instanceof UnionType) {
-            	List<ProducedType> list = new ArrayList<ProducedType>();
+                List<ProducedType> list = new ArrayList<ProducedType>();
                 for (ProducedType ct: argType.getDeclaration().getCaseTypes()) {
-                	addToUnion(list, inferTypeArg(tp, paramType, 
-                			ct.substitute(paramType.getTypeArguments()), 
-                    		visited));
+                    addToUnion(list, inferTypeArg(tp, paramType, 
+                            ct.substitute(paramType.getTypeArguments()), 
+                            visited));
                 }
                 return union(list);
             }
             else if (argType.getDeclaration() instanceof IntersectionType) {
-            	List<ProducedType> list = new ArrayList<ProducedType>();
+                List<ProducedType> list = new ArrayList<ProducedType>();
                 for (ProducedType ct: argType.getDeclaration().getSatisfiedTypes()) {
-                	addToIntersection(list, inferTypeArg(tp, paramType, 
-                			ct.substitute(paramType.getTypeArguments()), 
-                    		visited));
+                    addToIntersection(list, inferTypeArg(tp, paramType, 
+                            ct.substitute(paramType.getTypeArguments()), 
+                            visited));
                 }
                 return intersection(list);
             }
             else if (paramType.getDeclaration() instanceof TypeParameter) {
-            	TypeParameter tp2 = (TypeParameter) paramType.getDeclaration();
-            	if (!visited.contains(tp2)) {
-	            	visited.add(tp2);
-                	List<ProducedType> list = new ArrayList<ProducedType>();
-		            for (ProducedType pt: tp2.getSatisfiedTypes()) {
-		                addToUnion(list, inferTypeArg(tp, pt, argType, visited) );
-		            	ProducedType st = argType.getSupertype(pt.getDeclaration());
-		                if (st!=null) {
-		                    for (int j=0; j<pt.getTypeArgumentList().size(); j++) {
-		                        if (st.getTypeArgumentList().size()>j) {
-		                        	addToUnion(list, inferTypeArg(tp, 
-		                        			pt.getTypeArgumentList().get(j), 
-		                                    st.getTypeArgumentList().get(j), 
-		                                    visited));
-		                        }
-		                    }
-		                }
-		            }
+                TypeParameter tp2 = (TypeParameter) paramType.getDeclaration();
+                if (!visited.contains(tp2)) {
+                    visited.add(tp2);
+                    List<ProducedType> list = new ArrayList<ProducedType>();
+                    for (ProducedType pt: tp2.getSatisfiedTypes()) {
+                        addToUnion(list, inferTypeArg(tp, pt, argType, visited) );
+                        ProducedType st = argType.getSupertype(pt.getDeclaration());
+                        if (st!=null) {
+                            for (int j=0; j<pt.getTypeArgumentList().size(); j++) {
+                                if (st.getTypeArgumentList().size()>j) {
+                                    addToUnion(list, inferTypeArg(tp, 
+                                            pt.getTypeArgumentList().get(j), 
+                                            st.getTypeArgumentList().get(j), 
+                                            visited));
+                                }
+                            }
+                        }
+                    }
                     return union(list);
-	            }
-            	else {
-            		return null;
-            	}
+                }
+                else {
+                    return null;
+                }
             }
             else {
                 ProducedType st = argType.getSupertype(paramType.getDeclaration());
                 if (st!=null) {
-                	List<ProducedType> list = new ArrayList<ProducedType>();
+                    List<ProducedType> list = new ArrayList<ProducedType>();
                     for (int j=0; j<paramType.getTypeArgumentList().size(); j++) {
                         if (st.getTypeArgumentList().size()>j) {
-                        	addToUnion(list, inferTypeArg(tp, 
-                        			paramType.getTypeArgumentList().get(j), 
+                            addToUnion(list, inferTypeArg(tp, 
+                                    paramType.getTypeArgumentList().get(j), 
                                     st.getTypeArgumentList().get(j), 
                                     visited));
                         }
@@ -1080,12 +1080,12 @@ public class ExpressionVisitor extends AbstractVisitor {
                     return union(list);
                 }
                 else {
-                	return null;
+                    return null;
                 }
             }
         }
         else {
-        	return null;
+            return null;
         }
     }
 
@@ -1145,7 +1145,7 @@ public class ExpressionVisitor extends AbstractVisitor {
             if (p==null) {
                 a.addError("no matching parameter for named argument " + 
                         name(a.getIdentifier()) + " declared by " + 
-                		pr.getDeclaration().getName());
+                        pr.getDeclaration().getName());
             }
             else {
                 foundParameters.add(p);
@@ -1158,7 +1158,7 @@ public class ExpressionVisitor extends AbstractVisitor {
             Parameter sp = getSequencedParameter(pl);
             if (sp==null) {
                 sa.addError("no matching sequenced parameter declared by "
-                		 + pr.getDeclaration().getName());
+                         + pr.getDeclaration().getName());
             }
             else {
                 foundParameters.add(sp);
@@ -1177,7 +1177,7 @@ public class ExpressionVisitor extends AbstractVisitor {
 
     private void checkNamedArgument(Tree.NamedArgument a, ProducedReference pr, 
             Parameter p) {
-    	a.setParameter(p);
+        a.setParameter(p);
         ProducedType argType = null;
         if (a instanceof Tree.SpecifiedArgument) {
             argType = ((Tree.SpecifiedArgument) a).getSpecifierExpression()
@@ -1193,7 +1193,7 @@ public class ExpressionVisitor extends AbstractVisitor {
     
     private void checkSequencedArgument(Tree.SequencedArgument a, ProducedReference pr, 
             Parameter p) {
-    	a.setParameter(p);
+        a.setParameter(p);
         for (Tree.Expression e: a.getExpressionList().getExpressions()) {
             ProducedType paramType = pr.getTypedParameter(p).getType();
             checkAssignable(e.getTypeModel(), getIndividualSequencedParameterType(paramType), a, 
@@ -1253,12 +1253,12 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
         for (int i=params.size(); i<args.size(); i++) {
             args.get(i).addError("no matching parameter for argument declared by " +
-            		 pr.getDeclaration().getName());
+                     pr.getDeclaration().getName());
         }
         if (pal.getEllipsis()!=null && 
                 (params.isEmpty() || !params.get(params.size()-1).isSequenced())) {
             pal.getEllipsis().addError("no matching sequenced parameter declared by " +
-            		 pr.getDeclaration().getName());
+                     pr.getDeclaration().getName());
         }
     }
 
@@ -1302,7 +1302,7 @@ public class ExpressionVisitor extends AbstractVisitor {
 
     private void checkPositionalArgument(Parameter p, ProducedReference pr,
             Tree.PositionalArgument a, ProducedType paramType) {
-    	a.setParameter(p);
+        a.setParameter(p);
         Tree.Expression e = a.getExpression();
         if (e==null) {
             //TODO: this case is temporary until we get support for SPECIAL_ARGUMENTs
@@ -1543,7 +1543,7 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
 
     private void visitBitwiseOperator(Tree.BinaryOperatorExpression that) {
-    	TypeDeclaration sd = getSlotsDeclaration();
+        TypeDeclaration sd = getSlotsDeclaration();
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
@@ -2367,29 +2367,26 @@ public class ExpressionVisitor extends AbstractVisitor {
         }
     }
 
-	private void checkExtensionOfMemberType(Node that, TypeDeclaration td,
-			ProducedType type) {
-		ProducedType declaringType = type.getDeclaringType();
-		if (declaringType!=null && td instanceof ClassOrInterface) {
-			Scope s = td;
-			while (s!=null) {
-				s = s.getContainer();
-				if (s instanceof TypeDeclaration) {
-					TypeDeclaration otd = (TypeDeclaration) s;
-					if ( otd.getType().isSubtypeOf(declaringType) ) {
-						return;
-					}
-				}
-			}
-			//if ( !td.isMember() || !td.getType().getDeclaringType().isSubtypeOf(declaringType) ) {
-				that.addError("containing type " + declaringType.getDeclaration().getName() + 
-						" of supertype " + type.getDeclaration().getName() + 
-						//" is not the containing type or a supertype of the containing type of " +
-						" is not an outer type or supertype of any outer type of " +
-						td.getName());
-			//}
-		}
-	}
+    private void checkExtensionOfMemberType(Node that, TypeDeclaration td,
+            ProducedType type) {
+        ProducedType declaringType = type.getDeclaringType();
+        if (declaringType!=null && td instanceof ClassOrInterface) {
+            Scope s = td;
+            while (s!=null) {
+                s = s.getContainer();
+                if (s instanceof TypeDeclaration) {
+                    TypeDeclaration otd = (TypeDeclaration) s;
+                    if ( otd.getType().isSubtypeOf(declaringType) ) {
+                        return;
+                    }
+                }
+            }
+            that.addError("containing type " + declaringType.getDeclaration().getName() + 
+                    " of supertype " + type.getDeclaration().getName() + 
+                    " is not an outer type or supertype of any outer type of " +
+                    td.getName());
+        }
+    }
     
     private void checkSelfTypes(Node that, TypeDeclaration td, ProducedType type) {
         if (!(td instanceof TypeParameter)) { //TODO: is this really ok?!

@@ -118,27 +118,27 @@ public class ProducedType extends ProducedReference {
                 return false;
             }
             else {
-            	ProducedType dt = getDeclaringType();
-        		ProducedType odt = type.getDeclaringType();
-            	if (dt==null) {
-            		if (odt!=null) {
-            			return false;
-            		}
-            	}
-            	else {
-            		if (odt==null) {
-            			return false;
-            		}
-            		else {
-	            		TypeDeclaration otd = (TypeDeclaration) type.getDeclaration().getContainer();
-						ProducedType odts = odt.getSupertype(otd);
-						TypeDeclaration td = (TypeDeclaration) getDeclaration().getContainer();
-						ProducedType dts = dt.getSupertype(td);
-            			if ( !dts.isExactly(odts) ) {
-            				return false;
-            			}
-            		}
-            	}
+                ProducedType dt = getDeclaringType();
+                ProducedType odt = type.getDeclaringType();
+                if (dt==null) {
+                    if (odt!=null) {
+                        return false;
+                    }
+                }
+                else {
+                    if (odt==null) {
+                        return false;
+                    }
+                    else {
+                        TypeDeclaration otd = (TypeDeclaration) type.getDeclaration().getContainer();
+                        ProducedType odts = odt.getSupertype(otd);
+                        TypeDeclaration td = (TypeDeclaration) getDeclaration().getContainer();
+                        ProducedType dts = dt.getSupertype(td);
+                        if ( !dts.isExactly(odts) ) {
+                            return false;
+                        }
+                    }
+                }
                 for (TypeParameter p: getDeclaration().getTypeParameters()) {
                     ProducedType arg = getTypeArguments().get(p);
                     ProducedType otherArg = type.getTypeArguments().get(p);
@@ -211,27 +211,27 @@ public class ProducedType extends ProducedReference {
                 return false;
             }
             else {
-            	ProducedType dt = st.getDeclaringType();
-        		ProducedType odt = type.getDeclaringType();
-            	if (dt==null) {
-            		if (odt!=null) {
-            			//probably extraneous!
-            			return false;
-            		}
-            	}
-            	else {
-            		if (odt==null) {
-            			//probably extraneous!
-            			return false;
-            		}
-            		else {
-	            		TypeDeclaration otd = (TypeDeclaration) type.getDeclaration().getContainer();
-						ProducedType odts = odt.getSupertype(otd);
-						if (!dt.isSubtypeOf(odts)) {
-	            			return false;
-	            		}
-            		}
-            	}
+                ProducedType dt = st.getDeclaringType();
+                ProducedType odt = type.getDeclaringType();
+                if (dt==null) {
+                    if (odt!=null) {
+                        //probably extraneous!
+                        return false;
+                    }
+                }
+                else {
+                    if (odt==null) {
+                        //probably extraneous!
+                        return false;
+                    }
+                    else {
+                        TypeDeclaration otd = (TypeDeclaration) type.getDeclaration().getContainer();
+                        ProducedType odts = odt.getSupertype(otd);
+                        if (!dt.isSubtypeOf(odts)) {
+                            return false;
+                        }
+                    }
+                }
                 for (TypeParameter p: type.getDeclaration().getTypeParameters()) {
                     ProducedType arg = st.getTypeArguments().get(p);
                     ProducedType otherArg = type.getTypeArguments().get(p);
@@ -354,9 +354,9 @@ public class ProducedType extends ProducedReference {
             }
             ProducedType selfType = getSelfType();
             if (selfType!=null) {
-            	if (!(selfType.getDeclaration() instanceof TypeParameter)) { //TODO: is this really correct???
-            		selfType.getSupertypes(list);
-            	}
+                if (!(selfType.getDeclaration() instanceof TypeParameter)) { //TODO: is this really correct???
+                    selfType.getSupertypes(list);
+                }
             }
             List<ProducedType> caseTypes = getCaseTypes();
             if (caseTypes!=null /*&& !getDeclaration().getCaseTypes().isEmpty()*/) {
@@ -406,13 +406,13 @@ public class ProducedType extends ProducedReference {
     ProducedType getSupertype(final Criteria c, List<ProducedType> list, 
             final TypeDeclaration ignoringSelfType) {
         if (c.satisfies(getDeclaration())) {
-        	ProducedType pt = new ProducedType();
-        	pt.setDeclaration(getDeclaration());
-        	if (getDeclaringType()!=null) {
-        		ProducedType dt = getDeclaringType().getSupertype((TypeDeclaration) getDeclaration().getContainer());
-	        	pt.setDeclaringType(dt);
-        	}
-        	pt.setTypeArguments(getTypeArguments());
+            ProducedType pt = new ProducedType();
+            pt.setDeclaration(getDeclaration());
+            if (getDeclaringType()!=null) {
+                ProducedType dt = getDeclaringType().getSupertype((TypeDeclaration) getDeclaration().getContainer());
+                pt.setDeclaringType(dt);
+            }
+            pt.setTypeArguments(getTypeArguments());
             return pt;
         }
         if ( isWellDefined() && Util.addToSupertypes(list, this) ) {
@@ -569,7 +569,7 @@ public class ProducedType extends ProducedReference {
     public List<TypeDeclaration> checkDecidability() {
         List<TypeDeclaration> errors = new ArrayList<TypeDeclaration>();
         for (TypeParameter tp: getDeclaration().getTypeParameters()) {
-        	ProducedType pt = getTypeArguments().get(tp);
+            ProducedType pt = getTypeArguments().get(tp);
             if (pt!=null) {
                 pt.checkDecidability(tp.isCovariant(), tp.isContravariant(), errors);
             }
@@ -605,13 +605,13 @@ public class ProducedType extends ProducedReference {
                         pt.checkDecidability(covariant, contravariant, errors);
                     }
                     else if (tp.isContravariant()) {
-                    	if (covariant|contravariant) { 
-                    		pt.checkDecidability(!covariant, !contravariant, errors); 
-                    	}
-                    	else {
-                    	    //else if we are in a nonvariant position, it stays nonvariant
+                        if (covariant|contravariant) { 
+                            pt.checkDecidability(!covariant, !contravariant, errors); 
+                        }
+                        else {
+                            //else if we are in a nonvariant position, it stays nonvariant
                             pt.checkDecidability(covariant, contravariant, errors);
-                    	}
+                        }
                     }
                     else {
                         pt.checkDecidability(false, false, errors);
@@ -660,13 +660,13 @@ public class ProducedType extends ProducedReference {
                         pt.checkVariance(covariant, contravariant, declaration, errors);
                     }
                     else if (tp.isContravariant()) {
-                    	if (covariant|contravariant) { 
-                    		pt.checkVariance(!covariant, !contravariant, declaration, errors); 
-                    	}
-                    	else {
+                        if (covariant|contravariant) { 
+                            pt.checkVariance(!covariant, !contravariant, declaration, errors); 
+                        }
+                        else {
                             //else if we are in a nonvariant position, it stays nonvariant
                             pt.checkVariance(covariant, contravariant, declaration, errors);
-                    	}
+                        }
                     }
                     else {
                         pt.checkVariance(false, false, declaration, errors);
@@ -827,7 +827,7 @@ public class ProducedType extends ProducedReference {
             ProducedType type = new ProducedType();
             type.setDeclaration(dec);
             ProducedType dt = pt.getDeclaringType();
-			if (dt!=null) {
+            if (dt!=null) {
                 type.setDeclaringType(substitute(dt, substitutions));
             }
             type.setTypeArguments(substituted(pt, substitutions));
