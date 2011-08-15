@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.test.expression;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.test.CompilerTest;
@@ -127,6 +128,7 @@ public class ExpressionTest extends CompilerTest {
     }
 
     @Test
+    @Ignore("Not for needed for M1")
     public void testInvNamedArgumentGetterInvocation(){
         compareWithJavaSource("invoke/NamedArgumentGetterInvocation");
     }
