@@ -1449,8 +1449,12 @@ shared class LinkedList<Element>(Element... elements)
     <section id="generictypeparameters">
         <title>Generic type parameters</title>
     
-        <para>Methods, classes, interfaces, and type parameters may declare one or more generic 
-        type parameters.</para>
+        <para>Methods, class, and interface <!-- and type parameter --> declarations may be
+        parameterized by one or more generic type parameters. A parameterized class or interface 
+        declaration defines a type constructor, a function that produces a type given a tuple of 
+        compatible type arguments. A parameterized class or method declaration defines a function 
+        that produces the signature of an invokable operation given a tuple of compatble type
+        arguments.</para>
         
         <programlisting>TypeParams: "&lt;" (TypeParam ",")* (TypeParam | SequencedTypeParam) "&gt;"</programlisting>
         
@@ -1516,21 +1520,33 @@ shared class LinkedList<Element>(Element... elements)
         <para>A type parameter allows a declaration to be abstracted over a constrained set of 
         types.</para>
         
-        <para>Each type parameter has a name and a specified <emphasis>variance</emphasis>.</para>
+        <programlisting>TypeParam: Variance? TypeName</programlisting>
         
-        <programlisting>TypeParam: Variance TypeName</programlisting>
+        <para>Every type parameter has a name. A parameter of a class or interface declaration 
+        has a specified <emphasis>variance</emphasis>.</para> 
+        
+        <itemizedlist>
+            <listitem>
+                <para>A <emphasis>covariant</emphasis> type parameter is indicated using the
+                keyword <literal>out</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>A <emphasis>contravariant</emphasis> type parameter is indicated using the
+                keyword <literal>in</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>By default, a type parameter is <emphasis>invariant</emphasis>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>A type parameter of a method declaration may not specify an explicit variance and, 
+        for the purposes of this section, are considered invariant</para>
+        
+        <programlisting>Variance: "out" | "in"</programlisting>
         
         <para>Within the body of the declaration it parameterizes, an ordinary type parameter is 
         itself a type. The type parameter is a subtype of every upper bound of the type parameter. 
         However, a class or interface may not extend or satisfy a type parameter.</para>
-        
-        <para>A <emphasis>covariant</emphasis> type parameter is indicated using <literal>out</literal>.
-        A <emphasis>contravariant</emphasis> type parameter is indicated using <literal>in</literal>.</para>
-        
-        <programlisting>Variance:  ("out" | "in")?</programlisting>
-        
-        <para>A type parameter declared neither <literal>out</literal> nor <literal>in</literal> 
-        is called <emphasis>invariant</emphasis>.</para>
         
         <programlisting>Map&lt;Key, Item&gt;</programlisting>
         
@@ -1540,103 +1556,157 @@ shared class LinkedList<Element>(Element... elements)
         
         <programlisting>BinaryFunction&lt;in Left, in Right, out Result&gt;</programlisting>
         
+        <!--
         <comment><para>TODO: Would <literal>produces</literal> and <literal>consumes</literal> 
         be better?</para></comment>
+        -->
         
-        <para>A covariant type parameter may only appear in covariant positions of the 
-        parameterized declaration. A contravariant type parameter may only appear in contravariant 
-        positions of the parameterized declaration. Invariant type parameters may appear in any 
-        position.</para>
+        <para>A covariant type parameter may only appear in <emphasis>covariant positions</emphasis> 
+        of the parameterized declaration. A contravariant type parameter may only appear in 
+        <emphasis>contravariant positions</emphasis> of the parameterized declaration. Invariant 
+        type parameters may appear in any position. As a special exception to this rule, any
+        type parameter or a method or class may appear in any position in the parameter list of
+        the method or class.</para>
+        
+        <para>To determine if a type expression occurs in a covariant or contravariant position,
+        we first consider how the type occurs syntactically.</para> 
+        
+        <para>In a method declaration:</para>
         
         <itemizedlist>
             <listitem>
-                <para>The return type of a method is a covariant position.</para>
+                <para>The return type of the method is a covariant position.</para>
             </listitem>
             <listitem>
-                <para>A parameter type of a method is a contravariant position.</para>
+                <para>A parameter type of the method is a contravariant position.</para>
             </listitem>
             <listitem>
-                <para>A type parameter of a method is a contravariant position.</para>
-            </listitem>
-            <listitem>
-                <para>A parameter type of a nested class initializer is a contravariant 
+                <para>Any upper bound of a type parameter of the method is a contravariant 
                 position.</para>
             </listitem>
             <listitem>
-                <para>A type parameter of a nested class is a contravariant position.</para>
-            </listitem>
-            <listitem>
-                <para>The type of a non-<literal>variable</literal> attribute is a covariant 
+                <para>Any lower bound of a type parameter of the method is a covariant 
                 position.</para>
-            </listitem>
-            <listitem>
-                <para>The type of a <literal>variable</literal> attribute is an invariant 
-                position.</para>
-            </listitem>
-            <listitem>
-                <para>An upper bound of a type parameter in a contravariant position is a 
-                contravariant position.</para>
-            </listitem>
-            <listitem>
-                <para>An upper bound of a type parameter in a covariant position is a covariant 
-                position.</para>
-            </listitem>
-            <listitem>
-                <para>A lower bound of a type parameter in a contravariant position is a 
-                covariant position.</para>
-            </listitem>
-            <listitem>
-                <para>A type parameter in a covariant position cannot have a lower bound. 
-                <comment>TODO: is this correct?</comment></para>
-            </listitem>
-            <listitem>
-                <para>A covariant type argument of a satisfied or extended type is a covariant 
-                position.</para>
-            </listitem>
-            <listitem>
-                <para>A contravariant type argument of a satisfied or extended type is a 
-                contravariant position.</para>
-            </listitem>
-            <listitem>
-                <para>A covariant type argument of a type in a covariant position is a covariant 
-                position.</para>
-            </listitem>
-            <listitem>
-                <para>A contravariant type argument of a type in a covariant position is a 
-                contravariant position.</para>
-            </listitem>
-            <listitem>
-                <para>A covariant type argument of a type in a contravariant position is a 
-                contravariant position.</para>
-            </listitem>
-            <listitem>
-                <para>A contravariant type argument of a type in a contravariant position is a 
-                covariant position.</para>
-            </listitem>
-            <listitem>
-                <para>An invariant type argument of a type is an invariant position.</para>
-            </listitem>
-            <listitem>
-                <para>A parameter of a callable parameter in a contravariant position is 
-                covariant.</para>
-            </listitem>
-            <listitem>
-                <para>A parameter of a callable parameter in a covariant position is 
-                contravariant.</para>
-            </listitem>
-            <listitem>
-                <para>The return type of a callable parameter in a contravariant position is 
-                contravariant.</para>
-            </listitem>
-            <listitem>
-                <para>The return type of a callable parameter in a covariant position is
-                covariant.</para>
             </listitem>
         </itemizedlist>
         
+        <para>In a simple attribute declaration not annotated <literal>variable</literal>,
+        or an attribute getter declaration with no matching setter:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>The type of the attribute is a covariant position.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>In a simple attribute declaration annotated <literal>variable</literal>, or
+        an attribute getter declaration with a matching setter:</para>
+        
+        <itemizedlist>
+            <listitem>
+               <para>The type of the attribute is an invariant position.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>In a class declaration:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>An initializer parameter type of the class is a contravariant position.</para>
+            </listitem>
+            <listitem>
+                <para>Any upper bound of a type parameter of the class is a contravariant 
+                position.</para>
+            </listitem>
+            <listitem>
+                <para>Any lower bound of a type parameter of the class is a covariant 
+                position.</para>
+            </listitem>
+            <listitem>
+                <para>An extended type, satisfied type, or case type is a covariant position.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>In an interface declaration:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>An extended type, satisfied type, or case type is a covariant position.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>For parameters of callable parameters, we first determine if the callable
+        parameter itself is covariant or contravariant:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>A callable parameter of a method or class is contravariant.</para>
+            </listitem>
+            <listitem>
+                <para>A callable parameter of a covariant parameter is contravariant.</para>
+            </listitem>
+            <listitem>
+                <para>A callable parameter of a contravariant parameter is covariant.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Then:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>The return type of a covariant callable parameter is a covariant 
+                position.</para>
+            </listitem>
+            <listitem>
+                <para>The return type of a contravariant callable parameter is a 
+                contravariant position.</para>
+            </listitem>
+            <listitem>
+                <para>The type of a parameter of a covariant callable parameter is a 
+                contravariant position.</para>
+            </listitem>
+            <listitem>
+                <para>The type of a parameter of a contravariant callable parameter is a 
+                covariant position.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Finally, to determine if a type parameter that occurs as a type argument occurs
+        in a covariant or contravariant position, we must consider the declared variance
+        of the corresponding type parameter:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>A type argument of a covariant type parameter of a type in a covariant 
+                position is a covariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A type argument of a contravariant type parameter of a type in a 
+                covariant position is a contravariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A type argument of a covariant type parameter of a type in a 
+                contravariant position is a contravariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A type argument of a contravariant type parameter of a type in a 
+                contravariant position is a covariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A type argument of an invariant type parameter of a type in any position 
+                is an invariant position.</para>
+            </listitem>
+            <listitem>
+                <para>A type argument of any type parameter of a type in an invariant position 
+                is an invariant position.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <!--
         <para>These rules apply to members declared by the type, and to members inherited from 
         supertypes.</para>
-                
+        -->
+            
         </section>
         
         <section id="sequencedtypeparameters">
