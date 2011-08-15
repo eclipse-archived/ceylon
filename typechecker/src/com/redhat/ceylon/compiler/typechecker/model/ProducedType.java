@@ -118,6 +118,27 @@ public class ProducedType extends ProducedReference {
                 return false;
             }
             else {
+            	ProducedType dt = getDeclaringType();
+        		ProducedType odt = type.getDeclaringType();
+            	if (dt==null) {
+            		if (odt!=null) {
+            			return false;
+            		}
+            	}
+            	else {
+            		if (odt==null) {
+            			return false;
+            		}
+            		else {
+	            		TypeDeclaration otd = (TypeDeclaration) type.getDeclaration().getContainer();
+						ProducedType odts = odt.getSupertype(otd);
+						TypeDeclaration td = (TypeDeclaration) getDeclaration().getContainer();
+						ProducedType dts = dt.getSupertype(td);
+            			if ( !dts.isExactly(odts) ) {
+            				return false;
+            			}
+            		}
+            	}
                 for (TypeParameter p: getDeclaration().getTypeParameters()) {
                     ProducedType arg = getTypeArguments().get(p);
                     ProducedType otherArg = type.getTypeArguments().get(p);
@@ -185,20 +206,32 @@ public class ProducedType extends ProducedReference {
             return false;
         }
         else {
-            boolean isInner = getDeclaration().isMember();
-            if (isInner) {
-                boolean isOtherInner = type.getDeclaration().isMember();
-                if (isOtherInner) {
-                    if (!getDeclaringType().isSubtypeOf(type.getDeclaringType())) {
-                        return false;
-                    }
-                }
-            }
             ProducedType st = getSupertype(type.getDeclaration(), selfTypeToIgnore);
             if (st==null) {
                 return false;
             }
             else {
+            	ProducedType dt = st.getDeclaringType();
+        		ProducedType odt = type.getDeclaringType();
+            	if (dt==null) {
+            		if (odt!=null) {
+            			//probably extraneous!
+            			return false;
+            		}
+            	}
+            	else {
+            		if (odt==null) {
+            			//probably extraneous!
+            			return false;
+            		}
+            		else {
+	            		TypeDeclaration otd = (TypeDeclaration) type.getDeclaration().getContainer();
+						ProducedType odts = odt.getSupertype(otd);
+						if (!dt.isSubtypeOf(odts)) {
+	            			return false;
+	            		}
+            		}
+            	}
                 for (TypeParameter p: type.getDeclaration().getTypeParameters()) {
                     ProducedType arg = st.getTypeArguments().get(p);
                     ProducedType otherArg = type.getTypeArguments().get(p);
@@ -316,12 +349,14 @@ public class ProducedType extends ProducedReference {
             if (extendedType!=null) {
                 extendedType.getSupertypes(list);
             }
-            for (ProducedType dst : getSatisfiedTypes()) {
+            for (ProducedType dst: getSatisfiedTypes()) {
                 dst.getSupertypes(list);
             }
             ProducedType selfType = getSelfType();
             if (selfType!=null) {
-                selfType.getSupertypes(list);
+            	if (!(selfType.getDeclaration() instanceof TypeParameter)) { //TODO: is this really correct???
+            		selfType.getSupertypes(list);
+            	}
             }
             List<ProducedType> caseTypes = getCaseTypes();
             if (caseTypes!=null /*&& !getDeclaration().getCaseTypes().isEmpty()*/) {
@@ -329,7 +364,7 @@ public class ProducedType extends ProducedReference {
                     List<ProducedType> candidates = t.getSupertypes();
                     for (ProducedType st: candidates) {
                         boolean include = true;
-                        for (ProducedType ct : getDeclaration().getCaseTypes()) {
+                        for (ProducedType ct: getDeclaration().getCaseTypes()) {
                             if (!ct.isSubtypeOf(st)) {
                                 include = false;
                                 break;
@@ -371,7 +406,14 @@ public class ProducedType extends ProducedReference {
     ProducedType getSupertype(final Criteria c, List<ProducedType> list, 
             final TypeDeclaration ignoringSelfType) {
         if (c.satisfies(getDeclaration())) {
-            return this;
+        	ProducedType pt = new ProducedType();
+        	pt.setDeclaration(getDeclaration());
+        	if (getDeclaringType()!=null) {
+        		ProducedType dt = getDeclaringType().getSupertype((TypeDeclaration) getDeclaration().getContainer());
+	        	pt.setDeclaringType(dt);
+        	}
+        	pt.setTypeArguments(getTypeArguments());
+            return pt;
         }
         if ( isWellDefined() && Util.addToSupertypes(list, this) ) {
             //search for the most-specific supertype 
@@ -769,7 +811,7 @@ public class ProducedType extends ProducedReference {
         private Map<TypeParameter, ProducedType> substituted(ProducedType pt, 
                 Map<TypeParameter, ProducedType> substitutions) {
             Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
-            for (Map.Entry<TypeParameter, ProducedType> e : pt.getTypeArguments().entrySet()) {
+            for (Map.Entry<TypeParameter, ProducedType> e: pt.getTypeArguments().entrySet()) {
                 if (e.getValue()!=null) {
                     map.put(e.getKey(), substitute(e.getValue(), substitutions));
                 }
@@ -784,8 +826,9 @@ public class ProducedType extends ProducedReference {
                 Map<TypeParameter, ProducedType> substitutions) {
             ProducedType type = new ProducedType();
             type.setDeclaration(dec);
-            if (pt.getDeclaringType()!=null) {
-                type.setDeclaringType(substitute(pt.getDeclaringType(), substitutions));
+            ProducedType dt = pt.getDeclaringType();
+			if (dt!=null) {
+                type.setDeclaringType(substitute(dt, substitutions));
             }
             type.setTypeArguments(substituted(pt, substitutions));
             return type;

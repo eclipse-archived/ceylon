@@ -102,6 +102,12 @@ public class Util {
         Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
         if (declaringType!=null) {
             map.putAll(declaringType.getTypeArguments());
+            //TODO: this needs to be recursive (use a while loop 
+            //      that walks the chain of declaringTypes)
+            ProducedType dt = declaringType.getDeclaringType();
+			if (dt!=null) {
+            	map.putAll(dt.getTypeArguments());
+            }
         }
         if (declaration instanceof Generic) {
             Generic g = (Generic) declaration;
