@@ -2177,6 +2177,19 @@ given Result(Natural count) satisfies Numeric<Result>]]></programlisting>
     </section>
     
     <section>
+        <title>Initialization parameter specifications</title>
+
+        <para>An initialization parameter specification allows instantiation of the 
+        type represented by the type parameter within the body of the declaration.</para>
+        
+        <programlisting><![CDATA[Result create<Result>(Object object) 
+        given Result(String s) { 
+    return Result(object.string.lowercase);
+}]]></programlisting>
+
+    </section>
+    
+    <section>
         <title>PROPOSAL: Metatype bounds</title>
         
         <comment><para>NOTE: Metatypes are a proposed feature for a future version 
@@ -2203,19 +2216,6 @@ given Result(Natural count) satisfies Numeric<Result>]]></programlisting>
         be considered to satisfy a metatype bound, allowing type class introduction.
         </para></comment>
         
-    </section>
-    
-    <section>
-        <title>Initialization parameter specifications</title>
-
-        <para>An initialization parameter specification allows instantiation of the 
-        type represented by the type parameter within the body of the declaration.</para>
-        
-        <programlisting><![CDATA[Result create<Result>(Object object) 
-        given Result(String s) { 
-    return Result(object.string.lowercase);
-}]]></programlisting>
-
     </section>
     
     <section>
