@@ -17,3 +17,20 @@ shared class NamedArgumentInvocationLocal() {
     }
     
 }
+
+// qualified
+@nomodel
+class X() {
+    void foo(String s, Boolean b) {
+    } 
+    void bar() { 
+        void foo(String s, Boolean b) {
+        } 
+        foo{
+            b=true; 
+            s="a";};
+        this.foo{
+            b=true; 
+            s="a";}; 
+    } 
+}

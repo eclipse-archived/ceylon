@@ -42,3 +42,38 @@ public class NamedArgumentInvocationLocal {
     public NamedArgumentInvocationLocal() {
     }
 }
+class X {
+    
+    private final void foo(final .java.lang.String s, final boolean b) {
+    }
+    
+    private final void bar() {
+        
+        final class foo {
+            
+            private foo() {
+            }
+            
+            void foo(final .java.lang.String s, final boolean b) {
+            }
+        }
+        final foo foo = new foo();
+        new .ceylon.language.NamedArgumentCall<foo>(foo, .ceylon.language.Boolean.instance(true), .ceylon.language.String.instance("a")){
+            
+            public .java.lang.Object call$() {
+                this.instance.foo(((ceylon.language.String)this.args[1]).toString(), ((ceylon.language.Boolean)this.args[0]).booleanValue());
+                return null;
+            }
+        }.call$();
+        new .ceylon.language.NamedArgumentCall<com.redhat.ceylon.compiler.test.expression.invoke.X>(this, .ceylon.language.Boolean.instance(true), .ceylon.language.String.instance("a")){
+            
+            public .java.lang.Object call$() {
+                this.instance.foo(((ceylon.language.String)this.args[1]).toString(), ((ceylon.language.Boolean)this.args[0]).booleanValue());
+                return null;
+            }
+        }.call$();
+    }
+    
+    X() {
+    }
+}
