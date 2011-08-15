@@ -2416,7 +2416,8 @@ given Result(Natural count) satisfies Numeric<Result>]]></programlisting>
             -->
             <listitem>
                 <para>A type argument to a type parameter with a metatype bound must have 
-                a metatype assignable to all metatype bounds.</para>
+                a metatype assignable to all metatype bounds. <emphasis>(Note that metatype 
+                bounds are a proposed feature for a future version of the language.)</emphasis></para>
             </listitem>
             <listitem>
                 <para>A type argument to a type parameter with an initialization parameter
