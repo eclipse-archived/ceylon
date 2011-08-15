@@ -23,6 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -2348,6 +2349,7 @@ public class ExpressionVisitor extends AbstractVisitor {
             ProducedType type = et.getTypeModel();
             if (type!=null) {
                 checkSelfTypes(et, td, type);
+                checkExtensionOfMemberType(et, td, type);
             }
         }
     }
@@ -2360,9 +2362,34 @@ public class ExpressionVisitor extends AbstractVisitor {
             ProducedType type = t.getTypeModel();
             if (type!=null) {
                 checkSelfTypes(t, td, type);
+                checkExtensionOfMemberType(t, td, type);
             }
         }
     }
+
+	private void checkExtensionOfMemberType(Node that, TypeDeclaration td,
+			ProducedType type) {
+		ProducedType declaringType = type.getDeclaringType();
+		if (declaringType!=null && td instanceof ClassOrInterface) {
+			Scope s = td;
+			while (s!=null) {
+				s = s.getContainer();
+				if (s instanceof TypeDeclaration) {
+					TypeDeclaration otd = (TypeDeclaration) s;
+					if ( otd.getType().isSubtypeOf(declaringType) ) {
+						return;
+					}
+				}
+			}
+			//if ( !td.isMember() || !td.getType().getDeclaringType().isSubtypeOf(declaringType) ) {
+				that.addError("containing type " + declaringType.getDeclaration().getName() + 
+						" of supertype " + type.getDeclaration().getName() + 
+						//" is not the containing type or a supertype of the containing type of " +
+						" is not an outer type or supertype of any outer type of " +
+						td.getName());
+			//}
+		}
+	}
     
     private void checkSelfTypes(Node that, TypeDeclaration td, ProducedType type) {
         if (!(td instanceof TypeParameter)) { //TODO: is this really ok?!
