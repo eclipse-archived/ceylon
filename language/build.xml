@@ -7,7 +7,7 @@
    language, or you can call lang.revdiff to get a difference report for a particular
    language, compared with the English reference.
 -->
-<project name="Project Ceylon" default="doc" basedir=".">
+<project name="Ceylon Language Specification" default="doc" basedir=".">
     <property file="build.properties"/>
     <!-- Allow this to be overriden by others importing this project. -->
     <dirname property="imported.basedir" file="${ant.file.ReferenceDocumentation}"/>
@@ -24,7 +24,7 @@
 
     <!-- Base name for documentation artifacts. -->
     <tstamp/>
-    <property name="docname" value="Project Ceylon ${DSTAMP}"/>
+    <property name="docname" value="Ceylon Language Specification ${DSTAMP}"/>
 
     <!-- Set DocBook stylesheets. -->
     <property name="db.style.fopdf" value="fopdf.xsl"/>
