@@ -2070,7 +2070,7 @@ Result findSingleByIntegerKey<Result>(Type<Result> type, Integer key) = findByKe
                 of the current instance, and</para>
             </listitem-->
             <listitem>
-                <para>an <emphasis>enumerated bound</emphasis>, <literal>given X of T | U | V</literal>
+                <para>an <emphasis>enumerated bound</emphasis>, <literal>given X of T|U|V</literal>
                 specifies that the type parameter <literal>X</literal> represents one 
                 of the enumerated types,</para>
             </listitem>
