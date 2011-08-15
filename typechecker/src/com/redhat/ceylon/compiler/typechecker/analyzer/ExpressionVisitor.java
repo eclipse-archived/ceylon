@@ -95,8 +95,8 @@ public class ExpressionVisitor extends AbstractVisitor {
                 ProducedType st1 = supertypes.get(i);
                 for (int j=i+1; j<supertypes.size(); j++) {
                     ProducedType st2 = supertypes.get(j);
-                    if (st1.getDeclaration()==st2.getDeclaration() && !st1.isExactly(st2)) {
-                        if (!st1.isSupertypeOf(st2) && !st2.isSupertypeOf(st1)) {
+                    if (st1.getDeclaration()==st2.getDeclaration() /*&& !st1.isExactly(st2)*/) {
+                        if (!st1.isSubtypeOf(st2) && !st2.isSubtypeOf(st1)) {
                             that.addError("type " + td.getName() +
                                     " has the same supertype twice with incompatible type arguments: " +
                                     st1.getProducedTypeName() + " and " + st2.getProducedTypeName());
