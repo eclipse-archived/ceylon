@@ -18,9 +18,10 @@
 <book lang="en">
 
     <bookinfo>
-        <title>Project Ceylon</title>
-        <subtitle>A Better Java</subtitle>
-        <releaseinfo>For internal discussion</releaseinfo>
+        <title>The Ceylon Language</title>
+        <subtitle>Say more, more clearly</subtitle>
+        <releaseinfo>Early draft</releaseinfo>
+        <author><firstname>Gavin</firstname><surname>King</surname></author>        
     </bookinfo>
 
     <toc/>
