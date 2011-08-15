@@ -292,10 +292,23 @@
     <para>
     Instead of method and constructor overloading, Ceylon supports parameters 
     with default values and <emphasis>sequenced</emphasis> ("varargs") 
-    parameters. Furthermore, a generic method may be used to emulate parameter
-    type overloading. Therefore, a single method in Ceylon may emulate the 
-    signatures of several overloaded methods in Java. 
+    parameters.
     </para>
+    
+    <programlisting>void addItem(Product product, Natural quantity=1) { ... }</programlisting>
+    
+    <programlisting>String join(String... strings) { ... }</programlisting>
+    
+    <para>
+    Furthermore, a generic method may be used to emulate parameter
+    type overloading.
+    </para>
+    
+    <programlisting>Number sum&lt;Number&gt;(Number... numbers)
+        given Number of Integer | Float { ... }</programlisting>
+    
+    <para>Therefore, a single method in Ceylon may emulate the signatures of 
+    several overloaded methods in Java.</para>
     
     </section>
     
@@ -317,11 +330,12 @@
     the method invocation. A method may even return an invocable reference to 
     another method.</para>
     
+    <!-- 
     <para>
     Finally, nested method declarations receive a closure of 
     immutable references defined in the surrounding scope.
     </para>
-    
+    -->
     </section>
     
     <!--
