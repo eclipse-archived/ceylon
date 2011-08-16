@@ -672,7 +672,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             
             if (willEraseToObject(primary.getTypeModel())) {
                 // Erased types need a type cast
-                JCExpression targetType = makeJavaType(expr.getTarget().getDeclaringType());
+                JCExpression targetType = makeJavaType(expr.getTarget().getQualifyingType());
                 primaryExpr = make().TypeCast(targetType, primaryExpr);
             } else if (sameType(syms().ceylonStringType, primary.getTypeModel())) {
                 // Java Strings need to be boxed
