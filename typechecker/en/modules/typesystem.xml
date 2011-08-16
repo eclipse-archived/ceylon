@@ -2497,7 +2497,8 @@ given Result(Natural count) satisfies Numeric<Result>]]></programlisting>
                 <para>
                     If <literal>X</literal> is invariant (neither covariant nor contravariant), 
                     there is no subtype relationship between <literal>T&lt;A&gt;</literal> and 
-                    <literal>T&lt;B&gt;</literal>.
+                    <literal>T&lt;B&gt;</literal> unless <literal>A</literal> and <literal>B</literal> 
+                    are the same type.
                 </para>
             </listitem>
         </itemizedlist>
