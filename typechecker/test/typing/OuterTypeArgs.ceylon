@@ -18,9 +18,20 @@ class OuterTypeArgs() {
 					return t->s;
 				}
 			}
+			void method() {
+				class Inner() extends Qux<String>() {}
+				Foo<T>.Bar<S>.Qux<String> good = Inner();
+				Bar<S>.Qux<String> ok = Inner();
+				Qux<String> stillok = Inner();
+				@error Foo<String>.Bar<S>.Qux<String> bad = Inner();
+				@error Foo<T>.Bar<Integer>.Qux<String> alsobad = Inner();
+				Entry<T,S> entry(T t, S s) {
+					return Inner().entry(t,s);
+				}
+			}
 		}
 	}
-	class Baz<T>() extends Foo<T>() given T satisfies Equality {}
+	class Baz<F>() extends Foo<F>() given F satisfies Equality {}
 	class Fum<T>() extends Foo<T>() given T satisfies Equality {
 		shared actual class Bar<S>() extends super.Bar<S>() 
 		        given S satisfies Equality {
@@ -47,6 +58,32 @@ class OuterTypeArgs() {
 	Fum<String>.Bar<Natural> fb3 = fmbg;
 	@error Fum<String>.Bar<Natural> fb4 = fbg; 
 	Baz<String>.Bar<Natural> fb5 = fmbg;
-	Baz<String>.Bar<Natural> fb6 = fbg; 
+	Baz<String>.Bar<Natural> fb6 = fbg;
+	
+	Baz<Equality>.Bar<String> bazbarobj = Baz<Equality>().Bar<String>();
+	@error Baz<Natural>.Bar<String> bazbarnat = bazbarobj;
+	
+	class Outer<out T>(T t) {
+		shared class Inner<out S>(S s) {
+			shared Outer<T>.Inner<S> bar() { return this; }
+		}
+	}
+	
+	@type["OuterTypeArgs.Outer<String>.Inner<String>"] Outer("hello").Inner("world");
+	@type["OuterTypeArgs.Outer<String>.Inner<String>"] Outer("hello").Inner("world").bar();
+	Outer<Object>.Inner<String> oiobj = Outer("hello").Inner("world");
+	@error Outer<String>.Inner<String> oistr = oiobj;
+
+	class Consumer<in T>(T t) {
+		shared class Inner<out S>(S s) {
+			shared S foo(T t) { return s; }
+		}
+	}
+	
+	@type["OuterTypeArgs.Consumer<String>.Inner<String>"] Consumer("hello").Inner("world");
+	@type["String"] Consumer("hello").Inner("world").foo("hello");
+	Consumer<Bottom>.Inner<String> ciobj = Consumer("hello").Inner("world");
+	@error Consumer<String>.Inner<String> cistr = ciobj;
+
 }
 
