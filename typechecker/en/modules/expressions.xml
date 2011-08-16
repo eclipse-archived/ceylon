@@ -448,6 +448,9 @@ shared interface Color { ... }</programlisting>
         
         <programlisting>StringTemplate: StringLiteral (Expression StringLiteral)+</programlisting>
         
+        <programlisting>An interpolated expression may not begin with a string
+        literal or the unary prefix <literal>+</literal> operator.</programlisting>
+        
         <para>Each interpolated expression contained in the string template must be 
         have a type assignable to the interface <literal>Format</literal> defined in 
         <literal>ceylon.language</literal>.</para>
