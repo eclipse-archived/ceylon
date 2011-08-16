@@ -103,11 +103,15 @@ public class Util {
     static Map<TypeParameter,ProducedType> arguments(Declaration declaration, 
     		ProducedType receivingType, List<ProducedType> typeArguments) {
         Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
+        //make sure we collect all type arguments
+        //from the whole qualified type!
         ProducedType dt = receivingType;
         while (dt!=null) {
             map.putAll(dt.getTypeArguments());
             dt = dt.getQualifyingType();
         }
+        //now turn the type argument tuple into a
+        //map from type parameter to argument
         if (declaration instanceof Generic) {
             Generic g = (Generic) declaration;
             for (int i=0; i<g.getTypeParameters().size(); i++) {
