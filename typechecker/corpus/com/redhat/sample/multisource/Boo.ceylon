@@ -1,2 +1,0 @@
-shared class Boo() {
-}
