@@ -326,12 +326,6 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
      * member with the given name. 
      */
     private Declaration getSupertypeDeclaration(final String name) {
-    	//TODO: I believe this is broken - it needs to
-    	//      keep searching the supertypes for the
-    	//      most-refined member, not just stop at
-    	//      the first member it finds! There might
-    	//      be multiple interfaces with the member.
-    	//                See spec 5.1.1
         class Criteria implements ProducedType.Criteria {
             @Override
             public boolean satisfies(TypeDeclaration type) {
