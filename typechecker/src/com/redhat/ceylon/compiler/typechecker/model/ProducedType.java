@@ -470,6 +470,10 @@ public class ProducedType extends ProducedReference {
         boolean satisfies(TypeDeclaration type);
     }
     
+    /**
+     * Search for the most-specialized supertype satisfying
+     * the given predicate. 
+     */
     private ProducedType getSupertype(final Criteria c, List<ProducedType> list, 
             final TypeDeclaration ignoringSelfType) {
         if (c.satisfies(getDeclaration())) {
