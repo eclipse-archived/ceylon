@@ -95,10 +95,11 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
      * is a nested type.
      *
      * @param qualifyingType the qualifying produced
-     * type or null if this is not a
-     * nested type declaration
+     *                       type or null if this is 
+     *                       not a nested type dec
      * @param typeArguments arguments to the type
-     * parameters of this declaration
+     *                      parameters of this 
+     *                      declaration
      */
     public ProducedType getProducedType(ProducedType qualifyingType,
             List<ProducedType> typeArguments) {

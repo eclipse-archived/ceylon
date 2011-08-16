@@ -339,6 +339,11 @@ public class ProducedType extends ProducedReference {
     /**
      * A member of the type with actual type arguments
      * to the receiving type and invocation.
+     * 
+     * @param member the declaration of a member of
+     *               this type
+     * @param typeArguments the type arguments of the
+     *                      invocation
      */
     public ProducedTypedReference getTypedMember(TypedDeclaration member, 
             List<ProducedType> typeArguments) {
@@ -360,6 +365,11 @@ public class ProducedType extends ProducedReference {
     /**
      * A member type of the type with actual type arguments
      * to the receiving type and invocation.
+     * 
+     * @param member the declaration of a member type of
+     *               this type
+     * @param typeArguments the type arguments of the
+     *                      invocation
      */
     public ProducedType getTypeMember(TypeDeclaration member, 
             List<ProducedType> typeArguments) {
@@ -375,7 +385,16 @@ public class ProducedType extends ProducedReference {
 
     /**
      * Substitute invocation type arguments into an upper bound 
-     * on a type parameter of the invocation.  
+     * on a type parameter of the invocation, where this type 
+     * represents an upper bound.
+     * 
+     * @param receiver the type that receives the invocation
+     * @param member the invoked member
+     * @param typeArguments the explicit or inferred type 
+     *                      arguments of the invocation
+     * 
+     * @return the upper bound of a type parameter, after 
+     *         performing all type argument substitution
      */
     public ProducedType getProducedType(ProducedType receiver, Declaration member, 
             List<ProducedType> typeArguments) {
@@ -435,7 +454,13 @@ public class ProducedType extends ProducedReference {
     
     /**
      * Given a type declaration, return a produced type of 
-     * which this type is an invariant subtype. 
+     * which this type is an invariant subtype.
+     * 
+     * @param dec a type declaration
+     * 
+     * @return a produced type of the given type declaration
+     *         which is a supertype of this type, or null if
+     *         there is no such supertype
      */
     public ProducedType getSupertype(TypeDeclaration dec) {
         return getSupertype(dec, null);
@@ -445,6 +470,14 @@ public class ProducedType extends ProducedReference {
      * Given a type declaration, return a produced type of 
      * which this type is an invariant subtype. Ignore a 
      * given self type constraint. 
+     * 
+     * @param dec a type declaration
+     * @param selfTypeToIgnore a self type to ignore when 
+     *        searching for supertypes
+     * 
+     * @return a produced type of the given type declaration
+     *         which is a supertype of this type, or null if
+     *         there is no such supertype
      */
     private ProducedType getSupertype(final TypeDeclaration dec, 
             TypeDeclaration selfTypeToIgnore) {
@@ -471,8 +504,8 @@ public class ProducedType extends ProducedReference {
     }
     
     /**
-     * Search for the most-specialized supertype satisfying
-     * the given predicate. 
+     * Search for the most-specialized supertype 
+     * satisfying the given predicate. 
      */
     private ProducedType getSupertype(final Criteria c, List<ProducedType> list, 
             final TypeDeclaration ignoringSelfType) {
@@ -656,6 +689,9 @@ public class ProducedType extends ProducedReference {
      * Determine if this is a decidable supertype, i.e. if it
      * obeys the restriction that types with contravariant 
      * type parameters may only appear in covariant positions. 
+     * 
+     * @return a list of type parameters which appear in illegal 
+     *         positions
      */
     public List<TypeDeclaration> checkDecidability() {
         List<TypeDeclaration> errors = new ArrayList<TypeDeclaration>();
@@ -716,6 +752,14 @@ public class ProducedType extends ProducedReference {
      * Check that this type can appear at a position,
      * given the variance of the position (covariant,
      * contravariant, or invariant.)
+     * 
+     * @param covariant true for a covariant position
+     * @param contravariant true for a contravariant 
+     *                      position
+     * @param declaration TODO!
+     * 
+     * @return a list of type parameters which appear
+     *         in illegal positions
      */
     public List<TypeParameter> checkVariance(boolean covariant, boolean contravariant,
             Declaration declaration) {
