@@ -103,6 +103,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 builder = make().Apply(null, makeSelect(builder, "append"), List.<JCExpression>of(transform(literal)));
             }
             if (ii == expressions.size()) {
+                // The loop condition includes the last literal, so break out
+                // after that because we've already exhausted all the expressions
                 break;
             }
             Expression expression = expressions.get(ii);
