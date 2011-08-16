@@ -779,28 +779,32 @@ String? firstWord = words[0];</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>If a type extends, satisfies, or adapts a second type, we say it <emphasis>inherits</emphasis>
-        the second type.</para>
+        <para>If a type declaration extends, satisfies, or adapts a type, we say it 
+        <emphasis>inherits</emphasis> the type. Inheritance results in a relationship
+        called <emphasis>invariant subtyping</emphasis> between produced types.</para>
         
         <itemizedlist>
         <listitem>
             <para>If a type <literal>X</literal> inherits a type <literal>Y</literal>, 
-            then <literal>X</literal> is a subtype of <literal>Y</literal>.</para>
+            then <literal>X</literal> is an invariant subtype of <literal>Y</literal>.</para>
         </listitem>
         <listitem>  
             <para>If a parameterized type <literal>X&lt;T&gt;</literal> inherits a type 
             <literal>Y</literal>, then the produced type <literal>X&lt;B&gt;</literal> 
-            is a subtype of <literal>Y</literal> for any type <literal>B</literal>.</para>
+            is an invariant subtype of <literal>Y</literal> for any type <literal>B</literal>.</para>
         </listitem>
         <listitem>  
             <para>If a parameterized type <literal>X&lt;T&gt;</literal> inherits a 
             produced type <literal>Y&lt;T&gt;</literal> that depends upon the type
             parameter <literal>T</literal>, then the produced type <literal>X&lt;B&gt;</literal> 
-            is a subtype of the produced type <literal>Y&lt;B&gt;</literal> formed by 
-            substituting <literal>B</literal> for <literal>T</literal> for any type 
-            <literal>B</literal>.</para>
+            is an invariant subtype of the produced type <literal>Y&lt;B&gt;</literal> 
+            formed by substituting <literal>B</literal> for <literal>T</literal> for 
+            any type <literal>B</literal>.</para>
         </listitem>
         </itemizedlist>
+        
+        <para>If a type is an invariant subtype of a second type then it is a subtype
+        of the second type.</para>
         
         <comment><para>TODO: these rules need to be formalized into the language of
         type constructors (functions from types to types).</para></comment>
@@ -1012,25 +1016,27 @@ shared interface ElementwiseEquality
         <itemizedlist>
         <listitem>
             <para>If a type <literal>X</literal> adapts a type <literal>Y</literal>, 
-            then <literal>Y</literal> is a subtype of <literal>X</literal> in 
-            every compilation unit that imports <literal>X</literal> and in the 
-            package to which <literal>X</literal> belongs.</para>
-        </listitem>
-        <listitem>  
-            <para>If a parameterized type <literal>X&lt;T&gt;</literal> inherits a 
-            type <literal>Y</literal>, then <literal>Y</literal> is a subtype of the 
-            produced type <literal>X&lt;B&gt;</literal> for any type <literal>B</literal>
+            then <literal>Y</literal> is an invariant subtype of <literal>X</literal> 
             in every compilation unit that imports <literal>X</literal> and in the 
             package to which <literal>X</literal> belongs.</para>
         </listitem>
         <listitem>  
             <para>If a parameterized type <literal>X&lt;T&gt;</literal> inherits a 
+            type <literal>Y</literal>, then <literal>Y</literal> is an invariant 
+            subtype of the produced type <literal>X&lt;B&gt;</literal> for any type 
+            <literal>B</literal> in every compilation unit that imports 
+            <literal>X</literal> and in the package to which <literal>X</literal> 
+            belongs.</para>
+        </listitem>
+        <listitem>  
+            <para>If a parameterized type <literal>X&lt;T&gt;</literal> inherits a 
             produced type <literal>Y&lt;T&gt;</literal> that depends upon the type
             parameter <literal>T</literal>, then the produced type <literal>Y&lt;B&gt;</literal> 
-            formed by substituting <literal>B</literal> for <literal>T</literal> is a
-            subtype of the produced type <literal>X&lt;B&gt;</literal> for any type 
-            <literal>B</literal> in every compilation unit that imports <literal>X</literal>
-            and in the package to which <literal>X</literal> belongs.</para>
+            formed by substituting <literal>B</literal> for <literal>T</literal> is 
+            an invariant subtype of the produced type <literal>X&lt;B&gt;</literal> 
+            for any type <literal>B</literal> in every compilation unit that imports 
+            <literal>X</literal> and in the package to which <literal>X</literal> 
+            belongs.</para>
         </listitem>
         </itemizedlist>
         
@@ -1119,22 +1125,22 @@ shared interface ElementwiseEquality
         
         <itemizedlist>
         <listitem>
-            <para>If every case of a type <literal>X</literal> is a suptype of a type 
-            <literal>Y</literal>, then <literal>X</literal> is a subtype of 
-            <literal>Y</literal>.</para>
-        </listitem>
-        <listitem>  
-            <para>If every case ofa parameterized type <literal>X&lt;T&gt;</literal> 
-            is a suptype of a type <literal>Y</literal>, then the produced type 
-            <literal>X&lt;B&gt;</literal> is a subtype of <literal>Y</literal> for 
-            any type <literal>B</literal>.</para>
+            <para>If every case of a type <literal>X</literal> is an invariant suptype 
+            of a type <literal>Y</literal>, then <literal>X</literal> is an invariant 
+            subtype of <literal>Y</literal>.</para>
         </listitem>
         <listitem>  
             <para>If every case of a parameterized type <literal>X&lt;T&gt;</literal> 
-            is a suptype of a produced type <literal>Y&lt;T&gt;</literal> that depends 
-            upon the type parameter <literal>T</literal>, then the produced type 
-            <literal>X&lt;B&gt;</literal> is a subtype of the produced type
-            <literal>Y&lt;B&gt;</literal> formed by substituting <literal>B</literal> 
+            is an invariant suptype of a type <literal>Y</literal>, then the produced 
+            type <literal>X&lt;B&gt;</literal> is an invariant subtype of <literal>Y</literal> 
+            for any type <literal>B</literal>.</para>
+        </listitem>
+        <listitem>  
+            <para>If every case of a parameterized type <literal>X&lt;T&gt;</literal> 
+            is an invariant suptype of a produced type <literal>Y&lt;T&gt;</literal> 
+            that depends upon the type parameter <literal>T</literal>, then the produced 
+            type <literal>X&lt;B&gt;</literal> is an invariant subtype of the produced 
+            type <literal>Y&lt;B&gt;</literal> formed by substituting <literal>B</literal> 
             for <literal>T</literal> for any type <literal>B</literal>.</para>
         </listitem>
         </itemizedlist>
@@ -2510,6 +2516,41 @@ given Result(Natural count) satisfies Numeric<Result>]]></programlisting>
         assignable to <literal>A</literal> for every type argument <literal>A</literal> 
         which satisfies the other type constraints on <literal>X</literal>.</para>
         
+        </section>
+        
+        <section id="qualifiedtypes">
+            <title>Qualified types</title>
+            
+            <para>If a class or interface declaration <literal>X&lt;P1,P2,...&gt;</literal> 
+            with type parameters <literal>P1,P2,...</literal> has a member class or interface 
+            declaration <literal>M&lt;Q1,Q2,...&gt;</literal>, then:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para><literal>U.M&lt;A1,A2,...&gt;</literal> is a subtype of 
+                    <literal>V.M&lt;B1,B2,...&gt;</literal> if <literal>U</literal> is a subtype 
+                    of <literal>X&lt;C1,C2,...&gt;</literal> and <literal>V</literal> is an 
+                    invariant subtype of <literal>X&lt;C1,C2,...&gt;</literal> and <literal>V</literal> 
+                    directly inherits <literal>M</literal> from <literal>X</literal> without 
+                    refining <literal>M</literal> and if <literal>M&lt;A1,A2,...&gt;</literal> 
+                    is a subtype of <literal>M&lt;B1,B2,...&gt;</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para><literal>M&lt;A1,A2,...&gt;</literal>
+                    is a subtype of <literal>V.M&lt;B1,B2,...&gt;</literal> if <literal>U</literal> 
+                    is a subtype of <literal>X&lt;C1,C2,...&gt;</literal>and <literal>V</literal> 
+                    is an invariant subtype of <literal>X&lt;P1,P2,...&gt;</literal> and <literal>V</literal> 
+                    directly inherits <literal>M</literal> from <literal>X</literal> without 
+                    refining <literal>M</literal> and if <literal>M&lt;A1,A2,...&gt;</literal> 
+                    is a subtype of <literal>M&lt;B1,B2,...&gt;</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <comment><para>Note that a type like <literal>M&lt;A1,A2,...&gt;</literal> is only
+            well-formed inside the scope in which <literal>M</literal> is declared or imported.
+            Outside this scope, references to <literal>M</literal> must be qualified by the 
+            containing type.</para></comment>
+            
         </section>
                 
         <section id="typeargumentsubstitution">
