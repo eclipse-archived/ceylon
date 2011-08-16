@@ -74,4 +74,9 @@ public final class Float
     public ceylon.language.Float succ() {
         return Float.instance(value + 1);
     }
+
+    @Override
+    public java.lang.String getFormatted() {
+        return java.lang.Double.toString(value);
+    }
 }

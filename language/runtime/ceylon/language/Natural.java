@@ -5,7 +5,8 @@ import com.redhat.ceylon.compiler.metadata.java.*;
 @SatisfiedTypes({
     "ceylon.language.Castable<ceylon.language.Natural|ceylon.language.Integer|ceylon.language.Float>",
     "ceylon.language.Integral<ceylon.language.Natural>",
-    "ceylon.language.Invertable<ceylon.language.Integer>"
+    "ceylon.language.Invertable<ceylon.language.Integer>",
+    "ceylon.language.Format"
 })
 public final class Natural
     extends Object
@@ -134,5 +135,10 @@ public final class Natural
     })
     public <CastValue extends Numeric> CastValue as() {
         return (CastValue) this;
+    }
+
+    @Override
+    public java.lang.String getFormatted() {
+        return java.lang.Long.toString(value);
     }
 }
