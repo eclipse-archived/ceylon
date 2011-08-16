@@ -338,6 +338,8 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
                 }
             }
         };
+        //this works by finding the most-specialized supertype
+        //that defines the member
         ProducedType st = getType().getSupertype(new Criteria());
         if (st!=null) {
             return st.getDeclaration().getDirectMember(name);
