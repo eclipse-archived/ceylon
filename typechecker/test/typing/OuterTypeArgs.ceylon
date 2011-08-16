@@ -72,7 +72,9 @@ class OuterTypeArgs() {
 	@type["OuterTypeArgs.Outer<String>.Inner<String>"] Outer("hello").Inner("world");
 	@type["OuterTypeArgs.Outer<String>.Inner<String>"] Outer("hello").Inner("world").bar();
 	Outer<Object>.Inner<String> oiobj = Outer("hello").Inner("world");
+	Outer<String>.Inner<Object> oiobj2 = Outer("hello").Inner("world");
 	@error Outer<String>.Inner<String> oistr = oiobj;
+	@error Outer<Natural>.Inner<String> oinat = Outer("hello").Inner("world");
 
 	class Consumer<in T>(T t) {
 		shared class Inner<out S>(S s) {
@@ -83,7 +85,9 @@ class OuterTypeArgs() {
 	@type["OuterTypeArgs.Consumer<String>.Inner<String>"] Consumer("hello").Inner("world");
 	@type["String"] Consumer("hello").Inner("world").foo("hello");
 	Consumer<Bottom>.Inner<String> ciobj = Consumer("hello").Inner("world");
+	Consumer<String>.Inner<Object> ciobj2 = Consumer("hello").Inner("world");
 	@error Consumer<String>.Inner<String> cistr = ciobj;
+	@error Consumer<Natural>.Inner<String> cinat = Consumer("hello").Inner("world");
 
 }
 
