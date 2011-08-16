@@ -94,21 +94,21 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
      * declaration is a member, in the case that this
      * is a nested type.
      *
-     * @param outerType the qualifying produced
+     * @param qualifyingType the qualifying produced
      * type or null if this is not a
      * nested type declaration
      * @param typeArguments arguments to the type
      * parameters of this declaration
      */
-    public ProducedType getProducedType(ProducedType outerType,
+    public ProducedType getProducedType(ProducedType qualifyingType,
             List<ProducedType> typeArguments) {
         /*if (!acceptsArguments(this, typeArguments)) {
               return null;
           }*/
         ProducedType pt = new ProducedType();
         pt.setDeclaration(this);
-        pt.setDeclaringType(outerType);
-        pt.setTypeArguments(arguments(this, outerType, typeArguments));
+        pt.setQualifyingType(qualifyingType);
+        pt.setTypeArguments(arguments(this, qualifyingType, typeArguments));
         return pt;
     }
 
@@ -126,7 +126,7 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
     public ProducedType getType() {
         ProducedType pt = new ProducedType();
         if (isMember()) {
-            pt.setDeclaringType(((ClassOrInterface) getContainer()).getType());
+            pt.setQualifyingType(((ClassOrInterface) getContainer()).getType());
         }
         pt.setDeclaration(this);
         //each type parameter is its own argument

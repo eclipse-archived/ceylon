@@ -88,23 +88,25 @@ public class Util {
     }
     
     /**
-     * Produce a map of type parameter to type argument
-     * given a list of type arguments to a declaration 
-     * and the containing type.
+     * Collect together type arguments given a list of 
+     * type arguments to a declaration and the receiving 
+     * type.
+     * 
+     * @return a map of type parameter to type argument
      *  
      * @param declaration a declaration
-     * @param declaringType the produced type of which
-     *        the declaration is a member
+     * @param receivingType the receiving produced type 
+     *        of which the declaration is a member
      * @param typeArguments explicit or inferred type 
      *        arguments of the declaration
      */
     static Map<TypeParameter,ProducedType> arguments(Declaration declaration, 
-    		ProducedType declaringType, List<ProducedType> typeArguments) {
+    		ProducedType receivingType, List<ProducedType> typeArguments) {
         Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
-        ProducedType dt = declaringType;
+        ProducedType dt = receivingType;
         while (dt!=null) {
             map.putAll(dt.getTypeArguments());
-            dt = dt.getDeclaringType();
+            dt = dt.getQualifyingType();
         }
         if (declaration instanceof Generic) {
             Generic g = (Generic) declaration;

@@ -27,6 +27,10 @@ public class ProducedType extends ProducedReference {
         return (TypeDeclaration) super.getDeclaration();
     }
 
+    /**
+     * Is this type exactly the same type as the
+     * given type? 
+     */
     public boolean isExactly(ProducedType type) {
         if (getDeclaration() instanceof BottomType) {
             return type.getDeclaration() instanceof BottomType;
@@ -118,23 +122,23 @@ public class ProducedType extends ProducedReference {
                 return false;
             }
             else {
-                ProducedType dt = getDeclaringType();
-                ProducedType odt = type.getDeclaringType();
-                if (dt==null) {
-                    if (odt!=null) {
+                ProducedType qt = getQualifyingType();
+                ProducedType tqt = type.getQualifyingType();
+                if (qt==null) {
+                    if (tqt!=null) {
                         return false;
                     }
                 }
                 else {
-                    if (odt==null) {
+                    if (tqt==null) {
                         return false;
                     }
                     else {
-                        TypeDeclaration otd = (TypeDeclaration) type.getDeclaration().getContainer();
-                        ProducedType odts = odt.getSupertype(otd);
-                        TypeDeclaration td = (TypeDeclaration) getDeclaration().getContainer();
-                        ProducedType dts = dt.getSupertype(td);
-                        if ( !dts.isExactly(odts) ) {
+                        TypeDeclaration totd = (TypeDeclaration) type.getDeclaration().getContainer();
+                        ProducedType tqts = tqt.getSupertype(totd);
+                        TypeDeclaration otd = (TypeDeclaration) getDeclaration().getContainer();
+                        ProducedType qts = qt.getSupertype(otd);
+                        if ( !qts.isExactly(tqts) ) {
                             return false;
                         }
                     }
@@ -158,14 +162,24 @@ public class ProducedType extends ProducedReference {
         }
     }
 
+    /**
+     * Is this type a supertype of the given type? 
+     */
     public boolean isSupertypeOf(ProducedType type) {
         return type.isSubtypeOf(this);
     }
 
+    /**
+     * Is this type a subtype of the given type? 
+     */
     public boolean isSubtypeOf(ProducedType type) {
         return isSubtypeOf(type, null);
     }
     
+    /**
+     * Is this type a subtype of the given type? Ignore
+     * a certain self type constraint.
+     */
     public boolean isSubtypeOf(ProducedType type, TypeDeclaration selfTypeToIgnore) {
         if (getDeclaration() instanceof BottomType) {
             return true;
@@ -211,23 +225,28 @@ public class ProducedType extends ProducedReference {
                 return false;
             }
             else {
-                ProducedType dt = st.getDeclaringType();
-                ProducedType odt = type.getDeclaringType();
-                if (dt==null) {
-                    if (odt!=null) {
+                ProducedType stqt = st.getQualifyingType();
+                ProducedType tqt = type.getQualifyingType();
+                if (stqt==null) {
+                    if (tqt!=null) {
                         //probably extraneous!
                         return false;
                     }
                 }
                 else {
-                    if (odt==null) {
+                    if (tqt==null) {
                         //probably extraneous!
                         return false;
                     }
                     else {
-                        TypeDeclaration otd = (TypeDeclaration) type.getDeclaration().getContainer();
-                        ProducedType odts = odt.getSupertype(otd);
-                        if (!dt.isSubtypeOf(odts)) {
+                    	//note that the qualifying type of the
+                    	//given type may be an invariant subtype
+                    	//of the type that declares the member
+                    	//type, as long as it doesn't refine the
+                    	//member type
+                        TypeDeclaration totd = (TypeDeclaration) type.getDeclaration().getContainer();
+                        ProducedType tqts = tqt.getSupertype(totd);
+                        if (!stqt.isSubtypeOf(tqts)) {
                             return false;
                         }
                     }
@@ -262,6 +281,14 @@ public class ProducedType extends ProducedReference {
         }
     }
 
+    /**
+     * Eliminate the given type from the union type.
+     * (Performs a set complement operation.) Note
+     * that this operation is not robust and only 
+     * works if this is a union of the given type
+     * with some other types that don't involve the
+     * given type.
+     */
     public ProducedType minus(ClassOrInterface ci) {
         if (getDeclaration()==ci) {
             return new BottomType().getType();
@@ -282,14 +309,23 @@ public class ProducedType extends ProducedReference {
         }
     }
 
+    /**
+     * Substitute the given types for the corresponding
+     * given type parameters wherever they appear in the
+     * type. 
+     */
     public ProducedType substitute(Map<TypeParameter, ProducedType> substitutions) {
         return new Substitution().substitute(this, substitutions);
     }
 
-    public ProducedType substituteInternal(Map<TypeParameter, ProducedType> substitutions) {
+    private ProducedType substituteInternal(Map<TypeParameter, ProducedType> substitutions) {
         return new InternalSubstitution().substitute(this, substitutions);
     }
 
+    /**
+     * A member or member type of the type with actual type 
+     * arguments to the receiving type and invocation.
+     */
     public ProducedReference getTypedReference(Declaration member, 
             List<ProducedType> typeArguments) {
         if (member instanceof TypeDeclaration) {
@@ -300,6 +336,10 @@ public class ProducedType extends ProducedReference {
         }
     }
 
+    /**
+     * A member of the type with actual type arguments
+     * to the receiving type and invocation.
+     */
     public ProducedTypedReference getTypedMember(TypedDeclaration member, 
             List<ProducedType> typeArguments) {
         ProducedType declaringType = getSupertype((TypeDeclaration) member.getContainer());
@@ -309,7 +349,7 @@ public class ProducedType extends ProducedReference {
         else {*/
         ProducedTypedReference ptr = new ProducedTypedReference();
         ptr.setDeclaration(member);
-        ptr.setDeclaringType(declaringType);
+        ptr.setQualifyingType(declaringType);
         Map<TypeParameter, ProducedType> map = arguments(member, declaringType, typeArguments);
         //map.putAll(sub(map));
         ptr.setTypeArguments(map);
@@ -317,18 +357,26 @@ public class ProducedType extends ProducedReference {
         //}
     }
 
+    /**
+     * A member type of the type with actual type arguments
+     * to the receiving type and invocation.
+     */
     public ProducedType getTypeMember(TypeDeclaration member, 
             List<ProducedType> typeArguments) {
         ProducedType declaringType = getSupertype((TypeDeclaration) member.getContainer());
         ProducedType pt = new ProducedType();
         pt.setDeclaration(member);
-        pt.setDeclaringType(declaringType);
+        pt.setQualifyingType(declaringType);
         Map<TypeParameter, ProducedType> map = arguments(member, declaringType, typeArguments);
         //map.putAll(sub(map));
         pt.setTypeArguments(map);
         return pt;
     }
 
+    /**
+     * Substitute invocation type arguments into an upper bound 
+     * on a type parameter of the invocation.  
+     */
     public ProducedType getProducedType(ProducedType receiver, Declaration member, 
             List<ProducedType> typeArguments) {
         ProducedType rst = (receiver==null) ? null : 
@@ -339,11 +387,16 @@ public class ProducedType extends ProducedReference {
     public ProducedType getType() {
         return this;
     }
+    
+    /**
+     * Get all supertypes of the type by traversing the whole
+     * type hierarchy. Avoid using this!
+     */
     public List<ProducedType> getSupertypes() {
         return getSupertypes(new ArrayList<ProducedType>());
     }
     
-    List<ProducedType> getSupertypes(List<ProducedType> list) {
+    private List<ProducedType> getSupertypes(List<ProducedType> list) {
         if ( isWellDefined() && Util.addToSupertypes(list, this) ) {
             ProducedType extendedType = getExtendedType();
             if (extendedType!=null) {
@@ -380,10 +433,19 @@ public class ProducedType extends ProducedReference {
         return list;
     }
     
+    /**
+     * Given a type declaration, return a produced type of 
+     * which this type is an invariant subtype. 
+     */
     public ProducedType getSupertype(TypeDeclaration dec) {
         return getSupertype(dec, null);
     }
     
+    /**
+     * Given a type declaration, return a produced type of 
+     * which this type is an invariant subtype. Ignore a 
+     * given self type constraint. 
+     */
     private ProducedType getSupertype(final TypeDeclaration dec, 
             TypeDeclaration selfTypeToIgnore) {
         Criteria c = new Criteria() {
@@ -395,6 +457,11 @@ public class ProducedType extends ProducedReference {
         return getSupertype(c, new ArrayList<ProducedType>(), selfTypeToIgnore);
     }
     
+    /**
+     * Given a predicate, return a produced type for a 
+     * declaration satisfying the predicate, of which 
+     * this type is an invariant subtype. 
+     */
     ProducedType getSupertype(Criteria c) {
         return getSupertype(c, new ArrayList<ProducedType>(), null);
     }
@@ -403,17 +470,10 @@ public class ProducedType extends ProducedReference {
         boolean satisfies(TypeDeclaration type);
     }
     
-    ProducedType getSupertype(final Criteria c, List<ProducedType> list, 
+    private ProducedType getSupertype(final Criteria c, List<ProducedType> list, 
             final TypeDeclaration ignoringSelfType) {
         if (c.satisfies(getDeclaration())) {
-            ProducedType pt = new ProducedType();
-            pt.setDeclaration(getDeclaration());
-            if (getDeclaringType()!=null) {
-                ProducedType dt = getDeclaringType().getSupertype((TypeDeclaration) getDeclaration().getContainer());
-                pt.setDeclaringType(dt);
-            }
-            pt.setTypeArguments(getTypeArguments());
-            return pt;
+            return qualifiedByDeclaringType();
         }
         if ( isWellDefined() && Util.addToSupertypes(list, this) ) {
             //search for the most-specific supertype 
@@ -487,6 +547,25 @@ public class ProducedType extends ProducedReference {
         }
     }
 
+	private ProducedType qualifiedByDeclaringType() {
+		ProducedType qt = getQualifyingType();
+		if (qt==null) {
+			return this;
+		}
+		else {
+			ProducedType pt = new ProducedType();
+			pt.setDeclaration(getDeclaration());
+			pt.setTypeArguments(getTypeArguments());
+			//replace the qualifying type with
+			//the supertype of the qualifying 
+			//type that declares this nested
+			//type, substituting type arguments
+		    ProducedType declaringType = qt.getSupertype((TypeDeclaration) getDeclaration().getContainer());
+		    pt.setQualifyingType(declaringType);
+			return pt;
+		}
+	}
+
     private static ProducedType getCommonSupertype(final List<ProducedType> caseTypes,
             TypeDeclaration dec, final TypeDeclaration selfTypeToIgnore) {
         //now try to construct a common produced
@@ -538,7 +617,7 @@ public class ProducedType extends ProducedReference {
             TypeDeclaration outer = (TypeDeclaration) dec.getContainer();
             List<ProducedType> list = new ArrayList<ProducedType>();
             for (ProducedType pt: caseTypes) {
-                ProducedType st = pt.getDeclaringType().getSupertype(outer, null);
+                ProducedType st = pt.getQualifyingType().getSupertype(outer, null);
                 list.add(st);
             }
             outerType = getCommonSupertype(list, outer, null);
@@ -558,6 +637,9 @@ public class ProducedType extends ProducedReference {
         return candidateResult;
     }
     
+    /**
+     * Get the type arguments as a tuple. 
+     */
     public List<ProducedType> getTypeArgumentList() {
         List<ProducedType> lpt = new ArrayList<ProducedType>();
         for (TypeParameter tp : getDeclaration().getTypeParameters()) {
@@ -566,6 +648,11 @@ public class ProducedType extends ProducedReference {
         return lpt;
     }
 
+    /**
+     * Determine if this is a decidable supertype, i.e. if it
+     * obeys the restriction that types with contravariant 
+     * type parameters may only appear in covariant positions. 
+     */
     public List<TypeDeclaration> checkDecidability() {
         List<TypeDeclaration> errors = new ArrayList<TypeDeclaration>();
         for (TypeParameter tp: getDeclaration().getTypeParameters()) {
@@ -621,6 +708,11 @@ public class ProducedType extends ProducedReference {
         }
     }
     
+    /**
+     * Check that this type can appear at a position,
+     * given the variance of the position (covariant,
+     * contravariant, or invariant.)
+     */
     public List<TypeParameter> checkVariance(boolean covariant, boolean contravariant,
             Declaration declaration) {
         List<TypeParameter> errors = new ArrayList<TypeParameter>();
@@ -676,6 +768,10 @@ public class ProducedType extends ProducedReference {
         }
     }
 
+    /**
+     * Is the type welldefined? Are any of its arguments
+     * garbage unknown types?
+     */
     public boolean isWellDefined() {
         for (ProducedType at: getTypeArgumentList()) {
             if (at==null || !at.isWellDefined() ) {
@@ -827,9 +923,9 @@ public class ProducedType extends ProducedReference {
                 Map<TypeParameter, ProducedType> substitutions) {
             ProducedType type = new ProducedType();
             type.setDeclaration(dec);
-            ProducedType dt = pt.getDeclaringType();
-            if (dt!=null) {
-                type.setDeclaringType(substitute(dt, substitutions));
+            ProducedType qt = pt.getQualifyingType();
+            if (qt!=null) {
+                type.setQualifyingType(substitute(qt, substitutions));
             }
             type.setTypeArguments(substitutedTypeArguments(pt, substitutions));
             return type;
@@ -884,7 +980,7 @@ public class ProducedType extends ProducedReference {
         }
         String producedTypeName = "";
         if (getDeclaration().isMember()) {
-            producedTypeName += getDeclaringType().getProducedTypeName();
+            producedTypeName += getQualifyingType().getProducedTypeName();
             producedTypeName += ".";
         }
         producedTypeName += getDeclaration().getName();
@@ -911,7 +1007,7 @@ public class ProducedType extends ProducedReference {
         }
         String producedTypeName = "";
         if (getDeclaration().isMember()) {
-            producedTypeName += getDeclaringType().getProducedTypeQualifiedName();
+            producedTypeName += getQualifyingType().getProducedTypeQualifiedName();
             producedTypeName += ".";
         }
         producedTypeName += getDeclaration().getQualifiedNameString();

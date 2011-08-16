@@ -45,18 +45,18 @@ public abstract class TypedDeclaration extends Declaration {
      * declaration is a member, in the case that this
      * is a member.
      *
-     * @param outerType the qualifying produced
-     * type or null if this is not a
-     * nested type declaration
+     * @param qualifyingType the qualifying produced
+     *        type or null if this is not a
+     *        nested type declaration
      * @param typeArguments arguments to the type
-     * parameters of this declaration
+     *        parameters of this declaration
      */
-    public ProducedTypedReference getProducedTypedReference(ProducedType pt,
+    public ProducedTypedReference getProducedTypedReference(ProducedType qualifyingType,
             List<ProducedType> typeArguments) {
         ProducedTypedReference ptr = new ProducedTypedReference();
         ptr.setDeclaration(this);
-        ptr.setDeclaringType(pt);
-        ptr.setTypeArguments(arguments(this, pt, typeArguments));
+        ptr.setQualifyingType(qualifyingType);
+        ptr.setTypeArguments(arguments(this, qualifyingType, typeArguments));
         return ptr;
     }
 

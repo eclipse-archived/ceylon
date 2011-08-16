@@ -15,21 +15,21 @@ public abstract class ProducedReference {
 
     private Map<TypeParameter, ProducedType> typeArguments = Collections.emptyMap();
     private Declaration declaration;
-    private ProducedType declaringType;
+    private ProducedType qualifyingType;
 
-    public ProducedType getDeclaringType() {
-        return declaringType;
+    public ProducedType getQualifyingType() {
+        return qualifyingType;
     }
 
-    public void setDeclaringType(ProducedType declaringType) {
-        this.declaringType = declaringType;
+    void setQualifyingType(ProducedType qualifyingType) {
+        this.qualifyingType = qualifyingType;
     }
 
     public Declaration getDeclaration() {
         return declaration;
     }
 
-    public void setDeclaration(Declaration type) {
+    void setDeclaration(Declaration type) {
         this.declaration = type;
     }
 
@@ -37,7 +37,7 @@ public abstract class ProducedReference {
         return typeArguments;
     }
 
-    public void setTypeArguments(Map<TypeParameter, ProducedType> typeArguments) {
+    void setTypeArguments(Map<TypeParameter, ProducedType> typeArguments) {
         this.typeArguments = typeArguments;
     }
 
@@ -47,10 +47,14 @@ public abstract class ProducedReference {
         return declaration instanceof Functional;
     }
 
+    /**
+     * Get the type of a parameter, after substitution of
+     * type arguments.
+     */
     public ProducedTypedReference getTypedParameter(Parameter p) {
         ProducedTypedReference ptr = new ProducedTypedReference();
         ptr.setDeclaration(p);
-        ptr.setDeclaringType(getDeclaringType());
+        ptr.setQualifyingType(getQualifyingType());
         ptr.setTypeArguments(getTypeArguments());
         return ptr;
     }

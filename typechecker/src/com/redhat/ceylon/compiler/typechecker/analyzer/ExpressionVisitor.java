@@ -2369,19 +2369,19 @@ public class ExpressionVisitor extends AbstractVisitor {
 
     private void checkExtensionOfMemberType(Node that, TypeDeclaration td,
             ProducedType type) {
-        ProducedType declaringType = type.getDeclaringType();
-        if (declaringType!=null && td instanceof ClassOrInterface) {
+        ProducedType qt = type.getQualifyingType();
+        if (qt!=null && td instanceof ClassOrInterface) {
             Scope s = td;
             while (s!=null) {
                 s = s.getContainer();
                 if (s instanceof TypeDeclaration) {
                     TypeDeclaration otd = (TypeDeclaration) s;
-                    if ( otd.getType().isSubtypeOf(declaringType) ) {
+                    if ( otd.getType().isSubtypeOf(qt) ) {
                         return;
                     }
                 }
             }
-            that.addError("containing type " + declaringType.getDeclaration().getName() + 
+            that.addError("containing type " + qt.getDeclaration().getName() + 
                     " of supertype " + type.getDeclaration().getName() + 
                     " is not an outer type or supertype of any outer type of " +
                     td.getName());
