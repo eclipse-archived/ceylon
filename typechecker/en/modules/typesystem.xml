@@ -2509,6 +2509,11 @@ given Result(Natural count) satisfies Numeric<Result>]]></programlisting>
             </listitem>
         </itemizedlist>
         
+        <comment><para>Note that if <literal>X</literal> is an invariant type parameter, 
+        then a produced type <literal>S</literal> is a subtype of <literal>T&lt;A&gt;</literal> 
+        if and only if <literal>S</literal> is an invariant subtype of 
+        <literal>T&lt;A&gt;</literal>.</para></comment>
+        
         <para>A produced type is a subtype of the type argument to any type parameter 
         that appears in the <literal>of</literal> clause of the type declaration. If 
         <literal>X</literal> is a type parameter of the parameterized type 
