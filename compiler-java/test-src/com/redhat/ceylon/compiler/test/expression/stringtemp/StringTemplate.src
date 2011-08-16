@@ -26,6 +26,10 @@ class StringTemplate {
         final .java.lang.String t = new java.lang.StringBuilder().append("Foo ").append(n).append(" bar").toString();
     }
     
+    private final void m4() {
+        final .java.lang.String t = new java.lang.StringBuilder().append("Foo ").append("").append(" bar").toString();
+    }
+    
     private final void m5() {
         final .java.lang.String t = new java.lang.StringBuilder().append("Foo ").append(4L).append(" bar").toString();
     }

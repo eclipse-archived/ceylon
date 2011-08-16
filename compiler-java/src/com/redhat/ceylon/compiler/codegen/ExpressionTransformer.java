@@ -73,7 +73,12 @@ public class ExpressionTransformer extends AbstractTransformer {
     JCExpression transformExpression(final Tree.Term expr) {
         CeylonVisitor v = new CeylonVisitor(gen());
         if (expr instanceof Tree.Expression) {
-            expr.visitChildren(v);
+            // Cope with things like ((expr))
+            Tree.Expression expr2 = (Tree.Expression)expr;
+            while(((Tree.Expression)expr2).getTerm() instanceof Tree.Expression) {
+                expr2 = (Tree.Expression)expr2.getTerm();
+            }
+            expr2.visitChildren(v);
         } else {
             expr.visit(v);
         }

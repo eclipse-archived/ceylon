@@ -13,9 +13,9 @@ class StringTemplate() {
     void m3(Natural n) {
     	String t = "Foo " n " bar";
     }
-    /*void m4() {
+    void m4() {
         String t = "Foo " ("") " bar";
-    }*/
+    }
     void m5() {
     	String t = "Foo " 4 " bar";
     }
