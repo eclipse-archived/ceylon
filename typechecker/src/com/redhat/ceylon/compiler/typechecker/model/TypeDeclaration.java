@@ -159,6 +159,11 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
         }
     }
     
+    /**
+     * Get all members inherited by this type declaration
+     * with the given name. Do not include members declared
+     * directly by this type. 
+     */
     public List<Declaration> getInheritedMembers(String name) {
         return getInheritedMembers(name, new ArrayList<TypeDeclaration>());
     }
@@ -185,23 +190,42 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
         return members;
     }
     
-    public Declaration getRefinedDeclaration(String name) {
-    	Class et = getExtendedTypeDeclaration();
-    	if (et!=null) {
-			Declaration ed = et.getDirectMember(name);
-	    	if (ed!=null) {
-	    		return ed;
-	    	}
-    	}
-		for (TypeDeclaration td: getSatisfiedTypeDeclarations()) {
-			Declaration sd = td.getDirectMember(name);
-			if (sd!=null) {
-				return sd;
-			}
-		}
-    	return getDirectMember(name);
+    /**
+     * Return the least-refined (i.e. the non-actual member)
+     * with the given name, by reversing the usual search
+     * order and searching supertypes first.
+     */
+    public Declaration getRefinedMember(String name) {
+    	return getRefinedMember(name, new ArrayList<TypeDeclaration>());
     }
 
+    private Declaration getRefinedMember(String name, List<TypeDeclaration> visited) {
+    	if (visited.contains(this)) {
+    		return null;
+    	}
+    	else {
+	    	visited.add(this);
+	    	TypeDeclaration et = getExtendedTypeDeclaration();
+	    	if (et!=null) {
+				Declaration ed = et.getRefinedMember(name, visited);
+		    	if (ed!=null) {
+		    		return ed;
+		    	}
+	    	}
+			for (TypeDeclaration st: getSatisfiedTypeDeclarations()) {
+				Declaration sd = st.getRefinedMember(name, visited);
+				if (sd!=null) {
+					return sd;
+				}
+			}
+	    	return getDirectMember(name);
+    	}
+    }
+
+    /**
+     * Get the most-refined member with the given name,
+     * searching this type first, followed by supertypes.
+     */
     @Override
     public Declaration getMember(String name) {
         //first search for the member in the local
@@ -220,11 +244,16 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
             }
         }
         //finally return the non-shared member we
-        //found earlier, so that the caller give a
-        //nice error message
+        //found earlier, so that the caller can give
+        //a nice error message
         return d;
     }
     
+    /**
+     * Get the parameter or most-refined member with the 
+     * given name, searching this type first, followed by 
+     * supertypes.
+     */
     @Override
     public Declaration getMemberOrParameter(String name) {
         //first search for the member or parameter 
@@ -240,6 +269,11 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
         }
     }
 
+    /**
+     * Is the given declaration inherited from
+     * a supertype of this type or an outer
+     * type?
+     */
     @Override
     public boolean isInherited(Declaration d) {
         if (d.getContainer()==this) {
@@ -256,6 +290,10 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
         }
     }
 
+    /**
+     * Get the containing type which inherits
+     * the given declaration.
+     */
     @Override
     public TypeDeclaration getInheritingDeclaration(Declaration d) {
         if (d.getContainer()==this) {
@@ -283,7 +321,17 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
         return getType().getSupertype(new Criteria())!=null;
     }
 
+    /**
+     * Get the supertype which defines the most-refined
+     * member with the given name. 
+     */
     private Declaration getSupertypeDeclaration(final String name) {
+    	//TODO: I believe this is broken - it needs to
+    	//      keep searching the supertypes for the
+    	//      most-refined member, not just stop at
+    	//      the first member it finds! There might
+    	//      be multiple interfaces with the member.
+    	//                See spec 5.1.1
         class Criteria implements ProducedType.Criteria {
             @Override
             public boolean satisfies(TypeDeclaration type) {
@@ -305,6 +353,9 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
         }
     }
 
+    /**
+     * Is this a class or interface alias? 
+     */
     public boolean isAlias() {
         return false;
     }

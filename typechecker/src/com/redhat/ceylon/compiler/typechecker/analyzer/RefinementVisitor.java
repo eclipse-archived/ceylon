@@ -86,7 +86,7 @@ public class RefinementVisitor extends AbstractVisitor {
             
             if (member) {
                 checkMember(that, dec);
-                Declaration refined = ((ClassOrInterface) dec.getContainer()).getRefinedDeclaration(dec.getName());
+                Declaration refined = ((ClassOrInterface) dec.getContainer()).getRefinedMember(dec.getName());
                 dec.setRefinedDeclaration(refined);
             }
 
