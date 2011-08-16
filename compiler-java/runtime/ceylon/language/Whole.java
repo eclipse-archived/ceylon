@@ -72,4 +72,9 @@ public final class Whole
         // FIXME
         throw new RuntimeException("Not implemented");
     }
+
+    @Override
+    public java.lang.String getFormatted() {
+        throw new RuntimeException("not implemented");
+    }
 }

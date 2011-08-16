@@ -1,0 +1,39 @@
+package com.redhat.ceylon.compiler.test.expression.stringtemp;
+
+class F implements ceylon.language.Format {
+    private final .java.lang.String formatted;
+    
+    @.java.lang.Override
+    public final .java.lang.String getFormatted() {
+        return this.formatted;
+    }
+    
+    F() {
+        this.formatted = "F";
+    }
+}
+class StringTemplate {
+    
+    private final void m1(final .java.lang.String s) {
+        final .java.lang.String t = new java.lang.StringBuilder().append("Foo ").append(s).append(" bar").toString();
+    }
+    
+    private final void m2(final .java.lang.String s) {
+        final .java.lang.String t = new java.lang.StringBuilder().append("Foo ").append(s).toString();
+    }
+    
+    private final void m3(final long n) {
+        final .java.lang.String t = new java.lang.StringBuilder().append("Foo ").append(n).append(" bar").toString();
+    }
+    
+    private final void m5() {
+        final .java.lang.String t = new java.lang.StringBuilder().append("Foo ").append(4L).append(" bar").toString();
+    }
+    
+    private final void m6(final com.redhat.ceylon.compiler.test.expression.stringtemp.F f) {
+        final .java.lang.String t = new java.lang.StringBuilder().append("Foo ").append(f.getFormatted()).append(" bar").toString();
+    }
+    
+    StringTemplate() {
+    }
+}

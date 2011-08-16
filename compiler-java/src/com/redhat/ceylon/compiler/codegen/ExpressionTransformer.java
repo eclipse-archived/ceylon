@@ -15,6 +15,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AndOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberOrTypeExpression;
@@ -42,6 +43,7 @@ import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
+import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
@@ -88,13 +90,33 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     public JCExpression transformStringExpression(Tree.StringTemplate expr) {
-        ListBuffer<JCExpression> strings = new ListBuffer<JCExpression>();
-        for (Tree.Expression t : expr.getExpressions()) {
-            strings.append(transformExpression(t));
+        at(expr);
+        JCExpression builder;
+        builder = make().NewClass(null, null, makeIdent("java.lang.StringBuilder"), List.<JCExpression>nil(), null);
+
+        java.util.List<StringLiteral> literals = expr.getStringLiterals();
+        java.util.List<Expression> expressions = expr.getExpressions();
+        for (int ii = 0; ii < literals.size(); ii += 1) {
+            StringLiteral literal = literals.get(ii);
+            if (!"\"\"".equals(literal.getText())) {// ignore empty string literals
+                at(literal);
+                builder = make().Apply(null, makeSelect(builder, "append"), List.<JCExpression>of(transform(literal)));
+            }
+            if (ii == expressions.size()) {
+                break;
+            }
+            Expression expression = expressions.get(ii);
+            at(expression);
+            if (isCeylonBasicType(expression.getTypeModel())) {// TODO: Test should be erases to String, long, int, boolean, char, byte, float, double
+                // If erases to a Java primitive just call append, don't box it just to call format. 
+                builder = make().Apply(null, makeSelect(builder, "append"), List.<JCExpression>of(transformExpression(expression)));
+            } else {
+                JCMethodInvocation formatted = make().Apply(null, makeSelect(transformExpression(expression), "getFormatted"), List.<JCExpression>nil());
+                builder = make().Apply(null, makeSelect(builder, "append"), List.<JCExpression>of(formatted));
+            }
         }
 
-        // FIXME Do something with a StringBuffer and multiple appends()s
-        return make().Apply(null, makeSelect(makeIdent(syms().ceylonStringType), "instance"), strings.toList());
+        return make().Apply(null, makeSelect(builder, "toString"), List.<JCExpression>nil());
     }
 
     private static Map<Class<? extends Tree.UnaryOperatorExpression>, String> unaryOperators;

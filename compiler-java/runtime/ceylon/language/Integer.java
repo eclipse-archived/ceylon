@@ -109,4 +109,9 @@ public final class Integer
             return false;
         }
     }
+
+    @Override
+    public java.lang.String getFormatted() {
+        return java.lang.Long.toString(value);
+    }
 }

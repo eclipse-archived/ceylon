@@ -211,4 +211,9 @@ public class ExpressionTest extends CompilerTest {
     public void testOprLogicalOp(){
         compareWithJavaSource("operator/LogicalOp");
     }
+    
+    @Test
+    public void testStpStringTemplate(){
+        compareWithJavaSource("stringtemp/StringTemplate");
+    }
 }

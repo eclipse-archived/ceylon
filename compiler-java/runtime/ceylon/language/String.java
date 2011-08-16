@@ -4,9 +4,10 @@ import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
 
 @SatisfiedTypes({
     "ceylon.language.Equality",
-    "ceylon.language.Comparable<ceylon.language.String>"
+    "ceylon.language.Comparable<ceylon.language.String>",
+    "ceylon.language.Format"
 })
-public final class String extends Object implements Equality, Comparable<String> {
+public final class String extends Object implements Equality, Comparable<String>, Format {
     public final java.lang.String value;
 
     private String(java.lang.String s) {
@@ -58,6 +59,11 @@ public final class String extends Object implements Equality, Comparable<String>
         int c = value.compareTo(other.value);
         return (c < 0) ? Comparison.SMALLER :
             ((c == 0) ? Comparison.EQUAL : Comparison.LARGER);
+    }
+
+    @Override
+    public java.lang.String getFormatted() {
+        return value;
     }
 
 }
