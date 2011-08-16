@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.typechecker.tree;
 
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
 public class Util {
     
@@ -13,4 +12,18 @@ public class Util {
         }
     }
 
+    public static boolean hasAnnotation(Tree.AnnotationList al, String name) {
+        if (al!=null) {
+            for (Tree.Annotation a: al.getAnnotations()) {
+                Tree.BaseMemberExpression p = (Tree.BaseMemberExpression) a.getPrimary();
+                if (p!=null) {
+                    if ( name(p.getIdentifier()).equals(name) ) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    
 }

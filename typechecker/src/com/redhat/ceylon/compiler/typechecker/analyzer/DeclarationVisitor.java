@@ -529,20 +529,6 @@ public class DeclarationVisitor extends Visitor {
         return typeParameters;
     }
     
-    private static boolean hasAnnotation(Tree.AnnotationList al, String name) {
-        if (al!=null) {
-            for (Tree.Annotation a: al.getAnnotations()) {
-                Tree.BaseMemberExpression p = (Tree.BaseMemberExpression) a.getPrimary();
-                if (p!=null) {
-                    if ( name(p.getIdentifier()).equals(name) ) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-    
     @Override public void visit(Tree.Declaration that) {
         Declaration model = that.getDeclarationModel();
         Declaration d = beginDeclaration(model);
@@ -756,10 +742,10 @@ public class DeclarationVisitor extends Visitor {
         that.addWarning("satisfies conditions are not yet supported");
     }
 
-    @Override
+    /*@Override
     public void visit(Tree.CaseTypes that) {
         super.visit(that);
         that.addWarning("of clause not yet supported");
-    }
+    }*/
 
 }
