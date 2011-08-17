@@ -2097,9 +2097,10 @@ Result findSingleByIntegerKey<Result>(Type<Result> type, Integer key) = findByKe
             </listitem>
             -->
             <listitem>
-                <para>an <emphasis>initialization parameter specification</emphasis>, 
+                <para>a <emphasis>parameter bound</emphasis>, 
                 <literal>given X(...)</literal> specifies that the type parameter 
-                <literal>X</literal> is a class with the given parameter types, and</para>
+                <literal>X</literal> is a concrete class with the given parameter types, 
+                and</para>
             </listitem>
             <listitem>
                 <para>a <emphasis>metatype bound</emphasis>, <literal>given X is T</literal>, 
@@ -2113,8 +2114,8 @@ Result findSingleByIntegerKey<Result>(Type<Result> type, Integer key) = findByKe
         
         <para>A single <literal>given</literal> clause may specify multiple constraints
         on a certain type parameter. For example, it may specify multiple upper bounds
-        together with an initialization parameter specification. If multiple upper bounds
-        are specified, at most one upper bound may be a class.</para>
+        together with a parameter bound. If multiple upper bounds are specified, at most
+        one upper bound may be a class.</para>
         
         <programlisting><![CDATA[given Value(Natural n) satisfies IdentifiableObject & Comparable<Value>]]></programlisting>
         
@@ -2205,10 +2206,10 @@ given Result(Natural count) satisfies Numeric<Result>]]></programlisting>
     </section>
     
     <section>
-        <title>Initialization parameter specifications</title>
+        <title>Parameter bounds</title>
 
-        <para>An initialization parameter specification allows instantiation of the 
-        type represented by the type parameter within the body of the declaration.</para>
+        <para>A parameter bound allows instantiation of the type represented by the 
+        type parameter within the body of the declaration.</para>
         
         <programlisting><![CDATA[Result create<Result>(Object object) 
         given Result(String s) { 
@@ -2231,8 +2232,7 @@ given Result(Natural count) satisfies Numeric<Result>]]></programlisting>
         
         <programlisting>given X is Type&lt;T&gt;</programlisting>
         
-        <para>and that an initialization parameter specification type constraint of 
-        form:</para>
+        <para>and that a parameter bound type constraint of form:</para>
         
         <programlisting>given X(A a, B b)</programlisting>
         
