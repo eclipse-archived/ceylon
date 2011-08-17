@@ -2183,6 +2183,10 @@ given Result(Natural count) satisfies Numeric<Result>]]></programlisting>
     }
      
 }]]></programlisting>
+
+        <para>A type parameter of a declaration may not appear anywhere in any lower 
+        bound constraint on any type parameter of the same declaration. It may appear
+        in any constraint on any type parameter of a nested declaration.</para>
         
     </section>
             
