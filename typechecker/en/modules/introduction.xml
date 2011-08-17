@@ -215,9 +215,9 @@
     <para>
     By limiting type inference to local declarations, Ceylon ensures that all 
     types may be inferred by the compiler in a single pass of the source code. 
-    Type inference works in the "forward" and "outward" directions. Every 
-    expression has a unique decidable type without the need to consider the 
-    rest of the statement or declaration in which it appears.
+    Type inference works in the "forward" and "outward" directions. The compiler 
+    is able to determine the type of an expression without considering the rest 
+    of the statement or declaration in which it appears.
     </para>
     
     </section>
