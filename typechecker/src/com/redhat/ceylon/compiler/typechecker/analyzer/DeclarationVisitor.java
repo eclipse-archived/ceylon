@@ -720,7 +720,7 @@ public class DeclarationVisitor extends Visitor {
             that.addWarning("enumerated type constraints are not yet supported");
         }
         if ( that.getParameterList()!=null ) {
-            that.addWarning("initialization parameter specifications are not yet supported");
+            that.addWarning("parameter bounds are not yet supported");
         }
     }
     
