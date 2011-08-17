@@ -49,15 +49,14 @@
     <title>The type system</title>
     
     <para>
-    Ceylon features a similar inheritance and generic type model to Java. A type 
-    is either a stateless <emphasis>interface</emphasis>, a stateful 
-    <emphasis>class</emphasis>, a <emphasis>type parameter</emphasis>, or a 
-    <emphasis>union</emphasis> or <emphasis>intersection</emphasis> of other types. 
-    An interface may satisfy (extend) an arbitrary number of other interfaces. A 
-    class may satisfy (implement) an arbitrary number of interfaces and must extend 
-    another class. A class may be abstract. A class or interface may declare type 
-    parameters. A type parameter abstracts the definition of a class or interface 
-    over all types which can be substituted for the type parameter.
+    Ceylon, like Java, features a hybrid type system with both subtype polymorphism 
+    and parameteric polymorphism. A type is either a stateless <emphasis>interface</emphasis>, 
+    a stateful <emphasis>class</emphasis>, a <emphasis>type parameter</emphasis>, or 
+    a <emphasis>union</emphasis> or <emphasis>intersection</emphasis> of other types.
+    A class, interface, or type parameter may be defined as a subtype of another type.
+    A class or interface may declare type parameters, which abstract the definition 
+    of the class or interface over all types which may be substituted for the type 
+    parameters.
     </para>
     
     <para>
@@ -68,47 +67,95 @@
     optimized performance of primitive types on the JVM.
     </para>
     
+    </section>
+    
+    <section id="mixininheritance">
+    <title>Mixin inheritance</title>
+    
     <para>
-    Interfaces may define concrete members, allowing a restricted form of multiple 
-    inheritance ("mixin" inheritance), but may not hold state (references to other 
-    objects) or initialization logic, which eliminates the problems traditionally 
-    associated with multiple inheritance. Ceylon never performs any kind of 
-    "linearization" of the supertypes of a type.
+    Ceylon supports a restricted form of multiple inheritance, often called 
+    <emphasis>mixin inheritance</emphasis>. A class must extend exactly one other 
+    class. But a class or interface may satisfy (extend or implement) an arbitrary 
+    number of interfaces.
     </para>
     
     <para>
+    Classes hold state and logic to initialize that state when the class is 
+    instantiated. A concrete class is a class that contains only concrete member 
+    definitions. Concrete classes may be directly instantiated.  An abstract class 
+    may contain abstract member declarations. Abstract classes may not be 
+    instantiated.
+    </para>
+    
+    <para>
+    Interfaces may define concrete members, but may not hold state (references to 
+    other objects) or initialization logic. This restriction helps eliminate the 
+    problems traditionally associated with multiple inheritance. Ceylon never 
+    performs any kind of "linearization" of the supertypes of a type. Interfaces 
+    may not be directly instantiated.
+    </para>
+    
+    </section>
+    
+    <section id="algrebraictypesselftypes">
+    <title>Algebraic types, self types, and type families</title>
+    
+    <para>
     Ceylon does not feature enumerated types as a first-class construct. Instead,
-    any abstract type may specify its <emphasis>cases</emphasis>&mdash;an 
-    enumerated list of subtypes. This facility may be used to simulate both
-    enumerated types and functional-style algebraic types. 
+    any abstract type may specify its <emphasis>cases</emphasis>&mdash;an enumerated 
+    list of instances or subtypes. This facility is used to simulate both enumerated 
+    types and functional-style algebraic types. 
     </para>
     
     <programlisting>interface Identity of Person | Organization { ... }</programlisting>
     
     <para>
-    A closely related feature is support for <emphasis>self types</emphasis> 
-    and <emphasis>type families</emphasis>.
+    A closely related feature is support for <emphasis>self types</emphasis> and 
+    <emphasis>type families</emphasis>. A self type is a type parameter of an 
+    abstract type (like <literal>Comparable</literal>) which represents the type of 
+    a concrete instantiation (like <literal>String</literal>) of the abstract type,
+    within the definition of the abstract type itself. In a type family, the self 
+    type of a type is declared not by the type itself, but by a containing type which 
+    groups together a set of related types.
     </para>
+    
+    </section>
+    
+    <section id="simplifiedgenerics">
+    <title>Simplified generics and fully-reified types</title>
     
     <para>
     Ceylon does not support Java-style wildcard type parameters, raw types, or
-    any other kind of existential type. Instead, a type parameter may be marked 
-    as covariant or contravariant by the class or interface that declares the 
-    parameter. Type arguments are reified in Ceylon, eliminating many problems 
-    related to type erasure in Java. Ceylon also supports <!--parameterization 
-    of type parameters (a form of higher-order polymorphism), and--> a more 
-    expressive system of generic type constraints with a much cleaner, more
-    regular syntax.
+    any other kind of existential type. And the Ceylon compiler never even uses 
+    any kind of "non-denotable" type to reason about the type system. And there's 
+    no implicit constraints on type arguments. So generics-related error messages 
+    are understandable to humans.
+    </para>
+    
+    <para>
+    Instead of wildcard types, Ceylon features <emphasis>declaration-site variance</emphasis>. 
+    A type parameter may be marked as covariant or contravariant by the class or 
+    interface that declares the parameter.
+    </para>
+    
+    <!--parameterization of type parameters (a form of higher-order polymorphism), and--> 
+    
+    <para>
+    Ceylon has a more expressive system of generic type constraints with a much 
+    cleaner, more regular syntax. The syntax for declaring type constraints on 
+    a type parameter looks very similar to a class or interface declaration. 
+    Along with upper bound type constraints, there are lower bounds, enumerated 
+    bounds, and parameter bounds.
     </para>
     
     <programlisting>interface Producer&lt;in Input, out Value&gt; 
         given Value(Input input) satisfies Equality { ... }</programlisting>
     
     <para>
-    The Ceylon compiler never even uses any kind of "non-denotable" type to 
-    reason about the type system.
+    Ceylon's type system is fully reified. In particular, generic type arguments 
+    are reified, eliminating many problems that result from type erasure in Java.
     </para>
-    
+        
     </section>
     
     <section id="unionandintersectiontypes">
@@ -158,7 +205,9 @@
     <programlisting>value name = person.name;</programlisting>
     <programlisting>function sqrt(Float x) { return x**0.5; }</programlisting>
     
-    <para>The type of a control-structure variable also may be inferred.</para>
+    <para>
+    The type of a control-structure variable also may be inferred.
+    </para>
     
     <programlisting>for (n in 0..max) { ... }</programlisting>
     <programlisting>try (tx = Transaction()) { ... }</programlisting>
@@ -202,21 +251,6 @@
     </para>
     
     <programlisting>List&lt;Character&gt; chars = "Hello, World!";</programlisting>
-    
-    </section>
-    
-    <section id="compilerenforcednamingconventions">
-    <title>Compiler-enforced naming conventions</title>
-    
-    <para>
-    The Ceylon compiler enforces the traditional Smalltalk naming convention:
-    type names begin with an initial uppercase letter&mdash;for example, 
-    <literal>Liberty</literal> or <literal>RedWine</literal>&mdash;member names 
-    and local names with an initial lowercase letter or underscore&mdash;for
-    example, <literal>blonde</literal>, <literal>immanentize()</literal> or 
-    <literal>boldlyGo()</literal>. This innovation allows a much cleaner syntax 
-    for program element annotations than the syntax found in either Java or C#.
-    </para>
     
     </section>
     
@@ -274,16 +308,24 @@
     expression.</para>
     
     <para>
-    Ceylon does not support method overloading. Each method of a type has a 
-    distinct name.
+    By default, an attribute or local may not be assigned a new value after
+    its initial value has been specified. Mutable attributes and variable 
+    locals must be explicitly declared using the <literal>variable</literal> 
+    annotation.
     </para>
     
-    <para>There are no <literal>static</literal> members. Instead, 
+    <para>
+    There are no <literal>static</literal> members. Instead, 
     <emphasis>toplevel</emphasis> methods and attributes are declared as direct 
     members of a package. This, along with certain other features, gives the 
     language a more regular block structure.
     </para>
-
+    
+    <para>
+    Ceylon does not support method overloading. Each method of a type has a 
+    distinct name.
+    </para>
+    
     </section>
     
     <section id="defaultparameters">
@@ -309,6 +351,32 @@
     
     <para>Therefore, a single method in Ceylon may emulate the signatures of 
     several overloaded methods in Java.</para>
+    
+    </section>
+    
+    <section id="compilerenforcednamingconventions">
+    <title>Naming conventions, annotations, and inline documentation</title>
+    
+    <para>
+    The Ceylon compiler enforces the traditional Smalltalk naming convention:
+    type names begin with an initial uppercase letter&mdash;for example, 
+    <literal>Liberty</literal> or <literal>RedWine</literal>&mdash;member names 
+    and local names with an initial lowercase letter or underscore&mdash;for
+    example, <literal>blonde</literal>, <literal>immanentize()</literal> or 
+    <literal>boldlyGo()</literal>.
+    </para> 
+    
+    <para>
+    This restrictions allows a much cleaner syntax for program element annotations 
+    than the syntax found in either Java or C#. Declaration "modifiers" like
+    <literal>shared</literal>, <literal>abstract</literal>, and <literal>variable</literal>
+    aren't keywords in Ceylon, they're ordinary annotations. The documentation
+    compiler reads inline documentation specified using the <literal>doc</literal> 
+    annotation.
+    </para>
+    
+    <programlisting>doc "Base type for higher-order abstract stuff."
+shared abstract class AbstractMetaThingy() { ... }</programlisting>
     
     </section>
     
@@ -350,18 +418,6 @@
     </section>
     -->
     
-    <section id="immutability">
-    <title>Immutability by default</title>
-    
-    <para>
-    By default, an attribute or local may not be assigned a new value after
-    its initial value has been specified. Mutable attributes and variable 
-    locals must be explicitly declared using the <literal>variable</literal> 
-    annotation.
-    </para>
-    
-    </section>
-    
     <section id="compiletimesafety">
     <title>Compile-time safety for optional values and type narrowing</title>
     
@@ -382,7 +438,9 @@
     Similarly, there are no C-style typecasts in Ceylon. Instead, the 
     <literal>if (is ... )</literal> and <literal>case (is ... )</literal> 
     constructs may be used to narrow the type of an object reference without 
-    risk of a <literal>ClassCastException</literal>.
+    risk of a <literal>ClassCastException</literal>. The combination of
+    <literal>case (is ... )</literal> with algebraic types amounts to a kind
+    of language-level support for the visitor pattern.
     </para>
     
     </section>
