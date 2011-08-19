@@ -119,12 +119,22 @@ public abstract class Node {
     public static void correctLineNumber(CommonTree node) {
         Token token = node.getToken();
         if (token!=null && !hasLocation(token)) {
-            Token t = getFirstChildToken(node);
-            if (t==null) {
-                t = getParentToken(node);
+            Token fc = getFirstChildToken(node);
+            Token lc = getLastChildToken(node);
+            Token pc = getParentToken(node);
+            if (fc!=null && lc!=null) {
+            	node.setTokenStartIndex(fc.getTokenIndex());
+            	node.setTokenStopIndex(lc.getTokenIndex());
             }
-            if (t!=null) {
-                copyLocation(t, token);
+            else if (pc!=null) {
+            	node.setTokenStartIndex(pc.getTokenIndex());
+            	node.setTokenStopIndex(pc.getTokenIndex());
+            }
+            if (fc!=null) {
+                copyLocation(fc, token);
+            }
+            else if (pc!=null) {
+                copyLocation(pc, token);
             }
         }
     }
@@ -141,6 +151,27 @@ public abstract class Node {
                     }
                     else {
                         Token st = getFirstChildToken((CommonTree) child);
+                        if (st!=null) return st;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private static Token getLastChildToken(CommonTree node) {
+        @SuppressWarnings("rawtypes") 
+        List children = node.getChildren();
+        if (children!=null) {
+            for (int i=children.size()-1; i>=0; i--) {
+            	Object child = children.get(i); 
+                if (child instanceof CommonTree) {
+                    Token ct = ((CommonTree) child).getToken();
+                    if (ct!=null && hasLocation(ct)) {
+                        return ct;
+                    }
+                    else {
+                        Token st = getLastChildToken((CommonTree) child);
                         if (st!=null) return st;
                     }
                 }
