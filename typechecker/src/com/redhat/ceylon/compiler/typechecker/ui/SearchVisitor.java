@@ -9,7 +9,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public class SearchVisitor extends Visitor {
 	
-	interface Matcher {
+	public interface Matcher {
 		boolean matches(String string);
 		boolean includeDeclarations();
 		boolean includeReferences();
