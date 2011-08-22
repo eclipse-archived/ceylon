@@ -516,7 +516,7 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
 
     @Override public void visit(Tree.ClassDefinition that) {
-        Tree.Type rt = beginReturnScope(new Tree.VoidModifier(that.getAntlrTreeNode()));
+        Tree.Type rt = beginReturnScope(new Tree.VoidModifier(that.getToken()));
         Declaration od = beginReturnDeclaration(that.getDeclarationModel());
         super.visit(that);
         endReturnDeclaration(od);
@@ -532,7 +532,7 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
 
     @Override public void visit(Tree.ObjectDefinition that) {
-        Tree.Type rt = beginReturnScope(new Tree.VoidModifier(that.getAntlrTreeNode()));
+        Tree.Type rt = beginReturnScope(new Tree.VoidModifier(that.getToken()));
         Declaration od = beginReturnDeclaration(that.getDeclarationModel());
         super.visit(that);
         endReturnDeclaration(od);
@@ -540,7 +540,7 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
 
     @Override public void visit(Tree.ObjectArgument that) {
-        Tree.Type rt = beginReturnScope(new Tree.VoidModifier(that.getAntlrTreeNode()));
+        Tree.Type rt = beginReturnScope(new Tree.VoidModifier(that.getToken()));
         Declaration od = beginReturnDeclaration(that.getDeclarationModel());
         super.visit(that);
         endReturnDeclaration(od);

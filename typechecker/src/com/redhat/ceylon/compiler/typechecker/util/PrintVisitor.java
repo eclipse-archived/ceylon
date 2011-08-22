@@ -66,9 +66,12 @@ public class PrintVisitor extends Visitor implements NaturalVisitor {
     private void print(Node node) {
         print(node.getText() + 
                 " [" + node.getNodeType() + 
-                "] (" + node.getAntlrTreeNode().getLine() + 
-                ":" + node.getAntlrTreeNode().getCharPositionInLine()  + 
+                "]");
+        if (node.getToken()!=null) {
+            print(" (" + node.getToken().getLine() + 
+                ":" + node.getToken().getCharPositionInLine()  + 
                 ")");
+        }
         if (node instanceof Tree.Primary) {
             Declaration d = ((Tree.Primary) node).getDeclaration();
             if (d!=null) {

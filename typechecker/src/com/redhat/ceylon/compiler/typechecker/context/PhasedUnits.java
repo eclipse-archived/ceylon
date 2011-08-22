@@ -6,17 +6,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.antlr.runtime.ANTLRInputStream;
+import org.antlr.runtime.CommonTokenStream;
+
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleBuilder;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
 import com.redhat.ceylon.compiler.typechecker.parser.LexError;
 import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
-import com.redhat.ceylon.compiler.typechecker.tree.CustomBuilder;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import org.antlr.runtime.ANTLRInputStream;
-import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.tree.CommonTree;
 
 /**
  * Contains phased units
@@ -106,11 +105,12 @@ public class PhasedUnits {
             CommonTokenStream tokens = new CommonTokenStream(lexer);
 
             CeylonParser parser = new CeylonParser(tokens);
-            CeylonParser.compilationUnit_return r = parser.compilationUnit();
+            parser.compilationUnit();
 
             com.redhat.ceylon.compiler.typechecker.model.Package p = moduleBuilder.getCurrentPackage();
-            CommonTree t = (CommonTree) r.getTree();
-            Tree.CompilationUnit cu = new CustomBuilder().buildCompilationUnit(t);
+            /*CommonTree t = (CommonTree) r.getTree();
+            Tree.CompilationUnit cu = new CustomBuilder().buildCompilationUnit(t);*/
+            Tree.CompilationUnit cu = parser.getCompilationUnit();
             PhasedUnit phasedUnit = new PhasedUnit(file, srcDir, cu, p, moduleBuilder, context);
             phasedUnit.setParser(parser);
             addPhasedUnit(file, phasedUnit);

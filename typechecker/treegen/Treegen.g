@@ -11,7 +11,7 @@ grammar Treegen;
 nodeList : { 
            println("package com.redhat.ceylon.compiler.typechecker.tree;\n");
            println("import static com.redhat.ceylon.compiler.typechecker.tree.Walker.*;\n");
-           println("import org.antlr.runtime.tree.CommonTree;\n");
+           println("import org.antlr.runtime.Token;\n");
            println("import java.util.*;\n");
            println("public class Tree {\n");
            }
@@ -28,8 +28,8 @@ node : '^' '('
        { print(className($n.text)); }
        extendsNode
        { println(" {\n"); }
-       { println("        public " + className($n.text) + "(CommonTree treeNode) {" ); }
-       { println("            super(treeNode);" ); }
+       { println("        public " + className($n.text) + "(Token token) {" ); }
+       { println("            super(token);" ); }
        { println("        }\n" ); }
        { println("        @Override public void visit(Visitor visitor) {" ); }
        { println("            try {" ); }

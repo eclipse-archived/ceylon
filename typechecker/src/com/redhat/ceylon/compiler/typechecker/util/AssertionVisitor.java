@@ -107,8 +107,8 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
     protected void out(Node that, String message) {
         System.err.println(
             message + " at " + 
-            that.getAntlrTreeNode().getLine() + ":" +
-            that.getAntlrTreeNode().getCharPositionInLine() + " of " +
+            that.getToken().getLine() + ":" +
+            that.getToken().getCharPositionInLine() + " of " +
             that.getUnit().getFilename());
     }
 
@@ -135,8 +135,8 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         System.err.println(
             "unexpected error encountered [" +
             err.getMessage() + "] at " + 
-            err.getTreeNode().getAntlrTreeNode().getLine() + ":" +
-            err.getTreeNode().getAntlrTreeNode().getCharPositionInLine() + " of " +
+            err.getTreeNode().getToken().getLine() + ":" +
+            err.getTreeNode().getToken().getCharPositionInLine() + " of " +
             err.getTreeNode().getUnit().getFilename());
     }
 
@@ -145,8 +145,8 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         System.err.println(
             "error encountered [" +
             err.getMessage() + "] at " + 
-            err.getTreeNode().getAntlrTreeNode().getLine() + ":" +
-            err.getTreeNode().getAntlrTreeNode().getCharPositionInLine() + " of " +
+            err.getTreeNode().getToken().getLine() + ":" +
+            err.getTreeNode().getToken().getCharPositionInLine() + " of " +
             err.getTreeNode().getUnit().getFilename());
     }
 
@@ -155,8 +155,8 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         System.out.println(
             "warning encountered [" +
             err.getMessage() + "] at " + 
-            err.getTreeNode().getAntlrTreeNode().getLine() + ":" +
-            err.getTreeNode().getAntlrTreeNode().getCharPositionInLine() + " of " +
+            err.getTreeNode().getToken().getLine() + ":" +
+            err.getTreeNode().getToken().getCharPositionInLine() + " of " +
             err.getTreeNode().getUnit().getFilename());
     }
 

@@ -18,15 +18,20 @@ import com.redhat.ceylon.compiler.typechecker.util.PrintVisitor;
 public abstract class Node {
     
     private String text;
-    private final CommonTree antlrTreeNode;
+    private final Token token;
     private Scope scope;
     private Unit unit;
     private List<Message> errors = new ArrayList<Message>();
     
-    protected Node(CommonTree antlrTreeNode) {
-        this.antlrTreeNode = antlrTreeNode; 
-        text = antlrTreeNode.getText();
-        correctLineNumber(antlrTreeNode);
+    protected Node(Token token) {
+        this.token = token;
+        if (token==null) {
+            text = "";
+        }
+        else {
+            text = token.getText();
+        }
+        //correctLineNumber(antlrTreeNode);
     }
     
     /**
@@ -67,8 +72,8 @@ public abstract class Node {
      * The text of the corresponding ANTLR tree node. Never null, 
      * since the two trees are isomorphic.
      */
-    public CommonTree getAntlrTreeNode() {
-        return antlrTreeNode;
+    public Token getToken() {
+        return token;
     }
     
     

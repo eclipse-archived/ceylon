@@ -2,116 +2,10 @@ grammar Ceylon;
 
 options {
     memoize=false;
-    output=AST;
 }
 
-tokens {
-    ANNOTATION;
-    ANNOTATION_LIST;
-    ATTRIBUTE_ARGUMENT;
-    ATTRIBUTE_DECLARATION;
-    ATTRIBUTE_GETTER_DEFINITION;
-    ATTRIBUTE_SETTER_DEFINITION;
-    BLOCK;
-    METHOD_DEFINITION;
-    INTERFACE_DECLARATION;
-    CLASS_DECLARATION;
-    INVOCATION_EXPRESSION;
-    CLASS_BODY;
-    BOOLEAN_CONDITION;
-    COMPILATION_UNIT;
-    EXPRESSION;
-    EXPRESSION_LIST;
-    EXPRESSION_STATEMENT;
-    FOR_ITERATOR;
-    FOR_STATEMENT;
-    VALUE_PARAMETER_DECLARATION;
-    FUNCTIONAL_PARAMETER_DECLARATION;
-    PARAMETER_LIST;
-    IF_STATEMENT;
-    IMPORT_LIST;
-    IMPORT_WILDCARD;
-    IMPORT_PATH;
-    IMPORT_MEMBER;
-    IMPORT_TYPE;
-    ALIAS;
-    INITIALIZER_EXPRESSION;
-    INTERFACE_BODY;
-    BROKEN_MEMBER_BODY;
-    METHOD_ARGUMENT;
-    METHOD_DECLARATION;
-    METATYPES;
-    NAMED_ARGUMENT_LIST;
-    OBJECT_ARGUMENT;
-    POSITIONAL_ARGUMENT;
-    POSITIONAL_ARGUMENT_LIST;
-    POSTFIX_OPERATOR_EXPRESSION;
-    SATISFIES_EXPRESSION;
-    SEQUENCED_ARGUMENT;
-    SEQUENCED_TYPE;
-    SEQUENCED_TYPE_PARAMETER;
-    SPECIAL_ARGUMENT;
-    TRY_CATCH_STATEMENT;
-    RESOURCE;
-    TYPE_ARGUMENT_LIST;
-    TYPE_DECLARATION;
-    TYPE_PARAMETER_LIST;
-    TYPE_SPECIFIER;
-    WHILE_STATEMENT;
-    //DO_WHILE_STATEMENT;
-    SWITCH_STATEMENT;
-    SWITCH_CASE_LIST;
-    TYPE_CONSTRAINT_LIST;
-    TYPE_DECLARATION;
-    INDEX_EXPRESSION;
-    LOWER_BOUND;
-    UPPER_BOUND;
-    SELECTOR_LIST;
-    SEQUENCE_ENUMERATION;
-    SPECIFIED_ARGUMENT;
-    SPECIFIER_EXPRESSION;
-    SPECIFIER_STATEMENT;
-    TYPE_VARIANCE;
-    TYPE_PARAMETER_DECLARATION;
-    STRING_TEMPLATE;
-    VARIABLE;
-    EXISTS_CONDITION;
-    NONEMPTY_CONDITION;
-    SATISFIES_CONDITION;
-    IS_CONDITION;
-    IS_CASE;
-    SATISFIES_CASE;
-    MATCH_CASE;
-    POSTFIX_INCREMENT_OP;
-    POSTFIX_DECREMENT_OP;
-    NEGATIVE_OP;
-    POSITIVE_OP;
-    FLIP_OP;
-    IDENTIFIER;
-    VALUE_ITERATOR;
-    KEY_VALUE_ITERATOR;
-    SATISFIED_TYPES;
-    EXTENDED_TYPE;
-    ELEMENT;
-    ELEMENT_RANGE;
-    BASE_TYPE;
-    QUALIFIED_TYPE;
-    UNION_TYPE;
-    INTERSECTION_TYPE;
-    BASE_TYPE_EXPRESSION;
-    BASE_MEMBER_EXPRESSION;
-    QUALIFIED_MEMBER_EXPRESSION;
-    QUALIFIED_TYPE_EXPRESSION;
-    EXTENDED_TYPE_EXPRESSION;
-    //SUBTYPE_EXPRESSION;
-    SUPER_TYPE;
-    LAMBDA;
-    SYNTHETIC_VARIABLE;
-    INFERRED_TYPE_ARGUMENTS;
-}
-
-@parser::header { package com.redhat.ceylon.compiler.typechecker.parser; }
-@lexer::header { package com.redhat.ceylon.compiler.typechecker.parser; }
+@parser::header { package com.redhat.ceylon.compiler.typechecker.parser; import static com.redhat.ceylon.compiler.typechecker.tree.Tree.*; }
+@lexer::header { package com.redhat.ceylon.compiler.typechecker.parser; import static com.redhat.ceylon.compiler.typechecker.tree.Tree.*; }
 
 @members {
     private java.util.List<ParseError> errors 
@@ -122,6 +16,12 @@ tokens {
     }
     public java.util.List<ParseError> getErrors() {
         return errors;
+    }
+    
+    private CompilationUnit compilationUnit;
+    
+    public CompilationUnit getCompilationUnit() {
+        return compilationUnit;
     }
 }
 
@@ -137,549 +37,520 @@ tokens {
     }
 }
 
-compilationUnit
-    : (compilerAnnotation+ ';')?
-      importDeclaration*
-      annotatedDeclaration2+
-      EOF
-    -> ^(COMPILATION_UNIT compilerAnnotation* ^(IMPORT_LIST importDeclaration+)? annotatedDeclaration2+)
+compilationUnit returns [CompilationUnit compilationUnit]
+    : { $compilationUnit = new CompilationUnit(null); }
+      importList { $compilationUnit.setImportList($importList.importList); }
+      ( statement { $compilationUnit.addStatement($statement.statement); } )*
+      EOF { this.compilationUnit = $compilationUnit; }
     ;
 
-importDeclaration
-    : 'import'^ packagePath '{'! importElements '}'!
+importList returns [ImportList importList]
+    : { $importList = new ImportList(null); } 
+      ( importDeclaration { $importList.addImport($importDeclaration.importDeclaration); } )*
     ;
 
-importElement2
-    : compilerAnnotation* importElement^
-    ;
-
-importElements
-    : importElement2 (','! importElement2)* (','! importWildcard)?
-    | importWildcard
-    ;
-
-importElement
-    : memberAlias? memberName
-    -> ^(IMPORT_MEMBER memberAlias? memberName)
-    | typeAlias? typeName
-    -> ^(IMPORT_TYPE typeAlias? typeName)
-    ;
-
-importWildcard
-    : ELLIPSIS
-    -> ^(IMPORT_WILDCARD[$ELLIPSIS])
-    ;
-
-memberAlias
-    : memberName '='
-    -> ^(ALIAS memberName)
-    ;
-
-typeAlias
-    : typeName '='
-    -> ^(ALIAS typeName)
-    ;
-
-packagePath
-    : packageName ('.' packageName)*
-    -> ^(IMPORT_PATH packageName*)
-    ;
-
-packageName
-    : LIDENTIFIER
-    -> ^(IDENTIFIER[$LIDENTIFIER])
-    ;
-
-block
-    : LBRACE annotatedDeclarationOrStatement2* '}'
-    -> ^(BLOCK[$LBRACE] annotatedDeclarationOrStatement2*)
-    ;
-
-//This rule accounts for the problem that we
-//can't tell whether a member body is a block
-//or a named argument list until after we
-//finish parsing it
-memberBody[Object mt] options { backtrack=true; memoize=true; }
-    : namedArguments //first try to match with no directives or control structures
-    -> ^(BLOCK ^(RETURN ^(EXPRESSION ^(INVOCATION_EXPRESSION ^(BASE_TYPE_EXPRESSION { ((CommonTree)$mt).getChild(0) } { ((CommonTree)$mt).getChild(1) } ) namedArguments))))
-    | block //if there is a "return" directive or control structure, it must be a block
-    //if it doesn't match as a block or as a named argument
-    //list, then there must be an error somewhere, so parse
-    //it again looking for the error
-    | '{' brokenMemberBody? '}' 
-    -> ^(BROKEN_MEMBER_BODY brokenMemberBody?)
-    ;
-
-brokenMemberBody
-    : (annotatedDeclarationStart) => annotatedDeclaration brokenMemberBody?
-    | ( 
-        specificationStatement brokenMemberBody?
-      | controlStructure brokenMemberBody?
-      | directiveStatement brokenMemberBody?
-      | expressionStatementOrList
-      )
-    ;
-    
-expressionStatementOrList
-    : expression 
-      (
-        ';' brokenMemberBody?
-      -> ^(EXPRESSION_STATEMENT expression) brokenMemberBody?
-      | (',' expression)* 
-      -> ^(EXPRESSION_LIST expression+)
-      )
-    ;
-
-annotatedDeclarationOrStatement2
-    : compilerAnnotation* annotatedDeclarationOrStatement^
-    ;
-
-annotatedDeclarationOrStatement options {memoize=true;}
-    : (annotatedDeclarationStart) => annotatedDeclaration
-    | statement
-    ;
-
-annotatedDeclaration2
-    : compilerAnnotation* annotatedDeclaration^
-    ;
-
-annotatedDeclaration
-    : annotations?
+importDeclaration returns [Import importDeclaration]
+    : IMPORT { $importDeclaration = new Import($IMPORT); } 
+      packagePath { $importDeclaration.setImportPath($packagePath.importPath); }
+    LBRACE
     ( 
-      objectDeclaration^
-    | setterDeclaration^
-    | voidMethodDeclaration^
-    | typedMethodOrAttributeDeclaration^
-    | classDeclaration^
-    | interfaceDeclaration^
+      ie1=importElement { $importDeclaration.addImportMemberOrType($ie1.importMemberOrType); } 
+      ( COMMA ie2=importElement { $importDeclaration.addImportMemberOrType($ie2.importMemberOrType); } )* 
+      ( COMMA iw=importWildcard { $importDeclaration.setImportWildcard($iw.importWildcard); } )?
+    | iw=importWildcard { $importDeclaration.setImportWildcard($iw.importWildcard); }
     )
+    RBRACE
     ;
 
-//special rule for syntactic predicate
-//to distinguish between an annotation
-//and an expression statement
-annotatedDeclarationStart
-    : declarationStart
-    | LIDENTIFIER
-      ( 
-          declarationStart
-        | LIDENTIFIER
-        | nonstringLiteral | stringLiteral
-        | arguments annotatedDeclarationStart //we need to recurse because it could be an inline callable argument
-      )
+importElement returns [ImportMemberOrType importMemberOrType]
+    : memberAlias? memberName
+      { $importMemberOrType = new ImportMember(null);
+        $importMemberOrType.setAlias($memberAlias.alias);
+        $importMemberOrType.setIdentifier($memberName.identifier); }
+    | typeAlias? typeName
+      { $importMemberOrType = new ImportType(null);
+        $importMemberOrType.setAlias($typeAlias.alias);
+        $importMemberOrType.setIdentifier($typeName.identifier); }
     ;
 
-//special rule for syntactic predicates
-//that distinguish declarations from
-//expressions
-declarationStart
-    : declarationKeyword 
-    | unionType ('...' | LIDENTIFIER)
+importWildcard returns [ImportWildcard importWildcard]
+    : ELLIPSIS
+      { $importWildcard = new ImportWildcard($ELLIPSIS); }
     ;
 
-declarationKeyword
-    : 'value'
-    | 'function' 
-    | 'assign'
-    | 'void'
-    | 'interface' 
-    | 'class' 
-    | 'object'
+memberAlias returns [Alias alias]
+    : memberName SPECIFY
+      { $alias = new Alias($SPECIFY); 
+        $alias.setIdentifier($memberName.identifier); }
     ;
 
-statement
-    : specificationStatement
-    | expressionStatement
-    | controlStructure
-    | directiveStatement
+typeAlias returns [Alias alias]
+    : typeName SPECIFY
+      { $alias = new Alias($SPECIFY); 
+        $alias.setIdentifier($typeName.identifier); }
     ;
 
-specificationStatement
-    : memberName specifier ';'
-    -> ^(SPECIFIER_STATEMENT ^(BASE_MEMBER_EXPRESSION memberName) specifier)
+packagePath returns [ImportPath importPath]
+    : { $importPath = new ImportPath(null); } 
+      pn1=packageName { $importPath.addIdentifier($pn1.identifier); } 
+      ( MEMBER_OP pn2=packageName { $importPath.addIdentifier($pn2.identifier); } )*
     ;
 
-expressionStatement
-    : expression ';'
-    -> ^(EXPRESSION_STATEMENT expression)
+packageName returns [Identifier identifier]
+    : LIDENTIFIER
+      { $identifier = new Identifier($LIDENTIFIER); }
     ;
 
-directiveStatement
-    : directive ';'!
+typeName returns [Identifier identifier]
+    : UIDENTIFIER
+      { $identifier = new Identifier($UIDENTIFIER); }
     ;
 
-/*semi
-    : {input.LT(1).getType()==RBRACE}? | ';'!
-    ;*/
-
-directive
-    : returnDirective
-    | throwDirective
-    | breakDirective
-    | continueDirective
-    //| retryDirective
+annotationName returns [Identifier identifier]
+    : LIDENTIFIER
+      { $identifier = new Identifier($LIDENTIFIER); }
     ;
 
-returnDirective
-    : 'return'^ expression?
-    ;
-
-throwDirective
-    : 'throw'^ expression?
-    ;
-
-breakDirective
-    : 'break'^
-    ;
-
-continueDirective
-    : 'continue'^
-    ;
-
-/*retryDirective
-    : 'retry'^
-    ;*/
-
-objectDeclaration
-    : OBJECT_DEFINITION memberName extendedType? satisfiedTypes? (classBody|';')
-    -> ^(OBJECT_DEFINITION VALUE_MODIFIER memberName extendedType? satisfiedTypes? classBody?) 
-    ;
-
-voidMethodDeclaration
-    : VOID_MODIFIER memberName methodParameters?
-      ( 
-        block 
-      -> ^(METHOD_DEFINITION VOID_MODIFIER memberName methodParameters? block)   
-      | specifier? ';'
-      -> ^(METHOD_DECLARATION VOID_MODIFIER memberName methodParameters? specifier?)   
-      )
-    ;
-
-setterDeclaration
-    : ASSIGN memberName block
-    -> ^(ATTRIBUTE_SETTER_DEFINITION[$ASSIGN] VOID_MODIFIER memberName block)
-    ;
-
-typedMethodOrAttributeDeclaration
-    : FUNCTION_MODIFIER memberName methodParameters?
-      ( 
-        block
-      -> ^(METHOD_DEFINITION FUNCTION_MODIFIER memberName methodParameters? block)
-      | specifier? ';'
-      -> ^(METHOD_DECLARATION FUNCTION_MODIFIER memberName methodParameters? specifier?)
-       )
-    | VALUE_MODIFIER memberName
-      ( 
-        (specifier | initializer)? ';'
-        -> ^(ATTRIBUTE_DECLARATION VALUE_MODIFIER memberName specifier? initializer?)
-        | block
-        -> ^(ATTRIBUTE_GETTER_DEFINITION VALUE_MODIFIER memberName block)
-      )
-    | unionType memberName
-      ( 
-        methodParameters 
-        ( 
-          memberBody[$unionType.tree] 
-        -> ^(METHOD_DEFINITION unionType memberName methodParameters memberBody)
-        | specifier? ';'
-        -> ^(METHOD_DECLARATION unionType memberName methodParameters specifier?)
-        )
-      | (specifier | initializer)? ';'
-      -> ^(ATTRIBUTE_DECLARATION unionType memberName specifier? initializer?)
-      | memberBody[$unionType.tree]
-      -> ^(ATTRIBUTE_GETTER_DEFINITION unionType memberName memberBody)      
-      )
-    ;
-
-interfaceDeclaration
-    : INTERFACE_DEFINITION
-      typeName interfaceParameters
-      (
-        interfaceBody
-      -> ^(INTERFACE_DEFINITION typeName interfaceParameters? interfaceBody)
-      | typeSpecifier? ';'
-      -> ^(INTERFACE_DECLARATION[$INTERFACE_DEFINITION] typeName interfaceParameters? typeSpecifier?)
-      )
-    ;
-
-classDeclaration
-    : CLASS_DEFINITION typeName classParameters?
-      (
-        classBody
-      -> ^(CLASS_DEFINITION typeName classParameters? classBody)
-      | typeSpecifier? ';'
-      -> ^(CLASS_DECLARATION[$CLASS_DEFINITION] typeName classParameters? typeSpecifier?)
-      )
-    ;
-
-methodParameters
-    : typeParameters? parameters+ extraParameters? 
-      metatypes? 
-      typeConstraints?
+memberName returns [Identifier identifier]
+    : LIDENTIFIER
+      { $identifier = new Identifier($LIDENTIFIER); }
     ;
     
-interfaceParameters
-    : typeParameters?
-      caseTypes? metatypes? adaptedTypes? satisfiedTypes?
-      typeConstraints?
+statement returns [Statement statement]
+    : specificationStatement
+      { $statement = $specificationStatement.specifierStatement; }
+    | expressionStatement
+      { $statement = $expressionStatement.expressionStatement; }
+    | directiveStatement
+      { $statement = $directiveStatement.directive; }
+    //| controlStructure
     ;
 
-classParameters
-    : typeParameters? parameters extraParameters?
-      caseTypes? metatypes? extendedType? satisfiedTypes?
-      typeConstraints?
+specificationStatement returns [SpecifierStatement specifierStatement]
+    : memberName 
+      { $specifierStatement = new SpecifierStatement(null); 
+        BaseMemberExpression bme = new BaseMemberExpression(null);
+        bme.setIdentifier($memberName.identifier);
+        $specifierStatement.setBaseMemberExpression(bme); }
+      specifier
+      { $specifierStatement.setSpecifierExpression($specifier.specifierExpression); }
+      ';'
     ;
 
-//Note: interface bodies can't really contain 
-//      statements, but error recovery works
-//      much better if we validate that later
-//      on, instead of doing it in the parser.
-interfaceBody
-    : LBRACE annotatedDeclarationOrStatement2* '}'
-    -> ^(INTERFACE_BODY[$LBRACE] annotatedDeclarationOrStatement2*)
+expressionStatement returns [ExpressionStatement expressionStatement]
+    : expression 
+      { $expressionStatement = new ExpressionStatement(null); 
+        $expressionStatement.setExpression($expression.expression); } 
+      ';'
+    ;
+directiveStatement returns [Directive directive]
+    : d=directive 
+      { $directive=$d.directive; } 
+      SEMICOLON
     ;
 
-classBody
-    : LBRACE annotatedDeclarationOrStatement2* '}'
-    -> ^(CLASS_BODY[$LBRACE] annotatedDeclarationOrStatement2*)
+directive returns [Directive directive]
+    : returnDirective
+      { $directive = $returnDirective.directive; }
+    | throwDirective
+      { $directive = $throwDirective.directive; }
+    | breakDirective
+      { $directive = $breakDirective.directive; }
+    | continueDirective
+      { $directive = $continueDirective.directive; }
     ;
 
-extendedType
-    : EXTENDS 
-    (
-      type positionalArguments
-      -> ^(EXTENDED_TYPE[$EXTENDS] type ^(INVOCATION_EXPRESSION ^(EXTENDED_TYPE_EXPRESSION) positionalArguments))
-    | SUPER MEMBER_OP typeReference positionalArguments
-      -> ^(EXTENDED_TYPE[$EXTENDS] ^(QUALIFIED_TYPE SUPER_TYPE[$SUPER] typeReference) ^(INVOCATION_EXPRESSION ^(EXTENDED_TYPE_EXPRESSION) positionalArguments))
+returnDirective returns [Return directive]
+    : RETURN 
+      { $directive = new Return($RETURN); }
+      (
+        expression
+        { $directive.setExpression($expression.expression); }
+      )?
+    ;
+
+throwDirective returns [Throw directive]
+    : THROW
+      { $directive = new Throw($THROW); }
+      ( 
+        expression
+        { $directive.setExpression($expression.expression); }
+      )?
+    ;
+
+breakDirective returns [Break directive]
+    : BREAK
+      { $directive = new Break($BREAK); }
+    ;
+
+continueDirective returns [Continue directive]
+    : CONTINUE
+      { $directive = new Continue($CONTINUE); }
+    ;
+
+specifier returns [SpecifierExpression specifierExpression]
+    : SPECIFY 
+      { $specifierExpression = new SpecifierExpression($SPECIFY); }
+      expression
+      { $specifierExpression.setExpression($expression.expression); }
+    ;
+
+expression returns [Expression expression]
+    : { $expression = new Expression(null); }
+      assignmentExpression
+      { $expression.setTerm($assignmentExpression.term); }
+    ;
+
+primary returns [Primary primary]
+    : 
+    ( 
+      stringExpression
+      { $primary=$stringExpression.atom; }
+    | nonstringLiteral
+      { $primary=$nonstringLiteral.literal; }
     )
     ;
 
-satisfiedTypes
-    : SATISFIES type ('&' type)*
-    -> ^(SATISFIED_TYPES[$SATISFIES] type+)
-    ;
-
-abstractedType
-    : 'abstracts'^ type
-    ;
-
-adaptedTypes
-    : 'adapts'^ type ('&' type)*
-    ;
-
-caseTypes
-    : 'of'^ caseType ('|'! caseType)*
-    ;
-
-caseType 
-    : type 
-    | memberName -> ^(BASE_MEMBER_EXPRESSION memberName)
-    //| (annotations? 'case' memberName) => annotations? 'case' memberName 
-    ;
-
-//Support for metatypes
-//Note that we don't need this for now
-metatypes
-    : IS_OP type ('&' type)* 
-    -> ^(METATYPES[$IS_OP] type*)
-    ;
-
-/*selfType
-    : 'this' 'is'
-    -> ^(SELF_TYPE)
-    ;*/
-
-typeConstraint
-    : 'given'^
-      //selfType?
-      typeName 
-      typeParameters? 
-      parameters? 
-      caseTypes? 
-      metatypes? 
-      satisfiedTypes? 
-      abstractedType?
-    ;
-
-typeConstraint2
-    : compilerAnnotation* typeConstraint^
-    ;
-
-typeConstraints
-    : typeConstraint2+
-    -> ^(TYPE_CONSTRAINT_LIST typeConstraint2+)
-    ;
-
-unionType
-    : (intersectionType -> intersectionType)
-    ( ('|' intersectionType)+
-      -> ^(UNION_TYPE $unionType intersectionType+)
-    )?
-    ;
-
-intersectionType
-    : (abbreviatedType -> abbreviatedType)
-    ( ('&' abbreviatedType)+
-      -> ^(INTERSECTION_TYPE $intersectionType abbreviatedType+)
-    )?
-    ;
-
-abbreviatedType
-    : (type -> type)
+assignmentExpression returns [Term term]
+    : ee1=disjunctionExpression
+      { $term = $ee1.term; }
       (
-        DEFAULT_OP 
-      -> ^(UNION_TYPE ^(BASE_TYPE ^(IDENTIFIER[$DEFAULT_OP,"Nothing"])) $abbreviatedType)
-      | ARRAY 
-      -> ^(UNION_TYPE ^(BASE_TYPE ^(IDENTIFIER[$ARRAY,"Empty"])) ^(BASE_TYPE ^(IDENTIFIER[$ARRAY,"Sequence"]) ^(TYPE_ARGUMENT_LIST $abbreviatedType)))
+        assignmentOperator 
+        { $assignmentOperator.operator.setLeftTerm($term);
+          $term = $assignmentOperator.operator; }
+        ee2=assignmentExpression
+        { $assignmentOperator.operator.setRightTerm($ee2.term); }
+      )?
+    ;
+
+assignmentOperator returns [AssignmentOp operator]
+    : ASSIGN_OP { $operator = new AssignOp($ASSIGN_OP); }
+    //| '.=' 
+    | ADD_ASSIGN_OP { $operator = new AddAssignOp($ADD_ASSIGN_OP); }
+    | SUBTRACT_ASSIGN_OP { $operator = new SubtractAssignOp($SUBTRACT_ASSIGN_OP); }
+    | MULTIPLY_ASSIGN_OP { $operator = new MultiplyAssignOp($MULTIPLY_ASSIGN_OP); }
+    | DIVIDE_ASSIGN_OP { $operator = new DivideAssignOp($DIVIDE_ASSIGN_OP); }
+    | REMAINDER_ASSIGN_OP { $operator = new RemainderAssignOp($REMAINDER_ASSIGN_OP); }
+    | INTERSECT_ASSIGN_OP { $operator = new IntersectAssignOp($INTERSECT_ASSIGN_OP); }
+    | UNION_ASSIGN_OP { $operator = new UnionAssignOp($UNION_ASSIGN_OP); }
+    | XOR_ASSIGN_OP { $operator = new XorAssignOp($XOR_ASSIGN_OP); }
+    | COMPLEMENT_ASSIGN_OP { $operator = new ComplementAssignOp($COMPLEMENT_ASSIGN_OP); }
+    | AND_ASSIGN_OP { $operator = new AndAssignOp($AND_ASSIGN_OP); }
+    | OR_ASSIGN_OP { $operator = new OrAssignOp($OR_ASSIGN_OP); }
+    | DEFAULT_ASSIGN_OP { $operator = new DefaultAssignOp($DEFAULT_ASSIGN_OP); }
+    ;
+
+disjunctionExpression returns [Term term]
+    : me1=conjunctionExpression
+      { $term = $me1.term; }
+      (
+        disjunctionOperator 
+        { $disjunctionOperator.operator.setLeftTerm($term);
+          $term = $disjunctionOperator.operator; }
+        me2=conjunctionExpression
+        { $disjunctionOperator.operator.setRightTerm($me2.term); }
       )*
     ;
 
-type
-    : (ot=typeNameWithArguments -> ^(BASE_TYPE $ot))
-      (MEMBER_OP it=typeNameWithArguments -> ^(QUALIFIED_TYPE[$MEMBER_OP] $type $it))*
-    //| SUBTYPE
-    /*| parameterName '.' 'subtype' abbreviation*
-    -> ^(TYPE parameterName 'subtype' abbreviation*)*/
+disjunctionOperator returns [OrOp operator]
+    : OR_OP 
+      { $operator = new OrOp($OR_OP); }
     ;
 
-typeNameWithArguments
-    : typeName typeArguments?
+conjunctionExpression returns [Term term]
+    : me1=logicalNegationExpression
+      { $term = $me1.term; }
+      (
+        conjunctionOperator 
+        { $conjunctionOperator.operator.setLeftTerm($term);
+          $term = $conjunctionOperator.operator; }
+        me2=logicalNegationExpression
+        { $conjunctionOperator.operator.setRightTerm($me2.term); }
+      )*
+    ;
+
+conjunctionOperator returns [AndOp operator]
+    : AND_OP 
+      { $operator = new AndOp($AND_OP); }
+    ;
+
+logicalNegationExpression returns [Term term]
+    : notOperator 
+      { $term = $notOperator.operator; }
+      le=logicalNegationExpression
+      { $notOperator.operator.setTerm($le.term); }
+    | equalityExpression
+      { $term = $equalityExpression.term; }
+    ;
+
+notOperator returns [NotOp operator]
+    : NOT_OP 
+      { $operator = new NotOp($NOT_OP); }
+    ;
+
+equalityExpression returns [Term term]
+    : ee1=comparisonExpression
+      { $term = $ee1.term; }
+      (
+        equalityOperator 
+        { $equalityOperator.operator.setLeftTerm($term);
+          $term = $equalityOperator.operator; }
+        ee2=comparisonExpression
+        { $equalityOperator.operator.setRightTerm($ee2.term); }
+      )?
+    ;
+
+equalityOperator returns [BinaryOperatorExpression operator]
+    : EQUAL_OP 
+      { $operator = new EqualOp($EQUAL_OP); }
+    | NOT_EQUAL_OP
+      { $operator = new NotEqualOp($NOT_EQUAL_OP); }
+    | IDENTICAL_OP
+      { $operator = new IdenticalOp($IDENTICAL_OP); }
+    ;
+
+comparisonExpression returns [Term term]
+    : ee1=existenceEmptinessExpression
+      { $term = $ee1.term; }
+      (
+        comparisonOperator 
+        { $comparisonOperator.operator.setLeftTerm($term);
+          $term = $comparisonOperator.operator; }
+        ee2=existenceEmptinessExpression
+        { $comparisonOperator.operator.setRightTerm($ee2.term); }
+      //| ('is'|'extends'|'satisfies') type
+      )?
+    ;
+
+comparisonOperator returns [BinaryOperatorExpression operator]
+    : COMPARE_OP 
+      { $operator = new CompareOp($COMPARE_OP); }
+    | SMALL_AS_OP
+      { $operator = new SmallAsOp($SMALL_AS_OP); }
+    | LARGE_AS_OP
+      { $operator = new LargeAsOp($LARGE_AS_OP); }
+    | LARGER_OP
+      { $operator = new LargerOp($LARGER_OP); }
+    | SMALLER_OP
+      { $operator = new SmallerOp($SMALLER_OP); }
+    | IN_OP
+      { $operator = new InOp($IN_OP); }
+    ;
+
+existenceEmptinessExpression returns [Term term]
+    : defaultExpression
+      { $term = $defaultExpression.term; }
+      (
+        existsNonemptyOperator
+        { $term = $existsNonemptyOperator.operator;
+          $existsNonemptyOperator.operator.setTerm($defaultExpression.term); }
+      )?
+    ;
+
+existsNonemptyOperator returns [UnaryOperatorExpression operator]
+    : EXISTS 
+      { $operator = new Exists($EXISTS); }
+    | NONEMPTY
+      { $operator = new Nonempty($NONEMPTY); }
+    ;
+
+defaultExpression returns [Term term]
+    : rangeIntervalEntryExpression
+      { $term = $rangeIntervalEntryExpression.term; }
+      (
+        defaultOperator 
+        { $defaultOperator.operator.setLeftTerm($term);
+          $term = $defaultOperator.operator; }
+        de=defaultExpression
+        { $defaultOperator.operator.setRightTerm($de.term); }
+      )?
+    ;
+
+defaultOperator returns [DefaultOp operator]
+    : DEFAULT_OP 
+      { $operator = new DefaultOp($DEFAULT_OP); }
+    ;
+
+rangeIntervalEntryExpression returns [Term term]
+    : ae1=additiveExpression
+      { $term = $ae1.term; }
+      (
+        rangeIntervalEntryOperator 
+        { $rangeIntervalEntryOperator.operator.setLeftTerm($term);
+          $term = $rangeIntervalEntryOperator.operator; }
+        ae2=additiveExpression
+        { $rangeIntervalEntryOperator.operator.setRightTerm($ae2.term); }
+      )?
+    ;
+
+rangeIntervalEntryOperator returns [BinaryOperatorExpression operator]
+    : RANGE_OP 
+      { $operator = new RangeOp($RANGE_OP); }
+    | ENTRY_OP
+      { $operator = new EntryOp($ENTRY_OP); }
+    ;
+
+additiveExpression returns [Term term]
+    : me1=multiplicativeExpression
+      { $term = $me1.term; }
+      (
+        additiveOperator 
+        { $additiveOperator.operator.setLeftTerm($term);
+          $term = $additiveOperator.operator; }
+        me2=multiplicativeExpression
+        { $additiveOperator.operator.setRightTerm($me2.term); }
+      )*
+    ;
+
+additiveOperator returns [BinaryOperatorExpression operator]
+    : SUM_OP 
+      { $operator = new SumOp($SUM_OP); }
+    | DIFFERENCE_OP
+      { $operator = new DifferenceOp($DIFFERENCE_OP); }
+    | UNION_OP
+      { $operator = new UnionOp($UNION_OP); }
+    | XOR_OP
+      { $operator = new XorOp($XOR_OP); }
+    | COMPLEMENT_OP
+      { $operator = new ComplementOp($COMPLEMENT_OP); }
+    ;
+
+multiplicativeExpression returns [Term term]
+    : ne1=negationComplementExpression
+      { $term = $ne1.term; }
+      (
+        multiplicativeOperator 
+        { $multiplicativeOperator.operator.setLeftTerm($term);
+          $term = $multiplicativeOperator.operator; }
+        ne2=negationComplementExpression
+        { $multiplicativeOperator.operator.setRightTerm($ne2.term); }
+      )*
+    ;
+
+multiplicativeOperator returns [BinaryOperatorExpression operator]
+    : PRODUCT_OP 
+      { $operator = new ProductOp($PRODUCT_OP); }
+    | QUOTIENT_OP
+      { $operator = new QuotientOp($QUOTIENT_OP); }
+    | REMAINDER_OP
+      { $operator = new RemainderOp($REMAINDER_OP); }
+    | INTERSECTION_OP
+      { $operator = new IntersectionOp($INTERSECTION_OP); }
+    ;
+
+negationComplementExpression returns [Term term]
+    : unaryMinusOrComplementOperator 
+      { $term = $unaryMinusOrComplementOperator.operator; }
+      ne=negationComplementExpression
+      { $unaryMinusOrComplementOperator.operator.setTerm($ne.term); }
+    | exponentiationExpression
+      { $term = $exponentiationExpression.term; }
+    ;
+
+unaryMinusOrComplementOperator returns [UnaryOperatorExpression operator]
+    : DIFFERENCE_OP 
+      { $operator = new NegativeOp($DIFFERENCE_OP); }
+    | SUM_OP
+      { $operator = new PositiveOp($SUM_OP); }
+    | COMPLEMENT_OP
+      { $operator = new FlipOp($COMPLEMENT_OP); }
+    | FORMAT_OP
+      { $operator = new FormatOp($FORMAT_OP); }
+    ;
+
+exponentiationExpression returns [Term term]
+    : incrementDecrementExpression
+      { $term = $incrementDecrementExpression.term; }
+      (
+        exponentiationOperator
+        { $exponentiationOperator.operator.setLeftTerm($term);
+          $term = $exponentiationOperator.operator; }
+        ee=exponentiationExpression
+        { $exponentiationOperator.operator.setRightTerm($ee.term); }
+      )?
+    ;
+
+exponentiationOperator returns [PowerOp operator]
+    : POWER_OP 
+      { $operator = new PowerOp($POWER_OP); }
+    ;
+
+incrementDecrementExpression returns [Term term]
+    : prefixOperator
+      { $term = $prefixOperator.operator; }
+      ie=incrementDecrementExpression
+      { $prefixOperator.operator.setTerm($ie.term); }
+    | postfixIncrementDecrementExpression
+      { $term = $postfixIncrementDecrementExpression.term; }
+    ;
+
+prefixOperator returns [PrefixOperatorExpression operator]
+    : DECREMENT_OP 
+      { $operator = new DecrementOp($DECREMENT_OP); }
+    | INCREMENT_OP 
+      { $operator = new IncrementOp($INCREMENT_OP); }
+    ;
+
+postfixIncrementDecrementExpression returns [Term term]
+    : primary 
+      { $term = $primary.primary; } 
+      (
+        postfixOperator
+        { $postfixOperator.operator.setTerm($term);
+          $term = $postfixOperator.operator; }
+      )*
+    ;
+
+postfixOperator returns [PostfixOperatorExpression operator]
+    : DECREMENT_OP 
+      { $operator = new PostfixDecrementOp($DECREMENT_OP); }
+    | INCREMENT_OP 
+      { $operator = new PostfixIncrementOp($INCREMENT_OP); }
+    ;
+
+selfReference returns [Atom atom]
+    : THIS
+      { $atom = new This($THIS); }
+    | SUPER 
+      { $atom = new Super($SUPER); }
+    | OUTER
+      { $atom = new Outer($OUTER); }
     ;
     
-annotations
-    : annotation+
-    -> ^(ANNOTATION_LIST ^(ANNOTATION annotation)+)
+nonstringLiteral returns [Literal literal]
+    : NATURAL_LITERAL 
+      { $literal = new NaturalLiteral($NATURAL_LITERAL); }
+    | FLOAT_LITERAL 
+      { $literal = new FloatLiteral($FLOAT_LITERAL); }
+    | QUOTED_LITERAL 
+      { $literal = new QuotedLiteral($QUOTED_LITERAL); }
+    | CHAR_LITERAL 
+      { $literal = new CharLiteral($CHAR_LITERAL); }
     ;
 
-//TODO: we could minimize backtracking by limiting the 
-//kind of expressions that can appear as arguments to
-//the annotation
-annotation
-    : annotationName
-    -> ^(BASE_MEMBER_EXPRESSION annotationName) ^(POSITIONAL_ARGUMENT_LIST)
-    | annotationName annotationArguments
-    -> ^(BASE_MEMBER_EXPRESSION annotationName) annotationArguments
-    ;
-
-compilerAnnotation
-    : '@'^ annotationName ( '['! STRING_LITERAL ']'! )?
-    ;
-
-annotationArguments
-    : arguments | literalArguments
-    ;
-
-literalArguments
-    : literalArgument+
-    -> ^(POSITIONAL_ARGUMENT_LIST ^(POSITIONAL_ARGUMENT ^(EXPRESSION literalArgument))+)
-    ;
-    
-literalArgument
-    : nonstringLiteral | stringLiteral
-    ;
-
-typeName
-    : UIDENTIFIER
-    -> ^(IDENTIFIER[$UIDENTIFIER])
-    ;
-
-annotationName
-    : LIDENTIFIER
-    -> ^(IDENTIFIER[$LIDENTIFIER])
-    ;
-
-memberName 
-    : LIDENTIFIER
-    -> ^(IDENTIFIER[$LIDENTIFIER])
-    ;
-
-typeArguments
-    : SMALLER_OP typeArgument (',' typeArgument)* '>'
-    -> ^(TYPE_ARGUMENT_LIST[$SMALLER_OP] typeArgument+)
-    ;
-
-typeArgument
-    : unionType ( '...' -> ^(SEQUENCED_TYPE unionType) | -> unionType ) 
-    ; /*| '#'! dimension
-    ;
-
-dimension
-    : dimensionTerm ('+' dimensionTerm)*
-    ;
-
-dimensionTerm
-    : (NATURALLITERAL '*')* dimensionAtom
-    ;
-
-dimensionAtom
-    : NATURALLITERAL 
-    | memberName 
-    | parenDimension
-    ;
-
-parenDimension
-    : '(' dimension ')'
-    ;*/
-
-typeParameters
-    : SMALLER_OP typeParameter (',' typeParameter)* '>'
-    -> ^(TYPE_PARAMETER_LIST[$SMALLER_OP] typeParameter+)
-    ;
-
-typeParameter
-    : variance? typeName
-    -> ^(TYPE_PARAMETER_DECLARATION variance? typeName)
-    | typeName '...'
-    -> ^(SEQUENCED_TYPE_PARAMETER typeName)
-    //| '#'! dimensionalTypeParameter
-    ;
-
-variance
-    : IN_OP -> ^(TYPE_VARIANCE[$IN_OP])
-    | OUT -> ^(TYPE_VARIANCE[$OUT])
-    ;
-    
-dimensionalTypeParameter
-    : memberName
-    -> ^(TYPE_PARAMETER_DECLARATION memberName)
-    ;
-    
-initializer
-    : ASSIGN_OP expression
-    -> ^(INITIALIZER_EXPRESSION[$ASSIGN_OP] expression)
-    ;
-
-specifier
-    : SPECIFY expression
-    -> ^(SPECIFIER_EXPRESSION[$SPECIFY] expression)
-    ;
-
-typeSpecifier
-    : SPECIFY type
-    -> ^(TYPE_SPECIFIER[$SPECIFY] type)
-    ;
-
-nonstringLiteral
-    : NATURAL_LITERAL
-    | FLOAT_LITERAL
-    | QUOTED_LITERAL
-    | CHAR_LITERAL
-    ;
-
-stringExpression
+stringExpression returns [Atom atom]
     : (STRING_LITERAL interpolatedExpressionStart) 
-        => stringTemplate
-    -> ^(STRING_TEMPLATE stringTemplate)
-    | stringLiteral
+       => stringTemplate 
+      { $atom = $stringTemplate.stringTemplate; }
+    | stringLiteral 
+      { $atom = $stringLiteral.stringLiteral; }
     ;
 
-stringLiteral
-    : STRING_LITERAL
-    ;
-
-stringTemplate
+stringLiteral returns [StringLiteral stringLiteral]
     : STRING_LITERAL 
-      ((interpolatedExpressionStart) => expression STRING_LITERAL)+
+      { $stringLiteral = new StringLiteral($STRING_LITERAL); }
+    ;
+
+stringTemplate returns [StringTemplate stringTemplate]
+    : sl1=stringLiteral 
+      { $stringTemplate = new StringTemplate($sl1.stringLiteral.getToken()); 
+        $stringTemplate.addStringLiteral($sl1.stringLiteral); }
+      (
+        (interpolatedExpressionStart) 
+         => expression sl2=stringLiteral
+        { $stringTemplate.addExpression($expression.expression);
+          $stringTemplate.addStringLiteral($sl2.stringLiteral); }
+      )+
     ;
 
 //special rule for syntactic predicate
@@ -689,636 +560,23 @@ stringTemplate
 //the beginning of an expression, except 
 //for SIMPLESTRINGLITERAL and '['
 interpolatedExpressionStart
-    : '(' 
-    | '{'
+    : LPAREN
+    | LBRACE
     | LIDENTIFIER 
     | UIDENTIFIER 
-    | selfReference 
-    //| 'subtype'
-    | nonstringLiteral
-    | prefixOperator
-    ;
-
-prefixOperator
-    : '$' | '-' /*| '+'*/ |'++' | '--' | '~'
-    ;
-
-expression
-    : assignmentExpression
-    -> ^(EXPRESSION assignmentExpression)
-    ;
-
-assignmentExpression
-    : disjunctionExpression
-      ((':='^ | '.='^ | '+='^ | '-='^ | '*='^ | '/='^ | '%='^ | '&='^ | '|='^ | '^='^ | '~='^ | '&&='^ | '||='^ | '?='^) assignmentExpression )?
-    ;
-
-//should '^' have a higher precedence?
-disjunctionExpression
-    : conjunctionExpression 
-      ('||'^ conjunctionExpression)*
-    ;
-
-conjunctionExpression
-    : logicalNegationExpression 
-      ('&&'^ logicalNegationExpression)*
-    ;
-
-logicalNegationExpression
-    : '!'^ logicalNegationExpression
-    | equalityExpression
-    ;
-
-equalityExpression
-    : comparisonExpression
-      (('=='^|'!='^|'==='^) comparisonExpression)?
-    ;
-
-comparisonExpression
-    : existenceEmptinessExpression
-      (
-        ('<=>'^|'<'^|'>'^|'<='^|'>='^|'in'^) existenceEmptinessExpression
-      | ('is'^|'extends'^|'satisfies'^) type
-      )?
-    ;
-
-existenceEmptinessExpression
-    : defaultExpression
-    (
-        EXISTS -> ^(EXISTS defaultExpression)
-      | NONEMPTY -> ^(NONEMPTY defaultExpression) 
-      | -> defaultExpression
-    )
-    ;
-
-defaultExpression
-    : rangeIntervalEntryExpression 
-      ('?'^ defaultExpression)?
-    ;
-
-//I wonder if it would it be cleaner to give 
-//'..' a higher precedence than '->'
-
-rangeIntervalEntryExpression
-    : additiveExpression
-      (('..'^ | '->'^) additiveExpression)?
-    ;
-
-additiveExpression
-    : multiplicativeExpression
-      (('+'^ | '-'^ | '|'^ | '^'^ | '~'^) multiplicativeExpression)*
-    ;
-
-multiplicativeExpression 
-    : negationComplementExpression
-      (('*'^ | '/'^ | '%'^ | '&'^) negationComplementExpression)*
-    ;
-
-negationComplementExpression 
-    : unaryMinusOrComplementOperator^ negationComplementExpression
-    | exponentiationExpression
-    ;
-
-unaryMinusOrComplementOperator
-    : DIFFERENCE_OP -> NEGATIVE_OP[$DIFFERENCE_OP]
-    | SUM_OP -> POSITIVE_OP[$SUM_OP]
-    | COMPLEMENT_OP -> FLIP_OP[$COMPLEMENT_OP]
-    | '$'
-    ;
-
-exponentiationExpression
-    : incrementDecrementExpression 
-      ('**'^ exponentiationExpression)?
-    ;
-
-incrementDecrementExpression
-    : ('++'^ | '--'^) incrementDecrementExpression
-    | postfixIncrementDecrementExpression
-    ;
-
-postfixIncrementDecrementExpression
-    : primary (postfixOperator^)*
-    ;
-
-postfixOperator
-    : DECREMENT_OP -> ^(POSTFIX_DECREMENT_OP[$DECREMENT_OP])
-    | INCREMENT_OP -> ^(POSTFIX_INCREMENT_OP[$INCREMENT_OP])
-    ;
-
-base 
-    : nonstringLiteral
-    | stringExpression
-    | enumeration
     | selfReference
-    | typeReference
-    -> ^(BASE_TYPE_EXPRESSION typeReference)
-    | memberReference
-    -> ^(BASE_MEMBER_EXPRESSION memberReference)
-    //| 'subtype' 
-    //-> ^(SUBTYPE_EXPRESSION)
-    | (parametersStart) => lambda
-    | parExpression
+    | nonstringLiteral
+    | prefixOperatorStart
     ;
 
-primary
-    : (base -> base)
-    (          
-        qualifiedMemberReference
-      -> ^(QUALIFIED_MEMBER_EXPRESSION $primary qualifiedMemberReference)
-      | qualifiedTypeReference
-      -> ^(QUALIFIED_TYPE_EXPRESSION $primary qualifiedTypeReference)
-      | indexExpression
-      -> ^(INDEX_EXPRESSION $primary indexExpression)
-      | invocationExpression
-      -> ^(INVOCATION_EXPRESSION $primary invocationExpression)
-    )*
-    ;
-   
-qualifiedMemberReference
-    : memberSelectionOperator memberReference
-    ;
-
-qualifiedTypeReference
-    : memberSelectionOperator typeReference
-    ;
-
-invocationExpression
-    : arguments functionalArguments?
-    ;
-
-indexExpression
-    : elementSelectionOperator indexOrIndexRange ']'!
-    ;
-
-memberSelectionOperator
-    : '.' | '?.' | '[].' 
-    ;
-
-elementSelectionOperator
-    : '?[' | '['
-    ;
-
-selfReference
-    : 'this' | 'super' | 'outer'
-    ;
-
-enumeration
-    : LBRACE expressions? '}'
-    -> ^(SEQUENCE_ENUMERATION[$LBRACE] expressions?)
-    ;
-
-lambda
-    : /*'function'*/ parameters functionalArgumentBody
-    -> ^(LAMBDA parameters functionalArgumentBody)
-    ;
-
-memberReference
-    : memberName ((typeArgumentsStart) => typeArguments)? 
-    ;
-
-typeReference
-    : typeName ((typeArgumentsStart) => typeArguments)?
-    ;
-
-//special rule for syntactic predicate to 
-//determine if we have a < operator, or a
-//type argument list
-typeArgumentsStart
-    : '<' 
-      UIDENTIFIER ('.' UIDENTIFIER)* /*| 'subtype')*/ (DEFAULT_OP|ARRAY)*
-      (('|'|'&') UIDENTIFIER ('.' UIDENTIFIER)* /*| 'subtype')*/ (DEFAULT_OP|ARRAY)*)*
-      ('>'|'<'|','|'...')
-    ;
-
-indexOrIndexRange
-    : l=index
-    (
-      -> ^(ELEMENT $l)
-      | '...' 
-      -> ^(ELEMENT_RANGE $l)
-      | '..' u=index 
-      -> ^(ELEMENT_RANGE $l $u)
-    )
-    ;
-
-index
-    : additiveExpression 
-    -> ^(EXPRESSION additiveExpression)
-    ;
-
-functionalArguments
-    : functionalArgument+
-    -> ^(NAMED_ARGUMENT_LIST functionalArgument+)
-    ;
-
-arguments
-    : positionalArguments | namedArguments
-    ;
-
-namedArgument2
-    : compilerAnnotation* namedArgument^
-    ;
-
-namedArgument
-    : namedSpecifiedArgument | namedArgumentDeclaration
-    ;
-
-namedArgumentDeclaration
-    : objectArgument
-    | voidMethodArgument
-    | typedMethodOrGetterArgument
+prefixOperatorStart
+    : FORMAT_OP 
+    | DIFFERENCE_OP
+    | INCREMENT_OP 
+    | DECREMENT_OP 
+    | COMPLEMENT_OP
     ;
     
-objectArgument
-    : OBJECT_DEFINITION memberName extendedType? satisfiedTypes? (classBody|';')
-    -> ^(OBJECT_ARGUMENT[$OBJECT_DEFINITION] VALUE_MODIFIER memberName extendedType? satisfiedTypes? classBody?)
-    ;
-
-voidMethodArgument
-    : VOID_MODIFIER memberName parameters* block
-    -> ^(METHOD_ARGUMENT VOID_MODIFIER memberName parameters* block)
-    ;
-
-typedMethodOrGetterArgument
-    : FUNCTION_MODIFIER memberName parameters* block
-      -> ^(METHOD_ARGUMENT FUNCTION_MODIFIER memberName parameters* block)      
-    | VALUE_MODIFIER memberName block
-      -> ^(ATTRIBUTE_ARGUMENT VALUE_MODIFIER memberName block)      
-    | unionType memberName
-      ( 
-        (parameters+ memberBody[$unionType.tree])
-      -> ^(METHOD_ARGUMENT unionType memberName parameters+ memberBody)
-      | memberBody[$unionType.tree]
-      -> ^(ATTRIBUTE_ARGUMENT unionType memberName memberBody)      
-      )
-    ;
-
-namedSpecifiedArgument
-    : memberName specifier ';'
-    -> ^(SPECIFIED_ARGUMENT memberName specifier)
-    ;
-
-//special rule for syntactic predicate
-//to distinguish between a named argument
-//and a sequenced argument
-namedArgumentStart
-    : compilerAnnotation* (specificationStart | declarationStart)
-    ;
-
-//special rule for syntactic predicates
-specificationStart
-    : LIDENTIFIER '='
-    ;
-
-namedArguments
-    : LBRACE ((namedArgumentStart) => namedArgument2)* expressions2? '}'
-    -> ^(NAMED_ARGUMENT_LIST[$LBRACE] namedArgument2* ^(SEQUENCED_ARGUMENT expressions2)?)
-    ;
-
-parExpression 
-    : '('! expression ')'!
-    ;
-    
-positionalArguments
-    : LPAREN ( positionalArgument (',' positionalArgument)* ELLIPSIS? )? ')'
-    -> ^(POSITIONAL_ARGUMENT_LIST[$LPAREN] ^(POSITIONAL_ARGUMENT positionalArgument)* ELLIPSIS?)
-    ;
-
-positionalArgument
-    : (declarationStart) => specialArgument
-    | expression
-    ;
-
-//a smalltalk-style parameter to a positional parameter
-//invocation
-functionalArgument
-    : memberName functionalArgumentDefinition
-    -> ^(METHOD_ARGUMENT FUNCTION_MODIFIER memberName functionalArgumentDefinition)
-    ;
-
-functionalArgumentDefinition
-    : functionalArgumentParameters functionalArgumentBody
-    ;
-
-functionalArgumentParameters
-    : (parametersStart) => parameters
-    | -> ^(PARAMETER_LIST)
-    ;
-
-functionalArgumentBody
-    : block
-    | parExpression -> ^(BLOCK /*^(DIRECTIVE*/ ^(RETURN parExpression))
-    ;
-
-//Support "T x in arg" in positional argument lists
-//Note that we don't need to support this yet
-specialArgument
-    : unionType memberName (containment | specifier)
-    -> ^(SPECIAL_ARGUMENT unionType memberName containment? specifier?)
-    //| isCondition
-    //| existsCondition
-    ;
-
-parameters
-    : LPAREN (annotatedParameter2 (',' annotatedParameter2)*)? ')'
-    -> ^(PARAMETER_LIST[$LPAREN] annotatedParameter2*)
-    ;
-
-//Support for declaring functional formal parameters outside
-//of the parenthesized list
-//Note that this is just a TODO in the spec
-extraParameters
-    : extraParameter+
-    -> ^(PARAMETER_LIST ^(FUNCTIONAL_PARAMETER_DECLARATION extraParameter)+)
-    ;
-
-//special rule for syntactic predicate
-//to distinguish between a formal 
-//parameter list and a parenthesized body 
-//of an inline callable argument
-//be careful with this one, since it 
-//matches "()", which can also be an 
-//argument list
-parametersStart
-    : '(' ( annotatedDeclarationStart | ')' )
-    ;
-    
-// FIXME: This accepts more than the language spec: named arguments
-// and varargs arguments can appear in any order.  We'll have to
-// enforce the rule that the ... appears at the end of the parapmeter
-// list in a later pass of the compiler.
-parameter
-    : parameterType memberName
-      (
-          valueParameter? specifier?
-        -> ^(VALUE_PARAMETER_DECLARATION parameterType memberName specifier?)
-        |  parameters+ specifier? //for callable parameters
-        -> ^(FUNCTIONAL_PARAMETER_DECLARATION parameterType memberName parameters+ specifier?)
-      /*| iteratedParameter 
-      | (specifiedParameterStart) => specifiedParameter*/
-      )
-    ;
-
-annotatedParameter
-    : annotations? parameter^
-    ;
-
-annotatedParameter2
-    : compilerAnnotation* annotatedParameter^
-    ;
-
-valueParameter
-    : '->' unionType memberName
-    ;
-
-/*
-//Support for "X x in Iterable<X> param" in formal parameter lists
-//Note that this is just a TODO in the spec
-iteratedParameter
-    : 'in' type memberName
-    ;
-
-//Support for "X x = X? param" in formal parameter lists
-//Note that this is just a TODO in the spec
-specifiedParameter
-    : '=' type memberName
-    ;
-
-//special rule for syntactic predicate
-specifiedParameterStart
-    : '=' declarationStart
-    ;
-*/
-
-extraParameter
-    : parameterType memberName parameters*
-    ;
-
-parameterType
-    : unionType ( '...' -> ^(SEQUENCED_TYPE unionType) | -> unionType )
-    | VOID_MODIFIER -> VOID_MODIFIER
-    ;
-
-// Control structures.
-
-controlCondition
-    : condition
-    ;
-
-condition
-    : booleanCondition 
-    | existsCondition
-    | nonemptyCondition
-    | isCondition 
-    | satisfiesCondition
-    ;
-    
-booleanCondition
-    : '(' expression ')'
-    -> ^(BOOLEAN_CONDITION expression)
-    ;
-    
-existsCondition
-    : ('(' EXISTS LIDENTIFIER ')') => '(' EXISTS impliedVariable ')'
-    -> ^(EXISTS_CONDITION[$EXISTS] impliedVariable)
-    | '(' EXISTS specifiedVariable2 ')'
-    -> ^(EXISTS_CONDITION[$EXISTS] specifiedVariable2)
-    ;
-    
-nonemptyCondition
-    : ('(' NONEMPTY LIDENTIFIER ')') => '(' NONEMPTY impliedVariable ')'
-    -> ^(NONEMPTY_CONDITION[$NONEMPTY] impliedVariable)
-    | '(' NONEMPTY specifiedVariable2 ')' 
-    -> ^(NONEMPTY_CONDITION[$NONEMPTY] specifiedVariable2)
-    ;
-
-isCondition
-    : ('(' IS_OP unionType LIDENTIFIER ')') => '(' IS_OP unionType memberName ')'
-    -> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName)))))
-    | '(' IS_OP unionType (memberName specifier) ')'
-    -> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE unionType memberName specifier))
-    ;
-
-satisfiesCondition
-    : '(' SATISFIES type type ')'
-    -> ^(SATISFIES_CONDITION[$SATISFIES] type+)
-    ;
-
-controlStructure
-    : ifElse 
-    | switchCaseElse 
-    | whileLoop 
-    //| doWhile 
-    | forFail 
-    | tryCatchFinally
-    ;
-    
-ifElse
-    : ifBlock elseBlock?
-    -> ^(IF_STATEMENT ifBlock elseBlock?)
-    ;
-
-ifBlock
-    : 'if'^ controlCondition block
-    ;
-
-elseBlock
-    : 'else'^ (elseIf | block)
-    ;
-
-elseIf
-    : ifElse 
-    -> ^(BLOCK ifElse)
-    ;
-
-switchCaseElse
-    : switchHeader ( '{' cases '}' | cases )
-    -> ^(SWITCH_STATEMENT switchHeader cases)
-    ;
-
-switchHeader
-    : 'switch'^ '('! expression ')'!
-    ;
-
-cases 
-    : caseItem+ defaultCaseItem?
-    -> ^(SWITCH_CASE_LIST caseItem+ defaultCaseItem?)
-    ;
-    
-caseItem
-    : 'case'^ '('! caseCondition ')'! block
-    ;
-
-defaultCaseItem
-    : 'else'^ block
-    ;
-
-caseCondition
-    : expressions 
-    -> ^(MATCH_CASE expressions)
-    | isCaseCondition 
-    | satisfiesCaseCondition
-    ;
-
-expressions2
-    : compilerAnnotation* expressions
-    ;
-
-expressions
-    : expression (',' expression)*
-    -> ^(EXPRESSION_LIST expression+)
-    ;
-
-isCaseCondition
-    : IS_OP unionType
-    -> ^(IS_CASE[$IS_OP] unionType)
-    ;
-
-satisfiesCaseCondition
-    : SATISFIES type
-    -> ^(SATISFIES_CASE[$SATISFIES] type)
-    ;
-
-forFail
-    : forBlock failBlock?
-    -> ^(FOR_STATEMENT forBlock failBlock?)
-    ;
-
-forBlock
-    : 'for'^ '('! forIterator2 ')'! block
-    ;
-
-failBlock
-    : 'else'^ block
-    ;
-
-forIterator2
-    : compilerAnnotation* forIterator^
-    ;
-
-forIterator
-    : v=variable
-    (
-      containment
-      -> ^(VALUE_ITERATOR $v containment)
-      | '->' vv=variable containment
-      -> ^(KEY_VALUE_ITERATOR $v $vv containment)
-    )
-    ;
-    
-containment
-    : 'in' expression
-    -> ^(SPECIFIER_EXPRESSION expression)
-    ;
-    
-/*doWhile
-    : doBlock ';'
-    -> ^(DO_WHILE_STATEMENT doBlock)
-    ;*/
-
-whileLoop
-    : whileBlock
-    -> ^(WHILE_STATEMENT whileBlock)
-    ;
-
-whileBlock
-    : 'while'^ controlCondition block
-    ;
-
-/*doBlock
-    : 'do'^ block 'while'! controlCondition
-    ;*/
-
-tryCatchFinally
-    : tryBlock catchBlock* finallyBlock?
-    -> ^(TRY_CATCH_STATEMENT tryBlock catchBlock* finallyBlock?)
-    ;
-
-tryBlock
-    : 'try'^ ('('! resource ')'!)? block
-    ;
-
-catchBlock
-    : 'catch'^ '('! variable2 ')'! block
-    ;
-
-finallyBlock
-    : 'finally'^ block
-    ;
-
-resource
-    : ('@'|declarationStart|specificationStart) => specifiedVariable2
-    -> ^(RESOURCE specifiedVariable2)
-    | expression
-    -> ^(RESOURCE expression)
-    ;
-
-specifiedVariable2
-    : compilerAnnotation* specifiedVariable^
-    ;
-
-specifiedVariable
-    : variable^ specifier?
-    ;
-
-variable2
-    : compilerAnnotation* variable^
-    ;
-
-variable
-    : unionType memberName parameters*
-    -> ^(VARIABLE unionType memberName parameters*)
-    | memberName
-    -> ^(VARIABLE VALUE_MODIFIER memberName)
-    | memberName parameters+
-    -> ^(VARIABLE FUNCTION_MODIFIER memberName parameters+)
-    ;
-
-impliedVariable
-    : memberName 
-    -> ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName))))
-    ;
-
 // Lexer
 
 fragment
@@ -1465,7 +723,7 @@ MULTI_COMMENT
             $channel = HIDDEN;
         }
         ;
-        
+
 ABSTRACTED_TYPE
     :   'abstracts'
     ;
@@ -1497,10 +755,6 @@ CLASS_DEFINITION
 CONTINUE
     :   'continue'
     ;
-
-/*DO_CLAUSE
-    :   'do'
-    ;*/
     
 ELSE_CLAUSE
     :   'else'
@@ -1521,10 +775,6 @@ FINALLY_CLAUSE
 FOR_CLAUSE
     :   'for'
     ;
-
-/*FAIL_CLAUSE
-    :   'fail'
-    ;*/
 
 TYPE_CONSTRAINT
     :   'given'
@@ -1590,10 +840,6 @@ OUT
     :   'out'
     ;
 
-/*SUBTYPE
-    :   'subtype'
-    ;*/
-
 THROW
     :   'throw'
     ;
@@ -1601,10 +847,6 @@ THROW
 TRY_CLAUSE
     :   'try'
     ;
-
-/*RETRY
-    :   'retry'
-    ;*/
 
 VOID_MODIFIER
     :   'void'
