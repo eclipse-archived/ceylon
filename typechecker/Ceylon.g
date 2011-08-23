@@ -38,10 +38,15 @@ options {
 }
 
 compilationUnit returns [CompilationUnit compilationUnit]
-    : { $compilationUnit = new CompilationUnit(null); }
-      importList { $compilationUnit.setImportList($importList.importList); }
-      ( statement { $compilationUnit.addStatement($statement.statement); } )*
-      EOF { this.compilationUnit = $compilationUnit; }
+    : { $compilationUnit = new CompilationUnit(null);
+        this.compilationUnit = $compilationUnit; }
+      importList 
+      { $compilationUnit.setImportList($importList.importList); }
+      ( 
+        annotatedDeclaration 
+        { $compilationUnit.addDeclaration($annotatedDeclaration.declaration); } 
+      )+
+      EOF
     ;
 
 importList returns [ImportList importList]
@@ -116,6 +121,339 @@ memberName returns [Identifier identifier]
       { $identifier = new Identifier($LIDENTIFIER); }
     ;
     
+objectDeclaration returns [ObjectDefinition declaration]
+    : OBJECT_DEFINITION
+      { $declaration = new ObjectDefinition(null); }
+      memberName 
+      { $declaration.setIdentifier($memberName.identifier); }
+      ( 
+        extendedType
+        { $declaration.setExtendedType($extendedType.extendedType); } 
+      )?
+      ( 
+        satisfiedTypes
+        { $declaration.setSatisfiedTypes($satisfiedTypes.satisfiedTypes); } 
+      )?
+      classBody
+      { $declaration.setClassBody($classBody.classBody); }
+    //-> ^(OBJECT_DEFINITION VALUE_MODIFIER memberName extendedType? satisfiedTypes? classBody?) 
+    ;
+
+voidMethodDeclaration
+    : VOID_MODIFIER memberName methodParameters?
+      ( 
+        block 
+      //-> ^(METHOD_DEFINITION VOID_MODIFIER memberName methodParameters? block)   
+      | specifier?
+        SEMICOLON
+      //-> ^(METHOD_DECLARATION VOID_MODIFIER memberName methodParameters? specifier?)   
+      )
+    ;
+
+setterDeclaration
+    : ASSIGN memberName block
+    //-> ^(ATTRIBUTE_SETTER_DEFINITION[$ASSIGN] VOID_MODIFIER memberName block)
+    ;
+
+typedMethodOrAttributeDeclaration
+    : FUNCTION_MODIFIER memberName methodParameters?
+      ( 
+        block
+      //-> ^(METHOD_DEFINITION FUNCTION_MODIFIER memberName methodParameters? block)
+      | specifier?
+        SEMICOLON
+      //-> ^(METHOD_DECLARATION FUNCTION_MODIFIER memberName methodParameters? specifier?)
+      )
+    | VALUE_MODIFIER memberName
+      ( 
+        (specifier | initializer)? 
+        SEMICOLON
+        //-> ^(ATTRIBUTE_DECLARATION VALUE_MODIFIER memberName specifier? initializer?)
+      | block
+        //-> ^(ATTRIBUTE_GETTER_DEFINITION VALUE_MODIFIER memberName block)
+      )
+    /*| unionType memberName
+      ( 
+        methodParameters 
+        ( 
+          memberBody[$unionType.tree] 
+        //-> ^(METHOD_DEFINITION unionType memberName methodParameters memberBody)
+        | specifier? ';'
+        //-> ^(METHOD_DECLARATION unionType memberName methodParameters specifier?)
+        )
+      | (specifier | initializer)? ';'
+      //-> ^(ATTRIBUTE_DECLARATION unionType memberName specifier? initializer?)
+      | memberBody[$unionType.tree]
+      //-> ^(ATTRIBUTE_GETTER_DEFINITION unionType memberName memberBody)      
+      )*/
+    ;
+
+interfaceDeclaration
+    : INTERFACE_DEFINITION
+      typeName interfaceParameters
+      (
+        interfaceBody
+      //-> ^(INTERFACE_DEFINITION typeName interfaceParameters? interfaceBody)
+      | typeSpecifier? 
+        SEMICOLON
+      //-> ^(INTERFACE_DECLARATION[$INTERFACE_DEFINITION] typeName interfaceParameters? typeSpecifier?)
+      )
+    ;
+
+classDeclaration
+    : CLASS_DEFINITION typeName classParameters?
+      (
+        classBody
+      //-> ^(CLASS_DEFINITION typeName classParameters? classBody)
+      | typeSpecifier? 
+        SEMICOLON
+      //-> ^(CLASS_DECLARATION[$CLASS_DEFINITION] typeName classParameters? typeSpecifier?)
+      )
+    ;
+
+methodParameters
+    : typeParameters? parameters+ 
+      //metatypes? 
+      typeConstraints?
+    ;
+    
+interfaceParameters
+    : typeParameters?
+      caseTypes? /*metatypes?*/ adaptedTypes? satisfiedTypes?
+      typeConstraints?
+    ;
+
+classParameters
+    : typeParameters? parameters
+      caseTypes? /*metatypes?*/ extendedType? satisfiedTypes?
+      typeConstraints?
+    ;
+
+block
+    : LBRACE 
+      annotatedDeclarationOrStatement* 
+      RBRACE
+    //-> ^(BLOCK[$LBRACE] annotatedDeclarationOrStatement*)
+    ;
+
+//Note: interface bodies can't really contain 
+//      statements, but error recovery works
+//      much better if we validate that later
+//      on, instead of doing it in the parser.
+interfaceBody
+    : LBRACE 
+      annotatedDeclarationOrStatement* 
+      RBRACE
+    //-> ^(INTERFACE_BODY[$LBRACE] annotatedDeclarationOrStatement2*)
+    ;
+
+classBody returns [ClassBody classBody]
+    : LBRACE
+      { $classBody = new ClassBody(null); }
+      (
+        annotatedDeclarationOrStatement
+        { $classBody.addStatement($annotatedDeclarationOrStatement.statement); }
+      )*
+      RBRACE
+    //-> ^(CLASS_BODY[$LBRACE] annotatedDeclarationOrStatement2*)
+    ;
+
+extendedType returns [ExtendedType extendedType]
+    : EXTENDS
+      { $extendedType = new ExtendedType($EXTENDS); }
+      (
+        type
+        { $extendedType.setType($type.type); }
+        pa1=positionalArguments
+        { InvocationExpression ie = new InvocationExpression(null);
+          ie.setPrimary( new ExtendedTypeExpression(null) );
+          ie.setPositionalArgumentList($pa1.positionalArgumentList);
+          $extendedType.setInvocationExpression(ie); }
+        //-> ^(EXTENDED_TYPE[$EXTENDS] type ^(INVOCATION_EXPRESSION ^(EXTENDED_TYPE_EXPRESSION) positionalArguments))
+      | SUPER MEMBER_OP typeReference pa2=positionalArguments
+        //-> ^(EXTENDED_TYPE[$EXTENDS] ^(QUALIFIED_TYPE SUPER_TYPE[$SUPER] typeReference) ^(INVOCATION_EXPRESSION ^(EXTENDED_TYPE_EXPRESSION) positionalArguments))
+      )
+    ;
+
+satisfiedTypes returns [SatisfiedTypes satisfiedTypes]
+    : SATISFIES 
+      { $satisfiedTypes = new SatisfiedTypes($SATISFIES); }
+      t1=type 
+      { $satisfiedTypes.addType($t1.type); }
+      (
+        INTERSECTION_OP 
+        t2=type
+        { $satisfiedTypes.addType($t2.type); }
+      )*
+    //-> ^(SATISFIED_TYPES[$SATISFIES] type+)
+    ;
+
+abstractedType
+    : ABSTRACTED_TYPE type
+    ;
+
+adaptedTypes
+    : ADAPTED_TYPES type (INTERSECTION_OP type)*
+    ;
+
+caseTypes
+    : CASE_TYPES caseType (UNION_OP caseType)*
+    ;
+
+caseType 
+    : type 
+    | memberName //-> ^(BASE_MEMBER_EXPRESSION memberName)
+    ;
+
+//Support for metatypes
+//Note that we don't need this for now
+/*metatypes
+    : IS_OP type ('&' type)* 
+    -> ^(METATYPES[$IS_OP] type*)
+    ;*/
+
+parameters
+    : LPAREN (annotatedParameter (COMMA annotatedParameter)*)? RPAREN
+    //-> ^(PARAMETER_LIST[$LPAREN] annotatedParameter*)
+    ;
+
+//special rule for syntactic predicate
+//to distinguish between a formal 
+//parameter list and a parenthesized body 
+//of an inline callable argument
+//be careful with this one, since it 
+//matches "()", which can also be an 
+//argument list
+parametersStart
+    : LPAREN ( annotatedDeclarationStart | RPAREN )
+    ;
+    
+// FIXME: This accepts more than the language spec: named arguments
+// and varargs arguments can appear in any order.  We'll have to
+// enforce the rule that the ... appears at the end of the parapmeter
+// list in a later pass of the compiler.
+parameter returns [Parameter parameter]
+    : parameterType memberName
+      (
+          valueParameter? specifier?
+        //-> ^(VALUE_PARAMETER_DECLARATION parameterType memberName specifier?)
+        |  parameters+ specifier? //for callable parameters
+        //-> ^(FUNCTIONAL_PARAMETER_DECLARATION parameterType memberName parameters+ specifier?)
+      )
+    ;
+
+annotatedParameter returns [Parameter parameter]
+    : annotations 
+      p=parameter
+      { $parameter=$p.parameter;
+        $parameter.setAnnotationList($annotations.annotationList); }
+    ;
+
+valueParameter
+    : ENTRY_OP unionType memberName
+    ;
+
+parameterType
+    : unionType ( ELLIPSIS )? //-> ^(SEQUENCED_TYPE unionType) | -> unionType )
+    | VOID_MODIFIER //-> VOID_MODIFIER
+    ;
+
+typeParameters
+    : SMALLER_OP 
+      typeParameter 
+      (
+        COMMA typeParameter
+      )*
+      LARGER_OP
+    //-> ^(TYPE_PARAMETER_LIST[$SMALLER_OP] typeParameter+)
+    ;
+
+typeParameter
+    : variance? 
+      typeName
+    //-> ^(TYPE_PARAMETER_DECLARATION variance? typeName)
+    | typeName 
+      ELLIPSIS
+    //-> ^(SEQUENCED_TYPE_PARAMETER typeName)
+    ;
+
+variance
+    : IN_OP //-> ^(TYPE_VARIANCE[$IN_OP])
+    | OUT //-> ^(TYPE_VARIANCE[$OUT])
+    ;
+    
+typeConstraint
+    : TYPE_CONSTRAINT
+      typeName 
+      typeParameters? 
+      parameters? 
+      caseTypes? 
+      //metatypes? 
+      satisfiedTypes? 
+      abstractedType?
+    ;
+
+typeConstraints
+    : typeConstraint+
+    //-> ^(TYPE_CONSTRAINT_LIST typeConstraint2+)
+    ;
+
+annotatedDeclarationOrStatement returns [Statement statement]
+    options {memoize=true;}
+    : (annotatedDeclarationStart) => annotatedDeclaration
+      { $statement=$annotatedDeclaration.declaration; }
+    | s=statement
+      { $statement=$s.statement; }
+    ;
+
+annotatedDeclaration returns [Declaration declaration]
+    : annotations
+    ( 
+      objectDeclaration
+      { $declaration=$objectDeclaration.declaration; }
+    /*| setterDeclaration
+    | voidMethodDeclaration
+    | typedMethodOrAttributeDeclaration
+    | classDeclaration
+    | interfaceDeclaration*/
+    )
+    { if ($declaration!=null) {
+      $declaration.setAnnotationList($annotations.annotationList); 
+    } }
+    ;
+
+//special rule for syntactic predicate
+//to distinguish between an annotation
+//and an expression statement
+annotatedDeclarationStart
+    : declarationStart
+    | LIDENTIFIER
+      ( 
+          declarationStart
+        | LIDENTIFIER
+        | nonstringLiteral | stringLiteral
+        | arguments annotatedDeclarationStart //we need to recurse because it could be an inline callable argument
+      )
+    ;
+
+//special rule for syntactic predicates
+//that distinguish declarations from
+//expressions
+declarationStart
+    : declarationKeyword 
+    | unionType (ELLIPSIS | LIDENTIFIER)
+    ;
+
+declarationKeyword
+    : VALUE_MODIFIER
+    | FUNCTION_MODIFIER
+    | ASSIGN
+    | VOID_MODIFIER
+    | INTERFACE_DEFINITION
+    | CLASS_DEFINITION
+    | OBJECT_DEFINITION
+    ;
+
 statement returns [Statement statement]
     : specificationStatement
       { $statement = $specificationStatement.specifierStatement; }
@@ -188,11 +526,21 @@ continueDirective returns [Continue directive]
       { $directive = new Continue($CONTINUE); }
     ;
 
+typeSpecifier
+    : SPECIFY type
+    //-> ^(TYPE_SPECIFIER[$SPECIFY] type)
+    ;
+
 specifier returns [SpecifierExpression specifierExpression]
     : SPECIFY 
       { $specifierExpression = new SpecifierExpression($SPECIFY); }
       expression
       { $specifierExpression.setExpression($expression.expression); }
+    ;
+
+initializer
+    : ASSIGN_OP expression
+    //-> ^(INITIALIZER_EXPRESSION[$ASSIGN_OP] expression)
     ;
 
 expression returns [Expression expression]
@@ -883,7 +1231,7 @@ abbreviatedType returns [StaticType type]
       )*
     ;
 
-type returns [StaticType type]
+type returns [SimpleType type]
     : ot=typeNameWithArguments
       { BaseType bt = new BaseType(null);
         bt.setIdentifier($ot.identifier);
@@ -914,7 +1262,7 @@ annotations returns [AnnotationList annotationList]
       ( 
         annotation 
         { $annotationList.addAnnotation($annotation.annotation); }
-      )+
+      )*
     ;
 
 annotation returns [Annotation annotation]
@@ -945,7 +1293,6 @@ literalArguments returns [PositionalArgumentList argumentList]
         literalArgument
         { $argumentList.addPositionalArgument($literalArgument.positionalArgument); }
       )*
-    //-> ^(POSITIONAL_ARGUMENT_LIST ^(POSITIONAL_ARGUMENT ^(EXPRESSION literalArgument))+)
     ;
     
 literalArgument returns [PositionalArgument positionalArgument]
