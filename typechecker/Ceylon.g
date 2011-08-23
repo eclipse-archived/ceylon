@@ -170,7 +170,7 @@ voidOrInferredMethodDeclaration returns [AnyMethod declaration]
         parameters
         { def.addParameterList($parameters.parameterList); 
           dec.addParameterList($parameters.parameterList); }
-      )*
+      )+
       //metatypes? 
       (
         typeConstraints
@@ -232,22 +232,67 @@ inferredAttributeDeclaration returns [AnyAttribute declaration]
       )
     ;
 
-typedMethodOrAttributeDeclaration
-    : | unionType memberName
+typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
+    @init { AttributeGetterDefinition adef=new AttributeGetterDefinition(null);
+            AttributeDeclaration adec=new AttributeDeclaration(null);
+            MethodDefinition mdef=new MethodDefinition(null);
+            MethodDeclaration mdec=new MethodDeclaration(null); 
+            $declaration = adef; }
+    : unionType
+      { adef.setType($unionType.type);
+        adec.setType($unionType.type); 
+        mdef.setType($unionType.type);
+        mdec.setType($unionType.type); }
+      memberName
+      { adef.setIdentifier($memberName.identifier);
+        adec.setIdentifier($memberName.identifier); 
+        mdef.setIdentifier($memberName.identifier);
+        mdec.setIdentifier($memberName.identifier); }
       ( 
-        typeParameters? 
-        parameters+
+        (
+          typeParameters
+          { mdef.setTypeParameterList($typeParameters.typeParameterList);
+            mdec.setTypeParameterList($typeParameters.typeParameterList); 
+            $declaration = mdef; }
+        )?
+        (
+          parameters
+          { mdef.addParameterList($parameters.parameterList);
+            mdec.addParameterList($parameters.parameterList); 
+            $declaration = mdef; }
+        )+
         //metatypes? 
-        typeConstraints?
         ( 
-          //memberBody[$unionType.tree] 
+          typeConstraints
+          { mdef.setTypeConstraintList($typeConstraints.typeConstraintList);
+            mdec.setTypeConstraintList($typeConstraints.typeConstraintList); }
+        )?
+        ( 
+          mb=block //memberBody[$unionType.tree] 
+         { mdef.setBlock($mb.block); }
         //-> ^(METHOD_DEFINITION unionType memberName methodParameters memberBody)
-        | specifier? ';'
+        | 
+          (
+            ms=specifier
+           { mdec.setSpecifierExpression($ms.specifierExpression); }
+          )?
+          SEMICOLON
+          { $declaration = mdec; }
         //-> ^(METHOD_DECLARATION unionType memberName methodParameters specifier?)
         )
-      | (specifier | initializer)? ';'
+      | 
+        (
+          as=specifier 
+          { adec.setSpecifierOrInitializerExpression($as.specifierExpression); }
+        | 
+          initializer
+          { adec.setSpecifierOrInitializerExpression($initializer.initializerExpression); }
+        )?
+        SEMICOLON
+        { $declaration = adec; }
       //-> ^(ATTRIBUTE_DECLARATION unionType memberName specifier? initializer?)
-      | //memberBody[$unionType.tree]
+      | ab=block //memberBody[$unionType.tree]
+        { adef.setBlock($ab.block); }
       //-> ^(ATTRIBUTE_GETTER_DEFINITION unionType memberName memberBody)      
       )
     ;
@@ -638,7 +683,8 @@ declaration returns [Declaration declaration]
       { $declaration=$voidOrInferredMethodDeclaration.declaration; }
     | inferredAttributeDeclaration
       { $declaration=$inferredAttributeDeclaration.declaration; }
-    //| typedMethodOrAttributeDeclaration
+    | typedMethodOrAttributeDeclaration
+      { $declaration=$typedMethodOrAttributeDeclaration.declaration; }
     | classDeclaration
       { $declaration=$classDeclaration.declaration; }
     | interfaceDeclaration
@@ -1579,6 +1625,19 @@ prefixOperatorStart
     | COMPLEMENT_OP
     ;
     
+compilerAnnotation returns [CompilerAnnotation annotation]
+    : COMPILER_ANNOTATION 
+      { $annotation=new CompilerAnnotation($COMPILER_ANNOTATION); }
+      annotationName 
+      { $annotation.setIdentifier($annotationName.identifier); }
+      ( 
+          LBRACKET
+          stringLiteral
+          { $annotation.setStringLiteral($stringLiteral.stringLiteral); }
+          RBRACKET
+      )?
+    ;
+
 // Lexer
 
 fragment
@@ -1619,7 +1678,7 @@ fragment ARRAY: '[]';
 fragment INDEX_OP: '[';
 //distinguish the spread operator "x[]."
 //from a sequenced type "T[]..."
-LBRACKETS
+LBRACKET
     : '['
     (
       (']' '.' ~'.') => '].' { $type = SPREAD_OP; }
@@ -1635,7 +1694,7 @@ fragment DEFAULT_OP: '?';
 //from an abbreviated type "T?[]"
 //and the safe member operator "x?.y" from 
 //the sequenced type "T?..."
-QMARKS
+QMARK
     : '?'
     (
       ('[' ~']') => '[' { $type = SAFE_INDEX_OP; }
