@@ -1680,34 +1680,80 @@ condition returns [Condition condition]
     | satisfiesCondition
     ;
     
-booleanCondition
-    : LPAREN expression RPAREN
+booleanCondition returns [BooleanCondition condition]
+    : LPAREN 
+      expression
+      { $condition = new BooleanCondition(null); 
+        $condition.setExpression($expression.expression); }
+      RPAREN
     //-> ^(BOOLEAN_CONDITION expression)
     ;
     
-existsCondition
-    : (LPAREN EXISTS LIDENTIFIER RPAREN) => LPAREN EXISTS impliedVariable RPAREN
+existsCondition returns [ExistsCondition condition]
+    : (LPAREN EXISTS LIDENTIFIER RPAREN) 
+      => LPAREN e1=EXISTS impliedVariable RPAREN
+      { $condition = new ExistsCondition($e1); 
+        $condition.setVariable($impliedVariable.variable); }
     //-> ^(EXISTS_CONDITION[$EXISTS] impliedVariable)
-    | LPAREN EXISTS specifiedVariable RPAREN
+    | LPAREN e2=EXISTS 
+      { $condition = new ExistsCondition($e2); } 
+      specifiedVariable 
+      { $condition.setVariable($specifiedVariable.variable); }
+      RPAREN
     //-> ^(EXISTS_CONDITION[$EXISTS] specifiedVariable2)
     ;
     
-nonemptyCondition
-    : (LPAREN NONEMPTY LIDENTIFIER ')') => LPAREN NONEMPTY impliedVariable RPAREN
+nonemptyCondition returns [NonemptyCondition condition]
+    : (LPAREN NONEMPTY LIDENTIFIER RPAREN) 
+      => LPAREN n1=NONEMPTY impliedVariable RPAREN
+      { $condition = new NonemptyCondition($n1); 
+        $condition.setVariable($impliedVariable.variable); }
     //-> ^(NONEMPTY_CONDITION[$NONEMPTY] impliedVariable)
-    | LPAREN NONEMPTY specifiedVariable RPAREN
+    | LPAREN n2=NONEMPTY 
+      { $condition = new NonemptyCondition($n2); }
+      specifiedVariable 
+      { $condition.setVariable($specifiedVariable.variable); }
+      RPAREN
     //-> ^(NONEMPTY_CONDITION[$NONEMPTY] specifiedVariable2)
     ;
 
-isCondition
-    : (LPAREN IS_OP unionType LIDENTIFIER RPAREN) => LPAREN IS_OP unionType memberName RPAREN
+isCondition returns [IsCondition condition]
+    : (LPAREN IS_OP unionType LIDENTIFIER RPAREN) 
+      => LPAREN i1=IS_OP t1=unionType memberName RPAREN
+      { $condition = new IsCondition($i1); 
+        $condition.setType($t1.type);
+        Variable v = new Variable(null);
+        v.setType(new SyntheticVariable(null));
+        v.setIdentifier($memberName.identifier);
+        SpecifierExpression se = new SpecifierExpression(null);
+        Expression e = new Expression(null);
+        BaseMemberExpression bme = new BaseMemberExpression(null);
+        bme.setIdentifier($memberName.identifier);
+        e.setTerm(bme);
+        se.setExpression(e);
+        v.setSpecifierExpression(se);
+        $condition.setVariable(v); }
     //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName)))))
-    | LPAREN IS_OP unionType (memberName specifier) RPAREN
+    | LPAREN i2=IS_OP t2=unionType (memberName specifier) RPAREN
+      { $condition = new IsCondition($i2); 
+        $condition.setType($t2.type);
+        Variable v = new Variable(null);
+        v.setType(new SyntheticVariable(null));
+        v.setIdentifier($memberName.identifier);
+        v.setSpecifierExpression($specifier.specifierExpression);
+        $condition.setVariable(v); }
     //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE unionType memberName specifier))
     ;
 
-satisfiesCondition
-    : LPAREN SATISFIES t1=type t2=type RPAREN
+satisfiesCondition returns [SatisfiesCondition condition]
+    : LPAREN 
+      SATISFIES 
+      { $condition = new SatisfiesCondition($SATISFIES); }
+      t1=type 
+      { $condition.setLeftType($t1.type); }
+      t2=type 
+      { $condition.setRightType($t2.type); }
+      RPAREN
     //-> ^(SATISFIES_CONDITION[$SATISFIES] type+)
     ;
 
