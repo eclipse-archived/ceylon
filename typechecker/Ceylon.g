@@ -611,10 +611,14 @@ annotatedDeclaration returns [Declaration declaration]
       objectDeclaration
       { $declaration=$objectDeclaration.declaration; }
     | setterDeclaration
+      { $declaration=$setterDeclaration.declaration; }
     | voidMethodDeclaration
+      { $declaration=$voidMethodDeclaration.declaration; }
     //| typedMethodOrAttributeDeclaration
     | classDeclaration
+      { $declaration=$classDeclaration.declaration; }
     | interfaceDeclaration
+      { $declaration=$interfaceDeclaration.declaration; }
     )
     { if ($declaration!=null) {
       $declaration.setAnnotationList($annotations.annotationList); 
