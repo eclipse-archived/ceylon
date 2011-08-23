@@ -1846,34 +1846,68 @@ whileBlock returns [WhileClause clause]
     ;
 
 tryCatchFinally returns [TryCatchStatement statement]
-    : tryBlock catchBlock* finallyBlock?
+    : { $statement = new TryCatchStatement(null); }
+      tryBlock 
+      { $statement.setTryClause($tryBlock.clause); }
+      (
+        catchBlock
+      { $statement.addCatchClause($catchBlock.clause); }
+      )* 
+      ( 
+        finallyBlock
+      { $statement.setFinallyClause($finallyBlock.clause); }
+      )?
     //-> ^(TRY_CATCH_STATEMENT tryBlock catchBlock* finallyBlock?)
     ;
 
-tryBlock
-    : TRY_CLAUSE (LPAREN resource RPAREN)? block
+tryBlock returns [TryClause clause]
+    : TRY_CLAUSE 
+      { $clause = new TryClause($TRY_CLAUSE); }
+      (
+        LPAREN 
+        resource
+        { $clause.setResource($resource.resource); }
+        RPAREN
+      )? 
+      block
+      { $clause.setBlock($block.block); }
     ;
 
-catchBlock
-    : CATCH_CLAUSE LPAREN variable RPAREN block
+catchBlock returns [CatchClause clause]
+    : CATCH_CLAUSE 
+      { $clause = new CatchClause($CATCH_CLAUSE); }
+      LPAREN 
+      variable 
+      { $clause.setVariable($variable.variable); }
+      RPAREN 
+      block
+      { $clause.setBlock($block.block); }
     ;
 
-finallyBlock
-    : FINALLY_CLAUSE block
+finallyBlock returns [FinallyClause clause]
+    : FINALLY_CLAUSE 
+      { $clause = new FinallyClause($FINALLY_CLAUSE); }
+      block
+      { $clause.setBlock($block.block); }
     ;
 
-resource
-    : (COMPILER_ANNOTATION|declarationStart|specificationStart) => specifiedVariable
+resource returns [Resource resource]
+    : (COMPILER_ANNOTATION|declarationStart|specificationStart) 
+      => specifiedVariable
+      { $resource = new Resource(null);
+        $resource.setVariable($specifiedVariable.variable); }
     //-> ^(RESOURCE specifiedVariable2)
     | expression
+      { $resource = new Resource(null);
+        $resource.setExpression($expression.expression); }
     //-> ^(RESOURCE expression)
     ;
 
-specifiedVariable
+specifiedVariable returns [Variable variable]
     : variable specifier?
     ;
 
-variable
+variable returns [Variable variable]
     : unionType memberName parameters*
     //-> ^(VARIABLE unionType memberName parameters*)
     | memberName
@@ -1882,7 +1916,7 @@ variable
     //-> ^(VARIABLE FUNCTION_MODIFIER memberName parameters+)
     ;
 
-impliedVariable
+impliedVariable returns [Variable variable]
     : memberName 
     //-> ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName))))
     ;
