@@ -43,8 +43,11 @@ compilationUnit returns [CompilationUnit compilationUnit]
       importList 
       { $compilationUnit.setImportList($importList.importList); }
       ( 
-        declaration 
-        { $compilationUnit.addDeclaration($declaration.declaration); } 
+        compilerAnnotations declaration
+        { $compilationUnit.addDeclaration($declaration.declaration); 
+          if ($declaration.declaration!=null) {
+              $declaration.declaration.getCompilerAnnotations().addAll($compilerAnnotations.annotations); 
+          } } 
       )+
       EOF
     ;
@@ -68,7 +71,9 @@ importDeclaration returns [Import importDeclaration]
     ;
 
 importElement returns [ImportMemberOrType importMemberOrType]
-    : memberAlias? memberName
+    : compilerAnnotations
+    (
+      memberAlias? memberName
       { $importMemberOrType = new ImportMember(null);
         $importMemberOrType.setAlias($memberAlias.alias);
         $importMemberOrType.setIdentifier($memberName.identifier); }
@@ -76,6 +81,10 @@ importElement returns [ImportMemberOrType importMemberOrType]
       { $importMemberOrType = new ImportType(null);
         $importMemberOrType.setAlias($typeAlias.alias);
         $importMemberOrType.setIdentifier($typeName.identifier); }
+    )
+    { if ($importMemberOrType!=null) {
+        $importMemberOrType.getCompilerAnnotations().addAll($compilerAnnotations.annotations);
+      } }
     ;
 
 importWildcard returns [ImportWildcard importWildcard]
@@ -556,7 +565,8 @@ parametersStart
 // enforce the rule that the ... appears at the end of the parapmeter
 // list in a later pass of the compiler.
 parameter returns [Parameter parameter]
-    : { $parameter = new ValueParameterDeclaration(null); }
+    : compilerAnnotations
+      { $parameter = new ValueParameterDeclaration(null); }
       parameterType
       { $parameter.setType($parameterType.type); }
       memberName
@@ -567,6 +577,9 @@ parameter returns [Parameter parameter]
         |  parameters+ specifier? //for callable parameters
         //-> ^(FUNCTIONAL_PARAMETER_DECLARATION parameterType memberName parameters+ specifier?)
       )
+      { if ($parameter!=null) {
+        $parameter.getCompilerAnnotations().addAll($compilerAnnotations.annotations);
+      } }
     ;
 
 parameterDeclaration returns [Parameter parameter]
@@ -666,10 +679,16 @@ typeConstraints returns [TypeConstraintList typeConstraintList]
 
 declarationOrStatement returns [Statement statement]
     options {memoize=true;}
-    : (annotatedDeclarationStart) => declaration
-      { $statement=$declaration.declaration; }
-    | s=statement
-      { $statement=$s.statement; }
+    : compilerAnnotations
+      ( 
+        (annotatedDeclarationStart) => declaration
+        { $statement=$declaration.declaration; }
+      | s=statement
+        { $statement=$s.statement; }
+      )
+      { if ($statement!=null) {
+            $statement.getCompilerAnnotations().addAll($compilerAnnotations.annotations);
+        } }
     ;
 
 declaration returns [Declaration declaration]
@@ -1625,13 +1644,21 @@ prefixOperatorStart
     | COMPLEMENT_OP
     ;
     
+compilerAnnotations returns [List<CompilerAnnotation> annotations]
+    : { $annotations = new ArrayList<CompilerAnnotation>(); }
+    (
+      compilerAnnotation
+      { $annotations.add($compilerAnnotation.annotation); }
+    )*
+    ;
+    
 compilerAnnotation returns [CompilerAnnotation annotation]
     : COMPILER_ANNOTATION 
       { $annotation=new CompilerAnnotation($COMPILER_ANNOTATION); }
       annotationName 
       { $annotation.setIdentifier($annotationName.identifier); }
       ( 
-          LBRACKET
+          INDEX_OP
           stringLiteral
           { $annotation.setStringLiteral($stringLiteral.stringLiteral); }
           RBRACKET
