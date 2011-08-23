@@ -1830,12 +1830,19 @@ containment
     ;*/
     
 whileLoop returns [WhileStatement statement]
-    : whileBlock
+    : { $statement = new WhileStatement(null); }
+      whileBlock
+      { $statement.setWhileClause($whileBlock.clause); }
     //-> ^(WHILE_STATEMENT whileBlock)
     ;
 
-whileBlock
-    : WHILE_CLAUSE condition block
+whileBlock returns [WhileClause clause]
+    : WHILE_CLAUSE
+      { $clause = new WhileClause($WHILE_CLAUSE); }
+      condition 
+      { $clause.setCondition($condition.condition); }
+      block
+      { $clause.setBlock($block.block); }
     ;
 
 tryCatchFinally returns [TryCatchStatement statement]
