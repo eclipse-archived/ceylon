@@ -1719,20 +1719,10 @@ nonemptyCondition returns [NonemptyCondition condition]
 
 isCondition returns [IsCondition condition]
     : (LPAREN IS_OP unionType LIDENTIFIER RPAREN) 
-      => LPAREN i1=IS_OP t1=unionType memberName RPAREN
+      => LPAREN i1=IS_OP t1=unionType impliedVariable RPAREN
       { $condition = new IsCondition($i1); 
         $condition.setType($t1.type);
-        Variable v = new Variable(null);
-        v.setType(new SyntheticVariable(null));
-        v.setIdentifier($memberName.identifier);
-        SpecifierExpression se = new SpecifierExpression(null);
-        Expression e = new Expression(null);
-        BaseMemberExpression bme = new BaseMemberExpression(null);
-        bme.setIdentifier($memberName.identifier);
-        e.setTerm(bme);
-        se.setExpression(e);
-        v.setSpecifierExpression(se);
-        $condition.setVariable(v); }
+        $condition.setVariable($impliedVariable.variable); }
     //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName)))))
     | LPAREN i2=IS_OP t2=unionType (memberName specifier) RPAREN
       { $condition = new IsCondition($i2); 
@@ -1992,20 +1982,54 @@ resource returns [Resource resource]
     ;
 
 specifiedVariable returns [Variable variable]
-    : variable specifier?
+    : v=variable 
+      { $variable = $v.variable; }
+      specifier
+      { $variable.setSpecifierExpression($specifier.specifierExpression); }
     ;
 
 variable returns [Variable variable]
-    : unionType memberName parameters*
+    : { $variable = new Variable(null); }
+    (
+      unionType 
+      { $variable.setType($unionType.type); }
+      mn1=memberName 
+      { $variable.setIdentifier($mn1.identifier); }
+      ( 
+        p1=parameters
+        { $variable.addParameterList($p1.parameterList); }
+      )*
     //-> ^(VARIABLE unionType memberName parameters*)
-    | memberName
+    | 
+      { $variable.setType( new ValueModifier(null) ); }
+      mn2=memberName
+      { $variable.setIdentifier($mn2.identifier); }
     //-> ^(VARIABLE VALUE_MODIFIER memberName)
-    | memberName parameters+
+    | 
+      { $variable.setType( new FunctionModifier(null) ); }
+      mn3=memberName 
+      { $variable.setIdentifier($mn3.identifier); }
+      (
+        p3=parameters
+        { $variable.addParameterList($p3.parameterList); }
+      )+
     //-> ^(VARIABLE FUNCTION_MODIFIER memberName parameters+)
+    )
     ;
 
 impliedVariable returns [Variable variable]
     : memberName 
+      { Variable v = new Variable(null);
+        v.setType(new SyntheticVariable(null));
+        v.setIdentifier($memberName.identifier);
+        SpecifierExpression se = new SpecifierExpression(null);
+        Expression e = new Expression(null);
+        BaseMemberExpression bme = new BaseMemberExpression(null);
+        bme.setIdentifier($memberName.identifier);
+        e.setTerm(bme);
+        se.setExpression(e);
+        v.setSpecifierExpression(se); 
+        $variable = v; }
     //-> ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName))))
     ;
 
