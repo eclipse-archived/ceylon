@@ -1763,41 +1763,83 @@ elseIf returns [Block block]
     ;
 
 switchCaseElse returns [SwitchStatement statement]
-    : switchHeader cases
+    : { $statement = new SwitchStatement(null); }
+      switchHeader 
+      { $statement.setSwitchClause($switchHeader.clause); }
+      cases
+      { $statement.setSwitchCaseList($cases.switchCaseList); }
     //-> ^(SWITCH_STATEMENT switchHeader cases)
     ;
 
-switchHeader
-    : SWITCH_CLAUSE LPAREN expression RPAREN
+switchHeader returns [SwitchClause clause]
+    : SWITCH_CLAUSE 
+      { $clause = new SwitchClause($SWITCH_CLAUSE); }
+      LPAREN 
+      expression 
+      { $clause.setExpression($expression.expression); }
+      RPAREN
     ;
 
-cases 
-    : caseItem+ defaultCaseItem?
+cases returns [SwitchCaseList switchCaseList]
+    : { $switchCaseList = new SwitchCaseList(null); }
+      (
+        caseBlock
+        { $switchCaseList.addCaseClause($caseBlock.clause); }
+      )+
+      (
+        defaultCaseBlock
+        { $switchCaseList.setElseClause($defaultCaseBlock.clause); }
+      )?
     //-> ^(SWITCH_CASE_LIST caseItem+ defaultCaseItem?)
     ;
     
-caseItem
-    : CASE_CLAUSE LPAREN caseCondition RPAREN block
+caseBlock returns [CaseClause clause]
+    : CASE_CLAUSE 
+      { $clause = new CaseClause($CASE_CLAUSE); }
+      LPAREN 
+      caseItem 
+      { $clause.setCaseItem($caseItem.item); }
+      RPAREN 
+      block
+      { $clause.setBlock($block.block); }
     ;
 
-defaultCaseItem
-    : ELSE_CLAUSE block
+defaultCaseBlock returns [ElseClause clause]
+    : ELSE_CLAUSE 
+      { $clause = new ElseClause($ELSE_CLAUSE); }
+      block
+      { $clause.setBlock($block.block); }
     ;
 
-caseCondition
-    : expressions 
-    //-> ^(MATCH_CASE expressions)
+caseItem returns [CaseItem item]
+    : matchCaseCondition
+      { $item=$matchCaseCondition.item; }
     | isCaseCondition 
+      { $item=$isCaseCondition.item; }
     | satisfiesCaseCondition
+      { $item=$satisfiesCaseCondition.item; }
     ;
 
-isCaseCondition
-    : IS_OP unionType
+matchCaseCondition returns [MatchCase item]
+    : expressions
+      { $item = new MatchCase(null);
+        $item.setExpressionList($expressions.expressionList); }
+    //-> ^(MATCH_CASE expressions)
+    ;
+
+isCaseCondition returns [IsCase item]
+    : IS_OP 
+      { $item = new IsCase($IS_OP); }
+      unionType
+      { $item.setType($unionType.type); }
     //-> ^(IS_CASE[$IS_OP] unionType)
     ;
 
-satisfiesCaseCondition
-    : SATISFIES type
+satisfiesCaseCondition returns [SatisfiesCase item]
+    : SATISFIES 
+      { $item = new SatisfiesCase($SATISFIES); }
+      type
+      { $item.setType($type.type); }
     //-> ^(SATISFIES_CASE[$SATISFIES] type)
     ;
 
