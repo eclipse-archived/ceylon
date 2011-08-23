@@ -213,10 +213,12 @@ base returns [Primary primary]
     | typeReference
       { BaseTypeExpression bte = new BaseTypeExpression(null);
         bte.setIdentifier($typeReference.identifier);
+        bte.setTypeArguments($typeReference.typeArgumentList);
         $primary=bte; }
     | memberReference
       { BaseMemberExpression bme = new BaseMemberExpression(null);
         bme.setIdentifier($memberReference.identifier);
+        bme.setTypeArguments($memberReference.typeArgumentList);
         $primary=bme; }
     | parExpression
       { $primary=$parExpression.expression; }
@@ -230,11 +232,13 @@ primary returns [Primary primary]
       { QualifiedMemberExpression bme = new QualifiedMemberExpression(null);
         bme.setPrimary($primary);
         bme.setIdentifier($qualifiedMemberReference.identifier);
+        bme.setTypeArguments($qualifiedMemberReference.typeArgumentList);
         $primary=bme; }
       | qualifiedTypeReference
       { QualifiedTypeExpression bte = new QualifiedTypeExpression(null);
         bte.setPrimary($primary);
         bte.setIdentifier($qualifiedTypeReference.identifier);
+        bte.setTypeArguments($qualifiedTypeReference.typeArgumentList);
         $primary=bte; }
       | indexExpression
         { IndexExpression xe = new IndexExpression(null);
@@ -255,18 +259,20 @@ primary returns [Primary primary]
     )*
     ;
    
-qualifiedMemberReference returns [Identifier identifier, MemberOperator operator]
+qualifiedMemberReference returns [Identifier identifier, MemberOperator operator, TypeArgumentList typeArgumentList]
     : memberSelectionOperator 
       { $operator = $memberSelectionOperator.operator; }
       memberReference
-      { $identifier = $memberReference.identifier; }
+      { $identifier = $memberReference.identifier;
+        $typeArgumentList = $memberReference.typeArgumentList; }
     ;
 
-qualifiedTypeReference returns [Identifier identifier, MemberOperator operator]
+qualifiedTypeReference returns [Identifier identifier, MemberOperator operator, TypeArgumentList typeArgumentList]
     : memberSelectionOperator 
       { $operator = $memberSelectionOperator.operator; }
       typeReference
-      { $identifier = $typeReference.identifier; }
+      { $identifier = $typeReference.identifier;
+        $typeArgumentList = $typeReference.typeArgumentList; }
     ;
 
 indexExpression returns [IndexOperator operator, ElementOrRange elementOrRange]
@@ -312,16 +318,34 @@ expressions returns [ExpressionList expressionList]
       )*
     ;
 
-memberReference returns [Identifier identifier]
+memberReference returns [Identifier identifier, TypeArgumentList typeArgumentList]
     : memberName
       { $identifier = $memberName.identifier; }
-      //((typeArgumentsStart) => typeArguments)? 
+      (
+        (typeArgumentsStart)
+        => typeArguments
+        { $typeArgumentList = $typeArguments.typeArgumentList; }
+      )?
     ;
 
-typeReference returns [Identifier identifier]
+typeReference returns [Identifier identifier, TypeArgumentList typeArgumentList]
     : typeName 
       { $identifier = $typeName.identifier; }
-      //((typeArgumentsStart) => typeArguments)?
+      (
+        (typeArgumentsStart)
+        => typeArguments
+        { $typeArgumentList = $typeArguments.typeArgumentList; }
+      )?
+    ;
+
+//special rule for syntactic predicate to 
+//determine if we have a < operator, or a
+//type argument list
+typeArgumentsStart
+    : SMALLER_OP
+      UIDENTIFIER ('.' UIDENTIFIER)* /*| 'subtype')*/ (DEFAULT_OP|ARRAY)*
+      ((INTERSECTION_OP|UNION_OP) UIDENTIFIER ('.' UIDENTIFIER)* (DEFAULT_OP|ARRAY)*)*
+      (LARGER_OP|SMALLER_OP|COMMA|ELLIPSIS)
     ;
 
 indexOrIndexRange returns [ElementOrRange elementOrRange]
@@ -773,6 +797,142 @@ stringTemplate returns [StringTemplate stringTemplate]
           $stringTemplate.addStringLiteral($sl2.stringLiteral); }
       )+
     ;
+
+typeArguments returns [TypeArgumentList typeArgumentList]
+    : SMALLER_OP
+      { $typeArgumentList = new TypeArgumentList($SMALLER_OP); }
+      ta1=typeArgument 
+      { $typeArgumentList.addType($ta1.type); }
+      (
+        COMMA 
+        ta2=typeArgument
+        { $typeArgumentList.addType($ta2.type); }
+      )* 
+      LARGER_OP
+    ;
+
+typeArgument returns [Type type]
+    : unionType
+      { $type = $unionType.type; }
+      ( 
+        ELLIPSIS
+        { SequencedType st = new SequencedType($ELLIPSIS);
+          st.setType($unionType.type); 
+          $type = st; }
+      )? 
+    ;
+    
+unionType returns [StaticType type]
+    @init { UnionType ut = new UnionType(null);
+            ut.addStaticType($type); }
+    : it1=intersectionType
+      { $type = $it1.type; }
+      ( 
+        (
+          UNION_OP
+          it2=intersectionType
+          { ut.addStaticType($it2.type); }
+        )+
+        { $type = ut; }
+      )?
+    ;
+
+intersectionType returns [StaticType type]
+    @init { IntersectionType it = new IntersectionType(null); 
+            it.addStaticType($type); }
+    : at1=abbreviatedType
+      { $type = $at1.type; }
+      ( 
+        (
+          INTERSECTION_OP
+          at2=abbreviatedType
+          { it.addStaticType($at2.type); }
+        )+
+        { $type = it; }
+      )?
+    ;
+
+abbreviatedType returns [StaticType type]
+    : t=type
+      { $type=$t.type; }
+      (
+        DEFAULT_OP 
+        { UnionType ot = new UnionType($DEFAULT_OP);
+          ot.addStaticType($type);
+          CommonToken tok = new CommonToken($DEFAULT_OP);
+          tok.setText("Nothing");
+          BaseType bt = new BaseType($DEFAULT_OP);
+          bt.setIdentifier( new Identifier(tok) );
+          ot.addStaticType(bt);
+          $type=ot; }
+      | ARRAY 
+        { UnionType ot = new UnionType($ARRAY);
+          CommonToken tok = new CommonToken($ARRAY);
+          tok.setText("Empty");
+          BaseType bt = new BaseType($ARRAY);
+          bt.setIdentifier( new Identifier(tok) );
+          ot.addStaticType(bt);
+          tok = new CommonToken($ARRAY);
+          tok.setText("Sequence");
+          bt = new BaseType($ARRAY);
+          bt.setIdentifier( new Identifier(tok) );
+          TypeArgumentList tal = new TypeArgumentList(null);
+          tal.addType($type);
+          ot.addStaticType(bt);
+          $type=ot; }
+      )*
+    ;
+
+type returns [StaticType type]
+    : ot=typeNameWithArguments
+      { BaseType bt = new BaseType(null);
+        bt.setIdentifier($ot.identifier);
+        bt.setTypeArgumentList($ot.typeArgumentList);
+        $type=bt; }
+      (
+        MEMBER_OP 
+        it=typeNameWithArguments
+        { QualifiedType qt = new QualifiedType($MEMBER_OP);
+          qt.setIdentifier($it.identifier);
+          qt.setTypeArgumentList($it.typeArgumentList);
+          qt.setOuterType($type);
+          $type=qt; }
+      )*
+    ;
+
+typeNameWithArguments returns [Identifier identifier, TypeArgumentList typeArgumentList]
+    : typeName
+      { $identifier = $typeName.identifier; } 
+      (
+        typeArguments
+        { $typeArgumentList = $typeArguments.typeArgumentList; }
+      )?
+    ;
+    
+/*annotations
+    : annotation+
+    -> ^(ANNOTATION_LIST ^(ANNOTATION annotation)+)
+    ;
+
+annotation
+    : annotationName
+    -> ^(BASE_MEMBER_EXPRESSION annotationName) ^(POSITIONAL_ARGUMENT_LIST)
+    | annotationName annotationArguments
+    -> ^(BASE_MEMBER_EXPRESSION annotationName) annotationArguments
+    ;
+
+annotationArguments
+    : arguments | literalArguments
+    ;
+
+literalArguments
+    : literalArgument+
+    -> ^(POSITIONAL_ARGUMENT_LIST ^(POSITIONAL_ARGUMENT ^(EXPRESSION literalArgument))+)
+    ;
+    
+literalArgument
+    : nonstringLiteral | stringLiteral
+    ;*/
 
 //special rule for syntactic predicate
 //to distinguish an interpolated expression
