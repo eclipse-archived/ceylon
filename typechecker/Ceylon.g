@@ -201,7 +201,8 @@ interfaceDeclaration
     ;
 
 classDeclaration returns [AnyClass declaration]
-    @init { ClassDefinition def=null; ClassDeclaration dec=null; }
+    @init { ClassDefinition def=null; 
+            ClassDeclaration dec=null; }
     : CLASS_DEFINITION 
       { def = new ClassDefinition($CLASS_DEFINITION); 
         dec = new ClassDeclaration($CLASS_DEFINITION);
@@ -312,21 +313,45 @@ satisfiedTypes returns [SatisfiedTypes satisfiedTypes]
     //-> ^(SATISFIED_TYPES[$SATISFIES] type+)
     ;
 
-abstractedType
-    : ABSTRACTED_TYPE type
+abstractedType returns [AbstractedType abstractedType]
+    : ABSTRACTED_TYPE
+      { $abstractedType = new AbstractedType($ABSTRACTED_TYPE); }
+      type
+      { $abstractedType.setType($type.type); }
     ;
 
-adaptedTypes
-    : ADAPTED_TYPES type (INTERSECTION_OP type)*
+adaptedTypes returns [AdaptedTypes adaptedTypes]
+    : ADAPTED_TYPES 
+      { $adaptedTypes = new AdaptedTypes($ADAPTED_TYPES); }
+      t1=type 
+      { $adaptedTypes.addType($t1.type); }
+      (
+        INTERSECTION_OP 
+        t2=type
+        { $adaptedTypes.addType($t2.type); }
+      )*
     ;
 
-caseTypes
-    : CASE_TYPES caseType (UNION_OP caseType)*
+caseTypes returns [CaseTypes caseTypes]
+    : CASE_TYPES
+      { $caseTypes = new CaseTypes($CASE_TYPES); }
+      ct1=caseType 
+      { if ($ct1.type!=null) $caseTypes.addType($ct1.type); 
+        if ($ct1.instance!=null) $caseTypes.addBaseMemberExpression($ct1.instance); }
+      (
+        UNION_OP 
+        ct2=caseType
+      { if ($ct2.type!=null) $caseTypes.addType($ct2.type); 
+        if ($ct2.instance!=null) $caseTypes.addBaseMemberExpression($ct2.instance); }
+      )*
     ;
 
-caseType 
-    : type 
+caseType returns [SimpleType type, BaseMemberExpression instance]
+    : t=type 
+      { $type=$t.type;}
     | memberName //-> ^(BASE_MEMBER_EXPRESSION memberName)
+      { $instance = new BaseMemberExpression(null);
+        $instance.setIdentifier($memberName.identifier); }
     ;
 
 //Support for metatypes
@@ -336,9 +361,20 @@ caseType
     -> ^(METATYPES[$IS_OP] type*)
     ;*/
 
-parameters
-    : LPAREN (annotatedParameter (COMMA annotatedParameter)*)? RPAREN
-    //-> ^(PARAMETER_LIST[$LPAREN] annotatedParameter*)
+parameters returns [ParameterList parameterList]
+    : LPAREN
+      { $parameterList=new ParameterList($LPAREN); }
+      (
+        ap1=annotatedParameter 
+        { $parameterList.addParameter($ap1.parameter); }
+        (
+          COMMA 
+          ap2=annotatedParameter
+          { $parameterList.addParameter($ap2.parameter); }
+        )*
+      )? 
+      RPAREN
+      //-> ^(PARAMETER_LIST[$LPAREN] annotatedParameter*)
     ;
 
 //special rule for syntactic predicate
@@ -357,7 +393,11 @@ parametersStart
 // enforce the rule that the ... appears at the end of the parapmeter
 // list in a later pass of the compiler.
 parameter returns [Parameter parameter]
-    : parameterType memberName
+    : { $parameter = new ValueParameterDeclaration(null); }
+      parameterType
+      { $parameter.setType($parameterType.type); }
+      memberName
+      { $parameter.setIdentifier($memberName.identifier); }
       (
           valueParameter? specifier?
         //-> ^(VALUE_PARAMETER_DECLARATION parameterType memberName specifier?)
@@ -377,44 +417,79 @@ valueParameter
     : ENTRY_OP unionType memberName
     ;
 
-parameterType
-    : unionType ( ELLIPSIS )? //-> ^(SEQUENCED_TYPE unionType) | -> unionType )
-    | VOID_MODIFIER //-> VOID_MODIFIER
+parameterType returns [Type type]
+    : unionType 
+      { $type = $unionType.type; }
+      ( 
+        ELLIPSIS
+        { SequencedType st = new SequencedType($ELLIPSIS);
+          st.setType($type);
+          $type = st; }
+      )?
+    | VOID_MODIFIER
+      { $type = new VoidModifier($VOID_MODIFIER); }
     ;
 
-typeParameters
-    : SMALLER_OP 
-      typeParameter 
+typeParameters returns [TypeParameterList typeParameterList]
+    : SMALLER_OP
+      { $typeParameterList = new TypeParameterList($SMALLER_OP); }
+      tp1=typeParameter
+      { $typeParameterList.addTypeParameterDeclaration($tp1.typeParameter); }
       (
-        COMMA typeParameter
+        COMMA 
+        tp2=typeParameter
+        { $typeParameterList.addTypeParameterDeclaration($tp2.typeParameter); }
       )*
       LARGER_OP
     //-> ^(TYPE_PARAMETER_LIST[$SMALLER_OP] typeParameter+)
     ;
 
-typeParameter
-    : variance? 
+typeParameter returns [TypeParameterDeclaration typeParameter]
+    : { $typeParameter = new TypeParameterDeclaration(null); }
+      ( 
+        variance 
+        { $typeParameter.setTypeVariance($variance.typeVariance); } 
+      )? 
       typeName
+      { $typeParameter.setIdentifier($typeName.identifier); } 
     //-> ^(TYPE_PARAMETER_DECLARATION variance? typeName)
-    | typeName 
+    | //{ $typeParameter = new SequencedTypeParameter(null); }
+      typeName 
+      //{ $typeParameter.setIdentifier($typeName.identifier); } 
       ELLIPSIS
     //-> ^(SEQUENCED_TYPE_PARAMETER typeName)
     ;
 
-variance
+variance returns [TypeVariance typeVariance]
     : IN_OP //-> ^(TYPE_VARIANCE[$IN_OP])
+      { $typeVariance = new TypeVariance($IN_OP); }
     | OUT //-> ^(TYPE_VARIANCE[$OUT])
+      { $typeVariance = new TypeVariance($OUT); }
     ;
     
-typeConstraint
+typeConstraint returns [TypeConstraint typeConstraint]
     : TYPE_CONSTRAINT
+      { $typeConstraint = new TypeConstraint($TYPE_CONSTRAINT); }
       typeName 
-      typeParameters? 
-      parameters? 
-      caseTypes? 
+      { $typeConstraint.setIdentifier($typeName.identifier); }
+      //(typeParameters)?
+      (
+        parameters
+        { $typeConstraint.setParameterList($parameters.parameterList); }
+      )?
+      (
+        caseTypes
+        { $typeConstraint.setCaseTypes($caseTypes.caseTypes); }
+      )?
       //metatypes? 
-      satisfiedTypes? 
-      abstractedType?
+      (
+        satisfiedTypes
+        { $typeConstraint.setSatisfiedTypes($satisfiedTypes.satisfiedTypes); }
+      )?
+      ( 
+        abstractedType
+        { $typeConstraint.setAbstractedType($abstractedType.abstractedType); }
+      )?
     ;
 
 typeConstraints
