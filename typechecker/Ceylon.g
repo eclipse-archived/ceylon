@@ -139,13 +139,25 @@ objectDeclaration returns [ObjectDefinition declaration]
     //-> ^(OBJECT_DEFINITION VALUE_MODIFIER memberName extendedType? satisfiedTypes? classBody?) 
     ;
 
-voidMethodDeclaration returns [AnyMethod declaration]
+voidOrInferredMethodDeclaration returns [AnyMethod declaration]
     @init { MethodDefinition def=null;
             MethodDeclaration dec=null; }
-    : VOID_MODIFIER
-      { def = new MethodDefinition($VOID_MODIFIER);
-        dec = new MethodDeclaration($VOID_MODIFIER);
-        $declaration = def; }
+    : (
+        VOID_MODIFIER
+        { VoidModifier vm = new VoidModifier($VOID_MODIFIER);
+          def = new MethodDefinition($VOID_MODIFIER);
+          dec = new MethodDeclaration($VOID_MODIFIER);
+          def.setType(vm);
+          dec.setType(vm);
+          $declaration = def; }
+      | FUNCTION_MODIFIER
+        { FunctionModifier fm = new FunctionModifier($VOID_MODIFIER);
+          def = new MethodDefinition($FUNCTION_MODIFIER);
+          dec = new MethodDeclaration($FUNCTION_MODIFIER);
+          def.setType(fm);
+          dec.setType(fm);
+          $declaration = def; }
+      )
       memberName
       { dec.setIdentifier($memberName.identifier); 
         def.setIdentifier($memberName.identifier); }
@@ -190,29 +202,32 @@ setterDeclaration returns [AttributeSetterDefinition declaration]
     //-> ^(ATTRIBUTE_SETTER_DEFINITION[$ASSIGN] VOID_MODIFIER memberName block)
     ;
 
-inferredMethodDeclaration
-    : FUNCTION_MODIFIER 
-      memberName 
-      typeParameters? 
-      parameters* 
-      //metatypes? 
-      typeConstraints?
+inferredAttributeDeclaration returns [AnyAttribute declaration]
+    @init { AttributeGetterDefinition def=null;
+            AttributeDeclaration dec=null; }
+    : VALUE_MODIFIER 
+      { ValueModifier fm = new ValueModifier($VALUE_MODIFIER);
+        def = new AttributeGetterDefinition($VALUE_MODIFIER);
+        dec = new AttributeDeclaration($VALUE_MODIFIER);
+        def.setType(fm);
+        dec.setType(fm);
+        $declaration = def; }
+      memberName
+      { dec.setIdentifier($memberName.identifier); 
+        def.setIdentifier($memberName.identifier); }
       ( 
-        block
-      //-> ^(METHOD_DEFINITION FUNCTION_MODIFIER memberName methodParameters? block)
-      | specifier?
+        (
+          specifier 
+          { dec.setSpecifierOrInitializerExpression($specifier.specifierExpression); }
+        | 
+          initializer
+          { dec.setSpecifierOrInitializerExpression($initializer.initializerExpression); }
+        )?
         SEMICOLON
-      //-> ^(METHOD_DECLARATION FUNCTION_MODIFIER memberName methodParameters? specifier?)
-      )
-    ;
- 
-inferredAttributeDeclaration
-    :  VALUE_MODIFIER memberName
-      ( 
-        (specifier | initializer)? 
-        SEMICOLON
+        { $declaration = dec; }
         //-> ^(ATTRIBUTE_DECLARATION VALUE_MODIFIER memberName specifier? initializer?)
       | block
+        { def.setBlock($block.block); }
         //-> ^(ATTRIBUTE_GETTER_DEFINITION VALUE_MODIFIER memberName block)
       )
     ;
@@ -612,8 +627,10 @@ annotatedDeclaration returns [Declaration declaration]
       { $declaration=$objectDeclaration.declaration; }
     | setterDeclaration
       { $declaration=$setterDeclaration.declaration; }
-    | voidMethodDeclaration
-      { $declaration=$voidMethodDeclaration.declaration; }
+    | voidOrInferredMethodDeclaration
+      { $declaration=$voidOrInferredMethodDeclaration.declaration; }
+    | inferredAttributeDeclaration
+      { $declaration=$inferredAttributeDeclaration.declaration; }
     //| typedMethodOrAttributeDeclaration
     | classDeclaration
       { $declaration=$classDeclaration.declaration; }
@@ -744,8 +761,11 @@ specifier returns [SpecifierExpression specifierExpression]
       { $specifierExpression.setExpression($expression.expression); }
     ;
 
-initializer
-    : ASSIGN_OP expression
+initializer returns [InitializerExpression initializerExpression]
+    : ASSIGN_OP 
+      { $initializerExpression = new InitializerExpression($ASSIGN_OP); }
+      expression
+      { $initializerExpression.setExpression($expression.expression); }
     //-> ^(INITIALIZER_EXPRESSION[$ASSIGN_OP] expression)
     ;
 
