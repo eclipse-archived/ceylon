@@ -758,7 +758,8 @@ statement returns [Statement statement]
       { $statement = $expressionStatement.expressionStatement; }
     | directiveStatement
       { $statement = $directiveStatement.directive; }
-    //| controlStructure
+    | controlStatement
+      { $statement = $controlStatement.controlStatement; }
     ;
 
 specificationStatement returns [SpecifierStatement specifierStatement]
@@ -1669,6 +1670,216 @@ compilerAnnotation returns [CompilerAnnotation annotation]
           RBRACKET
       )?
     ;
+
+
+condition returns [Condition condition]
+    : booleanCondition
+    | existsCondition
+    | nonemptyCondition
+    | isCondition 
+    | satisfiesCondition
+    ;
+    
+booleanCondition
+    : LPAREN expression RPAREN
+    //-> ^(BOOLEAN_CONDITION expression)
+    ;
+    
+existsCondition
+    : (LPAREN EXISTS LIDENTIFIER RPAREN) => LPAREN EXISTS impliedVariable RPAREN
+    //-> ^(EXISTS_CONDITION[$EXISTS] impliedVariable)
+    | LPAREN EXISTS specifiedVariable RPAREN
+    //-> ^(EXISTS_CONDITION[$EXISTS] specifiedVariable2)
+    ;
+    
+nonemptyCondition
+    : (LPAREN NONEMPTY LIDENTIFIER ')') => LPAREN NONEMPTY impliedVariable RPAREN
+    //-> ^(NONEMPTY_CONDITION[$NONEMPTY] impliedVariable)
+    | LPAREN NONEMPTY specifiedVariable RPAREN
+    //-> ^(NONEMPTY_CONDITION[$NONEMPTY] specifiedVariable2)
+    ;
+
+isCondition
+    : (LPAREN IS_OP unionType LIDENTIFIER RPAREN) => LPAREN IS_OP unionType memberName RPAREN
+    //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName)))))
+    | LPAREN IS_OP unionType (memberName specifier) RPAREN
+    //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE unionType memberName specifier))
+    ;
+
+satisfiesCondition
+    : LPAREN SATISFIES t1=type t2=type RPAREN
+    //-> ^(SATISFIES_CONDITION[$SATISFIES] type+)
+    ;
+
+controlStatement returns [ControlStatement controlStatement]
+    : ifElse 
+      { $controlStatement=$ifElse.statement; }
+    | switchCaseElse 
+      { $controlStatement=$switchCaseElse.statement; }
+    | whileLoop 
+      { $controlStatement=$whileLoop.statement; }
+    //| forFail 
+    | tryCatchFinally
+      { $controlStatement=$tryCatchFinally.statement; }
+    ;
+    
+ifElse returns [IfStatement statement]
+    : { $statement=new IfStatement(null); }
+      ifBlock 
+      { $statement.setIfClause($ifBlock.clause); }
+      ( 
+        elseBlock
+        { $statement.setElseClause($elseBlock.clause); }
+      )?
+    //-> ^(IF_STATEMENT ifBlock elseBlock?)
+    ;
+
+ifBlock returns [IfClause clause]
+    : IF_CLAUSE 
+      { $clause = new IfClause($IF_CLAUSE); }
+      condition
+      { $clause.setCondition($condition.condition); }
+      block
+      { $clause.setBlock($block.block); }
+    ;
+
+elseBlock returns [ElseClause clause]
+    : ELSE_CLAUSE 
+      { $clause = new ElseClause($ELSE_CLAUSE); }
+      (
+        elseIf 
+        { $clause.setBlock($elseIf.block); }
+      | 
+        block
+        { $clause.setBlock($block.block); }
+      )
+    ;
+
+elseIf returns [Block block]
+    : ifElse
+      { $block = new Block(null);
+        $block.addStatement($ifElse.statement); }
+    //-> ^(BLOCK ifElse)
+    ;
+
+switchCaseElse returns [SwitchStatement statement]
+    : switchHeader cases
+    //-> ^(SWITCH_STATEMENT switchHeader cases)
+    ;
+
+switchHeader
+    : SWITCH_CLAUSE LPAREN expression RPAREN
+    ;
+
+cases 
+    : caseItem+ defaultCaseItem?
+    //-> ^(SWITCH_CASE_LIST caseItem+ defaultCaseItem?)
+    ;
+    
+caseItem
+    : CASE_CLAUSE LPAREN caseCondition RPAREN block
+    ;
+
+defaultCaseItem
+    : ELSE_CLAUSE block
+    ;
+
+caseCondition
+    : expressions 
+    //-> ^(MATCH_CASE expressions)
+    | isCaseCondition 
+    | satisfiesCaseCondition
+    ;
+
+isCaseCondition
+    : IS_OP unionType
+    //-> ^(IS_CASE[$IS_OP] unionType)
+    ;
+
+satisfiesCaseCondition
+    : SATISFIES type
+    //-> ^(SATISFIES_CASE[$SATISFIES] type)
+    ;
+
+/*forFail
+    : forBlock failBlock?
+    //-> ^(FOR_STATEMENT forBlock failBlock?)
+    ;
+
+forBlock
+    : FOR_CLAUSE RPAREN forIterator LPAREN block
+    ;
+
+failBlock
+    : ELSE_CLAUSE block
+    ;
+
+forIterator
+    : v=variable
+    (
+      containment
+      //-> ^(VALUE_ITERATOR $v containment)
+      | ENTRY_OP vv=variable containment
+      //-> ^(KEY_VALUE_ITERATOR $v $vv containment)
+    )
+    ;
+    
+containment
+    : IN_OP expression
+    //-> ^(SPECIFIER_EXPRESSION expression)
+    ;*/
+    
+whileLoop returns [WhileStatement statement]
+    : whileBlock
+    //-> ^(WHILE_STATEMENT whileBlock)
+    ;
+
+whileBlock
+    : WHILE_CLAUSE condition block
+    ;
+
+tryCatchFinally returns [TryCatchStatement statement]
+    : tryBlock catchBlock* finallyBlock?
+    //-> ^(TRY_CATCH_STATEMENT tryBlock catchBlock* finallyBlock?)
+    ;
+
+tryBlock
+    : TRY_CLAUSE (LPAREN resource RPAREN)? block
+    ;
+
+catchBlock
+    : CATCH_CLAUSE LPAREN variable RPAREN block
+    ;
+
+finallyBlock
+    : FINALLY_CLAUSE block
+    ;
+
+resource
+    : (COMPILER_ANNOTATION|declarationStart|specificationStart) => specifiedVariable
+    //-> ^(RESOURCE specifiedVariable2)
+    | expression
+    //-> ^(RESOURCE expression)
+    ;
+
+specifiedVariable
+    : variable specifier?
+    ;
+
+variable
+    : unionType memberName parameters*
+    //-> ^(VARIABLE unionType memberName parameters*)
+    | memberName
+    //-> ^(VARIABLE VALUE_MODIFIER memberName)
+    | memberName parameters+
+    //-> ^(VARIABLE FUNCTION_MODIFIER memberName parameters+)
+    ;
+
+impliedVariable
+    : memberName 
+    //-> ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName))))
+    ;
+
 
 // Lexer
 
