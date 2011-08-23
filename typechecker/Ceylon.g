@@ -201,16 +201,233 @@ expression returns [Expression expression]
       { $expression.setTerm($assignmentExpression.term); }
     ;
 
-primary returns [Primary primary]
-    : 
-    ( 
-      stringExpression
-      { $primary=$stringExpression.atom; }
-    | nonstringLiteral
+base returns [Primary primary]
+    : nonstringLiteral
       { $primary=$nonstringLiteral.literal; }
+    | stringExpression
+      { $primary=$stringExpression.atom; }
+    | enumeration
+      { $primary=$enumeration.sequenceEnumeration; }
+    | selfReference
+      { $primary=$selfReference.atom; }
+    | typeReference
+      { BaseTypeExpression bte = new BaseTypeExpression(null);
+        bte.setIdentifier($typeReference.identifier);
+        $primary=bte; }
+    | memberReference
+      { BaseMemberExpression bme = new BaseMemberExpression(null);
+        bme.setIdentifier($memberReference.identifier);
+        $primary=bme; }
+    | parExpression
+      { $primary=$parExpression.expression; }
+    ;
+
+primary returns [Primary primary]
+    : base
+      { $primary=$base.primary; }
+    (          
+        qualifiedMemberReference
+      { QualifiedMemberExpression bme = new QualifiedMemberExpression(null);
+        bme.setPrimary($primary);
+        bme.setIdentifier($qualifiedMemberReference.identifier);
+        $primary=bme; }
+      | qualifiedTypeReference
+      { QualifiedTypeExpression bte = new QualifiedTypeExpression(null);
+        bte.setPrimary($primary);
+        bte.setIdentifier($qualifiedTypeReference.identifier);
+        $primary=bte; }
+      | indexExpression
+        { IndexExpression xe = new IndexExpression(null);
+          xe.setPrimary($primary);
+          xe.setElementOrRange($indexExpression.elementOrRange);
+          xe.setIndexOperator($indexExpression.operator); 
+          $primary=xe; }
+      | arguments
+        { InvocationExpression ie = new InvocationExpression(null);
+          ie.setPrimary($primary);
+          if ($arguments.argumentList instanceof PositionalArgumentList) {
+              ie.setPositionalArgumentList((PositionalArgumentList)$arguments.argumentList);
+          }
+          if ($arguments.argumentList instanceof NamedArgumentList) {
+              ie.setNamedArgumentList((NamedArgumentList)$arguments.argumentList);
+          }
+          $primary=ie; }
+    )*
+    ;
+   
+qualifiedMemberReference returns [Identifier identifier, MemberOperator operator]
+    : memberSelectionOperator 
+      { $operator = $memberSelectionOperator.operator; }
+      memberReference
+      { $identifier = $memberReference.identifier; }
+    ;
+
+qualifiedTypeReference returns [Identifier identifier, MemberOperator operator]
+    : memberSelectionOperator 
+      { $operator = $memberSelectionOperator.operator; }
+      typeReference
+      { $identifier = $typeReference.identifier; }
+    ;
+
+indexExpression returns [IndexOperator operator, ElementOrRange elementOrRange]
+    : elementSelectionOperator 
+      { $operator=$elementSelectionOperator.operator; }
+      indexOrIndexRange 
+      { $elementOrRange=$indexOrIndexRange.elementOrRange; }
+      RBRACKET
+    ;
+
+memberSelectionOperator returns [MemberOperator operator]
+    : MEMBER_OP
+      { $operator=new MemberOp($MEMBER_OP); }
+    | SAFE_MEMBER_OP
+      { $operator=new SafeMemberOp($SAFE_MEMBER_OP); }
+    | SPREAD_OP
+      { $operator=new SpreadOp($SPREAD_OP); }
+    ;
+
+elementSelectionOperator returns [IndexOperator operator]
+    : SAFE_INDEX_OP
+      { $operator=new SafeIndexOp($SAFE_INDEX_OP); }
+    | INDEX_OP
+      { $operator=new IndexOp($INDEX_OP); }
+    ;
+
+enumeration returns [SequenceEnumeration sequenceEnumeration]
+    : LBRACE { $sequenceEnumeration = new SequenceEnumeration($LBRACE); } 
+      (
+        expressions
+        { $sequenceEnumeration.setExpressionList($expressions.expressionList); }
+      )?
+      RBRACE
+    ;
+
+expressions returns [ExpressionList expressionList]
+    : { $expressionList = new ExpressionList(null); }
+      e1=expression { $expressionList.addExpression($e1.expression); }
+      ( COMMA e2=expression { $expressionList.addExpression($e2.expression); } )
+    ;
+
+memberReference returns [Identifier identifier]
+    : memberName
+      { $identifier = $memberName.identifier; }
+      //((typeArgumentsStart) => typeArguments)? 
+    ;
+
+typeReference returns [Identifier identifier]
+    : typeName 
+      { $identifier = $typeName.identifier; }
+      //((typeArgumentsStart) => typeArguments)?
+    ;
+
+indexOrIndexRange returns [ElementOrRange elementOrRange]
+    : l=index
+    (
+      { Element e = new Element(null);
+        $elementOrRange = e;
+        e.setExpression($l.expression); }
+      | '...' 
+      { ElementRange er1 = new ElementRange(null);
+        $elementOrRange = er1;
+        er1.setLowerBound($l.expression); }
+      | '..' u=index 
+      { ElementRange er2 = new ElementRange(null);
+        $elementOrRange = er2;
+        er2.setLowerBound($l.expression); 
+        er2.setUpperBound($u.expression); }
     )
     ;
 
+index returns [Expression expression]
+    : additiveExpression 
+      { $expression = new Expression(null);
+        $expression.setTerm($additiveExpression.term); }
+    ;
+
+arguments returns [ArgumentList argumentList]
+    : positionalArguments 
+      { $argumentList = $positionalArguments.positionalArgumentList; }
+    | namedArguments
+      { $argumentList = $namedArguments.namedArgumentList; }
+    ;
+
+namedArguments returns [NamedArgumentList namedArgumentList]
+    : LBRACE 
+      { $namedArgumentList = new NamedArgumentList($LBRACE); }
+      (
+        (namedArgumentStart) 
+        => namedArgument
+        { $namedArgumentList.addNamedArgument($namedArgument.namedArgument); }
+      )* 
+      ( 
+        expressions
+        { SequencedArgument se = new SequencedArgument(null);
+          se.setExpressionList($expressions.expressionList);
+          $namedArgumentList.setSequencedArgument(se); }
+      )?
+      RBRACE
+    ;
+
+namedArgument returns [NamedArgument namedArgument]
+    : namedSpecifiedArgument
+      { $namedArgument = $namedSpecifiedArgument.specifiedArgument; }
+    //| namedArgumentDeclaration
+    ;
+
+namedSpecifiedArgument returns [SpecifiedArgument specifiedArgument]
+    : memberName 
+      { $specifiedArgument = new SpecifiedArgument(null); 
+        $specifiedArgument.setIdentifier($memberName.identifier); }
+      specifier 
+      { $specifiedArgument.setSpecifierExpression($specifier.specifierExpression); }
+    SEMICOLON
+    ;
+
+//special rule for syntactic predicate
+//to distinguish between a named argument
+//and a sequenced argument
+namedArgumentStart
+    : specificationStart 
+    //| declarationStart
+    ;
+
+//special rule for syntactic predicates
+specificationStart
+    : LIDENTIFIER '='
+    ;
+
+parExpression returns [Expression expression] 
+    : LPAREN 
+      e=expression
+      { $expression = $e.expression; }
+      RPAREN
+    ;
+    
+positionalArguments returns [PositionalArgumentList positionalArgumentList]
+    : LPAREN 
+      { $positionalArgumentList = new PositionalArgumentList($LPAREN); }
+      ( pa1=positionalArgument
+        { $positionalArgumentList.addPositionalArgument($pa1.positionalArgument); }
+        (
+          COMMA 
+          pa2=positionalArgument
+          { $positionalArgumentList.addPositionalArgument($pa2.positionalArgument); }
+        )* 
+        (
+          ELLIPSIS
+          { $positionalArgumentList.setEllipsis( new Ellipsis($ELLIPSIS) ); }
+        )?
+      )? 
+      RPAREN
+    ;
+
+positionalArgument returns [PositionalArgument positionalArgument]
+    : //(declarationStart) => specialArgument | 
+      expression
+      { $positionalArgument = new PositionalArgument(null);
+        $positionalArgument.setExpression($expression.expression); }
+    ;
+    
 assignmentExpression returns [Term term]
     : ee1=disjunctionExpression
       { $term = $ee1.term; }
