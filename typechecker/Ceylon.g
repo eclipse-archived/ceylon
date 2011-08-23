@@ -123,7 +123,7 @@ memberName returns [Identifier identifier]
     
 objectDeclaration returns [ObjectDefinition declaration]
     : OBJECT_DEFINITION
-      { $declaration = new ObjectDefinition(null); }
+      { $declaration = new ObjectDefinition($OBJECT_DEFINITION); }
       memberName 
       { $declaration.setIdentifier($memberName.identifier); }
       ( 
@@ -200,12 +200,28 @@ interfaceDeclaration
       )
     ;
 
-classDeclaration
-    : CLASS_DEFINITION typeName classParameters?
+classDeclaration returns [AnyClass declaration]
+    @init { ClassDefinition def=null; ClassDeclaration dec=null; }
+    : CLASS_DEFINITION 
+      { def = new ClassDefinition($CLASS_DEFINITION); 
+        dec = new ClassDeclaration($CLASS_DEFINITION);
+        $declaration = def; }
+      typeName
+      { dec.setIdentifier($typeName.identifier); 
+        def.setIdentifier($typeName.identifier); }
+      (
+        classParameters
+      )?
       (
         classBody
+        { def.setClassBody($classBody.classBody); }
       //-> ^(CLASS_DEFINITION typeName classParameters? classBody)
-      | typeSpecifier? 
+      | 
+        (
+          typeSpecifier
+          { dec.setTypeSpecifier($typeSpecifier.typeSpecifier);
+            $declaration = dec; }
+        )?
         SEMICOLON
       //-> ^(CLASS_DECLARATION[$CLASS_DEFINITION] typeName classParameters? typeSpecifier?)
       )
@@ -229,9 +245,13 @@ classParameters
       typeConstraints?
     ;
 
-block
+block returns [Block block]
     : LBRACE 
-      annotatedDeclarationOrStatement* 
+      { $block = new Block($LBRACE); }
+      (
+        annotatedDeclarationOrStatement
+        { $block.addStatement($annotatedDeclarationOrStatement.statement); }
+      )*
       RBRACE
     //-> ^(BLOCK[$LBRACE] annotatedDeclarationOrStatement*)
     ;
@@ -240,16 +260,20 @@ block
 //      statements, but error recovery works
 //      much better if we validate that later
 //      on, instead of doing it in the parser.
-interfaceBody
+interfaceBody returns [InterfaceBody interfaceBody]
     : LBRACE 
-      annotatedDeclarationOrStatement* 
+      { $interfaceBody = new InterfaceBody($LBRACE); }
+      (
+        annotatedDeclarationOrStatement
+        { $interfaceBody.addStatement($annotatedDeclarationOrStatement.statement); }
+      )*
       RBRACE
     //-> ^(INTERFACE_BODY[$LBRACE] annotatedDeclarationOrStatement2*)
     ;
 
 classBody returns [ClassBody classBody]
     : LBRACE
-      { $classBody = new ClassBody(null); }
+      { $classBody = new ClassBody($LBRACE); }
       (
         annotatedDeclarationOrStatement
         { $classBody.addStatement($annotatedDeclarationOrStatement.statement); }
@@ -526,8 +550,11 @@ continueDirective returns [Continue directive]
       { $directive = new Continue($CONTINUE); }
     ;
 
-typeSpecifier
-    : SPECIFY type
+typeSpecifier returns [TypeSpecifier typeSpecifier]
+    : SPECIFY 
+      { $typeSpecifier = new TypeSpecifier($SPECIFY); }
+      type
+      { $typeSpecifier.setType($type.type); }
     //-> ^(TYPE_SPECIFIER[$SPECIFY] type)
     ;
 

@@ -77,7 +77,7 @@
     TypeParameter declarationModel;)
 
 ^(TYPE_SPECIFIER 
-    BASE_TYPE type)
+    SIMPLE_TYPE type)
 
 ^(ANY_CLASS:CLASS_OR_INTERFACE
     PARAMETER_LIST
