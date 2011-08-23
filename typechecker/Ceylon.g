@@ -180,12 +180,17 @@ voidMethodDeclaration returns [AnyMethod declaration]
       )
     ;
 
-setterDeclaration
-    : ASSIGN memberName block
+setterDeclaration returns [AttributeSetterDefinition declaration]
+    : ASSIGN 
+      { $declaration = new AttributeSetterDefinition($ASSIGN); }
+      memberName 
+      { $declaration.setIdentifier($memberName.identifier); }
+      block
+      { $declaration.setBlock($block.block); }
     //-> ^(ATTRIBUTE_SETTER_DEFINITION[$ASSIGN] VOID_MODIFIER memberName block)
     ;
 
-typedMethodOrAttributeDeclaration
+inferredMethodDeclaration
     : FUNCTION_MODIFIER 
       memberName 
       typeParameters? 
@@ -199,7 +204,10 @@ typedMethodOrAttributeDeclaration
         SEMICOLON
       //-> ^(METHOD_DECLARATION FUNCTION_MODIFIER memberName methodParameters? specifier?)
       )
-    | VALUE_MODIFIER memberName
+    ;
+ 
+inferredAttributeDeclaration
+    :  VALUE_MODIFIER memberName
       ( 
         (specifier | initializer)? 
         SEMICOLON
@@ -207,23 +215,26 @@ typedMethodOrAttributeDeclaration
       | block
         //-> ^(ATTRIBUTE_GETTER_DEFINITION VALUE_MODIFIER memberName block)
       )
-    /*| unionType memberName
+    ;
+
+typedMethodOrAttributeDeclaration
+    : | unionType memberName
       ( 
         typeParameters? 
         parameters+
         //metatypes? 
         typeConstraints?
         ( 
-          memberBody[$unionType.tree] 
+          //memberBody[$unionType.tree] 
         //-> ^(METHOD_DEFINITION unionType memberName methodParameters memberBody)
         | specifier? ';'
         //-> ^(METHOD_DECLARATION unionType memberName methodParameters specifier?)
         )
       | (specifier | initializer)? ';'
       //-> ^(ATTRIBUTE_DECLARATION unionType memberName specifier? initializer?)
-      | memberBody[$unionType.tree]
+      | //memberBody[$unionType.tree]
       //-> ^(ATTRIBUTE_GETTER_DEFINITION unionType memberName memberBody)      
-      )*/
+      )
     ;
 
 interfaceDeclaration returns [AnyInterface declaration]
@@ -599,11 +610,11 @@ annotatedDeclaration returns [Declaration declaration]
     ( 
       objectDeclaration
       { $declaration=$objectDeclaration.declaration; }
-    /*| setterDeclaration
+    | setterDeclaration
     | voidMethodDeclaration
-    | typedMethodOrAttributeDeclaration
+    //| typedMethodOrAttributeDeclaration
     | classDeclaration
-    | interfaceDeclaration*/
+    | interfaceDeclaration
     )
     { if ($declaration!=null) {
       $declaration.setAnnotationList($annotations.annotationList); 
