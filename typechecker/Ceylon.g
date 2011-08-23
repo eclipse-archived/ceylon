@@ -43,8 +43,8 @@ compilationUnit returns [CompilationUnit compilationUnit]
       importList 
       { $compilationUnit.setImportList($importList.importList); }
       ( 
-        annotatedDeclaration 
-        { $compilationUnit.addDeclaration($annotatedDeclaration.declaration); } 
+        declaration 
+        { $compilationUnit.addDeclaration($declaration.declaration); } 
       )+
       EOF
     ;
@@ -361,8 +361,10 @@ block returns [Block block]
     : LBRACE 
       { $block = new Block($LBRACE); }
       (
-        annotatedDeclarationOrStatement
-        { $block.addStatement($annotatedDeclarationOrStatement.statement); }
+        declarationOrStatement
+        { if ($declarationOrStatement.statement!=null) {
+              $block.addStatement($declarationOrStatement.statement);
+        } }
       )*
       RBRACE
     //-> ^(BLOCK[$LBRACE] annotatedDeclarationOrStatement*)
@@ -376,8 +378,10 @@ interfaceBody returns [InterfaceBody interfaceBody]
     : LBRACE 
       { $interfaceBody = new InterfaceBody($LBRACE); }
       (
-        annotatedDeclarationOrStatement
-        { $interfaceBody.addStatement($annotatedDeclarationOrStatement.statement); }
+        declarationOrStatement
+        { if ($declarationOrStatement.statement!=null) {
+              $interfaceBody.addStatement($declarationOrStatement.statement);
+        } }
       )*
       RBRACE
     //-> ^(INTERFACE_BODY[$LBRACE] annotatedDeclarationOrStatement2*)
@@ -387,8 +391,10 @@ classBody returns [ClassBody classBody]
     : LBRACE
       { $classBody = new ClassBody($LBRACE); }
       (
-        annotatedDeclarationOrStatement
-        { $classBody.addStatement($annotatedDeclarationOrStatement.statement); }
+        declarationOrStatement
+        { if ($declarationOrStatement.statement!=null) {
+              $classBody.addStatement($declarationOrStatement.statement);
+        } }
       )*
       RBRACE
     //-> ^(CLASS_BODY[$LBRACE] annotatedDeclarationOrStatement2*)
@@ -462,6 +468,7 @@ caseType returns [SimpleType type, BaseMemberExpression instance]
       { $type=$t.type;}
     | memberName //-> ^(BASE_MEMBER_EXPRESSION memberName)
       { $instance = new BaseMemberExpression(null);
+        $instance.setTypeArguments( new InferredTypeArguments(null) );
         $instance.setIdentifier($memberName.identifier); }
     ;
 
@@ -476,11 +483,11 @@ parameters returns [ParameterList parameterList]
     : LPAREN
       { $parameterList=new ParameterList($LPAREN); }
       (
-        ap1=annotatedParameter 
+        ap1=parameterDeclaration 
         { $parameterList.addParameter($ap1.parameter); }
         (
           COMMA 
-          ap2=annotatedParameter
+          ap2=parameterDeclaration
           { $parameterList.addParameter($ap2.parameter); }
         )*
       )? 
@@ -517,7 +524,7 @@ parameter returns [Parameter parameter]
       )
     ;
 
-annotatedParameter returns [Parameter parameter]
+parameterDeclaration returns [Parameter parameter]
     : annotations 
       p=parameter
       { $parameter=$p.parameter;
@@ -612,15 +619,15 @@ typeConstraints returns [TypeConstraintList typeConstraintList]
     //-> ^(TYPE_CONSTRAINT_LIST typeConstraint2+)
     ;
 
-annotatedDeclarationOrStatement returns [Statement statement]
+declarationOrStatement returns [Statement statement]
     options {memoize=true;}
-    : (annotatedDeclarationStart) => annotatedDeclaration
-      { $statement=$annotatedDeclaration.declaration; }
+    : (annotatedDeclarationStart) => declaration
+      { $statement=$declaration.declaration; }
     | s=statement
       { $statement=$s.statement; }
     ;
 
-annotatedDeclaration returns [Declaration declaration]
+declaration returns [Declaration declaration]
     : annotations
     ( 
       objectDeclaration
@@ -688,6 +695,7 @@ specificationStatement returns [SpecifierStatement specifierStatement]
     : memberName 
       { $specifierStatement = new SpecifierStatement(null); 
         BaseMemberExpression bme = new BaseMemberExpression(null);
+        bme.setTypeArguments( new InferredTypeArguments(null) );
         bme.setIdentifier($memberName.identifier);
         $specifierStatement.setBaseMemberExpression(bme); }
       specifier
@@ -786,13 +794,19 @@ base returns [Primary primary]
       { $primary=$selfReference.atom; }
     | typeReference
       { BaseTypeExpression bte = new BaseTypeExpression(null);
+        bte.setTypeArguments( new InferredTypeArguments(null) );
         bte.setIdentifier($typeReference.identifier);
-        bte.setTypeArguments($typeReference.typeArgumentList);
+        if ($typeReference.typeArgumentList!=null) {
+            bte.setTypeArguments($typeReference.typeArgumentList);
+        }
         $primary=bte; }
     | memberReference
       { BaseMemberExpression bme = new BaseMemberExpression(null);
+        bme.setTypeArguments( new InferredTypeArguments(null) );
         bme.setIdentifier($memberReference.identifier);
-        bme.setTypeArguments($memberReference.typeArgumentList);
+        if ($memberReference.typeArgumentList!=null) {
+            bme.setTypeArguments($memberReference.typeArgumentList);
+        }
         $primary=bme; }
     | parExpression
       { $primary=$parExpression.expression; }
@@ -804,15 +818,21 @@ primary returns [Primary primary]
     (          
         qualifiedMemberReference
       { QualifiedMemberExpression bme = new QualifiedMemberExpression(null);
+        bme.setTypeArguments( new InferredTypeArguments(null) );
         bme.setPrimary($primary);
         bme.setIdentifier($qualifiedMemberReference.identifier);
-        bme.setTypeArguments($qualifiedMemberReference.typeArgumentList);
+        if ($qualifiedMemberReference.typeArgumentList!=null) {
+            bme.setTypeArguments($qualifiedMemberReference.typeArgumentList);
+        }
         $primary=bme; }
       | qualifiedTypeReference
       { QualifiedTypeExpression bte = new QualifiedTypeExpression(null);
+        bte.setTypeArguments( new InferredTypeArguments(null) );
         bte.setPrimary($primary);
         bte.setIdentifier($qualifiedTypeReference.identifier);
-        bte.setTypeArguments($qualifiedTypeReference.typeArgumentList);
+        if ($qualifiedTypeReference.typeArgumentList!=null) {
+            bte.setTypeArguments($qualifiedTypeReference.typeArgumentList);
+        }
         $primary=bte; }
       | indexExpression
         { IndexExpression xe = new IndexExpression(null);
@@ -1495,6 +1515,7 @@ annotation returns [Annotation annotation]
     : annotationName
       { $annotation = new Annotation(null);
         BaseMemberExpression bme = new BaseMemberExpression(null);
+        bme.setTypeArguments( new InferredTypeArguments(null) );
         bme.setIdentifier($annotationName.identifier);
         $annotation.setPrimary(bme); }
       annotationArguments
