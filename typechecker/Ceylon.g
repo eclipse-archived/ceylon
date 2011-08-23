@@ -188,14 +188,52 @@ typedMethodOrAttributeDeclaration
       )*/
     ;
 
-interfaceDeclaration
+interfaceDeclaration returns [AnyInterface declaration]
+    @init { InterfaceDefinition def=null; 
+            InterfaceDeclaration dec=null; }
     : INTERFACE_DEFINITION
-      typeName interfaceParameters
+      { def = new InterfaceDefinition($INTERFACE_DEFINITION); 
+        dec = new InterfaceDeclaration($INTERFACE_DEFINITION);
+        $declaration = def; }
+      typeName 
+      { dec.setIdentifier($typeName.identifier); 
+        def.setIdentifier($typeName.identifier); }
+      (
+        typeParameters 
+        { def.setTypeParameterList($typeParameters.typeParameterList); 
+          dec.setTypeParameterList($typeParameters.typeParameterList); }
+      )?
+      (
+        caseTypes
+        { def.setCaseTypes($caseTypes.caseTypes); 
+          dec.setCaseTypes($caseTypes.caseTypes); }
+      )?
+      /*metatypes?*/ 
+      (
+        adaptedTypes
+        { def.setAdaptedTypes($adaptedTypes.adaptedTypes); }
+      )?
+      (
+        satisfiedTypes
+        { def.setSatisfiedTypes($satisfiedTypes.satisfiedTypes); 
+          dec.setSatisfiedTypes($satisfiedTypes.satisfiedTypes); }
+      )?
+      (
+        typeConstraints
+        { def.setTypeConstraintList($typeConstraints.typeConstraintList); 
+          dec.setTypeConstraintList($typeConstraints.typeConstraintList); }
+      )?
       (
         interfaceBody
+        { def.setInterfaceBody($interfaceBody.interfaceBody); }
       //-> ^(INTERFACE_DEFINITION typeName interfaceParameters? interfaceBody)
-      | typeSpecifier? 
+      | 
+        (
+          typeSpecifier
+          { dec.setTypeSpecifier($typeSpecifier.typeSpecifier); }
+        )? 
         SEMICOLON
+        { $declaration = dec; }
       //-> ^(INTERFACE_DECLARATION[$INTERFACE_DEFINITION] typeName interfaceParameters? typeSpecifier?)
       )
     ;
@@ -211,7 +249,33 @@ classDeclaration returns [AnyClass declaration]
       { dec.setIdentifier($typeName.identifier); 
         def.setIdentifier($typeName.identifier); }
       (
-        classParameters
+        typeParameters 
+        { def.setTypeParameterList($typeParameters.typeParameterList); 
+          dec.setTypeParameterList($typeParameters.typeParameterList); }
+      )?
+      parameters
+      { def.setParameterList($parameters.parameterList); 
+        dec.setParameterList($parameters.parameterList); }
+      (
+        caseTypes
+        { def.setCaseTypes($caseTypes.caseTypes); 
+          dec.setCaseTypes($caseTypes.caseTypes); }
+      )?
+      /*metatypes?*/ 
+      (
+        extendedType
+        { def.setExtendedType($extendedType.extendedType); 
+          dec.setExtendedType($extendedType.extendedType); }
+      )? 
+      (
+        satisfiedTypes
+        { def.setSatisfiedTypes($satisfiedTypes.satisfiedTypes); 
+          dec.setSatisfiedTypes($satisfiedTypes.satisfiedTypes); }
+      )?
+      (
+        typeConstraints
+        { def.setTypeConstraintList($typeConstraints.typeConstraintList); 
+          dec.setTypeConstraintList($typeConstraints.typeConstraintList); }
       )?
       (
         classBody
@@ -220,10 +284,10 @@ classDeclaration returns [AnyClass declaration]
       | 
         (
           typeSpecifier
-          { dec.setTypeSpecifier($typeSpecifier.typeSpecifier);
-            $declaration = dec; }
+          { dec.setTypeSpecifier($typeSpecifier.typeSpecifier); }
         )?
         SEMICOLON
+        { $declaration = dec; }
       //-> ^(CLASS_DECLARATION[$CLASS_DEFINITION] typeName classParameters? typeSpecifier?)
       )
     ;
@@ -234,18 +298,6 @@ methodParameters
       typeConstraints?
     ;
     
-interfaceParameters
-    : typeParameters?
-      caseTypes? /*metatypes?*/ adaptedTypes? satisfiedTypes?
-      typeConstraints?
-    ;
-
-classParameters
-    : typeParameters? parameters
-      caseTypes? /*metatypes?*/ extendedType? satisfiedTypes?
-      typeConstraints?
-    ;
-
 block returns [Block block]
     : LBRACE 
       { $block = new Block($LBRACE); }
