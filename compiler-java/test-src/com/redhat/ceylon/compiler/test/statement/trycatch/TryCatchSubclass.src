@@ -1,0 +1,32 @@
+package com.redhat.ceylon.compiler.test.statement.trycatch;
+
+class E extends .java.lang.RuntimeException {
+    
+    E(ceylon.language.String message, .java.lang.RuntimeException cause) {
+        super(message.toString(), cause);
+    }
+}
+class TryCatchSubclass {
+    
+    private final void t() {
+        throw new .java.lang.RuntimeException("Bang!", null);
+    }
+    
+    private final void ce(final E e) {
+    }
+    private final void cexception(final .java.lang.RuntimeException e) {
+    }
+    
+    private final void m() {
+        try {
+            t();
+        } catch (final E e) {
+            c(e);
+        } catch (final .java.lang.RuntimeException e) {
+            c(e);
+        }
+    }
+    
+    TryCatch() {
+    }
+}

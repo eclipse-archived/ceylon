@@ -1,0 +1,21 @@
+package com.redhat.ceylon.compiler.test.statement.trycatch;
+
+class TryFinally {
+    
+    private final void t() {
+    }
+    
+    private final void f() {
+    }
+    
+    private final void m() {
+        try {
+            t();
+        } finally {
+            f();
+        }
+    }
+    
+    TryFinally() {
+    }
+}

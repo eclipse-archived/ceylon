@@ -1,0 +1,13 @@
+class ThrowMethodResult {
+    
+    private final java.lang.RuntimeException e() {
+        return new java.lang.RuntimeException("Bang!", null);
+    }
+    
+    private final void t() {
+        throw e();
+    }
+    
+    ThrowExceptionResult() {
+    }
+}

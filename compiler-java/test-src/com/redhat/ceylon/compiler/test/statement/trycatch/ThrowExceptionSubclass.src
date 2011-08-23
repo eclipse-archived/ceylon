@@ -1,0 +1,15 @@
+class E extends .java.lang.RuntimeException {
+    
+    E(ceylon.language.String message, .java.lang.RuntimeException cause) {
+        super(message.toString(), cause);
+    }
+}
+class ThrowExceptionSubclass {
+    
+    private final void t() {
+        throw new com.redhat.ceylon.compiler.test.statement.trycatch.E(.ceylon.language.String.instance("Bang!"), null);
+    }
+    
+    ThrowExceptionSubclass() {
+    }
+}

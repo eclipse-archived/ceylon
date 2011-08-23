@@ -1,0 +1,33 @@
+package com.redhat.ceylon.compiler.test.statement.trycatch;
+
+class ReplaceExceptionAtJavaCallSite {
+    
+    private final void m() {
+        final com.redhat.ceylon.compiler.test.statement.trycatch.JavaThrower jt = new com.redhat.ceylon.compiler.test.statement.trycatch.JavaThrower();
+        final long n;
+        try {
+            n = jt.throwException();
+        } catch (java.lang.Exception e$) {
+            throw new java.lang.RuntimeException(e$);
+        }
+        final long m;
+        try {
+            m = jt.throwThrowable();
+        } catch (java.lang.Throwable e$) {
+            throw new java.lang.RuntimeException(e$);
+        }
+        final long x = jt.throwRuntimeException();
+        final long y = jt.throwError();
+        final long z
+        try {
+            z = jt.throwsMultiple();
+        } catch (java.lang.ClassNotFoundException e$) {
+            throw new java.lang.RuntimeException(e$);
+        } catch (java.io.IOException e$) {
+            throw new java.lang.RuntimeException(e$);
+        }
+    }
+    
+    ReplaceExceptionAtJavaCallSite() {
+    }
+}

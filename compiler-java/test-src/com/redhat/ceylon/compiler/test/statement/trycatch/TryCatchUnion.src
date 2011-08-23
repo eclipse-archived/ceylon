@@ -1,0 +1,33 @@
+class E1 extends .java.lang.RuntimeException {
+    
+    E1(ceylon.language.String message, .java.lang.RuntimeException cause) {
+        super(message.toString(), cause);
+    }
+}
+class E2 extends .java.lang.RuntimeException {
+    
+    E2(ceylon.language.String message, .java.lang.RuntimeException cause) {
+        super(message.toString(), cause);
+    }
+}
+class TryCatchUnion {
+    
+    private final void t() {
+    }
+    
+    private final void c(final .java.lang.RuntimeException e) {
+    }
+    
+    private final void m() {
+        try {
+            t();
+        } catch (final E1 e) {
+            c(e);
+        } catch (final E2 e) {
+            c(e);
+        }
+    }
+    
+    TryCatchUnion() {
+    }
+}

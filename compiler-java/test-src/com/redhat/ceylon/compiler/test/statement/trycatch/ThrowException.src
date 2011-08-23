@@ -1,0 +1,11 @@
+package com.redhat.ceylon.compiler.test.statement.trycatch;
+
+class ThrowException {
+    
+    private final void t() {
+        throw new java.lang.RuntimeException("Bang!", null);
+    }
+    
+    ThrowException() {
+    }
+}

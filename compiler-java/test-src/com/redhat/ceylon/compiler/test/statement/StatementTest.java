@@ -187,4 +187,63 @@ public class StatementTest extends CompilerTest {
         compareWithJavaSource("local/FunctionAndValueKeyword");
     }
     
+    @Test
+    public void testTryBareThrow(){
+        compareWithJavaSource("trycatch/Throw");
+    }
+    
+    @Test
+    public void testTryThrowException(){
+        compareWithJavaSource("trycatch/ThrowException");
+    }
+    
+    @Test
+    public void testTryThrowExceptionSubclass(){
+        compareWithJavaSource("trycatch/ThrowExceptionSubclass");
+    }
+    
+    @Test
+    public void testTryThrowMethodResult(){
+        compareWithJavaSource("trycatch/ThrowMethodResult");
+    }
+    
+    @Test
+    public void testTryThrowLocal(){
+        compareWithJavaSource("trycatch/ThrowLocal");
+    }
+    
+    @Test
+    public void testTryTryFinally(){
+        compareWithJavaSource("trycatch/TryFinally");
+    }
+    
+    @Test
+    public void testTryTryCatch(){
+        compareWithJavaSource("trycatch/TryCatch");
+    }
+    
+    @Test
+    public void testTryTryCatchFinally(){
+        compareWithJavaSource("trycatch/TryCatchFinally");
+    }
+    
+    @Test
+    public void testTryTryCatchSubclass(){
+        compareWithJavaSource("trycatch/TryCatchSubclass");
+    }
+    
+    @Test
+    public void testTryTryCatchIntersection(){
+        compareWithJavaSource("trycatch/TryCatchIntersection");
+    }
+    
+    @Test
+    public void testTryTryCatchUnion(){
+        compareWithJavaSource("trycatch/TryCatchUnion");
+    }
+    
+    @Test
+    public void testTryReplaceExceptionAtJavaCallSite(){
+        compareWithJavaSource("trycatch/WrapExceptionAtJavaCallSite");
+    }
 }
