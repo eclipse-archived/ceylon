@@ -40,13 +40,18 @@ options {
 compilationUnit returns [CompilationUnit compilationUnit]
     : { $compilationUnit = new CompilationUnit(null);
         this.compilationUnit = $compilationUnit; }
+      ( 
+        ca1=compilerAnnotations
+        SEMICOLON
+        { $compilationUnit.getCompilerAnnotations().addAll($ca1.annotations); }
+      )?
       importList 
       { $compilationUnit.setImportList($importList.importList); }
       ( 
-        compilerAnnotations declaration
+        ca2=compilerAnnotations declaration
         { $compilationUnit.addDeclaration($declaration.declaration); 
           if ($declaration.declaration!=null) {
-              $declaration.declaration.getCompilerAnnotations().addAll($compilerAnnotations.annotations); 
+              $declaration.declaration.getCompilerAnnotations().addAll($ca2.annotations); 
           } } 
       )+
       EOF

@@ -16,7 +16,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueParameterDeclaratio
 
 public class CustomBuilder extends Builder {
     
-    private static Tree.InferredTypeArguments inferredTypeArguments(CommonTree treeNode) {
+    /*private static Tree.InferredTypeArguments inferredTypeArguments(CommonTree treeNode) {
         Tree.InferredTypeArguments ita = new Tree.InferredTypeArguments(treeNode);
         ita.setText("<>");
         return ita;
@@ -60,7 +60,7 @@ public class CustomBuilder extends Builder {
             node.setTypeArguments( inferredTypeArguments(treeNode) );
         }
         return node;
-    }
+    }*/
     
     @Override
     public AttributeDeclaration buildAttributeDeclaration(CommonTree treeNode) {
