@@ -139,13 +139,43 @@ objectDeclaration returns [ObjectDefinition declaration]
     //-> ^(OBJECT_DEFINITION VALUE_MODIFIER memberName extendedType? satisfiedTypes? classBody?) 
     ;
 
-voidMethodDeclaration
-    : VOID_MODIFIER memberName methodParameters?
+voidMethodDeclaration returns [AnyMethod declaration]
+    @init { MethodDefinition def=null;
+            MethodDeclaration dec=null; }
+    : VOID_MODIFIER
+      { def = new MethodDefinition($VOID_MODIFIER);
+        dec = new MethodDeclaration($VOID_MODIFIER);
+        $declaration = def; }
+      memberName
+      { dec.setIdentifier($memberName.identifier); 
+        def.setIdentifier($memberName.identifier); }
+      (
+        typeParameters
+        { def.setTypeParameterList($typeParameters.typeParameterList); 
+          dec.setTypeParameterList($typeParameters.typeParameterList); }        
+      )?
+      (
+        parameters
+        { def.addParameterList($parameters.parameterList); 
+          dec.addParameterList($parameters.parameterList); }
+      )*
+      //metatypes? 
+      (
+        typeConstraints
+        { def.setTypeConstraintList($typeConstraints.typeConstraintList); 
+          dec.setTypeConstraintList($typeConstraints.typeConstraintList); }
+      )?
       ( 
         block 
+        { def.setBlock($block.block); }
       //-> ^(METHOD_DEFINITION VOID_MODIFIER memberName methodParameters? block)   
-      | specifier?
+      | 
+        (
+          specifier
+          { dec.setSpecifierExpression($specifier.specifierExpression); }
+        )?
         SEMICOLON
+        { $declaration = dec; }
       //-> ^(METHOD_DECLARATION VOID_MODIFIER memberName methodParameters? specifier?)   
       )
     ;
@@ -156,7 +186,12 @@ setterDeclaration
     ;
 
 typedMethodOrAttributeDeclaration
-    : FUNCTION_MODIFIER memberName methodParameters?
+    : FUNCTION_MODIFIER 
+      memberName 
+      typeParameters? 
+      parameters* 
+      //metatypes? 
+      typeConstraints?
       ( 
         block
       //-> ^(METHOD_DEFINITION FUNCTION_MODIFIER memberName methodParameters? block)
@@ -174,7 +209,10 @@ typedMethodOrAttributeDeclaration
       )
     /*| unionType memberName
       ( 
-        methodParameters 
+        typeParameters? 
+        parameters+
+        //metatypes? 
+        typeConstraints?
         ( 
           memberBody[$unionType.tree] 
         //-> ^(METHOD_DEFINITION unionType memberName methodParameters memberBody)
@@ -292,11 +330,6 @@ classDeclaration returns [AnyClass declaration]
       )
     ;
 
-methodParameters
-    : typeParameters? parameters+ 
-      //metatypes? 
-      typeConstraints?
-    ;
     
 block returns [Block block]
     : LBRACE 
