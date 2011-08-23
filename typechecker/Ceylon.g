@@ -1674,10 +1674,15 @@ compilerAnnotation returns [CompilerAnnotation annotation]
 
 condition returns [Condition condition]
     : booleanCondition
+      { $condition=$booleanCondition.condition; }
     | existsCondition
+      { $condition=$existsCondition.condition; }
     | nonemptyCondition
+      { $condition=$nonemptyCondition.condition; }
     | isCondition 
+      { $condition=$isCondition.condition; }
     | satisfiesCondition
+      { $condition=$satisfiesCondition.condition; }
     ;
     
 booleanCondition returns [BooleanCondition condition]
@@ -1990,6 +1995,8 @@ specifiedVariable returns [Variable variable]
 
 variable returns [Variable variable]
     : { $variable = new Variable(null); }
+      compilerAnnotations
+      { $variable.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
     (
       unionType 
       { $variable.setType($unionType.type); }
