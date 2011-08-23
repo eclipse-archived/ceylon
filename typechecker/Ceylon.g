@@ -909,30 +909,57 @@ typeNameWithArguments returns [Identifier identifier, TypeArgumentList typeArgum
       )?
     ;
     
-/*annotations
-    : annotation+
-    -> ^(ANNOTATION_LIST ^(ANNOTATION annotation)+)
+annotations returns [AnnotationList annotationList]
+    : { $annotationList = new AnnotationList(null); }
+      ( 
+        annotation 
+        { $annotationList.addAnnotation($annotation.annotation); }
+      )+
     ;
 
-annotation
+annotation returns [Annotation annotation]
     : annotationName
-    -> ^(BASE_MEMBER_EXPRESSION annotationName) ^(POSITIONAL_ARGUMENT_LIST)
-    | annotationName annotationArguments
-    -> ^(BASE_MEMBER_EXPRESSION annotationName) annotationArguments
+      { $annotation = new Annotation(null);
+        BaseMemberExpression bme = new BaseMemberExpression(null);
+        bme.setIdentifier($annotationName.identifier);
+        $annotation.setPrimary(bme); }
+      annotationArguments
+      { if ($annotationArguments.argumentList instanceof PositionalArgumentList) {
+            $annotation.setPositionalArgumentList((PositionalArgumentList)$annotationArguments.argumentList);
+        }
+        if ($annotationArguments.argumentList instanceof NamedArgumentList) {
+            $annotation.setNamedArgumentList((NamedArgumentList)$annotationArguments.argumentList);
+        } }
     ;
 
-annotationArguments
-    : arguments | literalArguments
+annotationArguments returns [ArgumentList argumentList]
+    : arguments 
+      { $argumentList=$arguments.argumentList; }
+    | literalArguments 
+      { $argumentList=$literalArguments.argumentList; }
     ;
 
-literalArguments
-    : literalArgument+
-    -> ^(POSITIONAL_ARGUMENT_LIST ^(POSITIONAL_ARGUMENT ^(EXPRESSION literalArgument))+)
+literalArguments returns [PositionalArgumentList argumentList]
+    : { $argumentList = new PositionalArgumentList(null); }
+      (
+        literalArgument
+        { $argumentList.addPositionalArgument($literalArgument.positionalArgument); }
+      )*
+    //-> ^(POSITIONAL_ARGUMENT_LIST ^(POSITIONAL_ARGUMENT ^(EXPRESSION literalArgument))+)
     ;
     
-literalArgument
-    : nonstringLiteral | stringLiteral
-    ;*/
+literalArgument returns [PositionalArgument positionalArgument]
+    : nonstringLiteral
+      { $positionalArgument = new PositionalArgument(null);
+        Expression e = new Expression(null);
+        e.setTerm($nonstringLiteral.literal);
+        $positionalArgument.setExpression(e); }
+    | stringLiteral
+      { $positionalArgument = new PositionalArgument(null);
+        Expression e = new Expression(null);
+        e.setTerm($stringLiteral.stringLiteral);
+        $positionalArgument.setExpression(e); }
+    ;
 
 //special rule for syntactic predicate
 //to distinguish an interpolated expression
