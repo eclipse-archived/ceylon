@@ -304,8 +304,12 @@ enumeration returns [SequenceEnumeration sequenceEnumeration]
 
 expressions returns [ExpressionList expressionList]
     : { $expressionList = new ExpressionList(null); }
-      e1=expression { $expressionList.addExpression($e1.expression); }
-      ( COMMA e2=expression { $expressionList.addExpression($e2.expression); } )
+      e1=expression 
+      { $expressionList.addExpression($e1.expression); }
+      ( COMMA 
+        e2=expression 
+        { $expressionList.addExpression($e2.expression); } 
+      )*
     ;
 
 memberReference returns [Identifier identifier]
