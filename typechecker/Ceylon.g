@@ -149,8 +149,11 @@ objectDeclaration returns [ObjectDefinition declaration]
         satisfiedTypes
         { $declaration.setSatisfiedTypes($satisfiedTypes.satisfiedTypes); } 
       )?
-      classBody
-      { $declaration.setClassBody($classBody.classBody); }
+      (
+        classBody
+        { $declaration.setClassBody($classBody.classBody); }
+      | SEMICOLON
+      )
     //-> ^(OBJECT_DEFINITION VALUE_MODIFIER memberName extendedType? satisfiedTypes? classBody?) 
     ;
 
@@ -213,8 +216,11 @@ setterDeclaration returns [AttributeSetterDefinition declaration]
         $declaration.setType( new VoidModifier(null) ); }
       memberName 
       { $declaration.setIdentifier($memberName.identifier); }
-      block
-      { $declaration.setBlock($block.block); }
+      ( 
+        block
+        { $declaration.setBlock($block.block); }
+      | SEMICOLON
+      )
     //-> ^(ATTRIBUTE_SETTER_DEFINITION[$ASSIGN] VOID_MODIFIER memberName block)
     ;
 
@@ -2092,8 +2098,10 @@ resource returns [Resource resource]
 specifiedVariable returns [Variable variable]
     : v=variable 
       { $variable = $v.variable; }
-      specifier
-      { $variable.setSpecifierExpression($specifier.specifierExpression); }
+      (
+        specifier
+        { $variable.setSpecifierExpression($specifier.specifierExpression); }
+      )?
     ;
 
 variable returns [Variable variable]
