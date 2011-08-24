@@ -940,7 +940,7 @@ primary returns [Primary primary]
         bte.setTypeArguments( new InferredTypeArguments(null) );
         bte.setPrimary($primary);
         bte.setIdentifier($qualifiedTypeReference.identifier);
-        bte.setMemberOperator($qualifiedMemberReference.operator);
+        bte.setMemberOperator($qualifiedTypeReference.operator);
         if ($qualifiedTypeReference.typeArgumentList!=null) {
             bte.setTypeArguments($qualifiedTypeReference.typeArgumentList);
         }
@@ -1289,7 +1289,8 @@ comparisonExpression returns [Term term]
         ee2=existenceEmptinessExpression
         { $comparisonOperator.operator.setRightTerm($ee2.term); }
       | typeOperator
-        { $typeOperator.operator.setTerm($ee1.term); }
+        { $typeOperator.operator.setTerm($ee1.term); 
+          $term = $typeOperator.operator;}
         type
         { $typeOperator.operator.setType($type.type); }
       )?
