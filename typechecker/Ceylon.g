@@ -24,6 +24,23 @@ options {
     public CompilationUnit getCompilationUnit() {
         return compilationUnit;
     }
+    
+        private boolean parseAsNamedArguments() {
+            //state.backtracking++;
+            int start = input.mark();
+            blockOrNamedArguments_return r=null;
+            try {
+            	r=blockOrNamedArguments(); // can never throw exception
+            } catch (RecognitionException re) {
+                System.err.println("impossible: "+re);
+            }
+            boolean success = !state.failed;
+            input.rewind(start);
+            //state.backtracking--;
+            state.failed=false;
+            return (success&&!r.foundStatement)
+            		|| (!success&&!r.foundStatement&&r.foundExpressionList);
+        }
 }
 
 @lexer::members {
@@ -475,11 +492,9 @@ classBody returns [ClassBody classBody]
 //or a named argument list until after we
 //finish parsing it
 memberBody[StaticType type] returns [Block block]
-      options { memoize=true; }
-    : {$type instanceof BaseType}?
-    (
-      (namedArguments)
-      => namedArguments //first try to match with no directives or control structures
+      //options { memoize=true; }
+    : {$type instanceof BaseType && parseAsNamedArguments()}?
+      namedArguments //first try to match with no directives or control structures
       { $block = new Block(null);
         SimpleType t = (SimpleType) $type;
         Return r = new Return(null);
@@ -487,47 +502,69 @@ memberBody[StaticType type] returns [Block block]
         InvocationExpression ie = new InvocationExpression(null);
         BaseTypeExpression bme = new BaseTypeExpression(null);
         bme.setIdentifier(t.getIdentifier());
-        bme.setTypeArguments(t.getTypeArgumentList());
+        bme.setTypeArguments(new InferredTypeArguments(null));
+        if (t.getTypeArgumentList()!=null) {
+            bme.setTypeArguments(t.getTypeArgumentList());
+        }
         ie.setPrimary(bme);
         ie.setNamedArgumentList($namedArguments.namedArgumentList);
         e.setTerm(ie);
         r.setExpression(e);
         $block.addStatement(r); }
     //-> ^(BLOCK ^(RETURN ^(EXPRESSION ^(INVOCATION_EXPRESSION ^(BASE_TYPE_EXPRESSION { ((CommonTree)$mt).getChild(0) } { ((CommonTree)$mt).getChild(1) } ) namedArguments))))
-    | (block)
-      => b1=block //if there is a "return" directive or control structure, it must be a block
-      { $block=$b1.block; }
-      
-    //if it doesn't match as a block or as a named argument
-    //list, then there must be an error somewhere, so parse
-    //it again looking for the error
-    | LBRACE brokenMemberBody? RBRACE
-      { $block = new BrokenMemberBody($LBRACE); }
-      //TODO: add all the statements in!
-    //-> ^(BROKEN_MEMBER_BODY brokenMemberBody?)
-    )
-    | b2=block
-      { $block=$b2.block; }
+    | b=block //if there is a "return" directive or control structure, it must be a block
+      { $block=$b.block; }
     ;
 
-brokenMemberBody
-    : (annotatedDeclarationStart) => declaration brokenMemberBody?
-    | ( 
-        specificationStatement brokenMemberBody?
-      | controlStatement brokenMemberBody?
-      | directiveStatement brokenMemberBody?
-      | expressionStatementOrList
-      )
+blockOrNamedArguments returns [boolean foundStatement, boolean foundExpressionList]
+    : LBRACE 
+      argumentsOrStatements
+      { $foundStatement=$argumentsOrStatements.foundStatement; 
+        $foundExpressionList=$argumentsOrStatements.foundExpressionList; }
+      RBRACE
     ;
     
-expressionStatementOrList
-    : expression 
-      (
-        ';' brokenMemberBody?
+argumentsOrStatements returns [boolean foundStatement, boolean foundExpressionList]
+    @init { $foundStatement=false; 
+            $foundExpressionList=false; }
+    : compilerAnnotations 
+    (
+      (annotatedDeclarationStart) 
+      => declaration //TODO: some declarations not allowd in named arg lists!
+      ( 
+        as1=argumentsOrStatements
+        { $foundStatement=$as1.foundStatement; 
+          $foundExpressionList=$as1.foundExpressionList; }
+      )?
+    | (
+        ( 
+          controlStatement { $foundStatement=true; } 
+        | directiveStatement { $foundStatement=true; } 
+        ) 
+        (
+          as2=argumentsOrStatements
+          { $foundExpressionList=$as2.foundExpressionList; }
+        )?
+      | specificationStatement
+        (
+          as3=argumentsOrStatements
+          { $foundStatement=$as3.foundStatement; 
+            $foundExpressionList=$as3.foundExpressionList; }
+        )?
+      | expression 
+        (
+          SEMICOLON 
+          { $foundStatement=true; } 
+          (
+            as4=argumentsOrStatements
+            { $foundExpressionList=$as4.foundExpressionList; }
+          )?
       //-> ^(EXPRESSION_STATEMENT expression) brokenMemberBody?
-      | (',' expression)* 
+        | ( COMMA {$foundExpressionList=true;} expression )* 
       //-> ^(EXPRESSION_LIST expression+)
+        )
       )
+    )
     ;
 
 extendedType returns [ExtendedType extendedType]
