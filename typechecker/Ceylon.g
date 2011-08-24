@@ -138,7 +138,8 @@ memberName returns [Identifier identifier]
     
 objectDeclaration returns [ObjectDefinition declaration]
     : OBJECT_DEFINITION
-      { $declaration = new ObjectDefinition($OBJECT_DEFINITION); }
+      { $declaration = new ObjectDefinition($OBJECT_DEFINITION); 
+        $declaration.setType(new ValueModifier(null)); }
       memberName 
       { $declaration.setIdentifier($memberName.identifier); }
       ( 
