@@ -291,7 +291,7 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
             mdec.setTypeConstraintList($typeConstraints.typeConstraintList); }
         )?
         ( 
-          mb=block //memberBody[$unionType.tree] 
+          mb=memberBody[$unionType.type] 
          { mdef.setBlock($mb.block); }
         //-> ^(METHOD_DEFINITION unionType memberName methodParameters memberBody)
         | 
@@ -314,7 +314,7 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
         SEMICOLON
         { $declaration = adec; }
       //-> ^(ATTRIBUTE_DECLARATION unionType memberName specifier? initializer?)
-      | ab=block //memberBody[$unionType.tree]
+      | ab=memberBody[$unionType.type]
         { adef.setBlock($ab.block); }
       //-> ^(ATTRIBUTE_GETTER_DEFINITION unionType memberName memberBody)      
       )
@@ -468,6 +468,66 @@ classBody returns [ClassBody classBody]
       )*
       RBRACE
     //-> ^(CLASS_BODY[$LBRACE] annotatedDeclarationOrStatement2*)
+    ;
+
+//This rule accounts for the problem that we
+//can't tell whether a member body is a block
+//or a named argument list until after we
+//finish parsing it
+memberBody[StaticType type] returns [Block block]
+      options { memoize=true; }
+    : {$type instanceof BaseType}?
+    (
+      (namedArguments)
+      => namedArguments //first try to match with no directives or control structures
+      { $block = new Block(null);
+        SimpleType t = (SimpleType) $type;
+        Return r = new Return(null);
+        Expression e = new Expression(null);
+        InvocationExpression ie = new InvocationExpression(null);
+        BaseTypeExpression bme = new BaseTypeExpression(null);
+        bme.setIdentifier(t.getIdentifier());
+        bme.setTypeArguments(t.getTypeArgumentList());
+        ie.setPrimary(bme);
+        ie.setNamedArgumentList($namedArguments.namedArgumentList);
+        e.setTerm(ie);
+        r.setExpression(e);
+        $block.addStatement(r); }
+    //-> ^(BLOCK ^(RETURN ^(EXPRESSION ^(INVOCATION_EXPRESSION ^(BASE_TYPE_EXPRESSION { ((CommonTree)$mt).getChild(0) } { ((CommonTree)$mt).getChild(1) } ) namedArguments))))
+    | (block)
+      => b1=block //if there is a "return" directive or control structure, it must be a block
+      { $block=$b1.block; }
+      
+    //if it doesn't match as a block or as a named argument
+    //list, then there must be an error somewhere, so parse
+    //it again looking for the error
+    | LBRACE brokenMemberBody? RBRACE
+      { $block = new BrokenMemberBody($LBRACE); }
+      //TODO: add all the statements in!
+    //-> ^(BROKEN_MEMBER_BODY brokenMemberBody?)
+    )
+    | b2=block
+      { $block=$b2.block; }
+    ;
+
+brokenMemberBody
+    : (annotatedDeclarationStart) => declaration brokenMemberBody?
+    | ( 
+        specificationStatement brokenMemberBody?
+      | controlStatement brokenMemberBody?
+      | directiveStatement brokenMemberBody?
+      | expressionStatementOrList
+      )
+    ;
+    
+expressionStatementOrList
+    : expression 
+      (
+        ';' brokenMemberBody?
+      //-> ^(EXPRESSION_STATEMENT expression) brokenMemberBody?
+      | (',' expression)* 
+      //-> ^(EXPRESSION_LIST expression+)
+      )
     ;
 
 extendedType returns [ExtendedType extendedType]
