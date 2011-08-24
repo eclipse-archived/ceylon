@@ -913,6 +913,7 @@ primary returns [Primary primary]
         bme.setTypeArguments( new InferredTypeArguments(null) );
         bme.setPrimary($primary);
         bme.setIdentifier($qualifiedMemberReference.identifier);
+        bme.setMemberOperator($qualifiedMemberReference.operator);
         if ($qualifiedMemberReference.typeArgumentList!=null) {
             bme.setTypeArguments($qualifiedMemberReference.typeArgumentList);
         }
@@ -922,6 +923,7 @@ primary returns [Primary primary]
         bte.setTypeArguments( new InferredTypeArguments(null) );
         bte.setPrimary($primary);
         bte.setIdentifier($qualifiedTypeReference.identifier);
+        bte.setMemberOperator($qualifiedMemberReference.operator);
         if ($qualifiedTypeReference.typeArgumentList!=null) {
             bte.setTypeArguments($qualifiedTypeReference.typeArgumentList);
         }
@@ -1541,10 +1543,10 @@ typeArgument returns [Type type]
     ;
     
 unionType returns [StaticType type]
-    @init { UnionType ut = new UnionType(null);
-            ut.addStaticType($type); }
+    @init { UnionType ut = new UnionType(null); }
     : it1=intersectionType
-      { $type = $it1.type; }
+      { $type = $it1.type; 
+        ut.addStaticType($type);}
       ( 
         (
           UNION_OP
@@ -1556,10 +1558,10 @@ unionType returns [StaticType type]
     ;
 
 intersectionType returns [StaticType type]
-    @init { IntersectionType it = new IntersectionType(null); 
-            it.addStaticType($type); }
+    @init { IntersectionType it = new IntersectionType(null); }
     : at1=abbreviatedType
-      { $type = $at1.type; }
+      { $type = $at1.type; 
+        it.addStaticType($type); }
       ( 
         (
           INTERSECTION_OP
@@ -1575,16 +1577,16 @@ abbreviatedType returns [StaticType type]
       { $type=$t.type; }
       (
         DEFAULT_OP 
-        { UnionType ot = new UnionType($DEFAULT_OP);
-          ot.addStaticType($type);
+        { UnionType ot = new UnionType(null);
           CommonToken tok = new CommonToken($DEFAULT_OP);
           tok.setText("Nothing");
           BaseType bt = new BaseType($DEFAULT_OP);
           bt.setIdentifier( new Identifier(tok) );
           ot.addStaticType(bt);
+          ot.addStaticType($type);
           $type=ot; }
       | ARRAY 
-        { UnionType ot = new UnionType($ARRAY);
+        { UnionType ot = new UnionType(null);
           CommonToken tok = new CommonToken($ARRAY);
           tok.setText("Empty");
           BaseType bt = new BaseType($ARRAY);
