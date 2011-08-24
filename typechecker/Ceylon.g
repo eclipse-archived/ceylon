@@ -1993,24 +1993,30 @@ failBlock returns [ElseClause clause]
 forIterator returns [ForIterator iterator]
     @init { ValueIterator vi=null;
             KeyValueIterator kvi = null; }
-    : v1=variable
-    (
-      { vi = new ValueIterator(null);
-        vi.setVariable($v1.variable);
-        $iterator = vi; }
-      c1=containment
-      { vi.setSpecifierExpression($c1.specifierExpression); }
+    : compilerAnnotations
+    ( 
+      v1=var
+      (
+        { vi = new ValueIterator(null);
+          vi.setVariable($v1.variable);
+          $iterator = vi; }
+        c1=containment
+        { vi.setSpecifierExpression($c1.specifierExpression); }
       //-> ^(VALUE_ITERATOR $v1 containment)
-    | ENTRY_OP
-      { kvi = new KeyValueIterator($ENTRY_OP);
-        kvi.setKeyVariable($v1.variable);
-        $iterator = kvi; }
-      v2=variable
-      { kvi.setValueVariable($v2.variable); }
-      c2=containment
-      {  kvi.setSpecifierExpression($c2.specifierExpression); }
+      | ENTRY_OP
+        { kvi = new KeyValueIterator($ENTRY_OP);
+          kvi.setKeyVariable($v1.variable);
+          $iterator = kvi; }
+        v2=var
+        { kvi.setValueVariable($v2.variable); }
+        c2=containment
+        {  kvi.setSpecifierExpression($c2.specifierExpression); }
       //-> ^(KEY_VALUE_ITERATOR $v1 $v2 containment)
+      )
     )
+    { if ($iterator!=null) {
+          $iterator.getCompilerAnnotations().addAll($compilerAnnotations.annotations); 
+    } }
     ;
     
 containment returns [SpecifierExpression specifierExpression]
@@ -2105,9 +2111,14 @@ specifiedVariable returns [Variable variable]
     ;
 
 variable returns [Variable variable]
+    : compilerAnnotations
+      var
+      { $variable=$var.variable;
+        $variable.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
+    ;
+    
+var returns [Variable variable]
     : { $variable = new Variable(null); }
-      compilerAnnotations
-      { $variable.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
     (
       unionType 
       { $variable.setType($unionType.type); }
@@ -2131,8 +2142,8 @@ variable returns [Variable variable]
         p3=parameters
         { $variable.addParameterList($p3.parameterList); }
       )+
-    //-> ^(VARIABLE FUNCTION_MODIFIER memberName parameters+)
     )
+    //-> ^(VARIABLE FUNCTION_MODIFIER memberName parameters+)
     ;
 
 impliedVariable returns [Variable variable]
