@@ -2123,6 +2123,7 @@ impliedVariable returns [Variable variable]
         SpecifierExpression se = new SpecifierExpression(null);
         Expression e = new Expression(null);
         BaseMemberExpression bme = new BaseMemberExpression(null);
+        bme.setTypeArguments( new InferredTypeArguments(null) );
         bme.setIdentifier($memberName.identifier);
         e.setTerm(bme);
         se.setExpression(e);
