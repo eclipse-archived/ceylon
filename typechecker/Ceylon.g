@@ -666,8 +666,10 @@ variance returns [TypeVariance typeVariance]
     ;
     
 typeConstraint returns [TypeConstraint typeConstraint]
-    : TYPE_CONSTRAINT
-      { $typeConstraint = new TypeConstraint($TYPE_CONSTRAINT); }
+    : compilerAnnotations
+      TYPE_CONSTRAINT
+      { $typeConstraint = new TypeConstraint($TYPE_CONSTRAINT); 
+        $typeConstraint.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
       typeName 
       { $typeConstraint.setIdentifier($typeName.identifier); }
       //(typeParameters)?
@@ -1070,18 +1072,31 @@ namedArguments returns [NamedArgumentList namedArgumentList]
         { $namedArgumentList.addNamedArgument($namedArgument.namedArgument); }
       )* 
       ( 
-        expressions
-        { SequencedArgument se = new SequencedArgument(null);
-          se.setExpressionList($expressions.expressionList);
-          $namedArgumentList.setSequencedArgument(se); }
+        sequencedArgument
+        { $namedArgumentList.setSequencedArgument($sequencedArgument.sequencedArgument); }
       )?
       RBRACE
     ;
 
+sequencedArgument returns [SequencedArgument sequencedArgument]
+    : compilerAnnotations
+      expressions
+      { sequencedArgument = new SequencedArgument(null);
+        sequencedArgument.setExpressionList($expressions.expressionList);
+        sequencedArgument.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
+    ;
+
 namedArgument returns [NamedArgument namedArgument]
-    : namedSpecifiedArgument
+    : compilerAnnotations 
+    ( 
+      namedSpecifiedArgument
       { $namedArgument = $namedSpecifiedArgument.specifiedArgument; }
-    | namedArgumentDeclaration
+    | 
+      namedArgumentDeclaration
+    )
+    { if ($namedArgument!=null) {
+          namedArgument.getCompilerAnnotations().addAll($compilerAnnotations.annotations); 
+    } }
     ;
 
 namedSpecifiedArgument returns [SpecifiedArgument specifiedArgument]
@@ -1104,8 +1119,8 @@ namedArgumentDeclaration returns [NamedArgument namedArgument]
 //to distinguish between a named argument
 //and a sequenced argument
 namedArgumentStart
-    : specificationStart 
-    | declarationStart
+    : compilerAnnotation* 
+      (specificationStart | declarationStart)
     ;
 
 //special rule for syntactic predicates
@@ -1252,7 +1267,10 @@ comparisonExpression returns [Term term]
           $term = $comparisonOperator.operator; }
         ee2=existenceEmptinessExpression
         { $comparisonOperator.operator.setRightTerm($ee2.term); }
-      //| ('is'|'extends'|'satisfies') type
+      | typeOperator
+        { $typeOperator.operator.setTerm($ee1.term); }
+        type
+        { $typeOperator.operator.setType($type.type); }
       )?
     ;
 
@@ -1269,6 +1287,15 @@ comparisonOperator returns [BinaryOperatorExpression operator]
       { $operator = new SmallerOp($SMALLER_OP); }
     | IN_OP
       { $operator = new InOp($IN_OP); }
+    ;
+
+typeOperator returns [TypeOperatorExpression operator]
+    : IS_OP
+      { $operator = new IsOp($IS_OP); }
+    | EXTENDS
+      { $operator = new Extends($EXTENDS); }
+    | SATISFIES
+      { $operator = new Satisfies($SATISFIES); }
     ;
 
 existenceEmptinessExpression returns [Term term]
@@ -1754,14 +1781,18 @@ isCondition returns [IsCondition condition]
         $condition.setType($t1.type);
         $condition.setVariable($impliedVariable.variable); }
     //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName)))))
-    | LPAREN i2=IS_OP t2=unionType (memberName specifier) RPAREN
-      { $condition = new IsCondition($i2); 
-        $condition.setType($t2.type);
+    | LPAREN i2=IS_OP 
+      { $condition = new IsCondition($i2); }
+      t2=unionType
+      { $condition.setType($t2.type);
         Variable v = new Variable(null);
-        v.setType(new SyntheticVariable(null));
-        v.setIdentifier($memberName.identifier);
-        v.setSpecifierExpression($specifier.specifierExpression);
+        v.setType($t2.type); 
         $condition.setVariable(v); }
+      memberName
+      { $condition.getVariable().setIdentifier($memberName.identifier); }
+      specifier
+      { $condition.getVariable().setSpecifierExpression($specifier.specifierExpression); }
+      RPAREN
     //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE unionType memberName specifier))
     ;
 
