@@ -469,15 +469,24 @@ extendedType returns [ExtendedType extendedType]
       (
         type
         { $extendedType.setType($type.type); }
-        pa1=positionalArguments
-        { InvocationExpression ie = new InvocationExpression(null);
-          ie.setPrimary( new ExtendedTypeExpression(null) );
-          ie.setPositionalArgumentList($pa1.positionalArgumentList);
-          $extendedType.setInvocationExpression(ie); }
         //-> ^(EXTENDED_TYPE[$EXTENDS] type ^(INVOCATION_EXPRESSION ^(EXTENDED_TYPE_EXPRESSION) positionalArguments))
-      | SUPER MEMBER_OP typeReference pa2=positionalArguments
+      | SUPER MEMBER_OP 
+        typeReference 
+        { QualifiedType qt=new QualifiedType(null);
+          SuperType st = new SuperType($SUPER);
+          qt.setOuterType(st);
+          qt.setIdentifier($typeReference.identifier);
+          qt.setTypeArgumentList($typeReference.typeArgumentList);
+          $extendedType.setType(qt); }
         //-> ^(EXTENDED_TYPE[$EXTENDS] ^(QUALIFIED_TYPE SUPER_TYPE[$SUPER] typeReference) ^(INVOCATION_EXPRESSION ^(EXTENDED_TYPE_EXPRESSION) positionalArguments))
       )
+      (
+        positionalArguments
+        { InvocationExpression ie = new InvocationExpression(null);
+          ie.setPrimary( new ExtendedTypeExpression(null) );
+          ie.setPositionalArgumentList($positionalArguments.positionalArgumentList);
+          $extendedType.setInvocationExpression(ie); }
+       )
     ;
 
 satisfiedTypes returns [SatisfiedTypes satisfiedTypes]
