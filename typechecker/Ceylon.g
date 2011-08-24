@@ -25,22 +25,6 @@ options {
         return compilationUnit;
     }
     
-        private boolean parseAsNamedArguments() {
-            //state.backtracking++;
-            int start = input.mark();
-            blockOrNamedArguments_return r=null;
-            try {
-            	r=blockOrNamedArguments(); // can never throw exception
-            } catch (RecognitionException re) {
-                System.err.println("impossible: "+re);
-            }
-            boolean success = !state.failed;
-            input.rewind(start);
-            //state.backtracking--;
-            state.failed=false;
-            return (success&&!r.foundStatement)
-            		|| (!success&&!r.foundStatement&&r.foundExpressionList);
-        }
 }
 
 @lexer::members {
@@ -493,8 +477,11 @@ classBody returns [ClassBody classBody]
 //finish parsing it
 memberBody[StaticType type] returns [Block block]
       //options { memoize=true; }
-    : {$type instanceof BaseType && parseAsNamedArguments()}?
-      namedArguments //first try to match with no directives or control structures
+    : 
+    {$type instanceof BaseType}? 
+    (
+      (namedArguments)
+      => namedArguments //first try to match with no directives or control structures
       { $block = new Block(null);
         SimpleType t = (SimpleType) $type;
         Return r = new Return(null);
@@ -512,59 +499,11 @@ memberBody[StaticType type] returns [Block block]
         r.setExpression(e);
         $block.addStatement(r); }
     //-> ^(BLOCK ^(RETURN ^(EXPRESSION ^(INVOCATION_EXPRESSION ^(BASE_TYPE_EXPRESSION { ((CommonTree)$mt).getChild(0) } { ((CommonTree)$mt).getChild(1) } ) namedArguments))))
-    | b=block //if there is a "return" directive or control structure, it must be a block
-      { $block=$b.block; }
-    ;
-
-blockOrNamedArguments returns [boolean foundStatement, boolean foundExpressionList]
-    : LBRACE 
-      argumentsOrStatements
-      { $foundStatement=$argumentsOrStatements.foundStatement; 
-        $foundExpressionList=$argumentsOrStatements.foundExpressionList; }
-      RBRACE
-    ;
-    
-argumentsOrStatements returns [boolean foundStatement, boolean foundExpressionList]
-    @init { $foundStatement=false; 
-            $foundExpressionList=false; }
-    : compilerAnnotations 
-    (
-      (annotatedDeclarationStart) 
-      => declaration //TODO: some declarations not allowd in named arg lists!
-      ( 
-        as1=argumentsOrStatements
-        { $foundStatement=$as1.foundStatement; 
-          $foundExpressionList=$as1.foundExpressionList; }
-      )?
-    | (
-        ( 
-          controlStatement { $foundStatement=true; } 
-        | directiveStatement { $foundStatement=true; } 
-        ) 
-        (
-          as2=argumentsOrStatements
-          { $foundExpressionList=$as2.foundExpressionList; }
-        )?
-      | specificationStatement
-        (
-          as3=argumentsOrStatements
-          { $foundStatement=$as3.foundStatement; 
-            $foundExpressionList=$as3.foundExpressionList; }
-        )?
-      | expression 
-        (
-          SEMICOLON 
-          { $foundStatement=true; } 
-          (
-            as4=argumentsOrStatements
-            { $foundExpressionList=$as4.foundExpressionList; }
-          )?
-      //-> ^(EXPRESSION_STATEMENT expression) brokenMemberBody?
-        | ( COMMA {$foundExpressionList=true;} expression )* 
-      //-> ^(EXPRESSION_LIST expression+)
-        )
-      )
+      | b1=block //if there is a "return" directive or control structure, it must be a block
+      { $block=$b1.block; } 
     )
+    | b2=block
+      { $block=$b2.block; }
     ;
 
 extendedType returns [ExtendedType extendedType]
@@ -913,7 +852,11 @@ expressionStatement returns [ExpressionStatement expressionStatement]
     : expression 
       { $expressionStatement = new ExpressionStatement(null); 
         $expressionStatement.setExpression($expression.expression); } 
-      ';'
+      (
+        SEMICOLON
+      | { displayRecognitionError(getTokenNames(), new MismatchedTokenException(SEMICOLON, input)); }
+        COMMA
+      )
     ;
 directiveStatement returns [Directive directive]
     : d=directive 
