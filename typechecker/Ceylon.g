@@ -184,7 +184,7 @@ voidOrInferredMethodDeclaration returns [AnyMethod declaration]
         parameters
         { def.addParameterList($parameters.parameterList); 
           dec.addParameterList($parameters.parameterList); }
-      )+
+      )*
       //metatypes? 
       (
         typeConstraints
@@ -377,9 +377,11 @@ classDeclaration returns [AnyClass declaration]
         { def.setTypeParameterList($typeParameters.typeParameterList); 
           dec.setTypeParameterList($typeParameters.typeParameterList); }
       )?
-      parameters
-      { def.setParameterList($parameters.parameterList); 
-        dec.setParameterList($parameters.parameterList); }
+      (
+        parameters
+        { def.setParameterList($parameters.parameterList); 
+          dec.setParameterList($parameters.parameterList); }
+      )?
       (
         caseTypes
         { def.setCaseTypes($caseTypes.caseTypes); 
