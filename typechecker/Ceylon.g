@@ -854,7 +854,8 @@ expressionStatement returns [ExpressionStatement expressionStatement]
         $expressionStatement.setExpression($expression.expression); } 
       (
         SEMICOLON
-      | { displayRecognitionError(getTokenNames(), new MismatchedTokenException(SEMICOLON, input)); }
+      | { displayRecognitionError(getTokenNames(), 
+              new MismatchedTokenException(SEMICOLON, input)); }
         COMMA
       )
     ;
