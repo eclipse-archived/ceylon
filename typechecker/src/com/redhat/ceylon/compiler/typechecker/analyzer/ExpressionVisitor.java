@@ -229,8 +229,9 @@ public class ExpressionVisitor extends AbstractVisitor {
     }
 
     private void checkReified(Node that, ProducedType type) {
-        TypeDeclaration dec = type.getDeclaration();
-        if (type!=null && (isGeneric(dec) || dec instanceof TypeParameter) ) {
+        if (type!=null && 
+        		(isGeneric(type.getDeclaration()) || 
+        				type.getDeclaration() instanceof TypeParameter) ) {
             that.addWarning("generic types in assignability conditions not yet supported (until we implement reified generics)");
         }
     }
