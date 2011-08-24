@@ -1759,7 +1759,8 @@ controlStatement returns [ControlStatement controlStatement]
       { $controlStatement=$switchCaseElse.statement; }
     | whileLoop 
       { $controlStatement=$whileLoop.statement; }
-    //| forFail 
+    | forElse 
+      { $controlStatement=$forElse.statement; }
     | tryCatchFinally
       { $controlStatement=$tryCatchFinally.statement; }
     ;
@@ -1884,33 +1885,65 @@ satisfiesCaseCondition returns [SatisfiesCase item]
     //-> ^(SATISFIES_CASE[$SATISFIES] type)
     ;
 
-/*forFail
-    : forBlock failBlock?
+forElse returns [ForStatement statement]
+    : { $statement=new ForStatement(null); }
+      forBlock 
+      { $statement.setForClause($forBlock.clause); }
+      (
+        failBlock
+        { $statement.setElseClause($failBlock.clause); }
+      )?
     //-> ^(FOR_STATEMENT forBlock failBlock?)
     ;
 
-forBlock
-    : FOR_CLAUSE RPAREN forIterator LPAREN block
+forBlock returns [ForClause clause]
+    : FOR_CLAUSE 
+      { $clause = new ForClause($FOR_CLAUSE); }
+      LPAREN 
+      forIterator 
+      { $clause.setForIterator($forIterator.iterator); }
+      RPAREN 
+      block
+      { $clause.setBlock($block.block); }
     ;
 
-failBlock
-    : ELSE_CLAUSE block
+failBlock returns [ElseClause clause]
+    : ELSE_CLAUSE 
+      { $clause = new ElseClause($ELSE_CLAUSE); }
+      block
+      { $clause.setBlock($block.block); }
     ;
 
-forIterator
-    : v=variable
+forIterator returns [ForIterator iterator]
+    @init { ValueIterator vi=null;
+            KeyValueIterator kvi = null; }
+    : v1=variable
     (
-      containment
-      //-> ^(VALUE_ITERATOR $v containment)
-      | ENTRY_OP vv=variable containment
-      //-> ^(KEY_VALUE_ITERATOR $v $vv containment)
+      { vi = new ValueIterator(null);
+        vi.setVariable($v1.variable);
+        $iterator = vi; }
+      c1=containment
+      { vi.setSpecifierExpression($c1.specifierExpression); }
+      //-> ^(VALUE_ITERATOR $v1 containment)
+    | ENTRY_OP
+      { kvi = new KeyValueIterator($ENTRY_OP);
+        kvi.setKeyVariable($v1.variable);
+        $iterator = kvi; }
+      v2=variable
+      { kvi.setValueVariable($v2.variable); }
+      c2=containment
+      {  kvi.setSpecifierExpression($c2.specifierExpression); }
+      //-> ^(KEY_VALUE_ITERATOR $v1 $v2 containment)
     )
     ;
     
-containment
-    : IN_OP expression
+containment returns [SpecifierExpression specifierExpression]
+    : IN_OP 
+      { $specifierExpression = new SpecifierExpression($IN_OP); }
+      expression
+      { $specifierExpression.setExpression($expression.expression); }
     //-> ^(SPECIFIER_EXPRESSION expression)
-    ;*/
+    ;
     
 whileLoop returns [WhileStatement statement]
     : { $statement = new WhileStatement(null); }
