@@ -4,8 +4,9 @@ options {
     memoize=false;
 }
 
-@parser::header { package com.redhat.ceylon.compiler.typechecker.parser; import static com.redhat.ceylon.compiler.typechecker.tree.Tree.*; }
-@lexer::header { package com.redhat.ceylon.compiler.typechecker.parser; import static com.redhat.ceylon.compiler.typechecker.tree.Tree.*; }
+@parser::header { package com.redhat.ceylon.compiler.typechecker.parser; 
+                  import static com.redhat.ceylon.compiler.typechecker.tree.CustomTree.*; }
+@lexer::header { package com.redhat.ceylon.compiler.typechecker.parser; }
 
 @members {
     private java.util.List<ParseError> errors 
