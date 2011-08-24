@@ -208,7 +208,8 @@ voidOrInferredMethodDeclaration returns [AnyMethod declaration]
 
 setterDeclaration returns [AttributeSetterDefinition declaration]
     : ASSIGN 
-      { $declaration = new AttributeSetterDefinition($ASSIGN); }
+      { $declaration = new AttributeSetterDefinition($ASSIGN); 
+        $declaration.setType( new VoidModifier(null) ); }
       memberName 
       { $declaration.setIdentifier($memberName.identifier); }
       block
@@ -570,28 +571,44 @@ parametersStart
 // enforce the rule that the ... appears at the end of the parapmeter
 // list in a later pass of the compiler.
 parameter returns [Parameter parameter]
-    : compilerAnnotations
-      { $parameter = new ValueParameterDeclaration(null); }
-      parameterType
-      { $parameter.setType($parameterType.type); }
+    @init { ValueParameterDeclaration vp = new ValueParameterDeclaration(null); 
+            FunctionalParameterDeclaration fp = new FunctionalParameterDeclaration(null); 
+            $parameter = vp; }
+    : parameterType
+      { vp.setType($parameterType.type); }
+      { fp.setType($parameterType.type); }
       memberName
-      { $parameter.setIdentifier($memberName.identifier); }
+      { vp.setIdentifier($memberName.identifier); }
+      { fp.setIdentifier($memberName.identifier); }
       (
-          valueParameter? specifier?
+        (
+          valueParameter
+        )?
         //-> ^(VALUE_PARAMETER_DECLARATION parameterType memberName specifier?)
-        |  parameters+ specifier? //for callable parameters
+      |
+        (
+          parameters
+          { fp.addParameterList($parameters.parameterList); }
+        )+
+        { $parameter=fp; }
+          //for callable parameters
         //-> ^(FUNCTIONAL_PARAMETER_DECLARATION parameterType memberName parameters+ specifier?)
       )
-      { if ($parameter!=null) {
-        $parameter.getCompilerAnnotations().addAll($compilerAnnotations.annotations);
-      } }
+      (
+        specifier
+        { $parameter.setSpecifierExpression($specifier.specifierExpression); }
+      )?
     ;
 
 parameterDeclaration returns [Parameter parameter]
-    : annotations 
+    : compilerAnnotations
+      annotations 
       p=parameter
       { $parameter=$p.parameter;
         $parameter.setAnnotationList($annotations.annotationList); }
+      { if ($parameter!=null) {
+        $parameter.getCompilerAnnotations().addAll($compilerAnnotations.annotations);
+      } }
     ;
 
 valueParameter
@@ -1064,7 +1081,7 @@ namedArguments returns [NamedArgumentList namedArgumentList]
 namedArgument returns [NamedArgument namedArgument]
     : namedSpecifiedArgument
       { $namedArgument = $namedSpecifiedArgument.specifiedArgument; }
-    //| namedArgumentDeclaration
+    | namedArgumentDeclaration
     ;
 
 namedSpecifiedArgument returns [SpecifiedArgument specifiedArgument]
@@ -1076,12 +1093,19 @@ namedSpecifiedArgument returns [SpecifiedArgument specifiedArgument]
     SEMICOLON
     ;
 
+namedArgumentDeclaration returns [NamedArgument namedArgument]
+    : objectDeclaration
+    | typedMethodOrAttributeDeclaration
+    | voidOrInferredMethodDeclaration
+    | inferredAttributeDeclaration
+    ;
+
 //special rule for syntactic predicate
 //to distinguish between a named argument
 //and a sequenced argument
 namedArgumentStart
     : specificationStart 
-    //| declarationStart
+    | declarationStart
     ;
 
 //special rule for syntactic predicates
