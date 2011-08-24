@@ -1543,6 +1543,7 @@ abbreviatedType returns [StaticType type]
           bt.setIdentifier( new Identifier(tok) );
           TypeArgumentList tal = new TypeArgumentList(null);
           tal.addType($type);
+          bt.setTypeArgumentList(tal);
           ot.addStaticType(bt);
           $type=ot; }
       )*
