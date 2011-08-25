@@ -1002,7 +1002,6 @@ qualifiedMemberReference returns [Identifier identifier, MemberOperator operator
       |
         { $identifier = new Identifier($operator.getToken());
           $identifier.setText("");
-          $typeArgumentList = $memberReference.typeArgumentList;
           displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(LIDENTIFIER, input)); }
       )
