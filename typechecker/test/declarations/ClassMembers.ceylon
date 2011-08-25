@@ -46,7 +46,7 @@ abstract class Classes() {
     MemberClass();
         
     printLine(MemberClass().goodbye);
-    @error MemberClass().goodbye = "Foo";
+    @error MemberClass().goodbye = @error "Foo";
     @error MemberClass().goodbye := "Foo";
     @error MemberClass().times := "Foo";
     MemberClass().times := 5;
