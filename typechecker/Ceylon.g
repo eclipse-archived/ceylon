@@ -154,7 +154,9 @@ objectDeclaration returns [ObjectDefinition declaration]
       (
         classBody
         { $declaration.setClassBody($classBody.classBody); }
-      | SEMICOLON
+      | { displayRecognitionError(getTokenNames(), 
+              new MismatchedTokenException(LBRACE, input)); }
+        SEMICOLON
       )
     //-> ^(OBJECT_DEFINITION VALUE_MODIFIER memberName extendedType? satisfiedTypes? classBody?) 
     ;
@@ -206,8 +208,8 @@ voidOrInferredMethodDeclaration returns [AnyMethod declaration]
           specifier
           { dec.setSpecifierExpression($specifier.specifierExpression); }
         )?
-        SEMICOLON
         { $declaration = dec; }
+        SEMICOLON
       //-> ^(METHOD_DECLARATION VOID_MODIFIER memberName methodParameters? specifier?)   
       )
     ;
@@ -221,7 +223,9 @@ setterDeclaration returns [AttributeSetterDefinition declaration]
       ( 
         block
         { $declaration.setBlock($block.block); }
-      | SEMICOLON
+      | { displayRecognitionError(getTokenNames(), 
+              new MismatchedTokenException(LBRACE, input)); }
+        SEMICOLON
       )
     //-> ^(ATTRIBUTE_SETTER_DEFINITION[$ASSIGN] VOID_MODIFIER memberName block)
     ;
@@ -247,8 +251,8 @@ inferredAttributeDeclaration returns [AnyAttribute declaration]
           initializer
           { dec.setSpecifierOrInitializerExpression($initializer.initializerExpression); }
         )?
-        SEMICOLON
         { $declaration = dec; }
+        SEMICOLON
         //-> ^(ATTRIBUTE_DECLARATION VALUE_MODIFIER memberName specifier? initializer?)
       | block
         { def.setBlock($block.block); }
@@ -300,8 +304,8 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
             ms=specifier
            { mdec.setSpecifierExpression($ms.specifierExpression); }
           )?
-          SEMICOLON
           { $declaration = mdec; }
+          SEMICOLON
         //-> ^(METHOD_DECLARATION unionType memberName methodParameters specifier?)
         )
       | 
@@ -312,8 +316,8 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
           initializer
           { adec.setSpecifierOrInitializerExpression($initializer.initializerExpression); }
         )?
-        SEMICOLON
         { $declaration = adec; }
+        SEMICOLON
       //-> ^(ATTRIBUTE_DECLARATION unionType memberName specifier? initializer?)
       | ab=memberBody[$unionType.type]
         { adef.setBlock($ab.block); }
@@ -365,8 +369,8 @@ interfaceDeclaration returns [AnyInterface declaration]
           typeSpecifier
           { dec.setTypeSpecifier($typeSpecifier.typeSpecifier); }
         )? 
-        SEMICOLON
         { $declaration = dec; }
+        SEMICOLON
       //-> ^(INTERFACE_DECLARATION[$INTERFACE_DEFINITION] typeName interfaceParameters? typeSpecifier?)
       )
     ;
@@ -421,8 +425,8 @@ classDeclaration returns [AnyClass declaration]
           typeSpecifier
           { dec.setTypeSpecifier($typeSpecifier.typeSpecifier); }
         )?
-        SEMICOLON
         { $declaration = dec; }
+        SEMICOLON
       //-> ^(CLASS_DECLARATION[$CLASS_DEFINITION] typeName classParameters? typeSpecifier?)
       )
     ;
@@ -1004,9 +1008,17 @@ primary returns [Primary primary]
 qualifiedMemberReference returns [Identifier identifier, MemberOperator operator, TypeArgumentList typeArgumentList]
     : memberSelectionOperator 
       { $operator = $memberSelectionOperator.operator; }
-      memberReference
-      { $identifier = $memberReference.identifier;
-        $typeArgumentList = $memberReference.typeArgumentList; }
+      ( 
+        memberReference
+        { $identifier = $memberReference.identifier;
+          $typeArgumentList = $memberReference.typeArgumentList; }
+      |
+        { $identifier = new Identifier($operator.getToken());
+          $identifier.setText("");
+          $typeArgumentList = $memberReference.typeArgumentList;
+          displayRecognitionError(getTokenNames(), 
+              new MismatchedTokenException(LIDENTIFIER, input)); }
+      )
     ;
 
 qualifiedTypeReference returns [Identifier identifier, MemberOperator operator, TypeArgumentList typeArgumentList]
@@ -1163,7 +1175,7 @@ namedSpecifiedArgument returns [SpecifiedArgument specifiedArgument]
         $specifiedArgument.setIdentifier($memberName.identifier); }
       specifier 
       { $specifiedArgument.setSpecifierExpression($specifier.specifierExpression); }
-    SEMICOLON
+      SEMICOLON
     ;
 
 namedArgumentDeclaration returns [NamedArgument namedArgument]
