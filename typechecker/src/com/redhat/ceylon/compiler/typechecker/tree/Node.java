@@ -22,7 +22,6 @@ public abstract class Node {
     private Unit unit;
     private List<Message> errors = new ArrayList<Message>();
     private List<Node> children = new ArrayList<Node>();
-    private Node parent;
     
     protected Node(Token token) {
         this.token = token;
@@ -75,21 +74,7 @@ public abstract class Node {
     public Token getToken() {
     	Token ct = getFirstChildToken();
     	if (ct!=null) return ct;
-    	Token pt = getParentToken();
-    	if (pt!=null) return pt;
     	return null;
-    }
-    
-    private Token getParentToken() {
-    	if (token!=null) {
-    		return token;
-    	}
-    	else if (parent!=null) {
-    		return parent.getParentToken();
-    	}
-    	else {
-    		return null;
-    	}
     }
     
     private Token getFirstChildToken() {
@@ -171,7 +156,6 @@ public abstract class Node {
 	public void connect(Node child) {
 		if (child!=null) {
 			children.add(child);
-			child.parent=this;
 		}
 	}
 
