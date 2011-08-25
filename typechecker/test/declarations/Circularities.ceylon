@@ -25,3 +25,13 @@ void testMemberResolutionOnCircular() {
     o.noop();
     CA ca = o;
 }
+
+interface CircularConstraints<P,Q,R>
+        given P satisfies Q
+        given Q satisfies R
+        given R satisfies P {}
+
+class Good1WithCircularConstraints() satisfies CircularConstraints<String,String,String> {}
+class Good2WithCircularConstraints() satisfies CircularConstraints<Object,Object,Object> {}
+@error class Bad1WithCircularConstraints() satisfies CircularConstraints<Object,Object,String> {}
+@error class Bad2WithCircularConstraints() satisfies CircularConstraints<String,String,Object> {}
