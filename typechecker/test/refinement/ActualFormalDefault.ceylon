@@ -19,7 +19,7 @@ abstract class BadFormal() {
     @error shared formal interface I1 {}
     @error shared formal interface I2;
     @error shared formal object o1 {}
-    @error shared formal object o2;
+    //@error shared formal object o2;
 }
 
 class Actual() extends Formal() {
