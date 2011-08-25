@@ -107,8 +107,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
     protected void out(Node that, String message) {
         System.err.println(
             message + " at " + 
-            that.getToken().getLine() + ":" +
-            that.getToken().getCharPositionInLine() + " of " +
+            that.getLocation() + " of " +
             that.getUnit().getFilename());
     }
 
@@ -135,8 +134,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         System.err.println(
             "unexpected error encountered [" +
             err.getMessage() + "] at " + 
-            err.getTreeNode().getToken().getLine() + ":" +
-            err.getTreeNode().getToken().getCharPositionInLine() + " of " +
+            err.getTreeNode().getLocation() + " of " +
             err.getTreeNode().getUnit().getFilename());
     }
 
@@ -145,8 +143,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         System.err.println(
             "error encountered [" +
             err.getMessage() + "] at " + 
-            err.getTreeNode().getToken().getLine() + ":" +
-            err.getTreeNode().getToken().getCharPositionInLine() + " of " +
+            err.getTreeNode().getLocation() + " of " +
             err.getTreeNode().getUnit().getFilename());
     }
 
@@ -155,8 +152,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         System.out.println(
             "warning encountered [" +
             err.getMessage() + "] at " + 
-            err.getTreeNode().getToken().getLine() + ":" +
-            err.getTreeNode().getToken().getCharPositionInLine() + " of " +
+            err.getTreeNode().getLocation() + " of " +
             err.getTreeNode().getUnit().getFilename());
     }
 

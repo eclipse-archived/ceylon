@@ -77,6 +77,17 @@ public abstract class Node {
     	return null;
     }
     
+    public String getLocation() {
+    	Token token = getToken();
+		if (token==null) {
+    		return "unknown location";
+    	}
+    	else {
+    		return token.getLine() + ":" + 
+    				token.getCharPositionInLine();
+    	}
+    }
+    
     private Token getFirstChildToken() {
     	if (token!=null) {
     		return token;
