@@ -18,7 +18,12 @@ public abstract class TypedDeclaration extends Declaration {
     ProducedType type;
 
     public TypeDeclaration getTypeDeclaration() {
-        return type.getDeclaration();
+    	if (type==null) {
+    	    return null;
+    	}
+    	else {
+            return type.getDeclaration();
+    	}
     }
 
     public ProducedType getType() {
