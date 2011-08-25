@@ -84,7 +84,8 @@ public class Util {
     }
     
     static boolean isNameMatching(String startingWith, Declaration d) {
-    	return d.getName()!=null && d.getName().startsWith(startingWith);
+    	return d.getName()!=null && 
+    		d.getName().toLowerCase().startsWith(startingWith.toLowerCase());
     }
     
     /**
