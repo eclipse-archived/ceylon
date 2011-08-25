@@ -957,24 +957,19 @@ primary returns [Primary primary]
     : base
       { $primary=$base.primary; }
     (          
-        qualifiedMemberReference
-      { QualifiedMemberExpression bme = new QualifiedMemberExpression(null);
-        bme.setPrimary($primary);
-        bme.setMemberOperator($qualifiedMemberReference.operator);
-        bme.setIdentifier($qualifiedMemberReference.identifier);
-        bme.setTypeArguments( new InferredTypeArguments(null) );
-        if ($qualifiedMemberReference.typeArgumentList!=null)
-            bme.setTypeArguments($qualifiedMemberReference.typeArgumentList);
-        $primary=bme; }
-      | qualifiedTypeReference
-      { QualifiedTypeExpression bte = new QualifiedTypeExpression(null);
-        bte.setPrimary($primary);
-        bte.setMemberOperator($qualifiedTypeReference.operator);
-        bte.setIdentifier($qualifiedTypeReference.identifier);
-        bte.setTypeArguments( new InferredTypeArguments(null) );
-        if ($qualifiedTypeReference.typeArgumentList!=null)
-            bte.setTypeArguments($qualifiedTypeReference.typeArgumentList);
-        $primary=bte; }
+        qualifiedReference
+      { QualifiedMemberOrTypeExpression qe;
+        if ($qualifiedReference.isMember)
+            qe = new QualifiedMemberExpression(null);
+        else
+            qe = new QualifiedTypeExpression(null);
+        qe.setPrimary($primary);
+        qe.setMemberOperator($qualifiedReference.operator);
+        qe.setIdentifier($qualifiedReference.identifier);
+        qe.setTypeArguments( new InferredTypeArguments(null) );
+        if ($qualifiedReference.typeArgumentList!=null)
+            qe.setTypeArguments($qualifiedReference.typeArgumentList);
+        $primary=qe; }
       | indexExpression
         { IndexExpression xe = new IndexExpression(null);
           xe.setPrimary($primary);
@@ -992,27 +987,25 @@ primary returns [Primary primary]
     )*
     ;
    
-qualifiedMemberReference returns [Identifier identifier, MemberOperator operator, TypeArgumentList typeArgumentList]
+qualifiedReference returns [Identifier identifier, MemberOperator operator, 
+                            TypeArgumentList typeArgumentList, boolean isMember]
     : memberSelectionOperator 
-      { $operator = $memberSelectionOperator.operator; }
+      { $operator = $memberSelectionOperator.operator;
+        $identifier = new Identifier($operator.getToken());
+        $identifier.setText("");
+        $isMember=true; }
       ( 
         memberReference
         { $identifier = $memberReference.identifier;
           $typeArgumentList = $memberReference.typeArgumentList; }
+      | typeReference
+        { $identifier = $typeReference.identifier;
+          $typeArgumentList = $typeReference.typeArgumentList; 
+          $isMember=false; }
       |
-        { $identifier = new Identifier($operator.getToken());
-          $identifier.setText("");
-          displayRecognitionError(getTokenNames(), 
+        { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(LIDENTIFIER, input)); }
       )
-    ;
-
-qualifiedTypeReference returns [Identifier identifier, MemberOperator operator, TypeArgumentList typeArgumentList]
-    : memberSelectionOperator 
-      { $operator = $memberSelectionOperator.operator; }
-      typeReference
-      { $identifier = $typeReference.identifier;
-        $typeArgumentList = $typeReference.typeArgumentList; }
     ;
 
 indexExpression returns [IndexOperator operator, ElementOrRange elementOrRange]
