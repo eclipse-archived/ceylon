@@ -326,9 +326,9 @@ public class DeclarationVisitor extends Visitor {
 
     @Override
     public void visit(Tree.ObjectDefinition that) {
-        if (that.getClassBody()==null) {
+        /*if (that.getClassBody()==null) {
             that.addError("missing object body");
-        }
+        }*/
         Class c = new Class();
         visitDeclaration(that, c);
         Value v = new Value();
@@ -343,9 +343,9 @@ public class DeclarationVisitor extends Visitor {
 
     @Override
     public void visit(Tree.ObjectArgument that) {
-        if (that.getClassBody()==null) {
+        /*if (that.getClassBody()==null) {
             that.addError("missing named argument body");
-        }
+        }*/
         Class c = new Class();
         visitArgument(that, c);
         Value v = new Value();
