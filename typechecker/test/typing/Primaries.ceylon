@@ -1,4 +1,3 @@
-@error;
 class Primaries() {
     
     class C() extends IdentifiableObject() {}
@@ -49,8 +48,8 @@ class Primaries() {
     
     @type["Primaries.A"] value p15 = this.A();
     
-    @error A().this;
-    @error A().super;
+    //A().this;
+    //A().super;
     
     @type["Primaries.A"] value p16 = Primaries().A();
     
