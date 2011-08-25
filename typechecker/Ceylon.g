@@ -277,17 +277,16 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
         mdef.setIdentifier($memberName.identifier);
         mdec.setIdentifier($memberName.identifier); }
       ( 
+        { $declaration = mdef; }
         (
           typeParameters
           { mdef.setTypeParameterList($typeParameters.typeParameterList);
-            mdec.setTypeParameterList($typeParameters.typeParameterList); 
-            $declaration = mdef; }
+            mdec.setTypeParameterList($typeParameters.typeParameterList); }
         )?
         (
           parameters
           { mdef.addParameterList($parameters.parameterList);
-            mdec.addParameterList($parameters.parameterList); 
-            $declaration = mdef; }
+            mdec.addParameterList($parameters.parameterList); }
         )+
         //metatypes? 
         ( 
@@ -1152,6 +1151,7 @@ namedArgument returns [NamedArgument namedArgument]
       { $namedArgument = $namedSpecifiedArgument.specifiedArgument; }
     | 
       namedArgumentDeclaration
+      { $namedArgument = $namedArgumentDeclaration.declaration; }
     )
     { if ($namedArgument!=null)
           namedArgument.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
@@ -1166,11 +1166,94 @@ namedSpecifiedArgument returns [SpecifiedArgument specifiedArgument]
       SEMICOLON
     ;
 
-namedArgumentDeclaration returns [NamedArgument namedArgument]
-    : objectDeclaration
-    | typedMethodOrAttributeDeclaration
-    | voidOrInferredMethodDeclaration
-    | inferredAttributeDeclaration
+objectArgument returns [ObjectArgument declaration]
+    : OBJECT_DEFINITION 
+      { $declaration = new ObjectArgument($OBJECT_DEFINITION); 
+        $declaration.setType(new ValueModifier(null)); }
+      memberName
+      { $declaration.setIdentifier($memberName.identifier); }
+      ( 
+        extendedType
+        { $declaration.setExtendedType($extendedType.extendedType); } 
+      )?
+      ( 
+        satisfiedTypes
+        { $declaration.setSatisfiedTypes($satisfiedTypes.satisfiedTypes); } 
+      )?
+      (
+        classBody
+        { $declaration.setClassBody($classBody.classBody); }
+      | { displayRecognitionError(getTokenNames(), 
+              new MismatchedTokenException(LBRACE, input)); }
+        SEMICOLON
+      )
+    //-> ^(OBJECT_ARGUMENT[$OBJECT_DEFINITION] VALUE_MODIFIER memberName extendedType? satisfiedTypes? classBody?)
+    ;
+
+voidOrInferredMethodArgument returns [MethodArgument declaration]
+    : { $declaration=new MethodArgument(null); }
+      (
+        VOID_MODIFIER
+      { $declaration.setType(new VoidModifier($VOID_MODIFIER)); }
+      |
+        FUNCTION_MODIFIER
+      { $declaration.setType(new FunctionModifier($FUNCTION_MODIFIER)); }
+      ) 
+      memberName 
+      { $declaration.setIdentifier($memberName.identifier); }
+      (
+        parameters
+        { $declaration.addParameterList($parameters.parameterList); }
+      )*
+      block
+      { $declaration.setBlock($block.block); }
+    //-> ^(METHOD_ARGUMENT VOID_MODIFIER memberName parameters* block)
+    ;
+
+inferredGetterArgument returns [AttributeArgument declaration]
+    : { $declaration=new AttributeArgument(null); }
+      VALUE_MODIFIER 
+      { $declaration.setType(new ValueModifier($VALUE_MODIFIER)); }
+      memberName 
+      { $declaration.setIdentifier($memberName.identifier); }
+      block
+      { $declaration.setBlock($block.block); }
+      //-> ^(ATTRIBUTE_ARGUMENT VALUE_MODIFIER memberName block)      
+    ;
+
+typedMethodOrGetterArgument returns [TypedArgument declaration]
+    @init { MethodArgument marg = new MethodArgument(null);
+            AttributeArgument aarg = new AttributeArgument(null); 
+            $declaration=aarg; }
+    : unionType 
+      { marg.setType($unionType.type);
+        aarg.setType($unionType.type); }
+      memberName
+      { marg.setIdentifier($memberName.identifier);
+        aarg.setIdentifier($memberName.identifier); }
+      ( 
+        { $declaration = marg; }
+        (
+          parameters
+          { marg.addParameterList($parameters.parameterList); }
+        )+
+      )?
+      memberBody[$unionType.type]
+      { marg.setBlock($memberBody.block); 
+        aarg.setBlock($memberBody.block); }
+      //-> ^(METHOD_ARGUMENT unionType memberName parameters+ memberBody)
+      //-> ^(ATTRIBUTE_ARGUMENT unionType memberName memberBody)      
+    ;
+
+namedArgumentDeclaration returns [NamedArgument declaration]
+    : objectArgument
+      { $declaration=$objectArgument.declaration; }
+    | typedMethodOrGetterArgument
+      { $declaration=$typedMethodOrGetterArgument.declaration; }
+    | voidOrInferredMethodArgument
+      { $declaration=$voidOrInferredMethodArgument.declaration; }
+    | inferredGetterArgument
+      { $declaration=$inferredGetterArgument.declaration; }
     ;
 
 //special rule for syntactic predicate
