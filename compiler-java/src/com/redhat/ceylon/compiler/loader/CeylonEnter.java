@@ -242,8 +242,8 @@ public class CeylonEnter extends Enter {
             this.cpu = cpu;
         }
         protected int getPosition(Node node) {
-            int pos = cpu.getLineMap().getStartPosition(node.getAntlrTreeNode().getLine())
-            + node.getAntlrTreeNode().getCharPositionInLine();
+            int pos = cpu.getLineMap().getStartPosition(node.getToken().getLine())
+            + node.getToken().getCharPositionInLine();
             log.useSource(cpu.getFileObject());
             return pos;
         }

@@ -161,10 +161,10 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     // FIXME: I'm pretty sure sugar is not supposed to be in there
     public JCExpression transform(Tree.NotEqualOp op) {
-        Tree.EqualOp newOp = new Tree.EqualOp(op.getAntlrTreeNode());
+        Tree.EqualOp newOp = new Tree.EqualOp(op.getToken());
         newOp.setLeftTerm(op.getLeftTerm());
         newOp.setRightTerm(op.getRightTerm());
-        Tree.NotOp newNotOp = new Tree.NotOp(op.getAntlrTreeNode());
+        Tree.NotOp newNotOp = new Tree.NotOp(op.getToken());
         newNotOp.setTerm(newOp);
         return transform(newNotOp);
     }
@@ -276,15 +276,15 @@ public class ExpressionTransformer extends AbstractTransformer {
         // desugar it
         Tree.BinaryOperatorExpression newOp;
         if(op instanceof Tree.AddAssignOp)
-            newOp = new Tree.SumOp(op.getAntlrTreeNode());
+            newOp = new Tree.SumOp(op.getToken());
         else if(op instanceof Tree.SubtractAssignOp)
-            newOp = new Tree.DifferenceOp(op.getAntlrTreeNode());
+            newOp = new Tree.DifferenceOp(op.getToken());
         else if(op instanceof Tree.MultiplyAssignOp)
-            newOp = new Tree.ProductOp(op.getAntlrTreeNode());
+            newOp = new Tree.ProductOp(op.getToken());
         else if(op instanceof Tree.DivideAssignOp)
-            newOp = new Tree.QuotientOp(op.getAntlrTreeNode());
+            newOp = new Tree.QuotientOp(op.getToken());
         else if(op instanceof Tree.RemainderAssignOp)
-            newOp = new Tree.RemainderOp(op.getAntlrTreeNode());
+            newOp = new Tree.RemainderOp(op.getToken());
         else
             throw new RuntimeException("Unsupported operator: "+op);
         return desugarAssignmentOp(op, newOp);
@@ -294,13 +294,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         // desugar it
         Tree.BinaryOperatorExpression newOp;
         if(op instanceof Tree.ComplementAssignOp)
-            newOp = new Tree.ComplementOp(op.getAntlrTreeNode());
+            newOp = new Tree.ComplementOp(op.getToken());
         else if(op instanceof Tree.UnionAssignOp)
-            newOp = new Tree.UnionOp(op.getAntlrTreeNode());
+            newOp = new Tree.UnionOp(op.getToken());
         else if(op instanceof Tree.XorAssignOp)
-            newOp = new Tree.XorOp(op.getAntlrTreeNode());
+            newOp = new Tree.XorOp(op.getToken());
         else if(op instanceof Tree.IntersectAssignOp)
-            newOp = new Tree.IntersectionOp(op.getAntlrTreeNode());
+            newOp = new Tree.IntersectionOp(op.getToken());
         else
             throw new RuntimeException("Unsupported operator: "+op);
         return desugarAssignmentOp(op, newOp);
@@ -310,9 +310,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         // desugar it
         Tree.BinaryOperatorExpression newOp;
         if(op instanceof Tree.AndAssignOp)
-            newOp = new Tree.AndOp(op.getAntlrTreeNode());
+            newOp = new Tree.AndOp(op.getToken());
         else if(op instanceof Tree.OrAssignOp)
-            newOp = new Tree.OrOp(op.getAntlrTreeNode());
+            newOp = new Tree.OrOp(op.getToken());
         else
             throw new RuntimeException("Unsupported operator: "+op);
         return desugarAssignmentOp(op, newOp);
@@ -323,7 +323,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         newOp.setLeftTerm(op.getLeftTerm());
         newOp.setRightTerm(op.getRightTerm());
         
-        AssignOp assignOp = new Tree.AssignOp(op.getAntlrTreeNode());
+        AssignOp assignOp = new Tree.AssignOp(op.getToken());
         assignOp.setLeftTerm(op.getLeftTerm());
         assignOp.setRightTerm(newOp);
         assignOp.setTypeModel(op.getTypeModel());

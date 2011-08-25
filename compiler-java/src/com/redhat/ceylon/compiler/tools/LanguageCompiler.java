@@ -49,8 +49,8 @@ import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
 import com.redhat.ceylon.compiler.typechecker.parser.LexError;
 import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
 import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
-import com.redhat.ceylon.compiler.typechecker.tree.Builder;
-import com.redhat.ceylon.compiler.typechecker.tree.CustomBuilder;
+import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.sun.tools.javac.comp.AttrContext;
 import com.sun.tools.javac.comp.Env;
@@ -172,7 +172,7 @@ public class LanguageCompiler extends JavaCompiler {
             CommonTokenStream tokens = new CommonTokenStream(lexer);
 
             CeylonParser parser = new CeylonParser(tokens);
-            CeylonParser.compilationUnit_return r = parser.compilationUnit();
+            CompilationUnit cu = parser.compilationUnit();
 
             char[] chars = source.toCharArray();
             LineMap map = Position.makeLineMap(chars, chars.length, false);
@@ -187,16 +187,11 @@ public class LanguageCompiler extends JavaCompiler {
                 printError(pe, pe.getMessage(), "ceylon.parser", map);
             }
 
-            CommonTree t = (CommonTree) r.getTree();
-
             if (lexer.getNumberOfSyntaxErrors() != 0) {
                 log.error("ceylon.lexer.failed");
             } else if (parser.getNumberOfSyntaxErrors() != 0) {
                 log.error("ceylon.parser.failed");
             } else {
-                Builder builder = new CustomBuilder();
-                CompilationUnit cu = builder.buildCompilationUnit(t);
-
                 ModuleBuilder moduleBuilder = phasedUnits.getModuleBuilder();
                 File sourceFile = new File(filename.toString());
                 // FIXME: temporary solution

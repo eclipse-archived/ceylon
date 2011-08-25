@@ -64,8 +64,7 @@ public abstract class AbstractTransformer implements Transformation {
 
     @Override
     public Factory at(Node node) {
-        CommonTree antlrTreeNode = node.getAntlrTreeNode();
-        Token token = antlrTreeNode.getToken();
+        Token token = node.getToken();
         if (token != null) {
             make().at(getMap().getStartPosition(token.getLine()) + token.getCharPositionInLine());
         }
