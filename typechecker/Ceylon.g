@@ -785,6 +785,10 @@ declaration returns [Declaration declaration]
       { $declaration=$classDeclaration.declaration; }
     | interfaceDeclaration
       { $declaration=$interfaceDeclaration.declaration; }
+    /*| { displayRecognitionError(getTokenNames(), 
+              new MismatchedTokenException(CLASS_DEFINITION, input)); }
+      SEMICOLON
+      { $declaration=new BrokenDeclaration($SEMICOLON); }*/
     )
     { if ($declaration!=null)
           $declaration.setAnnotationList($annotations.annotationList);  }
@@ -793,7 +797,7 @@ declaration returns [Declaration declaration]
 //special rule for syntactic predicate
 //to distinguish between an annotation
 //and an expression statement
-annotatedDeclarationStart
+/*annotatedDeclarationStart
     : declarationStart
     | LIDENTIFIER
       ( 
@@ -802,6 +806,10 @@ annotatedDeclarationStart
         | nonstringLiteral | stringLiteral
         | arguments annotatedDeclarationStart //we need to recurse because it could be an inline callable argument
       )
+    ;*/
+
+annotatedDeclarationStart
+    : annotation* declarationStart
     ;
 
 //special rule for syntactic predicates
@@ -956,7 +964,7 @@ base returns [Primary primary]
 primary returns [Primary primary]
     : base
       { $primary=$base.primary; }
-    (          
+    (   
         qualifiedReference
       { QualifiedMemberOrTypeExpression qe;
         if ($qualifiedReference.isMember)
