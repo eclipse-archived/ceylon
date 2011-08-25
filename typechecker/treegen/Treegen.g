@@ -65,11 +65,11 @@ subnode :
           n=NODE_NAME '?'? f=FIELD_NAME ('(' NODE_NAME* ')')?
           { println("        private " + className($n.text) + " " + $f.text + ";"); }
           { println("        public " + className($n.text) + " get" + initialUpper($f.text) + "() { return " + $f.text + "; }"); }
-          { println("        public void set" + initialUpper($f.text) + "(" + className($n.text) + " node) { " + $f.text + " = node; }\n"); }
+          { println("        public void set" + initialUpper($f.text) + "(" + className($n.text) + " node) { " + $f.text + " = node; connect(node); }\n"); }
         | n=NODE_NAME '?'? ('(' NODE_NAME* ')')?
           { println("        private " + className($n.text) + " " + fieldName($n.text) + ";"); }
           { println("        public " + className($n.text) + " get" + className($n.text) + "() { return " + fieldName($n.text) + "; }"); }
-          { println("        public void set" + className($n.text) + "(" + className($n.text) + " node) { " + fieldName($n.text) + " = node; }\n"); }
+          { println("        public void set" + className($n.text) + "(" + className($n.text) + " node) { " + fieldName($n.text) + " = node; connect(node); }\n"); }
         | mn=NODE_NAME '*' ('(' NODE_NAME* ')')?
           { println("        private List<" + className($mn.text) + "> " + fieldName($mn.text) + 
                                "s = new ArrayList<" + className($mn.text) + ">();"); }

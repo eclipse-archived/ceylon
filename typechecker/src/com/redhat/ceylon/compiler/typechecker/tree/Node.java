@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.antlr.runtime.Token;
-import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
@@ -18,10 +17,12 @@ import com.redhat.ceylon.compiler.typechecker.util.PrintVisitor;
 public abstract class Node {
     
     private String text;
-    private final Token token;
+    private Token token;
     private Scope scope;
     private Unit unit;
     private List<Message> errors = new ArrayList<Message>();
+    private List<Node> children = new ArrayList<Node>();
+    private Node parent;
     
     protected Node(Token token) {
         this.token = token;
@@ -31,7 +32,6 @@ public abstract class Node {
         else {
             text = token.getText();
         }
-        //correctLineNumber(antlrTreeNode);
     }
     
     /**
@@ -73,9 +73,30 @@ public abstract class Node {
      * since the two trees are isomorphic.
      */
     public Token getToken() {
-        return token;
+    	Token ct = getChildToken();
+    	if (ct!=null) return ct;
+    	Token pt = getParentToken();
+    	if (pt!=null) return pt;
+    	return null;
     }
     
+    private Token getParentToken() {
+    	if (token!=null)
+    		return token;
+    	else if (parent!=null)
+    		return parent.getParentToken();
+    	else
+    		return null;
+    }
+    
+    private Token getChildToken() {
+    	if (token!=null)
+    		return token;
+    	else if (!children.isEmpty())
+    		return children.get(0).getChildToken();
+    	else
+    		return null;
+    }
     
     /**
      * The compilation errors belonging to this node.
@@ -121,91 +142,6 @@ public abstract class Node {
         return getClass().getSimpleName();
     }
     
-    public static void correctLineNumber(CommonTree node) {
-        Token token = node.getToken();
-        if (token!=null && !hasLocation(token)) {
-            Token fc = getFirstChildToken(node);
-            Token lc = getLastChildToken(node);
-            Token pc = getParentToken(node);
-            if (fc!=null && lc!=null) {
-            	node.setTokenStartIndex(fc.getTokenIndex());
-            	node.setTokenStopIndex(lc.getTokenIndex());
-            }
-            else if (pc!=null) {
-            	node.setTokenStartIndex(pc.getTokenIndex());
-            	node.setTokenStopIndex(pc.getTokenIndex());
-            }
-            if (fc!=null) {
-                copyLocation(fc, token);
-            }
-            else if (pc!=null) {
-                copyLocation(pc, token);
-            }
-        }
-    }
-
-    private static Token getFirstChildToken(CommonTree node) {
-        @SuppressWarnings("rawtypes") 
-        List children = node.getChildren();
-        if (children!=null) {
-            for (Object child: children) {
-                if (child instanceof CommonTree) {
-                    Token ct = ((CommonTree) child).getToken();
-                    if (ct!=null && hasLocation(ct)) {
-                        return ct;
-                    }
-                    else {
-                        Token st = getFirstChildToken((CommonTree) child);
-                        if (st!=null) return st;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    private static Token getLastChildToken(CommonTree node) {
-        @SuppressWarnings("rawtypes") 
-        List children = node.getChildren();
-        if (children!=null) {
-            for (int i=children.size()-1; i>=0; i--) {
-            	Object child = children.get(i); 
-                if (child instanceof CommonTree) {
-                    Token ct = ((CommonTree) child).getToken();
-                    if (ct!=null && hasLocation(ct)) {
-                        return ct;
-                    }
-                    else {
-                        Token st = getLastChildToken((CommonTree) child);
-                        if (st!=null) return st;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    private static Token getParentToken(CommonTree node) {
-        org.antlr.runtime.tree.Tree parent = node.getParent();
-        if (parent!=null && parent instanceof CommonTree) {
-            Token pt = ((CommonTree) parent).getToken();
-            if (pt!=null && hasLocation(pt)) {
-                return pt;
-            }
-        }
-        return null;
-    }
-
-    private static void copyLocation(Token from, Token to) {
-        to.setLine(from.getLine());
-        to.setCharPositionInLine(from.getCharPositionInLine());
-    }
-
-    private static boolean hasLocation(Token token) {
-        return token.getLine()!=0 || 
-                token.getCharPositionInLine()!=-1;
-    }
-    
     public void handleException(Exception e, Visitor visitor) {
 	    addError(getMessage(e, visitor));
     }
@@ -219,6 +155,13 @@ public abstract class Node {
 	private String getLocationInfo(Exception e) {
 		return e.getStackTrace().length>0 ? 
 				e.getStackTrace()[0].toString() : "unknown";
+	}
+	
+	public void connect(Node child) {
+		if (child!=null) {
+			children.add(child);
+			child.parent=this;
+		}
 	}
 
 }
