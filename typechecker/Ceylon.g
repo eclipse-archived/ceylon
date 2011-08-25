@@ -478,7 +478,7 @@ classBody returns [ClassBody classBody]
 memberBody[StaticType type] returns [Block block]
       //options { memoize=true; }
     : 
-    {$type instanceof BaseType}? 
+    {$type instanceof BaseType}?=>
     (
       (namedArguments)
       => namedArguments //first try to match with no directives or control structures
@@ -826,32 +826,27 @@ declarationKeyword
     ;
 
 statement returns [Statement statement]
-    : specificationStatement
-      { $statement = $specificationStatement.specifierStatement; }
-    | expressionStatement
-      { $statement = $expressionStatement.expressionStatement; }
-    | directiveStatement
+    : directiveStatement
       { $statement = $directiveStatement.directive; }
     | controlStatement
       { $statement = $controlStatement.controlStatement; }
+    | expressionOrSpecificationstatement
+      { $statement = $expressionOrSpecificationstatement.statement; }
     ;
 
-specificationStatement returns [SpecifierStatement specifierStatement]
-    : memberName 
-      { $specifierStatement = new SpecifierStatement(null); 
-        BaseMemberExpression bme = new BaseMemberExpression(null);
-        bme.setTypeArguments( new InferredTypeArguments(null) );
-        bme.setIdentifier($memberName.identifier);
-        $specifierStatement.setBaseMemberExpression(bme); }
-      specifier
-      { $specifierStatement.setSpecifierExpression($specifier.specifierExpression); }
-      ';'
-    ;
-
-expressionStatement returns [ExpressionStatement expressionStatement]
+expressionOrSpecificationstatement returns [Statement statement]
+    @init { SpecifierStatement ss=new SpecifierStatement(null); 
+            ExpressionStatement es=new ExpressionStatement(null); }
     : expression 
-      { $expressionStatement = new ExpressionStatement(null); 
-        $expressionStatement.setExpression($expression.expression); } 
+      { es.setExpression($expression.expression);
+        $statement = es; }
+      (
+        { $expression.expression.getTerm() instanceof BaseMemberExpression }?=>
+        specifier
+        { ss.setSpecifierExpression($specifier.specifierExpression);
+          ss.setBaseMemberExpression((BaseMemberExpression)$expression.expression.getTerm()); 
+          $statement = ss; }
+      )?
       (
         SEMICOLON
       | { displayRecognitionError(getTokenNames(), 
@@ -859,6 +854,7 @@ expressionStatement returns [ExpressionStatement expressionStatement]
         COMMA
       )
     ;
+
 directiveStatement returns [Directive directive]
     : d=directive 
       { $directive=$d.directive; } 
