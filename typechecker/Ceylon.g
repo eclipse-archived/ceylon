@@ -584,8 +584,8 @@ caseType returns [SimpleType type, BaseMemberExpression instance]
       { $type=$t.type;}
     | memberName //-> ^(BASE_MEMBER_EXPRESSION memberName)
       { $instance = new BaseMemberExpression(null);
-        $instance.setTypeArguments( new InferredTypeArguments(null) );
-        $instance.setIdentifier($memberName.identifier); }
+        $instance.setIdentifier($memberName.identifier);
+        $instance.setTypeArguments( new InferredTypeArguments(null) ); }
     ;
 
 //Support for metatypes
@@ -938,15 +938,15 @@ base returns [Primary primary]
       { $primary=$selfReference.atom; }
     | typeReference
       { BaseTypeExpression bte = new BaseTypeExpression(null);
-        bte.setTypeArguments( new InferredTypeArguments(null) );
         bte.setIdentifier($typeReference.identifier);
+        bte.setTypeArguments( new InferredTypeArguments(null) );
         if ($typeReference.typeArgumentList!=null)
             bte.setTypeArguments($typeReference.typeArgumentList);
         $primary=bte; }
     | memberReference
       { BaseMemberExpression bme = new BaseMemberExpression(null);
-        bme.setTypeArguments( new InferredTypeArguments(null) );
         bme.setIdentifier($memberReference.identifier);
+        bme.setTypeArguments( new InferredTypeArguments(null) );
         if ($memberReference.typeArgumentList!=null)
             bme.setTypeArguments($memberReference.typeArgumentList);
         $primary=bme; }
@@ -960,27 +960,27 @@ primary returns [Primary primary]
     (          
         qualifiedMemberReference
       { QualifiedMemberExpression bme = new QualifiedMemberExpression(null);
-        bme.setTypeArguments( new InferredTypeArguments(null) );
         bme.setPrimary($primary);
-        bme.setIdentifier($qualifiedMemberReference.identifier);
         bme.setMemberOperator($qualifiedMemberReference.operator);
+        bme.setIdentifier($qualifiedMemberReference.identifier);
+        bme.setTypeArguments( new InferredTypeArguments(null) );
         if ($qualifiedMemberReference.typeArgumentList!=null)
             bme.setTypeArguments($qualifiedMemberReference.typeArgumentList);
         $primary=bme; }
       | qualifiedTypeReference
       { QualifiedTypeExpression bte = new QualifiedTypeExpression(null);
-        bte.setTypeArguments( new InferredTypeArguments(null) );
         bte.setPrimary($primary);
-        bte.setIdentifier($qualifiedTypeReference.identifier);
         bte.setMemberOperator($qualifiedTypeReference.operator);
+        bte.setIdentifier($qualifiedTypeReference.identifier);
+        bte.setTypeArguments( new InferredTypeArguments(null) );
         if ($qualifiedTypeReference.typeArgumentList!=null)
             bte.setTypeArguments($qualifiedTypeReference.typeArgumentList);
         $primary=bte; }
       | indexExpression
         { IndexExpression xe = new IndexExpression(null);
           xe.setPrimary($primary);
-          xe.setElementOrRange($indexExpression.elementOrRange);
           xe.setIndexOperator($indexExpression.operator); 
+          xe.setElementOrRange($indexExpression.elementOrRange);
           $primary=xe; }
       | arguments
         { InvocationExpression ie = new InvocationExpression(null);
@@ -1699,8 +1699,8 @@ annotation returns [Annotation annotation]
     : annotationName
       { $annotation = new Annotation(null);
         BaseMemberExpression bme = new BaseMemberExpression(null);
-        bme.setTypeArguments( new InferredTypeArguments(null) );
         bme.setIdentifier($annotationName.identifier);
+        bme.setTypeArguments( new InferredTypeArguments(null) );
         $annotation.setPrimary(bme); }
       annotationArguments
       { if ($annotationArguments.argumentList instanceof PositionalArgumentList)
@@ -2192,8 +2192,8 @@ impliedVariable returns [Variable variable]
         SpecifierExpression se = new SpecifierExpression(null);
         Expression e = new Expression(null);
         BaseMemberExpression bme = new BaseMemberExpression(null);
-        bme.setTypeArguments( new InferredTypeArguments(null) );
         bme.setIdentifier($memberName.identifier);
+        bme.setTypeArguments( new InferredTypeArguments(null) );
         e.setTerm(bme);
         se.setExpression(e);
         v.setSpecifierExpression(se); 
