@@ -1,8 +1,10 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -74,6 +76,20 @@ public abstract class TypedDeclaration extends Declaration {
 
     public boolean isVariable() {
         return false;
+    }
+    
+    @Override
+    public Map<String, Declaration> getMatchingDeclarations(Unit unit, String startingWith) {
+    	Map<String, Declaration> result = super.getMatchingDeclarations(unit, startingWith);
+    	TypeDeclaration td = getTypeDeclaration();
+    	if (td instanceof Class) {
+    		for ( Parameter p: ((Class) td).getParameterList().getParameters() ) {
+    			if ( isNameMatching(startingWith, p) ) {
+    				result.put(p.getName(), p);
+    			}
+    		}
+    	}
+    	return result;
     }
 
 }
