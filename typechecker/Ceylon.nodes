@@ -115,7 +115,7 @@
 
 "An attribute getter declaration."
 ^(ATTRIBUTE_GETTER_DEFINITION:ANY_ATTRIBUTE
-    BLOCK(BLOCK BROKEN_MEMBER_BODY)
+    BLOCK
     Getter declarationModel;)
 
 "An attribute setter declaration."
@@ -131,7 +131,7 @@
     Method declarationModel;)
     
 ^(METHOD_DEFINITION:ANY_METHOD
-    BLOCK(BLOCK BROKEN_MEMBER_BODY))
+    BLOCK)
 
 ^(METHOD_DECLARATION:ANY_METHOD
     SPECIFIER_EXPRESSION?)
@@ -185,10 +185,6 @@
 
 "An interface body."
 ^(INTERFACE_BODY:BODY)
-
-"A body of a typed member with a parse error somewhere."
-^(BROKEN_MEMBER_BODY:BLOCK
-    EXPRESSION_LIST?)
 
 ^(abstract TYPE
     ProducedType typeModel;)
