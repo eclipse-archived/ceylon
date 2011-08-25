@@ -52,9 +52,8 @@ compilationUnit returns [CompilationUnit compilationUnit]
       ( 
         ca2=compilerAnnotations declaration
         { $compilationUnit.addDeclaration($declaration.declaration); 
-          if ($declaration.declaration!=null) {
-              $declaration.declaration.getCompilerAnnotations().addAll($ca2.annotations); 
-          } } 
+          if ($declaration.declaration!=null)
+              $declaration.declaration.getCompilerAnnotations().addAll($ca2.annotations); } 
       )+
       EOF
     ;
@@ -82,16 +81,17 @@ importElement returns [ImportMemberOrType importMemberOrType]
     (
       memberAlias? memberName
       { $importMemberOrType = new ImportMember(null);
-        $importMemberOrType.setAlias($memberAlias.alias);
+        if ($memberAlias.alias!=null) 
+            $importMemberOrType.setAlias($memberAlias.alias);
         $importMemberOrType.setIdentifier($memberName.identifier); }
     | typeAlias? typeName
       { $importMemberOrType = new ImportType(null);
-        $importMemberOrType.setAlias($typeAlias.alias);
+        if ($typeAlias.alias!=null)
+            $importMemberOrType.setAlias($typeAlias.alias);
         $importMemberOrType.setIdentifier($typeName.identifier); }
     )
-    { if ($importMemberOrType!=null) {
-        $importMemberOrType.getCompilerAnnotations().addAll($compilerAnnotations.annotations);
-      } }
+    { if ($importMemberOrType!=null)
+        $importMemberOrType.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
     ;
 
 importWildcard returns [ImportWildcard importWildcard]
@@ -437,9 +437,8 @@ block returns [Block block]
       { $block = new Block($LBRACE); }
       (
         declarationOrStatement
-        { if ($declarationOrStatement.statement!=null) {
-              $block.addStatement($declarationOrStatement.statement);
-        } }
+        { if ($declarationOrStatement.statement!=null)
+              $block.addStatement($declarationOrStatement.statement); }
       )*
       RBRACE
     //-> ^(BLOCK[$LBRACE] annotatedDeclarationOrStatement*)
@@ -454,9 +453,8 @@ interfaceBody returns [InterfaceBody interfaceBody]
       { $interfaceBody = new InterfaceBody($LBRACE); }
       (
         declarationOrStatement
-        { if ($declarationOrStatement.statement!=null) {
-              $interfaceBody.addStatement($declarationOrStatement.statement);
-        } }
+        { if ($declarationOrStatement.statement!=null)
+              $interfaceBody.addStatement($declarationOrStatement.statement); }
       )*
       RBRACE
     //-> ^(INTERFACE_BODY[$LBRACE] annotatedDeclarationOrStatement2*)
@@ -467,9 +465,8 @@ classBody returns [ClassBody classBody]
       { $classBody = new ClassBody($LBRACE); }
       (
         declarationOrStatement
-        { if ($declarationOrStatement.statement!=null) {
-              $classBody.addStatement($declarationOrStatement.statement);
-        } }
+        { if ($declarationOrStatement.statement!=null)
+              $classBody.addStatement($declarationOrStatement.statement); }
       )*
       RBRACE
     //-> ^(CLASS_BODY[$LBRACE] annotatedDeclarationOrStatement2*)
@@ -494,9 +491,8 @@ memberBody[StaticType type] returns [Block block]
         BaseTypeExpression bme = new BaseTypeExpression(null);
         bme.setIdentifier(t.getIdentifier());
         bme.setTypeArguments(new InferredTypeArguments(null));
-        if (t.getTypeArgumentList()!=null) {
+        if (t.getTypeArgumentList()!=null)
             bme.setTypeArguments(t.getTypeArgumentList());
-        }
         ie.setPrimary(bme);
         ie.setNamedArgumentList($namedArguments.namedArgumentList);
         e.setTerm(ie);
@@ -523,7 +519,8 @@ extendedType returns [ExtendedType extendedType]
           SuperType st = new SuperType($SUPER);
           qt.setOuterType(st);
           qt.setIdentifier($typeReference.identifier);
-          qt.setTypeArgumentList($typeReference.typeArgumentList);
+          if ($typeReference.typeArgumentList!=null)
+              qt.setTypeArgumentList($typeReference.typeArgumentList);
           $extendedType.setType(qt); }
         //-> ^(EXTENDED_TYPE[$EXTENDS] ^(QUALIFIED_TYPE SUPER_TYPE[$SUPER] typeReference) ^(INVOCATION_EXPRESSION ^(EXTENDED_TYPE_EXPRESSION) positionalArguments))
       )
@@ -665,9 +662,8 @@ parameterDeclaration returns [Parameter parameter]
       p=parameter
       { $parameter=$p.parameter;
         $parameter.setAnnotationList($annotations.annotationList); }
-      { if ($parameter!=null) {
-        $parameter.getCompilerAnnotations().addAll($compilerAnnotations.annotations);
-      } }
+      { if ($parameter!=null)
+        $parameter.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
     ;
 
 valueParameter
@@ -769,9 +765,8 @@ declarationOrStatement returns [Statement statement]
       | s=statement
         { $statement=$s.statement; }
       )
-      { if ($statement!=null) {
-            $statement.getCompilerAnnotations().addAll($compilerAnnotations.annotations);
-        } }
+      { if ($statement!=null)
+            $statement.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
     ;
 
 declaration returns [Declaration declaration]
@@ -792,9 +787,8 @@ declaration returns [Declaration declaration]
     | interfaceDeclaration
       { $declaration=$interfaceDeclaration.declaration; }
     )
-    { if ($declaration!=null) {
-      $declaration.setAnnotationList($annotations.annotationList); 
-    } }
+    { if ($declaration!=null)
+          $declaration.setAnnotationList($annotations.annotationList);  }
     ;
 
 //special rule for syntactic predicate
@@ -946,17 +940,15 @@ base returns [Primary primary]
       { BaseTypeExpression bte = new BaseTypeExpression(null);
         bte.setTypeArguments( new InferredTypeArguments(null) );
         bte.setIdentifier($typeReference.identifier);
-        if ($typeReference.typeArgumentList!=null) {
+        if ($typeReference.typeArgumentList!=null)
             bte.setTypeArguments($typeReference.typeArgumentList);
-        }
         $primary=bte; }
     | memberReference
       { BaseMemberExpression bme = new BaseMemberExpression(null);
         bme.setTypeArguments( new InferredTypeArguments(null) );
         bme.setIdentifier($memberReference.identifier);
-        if ($memberReference.typeArgumentList!=null) {
+        if ($memberReference.typeArgumentList!=null)
             bme.setTypeArguments($memberReference.typeArgumentList);
-        }
         $primary=bme; }
     | parExpression
       { $primary=$parExpression.expression; }
@@ -972,9 +964,8 @@ primary returns [Primary primary]
         bme.setPrimary($primary);
         bme.setIdentifier($qualifiedMemberReference.identifier);
         bme.setMemberOperator($qualifiedMemberReference.operator);
-        if ($qualifiedMemberReference.typeArgumentList!=null) {
+        if ($qualifiedMemberReference.typeArgumentList!=null)
             bme.setTypeArguments($qualifiedMemberReference.typeArgumentList);
-        }
         $primary=bme; }
       | qualifiedTypeReference
       { QualifiedTypeExpression bte = new QualifiedTypeExpression(null);
@@ -982,9 +973,8 @@ primary returns [Primary primary]
         bte.setPrimary($primary);
         bte.setIdentifier($qualifiedTypeReference.identifier);
         bte.setMemberOperator($qualifiedTypeReference.operator);
-        if ($qualifiedTypeReference.typeArgumentList!=null) {
+        if ($qualifiedTypeReference.typeArgumentList!=null)
             bte.setTypeArguments($qualifiedTypeReference.typeArgumentList);
-        }
         $primary=bte; }
       | indexExpression
         { IndexExpression xe = new IndexExpression(null);
@@ -995,12 +985,10 @@ primary returns [Primary primary]
       | arguments
         { InvocationExpression ie = new InvocationExpression(null);
           ie.setPrimary($primary);
-          if ($arguments.argumentList instanceof PositionalArgumentList) {
+          if ($arguments.argumentList instanceof PositionalArgumentList)
               ie.setPositionalArgumentList((PositionalArgumentList)$arguments.argumentList);
-          }
-          if ($arguments.argumentList instanceof NamedArgumentList) {
+          if ($arguments.argumentList instanceof NamedArgumentList)
               ie.setNamedArgumentList((NamedArgumentList)$arguments.argumentList);
-          }
           $primary=ie; }
     )*
     ;
@@ -1139,7 +1127,8 @@ namedArguments returns [NamedArgumentList namedArgumentList]
       (
         (namedArgumentStart) 
         => namedArgument
-        { $namedArgumentList.addNamedArgument($namedArgument.namedArgument); }
+        { if ($namedArgument.namedArgument!=null) 
+              $namedArgumentList.addNamedArgument($namedArgument.namedArgument); }
       )* 
       ( 
         sequencedArgument
@@ -1164,9 +1153,8 @@ namedArgument returns [NamedArgument namedArgument]
     | 
       namedArgumentDeclaration
     )
-    { if ($namedArgument!=null) {
-          namedArgument.getCompilerAnnotations().addAll($compilerAnnotations.annotations); 
-    } }
+    { if ($namedArgument!=null)
+          namedArgument.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
     ;
 
 namedSpecifiedArgument returns [SpecifiedArgument specifiedArgument]
@@ -1675,14 +1663,16 @@ type returns [SimpleType type]
     : ot=typeNameWithArguments
       { BaseType bt = new BaseType(null);
         bt.setIdentifier($ot.identifier);
-        bt.setTypeArgumentList($ot.typeArgumentList);
+        if ($ot.typeArgumentList!=null)
+            bt.setTypeArgumentList($ot.typeArgumentList);
         $type=bt; }
       (
         MEMBER_OP 
         it=typeNameWithArguments
         { QualifiedType qt = new QualifiedType($MEMBER_OP);
           qt.setIdentifier($it.identifier);
-          qt.setTypeArgumentList($it.typeArgumentList);
+          if ($it.typeArgumentList!=null)
+              qt.setTypeArgumentList($it.typeArgumentList);
           qt.setOuterType($type);
           $type=qt; }
       )*
@@ -1713,12 +1703,10 @@ annotation returns [Annotation annotation]
         bme.setIdentifier($annotationName.identifier);
         $annotation.setPrimary(bme); }
       annotationArguments
-      { if ($annotationArguments.argumentList instanceof PositionalArgumentList) {
+      { if ($annotationArguments.argumentList instanceof PositionalArgumentList)
             $annotation.setPositionalArgumentList((PositionalArgumentList)$annotationArguments.argumentList);
-        }
-        if ($annotationArguments.argumentList instanceof NamedArgumentList) {
-            $annotation.setNamedArgumentList((NamedArgumentList)$annotationArguments.argumentList);
-        } }
+        if ($annotationArguments.argumentList instanceof NamedArgumentList)
+            $annotation.setNamedArgumentList((NamedArgumentList)$annotationArguments.argumentList); }
     ;
 
 annotationArguments returns [ArgumentList argumentList]
@@ -2065,9 +2053,8 @@ forIterator returns [ForIterator iterator]
       //-> ^(KEY_VALUE_ITERATOR $v1 $v2 containment)
       )
     )
-    { if ($iterator!=null) {
-          $iterator.getCompilerAnnotations().addAll($compilerAnnotations.annotations); 
-    } }
+    { if ($iterator!=null)
+          $iterator.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
     ;
     
 containment returns [SpecifierExpression specifierExpression]
