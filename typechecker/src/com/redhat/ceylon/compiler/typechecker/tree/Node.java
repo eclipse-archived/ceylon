@@ -73,7 +73,7 @@ public abstract class Node {
      * since the two trees are isomorphic.
      */
     public Token getToken() {
-    	Token ct = getChildToken();
+    	Token ct = getFirstChildToken();
     	if (ct!=null) return ct;
     	Token pt = getParentToken();
     	if (pt!=null) return pt;
@@ -81,21 +81,32 @@ public abstract class Node {
     }
     
     private Token getParentToken() {
-    	if (token!=null)
+    	if (token!=null) {
     		return token;
-    	else if (parent!=null)
+    	}
+    	else if (parent!=null) {
     		return parent.getParentToken();
-    	else
+    	}
+    	else {
     		return null;
+    	}
     }
     
-    private Token getChildToken() {
-    	if (token!=null)
+    private Token getFirstChildToken() {
+    	if (token!=null) {
     		return token;
-    	else if (!children.isEmpty())
-    		return children.get(0).getChildToken();
-    	else
-    		return null;
+    	}
+    	else {
+    		Token token=null;
+    		for (Node child: children) {
+    			Token tok = child.getFirstChildToken();
+    			if (tok!=null && ( token==null || 
+    					tok.getTokenIndex()<token.getTokenIndex() )) {
+    				token=tok;
+    			}
+    		}
+			return token;
+    	}
     }
     
     /**
