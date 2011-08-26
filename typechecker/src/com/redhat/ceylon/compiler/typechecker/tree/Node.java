@@ -18,6 +18,7 @@ public abstract class Node {
     
     private String text;
     private Token token;
+    private Token endToken;
     private Scope scope;
     private Unit unit;
     private List<Message> errors = new ArrayList<Message>();
@@ -72,9 +73,7 @@ public abstract class Node {
      * since the two trees are isomorphic.
      */
     public Token getToken() {
-    	Token ct = getFirstChildToken();
-    	if (ct!=null) return ct;
-    	return null;
+    	return getFirstChildToken();
     }
     
     public String getLocation() {
@@ -104,6 +103,31 @@ public abstract class Node {
 			return token;
     	}
     }
+    
+    private Token getLastChildToken() {
+    	if (endToken!=null) {
+    		return endToken;
+    	}
+    	else {
+    		Token token=null;
+    		for (Node child: children) {
+    			Token tok = child.getFirstChildToken();
+    			if (tok!=null && ( token==null || 
+    					tok.getTokenIndex()>token.getTokenIndex() )) {
+    				token=tok;
+    			}
+    		}
+			return token;
+    	}
+    }
+    
+    public Token getEndToken() {
+    	return getLastChildToken();
+	}
+    
+    public void setEndToken(Token endToken) {
+		this.endToken = endToken;
+	}
     
     /**
      * The compilation errors belonging to this node.
