@@ -441,6 +441,7 @@ block returns [Block block]
               $block.addStatement($declarationOrStatement.statement); }
       )*
       RBRACE
+      { $block.setEndToken($RBRACE); }
     //-> ^(BLOCK[$LBRACE] annotatedDeclarationOrStatement*)
     ;
 
@@ -457,6 +458,7 @@ interfaceBody returns [InterfaceBody interfaceBody]
               $interfaceBody.addStatement($declarationOrStatement.statement); }
       )*
       RBRACE
+      { $interfaceBody.setEndToken($RBRACE); }
     //-> ^(INTERFACE_BODY[$LBRACE] annotatedDeclarationOrStatement2*)
     ;
 
@@ -469,6 +471,7 @@ classBody returns [ClassBody classBody]
               $classBody.addStatement($declarationOrStatement.statement); }
       )*
       RBRACE
+      { $classBody.setEndToken($RBRACE); }
     //-> ^(CLASS_BODY[$LBRACE] annotatedDeclarationOrStatement2*)
     ;
 
