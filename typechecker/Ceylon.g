@@ -51,10 +51,11 @@ compilationUnit returns [CompilationUnit compilationUnit]
       { $compilationUnit.setImportList($importList.importList); }
       ( 
         ca2=compilerAnnotations declaration
-        { $compilationUnit.addDeclaration($declaration.declaration); 
+        { if ($declaration.declaration!=null)
+              $compilationUnit.addDeclaration($declaration.declaration); 
           if ($declaration.declaration!=null)
               $declaration.declaration.getCompilerAnnotations().addAll($ca2.annotations); } 
-      )+
+      )*
       EOF
     ;
 
@@ -2360,7 +2361,7 @@ NonCharacterChars
     ;
 
 QUOTED_LITERAL
-    :   '\'' QuotedLiteralPart '\''
+    :   '\'' QuotedLiteralPart '\''?
     ;
 
 fragment
@@ -2369,7 +2370,7 @@ QuotedLiteralPart
     ;
 
 STRING_LITERAL
-    :   '"' StringPart '"'
+    :   '"' StringPart '"'?
     ;
 
 fragment
@@ -2426,7 +2427,8 @@ MULTI_COMMENT
         |    ('*' ~'/') => '*'
         |    MULTI_COMMENT
         )*
-        '*/'
+        '*/'?
+        //('*/'/|{displayRecognitionError(getTokenNames(), new MismatchedSetException(null,input));})
         {
             $channel = HIDDEN;
         }
