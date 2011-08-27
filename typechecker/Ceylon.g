@@ -65,8 +65,22 @@ importList returns [ImportList importList]
     ;
 
 importDeclaration returns [Import importDeclaration]
-    : IMPORT { $importDeclaration = new Import($IMPORT); } 
-      packagePath { $importDeclaration.setImportPath($packagePath.importPath); }
+    @init { ImportPath importPath=null; }
+    : IMPORT 
+      { $importDeclaration = new Import($IMPORT); } 
+      ( 
+        pn1=packageName 
+        { importPath = new ImportPath($pn1.identifier.getToken());
+          importPath.addIdentifier($pn1.identifier); 
+          $importDeclaration.setImportPath(importPath); } 
+        ( 
+          MEMBER_OP 
+          pn2=packageName 
+          { importPath.addIdentifier($pn2.identifier); 
+            importPath.setEndToken($pn2.identifier.getToken());} 
+        )*
+      )
+    //TODO: don't throw away the braces! (instead introduce an importElementList)
     LBRACE
     ( 
       ie1=importElement { $importDeclaration.addImportMemberOrType($ie1.importMemberOrType); } 
@@ -110,12 +124,6 @@ typeAlias returns [Alias alias]
     : typeName SPECIFY
       { $alias = new Alias($SPECIFY); 
         $alias.setIdentifier($typeName.identifier); }
-    ;
-
-packagePath returns [ImportPath importPath]
-    : { $importPath = new ImportPath(null); } 
-      pn1=packageName { $importPath.addIdentifier($pn1.identifier); } 
-      ( MEMBER_OP pn2=packageName { $importPath.addIdentifier($pn2.identifier); } )*
     ;
 
 packageName returns [Identifier identifier]
