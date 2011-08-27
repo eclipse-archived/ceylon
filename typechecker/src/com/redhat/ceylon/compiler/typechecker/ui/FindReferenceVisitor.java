@@ -31,6 +31,14 @@ public class FindReferenceVisitor extends Visitor {
 	}
 		
 	@Override
+	public void visit(Tree.NamedArgument that) {
+		if (that.getParameter()==declaration) {
+			nodes.add(that);
+		}
+		super.visit(that);
+	}
+		
+	@Override
 	public void visit(Tree.Type that) {
 		if (that.getTypeModel().getDeclaration()==declaration) {
 			nodes.add(that);
