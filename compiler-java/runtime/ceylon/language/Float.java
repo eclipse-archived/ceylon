@@ -59,10 +59,6 @@ public final class Float
         return ceylon.language.Integer.instance((long) value);
     }
 
-    public ceylon.language.Whole whole() {
-        throw new RuntimeException("not implemented");
-    }
-
     public ceylon.language.Float toFloat() {
         return this;
     }
