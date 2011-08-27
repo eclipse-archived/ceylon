@@ -132,37 +132,28 @@ public abstract class Node {
 	}
     
     private Token getFirstChildToken() {
-    	if (token!=null) {
-    		return token;
-    	}
-    	else {
-    		Token token=null;
-    		for (Node child: children) {
-    			Token tok = child.getFirstChildToken();
-    			if (tok!=null && ( token==null || 
-    					tok.getTokenIndex()<token.getTokenIndex() )) {
-    				token=tok;
-    			}
-    		}
-			return token;
-    	}
+		Token token=this.token;
+		for (Node child: children) {
+			Token tok = child.getFirstChildToken();
+			if (tok!=null && ( token==null || 
+					tok.getTokenIndex()<token.getTokenIndex() )) {
+				token=tok;
+			}
+		}
+		return token;
     }
     
     private Token getLastChildToken() {
-    	if (endToken!=null) {
-    		return endToken;
-    	}
-    	else {
-    		Token token=null;
-    		for (Node child: children) {
-    			Token tok = child.getLastChildToken();
-    			if (tok!=null && ( token==null || 
-    					tok.getTokenIndex()>token.getTokenIndex() )) {
-    				token=tok;
-    			}
-    		}
-			return token;
-    	}
+		Token token=this.endToken==null?
+				this.token:this.endToken;
+		for (Node child: children) {
+			Token tok = child.getLastChildToken();
+			if (tok!=null && ( token==null || 
+					tok.getTokenIndex()>token.getTokenIndex() )) {
+				token=tok;
+			}
+		}
+		return token;
     }
     
     public Token getEndToken() {
