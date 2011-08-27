@@ -68,11 +68,6 @@ public final class Integer
     }
 
     @Extension
-    public ceylon.language.Whole whole() {
-        throw new RuntimeException("not implemented");
-    }
-
-    @Extension
     public ceylon.language.Float toFloat() {
         return ceylon.language.Float.instance(value);
     }
