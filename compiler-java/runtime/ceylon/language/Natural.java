@@ -47,7 +47,11 @@ public final class Natural
         return instance(value % op.value);
     }
 
-    public ceylon.language.Integer inverse() {
+    public ceylon.language.Integer getPositiveValue() {
+        return ceylon.language.Integer.instance(value);
+    }
+
+    public ceylon.language.Integer getNegativeValue() {
         return ceylon.language.Integer.instance(-value);
     }
 
