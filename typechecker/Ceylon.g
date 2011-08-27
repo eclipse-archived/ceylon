@@ -166,6 +166,7 @@ objectDeclaration returns [ObjectDefinition declaration]
       | { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(LBRACE, input)); }
         SEMICOLON
+        { $declaration.setEndToken($SEMICOLON); }
       )
     //-> ^(OBJECT_DEFINITION VALUE_MODIFIER memberName extendedType? satisfiedTypes? classBody?) 
     ;
@@ -219,6 +220,7 @@ voidOrInferredMethodDeclaration returns [AnyMethod declaration]
         )?
         { $declaration = dec; }
         SEMICOLON
+        { $declaration.setEndToken($SEMICOLON); }
       //-> ^(METHOD_DECLARATION VOID_MODIFIER memberName methodParameters? specifier?)   
       )
     ;
@@ -235,6 +237,7 @@ setterDeclaration returns [AttributeSetterDefinition declaration]
       | { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(LBRACE, input)); }
         SEMICOLON
+        { $declaration.setEndToken($SEMICOLON); }
       )
     //-> ^(ATTRIBUTE_SETTER_DEFINITION[$ASSIGN] VOID_MODIFIER memberName block)
     ;
@@ -262,6 +265,7 @@ inferredAttributeDeclaration returns [AnyAttribute declaration]
         )?
         { $declaration = dec; }
         SEMICOLON
+        { $declaration.setEndToken($SEMICOLON); }
         //-> ^(ATTRIBUTE_DECLARATION VALUE_MODIFIER memberName specifier? initializer?)
       | block
         { def.setBlock($block.block); }
@@ -314,6 +318,7 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
           )?
           { $declaration = mdec; }
           SEMICOLON
+          { $declaration.setEndToken($SEMICOLON); }
         //-> ^(METHOD_DECLARATION unionType memberName methodParameters specifier?)
         )
       | 
@@ -326,6 +331,7 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
         )?
         { $declaration = adec; }
         SEMICOLON
+        { $declaration.setEndToken($SEMICOLON); }
       //-> ^(ATTRIBUTE_DECLARATION unionType memberName specifier? initializer?)
       | ab=memberBody[$unionType.type]
         { adef.setBlock($ab.block); }
@@ -379,6 +385,7 @@ interfaceDeclaration returns [AnyInterface declaration]
         )? 
         { $declaration = dec; }
         SEMICOLON
+        { $declaration.setEndToken($SEMICOLON); }
       //-> ^(INTERFACE_DECLARATION[$INTERFACE_DEFINITION] typeName interfaceParameters? typeSpecifier?)
       )
     ;
@@ -435,6 +442,7 @@ classDeclaration returns [AnyClass declaration]
         )?
         { $declaration = dec; }
         SEMICOLON
+        { $declaration.setEndToken($SEMICOLON); }
       //-> ^(CLASS_DECLARATION[$CLASS_DEFINITION] typeName classParameters? typeSpecifier?)
       )
     ;
