@@ -13,4 +13,20 @@ public interface Comparable<T> {
     /** The binary compare operator |<=>|.  Compares this
         object with the given object. */
     public Comparison compare(T other);
+    
+    public boolean largerThan(T other); /* {
+        return compare(other)==larger;
+    }*/
+    
+    public boolean smallerThan(T other);/* {
+        return compare(other)==smaller;
+    }*/
+    
+    public boolean asLargeAs(T other);/* {
+        return compare(other)!=smaller;
+    }*/
+    
+    public boolean asSmallAs(T other);/* {
+        return compare(other)!=larger;
+    }*/
 }
