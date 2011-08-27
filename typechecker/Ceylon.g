@@ -317,8 +317,8 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
            { mdec.setSpecifierExpression($ms.specifierExpression); }
           )?
           { $declaration = mdec; }
-          SEMICOLON
-          { $declaration.setEndToken($SEMICOLON); }
+          s1=SEMICOLON
+          { $declaration.setEndToken($s1); }
         //-> ^(METHOD_DECLARATION unionType memberName methodParameters specifier?)
         )
       | 
@@ -330,8 +330,8 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
           { adec.setSpecifierOrInitializerExpression($initializer.initializerExpression); }
         )?
         { $declaration = adec; }
-        SEMICOLON
-        { $declaration.setEndToken($SEMICOLON); }
+        s2=SEMICOLON
+        { $declaration.setEndToken($s2); }
       //-> ^(ATTRIBUTE_DECLARATION unionType memberName specifier? initializer?)
       | ab=memberBody[$unionType.type]
         { adef.setBlock($ab.block); }
@@ -1191,6 +1191,7 @@ namedSpecifiedArgument returns [SpecifiedArgument specifiedArgument]
       specifier 
       { $specifiedArgument.setSpecifierExpression($specifier.specifierExpression); }
       SEMICOLON
+      { $specifiedArgument.setEndToken($SEMICOLON); }
     ;
 
 objectArgument returns [ObjectArgument declaration]
@@ -1213,6 +1214,7 @@ objectArgument returns [ObjectArgument declaration]
       | { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(LBRACE, input)); }
         SEMICOLON
+        { $declaration.setEndToken($SEMICOLON); }
       )
     //-> ^(OBJECT_ARGUMENT[$OBJECT_DEFINITION] VALUE_MODIFIER memberName extendedType? satisfiedTypes? classBody?)
     ;
