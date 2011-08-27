@@ -600,8 +600,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (def.getPrimary() instanceof Tree.StaticMemberOrTypeExpression) {
             Tree.StaticMemberOrTypeExpression expr = (Tree.StaticMemberOrTypeExpression)def.getPrimary();
             java.util.List<ProducedType> args = expr.getTypeArguments().getTypeModels();
-            for (ProducedType arg : args) {
-                result = result.append(makeJavaType(arg, AbstractTransformer.TYPE_PARAM));
+            if(args != null){
+                for (ProducedType arg : args) {
+                    result = result.append(makeJavaType(arg, AbstractTransformer.TYPE_PARAM));
+                }
             }
         }
         return result;
