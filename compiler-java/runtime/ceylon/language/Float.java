@@ -2,7 +2,7 @@ package ceylon.language;
 
 public final class Float
     extends Object
-    implements Numeric<Float>, Invertable<Float> {
+    implements Castable<Float>, Numeric<Float>, Invertable<Float> {
 
     private final double value;
     private Float(double d) {
@@ -100,5 +100,10 @@ public final class Float
     @Override
     public boolean asSmallAs(Float other) {
         return value <= other.value;
+    }
+
+    @Override
+    public <CastValue extends Float> CastValue as() {
+        return (CastValue)this;
     }
 }
