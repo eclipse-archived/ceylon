@@ -129,6 +129,7 @@ public class TypeVisitor extends AbstractVisitor {
                         name);
             }
             i.setDeclaration(d);
+            member.setDeclarationModel(d);
             unit.getImports().add(i);
         }
         return name;

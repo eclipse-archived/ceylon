@@ -90,6 +90,12 @@ public class PrintVisitor extends Visitor implements NaturalVisitor {
                 print(" -- " + d);
             }
         }
+        if (node instanceof Tree.ImportMemberOrType) {
+            Declaration d = ((Tree.ImportMemberOrType) node).getDeclarationModel();
+            if (d!=null) {
+                print(" -- " + d);
+            }
+        }
         if (node instanceof Tree.Term) {
             ProducedType type = ((Tree.Term) node).getTypeModel();
             if (type!=null) {
