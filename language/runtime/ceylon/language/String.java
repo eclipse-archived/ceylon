@@ -66,4 +66,24 @@ public final class String extends Object implements Equality, Comparable<String>
         return value;
     }
 
+    @Override
+    public boolean largerThan(String other) {
+        return value.length() > other.value.length();
+    }
+
+    @Override
+    public boolean smallerThan(String other) {
+        return value.length() < other.value.length();
+    }
+
+    @Override
+    public boolean asLargeAs(String other) {
+        return value.length() >= other.value.length();
+    }
+
+    @Override
+    public boolean asSmallAs(String other) {
+        return value.length() <= other.value.length();
+    }
+
 }

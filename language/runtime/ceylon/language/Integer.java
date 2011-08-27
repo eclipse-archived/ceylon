@@ -109,4 +109,24 @@ public final class Integer
     public java.lang.String getFormatted() {
         return java.lang.Long.toString(value);
     }
+
+    @Override
+    public boolean largerThan(Integer other) {
+        return value > other.value;
+    }
+
+    @Override
+    public boolean smallerThan(Integer other) {
+        return value < other.value;
+    }
+
+    @Override
+    public boolean asLargeAs(Integer other) {
+        return value >= other.value;
+    }
+
+    @Override
+    public boolean asSmallAs(Integer other) {
+        return value <= other.value;
+    }
 }

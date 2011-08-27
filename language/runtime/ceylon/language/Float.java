@@ -75,4 +75,24 @@ public final class Float
     public java.lang.String getFormatted() {
         return java.lang.Double.toString(value);
     }
+
+    @Override
+    public boolean largerThan(Float other) {
+        return value > other.value;
+    }
+
+    @Override
+    public boolean smallerThan(Float other) {
+        return value < other.value;
+    }
+
+    @Override
+    public boolean asLargeAs(Float other) {
+        return value >= other.value;
+    }
+
+    @Override
+    public boolean asSmallAs(Float other) {
+        return value <= other.value;
+    }
 }

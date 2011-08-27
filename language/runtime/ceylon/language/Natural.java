@@ -135,4 +135,24 @@ public final class Natural
     public java.lang.String getFormatted() {
         return java.lang.Long.toString(value);
     }
+
+    @Override
+    public boolean largerThan(Natural other) {
+        return value > other.value;
+    }
+
+    @Override
+    public boolean smallerThan(Natural other) {
+        return value < other.value;
+    }
+
+    @Override
+    public boolean asLargeAs(Natural other) {
+        return value >= other.value;
+    }
+
+    @Override
+    public boolean asSmallAs(Natural other) {
+        return value <= other.value;
+    }
 }
