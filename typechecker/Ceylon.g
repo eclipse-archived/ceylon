@@ -2429,9 +2429,10 @@ WS
         |    '\t'
         |    '\u000C'
         |    '\n'
-        ) 
+        )+
         {
-            skip();
+            //skip();
+            $channel = HIDDEN;
         }          
     ;
 
