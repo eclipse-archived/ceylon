@@ -4,6 +4,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.Token;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
@@ -26,12 +27,6 @@ public abstract class Node {
     
     protected Node(Token token) {
         this.token = token;
-        if (token==null) {
-            text = "";
-        }
-        else {
-            text = token.getText();
-        }
     }
     
     /**
@@ -61,7 +56,18 @@ public abstract class Node {
      * The text of the corresponding ANTLR node.
      */
     public String getText() {
-        return text;
+    	if (text!=null) {
+    		return text;
+    	}
+    	else if (token==null) {
+    		return "";
+    	}
+    	else if (endToken==null) {
+    		return token.getText();
+    	}
+    	else {
+    		return token.getText() + endToken.getText();
+    	}
     }
     
     public void setText(String text) {
@@ -78,14 +84,52 @@ public abstract class Node {
     
     public String getLocation() {
     	Token token = getToken();
+    	Token endToken = getEndToken();
 		if (token==null) {
     		return "unknown location";
     	}
+    	else if (endToken==null) {
+    		return toLocation(token);
+    	}
     	else {
-    		return token.getLine() + ":" + 
-    				token.getCharPositionInLine();
+    		return toLocation(token) + "-" + 
+    				toEndLocation(endToken);
     	}
     }
+    
+    public Integer getStartIndex() {
+    	Token token = getToken();
+    	if (token==null) {
+    		return null;
+    	}
+    	else {
+    		return ((CommonToken) token).getStartIndex();
+    	}
+    }
+
+    public Integer getStopIndex() {
+    	Token token = getEndToken();
+    	if (token==null) {
+    		token = getToken();
+    	}
+    	if (token==null) {
+    		return null;
+    	}
+    	else {
+    		return ((CommonToken) token).getStopIndex();
+    	}
+    }
+
+	private static String toLocation(Token token) {
+		return token.getLine() + ":" + 
+				token.getCharPositionInLine();
+	}
+    
+	private static String toEndLocation(Token token) {
+		return token.getLine() + ":" + 
+				(token.getCharPositionInLine()
+				+ token.getText().length());
+	}
     
     private Token getFirstChildToken() {
     	if (token!=null) {
@@ -111,7 +155,7 @@ public abstract class Node {
     	else {
     		Token token=null;
     		for (Node child: children) {
-    			Token tok = child.getFirstChildToken();
+    			Token tok = child.getLastChildToken();
     			if (tok!=null && ( token==null || 
     					tok.getTokenIndex()>token.getTokenIndex() )) {
     				token=tok;

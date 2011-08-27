@@ -619,6 +619,7 @@ parameters returns [ParameterList parameterList]
         )*
       )? 
       RPAREN
+      { $parameterList.setEndToken($RPAREN); }
       //-> ^(PARAMETER_LIST[$LPAREN] annotatedParameter*)
     ;
 
@@ -705,6 +706,7 @@ typeParameters returns [TypeParameterList typeParameterList]
         { $typeParameterList.addTypeParameterDeclaration($tp2.typeParameter); }
       )*
       LARGER_OP
+      { $typeParameterList.setEndToken($LARGER_OP); }
     //-> ^(TYPE_PARAMETER_LIST[$SMALLER_OP] typeParameter+)
     ;
 
@@ -866,16 +868,19 @@ expressionOrSpecificationstatement returns [Statement statement]
       )?
       (
         SEMICOLON
+        { $statement.setEndToken($SEMICOLON); }
       | { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(SEMICOLON, input)); }
         COMMA
-      )
+        { $statement.setEndToken($COMMA); }
+    )
     ;
 
 directiveStatement returns [Directive directive]
     : d=directive 
       { $directive=$d.directive; } 
       SEMICOLON
+      { $directive.setEndToken($SEMICOLON); }
     ;
 
 directive returns [Directive directive]
@@ -1059,6 +1064,7 @@ enumeration returns [SequenceEnumeration sequenceEnumeration]
         { $sequenceEnumeration.setExpressionList($expressions.expressionList); }
       )?
       RBRACE
+      { $sequenceEnumeration.setEndToken($RBRACE); }
     ;
 
 expressions returns [ExpressionList expressionList]
@@ -1146,6 +1152,7 @@ namedArguments returns [NamedArgumentList namedArgumentList]
         { $namedArgumentList.setSequencedArgument($sequencedArgument.sequencedArgument); }
       )?
       RBRACE
+      { $namedArgumentList.setEndToken($RBRACE); }
     ;
 
 sequencedArgument returns [SequencedArgument sequencedArgument]
@@ -1283,9 +1290,11 @@ specificationStart
 
 parExpression returns [Expression expression] 
     : LPAREN 
-      e=expression
-      { $expression = $e.expression; }
+      { $expression = new Expression($LPAREN); }
+      assignmentExpression
+      { $expression.setTerm($assignmentExpression.term); }
       RPAREN
+      { $expression.setEndToken($RPAREN); }
     ;
     
 positionalArguments returns [PositionalArgumentList positionalArgumentList]
@@ -1304,6 +1313,7 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
         )?
       )? 
       RPAREN
+      { $positionalArgumentList.setEndToken($RPAREN); }
     ;
 
 positionalArgument returns [PositionalArgument positionalArgument]
@@ -1679,6 +1689,7 @@ typeArguments returns [TypeArgumentList typeArgumentList]
         { $typeArgumentList.addType($ta2.type); }
       )* 
       LARGER_OP
+      { $typeArgumentList.setEndToken($LARGER_OP); }
     ;
 
 typeArgument returns [Type type]
