@@ -37,7 +37,13 @@ public final class Integer
         return instance(value % op.value);
     }
 
-    public ceylon.language.Integer inverse() {
+    @Override
+    public ceylon.language.Integer getPositiveValue() {
+        return this;
+    }
+
+    @Override
+    public ceylon.language.Integer getNegativeValue() {
         return instance(-value);
     }
 

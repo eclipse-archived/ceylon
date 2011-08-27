@@ -33,7 +33,13 @@ public final class Float
         return instance(Math.pow(value, op.value));
     }
 
-    public ceylon.language.Float inverse() {
+    @Override
+    public ceylon.language.Float getNegativeValue() {
+        return instance(-value);
+    }
+
+    @Override
+    public ceylon.language.Float getPositiveValue() {
         return instance(-value);
     }
 
