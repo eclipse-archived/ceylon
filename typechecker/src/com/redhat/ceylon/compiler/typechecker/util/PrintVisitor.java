@@ -84,7 +84,9 @@ public class PrintVisitor extends Visitor implements NaturalVisitor {
                 print(" <");
                 int i=0;
                 for (ProducedType pt: types) {
-                    print(pt.getProducedTypeName());
+                    if (pt!=null) {
+                    	print(pt.getProducedTypeName());
+                    }
                     if (++i!=types.size()) {
                         print(", ");
                     }
