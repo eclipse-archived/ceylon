@@ -546,7 +546,7 @@ extendedType returns [ExtendedType extendedType]
       (
         positionalArguments
         { InvocationExpression ie = new InvocationExpression(null);
-          ie.setPrimary( new ExtendedTypeExpression(null) );
+          ie.setPrimary( new ExtendedTypeExpression($EXTENDS) );
           ie.setPositionalArgumentList($positionalArguments.positionalArgumentList);
           $extendedType.setInvocationExpression(ie); }
        )
