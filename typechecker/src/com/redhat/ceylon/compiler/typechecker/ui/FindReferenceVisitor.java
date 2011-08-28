@@ -46,4 +46,12 @@ public class FindReferenceVisitor extends Visitor {
 		super.visit(that);
 	}
 		
+	@Override
+	public void visit(Tree.ImportMemberOrType that) {
+		if (that.getDeclarationModel()==declaration) {
+			nodes.add(that);
+		}
+		super.visit(that);
+	}
+		
 }
