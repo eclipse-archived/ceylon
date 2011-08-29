@@ -133,7 +133,7 @@ public abstract class Node {
     
     private Token getFirstChildToken() {
 		Token token=this.token;
-		for (Node child: children) {
+		for (Node child: getChildren()) {
 			Token tok = child.getFirstChildToken();
 			if (tok!=null && ( token==null || 
 					tok.getTokenIndex()<token.getTokenIndex() )) {
@@ -146,7 +146,7 @@ public abstract class Node {
     private Token getLastChildToken() {
 		Token token=this.endToken==null?
 				this.token:this.endToken;
-		for (Node child: children) {
+		for (Node child: getChildren()) {
 			Token tok = child.getLastChildToken();
 			if (tok!=null && ( token==null || 
 					tok.getTokenIndex()>token.getTokenIndex() )) {
@@ -227,6 +227,10 @@ public abstract class Node {
 		if (child!=null) {
 			children.add(child);
 		}
+	}
+
+	protected List<Node> getChildren() {
+		return children;
 	}
 
 }

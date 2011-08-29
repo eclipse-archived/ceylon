@@ -1717,14 +1717,13 @@ unionType returns [StaticType type]
     @init { UnionType ut=null; }
     : it1=intersectionType
       { $type = $it1.type;
-        ut = new UnionType($it1.type.getToken());
+        ut = new UnionType(null);
         ut.addStaticType($type); }
       ( 
         (
           UNION_OP
           it2=intersectionType
-          { ut.setEndToken($it2.type.getEndToken());
-            ut.addStaticType($it2.type); }
+          { ut.addStaticType($it2.type); }
         )+
         { $type = ut; }
       )?
@@ -1734,14 +1733,13 @@ intersectionType returns [StaticType type]
     @init { IntersectionType it=null; }
     : at1=abbreviatedType
       { $type = $at1.type;
-        it = new IntersectionType($at1.type.getToken());
+        it = new IntersectionType(null);
         it.addStaticType($type); }
       ( 
         (
           INTERSECTION_OP
           at2=abbreviatedType
-          { it.setEndToken($at2.type.getEndToken());
-            it.addStaticType($at2.type); }
+          { it.addStaticType($at2.type); }
         )+
         { $type = it; }
       )?

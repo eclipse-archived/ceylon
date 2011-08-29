@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.typechecker.tree;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.antlr.runtime.Token;
 
 public class CustomTree extends Tree {
@@ -201,5 +204,60 @@ public class CustomTree extends Tree {
             return FunctionalParameterDeclaration.class.getSimpleName();
         }
     }
+    
+    public static class UnionType extends Tree.UnionType {
+        public UnionType(Token token) {
+        	super(token);
+        }
+        @Override public String getNodeType() {
+            return UnionType.class.getSimpleName();
+        }
+        @Override
+        protected List<Node> getChildren() {
+        	return new ArrayList<Node>(getStaticTypes());
+        }
+    }
+    
+    public static class IntersectionType extends Tree.IntersectionType {
+        public IntersectionType(Token token) {
+        	super(token);
+        }
+        @Override public String getNodeType() {
+            return IntersectionType.class.getSimpleName();
+        }
+        @Override
+        protected List<Node> getChildren() {
+        	return new ArrayList<Node>(getStaticTypes());
+        }
+    }
+    
+    public static class ExpressionList extends Tree.ExpressionList {
+        public ExpressionList(Token token) {
+        	super(token);
+        }
+        @Override public String getNodeType() {
+            return SequencedArgument.class.getSimpleName();
+        }
+        @Override
+        protected List<Node> getChildren() {
+        	return new ArrayList<Node>(getExpressions());
+        }
+    }
+    
+    //deliberately don't do this one, so that the span of 
+    //a declaration doesn't include its annotations (but
+    //is that really what we want??
+    /*public static class AnnotationList extends Tree.AnnotationList {
+        public AnnotationList(Token token) {
+        	super(token);
+        }
+        @Override public String getNodeType() {
+            return SequencedArgument.class.getSimpleName();
+        }
+        @Override
+        protected List<Node> getChildren() {
+        	return new ArrayList<Node>(getAnnotations());
+        }
+    }*/
     
 }
