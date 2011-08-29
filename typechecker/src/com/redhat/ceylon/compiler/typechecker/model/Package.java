@@ -128,7 +128,9 @@ public class Package implements Scope {
                 result.put(d.getName(), d);
             }
         }
-    	result.putAll(unit.getMatchingImportedDeclarations(startingWith));
+        if (unit!=null) {
+        	result.putAll(unit.getMatchingImportedDeclarations(startingWith));
+        }
     	return result;
     }
 
