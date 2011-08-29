@@ -244,6 +244,18 @@ public class CustomTree extends Tree {
         }
     }
     
+    public static class ExtendedTypeExpression extends Tree.ExtendedTypeExpression {
+        public ExtendedTypeExpression(Token token) {
+        	super(token);
+        }
+        @Override public String getNodeType() {
+            return ExtendedTypeExpression.class.getSimpleName();
+        }
+        public void setExtendedType(SimpleType type) {
+        	getChildren().add(type);
+        }
+    }
+    
     //deliberately don't do this one, so that the span of 
     //a declaration doesn't include its annotations (but
     //is that really what we want??
