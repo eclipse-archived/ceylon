@@ -1714,30 +1714,34 @@ typeArgument returns [Type type]
     ;
     
 unionType returns [StaticType type]
-    @init { UnionType ut = new UnionType(null); }
+    @init { UnionType ut=null; }
     : it1=intersectionType
-      { $type = $it1.type; 
-        ut.addStaticType($type);}
+      { $type = $it1.type;
+        ut = new UnionType($it1.type.getToken());
+        ut.addStaticType($type); }
       ( 
         (
           UNION_OP
           it2=intersectionType
-          { ut.addStaticType($it2.type); }
+          { ut.setEndToken($it2.type.getEndToken());
+            ut.addStaticType($it2.type); }
         )+
         { $type = ut; }
       )?
     ;
 
 intersectionType returns [StaticType type]
-    @init { IntersectionType it = new IntersectionType(null); }
+    @init { IntersectionType it=null; }
     : at1=abbreviatedType
-      { $type = $at1.type; 
+      { $type = $at1.type;
+        it = new IntersectionType($at1.type.getToken());
         it.addStaticType($type); }
       ( 
         (
           INTERSECTION_OP
           at2=abbreviatedType
-          { it.addStaticType($at2.type); }
+          { it.setEndToken($at2.type.getEndToken());
+            it.addStaticType($at2.type); }
         )+
         { $type = it; }
       )?
