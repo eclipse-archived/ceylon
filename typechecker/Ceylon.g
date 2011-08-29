@@ -183,7 +183,7 @@ voidOrInferredMethodDeclaration returns [AnyMethod declaration]
           dec.setType(vm);
           $declaration = def; }
       | FUNCTION_MODIFIER
-        { FunctionModifier fm = new FunctionModifier($VOID_MODIFIER);
+        { FunctionModifier fm = new FunctionModifier($FUNCTION_MODIFIER);
           def = new MethodDefinition($FUNCTION_MODIFIER);
           dec = new MethodDeclaration($FUNCTION_MODIFIER);
           def.setType(fm);
