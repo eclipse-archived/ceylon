@@ -128,7 +128,7 @@ public abstract class Node {
 	private static String toEndLocation(Token token) {
 		return token.getLine() + ":" + 
 				(token.getCharPositionInLine()
-				+ token.getText().length());
+				+ token.getText().length()-1);
 	}
     
     private Token getFirstChildToken() {
