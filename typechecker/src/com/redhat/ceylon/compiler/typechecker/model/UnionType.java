@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import java.util.List;
+import java.util.Map;
 
 public class UnionType extends TypeDeclaration {
 
@@ -57,4 +58,15 @@ public class UnionType extends TypeDeclaration {
         }
     }
 
+    @Override
+    public Map<String, Declaration> getMatchingMemberDeclarations(String startingWith) {
+    	//TODO: this can result in the wrong parameter types, and the
+    	//      same bug also affects intersection types
+    	Map<String, Declaration> result = super.getMatchingMemberDeclarations(startingWith);
+		result.putAll(getCaseTypes().get(0).getDeclaration().getMatchingMemberDeclarations(startingWith));
+    	for (ProducedType ct: getCaseTypes()) {
+    		result.keySet().retainAll(ct.getDeclaration().getMatchingMemberDeclarations(startingWith).keySet());
+    	}
+    	return result;
+    }
 }
