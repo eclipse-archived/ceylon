@@ -359,6 +359,9 @@ public class ExpressionVisitor extends AbstractVisitor {
             if (se==null) {
                 that.getVariable().addError("missing resource specifier");
             }
+            else if (typedNode instanceof Tree.ValueModifier){
+                typedNode = se.getExpression();
+            }
         }
         checkAssignable(t, getCloseableDeclaration().getType(), typedNode, 
                 "resource must be closeable");
