@@ -42,7 +42,8 @@ public class PhasedUnit {
     private final String pathRelativeToSrcDir;
     private CeylonParser parser; 
 
-    public PhasedUnit(VirtualFile unitFile, VirtualFile srcDir, Tree.CompilationUnit cu, Package p, ModuleBuilder moduleBuilder, Context context) {
+    public PhasedUnit(VirtualFile unitFile, VirtualFile srcDir, Tree.CompilationUnit cu, 
+    		Package p, ModuleBuilder moduleBuilder, Context context) {
         this.compilationUnit = cu;
         this.pkg = p;
         this.fileName = unitFile.getName();
