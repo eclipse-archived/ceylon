@@ -8,7 +8,6 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -183,18 +182,6 @@ public class ClassDoc extends CeylonDoc {
 		close("td");
 		close("tr");
 	}
-
-	private String getDoc(Declaration decl) {
-	    for (Annotation a : decl.getAnnotations()){
-	        if(a.getName().equals("doc"))
-	            return unquote(a.getPositionalArguments().get(0));
-	    }
-        return "";
-    }
-
-    private String unquote(String string) {
-        return string.substring(1, string.length()-1);
-    }
 
     private void writeParameterList(List<ParameterList> parameterLists) throws IOException {
 		for(ParameterList lists : parameterLists){

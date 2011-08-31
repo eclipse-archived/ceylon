@@ -82,7 +82,7 @@ public class SummaryDoc extends CeylonDoc {
         if(c.getNameAsString().isEmpty())
             around("a href='index.html'", "default package");
         else
-            around("a href='"+join("/",c.getQualifiedName())+"/index.html'", c.getNameAsString());
+            around("a href='"+join("/",c.getName())+"/index.html'", c.getNameAsString());
         close("td");
         open("td");
         write(c.getNameAsString());
