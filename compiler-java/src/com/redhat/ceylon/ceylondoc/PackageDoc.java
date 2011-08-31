@@ -134,7 +134,11 @@ public class PackageDoc extends CeylonDoc {
 		link(c.getType());
 		close("td");
 		open("td");
-		write(c.getName());
+		String doc = getDoc(c);
+		if (doc == null || doc.isEmpty()) {
+			doc = c.getName();
+		}	
+		write(doc);
 		close("td");
 		close("tr");
 	}

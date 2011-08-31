@@ -28,7 +28,13 @@ public class Main {
             System.exit(1);
         }
         
-        TypeChecker typeChecker = new TypeCheckerBuilder().addSrcDirectory(new File(srcDir)).getTypeChecker();
+        File file = new File(srcDir);     
+        if (file.exists() == false) {
+            System.err.println(srcDir + " is not a file or directory");
+            System.exit(1);        	
+        }
+        
+        TypeChecker typeChecker = new TypeCheckerBuilder().addSrcDirectory(file).getTypeChecker();
         typeChecker.process();
         CeylonDocTool ceylonDocTool = new CeylonDocTool(typeChecker.getPhasedUnits().getPhasedUnits(), typeChecker.getContext().getModules());
         ceylonDocTool.setDestDir(destDir);

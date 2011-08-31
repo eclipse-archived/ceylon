@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -47,7 +48,7 @@ public abstract class CeylonDoc {
 	}
 	protected String getPathToBase(Package pkg) {
 		StringBuilder stringBuilder = new StringBuilder();
-		for(int i=pkg.getQualifiedName().size()-1;i>=0;i--){
+		for(int i=pkg.getName().size()-1;i>=0;i--){
 			stringBuilder.append("..");
 			if(i > 0)
 				stringBuilder.append("/");
@@ -81,8 +82,8 @@ public abstract class CeylonDoc {
 	}
 
 	protected void link(ClassOrInterface decl, boolean qualified) throws IOException {
-		String path = getPathToBase() + "/" + join("/", getPackage(decl).getQualifiedName())+"/"+getFileName(decl);
-		around("a href='"+path+"'", qualified ? join(".", decl.getQualifiedName()) : decl.getName());
+		String path = getPathToBase() + "/" + join("/", getPackage(decl).getName())+"/"+getFileName(decl);
+		around("a href='"+path+"'", qualified ? decl.getQualifiedNameString() : decl.getName());
 	}
 
 	protected abstract String getPathToBase();
@@ -97,7 +98,7 @@ public abstract class CeylonDoc {
 	}
 
 	protected File getFolder(Package pkg) {
-		File dir = new File(destDir, join("/",pkg.getQualifiedName()));
+		File dir = new File(destDir, join("/",pkg.getName()));
 		dir.mkdirs();
 		return dir;
 	}
@@ -161,5 +162,17 @@ public abstract class CeylonDoc {
 	    around("th", secondColumnTitle);
 	    close("tr");
 	}
-
+	
+	protected String getDoc(Declaration decl) {
+	    for (Annotation a : decl.getAnnotations()){
+	        if(a.getName().equals("doc"))
+	            return unquote(a.getPositionalArguments().get(0));
+	    }
+        return "";
+    }
+	
+   private String unquote(String string) {
+        return string.substring(1, string.length()-1);
+   }
+   
 }
