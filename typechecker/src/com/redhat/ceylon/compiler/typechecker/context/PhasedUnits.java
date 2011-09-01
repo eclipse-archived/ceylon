@@ -2,7 +2,10 @@ package com.redhat.ceylon.compiler.typechecker.context;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,8 +26,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
 public class PhasedUnits {
-    private List<PhasedUnit> phasedUnits = new ArrayList<PhasedUnit>();
-    private Map<VirtualFile, PhasedUnit> phasedUnitPerFile = new HashMap<VirtualFile, PhasedUnit>();
+    private Map<VirtualFile, PhasedUnit> phasedUnitPerFile = new LinkedHashMap<VirtualFile, PhasedUnit>();
     private Map<String, PhasedUnit> phasedUnitPerRelativePath = new HashMap<String, PhasedUnit>();
     private final Context context;
     private final ModuleBuilder moduleBuilder;
@@ -36,10 +38,14 @@ public class PhasedUnits {
     }
 
     public void addPhasedUnit(VirtualFile unitFile, PhasedUnit phasedUnit) {
-        //TODO do we need the ordering??, we could get rid of the List and use map.valueSet()
-        this.phasedUnits.add(phasedUnit);
         this.phasedUnitPerFile.put(unitFile, phasedUnit);
         this.phasedUnitPerRelativePath.put(phasedUnit.getPathRelativeToSrcDir(), phasedUnit);
+    }
+
+    public void removePhasedUnitForRelativePath(String relativePath) {
+	PhasedUnit phasedUnit = this.phasedUnitPerRelativePath.get(relativePath);
+        this.phasedUnitPerRelativePath.remove(relativePath);
+        this.phasedUnitPerFile.remove(phasedUnit.getUnitFile());
     }
 
     public ModuleBuilder getModuleBuilder() {
@@ -47,7 +53,9 @@ public class PhasedUnits {
     }
 
     public List<PhasedUnit> getPhasedUnits() {
-        return phasedUnits;
+	List<PhasedUnit> list = new ArrayList<PhasedUnit>();
+	list.addAll(phasedUnitPerFile.values());
+        return list;
     }
 
     public PhasedUnit getPhasedUnit(VirtualFile file) {

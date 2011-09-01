@@ -40,12 +40,14 @@ public class PhasedUnit {
     private final ModuleBuilder moduleBuilder;
     private final Context context;
     private final String pathRelativeToSrcDir;
-    private CeylonParser parser; 
+    private CeylonParser parser;
+    private VirtualFile unitFile;
 
     public PhasedUnit(VirtualFile unitFile, VirtualFile srcDir, Tree.CompilationUnit cu, 
     		Package p, ModuleBuilder moduleBuilder, Context context) {
         this.compilationUnit = cu;
         this.pkg = p;
+        this.unitFile = unitFile;
         this.fileName = unitFile.getName();
         this.pathRelativeToSrcDir = computeRelativePath(unitFile, srcDir);
         this.moduleBuilder = moduleBuilder;
@@ -141,6 +143,10 @@ public class PhasedUnit {
 
     public String getPathRelativeToSrcDir() {
         return pathRelativeToSrcDir;
+    }
+
+    public VirtualFile getUnitFile() {
+        return unitFile;
     }
 
     @Override
