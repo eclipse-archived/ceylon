@@ -1,8 +1,10 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 public class Unit {
@@ -11,6 +13,7 @@ public class Unit {
     List<Import> imports = new ArrayList<Import>();
     List<Declaration> declarations = new ArrayList<Declaration>();
     String filename;
+    Set<Unit> unitsDependingOn = new HashSet<Unit>();
 
     public List<Import> getImports() {
         return imports;
@@ -34,6 +37,11 @@ public class Unit {
 
     public void setFilename(String filename) {
         this.filename = filename;
+    }
+    
+    public Set<Unit> getUnitsDependingOn()
+    {
+      return unitsDependingOn;
     }
 
     @Override

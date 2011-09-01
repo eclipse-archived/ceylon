@@ -104,10 +104,13 @@ public class Package implements Scope {
         //this implements the rule that imports hide 
         //toplevel members of a package
         Declaration d = unit.getImportedDeclaration(name);
-        if (d!=null) {
-            return d;
+        if (d==null) {
+            d = getDirectMemberOrParameter(name);
         }
-        return getDirectMemberOrParameter(name);
+        if (d != null) {
+            d.getUnit().getUnitsDependingOn().add(unit);
+        }
+        return d;
     }
     
     @Override
