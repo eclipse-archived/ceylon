@@ -1,12 +1,33 @@
 @nomodel
 class BasicTypes() {
+  Natural privateNonCapturedAttrNatural;
+  Integer privateNonCapturedAttrInteger;
+  Float privateNonCapturedAttrFloat;
+  String privateNonCapturedAttrString;
+  Boolean privateNonCapturedAttrBoolean;
+  Character privateNonCapturedAttrCharacter;
+
+  Natural privateAttrNatural = 1;
+  Integer privateAttrInteger = +1;
+  Float privateAttrFloat = 1.0;
+  String privateAttrString = "a";
+  Boolean privateAttrBoolean = true;
+  Character privateAttrCharacter = `a`;
+
+  shared Natural sharedAttrNatural = 1;
+  shared Integer sharedAttrInteger = +1;
+  shared Float sharedAttrFloat = 1.0;
+  shared String sharedAttrString = "a";
+  shared Boolean sharedAttrBoolean = true;
+  shared Character sharedAttrCharacter = `a`;
+
   void m() {
-    Natural localAttrNatural;
-    Integer localAttrInteger;
-    Float localAttrFloat;
-    String localAttrString;
-    Boolean localAttrBoolean;
-    Character localAttrCharacter;
+    Natural localAttrNatural = privateAttrNatural;
+    Integer localAttrInteger = privateAttrInteger;
+    Float localAttrFloat = privateAttrFloat;
+    String localAttrString = privateAttrString;
+    Boolean localAttrBoolean = privateAttrBoolean;
+    Character localAttrCharacter = privateAttrCharacter;
     
     Natural? localAttrOptionalNatural;
     Integer? localAttrOptionalInteger;

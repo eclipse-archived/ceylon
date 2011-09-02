@@ -1,14 +1,74 @@
 package com.redhat.ceylon.compiler.test.structure.type;
 
 class BasicTypes {
+    private final long privateAttrNatural;
+    
+    private final long getPrivateAttrNatural() {
+        return this.privateAttrNatural;
+    }
+    private final long privateAttrInteger;
+    
+    private final long getPrivateAttrInteger() {
+        return this.privateAttrInteger;
+    }
+    private final double privateAttrFloat;
+    
+    private final double getPrivateAttrFloat() {
+        return this.privateAttrFloat;
+    }
+    private final .java.lang.String privateAttrString;
+    
+    private final .java.lang.String getPrivateAttrString() {
+        return this.privateAttrString;
+    }
+    private final boolean privateAttrBoolean;
+    
+    private final boolean getPrivateAttrBoolean() {
+        return this.privateAttrBoolean;
+    }
+    private final char privateAttrCharacter;
+    
+    private final char getPrivateAttrCharacter() {
+        return this.privateAttrCharacter;
+    }
+    private final long sharedAttrNatural;
+    
+    public final long getSharedAttrNatural() {
+        return this.sharedAttrNatural;
+    }
+    private final long sharedAttrInteger;
+    
+    public final long getSharedAttrInteger() {
+        return this.sharedAttrInteger;
+    }
+    private final double sharedAttrFloat;
+    
+    public final double getSharedAttrFloat() {
+        return this.sharedAttrFloat;
+    }
+    private final .java.lang.String sharedAttrString;
+    
+    public final .java.lang.String getSharedAttrString() {
+        return this.sharedAttrString;
+    }
+    private final boolean sharedAttrBoolean;
+    
+    public final boolean getSharedAttrBoolean() {
+        return this.sharedAttrBoolean;
+    }
+    private final char sharedAttrCharacter;
+    
+    public final char getSharedAttrCharacter() {
+        return this.sharedAttrCharacter;
+    }
     
     private final void m() {
-        final long localAttrNatural;
-        final long localAttrInteger;
-        final double localAttrFloat;
-        final .java.lang.String localAttrString;
-        final boolean localAttrBoolean;
-        final char localAttrCharacter;
+        final long localAttrNatural = getPrivateAttrNatural();
+        final long localAttrInteger = getPrivateAttrInteger();
+        final double localAttrFloat = getPrivateAttrFloat();
+        final .java.lang.String localAttrString = getPrivateAttrString();
+        final boolean localAttrBoolean = getPrivateAttrBoolean();
+        final char localAttrCharacter = getPrivateAttrCharacter();
         final ceylon.language.Natural localAttrOptionalNatural;
         final ceylon.language.Integer localAttrOptionalInteger;
         final ceylon.language.Float localAttrOptionalFloat;
@@ -66,5 +126,23 @@ class BasicTypes {
     }
     
     BasicTypes() {
+        final long privateNonCapturedAttrNatural;
+        final long privateNonCapturedAttrInteger;
+        final double privateNonCapturedAttrFloat;
+        final .java.lang.String privateNonCapturedAttrString;
+        final boolean privateNonCapturedAttrBoolean;
+        final char privateNonCapturedAttrCharacter;
+        this.privateAttrNatural = 1L;
+        this.privateAttrInteger = 1;
+        this.privateAttrFloat = 1.0;
+        this.privateAttrString = "a";
+        this.privateAttrBoolean = true;
+        this.privateAttrCharacter = 'a';
+        this.sharedAttrNatural = 1L;
+        this.sharedAttrInteger = 1;
+        this.sharedAttrFloat = 1.0;
+        this.sharedAttrString = "a";
+        this.sharedAttrBoolean = true;
+        this.sharedAttrCharacter = 'a';
     }
 }
