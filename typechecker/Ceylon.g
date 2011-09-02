@@ -65,7 +65,8 @@ importList returns [ImportList importList]
     ;
 
 importDeclaration returns [Import importDeclaration]
-    @init { ImportPath importPath=null; }
+    @init { ImportPath importPath=null; 
+            ImportMemberOrTypeList il=null; }
     : IMPORT 
       { $importDeclaration = new Import($IMPORT); } 
       ( 
@@ -80,15 +81,17 @@ importDeclaration returns [Import importDeclaration]
             importPath.setEndToken($pn2.identifier.getToken());} 
         )*
       )
-    //TODO: don't throw away the braces! (instead introduce an importElementList)
     LBRACE
+    { il = new ImportMemberOrTypeList($LBRACE);
+      $importDeclaration.setImportMemberOrTypeList(il); }
     ( 
-      ie1=importElement { $importDeclaration.addImportMemberOrType($ie1.importMemberOrType); } 
-      ( COMMA ie2=importElement { $importDeclaration.addImportMemberOrType($ie2.importMemberOrType); } )* 
-      ( COMMA iw=importWildcard { $importDeclaration.setImportWildcard($iw.importWildcard); } )?
-    | iw=importWildcard { $importDeclaration.setImportWildcard($iw.importWildcard); }
+      ie1=importElement { il.addImportMemberOrType($ie1.importMemberOrType); } 
+      ( COMMA ie2=importElement { il.addImportMemberOrType($ie2.importMemberOrType); } )* 
+      ( COMMA iw=importWildcard { il.setImportWildcard($iw.importWildcard); } )?
+    | iw=importWildcard { il.setImportWildcard($iw.importWildcard); }
     )
     RBRACE
+    { il.setEndToken($RBRACE); }
     ;
 
 importElement returns [ImportMemberOrType importMemberOrType]

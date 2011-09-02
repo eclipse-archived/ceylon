@@ -7,7 +7,8 @@ import org.antlr.runtime.Token;
 
 public class CustomTree extends Tree {
     
-    public static class AttributeDeclaration extends Tree.AttributeDeclaration {
+    public static class AttributeDeclaration 
+            extends Tree.AttributeDeclaration {
     	public AttributeDeclaration(Token token) {
     		super(token);
     	}
@@ -36,7 +37,8 @@ public class CustomTree extends Tree {
         }
     }
     
-    public static class MethodDeclaration extends Tree.MethodDeclaration {
+    public static class MethodDeclaration 
+            extends Tree.MethodDeclaration {
         public MethodDeclaration(Token token) {
         	super(token);
         }
@@ -71,7 +73,8 @@ public class CustomTree extends Tree {
         }
     }
     
-    public static class MethodDefinition extends Tree.MethodDefinition {
+    public static class MethodDefinition 
+            extends Tree.MethodDefinition {
         public MethodDefinition(Token token) {
         	super(token);
         }
@@ -99,7 +102,8 @@ public class CustomTree extends Tree {
         }
     }
     
-    public static class ClassDefinition extends Tree.ClassDefinition {
+    public static class ClassDefinition 
+            extends Tree.ClassDefinition {
         public ClassDefinition(Token token) {
         	super(token);
         }
@@ -145,7 +149,8 @@ public class CustomTree extends Tree {
         }
     }
     
-    public static class ValueParameterDeclaration extends Tree.ValueParameterDeclaration {
+    public static class ValueParameterDeclaration 
+            extends Tree.ValueParameterDeclaration {
         public ValueParameterDeclaration(Token token) {
         	super(token);
         }
@@ -174,7 +179,8 @@ public class CustomTree extends Tree {
         }
     }
     
-    public static class FunctionalParameterDeclaration extends Tree.FunctionalParameterDeclaration {
+    public static class FunctionalParameterDeclaration 
+            extends Tree.FunctionalParameterDeclaration {
         public FunctionalParameterDeclaration(Token token) {
         	super(token);
         }
@@ -205,7 +211,8 @@ public class CustomTree extends Tree {
         }
     }
     
-    public static class UnionType extends Tree.UnionType {
+    public static class UnionType 
+            extends Tree.UnionType {
         public UnionType(Token token) {
         	super(token);
         }
@@ -218,7 +225,8 @@ public class CustomTree extends Tree {
         }
     }
     
-    public static class IntersectionType extends Tree.IntersectionType {
+    public static class IntersectionType 
+            extends Tree.IntersectionType {
         public IntersectionType(Token token) {
         	super(token);
         }
@@ -231,7 +239,8 @@ public class CustomTree extends Tree {
         }
     }
     
-    public static class ExpressionList extends Tree.ExpressionList {
+    public static class ExpressionList 
+            extends Tree.ExpressionList {
         public ExpressionList(Token token) {
         	super(token);
         }
@@ -244,7 +253,22 @@ public class CustomTree extends Tree {
         }
     }
     
-    public static class ExtendedTypeExpression extends Tree.ExtendedTypeExpression {
+    public static class ImportList 
+            extends Tree.ImportList {
+        public ImportList(Token token) {
+            super(token);
+        }
+        @Override public String getNodeType() {
+            return ImportList.class.getSimpleName();
+        }
+        @Override
+        protected List<Node> getChildren() {
+            return new ArrayList<Node>(getImports());
+        }
+    }
+    
+    public static class ExtendedTypeExpression 
+            extends Tree.ExtendedTypeExpression {
         public ExtendedTypeExpression(Token token) {
         	super(token);
         }
