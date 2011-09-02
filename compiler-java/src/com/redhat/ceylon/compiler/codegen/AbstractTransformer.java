@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.antlr.runtime.Token;
-import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
