@@ -3920,7 +3920,7 @@ createItemMethod.intercept()
         <row>
             <entry><literal>+rhs</literal></entry>
             <entry></entry>
-            <entry><literal>rhs.positive</literal></entry>
+            <entry><literal>rhs.positiveValue</literal></entry>
             <entry></entry>
             <entry><literal>Invertable &lt;I&gt;</literal></entry>
             <entry><literal>I</literal></entry>
@@ -3929,7 +3929,7 @@ createItemMethod.intercept()
         <row>
             <entry><literal>-rhs</literal></entry>
             <entry>negation</entry>
-            <entry><literal>rhs.negative</literal></entry>
+            <entry><literal>rhs.negativeValue</literal></entry>
             <entry></entry>
             <entry><literal>Invertable &lt;I&gt;</literal></entry>
             <entry><literal>I</literal></entry>
