@@ -61,11 +61,12 @@ public class TypeVisitor extends AbstractVisitor {
         Package importedPackage = getPackage(that.getImportPath());
         if (importedPackage!=null) {
             Set<String> names = new HashSet<String>();
-            for (Tree.ImportMemberOrType member: that.getImportMemberOrTypes()) {
+            for (Tree.ImportMemberOrType member: that.getImportMemberOrTypeList()
+                    .getImportMemberOrTypes()) {
                 String name = importMember(member, importedPackage);
                 names.add(name);
             }
-            if (that.getImportWildcard()!=null) {
+            if (that.getImportMemberOrTypeList().getImportWildcard()!=null) {
                 importAllMembers(importedPackage, names);
             }
         }
