@@ -53,9 +53,9 @@ public class MethodDefinitionBuilder {
         return new MethodDefinitionBuilder(gen, null);
     }
     
-    public static MethodDefinitionBuilder getter(AbstractTransformer gen, String name, ProducedType attrType) {
+    public static MethodDefinitionBuilder getter(AbstractTransformer gen, String name, ProducedType attrType, boolean isGenericsType) {
         return new MethodDefinitionBuilder(gen, Util.getGetterName(name))
-            .resultType(attrType);
+            .resultType(attrType, isGenericsType);
     }
     
     public static MethodDefinitionBuilder getter(AbstractTransformer gen, String name, JCExpression attrType) {
@@ -63,9 +63,9 @@ public class MethodDefinitionBuilder {
             .resultType(attrType);
     }
     
-    public static MethodDefinitionBuilder setter(AbstractTransformer gen, String name, ProducedType attrType) {
+    public static MethodDefinitionBuilder setter(AbstractTransformer gen, String name, ProducedType attrType, boolean isGenericsType) {
         return new MethodDefinitionBuilder(gen, Util.getSetterName(name))
-            .parameter(0, name, attrType);
+            .parameter(0, name, attrType, isGenericsType);
     }
     
     public static MethodDefinitionBuilder setter(AbstractTransformer gen, String name, JCExpression attrType, List<JCAnnotation> annots) {
@@ -164,8 +164,8 @@ public class MethodDefinitionBuilder {
         return this;
     }
     
-    public MethodDefinitionBuilder parameter(long modifiers, String name, ProducedType paramType) {
-        JCExpression type = gen.makeJavaType(paramType);
+    public MethodDefinitionBuilder parameter(long modifiers, String name, ProducedType paramType, boolean isGenericsType) {
+        JCExpression type = gen.makeJavaType(paramType, isGenericsType ? AbstractTransformer.NO_ERASURE_TO_PRIMITIVE : 0);
         List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(paramType, true);
         return parameter(gen.make().VarDef(gen.make().Modifiers(modifiers, annots), gen.names().fromString(name), type, null));
     }
@@ -178,12 +178,12 @@ public class MethodDefinitionBuilder {
         gen.at(param);
         String name = param.getIdentifier().getText();
         ProducedType paramType = gen.actualType(param);
-        return parameter(FINAL, name, paramType);
+        return parameter(FINAL, name, paramType, false);
     }
 
     public MethodDefinitionBuilder parameter(Parameter param) {
         String name = param.getName();
-        return parameter(FINAL, name, param.getType());
+        return parameter(FINAL, name, param.getType(), false);
     }
 
     public MethodDefinitionBuilder isActual(boolean isActual) {
@@ -214,8 +214,8 @@ public class MethodDefinitionBuilder {
         }
     }
 
-    public MethodDefinitionBuilder resultType(ProducedType resultType) {
-        return resultType(resultType, 0);
+    public MethodDefinitionBuilder resultType(ProducedType resultType, boolean isGenericsType) {
+        return resultType(resultType, isGenericsType ? AbstractTransformer.NO_ERASURE_TO_PRIMITIVE : 0);
     }
 
     public MethodDefinitionBuilder resultType(ProducedType resultType, int flags) {

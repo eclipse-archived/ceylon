@@ -134,7 +134,7 @@ public class ClassDefinitionBuilder {
                             params.toList());
                     JCTree.JCStatement body;
                     if (!isVoid) {
-                        methodBuilder.resultType(method.getType());
+                        methodBuilder.resultType(method.getType(), false);
                         body = gen.make().Return(expr);
                     }else{
                         body = gen.make().Exec(expr);

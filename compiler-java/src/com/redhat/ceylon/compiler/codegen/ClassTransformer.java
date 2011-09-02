@@ -8,7 +8,10 @@ import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
@@ -73,7 +76,10 @@ public class ClassTransformer extends AbstractTransformer {
                 initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression());
             }
 
-            JCExpression type = makeJavaType(actualType(decl));
+            int flags = 0;
+            if(isGenericsImplementation(decl.getDeclarationModel()))
+                flags |= TYPE_PARAM;
+            JCExpression type = makeJavaType(actualType(decl), flags);
 
             if (useField) {
                 // A captured attribute gets turned into a field
@@ -99,11 +105,16 @@ public class ClassTransformer extends AbstractTransformer {
         }        
     }
     
+    private boolean isGenericsImplementation(TypedDeclaration decl) {
+        return ((TypedDeclaration)decl.getRefinedDeclaration()).getType().getDeclaration() instanceof TypeParameter;
+    }
+
     public JCTree.JCMethodDecl transform(AttributeSetterDefinition decl) {
         JCBlock body = statementGen().transform(decl.getBlock());
         String name = decl.getIdentifier().getText();
+        boolean isGenericsType = isGenericsImplementation(decl.getDeclarationModel());
         return MethodDefinitionBuilder
-            .setter(this, name, actualType(decl))
+            .setter(this, name, actualType(decl), isGenericsType)
             .modifiers(transformAttributeGetSetDeclFlags(decl))
             .block(body)
             .build();
@@ -113,7 +124,7 @@ public class ClassTransformer extends AbstractTransformer {
         String name = decl.getIdentifier().getText();
         JCBlock body = statementGen().transform(decl.getBlock());
         return MethodDefinitionBuilder
-            .getter(this, name, actualType(decl))
+            .getter(this, name, actualType(decl), isGenericsImplementation(decl.getDeclarationModel()))
             .modifiers(transformAttributeGetSetDeclFlags(decl))
             .block(body)
             .build();
@@ -191,7 +202,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         return MethodDefinitionBuilder
-            .getter(this, atrrName, actualType(decl))
+            .getter(this, atrrName, actualType(decl), isGenericsImplementation(decl.getDeclarationModel()))
             .modifiers(transformAttributeGetSetDeclFlags(decl))
             .isActual(isActual(decl))
             .block(body)
@@ -210,7 +221,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         return MethodDefinitionBuilder
-            .setter(this, atrrName, actualType(decl))
+            .setter(this, atrrName, actualType(decl), isGenericsImplementation(decl.getDeclarationModel()))
             .modifiers(transformAttributeGetSetDeclFlags(decl))
             .isActual(isActual(decl))
             .block(body)
@@ -232,7 +243,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
 
         if (!(def.getType() instanceof VoidModifier)) {
-            methodBuilder.resultType(actualType(def));
+            methodBuilder.resultType(actualType(def), false);
         }
         
         if (def instanceof Tree.MethodDefinition) {
@@ -253,7 +264,7 @@ public class ClassTransformer extends AbstractTransformer {
         String name = def.getIdentifier().getText();
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(gen(), name);
         
-        methodBuilder.parameter(FINAL, "$this", type);
+        methodBuilder.parameter(FINAL, "$this", type, false);
         for (Tree.Parameter param : def.getParameterLists().get(0).getParameters()) {
             methodBuilder.parameter(param);
         }
@@ -265,7 +276,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
 
         if (!(def.getType() instanceof VoidModifier)) {
-            methodBuilder.resultType(gen().actualType(def));
+            methodBuilder.resultType(gen().actualType(def), false);
         }
         
         // FIXME: this needs rewriting to map non-qualified refs to $this
