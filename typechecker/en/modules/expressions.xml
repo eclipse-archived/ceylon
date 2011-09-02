@@ -3942,7 +3942,7 @@ createItemMethod.intercept()
             <entry>sum</entry>
             <entry><literal>lhs.cast&lt;N&gt;() .plus(rhs.cast&lt;N&gt;())</literal></entry>
             <entry><literal>X satisfies Castable&lt;N&gt; &amp; Summable&lt;X&gt;</literal></entry>
-            <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Summable&lt;X&gt;</literal></entry>
+            <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Summable&lt;Y&gt;</literal></entry>
             <entry><literal>N of X|Y</literal></entry>
         </row>
         <row>
@@ -3950,7 +3950,7 @@ createItemMethod.intercept()
             <entry>difference</entry>
             <entry><literal>lhs.cast&lt;N&gt;() .minus(rhs.cast&lt;N&gt;())</literal></entry>
             <entry><literal>X satisfies Castable&lt;N&gt; &amp; Numeric&lt;X&gt;</literal></entry>
-            <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Numeric&lt;X&gt;</literal></entry>
+            <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Numeric&lt;Y&gt;</literal></entry>
             <entry><literal>N of X|Y</literal></entry>
         </row>
         <row>
@@ -3958,7 +3958,7 @@ createItemMethod.intercept()
             <entry>product</entry>
             <entry><literal>lhs.cast&lt;N&gt;() .times(rhs.cast&lt;N&gt;())</literal></entry>
             <entry><literal>X satisfies Castable&lt;N&gt; &amp; Numeric&lt;X&gt;</literal></entry>
-            <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Numeric&lt;X&gt;</literal></entry>
+            <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Numeric&lt;Y&gt;</literal></entry>
             <entry><literal>N of X|Y</literal></entry>
         </row>
         <row>
@@ -3966,7 +3966,7 @@ createItemMethod.intercept()
             <entry>quotient</entry>
             <entry><literal>lhs.cast&lt;N&gt;() .divided(rhs.cast&lt;N&gt;())</literal></entry>
             <entry><literal>X satisfies Castable&lt;N&gt; &amp; Numeric&lt;X&gt;</literal></entry>
-            <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Numeric&lt;X&gt;</literal></entry>
+            <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Numeric&lt;Y&gt;</literal></entry>
             <entry><literal>N of X|Y</literal></entry>
         </row>
         <row>
@@ -3974,7 +3974,7 @@ createItemMethod.intercept()
             <entry>remainder</entry>
             <entry><literal>lhs.cast&lt;N&gt;() .remainder(rhs.cast&lt;N&gt;())</literal></entry>
             <entry><literal>X satisfies Castable&lt;N&gt; &amp; Integral&lt;X&gt;</literal></entry>
-            <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Integral&lt;X&gt;</literal></entry>
+            <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Integral&lt;Y&gt;</literal></entry>
             <entry><literal>N of X|Y</literal></entry>
         </row>
         <row>
@@ -3982,7 +3982,7 @@ createItemMethod.intercept()
             <entry>power</entry>
             <entry><literal>lhs.cast&lt;N&gt;() .power(rhs.cast&lt;N&gt;())</literal></entry>
             <entry><literal>X satisfies Castable&lt;N&gt; &amp; Numeric&lt;X&gt;</literal></entry>
-            <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Numeric&lt;X&gt;</literal></entry>
+            <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Numeric&lt;Y&gt;</literal></entry>
             <entry><literal>N of X|Y</literal></entry>
         </row>
         
