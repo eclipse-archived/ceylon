@@ -71,14 +71,13 @@ importDeclaration returns [Import importDeclaration]
       { $importDeclaration = new Import($IMPORT); } 
       ( 
         pn1=packageName 
-        { importPath = new ImportPath($pn1.identifier.getToken());
+        { importPath = new ImportPath(null);
           importPath.addIdentifier($pn1.identifier); 
           $importDeclaration.setImportPath(importPath); } 
         ( 
           MEMBER_OP 
           pn2=packageName 
-          { importPath.addIdentifier($pn2.identifier); 
-            importPath.setEndToken($pn2.identifier.getToken());} 
+          { importPath.addIdentifier($pn2.identifier); } 
         )*
       )
     LBRACE

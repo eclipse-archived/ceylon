@@ -296,4 +296,18 @@ public class CustomTree extends Tree {
         }
     }*/
     
+    public static class ImportPath 
+            extends Tree.ImportPath {
+        public ImportPath(Token token) {
+            super(token);
+        }
+        @Override public String getNodeType() {
+            return ImportPath.class.getSimpleName();
+        }
+        @Override
+        protected List<Node> getChildren() {
+            return new ArrayList<Node>(getIdentifiers());
+        }
+    }
+
 }
