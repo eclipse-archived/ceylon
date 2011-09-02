@@ -1,22 +1,32 @@
 @nomodel
-void m() {
-    Natural n;
-    small Natural sn;
-    Integer i;
-    small Integer si;
-    Float f;
-    small Float sf;
-    String s;
-    Boolean b;
-    Character c;
+class BasicTypes() {
+  void m() {
+    Natural localAttrNatural;
+    Integer localAttrInteger;
+    Float localAttrFloat;
+    String localAttrString;
+    Boolean localAttrBoolean;
+    Character localAttrCharacter;
     
-    Natural? on;
-    small Natural? osn;
-    Integer? oi;
-    small Integer? osi;
-    Float? off;
-    small Float? osf;
-    String? os;
-    Boolean? ob;
-    Character? oc;
+    Natural? localAttrOptionalNatural;
+    Integer? localAttrOptionalInteger;
+    Float? localAttrOptionalFloat;
+    String? localAttrOptionalString;
+    Boolean? localAttrOptionalBoolean;
+    Character? localAttrOptionalCharacter;
+  }
+
+  Integer methodInteger(Integer i){ return i; }
+  Natural methodNatural(Natural i){ return i; }
+  Float methodFloat(Float i){ return i; }
+  String methodString(String i){ return i; }
+  Boolean methodBoolean(Boolean i){ return i; }
+  Character methodCharacter(Character i){ return i; }
+
+  Integer? methodOptionalInteger(Integer? i){ return i; }
+  Natural? methodOptionalNatural(Natural? i){ return i; }
+  Float? methodOptionalFloat(Float? i){ return i; }
+  String? methodOptionalString(String? i){ return i; }
+  Boolean? methodOptionalBoolean(Boolean? i){ return i; }
+  Character? methodOptionalCharacter(Character? i){ return i; }
 }

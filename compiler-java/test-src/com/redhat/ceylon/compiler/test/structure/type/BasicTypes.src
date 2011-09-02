@@ -1,29 +1,70 @@
 package com.redhat.ceylon.compiler.test.structure.type;
 
-final class m {
+class BasicTypes {
     
-    private m() {
+    private final void m() {
+        final long localAttrNatural;
+        final long localAttrInteger;
+        final double localAttrFloat;
+        final .java.lang.String localAttrString;
+        final boolean localAttrBoolean;
+        final char localAttrCharacter;
+        final ceylon.language.Natural localAttrOptionalNatural;
+        final ceylon.language.Integer localAttrOptionalInteger;
+        final ceylon.language.Float localAttrOptionalFloat;
+        final ceylon.language.String localAttrOptionalString;
+        final ceylon.language.Boolean localAttrOptionalBoolean;
+        final ceylon.language.Character localAttrOptionalCharacter;
     }
     
-    static void m() {
-        final long n;
-        final int sn;
-        final long i;
-        final int si;
-        final double f;
-        final float sf;
-        final .java.lang.String s;
-        final boolean b;
-        final char c;
-        
-        final .java.lang.Long on;
-        final .java.lang.Integer osn;
-        final .java.lang.Long oi;
-        final .java.lang.Integer osi;
-        final .java.lang.Float off;
-        final .java.lang.Float osf;
-        final .java.lang.String os;
-        final .java.lang.Boolean ob;
-        final .java.lang.Character oc;
+    private final long methodInteger(final long i) {
+        return i;
+    }
+    
+    private final long methodNatural(final long i) {
+        return i;
+    }
+    
+    private final double methodFloat(final double i) {
+        return i;
+    }
+    
+    private final .java.lang.String methodString(final .java.lang.String i) {
+        return i;
+    }
+    
+    private final boolean methodBoolean(final boolean i) {
+        return i;
+    }
+    
+    private final char methodCharacter(final char i) {
+        return i;
+    }
+    
+    private final ceylon.language.Integer methodOptionalInteger(final ceylon.language.Integer i) {
+        return i;
+    }
+    
+    private final ceylon.language.Natural methodOptionalNatural(final ceylon.language.Natural i) {
+        return i;
+    }
+    
+    private final ceylon.language.Float methodOptionalFloat(final ceylon.language.Float i) {
+        return i;
+    }
+    
+    private final ceylon.language.String methodOptionalString(final ceylon.language.String i) {
+        return i;
+    }
+    
+    private final ceylon.language.Boolean methodOptionalBoolean(final ceylon.language.Boolean i) {
+        return i;
+    }
+    
+    private final ceylon.language.Character methodOptionalCharacter(final ceylon.language.Character i) {
+        return i;
+    }
+    
+    BasicTypes() {
     }
 }
