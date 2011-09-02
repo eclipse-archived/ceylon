@@ -49,6 +49,9 @@ public class FileSystemVirtualFile implements VirtualFile {
 
     @Override
     public String getPath() {
+        if ('\\' == File.separatorChar){
+            return file.getPath().replace('\\', '/');
+        }
         return file.getPath();
     }
 
