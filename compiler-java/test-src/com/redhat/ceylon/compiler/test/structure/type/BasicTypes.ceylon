@@ -51,7 +51,18 @@ shared Boolean? globalAttrOptionalBoolean = null;
 shared Character? globalAttrOptionalCharacter = null;
 
 @nomodel
-class BasicTypes() {
+class BasicTypes(Natural paramNatural,
+                 Integer paramInteger,
+                 Float paramFloat,
+                 String paramString,
+                 Boolean paramBoolean,
+                 Character paramCharacter,
+                 Natural? paramOptionalNatural,
+                 Integer? paramOptionalInteger,
+                 Float? paramOptionalFloat,
+                 String? paramOptionalString,
+                 Boolean? paramOptionalBoolean,
+                 Character? paramOptionalCharacter) {
   Natural privateNonCapturedAttrNatural;
   Integer privateNonCapturedAttrInteger;
   Float privateNonCapturedAttrFloat;

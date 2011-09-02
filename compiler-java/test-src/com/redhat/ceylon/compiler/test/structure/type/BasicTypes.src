@@ -413,7 +413,7 @@ class BasicTypes {
         return i;
     }
     
-    BasicTypes() {
+    BasicTypes(long paramNatural, long paramInteger, double paramFloat, .java.lang.String paramString, boolean paramBoolean, char paramCharacter, ceylon.language.Natural paramOptionalNatural, ceylon.language.Integer paramOptionalInteger, ceylon.language.Float paramOptionalFloat, ceylon.language.String paramOptionalString, ceylon.language.Boolean paramOptionalBoolean, ceylon.language.Character paramOptionalCharacter) {
         final long privateNonCapturedAttrNatural;
         final long privateNonCapturedAttrInteger;
         final double privateNonCapturedAttrFloat;
