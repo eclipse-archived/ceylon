@@ -1,5 +1,113 @@
 package com.redhat.ceylon.compiler.test.structure.type;
 
+public final class globalMethodInteger {
+    
+    private globalMethodInteger() {
+    }
+    
+    public static long globalMethodInteger(final long i) {
+        return i;
+    }
+}
+public final class globalMethodNatural {
+    
+    private globalMethodNatural() {
+    }
+    
+    public static long globalMethodNatural(final long i) {
+        return i;
+    }
+}
+public final class globalMethodFloat {
+    
+    private globalMethodFloat() {
+    }
+    
+    public static double globalMethodFloat(final double i) {
+        return i;
+    }
+}
+public final class globalMethodString {
+    
+    private globalMethodString() {
+    }
+    
+    public static .java.lang.String globalMethodString(final .java.lang.String i) {
+        return i;
+    }
+}
+public final class globalMethodBoolean {
+    
+    private globalMethodBoolean() {
+    }
+    
+    public static boolean globalMethodBoolean(final boolean i) {
+        return i;
+    }
+}
+public final class globalMethodCharacter {
+    
+    private globalMethodCharacter() {
+    }
+    
+    public static char globalMethodCharacter(final char i) {
+        return i;
+    }
+}
+public final class globalMethodOptionalInteger {
+    
+    private globalMethodOptionalInteger() {
+    }
+    
+    public static ceylon.language.Integer globalMethodOptionalInteger(final ceylon.language.Integer i) {
+        return i;
+    }
+}
+public final class globalMethodOptionalNatural {
+    
+    private globalMethodOptionalNatural() {
+    }
+    
+    public static ceylon.language.Natural globalMethodOptionalNatural(final ceylon.language.Natural i) {
+        return i;
+    }
+}
+public final class globalMethodOptionalFloat {
+    
+    private globalMethodOptionalFloat() {
+    }
+    
+    public static ceylon.language.Float globalMethodOptionalFloat(final ceylon.language.Float i) {
+        return i;
+    }
+}
+public final class globalMethodOptionalString {
+    
+    private globalMethodOptionalString() {
+    }
+    
+    public static ceylon.language.String globalMethodOptionalString(final ceylon.language.String i) {
+        return i;
+    }
+}
+public final class globalMethodOptionalBoolean {
+    
+    private globalMethodOptionalBoolean() {
+    }
+    
+    public static ceylon.language.Boolean globalMethodOptionalBoolean(final ceylon.language.Boolean i) {
+        return i;
+    }
+}
+public final class globalMethodOptionalCharacter {
+    
+    private globalMethodOptionalCharacter() {
+    }
+    
+    public static ceylon.language.Character globalMethodOptionalCharacter(final ceylon.language.Character i) {
+        return i;
+    }
+}
 public final class globalAttrNatural {
     private static final long value = 1L;
     

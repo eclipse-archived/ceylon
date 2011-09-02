@@ -1,4 +1,30 @@
 @nomodel
+shared Integer globalMethodInteger(Integer i){ return i; }
+@nomodel
+shared Natural globalMethodNatural(Natural i){ return i; }
+@nomodel
+shared Float globalMethodFloat(Float i){ return i; }
+@nomodel
+shared String globalMethodString(String i){ return i; }
+@nomodel
+shared Boolean globalMethodBoolean(Boolean i){ return i; }
+@nomodel
+shared Character globalMethodCharacter(Character i){ return i; }
+
+@nomodel
+shared Integer? globalMethodOptionalInteger(Integer? i){ return i; }
+@nomodel
+shared Natural? globalMethodOptionalNatural(Natural? i){ return i; }
+@nomodel
+shared Float? globalMethodOptionalFloat(Float? i){ return i; }
+@nomodel
+shared String? globalMethodOptionalString(String? i){ return i; }
+@nomodel
+shared Boolean? globalMethodOptionalBoolean(Boolean? i){ return i; }
+@nomodel
+shared Character? globalMethodOptionalCharacter(Character? i){ return i; }
+
+@nomodel
 shared Natural globalAttrNatural = 1;
 @nomodel
 shared Integer globalAttrInteger = +1;
