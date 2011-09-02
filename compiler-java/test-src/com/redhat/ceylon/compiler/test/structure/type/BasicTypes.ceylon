@@ -1,4 +1,30 @@
 @nomodel
+shared Natural globalAttrNatural = 1;
+@nomodel
+shared Integer globalAttrInteger = +1;
+@nomodel
+shared Float globalAttrFloat = 1.0;
+@nomodel
+shared String globalAttrString = "a";
+@nomodel
+shared Boolean globalAttrBoolean = true;
+@nomodel
+shared Character globalAttrCharacter = `a`;
+
+@nomodel
+shared Natural? globalAttrOptionalNatural = null;
+@nomodel
+shared Integer? globalAttrOptionalInteger = null;
+@nomodel
+shared Float? globalAttrOptionalFloat = null;
+@nomodel
+shared String? globalAttrOptionalString = null;
+@nomodel
+shared Boolean? globalAttrOptionalBoolean = null;
+@nomodel
+shared Character? globalAttrOptionalCharacter = null;
+
+@nomodel
 class BasicTypes() {
   Natural privateNonCapturedAttrNatural;
   Integer privateNonCapturedAttrInteger;
@@ -7,6 +33,13 @@ class BasicTypes() {
   Boolean privateNonCapturedAttrBoolean;
   Character privateNonCapturedAttrCharacter;
 
+  Natural? privateNonCapturedAttrOptionalNatural;
+  Integer? privateNonCapturedAttrOptionalInteger;
+  Float? privateNonCapturedAttrOptionalFloat;
+  String? privateNonCapturedAttrOptionalString;
+  Boolean? privateNonCapturedAttrOptionalBoolean;
+  Character? privateNonCapturedAttrOptionalCharacter;
+
   Natural privateAttrNatural = 1;
   Integer privateAttrInteger = +1;
   Float privateAttrFloat = 1.0;
@@ -14,12 +47,26 @@ class BasicTypes() {
   Boolean privateAttrBoolean = true;
   Character privateAttrCharacter = `a`;
 
+  Natural? privateAttrOptionalNatural = null;
+  Integer? privateAttrOptionalInteger = null;
+  Float? privateAttrOptionalFloat = null;
+  String? privateAttrOptionalString = null;
+  Boolean? privateAttrOptionalBoolean = null;
+  Character? privateAttrOptionalCharacter = null;
+
   shared Natural sharedAttrNatural = 1;
   shared Integer sharedAttrInteger = +1;
   shared Float sharedAttrFloat = 1.0;
   shared String sharedAttrString = "a";
   shared Boolean sharedAttrBoolean = true;
   shared Character sharedAttrCharacter = `a`;
+
+  shared Natural? sharedAttrOptionalNatural = null;
+  shared Integer? sharedAttrOptionalInteger = null;
+  shared Float? sharedAttrOptionalFloat = null;
+  shared String? sharedAttrOptionalString = null;
+  shared Boolean? sharedAttrOptionalBoolean = null;
+  shared Character? sharedAttrOptionalCharacter = null;
 
   void m() {
     Natural localAttrNatural = privateAttrNatural;
@@ -29,12 +76,12 @@ class BasicTypes() {
     Boolean localAttrBoolean = privateAttrBoolean;
     Character localAttrCharacter = privateAttrCharacter;
     
-    Natural? localAttrOptionalNatural;
-    Integer? localAttrOptionalInteger;
-    Float? localAttrOptionalFloat;
-    String? localAttrOptionalString;
-    Boolean? localAttrOptionalBoolean;
-    Character? localAttrOptionalCharacter;
+    Natural? localAttrOptionalNatural = privateAttrOptionalNatural;
+    Integer? localAttrOptionalInteger = privateAttrOptionalInteger;
+    Float? localAttrOptionalFloat = privateAttrOptionalFloat;
+    String? localAttrOptionalString = privateAttrOptionalString;
+    Boolean? localAttrOptionalBoolean = privateAttrOptionalBoolean;
+    Character? localAttrOptionalCharacter = privateAttrOptionalCharacter;
   }
 
   Integer methodInteger(Integer i){ return i; }
