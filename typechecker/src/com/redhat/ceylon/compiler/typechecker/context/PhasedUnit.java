@@ -1,7 +1,11 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.redhat.ceylon.compiler.typechecker.analyzer.ControlFlowVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor;
+import com.redhat.ceylon.compiler.typechecker.analyzer.DependedUponVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleBuilder;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleVisitor;
@@ -42,6 +46,8 @@ public class PhasedUnit {
     private final String pathRelativeToSrcDir;
     private CeylonParser parser;
     private VirtualFile unitFile;
+    private final Set<String> dependentsOf = new HashSet<String>();
+
 
     public PhasedUnit(VirtualFile unitFile, VirtualFile srcDir, Tree.CompilationUnit cu, 
     		Package p, ModuleBuilder moduleBuilder, Context context) {
@@ -98,6 +104,11 @@ public class PhasedUnit {
         compilationUnit.visit(new TypeHierarchyVisitor());
     }
 
+    public void collectUnitDependencies(PhasedUnits phasedUnits) {
+        //System.out.println("Run collecting unit dependencies phase for " + fileName);
+        compilationUnit.visit(new DependedUponVisitor(this, phasedUnits));
+    }
+    
     public void analyseFlow() {
         //System.out.println("Validate control flow for " + fileName);
         compilationUnit.visit(new ControlFlowVisitor());
@@ -170,6 +181,13 @@ public class PhasedUnit {
 
     public CeylonParser getParser() {
       return parser;
+    }
+
+    /**
+     * @return the dependentsOf
+     */
+    public Set<String> getDependentsOf() {
+        return dependentsOf;
     }
 
 }

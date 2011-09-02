@@ -37,6 +37,11 @@ public class PhasedUnits {
         this.moduleBuilder.initCoreModules();
     }
 
+    public PhasedUnits(Context context, ModuleBuilder moduleBuilder) {
+        this.context = context;
+        this.moduleBuilder = moduleBuilder;
+    }
+    
     public void addPhasedUnit(VirtualFile unitFile, PhasedUnit phasedUnit) {
         this.phasedUnitPerFile.put(unitFile, phasedUnit);
         this.phasedUnitPerRelativePath.put(phasedUnit.getPathRelativeToSrcDir(), phasedUnit);
