@@ -220,4 +220,42 @@ public class StructureTest extends CompilerTest {
     public void testTypSequenceType(){
         compareWithJavaSource("type/SequenceType");
     }
+    
+    //
+    // import
+    
+    @Test
+    public void testImpImportAttrSingle(){
+        compareWithJavaSource("import_/ImportAttrSingle");
+    }
+    
+    @Test
+    public void testImpImportMethodSingle(){
+        compareWithJavaSource("import_/ImportMethodSingle");
+    }
+    
+    @Test
+    public void testImpImportTypeSingle(){
+        compareWithJavaSource("import_/ImportTypeSingle");
+    }
+    
+    @Test
+    public void testImpImportTypeMultiple(){
+        compareWithJavaSource("import_/ImportTypeMultiple");
+    }
+    
+    @Test
+    public void testImpImportTypeAlias(){
+        compareWithJavaSource("import_/ImportTypeAlias");
+    }
+    
+    @Test
+    public void testImpImportWildcard(){
+        compareWithJavaSource("import_/ImportWildcard");
+    }
+    
+    @Test
+    public void testImpImportJavaRuntimeTypeSingle(){
+        compareWithJavaSource("import_/ImportJavaRuntimeTypeSingle");
+    }
 }
