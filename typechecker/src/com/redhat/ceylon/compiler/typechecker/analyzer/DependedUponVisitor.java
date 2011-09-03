@@ -27,6 +27,7 @@ public class DependedUponVisitor extends Visitor {
 	
 	private void storeDependency(Declaration d)
 	{
+	    if (d!=null) {
 	    Unit declarationUnit = d.getUnit();
 	    if (declarationUnit != null)
 	    {
@@ -39,6 +40,7 @@ public class DependedUponVisitor extends Visitor {
                     dependedOnPhasedUnit.getDependentsOf().add(currentUnitName);        		    
         		}
 	    	}
+	    }
 	    }
 	}
 	
