@@ -20,6 +20,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.BoundKind;
 import com.sun.tools.javac.code.Symtab;
@@ -587,22 +588,36 @@ public abstract class AbstractTransformer implements Transformation {
      * Boxing
      */
     
-    protected JCExpression boxUnboxIfNecessary(JCExpression expr, ProducedType exprType, TypedDeclaration targetDecl) {
+    protected JCExpression boxUnboxIfNecessary(JCExpression javaExpr, Tree.Term expr, TypedDeclaration targetDecl) {
         ProducedType targetType = targetDecl.getType();
         boolean targetBoxed = isBoxed(targetDecl, targetType);
-        boolean exprBoxed = isBoxed(exprType);
+        ProducedType exprType = determineExpressionType(expr);
+        TypedDeclaration exprDeclaration = determinExpressionDeclaration(expr);
+        boolean exprBoxed;
+        if(exprDeclaration != null){
+            exprBoxed = isBoxed(exprDeclaration, exprDeclaration.getType());
+        }else
+            exprBoxed = isBoxed(exprType);
         if (targetBoxed && !exprBoxed) {
             if (isTypeParameter(targetType) || simplifyType(targetType).isExactly(exprType)) {
                 // box
-                expr = boxType(expr, exprType);
+                javaExpr = boxType(javaExpr, exprType);
             }
         } else if (!targetBoxed && exprBoxed) {
             if (isTypeParameter(exprType) || targetType.isExactly(simplifyType(exprType))) {
                 // unbox
-                expr = unboxType(expr, targetType);
+                javaExpr = unboxType(javaExpr, targetType);
             }
         }
-        return expr;
+        return javaExpr;
+    }
+
+    private TypedDeclaration determinExpressionDeclaration(Tree.Term expr) {
+        if(expr instanceof Tree.BaseMemberExpression){
+            TypedDeclaration declaration = (TypedDeclaration) ((Tree.BaseMemberExpression)expr).getDeclaration();
+            return Util.getTopmostRefinedDeclaration(declaration);
+        }
+        return null;
     }
 
     // isBoxed() is be the wrong name.
