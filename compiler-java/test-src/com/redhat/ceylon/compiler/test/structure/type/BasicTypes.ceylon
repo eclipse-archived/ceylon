@@ -135,3 +135,14 @@ class BasicTypes(Natural paramNatural,
   Boolean? methodOptionalBoolean(Boolean? i){ return i; }
   Character? methodOptionalCharacter(Character? i){ return i; }
 }
+@nomodel
+abstract class TypeParameterClass<ClassParam>(ClassParam classParam){
+ shared formal ClassParam attr;
+ shared formal ClassParam classParamMethod(ClassParam param);
+}
+
+@nomodel
+class IntegerParameterClass(Integer classParam) extends TypeParameterClass<Integer>(classParam) {
+ shared actual Integer attr = classParam;
+ shared actual Integer classParamMethod(Integer param){ return param; }
+}

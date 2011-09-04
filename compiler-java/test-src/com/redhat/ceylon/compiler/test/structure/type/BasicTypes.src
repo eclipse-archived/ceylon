@@ -452,3 +452,30 @@ class BasicTypes {
         this.sharedAttrOptionalCharacter = null;
     }
 }
+abstract class TypeParameterClass<ClassParam> {
+    
+    public abstract ClassParam getAttr();
+    
+    public abstract ClassParam classParamMethod(final ClassParam param);
+    
+    TypeParameterClass(ClassParam classParam) {
+    }
+}
+class IntegerParameterClass extends com.redhat.ceylon.compiler.test.structure.type.TypeParameterClass<ceylon.language.Integer> {
+    private final ceylon.language.Integer attr;
+    
+    @.java.lang.Override
+    public final ceylon.language.Integer getAttr() {
+        return this.attr;
+    }
+    
+    @.java.lang.Override
+    public final ceylon.language.Integer classParamMethod(final ceylon.language.Integer param) {
+        return param;
+    }
+    
+    IntegerParameterClass(long classParam) {
+        super(.ceylon.language.Integer.instance(classParam));
+        this.attr = .ceylon.language.Integer.instance(classParam);
+    }
+}
