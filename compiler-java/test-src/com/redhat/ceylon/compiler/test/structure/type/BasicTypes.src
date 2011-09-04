@@ -5,7 +5,7 @@ public final class globalMethodInteger {
     private globalMethodInteger() {
     }
     
-    public static long globalMethodInteger(final long i) {
+    public static int globalMethodInteger(final int i) {
         return i;
     }
 }
@@ -119,9 +119,9 @@ public final class globalAttrNatural {
     }
 }
 public final class globalAttrInteger {
-    private static final long value = 1;
+    private static final int value = 1;
     
-    public static long getGlobalAttrInteger() {
+    public static int getGlobalAttrInteger() {
         return value;
     }
     
@@ -234,9 +234,9 @@ class BasicTypes {
     private final long getPrivateAttrNatural() {
         return this.privateAttrNatural;
     }
-    private final long privateAttrInteger;
+    private final int privateAttrInteger;
     
-    private final long getPrivateAttrInteger() {
+    private final int getPrivateAttrInteger() {
         return this.privateAttrInteger;
     }
     private final double privateAttrFloat;
@@ -294,9 +294,9 @@ class BasicTypes {
     public final long getSharedAttrNatural() {
         return this.sharedAttrNatural;
     }
-    private final long sharedAttrInteger;
+    private final int sharedAttrInteger;
     
-    public final long getSharedAttrInteger() {
+    public final int getSharedAttrInteger() {
         return this.sharedAttrInteger;
     }
     private final double sharedAttrFloat;
@@ -352,7 +352,7 @@ class BasicTypes {
     
     private final void m() {
         final long localAttrNatural = getPrivateAttrNatural();
-        final long localAttrInteger = getPrivateAttrInteger();
+        final int localAttrInteger = getPrivateAttrInteger();
         final double localAttrFloat = getPrivateAttrFloat();
         final .java.lang.String localAttrString = getPrivateAttrString();
         final boolean localAttrBoolean = getPrivateAttrBoolean();
@@ -365,7 +365,7 @@ class BasicTypes {
         final ceylon.language.Character localAttrOptionalCharacter = getPrivateAttrOptionalCharacter();
     }
     
-    private final long methodInteger(final long i) {
+    private final int methodInteger(final int i) {
         return i;
     }
     
@@ -413,9 +413,9 @@ class BasicTypes {
         return i;
     }
     
-    BasicTypes(long paramNatural, long paramInteger, double paramFloat, .java.lang.String paramString, boolean paramBoolean, char paramCharacter, ceylon.language.Natural paramOptionalNatural, ceylon.language.Integer paramOptionalInteger, ceylon.language.Float paramOptionalFloat, ceylon.language.String paramOptionalString, ceylon.language.Boolean paramOptionalBoolean, ceylon.language.Character paramOptionalCharacter) {
+    BasicTypes(long paramNatural, int paramInteger, double paramFloat, .java.lang.String paramString, boolean paramBoolean, char paramCharacter, ceylon.language.Natural paramOptionalNatural, ceylon.language.Integer paramOptionalInteger, ceylon.language.Float paramOptionalFloat, ceylon.language.String paramOptionalString, ceylon.language.Boolean paramOptionalBoolean, ceylon.language.Character paramOptionalCharacter) {
         final long privateNonCapturedAttrNatural;
-        final long privateNonCapturedAttrInteger;
+        final int privateNonCapturedAttrInteger;
         final double privateNonCapturedAttrFloat;
         final .java.lang.String privateNonCapturedAttrString;
         final boolean privateNonCapturedAttrBoolean;
@@ -474,7 +474,7 @@ class IntegerParameterClass extends com.redhat.ceylon.compiler.test.structure.ty
         return param;
     }
     
-    IntegerParameterClass(long classParam) {
+    IntegerParameterClass(int classParam) {
         super(.ceylon.language.Integer.instance(classParam));
         this.attr = .ceylon.language.Integer.instance(classParam);
     }
