@@ -1,0 +1,33 @@
+@nomodel
+class Method() {
+    void abstract() {}
+    void assert() {}
+    void boolean() {}
+    void byte() {}
+    void char() {}
+    void const() {}
+    void default() {}
+    void do() {}
+    void double() {}
+    void enum() {}
+    void final() {}
+    void float() {}
+    void goto() {}
+    void implements() {}
+    void instanceof() {}
+    void int() {}
+    void long() {}
+    void native() {}
+    void new() {}
+    void package() {}
+    void private() {}
+    void protected() {}
+    void public() {}
+    void short() {}
+    void static() {}
+    void strictfp() {}
+    void synchronized() {}
+    void throws() {}
+    void transient() {}
+    void volatile() {}
+}

@@ -63,4 +63,30 @@ public class MiscTest extends CompilerTest {
         Boolean result = task.call();
         Assert.assertEquals("Compilation failed", Boolean.TRUE, result);
     }
+    
+    //
+    // Java keyword avoidance
+    // Note class names and generic type arguments are not a problem because
+    // in Ceylon they must begin with an upper case latter, but the Java
+    // keywords are all lowercase 
+    
+    @Test
+    public void testKeywordVariable(){
+        compareWithJavaSource("keyword/Variable");
+    }
+    
+    @Test
+    public void testKeywordAttribute(){
+        compareWithJavaSource("keyword/Attribute");
+    }
+    
+    @Test
+    public void testKeywordMethod(){
+        compareWithJavaSource("keyword/Method");
+    }
+    
+    @Test
+    public void testKeywordParameter(){
+        compareWithJavaSource("keyword/Parameter");
+    }
 }
