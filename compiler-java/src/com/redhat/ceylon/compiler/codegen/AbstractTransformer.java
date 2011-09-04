@@ -304,13 +304,8 @@ public abstract class AbstractTransformer implements Transformation {
         return type;
     }
     
-    protected ProducedType actualType(TypedDeclaration decl) {
-        ProducedType t = decl.getType().getTypeModel();
-        if (decl.getType() instanceof LocalModifier) {
-            LocalModifier m = (LocalModifier)(decl.getType());
-            t = m.getTypeModel();
-        }
-        return t;
+    protected ProducedType actualType(Tree.TypedDeclaration decl) {
+        return decl.getType().getTypeModel();
     }
 
     protected ProducedType toPType(com.sun.tools.javac.code.Type t) {
