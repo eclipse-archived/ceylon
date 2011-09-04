@@ -88,8 +88,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     JCExpression transformExpression(final Tree.Term expr, TypedDeclaration targetType) {
         JCExpression result = transformExpression(expr);
         
-        ProducedType exprType = determineExpressionType(expr);
-        result = boxUnboxIfNecessary(result, exprType, targetType);
+        result = boxUnboxIfNecessary(result, expr, targetType);
         
         return result;
     }
@@ -181,9 +180,12 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     JCExpression transformAssignment(Node op, Term leftTerm, Term rightTerm) {
         JCExpression result = null;
-        
+
+        // FIXME: can this be anything else than a Primary?
+        Declaration decl = ((Tree.Primary)leftTerm).getDeclaration();
+
         // right side is easy
-        JCExpression rhs = transformExpression(rightTerm, determineExpressionType(leftTerm));
+        JCExpression rhs = transformExpression(rightTerm, (TypedDeclaration) decl);
         
         // left side depends
         
@@ -194,9 +196,6 @@ public class ExpressionTransformer extends AbstractTransformer {
             expr = v.getSingleResult();
         }
         
-        // FIXME: can this be anything else than a Primary?
-        Declaration decl = ((Tree.Primary)leftTerm).getDeclaration();
-
         // FIXME: can this be anything else than a Value or a TypedDeclaration?
         boolean variable = false;
         if (decl instanceof Value) {
