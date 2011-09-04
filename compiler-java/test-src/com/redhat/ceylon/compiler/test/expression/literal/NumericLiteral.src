@@ -4,8 +4,8 @@ class NumericLiteral {
     
     public final void m() {
         final long n1 = 1L;
-        final int n2 = 1;
-        final int n3 = -1;
+        final long n2 = 1L;
+        final long n3 = -1L;
         final double n4 = 3.14159;
     }
     
