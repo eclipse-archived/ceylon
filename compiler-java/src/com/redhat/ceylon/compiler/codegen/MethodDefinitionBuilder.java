@@ -4,8 +4,10 @@ import static com.sun.tools.javac.code.Flags.ABSTRACT;
 import static com.sun.tools.javac.code.Flags.FINAL;
 import static com.sun.tools.javac.code.TypeTags.VOID;
 
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.tree.JCTree;
@@ -53,9 +55,9 @@ public class MethodDefinitionBuilder {
         return new MethodDefinitionBuilder(gen, null);
     }
     
-    public static MethodDefinitionBuilder getter(AbstractTransformer gen, String name, ProducedType attrType, boolean isGenericsType) {
+    public static MethodDefinitionBuilder getter(AbstractTransformer gen, String name, TypedDeclaration decl) {
         return new MethodDefinitionBuilder(gen, Util.getGetterName(name))
-            .resultType(attrType, isGenericsType);
+            .resultType(decl);
     }
     
     public static MethodDefinitionBuilder getter(AbstractTransformer gen, String name, JCExpression attrType) {
@@ -176,14 +178,12 @@ public class MethodDefinitionBuilder {
     
     public MethodDefinitionBuilder parameter(Tree.Parameter param) {
         gen.at(param);
-        String name = param.getIdentifier().getText();
-        ProducedType paramType = gen.actualType(param);
-        return parameter(FINAL, name, paramType, false);
+        return parameter(param.getDeclarationModel());
     }
 
     public MethodDefinitionBuilder parameter(Parameter param) {
         String name = param.getName();
-        return parameter(FINAL, name, param.getType(), false);
+        return parameter(FINAL, name, param.getType(), gen.isGenericsImplementation(param));
     }
 
     public MethodDefinitionBuilder isActual(boolean isActual) {
@@ -214,11 +214,11 @@ public class MethodDefinitionBuilder {
         }
     }
 
-    public MethodDefinitionBuilder resultType(ProducedType resultType, boolean isGenericsType) {
-        return resultType(resultType, isGenericsType ? AbstractTransformer.NO_ERASURE_TO_PRIMITIVE : 0);
+    public MethodDefinitionBuilder resultType(TypedDeclaration decl) {
+        return resultType(decl.getType(), gen.isGenericsImplementation(decl) ? AbstractTransformer.NO_ERASURE_TO_PRIMITIVE : 0);
     }
 
-    public MethodDefinitionBuilder resultType(ProducedType resultType, int flags) {
+    private MethodDefinitionBuilder resultType(ProducedType resultType, int flags) {
         this.resultType = resultType;
         this.resultTypeExpr = makeResultType(resultType, flags);
         return this;

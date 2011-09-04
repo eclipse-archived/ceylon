@@ -73,7 +73,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (!isFormal(decl) && !classBuilder.existsParam(attrName.toString())) {
             JCExpression initialValue = null;
             if (decl.getSpecifierOrInitializerExpression() != null) {
-                initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression());
+                initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), decl.getDeclarationModel());
             }
 
             int flags = 0;
@@ -105,10 +105,6 @@ public class ClassTransformer extends AbstractTransformer {
         }        
     }
     
-    private boolean isGenericsImplementation(TypedDeclaration decl) {
-        return ((TypedDeclaration)decl.getRefinedDeclaration()).getType().getDeclaration() instanceof TypeParameter;
-    }
-
     public JCTree.JCMethodDecl transform(AttributeSetterDefinition decl) {
         JCBlock body = statementGen().transform(decl.getBlock());
         String name = decl.getIdentifier().getText();
@@ -124,7 +120,7 @@ public class ClassTransformer extends AbstractTransformer {
         String name = decl.getIdentifier().getText();
         JCBlock body = statementGen().transform(decl.getBlock());
         return MethodDefinitionBuilder
-            .getter(this, name, actualType(decl), isGenericsImplementation(decl.getDeclarationModel()))
+            .getter(this, name, decl.getDeclarationModel())
             .modifiers(transformAttributeGetSetDeclFlags(decl))
             .block(body)
             .build();
@@ -202,7 +198,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         return MethodDefinitionBuilder
-            .getter(this, atrrName, actualType(decl), isGenericsImplementation(decl.getDeclarationModel()))
+            .getter(this, atrrName, decl.getDeclarationModel())
             .modifiers(transformAttributeGetSetDeclFlags(decl))
             .isActual(isActual(decl))
             .block(body)
@@ -243,7 +239,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
 
         if (!(def.getType() instanceof VoidModifier)) {
-            methodBuilder.resultType(actualType(def), false);
+            methodBuilder.resultType(def.getDeclarationModel());
         }
         
         if (def instanceof Tree.MethodDefinition) {
@@ -276,7 +272,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
 
         if (!(def.getType() instanceof VoidModifier)) {
-            methodBuilder.resultType(gen().actualType(def), false);
+            methodBuilder.resultType(def.getDeclarationModel());
         }
         
         // FIXME: this needs rewriting to map non-qualified refs to $this

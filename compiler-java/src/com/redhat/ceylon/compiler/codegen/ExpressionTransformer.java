@@ -85,7 +85,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return v.getSingleResult();
     }
 
-    JCExpression transformExpression(final Tree.Term expr, ProducedType targetType) {
+    JCExpression transformExpression(final Tree.Term expr, TypedDeclaration targetType) {
         JCExpression result = transformExpression(expr);
         
         ProducedType exprType = determineExpressionType(expr);
@@ -610,7 +610,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     JCExpression transformArg(Tree.PositionalArgument arg) {
-        return transformExpression(arg.getExpression(), refinedParameter(arg.getParameter()).getType());
+        return transformExpression(arg.getExpression(), arg.getParameter());
     }
 
     JCExpression transformArg(Tree.NamedArgument arg) {

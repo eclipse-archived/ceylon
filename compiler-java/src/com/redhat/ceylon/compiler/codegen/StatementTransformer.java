@@ -294,7 +294,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         JCExpression initialValue = null;
         if (decl.getSpecifierOrInitializerExpression() != null) {
-            initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), t);
+            initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), decl.getDeclarationModel());
         }
 
         JCExpression type = makeJavaType(t);
@@ -322,12 +322,7 @@ public class StatementTransformer extends AbstractTransformer {
         Tree.Expression expr = ret.getExpression();
         JCExpression returnExpr = null;
         if (expr != null) {
-            ProducedType targetType = null;
-            if (ret.getDeclaration() instanceof TypedDeclaration) {
-                targetType = ((TypedDeclaration)ret.getDeclaration()).getType();
-            }
-            ProducedType exprType = determineExpressionType(expr);
-            returnExpr = boxUnboxIfNecessary(expressionGen().transformExpression(expr), exprType, targetType);
+            returnExpr = expressionGen().transformExpression(expr.getTerm(), (TypedDeclaration) ret.getDeclaration());
         }
         return at(ret).Return(returnExpr);
     }

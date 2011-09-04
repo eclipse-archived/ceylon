@@ -134,7 +134,7 @@ public class ClassDefinitionBuilder {
                             params.toList());
                     JCTree.JCStatement body;
                     if (!isVoid) {
-                        methodBuilder.resultType(method.getType(), false);
+                        methodBuilder.resultType(method);
                         body = gen.make().Return(expr);
                     }else{
                         body = gen.make().Exec(expr);
@@ -266,16 +266,16 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
-    public ClassDefinitionBuilder parameter(String name, ProducedType paramType, boolean isCaptured) {
+    private ClassDefinitionBuilder parameter(String name, ProducedType paramType, Parameter parameter) {
         // Create a parameter for the constructor
-        JCExpression type = gen.makeJavaType(paramType);
+        JCExpression type = gen.makeJavaType(paramType, gen.isGenericsImplementation(parameter) ? AbstractTransformer.NO_ERASURE_TO_PRIMITIVE : 0);
         List<JCAnnotation> annots = gen.makeAtName(name);
         annots = annots.appendList(gen.makeJavaTypeAnnotations(paramType, true));
         JCVariableDecl var = gen.make().VarDef(gen.make().Modifiers(0, annots), gen.names().fromString(name), type, null);
         params.append(var);
         
         // Check if the parameter is used outside of the initializer
-        if (isCaptured) {
+        if (parameter.isCaptured()) {
             // If so we create a field for it initializing it with the parameter's value
             JCVariableDecl localVar = gen.make().VarDef(gen.make().Modifiers(FINAL | PRIVATE), gen.names().fromString(name), type , null);
             defs.append(localVar);
@@ -288,7 +288,7 @@ public class ClassDefinitionBuilder {
     public ClassDefinitionBuilder parameter(Tree.Parameter param) {
         gen.at(param);
         String name = param.getIdentifier().getText();
-        return parameter(name, param.getType().getTypeModel(), param.getDeclarationModel().isCaptured());
+        return parameter(name, param.getType().getTypeModel(), param.getDeclarationModel());
     }
     
     public ClassDefinitionBuilder defs(JCTree statement) {

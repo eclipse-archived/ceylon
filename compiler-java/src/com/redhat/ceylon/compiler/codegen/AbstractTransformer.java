@@ -13,13 +13,14 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedDeclaration;
+import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.BoundKind;
 import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.code.Type;
@@ -586,13 +587,16 @@ public abstract class AbstractTransformer implements Transformation {
      * Boxing
      */
     
-    protected JCExpression boxUnboxIfNecessary(JCExpression expr, ProducedType exprType, ProducedType targetType) {
-        if (isBoxed(targetType) && !isBoxed(exprType)) {
+    protected JCExpression boxUnboxIfNecessary(JCExpression expr, ProducedType exprType, TypedDeclaration targetDecl) {
+        ProducedType targetType = targetDecl.getType();
+        boolean targetBoxed = isBoxed(targetDecl, targetType);
+        boolean exprBoxed = isBoxed(exprType);
+        if (targetBoxed && !exprBoxed) {
             if (isTypeParameter(targetType) || simplifyType(targetType).isExactly(exprType)) {
                 // box
                 expr = boxType(expr, exprType);
             }
-        } else if (!isBoxed(targetType) && isBoxed(exprType)) {
+        } else if (!targetBoxed && exprBoxed) {
             if (isTypeParameter(exprType) || targetType.isExactly(simplifyType(exprType))) {
                 // unbox
                 expr = unboxType(expr, targetType);
@@ -607,7 +611,12 @@ public abstract class AbstractTransformer implements Transformation {
     private boolean isBoxed(ProducedType type) {
         return (type  != null) && (isOptional(type) || isTypeParameter(type));
     }
-    
+
+    private boolean isBoxed(TypedDeclaration decl, ProducedType type) {
+        decl = Util.getTopmostRefinedDeclaration(decl);
+        return (decl.getTypeDeclaration() instanceof TypeParameter) || isOptional(type);
+    }
+
     protected boolean isTypeParameter(ProducedType type) {
         return type.getDeclaration() instanceof TypeParameter;
     }
@@ -716,7 +725,12 @@ public abstract class AbstractTransformer implements Transformation {
         }
         return exprType;
     }
-    
+
+    protected boolean isGenericsImplementation(TypedDeclaration decl) {
+        return Util.getTopmostRefinedDeclaration(decl).getTypeDeclaration() instanceof TypeParameter;
+    }
+
+
     /*
      * Sequences
      */
