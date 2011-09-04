@@ -104,6 +104,8 @@ public class CeylonEnter extends Enter {
         loadCompiledModules();
         // load modules required by the typechecker
         modelLoader.loadRequiredModules(trees);
+        // resolve module dependencies
+        resolveModuleDependencies();
         // run the type checker
         typeCheck();
         // some debugging
@@ -123,6 +125,20 @@ public class CeylonEnter extends Enter {
             }
         }
         printGeneratorErrors();
+    }
+
+    // FIXME: this needs to be replaced when we deal with modules
+    private void resolveModuleDependencies() {
+        Modules modules = ceylonContext.getModules();
+        // every module depends on java.lang implicitely
+        Module javaModule = modelLoader.findOrCreateModule("java.lang");
+        // make sure java.lang is available
+        modelLoader.findOrCreatePackage(javaModule, "java.lang");
+        for(Module m : modules.getListOfModules()){
+            if(!m.getName().equals("java")){
+                m.getDependencies().add(javaModule);
+            }
+        }
     }
 
     private void loadCompiledModules() {
