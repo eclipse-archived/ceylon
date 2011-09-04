@@ -4,7 +4,9 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.sun.tools.javac.parser.Token;
 
@@ -108,5 +110,26 @@ public class Util {
 
     public static String getSimpleName(String name) {
         return name.substring(name.lastIndexOf('.') + 1);
+    }
+
+    public static TypedDeclaration getTopmostRefinedDeclaration(TypedDeclaration decl){
+        if(decl instanceof Parameter && decl.getContainer() instanceof Method){
+            // for some reason this isn't filled up properly for Parameter so we look up the method's refined decl
+            Method refinedMethod = (Method) getTopmostRefinedDeclaration((TypedDeclaration) decl.getContainer());
+            // shortcut if the method doesn't override anything
+            if(refinedMethod == decl.getContainer())
+                return decl;
+            if(refinedMethod.getParameterLists().size() != 1)
+                throw new RuntimeException("Multiple parameter lists not supported");
+            for(Parameter param : refinedMethod.getParameterLists().get(0).getParameters()){
+                if(param.getName().equals(decl.getName()))
+                    return param;
+            }
+            throw new RuntimeException("Can't find refined parameter: "+decl);
+        }
+        TypedDeclaration refinedDecl = (TypedDeclaration) decl.getRefinedDeclaration();
+        if(refinedDecl != null && refinedDecl != decl)
+            return getTopmostRefinedDeclaration(refinedDecl);
+        return decl;
     }
 }
