@@ -8,24 +8,24 @@ public class JavaThrower {
         
     }
     
-    public long throwException() throws Exception {
+    public boolean throwException() throws Exception {
         throw new Exception();
     }
     
-    public long throwThrowable() throws Throwable {
+    public boolean throwThrowable() throws Throwable {
         throw new Throwable();
     }
     
-    public long throwRuntimeException() throws RuntimeException {
+    public boolean throwRuntimeException() throws RuntimeException {
         throw new RuntimeException();
     }
     
-    public long throwError() throws Error {
+    public boolean throwError() throws Error {
         throw new Error();
     }
     
-    public long throwsMultiple() throws ClassNotFoundException, IOException {
-        return 0;
+    public boolean throwsMultiple() throws ClassNotFoundException, IOException {
+        return false;
     }
     
 }

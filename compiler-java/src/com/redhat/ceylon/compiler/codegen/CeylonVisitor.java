@@ -434,6 +434,14 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         append(gen.expressionGen().transformStringExpression(expr));
     }
     
+    public void visit(Tree.Throw throw_) {
+        append(gen.statementGen().transform(throw_));
+    }
+    
+    public void visit(Tree.TryCatchStatement t) {
+        append(gen.statementGen().transform(t));
+    }
+    
     /**
      * Gets all the results which were appended during the visit
      * @return The results

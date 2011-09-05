@@ -797,7 +797,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCExpression transform(Tree.BaseTypeExpression typeExp, List<JCExpression> typeArgs, List<JCExpression> args) {
         // A constructor
-        return at(typeExp).NewClass(null, typeArgs, makeIdent(typeExp.getIdentifier().getText()), args, null);
+        return at(typeExp).NewClass(null, typeArgs, makeJavaType(typeExp.getTypeModel(), CLASS_NEW), args, null);
     }
 
     public JCExpression transform(SequenceEnumeration value) {

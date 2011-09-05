@@ -188,6 +188,11 @@ public class StatementTest extends CompilerTest {
     }
     
     @Test
+    public void testTryExceptionAttr(){
+        compareWithJavaSource("trycatch/ExceptionAttr");
+    }
+    
+    @Test
     public void testTryBareThrow(){
         compareWithJavaSource("trycatch/Throw");
     }
@@ -208,8 +213,8 @@ public class StatementTest extends CompilerTest {
     }
     
     @Test
-    public void testTryThrowLocal(){
-        compareWithJavaSource("trycatch/ThrowLocal");
+    public void testTryThrowThrowable(){
+        compareWithJavaSource("trycatch/ThrowThrowable");
     }
     
     @Test
@@ -230,11 +235,6 @@ public class StatementTest extends CompilerTest {
     @Test
     public void testTryTryCatchSubclass(){
         compareWithJavaSource("trycatch/TryCatchSubclass");
-    }
-    
-    @Test
-    public void testTryTryCatchIntersection(){
-        compareWithJavaSource("trycatch/TryCatchIntersection");
     }
     
     @Test

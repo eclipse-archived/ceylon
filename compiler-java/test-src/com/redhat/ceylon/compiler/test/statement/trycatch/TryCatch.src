@@ -5,13 +5,13 @@ class TryCatch {
     private final void t() {
     }
     
-    private final void c(final .java.lang.RuntimeException e) {
+    private final void c(final .java.lang.Throwable e) {
     }
     
     private final void m() {
         try {
             t();
-        } catch (final .java.lang.RuntimeException e) {
+        } catch (final .ceylon.language.BaseException e) {
             c(e);
         }
     }
