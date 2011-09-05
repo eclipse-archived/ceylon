@@ -12,12 +12,12 @@ public class KlassMethodTypeParams {
 class GenericMethodInvocation {
     
     public final .java.lang.String m() {
-        final com.redhat.ceylon.compiler.test.expression.invoke.KlassMethodTypeParams k = new KlassMethodTypeParams();
+        final com.redhat.ceylon.compiler.test.expression.invoke.KlassMethodTypeParams k = new com.redhat.ceylon.compiler.test.expression.invoke.KlassMethodTypeParams();
         return k.<ceylon.language.String, ceylon.language.Natural>bar(.ceylon.language.String.instance("hello"), .ceylon.language.Natural.instance(1L)).toString();
     }
     
     public final .java.lang.String m2() {
-        final com.redhat.ceylon.compiler.test.expression.invoke.KlassMethodTypeParams k = new KlassMethodTypeParams();
+        final com.redhat.ceylon.compiler.test.expression.invoke.KlassMethodTypeParams k = new com.redhat.ceylon.compiler.test.expression.invoke.KlassMethodTypeParams();
         return new .ceylon.language.NamedArgumentCall<com.redhat.ceylon.compiler.test.expression.invoke.KlassMethodTypeParams>(k, .ceylon.language.String.instance("hello"), .ceylon.language.Natural.instance(1L)){
             
             public ceylon.language.String call$() {

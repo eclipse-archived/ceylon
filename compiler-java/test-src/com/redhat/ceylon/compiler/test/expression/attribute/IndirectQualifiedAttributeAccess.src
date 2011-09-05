@@ -18,6 +18,6 @@ class IndirectQualifiedAttributeAccess {
     
     IndirectQualifiedAttributeAccess() {
         this.b = true;
-        this.q = new IndirectQualifiedAttributeAccess();
+        this.q = new com.redhat.ceylon.compiler.test.expression.attribute.IndirectQualifiedAttributeAccess();
     }
 }

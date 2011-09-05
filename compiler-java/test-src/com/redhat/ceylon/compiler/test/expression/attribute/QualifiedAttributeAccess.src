@@ -30,11 +30,11 @@ class QualifiedAttributeAccess {
     }
     
     private final boolean m3() {
-        return new QualifiedAttributeAccess().getB();
+        return new com.redhat.ceylon.compiler.test.expression.attribute.QualifiedAttributeAccess().getB();
     }
     
     private final boolean m4() {
-        return new QualifiedAttributeAccess().getB2();
+        return new com.redhat.ceylon.compiler.test.expression.attribute.QualifiedAttributeAccess().getB2();
     }
     
     private final boolean m5() {
@@ -52,7 +52,7 @@ class QualifiedAttributeAccess {
     QualifiedAttributeAccess() {
         this.b = true;
         this.b2 = true;
-        this.q = new QualifiedAttributeAccess();
+        this.q = new com.redhat.ceylon.compiler.test.expression.attribute.QualifiedAttributeAccess();
     }
 }
 class Foo {
