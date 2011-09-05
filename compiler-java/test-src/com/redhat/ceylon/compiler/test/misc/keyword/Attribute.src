@@ -1,0 +1,187 @@
+package com.redhat.ceylon.compiler.test.misc.keyword;
+
+class Attribute {
+    private final boolean abstract;
+    
+    public final boolean getAbstract() {
+        return this.abstract;
+    }
+    private final boolean assert;
+    
+    public final boolean getAssert() {
+        return this.assert;
+    }
+    private final boolean boolean;
+    
+    public final boolean getBoolean() {
+        return this.boolean;
+    }
+    private final boolean byte;
+    
+    public final boolean getByte() {
+        return this.byte;
+    }
+    private final boolean char;
+    
+    public final boolean getChar() {
+        return this.char;
+    }
+    private final boolean const;
+    
+    public final boolean getConst() {
+        return this.const;
+    }
+    private final boolean default;
+    
+    public final boolean getDefault() {
+        return this.default;
+    }
+    private final boolean do;
+    
+    public final boolean getDo() {
+        return this.do;
+    }
+    private final boolean double;
+    
+    public final boolean getDouble() {
+        return this.double;
+    }
+    private final boolean enum;
+    
+    public final boolean getEnum() {
+        return this.enum;
+    }
+    private final boolean final;
+    
+    public final boolean getFinal() {
+        return this.final;
+    }
+    private final boolean float;
+    
+    public final boolean getFloat() {
+        return this.float;
+    }
+    private final boolean goto;
+    
+    public final boolean getGoto() {
+        return this.goto;
+    }
+    private final boolean implements;
+    
+    public final boolean getImplements() {
+        return this.implements;
+    }
+    private final boolean instanceof;
+    
+    public final boolean getInstanceof() {
+        return this.instanceof;
+    }
+    private final boolean int;
+    
+    public final boolean getInt() {
+        return this.int;
+    }
+    private final boolean long;
+    
+    public final boolean getLong() {
+        return this.long;
+    }
+    private final boolean native;
+    
+    public final boolean getNative() {
+        return this.native;
+    }
+    private final boolean new;
+    
+    public final boolean getNew() {
+        return this.new;
+    }
+    private final boolean package;
+    
+    public final boolean getPackage() {
+        return this.package;
+    }
+    private final boolean private;
+    
+    public final boolean getPrivate() {
+        return this.private;
+    }
+    private final boolean protected;
+    
+    public final boolean getProtected() {
+        return this.protected;
+    }
+    private final boolean public;
+    
+    public final boolean getPublic() {
+        return this.public;
+    }
+    private final boolean short;
+    
+    public final boolean getShort() {
+        return this.short;
+    }
+    private final boolean static;
+    
+    public final boolean getStatic() {
+        return this.static;
+    }
+    private final boolean strictfp;
+    
+    public final boolean getStrictfp() {
+        return this.strictfp;
+    }
+    private final boolean synchronized;
+    
+    public final boolean getSynchronized() {
+        return this.synchronized;
+    }
+    private final boolean throws;
+    
+    public final boolean getThrows() {
+        return this.throws;
+    }
+    private final boolean transient;
+    
+    public final boolean getTransient() {
+        return this.transient;
+    }
+    private final boolean volatile;
+    
+    public final boolean getVolatile() {
+        return this.volatile;
+    }
+    
+    Attribute() {
+        this.abstract = false;
+        this.assert = false;
+        this.boolean = false;
+        this.byte = false;
+        this.char = false;
+        this.const = false;
+        this.default = false;
+        this.do = false;
+        this.double = false;
+        this.enum = false;
+        this.final = false;
+        this.float = false;
+        this.goto = false;
+        this.implements = false;
+        this.instanceof = false;
+        this.int = false;
+        this.long = false;
+        this.native = false;
+        this.new = false;
+        this.package = false;
+        this.private = false;
+        this.protected = false;
+        this.public = false;
+        this.short = false;
+        this.static = false;
+        this.strictfp = false;
+        this.synchronized = false;
+        this.throws = false;
+        this.transient = false;
+        this.volatile = false;
+    }
+}
