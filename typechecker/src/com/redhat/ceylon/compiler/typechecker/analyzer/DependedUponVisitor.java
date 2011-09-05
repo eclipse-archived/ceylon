@@ -1,13 +1,9 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
-import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -22,25 +18,26 @@ public class DependedUponVisitor extends Visitor {
 	
 	private String getSrcFolderRelativePath(Unit u)
 	{
-	    return u.getPackage().getQualifiedNameString().replace('.', '/') + "/" + u.getFilename();
+	    return u.getPackage().getQualifiedNameString().replace('.', '/') + 
+	            "/" + u.getFilename();
 	}
 	
 	private void storeDependency(Declaration d)
 	{
 	    if (d!=null) {
-	    Unit declarationUnit = d.getUnit();
-	    if (declarationUnit != null)
-	    {
-		    String currentUnitName = getSrcFolderRelativePath(phasedUnit.getUnit());
-	    	String dependedOnUnitName = getSrcFolderRelativePath(d.getUnit());
-	    	if (! dependedOnUnitName.equals(currentUnitName))
-	    	{
-        		PhasedUnit dependedOnPhasedUnit = phasedUnits.getPhasedUnitFromRelativePath(dependedOnUnitName);
-        		if (dependedOnPhasedUnit != null) {
-                    dependedOnPhasedUnit.getDependentsOf().add(currentUnitName);        		    
-        		}
-	    	}
-	    }
+    	    Unit declarationUnit = d.getUnit();
+    	    if (declarationUnit != null)
+    	    {
+    		    String currentUnitName = getSrcFolderRelativePath(phasedUnit.getUnit());
+    	    	String dependedOnUnitName = getSrcFolderRelativePath(d.getUnit());
+    	    	if (! dependedOnUnitName.equals(currentUnitName))
+    	    	{
+            		PhasedUnit dependedOnPhasedUnit = phasedUnits.getPhasedUnitFromRelativePath(dependedOnUnitName);
+            		if (dependedOnPhasedUnit != null) {
+                        dependedOnPhasedUnit.getDependentsOf().add(currentUnitName);        		    
+            		}
+    	    	}
+    	    }
 	    }
 	}
 	
