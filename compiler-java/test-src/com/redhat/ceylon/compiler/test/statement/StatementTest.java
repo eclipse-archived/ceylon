@@ -203,6 +203,11 @@ public class StatementTest extends CompilerTest {
     }
     
     @Test
+    public void testTryThrowExceptionNamedArgs(){
+        compareWithJavaSource("trycatch/ThrowExceptionNamedArgs");
+    }
+    
+    @Test
     public void testTryThrowExceptionSubclass(){
         compareWithJavaSource("trycatch/ThrowExceptionSubclass");
     }
