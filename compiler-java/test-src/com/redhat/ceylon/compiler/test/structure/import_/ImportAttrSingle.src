@@ -1,0 +1,9 @@
+package com.redhat.ceylon.compiler.test.structure.import_;
+
+class ImportAttrSingle {
+
+    private void m() {
+        final boolean b = com.redhat.ceylon.compiler.test.structure.import_.pkg.f1.getF1();
+    }
+
+}
