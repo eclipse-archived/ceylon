@@ -38,7 +38,7 @@ class MethodIfIs {
     }
     
     private final com.redhat.ceylon.compiler.test.statement.conditional.Foo give() {
-        return new FooSub();
+        return new com.redhat.ceylon.compiler.test.statement.conditional.FooSub();
     }
     
     MethodIfIs() {

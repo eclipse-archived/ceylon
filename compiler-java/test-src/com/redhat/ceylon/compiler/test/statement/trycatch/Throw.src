@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.test.statement.trycatch;
 class Throw {
     
     private final void t() {
-        throw new java.lang.RuntimeException();
+        throw new ceylon.language.BaseException();
     }
     
     Throw() {

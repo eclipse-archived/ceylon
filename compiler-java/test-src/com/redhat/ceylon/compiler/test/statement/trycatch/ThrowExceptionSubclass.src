@@ -1,7 +1,9 @@
-class E extends .java.lang.RuntimeException {
+package com.redhat.ceylon.compiler.test.statement.trycatch;
+
+class E extends .ceylon.language.BaseException {
     
-    E(ceylon.language.String message, .java.lang.RuntimeException cause) {
-        super(message.toString(), cause);
+    E(ceylon.language.String message, .java.lang.Throwable cause) {
+        super(message, cause);
     }
 }
 class ThrowExceptionSubclass {

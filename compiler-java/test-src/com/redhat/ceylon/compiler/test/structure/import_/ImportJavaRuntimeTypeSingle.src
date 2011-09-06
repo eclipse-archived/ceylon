@@ -1,0 +1,11 @@
+package com.redhat.ceylon.compiler.test.structure.import_;
+
+class ImportJavaRuntimeTypeSingle {
+    
+    private final void m() {
+        new java.lang.Throwable();
+    }
+    
+    ImportJavaRuntimeTypeSingle() {
+    }
+}

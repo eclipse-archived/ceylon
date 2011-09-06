@@ -28,8 +28,8 @@ class QualifiedAttributeAssign {
     private final void m(final com.redhat.ceylon.compiler.test.expression.attribute.Foo f) {
         this.setB(false);
         this.setB2(false);
-        new QualifiedAttributeAssign().setB(true);
-        new QualifiedAttributeAssign().setB2(true);
+        new com.redhat.ceylon.compiler.test.expression.attribute.QualifiedAttributeAssign().setB(true);
+        new com.redhat.ceylon.compiler.test.expression.attribute.QualifiedAttributeAssign().setB2(true);
         getQ().setB(getQ().getB2());
         f.setB(f.getB());
     }
@@ -37,7 +37,7 @@ class QualifiedAttributeAssign {
     QualifiedAttributeAssign() {
         this.b = true;
         this.b2 = true;
-        this.q = new QualifiedAttributeAssign();
+        this.q = new com.redhat.ceylon.compiler.test.expression.attribute.QualifiedAttributeAssign();
     }
 }
 class Foo {

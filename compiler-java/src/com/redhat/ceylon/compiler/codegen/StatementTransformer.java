@@ -6,16 +6,23 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.CatchClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.FinallyClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Throw;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TryCatchStatement;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TryClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.util.Util;
+import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
+import com.sun.tools.javac.tree.JCTree.JCCatch;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
@@ -23,6 +30,7 @@ import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
+import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
 
 /**
@@ -329,6 +337,56 @@ public class StatementTransformer extends AbstractTransformer {
 
     JCStatement transform(Tree.SpecifierStatement op) {
         return at(op).Exec(expressionGen().transformAssignment(op, op.getBaseMemberExpression(), op.getSpecifierExpression().getExpression()));
+    }
+    
+    public JCStatement transform(Throw t) {
+        at(t);
+        Expression expr = t.getExpression();
+        final JCExpression exception;
+        if (expr == null) {// bare "throw;" stmt
+            exception = make().NewClass(null, List.<JCExpression>nil(),
+                    makeIdent("ceylon.language.BaseException"), List.<JCExpression>nil(),
+                    null);
+        } else {
+            exception = gen().expressionGen().transformExpression(expr);
+        }
+        return make().Throw(exception);
+    }
+    
+    public JCStatement transform(TryCatchStatement t) {
+        // TODO Support resources -- try(Usage u = ...) { ...
+        TryClause tryClause = t.getTryClause();
+        at(tryClause);
+        JCBlock tryBlock = transform(tryClause.getBlock());
+
+        final ListBuffer<JCCatch> catches = ListBuffer.<JCCatch>lb();
+        for (CatchClause catchClause : t.getCatchClauses()) {
+            at(catchClause);
+            java.util.List<ProducedType> exceptionTypes;
+            ProducedType exceptionType = catchClause.getVariable().getDeclarationModel().getType();
+            if (typeFact().isUnion(exceptionType)) {
+                exceptionTypes = exceptionType.getDeclaration().getCaseTypes();
+            } else {
+                exceptionTypes = List.<ProducedType>of(exceptionType);
+            }
+            for (ProducedType type : exceptionTypes) {
+                // catch blocks for each exception in the union
+                JCVariableDecl param = make().VarDef(make().Modifiers(Flags.FINAL), names().fromString(catchClause.getVariable().getIdentifier().getText()),
+                        makeJavaType(type, CLASS_NEW), null);
+                catches.add(make().Catch(param, transform(catchClause.getBlock())));
+            }
+        }
+
+        final JCBlock finallyBlock;
+        FinallyClause finallyClause = t.getFinallyClause();
+        if (finallyClause != null) {
+            at(finallyClause);
+            finallyBlock = transform(finallyClause.getBlock());
+        } else {
+            finallyBlock = null;
+        }
+
+        return at(t).Try(tryBlock, catches.toList(), finallyBlock);
     }
 
     private int transformLocalFieldDeclFlags(Tree.AttributeDeclaration cdecl) {

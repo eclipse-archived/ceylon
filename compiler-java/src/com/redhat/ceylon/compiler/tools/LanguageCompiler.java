@@ -307,5 +307,18 @@ public class LanguageCompiler extends JavaCompiler {
         }
         super.desugar(env, results);
     }
+    
+    protected void flow(Env<AttrContext> env, Queue<Env<AttrContext>> results) {
+        if (env.toplevel.sourcefile instanceof CeylonFileObject) {
+            try {
+                Context.SourceLanguage.push(Language.CEYLON);
+                super.flow(env, results);
+                return;
+            } finally {
+                Context.SourceLanguage.pop();
+            }
+        }
+        super.flow(env, results);   
+    }
 
 }
