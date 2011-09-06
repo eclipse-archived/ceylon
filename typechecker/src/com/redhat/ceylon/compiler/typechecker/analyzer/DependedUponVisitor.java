@@ -21,7 +21,7 @@ public class DependedUponVisitor extends Visitor {
 	    return u.getPackage().getQualifiedNameString().replace('.', '/') + 
 	            "/" + u.getFilename();
 	}
-	
+
 	private void storeDependency(Declaration d)
 	{
 	    if (d!=null) {
