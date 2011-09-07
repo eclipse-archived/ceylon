@@ -3,6 +3,8 @@ package com.redhat.ceylon.compiler.typechecker.context;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.antlr.runtime.CommonTokenStream;
+
 import com.redhat.ceylon.compiler.typechecker.analyzer.ControlFlowVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DependedUponVisitor;
@@ -45,10 +47,11 @@ public class PhasedUnit {
     private final String pathRelativeToSrcDir;
     private VirtualFile unitFile;
     private final Set<String> dependentsOf = new HashSet<String>();
+    private CommonTokenStream tokenStream;
 
 
     public PhasedUnit(VirtualFile unitFile, VirtualFile srcDir, Tree.CompilationUnit cu, 
-    		Package p, ModuleBuilder moduleBuilder, Context context) {
+    		Package p, ModuleBuilder moduleBuilder, Context context, CommonTokenStream tokenStream) {
         this.compilationUnit = cu;
         this.pkg = p;
         this.unitFile = unitFile;
@@ -56,8 +59,15 @@ public class PhasedUnit {
         this.pathRelativeToSrcDir = computeRelativePath(unitFile, srcDir);
         this.moduleBuilder = moduleBuilder;
         this.context = context;
+        this.tokenStream = tokenStream;
     }
 
+    @Deprecated
+    protected PhasedUnit(VirtualFile unitFile, VirtualFile srcDir, Tree.CompilationUnit cu, 
+            Package p, ModuleBuilder moduleBuilder, Context context) {
+        this(unitFile, srcDir, cu, p, moduleBuilder, context, null);
+    }
+    
     private String computeRelativePath(VirtualFile unitFile, VirtualFile srcDir) {
         final String rawRelativePath = unitFile.getPath().substring( srcDir.getPath().length() );
         if ( rawRelativePath.startsWith("/") ) {
@@ -182,6 +192,10 @@ public class PhasedUnit {
      */
     public Set<String> getDependentsOf() {
         return dependentsOf;
+    }
+    
+    public CommonTokenStream getTokenStream() {
+        return tokenStream;
     }
 
 }

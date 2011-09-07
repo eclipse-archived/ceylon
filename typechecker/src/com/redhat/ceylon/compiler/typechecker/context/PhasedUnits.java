@@ -109,10 +109,12 @@ public class PhasedUnits {
 
             //System.out.println("Parsing " + file.getName());
             CeylonLexer lexer = new CeylonLexer(new ANTLRInputStream(file.getInputStream()));
-            CeylonParser parser = new CeylonParser(new CommonTokenStream(lexer));
+            CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+            CeylonParser parser = new CeylonParser(tokenStream);
             Tree.CompilationUnit cu = parser.compilationUnit();
             PhasedUnit phasedUnit = new PhasedUnit(file, srcDir, cu, 
-                    moduleBuilder.getCurrentPackage(), moduleBuilder, context);
+                    moduleBuilder.getCurrentPackage(), moduleBuilder, 
+                    context, tokenStream);
             addPhasedUnit(file, phasedUnit);
 
             List<LexError> lexerErrors = lexer.getErrors();
