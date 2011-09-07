@@ -18,6 +18,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinitio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
+import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -73,7 +74,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (!isFormal(decl) && !classBuilder.existsParam(attrName.toString())) {
             JCExpression initialValue = null;
             if (decl.getSpecifierOrInitializerExpression() != null) {
-                initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), decl.getDeclarationModel());
+                initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), Util.isUnBoxed(decl));
             }
 
             int flags = 0;

@@ -85,10 +85,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         return v.getSingleResult();
     }
 
-    JCExpression transformExpression(final Tree.Term expr, TypedDeclaration targetType) {
+    JCExpression transformExpression(final Tree.Term expr, boolean wantsUnboxed) {
         JCExpression result = transformExpression(expr);
         
-        result = boxUnboxIfNecessary(result, expr, targetType);
+        result = boxUnboxIfNecessary(result, expr, wantsUnboxed);
         
         return result;
     }
@@ -185,7 +185,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         Declaration decl = ((Tree.Primary)leftTerm).getDeclaration();
 
         // right side is easy
-        JCExpression rhs = transformExpression(rightTerm, (TypedDeclaration) decl);
+        JCExpression rhs = transformExpression(rightTerm, Util.isUnBoxed(decl));
         
         // left side depends
         
@@ -609,7 +609,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     JCExpression transformArg(Tree.PositionalArgument arg) {
-        return transformExpression(arg.getExpression(), arg.getParameter());
+        return transformExpression(arg.getExpression(), Util.isUnBoxed(arg.getParameter()));
     }
 
     JCExpression transformArg(Tree.NamedArgument arg) {

@@ -13,14 +13,12 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.LocalModifier;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.BoundKind;
 import com.sun.tools.javac.code.Symtab;
@@ -599,48 +597,21 @@ public abstract class AbstractTransformer implements Transformation {
      * Boxing
      */
     
-    protected JCExpression boxUnboxIfNecessary(JCExpression javaExpr, Tree.Term expr, TypedDeclaration targetDecl) {
-        ProducedType targetType = targetDecl.getType();
-        boolean targetBoxed = isBoxed(targetDecl, targetType);
-        ProducedType exprType = determineExpressionType(expr);
-        TypedDeclaration exprDeclaration = determinExpressionDeclaration(expr);
-        boolean exprBoxed;
-        if(exprDeclaration != null){
-            exprBoxed = isBoxed(exprDeclaration, exprDeclaration.getType());
-        }else
-            exprBoxed = isBoxed(exprType);
-        if (targetBoxed && !exprBoxed) {
-            if (isTypeParameter(targetType) || simplifyType(targetType).isExactly(exprType)) {
-                // box
-                javaExpr = boxType(javaExpr, exprType);
-            }
-        } else if (!targetBoxed && exprBoxed) {
-            if (isTypeParameter(exprType) || targetType.isExactly(simplifyType(exprType))) {
-                // unbox
-                javaExpr = unboxType(javaExpr, targetType);
-            }
+    protected JCExpression boxUnboxIfNecessary(JCExpression javaExpr, Tree.Term expr, boolean wantsUnboxed) {
+        boolean targetBoxed = !wantsUnboxed;
+        ProducedType exprType = expr.getTypeModel();
+        boolean exprBoxed = !Util.isUnBoxed(expr);
+        // only box if the two differ
+        if(targetBoxed == exprBoxed)
+            return javaExpr;
+        if (targetBoxed) {
+            // box
+            javaExpr = boxType(javaExpr, exprType);
+        } else {
+            // unbox
+            javaExpr = unboxType(javaExpr, exprType);
         }
         return javaExpr;
-    }
-
-    private TypedDeclaration determinExpressionDeclaration(Tree.Term expr) {
-        if(expr instanceof Tree.BaseMemberExpression){
-            TypedDeclaration declaration = (TypedDeclaration) ((Tree.BaseMemberExpression)expr).getDeclaration();
-            return Util.getTopmostRefinedDeclaration(declaration);
-        }
-        return null;
-    }
-
-    // isBoxed() is be the wrong name.
-    // It's more like: IF we would assign a value to a
-    // variable of this type it would need to be boxed
-    private boolean isBoxed(ProducedType type) {
-        return (type  != null) && (isOptional(type) || isTypeParameter(type));
-    }
-
-    private boolean isBoxed(TypedDeclaration decl, ProducedType type) {
-        decl = Util.getTopmostRefinedDeclaration(decl);
-        return (decl.getTypeDeclaration() instanceof TypeParameter) || isOptional(type);
     }
 
     protected boolean isTypeParameter(ProducedType type) {
