@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.loader;
 
+import com.redhat.ceylon.compiler.codegen.BoxingDeclarationVisitor;
+import com.redhat.ceylon.compiler.codegen.BoxingVisitor;
 import com.redhat.ceylon.compiler.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.codegen.CeylonTransformer;
 import com.redhat.ceylon.compiler.codegen.CodeGenError;
@@ -189,7 +191,6 @@ public class CeylonEnter extends Enter {
         // moduleValidator.verifyModuleDependencyTree();
         // FIXME: what's that for?
         java.util.List<PhasedUnits> phasedUnitsOfDependencies = moduleValidator.getPhasedUnitsOfDependencies();
-
         for (PhasedUnit pu : listOfUnits) {
             pu.validateTree();
             pu.scanDeclarations();
@@ -205,6 +206,15 @@ public class CeylonEnter extends Enter {
         }
         for (PhasedUnit pu : listOfUnits) { 
             pu.analyseFlow();
+        }
+        BoxingDeclarationVisitor boxingDeclarationVisitor = new BoxingDeclarationVisitor(gen);
+        BoxingVisitor boxingVisitor = new BoxingVisitor(gen);
+        // Extra phases for the compiler
+        for (PhasedUnit pu : listOfUnits) {
+            pu.getCompilationUnit().visit(boxingDeclarationVisitor);
+        }
+        for (PhasedUnit pu : listOfUnits) {
+            pu.getCompilationUnit().visit(boxingVisitor);
         }
         for (PhasedUnit pu : listOfUnits) {
             pu.getCompilationUnit().visit(new JavacAssertionVisitor((CeylonPhasedUnit) pu){
