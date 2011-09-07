@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.lang.model.type.TypeKind;
 import javax.tools.JavaFileObject.Kind;
 
+import com.redhat.ceylon.compiler.codegen.BoxingDeclarationVisitor;
 import com.redhat.ceylon.compiler.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -31,6 +32,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
@@ -561,6 +563,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                     // now its parameters
                     setParameters(method, methodSymbol);
                     method.setType(obtainType(methodSymbol.getReturnType(), methodSymbol, method));
+                    markUnboxed(method, methodSymbol.getReturnType());
                     klass.getMembers().add(method);
                 }
             }
@@ -654,6 +657,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         value.setName(methodName);
         setMethodOrValueFlags(klass, methodSymbol, value);
         value.setType(obtainType(methodSymbol.getReturnType(), methodSymbol, klass));
+        markUnboxed(value, methodSymbol.getReturnType());
         klass.getMembers().add(value);
     }
 
@@ -719,9 +723,15 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 paramName = paramSymbol.name.toString();
             parameter.setName(paramName);
             parameter.setType(obtainType(paramSymbol.type, paramSymbol, (Scope) decl));
+            markUnboxed(parameter, paramSymbol.type);
             parameter.setDeclaration((Declaration) decl);
             parameters.getParameters().add(parameter);
         }
+    }
+
+    private void markUnboxed(TypedDeclaration decl, Type type) {
+        if(type.isPrimitive() || sameType(type, symtab.stringType))
+            decl.setAttribute(BoxingDeclarationVisitor.IS_UNBOXED, true);
     }
 
     @Override
@@ -746,6 +756,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             throw new RuntimeException("Failed to find toplevel attribute "+value.getName());
         
         value.setType(obtainType(meth.getReturnType(), meth, null));
+        markUnboxed(value, meth.getReturnType());
     }
 
     @Override
@@ -770,6 +781,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         // now its parameters
         setParameters(method, meth);
         method.setType(obtainType(meth.getReturnType(), meth, method));
+        markUnboxed(method, meth.getReturnType());
      }
     
     //
