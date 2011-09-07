@@ -1,9 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -111,21 +108,11 @@ public class PhasedUnits {
         if (file.getName().endsWith(".ceylon")) {
 
             //System.out.println("Parsing " + file.getName());
-            InputStream is = file.getInputStream();
-            ANTLRInputStream input = new ANTLRInputStream(is);
-            CeylonLexer lexer = new CeylonLexer(input);
-
-            CommonTokenStream tokens = new CommonTokenStream(lexer);
-
-            CeylonParser parser = new CeylonParser(tokens);
-            parser.compilationUnit();
-
-            com.redhat.ceylon.compiler.typechecker.model.Package p = moduleBuilder.getCurrentPackage();
-            /*CommonTree t = (CommonTree) r.getTree();
-            Tree.CompilationUnit cu = new CustomBuilder().buildCompilationUnit(t);*/
-            Tree.CompilationUnit cu = parser.getCompilationUnit();
-            PhasedUnit phasedUnit = new PhasedUnit(file, srcDir, cu, p, moduleBuilder, context);
-            phasedUnit.setParser(parser);
+            CeylonLexer lexer = new CeylonLexer(new ANTLRInputStream(file.getInputStream()));
+            CeylonParser parser = new CeylonParser(new CommonTokenStream(lexer));
+            Tree.CompilationUnit cu = parser.compilationUnit();
+            PhasedUnit phasedUnit = new PhasedUnit(file, srcDir, cu, 
+                    moduleBuilder.getCurrentPackage(), moduleBuilder, context);
             addPhasedUnit(file, phasedUnit);
 
             List<LexError> lexerErrors = lexer.getErrors();
