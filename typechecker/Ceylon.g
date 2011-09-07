@@ -19,12 +19,6 @@ options {
         return errors;
     }
     
-    private CompilationUnit compilationUnit;
-    
-    public CompilationUnit getCompilationUnit() {
-        return compilationUnit;
-    }
-    
 }
 
 @lexer::members {
@@ -40,8 +34,7 @@ options {
 }
 
 compilationUnit returns [CompilationUnit compilationUnit]
-    : { $compilationUnit = new CompilationUnit(null);
-        this.compilationUnit = $compilationUnit; }
+    : { $compilationUnit = new CompilationUnit(null); }
       ( 
         ca1=compilerAnnotations
         SEMICOLON
