@@ -21,10 +21,14 @@ public class FindReferenceVisitor extends Visitor {
 		return nodes;
 	}
 	
+	protected boolean equals(Declaration x, Declaration y) {
+	    return x==y;
+	}
+	
 	@Override
 	public void visit(Tree.MemberOrTypeExpression that) {
 		//TODO: handle refinement!
-		if (that.getDeclaration()==declaration) {
+		if (equals(that.getDeclaration(), declaration)) {
 			nodes.add(that);
 		}
 		super.visit(that);
@@ -32,7 +36,7 @@ public class FindReferenceVisitor extends Visitor {
 		
 	@Override
 	public void visit(Tree.NamedArgument that) {
-		if (that.getParameter()==declaration) {
+		if (equals(that.getParameter(), declaration)) {
 			nodes.add(that);
 		}
 		super.visit(that);
@@ -40,15 +44,18 @@ public class FindReferenceVisitor extends Visitor {
 		
 	@Override
 	public void visit(Tree.Type that) {
-		if (that.getTypeModel().getDeclaration()==declaration) {
+		if (equals(that.getTypeModel().getDeclaration(), declaration)) {
 			nodes.add(that);
 		}
 		super.visit(that);
 	}
-		
+	
+	/*@Override
+	public void visit(Tree.SyntheticVariable that) {}*/
+
 	@Override
 	public void visit(Tree.ImportMemberOrType that) {
-		if (that.getDeclarationModel()==declaration) {
+		if (equals(that.getDeclarationModel(), declaration)) {
 			nodes.add(that);
 		}
 		super.visit(that);
