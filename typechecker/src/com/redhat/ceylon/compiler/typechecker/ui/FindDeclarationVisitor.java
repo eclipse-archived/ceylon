@@ -18,9 +18,13 @@ public class FindDeclarationVisitor extends Visitor {
 		return declarationNode;
 	}
 	
+    protected boolean equals(Declaration x, Declaration y) {
+        return x==y;
+    }
+    
 	@Override
 	public void visit(Tree.Declaration that) {
-		if (that.getDeclarationModel()==declaration) {
+		if (equals(that.getDeclarationModel(),declaration)) {
 			declarationNode = that;
 		}
 		super.visit(that);
