@@ -82,6 +82,8 @@ class Operators() {
     @error value x26 = 1.2..3.4;
     
     @type["Entry<Natural,Operators.X>"] value x27 = 0->X();
+    @type["Operators.X"] value x27item = x27.item;
+    @type["Natural"] value x27key = x27.key;
     
     @error value x28 = 0->nothing;
     
