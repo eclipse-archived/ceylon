@@ -93,6 +93,12 @@ public class BoxingVisitor extends Visitor {
         propagateFromTerm(that, that.getTerm());
     }
 
+    @Override
+    public void visit(NotOp that) {
+        super.visit(that);
+        propagateFromTerm(that, that.getTerm());
+    }
+
     private void propagateFromDeclaration(Node that, Declaration term) {
         if(Util.isUnBoxed(term))
             markUnboxed(that);
