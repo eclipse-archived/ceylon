@@ -327,6 +327,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         assignOp.setRightTerm(newOp);
         assignOp.setTypeModel(op.getTypeModel());
         newOp.setTypeModel(op.getTypeModel());
+
+        if(Util.isUnBoxed(op))
+            Util.markUnBoxed(newOp);
         return transform(assignOp);
     }
 

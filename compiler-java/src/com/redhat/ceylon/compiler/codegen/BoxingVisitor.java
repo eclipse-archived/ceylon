@@ -101,6 +101,20 @@ public class BoxingVisitor extends Visitor {
         super.visit(that);
         propagateFromTerm(that, that.getTerm());
     }
+    
+    @Override
+    public void visit(LogicalOp that) {
+        super.visit(that);
+        // this is not conditional
+        markUnboxed(that);
+    }
+
+    @Override
+    public void visit(LogicalAssignmentOp that) {
+        super.visit(that);
+        // this is not conditional
+        markUnboxed(that);
+    }
 
     private void propagateFromDeclaration(Node that, Declaration term) {
         if(Util.isUnBoxed(term))
