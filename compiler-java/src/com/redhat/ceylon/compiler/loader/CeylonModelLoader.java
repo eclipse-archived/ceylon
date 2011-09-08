@@ -731,7 +731,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
 
     private void markUnboxed(TypedDeclaration decl, Type type) {
         if(type.isPrimitive() || sameType(type, symtab.stringType))
-            decl.setAttribute(BoxingDeclarationVisitor.IS_UNBOXED, true);
+            Util.markUnBoxed(decl);
     }
 
     @Override

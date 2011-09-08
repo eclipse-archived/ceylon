@@ -17,7 +17,6 @@ import com.redhat.ceylon.compiler.util.Util;
 
 public class BoxingDeclarationVisitor extends Visitor {
     
-    public final static Object IS_UNBOXED = new Object(){ public String toString() {return "IS_UNBOXED";};};
     private AbstractTransformer transformer;
     
     public BoxingDeclarationVisitor(AbstractTransformer transformer){
@@ -31,12 +30,12 @@ public class BoxingDeclarationVisitor extends Visitor {
         Method method = that.getDeclarationModel();
         Method refinedMethod = (Method) Util.getTopmostRefinedDeclaration(method);
         if(isPrimitive(method, refinedMethod))
-            method.setAttribute(IS_UNBOXED, true);
+            Util.markUnBoxed(method);
         Iterator<Parameter> parameters = method.getParameterLists().get(0).getParameters().iterator();
         for(Parameter refinedParam : refinedMethod.getParameterLists().get(0).getParameters()){
             Parameter param = parameters.next();
             if(isPrimitive(param, refinedParam))
-                param.setAttribute(IS_UNBOXED, true);
+                Util.markUnBoxed(param);
         }
     }
     
@@ -47,7 +46,7 @@ public class BoxingDeclarationVisitor extends Visitor {
         List<Parameter> parameters = klass.getParameterLists().get(0).getParameters();
         for(Parameter param : parameters){
             if(isPrimitive(param, param))
-                param.setAttribute(IS_UNBOXED, true);
+                Util.markUnBoxed(param);
         }
     }
     
@@ -62,7 +61,7 @@ public class BoxingDeclarationVisitor extends Visitor {
         TypedDeclaration declaration = that.getDeclarationModel();
         TypedDeclaration refinedDeclaration = Util.getTopmostRefinedDeclaration(declaration);
         if(isPrimitive(declaration, refinedDeclaration))
-            declaration.setAttribute(IS_UNBOXED, true);
+            Util.markUnBoxed(declaration);
     }
 
     @Override
@@ -70,6 +69,6 @@ public class BoxingDeclarationVisitor extends Visitor {
         super.visit(that);
         TypedDeclaration declaration = that.getDeclarationModel();
         if(isPrimitive(declaration, declaration))
-            declaration.setAttribute(IS_UNBOXED, true);
+            Util.markUnBoxed(declaration);
     }
 }

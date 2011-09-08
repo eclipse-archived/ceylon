@@ -5,8 +5,11 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExpressionStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.LogicalAssignmentOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.LogicalOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NegativeOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NotOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositiveOp;
@@ -110,7 +113,7 @@ public class BoxingVisitor extends Visitor {
     }
 
     private void markUnboxed(Node that) {
-        that.setAttribute(BoxingDeclarationVisitor.IS_UNBOXED, true);
+        Util.markUnBoxed(that);
     }
 
 }

@@ -135,12 +135,22 @@ public class Util {
             return getTopmostRefinedDeclaration(refinedDecl);
         return decl;
     }
-    
+
+    private final static Object IS_UNBOXED = new Object(){ public String toString() {return "IS_UNBOXED";};};
+
     public static boolean isUnBoxed(Node node){
-        return node.hasAttribute(BoxingDeclarationVisitor.IS_UNBOXED);
+        return node.hasAttribute(IS_UNBOXED);
     }
 
     public static boolean isUnBoxed(Declaration decl){
-        return decl.hasAttribute(BoxingDeclarationVisitor.IS_UNBOXED);
+        return decl.hasAttribute(IS_UNBOXED);
+    }
+
+    public static void markUnBoxed(Node node) {
+        node.setAttribute(IS_UNBOXED, true);
+    }
+
+    public static void markUnBoxed(Declaration decl) {
+        decl.setAttribute(IS_UNBOXED, true);
     }
 }
