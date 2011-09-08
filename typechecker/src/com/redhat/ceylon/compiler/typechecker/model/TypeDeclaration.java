@@ -180,9 +180,9 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
                 }
             //}
         }
-        ProducedType et = getExtendedType();
+        TypeDeclaration et = getExtendedTypeDeclaration();
         if (et!=null) {
-            for (Declaration d: et.getDeclaration().getMembers(name, visited)) {
+            for (Declaration d: et.getMembers(name, visited)) {
                 if (d.isShared() && isResolvable(d)) {
                     members.add(d);
                 }
@@ -214,9 +214,36 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
                 return true;
             }
         }
-        ProducedType et = getExtendedType();
+        TypeDeclaration et = getExtendedTypeDeclaration();
         if (et!=null) {
-            if (et.getDeclaration().isMember(dec, visited)) {
+            if (et.isMember(dec, visited)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * Does the given declaration inherit the given type?
+     */
+    public boolean inherits(TypeDeclaration dec) {
+        return inherits(dec, new ArrayList<TypeDeclaration>());
+    }
+    
+    private boolean inherits(TypeDeclaration dec, List<TypeDeclaration> visited) {
+        if (visited.contains(this)) {
+            return false;
+        }
+        visited.add(this);
+        if (equals(dec)) return true;
+        for (TypeDeclaration t: getSatisfiedTypeDeclarations()) {
+            if (t.inherits(dec, visited)) {
+                return true;
+            }
+        }
+        TypeDeclaration et = getExtendedTypeDeclaration();
+        if (et!=null) {
+            if (et.inherits(dec, visited)) {
                 return true;
             }
         }
