@@ -211,14 +211,15 @@ public abstract class Declaration extends Element {
      * Does this declaration refine the given declaration?
      */
     public boolean refines(Declaration other) {
-        if (other.getName()==null || getName()==null ||
-                !other.getName().equals(getName())) {
-            return false;
+        if (equals(other)) {
+            return true;
         }
         else {
             if (isClassOrInterfaceMember()) {
                 ClassOrInterface type = (ClassOrInterface) getContainer();
-                return type.isMember(other);
+                return other.getName()!=null && getName()!=null &&
+                        other.getName().equals(getName()) && 
+                        type.isMember(other);
             }
             else {
                 return false;
