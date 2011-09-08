@@ -268,8 +268,8 @@ public abstract class AbstractVisitor extends Visitor {
                     if (o.getExtendedType()!=null) {
                         ProducedType et = o.getExtendedType().getType().getTypeModel();
                         if (et!=null 
-                                && et.getDeclaration()!=getObjectDeclaration()
-                                && et.getDeclaration()!=getIdentifiableObjectDeclaration()) {
+                                && !et.getDeclaration().equals(getObjectDeclaration())
+                                && !et.getDeclaration().equals(getIdentifiableObjectDeclaration())) {
                             return s;
                         }
                     }

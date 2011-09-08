@@ -118,7 +118,7 @@ public class ProducedType extends ProducedReference {
             }
         }
         else {
-            if (type.getDeclaration()!=getDeclaration()) {
+            if (!type.getDeclaration().equals(getDeclaration())) {
                 return false;
             }
             else {
@@ -290,7 +290,7 @@ public class ProducedType extends ProducedReference {
      * given type.
      */
     public ProducedType minus(ClassOrInterface ci) {
-        if (getDeclaration()==ci) {
+        if (getDeclaration().equals(ci)) {
             return new BottomType().getType();
         }
         else if (getDeclaration() instanceof UnionType) {
@@ -484,7 +484,7 @@ public class ProducedType extends ProducedReference {
         Criteria c = new Criteria() {
             @Override
             public boolean satisfies(TypeDeclaration type) {
-                return type==dec;
+                return type.equals(dec);
             }
         };
         return getSupertype(c, new ArrayList<ProducedType>(), selfTypeToIgnore);
@@ -532,7 +532,7 @@ public class ProducedType extends ProducedReference {
                     result = possibleResult;
                 }
             }
-            if (getDeclaration()!=ignoringSelfType) {
+            if (!getDeclaration().equals(ignoringSelfType)) {
                 ProducedType selfType = getInternalSelfType();
                 if (selfType!=null) {
                     ProducedType possibleResult = selfType.getSupertype(c, list, 
@@ -773,7 +773,7 @@ public class ProducedType extends ProducedReference {
         //TODO: fix this to allow reporting multiple errors!
         if (getDeclaration() instanceof TypeParameter) {
             TypeParameter tp = (TypeParameter) getDeclaration();
-            boolean ok = tp.getDeclaration()==declaration ||
+            boolean ok = tp.getDeclaration().equals(declaration) ||
                     ((covariant || !tp.isCovariant()) && 
                             (contravariant || !tp.isContravariant()));
             if (!ok) {

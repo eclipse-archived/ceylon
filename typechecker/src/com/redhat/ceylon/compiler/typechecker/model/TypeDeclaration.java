@@ -277,7 +277,7 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
      */
     @Override
     public boolean isInherited(Declaration d) {
-        if (d.getContainer()==this) {
+        if (d.getContainer().equals(this)) {
             return false;
         }
         else if (isInheritedFromSupertype(d)) {
@@ -297,7 +297,7 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
      */
     @Override
     public TypeDeclaration getInheritingDeclaration(Declaration d) {
-        if (d.getContainer()==this) {
+        if (d.getContainer().equals(this)) {
             return null;
         }
         else if (isInheritedFromSupertype(d)) {
@@ -315,8 +315,13 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
         class Criteria implements ProducedType.Criteria {
             @Override
             public boolean satisfies(TypeDeclaration type) {
-                return type!=TypeDeclaration.this &&
-                    type.getDirectMember(member.getName())==member;
+                if (type.equals(TypeDeclaration.this)) {
+                    return false;
+                }
+                else {
+                    Declaration dm = type.getDirectMember(member.getName());
+                    return dm!=null && dm.equals(member);
+                }
             }
         };
         return getType().getSupertype(new Criteria())!=null;

@@ -95,7 +95,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                 ProducedType st1 = supertypes.get(i);
                 for (int j=i+1; j<supertypes.size(); j++) {
                     ProducedType st2 = supertypes.get(j);
-                    if (st1.getDeclaration()==st2.getDeclaration() /*&& !st1.isExactly(st2)*/) {
+                    if (st1.getDeclaration().equals(st2.getDeclaration()) /*&& !st1.isExactly(st2)*/) {
                         if (!st1.isSubtypeOf(st2) && !st2.isSubtypeOf(st1)) {
                             that.addError("type " + td.getName() +
                                     " has the same supertype twice with incompatible type arguments: " +
@@ -426,7 +426,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                     Tree.Term t = that.getSpecifierExpression().getExpression().getTerm();
                     if (t instanceof Tree.BaseMemberExpression) {
                         ProducedReference pr = ((Tree.BaseMemberExpression) t).getTarget();
-                        if (pr==null || pr.getDeclaration()!=getNullDeclaration()) {
+                        if (pr==null || !pr.getDeclaration().equals(getNullDeclaration())) {
                             that.getSpecifierExpression().getExpression()
                                     .addError("defaulted parameters of optional type must have the default value null");
                         }
@@ -1005,7 +1005,7 @@ public class ExpressionVisitor extends AbstractVisitor {
     private ProducedType inferTypeArg(TypeParameter tp, ProducedType paramType,
             ProducedType argType, List<TypeParameter> visited) {
         if (paramType!=null) {
-            if (paramType.getDeclaration()==tp) {
+            if (paramType.getDeclaration().equals(tp)) {
                 return argType;
             }
             else if (paramType.getDeclaration() instanceof UnionType) {
@@ -2402,7 +2402,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                     ProducedType arg = args.get(i);
                     TypeDeclaration std = param.getSelfTypedDeclaration();
                     ProducedType at;
-                    if (std==param.getContainer()) {
+                    if (param.getContainer().equals(std)) {
                         at = td.getType();
                     }
                     else {
@@ -2410,7 +2410,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                         at = ( (TypeDeclaration) td.getMember(std.getName()) ).getType();
                     }
                     checkAssignable(at, arg, std, that, 
-                            "does not satisfy self type constraint on type parameter: " + 
+                            "type argument does not satisfy self type constraint on type parameter " + 
                                 param.getName() + " of " + type.getDeclaration().getName());
                 }
             }

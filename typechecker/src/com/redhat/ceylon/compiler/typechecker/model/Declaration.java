@@ -188,4 +188,23 @@ public abstract class Declaration extends Element {
     public abstract ProducedReference getProducedReference(ProducedType pt,
             List<ProducedType> typeArguments);
 
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof Declaration) {
+            Declaration that = (Declaration) object;
+            return this==that || (getName()!=null && that.getName()!=null &&
+                    that.getName().equals(getName()) &&
+                    (getContainer()==null && that.getContainer()==null ||
+                            that.getContainer().equals(getContainer())));
+        }
+        else {
+            return false;
+        }
+    }
+    
+    @Override
+    public int hashCode() {
+        return getName()==null ? 0 : getName().hashCode();
+    }
+    
 }
