@@ -207,4 +207,23 @@ public abstract class Declaration extends Element {
         return getName()==null ? 0 : getName().hashCode();
     }
     
+    /**
+     * Does this declaration refine the given declaration?
+     */
+    public boolean refines(Declaration other) {
+        if (other.getName()==null || getName()==null ||
+                !other.getName().equals(getName())) {
+            return false;
+        }
+        else {
+            if (isClassOrInterfaceMember()) {
+                ClassOrInterface type = (ClassOrInterface) getContainer();
+                return type.isMember(other);
+            }
+            else {
+                return false;
+            }
+        }
+    }
+    
 }

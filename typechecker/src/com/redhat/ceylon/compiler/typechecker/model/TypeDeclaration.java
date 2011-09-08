@@ -192,6 +192,38 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
     }
     
     /**
+     * Is the given declaration a direct or inherited
+     * member of this type?
+     */
+    public boolean isMember(Declaration dec) {
+        return isMember(dec, new ArrayList<TypeDeclaration>());
+    }
+    
+    private boolean isMember(Declaration dec, List<TypeDeclaration> visited) {
+        if (visited.contains(this)) {
+            return false;
+        }
+        visited.add(this);
+        for (Declaration member: getMembers()) {
+            if (dec.equals(member)) {
+                return true;
+            }
+        }
+        for (TypeDeclaration t: getSatisfiedTypeDeclarations()) {
+            if (t.isMember(dec, visited)) {
+                return true;
+            }
+        }
+        ProducedType et = getExtendedType();
+        if (et!=null) {
+            if (et.getDeclaration().isMember(dec, visited)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
      * Return the least-refined (i.e. the non-actual member)
      * with the given name, by reversing the usual search
      * order and searching supertypes first.
