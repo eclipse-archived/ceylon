@@ -15,6 +15,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.NotOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositiveOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
@@ -84,6 +85,13 @@ public class BoxingVisitor extends Visitor {
         markUnboxed(that);
     }
 
+    @Override
+    public void visit(StringTemplate that) {
+        super.visit(that);
+        // for now we always produce an unboxed string in ExpressionTransformer
+        markUnboxed(that);
+    }
+    
     @Override
     public void visit(PositiveOp that) {
         super.visit(that);
