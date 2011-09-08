@@ -317,7 +317,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return desugarAssignmentOp(op, newOp);
     }
 
-    // FIXME GET RID OF THIS, IT'S WRONG!!
+    // FIXME GET RID OF THIS, IT'S WRONG because we evaluate the LHS twice
     private JCExpression desugarAssignmentOp(Tree.AssignmentOp op, BinaryOperatorExpression newOp) {
         newOp.setLeftTerm(op.getLeftTerm());
         newOp.setRightTerm(op.getRightTerm());
