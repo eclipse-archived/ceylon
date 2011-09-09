@@ -38,7 +38,8 @@
 ^(abstract DECLARATION:STATEMENT
     ANNOTATION_LIST?
     IDENTIFIER
-    abstract Declaration declarationModel;)
+    abstract Declaration declarationModel;
+    boolean unboxed;)
 
 "A class, interface, or type parameter declaration."
 ^(abstract TYPE_DECLARATION:DECLARATION
