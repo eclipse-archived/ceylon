@@ -1,3 +1,4 @@
+doc "A nonempty sequence of values"
 shared interface Sequence<out Element> 
         //is EnumerableSequence<Element>
         satisfies Correspondence<Natural, Element> & Iterable<Element> & 
