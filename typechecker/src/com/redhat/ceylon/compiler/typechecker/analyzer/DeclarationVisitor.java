@@ -768,4 +768,13 @@ public class DeclarationVisitor extends Visitor {
         that.addWarning("of clause not yet supported");
     }*/
 
+    @Override
+    public void visit(Tree.AnnotationList that) {
+        Scope s = scope;
+        if (declaration instanceof Scope) {
+            scope = scope.getContainer();
+        }
+        super.visit(that);
+        scope = s;
+    }
 }
