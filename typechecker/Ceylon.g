@@ -854,11 +854,11 @@ statement returns [Statement statement]
       { $statement = $directiveStatement.directive; }
     | controlStatement
       { $statement = $controlStatement.controlStatement; }
-    | expressionOrSpecificationstatement
-      { $statement = $expressionOrSpecificationstatement.statement; }
+    | expressionOrSpecificationStatement
+      { $statement = $expressionOrSpecificationStatement.statement; }
     ;
 
-expressionOrSpecificationstatement returns [Statement statement]
+expressionOrSpecificationStatement returns [Statement statement]
     @init { SpecifierStatement ss=new SpecifierStatement(null); 
             ExpressionStatement es=new ExpressionStatement(null); }
     : expression 
@@ -987,7 +987,8 @@ primary returns [Primary primary]
     : base
       { $primary=$base.primary; }
     (   
-        qualifiedReference
+        inlineFunctionalArgument
+      | qualifiedReference
       { QualifiedMemberOrTypeExpression qe;
         if ($qualifiedReference.isMember)
             qe = new QualifiedMemberExpression(null);
@@ -1032,7 +1033,7 @@ qualifiedReference returns [Identifier identifier, MemberOperator operator,
         { $identifier = $typeReference.identifier;
           $typeArgumentList = $typeReference.typeArgumentList; 
           $isMember=false; }
-      |
+      | (~(LIDENTIFIER|UIDENTIFIER))=>
         { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(LIDENTIFIER, input)); }
       )
@@ -1146,7 +1147,8 @@ arguments returns [ArgumentList argumentList]
 namedArguments returns [NamedArgumentList namedArgumentList]
     : LBRACE 
       { $namedArgumentList = new NamedArgumentList($LBRACE); }
-      (
+      ( //TODO: get rid of the predicate and use the approach
+        //      in expressionOrSpecificationStatement
         (namedArgumentStart) 
         => namedArgument
         { if ($namedArgument.namedArgument!=null) 
@@ -1328,6 +1330,11 @@ positionalArgument returns [PositionalArgument positionalArgument]
       expression
       { $positionalArgument = new PositionalArgument(null);
         $positionalArgument.setExpression($expression.expression); }
+    ;
+    
+inlineFunctionalArgument
+    : memberName ((parametersStart) => parameters)? 
+      (LPAREN expression RPAREN | block)
     ;
     
 assignmentExpression returns [Term term]
