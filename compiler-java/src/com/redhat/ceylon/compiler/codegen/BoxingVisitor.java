@@ -34,7 +34,7 @@ public class BoxingVisitor extends Visitor {
     public void visit(BaseMemberExpression that) {
         super.visit(that);
         if(Util.isUnBoxed(that.getDeclaration()) || transformer.isCeylonBoolean(that.getTypeModel()))
-            markUnboxed(that);
+            Util.markUnBoxed(that);
     }
 
     @Override
@@ -64,32 +64,32 @@ public class BoxingVisitor extends Visitor {
     @Override
     public void visit(NaturalLiteral that) {
         super.visit(that);
-        markUnboxed(that);
+        Util.markUnBoxed(that);
     }
 
     @Override
     public void visit(FloatLiteral that) {
         super.visit(that);
-        markUnboxed(that);
+        Util.markUnBoxed(that);
     }
 
     @Override
     public void visit(StringLiteral that) {
         super.visit(that);
-        markUnboxed(that);
+        Util.markUnBoxed(that);
     }
 
     @Override
     public void visit(CharLiteral that) {
         super.visit(that);
-        markUnboxed(that);
+        Util.markUnBoxed(that);
     }
 
     @Override
     public void visit(StringTemplate that) {
         super.visit(that);
         // for now we always produce an unboxed string in ExpressionTransformer
-        markUnboxed(that);
+        Util.markUnBoxed(that);
     }
     
     @Override
@@ -114,28 +114,24 @@ public class BoxingVisitor extends Visitor {
     public void visit(LogicalOp that) {
         super.visit(that);
         // this is not conditional
-        markUnboxed(that);
+        Util.markUnBoxed(that);
     }
 
     @Override
     public void visit(LogicalAssignmentOp that) {
         super.visit(that);
         // this is not conditional
-        markUnboxed(that);
-    }
-
-    private void propagateFromDeclaration(Node that, Declaration term) {
-        if(Util.isUnBoxed(term))
-            markUnboxed(that);
-    }
-
-    private void propagateFromTerm(Node that, Term term) {
-        if(Util.isUnBoxed(term))
-            markUnboxed(that);
-    }
-
-    private void markUnboxed(Node that) {
         Util.markUnBoxed(that);
+    }
+
+    private void propagateFromDeclaration(Term that, Declaration term) {
+        if(Util.isUnBoxed(term))
+            Util.markUnBoxed(that);
+    }
+
+    private void propagateFromTerm(Term that, Term term) {
+        if(Util.isUnBoxed(term))
+            Util.markUnBoxed(that);
     }
 
 }

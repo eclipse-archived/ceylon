@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NotOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.parser.Token;
 
 public class Util {
@@ -138,7 +139,7 @@ public class Util {
 
     private final static Object IS_UNBOXED = new Object(){ public String toString() {return "IS_UNBOXED";};};
 
-    public static boolean isUnBoxed(Node node){
+    public static boolean isUnBoxed(Term node){
         return node.hasAttribute(IS_UNBOXED);
     }
 
@@ -146,7 +147,7 @@ public class Util {
         return decl.hasAttribute(IS_UNBOXED);
     }
 
-    public static void markUnBoxed(Node node) {
+    public static void markUnBoxed(Term node) {
         node.setAttribute(IS_UNBOXED, true);
     }
 
@@ -154,7 +155,7 @@ public class Util {
         decl.setAttribute(IS_UNBOXED, true);
     }
 
-    public static BoxingStrategy getBoxingStrategy(Node node) {
+    public static BoxingStrategy getBoxingStrategy(Term node) {
         return isUnBoxed(node) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
     }
 

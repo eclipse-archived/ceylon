@@ -74,7 +74,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (!isFormal(decl) && !classBuilder.existsParam(attrName.toString())) {
             JCExpression initialValue = null;
             if (decl.getSpecifierOrInitializerExpression() != null) {
-                initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), Util.getBoxingStrategy(decl));
+                initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), Util.getBoxingStrategy(decl.getDeclarationModel()));
             }
 
             int flags = 0;
