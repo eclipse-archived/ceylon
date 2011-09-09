@@ -370,7 +370,7 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
         }
     }
 
-    private boolean isInheritedFromSupertype(final Declaration member) {
+    public boolean isInheritedFromSupertype(final Declaration member) {
         class Criteria implements ProducedType.Criteria {
             @Override
             public boolean satisfies(TypeDeclaration type) {
