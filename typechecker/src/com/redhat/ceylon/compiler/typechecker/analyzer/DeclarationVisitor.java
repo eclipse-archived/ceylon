@@ -18,6 +18,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.InterfaceAlias;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.NamedArgumentList;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
@@ -484,9 +485,20 @@ public class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ControlClause that) {
-        ControlBlock c = new ControlBlock();
-        visitElement(that, c);
-        Scope o = enterScope(c);
+        ControlBlock cb = new ControlBlock();
+        that.setControlBlock(cb);
+        visitElement(that, cb);
+        Scope o = enterScope(cb);
+        super.visit(that);
+        exitScope(o);
+    }
+    
+    @Override
+    public void visit(Tree.NamedArgumentList that) {
+        NamedArgumentList nal = new NamedArgumentList();
+        that.setNamedArgumentList(nal);
+        visitElement(that, nal);
+        Scope o = enterScope(nal);
         super.visit(that);
         exitScope(o);
     }

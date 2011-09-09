@@ -1133,6 +1133,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                     checkPositionalArguments(pl, prf, that.getPositionalArgumentList());
                 }
                 if ( that.getNamedArgumentList()!=null ) {
+                    that.getNamedArgumentList().getNamedArgumentList().setParameterList(pl);
                     checkNamedArguments(pl, prf, that.getNamedArgumentList());
                 }
             }
