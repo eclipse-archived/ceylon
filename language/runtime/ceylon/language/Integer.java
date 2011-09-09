@@ -1,8 +1,15 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
+
+@SatisfiedTypes({
+    "ceylon.language.Castable<ceylon.language.Integer|ceylon.language.Float>",
+    "ceylon.language.Integral<ceylon.language.Integer>",
+    "ceylon.language.Invertable<ceylon.language.Integer>"
+})
 public final class Integer
     extends Object
-    implements Integral<Integer>, Invertable<Integer> {
+    implements Castable<Numeric>, Integral<Integer>, Invertable<Integer> {
 
     private final long value;
     private Integer(long l) {
@@ -134,5 +141,10 @@ public final class Integer
     @Override
     public boolean asSmallAs(Integer other) {
         return value <= other.value;
+    }
+
+    @Override
+    public <CastValue extends Numeric> CastValue as() {
+        return (CastValue)this;
     }
 }
