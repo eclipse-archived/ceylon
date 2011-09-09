@@ -2,14 +2,44 @@ package com.redhat.ceylon.compiler.test.expression.boxing;
 
 class IntegerBoxing {
     
-    private final void m() {
-        final int i1 = 0;
-        final int i2 = ceylon.language.Integer.instance(i1).plus(5).intValue();
-        final int i3 = double(i2);
+    private final <T>T id(final T x) {
+        return x;
     }
     
-    private final int double(final int i) {
-        return ceylon.language.Integer.instance(i).times(2);
+    private final void m() {
+        int localAttrInteger = 1;
+        int localAttrOptionalInteger = 1;
+        .java.lang.Object localAttrObject = .ceylon.language.Integer.instance(1);
+        localAttrInteger = localAttrInteger;
+        localAttrOptionalInteger = localAttrInteger;
+        localAttrObject = .ceylon.language.Integer.instance(localAttrInteger);
+        localAttrInteger = <ceylon.language.Integer>id(.ceylon.language.Integer.instance(1)).intValue();
+        localAttrOptionalInteger = <ceylon.language.Integer>id(.ceylon.language.Integer.instance(1)).intValue();
+        localAttrObject = <ceylon.language.Integer>id(.ceylon.language.Integer.instance(1));
+        final .java.lang.Object localAttrConstantObject = .ceylon.language.Integer.instance(localAttrInteger);
+        final int localAttrConstantInteger = localAttrInteger;
+        final .java.lang.Object $localAttrConstantObject$0 = localAttrConstantObject;
+        if ($localAttrConstantObject$0 instanceof ceylon.language.Integer) {
+            final int $localAttrConstantObject$1 = ((ceylon.language.Integer)$localAttrConstantObject$0).intValue();
+            localAttrInteger = $localAttrConstantObject$1;
+        }
+        final .java.lang.Object $localAttrConstantInteger$2 = .ceylon.language.Integer.instance(localAttrConstantInteger);
+        if ($localAttrConstantInteger$2 instanceof ceylon.language.Integer) {
+            final int $localAttrConstantInteger$3 = ((ceylon.language.Integer)$localAttrConstantInteger$2).intValue();
+            localAttrInteger = $localAttrConstantInteger$3;
+        }
+        final .java.lang.Object $localAttrConstantObject$4 = localAttrConstantObject;
+        if ($localAttrConstantObject$4 instanceof ceylon.language.String) {
+            final .java.lang.String $localAttrConstantObject$5 = ((ceylon.language.String)$localAttrConstantObject$4).toString();
+            final .java.lang.String foo = $localAttrConstantObject$5;
+        }
+        final .java.lang.Object $localAttrConstantInteger$6 = .ceylon.language.Integer.instance(localAttrConstantInteger);
+        if ($localAttrConstantInteger$6 instanceof ceylon.language.String) {
+            final .java.lang.String $localAttrConstantInteger$7 = ((ceylon.language.String)$localAttrConstantInteger$6).toString();
+            final .java.lang.String foo = $localAttrConstantInteger$7;
+        }
+        localAttrInteger = .ceylon.language.Integer.instance(localAttrInteger).plus(.ceylon.language.Integer.instance(2)).intValue();
+        localAttrObject = .ceylon.language.Integer.instance(localAttrInteger).plus(.ceylon.language.Integer.instance(2));
     }
     
     IntegerBoxing() {
