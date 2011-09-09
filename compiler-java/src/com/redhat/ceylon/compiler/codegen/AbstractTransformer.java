@@ -596,9 +596,14 @@ public abstract class AbstractTransformer implements Transformation {
     /*
      * Boxing
      */
-    
-    protected JCExpression boxUnboxIfNecessary(JCExpression javaExpr, Tree.Term expr, boolean wantsUnboxed) {
-        boolean targetBoxed = !wantsUnboxed;
+    public enum BoxingStrategy {
+        UNBOXED, BOXED, INDIFFERENT;
+    }
+
+    protected JCExpression boxUnboxIfNecessary(JCExpression javaExpr, Tree.Term expr, BoxingStrategy boxingStrategy) {
+        if(boxingStrategy == BoxingStrategy.INDIFFERENT)
+            return javaExpr;
+        boolean targetBoxed = boxingStrategy == BoxingStrategy.BOXED;
         ProducedType exprType = expr.getTypeModel();
         boolean exprBoxed = !Util.isUnBoxed(expr);
         // only box if the two differ
@@ -735,7 +740,7 @@ public abstract class AbstractTransformer implements Transformation {
     protected JCExpression makeSequence(java.util.List<Expression> list, ProducedType seqElemType) {
         ListBuffer<JCExpression> elems = new ListBuffer<JCExpression>();
         for (Expression expr : list) {
-            elems.append(boxType(expressionGen().transformExpression(expr), determineExpressionType(expr)));
+            elems.append(expressionGen().transformExpression(expr));
         }
         ProducedType seqType = typeFact().makeDefaultSequenceType(seqElemType);
         JCExpression typeExpr = makeJavaType(seqType, CeylonTransformer.CLASS_NEW);

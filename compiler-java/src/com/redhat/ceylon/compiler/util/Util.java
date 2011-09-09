@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.util;
 
+import com.redhat.ceylon.compiler.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
@@ -9,6 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.NotOp;
 import com.sun.tools.javac.parser.Token;
 
 public class Util {
@@ -150,5 +152,13 @@ public class Util {
 
     public static void markUnBoxed(Declaration decl) {
         decl.setAttribute(IS_UNBOXED, true);
+    }
+
+    public static BoxingStrategy getBoxingStrategy(Node node) {
+        return isUnBoxed(node) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
+    }
+
+    public static BoxingStrategy getBoxingStrategy(Declaration decl) {
+        return isUnBoxed(decl) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
     }
 }

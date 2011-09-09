@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.codegen;
 
 import static com.sun.tools.javac.code.Flags.FINAL;
 
+import com.redhat.ceylon.compiler.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
@@ -309,7 +310,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.ExpressionStatement tree) {
-        append(gen.at(tree).Exec(gen.expressionGen().transformExpression(tree.getExpression())));
+        append(gen.at(tree).Exec(gen.expressionGen().transformExpression(tree.getExpression(), BoxingStrategy.INDIFFERENT)));
     }
     
     /*

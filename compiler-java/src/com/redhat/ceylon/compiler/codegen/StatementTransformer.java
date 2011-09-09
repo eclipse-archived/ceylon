@@ -165,7 +165,7 @@ public class StatementTransformer extends AbstractTransformer {
             }
         } else if (cond instanceof Tree.BooleanCondition) {
             Tree.BooleanCondition booleanCondition = (Tree.BooleanCondition) cond;
-            test = makeBooleanTest(expressionGen().transformExpression(booleanCondition.getExpression()), true);
+            test = makeBooleanTest(expressionGen().transformExpression(booleanCondition.getExpression(), BoxingStrategy.UNBOXED), true);
         } else {
             throw new RuntimeException("Not implemented: " + cond.getNodeType());
         }
@@ -238,7 +238,7 @@ public class StatementTransformer extends AbstractTransformer {
         List<JCAnnotation> annots = makeJavaTypeAnnotations(variable.getDeclarationModel(), actualType(variable));
 
         // ceylon.language.Iterator<T> $V$iter$X = ITERABLE.iterator();
-        JCExpression containment = expressionGen().transformExpression(iterDecl.getSpecifierExpression().getExpression());
+        JCExpression containment = expressionGen().transformExpression(iterDecl.getSpecifierExpression().getExpression(), BoxingStrategy.UNBOXED);
         JCVariableDecl iter_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(aliasName(loop_var_name + "$iter")), iter_type_expr, at(stmt).Apply(null, makeSelect(containment, "iterator"), List.<JCExpression> nil()));
         JCIdent iter_id = at(stmt).Ident(iter_decl.getName());
         
@@ -301,7 +301,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         JCExpression initialValue = null;
         if (decl.getSpecifierOrInitializerExpression() != null) {
-            initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), Util.isUnBoxed(decl));
+            initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), Util.getBoxingStrategy(decl));
         }
 
         JCExpression type = makeJavaType(t);
@@ -329,7 +329,7 @@ public class StatementTransformer extends AbstractTransformer {
         Tree.Expression expr = ret.getExpression();
         JCExpression returnExpr = null;
         if (expr != null) {
-            returnExpr = expressionGen().transformExpression(expr.getTerm(), Util.isUnBoxed(ret.getDeclaration()));
+            returnExpr = expressionGen().transformExpression(expr.getTerm(), Util.getBoxingStrategy(ret.getDeclaration()));
         }
         return at(ret).Return(returnExpr);
     }

@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
+import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -196,7 +197,7 @@ public class CeylonTransformer extends AbstractTransformer {
                 AttributeDeclaration adecl = (AttributeDeclaration)decl;
                 if (adecl.getSpecifierOrInitializerExpression() != null) {
                     builder.initialValue(expressionGen().transformExpression(
-                            adecl.getSpecifierOrInitializerExpression().getExpression()));
+                            adecl.getSpecifierOrInitializerExpression().getExpression(), Util.getBoxingStrategy(decl)));
                 }
             } else {
                 // For inner and toplevel getters

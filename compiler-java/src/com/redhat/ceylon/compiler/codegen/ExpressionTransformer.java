@@ -71,6 +71,10 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     JCExpression transformExpression(final Tree.Term expr) {
+        return transformExpression(expr, BoxingStrategy.BOXED);
+    }
+
+    JCExpression transformExpression(final Tree.Term expr, BoxingStrategy boxingStrategy) {
         CeylonVisitor v = new CeylonVisitor(gen());
         if (expr instanceof Tree.Expression) {
             // Cope with things like ((expr))
@@ -82,13 +86,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else {
             expr.visit(v);
         }
-        return v.getSingleResult();
-    }
-
-    JCExpression transformExpression(final Tree.Term expr, boolean wantsUnboxed) {
-        JCExpression result = transformExpression(expr);
+        JCExpression result = v.getSingleResult();
         
-        result = boxUnboxIfNecessary(result, expr, wantsUnboxed);
+        result = boxUnboxIfNecessary(result, expr, boxingStrategy);
         
         return result;
     }
@@ -115,7 +115,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             at(expression);
             if (isCeylonBasicType(expression.getTypeModel())) {// TODO: Test should be erases to String, long, int, boolean, char, byte, float, double
                 // If erases to a Java primitive just call append, don't box it just to call format. 
-                builder = make().Apply(null, makeSelect(builder, "append"), List.<JCExpression>of(transformExpression(expression)));
+                builder = make().Apply(null, makeSelect(builder, "append"), List.<JCExpression>of(transformExpression(expression, BoxingStrategy.UNBOXED)));
             } else {
                 JCMethodInvocation formatted = make().Apply(null, makeSelect(transformExpression(expression), "getFormatted"), List.<JCExpression>nil());
                 builder = make().Apply(null, makeSelect(builder, "append"), List.<JCExpression>of(formatted));
@@ -169,7 +169,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.NotOp op) {
-        JCExpression term = transformExpression(op.getTerm());
+        JCExpression term = transformExpression(op.getTerm(), Util.getBoxingStrategy(op));
         JCUnary jcu = at(op).Unary(JCTree.NOT, term);
         return jcu;
     }
@@ -185,7 +185,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         Declaration decl = ((Tree.Primary)leftTerm).getDeclaration();
 
         // right side is easy
-        JCExpression rhs = transformExpression(rightTerm, Util.isUnBoxed(decl));
+        JCExpression rhs = transformExpression(rightTerm, Util.getBoxingStrategy(decl));
         
         // left side depends
         
@@ -243,16 +243,16 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.RangeOp op) {
-        JCExpression lower = boxType(transformExpression(op.getLeftTerm()), determineExpressionType(op.getLeftTerm()));
-        JCExpression upper = boxType(transformExpression(op.getRightTerm()), determineExpressionType(op.getRightTerm()));
+        JCExpression lower = transformExpression(op.getLeftTerm());
+        JCExpression upper = transformExpression(op.getRightTerm());
         ProducedType rangeType = typeFact().makeRangeType(op.getLeftTerm().getTypeModel());
         JCExpression typeExpr = makeJavaType(rangeType, CeylonTransformer.CLASS_NEW);
         return at(op).NewClass(null, null, typeExpr, List.<JCExpression> of(lower, upper), null);
     }
 
     public JCExpression transform(Tree.EntryOp op) {
-        JCExpression key = boxType(transformExpression(op.getLeftTerm()), determineExpressionType(op.getLeftTerm()));
-        JCExpression elem = boxType(transformExpression(op.getRightTerm()), determineExpressionType(op.getRightTerm()));
+        JCExpression key = transformExpression(op.getLeftTerm());
+        JCExpression elem = transformExpression(op.getRightTerm());
         ProducedType entryType = typeFact().makeEntryType(op.getLeftTerm().getTypeModel(), op.getRightTerm().getTypeModel());
         JCExpression typeExpr = makeJavaType(entryType, CeylonTransformer.CLASS_NEW);
         return at(op).NewClass(null, null, typeExpr , List.<JCExpression> of(key, elem), null);
@@ -354,8 +354,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.LogicalOp op) {
-        JCExpression left = transformExpression(op.getLeftTerm());
-        JCExpression right = transformExpression(op.getRightTerm());
+        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.UNBOXED);
+        JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.UNBOXED);
 
         JCBinary jcb = null;
         if (op instanceof AndOp) {
@@ -612,13 +612,13 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     JCExpression transformArg(Tree.PositionalArgument arg) {
-        return transformExpression(arg.getExpression(), Util.isUnBoxed(arg.getParameter()));
+        return transformExpression(arg.getExpression(), Util.getBoxingStrategy(arg.getParameter()));
     }
 
     JCExpression transformArg(Tree.NamedArgument arg) {
         if (arg instanceof Tree.SpecifiedArgument) {
             Expression expr = ((Tree.SpecifiedArgument)arg).getSpecifierExpression().getExpression();
-            return boxType(transformExpression(expr), expr.getTypeModel());
+            return transformExpression(expr);
         } else if (arg instanceof Tree.TypedArgument) {
             throw new RuntimeException("Not yet implemented");
         } else {
