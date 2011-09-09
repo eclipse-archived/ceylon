@@ -108,7 +108,7 @@ subnode : n=NODE_NAME '?'? f=FIELD_NAME
           )+ ')' 
         ;
 
-field : 'abstract'? t=TYPE_NAME f=FIELD_NAME ';'
+field : 'abstract'? (TYPE_NAME|'boolean') FIELD_NAME ';'
       ;
 
 NODE_NAME : ('A'..'Z'|'_')+;
