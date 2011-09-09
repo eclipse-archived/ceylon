@@ -97,4 +97,8 @@ public abstract class TypedDeclaration extends Declaration {
     	return result;
     }
 
+    private boolean unboxed;
+    public boolean getUnboxed() { return unboxed; }
+    public void setUnboxed(boolean value) { unboxed = value; }
+
 }
