@@ -1,15 +1,14 @@
 package com.redhat.ceylon.compiler.codegen;
 
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Node;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExpressionStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LogicalAssignmentOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LogicalOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.NaturalLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NegativeOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NotOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositiveOp;
@@ -18,8 +17,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.NaturalLiteral;
 import com.redhat.ceylon.compiler.util.Util;
 
 public class BoxingVisitor extends Visitor {
@@ -33,14 +30,14 @@ public class BoxingVisitor extends Visitor {
     @Override
     public void visit(BaseMemberExpression that) {
         super.visit(that);
-        if(Util.isUnBoxed(that.getDeclaration()) || transformer.isCeylonBoolean(that.getTypeModel()))
+        if(Util.isUnBoxed((TypedDeclaration)that.getDeclaration()) || transformer.isCeylonBoolean(that.getTypeModel()))
             Util.markUnBoxed(that);
     }
 
     @Override
     public void visit(QualifiedMemberExpression that) {
         super.visit(that);
-        propagateFromDeclaration(that, that.getDeclaration());
+        propagateFromDeclaration(that, (TypedDeclaration)that.getDeclaration());
     }
 
     @Override
@@ -118,7 +115,7 @@ public class BoxingVisitor extends Visitor {
         Util.markUnBoxed(that);
     }
 
-    private void propagateFromDeclaration(Term that, Declaration term) {
+    private void propagateFromDeclaration(Term that, TypedDeclaration term) {
         if(Util.isUnBoxed(term))
             Util.markUnBoxed(that);
     }

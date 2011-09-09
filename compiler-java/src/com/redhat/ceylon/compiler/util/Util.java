@@ -9,8 +9,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.tree.Node;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.NotOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.parser.Token;
 
@@ -140,26 +138,26 @@ public class Util {
     private final static Object IS_UNBOXED = new Object(){ public String toString() {return "IS_UNBOXED";};};
 
     public static boolean isUnBoxed(Term node){
-        return node.hasAttribute(IS_UNBOXED);
+        return node.getUnboxed();
     }
 
-    public static boolean isUnBoxed(Declaration decl){
-        return decl.hasAttribute(IS_UNBOXED);
+    public static boolean isUnBoxed(TypedDeclaration decl){
+        return decl.getUnboxed();
     }
 
     public static void markUnBoxed(Term node) {
-        node.setAttribute(IS_UNBOXED, true);
+        node.setUnboxed(true);
     }
 
-    public static void markUnBoxed(Declaration decl) {
-        decl.setAttribute(IS_UNBOXED, true);
+    public static void markUnBoxed(TypedDeclaration decl) {
+        decl.setUnboxed(true);
     }
 
     public static BoxingStrategy getBoxingStrategy(Term node) {
         return isUnBoxed(node) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
     }
 
-    public static BoxingStrategy getBoxingStrategy(Declaration decl) {
+    public static BoxingStrategy getBoxingStrategy(TypedDeclaration decl) {
         return isUnBoxed(decl) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
     }
 }

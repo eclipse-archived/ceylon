@@ -182,7 +182,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression result = null;
 
         // FIXME: can this be anything else than a Primary?
-        Declaration decl = ((Tree.Primary)leftTerm).getDeclaration();
+        TypedDeclaration decl = (TypedDeclaration) ((Tree.Primary)leftTerm).getDeclaration();
 
         // right side is easy
         JCExpression rhs = transformExpression(rightTerm, Util.getBoxingStrategy(decl));
@@ -200,8 +200,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         boolean variable = false;
         if (decl instanceof Value) {
             variable = ((Value)decl).isVariable();
-        } else if (decl instanceof TypedDeclaration) {
-            variable = ((TypedDeclaration)decl).isVariable();
+        } else {
+            variable = decl.isVariable();
         }
         if(decl.isToplevel()){
             // must use top level setter

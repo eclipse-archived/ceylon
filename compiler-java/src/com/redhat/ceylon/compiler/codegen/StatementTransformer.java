@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.codegen;
 import static com.sun.tools.javac.code.Flags.FINAL;
 
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CatchClause;
@@ -338,7 +339,8 @@ public class StatementTransformer extends AbstractTransformer {
         Tree.Expression expr = ret.getExpression();
         JCExpression returnExpr = null;
         if (expr != null) {
-            returnExpr = expressionGen().transformExpression(expr.getTerm(), Util.getBoxingStrategy(ret.getDeclaration()));
+            // we can cast to TypedDeclaration here because return with expressions are only in Method
+            returnExpr = expressionGen().transformExpression(expr.getTerm(), Util.getBoxingStrategy((TypedDeclaration)ret.getDeclaration()));
         }
         return at(ret).Return(returnExpr);
     }
