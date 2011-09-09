@@ -44,12 +44,6 @@ public class BoxingVisitor extends Visitor {
     }
 
     @Override
-    public void visit(AnyAttribute that) {
-        super.visit(that);
-        propagateFromDeclaration(that, that.getDeclarationModel());
-    }
-
-    @Override
     public void visit(Expression that) {
         super.visit(that);
         propagateFromTerm(that, that.getTerm());
