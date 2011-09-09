@@ -369,6 +369,7 @@ public abstract class AbstractTransformer implements Transformation {
     static final int CLASS_NEW = 1 << 1; // Yes, same as EXTENDS
     static final int WANT_RAW_TYPE = 1 << 3;
     static final int NO_ERASURE_TO_PRIMITIVE = EXTENDS; // Same behaviour
+    static final int IS = NO_ERASURE_TO_PRIMITIVE | WANT_RAW_TYPE; // Same behaviour
 
     protected JCExpression makeJavaType(ProducedType producedType) {
         return makeJavaType(producedType, 0);

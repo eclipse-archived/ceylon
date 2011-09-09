@@ -132,16 +132,25 @@ public class StatementTransformer extends AbstractTransformer {
 
             JCExpression expr = expressionGen().transformExpression(specifierExpr);
             ProducedType tmpVarType = specifierExpr.getTypeModel();
+            JCExpression tmpVarTypeExpr;
+            // Want raw type for instanceof since it can't be used with generic types
+            JCExpression rawToTypeExpr = makeJavaType(toType, IS);
 
-            // Temporary variable holding the result of the expression/variable to test
-            decl = at(cond).VarDef(make().Modifiers(FINAL), tmpVarName, makeJavaType(tmpVarType), expr);
             // Substitute variable with the correct type to use in the rest of the code block
             JCExpression tmpVarExpr = at(cond).Ident(tmpVarName);
             if (cond instanceof Tree.ExistsCondition) {
                 tmpVarExpr = unboxType(tmpVarExpr, toType);
+                tmpVarTypeExpr = makeJavaType(tmpVarType);
+            } else if(cond instanceof Tree.IsCondition){
+                tmpVarExpr = unboxType(at(cond).TypeCast(rawToTypeExpr, tmpVarExpr), toType);
+                tmpVarTypeExpr = make().Type(syms().objectType);
             } else {
                 tmpVarExpr = at(cond).TypeCast(toTypeExpr, tmpVarExpr);
+                tmpVarTypeExpr = makeJavaType(tmpVarType);
             }
+            // Temporary variable holding the result of the expression/variable to test
+            decl = at(cond).VarDef(make().Modifiers(FINAL), tmpVarName, tmpVarTypeExpr, expr);
+
             JCVariableDecl decl2 = at(cond).VarDef(make().Modifiers(FINAL), substVarName, toTypeExpr, tmpVarExpr);
             
             // Prepare for variable substitution in the following code block
@@ -158,10 +167,10 @@ public class StatementTransformer extends AbstractTransformer {
             if (cond instanceof Tree.ExistsCondition) {
                 test = at(cond).Binary(JCTree.NE, make().Ident(decl.name), make().Literal(TypeTags.BOT, null));                
             } else {
-                // Want raw type for instanceof since it can't be used with generic types
-                JCExpression rawToTypeExpr = makeJavaType(toType, CeylonTransformer.WANT_RAW_TYPE);
-    
-                test = at(cond).TypeTest(make().Ident(decl.name), rawToTypeExpr);
+                // is/nonempty
+                JCExpression testExpr = make().Ident(decl.name);
+
+                test = at(cond).TypeTest(testExpr , rawToTypeExpr);
             }
         } else if (cond instanceof Tree.BooleanCondition) {
             Tree.BooleanCondition booleanCondition = (Tree.BooleanCondition) cond;
