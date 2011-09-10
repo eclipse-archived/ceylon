@@ -58,7 +58,7 @@ public class Unit {
     	Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
         for (Import i: getImports()) {
             if (i.getAlias().startsWith(startingWith)) {
-                result.put(i.getAlias(), new DeclarationWithProximity(i.getDeclaration(), proximity));
+                result.put(i.getAlias(), new DeclarationWithProximity(i, proximity));
             }
         }
         return result;
