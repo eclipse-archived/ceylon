@@ -54,11 +54,11 @@ public class Unit {
         return null;
     }
     
-    public Map<String, Declaration> getMatchingImportedDeclarations(String startingWith) {
-    	Map<String, Declaration> result = new TreeMap<String, Declaration>();
+    public Map<String, DeclarationWithProximity> getMatchingImportedDeclarations(String startingWith, int proximity) {
+    	Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
         for (Import i: getImports()) {
             if (i.getAlias().startsWith(startingWith)) {
-                result.put(i.getAlias(), i.getDeclaration());
+                result.put(i.getAlias(), new DeclarationWithProximity(i.getDeclaration(), proximity));
             }
         }
         return result;

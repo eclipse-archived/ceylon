@@ -138,12 +138,12 @@ public abstract class Element {
         }
     }
     
-    public Map<String, Declaration> getMatchingDeclarations(Unit unit, String startingWith) {
-    	Map<String, Declaration> result = getContainer()
-    			.getMatchingDeclarations(unit, startingWith);
+    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
+    	Map<String, DeclarationWithProximity> result = getContainer()
+    			.getMatchingDeclarations(unit, startingWith, proximity+1);
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && isNameMatching(startingWith, d)) {
-                result.put(d.getName(), d);
+                result.put(d.getName(), new DeclarationWithProximity(d, proximity));
             }
         }
     	return result;

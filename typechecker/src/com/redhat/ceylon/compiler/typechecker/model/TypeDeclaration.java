@@ -430,25 +430,27 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
     }
     
     @Override
-    public Map<String, Declaration> getMatchingDeclarations(Unit unit, String startingWith) {
-    	Map<String, Declaration> result = getMatchingMemberDeclarations(startingWith);
-    	result.putAll(super.getMatchingDeclarations(unit, startingWith));
+    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
+    	Map<String, DeclarationWithProximity> result = getMatchingMemberDeclarations(startingWith, proximity);
+    	//TODO: is this correct? I thought inherited declarations hide outer
+    	//      declarations! I think this is a bug
+    	result.putAll(super.getMatchingDeclarations(unit, startingWith, proximity));
     	return result;
     }
 
-	public Map<String, Declaration> getMatchingMemberDeclarations(String startingWith) {
-		Map<String, Declaration> result = new TreeMap<String, Declaration>();
+	public Map<String, DeclarationWithProximity> getMatchingMemberDeclarations(String startingWith, int proximity) {
+		Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
         TypeDeclaration et = getExtendedTypeDeclaration();
     	if (et!=null) {
-    		result.putAll(et.getMatchingMemberDeclarations(startingWith));
+    		result.putAll(et.getMatchingMemberDeclarations(startingWith, proximity+1));
     	}
     	for (TypeDeclaration st: getSatisfiedTypeDeclarations()) {
-    		result.putAll(st.getMatchingMemberDeclarations(startingWith));
+    		result.putAll(st.getMatchingMemberDeclarations(startingWith, proximity+1));
     	}
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && d.isShared() && 
             		isNameMatching(startingWith, d)) {
-                result.put(d.getName(), d);
+                result.put(d.getName(), new DeclarationWithProximity(d, proximity));
             }
         }
     	//TODO: self type?

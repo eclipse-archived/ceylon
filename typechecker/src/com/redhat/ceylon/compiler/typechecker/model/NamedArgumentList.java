@@ -13,11 +13,11 @@ public class NamedArgumentList extends Element implements Scope {
     }
     
     @Override
-    public Map<String, Declaration> getMatchingDeclarations(Unit unit, String startingWith) {
-        Map<String, Declaration> result = super.getMatchingDeclarations(unit, startingWith);
+    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
+        Map<String, DeclarationWithProximity> result = super.getMatchingDeclarations(unit, startingWith, proximity+1);
         for (Parameter p: getParameterList().getParameters()) {
             if (p.getName().startsWith(startingWith)) {
-                result.put(p.getName(), p);
+                result.put(p.getName(), new DeclarationWithProximity(p, proximity));
             }
         }
         return result;

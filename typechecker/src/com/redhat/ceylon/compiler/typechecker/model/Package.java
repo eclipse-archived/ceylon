@@ -121,15 +121,15 @@ public class Package implements Scope {
     }
     
     @Override
-    public Map<String, Declaration> getMatchingDeclarations(Unit unit, String startingWith) {
-    	Map<String, Declaration> result = new TreeMap<String, Declaration>();
+    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
+    	Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && isNameMatching(startingWith, d)) {
-                result.put(d.getName(), d);
+                result.put(d.getName(), new DeclarationWithProximity(d, proximity+1));
             }
         }
         if (unit!=null) {
-        	result.putAll(unit.getMatchingImportedDeclarations(startingWith));
+        	result.putAll(unit.getMatchingImportedDeclarations(startingWith, proximity));
         }
     	return result;
     }

@@ -32,6 +32,6 @@ public interface Scope {
 
     Scope getContainer();
     
-    Map<String, Declaration> getMatchingDeclarations(Unit unit, String startingWith);
+    Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity);
     
 }
