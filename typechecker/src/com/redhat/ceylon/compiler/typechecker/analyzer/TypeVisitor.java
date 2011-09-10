@@ -13,6 +13,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Import;
+import com.redhat.ceylon.compiler.typechecker.model.ImportList;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -60,6 +61,7 @@ public class TypeVisitor extends AbstractVisitor {
     public void visit(Tree.Import that) {
         Package importedPackage = getPackage(that.getImportPath());
         if (importedPackage!=null) {
+            ((ImportList) that.getScope()).setImportedPackage(importedPackage);
             Set<String> names = new HashSet<String>();
             for (Tree.ImportMemberOrType member: that.getImportMemberOrTypeList()
                     .getImportMemberOrTypes()) {

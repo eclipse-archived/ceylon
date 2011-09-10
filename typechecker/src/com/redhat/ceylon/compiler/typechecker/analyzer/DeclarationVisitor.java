@@ -15,6 +15,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.FunctionalParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
+import com.redhat.ceylon.compiler.typechecker.model.ImportList;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.InterfaceAlias;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -209,6 +210,14 @@ public class DeclarationVisitor extends Visitor {
         unit.setPackage(pkg);
         unit.setFilename(filename);
         super.visit(that);
+    }
+    
+    @Override
+    public void visit(Tree.Import that) {
+        ImportList il = new ImportList();
+        Scope o = enterScope(il);
+        super.visit(that);
+        exitScope(o);
     }
     
     @Override

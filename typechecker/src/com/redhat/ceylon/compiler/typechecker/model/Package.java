@@ -134,4 +134,14 @@ public class Package implements Scope {
     	return result;
     }
 
+    Map<String, DeclarationWithProximity> getImportableDeclarations(Unit unit, String startingWith, int proximity) {
+        Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
+        for (Declaration d: getMembers()) {
+            if (isResolvable(d) && d.isShared() && isNameMatching(startingWith, d) ) {
+                result.put(d.getName(), new DeclarationWithProximity(d, proximity));
+            }
+        }
+        return result;
+    }
+
 }
