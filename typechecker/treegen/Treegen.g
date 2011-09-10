@@ -87,6 +87,11 @@ field : t=TYPE_NAME f=FIELD_NAME
           { println("        public com.redhat.ceylon.compiler.typechecker.model." + $t.text + " get" + initialUpper($f.text) + "() { return " + $f.text + "; }"); }
           { println("        public void set" + initialUpper($f.text) + "(com.redhat.ceylon.compiler.typechecker.model." + $t.text + " value) { " + $f.text + " = value; }\n"); }
         ';'
+      | 'boolean' f=FIELD_NAME
+          { println("        private boolean " + $f.text+ ";"); }
+          { println("        public boolean get" + initialUpper($f.text) + "() { return " + $f.text + "; }"); }
+          { println("        public void set" + initialUpper($f.text) + "(boolean value) { " + $f.text + " = value; }\n"); }
+        ';'
       | l=TYPE_NAME '<' t=TYPE_NAME '>' f=FIELD_NAME
           { println("        private " + $l.text + "<com.redhat.ceylon.compiler.typechecker.model." + $t.text + "> " + $f.text+ ";"); }
           { println("        public " + $l.text + "<com.redhat.ceylon.compiler.typechecker.model." + $t.text + "> get" + initialUpper($f.text) + "() { return " + $f.text + "; }"); }

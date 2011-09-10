@@ -350,7 +350,8 @@
     Value declarationModel;)
 
 ^(abstract TERM
-    ProducedType typeModel;)
+    ProducedType typeModel;
+    boolean unboxed;)
 ^(abstract OPERATOR_EXPRESSION:TERM)
 
 ^(abstract BINARY_OPERATOR_EXPRESSION:OPERATOR_EXPRESSION
