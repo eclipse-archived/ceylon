@@ -14,11 +14,16 @@ shared class Entry<out Key, out Item>(Key key, Item item)
     
     shared actual Boolean equals(Equality that) {
         if (is Entry<Equality,Equality> that) {
-            return this.key==that.key && this.item==that.item;
+            return this.key==that.key && 
+                this.item==that.item;
         }
         else {
             return false;
         }
+    }
+    
+    shared actual String string {
+        return key.string + "->" + item.string;
     }
     
 }
