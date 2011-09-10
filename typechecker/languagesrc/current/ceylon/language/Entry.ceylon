@@ -1,4 +1,4 @@
-shared abstract class Entry<out Key, out Item>(Key key, Item item)
+shared class Entry<out Key, out Item>(Key key, Item item)
         extends Object()
         satisfies Equality
         given Key satisfies Equality
