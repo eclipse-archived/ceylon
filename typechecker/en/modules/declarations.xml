@@ -118,7 +118,7 @@ TypeConstraints?
         only if it explicitly <emphasis>imports</emphasis> the declaration using the 
         <literal>import</literal> statement.</para>
         
-        <programlisting>Import: "import" FullPackageName "{" ImportElements "}"</programlisting>
+        <programlisting>Import: "import" FullPackageName "{" ImportElements? "}"</programlisting>
         
         <para>A package is a namespace. A full package name is a period-separated list of 
         all-lowercase identifiers.</para>

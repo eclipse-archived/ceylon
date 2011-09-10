@@ -81,7 +81,7 @@ importDeclaration returns [Import importDeclaration]
       ( COMMA ie2=importElement { il.addImportMemberOrType($ie2.importMemberOrType); } )* 
       ( COMMA iw=importWildcard { il.setImportWildcard($iw.importWildcard); } )?
     | iw=importWildcard { il.setImportWildcard($iw.importWildcard); }
-    )
+    )?
     RBRACE
     { il.setEndToken($RBRACE); }
     ;
