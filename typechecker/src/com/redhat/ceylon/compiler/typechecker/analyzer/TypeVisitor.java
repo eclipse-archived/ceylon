@@ -90,7 +90,7 @@ public class TypeVisitor extends AbstractVisitor {
                 return pkg;
             }
         }
-        path.addError("Package not found: " + 
+        path.addError("package not found: " + 
                 PrintUtil.importNodeToString(path.getIdentifiers()));
         return null;
     }
