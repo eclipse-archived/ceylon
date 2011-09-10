@@ -61,26 +61,28 @@ public class TypeVisitor extends AbstractVisitor {
     public void visit(Tree.Import that) {
         Package importedPackage = getPackage(that.getImportPath());
         if (importedPackage!=null) {
-            ((ImportList) that.getScope()).setImportedPackage(importedPackage);
+            ImportList il = (ImportList) that.getScope();
+            il.setImportedPackage(importedPackage);
             Set<String> names = new HashSet<String>();
             for (Tree.ImportMemberOrType member: that.getImportMemberOrTypeList()
                     .getImportMemberOrTypes()) {
-                String name = importMember(member, importedPackage);
+                String name = importMember(member, importedPackage, il);
                 names.add(name);
             }
             if (that.getImportMemberOrTypeList().getImportWildcard()!=null) {
-                importAllMembers(importedPackage, names);
+                importAllMembers(importedPackage, names, il);
             }
         }
     }
 
-    private void importAllMembers(Package importedPackage, Set<String> ignoredMembers) {
+    private void importAllMembers(Package importedPackage, Set<String> ignoredMembers, ImportList il) {
         for (Declaration dec: importedPackage.getMembers()) {
             if (dec.isShared() && !ignoredMembers.contains(dec.getName())) {
                 Import i = new Import();
                 i.setAlias(dec.getName());
                 i.setDeclaration(dec);
                 unit.getImports().add(i);
+                il.getImports().add(i);
             }
         }
     }
@@ -111,7 +113,7 @@ public class TypeVisitor extends AbstractVisitor {
         }
     }
     
-    private String importMember(Tree.ImportMemberOrType member, Package importedPackage) {
+    private String importMember(Tree.ImportMemberOrType member, Package importedPackage, ImportList il) {
         Import i = new Import();
         Tree.Alias alias = member.getAlias();
         String name = name(member.getIdentifier());
@@ -134,6 +136,7 @@ public class TypeVisitor extends AbstractVisitor {
             i.setDeclaration(d);
             member.setDeclarationModel(d);
             unit.getImports().add(i);
+            il.getImports().add(i);
         }
         return name;
     }

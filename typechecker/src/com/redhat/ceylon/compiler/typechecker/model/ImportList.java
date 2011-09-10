@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +10,7 @@ import java.util.Map;
 public class ImportList implements Scope {
     
     Package importedPackage;
+    List<Import> imports = new ArrayList<Import>();
     
     @Override
     public List<Declaration> getMembers() {
@@ -67,7 +70,12 @@ public class ImportList implements Scope {
     @Override
     public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit,
             String startingWith, int proximity) {
-        return importedPackage.getImportableDeclarations(unit, startingWith, proximity);
+        if (importedPackage!=null) {
+            return importedPackage.getImportableDeclarations(unit, startingWith, imports, proximity);
+        }
+        else {
+            return Collections.emptyMap();
+        }
     }
     
     public Package getImportedPackage() {
@@ -76,6 +84,10 @@ public class ImportList implements Scope {
     
     public void setImportedPackage(Package importedPackage) {
         this.importedPackage = importedPackage;
+    }
+    
+    public List<Import> getImports() {
+        return imports;
     }
     
 }

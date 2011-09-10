@@ -77,9 +77,23 @@ importDeclaration returns [Import importDeclaration]
     { il = new ImportMemberOrTypeList($LBRACE);
       $importDeclaration.setImportMemberOrTypeList(il); }
     ( 
-      ie1=importElement { il.addImportMemberOrType($ie1.importMemberOrType); } 
-      ( COMMA ie2=importElement { il.addImportMemberOrType($ie2.importMemberOrType); } )* 
-      ( COMMA iw=importWildcard { il.setImportWildcard($iw.importWildcard); } )?
+      ie1=importElement 
+      { il.addImportMemberOrType($ie1.importMemberOrType); } 
+      ( 
+        COMMA 
+        ie2=importElement 
+        { il.addImportMemberOrType($ie2.importMemberOrType); } 
+      )*
+      ( 
+        COMMA 
+        (
+          iw=importWildcard 
+          { il.setImportWildcard($iw.importWildcard); } 
+        |
+          { displayRecognitionError(getTokenNames(), 
+                new MismatchedTokenException(RBRACE, input)); }
+        )
+      )?
     | iw=importWildcard { il.setImportWildcard($iw.importWildcard); }
     )?
     RBRACE
