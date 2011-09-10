@@ -215,6 +215,7 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.Import that) {
         ImportList il = new ImportList();
+        unit.getImportLists().add(il);
         Scope o = enterScope(il);
         super.visit(that);
         exitScope(o);

@@ -11,9 +11,14 @@ public class Unit {
     List<Import> imports = new ArrayList<Import>();
     List<Declaration> declarations = new ArrayList<Declaration>();
     String filename;
+    List<ImportList> importLists = new ArrayList<ImportList>();
 
     public List<Import> getImports() {
         return imports;
+    }
+
+    public List<ImportList> getImportLists() {
+        return importLists;
     }
 
     public Package getPackage() {
