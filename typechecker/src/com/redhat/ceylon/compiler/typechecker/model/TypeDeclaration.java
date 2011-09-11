@@ -232,9 +232,12 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
         //first search for the member in the local
         //scope, including non-shared declarations
         Declaration d = getDirectMember(name);
+        if (d==null) d = getDirectMemberOrParameter(name);
         if (d!=null && d.isShared()) {
             //if it's shared, it's what we're 
             //looking for, return it
+            //TODO: should also return it if we're 
+            //      calling from local scope!
             return d;
         }
         else {
