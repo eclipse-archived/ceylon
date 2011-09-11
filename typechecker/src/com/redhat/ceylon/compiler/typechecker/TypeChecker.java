@@ -32,7 +32,7 @@ public class TypeChecker {
 
     //package level
     TypeChecker(VFS vfs, List<VirtualFile> srcDirectories, boolean verifyDependencies, 
-    		AssertionVisitor assertionVisitor, boolean verbose) {
+            AssertionVisitor assertionVisitor, boolean verbose) {
         long start = System.nanoTime();
         this.srcDirectories = srcDirectories;
         this.verbose = verbose;
