@@ -68,5 +68,22 @@ public class Unit {
         }
         return result;
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Unit) {
+            Unit that = (Unit) obj;
+            return that.getPackage().equals(getPackage())
+                    && that.getFilename().equals(getFilename());
+        }
+        else {
+            return false;
+        }
+    }
+    
+    @Override
+    public int hashCode() {
+        return getFilename().hashCode();
+    }
 
 }
