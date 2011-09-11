@@ -1,9 +1,12 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class NamedArgumentList extends Element implements Scope {
     private ParameterList parameterList;
+    private List<String> argumentNames = new ArrayList<String>();
     
     public ParameterList getParameterList() {
         return parameterList;
@@ -16,11 +19,15 @@ public class NamedArgumentList extends Element implements Scope {
     public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
         Map<String, DeclarationWithProximity> result = super.getMatchingDeclarations(unit, startingWith, proximity+1);
         for (Parameter p: getParameterList().getParameters()) {
-            if (p.getName().startsWith(startingWith)) {
+            if (p.getName().startsWith(startingWith) && !getArgumentNames().contains(p.getName())) {
                 result.put(p.getName(), new DeclarationWithProximity(p, proximity));
             }
         }
         return result;
+    }
+    
+    public List<String> getArgumentNames() {
+        return argumentNames;
     }
     
 }

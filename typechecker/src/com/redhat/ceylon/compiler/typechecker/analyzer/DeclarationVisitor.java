@@ -506,6 +506,11 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.NamedArgumentList that) {
         NamedArgumentList nal = new NamedArgumentList();
+        for (Tree.NamedArgument na: that.getNamedArguments()) {
+            if (na.getIdentifier()!=null) {
+                nal.getArgumentNames().add(na.getIdentifier().getText());
+            }
+        }
         that.setNamedArgumentList(nal);
         visitElement(that, nal);
         Scope o = enterScope(nal);
