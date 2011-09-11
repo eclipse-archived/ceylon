@@ -74,8 +74,8 @@ public abstract class Element {
         for (Declaration d: getMembers()) {
             if (isResolvable(d)
                     //&& d.isShared()
-                    && !isParameter(d)
-                    && isNamed(name, d)) { //don't return parameters
+                    && !isParameter(d)  //don't return parameters
+                    && isNamed(name, d)) {
                 return d;
             }
         }
