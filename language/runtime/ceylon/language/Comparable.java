@@ -7,26 +7,19 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
 
 @Ceylon
 @TypeParameters({
-    @TypeParameter(value = "T", variance = Variance.IN)
+    @TypeParameter(value = "Other", variance = Variance.IN)
  })
-public interface Comparable<T> {
+public interface Comparable<Other extends Comparable<Other>> extends Equality {
+    
     /** The binary compare operator |<=>|.  Compares this
         object with the given object. */
-    public Comparison compare(T other);
+    public Comparison compare(Other other);
     
-    public boolean largerThan(T other); /* {
-        return compare(other)==larger;
-    }*/
+    public boolean largerThan(Other other); 
     
-    public boolean smallerThan(T other);/* {
-        return compare(other)==smaller;
-    }*/
+    public boolean smallerThan(Other other);
     
-    public boolean asLargeAs(T other);/* {
-        return compare(other)!=smaller;
-    }*/
+    public boolean asLargeAs(Other other);
     
-    public boolean asSmallAs(T other);/* {
-        return compare(other)!=larger;
-    }*/
+    public boolean asSmallAs(Other other);
 }

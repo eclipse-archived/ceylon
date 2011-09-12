@@ -4,70 +4,59 @@ import com.redhat.ceylon.compiler.metadata.java.Attribute;
 import com.redhat.ceylon.compiler.metadata.java.Ceylon;
 
 @Ceylon @Attribute
-public class $empty {
+public class empty {
     private final static Empty value = new Empty(){
 
         @Override
-        public boolean defines(Equality key) {
-            return false;
+        public boolean defines(Natural key) {
+            return Correspondence$impl.defines(this, key);
         }
 
         @Override
         public Category getKeys() {
-            throw new RuntimeException("Not yet implemented");
+            return Correspondence$impl.getKeys(this);
         }
 
         @Override
-        public boolean definesEvery(Equality... keys) {
-            return false;
+        public boolean definesEvery(Iterable<? extends Natural> keys) {
+            return Correspondence$impl.definesEvery(this, keys);
         }
 
         @Override
-        public boolean definesAny(Equality... keys) {
-            return false;
+        public boolean definesAny(Iterable<? extends Natural> keys) {
+            return Correspondence$impl.definesAny(this, keys);
         }
 
         @Override
-        public java.lang.Object[] values(Equality... keys) {
-            return null;
-        }
-
-        @Override
-        public Iterator iterator() {
-            return new Iterator() {
-
-                @Override
-                public java.lang.Object getHead() {
-                    return null;
-                }
-
-                @Override
-                public Iterator getTail() {
-                    return this;
-                }
-                
-            };
+        public Sequence<? extends java.lang.Object> items(Iterable<? extends Natural> keys) {
+            return Correspondence$impl.items(this, keys);
         }
 
         @Override
         public Natural getSize() {
-            return Natural.instance(0);
+            return Empty$impl.getSize(this);
         }
 
         @Override
         public boolean getEmpty() {
-            return false;
+            return Empty$impl.getEmpty(this);
         }
 
         @Override
-        public java.lang.Object value(Equality key) {
-            return null;
+        public Iterator<java.lang.Object> getIterator() {
+            return Empty$impl.getIterator(this);
+        }
+
+        @Override
+        public java.lang.Object item(Natural key) {
+            return Empty$impl.item(this, key);
         }
 
         @Override
         public java.lang.Object getFirst() {
-            return null;
+            return Empty$impl.getFirst(this);
         }
+
     };
     
     public static Empty getEmpty(){
