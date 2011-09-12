@@ -76,7 +76,6 @@ public class LazyInterface extends Interface implements LazyElement {
 
     @Override
     public boolean isMember() {
-        load();
         return super.isMember();
     }
 
@@ -258,7 +257,6 @@ public class LazyInterface extends Interface implements LazyElement {
 
     @Override
     public Scope getContainer() {
-        load();
         return super.getContainer();
     }
 

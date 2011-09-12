@@ -99,7 +99,6 @@ public class LazyClass extends Class implements LazyElement {
 
     @Override
     public boolean isMember() {
-        load();
         return super.isMember();
     }
 
@@ -281,7 +280,6 @@ public class LazyClass extends Class implements LazyElement {
 
     @Override
     public Scope getContainer() {
-        load();
         return super.getContainer();
     }
 
