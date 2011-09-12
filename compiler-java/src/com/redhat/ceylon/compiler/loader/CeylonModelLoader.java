@@ -1020,6 +1020,8 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 type = symtab.ceylonCharacterType;
             } else if (sameType(type, symtab.characterObjectType)) {
                 type = makeOptional(symtab.ceylonCharacterType);
+            } else if (sameType(type, symtab.objectType)) {
+                type = makeOptional(symtab.ceylonIdentifiableObjectType);
             }
             
             return getType(type, scope);
