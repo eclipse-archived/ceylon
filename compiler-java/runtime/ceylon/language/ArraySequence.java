@@ -26,7 +26,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
 	}
 
 	@Override
-	public Sequence<Element> getRest() {
+	public Sequence<? extends Element> getRest() {
 		return new ArraySequence<Element>(array, first + 1);
 	}
 
@@ -51,15 +51,15 @@ public class ArraySequence<Element> implements Sequence<Element> {
 	}
 
 	@Override
-	public Iterator<Element> iterator() {
+	public Iterator<Element> getIterator() {
 		return new ArraySequenceIterator<Element>(this);
 	}
 
 	public static class ArraySequenceIterator<Element> implements Iterator<Element> {
 
-		private final Sequence<Element> sequence;
+		private final Sequence<? extends Element> sequence;
 
-		public ArraySequenceIterator(Sequence<Element> sequence) {
+		public ArraySequenceIterator(Sequence<? extends Element> sequence) {
 			this.sequence = sequence;
 		}
 
@@ -76,7 +76,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
 	}
 
 	@Override
-	public Element value(Natural key) {
+	public Element item(Natural key) {
 		return key.longValue() >= getSize().longValue() ? null : array[(int) (key.longValue() - first)];
 	}
 
@@ -86,17 +86,17 @@ public class ArraySequence<Element> implements Sequence<Element> {
 	}
 
 	@Override
-	public boolean definesEvery(Natural... keys) {
+	public boolean definesEvery(Iterable<? extends Natural> keys) {
 		throw new RuntimeException("Not implemented yet");
 	}
 
 	@Override
-	public boolean definesAny(Natural... keys) {
+	public boolean definesAny(Iterable<? extends Natural> keys) {
 		throw new RuntimeException("Not implemented yet");
 	}
 
 	@Override
-	public Element[] values(Natural... keys) {
+	public Sequence<Element> items(Iterable<? extends Natural> keys) {
 		throw new RuntimeException("Not implemented yet");
 	}
 
@@ -104,4 +104,9 @@ public class ArraySequence<Element> implements Sequence<Element> {
 	public Sequence<Element> getClone() {
 		throw new RuntimeException("Not implemented yet");
 	}
+
+    @Override
+    public java.lang.String getElementsString() {
+        return Sequence$impl.getElementsString(this);
+    }
 }

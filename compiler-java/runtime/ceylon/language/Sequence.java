@@ -1,6 +1,7 @@
-package ceylon.language;
+ package ceylon.language;
 
 import com.redhat.ceylon.compiler.metadata.java.Ceylon;
+import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 import com.redhat.ceylon.compiler.metadata.java.TypeParameter;
 import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
 import com.redhat.ceylon.compiler.metadata.java.Variance;
@@ -17,26 +18,16 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
     
     public Element getFirst();
     
-    public Sequence<Element> getRest();
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element|ceylon.language.Nothing>")
+    public Sequence<? extends Element> getRest();
     
     public boolean getEmpty();
-        // return false;
     
     public Natural getSize();
-        //return lastIndex+1;
     
     public Element getLast();
-    /*{
-        if (exists Element x = value(lastIndex)) {
-            return x;
-        }
-        else {
-            return first; //actually never occurs
-        } 
-    }*/
     
     public boolean defines(Natural index);
-//        return index<=lastIndex;
     
     //this depends on efficient implementation of rest
     /*
@@ -52,18 +43,31 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
     }
     */
     
-    public Iterator<Element> iterator();
-        //return SequenceIterator(0);
+    public Iterator<Element> getIterator();
     
-/*    class SequenceIterator(Natural from)
-            extends Object()
-            satisfies Iterator<Element> {
-        shared actual Element? head { 
-            return value(from);
+    class SequenceIterator<Element> extends Object
+    implements Iterator<Element> {
+        private long from;
+        private Sequence<Element> $this;
+        SequenceIterator(Sequence<Element> $this, long from){
+            this.from = from;
+            this.$this = $this;
         }
-        shared actual Iterator<Element> tail {
-            return SequenceIterator(from+1);
+        @TypeInfo("ceylon.language.Nothing|Element")
+        public final Element getHead() { 
+            return $this.item(Natural.instance(from));
+        }
+        public final Iterator<Element> getTail() {
+            return new SequenceIterator<Element>($this, from+1);
+        }
+        public final java.lang.String toString() {
+            return "SequenceIterator";
         }
     }
-*/
+    
+    public java.lang.String toString();
+
+    // FIXME: this is supposed to be private but no idea how to make it so
+    // because it's used in Sequence$impl so we can't move it there
+    public java.lang.String getElementsString();
 }

@@ -7,33 +7,38 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
 
 @Ceylon
 @TypeParameters({
-    @TypeParameter(value = "K", variance = Variance.OUT),
-    @TypeParameter(value = "E", variance = Variance.OUT)
+    @TypeParameter(value = "Key", variance = Variance.OUT),
+    @TypeParameter(value = "Item", variance = Variance.OUT)
  })
-public class Entry<K extends java.lang.Object /* Equality */, E extends java.lang.Object /* Equality */> extends Object implements Equality {
-	private K key;
-	private E element;
+public class Entry<Key extends Equality, 
+                    Item extends Equality> 
+    extends Object implements Equality {
+	private Key key;
+	private Item item;
 	
-	public Entry(K key, E element) {
+	public Entry(Key key, Item item) {
 		this.key = key;
-		this.element = element;
+		this.item = item;
 	}
 	
-	public K getKey() {
+	public Key getKey() {
 		return key;
 	}
 	
-	public E getElement() {
-		return element;
+	public Item getElement() {
+		return item;
 	}
-	
-	// shared actual Integer hash
+
+	@Override
+	public int hashCode() {
+	    return key.hashCode()/2 + item.hashCode()/2;// TODO: really should be xor
+	}
 	
 	@Override
 	public boolean equals(java.lang.Object that) {
 		if (that instanceof Entry) {
-			Entry<K, E> that2 = (Entry)that;
-			return (this.key.equals(that2.key) && this.element.equals(that2.element));
+			Entry<Key, Item> that2 = (Entry)that;
+			return (this.key.equals(that2.key) && this.item.equals(that2.item));
 		} else {
 			return false;
 		}

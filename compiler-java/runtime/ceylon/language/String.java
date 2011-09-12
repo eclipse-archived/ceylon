@@ -1,13 +1,10 @@
 package ceylon.language;
 
-import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
 
-@SatisfiedTypes({
-    "ceylon.language.Equality",
-    "ceylon.language.Comparable<ceylon.language.String>",
-    "ceylon.language.Format"
-})
-public final class String extends Object implements Equality, Comparable<String>, Format {
+public final class String extends Object 
+implements Comparable<String>, Iterable<Character>, 
+           Correspondence<Natural,Character>, Format,
+           Sized, Summable<String>, Castable<String> {
     public final java.lang.String value;
 
     private String(java.lang.String s) {
@@ -84,6 +81,86 @@ public final class String extends Object implements Equality, Comparable<String>
     @Override
     public boolean asSmallAs(String other) {
         return value.length() <= other.value.length();
+    }
+
+    @Override
+    public <CastValue extends String> CastValue as() {
+        return (CastValue)this;
+    }
+
+    @Override
+    public String plus(String number) {
+        return instance(value + number.value);
+    }
+
+    @Override
+    public Natural getSize() {
+        return Natural.instance(value.length());
+    }
+
+    @Override
+    public boolean getEmpty() {
+        return value.isEmpty();
+    }
+
+    @Override
+    public Character item(Natural key) {
+        return Character.instance(value.charAt(key.intValue()));
+    }
+
+    @Override
+    public boolean defines(Natural key) {
+        return key.intValue() >= 0 && key.intValue() < value.length();
+    }
+
+    @Override
+    public Category getKeys() {
+        return Correspondence$impl.getKeys(this);
+    }
+
+    @Override
+    public boolean definesEvery(Iterable<? extends Natural> keys) {
+        return Correspondence$impl.definesEvery(this, keys);
+    }
+
+    @Override
+    public boolean definesAny(Iterable<? extends Natural> keys) {
+        return Correspondence$impl.definesAny(this, keys);
+    }
+
+    @Override
+    public Sequence<? extends Character> items(Iterable<? extends Natural> keys) {
+        return Correspondence$impl.items(this, keys);
+    }
+
+    class StringIterator implements Iterator<Character>{
+
+        private int index;
+
+        StringIterator(int index){
+            this.index = index;
+        }
+        
+        @Override
+        public Character getHead() {
+            return item(Natural.instance(index));
+        }
+
+        @Override
+        public Iterator<Character> getTail() {
+            return new StringIterator(index+1);
+        }
+        
+    }
+    
+    @Override
+    public Iterator<Character> getIterator() {
+        return new StringIterator(0);
+    }
+
+    @Override
+    public Character getFirst() {
+        return Iterable$impl.getFirst(this);
     }
 
 }
