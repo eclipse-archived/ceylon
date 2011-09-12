@@ -607,6 +607,9 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
 
     private MethodSymbol getOverriddenMethod(MethodSymbol method, Types types) {
         MethodSymbol impl = null;
+        // interfaces have a different way to work
+        if(method.owner.isInterface())
+            return (MethodSymbol) method.implemented(method.owner.type.tsym, types);
         for (Type superType = types.supertype(method.owner.type);
                 impl == null && superType.tsym != null;
                 superType = types.supertype(superType)) {
@@ -622,7 +625,13 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                     impl = (MethodSymbol) e.sym;
                 }
             }
+            // try in the interfaces
+            if(impl == null)
+                impl = (MethodSymbol) method.implemented(i, types);
         }
+        // try in the interfaces
+        if(impl == null)
+            impl = (MethodSymbol) method.implemented(method.owner.type.tsym, types);
         return impl;
     }
 
