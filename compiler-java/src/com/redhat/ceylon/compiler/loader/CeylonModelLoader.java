@@ -614,6 +614,9 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 impl == null && superType.tsym != null;
                 superType = types.supertype(superType)) {
             TypeSymbol i = superType.tsym;
+            // never go above this type since it has no supertype in Ceylon (does in Java though)
+            if(i.getQualifiedName().toString().equals("ceylon.language.Void"))
+                break;
             for (Entry e = i.members().lookup(method.name);
                     impl == null && e.scope != null;
                     e = e.next()) {
