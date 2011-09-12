@@ -587,6 +587,22 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         
         setExtendedType(klass, classSymbol);
         setSatisfiedTypes(klass, classSymbol);
+        fillRefinedDeclarations(klass);
+    }
+
+    private void fillRefinedDeclarations(ClassOrInterface klass) {
+        for(Declaration member : klass.getMembers()){
+            if(member.isActual()){
+                member.setRefinedDeclaration(findRefinedDeclaration(klass, member.getName()));
+            }
+        }
+    }
+
+    private Declaration findRefinedDeclaration(ClassOrInterface decl, String name) {
+        Declaration refinedDeclaration = decl.getRefinedMember(name);
+        if(refinedDeclaration == null)
+            throw new RuntimeException("Failed to find refined declaration for "+name);
+        return refinedDeclaration;
     }
 
     private MethodSymbol getOverriddenMethod(MethodSymbol method, Types types) {
