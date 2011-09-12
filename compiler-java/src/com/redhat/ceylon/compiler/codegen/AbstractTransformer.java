@@ -749,7 +749,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     protected JCExpression makeEmpty() {
-        return globalGen().getGlobalValue(makeIdent("ceylon", "language"), "empty");
+        return globalGen().getGlobalValue(makeIdent("ceylon", "language"), "$empty");
     }
     
     /*

@@ -23,8 +23,8 @@ class MethodWithVarargs {
     private final void m() {
         f1(new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L)));
         f2(1L, new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L)));
-        f1(ceylon.language.empty.getEmpty());
-        f2(1L, ceylon.language.empty.getEmpty());
+        f1(ceylon.language.$empty.getEmpty());
+        f2(1L, ceylon.language.$empty.getEmpty());
         f1(new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L)));
         f2(1L, new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L)));
         f3(new ceylon.language.ArraySequence<.java.lang.Object>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L)));
