@@ -1,0 +1,33 @@
+package com.redhat.ceylon.compiler.test.misc.equalshashoverriding;
+
+@.com.redhat.ceylon.compiler.metadata.java.Ceylon
+class EqualsHashOverriding {
+    private final .java.lang.String s;
+    
+    public final void print() {
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Boolean")
+    public final boolean equals(@.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Equality")
+    final .java.lang.Object that) {
+        final .java.lang.Object $that$0 = that;
+        if ($that$0 instanceof com.redhat.ceylon.compiler.test.misc.equalshashoverriding.EqualsHashOverriding) {
+            final com.redhat.ceylon.compiler.test.misc.equalshashoverriding.EqualsHashOverriding $that$1 = (com.redhat.ceylon.compiler.test.misc.equalshashoverriding.EqualsHashOverriding)$that$0;
+            return (.ceylon.language.String.instance(s)).equals(.ceylon.language.String.instance($that$1.s));
+        } else {
+            return false;
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
+    public final int hashCode() {
+        return (.ceylon.language.String.instance(s)).hashCode();
+    }
+    
+    EqualsHashOverriding(@.com.redhat.ceylon.compiler.metadata.java.Name("s")
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.String")
+    .java.lang.String s) {
+        this.s = s;
+    }
+}

@@ -35,7 +35,12 @@ public class MiscTest extends CompilerTest {
     public void testCompileTwoClasses() throws Exception{
         compileAndRun("com.redhat.ceylon.compiler.test.misc.twoclasses.main", "twoclasses/One.ceylon", "twoclasses/Two.ceylon", "twoclasses/main.ceylon");
     }
-    
+
+    @Test
+    public void testEqualsHashOverriding(){
+        compareWithJavaSource("equalshashoverriding/EqualsHashOverriding");
+    }
+
     @Test
     public void compileRuntime(){
         String sourcePath = "../ceylon-spec/languagesrc/current";
