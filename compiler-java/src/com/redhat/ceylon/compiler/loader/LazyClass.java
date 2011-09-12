@@ -75,7 +75,7 @@ public class LazyClass extends Class implements LazyElement {
 
     @Override
     public ProducedType getType() {
-        load();
+        loadTypeParams();
         return super.getType();
     }
 
@@ -148,14 +148,14 @@ public class LazyClass extends Class implements LazyElement {
     @Override
     public ProducedReference getProducedReference(ProducedType pt,
             List<ProducedType> typeArguments) {
-        load();
+        loadTypeParams();
         return super.getProducedReference(pt, typeArguments);
     }
 
     @Override
     public ProducedType getProducedType(ProducedType outerType,
             List<ProducedType> typeArguments) {
-        load();
+        loadTypeParams();
         return super.getProducedType(outerType, typeArguments);
     }
 
