@@ -1880,7 +1880,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         TypedDeclaration member = getBaseDeclaration(that);
         if (member==null) {
             that.addError("method or attribute does not exist: " +
-                    name(that.getIdentifier()));
+                    name(that.getIdentifier()), 100);
         }
         else {
             that.setDeclaration(member);
@@ -1905,7 +1905,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                     .getMember(name(that.getIdentifier()));
             if (member==null) {
                 that.addError("member method or attribute does not exist: " +
-                        name(that.getIdentifier()));
+                        name(that.getIdentifier()), 100);
             }
             else {
                 that.setDeclaration(member);
@@ -1971,7 +1971,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         TypeDeclaration type = getBaseDeclaration(that);
         if (type==null) {
             that.addError("type does not exist: " + 
-                    name(that.getIdentifier()));
+                    name(that.getIdentifier()), 100);
         }
         else {
             that.setDeclaration(type);
@@ -1996,7 +1996,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                     .getMember(name(that.getIdentifier()));
             if (type==null) {
                 that.addError("member type does not exist: " +
-                        name(that.getIdentifier()));
+                        name(that.getIdentifier()), 100);
             }
             else {
                 that.setDeclaration(type);

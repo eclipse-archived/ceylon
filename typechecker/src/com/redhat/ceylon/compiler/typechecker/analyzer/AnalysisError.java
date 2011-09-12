@@ -9,4 +9,8 @@ public class AnalysisError extends AnalysisMessage {
 		super(treeNode, message);
 	}
     
+    public AnalysisError(Node treeNode, String message, int code) {
+        super(treeNode, message, code);
+    }
+    
 }

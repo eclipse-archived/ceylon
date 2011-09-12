@@ -175,6 +175,10 @@ public abstract class Node {
         errors.add( new AnalysisError(this, message) );
     }
     
+    public void addError(String message, int code) {
+        errors.add( new AnalysisError(this, message, code) );
+    }
+    
     public void addUnexpectedError(String message) {
         errors.add( new UnexpectedError(this, message) );
     }

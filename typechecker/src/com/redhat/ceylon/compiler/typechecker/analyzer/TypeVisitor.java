@@ -175,7 +175,7 @@ public class TypeVisitor extends AbstractVisitor {
         TypeDeclaration type = getBaseDeclaration(that);
         if (type==null) {
             that.addError("type declaration not found: " + 
-                    name(that.getIdentifier()));
+                    name(that.getIdentifier()), 100);
         }
         else {
             ProducedType outerType = that.getScope().getDeclaringType(type);
@@ -208,7 +208,7 @@ public class TypeVisitor extends AbstractVisitor {
                         .getMember(name(that.getIdentifier()));
             if (type==null) {
                 that.addError("member type declaration not found: " + 
-                        name(that.getIdentifier()));
+                        name(that.getIdentifier()), 100);
             }
             else {
                 if (!type.isVisible(that.getScope())) {

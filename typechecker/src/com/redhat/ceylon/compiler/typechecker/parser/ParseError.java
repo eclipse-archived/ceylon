@@ -19,6 +19,11 @@ public class ParseError extends RecognitionError {
 		return parser.getErrorHeader(recognitionException);
 	}
 	
+    @Override
+    public int getCode() {
+        return -1;
+    }
+    
 	@Override 
 	public String getMessage() {
 		return parser.getErrorMessage(recognitionException, tokenNames);

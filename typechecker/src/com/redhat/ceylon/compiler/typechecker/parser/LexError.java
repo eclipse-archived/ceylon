@@ -2,8 +2,6 @@ package com.redhat.ceylon.compiler.typechecker.parser;
 
 import org.antlr.runtime.RecognitionException;
 
-import com.redhat.ceylon.compiler.typechecker.tree.Message;
-
 public class LexError extends RecognitionError {
 	
 	private CeylonLexer lexer;
@@ -21,6 +19,12 @@ public class LexError extends RecognitionError {
 		return lexer.getErrorHeader(recognitionException);
 	}
 	
+    @Override
+    public int getCode() {
+        return -1;
+    }
+    
+    @Override
 	public String getMessage() {
 		return lexer.getErrorMessage(recognitionException, tokenNames);
 	}
