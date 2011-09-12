@@ -165,6 +165,12 @@ public class LazyClass extends Class implements LazyElement {
     }
 
     @Override
+    public Declaration getRefinedMember(String name) {
+        load();
+        return super.getRefinedMember(name);
+    }
+    
+    @Override
     public Declaration getMember(String name) {
         load();
         return super.getMember(name);
