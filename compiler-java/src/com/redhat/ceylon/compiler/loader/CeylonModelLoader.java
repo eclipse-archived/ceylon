@@ -503,7 +503,6 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
 
     private void complete(ClassOrInterface klass, ClassSymbol classSymbol) {
         HashSet<String> variables = new HashSet<String>();
-        
         // FIXME: deal with toplevel methods and attributes
         int constructorCount = 0;
         // then its methods
@@ -560,7 +559,10 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                     setTypeParameters(method, methodSymbol);
     
                     // now its parameters
-                    setParameters(method, methodSymbol);
+                    if(isEqualsMethod(methodSymbol))
+                        setEqualsParameters(method, methodSymbol);
+                    else
+                        setParameters(method, methodSymbol);
                     method.setType(obtainType(methodSymbol.getReturnType(), methodSymbol, method));
                     markUnboxed(method, methodSymbol.getReturnType());
                     klass.getMembers().add(method);
@@ -638,7 +640,27 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         boolean hasNoParams = methodSymbol.getParameters().size() == 0;
         return matchesName && hasNoParams;
     }
-    
+
+    private boolean isEqualsMethod(MethodSymbol methodSymbol) {
+        String name = methodSymbol.name.toString();
+        if(!"equals".equals(name)
+                || methodSymbol.getParameters().size() != 1)
+            return false;
+        VarSymbol param = methodSymbol.getParameters().head;
+        return sameType(param.type, symtab.objectType);
+    }
+
+    private void setEqualsParameters(Method decl, MethodSymbol methodSymbol) {
+        ParameterList parameters = new ParameterList();
+        decl.addParameterList(parameters);
+        ValueParameter parameter = new ValueParameter();
+        parameter.setContainer((Scope) decl);
+        parameter.setName("that");
+        parameter.setType(getType(symtab.ceylonEqualityType, decl));
+        parameter.setDeclaration((Declaration) decl);
+        parameters.getParameters().add(parameter);
+    }
+
     private String getJavaAttributeName(String getterName) {
         if (getterName.startsWith("get") || getterName.startsWith("set")) {
             return Character.toLowerCase(getterName.charAt(3)) + getterName.substring(4);
