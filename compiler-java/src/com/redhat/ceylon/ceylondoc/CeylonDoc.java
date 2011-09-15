@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -163,15 +162,9 @@ public abstract class CeylonDoc {
 	    close("tr");
 	}
 	
-	protected String getDoc(Declaration decl) {
-	    for (Annotation a : decl.getAnnotations()){
-	        if(a.getName().equals("doc"))
-	            return unquote(a.getPositionalArguments().get(0));
-	    }
-        return "";
-    }
+
 	
-   private String unquote(String string) {
+   protected String unquote(String string) {
         return string.substring(1, string.length()-1);
    }
    

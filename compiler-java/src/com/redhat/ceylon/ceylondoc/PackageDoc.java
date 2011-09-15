@@ -15,7 +15,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
-public class PackageDoc extends CeylonDoc {
+public class PackageDoc extends ClassOrPackageDoc {
 
 	private Package pkg;
     private List<Class> classes;
@@ -96,13 +96,15 @@ public class PackageDoc extends CeylonDoc {
 		close("div");
 	}
 	
-    private void methods() throws IOException {
-        openTable("Methods", "Method", "Description");
-        for(Method m : methods){
-            doc(m);
-        }
-        close("table");
-    }
+	private void methods() throws IOException {
+        if(methods.isEmpty())
+            return;
+        openTable("Methods", "Modifier and Type", "Method and Description");
+		for(Method m : methods){
+		    doc(m);
+		}
+		close("table");
+	}
 
     private void attributes() throws IOException {
 	    openTable("Attributes", "Attribute", "Description");
@@ -128,41 +130,15 @@ public class PackageDoc extends CeylonDoc {
 		close("table");
 	}
 
-	private void doc(ClassOrInterface c) throws IOException {
+	private void doc(ClassOrInterface d) throws IOException {
         open("tr class='TableRowColor'");
 		open("td");
-		link(c.getType());
+		link(d.getType());
 		close("td");
-		open("td");
-		String doc = getDoc(c);
-		if (doc == null || doc.isEmpty()) {
-			doc = c.getName();
-		}	
-		write(doc);
+		open("td");		
+		write(getDoc(d));
 		close("td");
 		close("tr");
-	}
-
-	private void doc(Value c) throws IOException {
-	    open("tr class='TableRowColor'");
-	    open("td");
-	    link(c.getType());
-	    close("td");
-	    open("td");
-	    write(c.getName());
-	    close("td");
-	    close("tr");
-	}
-
-	private void doc(Method m) throws IOException {
-	    open("tr class='TableRowColor'");
-	    open("td");
-	    link(m.getType());
-	    close("td");
-	    open("td");
-	    write(m.getName());
-	    close("td");
-	    close("tr");
 	}
 
 	@Override

@@ -14,13 +14,11 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
-public class ClassDoc extends CeylonDoc {
+public class ClassDoc extends ClassOrPackageDoc {
 
 	private ClassOrInterface klass;
     private List<Method> methods;
@@ -154,63 +152,6 @@ public class ClassDoc extends CeylonDoc {
 		    doc(attribute);
 		}
 		close("table");
-	}
-
-    private void doc(Method m) throws IOException {
-        open("tr class='TableRowColor'");
-		open("td");
-		link(m.getType());
-		List<TypeParameter> typeParameters = m.getTypeParameters();
-		if(!typeParameters.isEmpty()){
-		    write("&lt;");
-		    boolean first = true;
-		    for(TypeParameter type : typeParameters){
-		        if(first)
-		            first = false;
-		        else
-		            write(", ");
-		        write(type.getName());
-		    }
-            write("&gt;");
-		}
-		close("td");
-		open("td");
-		write(m.getName());
-		writeParameterList(m.getParameterLists());
-		tag("br");
-		around("span class='doc'", getDoc(m));
-		close("td");
-		close("tr");
-	}
-
-    private void writeParameterList(List<ParameterList> parameterLists) throws IOException {
-		for(ParameterList lists : parameterLists){
-			write("(");
-			boolean first = true;
-			for(Parameter param : lists.getParameters()){
-				if(!first){
-					write(", ");
-				}else{
-					first = false;
-				}
-				link(param.getType());
-				write(" ", param.getName());
-			}
-			write(")");
-		}
-	}
-
-	private void doc(MethodOrValue f) throws IOException {
-        open("tr class='TableRowColor'");
-		open("td");
-		link(f.getType());
-		close("td");
-        open("td");
-		write(f.getName());
-        tag("br");
-        around("span class='doc'", getDoc(f));
-        close("td");
-		close("tr");
 	}
 
 	@Override
