@@ -42,4 +42,9 @@ public abstract class ClassOrInterface extends TypeDeclaration {
     	}
     }
 
+    @Override
+    DeclarationKind getDeclarationKind() {
+        return DeclarationKind.TYPE;
+    }
+    
 }

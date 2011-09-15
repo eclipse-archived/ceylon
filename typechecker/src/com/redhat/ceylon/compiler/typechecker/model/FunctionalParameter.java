@@ -30,4 +30,10 @@ public class FunctionalParameter extends Parameter implements Scope, Functional 
         return Collections.emptyList();
     }
     
+    @Override
+    DeclarationKind getDeclarationKind() {
+        return DeclarationKind.PARAMETER;
+    }
+
+
 }

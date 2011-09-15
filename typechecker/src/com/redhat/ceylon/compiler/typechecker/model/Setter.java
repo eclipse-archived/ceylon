@@ -44,4 +44,9 @@ public class Setter extends MethodOrValue implements Scope {
         return true;
     }
     
+    @Override
+    DeclarationKind getDeclarationKind() {
+        return DeclarationKind.SETTER;
+    }
+
 }

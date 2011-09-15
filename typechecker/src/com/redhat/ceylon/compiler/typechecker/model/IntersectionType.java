@@ -92,5 +92,10 @@ public class IntersectionType extends TypeDeclaration {
 		}
 		return this;
 	}
+	
+    @Override
+    DeclarationKind getDeclarationKind() {
+        return null;
+    }
 
 }

@@ -194,7 +194,7 @@ public abstract class Declaration extends Element {
             Declaration that = (Declaration) object;
             return this==that || getName()!=null && that.getName()!=null &&
                     that.getName().equals(getName()) &&
-                    that.getClass().equals(getClass()) &&
+                    that.getDeclarationKind()==getDeclarationKind() &&
                     (getContainer()==null && that.getContainer()==null ||
                             that.getContainer().equals(getContainer())); 
         }
@@ -220,7 +220,7 @@ public abstract class Declaration extends Element {
                 ClassOrInterface type = (ClassOrInterface) getContainer();
                 return other.getName()!=null && getName()!=null &&
                         other.getName().equals(getName()) && 
-                        other.getClass().equals(getClass()) &&
+                        other.getDeclarationKind()==getDeclarationKind() &&
                         type.isMember(other);
             }
             else {
@@ -228,5 +228,7 @@ public abstract class Declaration extends Element {
             }
         }
     }
+    
+    abstract DeclarationKind getDeclarationKind();
     
 }

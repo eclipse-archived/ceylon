@@ -30,4 +30,9 @@ public class BottomType extends TypeDeclaration {
         return true;
     }
     
+    @Override
+    DeclarationKind getDeclarationKind() {
+        return DeclarationKind.TYPE;
+    }
+
 }
