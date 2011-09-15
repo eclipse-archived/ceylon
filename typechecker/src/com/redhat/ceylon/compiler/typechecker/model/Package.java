@@ -82,7 +82,13 @@ public class Package implements Scope {
 
     @Override
     public Declaration getDirectMember(String name) {
-        for (Declaration d: getMembers()) {
+        //for (Declaration d: getMembers()) {
+        //TODO: This is a rather expedient workaround for
+        //      the loss of uniqueness in the IDE.
+        //      Eventually we need a better way of 
+        //      managing this!
+        for (int i=getMembers().size()-1; i>=0; i--) {
+            Declaration d = getMembers().get(i);
             if (isResolvable(d) && /*d.isShared() &&*/ isNamed(name, d)) {
                 return d;
             }
