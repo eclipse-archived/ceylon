@@ -9,6 +9,6 @@ package com.redhat.ceylon.compiler.typechecker.model;
  * 
  * @author Gavin King
  */
-enum DeclarationKind {
+public enum DeclarationKind {
     TYPE, TYPE_PARAMETER, MEMBER, PARAMETER, SETTER
 }

@@ -32,7 +32,7 @@ public abstract class Parameter extends TypedDeclaration {
     }
     
     @Override
-    DeclarationKind getDeclarationKind() {
+    public DeclarationKind getDeclarationKind() {
         return DeclarationKind.PARAMETER;
     }
 

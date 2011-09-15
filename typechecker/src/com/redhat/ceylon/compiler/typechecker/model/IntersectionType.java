@@ -94,7 +94,7 @@ public class IntersectionType extends TypeDeclaration {
 	}
 	
     @Override
-    DeclarationKind getDeclarationKind() {
+    public DeclarationKind getDeclarationKind() {
         return null;
     }
 

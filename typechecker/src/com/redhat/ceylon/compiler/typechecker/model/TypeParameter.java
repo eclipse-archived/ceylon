@@ -77,7 +77,7 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     }
     
     @Override
-    DeclarationKind getDeclarationKind() {
+    public DeclarationKind getDeclarationKind() {
         return DeclarationKind.TYPE_PARAMETER;
     }
 

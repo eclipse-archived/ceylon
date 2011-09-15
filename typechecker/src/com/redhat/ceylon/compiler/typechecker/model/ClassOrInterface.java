@@ -43,7 +43,7 @@ public abstract class ClassOrInterface extends TypeDeclaration {
     }
 
     @Override
-    DeclarationKind getDeclarationKind() {
+    public DeclarationKind getDeclarationKind() {
         return DeclarationKind.TYPE;
     }
     

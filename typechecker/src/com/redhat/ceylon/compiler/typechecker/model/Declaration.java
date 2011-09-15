@@ -229,6 +229,6 @@ public abstract class Declaration extends Element {
         }
     }
     
-    abstract DeclarationKind getDeclarationKind();
+    public abstract DeclarationKind getDeclarationKind();
     
 }

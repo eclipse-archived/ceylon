@@ -71,7 +71,7 @@ public class UnionType extends TypeDeclaration {
     }
 
     @Override
-    DeclarationKind getDeclarationKind() {
+    public DeclarationKind getDeclarationKind() {
         return null;
     }
 
