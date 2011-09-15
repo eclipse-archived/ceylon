@@ -15,7 +15,7 @@ public class Util {
      */
     public static boolean contains(Scope outer, Scope inner) {
         while (inner!=null) {
-            if (inner==outer) {
+            if (inner.equals(outer)) {
                 return true;
             }
             inner = inner.getContainer();
