@@ -220,6 +220,7 @@ public abstract class Declaration extends Element {
                 ClassOrInterface type = (ClassOrInterface) getContainer();
                 return other.getName()!=null && getName()!=null &&
                         other.getName().equals(getName()) && 
+                        other.getClass().equals(getClass()) &&
                         type.isMember(other);
             }
             else {
