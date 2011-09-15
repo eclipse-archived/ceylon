@@ -192,10 +192,11 @@ public abstract class Declaration extends Element {
     public boolean equals(Object object) {
         if (object instanceof Declaration) {
             Declaration that = (Declaration) object;
-            return this==that || (getName()!=null && that.getName()!=null &&
+            return this==that || getName()!=null && that.getName()!=null &&
                     that.getName().equals(getName()) &&
+                    that.getClass().equals(getClass()) &&
                     (getContainer()==null && that.getContainer()==null ||
-                            that.getContainer().equals(getContainer())));
+                            that.getContainer().equals(getContainer())); 
         }
         else {
             return false;
