@@ -107,7 +107,7 @@ public class PackageDoc extends ClassOrPackageDoc {
 	}
 
     private void attributes() throws IOException {
-	    openTable("Attributes", "Attribute", "Description");
+	    openTable("Attributes", "Modifier and Type", "Name and Description");
 	    for(Value v : attributes){
 	        doc(v);
 	    }
@@ -115,7 +115,7 @@ public class PackageDoc extends ClassOrPackageDoc {
 	}
 
 	private void interfaces() throws IOException {
-	    openTable("Interfaces", "Interface", "Description");
+	    openTable("Interfaces", "Modifier and Type", "Description");
 		for(Interface i : interfaces){
 		    doc(i);
 		}
@@ -123,7 +123,7 @@ public class PackageDoc extends ClassOrPackageDoc {
 	}
 
 	private void classes() throws IOException {
-        openTable("Classes", "Class", "Description");
+        openTable("Classes", "Modifier and Type", "Description");
 		for(Class c : classes){
 		    doc(c);
 		}
@@ -133,6 +133,8 @@ public class PackageDoc extends ClassOrPackageDoc {
 	private void doc(ClassOrInterface d) throws IOException {
         open("tr class='TableRowColor'");
 		open("td");
+		around("span class='modifiers'",getModifiers(d));
+		write(" ");
 		link(d.getType());
 		close("td");
 		open("td");		

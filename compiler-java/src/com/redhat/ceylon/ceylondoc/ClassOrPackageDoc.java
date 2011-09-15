@@ -18,7 +18,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
 		super(destDir);	
 	}
 	
-	private String getModifiers(Declaration d) {
+	protected String getModifiers(Declaration d) {
 		StringBuilder modifiers = new StringBuilder();
 		if (d.isShared()) {
 			modifiers.append("shared ");
@@ -28,7 +28,12 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
 			if (v.isVariable()) {
 				modifiers.append("variable");
 			}
-		}		
+		} else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+			com.redhat.ceylon.compiler.typechecker.model.Class c  = (com.redhat.ceylon.compiler.typechecker.model.Class) d;
+			if (c.isAbstract()) {
+				modifiers.append("abstract");
+			}
+		}			
 		return modifiers.toString().trim();
 	}
 	
