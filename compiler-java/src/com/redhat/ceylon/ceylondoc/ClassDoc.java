@@ -24,9 +24,9 @@ public class ClassDoc extends ClassOrPackageDoc {
 	private ClassOrInterface klass;
     private List<Method> methods;
     private List<MethodOrValue> attributes;
-    private List<Class> subclasses;
+    private List<ClassOrInterface> subclasses;
 
-	public ClassDoc(String destDir, ClassOrInterface klass, List<Class> subclasses) throws IOException {
+	public ClassDoc(String destDir, ClassOrInterface klass, List<ClassOrInterface> subclasses) throws IOException {
 		super(destDir);
 		this.subclasses = subclasses;
 		this.klass = klass;
