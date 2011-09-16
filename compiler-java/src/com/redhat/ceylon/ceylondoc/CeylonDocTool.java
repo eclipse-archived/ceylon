@@ -16,6 +16,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 
 public class CeylonDocTool {
 
@@ -23,7 +24,9 @@ public class CeylonDocTool {
     private Modules modules;
     private String destDir;
     private Map<ClassOrInterface,List<ClassOrInterface>> subclassesMap = new HashMap<ClassOrInterface, List<ClassOrInterface>>();
-
+    private Map<TypeDeclaration,List<ClassOrInterface>> implementingClassesMap = new HashMap<TypeDeclaration, List<ClassOrInterface>>();
+    
+    
     public CeylonDocTool(List<PhasedUnit> phasedUnits, Modules modules) {
         this.phasedUnits = phasedUnits;
         this.modules = modules;
@@ -45,6 +48,15 @@ public class CeylonDocTool {
                 			 subclassesMap.put(superclass, new ArrayList<ClassOrInterface>());
                 		 }
                 		 subclassesMap.get(superclass).add(c);
+            		 }
+            		 List<TypeDeclaration> satisfiedTypes = c.getSatisfiedTypeDeclarations();
+            		 if (satisfiedTypes != null && satisfiedTypes.isEmpty() == false) {
+            			 for (TypeDeclaration satisfiedType : satisfiedTypes) {
+                    		 if (implementingClassesMap.get(satisfiedType) ==  null) {
+                    			 implementingClassesMap.put(satisfiedType, new ArrayList<ClassOrInterface>());
+                    		 }
+                    		 implementingClassesMap.get(satisfiedType).add(c);
+						}
             		 }
                  }
             }
@@ -87,7 +99,7 @@ public class CeylonDocTool {
 
     private void doc(Declaration decl) throws IOException {
         if(decl instanceof ClassOrInterface){        	
-            new ClassDoc(destDir, (ClassOrInterface)decl,subclassesMap.get(decl)).generate();
+            new ClassDoc(destDir, (ClassOrInterface)decl,subclassesMap.get(decl), implementingClassesMap.get(decl)).generate();
         }
     }
 
