@@ -400,7 +400,11 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     }
 
     private final Map<String,Package> packagesByName = new HashMap<String,Package>();
-    
+
+    public Package findPackage(final String pkgName) {
+        return packagesByName.get(pkgName);
+    }
+
     public Package findOrCreatePackage(Module module, final String pkgName) {
         Package pkg = packagesByName.get(pkgName);
         if(pkg != null)

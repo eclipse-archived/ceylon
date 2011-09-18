@@ -50,15 +50,16 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.StandardLocation;
 
+import com.redhat.ceylon.compiler.codegen.CeylonFileObject;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.JavacFileManager;
 import com.sun.tools.javac.util.ListBuffer;
-import com.redhat.ceylon.compiler.codegen.CeylonFileObject;
 
 public class CeyloncFileManager extends JavacFileManager implements StandardJavaFileManager {
     protected String[] sourcePath = new String[0];
     private JarOutputStream jarFile;
-    private String currentPackage;
+    private Module currentModule;
 
     public void setSourcePath(String sourcePath) {
         StringTokenizer st = new StringTokenizer(sourcePath, File.pathSeparator);
@@ -139,7 +140,8 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
             sibling = ((CeylonFileObject) sibling).getFile();
         }
         if(location == StandardLocation.CLASS_OUTPUT){
-            openJar();
+            File dir = getOutputFolder(sibling);
+            openJar(dir);
             return new JavaFileObject(){
 
                 @Override
@@ -246,14 +248,22 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         }
     }
     
-    private void openJar() throws IOException {
+    private void openJar(File dir) throws IOException {
         if(jarFile == null){
-            jarFile = new JarOutputStream(new FileOutputStream(currentPackage+".jar"));
+            String moduleName = currentModule.getNameAsString();
+            // FIXME: do better than this
+            if(moduleName.equals("<default module>"))
+                moduleName = "default_module";
+            String version = currentModule.getVersion();
+            if(version == null)
+                version = "unversioned";
+            String name = moduleName+"-"+version+".jar";
+            jarFile = new JarOutputStream(new FileOutputStream(new File(dir, name)));
         }
     }
 
-    public void setPackage(String string) {
-        currentPackage = string;
+    public void setModule(Module module) {
+        currentModule = module;
     }
     
     private File getOutputFolder(FileObject sibling){
