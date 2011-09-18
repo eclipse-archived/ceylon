@@ -5,6 +5,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
@@ -130,7 +132,13 @@ public abstract class CompilerTest {
 		Boolean success = getCompilerTask(ceylon).call();
 		Assert.assertTrue(success);
 		try{
-			java.lang.Class<?> klass = java.lang.Class.forName(main);
+		    // make sure we load the stuff from the Jar
+		    File jar = new File(destDir, "/default_module-unversioned.jar");
+		    ClassLoader loader = URLClassLoader.newInstance(
+		            new URL[] { jar.toURL() },
+		            getClass().getClassLoader()
+		            );
+			java.lang.Class<?> klass = java.lang.Class.forName(main, true, loader);
 			Method m = klass.getMethod(klass.getSimpleName(), ceylon.language.Process.class);
 			m.invoke(null, new ceylon.language.Process());
 		}catch(Exception x){
