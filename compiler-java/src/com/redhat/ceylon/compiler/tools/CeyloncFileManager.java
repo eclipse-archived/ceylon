@@ -27,23 +27,13 @@ package com.redhat.ceylon.compiler.tools;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FilterOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.Writer;
-import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
-import java.util.zip.ZipEntry;
 
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.NestingKind;
 import javax.tools.FileObject;
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
@@ -140,95 +130,10 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
             sibling = ((CeylonFileObject) sibling).getFile();
         }
         if(location == StandardLocation.CLASS_OUTPUT){
+            System.err.println("file name: "+fileName+", location: "+location);
             File dir = getOutputFolder(sibling);
             openJar(dir);
-            return new JavaFileObject(){
-
-                @Override
-                public URI toUri() {
-                    // TODO Auto-generated method stub
-                    return null;
-                }
-
-                @Override
-                public String getName() {
-                    // TODO Auto-generated method stub
-                    return null;
-                }
-
-                @Override
-                public InputStream openInputStream() throws IOException {
-                    // TODO Auto-generated method stub
-                    return null;
-                }
-
-                @Override
-                public OutputStream openOutputStream() throws IOException {
-                    jarFile.putNextEntry(new ZipEntry(fileName));
-                    return new FilterOutputStream(jarFile){
-                        @Override
-                        public void close() throws IOException {
-                            jarFile.closeEntry();
-                        }
-                    };
-                }
-
-                @Override
-                public Reader openReader(boolean ignoreEncodingErrors)
-                        throws IOException {
-                    // TODO Auto-generated method stub
-                    return null;
-                }
-
-                @Override
-                public CharSequence getCharContent(boolean ignoreEncodingErrors)
-                        throws IOException {
-                    // TODO Auto-generated method stub
-                    return null;
-                }
-
-                @Override
-                public Writer openWriter() throws IOException {
-                    // TODO Auto-generated method stub
-                    return null;
-                }
-
-                @Override
-                public long getLastModified() {
-                    // TODO Auto-generated method stub
-                    return 0;
-                }
-
-                @Override
-                public boolean delete() {
-                    // TODO Auto-generated method stub
-                    return false;
-                }
-
-                @Override
-                public Kind getKind() {
-                    // TODO Auto-generated method stub
-                    return null;
-                }
-
-                @Override
-                public boolean isNameCompatible(String simpleName, Kind kind) {
-                    // TODO Auto-generated method stub
-                    return false;
-                }
-
-                @Override
-                public NestingKind getNestingKind() {
-                    // TODO Auto-generated method stub
-                    return null;
-                }
-
-                @Override
-                public Modifier getAccessLevel() {
-                    // TODO Auto-generated method stub
-                    return null;
-                }
-            };
+            return new JarEntryFileObject(jarFile, fileName);
         }else
             return super.getFileForOutput(location, fileName, sibling);
     }
