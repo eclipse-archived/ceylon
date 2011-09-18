@@ -1214,7 +1214,7 @@ public class JavacFileManager implements StandardJavaFileManager {
             return paths.getPathForLocation(location);
     }
 
-    private File getClassOutDir() {
+    protected File getClassOutDir() {
         if (classOutDir == uninited)
             classOutDir = getOutputLocation(null, D);
         return classOutDir;
@@ -1307,7 +1307,7 @@ public class JavacFileManager implements StandardJavaFileManager {
     /**
      * A subclass of JavaFileObject representing regular files.
      */
-    private class RegularFileObject extends BaseFileObject {
+    protected class RegularFileObject extends BaseFileObject {
         /** Have the parent directories been created?
          */
         private boolean hasParents=false;
@@ -1453,6 +1453,9 @@ public class JavacFileManager implements StandardJavaFileManager {
             }
         }
 
+        public File getUnderlyingFile(){
+            return f;
+        }
     }
 
     /**

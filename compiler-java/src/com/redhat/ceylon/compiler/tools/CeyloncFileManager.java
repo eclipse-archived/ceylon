@@ -255,4 +255,16 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
     public void setPackage(String string) {
         currentPackage = string;
     }
+    
+    private File getOutputFolder(FileObject sibling){
+        if (getClassOutDir() != null) {
+            return getClassOutDir();
+        } else {
+            File siblingDir = null;
+            if (sibling != null && sibling instanceof RegularFileObject) {
+                siblingDir = ((RegularFileObject)sibling).getUnderlyingFile().getParentFile();
+            }
+            return siblingDir;
+        }
+    }
 }
