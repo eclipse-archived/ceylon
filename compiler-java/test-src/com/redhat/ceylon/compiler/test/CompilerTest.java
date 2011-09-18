@@ -27,6 +27,7 @@ import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 public abstract class CompilerTest {
 
 	private final static String dir = "test-src";
+	private final static String destDir = "build/classes";
 
 	protected String path;
 
@@ -144,6 +145,6 @@ public abstract class CompilerTest {
 	    }
         Iterable<? extends JavaFileObject> compilationUnits1 =
             runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
-        return (CeyloncTaskImpl) runCompiler.getTask(null, runFileManager, null, Arrays.asList("-d", "build/classes", "-verbose"), null, compilationUnits1);
+        return (CeyloncTaskImpl) runCompiler.getTask(null, runFileManager, null, Arrays.asList("-d", destDir, "-verbose"), null, compilationUnits1);
 	}
 }
