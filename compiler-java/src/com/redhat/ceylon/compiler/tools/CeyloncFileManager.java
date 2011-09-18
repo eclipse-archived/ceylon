@@ -26,13 +26,11 @@
 package com.redhat.ceylon.compiler.tools;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.jar.JarOutputStream;
 
 import javax.tools.FileObject;
 import javax.tools.JavaFileManager;
@@ -48,8 +46,8 @@ import com.sun.tools.javac.util.ListBuffer;
 
 public class CeyloncFileManager extends JavacFileManager implements StandardJavaFileManager {
     protected String[] sourcePath = new String[0];
-    private JarOutputStream jarFile;
     private Module currentModule;
+    private JarOutputRepositoryManager jarRepository = new JarOutputRepositoryManager();
 
     public void setSourcePath(String sourcePath) {
         StringTokenizer st = new StringTokenizer(sourcePath, File.pathSeparator);
@@ -132,8 +130,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         if(location == StandardLocation.CLASS_OUTPUT){
             System.err.println("file name: "+fileName+", location: "+location);
             File dir = getOutputFolder(sibling);
-            openJar(dir);
-            return new JarEntryFileObject(jarFile, fileName);
+            return jarRepository.getFileObject(dir, currentModule, fileName);
         }else
             return super.getFileForOutput(location, fileName, sibling);
     }
@@ -141,32 +138,9 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
     @Override
     public void flush() {
         super.flush();
-        if(jarFile != null){
-            try {
-                jarFile.flush();
-                jarFile.close();
-                jarFile = null;
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
+        jarRepository.flush();
     }
     
-    private void openJar(File dir) throws IOException {
-        if(jarFile == null){
-            String moduleName = currentModule.getNameAsString();
-            // FIXME: do better than this
-            if(moduleName.equals("<default module>"))
-                moduleName = "default_module";
-            String version = currentModule.getVersion();
-            if(version == null)
-                version = "unversioned";
-            String name = moduleName+"-"+version+".jar";
-            jarFile = new JarOutputStream(new FileOutputStream(new File(dir, name)));
-        }
-    }
-
     public void setModule(Module module) {
         currentModule = module;
     }
