@@ -117,7 +117,7 @@ public class JarOutputRepositoryManager {
         public JavaFileObject getJavaFileObject(String fileName) {
             // record the class file we produce so that we don't save it from the original jar
             writtenClasses.add(fileName);
-            return new JarEntryFileObject(jarOutputStream, fileName);
+            return new JarEntryFileObject(outputJarFile.getPath(), jarOutputStream, fileName);
         }
     }
 }

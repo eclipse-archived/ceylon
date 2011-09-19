@@ -18,9 +18,11 @@ public class JarEntryFileObject implements JavaFileObject {
 
     private JarOutputStream jarFile;
     private String fileName;
+    private String jarFileName;
 
-    public JarEntryFileObject(JarOutputStream jarFile, String fileName) {
+    public JarEntryFileObject(String jarFileName, JarOutputStream jarFile, String fileName) {
         super();
+        this.jarFileName = jarFileName;
         this.jarFile = jarFile;
         this.fileName = fileName;
     }
@@ -42,6 +44,11 @@ public class JarEntryFileObject implements JavaFileObject {
         };
     }
 
+    @Override
+    public String toString() {
+        return jarFileName+":"+fileName;
+    }
+    
     //
     // All the following methods are just boilerplate and never called
     
