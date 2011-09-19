@@ -13,6 +13,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -26,6 +27,8 @@ public class ClassDoc extends ClassOrPackageDoc {
     private List<MethodOrValue> attributes;
     private List<ClassOrInterface> subclasses;
     private List<ClassOrInterface> satisfyingClassesOrInterfaces;
+    private List<Class> satisfyingClasses;
+    private List<Interface> satisfyingInterfaces;
 
     private Comparator<Declaration> comparator = new Comparator<Declaration>() {
         @Override
@@ -53,6 +56,8 @@ public class ClassDoc extends ClassOrPackageDoc {
 	
 	private void loadMembers() {
 	        methods = new ArrayList<Method>();
+	        satisfyingClasses = new ArrayList<Class>();
+	        satisfyingInterfaces = new ArrayList<Interface>();	        
 	        attributes = new ArrayList<MethodOrValue>();
 	        for(Declaration m : klass.getMembers()){
 	            if(m instanceof Value)
@@ -63,10 +68,19 @@ public class ClassDoc extends ClassOrPackageDoc {
                     methods.add((Method) m);
 	        }
 
+	        for (ClassOrInterface classOrInterface : satisfyingClassesOrInterfaces) {
+	        	if (classOrInterface instanceof Class) {
+	        		satisfyingClasses.add((Class) classOrInterface);
+	        	} else if (classOrInterface instanceof Interface) {
+	        		satisfyingInterfaces.add((Interface) classOrInterface);
+	        	}
+	        }	        
+	        
 	        Collections.sort(methods, comparator );
 	        Collections.sort(attributes, comparator );
 	        Collections.sort(subclasses, comparator);	        
-	        Collections.sort(satisfyingClassesOrInterfaces, comparator);	        
+	        Collections.sort(satisfyingClasses, comparator);
+	        Collections.sort(satisfyingInterfaces, comparator);        
     }
 
     public void generate() throws IOException {
@@ -140,7 +154,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 		// interfaces
 		if (isNullorEmpty(klass.getSatisfiedTypeDeclarations())==  false) {
 			open("div class='implements'");
-			write("Implemented interfaces: ");
+			write("Satisfied interfaces: ");
 			boolean first = true;
 			for (TypeDeclaration satisfied : klass.getSatisfiedTypeDeclarations()){
 				if(!first){
@@ -167,14 +181,31 @@ public class ClassDoc extends ClassOrPackageDoc {
 				link(sublcass, true);
 			}
 			close("div");
-		}
+		}	
 		
-		// implementing classes
-		if (isNullorEmpty(satisfyingClassesOrInterfaces) == false) {
+		
+		// satisfying classes
+		if (isNullorEmpty(satisfyingClasses) == false) {
 			boolean first = true;
-			open("div class='implementingClasses'");
-			write("All Known Implementing Classes: ");
-			for (TypeDeclaration sublcass : satisfyingClassesOrInterfaces) {
+			open("div class='satisfyingClasses'");
+			write("All Known Satisfying Classes: ");
+			for (TypeDeclaration sublcass : satisfyingClasses) {
+				if (!first) {
+					write(", ");
+				} else {
+					first = false;
+				}
+				link(sublcass, true);
+			}
+			close("div");
+		}	
+		
+		// satisfying interfaces
+		if (isNullorEmpty(satisfyingInterfaces) == false) {
+			boolean first = true;
+			open("div class='satisfyingInterfaces'");
+			write("All Known Satisfying Interfaces: ");
+			for (TypeDeclaration sublcass : satisfyingInterfaces) {
 				if (!first) {
 					write(", ");
 				} else {
@@ -184,6 +215,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 			}
 			close("div");
 		}		
+		
 		
 		// description
 		around("div class='doc'", getDoc(klass));
