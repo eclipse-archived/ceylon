@@ -33,10 +33,6 @@ public abstract class CompilerTest {
 
 	protected String path;
 
-	// for running
-	protected JavaCompiler runCompiler;
-	protected CeyloncFileManager runFileManager;
-
 	private String pkg;
 
 	@Before
@@ -45,29 +41,31 @@ public abstract class CompilerTest {
 	    Package pakage = getClass().getPackage();
 		pkg = pakage == null ? "" : pakage.getName().replaceAll("\\.", Matcher.quoteReplacement(File.separator));
 		path = dir + File.separator + pkg + File.separator;
-		// for running
-		try {
-			runCompiler = new CeyloncTool();
-		} catch (VerifyError e) {
-			System.err.println("ERROR: Cannot run tests! Did you maybe forget to configure the -Xbootclasspath/p: parameter?");
-			throw e;
-		}
-		runFileManager = (CeyloncFileManager)runCompiler.getStandardFileManager(null, null, null);
-		runFileManager.setSourcePath(dir);
 	}
 
+	protected CeyloncTool makeCompiler(){
+        try {
+            return new CeyloncTool();
+        } catch (VerifyError e) {
+            System.err.println("ERROR: Cannot run tests! Did you maybe forget to configure the -Xbootclasspath/p: parameter?");
+            throw e;
+        }
+	}
+
+	protected CeyloncFileManager makeFileManager(CeyloncTool compiler){
+        CeyloncFileManager fileManager = (CeyloncFileManager)compiler.getStandardFileManager(null, null, null);
+        fileManager.setSourcePath(dir);
+        return fileManager;
+	}
+	
 	protected void compareWithJavaSource(String name) {
-	    compareWithJavaSource(name, dir);
+		compareWithJavaSource(name+".ceylon", name+".src");
 	}
 
-	protected void compareWithJavaSource(String name, String dir) {
-		compareWithJavaSource(name+".ceylon", name+".src", dir);
-	}
-
-	protected void compareWithJavaSource(String ceylon, String java, String dir) {
+	protected void compareWithJavaSource(String ceylon, String java) {
 
 	    // make a compiler task
-        runFileManager.setSourcePath(dir);
+        // FIXME: runFileManager.setSourcePath(dir);
 	    CeyloncTaskImpl task = getCompilerTask(ceylon);
 	    
 	    // grab the CU after we've completed it
@@ -151,6 +149,10 @@ public abstract class CompilerTest {
 	    for(String file : sourcePaths){
 	        sourceFiles.add(new File(path+file));
 	    }
+	    
+	    CeyloncTool runCompiler = makeCompiler();
+        CeyloncFileManager runFileManager = makeFileManager(runCompiler );
+        
         Iterable<? extends JavaFileObject> compilationUnits1 =
             runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
         return (CeyloncTaskImpl) runCompiler.getTask(null, runFileManager, null, 

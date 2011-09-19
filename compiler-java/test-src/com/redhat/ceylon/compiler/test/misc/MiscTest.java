@@ -27,11 +27,6 @@ public class MiscTest extends CompilerTest {
 	}
 
     @Test
-    public void testDefaultPackage(){
-        compareWithJavaSource("defaultPackage", path);
-    }
-
-    @Test
     public void testCompileTwoClasses() throws Exception{
         compileAndRun("com.redhat.ceylon.compiler.test.misc.twoclasses.main", "twoclasses/One.ceylon", "twoclasses/Two.ceylon", "twoclasses/main.ceylon");
     }
