@@ -40,6 +40,7 @@ import com.sun.tools.javac.code.Types;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Name.Table;
+import com.sun.tools.javac.zip.ZipFileIndex;
 
 public class ModelLoaderTest extends CompilerTest {
     
@@ -66,7 +67,7 @@ public class ModelLoaderTest extends CompilerTest {
                 decls.put(Util.getQualifiedPrefixedName(decl), decl);
             }
         }
-        
+
         // now compile the ceylon usage file
         // remove the extension, make lowercase and add "test"
         String testfile = ceylon.substring(0, ceylon.length()-7).toLowerCase()+"test.ceylon";

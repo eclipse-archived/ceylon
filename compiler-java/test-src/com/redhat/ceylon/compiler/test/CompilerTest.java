@@ -24,6 +24,7 @@ import com.sun.source.util.TaskEvent;
 import com.sun.source.util.TaskEvent.Kind;
 import com.sun.source.util.TaskListener;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
+import com.sun.tools.javac.zip.ZipFileIndex;
 
 public abstract class CompilerTest {
 
@@ -145,7 +146,9 @@ public abstract class CompilerTest {
 	}
 	
 	protected CeyloncTaskImpl getCompilerTask(String... sourcePaths){
-	    java.util.List<File> sourceFiles = new ArrayList<File>(sourcePaths.length);
+        // make sure we get a fresh jar cache for each compiler run
+	    ZipFileIndex.clearCache();
+        java.util.List<File> sourceFiles = new ArrayList<File>(sourcePaths.length);
 	    for(String file : sourcePaths){
 	        sourceFiles.add(new File(path+file));
 	    }
