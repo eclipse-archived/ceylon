@@ -612,6 +612,9 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     JCExpression transformArg(Tree.PositionalArgument arg) {
+        // deal with upstream errors, must have already been reported so let's not throw further
+        if(arg.getParameter() == null)
+            return make().Erroneous();
         return transformExpression(arg.getExpression(), Util.getBoxingStrategy(arg.getParameter()));
     }
 

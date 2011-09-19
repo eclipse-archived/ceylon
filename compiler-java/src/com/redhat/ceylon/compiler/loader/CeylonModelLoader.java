@@ -748,6 +748,11 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 // be seeing j.l.Object at all due to unerasure
                 extendedType = getType(symtab.ceylonIdentifiableObjectType, klass);
             }else{
+                // make sure we don't throw and just report an error when this sort of weird thing happens
+                if(superClass.tsym == null){
+                    log.error("ceylon", "Object has no super class symbol: "+classSymbol.getQualifiedName().toString());
+                    return;
+                }
                 // now deal with type erasure, avoid having Object as superclass
                 String superClassName = superClass.tsym.getQualifiedName().toString();
                 if(superClassName.equals("java.lang.Object")){

@@ -51,6 +51,10 @@ public class BoxingDeclarationVisitor extends Visitor {
     }
     
     private boolean isPrimitive(TypedDeclaration declaration, TypedDeclaration refinedDeclaration) {
+        if(declaration.getType() == null){
+            // an error must have already been reported
+            return false;
+        }
         return transformer.isCeylonBasicType(declaration.getType())
                 && !(refinedDeclaration.getTypeDeclaration() instanceof TypeParameter);
     }
