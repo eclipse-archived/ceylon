@@ -140,7 +140,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 		}
 		
 		// type parameters
-		if (isNullorEmpty(klass.getTypeParameters()) == false ) {
+		if (isNullOrEmpty(klass.getTypeParameters()) == false ) {
 			open("div class='type-parameters'");
 			write("Type parameters:");
 			open("ul");
@@ -152,70 +152,19 @@ public class ClassDoc extends ClassOrPackageDoc {
 		}
 		
 		// interfaces
-		if (isNullorEmpty(klass.getSatisfiedTypeDeclarations())==  false) {
-			open("div class='implements'");
-			write("Satisfied interfaces: ");
-			boolean first = true;
-			for (TypeDeclaration satisfied : klass.getSatisfiedTypeDeclarations()){
-				if(!first){
-					write(", ");
-				}else{
-					first = false;
-				}
-				link(satisfied, true);
-			}
-			close("div");
-		}
-		
+		writeListOnSumary("satisfied", "Satisfied interfaces: ", klass.getSatisfiedTypeDeclarations());
+
 		// subclasses
-		if (isNullorEmpty(subclasses) == false) {
-			boolean first = true;
-			open("div class='sublclases'");
-			write("Direct Known Subclasses: ");
-			for (TypeDeclaration sublcass : subclasses) {
-				if (!first) {
-					write(", ");
-				} else {
-					first = false;
-				}
-				link(sublcass, true);
-			}
-			close("div");
-		}	
-		
-		
+		writeListOnSumary("subclasses", "Direct Known Subclasses: ", subclasses);
+
 		// satisfying classes
-		if (isNullorEmpty(satisfyingClasses) == false) {
-			boolean first = true;
-			open("div class='satisfyingClasses'");
-			write("All Known Satisfying Classes: ");
-			for (TypeDeclaration sublcass : satisfyingClasses) {
-				if (!first) {
-					write(", ");
-				} else {
-					first = false;
-				}
-				link(sublcass, true);
-			}
-			close("div");
-		}	
-		
+		writeListOnSumary("satisfyingClasses", "All Known Satisfying Classes: ", satisfyingClasses);
+
 		// satisfying interfaces
-		if (isNullorEmpty(satisfyingInterfaces) == false) {
-			boolean first = true;
-			open("div class='satisfyingInterfaces'");
-			write("All Known Satisfying Interfaces: ");
-			for (TypeDeclaration sublcass : satisfyingInterfaces) {
-				if (!first) {
-					write(", ");
-				} else {
-					first = false;
-				}
-				link(sublcass, true);
-			}
-			close("div");
-		}		
-		
+		writeListOnSumary("satisfyingClasses", "All Known Satisfying Interfaces: ", satisfyingInterfaces);
+
+		// description
+		around("div class='doc'", getDoc(klass));		
 		
 		// description
 		around("div class='doc'", getDoc(klass));
@@ -261,9 +210,26 @@ public class ClassDoc extends ClassOrPackageDoc {
         return new File(getFolder(klass), getFileName(klass));
     }
     
-    private boolean isNullorEmpty(Collection<? extends Object> collection ) {
+    private boolean isNullOrEmpty(Collection<? extends Object> collection ) {
     	return collection == null || collection.isEmpty(); 
     }
+    
+    private void writeListOnSumary(String divClass, String label, List<? extends TypeDeclaration> list) throws IOException {
+		if (isNullOrEmpty(list) == false) {
+			boolean first = true;
+			open("div class='" + divClass + "'");
+			write(label);
+			for (TypeDeclaration typeDeclaration : list) {
+				if (!first) {
+					write(", ");
+				} else {
+					first = false;
+				}
+				link(typeDeclaration, true);
+			}
+			close("div");
+		}
+    }    
     
     
 }
