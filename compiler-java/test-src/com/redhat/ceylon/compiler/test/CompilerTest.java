@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 
-import javax.tools.JavaCompiler;
 import javax.tools.JavaFileObject;
 
 import junit.framework.Assert;
@@ -30,6 +29,7 @@ public abstract class CompilerTest {
 
 	private final static String dir = "test-src";
 	private final static String destDir = "build/classes";
+	private final static String destJar = destDir+"/default_module-unversioned.jar";
 
 	protected String path;
 
@@ -133,7 +133,7 @@ public abstract class CompilerTest {
 		Assert.assertTrue(success);
 		try{
 		    // make sure we load the stuff from the Jar
-		    File jar = new File(destDir, "/default_module-unversioned.jar");
+		    File jar = new File(destJar);
 		    ClassLoader loader = URLClassLoader.newInstance(
 		            new URL[] { jar.toURL() },
 		            getClass().getClassLoader()
@@ -153,6 +153,8 @@ public abstract class CompilerTest {
 	    }
         Iterable<? extends JavaFileObject> compilationUnits1 =
             runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
-        return (CeyloncTaskImpl) runCompiler.getTask(null, runFileManager, null, Arrays.asList("-d", destDir, "-verbose"), null, compilationUnits1);
+        return (CeyloncTaskImpl) runCompiler.getTask(null, runFileManager, null, 
+                Arrays.asList("-d", destDir, "-verbose", "-cp", destJar+File.pathSeparator+destDir), 
+                null, compilationUnits1);
 	}
 }
