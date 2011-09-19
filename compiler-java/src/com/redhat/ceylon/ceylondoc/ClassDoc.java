@@ -25,12 +25,28 @@ public class ClassDoc extends ClassOrPackageDoc {
     private List<Method> methods;
     private List<MethodOrValue> attributes;
     private List<ClassOrInterface> subclasses;
-    private List<ClassOrInterface> implementingClasses;
+    private List<ClassOrInterface> satisfyingClassesOrInterfaces;
 
-	public ClassDoc(String destDir, ClassOrInterface klass, List<ClassOrInterface> subclasses, List<ClassOrInterface> implementingClasses) throws IOException {
+    private Comparator<Declaration> comparator = new Comparator<Declaration>() {
+        @Override
+        public int compare(Declaration a, Declaration b) {
+            return a.getName().compareTo(b.getName());
+        }
+    };
+    
+    
+	public ClassDoc(String destDir, ClassOrInterface klass, List<ClassOrInterface> subclasses, List<ClassOrInterface> satisfyingClassesOrInterfaces) throws IOException {
 		super(destDir);
-		this.subclasses = subclasses;
-		this.implementingClasses = implementingClasses;
+		if (subclasses != null) {
+			this.subclasses = subclasses;
+		} else {
+			this.subclasses = new ArrayList<ClassOrInterface>();
+		}
+		if (satisfyingClassesOrInterfaces != null) {
+			this.satisfyingClassesOrInterfaces = satisfyingClassesOrInterfaces;
+		} else {
+			this.satisfyingClassesOrInterfaces = new ArrayList<ClassOrInterface>();
+		}
 		this.klass = klass;
 		loadMembers();
 	}
@@ -46,14 +62,11 @@ public class ClassDoc extends ClassOrPackageDoc {
 	            else if(m instanceof Method)
                     methods.add((Method) m);
 	        }
-	        Comparator<MethodOrValue> comparator = new Comparator<MethodOrValue>(){
-	            @Override
-	            public int compare(MethodOrValue a, MethodOrValue b) {
-	                return a.getName().compareTo(b.getName());
-	            }
-	        };
+
 	        Collections.sort(methods, comparator );
 	        Collections.sort(attributes, comparator );
+	        Collections.sort(subclasses, comparator);	        
+	        Collections.sort(satisfyingClassesOrInterfaces, comparator);	        
     }
 
     public void generate() throws IOException {
@@ -157,11 +170,11 @@ public class ClassDoc extends ClassOrPackageDoc {
 		}
 		
 		// implementing classes
-		if (isNullorEmpty(implementingClasses) == false) {
+		if (isNullorEmpty(satisfyingClassesOrInterfaces) == false) {
 			boolean first = true;
 			open("div class='implementingClasses'");
 			write("All Known Implementing Classes: ");
-			for (TypeDeclaration sublcass : implementingClasses) {
+			for (TypeDeclaration sublcass : satisfyingClassesOrInterfaces) {
 				if (!first) {
 					write(", ");
 				} else {
