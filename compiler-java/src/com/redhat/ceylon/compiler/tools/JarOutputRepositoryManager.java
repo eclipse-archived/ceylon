@@ -97,12 +97,14 @@ public class JarOutputRepositoryManager {
                     inputStream.close();
                     jarOutputStream.closeEntry();
                 }
+                jarFile.close();
             }
             jarOutputStream.flush();
             jarOutputStream.close();
             if(originalJarFile != null){
                 // now rename to the original name
-                outputJarFile.renameTo(originalJarFile);
+                if(!outputJarFile.renameTo(originalJarFile))
+                    throw new IOException("Failed to rename jar file");
             }
         }
 
