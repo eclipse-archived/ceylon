@@ -88,50 +88,6 @@ public class ModelLoaderTest extends CompilerTest {
         }
     }
 
-    private void testActual(Context context) {
-        Symtab symtab = Symtab.instance(context);
-        Table names = Name.Table.instance(context);
-        Types types = Types.instance(context);
-        ClassSymbol classSymbol = symtab.classes.get(names.fromString("java.lang.String"));
-        MethodSymbol equals = null;
-        for(Symbol member : classSymbol.getEnclosedElements()){
-            if(member instanceof MethodSymbol
-                    && member.name.toString().equals("equals")){
-                equals = (MethodSymbol) member;
-                break;
-            }
-        }
-        Assert.assertNotNull(equals);
-        Assert.assertEquals("java.lang.Object", classSymbol.getSuperclass().tsym.getQualifiedName().toString());
-        
-        MethodSymbol equalsImpl = getOverriddenMethod(equals, types);
-        Assert.assertNotNull(equalsImpl);
-        Assert.assertFalse(equals == equalsImpl);
-        Assert.assertEquals("java.lang.Object", equalsImpl.owner.getQualifiedName().toString());
-
-    }
-    
-    private MethodSymbol getOverriddenMethod(MethodSymbol method, Types types) {
-        MethodSymbol impl = null;
-        for (Type superType = types.supertype(method.owner.type);
-                impl == null && superType.tsym != null;
-                superType = types.supertype(superType)) {
-            TypeSymbol i = superType.tsym;
-            for (Scope.Entry e = i.members().lookup(method.name);
-                    impl == null && e.scope != null;
-                    e = e.next()) {
-                if (method.overrides(e.sym, (TypeSymbol)method.owner, types, true) &&
-                        // FIXME: I suspect the following requires a
-                        // subst() for a parametric return type.
-                        types.isSameType(method.type.getReturnType(),
-                                types.memberType(method.owner.type, e.sym).getReturnType())) {
-                    impl = (MethodSymbol) e.sym;
-                }
-            }
-        }
-        return impl;
-    }
-
     private void compareDeclarations(Declaration validDeclaration, Declaration modelDeclaration) {
         if(!validDeclarations.add(validDeclaration))
             return;
