@@ -152,20 +152,17 @@ public class ClassDoc extends ClassOrPackageDoc {
 		}
 		
 		// interfaces
-		writeListOnSumary("satisfied", "Satisfied interfaces: ", klass.getSatisfiedTypeDeclarations());
+		writeListOnSummary("satisfied", "Satisfied interfaces: ", klass.getSatisfiedTypeDeclarations());
 
 		// subclasses
-		writeListOnSumary("subclasses", "Direct Known Subclasses: ", subclasses);
+		writeListOnSummary("subclasses", "Direct Known Subclasses: ", subclasses);
 
 		// satisfying classes
-		writeListOnSumary("satisfyingClasses", "All Known Satisfying Classes: ", satisfyingClasses);
+		writeListOnSummary("satisfyingClasses", "All Known Satisfying Classes: ", satisfyingClasses);
 
 		// satisfying interfaces
-		writeListOnSumary("satisfyingClasses", "All Known Satisfying Interfaces: ", satisfyingInterfaces);
+		writeListOnSummary("satisfyingClasses", "All Known Satisfying Interfaces: ", satisfyingInterfaces);
 
-		// description
-		around("div class='doc'", getDoc(klass));		
-		
 		// description
 		around("div class='doc'", getDoc(klass));
 		
@@ -214,7 +211,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     	return collection == null || collection.isEmpty(); 
     }
     
-    private void writeListOnSumary(String divClass, String label, List<? extends TypeDeclaration> list) throws IOException {
+    private void writeListOnSummary(String divClass, String label, List<? extends TypeDeclaration> list) throws IOException {
 		if (isNullOrEmpty(list) == false) {
 			boolean first = true;
 			open("div class='" + divClass + "'");
