@@ -28,6 +28,9 @@ import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.util.Util;
+import com.sun.source.util.TaskEvent;
+import com.sun.source.util.TaskListener;
+import com.sun.source.util.TaskEvent.Kind;
 import com.sun.tools.javac.api.JavacTaskImpl;
 import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
@@ -37,6 +40,7 @@ import com.sun.tools.javac.code.Scope;
 import com.sun.tools.javac.code.Symtab;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.Types;
+import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Name.Table;
@@ -61,7 +65,7 @@ public class ModelLoaderTest extends CompilerTest {
         // find out what was in that file
         Assert.assertEquals(1, phasedUnits.getPhasedUnits().size());
         PhasedUnit phasedUnit = phasedUnits.getPhasedUnits().get(0);
-        Map<String,Declaration> decls = new HashMap<String,Declaration>();
+        final Map<String,Declaration> decls = new HashMap<String,Declaration>();
         for(Declaration decl : phasedUnit.getUnit().getDeclarations()){
             if(decl.isToplevel()){
                 decls.put(Util.getQualifiedPrefixedName(decl), decl);
@@ -73,19 +77,35 @@ public class ModelLoaderTest extends CompilerTest {
         String testfile = ceylon.substring(0, ceylon.length()-7).toLowerCase()+"test.ceylon";
         JavacTaskImpl task2 = getCompilerTask(testfile);
         // get the context to grab the declarations
-        Context context2 = task2.getContext();
+        final Context context2 = task2.getContext();
+        
+        // check the declarations after Enter but before the compilation is done otherwise we can'tload lazy
+        // declarations from the jar anymore because we've overridden the jar and the javac jar index is corrupted
+        class Listener implements TaskListener{
+            @Override
+            public void started(TaskEvent e) {
+            }
+
+            @Override
+            public void finished(TaskEvent e) {
+                if(e.getKind() == Kind.ENTER){
+                    CeylonModelLoader modelLoader = CeylonModelLoader.instance(context2);
+                    // now see if we can find our declarations
+                    for(Entry<String, Declaration> entry : decls.entrySet()){
+                        Declaration modelDeclaration = modelLoader.getDeclaration(entry.getKey().substring(1), 
+                                entry.getValue() instanceof Value ? DeclarationType.VALUE : DeclarationType.TYPE);
+                        Assert.assertNotNull(modelDeclaration);
+                        // make sure we loaded them exactly the same
+                        compareDeclarations(entry.getValue(), modelDeclaration);
+                    }
+                }
+            }
+        }
+        Listener listener = new Listener();
+        task2.setTaskListener(listener);
+
         success = task2.call();
         Assert.assertTrue("Compilation failed", success);
-        
-        CeylonModelLoader modelLoader = CeylonModelLoader.instance(context2);
-        // now see if we can find our declarations
-        for(Entry<String, Declaration> entry : decls.entrySet()){
-            Declaration modelDeclaration = modelLoader.getDeclaration(entry.getKey().substring(1), 
-                    entry.getValue() instanceof Value ? DeclarationType.VALUE : DeclarationType.TYPE);
-            Assert.assertNotNull(modelDeclaration);
-            // make sure we loaded them exactly the same
-            compareDeclarations(entry.getValue(), modelDeclaration);
-        }
     }
 
     private void compareDeclarations(Declaration validDeclaration, Declaration modelDeclaration) {
