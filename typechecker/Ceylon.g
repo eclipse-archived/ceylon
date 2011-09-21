@@ -65,13 +65,17 @@ importDeclaration returns [Import importDeclaration]
       ( 
         pn1=packageName 
         { importPath = new ImportPath(null);
-          importPath.addIdentifier($pn1.identifier); 
+          if ($pn1.identifier!=null) 
+              importPath.addIdentifier($pn1.identifier); 
           $importDeclaration.setImportPath(importPath); } 
         ( 
           MEMBER_OP 
           pn2=packageName 
-          { importPath.addIdentifier($pn2.identifier); } 
+          { if ($pn2.identifier!=null) 
+                importPath.addIdentifier($pn2.identifier); } 
         )*
+      | { displayRecognitionError(getTokenNames(), 
+              new MismatchedTokenException(LIDENTIFIER, input)); }
       )
     LBRACE
     { il = new ImportMemberOrTypeList($LBRACE);
