@@ -253,6 +253,23 @@ public class CustomTree extends Tree {
         }
     }
     
+    public static class CompilationUnit 
+            extends Tree.CompilationUnit {
+        public CompilationUnit(Token token) {
+            super(token);
+        }
+        @Override public String getNodeType() {
+            return CompilationUnit.class.getSimpleName();
+        }
+        @Override
+        protected List<Node> getChildren() {
+            ArrayList<Node> list = new ArrayList<Node>();
+            list.addAll(super.getChildren());
+            list.addAll(getDeclarations());
+            return list;
+        }
+    }
+
     public static class ImportList 
             extends Tree.ImportList {
         public ImportList(Token token) {
