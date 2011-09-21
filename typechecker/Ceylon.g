@@ -82,11 +82,13 @@ importDeclaration returns [Import importDeclaration]
       $importDeclaration.setImportMemberOrTypeList(il); }
     ( 
       ie1=importElement 
-      { il.addImportMemberOrType($ie1.importMemberOrType); } 
+      { if ($ie1.importMemberOrType!=null)
+            il.addImportMemberOrType($ie1.importMemberOrType); } 
       ( 
         COMMA 
         ie2=importElement 
-        { il.addImportMemberOrType($ie2.importMemberOrType); } 
+        { if ($ie2.importMemberOrType!=null)
+            il.addImportMemberOrType($ie2.importMemberOrType); } 
       )*
       ( 
         COMMA 
