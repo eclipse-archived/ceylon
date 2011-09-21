@@ -93,14 +93,16 @@ public class TypeVisitor extends AbstractVisitor {
     }
 
     private Package getPackage(Tree.ImportPath path) {
-        Module module = unit.getPackage().getModule();
-        for (Package pkg: module.getAllPackages()) {
-            if ( hasName(path.getIdentifiers(), pkg) ) {
-                return pkg;
+        if (path!=null && !path.getIdentifiers().isEmpty()) {
+            Module module = unit.getPackage().getModule();
+            for (Package pkg: module.getAllPackages()) {
+                if ( hasName(path.getIdentifiers(), pkg) ) {
+                    return pkg;
+                }
             }
+            path.addError("package not found: " + 
+                    PrintUtil.importNodeToString(path.getIdentifiers()));
         }
-        path.addError("package not found: " + 
-                PrintUtil.importNodeToString(path.getIdentifiers()));
         return null;
     }
 
