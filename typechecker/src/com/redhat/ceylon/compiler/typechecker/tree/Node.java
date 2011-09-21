@@ -135,8 +135,8 @@ public abstract class Node {
 		Token token=this.token;
 		for (Node child: getChildren()) {
 			Token tok = child.getFirstChildToken();
-			if (tok!=null && ( token==null || 
-					tok.getTokenIndex()<token.getTokenIndex() )) {
+			if (tok!=null && (token==null || 
+					tok.getTokenIndex()<token.getTokenIndex())) {
 				token=tok;
 			}
 		}
@@ -144,12 +144,15 @@ public abstract class Node {
     }
     
     private Token getLastChildToken() {
-		Token token=this.endToken==null?
-				this.token:this.endToken;
+		Token token=this.endToken==null || 
+		        //the tokens ANTLR inserts to represent missing tokens
+		        //don't come with useful offset information
+		        this.endToken.getText().startsWith("<missing ") ?
+				this.token : this.endToken;
 		for (Node child: getChildren()) {
 			Token tok = child.getLastChildToken();
-			if (tok!=null && ( token==null || 
-					tok.getTokenIndex()>token.getTokenIndex() )) {
+			if (tok!=null && (token==null || 
+			        tok.getTokenIndex()>token.getTokenIndex())) {
 				token=tok;
 			}
 		}
