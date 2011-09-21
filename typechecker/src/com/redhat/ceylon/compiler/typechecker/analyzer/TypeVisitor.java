@@ -26,6 +26,7 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrTypeList;
 import com.redhat.ceylon.compiler.typechecker.util.PrintUtil;
 
 /**
@@ -65,13 +66,16 @@ public class TypeVisitor extends AbstractVisitor {
             il.setImportedPackage(importedPackage);
             that.setImportList(il);
             Set<String> names = new HashSet<String>();
-            for (Tree.ImportMemberOrType member: that.getImportMemberOrTypeList()
-                    .getImportMemberOrTypes()) {
-                String name = importMember(member, importedPackage, il);
-                names.add(name);
-            }
-            if (that.getImportMemberOrTypeList().getImportWildcard()!=null) {
-                importAllMembers(importedPackage, names, il);
+            ImportMemberOrTypeList imtl = that.getImportMemberOrTypeList();
+            if (imtl!=null) {
+                for (Tree.ImportMemberOrType member: imtl
+                        .getImportMemberOrTypes()) {
+                    String name = importMember(member, importedPackage, il);
+                    names.add(name);
+                }
+                if (imtl.getImportWildcard()!=null) {
+                    importAllMembers(importedPackage, names, il);
+                }
             }
         }
     }
