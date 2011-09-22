@@ -28,6 +28,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     private List<ClassOrInterface> subclasses;
     private List<ClassOrInterface> satisfyingClassesOrInterfaces;
     private List<Class> satisfyingClasses;
+    private List<Class> innerClasses;
     private List<Interface> satisfyingInterfaces;
     private List<ClassOrInterface> superInterfaces;
 
@@ -67,7 +68,8 @@ public class ClassDoc extends ClassOrPackageDoc {
 	        satisfyingClasses = new ArrayList<Class>();
 	        satisfyingInterfaces = new ArrayList<Interface>();	        
 	        attributes = new ArrayList<MethodOrValue>();
-	        for(Declaration m : klass.getMembers()){
+	        innerClasses = new ArrayList<Class>();
+	        for(Declaration m : klass.getMembers()){	        	
 	        	if (showPrivate || m.isShared()) {
 		            if(m instanceof Value)	            	
 	                    attributes.add((Value) m);
@@ -75,6 +77,8 @@ public class ClassDoc extends ClassOrPackageDoc {
 		                attributes.add((Getter) m);
 		            else if(m instanceof Method)
 	                    methods.add((Method) m);
+		            else if(m instanceof Class)
+	                    innerClasses.add((Class) m);
 	        	}
 	        }
 
@@ -103,14 +107,38 @@ public class ClassDoc extends ClassOrPackageDoc {
 		close("head");
 		open("body");
 		summary();
-		if(klass instanceof Class)
-			constructor((Class)klass);
 		attributes();
+		innerClasses();
+		if(klass instanceof Class)
+			constructor((Class)klass);		
 		methods();
 		close("body");
 		close("html");
 		writer.flush();
 		writer.close();
+	}
+
+	private void innerClasses()  throws IOException {
+        if(innerClasses.isEmpty())
+            return;
+        openTable("Nested Classes", "Modifiers", "Name and Description");
+		for(Class m : innerClasses){
+		    doc(m);
+		}
+		close("table");
+	}
+	
+	protected void doc(Class c) throws IOException {
+        open("tr class='TableRowColor'");
+		open("td");
+		around("span class='modifiers'",getModifiers(c));
+		close("td");
+        open("td");
+        link(c.getType());
+        tag("br");
+        around("span class='doc'", getDoc(c));
+        close("td");
+		close("tr");
 	}
 
 	private void summary() throws IOException {
