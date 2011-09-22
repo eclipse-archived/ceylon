@@ -68,8 +68,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 	        satisfyingInterfaces = new ArrayList<Interface>();	        
 	        attributes = new ArrayList<MethodOrValue>();
 	        for(Declaration m : klass.getMembers()){
-	        	boolean isShared = (getModifiers(m).indexOf("shared") != -1);
-	        	if (showPrivate || isShared) {
+	        	if (showPrivate || m.isShared()) {
 		            if(m instanceof Value)	            	
 	                    attributes.add((Value) m);
 		            else if(m instanceof Getter)
