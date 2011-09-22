@@ -52,21 +52,13 @@ public class DeclarationVisitor extends Visitor {
     private Unit unit;
     private ParameterList parameterList;
     private Declaration declaration;
-    private boolean checkDuplicates = true;
-    
+
     public DeclarationVisitor(Package pkg, String filename) {
         scope = pkg;
         this.pkg = pkg;
         this.filename = filename;
     }
 
-    public DeclarationVisitor(Package pkg, String filename, boolean checkDuplicates) {
-        scope = pkg;
-        this.pkg = pkg;
-        this.filename = filename;
-        this.checkDuplicates = checkDuplicates;
-    }
-    
     public Unit getCompilationUnit() {
         return unit;
     }
@@ -98,7 +90,7 @@ public class DeclarationVisitor extends Visitor {
     private void visitDeclaration(Tree.Declaration that, Declaration model, boolean checkDupe) {
         visitElement(that, model);
         if ( setModelName(that, model, that.getIdentifier()) ) {
-            if (checkDupe && checkDuplicates) checkForDuplicateDeclaration(that, model);
+            if (checkDupe) checkForDuplicateDeclaration(that, model);
         }
         //that.setDeclarationModel(model);
         unit.getDeclarations().add(model);

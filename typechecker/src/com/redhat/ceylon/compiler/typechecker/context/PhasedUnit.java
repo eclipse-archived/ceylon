@@ -93,15 +93,11 @@ public class PhasedUnit {
         compilationUnit.visit(new Validator());
     }
 
-    public void scanDeclarations(boolean checkDuplicates) {
+    public void scanDeclarations() {
         //System.out.println("Scan declarations for " + fileName);
-        DeclarationVisitor dv = new DeclarationVisitor(pkg, fileName, checkDuplicates);
+        DeclarationVisitor dv = new DeclarationVisitor(pkg, fileName);
         compilationUnit.visit(dv);
         unit = dv.getCompilationUnit();
-    }
-
-    public void scanDeclarations() {
-    	scanDeclarations(true);
     }
 
     public void scanTypeDeclarations() {
