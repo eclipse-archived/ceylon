@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -25,7 +26,7 @@ public class CeylonDocTool {
     private String destDir;
     private Map<ClassOrInterface,List<ClassOrInterface>> subclassesMap = new HashMap<ClassOrInterface, List<ClassOrInterface>>();
     private Map<TypeDeclaration,List<ClassOrInterface>> implementingClassesMap = new HashMap<TypeDeclaration, List<ClassOrInterface>>();
-    
+    private Map<ClassOrInterface,List<ClassOrInterface>> superInterfacesMap = new HashMap<ClassOrInterface, List<ClassOrInterface>>();
     
     public CeylonDocTool(List<PhasedUnit> phasedUnits, Modules modules) {
         this.phasedUnits = phasedUnits;
@@ -41,23 +42,51 @@ public class CeylonDocTool {
     	for (PhasedUnit pu : phasedUnits) {
             for(Declaration decl : pu.getUnit().getDeclarations()){
             	 if(decl instanceof ClassOrInterface){
-            		 ClassOrInterface c = (ClassOrInterface) decl;
-            		 ClassOrInterface superclass = c.getExtendedTypeDeclaration();            		 
-            		 if (superclass != null) {
-                		 if (subclassesMap.get(superclass) ==  null) {
-                			 subclassesMap.put(superclass, new ArrayList<ClassOrInterface>());
-                		 }
-                		 subclassesMap.get(superclass).add(c);
+            		 ClassOrInterface c = (ClassOrInterface) decl;    
+            		 
+            		 // superclass map
+            		 if (c instanceof Class) {
+	            		 ClassOrInterface superclass = c.getExtendedTypeDeclaration();            		 
+	            		 if (superclass != null) {
+	                		 if (subclassesMap.get(superclass) ==  null) {
+	                			 subclassesMap.put(superclass, new ArrayList<ClassOrInterface>());
+	                		 }
+	                		 subclassesMap.get(superclass).add(c);
+	            		 }
             		 }
-            		 List<TypeDeclaration> satisfiedTypes = c.getSatisfiedTypeDeclarations();
+            		 
+            		 List<TypeDeclaration> satisfiedTypes = new ArrayList<TypeDeclaration>(c.getSatisfiedTypeDeclarations());            		 
             		 if (satisfiedTypes != null && satisfiedTypes.isEmpty() == false) {
-            			 for (TypeDeclaration satisfiedType : satisfiedTypes) {
+            			 
+                		// implementing classes or interfaces map
+            			for (TypeDeclaration satisfiedType : satisfiedTypes) {
                     		 if (implementingClassesMap.get(satisfiedType) ==  null) {
                     			 implementingClassesMap.put(satisfiedType, new ArrayList<ClassOrInterface>());
                     		 }
                     		 implementingClassesMap.get(satisfiedType).add(c);
 						}
+            			
+            			// implemented interfaces map
+            			List<ClassOrInterface> superInterfaces = new ArrayList<ClassOrInterface>();
+            			superInterfacesMap.put(c, superInterfaces);
+            			while (satisfiedTypes.isEmpty() == false) {
+            				 List<TypeDeclaration> superSatisfiedTypes = new ArrayList<TypeDeclaration>(); 
+            				 for (TypeDeclaration satisfiedType : satisfiedTypes) {
+            					 superInterfaces.add((ClassOrInterface)satisfiedType);
+            					 if (satisfiedType.getSatisfiedTypeDeclarations().isEmpty() == false) {
+            						 for (TypeDeclaration superSatisfiedType: satisfiedType.getSatisfiedTypeDeclarations() ) {
+            							 if (superInterfaces.contains(superSatisfiedType) == false && superSatisfiedTypes.contains(superSatisfiedType) == false) {
+            								 superSatisfiedTypes.add(superSatisfiedType);
+            							 }
+            						 }
+            					 }
+            					 
+            				 }
+            				 satisfiedTypes = superSatisfiedTypes; 
+            			}
+            			
             		 }
+            		 
                  }
             }
         }
@@ -98,8 +127,9 @@ public class CeylonDocTool {
     }
 
     private void doc(Declaration decl) throws IOException {
-        if(decl instanceof ClassOrInterface){        	
-            new ClassDoc(destDir, (ClassOrInterface)decl,subclassesMap.get(decl), implementingClassesMap.get(decl)).generate();
+        if(decl instanceof ClassOrInterface){   
+        	System.out.println(decl.getName() + " " +  superInterfacesMap.get(decl));
+            new ClassDoc(destDir, (ClassOrInterface)decl,subclassesMap.get(decl), implementingClassesMap.get(decl), superInterfacesMap.get(decl)).generate();
         }
     }
 

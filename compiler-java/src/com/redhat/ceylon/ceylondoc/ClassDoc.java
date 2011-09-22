@@ -29,6 +29,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     private List<ClassOrInterface> satisfyingClassesOrInterfaces;
     private List<Class> satisfyingClasses;
     private List<Interface> satisfyingInterfaces;
+    private List<ClassOrInterface> superInterfaces;
 
     private Comparator<Declaration> comparator = new Comparator<Declaration>() {
         @Override
@@ -38,7 +39,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     };
     
     
-	public ClassDoc(String destDir, ClassOrInterface klass, List<ClassOrInterface> subclasses, List<ClassOrInterface> satisfyingClassesOrInterfaces) throws IOException {
+	public ClassDoc(String destDir, ClassOrInterface klass, List<ClassOrInterface> subclasses, List<ClassOrInterface> satisfyingClassesOrInterfaces, List<ClassOrInterface> superInterfaces) throws IOException {
 		super(destDir);
 		if (subclasses != null) {
 			this.subclasses = subclasses;
@@ -50,6 +51,13 @@ public class ClassDoc extends ClassOrPackageDoc {
 		} else {
 			this.satisfyingClassesOrInterfaces = new ArrayList<ClassOrInterface>();
 		}
+		
+		if (superInterfaces != null) {
+			this.superInterfaces = superInterfaces;
+		} else {
+			this.superInterfaces = new ArrayList<ClassOrInterface>();
+		}
+		
 		this.klass = klass;
 		loadMembers();
 	}
@@ -80,7 +88,8 @@ public class ClassDoc extends ClassOrPackageDoc {
 	        Collections.sort(attributes, comparator );
 	        Collections.sort(subclasses, comparator);	        
 	        Collections.sort(satisfyingClasses, comparator);
-	        Collections.sort(satisfyingInterfaces, comparator);        
+	        Collections.sort(satisfyingInterfaces, comparator);     
+	        Collections.sort(superInterfaces, comparator);  
     }
 
     public void generate() throws IOException {
@@ -117,28 +126,30 @@ public class ClassDoc extends ClassOrPackageDoc {
        
         open("div class='head'");
         
-        // name
+        // name      
 		around("div class='package'", getPackage(klass).getNameAsString());
 		around("div class='type'", klass instanceof Class ? "Class " : "Interface ", klass.getName());
 		
-		// hierarchy tree
-		LinkedList<ClassOrInterface> superTypes = new LinkedList<ClassOrInterface>();
-		superTypes.add(klass);
-		ClassOrInterface type = klass.getExtendedTypeDeclaration(); 
-		while(type != null){
-			superTypes.add(0, type);
-			type = type.getExtendedTypeDeclaration();
-		}
-		int i=0;
-		for(ClassOrInterface superType : superTypes){
-			open("ul class='inheritance'", "li");
-			link(superType, true);
-			i++;
-		}
-		while(i-- > 0){
-			close("li", "ul");
-		}
-		
+		// hierarchy tree - only for classes
+		if (klass instanceof Class) {			
+			LinkedList<ClassOrInterface> superTypes = new LinkedList<ClassOrInterface>();
+			superTypes.add(klass);
+			ClassOrInterface type = klass.getExtendedTypeDeclaration(); 
+			while(type != null){
+				superTypes.add(0, type);
+				type = type.getExtendedTypeDeclaration();
+			}
+			int i=0;
+			for(ClassOrInterface superType : superTypes){
+				open("ul class='inheritance'", "li");
+				link(superType, true);
+				i++;
+			}
+			while(i-- > 0){
+				close("li", "ul");
+			}
+        }
+        
 		// type parameters
 		if (isNullOrEmpty(klass.getTypeParameters()) == false ) {
 			open("div class='type-parameters'");
@@ -152,7 +163,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 		}
 		
 		// interfaces
-		writeListOnSummary("satisfied", "Satisfied interfaces: ", klass.getSatisfiedTypeDeclarations());
+		writeListOnSummary("satisfied", "All Known Satisfied Interfaces: ", superInterfaces);
 
 		// subclasses
 		writeListOnSummary("subclasses", "Direct Known Subclasses: ", subclasses);
