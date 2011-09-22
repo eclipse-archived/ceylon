@@ -39,8 +39,8 @@ public class ClassDoc extends ClassOrPackageDoc {
     };
     
     
-	public ClassDoc(String destDir, ClassOrInterface klass, List<ClassOrInterface> subclasses, List<ClassOrInterface> satisfyingClassesOrInterfaces, List<ClassOrInterface> superInterfaces) throws IOException {
-		super(destDir);
+	public ClassDoc(String destDir, boolean showPrivate, ClassOrInterface klass, List<ClassOrInterface> subclasses, List<ClassOrInterface> satisfyingClassesOrInterfaces, List<ClassOrInterface> superInterfaces) throws IOException {
+		super(destDir, showPrivate);
 		if (subclasses != null) {
 			this.subclasses = subclasses;
 		} else {
@@ -68,12 +68,15 @@ public class ClassDoc extends ClassOrPackageDoc {
 	        satisfyingInterfaces = new ArrayList<Interface>();	        
 	        attributes = new ArrayList<MethodOrValue>();
 	        for(Declaration m : klass.getMembers()){
-	            if(m instanceof Value)
-                    attributes.add((Value) m);
-	            else if(m instanceof Getter)
-	                attributes.add((Getter) m);
-	            else if(m instanceof Method)
-                    methods.add((Method) m);
+	        	boolean isShared = (getModifiers(m).indexOf("shared") != -1);
+	        	if (showPrivate || isShared) {
+		            if(m instanceof Value)	            	
+	                    attributes.add((Value) m);
+		            else if(m instanceof Getter)
+		                attributes.add((Getter) m);
+		            else if(m instanceof Method)
+	                    methods.add((Method) m);
+	        	}
 	        }
 
 	        for (ClassOrInterface classOrInterface : satisfyingClassesOrInterfaces) {

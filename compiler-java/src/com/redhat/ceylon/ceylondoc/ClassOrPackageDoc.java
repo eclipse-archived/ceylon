@@ -14,10 +14,11 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 public abstract class ClassOrPackageDoc extends CeylonDoc {
 
-	public ClassOrPackageDoc(String destDir) {
-		super(destDir);	
+	public ClassOrPackageDoc(String destDir, boolean showPrivate) {
+		super(destDir, showPrivate);		
 	}
-	
+
+
 	protected String getModifiers(Declaration d) {
 		StringBuilder modifiers = new StringBuilder();
 		if (d.isShared()) {

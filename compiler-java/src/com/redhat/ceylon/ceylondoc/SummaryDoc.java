@@ -15,8 +15,8 @@ public class SummaryDoc extends CeylonDoc {
 
     private Modules modules;
 
-    public SummaryDoc(String destDir, Modules modules) throws IOException {
-        super(destDir);
+    public SummaryDoc(String destDir, Modules modules, boolean showPrivate) throws IOException {
+        super(destDir, showPrivate);
         this.modules = modules;
     }
 

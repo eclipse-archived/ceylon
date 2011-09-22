@@ -23,8 +23,8 @@ public class PackageDoc extends ClassOrPackageDoc {
     private List<Value> attributes;
     private List<Method> methods;
 
-	public PackageDoc(String destDir, Package pkg) throws IOException {
-		super(destDir);
+	public PackageDoc(String destDir, Package pkg, boolean showPrivate) throws IOException {
+		super(destDir, showPrivate);
 		this.pkg = pkg;
 		loadMembers();
 	}

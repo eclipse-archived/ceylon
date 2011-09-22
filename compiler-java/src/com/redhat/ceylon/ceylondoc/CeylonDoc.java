@@ -21,9 +21,11 @@ public abstract class CeylonDoc {
 
 	protected Writer writer;
     protected String destDir;
+    protected boolean showPrivate;
 
-	public CeylonDoc(String destDir) {
+	public CeylonDoc(String destDir, boolean showPrivate) {
 		this.destDir = destDir;
+		this.showPrivate = showPrivate;
 	}
 
 	protected void setupWriter() throws IOException{

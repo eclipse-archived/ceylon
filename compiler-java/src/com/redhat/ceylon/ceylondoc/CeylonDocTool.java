@@ -107,11 +107,11 @@ public class CeylonDocTool {
     }
 
     private void doc(Modules modules) throws IOException {
-        new SummaryDoc(destDir, modules).generate();
+        new SummaryDoc(destDir, modules, false).generate();
     }
 
     private void doc(Package pkg) throws IOException {
-        new PackageDoc(destDir, pkg).generate();
+        new PackageDoc(destDir, pkg, false).generate();
     }
 
     private void copyResource(String path) throws IOException {
@@ -127,9 +127,8 @@ public class CeylonDocTool {
     }
 
     private void doc(Declaration decl) throws IOException {
-        if(decl instanceof ClassOrInterface){   
-        	System.out.println(decl.getName() + " " +  superInterfacesMap.get(decl));
-            new ClassDoc(destDir, (ClassOrInterface)decl,subclassesMap.get(decl), implementingClassesMap.get(decl), superInterfacesMap.get(decl)).generate();
+        if(decl instanceof ClassOrInterface){
+            new ClassDoc(destDir, false, (ClassOrInterface)decl,subclassesMap.get(decl), implementingClassesMap.get(decl), superInterfacesMap.get(decl)).generate();
         }
     }
 
