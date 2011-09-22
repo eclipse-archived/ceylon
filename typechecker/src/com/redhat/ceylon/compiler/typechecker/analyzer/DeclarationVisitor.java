@@ -209,6 +209,8 @@ public class DeclarationVisitor extends Visitor {
         //that.setModelNode(unit);
         unit.setPackage(pkg);
         unit.setFilename(filename);
+        pkg.getUnits().remove(unit);
+        pkg.getUnits().add(unit);
         super.visit(that);
     }
     

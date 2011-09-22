@@ -14,7 +14,7 @@ public class Package implements Scope {
 
     List<String> name;
     Module module;
-    List<Declaration> members = new ArrayList<Declaration>();
+    List<Unit> units = new ArrayList<Unit>();
 
     public Module getModule() {
         return module;
@@ -31,10 +31,22 @@ public class Package implements Scope {
     public void setName(List<String> name) {
         this.name = name;
     }
-
+    
+    public List<Unit> getUnits() {
+        return units;
+    }
+    
     @Override
     public List<Declaration> getMembers() {
-        return members;
+        List<Declaration> result = new ArrayList<Declaration>();
+        for (Unit unit: units) {
+            for (Declaration d: unit.getDeclarations()) {
+                if (d.getContainer().equals(this)) {
+                    result.add(d);
+                }
+            }
+        }
+        return result;
     }
 
     @Override
@@ -82,13 +94,7 @@ public class Package implements Scope {
 
     @Override
     public Declaration getDirectMember(String name) {
-        //for (Declaration d: getMembers()) {
-        //TODO: This is a rather expedient workaround for
-        //      the loss of uniqueness in the IDE.
-        //      Eventually we need a better way of 
-        //      managing this!
-        for (int i=getMembers().size()-1; i>=0; i--) {
-            Declaration d = getMembers().get(i);
+        for (Declaration d: getMembers()) {
             if (isResolvable(d) && /*d.isShared() &&*/ isNamed(name, d)) {
                 return d;
             }
@@ -157,6 +163,21 @@ public class Package implements Scope {
             }
         }
         return result;
+    }
+    
+    @Override
+    public int hashCode() {
+        return getName().hashCode();
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Package) {
+            return ((Package) obj).getName().equals(getName());
+        }
+        else {
+            return false;
+        }
     }
 
 }
