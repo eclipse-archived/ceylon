@@ -297,6 +297,40 @@ public class CustomTree extends Tree {
         }
     }
     
+    public static class SatisfiedTypes
+            extends Tree.SatisfiedTypes {
+        public SatisfiedTypes(Token token) {
+            super(token);
+        }
+        @Override public String getNodeType() {
+            return SatisfiedTypes.class.getSimpleName();
+        }
+        @Override
+        protected List<Node> getChildren() {
+            ArrayList<Node> list = new ArrayList<Node>();
+            list.addAll(super.getChildren());
+            list.addAll(getTypes());
+            return list;
+        }
+    }
+
+    public static class CaseTypes
+            extends Tree.CaseTypes {
+        public CaseTypes(Token token) {
+            super(token);
+        }
+        @Override public String getNodeType() {
+            return SatisfiedTypes.class.getSimpleName();
+        }
+        @Override
+        protected List<Node> getChildren() {
+            ArrayList<Node> list = new ArrayList<Node>();
+            list.addAll(super.getChildren());
+            list.addAll(getTypes());
+            return list;
+        }
+    }
+
     //deliberately don't do this one, so that the span of 
     //a declaration doesn't include its annotations (but
     //is that really what we want??
