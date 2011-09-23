@@ -193,4 +193,19 @@
       <report format="frames" todir="${test.reports}"/>
     </junitreport>
   </target>
+
+    <target name="ceylon-tests" depends="compiler.jar,runtime.jar">
+      <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc">
+        <classpath>
+          <pathelement location="${compiler.jar}"/>
+        </classpath>
+      </taskdef>
+      <ceylonc
+         compiler="bin/ceylonc"
+         srcdir="${test.src}"
+         destdir="${build.classes}">
+        <include name="com/redhat/ceylon/compiler/test/ceylon/*.ceylon"/>
+      </ceylonc>
+    </target>
+
 </project>
