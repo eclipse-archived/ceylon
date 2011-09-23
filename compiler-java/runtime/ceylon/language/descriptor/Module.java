@@ -8,16 +8,16 @@ import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 public class Module {
     private ceylon.language.Quoted name;
     private ceylon.language.Quoted version;
-    private String doc;
-    private Iterable<? extends String> authors;
+    private ceylon.language.String doc;
+    private Iterable<? extends ceylon.language.String> authors;
     private ceylon.language.Quoted license;
 
     public Module(@Name("name") ceylon.language.Quoted name, 
             @Name("version") ceylon.language.Quoted version, 
             @TypeInfo("ceylon.language.Nothing|ceylon.language.String") @Name("doc") 
-              java.lang.String doc, 
+              ceylon.language.String doc, 
             @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>") @Name("authors") 
-              ceylon.language.Iterable<? extends java.lang.String> authors, 
+              ceylon.language.Iterable<? extends ceylon.language.String> authors, 
             @TypeInfo("ceylon.language.Nothing|ceylon.language.Quoted") @Name("license") 
     ceylon.language.Quoted license){
         this.name = name;
@@ -35,11 +35,11 @@ public class Module {
         return version;
     }
 
-    public String getDoc() {
+    public ceylon.language.String getDoc() {
         return doc;
     }
 
-    public Iterable<? extends String> getAuthors() {
+    public Iterable<? extends ceylon.language.String> getAuthors() {
         return authors;
     }
 
