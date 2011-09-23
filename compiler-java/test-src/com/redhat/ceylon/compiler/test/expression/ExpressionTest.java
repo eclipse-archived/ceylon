@@ -101,6 +101,10 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("literal/StringLiteral");
     }
     @Test
+    public void testLitQuotedLiteral(){
+        compareWithJavaSource("literal/QuotedLiteral");
+    }
+    @Test
     public void testLitNumericLiteral(){
         compareWithJavaSource("literal/NumericLiteral");
     }
