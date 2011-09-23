@@ -178,7 +178,7 @@ public class Ceylonc extends MatchingTask {
         cmd.setExecutable(compilerExecutable.getAbsolutePath());
         cmd.createArgument().setValue("-d");
         cmd.createArgument().setValue(destDir.getAbsolutePath());
-        cmd.createArgument().setValue("-src");
+        cmd.createArgument().setValue("-sourcepath");
         cmd.createArgument().setValue(src.toString());
         for (int i = 0; i < compileList.length; i++) {
             cmd.createArgument().setValue(compileList[i].getAbsolutePath());
