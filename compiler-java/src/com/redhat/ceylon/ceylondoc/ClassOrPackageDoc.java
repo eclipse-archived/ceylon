@@ -1,51 +1,25 @@
 package com.redhat.ceylon.ceylondoc;
 
+
+import static com.redhat.ceylon.ceylondoc.Util.getDoc;
+import static com.redhat.ceylon.ceylondoc.Util.getModifiers;
+
 import java.io.IOException;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.typechecker.model.Annotation;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.model.Class;
 
 public abstract class ClassOrPackageDoc extends CeylonDoc {
 
 	public ClassOrPackageDoc(String destDir, boolean showPrivate) {
 		super(destDir, showPrivate);		
 	}
-
-
-	protected String getModifiers(Declaration d) {
-		StringBuilder modifiers = new StringBuilder();
-		if (d.isShared()) {
-			modifiers.append("shared ");
-		}		
-		if (d.isFormal()) {
-			modifiers.append("formal ");
-		}
-		if (d.isDefault()) {
-			modifiers.append("default ");
-		}		
-		if (d instanceof Value) {
-			Value v = (Value) d;
-			if (v.isVariable()) {
-				modifiers.append("variable ");
-			}			
-		} else if (d instanceof Class) {
-			Class c  = (Class) d;
-			if (c.isAbstract()) {
-				modifiers.append("abstract ");
-			}
-		}			
-		return modifiers.toString().trim();
-	}
 	
-
     protected void doc(Method m) throws IOException {
         open("tr class='TableRowColor'");
 		open("td");
@@ -110,13 +84,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
 		}
 	}
     
-	protected String getDoc(Declaration decl) {
-	    for (Annotation a : decl.getAnnotations()){
-	        if(a.getName().equals("doc"))
-	            return unquote(a.getPositionalArguments().get(0));
-	    }
-        return "";
-    }
+
 	
 
 }

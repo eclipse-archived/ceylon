@@ -1,9 +1,12 @@
 package com.redhat.ceylon.ceylondoc;
 
+import static com.redhat.ceylon.ceylondoc.Util.getDoc;
+import static com.redhat.ceylon.ceylondoc.Util.getModifiers;
+import static com.redhat.ceylon.ceylondoc.Util.isNullOrEmpty;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -109,6 +112,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 		summary();
 		innerClasses();
 		attributes();
+		inheritedAttributes();
 		if(klass instanceof Class)
 			constructor((Class)klass);		
 		methods();
@@ -116,6 +120,12 @@ public class ClassDoc extends ClassOrPackageDoc {
 		close("html");
 		writer.flush();
 		writer.close();
+	}
+
+	private void inheritedAttributes() {
+//		klass.getInheritedMembers(name);
+		
+		
 	}
 
 	private void innerClasses() throws IOException {
@@ -248,9 +258,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         return new File(getFolder(klass), getFileName(klass));
     }
     
-    private boolean isNullOrEmpty(Collection<? extends Object> collection ) {
-    	return collection == null || collection.isEmpty(); 
-    }
+
     
     private void writeListOnSummary(String divClass, String label, List<? extends TypeDeclaration> list) throws IOException {
 		if (isNullOrEmpty(list) == false) {

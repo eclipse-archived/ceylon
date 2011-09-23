@@ -166,8 +166,6 @@ public abstract class CeylonDoc {
 	
 
 	
-   protected String unquote(String string) {
-        return string.substring(1, string.length()-1);
-   }
+
    
 }
