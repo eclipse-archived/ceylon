@@ -664,6 +664,14 @@ public class ExpressionTransformer extends AbstractTransformer {
         return ceylonLiteral(value);
     }
 
+    public JCExpression transform(Tree.QuotedLiteral string) {
+        String value = string
+                .getText()
+                .substring(1, string.getText().length() - 1);
+        JCExpression result = makeSelect(makeIdent(syms().ceylonQuotedType), "instance");
+        return at(string).Apply(null, result, List.<JCTree.JCExpression>of(make().Literal(value)));
+    }
+
     public JCExpression transform(Tree.CharLiteral lit) {
         JCExpression expr = make().Literal(TypeTags.CHAR, (int) lit.getText().charAt(1));
         // XXX make().Literal(lit.value) doesn't work here... something

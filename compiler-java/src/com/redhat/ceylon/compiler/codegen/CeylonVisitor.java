@@ -417,6 +417,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         append(gen.expressionGen().transform(string));
     }
 
+    public void visit(Tree.QuotedLiteral string) {
+        append(gen.expressionGen().transform(string));
+    }
+
     // FIXME: port TypeName?
     public void visit(Tree.InitializerExpression value) {
         append(gen.expressionGen().transformExpression(value.getExpression()));
