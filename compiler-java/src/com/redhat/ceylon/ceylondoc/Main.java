@@ -10,6 +10,7 @@ public class Main {
     public static void main(String[] args) throws IOException{
         String destDir = null;
         String srcDir = null;
+        boolean showPrivate = false;
         
         for(int i=0;i<args.length;i++){
             String arg = args[i];
@@ -17,6 +18,8 @@ public class Main {
                 destDir = args[++i];
             }else if("-sourcepath".equals(arg)){
                 srcDir = args[++i];
+            }else if("-private".equals(arg)){
+                showPrivate = true;
             }
         }
         if(destDir == null){
@@ -36,7 +39,7 @@ public class Main {
         
         TypeChecker typeChecker = new TypeCheckerBuilder().addSrcDirectory(file).getTypeChecker();
         typeChecker.process();
-        CeylonDocTool ceylonDocTool = new CeylonDocTool(typeChecker.getPhasedUnits().getPhasedUnits(), typeChecker.getContext().getModules());
+        CeylonDocTool ceylonDocTool = new CeylonDocTool(typeChecker.getPhasedUnits().getPhasedUnits(), typeChecker.getContext().getModules(), showPrivate);
         ceylonDocTool.setDestDir(destDir);
         ceylonDocTool.makeDoc();
     }

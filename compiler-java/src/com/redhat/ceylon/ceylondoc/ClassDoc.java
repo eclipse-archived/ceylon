@@ -64,38 +64,38 @@ public class ClassDoc extends ClassOrPackageDoc {
 	}
 	
 	private void loadMembers() {
-	        methods = new ArrayList<Method>();
-	        satisfyingClasses = new ArrayList<Class>();
-	        satisfyingInterfaces = new ArrayList<Interface>();	        
-	        attributes = new ArrayList<MethodOrValue>();
-	        innerClasses = new ArrayList<Class>();
-	        for(Declaration m : klass.getMembers()){	        	
-	        	if (showPrivate || m.isShared()) {
-		            if(m instanceof Value)	            	
-	                    attributes.add((Value) m);
-		            else if(m instanceof Getter)
-		                attributes.add((Getter) m);
-		            else if(m instanceof Method)
-	                    methods.add((Method) m);
-		            else if(m instanceof Class)
-	                    innerClasses.add((Class) m);
-	        	}
-	        }
-
-	        for (ClassOrInterface classOrInterface : satisfyingClassesOrInterfaces) {
-	        	if (classOrInterface instanceof Class) {
-	        		satisfyingClasses.add((Class) classOrInterface);
-	        	} else if (classOrInterface instanceof Interface) {
-	        		satisfyingInterfaces.add((Interface) classOrInterface);
-	        	}
-	        }	        
-	        
-	        Collections.sort(methods, comparator );
-	        Collections.sort(attributes, comparator );
-	        Collections.sort(subclasses, comparator);	        
-	        Collections.sort(satisfyingClasses, comparator);
-	        Collections.sort(satisfyingInterfaces, comparator);     
-	        Collections.sort(superInterfaces, comparator);  
+	    methods = new ArrayList<Method>();
+	    satisfyingClasses = new ArrayList<Class>();
+	    satisfyingInterfaces = new ArrayList<Interface>();	        
+	    attributes = new ArrayList<MethodOrValue>();
+	    innerClasses = new ArrayList<Class>();
+	    for(Declaration m : klass.getMembers()){	        	
+	    	if (showPrivate || m.isShared()) {
+	            if(m instanceof Value)	            	
+	                attributes.add((Value) m);
+	            else if(m instanceof Getter)
+	                attributes.add((Getter) m);
+	            else if(m instanceof Method)
+	                methods.add((Method) m);
+	            else if(m instanceof Class)
+	                innerClasses.add((Class) m);
+	    	}
+	    }
+	
+	    for (ClassOrInterface classOrInterface : satisfyingClassesOrInterfaces) {
+	    	if (classOrInterface instanceof Class) {
+	    		satisfyingClasses.add((Class) classOrInterface);
+	    	} else if (classOrInterface instanceof Interface) {
+	    		satisfyingInterfaces.add((Interface) classOrInterface);
+	    	}
+	    }	        
+	    
+	    Collections.sort(methods, comparator );
+	    Collections.sort(attributes, comparator );
+	    Collections.sort(subclasses, comparator);	        
+	    Collections.sort(satisfyingClasses, comparator);
+	    Collections.sort(satisfyingInterfaces, comparator);     
+	    Collections.sort(superInterfaces, comparator);
     }
 
     public void generate() throws IOException {
@@ -107,8 +107,8 @@ public class ClassDoc extends ClassOrPackageDoc {
 		close("head");
 		open("body");
 		summary();
-		attributes();
 		innerClasses();
+		attributes();
 		if(klass instanceof Class)
 			constructor((Class)klass);		
 		methods();
@@ -118,43 +118,43 @@ public class ClassDoc extends ClassOrPackageDoc {
 		writer.close();
 	}
 
-	private void innerClasses()  throws IOException {
-        if(innerClasses.isEmpty())
-            return;
-        openTable("Nested Classes", "Modifiers", "Name and Description");
-		for(Class m : innerClasses){
-		    doc(m);
+	private void innerClasses() throws IOException {
+		if (innerClasses.isEmpty())
+			return;
+		openTable("Nested Classes", "Modifiers", "Name and Description");
+		for (Class m : innerClasses) {
+			doc(m);
 		}
 		close("table");
 	}
 	
-	protected void doc(Class c) throws IOException {
-        open("tr class='TableRowColor'");
+	private void doc(Class c) throws IOException {
+		open("tr class='TableRowColor'");
 		open("td");
-		around("span class='modifiers'",getModifiers(c));
+		around("span class='modifiers'", getModifiers(c));
 		close("td");
-        open("td");
-        link(c.getType());
-        tag("br");
-        around("span class='doc'", getDoc(c));
-        close("td");
+		open("td");
+		link(c.getType());
+		tag("br");
+		around("span class='doc'", getDoc(c));
+		close("td");
 		close("tr");
 	}
 
 	private void summary() throws IOException {
-        open("div class='nav'");
-        open("div");
-        around("a href='"+getPathToBase()+"/overview-summary.html'", "Overview");
-        close("div");
-        open("div");
-        around("a href='index.html'", "Package");
-        close("div");
-        open("div class='selected'");
-        write("Class");
-        close("div");
-        close("div");
-       
-        open("div class='head'");
+		open("div class='nav'");
+		open("div");
+		around("a href='" + getPathToBase() + "/overview-summary.html'", "Overview");
+		close("div");
+		open("div");
+		around("a href='index.html'", "Package");
+		close("div");
+		open("div class='selected'");
+		write("Class");
+		close("div");
+		close("div");
+
+		open("div class='head'");
         
         // name      
 		around("div class='package'", getPackage(klass).getNameAsString());
@@ -268,6 +268,4 @@ public class ClassDoc extends ClassOrPackageDoc {
 			close("div");
 		}
     }    
-    
-    
 }

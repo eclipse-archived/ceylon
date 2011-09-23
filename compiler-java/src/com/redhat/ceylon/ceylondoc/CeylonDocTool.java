@@ -27,10 +27,12 @@ public class CeylonDocTool {
     private Map<ClassOrInterface,List<ClassOrInterface>> subclassesMap = new HashMap<ClassOrInterface, List<ClassOrInterface>>();
     private Map<TypeDeclaration,List<ClassOrInterface>> implementingClassesMap = new HashMap<TypeDeclaration, List<ClassOrInterface>>();
     private Map<ClassOrInterface,List<ClassOrInterface>> superInterfacesMap = new HashMap<ClassOrInterface, List<ClassOrInterface>>();
+    private boolean showPrivate;
     
-    public CeylonDocTool(List<PhasedUnit> phasedUnits, Modules modules) {
+    public CeylonDocTool(List<PhasedUnit> phasedUnits, Modules modules, boolean showPrivate) {
         this.phasedUnits = phasedUnits;
         this.modules = modules;
+        this.showPrivate = showPrivate;
     }
     
     public void setDestDir(String destDir){
@@ -93,6 +95,7 @@ public class CeylonDocTool {
 
         for (PhasedUnit pu : phasedUnits) {
             for(Declaration decl : pu.getUnit().getDeclarations()){
+            	
                 doc(decl);
             }
         }    	
@@ -107,11 +110,11 @@ public class CeylonDocTool {
     }
 
     private void doc(Modules modules) throws IOException {
-        new SummaryDoc(destDir, modules, false).generate();
+        new SummaryDoc(destDir, modules, showPrivate).generate();
     }
 
     private void doc(Package pkg) throws IOException {
-        new PackageDoc(destDir, pkg, false).generate();
+        new PackageDoc(destDir, pkg, showPrivate).generate();
     }
 
     private void copyResource(String path) throws IOException {
@@ -126,10 +129,15 @@ public class CeylonDocTool {
         os.close();
     }
 
-    private void doc(Declaration decl) throws IOException {
-        if(decl instanceof ClassOrInterface){
-            new ClassDoc(destDir, false, (ClassOrInterface)decl,subclassesMap.get(decl), implementingClassesMap.get(decl), superInterfacesMap.get(decl)).generate();
-        }
-    }
+	private void doc(Declaration decl) throws IOException {
+		if (decl instanceof ClassOrInterface) {
+			if (showPrivate || decl.isShared()) {
+				new ClassDoc(destDir, showPrivate, (ClassOrInterface) decl,
+						subclassesMap.get(decl),
+						implementingClassesMap.get(decl),
+						superInterfacesMap.get(decl)).generate();
+			}
+		}
+	}
 
 }
