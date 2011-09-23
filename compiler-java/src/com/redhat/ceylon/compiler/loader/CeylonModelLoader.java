@@ -109,15 +109,8 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
          * We do not load the ceylon.language module from class files if we're bootstrapping it
          */
         if(!isBootstrap){
-            PackageSymbol ceylonPkg = reader.enterPackage(names.fromString("ceylon.language"));
-            ceylonPkg.complete();
-            /*
-             * Eventually this will go away as we get a hook from the typechecker to load on demand, but
-             * for now the typechecker requires at least ceylon.language to be loaded 
-             */
-            for(Symbol m : ceylonPkg.members().getElements()){
-                convertToDeclaration(lookupClassSymbol(m.getQualifiedName().toString()), DeclarationType.VALUE);
-            }
+            loadPackage("ceylon.language");
+            loadPackage("ceylon.language.descriptor");
         }
         
         for(final JCCompilationUnit tree : trees){
@@ -166,6 +159,18 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         // If we're bootstrapping the Ceylon language now load the symbols from the source CU
         if(isBootstrap)
             symtab.loadCeylonSymbols();
+    }
+
+    private void loadPackage(String packageName) {
+        PackageSymbol ceylonPkg = reader.enterPackage(names.fromString(packageName));
+        ceylonPkg.complete();
+        /*
+         * Eventually this will go away as we get a hook from the typechecker to load on demand, but
+         * for now the typechecker requires at least ceylon.language to be loaded 
+         */
+        for(Symbol m : ceylonPkg.members().getElements()){
+            convertToDeclaration(lookupClassSymbol(m.getQualifiedName().toString()), DeclarationType.VALUE);
+        }
     }
 
     enum ClassType {
@@ -449,6 +454,8 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             moduleName = Arrays.asList("java");
         else if(pkgName.startsWith("sun."))
             moduleName = Arrays.asList("sun");
+        else if(pkgName.startsWith("ceylon.language."))
+            moduleName = Arrays.asList("ceylon","language");
         else
             moduleName = Arrays.asList(pkgName.split("\\."));
          Module module = phasedUnits.getModuleBuilder().getOrCreateModule(moduleName);
