@@ -636,11 +636,13 @@ parameters returns [ParameterList parameterList]
       { $parameterList=new ParameterList($LPAREN); }
       (
         ap1=parameterDeclaration 
-        { $parameterList.addParameter($ap1.parameter); }
+        { if ($ap1.parameter!=null)
+              $parameterList.addParameter($ap1.parameter); }
         (
           COMMA 
           ap2=parameterDeclaration
-          { $parameterList.addParameter($ap2.parameter); }
+          { if ($ap2.parameter!=null)
+              $parameterList.addParameter($ap2.parameter); }
         )*
       )? 
       RPAREN
@@ -724,11 +726,13 @@ typeParameters returns [TypeParameterList typeParameterList]
     : SMALLER_OP
       { $typeParameterList = new TypeParameterList($SMALLER_OP); }
       tp1=typeParameter
-      { $typeParameterList.addTypeParameterDeclaration($tp1.typeParameter); }
+      { if ($tp1.typeParameter!=null)
+            $typeParameterList.addTypeParameterDeclaration($tp1.typeParameter); }
       (
         COMMA 
         tp2=typeParameter
-        { $typeParameterList.addTypeParameterDeclaration($tp2.typeParameter); }
+        { if ($tp2.typeParameter!=null)
+            $typeParameterList.addTypeParameterDeclaration($tp2.typeParameter); }
       )*
       LARGER_OP
       { $typeParameterList.setEndToken($LARGER_OP); }
@@ -1330,11 +1334,13 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
     : LPAREN 
       { $positionalArgumentList = new PositionalArgumentList($LPAREN); }
       ( pa1=positionalArgument
-        { $positionalArgumentList.addPositionalArgument($pa1.positionalArgument); }
+        { if ($pa1.positionalArgument!=null)
+              $positionalArgumentList.addPositionalArgument($pa1.positionalArgument); }
         (
           COMMA 
           pa2=positionalArgument
-          { $positionalArgumentList.addPositionalArgument($pa2.positionalArgument); }
+          { if ($pa2.positionalArgument!=null)
+              $positionalArgumentList.addPositionalArgument($pa2.positionalArgument); }
         )* 
         (
           ELLIPSIS
@@ -1716,11 +1722,13 @@ typeArguments returns [TypeArgumentList typeArgumentList]
     : SMALLER_OP
       { $typeArgumentList = new TypeArgumentList($SMALLER_OP); }
       ta1=typeArgument 
-      { $typeArgumentList.addType($ta1.type); }
+      { if ($ta1.type!=null)
+            $typeArgumentList.addType($ta1.type); }
       (
         COMMA 
         ta2=typeArgument
-        { $typeArgumentList.addType($ta2.type); }
+        { if ($ta2.type!=null)
+            $typeArgumentList.addType($ta2.type); }
       )* 
       LARGER_OP
       { $typeArgumentList.setEndToken($LARGER_OP); }
