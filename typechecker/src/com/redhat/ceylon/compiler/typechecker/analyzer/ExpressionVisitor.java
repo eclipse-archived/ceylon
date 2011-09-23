@@ -1922,7 +1922,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                 //otherwise infer type arguments later
             }
             if (that.getPrimary() instanceof Tree.Super) {
-                if (member.isFormal()) {
+                if (member!=null && member.isFormal()) {
                     that.addError("superclass member is formal");
                 }
             }
@@ -2018,7 +2018,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                 checkTypeBelongsToContainingScope(that.getTypeModel(), that.getScope(), that);
             }
             if (!inExtendsClause && that.getPrimary() instanceof Tree.Super) {
-                if (type.isFormal()) {
+                if (type!=null && type.isFormal()) {
                     that.addError("superclass member class is formal");
                 }
             }
