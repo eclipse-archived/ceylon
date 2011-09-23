@@ -3,6 +3,9 @@ package com.redhat.ceylon.ceylondoc;
 import static com.redhat.ceylon.ceylondoc.Util.getDoc;
 import static com.redhat.ceylon.ceylondoc.Util.getModifiers;
 import static com.redhat.ceylon.ceylondoc.Util.isNullOrEmpty;
+import static com.redhat.ceylon.ceylondoc.Util.getConcreteSharedAttributes;
+import static com.redhat.ceylon.ceylondoc.Util.getAncestors;
+import static com.redhat.ceylon.ceylondoc.Util.getConcreteSharedMethods;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,7 +37,8 @@ public class ClassDoc extends ClassOrPackageDoc {
     private List<Class> innerClasses;
     private List<Interface> satisfyingInterfaces;
     private List<ClassOrInterface> superInterfaces;
-
+    private List<TypeDeclaration> superClasses;
+    
     private Comparator<Declaration> comparator = new Comparator<Declaration>() {
         @Override
         public int compare(Declaration a, Declaration b) {
@@ -72,6 +76,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 	    satisfyingInterfaces = new ArrayList<Interface>();	        
 	    attributes = new ArrayList<MethodOrValue>();
 	    innerClasses = new ArrayList<Class>();
+	    superClasses = getAncestors(klass);
 	    for(Declaration m : klass.getMembers()){	        	
 	    	if (showPrivate || m.isShared()) {
 	            if(m instanceof Value)	            	
@@ -99,6 +104,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 	    Collections.sort(satisfyingClasses, comparator);
 	    Collections.sort(satisfyingInterfaces, comparator);     
 	    Collections.sort(superInterfaces, comparator);
+	    Collections.sort(innerClasses, comparator);
     }
 
     public void generate() throws IOException {
@@ -116,22 +122,91 @@ public class ClassDoc extends ClassOrPackageDoc {
 		if(klass instanceof Class)
 			constructor((Class)klass);		
 		methods();
+		inheritedMethods();
 		close("body");
 		close("html");
 		writer.flush();
 		writer.close();
 	}
 
-	private void inheritedAttributes() {
-//		klass.getInheritedMembers(name);
-		
-		
+	private void inheritedAttributes() throws IOException {		
+		if  (superClasses.isEmpty())
+			return;
+		TypeDeclaration subclass = klass;		
+		for (TypeDeclaration superClass: superClasses) {
+			List<MethodOrValue> attributes = getConcreteSharedAttributes(superClass);
+			if (attributes.isEmpty())
+				continue;
+			List<MethodOrValue> notRefined = new ArrayList<MethodOrValue>();
+ 			for (MethodOrValue attribute: attributes) {
+				if (subclass.getDirectMember(attribute.getName()) == null) { 
+					notRefined.add(attribute);
+				}
+			}
+			if (notRefined.isEmpty())
+				continue;
+			openTable("Attributes inherited from class " + superClass.getQualifiedNameString());
+			open("tr class='TableRowColor'");
+			open("td");	
+			boolean first = true;
+			for (MethodOrValue atribute: notRefined) { 
+					if(!first){
+						write(", ");
+					}else{
+						first = false;
+					}
+					write(atribute.getName());
+			}
+			close("td");
+			close("tr");
+			subclass = superClass;		
+		}
+		close("table");
 	}
-
+	
+	// refactor, same as inherited attributes    
+	private void inheritedMethods() throws IOException {		
+		if  (superClasses.isEmpty())
+			return;
+		TypeDeclaration subclass = klass;		
+		for (TypeDeclaration superClass: superClasses) {
+			List<MethodOrValue> methods = getConcreteSharedMethods(superClass);
+			if (methods.isEmpty())
+				continue;
+			List<MethodOrValue> notRefined = new ArrayList<MethodOrValue>();
+			// clean already listed methods (refined in subclasses)
+			// done in 2 phases to avoid empty tables
+ 			for (MethodOrValue method: methods) {
+				if (subclass.getDirectMember(method.getName()) == null) { 
+					notRefined.add(method);
+				}
+			}
+			if (notRefined.isEmpty())
+				continue;
+			openTable("Methods inherited from class " + superClass.getQualifiedNameString());
+			open("tr class='TableRowColor'");
+			open("td");
+			boolean first = true;
+			for (MethodOrValue method: notRefined) {
+					if(!first){
+						write(", ");
+					}else{
+						first = false;
+					}
+					// generate links to class#method instead of just print the name
+					write(method.getName());
+			}
+			close("td");
+			close("tr");
+			subclass = superClass;		
+		}
+		close("table");
+	}	
+	
 	private void innerClasses() throws IOException {
 		if (innerClasses.isEmpty())
 			return;
-		openTable("Nested Classes", "Modifiers", "Name and Description");
+		openTable("Nested Classes");
 		for (Class m : innerClasses) {
 			doc(m);
 		}
@@ -257,8 +332,6 @@ public class ClassDoc extends ClassOrPackageDoc {
     protected File getOutputFile() {
         return new File(getFolder(klass), getFileName(klass));
     }
-    
-
     
     private void writeListOnSummary(String divClass, String label, List<? extends TypeDeclaration> list) throws IOException {
 		if (isNullOrEmpty(list) == false) {
