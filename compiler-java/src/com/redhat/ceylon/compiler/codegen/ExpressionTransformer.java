@@ -705,6 +705,10 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     private JCExpression transformMemberExpression(Tree.QualifiedMemberExpression expr, Declaration decl) {
         JCExpression result = null;
+
+        // do not throw, an error will already have been reported
+        if(decl == null)
+            return make().Erroneous(List.<JCTree>nil());
         
         JCExpression primaryExpr = null;
         if (expr != null) {
