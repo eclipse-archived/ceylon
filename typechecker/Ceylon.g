@@ -103,7 +103,7 @@ importDeclaration returns [Import importDeclaration]
           { il.setImportWildcard($iw.importWildcard); 
             il.setEndToken(null); } 
         | { displayRecognitionError(getTokenNames(), 
-                new MismatchedTokenException(RBRACE, input)); }
+                new MismatchedTokenException(ELLIPSIS, input)); }
         )
       )?
     | iw=importWildcard { il.setImportWildcard($iw.importWildcard); }
@@ -581,9 +581,15 @@ satisfiedTypes returns [SatisfiedTypes satisfiedTypes]
       t1=type 
       { $satisfiedTypes.addType($t1.type); }
       (
-        INTERSECTION_OP 
-        t2=type
-        { $satisfiedTypes.addType($t2.type); }
+        i=INTERSECTION_OP
+        { $satisfiedTypes.setEndToken($i); }
+        (
+          t2=type
+          { $satisfiedTypes.addType($t2.type); 
+            $satisfiedTypes.setEndToken(null); }
+        | { displayRecognitionError(getTokenNames(),
+              new MismatchedTokenException(UIDENTIFIER, input)); }
+        )
       )*
     //-> ^(SATISFIED_TYPES[$SATISFIES] type+)
     ;
@@ -601,9 +607,15 @@ adaptedTypes returns [AdaptedTypes adaptedTypes]
       t1=type 
       { $adaptedTypes.addType($t1.type); }
       (
-        INTERSECTION_OP 
-        t2=type
-        { $adaptedTypes.addType($t2.type); }
+        i=INTERSECTION_OP 
+        { $adaptedTypes.setEndToken($i); }
+        (
+          t2=type
+          { $adaptedTypes.addType($t2.type); 
+            $adaptedTypes.setEndToken(null); }
+        | { displayRecognitionError(getTokenNames(),
+              new MismatchedTokenException(UIDENTIFIER, input)); }
+        )
       )*
     ;
 
@@ -614,10 +626,16 @@ caseTypes returns [CaseTypes caseTypes]
       { if ($ct1.type!=null) $caseTypes.addType($ct1.type); 
         if ($ct1.instance!=null) $caseTypes.addBaseMemberExpression($ct1.instance); }
       (
-        UNION_OP 
-        ct2=caseType
-      { if ($ct2.type!=null) $caseTypes.addType($ct2.type); 
-        if ($ct2.instance!=null) $caseTypes.addBaseMemberExpression($ct2.instance); }
+        u=UNION_OP 
+        { $caseTypes.setEndToken($u); }
+        (
+          ct2=caseType
+          { if ($ct2.type!=null) $caseTypes.addType($ct2.type); 
+            if ($ct2.instance!=null) $caseTypes.addBaseMemberExpression($ct2.instance); 
+            $caseTypes.setEndToken(null); }
+        | { displayRecognitionError(getTokenNames(),
+              new MismatchedTokenException(UIDENTIFIER, input)); }
+        )
       )*
     ;
 
@@ -650,7 +668,7 @@ parameters returns [ParameterList parameterList]
           (
             (~(COMPILER_ANNOTATION | LIDENTIFIER | UIDENTIFIER)) => 
             { displayRecognitionError(getTokenNames(),
-                new MismatchedTokenException(RPAREN, input)); }
+                new MismatchedTokenException(UIDENTIFIER, input)); }
           | 
             ap2=parameterDeclaration
             { $parameterList.addParameter($ap2.parameter); 
@@ -749,7 +767,7 @@ typeParameters returns [TypeParameterList typeParameterList]
           { $typeParameterList.addTypeParameterDeclaration($tp2.typeParameter); 
             $typeParameterList.setEndToken(null); }
         | { displayRecognitionError(getTokenNames(), 
-                new MismatchedTokenException(LARGER_OP, input)); }
+                new MismatchedTokenException(UIDENTIFIER, input)); }
         )
       )*
       LARGER_OP
@@ -1126,7 +1144,7 @@ expressions returns [ExpressionList expressionList]
           { $expressionList.addExpression($e2.expression);
             $expressionList.setEndToken(null); }
         | { displayRecognitionError(getTokenNames(), 
-              new MismatchedTokenException(RBRACE, input)); } //TODO: sometimes it should be RPAREN!
+              new MismatchedTokenException(LIDENTIFIER, input)); } //TODO: sometimes it should be RPAREN!
         )
       )*
     ;
@@ -1372,7 +1390,7 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
             { $positionalArgumentList.addPositionalArgument($pa2.positionalArgument); 
               positionalArgumentList.setEndToken(null); }
           | { displayRecognitionError(getTokenNames(), 
-                new MismatchedTokenException(RPAREN, input)); }
+                new MismatchedTokenException(LIDENTIFIER, input)); }
           )
         )* 
         (
@@ -1758,14 +1776,14 @@ typeArguments returns [TypeArgumentList typeArgumentList]
       { if ($ta1.type!=null)
             $typeArgumentList.addType($ta1.type); }
       (
-        c=COMMA 
+        c=COMMA
         { $typeArgumentList.setEndToken($c); }
         (
           ta2=typeArgument
           { $typeArgumentList.addType($ta2.type); 
             $typeArgumentList.setEndToken(null); }
           | { displayRecognitionError(getTokenNames(), 
-                new MismatchedTokenException(LARGER_OP, input)); }
+                new MismatchedTokenException(UIDENTIFIER, input)); }
         )
       )* 
       LARGER_OP
@@ -1791,9 +1809,15 @@ unionType returns [StaticType type]
         ut.addStaticType($type); }
       ( 
         (
-          UNION_OP
-          it2=intersectionType
-          { ut.addStaticType($it2.type); }
+          u=UNION_OP
+          { ut.setEndToken($u); }
+          (
+            it2=intersectionType
+            { ut.addStaticType($it2.type);
+              ut.setEndToken(null); }
+          | { displayRecognitionError(getTokenNames(), 
+                new MismatchedTokenException(UIDENTIFIER, input)); }
+          )
         )+
         { $type = ut; }
       )?
@@ -1807,9 +1831,15 @@ intersectionType returns [StaticType type]
         it.addStaticType($type); }
       ( 
         (
-          INTERSECTION_OP
-          at2=abbreviatedType
-          { it.addStaticType($at2.type); }
+          i=INTERSECTION_OP
+          { it.setEndToken($i); }
+          (
+            at2=abbreviatedType
+            { it.addStaticType($at2.type);
+              it.setEndToken(null); }
+          | { displayRecognitionError(getTokenNames(), 
+                new MismatchedTokenException(UIDENTIFIER, input)); }
+          )
         )+
         { $type = it; }
       )?
