@@ -64,7 +64,7 @@ public class CustomTree extends Tree {
                 if (getTypeConstraintList()!=null)
                     getTypeConstraintList().visit(visitor);
                 Walker.walkTypedDeclaration(visitor, this);
-                for (ParameterList subnode: getParameterLists())
+                for (Tree.ParameterList subnode: getParameterLists())
                     subnode.visit(visitor);
             }
         }
@@ -91,7 +91,7 @@ public class CustomTree extends Tree {
                     getTypeConstraintList().visit(visitor);
                 if (getType()!=null)
                     getType().visit(visitor);
-                for (ParameterList subnode: getParameterLists())
+                for (Tree.ParameterList subnode: getParameterLists())
                     subnode.visit(visitor);
                 if (getBlock()!=null)
                     getBlock().visit(visitor);
@@ -202,7 +202,7 @@ public class CustomTree extends Tree {
             }
             else {
                 Walker.walkTypedDeclaration(visitor, this);
-                for (ParameterList subnode: getParameterLists())
+                for (Tree.ParameterList subnode: getParameterLists())
                     subnode.visit(visitor);
             }
         }
@@ -210,6 +210,9 @@ public class CustomTree extends Tree {
             return FunctionalParameterDeclaration.class.getSimpleName();
         }
     }
+    
+    //MAJOR TODO: rip out the rest of this class and
+    //put multivariate children in the children list
     
     public static class UnionType 
             extends Tree.UnionType {
@@ -307,10 +310,7 @@ public class CustomTree extends Tree {
         }
         @Override
         protected List<Node> getChildren() {
-            ArrayList<Node> list = new ArrayList<Node>();
-            list.addAll(super.getChildren());
-            list.addAll(getTypes());
-            return list;
+            return new ArrayList<Node>(getTypes());
         }
     }
 
@@ -320,12 +320,12 @@ public class CustomTree extends Tree {
             super(token);
         }
         @Override public String getNodeType() {
-            return SatisfiedTypes.class.getSimpleName();
+            return CaseTypes.class.getSimpleName();
         }
         @Override
         protected List<Node> getChildren() {
             ArrayList<Node> list = new ArrayList<Node>();
-            list.addAll(super.getChildren());
+            list.addAll(getBaseMemberExpressions());
             list.addAll(getTypes());
             return list;
         }
@@ -358,6 +358,68 @@ public class CustomTree extends Tree {
         @Override
         protected List<Node> getChildren() {
             return new ArrayList<Node>(getIdentifiers());
+        }
+    }
+
+    public static class ImportMemberOrTypeList
+            extends Tree.ImportMemberOrTypeList {
+        public ImportMemberOrTypeList(Token token) {
+            super(token);
+        }
+        @Override public String getNodeType() {
+            return ImportMemberOrTypeList.class.getSimpleName();
+        }
+        @Override
+        protected List<Node> getChildren() {
+            return new ArrayList<Node>(getImportMemberOrTypes());
+        }
+    }
+
+    public static class NamedArgumentList 
+            extends Tree.NamedArgumentList {
+        public NamedArgumentList(Token token) {
+            super(token);
+        }
+        @Override public String getNodeType() {
+            return NamedArgumentList.class.getSimpleName();
+        }
+        @Override
+        protected List<Node> getChildren() {
+            ArrayList<Node> list = new ArrayList<Node>();
+            list.addAll(super.getChildren());
+            list.addAll(getNamedArguments());
+            return list;
+        }
+    }
+
+    public static class PositionalArgumentList 
+            extends Tree.PositionalArgumentList {
+        public PositionalArgumentList(Token token) {
+            super(token);
+        }
+        @Override public String getNodeType() {
+            return PositionalArgumentList.class.getSimpleName();
+        }
+        @Override
+        protected List<Node> getChildren() {
+            ArrayList<Node> list = new ArrayList<Node>();
+            list.addAll(super.getChildren());
+            list.addAll(getPositionalArguments());
+            return list;
+        }
+    }
+
+    public static class ParameterList 
+            extends Tree.ParameterList {
+        public ParameterList(Token token) {
+            super(token);
+        }
+        @Override public String getNodeType() {
+            return ParameterList.class.getSimpleName();
+        }
+        @Override
+        protected List<Node> getChildren() {
+            return new ArrayList<Node>(getParameters());
         }
     }
 

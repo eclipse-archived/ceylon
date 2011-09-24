@@ -69,10 +69,15 @@ importDeclaration returns [Import importDeclaration]
               importPath.addIdentifier($pn1.identifier); 
           $importDeclaration.setImportPath(importPath); } 
         ( 
-          MEMBER_OP 
-          pn2=packageName 
-          { if ($pn2.identifier!=null) 
-                importPath.addIdentifier($pn2.identifier); } 
+          m=MEMBER_OP 
+          { importPath.setEndToken($m); }
+          (
+            pn2=packageName 
+            { importPath.addIdentifier($pn2.identifier); 
+              importPath.setEndToken(null); }
+          | { displayRecognitionError(getTokenNames(), 
+                  new MismatchedTokenException(LIDENTIFIER, input)); }
+          )
         )*
       | { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(LIDENTIFIER, input)); }
@@ -91,12 +96,13 @@ importDeclaration returns [Import importDeclaration]
             il.addImportMemberOrType($ie2.importMemberOrType); } 
       )*
       ( 
-        COMMA 
+        c=COMMA
+        { il.setEndToken($c); }
         (
           iw=importWildcard 
-          { il.setImportWildcard($iw.importWildcard); } 
-        |
-          { displayRecognitionError(getTokenNames(), 
+          { il.setImportWildcard($iw.importWildcard); 
+            il.setEndToken(null); } 
+        | { displayRecognitionError(getTokenNames(), 
                 new MismatchedTokenException(RBRACE, input)); }
         )
       )?
@@ -639,10 +645,17 @@ parameters returns [ParameterList parameterList]
         { if ($ap1.parameter!=null)
               $parameterList.addParameter($ap1.parameter); }
         (
-          COMMA 
-          ap2=parameterDeclaration
-          { if ($ap2.parameter!=null)
-              $parameterList.addParameter($ap2.parameter); }
+          c=COMMA
+          { $parameterList.setEndToken($c); }
+          (
+            (~(COMPILER_ANNOTATION | LIDENTIFIER | UIDENTIFIER)) => 
+            { displayRecognitionError(getTokenNames(),
+                new MismatchedTokenException(RPAREN, input)); }
+          | 
+            ap2=parameterDeclaration
+            { $parameterList.addParameter($ap2.parameter); 
+              $parameterList.setEndToken(null); }
+          )
         )*
       )? 
       RPAREN
@@ -729,10 +742,15 @@ typeParameters returns [TypeParameterList typeParameterList]
       { if ($tp1.typeParameter!=null)
             $typeParameterList.addTypeParameterDeclaration($tp1.typeParameter); }
       (
-        COMMA 
-        tp2=typeParameter
-        { if ($tp2.typeParameter!=null)
-            $typeParameterList.addTypeParameterDeclaration($tp2.typeParameter); }
+        c=COMMA
+        { $typeParameterList.setEndToken($c); }
+        (
+          tp2=typeParameter
+          { $typeParameterList.addTypeParameterDeclaration($tp2.typeParameter); 
+            $typeParameterList.setEndToken(null); }
+        | { displayRecognitionError(getTokenNames(), 
+                new MismatchedTokenException(LARGER_OP, input)); }
+        )
       )*
       LARGER_OP
       { $typeParameterList.setEndToken($LARGER_OP); }
@@ -1101,9 +1119,15 @@ expressions returns [ExpressionList expressionList]
     : { $expressionList = new ExpressionList(null); }
       e1=expression 
       { $expressionList.addExpression($e1.expression); }
-      ( COMMA 
-        e2=expression 
-        { $expressionList.addExpression($e2.expression); } 
+      ( c=COMMA 
+        { $expressionList.setEndToken($c); }
+        (
+          e2=expression 
+          { $expressionList.addExpression($e2.expression);
+            $expressionList.setEndToken(null); }
+        | { displayRecognitionError(getTokenNames(), 
+              new MismatchedTokenException(RBRACE, input)); } //TODO: sometimes it should be RPAREN!
+        )
       )*
     ;
 
@@ -1132,9 +1156,13 @@ typeReference returns [Identifier identifier, TypeArgumentList typeArgumentList]
 //type argument list
 typeArgumentsStart
     : SMALLER_OP
+    (
       UIDENTIFIER ('.' UIDENTIFIER)* /*| 'subtype')*/ (DEFAULT_OP|ARRAY)*
       ((INTERSECTION_OP|UNION_OP) UIDENTIFIER ('.' UIDENTIFIER)* (DEFAULT_OP|ARRAY)*)*
       (LARGER_OP|SMALLER_OP|COMMA|ELLIPSIS)
+    | 
+      LARGER_OP //for IDE only!
+    )
     ;
 
 indexOrIndexRange returns [ElementOrRange elementOrRange]
@@ -1337,10 +1365,15 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
         { if ($pa1.positionalArgument!=null)
               $positionalArgumentList.addPositionalArgument($pa1.positionalArgument); }
         (
-          COMMA 
-          pa2=positionalArgument
-          { if ($pa2.positionalArgument!=null)
-              $positionalArgumentList.addPositionalArgument($pa2.positionalArgument); }
+          c=COMMA 
+          { $positionalArgumentList.setEndToken($c); }
+          (
+            pa2=positionalArgument
+            { $positionalArgumentList.addPositionalArgument($pa2.positionalArgument); 
+              positionalArgumentList.setEndToken(null); }
+          | { displayRecognitionError(getTokenNames(), 
+                new MismatchedTokenException(RPAREN, input)); }
+          )
         )* 
         (
           ELLIPSIS
@@ -1725,10 +1758,15 @@ typeArguments returns [TypeArgumentList typeArgumentList]
       { if ($ta1.type!=null)
             $typeArgumentList.addType($ta1.type); }
       (
-        COMMA 
-        ta2=typeArgument
-        { if ($ta2.type!=null)
-            $typeArgumentList.addType($ta2.type); }
+        c=COMMA 
+        { $typeArgumentList.setEndToken($c); }
+        (
+          ta2=typeArgument
+          { $typeArgumentList.addType($ta2.type); 
+            $typeArgumentList.setEndToken(null); }
+          | { displayRecognitionError(getTokenNames(), 
+                new MismatchedTokenException(LARGER_OP, input)); }
+        )
       )* 
       LARGER_OP
       { $typeArgumentList.setEndToken($LARGER_OP); }
