@@ -29,4 +29,9 @@ public class DeclarationWithProximity {
         return name;
     }
     
+    @Override
+    public String toString() {
+        return name + ":" + declaration.toString() + "@" + proximity;
+    }
+    
 }
