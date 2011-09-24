@@ -1,7 +1,7 @@
-value good = "hello";
+String good = "hello";
 @error String bad;
-function goodFunction() { return good; }
+String goodFunction() { return good; }
 @error String badFunction();
 
-@error shared value sharedBad = "hello";
-@error shared function sharedBadFunction() { return sharedBad; }
+@error value sharedBad = "hello";
+@error function sharedBadFunction() { return sharedBad; }
