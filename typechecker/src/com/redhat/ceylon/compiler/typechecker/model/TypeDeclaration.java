@@ -444,12 +444,17 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
 	public Map<String, DeclarationWithProximity> getMatchingMemberDeclarations(String startingWith, int proximity) {
 		Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
         TypeDeclaration et = getExtendedTypeDeclaration();
-    	if (et!=null) {
-    		result.putAll(et.getMatchingMemberDeclarations(startingWith, proximity+1));
-    	}
     	for (TypeDeclaration st: getSatisfiedTypeDeclarations()) {
+    	    //TODO: account for the case where one interface refines
+    	    //      a formal member of a second interface
     		result.putAll(st.getMatchingMemberDeclarations(startingWith, proximity+1));
     	}
+        if (et!=null) {
+            //TODO: Object has a formal declaration of "string", that might 
+            //      be refined by an interface, in which case we should ignore
+            //      it here
+            result.putAll(et.getMatchingMemberDeclarations(startingWith, proximity+1));
+        }
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && d.isShared() && 
             		isNameMatching(startingWith, d)) {
