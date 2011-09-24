@@ -922,10 +922,12 @@ expressionOrSpecificationStatement returns [Statement statement]
     @init { SpecifierStatement ss=new SpecifierStatement(null); 
             ExpressionStatement es=new ExpressionStatement(null); }
     : expression 
-      { es.setExpression($expression.expression);
+      { if ($expression.expression!=null) 
+            es.setExpression($expression.expression);
         $statement = es; }
       (
-        { $expression.expression.getTerm() instanceof BaseMemberExpression }?=>
+        { $expression.expression!=null && 
+          $expression.expression.getTerm() instanceof BaseMemberExpression }?=>
         specifier
         { ss.setSpecifierExpression($specifier.specifierExpression);
           ss.setBaseMemberExpression((BaseMemberExpression)$expression.expression.getTerm()); 
