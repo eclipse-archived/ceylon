@@ -185,7 +185,8 @@ public class TypeHierarchyVisitor extends Visitor {
         Type aggregation = buildAggregatedType(orderedTypes);
         for (Type.Members members:aggregation.membersByName.values()) {
             if (members.formals.size()!=0&&members.actuals.size()==0) {
-                that.addError("formal member " + members.name + " not implemented in class hierarchy");
+                that.addError("formal member " + members.name + 
+                        " not implemented in class hierarchy", 300);
             }
         }
     }
