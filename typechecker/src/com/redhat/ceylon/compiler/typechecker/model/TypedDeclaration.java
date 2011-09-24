@@ -87,7 +87,7 @@ public abstract class TypedDeclaration extends Declaration {
     public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
     	Map<String, DeclarationWithProximity> result = super.getMatchingDeclarations(unit, startingWith, proximity+1);
     	TypeDeclaration td = getTypeDeclaration();
-    	if (td instanceof Class) {
+    	if (td instanceof Class && !((Class) td).isAbstract()) {
     		for ( Parameter p: ((Class) td).getParameterList().getParameters() ) {
     			if ( isNameMatching(startingWith, p) ) {
     				result.put(p.getName(), new DeclarationWithProximity(p, proximity));
