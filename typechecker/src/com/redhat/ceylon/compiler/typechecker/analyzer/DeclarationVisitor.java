@@ -298,7 +298,7 @@ public class DeclarationVisitor extends Visitor {
             that.getType().addError("methods may not be declared using the keyword value");
         }
         if (that.getType() instanceof Tree.FunctionModifier && m.isToplevel()) {
-            that.getType().addError("toplevel methods may not be declared using the keyword function");
+            that.getType().addError("toplevel methods may not be declared using the keyword function", 200);
         }
     }
     
@@ -306,10 +306,10 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.AnyAttribute that) {
         super.visit(that);
         if (that.getType() instanceof Tree.FunctionModifier) {
-            that.getType().addError("attributes may not be declared using the keyword function");
+            that.getType().addError("attributes may not be declared using the keyword function", 200);
         }
         if (that.getType() instanceof Tree.ValueModifier && that.getDeclarationModel().isToplevel()) {
-            that.getType().addError("toplevel attributes may not be declared using the keyword value");
+            that.getType().addError("toplevel attributes may not be declared using the keyword value", 200);
         }
     }
 
@@ -582,7 +582,7 @@ public class DeclarationVisitor extends Visitor {
             else if (that instanceof Tree.TypedDeclaration && !(that instanceof Tree.ObjectDefinition)) {
                 Tree.Type t =  ((Tree.TypedDeclaration) that).getType();
                 if (t instanceof Tree.ValueModifier || t instanceof Tree.FunctionModifier) {
-                    that.addError("shared declarations must explicitly specify a type");
+                    that.addError("shared declarations must explicitly specify a type", 200);
                 }
                 else {
                     model.setShared(true);
