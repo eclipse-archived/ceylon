@@ -1113,7 +1113,8 @@ public class ExpressionVisitor extends AbstractVisitor {
             that.addError("receiving expression cannot be invoked");
         }
         else {
-            if (prf.getDeclaration() instanceof Class 
+            if (!(that.getPrimary() instanceof Tree.ExtendedTypeExpression) 
+                    &&prf.getDeclaration() instanceof Class 
                     && ((Class) prf.getDeclaration()).isAbstract()) {
                 that.addError("abstract classes may not be instantiated");
             }
