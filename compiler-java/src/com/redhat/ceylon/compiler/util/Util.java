@@ -9,6 +9,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.parser.Token;
 
@@ -160,4 +162,13 @@ public class Util {
     public static BoxingStrategy getBoxingStrategy(TypedDeclaration decl) {
         return isUnBoxed(decl) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
     }
+
+    public static boolean hasCompilerAnnotation(Tree.Declaration decl, String name){
+        for(CompilerAnnotation annotation : decl.getCompilerAnnotations()){
+            if(annotation.getIdentifier().getText().equals(name))
+                return true;
+        }
+        return false;
+    }
+
 }

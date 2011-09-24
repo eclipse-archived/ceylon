@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -116,17 +117,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     
     private boolean checkCompilerAnnotations(Tree.Declaration decl){
         boolean old = gen.disableModelAnnotations;
-        if(hasCompilerAnnotation(decl, "nomodel"))
+        if(Util.hasCompilerAnnotation(decl, "nomodel"))
             gen.disableModelAnnotations  = true;
         return old;
-    }
-
-    private boolean hasCompilerAnnotation(Tree.Declaration decl, String name){
-        for(CompilerAnnotation annotation : decl.getCompilerAnnotations()){
-            if(annotation.getIdentifier().getText().equals(name))
-                return true;
-        }
-        return false;
     }
 
     private void resetCompilerAnnotations(boolean value){
