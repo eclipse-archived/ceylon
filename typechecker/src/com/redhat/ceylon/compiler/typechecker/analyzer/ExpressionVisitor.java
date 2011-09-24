@@ -1113,6 +1113,10 @@ public class ExpressionVisitor extends AbstractVisitor {
             that.addError("receiving expression cannot be invoked");
         }
         else {
+            if (prf.getDeclaration() instanceof Class 
+                    && ((Class) prf.getDeclaration()).isAbstract()) {
+                that.addError("abstract classes may not be instantiated");
+            }
             //that.setTypeModel(mr.getType()); //THIS IS THE CORRECT ONE!
             that.setTypeModel(that.getPrimary().getTypeModel()); //TODO: THIS IS A TEMPORARY HACK!
             Functional dec = (Functional) that.getPrimary().getDeclaration();
