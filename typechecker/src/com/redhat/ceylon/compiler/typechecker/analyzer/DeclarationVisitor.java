@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.*;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.hasAnnotation;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -296,6 +297,9 @@ public class DeclarationVisitor extends Visitor {
         if (that.getType() instanceof Tree.ValueModifier) {
             that.getType().addError("methods may not be declared using the keyword value");
         }
+        if (that.getType() instanceof Tree.FunctionModifier && m.isToplevel()) {
+            that.getType().addError("toplevel methods may not be declared using the keyword function");
+        }
     }
     
     @Override
@@ -303,6 +307,9 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         if (that.getType() instanceof Tree.FunctionModifier) {
             that.getType().addError("attributes may not be declared using the keyword function");
+        }
+        if (that.getType() instanceof Tree.ValueModifier && that.getDeclarationModel().isToplevel()) {
+            that.getType().addError("toplevel attributes may not be declared using the keyword value");
         }
     }
 
