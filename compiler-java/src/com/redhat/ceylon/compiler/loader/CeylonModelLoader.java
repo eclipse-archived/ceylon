@@ -418,6 +418,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             @Override
             public Declaration getDirectMember(String name) {
                 // FIXME: some refactoring needed
+                name = Util.quoteIfJavaKeyword(name);
                 String className = pkgName.isEmpty() ? name : pkgName + "." + name;
                 // we need its package ready first
                 PackageSymbol javaPkg = reader.enterPackage(names.fromString(pkgName));
