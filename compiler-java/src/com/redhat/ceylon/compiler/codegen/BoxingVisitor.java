@@ -18,6 +18,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpressio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.util.Util;
 
@@ -88,13 +89,19 @@ public class BoxingVisitor extends Visitor {
     @Override
     public void visit(PositiveOp that) {
         super.visit(that);
-        propagateFromTerm(that, that.getTerm());
+        // FIXME: when operator methods support better unboxing than this, reenable this:
+        //propagateFromTerm(that, that.getTerm());
+        if(that.getTerm() instanceof Tree.NaturalLiteral)
+            Util.markUnBoxed(that);
     }
 
     @Override
     public void visit(NegativeOp that) {
         super.visit(that);
-        propagateFromTerm(that, that.getTerm());
+        // FIXME: when operator methods support better unboxing than this, reenable this:
+        //propagateFromTerm(that, that.getTerm());
+        if(that.getTerm() instanceof Tree.NaturalLiteral)
+            Util.markUnBoxed(that);
     }
 
     @Override
