@@ -427,11 +427,13 @@ public class TypeVisitor extends AbstractVisitor {
                         checkTypeBelongsToContainingScope(type, td.getContainer(), et);
                     }
                 }
-                Tree.Primary pr = that.getInvocationExpression().getPrimary();
-                if (pr instanceof Tree.ExtendedTypeExpression) {
-                    pr.setTypeModel(type);
-                    pr.setDeclaration(type.getDeclaration());
-                    ( (Tree.ExtendedTypeExpression) pr).setTarget(type);
+                if (that.getInvocationExpression()!=null) {
+                    Tree.Primary pr = that.getInvocationExpression().getPrimary();
+                    if (pr instanceof Tree.ExtendedTypeExpression) {
+                        pr.setTypeModel(type);
+                        pr.setDeclaration(type.getDeclaration());
+                        ( (Tree.ExtendedTypeExpression) pr).setTarget(type);
+                    }
                 }
                 if (type.getDeclaration() instanceof TypeParameter) {
                     et.addError("directly extends a type parameter: " + 
