@@ -1051,8 +1051,9 @@ primary returns [Primary primary]
     : base
       { $primary=$base.primary; }
     (   
-        inlineFunctionalArgument
-      | qualifiedReference
+      //TODO: re-enable:
+        /*inlineFunctionalArgument
+      |*/ qualifiedReference
       { QualifiedMemberOrTypeExpression qe;
         if ($qualifiedReference.isMember)
             qe = new QualifiedMemberExpression(null);
