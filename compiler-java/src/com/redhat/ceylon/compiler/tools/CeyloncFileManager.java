@@ -128,7 +128,6 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
             sibling = ((CeylonFileObject) sibling).getFile();
         }
         if(location == StandardLocation.CLASS_OUTPUT){
-            System.err.println("file name: "+fileName+", location: "+location);
             File dir = getOutputFolder(sibling);
             return jarRepository.getFileObject(dir, currentModule, fileName);
         }else
