@@ -572,7 +572,9 @@ extendedType returns [ExtendedType extendedType]
           ete.setExtendedType($extendedType.getType());
           ie.setPositionalArgumentList($positionalArguments.positionalArgumentList);
           $extendedType.setInvocationExpression(ie); }
-       )
+      | { displayRecognitionError(getTokenNames(),
+            new MismatchedTokenException(LPAREN, input)); }
+      )
     ;
 
 satisfiedTypes returns [SatisfiedTypes satisfiedTypes]
