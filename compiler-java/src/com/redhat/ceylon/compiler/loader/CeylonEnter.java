@@ -205,7 +205,6 @@ public class CeylonEnter extends Enter {
         Iterable<? extends File> location = fileManager.getLocation(StandardLocation.CLASS_OUTPUT);
         File classDir = location.iterator().next();
         File moduleJar = new File(classDir, Util.getJarName(module));
-        System.err.println("Adding class path entry: "+moduleJar);
         classPath.addFile(moduleJar, false);
     }
 
