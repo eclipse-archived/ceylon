@@ -135,7 +135,7 @@ public class RefinementVisitor extends AbstractVisitor {
                     that.addError("non-actual member refines an inherited member");
                 }
                 if (!refined.isDefault() && !refined.isFormal()) {
-                    that.addError("member refines a non-default, non-formal member");
+                    that.addError("member refines a non-default, non-formal member", 500);
                 }
                 checkRefinedTypeAndParameterTypes(that, dec, ci, refined);
             }
