@@ -3,6 +3,8 @@ package com.redhat.ceylon.compiler.codegen;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ComparisonOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.EqualityOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
@@ -110,6 +112,20 @@ public class BoxingVisitor extends Visitor {
 
     @Override
     public void visit(LogicalAssignmentOp that) {
+        super.visit(that);
+        // this is not conditional
+        Util.markUnBoxed(that);
+    }
+
+    @Override
+    public void visit(EqualityOp that) {
+        super.visit(that);
+        // this is not conditional
+        Util.markUnBoxed(that);
+    }
+
+    @Override
+    public void visit(ComparisonOp that) {
         super.visit(that);
         // this is not conditional
         Util.markUnBoxed(that);
