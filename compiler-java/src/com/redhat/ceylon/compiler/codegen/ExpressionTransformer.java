@@ -133,7 +133,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         binaryOperators = new HashMap<Class<? extends Tree.BinaryOperatorExpression>, String>();
 
         // Unary operators
-        unaryOperators.put(Tree.NegativeOp.class, "inverse");
+        unaryOperators.put(Tree.PositiveOp.class, "positiveValue");
+        unaryOperators.put(Tree.NegativeOp.class, "negativeValue");
         unaryOperators.put(Tree.NotOp.class, "complement");
         unaryOperators.put(Tree.FormatOp.class, "string");
 
@@ -268,7 +269,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             Tree.NaturalLiteral lit = (Tree.NaturalLiteral) term;
             return makeInteger(Long.parseLong(lit.getText()));
         }
-        return make().Apply(null, makeSelect(transformExpression(term), unaryOperators.get(op.getClass())), List.<JCExpression> nil());
+        return make().Apply(null, makeSelect(transformExpression(term), 
+                Util.getGetterName(unaryOperators.get(op.getClass()))), List.<JCExpression> nil());
     }
 
     public JCExpression transform(Tree.ArithmeticAssignmentOp op){
