@@ -128,7 +128,8 @@ public class Ceylonc extends MatchingTask {
      * @param files An array of filenames
      */
     private void scanDir(File srcDir, File destDir, String[] files) {
-        scanDir(srcDir, destDir, files, "*.java");
+        // FIXME: we can't compile java at the same time in M1
+        //scanDir(srcDir, destDir, files, "*.java");
         scanDir(srcDir, destDir, files, "*.ceylon");
     }
 
