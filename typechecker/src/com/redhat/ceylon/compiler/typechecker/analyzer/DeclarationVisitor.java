@@ -582,7 +582,7 @@ public class DeclarationVisitor extends Visitor {
             else if (that instanceof Tree.TypedDeclaration && !(that instanceof Tree.ObjectDefinition)) {
                 Tree.Type t =  ((Tree.TypedDeclaration) that).getType();
                 if (t instanceof Tree.ValueModifier || t instanceof Tree.FunctionModifier) {
-                    that.addError("shared declarations must explicitly specify a type", 200);
+                    t.addError("shared declarations must explicitly specify a type", 200);
                 }
                 else {
                     model.setShared(true);
