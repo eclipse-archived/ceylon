@@ -202,14 +202,14 @@ voidOrInferredMethodDeclaration returns [AnyMethod declaration]
           dec = new MethodDeclaration($VOID_MODIFIER);
           def.setType(vm);
           dec.setType(vm);
-          $declaration = def; }
+          $declaration = dec; }
       | FUNCTION_MODIFIER
         { FunctionModifier fm = new FunctionModifier($FUNCTION_MODIFIER);
           def = new MethodDefinition($FUNCTION_MODIFIER);
           dec = new MethodDeclaration($FUNCTION_MODIFIER);
           def.setType(fm);
           dec.setType(fm);
-          $declaration = def; }
+          $declaration = dec; }
       )
       memberName
       { dec.setIdentifier($memberName.identifier); 
@@ -231,6 +231,7 @@ voidOrInferredMethodDeclaration returns [AnyMethod declaration]
           dec.setTypeConstraintList($typeConstraints.typeConstraintList); }
       )?
       ( 
+        { $declaration = def; }
         block 
         { def.setBlock($block.block); }
       //-> ^(METHOD_DEFINITION VOID_MODIFIER memberName methodParameters? block)   
@@ -239,7 +240,6 @@ voidOrInferredMethodDeclaration returns [AnyMethod declaration]
           specifier
           { dec.setSpecifierExpression($specifier.specifierExpression); }
         )?
-        { $declaration = dec; }
         SEMICOLON
         { $declaration.setEndToken($SEMICOLON); }
       //-> ^(METHOD_DECLARATION VOID_MODIFIER memberName methodParameters? specifier?)   
@@ -272,7 +272,7 @@ inferredAttributeDeclaration returns [AnyAttribute declaration]
         dec = new AttributeDeclaration($VALUE_MODIFIER);
         def.setType(fm);
         dec.setType(fm);
-        $declaration = def; }
+        $declaration = dec; }
       memberName
       { dec.setIdentifier($memberName.identifier); 
         def.setIdentifier($memberName.identifier); }
@@ -284,11 +284,12 @@ inferredAttributeDeclaration returns [AnyAttribute declaration]
           initializer
           { dec.setSpecifierOrInitializerExpression($initializer.initializerExpression); }
         )?
-        { $declaration = dec; }
         SEMICOLON
         { $declaration.setEndToken($SEMICOLON); }
         //-> ^(ATTRIBUTE_DECLARATION VALUE_MODIFIER memberName specifier? initializer?)
-      | block
+      | 
+        { $declaration = def; }
+        block
         { def.setBlock($block.block); }
         //-> ^(ATTRIBUTE_GETTER_DEFINITION VALUE_MODIFIER memberName block)
       )
@@ -299,7 +300,7 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
             AttributeDeclaration adec=new AttributeDeclaration(null);
             MethodDefinition mdef=new MethodDefinition(null);
             MethodDeclaration mdec=new MethodDeclaration(null); 
-            $declaration = adef; }
+            $declaration = adec; }
     : unionType
       { adef.setType($unionType.type);
         adec.setType($unionType.type); 
@@ -311,7 +312,7 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
         mdef.setIdentifier($memberName.identifier);
         mdec.setIdentifier($memberName.identifier); }
       ( 
-        { $declaration = mdef; }
+        { $declaration = mdec; }
         (
           typeParameters
           { mdef.setTypeParameterList($typeParameters.typeParameterList);
@@ -329,6 +330,7 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
             mdec.setTypeConstraintList($typeConstraints.typeConstraintList); }
         )?
         ( 
+          { $declaration = mdef; }
           mb=memberBody[$unionType.type] 
          { mdef.setBlock($mb.block); }
         //-> ^(METHOD_DEFINITION unionType memberName methodParameters memberBody)
@@ -337,7 +339,6 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
             ms=specifier
            { mdec.setSpecifierExpression($ms.specifierExpression); }
           )?
-          { $declaration = mdec; }
           s1=SEMICOLON
           { $declaration.setEndToken($s1); }
         //-> ^(METHOD_DECLARATION unionType memberName methodParameters specifier?)
@@ -350,11 +351,12 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
           initializer
           { adec.setSpecifierOrInitializerExpression($initializer.initializerExpression); }
         )?
-        { $declaration = adec; }
         s2=SEMICOLON
         { $declaration.setEndToken($s2); }
       //-> ^(ATTRIBUTE_DECLARATION unionType memberName specifier? initializer?)
-      | ab=memberBody[$unionType.type]
+      | 
+        { $declaration = adef; }
+        ab=memberBody[$unionType.type]
         { adef.setBlock($ab.block); }
       //-> ^(ATTRIBUTE_GETTER_DEFINITION unionType memberName memberBody)      
       )
@@ -366,7 +368,7 @@ interfaceDeclaration returns [AnyInterface declaration]
     : INTERFACE_DEFINITION
       { def = new InterfaceDefinition($INTERFACE_DEFINITION); 
         dec = new InterfaceDeclaration($INTERFACE_DEFINITION);
-        $declaration = def; }
+        $declaration = dec; }
       typeName 
       { dec.setIdentifier($typeName.identifier); 
         def.setIdentifier($typeName.identifier); }
@@ -396,6 +398,7 @@ interfaceDeclaration returns [AnyInterface declaration]
           dec.setTypeConstraintList($typeConstraints.typeConstraintList); }
       )?
       (
+        { $declaration = def; }
         interfaceBody
         { def.setInterfaceBody($interfaceBody.interfaceBody); }
       //-> ^(INTERFACE_DEFINITION typeName interfaceParameters? interfaceBody)
@@ -404,7 +407,6 @@ interfaceDeclaration returns [AnyInterface declaration]
           typeSpecifier
           { dec.setTypeSpecifier($typeSpecifier.typeSpecifier); }
         )? 
-        { $declaration = dec; }
         SEMICOLON
         { $declaration.setEndToken($SEMICOLON); }
       //-> ^(INTERFACE_DECLARATION[$INTERFACE_DEFINITION] typeName interfaceParameters? typeSpecifier?)
@@ -417,7 +419,7 @@ classDeclaration returns [AnyClass declaration]
     : CLASS_DEFINITION 
       { def = new ClassDefinition($CLASS_DEFINITION); 
         dec = new ClassDeclaration($CLASS_DEFINITION);
-        $declaration = def; }
+        $declaration = dec; }
       typeName
       { dec.setIdentifier($typeName.identifier); 
         def.setIdentifier($typeName.identifier); }
@@ -453,6 +455,7 @@ classDeclaration returns [AnyClass declaration]
           dec.setTypeConstraintList($typeConstraints.typeConstraintList); }
       )?
       (
+        { $declaration = def; }
         classBody
         { def.setClassBody($classBody.classBody); }
       //-> ^(CLASS_DEFINITION typeName classParameters? classBody)
@@ -461,7 +464,6 @@ classDeclaration returns [AnyClass declaration]
           typeSpecifier
           { dec.setTypeSpecifier($typeSpecifier.typeSpecifier); }
         )?
-        { $declaration = dec; }
         SEMICOLON
         { $declaration.setEndToken($SEMICOLON); }
       //-> ^(CLASS_DECLARATION[$CLASS_DEFINITION] typeName classParameters? typeSpecifier?)
