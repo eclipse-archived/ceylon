@@ -1916,7 +1916,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                 that.setDeclaration(member);
                 if (!member.isVisible(that.getScope())) {
                     that.addError("member method or attribute is not visible: " +
-                            name(that.getIdentifier()));
+                            name(that.getIdentifier()), 400);
                 }
                 Tree.TypeArguments tal = that.getTypeArguments();
                 if (explicitTypeArguments(member,tal)) {
@@ -2007,7 +2007,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                 that.setDeclaration(type);
                 if (!type.isVisible(that.getScope())) {
                     that.addError("member type is not visible: " +
-                            name(that.getIdentifier()));
+                            name(that.getIdentifier()), 400);
                 }
                 Tree.TypeArguments tal = that.getTypeArguments();
                 if (explicitTypeArguments(type, tal)) {
