@@ -39,6 +39,7 @@ public class Ceylonc extends MatchingTask {
     private static final String FAIL_MSG = "Compile failed; see the compiler error output for details.";
 
     private Path src;
+    private Path classpath;
     private File destDir;
     private File[] compileList;
 
@@ -56,6 +57,17 @@ public class Ceylonc extends MatchingTask {
             src = srcDir;
         } else {
             src.append(srcDir);
+        }
+    }
+
+    /**
+     * Set the classpath
+     */
+    public void setClasspath(Path classpath) {
+        if (this.classpath == null) {
+            this.classpath = classpath;
+        } else {
+            this.classpath.append(classpath);
         }
     }
 
@@ -180,6 +192,10 @@ public class Ceylonc extends MatchingTask {
         cmd.createArgument().setValue(destDir.getAbsolutePath());
         cmd.createArgument().setValue("-sourcepath");
         cmd.createArgument().setValue(src.toString());
+        if(classpath != null){
+            cmd.createArgument().setValue("-classpath");
+            cmd.createArgument().setValue(classpath.toString());
+        }
         for (int i = 0; i < compileList.length; i++) {
             cmd.createArgument().setValue(compileList[i].getAbsolutePath());
         }
