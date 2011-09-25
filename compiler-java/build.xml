@@ -13,6 +13,7 @@
   <!-- Directories everything gets built into -->
   <property name="build" location="build"/>
   <property name="build.classes" location="${build}/classes"/>
+  <property name="build.ceylon.jars" location="${build}/ceylon-jars"/>
   <property name="build.lib" location="${build}/lib"/>
   <property name="test.reports" location="${build}/test-reports"/>
 
@@ -22,6 +23,7 @@
   <!-- Jarfiles everything ends up in -->
   <property name="compiler.jar" location="${build.lib}/compiler.jar"/>
   <property name="runtime.jar" location="${build.lib}/runtime.jar"/>
+  <property name="ceylon-tests.jar" location="${build.ceylon.jars}/com.redhat.ceylon.compiler.test.ceylon-0.1.jar"/>
 
   <!-- The directory that parser tests live in, and
        the directory test results get written into -->
@@ -45,6 +47,7 @@
     <pathelement path="${runtime.jar}"/>
     <pathelement path="${junit.lib}"/>
     <pathelement path="${build.classes}"/>
+    <pathelement path="${ceylon-tests.jar}"/>
   </path>
 
   <path id="runtime.classpath">
@@ -169,7 +172,7 @@
   </target>
 
   <!-- Runs the JUnit tests -->
-  <target name="test" depends="test.classes,compiler.jar,runtime.jar" description="Runs the JUnit tests">
+  <target name="test" depends="test.classes,ceylon-tests.jar,compiler.jar,runtime.jar" description="Runs the JUnit tests">
     <mkdir dir="${test.reports}"/>
   	<property name="bootclasspath" refid="test.run.classpath" />
     <junit printsummary="yes" haltonfailure="no">
@@ -182,7 +185,12 @@
         <fileset dir="${test.src}">
           <include name="**/*Test.java"/>
           <exclude name="com/redhat/ceylon/compiler/test/CompilerTest.java"/>
+          <exclude name="com/redhat/ceylon/compiler/test/ceylon/**"/>
         </fileset>
+        <zipfileset src="${ceylon-tests.jar}">
+          <include name="com/redhat/ceylon/compiler/test/ceylon/**/*Test.class"/>
+          <exclude name="com/redhat/ceylon/compiler/test/ceylon/Test.class"/>
+        </zipfileset>
       </batchtest>
     </junit>
  
@@ -194,18 +202,28 @@
     </junitreport>
   </target>
 
-    <target name="ceylon-tests" depends="compiler.jar,runtime.jar">
-      <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc">
-        <classpath>
-          <pathelement location="${compiler.jar}"/>
-        </classpath>
-      </taskdef>
-      <ceylonc
-         compiler="bin/ceylonc"
-         srcdir="${test.src}"
-         destdir="${build.classes}">
-        <include name="com/redhat/ceylon/compiler/test/ceylon/*.ceylon"/>
-      </ceylonc>
-    </target>
+  <target name="ceylonc" depends="compiler.jar,runtime.jar">
+    <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc">
+      <classpath>
+        <pathelement location="${compiler.jar}"/>
+      </classpath>
+    </taskdef>
+  </target>
+
+  <target name="ceylon-tests.jar" depends="compiler.jar, runtime.jar, ceylonc">
+    <mkdir dir="${build.ceylon.jars}"/>
+    <jar destfile="${ceylon-tests.jar}">
+      <fileset dir="${build.classes}">
+        <include name="com/redhat/ceylon/compiler/test/ceylon/**"/>
+      </fileset>
+    </jar>
+    <ceylonc
+      classpath="${junit.lib}"
+      compiler="bin/ceylonc"
+      srcdir="${test.src}"
+      destdir="${build.ceylon.jars}">
+       <include name="com/redhat/ceylon/compiler/test/ceylon/*.ceylon"/>
+    </ceylonc>
+  </target>
 
 </project>
