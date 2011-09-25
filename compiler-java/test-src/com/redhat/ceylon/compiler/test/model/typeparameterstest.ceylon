@@ -1,1 +1,1 @@
-value k = TypeParameters<Natural,String>(1, "foo");
+TypeParameters<Natural,String> k = TypeParameters<Natural,String>(1, "foo");
