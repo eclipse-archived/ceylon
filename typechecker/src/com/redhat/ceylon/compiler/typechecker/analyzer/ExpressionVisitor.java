@@ -1905,7 +1905,8 @@ public class ExpressionVisitor extends AbstractVisitor {
             that.getTypeArgumentList().visit(this);*/
         super.visit(that);
         ProducedType pt = that.getPrimary().getTypeModel();
-        if (pt!=null && that.getIdentifier()!=null) {
+        if (pt!=null && that.getIdentifier()!=null && 
+                !that.getIdentifier().getText().equals("")) {
             TypedDeclaration member = (TypedDeclaration) unwrap(pt, that).getDeclaration()
                     .getMember(name(that.getIdentifier()));
             if (member==null) {
