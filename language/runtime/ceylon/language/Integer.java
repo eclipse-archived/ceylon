@@ -65,7 +65,6 @@ public final class Integer
             ((x == y) ? Comparison.EQUAL : Comparison.LARGER);
     }
 
-    @Extension
     public java.lang.String toString() {
         return java.lang.Long.toString(value);
     }
@@ -80,18 +79,15 @@ public final class Integer
         return this;
     }
 
-    @Extension
     public ceylon.language.Float toFloat() {
         return ceylon.language.Float.instance(value);
     }
 
     // Just a kludge til we have full autoboxing
-    @Extension
     public long longValue() {
         return value;
     }
 
-    @Extension
     public int intValue() {
         return (int)value;
     }

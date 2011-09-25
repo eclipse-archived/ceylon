@@ -66,7 +66,6 @@ public final class Natural
             ((x == y) ? Comparison.EQUAL : Comparison.LARGER);
     }
 
-    @Extension
     public java.lang.String toString() {
         return java.lang.Long.toString(value);
     }
@@ -77,23 +76,19 @@ public final class Natural
         return this;
     }
 
-    @Extension
     public ceylon.language.Integer integer() {
         return ceylon.language.Integer.instance(value);
     }
 
-    @Extension
     public ceylon.language.Float toFloat() {
         return ceylon.language.Float.instance(value);
     }
 
     // Just a kludge til we have full autoboxing
-    @Extension
     public long longValue() {
         return value;
     }
 
-    @Extension
     public int intValue() {
         return (int)value;
     }
