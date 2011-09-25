@@ -2023,9 +2023,9 @@ condition returns [Condition condition]
     
 booleanCondition returns [BooleanCondition condition]
     : LPAREN 
-      expression
+      (expression
       { $condition = new BooleanCondition(null); 
-        $condition.setExpression($expression.expression); }
+        $condition.setExpression($expression.expression); })?
       RPAREN
     //-> ^(BOOLEAN_CONDITION expression)
     ;
@@ -2037,9 +2037,9 @@ existsCondition returns [ExistsCondition condition]
         $condition.setVariable($impliedVariable.variable); }
     //-> ^(EXISTS_CONDITION[$EXISTS] impliedVariable)
     | LPAREN e2=EXISTS 
-      { $condition = new ExistsCondition($e2); } 
+      ({ $condition = new ExistsCondition($e2); } 
       specifiedVariable 
-      { $condition.setVariable($specifiedVariable.variable); }
+      { $condition.setVariable($specifiedVariable.variable); })?
       RPAREN
     //-> ^(EXISTS_CONDITION[$EXISTS] specifiedVariable2)
     ;
@@ -2051,9 +2051,9 @@ nonemptyCondition returns [NonemptyCondition condition]
         $condition.setVariable($impliedVariable.variable); }
     //-> ^(NONEMPTY_CONDITION[$NONEMPTY] impliedVariable)
     | LPAREN n2=NONEMPTY 
-      { $condition = new NonemptyCondition($n2); }
+      ({ $condition = new NonemptyCondition($n2); }
       specifiedVariable 
-      { $condition.setVariable($specifiedVariable.variable); }
+      { $condition.setVariable($specifiedVariable.variable); })?
       RPAREN
     //-> ^(NONEMPTY_CONDITION[$NONEMPTY] specifiedVariable2)
     ;
@@ -2066,7 +2066,7 @@ isCondition returns [IsCondition condition]
         $condition.setVariable($impliedVariable.variable); }
     //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName)))))
     | LPAREN i2=IS_OP 
-      { $condition = new IsCondition($i2); }
+      ({ $condition = new IsCondition($i2); }
       t2=unionType
       { $condition.setType($t2.type);
         Variable v = new Variable(null);
@@ -2075,7 +2075,7 @@ isCondition returns [IsCondition condition]
       memberName
       { $condition.getVariable().setIdentifier($memberName.identifier); }
       specifier
-      { $condition.getVariable().setSpecifierExpression($specifier.specifierExpression); }
+      { $condition.getVariable().setSpecifierExpression($specifier.specifierExpression); })?
       RPAREN
     //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE unionType memberName specifier))
     ;
@@ -2083,11 +2083,11 @@ isCondition returns [IsCondition condition]
 satisfiesCondition returns [SatisfiesCondition condition]
     : LPAREN 
       SATISFIES 
-      { $condition = new SatisfiesCondition($SATISFIES); }
+      ({ $condition = new SatisfiesCondition($SATISFIES); }
       t1=type 
       { $condition.setLeftType($t1.type); }
       t2=type 
-      { $condition.setRightType($t2.type); }
+      { $condition.setRightType($t2.type); })?
       RPAREN
     //-> ^(SATISFIES_CONDITION[$SATISFIES] type+)
     ;
