@@ -1,11 +1,18 @@
 package com.redhat.ceylon.compiler.loader;
 
+import java.io.File;
+
+import javax.tools.JavaFileManager.Location;
+import javax.tools.JavaFileManager;
+import javax.tools.StandardLocation;
+
 import com.redhat.ceylon.compiler.codegen.BoxingDeclarationVisitor;
 import com.redhat.ceylon.compiler.codegen.BoxingVisitor;
 import com.redhat.ceylon.compiler.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.codegen.CeylonTransformer;
 import com.redhat.ceylon.compiler.codegen.CodeGenError;
 import com.redhat.ceylon.compiler.tools.CeylonPhasedUnit;
+import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
@@ -19,6 +26,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
+import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.comp.AttrContext;
 import com.sun.tools.javac.comp.Enter;
@@ -28,9 +36,12 @@ import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Context.SourceLanguage.Language;
+import com.sun.tools.javac.util.JavacFileManager;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Options;
+import com.sun.tools.javac.util.Paths;
+import com.sun.tools.javac.util.Paths.Path;
 
 public class CeylonEnter extends Enter {
 
@@ -50,6 +61,8 @@ public class CeylonEnter extends Enter {
     private Log log;
     private CeylonModelLoader modelLoader;
     private Options options;
+    private Paths paths;
+    private CeyloncFileManager fileManager;
     
     protected CeylonEnter(Context context) {
         super(context);
@@ -64,6 +77,8 @@ public class CeylonEnter extends Enter {
         log = Log.instance(context);
         modelLoader = CeylonModelLoader.instance(context);
         options = Options.instance(context);
+        paths = Paths.instance(context);
+        fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
     }
 
     @Override
@@ -180,7 +195,18 @@ public class CeylonEnter extends Enter {
             // bind module and package together
             pkg.setModule(module);
             module.getPackages().add(pkg);
+            // automatically add this module's jar to the classpath if it exists
+            addModuleToClassPath(module);
         }
+    }
+
+    private void addModuleToClassPath(Module module) {
+        Paths.Path classPath = paths.getPathForLocation(StandardLocation.CLASS_PATH);
+        Iterable<? extends File> location = fileManager.getLocation(StandardLocation.CLASS_OUTPUT);
+        File classDir = location.iterator().next();
+        File moduleJar = new File(classDir, Util.getJarName(module));
+        System.err.println("Adding class path entry: "+moduleJar);
+        classPath.addFile(moduleJar, false);
     }
 
     private void typeCheck() {
