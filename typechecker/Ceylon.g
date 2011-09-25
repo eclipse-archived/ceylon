@@ -2022,52 +2022,67 @@ condition returns [Condition condition]
     ;
     
 booleanCondition returns [BooleanCondition condition]
-    : LPAREN 
+    : LPAREN
+      { $condition = new BooleanCondition($LPAREN); }
       (expression
-      { $condition = new BooleanCondition(null); 
-        $condition.setExpression($expression.expression); })?
+      { $condition.setExpression($expression.expression); })?
       RPAREN
+      { $condition.setEndToken($RPAREN); }
     //-> ^(BOOLEAN_CONDITION expression)
     ;
     
 existsCondition returns [ExistsCondition condition]
     : (LPAREN EXISTS LIDENTIFIER RPAREN) 
-      => LPAREN e1=EXISTS impliedVariable RPAREN
-      { $condition = new ExistsCondition($e1); 
-        $condition.setVariable($impliedVariable.variable); }
+      => l1=LPAREN 
+      { $condition = new ExistsCondition($l1); }
+      e1=EXISTS impliedVariable
+      { $condition.setVariable($impliedVariable.variable); }
+      r1=RPAREN
+      { $condition.setEndToken($r1); }
     //-> ^(EXISTS_CONDITION[$EXISTS] impliedVariable)
-    | LPAREN e2=EXISTS 
-      ({ $condition = new ExistsCondition($e2); } 
-      specifiedVariable 
+    | l2=LPAREN 
+      { $condition = new ExistsCondition($l2); }
+      e2=EXISTS 
+      (specifiedVariable 
       { $condition.setVariable($specifiedVariable.variable); })?
-      RPAREN
+      r2=RPAREN
+      { $condition.setEndToken($r2); }
     //-> ^(EXISTS_CONDITION[$EXISTS] specifiedVariable2)
     ;
     
 nonemptyCondition returns [NonemptyCondition condition]
     : (LPAREN NONEMPTY LIDENTIFIER RPAREN) 
-      => LPAREN n1=NONEMPTY impliedVariable RPAREN
-      { $condition = new NonemptyCondition($n1); 
-        $condition.setVariable($impliedVariable.variable); }
+      => l1=LPAREN 
+      { $condition = new NonemptyCondition($l1); }
+      n1=NONEMPTY impliedVariable 
+      { $condition.setVariable($impliedVariable.variable); }
+      r1=RPAREN
+      { $condition.setEndToken($r1); }
     //-> ^(NONEMPTY_CONDITION[$NONEMPTY] impliedVariable)
-    | LPAREN n2=NONEMPTY 
-      ({ $condition = new NonemptyCondition($n2); }
-      specifiedVariable 
+    | l2=LPAREN 
+      { $condition = new NonemptyCondition($l2); }
+      n2=NONEMPTY 
+      (specifiedVariable 
       { $condition.setVariable($specifiedVariable.variable); })?
-      RPAREN
+      r2=RPAREN
+      { $condition.setEndToken($r2); }
     //-> ^(NONEMPTY_CONDITION[$NONEMPTY] specifiedVariable2)
     ;
 
 isCondition returns [IsCondition condition]
     : (LPAREN IS_OP unionType LIDENTIFIER RPAREN) 
-      => LPAREN i1=IS_OP t1=unionType impliedVariable RPAREN
-      { $condition = new IsCondition($i1); 
-        $condition.setType($t1.type);
+      => l1=LPAREN 
+      { $condition = new IsCondition($l1); }
+      i1=IS_OP t1=unionType impliedVariable 
+      { $condition.setType($t1.type);
         $condition.setVariable($impliedVariable.variable); }
+      r1=RPAREN
+      { $condition.setEndToken($r1); }
     //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName)))))
-    | LPAREN i2=IS_OP 
-      ({ $condition = new IsCondition($i2); }
-      t2=unionType
+    | l2=LPAREN 
+      { $condition = new IsCondition($l2); }
+      i2=IS_OP 
+      ( t2=unionType
       { $condition.setType($t2.type);
         Variable v = new Variable(null);
         v.setType($t2.type); 
@@ -2076,19 +2091,21 @@ isCondition returns [IsCondition condition]
       { $condition.getVariable().setIdentifier($memberName.identifier); }
       specifier
       { $condition.getVariable().setSpecifierExpression($specifier.specifierExpression); })?
-      RPAREN
+      r2=RPAREN
+      { $condition.setEndToken($r2); }
     //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE unionType memberName specifier))
     ;
 
 satisfiesCondition returns [SatisfiesCondition condition]
     : LPAREN 
+      { $condition = new SatisfiesCondition($LPAREN); }
       SATISFIES 
-      ({ $condition = new SatisfiesCondition($SATISFIES); }
-      t1=type 
+      (t1=type 
       { $condition.setLeftType($t1.type); }
       t2=type 
       { $condition.setRightType($t2.type); })?
       RPAREN
+      { $condition.setEndToken($RPAREN); }
     //-> ^(SATISFIES_CONDITION[$SATISFIES] type+)
     ;
 
