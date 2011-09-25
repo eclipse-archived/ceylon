@@ -147,7 +147,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         binaryOperators.put(Tree.IntersectionOp.class, "and");
         binaryOperators.put(Tree.UnionOp.class, "or");
         binaryOperators.put(Tree.XorOp.class, "xor");
-        binaryOperators.put(Tree.EqualOp.class, "equalsXXX");
+        binaryOperators.put(Tree.EqualOp.class, "equals");
         binaryOperators.put(Tree.IdenticalOp.class, "identical");
         binaryOperators.put(Tree.CompareOp.class, "compare");
 
