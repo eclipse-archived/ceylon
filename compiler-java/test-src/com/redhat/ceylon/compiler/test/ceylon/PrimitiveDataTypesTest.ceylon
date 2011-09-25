@@ -41,6 +41,18 @@ shared class PrimitiveDataTypesTest () extends Test() {
     j := i / i;
     assertTrue(j == +1);
 
+    j := i % i;
+    assertTrue(j == +0);
+
+    j := i ** i;
+    assertTrue(j == +27);
+
+    j := +i;
+    assertTrue(j == +3);
+
+    j := -i;
+    assertTrue(j == -3);
+
     assertTrue(+2 < +3);
     assertFalse(+2 > +3);
 
