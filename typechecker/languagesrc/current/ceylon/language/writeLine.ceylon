@@ -1,3 +1,3 @@
-shared void writeLine(String line) {
+shared void writeLine(String line="") {
     process.writeLine(line);
 }
