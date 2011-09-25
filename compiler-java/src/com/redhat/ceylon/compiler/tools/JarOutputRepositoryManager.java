@@ -16,6 +16,7 @@ import java.util.jar.JarOutputStream;
 import javax.tools.JavaFileObject;
 
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.util.Util;
 
 public class JarOutputRepositoryManager {
     
@@ -29,7 +30,7 @@ public class JarOutputRepositoryManager {
     private ProgressiveJar getProgressiveJar(File outputDir, Module module) throws IOException {
         ProgressiveJar jarFile = openJars.get(module);
         if(jarFile == null){
-            String jarName = getJarName(module);
+            String jarName = Util.getJarName(module);
             System.out.println("Jar name: "+jarName);
             jarFile = new ProgressiveJar(new File(outputDir, jarName));
             openJars.put(module, jarFile);
@@ -51,17 +52,6 @@ public class JarOutputRepositoryManager {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-    }
-
-    private String getJarName(Module module) {
-        String moduleName = module.getNameAsString();
-        // FIXME: do better than this
-        if(moduleName.equals("<default module>"))
-            moduleName = "default_module";
-        String version = module.getVersion();
-        if(version == null)
-            version = "unversioned";
-        return moduleName+"-"+version+".jar";
     }
 
     static class ProgressiveJar {

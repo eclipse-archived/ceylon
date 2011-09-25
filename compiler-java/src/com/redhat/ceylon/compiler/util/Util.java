@@ -5,6 +5,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -169,6 +170,17 @@ public class Util {
                 return true;
         }
         return false;
+    }
+
+    public static String getJarName(Module module) {
+        String moduleName = module.getNameAsString();
+        // FIXME: do better than this
+        if(moduleName.equals("<default module>"))
+            moduleName = "default_module";
+        String version = module.getVersion();
+        if(version == null)
+            version = "unversioned";
+        return moduleName+"-"+version+".jar";
     }
 
 }
