@@ -29,7 +29,6 @@ public class Comparison extends Object {
         return this != LARGER;
     }
 
-    @Extension
     public java.lang.String toString() {
         java.lang.String result;
         if (this == LARGER)

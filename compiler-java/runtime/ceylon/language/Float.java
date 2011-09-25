@@ -50,7 +50,6 @@ public final class Float
             ((x == y) ? Comparison.EQUAL : Comparison.LARGER);
     }
 
-    @Extension
     public java.lang.String toString() {
         return java.lang.Double.toString(value);
     }
