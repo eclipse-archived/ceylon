@@ -1,6 +1,8 @@
 package ceylon.language;
 
-import com.redhat.ceylon.compiler.metadata.java.*;
+import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
+import com.redhat.ceylon.compiler.metadata.java.TypeParameter;
+import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
 
 @SatisfiedTypes({
     "ceylon.language.Castable<ceylon.language.Natural|ceylon.language.Integer|ceylon.language.Float>",
