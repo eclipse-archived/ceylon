@@ -1,4 +1,4 @@
-shared class FooTest () extends Test() {
+shared class PrimitiveDataTypesTest () extends Test() {
   @test
   shared void testFail(){
     fail();
