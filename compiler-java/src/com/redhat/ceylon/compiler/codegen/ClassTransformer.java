@@ -250,7 +250,11 @@ public class ClassTransformer extends AbstractTransformer {
             }else
                 methodBuilder.noBody();
         }
-                
+        
+        if(Util.hasCompilerAnnotation(def, "test")){
+            methodBuilder.annotations(List.of(make().Annotation(makeIdent("org.junit.Test"), List.<JCTree.JCExpression>nil())));
+        }
+        
         return methodBuilder
             .modifiers(transformMethodDeclFlags(def))
             .isActual(isActual(def))
