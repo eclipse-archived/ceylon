@@ -369,16 +369,19 @@ public class ExpressionVisitor extends AbstractVisitor {
 
     @Override public void visit(Tree.ValueIterator that) {
         super.visit(that);
-        inferContainedType(that.getVariable(), that.getSpecifierExpression());
-        checkContainedType(that.getVariable(), that.getSpecifierExpression());
+        if (that.getVariable()!=null) {
+            inferContainedType(that.getVariable(), that.getSpecifierExpression());
+            checkContainedType(that.getVariable(), that.getSpecifierExpression());
+        }
     }
 
     @Override public void visit(Tree.KeyValueIterator that) {
         super.visit(that);
-        inferKeyType(that.getKeyVariable(), that.getSpecifierExpression());
-        inferValueType(that.getValueVariable(), that.getSpecifierExpression());
-        checkKeyValueType(that.getKeyVariable(), that.getValueVariable(), that.getSpecifierExpression());
-        
+        if (that.getKeyVariable()!=null && that.getValueVariable()!=null) {
+            inferKeyType(that.getKeyVariable(), that.getSpecifierExpression());
+            inferValueType(that.getValueVariable(), that.getSpecifierExpression());
+            checkKeyValueType(that.getKeyVariable(), that.getValueVariable(), that.getSpecifierExpression());
+        }
     }
     
     @Override public void visit(Tree.AttributeDeclaration that) {
@@ -442,7 +445,7 @@ public class ExpressionVisitor extends AbstractVisitor {
 
     private void checkType(ProducedType declaredType, 
             Tree.SpecifierOrInitializerExpression sie) {
-        if (sie!=null) {
+        if (sie!=null && sie.getExpression()!=null) {
             checkAssignable(sie.getExpression().getTypeModel(), declaredType, sie, 
                     "specified expression must be assignable to declared type");
         }
@@ -450,27 +453,35 @@ public class ExpressionVisitor extends AbstractVisitor {
 
     private void checkOptionalType(Tree.Variable var, 
             Tree.SpecifierExpression se) {
-        ProducedType vt = var.getType().getTypeModel();
-        checkType(getOptionalType(vt), se);
+        if (var.getType()!=null) {
+            ProducedType vt = var.getType().getTypeModel();
+            checkType(getOptionalType(vt), se);
+        }
     }
 
     private void checkEmptyOptionalType(Tree.Variable var, 
             Tree.SpecifierExpression se) {
-        ProducedType vt = var.getType().getTypeModel();
-        checkType(getOptionalType(getEmptyType(vt)), se);
+        if (var.getType()!=null) {
+            ProducedType vt = var.getType().getTypeModel();
+            checkType(getOptionalType(getEmptyType(vt)), se);
+        }
     }
 
     private void checkContainedType(Tree.Variable var, 
             Tree.SpecifierExpression se) {
-        ProducedType vt = var.getType().getTypeModel();
-        checkType(getIterableType(vt), se);
+        if (var.getType()!=null) {
+            ProducedType vt = var.getType().getTypeModel();
+            checkType(getIterableType(vt), se);
+        }
     }
 
     private void checkKeyValueType(Tree.Variable key, Tree.Variable value, 
             Tree.SpecifierExpression se) {
-        ProducedType kt = key.getType().getTypeModel();
-        ProducedType vt = value.getType().getTypeModel();
-        checkType(getIterableType(getEntryType(kt, vt)), se);
+        if (key.getType()!=null && value.getType()!=null) {
+            ProducedType kt = key.getType().getTypeModel();
+            ProducedType vt = value.getType().getTypeModel();
+            checkType(getIterableType(getEntryType(kt, vt)), se);
+        }
     }
 
     @Override public void visit(Tree.AttributeGetterDefinition that) {
@@ -691,13 +702,15 @@ public class ExpressionVisitor extends AbstractVisitor {
     
     private void setTypeFromIterableType(Tree.LocalModifier local, 
             Tree.SpecifierExpression se, Tree.Variable that) {
-        ProducedType expressionType = se.getExpression().getTypeModel();
-        if (expressionType!=null) {
-            if (isIterableType(expressionType)) {
-                ProducedType t = getIteratedType(expressionType);
-                local.setTypeModel(t);
-                that.getDeclarationModel().setType(t);
-                return;
+        if (se.getExpression()!=null) {
+            ProducedType expressionType = se.getExpression().getTypeModel();
+            if (expressionType!=null) {
+                if (isIterableType(expressionType)) {
+                    ProducedType t = getIteratedType(expressionType);
+                    local.setTypeModel(t);
+                    that.getDeclarationModel().setType(t);
+                    return;
+                }
             }
         }
 //        local.addError("could not infer type of: " + 
@@ -706,16 +719,18 @@ public class ExpressionVisitor extends AbstractVisitor {
     
     private void setTypeFromKeyType(Tree.LocalModifier local,
             Tree.SpecifierExpression se, Tree.Variable that) {
-        ProducedType expressionType = se.getExpression().getTypeModel();
-        if (expressionType!=null) {
-            if (isIterableType(expressionType)) {
-                ProducedType entryType = getIteratedType(expressionType);
-                if (entryType!=null) {
-                    if (isEntryType(entryType)) {
-                        ProducedType et = getKeyType(entryType);
-                        local.setTypeModel(et);
-                        that.getDeclarationModel().setType(et);
-                        return;
+        if (se.getExpression()!=null) {
+            ProducedType expressionType = se.getExpression().getTypeModel();
+            if (expressionType!=null) {
+                if (isIterableType(expressionType)) {
+                    ProducedType entryType = getIteratedType(expressionType);
+                    if (entryType!=null) {
+                        if (isEntryType(entryType)) {
+                            ProducedType et = getKeyType(entryType);
+                            local.setTypeModel(et);
+                            that.getDeclarationModel().setType(et);
+                            return;
+                        }
                     }
                 }
             }
@@ -726,16 +741,18 @@ public class ExpressionVisitor extends AbstractVisitor {
     
     private void setTypeFromValueType(Tree.LocalModifier local,
             Tree.SpecifierExpression se, Tree.Variable that) {
-        ProducedType expressionType = se.getExpression().getTypeModel();
-        if (expressionType!=null) {
-            if (isIterableType(expressionType)) {
-                ProducedType entryType = getIteratedType(expressionType);
-                if (entryType!=null) {
-                    if (isEntryType(entryType)) {
-                        ProducedType et = getValueType(entryType);
-                        local.setTypeModel(et);
-                        that.getDeclarationModel().setType(et);
-                        return;
+        if (se.getExpression()!=null) {
+            ProducedType expressionType = se.getExpression().getTypeModel();
+            if (expressionType!=null) {
+                if (isIterableType(expressionType)) {
+                    ProducedType entryType = getIteratedType(expressionType);
+                    if (entryType!=null) {
+                        if (isEntryType(entryType)) {
+                            ProducedType et = getValueType(entryType);
+                            local.setTypeModel(et);
+                            that.getDeclarationModel().setType(et);
+                            return;
+                        }
                     }
                 }
             }
