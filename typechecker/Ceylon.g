@@ -2344,10 +2344,8 @@ tryBlock returns [TryClause clause]
     : TRY_CLAUSE 
       { $clause = new TryClause($TRY_CLAUSE); }
       (
-        LPAREN 
         resource
         { $clause.setResource($resource.resource); }
-        RPAREN
       )? 
       block
       { $clause.setBlock($block.block); }
@@ -2356,6 +2354,7 @@ tryBlock returns [TryClause clause]
 catchBlock returns [CatchClause clause]
     : CATCH_CLAUSE 
       { $clause = new CatchClause($CATCH_CLAUSE); }
+      //TODO: correct span calculation
       LPAREN 
       variable 
       { $clause.setVariable($variable.variable); }
@@ -2372,15 +2371,19 @@ finallyBlock returns [FinallyClause clause]
     ;
 
 resource returns [Resource resource]
-    : (COMPILER_ANNOTATION|declarationStart|specificationStart) 
+    : LPAREN 
+    { $resource = new Resource($LPAREN); }
+    (
+    (COMPILER_ANNOTATION|declarationStart|specificationStart) 
       => specifiedVariable
-      { $resource = new Resource(null);
-        $resource.setVariable($specifiedVariable.variable); }
+      { $resource.setVariable($specifiedVariable.variable); }
     //-> ^(RESOURCE specifiedVariable2)
     | expression
-      { $resource = new Resource(null);
-        $resource.setExpression($expression.expression); }
+      { $resource.setExpression($expression.expression); }
     //-> ^(RESOURCE expression)
+    )
+    RPAREN
+    { $resource.setEndToken($RPAREN); }
     ;
 
 specifiedVariable returns [Variable variable]
