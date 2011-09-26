@@ -2256,10 +2256,8 @@ forElse returns [ForStatement statement]
 forBlock returns [ForClause clause]
     : FOR_CLAUSE 
       { $clause = new ForClause($FOR_CLAUSE); }
-      LPAREN 
       forIterator 
       { $clause.setForIterator($forIterator.iterator); }
-      RPAREN 
       block
       { $clause.setBlock($block.block); }
     ;
@@ -2272,38 +2270,42 @@ failBlock returns [ElseClause clause]
     ;
 
 forIterator returns [ForIterator iterator]
-    @init { ValueIterator vi=null;
+    @init { ValueIterator vi = null;
             KeyValueIterator kvi = null; }
-    : compilerAnnotations
+    : LPAREN
+    { vi = new ValueIterator($LPAREN); 
+      kvi = new KeyValueIterator($LPAREN); 
+      $iterator = vi; }
+    compilerAnnotations
     ( 
       v1=var
       (
-        { vi = new ValueIterator(null);
-          vi.setVariable($v1.variable);
-          $iterator = vi; }
+        { vi.setVariable($v1.variable); }
         c1=containment
         { vi.setSpecifierExpression($c1.specifierExpression); }
       //-> ^(VALUE_ITERATOR $v1 containment)
-      | ENTRY_OP
-        { kvi = new KeyValueIterator($ENTRY_OP);
-          kvi.setKeyVariable($v1.variable);
-          $iterator = kvi; }
+      | 
+        { $iterator = kvi; }
+        ENTRY_OP
+        { kvi.setKeyVariable($v1.variable); }
         v2=var
         { kvi.setValueVariable($v2.variable); }
         c2=containment
         {  kvi.setSpecifierExpression($c2.specifierExpression); }
       //-> ^(KEY_VALUE_ITERATOR $v1 $v2 containment)
-      )
-    )
+      )?
+    )?
     { if ($iterator!=null)
           $iterator.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
+    RPAREN
+    { $iterator.setEndToken($RPAREN); }
     ;
     
 containment returns [SpecifierExpression specifierExpression]
     : IN_OP 
       { $specifierExpression = new SpecifierExpression($IN_OP); }
-      expression
-      { $specifierExpression.setExpression($expression.expression); }
+      (expression
+      { $specifierExpression.setExpression($expression.expression); })?
     //-> ^(SPECIFIER_EXPRESSION expression)
     ;
     
