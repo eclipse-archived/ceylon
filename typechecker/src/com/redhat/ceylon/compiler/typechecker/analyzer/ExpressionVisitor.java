@@ -363,8 +363,10 @@ public class ExpressionVisitor extends AbstractVisitor {
                 typedNode = se.getExpression();
             }
         }
-        checkAssignable(t, getCloseableDeclaration().getType(), typedNode, 
-                "resource must be closeable");
+        if (typedNode!=null) {
+            checkAssignable(t, getCloseableDeclaration().getType(), typedNode, 
+                    "resource must be closeable");
+        }
     }
 
     @Override public void visit(Tree.ValueIterator that) {
