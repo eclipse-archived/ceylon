@@ -194,6 +194,15 @@ public class ExpressionVisitor extends AbstractVisitor {
             }
         }
     }
+
+    private void initOriginalDeclaration(Tree.Variable that) {
+        if (that.getType() instanceof Tree.SyntheticVariable) {
+            Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression) that
+                    .getSpecifierExpression().getExpression().getTerm();
+            ((TypedDeclaration) that.getDeclarationModel())
+                .setOriginalDeclaration((TypedDeclaration) bme.getDeclaration());
+        }
+    }
     
     @Override public void visit(Tree.IsCondition that) {
         //don't recurse to the Variable, since we don't
@@ -220,6 +229,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                         getOptionalType(getObjectDeclaration().getType()), 
                         se.getExpression(), 
                         "expression may not be of void type");*/
+                initOriginalDeclaration(v);
             }
         }
         /*if (that.getExpression()!=null) {
@@ -266,6 +276,7 @@ public class ExpressionVisitor extends AbstractVisitor {
                 t = se.getExpression().getTypeModel();
                 n = v;
                 checkReferenceIsNonVariable(v, se);
+                initOriginalDeclaration(v);
             }
         }
         /*Tree.Expression e = that.getExpression();

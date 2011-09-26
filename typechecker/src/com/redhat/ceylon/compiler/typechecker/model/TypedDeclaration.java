@@ -17,6 +17,8 @@ public abstract class TypedDeclaration extends Declaration {
 
     ProducedType type;
 
+    TypedDeclaration originalDeclaration;
+    
     public TypeDeclaration getTypeDeclaration() {
     	if (type==null) {
     	    return null;
@@ -98,6 +100,14 @@ public abstract class TypedDeclaration extends Declaration {
     		}
     	}
     	return result;
+    }
+
+    public TypedDeclaration getOriginalDeclaration() {
+        return originalDeclaration;
+    }
+    
+    public void setOriginalDeclaration(TypedDeclaration originalDeclaration) {
+        this.originalDeclaration = originalDeclaration;
     }
 
     private boolean unboxed;
