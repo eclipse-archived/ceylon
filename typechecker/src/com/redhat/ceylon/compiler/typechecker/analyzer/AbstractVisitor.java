@@ -317,7 +317,7 @@ public abstract class AbstractVisitor extends Visitor {
         }
     }
 
-    protected ProducedType unionType(ProducedType lhst, ProducedType rhst) {
+    protected static ProducedType unionType(ProducedType lhst, ProducedType rhst) {
         List<ProducedType> list = new ArrayList<ProducedType>();
         addToUnion(list, rhst);
         addToUnion(list, lhst);
