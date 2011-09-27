@@ -155,6 +155,14 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Iterable");
     }
     
+    /**
+     * Gets the declaration of {@code Iterator}
+     * @return The declaration
+     */
+    public Interface getIteratorDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("Iterator");
+    }
+
     public Interface getCastableDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Castable");
     }
@@ -293,6 +301,24 @@ public class Unit {
         return producedType(getIterableDeclaration(), et);
     }
 
+    /**
+     * Returns a ProducedType corresponding to {@code Iterator<T>}
+     * @param et The ProducedType corresponding to {@code T}
+     * @return The ProducedType corresponding to {@code Iterator<T>}
+     */
+    public ProducedType getIteratorType(ProducedType et) {
+        return Util.producedType(getIteratorDeclaration(), et);
+    }
+
+    /**
+     * Returns a ProducedType corresponding to {@code Range<T>}
+     * @param rt The ProducedType corresponding to {@code T}
+     * @return The ProducedType corresponding to {@code Range<T>}
+     */
+    public ProducedType getRangeType(ProducedType rt) {
+        return Util.producedType(getRangeDeclaration(), rt);
+    }
+
     public ProducedType getCastableType(ProducedType et) {
         return producedType(getCastableDeclaration(), et);
     }
@@ -341,6 +367,10 @@ public class Unit {
 
     public ProducedType getNonemptySequenceType(ProducedType pt) {
         return pt.minus(getEmptyDeclaration()).getSupertype(getSequenceDeclaration());
+    }
+    
+    public ProducedType getNonemptyIterableType(ProducedType pt) {
+        return pt.minus(getEmptyDeclaration()).getSupertype(getIterableDeclaration());
     }
     
     public boolean isEntryType(ProducedType pt) {
