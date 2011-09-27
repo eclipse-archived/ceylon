@@ -360,11 +360,6 @@ public class Unit {
         return getEmptyDeclaration().getType().isSubtypeOf(pt);
     }
     
-    public boolean isEmptySequenceType(ProducedType pt) {
-        return isEmptyType(pt) && pt.minus(getEmptyDeclaration())
-                .getDeclaration().equals(getSequenceDeclaration());
-    }
-    
     public ProducedType getElementType(ProducedType pt) {
         ProducedType st = getNonemptySequenceType(pt);
         if (st!=null && st.getTypeArguments().size()==1) {
