@@ -670,10 +670,13 @@ public class DeclarationVisitor extends Visitor {
 
     private static void checkFormalMember(Tree.Declaration that, Declaration d) {
         
-        if ( d.isFormal() && 
-                ( !(d.getContainer() instanceof ClassOrInterface) || 
-                !( (ClassOrInterface) d.getContainer() ).isAbstract()) ) {
-            that.addError("formal member does not belong to an interface or abstract class");
+        if ( d.isFormal() ) {
+            if ( !(d.getContainer() instanceof ClassOrInterface) ) {
+                that.addError("formal member does not belong to an interface or abstract class");
+            }
+            else if (!( (ClassOrInterface) d.getContainer() ).isAbstract() ) {
+                that.addError("formal member belongs to a concrete class", 900);
+            }
         }
         
         if ( d.isFormal() && 
