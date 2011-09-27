@@ -74,6 +74,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     private Log log;
     private boolean isBootstrap;
     private Types types;
+    private TypeFactory typeFactory;
     
     public static CeylonModelLoader instance(Context context) {
         CeylonModelLoader instance = context.get(CeylonModelLoader.class);
@@ -92,11 +93,16 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         reader = ClassReader.instance(context);
         log = Log.instance(context);
         types = Types.instance(context);
-        typeParser = new TypeParser(this);
+        typeFactory = TypeFactory.instance(context);
+        typeParser = new TypeParser(this, typeFactory);
         isBootstrap = Options.instance(context).get(OptionName.BOOTSTRAPCEYLON) != null;
     }
 
     public void loadRequiredModules(com.sun.tools.javac.util.List<JCCompilationUnit> trees) {
+        // set up the type factory
+        Module languageModule = findOrCreateModule("ceylon.language");
+        Package languagePackage = findOrCreatePackage(languageModule, "ceylon.language");
+        typeFactory.setPackage(languagePackage);
         /*
          * We start by loading java.lang and ceylon.language because we will need them no matter what.
          */
@@ -297,7 +303,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             // producedtypes.typearguments: typeparam[element]->type[natural]
             TypeDeclaration emptyDecl = (TypeDeclaration)convertToDeclaration("ceylon.language.Empty", DeclarationType.TYPE);
             TypeDeclaration sequenceDecl = (TypeDeclaration)convertToDeclaration("ceylon.language.Sequence", DeclarationType.TYPE);
-            UnionType unionType = new UnionType();
+            UnionType unionType = new UnionType(typeFactory);
             List<ProducedType> caseTypes = new ArrayList<ProducedType>(2);
             caseTypes.add(emptyDecl.getType());
             List<ProducedType> typeArguments = new ArrayList<ProducedType>(1);
@@ -322,7 +328,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     
     private Declaration convertToDeclaration(String typeName, DeclarationType declarationType) {
         if ("ceylon.language.Bottom".equals(typeName)) {
-            return new BottomType();
+            return new BottomType(typeFactory);
         }
         ClassSymbol classSymbol = lookupClassSymbol(typeName);
         if (classSymbol == null) {

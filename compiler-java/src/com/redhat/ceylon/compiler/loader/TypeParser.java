@@ -7,12 +7,15 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
 
 public class TypeParser {
     private ModelLoader loader;
+    private Unit unit;
     
-    public TypeParser(ModelLoader loader) {
+    public TypeParser(ModelLoader loader, Unit unit) {
         this.loader = loader;
+        this.unit = unit;
     }
     
     /** 
@@ -88,7 +91,7 @@ public class TypeParser {
         }
         if(list.isEmpty()){
             // add a new union type
-            UnionType unionType = new UnionType();
+            UnionType unionType = new UnionType(unit);
             LinkedList<ProducedType> unionTypes = new LinkedList<ProducedType>();
             unionTypes.add(type);
             unionType.setCaseTypes(unionTypes);
@@ -100,7 +103,7 @@ public class TypeParser {
                 last.getDeclaration().getCaseTypes().add(type);
             }else{
                 // turn a non-union type into one
-                UnionType unionType = new UnionType();
+                UnionType unionType = new UnionType(unit);
                 LinkedList<ProducedType> unionTypes = new LinkedList<ProducedType>();
                 unionTypes.add(last);
                 unionTypes.add(type);

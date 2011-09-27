@@ -16,6 +16,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
 
 public class TypeParserTest {
     static class MockLoader implements ModelLoader {
@@ -46,9 +47,11 @@ public class TypeParserTest {
         
     }
     
+    private Unit mockUnit = new Unit();
+    
     @Test
     public void testUnion(){
-        ProducedType type = new TypeParser(MockLoader.instance).decodeType("a|b|c", null);
+        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("a|b|c", null);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
@@ -65,7 +68,7 @@ public class TypeParserTest {
 
     @Test
     public void testParams(){
-        ProducedType type = new TypeParser(MockLoader.instance).decodeType("t2<b,c>", null);
+        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("t2<b,c>", null);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
@@ -80,7 +83,7 @@ public class TypeParserTest {
 
     @Test
     public void testUnionParams(){
-        ProducedType type = new TypeParser(MockLoader.instance).decodeType("a|t2<b|c,t2<d,e|f>>", null);
+        ProducedType type = new TypeParser(MockLoader.instance, mockUnit).decodeType("a|t2<b|c,t2<d,e|f>>", null);
         Assert.assertNotNull(type);
         TypeDeclaration declaration = type.getDeclaration();
         Assert.assertNotNull(declaration);
