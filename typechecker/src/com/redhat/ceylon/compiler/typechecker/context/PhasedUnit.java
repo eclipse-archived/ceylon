@@ -45,7 +45,7 @@ public class PhasedUnit {
     private final ModuleBuilder moduleBuilder;
     private final String pathRelativeToSrcDir;
     private VirtualFile unitFile;
-    private final Set<String> dependentsOf = new HashSet<String>();
+    private final Set<PhasedUnit> dependentsOf = new HashSet<PhasedUnit>();
     private CommonTokenStream tokenStream;
 
 
@@ -184,7 +184,7 @@ public class PhasedUnit {
     /**
      * @return the dependentsOf
      */
-    public Set<String> getDependentsOf() {
+    public Set<PhasedUnit> getDependentsOf() {
         return dependentsOf;
     }
     
