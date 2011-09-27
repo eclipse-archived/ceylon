@@ -51,9 +51,10 @@ import com.redhat.ceylon.compiler.typechecker.util.PrintUtil;
 public class TypeVisitor extends Visitor {
     
     private Unit unit;
-    
-    public TypeVisitor(Unit unit) {
-        this.unit = unit;
+            
+    @Override public void visit(Tree.CompilationUnit that) {
+        unit = that.getUnit();
+        super.visit(that);
     }
         
     @Override

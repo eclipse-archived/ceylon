@@ -100,12 +100,12 @@ public class PhasedUnit {
 
     public void scanTypeDeclarations() {
         //System.out.println("Scan type declarations for " + fileName);
-        compilationUnit.visit( new TypeVisitor(unit) );
+        compilationUnit.visit( new TypeVisitor() );
     }
 
     public void analyseTypes() {
         //System.out.println("Run analysis phase for " + fileName);
-        compilationUnit.visit(new ExpressionVisitor(unit));
+        compilationUnit.visit(new ExpressionVisitor());
         compilationUnit.visit(new TypeArgumentVisitor());
         compilationUnit.visit(new TypeHierarchyVisitor());
     }
