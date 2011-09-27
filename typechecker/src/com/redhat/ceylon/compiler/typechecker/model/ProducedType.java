@@ -1025,19 +1025,31 @@ public class ProducedType extends ProducedReference {
         return getProducedTypeName(true);
     }
 
+    private static boolean isElementOfUnion(UnionType ut, TypeDeclaration td) {
+        for (TypeDeclaration ct: ut.getCaseTypeDeclarations()) {
+            if (ct.equals(td)) return true;
+        }
+        return false;
+    }
+    
     public String getProducedTypeName(boolean abbreviate) {
         if (getDeclaration()==null) {
             //unknown type
             return null;
         }
         if (abbreviate && getDeclaration() instanceof UnionType) {
-            if (getDeclaration().getUnit().isOptionalType(this)) {
-                return getDeclaration().getUnit().getDefiniteType(this)
-                        .getProducedTypeName(abbreviate) + "?";
-            }
-            if (getDeclaration().getUnit().isEmptySequenceType(this)) {
-                return getDeclaration().getUnit().getElementType(this)
-                        .getProducedTypeName(abbreviate) + "[]";
+            UnionType ut = (UnionType) getDeclaration();
+            if (ut.getCaseTypes().size()==2) {
+                Unit unit = getDeclaration().getUnit();
+                if (isElementOfUnion(ut, unit.getNothingDeclaration())) {
+                    return unit.getDefiniteType(this)
+                            .getProducedTypeName() + "?";
+                }
+                if (isElementOfUnion(ut, unit.getEmptyDeclaration()) &&
+                        isElementOfUnion(ut, unit.getSequenceDeclaration())) {
+                    return unit.getElementType(this)
+                            .getProducedTypeName() + "[]";
+                }
             }
         }
         String producedTypeName = "";
