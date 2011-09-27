@@ -219,7 +219,7 @@ public class SpecificationVisitor extends Visitor {
             if (member==declaration) {
                 if (!isVariable()) {
                     term.addError("not a variable: " +
-                            member.getName());
+                            member.getName(), 800);
                 }
             }
         }
@@ -365,7 +365,7 @@ public class SpecificationVisitor extends Visitor {
                 else {
                     if (that.getSpecifierOrInitializerExpression() instanceof Tree.InitializerExpression) {
                         that.addError("non-variable values must be specified using \"=\": " + 
-                                declaration.getName());
+                                declaration.getName(), 801);
                     }
                 }
                 specify();
