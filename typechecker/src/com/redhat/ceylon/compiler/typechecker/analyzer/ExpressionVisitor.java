@@ -1,5 +1,10 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactly;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkTypeBelongsToContainingScope;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
@@ -36,6 +41,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
  * Third and final phase of type analysis.
@@ -48,7 +54,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
  * @author Gavin King
  *
  */
-public class ExpressionVisitor extends AbstractVisitor {
+public class ExpressionVisitor extends Visitor {
     
     private Tree.Type returnType;
     private Declaration returnDeclaration;
@@ -1429,13 +1435,13 @@ public class ExpressionVisitor extends AbstractVisitor {
     @Override public void visit(Tree.PostfixOperatorExpression that) {
         super.visit(that);
         visitIncrementDecrement(that, type(that), that.getTerm());
-        checkAssignable(that.getTerm());
+        checkAssignability(that.getTerm());
     }
 
     @Override public void visit(Tree.PrefixOperatorExpression that) {
         super.visit(that);
         visitIncrementDecrement(that, type(that), that.getTerm());
-        checkAssignable(that.getTerm());
+        checkAssignability(that.getTerm());
     }
     
     private void checkOperandType(ProducedType pt, TypeDeclaration td, 
@@ -1717,7 +1723,7 @@ public class ExpressionVisitor extends AbstractVisitor {
         that.setTypeModel(rhst);
     }
 
-    private void checkAssignable(Tree.Term that) {
+    private static void checkAssignability(Tree.Term that) {
         if (that instanceof Tree.BaseMemberExpression ||
                 that instanceof Tree.QualifiedMemberExpression) {
             ProducedReference pr = ((Tree.MemberOrTypeExpression) that).getTarget();
@@ -1840,25 +1846,25 @@ public class ExpressionVisitor extends AbstractVisitor {
     @Override public void visit(Tree.AssignOp that) {
         super.visit(that);
         visitAssignOperator(that);
-        checkAssignable(that.getLeftTerm());
+        checkAssignability(that.getLeftTerm());
     }
         
     @Override public void visit(Tree.ArithmeticAssignmentOp that) {
         super.visit(that);
         visitArithmeticAssignOperator(that, getArithmeticDeclaration(that));
-        checkAssignable(that.getLeftTerm());
+        checkAssignability(that.getLeftTerm());
     }
         
     @Override public void visit(Tree.LogicalAssignmentOp that) {
         super.visit(that);
         visitLogicalOperator(that);
-        checkAssignable(that.getLeftTerm());
+        checkAssignability(that.getLeftTerm());
     }
         
     @Override public void visit(Tree.BitwiseAssignmentOp that) {
         super.visit(that);
         visitBitwiseOperator(that);
-        checkAssignable(that.getLeftTerm());
+        checkAssignability(that.getLeftTerm());
     }
         
     @Override public void visit(Tree.FormatOp that) {

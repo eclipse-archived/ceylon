@@ -1,9 +1,13 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecutableStatement;
+
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
  * Validates that non-variable values are well-defined
@@ -15,7 +19,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
  * @author Gavin King
  *
  */
-public class SpecificationVisitor extends AbstractVisitor {
+public class SpecificationVisitor extends Visitor {
     
     private final Declaration declaration;
     

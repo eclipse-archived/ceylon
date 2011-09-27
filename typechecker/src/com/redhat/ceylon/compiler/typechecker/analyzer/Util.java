@@ -5,12 +5,10 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -22,28 +20,24 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  * @author Gavin King
  *
  */
-public class AbstractVisitor extends Visitor {
+class Util extends Visitor {
     
-    private Declaration getBaseDeclaration(Scope scope, Unit unit, String name) {
-        return scope.getMemberOrParameter(unit, name);
-    }
-    
-    protected TypedDeclaration getBaseDeclaration(Tree.BaseMemberExpression bme) {
-        return (TypedDeclaration) getBaseDeclaration(bme.getScope(), bme.getUnit(), 
+    static TypedDeclaration getBaseDeclaration(Tree.BaseMemberExpression bme) {
+        return (TypedDeclaration) bme.getScope().getMemberOrParameter(bme.getUnit(), 
                 name(bme.getIdentifier()));
     }
     
-    protected TypeDeclaration getBaseDeclaration(Tree.BaseType bt) {
-        return (TypeDeclaration) getBaseDeclaration(bt.getScope(), bt.getUnit(), 
+    static TypeDeclaration getBaseDeclaration(Tree.BaseType bt) {
+        return (TypeDeclaration) bt.getScope().getMemberOrParameter(bt.getUnit(), 
                 name(bt.getIdentifier()));
     }
     
-    protected TypeDeclaration getBaseDeclaration(Tree.BaseTypeExpression bte) {
-        return (TypeDeclaration) getBaseDeclaration(bte.getScope(), bte.getUnit(), 
+    static TypeDeclaration getBaseDeclaration(Tree.BaseTypeExpression bte) {
+        return (TypeDeclaration) bte.getScope().getMemberOrParameter(bte.getUnit(), 
                 name(bte.getIdentifier()));
     }
     
-    protected static void checkTypeBelongsToContainingScope(ProducedType type,
+    static void checkTypeBelongsToContainingScope(ProducedType type,
             Scope scope, Node that) {
         //TODO: this does not account for types 
         //      inherited by a containing scope!
@@ -58,7 +52,7 @@ public class AbstractVisitor extends Visitor {
                 type.getProducedTypeName());
     }
 
-    protected static List<ProducedType> getTypeArguments(Tree.TypeArguments tal) {
+    static List<ProducedType> getTypeArguments(Tree.TypeArguments tal) {
         List<ProducedType> typeArguments = new ArrayList<ProducedType>();
         if (tal instanceof Tree.TypeArgumentList) {
             for (Tree.Type ta: ( (Tree.TypeArgumentList) tal ).getTypes()) {
@@ -75,7 +69,7 @@ public class AbstractVisitor extends Visitor {
         return typeArguments;
     }
     
-    protected Tree.Statement getLastExecutableStatement(Tree.ClassBody that) {
+    static Tree.Statement getLastExecutableStatement(Tree.ClassBody that) {
         List<Tree.Statement> statements = that.getStatements();
         for (int i=statements.size()-1; i>=0; i--) {
             Tree.Statement s = statements.get(i);
@@ -114,7 +108,7 @@ public class AbstractVisitor extends Visitor {
         return null;
     }
             
-    protected static void checkAssignable(ProducedType type, ProducedType supertype, 
+    static void checkAssignable(ProducedType type, ProducedType supertype, 
             Node node, String message) {
         if (type==null||supertype==null) {
             node.addError(message);
@@ -125,7 +119,7 @@ public class AbstractVisitor extends Visitor {
         }
     }
 
-    protected static void checkAssignable(ProducedType type, ProducedType supertype, 
+    static void checkAssignable(ProducedType type, ProducedType supertype, 
             TypeDeclaration td, Node node, String message) {
         if (type==null||supertype==null) {
             node.addError(message);
@@ -136,7 +130,7 @@ public class AbstractVisitor extends Visitor {
         }
     }
 
-    protected static void checkIsExactly(ProducedType type, ProducedType supertype, 
+    static void checkIsExactly(ProducedType type, ProducedType supertype, 
             Node node, String message) {
         if (type==null||supertype==null) {
             node.addError(message + ": type not known");

@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkTypeBelongsToContainingScope;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getBaseDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
@@ -28,6 +31,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrTypeList;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.PrintUtil;
 
 /**
@@ -44,7 +48,7 @@ import com.redhat.ceylon.compiler.typechecker.util.PrintUtil;
  * @author Gavin King
  *
  */
-public class TypeVisitor extends AbstractVisitor {
+public class TypeVisitor extends Visitor {
     
     private Unit unit;
     

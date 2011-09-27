@@ -1,10 +1,12 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecutableStatement;
+
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 /**
  * Validates that the initializer of a class does
  * not leak self-references to the instance being
@@ -13,7 +15,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
  * @author Gavin King
  *
  */
-public class SelfReferenceVisitor extends AbstractVisitor {
+public class SelfReferenceVisitor extends Visitor {
     
     private final TypeDeclaration typeDeclaration;
     private Tree.Statement lastExecutableStatement;

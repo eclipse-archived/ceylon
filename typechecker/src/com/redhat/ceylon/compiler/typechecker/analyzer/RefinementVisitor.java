@@ -1,5 +1,9 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkIsExactly;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +24,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
  * Validates some simple rules relating to refinement.
@@ -29,7 +34,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
  * @author Gavin King
  *
  */
-public class RefinementVisitor extends AbstractVisitor {
+public class RefinementVisitor extends Visitor {
     
     @Override public void visit(Tree.Declaration that) {
         super.visit(that);
