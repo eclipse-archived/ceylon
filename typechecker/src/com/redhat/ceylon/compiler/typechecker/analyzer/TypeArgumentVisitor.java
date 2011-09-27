@@ -26,8 +26,6 @@ public class TypeArgumentVisitor extends Visitor {
         contravariant = !contravariant;
     }
     
-    public TypeArgumentVisitor() {}
-    
     @Override public void visit(Tree.ParameterList that) {
         flip();
         super.visit(that);

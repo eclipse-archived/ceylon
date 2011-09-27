@@ -9,6 +9,7 @@ public class Module {
 	private String version;
     private List<Package> packages = new ArrayList<Package>();
     private List<Module> dependencies = new ArrayList<Module>();
+    private Module languageModule;
     private boolean available;
 
     /**
@@ -37,6 +38,14 @@ public class Module {
 
     public List<Module> getDependencies() {
         return dependencies;
+    }
+    
+    public Module getLanguageModule() {
+        return languageModule;
+    }
+    
+    public void setLanguageModule(Module languageModule) {
+        this.languageModule = languageModule;
     }
 
 	public String getVersion() {

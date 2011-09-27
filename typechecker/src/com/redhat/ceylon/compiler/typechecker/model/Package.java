@@ -119,7 +119,11 @@ public class Package implements Scope {
         if (d!=null) {
             return d;
         }
-        return getDirectMemberOrParameter(name);
+        d = getDirectMemberOrParameter(name);
+        if (d!=null) {
+            return d;
+        }
+        return unit.getLanguageModuleDeclaration(name);
     }
     
     @Override

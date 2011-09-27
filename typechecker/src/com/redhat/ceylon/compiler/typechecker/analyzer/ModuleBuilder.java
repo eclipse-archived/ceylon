@@ -53,10 +53,12 @@ public class ModuleBuilder {
             languageName.add("language");
             Module languageModule = new Module();
             languageModule.setName(languageName);
+            languageModule.setLanguageModule(languageModule);
             languageModule.setAvailable(false); //not available yet
             modules.setLanguageModule(languageModule);
             modules.getListOfModules().add(languageModule);
             defaultModule.getDependencies().add(languageModule);
+            defaultModule.setLanguageModule(languageModule);
             context.setModules(modules);
         }
         else {
@@ -94,6 +96,7 @@ public class ModuleBuilder {
         if (module == null) {
             module = new Module();
             module.setName(moduleName);
+            module.setLanguageModule(modules.getLanguageModule());
             moduleList.add(module);
         }
         return module;

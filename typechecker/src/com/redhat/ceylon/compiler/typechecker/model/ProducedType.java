@@ -291,7 +291,7 @@ public class ProducedType extends ProducedReference {
      */
     public ProducedType minus(ClassOrInterface ci) {
         if (getDeclaration().equals(ci)) {
-            return new BottomType().getType();
+            return new BottomType(getDeclaration().getUnit()).getType();
         }
         else if (getDeclaration() instanceof UnionType) {
             List<ProducedType> types = new ArrayList<ProducedType>();
@@ -300,7 +300,7 @@ public class ProducedType extends ProducedReference {
                     addToUnion(types, ct.minus(ci));
                 }
             }
-            UnionType ut = new UnionType();
+            UnionType ut = new UnionType(getDeclaration().getUnit());
             ut.setCaseTypes(types);
             return ut.getType();
         }
@@ -603,7 +603,7 @@ public class ProducedType extends ProducedReference {
 		}
 	}
 
-    private static ProducedType getCommonSupertype(final List<ProducedType> caseTypes,
+    private ProducedType getCommonSupertype(final List<ProducedType> caseTypes,
             TypeDeclaration dec, final TypeDeclaration selfTypeToIgnore) {
         //now try to construct a common produced
         //type that is a common supertype by taking
@@ -620,7 +620,7 @@ public class ProducedType extends ProducedReference {
                     }
                     addToIntersection(list2, st.getTypeArguments().get(tp));
                 }
-                IntersectionType it = new IntersectionType();
+                IntersectionType it = new IntersectionType(getDeclaration().getUnit());
                 it.setSatisfiedTypes(list2);
                 result = it.canonicalize().getType();
             }
@@ -632,7 +632,7 @@ public class ProducedType extends ProducedReference {
                     }
                     addToUnion(list2, st.getTypeArguments().get(tp));
                 }
-                UnionType ut = new UnionType();
+                UnionType ut = new UnionType(getDeclaration().getUnit());
                 ut.setCaseTypes(list2);
                 result = ut.getType();
             }
@@ -903,7 +903,7 @@ public class ProducedType extends ProducedReference {
                 Map<TypeParameter, ProducedType> substitutions) {
             Declaration dec;
             if (pt.getDeclaration() instanceof UnionType) {
-                UnionType ut = new UnionType();
+                UnionType ut = new UnionType(pt.getDeclaration().getUnit());
                 List<ProducedType> types = new ArrayList<ProducedType>();
                 for (ProducedType ct: pt.getDeclaration().getCaseTypes()) {
                     addTypeToUnion(ct, substitutions, types);
@@ -912,7 +912,7 @@ public class ProducedType extends ProducedReference {
                 dec = ut;
             }
             else if (pt.getDeclaration() instanceof IntersectionType) {
-                IntersectionType it = new IntersectionType();
+                IntersectionType it = new IntersectionType(pt.getDeclaration().getUnit());
                 List<ProducedType> types = new ArrayList<ProducedType>();
                 for (ProducedType ct: pt.getDeclaration().getSatisfiedTypes()) {
                     addTypeToIntersection(ct, substitutions, types);
@@ -1020,15 +1020,29 @@ public class ProducedType extends ProducedReference {
     public String toString() {
         return "Type[" + getProducedTypeName() + "]";
     }
-
+    
     public String getProducedTypeName() {
+        return getProducedTypeName(true);
+    }
+
+    public String getProducedTypeName(boolean abbreviate) {
         if (getDeclaration()==null) {
             //unknown type
             return null;
         }
+        if (abbreviate && getDeclaration() instanceof UnionType) {
+            if (getDeclaration().getUnit().isOptionalType(this)) {
+                return getDeclaration().getUnit().getDefiniteType(this)
+                        .getProducedTypeName(abbreviate) + "?";
+            }
+            if (getDeclaration().getUnit().isEmptySequenceType(this)) {
+                return getDeclaration().getUnit().getElementType(this)
+                        .getProducedTypeName(abbreviate) + "[]";
+            }
+        }
         String producedTypeName = "";
         if (getDeclaration().isMember()) {
-            producedTypeName += getQualifyingType().getProducedTypeName();
+            producedTypeName += getQualifyingType().getProducedTypeName(abbreviate);
             producedTypeName += ".";
         }
         producedTypeName += getDeclaration().getName();
@@ -1039,7 +1053,7 @@ public class ProducedType extends ProducedReference {
                     producedTypeName += "unknown,";
                 }
                 else {
-                    producedTypeName += t.getProducedTypeName() + ",";
+                    producedTypeName += t.getProducedTypeName(abbreviate) + ",";
                 }
             }
             producedTypeName += ">";

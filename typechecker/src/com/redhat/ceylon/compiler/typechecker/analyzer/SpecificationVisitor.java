@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -23,7 +22,6 @@ public class SpecificationVisitor extends AbstractVisitor {
     private SpecificationState specified = new SpecificationState(false, false);
     private boolean cannotSpecify = true;
     private boolean declared = false;
-    private Context context;
     private Tree.Statement lastExecutableStatement;
     private boolean declarationSection = false;
 
@@ -38,14 +36,8 @@ public class SpecificationVisitor extends AbstractVisitor {
         }
     }
     
-    public SpecificationVisitor(Declaration declaration, Context context) {
+    public SpecificationVisitor(Declaration declaration) {
         this.declaration = declaration;
-        this.context = context;
-    }
-    
-    @Override
-    protected Context getContext() {
-        return context;
     }
     
     private void declare() {

@@ -5,6 +5,10 @@ import java.util.List;
 
 public class BottomType extends TypeDeclaration {
     
+    public BottomType(Unit unit) {
+        this.unit = unit;
+    }
+    
     @Override
     public String getName() {
         return "Bottom";

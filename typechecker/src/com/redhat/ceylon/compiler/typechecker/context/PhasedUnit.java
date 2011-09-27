@@ -43,7 +43,6 @@ public class PhasedUnit {
     //must be the non qualified file name
     private String fileName;
     private final ModuleBuilder moduleBuilder;
-    private final Context context;
     private final String pathRelativeToSrcDir;
     private VirtualFile unitFile;
     private final Set<String> dependentsOf = new HashSet<String>();
@@ -58,7 +57,6 @@ public class PhasedUnit {
         this.fileName = unitFile.getName();
         this.pathRelativeToSrcDir = computeRelativePath(unitFile, srcDir);
         this.moduleBuilder = moduleBuilder;
-        this.context = context;
         this.tokenStream = tokenStream;
     }
 
@@ -83,7 +81,7 @@ public class PhasedUnit {
 
     public void buildModuleImport() {
         if ( ModuleBuilder.MODULE_FILE.equals(fileName) ) {
-            final ModuleVisitor v = new ModuleVisitor(moduleBuilder, context);
+            final ModuleVisitor v = new ModuleVisitor(moduleBuilder);
             compilationUnit.visit(v);
         }
     }
@@ -102,12 +100,12 @@ public class PhasedUnit {
 
     public void scanTypeDeclarations() {
         //System.out.println("Scan type declarations for " + fileName);
-        compilationUnit.visit( new TypeVisitor(unit, context) );
+        compilationUnit.visit( new TypeVisitor(unit) );
     }
 
     public void analyseTypes() {
         //System.out.println("Run analysis phase for " + fileName);
-        compilationUnit.visit(new ExpressionVisitor(context));
+        compilationUnit.visit(new ExpressionVisitor(unit));
         compilationUnit.visit(new TypeArgumentVisitor());
         compilationUnit.visit(new TypeHierarchyVisitor());
     }
@@ -123,19 +121,19 @@ public class PhasedUnit {
         //System.out.println("Validate self references for " + fileName);
         //System.out.println("Validate specification for " + fileName);
         for (Declaration d: unit.getDeclarations()) {
-            compilationUnit.visit(new SpecificationVisitor(d, context));
+            compilationUnit.visit(new SpecificationVisitor(d));
             if (d instanceof TypedDeclaration && !(d instanceof Setter)) {
                 compilationUnit.visit(new ValueVisitor((TypedDeclaration) d));
             }
             else if (d instanceof TypeDeclaration) {
-                compilationUnit.visit(new SelfReferenceVisitor((TypeDeclaration) d, context));
+                compilationUnit.visit(new SelfReferenceVisitor((TypeDeclaration) d));
             }
         }
     }
 
     public void validateRefinement() {
         //System.out.println("Validate member refinement for " + fileName);
-        compilationUnit.visit(new RefinementVisitor(context));
+        compilationUnit.visit(new RefinementVisitor());
     }
 
     public void generateStatistics(StatisticsVisitor statsVisitor) {

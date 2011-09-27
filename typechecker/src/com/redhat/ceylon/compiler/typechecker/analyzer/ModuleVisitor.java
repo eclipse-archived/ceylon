@@ -2,11 +2,9 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import java.util.Arrays;
 
-import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.sun.org.apache.xerces.internal.impl.Version;
 
 /**
  * Detect and populate the list of imports for modules.
@@ -19,7 +17,6 @@ import com.sun.org.apache.xerces.internal.impl.Version;
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
 public class ModuleVisitor extends Visitor {
-    private final Context context;
     /**
      * are we truly in a module?
      */
@@ -33,9 +30,8 @@ public class ModuleVisitor extends Visitor {
     private final ModuleBuilder moduleBuilder;
 
 
-    public ModuleVisitor(ModuleBuilder moduleBuilder, Context context) {
+    public ModuleVisitor(ModuleBuilder moduleBuilder) {
         this.moduleBuilder = moduleBuilder;
-        this.context = context;
     }
 
     @Override

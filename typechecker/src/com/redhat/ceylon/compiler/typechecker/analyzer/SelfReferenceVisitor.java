@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -20,16 +19,9 @@ public class SelfReferenceVisitor extends AbstractVisitor {
     private Tree.Statement lastExecutableStatement;
     private boolean declarationSection = false;
     private int nestedLevel = -1;
-    private Context context;
     
-    public SelfReferenceVisitor(TypeDeclaration td, Context context) {
+    public SelfReferenceVisitor(TypeDeclaration td) {
         typeDeclaration = td;
-        this.context = context;
-    }
-
-    @Override
-    protected Context getContext() {
-        return context;
     }
     
     private void visitExtendedType(Tree.ExtendedTypeExpression that) {

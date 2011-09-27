@@ -43,25 +43,25 @@ public class DependedUponVisitor extends Visitor {
 	
 	@Override
 	public void visit(Tree.MemberOrTypeExpression that) {
-	    	storeDependency(that.getDeclaration());
+        storeDependency(that.getDeclaration());
 		super.visit(that);
 	}
 		
 	@Override
 	public void visit(Tree.NamedArgument that) {
-	    	storeDependency(that.getParameter());
+        storeDependency(that.getParameter());
 		super.visit(that);
 	}
 		
 	@Override
 	public void visit(Tree.Type that) {
-	    	storeDependency(that.getTypeModel().getDeclaration());
+        storeDependency(that.getTypeModel().getDeclaration());
 		super.visit(that);
 	}
 		
 	@Override
 	public void visit(Tree.ImportMemberOrType that) {
-	    	storeDependency(that.getDeclarationModel());
+        storeDependency(that.getDeclarationModel());
 		super.visit(that);
 	}
 		

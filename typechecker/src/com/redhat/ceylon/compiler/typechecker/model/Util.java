@@ -224,4 +224,13 @@ public class Util {
         return true;
     }
 
+    public static ProducedType unionType(ProducedType lhst, ProducedType rhst, Unit unit) {
+        List<ProducedType> list = new ArrayList<ProducedType>();
+        addToUnion(list, rhst);
+        addToUnion(list, lhst);
+        UnionType ut = new UnionType(unit);
+        ut.setCaseTypes(list);
+        return ut.getType();
+    }
+    
 }

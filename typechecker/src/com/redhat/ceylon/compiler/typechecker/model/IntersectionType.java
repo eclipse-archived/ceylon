@@ -8,6 +8,10 @@ import java.util.List;
 
 public class IntersectionType extends TypeDeclaration {
 
+    public IntersectionType(Unit unit) {
+        this.unit = unit;
+    }
+    
     @Override
     public String getName() {
         String name = "";
@@ -51,8 +55,7 @@ public class IntersectionType extends TypeDeclaration {
     @Override
     public ProducedType getType() {
         if (getSatisfiedTypes().size()==0) {
-            //TODO: should return Void type
-            throw new RuntimeException();
+            return unit.getVoidDeclaration().getType();
         }
         else if (getSatisfiedTypes().size()==1) {
             return getSatisfiedTypes().get(0).getType();
@@ -70,7 +73,7 @@ public class IntersectionType extends TypeDeclaration {
 	public TypeDeclaration canonicalize() {
 		for (ProducedType st: getSatisfiedTypes()) {
 			if (st.getDeclaration() instanceof UnionType) {
-				TypeDeclaration result = new UnionType();
+				TypeDeclaration result = new UnionType(unit);
 				List<ProducedType> ulist = new ArrayList<ProducedType>();
 				for (ProducedType ct: st.getDeclaration().getCaseTypes()) {
 					List<ProducedType> ilist = new ArrayList<ProducedType>();
@@ -82,7 +85,7 @@ public class IntersectionType extends TypeDeclaration {
 							addToIntersection(ilist, pt);
 						}
 					}
-					IntersectionType it = new IntersectionType();
+					IntersectionType it = new IntersectionType(unit);
 					it.setSatisfiedTypes(ilist);
 					addToUnion(ulist, it.canonicalize().getType());
 				}

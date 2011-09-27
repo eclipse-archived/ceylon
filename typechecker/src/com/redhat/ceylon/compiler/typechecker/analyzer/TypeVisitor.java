@@ -1,14 +1,15 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.model.Util.*;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.*;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
+import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -46,18 +47,11 @@ import com.redhat.ceylon.compiler.typechecker.util.PrintUtil;
 public class TypeVisitor extends AbstractVisitor {
     
     private Unit unit;
-    private Context context;
     
-    public TypeVisitor(Unit u, Context context) {
-        unit = u;
-        this.context = context;
+    public TypeVisitor(Unit unit) {
+        this.unit = unit;
     }
-    
-    @Override
-    protected Context getContext() {
-        return context;
-    }
-    
+        
     @Override
     public void visit(Tree.Import that) {
         Package importedPackage = getPackage(that.getImportPath());
@@ -151,7 +145,7 @@ public class TypeVisitor extends AbstractVisitor {
     @Override 
     public void visit(Tree.UnionType that) {
         super.visit(that);
-        UnionType ut = new UnionType();
+        UnionType ut = new UnionType(unit);
         List<ProducedType> types = new ArrayList<ProducedType>();
         for (Tree.StaticType st: that.getStaticTypes()) {
             addToUnion( types, st.getTypeModel() );
@@ -165,7 +159,7 @@ public class TypeVisitor extends AbstractVisitor {
     @Override 
     public void visit(Tree.IntersectionType that) {
         super.visit(that);
-        IntersectionType it = new IntersectionType();
+        IntersectionType it = new IntersectionType(unit);
         List<ProducedType> types = new ArrayList<ProducedType>();
         for (Tree.StaticType st: that.getStaticTypes()) {
             addToIntersection( types, st.getTypeModel() );
@@ -249,14 +243,14 @@ public class TypeVisitor extends AbstractVisitor {
         
     @Override 
     public void visit(Tree.VoidModifier that) {
-        that.setTypeModel(getVoidDeclaration().getType());
+        that.setTypeModel(unit.getVoidDeclaration().getType());
     }
 
     public void visit(Tree.SequencedType that) {
         super.visit(that);
         ProducedType type = that.getType().getTypeModel();
         if (type!=null) {
-            that.setTypeModel(getEmptyType(getSequenceType(type)));
+            that.setTypeModel(unit.getEmptyType(unit.getSequenceType(type)));
         }
     }
 
@@ -291,7 +285,7 @@ public class TypeVisitor extends AbstractVisitor {
     private void defaultSuperclass(Tree.ExtendedType et, TypeDeclaration c) {
         if (et==null) {
             //TODO: should be BaseObject, according to the spec!
-            c.setExtendedType(getIdentifiableObjectDeclaration().getType());
+            c.setExtendedType(unit.getIdentifiableObjectDeclaration().getType());
         }
     }
 
@@ -312,7 +306,7 @@ public class TypeVisitor extends AbstractVisitor {
     @Override 
     public void visit(Tree.ClassDefinition that) {
         Class c = that.getDeclarationModel();
-        Class vd = getVoidDeclaration();
+        Class vd = unit.getVoidDeclaration();
         if (c!=vd) {
             defaultSuperclass(that.getExtendedType(), c);
         }
@@ -321,13 +315,13 @@ public class TypeVisitor extends AbstractVisitor {
 
     @Override 
     public void visit(Tree.InterfaceDefinition that) {
-        that.getDeclarationModel().setExtendedType(getObjectDeclaration().getType());
+        that.getDeclarationModel().setExtendedType(unit.getObjectDeclaration().getType());
         super.visit(that);
     }
 
     @Override 
     public void visit(Tree.TypeParameterDeclaration that) {
-        that.getDeclarationModel().setExtendedType(getVoidDeclaration().getType());
+        that.getDeclarationModel().setExtendedType(unit.getVoidDeclaration().getType());
         super.visit(that);
     }
     

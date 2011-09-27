@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -31,17 +30,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
  *
  */
 public class RefinementVisitor extends AbstractVisitor {
-    
-    private Context context;
-    
-    public RefinementVisitor(Context context) {
-        this.context = context;
-    }
-    
-    @Override
-    protected Context getContext() {
-        return context;
-    }
     
     @Override public void visit(Tree.Declaration that) {
         super.visit(that);
