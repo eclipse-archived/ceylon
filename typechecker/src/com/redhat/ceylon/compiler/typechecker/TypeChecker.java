@@ -116,9 +116,6 @@ public class TypeChecker {
         for (PhasedUnit pu: listOfUnits) {
             pu.analyseFlow();
         }
-        for (PhasedUnit pu : listOfUnits) {
-            pu.collectUnitDependencies(phasedUnits);
-        }
 
         if (!forceSilence) {
             for (PhasedUnit pu : listOfUnits) {

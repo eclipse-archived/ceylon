@@ -34,7 +34,7 @@ public class DependedUponVisitor extends Visitor {
     	    	{
             		PhasedUnit dependedOnPhasedUnit = phasedUnits.getPhasedUnitFromRelativePath(dependedOnUnitName);
             		if (dependedOnPhasedUnit != null) {
-                        dependedOnPhasedUnit.getDependentsOf().add(currentUnitName);        		    
+                        dependedOnPhasedUnit.getDependentsOf().add(phasedUnit);        		    
             		}
     	    	}
     	    }
