@@ -2204,16 +2204,18 @@ public class ExpressionVisitor extends AbstractVisitor {
         that.setTypeModel(st);
     }
 
-    @Override public void visit(Tree.CatchClause that) {
+    @Override public void visit(Tree.CatchVariable that) {
         super.visit(that);
-        ProducedType et = unit.getExceptionDeclaration().getType();
-        if (that.getVariable().getType() instanceof Tree.LocalModifier) {
-            that.getVariable().getType().setTypeModel(et);
-        }
-        else {
-            checkAssignable(that.getVariable().getType().getTypeModel(), et, 
-                    that.getVariable().getType(), 
-                    "type must be an exception type");
+        if (that.getVariable()!=null) {
+            ProducedType et = unit.getExceptionDeclaration().getType();
+            if (that.getVariable().getType() instanceof Tree.LocalModifier) {
+                that.getVariable().getType().setTypeModel(et);
+            }
+            else {
+                checkAssignable(that.getVariable().getType().getTypeModel(), et, 
+                        that.getVariable().getType(), 
+                        "catch type must be an exception type");
+            }
         }
     }
     
@@ -2259,23 +2261,27 @@ public class ExpressionVisitor extends AbstractVisitor {
     public void visit(Tree.TryCatchStatement that) {
         super.visit(that);
         for (Tree.CatchClause cc: that.getCatchClauses()) {
-            if (cc.getVariable()!=null) {
-                ProducedType ct = cc.getVariable().getType().getTypeModel();
+            if (cc.getCatchVariable()!=null && 
+                    cc.getCatchVariable().getVariable()!=null) {
+                ProducedType ct = cc.getCatchVariable()
+                        .getVariable().getType().getTypeModel();
                 if (ct!=null) {
                     for (Tree.CatchClause ecc: that.getCatchClauses()) {
-                        if (ecc.getVariable()!=null) {
+                        if (ecc.getCatchVariable()!=null &&
+                                ecc.getCatchVariable().getVariable()!=null) {
                             if (cc==ecc) break;
-                            ProducedType ect = ecc.getVariable().getType().getTypeModel();
+                            ProducedType ect = ecc.getCatchVariable()
+                                    .getVariable().getType().getTypeModel();
                             if (ect!=null) {
                                 if (ct.isSubtypeOf(ect)) {
-                                    cc.getVariable().getType()
+                                    cc.getCatchVariable().getVariable().getType()
                                             .addError("exception type is already handled by earlier catch clause:" 
                                                     + ct.getProducedTypeName());
                                 }
                                 if (ct.getDeclaration() instanceof UnionType) {
                                     for (ProducedType ut: ct.getDeclaration().getCaseTypes()) {
                                         if ( ut.substitute(ct.getTypeArguments()).isSubtypeOf(ect) ) {
-                                            cc.getVariable().getType()
+                                            cc.getCatchVariable().getVariable().getType()
                                                     .addError("exception type is already handled by earlier catch clause: "
                                                             + ut.getProducedTypeName());
                                         }

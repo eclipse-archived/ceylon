@@ -2354,14 +2354,21 @@ tryBlock returns [TryClause clause]
 catchBlock returns [CatchClause clause]
     : CATCH_CLAUSE 
       { $clause = new CatchClause($CATCH_CLAUSE); }
-      //TODO: correct span calculation
-      LPAREN 
-      variable 
-      { $clause.setVariable($variable.variable); }
-      RPAREN 
+      catchVariable
+      { $clause.setCatchVariable($catchVariable.catchVariable); }
       block
       { $clause.setBlock($block.block); }
     ;
+
+catchVariable returns [CatchVariable catchVariable]
+    : LPAREN 
+      { $catchVariable=new CatchVariable($LPAREN); }
+      (variable 
+      { $catchVariable.setVariable($variable.variable); })?
+      RPAREN 
+      { $catchVariable.setEndToken($RPAREN); }
+    ;
+
 
 finallyBlock returns [FinallyClause clause]
     : FINALLY_CLAUSE 
