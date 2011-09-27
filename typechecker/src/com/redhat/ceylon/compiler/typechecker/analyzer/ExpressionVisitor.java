@@ -871,7 +871,7 @@ public class ExpressionVisitor extends Visitor {
                 return pt;
             }
             else {
-                return st.getTypeArgumentList().get(0);
+                return unit.getElementType(pt);
             }
         }
         else {
@@ -980,7 +980,7 @@ public class ExpressionVisitor extends Visitor {
         if (sa!=null) {
             Parameter sp = getSequencedParameter(parameters);
             if (sp!=null) {
-                ProducedType spt = getIndividualSequencedParameterType(sp.getType());
+                ProducedType spt = unit.getElementType(sp.getType());
                 for (Tree.Expression e: args.getSequencedArgument()
                                 .getExpressionList().getExpressions()) {
                     ProducedType sat = e.getTypeModel();
@@ -999,7 +999,7 @@ public class ExpressionVisitor extends Visitor {
             Parameter parameter = parameters.getParameters().get(i);
             if (args.getPositionalArguments().size()>i) {
                 if (parameter.isSequenced() && args.getEllipsis()==null) {
-                    ProducedType spt = getIndividualSequencedParameterType(parameter.getType());
+                    ProducedType spt = unit.getElementType(parameter.getType());
                     for (int k=i; k<args.getPositionalArguments().size(); k++) {
                         ProducedType sat = args.getPositionalArguments().get(k)
                                 .getExpression().getTypeModel();
@@ -1244,7 +1244,7 @@ public class ExpressionVisitor extends Visitor {
         a.setParameter(p);
         for (Tree.Expression e: a.getExpressionList().getExpressions()) {
             ProducedType paramType = pr.getTypedParameter(p).getType();
-            checkAssignable(e.getTypeModel(), getIndividualSequencedParameterType(paramType), a, 
+            checkAssignable(e.getTypeModel(), unit.getElementType(paramType), a, 
                     "sequenced argument must be assignable to sequenced parameter " + 
                     p.getName() + " of " + pr.getDeclaration().getName());
         }
@@ -1314,7 +1314,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.PositionalArgumentList pal, int i, ProducedType paramType) {
         List<Tree.PositionalArgument> args = pal.getPositionalArguments();
         ProducedType at = paramType==null ? null : 
-                getIndividualSequencedParameterType(paramType);
+                unit.getElementType(paramType);
         for (int j=i; j<args.size(); j++) {
             Tree.PositionalArgument a = args.get(j);
             a.setParameter(p);
@@ -1342,10 +1342,6 @@ public class ExpressionVisitor extends Visitor {
                 //}
             }
         }
-    }
-
-    private ProducedType getIndividualSequencedParameterType(ProducedType paramType) {
-        return unit.getNonemptySequenceType(paramType).getTypeArgumentList().get(0);
     }
 
     private void checkPositionalArgument(Parameter p, ProducedReference pr,
