@@ -246,7 +246,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.RangeOp op) {
         JCExpression lower = transformExpression(op.getLeftTerm());
         JCExpression upper = transformExpression(op.getRightTerm());
-        ProducedType rangeType = typeFact().makeRangeType(op.getLeftTerm().getTypeModel());
+        ProducedType rangeType = typeFact().getRangeType(op.getLeftTerm().getTypeModel());
         JCExpression typeExpr = makeJavaType(rangeType, CeylonTransformer.CLASS_NEW);
         return at(op).NewClass(null, null, typeExpr, List.<JCExpression> of(lower, upper), null);
     }
@@ -254,7 +254,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.EntryOp op) {
         JCExpression key = transformExpression(op.getLeftTerm());
         JCExpression elem = transformExpression(op.getRightTerm());
-        ProducedType entryType = typeFact().makeEntryType(op.getLeftTerm().getTypeModel(), op.getRightTerm().getTypeModel());
+        ProducedType entryType = typeFact().getEntryType(op.getLeftTerm().getTypeModel(), op.getRightTerm().getTypeModel());
         JCExpression typeExpr = makeJavaType(entryType, CeylonTransformer.CLASS_NEW);
         return at(op).NewClass(null, null, typeExpr , List.<JCExpression> of(key, elem), null);
     }

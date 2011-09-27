@@ -283,7 +283,7 @@ public abstract class AbstractTransformer implements Transformation {
     
     // A type is optional when it is a union of Nothing|Type...
     protected boolean isOptional(ProducedType type) {
-        return typeFact().isOptional(type);
+        return typeFact().isOptionalType(type);
     }
 
     protected ProducedType simplifyType(ProducedType type) {
@@ -743,7 +743,7 @@ public abstract class AbstractTransformer implements Transformation {
         for (Expression expr : list) {
             elems.append(expressionGen().transformExpression(expr));
         }
-        ProducedType seqType = typeFact().makeDefaultSequenceType(seqElemType);
+        ProducedType seqType = typeFact().getDefaultSequenceType(seqElemType);
         JCExpression typeExpr = makeJavaType(seqType, CeylonTransformer.CLASS_NEW);
         return make().NewClass(null, null, typeExpr, elems.toList(), null);
     }
