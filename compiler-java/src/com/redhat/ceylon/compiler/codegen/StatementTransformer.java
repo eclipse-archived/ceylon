@@ -373,7 +373,8 @@ public class StatementTransformer extends AbstractTransformer {
         for (CatchClause catchClause : t.getCatchClauses()) {
             at(catchClause);
             java.util.List<ProducedType> exceptionTypes;
-            ProducedType exceptionType = catchClause.getVariable().getDeclarationModel().getType();
+            Variable variable = catchClause.getCatchVariable().getVariable();
+            ProducedType exceptionType = variable.getDeclarationModel().getType();
             if (typeFact().isUnion(exceptionType)) {
                 exceptionTypes = exceptionType.getDeclaration().getCaseTypes();
             } else {
@@ -381,7 +382,7 @@ public class StatementTransformer extends AbstractTransformer {
             }
             for (ProducedType type : exceptionTypes) {
                 // catch blocks for each exception in the union
-                JCVariableDecl param = make().VarDef(make().Modifiers(Flags.FINAL), names().fromString(catchClause.getVariable().getIdentifier().getText()),
+                JCVariableDecl param = make().VarDef(make().Modifiers(Flags.FINAL), names().fromString(variable.getIdentifier().getText()),
                         makeJavaType(type, CLASS_NEW), null);
                 catches.add(make().Catch(param, transform(catchClause.getBlock())));
             }
