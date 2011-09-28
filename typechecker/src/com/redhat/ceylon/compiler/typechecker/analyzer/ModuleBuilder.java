@@ -5,6 +5,8 @@ import com.redhat.ceylon.compiler.typechecker.model.*;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -33,13 +35,12 @@ public class ModuleBuilder {
             modules = new Modules();
             //build empty package
             final Package emptyPackage = new Package();
-            emptyPackage.setName(new ArrayList<String>(0));
+            emptyPackage.setName(Collections.<String>emptyList());
             packageStack.addLast(emptyPackage);
 
             //build default module (module in which packages belong to when not explicitly under a module
             final Module defaultModule = new Module();
-            final List<String> defaultModuleName = new ArrayList<String>();
-            defaultModuleName.add("<default module>");
+            final List<String> defaultModuleName = Collections.singletonList("<default module>");
             defaultModule.setName(defaultModuleName);
             defaultModule.setAvailable(true);
             bindPackageToModule(emptyPackage, defaultModule);
@@ -48,9 +49,7 @@ public class ModuleBuilder {
 
             //create language module and add it as a dependency of defaultModule
             //since packages outside a module cannot declare dependencies
-            final List<String> languageName = new ArrayList<String>();
-            languageName.add("ceylon");
-            languageName.add("language");
+            final List<String> languageName = Arrays.asList("ceylon", "language");
             Module languageModule = new Module();
             languageModule.setName(languageName);
             languageModule.setLanguageModule(languageModule);
@@ -125,7 +124,7 @@ public class ModuleBuilder {
         final Package lastPkg = packageStack.peekLast();
         List<String> parentName = lastPkg.getName();
         final ArrayList<String> name = new ArrayList<String>(parentName.size() + 1);
-        name.addAll( parentName );
+        name.addAll(parentName);
         name.add(path);
         pkg.setName(name);
         if (currentModule != null) {
