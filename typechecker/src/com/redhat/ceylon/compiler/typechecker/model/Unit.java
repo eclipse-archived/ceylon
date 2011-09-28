@@ -4,9 +4,13 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
 
 public class Unit {
 
@@ -15,13 +19,18 @@ public class Unit {
     List<Declaration> declarations = new ArrayList<Declaration>();
     String filename;
     List<ImportList> importLists = new ArrayList<ImportList>();
-
+    Set<Identifier> unresolvedReferences = new HashSet<Identifier>();
+    
     public List<Import> getImports() {
         return imports;
     }
 
     public List<ImportList> getImportLists() {
         return importLists;
+    }
+
+    public Set<Identifier> getUnresolvedReferences() {
+        return unresolvedReferences;
     }
 
     public Package getPackage() {

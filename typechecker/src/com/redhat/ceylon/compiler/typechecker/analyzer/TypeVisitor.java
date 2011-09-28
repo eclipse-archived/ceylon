@@ -182,6 +182,7 @@ public class TypeVisitor extends Visitor {
         if (type==null) {
             that.addError("type declaration not found: " + 
                     name(that.getIdentifier()), 100);
+            unit.getUnresolvedReferences().add(that.getIdentifier());
         }
         else {
             ProducedType outerType = that.getScope().getDeclaringType(type);
@@ -215,6 +216,7 @@ public class TypeVisitor extends Visitor {
             if (type==null) {
                 that.addError("member type declaration not found: " + 
                         name(that.getIdentifier()), 100);
+                unit.getUnresolvedReferences().add(that.getIdentifier());
             }
             else {
                 if (!type.isVisible(that.getScope())) {
