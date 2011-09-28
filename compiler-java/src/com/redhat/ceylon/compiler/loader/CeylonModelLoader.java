@@ -757,6 +757,9 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             String className = classSymbol.getQualifiedName().toString();
             if(className.equals("ceylon.language.Void")){
                 // ceylon.language.Void has no super type
+            }else if(className.equals("ceylon.language.Exception")){
+                // we pretend its superclass is something else
+                extendedType = getType(symtab.ceylonIdentifiableObjectType, klass);
             }else if(className.equals("java.lang.Object")){
                 // we pretend its superclass is something else, but note that in theory we shouldn't 
                 // be seeing j.l.Object at all due to unerasure
