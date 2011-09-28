@@ -5,8 +5,8 @@ class ThrowExceptionNamedArgs {
     private final void t() {
         throw new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, .ceylon.language.String.instance("Bang!"), null){
             
-            public .ceylon.language.BaseException call$() {
-                return new .ceylon.language.BaseException((ceylon.language.String)this.args[0], (.java.lang.Throwable)this.args[1]);
+            public .ceylon.language.Exception call$() {
+                return new .ceylon.language.Exception((.java.lang.Throwable)this.args[1], (ceylon.language.String)this.args[0]);
             }
         }.call$();
     }

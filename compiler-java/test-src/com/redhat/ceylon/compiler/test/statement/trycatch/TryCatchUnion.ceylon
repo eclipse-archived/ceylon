@@ -1,10 +1,10 @@
 @nomodel
-class E1(String? message, Exception? cause) extends Exception(message, cause) {
+class E1(Exception? cause, String? message) extends Exception(cause, message) {
 	
 }
 
 @nomodel
-class E2(String? message, Exception? cause) extends Exception(message, cause) {
+class E2(Exception? cause, String? message) extends Exception(cause, message) {
 	
 }
 

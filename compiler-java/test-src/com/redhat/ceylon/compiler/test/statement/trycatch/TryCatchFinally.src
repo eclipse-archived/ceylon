@@ -14,7 +14,7 @@ class TryCatchFinally {
     private final void m() {
         try {
             t();
-        } catch (final .ceylon.language.BaseException e) {
+        } catch (final .ceylon.language.Exception e) {
             c(e);
         } finally {
             f();

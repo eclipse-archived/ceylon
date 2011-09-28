@@ -12,6 +12,6 @@ class ExceptionAttr {
     }
     
     ExceptionAttr() {
-        this.e = new .ceylon.language.BaseException(.ceylon.language.String.instance(""), null);
+        this.e = new .ceylon.language.Exception(null, .ceylon.language.String.instance(""));
     }
 }

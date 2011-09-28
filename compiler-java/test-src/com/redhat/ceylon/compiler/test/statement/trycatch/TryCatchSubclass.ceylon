@@ -1,5 +1,5 @@
 @nomodel
-class E(String? message, Exception? cause) extends Exception(message, cause) {
+class E(Exception? cause, String? message) extends Exception(cause, message) {
 	
 }
 
