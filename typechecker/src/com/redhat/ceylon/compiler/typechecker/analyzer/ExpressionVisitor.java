@@ -2456,11 +2456,14 @@ public class ExpressionVisitor extends Visitor {
                     }
                     else {
                         //TODO: lots wrong here?
-                        at = ( (TypeDeclaration) td.getMember(std.getName()) ).getType();
+                        TypeDeclaration mtd = (TypeDeclaration) td.getMember(std.getName());
+                        at = mtd==null ? null : mtd.getType();
                     }
-                    checkAssignable(at, arg, std, that, 
-                            "type argument does not satisfy self type constraint on type parameter " + 
-                                param.getName() + " of " + type.getDeclaration().getName());
+                    if (at!=null) {
+                        checkAssignable(at, arg, std, that,
+                                "type argument does not satisfy self type constraint on type parameter " + 
+                                    param.getName() + " of " + type.getDeclaration().getName());
+                    }
                 }
             }
         }
