@@ -1,19 +1,18 @@
-shared class Exception(Exception? cause=null, String? description=null) 
+shared class Exception(String? description=null, Exception? cause=null) 
         extends IdentifiableObject() {
     
-    shared String? description = description ? cause?.description;
+    shared String? description = description;
     
     shared Exception? cause = cause;
     
     //shared StackTrace stackTrace { throw; }
     
+    shared default String message {
+        return description ? cause?.message ? "";
+    }
+    
     shared actual String string {
-        if (exists description) {
-            return super.string + ": " + description;
-        }
-        else {
-            return super.string;
-        }
+        return super.string + " \"" message "\"";
     }
     
 }
