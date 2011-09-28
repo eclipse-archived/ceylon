@@ -20,7 +20,7 @@ public class Exception extends RuntimeException {
         return null;
     }
     
-    public ceylon.language.String getMessage() {
+    public java.lang.String getMessage() {
         return null;
     }
 }
