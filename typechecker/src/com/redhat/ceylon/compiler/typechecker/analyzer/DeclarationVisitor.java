@@ -766,7 +766,7 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.TryCatchStatement that) {
         super.visit(that);
-        that.addWarning("try statements are not yet supported");
+        //that.addWarning("try statements are not yet supported");
     }
 
     @Override
