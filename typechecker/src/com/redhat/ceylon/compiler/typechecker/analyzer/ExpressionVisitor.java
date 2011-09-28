@@ -41,6 +41,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -2213,14 +2214,16 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.CatchVariable that) {
         super.visit(that);
-        if (that.getVariable()!=null) {
+        Variable var = that.getVariable();
+        if (var!=null) {
             ProducedType et = unit.getExceptionDeclaration().getType();
-            if (that.getVariable().getType() instanceof Tree.LocalModifier) {
-                that.getVariable().getType().setTypeModel(et);
+            if (var.getType() instanceof Tree.LocalModifier) {
+                var.getType().setTypeModel(et);
+                var.getDeclarationModel().setType(et);
             }
             else {
-                checkAssignable(that.getVariable().getType().getTypeModel(), et, 
-                        that.getVariable().getType(), 
+                checkAssignable(var.getType().getTypeModel(), et, 
+                        var.getType(), 
                         "catch type must be an exception type");
             }
         }
