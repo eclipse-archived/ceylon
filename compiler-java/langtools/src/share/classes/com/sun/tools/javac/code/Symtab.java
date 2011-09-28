@@ -178,7 +178,6 @@ public class Symtab {
     public  Type ceylonContainerType;
     public  Type ceylonNamedArgumentCall;
     public  Type ceylonExceptionType;
-    public  Type ceylonBaseExceptionType;
 
     public final Type ceylonAtCeylonType;
     public final Type ceylonAtNameType;
@@ -720,6 +719,5 @@ public class Symtab {
         ceylonContainerType = enterClass("ceylon.language.Container");
         ceylonNamedArgumentCall = enterClass("ceylon.language.NamedArgumentCall");
         ceylonExceptionType = enterClass("ceylon.language.Exception");
-        ceylonBaseExceptionType = enterClass("ceylon.language.BaseException");
     }
 }
