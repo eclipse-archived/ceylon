@@ -498,7 +498,12 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         // Construct the call$() method
         boolean isVoid = ce.getTypeModel().isExactly(typeFact().getVoidDeclaration().getType());
-        JCExpression resultType = makeJavaType(ce.getTypeModel(), (isTypeParameter(determineExpressionType(ce))) ? this.TYPE_PARAM: 0);
+        int spec = 0;
+        if(isTypeParameter(determineExpressionType(ce)))
+            spec = this.TYPE_PARAM;
+        else if(generateNew)
+            spec = this.CLASS_NEW;
+        JCExpression resultType = makeJavaType(ce.getTypeModel(), spec);
         final String callMethodName = "call$";
         MethodDefinitionBuilder callMethod = MethodDefinitionBuilder.method(gen(), callMethodName);
         callMethod.modifiers(Flags.PUBLIC);
