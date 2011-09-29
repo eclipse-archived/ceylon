@@ -11,8 +11,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -115,7 +117,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 	    Collections.sort(subclasses, comparator);	        
 	    Collections.sort(satisfyingClasses, comparator);
 	    Collections.sort(satisfyingInterfaces, comparator);     
-	    Collections.sort(superInterfaces, comparator);
+//	    Collections.sort(superInterfaces, comparator);
 	    Collections.sort(innerClasses, comparator);
     }
 
@@ -135,6 +137,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 			constructor((Class)klass);		
 		methods();
 		inheritedMembers(methodSpecification, "Methods inherited from class ");
+		inheritedMethodsFromInterfaces();
 		close("body");
 		close("html");
 		writer.flush();
@@ -142,10 +145,10 @@ public class ClassDoc extends ClassOrPackageDoc {
 	}
     
 	public List<Declaration> getConcreteSharedMembers(TypeDeclaration decl, MemberSpecification specification ) {
-		List<Declaration> members = new ArrayList<Declaration>();
-		for(Declaration m : decl.getMembers())	 
+		List<Declaration> members = new ArrayList<Declaration>();		
+		for(Declaration m : decl.getMembers())		
 			if ((m.isShared() && !m.isFormal()) && specification.isSatisfiedBy(m))
-	                members.add((MethodOrValue) m);
+	                members.add((MethodOrValue) m);		
 		return members;
 	}	
 	  
@@ -184,7 +187,47 @@ public class ClassDoc extends ClassOrPackageDoc {
 			close("tr");
 			subclass = superClass;		
 		}
-		close("table");
+		close("table");	
+	}
+	
+	private void inheritedMethodsFromInterfaces() throws IOException {
+		Map<String, List<Declaration>> classMethods = new HashMap<String, List<Declaration>>();
+		for (TypeDeclaration superInterface: superInterfaces) {
+			List<Declaration> methods = getConcreteSharedMembers(superInterface, methodSpecification);
+			classMethods.put(superInterface.getQualifiedNameString(), methods);
+		}
+		for (TypeDeclaration superInterface: superInterfaces) {
+			List<Declaration> methods = getConcreteSharedMembers(superInterface, methodSpecification);
+			for (Declaration method: methods) {
+				Declaration refined = method.getRefinedDeclaration();
+				if (refined != null && refined != method) {
+					classMethods.get(refined.getContainer().getQualifiedNameString()).remove(refined);
+				}
+			}
+		}
+		for (String superIntefaceName: classMethods.keySet()) {
+			List<Declaration> methods = classMethods.get(superIntefaceName);
+			if (methods.isEmpty())
+				continue;
+			openTable("Methos inherited from interface: " + superIntefaceName);
+			open("tr class='TableRowColor'");
+			open("td");
+			boolean first = true;
+			for (Declaration method: methods) {
+					if(!first){
+						write(", ");
+					}else{
+						first = false;
+					}
+					// generate links to class#method instead of just print the name
+					write(method.getName());
+			}
+			close("td");
+			close("tr");
+			close("table");	
+		}
+	
+	
 	}
 	
 	private void innerClasses() throws IOException {

@@ -69,7 +69,7 @@ public class Util {
 		while (satisfiedTypes.isEmpty() == false) {
 			 List<TypeDeclaration> superSatisfiedTypes = new ArrayList<TypeDeclaration>(); 
 			 for (TypeDeclaration satisfiedType : satisfiedTypes) {
-				 if (superInterfaces.contains(satisfiedType) == false) { 
+				 if (superInterfaces.contains(satisfiedType) == false && superSatisfiedTypes.contains(satisfiedType) == false) { 
 					 superInterfaces.add(satisfiedType);
 					 if (satisfiedType.getSatisfiedTypeDeclarations().isEmpty() == false) {
 						 for (TypeDeclaration superSatisfiedType: satisfiedType.getSatisfiedTypeDeclarations() ) {
