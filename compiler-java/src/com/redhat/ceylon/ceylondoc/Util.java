@@ -82,6 +82,31 @@ public class Util {
 		return ancestors;
 	}	
 	
+	public static List<TypeDeclaration> getSuperInterfaces(TypeDeclaration decl) {
+		List<TypeDeclaration> superInterfaces = new ArrayList<TypeDeclaration>();
+		List<TypeDeclaration> satisfiedTypes = decl.getSatisfiedTypeDeclarations();
+		while (satisfiedTypes.isEmpty() == false) {
+			 List<TypeDeclaration> superSatisfiedTypes = new ArrayList<TypeDeclaration>(); 
+			 for (TypeDeclaration satisfiedType : satisfiedTypes) {
+				 if (superInterfaces.contains(satisfiedType) == false) { 
+					 superInterfaces.add(satisfiedType);
+					 if (satisfiedType.getSatisfiedTypeDeclarations().isEmpty() == false) {
+						 for (TypeDeclaration superSatisfiedType: satisfiedType.getSatisfiedTypeDeclarations() ) {
+							 if (superInterfaces.contains(superSatisfiedType) == false && superSatisfiedTypes.contains(superSatisfiedType) == false) {
+								 superSatisfiedTypes.add(superSatisfiedType);
+							 }
+						 }
+					 }
+				 }	 
+
+				 
+			 }
+			 satisfiedTypes = superSatisfiedTypes; 
+		}
+		return superInterfaces;
+	}	
+	
+	
     public static boolean isNullOrEmpty(Collection<? extends Object> collection ) {
     	return collection == null || collection.isEmpty(); 
     }

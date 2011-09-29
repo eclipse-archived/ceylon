@@ -1,11 +1,12 @@
 package com.redhat.ceylon.ceylondoc;
 
+import static com.redhat.ceylon.ceylondoc.Util.getAncestors;
+import static com.redhat.ceylon.ceylondoc.Util.getConcreteSharedAttributes;
+import static com.redhat.ceylon.ceylondoc.Util.getConcreteSharedMethods;
 import static com.redhat.ceylon.ceylondoc.Util.getDoc;
 import static com.redhat.ceylon.ceylondoc.Util.getModifiers;
+import static com.redhat.ceylon.ceylondoc.Util.getSuperInterfaces;
 import static com.redhat.ceylon.ceylondoc.Util.isNullOrEmpty;
-import static com.redhat.ceylon.ceylondoc.Util.getConcreteSharedAttributes;
-import static com.redhat.ceylon.ceylondoc.Util.getAncestors;
-import static com.redhat.ceylon.ceylondoc.Util.getConcreteSharedMethods;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +37,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     private List<Class> satisfyingClasses;
     private List<Class> innerClasses;
     private List<Interface> satisfyingInterfaces;
-    private List<ClassOrInterface> superInterfaces;
+    private List<TypeDeclaration> superInterfaces;
     private List<TypeDeclaration> superClasses;
     
     private Comparator<Declaration> comparator = new Comparator<Declaration>() {
@@ -47,7 +48,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     };
     
     
-	public ClassDoc(String destDir, boolean showPrivate, ClassOrInterface klass, List<ClassOrInterface> subclasses, List<ClassOrInterface> satisfyingClassesOrInterfaces, List<ClassOrInterface> superInterfaces) throws IOException {
+	public ClassDoc(String destDir, boolean showPrivate, ClassOrInterface klass, List<ClassOrInterface> subclasses, List<ClassOrInterface> satisfyingClassesOrInterfaces) throws IOException {
 		super(destDir, showPrivate);
 		if (subclasses != null) {
 			this.subclasses = subclasses;
@@ -58,12 +59,6 @@ public class ClassDoc extends ClassOrPackageDoc {
 			this.satisfyingClassesOrInterfaces = satisfyingClassesOrInterfaces;
 		} else {
 			this.satisfyingClassesOrInterfaces = new ArrayList<ClassOrInterface>();
-		}
-		
-		if (superInterfaces != null) {
-			this.superInterfaces = superInterfaces;
-		} else {
-			this.superInterfaces = new ArrayList<ClassOrInterface>();
 		}
 		
 		this.klass = klass;
@@ -77,6 +72,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 	    attributes = new ArrayList<MethodOrValue>();
 	    innerClasses = new ArrayList<Class>();
 	    superClasses = getAncestors(klass);
+	    superInterfaces = getSuperInterfaces(klass);
 	    for(Declaration m : klass.getMembers()){	        	
 	    	if (showPrivate || m.isShared()) {
 	            if(m instanceof Value)	            	
@@ -278,7 +274,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 		}
 		
 		// interfaces
-		writeListOnSummary("satisfied", "All Known Satisfied Interfaces: ", superInterfaces);
+		writeListOnSummary("satisfied", "All Known Satisfied Interfaces: ",superInterfaces);
 
 		// subclasses
 		writeListOnSummary("subclasses", "Direct Known Subclasses: ", subclasses);
