@@ -70,20 +70,18 @@ public class FileSystemVirtualFile implements VirtualFile {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        FileSystemVirtualFile that = (FileSystemVirtualFile) o;
-
-        if (!file.equals(that.file)) return false;
-
-        return true;
-    }
-
-    @Override
     public int hashCode() {
-        return file.hashCode();
+        return getPath().hashCode();
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof VirtualFile) {
+            return ((VirtualFile) obj).getPath().equals(getPath());
+        }
+        else {
+            return super.equals(obj);
+        }
     }
 
     @Override

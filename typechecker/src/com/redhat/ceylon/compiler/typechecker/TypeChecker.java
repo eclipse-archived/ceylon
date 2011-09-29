@@ -73,6 +73,22 @@ public class TypeChecker {
         }
     }
 
+    public PhasedUnit getPhasedUnit(VirtualFile file) {
+        PhasedUnit phasedUnit = phasedUnits.getPhasedUnit(file);
+        if (phasedUnit == null) {
+            for (PhasedUnits units : phasedUnitsOfDependencies) {
+                phasedUnit = units.getPhasedUnit(file);
+                if (phasedUnit != null) {
+                    return phasedUnit;
+                }
+            }
+            return null;
+        }
+        else {
+            return phasedUnit;
+        }
+    }
+
     /*
      * Return the CompilationUnit for a given file.
      * May return null of the CompilationUnit has not been parsed.
