@@ -126,7 +126,7 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public final Sequence<Element> by(long stepSize){
-        throw new ceylon.language.BaseException();
+        throw new ceylon.language.Exception(null, null);
     }
     
     @Override

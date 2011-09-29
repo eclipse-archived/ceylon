@@ -41,7 +41,7 @@ public class Sequence$impl {
                     return first.toString();
                 else if(first == null)
                     return "null";
-                throw new ceylon.language.BaseException();
+                throw new ceylon.language.Exception(null, null);
             }
         }
         final getFirstString$getter getFirstString$getter = new getFirstString$getter();
