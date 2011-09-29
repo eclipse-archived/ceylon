@@ -21,15 +21,15 @@ public class MainForTest {
                 .addSrcDirectory( new File("test") )
                 .getTypeChecker();
         typeChecker.process();
-        Tree.CompilationUnit compilationUnit = typeChecker.getCompilationUnitFromRelativePath("ceylon/language/Object.ceylon");
+        Tree.CompilationUnit compilationUnit = typeChecker.getPhasedUnitFromRelativePath("ceylon/language/Object.ceylon").getCompilationUnit();
         if ( compilationUnit == null ) {
             throw new RuntimeException("Failed to pass getCompilationUnitFromRelativePath for files in .src");
         }
-        compilationUnit = typeChecker.getCompilationUnitFromRelativePath("capture/Capture.ceylon");
+        compilationUnit = typeChecker.getPhasedUnitFromRelativePath("capture/Capture.ceylon").getCompilationUnit();
         if ( compilationUnit == null ) {
             throw new RuntimeException("Failed to pass getCompilationUnitFromRelativePath for files in real src dir");
         }
-        compilationUnit = typeChecker.getCompilationUnitFromRelativePath("com/redhat/sample/multisource/Boo.ceylon");
+        compilationUnit = typeChecker.getPhasedUnitFromRelativePath("com/redhat/sample/multisource/Boo.ceylon").getCompilationUnit();
         Module module = compilationUnit.getUnit().getPackage().getModule();
         if ( !"com.redhat.sample.multisource".equals( module.getNameAsString() ) ) {
             throw new RuntimeException("Unable to extract module name");
@@ -42,7 +42,7 @@ public class MainForTest {
                 .addSrcDirectory( new File("test/capture") )
                 .getTypeChecker();
         typeChecker.process();
-        compilationUnit = typeChecker.getCompilationUnitFromRelativePath("Capture.ceylon");
+        compilationUnit = typeChecker.getPhasedUnitFromRelativePath("Capture.ceylon").getCompilationUnit();
         if ( compilationUnit == null ) {
             throw new RuntimeException("Failed to pass getCompilationUnitFromRelativePath for top level files (no package) in real src dir");
         }

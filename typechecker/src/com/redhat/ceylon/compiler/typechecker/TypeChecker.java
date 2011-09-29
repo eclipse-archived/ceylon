@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.typechecker;
 
-import java.io.File;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleValidator;
@@ -9,7 +8,6 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.StatisticsVisitor;
 
@@ -55,31 +53,34 @@ public class TypeChecker {
     }
 
     /**
-     * Return the CompilationUnit for a given relative path.
+     * Return the PhasedUnit for a given relative path.
      * The path is relative to the source directory
      * eg ceylon/language/Object.ceylon
      */
-    public Tree.CompilationUnit getCompilationUnitFromRelativePath(String relativePath) {
+    public PhasedUnit getPhasedUnitFromRelativePath(String relativePath) {
         PhasedUnit phasedUnit = phasedUnits.getPhasedUnitFromRelativePath(relativePath);
         if (phasedUnit == null) {
             for (PhasedUnits units : phasedUnitsOfDependencies) {
                 phasedUnit = units.getPhasedUnitFromRelativePath(relativePath);
                 if (phasedUnit != null) {
-                    break;
+                    return phasedUnit;
                 }
             }
+            return null;
         }
-        return phasedUnit == null ? null : phasedUnit.getCompilationUnit();
+        else {
+            return phasedUnit;
+        }
     }
 
-    /**
+    /*
      * Return the CompilationUnit for a given file.
      * May return null of the CompilationUnit has not been parsed.
      */
-    public Tree.CompilationUnit getCompilationUnit(File file) {
+    /*public Tree.CompilationUnit getCompilationUnit(File file) {
         final PhasedUnit phasedUnit = phasedUnits.getPhasedUnit( context.getVfs().getFromFile(file) );
         return phasedUnit.getCompilationUnit();
-    }
+    }*/
 
     public void process() throws RuntimeException {
         long start = System.nanoTime();
