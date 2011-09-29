@@ -1,8 +1,6 @@
 package com.redhat.ceylon.ceylondoc;
 
 import static com.redhat.ceylon.ceylondoc.Util.getAncestors;
-import static com.redhat.ceylon.ceylondoc.Util.getConcreteSharedAttributes;
-import static com.redhat.ceylon.ceylondoc.Util.getConcreteSharedMethods;
 import static com.redhat.ceylon.ceylondoc.Util.getDoc;
 import static com.redhat.ceylon.ceylondoc.Util.getModifiers;
 import static com.redhat.ceylon.ceylondoc.Util.getSuperInterfaces;
@@ -46,6 +44,24 @@ public class ClassDoc extends ClassOrPackageDoc {
             return a.getName().compareTo(b.getName());
         }
     };
+    
+	interface MemberSpecification {
+		boolean isSatisfiedBy(Declaration decl);
+	}
+	
+	MemberSpecification atributeSpecification = new MemberSpecification() {		
+		@Override
+		public boolean isSatisfiedBy(Declaration decl) {			
+			return decl instanceof Value || decl  instanceof Getter;
+		}
+	};
+	
+	MemberSpecification methodSpecification = new MemberSpecification() {		
+		@Override
+		public boolean isSatisfiedBy(Declaration decl) {			
+			return decl instanceof Method;
+		}
+	};
     
     
 	public ClassDoc(String destDir, boolean showPrivate, ClassOrInterface klass, List<ClassOrInterface> subclasses, List<ClassOrInterface> satisfyingClassesOrInterfaces) throws IOException {
@@ -114,76 +130,48 @@ public class ClassDoc extends ClassOrPackageDoc {
 		summary();
 		innerClasses();
 		attributes();
-		inheritedAttributes();
+		inheritedMembers(atributeSpecification,"Attributes inherited from class ");
 		if(klass instanceof Class)
 			constructor((Class)klass);		
 		methods();
-		inheritedMethods();
+		inheritedMembers(methodSpecification, "Methods inherited from class ");
 		close("body");
 		close("html");
 		writer.flush();
 		writer.close();
 	}
-
-	private void inheritedAttributes() throws IOException {		
+    
+	public List<Declaration> getConcreteSharedMembers(TypeDeclaration decl, MemberSpecification specification ) {
+		List<Declaration> members = new ArrayList<Declaration>();
+		for(Declaration m : decl.getMembers())	 
+			if ((m.isShared() && !m.isFormal()) && specification.isSatisfiedBy(m))
+	                members.add((MethodOrValue) m);
+		return members;
+	}	
+	  
+	private void inheritedMembers(MemberSpecification specification, String title) throws IOException {		
 		if  (superClasses.isEmpty())
 			return;
 		TypeDeclaration subclass = klass;		
 		for (TypeDeclaration superClass: superClasses) {
-			List<MethodOrValue> attributes = getConcreteSharedAttributes(superClass);
-			if (attributes.isEmpty())
-				continue;
-			List<MethodOrValue> notRefined = new ArrayList<MethodOrValue>();
- 			for (MethodOrValue attribute: attributes) {
-				if (subclass.getDirectMember(attribute.getName()) == null) { 
-					notRefined.add(attribute);
-				}
-			}
-			if (notRefined.isEmpty())
-				continue;
-			openTable("Attributes inherited from class " + superClass.getQualifiedNameString());
-			open("tr class='TableRowColor'");
-			open("td");	
-			boolean first = true;
-			for (MethodOrValue atribute: notRefined) { 
-					if(!first){
-						write(", ");
-					}else{
-						first = false;
-					}
-					write(atribute.getName());
-			}
-			close("td");
-			close("tr");
-			subclass = superClass;		
-		}
-		close("table");
-	}
-	
-	// refactor, same as inherited attributes    
-	private void inheritedMethods() throws IOException {		
-		if  (superClasses.isEmpty())
-			return;
-		TypeDeclaration subclass = klass;		
-		for (TypeDeclaration superClass: superClasses) {
-			List<MethodOrValue> methods = getConcreteSharedMethods(superClass);
+			List<Declaration> methods = getConcreteSharedMembers(superClass, specification);
 			if (methods.isEmpty())
 				continue;
-			List<MethodOrValue> notRefined = new ArrayList<MethodOrValue>();
+			List<Declaration> notRefined = new ArrayList<Declaration>();
 			// clean already listed methods (refined in subclasses)
 			// done in 2 phases to avoid empty tables
- 			for (MethodOrValue method: methods) {
+ 			for (Declaration method: methods) {
 				if (subclass.getDirectMember(method.getName()) == null) { 
 					notRefined.add(method);
 				}
 			}
 			if (notRefined.isEmpty())
 				continue;
-			openTable("Methods inherited from class " + superClass.getQualifiedNameString());
+			openTable( title + superClass.getQualifiedNameString());
 			open("tr class='TableRowColor'");
 			open("td");
 			boolean first = true;
-			for (MethodOrValue method: notRefined) {
+			for (Declaration method: notRefined) {
 					if(!first){
 						write(", ");
 					}else{
@@ -197,7 +185,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 			subclass = superClass;		
 		}
 		close("table");
-	}	
+	}
 	
 	private void innerClasses() throws IOException {
 		if (innerClasses.isEmpty())

@@ -7,9 +7,6 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Getter;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
@@ -55,22 +52,6 @@ public class Util {
 		}
 		return modifiers.toString().trim();
 	}
-	
-	public static List<MethodOrValue> getConcreteSharedAttributes(TypeDeclaration decl) {
-		List<MethodOrValue> attributes = new ArrayList<MethodOrValue>();
-		for(Declaration m : decl.getMembers())	 
-			if ((m.isShared() && !m.isFormal()) && (m instanceof Value ||m  instanceof Getter))
-	                attributes.add((MethodOrValue) m);
-		return attributes;
-	}
-	
-	public static List<MethodOrValue> getConcreteSharedMethods(TypeDeclaration decl) {
-		List<MethodOrValue> methods = new ArrayList<MethodOrValue>();
-		for(Declaration m : decl.getMembers())	 
-			if ((m.isShared() && !m.isFormal()) && (m instanceof Method))
-	                methods.add((MethodOrValue) m);
-		return methods;
-	}	
 	
 	public static List<TypeDeclaration> getAncestors(TypeDeclaration decl) {
 		List<TypeDeclaration> ancestors =  new ArrayList<TypeDeclaration>();
