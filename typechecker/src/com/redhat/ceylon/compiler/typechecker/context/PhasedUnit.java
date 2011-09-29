@@ -47,7 +47,7 @@ public class PhasedUnit {
     private VirtualFile unitFile;
     private final Set<PhasedUnit> dependentsOf = new HashSet<PhasedUnit>();
     private CommonTokenStream tokenStream;
-
+    private boolean fullyTyped;
 
     public PhasedUnit(VirtualFile unitFile, VirtualFile srcDir, Tree.CompilationUnit cu, 
     		Package p, ModuleBuilder moduleBuilder, Context context, CommonTokenStream tokenStream) {
@@ -85,6 +85,10 @@ public class PhasedUnit {
             compilationUnit.visit(v);
         }
     }
+    
+    public boolean isFullyTyped() {
+        return fullyTyped;
+    }
 
     public void validateTree() {
         //System.out.println("Validating tree for " + fileName);
@@ -108,6 +112,7 @@ public class PhasedUnit {
         compilationUnit.visit(new ExpressionVisitor());
         compilationUnit.visit(new TypeArgumentVisitor());
         compilationUnit.visit(new TypeHierarchyVisitor());
+        fullyTyped = true;
     }
 
     public void collectUnitDependencies(PhasedUnits phasedUnits) {
