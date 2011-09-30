@@ -12,6 +12,10 @@ public final class Float
     public static ceylon.language.Float instance(double d) {
         return new ceylon.language.Float(d);
     }
+    
+    public double doubleValue() {
+        return value;
+    }
 
     public ceylon.language.Float plus(ceylon.language.Float op) {
         return instance(value + op.value);
