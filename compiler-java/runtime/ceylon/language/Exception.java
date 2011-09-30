@@ -34,6 +34,6 @@ public class Exception extends RuntimeException {
     }
     
     public java.lang.String toString() {
-        return /*super.toString() + */ " \"" + getMessage() +"\""; 
+        return /*TODO IdentifiableObject.toString() + */ " \"" + getMessage() +"\""; 
     }
 }
