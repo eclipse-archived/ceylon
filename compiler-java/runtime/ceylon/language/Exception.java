@@ -23,10 +23,6 @@ public class Exception extends RuntimeException {
         return (java.lang.Exception)super.getCause();
     }
     
-    public ceylon.language.String getDescription() {
-        return description;
-    }
-    
     public java.lang.String getMessage() {
         if (description != null) {
             return description.value;
