@@ -1,8 +1,6 @@
 shared class Exception(String? description=null, Exception? cause=null) 
         extends Object() {
     
-    shared String? description = description;
-    
     shared Exception? cause = cause;
     
     //shared StackTrace stackTrace { throw; }
