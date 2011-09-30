@@ -14,7 +14,7 @@ class TryCatchFinally {
     private final void m() {
         try {
             t();
-        } catch (final .ceylon.language.Exception e) {
+        } catch (final .java.lang.Exception e) {
             c(e);
         } finally {
             f();

@@ -22,7 +22,7 @@ class TryCatchSubclass {
             t();
         } catch (final com.redhat.ceylon.compiler.test.statement.trycatch.E e) {
             ce(e);
-        } catch (final .ceylon.language.Exception e) {
+        } catch (final .java.lang.Exception e) {
             cexception(e);
         }
     }

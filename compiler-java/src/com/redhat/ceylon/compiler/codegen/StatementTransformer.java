@@ -383,7 +383,7 @@ public class StatementTransformer extends AbstractTransformer {
             for (ProducedType type : exceptionTypes) {
                 // catch blocks for each exception in the union
                 JCVariableDecl param = make().VarDef(make().Modifiers(Flags.FINAL), names().fromString(variable.getIdentifier().getText()),
-                        makeJavaType(type, CLASS_NEW), null);
+                        makeJavaType(type), null);
                 catches.add(make().Catch(param, transform(catchClause.getBlock())));
             }
         }
