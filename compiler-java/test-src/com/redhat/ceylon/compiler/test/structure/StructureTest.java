@@ -238,6 +238,7 @@ public class StructureTest extends CompilerTest {
     
     @Test
     public void testImpImportAttrSingle(){
+        compile("import_/pkg/C1.ceylon", "import_/pkg/C2.ceylon");
         compareWithJavaSource("import_/ImportAttrSingle");
     }
     
