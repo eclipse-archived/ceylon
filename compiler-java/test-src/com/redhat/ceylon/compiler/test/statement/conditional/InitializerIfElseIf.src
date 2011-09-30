@@ -4,10 +4,10 @@ class InitializerIfElseIf {
     
     InitializerIfElseIf() {
         boolean b;
-        if (true == true) {
+        if (true) {
             b = true;
         } else {
-            if (false == true) {
+            if (false) {
                 b = false;
             } else {
                 b = true;

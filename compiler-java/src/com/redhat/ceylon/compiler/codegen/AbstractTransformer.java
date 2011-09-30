@@ -174,10 +174,6 @@ public abstract class AbstractTransformer implements Transformation {
         return expr;
     }
 
-    protected JCExpression makeBooleanTest(JCExpression expr, boolean val) {
-        return make().Binary(JCTree.EQ, expr, makeBoolean(val));
-    }
-    
     protected JCFieldAccess makeSelect(JCExpression s1, String s2) {
         return make().Select(s1, names().fromString(s2));
     }

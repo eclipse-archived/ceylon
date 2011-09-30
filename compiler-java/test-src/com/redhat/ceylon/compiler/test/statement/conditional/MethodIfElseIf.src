@@ -3,10 +3,10 @@ package com.redhat.ceylon.compiler.test.statement.conditional;
 class MethodIfElseIf {
     
     private final long m() {
-        if (true == true) {
+        if (true) {
             return 1L;
         } else {
-            if (false == true) {
+            if (false) {
                 return 2L;
             } else {
                 return 3L;

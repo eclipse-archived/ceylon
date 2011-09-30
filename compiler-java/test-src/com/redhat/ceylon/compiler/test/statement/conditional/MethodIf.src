@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.test.statement.conditional;
 class MethodIf {
     
     public final long m() {
-        if (true == true) {
+        if (true) {
             return 1L;
         }
         return 0L;

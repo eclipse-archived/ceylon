@@ -4,7 +4,7 @@ class InitializerIf {
     
     InitializerIf() {
         boolean b = false;
-        if (true == true) {
+        if (true) {
             b = true;
         }
     }

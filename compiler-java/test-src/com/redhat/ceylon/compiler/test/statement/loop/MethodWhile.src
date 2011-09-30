@@ -4,7 +4,7 @@ class MethodWhile {
     
     public final long m() {
         boolean cont = true;
-        while (cont == true) {
+        while (cont) {
             cont = false;
         }
         return 0L;

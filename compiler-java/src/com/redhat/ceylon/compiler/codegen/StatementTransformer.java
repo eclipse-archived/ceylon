@@ -175,7 +175,7 @@ public class StatementTransformer extends AbstractTransformer {
             }
         } else if (cond instanceof Tree.BooleanCondition) {
             Tree.BooleanCondition booleanCondition = (Tree.BooleanCondition) cond;
-            test = makeBooleanTest(expressionGen().transformExpression(booleanCondition.getExpression(), BoxingStrategy.UNBOXED), true);
+            test = expressionGen().transformExpression(booleanCondition.getExpression(), BoxingStrategy.UNBOXED);
         } else {
             throw new RuntimeException("Not implemented: " + cond.getNodeType());
         }
