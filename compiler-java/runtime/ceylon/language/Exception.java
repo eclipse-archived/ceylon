@@ -33,7 +33,7 @@ public class Exception extends RuntimeException {
         return "";
     }
     
-    public java.lang.String getString() {
+    public java.lang.String toString() {
         return /*super.toString() + */ " \"" + getMessage() +"\""; 
     }
 }
