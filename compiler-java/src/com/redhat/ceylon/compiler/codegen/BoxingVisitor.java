@@ -33,6 +33,9 @@ public class BoxingVisitor extends Visitor {
     @Override
     public void visit(BaseMemberExpression that) {
         super.visit(that);
+        // handle errors gracefully
+        if(that.getDeclaration() == null)
+            return;
         if(Util.isUnBoxed((TypedDeclaration)that.getDeclaration()) || transformer.isCeylonBoolean(that.getTypeModel()))
             Util.markUnBoxed(that);
     }
@@ -40,6 +43,9 @@ public class BoxingVisitor extends Visitor {
     @Override
     public void visit(QualifiedMemberExpression that) {
         super.visit(that);
+        // handle errors gracefully
+        if(that.getDeclaration() == null)
+            return;
         propagateFromDeclaration(that, (TypedDeclaration)that.getDeclaration());
     }
 
