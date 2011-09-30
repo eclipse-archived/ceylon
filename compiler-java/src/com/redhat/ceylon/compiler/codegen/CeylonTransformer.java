@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import javax.tools.JavaFileObject;
 
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
@@ -168,14 +169,16 @@ public class CeylonTransformer extends AbstractTransformer {
                 attrClassName += "$setter";
             }
         }
+
+        TypedDeclaration declarationModel = decl.getDeclarationModel();
         AttributeDefinitionBuilder builder = globalGen()
             .defineGlobal(makeJavaType(actualType(decl)), attrName)
             .className(attrClassName)
             .classAnnotations(makeAtAttribute())
-            .valueAnnotations(makeJavaTypeAnnotations(decl.getDeclarationModel(), actualType(decl)))
+            .valueAnnotations(makeJavaTypeAnnotations(declarationModel, actualType(decl)))
             .classIsFinal(true);
 
-        if (decl.getDeclarationModel().isShared()) {
+        if (declarationModel.isShared()) {
             builder
                 .classIsPublic(true)
                 .getterIsPublic(true)
@@ -191,13 +194,13 @@ public class CeylonTransformer extends AbstractTransformer {
         } else {
             if (decl instanceof AttributeDeclaration) {
                 // For inner and toplevel value attributes
-                if (!decl.getDeclarationModel().isVariable()) {
+                if (!declarationModel.isVariable()) {
                     builder.immutable();
                 }
                 AttributeDeclaration adecl = (AttributeDeclaration)decl;
                 if (adecl.getSpecifierOrInitializerExpression() != null) {
                     builder.initialValue(expressionGen().transformExpression(
-                            adecl.getSpecifierOrInitializerExpression().getExpression(), Util.getBoxingStrategy(decl.getDeclarationModel())));
+                            adecl.getSpecifierOrInitializerExpression().getExpression(), Util.getBoxingStrategy(declarationModel)));
                 }
             } else {
                 // For inner and toplevel getters
@@ -220,7 +223,7 @@ public class CeylonTransformer extends AbstractTransformer {
             }
         }
         
-        boolean isMethodLocal = decl.getDeclarationModel().getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Method;
+        boolean isMethodLocal = declarationModel.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Method;
         if (isMethodLocal) {
             // Add a "foo foo = new foo();" at the decl site
             JCTree.JCIdent name = make().Ident(names().fromString(attrClassName));
@@ -228,7 +231,7 @@ public class CeylonTransformer extends AbstractTransformer {
             JCExpression initValue = at(decl).NewClass(null, null, name, List.<JCTree.JCExpression>nil(), null);
             List<JCAnnotation> annots2 = List.<JCAnnotation>nil();
     
-            int modifiers = decl.getDeclarationModel().isShared() ? 0 : FINAL;
+            int modifiers = declarationModel.isShared() ? 0 : FINAL;
             JCTree.JCVariableDecl var = at(decl).VarDef(at(decl)
                     .Modifiers(modifiers, annots2), 
                     names().fromString(attrClassName), 
