@@ -126,10 +126,14 @@ public abstract class CompilerTest {
 		result = result.replaceAll("\r", "\n"); // Mac (OS<=9)
 		return result;
 	}
-	
+
+	protected void compile(String... ceylon) {
+	    Boolean success = getCompilerTask(ceylon).call();
+	    Assert.assertTrue(success);
+	}
+
 	protected void compileAndRun(String main, String... ceylon) {
-		Boolean success = getCompilerTask(ceylon).call();
-		Assert.assertTrue(success);
+		compile(ceylon);
 		try{
 		    // make sure we load the stuff from the Jar
 		    File jar = new File(destJar);
