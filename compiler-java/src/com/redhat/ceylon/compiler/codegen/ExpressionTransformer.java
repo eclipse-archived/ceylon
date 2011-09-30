@@ -443,8 +443,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (declaredParam.getName().equals(namedArg.getIdentifier().getText())) {
                     JCExpression argExpr = make().Indexed(makeSelect("this", "args"), makeInteger(index));
                     ProducedType type = declaredParam.getType();
-                    if(isTypeParameter(type))
+                    if (isTypeParameter(type)) {
                         type = namedArgType(namedArg);
+                    }
                     argExpr = make().TypeCast(makeJavaType(type, this.TYPE_PARAM), argExpr);
                     callArgs.append(unboxType(argExpr, declaredParam.getType()));
                     found = true;

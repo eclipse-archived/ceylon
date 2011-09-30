@@ -1,17 +1,17 @@
 package com.redhat.ceylon.compiler.test.statement.trycatch;
 
 class ExceptionAttr {
-    private .java.lang.Throwable e;
+    private .java.lang.Exception e;
     
-    public final .java.lang.Throwable getE() {
+    public final .java.lang.Exception getE() {
         return this.e;
     }
     
-    public final void setE(.java.lang.Throwable e) {
+    public final void setE(.java.lang.Exception e) {
         this.e = e;
     }
     
     ExceptionAttr() {
-        this.e = new .ceylon.language.Exception(null, .ceylon.language.String.instance(""));
+        this.e = new .ceylon.language.Exception(.ceylon.language.String.instance(""), null);
     }
 }

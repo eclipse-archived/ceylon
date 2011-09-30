@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.test.statement.trycatch;
 class ThrowException {
     
     private final void t() {
-        throw new java.lang.Throwable("Bang!", null);
+        throw new java.lang.Exception("Bang!", null);
     }
     
     ThrowException() {

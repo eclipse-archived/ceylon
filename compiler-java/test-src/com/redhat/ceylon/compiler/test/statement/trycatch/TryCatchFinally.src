@@ -5,7 +5,7 @@ class TryCatchFinally {
     private final void t() {
     }
     
-    private final void c(final .java.lang.Throwable e) {
+    private final void c(final .java.lang.Exception e) {
     }
     
     private final void f() {

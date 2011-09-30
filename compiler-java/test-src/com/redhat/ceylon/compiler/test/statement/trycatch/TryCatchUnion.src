@@ -2,14 +2,14 @@ package com.redhat.ceylon.compiler.test.statement.trycatch;
 
 class E1 extends .ceylon.language.Exception {
     
-    E1(.java.lang.Throwable cause, ceylon.language.String message) {
-        super(cause, message);
+    E1(ceylon.language.String description, .java.lang.Exception cause) {
+        super(description, cause);
     }
 }
 class E2 extends .ceylon.language.Exception {
     
-    E2(.java.lang.Throwable cause, ceylon.language.String message) {
-        super(cause, message);
+    E2(ceylon.language.String description, .java.lang.Exception cause) {
+        super(description, cause);
     }
 }
 class TryCatchUnion {
@@ -17,7 +17,7 @@ class TryCatchUnion {
     private final void t() {
     }
     
-    private final void c(final .java.lang.Throwable e) {
+    private final void c(final .java.lang.Exception e) {
     }
     
     private final void m() {

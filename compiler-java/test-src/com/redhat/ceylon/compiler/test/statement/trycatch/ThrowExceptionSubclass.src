@@ -2,14 +2,14 @@ package com.redhat.ceylon.compiler.test.statement.trycatch;
 
 class E extends .ceylon.language.Exception {
     
-    E(.java.lang.Throwable cause, ceylon.language.String message) {
-        super(cause, message);
+    E(ceylon.language.String description, .java.lang.Exception cause) {
+        super(description, cause);
     }
 }
 class ThrowExceptionSubclass {
     
     private final void t() {
-        throw new com.redhat.ceylon.compiler.test.statement.trycatch.E(null, .ceylon.language.String.instance("Bang!"));
+        throw new com.redhat.ceylon.compiler.test.statement.trycatch.E(.ceylon.language.String.instance("Bang!"), null);
     }
     
     ThrowExceptionSubclass() {

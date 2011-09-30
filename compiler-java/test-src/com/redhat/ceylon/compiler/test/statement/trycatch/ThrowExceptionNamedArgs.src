@@ -6,7 +6,7 @@ class ThrowExceptionNamedArgs {
         throw new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, .ceylon.language.String.instance("Bang!"), null){
             
             public .ceylon.language.Exception call$() {
-                return new .ceylon.language.Exception((.java.lang.Throwable)this.args[1], (ceylon.language.String)this.args[0]);
+                return new .ceylon.language.Exception((ceylon.language.String)this.args[0], (.java.lang.Exception)this.args[1]);
             }
         }.call$();
     }

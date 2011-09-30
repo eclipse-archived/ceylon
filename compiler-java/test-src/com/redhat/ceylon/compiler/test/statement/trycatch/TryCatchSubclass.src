@@ -2,8 +2,8 @@ package com.redhat.ceylon.compiler.test.statement.trycatch;
 
 class E extends .ceylon.language.Exception {
     
-    E(.java.lang.Throwable cause, ceylon.language.String message) {
-        super(cause, message);
+    E(ceylon.language.String description, .java.lang.Exception cause) {
+        super(description, cause);
     }
 }
 class TryCatchSubclass {
@@ -14,7 +14,7 @@ class TryCatchSubclass {
     private final void ce(final com.redhat.ceylon.compiler.test.statement.trycatch.E e) {
     }
     
-    private final void cexception(final .java.lang.Throwable e) {
+    private final void cexception(final .java.lang.Exception e) {
     }
     
     private final void m() {

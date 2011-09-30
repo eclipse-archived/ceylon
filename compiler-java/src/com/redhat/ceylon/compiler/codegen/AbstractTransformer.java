@@ -399,7 +399,7 @@ public abstract class AbstractTransformer implements Transformation {
             }
         } else if (willEraseToException(type)) {
             if ((flags & CLASS_NEW) == 0) {
-                return make().Type(syms().throwableType);
+                return make().Type(syms().exceptionType);
             } else {
                 return make().Type(syms().ceylonExceptionType);
             }

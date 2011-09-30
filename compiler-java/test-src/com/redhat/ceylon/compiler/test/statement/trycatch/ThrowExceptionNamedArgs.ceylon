@@ -2,7 +2,7 @@
 class ThrowExceptionNamedArgs() {
 	void t() {
 		throw Exception{
-		    message="Bang!"; 
+		    description="Bang!"; 
 		    cause=null;
 		};
 	}

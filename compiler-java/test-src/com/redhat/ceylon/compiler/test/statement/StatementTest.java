@@ -218,6 +218,7 @@ public class StatementTest extends CompilerTest {
     }
     
     @Test
+    //@Ignore("Curren erasure rules")
     public void testTryThrowThrowable(){
         compareWithJavaSource("trycatch/ThrowThrowable");
     }

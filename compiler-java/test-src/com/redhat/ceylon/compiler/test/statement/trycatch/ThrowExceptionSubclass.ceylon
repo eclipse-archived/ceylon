@@ -1,11 +1,11 @@
 @nomodel
-class E(Exception? cause, String? message) extends Exception(cause, message) {
+class E(String? description, Exception? cause) extends Exception(description, cause) {
 	
 }
 
 @nomodel
 class ThrowExceptionSubclass() {
 	void t() {
-		throw E(null, "Bang!");
+		throw E("Bang!", null);
 	}
 }

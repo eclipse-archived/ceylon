@@ -1,7 +1,7 @@
 @nomodel
 class ThrowMethodResult() {
     Exception e() {
-        return Exception(null, "Bang!");
+        return Exception("Bang!", null);
     }
 	void t() {
 		throw e();
