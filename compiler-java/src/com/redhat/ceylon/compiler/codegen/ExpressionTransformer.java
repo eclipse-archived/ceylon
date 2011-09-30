@@ -819,14 +819,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
     
-    public JCExpression transform(Tree.Type type, List<JCExpression> typeArgs, List<JCExpression> args) {
+    public JCExpression transform(Tree.BaseTypeExpression typeExp, List<JCExpression> args) {
         // A constructor
-        return at(type).NewClass(null, typeArgs, makeJavaType(type.getTypeModel()), args, null);
-    }
-
-    public JCExpression transform(Tree.BaseTypeExpression typeExp, List<JCExpression> typeArgs, List<JCExpression> args) {
-        // A constructor
-        return at(typeExp).NewClass(null, typeArgs, makeJavaType(typeExp.getTypeModel(), CLASS_NEW), args, null);
+        return at(typeExp).NewClass(null, null, makeJavaType(typeExp.getTypeModel(), CLASS_NEW), args, null);
     }
 
     public JCExpression transform(SequenceEnumeration value) {

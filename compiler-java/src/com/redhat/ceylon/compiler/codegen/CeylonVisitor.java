@@ -320,7 +320,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
 
     public void visit(Tree.BaseTypeExpression typeExp) {
         // A constructor
-        append(gen.expressionGen().transform(typeExp, typeArgs, args.toList()));
+        append(gen.expressionGen().transform(typeExp, args.toList()));
     }
 
     public void visit(Tree.BaseMemberExpression access) {

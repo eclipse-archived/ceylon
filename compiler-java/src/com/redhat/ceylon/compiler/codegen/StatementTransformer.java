@@ -354,7 +354,7 @@ public class StatementTransformer extends AbstractTransformer {
         Expression expr = t.getExpression();
         final JCExpression exception;
         if (expr == null) {// bare "throw;" stmt
-            exception = make().NewClass(null, List.<JCExpression>nil(),
+            exception = make().NewClass(null, null,
                     makeIdent("ceylon.language.Exception"), List.<JCExpression>of(makeNull(), makeNull()),
                     null);
         } else {
