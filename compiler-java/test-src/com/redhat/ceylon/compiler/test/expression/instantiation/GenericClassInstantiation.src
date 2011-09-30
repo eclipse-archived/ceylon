@@ -1,5 +1,10 @@
 package com.redhat.ceylon.compiler.test.expression.instantiation;
 
+class Single<Element> {
+    
+    Single(Element e) {
+    }
+}
 public class KlassTypeParams<U, V> {
     
     public final U foo(final U u, final V v) {
@@ -12,22 +17,26 @@ public class KlassTypeParams<U, V> {
 class KlassTypeParamsInstantiation {
     
     public final com.redhat.ceylon.compiler.test.expression.instantiation.KlassTypeParams<ceylon.language.String, ceylon.language.Natural> m() {
-        return new <ceylon.language.String, ceylon.language.Natural>com.redhat.ceylon.compiler.test.expression.instantiation.KlassTypeParams<ceylon.language.String, ceylon.language.Natural>(.ceylon.language.String.instance("foo"), .ceylon.language.Natural.instance(2L));
+        return new com.redhat.ceylon.compiler.test.expression.instantiation.KlassTypeParams<ceylon.language.String, ceylon.language.Natural>(.ceylon.language.String.instance("foo"), .ceylon.language.Natural.instance(2L));
     }
     
     public final .java.lang.String m2() {
-        final com.redhat.ceylon.compiler.test.expression.instantiation.KlassTypeParams<ceylon.language.String, ceylon.language.Natural> k = new <ceylon.language.String, ceylon.language.Natural>com.redhat.ceylon.compiler.test.expression.instantiation.KlassTypeParams<ceylon.language.String, ceylon.language.Natural>(.ceylon.language.String.instance("foo"), .ceylon.language.Natural.instance(2L));
+        final com.redhat.ceylon.compiler.test.expression.instantiation.KlassTypeParams<ceylon.language.String, ceylon.language.Natural> k = new com.redhat.ceylon.compiler.test.expression.instantiation.KlassTypeParams<ceylon.language.String, ceylon.language.Natural>(.ceylon.language.String.instance("foo"), .ceylon.language.Natural.instance(2L));
         return k.foo(.ceylon.language.String.instance("hello"), .ceylon.language.Natural.instance(1L)).toString();
     }
     
     public final .java.lang.String m3() {
-        final com.redhat.ceylon.compiler.test.expression.instantiation.KlassTypeParams<ceylon.language.String, ceylon.language.Natural> k = new <ceylon.language.String, ceylon.language.Natural>com.redhat.ceylon.compiler.test.expression.instantiation.KlassTypeParams<ceylon.language.String, ceylon.language.Natural>(.ceylon.language.String.instance("foo"), .ceylon.language.Natural.instance(2L));
+        final com.redhat.ceylon.compiler.test.expression.instantiation.KlassTypeParams<ceylon.language.String, ceylon.language.Natural> k = new com.redhat.ceylon.compiler.test.expression.instantiation.KlassTypeParams<ceylon.language.String, ceylon.language.Natural>(.ceylon.language.String.instance("foo"), .ceylon.language.Natural.instance(2L));
         return new .ceylon.language.NamedArgumentCall<com.redhat.ceylon.compiler.test.expression.instantiation.KlassTypeParams<ceylon.language.String, ceylon.language.Natural>>(k, .ceylon.language.String.instance("hello"), .ceylon.language.Natural.instance(1L)){
             
             public ceylon.language.String call$() {
                 return this.instance.foo((ceylon.language.String)this.args[0], (ceylon.language.Natural)this.args[1]);
             }
         }.call$().toString();
+    }
+    
+    public final void typeArgumentInference() {
+        final com.redhat.ceylon.compiler.test.expression.instantiation.Single<ceylon.language.Natural> s = new com.redhat.ceylon.compiler.test.expression.instantiation.Single<ceylon.language.Natural>(.ceylon.language.Natural.instance(69L));
     }
     
     KlassTypeParamsInstantiation() {

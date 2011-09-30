@@ -1,4 +1,8 @@
 @nomodel
+class Single<Element>(Element e) {
+}
+
+@nomodel
 shared class KlassTypeParams<U,V>(U u, V v) {
     shared U foo(U u, V v){
         return u;
@@ -17,5 +21,8 @@ class KlassTypeParamsInstantiation(){
     shared String m3() {
         value k = KlassTypeParams<String, Natural>("foo", 2);
         return k.foo{u = "hello"; v = 1;};
+    }
+    shared void typeArgumentInference(){
+    	value s = Single(69);
     }
 }
