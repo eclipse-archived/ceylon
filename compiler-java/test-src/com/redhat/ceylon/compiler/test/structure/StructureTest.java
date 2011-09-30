@@ -86,6 +86,10 @@ public class StructureTest extends CompilerTest {
     public void testKlsInitializerVarargs(){
         compareWithJavaSource("klass/InitializerVarargs");
     }
+    @Test
+    public void testKlsWithObjectMember(){
+        compareWithJavaSource("klass/KlassWithObjectMember");
+    }
     @Ignore("M2")
     @Test
     public void testKlsCaseTypes(){
