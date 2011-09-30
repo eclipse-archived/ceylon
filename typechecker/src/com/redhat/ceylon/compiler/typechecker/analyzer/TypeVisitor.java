@@ -132,12 +132,12 @@ public class TypeVisitor extends Visitor {
         Declaration d = importedPackage.getMember(name);
         if (d==null) {
             member.getIdentifier().addError("imported declaration not found: " + 
-                    name);
+                    name, 100);
         }
         else {
             if (!d.isShared()) {
                 member.getIdentifier().addError("imported declaration is not shared: " +
-                        name);
+                        name, 400);
             }
             i.setDeclaration(d);
             member.setDeclarationModel(d);
