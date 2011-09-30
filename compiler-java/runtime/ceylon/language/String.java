@@ -19,11 +19,11 @@ implements Comparable<String>, Iterable<Character>,
         return new ceylon.language.String(s);
     }
 
-    public java.lang.String uppercase() {
+    public java.lang.String getUppercase() {
         return value.toUpperCase();
     }
 
-    public java.lang.String lowercase() {
+    public java.lang.String getLowercase() {
         return value.toLowerCase();
     }
 
