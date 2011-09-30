@@ -193,6 +193,11 @@ public class StatementTest extends CompilerTest {
     }
     
     @Test
+    public void testTryExceptionAttributes(){
+        compareWithJavaSource("trycatch/ExceptionAttributes");
+    }
+    
+    @Test
     public void testTryBareThrow(){
         compareWithJavaSource("trycatch/Throw");
     }

@@ -1,13 +1,13 @@
 package com.redhat.ceylon.compiler.test.statement.trycatch;
 
 class ExceptionAttr {
-    private .java.lang.Exception e;
+    private .java.lang.Throwable e;
     
-    public final .java.lang.Exception getE() {
+    public final .java.lang.Throwable getE() {
         return this.e;
     }
     
-    public final void setE(.java.lang.Exception e) {
+    public final void setE(.java.lang.Throwable e) {
         this.e = e;
     }
     

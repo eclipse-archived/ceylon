@@ -369,6 +369,7 @@ public abstract class AbstractTransformer implements Transformation {
     static final int TYPE_PARAM = 1 << 2;
     static final int CLASS_NEW = 1 << 1; // Yes, same as EXTENDS
     static final int WANT_RAW_TYPE = 1 << 3;
+    static final int CATCH = 1 << 4;
     static final int NO_ERASURE_TO_PRIMITIVE = EXTENDS; // Same behaviour
     static final int IS = NO_ERASURE_TO_PRIMITIVE | WANT_RAW_TYPE; // Same behaviour
 
@@ -399,10 +400,13 @@ public abstract class AbstractTransformer implements Transformation {
                 }
             }
         } else if (willEraseToException(type)) {
-            if ((flags & CLASS_NEW) == 0) {
+            if ((flags & CLASS_NEW) != 0
+                    || (flags & EXTENDS) != 0) {
+                return make().Type(syms().ceylonExceptionType);
+            } else if ((flags & CATCH) != 0) {
                 return make().Type(syms().exceptionType);
             } else {
-                return make().Type(syms().ceylonExceptionType);
+                return make().Type(syms().throwableType);
             }
         } else if (satisfiesOrExtendsOrTypeParam == 0 && !isOptional(type)) {
             if (isCeylonString(type)) {
