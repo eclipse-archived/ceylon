@@ -245,19 +245,19 @@ public class CeylonEnter extends Enter {
             pu.getCompilationUnit().visit(new JavacAssertionVisitor((CeylonPhasedUnit) pu){
                 @Override
                 protected void out(UnexpectedError err) {
-                    log.error(getPosition(err.getTreeNode()), "ceylon", err.getMessage());
+                    logError(getPosition(err.getTreeNode()), err.getMessage());
                 }
                 @Override
                 protected void out(AnalysisError err) {
-                    log.error(getPosition(err.getTreeNode()), "ceylon", err.getMessage());
+                    logError(getPosition(err.getTreeNode()), err.getMessage());
                 }
                 @Override
                 protected void out(AnalysisWarning err) {
-                    log.warning(getPosition(err.getTreeNode()), "ceylon", err.getMessage());
+                    logWarning(getPosition(err.getTreeNode()), err.getMessage());
                 }
                 @Override
                 protected void out(Node that, String message) {
-                    log.error(getPosition(that), "ceylon", message);
+                    logError(getPosition(that), message);
                 }
             });
         }
@@ -272,7 +272,7 @@ public class CeylonEnter extends Enter {
                 protected void out(UnexpectedError err) {
                     if(err instanceof CodeGenError){
                         CodeGenError error = ((CodeGenError)err);
-                        log.error(getPosition(err.getTreeNode()), "ceylon", "Compiler error: "+error.getCause());
+                        logError(getPosition(err.getTreeNode()), "Compiler error: "+error.getCause());
                         error.getCause().printStackTrace();
                     }
                 }
@@ -284,6 +284,28 @@ public class CeylonEnter extends Enter {
                 @Override
                 protected void out(Node that, String message) {}
             });
+        }
+    }
+
+    protected void logError(int position, String message) {
+        boolean prev = log.multipleErrors;
+        // we want multiple errors for Ceylon
+        log.multipleErrors = true;
+        try{
+            log.error(position, "ceylon", message);
+        }finally{
+            log.multipleErrors = prev;
+        }
+    }
+
+    protected void logWarning(int position, String message) {
+        boolean prev = log.multipleErrors;
+        // we want multiple errors for Ceylon
+        log.multipleErrors = true;
+        try{
+            log.warning(position, "ceylon", message);
+        }finally{
+            log.multipleErrors = prev;
         }
     }
 
