@@ -4,11 +4,11 @@ shared abstract class Object()
     doc "A developer-friendly string representing the instance."
     shared formal String string;
     
-    doc "Determine if this object belongs to the given |Category|.
+    /*doc "Determine if this object belongs to the given |Category|.
          The binary |in| operator."
     shared Boolean contained(Category category) {
         return category.contains(this);
-    }
+    }*/
     
     /*shared Boolean contained(Category|Iterable<Equality> category) {
         switch (category)
