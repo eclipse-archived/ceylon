@@ -19,12 +19,15 @@ public class Exception extends RuntimeException {
         this.description = description;
     }
     
-    public java.lang.Exception getCause() {
-        return (java.lang.Exception)super.getCause();
+    @TypeInfo("ceylon.language.Exception|ceylon.language.Nothing")
+    public java.lang.Throwable getCause() {
+        return super.getCause();
     }
     
+    @TypeInfo("ceylon.language.String")
     public java.lang.String getMessage() {
-        if (description != null) {
+        if (description != null
+                && description.value != null) {
             return description.value;
         } else if (getCause() != null 
                 && getCause().getMessage() != null) {
@@ -32,8 +35,9 @@ public class Exception extends RuntimeException {
         }
         return "";
     }
-    
+
+    @TypeInfo("ceylon.language.String")
     public java.lang.String toString() {
-        return /*TODO IdentifiableObject.toString() + */ " \"" + getMessage() +"\""; 
+        return  "Exception \"" + getMessage() +"\""; 
     }
 }
