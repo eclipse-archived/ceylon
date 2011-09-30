@@ -1,5 +1,5 @@
 shared class Exception(String? description=null, Exception? cause=null) 
-        extends IdentifiableObject() {
+        extends Object() {
     
     shared String? description = description;
     
@@ -12,7 +12,7 @@ shared class Exception(String? description=null, Exception? cause=null)
     }
     
     shared actual String string {
-        return super.string + " \"" message "\"";
+        return "Exception \"" message "\"";
     }
     
 }
