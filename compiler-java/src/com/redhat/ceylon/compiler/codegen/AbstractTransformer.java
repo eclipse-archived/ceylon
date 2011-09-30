@@ -29,6 +29,7 @@ import com.sun.tools.javac.tree.JCTree.Factory;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
+import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
@@ -153,6 +154,10 @@ public abstract class AbstractTransformer implements Transformation {
         return make().QualIdent(type.tsym);
     }
 
+    protected JCLiteral makeNull() {
+        return make().Literal(TypeTags.BOT, null);
+    }
+    
     protected JCExpression makeInteger(long i) {
         // FIXME Using Integer only to make hashCode() work!!
         // We should introduce "small"!!

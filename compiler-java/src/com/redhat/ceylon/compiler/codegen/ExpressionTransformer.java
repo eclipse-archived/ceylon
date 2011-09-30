@@ -472,7 +472,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             BaseMemberOrTypeExpression memberExpr = (BaseMemberOrTypeExpression)primary;
             generateNew = primary instanceof BaseTypeExpression;
             if (memberExpr.getDeclaration().isToplevel()) {
-                passArgs.prepend(make().Literal(TypeTags.BOT, null));
+                passArgs.prepend(makeNull());
                 receiverType = makeIdent("java.lang.Void");
                 receiver = makeSelect(memberExpr.getDeclaration().getName(), methodName);// TODO encapsulate this
             } else if (!memberExpr.getDeclaration().isClassMember()) {// local
@@ -480,7 +480,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 receiverType = makeIdent(memberExpr.getDeclaration().getName());// TODO: get the generated name somehow
                 receiver = makeSelect("this", "instance", methodName);
             } else {
-                passArgs.prepend(make().Literal(TypeTags.BOT, null));
+                passArgs.prepend(makeNull());
                 receiverType = makeIdent("java.lang.Void");
                 receiver = makeIdent(methodName);
             }
@@ -517,7 +517,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (isVoid) {
                 callMethod.body(List.<JCStatement>of(
                         make().Exec(expr),
-                        make().Return(make().Literal(TypeTags.BOT, null))));
+                        make().Return(makeNull())));
             } else {
                 callMethod.body(make().Return(expr));
             }
@@ -766,7 +766,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // ERASURE
                 if ("null".equals(decl.getName())) {
                     // FIXME this is a pretty brain-dead way to go about erase I think
-                    result = make().Literal(TypeTags.BOT, null);
+                    result = makeNull();
                 } else if (isBooleanTrue(decl)) {
                     result = makeBoolean(true);
                 } else if (isBooleanFalse(decl)) {

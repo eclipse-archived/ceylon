@@ -166,7 +166,7 @@ public class StatementTransformer extends AbstractTransformer {
             removeVariableSubst(origVarName.toString(), prevSubst);
             
             if (cond instanceof Tree.ExistsCondition) {
-                test = at(cond).Binary(JCTree.NE, make().Ident(decl.name), make().Literal(TypeTags.BOT, null));                
+                test = at(cond).Binary(JCTree.NE, make().Ident(decl.name), makeNull());                
             } else {
                 // is/nonempty
                 JCExpression testExpr = make().Ident(decl.name);
@@ -282,7 +282,7 @@ public class StatementTransformer extends AbstractTransformer {
         JCExpression step = at(stmt).Assign(iter_id, at(stmt).Apply(null, makeSelect(iter_id, Util.getGetterName("tail")), List.<JCExpression> nil()));
         
         // $i$iter$1.getHead() != null;
-        JCExpression cond = at(stmt).Binary(JCTree.NE, iter_head, make().Literal(TypeTags.BOT, null));
+        JCExpression cond = at(stmt).Binary(JCTree.NE, iter_head, makeNull());
         
         // for (.ceylon.language.Iterator<T> $V$iter$X = ITERABLE.iterator(); $V$iter$X.getHead() != null; $V$iter$X = $V$iter$X.getTail()) {
         outer = outer.append(at(stmt).ForLoop(
@@ -355,7 +355,7 @@ public class StatementTransformer extends AbstractTransformer {
         final JCExpression exception;
         if (expr == null) {// bare "throw;" stmt
             exception = make().NewClass(null, List.<JCExpression>nil(),
-                    makeIdent("ceylon.language.Exception"), List.<JCExpression>of(make().Literal(TypeTags.BOT, null), make().Literal(TypeTags.BOT, null)),
+                    makeIdent("ceylon.language.Exception"), List.<JCExpression>of(makeNull(), makeNull()),
                     null);
         } else {
             exception = gen().expressionGen().transformExpression(expr);
