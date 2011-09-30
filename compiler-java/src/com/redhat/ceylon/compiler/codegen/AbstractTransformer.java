@@ -566,6 +566,12 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtCeylonType);
     }
 
+    protected List<JCAnnotation> makeAtModule(String name, String version) {
+        return makeModelAnnotation(syms().ceylonAtModuleType, 
+                List.<JCExpression>of(make().Assign(makeIdent("name"), make().Literal(name)), 
+                        make().Assign(makeIdent("version"), make().Literal(version))));
+    }
+
     protected List<JCAnnotation> makeAtName(String name) {
         return makeModelAnnotation(syms().ceylonAtNameType, List.<JCExpression>of(make().Literal(name)));
     }

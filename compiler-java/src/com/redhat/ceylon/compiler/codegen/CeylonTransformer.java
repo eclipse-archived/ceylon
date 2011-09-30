@@ -6,6 +6,8 @@ import java.util.Iterator;
 
 import javax.tools.JavaFileObject;
 
+import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
@@ -177,6 +179,15 @@ public class CeylonTransformer extends AbstractTransformer {
             .classAnnotations(makeAtAttribute())
             .valueAnnotations(makeJavaTypeAnnotations(declarationModel, actualType(decl)))
             .classIsFinal(true);
+
+        // if it's a module add a special annotation
+        if(declarationModel.isToplevel() 
+        		&& attrName.equals("module")
+        		&& declarationModel.getUnit().getFilename().equals("module.ceylon")){
+            Package pkg = (Package) declarationModel.getContainer();
+            Module module = pkg.getModule();
+            builder.classAnnotations(makeAtModule(module.getNameAsString(), module.getVersion()));
+        }
 
         if (declarationModel.isShared()) {
             builder
