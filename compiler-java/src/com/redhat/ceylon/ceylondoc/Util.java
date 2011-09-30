@@ -7,9 +7,6 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Getter;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
@@ -56,22 +53,6 @@ public class Util {
 		return modifiers.toString().trim();
 	}
 	
-	public static List<MethodOrValue> getConcreteSharedAttributes(TypeDeclaration decl) {
-		List<MethodOrValue> attributes = new ArrayList<MethodOrValue>();
-		for(Declaration m : decl.getMembers())	 
-			if ((m.isShared() && !m.isFormal()) && (m instanceof Value ||m  instanceof Getter))
-	                attributes.add((MethodOrValue) m);
-		return attributes;
-	}
-	
-	public static List<MethodOrValue> getConcreteSharedMethods(TypeDeclaration decl) {
-		List<MethodOrValue> methods = new ArrayList<MethodOrValue>();
-		for(Declaration m : decl.getMembers())	 
-			if ((m.isShared() && !m.isFormal()) && (m instanceof Method))
-	                methods.add((MethodOrValue) m);
-		return methods;
-	}	
-	
 	public static List<TypeDeclaration> getAncestors(TypeDeclaration decl) {
 		List<TypeDeclaration> ancestors =  new ArrayList<TypeDeclaration>();
 		TypeDeclaration ancestor = decl.getExtendedTypeDeclaration();
@@ -81,6 +62,31 @@ public class Util {
 		}
 		return ancestors;
 	}	
+	
+	public static List<TypeDeclaration> getSuperInterfaces(TypeDeclaration decl) {
+		List<TypeDeclaration> superInterfaces = new ArrayList<TypeDeclaration>();
+		List<TypeDeclaration> satisfiedTypes = decl.getSatisfiedTypeDeclarations();
+		while (satisfiedTypes.isEmpty() == false) {
+			 List<TypeDeclaration> superSatisfiedTypes = new ArrayList<TypeDeclaration>(); 
+			 for (TypeDeclaration satisfiedType : satisfiedTypes) {
+				 if (superInterfaces.contains(satisfiedType) == false && superSatisfiedTypes.contains(satisfiedType) == false) { 
+					 superInterfaces.add(satisfiedType);
+					 if (satisfiedType.getSatisfiedTypeDeclarations().isEmpty() == false) {
+						 for (TypeDeclaration superSatisfiedType: satisfiedType.getSatisfiedTypeDeclarations() ) {
+							 if (superInterfaces.contains(superSatisfiedType) == false && superSatisfiedTypes.contains(superSatisfiedType) == false) {
+								 superSatisfiedTypes.add(superSatisfiedType);
+							 }
+						 }
+					 }
+				 }	 
+
+				 
+			 }
+			 satisfiedTypes = superSatisfiedTypes; 
+		}
+		return superInterfaces;
+	}	
+	
 	
     public static boolean isNullOrEmpty(Collection<? extends Object> collection ) {
     	return collection == null || collection.isEmpty(); 
