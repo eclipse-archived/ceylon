@@ -14,7 +14,15 @@ public class StructureTest extends CompilerTest {
     public void testPkgPackage(){
         compareWithJavaSource("pkg/pkg");
     }
+
+    //
+    // Modules
     
+    @Test
+    public void testMdlModule(){
+        compareWithJavaSource("module/module");
+    }
+
     //
     // Classes
     
