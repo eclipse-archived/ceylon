@@ -31,7 +31,7 @@ public class AttributeDefinitionBuilder {
     private JCTree.JCBlock setterBlock;
     
     private List<JCTree.JCAnnotation> valueAnnotations = List.nil();
-    private List<JCTree.JCAnnotation> classAnnotations = List.nil();
+    private ListBuffer<JCTree.JCAnnotation> classAnnotations = ListBuffer.lb();
 
     private AbstractTransformer owner;
 
@@ -53,7 +53,7 @@ public class AttributeDefinitionBuilder {
             .klass(owner, className)
             .modifiers(classFlags)
             .constructorModifiers(Flags.PRIVATE)
-            .annotations(classAnnotations)
+            .annotations(classAnnotations.toList())
             .defs(defs.toList())
             .build();
     }
@@ -370,7 +370,7 @@ public class AttributeDefinitionBuilder {
     }
 
     public AttributeDefinitionBuilder classAnnotations(List<JCTree.JCAnnotation> classAnnotations) {
-        this.classAnnotations = classAnnotations;
+        this.classAnnotations.addAll(classAnnotations);
         return this;
     }
 }
