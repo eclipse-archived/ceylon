@@ -47,8 +47,19 @@ public class Ceylonc extends MatchingTask {
     // compiler into the compile() method. Once that better way is
     // found, remove all references to compilerExecutable in this file.
     private File compilerExecutable;
+    
 
-    /**
+    private String compilerDirectory;
+
+	/**
+     * Set the compiler directory to find the compiler executable for each OS.
+     * @param compilerDirectory the directory of the compiler
+     */ 
+    public void setCompilerDirectory(String compilerDirectory) {
+		this.compilerDirectory = compilerDirectory;
+	}
+
+	/**
      * Set the source directories to find the source Java and Ceylon files.
      * @param srcDir the source directories as a path
      */
@@ -81,20 +92,13 @@ public class Ceylonc extends MatchingTask {
     }
 
     /**
-     * Set the classpath of the Ceylon compiler and its associated libraries.
-     * @param classpath the classpath
-     */
-    public void setCompiler(File executable) {
-        compilerExecutable = executable;
-    }
-
-    /**
      * Executes the task.
      * @exception BuildException if an error occurs
      */
     public void execute() throws BuildException {
         checkParameters();
         resetFileLists();
+        setCompilerExecutable();
 
         String[] list = src.list();
         for (int i = 0; i < list.length; i++) {
@@ -113,6 +117,17 @@ public class Ceylonc extends MatchingTask {
     }
 
     /**
+     * Set compiler executable depending on the OS.
+     */
+    private void setCompilerExecutable() {
+		if (System.getProperty("os.name").toLowerCase().indexOf("windows") > -1) {
+			compilerExecutable = new File(compilerDirectory + "/ceylonc.bat");
+		} else {
+			compilerExecutable = new File(compilerDirectory + "/ceylonc");
+		}		
+	}
+
+	/**
      * Clear the list of files to be compiled and copied..
      */
     protected void resetFileLists() {
@@ -175,8 +190,8 @@ public class Ceylonc extends MatchingTask {
             throw new BuildException("destination directory \"" + destDir + "\" does not exist " + "or is not a directory", getLocation());
         }
 
-        if (compilerExecutable == null) {
-            throw new BuildException("compiler attribute must be set!", getLocation());
+        if (compilerDirectory == null) {
+            throw new BuildException("compiler directory attribute must be set!", getLocation());
         }
     }
 
