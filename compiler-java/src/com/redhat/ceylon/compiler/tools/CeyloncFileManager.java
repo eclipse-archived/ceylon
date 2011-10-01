@@ -43,11 +43,12 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.JavacFileManager;
 import com.sun.tools.javac.util.ListBuffer;
+import com.sun.tools.javac.util.Log;
 
 public class CeyloncFileManager extends JavacFileManager implements StandardJavaFileManager {
     protected String[] sourcePath = new String[0];
     private Module currentModule;
-    private JarOutputRepositoryManager jarRepository = new JarOutputRepositoryManager();
+    private JarOutputRepositoryManager jarRepository;
 
     public void setSourcePath(String sourcePath) {
         StringTokenizer st = new StringTokenizer(sourcePath, File.pathSeparator);
@@ -64,6 +65,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
 
     public CeyloncFileManager(Context context, boolean register, Charset charset) {
         super(context, register, charset);
+        jarRepository = new JarOutputRepositoryManager(Log.instance(context));
     }
 
     protected JavaFileObject.Kind getKind(String extension) {
