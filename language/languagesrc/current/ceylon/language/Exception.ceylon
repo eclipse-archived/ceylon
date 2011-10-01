@@ -1,5 +1,5 @@
 shared class Exception(String? description=null, Exception? cause=null) 
-        extends Object() {
+        extends IdentifiableObject() {
     
     shared Exception? cause = cause;
     
