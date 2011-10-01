@@ -29,7 +29,7 @@ import com.sun.tools.javac.zip.ZipFileIndex;
 public abstract class CompilerTest {
 
 	private final static String dir = "test-src";
-	private final static String destDir = "build/classes";
+	protected final static String destDir = "build/classes";
 	private final static String destJar = destDir+"/default_module-unversioned.jar";
 
 	protected String path;
