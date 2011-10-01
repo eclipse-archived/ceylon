@@ -872,16 +872,28 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     }
 
     private Array getAnnotationArrayValue(Symbol symbol, Type type) {
-        Compound annotation = getAnnotation(symbol, type);
-        if(annotation != null)
-            return (Array)annotation.member(names.fromString("value"));
-        return null;
+        return (Array) getAnnotationValue(symbol, type);
     }
 
     private String getAnnotationStringValue(Symbol symbol, Type type) {
+        return getAnnotationStringValue(symbol, type, "value");
+    }
+    
+    private String getAnnotationStringValue(Symbol symbol, Type type, String field) {
+        Attribute annotation = getAnnotationValue(symbol, type, field);
+        if(annotation != null)
+            return (String) annotation.getValue();
+        return null;
+    }
+
+    private Attribute getAnnotationValue(Symbol symbol, Type type) {
+        return getAnnotationValue(symbol, type, "value");
+    }
+    
+    private Attribute getAnnotationValue(Symbol symbol, Type type, String fieldName) {
         Compound annotation = getAnnotation(symbol, type);
         if(annotation != null)
-            return (String)annotation.member(names.fromString("value")).getValue();
+            return annotation.member(names.fromString(fieldName));
         return null;
     }
 
