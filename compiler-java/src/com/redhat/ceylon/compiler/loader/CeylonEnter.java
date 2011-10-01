@@ -175,6 +175,7 @@ public class CeylonEnter extends Enter {
             String pkgName = pkg.getQualifiedNameString();
             Module module = null;
             // do we have a module for this package?
+            // FIXME: is this true? what if we have a module.ceylon at toplevel?
             if(pkgName.isEmpty())
                 module = modules.getDefaultModule();
             else{
