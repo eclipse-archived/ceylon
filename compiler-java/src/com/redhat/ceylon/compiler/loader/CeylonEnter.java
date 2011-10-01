@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.loader;
 
 import java.io.File;
 
-import javax.tools.JavaFileManager.Location;
 import javax.tools.JavaFileManager;
 import javax.tools.StandardLocation;
 
@@ -36,12 +35,10 @@ import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Context.SourceLanguage.Language;
-import com.sun.tools.javac.util.JavacFileManager;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Options;
 import com.sun.tools.javac.util.Paths;
-import com.sun.tools.javac.util.Paths.Path;
 
 public class CeylonEnter extends Enter {
 
