@@ -1,5 +1,12 @@
 package com.redhat.ceylon.compiler.test.structure;
 
+import static org.junit.Assert.*;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -21,6 +28,27 @@ public class StructureTest extends CompilerTest {
     @Test
     public void testMdlModule(){
         compareWithJavaSource("module/module");
+    }
+
+    @Test
+    public void testMdlModuleFromCompiledModule() throws IOException{
+        compile("module/module.ceylon");
+        
+        File jarFile = new File(destDir, "com.redhat.ceylon.compiler.test.structure.module-6.6.6.jar");
+        assertTrue(jarFile.exists());
+
+        JarFile jar = new JarFile(jarFile);
+        // just to be sure
+        ZipEntry bogusEntry = jar.getEntry("com/redhat/ceylon/compiler/test/structure/module/BOGUS");
+        assertNull(bogusEntry);
+
+        ZipEntry moduleClass = jar.getEntry("com/redhat/ceylon/compiler/test/structure/module/module.class");
+        assertNotNull(moduleClass);
+
+        compile("module/subpackage/Subpackage.ceylon");
+
+        ZipEntry subpackageClass = jar.getEntry("com/redhat/ceylon/compiler/test/structure/module/subpackage/Subpackage.class");
+        assertNotNull(subpackageClass);
     }
 
     //
