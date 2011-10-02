@@ -168,7 +168,8 @@ public class MethodDefinitionBuilder {
     
     public MethodDefinitionBuilder parameter(long modifiers, String name, ProducedType paramType, boolean isGenericsType) {
         JCExpression type = gen.makeJavaType(paramType, isGenericsType ? AbstractTransformer.NO_ERASURE_TO_PRIMITIVE : 0);
-        List<JCAnnotation> annots = gen.makeJavaTypeAnnotations(paramType, true);
+        List<JCAnnotation> annots = gen.makeAtName(name);
+        annots = annots.appendList(gen.makeJavaTypeAnnotations(paramType, true));
         return parameter(gen.make().VarDef(gen.make().Modifiers(modifiers, annots), gen.names().fromString(name), type, null));
     }
     

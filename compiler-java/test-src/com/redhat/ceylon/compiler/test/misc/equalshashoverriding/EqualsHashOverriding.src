@@ -9,7 +9,8 @@ class EqualsHashOverriding {
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Boolean")
-    public final boolean equals(@.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Equality")
+    public final boolean equals(@.com.redhat.ceylon.compiler.metadata.java.Name("that")
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Equality")
     final .java.lang.Object that) {
         final .java.lang.Object $that$0 = that;
         if ($that$0 instanceof com.redhat.ceylon.compiler.test.misc.equalshashoverriding.EqualsHashOverriding) {
