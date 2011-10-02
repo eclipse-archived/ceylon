@@ -104,18 +104,22 @@ public class Enter extends JCTree.Visitor {
     Name.Table names;
     JavaFileManager fileManager;
 
-    private final Todo todo;
+    private Todo todo;
 
     public static Enter instance(Context context) {
         Enter instance = context.get(enterKey);
-        if (instance == null)
+        if (instance == null){
             instance = new Enter(context);
+            instance.init(context);
+        }
         return instance;
     }
 
     protected Enter(Context context) {
         context.put(enterKey, this);
+    }
 
+    protected void init(Context context){
         log = Log.instance(context);
         reader = ClassReader.instance(context);
         make = TreeMaker.instance(context);
