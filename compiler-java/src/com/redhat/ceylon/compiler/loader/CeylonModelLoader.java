@@ -98,7 +98,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         isBootstrap = Options.instance(context).get(OptionName.BOOTSTRAPCEYLON) != null;
     }
 
-    public void loadRequiredModules(com.sun.tools.javac.util.List<JCCompilationUnit> trees) {
+    public void loadStandardModules(){
         // set up the type factory
         Module languageModule = findOrCreateModule("ceylon.language");
         Package languagePackage = findOrCreatePackage(languageModule, "ceylon.language");
@@ -110,7 +110,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         javaPkg.complete();
         PackageSymbol modelPkg = reader.enterPackage(names.fromString("com.redhat.ceylon.compiler.metadata.java"));
         modelPkg.complete();
-        
+
         /*
          * We do not load the ceylon.language module from class files if we're bootstrapping it
          */
@@ -118,7 +118,9 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             loadPackage("ceylon.language");
             loadPackage("ceylon.language.descriptor");
         }
-        
+    }
+    
+    public void setupSourceFileObjects(com.sun.tools.javac.util.List<JCCompilationUnit> trees) {
         for(final JCCompilationUnit tree : trees){
             CompilationUnit ceylonTree = ((CeylonCompilationUnit)tree).ceylonTree;
             final String pkgName = tree.getPackageName() != null ? tree.getPackageName().toString() : "";

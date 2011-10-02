@@ -116,8 +116,10 @@ public class CeylonEnter extends Enter {
         hasRun = true;
         // load the modules we are compiling first
         loadCompiledModules();
-        // load modules required by the typechecker
-        modelLoader.loadRequiredModules(trees);
+        // load the standard modules
+        modelLoader.loadStandardModules();
+        // make sure we don't load the files we are compiling from their class files
+        modelLoader.setupSourceFileObjects(trees);
         // resolve module dependencies
         resolveModuleDependencies();
         // run the type checker
