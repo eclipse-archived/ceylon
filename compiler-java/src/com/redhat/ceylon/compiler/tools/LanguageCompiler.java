@@ -207,7 +207,7 @@ public class LanguageCompiler extends JavaCompiler {
                 phasedUnits.addPhasedUnit(file, phasedUnit);
                 gen.setMap(map);
 
-                return gen.makeJCCompilationUnitPlaceholder(cu, filename, pkgName);
+                return gen.makeJCCompilationUnitPlaceholder(cu, filename, pkgName, phasedUnit);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

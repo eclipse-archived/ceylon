@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import javax.tools.JavaFileObject;
 
+import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -72,12 +73,12 @@ public class CeylonTransformer extends AbstractTransformer {
      * In this pass we only make an empty placeholder which we'll fill in the
      * EnterCeylon phase later on
      */
-    public JCCompilationUnit makeJCCompilationUnitPlaceholder(Tree.CompilationUnit t, JavaFileObject file, String pkgName) {
+    public JCCompilationUnit makeJCCompilationUnitPlaceholder(Tree.CompilationUnit t, JavaFileObject file, String pkgName, PhasedUnit phasedUnit) {
         if(options.get(OptionName.VERBOSE) != null)
             System.err.println(t);
         JCExpression pkg = pkgName != null ? getPackage(pkgName) : null;
         at(t);
-        JCCompilationUnit topLev = new CeylonCompilationUnit(List.<JCTree.JCAnnotation> nil(), pkg, List.<JCTree> nil(), null, null, null, null, t);
+        JCCompilationUnit topLev = new CeylonCompilationUnit(List.<JCTree.JCAnnotation> nil(), pkg, List.<JCTree> nil(), null, null, null, null, t, phasedUnit);
 
         topLev.lineMap = getMap();
         topLev.sourcefile = file;
