@@ -44,8 +44,12 @@ public class StructureTest extends CompilerTest {
 
         ZipEntry moduleClass = jar.getEntry("com/redhat/ceylon/compiler/test/structure/module/module.class");
         assertNotNull(moduleClass);
+        jar.close();
 
         compile("module/subpackage/Subpackage.ceylon");
+
+        // MUST reopen it
+        jar = new JarFile(jarFile);
 
         ZipEntry subpackageClass = jar.getEntry("com/redhat/ceylon/compiler/test/structure/module/subpackage/Subpackage.class");
         assertNotNull(subpackageClass);
