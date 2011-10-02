@@ -54,9 +54,7 @@ public abstract class CompilerTest {
 	}
 
 	protected CeyloncFileManager makeFileManager(CeyloncTool compiler){
-        CeyloncFileManager fileManager = (CeyloncFileManager)compiler.getStandardFileManager(null, null, null);
-        fileManager.setSourcePath(dir);
-        return fileManager;
+        return (CeyloncFileManager)compiler.getStandardFileManager(null, null, null);
 	}
 	
 	protected void compareWithJavaSource(String name) {
@@ -163,7 +161,11 @@ public abstract class CompilerTest {
         Iterable<? extends JavaFileObject> compilationUnits1 =
             runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
         return (CeyloncTaskImpl) runCompiler.getTask(null, runFileManager, null, 
-                Arrays.asList("-d", destDir, "-verbose", "-cp", destJar+File.pathSeparator+destDir), 
+                Arrays.asList("-sourcepath", getSourcePath(), "-d", destDir, "-verbose", "-cp", destJar+File.pathSeparator+destDir), 
                 null, compilationUnits1);
 	}
+
+    protected String getSourcePath() {
+        return dir;
+    }
 }

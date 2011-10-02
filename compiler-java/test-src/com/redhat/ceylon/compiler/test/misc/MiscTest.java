@@ -62,10 +62,11 @@ public class MiscTest extends CompilerTest {
             throw e;
         }
         CeyloncFileManager fileManager = (CeyloncFileManager)compiler.getStandardFileManager(null, null, null);
-        fileManager.setSourcePath(sourcePath);
         Iterable<? extends JavaFileObject> compilationUnits1 =
             fileManager.getJavaFileObjectsFromFiles(sourceFiles);
-        CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, null, Arrays.asList("-d", "build/classes-runtime", "-Xbootstrapceylon", "-verbose"), null, compilationUnits1);
+        CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, null, 
+                Arrays.asList("-sourcepath", sourcePath, "-d", "build/classes-runtime", "-Xbootstrapceylon", "-verbose"), 
+                null, compilationUnits1);
         Boolean result = task.call();
         Assert.assertEquals("Compilation failed", Boolean.TRUE, result);
     }

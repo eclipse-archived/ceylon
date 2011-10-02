@@ -30,11 +30,11 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 import javax.tools.FileObject;
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
+import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.StandardLocation;
 
@@ -46,22 +46,8 @@ import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Log;
 
 public class CeyloncFileManager extends JavacFileManager implements StandardJavaFileManager {
-    protected String[] sourcePath = new String[0];
     private Module currentModule;
     private JarOutputRepositoryManager jarRepository;
-
-    public void setSourcePath(String sourcePath) {
-        StringTokenizer st = new StringTokenizer(sourcePath, File.pathSeparator);
-        int size = st.countTokens();
-        this.sourcePath = new String[size];
-        for (int i = 0; i < size; i++) {
-            this.sourcePath[i] = st.nextToken();
-        }
-    }
-
-    public String[] getSourcePath() {
-        return sourcePath;
-    }
 
     public CeyloncFileManager(Context context, boolean register, Charset charset) {
         super(context, register, charset);
@@ -96,7 +82,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         ArrayList<JavaFileObject> result = new ArrayList<JavaFileObject>();
         for (JavaFileObject file : theCollection) {
             if (file.getName().endsWith(".ceylon")) {
-                result.add(new CeylonFileObject(file, sourcePath));
+                result.add(new CeylonFileObject(file));
             } else {
                 result.add(file);
             }

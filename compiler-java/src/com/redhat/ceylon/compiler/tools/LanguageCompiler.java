@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.util.Queue;
 
 import javax.tools.JavaFileObject;
+import javax.tools.StandardLocation;
 
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
@@ -63,6 +64,7 @@ import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Context.SourceLanguage.Language;
 import com.sun.tools.javac.util.Convert;
+import com.sun.tools.javac.util.JavacFileManager;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Options;
 import com.sun.tools.javac.util.Pair;
@@ -227,33 +229,31 @@ public class LanguageCompiler extends JavaCompiler {
             // FIXME
             throw new RuntimeException(e);
         }
-        String[] prefixes = ((CeyloncFileManager) fileManager).getSourcePath();
-        for (String prefix : prefixes) {
-            if (prefix != null) {
-                File prefixFile = new File(prefix);
-                String path;
-                try {
-                    path = prefixFile.getCanonicalPath();
-                } catch (IOException e) {
-                    // FIXME
-                    throw new RuntimeException(e);
-                }
-                if (name.startsWith(path)) {
-                    return prefixFile;
-                }
+        Iterable<? extends File> prefixes = ((JavacFileManager)fileManager).getLocation(StandardLocation.SOURCE_PATH);
+        for (File prefixFile : prefixes) {
+            String path;
+            try {
+                path = prefixFile.getCanonicalPath();
+            } catch (IOException e) {
+                // FIXME
+                throw new RuntimeException(e);
+            }
+            if (name.startsWith(path)) {
+                return prefixFile;
             }
         }
         throw new RuntimeException("Failed to find source prefix for " + name);
     }
 
     private String getPackage(JavaFileObject file){
-    	String[] prefixes = ((CeyloncFileManager) fileManager).getSourcePath();
+        Iterable<? extends File> prefixes = ((JavacFileManager)fileManager).getLocation(StandardLocation.SOURCE_PATH);
 
     	// Figure out the package name by stripping the "-src" prefix and
     	// extracting
     	// the package part of the fullname.
-    	for (String prefix : prefixes) {
-    		if (prefix != null && file.toString().startsWith(prefix)) {
+        for (File prefixFile : prefixes) {
+            String prefix = prefixFile.getPath();
+    		if (file.toString().startsWith(prefix)) {
     			String fullname = file.toString().substring(prefix.length());
     			assert fullname.endsWith(".ceylon");
     			fullname = fullname.substring(0, fullname.length() - ".ceylon".length());
