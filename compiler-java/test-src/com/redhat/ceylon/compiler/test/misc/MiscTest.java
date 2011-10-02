@@ -8,6 +8,7 @@ import javax.tools.JavaFileObject;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.test.CompilerTest;
@@ -42,6 +43,7 @@ public class MiscTest extends CompilerTest {
         compareWithJavaSource("equalshashoverriding/EqualsHashOverriding");
     }
 
+    @Ignore("M2")
     @Test
     public void compileRuntime(){
         String sourcePath = "../ceylon-spec/languagesrc/current";
