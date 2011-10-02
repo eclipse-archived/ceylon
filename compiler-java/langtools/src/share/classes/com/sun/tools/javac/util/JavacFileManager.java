@@ -128,7 +128,7 @@ public class JavacFileManager implements StandardJavaFileManager {
 
     private final File uninited = new File("U N I N I T E D");
 
-    private final Set<JavaFileObject.Kind> sourceOrClass =
+    protected final Set<JavaFileObject.Kind> sourceOrClass =
         EnumSet.of(JavaFileObject.Kind.SOURCE, JavaFileObject.Kind.CLASS);
 
     /** The standard output directory, primarily used for classes.
@@ -298,7 +298,7 @@ public class JavacFileManager implements StandardJavaFileManager {
     /** Return external representation of name,
      *  converting '.' to File.separatorChar.
      */
-    private static String externalizeFileName(CharSequence name) {
+    protected static String externalizeFileName(CharSequence name) {
         return name.toString().replace('.', File.separatorChar);
     }
 
@@ -1055,7 +1055,7 @@ public class JavacFileManager implements StandardJavaFileManager {
         return getFileForInput(location, name);
     }
 
-    private JavaFileObject getFileForInput(Location location, String name) throws IOException {
+    protected JavaFileObject getFileForInput(Location location, String name) throws IOException {
         Iterable<? extends File> path = getLocation(location);
         if (path == null)
             return null;
@@ -1293,7 +1293,7 @@ public class JavacFileManager implements StandardJavaFileManager {
         }
     }
 
-    private static <T> T nullCheck(T o) {
+    protected static <T> T nullCheck(T o) {
         o.getClass(); // null check
         return o;
     }
