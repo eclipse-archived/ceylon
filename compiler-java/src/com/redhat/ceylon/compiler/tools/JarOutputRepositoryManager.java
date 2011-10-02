@@ -103,6 +103,7 @@ public class JarOutputRepositoryManager {
             if(originalJarFile != null){
                 // now rename to the original name
                 Log.printLines(log.noticeWriter, "[renaming jar to: "+originalJarFile.getPath()+"]");
+            	originalJarFile.delete();
                 if(!outputJarFile.renameTo(originalJarFile))
                     throw new IOException("Failed to rename jar file");
             }
