@@ -90,7 +90,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         ceylonContext = LanguageCompiler.getCeylonContextInstance(context);
         symtab = Symtab.instance(context);
         names = Name.Table.instance(context);
-        reader = ClassReader.instance(context);
+        reader = CeylonClassReader.instance(context);
         log = Log.instance(context);
         types = Types.instance(context);
         typeFactory = TypeFactory.instance(context);

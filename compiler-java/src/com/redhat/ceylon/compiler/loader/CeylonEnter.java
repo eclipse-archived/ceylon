@@ -68,6 +68,8 @@ public class CeylonEnter extends Enter {
     
     protected CeylonEnter(Context context) {
         super(context);
+        // make sure it's loaded first
+        CeylonClassReader.instance(context);
         try {
             gen = CeylonTransformer.getInstance(context);
         } catch (Exception e) {
@@ -82,6 +84,8 @@ public class CeylonEnter extends Enter {
         paths = Paths.instance(context);
         fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
         compiler = LanguageCompiler.instance(context);
+        // now superclass init
+        init(context);
     }
 
     @Override
