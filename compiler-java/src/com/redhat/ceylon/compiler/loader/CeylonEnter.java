@@ -1,8 +1,11 @@
 package com.redhat.ceylon.compiler.loader;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.tools.JavaFileManager;
+import javax.tools.JavaFileObject;
+import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.compiler.codegen.BoxingDeclarationVisitor;
@@ -30,6 +33,7 @@ import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.comp.AttrContext;
 import com.sun.tools.javac.comp.Enter;
 import com.sun.tools.javac.comp.Env;
+import com.sun.tools.javac.main.JavaCompiler;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
@@ -60,6 +64,7 @@ public class CeylonEnter extends Enter {
     private Options options;
     private Paths paths;
     private CeyloncFileManager fileManager;
+    private JavaCompiler compiler;
     
     protected CeylonEnter(Context context) {
         super(context);
@@ -76,6 +81,7 @@ public class CeylonEnter extends Enter {
         options = Options.instance(context);
         paths = Paths.instance(context);
         fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
+        compiler = LanguageCompiler.instance(context);
     }
 
     @Override
@@ -113,11 +119,11 @@ public class CeylonEnter extends Enter {
     public void completeCeylonTrees(List<JCCompilationUnit> trees) {
         if (hasRun)
             throw new RuntimeException("Waaaaa, running twice!!!");
-        hasRun = true;
-        // load the modules we are compiling first
-        loadCompiledModules();
         // load the standard modules
         modelLoader.loadStandardModules();
+        // load the modules we are compiling first
+        loadCompiledModules();
+        hasRun = true;
         // make sure we don't load the files we are compiling from their class files
         modelLoader.setupSourceFileObjects(trees);
         // resolve module dependencies
@@ -188,6 +194,9 @@ public class CeylonEnter extends Enter {
                     }
                 }
                 if(module == null){
+                    module = loadModuleFromSource(pkgName);
+                }
+                if(module == null){
                     // no declaration for it, must be the default module
                     module = modules.getDefaultModule();
                 }
@@ -198,6 +207,50 @@ public class CeylonEnter extends Enter {
             // automatically add this module's jar to the classpath if it exists
             addModuleToClassPath(module);
         }
+    }
+
+    private Module loadModuleFromSource(String pkgName) {
+        if(pkgName.isEmpty())
+            return null;
+        String moduleClassName = pkgName + ".module";
+        JavaFileObject fileObject;
+        try {
+            System.err.println("Trying to load module "+moduleClassName);
+            fileObject = fileManager.getJavaFileForInput(StandardLocation.SOURCE_PATH, moduleClassName, Kind.SOURCE);
+            System.err.println("Got file object: "+fileObject);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return loadModuleFromSource(getParentPackage(pkgName));
+        }
+        if(fileObject != null){
+            CeylonCompilationUnit ceylonCompilationUnit = (CeylonCompilationUnit) compiler.parse(fileObject);
+            // parse the module info from there
+            ceylonCompilationUnit.phasedUnit.buildModuleImport();
+            // now try to obtain the parsed module
+            Module module = getModule(pkgName);
+            if(module != null){
+                ceylonCompilationUnit.phasedUnit.getPackage().setModule(module);
+                return module;
+            }
+        }
+        return loadModuleFromSource(getParentPackage(pkgName));
+    }
+
+    private String getParentPackage(String pkgName) {
+        int lastDot = pkgName.lastIndexOf(".");
+        if(lastDot == -1)
+            return "";
+        return pkgName.substring(0, lastDot);
+    }
+
+    private Module getModule(String pkgName) {
+        Modules modules = ceylonContext.getModules();
+        for(Module m : modules.getListOfModules()){
+            if(pkgName.equals(m.getNameAsString())){
+                return m;
+            }
+        }
+        return null;
     }
 
     private void addModuleToClassPath(Module module) {

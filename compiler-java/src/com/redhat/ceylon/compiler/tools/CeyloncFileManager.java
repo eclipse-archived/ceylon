@@ -123,6 +123,28 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
     }
 
     @Override
+    public JavaFileObject getJavaFileForInput(Location location,
+            String className,
+            JavaFileObject.Kind kind) throws IOException {
+        nullCheck(location);
+        // validateClassName(className);
+        nullCheck(className);
+        nullCheck(kind);
+        if (!sourceOrClass.contains(kind))
+            throw new IllegalArgumentException("Invalid kind " + kind);
+        return getFileForInput(location, externalizeFileName(className, kind));
+    }
+    
+    private String externalizeFileName(String className, JavaFileObject.Kind kind){
+        String extension;
+        if(kind == Kind.SOURCE)
+            extension = ".ceylon";
+        else
+            extension = kind.extension;
+        return externalizeFileName(className) + extension;
+    }
+
+    @Override
     public void flush() {
         super.flush();
         jarRepository.flush();
