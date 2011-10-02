@@ -27,6 +27,12 @@ public class MiscTest extends CompilerTest {
 	}
 
     @Test
+    public void testCompileTwoDepdendantClasses() throws Exception{
+        compile("twoclasses/Two.ceylon");
+        compile("twoclasses/One.ceylon");
+    }
+
+    @Test
     public void testCompileTwoClasses() throws Exception{
         compileAndRun("com.redhat.ceylon.compiler.test.misc.twoclasses.main", "twoclasses/One.ceylon", "twoclasses/Two.ceylon", "twoclasses/main.ceylon");
     }
