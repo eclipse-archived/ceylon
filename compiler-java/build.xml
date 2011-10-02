@@ -219,7 +219,7 @@
     </jar>
     <ceylonc
       classpath="${junit.lib}"
-      compilerDirectory="bin"
+      compiler="bin/ceylonc"
       srcdir="${test.src}"
       destdir="${build.ceylon.jars}">
        <include name="com/redhat/ceylon/compiler/test/ceylon/*.ceylon"/>
