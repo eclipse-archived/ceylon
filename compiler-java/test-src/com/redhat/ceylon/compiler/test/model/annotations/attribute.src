@@ -1,0 +1,61 @@
+package com.redhat.ceylon.compiler.test.model.annotations;
+
+@.com.redhat.ceylon.compiler.metadata.java.Ceylon
+@.com.redhat.ceylon.compiler.metadata.java.Attribute
+final class attr1 {
+    private static final int value = 1;
+    
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
+    static int getAttr1() {
+        return value;
+    }
+    
+    private attr1() {
+    }
+}
+@.com.redhat.ceylon.compiler.metadata.java.Ceylon
+@.com.redhat.ceylon.compiler.metadata.java.Attribute
+final class attr2 {
+    private static int value = 1;
+    
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
+    static int getAttr2() {
+        return value;
+    }
+    
+    static void setAttr2(@.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
+    int attr2) {
+        value = attr2;
+    }
+    
+    private attr2() {
+    }
+}
+@.com.redhat.ceylon.compiler.metadata.java.Ceylon
+@.com.redhat.ceylon.compiler.metadata.java.Attribute
+final class attr3 {
+    
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
+    static int getAttr3() {
+        return 1;
+    }
+    
+    private attr3() {
+    }
+}
+@.com.redhat.ceylon.compiler.metadata.java.Ceylon
+@.com.redhat.ceylon.compiler.metadata.java.Attribute
+final class attr4 {
+    
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
+    static int getAttr4() {
+        return 1;
+    }
+    
+    static void setAttr4(@.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
+    int attr4) {
+    }
+    
+    private attr4() {
+    }
+}

@@ -9,4 +9,16 @@ public class AnnotationsTest extends CompilerTest {
     public void testUnionTypeInfo(){
         compareWithJavaSource("annotations/UnionTypeInfo");
     }
+    @Test
+    public void testClass(){
+        compareWithJavaSource("annotations/Klass");
+    }
+    @Test
+    public void testMethod(){
+        compareWithJavaSource("annotations/method");
+    }
+    @Test
+    public void testAttribute(){
+        compareWithJavaSource("annotations/attribute");
+    }
 }

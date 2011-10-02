@@ -1,0 +1,16 @@
+package com.redhat.ceylon.compiler.test.model.annotations;
+
+@.com.redhat.ceylon.compiler.metadata.java.Ceylon
+@.com.redhat.ceylon.compiler.metadata.java.Method
+final class method {
+    
+    private method() {
+    }
+    
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
+    static int method(@.com.redhat.ceylon.compiler.metadata.java.Name("i")
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
+    final int i) {
+        return 1;
+    }
+}
