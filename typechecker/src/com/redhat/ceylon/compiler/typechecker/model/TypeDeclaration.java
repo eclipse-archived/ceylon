@@ -80,6 +80,10 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
     public void setCaseTypes(List<ProducedType> caseTypes) {
         this.caseTypes = caseTypes;
     }
+    
+    public List<TypeDeclaration> getKnownSubtypes() {
+        return Collections.emptyList();
+    }
 
     @Override
     public ProducedReference getProducedReference(ProducedType pt,

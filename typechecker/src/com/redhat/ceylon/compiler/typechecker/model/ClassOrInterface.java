@@ -2,10 +2,13 @@ package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public abstract class ClassOrInterface extends TypeDeclaration {
+
+    private List<TypeDeclaration> knownSubtypes = new ArrayList<TypeDeclaration>();
 
     @Override
     public boolean isMember() {
@@ -47,4 +50,20 @@ public abstract class ClassOrInterface extends TypeDeclaration {
         return DeclarationKind.TYPE;
     }
     
+    public void setExtendedType(ProducedType extendedType) {
+        super.setExtendedType(extendedType);
+        extendedType.getDeclaration().getKnownSubtypes().add(this);
+    }
+
+    public void setSatisfiedTypes(List<ProducedType> satisfiedTypes) {
+        super.setSatisfiedTypes(satisfiedTypes);
+        for (ProducedType st: satisfiedTypes) {
+            st.getDeclaration().getKnownSubtypes().add(this);
+        }
+    }
+    
+    public List<TypeDeclaration> getKnownSubtypes() {
+        return knownSubtypes;
+    }
+
 }
