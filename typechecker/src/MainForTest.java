@@ -1,5 +1,6 @@
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
+import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
@@ -46,10 +47,13 @@ public class MainForTest {
         if ( compilationUnit == null ) {
             throw new RuntimeException("Failed to pass getCompilationUnitFromRelativePath for top level files (no package) in real src dir");
         }
+
+        ClosableVirtualFile latestZippedLanguageSourceFile = MainHelper.getLatestZippedLanguageSourceFile();
         typeChecker = new TypeCheckerBuilder()
                 .verbose(false)
-                .addSrcDirectory( new File("languagesrc/current") )
+                .addSrcDirectory( latestZippedLanguageSourceFile )
                 .getTypeChecker();
         typeChecker.process();
+        latestZippedLanguageSourceFile.close();
     }
 }
