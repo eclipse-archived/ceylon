@@ -34,11 +34,6 @@
     <!-- Local repository -->
     <property name="repo.local.dir" value="${user.home}/.ceylon/repo"/>
 
-    <!-- ceylon.language -->
-    <property name="module.language.srcrootdir" value="${basedir}/languagesrc/current"/>
-    <property name="module.language.dir" value="ceylon/language"/>
-    <property name="module.language.name" value="ceylon.language"/>
-
     <!-- Classpath for the build tools. -->
     <path id="lib.classpath">
         <fileset dir="${support.dir}/lib">
@@ -332,29 +327,13 @@
         <mkdir dir="${repo.local.dir}"/>
     </target>
 
-    <target name="publish.language.module"
-            depends="init.repo"
-            description="Publish ceylon language template">
-        <property name="dir.file" value="${repo.local.dir}/${module.language.dir}/${module.ceylon.language.version}"/>
-        <property name="src.file" value="${dir.file}/${module.language.name}-${module.ceylon.language.version}.src"/>
-
-        <delete dir="${dir.file}"/>
-        <mkdir dir="${dir.file}"/>
-        <zip destfile="${src.file}">
-            <fileset dir="${module.language.srcrootdir}">
-                <include name="ceylon/language/**/*.ceylon"/>
-            </fileset>
-        </zip>
-        <checksum file="${src.file}" algorithm="sha1"/>
-    </target>
-
     <target name="clean.repo"
             description="Clean local ceylon repository">
         <delete dir="${repo.local.dir}"/>
     </target>
 
     <target name="publish"
-            depends="publish.language.module,publish.typechecker"
+            depends="publish.typechecker"
             description="Publish both type checker and ceylon.language template module">
 
     </target>
