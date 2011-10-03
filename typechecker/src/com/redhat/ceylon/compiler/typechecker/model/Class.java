@@ -60,5 +60,10 @@ public class Class extends ClassOrInterface implements Functional {
         }
         return null;
     }
+    
+    @Override
+    public Class getExtendedTypeDeclaration() {
+        return (Class) super.getExtendedTypeDeclaration();
+    }
 
 }

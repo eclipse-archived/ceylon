@@ -83,21 +83,6 @@ public class RefinementVisitor extends Visitor {
                 ClassOrInterface declaringType = (ClassOrInterface) dec.getContainer();
                 Declaration refined = declaringType.getRefinedMember(dec.getName());
                 dec.setRefinedDeclaration(refined);
-                //if (!dec.equals(refined)) {
-                    Class etd = declaringType.getExtendedTypeDeclaration();
-                    if (etd!=null) {
-                        Declaration immediatelyRefined = etd.getMember(dec.getName());
-                        if (immediatelyRefined!=null && !dec.equals(immediatelyRefined)) {
-                            immediatelyRefined.getKnownRefinements().add(dec);
-                        }
-                    }
-                    for (TypeDeclaration std: declaringType.getSatisfiedTypeDeclarations()) {
-                        Declaration immediatelyRefined = std.getMember(dec.getName());
-                        if (immediatelyRefined!=null && !dec.equals(immediatelyRefined)) {
-                            immediatelyRefined.getKnownRefinements().add(dec);
-                        }
-                    }
-                //}
             }
 
         }

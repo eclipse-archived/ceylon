@@ -4,9 +4,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.contains;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.list;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Represents a named, annotated program element:
@@ -25,7 +23,6 @@ public abstract class Declaration extends Element {
     List<Annotation> annotations = new ArrayList<Annotation>();
     Scope visibleScope;
     Declaration refinedDeclaration = this;
-    Set<Declaration> knownRefinements = new HashSet<Declaration>();
 
     public Scope getVisibleScope() {
         return visibleScope;
@@ -107,10 +104,6 @@ public abstract class Declaration extends Element {
 		this.refinedDeclaration = refinedDeclaration;
 	}
     
-    public Set<Declaration> getKnownRefinements() {
-        return knownRefinements;
-    }
-
     /**
      * Determine if this declaration is visible
      * in the given scope, by considering if it

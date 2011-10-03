@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 public abstract class TypeDeclaration extends Declaration implements Scope, Generic {
@@ -33,12 +32,12 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
         this.typeParameters = typeParameters;
     }
 
-    public Class getExtendedTypeDeclaration() {
+    public ClassOrInterface getExtendedTypeDeclaration() {
         if (getExtendedType()==null) {
             return null;
         }
         else {
-            return (Class) getExtendedType().getDeclaration();
+            return (ClassOrInterface) getExtendedType().getDeclaration();
         }
     }
 
@@ -82,10 +81,6 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
         this.caseTypes = caseTypes;
     }
     
-    public Set<TypeDeclaration> getKnownSubtypes() {
-        return Collections.emptySet();
-    }
-
     @Override
     public ProducedReference getProducedReference(ProducedType pt,
             List<ProducedType> typeArguments) {
