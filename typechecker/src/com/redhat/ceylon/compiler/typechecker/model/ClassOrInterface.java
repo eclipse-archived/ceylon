@@ -2,13 +2,14 @@ package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public abstract class ClassOrInterface extends TypeDeclaration {
 
-    private List<TypeDeclaration> knownSubtypes = new ArrayList<TypeDeclaration>();
+    private Set<TypeDeclaration> knownSubtypes = new HashSet<TypeDeclaration>();
 
     @Override
     public boolean isMember() {
@@ -62,7 +63,7 @@ public abstract class ClassOrInterface extends TypeDeclaration {
         }
     }
     
-    public List<TypeDeclaration> getKnownSubtypes() {
+    public Set<TypeDeclaration> getKnownSubtypes() {
         return knownSubtypes;
     }
 

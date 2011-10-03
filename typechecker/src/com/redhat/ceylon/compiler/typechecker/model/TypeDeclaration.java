@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 public abstract class TypeDeclaration extends Declaration implements Scope, Generic {
@@ -81,8 +82,8 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
         this.caseTypes = caseTypes;
     }
     
-    public List<TypeDeclaration> getKnownSubtypes() {
-        return Collections.emptyList();
+    public Set<TypeDeclaration> getKnownSubtypes() {
+        return Collections.emptySet();
     }
 
     @Override

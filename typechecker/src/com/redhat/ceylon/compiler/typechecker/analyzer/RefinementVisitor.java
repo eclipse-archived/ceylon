@@ -20,6 +20,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -79,8 +80,24 @@ public class RefinementVisitor extends Visitor {
             
             if (member) {
                 checkMember(that, dec);
-                Declaration refined = ((ClassOrInterface) dec.getContainer()).getRefinedMember(dec.getName());
+                ClassOrInterface declaringType = (ClassOrInterface) dec.getContainer();
+                Declaration refined = declaringType.getRefinedMember(dec.getName());
                 dec.setRefinedDeclaration(refined);
+                //if (!dec.equals(refined)) {
+                    Class etd = declaringType.getExtendedTypeDeclaration();
+                    if (etd!=null) {
+                        Declaration immediatelyRefined = etd.getMember(dec.getName());
+                        if (immediatelyRefined!=null && !dec.equals(immediatelyRefined)) {
+                            immediatelyRefined.getKnownRefinements().add(dec);
+                        }
+                    }
+                    for (TypeDeclaration std: declaringType.getSatisfiedTypeDeclarations()) {
+                        Declaration immediatelyRefined = std.getMember(dec.getName());
+                        if (immediatelyRefined!=null && !dec.equals(immediatelyRefined)) {
+                            immediatelyRefined.getKnownRefinements().add(dec);
+                        }
+                    }
+                //}
             }
 
         }

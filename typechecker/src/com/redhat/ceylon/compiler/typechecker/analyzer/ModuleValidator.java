@@ -113,6 +113,9 @@ public class ModuleValidator {
         for (PhasedUnit pu : listOfUnits) {
             pu.scanTypeDeclarations();
         }
+        for (PhasedUnit pu : listOfUnits) {
+            pu.validateRefinement(); //TODO: only needed for type hierarchy view in IDE!
+        }
     }
 
     private void buildDependencyString(LinkedList<Module> dependencyTree, Module module, StringBuilder error) {
