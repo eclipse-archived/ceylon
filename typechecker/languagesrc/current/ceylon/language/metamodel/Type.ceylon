@@ -1,1 +1,0 @@
-shared interface Type<out Instance> satisfies Annotated {}

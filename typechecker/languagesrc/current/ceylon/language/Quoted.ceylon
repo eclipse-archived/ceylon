@@ -1,1 +1,0 @@
-shared class Quoted(Character[] chars) {}

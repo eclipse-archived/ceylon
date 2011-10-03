@@ -1,1 +1,0 @@
-shared Element[] join<Element>(Element[]... sequences) { throw; }
