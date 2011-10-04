@@ -31,6 +31,8 @@ public abstract class CompilerTest {
 	private final static String dir = "test-src";
 	protected final static String destDir = "build/classes";
 	private final static String destJar = destDir+"/default_module-unversioned.jar";
+    private static String languageVersion = "0.1";
+	private final static String languageJar = System.getProperty("user.home")+"/.ceylon/repo/ceylon/language/"+languageVersion +"/ceylon.language-"+languageVersion+".car";
 
 	protected String path;
 
@@ -161,7 +163,8 @@ public abstract class CompilerTest {
         Iterable<? extends JavaFileObject> compilationUnits1 =
             runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
         return (CeyloncTaskImpl) runCompiler.getTask(null, runFileManager, null, 
-                Arrays.asList("-sourcepath", getSourcePath(), "-d", destDir, "-verbose", "-cp", destJar+File.pathSeparator+destDir), 
+                Arrays.asList("-sourcepath", getSourcePath(), "-d", destDir, "-verbose", 
+                        "-cp", languageJar+File.pathSeparator+destJar+File.pathSeparator+destDir), 
                 null, compilationUnits1);
 	}
 
