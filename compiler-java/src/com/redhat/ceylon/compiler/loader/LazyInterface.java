@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
@@ -92,7 +93,7 @@ public class LazyInterface extends Interface implements LazyElement {
     }
 
     @Override
-    public Class getExtendedTypeDeclaration() {
+    public ClassOrInterface getExtendedTypeDeclaration() {
         load();
         return super.getExtendedTypeDeclaration();
     }
