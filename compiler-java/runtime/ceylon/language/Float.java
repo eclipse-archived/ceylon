@@ -44,7 +44,7 @@ public final class Float
 
     @Override
     public ceylon.language.Float getPositiveValue() {
-        return instance(-value);
+        return this;
     }
 
     public ceylon.language.Comparison compare(ceylon.language.Float op) {
