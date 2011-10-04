@@ -1,5 +1,7 @@
 <project name="Ceylon compiler" default="all" basedir=".">
 
+  <property file="build.properties"/>	
+
   <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
   <property name="typechecker.jar" location="${ceylon.repo.dir}/com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar"/>
 
