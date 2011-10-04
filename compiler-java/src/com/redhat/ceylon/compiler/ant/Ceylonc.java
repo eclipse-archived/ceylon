@@ -194,8 +194,6 @@ public class Ceylonc extends MatchingTask {
         	String path = classpathReference.getReferencedObject().toString();
         	if (System.getProperty("os.name").toLowerCase().indexOf("windows") > -1) {
         		path = "\"" + path + "\"";
-        	} else {
-        		path = "\'" + path + "\'";
         	}
             cmd.createArgument().setValue("-classpath");
             cmd.createArgument().setValue(path);
@@ -204,6 +202,7 @@ public class Ceylonc extends MatchingTask {
             cmd.createArgument().setValue(compileList[i].getAbsolutePath());
         }
 
+System.err.println("XXXXXXXXXXXXXX " + cmd.toString());
         try {
             Execute exe = new Execute(new LogStreamHandler(this, Project.MSG_INFO, Project.MSG_WARN));
             exe.setAntRun(getProject());
