@@ -65,7 +65,16 @@ public class Module {
         return list;
     }
 
-    public String getNameAsString() {
+	public Package getPackage(String name) {
+        for (Package pkg: getAllPackages()) {
+            if ( pkg.getQualifiedNameString().equals(name) ) {
+                return pkg;
+            }
+        }
+        return null;
+	}
+	
+	public String getNameAsString() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < name.size(); i++) {
             sb.append(name.get(i));
