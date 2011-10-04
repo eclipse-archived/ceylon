@@ -36,8 +36,8 @@
 
 	  <!-- Rule to clean everything up -->
     <target name="clean" description="Clean up everything.">
-        <delete dir="${build}"/>
-	</target>
+        <delete dir="${build.dir}"/>
+    </target>
 
     <!-- Repository targets -->
     <target name="init.repo"
