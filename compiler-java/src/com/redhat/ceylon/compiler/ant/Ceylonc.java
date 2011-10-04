@@ -202,7 +202,6 @@ public class Ceylonc extends MatchingTask {
             cmd.createArgument().setValue(compileList[i].getAbsolutePath());
         }
 
-System.err.println("XXXXXXXXXXXXXX " + cmd.toString());
         try {
             Execute exe = new Execute(new LogStreamHandler(this, Project.MSG_INFO, Project.MSG_WARN));
             exe.setAntRun(getProject());
