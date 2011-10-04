@@ -9,7 +9,7 @@ set JAVA_CP=%JAVA_CP%;%HOMEDRIVE%%HOMEPATH%\.ceylon\repo\com\redhat\ceylon\typec
 set JAVA_CP=%JAVA_CP%;%CEYLON_HOME%\lib\antlrworks-1.3.1.jar
 
 rem COMPILE_CP are classes required by the code being compiled
-set COMPILE_CP=%CEYLON_HOME%\build\lib\runtime.jar;%USER_CP%
+set COMPILE_CP=$HOME\.ceylon\repo\ceylon\language\0.1\ceylon.language-0.1.car;%USER_CP%
 
 %JAVA% ^
 	-enableassertions ^

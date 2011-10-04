@@ -1,14 +1,13 @@
-<project name="MyProject" default="all" basedir=".">
+<project name="Ceylon compiler" default="all" basedir=".">
 
-  <property name="typechecker.jar" location="${user.home}/.ceylon/repo/com/redhat/ceylon/typechecker/0.1/com.redhat.ceylon.typechecker-0.1.jar"/>
+  <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
+  <property name="typechecker.jar" location="${ceylon.repo.dir}/com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar"/>
 
   <!-- The Java source files for the compiler -->
   <property name="javac.src" location="langtools/src/share/classes"/>
   <property name="ceylonc.src" location="src"/>
   <property name="test.src" location="test-src"/>
 
-  <!-- The Java and Ceylon source files for the runtime -->
-  <property name="runtime.src" location="runtime"/>  
   
   <!-- Directories everything gets built into -->
   <property name="build" location="build"/>
@@ -22,7 +21,7 @@
 
   <!-- Jarfiles everything ends up in -->
   <property name="compiler.jar" location="${build.lib}/compiler.jar"/>
-  <property name="runtime.jar" location="${build.lib}/runtime.jar"/>
+  <property name="runtime.jar" location="${ceylon.repo.dir}/ceylon/language/${module.ceylon.language.version}/ceylon.language-${module.ceylon.language.version}.car"/>
   <property name="ceylon-tests.jar" location="${build.ceylon.jars}/com.redhat.ceylon.compiler.test.ceylon-0.1.jar"/>
 
   <!-- The directory that parser tests live in, and
@@ -37,6 +36,7 @@
 
   <path id="test.compile.classpath">
     <path refid="compiler.classpath"/>
+    <pathelement path="${runtime.jar}"/>
     <pathelement path="${build.classes}"/>
     <pathelement path="${junit.lib}"/>
   </path>
@@ -75,7 +75,7 @@
   </target>
 
   <!-- Rule to build compiler test classes from their Java sources -->
-  <target name="test.classes" depends="compiler.classes,runtime.classes">
+  <target name="test.classes" depends="compiler.classes">
     <mkdir dir="${build.classes}"/>
     <javac
        srcdir="${test.src}"
@@ -96,35 +96,6 @@
       </fileset>
       <fileset dir="${javac.src}">
         <include name="com/sun/tools/javac/resources/*.properties"/>
-      </fileset>
-    </jar>
-  </target>
-
-  <!-- Rule to build runtime classes from their Java and Ceylon sources -->
-  <target name="runtime.classes" depends="compiler.jar">
-<!--
-    <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc">
-      <classpath>
-        <pathelement location="${compiler.jar}"/>
-      </classpath>
-    </taskdef>
-    <ceylonc
-       compiler="bin/ceylonc"
-       srcdir="${runtime.src}"
-       destdir="${build.classes}"/>
--->
-    <javac
-       srcdir="${runtime.src}"
-       destdir="${build.classes}"/>
-  </target>
-  
-  <!-- Rule to build runtime jar -->
-  <target name="runtime.jar" depends="runtime.classes">
-    <mkdir dir="${build.lib}"/>
-    <jar destfile="${runtime.jar}">
-      <fileset dir="${build.classes}">
-        <include name="ceylon/**"/>
-        <include name="com/redhat/ceylon/compiler/metadata/**"/>
       </fileset>
     </jar>
   </target>
@@ -155,7 +126,7 @@
 
   <!-- FIXME: Historical rule -->
   <!-- Rule to run the compiler regression tests -->
-  <target name="test.compiler" depends="compiler.jar,runtime.jar">
+  <target name="test.compiler" depends="compiler.jar">
     <exec executable="bin/compilertest" failonerror="true"/>
   </target>
 
@@ -163,7 +134,7 @@
   <target name="all" depends="test"/>
 
   <!-- Rule to compile and test -->
-  <target name="build" depends="compiler.jar,runtime.jar"/>
+  <target name="build" depends="compiler.jar"/>
 
   <!-- Rule to clean everything up -->
   <target name="clean">
@@ -172,7 +143,7 @@
   </target>
 
   <!-- Runs the JUnit tests -->
-  <target name="test" depends="test.classes,ceylon-tests.jar,compiler.jar,runtime.jar" description="Runs the JUnit tests">
+  <target name="test" depends="test.classes,ceylon-tests.jar,compiler.jar" description="Runs the JUnit tests">
     <mkdir dir="${test.reports}"/>
   	<property name="bootclasspath" refid="test.run.classpath" />
     <junit printsummary="yes" haltonfailure="no">
@@ -202,7 +173,7 @@
     </junitreport>
   </target>
 
-  <target name="ceylonc" depends="compiler.jar,runtime.jar">
+  <target name="ceylonc" depends="compiler.jar">
     <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc">
       <classpath>
         <pathelement location="${compiler.jar}"/>
@@ -210,7 +181,7 @@
     </taskdef>
   </target>
 
-  <target name="ceylon-tests.jar" depends="compiler.jar, runtime.jar, ceylonc">
+  <target name="ceylon-tests.jar" depends="compiler.jar, ceylonc">
     <mkdir dir="${build.ceylon.jars}"/>
     <jar destfile="${ceylon-tests.jar}">
       <fileset dir="${build.classes}">

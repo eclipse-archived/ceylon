@@ -2,7 +2,7 @@
 source $(dirname $0)/args.sh
 
 # Classes required by the launcher and by the code being launched
-JAVA_CP="$CEYLON_HOME/build/lib/runtime.jar:$USER_CP"
+JAVA_CP="$HOME/.ceylon/repo/ceylon/language/0.1/ceylon.language-0.1.car:$USER_CP"
 
 java \
 	-enableassertions \

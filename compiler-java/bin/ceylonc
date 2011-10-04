@@ -11,7 +11,7 @@ JAVA_CP="$JAVA_CP:$CEYLON_HOME/lib/antlrworks-1.3.1.jar"
 # Do not add the hand-made runtime if we're bootstrapping it
 if test "$BOOTSTRAP" != "true"
 then
-    COMPILE_CP="$CEYLON_HOME/build/lib/runtime.jar:$USER_CP"
+    COMPILE_CP="$HOME/.ceylon/repo/ceylon/language/0.1/ceylon.language-0.1.car:$USER_CP"
 else
     COMPILE_CP="$USER_CP"
 fi

@@ -12,10 +12,9 @@ The -sourcepath argument to the compiler is required in order for
 the compiler to figure out each class's full name.  It is
 a colon-separated path, much like javac's -sourcepath argument.
 
-Once built, the compiler and runtime live in these jars:
+Once built, the compiler lives in this jars:
 
   build/lib/compiler.jar
-  build/lib/runtime.jar
 
 If you want to build and run the Ceylon compiler in Eclipse
 then please see README.eclipse for setup instructions.
