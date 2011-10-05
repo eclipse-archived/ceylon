@@ -32,7 +32,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrTypeList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.redhat.ceylon.compiler.typechecker.util.PrintUtil;
 
 /**
  * Second phase of type analysis.
@@ -93,7 +92,7 @@ public class TypeVisitor extends Visitor {
 
     private Package getPackage(Tree.ImportPath path) {
         if (path!=null && !path.getIdentifiers().isEmpty()) {
-            String nameToImport = PrintUtil.importNodeToString(path.getIdentifiers());
+            String nameToImport = formatPath(path.getIdentifiers());
             Module module = unit.getPackage().getModule();
             Package pkg = module.getPackage(nameToImport);
             if (pkg != null) {
@@ -117,6 +116,21 @@ public class TypeVisitor extends Visitor {
 //            return false;
 //        }
 //    }
+    
+    private static String formatPath(List<Tree.Identifier> nodes) {
+        StringBuilder sb = new StringBuilder();
+        boolean first = true;
+        for (Node node: nodes) {
+            if (first) {
+                first = false;
+            }
+            else {
+                sb.append(".");
+            }
+            sb.append(node.getText());
+        }
+        return sb.toString();
+    }
     
     private String importMember(Tree.ImportMemberOrType member, Package importedPackage, ImportList il) {
         Import i = new Import();
