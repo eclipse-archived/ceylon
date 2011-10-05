@@ -7,4 +7,8 @@ public final class pkg {
     
     public static void pkg() {
     }
+    
+    public static void main(.java.lang.String[] args) {
+        pkg();
+    }
 }

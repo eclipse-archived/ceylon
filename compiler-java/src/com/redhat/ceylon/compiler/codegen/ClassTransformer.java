@@ -8,6 +8,7 @@ import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
@@ -15,6 +16,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinitio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
+import com.redhat.ceylon.compiler.util.Decl;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
@@ -22,6 +24,7 @@ import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -62,13 +65,13 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     public void transform(AttributeDeclaration decl, ClassDefinitionBuilder classBuilder) {
-        boolean useField = decl.getDeclarationModel().isCaptured() || isShared(decl);
+        boolean useField = decl.getDeclarationModel().isCaptured() || Decl.isShared(decl);
 
         Name attrName = names().fromString(decl.getIdentifier().getText());
 
         // Only a non-formal attribute has a corresponding field
         // and if a class parameter exists with the same name we skip this part as well
-        if (!isFormal(decl) && !classBuilder.existsParam(attrName.toString())) {
+        if (!Decl.isFormal(decl) && !classBuilder.existsParam(attrName.toString())) {
             JCExpression initialValue = null;
             if (decl.getSpecifierOrInitializerExpression() != null) {
                 initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), Util.getBoxingStrategy(decl.getDeclarationModel()));
@@ -97,7 +100,7 @@ public class ClassTransformer extends AbstractTransformer {
 
         if (useField) {
             classBuilder.defs(makeGetter(decl));
-            if (isMutable(decl)) {
+            if (Decl.isMutable(decl)) {
                 classBuilder.defs(makeSetter(decl));
             }
         }        
@@ -127,8 +130,8 @@ public class ClassTransformer extends AbstractTransformer {
     private int transformClassDeclFlags(Tree.ClassOrInterface cdecl) {
         int result = 0;
 
-        result |= isShared(cdecl) ? PUBLIC : 0;
-        result |= isAbstract(cdecl) && (cdecl instanceof Tree.AnyClass) ? ABSTRACT : 0;
+        result |= Decl.isShared(cdecl) ? PUBLIC : 0;
+        result |= Decl.isAbstract(cdecl) && (cdecl instanceof Tree.AnyClass) ? ABSTRACT : 0;
         result |= (cdecl instanceof Tree.AnyInterface) ? INTERFACE : 0;
 
         return result;
@@ -137,15 +140,15 @@ public class ClassTransformer extends AbstractTransformer {
     private int transformMethodDeclFlags(Tree.AnyMethod def) {
         int result = 0;
 
-        if (isToplevel(def)) {
-            result |= isShared(def) ? PUBLIC : 0;
+        if (Decl.isToplevel(def)) {
+            result |= Decl.isShared(def) ? PUBLIC : 0;
             result |= STATIC;
-        } else if (isInner(def)) {
-            result |= isShared(def) ? PUBLIC : 0;
+        } else if (Decl.isInner(def)) {
+            result |= Decl.isShared(def) ? PUBLIC : 0;
         } else {
-            result |= isShared(def) ? PUBLIC : PRIVATE;
-            result |= (isFormal(def) && !isDefault(def)) ? ABSTRACT : 0;
-            result |= !(isFormal(def) || isDefault(def)) ? FINAL : 0;
+            result |= Decl.isShared(def) ? PUBLIC : PRIVATE;
+            result |= (Decl.isFormal(def) && !Decl.isDefault(def)) ? ABSTRACT : 0;
+            result |= !(Decl.isFormal(def) || Decl.isDefault(def)) ? FINAL : 0;
         }
 
         return result;
@@ -154,7 +157,7 @@ public class ClassTransformer extends AbstractTransformer {
     private int transformAttributeFieldDeclFlags(Tree.AttributeDeclaration cdecl) {
         int result = 0;
 
-        result |= isMutable(cdecl) ? 0 : FINAL;
+        result |= Decl.isMutable(cdecl) ? 0 : FINAL;
         result |= PRIVATE;
 
         return result;
@@ -163,7 +166,7 @@ public class ClassTransformer extends AbstractTransformer {
     private int transformLocalDeclFlags(Tree.AttributeDeclaration cdecl) {
         int result = 0;
 
-        result |= isMutable(cdecl) ? 0 : FINAL;
+        result |= Decl.isMutable(cdecl) ? 0 : FINAL;
 
         return result;
     }
@@ -171,9 +174,9 @@ public class ClassTransformer extends AbstractTransformer {
     private int transformAttributeGetSetDeclFlags(Tree.TypedDeclaration cdecl) {
         int result = 0;
 
-        result |= isShared(cdecl) ? PUBLIC : PRIVATE;
-        result |= (isFormal(cdecl) && !isDefault(cdecl)) ? ABSTRACT : 0;
-        result |= !(isFormal(cdecl) || isDefault(cdecl)) ? FINAL : 0;
+        result |= Decl.isShared(cdecl) ? PUBLIC : PRIVATE;
+        result |= (Decl.isFormal(cdecl) && !Decl.isDefault(cdecl)) ? ABSTRACT : 0;
+        result |= !(Decl.isFormal(cdecl) || Decl.isDefault(cdecl)) ? FINAL : 0;
 
         return result;
     }
@@ -182,7 +185,7 @@ public class ClassTransformer extends AbstractTransformer {
         int result = 0;
 
         result |= FINAL;
-        result |= isShared(cdecl) ? PUBLIC : 0;
+        result |= Decl.isShared(cdecl) ? PUBLIC : 0;
 
         return result;
     }
@@ -191,14 +194,14 @@ public class ClassTransformer extends AbstractTransformer {
         at(decl);
         String atrrName = decl.getIdentifier().getText();
         JCBlock body = null;
-        if (!isFormal(decl)) {
+        if (!Decl.isFormal(decl)) {
             body = make().Block(0, List.<JCTree.JCStatement>of(make().Return(makeSelect("this", atrrName))));
         }
         
         return MethodDefinitionBuilder
             .getter(this, atrrName, decl.getDeclarationModel())
             .modifiers(transformAttributeGetSetDeclFlags(decl))
-            .isActual(isActual(decl))
+            .isActual(Decl.isActual(decl))
             .block(body)
             .build();
     }
@@ -207,7 +210,7 @@ public class ClassTransformer extends AbstractTransformer {
         at(decl);
         String atrrName = decl.getIdentifier().getText();
         JCBlock body = null;
-        if (!isFormal(decl)) {
+        if (!Decl.isFormal(decl)) {
             body = make().Block(0, List.<JCTree.JCStatement>of(
                     make().Exec(
                             make().Assign(makeSelect("this", atrrName),
@@ -217,12 +220,39 @@ public class ClassTransformer extends AbstractTransformer {
         return MethodDefinitionBuilder
             .setter(this, atrrName, actualType(decl), isGenericsImplementation(decl.getDeclarationModel()))
             .modifiers(transformAttributeGetSetDeclFlags(decl))
-            .isActual(isActual(decl))
+            .isActual(Decl.isActual(decl))
             .block(body)
             .build();
     }
 
-    public JCMethodDecl transform(Tree.AnyMethod def, boolean isInterface) {
+    public List<JCTree> transformWrappedMethod(Tree.MethodDefinition decl) {
+        // Generate a wrapper class for the method
+        String name = decl.getIdentifier().getText();
+        JCTree.JCIdent nameId = make().Ident(names().fromString(Util.quoteIfJavaKeyword(name)));
+        ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, name, Decl.isShared(decl));
+        builder.body(classGen().transform(decl));
+        if (Decl.withinMethod(decl)) {
+            // Inner method
+            List<JCTree> result = builder.build();
+            JCVariableDecl call = at(decl).VarDef(
+                    make().Modifiers(FINAL),
+                    names().fromString(name),
+                    nameId,
+                    at(decl).NewClass(null, null, nameId, List.<JCTree.JCExpression>nil(), null));
+            return result.append(call);
+        } else {
+            // Toplevel method
+            if (decl.getParameterLists().size() > 0 && decl.getParameterLists().get(0).getParameters().size() == 0) {
+                // Add a main() method
+                MethodDefinitionBuilder methbuilder = MethodDefinitionBuilder.main(this);
+                methbuilder.body(make().Exec(at(decl).Apply(null, nameId, List.<JCTree.JCExpression>nil())));
+                builder.body(methbuilder.build());
+            }
+            return builder.build();                
+        }
+    }
+
+    public JCMethodDecl transform(Tree.AnyMethod def) {
         String name = def.getIdentifier().getText();
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, name);
         
@@ -241,6 +271,8 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         if (def instanceof Tree.MethodDefinition) {
+            Scope container = def.getDeclarationModel().getContainer();
+            boolean isInterface = container instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
             if(!isInterface){
                 JCBlock body = statementGen().transform(((Tree.MethodDefinition)def).getBlock());
                 methodBuilder.block(body);
@@ -254,7 +286,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         return methodBuilder
             .modifiers(transformMethodDeclFlags(def))
-            .isActual(isActual(def))
+            .isActual(Decl.isActual(def))
             .build();
     }
 
@@ -283,18 +315,7 @@ public class ClassTransformer extends AbstractTransformer {
                 
         return methodBuilder
             .modifiers(transformMethodDeclFlags(def) | STATIC)
-            .isActual(isActual(def))
-            .build();
-    }
-
-    public List<JCTree> methodClass(Tree.MethodDefinition def) {
-        String name = def.getIdentifier().getText();
-        JCMethodDecl meth = transform(def, false);
-        return ClassDefinitionBuilder.klass(this, name)
-            .annotations(makeAtMethod())
-            .modifiers(FINAL, isShared(def) ? PUBLIC : 0)
-            .constructorModifiers(PRIVATE)
-            .body(meth)
+            .isActual(Decl.isActual(def))
             .build();
     }
 
@@ -328,9 +349,9 @@ public class ClassTransformer extends AbstractTransformer {
                 .immutable()
                 .initialValue(make().NewClass(null, null, generatedClassName, List.<JCExpression>nil(), null));
 
-        builder.classIsFinal(true).classIsPublic(isShared(decl));
-        builder.getterIsStatic(true).getterIsPublic(isShared(decl));
-        builder.setterIsStatic(true).setterIsPublic(isShared(decl)); 
+        builder.classIsFinal(true).classIsPublic(Decl.isShared(decl));
+        builder.getterIsStatic(true).getterIsPublic(Decl.isShared(decl));
+        builder.setterIsStatic(true).setterIsPublic(Decl.isShared(decl)); 
 
         builder.appendDefinitionsTo(defs);
         return defs;

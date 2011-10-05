@@ -7,6 +7,10 @@ final class foo {
     
     static void foo() {
     }
+    
+    public static void main(.java.lang.String[] args) {
+        foo();
+    }
 }
 final class bar {
     

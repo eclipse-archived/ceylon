@@ -1,20 +1,15 @@
 package com.redhat.ceylon.compiler.codegen;
 
-import static com.sun.tools.javac.code.Flags.FINAL;
-
 import com.redhat.ceylon.compiler.codegen.AbstractTransformer.BoxingStrategy;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.compiler.util.Decl;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.tree.JCTree;
-import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 
@@ -62,46 +57,6 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         this.typeArgs = typeArgs;
         this.args = args;
     }
-
-    /**
-     * Determines whether the declaration's containing scope is a method
-     * @param decl The declaration
-     * @return true if the declaration is within a method
-     */
-    private boolean withinMethod(Tree.Declaration decl) {
-        Scope container = decl.getDeclarationModel().getContainer();
-        return container instanceof Method;
-    }
-    
-    /**
-     * Determines whether the declaration's containing scope is a package
-     * @param decl The declaration
-     * @return true if the declaration is within a package
-     */
-    private boolean withinPackage(Tree.Declaration decl) {
-        Scope container = decl.getDeclarationModel().getContainer();
-        return container instanceof com.redhat.ceylon.compiler.typechecker.model.Package;
-    }
-    
-    /**
-     * Determines whether the declaration's containing scope is a class
-     * @param decl The declaration
-     * @return true if the declaration is within a class
-     */
-    private boolean withinClass(Tree.Declaration decl) {
-        Scope container = decl.getDeclarationModel().getContainer();
-        return container instanceof com.redhat.ceylon.compiler.typechecker.model.Class;
-    }
-    
-    /**
-     * Determines whether the declaration's containing scope is a class or interface
-     * @param decl The declaration
-     * @return true if the declaration is within a class or interface
-     */
-    private boolean withinClassOrInterface(Tree.Declaration decl) {
-        Scope container = decl.getDeclarationModel().getContainer();
-        return container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
-    }
     
     public void handleException(Exception e, Node that) {
         that.getErrors().add(new CodeGenError(that, e.getMessage(), e)); 
@@ -128,7 +83,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
 
     public void visit(Tree.ClassOrInterface decl) {
         boolean annots = checkCompilerAnnotations(decl);
-        if (withinClass(decl)) {
+        if (Decl.withinClass(decl)) {
             classBuilder.defs(gen.classGen().transform(decl));
         } else {
             appendList(gen.classGen().transform(decl));
@@ -144,13 +99,13 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     
     public void visit(Tree.AttributeDeclaration decl){
         boolean annots = checkCompilerAnnotations(decl);
-        if (withinPackage(decl)) {
+        if (Decl.withinPackage(decl)) {
             // Toplevel attributes
             appendList(gen.transform(decl));
-        } else if (withinClassOrInterface(decl)) {
+        } else if (Decl.withinClassOrInterface(decl)) {
             // Class attributes
             gen.classGen().transform(decl, classBuilder);
-        } else if (withinMethod(decl) && decl.getDeclarationModel().isCaptured()) {
+        } else if (Decl.withinMethod(decl) && decl.getDeclarationModel().isCaptured()) {
             // Captured local attributes get turned into an inner getter/setter class
             appendList(gen.transform(decl));
         } else {
@@ -162,9 +117,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
 
     public void visit(Tree.AttributeGetterDefinition decl){
         boolean annots = checkCompilerAnnotations(decl);
-        if (withinClass(decl)) {
+        if (Decl.withinClass(decl)) {
             classBuilder.defs(gen.classGen().transform(decl));
-        } else if (withinMethod(decl)) {
+        } else if (Decl.withinMethod(decl)) {
             appendList(gen.transform(decl));
         } else {
             topattrBuilder.add(decl);
@@ -174,9 +129,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
 
     public void visit(final Tree.AttributeSetterDefinition decl) {
         boolean annots = checkCompilerAnnotations(decl);
-        if (withinClass(decl)) {
+        if (Decl.withinClass(decl)) {
             classBuilder.defs(gen.classGen().transform(decl));
-        } else if (withinMethod(decl)) {
+        } else if (Decl.withinMethod(decl)) {
             appendList(gen.transform(decl));
         } else {
             topattrBuilder.add(decl);
@@ -189,26 +144,17 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         Scope container = decl.getDeclarationModel().getContainer();
         if (container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) {
             boolean isInterface = container instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
-            classBuilder.defs(gen.classGen().transform(decl, isInterface));
+            classBuilder.defs(gen.classGen().transform(decl));
             if(isInterface && decl.getBlock() != null)
                 classBuilder.concreteInterfaceMemberDefs(gen.classGen().transformConcreteInterfaceMember(decl, ((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)container).getType()));
         } else {
-            // Generate a wrapper class for the method
-            List<JCTree> innerDecl = gen.classGen().methodClass(decl);
-            // This is a bit lame, but we know that for a methodClass we have only one decl and it's a ClassDecl
-            JCTree.JCClassDecl classDecl = (JCClassDecl) innerDecl.get(0);
-            appendList(innerDecl);
-            if (withinMethod(decl)) {
-                JCTree.JCIdent name = gen.make().Ident(classDecl.name);
-                JCVariableDecl call = gen.at(decl).VarDef(
-                        gen.make().Modifiers(FINAL),
-                        gen.names().fromString(decl.getIdentifier().getText()),
-                        name,
-                        gen.at(decl).NewClass(null, null, name, List.<JCTree.JCExpression>nil(), null));
-                append(call);
-            }
+            appendList(gen.classGen().transformWrappedMethod(decl));
         }
         resetCompilerAnnotations(annots);
+    }
+
+    public void visit(Tree.MethodDeclaration meth) {
+        classBuilder.defs(gen.classGen().transform(meth));
     }
     
     /*
@@ -222,10 +168,6 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
 
     public void visit(Tree.Block b) {
         b.visitChildren(this);
-    }
-
-    public void visit(Tree.MethodDeclaration meth) {
-        classBuilder.defs(gen.classGen().transform(meth, false));
     }
 
     public void visit(Tree.Annotation ann) {

@@ -15,6 +15,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
+import com.redhat.ceylon.compiler.util.Decl;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.tree.JCTree;
@@ -165,7 +166,7 @@ public class CeylonTransformer extends AbstractTransformer {
         at(decl);
         String attrName = decl.getIdentifier().getText();
         String attrClassName = attrName;
-        if (isInner(decl)) {
+        if (Decl.isInner(decl)) {
             if (decl instanceof AttributeGetterDefinition) {
                 attrClassName += "$getter";
             } else if (decl instanceof AttributeSetterDefinition) {
@@ -220,7 +221,7 @@ public class CeylonTransformer extends AbstractTransformer {
                 JCBlock getterBlock = make().Block(0, statementGen().transformStmts(gdef.getBlock().getStatements()));
                 builder.getterBlock(getterBlock);
                 
-                if (isInner(decl)) {
+                if (Decl.isInner(decl)) {
                     // For inner getters
                     builder.immutable();
                 } else {

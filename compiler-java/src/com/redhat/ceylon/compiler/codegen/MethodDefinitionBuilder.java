@@ -2,9 +2,10 @@ package com.redhat.ceylon.compiler.codegen;
 
 import static com.sun.tools.javac.code.Flags.ABSTRACT;
 import static com.sun.tools.javac.code.Flags.FINAL;
+import static com.sun.tools.javac.code.Flags.PUBLIC;
+import static com.sun.tools.javac.code.Flags.STATIC;
 import static com.sun.tools.javac.code.TypeTags.VOID;
 
-import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -73,6 +74,12 @@ public class MethodDefinitionBuilder {
     public static MethodDefinitionBuilder setter(AbstractTransformer gen, String name, JCExpression attrType, List<JCAnnotation> annots) {
         return new MethodDefinitionBuilder(gen, Util.getSetterName(name))
             .parameter(0, name, attrType, annots);
+    }
+    
+    public static MethodDefinitionBuilder main(AbstractTransformer gen) {
+        return new MethodDefinitionBuilder(gen, "main")
+            .modifiers(PUBLIC | STATIC)
+            .parameter(0, "args", gen.make().TypeArray(gen.make().Type(gen.syms().stringType)), List.<JCAnnotation>nil());
     }
     
     private MethodDefinitionBuilder(AbstractTransformer gen, String name) {

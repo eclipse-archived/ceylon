@@ -59,6 +59,13 @@ public class ClassDefinitionBuilder {
         return new ClassDefinitionBuilder(gen, name);
     }
     
+    public static ClassDefinitionBuilder methodWrapper(AbstractTransformer gen, String name, boolean shared) {
+        return new ClassDefinitionBuilder(gen, name)
+            .annotations(gen.makeAtMethod())
+            .modifiers(FINAL, shared ? PUBLIC : 0)
+            .constructorModifiers(PRIVATE);
+    }
+
     private ClassDefinitionBuilder(AbstractTransformer gen, String name) {
         this.gen = gen;
         this.name = name;

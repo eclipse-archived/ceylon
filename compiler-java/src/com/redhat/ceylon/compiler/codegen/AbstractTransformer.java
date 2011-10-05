@@ -242,38 +242,6 @@ public abstract class AbstractTransformer implements Transformation {
     /*
      * Type handling
      */
-    
-    protected boolean isShared(Tree.Declaration decl) {
-        return decl.getDeclarationModel().isShared();
-    }
-
-    protected boolean isAbstract(Tree.ClassOrInterface decl) {
-        return decl.getDeclarationModel().isAbstract();
-    }
-
-    protected boolean isDefault(Tree.Declaration decl) {
-        return decl.getDeclarationModel().isDefault();
-    }
-
-    protected boolean isFormal(Tree.Declaration decl) {
-        return decl.getDeclarationModel().isFormal();
-    }
-
-    protected boolean isActual(Tree.Declaration decl) {
-        return decl.getDeclarationModel().isActual();
-    }
-
-    protected boolean isMutable(Tree.AttributeDeclaration decl) {
-        return decl.getDeclarationModel().isVariable();
-    }
-
-    protected boolean isToplevel(Tree.Declaration decl) {
-        return decl.getDeclarationModel().isToplevel();
-    }
-    
-    protected boolean isInner(Tree.Declaration decl) {
-        return decl.getDeclarationModel().getContainer() instanceof Method;
-    }
 
     protected boolean isBooleanTrue(Declaration decl) {
         return decl == loader().getDeclaration("ceylon.language.$true", DeclarationType.VALUE);
