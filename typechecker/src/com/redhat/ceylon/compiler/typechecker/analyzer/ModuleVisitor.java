@@ -27,6 +27,7 @@ public class ModuleVisitor extends Visitor {
      */
     private Module mainModule;
 	private String currentVersion;
+	private Module currentModule;
     private final ModuleBuilder moduleBuilder;
 
 
@@ -48,33 +49,33 @@ public class ModuleVisitor extends Visitor {
         //safety, if the object is not of type Module, ignore
         if (isModule) {
             final Tree.Identifier identifier = that.getIdentifier();
-			String currentModuleName = getQuotedIfPresent( "name", that, identifier );
+			String currentModuleName = getQuotedIfPresent( "name", that, identifier );			
 			if ( currentModuleName != null) {
                 final String[] splitModuleName = currentModuleName.split("[\\.]");
-                Module currentModule = moduleBuilder.getOrCreateModule(Arrays.asList(splitModuleName));
+                currentModule = moduleBuilder.getOrCreateModule(Arrays.asList(splitModuleName));
                 //main module definition
                 if ( mainModule == null) {
                     mainModule = currentModule;
-					setVersionToMainModule();
+					setVersionToCurrentModule();
 				}
                 else {
                     mainModule.getDependencies().add(currentModule);
                 }
             }
-            if ( currentVersion == null && (mainModule == null || mainModule.getVersion() == null) ) {
+            if ( currentVersion == null && (currentModule == null || currentModule.getVersion() == null) ) {
                 String currentModuleVersion = getQuotedIfPresent( "version", that, identifier );
                 if ( currentModuleVersion != null) {
                     currentVersion = currentModuleVersion;
-                    setVersionToMainModule();
+                    setVersionToCurrentModule();
                 }
             }
         }
         super.visit(that); //is that right to call super after? I have no clue
     }
 
-	private void setVersionToMainModule() {
-		if ( mainModule != null && currentVersion != null ) {
-			mainModule.setVersion(currentVersion);
+	private void setVersionToCurrentModule() {
+		if ( currentModule != null && currentVersion != null ) {
+		    currentModule.setVersion(currentVersion);
 			currentVersion = null;
 		}
 	}

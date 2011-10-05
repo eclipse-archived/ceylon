@@ -93,31 +93,30 @@ public class TypeVisitor extends Visitor {
 
     private Package getPackage(Tree.ImportPath path) {
         if (path!=null && !path.getIdentifiers().isEmpty()) {
+            String nameToImport = PrintUtil.importNodeToString(path.getIdentifiers());
             Module module = unit.getPackage().getModule();
-            for (Package pkg: module.getAllPackages()) {
-                if ( hasName(path.getIdentifiers(), pkg) ) {
-                    return pkg;
-                }
+            Package pkg = module.getPackage(nameToImport);
+            if (pkg != null) {
+                return pkg; 
             }
-            path.addError("package not found: " + 
-                    PrintUtil.importNodeToString(path.getIdentifiers()));
+            path.addError("package not found: " + nameToImport);
         }
         return null;
     }
 
-    private boolean hasName(List<Tree.Identifier> importPath, Package mp) {
-        if (mp.getName().size()==importPath.size()) {
-            for (int i=0; i<mp.getName().size(); i++) {
-                if (!mp.getName().get(i).equals(name(importPath.get(i)))) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
+//    private boolean hasName(List<Tree.Identifier> importPath, Package mp) {
+//        if (mp.getName().size()==importPath.size()) {
+//            for (int i=0; i<mp.getName().size(); i++) {
+//                if (!mp.getName().get(i).equals(name(importPath.get(i)))) {
+//                    return false;
+//                }
+//            }
+//            return true;
+//        }
+//        else {
+//            return false;
+//        }
+//    }
     
     private String importMember(Tree.ImportMemberOrType member, Package importedPackage, ImportList il) {
         Import i = new Import();
