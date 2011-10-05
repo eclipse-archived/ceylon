@@ -181,6 +181,7 @@ public class Symtab {
 
     public final Type ceylonAtCeylonType;
     public final Type ceylonAtModuleType;
+    public final Type ceylonAtImportType;
     public final Type ceylonAtNameType;
     public final Type ceylonAtTypeInfoType;
     public final Type ceylonAtAttributeType;
@@ -491,6 +492,7 @@ public class Symtab {
         }
         
         ceylonAtCeylonType = enterClass("com.redhat.ceylon.compiler.metadata.java.Ceylon");
+        ceylonAtImportType = enterClass("com.redhat.ceylon.compiler.metadata.java.Import");
         ceylonAtModuleType = enterClass("com.redhat.ceylon.compiler.metadata.java.Module");
         ceylonAtNameType = enterClass("com.redhat.ceylon.compiler.metadata.java.Name");
         ceylonAtTypeInfoType = enterClass("com.redhat.ceylon.compiler.metadata.java.TypeInfo");
