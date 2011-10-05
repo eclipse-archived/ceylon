@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import static com.redhat.ceylon.compiler.typechecker.model.Util.format;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNamed;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
@@ -55,7 +55,7 @@ public class Package implements Scope {
     }
 
     public String getNameAsString() {
-        return format(name);
+        return formatPath(name);
     }
 
     @Override

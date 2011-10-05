@@ -205,7 +205,7 @@ public class Util {
         }
     }
     
-    static String format(List<String> path) {
+    public static String formatPath(List<String> path) {
         StringBuilder sb = new StringBuilder();
         for (int i=0; i<path.size(); i++) {
             sb.append(path.get(i));

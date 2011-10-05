@@ -1,8 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import com.redhat.ceylon.compiler.typechecker.context.Context;
-import com.redhat.ceylon.compiler.typechecker.model.*;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.formatPath;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +9,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import static com.redhat.ceylon.compiler.typechecker.util.PrintUtil.importPathToString;
+import com.redhat.ceylon.compiler.typechecker.context.Context;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Modules;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 
 /**
  * Build modules and packages
@@ -111,9 +112,9 @@ public class ModuleBuilder {
         }
         else {
             StringBuilder error = new StringBuilder("Found two modules within the same hierarchy: '");
-            error.append( importPathToString( currentModule.getName() ) )
+            error.append( formatPath( currentModule.getName() ) )
                 .append( "' and '" )
-                .append( importPathToString( packageStack.peekLast().getName() ) )
+                .append( formatPath( packageStack.peekLast().getName() ) )
                 .append("'");
             System.err.println(error);
         }
