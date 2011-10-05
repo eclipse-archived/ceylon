@@ -44,6 +44,7 @@ import com.sun.tools.javac.util.JavacFileManager;
 import com.sun.tools.javac.util.Log;
 
 public class CeyloncTool extends JavacTool implements JavaCompiler {
+    @Override
     public JavacFileManager getStandardFileManager(DiagnosticListener<? super JavaFileObject> diagnosticListener, Locale locale, Charset charset) {
         Context context = new Context();
         if (diagnosticListener != null)
@@ -52,6 +53,7 @@ public class CeyloncTool extends JavacTool implements JavaCompiler {
         return new CeyloncFileManager(context, true, charset);
     }
 
+    @Override
     public JavacTask getTask(Writer out, JavaFileManager fileManager, DiagnosticListener<? super JavaFileObject> diagnosticListener, Iterable<String> options, Iterable<String> classes, Iterable<? extends JavaFileObject> compilationUnits) {
         final String kindMsg = "All compilation units must be of SOURCE kind";
         if (options != null)
