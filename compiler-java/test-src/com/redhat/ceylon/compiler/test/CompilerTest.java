@@ -30,9 +30,9 @@ public abstract class CompilerTest {
 
 	private final static String dir = "test-src";
 	protected final static String destDir = "build/classes";
-	private final static String destJar = destDir+"/default_module-unversioned.jar";
+	private final static String destCar = destDir+"/default_module-unversioned.car";
     private static String languageVersion = "0.1";
-	private final static String languageJar = System.getProperty("user.home")+"/.ceylon/repo/ceylon/language/"+languageVersion +"/ceylon.language-"+languageVersion+".car";
+	private final static String languageCar = System.getProperty("user.home")+"/.ceylon/repo/ceylon/language/"+languageVersion +"/ceylon.language-"+languageVersion+".car";
 
 	protected String path;
 
@@ -135,10 +135,10 @@ public abstract class CompilerTest {
 	protected void compileAndRun(String main, String... ceylon) {
 		compile(ceylon);
 		try{
-		    // make sure we load the stuff from the Jar
-		    File jar = new File(destJar);
+		    // make sure we load the stuff from the Car
+		    File car = new File(destCar);
 		    ClassLoader loader = URLClassLoader.newInstance(
-		            new URL[] { jar.toURL() },
+		            new URL[] { car.toURL() },
 		            getClass().getClassLoader()
 		            );
 			java.lang.Class<?> klass = java.lang.Class.forName(main, true, loader);
@@ -164,7 +164,7 @@ public abstract class CompilerTest {
             runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
         return (CeyloncTaskImpl) runCompiler.getTask(null, runFileManager, null, 
                 Arrays.asList("-src", getSourcePath(), "-out", destDir, "-verbose", 
-                        "-cp", languageJar+File.pathSeparator+destJar+File.pathSeparator+destDir), 
+                        "-cp", languageCar+File.pathSeparator+destCar+File.pathSeparator+destDir), 
                 null, compilationUnits1);
 	}
 
