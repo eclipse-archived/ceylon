@@ -25,6 +25,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -46,6 +47,7 @@ import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.Scope.Entry;
 import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
+import com.sun.tools.javac.code.Symbol.CompletionFailure;
 import com.sun.tools.javac.code.Symbol.MethodSymbol;
 import com.sun.tools.javac.code.Symbol.PackageSymbol;
 import com.sun.tools.javac.code.Symbol.TypeSymbol;
@@ -480,6 +482,62 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
          return module;
     }
 
+    public Module loadCompiledModule(String pkgName) {
+        if(pkgName.isEmpty())
+            return null;
+        String moduleClassName = pkgName + ".module";
+        System.err.println("Trying to look up module from "+moduleClassName);
+        ClassSymbol moduleClass = null;
+        try{
+//            moduleClass = reader.loadClass(names.fromString(moduleClassName));
+            PackageSymbol javaPkg = reader.enterPackage(names.fromString(pkgName));
+            javaPkg.complete();
+            moduleClass = lookupClassSymbol(moduleClassName);
+        }catch(CompletionFailure x){
+            System.err.println("Failed to complete "+moduleClassName);
+        }
+        if(moduleClass != null){
+            // load its module annotation
+            Module module = loadCompiledModule(moduleClass, moduleClassName);
+            if(module != null)
+                return module;
+        }
+        // keep looking up
+        int lastDot = pkgName.lastIndexOf(".");
+        if(lastDot == -1)
+            return null;
+        String parentPackageName = pkgName.substring(0, lastDot);
+        return loadCompiledModule(parentPackageName);
+    }
+
+    private Module loadCompiledModule(ClassSymbol moduleClass, String moduleClassName) {
+        String name = getAnnotationStringValue(moduleClass, symtab.ceylonAtModuleType, "name");
+        String version = getAnnotationStringValue(moduleClass, symtab.ceylonAtModuleType, "version");
+        // FIXME: validate the name?
+        if(name == null || name.isEmpty()){
+            log.warning("ceylon", "Module class "+moduleClassName+" contains no name, ignoring it");
+            return null;
+        }
+        if(version == null || version.isEmpty()){
+            log.warning("ceylon", "Module class "+moduleClassName+" contains no version, ignoring it");
+            return null;
+        }
+        Module module = new Module();
+        module.setName(Arrays.asList(name.split("\\.")));
+        module.setVersion(version);
+        module.setAvailable(true);
+        // TODO : Ajouter la récupération des dépendances
+        // Pour chaque dépendance créer un module qui n'est pas available
+        // l'ajouter dans les dépendances
+        
+        Modules modules = ceylonContext.getModules();
+        modules.getListOfModules().add(module);
+        module.setLanguageModule(modules.getLanguageModule());
+        module.getDependencies().add(modules.getLanguageModule());
+        
+        return module;
+    }  
+    
     private ProducedType getType(Type type, Scope scope) {
         Declaration decl = convertToDeclaration(type, scope, DeclarationType.TYPE);
         TypeDeclaration declaration = (TypeDeclaration) decl;

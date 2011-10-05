@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.loader;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
@@ -156,6 +158,30 @@ public class CeylonEnter extends Enter {
     // FIXME: this needs to be replaced when we deal with modules
     private void resolveModuleDependencies() {
         Modules modules = ceylonContext.getModules();
+        
+        boolean onlyAvailableModules = false;
+        while (! onlyAvailableModules) {
+            onlyAvailableModules = true;
+            Collection<Module> copyOfModules = new ArrayList<Module>(modules.getListOfModules());
+            for (Module module : copyOfModules) {
+                if (! module.isAvailable()) {
+                    modules.getListOfModules().remove(module);
+                    addModuleToClassPath(module);
+                    Module compiledModule = modelLoader.loadCompiledModule(module.getNameAsString());
+                    if (compiledModule != null) {
+                        for (Module otherModule : modules.getListOfModules()) {
+                            java.util.List<Module> dependencies = otherModule.getDependencies();
+                            if (dependencies.contains(module)) {
+                                dependencies.remove(module);
+                                dependencies.add(compiledModule);                            
+                            }                        
+                        }
+                        onlyAvailableModules = false;
+                    }
+                }
+            }
+        }
+            
         // every module depends on java.lang implicitely
         Module javaModule = modelLoader.findOrCreateModule("java.lang");
         // make sure java.lang is available
@@ -234,6 +260,7 @@ public class CeylonEnter extends Enter {
             Module module = getModule(pkgName);
             if(module != null){
                 ceylonCompilationUnit.phasedUnit.getPackage().setModule(module);
+                module.setAvailable(true);
                 return module;
             }
         }
