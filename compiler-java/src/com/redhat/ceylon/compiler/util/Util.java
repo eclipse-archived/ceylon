@@ -180,7 +180,7 @@ public class Util {
         String version = module.getVersion();
         if(version == null)
             version = "unversioned";
-        return moduleName+"-"+version+".jar";
+        return moduleName+"-"+version+".car";
     }
 
 }
