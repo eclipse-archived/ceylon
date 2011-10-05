@@ -44,12 +44,12 @@ import com.sun.tools.javac.util.JavacFileManager;
 import com.sun.tools.javac.util.Log;
 
 public class CeyloncTool extends JavacTool implements JavaCompiler {
+    Context context = new Context();
+
     @Override
     public JavacFileManager getStandardFileManager(DiagnosticListener<? super JavaFileObject> diagnosticListener, Locale locale, Charset charset) {
-        Context context = new Context();
         if (diagnosticListener != null)
             context.put(DiagnosticListener.class, diagnosticListener);
-        context.put(Log.outKey, new PrintWriter(System.err, true)); // FIXME
         return new CeyloncFileManager(context, true, charset);
     }
 
@@ -72,15 +72,15 @@ public class CeyloncTool extends JavacTool implements JavaCompiler {
             }
         }
 
-        Context context = new Context();
-
-        if (diagnosticListener != null)
+        if (diagnosticListener != null && context.get(DiagnosticListener.class) == null)
             context.put(DiagnosticListener.class, diagnosticListener);
 
-        if (out == null)
-            context.put(Log.outKey, new PrintWriter(System.err, true));
-        else
-            context.put(Log.outKey, new PrintWriter(out, true));
+        if (context.get(Log.outKey) == null) {
+            if (out == null)
+                context.put(Log.outKey, new PrintWriter(System.err, true));
+            else
+                context.put(Log.outKey, new PrintWriter(out, true));
+        }
 
         if (fileManager == null)
             fileManager = getStandardFileManager(diagnosticListener, null, null);
@@ -89,5 +89,4 @@ public class CeyloncTool extends JavacTool implements JavaCompiler {
         Main compiler = new Main("javacTask", context.get(Log.outKey));
         return new CeyloncTaskImpl(this, compiler, options, context, classes, compilationUnits);
     }
-
 }
