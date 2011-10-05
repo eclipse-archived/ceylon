@@ -126,6 +126,7 @@ public class RecognizedOptions {
         CLASSPATH,
         CP,
         SOURCEPATH,
+        CEYLONSOURCEPATH,
         BOOTCLASSPATH,
         XBOOTCLASSPATH_PREPEND,
         XBOOTCLASSPATH_APPEND,
@@ -138,6 +139,7 @@ public class RecognizedOptions {
         PROCESSOR,
         PROCESSORPATH,
         D,
+        CEYLONOUT,
         S,
         IMPLICIT,
         ENCODING,
@@ -175,6 +177,7 @@ public class RecognizedOptions {
         CLASSPATH,
         CP,
         SOURCEPATH,
+        CEYLONSOURCEPATH,
         BOOTCLASSPATH,
         XBOOTCLASSPATH_PREPEND,
         XBOOTCLASSPATH_APPEND,
@@ -185,6 +188,7 @@ public class RecognizedOptions {
         DJAVA_ENDORSED_DIRS,
         PROCESSORPATH,
         D,
+        CEYLONOUT,
         S,
         ENCODING,
         SOURCE,
@@ -322,6 +326,12 @@ public class RecognizedOptions {
             }
         },
         new Option(SOURCEPATH,             "opt.arg.path",      "opt.sourcepath"),
+        new Option(CEYLONSOURCEPATH,       "opt.arg.path",      "opt.ceylonsourcepath"){
+            @Override
+            public boolean process(Options options, String option, String arg) {
+                return super.process(options, "-sourcepath", arg);
+            }
+        },
         new Option(BOOTCLASSPATH,          "opt.arg.path",      "opt.bootclasspath") {
             public boolean process(Options options, String option, String arg) {
                 options.remove("-Xbootclasspath/p:");
@@ -368,6 +378,12 @@ public class RecognizedOptions {
         new Option(PROCESSOR,           "opt.arg.class.list",   "opt.processor"),
         new Option(PROCESSORPATH,       "opt.arg.path",         "opt.processorpath"),
         new Option(D,                   "opt.arg.directory",    "opt.d"),
+        new Option(CEYLONOUT,           "opt.arg.directory",    "opt.ceylonout"){
+            @Override
+            public boolean process(Options options, String option, String arg) {
+                return super.process(options, "-d", arg);
+            } 
+        },
         new Option(S,                   "opt.arg.directory",    "opt.sourceDest"),
         new Option(IMPLICIT,                                    "opt.implicit") {
             public boolean matches(String s) {

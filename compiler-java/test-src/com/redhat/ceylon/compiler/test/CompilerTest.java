@@ -163,7 +163,7 @@ public abstract class CompilerTest {
         Iterable<? extends JavaFileObject> compilationUnits1 =
             runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
         return (CeyloncTaskImpl) runCompiler.getTask(null, runFileManager, null, 
-                Arrays.asList("-sourcepath", getSourcePath(), "-d", destDir, "-verbose", 
+                Arrays.asList("-src", getSourcePath(), "-out", destDir, "-verbose", 
                         "-cp", languageJar+File.pathSeparator+destJar+File.pathSeparator+destDir), 
                 null, compilationUnits1);
 	}
