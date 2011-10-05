@@ -187,7 +187,7 @@ public class CeylonTransformer extends AbstractTransformer {
         		&& declarationModel.getUnit().getFilename().equals("module.ceylon")){
             Package pkg = (Package) declarationModel.getContainer();
             Module module = pkg.getModule();
-            builder.classAnnotations(makeAtModule(module.getNameAsString(), module.getVersion()));
+            builder.classAnnotations(makeAtModule(module));
         }
 
         if (declarationModel.isShared()) {

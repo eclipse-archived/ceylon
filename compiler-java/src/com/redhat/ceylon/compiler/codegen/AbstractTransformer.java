@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.loader.TypeFactory;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -566,10 +567,29 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtCeylonType);
     }
 
-    protected List<JCAnnotation> makeAtModule(String name, String version) {
+    protected List<JCAnnotation> makeAtModule(Module module) {
+        String name = module.getNameAsString();
+        String version = module.getVersion();
+        java.util.List<Module> dependencies = module.getDependencies();
+        ListBuffer<JCExpression> imports = new ListBuffer<JCTree.JCExpression>();
+        for(Module dependency : dependencies){
+            JCExpression dependencyName = make().Assign(makeIdent("name"), make().Literal(dependency.getNameAsString()));
+            JCExpression dependencyVersion = null;
+            if(dependency.getVersion() != null)
+                dependencyVersion = make().Assign(makeIdent("version"), make().Literal(dependency.getVersion()));
+            List<JCExpression> spec;
+            if(dependencyVersion != null)
+                spec = List.<JCExpression>of(dependencyName, dependencyVersion);
+            else
+                spec = List.<JCExpression>of(dependencyName);
+            JCAnnotation atImport = make().Annotation(makeIdent(syms().ceylonAtImportType), spec); 
+            imports.add(atImport);
+        }
+        JCExpression nameAttribute = make().Assign(makeIdent("name"), make().Literal(name));
+        JCExpression versionAttribute = make().Assign(makeIdent("version"), make().Literal(version));
+        JCExpression importAttribute = make().Assign(makeIdent("dependencies"), make().NewArray(null, null, imports.toList()));
         return makeModelAnnotation(syms().ceylonAtModuleType, 
-                List.<JCExpression>of(make().Assign(makeIdent("name"), make().Literal(name)), 
-                        make().Assign(makeIdent("version"), make().Literal(version))));
+                List.<JCExpression>of(nameAttribute, versionAttribute, importAttribute));
     }
 
     protected List<JCAnnotation> makeAtName(String name) {
