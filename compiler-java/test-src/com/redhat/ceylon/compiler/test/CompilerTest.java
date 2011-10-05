@@ -29,8 +29,8 @@ import com.sun.tools.javac.zip.ZipFileIndex;
 public abstract class CompilerTest {
 
 	private final static String dir = "test-src";
-	protected final static String destDir = "build/classes";
-	private final static String destCar = destDir+"/default_module-unversioned.car";
+	protected final static String destDir = "build/ceylon-cars";
+	private final static String destCar = destDir+"/unversioned/default_module-unversioned.car";
     private static String languageVersion = "0.1";
 	private final static String languageCar = System.getProperty("user.home")+"/.ceylon/repo/ceylon/language/"+languageVersion +"/ceylon.language-"+languageVersion+".car";
 

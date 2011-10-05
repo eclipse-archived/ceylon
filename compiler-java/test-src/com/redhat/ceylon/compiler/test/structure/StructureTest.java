@@ -34,7 +34,9 @@ public class StructureTest extends CompilerTest {
     public void testMdlModuleFromCompiledModule() throws IOException{
         compile("module/module.ceylon");
         
-        File jarFile = new File(destDir, "com.redhat.ceylon.compiler.test.structure.module-6.6.6.jar");
+        String moduleName = "com.redhat.ceylon.compiler.test.structure.module";
+        String modulePath = moduleName.replace('.', File.separatorChar)+File.separatorChar+"6.6.6"+File.separator;
+        File jarFile = new File(destDir, modulePath+moduleName+"-6.6.6.car");
         assertTrue(jarFile.exists());
 
         JarFile jar = new JarFile(jarFile);

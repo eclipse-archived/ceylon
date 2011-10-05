@@ -37,8 +37,11 @@ public class JarOutputRepositoryManager {
         ProgressiveJar jarFile = openJars.get(module);
         if(jarFile == null){
             String jarName = Util.getJarName(module);
+            File moduleOutputDir = Util.getModulePath(outputDir, module);
+            if(!moduleOutputDir.exists() && !moduleOutputDir.mkdirs())
+                throw new IOException("Failed to create output dir: "+moduleOutputDir);
             Log.printLines(log.noticeWriter, "[output jar name: "+jarName+"]");
-            jarFile = new ProgressiveJar(new File(outputDir, jarName), log);
+            jarFile = new ProgressiveJar(new File(moduleOutputDir, jarName), log);
             openJars.put(module, jarFile);
         }
         return jarFile;

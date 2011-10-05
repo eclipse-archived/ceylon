@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.util;
 
+import java.io.File;
+
 import com.redhat.ceylon.compiler.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -181,6 +183,25 @@ public class Util {
         if(version == null)
             version = "unversioned";
         return moduleName+"-"+version+".car";
+    }
+
+    public static File getModulePath(File outputDir, Module module) {
+        // See 7.2.4. Module repositories
+        String moduleName = module.getNameAsString();
+        String modulePath;
+        
+        // FIXME: do better than this
+        if(moduleName.equals("<default module>"))
+            modulePath = ""; // goes at the root
+        else
+            modulePath = moduleName.replace('.', File.separatorChar);
+        
+        String version = module.getVersion();
+        if(version == null)
+            version = "unversioned";
+        modulePath += File.separatorChar + version;
+        
+        return new File(outputDir, modulePath);
     }
 
 }
