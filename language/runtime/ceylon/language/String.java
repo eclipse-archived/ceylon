@@ -11,7 +11,7 @@ implements Comparable<String>, Iterable<Character>,
         value = s;
     }
 
-    public java.lang.String toJavaString() {
+    public java.lang.String toString() {
         return value;
     }
 
