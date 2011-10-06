@@ -2095,7 +2095,8 @@ isCondition returns [IsCondition condition]
       r1=RPAREN
       { $condition.setEndToken($r1); }
     //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName)))))
-    | l2=LPAREN 
+    | (LPAREN IS_OP unionType LIDENTIFIER SPECIFY)
+      => l2=LPAREN
       { $condition = new IsCondition($l2); }
       i2=IS_OP 
       ( t2=unionType
@@ -2110,6 +2111,15 @@ isCondition returns [IsCondition condition]
       r2=RPAREN
       { $condition.setEndToken($r2); }
     //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE unionType memberName specifier))
+    | l3=LPAREN
+      { $condition = new IsCondition($l3); }
+      i3=IS_OP 
+      t3=abbreviatedType
+      { $condition.setType($t3.type); }
+      ( expression
+      { $condition.setExpression($expression.expression); })?
+      r3=RPAREN
+      { $condition.setEndToken($r3); }
     ;
 
 satisfiesCondition returns [SatisfiesCondition condition]

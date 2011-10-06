@@ -241,6 +241,9 @@ public class ExpressionVisitor extends Visitor {
                 initOriginalDeclaration(v);
             }
         }
+        else if (that.getExpression()!=null) {
+            that.getExpression().visit(this);
+        }
         /*if (that.getExpression()!=null) {
             that.getExpression().visit(this);
         }*/
