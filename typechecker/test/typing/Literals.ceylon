@@ -2,9 +2,15 @@ class Literals() {
     
     @type["String"] value s = "Hello";
     @type["Natural"] value n = 1;
+    @type["Natural"] value nsi = 1k;
+    @type["Natural"] value ng = 1_000_000;
     @type["Integer"] value im = -1;
     @type["Integer"] value ip = +1;
     @type["Float"] value f = 1.0;
+    @type["Float"] value fe1 = 2.4e12;
+    @type["Float"] value fe2 = 12.437E-9;
+    @type["Float"] value fsi1 = 12u;
+    @type["Float"] value fsi2 = 3.56M;
     @type["Character"] value c = `x`;
     @type["Sequence<String>"] value ss = { "hello", "world" };
     @type["Sequence<Natural>"] value ns = { 1, 2, 3, 4 };
