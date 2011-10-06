@@ -288,6 +288,12 @@ public class ExpressionVisitor extends Visitor {
                 initOriginalDeclaration(v);
             }
         }
+        else if (that.getExpression()!=null) {
+            //note: this is only here to handle
+            //      erroneous syntax elegantly
+            that.getExpression().visit(this);
+            t = that.getExpression().getTypeModel();
+        }
         /*Tree.Expression e = that.getExpression();
         if (e!=null) {
             e.visit(this);

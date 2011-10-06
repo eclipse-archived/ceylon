@@ -2032,7 +2032,7 @@ booleanCondition returns [BooleanCondition condition]
     ;
     
 existsCondition returns [ExistsCondition condition]
-    : (LPAREN EXISTS LIDENTIFIER RPAREN) 
+    : (LPAREN EXISTS LIDENTIFIER RPAREN)
       => l1=LPAREN 
       { $condition = new ExistsCondition($l1); }
       e1=EXISTS impliedVariable
@@ -2040,14 +2040,22 @@ existsCondition returns [ExistsCondition condition]
       r1=RPAREN
       { $condition.setEndToken($r1); }
     //-> ^(EXISTS_CONDITION[$EXISTS] impliedVariable)
-    | l2=LPAREN 
+    | (LPAREN EXISTS compilerAnnotations (declarationStart|specificationStart))
+      => l2=LPAREN 
       { $condition = new ExistsCondition($l2); }
       e2=EXISTS 
-      (specifiedVariable 
-      { $condition.setVariable($specifiedVariable.variable); })?
+      specifiedVariable 
+      { $condition.setVariable($specifiedVariable.variable); }
       r2=RPAREN
       { $condition.setEndToken($r2); }
     //-> ^(EXISTS_CONDITION[$EXISTS] specifiedVariable2)
+    | l3=LPAREN
+      { $condition = new ExistsCondition($l3); }
+      e3=EXISTS
+      (expression
+      { $condition.setExpression($expression.expression); })?
+      r3=RPAREN
+      { $condition.setEndToken($r3); }
     ;
     
 nonemptyCondition returns [NonemptyCondition condition]
@@ -2059,7 +2067,8 @@ nonemptyCondition returns [NonemptyCondition condition]
       r1=RPAREN
       { $condition.setEndToken($r1); }
     //-> ^(NONEMPTY_CONDITION[$NONEMPTY] impliedVariable)
-    | l2=LPAREN 
+    | (LPAREN NONEMPTY compilerAnnotations (declarationStart|specificationStart))
+      => l2=LPAREN 
       { $condition = new NonemptyCondition($l2); }
       n2=NONEMPTY 
       (specifiedVariable 
@@ -2067,6 +2076,13 @@ nonemptyCondition returns [NonemptyCondition condition]
       r2=RPAREN
       { $condition.setEndToken($r2); }
     //-> ^(NONEMPTY_CONDITION[$NONEMPTY] specifiedVariable2)
+    | l3=LPAREN
+      { $condition = new NonemptyCondition($l3); }
+      n3=NONEMPTY 
+      (expression
+      { $condition.setExpression($expression.expression); })?
+      r3=RPAREN
+      { $condition.setEndToken($r3); }
     ;
 
 isCondition returns [IsCondition condition]
