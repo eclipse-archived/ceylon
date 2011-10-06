@@ -15,6 +15,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AndOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
@@ -416,7 +417,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     private JCExpression transformNamedInvocation(InvocationExpression ce) {
-        final ListBuffer<JCExpression> callArgs = new ListBuffer<JCExpression>();
+        final ListBuffer<JCExpression> callArgs;
         final ListBuffer<JCExpression> passArgs = new ListBuffer<JCExpression>();
         final String methodName;
         final java.util.List<ParameterList> parameterLists;
@@ -434,32 +435,44 @@ public class ExpressionTransformer extends AbstractTransformer {
             throw new RuntimeException("Illegal State: " + (primaryDecl != null ? primaryDecl.getClass() : "null"));
         }
         java.util.List<NamedArgument> namedArguments = ce.getNamedArgumentList().getNamedArguments();
+        SequencedArgument sequencedArgument = ce.getNamedArgumentList().getSequencedArgument();
         java.util.List<Parameter> declaredParams = parameterLists.get(0).getParameters();
-        for (Parameter declaredParam : declaredParams) {
-            boolean found = false;
-            int index = 0;
-            for (NamedArgument namedArg : namedArguments) {
-                at(namedArg);
-                if (declaredParam.getName().equals(namedArg.getIdentifier().getText())) {
-                    JCExpression argExpr = make().Indexed(makeSelect("this", "args"), makeInteger(index));
-                    ProducedType type = declaredParam.getType();
-                    if (isTypeParameter(type)) {
-                        type = namedArgType(namedArg);
-                    }
-                    argExpr = make().TypeCast(makeJavaType(type, this.TYPE_PARAM), argExpr);
-                    callArgs.append(unboxType(argExpr, declaredParam.getType()));
-                    found = true;
-                    break;
+        JCExpression[] callArgsArray = new JCExpression[namedArguments.size() + (sequencedArgument == null ? 0 : 1)];
+        for (NamedArgument namedArg : namedArguments) {
+            at(namedArg);
+            Parameter declaredParam = namedArg.getParameter();
+            int index = namedArguments.indexOf(namedArg);
+            if (declaredParam.getName().equals(namedArg.getIdentifier().getText())) {
+                JCExpression argExpr = make().Indexed(makeSelect("this", "args"), makeInteger(index));
+                ProducedType type = declaredParam.getType();
+                if (isTypeParameter(type)) {
+                    type = namedArgType(namedArg);
                 }
-                index += 1;
+                argExpr = make().TypeCast(makeJavaType(type, this.TYPE_PARAM), argExpr);
+                callArgsArray[declaredParams.indexOf(declaredParam)] = unboxType(argExpr, declaredParam.getType());
             }
-            if (!found) {
-                throw new RuntimeException("No value specified for argument '" + declaredParam.getName()+ "' and default values not implemented yet");
-            }
+        }
+        if (sequencedArgument != null) {
+            int index = namedArguments.size();
+            JCExpression argExpr = make().Indexed(makeSelect("this", "args"), makeInteger(index));
+            
+            Parameter declaredParam = declaredParams.get(declaredParams.size() - 1);
+            ProducedType type = declaredParam.getType();
+            argExpr = make().TypeCast(makeJavaType(type, this.TYPE_PARAM), argExpr);
+            callArgsArray[namedArguments.size()] = unboxType(argExpr, declaredParam.getType());
+        }
+        callArgs = ListBuffer.<JCExpression>lb();
+        for (JCExpression expr : callArgsArray) {
+            callArgs.add(expr);
         }
         for (NamedArgument namedArg : namedArguments) {
             at(namedArg);
             passArgs.append(transformArg(namedArg));
+        }
+        if (sequencedArgument != null) {
+            at(sequencedArgument);
+            ProducedType seqElemType = typeFact().getIteratedType(sequencedArgument.getParameter().getType());
+            passArgs.append(makeSequence(sequencedArgument.getExpressionList().getExpressions(), seqElemType));   
         }
         at(ce);
 
@@ -512,7 +525,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (generateNew) {
             callMethod.body(make().Return(make().NewClass(null, null, resultType, callArgs.toList(), null)));
         } else {
-            JCExpression expr = make().Apply(null, receiver, callArgs.toList());;
+            JCExpression expr = make().Apply(null, receiver, callArgs.toList());
             
             if (isVoid) {
                 callMethod.body(List.<JCStatement>of(
@@ -629,15 +642,19 @@ public class ExpressionTransformer extends AbstractTransformer {
         return transformExpression(arg.getExpression(), Util.getBoxingStrategy(arg.getParameter()));
     }
 
-    JCExpression transformArg(Tree.NamedArgument arg) {
+    Expression getArgExpression(Tree.NamedArgument arg) {
         if (arg instanceof Tree.SpecifiedArgument) {
             Expression expr = ((Tree.SpecifiedArgument)arg).getSpecifierExpression().getExpression();
-            return transformExpression(expr);
+            return expr;
         } else if (arg instanceof Tree.TypedArgument) {
             throw new RuntimeException("Not yet implemented");
         } else {
             throw new RuntimeException("Illegal State");
         }
+    }
+    
+    JCExpression transformArg(Tree.NamedArgument arg) {
+        return transformExpression(getArgExpression(arg));
     }
 
     ProducedType namedArgType(Tree.NamedArgument arg) {

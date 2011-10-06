@@ -1,0 +1,41 @@
+package com.redhat.ceylon.compiler.test.expression.invoke;
+
+class NamedArgumentWithSequence {
+    
+    private final void m(final int a, final ceylon.language.Iterable<? extends ceylon.language.Integer> b) {
+    }
+    
+    private final void m2(final .java.lang.Throwable a, final ceylon.language.Iterable<? extends .java.lang.Throwable> b) {
+    }
+    
+    private final void m3(final com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentWithSequence a, final ceylon.language.Iterable<? extends com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentWithSequence> b) {
+    }
+    
+    private final void invoke() {
+        new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, .ceylon.language.Integer.instance(1), new ceylon.language.ArraySequence<ceylon.language.Integer>(.ceylon.language.Integer.instance(2), .ceylon.language.Integer.instance(3), .ceylon.language.Integer.instance(4))){
+            
+            public .java.lang.Object call$() {
+                m(((ceylon.language.Integer)this.args[0]).intValue(), (ceylon.language.Iterable<? extends ceylon.language.Integer>)this.args[1]);
+                return null;
+            }
+        }.call$();
+        final .java.lang.Throwable e = new .ceylon.language.Exception(.ceylon.language.String.instance(""), null);
+        new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, e, new ceylon.language.ArraySequence<.java.lang.Throwable>(e, e, e)){
+            
+            public .java.lang.Object call$() {
+                m2((.java.lang.Throwable)this.args[0], (ceylon.language.Iterable<? extends .java.lang.Throwable>)this.args[1]);
+                return null;
+            }
+        }.call$();
+        new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, this, new ceylon.language.ArraySequence<com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentWithSequence>(this, this, this)){
+            
+            public .java.lang.Object call$() {
+                m3((com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentWithSequence)this.args[0], (ceylon.language.Iterable<? extends com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentWithSequence>)this.args[1]);
+                return null;
+            }
+        }.call$();
+    }
+    
+    NamedArgumentWithSequence() {
+    }
+}

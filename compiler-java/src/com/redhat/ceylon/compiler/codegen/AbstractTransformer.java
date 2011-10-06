@@ -743,7 +743,7 @@ public abstract class AbstractTransformer implements Transformation {
             elems.append(expressionGen().transformExpression(expr));
         }
         ProducedType seqType = typeFact().getDefaultSequenceType(seqElemType);
-        JCExpression typeExpr = makeJavaType(seqType, CeylonTransformer.CLASS_NEW);
+        JCExpression typeExpr = makeJavaType(seqType, CeylonTransformer.TYPE_PARAM);
         return make().NewClass(null, null, typeExpr, elems.toList(), null);
     }
     
