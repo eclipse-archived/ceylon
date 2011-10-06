@@ -154,6 +154,7 @@ public abstract class CompilerTest {
 	    ZipFileIndex.clearCache();
         java.util.List<File> sourceFiles = new ArrayList<File>(sourcePaths.length);
 	    for(String file : sourcePaths){
+	    	file = file.replace('/', File.separatorChar);
 	        sourceFiles.add(new File(path+file));
 	    }
 	    
