@@ -6,6 +6,11 @@ public final class helloworld {
     }
     
     public static void helloworld() {
-        ceylon.language.process.writeLine("Hello World");
+        ceylon.language.process.getProcess().writeLine("Hello World");
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        helloworld();
     }
 }
