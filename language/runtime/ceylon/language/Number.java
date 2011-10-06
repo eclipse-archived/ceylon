@@ -7,7 +7,7 @@ public interface Number extends Format {
 	@TypeInfo(value="ceylon.language.Natural")
     public long getNatural();
 	@TypeInfo(value="ceylon.language.Integer")
-    public long getInteger();
+    public int getInteger();
 	@TypeInfo(value="ceylon.language.Float")
     public double getFloat();
 	
