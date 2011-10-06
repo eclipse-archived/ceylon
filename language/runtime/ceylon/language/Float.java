@@ -17,22 +17,27 @@ public final class Float
         return value;
     }
 
+    @Override
     public Float plus(Float op) {
         return instance(value + op.value);
     }
 
+    @Override
     public Float minus(Float op) {
         return instance(value - op.value);
     }
 
+    @Override
     public Float times(Float op) {
         return instance(value * op.value);
     }
 
+    @Override
     public Float divided(Float op) {
         return instance(value / op.value);
     }
 
+    @Override
     public Float power(Float op) {
         return instance(Math.pow(value, op.value));
     }
@@ -47,6 +52,7 @@ public final class Float
         return this;
     }
 
+    @Override
     public Comparison compare(Float op) {
         double x = value;
         double y = op.value;
@@ -54,30 +60,26 @@ public final class Float
             ((x == y) ? Comparison.EQUAL : Comparison.LARGER);
     }
 
+    @Override
     public java.lang.String toString() {
         return java.lang.Double.toString(value);
     }
 
     // Conversions between numeric types
 
+    @Override
     public Natural getNatural() {
         return Natural.instance((long) value);
     }
 
+    @Override
     public Integer getInteger() {
         return Integer.instance((long) value);
     }
 
+    @Override
     public Float getFloat() {
         return this;
-    }
-
-    public Float getPredecessor() {
-        return Float.instance(value - 1);
-    }
-
-    public Float getSuccessor() {
-        return Float.instance(value + 1);
     }
 
     @Override

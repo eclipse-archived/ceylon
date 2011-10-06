@@ -20,26 +20,32 @@ public final class Integer
         return new Integer(l);
     }
 
+    @Override
     public Integer plus(Integer op) {
         return instance(value + op.value);
     }
 
+    @Override
     public Integer minus(Integer op) {
         return instance(value - op.value);
     }
 
+    @Override
     public Integer times(Integer op) {
         return instance(value * op.value);
     }
 
+    @Override
     public Integer divided(Integer op) {
         return instance(value / op.value);
     }
 
+    @Override
     public Integer power(Integer op) {
         return instance((long) Math.pow(value, op.value)); // FIXME: ugly
     }
 
+    @Override
     public Integer remainder(Integer op) {
         return instance(value % op.value);
     }
@@ -58,6 +64,7 @@ public final class Integer
         return value == op.value;
     }
 
+    @Override
     public Comparison compare(Integer op) {
         long x = value;
         long y = op.value;
@@ -65,20 +72,24 @@ public final class Integer
             ((x == y) ? Comparison.EQUAL : Comparison.LARGER);
     }
 
+    @Override
     public java.lang.String toString() {
         return java.lang.Long.toString(value);
     }
 
     // Conversions between numeric types
 
+    @Override
     public Natural getNatural() {
         return Natural.instance(value);
     }
 
+    @Override
     public Integer getInteger() {
         return this;
     }
 
+    @Override
     public Float getFloat() {
         return Float.instance(value);
     }
@@ -92,10 +103,12 @@ public final class Integer
         return (int)value;
     }
 
+    @Override
     public Integer getPredecessor() {
         return Integer.instance(value - 1);
     }
 
+    @Override
     public Integer getSuccessor() {
         return Integer.instance(value + 1);
     }

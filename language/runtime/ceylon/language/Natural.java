@@ -25,34 +25,42 @@ public final class Natural
         return new Natural(l);
     }
 
+    @Override
     public Natural plus(Natural op) {
         return instance(value + op.value);
     }
 
+    @Override
     public Natural minus(Natural op) {
         return instance(value - op.value);
     }
 
+    @Override
     public Natural times(Natural op) {
         return instance(value * op.value);
     }
 
+    @Override
     public Natural divided(Natural op) {
         return instance(value / op.value);
     }
 
+    @Override
     public Natural power(Natural op) {
         return instance((long) Math.pow(value, op.value)); // FIXME: ugly
     }
 
+    @Override
     public Natural remainder(Natural op) {
         return instance(value % op.value);
     }
 
+    @Override
     public Integer getPositiveValue() {
         return Integer.instance(value);
     }
 
+    @Override
     public Integer getNegativeValue() {
         return Integer.instance(-value);
     }
@@ -61,6 +69,7 @@ public final class Natural
         return value == op.value;
     }
 
+    @Override
     public Comparison compare(Natural op) {
         long x = value;
         long y = op.value;
@@ -68,20 +77,24 @@ public final class Natural
             ((x == y) ? Comparison.EQUAL : Comparison.LARGER);
     }
 
+    @Override
     public java.lang.String toString() {
         return java.lang.Long.toString(value);
     }
 
     // Conversions between numeric types
 
+    @Override
     public Natural getNatural() {
         return this;
     }
 
+    @Override
     public Integer getInteger() {
         return Integer.instance(value);
     }
 
+    @Override
     public Float getFloat() {
         return Float.instance(value);
     }
@@ -95,10 +108,12 @@ public final class Natural
         return (int)value;
     }
 
+    @Override
     public Natural getPredecessor() {
         return Natural.instance(value - 1);
     }
 
+    @Override
     public Natural getSuccessor() {
         return Natural.instance(value + 1);
     }
