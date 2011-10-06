@@ -79,8 +79,8 @@ public final class Float
 
 	@TypeInfo(value="ceylon.language.Integer")
     @Override
-    public long getInteger() {
-        return (long) value;
+    public int getInteger() {
+        return (int) value;
     }
 
 	@TypeInfo(value="ceylon.language.Float")

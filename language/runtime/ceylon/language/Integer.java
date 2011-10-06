@@ -90,8 +90,8 @@ public final class Integer
 
 	@TypeInfo(value="ceylon.language.Integer")
     @Override
-    public long getInteger() {
-        return value;
+    public int getInteger() {
+        return (int) value;
     }
 
 	@TypeInfo(value="ceylon.language.Float")
