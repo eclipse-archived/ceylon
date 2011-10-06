@@ -13,6 +13,6 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
  public interface Iterable<Element> extends Container {
     public Iterator<Element> getIterator();
     public boolean getEmpty();
-    @TypeInfo("ceylon.language.Empty|Element")
+    @TypeInfo("ceylon.language.Nothing|Element")
     public Element getFirst();
 }
