@@ -166,6 +166,11 @@ public class ExpressionTest extends CompilerTest {
     }
 
     @Test
+    public void testInvNamedArgumentWithSequence(){
+        compareWithJavaSource("invoke/NamedArgumentWithSequence");
+    }
+    
+    @Test
     public void testInvSequencedParameterInvocation(){
         compareWithJavaSource("invoke/SequencedParameterInvocation");
     }
