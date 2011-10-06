@@ -23,6 +23,7 @@ import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
+import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
@@ -245,6 +246,11 @@ public class ClassTransformer extends AbstractTransformer {
             if (decl.getParameterLists().size() > 0 && decl.getParameterLists().get(0).getParameters().size() == 0) {
                 // Add a main() method
                 MethodDefinitionBuilder methbuilder = MethodDefinitionBuilder.main(this);
+                // Add call to process.setupArguments
+                JCIdent argsId = make().Ident(names().fromString("args"));
+                JCMethodInvocation processExpr = at(decl).Apply(null, makeIdent("ceylon", "language", "process", "getProcess"), List.<JCTree.JCExpression>nil());
+                methbuilder.body(make().Exec(at(decl).Apply(null, makeSelect(processExpr, "setupArguments"), List.<JCTree.JCExpression>of(argsId))));
+                // Add call to toplevel method
                 methbuilder.body(make().Exec(at(decl).Apply(null, nameId, List.<JCTree.JCExpression>nil())));
                 builder.body(methbuilder.build());
             }
