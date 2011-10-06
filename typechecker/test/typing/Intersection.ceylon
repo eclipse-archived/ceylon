@@ -90,4 +90,17 @@ class Intersection() {
     @type["String&Intersection.X|String&Intersection.Y"] WithIntersectionArg<String,X|Y>().get();
     @type["String&Intersection.X|String&Intersection.Y|Float&Intersection.X|Float&Intersection.Y"] WithIntersectionArg<String|Float,X|Y>().get();
     
+    interface One {}
+    interface Two {}
+    object one satisfies One {}
+    object onetwo satisfies One&Two {}
+    
+    Sequence<One>&Sequence<Two> seq = { onetwo };
+    @type["Nothing|Intersection.One&Intersection.Two"] value item = seq[0];
+    Consumer<One>&Consumer<Two> cons = Consumer<One|Two>();
+    cons.consume(onetwo);
+    cons.consume(one);
+    One|Two unk = one;
+    cons.consume(unk);
+    
 }
