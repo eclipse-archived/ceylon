@@ -106,7 +106,7 @@ public final class Float
     }
 
     @Override
-    public <CastValue extends Float> CastValue as() {
+    public <CastValue extends Float> CastValue castTo() {
         return (CastValue)this;
     }
 }

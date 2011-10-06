@@ -140,7 +140,7 @@ public final class Integer
     }
 
     @Override
-    public <CastValue extends Numeric> CastValue as() {
+    public <CastValue extends Numeric> CastValue castTo() {
         return (CastValue)this;
     }
 }

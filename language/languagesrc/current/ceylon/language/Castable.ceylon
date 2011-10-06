@@ -1,4 +1,4 @@
 shared interface Castable<in Types> {
-    shared formal CastValue as<CastValue>()
+    shared formal CastValue castTo<CastValue>()
             given CastValue satisfies Types;
 }

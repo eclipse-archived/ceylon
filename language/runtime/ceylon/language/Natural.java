@@ -128,7 +128,7 @@ public final class Natural
     @TypeParameters({
         @TypeParameter(value = "CastValue", satisfies = "ceylon.language.Natural|ceylon.language.Integer|ceylon.language.Float")
     })
-    public <CastValue extends Numeric> CastValue as() {
+    public <CastValue extends Numeric> CastValue castTo() {
         return (CastValue) this;
     }
 

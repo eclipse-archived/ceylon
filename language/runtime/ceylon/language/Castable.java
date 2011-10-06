@@ -8,5 +8,5 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
     @TypeParameter(value = "Types", variance = Variance.IN)
 })
 public interface Castable<Types> {
-    <CastValue extends Types> CastValue as();
+    <CastValue extends Types> CastValue castTo();
 }

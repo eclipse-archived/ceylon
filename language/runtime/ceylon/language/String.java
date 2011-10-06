@@ -84,7 +84,7 @@ implements Comparable<String>, Iterable<Character>,
     }
 
     @Override
-    public <CastValue extends String> CastValue as() {
+    public <CastValue extends String> CastValue castTo() {
         return (CastValue)this;
     }
 
