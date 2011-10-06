@@ -3992,7 +3992,7 @@ createItemMethod.intercept()
             <entry><literal>lhs += rhs</literal></entry>
             <entry>add</entry>
             <entry><literal>lhs:=lhs .plus(rhs.castTo&lt;N&gt;())</literal></entry>
-            <entry><literal>Settable &lt;Numeric&lt;N&gt;&gt;</literal></entry>
+            <entry><literal>Settable &lt;Summable&lt;N&gt;&gt;</literal></entry>
             <entry><literal>Castable&lt;N&gt;</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
