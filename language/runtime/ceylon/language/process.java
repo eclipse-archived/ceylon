@@ -40,7 +40,7 @@ public class process extends Object {
     }
     private static final process value = new process();
     
-    static process getProcess() {
+    public static process getProcess() {
         return value;
     }
 }
