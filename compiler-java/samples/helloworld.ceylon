@@ -1,4 +1,4 @@
 doc "The classic Hello World program"
-shared void helloworld(Process process) {
+shared void helloworld() {
     process.writeLine("Hello World");
 }

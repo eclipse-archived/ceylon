@@ -5,8 +5,8 @@ Note that some of the tests currently fail. See more info in README.tests.
 The compiler and runtime may be invoked using the scripts
 bin/ceylonc and bin/ceylon:
 
-  bin/ceylonc -sourcepath samples -d build/classes samples/helloworld.ceylon 
-  bin/ceylon -cp build/classes helloworld
+  bin/ceylonc -sourcepath samples -out build/ceylon-cars samples/helloworld.ceylon 
+  bin/ceylon -cp build/ceylon-cars helloworld
 
 The -sourcepath argument to the compiler is required in order for
 the compiler to figure out each class's full name.  It is

@@ -5,7 +5,7 @@ public final class helloworld {
     private helloworld() {
     }
     
-    public static void helloworld(final ceylon.language.Process process) {
-        process.writeLine("Hello World");
+    public static void helloworld() {
+        ceylon.language.process.writeLine("Hello World");
     }
 }

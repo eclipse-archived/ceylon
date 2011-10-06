@@ -7,5 +7,4 @@ JAVA_CP="$HOME/.ceylon/repo/ceylon/language/0.1/ceylon.language-0.1.car:$USER_CP
 java \
 	-enableassertions \
 	-classpath "$JAVA_CP" \
-	ceylon.language.Launcher \
 	$ARGS

@@ -142,8 +142,8 @@ public abstract class CompilerTest {
 		            getClass().getClassLoader()
 		            );
 			java.lang.Class<?> klass = java.lang.Class.forName(main, true, loader);
-			Method m = klass.getMethod(klass.getSimpleName(), ceylon.language.Process.class);
-			m.invoke(null, new ceylon.language.Process());
+			Method m = klass.getMethod(klass.getSimpleName());
+			m.invoke(null);
 		}catch(Exception x){
 			throw new RuntimeException(x);
 		}

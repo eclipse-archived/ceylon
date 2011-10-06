@@ -1,3 +1,6 @@
+rem User HOME
+set HOME=%HOMEDRIVE%%HOMEPATH%
+
 rem Find CEYLON_HOME
 if "%CEYLON_HOME%" == "" set CEYLON_HOME=%~dp0..
 
