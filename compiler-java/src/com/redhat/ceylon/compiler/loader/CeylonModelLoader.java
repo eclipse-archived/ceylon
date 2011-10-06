@@ -530,7 +530,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             // FIXME: deal with multiple constructors
             if(member instanceof MethodSymbol){
                 MethodSymbol methodSymbol = (MethodSymbol) member;
-                String methodName = methodSymbol.name.toString();
+                String methodName = getMethodName(methodSymbol);
                 
                 if(methodSymbol.isStatic())
                     continue;
@@ -608,6 +608,13 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         setExtendedType(klass, classSymbol);
         setSatisfiedTypes(klass, classSymbol);
         fillRefinedDeclarations(klass);
+    }
+
+    private String getMethodName(MethodSymbol methodSymbol) {
+        String methodName = getAnnotationStringValue(methodSymbol, symtab.ceylonAtNameType);
+        if(methodName == null)
+            methodName = methodSymbol.name.toString();
+        return methodName;
     }
 
     private void fillRefinedDeclarations(ClassOrInterface klass) {
