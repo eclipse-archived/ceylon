@@ -4,7 +4,7 @@ class LanguageModule() {
             given N of X|Y satisfies Numeric<N>
             given X satisfies Castable<N> & Numeric<X>
             given Y satisfies Castable<N> & Numeric<Y> {
-        return x.as<N>().plus(y.as<N>());
+        return x.castTo<N>().plus(y.castTo<N>());
     }
 
     @type["Natural"] plus<Natural, Natural, Natural>(1, 2);
