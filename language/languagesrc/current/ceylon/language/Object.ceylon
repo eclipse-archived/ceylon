@@ -1,11 +1,16 @@
+doc "The abstract supertype of all types representing 
+     definite values."
+see (IdentifiableObject)
+by "Gavin"
 shared abstract class Object() 
         extends Void() {
         
-    doc "A developer-friendly string representing the instance."
+    doc "A developer-friendly string representing the 
+         instance."
     shared formal String string;
     
-    /*doc "Determine if this object belongs to the given |Category|.
-         The binary |in| operator."
+    /*doc "Determine if this object belongs to the given 
+           Category."
     shared Boolean contained(Category category) {
         return category.contains(this);
     }*/
