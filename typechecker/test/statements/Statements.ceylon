@@ -30,5 +30,12 @@ void statements() {
     @error xn?.hello;
     
     @error true;
+    
+    abstract class Z(String z) {}
+    
+    @error Z("hello");
+    @error IdentifiableObject();
+    @error Equality();
+    @error process();
         
 }
