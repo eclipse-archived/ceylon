@@ -29,3 +29,5 @@ abstract class Super1() extends Super2() {
     shared variable actual formal Natural defaultGetterSetter;
 }
 
+@error object obj extends WithFormal() {}
+
