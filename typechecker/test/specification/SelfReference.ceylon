@@ -74,10 +74,10 @@ interface SelfReference {
     class Ok() {
         String hello = "hello";
         void method() {
-            writeLine(this.hello);
+            print(this.hello);
         }
         class Inner() {
-            writeLine(outer.hello);
+            print(outer.hello);
         }
     }
     
@@ -90,17 +90,17 @@ interface SelfReference {
     }
     
     class Concrete() extends Abstract() {
-        @error writeLine(hello);
-        @error writeLine(super.hello);
-        @error writeLine(this.hello);
+        @error print(hello);
+        @error print(super.hello);
+        @error print(this.hello);
         void method() {
-            writeLine(hello);
-            writeLine(super.hello);
-            writeLine(this.hello);
+            print(hello);
+            print(super.hello);
+            print(this.hello);
         }
         class Class() {
-            writeLine(hello);
-            writeLine(outer.hello);
+            print(hello);
+            print(outer.hello);
         }
     }
     

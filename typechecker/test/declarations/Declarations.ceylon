@@ -78,19 +78,19 @@ interface Declarations {
     class Outer() {
         String s = "hello";
         if (true) {
-            @error writeLine(s);
+            @error print(s);
             @error String s = "goodbye";
         }
         for (x in {}) {
-            @error writeLine(s);
+            @error print(s);
             @error String s = "goodbye";
         }
         class Inner() {
-            @error writeLine(s);
+            @error print(s);
             String s = "hello again";
         }
         void member() {
-            @error writeLine(s);
+            @error print(s);
             String s = "hello again";
         }
     }

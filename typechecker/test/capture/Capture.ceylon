@@ -196,7 +196,7 @@ class Capture() {
         @captured String hello = "hello";
         use {
             object o {
-                writeLine(hello);
+                print(hello);
             }
         };
     }

@@ -674,13 +674,13 @@ interface ClassBodies {
                 @error bar();
             }
         }
-        writeLine("hello");
+        print("hello");
         void bar() {}
     }
     
     class BadClassWithObject3() {
         object foo {
-            writeLine("hello");
+            print("hello");
             void method() {
                 @error bar();
             }

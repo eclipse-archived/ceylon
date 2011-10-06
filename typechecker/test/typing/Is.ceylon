@@ -6,7 +6,7 @@ class Is() {
     String[] strings = { "hello", "world" };
     
     if (is Sequence<String> strings) {
-        writeLine(strings.first);
+        print(strings.first);
     }
     @error if (is Sequence strings) {}
     @error if (is Container<String> strings) {}
@@ -14,7 +14,7 @@ class Is() {
     @error if (is Is.Container<String> strings) {}
 
     if (strings is Sequence<String>) {
-        //writeLine(strings.first);
+        //print(strings.first);
     }
     @error if (strings is Sequence) {}
     @error if (strings is Container<String>) {}

@@ -42,14 +42,14 @@ class Intersection() {
     
     class Good1() extends Super() {
         shared actual X&Y get(X&Y&Object xy) {
-            writeLine(xy.hello);
+            print(xy.hello);
             return xy;
         }
     }
     
     class Good2() extends Super() {
         shared actual X&Y&Object get(X&Y xy) {
-            writeLine(xy.goodbye);
+            print(xy.goodbye);
             return xy;
         }
     }

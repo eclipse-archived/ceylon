@@ -91,7 +91,7 @@ class ControlStructures() {
     try (Transaction t = trans()) {}
     
     try {
-        writeLine("hello");
+        print("hello");
     }
     catch (e) {
         
@@ -101,7 +101,7 @@ class ControlStructures() {
     class Exception2() extends Exception() {}
     
     try {
-        writeLine("hello");
+        print("hello");
     }
     catch (Exception1|Exception2 e) {
         

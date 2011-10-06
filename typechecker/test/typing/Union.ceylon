@@ -69,7 +69,7 @@ class Union() {
     String?[] mr = method<String>();
     
     if (exists s = method<String>().first) {
-        writeLine(s);
+        print(s);
     }
     
     T[]? method2<T>() { return {}; }
