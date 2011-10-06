@@ -21,9 +21,10 @@ shared abstract class IdentifiableObject()
     }
     
     doc "The system-defined identity hash value of the
-         instance. Subclasses which refine equals must
-         also refine hash, according to the general
-         contract of Equality."
+         instance. Subclasses which refine equals must also 
+         refine hash, according to the general contract of 
+         Equality."
+    see (identityHash)
     shared default actual Integer hash {
         return identityHash(this);
     }
