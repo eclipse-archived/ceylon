@@ -26,11 +26,11 @@ public class process extends Object {
 
 //    shared Entries<String,String> properties { throw; }
 
-    public void writeLine(@Name("s") @TypeInfo("ceylon.language.String") java.lang.String s) {
+    public void writeLine(@Name("line") @TypeInfo("ceylon.language.String") java.lang.String s) {
         java.lang.System.out.println(s);
     }
     
-    public void write(@Name("s") @TypeInfo("ceylon.language.String") java.lang.String s) {
+    public void write(@Name("string") @TypeInfo("ceylon.language.String") java.lang.String s) {
         java.lang.System.out.print(s);
     }
     
