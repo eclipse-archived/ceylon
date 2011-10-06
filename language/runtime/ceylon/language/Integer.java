@@ -16,49 +16,49 @@ public final class Integer
         value = l;
     }
 
-    public static ceylon.language.Integer instance(long l) {
-        return new ceylon.language.Integer(l);
+    public static Integer instance(long l) {
+        return new Integer(l);
     }
 
-    public ceylon.language.Integer plus(ceylon.language.Integer op) {
+    public Integer plus(Integer op) {
         return instance(value + op.value);
     }
 
-    public ceylon.language.Integer minus(ceylon.language.Integer op) {
+    public Integer minus(Integer op) {
         return instance(value - op.value);
     }
 
-    public ceylon.language.Integer times(ceylon.language.Integer op) {
+    public Integer times(Integer op) {
         return instance(value * op.value);
     }
 
-    public ceylon.language.Integer divided(ceylon.language.Integer op) {
+    public Integer divided(Integer op) {
         return instance(value / op.value);
     }
 
-    public ceylon.language.Integer power(ceylon.language.Integer op) {
+    public Integer power(Integer op) {
         return instance((long) Math.pow(value, op.value)); // FIXME: ugly
     }
 
-    public ceylon.language.Integer remainder(ceylon.language.Integer op) {
+    public Integer remainder(Integer op) {
         return instance(value % op.value);
     }
 
     @Override
-    public ceylon.language.Integer getPositiveValue() {
+    public Integer getPositiveValue() {
         return this;
     }
 
     @Override
-    public ceylon.language.Integer getNegativeValue() {
+    public Integer getNegativeValue() {
         return instance(-value);
     }
 
-    public boolean test(ceylon.language.Integer op) {
+    public boolean test(Integer op) {
         return value == op.value;
     }
 
-    public ceylon.language.Comparison compare(ceylon.language.Integer op) {
+    public Comparison compare(Integer op) {
         long x = value;
         long y = op.value;
         return (x < y) ? Comparison.SMALLER :
@@ -71,16 +71,16 @@ public final class Integer
 
     // Conversions between numeric types
 
-    public ceylon.language.Natural natural() {
-        return ceylon.language.Natural.instance(value);
+    public Natural getNatural() {
+        return Natural.instance(value);
     }
 
-    public ceylon.language.Integer integer() {
+    public Integer getInteger() {
         return this;
     }
 
-    public ceylon.language.Float toFloat() {
-        return ceylon.language.Float.instance(value);
+    public Float getFloat() {
+        return Float.instance(value);
     }
 
     // Just a kludge til we have full autoboxing
@@ -92,16 +92,16 @@ public final class Integer
         return (int)value;
     }
 
-    public ceylon.language.Integer getPredecessor() {
+    public Integer getPredecessor() {
         return Integer.instance(value - 1);
     }
 
-    public ceylon.language.Integer getSuccessor() {
+    public Integer getSuccessor() {
         return Integer.instance(value + 1);
     }
 
     // Probably not spec-conformant
-    public ceylon.language.Integer complement() {
+    public Integer complement() {
         return instance(~value);
     }
 

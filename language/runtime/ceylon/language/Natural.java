@@ -20,48 +20,48 @@ public final class Natural
         value = l;
     }
 
-    public static ceylon.language.Natural instance(long l) {
+    public static Natural instance(long l) {
         assert l >= 0;
-        return new ceylon.language.Natural(l);
+        return new Natural(l);
     }
 
-    public ceylon.language.Natural plus(ceylon.language.Natural op) {
+    public Natural plus(Natural op) {
         return instance(value + op.value);
     }
 
-    public ceylon.language.Natural minus(ceylon.language.Natural op) {
+    public Natural minus(Natural op) {
         return instance(value - op.value);
     }
 
-    public ceylon.language.Natural times(ceylon.language.Natural op) {
+    public Natural times(Natural op) {
         return instance(value * op.value);
     }
 
-    public ceylon.language.Natural divided(ceylon.language.Natural op) {
+    public Natural divided(Natural op) {
         return instance(value / op.value);
     }
 
-    public ceylon.language.Natural power(ceylon.language.Natural op) {
+    public Natural power(Natural op) {
         return instance((long) Math.pow(value, op.value)); // FIXME: ugly
     }
 
-    public ceylon.language.Natural remainder(ceylon.language.Natural op) {
+    public Natural remainder(Natural op) {
         return instance(value % op.value);
     }
 
-    public ceylon.language.Integer getPositiveValue() {
-        return ceylon.language.Integer.instance(value);
+    public Integer getPositiveValue() {
+        return Integer.instance(value);
     }
 
-    public ceylon.language.Integer getNegativeValue() {
-        return ceylon.language.Integer.instance(-value);
+    public Integer getNegativeValue() {
+        return Integer.instance(-value);
     }
 
-    public boolean test(ceylon.language.Natural op) {
+    public boolean test(Natural op) {
         return value == op.value;
     }
 
-    public ceylon.language.Comparison compare(ceylon.language.Natural op) {
+    public Comparison compare(Natural op) {
         long x = value;
         long y = op.value;
         return (x < y) ? Comparison.SMALLER :
@@ -74,16 +74,16 @@ public final class Natural
 
     // Conversions between numeric types
 
-    public ceylon.language.Natural natural() {
+    public Natural getNatural() {
         return this;
     }
 
-    public ceylon.language.Integer integer() {
-        return ceylon.language.Integer.instance(value);
+    public Integer getInteger() {
+        return Integer.instance(value);
     }
 
-    public ceylon.language.Float toFloat() {
-        return ceylon.language.Float.instance(value);
+    public Float getFloat() {
+        return Float.instance(value);
     }
 
     // Just a kludge til we have full autoboxing
@@ -95,23 +95,23 @@ public final class Natural
         return (int)value;
     }
 
-    public ceylon.language.Natural getPredecessor() {
+    public Natural getPredecessor() {
         return Natural.instance(value - 1);
     }
 
-    public ceylon.language.Natural getSuccessor() {
+    public Natural getSuccessor() {
         return Natural.instance(value + 1);
     }
 
-    public ceylon.language.Natural and(ceylon.language.Natural op) {
+    public Natural and(Natural op) {
         return Natural.instance(value & op.value);
     }
 
-    public ceylon.language.Natural or(ceylon.language.Natural op) {
+    public Natural or(Natural op) {
         return Natural.instance(value | op.value);
     }
 
-    public ceylon.language.Natural xor(ceylon.language.Natural op) {
+    public Natural xor(Natural op) {
         return Natural.instance(value ^ op.value);
     }
 

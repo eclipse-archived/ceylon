@@ -9,45 +9,45 @@ public final class Float
         value = d;
     }
 
-    public static ceylon.language.Float instance(double d) {
-        return new ceylon.language.Float(d);
+    public static Float instance(double d) {
+        return new Float(d);
     }
     
     public double doubleValue() {
         return value;
     }
 
-    public ceylon.language.Float plus(ceylon.language.Float op) {
+    public Float plus(Float op) {
         return instance(value + op.value);
     }
 
-    public ceylon.language.Float minus(ceylon.language.Float op) {
+    public Float minus(Float op) {
         return instance(value - op.value);
     }
 
-    public ceylon.language.Float times(ceylon.language.Float op) {
+    public Float times(Float op) {
         return instance(value * op.value);
     }
 
-    public ceylon.language.Float divided(ceylon.language.Float op) {
+    public Float divided(Float op) {
         return instance(value / op.value);
     }
 
-    public ceylon.language.Float power(ceylon.language.Float op) {
+    public Float power(Float op) {
         return instance(Math.pow(value, op.value));
     }
 
     @Override
-    public ceylon.language.Float getNegativeValue() {
+    public Float getNegativeValue() {
         return instance(-value);
     }
 
     @Override
-    public ceylon.language.Float getPositiveValue() {
+    public Float getPositiveValue() {
         return this;
     }
 
-    public ceylon.language.Comparison compare(ceylon.language.Float op) {
+    public Comparison compare(Float op) {
         double x = value;
         double y = op.value;
         return (x < y) ? Comparison.SMALLER :
@@ -60,23 +60,23 @@ public final class Float
 
     // Conversions between numeric types
 
-    public ceylon.language.Natural natural() {
-        return ceylon.language.Natural.instance((long) value);
+    public Natural getNatural() {
+        return Natural.instance((long) value);
     }
 
-    public ceylon.language.Integer integer() {
-        return ceylon.language.Integer.instance((long) value);
+    public Integer getInteger() {
+        return Integer.instance((long) value);
     }
 
-    public ceylon.language.Float toFloat() {
+    public Float getFloat() {
         return this;
     }
 
-    public ceylon.language.Float pred() {
+    public Float getPredecessor() {
         return Float.instance(value - 1);
     }
 
-    public ceylon.language.Float succ() {
+    public Float getSuccessor() {
         return Float.instance(value + 1);
     }
 
