@@ -1,10 +1,6 @@
 package ceylon.language;
 
-public interface Invertable<I> {
-
-    /** The unary |+| operator. */
-    public I getPositiveValue();
-
-    /** The unary |-| operator. */
-    public I getNegativeValue();
+public interface Invertable<Inverse> {
+    public Inverse getPositiveValue();
+    public Inverse getNegativeValue();
 }

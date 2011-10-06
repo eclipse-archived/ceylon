@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
+
 public final class Float
     extends Object
     implements Castable<Float>, Numeric<Float>, Invertable<Float> {
@@ -67,19 +69,39 @@ public final class Float
 
     // Conversions between numeric types
 
+	@TypeInfo(value="ceylon.language.Natural")
     @Override
-    public Natural getNatural() {
-        return Natural.instance((long) value);
+    public long getNatural() {
+        if (value < 0.0)
+            throw new NegativeNumberException();
+        return (long) value;
     }
 
+	@TypeInfo(value="ceylon.language.Integer")
     @Override
-    public Integer getInteger() {
-        return Integer.instance((long) value);
+    public long getInteger() {
+        return (long) value;
     }
 
+	@TypeInfo(value="ceylon.language.Float")
     @Override
-    public Float getFloat() {
-        return this;
+    public double getFloat() {
+        return value;
+    }
+    
+    @Override
+    public boolean getIntegral() {
+    	return value == (double) Math.round(value);
+    }
+    
+    @Override
+    public boolean getUnit() {
+    	return value==1.0;
+    }
+    
+    @Override
+    public boolean getZero() {
+    	return value==0.0;
     }
 
     @Override

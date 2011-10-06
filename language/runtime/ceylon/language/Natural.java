@@ -1,6 +1,7 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
+import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 import com.redhat.ceylon.compiler.metadata.java.TypeParameter;
 import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
 
@@ -84,19 +85,37 @@ public final class Natural
 
     // Conversions between numeric types
 
+	@TypeInfo(value="ceylon.language.Natural")
     @Override
-    public Natural getNatural() {
-        return this;
+    public long getNatural() {
+        return value;
+    }
+
+	@TypeInfo(value="ceylon.language.Integer")
+    @Override
+    public long getInteger() {
+        return value;
+    }
+
+	@TypeInfo(value="ceylon.language.Float")
+    @Override
+    public double getFloat() {
+        return (double) value;
     }
 
     @Override
-    public Integer getInteger() {
-        return Integer.instance(value);
+    public boolean getIntegral() {
+    	return true;
     }
-
+    
     @Override
-    public Float getFloat() {
-        return Float.instance(value);
+    public boolean getUnit() {
+    	return value==1;
+    }
+    
+    @Override
+    public boolean getZero() {
+    	return value==0;
     }
 
     // Just a kludge til we have full autoboxing
@@ -105,7 +124,7 @@ public final class Natural
     }
 
     public int intValue() {
-        return (int)value;
+        return (int) value;
     }
 
     @Override

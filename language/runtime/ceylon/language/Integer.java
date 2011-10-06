@@ -1,6 +1,7 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
+import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 @SatisfiedTypes({
     "ceylon.language.Castable<ceylon.language.Integer|ceylon.language.Float>",
@@ -79,19 +80,39 @@ public final class Integer
 
     // Conversions between numeric types
 
+	@TypeInfo(value="ceylon.language.Natural")
     @Override
-    public Natural getNatural() {
-        return Natural.instance(value);
+    public long getNatural() {
+        if (value < 0.0)
+            throw new NegativeNumberException();
+        return (long) value;
+    }
+
+	@TypeInfo(value="ceylon.language.Integer")
+    @Override
+    public long getInteger() {
+        return value;
+    }
+
+	@TypeInfo(value="ceylon.language.Float")
+    @Override
+    public double getFloat() {
+        return (double) value;
     }
 
     @Override
-    public Integer getInteger() {
-        return this;
+    public boolean getIntegral() {
+    	return true;
     }
-
+    
     @Override
-    public Float getFloat() {
-        return Float.instance(value);
+    public boolean getUnit() {
+    	return value==1;
+    }
+    
+    @Override
+    public boolean getZero() {
+    	return value==0;
     }
 
     // Just a kludge til we have full autoboxing
