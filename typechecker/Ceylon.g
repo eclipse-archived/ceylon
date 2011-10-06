@@ -2487,6 +2487,7 @@ NATURAL_LITERAL
       ( 
         ('.' ('0'..'9')) => 
         '.' Digits (Exponent|Magnitude|FractionalMagnitude)? { $type = FLOAT_LITERAL; } 
+      | FractionalMagnitude { $type = FLOAT_LITERAL; }
       | Magnitude?
       )
     ;

@@ -132,7 +132,7 @@
         
         <para>A floating point number literal has this form:</para>
         
-        <programlisting>FloatLiteral: Digits "." FractionalDigits (Exponent | Magnitude | FractionalMagnitude)?</programlisting>
+        <programlisting>FloatLiteral: Digits ("." FractionalDigits (Exponent | Magnitude | FractionalMagnitude)? | FractionalMagnitude)</programlisting>
         
         <para>Digits may be separated into groups of three using an underscore.</para>
         
@@ -160,6 +160,7 @@
         <programlisting>1.5k</programlisting>
         <programlisting>12M</programlisting>
         <programlisting>2.34p</programlisting>
+        <programlisting>5u</programlisting>
         
         <para>The following are <emphasis>not</emphasis> valid numeric literals:</para>
         
