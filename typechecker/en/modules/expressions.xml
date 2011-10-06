@@ -3940,7 +3940,7 @@ createItemMethod.intercept()
         <row>
             <entry><literal>lhs + rhs</literal></entry>
             <entry>sum</entry>
-            <entry><literal>lhs.cast&lt;N&gt;() .plus(rhs.cast&lt;N&gt;())</literal></entry>
+            <entry><literal>lhs.castTo&lt;N&gt;() .plus(rhs.castTo&lt;N&gt;())</literal></entry>
             <entry><literal>X satisfies Castable&lt;N&gt; &amp; Summable&lt;X&gt;</literal></entry>
             <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Summable&lt;Y&gt;</literal></entry>
             <entry><literal>N of X|Y</literal></entry>
@@ -3948,7 +3948,7 @@ createItemMethod.intercept()
         <row>
             <entry><literal>lhs - rhs</literal></entry>
             <entry>difference</entry>
-            <entry><literal>lhs.cast&lt;N&gt;() .minus(rhs.cast&lt;N&gt;())</literal></entry>
+            <entry><literal>lhs.castTo&lt;N&gt;() .minus(rhs.castTo&lt;N&gt;())</literal></entry>
             <entry><literal>X satisfies Castable&lt;N&gt; &amp; Numeric&lt;X&gt;</literal></entry>
             <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Numeric&lt;Y&gt;</literal></entry>
             <entry><literal>N of X|Y</literal></entry>
@@ -3956,7 +3956,7 @@ createItemMethod.intercept()
         <row>
             <entry><literal>lhs * rhs</literal></entry>
             <entry>product</entry>
-            <entry><literal>lhs.cast&lt;N&gt;() .times(rhs.cast&lt;N&gt;())</literal></entry>
+            <entry><literal>lhs.castTo&lt;N&gt;() .times(rhs.castTo&lt;N&gt;())</literal></entry>
             <entry><literal>X satisfies Castable&lt;N&gt; &amp; Numeric&lt;X&gt;</literal></entry>
             <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Numeric&lt;Y&gt;</literal></entry>
             <entry><literal>N of X|Y</literal></entry>
@@ -3964,7 +3964,7 @@ createItemMethod.intercept()
         <row>
             <entry><literal>lhs / rhs</literal></entry>
             <entry>quotient</entry>
-            <entry><literal>lhs.cast&lt;N&gt;() .divided(rhs.cast&lt;N&gt;())</literal></entry>
+            <entry><literal>lhs.castTo&lt;N&gt;() .divided(rhs.castTo&lt;N&gt;())</literal></entry>
             <entry><literal>X satisfies Castable&lt;N&gt; &amp; Numeric&lt;X&gt;</literal></entry>
             <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Numeric&lt;Y&gt;</literal></entry>
             <entry><literal>N of X|Y</literal></entry>
@@ -3972,7 +3972,7 @@ createItemMethod.intercept()
         <row>
             <entry><literal>lhs % rhs</literal></entry>
             <entry>remainder</entry>
-            <entry><literal>lhs.cast&lt;N&gt;() .remainder(rhs.cast&lt;N&gt;())</literal></entry>
+            <entry><literal>lhs.castTo&lt;N&gt;() .remainder(rhs.castTo&lt;N&gt;())</literal></entry>
             <entry><literal>X satisfies Castable&lt;N&gt; &amp; Integral&lt;X&gt;</literal></entry>
             <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Integral&lt;Y&gt;</literal></entry>
             <entry><literal>N of X|Y</literal></entry>
@@ -3980,7 +3980,7 @@ createItemMethod.intercept()
         <row>
             <entry><literal>lhs ** rhs</literal></entry>
             <entry>power</entry>
-            <entry><literal>lhs.cast&lt;N&gt;() .power(rhs.cast&lt;N&gt;())</literal></entry>
+            <entry><literal>lhs.castTo&lt;N&gt;() .power(rhs.castTo&lt;N&gt;())</literal></entry>
             <entry><literal>X satisfies Castable&lt;N&gt; &amp; Numeric&lt;X&gt;</literal></entry>
             <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Numeric&lt;Y&gt;</literal></entry>
             <entry><literal>N of X|Y</literal></entry>
@@ -3991,7 +3991,7 @@ createItemMethod.intercept()
         <row>
             <entry><literal>lhs += rhs</literal></entry>
             <entry>add</entry>
-            <entry><literal>lhs:=lhs .plus(rhs.cast&lt;N&gt;())</literal></entry>
+            <entry><literal>lhs:=lhs .plus(rhs.castTo&lt;N&gt;())</literal></entry>
             <entry><literal>Settable &lt;Numeric&lt;N&gt;&gt;</literal></entry>
             <entry><literal>Castable&lt;N&gt;</literal></entry>
             <entry><literal>N</literal></entry>
@@ -3999,7 +3999,7 @@ createItemMethod.intercept()
         <row>
             <entry><literal>lhs -= rhs</literal></entry>
             <entry>subtract</entry>
-            <entry><literal>lhs:=lhs .minus(rhs.cast&lt;N&gt;())</literal></entry>
+            <entry><literal>lhs:=lhs .minus(rhs.castTo&lt;N&gt;())</literal></entry>
             <entry><literal>Settable &lt;Numeric&lt;N&gt;&gt;</literal></entry>
             <entry><literal>Castable&lt;N&gt;</literal></entry>
             <entry><literal>N</literal></entry>
@@ -4007,7 +4007,7 @@ createItemMethod.intercept()
         <row>
             <entry><literal>lhs *= rhs</literal></entry>
             <entry>multiply</entry>
-            <entry><literal>lhs:=lhs .times(rhs.cast&lt;N&gt;())</literal></entry>
+            <entry><literal>lhs:=lhs .times(rhs.castTo&lt;N&gt;())</literal></entry>
             <entry><literal>Settable &lt;Numeric&lt;N&gt;&gt;</literal></entry>
             <entry><literal>Castable&lt;N&gt;</literal></entry>
             <entry><literal>N</literal></entry>
@@ -4015,7 +4015,7 @@ createItemMethod.intercept()
         <row>
             <entry><literal>lhs /= rhs</literal></entry>
             <entry>divide</entry>
-            <entry><literal>lhs:=lhs .divided(rhs.cast&lt;N&gt;())</literal></entry>
+            <entry><literal>lhs:=lhs .divided(rhs.castTo&lt;N&gt;())</literal></entry>
             <entry><literal>Settable &lt;Numeric&lt;N&gt;&gt;</literal></entry>
             <entry><literal>Castable&lt;N&gt;</literal></entry>
             <entry><literal>N</literal></entry>
@@ -4023,7 +4023,7 @@ createItemMethod.intercept()
         <row>
             <entry><literal>lhs %= rhs</literal></entry>
             <entry>remainder</entry>
-            <entry><literal>lhs:=lhs .remainder(rhs.cast&lt;N&gt;())</literal></entry>
+            <entry><literal>lhs:=lhs .remainder(rhs.castTo&lt;N&gt;())</literal></entry>
             <entry><literal>Settable &lt;Integral&lt;N&gt;&gt;</literal></entry>
             <entry><literal>Castable&lt;N&gt;</literal></entry>
             <entry><literal>N</literal></entry>
