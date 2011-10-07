@@ -15,8 +15,6 @@ import javax.tools.JavaFileObject;
 
 import junit.framework.Assert;
 
-import org.junit.Before;
-
 import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.tools.CeyloncTool;
@@ -30,22 +28,23 @@ public abstract class CompilerTest {
 
 	private final static String dir = "test-src";
 	protected final static String destDir = "build/ceylon-cars";
-	private final static String destCar = destDir+"/unversioned/default_module-unversioned.car";
+	private final static String destCar = destDir + "/unversioned/default_module-unversioned.car";
     private static String languageVersion = "0.1";
-	private final static String languageCar = System.getProperty("user.home")+"/.ceylon/repo/ceylon/language/"+languageVersion +"/ceylon.language-"+languageVersion+".car";
+    
+	private final String languageCar;
+	
+	protected final String path;
 
-	protected String path;
-
-	private String pkg;
-
-	@Before
-	public void setup(){
-		// for comparing with java source
-	    Package pakage = getClass().getPackage();
-		pkg = pakage == null ? "" : pakage.getName().replaceAll("\\.", Matcher.quoteReplacement(File.separator));
-		path = dir + File.separator + pkg + File.separator;
+	public CompilerTest() {
+        File langCarFile = new File(System.getProperty("user.home"), ".ceylon/repo/ceylon/language/" + languageVersion + "/ceylon.language-" + languageVersion + ".car");
+        languageCar = langCarFile.getPath();
+        
+        // for comparing with java source
+        Package pakage = getClass().getPackage();
+        String pkg = pakage == null ? "" : pakage.getName().replaceAll("\\.", Matcher.quoteReplacement(File.separator));
+        path = dir + File.separator + pkg + File.separator;
 	}
-
+	
 	protected CeyloncTool makeCompiler(){
         try {
             return new CeyloncTool();
@@ -98,7 +97,7 @@ public abstract class CompilerTest {
 	    Assert.assertTrue("Compilation failed", success);
 
 		// now look at what we expected
-		String expectedSrc = normalizeLineEndings(readFile(new File(path+java))).trim();
+		String expectedSrc = normalizeLineEndings(readFile(new File(path, java))).trim();
         String compiledSrc = listener.compilerSrc.trim();
 		Assert.assertEquals("Source code differs", expectedSrc, compiledSrc);
 	}
@@ -154,8 +153,7 @@ public abstract class CompilerTest {
 	    ZipFileIndex.clearCache();
         java.util.List<File> sourceFiles = new ArrayList<File>(sourcePaths.length);
 	    for(String file : sourcePaths){
-	    	file = file.replace('/', File.separatorChar);
-	        sourceFiles.add(new File(path+file));
+	        sourceFiles.add(new File(path, file));
 	    }
 	    
 	    CeyloncTool runCompiler = makeCompiler();
@@ -165,7 +163,7 @@ public abstract class CompilerTest {
             runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
         return (CeyloncTaskImpl) runCompiler.getTask(null, runFileManager, null, 
                 Arrays.asList("-src", getSourcePath(), "-out", destDir, "-verbose", 
-                        "-cp", languageCar+File.pathSeparator+destCar+File.pathSeparator+destDir), 
+                        "-cp", languageCar + File.pathSeparator + destCar + File.pathSeparator + destDir), 
                 null, compilationUnits1);
 	}
 

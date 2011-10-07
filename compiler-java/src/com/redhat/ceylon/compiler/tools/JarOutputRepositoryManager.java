@@ -88,7 +88,7 @@ public class JarOutputRepositoryManager {
                 JarFile jarFile = new JarFile(originalJarFile);
                 Enumeration<JarEntry> entries = jarFile.entries();
                 while(entries.hasMoreElements()){
-                    JarEntry entry = entries.nextElement();                    
+                    JarEntry entry = entries.nextElement();
                     // skip the old entry if we overwrote it
                     if(writtenClasses.contains(entry.getName()))
                         continue;
