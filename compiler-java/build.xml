@@ -24,7 +24,8 @@
   <!-- Jarfiles everything ends up in -->
   <property name="compiler.jar" location="${build.lib}/compiler.jar"/>
   <property name="runtime.jar" location="${ceylon.repo.dir}/ceylon/language/${module.ceylon.language.version}/ceylon.language-${module.ceylon.language.version}.car"/>
-  <property name="ceylon-tests.car" location="${build.ceylon.cars}/com/redhat/ceylon/compiler/test/ceylon/0.1/com.redhat.ceylon.compiler.test.ceylon-0.1.car"/>
+  <property name="ceylon-tests.dir" location="${build.ceylon.cars}/com/redhat/ceylon/compiler/test/ceylon/0.1"/>
+  <property name="ceylon-tests.car" location="${ceylon-tests.dir}/com.redhat.ceylon.compiler.test.ceylon-0.1.car"/>
 
   <!-- The directory that parser tests live in, and
        the directory test results get written into -->
@@ -184,7 +185,7 @@
   </target>
 
   <target name="ceylon-tests.car" depends="compiler.jar, ceylonc">
-    <mkdir dir="${build.ceylon.cars}"/>
+    <mkdir dir="${ceylon-tests.dir}"/>
     <jar destfile="${ceylon-tests.car}">
       <fileset dir="${build.classes}">
         <include name="com/redhat/ceylon/compiler/test/ceylon/**"/>
