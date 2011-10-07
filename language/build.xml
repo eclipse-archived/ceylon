@@ -34,9 +34,10 @@
 
     <!-- ################################################################## -->
 
-    <!-- nothing to do so far -->
-    <target name="clean"
-            description="Clean up everything."/>
+	  <!-- Rule to clean everything up -->
+    <target name="clean" description="Clean up everything.">
+        <delete dir="${build}"/>
+	</target>
 
     <!-- Repository targets -->
     <target name="init.repo"
