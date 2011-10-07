@@ -2284,7 +2284,7 @@ case ("es") {
 else {
     throw LanguageNotSupported();
 }
-writeLine(greeting);</programlisting>
+print(greeting);</programlisting>
             
             <para>Every forward-declared simple attribute must explicitly specify a type.
             It may not be declared using the keyword <literal>value</literal>.</para>
