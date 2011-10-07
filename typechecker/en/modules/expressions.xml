@@ -1075,7 +1075,7 @@ value comp = order(1,-1);</programlisting>
             <programlisting>printer.print { join = ", "; "Gavin", "Emmanuel", "Max", "Steve" }</programlisting>
             <programlisting>printer.print { "Names: ", from (Person p in people) select (p.name) }</programlisting>
             <programlisting>set(person.name)("Gavin")</programlisting>
-            <programlisting>get(process.args)()</programlisting>
+            <programlisting>get(process.arguments)()</programlisting>
             
             <programlisting>amounts.sort() by (Float x, Float y) (x&lt;=&gt;y)</programlisting>
             <programlisting>people.each() perform (Person p) { log.info(p.name); }</programlisting>
