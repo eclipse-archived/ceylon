@@ -88,7 +88,7 @@ public class JarOutputRepositoryManager {
                 JarFile jarFile = new JarFile(originalJarFile);
                 Enumeration<JarEntry> entries = jarFile.entries();
                 while(entries.hasMoreElements()){
-                    JarEntry entry = entries.nextElement();
+                    JarEntry entry = entries.nextElement();                    
                     // skip the old entry if we overwrote it
                     if(writtenClasses.contains(entry.getName()))
                         continue;
@@ -122,6 +122,7 @@ public class JarOutputRepositoryManager {
 
         public JavaFileObject getJavaFileObject(String fileName) {
             // record the class file we produce so that we don't save it from the original jar
+        	fileName = fileName.replace(File.separatorChar, '/');
             writtenClasses.add(fileName);
             return new JarEntryFileObject(outputJarFile.getPath(), jarOutputStream, fileName);
         }
