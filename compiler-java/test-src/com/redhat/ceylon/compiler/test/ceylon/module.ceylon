@@ -4,4 +4,5 @@ Module module {
     doc = "The Ceylon tests.";
     authors = { "Stef Epardaud" };
     license = 'http://www.gnu.org/licenses/gpl.html';
+    dependencies = {};
 }
