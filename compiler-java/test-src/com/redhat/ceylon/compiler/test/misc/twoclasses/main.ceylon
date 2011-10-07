@@ -1,4 +1,4 @@
-shared void main(Process process) {
+shared void main() {
     value one = One();
-    one.f(process);
+    one.f();
 }

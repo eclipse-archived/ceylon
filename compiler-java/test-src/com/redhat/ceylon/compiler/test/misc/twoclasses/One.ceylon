@@ -1,5 +1,5 @@
 class One () satisfies Two {
- shared actual void f(Process process){
+ shared actual void f(){
   process.writeLine("Hello World from two classes");
  }
 }
