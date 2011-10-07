@@ -2773,8 +2773,8 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
             </listitem>
         </itemizedlist>
         
-        <para>A declaration not annotated <literal>shared</literal> is called a 
-        <emphasis>block local</emphasis> declaration.</para>
+        <para>A nested declaration not annotated <literal>shared</literal> is called 
+        a <emphasis>block local</emphasis> declaration.</para>
         
         <comment><para>TODO: Should we allow you to limit the effect of the 
         <literal>shared</literal> annotation by specifying a containing program 

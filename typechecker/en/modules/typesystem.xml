@@ -672,7 +672,8 @@
                 
         <para>Type inference is only allowed for block local declarations. The keywords
         <literal>value</literal> and <literal>function</literal> may not be combined with 
-        the <literal>shared</literal> annotation.</para>
+        the <literal>shared</literal> annotation. Nor may they may they be used to declare
+        a toplevel method or attribute.</para>
         
         <programlisting>value names = people[].name;</programlisting>
 
