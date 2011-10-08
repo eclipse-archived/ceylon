@@ -88,7 +88,7 @@ public class Util {
     
     // FIXME: add this to Declaration?
     public static boolean isClassAttribute(Declaration decl) {
-        return (decl.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Class)
+        return ((decl.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Class) || (decl.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Interface))
         	 && (decl.isCaptured() || decl.isShared());
     }
 

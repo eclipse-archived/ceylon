@@ -6,7 +6,7 @@ shared void helloworld() {
             process.write(arg);
             process.write(" ");
         }
-        process.writeLine("");
+        process.writeLine(args.first);
     } else {
         process.writeLine("Hello World");
     }
