@@ -270,39 +270,49 @@ public class StructureTest extends CompilerTest {
     //
     // import
     
+    private void compileImportedPackage() {
+        compile("import_/pkg/C1.ceylon", "import_/pkg/C2.ceylon");
+    }
+
     @Test
     public void testImpImportAttrSingle(){
-        compile("import_/pkg/C1.ceylon", "import_/pkg/C2.ceylon");
+        compileImportedPackage();
         compareWithJavaSource("import_/ImportAttrSingle");
     }
-    
+
     @Test
     public void testImpImportMethodSingle(){
+        compileImportedPackage();
         compareWithJavaSource("import_/ImportMethodSingle");
     }
     
     @Test
     public void testImpImportTypeSingle(){
+        compileImportedPackage();
         compareWithJavaSource("import_/ImportTypeSingle");
     }
     
     @Test
     public void testImpImportTypeMultiple(){
+        compileImportedPackage();
         compareWithJavaSource("import_/ImportTypeMultiple");
     }
     
     @Test
     public void testImpImportTypeAlias(){
+        compileImportedPackage();
         compareWithJavaSource("import_/ImportTypeAlias");
     }
     
     @Test
     public void testImpImportWildcard(){
+        compileImportedPackage();
         compareWithJavaSource("import_/ImportWildcard");
     }
     
     @Test
     public void testImpImportJavaRuntimeTypeSingle(){
+        compileImportedPackage();
         compareWithJavaSource("import_/ImportJavaRuntimeTypeSingle");
     }
 }
