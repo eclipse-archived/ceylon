@@ -175,16 +175,45 @@
       <report format="frames" todir="${test.reports}"/>
     </junitreport>
   </target>
+	
+	
+  <!-- Runs the JUnit ceylon tests only -->
+  <target name="ceylon-tests-only" depends="test.classes,ceylon-tests.car,compiler.jar" description="Runs the JUnit tests">
+    <mkdir dir="${test.reports}"/>
+  	<property name="bootclasspath" refid="test.run.classpath" />
+    <junit printsummary="yes" haltonfailure="no">
+      <classpath refid="test.run.classpath"/>
+      <jvmarg value="-Xbootclasspath/p:${bootclasspath}"/>
+
+      <formatter type="xml"/>
+
+      <batchtest fork="yes" todir="${test.reports}">
+
+        <zipfileset src="${ceylon-tests.car}">
+          <include name="com/redhat/ceylon/compiler/test/ceylon/**/*Test.class"/>
+          <exclude name="com/redhat/ceylon/compiler/test/ceylon/Test.class"/>
+        </zipfileset>
+      </batchtest>
+    </junit>
+ 
+    <junitreport todir="${test.reports}">
+      <fileset dir="${test.reports}">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report format="frames" todir="${test.reports}"/>
+    </junitreport>
+  </target>
 
   <target name="ceylonc" depends="compiler.jar">
     <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc">
       <classpath>
-        <pathelement location="${compiler.jar}"/>
+        <pathelement location="${compiler.jar}"/>      	
       </classpath>
     </taskdef>
   </target>
-
-  <target name="ceylon-tests.car" depends="compiler.jar, ceylonc">
+	
+  <target name="ceylon-tests.car" depends="test.classes, compiler.jar, ceylonc">
+  	<delete dir="${ceylon-tests.dir}"/>
     <mkdir dir="${ceylon-tests.dir}"/>
     <jar destfile="${ceylon-tests.car}">
       <fileset dir="${build.classes}">
@@ -192,7 +221,7 @@
       </fileset>
     </jar>
     <ceylonc
-      classpath="${junit.lib}"
+      classpath="${junit.lib};${ceylon-tests.car}"
       compiler="bin/ceylonc"
       srcdir="${test.src}"
       destdir="${build.ceylon.cars}">
