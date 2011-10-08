@@ -1,8 +1,12 @@
-import java.lang {Throwable}
-
 @nomodel
 class ThrowThrowable() {
-	void m() {
-		throw Throwable("Bang!", null);
-	}
+    void m() {
+        try {
+            
+        } catch (Exception e) {
+            if (exists cause = e.cause) { 
+                throw cause;
+            }
+        }
+    }
 }
