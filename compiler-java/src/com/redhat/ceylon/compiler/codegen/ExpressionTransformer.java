@@ -801,10 +801,19 @@ public class ExpressionTransformer extends AbstractTransformer {
                         List.<JCExpression>nil());
             }
         } else if (decl instanceof Method) {
-            if (Util.isInnerMethod(decl) || decl.isToplevel()) {
+            if (Util.isInnerMethod(decl)) {
                 java.util.List<String> path = new LinkedList<String>();
                 path.add(decl.getName());
-                path.add(decl.getName());
+                path.add(Util.quoteMethodName(decl.getName()));
+                result = makeIdent(path);
+            } else if (decl.isToplevel()) {
+                java.util.List<String> path = new LinkedList<String>();
+                // package
+                path.addAll(decl.getContainer().getQualifiedName());
+                // class
+                path.add(Util.quoteIfJavaKeyword(decl.getName()));
+                // method
+                path.add(Util.quoteMethodName(decl.getName()));
                 result = makeIdent(path);
             } else {
                 result = makeIdentOrSelect(primaryExpr, Util.quoteMethodName(decl.getName()));
