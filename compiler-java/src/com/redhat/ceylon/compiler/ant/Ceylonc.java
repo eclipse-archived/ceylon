@@ -31,6 +31,7 @@ import org.apache.tools.ant.taskdefs.LogStreamHandler;
 import org.apache.tools.ant.taskdefs.MatchingTask;
 import org.apache.tools.ant.types.Commandline;
 import org.apache.tools.ant.types.Path;
+import org.apache.tools.ant.types.Reference;
 import org.apache.tools.ant.util.GlobPatternMapper;
 import org.apache.tools.ant.util.SourceFileScanner;
 
@@ -38,12 +39,16 @@ public class Ceylonc extends MatchingTask {
 
     private static final String FAIL_MSG = "Compile failed; see the compiler error output for details.";
 
-    private Path src;
-    private Path classpath;
+    private Path src;   
     private File destDir;
     private File[] compileList;
+    private Reference classpathReference;
 
-    // TODO: There must be a better way to get the path for the Ceylon
+	public void setClasspathReference(Reference classpathReference) {
+		this.classpathReference = classpathReference;
+	}
+
+	// TODO: There must be a better way to get the path for the Ceylon
     // compiler into the compile() method. Once that better way is
     // found, remove all references to compilerExecutable in this file.
     private File compilerExecutable;
@@ -57,17 +62,6 @@ public class Ceylonc extends MatchingTask {
             src = srcDir;
         } else {
             src.append(srcDir);
-        }
-    }
-
-    /**
-     * Set the classpath
-     */
-    public void setClasspath(Path classpath) {
-        if (this.classpath == null) {
-            this.classpath = classpath;
-        } else {
-            this.classpath.append(classpath);
         }
     }
 
@@ -196,8 +190,8 @@ public class Ceylonc extends MatchingTask {
         cmd.createArgument().setValue(destDir.getAbsolutePath());
         cmd.createArgument().setValue("-sourcepath");
         cmd.createArgument().setValue(src.toString());
-        if(classpath != null){
-        	String path = classpath.toString();
+        if(classpathReference != null){
+        	String path = classpathReference.getReferencedObject().toString();
         	if (System.getProperty("os.name").toLowerCase().indexOf("windows") > -1) {
         		path = "\"" + path + "\"";
         	} else {
