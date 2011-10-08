@@ -41,6 +41,7 @@ import com.redhat.ceylon.compiler.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.codegen.CeylonTransformer;
 import com.redhat.ceylon.compiler.loader.CeylonEnter;
 import com.redhat.ceylon.compiler.loader.CeylonModelLoader;
+import com.redhat.ceylon.compiler.loader.CompilerModuleBuilder;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleBuilder;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -92,8 +93,12 @@ public class LanguageCompiler extends JavaCompiler {
     public static PhasedUnits getPhasedUnitsInstance(Context context) {
         PhasedUnits phasedUnits = context.get(phasedUnitsKey);
         if (phasedUnits == null) {
-            phasedUnits = new PhasedUnits(getCeylonContextInstance(context));
+            com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext = getCeylonContextInstance(context);
+            CompilerModuleBuilder moduleBuilder = new CompilerModuleBuilder(ceylonContext, context);
+            phasedUnits = new PhasedUnits(ceylonContext, moduleBuilder);
             context.put(phasedUnitsKey, phasedUnits);
+            // we must call it here because we use the PhasedUnits constructor that doesn't call it
+            moduleBuilder.initCoreModules();
         }
         return phasedUnits;
     }
