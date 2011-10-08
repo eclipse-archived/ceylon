@@ -205,12 +205,17 @@
   </target>
 
   <target name="ceylonc" depends="compiler.jar">
-    <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc">
+    <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc" >
       <classpath>
         <pathelement location="${compiler.jar}"/>      	
       </classpath>
     </taskdef>
   </target>
+	
+  <path id="ceylon.tests.classpath">
+    <pathelement path="${junit.lib}"/>
+    <pathelement path="${ceylon-tests.car}"/>
+  </path>
 	
   <target name="ceylon-tests.car" depends="test.classes, compiler.jar, ceylonc">
   	<delete dir="${ceylon-tests.dir}"/>
@@ -220,8 +225,8 @@
         <include name="com/redhat/ceylon/compiler/test/ceylon/**"/>
       </fileset>
     </jar>
-    <ceylonc
-      classpath="${junit.lib};${ceylon-tests.car}"
+    <ceylonc     
+	  classpathReference="ceylon.tests.classpath"		    	
       compiler="bin/ceylonc"
       srcdir="${test.src}"
       destdir="${build.ceylon.cars}">
