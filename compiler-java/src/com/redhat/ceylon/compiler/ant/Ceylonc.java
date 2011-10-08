@@ -87,7 +87,7 @@ public class Ceylonc extends MatchingTask {
     public void execute() throws BuildException {
         checkParameters();
         resetFileLists();
-       
+        
         String[] list = src.list();
         for (int i = 0; i < list.length; i++) {
             File srcDir = getProject().resolveFile(list[i]);
@@ -197,8 +197,14 @@ public class Ceylonc extends MatchingTask {
         cmd.createArgument().setValue("-sourcepath");
         cmd.createArgument().setValue(src.toString());
         if(classpath != null){
+        	String path = classpath.toString();
+        	if (System.getProperty("os.name").toLowerCase().indexOf("windows") > -1) {
+        		path = "\"" + path + "\"";
+        	} else {
+        		path = "\'" + path + "\'";
+        	}
             cmd.createArgument().setValue("-classpath");
-            cmd.createArgument().setValue(classpath.toString());
+            cmd.createArgument().setValue(path);
         }
         for (int i = 0; i < compileList.length; i++) {
             cmd.createArgument().setValue(compileList[i].getAbsolutePath());
