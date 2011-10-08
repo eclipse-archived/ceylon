@@ -1,9 +1,11 @@
 package com.redhat.ceylon.compiler.test.structure.import_;
 
-class ImportAttrSingle {
-
-    private void m() {
+class ImportTypeSingle {
+    
+    private final void m() {
         new com.redhat.ceylon.compiler.test.structure.import_.pkg.C1();
     }
-
+    
+    ImportTypeSingle() {
+    }
 }

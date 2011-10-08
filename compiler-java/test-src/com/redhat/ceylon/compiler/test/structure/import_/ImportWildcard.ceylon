@@ -5,7 +5,7 @@ class ImportAlias() {
     void m() {
         C1();
         C2();
-        variable boolean b := f1;
+        variable Boolean b := f1;
         b := f2;
         m1();
         m2();

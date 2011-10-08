@@ -1,10 +1,12 @@
 package com.redhat.ceylon.compiler.test.structure.import_;
 
-class ImportAttrSingle {
-
-    private void m() {
+class ImportTypeMultiple {
+    
+    private final void m() {
         new com.redhat.ceylon.compiler.test.structure.import_.pkg.C1();
         new com.redhat.ceylon.compiler.test.structure.import_.pkg.C2();
     }
-
+    
+    ImportTypeMultiple() {
+    }
 }
