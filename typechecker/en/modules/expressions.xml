@@ -3363,7 +3363,7 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Assignability</emphasis></entry></row>
         
         <row>
-            <entry><literal>lhs is Rhs</literal></entry>
+            <entry><literal>lhs is rhs</literal></entry>
             <entry>is</entry>
             <entry></entry>
             <entry><literal>Object?</literal></entry>

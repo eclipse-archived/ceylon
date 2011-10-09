@@ -1479,7 +1479,7 @@ shared class LinkedList<Element>(Element... elements)
         parameterized by one or more generic type parameters. A parameterized class or interface 
         declaration defines a type constructor, a function that produces a type given a tuple of 
         compatible type arguments. A parameterized class or method declaration defines a function 
-        that produces the signature of an invokable operation given a tuple of compatble type
+        that produces the signature of an invokable operation given a tuple of compatible type
         arguments.</para>
         
         <programlisting>TypeParams: "&lt;" (TypeParam ",")* (TypeParam | SequencedTypeParam) "&gt;"</programlisting>
@@ -1925,7 +1925,7 @@ shared interface Successor&lt;out N&gt; satisfies Dimension given N satisfies Di
         constraints.</para>
         
         <para>A type argument to a parameterized type parameter must be a parameterized 
-        type with type parameters to which the the type parameters of the parameterized
+        type with type parameters to which the type parameters of the parameterized
         type parameter are assignable.</para>
         
         <para>A parameterized type parameter appears as a produced type (with type 
