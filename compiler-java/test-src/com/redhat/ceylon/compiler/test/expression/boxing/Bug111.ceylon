@@ -8,9 +8,9 @@ class Bug111() {
         Natural|Integer num = 0;
         Integer mag = num.negativeValue;
     }
-    /*void m3() {
+    void m3() {
         Natural[]|Integer[] nums = {1,2,3};
-        Natural|Integer|Empty first = nums.first;
-    }*/
+        Natural|Integer|Nothing first = nums.first;
+    }
 
 }
