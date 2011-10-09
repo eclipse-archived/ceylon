@@ -23,4 +23,7 @@ class KlassWithMethods() extends Super1() {
  // override all formal methods
  shared actual void formalMethod2(){}
  shared actual void defaultMethod(){}
+ 
+ // varargs
+ shared void varargs(Natural... args){}
 }
