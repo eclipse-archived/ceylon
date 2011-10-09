@@ -1,7 +1,7 @@
 import com.redhat.ceylon.compiler.test.structure.import_.pkg{...}
 
 @nomodel
-class ImportAlias() {
+class ImportWildcard() {
     void m() {
         C1();
         C2();
