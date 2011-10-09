@@ -441,37 +441,17 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         return classSymbol;
     }
 
-    private final Map<String,Package> packagesByName = new HashMap<String,Package>();
+    private final Map<String,LazyPackage> packagesByName = new HashMap<String,LazyPackage>();
 
     public Package findPackage(final String pkgName) {
         return packagesByName.get(pkgName);
     }
 
-    public Package findOrCreatePackage(Module module, final String pkgName) {
-        Package pkg = packagesByName.get(pkgName);
+    public LazyPackage findOrCreatePackage(Module module, final String pkgName) {
+        LazyPackage pkg = packagesByName.get(pkgName);
         if(pkg != null)
             return pkg;
-        pkg = new Package(){
-            @Override
-            public Declaration getDirectMember(String name) {
-                // FIXME: some refactoring needed
-                name = Util.quoteIfJavaKeyword(name);
-                String className = pkgName.isEmpty() ? name : pkgName + "." + name;
-                // we need its package ready first
-                PackageSymbol javaPkg = reader.enterPackage(names.fromString(pkgName));
-                javaPkg.complete();
-                ClassSymbol classSymbol = lookupClassSymbol(className);
-                // only get it from the classpath if we're not compiling it
-                if(classSymbol != null && classSymbol.classfile.getKind() != Kind.SOURCE)
-                    return convertToDeclaration(className, DeclarationType.VALUE);
-                return super.getDirectMember(name);
-            }
-            @Override
-            public Declaration getDirectMemberOrParameter(String name) {
-                // FIXME: what's the difference?
-                return getDirectMember(name);
-            }
-        };
+        pkg = new LazyPackage(this, reader, names);
         packagesByName.put(pkgName, pkg);
         // FIXME: some refactoring needed
         pkg.setName(pkgName == null ? Collections.<String>emptyList() : Arrays.asList(pkgName.split("\\.")));
