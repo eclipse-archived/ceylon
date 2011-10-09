@@ -4,7 +4,6 @@ Module module {
     doc = "Bla bla.";
     authors = { "Stef FroMage" };
     license = 'http://www.gnu.org/licenses/gpl.html';
-    dependencies = {
     Import {
         name = 'foo';
         version = '1.2';
@@ -16,5 +15,5 @@ Module module {
         version = '3.4';
         optional = true;
         export = true;
-    }};
+    }
 }
