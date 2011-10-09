@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.loader;
 
+import static com.sun.tools.javac.code.Kinds.PCK;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -9,6 +11,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.lang.model.type.TypeKind;
 import javax.tools.JavaFileObject.Kind;
@@ -59,6 +62,7 @@ import com.sun.tools.javac.jvm.ClassReader;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.util.Context;
+import com.sun.tools.javac.util.Convert;
 import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Name.Table;
@@ -77,6 +81,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     private boolean isBootstrap;
     private Types types;
     private TypeFactory typeFactory;
+    private final Set<String> loadedPackages = new HashSet<String>();
     
     public static CeylonModelLoader instance(Context context) {
         CeylonModelLoader instance = context.get(CeylonModelLoader.class);
@@ -171,7 +176,10 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             symtab.loadCeylonSymbols();
     }
 
-    private void loadPackage(String packageName) {
+    void loadPackage(String packageName) {
+        // abort if we already loaded it
+        if(!loadedPackages.add(packageName))
+            return;
         PackageSymbol ceylonPkg = reader.enterPackage(names.fromString(packageName));
         ceylonPkg.complete();
         /*
