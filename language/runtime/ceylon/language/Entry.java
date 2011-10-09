@@ -25,7 +25,7 @@ public class Entry<Key extends Equality,
 		return key;
 	}
 	
-	public Item getElement() {
+	public Item getItem() {
 		return item;
 	}
 
