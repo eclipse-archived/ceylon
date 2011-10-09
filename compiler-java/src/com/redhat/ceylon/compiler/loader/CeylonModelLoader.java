@@ -272,7 +272,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         // find its module
         String pkgName = classSymbol.packge().getQualifiedName().toString();
         Module module = findOrCreateModule(pkgName);
-        Package pkg = findOrCreatePackage(module, pkgName);
+        LazyPackage pkg = findOrCreatePackage(module, pkgName);
 
         for(Declaration d : decls){
             d.setShared((classSymbol.flags() & Flags.PUBLIC) != 0);
@@ -357,7 +357,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         return convertToDeclaration(typeName, declarationType);
     }
     
-    private Declaration convertToDeclaration(String typeName, DeclarationType declarationType) {
+    Declaration convertToDeclaration(String typeName, DeclarationType declarationType) {
         if ("ceylon.language.Bottom".equals(typeName)) {
             return new BottomType(typeFactory);
         }
@@ -400,7 +400,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             throw new RuntimeException("Type param "+name+" lookup not supported for scope "+scope);
     }
 
-    private ClassSymbol lookupClassSymbol(String name) {
+    ClassSymbol lookupClassSymbol(String name) {
         ClassSymbol classSymbol;
 
         String outerName = name;
