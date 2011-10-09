@@ -15,7 +15,7 @@ class EqualsHashOverriding {
         final .java.lang.Object $that$0 = that;
         if ($that$0 instanceof com.redhat.ceylon.compiler.test.misc.equalshashoverriding.EqualsHashOverriding) {
             final com.redhat.ceylon.compiler.test.misc.equalshashoverriding.EqualsHashOverriding $that$1 = (com.redhat.ceylon.compiler.test.misc.equalshashoverriding.EqualsHashOverriding)$that$0;
-            return (.ceylon.language.String.instance(s)).equals(.ceylon.language.String.instance($that$1.s));
+            return .ceylon.language.String.instance(s).equals(.ceylon.language.String.instance($that$1.s));
         } else {
             return false;
         }
@@ -23,7 +23,7 @@ class EqualsHashOverriding {
     
     @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
     public final int hashCode() {
-        return (.ceylon.language.String.instance(s)).hashCode();
+        return .ceylon.language.String.instance(s).hashCode();
     }
     
     EqualsHashOverriding(@.com.redhat.ceylon.compiler.metadata.java.Name("s")
