@@ -58,5 +58,24 @@ shared class ClassesTest() extends Test() {
 		DefaultHello hello = DefaultHello();
 		assertEquals("Hello, World!", hello.say());
 	}
+	
+	@test
+	shared void testWithParameters() {
+		abstract class Hello(String name) {		    
+		    shared formal String greeting;		    
+		    shared String say() {
+		        return greeting + " " + name;
+		    }
+		}
+		
+		class DefaultHello(String name) extends Hello(name) {
+		    shared actual String greeting {
+		        return "Hello, World!";
+		    }
+		}
+		String name = "Flavio";
+		DefaultHello hello = DefaultHello(name);
+		assertEquals("Hello, World!" + " " + name, hello.say());
+	}	
 		
 }
