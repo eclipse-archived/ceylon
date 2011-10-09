@@ -51,9 +51,9 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
     
     private final Element next(Element x){
         if(getDecreasing())
-            return x.getSuccessor();
-        else
             return x.getPredecessor();
+        else
+            return x.getSuccessor();
     }
 
     @Override
