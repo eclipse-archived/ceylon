@@ -278,7 +278,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             d.setShared((classSymbol.flags() & Flags.PUBLIC) != 0);
         
             // add it to its package
-            pkg.getMembers().add(d);
+            pkg.addMember(d);
             d.setContainer(pkg);
         }
         
