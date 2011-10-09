@@ -160,6 +160,10 @@ public class ModelLoaderTest extends CompilerTest {
             for(int p=0;p<validParameterList.size();p++){
                 Parameter validParameter = validParameterList.get(i);
                 Parameter modelParameter = modelParameterList.get(i);
+                Assert.assertEquals(name+" [param "+validParameter.getName()+" sequenced]", 
+                        validParameter.isSequenced(), modelParameter.isSequenced());
+                Assert.assertEquals(name+" [param "+validParameter.getName()+" defaulted]", 
+                        validParameter.isDefaulted(), modelParameter.isDefaulted());
                 // make sure they have the same name and type
                 compareDeclarations(validParameter, modelParameter);
             }
