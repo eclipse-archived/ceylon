@@ -1,0 +1,51 @@
+shared class EntryTest() extends Test() {
+
+	
+	@test
+	shared void testKey() {
+		Integer key = +1;
+		String item = "One";		
+		Entry<Integer, String> first = Entry(key,item); 
+		assertTrue(key.equals(first.key));	
+	}
+	
+	
+	@test
+	shared void testItem() {
+		Integer key = +1;
+		String item = "One";		
+		Entry<Integer, String> first = Entry(key,item); 
+		assertTrue(item.equals(first.item));	
+	}	
+		
+	@test
+	shared void testEquals() {
+		Integer key1 = +1;
+		String item1 = "One";
+		Entry<Integer, String> first = Entry(key1,item1);
+		Entry<Integer, String> anotherFirst = Entry(key1,item1);
+		Integer key2 = +2;
+		String item2 = "Two";
+		Entry<Integer, String> second = Entry(key2,item2);
+		assertEquals(first, anotherFirst);
+		assertFalse(first.equals(second));
+		Entry<Integer, String> mixed = Entry(key1,item2);
+		assertFalse(first.equals(mixed));
+		assertFalse(second.equals(mixed));
+	}
+	
+	@test
+	shared void testHash() {
+		Entry<Integer, String> first = Entry(+1,"One");
+		Integer hash = first.hash;
+		assertEquals(first.hash, hash);
+	}
+	
+	@test
+	shared void testString() {
+		Entry<Integer, String> first = Entry(+1,"One");
+		String name = first.string;
+		assertEquals(first.string, name);
+	}	
+	
+}	  
