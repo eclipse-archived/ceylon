@@ -36,8 +36,8 @@ shared class EqualityTest() extends Test() {
 	@test
 	shared void testHash() {
 		Equality entity = Entity(+1);
-		// it doesn't work!		
-		// entity.hash;		
+		Integer entityHash = entity.hash;
+		assertEquals(entityHash, entity.hash);		
 	}	
 	
 }	  

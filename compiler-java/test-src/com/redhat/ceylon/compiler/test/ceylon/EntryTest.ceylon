@@ -37,8 +37,8 @@ shared class EntryTest() extends Test() {
 	@test
 	shared void testHash() {
 		Entry<Integer, String> first = Entry(+1,"One");
-		Integer hash = first.hash;
-		assertEquals(first.hash, hash);
+		Integer firstHash = first.hash;
+		assertEquals(first.hash, firstHash);
 	}
 	
 	@test
