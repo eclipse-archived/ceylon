@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.loader;
 
+import java.util.EnumSet;
+
 import javax.tools.JavaFileObject;
 import javax.tools.JavaFileObject.Kind;
 
@@ -22,5 +24,10 @@ public class CeylonClassReader extends ClassReader {
     @Override
     protected JavaFileObject preferredFileObject(JavaFileObject a, JavaFileObject b) {
         return a.getKind() == Kind.CLASS ? a : b;
+    }
+
+    @Override
+    protected EnumSet<JavaFileObject.Kind> getPackageFileKinds() {
+        return EnumSet.of(JavaFileObject.Kind.CLASS);
     }
 }
