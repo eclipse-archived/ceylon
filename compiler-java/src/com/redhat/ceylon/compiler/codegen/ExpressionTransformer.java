@@ -565,9 +565,15 @@ public class ExpressionTransformer extends AbstractTransformer {
         boolean isVarargs = false;
         Declaration primaryDecl = ce.getPrimary().getDeclaration();
         PositionalArgumentList positional = ce.getPositionalArgumentList();
-        if (primaryDecl instanceof Method) {
-            Method methodDecl = (Method)primaryDecl;
-            java.util.List<Parameter> declaredParams = methodDecl.getParameterLists().get(0).getParameters();
+        if (primaryDecl instanceof Method || primaryDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+            java.util.List<Parameter> declaredParams;
+            if(primaryDecl instanceof Method){
+                Method methodDecl = (Method)primaryDecl;
+                declaredParams = methodDecl.getParameterLists().get(0).getParameters();
+            }else{
+                com.redhat.ceylon.compiler.typechecker.model.Class classDecl = (com.redhat.ceylon.compiler.typechecker.model.Class)primaryDecl;
+                declaredParams = classDecl.getParameterLists().get(0).getParameters();
+            }
             int numDeclared = declaredParams.size();
             java.util.List<PositionalArgument> passedArguments = positional.getPositionalArguments();
             int numPassed = passedArguments.size();
