@@ -23,13 +23,19 @@ public class LazyClass extends Class implements LazyElement {
     private ModelCompleter completer;
     private boolean isLoaded = false;
     private boolean isTypeParamsLoaded = false;
+    private boolean forTopLevelObject;
 
-    public LazyClass(ClassSymbol classSymbol, ModelCompleter completer) {
+    public LazyClass(ClassSymbol classSymbol, ModelCompleter completer, boolean forTopLevelObject) {
         this.classSymbol = classSymbol;
         this.completer = completer;
+        this.forTopLevelObject = forTopLevelObject;
         // FIXME Using flatName() instead of just getSimpleName() is for anonymous classes, but do we need them?
         setName(Util.getSimpleName(classSymbol.flatName().toString()));
         setAbstract((classSymbol.flags() & Flags.ABSTRACT) != 0);
+    }
+    
+    public boolean isTopLevelObjectType(){
+        return forTopLevelObject;
     }
     
     private void load() {

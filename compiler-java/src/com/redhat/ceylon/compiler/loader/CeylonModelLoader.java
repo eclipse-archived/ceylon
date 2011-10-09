@@ -224,7 +224,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             break;
         case OBJECT:
             // we first make a class
-            decl = makeLazyClassOrInterface(classSymbol);
+            decl = makeLazyClassOrInterface(classSymbol, true);
             declarationsByName.put("C"+className, decl);
             decls.add(decl);
             // then we make a value for it
@@ -233,7 +233,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             break;
         case CLASS:
         case INTERFACE:
-            decl = makeLazyClassOrInterface(classSymbol);
+            decl = makeLazyClassOrInterface(classSymbol, false);
             break;
         }
 
@@ -278,9 +278,9 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         return method;
     }
     
-    private ClassOrInterface makeLazyClassOrInterface(ClassSymbol classSymbol) {
+    private ClassOrInterface makeLazyClassOrInterface(ClassSymbol classSymbol, boolean forTopLevelObject) {
         if(!classSymbol.isInterface()){
-            return new LazyClass(classSymbol, this);
+            return new LazyClass(classSymbol, this, forTopLevelObject);
         }else{
             return new LazyInterface(classSymbol, this);
         }
@@ -549,7 +549,9 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                             log.rawWarning(0, "Has multiple constructors: "+classSymbol.getQualifiedName());
                         continue;
                     }
-                    setParameters((Class)klass, methodSymbol);
+                    if(!(klass instanceof LazyClass)
+                            || !((LazyClass)klass).isTopLevelObjectType())
+                        setParameters((Class)klass, methodSymbol);
                     continue;
                 }
                 
