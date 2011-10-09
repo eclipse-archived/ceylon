@@ -202,6 +202,10 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("instantiation/ClassInstantiation");
     }
     @Test
+    public void testInsSequencedParameterClassInstantiation(){
+        compareWithJavaSource("instantiation/SequencedParameterClassInstantiation");
+    }
+    @Test
     public void testInsEntryInstantiation(){
         compareWithJavaSource("instantiation/EntryInstantiation");
     }
