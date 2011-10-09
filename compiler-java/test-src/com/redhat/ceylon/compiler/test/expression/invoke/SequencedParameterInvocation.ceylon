@@ -7,6 +7,7 @@ class SequencedParameterInvocation(){
     }
     
     void f() {
+        m("foo");
         m("foo", 1, 2, 3);
         m2("foo", this, this, this);
     }
