@@ -187,9 +187,28 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
          * for now the typechecker requires at least ceylon.language to be loaded 
          */
         for(Symbol m : ceylonPkg.members().getElements()){
-            convertToDeclaration(lookupClassSymbol(m.getQualifiedName().toString()), DeclarationType.VALUE);
+            if(!(m instanceof ClassSymbol))
+                return;
+            ClassSymbol enclosingClass = getEnclosing((ClassSymbol) m);
+            if(enclosingClass.classfile.getKind() != Kind.SOURCE)
+                convertToDeclaration(lookupClassSymbol(m.getQualifiedName().toString()), DeclarationType.VALUE);
         }
     }
+    
+    private ClassSymbol getEnclosing(ClassSymbol c) {
+        Symbol owner = c.owner;
+        com.sun.tools.javac.util.List<Name> enclosing = Convert.enclosingCandidates(Convert.shortName(c.name));
+        if(enclosing.isEmpty())
+            return c;
+        Name name = enclosing.head;
+        Symbol encl = owner.members().lookup(name).sym;
+        if (encl == null)
+            encl = symtab.classes.get(TypeSymbol.formFlatName(name, owner));
+        if(encl != null)
+            return (ClassSymbol) encl;
+        return c;
+    }
+
 
     enum ClassType {
         ATTRIBUTE, METHOD, OBJECT, CLASS, INTERFACE;
