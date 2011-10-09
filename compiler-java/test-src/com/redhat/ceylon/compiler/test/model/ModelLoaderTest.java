@@ -136,6 +136,7 @@ public class ModelLoaderTest extends CompilerTest {
             Assert.assertTrue(validDeclaration.getQualifiedNameString()+" [null supertype]", modelDeclaration.getExtendedTypeDeclaration() == null);
         else
             compareDeclarations(validDeclaration.getExtendedTypeDeclaration(), modelDeclaration.getExtendedTypeDeclaration());
+        compareParameterLists(validDeclaration.getQualifiedNameString(), validDeclaration.getParameterLists(), modelDeclaration.getParameterLists());
         // make sure it has every member required
         for(Declaration validMember : validDeclaration.getMembers()){
             Declaration modelMember = modelDeclaration.getMemberOrParameter(validMember.getName());
@@ -149,18 +150,12 @@ public class ModelLoaderTest extends CompilerTest {
         }
     }
     
-    private void compareMethodDeclarations(Method validDeclaration, Method modelDeclaration) {
-        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [formal]", validDeclaration.isFormal(), modelDeclaration.isFormal());
-        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [actual]", validDeclaration.isActual(), modelDeclaration.isActual());
-        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [default]", validDeclaration.isDefault(), modelDeclaration.isDefault());
-        // make sure it has every parameter list required
-        List<ParameterList> validParameterLists = validDeclaration.getParameterLists();
-        List<ParameterList> modelParameterLists = modelDeclaration.getParameterLists();
-        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [param lists count]", validParameterLists.size(), modelParameterLists.size());
+    private void compareParameterLists(String name, List<ParameterList> validParameterLists, List<ParameterList> modelParameterLists) {
+        Assert.assertEquals(name+" [param lists count]", validParameterLists.size(), modelParameterLists.size());
         for(int i=0;i<validParameterLists.size();i++){
             List<Parameter> validParameterList = validParameterLists.get(i).getParameters();
             List<Parameter> modelParameterList = modelParameterLists.get(i).getParameters();
-            Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [param lists "+i+" count]", 
+            Assert.assertEquals(name+" [param lists "+i+" count]", 
                     validParameterList.size(), modelParameterList.size());
             for(int p=0;p<validParameterList.size();p++){
                 Parameter validParameter = validParameterList.get(i);
@@ -169,6 +164,16 @@ public class ModelLoaderTest extends CompilerTest {
                 compareDeclarations(validParameter, modelParameter);
             }
         }
+    }
+
+    private void compareMethodDeclarations(Method validDeclaration, Method modelDeclaration) {
+        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [formal]", validDeclaration.isFormal(), modelDeclaration.isFormal());
+        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [actual]", validDeclaration.isActual(), modelDeclaration.isActual());
+        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [default]", validDeclaration.isDefault(), modelDeclaration.isDefault());
+        // make sure it has every parameter list required
+        List<ParameterList> validParameterLists = validDeclaration.getParameterLists();
+        List<ParameterList> modelParameterLists = modelDeclaration.getParameterLists();
+        compareParameterLists(validDeclaration.getQualifiedNameString(), validParameterLists, modelParameterLists);
         // now same for return type
         compareDeclarations(validDeclaration.getType().getDeclaration(), modelDeclaration.getType().getDeclaration());
     }
