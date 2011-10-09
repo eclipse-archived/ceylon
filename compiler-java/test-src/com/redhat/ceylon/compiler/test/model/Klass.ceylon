@@ -1,4 +1,4 @@
 class Klass() {
 }
-class KlassWithConstructor(Natural param) {
+class KlassWithConstructor(Natural param, Natural... varargs) {
 }
