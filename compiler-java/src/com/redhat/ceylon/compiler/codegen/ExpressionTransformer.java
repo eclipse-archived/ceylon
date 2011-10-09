@@ -742,23 +742,12 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (expr != null) {
             Tree.Primary primary = expr.getPrimary();
             
-            CeylonVisitor v = new CeylonVisitor(gen());
-            primary.visit(v);
-            primaryExpr = v.getSingleResult();
+            primaryExpr = transformExpression(primary, BoxingStrategy.BOXED);
             
             if (willEraseToObject(primary.getTypeModel())) {
                 // Erased types need a type cast
                 JCExpression targetType = makeJavaType(expr.getTarget().getQualifyingType());
                 primaryExpr = make().TypeCast(targetType, primaryExpr);
-            } else if (sameType(syms().ceylonStringType, primary.getTypeModel())) {
-                // Java Strings need to be boxed
-                primaryExpr = makeBox(syms().ceylonStringType, primaryExpr);
-            } else if (sameType(syms().ceylonBooleanType, primary.getTypeModel())) {
-                // Java native types need to be boxed
-                primaryExpr = makeBox(syms().ceylonBooleanType, primaryExpr);
-            } else if (sameType(syms().ceylonIntegerType, primary.getTypeModel())) {
-                // Java native types need to be boxed
-                primaryExpr = makeBox(syms().ceylonIntegerType, primaryExpr);
             }
         }
         
