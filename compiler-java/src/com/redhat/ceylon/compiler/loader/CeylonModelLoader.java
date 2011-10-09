@@ -802,6 +802,8 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 paramName = paramSymbol.name.toString();
             parameter.setName(paramName);
             parameter.setType(obtainType(paramSymbol.type, paramSymbol, (Scope) decl));
+            if(getAnnotation(paramSymbol, symtab.ceylonAtSequencedType) != null)
+                parameter.setSequenced(true);
             markUnboxed(parameter, paramSymbol.type);
             parameter.setDeclaration((Declaration) decl);
             parameters.getParameters().add(parameter);
