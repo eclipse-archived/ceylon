@@ -1,25 +1,21 @@
 shared class EqualityTest() extends Test() {
 
-	class Entity (Integer initId) satisfies Equality {	
+	class Entity (Integer id) satisfies Equality {	
 	
-		shared Integer id {
-			return initId;		
-		}
-	
-	    shared actual Boolean equals(Equality that) {
+		shared Integer id = id;
+			
+	    shared actual Boolean equals(Equality that) {	  
 	    	if (this == that) { 
 	    		return true;
-	    	}
-	    		
+	    	}	    		
 	    	if (is Entity that) {
-	    		return id.equals(that.id);
-	    	} else {
-	    		return false;
-	    	}	    	
+	    		return id == that.id;
+	    	} 
+	    	return false;	    		    	
 	    }
 	    
     	shared actual Integer hash {
-    		return id.hash;
+    		return id;
     	}    	
 	
 	}
