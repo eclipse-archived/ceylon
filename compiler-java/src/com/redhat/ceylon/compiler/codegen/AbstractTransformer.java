@@ -568,6 +568,10 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtTypeInfoType, List.<JCExpression>of(make().Literal(name)));
     }
 
+    protected List<JCAnnotation> makeAtSequenced() {
+        return makeModelAnnotation(syms().ceylonAtSequencedType);
+    }
+
     protected List<JCAnnotation> makeAtAttribute() {
         return makeModelAnnotation(syms().ceylonAtAttributeType);
     }

@@ -7,6 +7,7 @@ import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
+import com.redhat.ceylon.compiler.codegen.MethodDefinitionBuilder.SequencedInfo;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -300,7 +301,7 @@ public class ClassTransformer extends AbstractTransformer {
         String name = def.getIdentifier().getText();
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(gen(), name);
         
-        methodBuilder.parameter(FINAL, "$this", type, false);
+        methodBuilder.parameter(FINAL, "$this", type, false, SequencedInfo.NORMAL);
         for (Tree.Parameter param : def.getParameterLists().get(0).getParameters()) {
             methodBuilder.parameter(param);
         }

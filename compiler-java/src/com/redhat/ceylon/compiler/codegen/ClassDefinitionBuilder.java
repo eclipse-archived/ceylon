@@ -277,6 +277,8 @@ public class ClassDefinitionBuilder {
         // Create a parameter for the constructor
         JCExpression type = gen.makeJavaType(paramType, gen.isGenericsImplementation(parameter) ? AbstractTransformer.NO_ERASURE_TO_PRIMITIVE : 0);
         List<JCAnnotation> annots = gen.makeAtName(name);
+        if(parameter.isSequenced())
+            annots = annots.appendList(gen.makeAtSequenced());
         annots = annots.appendList(gen.makeJavaTypeAnnotations(paramType, true));
         JCVariableDecl var = gen.make().VarDef(gen.make().Modifiers(0, annots), gen.names().fromString(name), type, null);
         params.append(var);

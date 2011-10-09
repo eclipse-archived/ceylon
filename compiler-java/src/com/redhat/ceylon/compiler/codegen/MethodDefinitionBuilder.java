@@ -68,7 +68,7 @@ public class MethodDefinitionBuilder {
     
     public static MethodDefinitionBuilder setter(AbstractTransformer gen, String name, ProducedType attrType, boolean isGenericsType) {
         return new MethodDefinitionBuilder(gen, Util.getSetterName(name))
-            .parameter(0, name, attrType, isGenericsType);
+            .parameter(0, name, attrType, isGenericsType, SequencedInfo.NORMAL);
     }
     
     public static MethodDefinitionBuilder setter(AbstractTransformer gen, String name, JCExpression attrType, List<JCAnnotation> annots) {
@@ -173,9 +173,15 @@ public class MethodDefinitionBuilder {
         return this;
     }
     
-    public MethodDefinitionBuilder parameter(long modifiers, String name, ProducedType paramType, boolean isGenericsType) {
+    enum SequencedInfo {
+        SEQUENCED, NORMAL;
+    }
+    
+    public MethodDefinitionBuilder parameter(long modifiers, String name, ProducedType paramType, boolean isGenericsType, SequencedInfo sequencedInfo) {
         JCExpression type = gen.makeJavaType(paramType, isGenericsType ? AbstractTransformer.NO_ERASURE_TO_PRIMITIVE : 0);
         List<JCAnnotation> annots = gen.makeAtName(name);
+        if(sequencedInfo == SequencedInfo.SEQUENCED)
+            annots = annots.appendList(gen.makeAtSequenced());
         annots = annots.appendList(gen.makeJavaTypeAnnotations(paramType, true));
         return parameter(gen.make().VarDef(gen.make().Modifiers(modifiers, annots), gen.names().fromString(name), type, null));
     }
@@ -191,7 +197,8 @@ public class MethodDefinitionBuilder {
 
     public MethodDefinitionBuilder parameter(Parameter param) {
         String name = param.getName();
-        return parameter(FINAL, name, param.getType(), gen.isGenericsImplementation(param));
+        return parameter(FINAL, name, param.getType(), gen.isGenericsImplementation(param), 
+                param.isSequenced() ? SequencedInfo.SEQUENCED : SequencedInfo.NORMAL);
     }
 
     public MethodDefinitionBuilder isActual(boolean isActual) {
