@@ -16,6 +16,7 @@ import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
@@ -43,6 +44,8 @@ public class ClassDefinitionBuilder {
     private long constructorModifiers = -1;
     
     private JCExpression extending;
+    private JCStatement superCall;
+    
     private final ListBuffer<JCExpression> satisfies = ListBuffer.lb();
     private final ListBuffer<JCTypeParameter> typeParams = ListBuffer.lb();
     
@@ -54,7 +57,7 @@ public class ClassDefinitionBuilder {
     private final ListBuffer<JCTree> concreteInterfaceMemberDefs = ListBuffer.lb();
     private final ListBuffer<JCTree> body = ListBuffer.lb();
     private final ListBuffer<JCStatement> init = ListBuffer.lb();
-    
+
     public static ClassDefinitionBuilder klass(AbstractTransformer gen, String name) {
         return new ClassDefinitionBuilder(gen, name);
     }
@@ -202,6 +205,7 @@ public class ClassDefinitionBuilder {
             .constructor(gen)
             .modifiers(mods)
             .parameters(params.toList())
+            .body(superCall)
             .body(init.toList())
             .build();
     }
@@ -257,7 +261,7 @@ public class ClassDefinitionBuilder {
             for (Tree.PositionalArgument arg : extendedType.getInvocationExpression().getPositionalArgumentList().getPositionalArguments())
                 args = args.append(gen.expressionGen().transformArg(arg));
 
-            init(gen.at(extendedType).Exec(gen.make().Apply(List.<JCExpression> nil(), gen.make().Ident(gen.names()._super), args)));
+            superCall = gen.at(extendedType).Exec(gen.make().Apply(List.<JCExpression> nil(), gen.make().Ident(gen.names()._super), args));
         }
         return extending(extendedType.getType().getTypeModel());
     }
@@ -301,32 +305,44 @@ public class ClassDefinitionBuilder {
     }
     
     public ClassDefinitionBuilder defs(JCTree statement) {
-        this.defs.append(statement);
+        if (statement != null) {
+            this.defs.append(statement);
+        }
         return this;
     }
     
     public ClassDefinitionBuilder defs(List<JCTree> defs) {
-        this.defs.appendList(defs);
+        if (defs != null) {
+            this.defs.appendList(defs);
+        }
         return this;
     }
     
     public ClassDefinitionBuilder body(JCTree statement) {
-        this.body.append(statement);
+        if (statement != null) {
+            this.body.append(statement);
+        }
         return this;
     }
     
     public ClassDefinitionBuilder body(List<JCTree> body) {
-        this.body.appendList(body);
+        if (body != null) {
+            this.body.appendList(body);
+        }
         return this;
     }
     
     public ClassDefinitionBuilder init(JCStatement statement) {
-        this.init.append(statement);
+        if (statement != null) {
+            this.init.append(statement);
+        }
         return this;
     }
     
     public ClassDefinitionBuilder init(List<JCStatement> init) {
-        this.init.appendList(init);
+        if (init != null) {
+            this.init.appendList(init);
+        }
         return this;
     }
 

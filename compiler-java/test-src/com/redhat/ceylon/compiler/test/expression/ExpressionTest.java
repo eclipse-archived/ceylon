@@ -34,6 +34,10 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("attribute/InitializerParamAccessInInitializer");
     }
     @Test
+    public void testAtrInitializerParamAccessWithExtends(){
+        compareWithJavaSource("attribute/InitializerParamAccessWithExtends");
+    }
+    @Test
     public void testAtrInitializerParamHidingAttribute(){
         compareWithJavaSource("attribute/InitializerParamHidingAttribute");
     }

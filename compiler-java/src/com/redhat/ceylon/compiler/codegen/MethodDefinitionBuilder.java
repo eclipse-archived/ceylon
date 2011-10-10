@@ -207,12 +207,16 @@ public class MethodDefinitionBuilder {
     }
     
     public MethodDefinitionBuilder body(JCStatement statement) {
-        this.body.append(statement);
+        if (statement != null) {
+            this.body.append(statement);
+        }
         return this;
     }
     
     public MethodDefinitionBuilder body(List<JCStatement> body) {
-        this.body.appendList(body);
+        if (body != null) {
+            this.body.appendList(body);
+        }
         return this;
     }
 
