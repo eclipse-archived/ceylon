@@ -1,11 +1,4 @@
 shared class PrimitiveDataTypesTest () extends Test() {
-  @test
-  shared void testFail(){
-    fail();
-  }
-  @test
-  shared void testSucceed(){
-  }
   
   @test
   shared void testNumbers(){
