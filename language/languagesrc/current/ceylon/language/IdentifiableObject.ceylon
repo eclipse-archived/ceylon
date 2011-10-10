@@ -30,7 +30,7 @@ shared abstract class IdentifiableObject()
     }
     
     shared default actual String string {
-        return className(this) + "#" + hash.string;
+        return className(this) + "@" + hash.string;
     }
         
 }
