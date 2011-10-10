@@ -159,29 +159,16 @@ public class CeylonEnter extends Enter {
     private void resolveModuleDependencies() {
         Modules modules = ceylonContext.getModules();
         
-        boolean onlyAvailableModules = false;
-        while (! onlyAvailableModules) {
-            onlyAvailableModules = true;
-            Collection<Module> copyOfModules = new ArrayList<Module>(modules.getListOfModules());
-            for (Module module : copyOfModules) {
-                if (! module.isAvailable()) {
-                    modules.getListOfModules().remove(module);
-                    addModuleToClassPath(module);
-                    Module compiledModule = modelLoader.loadCompiledModule(module.getNameAsString());
-                    if (compiledModule != null) {
-                        for (Module otherModule : modules.getListOfModules()) {
-                            java.util.List<Module> dependencies = otherModule.getDependencies();
-                            if (dependencies.contains(module)) {
-                                dependencies.remove(module);
-                                dependencies.add(compiledModule);                            
-                            }                        
-                        }
-                        onlyAvailableModules = false;
-                    }
-                }
-            }
-        }
-            
+        // On all the modules that are not available (currently unresolved module dependencies),
+        // try to replace them with modules loaded from the classpath
+        // To manage new dependencies from just-loaded new modules, we iterate as long as a
+        // new module is successfully loaded from the classpath
+        boolean aNewModuleWasLoaded = false;
+        do {
+            aNewModuleWasLoaded = loadUnavailableModulesFromJars(modules.getListOfModules());
+        } while (aNewModuleWasLoaded);
+
+
         // every module depends on java.lang implicitely
         Module javaModule = modelLoader.findOrCreateModule("java.lang");
         // make sure java.lang is available
@@ -189,6 +176,38 @@ public class CeylonEnter extends Enter {
         for(Module m : modules.getListOfModules()){
             if(!m.getName().equals("java")){
                 m.getDependencies().add(javaModule);
+            }
+        }
+    }
+
+    private boolean loadUnavailableModulesFromJars(Collection<Module> modules) {
+        boolean aNewModuleWasLoaded = false;
+        Collection<Module> copyOfModules = new ArrayList<Module>(modules);
+        for (Module module : copyOfModules) {
+            if (! module.isAvailable()) {
+                // It is a dummy module, created on-the-fly as a dependency of a fully-parsed module file.
+                // Since it has never been fully parsed (neither from a source file nor from the classpath),
+                // it should be replaced now by a full one loaded from the classpath.
+
+                modules.remove(module);
+                addModuleToClassPath(module); // To be able to load it from the corresponding archive
+                Module compiledModule = modelLoader.loadCompiledModule(module.getNameAsString());
+                if (compiledModule != null) {
+                    updateModulesDependingOn(modules, module, compiledModule);
+                    aNewModuleWasLoaded = true;
+                }
+            }
+        }
+        return aNewModuleWasLoaded;
+    }
+
+    private void updateModulesDependingOn(Collection<Module> modules,
+            Module replacedModule, Module replacingModule) {
+        for (Module otherModule : modules) {
+            java.util.List<Module> dependencies = otherModule.getDependencies();
+            if (dependencies.contains(replacedModule)) {
+                dependencies.remove(replacedModule);
+                dependencies.add(replacingModule);
             }
         }
     }
