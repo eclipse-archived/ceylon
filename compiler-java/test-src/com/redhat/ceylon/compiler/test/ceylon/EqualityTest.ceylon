@@ -4,10 +4,7 @@ shared class EqualityTest() extends Test() {
 	
 		shared Integer id = id;
 			
-	    shared actual Boolean equals(Equality that) {	  
-	    	if (this == that) { 
-	    		return true;
-	    	}	    		
+	    shared actual Boolean equals(Equality that) {
 	    	if (is Entity that) {
 	    		return id == that.id;
 	    	} 
@@ -20,12 +17,11 @@ shared class EqualityTest() extends Test() {
 	
 	}
 
-
 	@test
 	shared void testEquals() {
 		Equality entity1 = Entity(+1);
 		Equality entity2 = Entity(+2);
-		assertFalse(entity1.equals(entity2));
+		assertFalse(entity1 == entity2);
 	}
 		
 	

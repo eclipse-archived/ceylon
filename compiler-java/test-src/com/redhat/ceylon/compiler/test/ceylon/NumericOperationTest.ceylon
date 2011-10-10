@@ -1,18 +1,6 @@
 shared class BooleanTest() extends Test() {
 
   @test
-  shared void testIsTrue() {
-  	Boolean isTrue = true;
-    assertTrue(isTrue);
-  }
-  
-  @test
-  shared void testIsFalse() {
-  	Boolean isFalse = false;
-    assertFalse(isFalse);
-  }
-  
-  @test
   shared void testEqual() {
   	Boolean equal = 1==1;
      assertTrue(equal);

@@ -1,21 +1,19 @@
 shared class EntryTest() extends Test() {
-
 	
 	@test
 	shared void testKey() {
 		Integer key = +1;
 		String item = "One";		
 		Entry<Integer, String> first = Entry(key,item); 
-		assertTrue(key.equals(first.key));	
+		assertTrue(key == first.key);	
 	}
-	
 	
 	@test
 	shared void testItem() {
 		Integer key = +1;
 		String item = "One";		
 		Entry<Integer, String> first = Entry(key,item); 
-		assertTrue(item.equals(first.item));	
+		assertTrue(item == first.item);	
 	}	
 		
 	@test
@@ -28,10 +26,10 @@ shared class EntryTest() extends Test() {
 		String item2 = "Two";
 		Entry<Integer, String> second = Entry(key2,item2);
 		assertEquals(first, anotherFirst);
-		assertFalse(first.equals(second));
+		assertFalse(first == second);
 		Entry<Integer, String> mixed = Entry(key1,item2);
-		assertFalse(first.equals(mixed));
-		assertFalse(second.equals(mixed));
+		assertFalse(first == mixed);
+		assertFalse(second == mixed);
 	}
 	
 	@test
@@ -44,8 +42,7 @@ shared class EntryTest() extends Test() {
 	@test
 	shared void testString() {
 		Entry<Integer, String> first = Entry(+1,"One");
-		String name = first.string;
-		assertEquals(first.string, name);
+		String name = first.string;		
 	}	
 	
 }	  
