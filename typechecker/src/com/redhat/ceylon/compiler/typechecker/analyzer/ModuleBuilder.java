@@ -40,9 +40,8 @@ public class ModuleBuilder {
             packageStack.addLast(emptyPackage);
 
             //build default module (module in which packages belong to when not explicitly under a module
-            final Module defaultModule = new Module();
             final List<String> defaultModuleName = Collections.singletonList("<default module>");
-            defaultModule.setName(defaultModuleName);
+            final Module defaultModule = createModule(defaultModuleName);
             defaultModule.setAvailable(true);
             bindPackageToModule(emptyPackage, defaultModule);
             modules.getListOfModules().add(defaultModule);
@@ -51,8 +50,7 @@ public class ModuleBuilder {
             //create language module and add it as a dependency of defaultModule
             //since packages outside a module cannot declare dependencies
             final List<String> languageName = Arrays.asList("ceylon", "language");
-            Module languageModule = new Module();
-            languageModule.setName(languageName);
+            Module languageModule = createModule(languageName);
             languageModule.setLanguageModule(languageModule);
             languageModule.setAvailable(false); //not available yet
             modules.setLanguageModule(languageModule);
@@ -67,7 +65,13 @@ public class ModuleBuilder {
         }
     }
 
-    public void push(String path) {
+    protected Module createModule(List<String> moduleName) {
+		Module module = new Module();
+		module.setName(moduleName);
+		return module;
+	}
+
+	public void push(String path) {
         createPackageAndAddToModule(path);
     }
 
@@ -94,8 +98,7 @@ public class ModuleBuilder {
             }
         }
         if (module == null) {
-            module = new Module();
-            module.setName(moduleName);
+            module = createModule(moduleName);
             module.setLanguageModule(modules.getLanguageModule());
             moduleList.add(module);
         }
