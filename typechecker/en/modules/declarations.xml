@@ -381,11 +381,11 @@ TypeConstraints?
     
     shared formal Comparison compare(Other other);
     
-    shared Boolean greaterThan(Other other) {
+    shared Boolean largerThan(Other other) {
         return compare(other)==larger;
     }
     
-    shared Boolean lessThan(Other other) {
+    shared Boolean smallerThan(Other other) {
         return compare(other)==smaller;
     }
     
