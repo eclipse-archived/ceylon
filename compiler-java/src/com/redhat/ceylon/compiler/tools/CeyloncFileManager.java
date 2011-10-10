@@ -48,10 +48,21 @@ import com.sun.tools.javac.util.Log;
 public class CeyloncFileManager extends JavacFileManager implements StandardJavaFileManager {
     private Module currentModule;
     private JarOutputRepositoryManager jarRepository;
+    private Context context;
 
     public CeyloncFileManager(Context context, boolean register, Charset charset) {
         super(context, register, charset);
         jarRepository = new JarOutputRepositoryManager(Log.instance(context));
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    @Override
+    public void setContext(Context context) {
+        this.context = context;
+        super.setContext(context);
     }
 
     protected JavaFileObject.Kind getKind(String extension) {

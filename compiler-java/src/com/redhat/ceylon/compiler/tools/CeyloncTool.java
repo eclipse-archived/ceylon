@@ -44,10 +44,10 @@ import com.sun.tools.javac.util.JavacFileManager;
 import com.sun.tools.javac.util.Log;
 
 public class CeyloncTool extends JavacTool implements JavaCompiler {
-    Context context = new Context();
 
     @Override
     public JavacFileManager getStandardFileManager(DiagnosticListener<? super JavaFileObject> diagnosticListener, Locale locale, Charset charset) {
+        Context context = new Context();
         if (diagnosticListener != null)
             context.put(DiagnosticListener.class, diagnosticListener);
         return new CeyloncFileManager(context, true, charset);
@@ -72,6 +72,10 @@ public class CeyloncTool extends JavacTool implements JavaCompiler {
             }
         }
 
+        if (fileManager == null)
+            fileManager = getStandardFileManager(diagnosticListener, null, null);
+
+        Context context = ((CeyloncFileManager) fileManager).getContext();
         if (diagnosticListener != null && context.get(DiagnosticListener.class) == null)
             context.put(DiagnosticListener.class, diagnosticListener);
 
@@ -82,8 +86,6 @@ public class CeyloncTool extends JavacTool implements JavaCompiler {
                 context.put(Log.outKey, new PrintWriter(out, true));
         }
 
-        if (fileManager == null)
-            fileManager = getStandardFileManager(diagnosticListener, null, null);
         context.put(JavaFileManager.class, fileManager);
         processOptions(context, fileManager, options);
         Main compiler = new Main("javacTask", context.get(Log.outKey));
