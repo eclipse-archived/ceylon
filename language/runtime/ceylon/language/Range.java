@@ -57,13 +57,15 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
     }
 
     @Override
-    public final Natural getSize(){
-        return Natural.instance(size);
+    @TypeInfo("ceylon.language.Natural")
+    public final long getSize(){
+        return size;
     }
 
     @Override
-    public final Natural getLastIndex(){
-        return Natural.instance(getSize().longValue() - 1);
+    @TypeInfo("ceylon.language.Natural")
+    public final long getLastIndex(){
+        return size - 1;
     }
 
     @Override

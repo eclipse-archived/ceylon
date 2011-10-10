@@ -38,7 +38,8 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
             this.keys = keys;
             this.$this = $this;
         }
-        public final Natural getLastIndex() {
+        @TypeInfo("ceylon.language.Natural")
+        public final long getLastIndex() {
             return keys.getLastIndex();
         }
         @TypeInfo("Item|ceylon.language.Nothing")
@@ -85,7 +86,8 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
             return Sequence$impl.getEmpty(this);
         }
         @Override
-        public Natural getSize() {
+        @TypeInfo("ceylon.language.Natural")
+        public long getSize() {
             return Sequence$impl.getSize(this);
         }
         @Override

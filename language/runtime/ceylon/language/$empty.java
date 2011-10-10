@@ -2,6 +2,7 @@ package ceylon.language;
 
 import com.redhat.ceylon.compiler.metadata.java.Attribute;
 import com.redhat.ceylon.compiler.metadata.java.Ceylon;
+import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 @Ceylon @Attribute
 public class $empty {
@@ -33,8 +34,9 @@ public class $empty {
         }
 
         @Override
-        public Natural getSize() {
-            return Empty$impl.getSize(this);
+        @TypeInfo("ceylon.language.Natural")
+        public long getSize() {
+            return Empty$impl.getSize(this).longValue();
         }
 
         @Override

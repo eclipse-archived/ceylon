@@ -14,7 +14,8 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
     extends Correspondence<Natural, Element>, Iterable<Element>, 
         Sized, Cloneable<Sequence<Element>> {
     
-    public Natural getLastIndex();
+    @TypeInfo("ceylon.language.Natural")
+    public long getLastIndex();
     
     public Element getFirst();
     
@@ -23,7 +24,8 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
     
     public boolean getEmpty();
     
-    public Natural getSize();
+    @TypeInfo("ceylon.language.Natural")
+    public long getSize();
     
     public Element getLast();
     

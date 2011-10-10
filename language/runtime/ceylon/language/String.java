@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
+
 
 public final class String extends Object 
 implements Comparable<String>, Iterable<Character>, 
@@ -94,8 +96,9 @@ implements Comparable<String>, Iterable<Character>,
     }
 
     @Override
-    public Natural getSize() {
-        return Natural.instance(value.length());
+    @TypeInfo("ceylon.language.Natural")
+    public long getSize() {
+        return value.length();
     }
 
     @Override

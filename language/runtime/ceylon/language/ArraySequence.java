@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
+
 public class ArraySequence<Element> implements Sequence<Element> {
 
 	private final Element[] array;
@@ -16,13 +18,14 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
 	@Override
-	public Natural getLastIndex() {
-		return (getEmpty() == true) ? null : Natural.instance(array.length - first - 1);
+    @TypeInfo("ceylon.language.Natural")
+	public long getLastIndex() {
+		return getEmpty() ? null : array.length - first - 1;
 	}
 
 	@Override
 	public Element getFirst() {
-		return (getEmpty() == true) ? null : array[(int) first];
+		return getEmpty() ? null : array[(int) first];
 	}
 
 	@Override
@@ -36,13 +39,14 @@ public class ArraySequence<Element> implements Sequence<Element> {
 	}
 
 	@Override
-	public Natural getSize() {
-		return Natural.instance((getEmpty() == true) ? 0 : array.length - first);
+    @TypeInfo("ceylon.language.Natural")
+	public long getSize() {
+		return getEmpty() ? 0 : array.length - first;
 	}
 
 	@Override
 	public Element getLast() {
-		return (getEmpty() == true) ? null : array[array.length - 1];
+		return getEmpty() ? null : array[array.length - 1];
 	}
 
 	@Override
@@ -77,7 +81,8 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
 	@Override
 	public Element item(Natural key) {
-		return key.longValue() >= getSize().longValue() ? null : array[(int) (key.longValue() - first)];
+		return key.longValue() >= getSize() ? 
+		        null : array[(int) (key.longValue() - first)];
 	}
 
 	@Override

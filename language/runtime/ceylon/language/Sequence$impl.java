@@ -6,12 +6,12 @@ public class Sequence$impl {
         return false;
     }
 
-    public static <Element> Natural getSize(Sequence<Element> $this){
-        return Natural.instance($this.getLastIndex().longValue()+1);
+    public static <Element> long getSize(Sequence<Element> $this){
+        return $this.getLastIndex()+1;
     }
 
     public static <Element> Element getLast(Sequence<Element> $this){
-        Element x = $this.item($this.getLastIndex());
+        Element x = $this.item(Natural.instance($this.getLastIndex()));
         if (x != null) {
             return x;
         }
@@ -21,7 +21,7 @@ public class Sequence$impl {
     }
 
     public static <Element> boolean defines(Sequence<Element> $this, Natural index){
-        return index.longValue() <= $this.getLastIndex().longValue();
+        return index.longValue() <= $this.getLastIndex();
     }
 
     public static <Element> Iterator<Element> getIterator(Sequence<Element> $this){
