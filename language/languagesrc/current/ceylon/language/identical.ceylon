@@ -1,5 +1,4 @@
-doc "Return |True| if |x| and |y| are identical."
+doc "Determine if the arguments are identical."
 shared Boolean identical(IdentifiableObject x, IdentifiableObject y) {
-    //FIXME implement
-    return false;
+    return x==y;
 }
