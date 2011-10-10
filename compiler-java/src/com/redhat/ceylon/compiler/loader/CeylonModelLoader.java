@@ -489,7 +489,6 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         System.err.println("Trying to look up module from "+moduleClassName);
         ClassSymbol moduleClass = null;
         try{
-//            moduleClass = reader.loadClass(names.fromString(moduleClassName));
             PackageSymbol javaPkg = reader.enterPackage(names.fromString(pkgName));
             javaPkg.complete();
             moduleClass = lookupClassSymbol(moduleClassName);
@@ -526,9 +525,9 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         module.setName(Arrays.asList(name.split("\\.")));
         module.setVersion(version);
         module.setAvailable(true);
-        // TODO : Ajouter la récupération des dépendances
-        // Pour chaque dépendance créer un module qui n'est pas available
-        // l'ajouter dans les dépendances
+        // TODO : Here we should also retrieve dependencies annotations
+        // And for each dependency annotation, add it as a dummy module in
+        // the currently-loaded module
         
         Modules modules = ceylonContext.getModules();
         modules.getListOfModules().add(module);
