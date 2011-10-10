@@ -73,7 +73,7 @@ shared class RangeTest() extends Test() {
 		Range<Natural> anotherOneToTen = Range(1, 10);		
 		Range<Natural> tenToOne = Range(10, 1);
 		assertEquals(oneToTen, anotherOneToTen);
-		assertFalse(oneToTen.equals(tenToOne));
+		assertFalse(oneToTen == tenToOne);
 	}
 	
 	@test

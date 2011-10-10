@@ -2,7 +2,6 @@ shared class CaseTest() extends Test() {
 
 	class Color (String name) extends Case(name) {}
 
-
 	@test
 	shared void testString() {
 		Color red = Color("red");	
@@ -14,10 +13,9 @@ shared class CaseTest() extends Test() {
 		Color red = Color("red");
 		Color anotherRed = Color("red");
 		Color yellow =  Color("yellow");		
-		assertFalse(yellow.equals(red));
-		assertTrue(yellow.equals(yellow));
-		// should be false ???
-		assertFalse(red.equals(anotherRed));		
+		assertFalse(yellow == red);
+		assertTrue(yellow == yellow);		
+		assertFalse(red == anotherRed);		
 	}
 	
 	@test
