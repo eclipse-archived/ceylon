@@ -12,7 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.lang.model.type.TypeKind;
 import javax.tools.JavaFileObject.Kind;
 
@@ -531,10 +530,33 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         Module module = new Module();
         module.setName(Arrays.asList(name.split("\\.")));
         module.setVersion(version);
+
+        List<Attribute> imports = getAnnotationArrayValue(moduleClass, symtab.ceylonAtModuleType, "dependencies").getValue();
+        for (Attribute i : imports)
+        {
+            Attribute.Compound importAttribute = (Attribute.Compound) i.getValue();
+            Attribute nameAttribute = importAttribute.member(Name.fromString(names, "name"));
+            if (nameAttribute != null)
+            {
+                String dependencyName = (String) nameAttribute.getValue();
+                if (! dependencyName.equals("java"))
+                {
+                    Module dependency = new Module();
+                    dependency.setName(Arrays.asList(dependencyName.split("\\.")));
+                    
+                    Attribute versionAttribute = importAttribute.member(Name.fromString(names, "version"));
+                    if (versionAttribute != null)
+                    {
+                        String dependencyVersion = (String) versionAttribute.getValue();
+                        dependency.setVersion(dependencyVersion);
+                    }
+                    module.getDependencies().add(dependency);
+                    ceylonContext.getModules().getListOfModules().add(dependency);
+                }
+            }
+        }
+        
         module.setAvailable(true);
-        // TODO : Here we should also retrieve dependencies annotations
-        // And for each dependency annotation, add it as a dummy module in
-        // the currently-loaded module
         
         Modules modules = ceylonContext.getModules();
         modules.getListOfModules().add(module);
@@ -939,6 +961,10 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 return annotation;
         }
         return null;
+    }
+
+    private Array getAnnotationArrayValue(Symbol symbol, Type type, String field) {
+        return (Array) getAnnotationValue(symbol, type, field);
     }
 
     private Array getAnnotationArrayValue(Symbol symbol, Type type) {
