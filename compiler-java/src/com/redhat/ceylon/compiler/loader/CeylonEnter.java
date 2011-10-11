@@ -128,7 +128,6 @@ public class CeylonEnter extends Enter {
         // load the standard modules
         modelLoader.loadStandardModules();
         // load the modules we are compiling first
-        loadCompiledModules();
         hasRun = true;
         // make sure we don't load the files we are compiling from their class files
         modelLoader.setupSourceFileObjects(trees);
@@ -212,98 +211,7 @@ public class CeylonEnter extends Enter {
         }
     }
 
-    private void loadCompiledModules() {
-        final java.util.List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
-        // FIXME: handle loading modules from compiled class
-        for (PhasedUnit pu : listOfUnits) {
-            pu.buildModuleImport();
-        }
-        Modules modules = ceylonContext.getModules();
-        // at this point every module should be available
-        for(Module m : modules.getListOfModules()){
-            m.setAvailable(true);
-        }
-        // now make sure the phase units have their modules and packages set correctly
-        for (PhasedUnit pu : listOfUnits) {
-            Package pkg = pu.getPackage();
-            // skip it if we already resolved the package
-            if(pkg.getModule() != null)
-                continue;
-            String pkgName = pkg.getQualifiedNameString();
-            Module module = null;
-            // do we have a module for this package?
-            // FIXME: is this true? what if we have a module.ceylon at toplevel?
-            if(pkgName.isEmpty())
-                module = modules.getDefaultModule();
-            else{
-                for(Module m : modules.getListOfModules()){
-                    if(pkgName.startsWith(m.getNameAsString())){
-                        module = m;
-                        break;
-                    }
-                }
-                if(module == null){
-                    module = loadModuleFromSource(pkgName);
-                }
-                if(module == null){
-                    // no declaration for it, must be the default module
-                    module = modules.getDefaultModule();
-                }
-            }
-            // bind module and package together
-            pkg.setModule(module);
-            module.getPackages().add(pkg);
-            // automatically add this module's jar to the classpath if it exists
-            addModuleToClassPath(module);
-        }
-    }
-
-    private Module loadModuleFromSource(String pkgName) {
-        if(pkgName.isEmpty())
-            return null;
-        String moduleClassName = pkgName + ".module";
-        JavaFileObject fileObject;
-        try {
-            System.err.println("Trying to load module "+moduleClassName);
-            fileObject = fileManager.getJavaFileForInput(StandardLocation.SOURCE_PATH, moduleClassName, Kind.SOURCE);
-            System.err.println("Got file object: "+fileObject);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return loadModuleFromSource(getParentPackage(pkgName));
-        }
-        if(fileObject != null){
-            CeylonCompilationUnit ceylonCompilationUnit = (CeylonCompilationUnit) compiler.parse(fileObject);
-            // parse the module info from there
-            ceylonCompilationUnit.phasedUnit.buildModuleImport();
-            // now try to obtain the parsed module
-            Module module = getModule(pkgName);
-            if(module != null){
-                ceylonCompilationUnit.phasedUnit.getPackage().setModule(module);
-                module.setAvailable(true);
-                return module;
-            }
-        }
-        return loadModuleFromSource(getParentPackage(pkgName));
-    }
-
-    private String getParentPackage(String pkgName) {
-        int lastDot = pkgName.lastIndexOf(".");
-        if(lastDot == -1)
-            return "";
-        return pkgName.substring(0, lastDot);
-    }
-
-    private Module getModule(String pkgName) {
-        Modules modules = ceylonContext.getModules();
-        for(Module m : modules.getListOfModules()){
-            if(pkgName.equals(m.getNameAsString())){
-                return m;
-            }
-        }
-        return null;
-    }
-
-    private void addModuleToClassPath(Module module) {
+    public void addModuleToClassPath(Module module) {
         Paths.Path classPath = paths.getPathForLocation(StandardLocation.CLASS_PATH);
         Iterable<? extends File> location = fileManager.getLocation(StandardLocation.CLASS_OUTPUT);
         File classDir = location.iterator().next();

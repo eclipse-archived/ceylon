@@ -27,16 +27,19 @@ package com.redhat.ceylon.compiler.tools;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.Queue;
 
 import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
+import javax.tools.JavaFileObject.Kind;
 
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.codegen.CeylonClassWriter;
+import com.redhat.ceylon.compiler.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.codegen.CeylonTransformer;
 import com.redhat.ceylon.compiler.loader.CeylonEnter;
@@ -47,6 +50,9 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Modules;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
 import com.redhat.ceylon.compiler.typechecker.parser.LexError;
@@ -223,6 +229,109 @@ public class LanguageCompiler extends JavaCompiler {
         JCCompilationUnit result = make.TopLevel(List.<JCAnnotation> nil(), null, List.<JCTree> of(make.Erroneous()));
         result.sourcefile = filename;
         return result;
+    }
+
+    @Override
+    public List<JCCompilationUnit> parseFiles(List<JavaFileObject> fileObjects)
+            throws IOException {
+        List<JCCompilationUnit> trees = super.parseFiles(fileObjects);
+        LinkedList<JCCompilationUnit> moduleTrees = new LinkedList<JCCompilationUnit>();
+        loadCompiledModules(moduleTrees);
+        for (JCCompilationUnit moduleTree : moduleTrees) {
+            trees = trees.append(moduleTree);
+        }
+        return trees;
+    }
+
+    private void loadCompiledModules(LinkedList<JCCompilationUnit> moduleTrees) {
+        final java.util.List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
+        for (PhasedUnit pu : listOfUnits) {
+            pu.buildModuleImport();
+        }
+        Modules modules = ceylonContext.getModules();
+        // at this point every module should be available
+        for(Module m : modules.getListOfModules()){
+            m.setAvailable(true);
+        }
+        // now make sure the phase units have their modules and packages set correctly
+        for (PhasedUnit pu : listOfUnits) {
+            Package pkg = pu.getPackage();
+            // skip it if we already resolved the package
+            if(pkg.getModule() != null)
+                continue;
+            String pkgName = pkg.getQualifiedNameString();
+            Module module = null;
+            // do we have a module for this package?
+            // FIXME: is this true? what if we have a module.ceylon at toplevel?
+            if(pkgName.isEmpty())
+                module = modules.getDefaultModule();
+            else{
+                for(Module m : modules.getListOfModules()){
+                    if(pkgName.startsWith(m.getNameAsString())){
+                        module = m;
+                        break;
+                    }
+                }
+                if(module == null){
+                    module = loadModuleFromSource(pkgName, moduleTrees);
+                }
+                if(module == null){
+                    // no declaration for it, must be the default module
+                    module = modules.getDefaultModule();
+                }
+            }
+            // bind module and package together
+            pkg.setModule(module);
+            module.getPackages().add(pkg);
+            // automatically add this module's jar to the classpath if it exists
+            ceylonEnter.addModuleToClassPath(module);
+        }
+    }
+
+    private Module loadModuleFromSource(String pkgName, LinkedList<JCCompilationUnit> moduleTrees) {
+        if(pkgName.isEmpty())
+            return null;
+        String moduleClassName = pkgName + ".module";
+        JavaFileObject fileObject;
+        try {
+            System.err.println("Trying to load module "+moduleClassName);
+            fileObject = fileManager.getJavaFileForInput(StandardLocation.SOURCE_PATH, moduleClassName, Kind.SOURCE);
+            System.err.println("Got file object: "+fileObject);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return loadModuleFromSource(getParentPackage(pkgName), moduleTrees);
+        }
+        if(fileObject != null){
+            CeylonCompilationUnit ceylonCompilationUnit = (CeylonCompilationUnit) parse(fileObject);
+            moduleTrees.add(ceylonCompilationUnit);
+            // parse the module info from there
+            ceylonCompilationUnit.phasedUnit.buildModuleImport();
+            // now try to obtain the parsed module
+            Module module = getModule(pkgName);
+            if(module != null){
+                ceylonCompilationUnit.phasedUnit.getPackage().setModule(module);
+                module.setAvailable(true);
+                return module;
+            }
+        }
+        return loadModuleFromSource(getParentPackage(pkgName), moduleTrees);
+    }
+
+    private String getParentPackage(String pkgName) {
+        int lastDot = pkgName.lastIndexOf(".");
+        if(lastDot == -1)
+            return "";
+        return pkgName.substring(0, lastDot);
+    }
+
+    private Module getModule(String pkgName) {
+        Modules modules = ceylonContext.getModules();
+        for(Module m : modules.getListOfModules()){
+            if(pkgName.equals(m.getNameAsString())){
+                return m;
+            }
+        }
+        return null;
     }
 
     // FIXME: this function is terrible, possibly refactor it with getPackage?
