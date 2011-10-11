@@ -6,10 +6,10 @@ import com.redhat.ceylon.compiler.metadata.java.Name;
 
 @Ceylon
 @Method
-public final class doc
+public final class by
 {
-    public static Nothing doc(@Name("description") java.lang.String description) {
+    public static Nothing by(@Name("authors") java.lang.String... authors) {
         return null;
     }
-    private doc(){}
+    private by(){}
 }
