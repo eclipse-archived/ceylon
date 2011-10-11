@@ -1,6 +1,6 @@
 package ceylon.language;
 
-public abstract class Case extends IdentifiableObject {
+public abstract class Case {
     private final java.lang.String string;
     
     public Case(java.lang.String caseName){
