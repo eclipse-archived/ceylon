@@ -143,9 +143,16 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         nullCheck(kind);
         if (!sourceOrClass.contains(kind))
             throw new IllegalArgumentException("Invalid kind " + kind);
-        return getFileForInput(location, externalizeFileName(className, kind));
+        String fileName = externalizeFileName(className, kind);
+        JavaFileObject file = getFileForInput(location, fileName);
+        if (fileName.endsWith(".ceylon")) {
+            return new CeylonFileObject(file);
+        } else {
+            return file;
+        }
+
     }
-    
+
     private String externalizeFileName(String className, JavaFileObject.Kind kind){
         String extension;
         if(kind == Kind.SOURCE)
