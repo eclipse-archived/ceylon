@@ -686,7 +686,7 @@
         Type inference is not supported for <literal>shared</literal> declarations which may 
         be accessed from outside the body containing the declaration, or for declarations
         which are referred to by statements or declarations that occur earlier in the body
-        containing of the declation.</para>
+        containing of the declaration.</para>
         
         <!--
         <comment><para>TODO: Should we let you leave off the type arguments in the type
