@@ -1,13 +1,20 @@
-shared interface Ordinal<out Other>
+doc "Abstraction of ordinal types, that is, types with 
+     successor and predecessor operations, including
+     Natural, Integer, and other Integral numeric types.
+     Character is also considered an ordinal type. Ordinal 
+     types may be used to generate a Range."
+see (Character, Natural, Integer, Integral, Range)
+by "Gavin"
+shared interface Ordinal<out Other> of Other
         satisfies Equality 
         given Other satisfies Ordinal<Other> {
 
-    doc "The unary |++| operator. The successor of this instance."
+    doc "The successor of this value."
     throws (OutOfRangeException
             -> "if this is the maximum value")
     shared formal Other successor;
     
-    doc "The unary |--| operator. The predecessor of this instance."
+    doc "The predecessor of this value."
     throws (OutOfRangeException
             -> "if this is the minimum value")
     shared formal Other predecessor;

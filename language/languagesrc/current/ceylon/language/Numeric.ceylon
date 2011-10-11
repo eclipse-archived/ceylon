@@ -1,35 +1,44 @@
+doc "Abstraction of numeric types supporting addition,
+     subtraction, multiplication, and division, including
+     Natural, Integer, and Float. Additionally, a numeric
+     type is expected to define a total order via an 
+     implementation of Comparable."
+see (Natural, Integer, Float)
+by "Gavin"
 shared interface Numeric<Other> of Other
         satisfies Number & Comparable<Other> & 
                   Summable<Other>
         given Other satisfies Numeric<Other> {
 
-    doc "The binary |-| operator"
-    shared formal Other minus(Other number);
+    doc "The difference between this number and the given 
+         number."
+    shared formal Other minus(Other other);
 
-    doc "The binary |*| operator"
-    shared formal Other times(Other number);
+    doc "The product of this number and the given number."
+    shared formal Other times(Other other);
 
-    doc "The binary |/| operator"
-    shared formal Other divided(Other number);
+    doc "The quotient obtained by dividing this number by 
+         the given number. For integral numeric types, this 
+         operation results in a remainder."
+    see (Integral)
+    shared formal Other divided(Other other);
 
-    doc "The binary |**| operator"
-    shared formal Other power(Other number);
+    doc "The result of raising this number to the given
+         power."
+    shared formal Other power(Other other);
     
-    doc "The magnitude of the number"
+    doc "The magnitude of this number."
     shared actual formal Other magnitude;
-    
-    doc "1 if the number is positive, -1 if it
-         is negative, or 0 if it is zero."
-    shared actual formal Other sign;
-    
-    doc "The fractional part of the number,
-         after truncation of the integral
-         part"
+        
+    doc "The fractional part of the number, after truncation 
+         of the integral part. For integral numeric types,
+         the fractional part is always zero."
     shared actual formal Other fractionalPart;
     
-    doc "The integral value of the number 
-         after truncation of the fractional
-         part"
+    doc "The integral value of the number after truncation 
+         of the fractional part. For integral numeric types,
+         the integral value of a number is the number 
+         itself."
     shared actual formal Other wholePart;
 
 }
