@@ -1,0 +1,49 @@
+package com.redhat.ceylon.compiler.test.expression.operator;
+
+public class EqualityAndComparisonOperators {
+    private boolean b1;
+    
+    private final boolean getB1() {
+        return this.b1;
+    }
+    
+    private final void setB1(boolean b1) {
+        this.b1 = b1;
+    }
+    private long n1;
+    
+    private final long getN1() {
+        return this.n1;
+    }
+    
+    private final void setN1(long n1) {
+        this.n1 = n1;
+    }
+    private long n2;
+    
+    private final long getN2() {
+        return this.n2;
+    }
+    
+    private final void setN2(long n2) {
+        this.n2 = n2;
+    }
+    
+    private final void equalityAndComparison(final .java.lang.Object o1, final .java.lang.Object o2) {
+        setB1(o1.identical(o2).booleanValue());
+        setB1(.ceylon.language.Natural.instance(getN1()).equals(.ceylon.language.Natural.instance(getN2())));
+        setB1(!.ceylon.language.Natural.instance(getN1()).equals(.ceylon.language.Natural.instance(getN2())));
+        final ceylon.language.Comparison c = .ceylon.language.Natural.instance(getN1()).compare(.ceylon.language.Natural.instance(getN2()));
+        setB1(.ceylon.language.Natural.instance(getN1()).compare(.ceylon.language.Natural.instance(getN2())).smaller());
+        setB1(.ceylon.language.Natural.instance(getN1()).compare(.ceylon.language.Natural.instance(getN2())).larger());
+        setB1(.ceylon.language.Natural.instance(getN1()).compare(.ceylon.language.Natural.instance(getN2())).smallAs());
+        setB1(.ceylon.language.Natural.instance(getN1()).compare(.ceylon.language.Natural.instance(getN2())).largeAs());
+        setB1(.ceylon.language.Natural.instance(getN1()) instanceof .ceylon.language.Natural);
+    }
+    
+    public EqualityAndComparisonOperators() {
+        this.b1 = false;
+        this.n1 = 0L;
+        this.n2 = 0L;
+    }
+}

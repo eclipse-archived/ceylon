@@ -1,0 +1,42 @@
+package com.redhat.ceylon.compiler.test.expression.operator;
+
+public class CreatorOperators {
+    private long n1;
+    
+    private final long getN1() {
+        return this.n1;
+    }
+    
+    private final void setN1(long n1) {
+        this.n1 = n1;
+    }
+    private int i1;
+    
+    private final int getI1() {
+        return this.i1;
+    }
+    
+    private final void setI1(int i1) {
+        this.i1 = i1;
+    }
+    private int i2;
+    
+    private final int getI2() {
+        return this.i2;
+    }
+    
+    private final void setI2(int i2) {
+        this.i2 = i2;
+    }
+    
+    private final void creators() {
+        final ceylon.language.Range<ceylon.language.Integer> r = new ceylon.language.Range<ceylon.language.Integer>(.ceylon.language.Integer.instance(getI1()), .ceylon.language.Integer.instance(getI2()));
+        final ceylon.language.Entry<? extends ceylon.language.Natural, ? extends ceylon.language.Integer> entry = new ceylon.language.Entry<ceylon.language.Natural, ceylon.language.Integer>(.ceylon.language.Natural.instance(getN1()), .ceylon.language.Integer.instance(getI2()));
+    }
+    
+    public CreatorOperators() {
+        this.n1 = 0L;
+        this.i1 = 0;
+        this.i2 = 0;
+    }
+}

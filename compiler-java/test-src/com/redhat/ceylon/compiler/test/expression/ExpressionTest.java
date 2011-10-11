@@ -236,6 +236,39 @@ public class ExpressionTest extends CompilerTest {
     // Operators
     
     @Test
+    public void testOprBasicOperators(){
+        compareWithJavaSource("operator/BasicOperators");
+    }
+    @Test
+    public void testOprEqualityAndComparisonOperators(){
+        compareWithJavaSource("operator/EqualityAndComparisonOperators");
+    }
+    @Test
+    public void testOprLogicalOperators(){
+        compareWithJavaSource("operator/LogicalOperators");
+    }
+    @Test
+    public void testOprNullHandlingOperators(){
+        compareWithJavaSource("operator/NullHandlingOperators");
+    }
+    @Test
+    public void testOprSequenceOperators(){
+        compareWithJavaSource("operator/SequenceOperators");
+    }
+    @Test
+    public void testOprCreatorOperators(){
+        compareWithJavaSource("operator/CreatorOperators");
+    }
+    @Test
+    public void testOprArithmeticOperators(){
+        compareWithJavaSource("operator/ArithmeticOperators");
+    }
+    @Test
+    @Ignore("M2")
+    public void testOprSlotwiseOperators(){
+        compareWithJavaSource("operator/SlotwiseOperators");
+    }
+    @Test
     public void testOprNumericOp(){
         compareWithJavaSource("operator/NumericOp");
     }

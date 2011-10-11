@@ -1,0 +1,35 @@
+package com.redhat.ceylon.compiler.test.expression.operator;
+
+public class LogicalOperators {
+    private boolean b1;
+    
+    private final boolean getB1() {
+        return this.b1;
+    }
+    
+    private final void setB1(boolean b1) {
+        this.b1 = b1;
+    }
+    private boolean b2;
+    
+    private final boolean getB2() {
+        return this.b2;
+    }
+    
+    private final void setB2(boolean b2) {
+        this.b2 = b2;
+    }
+    
+    private final void logical() {
+        setB1(!getB2());
+        setB1(true || getB2());
+        setB1(false && getB2());
+        setB1(getB1() || getB2());
+        setB1(getB1() && getB2());
+    }
+    
+    public LogicalOperators() {
+        this.b1 = false;
+        this.b2 = false;
+    }
+}
