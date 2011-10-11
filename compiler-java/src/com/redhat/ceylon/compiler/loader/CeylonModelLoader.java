@@ -552,6 +552,9 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                     }
                     module.getDependencies().add(dependency);
                     ceylonContext.getModules().getListOfModules().add(dependency);
+                    // The imports are added as dummy packages (with available = false)
+                    // So they will be recursively identified (and replaced by classpath-loaded full modules)
+                    // in the enclosing loop (in CeylonEnter.resolveModuleDependencies())
                 }
             }
         }
