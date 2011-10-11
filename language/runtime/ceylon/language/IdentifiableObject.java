@@ -11,10 +11,10 @@ public abstract class IdentifiableObject extends Object implements Equality {
     }
     
     public int hashCode() {
-        throw new RuntimeException(); //TODO!
+        throw new UnsupportedOperationException();
     }
     
     public java.lang.String toString() {
-        throw new RuntimeException(); //TODO!
+        throw new UnsupportedOperationException();
     }
 }
