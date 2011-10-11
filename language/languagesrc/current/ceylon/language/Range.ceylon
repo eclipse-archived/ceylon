@@ -28,10 +28,10 @@ shared class Range<Element>(Element first, Element last)
     
     Element next(Element x) {
         if (decreasing) {
-            return x.successor;
+            return x.predecessor;
         }
         else {
-            return x.predecessor;
+            return x.successor;
         }
     }
 
