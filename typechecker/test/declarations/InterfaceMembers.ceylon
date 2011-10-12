@@ -19,7 +19,7 @@ interface Interfaces {
     }
     
     String upper(String x) {
-        return x.uppercase;
+        return x.uppercased;
     }
     
     String str {

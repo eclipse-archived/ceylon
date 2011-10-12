@@ -199,7 +199,7 @@
         <para>Note that this code is not legal:</para>
         
         <programlisting>String uppercase(String string) {
-    String string = string.uppercase;  //compiler error!
+    String string = string.uppercased;  //compiler error!
     return string;
 }</programlisting>
 
@@ -214,7 +214,7 @@
         <para>But the following is not legal:</para>
         
         <programlisting>class Person(String name) {
-    shared String name = name.lowercase;
+    shared String name = name.lowercased;
 }</programlisting>
 
         <para>However, an inner body may <emphasis>hide</emphasis> declarations of 
@@ -222,7 +222,7 @@
         
         <programlisting>class Person(String name) {
     shared String lowerCaseName {
-        String name = name.lowercase;
+        String name = name.lowercased;
         return name;
     }
 }</programlisting>

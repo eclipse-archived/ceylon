@@ -140,7 +140,7 @@ interface TypeInference {
         @type["String"] value hw = join {
             value x { return "Hello"; }
             value y { return "Hello"; }
-            function f(String z) { return z.uppercase; }
+            function f(String z) { return z.uppercased; }
         };
         @type["String"] value broken = join {
             value x { return "Hello"; }

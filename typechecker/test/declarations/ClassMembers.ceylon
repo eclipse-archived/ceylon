@@ -21,7 +21,7 @@ abstract class Classes() {
     }
     
     String upper(String x) {
-        return x.uppercase;
+        return x.uppercased;
     }
     
     printLine("Hi!");

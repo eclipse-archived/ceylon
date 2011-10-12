@@ -1839,12 +1839,12 @@ while (i<=max) {
     
     doc "The string, with all characters in lowercase."
     shared String lowercase {
-        return replace() with (Character c) (c.lowercase);
+        return replace() with (Character c) (c.lowercased);
     }
     
     doc "The string, with all characters in uppercase."
     shared String uppercase {
-        return replace() with (Character c) (c.uppercase);
+        return replace() with (Character c) (c.uppercased);
     }
     
     doc "Remove the given characters from the beginning 
@@ -2674,7 +2674,7 @@ while (i<=max) {
 
         <programlisting><![CDATA[void removeSayInterceptor() = person.say.intercept() 
     onInvoke(void proceed(String words), String words) { 
-        proceed(words.uppercase);
+        proceed(words.uppercased);
     };
 ...
 removeSayInterceptor();]]></programlisting>

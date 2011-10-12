@@ -127,7 +127,7 @@ class Operators() {
     @error value x45 = sequence[1.."hello"];
     
     @type["Sequence<Empty|Sequence<Character>>"] value x46 = {"hello", "world"}[].characters;
-    @type["Sequence<String>"] value x47 = {"hello", "world"}[].uppercase;
+    @type["Sequence<String>"] value x47 = {"hello", "world"}[].uppercased;
     @type["Nothing|Empty|Sequence<Character>"] value x48 = {"hello", "world"}[0]?.characters;
     @type["Sequence<Empty|Sequence<Character>>"] value x49 = {"hello", "world"}[].characters;
     @type["Sequence<Iterable<String>>"] value x50 = {"hello", "world"}[].lines();

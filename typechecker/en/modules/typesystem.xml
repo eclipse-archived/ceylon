@@ -2201,10 +2201,10 @@ given Result(Natural count) satisfies Numeric<Result>]]></programlisting>
        given Characters of String | Range<Character> { 
     switch (Characters)
     case (satisfies String) { 
-        return chars.uppercase;
+        return chars.uppercased;
     }
     case (satisfies Range<Character>) { 
-        return chars.first.uppercase..chars.last.uppercase;
+        return chars.first.uppercased..chars.last.uppercased;
     }
 }]]></programlisting>
 
@@ -2218,7 +2218,7 @@ given Result(Natural count) satisfies Numeric<Result>]]></programlisting>
         
         <programlisting><![CDATA[Result create<Result>(Object object) 
         given Result(String s) { 
-    return Result(object.string.lowercase);
+    return Result(object.string.lowercased);
 }]]></programlisting>
 
     </section>
