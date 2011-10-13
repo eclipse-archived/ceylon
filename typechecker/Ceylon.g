@@ -2147,7 +2147,15 @@ controlStatement returns [ControlStatement controlStatement]
     | tryCatchFinally
       { $controlStatement=$tryCatchFinally.statement; }
     ;
-    
+
+controlBlock returns [Block block]
+    : ( (LBRACE)=> b=block
+        { $block=$b.block; }
+      | { displayRecognitionError(getTokenNames(), 
+                new MismatchedTokenException(LBRACE, input)); }
+      )
+    ;
+
 ifElse returns [IfStatement statement]
     : { $statement=new IfStatement(null); }
       ifBlock 
@@ -2164,8 +2172,8 @@ ifBlock returns [IfClause clause]
       { $clause = new IfClause($IF_CLAUSE); }
       condition
       { $clause.setCondition($condition.condition); }
-      block
-      { $clause.setBlock($block.block); }
+      controlBlock
+      { $clause.setBlock($controlBlock.block); }
     ;
 
 elseBlock returns [ElseClause clause]
@@ -2284,8 +2292,8 @@ forBlock returns [ForClause clause]
       { $clause = new ForClause($FOR_CLAUSE); }
       forIterator 
       { $clause.setForIterator($forIterator.iterator); }
-      block
-      { $clause.setBlock($block.block); }
+      controlBlock
+      { $clause.setBlock($controlBlock.block); }
     ;
 
 failBlock returns [ElseClause clause]
@@ -2347,8 +2355,8 @@ whileBlock returns [WhileClause clause]
       { $clause = new WhileClause($WHILE_CLAUSE); }
       condition 
       { $clause.setCondition($condition.condition); }
-      block
-      { $clause.setBlock($block.block); }
+      controlBlock
+      { $clause.setBlock($controlBlock.block); }
     ;
 
 tryCatchFinally returns [TryCatchStatement statement]
@@ -2372,9 +2380,12 @@ tryBlock returns [TryClause clause]
       (
         resource
         { $clause.setResource($resource.resource); }
-      )? 
-      block
-      { $clause.setBlock($block.block); }
+        controlBlock
+        { $clause.setBlock($controlBlock.block); }
+      |
+        block
+        { $clause.setBlock($block.block); }
+      )
     ;
 
 catchBlock returns [CatchClause clause]
