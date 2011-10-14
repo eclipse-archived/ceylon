@@ -1,4 +1,4 @@
-doc "A UTF-?? character."
+doc "A UTF-16 character."
 see (String)
 by "Gavin"
 shared abstract class Character()
@@ -11,6 +11,9 @@ shared abstract class Character()
     doc "The uppercase representation of this character."
     shared formal Character uppercased;
 
+    doc "The title case representation of this character."
+    shared formal Character titlecased;
+
     doc "Determine if this is a lowercase representation of
          the character."
     shared formal Boolean lowercase;
@@ -19,6 +22,10 @@ shared abstract class Character()
          the character."
     shared formal Boolean uppercase;
     
+    doc "Determine if this is a title case representation of
+         the character."
+    shared formal Boolean titlecase;
+
     doc "Determine if this character is a numeric digit."
     shared formal Boolean digit;
 
@@ -28,5 +35,15 @@ shared abstract class Character()
     doc "Determine if this character is a whitespace 
          character."
     shared formal Boolean whitespace;
+    
+    doc "Determine if this character is an ISO control 
+         character."
+    shared formal Boolean control;
+
+    /*doc "The general category of the character"
+    shared formal CharacterCategory category;*/
+
+    /*doc "The directionality of the character"
+    shared formal CharacterDirectionality directionality;*/
 
 }
