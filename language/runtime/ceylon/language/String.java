@@ -136,11 +136,15 @@ implements Comparable<String>, Iterable<Character>,
 
     @Override
     public boolean definesEvery(Iterable<? extends Natural> keys) {
+        //TODO: inefficient ... better to cache the result
+        //      of getSize()
         return Correspondence$impl.definesEvery(this, keys);
     }
 
     @Override
     public boolean definesAny(Iterable<? extends Natural> keys) {
+        //TODO: inefficient ... better to cache the result
+        //      of getSize()
         return Correspondence$impl.definesAny(this, keys);
     }
 
