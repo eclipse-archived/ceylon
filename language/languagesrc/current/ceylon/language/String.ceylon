@@ -20,7 +20,7 @@ shared abstract class String()
     shared formal Iterable<String> split(
             Iterable<Character> separators,
             Boolean discardSeparators=false);
-
+    
     doc "Join the given strings, using this string as a 
          separator."
     shared formal String join(String... strings);
