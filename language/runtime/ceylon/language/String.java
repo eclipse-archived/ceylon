@@ -7,6 +7,7 @@ public final class String extends Object
 implements Comparable<String>, Iterable<Character>, 
            Correspondence<Natural,Character>, Format,
            Sized, Summable<String>, Castable<String> {
+    
     public final java.lang.String value;
 
     private String(java.lang.String s) {
@@ -21,11 +22,11 @@ implements Comparable<String>, Iterable<Character>,
         return new ceylon.language.String(s);
     }
 
-    public java.lang.String getUppercase() {
+    public java.lang.String getUppercased() {
         return value.toUpperCase();
     }
 
-    public java.lang.String getLowercase() {
+    public java.lang.String getLowercased() {
         return value.toLowerCase();
     }
 
@@ -67,27 +68,27 @@ implements Comparable<String>, Iterable<Character>,
 
     @Override
     public boolean largerThan(String other) {
-        return value.length() > other.value.length();
+        return value.compareTo(other.value) > 0;
     }
 
     @Override
     public boolean smallerThan(String other) {
-        return value.length() < other.value.length();
+        return value.compareTo(other.value) < 0;
     }
 
     @Override
     public boolean asLargeAs(String other) {
-        return value.length() >= other.value.length();
+        return value.compareTo(other.value) >= 0;
     }
 
     @Override
     public boolean asSmallAs(String other) {
-        return value.length() <= other.value.length();
+        return value.compareTo(other.value) <= 0;
     }
 
     @Override
     public <CastValue extends String> CastValue castTo() {
-        return (CastValue)this;
+        return (CastValue) this;
     }
 
     @Override
@@ -98,7 +99,8 @@ implements Comparable<String>, Iterable<Character>,
     @Override
     @TypeInfo("ceylon.language.Natural")
     public long getSize() {
-        return value.length();
+        //TODO: should we cache this value in an instvar?
+        return value.codePointCount(0, value.length()-1);
     }
 
     @Override
@@ -108,12 +110,23 @@ implements Comparable<String>, Iterable<Character>,
 
     @Override
     public Character item(Natural key) {
-        return Character.instance(value.charAt(key.intValue()));
+        int index = key.intValue();
+        int length = value.length();
+        if (index < 0 || index >= length)
+            return null;
+        for (int offset = 0, i = 0; offset <= length; i++) {
+           int codePoint = value.codePointAt(offset);
+           if (i==index)
+               return new Character(codePoint);
+           offset += java.lang.Character.charCount(codePoint);
+        }
+        return null;
     }
 
     @Override
     public boolean defines(Natural key) {
-        return key.intValue() >= 0 && key.intValue() < value.length();
+        int index = key.intValue();
+        return index >= 0 && index < getSize();
     }
 
     @Override
@@ -136,22 +149,28 @@ implements Comparable<String>, Iterable<Character>,
         return Correspondence$impl.items(this, keys);
     }
 
-    class StringIterator implements Iterator<Character>{
+    class StringIterator implements Iterator<Character> {
 
-        private int index;
+        private final int offset;
+        private final int codePoint;
 
-        StringIterator(int index){
-            this.index = index;
+        StringIterator(int offset){
+            this.offset = offset;
+            codePoint = offset < value.length() ? 
+                    value.codePointAt(offset) : -1;
         }
         
         @Override
         public Character getHead() {
-            return item(Natural.instance(index));
+            return codePoint==-1 ? 
+                    null : new Character(codePoint);
         }
 
         @Override
         public Iterator<Character> getTail() {
-            return new StringIterator(index+1);
+            return codePoint==-1 ? 
+                    this : new StringIterator(offset +
+                            java.lang.Character.charCount(codePoint));
         }
         
     }
@@ -164,6 +183,17 @@ implements Comparable<String>, Iterable<Character>,
     @Override
     public Character getFirst() {
         return Iterable$impl.getFirst(this);
+    }
+    
+    public Sequence<? extends Character> getCharacters() {
+        Character[] chars = new Character[(int)getSize()];
+        int length = value.length();
+        for (int offset = 0, i = 0; offset < length; i++) {
+           int codePoint = value.codePointAt(offset);
+           chars[i] = new Character(codePoint);
+           offset += java.lang.Character.charCount(codePoint);
+        }
+        return new ArraySequence<Character>(chars);
     }
 
 }

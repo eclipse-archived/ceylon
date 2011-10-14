@@ -1,4 +1,4 @@
-doc "A UTF-16 character."
+doc "A unicode character."
 see (String)
 by "Gavin"
 shared abstract class Character()

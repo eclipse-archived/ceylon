@@ -2,63 +2,63 @@ package ceylon.language;
 
 public final class Character extends Object
 {
-    public final char value;
+    public final int codePoint;
 
-    private Character(char c) {
-        value = c;
+    Character(int codePoint) {
+        this.codePoint = codePoint;
     }
     
     public  boolean getLowercase() {
-        return java.lang.Character.isLowerCase(value);
+        return java.lang.Character.isLowerCase(codePoint);
     }    
     
     public boolean getUppercase(){
-        return java.lang.Character.isUpperCase(value);
+        return java.lang.Character.isUpperCase(codePoint);
     }
     
     public boolean getTitlecase(){
-        return java.lang.Character.isTitleCase(value);
+        return java.lang.Character.isTitleCase(codePoint);
     }
     
     public boolean getDigit(){
-        return java.lang.Character.isDigit(value);
+        return java.lang.Character.isDigit(codePoint);
     }
     
     public boolean getLetter(){
-        return java.lang.Character.isLetter(value);
+        return java.lang.Character.isLetter(codePoint);
     }
     
     public boolean getWhitespace(){
-        return java.lang.Character.isWhitespace(value);
+        return java.lang.Character.isWhitespace(codePoint);
     }       
 
     public boolean getControl(){
-        return java.lang.Character.isISOControl(value);
+        return java.lang.Character.isISOControl(codePoint);
     }       
 
-    public static ceylon.language.Character instance(char c) {
-        return new ceylon.language.Character(c);
+    public static Character instance(char c) {
+        return new Character(c);
     }
 
     public ceylon.language.Character getLowercased() {
-        return instance(java.lang.Character.toLowerCase(value));
+        return new Character(java.lang.Character.toLowerCase(codePoint));
     }
 
     public ceylon.language.Character getUppercased() {
-        return instance(java.lang.Character.toUpperCase(value));
+        return new Character(java.lang.Character.toUpperCase(codePoint));
     }
 
     public ceylon.language.Character getTitlecased() {
-        return instance(java.lang.Character.toTitleCase(value));
+        return new Character(java.lang.Character.toTitleCase(codePoint));
     }
 
     public java.lang.String toString() {
-        return java.lang.Character.toString(value);
+        return java.lang.String.valueOf(java.lang.Character.toChars(codePoint));
     }
 
     @Override
     public int hashCode() {
-        return value;
+        return codePoint;
     }
 
     @Override
@@ -67,7 +67,7 @@ public final class Character extends Object
             return true;
         if (obj instanceof Character) {
             Character other = (Character) obj;
-            return value == other.value;
+            return codePoint == other.codePoint;
         }
         else {
             return false;
