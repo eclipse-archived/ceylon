@@ -122,6 +122,10 @@ shared class Range<Element>(Element first, Element last)
             return x>=first && x<=last;
         }
     }
+    
+    shared Element[] excludingLast {
+        throw; //todo!
+    }
 
     doc "Return a sequence of values in the range, beginning 
          at the first value, and incrementing by a constant 
