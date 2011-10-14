@@ -92,6 +92,21 @@ shared abstract class String()
         return characters[index]; 
     }
     
+    doc "The character indexes at which the given substring
+         occurs within this string. Occurrences do not 
+         overlap."
+    shared formal Iterable<Natural> occurrences(String substring);
+    
+    doc "The first index at which the given substring occurs
+         within this string, or null if the substring does
+         not occur in this string."
+    shared formal Natural? firstOccurrence(String substring);
+    
+    doc "The last index at which the given substring occurs
+         within this string, or null if the substring does
+         not occur in this string."
+    shared formal Natural? lastOccurrence(String substring);
+    
     doc "Determines if the given object is a string and, 
          if so, if it occurs as a substring of this string. 
          That is to say, a string is considered a Category 
