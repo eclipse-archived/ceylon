@@ -73,7 +73,11 @@ shared abstract class String()
     
     doc "The length of the string (the number of characters
          it contains). In the case of the empty string, the
-         string has length zero."
+         string has length zero. Note that this operation is
+         potentially costly for long strings, since the
+         underlying representation of the characters uses a
+         UTF-16 encoding."
+    see (longerThan, shorterThan)
     shared actual Natural size { 
         return characters.size;
     }
@@ -121,6 +125,18 @@ shared abstract class String()
          lexicographically, according to the Unicode values
          of the characters."
     shared actual formal Comparison compare(String other);
+    
+    doc "Determines if this string is longer than the given
+         length. This is a more efficient operation than
+         string.size>length."
+    see (size)
+    shared formal Boolean longerThan(Natural length);
+    
+    doc "Determines if this string is shorter than the given
+         length. This is a more efficient operation than
+         string.size>length."
+    see (size)
+    shared formal Boolean shorterThan(Natural length);
     
     shared actual formal Boolean equals(Equality that);
     
