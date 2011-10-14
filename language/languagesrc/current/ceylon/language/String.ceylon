@@ -9,35 +9,36 @@ shared abstract class String()
     
     shared formal Character[] characters;
     
-    doc "The string, with all characters in lowercase."
+    doc "This string, with all characters in lowercase."
     shared formal String lowercased;
     
-    doc "The string, with all characters in uppercase."
+    doc "This string, with all characters in uppercase."
     shared formal String uppercased;
     
     doc "Split the string into tokens, using the given
          separator characters."
-    shared formal Iterable<String> tokens(
+    shared formal Iterable<String> split(
             Iterable<Character> separators,
             Boolean discardSeparators=false);
 
-    doc "Split the string into lines of text."
-    shared formal Iterable<String> lines;
-
-    doc "Remove whitespace from the beginning and end of the 
-         string."
-    shared formal String trimmed;
-
-    doc "Collapse substrings of the given characters into
-         single space characters."
-    shared formal String normalized;
-    
-    doc "Reverse the order of the characters in the string."
-    shared formal String reversed;
-    
     doc "Join the given strings, using this string as a 
          separator."
     shared formal String join(String... strings);
+    
+    doc "Split the string into lines of text."
+    shared formal Iterable<String> lines;
+
+    doc "This string, after discarding whitespace from the 
+         beginning and end of the string."
+    shared formal String trimmed;
+
+    doc "This string, after collapsing strings of whitespace 
+         into single space characters and discard whitespace 
+         from the beginning and end of the string."
+    shared formal String normalized;
+    
+    doc "This string, with the characters in reverse order."
+    shared formal String reversed;
     
     doc "Select the characters between the given indexes.
          If the start index is larger than the last index
