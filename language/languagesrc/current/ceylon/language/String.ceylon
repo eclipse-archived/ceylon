@@ -41,11 +41,12 @@ shared abstract class String()
     shared formal String reversed;
     
     doc "Select the characters between the given indexes.
-         If the start index is larger than the last index
-         of the string, return the empty string. Otherwise, 
-         if the end index is larger than the last index of 
-         the string, return all characters from the start
-         index to the end of the string."
+         If the start index is larger than the end index, or 
+         larger than the last index of the string, return 
+         the empty string. Otherwise, if the end index is 
+         larger than the last index of the string, return 
+         all characters from the start index to the end of 
+         the string."
     shared formal String span(Natural from, Natural to);
     
     doc "Select the characters of this string beginning at 
