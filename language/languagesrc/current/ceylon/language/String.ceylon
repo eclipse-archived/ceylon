@@ -2,7 +2,7 @@ doc "A string of characters."
 by "Gavin"
 shared abstract class String()
         extends Object()
-        satisfies Comparable<String> & Iterable<Character> &
+        satisfies Comparable<String> & Ordered<Character> &
                   Correspondence<Natural,Character> & Sized & 
                   Category & Summable<String> & Format &
                   Castable<String> {
@@ -116,7 +116,7 @@ shared abstract class String()
          if so, if it occurs as a substring of this string. 
          That is to say, a string is considered a Category 
          of its substrings."
-    shared actual formal Boolean contains(Object element);
+    shared actual formal Boolean contains(Equality element);
     
     doc "Returns the concatenation of this string with the
          given string."

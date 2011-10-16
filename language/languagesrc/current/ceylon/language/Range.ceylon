@@ -6,9 +6,10 @@ doc "Represents the range of totally ordered, ordinal values
      If the two values are equal, the range contains exactly
      one element. The range is always nonempty, containing 
      at least one value."
+by "Gavin"
 shared class Range<Element>(Element first, Element last) 
         extends Object() 
-        satisfies Sequence<Element> & Equality & Category
+        satisfies List<Element> & Equality
         given Element satisfies Ordinal<Element> & 
                                 Comparable<Element> { 
     
@@ -105,7 +106,7 @@ shared class Range<Element>(Element first, Element last)
     }
     
     doc "Determines if the range includes the given object."
-    shared actual Boolean contains(Object element) {
+    shared actual Boolean contains(Equality element) {
         if (is Element element) {
             return includes(element);
         }

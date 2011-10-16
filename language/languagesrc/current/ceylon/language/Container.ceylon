@@ -6,6 +6,7 @@ doc "Abstract supertype of objects which may or may not
      Container does not define a size, since it is possible
      to have a container of infinite or uncomputable size."
 see (Sized, Category)
+by "Gavin"
 shared interface Container {
         
     doc "Determine if the container is empty, that is, if

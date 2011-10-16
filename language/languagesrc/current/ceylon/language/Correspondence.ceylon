@@ -5,6 +5,8 @@ doc "Abstract supertype of objects which associate values
      values, and in other cases, for example maps, it is
      convenient to treat the subtype as a Categoy of its
      entries."
+see (Map)
+by "Gavin"
 shared interface Correspondence<in Key, out Item>
         given Key satisfies Equality {
     
@@ -26,7 +28,7 @@ shared interface Correspondence<in Key, out Item>
     see (defines)
     shared default Category keys {
         object keys satisfies Category {
-            shared actual Boolean contains(Object key) {
+            shared actual Boolean contains(Equality key) {
                 if (is Key key) {
                     return defines(key);
                 }

@@ -11,7 +11,7 @@ object emptyIterator satisfies Iterator<Bottom> {
 
 shared interface Empty
            satisfies Correspondence<Natural, Bottom> & 
-                     Iterable<Bottom> & Sized {
+                     Sized & Ordered<Bottom> {
     
     shared actual Natural size { 
         return 0; 

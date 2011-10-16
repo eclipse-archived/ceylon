@@ -1,10 +1,12 @@
 doc "A nonempty sequence of values. Sequence does not 
      satisfy Category, simply because the contains() 
      operation may be inefficient for some sequences."
+by "Gavin"
+see (List)
 shared interface Sequence<out Element> 
         //is EnumerableSequence<Element>
         satisfies Correspondence<Natural, Element> & 
-                  Iterable<Element> & Sized & 
+                  Sized & Ordered<Element> &
                   Cloneable<Sequence<Element>> {
     
     doc "The index of the last element of the sequence."
