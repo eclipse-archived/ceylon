@@ -3,8 +3,8 @@ by "Gavin"
 shared abstract class String()
         extends Object()
         satisfies Comparable<String> & Iterable<Character> &
-                  Correspondence<Natural,Character> & Format &
-                  Sized & Category & Summable<String> & 
+                  Correspondence<Natural,Character> & Sized & 
+                  Category & Summable<String> & Format &
                   Castable<String> {
     
     shared formal Character[] characters;
@@ -56,7 +56,7 @@ shared abstract class String()
          return a string of the given length. If the start
          index is larger than the last index of the string,
          return the empty string."
-    shared formal String slice(Natural from, Natural length);
+    shared formal String segment(Natural from, Natural length);
     
         doc "Select the first characters of this string, 
          returning a string no longer than the given 

@@ -9,7 +9,8 @@ doc "Represents the range of totally ordered, ordinal values
 shared class Range<Element>(Element first, Element last) 
         extends Object() 
         satisfies Sequence<Element> & Equality & Category
-        given Element satisfies Ordinal<Element> & Comparable<Element> { 
+        given Element satisfies Ordinal<Element> & 
+                                Comparable<Element> { 
     
     doc "The start of the range."
     shared actual Element first = first;

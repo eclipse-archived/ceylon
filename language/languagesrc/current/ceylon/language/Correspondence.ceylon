@@ -1,15 +1,29 @@
+doc "Abstract supertype of objects which associate values 
+     with keys. Correspondence does not satisfy Category,
+     since in some cases, for examples lists, it is 
+     convenient to consider the subtype a Category of its
+     values, and in other cases, for example maps, it is
+     convenient to treat the subtype as a Categoy of its
+     entries."
 shared interface Correspondence<in Key, out Item>
         given Key satisfies Equality {
     
-    doc "Binary lookup operator x[key]. Returns the value defined
-         for the given key, or |null| if there is no value defined
-         for the given key."
+    doc "Returns the value defined for the given key, or 
+         null if there is no value defined for the given 
+         key."
+    see (items)
     shared formal Item? item(Key key);
     
+    doc "Determines if there is a value defined for the 
+         given key."
+    see (definesAny, definesEvery, keys)
     shared default Boolean defines(Key key) {
         return item(key) exists;
     }
     
+    doc "The Category of all keys for which a value is 
+         defined by this Correspondence."
+    see (defines)
     shared default Category keys {
         object keys satisfies Category {
             shared actual Boolean contains(Object key) {
@@ -24,6 +38,9 @@ shared interface Correspondence<in Key, out Item>
         return keys;
     }
     
+    doc "Determines if this Correspondence defines a value
+         for every one of the given keys."
+    see (defines)
     shared default Boolean definesEvery(Key... keys) {
         for (Key key in keys) {
             if (!defines(key)) {
@@ -35,6 +52,9 @@ shared interface Correspondence<in Key, out Item>
         }
     }
     
+    doc "Determines if this Correspondence defines a value
+         for any one of the given keys."
+    see (defines)
     shared default Boolean definesAny(Key... keys) {
         for (Key key in keys) {
             if (defines(key)) {
@@ -46,6 +66,9 @@ shared interface Correspondence<in Key, out Item>
         }
     }
     
+    doc "Returns the items defined for the given keys, in
+         the same order as the corresponding keys."
+    see (item)
     shared default Item?[] items(Key... keys) {
         if (nonempty keys) {
             return Entries(keys.clone);

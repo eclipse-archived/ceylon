@@ -1,23 +1,33 @@
-doc "A nonempty sequence of values"
+doc "A nonempty sequence of values. Sequence does not 
+     satisfy Category, simply because the contains() 
+     operation may be inefficient for some sequences."
 shared interface Sequence<out Element> 
         //is EnumerableSequence<Element>
-        satisfies Correspondence<Natural, Element> & Iterable<Element> & 
-                  Sized & Cloneable<Sequence<Element>> {
+        satisfies Correspondence<Natural, Element> & 
+                  Iterable<Element> & Sized & 
+                  Cloneable<Sequence<Element>> {
     
     doc "The index of the last element of the sequence."
+    see (size)
     shared formal Natural lastIndex;
     
-    doc "The first element of the sequence."
+    doc "The first element of the sequence, that is, the
+         element with index 0."
     shared actual formal Element first;
     
-    doc "The rest of the sequence, without the first
+    doc "The rest of the sequence, without the first 
          element."
     shared formal Element[] rest;
     
+    doc "Returns false, since every Sequence contains at 
+         least one element."
     shared actual Boolean empty {
         return false;
     }
     
+    doc "The number of elements in this sequence, always
+         sequence.lastIndex+1."
+    see (lastIndex)
     shared actual default Natural size {
         return lastIndex+1;
     }
@@ -32,9 +42,19 @@ shared interface Sequence<out Element>
         } 
     }
     
+    doc "Determines if the given index refers to an element
+         of this sequence, that is, if 
+         index<=sequence.lastIndex."
     shared actual default Boolean defines(Natural index) {
         return index<=lastIndex;
     }
+    
+    doc "Returns the element of this sequence with the given
+         index, or null if the given index is past the end
+         of the sequence, that is, if 
+         index>sequence.lastIndex. The first element of the
+         sequence has index 0."
+    shared actual formal Element? item(Natural index);
     
     //this depends on efficient implementation of rest
     /*
@@ -67,6 +87,12 @@ shared interface Sequence<out Element>
             return "SequenceIterator";
         }
     }
+    
+    /*shared formal Sequence<Value> append<Value>(Value... elements)
+            given Value abstracts Element;
+    
+    shared formal Sequence<Value> prepend<Value>(Value... elements)
+            given Value abstracts Element;*/
     
     shared default actual String string {
         return "{ " elementsString " }";
