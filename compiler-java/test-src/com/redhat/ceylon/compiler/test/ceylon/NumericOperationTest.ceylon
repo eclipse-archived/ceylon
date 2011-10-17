@@ -1,4 +1,4 @@
-shared class BooleanTest() extends Test() {
+shared class NumericOperationTest() extends Test() {
 
   @test
   shared void testEqual() {

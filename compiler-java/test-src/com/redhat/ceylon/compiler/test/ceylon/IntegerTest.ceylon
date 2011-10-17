@@ -120,12 +120,84 @@ shared class IntegerTest() extends Test() {
 	@test
 	shared void testMagnitude() {
 		Integer ten = +10;		
-		Integer minustwo = -2;		
+		Integer minusTwo = -2;		
+		Integer minusZero = -0;				
 		Integer theZero = +0;
-				
-		assertEquals(theZero,theZero.magnitude(theZero));
-		
-	}				
+		assertEquals(theZero,theZero.magnitude);
+		assertEquals(theZero,minusZero.magnitude);
+		assertEquals(ten,ten.magnitude);		
+		assertEquals(+2,minusTwo.magnitude);
+		assertEquals(+4,(-4).magnitude);
+		assertEquals(+4,(+4).magnitude);
+	}
 	
+	@test
+	shared void testFractionalPart() {
+		Integer ten = +10;		
+		Integer minusTwo = -2;
+		Integer theZero = +0;
+		assertEquals(theZero,theZero.fractionalPart);
+		assertEquals(theZero,minusTwo.fractionalPart);
+		assertEquals(theZero,ten.fractionalPart);		
+	}
+	
+	@test
+	shared void testWholePart() {
+		Integer ten = +10;		
+		Integer minusTwo = -2;
+		Integer theZero = +0;
+		assertEquals(theZero,theZero.wholePart);
+		assertEquals(minusTwo,minusTwo.wholePart);
+		assertEquals(ten,ten.wholePart);		
+	}	
+	
+	@test
+	shared void testPositive() {
+		Integer ten = +10;		
+		Integer minusTwo = -2;		
+		assertFalse(minusTwo.positive);
+		assertTrue(ten.positive);		
+		assertFalse((+0).positive);
+		assertFalse((-0).positive);
+	}		
+
+	@test
+	shared void testNegative() {
+		Integer ten = +10;		
+		Integer minusTwo = -2;		
+		assertFalse(ten.negative);
+		assertTrue(minusTwo.negative);
+		assertFalse((+0).negative);
+		assertFalse((-0).negative);		
+	}
+	
+	@test
+	shared void testFloat() {
+		Integer ten = +10;
+		Float floatTen = ten.float;			
+	}
+	
+	@test
+	shared void testInteger() {
+		Integer ten = +10;
+		Integer other = ten.integer;
+		assertEquals(ten, other);			
+	}
+	
+	@test
+	shared void testNatural() {
+		Integer ten = +10;
+		Natural other = ten.natural;			
+	}
+	
+	@test
+	shared void testSign() {
+		Integer ten = +10;		
+		Integer minusTwo = -2;
+		Integer theZero = +0;
+		assertEquals(+0, theZero.sign);
+		assertEquals(+1, ten.sign);
+		assertEquals(-1, minusTwo.sign);			
+	}	
 		
 }	  
