@@ -16,7 +16,7 @@ shared object naturals
     
     shared actual Iterator<Natural> iterator = NaturalIterator(0);
 
-    shared actual Natural[] span(Natural from, Natural to) {
+    shared actual Range<Natural> span(Natural from, Natural to) {
         return from..to;
     }
     
