@@ -16,9 +16,11 @@ shared abstract class String()
     shared formal String uppercased;
     
     doc "Split the string into tokens, using the given
-         separator characters."
-    shared formal Iterable<String> split(
-            Iterable<Character> separators,
+         separator characters. If no separator characters
+         are given, split the string at any unicode 
+         whitespace character."
+    shared formal Ordered<String> split(
+            Iterable<Character>? separators=null,
             Boolean discardSeparators=false);
     
     doc "Join the given strings, using this string as a 
@@ -26,7 +28,7 @@ shared abstract class String()
     shared formal String join(String... strings);
     
     doc "Split the string into lines of text."
-    shared formal Iterable<String> lines;
+    shared formal Ordered<String> lines;
 
     doc "This string, after discarding whitespace from the 
          beginning and end of the string."
@@ -56,7 +58,8 @@ shared abstract class String()
          return a string of the given length. If the start
          index is larger than the last index of the string,
          return the empty string."
-    shared formal String segment(Natural from, Natural length);
+    shared formal actual String segment(Natural from, 
+                                        Natural length);
     
         doc "Select the first characters of this string, 
          returning a string no longer than the given 
