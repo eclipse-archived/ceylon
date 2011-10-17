@@ -5,14 +5,14 @@ by "Gavin"
 shared object process extends Object() {
     
     doc "The command line arguments to the virtual machine."
-    shared String[] arguments { throw; }
+    shared List<String> arguments { throw; }
     
     doc "The unix switch-style command line arguments to the 
          virtual machine."
-    shared Entries<String,String> switches { throw; }
+    shared Map<String,String> switches { throw; }
 
     doc "The current system properties."
-    shared Entries<String,String> properties { throw; }
+    shared Map<String,String> properties { throw; }
 
     doc "Print a string to the console."
     shared void write(String string) { throw; }
