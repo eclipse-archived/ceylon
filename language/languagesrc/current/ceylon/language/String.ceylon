@@ -2,13 +2,9 @@ doc "A string of characters."
 by "Gavin"
 shared abstract class String()
         extends Object()
-        satisfies Comparable<String> & Ordered<Character> &
-                  Correspondence<Natural,Character> &
-                  Category & Sized & Format & 
-                  Summable<String> & Castable<String> {
-    
-    doc "The characters that form this string."
-    shared formal List<Character> characters;
+        satisfies List<Character> & Comparable<String> &
+                  Summable<String> & Castable<String> & 
+                  Ranged<String> & Format {
     
     doc "This string, with all characters in lowercase."
     shared formal String lowercased;
@@ -44,14 +40,18 @@ shared abstract class String()
     shared formal String reversed;
     
     doc "Select the characters between the given indexes.
-         If the start index is larger than the end index, or 
-         larger than the last index of the string, return 
-         the empty string. Otherwise, if the end index is 
-         larger than the last index of the string, return 
-         all characters from the start index to the end of 
-         the string."
-    //todo: would be better to support reverse spans?
-    shared formal String span(Natural from, Natural to);
+         If the start index is the same as the end index,
+         return a string with a single character.
+         If the start index larger than the end index, 
+         return the characters in the reverse order from
+         the order in which they appear in this string.
+         If both the start index and the end index are 
+         larger than the last index in the string, return 
+         the empty string. Otherwise, if the last index is 
+         larger than the last index in the sequence, return
+         all characters from the start index to last 
+         character of the string."
+    shared actual formal String span(Natural from, Natural to);
     
     doc "Select the characters of this string beginning at 
          the given index, returning a string no longer than 
@@ -84,23 +84,17 @@ shared abstract class String()
          underlying representation of the characters uses a
          UTF-16 encoding."
     see (longerThan, shorterThan)
-    shared actual Natural size { 
-        return characters.size;
-    }
+    shared actual formal Natural size;
     
     doc "An iterator for the characters of the string."
-    shared actual Iterator<Character> iterator {
-        return characters.iterator;
-    }
+    shared actual formal Iterator<Character> iterator;
     
     doc "Returns the character at the given index in the 
          string, or null if the index is past the end of
          string. The first character in the string occurs at
          index zero. The last character in the string occurs
          at index string.size-1."
-    shared actual Character? item(Natural index) { 
-        return characters[index]; 
-    }
+    shared actual formal Character? item(Natural index);
     
     doc "The character indexes at which the given substring
          occurs within this string. Occurrences do not 

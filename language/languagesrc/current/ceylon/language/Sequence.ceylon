@@ -5,7 +5,8 @@ by "Gavin"
 see (List)
 shared interface Sequence<out Element> 
         satisfies Correspondence<Natural, Element> &  
-                  Ordered<Element> & Sized &
+                  Ordered<Element> & Sized & 
+                  Ranged<Element[]> &
                   Cloneable<Sequence<Element>> {
     
     doc "The index of the last element of the sequence."
@@ -90,14 +91,19 @@ shared interface Sequence<out Element>
     }
     
     doc "Select the elements between the given indexes.
-         If the start index is larger than the end index, or 
-         larger than the last index of the string, return 
-         an Empty sequence. Otherwise, if the end index is 
-         larger than the last index of the string, return 
-         all elements from the start index to the end of 
-         the string."
-    //todo: would be better to support reverse spans?
-    shared formal Element[] span(Natural from, Natural to);
+         If the start index is the same as the end index,
+         return a sequence with a single element.
+         If the start index larger than the end index, 
+         return the elements in the reverse order from
+         the order in which they appear in this sequence.
+         If both the start index and the end index are 
+         larger than the last index in the sequence, return 
+         an Empty sequence. Otherwise, if the last index is 
+         larger than the last index in the sequence, return
+         all elements from the start index to last element
+         of the sequence."
+    shared actual formal Element[] span(Natural from, 
+                                        Natural to);
     
     doc "Returns a sequence containing the elements 
          beginning from the given index, with the given

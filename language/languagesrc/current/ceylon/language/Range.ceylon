@@ -9,7 +9,7 @@ doc "Represents the range of totally ordered, ordinal values
 by "Gavin"
 shared class Range<Element>(Element first, Element last) 
         extends Object() 
-        satisfies List<Element> & Equality
+        satisfies Sequence<Element> & Category & Equality
         given Element satisfies Ordinal<Element> & 
                                 Comparable<Element> { 
     
@@ -125,9 +125,9 @@ shared class Range<Element>(Element first, Element last)
         }
     }
     
-    shared Element[] excludingLast {
+    /*shared Element[] excludingLast {
         throw; //todo!
-    }
+    }*/
 
     doc "Return a sequence of values in the range, beginning 
          at the first value, and incrementing by a constant 
@@ -178,12 +178,12 @@ shared class Range<Element>(Element first, Element last)
         return this;
     }
     
-    shared actual Set<Element> elements {
+    /*shared actual Set<Element> elements {
         throw; //todo!
-    }
+    }*/
     
-    shared actual Sequence<Element> segment(Natural from, 
-                                            Natural length) {
+    shared actual Element[] segment(Natural from, 
+                                    Natural length) {
         throw; //todo!
     }
     

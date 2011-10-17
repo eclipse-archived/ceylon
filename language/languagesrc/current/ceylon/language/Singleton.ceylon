@@ -62,8 +62,6 @@ shared class Singleton<Element>(Element element)
     }
     
     shared actual Element[] span(Natural from, Natural to) {
-        //this implementation assumes we decide on 
-        //supporting reverse spans
         if (from>0 && to>0) {
             return {};
         }

@@ -1,7 +1,8 @@
 doc "An iterator that produces the natural numbers, starting
      from 0."
 by "Gavin"
-shared object naturals satisfies Ordered<Natural> {
+shared object naturals 
+        satisfies Ordered<Natural> & Ranged<Natural[]> {
     
     class NaturalIterator(Natural from) 
             satisfies Iterator<Natural> {
@@ -14,5 +15,18 @@ shared object naturals satisfies Ordered<Natural> {
     }
     
     shared actual Iterator<Natural> iterator = NaturalIterator(0);
+
+    shared actual Natural[] span(Natural from, Natural to) {
+        return from..to;
+    }
+    
+    shared actual Natural[] segment(Natural from, Natural length) {
+        if (length==0) {
+            return {};
+        }
+        else {
+            return from..from+length-1;
+        }
+    }
 
 }
