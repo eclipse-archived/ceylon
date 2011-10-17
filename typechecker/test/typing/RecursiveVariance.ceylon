@@ -18,7 +18,7 @@ class Better<out T>() satisfies Pile<Bucket<T>> {
 }
 @error class Worse<out T>() extends Widget<Bucket<T>>() {
 	@error function notok() {
-		@error Widget<Bucket<T>> w = this;
+		Widget<Bucket<T>> w = this;
 		return w;
 	}
 }
