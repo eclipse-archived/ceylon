@@ -47,7 +47,17 @@ public final class Float
 	@Override
 	public Float getMagnitude() {
 		return instance(Math.abs(value));
-	}      
+	}
+	
+	@Override
+	public Float getFractionalPart() {		
+		return instance(value - (long)value);
+	}
+
+	@Override
+	public Float getWholePart() {		
+		return instance((long)value);
+	}
 
     @Override
     public Float getNegativeValue() {

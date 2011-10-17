@@ -15,4 +15,8 @@ public interface Number extends Format {
     public boolean getZero();
     public boolean getUnit();
     
+    public Number getMagnitude();    
+    public Number getFractionalPart();
+    public Number getWholePart();
+    
 }

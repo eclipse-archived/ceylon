@@ -59,7 +59,17 @@ public final class Natural
 	@Override
 	public Natural getMagnitude() {
 		return this;
-	}     
+	}
+	
+	@Override
+	public Natural getFractionalPart() {		
+		return instance(0);
+	}
+
+	@Override
+	public Natural getWholePart() {		
+		return this;
+	}	
 
     @Override
     public Integer getPositiveValue() {

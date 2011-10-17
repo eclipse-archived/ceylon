@@ -49,7 +49,17 @@ public final class Integer
 	@Override
 	public Integer getMagnitude() {		
 		return instance(Math.abs(value));
-	}    
+	}
+
+	@Override
+	public Integer getFractionalPart() {		
+		return instance(0);
+	}
+
+	@Override
+	public Integer getWholePart() {		
+		return this;
+	}
 
     @Override
     public Integer remainder(Integer op) {
@@ -182,6 +192,5 @@ public final class Integer
     public <CastValue extends Numeric> CastValue castTo() {
         return (CastValue)this;
     }
-
 
 }
