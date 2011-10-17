@@ -58,6 +58,16 @@ public final class Float
 	public Float getWholePart() {		
 		return instance((long)value);
 	}
+	
+	@Override
+	public boolean getPositive() {
+		return value >= 0;
+	}
+	
+	@Override
+	public boolean getNegative() {
+		return value < 0;
+	}	
 
     @Override
     public Float getNegativeValue() {

@@ -69,6 +69,16 @@ public final class Natural
 	@Override
 	public Natural getWholePart() {		
 		return this;
+	}
+	
+	@Override
+	public boolean getPositive() {
+		return value >= 0;
+	}
+	
+	@Override
+	public boolean getNegative() {
+		return value < 0;
 	}	
 
     @Override

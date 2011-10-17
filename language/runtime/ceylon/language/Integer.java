@@ -60,6 +60,16 @@ public final class Integer
 	public Integer getWholePart() {		
 		return this;
 	}
+	
+	@Override
+	public boolean getPositive() {
+		return value >= 0;
+	}
+	
+	@Override
+	public boolean getNegative() {
+		return value < 0;
+	}	
 
     @Override
     public Integer remainder(Integer op) {
