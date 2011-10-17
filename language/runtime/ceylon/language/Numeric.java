@@ -9,5 +9,6 @@ public interface Numeric<Other extends Numeric<Other>>
     public Other times(@Name("number") Other number);
     public Other divided(@Name("number") Other number);
     public Other power(@Name("number") Other number);
+    public Other getMagnitude();
     
 }

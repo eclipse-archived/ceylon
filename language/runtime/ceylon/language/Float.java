@@ -43,6 +43,11 @@ public final class Float
     public Float power(Float op) {
         return instance(Math.pow(value, op.value));
     }
+    
+	@Override
+	public Float getMagnitude() {
+		return instance(Math.abs(value));
+	}      
 
     @Override
     public Float getNegativeValue() {

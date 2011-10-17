@@ -55,6 +55,11 @@ public final class Natural
     public Natural remainder(Natural op) {
         return instance(value % op.value);
     }
+    
+	@Override
+	public Natural getMagnitude() {
+		return this;
+	}     
 
     @Override
     public Integer getPositiveValue() {
