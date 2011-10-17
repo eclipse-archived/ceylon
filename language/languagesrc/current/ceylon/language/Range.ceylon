@@ -169,13 +169,26 @@ shared class Range<Element>(Element first, Element last)
     }
     
     shared actual Integer hash {
-        return first.hash/2 + last.hash/2; //TODO: really should be xor
+        return first.hash/2 + last.hash/2; //todo: really should be xor
     }
     
     doc "Returns the range itself, since ranges are 
          immutable."
     shared actual Sequence<Element> clone {
         return this;
+    }
+    
+    shared actual Set<Element> elements {
+        throw; //todo!
+    }
+    
+    shared actual Sequence<Element> segment(Natural from, 
+                                            Natural length) {
+        throw; //todo!
+    }
+    
+    shared actual Element[] span(Natural from, Natural to) {
+        throw; //todo
     }
     
 }

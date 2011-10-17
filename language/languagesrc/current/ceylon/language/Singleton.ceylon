@@ -51,4 +51,24 @@ shared class Singleton<Element>(Element element)
             throw;
         }
     }
+    
+    shared actual Element[] segment(Natural from, Natural length) {
+        if (from>0 || length==0) {
+            return {};
+        }
+        else {
+            return this;
+        }
+    }
+    
+    shared actual Element[] span(Natural from, Natural to) {
+        //this implementation assumes we decide on 
+        //supporting reverse spans
+        if (from>0 && to>0) {
+            return {};
+        }
+        else {
+            return this;
+        }
+    }
 }

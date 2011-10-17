@@ -3,11 +3,12 @@ by "Gavin"
 shared abstract class String()
         extends Object()
         satisfies Comparable<String> & Ordered<Character> &
-                  Correspondence<Natural,Character> & Sized & 
-                  Category & Summable<String> & Format &
-                  Castable<String> {
+                  Correspondence<Natural,Character> &
+                  Category & Sized & Format & 
+                  Summable<String> & Castable<String> {
     
-    shared formal Character[] characters;
+    doc "The characters that form this string."
+    shared formal List<Character> characters;
     
     doc "This string, with all characters in lowercase."
     shared formal String lowercased;
@@ -49,6 +50,7 @@ shared abstract class String()
          larger than the last index of the string, return 
          all characters from the start index to the end of 
          the string."
+    //todo: would be better to support reverse spans?
     shared formal String span(Natural from, Natural to);
     
     doc "Select the characters of this string beginning at 
@@ -142,6 +144,10 @@ shared abstract class String()
     see (size)
     shared formal Boolean shorterThan(Natural length);
     
+    doc "Determines if the given object is a string, and if
+         so, if this string has the same length, and the 
+         same characters, in the same order, as the given 
+         string."
     shared actual formal Boolean equals(Equality that);
     
     shared actual formal Integer hash;
@@ -153,10 +159,6 @@ shared abstract class String()
     
     doc "Returns the string itself."
     shared actual String string { 
-        return this;
-    }
-    
-    shared actual String castTo<String>() {
         return this;
     }
     

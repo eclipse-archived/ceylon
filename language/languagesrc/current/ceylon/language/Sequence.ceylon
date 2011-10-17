@@ -4,9 +4,8 @@ doc "A nonempty sequence of values. Sequence does not
 by "Gavin"
 see (List)
 shared interface Sequence<out Element> 
-        //is EnumerableSequence<Element>
-        satisfies Correspondence<Natural, Element> & 
-                  Sized & Ordered<Element> &
+        satisfies Correspondence<Natural, Element> &  
+                  Ordered<Element> & Sized &
                   Cloneable<Sequence<Element>> {
     
     doc "The index of the last element of the sequence."
@@ -89,6 +88,22 @@ shared interface Sequence<out Element>
             return "SequenceIterator";
         }
     }
+    
+    doc "Select the elements between the given indexes.
+         If the start index is larger than the end index, or 
+         larger than the last index of the string, return 
+         an Empty sequence. Otherwise, if the end index is 
+         larger than the last index of the string, return 
+         all elements from the start index to the end of 
+         the string."
+    //todo: would be better to support reverse spans?
+    shared formal Element[] span(Natural from, Natural to);
+    
+    doc "Returns a sequence containing the elements 
+         beginning from the given index, with the given
+         length."
+    shared actual formal Element[] segment(Natural from, 
+                                           Natural length);
     
     /*shared formal Sequence<Value> append<Value>(Value... elements)
             given Value abstracts Element;

@@ -100,6 +100,14 @@ shared interface Correspondence<in Key, out Item>
                 return null;
             }
         }
+        shared actual Item[] segment(Natural from, 
+                                     Natural length) {
+            throw; //todo
+        }
+        shared actual Item[] span(Natural from, Natural to) {
+            throw; //todo
+        }
+        shared actual String string = "Entries"; //todo
         shared actual Sequence<Item?> clone {
             return this;
         }
