@@ -55,6 +55,40 @@ public final class Natural
     public Natural remainder(Natural op) {
         return instance(value % op.value);
     }
+    
+	@Override
+	public Natural getMagnitude() {
+		return this;
+	}
+	
+	@Override
+	public Natural getFractionalPart() {		
+		return instance(0);
+	}
+
+	@Override
+	public Natural getWholePart() {		
+		return this;
+	}
+	
+	@Override
+	public boolean getPositive() {
+		return value > 0;
+	}
+	
+	@Override
+	public boolean getNegative() {
+		return value < 0;
+	}
+	
+	@Override
+	public Integer getSign() {
+		if (value > 0)
+			return Integer.instance(1);
+		if (value < 0)
+			return Integer.instance(-1);
+		return Integer.instance(0);
+	}	
 
     @Override
     public Integer getPositiveValue() {

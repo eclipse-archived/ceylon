@@ -45,6 +45,40 @@ public final class Integer
     public Integer power(Integer op) {
         return instance((long) Math.pow(value, op.value)); // FIXME: ugly
     }
+    
+	@Override
+	public Integer getMagnitude() {		
+		return instance(Math.abs(value));
+	}
+
+	@Override
+	public Integer getFractionalPart() {		
+		return instance(0);
+	}
+
+	@Override
+	public Integer getWholePart() {		
+		return this;
+	}
+	
+	@Override
+	public boolean getPositive() {
+		return value > 0;
+	}
+	
+	@Override
+	public boolean getNegative() {
+		return value < 0;
+	}
+	
+	@Override
+	public Integer getSign() {
+		if (value > 0)
+			return Integer.instance(1);
+		if (value < 0)
+			return Integer.instance(-1);
+		return Integer.instance(0);
+	}
 
     @Override
     public Integer remainder(Integer op) {
@@ -177,4 +211,5 @@ public final class Integer
     public <CastValue extends Numeric> CastValue castTo() {
         return (CastValue)this;
     }
+
 }

@@ -43,6 +43,40 @@ public final class Float
     public Float power(Float op) {
         return instance(Math.pow(value, op.value));
     }
+    
+	@Override
+	public Float getMagnitude() {
+		return instance(Math.abs(value));
+	}
+	
+	@Override
+	public Float getFractionalPart() {		
+		return instance(value - (long)value);
+	}
+
+	@Override
+	public Float getWholePart() {		
+		return instance((long)value);
+	}
+	
+	@Override
+	public boolean getPositive() {
+		return value > 0;
+	}
+	
+	@Override
+	public boolean getNegative() {
+		return value < 0;
+	}
+	
+	@Override
+	public Integer getSign() {
+		if (value > 0)
+			return Integer.instance(1);
+		if (value < 0)
+			return Integer.instance(-1);
+		return Integer.instance(0);
+	}	
 
     @Override
     public Float getNegativeValue() {
