@@ -73,12 +73,21 @@ public final class Natural
 	
 	@Override
 	public boolean getPositive() {
-		return value >= 0;
+		return value > 0;
 	}
 	
 	@Override
 	public boolean getNegative() {
 		return value < 0;
+	}
+	
+	@Override
+	public Integer getSign() {
+		if (value > 0)
+			return Integer.instance(1);
+		if (value < 0)
+			return Integer.instance(-1);
+		return Integer.instance(0);
 	}	
 
     @Override
