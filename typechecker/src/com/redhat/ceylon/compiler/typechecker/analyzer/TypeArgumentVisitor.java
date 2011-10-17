@@ -55,7 +55,9 @@ public class TypeArgumentVisitor extends Visitor {
             parameterizedDeclaration = that.getDeclarationModel().getDeclaration();
         }
         super.visit(that);
-        check(that.getType(), false);
+        if (parameterizedDeclaration.isClassOrInterfaceMember()) {
+            check(that.getType(), false);
+        }
         if (topLevel) {
             parameterizedDeclaration = null;
         }
@@ -63,7 +65,8 @@ public class TypeArgumentVisitor extends Visitor {
     
     @Override public void visit(Tree.TypedDeclaration that) {
         super.visit(that);
-        if (!(that instanceof Tree.Variable)) { //TODO: is this really the correct condition?!
+        if (!(that instanceof Tree.Variable) && !(that instanceof Tree.Parameter) &&
+                that.getDeclarationModel().isClassOrInterfaceMember()) {
             check(that.getType(), that.getDeclarationModel().isVariable());
         }
     }
