@@ -1,5 +1,6 @@
 doc "Abstract supertype of ranged objects which map a range
      of natural numbers to values."
+see (Sequence, List)
 shared interface Ranged<out Span> {
     
     doc "Obtain a span containing the mapped values between 
