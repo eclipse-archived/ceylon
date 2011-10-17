@@ -67,5 +67,65 @@ shared class IntegerTest() extends Test() {
 		assertFalse(negative == positive.positiveValue);
 	}
 	
+	@test
+	shared void testMinus() {
+		Integer ten = +10;
+		Integer seven = +7;
+		Integer minusThree = -3;
+		Integer theZero = +0;		
+		assertEquals(theZero,ten.minus(ten));
+		assertEquals(+3,ten.minus(seven));
+		assertEquals(minusThree,seven.minus(ten));
+		assertEquals(-10,minusThree.minus(seven));
+		assertEquals(+2, +10 - +8);				
+	}
+	
+	@test
+	shared void testTimes() {
+		Integer ten = +10;
+		Integer seven = +7;
+		Integer minusThree = -3;
+		Integer theZero = +0;		
+		assertEquals(theZero, ten.times(theZero));
+		assertEquals(theZero, theZero.times(ten));
+		assertEquals(+70, ten.times(seven));
+		assertEquals(+3, minusThree.times(-1));
+		assertEquals(-10, ten.times(-1));
+		assertEquals(+24, +3 * +8);
+	}	
+	
+	@test
+	shared void testPower() {		
+		Integer two = +2;
+		Integer four = +4;		
+		Integer theZero = +0;		
+		assertEquals(+1,two.power(theZero));
+		assertEquals(four,two.power(+2));
+	}	
+	
+	@test
+	shared void testDivided() {
+		Integer ten = +10;		
+		Integer two = +2;
+		Integer minusOne = -1;
+		Integer theZero = +0;		
+		assertEquals(theZero,theZero.divided(ten));
+		assertEquals(+5,ten.divided(two));
+		assertEquals(+1,ten.divided(ten));
+		assertEquals(-2,two.divided(-1));
+		assertEquals(+1, +4 / +3);
+		assertEquals(-1, +4 / -3);
+	}		
+	
+	@test
+	shared void testMagnitude() {
+		Integer ten = +10;		
+		Integer minustwo = -2;		
+		Integer theZero = +0;
+				
+		assertEquals(theZero,theZero.magnitude(theZero));
+		
+	}				
+	
 		
 }	  
