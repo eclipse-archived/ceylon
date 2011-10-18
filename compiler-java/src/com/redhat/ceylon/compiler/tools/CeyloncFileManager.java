@@ -145,7 +145,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
             throw new IllegalArgumentException("Invalid kind " + kind);
         String fileName = externalizeFileName(className, kind);
         JavaFileObject file = getFileForInput(location, fileName);
-        if (fileName.endsWith(".ceylon")) {
+        if (file != null && fileName.endsWith(".ceylon")) {
             return new CeylonFileObject(file);
         } else {
             return file;
