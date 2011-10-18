@@ -267,7 +267,7 @@ public class StatementTransformer extends AbstractTransformer {
 
         if (variable2 != null) {
             // final V n = $V$iter$X.getHead().getElement();
-            JCExpression loop_var_init2 = at(stmt).Apply(null, makeSelect(at(stmt).Apply(null, makeSelect(iter_id, Util.getGetterName("head")), List.<JCExpression> nil()), Util.getGetterName("element")), List.<JCExpression> nil());
+            JCExpression loop_var_init2 = at(stmt).Apply(null, makeSelect(at(stmt).Apply(null, makeSelect(iter_id, Util.getGetterName("head")), List.<JCExpression> nil()), Util.getGetterName("item")), List.<JCExpression> nil());
             String loop_var_name2 = variable2.getIdentifier().getText();
             ProducedType item_type2 = actualType(variable2);
             JCExpression item_type_expr2 = makeJavaType(item_type2);
