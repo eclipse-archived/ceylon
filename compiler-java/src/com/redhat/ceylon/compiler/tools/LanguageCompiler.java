@@ -275,6 +275,13 @@ public class LanguageCompiler extends JavaCompiler {
                 if(module == null){
                     module = loadModuleFromSource(pkgName, moduleTrees);
                 }
+                else if (! module.isAvailable()) {
+                    modules.getListOfModules().remove(module);
+                    Module fullModule = loadModuleFromSource(pkgName, moduleTrees);
+                    CeylonEnter.updateModulesDependingOn(modules.getListOfModules(), module, fullModule);
+                    module = fullModule;
+                }
+
                 if(module == null){
                     // no declaration for it, must be the default module
                     module = modules.getDefaultModule();

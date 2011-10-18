@@ -200,7 +200,7 @@ public class CeylonEnter extends Enter {
         return aNewModuleWasLoaded;
     }
 
-    private void updateModulesDependingOn(Collection<Module> modules,
+    public static void updateModulesDependingOn(Collection<Module> modules,
             Module replacedModule, Module replacingModule) {
         for (Module otherModule : modules) {
             java.util.List<Module> dependencies = otherModule.getDependencies();
