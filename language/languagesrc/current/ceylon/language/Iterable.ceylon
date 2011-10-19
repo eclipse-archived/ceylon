@@ -9,7 +9,8 @@ shared interface Iterable<out Element>
         satisfies Container {
     
     doc "An iterator for the elements belonging to the 
-         container."
+         container, or null if the container has no 
+         elements."
     shared formal Iterator<Element>? iterator;
     
     doc "Determines if the iterable object is empty, that is
