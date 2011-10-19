@@ -1,10 +1,11 @@
 package ceylon.language;
 
-public class Comparison extends Object {
-    public static final Comparison LARGER = new Comparison();
-    public static final Comparison SMALLER = new Comparison();
-    public static final Comparison EQUAL = new Comparison();
-
+public class Comparison extends Case {
+	
+    public static final Comparison LARGER = new Comparison("LARGER");
+    public static final Comparison SMALLER = new Comparison("SMALLER");
+    public static final Comparison EQUAL = new Comparison("EQUAL");
+    
     public boolean larger() {
         return this == LARGER;
     }
@@ -30,14 +31,11 @@ public class Comparison extends Object {
     }
 
     public java.lang.String toString() {
-        java.lang.String result;
-        if (this == LARGER)
-            result = "LARGER";
-        else if (this == SMALLER)
-            result = "SMALLER";
-        else
-            result = "EQUAL";
-
-        return result;
+        return super.toString();
     }
+
+	public Comparison(java.lang.String caseName) {
+		super(caseName);
+	}	
+
 }

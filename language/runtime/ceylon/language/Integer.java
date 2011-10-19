@@ -183,6 +183,11 @@ public final class Integer
     }
     
     @Override
+    public int hashCode() {
+    	return (int)(value ^ (value >>> 32));
+    }
+    
+    @Override
     public java.lang.String getFormatted() {
         return java.lang.Long.toString(value);
     }
