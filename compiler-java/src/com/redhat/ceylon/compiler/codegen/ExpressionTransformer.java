@@ -693,7 +693,16 @@ public class ExpressionTransformer extends AbstractTransformer {
                 .getText()
                 .substring(1, string.getText().length() - 1)
                 .replace("\r\n", "\n")
-                .replace("\r", "\n");
+                .replace("\r", "\n")
+                .replace("\\b", "\b")
+                .replace("\\t", "\t")
+                .replace("\\n", "\n")
+                .replace("\\f", "\f")
+                .replace("\\r", "\r")
+                .replace("\\\\", "\\")
+                .replace("\\\"", "\"")
+                .replace("\\'", "'")
+                .replace("\\`", "`");
         at(string);
         return ceylonLiteral(value);
     }
