@@ -39,6 +39,11 @@ implements Comparable<String>, Iterable<Character>,
 			return false;
 		}
     }
+	
+	@Override
+	public int hashCode() {
+		return value.hashCode();
+	}
 
     public static ceylon.language.String instance(java.lang.String... strings) {
         StringBuffer buf = new StringBuffer();
