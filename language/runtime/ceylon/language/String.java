@@ -5,8 +5,8 @@ import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 public final class String extends Object 
     implements Comparable<String>, Iterable<Character>, 
-    Correspondence<Natural,Character>, Format,
-    Sized, Summable<String>, Castable<String> {
+               Correspondence<Natural,Character>, Format,
+               Sized, Summable<String>, Castable<String> {
 
     public final java.lang.String value;
 
@@ -49,14 +49,14 @@ public final class String extends Object
         StringBuffer buf = new StringBuffer();
         for (java.lang.String s: strings)
             buf.append(s);
-                return new ceylon.language.String(buf.toString());
+        return new ceylon.language.String(buf.toString());
     }
 
     public static ceylon.language.String instance(String... strings) {
         StringBuffer buf = new StringBuffer();
         for (String s: strings)
             buf.append(s.value);
-                return new ceylon.language.String(buf.toString());
+        return new ceylon.language.String(buf.toString());
     }
 
     @Override
@@ -105,7 +105,7 @@ public final class String extends Object
     @TypeInfo("ceylon.language.Natural")
     public long getSize() {
         //TODO: should we cache this value in an instvar?
-                return value.codePointCount(0, value.length()-1);
+        return value.codePointCount(0, value.length()-1);
     }
 
     @Override
@@ -143,7 +143,7 @@ public final class String extends Object
     public boolean definesEvery(Iterable<? extends Natural> keys) {
         //TODO: inefficient ... better to cache the result
         //      of getSize()
-    return Correspondence$impl.definesEvery(this, keys);
+        return Correspondence$impl.definesEvery(this, keys);
     }
 
     @Override
