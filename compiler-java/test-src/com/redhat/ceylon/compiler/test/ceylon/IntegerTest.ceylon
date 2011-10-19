@@ -5,9 +5,18 @@ shared class IntegerTest() extends Test() {
 		Integer one = +1;
 		Integer anotherOne = +1;
 		Integer two = +2;
-		assertTrue(one == anotherOne);
+		assertEquals(one, anotherOne);
 		assertFalse(one == two);
 	}
+	
+    @test
+    shared void testHash() {
+        Integer one = +1;
+        Integer anotherOne = +1;
+        Integer two = +2;
+        assertEquals(one.hash, anotherOne.hash);
+        assertFalse(one.hash == two.hash);
+    }	
 	
 	@test
 	shared void testZero() {
@@ -79,6 +88,21 @@ shared class IntegerTest() extends Test() {
 		assertEquals(-10,minusThree.minus(seven));
 		assertEquals(+2, +10 - +8);				
 	}
+	
+    @test
+    shared void testPlus() {
+        Integer ten = +10;      
+        Integer minusTwo = -2;
+        Integer theZero = +0;       
+        assertEquals(ten, ten.plus(theZero));
+        assertEquals(+10, +10 + (+0));
+        assertEquals(+10, +10 + (-0));
+        assertEquals(+8, ten.plus(minusTwo));
+        assertEquals(+8, +10 + (-2));
+        assertEquals(minusTwo, minusTwo.plus(theZero));
+        assertEquals(-2, -2 + (+0));
+        assertEquals(-4, -2 + (-2));   
+    }	
 	
 	@test
 	shared void testTimes() {
@@ -198,6 +222,145 @@ shared class IntegerTest() extends Test() {
 		assertEquals(+0, theZero.sign);
 		assertEquals(+1, ten.sign);
 		assertEquals(-1, minusTwo.sign);			
-	}	
+	}
+	
+    @test
+    shared void testSuccessor() {
+        Integer ten = +10;      
+        Integer minusTwo = -2;
+        Integer theZero = +0;
+        assertEquals(+11, ten.successor);
+        assertFalse(+9 == ten.successor);
+        assertEquals(-1, minusTwo.successor);
+        assertFalse(-3 == minusTwo.successor);
+        assertEquals(+1, theZero.successor);
+        assertFalse(-1 == theZero.successor);
+    }
+    
+    @test
+    shared void testPredecessor() {
+        Integer ten = +10;      
+        Integer minusTwo = -2;
+        Integer theZero = +0;
+        assertFalse(+11 == ten.predecessor);
+        assertEquals(+9, ten.predecessor);
+        assertFalse(-1 == minusTwo.predecessor);
+        assertEquals(-3, minusTwo.predecessor);
+        assertFalse(+1 == theZero.predecessor);
+        assertEquals(-1,theZero.predecessor);
+    }
+    
+    @test
+    shared void testLargerThan() {
+        Integer ten = +10;      
+        Integer minusTwo = -2;
+        Integer theZero = +0;
+        assertFalse(theZero.largerThan(ten));
+        assertTrue(theZero.largerThan(minusTwo));
+        assertFalse(theZero.largerThan(theZero));        
+        assertFalse(minusTwo.largerThan(minusTwo));             
+        assertFalse(minusTwo.largerThan(theZero));
+        assertFalse(minusTwo.largerThan(ten));
+        assertTrue(ten.largerThan(theZero));
+        assertTrue(ten.largerThan(minusTwo));
+        assertFalse(ten.largerThan(ten));  
+    }   
+    
+    @test
+    shared void testAsLargeAs() {
+        Integer ten = +10;      
+        Integer minusTwo = -2;
+        Integer theZero = +0;
+        assertFalse(theZero.asLargeAs(ten));
+        assertTrue(theZero.asLargeAs(minusTwo));
+        assertTrue(theZero.asLargeAs(theZero));        
+        assertTrue(minusTwo.asLargeAs(minusTwo));             
+        assertFalse(minusTwo.asLargeAs(theZero));
+        assertFalse(minusTwo.asLargeAs(ten));
+        assertTrue(ten.asLargeAs(theZero));
+        assertTrue(ten.asLargeAs(minusTwo));
+        assertTrue(ten.asLargeAs(ten));  
+    }  
+    
+    @test
+    shared void testSmallerThan() {
+        Integer ten = +10;      
+        Integer minusTwo = -2;
+        Integer theZero = +0;
+        assertTrue(theZero.smallerThan(ten));
+        assertFalse(theZero.smallerThan(minusTwo));
+        assertFalse(theZero.smallerThan(theZero));        
+        assertFalse(minusTwo.smallerThan(minusTwo));             
+        assertTrue(minusTwo.smallerThan(theZero));
+        assertTrue(minusTwo.smallerThan(ten));
+        assertFalse(ten.smallerThan(theZero));
+        assertFalse(ten.smallerThan(minusTwo));
+        assertFalse(ten.smallerThan(ten));  
+    }
+
+
+    @test
+    shared void testAsSmallAs() {
+        Integer ten = +10;      
+        Integer minusTwo = -2;
+        Integer theZero = +0;
+        assertTrue(theZero.asSmallAs(ten));
+        assertFalse(theZero.asSmallAs(minusTwo));
+        assertTrue(theZero.asSmallAs(theZero));        
+        assertTrue(minusTwo.asSmallAs(minusTwo));             
+        assertTrue(minusTwo.asSmallAs(theZero));
+        assertTrue(minusTwo.asSmallAs(ten));
+        assertFalse(ten.asSmallAs(theZero));
+        assertFalse(ten.asSmallAs(minusTwo));
+        assertTrue(ten.asSmallAs(ten));  
+    }
+
+    @test
+    shared void testComparisionSmaller() {
+        Integer ten = +10;      
+        Integer minusTwo = -2;
+        Integer theZero = +0;        
+        assertEquals(smaller, minusTwo.compare(ten));
+        assertEquals(smaller, minusTwo.compare(theZero));
+        assertFalse(smaller == minusTwo.compare(minusTwo));
+        assertEquals(smaller, theZero.compare(ten));
+        assertFalse(smaller == theZero.compare(minusTwo));
+        assertFalse(smaller == theZero.compare(theZero));
+        assertFalse(smaller == ten.compare(ten));
+        assertFalse(smaller == ten.compare(theZero));
+        assertFalse(smaller == ten.compare(minusTwo));          
+    }
+    
+    @test
+    shared void testComparisionLarger() {
+        Integer ten = +10;      
+        Integer minusTwo = -2;
+        Integer theZero = +0;        
+        assertEquals(larger, ten.compare(minusTwo));
+        assertEquals(larger, ten.compare(theZero));
+        assertFalse(larger == ten.compare(ten));
+        assertEquals(larger, theZero.compare(minusTwo));
+        assertFalse(larger == theZero.compare(theZero));
+        assertFalse(larger == theZero.compare(ten));
+        assertFalse(larger == minusTwo.compare(minusTwo));
+        assertFalse(larger == minusTwo.compare(theZero));
+        assertFalse(larger == minusTwo.compare(ten));                           
+    }
+    
+    @test
+    shared void testComparisionEqual() {
+        Integer ten = +10;      
+        Integer minusTwo = -2;
+        Integer theZero = +0;        
+        assertFalse(equal == ten.compare(minusTwo));
+        assertFalse(equal == ten.compare(theZero));
+        assertEquals(equal, ten.compare(ten));
+        assertFalse(equal == theZero.compare(minusTwo));
+        assertEquals(equal, theZero.compare(theZero));
+        assertFalse(equal == theZero.compare(ten));
+        assertEquals(equal, minusTwo.compare(minusTwo));
+        assertFalse(equal == minusTwo.compare(theZero));
+        assertFalse(equal == minusTwo.compare(ten));                           
+    }              	
 		
 }	  
