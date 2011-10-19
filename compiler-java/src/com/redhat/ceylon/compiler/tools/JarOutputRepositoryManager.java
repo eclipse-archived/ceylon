@@ -17,15 +17,19 @@ import javax.tools.JavaFileObject;
 
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.util.Util;
+import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.util.Log;
+import com.sun.tools.javac.util.Options;
 
 public class JarOutputRepositoryManager {
     
     private Map<Module,ProgressiveJar> openJars = new HashMap<Module, ProgressiveJar>();
     private Log log;
+    private Options options;
     
-    JarOutputRepositoryManager(Log log){
+    JarOutputRepositoryManager(Log log, Options options){
         this.log = log;
+        this.options = options;
     }
     
     public JavaFileObject getFileObject(File outputDir, Module module, String fileName) throws IOException{
@@ -40,8 +44,10 @@ public class JarOutputRepositoryManager {
             File moduleOutputDir = Util.getModulePath(outputDir, module);
             if(!moduleOutputDir.exists() && !moduleOutputDir.mkdirs())
                 throw new IOException("Failed to create output dir: "+moduleOutputDir);
-            Log.printLines(log.noticeWriter, "[output jar name: "+jarName+"]");
-            jarFile = new ProgressiveJar(new File(moduleOutputDir, jarName), log);
+            if(options.get(OptionName.VERBOSE) != null){
+                Log.printLines(log.noticeWriter, "[output jar name: "+jarName+"]");
+            }
+            jarFile = new ProgressiveJar(new File(moduleOutputDir, jarName), log, options);
             openJars.put(module, jarFile);
         }
         return jarFile;
@@ -69,8 +75,9 @@ public class JarOutputRepositoryManager {
         final private JarOutputStream jarOutputStream;
         final private Set<String> writtenClasses = new HashSet<String>();
         private Log log;
+        private Options options;
         
-        public ProgressiveJar(File targetJarFile, Log log) throws IOException{
+        public ProgressiveJar(File targetJarFile, Log log, Options options) throws IOException{
             if(targetJarFile.exists()){
                 outputJarFile = File.createTempFile(targetJarFile.getName(), ".tmp", targetJarFile.getParentFile());
                 originalJarFile = targetJarFile;
@@ -80,6 +87,7 @@ public class JarOutputRepositoryManager {
             }
             jarOutputStream = new JarOutputStream(new FileOutputStream(outputJarFile));
             this.log = log;
+            this.options = options;
         }
 
         public void close() throws IOException {
@@ -102,10 +110,14 @@ public class JarOutputRepositoryManager {
             }
             jarOutputStream.flush();
             jarOutputStream.close();
-            Log.printLines(log.noticeWriter, "[done writing to jar: "+outputJarFile.getPath()+"]");
+            if(options.get(OptionName.VERBOSE) != null){
+                Log.printLines(log.noticeWriter, "[done writing to jar: "+outputJarFile.getPath()+"]");
+            }
             if(originalJarFile != null){
                 // now rename to the original name
-                Log.printLines(log.noticeWriter, "[renaming jar to: "+originalJarFile.getPath()+"]");
+                if(options.get(OptionName.VERBOSE) != null){
+                    Log.printLines(log.noticeWriter, "[renaming jar to: "+originalJarFile.getPath()+"]");
+                }
             	originalJarFile.delete();
                 if(!outputJarFile.renameTo(originalJarFile))
                     throw new IOException("Failed to rename jar file");
