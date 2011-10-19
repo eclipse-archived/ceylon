@@ -139,6 +139,20 @@ public final class Float
     }
     
     @Override
+    public boolean equals(java.lang.Object s) {
+        if (s instanceof Float) {
+            return value == ((Float)s).value;
+        } else {
+            return false;
+        }
+    }
+    
+    @Override
+    public int hashCode() {
+    	return java.lang.Double.valueOf(value).hashCode();
+    }
+    
+    @Override
     public java.lang.String getFormatted() {
         return java.lang.Double.toString(value);
     }
