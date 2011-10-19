@@ -16,7 +16,6 @@ import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
@@ -277,18 +276,19 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
-    private ClassDefinitionBuilder parameter(String name, ProducedType paramType, Parameter parameter) {
+    private ClassDefinitionBuilder parameter(String name, ProducedType paramType, boolean isGenericsType, boolean isSequenced, boolean isCaptured) {
         // Create a parameter for the constructor
-        JCExpression type = gen.makeJavaType(paramType, gen.isGenericsImplementation(parameter) ? AbstractTransformer.NO_ERASURE_TO_PRIMITIVE : 0);
+        JCExpression type = gen.makeJavaType(paramType, isGenericsType ? AbstractTransformer.TYPE_ARGUMENT : 0);
         List<JCAnnotation> annots = gen.makeAtName(name);
-        if(parameter.isSequenced())
+        if (isSequenced) {
             annots = annots.appendList(gen.makeAtSequenced());
+        }
         annots = annots.appendList(gen.makeJavaTypeAnnotations(paramType, true));
         JCVariableDecl var = gen.make().VarDef(gen.make().Modifiers(0, annots), gen.names().fromString(name), type, null);
         params.append(var);
         
         // Check if the parameter is used outside of the initializer
-        if (parameter.isCaptured()) {
+        if (isCaptured) {
             // If so we create a field for it initializing it with the parameter's value
             JCVariableDecl localVar = gen.make().VarDef(gen.make().Modifiers(FINAL | PRIVATE), gen.names().fromString(name), type , null);
             defs.append(localVar);
@@ -300,8 +300,12 @@ public class ClassDefinitionBuilder {
     
     public ClassDefinitionBuilder parameter(Tree.Parameter param) {
         gen.at(param);
-        String name = param.getIdentifier().getText();
-        return parameter(name, param.getType().getTypeModel(), param.getDeclarationModel());
+        return parameter(param.getDeclarationModel());
+    }
+    
+    public ClassDefinitionBuilder parameter(Parameter param) {
+        String name = param.getName();
+        return parameter(name, param.getType(), gen.isGenericsImplementation(param), param.isSequenced(), param.isCaptured());
     }
     
     public ClassDefinitionBuilder defs(JCTree statement) {

@@ -448,7 +448,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (isTypeParameter(type)) {
                     type = namedArgType(namedArg);
                 }
-                argExpr = make().TypeCast(makeJavaType(type, this.TYPE_PARAM), argExpr);
+                argExpr = make().TypeCast(makeJavaType(type, this.TYPE_ARGUMENT), argExpr);
                 callArgsArray[declaredParams.indexOf(declaredParam)] = unboxType(argExpr, declaredParam.getType());
             }
         }
@@ -458,7 +458,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             
             Parameter declaredParam = declaredParams.get(declaredParams.size() - 1);
             ProducedType type = declaredParam.getType();
-            argExpr = make().TypeCast(makeJavaType(type, this.TYPE_PARAM), argExpr);
+            argExpr = make().TypeCast(makeJavaType(type, this.TYPE_ARGUMENT), argExpr);
             callArgsArray[namedArguments.size()] = unboxType(argExpr, declaredParam.getType());
         }
         callArgs = ListBuffer.<JCExpression>lb();
@@ -502,7 +502,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             CeylonVisitor visitor = new CeylonVisitor(gen(), typeArgs, callArgs);
             memberExpr.getPrimary().visit(visitor);
             passArgs.prepend((JCExpression)visitor.getSingleResult());
-            receiverType = makeJavaType(memberExpr.getPrimary().getTypeModel(), this.TYPE_PARAM);
+            receiverType = makeJavaType(memberExpr.getPrimary().getTypeModel(), this.TYPE_ARGUMENT);
             receiver = makeSelect("this", "instance", methodName);
             generateNew = primary instanceof QualifiedTypeExpression;
             
@@ -514,7 +514,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         boolean isVoid = ce.getTypeModel().isExactly(typeFact().getVoidDeclaration().getType());
         int spec = 0;
         if(isTypeParameter(determineExpressionType(ce)))
-            spec = this.TYPE_PARAM;
+            spec = this.TYPE_ARGUMENT;
         else if(generateNew)
             spec = this.CLASS_NEW;
         JCExpression resultType = makeJavaType(ce.getTypeModel(), spec);
@@ -634,7 +634,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             java.util.List<ProducedType> args = expr.getTypeArguments().getTypeModels();
             if(args != null){
                 for (ProducedType arg : args) {
-                    result = result.append(makeJavaType(arg, AbstractTransformer.TYPE_PARAM));
+                    result = result.append(makeJavaType(arg, AbstractTransformer.TYPE_ARGUMENT));
                 }
             }
         }

@@ -335,19 +335,18 @@ public abstract class AbstractTransformer implements Transformation {
     
     static final int SATISFIES = 1 << 0;
     static final int EXTENDS = 1 << 1;
-    static final int TYPE_PARAM = 1 << 2;
+    static final int TYPE_ARGUMENT = 1 << 2;
+    static final int NO_PRIMITIVES = 1 << 2; // Yes, same as TYPE_ARGUMENT
     static final int CLASS_NEW = 1 << 1; // Yes, same as EXTENDS
     static final int WANT_RAW_TYPE = 1 << 3;
     static final int CATCH = 1 << 4;
-    static final int NO_ERASURE_TO_PRIMITIVE = EXTENDS; // Same behaviour
-    static final int IS = NO_ERASURE_TO_PRIMITIVE | WANT_RAW_TYPE; // Same behaviour
 
     protected JCExpression makeJavaType(ProducedType producedType) {
         return makeJavaType(producedType, 0);
     }
 
     protected JCExpression makeJavaType(ProducedType type, int flags) {
-        int satisfiesOrExtendsOrTypeParam = flags & (SATISFIES | EXTENDS | TYPE_PARAM);
+        int satisfiesOrExtendsOrTypeParam = flags & (SATISFIES | EXTENDS | TYPE_ARGUMENT);
         int satisfiesOrExtends = flags & (SATISFIES | EXTENDS);
         
         // ERASURE
@@ -473,11 +472,11 @@ public abstract class AbstractTransformer implements Transformation {
                         // - Foo<? super T> if Foo is contravariant in T
                         TypeParameter tp = tdecl.getTypeParameters().get(idx);
                         if (tp.isContravariant()) {
-                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), makeJavaType(ta, TYPE_PARAM));
+                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), makeJavaType(ta, TYPE_ARGUMENT));
                         } else if (tp.isCovariant()) {
-                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), makeJavaType(ta, TYPE_PARAM));
+                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), makeJavaType(ta, TYPE_ARGUMENT));
                         } else {
-                            jta = makeJavaType(ta, TYPE_PARAM);
+                            jta = makeJavaType(ta, TYPE_ARGUMENT);
                         }
                     }
                 }
@@ -747,7 +746,7 @@ public abstract class AbstractTransformer implements Transformation {
             elems.append(expressionGen().transformExpression(expr));
         }
         ProducedType seqType = typeFact().getDefaultSequenceType(seqElemType);
-        JCExpression typeExpr = makeJavaType(seqType, CeylonTransformer.TYPE_PARAM);
+        JCExpression typeExpr = makeJavaType(seqType, CeylonTransformer.TYPE_ARGUMENT);
         return make().NewClass(null, null, typeExpr, elems.toList(), null);
     }
     

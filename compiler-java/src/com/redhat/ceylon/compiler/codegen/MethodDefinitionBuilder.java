@@ -68,7 +68,7 @@ public class MethodDefinitionBuilder {
     
     public static MethodDefinitionBuilder setter(AbstractTransformer gen, String name, ProducedType attrType, boolean isGenericsType) {
         return new MethodDefinitionBuilder(gen, Util.getSetterName(name))
-            .parameter(0, name, attrType, isGenericsType, SequencedInfo.NORMAL);
+            .parameter(0, name, attrType, isGenericsType, false);
     }
     
     public static MethodDefinitionBuilder setter(AbstractTransformer gen, String name, JCExpression attrType, List<JCAnnotation> annots) {
@@ -173,15 +173,12 @@ public class MethodDefinitionBuilder {
         return this;
     }
     
-    enum SequencedInfo {
-        SEQUENCED, NORMAL;
-    }
-    
-    public MethodDefinitionBuilder parameter(long modifiers, String name, ProducedType paramType, boolean isGenericsType, SequencedInfo sequencedInfo) {
-        JCExpression type = gen.makeJavaType(paramType, isGenericsType ? AbstractTransformer.NO_ERASURE_TO_PRIMITIVE : 0);
+    public MethodDefinitionBuilder parameter(long modifiers, String name, ProducedType paramType, boolean isGenericsType, boolean isSequenced) {
+        JCExpression type = gen.makeJavaType(paramType, isGenericsType ? AbstractTransformer.TYPE_ARGUMENT : 0);
         List<JCAnnotation> annots = gen.makeAtName(name);
-        if(sequencedInfo == SequencedInfo.SEQUENCED)
+        if (isSequenced) {
             annots = annots.appendList(gen.makeAtSequenced());
+        }
         annots = annots.appendList(gen.makeJavaTypeAnnotations(paramType, true));
         return parameter(gen.make().VarDef(gen.make().Modifiers(modifiers, annots), gen.names().fromString(name), type, null));
     }
@@ -197,8 +194,7 @@ public class MethodDefinitionBuilder {
 
     public MethodDefinitionBuilder parameter(Parameter param) {
         String name = param.getName();
-        return parameter(FINAL, name, param.getType(), gen.isGenericsImplementation(param), 
-                param.isSequenced() ? SequencedInfo.SEQUENCED : SequencedInfo.NORMAL);
+        return parameter(FINAL, name, param.getType(), gen.isGenericsImplementation(param), param.isSequenced());
     }
 
     public MethodDefinitionBuilder isActual(boolean isActual) {
@@ -234,7 +230,7 @@ public class MethodDefinitionBuilder {
     }
 
     public MethodDefinitionBuilder resultType(TypedDeclaration decl) {
-        return resultType(decl.getType(), gen.isGenericsImplementation(decl) ? AbstractTransformer.NO_ERASURE_TO_PRIMITIVE : 0);
+        return resultType(decl.getType(), gen.isGenericsImplementation(decl) ? AbstractTransformer.TYPE_ARGUMENT : 0);
     }
 
     private MethodDefinitionBuilder resultType(ProducedType resultType, int flags) {

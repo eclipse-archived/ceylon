@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.codegen;
 
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ComparisonOp;
@@ -18,7 +20,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpressio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.util.Util;
 
@@ -121,6 +122,12 @@ public class BoxingVisitor extends Visitor {
         super.visit(that);
         // this is not conditional
         Util.markUnBoxed(that);
+    }
+
+    @Override
+    public void visit(AssignOp that) {
+        super.visit(that);
+        propagateFromTerm(that, that.getLeftTerm());
     }
 
     @Override

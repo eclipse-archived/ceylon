@@ -17,7 +17,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinitio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.util.Decl;
 import com.redhat.ceylon.compiler.util.Util;
-import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBlock;

@@ -135,7 +135,7 @@ public class StatementTransformer extends AbstractTransformer {
             ProducedType tmpVarType = specifierExpr.getTypeModel();
             JCExpression tmpVarTypeExpr;
             // Want raw type for instanceof since it can't be used with generic types
-            JCExpression rawToTypeExpr = makeJavaType(toType, IS);
+            JCExpression rawToTypeExpr = makeJavaType(toType, NO_PRIMITIVES | WANT_RAW_TYPE);
 
             // Substitute variable with the correct type to use in the rest of the code block
             JCExpression tmpVarExpr = at(cond).Ident(tmpVarName);
@@ -242,7 +242,7 @@ public class StatementTransformer extends AbstractTransformer {
         String loop_var_name = variable.getIdentifier().getText();
         ProducedType sequenceElementType = typeFact().getIteratedType(iterDecl.getSpecifierExpression().getExpression().getTypeModel());
         ProducedType iter_type = typeFact().getIteratorType(sequenceElementType);
-        JCExpression iter_type_expr = makeJavaType(iter_type, CeylonTransformer.TYPE_PARAM);
+        JCExpression iter_type_expr = makeJavaType(iter_type, CeylonTransformer.TYPE_ARGUMENT);
         ProducedType item_type = actualType(variable);
         JCExpression item_type_expr = makeJavaType(item_type);
         List<JCAnnotation> annots = makeJavaTypeAnnotations(variable.getDeclarationModel(), actualType(variable));
