@@ -75,8 +75,6 @@ public class CeylonTransformer extends AbstractTransformer {
      * EnterCeylon phase later on
      */
     public JCCompilationUnit makeJCCompilationUnitPlaceholder(Tree.CompilationUnit t, JavaFileObject file, String pkgName, PhasedUnit phasedUnit) {
-        if(options.get(OptionName.VERBOSE) != null)
-            System.err.println(t);
         JCExpression pkg = pkgName != null ? getPackage(pkgName) : null;
         at(t);
         JCCompilationUnit topLev = new CeylonCompilationUnit(List.<JCTree.JCAnnotation> nil(), pkg, List.<JCTree> nil(), null, null, null, null, t, phasedUnit);
