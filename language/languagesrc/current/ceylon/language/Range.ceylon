@@ -88,18 +88,19 @@ shared class Range<Element>(Element first, Element last)
     
     doc "An iterator for the elements of the range."
     shared actual Iterator<Element> iterator {
-        class RangeIterator(Element x) 
+        class RangeIterator(Element current) 
                 satisfies Iterator<Element> {
-            shared actual Element? head { 
-                if (pastEnd(x)) { 
-                    return null;
-                } 
-                else { 
-                    return x;
-                }
+            shared actual Element head { 
+                return current;
             }
-            shared actual Iterator<Element> tail {
-                return RangeIterator(next(x));
+            shared actual Iterator<Element>? tail {
+                Element next = outer.next(current);
+                if (pastEnd(next)) {
+                    return null;
+                }
+                else {
+                    return RangeIterator(next);
+                }
             }
         }
         return RangeIterator(first);

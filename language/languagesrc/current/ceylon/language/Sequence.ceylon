@@ -34,13 +34,14 @@ shared interface Sequence<out Element>
         return lastIndex+1;
     }
     
-    doc "The last element of the sequence."
+    doc "The last element of the sequence, that is, the
+         element with index sequence.lastIndex."
     shared default Element last {
-        if (exists Element x = item(lastIndex)) {
-            return x;
+        if (is Element last = item(lastIndex)) {
+            return last;
         }
         else {
-            return first; //actually never occurs
+            throw; //actually never occurs
         } 
     }
     
@@ -79,11 +80,21 @@ shared interface Sequence<out Element>
     class SequenceIterator(Natural from)
             extends Object()
             satisfies Iterator<Element> {
-        shared actual Element? head { 
-            return item(from);
+        shared actual Element head { 
+            if (is Element head = item(from)) {
+                return head;
+            }
+            else {
+                throw;
+            }
         }
-        shared actual Iterator<Element> tail {
-            return SequenceIterator(from+1);
+        shared actual Iterator<Element>? tail {
+            if (from<lastIndex) {
+                return SequenceIterator(from+1);
+            }
+            else {
+                return null;
+            }
         }
         shared actual String string {
             return "SequenceIterator";

@@ -34,8 +34,8 @@ shared class Singleton<Element>(Element element)
             shared actual Element head { 
                 return first;
             }
-            shared actual Iterator<Element> tail {
-                return emptyIterator;
+            shared actual Iterator<Element>? tail {
+                return null;
             }
         }
         return singletonIterator;

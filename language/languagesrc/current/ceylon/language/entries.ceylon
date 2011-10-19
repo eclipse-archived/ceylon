@@ -11,16 +11,21 @@ shared Map<Natural,Element> entries<Element>(Element... sequence)
             class EntryIterator(Natural from) 
                     extends Object()
                     satisfies Iterator<Entry<Natural,Element>> {
-                shared actual Entry<Natural,Element>? head {
+                shared actual Entry<Natural,Element> head {
                     if (exists Element x = sequence[from]) {
                         return from->x;
                     }
                     else {
-                        return null;
+                        throw;
                     }
                 }
-                shared actual Iterator<Entry<Natural,Element>> tail {
-                    return EntryIterator(from+1);
+                shared actual Iterator<Entry<Natural,Element>>? tail {
+                    if (nonempty sequence) {
+                        if (from<sequence.lastIndex) {
+                            return EntryIterator(from+1);
+                        }
+                    }
+                    return null;
                 }
                 shared actual String string {
                     return "" sequence.string " from " from "";
