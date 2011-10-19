@@ -94,12 +94,12 @@ shared class Range<Element>(Element first, Element last)
                 return current;
             }
             shared actual Iterator<Element>? tail {
-                Element next = outer.next(current);
-                if (pastEnd(next)) {
+                Element x = next(current);
+                if (pastEnd(x)) {
                     return null;
                 }
                 else {
-                    return RangeIterator(next);
+                    return RangeIterator(x);
                 }
             }
         }
