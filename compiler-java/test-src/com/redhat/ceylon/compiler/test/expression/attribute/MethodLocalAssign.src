@@ -3,6 +3,8 @@ package com.redhat.ceylon.compiler.test.expression.attribute;
 class MethodLocalAssign {
     
     private final void m() {
+        boolean b = true;
+        b = false;
         
         final class b1 {
             private boolean value = true;

@@ -1,6 +1,8 @@
 @nomodel
 class MethodLocalAssign(){
     void m(){
+        variable Boolean b := true;
+        b := false;
         variable Boolean b1 := true;
         b1 := false;
         Boolean b2 {
