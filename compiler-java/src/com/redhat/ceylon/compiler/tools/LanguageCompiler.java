@@ -351,6 +351,9 @@ public class LanguageCompiler extends JavaCompiler {
             throw new RuntimeException(e);
         }
         Iterable<? extends File> prefixes = ((JavacFileManager)fileManager).getLocation(StandardLocation.SOURCE_PATH);
+        
+        int maxPrefixLength = 0;
+        File srcDirFile = null;
         for (File prefixFile : prefixes) {
             String path;
             try {
@@ -359,9 +362,13 @@ public class LanguageCompiler extends JavaCompiler {
                 // FIXME
                 throw new RuntimeException(e);
             }
-            if (name.startsWith(path)) {
-                return prefixFile;
+            if (name.startsWith(path) && path.length() > maxPrefixLength) {
+                maxPrefixLength = path.length();
+                srcDirFile = prefixFile;
             }
+        }
+        if (srcDirFile != null) {
+            return srcDirFile;
         }
         throw new RuntimeException("Failed to find source prefix for " + name);
     }
