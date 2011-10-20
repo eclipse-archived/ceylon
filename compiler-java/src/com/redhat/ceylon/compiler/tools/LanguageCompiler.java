@@ -379,20 +379,25 @@ public class LanguageCompiler extends JavaCompiler {
     	// Figure out the package name by stripping the "-src" prefix and
     	// extracting
     	// the package part of the fullname.
+        int srcDirLength = 0;
         for (File prefixFile : prefixes) {
             String prefix = prefixFile.getPath();
-    		if (file.toString().startsWith(prefix)) {
-    			String fullname = file.toString().substring(prefix.length());
-    			assert fullname.endsWith(".ceylon");
-    			fullname = fullname.substring(0, fullname.length() - ".ceylon".length());
-    			fullname = fullname.replace(File.separator, ".");
-    			if(fullname.startsWith("."))
-    				fullname = fullname.substring(1);
-    			String packageName = Convert.packagePart(fullname);
-    			if (!packageName.equals(""))
-    				return packageName;
-    		}
+            if (file.toString().startsWith(prefix) && prefix.length() > srcDirLength) {
+                srcDirLength = prefix.length();
+            }
     	}
+        
+        if (srcDirLength > 0) {
+            String fullname = file.toString().substring(srcDirLength);
+            assert fullname.endsWith(".ceylon");
+            fullname = fullname.substring(0, fullname.length() - ".ceylon".length());
+            fullname = fullname.replace(File.separator, ".");
+            if(fullname.startsWith("."))
+                fullname = fullname.substring(1);
+            String packageName = Convert.packagePart(fullname);
+            if (!packageName.equals(""))
+                return packageName;
+        }
     	return null;
     }
     
