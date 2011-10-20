@@ -17,6 +17,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinitio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.util.Decl;
 import com.redhat.ceylon.compiler.util.Util;
+import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
@@ -172,12 +173,10 @@ public class CeylonTransformer extends AbstractTransformer {
         }
 
         TypedDeclaration declarationModel = decl.getDeclarationModel();
-        AttributeDefinitionBuilder builder = globalGen()
-            .defineGlobal(makeJavaType(actualType(decl)), attrName)
+        AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
+            .wrapped(this, attrName, declarationModel)
             .className(attrClassName)
-            .classAnnotations(makeAtAttribute())
-            .valueAnnotations(makeJavaTypeAnnotations(declarationModel, actualType(decl)))
-            .classIsFinal(true);
+            .is(Flags.PUBLIC, declarationModel.isShared());
 
         // if it's a module add a special annotation
         if(declarationModel.isToplevel() 
@@ -185,16 +184,9 @@ public class CeylonTransformer extends AbstractTransformer {
         		&& declarationModel.getUnit().getFilename().equals("module.ceylon")){
             Package pkg = (Package) declarationModel.getContainer();
             Module module = pkg.getModule();
-            builder.classAnnotations(makeAtModule(module));
+            builder.annotations(makeAtModule(module));
         }
 
-        if (declarationModel.isShared()) {
-            builder
-                .classIsPublic(true)
-                .getterIsPublic(true)
-                .setterIsPublic(true);
-        }
-        
         if (decl instanceof AttributeSetterDefinition) {
             // For inner setters
             AttributeSetterDefinition sdef = (AttributeSetterDefinition)decl;
@@ -250,9 +242,7 @@ public class CeylonTransformer extends AbstractTransformer {
             
             return builder.build().append(var);
         } else {
-            builder
-                .getterIsStatic(true)
-                .setterIsStatic(true);
+            builder.is(Flags.STATIC, true);
             return builder.build();
         }
     }

@@ -1,7 +1,11 @@
 package com.redhat.ceylon.compiler.codegen;
 
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCAnnotation;
+import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
@@ -12,36 +16,63 @@ import com.sun.tools.javac.util.Name;
  * The generated class can be customized by calling methods of this class.
  */
 public class AttributeDefinitionBuilder {
+    private boolean hasField = true;
     private final Name fieldName;
 
-    private final JCTree.JCExpression variableType;
-    private final String variableName;
+    private final JCTree.JCExpression attrType;
+    private final String attrName;
     private String className;
 
-    private long classFlags;
+    private long modifiers;
+
+    private final ListBuffer<JCAnnotation> annotations = ListBuffer.lb();
 
     private boolean readable = true;
-    private int getterFlags;
-    private JCTree.JCBlock getterBlock;
+    private final MethodDefinitionBuilder getterBuilder;
 
     private JCTree.JCExpression variableInit;
 
     private boolean writable = true;
-    private int setterFlags;
-    private JCTree.JCBlock setterBlock;
+    private final MethodDefinitionBuilder setterBuilder;
     
-    private List<JCTree.JCAnnotation> valueAnnotations = List.nil();
-    private ListBuffer<JCTree.JCAnnotation> classAnnotations = ListBuffer.lb();
-
     private AbstractTransformer owner;
 
-    public AttributeDefinitionBuilder(AbstractTransformer owner, JCTree.JCExpression variableType, String variableName) {
+    private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, String className, String attrName, String fieldName) {
+        boolean isGenericsType = owner.isGenericsImplementation(attrType);
+        JCExpression type = owner.makeJavaType(attrType.getType(), isGenericsType ? AbstractTransformer.TYPE_ARGUMENT : 0);
+        this.attrType = type;
+        
         this.owner = owner;
-        this.variableType = variableType;
-        this.className = this.variableName = variableName;
-        this.fieldName = owner.names().fromString("value");
+        this.className = className;
+        this.attrName = attrName;
+        this.fieldName = owner.names().fromString(fieldName);
+        
+        getterBuilder = MethodDefinitionBuilder
+            .systemMethod(owner, Util.getGetterName(attrName))
+            .block(generateDefaultGetterBlock())
+            .resultType(attrType);
+        setterBuilder = MethodDefinitionBuilder
+            .systemMethod(owner, Util.getSetterName(attrName))
+            .block(generateDefaultSetterBlock())
+            .parameter(0, attrName, attrType);
     }
 
+    public static AttributeDefinitionBuilder wrapped(AbstractTransformer owner, String name, TypedDeclaration attrType) {
+        return new AttributeDefinitionBuilder(owner, attrType, name, name, "value");
+    }
+    
+    public static AttributeDefinitionBuilder getter(AbstractTransformer owner, String name, TypedDeclaration attrType) {
+        return new AttributeDefinitionBuilder(owner, attrType, null, name, name)
+            .skipField()
+            .immutable();
+    }
+    
+    public static AttributeDefinitionBuilder setter(AbstractTransformer owner, String name, TypedDeclaration attrType) {
+        return new AttributeDefinitionBuilder(owner, attrType, null, name, name)
+            .skipField()
+            .skipGetter();
+    }
+    
     /**
      * Generates the class and returns the generated tree.
      * @return the generated class tree, to be added to the appropriate {@link JCTree.JCCompilationUnit}.
@@ -49,13 +80,18 @@ public class AttributeDefinitionBuilder {
     public List<JCTree> build() {
         ListBuffer<JCTree> defs = ListBuffer.lb();
         appendDefinitionsTo(defs);
-        return ClassDefinitionBuilder
-            .klass(owner, className)
-            .modifiers(classFlags)
-            .constructorModifiers(Flags.PRIVATE)
-            .annotations(classAnnotations.toList())
-            .defs(defs.toList())
-            .build();
+        if (className != null) {
+            return ClassDefinitionBuilder
+                .klass(owner, className)
+                .modifiers(Flags.FINAL | (modifiers & (Flags.PUBLIC | Flags.PRIVATE)))
+                .constructorModifiers(Flags.PRIVATE)
+                .annotations(owner.makeAtAttribute())
+                .annotations(annotations.toList())
+                .defs(defs.toList())
+                .build();
+        } else {
+            return defs.toList();
+        }
     }
 
     /**
@@ -63,21 +99,27 @@ public class AttributeDefinitionBuilder {
      * @param defs a {@link ListBuffer} to which the definitions will be appended.
      */
     public void appendDefinitionsTo(ListBuffer<JCTree> defs) {
-        if (getterBlock == null) {
+        if (hasField) {
             defs.append(generateField());
         }
 
         if (readable) {
-            defs.append(generateGetter());
+            getterBuilder.modifiers(getGetSetModifiers());
+            defs.append(getterBuilder.build());
         }
 
         if (writable) {
-            defs.append(generateSetter());
+            setterBuilder.modifiers(getGetSetModifiers());
+            defs.append(setterBuilder.build());
         }
     }
 
+    private long getGetSetModifiers() {
+        return modifiers & (Flags.PUBLIC | Flags.PRIVATE | Flags.ABSTRACT | Flags.FINAL | Flags.STATIC);
+    }
+    
     private JCTree generateField() {
-        int flags = Flags.PRIVATE | (getterFlags & Flags.STATIC);
+        long flags = Flags.PRIVATE | (modifiers & Flags.STATIC);
         if (!writable) {
             flags |= Flags.FINAL;
         }
@@ -85,52 +127,17 @@ public class AttributeDefinitionBuilder {
         return owner.make().VarDef(
                 owner.make().Modifiers(flags),
                 fieldName,
-                variableType,
+                attrType,
                 variableInit
         );
     }
 
-    private JCTree generateGetter() {
-        return MethodDefinitionBuilder
-            .getter(owner, variableName, variableType)
-            .modifiers(getterFlags)
-            .annotations(valueAnnotations)
-            .block(makeGetterBlock())
-            .build();
-    }
-
-    private JCTree.JCBlock makeGetterBlock() {
-        return getterBlock != null
-            ? getterBlock
-            : generateDefaultGetterBlock();
-    }
-    
     private JCTree.JCBlock generateDefaultGetterBlock() {
         return owner.make().Block(0L, List.<JCTree.JCStatement>of(owner.make().Return(owner.make().Ident(fieldName))));
     }
 
-    private JCTree generateSetter() {
-        return MethodDefinitionBuilder
-            .setter(owner, variableName, variableType, valueAnnotations)
-            .modifiers(setterFlags)
-            .block(makeSetterBlock())
-            .build();
-    }
-
-    private JCTree.JCBlock makeSetterBlock() {
-        if (setterBlock != null) {
-            return setterBlock != null ? setterBlock : createEmptyBlock();
-        } else {
-            return generateDefaultSetterBlock();
-        }
-    }
-    
-    private JCTree.JCBlock createEmptyBlock() {
-        return owner.make().Block(0L, List.<JCTree.JCStatement>nil());
-    }
-
     private JCTree.JCBlock generateDefaultSetterBlock() {
-        Name paramName = owner.names().fromString(variableName);
+        Name paramName = owner.names().fromString(attrName);
         return owner.make().Block(0L, List.<JCTree.JCStatement>of(
                 owner.make().Exec(
                         owner.make().Assign(
@@ -149,110 +156,42 @@ public class AttributeDefinitionBuilder {
         return this;
     }
     
-    /**
-     * Adds to the modifier flags of the generated class.
-     * @param classFlags the modifier flags (see {@link Flags})
-     * @return this instance for method chaining
-     */
-    public AttributeDefinitionBuilder classModifiers(long classFlags) {
-        this.classFlags |= classFlags;
-        return this;
-    }
-    
-    private AttributeDefinitionBuilder classIs(boolean is, long mod) {
-        if (is) {
-            classModifiers(mod);
-        } else {
-            this.classFlags &= ~mod;
+    public AttributeDefinitionBuilder modifiers(long... modifiers) {
+        long mods = 0;
+        for (long mod : modifiers) {
+            mods |= mod;
         }
-        return this;
-    }
-    
-    /**
-     * Sets the class STATIC flag.
-     * @param isStatic true to set the flag, false to clear it
-     * @return this instance for method chaining
-     * 
-     * @see #classModifiers(long)
-     */
-    public AttributeDefinitionBuilder classIsStatic(boolean isStatic) {
-        return classIs(isStatic, Flags.STATIC);
-    }
-    
-    /**
-     * Sets the class FINAL flag.
-     * @param isFinal true to set the flag, false to clear it
-     * @return this instance for method chaining
-     * 
-     * @see #classModifiers(long)
-     */
-    public AttributeDefinitionBuilder classIsFinal(boolean isFinal) {
-        return classIs(isFinal, Flags.FINAL);
-    }
-    
-    /**
-     * Sets the class PUBLIC flag.
-     * @param isPublic true to set the flag, false to clear it
-     * @return this instance for method chaining
-     * 
-     * @see #classModifiers(long)
-     */
-    public AttributeDefinitionBuilder classIsPublic(boolean isPublic) {
-        return classIs(isPublic, Flags.PUBLIC);
-    }
-
-    /**
-     * Adds to the modifier flags of the generated getter. 
-     * If no getter is generated the modifier flags will be silently
-     * ignored.
-     * @param getterFlags the modifier flags (see {@link Flags})
-     * @return this instance for method chaining
-     */
-    public AttributeDefinitionBuilder getterModifiers(long getterFlags) {
-        this.getterFlags |= getterFlags;
+        this.modifiers = mods;
         return this;
     }
 
-    private AttributeDefinitionBuilder getterIs(boolean is, long mod) {
-        if (is) {
-            getterModifiers(mod);
+    public AttributeDefinitionBuilder is(long flag, boolean value) {
+        if (value) {
+            this.modifiers |= flag;
         } else {
-            this.getterFlags &= ~mod;
+            this.modifiers &= ~flag;
         }
         return this;
     }
-    
-    /**
-     * Sets the setter STATIC flag.
-     * @param isStatic true to set the flag, false to clear it
-     * @return this instance for method chaining
-     * 
-     * @see #getterModifiers(long)
-     */
-    public AttributeDefinitionBuilder getterIsStatic(boolean isStatic) {
-        return getterIs(isStatic, Flags.STATIC);
+
+    public AttributeDefinitionBuilder annotations(List<JCTree.JCAnnotation> annotations) {
+        this.annotations.appendList(annotations);
+        return this;
     }
-    
-    /**
-     * Sets the getter FINAL flag.
-     * @param isFinal true to set the flag, false to clear it
-     * @return this instance for method chaining
-     * 
-     * @see #getterModifiers(long)
-     */
-    public AttributeDefinitionBuilder getterIsFinal(boolean isFinal) {
-        return getterIs(isFinal, Flags.FINAL);
+
+    public AttributeDefinitionBuilder isActual(boolean isActual) {
+        getterBuilder.isActual(isActual);
+        setterBuilder.isActual(isActual);
+        return this;
     }
-    
+
     /**
-     * Sets the getter PUBLIC flag.
-     * @param isPublic true to set the flag, false to clear it
+     * Causes no field to be generated.
      * @return this instance for method chaining
-     * 
-     * @see #getterModifiers(long)
      */
-    public AttributeDefinitionBuilder getterIsPublic(boolean isPublic) {
-        return getterIs(isPublic, Flags.PUBLIC);
+    public AttributeDefinitionBuilder skipField() {
+        this.hasField = false;
+        return this;
     }
 
     /**
@@ -262,7 +201,8 @@ public class AttributeDefinitionBuilder {
      * @return this instance for method chaining
      */
     public AttributeDefinitionBuilder getterBlock(JCTree.JCBlock getterBlock) {
-        this.getterBlock = getterBlock;
+        skipField();
+        getterBuilder.block(getterBlock);
         return this;
     }
 
@@ -270,62 +210,9 @@ public class AttributeDefinitionBuilder {
      * Causes no getter to be generated.
      * @return this instance for method chaining
      */
-    public void skipGetter() {
+    public AttributeDefinitionBuilder skipGetter() {
         this.readable = false;
-    }
-
-    /**
-     * Adds to the modifier flags of the generated setter. 
-     * If no setter is generated the modifier flags will be silently
-     * ignored.
-     * @param setterFlags the modifier flags (see {@link Flags})
-     * @return this instance for method chaining
-     */
-    public AttributeDefinitionBuilder setterModifiers(long setterFlags) {
-        this.setterFlags |= setterFlags;
         return this;
-    }
-
-    private AttributeDefinitionBuilder setterIs(boolean is, long mod) {
-        if (is) {
-            setterModifiers(mod);
-        } else {
-            this.setterFlags &= ~mod;
-        }
-        return this;
-    }
-    
-    /**
-     * Sets the setter STATIC flag.
-     * @param isStatic true to set the flag, false to clear it
-     * @return this instance for method chaining
-     * 
-     * @see #setterModifiers(long)
-     */
-    public AttributeDefinitionBuilder setterIsStatic(boolean isStatic) {
-        return setterIs(isStatic, Flags.STATIC);
-    }
-    
-    /**
-     * Sets the setter FINAL flag.
-     * @param isFinal true to set the flag, false to clear it
-     * @return this instance for method chaining
-     * 
-     * @see #setterModifiers(long)
-     */
-    public AttributeDefinitionBuilder setterIsFinal(boolean isFinal) {
-        return setterIs(isFinal, Flags.FINAL);
-    }
-    
-    /**
-     * Sets the setter PUBLIC flag.
-     * @param isPublic true to set the flag, false to clear it
-     * @return this instance for method chaining
-     * 
-     * @see #setterModifiers(long)
-     */
-    public AttributeDefinitionBuilder setterIsPublic(boolean isPublic) {
-        return setterIs(isPublic, Flags.PUBLIC);
     }
 
     /**
@@ -335,7 +222,7 @@ public class AttributeDefinitionBuilder {
      * @return this instance for method chaining
      */
     public AttributeDefinitionBuilder setterBlock(JCTree.JCBlock setterBlock) {
-        this.setterBlock = setterBlock;
+        setterBuilder.block(setterBlock);
         return this;
     }
 
@@ -356,21 +243,6 @@ public class AttributeDefinitionBuilder {
      */
     public AttributeDefinitionBuilder initialValue(JCTree.JCExpression initialValue) {
         this.variableInit = initialValue;
-        return this;
-    }
-
-    /**
-     * Applies the given <tt>valueAnnotations</tt> to the getter method and to the parameter of the setter method.
-     * @param valueAnnotations the annotations to apply.
-     * @return this instance for method chaining
-     */
-    public AttributeDefinitionBuilder valueAnnotations(List<JCTree.JCAnnotation> valueAnnotations) {
-        this.valueAnnotations = valueAnnotations;
-        return this;
-    }
-
-    public AttributeDefinitionBuilder classAnnotations(List<JCTree.JCAnnotation> classAnnotations) {
-        this.classAnnotations.addAll(classAnnotations);
         return this;
     }
 }

@@ -23,7 +23,8 @@ final class attr2 {
         return value;
     }
     
-    static void setAttr2(@.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
+    static void setAttr2(@.com.redhat.ceylon.compiler.metadata.java.Name("attr2")
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
     int attr2) {
         value = attr2;
     }
@@ -52,7 +53,8 @@ final class attr4 {
         return 1;
     }
     
-    static void setAttr4(@.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
+    static void setAttr4(@.com.redhat.ceylon.compiler.metadata.java.Name("attr4")
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
     int attr4) {
     }
     

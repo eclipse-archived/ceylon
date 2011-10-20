@@ -4,21 +4,21 @@ package com.redhat.ceylon.compiler.test.model.annotations;
 public class Klass {
     
     @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
-    private final int m1(@.com.redhat.ceylon.compiler.metadata.java.Name("p1")
+    public final int m1(@.com.redhat.ceylon.compiler.metadata.java.Name("p1")
     @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
     final int p1) {
         return 1;
     }
     
     @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
-    private final ceylon.language.Integer m2(@.com.redhat.ceylon.compiler.metadata.java.Name("p2")
+    public final ceylon.language.Integer m2(@.com.redhat.ceylon.compiler.metadata.java.Name("p2")
     @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     final ceylon.language.Integer p2) {
         return .ceylon.language.Integer.instance(1);
     }
     
     @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
-    private final ceylon.language.Iterable<? extends ceylon.language.Integer> m3(@.com.redhat.ceylon.compiler.metadata.java.Name("p3")
+    public final ceylon.language.Iterable<? extends ceylon.language.Integer> m3(@.com.redhat.ceylon.compiler.metadata.java.Name("p3")
     @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
     final ceylon.language.Iterable<? extends ceylon.language.Integer> p3) {
         return new ceylon.language.ArraySequence<ceylon.language.Integer>(.ceylon.language.Integer.instance(1));

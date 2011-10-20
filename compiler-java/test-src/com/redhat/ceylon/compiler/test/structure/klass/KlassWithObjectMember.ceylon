@@ -1,5 +1,5 @@
 @nomodel
-class KlassWithObjectInInitialiser(String x) {
+class KlassWithObjectMember(String x) {
     shared object y {
         String m() {
             return x;

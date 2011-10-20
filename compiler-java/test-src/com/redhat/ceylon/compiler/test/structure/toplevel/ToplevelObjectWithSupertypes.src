@@ -19,9 +19,9 @@ public final class x extends com.redhat.ceylon.compiler.test.structure.toplevel.
     private x() {
         super(2L);
     }
-    private static final x value = new x();
+    private static final com.redhat.ceylon.compiler.test.structure.toplevel.x value = new x();
     
-    public static x getX() {
+    public static com.redhat.ceylon.compiler.test.structure.toplevel.x getX() {
         return value;
     }
 }

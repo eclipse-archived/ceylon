@@ -7,9 +7,9 @@ final class x {
     
     private x() {
     }
-    private static final x value = new x();
+    private static final com.redhat.ceylon.compiler.test.structure.toplevel.x value = new x();
     
-    static x getX() {
+    static com.redhat.ceylon.compiler.test.structure.toplevel.x getX() {
         return value;
     }
 }

@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.tree.JCTree;
@@ -276,19 +277,22 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
-    private ClassDefinitionBuilder parameter(String name, ProducedType paramType, boolean isGenericsType, boolean isSequenced, boolean isCaptured) {
+    private ClassDefinitionBuilder parameter(String name, TypedDeclaration decl, boolean isSequenced) {
         // Create a parameter for the constructor
-        JCExpression type = gen.makeJavaType(paramType, isGenericsType ? AbstractTransformer.TYPE_ARGUMENT : 0);
-        List<JCAnnotation> annots = gen.makeAtName(name);
-        if (isSequenced) {
-            annots = annots.appendList(gen.makeAtSequenced());
+        JCExpression type = gen.makeJavaType(decl);
+        List<JCAnnotation> annots = List.nil();
+        if (gen.needsAnnotations(decl)) {
+            annots = annots.appendList(gen.makeAtName(name));
+            if (isSequenced) {
+                annots = annots.appendList(gen.makeAtSequenced());
+            }
+            annots = annots.appendList(gen.makeJavaTypeAnnotations(decl));
         }
-        annots = annots.appendList(gen.makeJavaTypeAnnotations(paramType, true));
         JCVariableDecl var = gen.make().VarDef(gen.make().Modifiers(0, annots), gen.names().fromString(name), type, null);
         params.append(var);
         
         // Check if the parameter is used outside of the initializer
-        if (isCaptured) {
+        if (decl.isCaptured()) {
             // If so we create a field for it initializing it with the parameter's value
             JCVariableDecl localVar = gen.make().VarDef(gen.make().Modifiers(FINAL | PRIVATE), gen.names().fromString(name), type , null);
             defs.append(localVar);
@@ -305,7 +309,7 @@ public class ClassDefinitionBuilder {
     
     public ClassDefinitionBuilder parameter(Parameter param) {
         String name = param.getName();
-        return parameter(name, param.getType(), gen.isGenericsImplementation(param), param.isSequenced(), param.isCaptured());
+        return parameter(name, param, param.isSequenced());
     }
     
     public ClassDefinitionBuilder defs(JCTree statement) {

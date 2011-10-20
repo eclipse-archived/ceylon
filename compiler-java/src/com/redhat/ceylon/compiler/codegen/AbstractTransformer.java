@@ -12,6 +12,7 @@ import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -341,6 +342,11 @@ public abstract class AbstractTransformer implements Transformation {
     static final int WANT_RAW_TYPE = 1 << 3;
     static final int CATCH = 1 << 4;
 
+    protected JCExpression makeJavaType(TypedDeclaration typeDecl) {
+        boolean isGenericsType = isGenericsImplementation(typeDecl);
+        return makeJavaType(typeDecl.getType(), isGenericsType ? AbstractTransformer.TYPE_ARGUMENT : 0);
+    }
+
     protected JCExpression makeJavaType(ProducedType producedType) {
         return makeJavaType(producedType, 0);
     }
@@ -583,8 +589,17 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtObjectType);
     }
 
-    protected List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Declaration decl, ProducedType type) {
-        return makeJavaTypeAnnotations(type, decl.isToplevel() || (decl.isClassOrInterfaceMember() && decl.isShared()));
+    protected boolean needsAnnotations(Declaration decl) {
+        Declaration reqdecl = decl;
+        if (reqdecl instanceof Parameter) {
+            Parameter p = (Parameter)reqdecl;
+            reqdecl = p.getDeclaration();
+        }
+        return reqdecl.isToplevel() || (reqdecl.isClassOrInterfaceMember() && reqdecl.isShared());
+    }
+
+    protected List<JCTree.JCAnnotation> makeJavaTypeAnnotations(TypedDeclaration decl) {
+        return makeJavaTypeAnnotations(decl.getType(), needsAnnotations(decl));
     }
 
     protected List<JCTree.JCAnnotation> makeJavaTypeAnnotations(ProducedType type, boolean required) {

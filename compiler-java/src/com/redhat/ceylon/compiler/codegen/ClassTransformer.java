@@ -107,24 +107,23 @@ public class ClassTransformer extends AbstractTransformer {
         }        
     }
     
-    public JCTree.JCMethodDecl transform(AttributeSetterDefinition decl) {
+    public List<JCTree> transform(AttributeSetterDefinition decl) {
         JCBlock body = statementGen().transform(decl.getBlock());
         String name = decl.getIdentifier().getText();
-        boolean isGenericsType = isGenericsImplementation(decl.getDeclarationModel());
-        return MethodDefinitionBuilder
-            .setter(this, name, actualType(decl), isGenericsType)
+        return AttributeDefinitionBuilder
+            .setter(this, name, decl.getDeclarationModel())
             .modifiers(transformAttributeGetSetDeclFlags(decl))
-            .block(body)
+            .setterBlock(body)
             .build();
     }
 
-    public JCTree.JCMethodDecl transform(AttributeGetterDefinition decl) {
+    public List<JCTree> transform(AttributeGetterDefinition decl) {
         String name = decl.getIdentifier().getText();
         JCBlock body = statementGen().transform(decl.getBlock());
-        return MethodDefinitionBuilder
+        return AttributeDefinitionBuilder
             .getter(this, name, decl.getDeclarationModel())
             .modifiers(transformAttributeGetSetDeclFlags(decl))
-            .block(body)
+            .getterBlock(body)
             .build();
     }
 
@@ -191,7 +190,7 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
 
-    public JCTree makeGetter(Tree.AttributeDeclaration decl) {
+    public List<JCTree> makeGetter(Tree.AttributeDeclaration decl) {
         at(decl);
         String atrrName = decl.getIdentifier().getText();
         JCBlock body = null;
@@ -199,15 +198,15 @@ public class ClassTransformer extends AbstractTransformer {
             body = make().Block(0, List.<JCTree.JCStatement>of(make().Return(makeSelect("this", atrrName))));
         }
         
-        return MethodDefinitionBuilder
+        return AttributeDefinitionBuilder
             .getter(this, atrrName, decl.getDeclarationModel())
             .modifiers(transformAttributeGetSetDeclFlags(decl))
             .isActual(Decl.isActual(decl))
-            .block(body)
+            .getterBlock(body)
             .build();
     }
 
-    public JCTree makeSetter(Tree.AttributeDeclaration decl) {
+    public List<JCTree> makeSetter(Tree.AttributeDeclaration decl) {
         at(decl);
         String atrrName = decl.getIdentifier().getText();
         JCBlock body = null;
@@ -218,11 +217,11 @@ public class ClassTransformer extends AbstractTransformer {
                                     makeIdent(atrrName.toString())))));
         }
         
-        return MethodDefinitionBuilder
-            .setter(this, atrrName, actualType(decl), isGenericsImplementation(decl.getDeclarationModel()))
+        return AttributeDefinitionBuilder
+            .setter(this, atrrName, decl.getDeclarationModel())
             .modifiers(transformAttributeGetSetDeclFlags(decl))
             .isActual(Decl.isActual(decl))
-            .block(body)
+            .setterBlock(body)
             .build();
     }
 
@@ -300,7 +299,8 @@ public class ClassTransformer extends AbstractTransformer {
         String name = def.getIdentifier().getText();
         MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(gen(), name);
         
-        methodBuilder.parameter(FINAL, "$this", type, false, false);
+        JCExpression typeExpr = makeJavaType(type);
+        methodBuilder.parameter(FINAL, "$this", typeExpr, List.<JCTree.JCAnnotation>nil());
         for (Tree.Parameter param : def.getParameterLists().get(0).getParameters()) {
             methodBuilder.parameter(param);
         }
@@ -325,7 +325,7 @@ public class ClassTransformer extends AbstractTransformer {
             .build();
     }
 
-    public List<JCTree> objectClass(Tree.ObjectDefinition def, boolean topLevel) {
+    public List<JCTree> objectClass(Tree.ObjectDefinition def) {
         String name = def.getIdentifier().getText();
         ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder.klass(this, name);
         
@@ -334,7 +334,7 @@ public class ClassTransformer extends AbstractTransformer {
 
         TypeDeclaration decl = def.getDeclarationModel().getType().getDeclaration();
 
-        if (topLevel) {
+        if (Decl.isToplevel(def)) {
             classBuilder.body(makeObjectGlobal(def, make().Ident(names().fromString(name))).toList());
         }
 
@@ -349,15 +349,12 @@ public class ClassTransformer extends AbstractTransformer {
 
     public ListBuffer<JCTree> makeObjectGlobal(Tree.ObjectDefinition decl, JCExpression generatedClassName) {
         ListBuffer<JCTree> defs = ListBuffer.lb();
-        AttributeDefinitionBuilder builder = globalGen()
-                .defineGlobal(generatedClassName, decl.getIdentifier().getText())
-                .valueAnnotations(makeJavaTypeAnnotations(decl.getDeclarationModel(), actualType(decl)))
+        AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
+                .wrapped(this, decl.getIdentifier().getText(), decl.getDeclarationModel())
                 .immutable()
-                .initialValue(make().NewClass(null, null, generatedClassName, List.<JCExpression>nil(), null));
-
-        builder.classIsFinal(true).classIsPublic(Decl.isShared(decl));
-        builder.getterIsStatic(true).getterIsPublic(Decl.isShared(decl));
-        builder.setterIsStatic(true).setterIsPublic(Decl.isShared(decl)); 
+                .initialValue(make().NewClass(null, null, generatedClassName, List.<JCExpression>nil(), null))
+                .is(PUBLIC, Decl.isShared(decl))
+                .is(STATIC, true);
 
         builder.appendDefinitionsTo(defs);
         return defs;

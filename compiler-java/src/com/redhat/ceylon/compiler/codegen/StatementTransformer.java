@@ -245,7 +245,7 @@ public class StatementTransformer extends AbstractTransformer {
         JCExpression iter_type_expr = makeJavaType(iter_type, CeylonTransformer.TYPE_ARGUMENT);
         ProducedType item_type = actualType(variable);
         JCExpression item_type_expr = makeJavaType(item_type);
-        List<JCAnnotation> annots = makeJavaTypeAnnotations(variable.getDeclarationModel(), actualType(variable));
+        List<JCAnnotation> annots = makeJavaTypeAnnotations(variable.getDeclarationModel());
 
         // ceylon.language.Iterator<T> $V$iter$X = ITERABLE.iterator();
         JCExpression containment = expressionGen().transformExpression(iterDecl.getSpecifierExpression().getExpression(), BoxingStrategy.UNBOXED);
@@ -315,7 +315,7 @@ public class StatementTransformer extends AbstractTransformer {
         }
 
         JCExpression type = makeJavaType(t);
-        List<JCAnnotation> annots = makeJavaTypeAnnotations(decl.getDeclarationModel(), t);
+        List<JCAnnotation> annots = makeJavaTypeAnnotations(decl.getDeclarationModel());
 
         int modifiers = transformLocalFieldDeclFlags(decl);
         return at(decl).VarDef(at(decl).Modifiers(modifiers, annots), atrrName, type, initialValue);

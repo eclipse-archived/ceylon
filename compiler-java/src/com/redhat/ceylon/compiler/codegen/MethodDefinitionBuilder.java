@@ -37,7 +37,7 @@ public class MethodDefinitionBuilder {
 
     private boolean isActual;
     
-    private ProducedType resultType;
+    private TypedDeclaration resultType;
     private JCExpression resultTypeExpr;
     
     private final ListBuffer<JCAnnotation> annotations = ListBuffer.lb();
@@ -52,30 +52,14 @@ public class MethodDefinitionBuilder {
         return new MethodDefinitionBuilder(gen, Util.quoteMethodName(name));
     }
     
+    public static MethodDefinitionBuilder systemMethod(AbstractTransformer gen, String name) {
+        return new MethodDefinitionBuilder(gen, name);
+    }
+    
     public static MethodDefinitionBuilder constructor(AbstractTransformer gen) {
         return new MethodDefinitionBuilder(gen, null);
     }
-    
-    public static MethodDefinitionBuilder getter(AbstractTransformer gen, String name, TypedDeclaration decl) {
-        return new MethodDefinitionBuilder(gen, Util.getGetterName(name))
-            .resultType(decl);
-    }
-    
-    public static MethodDefinitionBuilder getter(AbstractTransformer gen, String name, JCExpression attrType) {
-        return new MethodDefinitionBuilder(gen, Util.getGetterName(name))
-            .resultType(attrType);
-    }
-    
-    public static MethodDefinitionBuilder setter(AbstractTransformer gen, String name, ProducedType attrType, boolean isGenericsType) {
-        return new MethodDefinitionBuilder(gen, Util.getSetterName(name))
-            .parameter(0, name, attrType, isGenericsType, false);
-    }
-    
-    public static MethodDefinitionBuilder setter(AbstractTransformer gen, String name, JCExpression attrType, List<JCAnnotation> annots) {
-        return new MethodDefinitionBuilder(gen, Util.getSetterName(name))
-            .parameter(0, name, attrType, annots);
-    }
-    
+
     public static MethodDefinitionBuilder main(AbstractTransformer gen) {
         return new MethodDefinitionBuilder(gen, "main")
             .modifiers(PUBLIC | STATIC)
@@ -85,7 +69,7 @@ public class MethodDefinitionBuilder {
     private MethodDefinitionBuilder(AbstractTransformer gen, String name) {
         this.gen = gen;
         this.name = name;
-        resultTypeExpr = makeResultType(null, 0);
+        resultTypeExpr = makeResultType(null);
     }
     
     public JCTree.JCMethodDecl build() {
@@ -94,7 +78,7 @@ public class MethodDefinitionBuilder {
             annotations.appendList(gen.makeAtOverride());
         }
         if (resultType != null) {
-            annotations.appendList(gen.makeJavaTypeAnnotations(resultType, true));
+            annotations.appendList(gen.makeJavaTypeAnnotations(resultType));
         }
         
         return gen.make().MethodDef(
@@ -120,11 +104,11 @@ public class MethodDefinitionBuilder {
         return ((body != null) && ((modifiers & ABSTRACT) == 0)) ? gen.make().Block(0, body.toList()) : null;
     }
 
-    private JCExpression makeResultType(ProducedType resultType, int flags) {
+    private JCExpression makeResultType(TypedDeclaration resultType) {
         if (resultType == null) {
             return gen.make().TypeIdent(VOID);
         } else {
-            return gen.makeJavaType(resultType, flags);
+            return gen.makeJavaType(resultType);
         }
     }
 
@@ -173,13 +157,16 @@ public class MethodDefinitionBuilder {
         return this;
     }
     
-    public MethodDefinitionBuilder parameter(long modifiers, String name, ProducedType paramType, boolean isGenericsType, boolean isSequenced) {
-        JCExpression type = gen.makeJavaType(paramType, isGenericsType ? AbstractTransformer.TYPE_ARGUMENT : 0);
-        List<JCAnnotation> annots = gen.makeAtName(name);
-        if (isSequenced) {
-            annots = annots.appendList(gen.makeAtSequenced());
+    public MethodDefinitionBuilder parameter(long modifiers, String name, TypedDeclaration decl) {
+        JCExpression type = gen.makeJavaType(decl);
+        List<JCAnnotation> annots = List.nil();
+        if (gen.needsAnnotations(decl)) {
+            annots = annots.appendList(gen.makeAtName(name));
+            if (decl instanceof Parameter && ((Parameter)decl).isSequenced()) {
+                annots = annots.appendList(gen.makeAtSequenced());
+            }
+            annots = annots.appendList(gen.makeJavaTypeAnnotations(decl));
         }
-        annots = annots.appendList(gen.makeJavaTypeAnnotations(paramType, true));
         return parameter(gen.make().VarDef(gen.make().Modifiers(modifiers, annots), gen.names().fromString(name), type, null));
     }
     
@@ -194,7 +181,7 @@ public class MethodDefinitionBuilder {
 
     public MethodDefinitionBuilder parameter(Parameter param) {
         String name = param.getName();
-        return parameter(FINAL, name, param.getType(), gen.isGenericsImplementation(param), param.isSequenced());
+        return parameter(FINAL, name, param);
     }
 
     public MethodDefinitionBuilder isActual(boolean isActual) {
@@ -223,19 +210,16 @@ public class MethodDefinitionBuilder {
 
     public MethodDefinitionBuilder block(JCBlock block) {
         if (block != null) {
+            body.clear();
             return body(block.getStatements());
         } else {
             return noBody();
         }
     }
 
-    public MethodDefinitionBuilder resultType(TypedDeclaration decl) {
-        return resultType(decl.getType(), gen.isGenericsImplementation(decl) ? AbstractTransformer.TYPE_ARGUMENT : 0);
-    }
-
-    private MethodDefinitionBuilder resultType(ProducedType resultType, int flags) {
+    public MethodDefinitionBuilder resultType(TypedDeclaration resultType) {
         this.resultType = resultType;
-        this.resultTypeExpr = makeResultType(resultType, flags);
+        this.resultTypeExpr = makeResultType(resultType);
         return this;
     }
 

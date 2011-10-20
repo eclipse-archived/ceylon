@@ -2,29 +2,29 @@ shared class Foo() {}
 shared class Bar() {}
 
 class UnionTypeInfo(Foo|Bar param){
- Foo|Bar attr;
- shared Foo|Bar sharedAttr = Foo();
- Foo|Bar getter {
-  return Foo();
- }
- assign getter {
- }
+    Foo|Bar attr;
+    shared Foo|Bar sharedAttr = Foo();
+    Foo|Bar getter {
+        return Foo();
+    }
+    assign getter {
+    }
 
- shared Foo|Bar sharedGetter {
-  return Foo();
- }
- assign sharedGetter {
- }
+    shared Foo|Bar sharedGetter {
+        return Foo();
+    }
+    assign sharedGetter {
+    }
  
- Foo|Bar method(Foo|Bar methodParam){
-  Foo|Bar val = Foo();
-  return val;
- }
+    Foo|Bar method(Foo|Bar methodParam){
+        Foo|Bar val = Foo();
+        return val;
+    }
 
- shared Foo|Bar sharedMethod(Foo|Bar methodParam){
-  Foo|Bar val = Foo();
-  return val;
- }
+    shared Foo|Bar sharedMethod(Foo|Bar methodParam){
+        Foo|Bar val = Foo();
+        return val;
+    }
 }
 
 shared class SharedUnionTypeInfo(Foo|Bar param){
@@ -34,21 +34,21 @@ Foo|Bar toplevelAttribute = Foo();
 shared Foo|Bar sharedToplevelAttribute = Bar();
 
 Foo|Bar toplevelGetter {
- return Foo();
+    return Foo();
 }
 assign toplevelGetter {
 }
 
 shared Foo|Bar toplevelSharedGetter {
- return Foo();
+    return Foo();
 }
 assign toplevelSharedGetter {
 }
 
 Foo|Bar toplevelMethod(Foo|Bar param){
- return Foo();
+    return Foo();
 }
 
 shared Foo|Bar sharedToplevelMethod(Foo|Bar param){
- return Foo();
+    return Foo();
 }
