@@ -150,7 +150,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         binaryOperators.put(Tree.UnionOp.class, "or");
         binaryOperators.put(Tree.XorOp.class, "xor");
         binaryOperators.put(Tree.EqualOp.class, "equals");
-        binaryOperators.put(Tree.IdenticalOp.class, "identical");
         binaryOperators.put(Tree.CompareOp.class, "compare");
 
         // Binary operators that act on intermediary Comparison objects
@@ -338,19 +337,26 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCExpression transform(Tree.BinaryOperatorExpression op) {
         JCExpression result = null;
-        Class<? extends Tree.OperatorExpression> operatorClass = op.getClass();
-
-        boolean loseComparison = op instanceof Tree.SmallAsOp || op instanceof Tree.SmallerOp || op instanceof Tree.LargerOp || op instanceof Tree.LargeAsOp;
-
-        if (loseComparison)
-            operatorClass = Tree.CompareOp.class;
-
+        
         JCExpression left = transformExpression(op.getLeftTerm());
         JCExpression right = transformExpression(op.getRightTerm());
-        result = at(op).Apply(null, makeSelect(left, binaryOperators.get(operatorClass)), List.of(right));
-
-        if (loseComparison) {
-            result = at(op).Apply(null, makeSelect(result, binaryOperators.get(op.getClass())), List.<JCExpression> nil());
+        
+        if (op instanceof Tree.IdenticalOp) {
+            result = at(op).Binary(JCTree.EQ, left, right);
+        } else {
+            Class<? extends Tree.OperatorExpression> operatorClass = op.getClass();
+    
+            boolean loseComparison = op instanceof Tree.SmallAsOp || op instanceof Tree.SmallerOp || op instanceof Tree.LargerOp || op instanceof Tree.LargeAsOp;
+    
+            if (loseComparison) {
+                operatorClass = Tree.CompareOp.class;
+            }
+            
+            result = at(op).Apply(null, makeSelect(left, binaryOperators.get(operatorClass)), List.of(right));
+    
+            if (loseComparison) {
+                result = at(op).Apply(null, makeSelect(result, binaryOperators.get(op.getClass())), List.<JCExpression> nil());
+            }
         }
 
         return result;

@@ -9,6 +9,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ComparisonOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.EqualityOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FloatLiteral;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.IdenticalOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LogicalAssignmentOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LogicalOp;
@@ -139,6 +140,13 @@ public class BoxingVisitor extends Visitor {
 
     @Override
     public void visit(EqualityOp that) {
+        super.visit(that);
+        // this is not conditional
+        Util.markUnBoxed(that);
+    }
+
+    @Override
+    public void visit(IdenticalOp that) {
         super.visit(that);
         // this is not conditional
         Util.markUnBoxed(that);
