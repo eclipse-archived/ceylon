@@ -39,4 +39,9 @@ public class CreatorOperators {
         this.i1 = 0;
         this.i2 = 0;
     }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new CreatorOperators();
+    }
 }

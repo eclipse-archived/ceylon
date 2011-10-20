@@ -7,6 +7,7 @@ import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -24,6 +25,7 @@ import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
+import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
@@ -58,6 +60,17 @@ public class ClassTransformer extends AbstractTransformer {
         CeylonVisitor visitor = new CeylonVisitor(gen(), classBuilder);
         def.visitChildren(visitor);
 
+        // Check if it's a Class without initializer parameters
+        if (def instanceof Tree.AnyClass && Decl.isToplevel(def) && Decl.isShared(def)) {
+            com.redhat.ceylon.compiler.typechecker.model.Class c = (com.redhat.ceylon.compiler.typechecker.model.Class) def.getDeclarationModel();
+            if (c.getParameterList().getParameters().isEmpty()) {
+                // Add a main() method
+                JCTree.JCIdent nameId = make().Ident(names().fromString(Util.quoteIfJavaKeyword(className)));
+                JCNewClass expr = make().NewClass(null, null, nameId, List.<JCTree.JCExpression>nil(), null);
+                classBuilder.body(makeMainMethod(expr));
+            }
+        }
+        
         return classBuilder
             .modifiers(transformClassDeclFlags(def))
             .satisfies(def.getDeclarationModel().getSatisfiedTypes())
@@ -225,33 +238,26 @@ public class ClassTransformer extends AbstractTransformer {
             .build();
     }
 
-    public List<JCTree> transformWrappedMethod(Tree.MethodDefinition decl) {
+    public List<JCTree> transformWrappedMethod(Tree.MethodDefinition def) {
         // Generate a wrapper class for the method
-        String name = decl.getIdentifier().getText();
+        String name = def.getIdentifier().getText();
         JCTree.JCIdent nameId = make().Ident(names().fromString(Util.quoteIfJavaKeyword(name)));
-        ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, name, Decl.isShared(decl));
-        builder.body(classGen().transform(decl));
-        if (Decl.withinMethod(decl)) {
+        ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, name, Decl.isShared(def));
+        builder.body(classGen().transform(def));
+        if (Decl.withinMethod(def)) {
             // Inner method
             List<JCTree> result = builder.build();
-            JCVariableDecl call = at(decl).VarDef(
+            JCVariableDecl call = at(def).VarDef(
                     make().Modifiers(FINAL),
                     names().fromString(name),
                     nameId,
-                    at(decl).NewClass(null, null, nameId, List.<JCTree.JCExpression>nil(), null));
+                    at(def).NewClass(null, null, nameId, List.<JCTree.JCExpression>nil(), null));
             return result.append(call);
         } else {
             // Toplevel method
-            if (decl.getParameterLists().size() > 0 && decl.getParameterLists().get(0).getParameters().size() == 0) {
+            if (!def.getParameterLists().isEmpty() && def.getParameterLists().get(0).getParameters().isEmpty()) {
                 // Add a main() method
-                MethodDefinitionBuilder methbuilder = MethodDefinitionBuilder.main(this);
-                // Add call to process.setupArguments
-                JCIdent argsId = make().Ident(names().fromString("args"));
-                JCMethodInvocation processExpr = at(decl).Apply(null, makeIdent("ceylon", "language", "process", "getProcess"), List.<JCTree.JCExpression>nil());
-                methbuilder.body(make().Exec(at(decl).Apply(null, makeSelect(processExpr, "setupArguments"), List.<JCTree.JCExpression>of(argsId))));
-                // Add call to toplevel method
-                methbuilder.body(make().Exec(at(decl).Apply(null, nameId, List.<JCTree.JCExpression>nil())));
-                builder.body(methbuilder.build());
+                builder.body(makeMainMethod(make().Apply(null, nameId, List.<JCTree.JCExpression>nil())));
             }
             return builder.build();                
         }
@@ -390,4 +396,15 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
 
+    private JCMethodDecl makeMainMethod(JCExpression callee) {
+        // Add a main() method
+        MethodDefinitionBuilder methbuilder = MethodDefinitionBuilder.main(this);
+        // Add call to process.setupArguments
+        JCIdent argsId = make().Ident(names().fromString("args"));
+        JCMethodInvocation processExpr = make().Apply(null, makeIdent("ceylon", "language", "process", "getProcess"), List.<JCTree.JCExpression>nil());
+        methbuilder.body(make().Exec(make().Apply(null, makeSelect(processExpr, "setupArguments"), List.<JCTree.JCExpression>of(argsId))));
+        // Add call to toplevel method
+        methbuilder.body(make().Exec(callee));
+        return methbuilder.build();
+    }
 }

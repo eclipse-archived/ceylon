@@ -32,4 +32,9 @@ public class LogicalOperators {
         this.b1 = false;
         this.b2 = false;
     }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new LogicalOperators();
+    }
 }

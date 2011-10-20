@@ -5,11 +5,21 @@ public class Foo {
     
     public Foo() {
     }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new Foo();
+    }
 }
 @.com.redhat.ceylon.compiler.metadata.java.Ceylon
 public class Bar {
     
     public Bar() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new Bar();
     }
 }
 @.com.redhat.ceylon.compiler.metadata.java.Ceylon
