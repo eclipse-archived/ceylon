@@ -31,6 +31,11 @@ class TopLevelAccess {
     
     TopLevelAccess() {
     }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new TopLevelAccess();
+    }
 }
 @.com.redhat.ceylon.compiler.metadata.java.Ceylon
 @.com.redhat.ceylon.compiler.metadata.java.Attribute

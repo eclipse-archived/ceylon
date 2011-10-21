@@ -19,4 +19,9 @@ class Bug111 {
     
     Bug111() {
     }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new Bug111();
+    }
 }

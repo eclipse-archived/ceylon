@@ -8,6 +8,11 @@ class ClassInstantiation {
     
     ClassInstantiation() {
     }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new ClassInstantiation();
+    }
 }
 class ClassInstantiationWithParam {
     
@@ -41,6 +46,11 @@ class InnerClassInstantiation {
     
     InnerClassInstantiation() {
     }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new InnerClassInstantiation();
+    }
 }
 class LocalClassInstantiation {
     
@@ -55,5 +65,10 @@ class LocalClassInstantiation {
     }
     
     LocalClassInstantiation() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new LocalClassInstantiation();
     }
 }

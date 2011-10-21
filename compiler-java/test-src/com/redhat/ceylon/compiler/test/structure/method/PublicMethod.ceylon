@@ -1,4 +1,4 @@
 @nomodel
-class Method() {
+class PublicMethod() {
     shared void f() {}
 }

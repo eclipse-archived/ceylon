@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.statement.local;
 
-class FunctionKeyword {
+class FunctionAndValueKeyword {
     
     private final long test() {
         return 0L;
@@ -10,6 +10,11 @@ class FunctionKeyword {
         final long n = test();
     }
     
-    FunctionKeyword() {
+    FunctionAndValueKeyword() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new FunctionAndValueKeyword();
     }
 }

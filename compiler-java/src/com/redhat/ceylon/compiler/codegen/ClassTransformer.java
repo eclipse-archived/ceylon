@@ -61,7 +61,7 @@ public class ClassTransformer extends AbstractTransformer {
         def.visitChildren(visitor);
 
         // Check if it's a Class without initializer parameters
-        if (def instanceof Tree.AnyClass && Decl.isToplevel(def) && Decl.isShared(def)) {
+        if (def instanceof Tree.AnyClass && Decl.isToplevel(def) && !Decl.isAbstract(def)) {
             com.redhat.ceylon.compiler.typechecker.model.Class c = (com.redhat.ceylon.compiler.typechecker.model.Class) def.getDeclarationModel();
             if (c.getParameterList().getParameters().isEmpty()) {
                 // Add a main() method

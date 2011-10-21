@@ -11,6 +11,11 @@ class F implements ceylon.language.Format {
     F() {
         this.formatted = "F";
     }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new F();
+    }
 }
 class StringTemplate {
     
@@ -39,5 +44,10 @@ class StringTemplate {
     }
     
     StringTemplate() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new StringTemplate();
     }
 }

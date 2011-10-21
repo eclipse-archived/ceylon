@@ -45,4 +45,9 @@ class AttributeAssign {
         this.b1 = true;
         this.b2 = true;
     }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new AttributeAssign();
+    }
 }

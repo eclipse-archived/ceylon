@@ -1,10 +1,15 @@
 package com.redhat.ceylon.compiler.test.structure.method;
 
-class Method {
+class PublicMethod {
     
     public final void f() {
     }
     
-    Method() {
+    PublicMethod() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new PublicMethod();
     }
 }

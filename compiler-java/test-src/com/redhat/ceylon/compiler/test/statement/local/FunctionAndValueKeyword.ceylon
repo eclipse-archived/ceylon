@@ -1,5 +1,5 @@
 @nomodel
-class FunctionKeyword(){
+class FunctionAndValueKeyword(){
     function test(){
         return 0;    
     }

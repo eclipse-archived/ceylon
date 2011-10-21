@@ -7,6 +7,11 @@ class Foo {
     
     Foo() {
     }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new Foo();
+    }
 }
 class FooSub extends com.redhat.ceylon.compiler.test.statement.conditional.Foo {
     
@@ -15,6 +20,11 @@ class FooSub extends com.redhat.ceylon.compiler.test.statement.conditional.Foo {
     
     FooSub() {
         super();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new FooSub();
     }
 }
 class MethodIfIs {
@@ -42,5 +52,10 @@ class MethodIfIs {
     }
     
     MethodIfIs() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new MethodIfIs();
     }
 }

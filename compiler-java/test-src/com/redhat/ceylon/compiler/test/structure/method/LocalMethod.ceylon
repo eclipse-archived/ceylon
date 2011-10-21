@@ -1,9 +1,9 @@
 @nomodel
-class InnerMethod() {
+class LocalMethod() {
     void m() {
-        Natural inner() {
+        Natural local() {
             return 0;
         }
-        Natural n = inner();
+        Natural n = local();
     }
 }

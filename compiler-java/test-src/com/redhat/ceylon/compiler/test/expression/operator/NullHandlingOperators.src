@@ -68,4 +68,9 @@ public class NullHandlingOperators {
         int i2 = 0;
         this.int = .ceylon.language.Integer.instance(0);
     }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new NullHandlingOperators();
+    }
 }

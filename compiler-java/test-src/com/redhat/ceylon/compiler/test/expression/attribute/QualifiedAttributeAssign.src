@@ -39,6 +39,11 @@ class QualifiedAttributeAssign {
         this.b2 = true;
         this.q = new com.redhat.ceylon.compiler.test.expression.attribute.QualifiedAttributeAssign();
     }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new QualifiedAttributeAssign();
+    }
 }
 class Foo {
     private boolean b;
@@ -53,5 +58,10 @@ class Foo {
     
     Foo() {
         this.b = true;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new Foo();
     }
 }

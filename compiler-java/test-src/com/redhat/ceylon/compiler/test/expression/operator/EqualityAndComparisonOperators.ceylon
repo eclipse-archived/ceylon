@@ -16,6 +16,6 @@ shared class EqualityAndComparisonOperators() {
         b1 := n1 in n1..n2;
         b1 := n1 is Natural;
         b1 := n1 extends Natural;
-        b1 := n1 satisfies Object; 
+        b1 := n1 satisfies Object;
     }
 }

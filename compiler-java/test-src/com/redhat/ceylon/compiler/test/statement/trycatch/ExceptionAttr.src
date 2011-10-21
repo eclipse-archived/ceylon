@@ -14,4 +14,9 @@ class ExceptionAttr {
     ExceptionAttr() {
         this.e = new .ceylon.language.Exception(.ceylon.language.String.instance(""), null);
     }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new ExceptionAttr();
+    }
 }

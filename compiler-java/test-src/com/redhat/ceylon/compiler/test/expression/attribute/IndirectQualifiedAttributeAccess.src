@@ -20,4 +20,9 @@ class IndirectQualifiedAttributeAccess {
         this.b = true;
         this.q = new com.redhat.ceylon.compiler.test.expression.attribute.IndirectQualifiedAttributeAccess();
     }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new IndirectQualifiedAttributeAccess();
+    }
 }

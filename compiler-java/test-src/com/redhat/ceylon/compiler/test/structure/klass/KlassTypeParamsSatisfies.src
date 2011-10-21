@@ -4,4 +4,9 @@ class KlassTypeParamsSatisfies<U, V extends ceylon.language.Sized, W extends cey
     
     KlassTypeParamsSatisfies() {
     }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new KlassTypeParamsSatisfies();
+    }
 }

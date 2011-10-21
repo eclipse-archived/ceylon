@@ -22,4 +22,9 @@ class Impl implements com.redhat.ceylon.compiler.test.structure.klass.InterfaceW
     
     Impl() {
     }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new Impl();
+    }
 }

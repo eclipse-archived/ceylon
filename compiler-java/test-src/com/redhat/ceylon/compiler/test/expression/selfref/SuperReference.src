@@ -12,6 +12,11 @@ class SuperReference {
     
     SuperReference() {
     }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new SuperReference();
+    }
 }
 class SuperReferenceChild extends com.redhat.ceylon.compiler.test.expression.selfref.SuperReference {
     
@@ -22,5 +27,10 @@ class SuperReferenceChild extends com.redhat.ceylon.compiler.test.expression.sel
     
     SuperReferenceChild() {
         super();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new SuperReferenceChild();
     }
 }

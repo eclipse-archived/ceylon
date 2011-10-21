@@ -10,4 +10,9 @@ class MethodLocalHidingAttribute {
     MethodLocalHidingAttribute() {
         final boolean b = true;
     }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new MethodLocalHidingAttribute();
+    }
 }

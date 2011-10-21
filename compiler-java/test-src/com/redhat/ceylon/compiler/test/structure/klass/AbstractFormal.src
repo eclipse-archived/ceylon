@@ -46,6 +46,11 @@ class ActualKlass extends com.redhat.ceylon.compiler.test.structure.klass.Abstra
     ActualKlass() {
         super();
     }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new ActualKlass();
+    }
 }
 class ActualSubKlass extends com.redhat.ceylon.compiler.test.structure.klass.ActualKlass {
     
@@ -56,5 +61,10 @@ class ActualSubKlass extends com.redhat.ceylon.compiler.test.structure.klass.Act
     
     ActualSubKlass() {
         super();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new ActualSubKlass();
     }
 }

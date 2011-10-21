@@ -13,4 +13,9 @@ class ReplaceExceptionAtJavaCallSite {
     
     ReplaceExceptionAtJavaCallSite() {
     }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new ReplaceExceptionAtJavaCallSite();
+    }
 }
