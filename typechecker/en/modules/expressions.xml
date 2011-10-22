@@ -1265,11 +1265,7 @@ value comp = order(1,-1);</programlisting>
     object iterator 
             satisfies Iterator&lt;Order&gt; {
         head = order;
-        shared actual object tail 
-                satisfies Iterator&lt;Order&gt; {
-            head = null;
-            tail = this;
-        }
+        tail = null;
     }   
 }</programlisting>
 

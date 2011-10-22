@@ -2098,9 +2098,9 @@ while (n&lt;=max) {
     n+=step(n);
 }</programlisting>
             
-            <programlisting>variable Iterator&lt;Person&gt; iter = org.employees.iterator;
-while (exists Person p = iter.head) {
-    log.info(p.name);
+            <programlisting>variable value iter = org.employees.iterator;
+while (exists iter) {
+    log.info(iter.head.name);
     iter.=tail;
 }</programlisting>
                   
