@@ -136,15 +136,15 @@ importWildcard returns [ImportWildcard importWildcard]
     ;
 
 memberAlias returns [Alias alias]
-    : memberName SPECIFY
+    : memberNameDeclaration SPECIFY
       { $alias = new Alias($SPECIFY); 
-        $alias.setIdentifier($memberName.identifier); }
+        $alias.setIdentifier($memberNameDeclaration.identifier); }
     ;
 
 typeAlias returns [Alias alias]
-    : typeName SPECIFY
+    : typeNameDeclaration SPECIFY
       { $alias = new Alias($SPECIFY); 
-        $alias.setIdentifier($typeName.identifier); }
+        $alias.setIdentifier($typeNameDeclaration.identifier); }
     ;
 
 packageName returns [Identifier identifier]
@@ -167,12 +167,28 @@ memberName returns [Identifier identifier]
       { $identifier = new Identifier($LIDENTIFIER); }
     ;
     
+memberNameDeclaration returns [Identifier identifier]
+    : memberName { $identifier = $memberName.identifier; }
+    | { displayRecognitionError(getTokenNames(), 
+              new MismatchedTokenException(LIDENTIFIER, input)); }
+      typeName { $identifier = $typeName.identifier; }
+      
+    ;
+
+typeNameDeclaration returns [Identifier identifier]
+    : typeName { $identifier = $typeName.identifier; }
+    | { displayRecognitionError(getTokenNames(), 
+              new MismatchedTokenException(UIDENTIFIER, input)); }
+      memberName { $identifier = $memberName.identifier; }
+      
+    ;
+
 objectDeclaration returns [ObjectDefinition declaration]
     : OBJECT_DEFINITION
       { $declaration = new ObjectDefinition($OBJECT_DEFINITION); 
         $declaration.setType(new ValueModifier(null)); }
-      memberName 
-      { $declaration.setIdentifier($memberName.identifier); }
+      memberNameDeclaration
+      { $declaration.setIdentifier($memberNameDeclaration.identifier); }
       ( 
         extendedType
         { $declaration.setExtendedType($extendedType.extendedType); } 
@@ -211,9 +227,9 @@ voidOrInferredMethodDeclaration returns [AnyMethod declaration]
           dec.setType(fm);
           $declaration = dec; }
       )
-      memberName
-      { dec.setIdentifier($memberName.identifier); 
-        def.setIdentifier($memberName.identifier); }
+      memberNameDeclaration
+      { dec.setIdentifier($memberNameDeclaration.identifier); 
+        def.setIdentifier($memberNameDeclaration.identifier); }
       (
         typeParameters
         { def.setTypeParameterList($typeParameters.typeParameterList); 
@@ -250,8 +266,8 @@ setterDeclaration returns [AttributeSetterDefinition declaration]
     : ASSIGN 
       { $declaration = new AttributeSetterDefinition($ASSIGN); 
         $declaration.setType( new VoidModifier(null) ); }
-      memberName 
-      { $declaration.setIdentifier($memberName.identifier); }
+      memberNameDeclaration 
+      { $declaration.setIdentifier($memberNameDeclaration.identifier); }
       ( 
         block
         { $declaration.setBlock($block.block); }
@@ -273,9 +289,9 @@ inferredAttributeDeclaration returns [AnyAttribute declaration]
         def.setType(fm);
         dec.setType(fm);
         $declaration = dec; }
-      memberName
-      { dec.setIdentifier($memberName.identifier); 
-        def.setIdentifier($memberName.identifier); }
+      memberNameDeclaration
+      { dec.setIdentifier($memberNameDeclaration.identifier); 
+        def.setIdentifier($memberNameDeclaration.identifier); }
       ( 
         (
           specifier 
@@ -306,11 +322,11 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
         adec.setType($unionType.type); 
         mdef.setType($unionType.type);
         mdec.setType($unionType.type); }
-      memberName
-      { adef.setIdentifier($memberName.identifier);
-        adec.setIdentifier($memberName.identifier); 
-        mdef.setIdentifier($memberName.identifier);
-        mdec.setIdentifier($memberName.identifier); }
+      memberNameDeclaration
+      { adef.setIdentifier($memberNameDeclaration.identifier);
+        adec.setIdentifier($memberNameDeclaration.identifier); 
+        mdef.setIdentifier($memberNameDeclaration.identifier);
+        mdec.setIdentifier($memberNameDeclaration.identifier); }
       ( 
         { $declaration = mdec; }
         (
@@ -369,9 +385,9 @@ interfaceDeclaration returns [AnyInterface declaration]
       { def = new InterfaceDefinition($INTERFACE_DEFINITION); 
         dec = new InterfaceDeclaration($INTERFACE_DEFINITION);
         $declaration = dec; }
-      typeName 
-      { dec.setIdentifier($typeName.identifier); 
-        def.setIdentifier($typeName.identifier); }
+      typeNameDeclaration 
+      { dec.setIdentifier($typeNameDeclaration.identifier); 
+        def.setIdentifier($typeNameDeclaration.identifier); }
       (
         typeParameters 
         { def.setTypeParameterList($typeParameters.typeParameterList); 
@@ -420,9 +436,9 @@ classDeclaration returns [AnyClass declaration]
       { def = new ClassDefinition($CLASS_DEFINITION); 
         dec = new ClassDeclaration($CLASS_DEFINITION);
         $declaration = dec; }
-      typeName
-      { dec.setIdentifier($typeName.identifier); 
-        def.setIdentifier($typeName.identifier); }
+      typeNameDeclaration
+      { dec.setIdentifier($typeNameDeclaration.identifier); 
+        def.setIdentifier($typeNameDeclaration.identifier); }
       (
         typeParameters 
         { def.setTypeParameterList($typeParameters.typeParameterList); 
@@ -785,11 +801,11 @@ typeParameter returns [TypeParameterDeclaration typeParameter]
         variance 
         { $typeParameter.setTypeVariance($variance.typeVariance); } 
       )? 
-      typeName
-      { $typeParameter.setIdentifier($typeName.identifier); } 
+      typeNameDeclaration
+      { $typeParameter.setIdentifier($typeNameDeclaration.identifier); } 
     //-> ^(TYPE_PARAMETER_DECLARATION variance? typeName)
     | //{ $typeParameter = new SequencedTypeParameter(null); }
-      typeName 
+      typeNameDeclaration
       //{ $typeParameter.setIdentifier($typeName.identifier); } 
       ELLIPSIS
     //-> ^(SEQUENCED_TYPE_PARAMETER typeName)
@@ -807,8 +823,8 @@ typeConstraint returns [TypeConstraint typeConstraint]
       TYPE_CONSTRAINT
       { $typeConstraint = new TypeConstraint($TYPE_CONSTRAINT); 
         $typeConstraint.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
-      typeName 
-      { $typeConstraint.setIdentifier($typeName.identifier); }
+      typeNameDeclaration 
+      { $typeConstraint.setIdentifier($typeNameDeclaration.identifier); }
       //(typeParameters)?
       (
         parameters
@@ -1261,9 +1277,9 @@ namedArgument returns [NamedArgument namedArgument]
     ;
 
 namedSpecifiedArgument returns [SpecifiedArgument specifiedArgument]
-    : memberName 
+    : memberNameDeclaration 
       { $specifiedArgument = new SpecifiedArgument(null); 
-        $specifiedArgument.setIdentifier($memberName.identifier); }
+        $specifiedArgument.setIdentifier($memberNameDeclaration.identifier); }
       specifier 
       { $specifiedArgument.setSpecifierExpression($specifier.specifierExpression); }
       SEMICOLON
@@ -1274,8 +1290,8 @@ objectArgument returns [ObjectArgument declaration]
     : OBJECT_DEFINITION 
       { $declaration = new ObjectArgument($OBJECT_DEFINITION); 
         $declaration.setType(new ValueModifier(null)); }
-      memberName
-      { $declaration.setIdentifier($memberName.identifier); }
+      memberNameDeclaration
+      { $declaration.setIdentifier($memberNameDeclaration.identifier); }
       ( 
         extendedType
         { $declaration.setExtendedType($extendedType.extendedType); } 
@@ -1304,8 +1320,8 @@ voidOrInferredMethodArgument returns [MethodArgument declaration]
         FUNCTION_MODIFIER
       { $declaration.setType(new FunctionModifier($FUNCTION_MODIFIER)); }
       ) 
-      memberName 
-      { $declaration.setIdentifier($memberName.identifier); }
+      memberNameDeclaration 
+      { $declaration.setIdentifier($memberNameDeclaration.identifier); }
       (
         parameters
         { $declaration.addParameterList($parameters.parameterList); }
@@ -1319,8 +1335,8 @@ inferredGetterArgument returns [AttributeArgument declaration]
     : { $declaration=new AttributeArgument(null); }
       VALUE_MODIFIER 
       { $declaration.setType(new ValueModifier($VALUE_MODIFIER)); }
-      memberName 
-      { $declaration.setIdentifier($memberName.identifier); }
+      memberNameDeclaration 
+      { $declaration.setIdentifier($memberNameDeclaration.identifier); }
       block
       { $declaration.setBlock($block.block); }
       //-> ^(ATTRIBUTE_ARGUMENT VALUE_MODIFIER memberName block)      
@@ -1333,9 +1349,9 @@ typedMethodOrGetterArgument returns [TypedArgument declaration]
     : unionType 
       { marg.setType($unionType.type);
         aarg.setType($unionType.type); }
-      memberName
-      { marg.setIdentifier($memberName.identifier);
-        aarg.setIdentifier($memberName.identifier); }
+      memberNameDeclaration
+      { marg.setIdentifier($memberNameDeclaration.identifier);
+        aarg.setIdentifier($memberNameDeclaration.identifier); }
       ( 
         { $declaration = marg; }
         (
