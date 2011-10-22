@@ -59,11 +59,10 @@ public abstract class CompilerTest {
 	}
 	
 	protected void compareWithJavaSource(String name) {
-		compareWithJavaSource(name+".ceylon", name+".src");
+		compareWithJavaSource(name+".src", name+".ceylon");
 	}
 
-	protected void compareWithJavaSource(String ceylon, String java) {
-
+	protected void compareWithJavaSource(String java, String... ceylon) {
 	    // make a compiler task
         // FIXME: runFileManager.setSourcePath(dir);
 	    CeyloncTaskImpl task = getCompilerTask(ceylon);
@@ -79,12 +78,12 @@ public abstract class CompilerTest {
             @Override
             public void finished(TaskEvent e) {
                 if(e.getKind() == Kind.ENTER){
-                    if(compilationUnit != null)
-                        throw new RuntimeException("Compilation unit already grabbed, are we compiling more than one file?");
-                    compilationUnit = (JCCompilationUnit) e.getCompilationUnit();
-                    // for some reason compilationUnit is full here in the listener, but empty as soon
-                    // as the compile task is done. probably to clean up for the gc?
-                    compilerSrc = normalizeLineEndings(compilationUnit.toString());
+                    if(compilationUnit == null) {
+                        compilationUnit = (JCCompilationUnit) e.getCompilationUnit();
+                        // for some reason compilationUnit is full here in the listener, but empty as soon
+                        // as the compile task is done. probably to clean up for the gc?
+                        compilerSrc = normalizeLineEndings(compilationUnit.toString());
+                    }
                 }
             }
         }

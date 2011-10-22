@@ -1,0 +1,27 @@
+package com.redhat.ceylon.compiler.test.expression.boxing;
+
+class Bug111 {
+    
+    private final void m1() {
+        final long nat = 0L;
+        final int neg = .ceylon.language.Natural.instance(nat).getNegativeValue().intValue();
+    }
+    
+    private final void m2() {
+        final .java.lang.Object num = .ceylon.language.Natural.instance(0L);
+        final int mag = ((ceylon.language.Invertable<ceylon.language.Integer>)num).getNegativeValue().intValue();
+    }
+    
+    private final void m3() {
+        final ceylon.language.Iterable nums = new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L));
+        final .java.lang.Object first = ((ceylon.language.Iterable)nums).getFirst();
+    }
+    
+    Bug111() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new Bug111();
+    }
+}

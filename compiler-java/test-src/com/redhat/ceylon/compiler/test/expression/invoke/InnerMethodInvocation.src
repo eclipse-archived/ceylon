@@ -1,0 +1,39 @@
+package com.redhat.ceylon.compiler.test.expression.invoke;
+
+final class foo {
+    
+    private foo() {
+    }
+    
+    static void foo() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        foo();
+    }
+}
+final class bar {
+    
+    private bar() {
+    }
+    
+    static long bar(final long i, final .java.lang.String j) {
+        return 1L;
+    }
+}
+class ToplevelMethodInvocation {
+    
+    private final long m() {
+        com.redhat.ceylon.compiler.test.expression.invoke.foo.foo();
+        return com.redhat.ceylon.compiler.test.expression.invoke.bar.bar(1L, "");
+    }
+    
+    ToplevelMethodInvocation() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new ToplevelMethodInvocation();
+    }
+}
