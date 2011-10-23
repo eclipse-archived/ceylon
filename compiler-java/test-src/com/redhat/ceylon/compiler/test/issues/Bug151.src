@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.test.issues;
 
-public final class bug148 {
+public final class bug151 {
     
-    private bug148() {
+    private bug151() {
     }
     
-    public static void bug148() {
+    public static void bug151() {
         for (ceylon.language.Iterator<? extends ceylon.language.Natural> $n$iter$0 = new ceylon.language.Range<ceylon.language.Natural>(.ceylon.language.Natural.instance(0L), .ceylon.language.Natural.instance(50L)).getIterator(); $n$iter$0.getHead() != null; $n$iter$0 = $n$iter$0.getTail()) {
             final long n = $n$iter$0.getHead().longValue();
             ceylon.language.process.getProcess().writeLine(.ceylon.language.Natural.instance(com.redhat.ceylon.compiler.test.issues.fib.fib(n)).toString());
@@ -14,6 +14,6 @@ public final class bug148 {
     
     public static void main(.java.lang.String[] args) {
         ceylon.language.process.getProcess().setupArguments(args);
-        bug148();
+        bug151();
     }
 }

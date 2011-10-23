@@ -12,7 +12,7 @@ public class IssuesTest extends CompilerTest {
     }
     
     @Test
-    public void testBug148(){
-        compareWithJavaSource("Bug148.src", "Bug148.ceylon", "Bug148_fib.ceylon");
+    public void testBug151(){
+        compileAndRun("com.redhat.ceylon.compiler.test.issues.bug151", "Bug151.ceylon", "Bug151_fib.ceylon");
     }
 }
