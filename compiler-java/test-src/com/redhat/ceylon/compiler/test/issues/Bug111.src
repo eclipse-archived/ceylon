@@ -1,5 +1,3 @@
-package com.redhat.ceylon.compiler.test.expression.boxing;
-
 class Bug111 {
     
     private final void m1() {
