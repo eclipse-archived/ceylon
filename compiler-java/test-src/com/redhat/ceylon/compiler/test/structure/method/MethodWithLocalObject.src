@@ -1,0 +1,27 @@
+package com.redhat.ceylon.compiler.test.structure.method;
+
+class LocalMethod {
+    
+    private final void m() {
+        
+        final class y {
+            
+            public final .java.lang.String m() {
+                return "foo";
+            }
+            
+            private y() {
+            }
+        }
+        final y y = new y();
+        final .java.lang.String s = y.m();
+    }
+    
+    LocalMethod() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new LocalMethod();
+    }
+}

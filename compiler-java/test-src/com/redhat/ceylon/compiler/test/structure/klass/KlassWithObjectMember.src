@@ -1,0 +1,56 @@
+package com.redhat.ceylon.compiler.test.structure.klass;
+
+class KlassWithObjectMember {
+    private final .java.lang.String x;
+    
+    final class localobj {
+        
+        public final .java.lang.String m() {
+            return x;
+        }
+        
+        private localobj() {
+        }
+    }
+    private final capturedobj capturedobj;
+    
+    final class capturedobj {
+        
+        public final .java.lang.String m() {
+            return x;
+        }
+        
+        private capturedobj() {
+        }
+    }
+    
+    private final com.redhat.ceylon.compiler.test.structure.klass.KlassWithObjectMember.capturedobj getCapturedobj() {
+        return capturedobj;
+    }
+    private final sharedobj sharedobj;
+    
+    public final class sharedobj {
+        
+        public final .java.lang.String m() {
+            return x;
+        }
+        
+        private sharedobj() {
+        }
+    }
+    
+    public final com.redhat.ceylon.compiler.test.structure.klass.KlassWithObjectMember.sharedobj getSharedobj() {
+        return sharedobj;
+    }
+    
+    private final void m() {
+        getCapturedobj().m();
+    }
+    
+    KlassWithObjectMember(.java.lang.String x) {
+        this.x = x;
+        final localobj localobj = new localobj();
+        this.capturedobj = new capturedobj();
+        this.sharedobj = new sharedobj();
+    }
+}

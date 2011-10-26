@@ -94,9 +94,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.ObjectDefinition decl) {
         boolean annots = checkCompilerAnnotations(decl);
         if (Decl.withinClass(decl)) {
-            classBuilder.defs(gen.classGen().objectClass(decl));
+            classBuilder.defs(gen.classGen().transformObject(decl, classBuilder));
         } else {
-            appendList(gen.classGen().objectClass(decl));
+            appendList(gen.classGen().transformObject(decl, null));
         }
         resetCompilerAnnotations(annots);
     }

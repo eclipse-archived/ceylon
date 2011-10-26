@@ -142,24 +142,12 @@ public class StructureTest extends CompilerTest {
     // Methods
     
     @Test
-    public void testMthMethod(){
-        compareWithJavaSource("method/Method");
-    }
-    @Test
-    public void testMthMethodWithParam(){
-        compareWithJavaSource("method/MethodWithParam");
-    }
-    @Test
-    public void testMthPublicMethod(){
-        compareWithJavaSource("method/PublicMethod");
-    }
-    @Test
     public void testMthLocalMethod(){
         compareWithJavaSource("method/LocalMethod");
     }
     @Test
-    public void testMthMethodWithVarargs(){
-        compareWithJavaSource("method/MethodWithVarargs");
+    public void testMthMethod(){
+        compareWithJavaSource("method/Method");
     }
     @Test
     public void testMthMethodErasure(){
@@ -168,6 +156,22 @@ public class StructureTest extends CompilerTest {
     @Test
     public void testMthMethodTypeParams(){
         compareWithJavaSource("method/MethodTypeParams");
+    }
+    @Test
+    public void testMthMethodWithLocalObject(){
+        compareWithJavaSource("method/MethodWithLocalObject");
+    }
+    @Test
+    public void testMthMethodWithParam(){
+        compareWithJavaSource("method/MethodWithParam");
+    }
+    @Test
+    public void testMthMethodWithVarargs(){
+        compareWithJavaSource("method/MethodWithVarargs");
+    }
+    @Test
+    public void testMthPublicMethod(){
+        compareWithJavaSource("method/PublicMethod");
     }
 
     //

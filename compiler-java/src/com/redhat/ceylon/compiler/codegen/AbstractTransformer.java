@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.codegen;
 
+import static com.sun.tools.javac.code.Flags.FINAL;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -203,6 +205,39 @@ public abstract class AbstractTransformer implements Transformation {
             acc = makeSelect(acc, s);
 
         return acc;
+    }
+    
+    // Creates a "foo foo = new foo();"
+    protected JCTree.JCVariableDecl makeLocalIdentityInstance(String varName, boolean isShared) {
+        JCTree.JCIdent name = make().Ident(names().fromString(varName));
+        
+        JCExpression initValue = makeNewClass(varName);
+        List<JCAnnotation> annots = List.<JCAnnotation>nil();
+
+        int modifiers = isShared ? 0 : FINAL;
+        JCTree.JCVariableDecl var = make().VarDef(
+                make().Modifiers(modifiers, annots), 
+                names().fromString(varName), 
+                name, 
+                initValue);
+        
+        return var;
+    }
+    
+    // Creates a "new foo();"
+    protected JCTree.JCNewClass makeNewClass(String className) {
+        return makeNewClass(className, List.<JCTree.JCExpression>nil());
+    }
+    
+    // Creates a "new foo(arg1, arg2, ...);"
+    protected JCTree.JCNewClass makeNewClass(String className, List<JCTree.JCExpression> args) {
+        JCTree.JCIdent name = make().Ident(names().fromString(className));
+        return makeNewClass(name, args);
+    }
+    
+    // Creates a "new foo(arg1, arg2, ...);"
+    protected JCTree.JCNewClass makeNewClass(JCExpression clazz, List<JCTree.JCExpression> args) {
+        return make().NewClass(null, null, clazz, args, null);
     }
 
     /*
@@ -762,7 +797,7 @@ public abstract class AbstractTransformer implements Transformation {
         }
         ProducedType seqType = typeFact().getDefaultSequenceType(seqElemType);
         JCExpression typeExpr = makeJavaType(seqType, CeylonTransformer.TYPE_ARGUMENT);
-        return make().NewClass(null, null, typeExpr, elems.toList(), null);
+        return makeNewClass(typeExpr, elems.toList());
     }
     
     protected JCExpression makeEmpty() {

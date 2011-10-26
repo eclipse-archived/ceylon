@@ -7,7 +7,6 @@ import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
-import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -80,12 +79,11 @@ public class ClassTransformer extends AbstractTransformer {
 
     public void transform(AttributeDeclaration decl, ClassDefinitionBuilder classBuilder) {
         boolean useField = decl.getDeclarationModel().isCaptured() || Decl.isShared(decl);
-
-        Name attrName = names().fromString(decl.getIdentifier().getText());
+        String attrName = decl.getIdentifier().getText();
 
         // Only a non-formal attribute has a corresponding field
         // and if a class parameter exists with the same name we skip this part as well
-        if (!Decl.isFormal(decl) && !classBuilder.existsParam(attrName.toString())) {
+        if (!Decl.isFormal(decl) && !classBuilder.existsParam(attrName)) {
             JCExpression initialValue = null;
             if (decl.getSpecifierOrInitializerExpression() != null) {
                 initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), Util.getBoxingStrategy(decl.getDeclarationModel()));
@@ -96,20 +94,8 @@ public class ClassTransformer extends AbstractTransformer {
                 flags |= TYPE_ARGUMENT;
             JCExpression type = makeJavaType(actualType(decl), flags);
 
-            if (useField) {
-                // A captured attribute gets turned into a field
-                int modifiers = transformAttributeFieldDeclFlags(decl);
-                classBuilder.defs(at(decl).VarDef(at(decl).Modifiers(modifiers, List.<JCTree.JCAnnotation>nil()), attrName, type, null));
-                if (initialValue != null) {
-                    // The attribute's initializer gets moved to the constructor
-                    // because it might be using locals of the initializer
-                    classBuilder.init(at(decl).Exec(at(decl).Assign(makeSelect("this", decl.getIdentifier().getText()), initialValue)));
-                }
-            } else {
-                // Otherwise it's local to the constructor
-                int modifiers = transformLocalDeclFlags(decl);
-                classBuilder.init(at(decl).VarDef(at(decl).Modifiers(modifiers, List.<JCTree.JCAnnotation>nil()), attrName, type, initialValue));
-            }
+            int modifiers = (useField) ? transformAttributeFieldDeclFlags(decl) : transformLocalDeclFlags(decl);
+            classBuilder.field(modifiers, attrName, type, initialValue, !useField);
         }
 
         if (useField) {
@@ -203,7 +189,7 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
 
-    public List<JCTree> makeGetter(Tree.AttributeDeclaration decl) {
+    private List<JCTree> makeGetter(Tree.AttributeDeclaration decl) {
         at(decl);
         String atrrName = decl.getIdentifier().getText();
         JCBlock body = null;
@@ -219,7 +205,7 @@ public class ClassTransformer extends AbstractTransformer {
             .build();
     }
 
-    public List<JCTree> makeSetter(Tree.AttributeDeclaration decl) {
+    private List<JCTree> makeSetter(Tree.AttributeDeclaration decl) {
         at(decl);
         String atrrName = decl.getIdentifier().getText();
         JCBlock body = null;
@@ -251,7 +237,7 @@ public class ClassTransformer extends AbstractTransformer {
                     make().Modifiers(FINAL),
                     names().fromString(name),
                     nameId,
-                    at(def).NewClass(null, null, nameId, List.<JCTree.JCExpression>nil(), null));
+                    makeNewClass(name));
             return result.append(call);
         } else {
             // Toplevel method
@@ -331,34 +317,54 @@ public class ClassTransformer extends AbstractTransformer {
             .build();
     }
 
-    public List<JCTree> objectClass(Tree.ObjectDefinition def) {
+    public List<JCTree> transformObject(Tree.ObjectDefinition def, ClassDefinitionBuilder containingClassBuilder) {
         String name = def.getIdentifier().getText();
-        ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder.klass(this, name);
+        ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.klass(this, name);
         
-        CeylonVisitor visitor = new CeylonVisitor(gen(), classBuilder);
+        CeylonVisitor visitor = new CeylonVisitor(gen(), objectClassBuilder);
         def.visitChildren(visitor);
 
         TypeDeclaration decl = def.getDeclarationModel().getType().getDeclaration();
 
         if (Decl.isToplevel(def)) {
-            classBuilder.body(makeObjectGlobal(def, make().Ident(names().fromString(name))).toList());
+            objectClassBuilder.body(makeObjectGlobal(def, name).toList());
         }
 
-        return classBuilder
+        List<JCTree> result = objectClassBuilder
             .annotations(makeAtObject())
             .modifiers(transformObjectDeclFlags(def))
             .constructorModifiers(PRIVATE)
             .satisfies(decl.getSatisfiedTypes())
             .init((List<JCStatement>)visitor.getResult().toList())
             .build();
+        
+        if (Decl.withinMethod(def)) {
+            result = result.append(makeLocalIdentityInstance(name, false));
+        } else if (Decl.withinClassOrInterface(def)) {
+            boolean visible = def.getDeclarationModel().isCaptured() || Decl.isShared(def);
+            int modifiers = FINAL | ((visible) ? PRIVATE : 0);
+            JCTree.JCIdent type = make().Ident(names().fromString(name));
+            JCExpression initialValue = makeNewClass(name);
+            containingClassBuilder.field(modifiers, name, type, initialValue, !visible);
+            
+            if (visible) {
+                result = result.appendList(AttributeDefinitionBuilder
+                    .getter(this, name, def.getDeclarationModel())
+                    .modifiers(transformAttributeGetSetDeclFlags(def))
+                    .isActual(Decl.isActual(def))
+                    .build());
+            }
+        }
+        
+        return result;
     }
 
-    public ListBuffer<JCTree> makeObjectGlobal(Tree.ObjectDefinition decl, JCExpression generatedClassName) {
+    private ListBuffer<JCTree> makeObjectGlobal(Tree.ObjectDefinition decl, String generatedClassName) {
         ListBuffer<JCTree> defs = ListBuffer.lb();
         AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
                 .wrapped(this, decl.getIdentifier().getText(), decl.getDeclarationModel())
                 .immutable()
-                .initialValue(make().NewClass(null, null, generatedClassName, List.<JCExpression>nil(), null))
+                .initialValue(makeNewClass(generatedClassName))
                 .is(PUBLIC, Decl.isShared(decl))
                 .is(STATIC, true);
 

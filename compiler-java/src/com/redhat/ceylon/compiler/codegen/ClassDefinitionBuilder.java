@@ -24,6 +24,7 @@ import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
+import com.sun.tools.javac.util.Name;
 
 /**
  * Builder for Java Classes. The specific properties of the "framework" of the
@@ -360,4 +361,20 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
+    public ClassDefinitionBuilder field(int modifiers, String attrName, JCExpression type, JCExpression initialValue, boolean isLocal) {
+        Name attrNameNm = gen.names().fromString(attrName);
+        if (!isLocal) {
+            // A shared or captured attribute gets turned into a class member
+            defs(gen.make().VarDef(gen.make().Modifiers(modifiers, List.<JCTree.JCAnnotation>nil()), attrNameNm, type, null));
+            if (initialValue != null) {
+                // The attribute's initializer gets moved to the constructor
+                // because it might be using locals of the initializer
+                init(gen.make().Exec(gen.make().Assign(gen.makeSelect("this", attrName), initialValue)));
+            }
+        } else {
+            // Otherwise it's local to the constructor
+            init(gen.make().VarDef(gen.make().Modifiers(modifiers, List.<JCTree.JCAnnotation>nil()), attrNameNm, type, initialValue));
+        }
+        return this;
+    }
 }

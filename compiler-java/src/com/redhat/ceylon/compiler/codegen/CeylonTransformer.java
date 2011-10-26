@@ -225,22 +225,8 @@ public class CeylonTransformer extends AbstractTransformer {
             }
         }
         
-        boolean isMethodLocal = declarationModel.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Method;
-        if (isMethodLocal) {
-            // Add a "foo foo = new foo();" at the decl site
-            JCTree.JCIdent name = make().Ident(names().fromString(attrClassName));
-            
-            JCExpression initValue = at(decl).NewClass(null, null, name, List.<JCTree.JCExpression>nil(), null);
-            List<JCAnnotation> annots2 = List.<JCAnnotation>nil();
-    
-            int modifiers = declarationModel.isShared() ? 0 : FINAL;
-            JCTree.JCVariableDecl var = at(decl).VarDef(at(decl)
-                    .Modifiers(modifiers, annots2), 
-                    names().fromString(attrClassName), 
-                    name, 
-                    initValue);
-            
-            return builder.build().append(var);
+        if (Decl.withinMethod(decl)) {
+            return builder.build().append(makeLocalIdentityInstance(attrClassName, declarationModel.isShared()));
         } else {
             builder.is(Flags.STATIC, true);
             return builder.build();
