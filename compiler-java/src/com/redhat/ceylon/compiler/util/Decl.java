@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.util;
 
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -14,7 +15,16 @@ public class Decl {
      * @return true if the declaration is within a method
      */
     public static boolean withinMethod(Tree.Declaration decl) {
-        Scope container = decl.getDeclarationModel().getContainer();
+        return withinMethod(decl.getDeclarationModel());
+    }
+
+    /**
+     * Determines whether the declaration's containing scope is a method
+     * @param decl The declaration
+     * @return true if the declaration is within a method
+     */
+    public static boolean withinMethod(Declaration decl) {
+        Scope container = decl.getContainer();
         return container instanceof Method;
     }
     
@@ -44,7 +54,16 @@ public class Decl {
      * @return true if the declaration is within a class or interface
      */
     public static boolean withinClassOrInterface(Tree.Declaration decl) {
-        Scope container = decl.getDeclarationModel().getContainer();
+        return withinClassOrInterface(decl.getDeclarationModel());
+    }
+    
+    /**
+     * Determines whether the declaration's containing scope is a class or interface
+     * @param decl The declaration
+     * @return true if the declaration is within a class or interface
+     */
+    public static boolean withinClassOrInterface(Declaration decl) {
+        Scope container = decl.getContainer();
         return container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
     }
     
@@ -80,4 +99,7 @@ public class Decl {
         return decl.getDeclarationModel().getContainer() instanceof Method;
     }
     
+    public static boolean isClassAttribute(Declaration decl) {
+        return (withinClassOrInterface(decl)) && (decl.isCaptured() || decl.isShared());
+    }
 }

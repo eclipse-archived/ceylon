@@ -22,6 +22,25 @@ class MethodLocalAccess {
         return n2$getter.getN2();
     }
     
+    private final long m3() {
+        
+        final class selfref$getter {
+            
+            long getSelfref() {
+                if (.ceylon.language.Natural.instance(getSelfref()).compare(.ceylon.language.Natural.instance(0L)).larger()) {
+                    return 1L;
+                } else {
+                    return 0L;
+                }
+            }
+            
+            private selfref$getter() {
+            }
+        }
+        final selfref$getter selfref$getter = new selfref$getter();
+        return selfref$getter.getSelfref();
+    }
+    
     MethodLocalAccess() {
     }
     

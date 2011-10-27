@@ -86,17 +86,6 @@ public class Util {
         return name + "$impl";
     }
     
-    // FIXME: add this to Declaration?
-    public static boolean isClassAttribute(Declaration decl) {
-        return ((decl.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Class) || (decl.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Interface))
-        	 && (decl.isCaptured() || decl.isShared());
-    }
-
-    // FIXME: add this to Declaration?
-	public static boolean isInnerMethod(Declaration decl) {
-        return decl.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Method;
-	}
-	
 	public static String getQualifiedPrefixedName(Declaration decl){
 	    String name = decl.getQualifiedNameString();
 	    String prefix;

@@ -10,4 +10,14 @@ class MethodLocalAccess(){
         }
         return n2;
     }
+    Natural m3(){
+        Natural selfref {
+            if (selfref > 0) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+        return selfref;
+    }
 }
