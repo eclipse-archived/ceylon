@@ -193,6 +193,11 @@ public final class Natural
     }
     
     @Override
+    public int hashCode() {
+    	return (int)(value ^ (value >>> 32));
+    }
+    
+    @Override
     @TypeParameters({
         @TypeParameter(value = "CastValue", satisfies = "ceylon.language.Natural|ceylon.language.Integer|ceylon.language.Float")
     })
