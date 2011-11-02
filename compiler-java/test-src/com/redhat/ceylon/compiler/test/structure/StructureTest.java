@@ -34,9 +34,7 @@ public class StructureTest extends CompilerTest {
     public void testMdlModuleFromCompiledModule() throws IOException{
         compile("module/single/module.ceylon");
         
-        String moduleName = "com.redhat.ceylon.compiler.test.structure.module.single";
-        String modulePath = moduleName.replace('.', File.separatorChar)+File.separatorChar+"6.6.6"+File.separator;
-        File jarFile = new File(destDir, modulePath+moduleName+"-6.6.6.car");
+        File jarFile = getModuleCar("com.redhat.ceylon.compiler.test.structure.module.single", "6.6.6");
         assertTrue(jarFile.exists());
 
         JarFile jar = new JarFile(jarFile);
@@ -55,6 +53,12 @@ public class StructureTest extends CompilerTest {
 
         ZipEntry subpackageClass = jar.getEntry("com/redhat/ceylon/compiler/test/structure/module/single/subpackage/Subpackage.class");
         assertNotNull(subpackageClass);
+    }
+
+    private File getModuleCar(String moduleName, String version) {
+        String modulePath = moduleName.replace('.', File.separatorChar)+File.separatorChar+version+File.separator;
+        File jarFile = new File(destDir, modulePath+moduleName+"-"+version+".car");
+        return jarFile;
     }
 
     //
