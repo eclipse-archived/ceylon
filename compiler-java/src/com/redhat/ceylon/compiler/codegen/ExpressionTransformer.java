@@ -450,7 +450,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             at(namedArg);
             Parameter declaredParam = namedArg.getParameter();
             int index = namedArguments.indexOf(namedArg);
-            if (declaredParam.getName().equals(namedArg.getIdentifier().getText())) {
+            if (declaredParam != null && declaredParam.getName().equals(namedArg.getIdentifier().getText())) {
                 JCExpression argExpr = make().Indexed(makeSelect("this", "args"), makeInteger(index));
                 ProducedType type = declaredParam.getType();
                 if (isTypeParameter(type)) {
@@ -471,7 +471,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         callArgs = ListBuffer.<JCExpression>lb();
         for (JCExpression expr : callArgsArray) {
-            callArgs.add(expr);
+            callArgs.add(expr != null ? expr : make().Erroneous());
         }
         for (NamedArgument namedArg : namedArguments) {
             at(namedArg);
