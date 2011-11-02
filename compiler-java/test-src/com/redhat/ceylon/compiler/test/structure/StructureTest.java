@@ -61,6 +61,22 @@ public class StructureTest extends CompilerTest {
         return jarFile;
     }
 
+    @Test
+    public void testMdlInterdepModule(){
+        // first compile it all from source
+        compile("module/interdep/a/module.ceylon", "module/interdep/a/b.ceylon", "module/interdep/a/A.ceylon",
+                "module/interdep/b/module.ceylon", "module/interdep/b/a.ceylon", "module/interdep/b/B.ceylon");
+        
+        File jarFile = getModuleCar("com.redhat.ceylon.compiler.test.structure.module.interdep.a", "6.6.6");
+        assertTrue(jarFile.exists());
+
+        jarFile = getModuleCar("com.redhat.ceylon.compiler.test.structure.module.interdep.b", "6.6.6");
+        assertTrue(jarFile.exists());
+        
+        // then try to compile only one module (the other being loaded from its car) 
+        compile("module/interdep/a/module.ceylon", "module/interdep/a/b.ceylon", "module/interdep/a/A.ceylon");
+    }
+
     //
     // Classes
     
