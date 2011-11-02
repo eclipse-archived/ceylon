@@ -29,6 +29,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 import javax.tools.FileObject;
@@ -40,6 +42,7 @@ import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.compiler.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.JavacFileManager;
 import com.sun.tools.javac.util.ListBuffer;
@@ -50,10 +53,13 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
     private Module currentModule;
     private JarOutputRepositoryManager jarRepository;
     private Context context;
+    private Options options;
+    private List<File> repositories;
 
     public CeyloncFileManager(Context context, boolean register, Charset charset) {
         super(context, register, charset);
-        jarRepository = new JarOutputRepositoryManager(Log.instance(context), Options.instance(context));
+        options = Options.instance(context);
+        jarRepository = new JarOutputRepositoryManager(Log.instance(context), options);
     }
 
     public Context getContext() {
@@ -183,5 +189,26 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
             }
             return siblingDir;
         }
+    }
+    
+    @Override
+    public Iterable<? extends File> getLocation(Location location) {
+        if(location != CeylonLocation.REPOSITORY)
+            return super.getLocation(location);
+        return getRepositories();
+    }
+
+    private Iterable<? extends File> getRepositories() {
+        // caching
+        if(repositories != null)
+            return repositories;
+        // lazy loading
+        List<String> repositoryNames = options.getMulti(OptionName.CEYLONREPO);
+        if(repositoryNames.isEmpty())
+            repositoryNames = Arrays.asList("modules");
+        repositories = new ArrayList<File>(repositoryNames.size());
+        for(String repository : repositoryNames)
+            repositories.add(new File(repository));
+        return repositories;
     }
 }
