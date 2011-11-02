@@ -390,6 +390,9 @@ public abstract class AbstractTransformer implements Transformation {
         int satisfiesOrExtendsOrTypeParam = flags & (SATISFIES | EXTENDS | TYPE_ARGUMENT);
         int satisfiesOrExtends = flags & (SATISFIES | EXTENDS);
         
+        if(type == null)
+            return make().Erroneous();
+        
         // ERASURE
         if (willEraseToObject(type)) {
             // For an erased type:
@@ -634,6 +637,8 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     protected List<JCTree.JCAnnotation> makeJavaTypeAnnotations(TypedDeclaration decl) {
+        if(decl.getType() == null)
+            return List.nil();
         return makeJavaTypeAnnotations(decl.getType(), needsAnnotations(decl));
     }
 
