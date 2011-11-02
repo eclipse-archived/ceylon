@@ -527,7 +527,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             log.warning("ceylon", "Module class "+moduleClassName+" contains no version, ignoring it");
             return null;
         }
-        Module module = new Module();
+        Module module = new CompilerModule(this);
         module.setName(Arrays.asList(name.split("\\.")));
         module.setVersion(version);
 
