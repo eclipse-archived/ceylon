@@ -29,16 +29,10 @@ public abstract class CompilerTest {
 	private final static String dir = "test-src";
 	protected final static String destDir = "build/ceylon-cars";
 	private final static String destCar = destDir + "/unversioned/default_module-unversioned.car";
-    private static String languageVersion = "0.1";
     
-	private final String languageCar;
-	
 	protected final String path;
 
 	public CompilerTest() {
-        File langCarFile = new File(System.getProperty("user.home"), ".ceylon/repo/ceylon/language/" + languageVersion + "/ceylon.language-" + languageVersion + ".car");
-        languageCar = langCarFile.getPath();
-        
         // for comparing with java source
         Package pakage = getClass().getPackage();
         String pkg = pakage == null ? "" : pakage.getName().replaceAll("\\.", Matcher.quoteReplacement(File.separator));
@@ -161,8 +155,7 @@ public abstract class CompilerTest {
         Iterable<? extends JavaFileObject> compilationUnits1 =
             runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
         return (CeyloncTaskImpl) runCompiler.getTask(null, runFileManager, null, 
-                Arrays.asList("-src", getSourcePath(), "-out", destDir, "-verbose", 
-                        "-cp", languageCar + File.pathSeparator + destCar + File.pathSeparator + destDir), 
+                Arrays.asList("-src", getSourcePath(), "-out", destDir, "-verbose"), 
                 null, compilationUnits1);
 	}
 
