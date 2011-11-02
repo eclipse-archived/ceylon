@@ -31,7 +31,7 @@ public abstract class CompilerTest {
 	private final static String dir = "test-src";
 	protected final static String destDir = "build/ceylon-cars";
 	private final static String destCar = destDir + "/unversioned/default_module-unversioned.car";
-	private final static List<String> defaultOptions = Arrays.asList("-out", destDir);
+	private final static List<String> defaultOptions = Arrays.asList("-out", destDir, "-repo", destDir);
     
 	protected final String path;
 
