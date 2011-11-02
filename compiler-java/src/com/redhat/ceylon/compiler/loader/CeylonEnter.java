@@ -192,7 +192,7 @@ public class CeylonEnter extends Enter {
                 // it should be replaced now by a full one loaded from the classpath.
 
                 modules.remove(module);
-                addModuleToClassPath(module); // To be able to load it from the corresponding archive
+                addModuleToClassPath(module, true); // To be able to load it from the corresponding archive
                 Module compiledModule = modelLoader.loadCompiledModule(module.getNameAsString());
                 if (compiledModule != null) {
                     updateModulesDependingOn(modules, module, compiledModule);
@@ -214,7 +214,7 @@ public class CeylonEnter extends Enter {
         }
     }
 
-    public void addModuleToClassPath(Module module) {
+    public void addModuleToClassPath(Module module, boolean errorIfMissing) {
         Paths.Path classPath = paths.getPathForLocation(StandardLocation.CLASS_PATH);
         Iterable<? extends File> repositories = fileManager.getLocation(CeylonLocation.REPOSITORY);
         for(File repository : repositories){
@@ -225,6 +225,8 @@ public class CeylonEnter extends Enter {
                 return;
             }
         }
+        if(errorIfMissing)
+            log.error("ceylon", "Failed to find module "+module.getNameAsString()+"/"+module.getVersion()+" in repositories");
     }
 
     private void typeCheck() {
