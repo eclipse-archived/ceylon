@@ -4,8 +4,11 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
+
+import junit.framework.Assert;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -93,6 +96,31 @@ public class StructureTest extends CompilerTest {
         compile("module/depend/b/module.ceylon", "module/depend/b/a.ceylon");
 
         jarFile = getModuleCar("com.redhat.ceylon.compiler.test.structure.module.depend.b", "6.6.6");
+        assertTrue(jarFile.exists());
+    }
+
+    @Test
+    public void testMdlMultipleRepos(){
+        // Compile the first module in its own repo 
+        File repoA = new File("build/ceylon-cars-a");
+        repoA.mkdirs();
+        Boolean result = getCompilerTask(Arrays.asList("-out", repoA.getPath()),
+                "module/depend/a/module.ceylon", "module/depend/a/A.ceylon").call();
+        Assert.assertEquals(Boolean.TRUE, result);
+        
+        File jarFile = getModuleCar("com.redhat.ceylon.compiler.test.structure.module.depend.a", "6.6.6", repoA.getPath());
+        assertTrue(jarFile.exists());
+
+        // make another repo for the second module
+        File repoB = new File("build/ceylon-cars-b");
+        repoB.mkdirs();
+
+        // then try to compile only one module (the other being loaded from its car) 
+        result = getCompilerTask(Arrays.asList("-out", repoB.getPath(), "-repo", repoA.getPath()),
+                "module/depend/b/module.ceylon", "module/depend/b/a.ceylon").call();
+        Assert.assertEquals(Boolean.TRUE, result);
+
+        jarFile = getModuleCar("com.redhat.ceylon.compiler.test.structure.module.depend.b", "6.6.6", repoB.getPath());
         assertTrue(jarFile.exists());
     }
 
