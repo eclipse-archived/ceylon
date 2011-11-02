@@ -139,6 +139,11 @@ shared class IntegerTest() extends Test() {
 		assertEquals(-2,two.divided(-1));
 		assertEquals(+1, +4 / +3);
 		assertEquals(-1, +4 / -3);
+		try {
+          Integer dividedByZeroError = +1 / (+0);
+          fail();
+        } catch (Exception e) {
+        }
 	}		
 	
 	@test
