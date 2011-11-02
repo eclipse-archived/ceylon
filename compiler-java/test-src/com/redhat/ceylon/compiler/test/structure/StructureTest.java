@@ -27,33 +27,33 @@ public class StructureTest extends CompilerTest {
     
     @Test
     public void testMdlModule(){
-        compareWithJavaSource("module/module");
+        compareWithJavaSource("module/single/module");
     }
 
     @Test
     public void testMdlModuleFromCompiledModule() throws IOException{
-        compile("module/module.ceylon");
+        compile("module/single/module.ceylon");
         
-        String moduleName = "com.redhat.ceylon.compiler.test.structure.module";
+        String moduleName = "com.redhat.ceylon.compiler.test.structure.module.single";
         String modulePath = moduleName.replace('.', File.separatorChar)+File.separatorChar+"6.6.6"+File.separator;
         File jarFile = new File(destDir, modulePath+moduleName+"-6.6.6.car");
         assertTrue(jarFile.exists());
 
         JarFile jar = new JarFile(jarFile);
         // just to be sure
-        ZipEntry bogusEntry = jar.getEntry("com/redhat/ceylon/compiler/test/structure/module/BOGUS");
+        ZipEntry bogusEntry = jar.getEntry("com/redhat/ceylon/compiler/test/structure/module/single/BOGUS");
         assertNull(bogusEntry);
 
-        ZipEntry moduleClass = jar.getEntry("com/redhat/ceylon/compiler/test/structure/module/module.class");
+        ZipEntry moduleClass = jar.getEntry("com/redhat/ceylon/compiler/test/structure/module/single/module.class");
         assertNotNull(moduleClass);
         jar.close();
 
-        compile("module/subpackage/Subpackage.ceylon");
+        compile("module/single/subpackage/Subpackage.ceylon");
 
         // MUST reopen it
         jar = new JarFile(jarFile);
 
-        ZipEntry subpackageClass = jar.getEntry("com/redhat/ceylon/compiler/test/structure/module/subpackage/Subpackage.class");
+        ZipEntry subpackageClass = jar.getEntry("com/redhat/ceylon/compiler/test/structure/module/single/subpackage/Subpackage.class");
         assertNotNull(subpackageClass);
     }
 
