@@ -15,6 +15,7 @@ import com.redhat.ceylon.compiler.codegen.BoxingVisitor;
 import com.redhat.ceylon.compiler.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.codegen.CeylonTransformer;
 import com.redhat.ceylon.compiler.codegen.CodeGenError;
+import com.redhat.ceylon.compiler.tools.CeylonLocation;
 import com.redhat.ceylon.compiler.tools.CeylonPhasedUnit;
 import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
@@ -215,11 +216,15 @@ public class CeylonEnter extends Enter {
 
     public void addModuleToClassPath(Module module) {
         Paths.Path classPath = paths.getPathForLocation(StandardLocation.CLASS_PATH);
-        Iterable<? extends File> location = fileManager.getLocation(StandardLocation.CLASS_OUTPUT);
-        File classDir = location.iterator().next();
-        File moduleDir = Util.getModulePath(classDir, module);
-        File moduleJar = new File(moduleDir, Util.getJarName(module));
-        classPath.addFile(moduleJar, false);
+        Iterable<? extends File> repositories = fileManager.getLocation(CeylonLocation.REPOSITORY);
+        for(File repository : repositories){
+            File moduleDir = Util.getModulePath(repository, module);
+            File moduleJar = new File(moduleDir, Util.getJarName(module));
+            if(moduleJar.exists()){
+                classPath.addFile(moduleJar, false);
+                return;
+            }
+        }
     }
 
     private void typeCheck() {
