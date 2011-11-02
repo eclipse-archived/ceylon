@@ -56,6 +56,10 @@ public class StructureTest extends CompilerTest {
     }
 
     private File getModuleCar(String moduleName, String version) {
+        return getModuleCar(moduleName, version, destDir);
+    }
+    
+    private File getModuleCar(String moduleName, String version, String destDir) {
         String modulePath = moduleName.replace('.', File.separatorChar)+File.separatorChar+version+File.separator;
         File jarFile = new File(destDir, modulePath+moduleName+"-"+version+".car");
         return jarFile;
