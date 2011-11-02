@@ -125,6 +125,7 @@ public class RecognizedOptions {
         DEPRECATION,
         CLASSPATH,
         CP,
+        CEYLONREPO,
         SOURCEPATH,
         CEYLONSOURCEPATH,
         BOOTCLASSPATH,
@@ -176,6 +177,7 @@ public class RecognizedOptions {
     static Set<OptionName> javacFileManagerOptions = EnumSet.of(
         CLASSPATH,
         CP,
+        CEYLONREPO,
         SOURCEPATH,
         CEYLONSOURCEPATH,
         BOOTCLASSPATH,
@@ -323,6 +325,14 @@ public class RecognizedOptions {
         new Option(CP,                     "opt.arg.path",      "opt.classpath") {
             public boolean process(Options options, String option, String arg) {
                 return super.process(options, "-classpath", arg);
+            }
+        },
+        new Option(CEYLONREPO,             "opt.arg.path",      "opt.ceylonrepo"){
+            @Override
+            public boolean process(Options options, String option, String arg) {
+                if(options != null)
+                    options.addMulti(CEYLONREPO, arg);
+                return false;
             }
         },
         new Option(SOURCEPATH,             "opt.arg.path",      "opt.sourcepath"),

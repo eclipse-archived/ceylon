@@ -49,6 +49,7 @@ public enum OptionName {
     DEPRECATION("-deprecation"),
     CLASSPATH("-classpath"),
     CP("-cp"),
+    CEYLONREPO("-repo"),
     SOURCEPATH("-sourcepath"),
     CEYLONSOURCEPATH("-src"),
     BOOTCLASSPATH("-bootclasspath"),
