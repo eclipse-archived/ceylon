@@ -152,6 +152,9 @@ public abstract class CompilerTest {
 	    CeyloncTool runCompiler = makeCompiler();
         CeyloncFileManager runFileManager = makeFileManager(runCompiler );
         
+        // make sure the destination repo exists
+        new File(destDir).mkdirs();
+        
         Iterable<? extends JavaFileObject> compilationUnits1 =
             runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
         return (CeyloncTaskImpl) runCompiler.getTask(null, runFileManager, null, 
