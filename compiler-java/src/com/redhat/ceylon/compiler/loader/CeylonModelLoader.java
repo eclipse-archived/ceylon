@@ -530,6 +530,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         Module module = new CompilerModule(this);
         module.setName(Arrays.asList(name.split("\\.")));
         module.setVersion(version);
+        Modules modules = ceylonContext.getModules();
 
         List<Attribute> imports = getAnnotationArrayValue(moduleClass, symtab.ceylonAtModuleType, "dependencies").getValue();
         for (Attribute i : imports)
@@ -541,27 +542,29 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 String dependencyName = (String) nameAttribute.getValue();
                 if (! dependencyName.equals("java"))
                 {
-                    Module dependency = new Module();
-                    dependency.setName(Arrays.asList(dependencyName.split("\\.")));
-                    
-                    Attribute versionAttribute = importAttribute.member(Name.fromString(names, "version"));
-                    if (versionAttribute != null)
-                    {
-                        String dependencyVersion = (String) versionAttribute.getValue();
-                        dependency.setVersion(dependencyVersion);
+                    Module dependency = findLoadedModule(modules, dependencyName);
+                    if(dependency == null){
+                        // The imports are added as dummy packages (with available = false)
+                        // So they will be recursively identified (and replaced by classpath-loaded full modules)
+                        // in the enclosing loop (in CeylonEnter.resolveModuleDependencies())
+                        dependency = new Module();
+                        dependency.setName(Arrays.asList(dependencyName.split("\\.")));
+
+                        Attribute versionAttribute = importAttribute.member(Name.fromString(names, "version"));
+                        if (versionAttribute != null)
+                        {
+                            String dependencyVersion = (String) versionAttribute.getValue();
+                            dependency.setVersion(dependencyVersion);
+                        }
+                        modules.getListOfModules().add(dependency);
                     }
                     module.getDependencies().add(dependency);
-                    ceylonContext.getModules().getListOfModules().add(dependency);
-                    // The imports are added as dummy packages (with available = false)
-                    // So they will be recursively identified (and replaced by classpath-loaded full modules)
-                    // in the enclosing loop (in CeylonEnter.resolveModuleDependencies())
                 }
             }
         }
         
         module.setAvailable(true);
         
-        Modules modules = ceylonContext.getModules();
         modules.getListOfModules().add(module);
         module.setLanguageModule(modules.getLanguageModule());
         module.getDependencies().add(modules.getLanguageModule());
@@ -569,6 +572,15 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         return module;
     }  
     
+    private Module findLoadedModule(Modules modules, String name) {
+        for(Module module : modules.getListOfModules()){
+            if(module.getNameAsString().equals(name)){
+                return module;
+            }
+        }
+        return null;
+    }
+
     private ProducedType getType(Type type, Scope scope) {
         Declaration decl = convertToDeclaration(type, scope, DeclarationType.TYPE);
         TypeDeclaration declaration = (TypeDeclaration) decl;
