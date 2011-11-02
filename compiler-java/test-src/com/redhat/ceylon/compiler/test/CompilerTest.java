@@ -9,6 +9,8 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Matcher;
 
 import javax.tools.JavaFileObject;
@@ -29,6 +31,7 @@ public abstract class CompilerTest {
 	private final static String dir = "test-src";
 	protected final static String destDir = "build/ceylon-cars";
 	private final static String destCar = destDir + "/unversioned/default_module-unversioned.car";
+	private final static List<String> defaultOptions = Arrays.asList("-out", destDir);
     
 	protected final String path;
 
@@ -141,7 +144,11 @@ public abstract class CompilerTest {
 		}
 	}
 	
-	protected CeyloncTaskImpl getCompilerTask(String... sourcePaths){
+    protected CeyloncTaskImpl getCompilerTask(String... sourcePaths){
+        return getCompilerTask(defaultOptions, sourcePaths);
+    }
+    
+	protected CeyloncTaskImpl getCompilerTask(List<String> defaultOptions, String... sourcePaths){
         // make sure we get a fresh jar cache for each compiler run
 	    ZipFileIndex.clearCache();
         java.util.List<File> sourceFiles = new ArrayList<File>(sourcePaths.length);
@@ -155,11 +162,13 @@ public abstract class CompilerTest {
         // make sure the destination repo exists
         new File(destDir).mkdirs();
         
+        List<String> options = new LinkedList<String>();
+        options.addAll(defaultOptions);
+        options.addAll(Arrays.asList("-src", getSourcePath(), "-verbose"));
         Iterable<? extends JavaFileObject> compilationUnits1 =
             runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
         return (CeyloncTaskImpl) runCompiler.getTask(null, runFileManager, null, 
-                Arrays.asList("-src", getSourcePath(), "-out", destDir, "-verbose"), 
-                null, compilationUnits1);
+                options, null, compilationUnits1);
 	}
 
     protected String getSourcePath() {
