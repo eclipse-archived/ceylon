@@ -2,17 +2,17 @@ package com.redhat.ceylon.compiler.test.structure.module.single;
 
 @.com.redhat.ceylon.compiler.metadata.java.Ceylon
 @.com.redhat.ceylon.compiler.metadata.java.Attribute
-@.com.redhat.ceylon.compiler.metadata.java.Module(name = "com.redhat.ceylon.compiler.test.structure.module.single", version = "6.6.6", dependencies = {@.com.redhat.ceylon.compiler.metadata.java.Import(name = "foo", version = "1.2"), @.com.redhat.ceylon.compiler.metadata.java.Import(name = "bar", version = "3.4"), @.com.redhat.ceylon.compiler.metadata.java.Import(name = "java")})
+@.com.redhat.ceylon.compiler.metadata.java.Module(name = "com.redhat.ceylon.compiler.test.structure.module.single", version = "6.6.6", dependencies = {@.com.redhat.ceylon.compiler.metadata.java.Import(name = "com.redhat.ceylon.compiler.test.structure.module.single", version = "6.6.6"), @.com.redhat.ceylon.compiler.metadata.java.Import(name = "com.redhat.ceylon.compiler.test.structure.module.single", version = "6.6.6"), @.com.redhat.ceylon.compiler.metadata.java.Import(name = "java")})
 final class module {
     
     @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.descriptor.Module")
     static ceylon.language.descriptor.Module getModule() {
-        return new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, .ceylon.language.Quoted.instance("com.redhat.ceylon.compiler.test.structure.module.single"), .ceylon.language.Quoted.instance("6.6.6"), .ceylon.language.String.instance("Bla bla."), new ceylon.language.ArraySequence<ceylon.language.String>(.ceylon.language.String.instance("Stef FroMage")), .ceylon.language.Quoted.instance("http://www.gnu.org/licenses/gpl.html"), new ceylon.language.ArraySequence<ceylon.language.descriptor.Import>(new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, .ceylon.language.Quoted.instance("foo"), .ceylon.language.Quoted.instance("1.2"), .ceylon.language.Boolean.instance(false), .ceylon.language.Boolean.instance(false)){
+        return new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, .ceylon.language.Quoted.instance("com.redhat.ceylon.compiler.test.structure.module.single"), .ceylon.language.Quoted.instance("6.6.6"), .ceylon.language.String.instance("Bla bla."), new ceylon.language.ArraySequence<ceylon.language.String>(.ceylon.language.String.instance("Stef FroMage")), .ceylon.language.Quoted.instance("http://www.gnu.org/licenses/gpl.html"), new ceylon.language.ArraySequence<ceylon.language.descriptor.Import>(new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, .ceylon.language.Quoted.instance("com.redhat.ceylon.compiler.test.structure.module.single"), .ceylon.language.Quoted.instance("6.6.6"), .ceylon.language.Boolean.instance(false), .ceylon.language.Boolean.instance(false)){
             
             public ceylon.language.descriptor.Import call$() {
                 return new ceylon.language.descriptor.Import((ceylon.language.Quoted)this.args[0], (ceylon.language.Quoted)this.args[1], (ceylon.language.Boolean)this.args[2], (ceylon.language.Boolean)this.args[3]);
             }
-        }.call$(), new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, .ceylon.language.Quoted.instance("bar"), .ceylon.language.Quoted.instance("3.4"), .ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(true)){
+        }.call$(), new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, .ceylon.language.Quoted.instance("com.redhat.ceylon.compiler.test.structure.module.single"), .ceylon.language.Quoted.instance("6.6.6"), .ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(true)){
             
             public ceylon.language.descriptor.Import call$() {
                 return new ceylon.language.descriptor.Import((ceylon.language.Quoted)this.args[0], (ceylon.language.Quoted)this.args[1], (ceylon.language.Boolean)this.args[2], (ceylon.language.Boolean)this.args[3]);

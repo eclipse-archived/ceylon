@@ -5,14 +5,14 @@ Module module {
     authors = { "Stef FroMage" };
     license = 'http://www.gnu.org/licenses/gpl.html';
     Import {
-        name = 'foo';
-        version = '1.2';
+        name = 'com.redhat.ceylon.compiler.test.structure.module.single';
+        version = '6.6.6';
         optional = false;
         export = false;
     },
     Import {
-        name = 'bar';
-        version = '3.4';
+        name = 'com.redhat.ceylon.compiler.test.structure.module.single';
+        version = '6.6.6';
         optional = true;
         export = true;
     }
