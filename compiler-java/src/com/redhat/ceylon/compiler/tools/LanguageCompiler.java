@@ -249,10 +249,6 @@ public class LanguageCompiler extends JavaCompiler {
             pu.buildModuleImport();
         }
         Modules modules = ceylonContext.getModules();
-        // at this point every module should be available
-        for(Module m : modules.getListOfModules()){
-            m.setAvailable(true);
-        }
         // now make sure the phase units have their modules and packages set correctly
         for (PhasedUnit pu : listOfUnits) {
             Package pkg = pu.getPackage();
@@ -276,10 +272,7 @@ public class LanguageCompiler extends JavaCompiler {
                     module = loadModuleFromSource(pkgName, moduleTrees);
                 }
                 else if (! module.isAvailable()) {
-                    modules.getListOfModules().remove(module);
-                    Module fullModule = loadModuleFromSource(pkgName, moduleTrees);
-                    CeylonEnter.updateModulesDependingOn(modules.getListOfModules(), module, fullModule);
-                    module = fullModule;
+                	module.setAvailable(true);
                 }
 
                 if(module == null){
