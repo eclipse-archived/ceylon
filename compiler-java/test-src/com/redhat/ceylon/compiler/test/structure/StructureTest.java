@@ -61,10 +61,18 @@ public class StructureTest extends CompilerTest {
     private File getModuleCar(String moduleName, String version) {
         return getModuleCar(moduleName, version, destDir);
     }
-    
+
     private File getModuleCar(String moduleName, String version, String destDir) {
+        return getModuleArchiveName(moduleName, version, destDir, "car");
+    }
+
+    private File getModuleSourceArchive(String moduleName, String version) {
+        return getModuleArchiveName(moduleName, version, destDir, "src");
+    }
+    
+    private File getModuleArchiveName(String moduleName, String version, String destDir, String extension) {
         String modulePath = moduleName.replace('.', File.separatorChar)+File.separatorChar+version+File.separator;
-        File jarFile = new File(destDir, modulePath+moduleName+"-"+version+".car");
+        File jarFile = new File(destDir, modulePath+moduleName+"-"+version+"."+extension);
         return jarFile;
     }
 
