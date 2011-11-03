@@ -2,6 +2,9 @@ package com.redhat.ceylon.compiler.util;
 
 import java.io.File;
 
+import javax.tools.JavaFileObject;
+import javax.tools.StandardLocation;
+
 import com.redhat.ceylon.compiler.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -16,6 +19,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.parser.Token;
+import com.sun.tools.javac.util.JavacFileManager;
 
 public class Util {
     public static boolean isErasedAttribute(String name){
@@ -199,6 +203,24 @@ public class Util {
         modulePath += File.separatorChar + version;
         
         return new File(outputDir, modulePath);
+    }
+
+    public static String getSourceFilePath(JavacFileManager fileManager, String file){
+        Iterable<? extends File> prefixes = fileManager.getLocation(StandardLocation.SOURCE_PATH);
+
+        // find the matching source prefix
+        int srcDirLength = 0;
+        for (File prefixFile : prefixes) {
+            String prefix = prefixFile.getPath();
+            if (file.startsWith(prefix) && prefix.length() > srcDirLength) {
+                srcDirLength = prefix.length();
+            }
+        }
+        
+        String path = file.substring(srcDirLength);
+        if(path.startsWith(File.separator))
+            path = path.substring(1);
+        return path;
     }
 
 }
