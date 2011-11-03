@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
@@ -14,6 +16,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.test.CompilerTest;
+import com.redhat.ceylon.compiler.util.Util;
 
 public class StructureTest extends CompilerTest {
     
@@ -143,7 +146,47 @@ public class StructureTest extends CompilerTest {
 
         jarFile = getModuleCar("com.redhat.ceylon.compiler.test.structure.module.depend.c", "6.6.6", repoC.getPath());
         assertTrue(jarFile.exists());
-}
+    }
+
+    @Test
+    public void testMdlSourceArchive() throws IOException{
+        File jarFile = getModuleSourceArchive("com.redhat.ceylon.compiler.test.structure.module.single", "6.6.6");
+        jarFile.delete();
+        assertFalse(jarFile.exists());
+
+        // compile one file
+        compile("module/single/module.ceylon");
+
+        // make sure it was created
+        assertTrue(jarFile.exists());
+
+        JarFile jar = new JarFile(jarFile);
+        assertEquals(1, countEntries(jar));
+
+        ZipEntry moduleClass = jar.getEntry("com/redhat/ceylon/compiler/test/structure/module/single/module.ceylon");
+        assertNotNull(moduleClass);
+        jar.close();
+
+        // now compile another file
+        compile("module/single/subpackage/Subpackage.ceylon");
+
+        // MUST reopen it
+        jar = new JarFile(jarFile);
+        assertEquals(2, countEntries(jar));
+
+        ZipEntry subpackageClass = jar.getEntry("com/redhat/ceylon/compiler/test/structure/module/single/subpackage/Subpackage.ceylon");
+        assertNotNull(subpackageClass);
+    }
+
+    private int countEntries(JarFile jar) {
+        int count = 0;
+        Enumeration<JarEntry> entries = jar.entries();
+        while(entries.hasMoreElements()){
+            count++;
+            entries.nextElement();
+        }
+        return count;
+    }
 
     //
     // Classes
