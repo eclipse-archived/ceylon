@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.tools;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,6 +13,7 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
+import java.util.zip.ZipEntry;
 
 import javax.tools.JavaFileObject;
 
@@ -69,6 +71,9 @@ public class JarOutputRepositoryManager {
         private File originalJarFile;
         private File outputJarFile;
         private JarOutputStream jarOutputStream;
+        private File originalSrcFile;
+        private File outputSrcFile;
+        private JarOutputStream srcOutputStream;
         final private Set<String> writtenClasses = new HashSet<String>();
         final private Set<String> sourceFiles = new HashSet<String>();
         private Log log;
@@ -82,6 +87,7 @@ public class JarOutputRepositoryManager {
 
             // figure out where it all goes
             String jarName = Util.getJarName(module);
+            String srcName = Util.getSourceArchiveName(module);
             File moduleOutputDir = Util.getModulePath(outputDir, module);
             // make sure the folder exists
             if(!moduleOutputDir.exists() && !moduleOutputDir.mkdirs())
@@ -90,6 +96,7 @@ public class JarOutputRepositoryManager {
                 Log.printLines(log.noticeWriter, "[output jar name: "+jarName+"]");
             }
             setupJarOutput(moduleOutputDir, jarName);
+            setupSrcOutput(moduleOutputDir, srcName);
         }
 
         private void setupJarOutput(File moduleOutputDir, String jarName) throws IOException {
@@ -105,14 +112,46 @@ public class JarOutputRepositoryManager {
             jarOutputStream = new JarOutputStream(new FileOutputStream(outputJarFile));
         }
 
+        private void setupSrcOutput(File moduleOutputDir, String srcName) throws IOException {
+            // now see if we create a new file or update one
+            File targetSrcFile = new File(moduleOutputDir, srcName);
+            if(targetSrcFile.exists()){
+                outputSrcFile = File.createTempFile(targetSrcFile.getName(), ".tmp", targetSrcFile.getParentFile());
+                originalSrcFile = targetSrcFile;
+            }else{
+                outputSrcFile = targetSrcFile; 
+                originalSrcFile = null;
+            }
+            srcOutputStream = new JarOutputStream(new FileOutputStream(outputSrcFile));
+        }
+
         public void addSource(File sourceFile) {
             sourceFiles.add(sourceFile.getPath());
         }
 
         public void close() throws IOException {
             finishUpdatingJar(originalJarFile, outputJarFile, jarOutputStream, writtenClasses);
+            Set<String> copiedSourceFiles = copySourceFiles();
+            finishUpdatingJar(originalSrcFile, outputSrcFile, srcOutputStream, copiedSourceFiles);
         }
         
+        private Set<String> copySourceFiles() throws IOException {
+            Set<String> copiedFiles = new HashSet<String>();
+            for(String prefixedSourceFile : sourceFiles){
+                // must remove the prefix first
+                String sourceFile = Util.getSourceFilePath(ceyloncFileManager, prefixedSourceFile);
+                // zips are UNIX-friendly
+                sourceFile = sourceFile.replace(File.separatorChar, '/');
+                srcOutputStream.putNextEntry(new ZipEntry(sourceFile));
+                InputStream inputStream = new FileInputStream(prefixedSourceFile);
+                copy(inputStream, srcOutputStream);
+                inputStream.close();
+                srcOutputStream.closeEntry();
+                copiedFiles.add(sourceFile);
+            }
+            return copiedFiles;
+        }
+
         public void finishUpdatingJar(File originalFile, File outputFile, 
                 JarOutputStream jarOutputStream, Set<String> skipEntries) throws IOException {
             // now copy all previous jar entries
