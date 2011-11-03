@@ -65,9 +65,9 @@ public class JarOutputRepositoryManager {
     }
 
     static class ProgressiveJar {
-        final private File originalJarFile;
-        final private File outputJarFile;
-        final private JarOutputStream jarOutputStream;
+        private File originalJarFile;
+        private File outputJarFile;
+        private JarOutputStream jarOutputStream;
         final private Set<String> writtenClasses = new HashSet<String>();
         private Log log;
         private Options options;
@@ -87,6 +87,10 @@ public class JarOutputRepositoryManager {
             if(options.get(OptionName.VERBOSE) != null){
                 Log.printLines(log.noticeWriter, "[output jar name: "+jarName+"]");
             }
+            setupJarOutput(moduleOutputDir, jarName);
+        }
+
+        private void setupJarOutput(File moduleOutputDir, String jarName) throws IOException {
             // now see if we create a new file or update one
             File targetJarFile = new File(moduleOutputDir, jarName);
             if(targetJarFile.exists()){
@@ -100,14 +104,19 @@ public class JarOutputRepositoryManager {
         }
 
         public void close() throws IOException {
+            finishUpdatingJar(originalJarFile, outputJarFile, jarOutputStream, writtenClasses);
+        }
+        
+        public void finishUpdatingJar(File originalFile, File outputFile, 
+                JarOutputStream jarOutputStream, Set<String> skipEntries) throws IOException {
             // now copy all previous jar entries
-            if(originalJarFile != null){
-                JarFile jarFile = new JarFile(originalJarFile);
+            if(originalFile != null){
+                JarFile jarFile = new JarFile(originalFile);
                 Enumeration<JarEntry> entries = jarFile.entries();
                 while(entries.hasMoreElements()){
                     JarEntry entry = entries.nextElement();
                     // skip the old entry if we overwrote it
-                    if(writtenClasses.contains(entry.getName()))
+                    if(skipEntries.contains(entry.getName()))
                         continue;
                     jarOutputStream.putNextEntry(entry);
                     InputStream inputStream = jarFile.getInputStream(entry);
@@ -120,15 +129,15 @@ public class JarOutputRepositoryManager {
             jarOutputStream.flush();
             jarOutputStream.close();
             if(options.get(OptionName.VERBOSE) != null){
-                Log.printLines(log.noticeWriter, "[done writing to jar: "+outputJarFile.getPath()+"]");
+                Log.printLines(log.noticeWriter, "[done writing to jar: "+outputFile.getPath()+"]");
             }
-            if(originalJarFile != null){
+            if(originalFile != null){
                 // now rename to the original name
                 if(options.get(OptionName.VERBOSE) != null){
-                    Log.printLines(log.noticeWriter, "[renaming jar to: "+originalJarFile.getPath()+"]");
+                    Log.printLines(log.noticeWriter, "[renaming jar to: "+originalFile.getPath()+"]");
                 }
-            	originalJarFile.delete();
-                if(!outputJarFile.renameTo(originalJarFile))
+            	originalFile.delete();
+                if(!outputFile.renameTo(originalFile))
                     throw new IOException("Failed to rename jar file");
             }
         }
