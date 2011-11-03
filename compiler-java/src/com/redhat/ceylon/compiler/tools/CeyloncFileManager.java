@@ -129,6 +129,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         return super.inferBinaryName(location, file);
     }
 
+    @Override
     protected JavaFileObject getFileForOutput(Location location, final String fileName, FileObject sibling) throws IOException {
         if (sibling instanceof CeylonFileObject) {
             sibling = ((CeylonFileObject) sibling).getFile();
