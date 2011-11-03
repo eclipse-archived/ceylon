@@ -36,6 +36,7 @@ public class JarOutputRepositoryManager {
     
     public JavaFileObject getFileObject(File outputDir, Module module, String fileName, File sourceFile) throws IOException{
         ProgressiveJar progressiveJar = getProgressiveJar(outputDir, module);
+        progressiveJar.addSource(sourceFile);
         return progressiveJar.getJavaFileObject(fileName);
     }
     
@@ -69,6 +70,7 @@ public class JarOutputRepositoryManager {
         private File outputJarFile;
         private JarOutputStream jarOutputStream;
         final private Set<String> writtenClasses = new HashSet<String>();
+        final private Set<String> sourceFiles = new HashSet<String>();
         private Log log;
         private Options options;
         private CeyloncFileManager ceyloncFileManager;
@@ -101,6 +103,10 @@ public class JarOutputRepositoryManager {
                 originalJarFile = null;
             }
             jarOutputStream = new JarOutputStream(new FileOutputStream(outputJarFile));
+        }
+
+        public void addSource(File sourceFile) {
+            sourceFiles.add(sourceFile.getPath());
         }
 
         public void close() throws IOException {
