@@ -164,6 +164,14 @@ public class Util {
     }
 
     public static String getJarName(Module module) {
+        return getArchiveName(module, "car");
+    }
+    
+    public static String getSourceArchiveName(Module module) {
+        return getArchiveName(module, "src");
+    }
+
+    public static String getArchiveName(Module module, String extension) {
         String moduleName = module.getNameAsString();
         // FIXME: do better than this
         if(moduleName.equals("<default module>"))
@@ -171,7 +179,7 @@ public class Util {
         String version = module.getVersion();
         if(version == null)
             version = "unversioned";
-        return moduleName+"-"+version+".car";
+        return moduleName+"-"+version+"."+extension;
     }
 
     public static File getModulePath(File outputDir, Module module) {
