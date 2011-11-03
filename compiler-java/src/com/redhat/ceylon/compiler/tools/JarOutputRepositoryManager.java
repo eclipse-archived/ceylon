@@ -42,7 +42,7 @@ public class JarOutputRepositoryManager {
     private ProgressiveJar getProgressiveJar(File outputDir, Module module) throws IOException {
         ProgressiveJar jarFile = openJars.get(module);
         if(jarFile == null){
-            jarFile = new ProgressiveJar(outputDir, module, log, options);
+            jarFile = new ProgressiveJar(outputDir, module, log, options, ceyloncFileManager);
             openJars.put(module, jarFile);
         }
         return jarFile;
@@ -71,10 +71,12 @@ public class JarOutputRepositoryManager {
         final private Set<String> writtenClasses = new HashSet<String>();
         private Log log;
         private Options options;
+        private CeyloncFileManager ceyloncFileManager;
         
-        public ProgressiveJar(File outputDir, Module module, Log log, Options options) throws IOException{
+        public ProgressiveJar(File outputDir, Module module, Log log, Options options, CeyloncFileManager ceyloncFileManager) throws IOException{
             this.log = log;
             this.options = options;
+            this.ceyloncFileManager = ceyloncFileManager;
 
             // figure out where it all goes
             String jarName = Util.getJarName(module);
