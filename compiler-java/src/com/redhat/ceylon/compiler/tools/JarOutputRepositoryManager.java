@@ -26,10 +26,12 @@ public class JarOutputRepositoryManager {
     private Map<Module,ProgressiveJar> openJars = new HashMap<Module, ProgressiveJar>();
     private Log log;
     private Options options;
+    private CeyloncFileManager ceyloncFileManager;
     
-    JarOutputRepositoryManager(Log log, Options options){
+    JarOutputRepositoryManager(Log log, Options options, CeyloncFileManager ceyloncFileManager){
         this.log = log;
         this.options = options;
+        this.ceyloncFileManager = ceyloncFileManager;
     }
     
     public JavaFileObject getFileObject(File outputDir, Module module, String fileName) throws IOException{

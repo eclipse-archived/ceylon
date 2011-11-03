@@ -59,7 +59,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
     public CeyloncFileManager(Context context, boolean register, Charset charset) {
         super(context, register, charset);
         options = Options.instance(context);
-        jarRepository = new JarOutputRepositoryManager(Log.instance(context), options);
+        jarRepository = new JarOutputRepositoryManager(Log.instance(context), options, this);
     }
 
     public Context getContext() {
