@@ -117,12 +117,25 @@ public class StructureTest extends CompilerTest {
 
         // then try to compile only one module (the other being loaded from its car) 
         result = getCompilerTask(Arrays.asList("-out", repoB.getPath(), "-repo", repoA.getPath()),
-                "module/depend/b/module.ceylon", "module/depend/b/a.ceylon").call();
+                "module/depend/b/module.ceylon", "module/depend/b/a.ceylon", "module/depend/b/B.ceylon").call();
         Assert.assertEquals(Boolean.TRUE, result);
 
         jarFile = getModuleCar("com.redhat.ceylon.compiler.test.structure.module.depend.b", "6.6.6", repoB.getPath());
         assertTrue(jarFile.exists());
-    }
+
+        // make another repo for the third module
+        File repoC = new File("build/ceylon-cars-c");
+        repoC.mkdirs();
+
+        // then try to compile only one module (the others being loaded from their car) 
+        result = getCompilerTask(Arrays.asList("-out", repoC.getPath(), 
+                "-repo", repoA.getPath(), "-repo", repoB.getPath()),
+                "module/depend/c/module.ceylon", "module/depend/c/a.ceylon", "module/depend/c/b.ceylon").call();
+        Assert.assertEquals(Boolean.TRUE, result);
+
+        jarFile = getModuleCar("com.redhat.ceylon.compiler.test.structure.module.depend.c", "6.6.6", repoC.getPath());
+        assertTrue(jarFile.exists());
+}
 
     //
     // Classes
