@@ -34,7 +34,7 @@ public class JarOutputRepositoryManager {
         this.ceyloncFileManager = ceyloncFileManager;
     }
     
-    public JavaFileObject getFileObject(File outputDir, Module module, String fileName) throws IOException{
+    public JavaFileObject getFileObject(File outputDir, Module module, String fileName, File sourceFile) throws IOException{
         ProgressiveJar progressiveJar = getProgressiveJar(outputDir, module);
         return progressiveJar.getJavaFileObject(fileName);
     }
