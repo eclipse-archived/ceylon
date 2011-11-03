@@ -40,14 +40,7 @@ public class JarOutputRepositoryManager {
     private ProgressiveJar getProgressiveJar(File outputDir, Module module) throws IOException {
         ProgressiveJar jarFile = openJars.get(module);
         if(jarFile == null){
-            String jarName = Util.getJarName(module);
-            File moduleOutputDir = Util.getModulePath(outputDir, module);
-            if(!moduleOutputDir.exists() && !moduleOutputDir.mkdirs())
-                throw new IOException("Failed to create output dir: "+moduleOutputDir);
-            if(options.get(OptionName.VERBOSE) != null){
-                Log.printLines(log.noticeWriter, "[output jar name: "+jarName+"]");
-            }
-            jarFile = new ProgressiveJar(new File(moduleOutputDir, jarName), log, options);
+            jarFile = new ProgressiveJar(outputDir, module, log, options);
             openJars.put(module, jarFile);
         }
         return jarFile;
@@ -77,7 +70,21 @@ public class JarOutputRepositoryManager {
         private Log log;
         private Options options;
         
-        public ProgressiveJar(File targetJarFile, Log log, Options options) throws IOException{
+        public ProgressiveJar(File outputDir, Module module, Log log, Options options) throws IOException{
+            this.log = log;
+            this.options = options;
+
+            // figure out where it all goes
+            String jarName = Util.getJarName(module);
+            File moduleOutputDir = Util.getModulePath(outputDir, module);
+            // make sure the folder exists
+            if(!moduleOutputDir.exists() && !moduleOutputDir.mkdirs())
+                throw new IOException("Failed to create output dir: "+moduleOutputDir);
+            if(options.get(OptionName.VERBOSE) != null){
+                Log.printLines(log.noticeWriter, "[output jar name: "+jarName+"]");
+            }
+            // now see if we create a new file or update one
+            File targetJarFile = new File(moduleOutputDir, jarName);
             if(targetJarFile.exists()){
                 outputJarFile = File.createTempFile(targetJarFile.getName(), ".tmp", targetJarFile.getParentFile());
                 originalJarFile = targetJarFile;
@@ -86,8 +93,6 @@ public class JarOutputRepositoryManager {
                 originalJarFile = null;
             }
             jarOutputStream = new JarOutputStream(new FileOutputStream(outputJarFile));
-            this.log = log;
-            this.options = options;
         }
 
         public void close() throws IOException {
