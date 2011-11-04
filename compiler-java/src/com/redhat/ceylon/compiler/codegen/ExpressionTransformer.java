@@ -209,7 +209,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (decl.isToplevel()) {
             // must use top level setter
             result = globalGen().setGlobalValue(
-                    makeIdentOrSelect(expr, decl.getContainer().getQualifiedNameString()),
+                    makeFQIdent(decl.getContainer().getQualifiedNameString()),
                     decl.getName(),
                     rhs);
         } else if ((decl instanceof Getter)) {
@@ -769,7 +769,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // invoke the getter
             if (decl.isToplevel()) {
                 result = globalGen().getGlobalValue(
-                        makeIdentOrSelect(primaryExpr, decl.getContainer().getQualifiedNameString()),
+                        makeFQIdent(decl.getContainer().getQualifiedNameString()),
                         decl.getName(),
                         decl.getName());
             } else if (decl.isClassMember()) {
@@ -799,7 +799,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 } else {
                     // it's a toplevel attribute
                     result = globalGen().getGlobalValue(
-                            makeIdentOrSelect(primaryExpr, decl.getContainer().getQualifiedNameString()),
+                            makeFQIdent(decl.getContainer().getQualifiedNameString()),
                             decl.getName());
                 }
             } else if(Decl.isClassAttribute(decl)) {
@@ -823,7 +823,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 result = makeIdent(path);
             } else if (decl.isToplevel()) {
                 java.util.List<String> path = new LinkedList<String>();
-                // package
+                // FQN must start with empty ident (see https://github.com/ceylon/ceylon-compiler/issues/148)
+                path.add("");
                 path.addAll(decl.getContainer().getQualifiedName());
                 // class
                 path.add(Util.quoteIfJavaKeyword(decl.getName()));
