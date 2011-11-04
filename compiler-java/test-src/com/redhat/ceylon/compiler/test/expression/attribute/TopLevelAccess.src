@@ -37,11 +37,8 @@ class TopLevelAccess {
         new TopLevelAccess();
     }
 }
-@.com.redhat.ceylon.compiler.metadata.java.Ceylon
-@.com.redhat.ceylon.compiler.metadata.java.Attribute
 final class b3 {
     
-    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Boolean")
     static boolean getB3() {
         return true;
     }
@@ -49,11 +46,8 @@ final class b3 {
     private b3() {
     }
 }
-@.com.redhat.ceylon.compiler.metadata.java.Ceylon
-@.com.redhat.ceylon.compiler.metadata.java.Attribute
 public final class b4 {
     
-    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Boolean")
     public static boolean getB4() {
         return true;
     }
