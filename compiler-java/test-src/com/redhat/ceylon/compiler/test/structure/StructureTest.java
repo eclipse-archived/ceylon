@@ -3,6 +3,9 @@ package com.redhat.ceylon.compiler.test.structure;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -186,6 +189,52 @@ public class StructureTest extends CompilerTest {
             entries.nextElement();
         }
         return count;
+    }
+
+    @Test
+    public void testMdlSha1Signatures() throws IOException{
+        File sourceArchiveFile = getModuleSourceArchive("com.redhat.ceylon.compiler.test.structure.module.single", "6.6.6");
+        File sourceArchiveSignatureFile = new File(sourceArchiveFile.getPath()+".sha1");
+        File jarFile = getModuleCar("com.redhat.ceylon.compiler.test.structure.module.single", "6.6.6");
+        File jarSignatureFile = new File(jarFile.getPath()+".sha1");
+        // cleanup
+        sourceArchiveFile.delete();
+        sourceArchiveSignatureFile.delete();
+        jarFile.delete();
+        jarSignatureFile.delete();
+        // safety check
+        assertFalse(sourceArchiveFile.exists());
+        assertFalse(sourceArchiveSignatureFile.exists());
+        assertFalse(jarFile.exists());
+        assertFalse(jarSignatureFile.exists());
+
+        // compile one file
+        compile("module/single/module.ceylon");
+
+        // make sure everything was created
+        assertTrue(sourceArchiveFile.exists());
+        assertTrue(sourceArchiveSignatureFile.exists());
+        assertTrue(jarFile.exists());
+        assertTrue(jarSignatureFile.exists());
+
+        // check the signatures vaguely
+        checkSha1(sourceArchiveSignatureFile);
+        checkSha1(jarSignatureFile);
+    }
+
+    private void checkSha1(File signatureFile) throws IOException {
+        Assert.assertEquals(40, signatureFile.length());
+        FileInputStream reader = new FileInputStream(signatureFile);
+        byte[] bytes = new byte[40];
+        Assert.assertEquals(40, reader.read(bytes));
+        reader.close();
+        char[] sha1 = new String(bytes, "ASCII").toCharArray();
+        for (int i = 0; i < sha1.length; i++) {
+            char c = sha1[i];
+            Assert.assertTrue((c >= '0' && c <= '9')
+                    || (c >= 'a' && c <= 'f')
+                    || (c >= 'A' && c <= 'F'));
+        }
     }
 
     //
