@@ -219,7 +219,7 @@ public class CeylonEnter extends Enter {
         Iterable<? extends File> repositories = fileManager.getLocation(CeylonLocation.REPOSITORY);
         for(File repository : repositories){
             File moduleDir = Util.getModulePath(repository, module);
-            File moduleJar = new File(moduleDir, Util.getJarName(module));
+            File moduleJar = new File(moduleDir, Util.getModuleArchiveName(module));
             if(moduleJar.exists()){
                 classPath.addFile(moduleJar, false);
                 return;

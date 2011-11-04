@@ -43,43 +43,43 @@ public class StructureTest extends CompilerTest {
     public void testMdlModuleFromCompiledModule() throws IOException{
         compile("module/single/module.ceylon");
         
-        File jarFile = getModuleCar("com.redhat.ceylon.compiler.test.structure.module.single", "6.6.6");
-        assertTrue(jarFile.exists());
+        File carFile = getModuleArchive("com.redhat.ceylon.compiler.test.structure.module.single", "6.6.6");
+        assertTrue(carFile.exists());
 
-        JarFile jar = new JarFile(jarFile);
+        JarFile car = new JarFile(carFile);
         // just to be sure
-        ZipEntry bogusEntry = jar.getEntry("com/redhat/ceylon/compiler/test/structure/module/single/BOGUS");
+        ZipEntry bogusEntry = car.getEntry("com/redhat/ceylon/compiler/test/structure/module/single/BOGUS");
         assertNull(bogusEntry);
 
-        ZipEntry moduleClass = jar.getEntry("com/redhat/ceylon/compiler/test/structure/module/single/module.class");
+        ZipEntry moduleClass = car.getEntry("com/redhat/ceylon/compiler/test/structure/module/single/module.class");
         assertNotNull(moduleClass);
-        jar.close();
+        car.close();
 
         compile("module/single/subpackage/Subpackage.ceylon");
 
         // MUST reopen it
-        jar = new JarFile(jarFile);
+        car = new JarFile(carFile);
 
-        ZipEntry subpackageClass = jar.getEntry("com/redhat/ceylon/compiler/test/structure/module/single/subpackage/Subpackage.class");
+        ZipEntry subpackageClass = car.getEntry("com/redhat/ceylon/compiler/test/structure/module/single/subpackage/Subpackage.class");
         assertNotNull(subpackageClass);
     }
 
-    private File getModuleCar(String moduleName, String version) {
-        return getModuleCar(moduleName, version, destDir);
+    private File getModuleArchive(String moduleName, String version) {
+        return getModuleArchive(moduleName, version, destDir);
     }
 
-    private File getModuleCar(String moduleName, String version, String destDir) {
-        return getModuleArchiveName(moduleName, version, destDir, "car");
+    private File getModuleArchive(String moduleName, String version, String destDir) {
+        return getArchiveName(moduleName, version, destDir, "car");
     }
 
-    private File getModuleSourceArchive(String moduleName, String version) {
-        return getModuleArchiveName(moduleName, version, destDir, "src");
+    private File getSourceArchive(String moduleName, String version) {
+        return getArchiveName(moduleName, version, destDir, "src");
     }
     
-    private File getModuleArchiveName(String moduleName, String version, String destDir, String extension) {
+    private File getArchiveName(String moduleName, String version, String destDir, String extension) {
         String modulePath = moduleName.replace('.', File.separatorChar)+File.separatorChar+version+File.separator;
-        File jarFile = new File(destDir, modulePath+moduleName+"-"+version+"."+extension);
-        return jarFile;
+        File archiveFile = new File(destDir, modulePath+moduleName+"-"+version+"."+extension);
+        return archiveFile;
     }
 
     @Test
@@ -88,11 +88,11 @@ public class StructureTest extends CompilerTest {
         compile("module/interdep/a/module.ceylon", "module/interdep/a/b.ceylon", "module/interdep/a/A.ceylon",
                 "module/interdep/b/module.ceylon", "module/interdep/b/a.ceylon", "module/interdep/b/B.ceylon");
         
-        File jarFile = getModuleCar("com.redhat.ceylon.compiler.test.structure.module.interdep.a", "6.6.6");
-        assertTrue(jarFile.exists());
+        File carFile = getModuleArchive("com.redhat.ceylon.compiler.test.structure.module.interdep.a", "6.6.6");
+        assertTrue(carFile.exists());
 
-        jarFile = getModuleCar("com.redhat.ceylon.compiler.test.structure.module.interdep.b", "6.6.6");
-        assertTrue(jarFile.exists());
+        carFile = getModuleArchive("com.redhat.ceylon.compiler.test.structure.module.interdep.b", "6.6.6");
+        assertTrue(carFile.exists());
         
         // then try to compile only one module (the other being loaded from its car) 
         compile("module/interdep/a/module.ceylon", "module/interdep/a/b.ceylon", "module/interdep/a/A.ceylon");
@@ -103,14 +103,14 @@ public class StructureTest extends CompilerTest {
         // Compile only the first module 
         compile("module/depend/a/module.ceylon", "module/depend/a/A.ceylon");
         
-        File jarFile = getModuleCar("com.redhat.ceylon.compiler.test.structure.module.depend.a", "6.6.6");
-        assertTrue(jarFile.exists());
+        File carFile = getModuleArchive("com.redhat.ceylon.compiler.test.structure.module.depend.a", "6.6.6");
+        assertTrue(carFile.exists());
 
         // then try to compile only one module (the other being loaded from its car) 
         compile("module/depend/b/module.ceylon", "module/depend/b/a.ceylon");
 
-        jarFile = getModuleCar("com.redhat.ceylon.compiler.test.structure.module.depend.b", "6.6.6");
-        assertTrue(jarFile.exists());
+        carFile = getModuleArchive("com.redhat.ceylon.compiler.test.structure.module.depend.b", "6.6.6");
+        assertTrue(carFile.exists());
     }
 
     @Test
@@ -122,8 +122,8 @@ public class StructureTest extends CompilerTest {
                 "module/depend/a/module.ceylon", "module/depend/a/A.ceylon").call();
         Assert.assertEquals(Boolean.TRUE, result);
         
-        File jarFile = getModuleCar("com.redhat.ceylon.compiler.test.structure.module.depend.a", "6.6.6", repoA.getPath());
-        assertTrue(jarFile.exists());
+        File carFile = getModuleArchive("com.redhat.ceylon.compiler.test.structure.module.depend.a", "6.6.6", repoA.getPath());
+        assertTrue(carFile.exists());
 
         // make another repo for the second module
         File repoB = new File("build/ceylon-cars-b");
@@ -134,8 +134,8 @@ public class StructureTest extends CompilerTest {
                 "module/depend/b/module.ceylon", "module/depend/b/a.ceylon", "module/depend/b/B.ceylon").call();
         Assert.assertEquals(Boolean.TRUE, result);
 
-        jarFile = getModuleCar("com.redhat.ceylon.compiler.test.structure.module.depend.b", "6.6.6", repoB.getPath());
-        assertTrue(jarFile.exists());
+        carFile = getModuleArchive("com.redhat.ceylon.compiler.test.structure.module.depend.b", "6.6.6", repoB.getPath());
+        assertTrue(carFile.exists());
 
         // make another repo for the third module
         File repoC = new File("build/ceylon-cars-c");
@@ -147,37 +147,37 @@ public class StructureTest extends CompilerTest {
                 "module/depend/c/module.ceylon", "module/depend/c/a.ceylon", "module/depend/c/b.ceylon").call();
         Assert.assertEquals(Boolean.TRUE, result);
 
-        jarFile = getModuleCar("com.redhat.ceylon.compiler.test.structure.module.depend.c", "6.6.6", repoC.getPath());
-        assertTrue(jarFile.exists());
+        carFile = getModuleArchive("com.redhat.ceylon.compiler.test.structure.module.depend.c", "6.6.6", repoC.getPath());
+        assertTrue(carFile.exists());
     }
 
     @Test
     public void testMdlSourceArchive() throws IOException{
-        File jarFile = getModuleSourceArchive("com.redhat.ceylon.compiler.test.structure.module.single", "6.6.6");
-        jarFile.delete();
-        assertFalse(jarFile.exists());
+        File sourceArchiveFile = getSourceArchive("com.redhat.ceylon.compiler.test.structure.module.single", "6.6.6");
+        sourceArchiveFile.delete();
+        assertFalse(sourceArchiveFile.exists());
 
         // compile one file
         compile("module/single/module.ceylon");
 
         // make sure it was created
-        assertTrue(jarFile.exists());
+        assertTrue(sourceArchiveFile.exists());
 
-        JarFile jar = new JarFile(jarFile);
-        assertEquals(1, countEntries(jar));
+        JarFile sourceArchive = new JarFile(sourceArchiveFile);
+        assertEquals(1, countEntries(sourceArchive));
 
-        ZipEntry moduleClass = jar.getEntry("com/redhat/ceylon/compiler/test/structure/module/single/module.ceylon");
+        ZipEntry moduleClass = sourceArchive.getEntry("com/redhat/ceylon/compiler/test/structure/module/single/module.ceylon");
         assertNotNull(moduleClass);
-        jar.close();
+        sourceArchive.close();
 
         // now compile another file
         compile("module/single/subpackage/Subpackage.ceylon");
 
         // MUST reopen it
-        jar = new JarFile(jarFile);
-        assertEquals(2, countEntries(jar));
+        sourceArchive = new JarFile(sourceArchiveFile);
+        assertEquals(2, countEntries(sourceArchive));
 
-        ZipEntry subpackageClass = jar.getEntry("com/redhat/ceylon/compiler/test/structure/module/single/subpackage/Subpackage.ceylon");
+        ZipEntry subpackageClass = sourceArchive.getEntry("com/redhat/ceylon/compiler/test/structure/module/single/subpackage/Subpackage.ceylon");
         assertNotNull(subpackageClass);
     }
 
@@ -193,20 +193,20 @@ public class StructureTest extends CompilerTest {
 
     @Test
     public void testMdlSha1Signatures() throws IOException{
-        File sourceArchiveFile = getModuleSourceArchive("com.redhat.ceylon.compiler.test.structure.module.single", "6.6.6");
+        File sourceArchiveFile = getSourceArchive("com.redhat.ceylon.compiler.test.structure.module.single", "6.6.6");
         File sourceArchiveSignatureFile = new File(sourceArchiveFile.getPath()+".sha1");
-        File jarFile = getModuleCar("com.redhat.ceylon.compiler.test.structure.module.single", "6.6.6");
-        File jarSignatureFile = new File(jarFile.getPath()+".sha1");
+        File moduleArchiveFile = getModuleArchive("com.redhat.ceylon.compiler.test.structure.module.single", "6.6.6");
+        File moduleArchiveSignatureFile = new File(moduleArchiveFile.getPath()+".sha1");
         // cleanup
         sourceArchiveFile.delete();
         sourceArchiveSignatureFile.delete();
-        jarFile.delete();
-        jarSignatureFile.delete();
+        moduleArchiveFile.delete();
+        moduleArchiveSignatureFile.delete();
         // safety check
         assertFalse(sourceArchiveFile.exists());
         assertFalse(sourceArchiveSignatureFile.exists());
-        assertFalse(jarFile.exists());
-        assertFalse(jarSignatureFile.exists());
+        assertFalse(moduleArchiveFile.exists());
+        assertFalse(moduleArchiveSignatureFile.exists());
 
         // compile one file
         compile("module/single/module.ceylon");
@@ -214,12 +214,12 @@ public class StructureTest extends CompilerTest {
         // make sure everything was created
         assertTrue(sourceArchiveFile.exists());
         assertTrue(sourceArchiveSignatureFile.exists());
-        assertTrue(jarFile.exists());
-        assertTrue(jarSignatureFile.exists());
+        assertTrue(moduleArchiveFile.exists());
+        assertTrue(moduleArchiveSignatureFile.exists());
 
         // check the signatures vaguely
         checkSha1(sourceArchiveSignatureFile);
-        checkSha1(jarSignatureFile);
+        checkSha1(moduleArchiveSignatureFile);
     }
 
     private void checkSha1(File signatureFile) throws IOException {

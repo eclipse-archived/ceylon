@@ -167,7 +167,7 @@ public class Util {
         return false;
     }
 
-    public static String getJarName(Module module) {
+    public static String getModuleArchiveName(Module module) {
         return getArchiveName(module, "car");
     }
     

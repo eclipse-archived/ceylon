@@ -87,7 +87,7 @@ public class JarOutputRepositoryManager {
             this.ceyloncFileManager = ceyloncFileManager;
 
             // figure out where it all goes
-            String jarName = Util.getJarName(module);
+            String jarName = Util.getModuleArchiveName(module);
             String srcName = Util.getSourceArchiveName(module);
             File moduleOutputDir = Util.getModulePath(outputDir, module);
             // make sure the folder exists
