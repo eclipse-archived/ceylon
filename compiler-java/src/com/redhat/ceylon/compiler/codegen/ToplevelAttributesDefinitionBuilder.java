@@ -31,9 +31,11 @@ public class ToplevelAttributesDefinitionBuilder {
     public ListBuffer<JCTree> build() {
         ListBuffer<JCTree> result = ListBuffer.lb();
         for (Tree.AttributeGetterDefinition getter : getters) {
+            boolean annots = gen.checkCompilerAnnotations(getter);
             String attrName = getter.getIdentifier().getText();
             Tree.AttributeSetterDefinition setter = setters.get(attrName);
             result.appendList(gen.transformAttribute(getter, setter));
+            gen.resetCompilerAnnotations(annots);
         }
         return result;
     }
