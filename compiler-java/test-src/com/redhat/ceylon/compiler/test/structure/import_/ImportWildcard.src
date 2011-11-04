@@ -5,10 +5,10 @@ class ImportWildcard {
     private final void m() {
         new com.redhat.ceylon.compiler.test.structure.import_.pkg.C1();
         new com.redhat.ceylon.compiler.test.structure.import_.pkg.C2();
-        boolean b = com.redhat.ceylon.compiler.test.structure.import_.pkg.f1.getF1();
-        b = com.redhat.ceylon.compiler.test.structure.import_.pkg.f2.getF2();
-        com.redhat.ceylon.compiler.test.structure.import_.pkg.m1.m1();
-        com.redhat.ceylon.compiler.test.structure.import_.pkg.m2.m2();
+        boolean b = .com.redhat.ceylon.compiler.test.structure.import_.pkg.f1.getF1();
+        b = .com.redhat.ceylon.compiler.test.structure.import_.pkg.f2.getF2();
+        .com.redhat.ceylon.compiler.test.structure.import_.pkg.m1.m1();
+        .com.redhat.ceylon.compiler.test.structure.import_.pkg.m2.m2();
     }
     
     ImportWildcard() {

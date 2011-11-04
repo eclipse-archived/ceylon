@@ -23,10 +23,10 @@ public final class b2 {
 class TopLevelAccess {
     
     private final void m() {
-        final boolean bb1 = com.redhat.ceylon.compiler.test.expression.attribute.b1.getB1();
-        final boolean bb2 = com.redhat.ceylon.compiler.test.expression.attribute.b2.getB2();
-        final boolean bb3 = com.redhat.ceylon.compiler.test.expression.attribute.b3.getB3();
-        final boolean bb4 = com.redhat.ceylon.compiler.test.expression.attribute.b4.getB4();
+        final boolean bb1 = .com.redhat.ceylon.compiler.test.expression.attribute.b1.getB1();
+        final boolean bb2 = .com.redhat.ceylon.compiler.test.expression.attribute.b2.getB2();
+        final boolean bb3 = .com.redhat.ceylon.compiler.test.expression.attribute.b3.getB3();
+        final boolean bb4 = .com.redhat.ceylon.compiler.test.expression.attribute.b4.getB4();
     }
     
     TopLevelAccess() {

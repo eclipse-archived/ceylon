@@ -6,13 +6,13 @@ public final class helloworld {
     }
     
     public static void helloworld() {
-        final ceylon.language.Iterable<? extends ceylon.language.String> $args$0 = ceylon.language.process.getProcess().getArguments();
+        final ceylon.language.Iterable<? extends ceylon.language.String> $args$0 = .ceylon.language.process.getProcess().getArguments();
         if ($args$0 instanceof ceylon.language.Sequence) {
             final ceylon.language.Sequence<? extends ceylon.language.String> $args$1 = (ceylon.language.Sequence<? extends ceylon.language.String>)$args$0;
-            ceylon.language.process.getProcess().write("Hello ");
-            ceylon.language.process.getProcess().writeLine($args$1.getFirst().toString());
+            .ceylon.language.process.getProcess().write("Hello ");
+            .ceylon.language.process.getProcess().writeLine($args$1.getFirst().toString());
         } else {
-            ceylon.language.process.getProcess().writeLine("Hello World");
+            .ceylon.language.process.getProcess().writeLine("Hello World");
         }
     }
     

@@ -23,7 +23,7 @@ public final class innerMethodInvocation {
         final fib fib = new fib();
         for (ceylon.language.Iterator<? extends ceylon.language.Natural> $n$iter$0 = new ceylon.language.Range<ceylon.language.Natural>(.ceylon.language.Natural.instance(0L), .ceylon.language.Natural.instance(50L)).getIterator(); $n$iter$0.getHead() != null; $n$iter$0 = $n$iter$0.getTail()) {
             final long n = $n$iter$0.getHead().longValue();
-            ceylon.language.print.print(.ceylon.language.String.instance("n! = ").plus(.ceylon.language.String.instance(.ceylon.language.Natural.instance(fib.fib(n)).toString())).toString());
+            .ceylon.language.print.print(.ceylon.language.String.instance("n! = ").plus(.ceylon.language.String.instance(.ceylon.language.Natural.instance(fib.fib(n)).toString())).toString());
         }
     }
     

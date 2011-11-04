@@ -31,10 +31,10 @@ public final class b2 {
 class TopLevelAssign {
     
     private final void m() {
-        com.redhat.ceylon.compiler.test.expression.attribute.b1.setB1(false);
-        com.redhat.ceylon.compiler.test.expression.attribute.b2.setB2(false);
-        com.redhat.ceylon.compiler.test.expression.attribute.b3.setB3(false);
-        com.redhat.ceylon.compiler.test.expression.attribute.b4.setB4(false);
+        .com.redhat.ceylon.compiler.test.expression.attribute.b1.setB1(false);
+        .com.redhat.ceylon.compiler.test.expression.attribute.b2.setB2(false);
+        .com.redhat.ceylon.compiler.test.expression.attribute.b3.setB3(false);
+        .com.redhat.ceylon.compiler.test.expression.attribute.b4.setB4(false);
     }
     
     TopLevelAssign() {

@@ -19,7 +19,7 @@ final class accessX {
     }
     
     static void accessX() {
-        com.redhat.ceylon.compiler.test.structure.toplevel.x.getX().y();
+        .com.redhat.ceylon.compiler.test.structure.toplevel.x.getX().y();
     }
     
     public static void main(.java.lang.String[] args) {
