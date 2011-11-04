@@ -18,6 +18,7 @@ import java.util.zip.ZipEntry;
 import javax.tools.JavaFileObject;
 
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.util.ShaSigner;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.util.Log;
@@ -184,7 +185,9 @@ public class JarOutputRepositoryManager {
             	originalFile.delete();
                 if(!outputFile.renameTo(originalFile))
                     throw new IOException("Failed to rename jar file");
-            }
+                ShaSigner.sign(originalFile, log, options);
+            }else
+                ShaSigner.sign(outputFile, log, options);
         }
 
         private void copy(InputStream inputStream, JarOutputStream outputStream) throws IOException {
