@@ -154,6 +154,17 @@ public abstract class AbstractTransformer implements Transformation {
         return type;
     }
 
+    protected JCExpression makeFQIdent(String... components) {
+        JCExpression type = make().Ident(names.empty);
+        for (String component : components) {
+            if (type == null)
+                type = make().Ident(names().fromString(component));
+            else
+                type = makeSelect(type, component);
+        }
+        return type;
+    }
+
     protected JCExpression makeIdent(Type type) {
         return make().QualIdent(type.tsym);
     }
