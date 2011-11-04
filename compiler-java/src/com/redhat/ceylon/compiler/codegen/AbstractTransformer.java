@@ -564,6 +564,17 @@ public abstract class AbstractTransformer implements Transformation {
     // FIXME
     public static boolean disableModelAnnotations = false;
     
+    public boolean checkCompilerAnnotations(Tree.Declaration decl){
+        boolean old = disableModelAnnotations;
+        if(Util.hasCompilerAnnotation(decl, "nomodel"))
+            disableModelAnnotations  = true;
+        return old;
+    }
+
+    public void resetCompilerAnnotations(boolean value){
+        disableModelAnnotations = value;
+    }
+
     private List<JCAnnotation> makeModelAnnotation(Type annotationType, List<JCExpression> annotationArgs) {
         if (disableModelAnnotations)
             return List.nil();

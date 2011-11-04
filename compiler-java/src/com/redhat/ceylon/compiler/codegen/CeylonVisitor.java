@@ -70,39 +70,28 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         //append(gen.transform(that));
     }
     
-    private boolean checkCompilerAnnotations(Tree.Declaration decl){
-        boolean old = gen.disableModelAnnotations;
-        if(Util.hasCompilerAnnotation(decl, "nomodel"))
-            gen.disableModelAnnotations  = true;
-        return old;
-    }
-
-    private void resetCompilerAnnotations(boolean value){
-        gen.disableModelAnnotations = value;
-    }
-
     public void visit(Tree.ClassOrInterface decl) {
-        boolean annots = checkCompilerAnnotations(decl);
+        boolean annots = gen.checkCompilerAnnotations(decl);
         if (Decl.withinClass(decl)) {
             classBuilder.defs(gen.classGen().transform(decl));
         } else {
             appendList(gen.classGen().transform(decl));
         }
-        resetCompilerAnnotations(annots);
+        gen.resetCompilerAnnotations(annots);
     }
 
     public void visit(Tree.ObjectDefinition decl) {
-        boolean annots = checkCompilerAnnotations(decl);
+        boolean annots = gen.checkCompilerAnnotations(decl);
         if (Decl.withinClass(decl)) {
             classBuilder.defs(gen.classGen().transformObject(decl, classBuilder));
         } else {
             appendList(gen.classGen().transformObject(decl, null));
         }
-        resetCompilerAnnotations(annots);
+        gen.resetCompilerAnnotations(annots);
     }
     
     public void visit(Tree.AttributeDeclaration decl){
-        boolean annots = checkCompilerAnnotations(decl);
+        boolean annots = gen.checkCompilerAnnotations(decl);
         if (Decl.withinPackage(decl)) {
             // Toplevel attributes
             appendList(gen.transform(decl));
@@ -116,11 +105,11 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             // All other local attributes
             append(gen.statementGen().transform(decl));
         }
-        resetCompilerAnnotations(annots);
+        gen.resetCompilerAnnotations(annots);
     }
 
     public void visit(Tree.AttributeGetterDefinition decl){
-        boolean annots = checkCompilerAnnotations(decl);
+        boolean annots = gen.checkCompilerAnnotations(decl);
         if (Decl.withinClass(decl)) {
             classBuilder.defs(gen.classGen().transform(decl));
         } else if (Decl.withinMethod(decl)) {
@@ -128,11 +117,11 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         } else {
             topattrBuilder.add(decl);
         }
-        resetCompilerAnnotations(annots);
+        gen.resetCompilerAnnotations(annots);
     }
 
     public void visit(final Tree.AttributeSetterDefinition decl) {
-        boolean annots = checkCompilerAnnotations(decl);
+        boolean annots = gen.checkCompilerAnnotations(decl);
         if (Decl.withinClass(decl)) {
             classBuilder.defs(gen.classGen().transform(decl));
         } else if (Decl.withinMethod(decl)) {
@@ -140,11 +129,11 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         } else {
             topattrBuilder.add(decl);
         }
-        resetCompilerAnnotations(annots);
+        gen.resetCompilerAnnotations(annots);
     }
 
     public void visit(Tree.MethodDefinition decl) {
-        boolean annots = checkCompilerAnnotations(decl);
+        boolean annots = gen.checkCompilerAnnotations(decl);
         Scope container = decl.getDeclarationModel().getContainer();
         if (container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) {
             boolean isInterface = container instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -154,7 +143,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         } else {
             appendList(gen.classGen().transformWrappedMethod(decl));
         }
-        resetCompilerAnnotations(annots);
+        gen.resetCompilerAnnotations(annots);
     }
 
     public void visit(Tree.MethodDeclaration meth) {
