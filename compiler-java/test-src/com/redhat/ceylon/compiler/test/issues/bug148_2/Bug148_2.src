@@ -1,0 +1,31 @@
+package bug148_2;
+
+final class f {
+    private static long value = 2L;
+    
+    static long getF() {
+        return value;
+    }
+    
+    static void setF(long f) {
+        value = f;
+    }
+    
+    private f() {
+    }
+}
+public final class bug148_2 {
+    
+    private bug148_2() {
+    }
+    
+    public static void bug148_2() {
+        .ceylon.language.print.print(.ceylon.language.Natural.instance(.bug148_2.f.getF()).toString());
+        .bug148_2.f.setF(3L);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        bug148_2();
+    }
+}
