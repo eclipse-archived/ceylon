@@ -1,15 +1,26 @@
 package bug148;
 
+final class f {
+    
+    private f() {
+    }
+    
+    static void f() {
+        .bug148.f.f();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        f();
+    }
+}
 public final class bug148 {
     
     private bug148() {
     }
     
     public static void bug148() {
-        for (ceylon.language.Iterator<? extends ceylon.language.Natural> $n$iter$0 = new ceylon.language.Range<ceylon.language.Natural>(.ceylon.language.Natural.instance(0L), .ceylon.language.Natural.instance(50L)).getIterator(); $n$iter$0.getHead() != null; $n$iter$0 = $n$iter$0.getTail()) {
-            final long n = $n$iter$0.getHead().longValue();
-            ceylon.language.process.getProcess().writeLine(.ceylon.language.Natural.instance(n).toString());
-        }
+        .bug148.f.f();
     }
     
     public static void main(.java.lang.String[] args) {

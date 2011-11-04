@@ -18,7 +18,7 @@ public class IssuesTest extends CompilerTest {
     
     @Test
     public void testBug148(){
-        compareWithJavaSource("bug148/Bug148.src", "bug148/Bug148.ceylon", "bug148/Bug148_fib.ceylon");
+        compareWithJavaSource("bug148/Bug148.src", "bug148/Bug148.ceylon");
     }
     
     @Test
