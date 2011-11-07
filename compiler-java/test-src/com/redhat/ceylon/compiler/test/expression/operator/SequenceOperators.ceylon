@@ -16,11 +16,13 @@ shared class SequenceOperators() {
 //            c1[n1] := s;
 //        }
         s :=  c2?[n1];
+// M2:        
+//        Natural[] indices = {1, 2, 3};
+//        variable String[] seq1 := c1[indices];
+//        variable Iterable<String> it1 := c1[indices.iterator];
+		String[] sequence = {"foo", "bar"};
+        String[] subrange = sequence[n1..n2];
 /*
-        Natural[] indices = {1, 2, 3};
-        variable String[] seq1 := c1[indices];
-        variable Iterable<String> it1 := c1[indices.iterator];
-        variable String[] subrange = c1[n1..n2];
         variable String[] upperRange = c1[n1...];
         Natural[] spreadMember = n1[].size;
         variable Iterable<String>[] spreadInvoke = n1[].lines();
