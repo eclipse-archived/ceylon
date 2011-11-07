@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import java.util.Arrays;
+
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 public class ArraySequence<Element> implements Sequence<Element> {
@@ -114,4 +116,19 @@ public class ArraySequence<Element> implements Sequence<Element> {
     public java.lang.String getElementsString() {
         return Sequence$impl.getElementsString(this);
     }
+
+	@Override
+	public Sequence<? extends Element> span(long from, long to) {
+		if(from >= to)
+			return new ArraySequence<Element>();
+		if(to > getLastIndex())
+			return new ArraySequence<Element>(array, from);
+		Element[] newArray = Arrays.copyOfRange(array, (int)from, (int)to);
+		return new ArraySequence<Element>(newArray);
+	}
+
+	@Override
+	public Ordered<Element> segment(long from, long length) {
+		return Ordered$Impl.segment(this, from, length);
+	}
 }

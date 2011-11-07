@@ -11,7 +11,7 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
     @TypeParameter(value = "Element", variance = Variance.OUT)
  })
  public interface Sequence<Element> 
-    extends Correspondence<Natural, Element>, Iterable<Element>, 
+    extends Correspondence<Natural, Element>, Ordered<Element>, 
         Sized, Cloneable<Sequence<Element>> {
     
     @TypeInfo("ceylon.language.Natural")
@@ -67,6 +67,12 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
         }
     }
     
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element|ceylon.language.Nothing>")
+    public Sequence<? extends Element> span(long from, long to);
+    
+    @Override
+    public Ordered<Element> segment(long from, long length);
+
     public java.lang.String toString();
 
     // FIXME: this is supposed to be private but no idea how to make it so
