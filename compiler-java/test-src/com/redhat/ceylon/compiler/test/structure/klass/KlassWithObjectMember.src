@@ -4,23 +4,35 @@ class KlassWithObjectMember {
     private final .java.lang.String x;
     
     final class localobj {
+        private final .java.lang.String f;
+        
+        public final .java.lang.String getF() {
+            return this.f;
+        }
         
         public final .java.lang.String m() {
             return x;
         }
         
         private localobj() {
+            this.f = x;
         }
     }
     private final capturedobj capturedobj;
     
     final class capturedobj {
+        private final .java.lang.String f;
+        
+        public final .java.lang.String getF() {
+            return this.f;
+        }
         
         public final .java.lang.String m() {
             return x;
         }
         
         private capturedobj() {
+            this.f = x;
         }
     }
     
@@ -30,12 +42,18 @@ class KlassWithObjectMember {
     private final sharedobj sharedobj;
     
     public final class sharedobj {
+        private final .java.lang.String f;
+        
+        public final .java.lang.String getF() {
+            return this.f;
+        }
         
         public final .java.lang.String m() {
             return x;
         }
         
         private sharedobj() {
+            this.f = x;
         }
     }
     
