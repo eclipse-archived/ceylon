@@ -1983,13 +1983,6 @@ public class Lower extends TreeTranslator {
         }
     }
 
-    private Name ceylonMangle(Name name, String suffix) {
-        String string = name.toString();
-        int limit = string.indexOf("$$overload");
-        assert limit >= 0;
-        return names.fromString(string.substring(0, limit + 2) + suffix);
-    }
-
     public void visitClassDef(JCClassDecl tree) {
         ClassSymbol currentClassPrev = currentClass;
         MethodSymbol currentMethodSymPrev = currentMethodSym;
@@ -2037,37 +2030,6 @@ public class Lower extends TreeTranslator {
         // Convert a protected modifier to public, mask static modifier.
         if ((tree.mods.flags & PROTECTED) != 0) tree.mods.flags |= PUBLIC;
         tree.mods.flags &= ClassFlags;
-
-        // If this is an overloaded top-level class then fix up the names.
-        if (Context.isCeylon() && tree.name.toString().contains("$$overload")) {
-            JCMethodDecl constructor = null;
-            for (JCTree def : tree.defs) {
-                if (def.getKind() == Kind.METHOD) {
-                    JCMethodDecl method = (JCMethodDecl) def;
-                    if (method.name.equals(names.init)) {
-                        assert constructor == null;
-                        constructor = method;
-                    }
-                }
-            }
-            assert constructor != null;
-
-            StringBuilder builder = new StringBuilder();
-            for (JCVariableDecl param : constructor.params) {
-                JCExpression vartype = param.vartype;
-                assert vartype.getKind() == Kind.IDENTIFIER;
-                String type = (((JCIdent) vartype).sym).toString().replace('.', '$');
-                builder.append(type.length());
-                builder.append(type);
-            }
-            String suffix = builder.toString();
-
-            // This name gets stored in the bytecode
-            tree.name = ceylonMangle(tree.name, suffix);
-
-            // This name is used to figure out the output filename
-            tree.sym.flatname = ceylonMangle(tree.sym.flatname, suffix);
-        }
 
         // Convert name to flat representation, replacing '.' by '$'.
         tree.name = Convert.shortName(currentClass.flatName());

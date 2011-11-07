@@ -451,18 +451,6 @@ public abstract class Symbol implements Element {
         return l.toList();
     }
 
-    /** The type you end up with if this symbol is used as an extension in Ceylon.
-     */
-    public Type ceylonIntroducedType() {
-        throw new AssertionError();
-    }
-
-    /** Apply this symbol as a Ceylon extension
-     */
-    public JCExpression doCeylonExtension(JCExpression tree, TreeMaker make) {
-        throw new AssertionError();
-    }
-
     public static class DelegatedSymbol extends Symbol {
         protected Symbol other;
         public DelegatedSymbol(Symbol other) {
@@ -999,14 +987,6 @@ public abstract class Symbol implements Element {
             this.data = data;
         }
 
-        public Type ceylonIntroducedType() {
-            assert getKind() == ElementKind.FIELD;
-            return asType();
-        }
-
-        public JCExpression doCeylonExtension(JCExpression tree, TreeMaker make) {
-            return make.Select(tree, this);
-        }
     }
 
     /** A class for method symbols.
@@ -1278,26 +1258,6 @@ public abstract class Symbol implements Element {
             return asType().getThrownTypes();
         }
 
-        public Type ceylonIntroducedType() {
-            if (isConstructor()) {
-                return owner.type;
-            }
-            else {
-                return getReturnType();
-            }
-        }
-
-        public JCExpression doCeylonExtension(JCExpression tree, TreeMaker make) {
-            if (isConstructor()) {
-                JCNewClass result = make.NewClass(
-                    null, null, make.QualIdent(owner.type.tsym), List.of(tree), null);
-                result.constructor = this;
-                return result;
-            }
-            else {
-                return make.App(make.Select(tree, this));
-            }
-        }
     }
 
     /** A class for predefined operators.

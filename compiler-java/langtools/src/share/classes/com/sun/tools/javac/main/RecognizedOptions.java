@@ -171,7 +171,6 @@ public class RecognizedOptions {
         XD,
         SOURCEFILE,
         SRC,
-        DEBUGCEYLON,
         BOOTSTRAPCEYLON);
 
     static Set<OptionName> javacFileManagerOptions = EnumSet.of(
@@ -543,9 +542,6 @@ public class RecognizedOptions {
         // output source after type erasure
         // new Option("-s",                                     "opt.s"),
         new HiddenOption(PRINTSOURCE),
-
-        // output source after type erasure
-        new HiddenOption(DEBUGCEYLON),
 
         // allow us to compile ceylon.language
         new HiddenOption(BOOTSTRAPCEYLON),

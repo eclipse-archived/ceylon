@@ -336,14 +336,6 @@ public class Resolve {
                                 allowBoxing, useVarargs, warn))
             return mt;
 
-        if (allowBoxing && Context.isCeylon()) {
-            // Special case: we need this to pass null to Optional parameters
-            List<Type> parameterTypes = m.type.getParameterTypes();
-            if (argumentsAcceptable(argtypes, parameterTypes,
-                    allowBoxing, useVarargs, warn))
-                return mt;
-        }
-
         return null;
     }
 

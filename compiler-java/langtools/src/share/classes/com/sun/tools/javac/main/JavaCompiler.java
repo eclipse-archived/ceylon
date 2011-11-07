@@ -387,8 +387,6 @@ public class JavaCompiler implements ClassReader.SourceCompleter {
             (options.get("shouldStopPolicy") != null)
             ? CompileState.valueOf(options.get("shouldStopPolicy"))
             : null;
-
-        debugCeylon = options.get("-debugceylon") != null;
     }
 
     /* Switches:
@@ -467,10 +465,6 @@ public class JavaCompiler implements ClassReader.SourceCompleter {
      * error.
      */
     public CompileState shouldStopPolicy;
-
-    /** Switch: Print Java sources when compiling Ceylon.
-     */
-    protected boolean debugCeylon;
 
     /** A queue of all as yet unattributed classes.
      */
@@ -1330,9 +1324,6 @@ public class JavaCompiler implements ClassReader.SourceCompleter {
 
             //translate out inner classes
             List<JCTree> cdefs = lower.translateTopLevelClass(env, env.tree, localMake);
-
-            if (debugCeylon)
-                System.out.println(cdefs);
 
             if (shouldStop(CompileState.LOWER))
                 return;
