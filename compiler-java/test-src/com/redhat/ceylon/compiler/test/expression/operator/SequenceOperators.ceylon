@@ -15,6 +15,7 @@ shared class SequenceOperators() {
 //        if (c1 satisfies OpenCorrespondence<Natural, String>) {
 //            c1[n1] := s;
 //        }
+/*
         s :=  c2?[n1];
         Natural[] indices = {1, 2, 3};
         variable String[] seq1 := c1[indices];
@@ -24,6 +25,6 @@ shared class SequenceOperators() {
         Natural[] spreadMember = n1[].size;
         variable Iterable<String>[] spreadInvoke = n1[].lines();
         spreadInvoke = n1[].lines{};
-        
+*/       
     }
 }
