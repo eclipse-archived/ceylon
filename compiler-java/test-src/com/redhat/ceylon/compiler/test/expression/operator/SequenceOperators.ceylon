@@ -11,9 +11,10 @@ shared class SequenceOperators() {
     
     void sequence(Correspondence<Natural, String> c1, Correspondence<Natural,String>? c2) {
         variable String? s := c1[n1];
-        if (c1 satisfies OpenCorrespondence<Natural, String>) {
-            c1[n1] := s;
-        }
+// M2:
+//        if (c1 satisfies OpenCorrespondence<Natural, String>) {
+//            c1[n1] := s;
+//        }
         s :=  c2?[n1];
         Natural[] indices = {1, 2, 3};
         variable String[] seq1 := c1[indices];
