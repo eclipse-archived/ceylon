@@ -23,6 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BinaryOperatorExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Element;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ElementOrRange;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ElementRange;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IndexExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
@@ -934,7 +935,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             // (let tmpVar in conditional)
             return make().LetExpr(tmpVar, conditional);
         }else{
-            throw new RuntimeException("Not supported yet");
+            Tree.ElementRange range = (ElementRange) elementOrRange;
+            JCExpression start = transformExpression(range.getLowerBound(), BoxingStrategy.UNBOXED);
+            JCExpression end = transformExpression(range.getUpperBound(), BoxingStrategy.UNBOXED);
+            // make a "lhs.span(start, end)" call
+            return at(access).Apply(List.<JCTree.JCExpression>nil(), 
+                    make().Select(lhs, names().fromString("span")), List.of(start, end));
         }
     }
 }
