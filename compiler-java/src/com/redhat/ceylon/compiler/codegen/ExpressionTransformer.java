@@ -47,6 +47,7 @@ import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
+import com.sun.tools.javac.tree.JCTree.JCConditional;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
@@ -54,9 +55,11 @@ import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCUnary;
+import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
+import com.sun.tools.javac.util.Name;
 
 /**
  * This transformer deals with expressions only
@@ -901,16 +904,35 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCTree transform(IndexExpression access) {
+        boolean safe = access.getIndexOperator() instanceof Tree.SafeIndexOp;
+
         // look at the lhs
         JCExpression lhs = transformExpression(access.getPrimary());
+        
         // do the index
         ElementOrRange elementOrRange = access.getElementOrRange();
         if(elementOrRange instanceof Tree.Element){
             Tree.Element element = (Element) elementOrRange;
             JCExpression index = transformExpression(element.getExpression(), BoxingStrategy.BOXED);
-            // make a "lhs.item(index)" call
-            return at(access).Apply(List.<JCTree.JCExpression>nil(), 
-                    make().Select(lhs, names().fromString("item")), List.of(index));
+            if(!safe)
+                // make a "lhs.item(index)" call
+                return at(access).Apply(List.<JCTree.JCExpression>nil(), 
+                        make().Select(lhs, names().fromString("item")), List.of(index));
+            // make a (let ArrayElem tmp = lhs in (tmp != null ? tmp.item(index) : null)) call
+            JCExpression arrayType = makeJavaType(access.getPrimary().getTypeModel());
+            Name varName = names().fromString(tempName("safeaccess"));
+            // tmpVar.item(index)
+            JCExpression safeAccess = make().Apply(List.<JCTree.JCExpression>nil(), 
+                    make().Select(make().Ident(varName), names().fromString("item")), List.of(index));
+
+            at(access.getPrimary());
+            // (tmpVar != null ? safeAccess : null)
+            JCConditional conditional = make().Conditional(make().Binary(JCTree.NE, make().Ident(varName), makeNull()), 
+                    safeAccess, makeNull());
+            // ArrayElem tmp = lhs
+            JCVariableDecl tmpVar = make().VarDef(make().Modifiers(0), varName, arrayType, lhs);
+            // (let tmpVar in conditional)
+            return make().LetExpr(tmpVar, conditional);
         }else{
             throw new RuntimeException("Not supported yet");
         }
