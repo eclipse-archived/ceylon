@@ -1,5 +1,0 @@
-arg exists:
-ceylon.language.String {
-  java.lang.String value = "Hello mum"
-}
-arg does not exist
