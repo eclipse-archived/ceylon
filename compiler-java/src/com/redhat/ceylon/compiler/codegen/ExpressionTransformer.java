@@ -21,7 +21,10 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BinaryOperatorExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Element;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ElementOrRange;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.IndexExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.OrOp;
@@ -895,5 +898,21 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(expr);
         ProducedType outerClass = com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface(expr.getScope());
         return makeIdent(outerClass.getDeclaration().getName(), "this");
+    }
+
+    public JCTree transform(IndexExpression access) {
+        // look at the lhs
+        JCExpression lhs = transformExpression(access.getPrimary());
+        // do the index
+        ElementOrRange elementOrRange = access.getElementOrRange();
+        if(elementOrRange instanceof Tree.Element){
+            Tree.Element element = (Element) elementOrRange;
+            JCExpression index = transformExpression(element.getExpression(), BoxingStrategy.BOXED);
+            // make a "lhs.item(index)" call
+            return at(access).Apply(List.<JCTree.JCExpression>nil(), 
+                    make().Select(lhs, names().fromString("item")), List.of(index));
+        }else{
+            throw new RuntimeException("Not supported yet");
+        }
     }
 }
