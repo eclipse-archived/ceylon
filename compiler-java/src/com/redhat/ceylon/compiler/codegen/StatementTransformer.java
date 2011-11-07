@@ -282,7 +282,11 @@ public class StatementTransformer extends AbstractTransformer {
         JCExpression step = at(stmt).Assign(iter_id, at(stmt).Apply(null, makeSelect(iter_id, Util.getGetterName("tail")), List.<JCExpression> nil()));
         
         // $i$iter$1.getHead() != null;
-        JCExpression cond = at(stmt).Binary(JCTree.NE, iter_head, makeNull());
+        // Watch out that we can't reuse tree bits in different locations, otherwise we break javac, since
+        // it will later on tag each tree bit while walking it and expects each node to be unique
+        // See https://github.com/ceylon/ceylon-compiler/issues/151
+        JCExpression iter_head2 = at(stmt).Apply(null, makeSelect(iter_id, Util.getGetterName("head")), List.<JCExpression> nil());
+        JCExpression cond = at(stmt).Binary(JCTree.NE, iter_head2, makeNull());
         
         // for (.ceylon.language.Iterator<T> $V$iter$X = ITERABLE.iterator(); $V$iter$X.getHead() != null; $V$iter$X = $V$iter$X.getTail()) {
         outer = outer.append(at(stmt).ForLoop(
