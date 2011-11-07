@@ -32,6 +32,7 @@ import javax.tools.JavaFileObject;
 import com.sun.tools.javac.code.*;
 import com.sun.tools.javac.jvm.*;
 import com.sun.tools.javac.tree.*;
+import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.*;
 import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
 import com.sun.tools.javac.util.List;
@@ -2596,6 +2597,26 @@ public class Attr extends JCTree.Visitor {
         result = tree.type = syms.errType;
     }
 
+    /* Added for Ceylon, required by the ExpressionTransformer */
+    @Override
+    public void visitLetExpr(LetExpr tree) {
+        // make a new environment which captures the current one
+        Env<AttrContext> localEnv =
+                env.dup(tree, env.info.dup(env.info.scope.dup()));
+        // visit each var def in this new env (side note: this is not a real LET since in theory each
+        // new variable should see the ones defined previously)
+        for(JCVariableDecl def : tree.defs){
+            // we don't expect any result type from these var defs
+            attribTree(def, localEnv, NIL, Type.noType);
+        }
+        // now attribute the expression with the LET expected type (pt)
+        attribExpr(tree.expr, localEnv, pt);
+        // the type of the LET is the type of the expression
+        tree.type = tree.expr.type;
+        // exit the LET scope
+        localEnv.info.scope.leave();
+    }
+    
     public void visitErroneous(JCErroneous tree) {
         if (tree.errs != null)
             for (JCTree err : tree.errs)
