@@ -54,7 +54,12 @@ public abstract class CeylonDoc {
 			if(i > 0)
 				stringBuilder.append("/");
 		}
-		return stringBuilder.toString();
+		if (stringBuilder.length() == 0)  {
+			return "."; //make links relative and not absolute
+		}
+		else {
+			return stringBuilder.toString();
+		}
 	}
 
 	protected void link(ProducedType type) throws IOException {
