@@ -7,6 +7,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
@@ -63,14 +64,14 @@ public class Util {
 		return ancestors;
 	}	
 	
-	public static List<TypeDeclaration> getSuperInterfaces(TypeDeclaration decl) {
-		List<TypeDeclaration> superInterfaces = new ArrayList<TypeDeclaration>();
+	public static List<Interface> getSuperInterfaces(TypeDeclaration decl) {
+		List<Interface> superInterfaces = new ArrayList<Interface>();
 		List<TypeDeclaration> satisfiedTypes = decl.getSatisfiedTypeDeclarations();
 		while (satisfiedTypes.isEmpty() == false) {
 			 List<TypeDeclaration> superSatisfiedTypes = new ArrayList<TypeDeclaration>(); 
 			 for (TypeDeclaration satisfiedType : satisfiedTypes) {
 				 if (superInterfaces.contains(satisfiedType) == false && superSatisfiedTypes.contains(satisfiedType) == false) { 
-					 superInterfaces.add(satisfiedType);
+					 superInterfaces.add((Interface)satisfiedType);
 					 if (satisfiedType.getSatisfiedTypeDeclarations().isEmpty() == false) {
 						 for (TypeDeclaration superSatisfiedType: satisfiedType.getSatisfiedTypeDeclarations() ) {
 							 if (superInterfaces.contains(superSatisfiedType) == false && superSatisfiedTypes.contains(superSatisfiedType) == false) {

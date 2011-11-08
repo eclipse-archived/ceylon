@@ -23,6 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
@@ -37,7 +38,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     private List<Class> satisfyingClasses;
     private List<Class> innerClasses;
     private List<Interface> satisfyingInterfaces;
-    private List<TypeDeclaration> superInterfaces;
+    private List<Interface> superInterfaces;
     private List<TypeDeclaration> superClasses;
     
     private Comparator<Declaration> comparator = new Comparator<Declaration>() {
@@ -274,15 +275,15 @@ public class ClassDoc extends ClassOrPackageDoc {
 		
 		// hierarchy tree - only for classes
 		if (klass instanceof Class) {			
-			LinkedList<ClassOrInterface> superTypes = new LinkedList<ClassOrInterface>();
-			superTypes.add(klass);
-			ClassOrInterface type = klass.getExtendedTypeDeclaration(); 
+			LinkedList<ProducedType> superTypes = new LinkedList<ProducedType>();
+			superTypes.add(klass.getType());
+			ProducedType type = klass.getExtendedType();
 			while(type != null){
 				superTypes.add(0, type);
-				type = type.getExtendedTypeDeclaration();
+				type = type.getDeclaration().getExtendedType();
 			}
 			int i=0;
-			for(ClassOrInterface superType : superTypes){
+			for(ProducedType superType : superTypes){
 				open("ul class='inheritance'", "li");
 				link(superType, true);
 				i++;
@@ -360,18 +361,18 @@ public class ClassDoc extends ClassOrPackageDoc {
         return new File(getFolder(klass), getFileName(klass));
     }
     
-    private void writeListOnSummary(String divClass, String label, List<? extends TypeDeclaration> list) throws IOException {
+    private void writeListOnSummary(String divClass, String label, List<? extends ClassOrInterface> list) throws IOException {
 		if (isNullOrEmpty(list) == false) {
 			boolean first = true;
 			open("div class='" + divClass + "'");
 			write(label);
-			for (TypeDeclaration typeDeclaration : list) {
+			for (ClassOrInterface typeDeclaration : list) {
 				if (!first) {
 					write(", ");
 				} else {
 					first = false;
 				}
-				link(typeDeclaration, true);
+				link(typeDeclaration, null, true);
 			}
 			close("div");
 		}

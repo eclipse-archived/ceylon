@@ -63,14 +63,14 @@ public abstract class CeylonDoc {
 	}
 
 	protected void link(ProducedType type) throws IOException {
-		TypeDeclaration decl = type.getDeclaration();
-		link(decl, false);
+		link(type, false);
 	}
 
-	protected void link(TypeDeclaration decl, boolean qualified) throws IOException {
+	protected void link(ProducedType type, boolean qualified) throws IOException {
+		TypeDeclaration decl = type.getDeclaration();
 		if(decl instanceof UnionType){
 			boolean first = true;
-			for(TypeDeclaration ud : ((UnionType)decl).getCaseTypeDeclarations()){
+			for(ProducedType ud : ((UnionType)decl).getCaseTypes()){
 				if(first){
 					first = false;
 				}else{
@@ -79,7 +79,7 @@ public abstract class CeylonDoc {
 				link(ud, qualified);
 			}
 		}else if(decl instanceof ClassOrInterface){
-			link((ClassOrInterface)decl, qualified);
+			link((ClassOrInterface)decl, type.getTypeArgumentList(), qualified);
         }else if(decl instanceof TypeParameter){
             around("span class='type-parameter'", decl.getName());
 		}else{
@@ -87,9 +87,22 @@ public abstract class CeylonDoc {
 		}
 	}
 
-	protected void link(ClassOrInterface decl, boolean qualified) throws IOException {
+	protected void link(ClassOrInterface decl, List<ProducedType> typeParameters, boolean qualified) throws IOException {
 		String path = getPathToBase() + "/" + join("/", getPackage(decl).getName())+"/"+getFileName(decl);
-		around("a href='"+path+"'", qualified ? decl.getQualifiedNameString() : decl.getName());
+		String name = qualified ? decl.getQualifiedNameString() : decl.getName();
+		around("a href='"+path+"'", name);
+		if(typeParameters != null && !typeParameters.isEmpty()){
+			write("<");
+			boolean once = false;
+			for(ProducedType typeParam : typeParameters){
+				if(!once)
+					once = true;
+				else
+					write(",");
+				link(typeParam, qualified);
+			}
+			write(">");
+		}
 	}
 
 	protected abstract String getPathToBase();
