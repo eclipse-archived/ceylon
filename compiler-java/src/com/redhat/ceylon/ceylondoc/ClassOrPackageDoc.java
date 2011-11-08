@@ -21,7 +21,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
 	}
 	
     protected void doc(Method m) throws IOException {
-        open("tr class='TableRowColor'");
+        open("tr class='TableRowColor' id='method-"+m.getName()+"'");
 		open("td");
 		around("span class='modifiers'",getModifiers(m));
 		write(" ");
@@ -53,7 +53,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
 		if (f instanceof Value) {
 			f = (Value) f;
 		}
-        open("tr class='TableRowColor'");
+        open("tr class='TableRowColor' id='attribute-"+f.getName()+"'");
 		open("td");
 		around("span class='modifiers'",getModifiers(f));
 		write(" ");
