@@ -26,6 +26,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
 		around("span class='modifiers'",getModifiers(m));
 		write(" ");
 		link(m.getType());
+		write(" ");
 		List<TypeParameter> typeParameters = m.getTypeParameters();
 		if(!typeParameters.isEmpty()){
 		    write("&lt;");
