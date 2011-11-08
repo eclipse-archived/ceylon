@@ -47,7 +47,14 @@ public class ClassDoc extends ClassOrPackageDoc {
             return a.getName().compareTo(b.getName());
         }
     };
-    
+
+    private Comparator<ProducedType> producedTypeComparator = new Comparator<ProducedType>() {
+        @Override
+        public int compare(ProducedType a, ProducedType b) {
+            return a.getDeclaration().getName().compareTo(b.getDeclaration().getName());
+        }
+    };
+
 	interface MemberSpecification {
 		boolean isSatisfiedBy(Declaration decl);
 	}
@@ -118,7 +125,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 	    Collections.sort(subclasses, comparator);	        
 	    Collections.sort(satisfyingClasses, comparator);
 	    Collections.sort(satisfyingInterfaces, comparator);     
-//	    Collections.sort(superInterfaces, comparator);
+	    Collections.sort(superInterfaces, producedTypeComparator);
 	    Collections.sort(innerClasses, comparator);
     }
 
