@@ -219,7 +219,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 			List<Declaration> methods = classMethods.get(superIntefaceName);
 			if (methods.isEmpty())
 				continue;
-			openTable("Methos inherited from interface: " + superIntefaceName);
+			openTable("Methods inherited from interface: " + superIntefaceName);
 			open("tr class='TableRowColor'");
 			open("td");
 			boolean first = true;
