@@ -387,7 +387,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 		}
     }    
 
-    private void  writeListOnSummary2(String divClass, String label, List<ProducedType> list) throws IOException {
+    private void writeListOnSummary2(String divClass, String label, List<ProducedType> list) throws IOException {
 		if (isNullOrEmpty(list) == false) {
 			boolean first = true;
 			open("div class='" + divClass + "'");
