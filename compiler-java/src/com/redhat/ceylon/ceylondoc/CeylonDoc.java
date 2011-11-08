@@ -132,12 +132,12 @@ public abstract class CeylonDoc {
 
 	protected void close(String... tags) throws IOException {
 		for(String tag : tags)
-			writer.append("</").append(tag).append(">\n");
+			writer.append("</").append(tag).append(">");
 	}
 
 	protected void open(String... tags) throws IOException {
 		for(String tag : tags)
-			writer.append("<").append(tag).append(">\n");
+			writer.append("<").append(tag).append(">");
 	}
 
 	protected static String join(String str, List<String> parts) {
