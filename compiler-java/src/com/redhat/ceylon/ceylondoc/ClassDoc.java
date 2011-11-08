@@ -38,7 +38,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     private List<Class> satisfyingClasses;
     private List<Class> innerClasses;
     private List<Interface> satisfyingInterfaces;
-    private List<Interface> superInterfaces;
+    private List<ProducedType> superInterfaces;
     private List<TypeDeclaration> superClasses;
     
     private Comparator<Declaration> comparator = new Comparator<Declaration>() {
@@ -193,12 +193,14 @@ public class ClassDoc extends ClassOrPackageDoc {
 	
 	private void inheritedMethodsFromInterfaces() throws IOException {
 		Map<String, List<Declaration>> classMethods = new HashMap<String, List<Declaration>>();
-		for (TypeDeclaration superInterface: superInterfaces) {
-			List<Declaration> methods = getConcreteSharedMembers(superInterface, methodSpecification);
-			classMethods.put(superInterface.getQualifiedNameString(), methods);
+		for (ProducedType superInterface: superInterfaces) {
+			TypeDeclaration decl = superInterface.getDeclaration();
+			List<Declaration> methods = getConcreteSharedMembers(decl , methodSpecification);
+			classMethods.put(decl.getQualifiedNameString(), methods);
 		}
-		for (TypeDeclaration superInterface: superInterfaces) {
-			List<Declaration> methods = getConcreteSharedMembers(superInterface, methodSpecification);
+		for (ProducedType superInterface: superInterfaces) {
+			TypeDeclaration decl = superInterface.getDeclaration();
+			List<Declaration> methods = getConcreteSharedMembers(decl, methodSpecification);
 			for (Declaration method: methods) {
 				Declaration refined = method.getRefinedDeclaration();
 				if (refined != null && refined != method) {
@@ -306,7 +308,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 		}
 		
 		// interfaces
-		writeListOnSummary("satisfied", "All Known Satisfied Interfaces: ",superInterfaces);
+		writeListOnSummary2("satisfied", "All Known Satisfied Interfaces: ",superInterfaces);
 
 		// subclasses
 		writeListOnSummary("subclasses", "Direct Known Subclasses: ", subclasses);
@@ -373,6 +375,23 @@ public class ClassDoc extends ClassOrPackageDoc {
 					first = false;
 				}
 				link(typeDeclaration, null, true);
+			}
+			close("div");
+		}
+    }    
+
+    private void  writeListOnSummary2(String divClass, String label, List<ProducedType> list) throws IOException {
+		if (isNullOrEmpty(list) == false) {
+			boolean first = true;
+			open("div class='" + divClass + "'");
+			write(label);
+			for (ProducedType typeDeclaration : list) {
+				if (!first) {
+					write(", ");
+				} else {
+					first = false;
+				}
+				link(typeDeclaration, true);
 			}
 			close("div");
 		}

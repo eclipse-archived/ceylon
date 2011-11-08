@@ -2,12 +2,15 @@ package com.redhat.ceylon.ceylondoc;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Interface;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
@@ -64,32 +67,45 @@ public class Util {
 		return ancestors;
 	}	
 	
-	public static List<Interface> getSuperInterfaces(TypeDeclaration decl) {
-		List<Interface> superInterfaces = new ArrayList<Interface>();
-		List<TypeDeclaration> satisfiedTypes = decl.getSatisfiedTypeDeclarations();
-		while (satisfiedTypes.isEmpty() == false) {
-			 List<TypeDeclaration> superSatisfiedTypes = new ArrayList<TypeDeclaration>(); 
-			 for (TypeDeclaration satisfiedType : satisfiedTypes) {
-				 if (superInterfaces.contains(satisfiedType) == false && superSatisfiedTypes.contains(satisfiedType) == false) { 
-					 superInterfaces.add((Interface)satisfiedType);
-					 if (satisfiedType.getSatisfiedTypeDeclarations().isEmpty() == false) {
-						 for (TypeDeclaration superSatisfiedType: satisfiedType.getSatisfiedTypeDeclarations() ) {
-							 if (superInterfaces.contains(superSatisfiedType) == false && superSatisfiedTypes.contains(superSatisfiedType) == false) {
-								 superSatisfiedTypes.add(superSatisfiedType);
-							 }
-						 }
-					 }
-				 }	 
-
-				 
-			 }
-			 satisfiedTypes = superSatisfiedTypes; 
+	public static List<ProducedType> getSuperInterfaces(TypeDeclaration decl) {
+		Set<ProducedType> superInterfaces = new HashSet<ProducedType>();
+		List<ProducedType> satisfiedTypes = decl.getSatisfiedTypes();
+		for(ProducedType satisfiedType : satisfiedTypes){
+			superInterfaces.add(satisfiedType);
+			superInterfaces.addAll(getSuperInterfaces(satisfiedType.getDeclaration()));
 		}
-		return superInterfaces;
+		ArrayList<ProducedType> list = new ArrayList<ProducedType>();
+		list.addAll(superInterfaces);
+		removeDuplicates(list);
+		return list;
 	}	
 	
 	
-    public static boolean isNullOrEmpty(Collection<? extends Object> collection ) {
+    private static void removeDuplicates(List<ProducedType> superInterfaces) {
+    	OUTER:
+    	for(int i=0;i<superInterfaces.size();i++){
+    		ProducedType pt1 = superInterfaces.get(i);
+    		// compare it with each type after it
+        	for(int j=i+1;j<superInterfaces.size();j++){
+        		ProducedType pt2 = superInterfaces.get(j);
+        		if(pt1.getDeclaration().equals(pt2.getDeclaration())){
+        			if(pt1.isSubtypeOf(pt2)){
+        				// we keep the first one because it is more specific
+        				superInterfaces.remove(j);
+        			}else{
+        				// we keep the second one because it is more specific
+        				superInterfaces.remove(i);
+        				// since we removed the first type we need to stay at the same index
+        				i--;
+        			}
+        			// go to next type
+        			continue OUTER;
+        		}
+        	}
+    	}
+	}
+
+	public static boolean isNullOrEmpty(Collection<? extends Object> collection ) {
     	return collection == null || collection.isEmpty(); 
     }
     
