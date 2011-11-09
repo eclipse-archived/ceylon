@@ -1,8 +1,9 @@
 @nomodel
 class InnerAttributeGetter() {
     void m() {
+        value m = 2;
         Natural innerGetter {
-            return 0;
+            return m;
         }
         Natural n = innerGetter;
     }

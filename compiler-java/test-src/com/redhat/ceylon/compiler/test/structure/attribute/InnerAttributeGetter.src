@@ -4,10 +4,22 @@ class InnerAttributeGetter {
     
     private final void m() {
         
+        final class m {
+            private final long value = 2L;
+            
+            long getM() {
+                return value;
+            }
+            
+            private m() {
+            }
+        }
+        final m m = new m();
+        
         final class innerGetter$getter {
             
             long getInnerGetter() {
-                return 0L;
+                return m.getM();
             }
             
             private innerGetter$getter() {
