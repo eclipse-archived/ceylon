@@ -17,6 +17,8 @@ import javax.tools.JavaFileObject;
 
 import junit.framework.Assert;
 
+import com.redhat.ceylon.compiler.codegen.AbstractTransformer;
+import com.redhat.ceylon.compiler.codegen.JavaPositionsRetriever;
 import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.tools.CeyloncTool;
@@ -59,6 +61,93 @@ public abstract class CompilerTest {
 		compareWithJavaSource(name+".src", name+".ceylon");
 	}
 
+    protected void compareWithJavaSourceWithPositions(String name) {
+        // make a compiler task
+        // FIXME: runFileManager.setSourcePath(dir);
+        CeyloncTaskImpl task = getCompilerTask(new String[] {name+".ceylon"});
+        
+        // grab the CU after we've completed it
+        class Listener implements TaskListener{
+            JCCompilationUnit compilationUnit;
+            private String compilerSrc;
+            private JavaPositionsRetriever javaPositionsRetriever = new JavaPositionsRetriever();
+            
+            @Override
+            public void started(TaskEvent e) {
+                AbstractTransformer.trackNodePositions(javaPositionsRetriever);
+            }
+
+            @Override
+            public void finished(TaskEvent e) {
+                if(e.getKind() == Kind.ENTER){
+                    if(compilationUnit == null) {
+                        compilationUnit = (JCCompilationUnit) e.getCompilationUnit();
+                        // for some reason compilationUnit is full here in the listener, but empty as soon
+                        // as the compile task is done. probably to clean up for the gc?
+                        javaPositionsRetriever.retrieve(compilationUnit);
+                        compilerSrc = normalizeLineEndings(javaPositionsRetriever.getJavaSourceCodeWithCeylonPositions());
+                        AbstractTransformer.trackNodePositions(null);
+                    }
+                }
+            }
+        }
+        Listener listener = new Listener();
+        task.setTaskListener(listener);
+
+        // now compile it all the way
+        Boolean success = task.call();
+        
+        Assert.assertTrue("Compilation failed", success);
+
+        // now look at what we expected
+        String expectedSrc = normalizeLineEndings(readFile(new File(path, name+".src"))).trim();
+        String compiledSrc = listener.compilerSrc.trim();
+        Assert.assertEquals("Source code differs", expectedSrc, compiledSrc);
+    }
+    
+    protected void compareWithJavaSourceWithLines(String name) {
+        // make a compiler task
+        // FIXME: runFileManager.setSourcePath(dir);
+        CeyloncTaskImpl task = getCompilerTask(new String[] {name+".ceylon"});
+        
+        // grab the CU after we've completed it
+        class Listener implements TaskListener{
+            JCCompilationUnit compilationUnit;
+            private String compilerSrc;
+            private JavaPositionsRetriever javaPositionsRetriever = new JavaPositionsRetriever();
+            
+            @Override
+            public void started(TaskEvent e) {
+            }
+
+            @Override
+            public void finished(TaskEvent e) {
+                if(e.getKind() == Kind.ENTER){
+                    if(compilationUnit == null) {
+                        compilationUnit = (JCCompilationUnit) e.getCompilationUnit();
+                        // for some reason compilationUnit is full here in the listener, but empty as soon
+                        // as the compile task is done. probably to clean up for the gc?
+                        javaPositionsRetriever.retrieve(compilationUnit);
+                        compilerSrc = normalizeLineEndings(javaPositionsRetriever.getJavaSourceCodeWithCeylonLines());
+                        AbstractTransformer.trackNodePositions(null);
+                    }
+                }
+            }
+        }
+        Listener listener = new Listener();
+        task.setTaskListener(listener);
+
+        // now compile it all the way
+        Boolean success = task.call();
+        
+        Assert.assertTrue("Compilation failed", success);
+
+        // now look at what we expected
+        String expectedSrc = normalizeLineEndings(readFile(new File(path, name+".src"))).trim();
+        String compiledSrc = listener.compilerSrc.trim();
+        Assert.assertEquals("Source code differs", expectedSrc, compiledSrc);
+    }
+    
 	protected void compareWithJavaSource(String java, String... ceylon) {
 	    // make a compiler task
         // FIXME: runFileManager.setSourcePath(dir);
