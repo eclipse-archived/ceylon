@@ -4,6 +4,8 @@ import static com.sun.tools.javac.code.Flags.FINAL;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import org.antlr.runtime.Token;
 
@@ -39,6 +41,7 @@ import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Name;
+import com.sun.tools.javac.util.Position;
 import com.sun.tools.javac.util.Position.LineMap;
 
 /**
@@ -66,11 +69,26 @@ public abstract class AbstractTransformer implements Transformation {
         return make;
     }
 
+    private static JavaPositionsRetriever javaPositionsRetriever = null;
+    public static void trackNodePositions(JavaPositionsRetriever positionsRetriever) {
+        javaPositionsRetriever = positionsRetriever;
+    }
+    
     @Override
     public Factory at(Node node) {
-        Token token = node.getToken();
-        if (token != null) {
-            make().at(getMap().getStartPosition(token.getLine()) + token.getCharPositionInLine());
+        if (node == null) {
+            make.at(Position.NOPOS);
+            
+        }
+        else {
+            Token token = node.getToken();
+            if (token != null) {
+                int tokenStartPosition = getMap().getStartPosition(token.getLine()) + token.getCharPositionInLine();
+                make().at(tokenStartPosition);
+                if (javaPositionsRetriever != null) {
+                    javaPositionsRetriever.addCeylonNode(tokenStartPosition, node);
+                }
+            }
         }
         return make();
     }
