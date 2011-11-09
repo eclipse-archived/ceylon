@@ -4,10 +4,22 @@ class MethodWithLocalObject {
     
     private final void m() {
         
+        final class ss {
+            private final .java.lang.String value = "foo";
+            
+            .java.lang.String getSs() {
+                return value;
+            }
+            
+            private ss() {
+            }
+        }
+        final ss ss = new ss();
+        
         final class y {
             
             public final .java.lang.String m() {
-                return "foo";
+                return ss.getSs();
             }
             
             private y() {

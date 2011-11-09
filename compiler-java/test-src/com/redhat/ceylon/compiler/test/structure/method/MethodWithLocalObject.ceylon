@@ -1,9 +1,10 @@
 @nomodel
 class MethodWithLocalObject() {
     void m() {
+        value ss = "foo";
         object y {
             shared String m() {
-                return "foo";
+                return ss;
             }
         }
         String s = y.m();
