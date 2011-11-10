@@ -10,11 +10,7 @@ exported class Package(
         Boolean shared = false,
 
         desc "A description of the package."
-        String doc="",
-
-        desc "The license under which the package
-             is distributed."
-        String license="") {
+        String doc="") {
 
     //TODO implement
 
