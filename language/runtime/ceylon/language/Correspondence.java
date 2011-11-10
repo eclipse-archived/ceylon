@@ -60,6 +60,19 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
                 return null;
             }
         }
+        @Override
+        @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
+        public Sequence<? extends Item> span(long from, long to) {
+            throw new RuntimeException("Not implemented"); //todo!
+        }
+        @Override
+        public Ordered<Item> segment(long from, long length) {
+            throw new RuntimeException("Not implemented"); //todo!
+        }
+        @Override
+        public java.lang.String toString() {
+            return "Entries";//todo			
+        }
         @TypeInfo("ceylon.language.Sequence<Item|ceylon.language.Nothing>")
         public final Sequence<Item> getClone() {
             return this;

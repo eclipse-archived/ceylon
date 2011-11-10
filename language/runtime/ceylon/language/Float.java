@@ -178,6 +178,21 @@ public final class Float
     }
     
     @Override
+    public boolean equals(java.lang.Object s) {
+        if (s instanceof Float) {
+            return value == ((Float)s).value;
+        } else {
+            return false;
+        }
+    }
+    
+    @Override
+    public int hashCode() {
+		long bits = Double.doubleToLongBits(value);
+		return (int)(bits ^ (bits >>> 32));
+    }
+    
+    @Override
     public <CastValue extends Float> CastValue castTo() {
         return (CastValue)this;
     }
