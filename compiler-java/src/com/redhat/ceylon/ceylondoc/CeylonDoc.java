@@ -63,13 +63,9 @@ public abstract class CeylonDoc {
 	}
 
 	protected void link(ProducedType type) throws IOException {
-		link(type, false);
-	}
-
-	protected void link(ProducedType type, boolean qualified) throws IOException {
 		TypeDeclaration decl = type.getDeclaration();
 		if (decl instanceof ClassOrInterface) {
-			link((ClassOrInterface)decl, type.getTypeArgumentList(), qualified);
+			link((ClassOrInterface)decl, type.getTypeArgumentList());
         } else if (decl instanceof TypeParameter) {
             around("span class='type-parameter'", decl.getName());
 		} else {
@@ -77,9 +73,9 @@ public abstract class CeylonDoc {
 		}
 	}
 
-	protected void link(ClassOrInterface decl, List<ProducedType> typeParameters, boolean qualified) throws IOException {
+	protected void link(ClassOrInterface decl, List<ProducedType> typeParameters) throws IOException {
 		String path = getPathToBase() + "/" + join("/", getPackage(decl).getName())+"/"+getFileName(decl);
-		String name = qualified ? decl.getQualifiedNameString() : decl.getName();
+		String name = decl.getName();
 		around("a href='"+path+"'", name);
 		if(typeParameters != null && !typeParameters.isEmpty()){
 			write("&lt;");
@@ -89,7 +85,7 @@ public abstract class CeylonDoc {
 					once = true;
 				else
 					write(",");
-				link(typeParam, qualified);
+				link(typeParam);
 			}
 			write("&gt;");
 		}

@@ -295,7 +295,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 			int i=0;
 			for(ProducedType superType : superTypes){
 				open("ul class='inheritance'", "li");
-				link(superType, true);
+				link(superType);
 				i++;
 			}
 			while(i-- > 0){
@@ -382,7 +382,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 				} else {
 					first = false;
 				}
-				link(typeDeclaration, null, true);
+				link(typeDeclaration, null);
 			}
 			close("div");
 		}
@@ -399,7 +399,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 				} else {
 					first = false;
 				}
-				link(typeDeclaration, true);
+				link(typeDeclaration);
 			}
 			close("div");
 		}
