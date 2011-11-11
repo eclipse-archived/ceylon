@@ -13,8 +13,10 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
@@ -24,7 +26,7 @@ public class PackageDoc extends ClassOrPackageDoc {
 	private Package pkg;
     private List<Class> classes;
     private List<Interface> interfaces;
-    private List<Value> attributes;
+    private List<MethodOrValue> attributes;
     private List<Method> methods;
 
 	public PackageDoc(String destDir, Package pkg, boolean showPrivate) throws IOException {
@@ -36,15 +38,16 @@ public class PackageDoc extends ClassOrPackageDoc {
 	private void loadMembers() {
 	    classes = new ArrayList<Class>();
         interfaces = new ArrayList<Interface>();
-        attributes = new ArrayList<Value>();
+        attributes = new ArrayList<MethodOrValue>();
         methods = new ArrayList<Method>();
         for(Declaration m : pkg.getMembers()){
             if(m instanceof Interface)
                 interfaces.add((Interface) m);
             else if(m instanceof Class)
                 classes.add((Class) m);
-            else if(m instanceof Value)
-                attributes.add((Value)m);
+            else if(m instanceof Value
+            		|| m instanceof Getter)
+                attributes.add((MethodOrValue)m);
             else if(m instanceof Method)
                 methods.add((Method)m);
         }
@@ -112,7 +115,7 @@ public class PackageDoc extends ClassOrPackageDoc {
 
     private void attributes() throws IOException {
 	    openTable("Attributes", "Modifier and Type", "Name and Description");
-	    for(Value v : attributes){
+	    for(MethodOrValue v : attributes){
 	        doc(v);
 	    }
 	    close("table");
