@@ -23,6 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -264,6 +265,8 @@ public class ClassDoc extends ClassOrPackageDoc {
 	}
 
 	private void summary() throws IOException {
+		Package pkg = getPackage(klass);
+		
 		open("div class='nav'");
 		open("div");
 		around("a href='" + getPathToBase() + "/overview-summary.html'", "Overview");
@@ -274,12 +277,15 @@ public class ClassDoc extends ClassOrPackageDoc {
 		open("div class='selected'");
 		write("Class");
 		close("div");
+        open("div");
+        write(pkg.getModule().getNameAsString() + "/" + pkg.getModule().getVersion());
+        close("div");
 		close("div");
 
 		open("div class='head'");
         
         // name      
-		around("div class='package'", "<code>" + getPackage(klass).getNameAsString() + "</code>");
+		around("div class='package'", "<code>" + pkg.getNameAsString() + "</code>");
 		around("div class='type'", klass instanceof Class ? "Class " : "Interface ", 
 		        "<code>" + klass.getName() + "</code>");
 		

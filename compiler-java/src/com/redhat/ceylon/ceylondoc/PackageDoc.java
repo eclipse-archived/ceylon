@@ -96,6 +96,9 @@ public class PackageDoc extends ClassOrPackageDoc {
         open("div");
         write("Class");
         close("div");
+        open("div");
+        write(pkg.getModule().getNameAsString() + "/" + pkg.getModule().getVersion());
+        close("div");
         close("div");
 
         open("div class='head'");

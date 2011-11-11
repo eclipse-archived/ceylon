@@ -13,11 +13,11 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 
 public class SummaryDoc extends CeylonDoc {
 
-    private Modules modules;
+    private Module module;
 
-    public SummaryDoc(String destDir, Modules modules, boolean showPrivate) throws IOException {
+    public SummaryDoc(String destDir, Module module, boolean showPrivate) throws IOException {
         super(destDir, showPrivate);
-        this.modules = modules;
+        this.module = module;
     }
 
     public void generate() throws IOException {
@@ -47,6 +47,9 @@ public class SummaryDoc extends CeylonDoc {
         open("div");
         write("Class");
         close("div");
+        open("div");
+        write(module.getNameAsString() + "/" + module.getVersion());
+        close("div");
         close("div");
     }
 
@@ -60,11 +63,9 @@ public class SummaryDoc extends CeylonDoc {
 
     private List<Package> getPackages(){
         List<Package> packages = new ArrayList<Package>();
-        for(Module m : modules.getListOfModules()){
-            for(Package pkg : m.getPackages()){
-                if(pkg.getMembers().size() > 0)
-                    packages.add(pkg);
-            }
+        for(Package pkg : module.getPackages()){
+        	if(pkg.getMembers().size() > 0)
+        		packages.add(pkg);
         }
         Collections.sort(packages, new Comparator<Package>(){
             @Override

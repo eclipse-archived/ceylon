@@ -69,23 +69,26 @@ public class CeylonDocTool {
             }
         }
 
+    	Module module = null;
         for (PhasedUnit pu : phasedUnits) {
+        	if(module == null)
+        		module = pu.getPackage().getModule();
+        	else if(pu.getPackage().getModule() != module)
+        		throw new RuntimeException("Documentation of multiple modules not supported yet");
             for(Declaration decl : pu.getUnit().getDeclarations()){            	
                 doc(decl);
             }
         }    	
         
-        for(Module module : modules.getListOfModules()){
-            for(Package pkg : module.getPackages()){
-                doc(pkg);
-            }
+        for(Package pkg : module.getPackages()){
+        	doc(pkg);
         }
-        doc(modules);
+        doc(module);
         copyResource("resources/style.css");
     }
 
-    private void doc(Modules modules) throws IOException {
-        new SummaryDoc(destDir, modules, showPrivate).generate();
+    private void doc(Module module) throws IOException {
+        new SummaryDoc(destDir, module, showPrivate).generate();
     }
 
     private void doc(Package pkg) throws IOException {
