@@ -1,4 +1,5 @@
-doc "Print a line to the console. A shortcut for 
+doc "Print a line to the standard output of the 
+     virtual machine process. A shortcut for 
      process.writeLine(line)."
 see (process.writeLine)
 by "Gavin"
