@@ -2,7 +2,6 @@ doc "A nonempty sequence of values. Sequence does not
      satisfy Category, simply because the contains() 
      operation may be inefficient for some sequences."
 by "Gavin"
-see (List)
 shared interface Sequence<out Element> 
         satisfies Correspondence<Natural, Element> &  
                   Ordered<Element> & Sized & 

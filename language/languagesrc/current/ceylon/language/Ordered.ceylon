@@ -1,7 +1,7 @@
 doc "Abstract supertype of iterable containers with a 
      well-defined iteration order."
 by "Gavin"
-see (Sequence, List, OrderedSet, OrderedMap)
+see (Sequence)
 shared interface Ordered<out Element>
         satisfies Iterable<Element> {
     

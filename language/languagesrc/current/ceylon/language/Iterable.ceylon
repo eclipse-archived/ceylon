@@ -3,7 +3,7 @@ doc "Abstract supertype of containers whose elements may be
      its elements must at least be countable. There may not
      be a well-defined iteration order, and so the order of
      iterated elements may not be stable."
-see (Ordered, Collection)
+see (Ordered)
 by "Gavin"
 shared interface Iterable<out Element> 
         satisfies Container {

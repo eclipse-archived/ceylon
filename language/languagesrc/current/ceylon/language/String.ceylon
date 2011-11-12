@@ -2,9 +2,14 @@ doc "A string of characters."
 by "Gavin"
 shared abstract class String()
         extends Object()
-        satisfies List<Character> & Comparable<String> &
+        satisfies Correspondence<Natural,Character> & 
+                  Ordered<Character> & Comparable<String> &
+                  Sized & Ranged<String> & Category & 
                   Summable<String> & Castable<String> & 
-                  Ranged<String> & Format {
+                  Format {
+    
+    doc "The characters in this string."
+    shared formal Character[] characters;
     
     doc "This string, with all characters in lowercase."
     shared formal String lowercased;

@@ -4,7 +4,7 @@ doc "Abstract supertype of objects that contain other
      Category does not satisfy Container, because it is 
      conceptually possible to have a Category whose 
      emptiness cannot be computed."
-see (Container, Set)
+see (Container)
 by "Gavin"
 shared interface Category {
     

@@ -1,11 +1,11 @@
-doc "Produces a Map of index to element for the given 
-     sequence of values."
-shared Map<Natural,Element> entries<Element>(Element... sequence) 
+doc "Produces a Ordered iterator of each index to element 
+     Entry for the given sequence of values."
+shared Ordered<Entry<Natural,Element>> entries<Element>(Element... sequence) 
         given Element satisfies Equality {
     
     object sequenceEntries
             extends Object()
-            satisfies Map<Natural,Element> {
+            satisfies Ordered<Entry<Natural,Element>> {
         
         shared actual Iterator<Entry<Natural,Element>> iterator {
             class EntryIterator(Natural from) 
@@ -34,7 +34,7 @@ shared Map<Natural,Element> entries<Element>(Element... sequence)
             return EntryIterator(0);
         }
         
-        shared actual Element? item(Natural index) {
+        /*shared actual Element? item(Natural index) {
             return sequence[index];
         }
         
@@ -49,7 +49,7 @@ shared Map<Natural,Element> entries<Element>(Element... sequence)
             else {
                 return entries<Element>();
             }
-        }
+        }*/
         
     }
     
