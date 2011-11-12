@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import com.petebevin.markdown.MarkdownProcessor;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -19,7 +20,7 @@ public class Util {
 	public static String getDoc(Declaration decl) {
 		for (Annotation a : decl.getAnnotations()) {
 			if (a.getName().equals("doc"))
-				return unquote(a.getPositionalArguments().get(0));
+				return new MarkdownProcessor().markdown(unquote(a.getPositionalArguments().get(0)));
 		}
 		return "";
 	}
