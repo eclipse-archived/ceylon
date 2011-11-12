@@ -36,7 +36,7 @@ shared abstract class String()
     shared formal String trimmed;
 
     doc "This string, after collapsing strings of whitespace 
-         into single space characters and discard whitespace 
+         into single space characters and discarding whitespace 
          from the beginning and end of the string."
     shared formal String normalized;
     
@@ -63,7 +63,7 @@ shared abstract class String()
     shared formal actual String segment(Natural from, 
                                         Natural length);
     
-        doc "Select the first characters of this string, 
+    doc "Select the first characters of this string, 
          returning a string no longer than the given 
          length. If this string is shorter than the given
          length, return this string. Otherwise return a

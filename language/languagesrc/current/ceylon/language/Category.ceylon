@@ -28,7 +28,7 @@ shared interface Category {
         }
     }
 
-    doc "Determines if every one of the given values belongs
+    doc "Determines if any of the given values belongs
          to this Category"
     see (contains)
     shared default Boolean containsAny(Equality... elements) {
