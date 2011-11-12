@@ -13,7 +13,7 @@ shared interface Sequence<out Element>
     shared formal Natural lastIndex;
     
     doc "The first element of the sequence, that is, the
-         element with index 0."
+         element with index `0`."
     shared actual formal Element first;
     
     doc "The rest of the sequence, without the first 
@@ -34,7 +34,7 @@ shared interface Sequence<out Element>
     }
     
     doc "The last element of the sequence, that is, the
-         element with index sequence.lastIndex."
+         element with index `sequence.lastIndex`."
     shared default Element last {
         if (is Element last = item(lastIndex)) {
             return last;
@@ -54,8 +54,8 @@ shared interface Sequence<out Element>
     doc "Returns the element of this sequence with the given
          index, or `null` if the given index is past the end
          of the sequence, that is, if 
-         `index>sequence.lastIndex`. The first element of the
-         sequence has index 0."
+         `index>sequence.lastIndex`. The first element of 
+         the sequence has index `0`."
     shared actual formal Element? item(Natural index);
     
     //this depends on efficient implementation of rest
@@ -102,16 +102,16 @@ shared interface Sequence<out Element>
     
     doc "Select the elements between the given indexes.
          If the start index is the same as the end index,
-         return a sequence with a single element.
-         If the start index larger than the end index, 
-         return the elements in the reverse order from
-         the order in which they appear in this sequence.
-         If both the start index and the end index are 
-         larger than the last index in the sequence, return 
-         an `Empty` sequence. Otherwise, if the last index is 
-         larger than the last index in the sequence, return
-         all elements from the start index to last element
-         of the sequence."
+         return a sequence with a single element. If the 
+         start index larger than the end index, return the 
+         elements in the reverse order from the order in 
+         which they appear in this sequence. If both the 
+         start index and the end index are larger than the 
+         last index in the sequence, return an `Empty` 
+         sequence. Otherwise, if the last index is larger 
+         than the last index in the sequence, return all 
+         elements from the start index to last element of 
+         the sequence."
     shared actual formal Element[] span(Natural from, 
                                         Natural to);
     

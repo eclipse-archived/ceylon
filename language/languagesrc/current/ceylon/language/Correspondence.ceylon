@@ -10,7 +10,7 @@ shared interface Correspondence<in Key, out Item>
         given Key satisfies Equality {
     
     doc "Returns the value defined for the given key, or 
-         `null if there is no value defined for the given 
+         `null` if there is no value defined for the given 
          key."
     see (items)
     shared formal Item? item(Key key);
