@@ -17,7 +17,7 @@ shared interface Equality {
     shared formal Boolean equals(Equality that);
     
     doc "The hash value of the value, which allows the value
-         do be an element of a hash-based set or key of a 
+         to be an element of a hash-based set or key of a 
          hash-based map. Implementations must respect the 
          constraint that if x==y then x.hash==y.hash."
     shared formal Integer hash;
