@@ -1,5 +1,5 @@
-doc "A nonempty sequence of values. Sequence does not 
-     satisfy Category, simply because the contains() 
+doc "A nonempty sequence of values. `Sequence` does not 
+     satisfy `Category`, simply because the `contains()` 
      operation may be inefficient for some sequences."
 by "Gavin"
 see (List)
@@ -20,14 +20,14 @@ shared interface Sequence<out Element>
          element."
     shared formal Element[] rest;
     
-    doc "Returns false, since every Sequence contains at 
+    doc "Returns `false`, since every `Sequence` contains at 
          least one element."
     shared actual Boolean empty {
         return false;
     }
     
     doc "The number of elements in this sequence, always
-         sequence.lastIndex+1."
+         `sequence.lastIndex+1`."
     see (lastIndex)
     shared actual default Natural size {
         return lastIndex+1;
@@ -45,15 +45,15 @@ shared interface Sequence<out Element>
     
     doc "Determines if the given index refers to an element
          of this sequence, that is, if 
-         index<=sequence.lastIndex."
+         `index<=sequence.lastIndex`."
     shared actual default Boolean defines(Natural index) {
         return index<=lastIndex;
     }
     
     doc "Returns the element of this sequence with the given
-         index, or null if the given index is past the end
+         index, or `null` if the given index is past the end
          of the sequence, that is, if 
-         index>sequence.lastIndex. The first element of the
+         `index>sequence.lastIndex`. The first element of the
          sequence has index 0."
     shared actual formal Element? item(Natural index);
     
@@ -92,7 +92,7 @@ shared interface Sequence<out Element>
     doc "Select the elements between the given indexes.
          If the start index is larger than the end index, or 
          larger than the last index of the string, return 
-         an Empty sequence. Otherwise, if the end index is 
+         an `Empty` sequence. Otherwise, if the end index is 
          larger than the last index of the string, return 
          all elements from the start index to the end of 
          the string."

@@ -7,9 +7,9 @@ shared interface Comparable<in Other> of Other
     
     doc "Compares this value with the given value. 
          Implementations must respect the constraint that 
-         x==y if and only if x<=>y == equal, the constraint 
-         that if x>y then y<x (symmetry), and the constraint 
-         that if x>y and y>z then x>z (transitivity)."
+         `x==y` if and only if `x<=>y == equal`, the constraint 
+         that if `x>y` then `y<x` (symmetry), and the constraint 
+         that if `x>y` and `y>z` then `x>z` (transitivity)."
     shared formal Comparison compare(Other other);
     
     doc "Determines if this value is strictly larger than 

@@ -4,8 +4,8 @@ doc "Abstraction of types which support a unary inversion
      parameter of this interface is not restricted to be a 
      self type, in order to accommodate the possibility of 
      types whose inverse can only be expressed in terms of a 
-     wider type. For example, the negative of a Natural is 
-     an Integer."
+     wider type. For example, the negative of a `Natural` is 
+     an `Integer`."
 see (Natural, Integer, Float)
 by "Gavin"
 shared interface Invertable<Inverse> {

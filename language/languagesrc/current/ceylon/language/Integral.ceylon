@@ -1,5 +1,5 @@
 doc "Abstraction of integral numeric types. That is, types 
-     with no fractional part, including Natural and Integer. 
+     with no fractional part, including `Natural` and `Integer`. 
      The division operation for integral numeric types 
      results in a remainder. Therefore, integral numeric 
      types have an operation to determine the remainder of 

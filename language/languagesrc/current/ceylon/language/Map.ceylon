@@ -1,6 +1,6 @@
 doc "A finite mapping from keys to values which satisfy 
-     Equality. A Map may not contain the same key twice. A
-     Map may contain the same value more than once, at 
+     `Equality`. A `Map` may not contain the same key twice. A
+     `Map` may contain the same value more than once, at 
      different keys."
 by "Gavin"
 see (OrderedMap)

@@ -1,5 +1,5 @@
 doc "The abstract supertype of all types with a well-defined
-     notion of identity. Values of type IdentifiableObject
+     notion of identity. Values of type `IdentifiableObject`
      may be compared to determine if they are references to
      the same object instance."
 by "Gavin"
@@ -20,11 +20,11 @@ shared abstract class IdentifiableObject()
         }
     }
     
-    doc "Default definition of hash returns the 
+    doc "Default definition of `hash` returns the 
          system-defined identity hash value of the instance. 
-         Subclasses which refine equals() must also refine 
-         hash, according to the general contract of 
-         Equality."
+         Subclasses which refine `equals()` must also refine 
+         `hash`, according to the general contract of 
+         `Equality`."
     see (identityHash)
     shared default actual Integer hash {
         return identityHash(this);
@@ -33,7 +33,7 @@ shared abstract class IdentifiableObject()
     doc "A developer-friendly string representing the 
          instance. Default implementation concatenates the 
          name of the concrete class of the instance with the
-         hash of the instance. Subclasses are encouraged to
+         `hash` of the instance. Subclasses are encouraged to
          refine this implementation to produce a more 
          meaningful representation."
     shared default actual String string {

@@ -1,4 +1,4 @@
-doc "Produces a Map of index to element for the given 
+doc "Produces a `Map` of index to element for the given 
      sequence of values."
 shared Map<Natural,Element> entries<Element>(Element... sequence) 
         given Element satisfies Equality {

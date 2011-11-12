@@ -1,4 +1,4 @@
-doc "A finite set of elements which satisfy Equality. A set
+doc "A finite set of elements which satisfy `Equality`. A set
      may not contain the same element twice."
 by "Gavin"
 see (OrderedSet)

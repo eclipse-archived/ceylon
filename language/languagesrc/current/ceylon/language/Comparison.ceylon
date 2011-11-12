@@ -1,5 +1,5 @@
 doc "The result of a comparison between two
-     Comparable objects."
+     `Comparable` objects."
 see (Comparable)
 by "Gavin"
 shared abstract class Comparison(String name) 

@@ -13,7 +13,7 @@ shared interface Iterable<out Element>
     shared formal Iterator<Element> iterator;
     
     doc "Determines if the iterable object is empty, that is
-         to say, if iterable.iterator.head is null."
+         to say, if `iterable.iterator.head` is `null`."
     shared actual default Boolean empty {
         return !(iterator.head exists);
     }

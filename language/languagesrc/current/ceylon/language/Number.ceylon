@@ -1,7 +1,7 @@
 doc "Abstraction of numbers. Numeric operations are provided
-     by the subtype Numeric. This type defines operations
+     by the subtype `Numeric`. This type defines operations
      which can be expressed without reference to the self
-     type Other of Numeric."
+     type `Other` of `Numeric`."
 see (Numeric)
 by "Gavin"
 shared interface Number 
@@ -13,20 +13,20 @@ shared interface Number
     doc "Determine if the number is negative."    
     shared formal Boolean negative;
 
-    doc "The number, represented as a Float."
+    doc "The number, represented as a `Float`."
     throws (FloatOverflowException
             -> "if the number is too large to be represented 
-                as a Float")
+                as a `Float`")
     shared formal Float float;
         
-    doc "The number, represented as an Integer, after 
+    doc "The number, represented as an `Integer`, after 
          truncation of any fractional part."
     throws (IntegerOverflowException
             -> "if the number is too large to be represented 
-                as an Integer")
+                as an `Integer`")
     shared formal Integer integer;
     
-    doc "The number, represented as a Natural, after 
+    doc "The number, represented as a `Natural`, after 
          truncation of any fractional part."
     throws (NegativeNumberException
             -> "if the number is negative")

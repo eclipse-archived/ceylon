@@ -1,4 +1,4 @@
-doc "Abstract supertype of Containers with a finite number 
+doc "Abstract supertype of `Container`s with a finite number 
      of elements, where the number of elements can be 
      efficiently determined."
 shared interface Sized 
@@ -9,7 +9,7 @@ shared interface Sized
     shared formal Natural size;
     
     doc "Determine if the sized container is empty, that is,
-         if sized.size==0."
+         if `sized.size==0`."
     shared actual default Boolean empty {
         return size==0;
     }

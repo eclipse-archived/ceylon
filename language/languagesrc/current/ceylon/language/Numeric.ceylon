@@ -1,8 +1,8 @@
 doc "Abstraction of numeric types supporting addition,
      subtraction, multiplication, and division, including
-     Natural, Integer, and Float. Additionally, a numeric
+     `Natural`, `Integer`, and `Float`. Additionally, a numeric
      type is expected to define a total order via an 
-     implementation of Comparable."
+     implementation of `Comparable`."
 see (Natural, Integer, Float)
 by "Gavin"
 shared interface Numeric<Other> of Other

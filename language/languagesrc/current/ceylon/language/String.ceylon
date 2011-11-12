@@ -94,10 +94,10 @@ shared abstract class String()
     }
     
     doc "Returns the character at the given index in the 
-         string, or null if the index is past the end of
+         string, or `null` if the index is past the end of
          string. The first character in the string occurs at
          index zero. The last character in the string occurs
-         at index string.size-1."
+         at index `string.size-1`."
     shared actual Character? item(Natural index) { 
         return characters[index]; 
     }
@@ -108,18 +108,18 @@ shared abstract class String()
     shared formal Iterable<Natural> occurrences(String substring);
     
     doc "The first index at which the given substring occurs
-         within this string, or null if the substring does
+         within this string, or `null` if the substring does
          not occur in this string."
     shared formal Natural? firstOccurrence(String substring);
     
     doc "The last index at which the given substring occurs
-         within this string, or null if the substring does
+         within this string, or `null` if the substring does
          not occur in this string."
     shared formal Natural? lastOccurrence(String substring);
     
-    doc "Determines if the given object is a string and, 
+    doc "Determines if the given object is a `String` and, 
          if so, if it occurs as a substring of this string. 
-         That is to say, a string is considered a Category 
+         That is to say, a string is considered a `Category` 
          of its substrings."
     shared actual formal Boolean contains(Equality element);
     
@@ -134,13 +134,13 @@ shared abstract class String()
     
     doc "Determines if this string is longer than the given
          length. This is a more efficient operation than
-         string.size>length."
+         `string.size>length`."
     see (size)
     shared formal Boolean longerThan(Natural length);
     
     doc "Determines if this string is shorter than the given
          length. This is a more efficient operation than
-         string.size>length."
+         `string.size>length`."
     see (size)
     shared formal Boolean shorterThan(Natural length);
     

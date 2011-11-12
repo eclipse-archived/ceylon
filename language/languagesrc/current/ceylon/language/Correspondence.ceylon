@@ -1,9 +1,9 @@
 doc "Abstract supertype of objects which associate values 
-     with keys. Correspondence does not satisfy Category,
+     with keys. `Correspondence` does not satisfy `Category`,
      since in some cases, for examples lists, it is 
-     convenient to consider the subtype a Category of its
+     convenient to consider the subtype a `Category` of its
      values, and in other cases, for example maps, it is
-     convenient to treat the subtype as a Category of its
+     convenient to treat the subtype as a `Category` of its
      entries."
 see (Map)
 by "Gavin"
@@ -11,7 +11,7 @@ shared interface Correspondence<in Key, out Item>
         given Key satisfies Equality {
     
     doc "Returns the value defined for the given key, or 
-         null if there is no value defined for the given 
+         `null if there is no value defined for the given 
          key."
     see (items)
     shared formal Item? item(Key key);
@@ -23,8 +23,8 @@ shared interface Correspondence<in Key, out Item>
         return item(key) exists;
     }
     
-    doc "The Category of all keys for which a value is 
-         defined by this Correspondence."
+    doc "The `Category` of all keys for which a value is 
+         defined by this `Correspondence`."
     see (defines)
     shared default Category keys {
         object keys satisfies Category {
@@ -40,7 +40,7 @@ shared interface Correspondence<in Key, out Item>
         return keys;
     }
     
-    doc "Determines if this Correspondence defines a value
+    doc "Determines if this `Correspondence` defines a value
          for every one of the given keys."
     see (defines)
     shared default Boolean definesEvery(Key... keys) {
@@ -54,7 +54,7 @@ shared interface Correspondence<in Key, out Item>
         }
     }
     
-    doc "Determines if this Correspondence defines a value
+    doc "Determines if this `Correspondence` defines a value
          for any one of the given keys."
     see (defines)
     shared default Boolean definesAny(Key... keys) {
