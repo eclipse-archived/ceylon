@@ -2,10 +2,10 @@ doc "A nonempty sequence of values. `Sequence` does not
      satisfy `Category`, simply because the `contains()` 
      operation may be inefficient for some sequences."
 by "Gavin"
-see (List)
 shared interface Sequence<out Element> 
         satisfies Correspondence<Natural, Element> &  
-                  Ordered<Element> & Sized &
+                  Ordered<Element> & Sized & 
+                  Ranged<Element[]> &
                   Cloneable<Sequence<Element>> {
     
     doc "The index of the last element of the sequence."
@@ -33,13 +33,14 @@ shared interface Sequence<out Element>
         return lastIndex+1;
     }
     
-    doc "The last element of the sequence."
+    doc "The last element of the sequence, that is, the
+         element with index sequence.lastIndex."
     shared default Element last {
-        if (exists Element x = item(lastIndex)) {
-            return x;
+        if (is Element last = item(lastIndex)) {
+            return last;
         }
         else {
-            return first; //actually never occurs
+            throw; //actually never occurs
         } 
     }
     
@@ -78,11 +79,21 @@ shared interface Sequence<out Element>
     class SequenceIterator(Natural from)
             extends Object()
             satisfies Iterator<Element> {
-        shared actual Element? head { 
-            return item(from);
+        shared actual Element head { 
+            if (is Element head = item(from)) {
+                return head;
+            }
+            else {
+                throw;
+            }
         }
-        shared actual Iterator<Element> tail {
-            return SequenceIterator(from+1);
+        shared actual Iterator<Element>? tail {
+            if (from<lastIndex) {
+                return SequenceIterator(from+1);
+            }
+            else {
+                return null;
+            }
         }
         shared actual String string {
             return "SequenceIterator";
@@ -90,14 +101,19 @@ shared interface Sequence<out Element>
     }
     
     doc "Select the elements between the given indexes.
-         If the start index is larger than the end index, or 
-         larger than the last index of the string, return 
-         an `Empty` sequence. Otherwise, if the end index is 
-         larger than the last index of the string, return 
-         all elements from the start index to the end of 
-         the string."
-    //todo: would be better to support reverse spans?
-    shared formal Element[] span(Natural from, Natural to);
+         If the start index is the same as the end index,
+         return a sequence with a single element.
+         If the start index larger than the end index, 
+         return the elements in the reverse order from
+         the order in which they appear in this sequence.
+         If both the start index and the end index are 
+         larger than the last index in the sequence, return 
+         an `Empty` sequence. Otherwise, if the last index is 
+         larger than the last index in the sequence, return
+         all elements from the start index to last element
+         of the sequence."
+    shared actual formal Element[] span(Natural from, 
+                                        Natural to);
     
     doc "Returns a sequence containing the elements 
          beginning from the given index, with the given

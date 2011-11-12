@@ -1,7 +1,6 @@
 doc "A key, together with a value associated with the key,
      called the item. Used primarily to represent the 
      elements of a `Map`."
-see (Map)
 by "Gavin"
 shared class Entry<out Key, out Item>(Key key, Item item)
         extends Object()

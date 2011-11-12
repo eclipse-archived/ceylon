@@ -1,11 +1,14 @@
 package ceylon.language;
 
+import java.io.IOException;
+
 import com.redhat.ceylon.compiler.metadata.java.Ceylon;
 import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 @Ceylon @com.redhat.ceylon.compiler.metadata.java.Object
 public class process extends Object {
+	
     @SuppressWarnings("unchecked")
     private Iterable<? extends String> args = $empty.getEmpty();
     
@@ -34,10 +37,26 @@ public class process extends Object {
         java.lang.System.out.print(s);
     }
     
-//  shared String readLine() { throw; }
-    
-    private process() {
+    @TypeInfo("ceylon.language.String") 
+    public java.lang.String readLine() {
+        try {
+            return new java.io.BufferedReader( 
+                    new java.io.InputStreamReader(java.lang.System.in))
+                .readLine();
+        } 
+        catch (IOException e) {
+            throw new Exception(
+                    String.instance("could not read line from standard input"), 
+                            e);
+        }
     }
+    
+    @Override
+    public java.lang.String toString() {
+    	return "process";
+    }
+    
+    private process() {}
     private static final process value = new process();
     
     public static process getProcess() {

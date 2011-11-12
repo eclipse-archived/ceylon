@@ -4,10 +4,10 @@ import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 
 public final class String extends Object 
-implements Comparable<String>, Iterable<Character>, 
-           Correspondence<Natural,Character>, Format,
-           Sized, Summable<String>, Castable<String> {
-    
+    implements Comparable<String>, Iterable<Character>, 
+               Correspondence<Natural,Character>, Format,
+               Sized, Summable<String>, Castable<String> {
+
     public final java.lang.String value;
 
     private String(java.lang.String s) {
@@ -30,14 +30,19 @@ implements Comparable<String>, Iterable<Character>,
         return value.toLowerCase();
     }
 
-	@Override
+    @Override
     public boolean equals(java.lang.Object that) {
-		if (that instanceof String) {
-			String s = (String)that;
-			return value.equals(s.value);
-		} else {
-			return false;
-		}
+        if (that instanceof String) {
+            String s = (String)that;
+            return value.equals(s.value);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
     }
 
     public static ceylon.language.String instance(java.lang.String... strings) {
@@ -115,10 +120,10 @@ implements Comparable<String>, Iterable<Character>,
         if (index < 0 || index >= length)
             return null;
         for (int offset = 0, i = 0; offset <= length; i++) {
-           int codePoint = value.codePointAt(offset);
-           if (i==index)
-               return new Character(codePoint);
-           offset += java.lang.Character.charCount(codePoint);
+            int codePoint = value.codePointAt(offset);
+            if (i==index)
+                return new Character(codePoint);
+            offset += java.lang.Character.charCount(codePoint);
         }
         return null;
     }
@@ -163,7 +168,7 @@ implements Comparable<String>, Iterable<Character>,
             codePoint = offset < value.length() ? 
                     value.codePointAt(offset) : -1;
         }
-        
+
         @Override
         public Character getHead() {
             return codePoint==-1 ? 
@@ -176,9 +181,9 @@ implements Comparable<String>, Iterable<Character>,
                     this : new StringIterator(offset +
                             java.lang.Character.charCount(codePoint));
         }
-        
+
     }
-    
+
     @Override
     public Iterator<Character> getIterator() {
         return new StringIterator(0);
@@ -188,14 +193,14 @@ implements Comparable<String>, Iterable<Character>,
     public Character getFirst() {
         return Iterable$impl.getFirst(this);
     }
-    
+
     public Sequence<? extends Character> getCharacters() {
         Character[] chars = new Character[(int)getSize()];
         int length = value.length();
         for (int offset = 0, i = 0; offset < length; i++) {
-           int codePoint = value.codePointAt(offset);
-           chars[i] = new Character(codePoint);
-           offset += java.lang.Character.charCount(codePoint);
+            int codePoint = value.codePointAt(offset);
+            chars[i] = new Character(codePoint);
+            offset += java.lang.Character.charCount(codePoint);
         }
         return new ArraySequence<Character>(chars);
     }
