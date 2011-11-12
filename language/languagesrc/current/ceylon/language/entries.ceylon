@@ -12,8 +12,8 @@ shared Map<Natural,Element> entries<Element>(Element... sequence)
                     extends Object()
                     satisfies Iterator<Entry<Natural,Element>> {
                 shared actual Entry<Natural,Element> head {
-                    if (exists Element x = sequence[from]) {
-                        return from->x;
+                    if (exists Element item = sequence[from]) {
+                        return from->item;
                     }
                     else {
                         throw;
