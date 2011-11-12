@@ -20,5 +20,9 @@ shared interface List<out Element>
     shared default Map<Natural, Element> entries {
         return sequenceEntries(sequence...);
     }
-        
+    
+    shared actual default String string { 
+        return "List " + sequence.string;
+    }
+    
 }
