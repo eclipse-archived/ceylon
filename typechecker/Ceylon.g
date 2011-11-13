@@ -2513,12 +2513,12 @@ impliedVariable returns [Variable variable]
 
 fragment
 Digits
-    : ('0'..'9')+ ('_' ('0'..'9')+)*
+    : Digit+ ('_' Digit+)*
     ;
 
 fragment 
 Exponent    
-    : ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ 
+    : ( 'e' | 'E' ) ( '+' | '-' )? Digit+ 
     ;
 
 fragment
@@ -3000,30 +3000,41 @@ COMPILER_ANNOTATION
     :   '@'
     ;
 
+fragment
+UIDENTIFIER :;
+
 LIDENTIFIER 
-    :   LIdentifierPart IdentifierPart*
+    :   IdentifierStart IdentifierPart*
+        { if (Character.isUpperCase($text.codePointAt(0))) $type=UIDENTIFIER; }
     ;
 
-UIDENTIFIER 
-    :   UIdentifierPart IdentifierPart*
-    ;
-
-// FIXME: Unicode identifiers
 fragment
-LIdentifierPart
+IdentifierStart
     :   '_'
-    |   'a'..'z'
+    |   Letter
+        { if (!Character.isJavaIdentifierStart($text.codePointAt(0))) { 
+          //TODO: error!
+        } }
     ;       
-                       
-// FIXME: Unicode identifiers
-fragment
-UIdentifierPart
-    :   'A'..'Z'
-    ;       
-                       
+             
 fragment 
 IdentifierPart
-    :   LIdentifierPart 
-    |   UIdentifierPart
-    |   '0'..'9'
+    :   '_'
+    |   Digit
+    |   Letter
+        { if (!Character.isJavaIdentifierPart($text.codePointAt(0))) { 
+          //TODO: error!
+        } }
+    ;
+
+fragment
+Letter
+    : 'a'..'z' 
+    | 'A'..'Z' 
+    | '\u00c0'..'\ufffe'
+    ;
+
+fragment
+Digit
+    : '0'..'9'
     ;
