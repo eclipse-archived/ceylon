@@ -1,6 +1,6 @@
 class Union() {
     String[] strings = {};
-    Iterator<String> it1 = strings.iterator;
+    Iterator<String>? it1 = strings.iterator;
     Iterable<String> it2 = strings; 
 
     interface Hello {
