@@ -286,8 +286,9 @@ public class ClassDoc extends ClassOrPackageDoc {
         
         // name      
 		around("div class='package'", "<code>" + pkg.getNameAsString() + "</code>");
+		
 		around("div class='type'", klass instanceof Class ? "Class " : "Interface ", 
-		        "<code>" + klass.getName() + "</code>");
+		        "<code>", getClassName(), "</code>");
 		
 		// hierarchy tree - only for classes
 		if (klass instanceof Class) {			
@@ -308,18 +309,6 @@ public class ClassDoc extends ClassOrPackageDoc {
 				close("li", "ul");
 			}
         }
-        
-		// type parameters
-		if (isNullOrEmpty(klass.getTypeParameters()) == false ) {
-			open("div class='type-parameters'");
-			write("Type parameters:");
-			open("ul");
-			for(TypeParameter typeParam : klass.getTypeParameters()){
-				around("li", typeParam.getName());
-			}
-			close("ul");
-			close("div");
-		}
 		
 		// interfaces
 		writeListOnSummary2("satisfied", "All Known Satisfied Interfaces: ",superInterfaces);
@@ -338,6 +327,25 @@ public class ClassDoc extends ClassOrPackageDoc {
 		
 		close("div");
 	}
+
+    private String getClassName() throws IOException {
+        StringBuilder sb = new StringBuilder();
+        sb.append(klass.getName());
+        if (isNullOrEmpty(klass.getTypeParameters()) == false ) {
+            sb.append("&lt;");
+            boolean first = true;
+            for (TypeParameter typeParam : klass.getTypeParameters()) {
+                if (first) {
+                    first = false;
+                } else {
+                    sb.append(",");
+                }
+                sb.append(typeParam.getName());
+            }
+            sb.append("&gt;");
+        }
+        return sb.toString();
+    }
 
 	private void constructor(Class klass) throws IOException {
 		openTable("Constructor");
