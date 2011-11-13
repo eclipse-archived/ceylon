@@ -16,8 +16,8 @@ class LanguageModule() {
     //@error plus<Natural, Integer, Float>(1, -2);
     //@error plus<Natural, Natural, Integer>(1, 2);
 
-    @type["Map<Natural,String>"] entries("hello", "world");
-    @type["Map<Natural,String>"] entries({"hello", "world"}...);
+    @type["Ordered<Entry<Natural,String>>"] entries("hello", "world");
+    @type["Ordered<Entry<Natural,String>>"] entries({"hello", "world"}...);
     for (Natural i->String s in entries("hello", "world", "!")) {}
 
 }
