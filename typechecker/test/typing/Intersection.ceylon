@@ -102,5 +102,10 @@ class Intersection() {
     cons.consume(one);
     One|Two unk = one;
     cons.consume(unk);
+    if (is One&Two unk) {
+        //todo
+        @type["Intersection.One&Intersection.Two"] value unkv = unk;
+        Two two = unk;
+    }
     
 }
