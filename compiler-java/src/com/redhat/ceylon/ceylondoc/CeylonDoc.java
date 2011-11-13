@@ -68,22 +68,12 @@ public abstract class CeylonDoc {
 
 	protected void link(ProducedType type, boolean qualified) throws IOException {
 		TypeDeclaration decl = type.getDeclaration();
-		if(decl instanceof UnionType){
-			boolean first = true;
-			for(ProducedType ud : ((UnionType)decl).getCaseTypes()){
-				if(first){
-					first = false;
-				}else{
-					write("|");
-				}
-				link(ud, qualified);
-			}
-		}else if(decl instanceof ClassOrInterface){
+		if (decl instanceof ClassOrInterface) {
 			link((ClassOrInterface)decl, type.getTypeArgumentList(), qualified);
-        }else if(decl instanceof TypeParameter){
+        } else if (decl instanceof TypeParameter) {
             around("span class='type-parameter'", decl.getName());
-		}else{
-			write(decl.toString());
+		} else {
+			write(type.getProducedTypeName());
 		}
 	}
 
@@ -92,7 +82,7 @@ public abstract class CeylonDoc {
 		String name = qualified ? decl.getQualifiedNameString() : decl.getName();
 		around("a href='"+path+"'", name);
 		if(typeParameters != null && !typeParameters.isEmpty()){
-			write("<");
+			write("&lt;");
 			boolean once = false;
 			for(ProducedType typeParam : typeParameters){
 				if(!once)
@@ -101,7 +91,7 @@ public abstract class CeylonDoc {
 					write(",");
 				link(typeParam, qualified);
 			}
-			write(">");
+			write("&gt;");
 		}
 	}
 

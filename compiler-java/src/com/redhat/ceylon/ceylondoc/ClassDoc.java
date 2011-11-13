@@ -178,9 +178,9 @@ public class ClassDoc extends ClassOrPackageDoc {
 			}
 			if (notRefined.isEmpty())
 				continue;
-			openTable( title + superClass.getQualifiedNameString());
+			openTable( title + "<code>" + superClass.getQualifiedNameString() + "</code>");
 			open("tr class='TableRowColor'");
-			open("td");
+			open("td", "code");
 			boolean first = true;
 			for (Declaration method: notRefined) {
 					if(!first){
@@ -191,7 +191,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 					// generate links to class#method instead of just print the name
 					write(method.getName());
 			}
-			close("td");
+			close("code", "td");
 			close("tr");
 			subclass = superClass;		
 		}
@@ -219,9 +219,9 @@ public class ClassDoc extends ClassOrPackageDoc {
 			List<Declaration> methods = classMethods.get(superIntefaceName);
 			if (methods.isEmpty())
 				continue;
-			openTable("Methods inherited from interface: " + superIntefaceName);
+			openTable("Methods inherited from interface: <code>" + superIntefaceName + "</code>");
 			open("tr class='TableRowColor'");
-			open("td");
+			open("td", "code");
 			boolean first = true;
 			for (Declaration method: methods) {
 					if(!first){
@@ -232,7 +232,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 					// generate links to class#method instead of just print the name
 					write(method.getName());
 			}
-			close("td");
+			close("code", "td");
 			close("tr");
 			close("table");	
 		}
@@ -279,8 +279,9 @@ public class ClassDoc extends ClassOrPackageDoc {
 		open("div class='head'");
         
         // name      
-		around("div class='package'", getPackage(klass).getNameAsString());
-		around("div class='type'", klass instanceof Class ? "Class " : "Interface ", klass.getName());
+		around("div class='package'", "<code>" + getPackage(klass).getNameAsString() + "</code>");
+		around("div class='type'", klass instanceof Class ? "Class " : "Interface ", 
+		        "<code>" + klass.getName() + "</code>");
 		
 		// hierarchy tree - only for classes
 		if (klass instanceof Class) {			
@@ -334,10 +335,10 @@ public class ClassDoc extends ClassOrPackageDoc {
 
 	private void constructor(Class klass) throws IOException {
 		openTable("Constructor");
-		open("tr", "td");
+		open("tr", "td", "code");
 		write(klass.getName());
 		writeParameterList(klass.getParameterLists());
-		close("td", "tr", "table");
+		close("code", "td", "tr", "table");
 	}
 
 	private void methods() throws IOException {

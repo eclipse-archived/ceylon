@@ -96,7 +96,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         close("div");
 
         open("div class='head'");
-		around("h1", "Package ", pkg.getNameAsString());
+		around("h1", "Package ", "<code>", pkg.getNameAsString(), "</code>");
 		close("div");
 	}
 	
@@ -136,11 +136,11 @@ public class PackageDoc extends ClassOrPackageDoc {
 
 	private void doc(ClassOrInterface d) throws IOException {
         open("tr class='TableRowColor'");
-		open("td");
+		open("td", "code");
 		around("span class='modifiers'",getModifiers(d));
 		write(" ");
 		link(d.getType());
-		close("td");
+		close("code", "td");
 		open("td");		
 		write(getDoc(d));
 		close("td");
