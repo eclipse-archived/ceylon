@@ -15,7 +15,7 @@ public class Exception extends RuntimeException {
             java.lang.Throwable cause
             
             ) {
-        super(description.value, cause);
+        super(description==null ? null : description.value, cause);
         this.description = description;
     }
     
