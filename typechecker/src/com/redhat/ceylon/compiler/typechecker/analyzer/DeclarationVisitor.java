@@ -385,7 +385,12 @@ public class DeclarationVisitor extends Visitor {
         visitDeclaration(that, v);
         super.visit(that);
         if ( v.isInterfaceMember() && !v.isFormal()) {
-            that.addError("interfaces may not have simple attributes");
+        	if ( that.getSpecifierOrInitializerExpression()==null ) {
+        		that.addError("non-formal interface attribute has no body");
+        	}
+        	else {
+                that.addError("interfaces may not have simple attributes");
+        	}
         }
         if ( v.isFormal() && that.getSpecifierOrInitializerExpression()!=null ) {
             that.addError("formal attributes may not have a value");
@@ -397,6 +402,14 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         if ( that.getSpecifierExpression()!=null ) {
             that.addWarning("method definition by reference is not yet supported");
+        }
+	    if (that.getDeclarationModel().isInterfaceMember() &&
+	    		that.getSpecifierExpression()==null &&
+	    		!that.getDeclarationModel().isFormal()) {
+	    	that.addError("non-formal interface method has no body");
+	    }
+        if ( that.getDeclarationModel().isFormal() && that.getSpecifierExpression()!=null ) {
+            that.addError("formal methods may not have a method reference");
         }
     }
     
