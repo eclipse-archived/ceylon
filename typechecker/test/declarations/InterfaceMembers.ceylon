@@ -8,6 +8,10 @@ interface Interfaces {
     
     @error name = "Gavin";
     
+    @error Float length;
+    
+    @error Float add(Float x, Float y);
+    
     shared formal void print(String s);
     
     void callsForward() {
