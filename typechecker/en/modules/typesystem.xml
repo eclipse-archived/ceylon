@@ -3253,7 +3253,7 @@ shared deprecated</programlisting>
         satisfies OptionalAnnotation<Scope,Type<Object>> {}]]></programlisting>
             
             <programlisting><![CDATA[shared class Todo(String text)
-        satisfies OptionalAnnotation<Todo,Annotated> {
+        satisfies SequencedAnnotation<Todo,Annotated> {
     shared actual String string = text;
 }]]></programlisting>
             
