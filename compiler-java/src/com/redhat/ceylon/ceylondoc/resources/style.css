@@ -74,3 +74,18 @@ ul.inheritance ul.inheritance li:before {
  display: inline;
 }
 
+.long {
+ display: none;
+}
+
+.category tr.more {
+ cursor: pointer;
+}
+
+.category tr.more {
+ background: #DDD;
+}
+
+.category tr.more:hover {
+ background: #FFA;
+}
