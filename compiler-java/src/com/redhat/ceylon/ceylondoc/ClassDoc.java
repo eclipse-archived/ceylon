@@ -224,8 +224,8 @@ public class ClassDoc extends ClassOrPackageDoc {
                 }
             }
         }
-        for (TypeDeclaration superInteface : classMethods.keySet()) {
-            List<Declaration> methods = classMethods.get(superInteface);
+        for (TypeDeclaration superInterface : classMethods.keySet()) {
+            List<Declaration> methods = classMethods.get(superInterface);
             if (methods.isEmpty())
                 continue;
             open("table");
@@ -233,7 +233,7 @@ public class ClassDoc extends ClassOrPackageDoc {
             open("th");
             write("Methods inherited from interface: ");
             open("code");
-            link(superInteface.getType());
+            link(superInterface.getType());
             close("code");
             close("th");
             close("tr");
