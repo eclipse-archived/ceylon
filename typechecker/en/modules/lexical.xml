@@ -76,8 +76,8 @@
         
         <programlisting>IdentifierChar: LowercaseChar | UppercaseChar | Digit</programlisting>
         <programlisting>Digit: "0".."9"</programlisting>
-        <programlisting>LowercaseChar: "a".."z" | "_"</programlisting>
-        <programlisting>UppercaseChar: "A".."Z"</programlisting>
+        <programlisting>LowercaseChar: &lt;lowercase letter&gt; | "_"</programlisting>
+        <programlisting>UppercaseChar: &lt;non-lowercase letter&gt;</programlisting>
         
         <para>All identifiers are case sensitive: <literal>Person</literal> and
         <literal>person</literal> are two different legal identifiers.</para>
@@ -113,11 +113,7 @@
         this outer super
         is exists nonempty
         </literal></para>
-        
-        <comment><para>TODO: Eventually we will probably want to support identifiers 
-        in non-European character sets. We can use an initial underscore to distinguish
-        "initial lowercase" identifiers.</para></comment>
-        
+                
     </section>
     
     <section id="literals">
