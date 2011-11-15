@@ -16,6 +16,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
 
 public abstract class CeylonDoc {
 
@@ -62,11 +63,36 @@ public abstract class CeylonDoc {
         }
     }
 
+    // FIXME: copied from ProducedType, we should make it public
+    private static boolean isElementOfUnion(UnionType ut, TypeDeclaration td) {
+        for (TypeDeclaration ct: ut.getCaseTypeDeclarations()) {
+            if (ct.equals(td)) return true;
+        }
+        return false;
+    }
+
     protected void link(ProducedType type) throws IOException {
         TypeDeclaration decl = type.getDeclaration();
         if(decl instanceof UnionType){
+            UnionType ut = (UnionType) decl;
+            // try to simplify if possible
+            if (ut.getCaseTypes().size()==2) {
+                Unit unit = decl.getUnit();
+                if (isElementOfUnion(ut, unit.getNothingDeclaration())) {
+                    link(unit.getDefiniteType(type));
+                    write("?");
+                    return;
+                }
+                if (isElementOfUnion(ut, unit.getEmptyDeclaration()) &&
+                        isElementOfUnion(ut, unit.getSequenceDeclaration())) {
+                    link(unit.getElementType(type));
+                    write("[]");
+                    return;
+                }
+            }
+            // simplification failed, do it the hard way
             boolean first = true;
-            for(ProducedType ud : ((UnionType)decl).getCaseTypes()){
+            for(ProducedType ud : ut.getCaseTypes()){
                 if(first){
                     first = false;
                 }else{
