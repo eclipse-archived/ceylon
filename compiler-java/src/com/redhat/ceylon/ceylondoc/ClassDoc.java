@@ -191,14 +191,14 @@ public class ClassDoc extends ClassOrPackageDoc {
             open("tr class='TableRowColor'");
             open("td", "code");
             boolean first = true;
-            for (Declaration method : notRefined) {
+            for (Declaration member : notRefined) {
                 if (!first) {
                     write(", ");
                 } else {
                     first = false;
                 }
-                // generate links to class#method instead of just print the name
-                write(method.getName());
+                // generate links to class#member instead of just print the name
+                linkToMember(member);
             }
             close("code", "td");
             close("tr");
