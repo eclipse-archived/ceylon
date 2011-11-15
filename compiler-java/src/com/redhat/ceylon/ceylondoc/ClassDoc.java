@@ -244,7 +244,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 	private void innerClasses() throws IOException {
 		if (innerClasses.isEmpty())
 			return;
-		openTable("Nested Classes");
+		openTable("Nested Classes", "Modifiers", "Name and Description");
 		for (Class m : innerClasses) {
 			doc(m);
 		}
