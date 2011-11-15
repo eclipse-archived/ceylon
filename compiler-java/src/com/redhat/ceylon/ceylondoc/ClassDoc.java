@@ -326,7 +326,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 
         tag("br");
         // interfaces
-        writeListOnSummary2("satisfied", "All Known Satisfied Interfaces: ", superInterfaces);
+        writeListOnSummary2("satisfied", "Satisfied Interfaces: ", superInterfaces);
 
         // subclasses
         writeListOnSummary("subclasses", "Direct Known Subclasses: ", subclasses);
