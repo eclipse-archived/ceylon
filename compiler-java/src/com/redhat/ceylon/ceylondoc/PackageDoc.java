@@ -66,10 +66,10 @@ public class PackageDoc extends ClassOrPackageDoc {
         open("html");
         open("head");
         around("title", "Package " + pkg.getName());
-        if (pkg.getNameAsString().isEmpty())
-            tag("link href='style.css' rel='stylesheet' type='text/css'");
-        else
-            tag("link href='" + getPathToBase(pkg) + "/style.css' rel='stylesheet' type='text/css'");
+        String pathToBase = pkg.getNameAsString().isEmpty() ? "" : getPathToBase(pkg) + "/";
+        tag("link href='" + pathToBase + "style.css' rel='stylesheet' type='text/css'");
+        open("script type='text/javascript' src='text/css' src='"+pathToBase+"jquery-1.7.min.js'");
+        close("script");
         close("head");
         open("body");
         summary();

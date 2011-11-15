@@ -134,7 +134,10 @@ public class ClassDoc extends ClassOrPackageDoc {
         open("html");
         open("head");
         around("title", "Class for " + klass.getName());
-        tag("link href='" + getPathToBase(klass) + "/style.css' rel='stylesheet' type='text/css'");
+        String pathToBase = getPathToBase(klass)+"/";
+        tag("link href='" + pathToBase  + "style.css' rel='stylesheet' type='text/css'");
+        open("script type='text/javascript' src='text/css' src='"+pathToBase+"jquery-1.7.min.js'");
+        close("script");
         close("head");
         open("body");
         summary();

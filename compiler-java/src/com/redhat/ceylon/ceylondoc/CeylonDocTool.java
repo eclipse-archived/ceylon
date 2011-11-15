@@ -86,7 +86,9 @@ public class CeylonDocTool {
             doc(pkg);
         }
         doc(module);
-        copyResource("resources/style.css");
+        copyResource("resources/style.css", "style.css");
+        copyResource("resources/jquery-1.7.min.js", "jquery-1.7.min.js");
+        copyResource("resources/ceylond.js", "ceylond.js");
     }
 
     private void doc(Module module) throws IOException {
@@ -97,9 +99,9 @@ public class CeylonDocTool {
         new PackageDoc(destDir, pkg, showPrivate).generate();
     }
 
-    private void copyResource(String path) throws IOException {
+    private void copyResource(String path, String target) throws IOException {
         InputStream resource = getClass().getResourceAsStream(path);
-        OutputStream os = new FileOutputStream(new File(destDir, "style.css"));
+        OutputStream os = new FileOutputStream(new File(destDir, target));
         byte[] buf = new byte[1024];
         int read;
         while ((read = resource.read(buf)) > -1) {
