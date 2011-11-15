@@ -1777,7 +1777,8 @@ else {
             <para>Every forward-declared method must explicitly specify a type. It may 
             not be declared using the keyword <literal>function</literal>.</para>
         
-            <para>A toplevel attribute may not be forward-declared.</para>
+            <para>A toplevel method may not be forward-declared. A method of an interface
+            may not be forward-declared.</para>
             
         </section>
         
@@ -2289,7 +2290,8 @@ print(greeting);</programlisting>
             <para>Every forward-declared simple attribute must explicitly specify a type.
             It may not be declared using the keyword <literal>value</literal>.</para>
         
-            <para>A toplevel attribute may not be forward-declared.</para>
+            <para>A toplevel attribute may not be forward-declared. An attribute of an 
+            interface may not be forward-declared.</para>
             
         </section>
         
