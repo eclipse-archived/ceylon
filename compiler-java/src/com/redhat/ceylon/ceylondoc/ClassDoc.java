@@ -178,7 +178,16 @@ public class ClassDoc extends ClassOrPackageDoc {
             }
             if (notRefined.isEmpty())
                 continue;
-            openTable(title + "<code>" + superClass.getQualifiedNameString() + "</code>");
+            open("table");
+            open("tr class='TableHeadingColor'");
+            open("th");
+            write("Methods inherited from class: ");
+            open("code");
+            link(superClass.getType());
+            close("code");
+            close("th");
+            close("tr");
+
             open("tr class='TableRowColor'");
             open("td", "code");
             boolean first = true;
