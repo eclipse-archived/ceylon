@@ -324,6 +324,7 @@ public class ClassDoc extends ClassOrPackageDoc {
             }
         }
 
+        tag("br");
         // interfaces
         writeListOnSummary2("satisfied", "All Known Satisfied Interfaces: ", superInterfaces);
 
