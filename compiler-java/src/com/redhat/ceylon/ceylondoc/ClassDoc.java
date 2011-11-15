@@ -141,11 +141,12 @@ public class ClassDoc extends ClassOrPackageDoc {
         innerClasses();
         attributes();
         inheritedMembers(atributeSpecification, "Attributes inherited from class: ");
+        inheritedMembersFromInterfaces(atributeSpecification, "Attributes inherited from interface: ");
         if (klass instanceof Class)
             constructor((Class) klass);
         methods();
         inheritedMembers(methodSpecification, "Methods inherited from class: ");
-        inheritedMethodsFromInterfaces();
+        inheritedMembersFromInterfaces(methodSpecification, "Methods inherited from interface: ");
         close("body");
         close("html");
         writer.flush();
@@ -207,31 +208,31 @@ public class ClassDoc extends ClassOrPackageDoc {
         close("table");
     }
 
-    private void inheritedMethodsFromInterfaces() throws IOException {
-        Map<TypeDeclaration, List<Declaration>> classMethods = new HashMap<TypeDeclaration, List<Declaration>>();
+    private void inheritedMembersFromInterfaces(MemberSpecification memberSpecification, String title) throws IOException {
+        Map<TypeDeclaration, List<Declaration>> classMembers = new HashMap<TypeDeclaration, List<Declaration>>();
         for (ProducedType superInterface : superInterfaces) {
             TypeDeclaration decl = superInterface.getDeclaration();
-            List<Declaration> methods = getConcreteSharedMembers(decl, methodSpecification);
-            classMethods.put(decl, methods);
+            List<Declaration> members = getConcreteSharedMembers(decl, memberSpecification);
+            classMembers.put(decl, members);
         }
         for (ProducedType superInterface : superInterfaces) {
             TypeDeclaration decl = superInterface.getDeclaration();
-            List<Declaration> methods = getConcreteSharedMembers(decl, methodSpecification);
-            for (Declaration method : methods) {
-                Declaration refined = method.getRefinedDeclaration();
-                if (refined != null && refined != method) {
-                    classMethods.get(refined.getContainer()).remove(refined);
+            List<Declaration> members = getConcreteSharedMembers(decl, memberSpecification);
+            for (Declaration member : members) {
+                Declaration refined = member.getRefinedDeclaration();
+                if (refined != null && refined != member && !(refined.getContainer() instanceof Class)) {
+                    classMembers.get(refined.getContainer()).remove(refined);
                 }
             }
         }
-        for (TypeDeclaration superInterface : classMethods.keySet()) {
-            List<Declaration> methods = classMethods.get(superInterface);
-            if (methods.isEmpty())
+        for (TypeDeclaration superInterface : classMembers.keySet()) {
+            List<Declaration> members = classMembers.get(superInterface);
+            if (members.isEmpty())
                 continue;
             open("table");
             open("tr class='TableHeadingColor'");
             open("th");
-            write("Methods inherited from interface: ");
+            write(title);
             open("code");
             link(superInterface.getType());
             close("code");
@@ -241,14 +242,14 @@ public class ClassDoc extends ClassOrPackageDoc {
             open("tr class='TableRowColor'");
             open("td", "code");
             boolean first = true;
-            for (Declaration method : methods) {
+            for (Declaration member : members) {
                 if (!first) {
                     write(", ");
                 } else {
                     first = false;
                 }
                 // generate links to class#method instead of just print the name
-                write(method.getName());
+                write(member.getName());
             }
             close("code", "td");
             close("tr");
