@@ -28,10 +28,29 @@ public class Util {
         return stringBuilder.toString();
     }
 
+    private static final int FIRST_LINE_MAX_SIZE = 120;
+
     public static String getDoc(Declaration decl) {
+        return new MarkdownProcessor().markdown(getRawDoc(decl));
+    }
+
+    public static String getDocFirstLine(Declaration decl) {
+        return new MarkdownProcessor().markdown(getFirstLine(getRawDoc(decl)));
+    }
+
+    private static String getFirstLine(String text) {
+        int dot = text.indexOf('.');
+        if(dot != -1 && dot <= FIRST_LINE_MAX_SIZE)
+            return text.substring(0, dot+1);
+        if(text.length() <= FIRST_LINE_MAX_SIZE)
+            return text;
+        return text.substring(0, FIRST_LINE_MAX_SIZE-1) + "…";
+    }
+
+    public static String getRawDoc(Declaration decl) {
         for (Annotation a : decl.getAnnotations()) {
             if (a.getName().equals("doc"))
-                return new MarkdownProcessor().markdown(unquote(a.getPositionalArguments().get(0)));
+                return unquote(a.getPositionalArguments().get(0));
         }
         return "";
     }
