@@ -42,6 +42,8 @@ public class CeylonDocTool {
 
         for (PhasedUnit pu : phasedUnits) {
             for (Declaration decl : pu.getUnit().getDeclarations()) {
+                if(!include(decl))
+                    continue;
                 if (decl instanceof ClassOrInterface) {
                     ClassOrInterface c = (ClassOrInterface) decl;
                     // subclasses map
