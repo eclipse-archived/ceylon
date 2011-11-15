@@ -6,10 +6,14 @@ import static com.redhat.ceylon.ceylondoc.Util.getModifiers;
 import java.io.IOException;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
@@ -17,6 +21,40 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
 
     public ClassOrPackageDoc(String destDir, boolean showPrivate) {
         super(destDir, showPrivate);
+    }
+
+    protected void writeSee(Declaration decl) throws IOException {
+        Annotation see = Util.getAnnotation(decl, "see");
+        if(see == null)
+            return;
+        boolean first = true;
+        open("div class='see'");
+        write("See also: ");
+        for(String target : see.getPositionalArguments()){
+            // try to resolve in containing scopes
+            TypeDeclaration targetDecl = resolveDeclaration((Scope) decl, target);
+            if(targetDecl != null){
+                if (!first) {
+                    write(", ");
+                } else {
+                    first = false;
+                }
+                if(targetDecl.isMember())
+                    linkToMember(targetDecl);
+                else
+                    link(targetDecl.getType());
+            }
+        }
+        close("div");
+    }
+
+    private TypeDeclaration resolveDeclaration(Scope decl, String target) {
+        if(decl == null)
+            return null;
+        TypeDeclaration member = (TypeDeclaration) decl.getMember(target);
+        if (member != null)
+            return member;
+        return resolveDeclaration(decl.getContainer(), target);
     }
 
     protected void doc(Method m) throws IOException {
@@ -45,6 +83,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         close("code");
         tag("br");
         around("span class='doc'", getDoc(m));
+        writeSee(m);
         close("td");
         close("tr");
     }

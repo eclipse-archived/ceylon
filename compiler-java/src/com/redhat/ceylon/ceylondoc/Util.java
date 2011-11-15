@@ -25,6 +25,14 @@ public class Util {
         return "";
     }
 
+    public static Annotation getAnnotation(Declaration decl, String name) {
+        for (Annotation a : decl.getAnnotations()) {
+            if (a.getName().equals(name))
+                return a;
+        }
+        return null;
+    }
+
     private static String unquote(String string) {
         return string.substring(1, string.length() - 1);
     }

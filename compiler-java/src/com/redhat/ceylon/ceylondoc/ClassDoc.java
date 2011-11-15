@@ -340,6 +340,8 @@ public class ClassDoc extends ClassOrPackageDoc {
         // description
         around("div class='doc'", getDoc(klass));
 
+        writeSee(klass);
+        
         close("div");
     }
 
