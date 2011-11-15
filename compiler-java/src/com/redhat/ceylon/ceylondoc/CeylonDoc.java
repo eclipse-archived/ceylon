@@ -158,14 +158,14 @@ public abstract class CeylonDoc {
     }
 
     protected void openTable(String title) throws IOException {
-        open("table");
+        open("table class='category'");
         open("tr class='TableHeadingColor'");
         around("th", title);
         close("tr");
     }
 
     protected void openTable(String title, String firstColumnTitle, String secondColumnTitle) throws IOException {
-        open("table");
+        open("table class='category'");
         open("tr class='TableHeadingColor'");
         around("th colspan='2'", title);
         close("tr");

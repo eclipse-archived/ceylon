@@ -282,7 +282,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     private void summary() throws IOException {
         Package pkg = getPackage(klass);
 
-        open("div class='nav'");
+        open("div class='nav menu'");
         open("div");
         around("a href='" + getPathToBase() + "/overview-summary.html'", "Overview");
         close("div");
@@ -297,7 +297,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         close("div");
         close("div");
 
-        open("div class='head'");
+        open("div class='head summary'");
 
         // name
         around("div class='package'", "<code>" + pkg.getNameAsString() + "</code>");

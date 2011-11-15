@@ -84,7 +84,7 @@ public class PackageDoc extends ClassOrPackageDoc {
     }
 
     private void summary() throws IOException {
-        open("div class='nav'");
+        open("div class='nav menu'");
         open("div");
         around("a href='" + getPathToBase() + "/overview-summary.html'", "Overview");
         close("div");
@@ -99,7 +99,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         close("div");
         close("div");
 
-        open("div class='head'");
+        open("div class='head summary'");
         around("h1", "Package ", "<code>", pkg.getNameAsString(), "</code>");
         close("div");
     }
@@ -139,7 +139,7 @@ public class PackageDoc extends ClassOrPackageDoc {
     }
 
     private void doc(ClassOrInterface d) throws IOException {
-        open("tr class='TableRowColor'");
+        open("tr class='TableRowColor category'");
         open("td", "code");
         around("span class='modifiers'", getModifiers(d));
         write(" ");
