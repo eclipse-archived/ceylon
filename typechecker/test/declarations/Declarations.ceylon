@@ -114,5 +114,6 @@ interface Declarations {
         Ni–o ni–o = Ni–o();
     }
     
+    void _bar() { _bar(); }
     
 }
