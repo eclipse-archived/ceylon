@@ -454,6 +454,12 @@ public class StructureTest extends CompilerTest {
     //
     // import
     
+    @Test
+    public void testImpImportAliasAndWildcard(){
+        compileImportedPackage();
+        compareWithJavaSource("import_/ImportAliasAndWildcard");
+    }
+    
     private void compileImportedPackage() {
         compile("import_/pkg/C1.ceylon", "import_/pkg/C2.ceylon");
     }
