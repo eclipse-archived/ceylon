@@ -306,6 +306,10 @@ public class SpecificationVisitor extends Visitor {
                 that.addError("toplevel function must be specified: " +
                         declaration.getName());
             }
+            else if (declaration.isInterfaceMember() && !declaration.isFormal()) {
+                that.addError("interface method must be formal or specified: " +
+                        declaration.getName());
+            }
         }
     }
     
