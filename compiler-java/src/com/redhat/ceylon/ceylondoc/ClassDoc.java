@@ -140,11 +140,11 @@ public class ClassDoc extends ClassOrPackageDoc {
         summary();
         innerClasses();
         attributes();
-        inheritedMembers(atributeSpecification, "Attributes inherited from class ");
+        inheritedMembers(atributeSpecification, "Attributes inherited from class: ");
         if (klass instanceof Class)
             constructor((Class) klass);
         methods();
-        inheritedMembers(methodSpecification, "Methods inherited from class ");
+        inheritedMembers(methodSpecification, "Methods inherited from class: ");
         inheritedMethodsFromInterfaces();
         close("body");
         close("html");
@@ -181,7 +181,7 @@ public class ClassDoc extends ClassOrPackageDoc {
             open("table");
             open("tr class='TableHeadingColor'");
             open("th");
-            write("Methods inherited from class: ");
+            write(title);
             open("code");
             link(superClass.getType());
             close("code");
