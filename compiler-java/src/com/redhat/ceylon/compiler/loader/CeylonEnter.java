@@ -216,12 +216,18 @@ public class CeylonEnter extends Enter {
 
     public void addModuleToClassPath(Module module, boolean errorIfMissing) {
         Paths.Path classPath = paths.getPathForLocation(StandardLocation.CLASS_PATH);
+        
+        Iterable<? extends File> outputLocation = fileManager.getLocation(StandardLocation.CLASS_OUTPUT);
+        if (outputLocation != null && outputLocation.iterator().hasNext()) {
+            File outputRepository = outputLocation.iterator().next();
+            if (addModuleFromRepository(module, outputRepository, classPath)) {
+                return;
+            }
+        }
+        
         Iterable<? extends File> repositories = fileManager.getLocation(CeylonLocation.REPOSITORY);
         for(File repository : repositories){
-            File moduleDir = Util.getModulePath(repository, module);
-            File moduleJar = new File(moduleDir, Util.getModuleArchiveName(module));
-            if(moduleJar.exists()){
-                classPath.addFile(moduleJar, false);
+            if (addModuleFromRepository(module, repository, classPath)) {
                 return;
             }
         }
@@ -229,6 +235,16 @@ public class CeylonEnter extends Enter {
             log.error("ceylon", "Failed to find module "+module.getNameAsString()+"/"+module.getVersion()+" in repositories");
     }
 
+    private boolean addModuleFromRepository(Module module, File repository, Paths.Path classPath) {
+        File moduleDir = Util.getModulePath(repository, module);
+        File moduleJar = new File(moduleDir, Util.getModuleArchiveName(module));
+        if(moduleJar.exists()){
+            classPath.addFile(moduleJar, false);
+            return true;
+        }
+        return false;
+    }
+    
     private void typeCheck() {
         final java.util.List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
 
