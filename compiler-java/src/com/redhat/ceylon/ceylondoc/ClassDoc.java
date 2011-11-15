@@ -198,7 +198,6 @@ public class ClassDoc extends ClassOrPackageDoc {
                 } else {
                     first = false;
                 }
-                // generate links to class#member instead of just print the name
                 linkToMember(member);
             }
             close("code", "td");
@@ -248,8 +247,7 @@ public class ClassDoc extends ClassOrPackageDoc {
                 } else {
                     first = false;
                 }
-                // generate links to class#method instead of just print the name
-                write(member.getName());
+                linkToMember(member);
             }
             close("code", "td");
             close("tr");
