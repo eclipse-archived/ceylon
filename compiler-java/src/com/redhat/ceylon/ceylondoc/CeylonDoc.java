@@ -91,6 +91,13 @@ public abstract class CeylonDoc {
         }
     }
 
+    protected void linkToMember(Declaration decl) throws IOException {
+        ClassOrInterface container = (ClassOrInterface) decl.getContainer();
+        String path = getPathToBase() + "/" + join("/", getPackage(container).getName()) + "/" + getFileName(container);
+        String name = decl.getName();
+        around("a href='" + path + "#"+ name + "'", name);
+    }
+
     protected abstract String getPathToBase();
 
     protected String getFileName(Scope klass) {
