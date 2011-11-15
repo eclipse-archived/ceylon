@@ -278,7 +278,9 @@ public class ClassDoc extends ClassOrPackageDoc {
         open("td");
         link(c.getType());
         tag("br");
-        around("span class='doc'", getDoc(c));
+        startPrintingLongDoc(c);
+        writeSee(c);
+        endLongDocAndPrintShortDoc(c);
         close("td");
         close("tr");
     }

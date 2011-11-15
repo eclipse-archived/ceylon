@@ -1,6 +1,7 @@
 package com.redhat.ceylon.ceylondoc;
 
 import static com.redhat.ceylon.ceylondoc.Util.getDoc;
+import static com.redhat.ceylon.ceylondoc.Util.getDocFirstLine;
 import static com.redhat.ceylon.ceylondoc.Util.getModifiers;
 
 import java.io.IOException;
@@ -146,7 +147,8 @@ public class PackageDoc extends ClassOrPackageDoc {
         link(d.getType());
         close("code", "td");
         open("td");
-        write(getDoc(d));
+        startPrintingLongDoc(d);
+        endLongDocAndPrintShortDoc(d);
         close("td");
         close("tr");
     }

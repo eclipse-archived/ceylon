@@ -1,6 +1,7 @@
 package com.redhat.ceylon.ceylondoc;
 
 import static com.redhat.ceylon.ceylondoc.Util.getDoc;
+import static com.redhat.ceylon.ceylondoc.Util.getDocFirstLine;
 import static com.redhat.ceylon.ceylondoc.Util.getModifiers;
 
 import java.io.File;
@@ -84,8 +85,9 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         writeParameterList(m.getParameterLists());
         close("code");
         tag("br");
-        around("span class='doc'", getDoc(m));
+        startPrintingLongDoc(m);
         writeSee(m);
+        endLongDocAndPrintShortDoc(m);
         close("td");
         close("tr");
     }
@@ -104,7 +106,8 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         write(f.getName());
         close("code");
         tag("br");
-        around("span class='doc'", getDoc(f));
+        startPrintingLongDoc(f);
+        endLongDocAndPrintShortDoc(f);
         close("td");
         close("tr");
     }
@@ -125,4 +128,17 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             write(")");
         }
     }
+
+    protected void endLongDocAndPrintShortDoc(Declaration d) throws IOException {
+        close("div");
+        open("div class='short'");
+        around("div class='doc'", getDocFirstLine(d));
+        close("div");
+    }
+
+    protected void startPrintingLongDoc(Declaration d) throws IOException {
+        open("div class='long'");
+        around("div class='doc'", getDoc(d));
+    }
+
 }
