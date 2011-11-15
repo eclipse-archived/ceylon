@@ -175,4 +175,7 @@ public abstract class CeylonDoc {
         close("tr");
     }
 
+    protected boolean include(Declaration decl){
+        return showPrivate || decl.isShared();
+    }
 }

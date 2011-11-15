@@ -109,10 +109,13 @@ public class CeylonDocTool {
 
     private void doc(Declaration decl) throws IOException {
         if (decl instanceof ClassOrInterface) {
-            if (showPrivate || decl.isShared()) {
+            if (include(decl)) {
                 new ClassDoc(destDir, showPrivate, (ClassOrInterface) decl, subclasses.get(decl), satisfyingClassesOrInterfaces.get(decl)).generate();
             }
         }
     }
 
+    protected boolean include(Declaration decl){
+        return showPrivate || decl.isShared();
+    }
 }

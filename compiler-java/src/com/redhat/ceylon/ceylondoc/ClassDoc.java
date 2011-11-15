@@ -100,7 +100,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         superClasses = getAncestors(klass);
         superInterfaces = getSuperInterfaces(klass);
         for (Declaration m : klass.getMembers()) {
-            if (showPrivate || m.isShared()) {
+            if (include(m)) {
                 if (m instanceof Value)
                     attributes.add((Value) m);
                 else if (m instanceof Getter)
