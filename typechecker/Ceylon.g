@@ -3001,11 +3001,12 @@ COMPILER_ANNOTATION
     ;
 
 fragment
-UIDENTIFIER :;
+LIDENTIFIER :;
 
-LIDENTIFIER 
+UIDENTIFIER 
     :   IdentifierStart IdentifierPart*
-        { if (Character.isUpperCase($text.codePointAt(0))) $type=UIDENTIFIER; }
+        { int cp = $text.codePointAt(0);
+          if (cp=='_' || Character.isLowerCase(cp)) $type=LIDENTIFIER; }
     ;
 
 fragment
