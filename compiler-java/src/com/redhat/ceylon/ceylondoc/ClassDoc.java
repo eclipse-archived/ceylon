@@ -200,11 +200,11 @@ public class ClassDoc extends ClassOrPackageDoc {
 	}
 	
 	private void inheritedMethodsFromInterfaces() throws IOException {
-		Map<String, List<Declaration>> classMethods = new HashMap<String, List<Declaration>>();
+		Map<TypeDeclaration, List<Declaration>> classMethods = new HashMap<TypeDeclaration, List<Declaration>>();
 		for (ProducedType superInterface: superInterfaces) {
 			TypeDeclaration decl = superInterface.getDeclaration();
 			List<Declaration> methods = getConcreteSharedMembers(decl , methodSpecification);
-			classMethods.put(decl.getQualifiedNameString(), methods);
+			classMethods.put(decl, methods);
 		}
 		for (ProducedType superInterface: superInterfaces) {
 			TypeDeclaration decl = superInterface.getDeclaration();
@@ -212,15 +212,24 @@ public class ClassDoc extends ClassOrPackageDoc {
 			for (Declaration method: methods) {
 				Declaration refined = method.getRefinedDeclaration();
 				if (refined != null && refined != method) {
-					classMethods.get(refined.getContainer().getQualifiedNameString()).remove(refined);
+					classMethods.get(refined.getContainer()).remove(refined);
 				}
 			}
 		}
-		for (String superIntefaceName: classMethods.keySet()) {
-			List<Declaration> methods = classMethods.get(superIntefaceName);
+		for (TypeDeclaration superInteface: classMethods.keySet()) {
+			List<Declaration> methods = classMethods.get(superInteface);
 			if (methods.isEmpty())
 				continue;
-			openTable("Methods inherited from interface: <code>" + superIntefaceName + "</code>");
+		     open("table");
+		     open("tr class='TableHeadingColor'");
+		     open("th");
+		     write("Methods inherited from interface: ");
+		     open("code");
+		     link(superInteface.getType());
+             close("code");
+		     close("th");
+		     close("tr");
+
 			open("tr class='TableRowColor'");
 			open("td", "code");
 			boolean first = true;
