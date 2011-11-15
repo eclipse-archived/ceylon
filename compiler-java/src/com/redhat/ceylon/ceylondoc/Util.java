@@ -16,6 +16,17 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 public class Util {
+	
+	protected static String join(String str, List<String> parts) {
+        StringBuilder stringBuilder = new StringBuilder();
+        Iterator<String> iterator = parts.iterator();
+        while(iterator.hasNext()){
+            stringBuilder.append(iterator.next());
+            if(iterator.hasNext())
+                stringBuilder.append(str);
+        }
+        return stringBuilder.toString();
+    }
 
     public static String getDoc(Declaration decl) {
         for (Annotation a : decl.getAnnotations()) {

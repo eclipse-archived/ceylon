@@ -1,6 +1,5 @@
 package com.redhat.ceylon.ceylondoc;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,18 +7,17 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 
 public class SummaryDoc extends CeylonDoc {
 
     private Module module;
 
-    public SummaryDoc(String destDir, Module module, boolean showPrivate) throws IOException {
-        super(destDir, showPrivate);
+    public SummaryDoc(CeylonDocTool tool, Module module) throws IOException {
+        super(module, tool, tool.getObjectFile(module));
         this.module = module;
     }
-
+    
     public void generate() throws IOException {
         setupWriter();
         open("html");
@@ -91,13 +89,14 @@ public class SummaryDoc extends CeylonDoc {
         close("tr");
     }
 
-    @Override
-    protected String getPathToBase() {
-        return "";
-    }
 
     @Override
-    protected File getOutputFile() {
-        return new File(destDir, "overview-summary.html");
+    protected String getObjectUrl(Object to) {
+        return getObjectUrl(module, to);
+    }
+    
+    @Override
+    protected String getResourceUrl(String to) {
+        return getResourceUrl(module, to);
     }
 }

@@ -3,7 +3,6 @@ package com.redhat.ceylon.ceylondoc;
 import static com.redhat.ceylon.ceylondoc.Util.getDoc;
 import static com.redhat.ceylon.ceylondoc.Util.getModifiers;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,11 +27,11 @@ public class PackageDoc extends ClassOrPackageDoc {
     private List<MethodOrValue> attributes;
     private List<Method> methods;
 
-    public PackageDoc(String destDir, Package pkg, boolean showPrivate) throws IOException {
-        super(destDir, showPrivate);
-        this.pkg = pkg;
-        loadMembers();
-    }
+	public PackageDoc(CeylonDocTool tool, Package pkg) throws IOException {
+		super(pkg.getModule(), tool, tool.getObjectFile(pkg));
+		this.pkg = pkg;
+		loadMembers();
+	}
 
     private void loadMembers() {
         classes = new ArrayList<Class>();
@@ -66,9 +65,8 @@ public class PackageDoc extends ClassOrPackageDoc {
         open("html");
         open("head");
         around("title", "Package " + pkg.getName());
-        String pathToBase = pkg.getNameAsString().isEmpty() ? "" : getPathToBase(pkg) + "/";
-        tag("link href='" + pathToBase + "style.css' rel='stylesheet' type='text/css'");
-        open("script type='text/javascript' src='text/css' src='"+pathToBase+"jquery-1.7.min.js'");
+        tag("link href='"+getResourceUrl("style.css") + "' rel='stylesheet' type='text/css'");
+        open("script type='text/javascript' src='text/css' src='" + getResourceUrl("jquery-1.7.min.js'") + "'");
         close("script");
         close("head");
         open("body");
@@ -86,7 +84,7 @@ public class PackageDoc extends ClassOrPackageDoc {
     private void summary() throws IOException {
         open("div class='nav menu'");
         open("div");
-        around("a href='" + getPathToBase() + "/overview-summary.html'", "Overview");
+        around("a href='"+getObjectUrl(module)+"'", "Overview");
         close("div");
         open("div class='selected'");
         write("Package");
@@ -152,12 +150,12 @@ public class PackageDoc extends ClassOrPackageDoc {
     }
 
     @Override
-    protected String getPathToBase() {
-        return getPathToBase(pkg);
+    protected String getObjectUrl(Object to) {
+        return getObjectUrl(pkg, to);
     }
 
     @Override
-    protected File getOutputFile() {
-        return new File(getFolder(pkg), "index.html");
+    protected String getResourceUrl(String to) {
+        return getResourceUrl(pkg, to);
     }
 }

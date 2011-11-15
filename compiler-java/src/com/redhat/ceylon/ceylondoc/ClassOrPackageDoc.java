@@ -3,6 +3,7 @@ package com.redhat.ceylon.ceylondoc;
 import static com.redhat.ceylon.ceylondoc.Util.getDoc;
 import static com.redhat.ceylon.ceylondoc.Util.getModifiers;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
@@ -19,9 +21,9 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 public abstract class ClassOrPackageDoc extends CeylonDoc {
 
-    public ClassOrPackageDoc(String destDir, boolean showPrivate) {
-        super(destDir, showPrivate);
-    }
+	public ClassOrPackageDoc(Module module, CeylonDocTool tool, File file) {
+		super(module, tool, file);		
+	}
 
     protected void writeSee(Declaration decl) throws IOException {
         Annotation see = Util.getAnnotation(decl, "see");
@@ -123,5 +125,4 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             write(")");
         }
     }
-
 }

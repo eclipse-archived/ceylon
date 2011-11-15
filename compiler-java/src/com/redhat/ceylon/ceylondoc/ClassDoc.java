@@ -6,7 +6,6 @@ import static com.redhat.ceylon.ceylondoc.Util.getModifiers;
 import static com.redhat.ceylon.ceylondoc.Util.getSuperInterfaces;
 import static com.redhat.ceylon.ceylondoc.Util.isNullOrEmpty;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -74,8 +73,9 @@ public class ClassDoc extends ClassOrPackageDoc {
         }
     };
 
-    public ClassDoc(String destDir, boolean showPrivate, ClassOrInterface klass, List<ClassOrInterface> subclasses, List<ClassOrInterface> satisfyingClassesOrInterfaces) throws IOException {
-        super(destDir, showPrivate);
+    public ClassDoc(CeylonDocTool tool,   
+            ClassOrInterface klass, List<ClassOrInterface> subclasses, List<ClassOrInterface> satisfyingClassesOrInterfaces) throws IOException {
+        super(tool.getModule(klass), tool, tool.getObjectFile(klass));
         if (subclasses != null) {
             this.subclasses = subclasses;
         } else {
@@ -134,9 +134,8 @@ public class ClassDoc extends ClassOrPackageDoc {
         open("html");
         open("head");
         around("title", "Class for " + klass.getName());
-        String pathToBase = getPathToBase(klass)+"/";
-        tag("link href='" + pathToBase  + "style.css' rel='stylesheet' type='text/css'");
-        open("script type='text/javascript' src='text/css' src='"+pathToBase+"jquery-1.7.min.js'");
+        tag("link href='" + getResourceUrl("style.css") + "' rel='stylesheet' type='text/css'");
+        open("script type='text/javascript' src='text/css' src='" + getResourceUrl("jquery-1.7.min.js") + "'");
         close("script");
         close("head");
         open("body");
@@ -283,11 +282,11 @@ public class ClassDoc extends ClassOrPackageDoc {
     }
 
     private void summary() throws IOException {
-        Package pkg = getPackage(klass);
+        Package pkg = tool.getPackage(klass);
 
         open("div class='nav menu'");
         open("div");
-        around("a href='" + getPathToBase() + "/overview-summary.html'", "Overview");
+        around("a href='" + getObjectUrl(module) + "'", "Overview");
         close("div");
         open("div");
         around("a href='index.html'", "Package");
@@ -348,6 +347,16 @@ public class ClassDoc extends ClassOrPackageDoc {
         close("div");
     }
 
+	@Override
+	protected String getObjectUrl(Object to) {
+	    return getObjectUrl(klass, to);
+	}
+	
+	@Override
+    protected String getResourceUrl(String to) {
+        return getResourceUrl(klass, to);
+    }
+
     private String getClassName() throws IOException {
         StringBuilder sb = new StringBuilder();
         sb.append(klass.getName());
@@ -379,6 +388,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         if (methods.isEmpty())
             return;
         openTable("Methods", "Modifier and Type", "Method and Description");
+
         for (Method m : methods) {
             doc(m);
         }
@@ -393,16 +403,6 @@ public class ClassDoc extends ClassOrPackageDoc {
             doc(attribute);
         }
         close("table");
-    }
-
-    @Override
-    protected String getPathToBase() {
-        return getPathToBase(klass);
-    }
-
-    @Override
-    protected File getOutputFile() {
-        return new File(getFolder(klass), getFileName(klass));
     }
 
     private void writeListOnSummary(String divClass, String label, List<? extends ClassOrInterface> list) throws IOException {

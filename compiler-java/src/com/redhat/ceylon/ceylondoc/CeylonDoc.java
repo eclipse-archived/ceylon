@@ -4,12 +4,14 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.net.URI;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
@@ -21,20 +23,16 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 public abstract class CeylonDoc {
 
     protected Writer writer;
-    protected String destDir;
-    protected boolean showPrivate;
+    private File file;
+    protected final CeylonDocTool tool;
+    protected final Module module;
 
-    public CeylonDoc(String destDir, boolean showPrivate) {
-        this.destDir = destDir;
-        this.showPrivate = showPrivate;
+    public CeylonDoc(Module module, CeylonDocTool tool, File file) {
+        this.module = module;
+        this.tool = tool;
+        this.file = file;
     }
-
-    protected void setupWriter() throws IOException {
-        this.writer = new FileWriter(getOutputFile());
-    }
-
-    protected abstract File getOutputFile();
-
+    
     protected void write(String... text) throws IOException {
         for (String s : text)
             writer.append(s);
@@ -43,24 +41,6 @@ public abstract class CeylonDoc {
     protected void tag(String... tags) throws IOException {
         for (String tag : tags)
             writer.append("<").append(tag).append("/>\n");
-    }
-
-    protected String getPathToBase(ClassOrInterface klass) {
-        return getPathToBase(getPackage(klass));
-    }
-
-    protected String getPathToBase(Package pkg) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = pkg.getName().size() - 1; i >= 0; i--) {
-            stringBuilder.append("..");
-            if (i > 0)
-                stringBuilder.append("/");
-        }
-        if (stringBuilder.length() == 0) {
-            return "."; // make links relative and not absolute
-        } else {
-            return stringBuilder.toString();
-        }
     }
 
     // FIXME: copied from ProducedType, we should make it public
@@ -110,9 +90,8 @@ public abstract class CeylonDoc {
     }
 
     protected void link(ClassOrInterface decl, List<ProducedType> typeParameters) throws IOException {
-        String path = getPathToBase() + "/" + join("/", getPackage(decl).getName()) + "/" + getFileName(decl);
         String name = decl.getName();
-        around("a href='" + path + "'", name);
+        around("a href='" + getObjectUrl(decl) + "'", name);
         if (typeParameters != null && !typeParameters.isEmpty()) {
             write("&lt;");
             boolean once = false;
@@ -129,12 +108,9 @@ public abstract class CeylonDoc {
 
     protected void linkToMember(Declaration decl) throws IOException {
         ClassOrInterface container = (ClassOrInterface) decl.getContainer();
-        String path = getPathToBase() + "/" + join("/", getPackage(container).getName()) + "/" + getFileName(container);
         String name = decl.getName();
-        around("a href='" + path + "#"+ name + "'", name);
+        around("a href='" + getObjectUrl(container) + "#"+ name + "'", name);
     }
-
-    protected abstract String getPathToBase();
 
     protected String getFileName(Scope klass) {
         List<String> name = new LinkedList<String>();
@@ -146,7 +122,7 @@ public abstract class CeylonDoc {
     }
 
     protected File getFolder(Package pkg) {
-        File dir = new File(destDir, join("/", pkg.getName()));
+        File dir = new File(tool.getDestDir(), join("/", pkg.getName()));
         dir.mkdirs();
         return dir;
     }
@@ -212,6 +188,97 @@ public abstract class CeylonDoc {
     }
 
     protected boolean include(Declaration decl){
-        return showPrivate || decl.isShared();
+        return tool.isShowPrivate() || decl.isShared();
     }
+
+	protected void setupWriter() throws IOException{
+	    this.writer = new FileWriter(getOutputFile());
+	}
+	
+	protected final File getOutputFile() {
+	    return this.file;
+	}
+
+
+    /**
+     * Returns the absolute URI of the page for the given thing
+     * @param obj (Module, Package, Declaration etc)
+     */
+    private URI getAbsoluteObjectUrl(Object obj) {
+        File f = tool.getObjectFile(obj);
+        if (f == null) {
+            throw new RuntimeException(obj + " doesn't have a ceylond page");
+        }
+        return f.toURI();
+    }
+    
+    /**
+     * Gets the base URL
+     * @return Gets the base URL
+     */
+    protected URI getBaseUrl() {
+        return new File(this.tool.getDestDir()).toURI();
+    }
+    
+    /**
+     * Generates a relative URL such that:
+     * <pre>
+     *   uri1.resolve(relativize(url1, url2)).equals(uri2);
+     * </pre>
+     * @param uri
+     * @param uri2
+     * @return A URL suitable for a link from a page at uri to a page at uri2
+     */
+    private URI relativize(URI uri, URI uri2) {
+        if (!uri.isAbsolute()) {
+            throw new IllegalArgumentException("Expected " + uri + " to be absolute");
+        }
+        if (!uri2.isAbsolute()) {
+            throw new IllegalArgumentException("Expected " + uri2 + " to be absolute");
+        }
+        URI baseUrl = getBaseUrl();
+        StringBuilder sb = new StringBuilder();
+        URI r = uri;
+        if (!r.equals(baseUrl)) {
+            sb.append("./");
+            r = uri.resolve(URI.create(sb.toString()));
+            if (!r.equals(baseUrl)) {
+                r = uri;
+            }
+        }
+        while (!r.equals(baseUrl)) {
+            sb.append("../");
+            r = uri.resolve(URI.create(sb.toString()));
+        }
+        URI result = URI.create(sb.toString() + baseUrl.relativize(uri2));
+        if (result.isAbsolute()) {
+            throw new RuntimeException();
+        }
+        if (!uri.resolve(result).equals(uri2)) {
+            throw new RuntimeException("Assertion fails: url=\""+uri + "\", uri2=\"" + uri2 + "\", result=\"" + result + "\"");
+        }
+        return result;
+    }
+    
+    protected String getObjectUrl(Object from, Object to) {
+        URI fromUrl = getAbsoluteObjectUrl(from);
+        URI toUrl = getAbsoluteObjectUrl(to);
+        String result = relativize(fromUrl, toUrl).toString();
+        return result;
+    }
+    
+    protected String getResourceUrl(Object from, String to) {
+        URI fromUrl = getAbsoluteObjectUrl(from);
+        URI toUrl = getBaseUrl().resolve(to);
+        String result = relativize(fromUrl, toUrl).toString();
+        return result;
+    }
+    
+    protected abstract String getObjectUrl(Object to);
+    
+    protected abstract String getResourceUrl(String to);
+
+
 }
+
+
