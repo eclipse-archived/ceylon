@@ -31,7 +31,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 public class ClassDoc extends ClassOrPackageDoc {
 
-	private ClassOrInterface klass;
+    private ClassOrInterface klass;
     private List<Method> methods;
     private List<MethodOrValue> attributes;
     private List<ClassOrInterface> subclasses;
@@ -41,7 +41,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     private List<Interface> satisfyingInterfaces;
     private List<ProducedType> superInterfaces;
     private List<TypeDeclaration> superClasses;
-    
+
     private Comparator<Declaration> comparator = new Comparator<Declaration>() {
         @Override
         public int compare(Declaration a, Declaration b) {
@@ -56,291 +56,288 @@ public class ClassDoc extends ClassOrPackageDoc {
         }
     };
 
-	interface MemberSpecification {
-		boolean isSatisfiedBy(Declaration decl);
-	}
-	
-	MemberSpecification atributeSpecification = new MemberSpecification() {		
-		@Override
-		public boolean isSatisfiedBy(Declaration decl) {			
-			return decl instanceof Value || decl  instanceof Getter;
-		}
-	};
-	
-	MemberSpecification methodSpecification = new MemberSpecification() {		
-		@Override
-		public boolean isSatisfiedBy(Declaration decl) {			
-			return decl instanceof Method;
-		}
-	};
-    
-    
-	public ClassDoc(String destDir, boolean showPrivate, ClassOrInterface klass, List<ClassOrInterface> subclasses, List<ClassOrInterface> satisfyingClassesOrInterfaces) throws IOException {
-		super(destDir, showPrivate);
-		if (subclasses != null) {
-			this.subclasses = subclasses;
-		} else {
-			this.subclasses = new ArrayList<ClassOrInterface>();
-		}
-		if (satisfyingClassesOrInterfaces != null) {
-			this.satisfyingClassesOrInterfaces = satisfyingClassesOrInterfaces;
-		} else {
-			this.satisfyingClassesOrInterfaces = new ArrayList<ClassOrInterface>();
-		}
-		
-		this.klass = klass;
-		loadMembers();
-	}
-	
-	private void loadMembers() {
-	    methods = new ArrayList<Method>();
-	    satisfyingClasses = new ArrayList<Class>();
-	    satisfyingInterfaces = new ArrayList<Interface>();	        
-	    attributes = new ArrayList<MethodOrValue>();
-	    innerClasses = new ArrayList<Class>();
-	    superClasses = getAncestors(klass);
-	    superInterfaces = getSuperInterfaces(klass);
-	    for(Declaration m : klass.getMembers()){	        	
-	    	if (showPrivate || m.isShared()) {
-	            if(m instanceof Value)	            	
-	                attributes.add((Value) m);
-	            else if(m instanceof Getter)
-	                attributes.add((Getter) m);
-	            else if(m instanceof Method)
-	                methods.add((Method) m);
-	            else if(m instanceof Class)
-	                innerClasses.add((Class) m);
-	    	}
-	    }
-	
-	    for (ClassOrInterface classOrInterface : satisfyingClassesOrInterfaces) {
-	    	if (classOrInterface instanceof Class) {
-	    		satisfyingClasses.add((Class) classOrInterface);
-	    	} else if (classOrInterface instanceof Interface) {
-	    		satisfyingInterfaces.add((Interface) classOrInterface);
-	    	}
-	    }	        
-	    
-	    Collections.sort(methods, comparator );
-	    Collections.sort(attributes, comparator );
-	    Collections.sort(subclasses, comparator);	        
-	    Collections.sort(satisfyingClasses, comparator);
-	    Collections.sort(satisfyingInterfaces, comparator);     
-	    Collections.sort(superInterfaces, producedTypeComparator);
-	    Collections.sort(innerClasses, comparator);
+    interface MemberSpecification {
+        boolean isSatisfiedBy(Declaration decl);
+    }
+
+    MemberSpecification atributeSpecification = new MemberSpecification() {
+        @Override
+        public boolean isSatisfiedBy(Declaration decl) {
+            return decl instanceof Value || decl instanceof Getter;
+        }
+    };
+
+    MemberSpecification methodSpecification = new MemberSpecification() {
+        @Override
+        public boolean isSatisfiedBy(Declaration decl) {
+            return decl instanceof Method;
+        }
+    };
+
+    public ClassDoc(String destDir, boolean showPrivate, ClassOrInterface klass, List<ClassOrInterface> subclasses, List<ClassOrInterface> satisfyingClassesOrInterfaces) throws IOException {
+        super(destDir, showPrivate);
+        if (subclasses != null) {
+            this.subclasses = subclasses;
+        } else {
+            this.subclasses = new ArrayList<ClassOrInterface>();
+        }
+        if (satisfyingClassesOrInterfaces != null) {
+            this.satisfyingClassesOrInterfaces = satisfyingClassesOrInterfaces;
+        } else {
+            this.satisfyingClassesOrInterfaces = new ArrayList<ClassOrInterface>();
+        }
+
+        this.klass = klass;
+        loadMembers();
+    }
+
+    private void loadMembers() {
+        methods = new ArrayList<Method>();
+        satisfyingClasses = new ArrayList<Class>();
+        satisfyingInterfaces = new ArrayList<Interface>();
+        attributes = new ArrayList<MethodOrValue>();
+        innerClasses = new ArrayList<Class>();
+        superClasses = getAncestors(klass);
+        superInterfaces = getSuperInterfaces(klass);
+        for (Declaration m : klass.getMembers()) {
+            if (showPrivate || m.isShared()) {
+                if (m instanceof Value)
+                    attributes.add((Value) m);
+                else if (m instanceof Getter)
+                    attributes.add((Getter) m);
+                else if (m instanceof Method)
+                    methods.add((Method) m);
+                else if (m instanceof Class)
+                    innerClasses.add((Class) m);
+            }
+        }
+
+        for (ClassOrInterface classOrInterface : satisfyingClassesOrInterfaces) {
+            if (classOrInterface instanceof Class) {
+                satisfyingClasses.add((Class) classOrInterface);
+            } else if (classOrInterface instanceof Interface) {
+                satisfyingInterfaces.add((Interface) classOrInterface);
+            }
+        }
+
+        Collections.sort(methods, comparator);
+        Collections.sort(attributes, comparator);
+        Collections.sort(subclasses, comparator);
+        Collections.sort(satisfyingClasses, comparator);
+        Collections.sort(satisfyingInterfaces, comparator);
+        Collections.sort(superInterfaces, producedTypeComparator);
+        Collections.sort(innerClasses, comparator);
     }
 
     public void generate() throws IOException {
-	    setupWriter();
-		open("html");
-		open("head");
-		around("title", "Class for "+klass.getName());
-		tag("link href='"+getPathToBase(klass)+"/style.css' rel='stylesheet' type='text/css'");
-		close("head");
-		open("body");
-		summary();
-		innerClasses();
-		attributes();
-		inheritedMembers(atributeSpecification,"Attributes inherited from class ");
-		if(klass instanceof Class)
-			constructor((Class)klass);		
-		methods();
-		inheritedMembers(methodSpecification, "Methods inherited from class ");
-		inheritedMethodsFromInterfaces();
-		close("body");
-		close("html");
-		writer.flush();
-		writer.close();
-	}
-    
-	public List<Declaration> getConcreteSharedMembers(TypeDeclaration decl, MemberSpecification specification ) {
-		List<Declaration> members = new ArrayList<Declaration>();		
-		for(Declaration m : decl.getMembers())		
-			if ((m.isShared() && !m.isFormal()) && specification.isSatisfiedBy(m))
-	                members.add((MethodOrValue) m);		
-		return members;
-	}	
-	  
-	private void inheritedMembers(MemberSpecification specification, String title) throws IOException {		
-		if  (superClasses.isEmpty())
-			return;
-		TypeDeclaration subclass = klass;		
-		for (TypeDeclaration superClass: superClasses) {
-			List<Declaration> methods = getConcreteSharedMembers(superClass, specification);
-			if (methods.isEmpty())
-				continue;
-			List<Declaration> notRefined = new ArrayList<Declaration>();
-			// clean already listed methods (refined in subclasses)
-			// done in 2 phases to avoid empty tables
- 			for (Declaration method: methods) {
-				if (subclass.getDirectMember(method.getName()) == null) { 
-					notRefined.add(method);
-				}
-			}
-			if (notRefined.isEmpty())
-				continue;
-			openTable( title + "<code>" + superClass.getQualifiedNameString() + "</code>");
-			open("tr class='TableRowColor'");
-			open("td", "code");
-			boolean first = true;
-			for (Declaration method: notRefined) {
-					if(!first){
-						write(", ");
-					}else{
-						first = false;
-					}
-					// generate links to class#method instead of just print the name
-					write(method.getName());
-			}
-			close("code", "td");
-			close("tr");
-			subclass = superClass;		
-		}
-		close("table");	
-	}
-	
-	private void inheritedMethodsFromInterfaces() throws IOException {
-		Map<TypeDeclaration, List<Declaration>> classMethods = new HashMap<TypeDeclaration, List<Declaration>>();
-		for (ProducedType superInterface: superInterfaces) {
-			TypeDeclaration decl = superInterface.getDeclaration();
-			List<Declaration> methods = getConcreteSharedMembers(decl , methodSpecification);
-			classMethods.put(decl, methods);
-		}
-		for (ProducedType superInterface: superInterfaces) {
-			TypeDeclaration decl = superInterface.getDeclaration();
-			List<Declaration> methods = getConcreteSharedMembers(decl, methodSpecification);
-			for (Declaration method: methods) {
-				Declaration refined = method.getRefinedDeclaration();
-				if (refined != null && refined != method) {
-					classMethods.get(refined.getContainer()).remove(refined);
-				}
-			}
-		}
-		for (TypeDeclaration superInteface: classMethods.keySet()) {
-			List<Declaration> methods = classMethods.get(superInteface);
-			if (methods.isEmpty())
-				continue;
-		     open("table");
-		     open("tr class='TableHeadingColor'");
-		     open("th");
-		     write("Methods inherited from interface: ");
-		     open("code");
-		     link(superInteface.getType());
-             close("code");
-		     close("th");
-		     close("tr");
+        setupWriter();
+        open("html");
+        open("head");
+        around("title", "Class for " + klass.getName());
+        tag("link href='" + getPathToBase(klass) + "/style.css' rel='stylesheet' type='text/css'");
+        close("head");
+        open("body");
+        summary();
+        innerClasses();
+        attributes();
+        inheritedMembers(atributeSpecification, "Attributes inherited from class ");
+        if (klass instanceof Class)
+            constructor((Class) klass);
+        methods();
+        inheritedMembers(methodSpecification, "Methods inherited from class ");
+        inheritedMethodsFromInterfaces();
+        close("body");
+        close("html");
+        writer.flush();
+        writer.close();
+    }
 
-			open("tr class='TableRowColor'");
-			open("td", "code");
-			boolean first = true;
-			for (Declaration method: methods) {
-					if(!first){
-						write(", ");
-					}else{
-						first = false;
-					}
-					// generate links to class#method instead of just print the name
-					write(method.getName());
-			}
-			close("code", "td");
-			close("tr");
-			close("table");	
-		}
-	
-	
-	}
-	
-	private void innerClasses() throws IOException {
-		if (innerClasses.isEmpty())
-			return;
-		openTable("Nested Classes", "Modifiers", "Name and Description");
-		for (Class m : innerClasses) {
-			doc(m);
-		}
-		close("table");
-	}
-	
-	private void doc(Class c) throws IOException {
-		open("tr class='TableRowColor'");
-		open("td");
-		around("span class='modifiers'", getModifiers(c));
-		close("td");
-		open("td");
-		link(c.getType());
-		tag("br");
-		around("span class='doc'", getDoc(c));
-		close("td");
-		close("tr");
-	}
+    public List<Declaration> getConcreteSharedMembers(TypeDeclaration decl, MemberSpecification specification) {
+        List<Declaration> members = new ArrayList<Declaration>();
+        for (Declaration m : decl.getMembers())
+            if ((m.isShared() && !m.isFormal()) && specification.isSatisfiedBy(m))
+                members.add((MethodOrValue) m);
+        return members;
+    }
 
-	private void summary() throws IOException {
-		Package pkg = getPackage(klass);
-		
-		open("div class='nav'");
-		open("div");
-		around("a href='" + getPathToBase() + "/overview-summary.html'", "Overview");
-		close("div");
-		open("div");
-		around("a href='index.html'", "Package");
-		close("div");
-		open("div class='selected'");
-		write("Class");
-		close("div");
+    private void inheritedMembers(MemberSpecification specification, String title) throws IOException {
+        if (superClasses.isEmpty())
+            return;
+        TypeDeclaration subclass = klass;
+        for (TypeDeclaration superClass : superClasses) {
+            List<Declaration> methods = getConcreteSharedMembers(superClass, specification);
+            if (methods.isEmpty())
+                continue;
+            List<Declaration> notRefined = new ArrayList<Declaration>();
+            // clean already listed methods (refined in subclasses)
+            // done in 2 phases to avoid empty tables
+            for (Declaration method : methods) {
+                if (subclass.getDirectMember(method.getName()) == null) {
+                    notRefined.add(method);
+                }
+            }
+            if (notRefined.isEmpty())
+                continue;
+            openTable(title + "<code>" + superClass.getQualifiedNameString() + "</code>");
+            open("tr class='TableRowColor'");
+            open("td", "code");
+            boolean first = true;
+            for (Declaration method : notRefined) {
+                if (!first) {
+                    write(", ");
+                } else {
+                    first = false;
+                }
+                // generate links to class#method instead of just print the name
+                write(method.getName());
+            }
+            close("code", "td");
+            close("tr");
+            subclass = superClass;
+        }
+        close("table");
+    }
+
+    private void inheritedMethodsFromInterfaces() throws IOException {
+        Map<TypeDeclaration, List<Declaration>> classMethods = new HashMap<TypeDeclaration, List<Declaration>>();
+        for (ProducedType superInterface : superInterfaces) {
+            TypeDeclaration decl = superInterface.getDeclaration();
+            List<Declaration> methods = getConcreteSharedMembers(decl, methodSpecification);
+            classMethods.put(decl, methods);
+        }
+        for (ProducedType superInterface : superInterfaces) {
+            TypeDeclaration decl = superInterface.getDeclaration();
+            List<Declaration> methods = getConcreteSharedMembers(decl, methodSpecification);
+            for (Declaration method : methods) {
+                Declaration refined = method.getRefinedDeclaration();
+                if (refined != null && refined != method) {
+                    classMethods.get(refined.getContainer()).remove(refined);
+                }
+            }
+        }
+        for (TypeDeclaration superInteface : classMethods.keySet()) {
+            List<Declaration> methods = classMethods.get(superInteface);
+            if (methods.isEmpty())
+                continue;
+            open("table");
+            open("tr class='TableHeadingColor'");
+            open("th");
+            write("Methods inherited from interface: ");
+            open("code");
+            link(superInteface.getType());
+            close("code");
+            close("th");
+            close("tr");
+
+            open("tr class='TableRowColor'");
+            open("td", "code");
+            boolean first = true;
+            for (Declaration method : methods) {
+                if (!first) {
+                    write(", ");
+                } else {
+                    first = false;
+                }
+                // generate links to class#method instead of just print the name
+                write(method.getName());
+            }
+            close("code", "td");
+            close("tr");
+            close("table");
+        }
+
+    }
+
+    private void innerClasses() throws IOException {
+        if (innerClasses.isEmpty())
+            return;
+        openTable("Nested Classes", "Modifiers", "Name and Description");
+        for (Class m : innerClasses) {
+            doc(m);
+        }
+        close("table");
+    }
+
+    private void doc(Class c) throws IOException {
+        open("tr class='TableRowColor'");
+        open("td");
+        around("span class='modifiers'", getModifiers(c));
+        close("td");
+        open("td");
+        link(c.getType());
+        tag("br");
+        around("span class='doc'", getDoc(c));
+        close("td");
+        close("tr");
+    }
+
+    private void summary() throws IOException {
+        Package pkg = getPackage(klass);
+
+        open("div class='nav'");
+        open("div");
+        around("a href='" + getPathToBase() + "/overview-summary.html'", "Overview");
+        close("div");
+        open("div");
+        around("a href='index.html'", "Package");
+        close("div");
+        open("div class='selected'");
+        write("Class");
+        close("div");
         open("div");
         write(pkg.getModule().getNameAsString() + "/" + pkg.getModule().getVersion());
         close("div");
-		close("div");
+        close("div");
 
-		open("div class='head'");
-        
-        // name      
-		around("div class='package'", "<code>" + pkg.getNameAsString() + "</code>");
-		
-		around("div class='type'", klass instanceof Class ? "Class " : "Interface ", 
-		        "<code>", getClassName(), "</code>");
-		
-		// hierarchy tree - only for classes
-		if (klass instanceof Class) {			
-			LinkedList<ProducedType> superTypes = new LinkedList<ProducedType>();
-			superTypes.add(klass.getType());
-			ProducedType type = klass.getExtendedType();
-			while(type != null){
-				superTypes.add(0, type);
-				type = type.getDeclaration().getExtendedType();
-			}
-			int i=0;
-			for(ProducedType superType : superTypes){
-				open("ul class='inheritance'", "li");
-				link(superType);
-				i++;
-			}
-			while(i-- > 0){
-				close("li", "ul");
-			}
+        open("div class='head'");
+
+        // name
+        around("div class='package'", "<code>" + pkg.getNameAsString() + "</code>");
+
+        around("div class='type'", klass instanceof Class ? "Class " : "Interface ", "<code>", getClassName(), "</code>");
+
+        // hierarchy tree - only for classes
+        if (klass instanceof Class) {
+            LinkedList<ProducedType> superTypes = new LinkedList<ProducedType>();
+            superTypes.add(klass.getType());
+            ProducedType type = klass.getExtendedType();
+            while (type != null) {
+                superTypes.add(0, type);
+                type = type.getDeclaration().getExtendedType();
+            }
+            int i = 0;
+            for (ProducedType superType : superTypes) {
+                open("ul class='inheritance'", "li");
+                link(superType);
+                i++;
+            }
+            while (i-- > 0) {
+                close("li", "ul");
+            }
         }
-		
-		// interfaces
-		writeListOnSummary2("satisfied", "All Known Satisfied Interfaces: ",superInterfaces);
 
-		// subclasses
-		writeListOnSummary("subclasses", "Direct Known Subclasses: ", subclasses);
+        // interfaces
+        writeListOnSummary2("satisfied", "All Known Satisfied Interfaces: ", superInterfaces);
 
-		// satisfying classes
-		writeListOnSummary("satisfyingClasses", "All Known Satisfying Classes: ", satisfyingClasses);
+        // subclasses
+        writeListOnSummary("subclasses", "Direct Known Subclasses: ", subclasses);
 
-		// satisfying interfaces
-		writeListOnSummary("satisfyingClasses", "All Known Satisfying Interfaces: ", satisfyingInterfaces);
+        // satisfying classes
+        writeListOnSummary("satisfyingClasses", "All Known Satisfying Classes: ", satisfyingClasses);
 
-		// description
-		around("div class='doc'", getDoc(klass));
-		
-		close("div");
-	}
+        // satisfying interfaces
+        writeListOnSummary("satisfyingClasses", "All Known Satisfying Interfaces: ", satisfyingInterfaces);
+
+        // description
+        around("div class='doc'", getDoc(klass));
+
+        close("div");
+    }
 
     private String getClassName() throws IOException {
         StringBuilder sb = new StringBuilder();
         sb.append(klass.getName());
-        if (isNullOrEmpty(klass.getTypeParameters()) == false ) {
+        if (isNullOrEmpty(klass.getTypeParameters()) == false) {
             sb.append("&lt;");
             boolean first = true;
             for (TypeParameter typeParam : klass.getTypeParameters()) {
@@ -356,75 +353,75 @@ public class ClassDoc extends ClassOrPackageDoc {
         return sb.toString();
     }
 
-	private void constructor(Class klass) throws IOException {
-		openTable("Constructor");
-		open("tr", "td", "code");
-		write(klass.getName());
-		writeParameterList(klass.getParameterLists());
-		close("code", "td", "tr", "table");
-	}
+    private void constructor(Class klass) throws IOException {
+        openTable("Constructor");
+        open("tr", "td", "code");
+        write(klass.getName());
+        writeParameterList(klass.getParameterLists());
+        close("code", "td", "tr", "table");
+    }
 
-	private void methods() throws IOException {
-        if(methods.isEmpty())
+    private void methods() throws IOException {
+        if (methods.isEmpty())
             return;
         openTable("Methods", "Modifier and Type", "Method and Description");
-		for(Method m : methods){
-		    doc(m);
-		}
-		close("table");
-	}
+        for (Method m : methods) {
+            doc(m);
+        }
+        close("table");
+    }
 
-	private void attributes() throws IOException {
-	    if(attributes.isEmpty())
-	        return;
-	    openTable("Attributes", "Modifier and Type", "Name and Description");
-		for(MethodOrValue attribute : attributes){
-		    doc(attribute);
-		}
-		close("table");
-	}
+    private void attributes() throws IOException {
+        if (attributes.isEmpty())
+            return;
+        openTable("Attributes", "Modifier and Type", "Name and Description");
+        for (MethodOrValue attribute : attributes) {
+            doc(attribute);
+        }
+        close("table");
+    }
 
-	@Override
-	protected String getPathToBase() {
-		return getPathToBase(klass);
-	}
+    @Override
+    protected String getPathToBase() {
+        return getPathToBase(klass);
+    }
 
     @Override
     protected File getOutputFile() {
         return new File(getFolder(klass), getFileName(klass));
     }
-    
+
     private void writeListOnSummary(String divClass, String label, List<? extends ClassOrInterface> list) throws IOException {
-		if (isNullOrEmpty(list) == false) {
-			boolean first = true;
-			open("div class='" + divClass + "'");
-			write(label);
-			for (ClassOrInterface typeDeclaration : list) {
-				if (!first) {
-					write(", ");
-				} else {
-					first = false;
-				}
-				link(typeDeclaration, null);
-			}
-			close("div");
-		}
-    }    
+        if (isNullOrEmpty(list) == false) {
+            boolean first = true;
+            open("div class='" + divClass + "'");
+            write(label);
+            for (ClassOrInterface typeDeclaration : list) {
+                if (!first) {
+                    write(", ");
+                } else {
+                    first = false;
+                }
+                link(typeDeclaration, null);
+            }
+            close("div");
+        }
+    }
 
     private void writeListOnSummary2(String divClass, String label, List<ProducedType> list) throws IOException {
-		if (isNullOrEmpty(list) == false) {
-			boolean first = true;
-			open("div class='" + divClass + "'");
-			write(label);
-			for (ProducedType typeDeclaration : list) {
-				if (!first) {
-					write(", ");
-				} else {
-					first = false;
-				}
-				link(typeDeclaration);
-			}
-			close("div");
-		}
-    }    
+        if (isNullOrEmpty(list) == false) {
+            boolean first = true;
+            open("div class='" + divClass + "'");
+            write(label);
+            for (ProducedType typeDeclaration : list) {
+                if (!first) {
+                    write(", ");
+                } else {
+                    first = false;
+                }
+                link(typeDeclaration);
+            }
+            close("div");
+        }
+    }
 }

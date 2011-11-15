@@ -24,64 +24,64 @@ public class CeylonDocTool {
     private List<PhasedUnit> phasedUnits;
     private Modules modules;
     private String destDir;
-    private Map<ClassOrInterface,List<ClassOrInterface>> subclasses = new HashMap<ClassOrInterface, List<ClassOrInterface>>();
-    private Map<TypeDeclaration,List<ClassOrInterface>> satisfyingClassesOrInterfaces = new HashMap<TypeDeclaration, List<ClassOrInterface>>();   
+    private Map<ClassOrInterface, List<ClassOrInterface>> subclasses = new HashMap<ClassOrInterface, List<ClassOrInterface>>();
+    private Map<TypeDeclaration, List<ClassOrInterface>> satisfyingClassesOrInterfaces = new HashMap<TypeDeclaration, List<ClassOrInterface>>();
     private boolean showPrivate;
-    
+
     public CeylonDocTool(List<PhasedUnit> phasedUnits, Modules modules, boolean showPrivate) {
         this.phasedUnits = phasedUnits;
         this.modules = modules;
         this.showPrivate = showPrivate;
     }
-    
-    public void setDestDir(String destDir){
+
+    public void setDestDir(String destDir) {
         this.destDir = destDir;
     }
 
-    public void makeDoc() throws IOException{
-    	
-    	for (PhasedUnit pu : phasedUnits) {
-            for(Declaration decl : pu.getUnit().getDeclarations()){
-            	 if(decl instanceof ClassOrInterface){
-            		 ClassOrInterface c = (ClassOrInterface) decl;            		 
-            		 // subclasses map
-            		 if (c instanceof Class) {
-	            		 ClassOrInterface superclass = c.getExtendedTypeDeclaration();            		 
-	            		 if (superclass != null) {
-	                		 if (subclasses.get(superclass) ==  null) {
-	                			 subclasses.put(superclass, new ArrayList<ClassOrInterface>());
-	                		 }
-	                		 subclasses.get(superclass).add(c);
-	            		 }
-            		 }
-            		 
-            		 List<TypeDeclaration> satisfiedTypes = new ArrayList<TypeDeclaration>(c.getSatisfiedTypeDeclarations());            		 
-            		 if (satisfiedTypes != null && satisfiedTypes.isEmpty() == false) {
-            			 // satisfying classes or interfaces map
-            			for (TypeDeclaration satisfiedType : satisfiedTypes) {
-                    		 if (satisfyingClassesOrInterfaces.get(satisfiedType) ==  null) {
-                    			 satisfyingClassesOrInterfaces.put(satisfiedType, new ArrayList<ClassOrInterface>());
-                    		 }
-                    		 satisfyingClassesOrInterfaces.get(satisfiedType).add(c);
-						}
-            		 }
-                 }
+    public void makeDoc() throws IOException {
+
+        for (PhasedUnit pu : phasedUnits) {
+            for (Declaration decl : pu.getUnit().getDeclarations()) {
+                if (decl instanceof ClassOrInterface) {
+                    ClassOrInterface c = (ClassOrInterface) decl;
+                    // subclasses map
+                    if (c instanceof Class) {
+                        ClassOrInterface superclass = c.getExtendedTypeDeclaration();
+                        if (superclass != null) {
+                            if (subclasses.get(superclass) == null) {
+                                subclasses.put(superclass, new ArrayList<ClassOrInterface>());
+                            }
+                            subclasses.get(superclass).add(c);
+                        }
+                    }
+
+                    List<TypeDeclaration> satisfiedTypes = new ArrayList<TypeDeclaration>(c.getSatisfiedTypeDeclarations());
+                    if (satisfiedTypes != null && satisfiedTypes.isEmpty() == false) {
+                        // satisfying classes or interfaces map
+                        for (TypeDeclaration satisfiedType : satisfiedTypes) {
+                            if (satisfyingClassesOrInterfaces.get(satisfiedType) == null) {
+                                satisfyingClassesOrInterfaces.put(satisfiedType, new ArrayList<ClassOrInterface>());
+                            }
+                            satisfyingClassesOrInterfaces.get(satisfiedType).add(c);
+                        }
+                    }
+                }
             }
         }
 
-    	Module module = null;
+        Module module = null;
         for (PhasedUnit pu : phasedUnits) {
-        	if(module == null)
-        		module = pu.getPackage().getModule();
-        	else if(pu.getPackage().getModule() != module)
-        		throw new RuntimeException("Documentation of multiple modules not supported yet");
-            for(Declaration decl : pu.getUnit().getDeclarations()){            	
+            if (module == null)
+                module = pu.getPackage().getModule();
+            else if (pu.getPackage().getModule() != module)
+                throw new RuntimeException("Documentation of multiple modules not supported yet");
+            for (Declaration decl : pu.getUnit().getDeclarations()) {
                 doc(decl);
             }
-        }    	
-        
-        for(Package pkg : module.getPackages()){
-        	doc(pkg);
+        }
+
+        for (Package pkg : module.getPackages()) {
+            doc(pkg);
         }
         doc(module);
         copyResource("resources/style.css");
@@ -100,21 +100,19 @@ public class CeylonDocTool {
         OutputStream os = new FileOutputStream(new File(destDir, "style.css"));
         byte[] buf = new byte[1024];
         int read;
-        while((read = resource.read(buf)) > -1){
+        while ((read = resource.read(buf)) > -1) {
             os.write(buf, 0, read);
         }
         os.flush();
         os.close();
     }
 
-	private void doc(Declaration decl) throws IOException {
-		if (decl instanceof ClassOrInterface) {
-			if (showPrivate || decl.isShared()) {
-				new ClassDoc(destDir, showPrivate, (ClassOrInterface) decl,
-						subclasses.get(decl),
-						satisfyingClassesOrInterfaces.get(decl)).generate();
-			}
-		}
-	}
+    private void doc(Declaration decl) throws IOException {
+        if (decl instanceof ClassOrInterface) {
+            if (showPrivate || decl.isShared()) {
+                new ClassDoc(destDir, showPrivate, (ClassOrInterface) decl, subclasses.get(decl), satisfyingClassesOrInterfaces.get(decl)).generate();
+            }
+        }
+    }
 
 }
