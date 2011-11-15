@@ -84,8 +84,8 @@ public class Util {
     }
     
     static boolean isNameMatching(String startingWith, Declaration d) {
-    	return d.getName()!=null && 
-    		d.getName().toLowerCase().startsWith(startingWith.toLowerCase());
+        return d.getName()!=null && 
+            d.getName().toLowerCase().startsWith(startingWith.toLowerCase());
     }
     
     /**
@@ -102,7 +102,7 @@ public class Util {
      *        arguments of the declaration
      */
     static Map<TypeParameter,ProducedType> arguments(Declaration declaration, 
-    		ProducedType receivingType, List<ProducedType> typeArguments) {
+            ProducedType receivingType, List<ProducedType> typeArguments) {
         Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
         //make sure we collect all type arguments
         //from the whole qualified type!
@@ -231,6 +231,13 @@ public class Util {
         UnionType ut = new UnionType(unit);
         ut.setCaseTypes(list);
         return ut.getType();
+    }
+
+    public static boolean isElementOfUnion(UnionType ut, TypeDeclaration td) {
+        for (TypeDeclaration ct: ut.getCaseTypeDeclarations()) {
+            if (ct.equals(td)) return true;
+        }
+        return false;
     }
     
 }

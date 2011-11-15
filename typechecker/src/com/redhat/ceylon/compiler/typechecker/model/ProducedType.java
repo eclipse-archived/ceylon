@@ -1025,13 +1025,6 @@ public class ProducedType extends ProducedReference {
         return getProducedTypeName(true);
     }
 
-    private static boolean isElementOfUnion(UnionType ut, TypeDeclaration td) {
-        for (TypeDeclaration ct: ut.getCaseTypeDeclarations()) {
-            if (ct.equals(td)) return true;
-        }
-        return false;
-    }
-    
     public String getProducedTypeName(boolean abbreviate) {
         if (getDeclaration()==null) {
             //unknown type
@@ -1041,12 +1034,12 @@ public class ProducedType extends ProducedReference {
             UnionType ut = (UnionType) getDeclaration();
             if (ut.getCaseTypes().size()==2) {
                 Unit unit = getDeclaration().getUnit();
-                if (isElementOfUnion(ut, unit.getNothingDeclaration())) {
+                if (Util.isElementOfUnion(ut, unit.getNothingDeclaration())) {
                     return unit.getDefiniteType(this)
                             .getProducedTypeName() + "?";
                 }
-                if (isElementOfUnion(ut, unit.getEmptyDeclaration()) &&
-                        isElementOfUnion(ut, unit.getSequenceDeclaration())) {
+                if (Util.isElementOfUnion(ut, unit.getEmptyDeclaration()) &&
+                        Util.isElementOfUnion(ut, unit.getSequenceDeclaration())) {
                     return unit.getElementType(this)
                             .getProducedTypeName() + "[]";
                 }
