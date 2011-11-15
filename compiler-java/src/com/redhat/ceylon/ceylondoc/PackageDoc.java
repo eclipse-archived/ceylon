@@ -66,7 +66,9 @@ public class PackageDoc extends ClassOrPackageDoc {
         open("head");
         around("title", "Package " + pkg.getName());
         tag("link href='"+getResourceUrl("style.css") + "' rel='stylesheet' type='text/css'");
-        open("script type='text/javascript' src='text/css' src='" + getResourceUrl("jquery-1.7.min.js'") + "'");
+        open("script type='text/javascript' src='" + getResourceUrl("jquery-1.7.min.js'") + "'");
+        close("script");
+        open("script type='text/javascript' src='" + getResourceUrl("ceylond.js'") + "'");
         close("script");
         close("head");
         open("body");
