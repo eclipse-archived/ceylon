@@ -64,7 +64,17 @@ public abstract class CeylonDoc {
 
     protected void link(ProducedType type) throws IOException {
         TypeDeclaration decl = type.getDeclaration();
-        if (decl instanceof ClassOrInterface) {
+        if(decl instanceof UnionType){
+            boolean first = true;
+            for(ProducedType ud : ((UnionType)decl).getCaseTypes()){
+                if(first){
+                    first = false;
+                }else{
+                    write("|");
+                }
+                link(ud);
+            }
+        }else if(decl instanceof ClassOrInterface){
             link((ClassOrInterface) decl, type.getTypeArgumentList());
         } else if (decl instanceof TypeParameter) {
             around("span class='type-parameter'", decl.getName());
