@@ -69,7 +69,8 @@ public abstract class Declaration extends Element {
 
     @Override
     public String getQualifiedNameString() {
-        return getContainer().getQualifiedNameString() + "." + getName();
+        String qualifier = getContainer().getQualifiedNameString();
+		return qualifier.isEmpty() ? getName() : qualifier + "." + getName();
     }
 
     public boolean isActual() {
