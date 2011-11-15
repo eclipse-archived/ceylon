@@ -30,6 +30,7 @@ import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
+import com.sun.tools.javac.util.Position;
 
 /**
  * This transformer deals with class/interface declarations
@@ -63,6 +64,7 @@ public class ClassTransformer extends AbstractTransformer {
             com.redhat.ceylon.compiler.typechecker.model.Class c = (com.redhat.ceylon.compiler.typechecker.model.Class) def.getDeclarationModel();
             if (c.getParameterList().getParameters().isEmpty()) {
                 // Add a main() method
+                at(null);
                 JCTree.JCIdent nameId = make().Ident(names().fromString(Util.quoteIfJavaKeyword(className)));
                 JCNewClass expr = make().NewClass(null, null, nameId, List.<JCTree.JCExpression>nil(), null);
                 classBuilder.body(makeMainMethod(expr));
@@ -242,6 +244,7 @@ public class ClassTransformer extends AbstractTransformer {
             // Toplevel method
             if (!def.getParameterLists().isEmpty() && def.getParameterLists().get(0).getParameters().isEmpty()) {
                 // Add a main() method
+                at(null);
                 builder.body(makeMainMethod(make().Apply(null, nameId, List.<JCTree.JCExpression>nil())));
             }
             return builder.build();                
