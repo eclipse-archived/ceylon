@@ -9,8 +9,8 @@ import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 @Method
 public final class print {
 	static final process p = process.getProcess();
-    public static void print(@Name("line") @TypeInfo("ceylon.language.String") java.lang.String line){
-    	p.writeLine(line);
+    public static void print(@Name("line") @TypeInfo("ceylon.language.Object") java.lang.Object line){
+    	p.writeLine(line.toString());
     }
     private print(){}
 }
