@@ -40,6 +40,8 @@ public class ClassDoc extends ClassOrPackageDoc {
     private List<Interface> satisfyingInterfaces;
     private List<ProducedType> superInterfaces;
     private List<TypeDeclaration> superClasses;
+    private boolean inheritedSectionOpen;
+    private String inheritedSectionCategory;
 
     private Comparator<Declaration> comparator = new Comparator<Declaration>() {
         @Override
@@ -144,13 +146,21 @@ public class ClassDoc extends ClassOrPackageDoc {
         summary();
         innerClasses();
         attributes();
+        
+        inheritedSectionCategory = "attributes";
         inheritedMembers(atributeSpecification, "Attributes inherited from class: ");
         inheritedMembersFromInterfaces(atributeSpecification, "Attributes inherited from interface: ");
+        makeSureInheritedSectionIsClosed();
+
         if (klass instanceof Class)
             constructor((Class) klass);
         methods();
+
+        inheritedSectionCategory = "methods";
         inheritedMembers(methodSpecification, "Methods inherited from class: ");
         inheritedMembersFromInterfaces(methodSpecification, "Methods inherited from interface: ");
+        makeSureInheritedSectionIsClosed();
+        
         close("body");
         close("html");
         writer.flush();
@@ -183,6 +193,7 @@ public class ClassDoc extends ClassOrPackageDoc {
             }
             if (notRefined.isEmpty())
                 continue;
+            makeSureInheritedSectionIsOpen();
             open("table");
             open("tr class='TableHeadingColor'");
             open("th");
@@ -211,6 +222,22 @@ public class ClassDoc extends ClassOrPackageDoc {
         close("table");
     }
 
+    private void makeSureInheritedSectionIsOpen() throws IOException {
+        if(inheritedSectionOpen)
+            return;
+        inheritedSectionOpen = true;
+        open("div class='collapsible'");
+        around("div class='short'", "Show inherited "+inheritedSectionCategory);
+        open("div class='long'");
+    }
+
+    private void makeSureInheritedSectionIsClosed() throws IOException {
+        if(!inheritedSectionOpen)
+            return;
+        inheritedSectionOpen = false;
+        close("div", "div");
+    }
+
     private void inheritedMembersFromInterfaces(MemberSpecification memberSpecification, String title) throws IOException {
         Map<TypeDeclaration, List<Declaration>> classMembers = new HashMap<TypeDeclaration, List<Declaration>>();
         for (ProducedType superInterface : superInterfaces) {
@@ -232,6 +259,7 @@ public class ClassDoc extends ClassOrPackageDoc {
             List<Declaration> members = classMembers.get(superInterface);
             if (members.isEmpty())
                 continue;
+            makeSureInheritedSectionIsOpen();
             open("table");
             open("tr class='TableHeadingColor'");
             open("th");

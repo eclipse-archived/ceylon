@@ -35,7 +35,7 @@ table {
  margin: 1em 0;
 }
 
-td, th {
+td, th, .collapsible .short {
  padding: 0.2em 0.5em;
 }
 
@@ -78,14 +78,17 @@ ul.inheritance ul.inheritance li:before {
  display: none;
 }
 
-.category tr.more {
+.category tr.more,
+.collapsible {
  cursor: pointer;
-}
-
-.category tr.more {
  background: #DDD;
 }
 
-.category tr.more:hover {
+.category tr.more:hover,
+.collapsible.more:hover {
  background: #FFA;
+}
+
+.collapsible .short {
+ font-weight: bold;
 }

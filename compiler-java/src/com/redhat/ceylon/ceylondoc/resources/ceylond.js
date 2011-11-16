@@ -3,7 +3,7 @@ jQuery(function(){
   jQuery(".short, .long", elem).toggle();
  }
 
- jQuery(".category tr").each(function(){
+ jQuery(".category tr, .collapsible").each(function(){
   var tr = jQuery(this);
   var short = jQuery(".short", this);
   var long = jQuery(".long", this);
