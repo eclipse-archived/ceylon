@@ -1,8 +1,6 @@
-Ceylon specification and type analyzer
-======================================
+# Ceylon specification and type analyzer
 
-Specification
--------------
+## Specification
 
 To build the PDF and HTML specifications, in the root 
 directory type:
@@ -24,8 +22,7 @@ Directory structure:
               specification
 * `support` - the docbook build
 
-Type analyzer
--------------
+## Type analyzer
 
 To run the type analyzer tests, in the root directory 
 type:
@@ -54,8 +51,8 @@ Directory structure:
 * `gensrc/`      - the generated Java implementation
                    of the parser and syntax tree
 
-Repository
-----------
+## Repository
+
 The local repository is created under `~/.ceylon/repo`
 
 To publish the type checker and language module (this
@@ -72,3 +69,11 @@ Other commands:
 * `ant publish.typechecker`     - publish typechecker jar 
                                   in the local repo
 * `ant publish`                 - publish both
+
+## License
+
+The content of this repository is released under the ASL v2.0
+as provided in the LICENSE file that accompanied this code.
+
+By submitting a "pull request" or otherwise contributing to this repository, you
+agree to license your contribution under the license mentioned above.
