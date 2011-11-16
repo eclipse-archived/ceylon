@@ -43,4 +43,9 @@ public class Entry<Key extends Equality,
 			return false;
 		}
 	}
+	
+	@Override
+	public java.lang.String toString() {
+		return key.toString() + "->" + item.toString();
+	}
 }

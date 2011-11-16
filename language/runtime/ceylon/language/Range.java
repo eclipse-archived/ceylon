@@ -35,7 +35,7 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
     
     @Override
     public final java.lang.String toString(){
-        return "[" + first.toString() + ".." + last.toString() + "]";
+        return first.toString() + ".." + last.toString();
     }
     
     public final boolean getDecreasing(){

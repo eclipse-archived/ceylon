@@ -2,9 +2,9 @@ package ceylon.language;
 
 public class Comparison extends Case {
 	
-    public static final Comparison LARGER = new Comparison("LARGER");
-    public static final Comparison SMALLER = new Comparison("SMALLER");
-    public static final Comparison EQUAL = new Comparison("EQUAL");
+    public static final Comparison LARGER = new Comparison("larger");
+    public static final Comparison SMALLER = new Comparison("smaller");
+    public static final Comparison EQUAL = new Comparison("equal");
     
     public boolean larger() {
         return this == LARGER;
