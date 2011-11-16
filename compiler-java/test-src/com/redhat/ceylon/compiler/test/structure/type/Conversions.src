@@ -82,7 +82,7 @@ class GenCon<T> {
 }
 interface ISats {
     
-    public abstract void a();
+    public abstract void z();
 }
 class Sats<T extends com.redhat.ceylon.compiler.test.structure.type.ISats> {
     
@@ -95,6 +95,21 @@ class Sats<T extends com.redhat.ceylon.compiler.test.structure.type.ISats> {
     public static void main(.java.lang.String[] args) {
         ceylon.language.process.getProcess().setupArguments(args);
         new Sats();
+    }
+}
+class BarSats extends com.redhat.ceylon.compiler.test.structure.type.Bar implements com.redhat.ceylon.compiler.test.structure.type.ISats {
+    
+    @.java.lang.Override
+    public final void z() {
+    }
+    
+    BarSats() {
+        super();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        new BarSats();
     }
 }
 class ExtVoid extends com.redhat.ceylon.compiler.test.structure.type.GenInv<.java.lang.Object> {
@@ -134,6 +149,10 @@ class Conversions {
             $u1$1.a();
             $u1$1.b();
         }
+        final .java.lang.Object i1 = new com.redhat.ceylon.compiler.test.structure.type.BarSats();
+        ((com.redhat.ceylon.compiler.test.structure.type.Foo)i1).a();
+        ((com.redhat.ceylon.compiler.test.structure.type.Bar)i1).b();
+        ((com.redhat.ceylon.compiler.test.structure.type.ISats)i1).z();
         final .java.lang.Object e1;
         final .java.lang.Object e2;
         final .java.lang.Object e3;
@@ -145,6 +164,7 @@ class Conversions {
         final com.redhat.ceylon.compiler.test.structure.type.GenCon<? super ceylon.language.String> g3;
         final com.redhat.ceylon.compiler.test.structure.type.GenInv<ceylon.language.String> g4;
         final com.redhat.ceylon.compiler.test.structure.type.GenInv g5;
+        final com.redhat.ceylon.compiler.test.structure.type.GenInv g6;
         final com.redhat.ceylon.compiler.test.structure.type.GenInv<.java.lang.Object> v1;
         final com.redhat.ceylon.compiler.test.structure.type.GenCov<?> v2;
         final com.redhat.ceylon.compiler.test.structure.type.GenCon<.java.lang.Object> v3;

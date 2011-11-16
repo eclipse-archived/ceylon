@@ -29,11 +29,15 @@ class GenCon<in T>() {
 //   results in the Java type Foo<T>
 @nomodel
 interface ISats {
-    shared formal void a();
+    shared formal void z();
 }
 @nomodel
 class Sats<T>() given T satisfies ISats {
     shared void a() { }
+}
+@nomodel
+class BarSats() extends Bar() satisfies ISats {
+    shared actual void z() { }
 }
 
 // For the root type Void:
@@ -72,6 +76,13 @@ class Conversions() {
             u1.b();
         }
         
+        // For any other intersection type U|V:
+        // - The Ceylon type U&V results in the Java type Object
+        Bar&ISats i1 = BarSats();
+        i1.a();
+        i1.b();
+        i1.z();
+                
         // For an erased type:
         // - Any of the Ceylon types Void, Object, Nothing, Equality,
         //   IdentifiableObject, and Bottom result in the Java type Object
@@ -98,6 +109,10 @@ class Conversions() {
         // For any other union type U|V:
         // - The Ceylon type Foo<U|V> results in the raw Java type Foo.
         GenInv<String|Integer> g5;
+        
+        // For any other intersection type U&V:
+        // - The Ceylon type Foo<U&V> results in the raw Java type Foo.
+        GenInv<String&Integer> g6;
         
         // For the root type Void:
         // - The Ceylon type Foo<Void> appearing anywhere else results in the Java type
