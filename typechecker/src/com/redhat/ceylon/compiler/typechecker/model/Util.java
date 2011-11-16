@@ -240,4 +240,11 @@ public class Util {
         return false;
     }
     
+    public static boolean isElementOfIntersection(IntersectionType ut, TypeDeclaration td) {
+        for (TypeDeclaration ct: ut.getSatisfiedTypeDeclarations()) {
+            if (ct.equals(td)) return true;
+        }
+        return false;
+    }
+    
 }
