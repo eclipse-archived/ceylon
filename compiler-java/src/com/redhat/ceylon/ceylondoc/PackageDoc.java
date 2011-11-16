@@ -98,9 +98,11 @@ public class PackageDoc extends ClassOrPackageDoc {
         open("div");
         write(pkg.getModule().getNameAsString() + "/" + pkg.getModule().getVersion());
         close("div");
-        if (!tool.isOmitSource()) {
+        String srcUrl = getSrcUrl(pkg);
+        if (!tool.isOmitSource()
+                && srcUrl != null) {
             open("div class='source-code'");
-            around("a href='" + getSrcUrl(pkg) + "'", "Source Code");
+            around("a href='" + srcUrl + "'", "Source Code");
             close("div");
         }
         close("div");

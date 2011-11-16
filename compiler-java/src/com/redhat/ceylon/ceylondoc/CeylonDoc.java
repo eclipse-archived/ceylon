@@ -275,8 +275,14 @@ public abstract class CeylonDoc {
         return result;
     }
     
+    /**
+     * Gets a URL for the source file containing the given thing
+     * @param from Where the link is relative to
+     * @param modPkgOrDecl e.g. Module, Package or Declaration
+     * @return A (relative) URL, or null if no source file exists (e.g. for a
+     * package or a module without a descriptor)
+     */
     protected String getSrcUrl(Object from, Object modPkgOrDecl) {
-        String result;
         URI fromUrl = getAbsoluteObjectUrl(from);
         String pkgName;
         String filename;
@@ -294,8 +300,14 @@ public abstract class CeylonDoc {
             throw new RuntimeException("Unexpected: " + modPkgOrDecl);
         }
         File dir = new File(tool.getDestDir(), pkgName.replace(".", "/"));
-        URI url = new File(dir, filename).toURI();
-        result = relativize(fromUrl, url).toString();
+        File srcFile = new File(dir, filename);
+        String result;
+        if (srcFile.exists()) {
+            URI url = srcFile.toURI();
+            result = relativize(fromUrl, url).toString();
+        } else {
+            result = null;
+        }
         return result;
     }
     

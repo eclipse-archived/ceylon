@@ -135,7 +135,7 @@ public class CeylonDocTool {
 
     public void makeDoc() throws IOException{
     	
-    	for (PhasedUnit pu : phasedUnits) {
+        for (PhasedUnit pu : phasedUnits) {
             for (Declaration decl : pu.getUnit().getDeclarations()) {
                 if(!include(decl)) {
                     continue;
@@ -168,6 +168,12 @@ public class CeylonDocTool {
             }
         }
 
+        if (!omitSource) {
+            for (PhasedUnit pu : phasedUnits) {
+                copy(pu.getUnitFile().getInputStream(), pu.getPathRelativeToSrcDir());
+            }
+        }
+        
         Module module = null;
         for (PhasedUnit pu : phasedUnits) {
             if (module == null) {
@@ -188,12 +194,6 @@ public class CeylonDocTool {
             doc(pkg);
         }
         doc(module);
-        
-        if (!omitSource) {
-            for (PhasedUnit pu : phasedUnits) {
-                copy(pu.getUnitFile().getInputStream(), pu.getPathRelativeToSrcDir());
-            }
-        }
         
         copyResource("resources/style.css", "style.css");
         copyResource("resources/jquery-1.7.min.js", "jquery-1.7.min.js");
