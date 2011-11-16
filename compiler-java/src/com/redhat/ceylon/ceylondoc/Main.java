@@ -11,6 +11,7 @@ public class Main {
         String destDir = null;
         String srcDir = null;
         boolean showPrivate = false;
+        boolean omitSource = false;
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
             if ("-d".equals(arg)) {
@@ -25,6 +26,8 @@ public class Main {
                 System.exit(1);
             } else if ("-private".equals(arg)) {
                 showPrivate = true;
+            } else if ("-omit-source".equals(arg)) {
+                omitSource = true;
             } else {
                 System.err.println("Processing modules by name is not supported yet");                
             }
@@ -50,6 +53,7 @@ public class Main {
         CeylonDocTool ceylonDocTool = new CeylonDocTool(typeChecker.getPhasedUnits().getPhasedUnits(), typeChecker.getContext().getModules(), showPrivate);
         ceylonDocTool.setDestDir(destDir);
         ceylonDocTool.setSrcDir(srcDir);
+        ceylonDocTool.setOmitSource(omitSource);
         ceylonDocTool.makeDoc();
     }
 }

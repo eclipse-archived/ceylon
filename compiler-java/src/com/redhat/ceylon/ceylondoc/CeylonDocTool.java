@@ -39,6 +39,7 @@ public class CeylonDocTool {
     private Map<ClassOrInterface, List<ClassOrInterface>> subclasses = new HashMap<ClassOrInterface, List<ClassOrInterface>>();
     private Map<TypeDeclaration, List<ClassOrInterface>> satisfyingClassesOrInterfaces = new HashMap<TypeDeclaration, List<ClassOrInterface>>();
     private boolean showPrivate;
+    private boolean omitSource;
 
     public CeylonDocTool(List<PhasedUnit> phasedUnits, Modules modules, boolean showPrivate) {
         this.phasedUnits = phasedUnits;
@@ -64,6 +65,14 @@ public class CeylonDocTool {
 
     public boolean isShowPrivate() {
         return showPrivate;
+    }
+
+    public boolean isOmitSource() {
+        return omitSource;
+    }
+
+    public void setOmitSource(boolean omitSource) {
+        this.omitSource = omitSource;
     }
 
     private String getFileName(Scope klass) {
@@ -180,8 +189,10 @@ public class CeylonDocTool {
         }
         doc(module);
         
-        for (PhasedUnit pu : phasedUnits) {
-            copy(pu.getUnitFile().getInputStream(), pu.getPathRelativeToSrcDir());
+        if (!omitSource) {
+            for (PhasedUnit pu : phasedUnits) {
+                copy(pu.getUnitFile().getInputStream(), pu.getPathRelativeToSrcDir());
+            }
         }
         
         copyResource("resources/style.css", "style.css");

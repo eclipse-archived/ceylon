@@ -48,9 +48,11 @@ public class SummaryDoc extends CeylonDoc {
         open("div");
         write(module.getNameAsString() + "/" + module.getVersion());
         close("div");
-        open("div class='source-code'");
-        around("a href='" + getSrcUrl(module) + "'", "Source Code");
-        close("div");
+        if (!tool.isOmitSource()) {
+            open("div class='source-code'");
+            around("a href='" + getSrcUrl(module) + "'", "Source Code");
+            close("div");
+        }
         close("div");
     }
 

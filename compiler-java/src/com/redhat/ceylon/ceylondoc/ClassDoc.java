@@ -329,9 +329,11 @@ public class ClassDoc extends ClassOrPackageDoc {
         open("div");
         write(pkg.getModule().getNameAsString() + "/" + pkg.getModule().getVersion());
         close("div");
-        open("div class='source-code'");
-        around("a href='" + getSrcUrl(klass) + "'", "Source Code");
-        close("div");
+        if (!tool.isOmitSource()) {
+            open("div class='source-code'");
+            around("a href='" + getSrcUrl(klass) + "'", "Source Code");
+            close("div");
+        }
         close("div");
 
         open("div class='head summary'");
