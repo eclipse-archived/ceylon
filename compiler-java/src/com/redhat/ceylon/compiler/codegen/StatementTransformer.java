@@ -2,8 +2,11 @@ package com.redhat.ceylon.compiler.codegen;
 
 import static com.sun.tools.javac.code.Flags.FINAL;
 
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CatchClause;
@@ -125,6 +128,7 @@ public class StatementTransformer extends AbstractTransformer {
                 specifierExpr = exists.getVariable().getSpecifierExpression().getExpression();
             }
             
+            toType = simplifyType(toType);
             JCExpression toTypeExpr = makeJavaType(toType);
 
             Name tmpVarName = names().fromString(aliasName(name));
@@ -165,13 +169,13 @@ public class StatementTransformer extends AbstractTransformer {
             // Deactivate the above variable substitution
             removeVariableSubst(origVarName.toString(), prevSubst);
             
+            at(cond);
             if (cond instanceof Tree.ExistsCondition) {
-                test = at(cond).Binary(JCTree.NE, make().Ident(decl.name), makeNull());                
+                test = make().Binary(JCTree.NE, make().Ident(decl.name), makeNull());                
             } else {
                 // is/nonempty
                 JCExpression testExpr = make().Ident(decl.name);
-
-                test = at(cond).TypeTest(testExpr , rawToTypeExpr);
+                test = makeTypeTest(testExpr, toType);
             }
         } else if (cond instanceof Tree.BooleanCondition) {
             Tree.BooleanCondition booleanCondition = (Tree.BooleanCondition) cond;
@@ -211,7 +215,36 @@ public class StatementTransformer extends AbstractTransformer {
         }
     }
 
-    List<JCStatement> transform(Tree.ForStatement stmt) {
+    private JCExpression makeTypeTest(JCExpression testExpr, ProducedType type) {
+    	JCExpression result = null;
+    	if (typeFact().isUnion(type)) {
+    		UnionType union = (UnionType)type.getDeclaration();
+    		for (ProducedType pt : union.getCaseTypes()) {
+    			JCExpression partExpr = makeTypeTest(testExpr, pt);
+    			if (result == null) {
+    				result = partExpr;
+    			} else {
+    				result = make().Binary(JCTree.OR, result, partExpr);
+    			}
+    		}
+    	} else if (typeFact().isIntersection(type)) {
+    		IntersectionType union = (IntersectionType)type.getDeclaration();
+    		for (ProducedType pt : union.getSatisfiedTypes()) {
+    			JCExpression partExpr = makeTypeTest(testExpr, pt);
+    			if (result == null) {
+    				result = partExpr;
+    			} else {
+    				result = make().Binary(JCTree.AND, result, partExpr);
+    			}
+    		}
+    	} else {
+    		JCExpression rawTypeExpr = makeJavaType(type, NO_PRIMITIVES | WANT_RAW_TYPE);
+    		result = make().TypeTest(testExpr, rawTypeExpr);
+    	}
+    	return result;
+	}
+
+	List<JCStatement> transform(Tree.ForStatement stmt) {
         Name tempForFailVariable = currentForFailVariable;
         
         at(stmt);

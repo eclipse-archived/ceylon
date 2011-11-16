@@ -14,6 +14,7 @@ import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.loader.TypeFactory;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -334,6 +335,10 @@ public abstract class AbstractTransformer implements Transformation {
             // Special case when the Union contains only a single CaseType
             // FIXME This is not correct! We might lose information about type arguments!
             type = tdecl.getCaseTypes().get(0);
+        } else if (tdecl instanceof IntersectionType && tdecl.getSatisfiedTypes().size() == 1) {
+            // Special case when the Intersection contains only a single SatisfiedType
+            // FIXME This is not correct! We might lose information about type arguments!
+            type = tdecl.getSatisfiedTypes().get(0);
         }
         
         return type;
@@ -358,7 +363,7 @@ public abstract class AbstractTransformer implements Transformation {
                 || sameType(syms().ceylonNothingType, type) || sameType(syms().ceylonEqualityType, type)
                 || sameType(syms().ceylonIdentifiableObjectType, type)
                 || type.getDeclaration() instanceof BottomType
-                || typeFact().isUnion(type));
+                || typeFact().isUnion(type)|| typeFact().isIntersection(type));
     }
     
     protected boolean willEraseToException(ProducedType type) {

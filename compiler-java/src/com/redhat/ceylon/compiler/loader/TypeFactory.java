@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.loader;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
@@ -53,6 +54,16 @@ public class TypeFactory extends Unit {
     public boolean isUnion(ProducedType pt) {
         TypeDeclaration tdecl = pt.getDeclaration();
         return (tdecl instanceof UnionType && tdecl.getCaseTypes().size() > 1);
+    }
+
+    /**
+     * Determines whether the given ProducedType is an intersection
+     * @param pt 
+     * @return whether the type is an intersection type
+     */
+    public boolean isIntersection(ProducedType pt) {
+        TypeDeclaration tdecl = pt.getDeclaration();
+        return (tdecl instanceof IntersectionType && tdecl.getSatisfiedTypes().size() > 1);
     }
 
     /**

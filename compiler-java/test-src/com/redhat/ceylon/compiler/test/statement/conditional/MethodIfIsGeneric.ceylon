@@ -21,5 +21,11 @@ class MethodIfIsGeneric() {
         if (is A<Integer>|B<Integer> x) {
             x.baseMethod();
         }
+
+        if (is A<Integer>&B<Integer> x) {
+            x.baseMethod();
+            x.aMethod();
+            x.bMethod();
+        }
     }
 }
