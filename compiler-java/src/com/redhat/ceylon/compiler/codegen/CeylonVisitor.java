@@ -7,7 +7,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.util.Decl;
-import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.util.List;
@@ -19,7 +18,6 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     
     private final ToplevelAttributesDefinitionBuilder topattrBuilder;
     private final ClassDefinitionBuilder classBuilder;
-    private final List<JCExpression> typeArgs;
     private final ListBuffer<JCExpression> args;
     
     public CeylonVisitor(CeylonTransformer ceylonTransformer) {
@@ -27,7 +25,6 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         this.defs = new ListBuffer<JCTree>();
         this.topattrBuilder = null;
         this.classBuilder = null;
-        this.typeArgs = null;
         this.args = null;
     }
 
@@ -36,7 +33,6 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         this.defs = new ListBuffer<JCTree>();
         this.topattrBuilder = topattrBuilder;
         this.classBuilder = null;
-        this.typeArgs = null;
         this.args = null;
     }
 
@@ -45,7 +41,6 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         this.defs = new ListBuffer<JCTree>();
         this.topattrBuilder = null;
         this.classBuilder = classBuilder;
-        this.typeArgs = null;
         this.args = null;
     }
 
@@ -54,7 +49,6 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         this.defs = new ListBuffer<JCTree>();
         this.topattrBuilder = null;
         this.classBuilder = null;
-        this.typeArgs = typeArgs;
         this.args = args;
     }
     
@@ -395,6 +389,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
      * 
      * @see #getResult()
      */
+    @SuppressWarnings("unchecked")
     public <K extends JCTree> K getSingleResult() {
         if (defs.size() != 1) {
             throw new RuntimeException("Got "+defs.size()+" results instead of 1");

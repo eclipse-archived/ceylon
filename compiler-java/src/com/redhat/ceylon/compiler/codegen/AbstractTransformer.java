@@ -4,8 +4,6 @@ import static com.sun.tools.javac.code.Flags.FINAL;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
 import org.antlr.runtime.Token;
 

@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -463,7 +462,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (isTypeParameter(type)) {
                     type = namedArgType(namedArg);
                 }
-                argExpr = make().TypeCast(makeJavaType(type, this.TYPE_ARGUMENT), argExpr);
+                argExpr = make().TypeCast(makeJavaType(type, AbstractTransformer.TYPE_ARGUMENT), argExpr);
                 callArgsArray[declaredParams.indexOf(declaredParam)] = unboxType(argExpr, declaredParam.getType());
             }
         }
@@ -473,7 +472,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             
             Parameter declaredParam = declaredParams.get(declaredParams.size() - 1);
             ProducedType type = declaredParam.getType();
-            argExpr = make().TypeCast(makeJavaType(type, this.TYPE_ARGUMENT), argExpr);
+            argExpr = make().TypeCast(makeJavaType(type, AbstractTransformer.TYPE_ARGUMENT), argExpr);
             callArgsArray[namedArguments.size()] = unboxType(argExpr, declaredParam.getType());
         }
         callArgs = ListBuffer.<JCExpression>lb();
@@ -517,7 +516,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             CeylonVisitor visitor = new CeylonVisitor(gen(), typeArgs, callArgs);
             memberExpr.getPrimary().visit(visitor);
             passArgs.prepend((JCExpression)visitor.getSingleResult());
-            receiverType = makeJavaType(memberExpr.getPrimary().getTypeModel(), this.TYPE_ARGUMENT);
+            receiverType = makeJavaType(memberExpr.getPrimary().getTypeModel(), AbstractTransformer.TYPE_ARGUMENT);
             receiver = makeSelect("this", "instance", methodName);
             generateNew = primary instanceof QualifiedTypeExpression;
             
@@ -529,9 +528,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         boolean isVoid = ce.getTypeModel().isExactly(typeFact().getVoidDeclaration().getType());
         int spec = 0;
         if(isTypeParameter(determineExpressionType(ce)))
-            spec = this.TYPE_ARGUMENT;
+            spec = AbstractTransformer.TYPE_ARGUMENT;
         else if(generateNew)
-            spec = this.CLASS_NEW;
+            spec = AbstractTransformer.CLASS_NEW;
         JCExpression resultType = makeJavaType(ce.getTypeModel(), spec);
         final String callMethodName = "call$";
         MethodDefinitionBuilder callMethod = MethodDefinitionBuilder.method(gen(), callMethodName);
@@ -686,16 +685,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else {
             throw new RuntimeException("Illegal State");
         }
-    }
-
-    private Parameter refinedParameter(Parameter parameter) {
-        java.util.List<Parameter> params = ((Functional)parameter.getDeclaration().getRefinedDeclaration()).getParameterLists().get(0).getParameters();
-        for (Parameter p : params) {
-            if (p.getName().equals(parameter.getName())) {
-                return p;
-            }
-        }
-        throw new RuntimeException("Parameter not found in refined declaration!"); // Should never happen
     }
 
     JCExpression ceylonLiteral(String s) {

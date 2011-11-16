@@ -4,7 +4,6 @@ import static com.sun.tools.javac.code.Flags.FINAL;
 
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -62,6 +61,7 @@ public class StatementTransformer extends AbstractTransformer {
         return block == null ? null : at(block).Block(0, transformStmts(block.getStatements()));
     }
 
+    @SuppressWarnings("unchecked")
     List<JCStatement> transformStmts(java.util.List<Tree.Statement> list) {
         CeylonVisitor v = new CeylonVisitor(gen());
 
