@@ -14,7 +14,7 @@ public final class Natural
     extends Object
     implements Castable<Numeric>, Integral<Natural>, Invertable<Integer> {
     
-    private final long value;
+    final long value;
     private Natural(long l) {
         if (l < 0)
             throw new NegativeNumberException();
@@ -49,6 +49,46 @@ public final class Natural
     @Override
     public Natural power(Natural op) {
         return instance((long) Math.pow(value, op.value)); // FIXME: ugly
+    }
+    
+    public Float plus(Float op) {
+        return Float.instance(value + op.value);
+    }
+    
+    public Float minus(Float op) {
+        return Float.instance(value - op.value);
+    }
+    
+    public Float times(Float op) {
+        return Float.instance(value * op.value);
+    }
+    
+    public Float divided(Float op) {
+        return Float.instance(value / op.value);
+    }
+    
+    public Float power(Float op) {
+        return Float.instance(Math.pow(value, op.value)); // FIXME: ugly
+    }
+    
+    public Integer plus(Integer op) {
+        return Integer.instance(value + op.value);
+    }
+    
+    public Integer minus(Integer op) {
+        return Integer.instance(value - op.value);
+    }
+    
+    public Integer times(Integer op) {
+        return Integer.instance(value * op.value);
+    }
+    
+    public Integer divided(Integer op) {
+        return Integer.instance(value / op.value);
+    }
+    
+    public Integer power(Integer op) {
+        return Integer.instance((long) Math.pow(value, op.value)); // FIXME: ugly
     }
     
     @Override

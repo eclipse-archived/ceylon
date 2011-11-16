@@ -6,7 +6,7 @@ public final class Float
     extends Object
     implements Castable<Float>, Numeric<Float>, Invertable<Float> {
     
-    private final double value;
+    final double value;
     private Float(double d) {
         value = d;
     }
@@ -41,6 +41,46 @@ public final class Float
     
     @Override
     public Float power(Float op) {
+        return instance(Math.pow(value, op.value));
+    }
+    
+    public Float plus(Natural op) {
+        return instance(value + op.value);
+    }
+    
+    public Float minus(Natural op) {
+        return instance(value - op.value);
+    }
+    
+    public Float times(Natural op) {
+        return instance(value * op.value);
+    }
+    
+    public Float divided(Natural op) {
+        return instance(value / op.value);
+    }
+    
+    public Float power(Natural op) {
+        return instance(Math.pow(value, op.value));
+    }
+    
+    public Float plus(Integer op) {
+        return instance(value + op.value);
+    }
+    
+    public Float minus(Integer op) {
+        return instance(value - op.value);
+    }
+    
+    public Float times(Integer op) {
+        return instance(value * op.value);
+    }
+    
+    public Float divided(Integer op) {
+        return instance(value / op.value);
+    }
+    
+    public Float power(Integer op) {
         return instance(Math.pow(value, op.value));
     }
     
