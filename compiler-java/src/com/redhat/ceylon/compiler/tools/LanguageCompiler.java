@@ -395,7 +395,10 @@ public class LanguageCompiler extends JavaCompiler {
     }
     
     private void printError(RecognitionError le, String message, String key, LineMap map) {
-        int pos = map.getStartPosition(le.getLine()) + le.getCharacterInLine();
+        int pos = -1;
+        if (le.getLine() > 0) {
+        	pos = map.getStartPosition(le.getLine()) + le.getCharacterInLine();
+        }
         log.error(pos, key, message);
     }
 
