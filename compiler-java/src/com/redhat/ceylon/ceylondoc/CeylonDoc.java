@@ -1,9 +1,7 @@
 package com.redhat.ceylon.ceylondoc;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.net.URI;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -21,29 +19,17 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 
-public abstract class CeylonDoc {
+public abstract class CeylonDoc extends Markup {
 
-    protected Writer writer;
-    private File file;
     protected final CeylonDocTool tool;
     protected final Module module;
 
     public CeylonDoc(Module module, CeylonDocTool tool, File file) {
+        super(file);
         this.module = module;
         this.tool = tool;
-        this.file = file;
     }
     
-    protected void write(String... text) throws IOException {
-        for (String s : text)
-            writer.append(s);
-    }
-
-    protected void tag(String... tags) throws IOException {
-        for (String tag : tags)
-            writer.append("<").append(tag).append("/>\n");
-    }
-
     // FIXME: copied from ProducedType, we should make it public
     private static boolean isElementOfUnion(UnionType ut, TypeDeclaration td) {
         for (TypeDeclaration ct: ut.getCaseTypeDeclarations()) {
@@ -139,26 +125,6 @@ public abstract class CeylonDoc {
         return (Package) decl;
     }
 
-    protected void around(String tag, String... text) throws IOException {
-        open(tag);
-        for (String s : text)
-            writer.append(s);
-        int space = tag.indexOf(" ");
-        if (space > -1)
-            tag = tag.substring(0, space);
-        close(tag);
-    }
-
-    protected void close(String... tags) throws IOException {
-        for (String tag : tags)
-            writer.append("</").append(tag).append(">");
-    }
-
-    protected void open(String... tags) throws IOException {
-        for (String tag : tags)
-            writer.append("<").append(tag).append(">");
-    }
-
     protected static String join(String str, List<String> parts) {
         StringBuilder stringBuilder = new StringBuilder();
         Iterator<String> iterator = parts.iterator();
@@ -170,145 +136,8 @@ public abstract class CeylonDoc {
         return stringBuilder.toString();
     }
 
-    protected void openTable(String title) throws IOException {
-        open("table class='category'");
-        open("tr class='TableHeadingColor'");
-        around("th", title);
-        close("tr");
-    }
-
-    protected void openTable(String title, String firstColumnTitle, String secondColumnTitle) throws IOException {
-        open("table class='category'");
-        open("tr class='TableHeadingColor'");
-        around("th colspan='2'", title);
-        close("tr");
-        open("tr class='TableSubHeadingColor'");
-        around("th", firstColumnTitle);
-        around("th", secondColumnTitle);
-        close("tr");
-    }
-
     protected boolean include(Declaration decl){
         return tool.isShowPrivate() || decl.isShared();
-    }
-
-	protected void setupWriter() throws IOException{
-	    this.writer = new FileWriter(getOutputFile());
-	}
-	
-	protected final File getOutputFile() {
-	    return this.file;
-	}
-
-
-    /**
-     * Returns the absolute URI of the page for the given thing
-     * @param obj (Module, Package, Declaration etc)
-     */
-    private URI getAbsoluteObjectUrl(Object obj) {
-        File f = tool.getObjectFile(obj);
-        if (f == null) {
-            throw new RuntimeException(obj + " doesn't have a ceylond page");
-        }
-        return f.toURI();
-    }
-    
-    /**
-     * Gets the base URL
-     * @return Gets the base URL
-     */
-    protected URI getBaseUrl() {
-        return new File(this.tool.getDestDir()).toURI();
-    }
-    
-    /**
-     * Generates a relative URL such that:
-     * <pre>
-     *   uri1.resolve(relativize(url1, url2)).equals(uri2);
-     * </pre>
-     * @param uri
-     * @param uri2
-     * @return A URL suitable for a link from a page at uri to a page at uri2
-     */
-    private URI relativize(URI uri, URI uri2) {
-        if (!uri.isAbsolute()) {
-            throw new IllegalArgumentException("Expected " + uri + " to be absolute");
-        }
-        if (!uri2.isAbsolute()) {
-            throw new IllegalArgumentException("Expected " + uri2 + " to be absolute");
-        }
-        URI baseUrl = getBaseUrl();
-        StringBuilder sb = new StringBuilder();
-        URI r = uri;
-        if (!r.equals(baseUrl)) {
-            sb.append("./");
-            r = uri.resolve(URI.create(sb.toString()));
-            if (!r.equals(baseUrl)) {
-                r = uri;
-            }
-        }
-        while (!r.equals(baseUrl)) {
-            sb.append("../");
-            r = uri.resolve(URI.create(sb.toString()));
-        }
-        URI result = URI.create(sb.toString() + baseUrl.relativize(uri2));
-        if (result.isAbsolute()) {
-            throw new RuntimeException();
-        }
-        if (!uri.resolve(result).equals(uri2)) {
-            throw new RuntimeException("Assertion fails: url=\""+uri + "\", uri2=\"" + uri2 + "\", result=\"" + result + "\"");
-        }
-        return result;
-    }
-    
-    protected String getObjectUrl(Object from, Object to) {
-        URI fromUrl = getAbsoluteObjectUrl(from);
-        URI toUrl = getAbsoluteObjectUrl(to);
-        String result = relativize(fromUrl, toUrl).toString();
-        return result;
-    }
-    
-    protected String getResourceUrl(Object from, String to) {
-        URI fromUrl = getAbsoluteObjectUrl(from);
-        URI toUrl = getBaseUrl().resolve(to);
-        String result = relativize(fromUrl, toUrl).toString();
-        return result;
-    }
-    
-    /**
-     * Gets a URL for the source file containing the given thing
-     * @param from Where the link is relative to
-     * @param modPkgOrDecl e.g. Module, Package or Declaration
-     * @return A (relative) URL, or null if no source file exists (e.g. for a
-     * package or a module without a descriptor)
-     */
-    protected String getSrcUrl(Object from, Object modPkgOrDecl) {
-        URI fromUrl = getAbsoluteObjectUrl(from);
-        String pkgName;
-        String filename;
-        if (modPkgOrDecl instanceof Element) {
-            Unit unit = ((Element)modPkgOrDecl).getUnit();
-            pkgName = unit.getPackage().getNameAsString();
-            filename = unit.getFilename();
-        } else if (modPkgOrDecl instanceof Package) {
-            pkgName = ((Package)modPkgOrDecl).getNameAsString();
-            filename = "package.ceylon";
-        } else if (modPkgOrDecl instanceof Module) {
-            pkgName = ((Module)modPkgOrDecl).getNameAsString();
-            filename = "module.ceylon";
-        } else {
-            throw new RuntimeException("Unexpected: " + modPkgOrDecl);
-        }
-        File dir = new File(tool.getDestDir(), pkgName.replace(".", "/"));
-        File srcFile = new File(dir, filename);
-        String result;
-        if (srcFile.exists()) {
-            URI url = srcFile.toURI();
-            result = relativize(fromUrl, url).toString();
-        } else {
-            result = null;
-        }
-        return result;
     }
     
     protected abstract String getObjectUrl(Object to);

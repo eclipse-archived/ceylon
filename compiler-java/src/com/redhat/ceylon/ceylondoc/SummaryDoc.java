@@ -99,16 +99,16 @@ public class SummaryDoc extends CeylonDoc {
 
     @Override
     protected String getObjectUrl(Object to) {
-        return getObjectUrl(module, to);
+        return tool.getObjectUrl(module, to);
     }
     
     @Override
     protected String getResourceUrl(String to) {
-        return getResourceUrl(module, to);
+        return tool.getResourceUrl(module, to);
     }
     
     @Override
     protected String getSrcUrl(Object to) {
-        return getSrcUrl(module, to);
+        return tool.getSrcUrl(module, to);
     }
 }

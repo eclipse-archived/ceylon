@@ -162,16 +162,16 @@ public class PackageDoc extends ClassOrPackageDoc {
 
     @Override
     protected String getObjectUrl(Object to) {
-        return getObjectUrl(pkg, to);
+        return tool.getObjectUrl(pkg, to);
     }
 
     @Override
     protected String getResourceUrl(String to) {
-        return getResourceUrl(pkg, to);
+        return tool.getResourceUrl(pkg, to);
     }
     
     @Override
     protected String getSrcUrl(Object to) {
-        return getSrcUrl(pkg, to);
+        return tool.getSrcUrl(pkg, to);
     }
 }

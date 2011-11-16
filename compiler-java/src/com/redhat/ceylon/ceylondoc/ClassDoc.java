@@ -386,17 +386,17 @@ public class ClassDoc extends ClassOrPackageDoc {
 
 	@Override
 	protected String getObjectUrl(Object to) {
-	    return getObjectUrl(klass, to);
+	    return tool.getObjectUrl(klass, to);
 	}
 	
 	@Override
     protected String getResourceUrl(String to) {
-        return getResourceUrl(klass, to);
+        return tool.getResourceUrl(klass, to);
     }
 	
 	@Override
     protected String getSrcUrl(Object to) {
-        return getSrcUrl(klass, to);
+        return tool.getSrcUrl(klass, to);
     }
 
     private String getClassName() throws IOException {

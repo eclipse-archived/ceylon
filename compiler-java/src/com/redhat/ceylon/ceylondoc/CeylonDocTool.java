@@ -2,11 +2,13 @@ package com.redhat.ceylon.ceylondoc;
 
 import static com.redhat.ceylon.ceylondoc.Util.join;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -27,6 +30,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 
@@ -169,9 +173,7 @@ public class CeylonDocTool {
         }
 
         if (!omitSource) {
-            for (PhasedUnit pu : phasedUnits) {
-                copy(pu.getUnitFile().getInputStream(), pu.getPathRelativeToSrcDir());
-            }
+            copySourceFiles();
         }
 
         Module module = null;
@@ -196,8 +198,47 @@ public class CeylonDocTool {
         doc(module);
 
         copyResource("resources/style.css", "style.css");
+        copyResource("resources/shCore.css", "shCore.css");
+        copyResource("resources/shThemeDefault.css", "shThemeDefault.css");
         copyResource("resources/jquery-1.7.min.js", "jquery-1.7.min.js");
         copyResource("resources/ceylond.js", "ceylond.js");
+        copyResource("resources/shCore.js", "shCore.js");
+        copyResource("resources/shBrushCeylon.js", "shBrushCeylon.js");
+    }
+
+    private void copySourceFiles() throws FileNotFoundException, IOException {
+        for (PhasedUnit pu : phasedUnits) {
+            Markup markup = new Markup(new File(destDir, pu.getPathRelativeToSrcDir()+".html"));
+            markup.setupWriter();
+            try {
+                markup.open("html", "head");
+                markup.around("title", pu.getUnit().getFilename());
+                Package decl = pu.getUnit().getPackage();
+                markup.tag("link href='" + getResourceUrl(decl, "shCore.css") + "' rel='stylesheet' type='text/css'");
+                markup.tag("link href='" + getResourceUrl(decl, "shThemeDefault.css") + "' rel='stylesheet' type='text/css'");
+                markup.around("script src='" + getResourceUrl(decl, "shCore.js") + "' type='text/javascript'");
+                markup.around("script src='" + getResourceUrl(decl, "shBrushCeylon.js") + "' type='text/javascript'");
+                markup.around("script type='text/javascript'", 
+                        "SyntaxHighlighter.defaults['gutter'] = false;", 
+                        "SyntaxHighlighter.all();");
+                markup.close("head");
+                markup.open("body", "pre class='brush: ceylon'");
+                // XXX source char encoding
+                BufferedReader input = new BufferedReader(new InputStreamReader(pu.getUnitFile().getInputStream()));
+                try{
+                    String line = input.readLine();
+                    while (line != null) {
+                        markup.text(line, "\n");
+                        line = input.readLine();
+                    }
+                } finally {
+                    input.close();
+                }
+                markup.close("pre", "body", "html");
+            } finally {
+                markup.writer.close();
+            }
+        }
     }
 
     private void doc(Module module) throws IOException {
@@ -252,5 +293,115 @@ public class CeylonDocTool {
 
     protected boolean include(Declaration decl){
         return showPrivate || decl.isShared();
+    }
+    
+    /**
+     * Returns the absolute URI of the page for the given thing
+     * @param obj (Module, Package, Declaration etc)
+     */
+    private URI getAbsoluteObjectUrl(Object obj) {
+        File f = getObjectFile(obj);
+        if (f == null) {
+            throw new RuntimeException(obj + " doesn't have a ceylond page");
+        }
+        return f.toURI();
+    }
+    
+    /**
+     * Gets the base URL
+     * @return Gets the base URL
+     */
+    protected URI getBaseUrl() {
+        return new File(getDestDir()).toURI();
+    }
+    
+    /**
+     * Generates a relative URL such that:
+     * <pre>
+     *   uri1.resolve(relativize(url1, url2)).equals(uri2);
+     * </pre>
+     * @param uri
+     * @param uri2
+     * @return A URL suitable for a link from a page at uri to a page at uri2
+     */
+    private URI relativize(URI uri, URI uri2) {
+        if (!uri.isAbsolute()) {
+            throw new IllegalArgumentException("Expected " + uri + " to be absolute");
+        }
+        if (!uri2.isAbsolute()) {
+            throw new IllegalArgumentException("Expected " + uri2 + " to be absolute");
+        }
+        URI baseUrl = getBaseUrl();
+        StringBuilder sb = new StringBuilder();
+        URI r = uri;
+        if (!r.equals(baseUrl)) {
+            sb.append("./");
+            r = uri.resolve(URI.create(sb.toString()));
+            if (!r.equals(baseUrl)) {
+                r = uri;
+            }
+        }
+        while (!r.equals(baseUrl)) {
+            sb.append("../");
+            r = uri.resolve(URI.create(sb.toString()));
+        }
+        URI result = URI.create(sb.toString() + baseUrl.relativize(uri2));
+        if (result.isAbsolute()) {
+            throw new RuntimeException();
+        }
+        if (!uri.resolve(result).equals(uri2)) {
+            throw new RuntimeException("Assertion fails: url=\""+uri + "\", uri2=\"" + uri2 + "\", result=\"" + result + "\"");
+        }
+        return result;
+    }
+    
+    protected String getObjectUrl(Object from, Object to) {
+        URI fromUrl = getAbsoluteObjectUrl(from);
+        URI toUrl = getAbsoluteObjectUrl(to);
+        String result = relativize(fromUrl, toUrl).toString();
+        return result;
+    }
+    
+    protected String getResourceUrl(Object from, String to) {
+        URI fromUrl = getAbsoluteObjectUrl(from);
+        URI toUrl = getBaseUrl().resolve(to);
+        String result = relativize(fromUrl, toUrl).toString();
+        return result;
+    }
+    
+    /**
+     * Gets a URL for the source file containing the given thing
+     * @param from Where the link is relative to
+     * @param modPkgOrDecl e.g. Module, Package or Declaration
+     * @return A (relative) URL, or null if no source file exists (e.g. for a
+     * package or a module without a descriptor)
+     */
+    protected String getSrcUrl(Object from, Object modPkgOrDecl) {
+        URI fromUrl = getAbsoluteObjectUrl(from);
+        String pkgName;
+        String filename;
+        if (modPkgOrDecl instanceof Element) {
+            Unit unit = ((Element)modPkgOrDecl).getUnit();
+            pkgName = unit.getPackage().getNameAsString();
+            filename = unit.getFilename();
+        } else if (modPkgOrDecl instanceof Package) {
+            pkgName = ((Package)modPkgOrDecl).getNameAsString();
+            filename = "package.ceylon";
+        } else if (modPkgOrDecl instanceof Module) {
+            pkgName = ((Module)modPkgOrDecl).getNameAsString();
+            filename = "module.ceylon";
+        } else {
+            throw new RuntimeException("Unexpected: " + modPkgOrDecl);
+        }
+        File dir = new File(getDestDir(), pkgName.replace(".", "/"));
+        File srcFile = new File(dir, filename + ".html");
+        String result;
+        if (srcFile.exists()) {
+            URI url = srcFile.toURI();
+            result = relativize(fromUrl, url).toString();
+        } else {
+            result = null;
+        }
+        return result;
     }
 }
