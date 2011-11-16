@@ -329,6 +329,9 @@ public class ClassDoc extends ClassOrPackageDoc {
         open("div");
         write(pkg.getModule().getNameAsString() + "/" + pkg.getModule().getVersion());
         close("div");
+        open("div class='source-code'");
+        around("a href='" + getSrcUrl(klass) + "'", "Source Code");
+        close("div");
         close("div");
 
         open("div class='head summary'");
@@ -387,6 +390,11 @@ public class ClassDoc extends ClassOrPackageDoc {
 	@Override
     protected String getResourceUrl(String to) {
         return getResourceUrl(klass, to);
+    }
+	
+	@Override
+    protected String getSrcUrl(Object to) {
+        return getSrcUrl(klass, to);
     }
 
     private String getClassName() throws IOException {

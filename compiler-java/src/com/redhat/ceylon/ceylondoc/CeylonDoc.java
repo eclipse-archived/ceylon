@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -274,9 +275,35 @@ public abstract class CeylonDoc {
         return result;
     }
     
+    protected String getSrcUrl(Object from, Object modPkgOrDecl) {
+        String result;
+        URI fromUrl = getAbsoluteObjectUrl(from);
+        String pkgName;
+        String filename;
+        if (modPkgOrDecl instanceof Element) {
+            Unit unit = ((Element)modPkgOrDecl).getUnit();
+            pkgName = unit.getPackage().getNameAsString();
+            filename = unit.getFilename();
+        } else if (modPkgOrDecl instanceof Package) {
+            pkgName = ((Package)modPkgOrDecl).getNameAsString();
+            filename = "package.ceylon";
+        } else if (modPkgOrDecl instanceof Module) {
+            pkgName = ((Module)modPkgOrDecl).getNameAsString();
+            filename = "module.ceylon";
+        } else {
+            throw new RuntimeException("Unexpected: " + modPkgOrDecl);
+        }
+        File dir = new File(tool.getDestDir(), pkgName.replace(".", "/"));
+        URI url = new File(dir, filename).toURI();
+        result = relativize(fromUrl, url).toString();
+        return result;
+    }
+    
     protected abstract String getObjectUrl(Object to);
     
     protected abstract String getResourceUrl(String to);
+    
+    protected abstract String getSrcUrl(Object to);
 
 
 }

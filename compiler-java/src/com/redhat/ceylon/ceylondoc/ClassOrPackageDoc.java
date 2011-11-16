@@ -33,6 +33,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         boolean first = true;
         open("div class='see'");
         write("See also: ");
+        System.out.println(decl);
         for(String target : see.getPositionalArguments()){
             // try to resolve in containing scopes
             TypeDeclaration targetDecl = resolveDeclaration((Scope) decl, target);

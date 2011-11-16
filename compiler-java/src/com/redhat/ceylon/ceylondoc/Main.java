@@ -49,6 +49,7 @@ public class Main {
         typeChecker.process();
         CeylonDocTool ceylonDocTool = new CeylonDocTool(typeChecker.getPhasedUnits().getPhasedUnits(), typeChecker.getContext().getModules(), showPrivate);
         ceylonDocTool.setDestDir(destDir);
+        ceylonDocTool.setSrcDir(srcDir);
         ceylonDocTool.makeDoc();
     }
 }

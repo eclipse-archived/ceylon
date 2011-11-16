@@ -3,10 +3,12 @@ package com.redhat.ceylon.ceylondoc;
 import static com.redhat.ceylon.ceylondoc.Util.join;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -32,6 +34,7 @@ public class CeylonDocTool {
 
     private List<PhasedUnit> phasedUnits;
     private Modules modules;
+    private String srcDir;
     private String destDir;
     private Map<ClassOrInterface, List<ClassOrInterface>> subclasses = new HashMap<ClassOrInterface, List<ClassOrInterface>>();
     private Map<TypeDeclaration, List<ClassOrInterface>> satisfyingClassesOrInterfaces = new HashMap<TypeDeclaration, List<ClassOrInterface>>();
@@ -49,6 +52,14 @@ public class CeylonDocTool {
 
     public String getDestDir() {
         return destDir;
+    }
+
+    public String getSrcDir() {
+        return srcDir;
+    }
+
+    public void setSrcDir(String srcDir) {
+        this.srcDir = srcDir;
     }
 
     public boolean isShowPrivate() {
@@ -168,6 +179,11 @@ public class CeylonDocTool {
             doc(pkg);
         }
         doc(module);
+        
+        for (PhasedUnit pu : phasedUnits) {
+            copy(pu.getUnitFile().getInputStream(), pu.getPathRelativeToSrcDir());
+        }
+        
         copyResource("resources/style.css", "style.css");
         copyResource("resources/jquery-1.7.min.js", "jquery-1.7.min.js");
         copyResource("resources/ceylond.js", "ceylond.js");
@@ -183,6 +199,11 @@ public class CeylonDocTool {
 
     private void copyResource(String path, String target) throws IOException {
         InputStream resource = getClass().getResourceAsStream(path);
+        copy(resource, target);
+    }
+
+    private void copy(InputStream resource, String target)
+            throws FileNotFoundException, IOException {
         OutputStream os = new FileOutputStream(new File(destDir, target));
         byte[] buf = new byte[1024];
         int read;

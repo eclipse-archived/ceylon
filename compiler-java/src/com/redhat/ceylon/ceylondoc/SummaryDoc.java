@@ -48,6 +48,9 @@ public class SummaryDoc extends CeylonDoc {
         open("div");
         write(module.getNameAsString() + "/" + module.getVersion());
         close("div");
+        open("div class='source-code'");
+        around("a href='" + getSrcUrl(module) + "'", "Source Code");
+        close("div");
         close("div");
     }
 
@@ -98,5 +101,10 @@ public class SummaryDoc extends CeylonDoc {
     @Override
     protected String getResourceUrl(String to) {
         return getResourceUrl(module, to);
+    }
+    
+    @Override
+    protected String getSrcUrl(Object to) {
+        return getSrcUrl(module, to);
     }
 }

@@ -98,6 +98,9 @@ public class PackageDoc extends ClassOrPackageDoc {
         open("div");
         write(pkg.getModule().getNameAsString() + "/" + pkg.getModule().getVersion());
         close("div");
+        open("div class='source-code'");
+        around("a href='" + getSrcUrl(pkg) + "'", "Source Code");
+        close("div");
         close("div");
 
         open("div class='head summary'");
@@ -161,5 +164,10 @@ public class PackageDoc extends ClassOrPackageDoc {
     @Override
     protected String getResourceUrl(String to) {
         return getResourceUrl(pkg, to);
+    }
+    
+    @Override
+    protected String getSrcUrl(Object to) {
+        return getSrcUrl(pkg, to);
     }
 }
