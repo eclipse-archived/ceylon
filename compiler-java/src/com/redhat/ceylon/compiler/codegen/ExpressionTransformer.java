@@ -95,6 +95,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else {
             expr.visit(v);
         }
+        
+        if (!v.hasResult()) {
+        	return make().Erroneous();
+        }
+        
         JCExpression result = v.getSingleResult();
         
         result = boxUnboxIfNecessary(result, expr, boxingStrategy);
@@ -515,7 +520,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             QualifiedMemberOrTypeExpression memberExpr = (QualifiedMemberOrTypeExpression)primary;
             CeylonVisitor visitor = new CeylonVisitor(gen(), typeArgs, callArgs);
             memberExpr.getPrimary().visit(visitor);
-            passArgs.prepend((JCExpression)visitor.getSingleResult());
+            if (visitor.hasResult()) {
+                passArgs.prepend((JCExpression)visitor.getSingleResult());
+            }
             receiverType = makeJavaType(memberExpr.getPrimary().getTypeModel(), AbstractTransformer.TYPE_ARGUMENT);
             receiver = makeSelect("this", "instance", methodName);
             generateNew = primary instanceof QualifiedTypeExpression;
@@ -631,10 +638,12 @@ public class ExpressionTransformer extends AbstractTransformer {
         CeylonVisitor visitor = new CeylonVisitor(gen(), typeArgs, args);
         ce.getPrimary().visit(visitor);
 
+        if (!visitor.hasResult()) {
+        	return make().Erroneous();
+        }
+        
         JCExpression expr = visitor.getSingleResult();
-        if (expr == null) {
-            throw new RuntimeException();
-        } else if (expr instanceof JCTree.JCNewClass) {
+        if (expr instanceof JCTree.JCNewClass) {
             return expr;
         } else {
             return at(ce).Apply(typeArgs, expr, args.toList());
