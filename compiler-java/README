@@ -1,3 +1,15 @@
+# Read me file
+
+## License
+
+The content of this repository is released under the GPL v2 + Classpath Exception
+as provided in the LICENSE file that accompanied this code.
+
+By submitting a "pull request" or otherwise contributing to this repository, you
+agree to license your contribution under the license mentioned above.
+
+## How to
+
 To build and test the compiler and runtime just run ant.
 
 Note that some of the tests currently fail. See more info in README.tests.
