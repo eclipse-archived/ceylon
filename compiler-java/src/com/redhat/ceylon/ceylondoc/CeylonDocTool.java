@@ -93,7 +93,7 @@ public class CeylonDocTool {
     private File getFolder(ClassOrInterface klass) {
         return getFolder(getPackage(klass));
     }
-    
+
     private String kind(Object obj) {
         if (obj instanceof Class) {
             return Character.isUpperCase(((Class)obj).getName().charAt(0)) ? "class" : "object";
@@ -113,7 +113,7 @@ public class CeylonDocTool {
         }
         throw new RuntimeException("Unexpected: " + obj);
     }
-    
+
     File getObjectFile(Object modPgkOrDecl) {
         final File file;
         if (modPgkOrDecl instanceof ClassOrInterface) {
@@ -134,37 +134,37 @@ public class CeylonDocTool {
     }
 
     public void makeDoc() throws IOException{
-    	
+
         for (PhasedUnit pu : phasedUnits) {
             for (Declaration decl : pu.getUnit().getDeclarations()) {
                 if(!include(decl)) {
                     continue;
                 }
-                 if (decl instanceof ClassOrInterface) {
-                     getObjectFile(decl);
-                     ClassOrInterface c = (ClassOrInterface) decl;            		 
-            		 // subclasses map
-            		 if (c instanceof Class) {
-	            		 ClassOrInterface superclass = c.getExtendedTypeDeclaration();            		 
-	            		 if (superclass != null) {
-	                		 if (subclasses.get(superclass) ==  null) {
-	                			 subclasses.put(superclass, new ArrayList<ClassOrInterface>());
-	                		 }
-	                		 subclasses.get(superclass).add(c);
-	            		 }
-            		 }
-            		 
-            		 List<TypeDeclaration> satisfiedTypes = new ArrayList<TypeDeclaration>(c.getSatisfiedTypeDeclarations());            		 
-            		 if (satisfiedTypes != null && satisfiedTypes.isEmpty() == false) {
-            			 // satisfying classes or interfaces map
-            			for (TypeDeclaration satisfiedType : satisfiedTypes) {
-                    		 if (satisfyingClassesOrInterfaces.get(satisfiedType) ==  null) {
-                    			 satisfyingClassesOrInterfaces.put(satisfiedType, new ArrayList<ClassOrInterface>());
-                    		 }
-                    		 satisfyingClassesOrInterfaces.get(satisfiedType).add(c);
-						}
-            		 }
-                 }
+                if (decl instanceof ClassOrInterface) {
+                    getObjectFile(decl);
+                    ClassOrInterface c = (ClassOrInterface) decl;            		 
+                    // subclasses map
+                    if (c instanceof Class) {
+                        ClassOrInterface superclass = c.getExtendedTypeDeclaration();            		 
+                        if (superclass != null) {
+                            if (subclasses.get(superclass) ==  null) {
+                                subclasses.put(superclass, new ArrayList<ClassOrInterface>());
+                            }
+                            subclasses.get(superclass).add(c);
+                        }
+                    }
+
+                    List<TypeDeclaration> satisfiedTypes = new ArrayList<TypeDeclaration>(c.getSatisfiedTypeDeclarations());            		 
+                    if (satisfiedTypes != null && satisfiedTypes.isEmpty() == false) {
+                        // satisfying classes or interfaces map
+                        for (TypeDeclaration satisfiedType : satisfiedTypes) {
+                            if (satisfyingClassesOrInterfaces.get(satisfiedType) ==  null) {
+                                satisfyingClassesOrInterfaces.put(satisfiedType, new ArrayList<ClassOrInterface>());
+                            }
+                            satisfyingClassesOrInterfaces.get(satisfiedType).add(c);
+                        }
+                    }
+                }
             }
         }
 
@@ -173,15 +173,15 @@ public class CeylonDocTool {
                 copy(pu.getUnitFile().getInputStream(), pu.getPathRelativeToSrcDir());
             }
         }
-        
+
         Module module = null;
         for (PhasedUnit pu : phasedUnits) {
             if (module == null) {
                 module = pu.getPackage().getModule();
                 getObjectFile(module);
-        		for (Package pkg : module.getPackages()) {
+                for (Package pkg : module.getPackages()) {
                     getObjectFile(pkg);
-        		}
+                }
             } else if (pu.getPackage().getModule() != module) {
                 throw new RuntimeException("Documentation of multiple modules not supported yet");
             }
@@ -194,7 +194,7 @@ public class CeylonDocTool {
             doc(pkg);
         }
         doc(module);
-        
+
         copyResource("resources/style.css", "style.css");
         copyResource("resources/jquery-1.7.min.js", "jquery-1.7.min.js");
         copyResource("resources/ceylond.js", "ceylond.js");
@@ -225,17 +225,17 @@ public class CeylonDocTool {
         os.close();
     }
 
-	private void doc(Declaration decl) throws IOException {
-		if (decl instanceof ClassOrInterface) {
-			 if (include(decl)) {
-			    Scope scope = getPackage(decl);
-				new ClassDoc(this,
+    private void doc(Declaration decl) throws IOException {
+        if (decl instanceof ClassOrInterface) {
+            if (include(decl)) {
+                Scope scope = getPackage(decl);
+                new ClassDoc(this,
                         (ClassOrInterface) decl,
-						subclasses.get(decl),
-						satisfyingClassesOrInterfaces.get(decl)).generate();
-			}
-		}
-	}
+                        subclasses.get(decl),
+                        satisfyingClassesOrInterfaces.get(decl)).generate();
+            }
+        }
+    }
 
     Package getPackage(Declaration decl) {
         Scope scope = decl.getContainer();
@@ -244,7 +244,7 @@ public class CeylonDocTool {
         }
         return (Package)scope;
     }
-    
+
     Module getModule(Declaration decl) {
         return getPackage(decl).getModule();
     }
