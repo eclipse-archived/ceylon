@@ -233,6 +233,15 @@ public class Util {
         return ut.getType();
     }
 
+    public static ProducedType intersectionType(ProducedType lhst, ProducedType rhst, Unit unit) {
+        List<ProducedType> list = new ArrayList<ProducedType>();
+        addToIntersection(list, rhst);
+        addToIntersection(list, lhst);
+        IntersectionType it = new IntersectionType(unit);
+        it.setSatisfiedTypes(list);
+        return it.getType();
+    }
+
     public static boolean isElementOfUnion(UnionType ut, TypeDeclaration td) {
         for (TypeDeclaration ct: ut.getCaseTypeDeclarations()) {
             if (ct.equals(td)) return true;

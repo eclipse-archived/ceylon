@@ -11,6 +11,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingCla
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
 import java.util.ArrayList;
@@ -223,13 +224,6 @@ public class ExpressionVisitor extends Visitor {
         ProducedType type = that.getType().getTypeModel();
         if (v!=null) {
             //v.getType().visit(this);
-            defaultTypeToVoid(v);
-            if (v.getType() instanceof Tree.SyntheticVariable) {
-                //this is a bit ugly (the parser sends us a SyntheticVariable
-                //instead of the real StaticType which it very well knows!)
-                v.getType().setTypeModel(type);
-                v.getDeclarationModel().setType(type);
-            }
             Tree.SpecifierExpression se = v.getSpecifierExpression();
             if (se!=null) {
                 se.visit(this);
@@ -239,6 +233,20 @@ public class ExpressionVisitor extends Visitor {
                         se.getExpression(), 
                         "expression may not be of void type");*/
                 initOriginalDeclaration(v);
+            }
+            defaultTypeToVoid(v);
+            if (v.getType() instanceof Tree.SyntheticVariable) {
+                //this is a bit ugly (the parser sends us a SyntheticVariable
+                //instead of the real StaticType which it very well knows!)
+            	ProducedType knownType = se==null ? null : 
+            			se.getExpression().getTypeModel();
+            	//when we're reusing the original name, we narrow to the
+            	//intersection of the outer type and the type specified
+            	//in the condition
+				ProducedType it = knownType==null ? type : 
+						intersectionType(type, knownType, that.getUnit());
+                v.getType().setTypeModel(it);
+                v.getDeclarationModel().setType(it);
             }
         }
         else if (that.getExpression()!=null) {
@@ -251,6 +259,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkReified(Node that, ProducedType type) {
+    	//TODO: intersections and unions!
         if (type!=null && 
         		(isGeneric(type.getDeclaration()) || 
         				type.getDeclaration() instanceof TypeParameter) ) {
