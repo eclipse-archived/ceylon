@@ -1,5 +1,5 @@
 #! /bin/bash
-source $(dirname $0)/args.sh
+source $(dirname $(readlink -f $0))/args.sh
 
 # Classes required by the launcher and by the code being launched
 JAVA_CP="$HOME/.ceylon/repo/ceylon/language/0.1/ceylon.language-0.1.car:$USER_CP"

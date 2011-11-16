@@ -1,7 +1,7 @@
 # This file is intended to be sourced, not run directly
 
 # Set CEYLON_HOME
-CEYLON_HOME=$(dirname $0)/..
+CEYLON_HOME=$(dirname $(readlink -f $0))/..
 
 unset USER_CP
 unset ARGS
