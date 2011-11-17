@@ -14,14 +14,14 @@ shared interface Number
     shared formal Boolean negative;
 
     doc "The number, represented as a `Float`."
-    throws (FloatOverflowException
+    throws (OverflowException
             -> "if the number is too large to be represented 
                 as a `Float`")
     shared formal Float float;
         
     doc "The number, represented as an `Integer`, after 
          truncation of any fractional part."
-    throws (IntegerOverflowException
+    throws (OverflowException
             -> "if the number is too large to be represented 
                 as an `Integer`")
     shared formal Integer integer;

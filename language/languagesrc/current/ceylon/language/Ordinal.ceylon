@@ -10,12 +10,12 @@ shared interface Ordinal<out Other> of Other
         given Other satisfies Ordinal<Other> {
 
     doc "The successor of this value."
-    throws (OutOfRangeException
+    throws (OverflowException
             -> "if this is the maximum value")
     shared formal Other successor;
     
     doc "The predecessor of this value."
-    throws (OutOfRangeException
+    throws (OverflowException
             -> "if this is the minimum value")
     shared formal Other predecessor;
     
