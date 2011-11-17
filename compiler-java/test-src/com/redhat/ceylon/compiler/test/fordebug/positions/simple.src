@@ -22,11 +22,11 @@ public class Main2 {
     public Main2() {
         /* 6 : 24([StringLiteral - "David"]) */final /* 6 : 24([StringLiteral - "David"]) */.java.lang.String firstName = /* 6 : 24([StringLiteral - "David"]) */"David";
         /* 7 : 23([StringLiteral - "Festal"]) */final /* 7 : 23([StringLiteral - "Festal"]) */.java.lang.String lastName = /* 7 : 23([StringLiteral - "Festal"]) */"Festal";
-        /* 8 : 5([ExpressionStatement - process, InvocationExpression - process]) *//* 8 : 23([InvocationExpression - name]) */ceylon.language.process.getProcess().writeLine(/* 8 : 23([InvocationExpression - name]) *//* 8 : 5([ExpressionStatement - process, InvocationExpression - process]) */com.redhat.ceylon.compiler.test.fordebug.positions.name.name(/* 8 : 5([ExpressionStatement - process, InvocationExpression - process]) */firstName, /* 8 : 5([ExpressionStatement - process, InvocationExpression - process]) */lastName));
+        /* 8 : 5([ExpressionStatement - process, InvocationExpression - process]) *//* 8 : 23([InvocationExpression - name]) */.ceylon.language.process.getProcess().writeLine(/* 8 : 23([InvocationExpression - name]) *//* 8 : 5([ExpressionStatement - process, InvocationExpression - process]) */com.redhat.ceylon.compiler.test.fordebug.positions.name.name(/* 8 : 5([ExpressionStatement - process, InvocationExpression - process]) */firstName, /* 8 : 5([ExpressionStatement - process, InvocationExpression - process]) */lastName));
     }
     
     public static void main(.java.lang.String[] args) {
-        ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process.getProcess().setupArguments(args);
         new Main2();
     }
 }

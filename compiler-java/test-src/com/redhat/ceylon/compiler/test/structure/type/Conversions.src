@@ -9,7 +9,7 @@ class Foo {
     }
     
     public static void main(.java.lang.String[] args) {
-        ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process.getProcess().setupArguments(args);
         new Foo();
     }
 }
@@ -23,7 +23,7 @@ class Bar extends com.redhat.ceylon.compiler.test.structure.type.Foo {
     }
     
     public static void main(.java.lang.String[] args) {
-        ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process.getProcess().setupArguments(args);
         new Bar();
     }
 }
@@ -37,7 +37,7 @@ class Baz extends com.redhat.ceylon.compiler.test.structure.type.Foo {
     }
     
     public static void main(.java.lang.String[] args) {
-        ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process.getProcess().setupArguments(args);
         new Baz();
     }
 }
@@ -50,7 +50,7 @@ class GenInv<T> {
     }
     
     public static void main(.java.lang.String[] args) {
-        ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process.getProcess().setupArguments(args);
         new GenInv();
     }
 }
@@ -63,7 +63,7 @@ class GenCov<T> {
     }
     
     public static void main(.java.lang.String[] args) {
-        ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process.getProcess().setupArguments(args);
         new GenCov();
     }
 }
@@ -76,7 +76,7 @@ class GenCon<T> {
     }
     
     public static void main(.java.lang.String[] args) {
-        ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process.getProcess().setupArguments(args);
         new GenCon();
     }
 }
@@ -93,7 +93,7 @@ class Sats<T extends com.redhat.ceylon.compiler.test.structure.type.ISats> {
     }
     
     public static void main(.java.lang.String[] args) {
-        ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process.getProcess().setupArguments(args);
         new Sats();
     }
 }
@@ -108,7 +108,7 @@ class BarSats extends com.redhat.ceylon.compiler.test.structure.type.Bar impleme
     }
     
     public static void main(.java.lang.String[] args) {
-        ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process.getProcess().setupArguments(args);
         new BarSats();
     }
 }
@@ -119,7 +119,7 @@ class ExtVoid extends com.redhat.ceylon.compiler.test.structure.type.GenInv<.jav
     }
     
     public static void main(.java.lang.String[] args) {
-        ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process.getProcess().setupArguments(args);
         new ExtVoid();
     }
 }
@@ -130,7 +130,7 @@ class ExtBottom extends com.redhat.ceylon.compiler.test.structure.type.GenInv {
     }
     
     public static void main(.java.lang.String[] args) {
-        ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process.getProcess().setupArguments(args);
         new ExtBottom();
     }
 }
@@ -177,7 +177,7 @@ class Conversions {
     }
     
     public static void main(.java.lang.String[] args) {
-        ceylon.language.process.getProcess().setupArguments(args);
+        .ceylon.language.process.getProcess().setupArguments(args);
         new Conversions();
     }
 }
