@@ -23,6 +23,27 @@ a {
  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c47e0f', endColorstr='#d99b2a',GradientType=0 ); /* IE6-9 */
 }
 
+.TableHeadingColor th {
+ -webkit-border-top-left-radius: 5px;
+ -webkit-border-top-right-radius: 5px;
+ -moz-border-radius-topleft: 5px;
+ -moz-border-radius-topright: 5px;
+ border-top-left-radius: 5px;
+ border-top-right-radius: 5px;
+}
+
+table tr:last-child td:first-child {
+ -webkit-border-bottom-left-radius: 5px;
+ -moz-border-radius-bottomleft: 5px;
+ border-bottom-left-radius: 5px;
+}
+
+table tr:last-child td:last-child {
+ -webkit-border-bottom-right-radius: 5px;
+ -moz-border-radius-bottomright: 5px;
+ border-bottom-right-radius: 5px;
+}
+
 .nav,
 table {
  -webkit-border-radius: 5px;
@@ -80,6 +101,10 @@ th {
 
 .TableRowColor {
  border-bottom: 1px solid #E6E7E8;
+}
+
+.TableRowColor:last-child {
+ border-bottom: none;
 }
 
 .type-parameter {
