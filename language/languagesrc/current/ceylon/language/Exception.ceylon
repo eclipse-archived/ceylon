@@ -28,4 +28,10 @@ shared class Exception(
         return "Exception \"" message "\"";
     }
     
+    doc "Print the stack trace to the standard error of
+         the virtual machine process."
+    shared void printStackTrace() {
+        throw;
+    }
+    
 }

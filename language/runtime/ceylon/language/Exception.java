@@ -40,4 +40,9 @@ public class Exception extends RuntimeException {
     public java.lang.String toString() {
         return  "Exception \"" + getMessage() +"\""; 
     }
+    
+    @Override
+    public void printStackTrace() {
+    	super.printStackTrace();
+    }
 }

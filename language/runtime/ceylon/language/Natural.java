@@ -28,7 +28,10 @@ public final class Natural
     
     @Override
     public Natural plus(Natural op) {
-        return instance(value + op.value);
+        long result = value + op.value;
+        if (result<0) 
+        	throw new OverflowException();
+		return instance(result);
     }
     
     @Override
@@ -38,7 +41,10 @@ public final class Natural
     
     @Override
     public Natural times(Natural op) {
-        return instance(value * op.value);
+        long result = value * op.value;
+        if (result<0) 
+        	throw new OverflowException();
+        return instance(result);
     }
     
     @Override
@@ -48,7 +54,10 @@ public final class Natural
     
     @Override
     public Natural power(Natural op) {
-        return instance((long) Math.pow(value, op.value)); // FIXME: ugly
+        long result = (long) Math.pow(value, op.value); // FIXME: ugly
+        if (result==Long.MAX_VALUE) 
+        	throw new OverflowException();
+        return instance(result);
     }
     
     public Float plus(Float op) {
