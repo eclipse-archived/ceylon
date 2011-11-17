@@ -8,7 +8,7 @@ class InitializerParamHidingAttribute {
 }
 class InitializerParamHidingAttribute2 {
     private final boolean b;
-        
+    
     public final boolean getB() {
         return this.b;
     }

@@ -27,6 +27,8 @@ import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
+import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -102,16 +104,19 @@ public class ClassTransformer extends AbstractTransformer {
         String attrName = decl.getIdentifier().getText();
 
         // Only a non-formal attribute has a corresponding field
-        // and if a class parameter exists with the same name we skip this part as well
-        if (!Decl.isFormal(decl) && !classBuilder.existsParam(attrName)) {
+        // and if a captured class parameter exists with the same name we skip this part as well
+        Parameter p = findParamForAttr(decl);
+        boolean createField = (p == null) || (useField && !p.isCaptured());
+        if (!Decl.isFormal(decl) && createField) {
             JCExpression initialValue = null;
             if (decl.getSpecifierOrInitializerExpression() != null) {
                 initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), Util.getBoxingStrategy(decl.getDeclarationModel()));
             }
 
             int flags = 0;
-            if(isGenericsImplementation(decl.getDeclarationModel()))
+            if (isGenericsImplementation(decl.getDeclarationModel())) {
                 flags |= TYPE_ARGUMENT;
+            }
             JCExpression type = makeJavaType(actualType(decl), flags);
 
             int modifiers = (useField) ? transformAttributeFieldDeclFlags(decl) : transformLocalDeclFlags(decl);
@@ -126,7 +131,22 @@ public class ClassTransformer extends AbstractTransformer {
         }        
     }
     
-    public List<JCTree> transform(AttributeSetterDefinition decl) {
+    private Parameter findParamForAttr(AttributeDeclaration decl) {
+        String attrName = decl.getIdentifier().getText();
+    	if (Decl.withinClass(decl)) {
+    		Class c = (Class)decl.getDeclarationModel().getContainer();
+    		if (!c.getParameterLists().isEmpty()) {
+	    		for (Parameter p : c.getParameterLists().get(0).getParameters()) {
+	    			if (attrName.equals(p.getName())) {
+	    				return p;
+	    			}
+	    		}
+    		}
+    	}
+		return null;
+	}
+
+	public List<JCTree> transform(AttributeSetterDefinition decl) {
         JCBlock body = statementGen().transform(decl.getBlock());
         String name = decl.getIdentifier().getText();
         return AttributeDefinitionBuilder

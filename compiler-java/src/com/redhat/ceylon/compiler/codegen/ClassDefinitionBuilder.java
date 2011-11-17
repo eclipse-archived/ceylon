@@ -98,18 +98,6 @@ public class ClassDefinitionBuilder {
         annotations(gen.makeAtCeylon());
     }
 
-    public boolean existsParam(String name) {
-        for (JCTree decl : params) {
-            if (decl instanceof JCVariableDecl) {
-                JCVariableDecl var = (JCVariableDecl)decl;
-                if (var.name.toString().equals(name)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     public List<JCTree> build() {
         ListBuffer<JCTree> defs = ListBuffer.lb();
         appendDefinitionsTo(defs);
