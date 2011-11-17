@@ -34,8 +34,10 @@ public class BoxingDeclarationVisitor extends Visitor {
         Iterator<Parameter> parameters = method.getParameterLists().get(0).getParameters().iterator();
         for(Parameter refinedParam : refinedMethod.getParameterLists().get(0).getParameters()){
             Parameter param = parameters.next();
-            if(isPrimitive(param, refinedParam))
+            if(isPrimitive(param, refinedParam)) {
                 Util.markUnBoxed(param);
+                Util.markUnBoxed(refinedParam);
+            }
         }
     }
     
@@ -64,8 +66,10 @@ public class BoxingDeclarationVisitor extends Visitor {
         super.visit(that);
         TypedDeclaration declaration = that.getDeclarationModel();
         TypedDeclaration refinedDeclaration = Util.getTopmostRefinedDeclaration(declaration);
-        if(isPrimitive(declaration, refinedDeclaration))
+        if(isPrimitive(declaration, refinedDeclaration)) {
             Util.markUnBoxed(declaration);
+            Util.markUnBoxed(refinedDeclaration);
+        }
     }
 
     @Override
