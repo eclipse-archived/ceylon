@@ -1,3 +1,7 @@
+body {
+ font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
 body,
 a:visited {
  color: #535353;
