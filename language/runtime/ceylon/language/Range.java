@@ -114,10 +114,15 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
     @Override
     public final boolean contains(@Name("element") Object value) {
         // FIXME
-        if(value != null /*&& value instanceof Element*/)
-            return includes((Element)value);
-        else
-            return false;
+    	try {
+	        if(value != null /*&& value instanceof Element*/)
+	            return includes((Element)value);
+	        else
+	            return false;
+    	}
+    	catch (ClassCastException cce) { //ugly hack
+    		return false;
+    	}
     }
 
     public final boolean includes(@Name("x") Element x){
