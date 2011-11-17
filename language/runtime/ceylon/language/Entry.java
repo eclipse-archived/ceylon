@@ -1,6 +1,7 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.metadata.java.Ceylon;
+import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.TypeParameter;
 import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
 import com.redhat.ceylon.compiler.metadata.java.Variance;
@@ -16,7 +17,8 @@ public class Entry<Key extends Equality,
 	private Key key;
 	private Item item;
 	
-	public Entry(Key key, Item item) {
+	public Entry(@Name("key") Key key, 
+			     @Name("item") Item item) {
 		this.key = key;
 		this.item = item;
 	}

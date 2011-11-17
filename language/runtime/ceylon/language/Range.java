@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 public class Range<Element extends Comparable<Element> & Ordinal<Element>>
@@ -11,7 +12,8 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
     private long index;
     private long size;
     
-    public Range(Element first, Element last) {
+    public Range(@Name("first") Element first, 
+    		     @Name("last") Element last) {
         this.first = first;
         this.last = last;
         this.index = 0;
