@@ -8,6 +8,11 @@ as provided in the LICENSE file that accompanied this code.
 By submitting a "pull request" or otherwise contributing to this repository, you
 agree to license your contribution under the license mentioned above.
 
+## License terms for 3rd Party Works
+
+This software uses a number of other works, the license terms of which are 
+documented in the NOTICE file that accompanied this code.
+
 ## How to
 
 To build and test the compiler and runtime just run ant.
