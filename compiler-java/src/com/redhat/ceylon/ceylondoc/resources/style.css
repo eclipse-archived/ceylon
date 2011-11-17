@@ -8,7 +8,7 @@ a {
 }
 
 .nav,
-.TableHeadingColor {
+.TableHeadingColor th {
  background: #c47e0f; /* Old browsers */
  background: -moz-linear-gradient(top, #c47e0f 0%, #d99b2a 100%); /* FF3.6+ */
  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#c47e0f), color-stop(100%,#d99b2a)); /* Chrome,Safari4+ */
@@ -24,6 +24,9 @@ table {
  -webkit-border-radius: 5px;
  -moz-border-radius: 5px;
  border-radius: 5px;
+ -moz-box-shadow: 5px 5px 5px #ccc;
+ -webkit-box-shadow: 5px 5px 5px #ccc;
+ box-shadow: 5px 5px 5px #ccc;
 }
 
 .nav {
