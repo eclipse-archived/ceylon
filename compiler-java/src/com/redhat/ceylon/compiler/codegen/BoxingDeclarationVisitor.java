@@ -49,8 +49,10 @@ public class BoxingDeclarationVisitor extends Visitor {
         // FIXME: we need to set those in the model loader as well
         Method method = that.getDeclarationModel();
         Method refinedMethod = (Method) Util.getTopmostRefinedDeclaration(method);
-        if(isPrimitive(method, refinedMethod))
+        if(isPrimitive(method, refinedMethod)) {
             Util.markUnBoxed(method);
+            Util.markUnBoxed(refinedMethod);
+        }
         Iterator<Parameter> parameters = method.getParameterLists().get(0).getParameters().iterator();
         for(Parameter refinedParam : refinedMethod.getParameterLists().get(0).getParameters()){
             Parameter param = parameters.next();
