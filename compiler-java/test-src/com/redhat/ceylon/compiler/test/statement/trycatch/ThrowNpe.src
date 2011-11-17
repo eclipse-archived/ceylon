@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.test.statement.trycatch;
+
+final class test {
+    
+    private test() {
+    }
+    
+    static void test() {
+        try {
+            throw new java.lang.NullPointerException();
+        } catch (final java.lang.NullPointerException npe) {
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        ceylon.language.process.getProcess().setupArguments(args);
+        test();
+    }
+}
