@@ -112,7 +112,7 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
     }
 
     @Override
-    public final boolean contains(@Name("element") Object value) {
+    public final boolean contains(@Name("element") @TypeInfo("ceylon.language.Equality") Object value) {
         // FIXME
     	try {
 	        if(value != null /*&& value instanceof Element*/)
@@ -193,11 +193,13 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
         return Correspondence$impl.items(this, keys);
     }
 
+    //TODO: @TypeInfo
     @Override
     public boolean containsEvery(@Name("elements") Iterable<? extends Object> elements) {
         return Category$impl.containsEvery(this, elements);
     }
 
+    //TODO: @TypeInfo
     @Override
     public boolean containsAny(@Name("elements") Iterable<? extends Object> elements) {
         return Category$impl.containsAny(this, elements);
