@@ -70,6 +70,11 @@ public class Decl {
     public static boolean isShared(Tree.Declaration decl) {
         return decl.getDeclarationModel().isShared();
     }
+    
+    public static boolean isCaptured(Tree.Declaration decl) {
+    	// Shared elements are implicitely captured although the typechecker doesn't mark them that way
+        return decl.getDeclarationModel().isCaptured() || decl.getDeclarationModel().isShared();
+    }
 
     public static boolean isAbstract(Tree.ClassOrInterface decl) {
         return decl.getDeclarationModel().isAbstract();

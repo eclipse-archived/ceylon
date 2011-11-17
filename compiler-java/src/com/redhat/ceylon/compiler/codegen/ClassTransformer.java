@@ -30,7 +30,6 @@ import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
-import com.sun.tools.javac.util.Position;
 
 /**
  * This transformer deals with class/interface declarations
@@ -79,7 +78,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     public void transform(AttributeDeclaration decl, ClassDefinitionBuilder classBuilder) {
-        boolean useField = decl.getDeclarationModel().isCaptured() || Decl.isShared(decl);
+        boolean useField = Decl.isCaptured(decl);
         String attrName = decl.getIdentifier().getText();
 
         // Only a non-formal attribute has a corresponding field
@@ -343,7 +342,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (Decl.withinMethod(def)) {
             result = result.append(makeLocalIdentityInstance(name, false));
         } else if (Decl.withinClassOrInterface(def)) {
-            boolean visible = def.getDeclarationModel().isCaptured() || Decl.isShared(def);
+            boolean visible = Decl.isCaptured(def);
             int modifiers = FINAL | ((visible) ? PRIVATE : 0);
             JCTree.JCIdent type = make().Ident(names().fromString(name));
             JCExpression initialValue = makeNewClass(name);

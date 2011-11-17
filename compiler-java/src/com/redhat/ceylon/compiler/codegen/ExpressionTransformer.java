@@ -239,7 +239,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             result = at(op).Apply(List.<JCTree.JCExpression>nil(),
                     makeIdentOrSelect(expr, Util.getSetterName(decl.getName())), 
                     List.<JCTree.JCExpression>of(rhs));
-        } else if (variable && decl.isCaptured()) {
+        } else if (variable && (decl.isCaptured() || decl.isShared())) {
             // must use the qualified setter
             result = at(op).Apply(List.<JCTree.JCExpression>nil(),
                     makeIdentOrSelect(expr, decl.getName(), Util.getSetterName(decl.getName())), 
@@ -807,12 +807,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                             makeFQIdent(decl.getContainer().getQualifiedNameString()),
                             decl.getName());
                 }
-            } else if(Decl.isClassAttribute(decl)) {
+            } else if (Decl.isClassAttribute(decl)) {
                 // invoke the getter
                 result = make().Apply(List.<JCExpression>nil(), 
                        makeIdentOrSelect(primaryExpr, Util.getGetterName(decl.getName())),
                        List.<JCExpression>nil());
-             } else if(decl.isCaptured()) {
+             } else if (decl.isCaptured() || decl.isShared()) {
                  // invoke the qualified getter
                  result = make().Apply(List.<JCExpression>nil(), 
                         makeIdentOrSelect(primaryExpr, decl.getName(), Util.getGetterName(decl.getName())),
