@@ -1,6 +1,7 @@
  package ceylon.language;
 
 import com.redhat.ceylon.compiler.metadata.java.Ceylon;
+import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 import com.redhat.ceylon.compiler.metadata.java.TypeParameter;
 import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
@@ -29,7 +30,7 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
     
     public Element getLast();
     
-    public boolean defines(Natural index);
+    public boolean defines(@Name("index") Natural index);
     
     //this depends on efficient implementation of rest
     /*

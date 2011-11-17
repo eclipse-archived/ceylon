@@ -1,9 +1,11 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.metadata.java.Name;
+
 public abstract class Case {
     private final java.lang.String string;
     
-    public Case(java.lang.String caseName){
+    public Case(@Name("caseName") java.lang.String caseName){
         this.string = caseName;
     }
     

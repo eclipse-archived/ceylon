@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
@@ -14,6 +15,6 @@ public interface Empty
     public long getSize(); 
     public boolean getEmpty();
     public Iterator getIterator();
-    public java.lang.Object item(Natural key);
+    public java.lang.Object item(@Name("key") Natural key);
     public java.lang.Object getFirst();
 }

@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
@@ -22,27 +23,27 @@ public final class Integer
     }
     
     @Override
-    public Integer plus(Integer op) {
+    public Integer plus(@Name("other") Integer op) {
         return instance(value + op.value);
     }
     
     @Override
-    public Integer minus(Integer op) {
+    public Integer minus(@Name("other") Integer op) {
         return instance(value - op.value);
     }
     
     @Override
-    public Integer times(Integer op) {
+    public Integer times(@Name("other") Integer op) {
         return instance(value * op.value);
     }
     
     @Override
-    public Integer divided(Integer op) {
+    public Integer divided(@Name("other") Integer op) {
         return instance(value / op.value);
     }
     
     @Override
-    public Integer power(Integer op) {
+    public Integer power(@Name("other") Integer op) {
         return instance((long) Math.pow(value, op.value)); // FIXME: ugly
     }
     
@@ -121,7 +122,7 @@ public final class Integer
     }
     
     @Override
-    public Integer remainder(Integer op) {
+    public Integer remainder(@Name("other") Integer op) {
         return instance(value % op.value);
     }
     
@@ -140,7 +141,7 @@ public final class Integer
     }
     
     @Override
-    public Comparison compare(Integer op) {
+    public Comparison compare(@Name("other") Integer op) {
         long x = value;
         long y = op.value;
         return (x < y) ? Comparison.SMALLER :
@@ -214,9 +215,9 @@ public final class Integer
     }
     
     @Override
-    public boolean equals(java.lang.Object s) {
-        if (s instanceof Integer) {
-            return value == ((Integer)s).value;
+    public boolean equals(@Name("that") java.lang.Object that) {
+        if (that instanceof Integer) {
+            return value == ((Integer)that).value;
         } else {
             return false;
         }
@@ -233,22 +234,22 @@ public final class Integer
     }
     
     @Override
-    public boolean largerThan(Integer other) {
+    public boolean largerThan(@Name("other") Integer other) {
         return value > other.value;
     }
     
     @Override
-    public boolean smallerThan(Integer other) {
+    public boolean smallerThan(@Name("other") Integer other) {
         return value < other.value;
     }
     
     @Override
-    public boolean asLargeAs(Integer other) {
+    public boolean asLargeAs(@Name("other") Integer other) {
         return value >= other.value;
     }
     
     @Override
-    public boolean asSmallAs(Integer other) {
+    public boolean asSmallAs(@Name("other") Integer other) {
         return value <= other.value;
     }
     

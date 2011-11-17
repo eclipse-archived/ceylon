@@ -77,7 +77,7 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
 
     @TypeInfo("ceylon.language.Nothing|Element")
     @Override
-    public Element item(Natural n) {
+    public Element item(@Name("n") Natural n) {
         long index = 0;
         Element x = first;
         while(index < n.longValue() && !pastEnd(x)){
@@ -112,15 +112,15 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
     }
 
     @Override
-    public final boolean contains(Object value) {
+    public final boolean contains(@Name("element") Object value) {
         // FIXME
-        if(value != null/*value instanceof Element*/)
+        if(value != null /*&& value instanceof Element*/)
             return includes((Element)value);
         else
             return false;
     }
 
-    public final boolean includes(Element x){
+    public final boolean includes(@Name("x") Element x){
         if(getDecreasing()){
             return x.asSmallAs(first) && x.asLargeAs(last);
         }else{
@@ -134,12 +134,12 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
     }
 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public final Sequence<Element> by(long stepSize){
+    public final Sequence<Element> by(@Name("stepSize") long stepSize){
         throw new ceylon.language.Exception(null, null);
     }
     
     @Override
-    public final boolean equals(java.lang.Object that){
+    public final boolean equals(@Name("that") java.lang.Object that){
         if(that instanceof Range){
             Range<Element> $that = (Range<Element>) that;
             return $that.getFirst().equals(getFirst()) && $that.getLast().equals(getLast());
@@ -174,27 +174,27 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
     }
 
     @Override
-    public boolean definesEvery(Iterable<? extends Natural> keys) {
+    public boolean definesEvery(@Name("keys") Iterable<? extends Natural> keys) {
         return Correspondence$impl.definesEvery(this, keys);
     }
 
     @Override
-    public boolean definesAny(Iterable<? extends Natural> keys) {
+    public boolean definesAny(@Name("keys") Iterable<? extends Natural> keys) {
         return Correspondence$impl.definesAny(this, keys);
     }
 
     @Override
-    public Sequence<? extends Element> items(Iterable<? extends Natural> keys) {
+    public Sequence<? extends Element> items(@Name("keys") Iterable<? extends Natural> keys) {
         return Correspondence$impl.items(this, keys);
     }
 
     @Override
-    public boolean containsEvery(Iterable<? extends Object> elements) {
+    public boolean containsEvery(@Name("elements") Iterable<? extends Object> elements) {
         return Category$impl.containsEvery(this, elements);
     }
 
     @Override
-    public boolean containsAny(Iterable<? extends Object> elements) {
+    public boolean containsAny(@Name("elements") Iterable<? extends Object> elements) {
         return Category$impl.containsAny(this, elements);
     }
 
@@ -204,7 +204,7 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
     }
 
     @Override
-    public boolean defines(Natural index) {
+    public boolean defines(@Name("index") Natural index) {
         return Sequence$impl.defines(this, index);
     }
 

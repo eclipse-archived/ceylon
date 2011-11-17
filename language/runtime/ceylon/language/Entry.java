@@ -37,7 +37,7 @@ public class Entry<Key extends Equality,
 	}
 	
 	@Override
-	public boolean equals(java.lang.Object that) {
+	public boolean equals(@Name("that") java.lang.Object that) {
 		if (that instanceof Entry) {
 			Entry<Key, Item> that2 = (Entry)that;
 			return (this.key.equals(that2.key) && this.item.equals(that2.item));

@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 import com.redhat.ceylon.compiler.metadata.java.TypeParameter;
@@ -27,7 +28,7 @@ public final class Natural
     }
     
     @Override
-    public Natural plus(Natural op) {
+    public Natural plus(@Name("other") Natural op) {
         long result = value + op.value;
         if (result<0) 
         	throw new OverflowException();
@@ -35,12 +36,12 @@ public final class Natural
     }
     
     @Override
-    public Natural minus(Natural op) {
+    public Natural minus(@Name("other") Natural op) {
         return instance(value - op.value);
     }
     
     @Override
-    public Natural times(Natural op) {
+    public Natural times(@Name("other") Natural op) {
         long result = value * op.value;
         if (result<0) 
         	throw new OverflowException();
@@ -48,12 +49,12 @@ public final class Natural
     }
     
     @Override
-    public Natural divided(Natural op) {
+    public Natural divided(@Name("other") Natural op) {
         return instance(value / op.value);
     }
     
     @Override
-    public Natural power(Natural op) {
+    public Natural power(@Name("other") Natural op) {
         long result = (long) Math.pow(value, op.value); // FIXME: ugly
         if (result==Long.MAX_VALUE) 
         	throw new OverflowException();
@@ -101,7 +102,7 @@ public final class Natural
     }
     
     @Override
-    public Natural remainder(Natural op) {
+    public Natural remainder(@Name("other") Natural op) {
         return instance(value % op.value);
     }
     
@@ -154,7 +155,7 @@ public final class Natural
     }
     
     @Override
-    public Comparison compare(Natural op) {
+    public Comparison compare(@Name("other") Natural op) {
         long x = value;
         long y = op.value;
         return (x < y) ? Comparison.SMALLER :
@@ -260,22 +261,22 @@ public final class Natural
     }
     
     @Override
-    public boolean largerThan(Natural other) {
+    public boolean largerThan(@Name("other") Natural other) {
         return value > other.value;
     }
     
     @Override
-    public boolean smallerThan(Natural other) {
+    public boolean smallerThan(@Name("other") Natural other) {
         return value < other.value;
     }
     
     @Override
-    public boolean asLargeAs(Natural other) {
+    public boolean asLargeAs(@Name("other") Natural other) {
         return value >= other.value;
     }
     
     @Override
-    public boolean asSmallAs(Natural other) {
+    public boolean asSmallAs(@Name("other") Natural other) {
         return value <= other.value;
     }
 }

@@ -1,6 +1,7 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.metadata.java.Ceylon;
+import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 import com.redhat.ceylon.compiler.metadata.java.TypeParameter;
@@ -15,26 +16,26 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
  public interface Correspondence<Key extends Equality,Item> {
     
     @TypeInfo("Item|ceylon.language.Nothing")
-    public Item item(Key key);
+    public Item item(@Name("key") Key key);
 
-    public boolean defines(Key key);
+    public boolean defines(@Name("key") Key key);
 
     public Category getKeys();
 
-    public boolean definesEvery(ceylon.language.Iterable<? extends Key> keys);
+    public boolean definesEvery(@Name("keys") Iterable<? extends Key> keys);
 
-    public boolean definesAny(ceylon.language.Iterable<? extends Key> keys);
+    public boolean definesAny(@Name("keys") Iterable<? extends Key> keys);
 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
-    public ceylon.language.Sequence<? extends Item> items(ceylon.language.Iterable<? extends Key> keys);
+    public Sequence<? extends Item> items(@Name("keys") Iterable<? extends Key> keys);
 
     @SatisfiedTypes("ceylon.language.Sequence<Item|ceylon.language.Nothing>")
-    class Values<Key extends Equality,Item>
+    class Entries<Key extends Equality,Item>
     extends Object
     implements Sequence<Item> {
         private Sequence<Key> keys;
         private Correspondence<Key, Item> $this;
-        Values(Correspondence<Key,Item> $this, Sequence<Key> keys){
+        Entries(Correspondence<Key,Item> $this, Sequence<Key> keys){
             this.keys = keys;
             this.$this = $this;
         }

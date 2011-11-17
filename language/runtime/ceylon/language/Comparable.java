@@ -12,8 +12,6 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
  })
 public interface Comparable<Other extends Comparable<Other>> extends Equality {
     
-    /** The binary compare operator |<=>|.  Compares this
-        object with the given object. */
     public Comparison compare(@Name("other") Other other);
     
     public boolean largerThan(@Name("other") Other other); 

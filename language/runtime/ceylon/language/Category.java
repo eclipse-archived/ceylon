@@ -1,9 +1,11 @@
 package ceylon.language;
 
-public interface Category {
-    public boolean contains(Object value);
-    
-    public boolean containsEvery(ceylon.language.Iterable<? extends Object> elements);
+import com.redhat.ceylon.compiler.metadata.java.Name;
 
-    public boolean containsAny(ceylon.language.Iterable<? extends Object> elements);
+public interface Category {
+    public boolean contains(@Name("element") Object element);
+    
+    public boolean containsEvery(@Name("elements") Iterable<? extends Object> elements);
+
+    public boolean containsAny(@Name("elements") Iterable<? extends Object> elements);
 }

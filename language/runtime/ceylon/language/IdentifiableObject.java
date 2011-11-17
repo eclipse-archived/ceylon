@@ -1,8 +1,10 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.metadata.java.Name;
+
 public abstract class IdentifiableObject extends Object implements Equality {
 
-   public boolean equals(java.lang.Object that) {
+   public boolean equals(@Name("that") java.lang.Object that) {
         if (that instanceof IdentifiableObject ) {
             return this == that;
         } else {

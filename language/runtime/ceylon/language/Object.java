@@ -17,11 +17,8 @@ public abstract class Object extends Void {
         Types.create(klass).addAnnotations(klass, annos);
     }
 
-    public Type getType () {
+    public Type getType() {
         return Types.create(getClass());
     }
-
-    public boolean identical(Object other) {
-        return this == other;
-    }
+    
 }

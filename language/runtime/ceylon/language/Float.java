@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 public final class Float
@@ -20,27 +21,27 @@ public final class Float
     }
     
     @Override
-    public Float plus(Float op) {
+    public Float plus(@Name("other") Float op) {
         return instance(value + op.value);
     }
     
     @Override
-    public Float minus(Float op) {
+    public Float minus(@Name("other") Float op) {
         return instance(value - op.value);
     }
     
     @Override
-    public Float times(Float op) {
+    public Float times(@Name("other") Float op) {
         return instance(value * op.value);
     }
     
     @Override
-    public Float divided(Float op) {
+    public Float divided(@Name("other") Float op) {
         return instance(value / op.value);
     }
     
     @Override
-    public Float power(Float op) {
+    public Float power(@Name("other") Float op) {
         return instance(Math.pow(value, op.value));
     }
     
@@ -129,7 +130,7 @@ public final class Float
     }
     
     @Override
-    public Comparison compare(Float op) {
+    public Comparison compare(@Name("other") Float op) {
         double x = value;
         double y = op.value;
         return (x < y) ? Comparison.SMALLER :
@@ -184,29 +185,29 @@ public final class Float
     }
     
     @Override
-    public boolean largerThan(Float other) {
+    public boolean largerThan(@Name("other") Float other) {
         return value > other.value;
     }
     
     @Override
-    public boolean smallerThan(Float other) {
+    public boolean smallerThan(@Name("other") Float other) {
         return value < other.value;
     }
     
     @Override
-    public boolean asLargeAs(Float other) {
+    public boolean asLargeAs(@Name("other") Float other) {
         return value >= other.value;
     }
     
     @Override
-    public boolean asSmallAs(Float other) {
+    public boolean asSmallAs(@Name("other") Float other) {
         return value <= other.value;
     }
     
     @Override
-    public boolean equals(java.lang.Object s) {
-        if (s instanceof Float) {
-            return value == ((Float)s).value;
+    public boolean equals(@Name("that") java.lang.Object that) {
+        if (that instanceof Float) {
+            return value == ((Float)that).value;
         } else {
             return false;
         }

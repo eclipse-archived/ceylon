@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 
@@ -31,7 +32,7 @@ public final class String extends Object
     }
 
     @Override
-    public boolean equals(java.lang.Object that) {
+    public boolean equals(@Name("that") java.lang.Object that) {
         if (that instanceof String) {
             String s = (String)that;
             return value.equals(s.value);
@@ -60,7 +61,7 @@ public final class String extends Object
     }
 
     @Override
-    public Comparison compare(String other) {
+    public Comparison compare(@Name("other") String other) {
         int c = value.compareTo(other.value);
         return (c < 0) ? Comparison.SMALLER :
             ((c == 0) ? Comparison.EQUAL : Comparison.LARGER);
@@ -72,22 +73,22 @@ public final class String extends Object
     }
 
     @Override
-    public boolean largerThan(String other) {
+    public boolean largerThan(@Name("other") String other) {
         return value.compareTo(other.value) > 0;
     }
 
     @Override
-    public boolean smallerThan(String other) {
+    public boolean smallerThan(@Name("other") String other) {
         return value.compareTo(other.value) < 0;
     }
 
     @Override
-    public boolean asLargeAs(String other) {
+    public boolean asLargeAs(@Name("other") String other) {
         return value.compareTo(other.value) >= 0;
     }
 
     @Override
-    public boolean asSmallAs(String other) {
+    public boolean asSmallAs(@Name("other") String other) {
         return value.compareTo(other.value) <= 0;
     }
 
@@ -97,8 +98,8 @@ public final class String extends Object
     }
 
     @Override
-    public String plus(String number) {
-        return instance(value + number.value);
+    public String plus(@Name("other") String string) {
+        return instance(value + string.value);
     }
 
     @Override
@@ -114,7 +115,7 @@ public final class String extends Object
     }
 
     @Override
-    public Character item(Natural key) {
+    public Character item(@Name("index") Natural key) {
         int index = key.intValue();
         int length = value.length();
         if (index < 0 || index >= length)
@@ -129,7 +130,7 @@ public final class String extends Object
     }
 
     @Override
-    public boolean defines(Natural key) {
+    public boolean defines(@Name("key") Natural key) {
         int index = key.intValue();
         return index >= 0 && index < getSize();
     }
@@ -140,21 +141,21 @@ public final class String extends Object
     }
 
     @Override
-    public boolean definesEvery(Iterable<? extends Natural> keys) {
+    public boolean definesEvery(@Name("keys") Iterable<? extends Natural> keys) {
         //TODO: inefficient ... better to cache the result
         //      of getSize()
         return Correspondence$impl.definesEvery(this, keys);
     }
 
     @Override
-    public boolean definesAny(Iterable<? extends Natural> keys) {
+    public boolean definesAny(@Name("keys") Iterable<? extends Natural> keys) {
         //TODO: inefficient ... better to cache the result
         //      of getSize()
         return Correspondence$impl.definesAny(this, keys);
     }
 
     @Override
-    public Sequence<? extends Character> items(Iterable<? extends Natural> keys) {
+    public Sequence<? extends Character> items(@Name("keys") Iterable<? extends Natural> keys) {
         return Correspondence$impl.items(this, keys);
     }
 
