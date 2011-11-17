@@ -282,8 +282,14 @@ public class ExpressionTransformer extends AbstractTransformer {
             Tree.NaturalLiteral lit = (Tree.NaturalLiteral) term;
             return makeInteger(Long.parseLong(lit.getText()));
         }
+        
+        String operatorMethodName = unaryOperators.get(op.getClass());
+        if (operatorMethodName == null) {
+        	return make().Erroneous();
+        }
+        
         return make().Apply(null, makeSelect(transformExpression(term), 
-                Util.getGetterName(unaryOperators.get(op.getClass()))), List.<JCExpression> nil());
+                Util.getGetterName(operatorMethodName)), List.<JCExpression> nil());
     }
 
     public JCExpression transform(Tree.ArithmeticAssignmentOp op){
@@ -365,10 +371,18 @@ public class ExpressionTransformer extends AbstractTransformer {
                 operatorClass = Tree.CompareOp.class;
             }
             
-            result = at(op).Apply(null, makeSelect(left, binaryOperators.get(operatorClass)), List.of(right));
+            String operatorMethodName = binaryOperators.get(operatorClass);
+            if (operatorMethodName == null) {
+            	return make().Erroneous();
+            }
+            result = at(op).Apply(null, makeSelect(left, operatorMethodName), List.of(right));
     
             if (loseComparison) {
-                result = at(op).Apply(null, makeSelect(result, binaryOperators.get(op.getClass())), List.<JCExpression> nil());
+                String operatorMethodName2 = binaryOperators.get(op.getClass());
+                if (operatorMethodName2 == null) {
+                	return make().Erroneous();
+                }
+                result = at(op).Apply(null, makeSelect(result, operatorMethodName2), List.<JCExpression> nil());
             }
         }
 
