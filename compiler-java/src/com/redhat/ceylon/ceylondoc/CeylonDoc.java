@@ -158,11 +158,11 @@ public abstract class CeylonDoc extends Markup {
         return tool.isShowPrivate() || decl.isShared();
     }
     
-    protected abstract String getObjectUrl(Object to);
+    protected abstract String getObjectUrl(Object to) throws IOException;
     
-    protected abstract String getResourceUrl(String to);
+    protected abstract String getResourceUrl(String to) throws IOException;
     
-    protected abstract String getSrcUrl(Object to);
+    protected abstract String getSrcUrl(Object to) throws IOException;
 
 
 }

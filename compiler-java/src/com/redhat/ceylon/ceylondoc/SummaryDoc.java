@@ -118,17 +118,17 @@ public class SummaryDoc extends CeylonDoc {
 
 
     @Override
-    protected String getObjectUrl(Object to) {
+    protected String getObjectUrl(Object to) throws IOException {
         return tool.getObjectUrl(module, to);
     }
     
     @Override
-    protected String getResourceUrl(String to) {
+    protected String getResourceUrl(String to) throws IOException {
         return tool.getResourceUrl(module, to);
     }
     
     @Override
-    protected String getSrcUrl(Object to) {
+    protected String getSrcUrl(Object to) throws IOException {
         return tool.getSrcUrl(module, to);
     }
 }

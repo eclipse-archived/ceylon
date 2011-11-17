@@ -144,7 +144,7 @@ public class CeylonDocTool {
         throw new RuntimeException("Unexpected: " + obj);
     }
 
-    File getObjectFile(Object modPgkOrDecl) {
+    File getObjectFile(Object modPgkOrDecl) throws IOException {
         final File file;
         if (modPgkOrDecl instanceof ClassOrInterface) {
             ClassOrInterface klass = (ClassOrInterface)modPgkOrDecl;
@@ -160,7 +160,7 @@ public class CeylonDocTool {
         } else {
             throw new RuntimeException("Unexpected: " + modPgkOrDecl);
         }
-        return file;
+        return file.getCanonicalFile();
     }
 
     public void makeDoc() throws IOException{
@@ -344,8 +344,9 @@ public class CeylonDocTool {
     /**
      * Returns the absolute URI of the page for the given thing
      * @param obj (Module, Package, Declaration etc)
+     * @throws IOException 
      */
-    private URI getAbsoluteObjectUrl(Object obj) {
+    private URI getAbsoluteObjectUrl(Object obj) throws IOException {
         File f = getObjectFile(obj);
         if (f == null) {
             throw new RuntimeException(obj + " doesn't have a ceylond page");
@@ -357,8 +358,8 @@ public class CeylonDocTool {
      * Gets the base URL
      * @return Gets the base URL
      */
-    protected URI getBaseUrl() {
-        return new File(getDestDir()).toURI();
+    protected URI getBaseUrl() throws IOException {
+        return new File(getDestDir()).getCanonicalFile().toURI();
     }
     
     /**
@@ -369,8 +370,9 @@ public class CeylonDocTool {
      * @param uri
      * @param uri2
      * @return A URL suitable for a link from a page at uri to a page at uri2
+     * @throws IOException 
      */
-    private URI relativize(URI uri, URI uri2) {
+    private URI relativize(URI uri, URI uri2) throws IOException {
         if (!uri.isAbsolute()) {
             throw new IllegalArgumentException("Expected " + uri + " to be absolute");
         }
@@ -401,14 +403,14 @@ public class CeylonDocTool {
         return result;
     }
     
-    protected String getObjectUrl(Object from, Object to) {
+    protected String getObjectUrl(Object from, Object to) throws IOException {
         URI fromUrl = getAbsoluteObjectUrl(from);
         URI toUrl = getAbsoluteObjectUrl(to);
         String result = relativize(fromUrl, toUrl).toString();
         return result;
     }
     
-    protected String getResourceUrl(Object from, String to) {
+    protected String getResourceUrl(Object from, String to) throws IOException {
         URI fromUrl = getAbsoluteObjectUrl(from);
         URI toUrl = getBaseUrl().resolve(to);
         String result = relativize(fromUrl, toUrl).toString();
@@ -421,8 +423,9 @@ public class CeylonDocTool {
      * @param modPkgOrDecl e.g. Module, Package or Declaration
      * @return A (relative) URL, or null if no source file exists (e.g. for a
      * package or a module without a descriptor)
+     * @throws IOException 
      */
-    protected String getSrcUrl(Object from, Object modPkgOrDecl) {
+    protected String getSrcUrl(Object from, Object modPkgOrDecl) throws IOException {
         URI fromUrl = getAbsoluteObjectUrl(from);
         String pkgName;
         String filename;
@@ -440,7 +443,7 @@ public class CeylonDocTool {
             throw new RuntimeException("Unexpected: " + modPkgOrDecl);
         }
         File dir = new File(getDestDir(), pkgName.replace(".", "/"));
-        File srcFile = new File(dir, filename + ".html");
+        File srcFile = new File(dir, filename + ".html").getCanonicalFile();
         String result;
         if (srcFile.exists()) {
             URI url = srcFile.toURI();
