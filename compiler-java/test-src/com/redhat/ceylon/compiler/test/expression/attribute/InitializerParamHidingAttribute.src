@@ -6,3 +6,20 @@ class InitializerParamHidingAttribute {
         final boolean b2 = b;
     }
 }
+class InitializerParamHidingAttribute2 {
+    private final boolean b;
+        
+    public final boolean getB() {
+        return this.b;
+    }
+    private final boolean b2;
+    
+    public final boolean getB2() {
+        return this.b2;
+    }
+    
+    InitializerParamHidingAttribute2(boolean b) {
+        this.b = b;
+        this.b2 = b;
+    }
+}
