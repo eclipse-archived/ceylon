@@ -44,7 +44,7 @@ class Capture() {
         }
     }
     
-    void methodWithParameter(X x) {
+    void methodWithParameter(@captured X x) {
         void innerMethod() {
             use(x);
         }
@@ -248,5 +248,17 @@ class Capture() {
             return q.b2;
         }
      }
+     
+     class Something1(@uncaptured Natural n) {
+         shared Natural n = n;
+     }
+     
+     class Something(@captured Natural n) {
+         shared Natural n = n;
+         shared void p() {
+             print(n);
+         }
+     }
+
     
 }
