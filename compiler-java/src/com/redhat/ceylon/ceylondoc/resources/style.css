@@ -1,9 +1,33 @@
-body {
+body,
+a:visited {
+ color: #535353;
+}
+
+a {
+ color: #4b5c78;
+}
+
+.nav,
+.TableHeadingColor {
+ background: #c47e0f; /* Old browsers */
+ background: -moz-linear-gradient(top, #c47e0f 0%, #d99b2a 100%); /* FF3.6+ */
+ background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#c47e0f), color-stop(100%,#d99b2a)); /* Chrome,Safari4+ */
+ background: -webkit-linear-gradient(top, #c47e0f 0%,#d99b2a 100%); /* Chrome10+,Safari5.1+ */
+ background: -o-linear-gradient(top, #c47e0f 0%,#d99b2a 100%); /* Opera 11.10+ */
+ background: -ms-linear-gradient(top, #c47e0f 0%,#d99b2a 100%); /* IE10+ */
+ background: linear-gradient(top, #c47e0f 0%,#d99b2a 100%); /* W3C */
+ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c47e0f', endColorstr='#d99b2a',GradientType=0 ); /* IE6-9 */
+}
+
+.nav,
+table {
+ -webkit-border-radius: 5px;
+ -moz-border-radius: 5px;
+ border-radius: 5px;
 }
 
 .nav {
  width: 100%;
- background: #505d60;
  margin-bottom: 2em;
  color: white;
  font-weight: bold;
@@ -21,7 +45,7 @@ body {
 .nav .selected a,
 .nav .selected {
  background: white;
- color: #505d60;
+ color: #535353;
 }
 
 h1 {
@@ -30,7 +54,6 @@ h1 {
 
 table {
  width: 100%;
- border: 1px solid #E6E7E8;
  border-collapse: collapse;
  margin: 1em 0;
 }
@@ -44,13 +67,12 @@ th {
 }
 
 .TableHeadingColor {
- background: #505d60;
  text-align: left;
  color: white;
 }
 
 .TableRowColor {
- border: 1px solid #E6E7E8;
+ border-bottom: 1px solid #E6E7E8;
 }
 
 .type-parameter {
