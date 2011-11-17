@@ -51,7 +51,7 @@ public class SummaryDoc extends CeylonDoc {
         String srcUrl = getSrcUrl(module);
         if (!tool.isOmitSource()
                 && srcUrl != null) {
-            open("div class='source-code'");
+            open("div class='source-code module'");
             around("a href='" + srcUrl + "'", "Source Code");
             close("div");
         }

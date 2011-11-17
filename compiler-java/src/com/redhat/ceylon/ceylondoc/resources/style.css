@@ -92,3 +92,8 @@ ul.inheritance ul.inheritance li:before {
 .collapsible .short {
  font-weight: bold;
 }
+
+.source-code {
+ float: right;
+ font-size: small;
+}

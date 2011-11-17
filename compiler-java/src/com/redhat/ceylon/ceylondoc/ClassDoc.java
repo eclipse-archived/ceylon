@@ -137,10 +137,8 @@ public class ClassDoc extends ClassOrPackageDoc {
         open("head");
         around("title", "Class for " + klass.getName());
         tag("link href='" + getResourceUrl("style.css") +"' rel='stylesheet' type='text/css'");
-        open("script type='text/javascript' src='"+getResourceUrl("jquery-1.7.min.js")+"'");
-        close("script");
-        open("script type='text/javascript' src='"+getResourceUrl("ceylond.js")+"'");
-        close("script");
+        around("script type='text/javascript' src='"+getResourceUrl("jquery-1.7.min.js")+"'");
+        around("script type='text/javascript' src='"+getResourceUrl("ceylond.js")+"'");
         close("head");
         open("body");
         summary();
@@ -329,11 +327,6 @@ public class ClassDoc extends ClassOrPackageDoc {
         open("div");
         write(pkg.getModule().getNameAsString() + "/" + pkg.getModule().getVersion());
         close("div");
-        if (!tool.isOmitSource()) {
-            open("div class='source-code'");
-            around("a href='" + getSrcUrl(klass) + "'", "Source Code");
-            close("div");
-        }
         close("div");
 
         open("div class='head summary'");
@@ -341,8 +334,15 @@ public class ClassDoc extends ClassOrPackageDoc {
         // name
         around("div class='package'", "<code>" + pkg.getNameAsString() + "</code>");
 
-        around("div class='type'", klass instanceof Class ? "Class " : "Interface ", "<code>", getClassName(), "</code>");
-
+        open("div class='type'");
+        write(klass instanceof Class ? "Class " : "Interface ", "<code>", getClassName(), "</code>");
+        if (!tool.isOmitSource()) {
+            open("div class='source-code'");
+            around("a href='" + getSrcUrl(klass) + "'", "Source Code");
+            close("div");
+        }
+        close("div");
+        
         // hierarchy tree - only for classes
         if (klass instanceof Class) {
             LinkedList<ProducedType> superTypes = new LinkedList<ProducedType>();

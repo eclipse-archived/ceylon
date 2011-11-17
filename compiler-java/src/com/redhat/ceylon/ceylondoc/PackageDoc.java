@@ -1,7 +1,5 @@
 package com.redhat.ceylon.ceylondoc;
 
-import static com.redhat.ceylon.ceylondoc.Util.getDoc;
-import static com.redhat.ceylon.ceylondoc.Util.getDocFirstLine;
 import static com.redhat.ceylon.ceylondoc.Util.getModifiers;
 
 import java.io.IOException;
@@ -101,7 +99,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         String srcUrl = getSrcUrl(pkg);
         if (!tool.isOmitSource()
                 && srcUrl != null) {
-            open("div class='source-code'");
+            open("div class='source-code package'");
             around("a href='" + srcUrl + "'", "Source Code");
             close("div");
         }

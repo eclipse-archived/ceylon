@@ -84,12 +84,29 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         }
         writeParameterList(m.getParameterLists());
         close("code");
+        linkSource(m);
         tag("br");
         startPrintingLongDoc(m);
         writeSee(m);
         endLongDocAndPrintShortDoc(m);
         close("td");
         close("tr");
+    }
+
+    private void linkSource(MethodOrValue m) throws IOException {
+        if (tool.isOmitSource()) {
+            return;
+        }
+        String srcUrl;
+        if (m.isToplevel()) {
+            srcUrl = getSrcUrl(m);
+        } else {
+            srcUrl = getSrcUrl(m.getContainer());
+        }
+        int[] lines = tool.getDeclarationSrcLocation(m);
+        open("div class='source-code member'");
+        around("a href='" + srcUrl + "#" + lines[0] + "," + lines[1] + "'", "Source Code");
+        close("div");
     }
 
     protected void doc(MethodOrValue f) throws IOException {
@@ -105,6 +122,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         open("td", "code");
         write(f.getName());
         close("code");
+        linkSource(f);
         tag("br");
         startPrintingLongDoc(f);
         endLongDocAndPrintShortDoc(f);

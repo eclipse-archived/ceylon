@@ -14,4 +14,22 @@ jQuery(function(){
    tr.click(function(){toggleLongDoc(this)});
   }
  });
+ 
+ if (SyntaxHighlighter!= null) {
+  var startend = location.hash.substr(1).split(',');
+  var startLine = parseInt(startend[0]);
+  var endLine = parseInt(startend[1]);
+  var lines = [];
+  for (var ii = startLine; ii <= endLine; ii++) {
+   lines.push(ii);
+  }
+  SyntaxHighlighter.defaults['highlight'] = lines;
+  SyntaxHighlighter.defaults['gutter'] = false; 
+  SyntaxHighlighter.all();
+  setTimeout(function() {
+   jQuery('div.number'+startLine).each(function() {
+	this.scrollIntoView(true);
+   });
+  }, 10);
+ }
 });

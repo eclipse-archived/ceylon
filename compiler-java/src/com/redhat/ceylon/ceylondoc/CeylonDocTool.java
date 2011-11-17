@@ -32,7 +32,12 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.compiler.typechecker.tree.Walker;
 
 public class CeylonDocTool {
 
@@ -44,6 +49,7 @@ public class CeylonDocTool {
     private Map<TypeDeclaration, List<ClassOrInterface>> satisfyingClassesOrInterfaces = new HashMap<TypeDeclaration, List<ClassOrInterface>>();
     private boolean showPrivate;
     private boolean omitSource;
+    private Map<Declaration, Node> sourceLocations = new HashMap<Declaration, Node>();
 
     public CeylonDocTool(List<PhasedUnit> phasedUnits, Modules modules, boolean showPrivate) {
         this.phasedUnits = phasedUnits;
@@ -139,6 +145,11 @@ public class CeylonDocTool {
 
     public void makeDoc() throws IOException{
 
+        if (!omitSource) {
+            buildSourceLocations();
+            copySourceFiles();
+        }
+        
         for (PhasedUnit pu : phasedUnits) {
             for (Declaration decl : pu.getUnit().getDeclarations()) {
                 if(!include(decl)) {
@@ -172,10 +183,6 @@ public class CeylonDocTool {
             }
         }
 
-        if (!omitSource) {
-            copySourceFiles();
-        }
-
         Module module = null;
         for (PhasedUnit pu : phasedUnits) {
             if (module == null) {
@@ -206,6 +213,26 @@ public class CeylonDocTool {
         copyResource("resources/shBrushCeylon.js", "shBrushCeylon.js");
     }
 
+    private void buildSourceLocations() {
+        for (PhasedUnit pu : phasedUnits) {
+            CompilationUnit cu = pu.getCompilationUnit();
+            Walker.walkCompilationUnit(new Visitor() {
+                public void visit(Tree.Declaration decl) {
+                    sourceLocations.put(decl.getDeclarationModel(), decl);
+                    super.visit(decl);
+                }
+                public void visit(Tree.MethodDeclaration decl) {
+                    sourceLocations.put(decl.getDeclarationModel(), decl);
+                    super.visit(decl);
+                }
+                public void visit(Tree.AttributeDeclaration decl) {
+                    sourceLocations.put(decl.getDeclarationModel(), decl);
+                    super.visit(decl);
+                }
+            }, cu);
+        }
+    }
+
     private void copySourceFiles() throws FileNotFoundException, IOException {
         for (PhasedUnit pu : phasedUnits) {
             Markup markup = new Markup(new File(destDir, pu.getPathRelativeToSrcDir()+".html"));
@@ -216,11 +243,10 @@ public class CeylonDocTool {
                 Package decl = pu.getUnit().getPackage();
                 markup.tag("link href='" + getResourceUrl(decl, "shCore.css") + "' rel='stylesheet' type='text/css'");
                 markup.tag("link href='" + getResourceUrl(decl, "shThemeDefault.css") + "' rel='stylesheet' type='text/css'");
+                markup.around("script type='text/javascript' src='"+getResourceUrl(decl, "jquery-1.7.min.js")+"'");
+                markup.around("script type='text/javascript' src='"+getResourceUrl(decl, "ceylond.js")+"'");
                 markup.around("script src='" + getResourceUrl(decl, "shCore.js") + "' type='text/javascript'");
                 markup.around("script src='" + getResourceUrl(decl, "shBrushCeylon.js") + "' type='text/javascript'");
-                markup.around("script type='text/javascript'", 
-                        "SyntaxHighlighter.defaults['gutter'] = false;", 
-                        "SyntaxHighlighter.all();");
                 markup.close("head");
                 markup.open("body", "pre class='brush: ceylon'");
                 // XXX source char encoding
@@ -403,5 +429,15 @@ public class CeylonDocTool {
             result = null;
         }
         return result;
+    }
+    
+    /**
+     * Returns the starting and ending line number of the given declaration
+     * @param decl The declaration
+     * @return [start, end]
+     */
+    int[] getDeclarationSrcLocation(Declaration decl) {
+        Node node = this.sourceLocations.get(decl);
+        return new int[]{node.getToken().getLine(), node.getEndToken().getLine()};
     }
 }
