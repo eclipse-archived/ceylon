@@ -1,66 +1,36 @@
 Setting up Eclipse to build the Ceylon compiler
 ===============================================
 
+ 0. First make sure you have compiled the ceylon projects according to the instruction in the README.md file
+
  1. NB, in this file, "/path/to/ceylon" should be replaced with the
     full path of the directory containing this file.
 
- 2. Select "File -> New -> Java Project" from the main menu.
+ 2. Select "File -> Import..." from the main menu.
 
- 3. In the "New Java Project" dialog:
+ 3. In the "Import" dialog:
 
-    a1) If you have checked out ceylon-compiler in your Eclipse workspace:
-        i) Enter the name of your ceylon-compiler checkout folder "ceylon-compiler" in the "Project name" box.
-
-    a2) If you did not check out ceylon-compiler in your Eclipse workspace:
-        i) Uncheck "Use default location"
-        ii) Click "Browse" and select your ceylon-compiler checkout folder "ceylon-compiler".
-
-    b) Ensure "JRE" and "Project layout" are disabled
+    a) Select "General -> Existing Projects into Workspace"
 
     c) Click "Next >"
 
- 4. In the next page of the "New Java Project" dialog:
+ 4. In the next page of the "Import" dialog:
 
-    a) In the "Source" tab:
+    a) Make sure the "Select root directory" is selected
 
-       i) Remove all "langtools/*" entries from the source path except for "langtools/src/share/classes"
+    b) Click the "Browse..." button
 
-       ii) Remove all "test/*" entries from the source path
+    c) Select the folder where the compiler, language and spec projects are located
 
-       iii) Change "Default output folder" to "ceylon-compiler/build/classes"
-            If Eclipse asks you if you want to delete the "bin" folder, click "No". 
+    d) Click "Ok"
 
- 5a. If you have the ceylon-spec project in Eclipse: 
-     In the "Projects" tab:
+ 5. Back in the Wizard dialog:
 
-    a) In the "Add..." dialog:
-       
-       i) Select the "ceylon-spec" project you checked out
+    a) Make sure the projects ceylon-compiler, ceylon-spec and ceylon.language are selected
 
- 5b. If you don't have the ceylon-spec project in Eclipse: 
-     In the "Libraries" tab:
+    b) Click "Finish"
 
-    a) In the "Add External JARs..." dialog:
-       
-       i) Go to $HOME/.ceylon/repo/com/redhat/ceylon/typechecker/0.1
-
-       ii) Select com.redhat.ceylon.typechecker-0.1.jar
-
- 6. In the "Libraries" tab:
-
-    a) Remove the included junit jar from the build path
-
-    b) Click on "Add Library..."
-
-    c) Select "JUnit", click "Next"
-
-    d) Select "JUnit 4" as "Junit library version" and click "Finish"
-
- 7. Back in the Wizard dialog:
-
-    a) Click "Finish"
-
- 8. If you see an error of the form
+ 6. If you see an error of the form
 
     "Access restriction: Class is not accessible due to restriction on
     required library"
@@ -73,11 +43,11 @@ Setting up Eclipse to build the Ceylon compiler
     "Deprecated and restricted API" section in the dialog box.  Set
     this to Warning" or "Ignore".
 
- 9. The project should now be correctly set up.  To test it:
+ 7. The project should now be correctly set up.  To test it:
 
-10. Select "Run -> Run Configurations..." from the main menu.
+ 8. Select "Run -> Run Configurations..." from the main menu.
 
-11. In the "Run Configurations" dialog:
+ 9. In the "Run Configurations" dialog:
 
     a) Right click on "JUnit" in the list on the left
        and select "New" from the popup menu.
@@ -104,6 +74,6 @@ Setting up Eclipse to build the Ceylon compiler
 
     g) Click "Run"
 
-12. You should see some output from the Ceylon compiler in the
+10. You should see some output from the Ceylon compiler in the
     "Console" tab at the bottom of the screen. Some tests will fail
     but most should succeed.
