@@ -39,7 +39,11 @@ Then go into **ceylon-spec** and run
     
 To build and test the compiler return to **ceylon-compiler** and run
 
-    ant
+    ant clean build
+    
+To run the tests type
+
+    ant test
 
 Note that some of the tests currently fail. See more info in README.tests.
 
