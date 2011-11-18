@@ -94,6 +94,7 @@
   <!-- Rule to build compiler jar -->
   <target name="compiler.jar" depends="compiler.classes">
     <mkdir dir="${build.lib}"/>
+    <mkdir dir="${build.ceylon.cars}"/>
     <jar destfile="${compiler.jar}">
       <fileset dir="${build.classes}">
         <exclude name="ceylon/**"/>
