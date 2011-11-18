@@ -58,20 +58,18 @@ Setting up Eclipse to build the Ceylon compiler
  
     d) Select "Run a single test"
     
-    e) In the "Test class" line, select "Search...":
+    e) In the "Project" line, select "Browse...":
+
+       i) Select "ceylon-compiler"
+
+       ii) Click "Ok"
+
+    f) In the "Test class" line, select "Search...":
  
        i) Select "AllTests"
  
        ii) Click "Ok"
  
-    f) Select the "Classpath" tab.
-  
-       i) Click "Advanced..."
- 
-       ii) Choose "Select folder" and press "OK"
-
-       iii) Choose "ceylon-compiler/langtools/src/share/classes" and press "OK"
-
     g) Click "Run"
 
 10. You should see some output from the Ceylon compiler in the
