@@ -50,6 +50,7 @@ public class SummaryDoc extends CeylonDoc {
     }
 
     private void htmlHead() throws IOException {
+        write("<?xml charset='UTF-8'?>");
         open("html");
         open("head");
         around("title", "Overview");

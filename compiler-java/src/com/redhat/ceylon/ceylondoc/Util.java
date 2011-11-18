@@ -20,6 +20,7 @@
 
 package com.redhat.ceylon.ceylondoc;
 
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -59,11 +60,31 @@ public class Util {
     }
 
     private static String getFirstLine(String text) {
-        int dot = text.indexOf('.');
-        if(dot != -1 && dot <= FIRST_LINE_MAX_SIZE)
-            return text.substring(0, dot+1);
-        if(text.length() <= FIRST_LINE_MAX_SIZE)
+        // First try to get the first sentence
+        BreakIterator breaker = BreakIterator.getSentenceInstance();
+        breaker.setText(text);
+        breaker.first();
+        int dot = breaker.next();
+        // First sentence is sufficiently short
+        if (dot != BreakIterator.DONE
+                && dot <= FIRST_LINE_MAX_SIZE) {
+            return text.substring(0, dot).replaceAll("\\s*$", "");
+        }
+        if (text.length() <= FIRST_LINE_MAX_SIZE) {
             return text;
+        }
+        // First sentence is really long, to try to break on a word
+        breaker = BreakIterator.getWordInstance();
+        breaker.setText(text);
+        int pos = breaker.first();
+        while (pos < FIRST_LINE_MAX_SIZE
+                && pos != BreakIterator.DONE) {
+            pos = breaker.next();
+        }
+        if (pos != BreakIterator.DONE
+                && breaker.previous() != BreakIterator.DONE) {
+            return text.substring(0, breaker.current()).replaceAll("\\s*$", "") + "…";
+        }
         return text.substring(0, FIRST_LINE_MAX_SIZE-1) + "…";
     }
 
