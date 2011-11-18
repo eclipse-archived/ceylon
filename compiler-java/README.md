@@ -28,9 +28,18 @@ Directory structure:
 Build the compiler and tools
 ----------------------------
 
-To build and test the compiler and runtime just run
+First you must make sure you have built the **ceylon.language** and **ceylon-spec** projects.
+Go into **ceylon.language** first and run
 
-    ant build
+    ant clean publish
+    
+Then go into **ceylon-spec** and run
+
+    ant clean tree publish
+    
+To build and test the compiler return to **ceylon-compiler** and run
+
+    ant
 
 Note that some of the tests currently fail. See more info in README.tests.
 
