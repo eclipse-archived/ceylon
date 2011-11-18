@@ -40,18 +40,22 @@ public class SummaryDoc extends CeylonDoc {
     
     public void generate() throws IOException {
         setupWriter();
-        open("html");
-        open("head");
-        around("title", "Overview");
-        tag("link href='style.css' rel='stylesheet' type='text/css'");
-        close("head");
-        open("body");
+        htmlHead();
         overview();
         packages();
         close("body");
         close("html");
         writer.flush();
         writer.close();
+    }
+
+    private void htmlHead() throws IOException {
+        open("html");
+        open("head");
+        around("title", "Overview");
+        tag("link href='style.css' rel='stylesheet' type='text/css'");
+        close("head");
+        open("body");
     }
 
     private void overview() throws IOException {

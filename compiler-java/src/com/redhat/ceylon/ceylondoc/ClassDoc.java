@@ -153,14 +153,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 
     public void generate() throws IOException {
         setupWriter();
-        open("html");
-        open("head");
-        around("title", "Class for " + klass.getName());
-        tag("link href='" + getResourceUrl("style.css") +"' rel='stylesheet' type='text/css'");
-        around("script type='text/javascript' src='"+getResourceUrl("jquery-1.7.min.js")+"'");
-        around("script type='text/javascript' src='"+getResourceUrl("ceylond.js")+"'");
-        close("head");
-        open("body");
+        htmlHead();
         summary();
         innerClasses();
         attributes();
@@ -183,6 +176,10 @@ public class ClassDoc extends ClassOrPackageDoc {
         close("html");
         writer.flush();
         writer.close();
+    }
+
+    private void htmlHead() throws IOException {
+        htmlHead("Class for " + klass.getName());
     }
 
     public List<Declaration> getConcreteSharedMembers(TypeDeclaration decl, MemberSpecification specification) {

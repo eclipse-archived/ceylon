@@ -46,6 +46,17 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
 		super(module, tool, file);		
 	}
 
+	protected void htmlHead(String title) throws IOException {
+	    open("html");
+        open("head");
+        around("title", title);
+        tag("link href='" + getResourceUrl("style.css") + "' rel='stylesheet' type='text/css'");
+        around("script type='text/javascript' src='" + getResourceUrl("jquery-1.7.min.js") + "'");
+        around("script type='text/javascript' src='" + getResourceUrl("ceylond.js") + "'");
+        close("head");
+        open("body");
+	}
+	
     protected void writeSee(Declaration decl) throws IOException {
         Annotation see = Util.getAnnotation(decl, "see");
         if(see == null)

@@ -81,16 +81,7 @@ public class PackageDoc extends ClassOrPackageDoc {
 
     public void generate() throws IOException {
         setupWriter();
-        open("html");
-        open("head");
-        around("title", "Package " + pkg.getName());
-        tag("link href='"+getResourceUrl("style.css") + "' rel='stylesheet' type='text/css'");
-        open("script type='text/javascript' src='" + getResourceUrl("jquery-1.7.min.js'") + "'");
-        close("script");
-        open("script type='text/javascript' src='" + getResourceUrl("ceylond.js'") + "'");
-        close("script");
-        close("head");
-        open("body");
+        htmlHead();
         summary();
         attributes();
         methods();
@@ -100,6 +91,10 @@ public class PackageDoc extends ClassOrPackageDoc {
         close("html");
         writer.flush();
         writer.close();
+    }
+
+    private void htmlHead() throws IOException {
+        htmlHead("Package " + pkg.getName());
     }
 
     private void summary() throws IOException {
