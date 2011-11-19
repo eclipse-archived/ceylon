@@ -6,9 +6,9 @@ public class CustomTree extends Tree {
     
     public static class AttributeDeclaration 
             extends Tree.AttributeDeclaration {
-    	public AttributeDeclaration(Token token) {
-    		super(token);
-    	}
+        public AttributeDeclaration(Token token) {
+            super(token);
+        }
         @Override
         public void visit(Visitor visitor) {
             if (visitor instanceof NaturalVisitor) {
@@ -37,7 +37,7 @@ public class CustomTree extends Tree {
     public static class MethodDeclaration 
             extends Tree.MethodDeclaration {
         public MethodDeclaration(Token token) {
-        	super(token);
+            super(token);
         }
         @Override
         public void visit(Visitor visitor) {
@@ -73,7 +73,7 @@ public class CustomTree extends Tree {
     public static class MethodDefinition 
             extends Tree.MethodDefinition {
         public MethodDefinition(Token token) {
-        	super(token);
+            super(token);
         }
         @Override
         public void visitChildren(Visitor visitor) {
@@ -102,7 +102,7 @@ public class CustomTree extends Tree {
     public static class ClassDefinition 
             extends Tree.ClassDefinition {
         public ClassDefinition(Token token) {
-        	super(token);
+            super(token);
         }
         @Override
         public void visitChildren(Visitor visitor) {
@@ -149,7 +149,7 @@ public class CustomTree extends Tree {
     public static class ValueParameterDeclaration 
             extends Tree.ValueParameterDeclaration {
         public ValueParameterDeclaration(Token token) {
-        	super(token);
+            super(token);
         }
         @Override
         public void visit(Visitor visitor) {
@@ -179,7 +179,7 @@ public class CustomTree extends Tree {
     public static class FunctionalParameterDeclaration 
             extends Tree.FunctionalParameterDeclaration {
         public FunctionalParameterDeclaration(Token token) {
-        	super(token);
+            super(token);
         }
         @Override
         public void visit(Visitor visitor) {
@@ -211,7 +211,7 @@ public class CustomTree extends Tree {
     public static class ExtendedTypeExpression 
             extends Tree.ExtendedTypeExpression {
         public ExtendedTypeExpression(Token token) {
-        	super(token);
+            super(token);
         }
         @Override public String getNodeType() {
             return ExtendedTypeExpression.class.getSimpleName();
@@ -219,6 +219,43 @@ public class CustomTree extends Tree {
         public void setExtendedType(SimpleType type) {
             connect(type);
         }
+    }
+    
+    public static class StringLiteral
+            extends Tree.StringLiteral {
+        public StringLiteral(Token token) {
+            super(token);
+        }
+        @Override
+        public String getText() {
+            int start = getToken().getCharPositionInLine()+1;
+            StringBuilder result = new StringBuilder();
+            int num = 0;
+            for (String line: super.getText().split("\n|\r\n?")) {
+                if (num++==0 || line.length()<start) {
+                    result.append(line);
+                }
+                else {
+                    boolean trimIndent = true;
+                    for (int i=0; i<start; i++) {
+                        if (line.charAt(i)!=' ') {
+                            trimIndent = false;
+                            break;
+                        }
+                    }
+                    if (trimIndent) {
+                    	result.append(line.substring(start));
+                    }
+                    else {
+                    	result.append(line);
+                    }
+                }
+                result.append("\n");
+            }
+            result.setLength(result.length()-1);
+            return result.toString();
+        }
+        
     }
     
 }
