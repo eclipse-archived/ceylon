@@ -171,11 +171,12 @@
         
         <itemizedlist>
           <listitem>
-             <para>the declaration is a class,</para>
+            <para>one declaration is an initializer parameter of a class and the 
+            other is an attribute of the class,</para>
           </listitem>
           <listitem>
-            <para>one declaration is an initializer parameter of the class and the 
-            other is an attribute of the class,</para>
+            <para>the attribute is neither <literal>default</literal> nor 
+            <literal>formal</literal>,</para>
           </listitem>
           <listitem>
             <para>the type of the parameter is the same as the type of the attribute,
