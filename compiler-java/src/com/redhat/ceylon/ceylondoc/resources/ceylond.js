@@ -24,6 +24,7 @@ jQuery(function(){
    lines.push(ii);
   }
   SyntaxHighlighter.defaults['highlight'] = lines;
+  SyntaxHighlighter.defaults['gutter'] = false;
   SyntaxHighlighter.defaults['toolbar'] = false; 
   SyntaxHighlighter.all();
   setTimeout(function() {
