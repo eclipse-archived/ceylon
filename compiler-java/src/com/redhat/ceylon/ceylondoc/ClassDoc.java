@@ -182,11 +182,12 @@ public class ClassDoc extends ClassOrPackageDoc {
         htmlHead("Class for " + klass.getName());
     }
 
-    public List<Declaration> getConcreteSharedMembers(TypeDeclaration decl, MemberSpecification specification) {
+    public List<Declaration> getConcreteMembers(TypeDeclaration decl, MemberSpecification specification) {
         List<Declaration> members = new ArrayList<Declaration>();
         for (Declaration m : decl.getMembers())
-            if ((m.isShared() && !m.isFormal()) && specification.isSatisfiedBy(m))
+            if (!m.isFormal() && specification.isSatisfiedBy(m)) {
                 members.add((MethodOrValue) m);
+            }
         return members;
     }
 
@@ -195,14 +196,15 @@ public class ClassDoc extends ClassOrPackageDoc {
             return;
         TypeDeclaration subclass = klass;
         for (TypeDeclaration superClass : superClasses) {
-            List<Declaration> methods = getConcreteSharedMembers(superClass, specification);
+            List<Declaration> methods = getConcreteMembers(superClass, specification);
             if (methods.isEmpty())
                 continue;
             List<Declaration> notRefined = new ArrayList<Declaration>();
             // clean already listed methods (refined in subclasses)
             // done in 2 phases to avoid empty tables
             for (Declaration method : methods) {
-                if (subclass.getDirectMember(method.getName()) == null) {
+                if (subclass.getDirectMember(method.getName()) == null
+                        && tool.include(method)) {
                     notRefined.add(method);
                 }
             }
@@ -256,24 +258,30 @@ public class ClassDoc extends ClassOrPackageDoc {
     private void inheritedMembersFromInterfaces(MemberSpecification memberSpecification, String title) throws IOException {
         Map<TypeDeclaration, List<Declaration>> classMembers = new HashMap<TypeDeclaration, List<Declaration>>();
         for (ProducedType superInterface : superInterfaces) {
+            if (!tool.include(superInterface.getDeclaration())) {
+                continue;
+            }
             TypeDeclaration decl = superInterface.getDeclaration();
-            List<Declaration> members = getConcreteSharedMembers(decl, memberSpecification);
-            classMembers.put(decl, members);
-        }
-        for (ProducedType superInterface : superInterfaces) {
-            TypeDeclaration decl = superInterface.getDeclaration();
-            List<Declaration> members = getConcreteSharedMembers(decl, memberSpecification);
+            List<Declaration> members = getConcreteMembers(decl, memberSpecification);
             for (Declaration member : members) {
                 Declaration refined = member.getRefinedDeclaration();
-                if (refined != null && refined != member && !(refined.getContainer() instanceof Class)) {
-                    classMembers.get(refined.getContainer()).remove(refined);
+                if (tool.include(member) &&
+                        (refined == null || refined == member || (refined.getContainer() instanceof Class))) {
+                    List<Declaration> list = classMembers.get(decl);
+                    if (list == null) {
+                        list = new ArrayList<Declaration>();
+                        classMembers.put(decl, list);
+                    }
+                    list.add(member);
                 }
             }
         }
         for (TypeDeclaration superInterface : classMembers.keySet()) {
             List<Declaration> members = classMembers.get(superInterface);
-            if (members.isEmpty())
+            if (members == null 
+                    || members.isEmpty()) {
                 continue;
+            }
             makeSureInheritedSectionIsOpen();
             open("table");
             open("tr class='TableHeadingColor'");
@@ -308,7 +316,9 @@ public class ClassDoc extends ClassOrPackageDoc {
             return;
         openTable("Nested Classes", "Modifiers", "Name and Description");
         for (Class m : innerClasses) {
-            doc(m);
+            if (tool.include(m)) {
+                doc(m);
+            }
         }
         close("table");
     }
@@ -449,7 +459,9 @@ public class ClassDoc extends ClassOrPackageDoc {
         openTable("Methods", "Modifier and Type", "Method and Description");
 
         for (Method m : methods) {
-            doc(m);
+            if (tool.include(m)) {
+                doc(m);
+            }
         }
         close("table");
     }
@@ -459,7 +471,9 @@ public class ClassDoc extends ClassOrPackageDoc {
             return;
         openTable("Attributes", "Modifier and Type", "Name and Description");
         for (MethodOrValue attribute : attributes) {
-            doc(attribute);
+            if (tool.include(attribute)) {
+                doc(attribute);
+            }
         }
         close("table");
     }

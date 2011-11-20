@@ -130,7 +130,9 @@ public class PackageDoc extends ClassOrPackageDoc {
             return;
         openTable("Methods", "Modifier and Type", "Method and Description");
         for (Method m : methods) {
-            doc(m);
+            if (tool.include(m)) {
+                doc(m);
+            }
         }
         close("table");
     }
@@ -138,7 +140,9 @@ public class PackageDoc extends ClassOrPackageDoc {
     private void attributes() throws IOException {
         openTable("Attributes", "Modifier and Type", "Name and Description");
         for (MethodOrValue v : attributes) {
-            doc(v);
+            if (tool.include(v)) {
+                doc(v);
+            }
         }
         close("table");
     }
@@ -146,7 +150,9 @@ public class PackageDoc extends ClassOrPackageDoc {
     private void interfaces() throws IOException {
         openTable("Interfaces", "Modifier and Type", "Description");
         for (Interface i : interfaces) {
-            doc(i);
+            if (tool.include(i)) {
+                doc(i);
+            }
         }
         close("table");
     }
@@ -154,7 +160,9 @@ public class PackageDoc extends ClassOrPackageDoc {
     private void classes() throws IOException {
         openTable("Classes", "Modifier and Type", "Description");
         for (Class c : classes) {
-            doc(c);
+            if (tool.include(c)) {
+                doc(c);
+            }
         }
         close("table");
     }
