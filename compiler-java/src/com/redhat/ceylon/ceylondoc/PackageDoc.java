@@ -41,9 +41,25 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 public class PackageDoc extends ClassOrPackageDoc {
 
     private Package pkg;
+    /**
+     * The {@linkplain #include(Declaration) visible} 
+     * classes in the package
+     */
     private List<Class> classes;
+    /**
+     * The {@linkplain #include(Declaration) visible} 
+     * interfaces in the package
+     */
     private List<Interface> interfaces;
+    /**
+     * The {@linkplain #include(Declaration) visible} 
+     * attributes in the package
+     */
     private List<MethodOrValue> attributes;
+    /**
+     * The {@linkplain #include(Declaration) visible} 
+     * methods in the package
+     */
     private List<Method> methods;
 
 	public PackageDoc(CeylonDocTool tool, Package pkg) throws IOException {

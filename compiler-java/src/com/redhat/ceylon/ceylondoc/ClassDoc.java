@@ -51,14 +51,50 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 public class ClassDoc extends ClassOrPackageDoc {
 
     private ClassOrInterface klass;
+    /**
+     * The {@linkplain #include(Declaration) visible} 
+     * methods
+     */
     private List<Method> methods;
+    /**
+     * The {@linkplain #include(Declaration) visible} 
+     * attributes
+     */
     private List<MethodOrValue> attributes;
+    /**
+     * The {@linkplain #include(Declaration) visible} 
+     * subclasses of the key
+     */
     private List<ClassOrInterface> subclasses;
+    /**
+     * The {@linkplain #include(Declaration) visible} classes/interfaces 
+     * that satisfy the key
+     */
     private List<ClassOrInterface> satisfyingClassesOrInterfaces;
+    /**
+     * The {@linkplain #include(Declaration) visible} classes 
+     * that satisfy the key
+     */
     private List<Class> satisfyingClasses;
+    /**
+     * The {@linkplain #include(Declaration) visible} 
+     * inner classes
+     */
     private List<Class> innerClasses;
+    /**
+     * The {@linkplain #include(Declaration) visible} interfaces 
+     * that satisfy the key
+     */
     private List<Interface> satisfyingInterfaces;
+    /**
+     * The {@linkplain #include(Declaration) visible} 
+     * superinterfaces
+     */
     private List<ProducedType> superInterfaces;
+    /**
+     * The {@linkplain #include(Declaration) visible} 
+     * superclasses
+     */
     private List<TypeDeclaration> superClasses;
     private boolean inheritedSectionOpen;
     private String inheritedSectionCategory;
@@ -95,6 +131,17 @@ public class ClassDoc extends ClassOrPackageDoc {
         }
     };
 
+    /**
+     * 
+     * @param tool
+     * @param klass
+     * @param subclasses The {@linkplain #include(Declaration) visible} 
+     * subclasses of the key
+     * @param satisfyingClassesOrInterfaces The 
+     * {@linkplain #include(Declaration) visible} class/interfaces 
+     * that satisfy the key
+     * @throws IOException
+     */
     public ClassDoc(CeylonDocTool tool,   
             ClassOrInterface klass, List<ClassOrInterface> subclasses, List<ClassOrInterface> satisfyingClassesOrInterfaces) throws IOException {
         super(tool.getModule(klass), tool, tool.getObjectFile(klass));

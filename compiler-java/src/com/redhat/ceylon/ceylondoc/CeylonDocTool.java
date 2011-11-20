@@ -65,7 +65,14 @@ public class CeylonDocTool {
     private Modules modules;
     private String srcDir;
     private String destDir;
+    /**
+     * The {@linkplain #include(Declaration) visible} subclasses of the key
+     */
     private Map<ClassOrInterface, List<ClassOrInterface>> subclasses = new HashMap<ClassOrInterface, List<ClassOrInterface>>();
+    /**
+     * The {@linkplain #include(Declaration) visible} class/interfaces 
+     * that satisfy the key
+     */
     private Map<TypeDeclaration, List<ClassOrInterface>> satisfyingClassesOrInterfaces = new HashMap<TypeDeclaration, List<ClassOrInterface>>();
     private boolean showPrivate;
     private boolean omitSource;
