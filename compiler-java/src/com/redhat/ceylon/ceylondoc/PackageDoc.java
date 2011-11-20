@@ -58,6 +58,9 @@ public class PackageDoc extends ClassOrPackageDoc {
         attributes = new ArrayList<MethodOrValue>();
         methods = new ArrayList<Method>();
         for (Declaration m : pkg.getMembers()) {
+            if (!include(m)) {
+                continue;
+            }
             if (m instanceof Interface)
                 interfaces.add((Interface) m);
             else if (m instanceof Class)
@@ -130,9 +133,7 @@ public class PackageDoc extends ClassOrPackageDoc {
             return;
         openTable("Methods", "Modifier and Type", "Method and Description");
         for (Method m : methods) {
-            if (tool.include(m)) {
-                doc(m);
-            }
+            doc(m);
         }
         close("table");
     }
@@ -140,9 +141,7 @@ public class PackageDoc extends ClassOrPackageDoc {
     private void attributes() throws IOException {
         openTable("Attributes", "Modifier and Type", "Name and Description");
         for (MethodOrValue v : attributes) {
-            if (tool.include(v)) {
-                doc(v);
-            }
+            doc(v);
         }
         close("table");
     }
@@ -150,9 +149,7 @@ public class PackageDoc extends ClassOrPackageDoc {
     private void interfaces() throws IOException {
         openTable("Interfaces", "Modifier and Type", "Description");
         for (Interface i : interfaces) {
-            if (tool.include(i)) {
-                doc(i);
-            }
+            doc(i);
         }
         close("table");
     }
@@ -160,9 +157,7 @@ public class PackageDoc extends ClassOrPackageDoc {
     private void classes() throws IOException {
         openTable("Classes", "Modifier and Type", "Description");
         for (Class c : classes) {
-            if (tool.include(c)) {
-                doc(c);
-            }
+            doc(c);
         }
         close("table");
     }

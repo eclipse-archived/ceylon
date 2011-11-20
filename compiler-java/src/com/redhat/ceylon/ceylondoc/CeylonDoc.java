@@ -155,7 +155,7 @@ public abstract class CeylonDoc extends Markup {
     }
 
     protected boolean include(Declaration decl){
-        return tool.isShowPrivate() || decl.isShared();
+        return tool.include(decl);
     }
     
     protected abstract String getObjectUrl(Object to) throws IOException;

@@ -336,13 +336,7 @@ public class CeylonDocTool {
         return getPackage(decl).getModule();
     }
 
-    /**
-     * Whether the given declaration should be included in the documentation 
-     * according to the {@link #isShowPrivate() -private} option and the 
-     * declarations {@code shared}-ness. 
-     * @param decl The declaration
-     * @return true if the declaration should be included
-     */
+
     protected boolean include(Declaration decl){
         return showPrivate || decl.isShared();
     }
