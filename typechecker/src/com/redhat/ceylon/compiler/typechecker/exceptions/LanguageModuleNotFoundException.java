@@ -5,8 +5,9 @@ package com.redhat.ceylon.compiler.typechecker.exceptions;
  *
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
-public class LanguageModuleNotFoundException extends RuntimeException {
-    public LanguageModuleNotFoundException(String message) {
+public class LanguageModuleNotFoundException extends RuntimeException {	
+	private static final long serialVersionUID = -3520692521592355218L;
+	public LanguageModuleNotFoundException(String message) {
         super(message);
     }
 }
