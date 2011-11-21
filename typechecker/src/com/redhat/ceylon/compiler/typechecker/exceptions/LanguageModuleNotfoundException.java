@@ -5,8 +5,8 @@ package com.redhat.ceylon.compiler.typechecker.exceptions;
  *
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
-public class LanguageModuleNotfoundException extends RuntimeException {
-    public LanguageModuleNotfoundException(String message) {
+public class LanguageModuleNotFoundException extends RuntimeException {
+    public LanguageModuleNotFoundException(String message) {
         super(message);
     }
 }
