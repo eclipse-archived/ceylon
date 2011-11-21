@@ -22,6 +22,7 @@ package com.redhat.ceylon.ceylondoc;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,8 +44,8 @@ public abstract class CeylonDoc extends Markup {
     protected final CeylonDocTool tool;
     protected final Module module;
 
-    public CeylonDoc(Module module, CeylonDocTool tool, File file) {
-        super(file);
+    public CeylonDoc(Module module, CeylonDocTool tool, Writer writer) {
+        super(writer);
         this.module = module;
         this.tool = tool;
     }

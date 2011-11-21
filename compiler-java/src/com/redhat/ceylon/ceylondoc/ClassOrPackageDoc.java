@@ -26,6 +26,7 @@ import static com.redhat.ceylon.ceylondoc.Util.getModifiers;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
@@ -42,8 +43,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 public abstract class ClassOrPackageDoc extends CeylonDoc {
 
-	public ClassOrPackageDoc(Module module, CeylonDocTool tool, File file) {
-		super(module, tool, file);		
+	public ClassOrPackageDoc(Module module, CeylonDocTool tool, Writer writer) {
+		super(module, tool, writer);
 	}
 
     protected void writeSee(Declaration decl) throws IOException {

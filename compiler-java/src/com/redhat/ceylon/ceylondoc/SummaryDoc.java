@@ -21,6 +21,7 @@
 package com.redhat.ceylon.ceylondoc;
 
 import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -33,20 +34,17 @@ public class SummaryDoc extends CeylonDoc {
 
     private Module module;
 
-    public SummaryDoc(CeylonDocTool tool, Module module) throws IOException {
-        super(module, tool, tool.getObjectFile(module));
+    public SummaryDoc(CeylonDocTool tool, Writer writer, Module module) throws IOException {
+        super(module, tool, writer);
         this.module = module;
     }
     
     public void generate() throws IOException {
-        setupWriter();
         htmlHead();
         overview();
         packages();
         close("body");
         close("html");
-        writer.flush();
-        writer.close();
     }
 
     private void htmlHead() throws IOException {

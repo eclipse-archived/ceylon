@@ -26,6 +26,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -264,9 +265,14 @@ public class CeylonDocTool {
 
     private void copySourceFiles() throws FileNotFoundException, IOException {
         for (PhasedUnit pu : phasedUnits) {
-            Markup markup = new Markup(new File(destDir, pu.getPathRelativeToSrcDir()+".html"));
-            markup.setupWriter();
+            File file = new File(destDir, pu.getPathRelativeToSrcDir()+".html");
+            File dir = file.getParentFile();
+            if (!dir.exists() && !dir.mkdirs()) {
+                throw new IOException("Couldn't create directory for file: " + file);
+            }
+            FileWriter writer = new FileWriter(file);
             try {
+            Markup markup = new Markup(writer);
                 markup.open("html", "head");
                 markup.around("title", pu.getUnit().getFilename());
                 Package decl = pu.getUnit().getPackage();
@@ -291,13 +297,18 @@ public class CeylonDocTool {
                 }
                 markup.close("pre", "body", "html");
             } finally {
-                markup.writer.close();
+                writer.close();
             }
         }
     }
 
     private void doc(Module module) throws IOException {
-        new SummaryDoc(this, module).generate();
+        FileWriter writer = new FileWriter(getObjectFile(module));
+        try {
+            new SummaryDoc(this, writer, module).generate();
+        } finally {
+            writer.close();
+        }
     }
 
     private void makeIndex(Module module) throws IOException {
@@ -305,7 +316,12 @@ public class CeylonDocTool {
     }
 
     private void doc(Package pkg) throws IOException {
-        new PackageDoc(this, pkg).generate();
+        FileWriter writer = new FileWriter(getObjectFile(pkg));
+        try {
+            new PackageDoc(this, writer, pkg).generate();
+        } finally {
+            writer.close();
+        }
     }
 
     private void copyResource(String path, String target) throws IOException {
@@ -328,11 +344,15 @@ public class CeylonDocTool {
     private void doc(Declaration decl) throws IOException {
         if (decl instanceof ClassOrInterface) {
             if (include(decl)) {
-                Scope scope = getPackage(decl);
-                new ClassDoc(this,
-                        (ClassOrInterface) decl,
-                        subclasses.get(decl),
-                        satisfyingClassesOrInterfaces.get(decl)).generate();
+                FileWriter writer = new FileWriter(getObjectFile(decl));
+                try {
+                    new ClassDoc(this, writer,
+                            (ClassOrInterface) decl,
+                            subclasses.get(decl),
+                            satisfyingClassesOrInterfaces.get(decl)).generate();
+                } finally {
+                    writer.close();
+                }
             }
         }
     }

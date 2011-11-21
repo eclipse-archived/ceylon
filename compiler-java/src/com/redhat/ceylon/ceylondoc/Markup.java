@@ -27,12 +27,11 @@ import java.io.Writer;
 
 public class Markup {
 
-    protected Writer writer;
-    protected final File file;
+    private final Writer writer;
 
-    public Markup(File file) {
+    public Markup(Writer writer) {
         super();
-        this.file = file;
+        this.writer = writer;
     }
 
     /**
@@ -88,14 +87,6 @@ public class Markup {
         around("th", firstColumnTitle);
         around("th", secondColumnTitle);
         close("tr");
-    }
-
-    protected void setupWriter() throws IOException {
-        File dir = file.getParentFile();
-        if (!dir.exists() && !dir.mkdirs()) {
-            throw new IOException("Couldn't create directory for file: " + file);
-        }
-        this.writer = new FileWriter(file);
     }
 
     /**

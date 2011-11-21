@@ -27,6 +27,7 @@ import static com.redhat.ceylon.ceylondoc.Util.getSuperInterfaces;
 import static com.redhat.ceylon.ceylondoc.Util.isNullOrEmpty;
 
 import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -142,9 +143,9 @@ public class ClassDoc extends ClassOrPackageDoc {
      * that satisfy the key
      * @throws IOException
      */
-    public ClassDoc(CeylonDocTool tool,   
+    public ClassDoc(CeylonDocTool tool, Writer writer,
             ClassOrInterface klass, List<ClassOrInterface> subclasses, List<ClassOrInterface> satisfyingClassesOrInterfaces) throws IOException {
-        super(tool.getModule(klass), tool, tool.getObjectFile(klass));
+        super(tool.getModule(klass), tool, writer);
         if (subclasses != null) {
             this.subclasses = subclasses;
         } else {
@@ -199,7 +200,6 @@ public class ClassDoc extends ClassOrPackageDoc {
     }
 
     public void generate() throws IOException {
-        setupWriter();
         htmlHead();
         summary();
         innerClasses();
@@ -221,8 +221,6 @@ public class ClassDoc extends ClassOrPackageDoc {
         
         close("body");
         close("html");
-        writer.flush();
-        writer.close();
     }
 
     private void htmlHead() throws IOException {

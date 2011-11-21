@@ -23,6 +23,7 @@ package com.redhat.ceylon.ceylondoc;
 import static com.redhat.ceylon.ceylondoc.Util.getModifiers;
 
 import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -62,8 +63,8 @@ public class PackageDoc extends ClassOrPackageDoc {
      */
     private List<Method> methods;
 
-	public PackageDoc(CeylonDocTool tool, Package pkg) throws IOException {
-		super(pkg.getModule(), tool, tool.getObjectFile(pkg));
+	public PackageDoc(CeylonDocTool tool, Writer writer, Package pkg) throws IOException {
+		super(pkg.getModule(), tool, writer);
 		this.pkg = pkg;
 		loadMembers();
 	}
@@ -99,7 +100,6 @@ public class PackageDoc extends ClassOrPackageDoc {
     }
 
     public void generate() throws IOException {
-        setupWriter();
         htmlHead();
         summary();
         attributes();
@@ -108,8 +108,6 @@ public class PackageDoc extends ClassOrPackageDoc {
         classes();
         close("body");
         close("html");
-        writer.flush();
-        writer.close();
     }
 
     private void htmlHead() throws IOException {
