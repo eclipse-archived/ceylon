@@ -1,7 +1,11 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Module {
 
@@ -11,6 +15,7 @@ public class Module {
     private List<Module> dependencies = new ArrayList<Module>();
     private Module languageModule;
     private boolean available;
+    private Set<Tree.SpecifiedArgument> dependencyDefinitions = new HashSet<Tree.SpecifiedArgument>();
 
     /**
      * Whether or not the module is available in the
@@ -90,4 +95,13 @@ public class Module {
         return "Module[" + getNameAsString() + "]";
     }
 
+    public void addDependencyDefinition(Tree.SpecifiedArgument that) {
+        this.dependencyDefinitions.add(that);
+    }
+
+    public void addMissingDependencyError(String error) {
+        for (Tree.SpecifiedArgument def :  dependencyDefinitions) {
+            def.addError(error);
+        }
+    }
 }

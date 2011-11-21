@@ -49,10 +49,11 @@ public class ModuleVisitor extends Visitor {
         //safety, if the object is not of type Module, ignore
         if (isModule) {
             final Tree.Identifier identifier = that.getIdentifier();
-			String currentModuleName = getQuotedIfPresent( "name", that, identifier );			
-			if ( currentModuleName != null) {
+            String currentModuleName = getQuotedIfPresent( "name", that, identifier );
+            if ( currentModuleName != null) {
                 final String[] splitModuleName = currentModuleName.split("[\\.]");
                 currentModule = moduleBuilder.getOrCreateModule(Arrays.asList(splitModuleName));
+                currentModule.addDependencyDefinition(that);
                 //main module definition
                 if ( mainModule == null) {
                     mainModule = currentModule;

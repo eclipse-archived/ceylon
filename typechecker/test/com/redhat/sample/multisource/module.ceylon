@@ -7,5 +7,9 @@ Module module {
         name = 'ceylon.language';
         version = '0.1';
         export = true;
+    },
+    Import {
+        @error name = 'non.existent.module';
+        version = '1.0';
     }
 }

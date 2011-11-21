@@ -9,6 +9,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
+import com.redhat.ceylon.compiler.typechecker.exceptions.LanguageModuleNotfoundException;
 import com.redhat.ceylon.compiler.typechecker.io.ArtifactProvider;
 import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -79,9 +80,14 @@ public class ModuleValidator {
                             .append("\n\tDependency tree: ");
                     buildDependencyString(dependencyTree, module, error);
                     error.append(".");
-                    error.append("\n\tGet ceylon-spec and run 'ant publish' or 'ant publish.language.module'");
-                    System.err.println(error);
-                    System.exit(1);
+                    if ( module.getLanguageModule() == module ) {
+                        error.append("\n\tGet ceylon.language and run 'ant publish' Get more information at http://ceylon-lang.org/code/source/#ceylonlanguage_module");
+                        //ceylon.language is essential to the type checker
+                        throw new LanguageModuleNotfoundException(error.toString());
+                    }
+                    else {
+                        module.addMissingDependencyError(error.toString());
+                    }
                 }
                 else {
                     //parse module units and build module dependency and carry on
