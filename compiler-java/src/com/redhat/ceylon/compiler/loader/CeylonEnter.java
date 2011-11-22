@@ -41,7 +41,6 @@ import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleValidator;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -268,11 +267,6 @@ public class CeylonEnter extends Enter {
     private void typeCheck() {
         final java.util.List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
 
-        final ModuleValidator moduleValidator = new ModuleValidator(ceylonContext);
-        // FIXME: this breaks because it tries to load dependencies on its own
-        // moduleValidator.verifyModuleDependencyTree();
-        // FIXME: what's that for?
-        java.util.List<PhasedUnits> phasedUnitsOfDependencies = moduleValidator.getPhasedUnitsOfDependencies();
         for (PhasedUnit pu : listOfUnits) {
             pu.validateTree();
             pu.scanDeclarations();
