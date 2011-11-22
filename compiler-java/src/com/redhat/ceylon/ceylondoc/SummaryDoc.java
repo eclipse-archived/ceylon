@@ -73,6 +73,9 @@ public class SummaryDoc extends CeylonDoc {
         open("div");
         write(module.getNameAsString() + "/" + module.getVersion());
         close("div");
+        open("div");
+        around("a href='"+getResourceUrl("search.html")+"'", "Search");
+        close("div");
         String srcUrl = getSrcUrl(module);
         if (!tool.isOmitSource()
                 && srcUrl != null) {

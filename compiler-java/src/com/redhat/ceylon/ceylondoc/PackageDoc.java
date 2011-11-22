@@ -130,6 +130,9 @@ public class PackageDoc extends ClassOrPackageDoc {
         open("div");
         write(pkg.getModule().getNameAsString() + "/" + pkg.getModule().getVersion());
         close("div");
+        open("div");
+        around("a href='"+getResourceUrl("search.html")+"'", "Search");
+        close("div");
         String srcUrl = getSrcUrl(pkg);
         if (!tool.isOmitSource()
                 && srcUrl != null) {

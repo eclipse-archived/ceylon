@@ -392,6 +392,9 @@ public class ClassDoc extends ClassOrPackageDoc {
         open("div");
         write(pkg.getModule().getNameAsString() + "/" + pkg.getModule().getVersion());
         close("div");
+        open("div");
+        around("a href='"+getResourceUrl("search.html")+"'", "Search");
+        close("div");
         close("div");
 
         open("div class='head summary'");
