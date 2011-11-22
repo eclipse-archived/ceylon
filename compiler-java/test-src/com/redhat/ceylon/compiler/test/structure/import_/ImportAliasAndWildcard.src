@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.test.structure.import_;
 
-class ImportWildcard {
+class ImportAliasAndWildcard {
     
     private final void m() {
         new com.redhat.ceylon.compiler.test.structure.import_.pkg.C1();
@@ -11,11 +11,11 @@ class ImportWildcard {
         .com.redhat.ceylon.compiler.test.structure.import_.pkg.m2.m2();
     }
     
-    ImportWildcard() {
+    ImportAliasAndWildcard() {
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new ImportWildcard();
+        new ImportAliasAndWildcard();
     }
 }
