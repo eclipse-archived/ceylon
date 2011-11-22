@@ -20,6 +20,7 @@
 
 package com.redhat.ceylon.compiler.codegen;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -863,8 +864,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             } else if (decl.isToplevel()) {
                 java.util.List<String> path = new LinkedList<String>();
                 // FQN must start with empty ident (see https://github.com/ceylon/ceylon-compiler/issues/148)
-                path.add("");
-                path.addAll(decl.getContainer().getQualifiedName());
+                path.addAll(Arrays.asList(decl.getContainer().getQualifiedNameString().split("\\.")));
                 // class
                 path.add(Util.quoteIfJavaKeyword(decl.getName()));
                 // method
