@@ -1,5 +1,5 @@
 rem User HOME
-set HOME=%HOMEDRIVE%%HOMEPATH%
+set HOME=%USERPROFILE%
 
 rem Find CEYLON_HOME
 if "%CEYLON_HOME%" == "" set CEYLON_HOME=%~dp0..
