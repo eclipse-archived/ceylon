@@ -5,6 +5,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -23,18 +24,36 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 class Util extends Visitor {
     
     static TypedDeclaration getBaseDeclaration(Tree.BaseMemberExpression bme) {
-        return (TypedDeclaration) bme.getScope().getMemberOrParameter(bme.getUnit(), 
+        Declaration result = bme.getScope().getMemberOrParameter(bme.getUnit(), 
                 name(bme.getIdentifier()));
+        if (result instanceof TypedDeclaration) {
+        	return (TypedDeclaration) result;
+        }
+        else {
+        	return null;
+        }
     }
     
     static TypeDeclaration getBaseDeclaration(Tree.BaseType bt) {
-        return (TypeDeclaration) bt.getScope().getMemberOrParameter(bt.getUnit(), 
+        Declaration result = bt.getScope().getMemberOrParameter(bt.getUnit(), 
                 name(bt.getIdentifier()));
+        if (result instanceof TypeDeclaration) {
+        	return (TypeDeclaration) result;
+        }
+        else {
+        	return null;
+        }
     }
     
     static TypeDeclaration getBaseDeclaration(Tree.BaseTypeExpression bte) {
-        return (TypeDeclaration) bte.getScope().getMemberOrParameter(bte.getUnit(), 
+        Declaration result = bte.getScope().getMemberOrParameter(bte.getUnit(), 
                 name(bte.getIdentifier()));
+        if (result instanceof TypeDeclaration) {
+        	return (TypeDeclaration) result;
+        }
+        else {
+        	return null;
+        }
     }
     
     static void checkTypeBelongsToContainingScope(ProducedType type,
