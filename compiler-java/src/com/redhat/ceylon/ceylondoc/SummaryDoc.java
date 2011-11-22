@@ -50,13 +50,7 @@ public class SummaryDoc extends CeylonDoc {
     }
 
     private void htmlHead() throws IOException {
-        write("<?xml charset='UTF-8'?>");
-        open("html");
-        open("head");
-        around("title", "Overview");
-        tag("link href='style.css' rel='stylesheet' type='text/css'");
-        close("head");
-        open("body");
+        htmlHead("Overview");
     }
 
     private void overview() throws IOException {

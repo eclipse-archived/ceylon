@@ -204,6 +204,19 @@ public abstract class CeylonDoc extends Markup {
         }
         close("div");
     }
+
+    protected void htmlHead(String title) throws IOException {
+        write("<?xml charset='UTF-8'?>");
+        open("html");
+        open("head");
+        around("title", title);
+        tag("link href='" + getResourceUrl("style.css") + "' rel='stylesheet' type='text/css'");
+        around("script type='text/javascript' src='" + getResourceUrl("jquery-1.7.min.js") + "'");
+        around("script type='text/javascript' src='" + getResourceUrl("ceylond.js") + "'");
+        close("head");
+        open("body");
+        writeKeyboardShortcuts();
+    }
 }
 
 
