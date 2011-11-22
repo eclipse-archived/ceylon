@@ -38,6 +38,16 @@ public class Module {
         return packages;
     }
 
+    public List<Package> getSharedPackages() {
+        List<Package> list = new ArrayList<Package>();
+        for (Package p: packages) {
+        	if (p.isShared()) {
+        		list.add(p);
+        	}
+        }
+        return list;
+    }
+
     public List<Module> getDependencies() {
         return dependencies;
     }
@@ -61,14 +71,23 @@ public class Module {
     public List<Package> getAllPackages() {
         List<Package> list = new ArrayList<Package>();
         list.addAll(packages);
-        for (Module m : dependencies) {
+        for (Module m: dependencies) {
+            list.addAll(m.getSharedPackages());
+        }
+        return list;
+    }
+
+    List<Package> getAllKnownPackages() {
+        List<Package> list = new ArrayList<Package>();
+        list.addAll(packages);
+        for (Module m: dependencies) {
             list.addAll(m.getPackages());
         }
         return list;
     }
 
     public Package getPackage(String name) {
-        for (Package pkg: getAllPackages()) {
+        for (Package pkg: getAllKnownPackages()) {
             if ( pkg.getQualifiedNameString().equals(name) ) {
                 return pkg;
             }
