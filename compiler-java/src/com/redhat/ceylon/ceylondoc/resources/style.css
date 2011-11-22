@@ -151,3 +151,29 @@ ul.inheritance ul.inheritance li:before {
  float: right;
  font-size: small;
 }
+
+#results .match {
+ margin: 0.5em 1em;
+ padding: 0.5em 1em;
+ border-top: 1px solid gray;
+ -webkit-border-radius: 5px;
+ -moz-border-radius: 5px;
+ border-radius: 5px;
+}
+
+#results .type {
+ float: right;
+}
+
+#results .highlight {
+ background: Highlight;
+ color: HighlightText;
+}
+
+#results .selected {
+ background: #C7D8D8;
+}
+
+#search {
+ text-align: center;
+}

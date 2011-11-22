@@ -239,6 +239,7 @@ public class CeylonDocTool {
         copyResource("resources/ceylond.js", "ceylond.js");
         copyResource("resources/shCore.js", "shCore.js");
         copyResource("resources/shBrushCeylon.js", "shBrushCeylon.js");
+        copyResource("resources/search.html", "search.html");
     }
 
     private void buildSourceLocations() {
