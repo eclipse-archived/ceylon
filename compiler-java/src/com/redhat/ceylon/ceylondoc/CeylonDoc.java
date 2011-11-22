@@ -210,7 +210,6 @@ public abstract class CeylonDoc extends Markup {
         open("script type='text/javascript'");
         write("jQuery('body').keypress(function(evt){\n");
         write(" evt = evt || window.event;\n");
-        write(" console.log(evt.keyCode);\n");
         writeKeyboardShortcut('s', getResourceUrl("search.html"));
         writeKeyboardShortcut('o', getResourceUrl("index.html"));
         writeAdditionalKeyboardShortcuts();
