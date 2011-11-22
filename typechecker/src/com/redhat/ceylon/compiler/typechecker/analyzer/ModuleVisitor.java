@@ -9,6 +9,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifiedArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -106,13 +107,21 @@ public class ModuleVisitor extends Visitor {
                 if (aid!=null && aid.getText().equals(name)) {
                     SpecifiedArgument sa = (Tree.SpecifiedArgument) arg;
                     Tree.SpecifierExpression se = sa.getSpecifierExpression();
-                    if (se!=null && se.getExpression()!=null && 
-                                se.getExpression().getTerm() instanceof Tree.Literal) {
-                        String text = se.getExpression().getTerm().getText();
-                        if (text.length()>=2 &&
-                                (text.startsWith("'") && text.endsWith("'") || 
-                                text.startsWith("\"") && text.endsWith("\"")) ) {
-                            return text.substring(1, text.length()-1);
+                    if (se!=null && se.getExpression()!=null) {
+                        Term term = se.getExpression().getTerm();
+						if ( term instanceof Tree.Literal) {
+	                        String text = term.getText();
+	                        if (text.length()>=2 &&
+	                                (text.startsWith("'") && text.endsWith("'") || 
+	                                text.startsWith("\"") && text.endsWith("\"")) ) {
+	                            return text.substring(1, text.length()-1);
+	                        }
+	                        else {
+	                        	return text;
+	                        }
+                        }
+                        else if ( term instanceof Tree.BaseMemberExpression) {
+                        	return ((Tree.BaseMemberExpression) term).getIdentifier().getText();
                         }
                     }
                 }

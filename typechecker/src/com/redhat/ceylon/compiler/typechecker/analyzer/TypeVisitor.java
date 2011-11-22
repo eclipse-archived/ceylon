@@ -96,6 +96,10 @@ public class TypeVisitor extends Visitor {
             Module module = unit.getPackage().getModule();
             Package pkg = module.getPackage(nameToImport);
             if (pkg != null) {
+                if (!pkg.getModule().equals(module) && !pkg.isShared()) {
+                    path.addError("imported package is not shared: " + 
+                            nameToImport);
+                }
                 return pkg; 
             }
             path.addError("package not found: " + nameToImport);
@@ -520,7 +524,7 @@ public class TypeVisitor extends Visitor {
         if (that.getTypes()!=null) {
             for (Tree.SimpleType st: that.getTypes()) {
                 ProducedType stt = st.getTypeModel();
-				if (stt!=null && stt.getDeclaration() instanceof TypeParameter) {
+                if (stt!=null && stt.getDeclaration() instanceof TypeParameter) {
                     TypeDeclaration td = (TypeDeclaration) that.getScope();
                     if (!(td instanceof TypeParameter)) {
                         TypeParameter tp = (TypeParameter) stt.getDeclaration();
