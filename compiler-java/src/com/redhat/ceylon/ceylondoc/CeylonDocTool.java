@@ -131,7 +131,7 @@ public class CeylonDocTool {
         return getFolder(getPackage(klass));
     }
 
-    private String kind(Object obj) {
+    public String kind(Object obj) {
         if (obj instanceof Class) {
             return Character.isUpperCase(((Class)obj).getName().charAt(0)) ? "class" : "object";
         } else if (obj instanceof Interface) {
