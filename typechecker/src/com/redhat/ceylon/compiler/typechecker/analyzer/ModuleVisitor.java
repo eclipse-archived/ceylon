@@ -25,10 +25,10 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
 public class ModuleVisitor extends Visitor {
-	
-	//TODO: we need to add *much* more validation of the
-	//      format of the descriptor
-	
+    
+    //TODO: we need to add *much* more validation of the
+    //      format of the descriptor
+    
     /**
      * Instance of the visited module which will receive
      * the dependencies declaration
@@ -51,12 +51,12 @@ public class ModuleVisitor extends Visitor {
                 if (id.getText().equals("Module")) {
                     String moduleName = parseArgument(that, "name");
                     if (moduleName==null) {
-                    	that.addError("missing module name");
+                        that.addError("missing module name");
                     }
                     else {
                         mainModule = pkg.getModule();
                         if ( !mainModule.getNameAsString().equals(moduleName) ) {
-                        	that.addError("module name does not match descriptor location");
+                            that.addError("module name does not match descriptor location");
                         }
                         mainModule.setDoc(parseArgument(that, "doc"));
                         mainModule.setLicense(parseArgument(that, "license"));
@@ -66,7 +66,7 @@ public class ModuleVisitor extends Visitor {
                 if (id.getText().equals("Import")) {
                     String moduleName = parseArgument(that, "name");
                     if (moduleName==null) {
-                    	that.addError("missing imported module name");
+                        that.addError("missing imported module name");
                     }
                     else {
                         //TODO: do something with the specified version number!
@@ -77,11 +77,11 @@ public class ModuleVisitor extends Visitor {
                 if (id.getText().equals("Package")) {
                     String packageName = parseArgument(that, "name");
                     if (packageName==null) {
-                    	that.addError("missing package name");
+                        that.addError("missing package name");
                     }
                     else {
                         if ( !pkg.getNameAsString().equals(packageName) ) {
-                        	that.addError("package name does not match descriptor location");
+                            that.addError("package name does not match descriptor location");
                         }
                         pkg.setDoc(parseArgument(that, "doc"));
                     }
@@ -91,9 +91,9 @@ public class ModuleVisitor extends Visitor {
         super.visit(that);
     }
 
-	private static List<String> splitModuleName(String moduleName) {
-		return Arrays.asList(moduleName.split("[\\.]"));
-	}
+    private static List<String> splitModuleName(String moduleName) {
+        return Arrays.asList(moduleName.split("[\\.]"));
+    }
 
     private String parseArgument(Tree.InvocationExpression that, String name) {
         for (Tree.NamedArgument arg: that.getNamedArgumentList().getNamedArguments()) {

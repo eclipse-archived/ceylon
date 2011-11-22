@@ -50,7 +50,7 @@ public class PhasedUnit {
     private boolean fullyTyped;
 
     public PhasedUnit(VirtualFile unitFile, VirtualFile srcDir, Tree.CompilationUnit cu, 
-    		Package p, ModuleBuilder moduleBuilder, Context context, CommonTokenStream tokenStream) {
+            Package p, ModuleBuilder moduleBuilder, Context context, CommonTokenStream tokenStream) {
         this.compilationUnit = cu;
         this.pkg = p;
         this.unitFile = unitFile;
@@ -81,7 +81,7 @@ public class PhasedUnit {
 
     public void buildModuleImport() {
         if ( ModuleBuilder.MODULE_FILE.equals(fileName) ||
-        		ModuleBuilder.PACKAGE_FILE.equals(fileName) ) {
+                ModuleBuilder.PACKAGE_FILE.equals(fileName) ) {
             final ModuleVisitor v = new ModuleVisitor(moduleBuilder, pkg);
             compilationUnit.visit(v);
         }

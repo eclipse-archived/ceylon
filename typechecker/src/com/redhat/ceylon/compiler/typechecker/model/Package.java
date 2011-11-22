@@ -12,7 +12,7 @@ import java.util.TreeMap;
 
 public class Package implements Scope {
 
-	private List<String> name;
+    private List<String> name;
     private Module module;
     private List<Unit> units = new ArrayList<Unit>();
     private String doc;
@@ -190,7 +190,7 @@ public class Package implements Scope {
 	}
     
     public void setDoc(String license) {
-		this.doc = license;
+        this.doc = license;
 	}
 
 }
