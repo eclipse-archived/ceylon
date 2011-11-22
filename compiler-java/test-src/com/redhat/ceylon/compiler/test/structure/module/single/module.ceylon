@@ -28,11 +28,5 @@ Module module {
         version = '6.6.6';
         optional = false;
         export = false;
-    },
-    Import {
-        name = 'com.redhat.ceylon.compiler.test.structure.module.single';
-        version = '6.6.6';
-        optional = true;
-        export = true;
     }
 }
