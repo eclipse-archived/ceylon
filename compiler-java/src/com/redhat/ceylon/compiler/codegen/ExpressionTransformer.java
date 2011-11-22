@@ -864,7 +864,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             } else if (decl.isToplevel()) {
                 java.util.List<String> path = new LinkedList<String>();
                 // FQN must start with empty ident (see https://github.com/ceylon/ceylon-compiler/issues/148)
-                path.addAll(Arrays.asList(decl.getContainer().getQualifiedNameString().split("\\.")));
+                if (!decl.getContainer().getQualifiedNameString().isEmpty()) {
+                    path.add("");
+                	path.addAll(Arrays.asList(decl.getContainer().getQualifiedNameString().split("\\.")));
+                } else {
+                    path.add("");
+                }
                 // class
                 path.add(Util.quoteIfJavaKeyword(decl.getName()));
                 // method
