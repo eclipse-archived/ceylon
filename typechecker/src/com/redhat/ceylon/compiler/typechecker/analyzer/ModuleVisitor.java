@@ -91,7 +91,9 @@ public class ModuleVisitor extends Visitor {
                     else {
                         //TODO: do something with the specified version number!
                         Module importedModule = moduleBuilder.getOrCreateModule(splitModuleName(moduleName));
-                        mainModule.getDependencies().add(importedModule);
+                        if (!mainModule.getDependencies().contains(importedModule)) {
+                        	mainModule.getDependencies().add(importedModule);
+                        }
                     }
                 }
                 if (id.getText().equals("Package")) {
