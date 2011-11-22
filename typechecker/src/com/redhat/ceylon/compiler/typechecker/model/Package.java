@@ -16,6 +16,7 @@ public class Package implements Scope {
     private Module module;
     private List<Unit> units = new ArrayList<Unit>();
     private String doc;
+    private boolean shared = false;
     
     public Module getModule() {
         return module;
@@ -35,6 +36,14 @@ public class Package implements Scope {
     
     public List<Unit> getUnits() {
         return units;
+    }
+    
+    public boolean isShared() {
+        return shared;
+    }
+    
+    public void setShared(boolean shared) {
+        this.shared = shared;
     }
     
     @Override
@@ -139,16 +148,16 @@ public class Package implements Scope {
     
     @Override
     public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
-    	Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
+        Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && isNameMatching(startingWith, d)) {
                 result.put(d.getName(), new DeclarationWithProximity(d, proximity+1));
             }
         }
         if (unit!=null) {
-        	result.putAll(unit.getMatchingImportedDeclarations(startingWith, proximity));
+            result.putAll(unit.getMatchingImportedDeclarations(startingWith, proximity));
         }
-    	return result;
+        return result;
     }
 
     Map<String, DeclarationWithProximity> getImportableDeclarations(Unit unit, String startingWith, List<Import> imports, int proximity) {
@@ -186,11 +195,11 @@ public class Package implements Scope {
     }
     
     public String getDoc() {
-		return doc;
-	}
+        return doc;
+    }
     
     public void setDoc(String license) {
         this.doc = license;
-	}
+    }
 
 }

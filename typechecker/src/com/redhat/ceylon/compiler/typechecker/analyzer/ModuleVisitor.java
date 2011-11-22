@@ -84,6 +84,10 @@ public class ModuleVisitor extends Visitor {
                             that.addError("package name does not match descriptor location");
                         }
                         pkg.setDoc(parseArgument(that, "doc"));
+                        String shared = parseArgument(that, "shared");
+						if (shared!=null && shared.equals("true")) {
+							pkg.setShared(true);
+						}
                     }
                 }
             }
