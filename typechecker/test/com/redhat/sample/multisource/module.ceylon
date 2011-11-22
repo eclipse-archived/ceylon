@@ -8,6 +8,8 @@ Module module {
         version = '0.1';
         export = true;
     },
+    //should have a @error on missing dependency here instead of on name
+    //but stuck because of https://github.com/ceylon/ceylon-spec/issues/60
     Import {
         @error name = 'non.existent.module';
         version = '1.0';

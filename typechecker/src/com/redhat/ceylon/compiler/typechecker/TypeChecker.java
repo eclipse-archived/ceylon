@@ -111,7 +111,7 @@ public class TypeChecker {
             pu.buildModuleImport();
         }
 
-        final ModuleValidator moduleValidator = new ModuleValidator(context);
+        final ModuleValidator moduleValidator = new ModuleValidator(context, phasedUnits);
         if (verifyDependencies) {
             moduleValidator.verifyModuleDependencyTree();
         }

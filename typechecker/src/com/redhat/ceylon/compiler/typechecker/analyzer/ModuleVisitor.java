@@ -94,6 +94,7 @@ public class ModuleVisitor extends Visitor {
                         if (!mainModule.getDependencies().contains(importedModule)) {
                         	mainModule.getDependencies().add(importedModule);
                         }
+                        moduleBuilder.addModuleDependencyDefinition(importedModule, nsa);
                     }
                 }
                 if (id.getText().equals("Package")) {

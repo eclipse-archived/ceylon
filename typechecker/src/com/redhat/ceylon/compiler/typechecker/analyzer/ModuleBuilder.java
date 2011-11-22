@@ -5,14 +5,18 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.formatPath;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 
 /**
  * Build modules and packages
@@ -26,6 +30,7 @@ public class ModuleBuilder {
     private final LinkedList<Package> packageStack = new LinkedList<Package>();
     private Module currentModule;
     private Modules modules;
+    private final Map<Module,Set<Node>> missingModuleDependencies = new HashMap<Module, Set<Node>>();
 
     public ModuleBuilder(Context context) {
         this.context = context;
@@ -161,5 +166,24 @@ public class ModuleBuilder {
         pkg.setModule(module);
     }
 
+    public void addModuleDependencyDefinition(Module module, Node definition) {
+        Set<Node> moduleDepError = missingModuleDependencies.get(module);
+        if (moduleDepError == null) {
+            moduleDepError = new HashSet<Node>();
+            missingModuleDependencies.put(module, moduleDepError);
+        }
+        moduleDepError.add(definition);
+    }
 
+    public void addMissingDependencyError(Module module, String error) {
+        Set<Node> moduleDepError = missingModuleDependencies.get(module);
+        if (moduleDepError != null) {
+            for ( Node definition :  moduleDepError ) {
+                definition.addError(error);
+            }
+        }
+        else {
+            System.err.println("This is a type checker bug, please report. \nExpecting to add missing dependency error on non present definition: " + error);
+        }
+    }
 }

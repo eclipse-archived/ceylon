@@ -25,9 +25,11 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 public class ModuleValidator {
     private final Context context;
     private List<PhasedUnits> phasedUnitsOfDependencies;
+    private final ModuleBuilder moduleBuilder;
 
-    public ModuleValidator(Context context) {
+    public ModuleValidator(Context context, PhasedUnits phasedUnits) {
         this.context = context;
+        this.moduleBuilder = phasedUnits.getModuleBuilder();
     }
 
     public List<PhasedUnits> getPhasedUnitsOfDependencies() {
@@ -86,10 +88,7 @@ public class ModuleValidator {
                         throw new LanguageModuleNotFoundException(error.toString());
                     }
                     else {
-                        //TODO!
-                        //sorry Emmanuel, references from the 
-                    	//model to tree are not allowed :-(
-                        //module.addMissingDependencyError(error.toString());
+                        moduleBuilder.addMissingDependencyError(module, error.toString());
                     }
                 }
                 else {
