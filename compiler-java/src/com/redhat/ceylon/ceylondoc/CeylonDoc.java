@@ -204,6 +204,29 @@ public abstract class CeylonDoc extends Markup {
         }
         close("div");
     }
+    
+    protected void writeKeyboardShortcuts() throws IOException{
+        // shortcuts
+        open("script type='text/javascript'");
+        write("jQuery('body').keypress(function(evt){\n");
+        write(" evt = evt || window.event;\n");
+        write(" console.log(evt.keyCode);\n");
+        writeKeyboardShortcut('s', getResourceUrl("search.html"));
+        writeKeyboardShortcut('o', getResourceUrl("index.html"));
+        writeAdditionalKeyboardShortcuts();
+        write("});\n");
+        close("script");
+    }
+
+    protected void writeAdditionalKeyboardShortcuts() throws IOException {
+        // for subclasses
+    }
+
+    protected void writeKeyboardShortcut(char c, String url) throws IOException {
+        write(" if(evt.keyCode == "+(int)c+"){\n");
+        write("  document.location = '"+url+"';\n"); 
+        write(" }\n");
+    }
 
     protected void htmlHead(String title) throws IOException {
         write("<?xml charset='UTF-8'?>");

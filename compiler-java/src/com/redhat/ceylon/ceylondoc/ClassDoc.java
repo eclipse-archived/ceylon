@@ -527,4 +527,12 @@ public class ClassDoc extends ClassOrPackageDoc {
             close("div");
         }
     }
+    
+    @Override
+    protected void writeAdditionalKeyboardShortcuts() throws IOException {
+        writeKeyboardShortcut('p', "index.html");
+        writeKeyboardShortcut('a', "#attributes");
+        writeKeyboardShortcut('c', "#constructor");
+        writeKeyboardShortcut('m', "#methods");
+    }
 }

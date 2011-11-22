@@ -186,4 +186,13 @@ public class PackageDoc extends ClassOrPackageDoc {
     protected String getSrcUrl(Object to) throws IOException {
         return tool.getSrcUrl(pkg, to);
     }
+
+    @Override
+    protected void writeAdditionalKeyboardShortcuts() throws IOException {
+        writeKeyboardShortcut('p', "index.html");
+        writeKeyboardShortcut('a', "#attributes");
+        writeKeyboardShortcut('m', "#methods");
+        writeKeyboardShortcut('c', "#classes");
+        writeKeyboardShortcut('i', "#interfaces");
+    }
 }
