@@ -61,7 +61,8 @@ public class ModuleVisitor extends Visitor {
                         unit.addError("missing module name");
                     }
                     else {
-                        mainModule = pkg.getModule();
+                        //mainModule = pkg.getModule();
+                        mainModule = moduleBuilder.getOrCreateModule(pkg.getName()); //in compiler the Package has a null Module
                         if ( !mainModule.getNameAsString().equals(moduleName) ) {
                             nsa.addError("module name does not match descriptor location");
                         }
