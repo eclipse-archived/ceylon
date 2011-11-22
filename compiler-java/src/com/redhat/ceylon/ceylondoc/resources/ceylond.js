@@ -114,7 +114,18 @@ jQuery(function(){
 	 search(q);
  }).keydown(function(event){
 	 var evt = event || window.event;
-	 if(evt.keyCode == 40){
+	 console.log(evt.keyCode);
+	 if(evt.keyCode == 27){
+		 // clear if we have something
+		 if(previousSearch){
+			 jQuery(this).val("");
+			 search("");
+		 }else{
+			 // go to overview, we canceled the search
+			 document.location = "index.html";
+		 }
+		 return false;
+	 }else if(evt.keyCode == 40){
 		 nextMatch();
 		 return false;
 	 }else if(evt.keyCode == 38){
