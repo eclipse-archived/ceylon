@@ -114,7 +114,6 @@ jQuery(function(){
 	 search(q);
  }).keydown(function(event){
 	 var evt = event || window.event;
-	 console.log(evt.keyCode);
 	 if(evt.keyCode == 27){
 		 // clear if we have something
 		 if(previousSearch){
