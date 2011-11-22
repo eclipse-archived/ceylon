@@ -96,6 +96,15 @@ public class ModuleVisitor extends Visitor {
                         	mainModule.getDependencies().add(importedModule);
                         }
                         moduleBuilder.addModuleDependencyDefinition(importedModule, nsa);
+                        Tree.SpecifiedArgument vsa = getArgument(that, "version");
+                        String version = argumentToString(vsa);
+						if (version.isEmpty()) {
+							vsa.addError("empty version identifier");
+						}
+                        //TODO: this is wrong and temporary:
+                        if (importedModule.getVersion() == null) {
+                            importedModule.setVersion(version);
+                        }
                     }
                 }
                 if (id.getText().equals("Package")) {
