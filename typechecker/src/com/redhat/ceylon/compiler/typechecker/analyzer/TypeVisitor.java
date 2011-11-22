@@ -102,7 +102,7 @@ public class TypeVisitor extends Visitor {
                 }
                 return pkg; 
             }
-            path.addError("package not found: " + nameToImport);
+            path.addError("package not found in dependent modules: " + nameToImport);
         }
         return null;
     }
