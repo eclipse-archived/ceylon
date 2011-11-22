@@ -471,6 +471,8 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         if(pkg != null)
             return pkg;
         pkg = new LazyPackage(this, reader, names);
+        // FIXME: implement this correctly:
+        pkg.setShared(true);
         packagesByName.put(pkgName, pkg);
         // FIXME: some refactoring needed
         pkg.setName(pkgName == null ? Collections.<String>emptyList() : Arrays.asList(pkgName.split("\\.")));
