@@ -119,6 +119,13 @@ public class PackageDoc extends ClassOrPackageDoc {
     private void summary() throws IOException {
         writeNav(module, pkg, DocType.PACKAGE);
         
+        open("div class='submenu'");
+        printSubMenuItem("Attributes");
+        printSubMenuItem("Methods");
+        printSubMenuItem("Classes");
+        printSubMenuItem("Interfaces");
+        close("div");
+        
         open("div class='head summary'");
         around("h1", "Package ", "<code>", pkg.getNameAsString(), "</code>");
         close("div");

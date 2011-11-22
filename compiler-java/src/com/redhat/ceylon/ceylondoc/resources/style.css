@@ -76,6 +76,15 @@ table {
  color: #535353;
 }
 
+.submenu {
+ text-align: center;
+}
+
+.submenu > div {
+ display: inline-block;
+ margin: 0.3em 0.5em;
+}
+
 h1 {
  text-align: center;
 }
