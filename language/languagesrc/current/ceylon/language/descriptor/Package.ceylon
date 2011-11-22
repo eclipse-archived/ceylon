@@ -1,7 +1,7 @@
-import ceylon.language { desc = doc, exported=shared }
+import ceylon.language { desc = doc }
 
 desc "A package descriptor."
-exported class Package(
+shared class Package(
 
         desc "The name of the package."
         Quoted name,
