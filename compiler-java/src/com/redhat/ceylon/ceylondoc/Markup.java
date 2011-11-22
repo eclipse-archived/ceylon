@@ -80,15 +80,15 @@ public class Markup {
 
     protected void openTable(String title, String firstColumnTitle, String secondColumnTitle)
             throws IOException {
-                open("table class='category'");
-                open("tr class='TableHeadingColor'");
-                around("th colspan='2'", title);
-                close("tr");
-                open("tr class='TableSubHeadingColor'");
-                around("th", firstColumnTitle);
-                around("th", secondColumnTitle);
-                close("tr");
-            }
+        open("table class='category'");
+        open("tr class='TableHeadingColor'");
+        around("th colspan='2'", title);
+        close("tr");
+        open("tr class='TableSubHeadingColor'");
+        around("th", firstColumnTitle);
+        around("th", secondColumnTitle);
+        close("tr");
+    }
 
     protected void setupWriter() throws IOException {
         File dir = file.getParentFile();
