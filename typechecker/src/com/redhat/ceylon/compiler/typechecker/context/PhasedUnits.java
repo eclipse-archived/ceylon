@@ -55,8 +55,8 @@ public class PhasedUnits {
     }
 
     public List<PhasedUnit> getPhasedUnits() {
-	List<PhasedUnit> list = new ArrayList<PhasedUnit>();
-	list.addAll(phasedUnitPerFile.values());
+        List<PhasedUnit> list = new ArrayList<PhasedUnit>();
+        list.addAll(phasedUnitPerFile.values());
         return list;
     }
 

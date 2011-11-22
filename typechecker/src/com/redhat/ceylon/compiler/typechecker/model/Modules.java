@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Represents the ste of modules involved in the compilation
+ * Represents the set of modules involved in the compilation
  *
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
