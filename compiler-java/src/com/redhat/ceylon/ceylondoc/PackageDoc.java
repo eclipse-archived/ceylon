@@ -120,10 +120,10 @@ public class PackageDoc extends ClassOrPackageDoc {
         writeNav(module, pkg, DocType.PACKAGE);
         
         open("div class='submenu'");
-        printSubMenuItem("Attributes");
-        printSubMenuItem("Methods");
-        printSubMenuItem("Classes");
-        printSubMenuItem("Interfaces");
+        printSubMenuItem("attributes", getAccessKeyed("Attributes", 'A'));
+        printSubMenuItem("methods", getAccessKeyed("Methods", 'M'));
+        printSubMenuItem("classes", getAccessKeyed("Classes", 'C'));
+        printSubMenuItem("interfaces", getAccessKeyed("Interfaces", 'I'));
         close("div");
         
         open("div class='head summary'");

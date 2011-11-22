@@ -186,3 +186,7 @@ ul.inheritance ul.inheritance li:before {
 #search {
  text-align: center;
 }
+
+.accesskey {
+ color: #bbb;
+}

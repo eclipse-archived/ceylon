@@ -179,9 +179,9 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         around("div class='doc'", getDoc(d));
     }
 
-    protected void printSubMenuItem(String title) throws IOException {
+    protected void printSubMenuItem(String id, String title) throws IOException {
         open("div");
-        around("a href='#"+title.toLowerCase()+"'", title);
+        around("a href='#"+id+"'", title);
         close("div");
     }
 

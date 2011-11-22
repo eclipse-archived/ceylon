@@ -167,20 +167,20 @@ public abstract class CeylonDoc extends Markup {
     protected void writeNav(Module module, Object decl, DocType docType) throws IOException {
         open("div class='nav menu'");
         open("div");
-        around("a href='"+getObjectUrl(module)+"'", "Overview");
+        around("a href='"+getObjectUrl(module)+"'", getAccessKeyed("Overview", 'O'));
         close("div");
         if(docType == DocType.PACKAGE)
             open("div class='selected'");
         else
             open("div");
         if(docType != DocType.MODULE)
-            around("a href='index.html'", "Package");
+            around("a href='index.html'", getAccessKeyed("Package", 'P'));
         else
             write("Package");
         close("div");
         if(docType == DocType.TYPE){
             open("div class='selected'");
-            around("a href='"+getObjectUrl(decl)+"'", "Type");
+            around("a href='"+getObjectUrl(decl)+"'", getAccessKeyed("Type", 'T'));
         }else{
             open("div");
             write("Type");
@@ -188,7 +188,7 @@ public abstract class CeylonDoc extends Markup {
         close("div");
 
         open("div");
-        around("a href='"+getResourceUrl("search.html")+"'", "Search");
+        around("a href='"+getResourceUrl("search.html")+"'", getAccessKeyed("Search", 'S'));
         close("div");
         
         open("div");
@@ -205,6 +205,15 @@ public abstract class CeylonDoc extends Markup {
         close("div");
     }
     
+    protected String getAccessKeyed(String string, char key) {
+        int index = string.indexOf(key);
+        if(index == -1)
+            return string;
+        String before = string.substring(0, index);
+        String after = string.substring(index+1);
+        return before + "<span class='accesskey'>" + key + "</span>" + after;
+    }
+
     protected void writeKeyboardShortcuts() throws IOException{
         // shortcuts
         open("script type='text/javascript'");

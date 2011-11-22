@@ -382,10 +382,10 @@ public class ClassDoc extends ClassOrPackageDoc {
         writeNav(pkg.getModule(), klass, DocType.TYPE);
         
         open("div class='submenu'");
-        printSubMenuItem("Attributes");
+        printSubMenuItem("attributes", getAccessKeyed("Attributes", 'A'));
         if(klass instanceof Class)
-            printSubMenuItem("Constructor");
-        printSubMenuItem("Methods");
+            printSubMenuItem("constructor", getAccessKeyed("Constructor", 'C'));
+        printSubMenuItem("methods", getAccessKeyed("Methods", 'M'));
         close("div");
 
         open("div class='head summary'");
