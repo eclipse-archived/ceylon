@@ -117,31 +117,8 @@ public class PackageDoc extends ClassOrPackageDoc {
     }
 
     private void summary() throws IOException {
-        open("div class='nav menu'");
-        open("div");
-        around("a href='"+getObjectUrl(module)+"'", "Overview");
-        close("div");
-        open("div class='selected'");
-        write("Package");
-        close("div");
-        open("div");
-        write("Class");
-        close("div");
-        open("div");
-        write(pkg.getModule().getNameAsString() + "/" + pkg.getModule().getVersion());
-        close("div");
-        open("div");
-        around("a href='"+getResourceUrl("search.html")+"'", "Search");
-        close("div");
-        String srcUrl = getSrcUrl(pkg);
-        if (!tool.isOmitSource()
-                && srcUrl != null) {
-            open("div class='source-code package'");
-            around("a href='" + srcUrl + "'", "Source Code");
-            close("div");
-        }
-        close("div");
-
+        writeNav(module, pkg, DocType.PACKAGE);
+        
         open("div class='head summary'");
         around("h1", "Package ", "<code>", pkg.getNameAsString(), "</code>");
         close("div");

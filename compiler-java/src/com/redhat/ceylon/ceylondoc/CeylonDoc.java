@@ -164,7 +164,46 @@ public abstract class CeylonDoc extends Markup {
     
     protected abstract String getSrcUrl(Object to) throws IOException;
 
+    protected void writeNav(Module module, Object decl, DocType docType) throws IOException {
+        open("div class='nav menu'");
+        open("div");
+        around("a href='"+getObjectUrl(module)+"'", "Overview");
+        close("div");
+        if(docType == DocType.PACKAGE)
+            open("div class='selected'");
+        else
+            open("div");
+        if(docType != DocType.MODULE)
+            around("a href='index.html'", "Package");
+        else
+            write("Package");
+        close("div");
+        if(docType == DocType.TYPE){
+            open("div class='selected'");
+            around("a href='"+getObjectUrl(decl)+"'", "Type");
+        }else{
+            open("div");
+            write("Type");
+        }
+        close("div");
 
+        open("div");
+        around("a href='"+getResourceUrl("search.html")+"'", "Search");
+        close("div");
+        
+        open("div");
+        write(module.getNameAsString() + "/" + module.getVersion());
+        close("div");
+
+        String srcUrl = getSrcUrl(decl);
+        if (!tool.isOmitSource()
+                && srcUrl != null) {
+            open("div class='source-code "+docType.name().toLowerCase()+"'");
+            around("a href='" + srcUrl + "'", "Source Code");
+            close("div");
+        }
+        close("div");
+    }
 }
 
 

@@ -379,24 +379,8 @@ public class ClassDoc extends ClassOrPackageDoc {
     private void summary() throws IOException {
         Package pkg = tool.getPackage(klass);
 
-        open("div class='nav menu'");
-        open("div");
-        around("a href='" + getObjectUrl(module) + "'", "Overview");
-        close("div");
-        open("div");
-        around("a href='index.html'", "Package");
-        close("div");
-        open("div class='selected'");
-        write("Class");
-        close("div");
-        open("div");
-        write(pkg.getModule().getNameAsString() + "/" + pkg.getModule().getVersion());
-        close("div");
-        open("div");
-        around("a href='"+getResourceUrl("search.html")+"'", "Search");
-        close("div");
-        close("div");
-
+        writeNav(pkg.getModule(), klass, DocType.TYPE);
+        
         open("div class='head summary'");
 
         // name
@@ -404,11 +388,6 @@ public class ClassDoc extends ClassOrPackageDoc {
 
         open("div class='type'");
         write(klass instanceof Class ? "Class " : "Interface ", "<code>", getClassName(), "</code>");
-        if (!tool.isOmitSource()) {
-            open("div class='source-code'");
-            around("a href='" + getSrcUrl(klass) + "'", "Source Code");
-            close("div");
-        }
         close("div");
         
         // hierarchy tree - only for classes

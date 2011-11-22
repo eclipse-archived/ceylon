@@ -60,30 +60,7 @@ public class SummaryDoc extends CeylonDoc {
     }
 
     private void overview() throws IOException {
-        open("div class='nav'");
-        open("div class='selected'");
-        write("Overview");
-        close("div");
-        open("div");
-        write("Package");
-        close("div");
-        open("div");
-        write("Class");
-        close("div");
-        open("div");
-        write(module.getNameAsString() + "/" + module.getVersion());
-        close("div");
-        open("div");
-        around("a href='"+getResourceUrl("search.html")+"'", "Search");
-        close("div");
-        String srcUrl = getSrcUrl(module);
-        if (!tool.isOmitSource()
-                && srcUrl != null) {
-            open("div class='source-code module'");
-            around("a href='" + srcUrl + "'", "Source Code");
-            close("div");
-        }
-        close("div");
+        writeNav(module, module, DocType.MODULE);
     }
 
     private void packages() throws IOException {
