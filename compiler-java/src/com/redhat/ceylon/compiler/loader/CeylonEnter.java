@@ -21,13 +21,10 @@
 package com.redhat.ceylon.compiler.loader;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.tools.JavaFileManager;
-import javax.tools.JavaFileObject;
-import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.compiler.codegen.BoxingDeclarationVisitor;
