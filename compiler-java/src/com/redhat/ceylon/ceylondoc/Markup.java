@@ -80,7 +80,7 @@ public class Markup {
 
     protected void openTable(String title, String firstColumnTitle, String secondColumnTitle)
             throws IOException {
-        open("table class='category'");
+        open("table class='category' id='"+title.toLowerCase()+"'");
         open("tr class='TableHeadingColor'");
         around("th colspan='2'", title);
         close("tr");

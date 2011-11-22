@@ -474,8 +474,10 @@ public class ClassDoc extends ClassOrPackageDoc {
     }
 
     private void methods() throws IOException {
-        if (methods.isEmpty())
+        if (methods.isEmpty()){
+            around("a name='methods'", "");
             return;
+        }
         openTable("Methods", "Modifier and Type", "Method and Description");
 
         for (Method m : methods) {
@@ -485,8 +487,10 @@ public class ClassDoc extends ClassOrPackageDoc {
     }
 
     private void attributes() throws IOException {
-        if (attributes.isEmpty())
+        if (attributes.isEmpty()){
+            around("a name='attributes'", "");
             return;
+        }
         openTable("Attributes", "Modifier and Type", "Name and Description");
         for (MethodOrValue attribute : attributes) {
             doc(attribute);
