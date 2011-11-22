@@ -230,6 +230,7 @@ public class CeylonDocTool {
             doc(pkg);
         }
         doc(module);
+        makeIndex(module);
 
         copyResource("resources/style.css", "style.css");
         copyResource("resources/shCore.css", "shCore.css");
@@ -296,6 +297,10 @@ public class CeylonDocTool {
 
     private void doc(Module module) throws IOException {
         new SummaryDoc(this, module).generate();
+    }
+
+    private void makeIndex(Module module) throws IOException {
+        new IndexDoc(this, module).generate();
     }
 
     private void doc(Package pkg) throws IOException {
