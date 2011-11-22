@@ -21,6 +21,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
  */
 public class ModuleBuilder {
     public static final String MODULE_FILE = "module.ceylon";
+    public static final String PACKAGE_FILE = "package.ceylon";
     private final Context context;
     private final LinkedList<Package> packageStack = new LinkedList<Package>();
     private Module currentModule;

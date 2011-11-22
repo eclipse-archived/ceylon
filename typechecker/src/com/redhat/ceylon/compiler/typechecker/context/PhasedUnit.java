@@ -80,8 +80,9 @@ public class PhasedUnit {
     }
 
     public void buildModuleImport() {
-        if ( ModuleBuilder.MODULE_FILE.equals(fileName) ) {
-            final ModuleVisitor v = new ModuleVisitor(moduleBuilder);
+        if ( ModuleBuilder.MODULE_FILE.equals(fileName) ||
+        		ModuleBuilder.PACKAGE_FILE.equals(fileName) ) {
+            final ModuleVisitor v = new ModuleVisitor(moduleBuilder, pkg);
             compilationUnit.visit(v);
         }
     }

@@ -1,11 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class Module {
 
@@ -15,8 +11,9 @@ public class Module {
     private List<Module> dependencies = new ArrayList<Module>();
     private Module languageModule;
     private boolean available;
-    private Set<Tree.SpecifiedArgument> dependencyDefinitions = new HashSet<Tree.SpecifiedArgument>();
-
+    private String license;
+    private String doc;
+    
     /**
      * Whether or not the module is available in the
      * source path or the repository
@@ -94,14 +91,21 @@ public class Module {
     public String toString() {
         return "Module[" + getNameAsString() + "]";
     }
-
-    public void addDependencyDefinition(Tree.SpecifiedArgument that) {
-        this.dependencyDefinitions.add(that);
-    }
-
-    public void addMissingDependencyError(String error) {
-        for (Tree.SpecifiedArgument def :  dependencyDefinitions) {
-            def.addError(error);
-        }
-    }
+    
+    public String getDoc() {
+		return doc;
+	}
+    
+    public void setDoc(String doc) {
+		this.doc = doc;
+	}
+    
+    public String getLicense() {
+		return license;
+	}
+    
+    public void setLicense(String license) {
+		this.license = license;
+	}
+    
 }

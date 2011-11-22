@@ -12,10 +12,11 @@ import java.util.TreeMap;
 
 public class Package implements Scope {
 
-    List<String> name;
-    Module module;
-    List<Unit> units = new ArrayList<Unit>();
-
+	private List<String> name;
+    private Module module;
+    private List<Unit> units = new ArrayList<Unit>();
+    private String doc;
+    
     public Module getModule() {
         return module;
     }
@@ -183,5 +184,13 @@ public class Package implements Scope {
             return false;
         }
     }
+    
+    public String getDoc() {
+		return doc;
+	}
+    
+    public void setDoc(String license) {
+		this.doc = license;
+	}
 
 }

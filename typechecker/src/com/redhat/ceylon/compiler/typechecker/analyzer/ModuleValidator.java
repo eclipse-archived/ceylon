@@ -86,7 +86,10 @@ public class ModuleValidator {
                         throw new LanguageModuleNotFoundException(error.toString());
                     }
                     else {
-                        module.addMissingDependencyError(error.toString());
+                        //TODO!
+                        //sorry Emmanuel, references from the 
+                    	//model to tree are not allowed :-(
+                        //module.addMissingDependencyError(error.toString());
                     }
                 }
                 else {
