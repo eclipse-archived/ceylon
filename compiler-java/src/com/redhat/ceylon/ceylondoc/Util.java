@@ -31,6 +31,8 @@ import java.util.Set;
 import com.petebevin.markdown.MarkdownProcessor;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -52,14 +54,29 @@ public class Util {
     private static final int FIRST_LINE_MAX_SIZE = 120;
 
     public static String getDoc(Declaration decl) {
-        return new MarkdownProcessor().markdown(getRawDoc(decl));
+        return wikiToHTML(getRawDoc(decl));
     }
 
     public static String getDocFirstLine(Declaration decl) {
-        return new MarkdownProcessor().markdown(getFirstLine(getRawDoc(decl)));
+        return wikiToHTML(getFirstLine(getRawDoc(decl)));
+    }
+
+    public static String getDocFirstLine(Package pkg) {
+        return wikiToHTML(getFirstLine(pkg.getDoc()));
+    }
+
+    public static String getDocFirstLine(Module module) {
+        return wikiToHTML(getFirstLine(module.getDoc()));
+    }
+
+    private static String wikiToHTML(String text) {
+        return new MarkdownProcessor().markdown(text);
     }
 
     private static String getFirstLine(String text) {
+        // be lenient for Package and Module
+        if(text == null)
+            return "";
         // First try to get the first sentence
         BreakIterator breaker = BreakIterator.getSentenceInstance();
         breaker.setText(text);
