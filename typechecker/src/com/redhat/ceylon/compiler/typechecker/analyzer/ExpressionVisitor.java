@@ -39,6 +39,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -2509,7 +2510,9 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private ProducedType defaultType() {
-        return unit.getVoidDeclaration().getType();
+    	TypeDeclaration ut = new UnknownType(unit);
+    	ut.setExtendedType(unit.getVoidDeclaration().getType());
+        return ut.getType();
     }
     
 }

@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -131,6 +132,9 @@ class Util extends Visitor {
             Node node, String message) {
         if (type==null||supertype==null) {
             node.addError(message);
+        }
+        else if (type.getDeclaration() instanceof UnknownType) {
+        	node.addError(message + ": type of expression cannot be determined");
         }
         else if (!type.isSubtypeOf(supertype)) {
             node.addError(message + ": " + type.getProducedTypeName() + 
