@@ -63,8 +63,10 @@ import com.redhat.ceylon.compiler.typechecker.parser.LexError;
 import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
 import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
+import com.sun.tools.javac.code.Symbol.CompletionFailure;
 import com.sun.tools.javac.comp.AttrContext;
 import com.sun.tools.javac.comp.Env;
+import com.sun.tools.javac.jvm.ClassWriter;
 import com.sun.tools.javac.main.JavaCompiler;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -422,12 +424,40 @@ public class LanguageCompiler extends JavaCompiler {
         if (env.toplevel.sourcefile instanceof CeylonFileObject) {
             try {
                 Context.SourceLanguage.push(Language.CEYLON);
-                return super.genCode(env, cdef);
+                // call our own genCode
+                return genCodeUnlessError(env, cdef);
             } finally {
                 Context.SourceLanguage.pop();
             }
         }
         return super.genCode(env, cdef);
+    }
+
+    @Override
+    protected boolean shouldStop(CompileState cs) {
+        // we override this to make sure we don't stop because of errors, because we want to generate
+        // code for classes with no errors
+        if (shouldStopPolicy == null)
+            return false;
+        else
+            return cs.ordinal() > shouldStopPolicy.ordinal();
+    }
+
+    private JavaFileObject genCodeUnlessError(Env<AttrContext> env, JCClassDecl cdef) throws IOException {
+        try {
+            CeylonFileObject sourcefile = (CeylonFileObject) env.toplevel.sourcefile;
+            // do not look at the global number of errors but only those for this file
+            if (super.gen.genClass(env, cdef) && sourcefile.errors == 0)
+                return writer.writeClass(cdef.sym);
+        } catch (ClassWriter.PoolOverflow ex) {
+            log.error(cdef.pos(), "limit.pool");
+        } catch (ClassWriter.StringOverflow ex) {
+            log.error(cdef.pos(), "limit.string.overflow",
+                    ex.value.substring(0, 20));
+        } catch (CompletionFailure ex) {
+            chk.completionError(cdef.pos(), ex);
+        }
+        return null;
     }
 
     protected void desugar(final Env<AttrContext> env, Queue<Pair<Env<AttrContext>, JCClassDecl>> results) {
