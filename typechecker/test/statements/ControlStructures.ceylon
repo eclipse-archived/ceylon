@@ -69,6 +69,7 @@ class ControlStructures() {
     
     class Transaction() satisfies Closeable {
         shared void rollbackOnly() {}
+        shared actual void open() {}
         shared actual void close(Exception? e) {}
     }
 
