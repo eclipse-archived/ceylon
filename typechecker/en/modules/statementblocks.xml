@@ -2157,7 +2157,7 @@ while (exists iter) {
             <para>A resource expresson produces a heavyweight object that must be 
             released when execution of the <literal>try</literal> terminates. Each 
             resource expression must be of type assignable to 
-            <literal>ceylon.language.Resource</literal>.</para>
+            <literal>ceylon.language.Closeable</literal>.</para>
             
             <programlisting>Resource: MemberName | InitializerReference Arguments | Variable Specifier </programlisting>
             
@@ -2166,16 +2166,16 @@ while (exists iter) {
             <itemizedlist>
                 <listitem>
                     <para>the resource expression, if any, is evaluated, and then 
-                    <literal>begin()</literal> is called on the resulting resource 
+                    <literal>open()</literal> is called on the resulting resource 
                     instance, then</para>
                 </listitem>
                 <listitem>
                     <para>the <literal>try</literal> block is executed, then</para>
                 </listitem>
                 <listitem>
-                    <para><literal>end()</literal> or <literal>abort()</literal> is 
-                    called on the resource instance, if any, with the exception that 
-                    propagated out of the <literal>try</literal> block, if any, then</para>
+                    <para><literal>close()</literal> is called on the resource 
+                    instance, if any, with the exception that propagated out of 
+                    the <literal>try</literal> block, if any, then</para>
                 </listitem>
                 <listitem>
                     <para>if an exception did propagate out of the <literal>try</literal> 
@@ -2189,10 +2189,10 @@ while (exists iter) {
                 </listitem>
             </itemizedlist>
             
-            <comment><para>TODO: Precisely what happens if <literal>end()</literal> or
-            <literal>abort()</literal> throws an exception? Wrap and rethrow the 
-            exception as a <literal>ResourceException</literal>, bypassing any handler
-            for the exception from the <literal>try</literal> block?</para></comment>
+            <comment><para>TODO: Precisely what happens if <literal>close()</literal> 
+            throws an exception? Wrap and rethrow the exception as a 
+            <literal>CloseException</literal>, bypassing any handler for the exception 
+            from the <literal>try</literal> block?</para></comment>
             
             <para>For example:</para>
             

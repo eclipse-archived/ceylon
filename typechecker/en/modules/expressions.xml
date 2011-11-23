@@ -1694,9 +1694,9 @@ shared Result with&lt;Value,Result&gt;(specified Value? val,
         
         <para>And for the following method declaration:</para>
         
-        <programlisting>shared Result using&lt;Resource,Result&gt;(specified Resource resource, 
-                                     Result seek(coordinated Resource x))
-        given Resource satisfies Usable;</programlisting>
+        <programlisting>shared Result using&lt;Closeable,Result&gt;(specified Closeable resource, 
+                                     Result seek(coordinated Closeable x))
+        given Closeable satisfies Usable;</programlisting>
                   
         <para>We may invoke the method as follows:</para>
                   
@@ -1713,8 +1713,8 @@ shared Result with&lt;Value,Result&gt;(specified Value? val,
         
         <comment><para>TODO: would a declaration which more closely reflects the invocation 
         syntax be easier to understand, something like this, for example:</para>
-        <programlisting>shared Result with&lt;Resource,Result&gt;(Resource x = Resource? val) 
-                                    Result then(coordinated Resource x)
+        <programlisting>shared Result with&lt;Closeable,Result&gt;(Closeable x = Closeable? val) 
+                                    Result then(coordinated Closeable x)
                                     Result otherwise;</programlisting></comment>
                 
         </section>
@@ -2019,7 +2019,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
 };</programlisting>
 
             <programlisting>return new transactional Database 
-        satisfies Resource {
+        satisfies Closeable {
     url = "jdbc:hsqldb:.";
     username = "gavin";
     password = "foobar";
