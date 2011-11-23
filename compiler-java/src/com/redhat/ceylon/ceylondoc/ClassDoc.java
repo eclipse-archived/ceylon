@@ -386,6 +386,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 
         open("div class='type'");
         write(klass instanceof Class ? "Class " : "Interface ", "<code>", getClassName(), "</code>");
+        writeSourceLink(klass);
         close("div");
         
         // hierarchy tree - only for classes
@@ -428,7 +429,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         
         close("div");
     }
-
+    
     protected void subMenu() throws IOException {
         if (attributes.isEmpty()
                 && !(klass instanceof Class)

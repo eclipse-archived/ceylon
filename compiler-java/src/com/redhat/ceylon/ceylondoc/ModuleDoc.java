@@ -63,6 +63,7 @@ public class ModuleDoc extends CeylonDoc {
         write("Module ");
         around("code", module.getNameAsString());
         close("h1");
+        writeSourceLink(module);
         close("div");
         
         around("div class='doc'", getDoc(module));

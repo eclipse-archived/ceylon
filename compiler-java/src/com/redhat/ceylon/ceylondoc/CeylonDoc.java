@@ -209,15 +209,6 @@ public abstract class CeylonDoc extends Markup {
         write(module.getNameAsString() + "/" + module.getVersion());
         close("div");
 
-        if (docType != DocType.SEARCH) {
-            String srcUrl = getSrcUrl(decl);
-            if (!tool.isOmitSource()
-                    && srcUrl != null) {
-                open("div class='source-code "+docType.name().toLowerCase()+"'");
-                around("a href='" + srcUrl + "'", "Source Code");
-                close("div");
-            }
-        }
         close("div");
     }
     
@@ -281,6 +272,16 @@ public abstract class CeylonDoc extends Markup {
         close("head");
         open("body");
         writeKeyboardShortcuts();
+    }
+    
+    protected void writeSourceLink(Object modPkgOrDecl) throws IOException {
+        String srcUrl = getSrcUrl(modPkgOrDecl);
+        if (!tool.isOmitSource()
+                && srcUrl != null) {
+            open("div class='source-code "+DocType.typeOf(modPkgOrDecl).name().toLowerCase()+"'");
+            around("a href='" + srcUrl + "'", "Source Code");
+            close("div");
+        }
     }
 }
 

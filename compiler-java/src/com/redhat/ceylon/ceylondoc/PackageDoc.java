@@ -133,6 +133,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         write("Package ");
         around("code", pkg.getNameAsString());
         close("h1");
+        writeSourceLink(pkg);
         close("div");
         
         around("div class='doc'", getDoc(pkg));
