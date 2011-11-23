@@ -378,14 +378,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         Package pkg = tool.getPackage(klass);
 
         writeNav(pkg.getModule(), klass, DocType.TYPE);
-        
-        open("div class='submenu'");
-        printSubMenuItem("attributes", getAccessKeyed("Attributes", 'A'));
-        if(klass instanceof Class)
-            printSubMenuItem("constructor", getAccessKeyed("Constructor", 'C'));
-        printSubMenuItem("methods", getAccessKeyed("Methods", 'M'));
-        close("div");
-
+        subMenu();
         open("div class='head summary'");
 
         // name
@@ -433,6 +426,25 @@ public class ClassDoc extends ClassOrPackageDoc {
 
         writeSee(klass);
         
+        close("div");
+    }
+
+    protected void subMenu() throws IOException {
+        if (attributes.isEmpty()
+                && !(klass instanceof Class)
+                && methods.isEmpty()) {
+            return;
+        }
+        open("div class='submenu'");
+        if (!attributes.isEmpty()) {
+            printSubMenuItem("attributes", getAccessKeyed("Attributes", 'A'));
+        }
+        if (klass instanceof Class) {
+            printSubMenuItem("constructor", getAccessKeyed("Constructor", 'C'));
+        }
+        if (!methods.isEmpty()) {
+            printSubMenuItem("methods", getAccessKeyed("Methods", 'M'));
+        }
         close("div");
     }
 

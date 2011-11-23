@@ -106,7 +106,7 @@ public class PackageDoc extends ClassOrPackageDoc {
             htmlHead();
             writeNav(module, pkg, DocType.PACKAGE);
         }
-        subnav();
+        subMenu();
         summary();
         attributes();
         methods();
@@ -135,12 +135,26 @@ public class PackageDoc extends ClassOrPackageDoc {
         close("div");
     }
 
-    private void subnav() throws IOException {
+    protected void subMenu() throws IOException {
+        if (attributes.isEmpty()
+                && methods.isEmpty()
+                && classes.isEmpty()
+                && interfaces.isEmpty()) {
+            return;
+        }
         open("div class='submenu'");
-        printSubMenuItem("attributes", getAccessKeyed("Attributes", 'A'));
-        printSubMenuItem("methods", getAccessKeyed("Methods", 'M'));
-        printSubMenuItem("classes", getAccessKeyed("Classes", 'C'));
-        printSubMenuItem("interfaces", getAccessKeyed("Interfaces", 'I'));
+        if (!attributes.isEmpty()) {
+            printSubMenuItem("attributes", getAccessKeyed("Attributes", 'A'));
+        }
+        if (!methods.isEmpty()) {
+            printSubMenuItem("methods", getAccessKeyed("Methods", 'M'));
+        }
+        if (!classes.isEmpty()) {
+            printSubMenuItem("classes", getAccessKeyed("Classes", 'C'));
+        }
+        if (!interfaces.isEmpty()) {
+            printSubMenuItem("interfaces", getAccessKeyed("Interfaces", 'I'));
+        }
         close("div");
     }
 

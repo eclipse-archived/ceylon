@@ -180,6 +180,8 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         around("div class='doc'", getDoc(d));
     }
 
+    protected abstract void subMenu() throws IOException;
+    
     protected void printSubMenuItem(String id, String title) throws IOException {
         open("div");
         around("a href='#"+id+"'", title);
