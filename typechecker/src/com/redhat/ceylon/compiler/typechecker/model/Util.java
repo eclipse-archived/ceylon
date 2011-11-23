@@ -197,6 +197,19 @@ public class Util {
                     else if (pt.isSubtypeOf(t)) {
                         iter.remove();
                     }
+                    else if ( !pt.getDeclaration().equals(t.getDeclaration()) ) { //TODO: what should we do about stuff like Foo<A>&Foo<B>?
+                    	TypeDeclaration nd = pt.getDeclaration().getUnit().getNothingDeclaration();
+                        if (pt.getDeclaration() instanceof Class &&
+                                t.getDeclaration() instanceof Class ||
+                            pt.getDeclaration() instanceof Interface &&
+                                t.getDeclaration().equals(nd) ||
+                            t.getDeclaration() instanceof Interface &&
+                                pt.getDeclaration().equals(nd)) {
+                            list.clear();
+                            list.add( new BottomType(pt.getDeclaration().getUnit()).getType() );
+                            return;
+                        }
+                    }
                 }
             }
             if (included) {

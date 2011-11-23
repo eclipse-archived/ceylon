@@ -40,6 +40,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
+import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -1469,10 +1470,20 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    private void checkOperandType(ProducedType pt, ProducedType operand, 
+            Node node, String message) {
+        if (!pt.isSupertypeOf(operand)) {
+            node.addError(message + ": " + operand.getProducedTypeName() +
+                    " is not a subtype of " + pt.getProducedTypeName());
+        }
+    }
+
     private void checkOperandTypes(ProducedType lhst, ProducedType rhst, 
             TypeDeclaration td, Node node, String message) {
         ProducedType ut = unionType(lhst, rhst, unit);
-        checkOperandType(ut, td, node, message);
+        ProducedType st = Util.producedType(td, ut);
+        checkOperandType(st, lhst, node, message);
+        checkOperandType(st, rhst, node, message);
     }
 
     private void visitIncrementDecrement(Tree.Term that,
