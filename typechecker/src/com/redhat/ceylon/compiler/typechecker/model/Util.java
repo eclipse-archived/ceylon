@@ -198,18 +198,16 @@ public class Util {
                         iter.remove();
                     }
                     else if ( !pt.getDeclaration().equals(t.getDeclaration()) ) { //TODO: what should we do about stuff like Foo<A>&Foo<B>?
-                    	//TODO: the backend does not set the Unit on LazyClass
-                    	//      so we can't use unit.getNothingDeclaration()
                     	//Unit unit = pt.getDeclaration().getUnit();
-						//TypeDeclaration nd = unit.getNothingDeclaration();
+						TypeDeclaration nd = unit.getNothingDeclaration();
                         if (pt.getDeclaration() instanceof Class &&
                                 t.getDeclaration() instanceof Class ||
                             pt.getDeclaration() instanceof Interface &&
-                                //t.getDeclaration().equals(nd) ||
-                                t.getDeclaration().getQualifiedNameString().equals("ceylon.language.Nothing") ||
+                                t.getDeclaration().equals(nd) ||
+                                //t.getDeclaration().getQualifiedNameString().equals("ceylon.language.Nothing") ||
                             t.getDeclaration() instanceof Interface &&
-                                //pt.getDeclaration().equals(nd)) {
-                                pt.getDeclaration().getQualifiedNameString().equals("ceylon.language.Nothing")) {
+                                pt.getDeclaration().equals(nd)) {
+                                //pt.getDeclaration().getQualifiedNameString().equals("ceylon.language.Nothing")) {
                             list.clear();
                             list.add( new BottomType(unit).getType() );
                             return;
