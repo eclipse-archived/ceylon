@@ -215,9 +215,10 @@ jQuery(function(){
 
  var konami = 0;
  var konamiCode = [38,38,40,40,37,39,37,39,66,65,13];
- jQuery("body").keydown(function (event){
+ jQuery("html").keydown(function (event){
 	 var evt = event || window.event;
-	 if(evt.keyCode == konamiCode[konami]){
+	 var keyCode = evt.keyCode || evt.which;
+	 if(keyCode == konamiCode[konami]){
 		 konami++;
 		 if(konami == konamiCode.length)
 			 document.location = "http://ceylon-lang.org/easter-egg/";
