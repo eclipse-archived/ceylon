@@ -39,4 +39,14 @@ public class UnknownType extends TypeDeclaration {
         return true;
     }
     
+    @Override
+    public boolean equals(Object object) {
+    	return this==object;
+    }
+    
+    @Override
+    public int hashCode() {
+    	return System.identityHashCode(this);
+    }
+    
 }

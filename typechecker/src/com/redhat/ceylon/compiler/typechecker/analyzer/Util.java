@@ -131,14 +131,17 @@ class Util extends Visitor {
     static void checkAssignable(ProducedType type, ProducedType supertype, 
             Node node, String message) {
         if (type==null||supertype==null) {
+        	//this is always a bug now, i suppose?
             node.addError(message);
         }
-        else if (type.getDeclaration() instanceof UnknownType) {
-        	node.addError(message + ": type of expression cannot be determined");
-        }
         else if (!type.isSubtypeOf(supertype)) {
-            node.addError(message + ": " + type.getProducedTypeName() + 
-                    " is not assignable to " + supertype.getProducedTypeName());
+        	if (type.getDeclaration() instanceof UnknownType) {
+            	node.addError(message + ": type of expression cannot be determined");
+            }
+        	else {
+	            node.addError(message + ": " + type.getProducedTypeName() + 
+	                    " is not assignable to " + supertype.getProducedTypeName());
+        	}
         }
     }
 
