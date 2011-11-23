@@ -221,8 +221,9 @@ public abstract class CeylonDoc extends Markup {
     protected void writeKeyboardShortcuts() throws IOException{
         // shortcuts
         open("script type='text/javascript'");
-        write("jQuery('body').keypress(function(evt){\n");
+        write("jQuery('html').keypress(function(evt){\n");
         write(" evt = evt || window.event;\n");
+        write(" var keyCode = evt.keyCode || evt.which;\n");
         writeKeyboardShortcut('s', getResourceUrl("search.html"));
         writeKeyboardShortcut('o', getResourceUrl("index.html"));
         writeAdditionalKeyboardShortcuts();
@@ -235,7 +236,7 @@ public abstract class CeylonDoc extends Markup {
     }
 
     protected void writeKeyboardShortcut(char c, String url) throws IOException {
-        write(" if(evt.keyCode == "+(int)c+"){\n");
+        write(" if(keyCode == "+(int)c+"){\n");
         write("  document.location = '"+url+"';\n"); 
         write(" }\n");
     }
