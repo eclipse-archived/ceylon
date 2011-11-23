@@ -58,7 +58,8 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
 	@Override
 	public Iterator<Element> getIterator() {
-		return new ArraySequenceIterator<Element>(this);
+		return getEmpty() ? null : 
+			new ArraySequenceIterator<Element>(this);
 	}
 
 	public static class ArraySequenceIterator<Element> implements Iterator<Element> {
@@ -76,7 +77,14 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
 		@Override
 		public Iterator<Element> getTail() {
-			return new ArraySequenceIterator<Element>(sequence.getRest());
+			Sequence<? extends Element> rest = sequence.getRest();
+			return rest.getEmpty() ? null :
+				new ArraySequenceIterator<Element>(rest);
+		}
+		
+		@Override
+		public java.lang.String toString() {
+			return "SequenceIterator";
 		}
 
 	}
@@ -125,6 +133,19 @@ public class ArraySequence<Element> implements Sequence<Element> {
 			return new ArraySequence<Element>(array, from);
 		Element[] newArray = Arrays.copyOfRange(array, (int)from, (int)to);
 		return new ArraySequence<Element>(newArray);
+	}
+	
+	@Override
+	public java.lang.String toString() {
+		if (getEmpty()) return "{}";
+		StringBuilder result = new StringBuilder("{ ");
+		for (Element elem: array) {
+			result.append(elem)
+				.append(", ");
+		}
+		result.setLength(result.length()-2);
+		result.append(" }");
+		return result.toString();
 	}
 
 	/*@Override
