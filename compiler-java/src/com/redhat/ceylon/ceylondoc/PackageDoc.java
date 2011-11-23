@@ -147,16 +147,16 @@ public class PackageDoc extends ClassOrPackageDoc {
         }
         open("div class='submenu'");
         if (!attributes.isEmpty()) {
-            printSubMenuItem("attributes", getAccessKeyed("Attributes", 'A'));
+            printSubMenuItem("attributes", getAccessKeyed("Attributes", 'A', "Jump to attributes"));
         }
         if (!methods.isEmpty()) {
-            printSubMenuItem("methods", getAccessKeyed("Methods", 'M'));
+            printSubMenuItem("methods", getAccessKeyed("Methods", 'M', "Jump to methods"));
         }
         if (!classes.isEmpty()) {
-            printSubMenuItem("classes", getAccessKeyed("Classes", 'C'));
+            printSubMenuItem("classes", getAccessKeyed("Classes", 'C', "Jump to classes"));
         }
         if (!interfaces.isEmpty()) {
-            printSubMenuItem("interfaces", getAccessKeyed("Interfaces", 'I'));
+            printSubMenuItem("interfaces", getAccessKeyed("Interfaces", 'I', "Jump to interfaces"));
         }
         close("div");
     }

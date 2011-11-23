@@ -437,13 +437,13 @@ public class ClassDoc extends ClassOrPackageDoc {
         }
         open("div class='submenu'");
         if (!attributes.isEmpty()) {
-            printSubMenuItem("attributes", getAccessKeyed("Attributes", 'A'));
+            printSubMenuItem("attributes", getAccessKeyed("Attributes", 'A', "Jump to attributes"));
         }
         if (klass instanceof Class) {
-            printSubMenuItem("constructor", getAccessKeyed("Constructor", 'C'));
+            printSubMenuItem("constructor", getAccessKeyed("Constructor", 'C', "Jump to constructor"));
         }
         if (!methods.isEmpty()) {
-            printSubMenuItem("methods", getAccessKeyed("Methods", 'M'));
+            printSubMenuItem("methods", getAccessKeyed("Methods", 'M', "Jump to methods"));
         }
         close("div");
     }

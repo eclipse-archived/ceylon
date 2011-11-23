@@ -172,7 +172,7 @@ public abstract class CeylonDoc extends Markup {
     protected void writeNav(Module module, Object decl, DocType docType) throws IOException {
         open("div class='nav menu'");
         open("div");
-        around("a href='"+getObjectUrl(module)+"'", getAccessKeyed("Overview", 'O'));
+        around("a href='"+getObjectUrl(module)+"'", getAccessKeyed("Overview", 'O', "Module documentation"));
         close("div");
         if(docType == DocType.PACKAGE)
             open("div class='selected'");
@@ -188,13 +188,13 @@ public abstract class CeylonDoc extends Markup {
             } else {
                 throw new RuntimeException("" + decl);
             }
-            around("a href='" + url + "'", getAccessKeyed("Package", 'P'));
+            around("a href='" + url + "'", getAccessKeyed("Package", 'P', "Package documentation"));
         } else
             write("Package");
         close("div");
         if(docType == DocType.TYPE){
             open("div class='selected'");
-            around("a href='"+getObjectUrl(decl)+"'", getAccessKeyed("Type", 'T'));
+            around("a href='"+getObjectUrl(decl)+"'", getAccessKeyed("Type", 'T', "Type documentation"));
         }else{
             open("div");
             write("Type");
@@ -202,7 +202,7 @@ public abstract class CeylonDoc extends Markup {
         close("div");
 
         open("div");
-        around("a href='"+getResourceUrl("../search.html")+"'", getAccessKeyed("Search", 'S'));
+        around("a href='"+getResourceUrl("../search.html")+"'", getAccessKeyed("Search", 'S', "Search this module"));
         close("div");
         
         open("div");
@@ -221,13 +221,15 @@ public abstract class CeylonDoc extends Markup {
         close("div");
     }
     
-    protected String getAccessKeyed(String string, char key) {
+    protected String getAccessKeyed(String string, char key, String tooltip) {
         int index = string.indexOf(key);
         if(index == -1)
             return string;
         String before = string.substring(0, index);
         String after = string.substring(index+1);
-        return before + "<span class='accesskey'>" + key + "</span>" + after;
+        return "<span title='" + tooltip + " [Shortcut: " + key + "]'>" +
+                before + "<span class='accesskey'>" + key + "</span>" + after +
+                "</span>";
     }
 
     protected void writeKeyboardShortcuts() throws IOException{
@@ -236,8 +238,8 @@ public abstract class CeylonDoc extends Markup {
         write("jQuery('html').keypress(function(evt){\n");
         write(" evt = evt || window.event;\n");
         write(" var keyCode = evt.keyCode || evt.which;\n");
-        writeKeyboardShortcut('s', getResourceUrl("search.html"));
-        writeKeyboardShortcut('o', getResourceUrl("index.html"));
+        writeKeyboardShortcut('s', getResourceUrl("../search.html"));
+        writeKeyboardShortcut('o', getResourceUrl("../index.html"));
         writeAdditionalKeyboardShortcuts();
         write("});\n");
         close("script");
