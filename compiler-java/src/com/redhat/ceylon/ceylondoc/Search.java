@@ -52,5 +52,10 @@ public class Search extends CeylonDoc {
     protected String getSrcUrl(Object to) throws IOException {
         return tool.getSrcUrl(module, to);
     }
+    
+    protected void writeKeyboardShortcuts() throws IOException {
+        // Hack: Don't do shortcuts on the search page, because it interferes 
+        // with the search
+    }
 
 }
