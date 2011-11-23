@@ -79,10 +79,10 @@ public class IntersectionType extends TypeDeclaration {
 					List<ProducedType> ilist = new ArrayList<ProducedType>();
 					for (ProducedType pt: getSatisfiedTypes()) {
 						if (pt==st) {
-							addToIntersection(ilist, ct);
+							addToIntersection(ilist, ct, unit);
 						}
 						else {
-							addToIntersection(ilist, pt);
+							addToIntersection(ilist, pt, unit);
 						}
 					}
 					IntersectionType it = new IntersectionType(unit);

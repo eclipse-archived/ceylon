@@ -618,7 +618,7 @@ public class ProducedType extends ProducedReference {
                     if (st==null) {
                         return null;
                     }
-                    addToIntersection(list2, st.getTypeArguments().get(tp));
+                    addToIntersection(list2, st.getTypeArguments().get(tp), getDeclaration().getUnit());
                 }
                 IntersectionType it = new IntersectionType(getDeclaration().getUnit());
                 it.setSatisfiedTypes(list2);
@@ -948,7 +948,7 @@ public class ProducedType extends ProducedReference {
                 types.add(null);
             }
             else {
-                addToIntersection(types, substitute(ct, substitutions));
+                addToIntersection(types, substitute(ct, substitutions), ct.getDeclaration().getUnit());
             }
         }
 

@@ -184,7 +184,7 @@ public class TypeVisitor extends Visitor {
         IntersectionType it = new IntersectionType(unit);
         List<ProducedType> types = new ArrayList<ProducedType>();
         for (Tree.StaticType st: that.getStaticTypes()) {
-            addToIntersection( types, st.getTypeModel() );
+            addToIntersection(types, st.getTypeModel(), unit);
         }
         it.setSatisfiedTypes(types);
         ProducedType pt = it.getType();

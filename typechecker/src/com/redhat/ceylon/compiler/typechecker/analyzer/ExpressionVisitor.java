@@ -1072,7 +1072,7 @@ public class ExpressionVisitor extends Visitor {
                 for (ProducedType ct: paramType.getDeclaration().getCaseTypes()) {
                     addToIntersection(list, inferTypeArg(tp, 
                             ct.substitute(paramType.getTypeArguments()), 
-                            argType, visited));
+                            argType, visited), unit);
                 }
                 return intersection(list);
             }
@@ -1099,7 +1099,7 @@ public class ExpressionVisitor extends Visitor {
                 for (ProducedType ct: argType.getDeclaration().getSatisfiedTypes()) {
                     addToIntersection(list, inferTypeArg(tp, paramType, 
                             ct.substitute(paramType.getTypeArguments()), 
-                            visited));
+                            visited), unit);
                 }
                 return intersection(list);
             }
