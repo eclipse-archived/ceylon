@@ -80,7 +80,7 @@ jQuery(function(){
 		var div = jQuery("<div/>").addClass("match");
 		if(i == 0)
 			div.addClass("selected");
-		var name = elem.name.toLowerCase();
+		var name = elem.name;
 		var matchStart = name.indexOf(q);
 		var before = name.substring(0, matchStart);
 		var match = name.substring(matchStart, matchStart + q.length);

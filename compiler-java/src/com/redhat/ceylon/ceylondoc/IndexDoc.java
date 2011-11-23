@@ -66,11 +66,14 @@ public class IndexDoc extends CeylonDoc {
         indexMembers(pkg);
     }
 
-    private void indexMembers(Scope pkg) throws IOException {
-        for(Declaration decl : pkg.getMembers()){
+    private void indexMembers(Scope scope) throws IOException {
+        for (Declaration decl : scope.getMembers()) {
+            if (!tool.shouldInclude(decl)) {
+                continue;
+            }
             if(decl instanceof ClassOrInterface)
                 indexMembers((Scope) decl);
-            if(indexDecl(pkg, decl))
+            if(indexDecl(scope, decl))
                 write(",\n");
         }
     }
@@ -100,13 +103,13 @@ public class IndexDoc extends CeylonDoc {
     }
 
     private void writeIndexElement(String name, String type, String url, String doc) throws IOException {
-        write("{name: '");
+        write("{'name': '");
         write(name);
-        write("', type: '");
+        write("', 'type': '");
         write(type);
-        write("', url: '");
+        write("', 'url': '");
         write(url);
-        write("', doc: '");
+        write("', 'doc': '");
         write(escapeJSONString(doc).trim());
         write("'}");
     }

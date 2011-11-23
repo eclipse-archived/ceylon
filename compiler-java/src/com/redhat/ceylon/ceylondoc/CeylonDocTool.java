@@ -449,7 +449,7 @@ public class CeylonDocTool {
     }
     
     protected boolean shouldInclude(Package pkg){
-        return showPrivate || pkg.isShared();
+        return true; // TODO showPrivate || pkg.isShared();
     }
     
     /**
