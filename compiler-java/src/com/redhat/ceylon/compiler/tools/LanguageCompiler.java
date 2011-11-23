@@ -36,12 +36,11 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import javax.tools.JavaFileObject;
-import javax.tools.StandardLocation;
 import javax.tools.JavaFileObject.Kind;
+import javax.tools.StandardLocation;
 
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.tree.CommonTree;
 
 import com.redhat.ceylon.compiler.codegen.CeylonClassWriter;
 import com.redhat.ceylon.compiler.codegen.CeylonCompilationUnit;
@@ -63,8 +62,6 @@ import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
 import com.redhat.ceylon.compiler.typechecker.parser.LexError;
 import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
 import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
-import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.sun.tools.javac.comp.AttrContext;
 import com.sun.tools.javac.comp.Env;
