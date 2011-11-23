@@ -499,7 +499,6 @@ public class CeylonDocTool {
         StringBuilder sb = new StringBuilder();
         URI r = uri;
         if (!r.equals(baseUrl)) {
-            sb.append("./");
             r = uri.resolve(URI.create(sb.toString()));
             if (!r.equals(baseUrl)) {
                 r = uri;
