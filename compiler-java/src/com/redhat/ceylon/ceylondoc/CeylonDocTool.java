@@ -233,14 +233,14 @@ public class CeylonDocTool {
         doc(module);
         makeIndex(module);
 
-        copyResource("resources/style.css", ".resources/style.css");
-        copyResource("resources/shCore.css", ".resources/shCore.css");
-        copyResource("resources/shThemeDefault.css", ".resources/shThemeDefault.css");
-        copyResource("resources/jquery-1.7.min.js", ".resources/jquery-1.7.min.js");
-        copyResource("resources/ceylond.js", ".resources/ceylond.js");
-        copyResource("resources/shCore.js", ".resources/shCore.js");
-        copyResource("resources/shBrushCeylon.js", ".resources/shBrushCeylon.js");
-        copyResource("resources/search.html", "search.html");
+        copyResource("resources/style.css", new File(getResourcesDir(), "style.css"));
+        copyResource("resources/shCore.css", new File(getResourcesDir(), "shCore.css"));
+        copyResource("resources/shThemeDefault.css", new File(getResourcesDir(), "shThemeDefault.css"));
+        copyResource("resources/jquery-1.7.min.js", new File(getResourcesDir(), "jquery-1.7.min.js"));
+        copyResource("resources/ceylond.js", new File(getResourcesDir(), "ceylond.js"));
+        copyResource("resources/shCore.js", new File(getResourcesDir(), "shCore.js"));
+        copyResource("resources/shBrushCeylon.js", new File(getResourcesDir(), "shBrushCeylon.js"));
+        copyResource("resources/search.html", new File(destDir, "search.html"));
     }
 
     private void buildSourceLocations() {
@@ -265,7 +265,7 @@ public class CeylonDocTool {
 
     private void copySourceFiles() throws FileNotFoundException, IOException {
         for (PhasedUnit pu : phasedUnits) {
-            File file = new File(destDir, pu.getPathRelativeToSrcDir()+".html");
+            File file = new File(getFolder(pu.getPackage()), pu.getUnitFile().getName()+".html");
             File dir = file.getParentFile();
             if (!dir.exists() && !dir.mkdirs()) {
                 throw new IOException("Couldn't create directory for file: " + file);
@@ -327,12 +327,22 @@ public class CeylonDocTool {
     }
 
     private void makeIndex(Module module) throws IOException {
-        FileWriter writer = new FileWriter(new File(destDir, ".resources/index.js"));
+        File dir = getResourcesDir();
+        FileWriter writer = new FileWriter(new File(dir, "index.js"));
         try {
             new IndexDoc(this, writer, module).generate();
         } finally {
             writer.close();
         }
+    }
+
+    private File getResourcesDir() throws IOException {
+        File dir = new File(destDir, ".resources");
+        if (!dir.exists()
+                && !dir.mkdirs()) {
+            throw new IOException();
+        }
+        return dir;
     }
     
     /**
@@ -346,8 +356,7 @@ public class CeylonDocTool {
         return pkg.getNameAsString().equals(module.getNameAsString());
     }
 
-    private void copyResource(String path, String target) throws IOException {
-        File file = new File(destDir, target);
+    private void copyResource(String path, File file) throws IOException {
         File dir = file.getParentFile();
         if (!dir.exists()
                 && !dir.mkdirs()) {
@@ -499,23 +508,24 @@ public class CeylonDocTool {
      */
     protected String getSrcUrl(Object from, Object modPkgOrDecl) throws IOException {
         URI fromUrl = getAbsoluteObjectUrl(from);
-        String pkgName;
+        Package pkg;
         String filename;
         if (modPkgOrDecl instanceof Element) {
             Unit unit = ((Element)modPkgOrDecl).getUnit();
-            pkgName = unit.getPackage().getNameAsString();
+            pkg = unit.getPackage();
             filename = unit.getFilename();
         } else if (modPkgOrDecl instanceof Package) {
-            pkgName = ((Package)modPkgOrDecl).getNameAsString();
+            pkg = (Package)modPkgOrDecl;
             filename = "package.ceylon";
         } else if (modPkgOrDecl instanceof Module) {
-            pkgName = ((Module)modPkgOrDecl).getNameAsString();
+            Module module = (Module)modPkgOrDecl;
+            pkg = module.getPackage(module.getNameAsString());
             filename = "module.ceylon";
         } else {
             throw new RuntimeException("Unexpected: " + modPkgOrDecl);
         }
-        File dir = new File(getDestDir(), pkgName.replace(".", "/"));
-        File srcFile = new File(dir, filename + ".html").getCanonicalFile();
+
+        File srcFile = new File(getFolder(pkg), filename + ".html").getCanonicalFile();
         String result;
         if (srcFile.exists()) {
             URI url = srcFile.toURI();

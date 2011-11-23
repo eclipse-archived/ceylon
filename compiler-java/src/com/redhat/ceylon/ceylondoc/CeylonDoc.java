@@ -178,9 +178,17 @@ public abstract class CeylonDoc extends Markup {
             open("div class='selected'");
         else
             open("div");
-        if(docType != DocType.MODULE)
-            around("a href='" + getObjectUrl(getPackage(((Declaration)decl).getContainer())) + "'", getAccessKeyed("Package", 'P'));
-        else
+        if(docType != DocType.MODULE) {
+            String url;
+            if (decl instanceof Declaration) {
+                url = getObjectUrl(getPackage(((Declaration)decl).getContainer()));
+            } else if (decl instanceof Package) {
+                url = getObjectUrl((Package)decl);
+            } else {
+                throw new RuntimeException("" + decl);
+            }
+            around("a href='" + url + "'", getAccessKeyed("Package", 'P'));
+        } else
             write("Package");
         close("div");
         if(docType == DocType.TYPE){
