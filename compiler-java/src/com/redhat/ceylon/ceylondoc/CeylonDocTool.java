@@ -38,6 +38,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
+
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -123,11 +125,13 @@ public class CeylonDocTool {
     }
 
     private File getFolder(Package pkg) {
-        File dir = new File(destDir, join("/",pkg.getName()));
+        Module module = pkg.getModule();
+        List<String> unprefixedName = pkg.getName().subList(module.getName().size(), pkg.getName().size());
+        File dir = new File(destDir, join("/", unprefixedName));
         dir.mkdirs();
         return dir;
     }
-
+    
     private File getFolder(ClassOrInterface klass) {
         return getFolder(getPackage(klass));
     }
@@ -158,13 +162,12 @@ public class CeylonDocTool {
             ClassOrInterface klass = (ClassOrInterface)modPgkOrDecl;
             String filename = kind(modPgkOrDecl) + "_" + getFileName(klass) + ".html";
             file = new File(getFolder(klass), filename);
-        } else if (modPgkOrDecl instanceof Package) {
-            Package pkg = (Package)modPgkOrDecl;
-            String filename = "index.html";
-            file = new File(getFolder(pkg), filename);
         } else if (modPgkOrDecl instanceof Module) {
             String filename = "index.html";
             file = new File(new File(destDir), filename);
+        } else if (modPgkOrDecl instanceof Package) {
+            String filename = "index.html";
+            file = new File(getFolder((Package)modPgkOrDecl), filename);
         } else {
             throw new RuntimeException("Unexpected: " + modPgkOrDecl);
         }
@@ -227,19 +230,16 @@ public class CeylonDocTool {
             }
         }
 
-        for (Package pkg : module.getPackages()) {
-            doc(pkg);
-        }
         doc(module);
         makeIndex(module);
 
-        copyResource("resources/style.css", "style.css");
-        copyResource("resources/shCore.css", "shCore.css");
-        copyResource("resources/shThemeDefault.css", "shThemeDefault.css");
-        copyResource("resources/jquery-1.7.min.js", "jquery-1.7.min.js");
-        copyResource("resources/ceylond.js", "ceylond.js");
-        copyResource("resources/shCore.js", "shCore.js");
-        copyResource("resources/shBrushCeylon.js", "shBrushCeylon.js");
+        copyResource("resources/style.css", ".resources/style.css");
+        copyResource("resources/shCore.css", ".resources/shCore.css");
+        copyResource("resources/shThemeDefault.css", ".resources/shThemeDefault.css");
+        copyResource("resources/jquery-1.7.min.js", ".resources/jquery-1.7.min.js");
+        copyResource("resources/ceylond.js", ".resources/ceylond.js");
+        copyResource("resources/shCore.js", ".resources/shCore.js");
+        copyResource("resources/shBrushCeylon.js", ".resources/shBrushCeylon.js");
         copyResource("resources/search.html", "search.html");
     }
 
@@ -303,35 +303,63 @@ public class CeylonDocTool {
     }
 
     private void doc(Module module) throws IOException {
-        FileWriter writer = new FileWriter(getObjectFile(module));
+        FileWriter rootWriter = new FileWriter(getObjectFile(module));
         try {
-            new SummaryDoc(this, writer, module).generate();
+            SummaryDoc summaryDoc = new SummaryDoc(this, rootWriter, module);
+            summaryDoc.generate();
+            for (Package pkg : module.getPackages()) {
+                if (isRootPackage(module, pkg)) {
+                    new PackageDoc(this, rootWriter, pkg).generate();
+                } else {
+                    FileWriter packageWriter = new FileWriter(getObjectFile(pkg));
+                    try {
+                        new PackageDoc(this, packageWriter, pkg).generate();
+                    } finally {
+                        packageWriter.close();
+                    }
+                }
+            }
+            summaryDoc.complete();
         } finally {
-            writer.close();
+            rootWriter.close();
         }
+        
     }
 
     private void makeIndex(Module module) throws IOException {
-        new IndexDoc(this, module).generate();
-    }
-
-    private void doc(Package pkg) throws IOException {
-        FileWriter writer = new FileWriter(getObjectFile(pkg));
+        FileWriter writer = new FileWriter(new File(destDir, ".resources/index.js"));
         try {
-            new PackageDoc(this, writer, pkg).generate();
+            new IndexDoc(this, writer, module).generate();
         } finally {
             writer.close();
         }
     }
-
-    private void copyResource(String path, String target) throws IOException {
-        InputStream resource = getClass().getResourceAsStream(path);
-        copy(resource, target);
+    
+    /**
+     * Determines whether the given package is the 'root package' (i.e. has the 
+     * same fully qualified name as) of the given module.
+     * @param module
+     * @param pkg
+     * @return
+     */
+    boolean isRootPackage(Module module, Package pkg) {
+        return pkg.getNameAsString().equals(module.getNameAsString());
     }
 
-    private void copy(InputStream resource, String target)
+    private void copyResource(String path, String target) throws IOException {
+        File file = new File(destDir, target);
+        File dir = file.getParentFile();
+        if (!dir.exists()
+                && !dir.mkdirs()) {
+            throw new IOException();
+        }
+        InputStream resource = getClass().getResourceAsStream(path);
+        copy(resource, file);
+    }
+
+    private void copy(InputStream resource, File file)
             throws FileNotFoundException, IOException {
-        OutputStream os = new FileOutputStream(new File(destDir, target));
+        OutputStream os = new FileOutputStream(file);
         byte[] buf = new byte[1024];
         int read;
         while ((read = resource.read(buf)) > -1) {
@@ -365,8 +393,15 @@ public class CeylonDocTool {
         return (Package)scope;
     }
 
-    Module getModule(Declaration decl) {
-        return getPackage(decl).getModule();
+    Module getModule(Object modPkgOrDecl) {
+        if (modPkgOrDecl instanceof Module) {
+            return (Module)modPkgOrDecl;
+        } else if (modPkgOrDecl instanceof Package) {
+            return ((Package)modPkgOrDecl).getModule();
+        } else if (modPkgOrDecl instanceof Declaration) {
+            return getPackage((Declaration)modPkgOrDecl).getModule();
+        }
+        throw new RuntimeException();
     }
 
 
@@ -440,12 +475,16 @@ public class CeylonDocTool {
         URI fromUrl = getAbsoluteObjectUrl(from);
         URI toUrl = getAbsoluteObjectUrl(to);
         String result = relativize(fromUrl, toUrl).toString();
+        if (to instanceof Package 
+                && isRootPackage(getModule(from), (Package)to)) {
+            result += "#package";
+        }
         return result;
     }
     
     protected String getResourceUrl(Object from, String to) throws IOException {
         URI fromUrl = getAbsoluteObjectUrl(from);
-        URI toUrl = getBaseUrl().resolve(to);
+        URI toUrl = getBaseUrl().resolve(".resources/" + to);
         String result = relativize(fromUrl, toUrl).toString();
         return result;
     }

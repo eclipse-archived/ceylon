@@ -42,7 +42,11 @@ public class SummaryDoc extends CeylonDoc {
     public void generate() throws IOException {
         htmlHead();
         overview();
+        summary();
         packages();
+    }
+    
+    public void complete() throws IOException {
         close("body");
         close("html");
     }
@@ -55,6 +59,15 @@ public class SummaryDoc extends CeylonDoc {
         writeNav(module, module, DocType.MODULE);
     }
 
+    private void summary() throws IOException {
+        open("div class='head summary'");
+        open("h1 id='module'");
+        write("Module ");
+        around("code", module.getNameAsString());
+        close("h1");
+        close("div");
+    }
+    
     private void packages() throws IOException {
         openTable("Packages", "Package", "Description");
         for (Package pkg : getPackages()) {
@@ -79,16 +92,17 @@ public class SummaryDoc extends CeylonDoc {
         return packages;
     }
 
-    private void doc(Package c) throws IOException {
+    private void doc(Package pkg) throws IOException {
         open("tr class='TableRowColor'");
         open("td", "code");
-        if (c.getNameAsString().isEmpty())
+        if (pkg.getNameAsString().isEmpty()) {
             around("a href='index.html'", "default package");
-        else
-            around("a href='" + join("/", c.getName()) + "/index.html'", c.getNameAsString());
+        } else {
+            around("a href='" + tool.getObjectUrl(module, pkg) + "'", pkg.getNameAsString());
+        }
         close("code", "td");
         open("td");
-        write(c.getNameAsString());
+        write(pkg.getNameAsString());
         close("td");
         close("tr");
     }

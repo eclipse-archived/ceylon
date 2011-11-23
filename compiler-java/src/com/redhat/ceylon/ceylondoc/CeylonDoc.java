@@ -179,7 +179,7 @@ public abstract class CeylonDoc extends Markup {
         else
             open("div");
         if(docType != DocType.MODULE)
-            around("a href='index.html'", getAccessKeyed("Package", 'P'));
+            around("a href='" + getObjectUrl(getPackage(((Declaration)decl).getContainer())) + "'", getAccessKeyed("Package", 'P'));
         else
             write("Package");
         close("div");
@@ -193,7 +193,7 @@ public abstract class CeylonDoc extends Markup {
         close("div");
 
         open("div");
-        around("a href='"+getResourceUrl("search.html")+"'", getAccessKeyed("Search", 'S'));
+        around("a href='"+getResourceUrl("../search.html")+"'", getAccessKeyed("Search", 'S'));
         close("div");
         
         open("div");

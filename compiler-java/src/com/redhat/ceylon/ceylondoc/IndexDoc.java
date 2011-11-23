@@ -22,6 +22,7 @@ package com.redhat.ceylon.ceylondoc;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -43,18 +44,15 @@ public class IndexDoc extends CeylonDoc {
 
     private Module module;
 
-    public IndexDoc(CeylonDocTool tool, Module module) throws IOException {
-        super(module, tool, new File(new File(tool.getDestDir()), "index.js"));
+    public IndexDoc(CeylonDocTool tool, Writer writer, Module module) throws IOException {
+        super(module, tool, writer);
         this.module = module;
     }
     
     public void generate() throws IOException {
-        setupWriter();
         write("var index = [\n");
         indexPackages();
         write("];\n");
-        writer.flush();
-        writer.close();
     }
 
     private void indexPackages() throws IOException {

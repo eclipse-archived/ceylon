@@ -62,9 +62,11 @@ public class PackageDoc extends ClassOrPackageDoc {
      * methods in the package
      */
     private List<Method> methods;
+    private final boolean sharingPageWithModule;
 
 	public PackageDoc(CeylonDocTool tool, Writer writer, Package pkg) throws IOException {
 		super(pkg.getModule(), tool, writer);
+		this.sharingPageWithModule = tool.isRootPackage(module, pkg);
 		this.pkg = pkg;
 		loadMembers();
 	}
@@ -100,14 +102,20 @@ public class PackageDoc extends ClassOrPackageDoc {
     }
 
     public void generate() throws IOException {
-        htmlHead();
+        if (!sharingPageWithModule) {
+            htmlHead();
+            writeNav(module, pkg, DocType.PACKAGE);
+        }
+        subnav();
         summary();
         attributes();
         methods();
         interfaces();
         classes();
-        close("body");
-        close("html");
+        if (!sharingPageWithModule) {
+            close("body");
+            close("html");
+        }
     }
 
     private void htmlHead() throws IOException {
@@ -115,17 +123,24 @@ public class PackageDoc extends ClassOrPackageDoc {
     }
 
     private void summary() throws IOException {
-        writeNav(module, pkg, DocType.PACKAGE);
-        
+        open("div class='head summary'");
+        String id = "";
+        if (tool.isRootPackage(module, pkg)) {
+            id = " id='package'";
+        }
+        open("h1" + id);
+        write("Package ");
+        around("code", pkg.getNameAsString());
+        close("h1");
+        close("div");
+    }
+
+    private void subnav() throws IOException {
         open("div class='submenu'");
         printSubMenuItem("attributes", getAccessKeyed("Attributes", 'A'));
         printSubMenuItem("methods", getAccessKeyed("Methods", 'M'));
         printSubMenuItem("classes", getAccessKeyed("Classes", 'C'));
         printSubMenuItem("interfaces", getAccessKeyed("Interfaces", 'I'));
-        close("div");
-        
-        open("div class='head summary'");
-        around("h1", "Package ", "<code>", pkg.getNameAsString(), "</code>");
         close("div");
     }
 
