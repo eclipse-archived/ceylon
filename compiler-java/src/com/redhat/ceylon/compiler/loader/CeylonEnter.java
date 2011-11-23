@@ -33,6 +33,7 @@ import com.redhat.ceylon.compiler.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.codegen.CeylonTransformer;
 import com.redhat.ceylon.compiler.codegen.CodeGenError;
 import com.redhat.ceylon.compiler.tools.CeylonLocation;
+import com.redhat.ceylon.compiler.tools.CeylonLog;
 import com.redhat.ceylon.compiler.tools.CeylonPhasedUnit;
 import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
@@ -97,7 +98,7 @@ public class CeylonEnter extends Enter {
         }
         phasedUnits = LanguageCompiler.getPhasedUnitsInstance(context);
         ceylonContext = LanguageCompiler.getCeylonContextInstance(context);
-        log = Log.instance(context);
+        log = CeylonLog.instance(context);
         modelLoader = CeylonModelLoader.instance(context);
         options = Options.instance(context);
         paths = Paths.instance(context);

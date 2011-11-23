@@ -36,6 +36,7 @@ import javax.lang.model.type.TypeKind;
 import javax.tools.JavaFileObject.Kind;
 
 import com.redhat.ceylon.compiler.codegen.CeylonCompilationUnit;
+import com.redhat.ceylon.compiler.tools.CeylonLog;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
@@ -120,7 +121,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         symtab = Symtab.instance(context);
         names = Name.Table.instance(context);
         reader = CeylonClassReader.instance(context);
-        log = Log.instance(context);
+        log = CeylonLog.instance(context);
         types = Types.instance(context);
         typeFactory = TypeFactory.instance(context);
         typeParser = new TypeParser(this, typeFactory);

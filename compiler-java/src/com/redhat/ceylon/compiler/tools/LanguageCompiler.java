@@ -129,6 +129,7 @@ public class LanguageCompiler extends JavaCompiler {
         Options options = Options.instance(context);
         options.put("-Xprefer", "source");
         // make sure it's registered
+        CeylonLog.instance(context);
         CeylonEnter.instance(context);
         CeylonClassWriter.instance(context);
         JavaCompiler instance = context.get(compilerKey);

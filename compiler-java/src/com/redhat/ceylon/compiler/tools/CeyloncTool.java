@@ -55,6 +55,7 @@ public class CeyloncTool extends JavacTool implements JavaCompiler {
         Context context = new Context();
         if (diagnosticListener != null)
             context.put(DiagnosticListener.class, diagnosticListener);
+        CeylonLog.preRegister(context);
         return new CeyloncFileManager(context, true, charset);
     }
 

@@ -31,6 +31,7 @@
 package com.redhat.ceylon.compiler.launcher;
 
 import com.redhat.ceylon.compiler.loader.CeylonEnter;
+import com.redhat.ceylon.compiler.tools.CeylonLog;
 import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.sun.tools.javac.util.Options;
@@ -312,6 +313,7 @@ public class Main extends com.sun.tools.javac.main.Main {
         Context context = new Context();
         CeyloncFileManager.preRegister(context); // can't create it until Log
                                                  // has been set up
+        CeylonLog.preRegister(context);
         int result = compile(args, context);
         if (fileManager instanceof JavacFileManager) {
             // A fresh context was created above, so jfm must be a
