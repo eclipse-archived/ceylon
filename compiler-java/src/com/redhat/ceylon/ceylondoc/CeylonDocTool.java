@@ -240,6 +240,8 @@ public class CeylonDocTool {
         copyResource("resources/ceylond.js", new File(getResourcesDir(), "ceylond.js"));
         copyResource("resources/shCore.js", new File(getResourcesDir(), "shCore.js"));
         copyResource("resources/shBrushCeylon.js", new File(getResourcesDir(), "shBrushCeylon.js"));
+        
+        copyResource("resources/NOTICE.txt", new File(destDir, "NOTICE.txt"));
         copyResource("resources/search.html", new File(destDir, "search.html"));
     }
 
