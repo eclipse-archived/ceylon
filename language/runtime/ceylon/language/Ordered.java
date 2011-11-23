@@ -18,5 +18,5 @@ public interface Ordered<Element> extends Iterable<Element> {
     @TypeInfo("Element|ceylon.language.Nothing")
     public Element getFirst();
     
-    public Ordered<Element> segment(long skipping, long finishingAfter);
+    //public Ordered<Element> segment(long skipping, long finishingAfter);
 }

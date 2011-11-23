@@ -33,7 +33,7 @@ public class Correspondence$impl {
     }
 
     public static <Key extends Equality,Item> boolean definesEvery(Correspondence<Key,Item> $this, ceylon.language.Iterable<? extends Key> keys){
-        for (ceylon.language.Iterator<? extends Key> $key$iter$0 = keys.getIterator(); $key$iter$0.getHead() != null; $key$iter$0 = $key$iter$0.getTail()) {
+        for (ceylon.language.Iterator<? extends Key> $key$iter$0 = keys.getIterator(); $key$iter$0 != null; $key$iter$0 = $key$iter$0.getTail()) {
             final Key key = $key$iter$0.getHead();
             if (!$this.defines(key)) {
                 return false;
@@ -43,7 +43,7 @@ public class Correspondence$impl {
     }
 
     public static <Key extends Equality,Item> boolean definesAny(Correspondence<Key,Item> $this, ceylon.language.Iterable<? extends Key> keys) {
-        for (ceylon.language.Iterator<? extends Key> $key$iter$0 = keys.getIterator(); $key$iter$0.getHead() != null; $key$iter$0 = $key$iter$0.getTail()) {
+        for (ceylon.language.Iterator<? extends Key> $key$iter$0 = keys.getIterator(); $key$iter$0 != null; $key$iter$0 = $key$iter$0.getTail()) {
             final Key key = $key$iter$0.getHead();
             if ($this.defines(key)) {
                 return true;

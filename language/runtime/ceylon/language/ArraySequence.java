@@ -127,8 +127,8 @@ public class ArraySequence<Element> implements Sequence<Element> {
 		return new ArraySequence<Element>(newArray);
 	}
 
-	@Override
+	/*@Override
 	public Ordered<Element> segment(long from, long length) {
 		return Ordered$Impl.segment(this, from, length);
-	}
+	}*/
 }

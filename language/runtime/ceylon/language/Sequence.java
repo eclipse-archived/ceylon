@@ -71,8 +71,8 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element|ceylon.language.Nothing>")
     public Sequence<? extends Element> span(long from, long to);
     
-    @Override
-    public Ordered<Element> segment(long from, long length);
+    /*@Override
+    public Ordered<Element> segment(long from, long length);*/
 
     public java.lang.String toString();
 

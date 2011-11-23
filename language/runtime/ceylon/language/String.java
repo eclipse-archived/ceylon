@@ -5,7 +5,7 @@ import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 
 public final class String extends Object 
-    implements Comparable<String>, Iterable<Character>, 
+    implements Comparable<String>, Ordered<Character>, 
                Correspondence<Natural,Character>, Format,
                Sized, Summable<String>, Castable<String> {
 
@@ -192,7 +192,7 @@ public final class String extends Object
 
     @Override
     public Character getFirst() {
-        return Iterable$impl.getFirst(this);
+        return Ordered$impl.getFirst(this);
     }
 
     public Sequence<? extends Character> getCharacters() {

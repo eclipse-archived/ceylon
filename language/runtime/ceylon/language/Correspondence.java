@@ -66,10 +66,10 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
         public Sequence<? extends Item> span(long from, long to) {
             throw new RuntimeException("Not implemented"); //todo!
         }
-        @Override
+        /*@Override
         public Ordered<Item> segment(long from, long length) {
             throw new RuntimeException("Not implemented"); //todo!
-        }
+        }*/
         @Override
         public java.lang.String toString() {
             return "Entries";//todo			

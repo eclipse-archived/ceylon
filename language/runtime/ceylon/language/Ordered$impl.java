@@ -1,15 +1,15 @@
 package ceylon.language;
 
-public class Ordered$Impl {
+public class Ordered$impl {
     public static <Element> boolean getEmpty(Ordered<Element> $this){
-        return $this.getFirst() != null;
+        return $this.getIterator() == null;
     }
 
     public static <Element> Element getFirst(Ordered<Element> $this){
         return $this.getIterator().getHead();
     }
 
-    public static <Element> Ordered<Element> segment(Ordered<Element> $this, long skipping, final long finishingAfter){
+    /*public static <Element> Ordered<Element> segment(Ordered<Element> $this, long skipping, final long finishingAfter){
     	if(finishingAfter == 0){
     		return new ArraySequence<Element>();
     	}else{
@@ -77,6 +77,6 @@ public class Ordered$Impl {
     		
     		return segment;
     	}
-    }
+    }*/
 
 }

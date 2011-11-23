@@ -168,10 +168,10 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
         throw new RuntimeException("Not implemented"); //todo!
     }
 
-    @Override
+    /*@Override
     public Ordered<Element> segment(long from, long length) {
         throw new RuntimeException("Not implemented"); //todo!
-    }
+    }*/
 
     @Override
     public Category getKeys() {

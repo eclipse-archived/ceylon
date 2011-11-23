@@ -11,8 +11,10 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
     @TypeParameter(value = "Element", variance = Variance.OUT)
  })
  public interface Iterable<Element> extends Container {
+
+	public boolean getEmpty();
+    
+    @TypeInfo("ceylon.language.Nothing|ceylon.language.Iterator<Element>")
     public Iterator<Element> getIterator();
-    public boolean getEmpty();
-    @TypeInfo("ceylon.language.Nothing|Element")
-    public Element getFirst();
+    
 }
