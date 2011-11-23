@@ -38,6 +38,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.test.CompilerTest;
+import com.redhat.ceylon.compiler.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.util.Util;
 
 public class StructureTest extends CompilerTest {
@@ -81,6 +82,29 @@ public class StructureTest extends CompilerTest {
 
         ZipEntry subpackageClass = car.getEntry("com/redhat/ceylon/compiler/test/structure/module/single/subpackage/Subpackage.class");
         assertNotNull(subpackageClass);
+    }
+
+    @Test
+    public void testMdlCompilerGeneratesModuleForValidUnits() throws IOException{
+        CeyloncTaskImpl compilerTask = getCompilerTask("module/single/module.ceylon", "module/single/Correct.ceylon", "module/single/Invalid.ceylon");
+        Boolean success = compilerTask.call();
+        assertFalse(success);
+        
+        File carFile = getModuleArchive("com.redhat.ceylon.compiler.test.structure.module.single", "6.6.6");
+        assertTrue(carFile.exists());
+
+        JarFile car = new JarFile(carFile);
+
+        ZipEntry moduleClass = car.getEntry("com/redhat/ceylon/compiler/test/structure/module/single/module.class");
+        assertNotNull(moduleClass);
+
+        ZipEntry correctClass = car.getEntry("com/redhat/ceylon/compiler/test/structure/module/single/Correct.class");
+        assertNotNull(correctClass);
+
+        ZipEntry invalidClass = car.getEntry("com/redhat/ceylon/compiler/test/structure/module/single/Invalid.class");
+        assertNull(invalidClass);
+        
+        car.close();
     }
 
     private File getModuleArchive(String moduleName, String version) {
