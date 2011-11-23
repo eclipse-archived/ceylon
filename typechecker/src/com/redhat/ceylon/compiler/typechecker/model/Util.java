@@ -197,9 +197,26 @@ public class Util {
                     else if (pt.isSubtypeOf(t)) {
                         iter.remove();
                     }
-                    else if ( !pt.getDeclaration().equals(t.getDeclaration()) ) { //TODO: what should we do about stuff like Foo<A>&Foo<B>?
-                    	//Unit unit = pt.getDeclaration().getUnit();
-						TypeDeclaration nd = unit.getNothingDeclaration();
+                    else if ( pt.getDeclaration().equals(t.getDeclaration()) ) {
+                        TypeDeclaration td = pt.getDeclaration();
+                        for (int i=0; i<td.getTypeParameters().size(); i++) {
+                        	TypeParameter tp = td.getTypeParameters().get(i);
+                        	if (!tp.isCovariant() && !tp.isContravariant()) {
+	                    		ProducedType pta = pt.getTypeArguments().get(tp);
+								ProducedType ta = t.getTypeArguments().get(tp);
+                        		if (!pta.isExactly(ta)) {
+                        			//the meet of invariant types with different 
+                        			//arguments is empty
+	                                list.clear();
+	                                list.add( new BottomType(unit).getType() );
+	                                return;
+                        		}
+                        	}
+                        }
+                    }
+                    else {
+                        //Unit unit = pt.getDeclaration().getUnit();
+                        TypeDeclaration nd = unit.getNothingDeclaration();
                         if (pt.getDeclaration() instanceof Class &&
                                 t.getDeclaration() instanceof Class ||
                             pt.getDeclaration() instanceof Interface &&
@@ -208,6 +225,8 @@ public class Util {
                             t.getDeclaration() instanceof Interface &&
                                 pt.getDeclaration().equals(nd)) {
                                 //pt.getDeclaration().getQualifiedNameString().equals("ceylon.language.Nothing")) {
+                        	//the meet of two classes unrelated by inheritance, or
+                        	//of Nothing with an interface type is empty
                             list.clear();
                             list.add( new BottomType(unit).getType() );
                             return;
