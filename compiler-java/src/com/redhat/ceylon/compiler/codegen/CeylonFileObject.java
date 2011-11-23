@@ -29,6 +29,7 @@ import static javax.tools.JavaFileObject.Kind.*;
 
 public class CeylonFileObject extends ForwardingFileObject<JavaFileObject> implements JavaFileObject {
     private final JavaFileObject f;
+    public int errors = 0;
 
     public CeylonFileObject(JavaFileObject f) {
         super(f);
