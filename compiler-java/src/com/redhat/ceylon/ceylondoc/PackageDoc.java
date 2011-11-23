@@ -20,6 +20,7 @@
 
 package com.redhat.ceylon.ceylondoc;
 
+import static com.redhat.ceylon.ceylondoc.Util.getDoc;
 import static com.redhat.ceylon.ceylondoc.Util.getModifiers;
 
 import java.io.IOException;
@@ -133,6 +134,8 @@ public class PackageDoc extends ClassOrPackageDoc {
         around("code", pkg.getNameAsString());
         close("h1");
         close("div");
+        
+        around("div class='doc'", getDoc(pkg));
     }
 
     protected void subMenu() throws IOException {

@@ -56,6 +56,14 @@ public class Util {
     public static String getDoc(Declaration decl) {
         return wikiToHTML(getRawDoc(decl));
     }
+    
+    public static String getDoc(Module module) {
+        return wikiToHTML(module.getDoc());
+    }
+    
+    public static String getDoc(Package pkg) {
+        return wikiToHTML(pkg.getDoc());
+    }
 
     public static String getDocFirstLine(Declaration decl) {
         return wikiToHTML(getFirstLine(getRawDoc(decl)));

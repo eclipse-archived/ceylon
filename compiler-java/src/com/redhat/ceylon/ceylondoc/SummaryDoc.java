@@ -20,6 +20,8 @@
 
 package com.redhat.ceylon.ceylondoc;
 
+import static com.redhat.ceylon.ceylondoc.Util.getDoc;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -66,6 +68,8 @@ public class SummaryDoc extends CeylonDoc {
         around("code", module.getNameAsString());
         close("h1");
         close("div");
+        
+        around("div class='doc'", getDoc(module));
     }
     
     private void packages() throws IOException {
