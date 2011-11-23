@@ -36,7 +36,7 @@ public class $empty {
         @Override
         @TypeInfo("ceylon.language.Natural")
         public long getSize() {
-            return Empty$impl.getSize(this).longValue();
+            return Empty$impl.getSize(this);
         }
 
         @Override
@@ -59,9 +59,15 @@ public class $empty {
             return Empty$impl.getFirst(this);
         }
 
+        @Override
+        public java.lang.String toString() {
+        	return Empty$impl.toString(this);
+        }
+
     };
     
     public static Empty getEmpty(){
         return value;
     }
+    
 }

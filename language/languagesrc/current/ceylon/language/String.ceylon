@@ -92,7 +92,7 @@ shared abstract class String()
     shared actual formal Natural size;
     
     doc "An iterator for the characters of the string."
-    shared actual formal Iterator<Character> iterator;
+    shared actual formal Iterator<Character>? iterator;
     
     doc "Returns the character at the given index in the 
          string, or `null` if the index is past the end of

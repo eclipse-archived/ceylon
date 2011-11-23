@@ -21,7 +21,7 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
     public Element getFirst();
     
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element|ceylon.language.Nothing>")
-    public Sequence<? extends Element> getRest();
+    public Iterable getRest();
     
     public boolean getEmpty();
     
@@ -46,6 +46,7 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
     }
     */
     
+    @TypeInfo("ceylon.language.Iterator<Element>")
     public Iterator<Element> getIterator();
     
     class SequenceIterator<Element> extends Object
@@ -60,6 +61,7 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
         public final Element getHead() { 
             return $this.item(Natural.instance(from));
         }
+        @TypeInfo("ceylon.language.Nothing|ceylon.language.Iterator<Element>")
         public final Iterator<Element> getTail() {
             return new SequenceIterator<Element>($this, from+1);
         }
@@ -76,7 +78,4 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
 
     public java.lang.String toString();
 
-    // FIXME: this is supposed to be private but no idea how to make it so
-    // because it's used in Sequence$impl so we can't move it there
-    public java.lang.String getElementsString();
 }

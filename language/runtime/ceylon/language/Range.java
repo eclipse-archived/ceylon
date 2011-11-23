@@ -91,6 +91,7 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
     }
 
     @Override
+    @TypeInfo("ceylon.language.Iterator<Element>")
 	public Iterator<Element> getIterator() {
         class RangeIterator implements Iterator<Element> {
         	Element x;
@@ -99,8 +100,9 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
             }
             public Element getHead() {
                 return x;
-             }
-             public Iterator<Element> getTail() {
+            }
+            @TypeInfo("ceylon.language.Nothing|ceylon.language.Iterator<Element>")
+            public Iterator<Element> getTail() {
                  Element next = next(x);
                  if(pastEnd(next))
                      return null;
@@ -214,8 +216,4 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
         return Sequence$impl.defines(this, index);
     }
 
-    @Override
-    public java.lang.String getElementsString() {
-        return Sequence$impl.getElementsString(this);
-    }
 }

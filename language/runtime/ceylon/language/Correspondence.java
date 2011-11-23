@@ -113,12 +113,9 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
             return Sequence$impl.defines(this, index);
         }
         @Override
+        @TypeInfo("ceylon.language.Iterator<Item>")
         public Iterator<Item> getIterator() {
             return Sequence$impl.getIterator(this);
-        }
-        @Override
-        public java.lang.String getElementsString() {
-            return Sequence$impl.getElementsString(this);
         }
     }
 }

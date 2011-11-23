@@ -31,8 +31,13 @@ public class ArraySequence<Element> implements Sequence<Element> {
 	}
 
 	@Override
-	public Sequence<? extends Element> getRest() {
-		return new ArraySequence<Element>(array, first + 1);
+	public Iterable getRest() {
+		if (first+1==array.length) {
+			return $empty.getEmpty();
+		}
+		else {
+			return new ArraySequence<Element>(array, first + 1);
+		}
 	}
 
 	@Override
@@ -77,9 +82,9 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
 		@Override
 		public Iterator<Element> getTail() {
-			Sequence<? extends Element> rest = sequence.getRest();
+			Iterable rest = sequence.getRest();
 			return rest.getEmpty() ? null :
-				new ArraySequenceIterator<Element>(rest);
+				new ArraySequenceIterator<Element>((Sequence<? extends Element>) rest);
 		}
 		
 		@Override
@@ -120,11 +125,6 @@ public class ArraySequence<Element> implements Sequence<Element> {
 		throw new RuntimeException("Not implemented yet");
 	}
 
-    @Override
-    public java.lang.String getElementsString() {
-        return Sequence$impl.getElementsString(this);
-    }
-
 	@Override
 	public Sequence<? extends Element> span(long from, long to) {
 		if(from >= to)
@@ -137,15 +137,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
 	
 	@Override
 	public java.lang.String toString() {
-		if (getEmpty()) return "{}";
-		StringBuilder result = new StringBuilder("{ ");
-		for (Element elem: array) {
-			result.append(elem)
-				.append(", ");
-		}
-		result.setLength(result.length()-2);
-		result.append(" }");
-		return result.toString();
+		return Sequence$impl.toString(this);
 	}
 
 	/*@Override

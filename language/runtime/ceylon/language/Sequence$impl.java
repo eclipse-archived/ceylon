@@ -28,28 +28,15 @@ public class Sequence$impl {
         return new Sequence.SequenceIterator<Element>($this, 0);
     }
     
-    public static <Element> java.lang.String toString(Sequence<Element> $this){
-        return "{" + getElementsString($this) + "}";
+    public static <Element> java.lang.String toString(Sequence<Element> $this) {
+		StringBuilder result = new StringBuilder("{ ");
+		for (Iterator<Element> iter=$this.getIterator(); iter!=null; iter=iter.getTail()) {
+			result.append(iter.getHead())
+				.append(", ");
+		}
+		result.setLength(result.length()-2);
+		result.append(" }");
+		return result.toString();
     }
     
-    public static <Element> java.lang.String getElementsString(final Sequence<Element> $this){
-        final class getFirstString$getter {
-            
-            java.lang.String getFirstString() {
-                Element first = $this.getFirst();
-                if(first instanceof Object)
-                    return first.toString();
-                else if(first == null)
-                    return "null";
-                throw new ceylon.language.Exception(null, null);
-            }
-        }
-        final getFirstString$getter getFirstString$getter = new getFirstString$getter();
-        Sequence<? extends Element> rest = $this.getRest();
-        if(rest != null){
-            return getFirstString$getter.getFirstString() + ", " + rest.getElementsString();
-        }else{
-            return getFirstString$getter.getFirstString();
-        }
-    }
 }

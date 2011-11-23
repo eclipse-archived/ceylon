@@ -27,4 +27,8 @@ shared interface Empty
         return this;
     }
     
+    shared actual String string {
+        return "{}";
+    }
+    
 }

@@ -179,15 +179,16 @@ public final class String extends Object
         @Override
         public Iterator<Character> getTail() {
             return codePoint==-1 ? 
-                    this : new StringIterator(offset +
+                    null : new StringIterator(offset +
                             java.lang.Character.charCount(codePoint));
         }
 
     }
 
     @Override
+    @TypeInfo("ceylon.language.Nothing|ceylon.language.Iterator<ceylon.language.Character>")
     public Iterator<Character> getIterator() {
-        return new StringIterator(0);
+        return value.isEmpty() ? null : new StringIterator(0);
     }
 
     @Override
