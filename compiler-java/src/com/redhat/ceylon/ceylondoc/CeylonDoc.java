@@ -159,8 +159,8 @@ public abstract class CeylonDoc extends Markup {
         return stringBuilder.toString();
     }
 
-    protected boolean include(Declaration decl){
-        return tool.include(decl);
+    protected boolean shouldInclude(Declaration decl){
+        return tool.shouldInclude(decl);
     }
     
     protected abstract String getObjectUrl(Object to) throws IOException;
@@ -178,7 +178,8 @@ public abstract class CeylonDoc extends Markup {
             open("div class='selected'");
         else
             open("div");
-        if(docType != DocType.MODULE) {
+        if(docType != DocType.MODULE
+                && docType != DocType.SEARCH) {
             String url;
             if (decl instanceof Declaration) {
                 url = getObjectUrl(getPackage(((Declaration)decl).getContainer()));
@@ -208,12 +209,14 @@ public abstract class CeylonDoc extends Markup {
         write(module.getNameAsString() + "/" + module.getVersion());
         close("div");
 
-        String srcUrl = getSrcUrl(decl);
-        if (!tool.isOmitSource()
-                && srcUrl != null) {
-            open("div class='source-code "+docType.name().toLowerCase()+"'");
-            around("a href='" + srcUrl + "'", "Source Code");
-            close("div");
+        if (docType != DocType.SEARCH) {
+            String srcUrl = getSrcUrl(decl);
+            if (!tool.isOmitSource()
+                    && srcUrl != null) {
+                open("div class='source-code "+docType.name().toLowerCase()+"'");
+                around("a href='" + srcUrl + "'", "Source Code");
+                close("div");
+            }
         }
         close("div");
     }
@@ -250,15 +253,29 @@ public abstract class CeylonDoc extends Markup {
         write(" }\n");
     }
 
-    protected void htmlHead(String title) throws IOException {
+    protected void htmlHead(String title, String... additional) throws IOException {
         write("<?xml charset='UTF-8'?>");
         write("<!DOCTYPE html>");
         open("html");
         open("head");
         around("title", title);
         tag("link href='" + getResourceUrl("style.css") + "' rel='stylesheet' type='text/css'");
+        for (String add : additional) {
+            if (add.endsWith(".css")) {
+                tag("link href='" + getResourceUrl(add) + "' rel='stylesheet' type='text/css'");
+            } else if (!add.endsWith(".js")) {
+                throw new RuntimeException("Unexpected additional resource " + add);
+            }
+        }
         around("script type='text/javascript' src='" + getResourceUrl("jquery-1.7.min.js") + "'");
         around("script type='text/javascript' src='" + getResourceUrl("ceylond.js") + "'");
+        for (String add : additional) {
+            if (add.endsWith(".js")) {
+                around("script type='text/javascript' src='" + getResourceUrl(add) + "'");
+            } else if (!add.endsWith(".css")) {
+                throw new RuntimeException("Unexpected additional resource " + add);
+            }
+        }
         close("head");
         open("body");
         writeKeyboardShortcuts();

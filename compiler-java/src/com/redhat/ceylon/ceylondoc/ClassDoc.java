@@ -53,47 +53,47 @@ public class ClassDoc extends ClassOrPackageDoc {
 
     private ClassOrInterface klass;
     /**
-     * The {@linkplain #include(Declaration) visible} 
+     * The {@linkplain #shouldInclude(Declaration) visible} 
      * methods
      */
     private List<Method> methods;
     /**
-     * The {@linkplain #include(Declaration) visible} 
+     * The {@linkplain #shouldInclude(Declaration) visible} 
      * attributes
      */
     private List<MethodOrValue> attributes;
     /**
-     * The {@linkplain #include(Declaration) visible} 
+     * The {@linkplain #shouldInclude(Declaration) visible} 
      * subclasses of the key
      */
     private List<ClassOrInterface> subclasses;
     /**
-     * The {@linkplain #include(Declaration) visible} classes/interfaces 
+     * The {@linkplain #shouldInclude(Declaration) visible} classes/interfaces 
      * that satisfy the key
      */
     private List<ClassOrInterface> satisfyingClassesOrInterfaces;
     /**
-     * The {@linkplain #include(Declaration) visible} classes 
+     * The {@linkplain #shouldInclude(Declaration) visible} classes 
      * that satisfy the key
      */
     private List<Class> satisfyingClasses;
     /**
-     * The {@linkplain #include(Declaration) visible} 
+     * The {@linkplain #shouldInclude(Declaration) visible} 
      * inner classes
      */
     private List<Class> innerClasses;
     /**
-     * The {@linkplain #include(Declaration) visible} interfaces 
+     * The {@linkplain #shouldInclude(Declaration) visible} interfaces 
      * that satisfy the key
      */
     private List<Interface> satisfyingInterfaces;
     /**
-     * The {@linkplain #include(Declaration) visible} 
+     * The {@linkplain #shouldInclude(Declaration) visible} 
      * superinterfaces
      */
     private List<ProducedType> superInterfaces;
     /**
-     * The {@linkplain #include(Declaration) visible} 
+     * The {@linkplain #shouldInclude(Declaration) visible} 
      * superclasses
      */
     private List<TypeDeclaration> superClasses;
@@ -136,10 +136,10 @@ public class ClassDoc extends ClassOrPackageDoc {
      * 
      * @param tool
      * @param klass
-     * @param subclasses The {@linkplain #include(Declaration) visible} 
+     * @param subclasses The {@linkplain #shouldInclude(Declaration) visible} 
      * subclasses of the key
      * @param satisfyingClassesOrInterfaces The 
-     * {@linkplain #include(Declaration) visible} class/interfaces 
+     * {@linkplain #shouldInclude(Declaration) visible} class/interfaces 
      * that satisfy the key
      * @throws IOException
      */
@@ -170,7 +170,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         superClasses = getAncestors(klass);
         superInterfaces = getSuperInterfaces(klass);
         for (Declaration m : klass.getMembers()) {
-            if (include(m)) {
+            if (shouldInclude(m)) {
                 if (m instanceof Value)
                     attributes.add((Value) m);
                 else if (m instanceof Getter)
@@ -230,7 +230,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     public List<Declaration> getConcreteMembers(TypeDeclaration decl, MemberSpecification specification) {
         List<Declaration> members = new ArrayList<Declaration>();
         for (Declaration m : decl.getMembers())
-            if (include(m) && !m.isFormal() && specification.isSatisfiedBy(m)) {
+            if (shouldInclude(m) && !m.isFormal() && specification.isSatisfiedBy(m)) {
                 members.add((MethodOrValue) m);
             }
         return members;

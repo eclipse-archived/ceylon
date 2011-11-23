@@ -17,8 +17,40 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+
 package com.redhat.ceylon.ceylondoc;
 
-public enum DocType {
-    MODULE, PACKAGE, TYPE, SEARCH;
+import java.io.IOException;
+import java.io.Writer;
+
+import com.redhat.ceylon.compiler.typechecker.model.Module;
+
+public class Search extends CeylonDoc {
+
+    public Search(Module module, CeylonDocTool tool, Writer writer) {
+        super(module, tool, writer);
+    }
+
+    public void generate() throws IOException {
+        htmlHead("Search", "index.js");
+        writeNav(module, null, DocType.SEARCH);
+        include("resources/search.html");
+        close("body", "html");
+    }
+
+    @Override
+    protected String getObjectUrl(Object to) throws IOException {
+        return tool.getObjectUrl(module, to);
+    }
+
+    @Override
+    protected String getResourceUrl(String to) throws IOException {
+        return tool.getResourceUrl(module, to);
+    }
+
+    @Override
+    protected String getSrcUrl(Object to) throws IOException {
+        return tool.getSrcUrl(module, to);
+    }
+
 }

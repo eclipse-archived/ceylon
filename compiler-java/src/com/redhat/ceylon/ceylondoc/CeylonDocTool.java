@@ -67,11 +67,11 @@ public class CeylonDocTool {
     private String srcDir;
     private String destDir;
     /**
-     * The {@linkplain #include(Declaration) visible} subclasses of the key
+     * The {@linkplain #shouldInclude(Declaration) visible} subclasses of the key
      */
     private Map<ClassOrInterface, List<ClassOrInterface>> subclasses = new HashMap<ClassOrInterface, List<ClassOrInterface>>();
     /**
-     * The {@linkplain #include(Declaration) visible} class/interfaces 
+     * The {@linkplain #shouldInclude(Declaration) visible} class/interfaces 
      * that satisfy the key
      */
     private Map<TypeDeclaration, List<ClassOrInterface>> satisfyingClassesOrInterfaces = new HashMap<TypeDeclaration, List<ClassOrInterface>>();
@@ -181,7 +181,7 @@ public class CeylonDocTool {
         
         for (PhasedUnit pu : phasedUnits) {
             for (Declaration decl : pu.getUnit().getDeclarations()) {
-                if(!include(decl)) {
+                if(!shouldInclude(decl)) {
                     continue;
                 }
                 if (decl instanceof ClassOrInterface) {
@@ -230,7 +230,8 @@ public class CeylonDocTool {
 
         doc(module);
         makeIndex(module);
-
+        makeSearch(module);
+        
         copyResource("resources/style.css", new File(getResourcesDir(), "style.css"));
         copyResource("resources/shCore.css", new File(getResourcesDir(), "shCore.css"));
         copyResource("resources/shThemeDefault.css", new File(getResourcesDir(), "shThemeDefault.css"));
@@ -240,7 +241,15 @@ public class CeylonDocTool {
         copyResource("resources/shBrushCeylon.js", new File(getResourcesDir(), "shBrushCeylon.js"));
         
         copyResource("resources/NOTICE.txt", new File(destDir, "NOTICE.txt"));
-        copyResource("resources/search.html", new File(destDir, "search.html"));
+    }
+
+    private void makeSearch(Module module) throws IOException {
+        FileWriter writer = new FileWriter(new File(destDir, "search.html"));
+        try {
+            new Search(module, this, writer).generate();
+        } finally {
+            writer.close();
+        }
     }
 
     private void buildSourceLocations() {
@@ -382,7 +391,7 @@ public class CeylonDocTool {
 
     private void doc(Declaration decl) throws IOException {
         if (decl instanceof ClassOrInterface) {
-            if (include(decl)) {
+            if (shouldInclude(decl)) {
                 FileWriter writer = new FileWriter(getObjectFile(decl));
                 try {
                     new ClassDoc(this, writer,
@@ -416,7 +425,7 @@ public class CeylonDocTool {
     }
 
 
-    protected boolean include(Declaration decl){
+    protected boolean shouldInclude(Declaration decl){
         return showPrivate || decl.isShared();
     }
     

@@ -44,22 +44,22 @@ public class PackageDoc extends ClassOrPackageDoc {
 
     private Package pkg;
     /**
-     * The {@linkplain #include(Declaration) visible} 
+     * The {@linkplain #shouldInclude(Declaration) visible} 
      * classes in the package
      */
     private List<Class> classes;
     /**
-     * The {@linkplain #include(Declaration) visible} 
+     * The {@linkplain #shouldInclude(Declaration) visible} 
      * interfaces in the package
      */
     private List<Interface> interfaces;
     /**
-     * The {@linkplain #include(Declaration) visible} 
+     * The {@linkplain #shouldInclude(Declaration) visible} 
      * attributes in the package
      */
     private List<MethodOrValue> attributes;
     /**
-     * The {@linkplain #include(Declaration) visible} 
+     * The {@linkplain #shouldInclude(Declaration) visible} 
      * methods in the package
      */
     private List<Method> methods;
@@ -78,7 +78,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         attributes = new ArrayList<MethodOrValue>();
         methods = new ArrayList<Method>();
         for (Declaration m : pkg.getMembers()) {
-            if (!include(m)) {
+            if (!shouldInclude(m)) {
                 continue;
             }
             if (m instanceof Interface)

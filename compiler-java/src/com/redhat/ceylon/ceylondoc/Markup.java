@@ -20,7 +20,14 @@
 
 package com.redhat.ceylon.ceylondoc;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.Writer;
 
 public class Markup {
@@ -100,6 +107,20 @@ public class Markup {
                 .replace(">", "&gt;")
                 .replace("\"", "&quot;")
                 .replace("'", "&apos;"));
+        }
+    }
+    
+    public void include(String classpathResource) throws IOException {
+        InputStream resource = getClass().getResourceAsStream(classpathResource);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
+        try {
+            String line = reader.readLine();
+            while (line != null) {
+                write(line);
+                line = reader.readLine();
+            }
+        } finally {
+            reader.close();
         }
     }
 
