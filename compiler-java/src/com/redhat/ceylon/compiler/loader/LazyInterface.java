@@ -278,7 +278,7 @@ public class LazyInterface extends Interface implements LazyElement {
 
     @Override
     public Unit getUnit() {
-        load();
+        // this doesn't require to load the model
         return super.getUnit();
     }
 
