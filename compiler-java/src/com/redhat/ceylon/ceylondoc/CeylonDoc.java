@@ -252,6 +252,7 @@ public abstract class CeylonDoc extends Markup {
 
     protected void htmlHead(String title) throws IOException {
         write("<?xml charset='UTF-8'?>");
+        write("<!DOCTYPE html>");
         open("html");
         open("head");
         around("title", title);

@@ -273,6 +273,8 @@ public class CeylonDocTool {
             FileWriter writer = new FileWriter(file);
             try {
             Markup markup = new Markup(writer);
+                markup.write("<?xml charset='UTF-8'?>");
+                markup.write("<!DOCTYPE html>");
                 markup.open("html", "head");
                 markup.around("title", pu.getUnit().getFilename());
                 Package decl = pu.getUnit().getPackage();
