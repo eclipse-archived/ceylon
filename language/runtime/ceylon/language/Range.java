@@ -98,14 +98,13 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
             	this.x = x;
             }
             public Element getHead() {
-                 if (pastEnd(x)) {
-                     return null;
-                 } else {
-                     return x;
-                 }
+                return x;
              }
              public Iterator<Element> getTail() {
-                 return new RangeIterator(next(x));
+                 Element next = next(x);
+                 if(pastEnd(next))
+                     return null;
+                 return new RangeIterator(next);
              }
         }
         return new RangeIterator(first);
