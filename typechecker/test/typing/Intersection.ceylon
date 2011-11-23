@@ -108,4 +108,10 @@ class Intersection() {
         Two two = unk;
     }
     
+    A&B intersect<A,B>(A a, B b) { throw; }
+    @type["Bottom"] intersect(1, "hello");
+    @type["Bottom"] intersect(null, {"hello"});
+    @type["Natural"] intersect(1, 3);
+    @type["Natural&Sequence<String>"] intersect(1, {"hello"});
+    
 }
