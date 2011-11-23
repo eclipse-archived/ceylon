@@ -28,6 +28,7 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -76,6 +77,17 @@ public abstract class CeylonDoc extends Markup {
                     write("|");
                 }
                 link(ud);
+            }
+        }else if(decl instanceof IntersectionType){
+            IntersectionType it = (IntersectionType) decl;
+            boolean first = true;
+            for(ProducedType id : it.getCaseTypes()){
+                if(first){
+                    first = false;
+                }else{
+                    write("&amp;");
+                }
+                link(id);
             }
         }else if(decl instanceof ClassOrInterface){
             link((ClassOrInterface) decl, type.getTypeArgumentList());
