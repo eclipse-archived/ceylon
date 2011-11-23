@@ -130,6 +130,9 @@ public class ModelLoaderTest extends CompilerTest {
     private void compareDeclarations(Declaration validDeclaration, Declaration modelDeclaration) {
         if(!validDeclarations.add(validDeclaration))
             return;
+        // check that we have a unit
+        Assert.assertNotNull("Missing Unit: "+modelDeclaration.getQualifiedNameString(), modelDeclaration.getUnit());
+        Assert.assertNotNull("Invalid Unit", modelDeclaration.getUnit().getPackage());
         // let's not check java stuff for now, due to missing types in the jdk's private methods
         if(validDeclaration.getQualifiedNameString().startsWith("java."))
             return;
