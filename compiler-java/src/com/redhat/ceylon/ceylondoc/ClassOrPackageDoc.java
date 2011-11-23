@@ -24,7 +24,6 @@ import static com.redhat.ceylon.ceylondoc.Util.getDoc;
 import static com.redhat.ceylon.ceylondoc.Util.getDocFirstLine;
 import static com.redhat.ceylon.ceylondoc.Util.getModifiers;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;

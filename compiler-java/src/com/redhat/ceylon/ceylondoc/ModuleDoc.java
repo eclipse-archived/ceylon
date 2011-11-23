@@ -32,11 +32,11 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 
-public class SummaryDoc extends CeylonDoc {
+public class ModuleDoc extends CeylonDoc {
 
     private Module module;
 
-    public SummaryDoc(CeylonDocTool tool, Writer writer, Module module) throws IOException {
+    public ModuleDoc(CeylonDocTool tool, Writer writer, Module module) throws IOException {
         super(module, tool, writer);
         this.module = module;
     }

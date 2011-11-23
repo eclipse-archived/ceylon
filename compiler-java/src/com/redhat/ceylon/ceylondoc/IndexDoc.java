@@ -20,7 +20,6 @@
 
 package com.redhat.ceylon.ceylondoc;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;

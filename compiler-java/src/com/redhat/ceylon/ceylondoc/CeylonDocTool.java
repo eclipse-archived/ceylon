@@ -38,8 +38,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
-
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -307,8 +305,8 @@ public class CeylonDocTool {
     private void doc(Module module) throws IOException {
         FileWriter rootWriter = new FileWriter(getObjectFile(module));
         try {
-            SummaryDoc summaryDoc = new SummaryDoc(this, rootWriter, module);
-            summaryDoc.generate();
+            ModuleDoc moduleDoc = new ModuleDoc(this, rootWriter, module);
+            moduleDoc.generate();
             for (Package pkg : module.getPackages()) {
                 if (isRootPackage(module, pkg)) {
                     new PackageDoc(this, rootWriter, pkg).generate();
@@ -321,7 +319,7 @@ public class CeylonDocTool {
                     }
                 }
             }
-            summaryDoc.complete();
+            moduleDoc.complete();
         } finally {
             rootWriter.close();
         }
