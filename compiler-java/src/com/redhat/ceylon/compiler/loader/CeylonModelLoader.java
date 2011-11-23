@@ -42,6 +42,7 @@ import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -56,6 +57,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.model.ValueParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -92,6 +94,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     private Symtab symtab;
     private Table names;
     private Map<String, Declaration> declarationsByName = new HashMap<String, Declaration>();
+    private Map<Package, Unit> unitsByPackage = new HashMap<Package, Unit>();
     private ClassReader reader;
     private PhasedUnits phasedUnits;
     private com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext;
@@ -293,15 +296,32 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         Module module = findOrCreateModule(pkgName);
         LazyPackage pkg = findOrCreatePackage(module, pkgName);
 
+        // find/make its Unit
+        Unit unit = getCompiledUnit(pkg);
+
         for(Declaration d : decls){
             d.setShared((classSymbol.flags() & Flags.PUBLIC) != 0);
         
             // add it to its package
             pkg.addMember(d);
             d.setContainer(pkg);
+
+            // add it to its Unit
+            d.setUnit(unit);
+            unit.getDeclarations().add(d);
         }
         
         return decl;
+    }
+
+    private Unit getCompiledUnit(LazyPackage pkg) {
+        Unit unit = unitsByPackage.get(pkg);
+        if(unit == null){
+            unit = new Unit();
+            unit.setPackage(pkg);
+            unitsByPackage.put(pkg, unit);
+        }
+        return unit;
     }
 
     private boolean isCeylonToplevelAttribute(ClassSymbol classSymbol) {
@@ -698,6 +718,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                     
                     method.setContainer(klass);
                     method.setName(methodName);
+                    method.setUnit(klass.getUnit());
                     setMethodOrValueFlags(klass, methodSymbol, method);
                     
                     // type params first
@@ -827,6 +848,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         ParameterList parameters = new ParameterList();
         decl.addParameterList(parameters);
         ValueParameter parameter = new ValueParameter();
+        parameter.setUnit(decl.getUnit());
         parameter.setContainer((Scope) decl);
         parameter.setName("that");
         parameter.setType(getType(symtab.ceylonEqualityType, decl));
@@ -849,6 +871,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         Value value = new Value();
         value.setContainer(klass);
         value.setName(methodName);
+        value.setUnit(klass.getUnit());
         setMethodOrValueFlags(klass, methodSymbol, value);
         value.setType(obtainType(methodSymbol.getReturnType(), methodSymbol, klass));
         markUnboxed(value, methodSymbol.getReturnType());
@@ -917,8 +940,10 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         for(VarSymbol paramSymbol : methodSymbol.params()){
             ValueParameter parameter = new ValueParameter();
             parameter.setContainer((Scope) decl);
-            if(decl instanceof Class)
+            parameter.setUnit(((Element)decl).getUnit());
+            if(decl instanceof Class){
                 ((Class)decl).getMembers().add(parameter);
+            }
             String paramName = getAnnotationStringValue(paramSymbol, symtab.ceylonAtNameType);
             // use whatever param name we find as default
             if(paramName == null)
@@ -1068,6 +1093,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         for(Attribute attribute : typeParameters.values){
             Compound typeParam = (Compound) attribute;
             TypeParameter param = new TypeParameter();
+            param.setUnit(((Element)scope).getUnit());
             param.setContainer(scope);
             // let's not trigger the lazy-loading if we're completing a LazyClass/LazyInterface
             if(scope instanceof LazyElement)
@@ -1104,6 +1130,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     private void setTypeParameters(Scope scope, List<TypeParameter> params, com.sun.tools.javac.util.List<TypeSymbol> typeParameters) {
         for(TypeSymbol typeParam : typeParameters){
             TypeParameter param = new TypeParameter();
+            param.setUnit(((Element)scope).getUnit());
             param.setContainer(scope);
             // let's not trigger the lazy-loading if we're completing a LazyClass/LazyInterface
             if(scope instanceof LazyElement)
