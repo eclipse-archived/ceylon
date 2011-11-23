@@ -109,6 +109,10 @@ class TypeArgInference() {
     interface One<out T> {}
     interface Two<out T> {}
     
+    interface A {}
+    interface B {}
+    
+    object test0 satisfies One<A> & Two<B> {}
     object test1 satisfies One<Natural> & Two<Float> {}
     object test2 satisfies One<Number> & Two<Natural&String> {}
     
@@ -119,9 +123,12 @@ class TypeArgInference() {
     	return null;
     }
     
+    @type["Nothing|TypeArgInference.A|TypeArgInference.B"] acceptOneTwo(test0);
     @type["Nothing|Natural|Float"] acceptOneTwo(test1);
     @type["Nothing|Number"] acceptOneTwo(test2);
-    @type["Nothing|Natural&Float"] @error acceptOneOrTwo(test1);
-    @type["Nothing|Natural&String"] acceptOneOrTwo(test2);
+    
+    @type["Nothing|TypeArgInference.A&TypeArgInference.B"] @error acceptOneOrTwo(test0);
+    @type["Nothing"] @error acceptOneOrTwo(test1);
+    @type["Nothing"] acceptOneOrTwo(test2);
 
 }
