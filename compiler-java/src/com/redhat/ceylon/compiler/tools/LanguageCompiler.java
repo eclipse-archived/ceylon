@@ -417,6 +417,7 @@ public class LanguageCompiler extends JavaCompiler {
         return super.attribute(env);
     }
 
+    @Override
     protected JavaFileObject genCode(Env<AttrContext> env, JCClassDecl cdef) throws IOException {
         if (env.toplevel.sourcefile instanceof CeylonFileObject) {
             try {
