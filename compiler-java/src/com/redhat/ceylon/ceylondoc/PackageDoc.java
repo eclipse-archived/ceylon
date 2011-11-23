@@ -159,8 +159,9 @@ public class PackageDoc extends ClassOrPackageDoc {
     }
 
     private void methods() throws IOException {
-        if (methods.isEmpty())
+        if (methods.isEmpty()) {
             return;
+        }
         openTable("Methods", "Modifier and Type", "Method and Description");
         for (Method m : methods) {
             doc(m);
@@ -169,6 +170,9 @@ public class PackageDoc extends ClassOrPackageDoc {
     }
 
     private void attributes() throws IOException {
+        if (attributes.isEmpty()) {
+            return;
+        }
         openTable("Attributes", "Modifier and Type", "Name and Description");
         for (MethodOrValue v : attributes) {
             doc(v);
@@ -177,6 +181,9 @@ public class PackageDoc extends ClassOrPackageDoc {
     }
 
     private void interfaces() throws IOException {
+        if (interfaces.isEmpty()) {
+            return;
+        }
         openTable("Interfaces", "Modifier and Type", "Description");
         for (Interface i : interfaces) {
             doc(i);
@@ -185,6 +192,9 @@ public class PackageDoc extends ClassOrPackageDoc {
     }
 
     private void classes() throws IOException {
+        if (classes.isEmpty()) {
+            return;
+        }
         openTable("Classes", "Modifier and Type", "Description");
         for (Class c : classes) {
             doc(c);
