@@ -24,10 +24,6 @@ import static com.redhat.ceylon.ceylondoc.Util.getDoc;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -74,26 +70,10 @@ public class ModuleDoc extends CeylonDoc {
     
     private void packages() throws IOException {
         openTable("Packages", "Package", "Description");
-        for (Package pkg : getPackages()) {
+        for (Package pkg : tool.getPackages(module)) {
             doc(pkg);
         }
         close("table");
-    }
-
-    private List<Package> getPackages() {
-        List<Package> packages = new ArrayList<Package>();
-        for (Package pkg : module.getPackages()) {
-            if (pkg.getMembers().size() > 0)
-                packages.add(pkg);
-        }
-        Collections.sort(packages, new Comparator<Package>() {
-            @Override
-            public int compare(Package a, Package b) {
-                return a.getNameAsString().compareTo(b.getNameAsString());
-            }
-
-        });
-        return packages;
     }
 
     private void doc(Package pkg) throws IOException {

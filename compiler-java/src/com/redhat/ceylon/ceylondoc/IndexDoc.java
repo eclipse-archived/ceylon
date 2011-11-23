@@ -22,10 +22,6 @@ package com.redhat.ceylon.ceylondoc;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -55,7 +51,7 @@ public class IndexDoc extends CeylonDoc {
     }
 
     private void indexPackages() throws IOException {
-        for (Package pkg : getPackages()) {
+        for (Package pkg : tool.getPackages(module)) {
             indexPackage(pkg);
         }
         // get rid of the eventual final dangling JSON list comma but adding a module entry 
@@ -133,22 +129,6 @@ public class IndexDoc extends CeylonDoc {
                 escaped.append(c);
         }
         return escaped.toString();
-    }
-
-    private List<Package> getPackages() {
-        List<Package> packages = new ArrayList<Package>();
-        for (Package pkg : module.getPackages()) {
-            if (pkg.getMembers().size() > 0)
-                packages.add(pkg);
-        }
-        Collections.sort(packages, new Comparator<Package>() {
-            @Override
-            public int compare(Package a, Package b) {
-                return a.getNameAsString().compareTo(b.getNameAsString());
-            }
-
-        });
-        return packages;
     }
 
     @Override

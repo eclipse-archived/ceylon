@@ -33,6 +33,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -423,10 +425,31 @@ public class CeylonDocTool {
         }
         throw new RuntimeException();
     }
+    
+    List<Package> getPackages(Module module) {
+        List<Package> packages = new ArrayList<Package>();
+        for (Package pkg : module.getPackages()) {
+            if (pkg.getMembers().size() > 0
+                    && shouldInclude(pkg))
+                packages.add(pkg);
+        }
+        Collections.sort(packages, new Comparator<Package>() {
+            @Override
+            public int compare(Package a, Package b) {
+                return a.getNameAsString().compareTo(b.getNameAsString());
+            }
+
+        });
+        return packages;
+    }
 
 
     protected boolean shouldInclude(Declaration decl){
         return showPrivate || decl.isShared();
+    }
+    
+    protected boolean shouldInclude(Package pkg){
+        return showPrivate || pkg.isShared();
     }
     
     /**
