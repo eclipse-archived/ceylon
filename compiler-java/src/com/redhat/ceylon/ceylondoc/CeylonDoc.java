@@ -48,14 +48,6 @@ public abstract class CeylonDoc extends Markup {
         this.tool = tool;
     }
     
-    // FIXME: copied from ProducedType, we should make it public
-    private static boolean isElementOfUnion(UnionType ut, TypeDeclaration td) {
-        for (TypeDeclaration ct: ut.getCaseTypeDeclarations()) {
-            if (ct.equals(td)) return true;
-        }
-        return false;
-    }
-
     protected void link(ProducedType type) throws IOException {
         TypeDeclaration decl = type.getDeclaration();
         if(decl instanceof UnionType){
@@ -63,13 +55,13 @@ public abstract class CeylonDoc extends Markup {
             // try to simplify if possible
             if (ut.getCaseTypes().size()==2) {
                 Unit unit = decl.getUnit();
-                if (isElementOfUnion(ut, unit.getNothingDeclaration())) {
+                if (com.redhat.ceylon.compiler.typechecker.model.Util.isElementOfUnion(ut, unit.getNothingDeclaration())) {
                     link(unit.getDefiniteType(type));
                     write("?");
                     return;
                 }
-                if (isElementOfUnion(ut, unit.getEmptyDeclaration()) &&
-                        isElementOfUnion(ut, unit.getSequenceDeclaration())) {
+                if (com.redhat.ceylon.compiler.typechecker.model.Util.isElementOfUnion(ut, unit.getEmptyDeclaration()) &&
+                        com.redhat.ceylon.compiler.typechecker.model.Util.isElementOfUnion(ut, unit.getSequenceDeclaration())) {
                     link(unit.getElementType(type));
                     write("[]");
                     return;
