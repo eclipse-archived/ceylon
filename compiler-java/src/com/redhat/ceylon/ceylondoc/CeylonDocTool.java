@@ -26,11 +26,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -245,8 +246,12 @@ public class CeylonDocTool {
         copyResource("resources/NOTICE.txt", new File(destDir, "NOTICE.txt"));
     }
 
+    private Writer openWriter(File file) throws IOException {
+        return new OutputStreamWriter(new FileOutputStream(file), "UTF-8"); 
+    }
+    
     private void makeSearch(Module module) throws IOException {
-        FileWriter writer = new FileWriter(new File(destDir, "search.html"));
+        Writer writer = openWriter(new File(destDir, "search.html"));
         try {
             new Search(module, this, writer).generate();
         } finally {
@@ -281,7 +286,7 @@ public class CeylonDocTool {
             if (!dir.exists() && !dir.mkdirs()) {
                 throw new IOException("Couldn't create directory for file: " + file);
             }
-            FileWriter writer = new FileWriter(file);
+            Writer writer = openWriter(file);
             try {
             Markup markup = new Markup(writer);
                 markup.write("<?xml charset='UTF-8'?>");
@@ -316,7 +321,7 @@ public class CeylonDocTool {
     }
 
     private void doc(Module module) throws IOException {
-        FileWriter rootWriter = new FileWriter(getObjectFile(module));
+        Writer rootWriter = openWriter(getObjectFile(module));
         try {
             ModuleDoc moduleDoc = new ModuleDoc(this, rootWriter, module);
             moduleDoc.generate();
@@ -324,7 +329,7 @@ public class CeylonDocTool {
                 if (isRootPackage(module, pkg)) {
                     new PackageDoc(this, rootWriter, pkg).generate();
                 } else {
-                    FileWriter packageWriter = new FileWriter(getObjectFile(pkg));
+                    Writer packageWriter = openWriter(getObjectFile(pkg));
                     try {
                         new PackageDoc(this, packageWriter, pkg).generate();
                     } finally {
@@ -341,7 +346,7 @@ public class CeylonDocTool {
 
     private void makeIndex(Module module) throws IOException {
         File dir = getResourcesDir();
-        FileWriter writer = new FileWriter(new File(dir, "index.js"));
+        Writer writer = openWriter(new File(dir, "index.js"));
         try {
             new IndexDoc(this, writer, module).generate();
         } finally {
@@ -394,7 +399,7 @@ public class CeylonDocTool {
     private void doc(Declaration decl) throws IOException {
         if (decl instanceof ClassOrInterface) {
             if (shouldInclude(decl)) {
-                FileWriter writer = new FileWriter(getObjectFile(decl));
+                Writer writer = openWriter(getObjectFile(decl));
                 try {
                     new ClassDoc(this, writer,
                             (ClassOrInterface) decl,
