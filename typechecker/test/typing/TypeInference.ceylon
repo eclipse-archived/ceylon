@@ -38,9 +38,9 @@ interface TypeInference {
     
     class BackwardTypeInference(){
         void m(){
-            @type["Void"] @error value n = test();
+            @type["unknown"] @error value n = test();
         }
-        @type["Void"] function f() {
+        @type["unknown"] function f() {
             @error return test();
         }
         function test(){
@@ -66,29 +66,29 @@ interface TypeInference {
 
     class UnknownInference() {
         
-        @error @type["Void"] value x = burp;
+        @error @type["unknown"] value x = burp;
         
-        @type["Void"] value y {
+        @type["unknown"] value y {
             @error return burp;
         }
         
-        @type["Void"] function f() {
+        @type["unknown"] function f() {
             @error return burp;
         }
         
-        @error @type["Void"] function g() = burp;
+        @error @type["unknown"] function g() = burp;
         
-        @error @type["Sequence<Void>"] value seq = { burp };
+        @error @type["Sequence<unknown>"] value seq = { burp };
         
-        @type["Sequence<Void>"] function createSeq() {
-            @error @type["Sequence<Void>"] return { hi };
+        @type["Sequence<unknown>"] function createSeq() {
+            @error @type["Sequence<unknown>"] return { hi };
         }
         
         Sequence<T> singleton<T>(T element) {
             return {element};
         }
         
-        @type["Sequence<Void>"] @error value sing = singleton(hi);
+        @type["Sequence<unknown>"] @error value sing = singleton(hi);
         
         value hi = "hi";
         
