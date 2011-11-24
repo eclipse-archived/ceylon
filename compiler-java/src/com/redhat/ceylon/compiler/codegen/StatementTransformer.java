@@ -296,8 +296,6 @@ public class StatementTransformer extends AbstractTransformer {
         ProducedType sequence_element_type = typeFact().getIteratedType(iterDecl.getSpecifierExpression().getExpression().getTypeModel());
         ProducedType iter_type = typeFact().getIteratorType(sequence_element_type);
         JCExpression iter_type_expr = makeJavaType(iter_type, CeylonTransformer.TYPE_ARGUMENT);
-        //ProducedType item_type = actualType(variable);
-        JCExpression item_type_expr = makeJavaType(sequence_element_type);
         List<JCAnnotation> annots = makeJavaTypeAnnotations(variable.getDeclarationModel());
 
         // ceylon.language.Iterator<T> $V$iter$X = ITERABLE.getIterator();
@@ -310,12 +308,15 @@ public class StatementTransformer extends AbstractTransformer {
         // final U n = $V$iter$X.getHead().getKey();
         JCExpression iter_head = at(stmt).Apply(null, makeSelect(iter_id, Util.getGetterName("head")), List.<JCExpression> nil());
         JCExpression loop_var_init;
+        ProducedType loop_var_type;
         if (variable2 == null) {
             loop_var_init = iter_head;
+            loop_var_type = sequence_element_type;
         } else {
             loop_var_init = at(stmt).Apply(null, makeSelect(iter_head, Util.getGetterName("key")), List.<JCExpression> nil());
+            loop_var_type = actualType(variable);
         }
-        JCVariableDecl item_decl = at(stmt).VarDef(make().Modifiers(FINAL, annots), names().fromString(loop_var_name), item_type_expr, unboxType(loop_var_init, sequence_element_type));
+        JCVariableDecl item_decl = at(stmt).VarDef(make().Modifiers(FINAL, annots), names().fromString(loop_var_name), makeJavaType(loop_var_type), unboxType(loop_var_init, loop_var_type));
         List<JCStatement> for_loop = List.<JCStatement> of(item_decl);
 
         if (variable2 != null) {
