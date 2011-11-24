@@ -10,7 +10,11 @@ shared class Package(
         Boolean shared = false,
 
         desc "A description of the package."
-        String doc="") {
+        String doc="",
+
+        desc "The names of the authors of the
+             package"
+        String[] by = {}) {
 
     //TODO implement
 

@@ -14,7 +14,7 @@ shared class Module(
         
         desc "The names of the authors of the
              module"
-        String[] authors = {},
+        String[] by = {},
 
         desc "The license under which the module
              is distributed."
