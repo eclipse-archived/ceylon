@@ -1,0 +1,1 @@
+class Invalid(Foo missingParamType){}
