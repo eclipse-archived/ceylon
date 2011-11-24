@@ -527,9 +527,47 @@ public class ProducedType extends ProducedReference {
             for (ProducedType dst: getInternalSatisfiedTypes()) {
                 ProducedType possibleResult = dst.getSupertype(c, list, 
                                 ignoringSelfType);
-                if (possibleResult!=null && (result==null || 
-                        possibleResult.isSubtypeOf(result, ignoringSelfType))) {
-                    result = possibleResult;
+                if (possibleResult!=null) {
+                	if (result==null || possibleResult.isSubtypeOf(result, ignoringSelfType)) {
+                		result = possibleResult;
+                	}
+                	else if ( !result.isSubtypeOf(possibleResult, ignoringSelfType) ) {
+                		List<ProducedType> args = new ArrayList<ProducedType>();
+                		TypeDeclaration dec = result.getDeclaration(); //TODO; get this from the Criteria?
+						for (TypeParameter tp: dec.getTypeParameters()) {
+	                		List<ProducedType> l = new ArrayList<ProducedType>();
+	                		Unit unit = getDeclaration().getUnit();
+	                		ProducedType arg;
+	                		ProducedType rta = result.getTypeArguments().get(tp);
+							ProducedType prta = possibleResult.getTypeArguments().get(tp);
+							if (tp.isContravariant()) {
+								addToUnion(l, rta);
+		                		addToUnion(l, prta);
+		                		UnionType ut = new UnionType(unit);
+		                		ut.setCaseTypes(l);
+		                		arg = ut.getType();
+	                		}
+	                		else {//if (tp.isCovariant()) {
+								addToIntersection(l, rta, unit);
+		                		addToIntersection(l, prta, unit);
+		                		IntersectionType it = new IntersectionType(unit);
+		                		it.setSatisfiedTypes(l);
+		                		arg = it.canonicalize().getType();
+	                		}
+	                		/*else {
+	                			if (rta.isExactly(prta)) {
+	                				arg = rta;
+	                			}
+	                			else {
+	                				//TODO: think this case through better!
+	                				return null;
+	                			}
+	                		}*/
+	                		args.add(arg);
+                		}
+                		//TODO: broken for member types! ugh :-(
+                		result = dec.getProducedType(result.getQualifyingType(), args);
+                	}
                 }
             }
             if (!getDeclaration().equals(ignoringSelfType)) {
