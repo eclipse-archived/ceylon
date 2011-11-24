@@ -247,6 +247,12 @@ public class ExpressionVisitor extends Visitor {
             	//in the condition
 				ProducedType it = knownType==null ? type : 
 						intersectionType(type, knownType, that.getUnit());
+				if (it.getDeclaration() instanceof BottomType) {
+					that.addError("narrows to Bottom type: intersection of " +
+							knownType.getProducedTypeName() + " and " + 
+							type.getProducedTypeName() +
+							" is empty");
+				}
                 v.getType().setTypeModel(it);
                 v.getDeclarationModel().setType(it);
             }
