@@ -6,7 +6,7 @@ public final class bug148_3 {
     }
     
     public static void bug148_3() {
-        .ceylon.language.print.print(.ceylon.language.Natural.instance(.bug148_3.f.getF()).toString());
+        .ceylon.language.print.print(.ceylon.language.String.instance(.ceylon.language.Natural.instance(.bug148_3.f.getF()).toString()));
         .bug148_3.f.setF(3L);
     }
     
