@@ -158,7 +158,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             ceylonTree.visit(new Visitor(){
                 
                 void loadFromSource(Tree.Declaration decl) {
-                    String name = decl.getIdentifier().getText();
+                    String name = Util.quoteIfJavaKeyword(decl.getIdentifier().getText());
                     String fqn = pkgName.isEmpty() ? name : pkgName+"."+name;
                     reader.enterClass(names.fromString(fqn), tree.getSourceFile());
                 }
