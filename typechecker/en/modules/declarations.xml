@@ -2824,7 +2824,7 @@ shared assign name { firstName := first(name); lastName := last(name); }</progra
         <itemizedlist>
             <listitem>
                 <para><literal>doc</literal> specifies the description of a 
-                program element.</para>
+                program element, in Markdown format text.</para>
             </listitem>
             <listitem>
                 <para><literal>by</literal> specifies the authors of a program 

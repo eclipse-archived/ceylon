@@ -855,8 +855,9 @@ shared class Import(
     <section id="documentationcompiler">
         <title>The documentation compiler</title>
         
-        <para>The documentation compiler generates XHTML-format 
-        documentation from Ceylon source files.</para>
+        <para>The documentation compiler generates XHTML-format documentation 
+        from Ceylon source files. The content of the <literal>doc</literal>
+        annotations is treated as Markdown format text.</para>
         
         <para>The <literal>ceylond</literal> command accepts a list of
         module names with optional versions, along with the following options:</para>
@@ -912,9 +913,11 @@ shared class Import(
         <para>If no version identifier is specified for a module, the module 
         is assumed to exist in a source directory.</para>
         
+        <!-- 
         <comment><para>TODO: should the documentation compiler generate HTML
         directly, or should it generate some intermediate format (XML?) that
         can be transformed to HTML, DocBook, etc?</para></comment>
+        -->
         
     </section>
     
