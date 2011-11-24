@@ -238,9 +238,17 @@ public class PackageDoc extends ClassOrPackageDoc {
     @Override
     protected void writeAdditionalKeyboardShortcuts() throws IOException {
         writeKeyboardShortcut('p', "index.html");
-        writeKeyboardShortcut('a', "#attributes");
-        writeKeyboardShortcut('m', "#methods");
-        writeKeyboardShortcut('c', "#classes");
-        writeKeyboardShortcut('i', "#interfaces");
+        if (!attributes.isEmpty()) {
+            writeKeyboardShortcut('a', "#attributes");
+        } 
+        if (!methods.isEmpty()) {
+            writeKeyboardShortcut('m', "#methods");
+        }
+        if (!classes.isEmpty()) {
+            writeKeyboardShortcut('c', "#classes");
+        }
+        if (!interfaces.isEmpty()) {
+            writeKeyboardShortcut('i', "#interfaces");
+        }
     }
 }
