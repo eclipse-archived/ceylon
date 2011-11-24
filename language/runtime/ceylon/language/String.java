@@ -166,21 +166,19 @@ public final class String extends Object
 
         StringIterator(int offset){
             this.offset = offset;
-            codePoint = offset < value.length() ? 
-                    value.codePointAt(offset) : -1;
+            codePoint = value.codePointAt(offset);
         }
 
         @Override
         public Character getHead() {
-            return codePoint==-1 ? 
-                    null : new Character(codePoint);
+            return new Character(codePoint);
         }
 
         @Override
         public Iterator<Character> getTail() {
-            return codePoint==-1 ? 
-                    null : new StringIterator(offset +
-                            java.lang.Character.charCount(codePoint));
+        	int nextOffset = offset + java.lang.Character.charCount(codePoint);
+            return nextOffset == value.length() ? 
+                    null : new StringIterator(nextOffset);
         }
 
     }
