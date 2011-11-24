@@ -17,6 +17,7 @@ public class Package implements Scope {
     private List<Unit> units = new ArrayList<Unit>();
     private String doc;
     private boolean shared = false;
+    private List<String> authors = new ArrayList<String>();
     
     public Module getModule() {
         return module;
@@ -201,5 +202,9 @@ public class Package implements Scope {
     public void setDoc(String license) {
         this.doc = license;
     }
+    
+    public List<String> getAuthors() {
+		return authors;
+	}
 
 }

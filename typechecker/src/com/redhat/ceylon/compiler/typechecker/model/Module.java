@@ -13,6 +13,7 @@ public class Module {
     private boolean available;
     private String license;
     private String doc;
+    private List<String> authors = new ArrayList<String>();
     
     /**
      * Whether or not the module is available in the
@@ -126,5 +127,9 @@ public class Module {
     public void setLicense(String license) {
         this.license = license;
     }
+    
+    public List<String> getAuthors() {
+		return authors;
+	}
     
 }

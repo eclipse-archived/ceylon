@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -82,6 +83,10 @@ public class ModuleVisitor extends Visitor {
 							}
 						}
                     }
+					List<String> by = argumentToStrings(getArgument(that, "by"));
+					if (by!=null) {
+						mainModule.getAuthors().addAll(by);
+					}
                 }
                 if (id.getText().equals("Import")) {
                 	Tree.SpecifiedArgument nsa = getArgument(that, "name");
@@ -122,6 +127,10 @@ public class ModuleVisitor extends Visitor {
 						if (shared!=null && shared.equals("true")) {
 							pkg.setShared(true);
 						}
+						List<String> by = argumentToStrings(getArgument(that, "by"));
+						if (by!=null) {
+							pkg.getAuthors().addAll(by);
+						}
                     }
                 }
             }
@@ -145,32 +154,57 @@ public class ModuleVisitor extends Visitor {
         return null;
     }
     
-    private String argumentToString(Tree.SpecifiedArgument sa) {
+    private List<String> argumentToStrings(Tree.SpecifiedArgument sa) {
     	if (sa==null) return null;
         Tree.SpecifierExpression se = sa.getSpecifierExpression();
         if (se!=null && se.getExpression()!=null) {
             Tree.Term term = se.getExpression().getTerm();
-			if ( term instanceof Tree.Literal) {
-	            String text = term.getText();
-	            if (text.length()>=2 &&
-	                    (text.startsWith("'") && text.endsWith("'") || 
-	                    text.startsWith("\"") && text.endsWith("\"")) ) {
-	                return text.substring(1, text.length()-1);
+			if ( term instanceof Tree.SequenceEnumeration) {
+				List<String> result = new ArrayList<String>();
+	            for (Tree.Expression exp: ((Tree.SequenceEnumeration) term).getExpressionList().getExpressions()) {
+	            	result.add(termToString(exp.getTerm()));
 	            }
-	            else {
-	            	return text;
-	            }
+	            return result;
 	        }
-	        else if ( term instanceof Tree.BaseMemberExpression) {
-	        	return ((Tree.BaseMemberExpression) term).getIdentifier().getText();
-	        }
-	        else {
+			else {
 	        	return null;
-	        }
+			}
         }
         else {
         	return null;
         }
     }
+
+    private String argumentToString(Tree.SpecifiedArgument sa) {
+    	if (sa==null) return null;
+        Tree.SpecifierExpression se = sa.getSpecifierExpression();
+        if (se!=null && se.getExpression()!=null) {
+            Tree.Term term = se.getExpression().getTerm();
+			return termToString(term);
+        }
+        else {
+        	return null;
+        }
+    }
+
+	private String termToString(Tree.Term term) {
+		if (term instanceof Tree.Literal) {
+		    String text = term.getText();
+		    if (text.length()>=2 &&
+		            (text.startsWith("'") && text.endsWith("'") || 
+		            text.startsWith("\"") && text.endsWith("\"")) ) {
+		        return text.substring(1, text.length()-1);
+		    }
+		    else {
+		    	return text;
+		    }
+		}
+		else if ( term instanceof Tree.BaseMemberExpression) {
+			return ((Tree.BaseMemberExpression) term).getIdentifier().getText();
+		}
+		else {
+			return null;
+		}
+	}
 
 }
