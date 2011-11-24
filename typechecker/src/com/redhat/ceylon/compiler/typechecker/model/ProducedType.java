@@ -239,11 +239,11 @@ public class ProducedType extends ProducedReference {
                         return false;
                     }
                     else {
-                    	//note that the qualifying type of the
-                    	//given type may be an invariant subtype
-                    	//of the type that declares the member
-                    	//type, as long as it doesn't refine the
-                    	//member type
+                        //note that the qualifying type of the
+                        //given type may be an invariant subtype
+                        //of the type that declares the member
+                        //type, as long as it doesn't refine the
+                        //member type
                         TypeDeclaration totd = (TypeDeclaration) type.getDeclaration().getContainer();
                         ProducedType tqts = tqt.getSupertype(totd);
                         if (!stqt.isSubtypeOf(tqts)) {
@@ -528,49 +528,49 @@ public class ProducedType extends ProducedReference {
                 ProducedType possibleResult = dst.getSupertype(c, list, 
                                 ignoringSelfType);
                 if (possibleResult!=null) {
-                	if (result==null || possibleResult.isSubtypeOf(result, ignoringSelfType)) {
-                		result = possibleResult;
-                	}
-                	else if ( !result.isSubtypeOf(possibleResult, ignoringSelfType) ) {
-                		//TODO: this is still needed even though we keep intersections 
-                		//      in canonical form because you can have stuff like
-                		//      empty of Iterable<String>&Sized
-                		List<ProducedType> args = new ArrayList<ProducedType>();
-                		TypeDeclaration dec = result.getDeclaration(); //TODO; get this from the Criteria?
-						for (TypeParameter tp: dec.getTypeParameters()) {
-	                		List<ProducedType> l = new ArrayList<ProducedType>();
-	                		Unit unit = getDeclaration().getUnit();
-	                		ProducedType arg;
-	                		ProducedType rta = result.getTypeArguments().get(tp);
-							ProducedType prta = possibleResult.getTypeArguments().get(tp);
-							if (tp.isContravariant()) {
-								addToUnion(l, rta);
-		                		addToUnion(l, prta);
-		                		UnionType ut = new UnionType(unit);
-		                		ut.setCaseTypes(l);
-		                		arg = ut.getType();
-	                		}
-	                		else {//if (tp.isCovariant()) {
-								addToIntersection(l, rta, unit);
-		                		addToIntersection(l, prta, unit);
-		                		IntersectionType it = new IntersectionType(unit);
-		                		it.setSatisfiedTypes(l);
-		                		arg = it.canonicalize().getType();
-	                		}
-//	                		else {
-//	                			if (rta.isExactly(prta)) {
-//	                				arg = rta;
-//	                			}
-//	                			else {
-//	                				//TODO: think this case through better!
-//	                				return null;
-//	                			}
-//	                		}
-	                		args.add(arg);
-                		}
-                		//TODO: broken for member types! ugh :-(
-                		result = dec.getProducedType(result.getQualifyingType(), args);
-                	}
+                    if (result==null || possibleResult.isSubtypeOf(result, ignoringSelfType)) {
+                        result = possibleResult;
+                    }
+                    else if ( !result.isSubtypeOf(possibleResult, ignoringSelfType) ) {
+                        //TODO: this is still needed even though we keep intersections 
+                        //      in canonical form because you can have stuff like
+                        //      empty of Iterable<String>&Sized
+                        List<ProducedType> args = new ArrayList<ProducedType>();
+                        TypeDeclaration dec = result.getDeclaration(); //TODO; get this from the Criteria?
+                        for (TypeParameter tp: dec.getTypeParameters()) {
+                            List<ProducedType> l = new ArrayList<ProducedType>();
+                            Unit unit = getDeclaration().getUnit();
+                            ProducedType arg;
+                            ProducedType rta = result.getTypeArguments().get(tp);
+                            ProducedType prta = possibleResult.getTypeArguments().get(tp);
+                            if (tp.isContravariant()) {
+                                addToUnion(l, rta);
+                                addToUnion(l, prta);
+                                UnionType ut = new UnionType(unit);
+                                ut.setCaseTypes(l);
+                                arg = ut.getType();
+                            }
+                            else {//if (tp.isCovariant()) {
+                                addToIntersection(l, rta, unit);
+                                addToIntersection(l, prta, unit);
+                                IntersectionType it = new IntersectionType(unit);
+                                it.setSatisfiedTypes(l);
+                                arg = it.canonicalize().getType();
+                            }
+//                            else {
+//                                if (rta.isExactly(prta)) {
+//                                    arg = rta;
+//                                }
+//                                else {
+//                                    //TODO: think this case through better!
+//                                    return null;
+//                                }
+//                            }
+                            args.add(arg);
+                        }
+                        //TODO: broken for member types! ugh :-(
+                        result = dec.getProducedType(result.getQualifyingType(), args);
+                    }
                 }
             }
             if (!getDeclaration().equals(ignoringSelfType)) {
@@ -625,24 +625,24 @@ public class ProducedType extends ProducedReference {
         }
     }
 
-	private ProducedType qualifiedByDeclaringType() {
-		ProducedType qt = getQualifyingType();
-		if (qt==null) {
-			return this;
-		}
-		else {
-			ProducedType pt = new ProducedType();
-			pt.setDeclaration(getDeclaration());
-			pt.setTypeArguments(getTypeArguments());
-			//replace the qualifying type with
-			//the supertype of the qualifying 
-			//type that declares this nested
-			//type, substituting type arguments
-		    ProducedType declaringType = qt.getSupertype((TypeDeclaration) getDeclaration().getContainer());
-		    pt.setQualifyingType(declaringType);
-			return pt;
-		}
-	}
+    private ProducedType qualifiedByDeclaringType() {
+        ProducedType qt = getQualifyingType();
+        if (qt==null) {
+            return this;
+        }
+        else {
+            ProducedType pt = new ProducedType();
+            pt.setDeclaration(getDeclaration());
+            pt.setTypeArguments(getTypeArguments());
+            //replace the qualifying type with
+            //the supertype of the qualifying 
+            //type that declares this nested
+            //type, substituting type arguments
+            ProducedType declaringType = qt.getSupertype((TypeDeclaration) getDeclaration().getContainer());
+            pt.setQualifyingType(declaringType);
+            return pt;
+        }
+    }
 
     private ProducedType getCommonSupertype(final List<ProducedType> caseTypes,
             TypeDeclaration dec, final TypeDeclaration selfTypeToIgnore) {
@@ -1002,7 +1002,7 @@ public class ProducedType extends ProducedReference {
                 }
             }
             /*ProducedType dt = pt.getDeclaringType();
-			if (dt!=null) {
+            if (dt!=null) {
                 map.putAll(substituted(dt, substitutions));
             }*/
             return map;
