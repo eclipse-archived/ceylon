@@ -293,15 +293,15 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         String loop_var_name = variable.getIdentifier().getText();
-        ProducedType sequenceElementType = typeFact().getIteratedType(iterDecl.getSpecifierExpression().getExpression().getTypeModel());
-        ProducedType iter_type = typeFact().getIteratorType(sequenceElementType);
+        ProducedType sequence_element_type = typeFact().getIteratedType(iterDecl.getSpecifierExpression().getExpression().getTypeModel());
+        ProducedType iter_type = typeFact().getIteratorType(sequence_element_type);
         JCExpression iter_type_expr = makeJavaType(iter_type, CeylonTransformer.TYPE_ARGUMENT);
-        ProducedType item_type = actualType(variable);
-        JCExpression item_type_expr = makeJavaType(item_type);
+        //ProducedType item_type = actualType(variable);
+        JCExpression item_type_expr = makeJavaType(sequence_element_type);
         List<JCAnnotation> annots = makeJavaTypeAnnotations(variable.getDeclarationModel());
 
-        // ceylon.language.Iterator<T> $V$iter$X = ITERABLE.iterator();
-        JCExpression containment = expressionGen().transformExpression(iterDecl.getSpecifierExpression().getExpression(), BoxingStrategy.UNBOXED);
+        // ceylon.language.Iterator<T> $V$iter$X = ITERABLE.getIterator();
+        JCExpression containment = expressionGen().transformExpression(iterDecl.getSpecifierExpression().getExpression(), BoxingStrategy.BOXED);
         JCVariableDecl iter_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(aliasName(loop_var_name + "$iter")), iter_type_expr, at(stmt).Apply(null, makeSelect(containment, "getIterator"), List.<JCExpression> nil()));
         JCIdent iter_id = at(stmt).Ident(iter_decl.getName());
         
@@ -315,7 +315,7 @@ public class StatementTransformer extends AbstractTransformer {
         } else {
             loop_var_init = at(stmt).Apply(null, makeSelect(iter_head, Util.getGetterName("key")), List.<JCExpression> nil());
         }
-        JCVariableDecl item_decl = at(stmt).VarDef(make().Modifiers(FINAL, annots), names().fromString(loop_var_name), item_type_expr, unboxType(loop_var_init, item_type));
+        JCVariableDecl item_decl = at(stmt).VarDef(make().Modifiers(FINAL, annots), names().fromString(loop_var_name), item_type_expr, unboxType(loop_var_init, sequence_element_type));
         List<JCStatement> for_loop = List.<JCStatement> of(item_decl);
 
         if (variable2 != null) {

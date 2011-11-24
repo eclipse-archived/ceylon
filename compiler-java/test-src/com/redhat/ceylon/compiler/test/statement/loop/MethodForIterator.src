@@ -21,6 +21,9 @@ class MethodForIterator {
         for (ceylon.language.Iterator<? extends ceylon.language.Natural> $n$iter$4 = new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(1L), null, .ceylon.language.Natural.instance(3L)).getIterator(); $n$iter$4 != null; $n$iter$4 = $n$iter$4.getTail()) {
             final ceylon.language.Natural n = $n$iter$4.getHead();
         }
+        for (ceylon.language.Iterator<? extends ceylon.language.Character> $c$iter$5 = .ceylon.language.String.instance("wim").getIterator(); $c$iter$5 != null; $c$iter$5 = $c$iter$5.getTail()) {
+            final int c = $c$iter$5.getHead().intValue();
+        }
     }
     
     MethodForIterator() {

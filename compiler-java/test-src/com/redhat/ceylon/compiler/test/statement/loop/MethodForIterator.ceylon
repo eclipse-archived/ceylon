@@ -37,5 +37,8 @@ class MethodForIterator(){
         for(Natural? n in {1,null,3}){
             // Empty
         }
+        for(Character c in "wim"){
+            // Empty
+        }
     }
 }
