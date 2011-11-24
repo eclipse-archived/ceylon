@@ -5,5 +5,5 @@ Module module {
            the core types referred to in the 
            language specification.";
     authors = { "Gavin King" };
-    license = 'http://www.gnu.org/licenses/gpl.html';
+    license = 'http://www.apache.org/licenses/LICENSE-2.0.html';
 }
