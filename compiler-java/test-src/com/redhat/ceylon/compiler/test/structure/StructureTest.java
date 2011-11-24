@@ -51,6 +51,11 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("pkg/pkg");
     }
 
+    @Test
+    public void testPkgPackageMetadata(){
+        compareWithJavaSource("pkg/package");
+    }
+
     //
     // Modules
     

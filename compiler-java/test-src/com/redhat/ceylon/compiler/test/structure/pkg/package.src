@@ -1,0 +1,20 @@
+package com.redhat.ceylon.compiler.test.structure.pkg;
+
+@.com.redhat.ceylon.compiler.metadata.java.Ceylon
+@.com.redhat.ceylon.compiler.metadata.java.Attribute
+@.com.redhat.ceylon.compiler.metadata.java.Package(name = "com.redhat.ceylon.compiler.test.structure.pkg", shared = true)
+final class $package {
+    
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.descriptor.Package")
+    static ceylon.language.descriptor.Package getPackage() {
+        return new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, .ceylon.language.Quoted.instance("com.redhat.ceylon.compiler.test.structure.pkg"), .ceylon.language.Boolean.instance(true), .ceylon.language.String.instance("Great documentation")){
+            
+            public ceylon.language.descriptor.Package call$() {
+                return new ceylon.language.descriptor.Package((ceylon.language.Quoted)this.args[0], ((ceylon.language.Boolean)this.args[1]).booleanValue(), ((ceylon.language.String)this.args[2]).toString());
+            }
+        }.call$();
+    }
+    
+    private $package() {
+    }
+}
