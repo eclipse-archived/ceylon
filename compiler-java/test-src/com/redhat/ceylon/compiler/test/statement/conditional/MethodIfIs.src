@@ -81,10 +81,11 @@ class MethodIfIs {
             ((com.redhat.ceylon.compiler.test.statement.conditional.Common)$x$5).common();
         }
         final .java.lang.Object $x$6 = x;
-        if ($x$6 instanceof com.redhat.ceylon.compiler.test.statement.conditional.FooInterface && $x$6 instanceof com.redhat.ceylon.compiler.test.statement.conditional.BarInterface) {
+        if ($x$6 instanceof com.redhat.ceylon.compiler.test.statement.conditional.Foo && $x$6 instanceof com.redhat.ceylon.compiler.test.statement.conditional.BarInterface) {
             final .java.lang.Object $x$7 = (.java.lang.Object)$x$6;
+            ((com.redhat.ceylon.compiler.test.statement.conditional.Foo)$x$7).common();
+            ((com.redhat.ceylon.compiler.test.statement.conditional.Foo)$x$7).foo();
             ((com.redhat.ceylon.compiler.test.statement.conditional.BarInterface)$x$7).bar();
-            ((com.redhat.ceylon.compiler.test.statement.conditional.FooInterface)$x$7).foo();
         }
         final .java.lang.Object $y$8 = give();
         if ($y$8 instanceof com.redhat.ceylon.compiler.test.statement.conditional.FooSub) {

@@ -58,9 +58,10 @@ class MethodIfIs() {
         if (is Foo|Bar x) {
             x.common();
         }
-        if (is FooInterface&BarInterface x) {
-            x.bar();
+        if (is Foo&BarInterface x) {
+            x.common();
             x.foo();
+            x.bar();
         }
         if (is FooSub y = give()) {
             y.foo();
