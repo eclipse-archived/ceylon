@@ -296,9 +296,10 @@ public class CeylonDocTool {
             Writer writer = openWriter(file);
             try {
             Markup markup = new Markup(writer);
-                markup.write("<?xml charset='UTF-8'?>");
                 markup.write("<!DOCTYPE html>");
-                markup.open("html", "head");
+                markup.open("html xmlns='http://www.w3.org/1999/xhtml'");
+                markup.open("head");
+                markup.tag("meta charset='UTF-8'");
                 markup.around("title", pu.getUnit().getFilename());
                 Package decl = pu.getUnit().getPackage();
                 markup.tag("link href='" + getResourceUrl(decl, "shCore.css") + "' rel='stylesheet' type='text/css'");
@@ -531,7 +532,7 @@ public class CeylonDocTool {
         String result = relativize(fromUrl, toUrl).toString();
         if (to instanceof Package 
                 && isRootPackage(getModule(from), (Package)to)) {
-            result += "#package";
+            result += "#section-package";
         }
         return result;
     }

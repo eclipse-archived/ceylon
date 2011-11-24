@@ -71,16 +71,24 @@ public class Markup {
             writer.append("<").append(tag).append(">");
     }
 
-    protected void openTable(String title) throws IOException {
-        open("table class='category' id='"+title.toLowerCase()+"'");
+    protected void openTable(String id, String title) throws IOException {
+        String opener = "table class='category'";
+        if (id != null) {
+            opener += " id='" + id + "'";
+        }
+        open(opener);
         open("tr class='TableHeadingColor'");
         around("th", title);
         close("tr");
     }
 
-    protected void openTable(String title, String firstColumnTitle, String secondColumnTitle)
+    protected void openTable(String id, String title, String firstColumnTitle, String secondColumnTitle)
             throws IOException {
-        open("table class='category' id='"+title.toLowerCase()+"'");
+        String opener = "table class='category'";
+        if (id != null) {
+            opener += " id='" + id + "'";
+        }
+        open(opener);
         open("tr class='TableHeadingColor'");
         around("th colspan='2'", title);
         close("tr");

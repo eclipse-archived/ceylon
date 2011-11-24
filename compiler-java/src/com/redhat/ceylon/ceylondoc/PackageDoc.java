@@ -106,6 +106,8 @@ public class PackageDoc extends ClassOrPackageDoc {
         if (!sharingPageWithModule) {
             htmlHead();
             writeNav(module, pkg, DocType.PACKAGE);
+        } else {
+            writeKeyboardShortcuts();
         }
         subMenu();
         summary();
@@ -127,7 +129,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         open("div class='head summary'");
         String id = "";
         if (tool.isRootPackage(module, pkg)) {
-            id = " id='package'";
+            id = " id='section-package'";
         }
         open("h1" + id);
         write("Package ");
@@ -148,16 +150,16 @@ public class PackageDoc extends ClassOrPackageDoc {
         }
         open("div class='submenu'");
         if (!attributes.isEmpty()) {
-            printSubMenuItem("attributes", getAccessKeyed("Attributes", 'A', "Jump to attributes"));
+            printSubMenuItem("section-attributes", getAccessKeyed("Attributes", 'A', "Jump to attributes"));
         }
         if (!methods.isEmpty()) {
-            printSubMenuItem("methods", getAccessKeyed("Methods", 'M', "Jump to methods"));
+            printSubMenuItem("section-methods", getAccessKeyed("Methods", 'M', "Jump to methods"));
         }
         if (!classes.isEmpty()) {
-            printSubMenuItem("classes", getAccessKeyed("Classes", 'C', "Jump to classes"));
+            printSubMenuItem("section-classes", getAccessKeyed("Classes", 'C', "Jump to classes"));
         }
         if (!interfaces.isEmpty()) {
-            printSubMenuItem("interfaces", getAccessKeyed("Interfaces", 'I', "Jump to interfaces"));
+            printSubMenuItem("section-interfaces", getAccessKeyed("Interfaces", 'I', "Jump to interfaces"));
         }
         close("div");
     }
@@ -166,7 +168,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         if (methods.isEmpty()) {
             return;
         }
-        openTable("Methods", "Modifier and Type", "Method and Description");
+        openTable("section-methods", "Methods", "Modifier and Type", "Method and Description");
         for (Method m : methods) {
             doc(m);
         }
@@ -177,7 +179,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         if (attributes.isEmpty()) {
             return;
         }
-        openTable("Attributes", "Modifier and Type", "Name and Description");
+        openTable("section-attributes", "Attributes", "Modifier and Type", "Name and Description");
         for (MethodOrValue v : attributes) {
             doc(v);
         }
@@ -188,7 +190,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         if (interfaces.isEmpty()) {
             return;
         }
-        openTable("Interfaces", "Modifier and Type", "Description");
+        openTable("section-interfaces", "Interfaces", "Modifier and Type", "Description");
         for (Interface i : interfaces) {
             doc(i);
         }
@@ -199,7 +201,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         if (classes.isEmpty()) {
             return;
         }
-        openTable("Classes", "Modifier and Type", "Description");
+        openTable("section-classes", "Classes", "Modifier and Type", "Description");
         for (Class c : classes) {
             doc(c);
         }
@@ -239,16 +241,16 @@ public class PackageDoc extends ClassOrPackageDoc {
     protected void writeAdditionalKeyboardShortcuts() throws IOException {
         writeKeyboardShortcut('p', "index.html");
         if (!attributes.isEmpty()) {
-            writeKeyboardShortcut('a', "#attributes");
+            writeKeyboardShortcut('a', "#section-attributes");
         } 
         if (!methods.isEmpty()) {
-            writeKeyboardShortcut('m', "#methods");
+            writeKeyboardShortcut('m', "#section-methods");
         }
         if (!classes.isEmpty()) {
-            writeKeyboardShortcut('c', "#classes");
+            writeKeyboardShortcut('c', "#section-classes");
         }
         if (!interfaces.isEmpty()) {
-            writeKeyboardShortcut('i', "#interfaces");
+            writeKeyboardShortcut('i', "#section-interfaces");
         }
     }
 }

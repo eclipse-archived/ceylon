@@ -211,21 +211,30 @@ public class ClassDoc extends ClassOrPackageDoc {
         htmlHead();
         summary();
         innerClasses();
-        attributes();
         
-        inheritedSectionCategory = "attributes";
-        writeSuperclassInheritedMembers(attributeSpecification, "Attributes inherited from class: ");
-        writeInterfaceInheritedMembers(attributeSpecification, "Attributes inherited from interface: ");
-        makeSureInheritedSectionIsClosed();
+        if (hasAnyAttributes()) {
+            open("div id='section-attributes'");
+            attributes();
+            inheritedSectionCategory = "attributes";
+            writeSuperclassInheritedMembers(attributeSpecification, "Attributes inherited from class: ");
+            writeInterfaceInheritedMembers(attributeSpecification, "Attributes inherited from interface: ");
+            makeSureInheritedSectionIsClosed();
+            close("div");
+        }
 
-        if (klass instanceof Class)
+        if (hasConstructor()) {
             constructor((Class) klass);
-        methods();
-
-        inheritedSectionCategory = "methods";
-        writeSuperclassInheritedMembers(methodSpecification, "Methods inherited from class: ");
-        writeInterfaceInheritedMembers(methodSpecification, "Methods inherited from interface: ");
-        makeSureInheritedSectionIsClosed();
+        }
+        
+        if (hasAnyMethods()) {
+            open("div id='section-methods'");
+            methods();
+            inheritedSectionCategory = "methods";
+            writeSuperclassInheritedMembers(methodSpecification, "Methods inherited from class: ");
+            writeInterfaceInheritedMembers(methodSpecification, "Methods inherited from interface: ");
+            makeSureInheritedSectionIsClosed();
+            close("div");
+        }
         
         close("body");
         close("html");
@@ -271,10 +280,9 @@ public class ClassDoc extends ClassOrPackageDoc {
                 }
                 linkToMember(member);
             }
-            close("code", "td");
-            close("tr");
+            close("code", "td", "tr", "table");
         }
-        close("table");
+        
     }
     
     /**
@@ -403,9 +411,7 @@ public class ClassDoc extends ClassOrPackageDoc {
                 }
                 linkToMember(member);
             }
-            close("code", "td");
-            close("tr");
-            close("table");
+            close("code", "td", "tr", "table");
         }
 
     }
@@ -435,7 +441,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     private void innerClasses() throws IOException {
         if (innerClasses.isEmpty())
             return;
-        openTable("Nested Classes", "Modifiers", "Name and Description");
+        openTable("section-nested_classes", "Nested Classes", "Modifiers", "Name and Description");
         for (Class m : innerClasses) {
             doc(m);
         }
@@ -519,13 +525,13 @@ public class ClassDoc extends ClassOrPackageDoc {
                 || hasAnyMethods()) {
             open("div class='submenu'");
             if (hasAnyAttributes()) {
-                printSubMenuItem("attributes", getAccessKeyed("Attributes", 'A', "Jump to attributes"));
+                printSubMenuItem("section-attributes", getAccessKeyed("Attributes", 'A', "Jump to attributes"));
             }
             if (hasConstructor()) {
-                printSubMenuItem("constructor", getAccessKeyed("Constructor", 'C', "Jump to constructor"));
+                printSubMenuItem("section-constructor", getAccessKeyed("Constructor", 'C', "Jump to constructor"));
             }
             if (hasAnyMethods()) {
-                printSubMenuItem("methods", getAccessKeyed("Methods", 'M', "Jump to methods"));
+                printSubMenuItem("section-methods", getAccessKeyed("Methods", 'M', "Jump to methods"));
             }
             close("div");
         }
@@ -570,7 +576,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     }
 
     private void constructor(Class klass) throws IOException {
-        openTable("Constructor");
+        openTable("section-constructor", "Constructor");
         open("tr", "td", "code");
         write(klass.getName());
         writeParameterList(klass.getParameterLists());
@@ -579,10 +585,9 @@ public class ClassDoc extends ClassOrPackageDoc {
 
     private void methods() throws IOException {
         if (methods.isEmpty()){
-            around("a name='methods'", "");
             return;
         }
-        openTable("Methods", "Modifier and Type", "Method and Description");
+        openTable(null, "Methods", "Modifier and Type", "Method and Description");
 
         for (Method m : methods) {
             doc(m);
@@ -592,10 +597,9 @@ public class ClassDoc extends ClassOrPackageDoc {
 
     private void attributes() throws IOException {
         if (attributes.isEmpty()){
-            around("a name='attributes'", "");
             return;
         }
-        openTable("Attributes", "Modifier and Type", "Name and Description");
+        openTable(null, "Attributes", "Modifier and Type", "Name and Description");
         for (MethodOrValue attribute : attributes) {
             doc(attribute);
         }
@@ -640,13 +644,13 @@ public class ClassDoc extends ClassOrPackageDoc {
     protected void writeAdditionalKeyboardShortcuts() throws IOException {
         writeKeyboardShortcut('p', "index.html");
         if (hasAnyAttributes()) {
-            writeKeyboardShortcut('a', "#attributes");
+            writeKeyboardShortcut('a', "#section-attributes");
         }
         if (hasConstructor()) {
-            writeKeyboardShortcut('c', "#constructor");
+            writeKeyboardShortcut('c', "#section-constructor");
         }
         if (hasAnyMethods()) {
-            writeKeyboardShortcut('m', "#methods");
+            writeKeyboardShortcut('m', "#section-methods");
         }
     }
 }

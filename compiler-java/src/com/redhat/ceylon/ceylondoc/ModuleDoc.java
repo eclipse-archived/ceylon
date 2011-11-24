@@ -59,7 +59,7 @@ public class ModuleDoc extends CeylonDoc {
 
     private void summary() throws IOException {
         open("div class='head summary'");
-        open("h1 id='module'");
+        open("h1 id='section-module'");
         write("Module ");
         around("code", module.getNameAsString());
         close("h1");
@@ -70,7 +70,7 @@ public class ModuleDoc extends CeylonDoc {
     }
     
     private void packages() throws IOException {
-        openTable("Packages", "Package", "Description");
+        openTable("section-packages", "Packages", "Package", "Description");
         for (Package pkg : tool.getPackages(module)) {
             doc(pkg);
         }

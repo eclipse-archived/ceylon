@@ -247,10 +247,11 @@ public abstract class CeylonDoc extends Markup {
     }
 
     protected void htmlHead(String title, String... additional) throws IOException {
-        write("<?xml charset='UTF-8'?>");
+        
         write("<!DOCTYPE html>");
-        open("html");
+        open("html xmlns='http://www.w3.org/1999/xhtml'");
         open("head");
+        tag("meta charset='UTF-8'");
         around("title", title);
         tag("link href='" + getResourceUrl("style.css") + "' rel='stylesheet' type='text/css'");
         for (String add : additional) {
