@@ -198,44 +198,44 @@ public class Util {
                         iter.remove();
                     }
                     else if ( pt.getDeclaration().equals(t.getDeclaration()) ) {
-                    	//canonicalize T<InX,OutX>&T<InY,OutY> to T<InX|InY,OutX&OutY>
+                        //canonicalize T<InX,OutX>&T<InY,OutY> to T<InX|InY,OutX&OutY>
                         TypeDeclaration td = pt.getDeclaration();
-                    	List<ProducedType> args = new ArrayList<ProducedType>();
+                        List<ProducedType> args = new ArrayList<ProducedType>();
                         for (int i=0; i<td.getTypeParameters().size(); i++) {
-                        	TypeParameter tp = td.getTypeParameters().get(i);
-                    		ProducedType pta = pt.getTypeArguments().get(tp);
-							ProducedType ta = t.getTypeArguments().get(tp);
-                        	if (tp.isInvariant()) {
-                        		if (!pta.isExactly(ta)) {
-                        			//the meet of invariant types with different 
-                        			//arguments is empty i.e. Bottom
-	                                list.clear();
-	                                list.add( new BottomType(unit).getType() );
-	                                return;
-                        		}
-                        		else {
-                        			args.add(pta);
-                        		}
-                        	}
-                        	if (tp.isContravariant()) {
-                        		List<ProducedType> ul = new ArrayList<ProducedType>();
-                        		addToUnion(ul, ta);
-                        		addToUnion(ul, pta);
-                        		UnionType ut = new UnionType(unit);
-                        		ut.setCaseTypes(ul);
-                        		args.add(ut.getType());
-                        	}
-                        	if (tp.isCovariant()) {
-                        		List<ProducedType> il = new ArrayList<ProducedType>();
-                        		addToIntersection(il, ta, unit);
-                        		addToIntersection(il, pta, unit);
-                        		IntersectionType it = new IntersectionType(unit);
-                        		it.setSatisfiedTypes(il);
-                        		args.add(it.canonicalize().getType());
-                        	}
+                            TypeParameter tp = td.getTypeParameters().get(i);
+                            ProducedType pta = pt.getTypeArguments().get(tp);
+                            ProducedType ta = t.getTypeArguments().get(tp);
+                            if (tp.isInvariant()) {
+                                if (!pta.isExactly(ta)) {
+                                    //the meet of invariant types with different 
+                                    //arguments is empty i.e. Bottom
+                                    list.clear();
+                                    list.add( new BottomType(unit).getType() );
+                                    return;
+                                }
+                                else {
+                                    args.add(pta);
+                                }
+                            }
+                            if (tp.isContravariant()) {
+                                List<ProducedType> ul = new ArrayList<ProducedType>();
+                                addToUnion(ul, ta);
+                                addToUnion(ul, pta);
+                                UnionType ut = new UnionType(unit);
+                                ut.setCaseTypes(ul);
+                                args.add(ut.getType());
+                            }
+                            if (tp.isCovariant()) {
+                                List<ProducedType> il = new ArrayList<ProducedType>();
+                                addToIntersection(il, ta, unit);
+                                addToIntersection(il, pta, unit);
+                                IntersectionType it = new IntersectionType(unit);
+                                it.setSatisfiedTypes(il);
+                                args.add(it.canonicalize().getType());
+                            }
                         }
                         iter.remove();
-                		//TODO: broken handling of member types!
+                        //TODO: broken handling of member types!
                         list.add( td.getProducedType(pt.getQualifyingType(), args) );
                         return;
                     }
@@ -250,8 +250,8 @@ public class Util {
                             t.getDeclaration() instanceof Interface &&
                                 pt.getDeclaration().equals(nd)) {
                                 //pt.getDeclaration().getQualifiedNameString().equals("ceylon.language.Nothing")) {
-                        	//the meet of two classes unrelated by inheritance, or
-                        	//of Nothing with an interface type is empty
+                            //the meet of two classes unrelated by inheritance, or
+                            //of Nothing with an interface type is empty
                             list.clear();
                             list.add( new BottomType(unit).getType() );
                             return;
