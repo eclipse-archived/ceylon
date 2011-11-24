@@ -198,13 +198,20 @@ public class CeylonTransformer extends AbstractTransformer {
             .className(attrClassName)
             .is(Flags.PUBLIC, declarationModel.isShared());
 
-        // if it's a module add a special annotation
-        if(declarationModel.isToplevel() 
-        		&& attrName.equals("module")
+        // if it's a module or package add a special annotation
+        if(declarationModel.isToplevel()){
+            if(attrName.equals("module")
         		&& declarationModel.getUnit().getFilename().equals("module.ceylon")){
-            Package pkg = (Package) declarationModel.getContainer();
-            Module module = pkg.getModule();
-            builder.annotations(makeAtModule(module));
+                // module
+                Package pkg = (Package) declarationModel.getContainer();
+                Module module = pkg.getModule();
+                builder.annotations(makeAtModule(module));
+            }else if(attrName.equals("package")
+                    && declarationModel.getUnit().getFilename().equals("package.ceylon")){
+                // package
+                Package pkg = (Package) declarationModel.getContainer();
+                builder.annotations(makeAtPackage(pkg));
+            }
         }
 
         if (decl instanceof AttributeSetterDefinition) {

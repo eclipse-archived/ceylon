@@ -35,6 +35,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -666,6 +667,15 @@ public abstract class AbstractTransformer implements Transformation {
         JCExpression importAttribute = make().Assign(makeIdent("dependencies"), make().NewArray(null, null, imports.toList()));
         return makeModelAnnotation(syms().ceylonAtModuleType, 
                 List.<JCExpression>of(nameAttribute, versionAttribute, importAttribute));
+    }
+
+    protected List<JCAnnotation> makeAtPackage(Package pkg) {
+        String name = pkg.getNameAsString();
+        boolean shared = pkg.isShared();
+        JCExpression nameAttribute = make().Assign(makeIdent("name"), make().Literal(name));
+        JCExpression sharedAttribute = make().Assign(makeIdent("shared"), makeBoolean(shared));
+        return makeModelAnnotation(syms().ceylonAtPackageType, 
+                List.<JCExpression>of(nameAttribute, sharedAttribute));
     }
 
     protected List<JCAnnotation> makeAtName(String name) {
