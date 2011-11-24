@@ -17,24 +17,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.ceylondoc;
-
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-
-public enum DocType {
-    MODULE, PACKAGE, TYPE, SEARCH;
-    
-    public static DocType typeOf(Object modPkgOrDecl) {
-        if (modPkgOrDecl instanceof Module) {
-            return MODULE;
-        } else if (modPkgOrDecl instanceof Package) {
-            return PACKAGE;
-        } else if (modPkgOrDecl instanceof TypeDeclaration) {
-            return TYPE;
-        } else {
-            throw new RuntimeException("" + modPkgOrDecl);
-        }
-    }
+doc "This one should test the code for creating links to types"
+by "Tom Bentley"
+shared interface Types<X,Y> {
+    //shared formal X&Y paramIntersection();
+    shared formal X|Y paramUnion();
+    //shared formal String&Number typeIntersection();
+    shared formal String|Number typeUnion();
+    shared formal X? paramOrNull();
+    shared formal X[] paramSequence();
+    shared formal String? typeOrNull();
+    shared formal String[] typeSequence();
+    //shared formal X?&Y? paramIntersectionOrNull();
+    shared formal X?|Y? paramUnionOrNull();
+    //shared formal X[]&Y[] paramIntersectionSequence();
+    shared formal X[]|Y[] paramUnionOrSequence();
 }

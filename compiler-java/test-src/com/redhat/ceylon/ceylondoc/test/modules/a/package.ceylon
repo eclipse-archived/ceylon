@@ -17,24 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.ceylondoc;
-
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-
-public enum DocType {
-    MODULE, PACKAGE, TYPE, SEARCH;
+Package package {
+    name = 'a';
+    shared = true;
+    doc = "This is a **test** package";
     
-    public static DocType typeOf(Object modPkgOrDecl) {
-        if (modPkgOrDecl instanceof Module) {
-            return MODULE;
-        } else if (modPkgOrDecl instanceof Package) {
-            return PACKAGE;
-        } else if (modPkgOrDecl instanceof TypeDeclaration) {
-            return TYPE;
-        } else {
-            throw new RuntimeException("" + modPkgOrDecl);
-        }
-    }
 }

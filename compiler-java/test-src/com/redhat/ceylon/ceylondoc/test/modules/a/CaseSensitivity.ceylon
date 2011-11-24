@@ -17,24 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.ceylondoc;
+doc "caseSensitive and CaseSensitive differ only by case"
+see(CaseSensitive)
+shared object caseSensitive extends CaseSensitive() {}
 
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+doc "CaseSensitive and caseSensitive differ only by case"
+see(caseSensitive)
+shared abstract class CaseSensitive() of caseSensitive {}
 
-public enum DocType {
-    MODULE, PACKAGE, TYPE, SEARCH;
-    
-    public static DocType typeOf(Object modPkgOrDecl) {
-        if (modPkgOrDecl instanceof Module) {
-            return MODULE;
-        } else if (modPkgOrDecl instanceof Package) {
-            return PACKAGE;
-        } else if (modPkgOrDecl instanceof TypeDeclaration) {
-            return TYPE;
-        } else {
-            throw new RuntimeException("" + modPkgOrDecl);
-        }
-    }
-}
+
