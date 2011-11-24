@@ -29,7 +29,9 @@ class Bug111() {
     }
     void m3() {
         Natural[]|Integer[] nums = {1,2,3};
-        Natural|Integer|Nothing first = nums.first;
+        if(nonempty nums){
+            Natural|Integer|Nothing first = nums.first;
+        }
     }
 
 }
