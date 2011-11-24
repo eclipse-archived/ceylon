@@ -11,6 +11,10 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     private ParameterList parameterList;
     private TypeDeclaration selfTypedDeclaration;
 
+    public boolean isInvariant() {
+    	return !covariant && !contravariant;
+    }
+    
     public boolean isCovariant() {
         return covariant;
     }

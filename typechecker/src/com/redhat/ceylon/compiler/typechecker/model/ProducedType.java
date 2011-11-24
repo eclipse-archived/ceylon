@@ -532,6 +532,9 @@ public class ProducedType extends ProducedReference {
                 		result = possibleResult;
                 	}
                 	else if ( !result.isSubtypeOf(possibleResult, ignoringSelfType) ) {
+                		//TODO: this is still needed even though we keep intersections 
+                		//      in canonical form because you can have stuff like
+                		//      empty of Iterable<String>&Sized
                 		List<ProducedType> args = new ArrayList<ProducedType>();
                 		TypeDeclaration dec = result.getDeclaration(); //TODO; get this from the Criteria?
 						for (TypeParameter tp: dec.getTypeParameters()) {
@@ -554,15 +557,15 @@ public class ProducedType extends ProducedReference {
 		                		it.setSatisfiedTypes(l);
 		                		arg = it.canonicalize().getType();
 	                		}
-	                		/*else {
-	                			if (rta.isExactly(prta)) {
-	                				arg = rta;
-	                			}
-	                			else {
-	                				//TODO: think this case through better!
-	                				return null;
-	                			}
-	                		}*/
+//	                		else {
+//	                			if (rta.isExactly(prta)) {
+//	                				arg = rta;
+//	                			}
+//	                			else {
+//	                				//TODO: think this case through better!
+//	                				return null;
+//	                			}
+//	                		}
 	                		args.add(arg);
                 		}
                 		//TODO: broken for member types! ugh :-(

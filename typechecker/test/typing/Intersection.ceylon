@@ -95,11 +95,12 @@ class Intersection() {
     object one satisfies One {}
     object onetwo satisfies One&Two {}
     
-    Sequence<One>&Sequence<Two> seq = { onetwo };
+    @type["Sequence<Intersection.One&Intersection.Two>"] Sequence<One>&Sequence<Two> seq = { onetwo };
     @type["Nothing|Intersection.One&Intersection.Two"] value item = seq[0];
     @type["Intersection.One&Intersection.Two"] value fst = seq.first;
     @type["Iterator<Intersection.One&Intersection.Two>"] value itr = seq.iterator;
-    Consumer<One>&Consumer<Two> cons = Consumer<One|Two>();
+    
+    @type["Intersection.Consumer<Intersection.One|Intersection.Two>"] Consumer<One>&Consumer<Two> cons = Consumer<One|Two>();
     cons.consume(onetwo);
     cons.consume(one);
     One|Two unk = one;
