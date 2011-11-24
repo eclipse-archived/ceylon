@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -99,6 +100,8 @@ public class ClassDoc extends ClassOrPackageDoc {
     private List<TypeDeclaration> superClasses;
     private boolean inheritedSectionOpen;
     private String inheritedSectionCategory;
+    private Map<MemberSpecification, Map<TypeDeclaration, List<Declaration>>> superclassInheritedMembers = new HashMap<ClassDoc.MemberSpecification, Map<TypeDeclaration,List<Declaration>>>(2);
+    private Map<MemberSpecification, Map<TypeDeclaration, List<Declaration>>> interfaceInheritedMembers = new HashMap<ClassDoc.MemberSpecification, Map<TypeDeclaration,List<Declaration>>>(2);
 
     private Comparator<Declaration> comparator = new Comparator<Declaration>() {
         @Override
@@ -118,7 +121,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         boolean isSatisfiedBy(Declaration decl);
     }
 
-    MemberSpecification atributeSpecification = new MemberSpecification() {
+    MemberSpecification attributeSpecification = new MemberSpecification() {
         @Override
         public boolean isSatisfiedBy(Declaration decl) {
             return decl instanceof Value || decl instanceof Getter;
@@ -197,6 +200,11 @@ public class ClassDoc extends ClassOrPackageDoc {
         Collections.sort(satisfyingInterfaces, comparator);
         Collections.sort(superInterfaces, producedTypeComparator);
         Collections.sort(innerClasses, comparator);
+        
+        loadSuperclassInheritedMembers(attributeSpecification);
+        loadSuperclassInheritedMembers(methodSpecification);
+        loadInterfaceInheritedMembers(attributeSpecification);
+        loadInterfaceInheritedMembers(methodSpecification);
     }
 
     public void generate() throws IOException {
@@ -206,8 +214,8 @@ public class ClassDoc extends ClassOrPackageDoc {
         attributes();
         
         inheritedSectionCategory = "attributes";
-        inheritedMembers(atributeSpecification, "Attributes inherited from class: ");
-        inheritedMembersFromInterfaces(atributeSpecification, "Attributes inherited from interface: ");
+        writeSuperclassInheritedMembers(attributeSpecification, "Attributes inherited from class: ");
+        writeInterfaceInheritedMembers(attributeSpecification, "Attributes inherited from interface: ");
         makeSureInheritedSectionIsClosed();
 
         if (klass instanceof Class)
@@ -215,8 +223,8 @@ public class ClassDoc extends ClassOrPackageDoc {
         methods();
 
         inheritedSectionCategory = "methods";
-        inheritedMembers(methodSpecification, "Methods inherited from class: ");
-        inheritedMembersFromInterfaces(methodSpecification, "Methods inherited from interface: ");
+        writeSuperclassInheritedMembers(methodSpecification, "Methods inherited from class: ");
+        writeInterfaceInheritedMembers(methodSpecification, "Methods inherited from interface: ");
         makeSureInheritedSectionIsClosed();
         
         close("body");
@@ -236,24 +244,11 @@ public class ClassDoc extends ClassOrPackageDoc {
         return members;
     }
 
-    private void inheritedMembers(MemberSpecification specification, String title) throws IOException {
-        if (superClasses.isEmpty())
-            return;
-        TypeDeclaration subclass = klass;
-        for (TypeDeclaration superClass : superClasses) {
-            List<Declaration> methods = getConcreteMembers(superClass, specification);
-            if (methods.isEmpty())
-                continue;
-            List<Declaration> notRefined = new ArrayList<Declaration>();
-            // clean already listed methods (refined in subclasses)
-            // done in 2 phases to avoid empty tables
-            for (Declaration method : methods) {
-                if (subclass.getDirectMember(method.getName()) == null) {
-                    notRefined.add(method);
-                }
-            }
-            if (notRefined.isEmpty())
-                continue;
+    private void writeSuperclassInheritedMembers(MemberSpecification specification, String title) throws IOException {
+        Map<TypeDeclaration, List<Declaration>> inheritedMembers = superclassInheritedMembers.get(specification);
+        for (Map.Entry<TypeDeclaration, List<Declaration>> entry : inheritedMembers.entrySet()) {
+            TypeDeclaration superClass = entry.getKey();
+            List<Declaration> notRefined = entry.getValue();
             makeSureInheritedSectionIsOpen();
             open("table");
             open("tr class='TableHeadingColor'");
@@ -278,9 +273,89 @@ public class ClassDoc extends ClassOrPackageDoc {
             }
             close("code", "td");
             close("tr");
-            subclass = superClass;
         }
         close("table");
+    }
+    
+    /**
+     * Gets the attributes inherited from interfaces.
+     * @return A map of interface to the attributes this type inherits from 
+     * that interface.
+     */
+    private Map<TypeDeclaration, List<Declaration>> getInterfaceInheritedAttibutes() {
+        return interfaceInheritedMembers.get(attributeSpecification);
+    }
+    
+    /**
+     * Gets the methods inherited from interfaces.
+     * @return A map of interface to the methods this type inherits from 
+     * that interface.
+     */
+    private Map<TypeDeclaration, List<Declaration>> getInterfaceInheritedMethods() {
+        return interfaceInheritedMembers.get(methodSpecification);
+    }
+    
+    /**
+     * Gets the attributes inherited from superclasses.
+     * @return A map of superclass to the attributes this type inherits from 
+     * that superclass.
+     */
+    private Map<TypeDeclaration, List<Declaration>> getSuperclassInheritedAttibutes() {
+        return superclassInheritedMembers.get(attributeSpecification);
+    }
+    
+    /**
+     * Gets the methods inherited from superclasses.
+     * @return A map of superclass to the methods this type inherits from 
+     * that superclass.
+     */
+    private Map<TypeDeclaration, List<Declaration>> getSuperclassInheritedMethods() {
+        return superclassInheritedMembers.get(methodSpecification);
+    }
+    
+    /**
+     * Determines whether the type has any attributes (include any inherited from
+     * superclasses or superinterfaces). 
+     * @return true if the type has any attributes.
+     */
+    private boolean hasAnyAttributes() {
+        return !(attributes.isEmpty() 
+                    && getInterfaceInheritedAttibutes().isEmpty()
+                    && getSuperclassInheritedAttibutes().isEmpty());
+    }
+    
+    /**
+     * Determines whether the type has any methods (include any inherited from
+     * superclasses or superinterfaces). 
+     * @return true if the type has any methods.
+     */
+    private boolean hasAnyMethods() {
+        return !(methods.isEmpty() 
+                    && getInterfaceInheritedMethods().isEmpty()
+                    && getSuperclassInheritedMethods().isEmpty());
+    }
+
+    private void loadSuperclassInheritedMembers(
+            MemberSpecification specification) {
+        LinkedHashMap<TypeDeclaration, List<Declaration>> inheritedMembers = new LinkedHashMap<TypeDeclaration, List<Declaration>>();
+        TypeDeclaration subclass = klass;
+        for (TypeDeclaration superClass : superClasses) {
+            List<Declaration> methods = getConcreteMembers(superClass, specification);
+            if (methods.isEmpty())
+                continue;
+            List<Declaration> notRefined = new ArrayList<Declaration>();
+            // clean already listed methods (refined in subclasses)
+            // done in 2 phases to avoid empty tables
+            for (Declaration method : methods) {
+                if (subclass.getDirectMember(method.getName()) == null) {
+                    notRefined.add(method);
+                }
+            }
+            if (notRefined.isEmpty())
+                continue;
+            inheritedMembers.put(superClass, notRefined);
+        }
+        superclassInheritedMembers.put(specification, inheritedMembers);
     }
 
     private void makeSureInheritedSectionIsOpen() throws IOException {
@@ -299,26 +374,12 @@ public class ClassDoc extends ClassOrPackageDoc {
         close("div", "div");
     }
 
-    private void inheritedMembersFromInterfaces(MemberSpecification memberSpecification, String title) throws IOException {
-        Map<TypeDeclaration, List<Declaration>> classMembers = new HashMap<TypeDeclaration, List<Declaration>>();
-        for (ProducedType superInterface : superInterfaces) {
-            TypeDeclaration decl = superInterface.getDeclaration();
-            List<Declaration> members = getConcreteMembers(decl, memberSpecification);
-            classMembers.put(decl, members);
-        }
-        for (ProducedType superInterface : superInterfaces) {
-            TypeDeclaration decl = superInterface.getDeclaration();
-            List<Declaration> members = getConcreteMembers(decl, memberSpecification);
-            for (Declaration member : members) {
-                Declaration refined = member.getRefinedDeclaration();
-                if (refined != null && refined != member && !(refined.getContainer() instanceof Class)) {
-                    classMembers.get(refined.getContainer()).remove(refined);
-                }
-            }
-        }
-        for (TypeDeclaration superInterface : classMembers.keySet()) {
-            List<Declaration> members = classMembers.get(superInterface);
-            if (members.isEmpty())
+    private void writeInterfaceInheritedMembers(MemberSpecification memberSpecification, String title) throws IOException {
+        Map<TypeDeclaration, List<Declaration>> inheritedMembers = interfaceInheritedMembers.get(memberSpecification);
+        for (TypeDeclaration superInterface : inheritedMembers.keySet()) {
+            List<Declaration> members = inheritedMembers.get(superInterface);
+            if (members == null 
+                    || members.isEmpty())
                 continue;
             makeSureInheritedSectionIsOpen();
             open("table");
@@ -347,6 +408,28 @@ public class ClassDoc extends ClassOrPackageDoc {
             close("table");
         }
 
+    }
+
+    private void loadInterfaceInheritedMembers(
+            MemberSpecification memberSpecification) {
+        LinkedHashMap<TypeDeclaration, List<Declaration>> result = new LinkedHashMap<TypeDeclaration, List<Declaration>>();
+        for (ProducedType superInterface : superInterfaces) {
+            TypeDeclaration decl = superInterface.getDeclaration();
+            List<Declaration> members = getConcreteMembers(decl, memberSpecification);
+            for (Declaration member : members) {
+                
+                Declaration refined = member.getRefinedDeclaration();
+                if (refined == null || refined == member || refined.getContainer() instanceof Class) {
+                    List<Declaration> r = result.get(refined.getContainer());
+                    if (r == null) {
+                        r = new ArrayList<Declaration>();
+                        result.put((TypeDeclaration)refined.getContainer(), r);
+                    }
+                    r.add(refined);
+                }
+            }
+        }
+        interfaceInheritedMembers.put(memberSpecification, result);
     }
 
     private void innerClasses() throws IOException {
@@ -431,22 +514,25 @@ public class ClassDoc extends ClassOrPackageDoc {
     }
     
     protected void subMenu() throws IOException {
-        if (attributes.isEmpty()
-                && !(klass instanceof Class)
-                && methods.isEmpty()) {
-            return;
+        if (hasAnyAttributes()
+                || hasConstructor()
+                || hasAnyMethods()) {
+            open("div class='submenu'");
+            if (hasAnyAttributes()) {
+                printSubMenuItem("attributes", getAccessKeyed("Attributes", 'A', "Jump to attributes"));
+            }
+            if (hasConstructor()) {
+                printSubMenuItem("constructor", getAccessKeyed("Constructor", 'C', "Jump to constructor"));
+            }
+            if (hasAnyMethods()) {
+                printSubMenuItem("methods", getAccessKeyed("Methods", 'M', "Jump to methods"));
+            }
+            close("div");
         }
-        open("div class='submenu'");
-        if (!attributes.isEmpty()) {
-            printSubMenuItem("attributes", getAccessKeyed("Attributes", 'A', "Jump to attributes"));
-        }
-        if (klass instanceof Class) {
-            printSubMenuItem("constructor", getAccessKeyed("Constructor", 'C', "Jump to constructor"));
-        }
-        if (!methods.isEmpty()) {
-            printSubMenuItem("methods", getAccessKeyed("Methods", 'M', "Jump to methods"));
-        }
-        close("div");
+    }
+
+    private boolean hasConstructor() {
+        return (klass instanceof Class);
     }
 
 	@Override
@@ -553,8 +639,14 @@ public class ClassDoc extends ClassOrPackageDoc {
     @Override
     protected void writeAdditionalKeyboardShortcuts() throws IOException {
         writeKeyboardShortcut('p', "index.html");
-        writeKeyboardShortcut('a', "#attributes");
-        writeKeyboardShortcut('c', "#constructor");
-        writeKeyboardShortcut('m', "#methods");
+        if (hasAnyAttributes()) {
+            writeKeyboardShortcut('a', "#attributes");
+        }
+        if (hasConstructor()) {
+            writeKeyboardShortcut('c', "#constructor");
+        }
+        if (hasAnyMethods()) {
+            writeKeyboardShortcut('m', "#methods");
+        }
     }
 }

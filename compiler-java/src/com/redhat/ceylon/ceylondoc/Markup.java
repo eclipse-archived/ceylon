@@ -72,7 +72,7 @@ public class Markup {
     }
 
     protected void openTable(String title) throws IOException {
-        open("table class='category'");
+        open("table class='category' id='"+title.toLowerCase()+"'");
         open("tr class='TableHeadingColor'");
         around("th", title);
         close("tr");
