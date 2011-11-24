@@ -20,16 +20,20 @@
 doc "This one should test the code for creating links to types"
 by "Tom Bentley"
 shared interface Types<X,Y> {
-    //shared formal X&Y paramIntersection();
+    shared formal X&Y paramIntersection();
     shared formal X|Y paramUnion();
-    //shared formal String&Number typeIntersection();
+    shared formal String&Number typeIntersection();
     shared formal String|Number typeUnion();
+    shared formal String&Types<X,Y> typeIntersectionWithSelf();
+    shared formal String|Types<X,Y> typeUnionWithSelf();
     shared formal X? paramOrNull();
     shared formal X[] paramSequence();
     shared formal String? typeOrNull();
     shared formal String[] typeSequence();
-    //shared formal X?&Y? paramIntersectionOrNull();
+    shared formal Types<X,Y>? selfOrNull();
+    shared formal Types<X,Y>[] selfSequence();
+    shared formal X?&Y? paramIntersectionOrNull();
     shared formal X?|Y? paramUnionOrNull();
-    //shared formal X[]&Y[] paramIntersectionSequence();
+    shared formal X[]&Y[] paramIntersectionSequence();
     shared formal X[]|Y[] paramUnionOrSequence();
 }

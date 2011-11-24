@@ -82,7 +82,7 @@ public abstract class CeylonDoc extends Markup {
         }else if(decl instanceof IntersectionType){
             IntersectionType it = (IntersectionType) decl;
             boolean first = true;
-            for(ProducedType id : it.getCaseTypes()){
+            for(ProducedType id : it.getSatisfiedTypes()){
                 if(first){
                     first = false;
                 }else{
