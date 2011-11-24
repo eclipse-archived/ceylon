@@ -21,38 +21,49 @@
 interface Common {
     shared formal void common();
 }
+
+@nomodel 
+interface FooInterface {
+    shared formal void foo();
+}
+
 @nomodel
-class Foo() satisfies Common {
+class Foo() satisfies Common & FooInterface {
     shared actual void common() {}
-    shared void bar() {}
+    shared actual void foo() {}
 }
 @nomodel
 class FooSub() extends Foo() {
-    shared void baz() {}
+    shared void foo2() {}
+}
+
+@nomodel
+interface BarInterface {
+    shared formal void bar();
 }
 @nomodel
-class Bar() satisfies Common {
+class Bar() satisfies Common & BarInterface {
     shared actual void common() {}
-    shared void foo() {}
+    shared actual void bar() {}
 }
 @nomodel
 class MethodIfIs() {
     shared void m(Object x) {
         if (is Foo x) {
-            x.bar();
+            x.foo();
             if (is FooSub x) {
-                x.baz();
+                x.foo2();
             }
         }
         if (is Foo|Bar x) {
             x.common();
         }
-        if (is Foo&Bar x) {
+        if (is FooInterface&BarInterface x) {
             x.bar();
             x.foo();
         }
         if (is FooSub y = give()) {
-            y.bar();
+            y.foo();
         }
     }
     Foo give() {
