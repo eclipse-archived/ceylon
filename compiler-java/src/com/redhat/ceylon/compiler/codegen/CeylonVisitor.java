@@ -421,14 +421,17 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         return (defs.size() > 0);
     }
     
-    private ListBuffer<JCTree> append(JCTree x) {
-        return defs.append(x);
+    private void append(JCTree x) {
+    	if (classBuilder != null) {
+    		classBuilder.init((JCTree.JCStatement)x);
+    	} else {
+    		defs.append(x);
+    	}
     }
 
-    private ListBuffer<JCTree> appendList(List<? extends JCTree> xs) {
+    private void appendList(List<? extends JCTree> xs) {
         for (JCTree x : xs) {
             append(x);
         }
-        return defs;
     }
 }
