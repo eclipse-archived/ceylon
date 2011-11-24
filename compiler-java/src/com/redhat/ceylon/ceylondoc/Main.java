@@ -23,9 +23,6 @@ package com.redhat.ceylon.ceylondoc;
 import java.io.File;
 import java.io.IOException;
 
-import com.redhat.ceylon.compiler.typechecker.TypeChecker;
-import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
-
 public class Main {
     public static void main(String[] args) throws IOException {
         String destDir = null;
@@ -68,9 +65,8 @@ public class Main {
             System.exit(1);
         }
 
-        TypeChecker typeChecker = new TypeCheckerBuilder().addSrcDirectory(file).getTypeChecker();
-        typeChecker.process();
-        CeylonDocTool ceylonDocTool = new CeylonDocTool(typeChecker.getPhasedUnits().getPhasedUnits(), typeChecker.getContext().getModules(), showPrivate);
+        CeylonDocTool ceylonDocTool = new CeylonDocTool(file);
+        ceylonDocTool.setShowPrivate(showPrivate);
         ceylonDocTool.setDestDir(destDir);
         ceylonDocTool.setSrcDir(srcDir);
         ceylonDocTool.setOmitSource(omitSource);

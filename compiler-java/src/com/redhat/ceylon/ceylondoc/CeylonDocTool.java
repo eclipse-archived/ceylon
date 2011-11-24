@@ -41,6 +41,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.typechecker.TypeChecker;
+import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -82,10 +84,11 @@ public class CeylonDocTool {
     private boolean omitSource;
     private Map<Declaration, Node> sourceLocations = new HashMap<Declaration, Node>();
 
-    public CeylonDocTool(List<PhasedUnit> phasedUnits, Modules modules, boolean showPrivate) {
-        this.phasedUnits = phasedUnits;
-        this.modules = modules;
-        this.showPrivate = showPrivate;
+    public CeylonDocTool(File file) {
+        TypeChecker typeChecker = new TypeCheckerBuilder().addSrcDirectory(file).getTypeChecker();
+        typeChecker.process();
+        this.phasedUnits = typeChecker.getPhasedUnits().getPhasedUnits();
+        this.modules = typeChecker.getContext().getModules();
     }
 
     public void setDestDir(String destDir) {
@@ -102,6 +105,10 @@ public class CeylonDocTool {
 
     public void setSrcDir(String srcDir) {
         this.srcDir = srcDir;
+    }
+
+    public void setShowPrivate(boolean showPrivate) {
+        this.showPrivate = showPrivate;
     }
 
     public boolean isShowPrivate() {
