@@ -29,6 +29,10 @@ shared object process extends Object() {
          input of the virtual machine process."
     shared String readLine() { throw; }
     
+    doc "The elapsed time in milliseconds since midnight, 
+         1 January 1970."
+    shared Integer milliseconds { throw; }
+    
     shared actual String string {
         return "process";
     }

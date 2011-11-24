@@ -51,6 +51,10 @@ public class process extends Object {
         }
     }
     
+    public long getMilliseconds() {
+    	return System.currentTimeMillis();
+    }
+    
     @Override
     public java.lang.String toString() {
     	return "process";
