@@ -228,17 +228,19 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
         ProducedType pt = that.getOuterType().getTypeModel();
         if (pt!=null) {
-            TypeDeclaration type = (TypeDeclaration) pt.getDeclaration()
-                        .getMember(name(that.getIdentifier()));
+            TypeDeclaration d = pt.getDeclaration();
+			TypeDeclaration type = (TypeDeclaration) d.getMember(name(that.getIdentifier()));
             if (type==null) {
-                that.addError("member type declaration not found: " + 
-                        name(that.getIdentifier()), 100);
+                that.addError("member type declaration does not exist: " + 
+                        name(that.getIdentifier()) +
+                        " in type " + d.getName(), 100);
                 unit.getUnresolvedReferences().add(that.getIdentifier());
             }
             else {
                 if (!type.isVisible(that.getScope())) {
                     that.addError("member type is not visible: " +
-                            name(that.getIdentifier()));
+                            name(that.getIdentifier()) +
+                            " of type " + d.getName(), 400);
                 }
                 visitSimpleType(that, pt, type);
             }

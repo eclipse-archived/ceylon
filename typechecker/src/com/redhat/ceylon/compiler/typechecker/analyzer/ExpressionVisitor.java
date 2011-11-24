@@ -1975,18 +1975,20 @@ public class ExpressionVisitor extends Visitor {
         ProducedType pt = that.getPrimary().getTypeModel();
         if (pt!=null && that.getIdentifier()!=null && 
                 !that.getIdentifier().getText().equals("")) {
-            TypedDeclaration member = (TypedDeclaration) unwrap(pt, that).getDeclaration()
-                    .getMember(name(that.getIdentifier()));
+            TypeDeclaration d = unwrap(pt, that).getDeclaration();
+			TypedDeclaration member = (TypedDeclaration) d.getMember(name(that.getIdentifier()));
             if (member==null) {
                 that.addError("member method or attribute does not exist: " +
-                        name(that.getIdentifier()), 100);
+                        name(that.getIdentifier()) + 
+                        " in type " + d.getName(), 100);
                 unit.getUnresolvedReferences().add(that.getIdentifier());
             }
             else {
                 that.setDeclaration(member);
                 if (!member.isVisible(that.getScope())) {
                     that.addError("member method or attribute is not visible: " +
-                            name(that.getIdentifier()), 400);
+                            name(that.getIdentifier()) + 
+                            " of type " + d.getName(), 400);
                 }
                 Tree.TypeArguments tal = that.getTypeArguments();
                 if (explicitTypeArguments(member,tal)) {
@@ -2068,18 +2070,20 @@ public class ExpressionVisitor extends Visitor {
             that.getTypeArgumentList().visit(this);*/
         ProducedType pt = that.getPrimary().getTypeModel();
         if (pt!=null) {
-            TypeDeclaration type = (TypeDeclaration) unwrap(pt, that).getDeclaration()
-                    .getMember(name(that.getIdentifier()));
+            TypeDeclaration d = unwrap(pt, that).getDeclaration();
+			TypeDeclaration type = (TypeDeclaration) d.getMember(name(that.getIdentifier()));
             if (type==null) {
                 that.addError("member type does not exist: " +
-                        name(that.getIdentifier()), 100);
+                        name(that.getIdentifier()) +
+                        " in type " + d.getName(), 100);
                 unit.getUnresolvedReferences().add(that.getIdentifier());
             }
             else {
                 that.setDeclaration(type);
                 if (!type.isVisible(that.getScope())) {
                     that.addError("member type is not visible: " +
-                            name(that.getIdentifier()), 400);
+                            name(that.getIdentifier()) +
+                            " of type " + d.getName(), 400);
                 }
                 Tree.TypeArguments tal = that.getTypeArguments();
                 if (explicitTypeArguments(type, tal)) {
