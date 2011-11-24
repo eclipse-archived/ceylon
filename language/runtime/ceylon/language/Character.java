@@ -36,7 +36,7 @@ public final class Character extends Object
         return java.lang.Character.isISOControl(codePoint);
     }       
 
-    public static Character instance(char c) {
+    public static Character instance(int c) {
         return new Character(c);
     }
 
