@@ -56,6 +56,10 @@ public final class Character extends Object
         return java.lang.String.valueOf(java.lang.Character.toChars(codePoint));
     }
 
+    public int intValue() {
+        return codePoint;
+    }
+
     @Override
     public int hashCode() {
         return codePoint;
