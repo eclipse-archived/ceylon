@@ -186,7 +186,7 @@ class Assignability() {
     @error if (something.hello exists) {}
     if (exists @error h = something.hello) {}
     
-    if (is Y something) {
+    @error if (is Y something) {
         @error print(something.name);
     }
 
