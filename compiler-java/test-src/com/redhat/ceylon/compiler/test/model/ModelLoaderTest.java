@@ -46,6 +46,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.source.util.TaskEvent;
@@ -150,9 +151,20 @@ public class ModelLoaderTest extends CompilerTest {
         }else if(validDeclaration instanceof Value || validDeclaration instanceof Getter || validDeclaration instanceof Setter){
             Assert.assertTrue("[Attribute]", modelDeclaration instanceof Value);
             compareAttributeDeclarations((MethodOrValue)validDeclaration, (Value)modelDeclaration);
+        }else if(validDeclaration instanceof TypeParameter){
+            Assert.assertTrue("[TypeParameter]", modelDeclaration instanceof TypeParameter);
+            compareTypeParameters((TypeParameter)validDeclaration, (TypeParameter)modelDeclaration);
         }
     }
     
+    private void compareTypeParameters(TypeParameter validDeclaration, TypeParameter modelDeclaration) {
+        String name = validDeclaration.getContainer().toString();
+        Assert.assertEquals("[Contravariant]", validDeclaration.isContravariant(), modelDeclaration.isContravariant());
+        Assert.assertEquals("[Covariant]", validDeclaration.isCovariant(), modelDeclaration.isCovariant());
+        Assert.assertEquals("[SelfType]", validDeclaration.isSelfType(), modelDeclaration.isSelfType());
+        compareSatisfiedTypes(name, validDeclaration.getSatisfiedTypeDeclarations(), modelDeclaration.getSatisfiedTypeDeclarations());
+    }
+
     private void compareClassDeclarations(Class validDeclaration, Class modelDeclaration) {
         String name = validDeclaration.getQualifiedNameString();
         Assert.assertEquals(name+" [abstract]", validDeclaration.isAbstract(), modelDeclaration.isAbstract());
@@ -218,6 +230,17 @@ public class ModelLoaderTest extends CompilerTest {
         compareParameterLists(name, validParameterLists, modelParameterLists);
         // now same for return type
         compareDeclarations(validDeclaration.getType().getDeclaration(), modelDeclaration.getType().getDeclaration());
+        // work on type parameters
+        compareTypeParameters(name, validDeclaration.getTypeParameters(), modelDeclaration.getTypeParameters());
+    }
+
+    private void compareTypeParameters(String name, List<TypeParameter> validTypeParameters, List<TypeParameter> modelTypeParameters) {
+        Assert.assertEquals(name+" [type parameter count]", validTypeParameters.size(), modelTypeParameters.size());
+        for(int i=0;i<validTypeParameters.size();i++){
+            TypeParameter validTypeParameter = validTypeParameters.get(i);
+            TypeParameter modelTypeParameter = modelTypeParameters.get(i);
+            compareDeclarations(validTypeParameter, modelTypeParameter);
+        }
     }
 
     private void compareAttributeDeclarations(MethodOrValue validDeclaration, Value modelDeclaration) {
