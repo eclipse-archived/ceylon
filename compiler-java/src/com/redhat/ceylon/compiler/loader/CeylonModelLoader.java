@@ -205,7 +205,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         // abort if we already loaded it
         if(!loadedPackages.add(packageName))
             return;
-        PackageSymbol ceylonPkg = reader.enterPackage(names.fromString(packageName));
+        PackageSymbol ceylonPkg = packageName.equals("") ? syms().unnamedPackage : reader.enterPackage(names.fromString(packageName));
         ceylonPkg.complete();
         /*
          * Eventually this will go away as we get a hook from the typechecker to load on demand, but
@@ -561,7 +561,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     private ClassSymbol loadClass(String pkgName, String className) {
         ClassSymbol moduleClass = null;
         try{
-            PackageSymbol javaPkg = reader.enterPackage(names.fromString(pkgName));
+            PackageSymbol javaPkg = pkgName.equals("") ? syms().unnamedPackage : reader.enterPackage(names.fromString(pkgName));
             javaPkg.complete();
             moduleClass = lookupClassSymbol(className);
         }catch(CompletionFailure x){
