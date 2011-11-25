@@ -1,15 +1,22 @@
 #! /bin/bash
 
+if [ $# -eq 0 ] ; then
+    echo 'Usage: ceylon <options> <toplevel class or method> <arguments>'
+    echo 'where possible options include:'
+    echo '  -cp                        Class search path of car files'
+    exit 0
+fi
+
 # resolve links - $0 may be a softlink
 PRG="$0"
 while [ -h "$PRG" ]; do
-  ls=`ls -ld "$PRG"`
-  link=`expr "$ls" : '.*-> \(.*\)$'`
-  if expr "$link" : '/.*' > /dev/null; then
-    PRG="$link"
-  else
-    PRG=`dirname "$PRG"`/"$link"
-  fi
+    ls=`ls -ld "$PRG"`
+    link=`expr "$ls" : '.*-> \(.*\)$'`
+    if expr "$link" : '/.*' > /dev/null; then
+        PRG="$link"
+    else
+        PRG=`dirname "$PRG"`/"$link"
+    fi
 done
 
 source $(dirname "$PRG")/args.sh
@@ -18,6 +25,6 @@ source $(dirname "$PRG")/args.sh
 JAVA_CP="$HOME/.ceylon/repo/ceylon/language/0.1/ceylon.language-0.1.car:$USER_CP"
 
 java \
-	-enableassertions \
-	-classpath "$JAVA_CP" \
-	$ARGS
+    -enableassertions \
+    -classpath "$JAVA_CP" \
+    $ARGS

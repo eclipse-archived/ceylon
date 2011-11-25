@@ -1,15 +1,24 @@
 #! /bin/bash
 
+if [ $# -eq 0 ] ; then
+    echo 'Usage: ceylonc <options> <sourcefiles>'
+    echo 'where possible options include:'
+    echo '  -src                       Specify where to find input source files'
+    echo '  -out                       Specify repository to store generated code in'
+    echo '  -verbose                   Output messages about what the compiler is doing'
+    exit 0
+fi
+
 # resolve links - $0 may be a softlink
 PRG="$0"
 while [ -h "$PRG" ]; do
-  ls=`ls -ld "$PRG"`
-  link=`expr "$ls" : '.*-> \(.*\)$'`
-  if expr "$link" : '/.*' > /dev/null; then
-    PRG="$link"
-  else
-    PRG=`dirname "$PRG"`/"$link"
-  fi
+    ls=`ls -ld "$PRG"`
+    link=`expr "$ls" : '.*-> \(.*\)$'`
+    if expr "$link" : '/.*' > /dev/null; then
+        PRG="$link"
+    else
+        PRG=`dirname "$PRG"`/"$link"
+    fi
 done
 
 source $(dirname "$PRG")/args.sh
@@ -30,8 +39,9 @@ else
 fi
 
 java \
-	-enableassertions \
-	-Xbootclasspath/p:"$JAVA_CP" \
-	com.redhat.ceylon.compiler.Main \
-	-classpath "$COMPILE_CP" \
-	$ARGS
+    -enableassertions \
+    -Xbootclasspath/p:"$JAVA_CP" \
+    com.redhat.ceylon.compiler.Main \
+    -classpath "$COMPILE_CP" \
+    $ARGS
+
