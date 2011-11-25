@@ -1,0 +1,2 @@
+Logic to resolve module dependency (used by the compiler, IDE, runtime etc).
+
