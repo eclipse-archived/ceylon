@@ -4,7 +4,7 @@ public @interface TypeParameter {
 
     String value();
 
-    String satisfies() default "";
+    String[] satisfies() default {};
 
     Variance variance() default Variance.NONE;
 }
