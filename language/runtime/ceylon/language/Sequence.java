@@ -18,9 +18,10 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
     @TypeInfo("ceylon.language.Natural")
     public long getLastIndex();
     
+    @TypeInfo("Element")
     public Element getFirst();
     
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element|ceylon.language.Nothing>")
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public Iterable getRest();
     
     public boolean getEmpty();
