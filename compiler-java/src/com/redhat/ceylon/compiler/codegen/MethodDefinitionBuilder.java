@@ -28,6 +28,7 @@ import static com.sun.tools.javac.code.TypeTags.VOID;
 
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.util.Util;
@@ -63,6 +64,7 @@ public class MethodDefinitionBuilder {
     private final ListBuffer<JCAnnotation> annotations = ListBuffer.lb();
     
     private final ListBuffer<JCTypeParameter> typeParams = ListBuffer.lb();
+    private final ListBuffer<JCExpression> typeParamAnnotations = ListBuffer.lb();
     
     private final ListBuffer<JCVariableDecl> params = ListBuffer.lb();
     
@@ -100,7 +102,9 @@ public class MethodDefinitionBuilder {
         if (resultType != null) {
             annotations.appendList(gen.makeJavaTypeAnnotations(resultType));
         }
-        
+        if(!typeParamAnnotations.isEmpty())
+            annotations(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
+
         return gen.make().MethodDef(
                 gen.make().Modifiers(modifiers, annotations.toList()), 
                 makeName(name),
@@ -150,21 +154,22 @@ public class MethodDefinitionBuilder {
         return this;
     }
 
-    public MethodDefinitionBuilder typeParameter(String name, java.util.List<ProducedType> types) {
+    public MethodDefinitionBuilder typeParameter(String name, TypeParameter typeParameter) {
         ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
-        for (ProducedType t : types) {
+        for (ProducedType t : typeParameter.getSatisfiedTypes()) {
             if (!gen.willEraseToObject(t)) {
                 bounds.append(gen.makeJavaType(t));
             }
         }
         typeParams.append(gen.make().TypeParameter(gen.names().fromString(name), bounds.toList()));
+        typeParamAnnotations.append(gen.makeAtTypeParameter(typeParameter));
         return this;
     }
 
     public MethodDefinitionBuilder typeParameter(Tree.TypeParameterDeclaration param) {
         gen.at(param);
         String name = param.getIdentifier().getText();
-        return typeParameter(name, param.getDeclarationModel().getSatisfiedTypes());
+        return typeParameter(name, param.getDeclarationModel());
     }
 
     public MethodDefinitionBuilder parameters(List<JCVariableDecl> decls) {
