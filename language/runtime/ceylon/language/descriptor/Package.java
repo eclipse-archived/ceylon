@@ -4,6 +4,7 @@ import ceylon.language.Iterable;
 
 import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
+import com.redhat.ceylon.compiler.metadata.java.Name;
 
 public class Package {
     private ceylon.language.Quoted name;
