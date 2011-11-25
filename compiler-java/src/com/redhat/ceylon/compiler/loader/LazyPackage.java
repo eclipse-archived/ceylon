@@ -56,7 +56,15 @@ public class LazyPackage extends Package {
     public Declaration getDirectMember(String name) {
         String pkgName = getQualifiedNameString();
         // we need its package ready first
-        PackageSymbol javaPkg = reader.enterPackage(names.fromString(pkgName ));
+        
+        PackageSymbol javaPkg = null;
+        if (pkgName.equals("")) {
+            javaPkg = modelLoader.syms().unnamedPackage;
+        }
+        else {
+            javaPkg = reader.enterPackage(names.fromString(pkgName ));
+        }
+        
         javaPkg.complete();
         String className = getQualifiedName(pkgName, name);
         ClassSymbol classSymbol = modelLoader.lookupClassSymbol(className);

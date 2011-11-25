@@ -1333,4 +1333,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         pkg.setShared(shared);
     }
 
+    public Symtab syms() {
+        return symtab;
+    }
 }
