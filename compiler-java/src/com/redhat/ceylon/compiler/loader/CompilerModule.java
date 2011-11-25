@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.loader;
 
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.util.Context;
 
 public class CompilerModule extends Module {
@@ -40,11 +41,37 @@ public class CompilerModule extends Module {
 
     @Override
     public Package getPackage(String name) {
-        System.err.println("Looking up package "+name);
-        Package pkg = super.getPackage(name);
-        if(pkg == null)
+        // try here first
+        Package pkg = null;
+        
+        // unless we're the default module, in which case we have to check this at the end,
+        // since every package can be part of the default module
+        boolean defaultModule = Util.isDefaultModule(this);
+        if(!defaultModule){
+            pkg = findPackageInModule(this, name);
+            if(pkg != null)
+                return pkg;
+        }
+        // then try in dependencies
+        for(Module dependency : getDependencies()){
+            // we don't have to worry about the default module here since we can't depend on it
+            pkg = findPackageInModule((CompilerModule) dependency, name);
+            if(pkg != null)
+                return pkg;
+        }
+        // do the lookup of the default module last
+        if(defaultModule)
             pkg = getModelLoader().findOrCreatePackage(this, name);
         return pkg;
+    }
+
+    private Package findPackageInModule(CompilerModule module, String name) {
+        String moduleName = module.getNameAsString();
+        // is it the same package as the module, or a subpackage of it?
+        if(name.equals(moduleName)
+                || name.startsWith(moduleName+"."))
+            return getModelLoader().findOrCreatePackage(module, name);
+        return null;
     }
 
     private CeylonModelLoader getModelLoader() {
