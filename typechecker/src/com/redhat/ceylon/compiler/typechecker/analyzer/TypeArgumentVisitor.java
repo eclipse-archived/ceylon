@@ -130,7 +130,8 @@ public class TypeArgumentVisitor extends Visitor {
         	List<TypeDeclaration> errors = type.checkDecidability();
             for (TypeDeclaration td: errors) {
                 that.addError("type with contravariant type parameter " + td.getName() + 
-                		" appears in contravariant location in supertype: " + type.getProducedTypeName());
+                		" appears in contravariant location in supertype: " + 
+                		type.getProducedTypeName());
             }
         }
     }
