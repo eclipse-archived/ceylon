@@ -543,14 +543,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             return null;
         String moduleClassName = pkgName + ".module";
         System.err.println("Trying to look up module from "+moduleClassName);
-        ClassSymbol moduleClass = null;
-        try{
-            PackageSymbol javaPkg = reader.enterPackage(names.fromString(pkgName));
-            javaPkg.complete();
-            moduleClass = lookupClassSymbol(moduleClassName);
-        }catch(CompletionFailure x){
-            System.err.println("Failed to complete "+moduleClassName);
-        }
+        ClassSymbol moduleClass = loadClass(pkgName, moduleClassName);
         if(moduleClass != null){
             // load its module annotation
             Module module = loadCompiledModule(moduleClass, moduleClassName);
