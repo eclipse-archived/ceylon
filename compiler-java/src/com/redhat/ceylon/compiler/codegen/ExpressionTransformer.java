@@ -20,7 +20,9 @@
 
 package com.redhat.ceylon.compiler.codegen;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -564,29 +566,37 @@ public class ExpressionTransformer extends AbstractTransformer {
         java.util.List<NamedArgument> namedArguments = ce.getNamedArgumentList().getNamedArguments();
         SequencedArgument sequencedArgument = ce.getNamedArgumentList().getSequencedArgument();
         java.util.List<Parameter> declaredParams = parameterLists.get(0).getParameters();
-        JCExpression[] callArgsArray = new JCExpression[namedArguments.size() + (sequencedArgument == null ? 0 : 1)];
+        Parameter lastDeclared = declaredParams.get(declaredParams.size() - 1);
+        boolean boundSequenced = false;
+        ArrayList<JCExpression> callArgsArray = new ArrayList<JCExpression>(Collections.<JCExpression>nCopies(namedArguments.size(), null));
         for (NamedArgument namedArg : namedArguments) {
             at(namedArg);
             Parameter declaredParam = namedArg.getParameter();
-            int index = namedArguments.indexOf(namedArg);
-            if (declaredParam != null && declaredParam.getName().equals(namedArg.getIdentifier().getText())) {
-                JCExpression argExpr = make().Indexed(makeSelect("this", "args"), makeInteger(index));
-                ProducedType type = declaredParam.getType();
-                if (isTypeParameter(type)) {
-                    type = namedArgType(namedArg);
-                }
-                argExpr = make().TypeCast(makeJavaType(type, AbstractTransformer.TYPE_ARGUMENT), argExpr);
-                callArgsArray[declaredParams.indexOf(declaredParam)] = unboxType(argExpr, declaredParam.getType());
+            if (declaredParam == null 
+                    || !declaredParam.getName().equals(namedArg.getIdentifier().getText())) {
+                throw new RuntimeException();
             }
+            if (declaredParam.isSequenced()) {
+                boundSequenced = true;
+            }
+            int index = namedArguments.indexOf(namedArg);
+            JCExpression argExpr = make().Indexed(makeSelect("this", "args"), makeInteger(index));
+            ProducedType type = declaredParam.getType();
+            if (isTypeParameter(type)) {
+                type = namedArgType(namedArg);
+            }
+            argExpr = make().TypeCast(makeJavaType(type, AbstractTransformer.TYPE_ARGUMENT), argExpr);
+            callArgsArray.set(declaredParams.indexOf(declaredParam), unboxType(argExpr, declaredParam.getType()));
         }
         if (sequencedArgument != null) {
             int index = namedArguments.size();
             JCExpression argExpr = make().Indexed(makeSelect("this", "args"), makeInteger(index));
             
-            Parameter declaredParam = declaredParams.get(declaredParams.size() - 1);
-            ProducedType type = declaredParam.getType();
+            ProducedType type = lastDeclared.getType();
             argExpr = make().TypeCast(makeJavaType(type, AbstractTransformer.TYPE_ARGUMENT), argExpr);
-            callArgsArray[namedArguments.size()] = unboxType(argExpr, declaredParam.getType());
+            callArgsArray.add(namedArguments.size(), unboxType(argExpr, lastDeclared.getType()));
+        } else if (lastDeclared.isSequenced() && !boundSequenced) {
+            callArgsArray.add(namedArguments.size(), makeEmpty());
         }
         callArgs = ListBuffer.<JCExpression>lb();
         for (JCExpression expr : callArgsArray) {
