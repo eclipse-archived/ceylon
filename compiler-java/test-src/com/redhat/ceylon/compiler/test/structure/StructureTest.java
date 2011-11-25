@@ -553,4 +553,9 @@ public class StructureTest extends CompilerTest {
         compileImportedPackage();
         compareWithJavaSource("import_/ImportJavaRuntimeTypeSingle");
     }
+
+    @Test
+    public void testImpImportCeylonLanguageType(){
+        compareWithJavaSource("import_/ImportCeylonLanguageType");
+    }
 }
