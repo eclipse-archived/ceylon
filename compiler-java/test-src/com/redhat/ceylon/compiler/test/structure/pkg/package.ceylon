@@ -21,4 +21,5 @@ Package package {
  name = 'com.redhat.ceylon.compiler.test.structure.pkg';
  shared = true;
  doc = "Great documentation";
+ by = {};
 }

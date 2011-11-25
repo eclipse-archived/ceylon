@@ -21,4 +21,5 @@ Package package {
     name = 'com.redhat.ceylon.compiler.test.structure.module.interdep.b';
     shared = true;
     doc = "Bla bla.";
+    by = {};
 }

@@ -21,4 +21,5 @@ Package package {
     name = 'com.redhat.ceylon.compiler.test.structure.module.depend.a';
     shared = true;
     doc = "Bla bla.";
+    by = {};
 }

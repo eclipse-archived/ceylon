@@ -21,7 +21,7 @@ Module module {
     name = 'a';
     version = '3.1.4';
     doc = "This is a **test** module";
-    authors = { "Tom Bentley" };
+    by = { "Tom Bentley" };
     license = 'http://www.gnu.org/licenses/gpl.html';
     dependencies = {};
 }

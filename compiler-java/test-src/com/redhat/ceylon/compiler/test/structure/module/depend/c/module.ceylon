@@ -21,7 +21,7 @@ Module module {
     name = 'com.redhat.ceylon.compiler.test.structure.module.depend.c';
     version = '6.6.6';
     doc = "Bla bla.";
-    authors = { "Stef FroMage" };
+    by = { "Stef FroMage" };
     license = 'http://www.gnu.org/licenses/gpl.html';
     Import {
         name = 'com.redhat.ceylon.compiler.test.structure.module.depend.a';
