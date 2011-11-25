@@ -240,19 +240,19 @@ public class ExpressionVisitor extends Visitor {
             if (v.getType() instanceof Tree.SyntheticVariable) {
                 //this is a bit ugly (the parser sends us a SyntheticVariable
                 //instead of the real StaticType which it very well knows!)
-            	ProducedType knownType = se==null ? null : 
-            			se.getExpression().getTypeModel();
-            	//when we're reusing the original name, we narrow to the
-            	//intersection of the outer type and the type specified
-            	//in the condition
-				ProducedType it = knownType==null ? type : 
-						intersectionType(type, knownType, that.getUnit());
-				if (it.getDeclaration() instanceof BottomType) {
-					that.addError("narrows to Bottom type: intersection of " +
-							knownType.getProducedTypeName() + " and " + 
-							type.getProducedTypeName() +
-							" is empty");
-				}
+                ProducedType knownType = se==null ? null : 
+                        se.getExpression().getTypeModel();
+                //when we're reusing the original name, we narrow to the
+                //intersection of the outer type and the type specified
+                //in the condition
+                ProducedType it = knownType==null ? type : 
+                        intersectionType(type, knownType, that.getUnit());
+                if (it.getDeclaration() instanceof BottomType) {
+                    that.addError("narrows to Bottom type: intersection of " +
+                            knownType.getProducedTypeName() + " and " + 
+                            type.getProducedTypeName() +
+                            " is empty");
+                }
                 v.getType().setTypeModel(it);
                 v.getDeclarationModel().setType(it);
             }
@@ -267,10 +267,10 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkReified(Node that, ProducedType type) {
-    	//TODO: intersections and unions!
+        //TODO: intersections and unions!
         if (type!=null && 
-        		(isGeneric(type.getDeclaration()) || 
-        				type.getDeclaration() instanceof TypeParameter) ) {
+                (isGeneric(type.getDeclaration()) || 
+                        type.getDeclaration() instanceof TypeParameter) ) {
             that.addWarning("generic types in assignability conditions not yet supported (until we implement reified generics)");
         }
     }
@@ -968,17 +968,24 @@ public class ExpressionVisitor extends Visitor {
             List<ProducedType> list = new ArrayList<ProducedType>();
             addToIntersection(list, ta, unit);
             for (ProducedType st: tp.getSatisfiedTypes()) {
-            	//TODO: st.getProducedType(receiver, dec, typeArgs);
-            	if (!st.getDeclaration().isParameterized()) {//TODO: remove this awful hack that 
-            		                                         //tries to work around the possibility 
-            		                                         //that a type parameter appears in the 
-            		                                         //upper bound!
-            	    addToIntersection(list, st, unit);
-            	}
+                //TODO: st.getProducedType(receiver, dec, typeArgs);
+                if (//if the upper bound is a type parameter, ignore it
+                    !dec.getTypeParameters().contains(st.getDeclaration()) &&
+                    (st.getQualifyingType()==null ||
+                    !dec.getTypeParameters().contains(st.getQualifyingType().getDeclaration())) &&
+                    //TODO: remove this awful hack that 
+                    //tries to work around the possibility 
+                    //that a type parameter appears in the 
+                    //upper bound!
+                    !st.getDeclaration().isParameterized() &&
+                    (st.getQualifyingType()==null || 
+                    !st.getQualifyingType().getDeclaration().isParameterized())) {
+                    addToIntersection(list, st, unit);
+                }
             }
             IntersectionType it = new IntersectionType(unit);
             it.setSatisfiedTypes(list);
-			typeArgs.add(it.canonicalize().getType());
+            typeArgs.add(it.canonicalize().getType());
         }
         return typeArgs;
     }
@@ -1996,7 +2003,7 @@ public class ExpressionVisitor extends Visitor {
         if (pt!=null && that.getIdentifier()!=null && 
                 !that.getIdentifier().getText().equals("")) {
             TypeDeclaration d = unwrap(pt, that).getDeclaration();
-			TypedDeclaration member = (TypedDeclaration) d.getMember(name(that.getIdentifier()));
+            TypedDeclaration member = (TypedDeclaration) d.getMember(name(that.getIdentifier()));
             if (member==null) {
                 that.addError("member method or attribute does not exist: " +
                         name(that.getIdentifier()) + 
@@ -2091,7 +2098,7 @@ public class ExpressionVisitor extends Visitor {
         ProducedType pt = that.getPrimary().getTypeModel();
         if (pt!=null) {
             TypeDeclaration d = unwrap(pt, that).getDeclaration();
-			TypeDeclaration type = (TypeDeclaration) d.getMember(name(that.getIdentifier()));
+            TypeDeclaration type = (TypeDeclaration) d.getMember(name(that.getIdentifier()));
             if (type==null) {
                 that.addError("member type does not exist: " +
                         name(that.getIdentifier()) +
@@ -2545,8 +2552,8 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private ProducedType defaultType() {
-    	TypeDeclaration ut = new UnknownType(unit);
-    	ut.setExtendedType(unit.getVoidDeclaration().getType());
+        TypeDeclaration ut = new UnknownType(unit);
+        ut.setExtendedType(unit.getVoidDeclaration().getType());
         return ut.getType();
     }
     
