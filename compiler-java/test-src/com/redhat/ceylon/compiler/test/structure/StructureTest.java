@@ -149,7 +149,7 @@ public class StructureTest extends CompilerTest {
     @Test
     public void testMdlDependentModule(){
         // Compile only the first module 
-        compile("module/depend/a/module.ceylon", "module/depend/a/A.ceylon");
+        compile("module/depend/a/module.ceylon", "module/depend/a/package.ceylon", "module/depend/a/A.ceylon");
         
         File carFile = getModuleArchive("com.redhat.ceylon.compiler.test.structure.module.depend.a", "6.6.6");
         assertTrue(carFile.exists());
@@ -167,7 +167,7 @@ public class StructureTest extends CompilerTest {
         File repoA = new File("build/ceylon-cars-a");
         repoA.mkdirs();
         Boolean result = getCompilerTask(Arrays.asList("-out", repoA.getPath()),
-                "module/depend/a/module.ceylon", "module/depend/a/A.ceylon").call();
+                "module/depend/a/module.ceylon", "module/depend/a/package.ceylon", "module/depend/a/A.ceylon").call();
         Assert.assertEquals(Boolean.TRUE, result);
         
         File carFile = getModuleArchive("com.redhat.ceylon.compiler.test.structure.module.depend.a", "6.6.6", repoA.getPath());
@@ -179,7 +179,7 @@ public class StructureTest extends CompilerTest {
 
         // then try to compile only one module (the other being loaded from its car) 
         result = getCompilerTask(Arrays.asList("-out", repoB.getPath(), "-repo", repoA.getPath()),
-                "module/depend/b/module.ceylon", "module/depend/b/a.ceylon", "module/depend/b/B.ceylon").call();
+                "module/depend/b/module.ceylon", "module/depend/b/package.ceylon", "module/depend/b/a.ceylon", "module/depend/b/B.ceylon").call();
         Assert.assertEquals(Boolean.TRUE, result);
 
         carFile = getModuleArchive("com.redhat.ceylon.compiler.test.structure.module.depend.b", "6.6.6", repoB.getPath());
