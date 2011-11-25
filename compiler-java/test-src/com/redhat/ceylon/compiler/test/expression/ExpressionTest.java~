@@ -120,13 +120,6 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("boxing/StringBoxing");
     }
 
-    // Erasure
-    
-    @Test
-    public void testErsErasure(){
-        compareWithJavaSource("erasure/Erasure");
-    }
-
 
     // Literals
     
@@ -215,6 +208,10 @@ public class ExpressionTest extends CompilerTest {
     public void testInvNamedArgumentInvocationInitWithEmptySequence(){
         compareWithJavaSource("invoke/NamedArgumentInvocationInitWithEmptySequence");
     }
+<<<<<<< HEAD
+=======
+    
+>>>>>>> fc9f54f... Test and Fix for Issue #201 part 3, support for zero sequenced arguments
     
     @Test
     public void testInvNamedArgumentInvocationOnPrimitive(){

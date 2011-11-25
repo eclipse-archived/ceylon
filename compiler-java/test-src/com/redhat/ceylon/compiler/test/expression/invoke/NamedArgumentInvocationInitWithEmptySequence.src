@@ -1,0 +1,13 @@
+package com.redhat.ceylon.compiler.test.expression.invoke;
+
+class NamedArgumentInvocationInitWithEmptySequence {
+    
+    NamedArgumentInvocationInitWithEmptySequence(ceylon.language.Iterable<? extends ceylon.language.Natural> b) {
+        final .java.lang.Object o = new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, ceylon.language.$empty.getEmpty()){
+            
+            public com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocationInitWithEmptySequence call$() {
+                return new com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocationInitWithEmptySequence((ceylon.language.Iterable<? extends ceylon.language.Natural>)this.args[0]);
+            }
+        }.call$();
+    }
+}
