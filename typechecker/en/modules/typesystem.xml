@@ -2922,8 +2922,8 @@ given Result(Natural count) satisfies Numeric<Result>]]></programlisting>
         
         <para>Consider the following invocation:</para>
         
-        <programlisting>Element[] prepend&lt;T&gt;(Element head, Element[] sequence) { ... }
-value result = prepend(null, {"hello", "world"});</programlisting>
+        <programlisting><![CDATA[Element[] prepend<Element>(Element head, Element[] sequence) { ... }
+value result = prepend(null, {"hello", "world"});]]></programlisting>
 
         <!--
         <para>The constraint set for <literal>Element</literal> comprises two 
@@ -2940,17 +2940,16 @@ value result = prepend(null, {"hello", "world"});</programlisting>
         -->
         
         <para>The inferred type of <literal>Element</literal> is the union type 
-        <literal>Element?</literal>.</para>
+        <literal>String?</literal>.</para>
         
         <para>Now consider:</para>
         
-        <programlisting>class Bag&lt;out Element&gt;(Element... elements) {
-    shared Bag&lt;ExtraElement&gt; with(ExtraElement... elements) 
+        <programlisting><![CDATA[class Bag<out Element>(Element... elements) {
+    shared Bag<ExtraElement> with<ExtraElement>(ExtraElement... elements) 
             given ExtraElement abstracts Element { ... }
 }
-Bag&lt;String&gt; bag = Bag("hello", "world");
-value biggerBag = bag.with(1, 2, 5.0);
-</programlisting>
+Bag<String> bag = Bag("hello", "world");
+value biggerBag = bag.with(1, 2, 5.0);]]></programlisting>
         
         <!--
         <para>The constraint set for <literal>ExtraElement</literal> comprises 
