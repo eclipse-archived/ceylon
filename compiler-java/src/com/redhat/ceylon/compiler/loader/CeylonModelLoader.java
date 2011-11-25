@@ -1135,11 +1135,11 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             
             // FIXME: I'm pretty sure we can have bounds that refer to method 
             // params, so we need to do this in two phases
-            Attribute satisfiesAttribute = typeParam.member(names.fromString("satisfies"));
+            Array satisfiesAttribute = (Array)typeParam.member(names.fromString("satisfies"));
             if(satisfiesAttribute != null){
-                String satisfies = (String) satisfiesAttribute.getValue();
-                if(!satisfies.isEmpty()){
-                    ProducedType satisfiesType = decodeType(satisfies, scope);
+                for (Attribute satisfyAttribute : satisfiesAttribute.values) {
+                    String satisfy = (String) satisfyAttribute.getValue();
+                    ProducedType satisfiesType = decodeType(satisfy, scope);
                     param.getSatisfiedTypes().add(satisfiesType);
                 }
             }
