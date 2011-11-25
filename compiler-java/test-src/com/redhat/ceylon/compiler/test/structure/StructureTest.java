@@ -133,8 +133,8 @@ public class StructureTest extends CompilerTest {
     @Test
     public void testMdlInterdepModule(){
         // first compile it all from source
-        compile("module/interdep/a/module.ceylon", "module/interdep/a/b.ceylon", "module/interdep/a/A.ceylon",
-                "module/interdep/b/module.ceylon", "module/interdep/b/a.ceylon", "module/interdep/b/B.ceylon");
+        compile("module/interdep/a/module.ceylon", "module/interdep/a/package.ceylon", "module/interdep/a/b.ceylon", "module/interdep/a/A.ceylon",
+                "module/interdep/b/module.ceylon", "module/interdep/b/package.ceylon", "module/interdep/b/a.ceylon", "module/interdep/b/B.ceylon");
         
         File carFile = getModuleArchive("com.redhat.ceylon.compiler.test.structure.module.interdep.a", "6.6.6");
         assertTrue(carFile.exists());
