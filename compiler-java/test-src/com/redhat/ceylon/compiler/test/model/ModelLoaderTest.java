@@ -45,6 +45,7 @@ import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.source.util.TaskEvent;
@@ -160,6 +161,8 @@ public class ModelLoaderTest extends CompilerTest {
             Assert.assertTrue(name+" [null supertype]", modelDeclaration.getExtendedTypeDeclaration() == null);
         else
             compareDeclarations(validDeclaration.getExtendedTypeDeclaration(), modelDeclaration.getExtendedTypeDeclaration());
+        // satisfied types!
+        compareSatisfiedTypes(name, validDeclaration.getSatisfiedTypeDeclarations(), modelDeclaration.getSatisfiedTypeDeclarations());
         // parameters
         compareParameterLists(validDeclaration.getQualifiedNameString(), validDeclaration.getParameterLists(), modelDeclaration.getParameterLists());
         // make sure it has every member required
@@ -175,6 +178,15 @@ public class ModelLoaderTest extends CompilerTest {
         }
     }
     
+    private void compareSatisfiedTypes(String name, List<TypeDeclaration> validTypeDeclarations, List<TypeDeclaration> modelTypeDeclarations) {
+        Assert.assertEquals(name+ " [Satisfied types count]", validTypeDeclarations.size(), modelTypeDeclarations.size());
+        for(int i=0;i<validTypeDeclarations.size();i++){
+            TypeDeclaration validTypeDeclaration = validTypeDeclarations.get(i);
+            TypeDeclaration modelTypeDeclaration = modelTypeDeclarations.get(i);
+            compareDeclarations(validTypeDeclaration, modelTypeDeclaration);
+        }
+    }
+
     private void compareParameterLists(String name, List<ParameterList> validParameterLists, List<ParameterList> modelParameterLists) {
         Assert.assertEquals(name+" [param lists count]", validParameterLists.size(), modelParameterLists.size());
         for(int i=0;i<validParameterLists.size();i++){
