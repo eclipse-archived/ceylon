@@ -964,7 +964,21 @@ public class ExpressionVisitor extends Visitor {
         List<ProducedType> typeArgs = new ArrayList<ProducedType>();
         ParameterList parameters = dec.getParameterLists().get(0);
         for (TypeParameter tp: dec.getTypeParameters()) {
-            typeArgs.add(inferTypeArgument(that, tp, parameters));
+            ProducedType ta = inferTypeArgument(that, tp, parameters);
+            List<ProducedType> list = new ArrayList<ProducedType>();
+            addToIntersection(list, ta, unit);
+            for (ProducedType st: tp.getSatisfiedTypes()) {
+            	//TODO: st.getProducedType(receiver, dec, typeArgs);
+            	if (!st.getDeclaration().isParameterized()) {//TODO: remove this awful hack that 
+            		                                         //tries to work around the possibility 
+            		                                         //that a type parameter appears in the 
+            		                                         //upper bound!
+            	    addToIntersection(list, st, unit);
+            	}
+            }
+            IntersectionType it = new IntersectionType(unit);
+            it.setSatisfiedTypes(list);
+			typeArgs.add(it.canonicalize().getType());
         }
         return typeArgs;
     }
