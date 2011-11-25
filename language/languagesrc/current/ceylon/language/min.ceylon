@@ -1,4 +1,4 @@
-Value min<Value>(Sequence<Value> values) 
+shared Value min<Value>(Sequence<Value> values) 
         given Value satisfies Comparable<Value> {
     variable value min := values.first;
     for (val in values.rest) {
