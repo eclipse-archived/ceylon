@@ -84,5 +84,10 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     public DeclarationKind getDeclarationKind() {
         return DeclarationKind.TYPE_PARAMETER;
     }
+    
+    @Override
+    public String getQualifiedNameString() {
+    	return getName();
+    }
 
 }
