@@ -153,11 +153,14 @@ public class ModelLoaderTest extends CompilerTest {
     }
     
     private void compareClassDeclarations(Class validDeclaration, Class modelDeclaration) {
-        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [abstract]", validDeclaration.isAbstract(), modelDeclaration.isAbstract());
+        String name = validDeclaration.getQualifiedNameString();
+        Assert.assertEquals(name+" [abstract]", validDeclaration.isAbstract(), modelDeclaration.isAbstract());
+        // extended type
         if(validDeclaration.getExtendedTypeDeclaration() == null)
-            Assert.assertTrue(validDeclaration.getQualifiedNameString()+" [null supertype]", modelDeclaration.getExtendedTypeDeclaration() == null);
+            Assert.assertTrue(name+" [null supertype]", modelDeclaration.getExtendedTypeDeclaration() == null);
         else
             compareDeclarations(validDeclaration.getExtendedTypeDeclaration(), modelDeclaration.getExtendedTypeDeclaration());
+        // parameters
         compareParameterLists(validDeclaration.getQualifiedNameString(), validDeclaration.getParameterLists(), modelDeclaration.getParameterLists());
         // make sure it has every member required
         for(Declaration validMember : validDeclaration.getMembers()){
@@ -193,13 +196,14 @@ public class ModelLoaderTest extends CompilerTest {
     }
 
     private void compareMethodDeclarations(Method validDeclaration, Method modelDeclaration) {
-        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [formal]", validDeclaration.isFormal(), modelDeclaration.isFormal());
-        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [actual]", validDeclaration.isActual(), modelDeclaration.isActual());
-        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [default]", validDeclaration.isDefault(), modelDeclaration.isDefault());
+        String name = validDeclaration.getQualifiedNameString();
+        Assert.assertEquals(name+" [formal]", validDeclaration.isFormal(), modelDeclaration.isFormal());
+        Assert.assertEquals(name+" [actual]", validDeclaration.isActual(), modelDeclaration.isActual());
+        Assert.assertEquals(name+" [default]", validDeclaration.isDefault(), modelDeclaration.isDefault());
         // make sure it has every parameter list required
         List<ParameterList> validParameterLists = validDeclaration.getParameterLists();
         List<ParameterList> modelParameterLists = modelDeclaration.getParameterLists();
-        compareParameterLists(validDeclaration.getQualifiedNameString(), validParameterLists, modelParameterLists);
+        compareParameterLists(name, validParameterLists, modelParameterLists);
         // now same for return type
         compareDeclarations(validDeclaration.getType().getDeclaration(), modelDeclaration.getType().getDeclaration());
     }
