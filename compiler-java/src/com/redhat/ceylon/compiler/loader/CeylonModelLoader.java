@@ -513,7 +513,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         boolean isJava = false;
         // FIXME: this is a rather simplistic view of the world
         if(pkgName == null)
-            moduleName = Arrays.asList("<default module>");
+            moduleName = Arrays.asList(Util.DEFAULT_MODULE_NAME);
         else if(pkgName.startsWith("java.")){
             moduleName = Arrays.asList("java");
             isJava = true;

@@ -42,6 +42,9 @@ import com.sun.tools.javac.parser.Token;
 import com.sun.tools.javac.util.JavacFileManager;
 
 public class Util {
+
+    public static final String DEFAULT_MODULE_NAME = "<default module>";
+
     public static boolean isErasedAttribute(String name){
         // ERASURE
         return "hash".equals(name) || "string".equals(name);
@@ -198,7 +201,7 @@ public class Util {
     public static String getArchiveName(Module module, String extension) {
         String moduleName = module.getNameAsString();
         // FIXME: do better than this
-        if(moduleName.equals("<default module>"))
+        if(isDefaultModule(module))
             moduleName = "default_module";
         String version = module.getVersion();
         if(version == null)
@@ -212,7 +215,7 @@ public class Util {
         String modulePath;
         
         // FIXME: do better than this
-        if(moduleName.equals("<default module>"))
+        if(isDefaultModule(module))
             modulePath = ""; // goes at the root
         else
             modulePath = moduleName.replace('.', File.separatorChar);
@@ -243,4 +246,7 @@ public class Util {
         return path;
     }
 
+    public static boolean isDefaultModule(Module module) {
+        return module.getNameAsString().equals(DEFAULT_MODULE_NAME);
+    }
 }
