@@ -9,19 +9,18 @@ import com.redhat.ceylon.compiler.metadata.java.Name;
 public class Package {
     private ceylon.language.Quoted name;
     private boolean shared;
-    private ceylon.language.String doc;
-    private Iterable<? extends ceylon.language.String> authors;
+    private java.lang.String doc;
+    private Iterable<? extends ceylon.language.String> by;
 
     public Package(@Name("name") ceylon.language.Quoted name, 
     		@Name("shared") boolean shared,
             @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>") @Name("by") 
-            ceylon.language.Iterable<? extends ceylon.language.String> authors, 
-            @TypeInfo("ceylon.language.Nothing|ceylon.language.String") @Name("doc")
-            ceylon.language.String doc){
+            ceylon.language.Iterable<? extends ceylon.language.String> by, 
+            @Name("doc") java.lang.String doc){
         this.name = name;
         this.shared = shared;
         this.doc = doc;
-        this.authors = authors;
+        this.by = by;
     }
 
     public ceylon.language.Quoted getName() {
@@ -32,12 +31,12 @@ public class Package {
 		return shared;
 	}
 
-    public ceylon.language.String getDoc() {
+    public java.lang.String getDoc() {
         return doc;
     }
     
-    public Iterable<? extends ceylon.language.String> getAuthors() {
-		return authors;
+    public Iterable<? extends ceylon.language.String> getBy() {
+		return by;
 	}
 
 }
