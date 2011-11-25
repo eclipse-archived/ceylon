@@ -31,6 +31,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.util.Util;
@@ -69,6 +70,7 @@ public class ClassDefinitionBuilder {
     
     private final ListBuffer<JCExpression> satisfies = ListBuffer.lb();
     private final ListBuffer<JCTypeParameter> typeParams = ListBuffer.lb();
+    private final ListBuffer<JCExpression> typeParamAnnotations = ListBuffer.lb();
     
     private final ListBuffer<JCAnnotation> annotations = ListBuffer.lb();
     
@@ -101,6 +103,8 @@ public class ClassDefinitionBuilder {
     public List<JCTree> build() {
         ListBuffer<JCTree> defs = ListBuffer.lb();
         appendDefinitionsTo(defs);
+        if(!typeParamAnnotations.isEmpty())
+            annotations(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
         JCTree.JCClassDecl klass = gen.make().ClassDef(
                 gen.make().Modifiers(modifiers, annotations.toList()),
                 gen.names().fromString(Util.quoteIfJavaKeyword(name)),
@@ -241,21 +245,22 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
-    public ClassDefinitionBuilder typeParameter(String name, java.util.List<ProducedType> types) {
+    public ClassDefinitionBuilder typeParameter(String name, TypeParameter typeParameter) {
         ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
-        for (ProducedType t : types) {
+        for (ProducedType t : typeParameter.getSatisfiedTypes()) {
             if (!gen.willEraseToObject(t)) {
                 bounds.append(gen.makeJavaType(t));
             }
         }
         typeParams.append(gen.make().TypeParameter(gen.names().fromString(name), bounds.toList()));
+        typeParamAnnotations.append(gen.makeAtTypeParameter(typeParameter));
         return this;
     }
 
     public ClassDefinitionBuilder typeParameter(Tree.TypeParameterDeclaration param) {
         gen.at(param);
         String name = param.getIdentifier().getText();
-        return typeParameter(name, param.getDeclarationModel().getSatisfiedTypes());
+        return typeParameter(name, param.getDeclarationModel());
     }
 
     public ClassDefinitionBuilder extending(ProducedType extendingType) {
