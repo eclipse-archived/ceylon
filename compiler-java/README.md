@@ -65,6 +65,9 @@ The -src argument to the compiler is required in order for
 the compiler to figure out each class's full name.  It is
 a colon-separated path, much like javac's -sourcepath argument.
 
+You can add -rep arguments to add module repositories. Note that this is
+currently limited to local folders.
+
 Running your Ceylon program
 ---------------------------
 
