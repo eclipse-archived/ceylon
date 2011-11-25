@@ -876,6 +876,14 @@ shared class Import(
                 repository containing source archives.</para>
             </listitem>
             <listitem>
+                <para><literal>-private</literal> includes documentation
+                for package-private declarations.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-omit-source</literal> excludes source code
+                from the generated documentation.</para>
+            </listitem>
+            <listitem>
                 <para><literal>-d</literal> disables the default
                 module repositories and source directory.</para>
             </listitem>
