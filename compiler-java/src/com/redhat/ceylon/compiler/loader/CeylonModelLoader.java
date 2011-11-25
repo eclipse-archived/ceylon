@@ -105,6 +105,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     private Types types;
     private TypeFactory typeFactory;
     private final Set<String> loadedPackages = new HashSet<String>();
+    private final Map<String,LazyPackage> packagesByName = new HashMap<String,LazyPackage>();
     private boolean packageDescriptorsNeedLoading = false;
     
     public static CeylonModelLoader instance(Context context) {
@@ -481,8 +482,6 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             }
         return classSymbol;
     }
-
-    private final Map<String,LazyPackage> packagesByName = new HashMap<String,LazyPackage>();
 
     public Package findPackage(final String pkgName) {
         return packagesByName.get(pkgName);
