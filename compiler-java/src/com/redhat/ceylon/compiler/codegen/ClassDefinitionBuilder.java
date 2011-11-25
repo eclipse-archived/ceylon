@@ -245,7 +245,7 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
-    public ClassDefinitionBuilder typeParameter(String name, TypeParameter typeParameter) {
+    private ClassDefinitionBuilder typeParameter(String name, TypeParameter typeParameter) {
         ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
         for (ProducedType t : typeParameter.getSatisfiedTypes()) {
             if (!gen.willEraseToObject(t)) {
