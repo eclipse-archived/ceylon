@@ -158,7 +158,7 @@ public class ModelLoaderTest extends CompilerTest {
     }
     
     private void compareTypeParameters(TypeParameter validDeclaration, TypeParameter modelDeclaration) {
-        String name = validDeclaration.getContainer().toString();
+        String name = validDeclaration.getContainer().toString()+"<"+validDeclaration.getName()+">";
         Assert.assertEquals("[Contravariant]", validDeclaration.isContravariant(), modelDeclaration.isContravariant());
         Assert.assertEquals("[Covariant]", validDeclaration.isCovariant(), modelDeclaration.isCovariant());
         Assert.assertEquals("[SelfType]", validDeclaration.isSelfType(), modelDeclaration.isSelfType());
