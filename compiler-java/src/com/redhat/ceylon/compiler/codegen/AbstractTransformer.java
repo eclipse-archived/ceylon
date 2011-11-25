@@ -686,6 +686,17 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtTypeInfoType, List.<JCExpression>of(make().Literal(name)));
     }
 
+    public JCAnnotation makeAtTypeParameter(TypeParameter typeParameter) {
+        String name = typeParameter.getName();
+        JCExpression nameAttribute = make().Assign(makeIdent("value"), make().Literal(name));
+        return make().Annotation(makeIdent(syms().ceylonAtTypeParameter), List.<JCExpression>of(nameAttribute));
+    }
+
+    public List<JCAnnotation> makeAtTypeParameters(List<JCExpression> typeParameters) {
+        JCExpression value = make().NewArray(null, null, typeParameters);
+        return makeModelAnnotation(syms().ceylonAtTypeParameters, List.of(value));
+    }
+
     protected List<JCAnnotation> makeAtSequenced() {
         return makeModelAnnotation(syms().ceylonAtSequencedType);
     }
