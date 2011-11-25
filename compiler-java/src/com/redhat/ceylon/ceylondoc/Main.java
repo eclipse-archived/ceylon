@@ -32,9 +32,9 @@ public class Main {
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
             if ("-d".equals(arg)) {
-                System.err.println("-d: option not yet supported (though perhaps you meant -dest-dir?)");
+                System.err.println("-d: option not yet supported (though perhaps you meant -out?)");
                 System.exit(1);
-            } else if ("-dest-dir".equals(arg)) {
+            } else if ("-out".equals(arg)) {
                 destDir = args[++i];
             } else if ("-src".equals(arg)) {
                 srcDir = args[++i];

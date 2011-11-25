@@ -178,7 +178,7 @@ public class StructureTest extends CompilerTest {
         repoB.mkdirs();
 
         // then try to compile only one module (the other being loaded from its car) 
-        result = getCompilerTask(Arrays.asList("-out", repoB.getPath(), "-repo", repoA.getPath()),
+        result = getCompilerTask(Arrays.asList("-out", repoB.getPath(), "-rep", repoA.getPath()),
                 "module/depend/b/module.ceylon", "module/depend/b/package.ceylon", "module/depend/b/a.ceylon", "module/depend/b/B.ceylon").call();
         Assert.assertEquals(Boolean.TRUE, result);
 
@@ -191,7 +191,7 @@ public class StructureTest extends CompilerTest {
 
         // then try to compile only one module (the others being loaded from their car) 
         result = getCompilerTask(Arrays.asList("-out", repoC.getPath(), 
-                "-repo", repoA.getPath(), "-repo", repoB.getPath()),
+                "-rep", repoA.getPath(), "-rep", repoB.getPath()),
                 "module/depend/c/module.ceylon", "module/depend/c/a.ceylon", "module/depend/c/b.ceylon").call();
         Assert.assertEquals(Boolean.TRUE, result);
 

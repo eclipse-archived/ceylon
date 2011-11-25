@@ -81,4 +81,4 @@ Generating the API documentation
 
 The ceylondoc tool can be run as follows:
 
-    bin/ceylond -dest-dir api-docs -src ../ceylon.language/languagesrc/current  
+    bin/ceylond -out api-docs -src ../ceylon.language/languagesrc/current  
