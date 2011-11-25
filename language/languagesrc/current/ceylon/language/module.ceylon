@@ -4,6 +4,6 @@ Module module {
     doc = "The Ceylon language module containing
            the core types referred to in the 
            language specification.";
-    authors = { "Gavin King" };
+    by = { "Gavin King" };
     license = 'http://www.apache.org/licenses/LICENSE-2.0.html';
 }
