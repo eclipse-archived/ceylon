@@ -17,9 +17,52 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+interface InterfaceA {} 
+interface InterfaceB {} 
+interface InterfaceWithTypeParam<T, U> {}
+
 class TypeParameters <T,U> (T t, U u) {
+
  shared T attr = t;
+ 
  T method(T t, U u){
   return t;
+ }
+
+ //
+ // methods with type params
+ 
+ T methodWithTypeParameters<T, U>(T t, U u){
+  return t;
+ }
+ 
+ //
+ // upper bounds tests
+ 
+ F methodWithUpperBounds<F>(F f)
+  given F satisfies InterfaceA & InterfaceB {
+  return f;
+ }
+
+ F methodWithParameterizedUpperBounds<F>(F f)
+  given F satisfies InterfaceWithTypeParam<InterfaceA, InterfaceB> {
+  return f;
+ }
+
+ F methodWithSelfParameterizedUpperBounds<F>(F f)
+  given F satisfies InterfaceWithTypeParam<F, F> {
+  return f;
+ }
+
+ F methodWithErasedUpperBounds<F>(F f)
+  given F satisfies IdentifiableObject {
+  return f;
+ }
+ 
+ //
+ // lower bounds tests
+ F methodWithLowerBounds<F>(F f)
+  given F abstracts InterfaceA {
+  return f;
  }
 }
