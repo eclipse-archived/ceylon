@@ -122,7 +122,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
 	@Override
 	public Sequence<Element> getClone() {
-		throw new RuntimeException("Not implemented yet");
+		return this;
 	}
 
 	@Override

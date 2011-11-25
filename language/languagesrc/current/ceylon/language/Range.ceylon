@@ -175,7 +175,7 @@ shared class Range<Element>(Element first, Element last)
     
     doc "Returns the range itself, since ranges are 
          immutable."
-    shared actual Sequence<Element> clone {
+    shared actual Range<Element> clone {
         return this;
     }
     

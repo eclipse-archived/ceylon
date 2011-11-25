@@ -159,7 +159,7 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
     }
     
     @Override
-    public Sequence<Element> getClone() {
+    public Range<Element> getClone() {
         return this;
     }
 
