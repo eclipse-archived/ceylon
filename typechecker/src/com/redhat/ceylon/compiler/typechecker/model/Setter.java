@@ -10,6 +10,7 @@ import java.util.List;
 public class Setter extends MethodOrValue implements Scope {
 
     Getter getter;
+    ValueParameter parameter;
 
     public Getter getGetter() {
         return getter;
@@ -18,6 +19,14 @@ public class Setter extends MethodOrValue implements Scope {
     public void setGetter(Getter getter) {
         this.getter = getter;
     }
+    
+    public ValueParameter getParameter() {
+		return parameter;
+	}
+    
+    public void setParameter(ValueParameter parameter) {
+		this.parameter = parameter;
+	}
 
     @Override @Deprecated
     public List<String> getQualifiedName() {

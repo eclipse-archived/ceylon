@@ -429,6 +429,13 @@ public class DeclarationVisitor extends Visitor {
         that.setDeclarationModel(s);
         visitDeclaration(that, s);
         Scope o = enterScope(s);
+        ValueParameter p = new ValueParameter();
+        p.setName(s.getName());
+        p.setDeclaration(s);
+        visitElement(that, p);
+        unit.getDeclarations().add(p);
+        scope.getMembers().add(p);
+        s.setParameter(p);
         super.visit(that);
         exitScope(o);
     }

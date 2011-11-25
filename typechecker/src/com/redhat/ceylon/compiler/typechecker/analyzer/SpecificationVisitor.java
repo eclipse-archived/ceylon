@@ -398,7 +398,8 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.AttributeSetterDefinition that) {
-        if (that.getDeclarationModel()==declaration) {
+        if (that.getDeclarationModel()==declaration ||
+            that.getDeclarationModel().getParameter()==declaration) {
             declare();
             specify();
         }
