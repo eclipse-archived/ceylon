@@ -10,7 +10,7 @@ public class Module {
     private ceylon.language.Quoted name;
     private ceylon.language.Quoted version;
     private ceylon.language.String doc;
-    private Iterable<? extends ceylon.language.String> authors;
+    private Iterable<? extends ceylon.language.String> by;
     private ceylon.language.Quoted license;
     private Iterable<? extends ceylon.language.descriptor.Import> dependencies;
 
@@ -19,7 +19,7 @@ public class Module {
             @TypeInfo("ceylon.language.Nothing|ceylon.language.String") @Name("doc") 
             ceylon.language.String doc, 
             @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>") @Name("by") 
-            ceylon.language.Iterable<? extends ceylon.language.String> authors, 
+            ceylon.language.Iterable<? extends ceylon.language.String> by, 
             @TypeInfo("ceylon.language.Nothing|ceylon.language.Quoted") @Name("license") 
             ceylon.language.Quoted license,
             @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.descriptor.Import>") @Name("dependencies") @Sequenced 
@@ -27,7 +27,7 @@ public class Module {
         this.name = name;
         this.version = version;
         this.doc = doc;
-        this.authors = authors;
+        this.by = by;
         this.license = license;
         this.dependencies = dependencies;
     }
@@ -44,8 +44,8 @@ public class Module {
         return doc;
     }
 
-    public Iterable<? extends ceylon.language.String> getAuthors() {
-        return authors;
+    public Iterable<? extends ceylon.language.String> getBy() {
+        return by;
     }
 
     public ceylon.language.Quoted getLicense() {
