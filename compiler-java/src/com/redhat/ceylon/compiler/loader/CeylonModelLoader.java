@@ -507,14 +507,17 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
 
     public Module findOrCreateModule(String pkgName) {
         java.util.List<String> moduleName;
+        boolean isJava = false;
         // FIXME: this is a rather simplistic view of the world
         if(pkgName == null)
             moduleName = Arrays.asList("<default module>");
-        else if(pkgName.startsWith("java."))
+        else if(pkgName.startsWith("java.")){
             moduleName = Arrays.asList("java");
-        else if(pkgName.startsWith("sun."))
+            isJava = true;
+        }else if(pkgName.startsWith("sun.")){
             moduleName = Arrays.asList("sun");
-        else if(pkgName.startsWith("ceylon.language."))
+            isJava = true;
+        }else if(pkgName.startsWith("ceylon.language."))
             moduleName = Arrays.asList("ceylon","language");
         else
             moduleName = Arrays.asList(pkgName.split("\\."));
@@ -526,6 +529,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                  && ceylonContext.getModules().getLanguageModule() == null){
              ceylonContext.getModules().setLanguageModule(module);
          }
+         ((CompilerModule)module).setJava(isJava);
          // FIXME: this can't be that easy.
          module.setAvailable(true);
          return module;

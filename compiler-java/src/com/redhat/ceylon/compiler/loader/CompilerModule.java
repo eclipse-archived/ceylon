@@ -28,6 +28,7 @@ public class CompilerModule extends Module {
 
     private Context context;
     private CeylonModelLoader modelLoader;
+    private boolean isJava = false;
 
     public CompilerModule(com.sun.tools.javac.util.Context context) {
         this.context = context;
@@ -51,6 +52,14 @@ public class CompilerModule extends Module {
             modelLoader = CeylonModelLoader.instance(context);
         }
         return modelLoader;
+    }
+
+    public boolean isJava() {
+        return isJava;
+    }
+
+    public void setJava(boolean isJava) {
+        this.isJava = isJava;
     }
 
 }
