@@ -105,6 +105,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     private Types types;
     private TypeFactory typeFactory;
     private final Set<String> loadedPackages = new HashSet<String>();
+    private boolean packageDescriptorsNeedLoading = false;
     
     public static CeylonModelLoader instance(Context context) {
         CeylonModelLoader instance = context.get(CeylonModelLoader.class);
@@ -492,11 +493,14 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         if(pkg != null)
             return pkg;
         pkg = new LazyPackage(this, reader, names);
-        // FIXME: implement this correctly:
-        pkg.setShared(true);
         packagesByName.put(pkgName, pkg);
         // FIXME: some refactoring needed
         pkg.setName(pkgName == null ? Collections.<String>emptyList() : Arrays.asList(pkgName.split("\\.")));
+        
+        // only load package descriptors for new packages after a certain phase
+        if(packageDescriptorsNeedLoading)
+            loadPackageDescriptor(pkg);
+
         // only bind it if we already have a module
         if(module != null){
             pkg.setModule(module);
@@ -560,6 +564,18 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             return null;
         String parentPackageName = pkgName.substring(0, lastDot);
         return loadCompiledModule(parentPackageName);
+    }
+
+    private ClassSymbol loadClass(String pkgName, String className) {
+        ClassSymbol moduleClass = null;
+        try{
+            PackageSymbol javaPkg = reader.enterPackage(names.fromString(pkgName));
+            javaPkg.complete();
+            moduleClass = lookupClassSymbol(className);
+        }catch(CompletionFailure x){
+            System.err.println("Failed to complete "+className);
+        }
+        return moduleClass;
     }
 
     private Module loadCompiledModule(ClassSymbol moduleClass, String moduleClassName) {
@@ -1049,6 +1065,13 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         return null;
     }
 
+    private Boolean getAnnotationBooleanValue(Symbol symbol, Type type, String field) {
+        Attribute annotation = getAnnotationValue(symbol, type, field);
+        if(annotation != null)
+            return (Boolean) annotation.getValue();
+        return null;
+    }
+
     private Attribute getAnnotationValue(Symbol symbol, Type type) {
         return getAnnotationValue(symbol, type, "value");
     }
@@ -1269,6 +1292,53 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 return ((TypeDeclaration)member).getType();
         }
         throw new RuntimeException("Failed to look up given type in language module while bootstrapping: "+name);
+    }
+
+    public void loadPackageDescriptors() {
+        for(Package pkg : packagesByName.values()){
+            loadPackageDescriptor(pkg);
+        }
+        packageDescriptorsNeedLoading  = true;
+    }
+
+    private void loadPackageDescriptor(Package pkg) {
+        // let's not load package descriptors for Java modules
+        if(pkg.getModule() != null 
+                && ((CompilerModule)pkg.getModule()).isJava()){
+            pkg.setShared(true);
+            return;
+        }
+        String className = pkg.getQualifiedNameString() + ".$package";
+        System.err.println("Trying to look up package from "+className);
+        ClassSymbol packageClass = loadClass(pkg.getQualifiedNameString(), className);
+        if(packageClass == null){
+            System.err.println("Failed to complete "+className);
+            // missing: leave it private
+            return;
+        }
+        // did we compile it from source or class?
+        if(packageClass.classfile.getKind() != Kind.CLASS){
+            // must have come from source, in which case we walked it and
+            // loaded its values already
+            System.err.println("We're compiling the package "+className);
+            return;
+        }
+        loadCompiledPackage(packageClass, pkg);
+    }
+
+    private void loadCompiledPackage(ClassSymbol packageClass, Package pkg) {
+        String name = getAnnotationStringValue(packageClass, symtab.ceylonAtPackageType, "name");
+        Boolean shared = getAnnotationBooleanValue(packageClass, symtab.ceylonAtPackageType, "shared");
+        // FIXME: validate the name?
+        if(name == null || name.isEmpty()){
+            log.warning("ceylon", "Package class "+pkg.getQualifiedNameString()+" contains no name, ignoring it");
+            return;
+        }
+        if(shared == null){
+            log.warning("ceylon", "Package class "+pkg.getQualifiedNameString()+" contains no shared, ignoring it");
+            return;
+        }
+        pkg.setShared(shared);
     }
 
 }

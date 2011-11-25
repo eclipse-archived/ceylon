@@ -151,6 +151,8 @@ public class CeylonEnter extends Enter {
         modelLoader.setupSourceFileObjects(trees);
         // resolve module dependencies
         resolveModuleDependencies();
+        // now load package descriptors
+        modelLoader.loadPackageDescriptors();
         // run the type checker
         typeCheck();
         // some debugging
