@@ -25,11 +25,13 @@ class AttributeAssign(){
         return true;
     }
     assign b3 {
+        Boolean _b3 = b3;
     }
     shared Boolean b4 {
         return true;
     }
     assign b4 {
+        Boolean _b4 = b4;
     }
    
     void m(){

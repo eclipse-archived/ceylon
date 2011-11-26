@@ -29,6 +29,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
@@ -87,6 +88,17 @@ public class BoxingDeclarationVisitor extends Visitor {
     public void visit(AnyAttribute that) {
         super.visit(that);
         TypedDeclaration declaration = that.getDeclarationModel();
+        TypedDeclaration refinedDeclaration = Util.getTopmostRefinedDeclaration(declaration);
+        if(isPrimitive(declaration, refinedDeclaration)) {
+            Util.markUnBoxed(declaration);
+            Util.markUnBoxed(refinedDeclaration);
+        }
+    }
+
+    @Override
+    public void visit(AttributeSetterDefinition that) {
+        super.visit(that);
+        TypedDeclaration declaration = that.getDeclarationModel().getParameter();
         TypedDeclaration refinedDeclaration = Util.getTopmostRefinedDeclaration(declaration);
         if(isPrimitive(declaration, refinedDeclaration)) {
             Util.markUnBoxed(declaration);

@@ -184,15 +184,16 @@ public class CeylonTransformer extends AbstractTransformer {
         at(decl);
         String attrName = decl.getIdentifier().getText();
         String attrClassName = attrName;
+        TypedDeclaration declarationModel = decl.getDeclarationModel();
         if (Decl.isInner(decl)) {
             if (decl instanceof AttributeGetterDefinition) {
                 attrClassName += "$getter";
             } else if (decl instanceof AttributeSetterDefinition) {
                 attrClassName += "$setter";
+                declarationModel = ((AttributeSetterDefinition)decl).getDeclarationModel().getParameter();
             }
         }
 
-        TypedDeclaration declarationModel = decl.getDeclarationModel();
         AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
             .wrapped(this, attrName, declarationModel)
             .className(attrClassName)

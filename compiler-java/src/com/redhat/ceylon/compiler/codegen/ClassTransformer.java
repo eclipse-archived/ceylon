@@ -150,7 +150,7 @@ public class ClassTransformer extends AbstractTransformer {
         JCBlock body = statementGen().transform(decl.getBlock());
         String name = decl.getIdentifier().getText();
         return AttributeDefinitionBuilder
-            .setter(this, name, decl.getDeclarationModel())
+            .setter(this, name, decl.getDeclarationModel().getParameter())
             .modifiers(transformAttributeGetSetDeclFlags(decl))
             .setterBlock(body)
             .build();

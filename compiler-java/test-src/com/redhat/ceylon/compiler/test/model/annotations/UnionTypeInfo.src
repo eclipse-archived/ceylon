@@ -44,7 +44,7 @@ class UnionTypeInfo {
     }
     
     public final void setSharedGetter(@.com.redhat.ceylon.compiler.metadata.java.Name("sharedGetter")
-    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Void")
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("com.redhat.ceylon.compiler.test.model.annotations.Foo|com.redhat.ceylon.compiler.test.model.annotations.Bar")
     .java.lang.Object sharedGetter) {
     }
     

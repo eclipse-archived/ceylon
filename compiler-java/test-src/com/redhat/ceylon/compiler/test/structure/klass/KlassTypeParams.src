@@ -28,8 +28,8 @@ class KlassTypeParams<U, V> {
         return getVar();
     }
     
-    private final void setGetset(.java.lang.Object getset) {
-        setVar(getGetset());
+    private final void setGetset(V getset) {
+        setVar(getset);
     }
     
     KlassTypeParams(U uu, V vv) {

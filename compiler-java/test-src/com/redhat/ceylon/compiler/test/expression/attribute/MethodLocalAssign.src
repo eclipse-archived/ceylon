@@ -35,10 +35,10 @@ class MethodLocalAssign {
         final b2$getter b2$getter = new b2$getter();
         
         final class b2$setter {
-            private .java.lang.Object value;
+            private boolean value;
             
-            void setB2(.java.lang.Object b2) {
-                b1.setB1(b2$getter.getB2());
+            void setB2(boolean b2) {
+                b1.setB1(b2);
             }
             
             private b2$setter() {
