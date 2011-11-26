@@ -31,7 +31,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.util.Util;
@@ -245,22 +244,22 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
-    private ClassDefinitionBuilder typeParameter(String name, TypeParameter typeParameter) {
+    private ClassDefinitionBuilder typeParameter(String name, java.util.List<ProducedType> satisfiedTypes) {
         ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
-        for (ProducedType t : typeParameter.getSatisfiedTypes()) {
+        for (ProducedType t : satisfiedTypes) {
             if (!gen.willEraseToObject(t)) {
                 bounds.append(gen.makeJavaType(t));
             }
         }
         typeParams.append(gen.make().TypeParameter(gen.names().fromString(name), bounds.toList()));
-        typeParamAnnotations.append(gen.makeAtTypeParameter(typeParameter));
+        typeParamAnnotations.append(gen.makeAtTypeParameter(name, satisfiedTypes));
         return this;
     }
 
     public ClassDefinitionBuilder typeParameter(Tree.TypeParameterDeclaration param) {
         gen.at(param);
         String name = param.getIdentifier().getText();
-        return typeParameter(name, param.getDeclarationModel());
+        return typeParameter(name, param.getDeclarationModel().getSatisfiedTypes());
     }
 
     public ClassDefinitionBuilder extending(ProducedType extendingType) {

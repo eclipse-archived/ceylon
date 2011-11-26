@@ -154,22 +154,22 @@ public class MethodDefinitionBuilder {
         return this;
     }
 
-    public MethodDefinitionBuilder typeParameter(String name, TypeParameter typeParameter) {
+    public MethodDefinitionBuilder typeParameter(String name, java.util.List<ProducedType> satisfiedTypes) {
         ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
-        for (ProducedType t : typeParameter.getSatisfiedTypes()) {
+        for (ProducedType t : satisfiedTypes) {
             if (!gen.willEraseToObject(t)) {
                 bounds.append(gen.makeJavaType(t));
             }
         }
         typeParams.append(gen.make().TypeParameter(gen.names().fromString(name), bounds.toList()));
-        typeParamAnnotations.append(gen.makeAtTypeParameter(typeParameter));
+        typeParamAnnotations.append(gen.makeAtTypeParameter(name, satisfiedTypes));
         return this;
     }
 
     public MethodDefinitionBuilder typeParameter(Tree.TypeParameterDeclaration param) {
         gen.at(param);
         String name = param.getIdentifier().getText();
-        return typeParameter(name, param.getDeclarationModel());
+        return typeParameter(name, param.getDeclarationModel().getSatisfiedTypes());
     }
 
     public MethodDefinitionBuilder parameters(List<JCVariableDecl> decls) {
