@@ -13,7 +13,7 @@ shared class Singleton<Element>(Element element)
     shared actual Element last {
         return element;
     }
-    shared actual Element[] rest {
+    shared actual Empty rest {
         return {};
     }
     shared actual Element? item(Natural index) {
@@ -24,7 +24,7 @@ shared class Singleton<Element>(Element element)
             return null;
         }
     }
-    shared actual Sequence<Element> clone {
+    shared actual Singleton<Element> clone {
         return this;
     }
     shared actual object iterator extends Object()
