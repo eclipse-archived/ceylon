@@ -1,111 +1,30 @@
 package com.redhat.ceylon.compiler.test.statement.conditional;
 
-interface Common {
+class MethodIfExists {
     
-    public abstract void common();
-}
-interface FooInterface {
-    
-    public abstract void foo();
-}
-class Foo implements com.redhat.ceylon.compiler.test.statement.conditional.Common, com.redhat.ceylon.compiler.test.statement.conditional.FooInterface {
-    
-    @.java.lang.Override
-    public final void common() {
+    public final long m(final ceylon.language.Natural x) {
+        final ceylon.language.Natural $x$0 = x;
+        if ($x$0 != null) {
+            final long $x$1 = $x$0.longValue();
+            return $x$1;
+        }
+        return 0L;
     }
     
-    @.java.lang.Override
-    public final void foo() {
+    public final long m2(final ceylon.language.Natural x) {
+        final ceylon.language.Natural $y$2 = x;
+        if ($y$2 != null) {
+            final long $y$3 = $y$2.longValue();
+            return $y$3;
+        }
+        return 0L;
     }
     
-    Foo() {
+    MethodIfExists() {
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new Foo();
-    }
-}
-class FooSub extends com.redhat.ceylon.compiler.test.statement.conditional.Foo {
-    
-    public final void foo2() {
-    }
-    
-    FooSub() {
-        super();
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        new FooSub();
-    }
-}
-interface BarInterface {
-    
-    public abstract void bar();
-}
-class Bar implements com.redhat.ceylon.compiler.test.statement.conditional.Common, com.redhat.ceylon.compiler.test.statement.conditional.BarInterface {
-    
-    @.java.lang.Override
-    public final void common() {
-    }
-    
-    @.java.lang.Override
-    public final void bar() {
-    }
-    
-    Bar() {
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        new Bar();
-    }
-}
-class MethodIfIs {
-    
-    public final void m(final .java.lang.Object x) {
-        final .java.lang.Object $x$0 = x;
-        if ($x$0 instanceof com.redhat.ceylon.compiler.test.statement.conditional.Foo) {
-            final com.redhat.ceylon.compiler.test.statement.conditional.Foo $x$1 = (com.redhat.ceylon.compiler.test.statement.conditional.Foo)$x$0;
-            $x$1.foo();
-            final .java.lang.Object $x$2 = $x$1;
-            if ($x$2 instanceof com.redhat.ceylon.compiler.test.statement.conditional.FooSub) {
-                final com.redhat.ceylon.compiler.test.statement.conditional.FooSub $x$3 = (com.redhat.ceylon.compiler.test.statement.conditional.FooSub)$x$2;
-                $x$3.foo2();
-            }
-        }
-        final .java.lang.Object $x$4 = x;
-        if ($x$4 instanceof com.redhat.ceylon.compiler.test.statement.conditional.Foo || $x$4 instanceof com.redhat.ceylon.compiler.test.statement.conditional.Bar) {
-            final .java.lang.Object $x$5 = (.java.lang.Object)$x$4;
-            ((com.redhat.ceylon.compiler.test.statement.conditional.Common)$x$5).common();
-        }
-        final .java.lang.Object $x$6 = x;
-        if ($x$6 instanceof com.redhat.ceylon.compiler.test.statement.conditional.Foo && $x$6 instanceof com.redhat.ceylon.compiler.test.statement.conditional.BarInterface) {
-            final .java.lang.Object $x$7 = (.java.lang.Object)$x$6;
-            ((com.redhat.ceylon.compiler.test.statement.conditional.Foo)$x$7).common();
-            ((com.redhat.ceylon.compiler.test.statement.conditional.Foo)$x$7).foo();
-            ((com.redhat.ceylon.compiler.test.statement.conditional.BarInterface)$x$7).bar();
-        }
-        final .java.lang.Object $x$8 = x;
-        if ($x$8 == null) {
-        }
-        final .java.lang.Object $y$10 = give();
-        if ($y$10 instanceof com.redhat.ceylon.compiler.test.statement.conditional.FooSub) {
-            final com.redhat.ceylon.compiler.test.statement.conditional.FooSub $y$11 = (com.redhat.ceylon.compiler.test.statement.conditional.FooSub)$y$10;
-            $y$11.foo();
-        }
-    }
-    
-    private final com.redhat.ceylon.compiler.test.statement.conditional.Foo give() {
-        return new com.redhat.ceylon.compiler.test.statement.conditional.FooSub();
-    }
-    
-    MethodIfIs() {
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
-        new MethodIfIs();
+        new MethodIfExists();
     }
 }
