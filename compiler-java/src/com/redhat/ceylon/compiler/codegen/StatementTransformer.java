@@ -148,54 +148,62 @@ public class StatementTransformer extends AbstractTransformer {
                 specifierExpr = exists.getVariable().getSpecifierExpression().getExpression();
             }
             
-            toType = simplifyType(toType);
-            JCExpression toTypeExpr = makeJavaType(toType);
-
-            Name tmpVarName = names().fromString(aliasName(name));
-            Name origVarName = names().fromString(name);
-            Name substVarName = names().fromString(aliasName(name));
-
             JCExpression expr = expressionGen().transformExpression(specifierExpr);
-            ProducedType tmpVarType = specifierExpr.getTypeModel();
-            JCExpression tmpVarTypeExpr;
-            // Want raw type for instanceof since it can't be used with generic types
-            JCExpression rawToTypeExpr = makeJavaType(toType, NO_PRIMITIVES | WANT_RAW_TYPE);
-
-            // Substitute variable with the correct type to use in the rest of the code block
-            JCExpression tmpVarExpr = at(cond).Ident(tmpVarName);
-            if (cond instanceof Tree.ExistsCondition) {
-                tmpVarExpr = unboxType(tmpVarExpr, toType);
-                tmpVarTypeExpr = makeJavaType(tmpVarType);
-            } else if(cond instanceof Tree.IsCondition){
-                tmpVarExpr = unboxType(at(cond).TypeCast(rawToTypeExpr, tmpVarExpr), toType);
-                tmpVarTypeExpr = make().Type(syms().objectType);
-            } else {
-                tmpVarExpr = at(cond).TypeCast(toTypeExpr, tmpVarExpr);
-                tmpVarTypeExpr = makeJavaType(tmpVarType);
-            }
-            // Temporary variable holding the result of the expression/variable to test
-            decl = at(cond).VarDef(make().Modifiers(FINAL), tmpVarName, tmpVarTypeExpr, expr);
-
-            JCVariableDecl decl2 = at(cond).VarDef(make().Modifiers(FINAL), substVarName, toTypeExpr, tmpVarExpr);
             
-            // Prepare for variable substitution in the following code block
-            String prevSubst = addVariableSubst(origVarName.toString(), substVarName.toString());
-            
-            thenBlock = transform(thenPart);
-            List<JCStatement> stats = List.<JCStatement> of(decl2);
-            stats = stats.appendList(thenBlock.getStatements());
-            thenBlock = at(cond).Block(0, stats);
-            
-            // Deactivate the above variable substitution
-            removeVariableSubst(origVarName.toString(), prevSubst);
-            
-            at(cond);
-            if (cond instanceof Tree.ExistsCondition) {
-                test = make().Binary(JCTree.NE, make().Ident(decl.name), makeNull());                
-            } else {
-                // is/nonempty
-                JCExpression testExpr = make().Ident(decl.name);
-                test = makeTypeTest(testExpr, toType);
+            // IsCondition with Nothing as ProducedType transformed to " == null" 
+            if (cond instanceof Tree.IsCondition && isNothing(toType)) {
+                at(cond);                                
+                test = make().Binary(JCTree.EQ, expr, makeNull());
+            } else {             
+                toType = simplifyType(toType);
+                JCExpression toTypeExpr = makeJavaType(toType);
+    
+                Name tmpVarName = names().fromString(aliasName(name));
+                Name origVarName = names().fromString(name);
+                Name substVarName = names().fromString(aliasName(name));
+    
+               
+                ProducedType tmpVarType = specifierExpr.getTypeModel();
+                JCExpression tmpVarTypeExpr;
+                // Want raw type for instanceof since it can't be used with generic types
+                JCExpression rawToTypeExpr = makeJavaType(toType, NO_PRIMITIVES | WANT_RAW_TYPE);
+    
+                // Substitute variable with the correct type to use in the rest of the code block
+                JCExpression tmpVarExpr = at(cond).Ident(tmpVarName);
+                if (cond instanceof Tree.ExistsCondition) {
+                    tmpVarExpr = unboxType(tmpVarExpr, toType);
+                    tmpVarTypeExpr = makeJavaType(tmpVarType);
+                } else if(cond instanceof Tree.IsCondition){
+                    tmpVarExpr = unboxType(at(cond).TypeCast(rawToTypeExpr, tmpVarExpr), toType);
+                    tmpVarTypeExpr = make().Type(syms().objectType);
+                } else {
+                    tmpVarExpr = at(cond).TypeCast(toTypeExpr, tmpVarExpr);
+                    tmpVarTypeExpr = makeJavaType(tmpVarType);
+                }
+                // Temporary variable holding the result of the expression/variable to test
+                decl = at(cond).VarDef(make().Modifiers(FINAL), tmpVarName, tmpVarTypeExpr, expr);
+    
+                JCVariableDecl decl2 = at(cond).VarDef(make().Modifiers(FINAL), substVarName, toTypeExpr, tmpVarExpr);
+                
+                // Prepare for variable substitution in the following code block
+                String prevSubst = addVariableSubst(origVarName.toString(), substVarName.toString());
+                
+                thenBlock = transform(thenPart);
+                List<JCStatement> stats = List.<JCStatement> of(decl2);
+                stats = stats.appendList(thenBlock.getStatements());
+                thenBlock = at(cond).Block(0, stats);
+                
+                // Deactivate the above variable substitution
+                removeVariableSubst(origVarName.toString(), prevSubst);
+                
+                at(cond);
+                if (cond instanceof Tree.ExistsCondition) {
+                    test = make().Binary(JCTree.NE, make().Ident(decl.name), makeNull());                
+                } else {
+                    // nonempty
+                    JCExpression testExpr = make().Ident(decl.name);
+                    test = makeTypeTest(testExpr, toType);
+                }
             }
         } else if (cond instanceof Tree.BooleanCondition) {
             Tree.BooleanCondition booleanCondition = (Tree.BooleanCondition) cond;
