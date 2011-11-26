@@ -106,7 +106,7 @@ public final class String extends Object
     @TypeInfo("ceylon.language.Natural")
     public long getSize() {
         //TODO: should we cache this value in an instvar?
-        return value.codePointCount(0, value.length()-1);
+        return value.codePointCount(0, value.length());
     }
 
     @Override
