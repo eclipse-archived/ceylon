@@ -94,6 +94,8 @@ class MethodIfIs {
             final com.redhat.ceylon.compiler.test.statement.conditional.FooSub $y$9 = (com.redhat.ceylon.compiler.test.statement.conditional.FooSub)$y$8;
             $y$9.foo();
         }
+        if (give() == null) {
+        }
     }
     
     private final com.redhat.ceylon.compiler.test.statement.conditional.Foo give() {
