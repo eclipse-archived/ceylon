@@ -148,11 +148,12 @@ public class StatementTransformer extends AbstractTransformer {
                 specifierExpr = exists.getVariable().getSpecifierExpression().getExpression();
             }
             
+            JCExpression expr = expressionGen().transformExpression(specifierExpr);
+            
             // IsCondition with Nothing as ProducedType transformed to " == null" 
             if (cond instanceof Tree.IsCondition && isNothing(toType)) {
-                at(cond);
-                Name varName = names().fromString(name);                
-                test = make().Binary(JCTree.EQ, make().Ident(varName), makeNull());
+                at(cond);                                
+                test = make().Binary(JCTree.EQ, expr, makeNull());
             } else {             
                 toType = simplifyType(toType);
                 JCExpression toTypeExpr = makeJavaType(toType);
@@ -161,7 +162,7 @@ public class StatementTransformer extends AbstractTransformer {
                 Name origVarName = names().fromString(name);
                 Name substVarName = names().fromString(aliasName(name));
     
-                JCExpression expr = expressionGen().transformExpression(specifierExpr);
+               
                 ProducedType tmpVarType = specifierExpr.getTypeModel();
                 JCExpression tmpVarTypeExpr;
                 // Want raw type for instanceof since it can't be used with generic types
