@@ -47,12 +47,6 @@ class FloatBoxing(){
         if(is Float localAttrConstantFloat){
             localAttrFloat := localAttrConstantFloat;
         }
-        if(is String localAttrConstantObject){
-            String foo = localAttrConstantObject;
-        }
-        if(is String localAttrConstantFloat){
-            String foo = localAttrConstantFloat;
-        }
         
         localAttrFloat := localAttrFloat + +2.0; 
         localAttrObject := localAttrFloat + +2.0; 

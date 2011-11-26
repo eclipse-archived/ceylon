@@ -47,12 +47,6 @@ class IntegerBoxing(){
         if(is Integer localAttrConstantInteger){
             localAttrInteger := localAttrConstantInteger;
         }
-        if(is String localAttrConstantObject){
-            String foo = localAttrConstantObject;
-        }
-        if(is String localAttrConstantInteger){
-            String foo = localAttrConstantInteger;
-        }
         
         localAttrInteger := localAttrInteger + +2; 
         localAttrObject := localAttrInteger + +2; 
