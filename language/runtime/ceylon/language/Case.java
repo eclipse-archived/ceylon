@@ -12,4 +12,14 @@ public abstract class Case {
     public java.lang.String toString(){
         return string;
     }
+    
+    @Override
+    public final boolean equals(java.lang.Object that) {
+    	return super.equals(that);
+    }
+    
+    @Override
+    public final int hashCode() {
+    	return super.hashCode();
+    }
 }
