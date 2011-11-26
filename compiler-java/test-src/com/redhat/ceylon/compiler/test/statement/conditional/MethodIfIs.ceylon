@@ -63,6 +63,8 @@ class MethodIfIs() {
             x.foo();
             x.bar();
         }
+        if (is Nothing x) {
+        }
         if (is FooSub y = give()) {
             y.foo();
         }
