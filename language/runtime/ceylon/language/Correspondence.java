@@ -63,7 +63,7 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
         }
         @Override
         @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
-        public Sequence<? extends Item> span(long from, long to) {
+        public Sequence<? extends Item> span(@TypeInfo("ceylon.language.Natural") long from, @TypeInfo("ceylon.language.Natural") long to) {
             throw new RuntimeException("Not implemented"); //todo!
         }
         /*@Override

@@ -10,8 +10,8 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
 @Ceylon
 @TypeParameters({
     @TypeParameter(value = "Element", variance = Variance.OUT)
- })
- public interface Sequence<Element> 
+})
+public interface Sequence<Element> 
     extends Correspondence<Natural, Element>, Ordered<Element>, 
         Sized, Cloneable<Sequence<Element>> {
     
@@ -72,7 +72,7 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
     }
     
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element|ceylon.language.Nothing>")
-    public Sequence<? extends Element> span(long from, long to);
+    public Sequence<? extends Element> span(@TypeInfo("ceylon.language.Natural") long from, @TypeInfo("ceylon.language.Natural") long to);
     
     /*@Override
     public Ordered<Element> segment(long from, long length);*/

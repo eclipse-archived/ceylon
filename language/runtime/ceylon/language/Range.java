@@ -165,7 +165,7 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
 
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element|ceylon.language.Nothing>")
-    public Sequence<? extends Element> span(long from, long to) {
+    public Sequence<? extends Element> span(@TypeInfo("ceylon.language.Natural") long from, @TypeInfo("ceylon.language.Natural") long to) {
         throw new RuntimeException("Not implemented"); //todo!
     }
 
