@@ -27,3 +27,24 @@ interface IEquality satisfies Equality {
 }
 class CIEquality() satisfies IEquality {
 }
+class ErasedTypes() {
+    void m() {
+        value cobject = CObject();
+        if (is Object cobject) {
+        }
+        
+        value cident = CIdentifiableObject();
+        if (is CIdentifiableObject cident) {
+        }
+        
+        value cequal = CEquality();
+        if (is CEquality cequal) {
+        }
+        
+        value ciequal = CIEquality();
+        if (is CEquality ciequal) {
+        }
+        if (is IEquality ciequal) {
+        }
+    }
+}
