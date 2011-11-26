@@ -1,6 +1,7 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.metadata.java.Name;
+import com.redhat.ceylon.compiler.metadata.java.Sequenced;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 public class Range<Element extends Comparable<Element> & Ordinal<Element>>
@@ -180,29 +181,29 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
     }
 
     @Override
-    public boolean definesEvery(@Name("keys") Iterable<? extends Natural> keys) {
+    public boolean definesEvery(@Sequenced @Name("keys") Iterable<? extends Natural> keys) {
         return Correspondence$impl.definesEvery(this, keys);
     }
 
     @Override
-    public boolean definesAny(@Name("keys") Iterable<? extends Natural> keys) {
+    public boolean definesAny(@Sequenced @Name("keys") Iterable<? extends Natural> keys) {
         return Correspondence$impl.definesAny(this, keys);
     }
 
     @Override
-    public Sequence<? extends Element> items(@Name("keys") Iterable<? extends Natural> keys) {
+    public Sequence<? extends Element> items(@Sequenced @Name("keys") Iterable<? extends Natural> keys) {
         return Correspondence$impl.items(this, keys);
     }
 
     //TODO: @TypeInfo
     @Override
-    public boolean containsEvery(@Name("elements") Iterable<? extends Object> elements) {
+    public boolean containsEvery(@Sequenced @Name("elements") Iterable<? extends Object> elements) {
         return Category$impl.containsEvery(this, elements);
     }
 
     //TODO: @TypeInfo
     @Override
-    public boolean containsAny(@Name("elements") Iterable<? extends Object> elements) {
+    public boolean containsAny(@Sequenced @Name("elements") Iterable<? extends Object> elements) {
         return Category$impl.containsAny(this, elements);
     }
 

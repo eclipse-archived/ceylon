@@ -1,6 +1,8 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.metadata.java.Ceylon;
+import com.redhat.ceylon.compiler.metadata.java.Name;
+import com.redhat.ceylon.compiler.metadata.java.Sequenced;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 import com.redhat.ceylon.compiler.metadata.java.TypeParameter;
 import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
@@ -23,7 +25,7 @@ public class Singleton<Element>
 	}
 	@Override
 	@TypeInfo("ceylon.language.Nothing|Element")
-	public Element item(Natural key) {
+	public Element item(@Name("index") Natural key) {
 		return key.longValue()==0 ? element : null;
 	}
 	@Override
@@ -31,15 +33,15 @@ public class Singleton<Element>
 		return Correspondence$impl.getKeys(this);
 	}
 	@Override
-	public boolean definesEvery(Iterable<? extends Natural> keys) {
+	public boolean definesEvery(@Sequenced @Name("keys") Iterable<? extends Natural> keys) {
 		return Correspondence$impl.definesEvery(this, keys);
 	}
 	@Override
-	public boolean definesAny(Iterable<? extends Natural> keys) {
+	public boolean definesAny(@Sequenced @Name("keys") Iterable<? extends Natural> keys) {
 		return Correspondence$impl.definesAny(this, keys);
 	}
 	@Override
-	public Sequence<? extends Element> items(Iterable<? extends Natural> keys) {
+	public Sequence<? extends Element> items(@Sequenced @Name("keys") Iterable<? extends Natural> keys) {
 		return Correspondence$impl.items(this, keys);
 	}
 	@Override
@@ -67,7 +69,7 @@ public class Singleton<Element>
 		return element;
 	}
 	@Override
-	public boolean defines(Natural index) {
+	public boolean defines(@Name("index") Natural index) {
 		return index.longValue()==0;
 	}
 	@Override

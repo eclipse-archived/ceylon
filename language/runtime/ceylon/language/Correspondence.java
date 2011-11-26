@@ -3,6 +3,7 @@ package ceylon.language;
 import com.redhat.ceylon.compiler.metadata.java.Ceylon;
 import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
+import com.redhat.ceylon.compiler.metadata.java.Sequenced;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 import com.redhat.ceylon.compiler.metadata.java.TypeParameter;
 import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
@@ -22,12 +23,12 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
 
     public Category getKeys();
 
-    public boolean definesEvery(@Name("keys") Iterable<? extends Key> keys);
+    public boolean definesEvery(@Sequenced @Name("keys") Iterable<? extends Key> keys);
 
-    public boolean definesAny(@Name("keys") Iterable<? extends Key> keys);
+    public boolean definesAny(@Sequenced @Name("keys") Iterable<? extends Key> keys);
 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
-    public Sequence<? extends Item> items(@Name("keys") Iterable<? extends Key> keys);
+    public Sequence<? extends Item> items(@Sequenced @Name("keys") Iterable<? extends Key> keys);
 
     @SatisfiedTypes("ceylon.language.Sequence<Item|ceylon.language.Nothing>")
     class Entries<Key extends Equality,Item>
@@ -72,7 +73,7 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
         }*/
         @Override
         public java.lang.String toString() {
-            return "Entries";//todo			
+            return Sequence$impl.toString(this);		
         }
         @TypeInfo("ceylon.language.Sequence<Item|ceylon.language.Nothing>")
         public final Sequence<Item> getClone() {
@@ -83,16 +84,16 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
             return Correspondence$impl.getKeys(this);
         }
         @Override
-        public boolean definesEvery(Iterable<? extends Natural> keys) {
+        public boolean definesEvery(@Sequenced @Name("keys") Iterable<? extends Natural> keys) {
             return Correspondence$impl.definesEvery(this, keys);
         }
         @Override
-        public boolean definesAny(Iterable<? extends Natural> keys) {
+        public boolean definesAny(@Sequenced @Name("keys") Iterable<? extends Natural> keys) {
             return Correspondence$impl.definesAny(this, keys);
         }
         @Override
         @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
-        public Sequence<? extends Item> items(Iterable<? extends Natural> keys) {
+        public Sequence<? extends Item> items(@Sequenced @Name("keys") Iterable<? extends Natural> keys) {
             return Correspondence$impl.items(this, keys);
         }
         @Override

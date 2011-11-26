@@ -64,7 +64,8 @@ public interface Sequence<Element>
         }
         @TypeInfo("ceylon.language.Nothing|ceylon.language.Iterator<Element>")
         public final Iterator<Element> getTail() {
-            return new SequenceIterator<Element>($this, from+1);
+            return from<$this.getLastIndex() ? 
+            		new SequenceIterator<Element>($this, from+1) : null;
         }
         public final java.lang.String toString() {
             return "SequenceIterator";
