@@ -8,11 +8,12 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
 
 @Ceylon
 @TypeParameters({
-    @TypeParameter(value = "Key", variance = Variance.OUT),
-    @TypeParameter(value = "Item", variance = Variance.OUT)
+    @TypeParameter(value = "Key", variance = Variance.OUT, 
+            satisfies="ceylon.language.Equality"),
+    @TypeParameter(value = "Item", variance = Variance.OUT, 
+            satisfies="ceylon.language.Equality")
  })
-public class Entry<Key extends Equality, 
-                    Item extends Equality> 
+public class Entry<Key, Item> 
     extends Object implements Equality {
 	private Key key;
 	private Item item;

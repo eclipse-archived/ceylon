@@ -11,10 +11,11 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
 
 @Ceylon
 @TypeParameters({
-    @TypeParameter(value = "Key", variance = Variance.IN),
+    @TypeParameter(value = "Key", variance = Variance.IN,
+            satisfies="ceylon.language.Equality"),
     @TypeParameter(value = "Item", variance = Variance.OUT)
- })
-public interface Correspondence<Key extends Equality,Item> {
+})
+public interface Correspondence<Key,Item> {
     
     @TypeInfo("Item|ceylon.language.Nothing")
     public Item item(@Name("key") Key key);
@@ -37,7 +38,12 @@ public interface Correspondence<Key extends Equality,Item> {
     Iterable<? extends Key> keys);
 
     @SatisfiedTypes("ceylon.language.Sequence<Item|ceylon.language.Nothing>")
-    class Entries<Key extends Equality,Item>
+    @TypeParameters({
+        @TypeParameter(value = "Key", variance = Variance.IN,
+                satisfies="ceylon.language.Equality"),
+        @TypeParameter(value = "Item", variance = Variance.OUT)
+    })
+    class Entries<Key,Item>
     extends Object
     implements Sequence<Item> {
         private Sequence<Key> keys;
