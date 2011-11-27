@@ -100,6 +100,10 @@ shared interface Sequence<out Element>
         }
     }
     
+    doc "Reverse this sequence, returning a new nonempty 
+         sequence."
+    shared formal Sequence<Element> reversed;
+    
     doc "Select the elements between the given indexes.
          If the start index is the same as the end index,
          return a sequence with a single element. If the 
