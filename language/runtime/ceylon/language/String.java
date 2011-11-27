@@ -143,21 +143,28 @@ public final class String extends Object
     }
 
     @Override
-    public boolean definesEvery(@Name("keys") Iterable<? extends Natural> keys) {
+    public boolean definesEvery(@Name("keys") 
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Natural>")
+    Iterable<? extends Natural> keys) {
         //TODO: inefficient ... better to cache the result
         //      of getSize()
         return Correspondence$impl.definesEvery(this, keys);
     }
 
     @Override
-    public boolean definesAny(@Name("keys") Iterable<? extends Natural> keys) {
+    public boolean definesAny(@Name("keys") 
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Natural>")
+    Iterable<? extends Natural> keys) {
         //TODO: inefficient ... better to cache the result
         //      of getSize()
         return Correspondence$impl.definesAny(this, keys);
     }
 
     @Override
-    public Sequence<? extends Character> items(@Name("keys") Iterable<? extends Natural> keys) {
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Character>")
+    public Iterable<? extends Character> items(@Name("keys") 
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Natural>")
+    Iterable<? extends Natural> keys) {
         return Correspondence$impl.items(this, keys);
     }
 
@@ -216,7 +223,9 @@ public final class String extends Object
     }
     
     @Override
-    public boolean contains(@Name("element") @TypeInfo("ceylon.language.Equality") Object element) {
+    public boolean contains(@Name("element") 
+    @TypeInfo("ceylon.language.Equality") 
+    Object element) {
     	if (element instanceof String) {
     	    return firstOccurrence(((String)element).value)!=null;
     	}
@@ -226,20 +235,26 @@ public final class String extends Object
     }
     
     @Override
-    public boolean containsAny(@Sequenced @Name("elements") Iterable<? extends Object> elements) {
+    public boolean containsAny(@Sequenced @Name("elements") 
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Equality>")
+    Iterable<? extends Object> elements) {
     	return Category$impl.containsAny(this, elements);
     }
 
     @Override
-    public boolean containsEvery(@Sequenced @Name("elements") Iterable<? extends Object> elements) {
+    public boolean containsEvery(@Sequenced @Name("elements") 
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Equality>")
+    Iterable<? extends Object> elements) {
     	return Category$impl.containsEvery(this, elements);
     }
     
-    public boolean longerThan(@TypeInfo("ceylon.language.Natural") @Name("length") long length) {
+    public boolean longerThan(@TypeInfo("ceylon.language.Natural") 
+    @Name("length") long length) {
         return getSize()>length; //TODO: really inefficient!
     }
 
-    public boolean shorterThan(@TypeInfo("ceylon.language.Natural") @Name("length") long length) {
+    public boolean shorterThan(@TypeInfo("ceylon.language.Natural") 
+    @Name("length") long length) {
     	return getSize()<length; //TODO: really inefficient!
     }
     

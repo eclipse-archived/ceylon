@@ -14,7 +14,9 @@ import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
 })
 public class SequenceAppender<Element> extends SequenceBuilder<Element> {
 
-    public SequenceAppender(@Name("elements") Sequence<? extends Element> elements) {
+    public SequenceAppender(@Name("elements") 
+    @TypeInfo("ceylon.language.Sequence<Element>")
+    Sequence<? extends Element> elements) {
     	super(new ArrayList<Element>((int) elements.getSize()+2));
     	for (Iterator<? extends Element> iter=elements.getIterator(); iter!=null; iter=iter.getTail()) {
     		list.add(iter.getHead());

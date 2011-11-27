@@ -14,7 +14,7 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
     @TypeParameter(value = "Key", variance = Variance.IN),
     @TypeParameter(value = "Item", variance = Variance.OUT)
  })
- public interface Correspondence<Key extends Equality,Item> {
+public interface Correspondence<Key extends Equality,Item> {
     
     @TypeInfo("Item|ceylon.language.Nothing")
     public Item item(@Name("key") Key key);
@@ -23,12 +23,18 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
 
     public Category getKeys();
 
-    public boolean definesEvery(@Sequenced @Name("keys") Iterable<? extends Key> keys);
+    public boolean definesEvery(@Sequenced @Name("keys") 
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
+    Iterable<? extends Key> keys);
 
-    public boolean definesAny(@Sequenced @Name("keys") Iterable<? extends Key> keys);
+    public boolean definesAny(@Sequenced @Name("keys") 
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
+    Iterable<? extends Key> keys);
 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
-    public Sequence<? extends Item> items(@Sequenced @Name("keys") Iterable<? extends Key> keys);
+    public Iterable<? extends Item> items(@Sequenced @Name("keys") 
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
+    Iterable<? extends Key> keys);
 
     @SatisfiedTypes("ceylon.language.Sequence<Item|ceylon.language.Nothing>")
     class Entries<Key extends Equality,Item>
@@ -49,7 +55,7 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
             return $this.item(keys.getFirst());
         }
         @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
-        public final ceylon.language.Sequence<? extends Item> getRest() {
+        public final ceylon.language.Iterable<? extends Item> getRest() {
             return $this.items(keys.getRest());
         }
         @TypeInfo("Item|ceylon.language.Nothing")
@@ -84,16 +90,22 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
             return Correspondence$impl.getKeys(this);
         }
         @Override
-        public boolean definesEvery(@Sequenced @Name("keys") Iterable<? extends Natural> keys) {
+        public boolean definesEvery(@Sequenced @Name("keys") 
+        @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Natural>")
+        Iterable<? extends Natural> keys) {
             return Correspondence$impl.definesEvery(this, keys);
         }
         @Override
-        public boolean definesAny(@Sequenced @Name("keys") Iterable<? extends Natural> keys) {
+        public boolean definesAny(@Sequenced @Name("keys") 
+        @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Natural>")
+        Iterable<? extends Natural> keys) {
             return Correspondence$impl.definesAny(this, keys);
         }
         @Override
         @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
-        public Sequence<? extends Item> items(@Sequenced @Name("keys") Iterable<? extends Natural> keys) {
+        public Iterable<? extends Item> items(@Sequenced @Name("keys") 
+        @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Natural>")
+        Iterable<? extends Natural> keys) {
             return Correspondence$impl.items(this, keys);
         }
         @Override

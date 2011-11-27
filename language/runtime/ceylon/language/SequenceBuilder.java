@@ -41,7 +41,7 @@ public class SequenceBuilder<Element> {
     }
     
     public synchronized void appendAll(@Sequenced @Name("elements") 
-    //@TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>") 
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>") 
     Iterable<? extends Element> elements) {
     	for (Iterator<? extends Element> iter=elements.getIterator(); iter!=null; iter=iter.getTail()) {
     	    list.add(iter.getHead());

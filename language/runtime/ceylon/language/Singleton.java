@@ -33,15 +33,22 @@ public class Singleton<Element>
 		return Correspondence$impl.getKeys(this);
 	}
 	@Override
-	public boolean definesEvery(@Sequenced @Name("keys") Iterable<? extends Natural> keys) {
+	public boolean definesEvery(@Sequenced @Name("keys") 
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Natural>")
+	Iterable<? extends Natural> keys) {
 		return Correspondence$impl.definesEvery(this, keys);
 	}
 	@Override
-	public boolean definesAny(@Sequenced @Name("keys") Iterable<? extends Natural> keys) {
+	public boolean definesAny(@Sequenced @Name("keys") 
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Natural>")
+	Iterable<? extends Natural> keys) {
 		return Correspondence$impl.definesAny(this, keys);
 	}
 	@Override
-	public Sequence<? extends Element> items(@Sequenced @Name("keys") Iterable<? extends Natural> keys) {
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element|ceylon.language.Nothing>")
+	public Iterable<? extends Element> items(@Sequenced @Name("keys") 
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Natural>")
+	Iterable<? extends Natural> keys) {
 		return Correspondence$impl.items(this, keys);
 	}
 	@Override

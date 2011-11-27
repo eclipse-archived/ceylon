@@ -2,7 +2,6 @@ package ceylon.language;
 
 import com.redhat.ceylon.compiler.metadata.java.Attribute;
 import com.redhat.ceylon.compiler.metadata.java.Ceylon;
-import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 @Ceylon @Attribute
 public class $empty {
@@ -29,12 +28,11 @@ public class $empty {
         }
 
         @Override
-        public Sequence<? extends java.lang.Object> items(Iterable<? extends Natural> keys) {
+        public Iterable<? extends java.lang.Object> items(Iterable<? extends Natural> keys) {
             return Correspondence$impl.items(this, keys);
         }
 
         @Override
-        @TypeInfo("ceylon.language.Natural")
         public long getSize() {
             return Empty$impl.getSize(this);
         }

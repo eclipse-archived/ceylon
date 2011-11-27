@@ -10,7 +10,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
 	private final long first;
 
 	public ArraySequence(Element... array) {
-		this.array = (java.lang.Object[]) array;
+		this.array = array;
 		this.first = 0;
 	}
 

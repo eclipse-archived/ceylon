@@ -18,11 +18,13 @@ public class Module {
             @Name("version") ceylon.language.Quoted version, 
             @TypeInfo("ceylon.language.Nothing|ceylon.language.String") @Name("doc") 
             ceylon.language.String doc, 
-            @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>") @Name("by") 
+            @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>") 
+            @Name("by") 
             ceylon.language.Iterable<? extends ceylon.language.String> by, 
             @TypeInfo("ceylon.language.Nothing|ceylon.language.Quoted") @Name("license") 
             ceylon.language.Quoted license,
-            @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.descriptor.Import>") @Name("dependencies") @Sequenced 
+            @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.descriptor.Import>") 
+            @Name("dependencies") @Sequenced 
             ceylon.language.Iterable<? extends ceylon.language.descriptor.Import> dependencies){
         this.name = name;
         this.version = version;
