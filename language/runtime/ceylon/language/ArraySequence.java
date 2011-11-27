@@ -6,15 +6,15 @@ import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 public class ArraySequence<Element> implements Sequence<Element> {
 
-	private final Element[] array;
+	private final java.lang.Object[] array;
 	private final long first;
 
 	public ArraySequence(Element... array) {
-		this.array = array;
+		this.array = (java.lang.Object[]) array;
 		this.first = 0;
 	}
 
-    public ArraySequence(Element[] array, long first) {
+    ArraySequence(java.lang.Object[] array, long first) {
         this.array = array;
         this.first = first;
     }
@@ -27,7 +27,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
 	@Override
 	public Element getFirst() {
-		return getEmpty() ? null : array[(int) first];
+		return (Element) (getEmpty() ? null : array[(int) first]);
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
 	@Override
 	public Element getLast() {
-		return getEmpty() ? null : array[array.length - 1];
+		return (Element) (getEmpty() ? null : array[array.length - 1]);
 	}
 
 	@Override
@@ -96,8 +96,8 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
 	@Override
 	public Element item(Natural key) {
-		return key.longValue() >= getSize() ? 
-		        null : array[(int) (key.longValue() - first)];
+		return (Element) (key.longValue() >= getSize() ? 
+		        null : array[(int) (key.longValue() - first)]);
 	}
 
 	@Override
@@ -131,8 +131,8 @@ public class ArraySequence<Element> implements Sequence<Element> {
 			return new ArraySequence<Element>();
 		if(to > getLastIndex())
 			return new ArraySequence<Element>(array, from);
-		Element[] newArray = Arrays.copyOfRange(array, (int)from, (int)to);
-		return new ArraySequence<Element>(newArray);
+		java.lang.Object[] newArray = Arrays.copyOfRange(array, (int)from, (int)to);
+		return new ArraySequence<Element>(newArray, 0);
 	}
 	
 	@Override
