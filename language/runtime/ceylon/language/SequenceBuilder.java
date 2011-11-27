@@ -16,19 +16,13 @@ import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
 })
 public class SequenceBuilder<Element> {
 
-    final List<Element> list;
+    List<Element> list;
     
-    public SequenceBuilder() {
-    	this(new ArrayList<Element>());
-    }
+    public SequenceBuilder() {}
      
-    SequenceBuilder(List<Element> list) {
-    	this.list = list;
-    }
-    
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public synchronized Iterable<? extends Element> getSequence() {
-        if (list.isEmpty()) {
+        if (list==null || list.isEmpty()) {
             return $empty.getEmpty();
         }
         else {
@@ -37,12 +31,18 @@ public class SequenceBuilder<Element> {
     }
     
     public synchronized void append(@Name("element") Element element) {
+    	if (list==null) {
+    	    list = new ArrayList<Element>();
+    	}
     	list.add(element);
     }
     
     public synchronized void appendAll(@Sequenced @Name("elements") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>") 
     Iterable<? extends Element> elements) {
+    	if (list==null) {
+    	    list = new ArrayList<Element>( (int) ((Sized) elements).getSize() );
+    	}
     	for (Iterator<? extends Element> iter=elements.getIterator(); iter!=null; iter=iter.getTail()) {
     	    list.add(iter.getHead());
     	}

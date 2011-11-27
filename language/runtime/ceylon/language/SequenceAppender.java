@@ -13,11 +13,12 @@ import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
     @TypeParameter(value = "Element")
 })
 public class SequenceAppender<Element> extends SequenceBuilder<Element> {
-
+    
     public SequenceAppender(@Name("elements") 
     @TypeInfo("ceylon.language.Sequence<Element>")
     Sequence<? extends Element> elements) {
-    	super(new ArrayList<Element>((int) elements.getSize()+2));
+    	super();
+    	list = new ArrayList<Element>((int) elements.getSize()+2);
     	for (Iterator<? extends Element> iter=elements.getIterator(); iter!=null; iter=iter.getTail()) {
     		list.add(iter.getHead());
     	}
