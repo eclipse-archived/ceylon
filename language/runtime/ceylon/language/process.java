@@ -18,11 +18,13 @@ public class process extends Object {
     }
     
     public void setupArguments(java.lang.String[] args) {
-        String[] newArgs = new String[args.length];
-        for (int i = 0; i < args.length; i++) {
-            newArgs[i] = String.instance(args[i]);
-        }
-        this.args = new ArraySequence<String>(newArgs);
+    	if (args.length>0) {
+	        String[] newArgs = new String[args.length];
+	        for (int i = 0; i < args.length; i++) {
+	            newArgs[i] = String.instance(args[i]);
+	        }
+	        this.args = new ArraySequence<String>(newArgs);
+    	}
     }
     
 //    shared Entries<String,String> switches { throw; }
