@@ -1,0 +1,4 @@
+void run() {
+    strings();
+    results();
+}
