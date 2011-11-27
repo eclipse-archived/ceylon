@@ -1,4 +1,4 @@
-void strings() {
+shared void strings() {
     value hello = "hello";
     
     assert(hello.size==5, "string size");
