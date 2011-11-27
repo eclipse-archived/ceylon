@@ -1,20 +1,17 @@
 shared Entry<Key,Item>[] zip<Key,Item>(Key[] keys, Item[] items)
         given Key satisfies Equality
         given Item satisfies Equality {
-    
-    function entry(Key? key, Item? item) {
-        if (exists key) {
-            if (exists item) {
-                return key->item;
-            }
-        }
-        return null;
-    }
-    
     value builder = SequenceBuilder<Entry<Key,Item>>();
-    for (i in 0..min({keys.size, items.size})-1) {
-        if (exists e = entry(keys[i], items[i])) {
-            builder.append(e);
+    variable value ki := keys.iterator;
+    variable value ii := items.iterator;
+    while (exists eki=ki) {
+        if (exists eii = ii) {
+            builder.append(eki.head->eii.head);
+            ki:=eki.tail;
+            ii:=eii.tail;
+        }
+        else {
+            break;
         }
     }
     return builder.sequence;
