@@ -73,7 +73,7 @@ public interface Sequence<Element>
     }
     
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element|ceylon.language.Nothing>")
-    public Sequence<? extends Element> span(@TypeInfo("ceylon.language.Natural") long from, @TypeInfo("ceylon.language.Natural") long to);
+    public Iterable<? extends Element> span(@TypeInfo("ceylon.language.Natural") long from, @TypeInfo("ceylon.language.Natural") long to);
     
     /*@Override
     public Ordered<Element> segment(long from, long length);*/

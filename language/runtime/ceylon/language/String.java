@@ -1,13 +1,15 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.metadata.java.Name;
+import com.redhat.ceylon.compiler.metadata.java.Sequenced;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 
 public final class String extends Object 
     implements Comparable<String>, Ordered<Character>, 
                Correspondence<Natural,Character>, Format,
-               Sized, Summable<String>, Castable<String> {
+               Sized, Summable<String>, Castable<String>,
+               Category {
 
     public final java.lang.String value;
 
@@ -194,15 +196,55 @@ public final class String extends Object
         return Ordered$impl.getFirst(this);
     }
 
-    public Sequence<? extends Character> getCharacters() {
-        Character[] chars = new Character[(int)getSize()];
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Character>")
+    public Iterable<? extends Character> getCharacters() {
         int length = value.length();
+        if (length==0) return $empty.getEmpty();
+        Character[] chars = new Character[(int)getSize()];
         for (int offset = 0, i = 0; offset < length; i++) {
             int codePoint = value.codePointAt(offset);
             chars[i] = new Character(codePoint);
             offset += java.lang.Character.charCount(codePoint);
         }
         return new ArraySequence<Character>(chars);
+    }
+    
+    @TypeInfo("ceylon.language.Nothing|ceylon.language.Natural")
+    public Natural firstOccurrence(@Name("substring") java.lang.String substring) {
+    	int index = value.indexOf(substring);
+		return index>=0 ? Natural.instance(index) : null;
+    }
+    
+    @Override
+    public boolean contains(@Name("element") @TypeInfo("ceylon.language.Equality") Object element) {
+    	if (element instanceof String) {
+    	    return firstOccurrence(((String)element).value)!=null;
+    	}
+    	else {
+    		return false;
+    	}
+    }
+    
+    @Override
+    public boolean containsAny(@Sequenced @Name("elements") Iterable<? extends Object> elements) {
+    	return Category$impl.containsAny(this, elements);
+    }
+
+    @Override
+    public boolean containsEvery(@Sequenced @Name("elements") Iterable<? extends Object> elements) {
+    	return Category$impl.containsEvery(this, elements);
+    }
+    
+    public boolean longerThan(@TypeInfo("ceylon.language.Natural") @Name("length") long length) {
+        return getSize()>length; //TODO: really inefficient!
+    }
+
+    public boolean shorterThan(@TypeInfo("ceylon.language.Natural") @Name("length") long length) {
+    	return getSize()<length; //TODO: really inefficient!
+    }
+    
+    public java.lang.String getTrimmed() {
+    	return value.trim();
     }
 
 }

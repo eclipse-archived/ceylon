@@ -136,12 +136,12 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
     }
 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public final Sequence<Element> excludingLast() {
+    public final Iterable<Element> excludingLast() {
         throw new RuntimeException("Not implemented"); //todo!
     }
 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public final Sequence<Element> by(@Name("stepSize") long stepSize){
+    public final Iterable<Element> by(@Name("stepSize") long stepSize){
         throw new ceylon.language.Exception(null, null);
     }
     
@@ -166,7 +166,7 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
 
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element|ceylon.language.Nothing>")
-    public Sequence<? extends Element> span(@TypeInfo("ceylon.language.Natural") long from, @TypeInfo("ceylon.language.Natural") long to) {
+    public Iterable<? extends Element> span(@TypeInfo("ceylon.language.Natural") long from, @TypeInfo("ceylon.language.Natural") long to) {
         throw new RuntimeException("Not implemented"); //todo!
     }
 

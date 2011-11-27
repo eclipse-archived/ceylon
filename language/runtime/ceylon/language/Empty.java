@@ -6,7 +6,7 @@ import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 @SatisfiedTypes({
     "ceylon.language.Correspondence<ceylon.language.Natural,ceylon.language.Bottom>",
-    "ceylon.language.Iterable<ceylon.language.Bottom>",
+    "ceylon.language.Ordered<ceylon.language.Bottom>",
     "ceylon.language.Sized"
 })
 public interface Empty 

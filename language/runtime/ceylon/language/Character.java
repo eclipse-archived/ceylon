@@ -1,6 +1,9 @@
 package ceylon.language;
 
-public final class Character extends Object
+import com.redhat.ceylon.compiler.metadata.java.Name;
+
+public final class Character extends Object 
+        implements Comparable<Character>
 {
     public final int codePoint;
 
@@ -77,5 +80,35 @@ public final class Character extends Object
             return false;
         }
     }
+
+	@Override
+	public Comparison compare(@Name("other") Character other) {
+        long x = codePoint;
+        long y = other.codePoint;
+        return (x < y) ? Comparison.SMALLER :
+            ((x == y) ? Comparison.EQUAL : Comparison.LARGER);
+	}
+
+	@Override
+	public boolean largerThan(@Name("other") Character other) {
+		return codePoint>other.codePoint;
+	}
+
+	@Override
+	public boolean smallerThan(@Name("other") Character other) {
+		return codePoint<other.codePoint;
+	}
+
+	@Override
+	public boolean asLargeAs(@Name("other") Character other) {
+		return codePoint>=other.codePoint;
+	}
+
+	@Override
+	public boolean asSmallAs(@Name("other") Character other) {
+		return codePoint<=other.codePoint;
+	}
+    
+    
     
 }
