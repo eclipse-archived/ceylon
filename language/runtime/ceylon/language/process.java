@@ -31,15 +31,22 @@ public class process extends Object {
 
 //    shared Entries<String,String> properties { throw; }
 
-    public void writeLine(@Name("line") @TypeInfo("ceylon.language.String") java.lang.String s) {
+    public void writeLine(@Name("line") java.lang.String s) {
         java.lang.System.out.println(s);
     }
     
-    public void write(@Name("string") @TypeInfo("ceylon.language.String") java.lang.String s) {
+    public void write(@Name("string") java.lang.String s) {
         java.lang.System.out.print(s);
     }
     
-    @TypeInfo("ceylon.language.String") 
+    public void writeErrorLine(@Name("line") java.lang.String s) {
+        java.lang.System.err.println(s);
+    }
+    
+    public void writeError(@Name("string") java.lang.String s) {
+        java.lang.System.err.print(s);
+    }
+    
     public java.lang.String readLine() {
         try {
             return new java.io.BufferedReader( 
@@ -55,6 +62,10 @@ public class process extends Object {
     
     public long getMilliseconds() {
     	return System.currentTimeMillis();
+    }
+    
+    public void exit(long code) {
+    	System.exit((int) code);
     }
     
     @Override
