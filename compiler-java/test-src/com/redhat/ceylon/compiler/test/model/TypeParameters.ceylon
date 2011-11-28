@@ -58,11 +58,4 @@ class TypeParameters <T,U> (T t, U u) {
   given F satisfies IdentifiableObject {
   return f;
  }
- 
- //
- // lower bounds tests
- F methodWithLowerBounds<F>(F f)
-  given F abstracts InterfaceA {
-  return f;
- }
 }
