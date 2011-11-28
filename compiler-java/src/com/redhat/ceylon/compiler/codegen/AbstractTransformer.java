@@ -694,6 +694,14 @@ public abstract class AbstractTransformer implements Transformation {
         String name = typeParameter.getName();
         java.util.List<ProducedType> satisfiedTypes = typeParameter.getSatisfiedTypes();
         JCExpression nameAttribute = make().Assign(makeIdent("value"), make().Literal(name));
+        // variance
+        String variance = "NONE";
+        if(typeParameter.isCovariant())
+            variance = "OUT";
+        else if(typeParameter.isContravariant())
+            variance = "IN";
+        JCExpression varianceAttribute = make().Assign(makeIdent("variance"), 
+                make().Select(makeIdent(syms().ceylonVarianceType), names().fromString(variance)));
         // upper bounds
         ListBuffer<JCExpression> upperBounds = new ListBuffer<JCTree.JCExpression>();
         for(ProducedType satisfiedType : satisfiedTypes){
@@ -704,7 +712,7 @@ public abstract class AbstractTransformer implements Transformation {
                 make().NewArray(null, null, upperBounds.toList()));
         // all done
         return make().Annotation(makeIdent(syms().ceylonAtTypeParameter), 
-                List.<JCExpression>of(nameAttribute, satisfiesAttribute));
+                List.<JCExpression>of(nameAttribute, varianceAttribute, satisfiesAttribute));
     }
 
     public List<JCAnnotation> makeAtTypeParameters(List<JCExpression> typeParameters) {
