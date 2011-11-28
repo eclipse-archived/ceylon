@@ -17,36 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.test.issues;
 
-import org.junit.Test;
+// Bug193.ceylon:26: <X>x(X) in com.redhat.ceylon.compiler.test.issues.x 
+// cannot be applied to <ceylon.language.Iterable<? extends ceylon.language.String>>
+// (ceylon.language.ArraySequence<ceylon.language.String>)
 
-import com.redhat.ceylon.compiler.test.CompilerTest;
-
-public class IssuesTest extends CompilerTest {
-    
-    @Test
-    public void testBug111(){
-        compareWithJavaSource("Bug111");
-    }
-    
-    @Test
-    public void testBug151(){
-        compileAndRun("com.redhat.ceylon.compiler.test.issues.bug151", "Bug151.ceylon");
-    }
-    
-    @Test
-    public void testBug193(){
-        compareWithJavaSource("Bug193");
-    }
-
-    @Test
-    public void testBug224(){
-        compareWithJavaSource("Bug224");
-    }
-    
-    @Test
-    public void testBug227(){
-        compareWithJavaSource("Bug227");
-    }
+@nomodel
+void x<X>(X x) given X satisfies Sized { 
+    print(x.size);
+}
+@nomodel
+void bug193(){
+    String[] arr = {"hello"}; 
+    x(arr);
+    print(arr.size);
 }
