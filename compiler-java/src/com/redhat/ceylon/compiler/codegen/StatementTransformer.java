@@ -404,6 +404,7 @@ public class StatementTransformer extends AbstractTransformer {
     JCStatement transform(Tree.Return ret) {
         Tree.Expression expr = ret.getExpression();
         JCExpression returnExpr = null;
+        at(ret);
         if (expr != null) {
             // we can cast to TypedDeclaration here because return with expressions are only in Method or Value
             returnExpr = expressionGen().transformExpression(expr.getTerm(), Util.getBoxingStrategy((TypedDeclaration)ret.getDeclaration()));
