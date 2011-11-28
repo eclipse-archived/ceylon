@@ -8,6 +8,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseTypeExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExpressionList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -45,8 +46,8 @@ public class ModuleVisitor extends Visitor {
     
     @Override
     public void visit(Tree.CompilationUnit that) {
-    	unit = that;
-    	super.visit(that);
+        unit = that;
+        super.visit(that);
     }
     
     @Override
@@ -55,8 +56,8 @@ public class ModuleVisitor extends Visitor {
         if (p instanceof Tree.BaseTypeExpression) {
             Identifier id = ((BaseTypeExpression) p).getIdentifier();
             if (id!=null) {
-				if (id.getText().equals("Module")) {
-					Tree.SpecifiedArgument nsa = getArgument(that, "name");
+                if (id.getText().equals("Module")) {
+                    Tree.SpecifiedArgument nsa = getArgument(that, "name");
                     String moduleName = argumentToString(nsa);
                     if (moduleName==null) {
                         unit.addError("missing module name");
@@ -70,42 +71,42 @@ public class ModuleVisitor extends Visitor {
                         mainModule.setDoc(argumentToString(getArgument(that, "doc")));
                         mainModule.setLicense(argumentToString(getArgument(that, "license")));
                         Tree.SpecifiedArgument vsa = getArgument(that, "version");
-						String version = argumentToString(vsa);
-						if (version==null) {
-							unit.addError("missing module version");
-						}
-						else {
-							if (version.isEmpty()) {
-								vsa.addError("empty version identifier");
-							}
-							else {
-								mainModule.setVersion(version);
-							}
-						}
+                        String version = argumentToString(vsa);
+                        if (version==null) {
+                            unit.addError("missing module version");
+                        }
+                        else {
+                            if (version.isEmpty()) {
+                                vsa.addError("empty version identifier");
+                            }
+                            else {
+                                mainModule.setVersion(version);
+                            }
+                        }
                     }
-					List<String> by = argumentToStrings(getArgument(that, "by"));
-					if (by!=null) {
-						mainModule.getAuthors().addAll(by);
-					}
+                    List<String> by = argumentToStrings(getArgument(that, "by"));
+                    if (by!=null) {
+                        mainModule.getAuthors().addAll(by);
+                    }
                 }
                 if (id.getText().equals("Import")) {
-                	Tree.SpecifiedArgument nsa = getArgument(that, "name");
+                    Tree.SpecifiedArgument nsa = getArgument(that, "name");
                     String moduleName = argumentToString(nsa);
                     if (moduleName==null) {
-                    	unit.addError("missing imported module name");
+                        unit.addError("missing imported module name");
                     }
                     else {
                         //TODO: do something with the specified version number!
                         Module importedModule = moduleBuilder.getOrCreateModule(splitModuleName(moduleName));
                         if (!mainModule.getDependencies().contains(importedModule)) {
-                        	mainModule.getDependencies().add(importedModule);
+                            mainModule.getDependencies().add(importedModule);
                         }
                         moduleBuilder.addModuleDependencyDefinition(importedModule, nsa);
                         Tree.SpecifiedArgument vsa = getArgument(that, "version");
                         String version = argumentToString(vsa);
-						if (version.isEmpty()) {
-							vsa.addError("empty version identifier");
-						}
+                        if (version.isEmpty()) {
+                            vsa.addError("empty version identifier");
+                        }
                         //TODO: this is wrong and temporary:
                         if (importedModule.getVersion() == null) {
                             importedModule.setVersion(version);
@@ -116,7 +117,7 @@ public class ModuleVisitor extends Visitor {
                     Tree.SpecifiedArgument nsa = getArgument(that, "name");
                     String packageName = argumentToString(nsa);
                     if (packageName==null) {
-                    	unit.addError("missing package name");
+                        unit.addError("missing package name");
                     }
                     else {
                         if ( !pkg.getNameAsString().equals(packageName) ) {
@@ -124,13 +125,13 @@ public class ModuleVisitor extends Visitor {
                         }
                         pkg.setDoc(argumentToString(getArgument(that, "doc")));
                         String shared = argumentToString(getArgument(that, "shared"));
-						if (shared!=null && shared.equals("true")) {
-							pkg.setShared(true);
-						}
-						List<String> by = argumentToStrings(getArgument(that, "by"));
-						if (by!=null) {
-							pkg.getAuthors().addAll(by);
-						}
+                        if (shared!=null && shared.equals("true")) {
+                            pkg.setShared(true);
+                        }
+                        List<String> by = argumentToStrings(getArgument(that, "by"));
+                        if (by!=null) {
+                            pkg.getAuthors().addAll(by);
+                        }
                     }
                 }
             }
@@ -155,56 +156,59 @@ public class ModuleVisitor extends Visitor {
     }
     
     private List<String> argumentToStrings(Tree.SpecifiedArgument sa) {
-    	if (sa==null) return null;
+        if (sa==null) return null;
         Tree.SpecifierExpression se = sa.getSpecifierExpression();
         if (se!=null && se.getExpression()!=null) {
             Tree.Term term = se.getExpression().getTerm();
-			if ( term instanceof Tree.SequenceEnumeration) {
-				List<String> result = new ArrayList<String>();
-	            for (Tree.Expression exp: ((Tree.SequenceEnumeration) term).getExpressionList().getExpressions()) {
-	            	result.add(termToString(exp.getTerm()));
-	            }
-	            return result;
-	        }
-			else {
-	        	return null;
-			}
+            if ( term instanceof Tree.SequenceEnumeration) {
+                List<String> result = new ArrayList<String>();
+                ExpressionList el = ((Tree.SequenceEnumeration) term).getExpressionList();
+                if (el!=null) {
+                    for (Tree.Expression exp: el.getExpressions()) {
+                        result.add(termToString(exp.getTerm()));
+                    }
+                }
+                return result;
+            }
+            else {
+                return null;
+            }
         }
         else {
-        	return null;
+            return null;
         }
     }
 
     private String argumentToString(Tree.SpecifiedArgument sa) {
-    	if (sa==null) return null;
+        if (sa==null) return null;
         Tree.SpecifierExpression se = sa.getSpecifierExpression();
         if (se!=null && se.getExpression()!=null) {
             Tree.Term term = se.getExpression().getTerm();
-			return termToString(term);
+            return termToString(term);
         }
         else {
-        	return null;
+            return null;
         }
     }
 
-	private String termToString(Tree.Term term) {
-		if (term instanceof Tree.Literal) {
-		    String text = term.getText();
-		    if (text.length()>=2 &&
-		            (text.startsWith("'") && text.endsWith("'") || 
-		            text.startsWith("\"") && text.endsWith("\"")) ) {
-		        return text.substring(1, text.length()-1);
-		    }
-		    else {
-		    	return text;
-		    }
-		}
-		else if ( term instanceof Tree.BaseMemberExpression) {
-			return ((Tree.BaseMemberExpression) term).getIdentifier().getText();
-		}
-		else {
-			return null;
-		}
-	}
+    private String termToString(Tree.Term term) {
+        if (term instanceof Tree.Literal) {
+            String text = term.getText();
+            if (text.length()>=2 &&
+                    (text.startsWith("'") && text.endsWith("'") || 
+                    text.startsWith("\"") && text.endsWith("\"")) ) {
+                return text.substring(1, text.length()-1);
+            }
+            else {
+                return text;
+            }
+        }
+        else if ( term instanceof Tree.BaseMemberExpression) {
+            return ((Tree.BaseMemberExpression) term).getIdentifier().getText();
+        }
+        else {
+            return null;
+        }
+    }
 
 }
