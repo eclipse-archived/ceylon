@@ -58,4 +58,11 @@ class TypeParameters <T,U> (T t, U u) {
   given F satisfies IdentifiableObject {
   return f;
  }
+ 
+ //
+ // variance tests
+ O methodWithVariance<in I, out O>(I i)
+  given I satisfies O{
+  return i;
+ }
 }
