@@ -68,4 +68,46 @@ shared void numbers() {
     assert((-3).sign==-1, "integer sign");
     assert(2.0.sign==+1, "integer sign");
     assert((-3.0).sign==-1, "integer sign");
+    
+    function add<T>(T x, T y) given T satisfies Numeric<T> {
+        return x.plus(y);
+    }
+    function exp<T>(T x, T y) given T satisfies Numeric<T> {
+        return x.power(y);
+    }
+        
+    function addNaturals(Natural x, Natural y) {
+        return x+y;
+    }
+    function addIntegers(Integer x, Integer y) {
+        return x+y;
+    }
+    function addFloats(Float x, Float y) {
+        return x+y;
+    }
+    function multiplyNaturalByFloat(Natural x, Float y) {
+        return x*y;
+    }
+    function multiplyFloatByInteger(Float x, Integer y) {
+        return x*y;
+    }
+    function multiplyNaturalByInteger(Natural x, Integer y) {
+        return x*y;
+    }
+        
+    assert(add(1,2)==3, "");
+    assert(add(-1,+2)==+1, "");
+    assert(add(1.5,-2.5)==-1.0, "");
+    
+    assert(exp(1,2)==1, "");
+    assert(exp(-1,+2)==+1, "");
+    assert(exp(2.0,2.0)==4.0, "");
+    
+    assert(addNaturals(2, 4)==6, "");
+    assert(addIntegers(-2, -4)==-6, "");
+    assert(addFloats(-1.0, 1.0)==0.0, "");
+    
+    assert(multiplyNaturalByFloat(3, 1.5)==4.5, "");
+    assert(multiplyFloatByInteger(1.5, -1)==-1.5, "");                
+    assert(multiplyNaturalByInteger(1, -1)==-1, "");
 }
