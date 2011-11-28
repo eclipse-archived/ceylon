@@ -690,7 +690,9 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtTypeInfoType, List.<JCExpression>of(make().Literal(name)));
     }
 
-    public JCAnnotation makeAtTypeParameter(String name, java.util.List<ProducedType> satisfiedTypes) {
+    public JCAnnotation makeAtTypeParameter(TypeParameter typeParameter) {
+        String name = typeParameter.getName();
+        java.util.List<ProducedType> satisfiedTypes = typeParameter.getSatisfiedTypes();
         JCExpression nameAttribute = make().Assign(makeIdent("value"), make().Literal(name));
         // upper bounds
         ListBuffer<JCExpression> upperBounds = new ListBuffer<JCTree.JCExpression>();
