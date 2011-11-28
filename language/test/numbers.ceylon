@@ -5,12 +5,12 @@ shared void numbers() {
     assert(+1!=+2, "integer not equals");
     assert(1.0==1.0, "float equals");
     assert(1.0!=2.0, "float not equals");
-    assert(1!=+1, "natural equals integer");
-    assert(1!=1.0, "natural equals float");
-    assert(+1!=1.0, "integer equals float");
-    assert(+1!=1, "natural equals integer");
-    assert(1.0!=1, "natural equals float");
-    assert(1.0!=+1, "integer equals float");
+    assert(1==+1, "natural equals integer");
+    assert(1==1.0, "natural equals float");
+    assert(+1==1.0, "integer equals float");
+    assert(+1==1, "natural equals integer");
+    assert(1.0==1, "natural equals float");
+    assert(1.0==+1, "integer equals float");
     assert(1<2, "natural comparison");
     assert(-1<+2, "integer comparison");
     assert(-0.5<0.0, "float comparison");
@@ -26,4 +26,10 @@ shared void numbers() {
     assert(1.5-0.5==1.0, "float subtraction");
     assert(2.0*2.0==4.0, "float multiplication");
     assert(2.0**3.0==8.0, "float exponentiation");
+    assert(2*2.5==5.0, "natural times float");
+    assert(2.5*3==7.5, "natural times float");
+    assert(-1*3==-3, "natural times integer");
+    assert(2*-3==-6, "natural times integer");
+    assert(-1*1.5==-1.5, "integer times float");
+    assert(-1.5*+2==-3.0, "integer times float");
 }
