@@ -1427,15 +1427,18 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
 
 positionalArgument returns [PositionalArgument positionalArgument]
     : //(declarationStart) => specialArgument | 
-      expression
+      /*(parametersStart)=> parameters expression
+    |*/  expression
       { $positionalArgument = new PositionalArgument(null);
         $positionalArgument.setExpression($expression.expression); }
+    /*| 'function' parameters expression
+    | 'value' expression*/
     ;
     
-inlineFunctionalArgument
+/*inlineFunctionalArgument
     : memberName ((parametersStart) => parameters)? 
       (LPAREN expression RPAREN | block)
-    ;
+    ;*/
     
 assignmentExpression returns [Term term]
     : ee1=disjunctionExpression
