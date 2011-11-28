@@ -27,6 +27,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -299,7 +300,20 @@ public class ExpressionTransformer extends AbstractTransformer {
         return at(op).NewClass(null, null, typeExpr , List.<JCExpression> of(key, elem), null);
     }
 
-    public JCExpression transform(Tree.UnaryOperatorExpression op) {
+    public JCExpression transform(Tree.PositiveOp op) {
+        return transformUnaryOperator(op, op.getUnit().getInvertableDeclaration());
+    }
+
+    public JCExpression transform(Tree.NegativeOp op) {
+        return transformUnaryOperator(op, op.getUnit().getInvertableDeclaration());
+    }
+
+    public JCExpression transformUnaryOperator(Tree.UnaryOperatorExpression op, Interface compoundType) {
+        ProducedType leftType = op.getTerm().getTypeModel().getSupertype(compoundType);
+        return transform(op, leftType);
+    }
+
+    public JCExpression transform(Tree.UnaryOperatorExpression op, ProducedType expectedType) {
         at(op);
         Tree.Term term = op.getTerm();
         if (term instanceof Tree.NaturalLiteral && op instanceof Tree.NegativeOp) {
@@ -315,7 +329,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         	return make().Erroneous();
         }
         
-        return make().Apply(null, makeSelect(transformExpression(term), 
+        return make().Apply(null, makeSelect(transformExpression(term, BoxingStrategy.UNBOXED, expectedType), 
                 Util.getGetterName(operatorMethodName)), List.<JCExpression> nil());
     }
 
@@ -381,11 +395,40 @@ public class ExpressionTransformer extends AbstractTransformer {
         return transform(assignOp);
     }
 
-    public JCExpression transform(Tree.BinaryOperatorExpression op) {
+    public JCExpression transform(Tree.ComparisonOp op) {
+        return transformArithmeticOperator(op, op.getUnit().getComparableDeclaration());
+    }
+
+    public JCExpression transform(Tree.ArithmeticOp op) {
+        return transformArithmeticOperator(op, op.getUnit().getNumericDeclaration());
+    }
+    
+    public JCExpression transform(Tree.SumOp op) {
+        return transformArithmeticOperator(op, op.getUnit().getSummableDeclaration());
+    }
+
+    public JCExpression transform(Tree.RemainderOp op) {
+        return transformArithmeticOperator(op, op.getUnit().getIntegralDeclaration());
+    }
+
+    public JCExpression transformArithmeticOperator(Tree.BinaryOperatorExpression op, Interface compoundType) {
+        ProducedType leftType = op.getLeftTerm().getTypeModel().getSupertype(compoundType);
+        ProducedType rightType = getTypeArgument(leftType);
+        return transform(op, leftType, rightType);
+    }
+    
+    private ProducedType getTypeArgument(ProducedType leftType) {
+        if (leftType!=null && leftType.getTypeArguments().size()==1) {
+            return leftType.getTypeArgumentList().get(0);
+        }
+        return null;
+    }
+
+    public JCExpression transform(Tree.BinaryOperatorExpression op, ProducedType leftType, ProducedType rightType) {
         JCExpression result = null;
         
-        JCExpression left = transformExpression(op.getLeftTerm());
-        JCExpression right = transformExpression(op.getRightTerm());
+        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, leftType);
+        JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, rightType);
         
         if (op instanceof Tree.IdenticalOp) {
             result = at(op).Binary(JCTree.EQ, left, right);

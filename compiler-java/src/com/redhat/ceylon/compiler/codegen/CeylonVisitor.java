@@ -326,10 +326,34 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.UnaryOperatorExpression op) {
+        append(gen.expressionGen().transform(op, null));
+    }
+
+    public void visit(Tree.PositiveOp op) {
+        append(gen.expressionGen().transform(op));
+    }
+
+    public void visit(Tree.NegativeOp op) {
         append(gen.expressionGen().transform(op));
     }
 
     public void visit(Tree.BinaryOperatorExpression op) {
+        append(gen.expressionGen().transform(op, null, null));
+    }
+    
+    public void visit(Tree.ComparisonOp op) {
+        append(gen.expressionGen().transform(op));
+    }
+
+    public void visit(Tree.ArithmeticOp op) {
+        append(gen.expressionGen().transform(op));
+    }
+    
+    public void visit(Tree.SumOp op) {
+        append(gen.expressionGen().transform(op));
+    }
+    
+    public void visit(Tree.RemainderOp op) {
         append(gen.expressionGen().transform(op));
     }
 
