@@ -34,11 +34,12 @@ public final class String extends Object
     }
 
     @Override
-    public boolean equals(@Name("that") java.lang.Object that) {
+    public boolean equals(@Name("that") @TypeInfo("ceylon.language.Equality") java.lang.Object that) {
         if (that instanceof String) {
             String s = (String)that;
             return value.equals(s.value);
-        } else {
+        } 
+        else {
             return false;
         }
     }

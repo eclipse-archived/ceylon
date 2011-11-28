@@ -229,7 +229,7 @@ public final class Natural
     }
     
     @Override
-    public boolean equals(java.lang.Object s) {
+    public boolean equals(@Name("that") @TypeInfo("ceylon.language.Equality") java.lang.Object s) {
         if (s instanceof Natural) {
             return value == ((Natural)s).value;
         } 

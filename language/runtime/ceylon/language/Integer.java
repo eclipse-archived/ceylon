@@ -210,7 +210,7 @@ public final class Integer
     }
     
     @Override
-    public boolean equals(@Name("that") java.lang.Object that) {
+    public boolean equals(@Name("that") @TypeInfo("ceylon.language.Equality") java.lang.Object that) {
         if (that instanceof Natural) {
             return value == ((Natural)that).value;
         } 

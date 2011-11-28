@@ -1,6 +1,7 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.metadata.java.Name;
+import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 public final class Character extends Object 
         implements Comparable<Character>
@@ -69,7 +70,7 @@ public final class Character extends Object
     }
 
     @Override
-    public boolean equals(java.lang.Object obj) {
+    public boolean equals(@Name("that") @TypeInfo("ceylon.language.Equality") java.lang.Object obj) {
         if (this == obj)
             return true;
         if (obj instanceof Character) {

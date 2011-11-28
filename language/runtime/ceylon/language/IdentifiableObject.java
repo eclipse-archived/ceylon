@@ -1,10 +1,11 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.metadata.java.Name;
+import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 public abstract class IdentifiableObject extends Object implements Equality {
 
-    public boolean equals(@Name("that") java.lang.Object that) {
+    public boolean equals(@Name("that") @TypeInfo("ceylon.language.Equality") java.lang.Object that) {
         //TODO: this is broken:   
         if (that instanceof IdentifiableObject ) {
             return this == that;

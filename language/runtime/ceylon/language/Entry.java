@@ -2,6 +2,7 @@ package ceylon.language;
 
 import com.redhat.ceylon.compiler.metadata.java.Ceylon;
 import com.redhat.ceylon.compiler.metadata.java.Name;
+import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 import com.redhat.ceylon.compiler.metadata.java.TypeParameter;
 import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
 import com.redhat.ceylon.compiler.metadata.java.Variance;
@@ -38,7 +39,7 @@ public class Entry<Key, Item>
 	}
 	
 	@Override
-	public boolean equals(@Name("that") java.lang.Object that) {
+	public boolean equals(@Name("that") @TypeInfo("ceylon.language.Equality") java.lang.Object that) {
 		if (that instanceof Entry) {
 			Entry<Key, Item> that2 = (Entry)that;
 			return (this.key.equals(that2.key) && this.item.equals(that2.item));

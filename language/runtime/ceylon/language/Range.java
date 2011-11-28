@@ -141,12 +141,14 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
     }
     
     @Override
-    public final boolean equals(@Name("that") java.lang.Object that){
-        if(that instanceof Range){
+    public final boolean equals(@Name("that") @TypeInfo("ceylon.language.Equality") java.lang.Object that){
+        if(that instanceof Range) {
             Range<Element> $that = (Range<Element>) that;
             return $that.getFirst().equals(getFirst()) && $that.getLast().equals(getLast());
-        }else
+        }
+        else {
             return false;
+        }
     }
     
     @Override
