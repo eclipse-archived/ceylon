@@ -113,12 +113,12 @@ public final class Integer
     }
     
     @Override
-    public Integer getSign() {
+    public int getSign() {
         if (value > 0)
-            return Integer.instance(1);
+            return 1;
         if (value < 0)
-            return Integer.instance(-1);
-        return Integer.instance(0);
+            return -1;
+        return 0;
     }
     
     @Override
@@ -173,11 +173,6 @@ public final class Integer
     @Override
     public double getFloat() {
         return (double) value;
-    }
-    
-    @Override
-    public boolean getIntegral() {
-        return true;
     }
     
     @Override

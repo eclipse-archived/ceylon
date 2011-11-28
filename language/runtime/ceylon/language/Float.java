@@ -111,12 +111,12 @@ public final class Float
     }
     
     @Override
-    public Integer getSign() {
+    public int getSign() {
         if (value > 0)
-            return Integer.instance(1);
+            return 1;
         if (value < 0)
-            return Integer.instance(-1);
-        return Integer.instance(0);
+            return -1;
+        return 0;
     }	
     
     @Override
@@ -162,21 +162,6 @@ public final class Float
     @Override
     public double getFloat() {
         return value;
-    }
-    
-    @Override
-    public boolean getIntegral() {
-        return value == (double) Math.round(value);
-    }
-    
-    @Override
-    public boolean getUnit() {
-        return value==1.0;
-    }
-    
-    @Override
-    public boolean getZero() {
-        return value==0.0;
     }
     
     @Override
