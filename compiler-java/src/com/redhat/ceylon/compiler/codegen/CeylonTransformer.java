@@ -230,7 +230,9 @@ public class CeylonTransformer extends AbstractTransformer {
                 AttributeDeclaration adecl = (AttributeDeclaration)decl;
                 if (adecl.getSpecifierOrInitializerExpression() != null) {
                     builder.initialValue(expressionGen().transformExpression(
-                            adecl.getSpecifierOrInitializerExpression().getExpression(), Util.getBoxingStrategy(declarationModel)));
+                            adecl.getSpecifierOrInitializerExpression().getExpression(), 
+                            Util.getBoxingStrategy(declarationModel),
+                            declarationModel.getType()));
                 }
             } else {
                 // For inner and toplevel getters

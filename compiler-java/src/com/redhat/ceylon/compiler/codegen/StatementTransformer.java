@@ -208,7 +208,8 @@ public class StatementTransformer extends AbstractTransformer {
             }
         } else if (cond instanceof Tree.BooleanCondition) {
             Tree.BooleanCondition booleanCondition = (Tree.BooleanCondition) cond;
-            test = expressionGen().transformExpression(booleanCondition.getExpression(), BoxingStrategy.UNBOXED);
+            test = expressionGen().transformExpression(booleanCondition.getExpression(), 
+                    BoxingStrategy.UNBOXED, null);
         } else {
             throw new RuntimeException("Not implemented: " + cond.getNodeType());
         }
@@ -302,13 +303,14 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         String loop_var_name = variable.getIdentifier().getText();
-        ProducedType sequence_element_type = typeFact().getIteratedType(iterDecl.getSpecifierExpression().getExpression().getTypeModel());
+        Expression specifierExpression = iterDecl.getSpecifierExpression().getExpression();
+        ProducedType sequence_element_type = typeFact().getIteratedType(specifierExpression.getTypeModel());
         ProducedType iter_type = typeFact().getIteratorType(sequence_element_type);
         JCExpression iter_type_expr = makeJavaType(iter_type, CeylonTransformer.TYPE_ARGUMENT);
         List<JCAnnotation> annots = makeJavaTypeAnnotations(variable.getDeclarationModel());
 
         // ceylon.language.Iterator<T> $V$iter$X = ITERABLE.getIterator();
-        JCExpression containment = expressionGen().transformExpression(iterDecl.getSpecifierExpression().getExpression(), BoxingStrategy.BOXED);
+        JCExpression containment = expressionGen().transformExpression(specifierExpression, BoxingStrategy.BOXED, null);
         JCVariableDecl iter_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(aliasName(loop_var_name + "$iter")), iter_type_expr, at(stmt).Apply(null, makeSelect(containment, "getIterator"), List.<JCExpression> nil()));
         JCIdent iter_id = at(stmt).Ident(iter_decl.getName());
         
@@ -377,7 +379,9 @@ public class StatementTransformer extends AbstractTransformer {
         
         JCExpression initialValue = null;
         if (decl.getSpecifierOrInitializerExpression() != null) {
-            initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), Util.getBoxingStrategy(decl.getDeclarationModel()));
+            initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), 
+                    Util.getBoxingStrategy(decl.getDeclarationModel()), 
+                    decl.getDeclarationModel().getType());
         }
 
         JCExpression type = makeJavaType(t);
@@ -407,7 +411,10 @@ public class StatementTransformer extends AbstractTransformer {
         at(ret);
         if (expr != null) {
             // we can cast to TypedDeclaration here because return with expressions are only in Method or Value
-            returnExpr = expressionGen().transformExpression(expr.getTerm(), Util.getBoxingStrategy((TypedDeclaration)ret.getDeclaration()));
+            TypedDeclaration declaration = (TypedDeclaration)ret.getDeclaration();
+            returnExpr = expressionGen().transformExpression(expr.getTerm(), 
+                    Util.getBoxingStrategy(declaration),
+                    declaration.getType());
             // FIXME Temporary work-around for hashCode() until we get "small" annotations!
             if (isCeylonInteger(expr.getTypeModel())) {
                 MethodOrValue m = (MethodOrValue)ret.getDeclaration();

@@ -32,6 +32,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
@@ -110,7 +111,10 @@ public class ClassTransformer extends AbstractTransformer {
         if (!Decl.isFormal(decl) && createField) {
             JCExpression initialValue = null;
             if (decl.getSpecifierOrInitializerExpression() != null) {
-                initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), Util.getBoxingStrategy(decl.getDeclarationModel()));
+                Value declarationModel = decl.getDeclarationModel();
+                initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), 
+                        Util.getBoxingStrategy(declarationModel), 
+                        declarationModel.getType());
             }
 
             int flags = 0;

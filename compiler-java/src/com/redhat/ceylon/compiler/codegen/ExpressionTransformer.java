@@ -101,10 +101,10 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     JCExpression transformExpression(final Tree.Term expr) {
-        return transformExpression(expr, BoxingStrategy.BOXED);
+        return transformExpression(expr, BoxingStrategy.BOXED, null);
     }
 
-    JCExpression transformExpression(final Tree.Term expr, BoxingStrategy boxingStrategy) {
+    JCExpression transformExpression(final Tree.Term expr, BoxingStrategy boxingStrategy, ProducedType expectedType) {
         CeylonVisitor v = new CeylonVisitor(gen());
         if (expr instanceof Tree.Expression) {
             // Cope with things like ((expr))
@@ -124,7 +124,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression result = v.getSingleResult();
         
         result = boxUnboxIfNecessary(result, expr, boxingStrategy);
-        
+
+        if (expectedType != null && willEraseToObject(expr.getTypeModel())) {
+            // Erased types need a type cast
+            JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.TYPE_ARGUMENT);
+            result = make().TypeCast(targetType, result);
+        }
+
         return result;
     }
     
@@ -150,7 +156,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             at(expression);
             if (isCeylonBasicType(expression.getTypeModel())) {// TODO: Test should be erases to String, long, int, boolean, char, byte, float, double
                 // If erases to a Java primitive just call append, don't box it just to call format. 
-                builder = make().Apply(null, makeSelect(builder, "append"), List.<JCExpression>of(transformExpression(expression, BoxingStrategy.UNBOXED)));
+                builder = make().Apply(null, makeSelect(builder, "append"), List.<JCExpression>of(transformExpression(expression, BoxingStrategy.UNBOXED, null)));
             } else {
                 JCMethodInvocation formatted = make().Apply(null, makeSelect(transformExpression(expression), "getFormatted"), List.<JCExpression>nil());
                 builder = make().Apply(null, makeSelect(builder, "append"), List.<JCExpression>of(formatted));
@@ -204,7 +210,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.NotOp op) {
-        JCExpression term = transformExpression(op.getTerm(), Util.getBoxingStrategy(op));
+        JCExpression term = transformExpression(op.getTerm(), Util.getBoxingStrategy(op), null);
         JCUnary jcu = at(op).Unary(JCTree.NOT, term);
         return jcu;
     }
@@ -220,8 +226,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         TypedDeclaration decl = (TypedDeclaration) ((Tree.Primary)leftTerm).getDeclaration();
 
         // right side is easy
-        JCExpression rhs = transformExpression(rightTerm, Util.getBoxingStrategy(decl));
-        
+        JCExpression rhs = transformExpression(rightTerm, Util.getBoxingStrategy(decl), null);
+         
         // left side depends
         
         JCExpression expr = null;
@@ -411,8 +417,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.LogicalOp op) {
-        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.UNBOXED);
-        JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.UNBOXED);
+        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.UNBOXED, null);
+        JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.UNBOXED, null);
 
         JCBinary jcb = null;
         if (op instanceof AndOp) {
@@ -703,7 +709,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         // deal with upstream errors, must have already been reported so let's not throw further
         if(arg.getParameter() == null)
             return make().Erroneous();
-        return transformExpression(arg.getExpression(), Util.getBoxingStrategy(arg.getParameter()));
+        return transformExpression(arg.getExpression(), 
+                Util.getBoxingStrategy(arg.getParameter()), 
+                arg.getParameter().getType());
     }
 
     Expression getArgExpression(Tree.NamedArgument arg) {
@@ -781,13 +789,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     public JCExpression transform(Tree.QualifiedMemberExpression expr) {
-        JCExpression primaryExpr = transformExpression(expr.getPrimary(), BoxingStrategy.BOXED);
-        
-        if (willEraseToObject(expr.getPrimary().getTypeModel())) {
-            // Erased types need a type cast
-            JCExpression targetType = makeJavaType(expr.getTarget().getQualifyingType());
-            primaryExpr = make().TypeCast(targetType, primaryExpr);
-        }
+        JCExpression primaryExpr = transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, 
+                expr.getTarget().getQualifyingType());
         
         return transformMemberExpression(expr, primaryExpr);
     }
@@ -951,7 +954,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         ElementOrRange elementOrRange = access.getElementOrRange();
         if(elementOrRange instanceof Tree.Element){
             Tree.Element element = (Element) elementOrRange;
-            JCExpression index = transformExpression(element.getExpression(), BoxingStrategy.BOXED);
+            JCExpression index = transformExpression(element.getExpression(), BoxingStrategy.BOXED, null);
             if(!safe)
                 // make a "lhs.item(index)" call
                 return at(access).Apply(List.<JCTree.JCExpression>nil(), 
@@ -973,8 +976,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             return make().LetExpr(tmpVar, conditional);
         }else{
             Tree.ElementRange range = (ElementRange) elementOrRange;
-            JCExpression start = transformExpression(range.getLowerBound(), BoxingStrategy.UNBOXED);
-            JCExpression end = transformExpression(range.getUpperBound(), BoxingStrategy.UNBOXED);
+            JCExpression start = transformExpression(range.getLowerBound(), BoxingStrategy.UNBOXED, null);
+            JCExpression end = transformExpression(range.getUpperBound(), BoxingStrategy.UNBOXED, null);
             // make a "lhs.span(start, end)" call
             return at(access).Apply(List.<JCTree.JCExpression>nil(), 
                     make().Select(lhs, names().fromString("span")), List.of(start, end));
