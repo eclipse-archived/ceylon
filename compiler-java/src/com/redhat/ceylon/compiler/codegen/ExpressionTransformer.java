@@ -586,7 +586,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                 type = namedArgType(namedArg);
             }
             argExpr = make().TypeCast(makeJavaType(type, AbstractTransformer.TYPE_ARGUMENT), argExpr);
-            callArgsArray.set(declaredParams.indexOf(declaredParam), unboxType(argExpr, declaredParam.getType()));
+            if (Util.getBoxingStrategy(declaredParam) == BoxingStrategy.UNBOXED) {
+                argExpr = unboxType(argExpr, declaredParam.getType());
+            }
+            callArgsArray.set(declaredParams.indexOf(declaredParam), argExpr);
         }
         if (sequencedArgument != null) {
             int index = namedArguments.size();
@@ -639,7 +642,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             CeylonVisitor visitor = new CeylonVisitor(gen(), typeArgs, callArgs);
             memberExpr.getPrimary().visit(visitor);
             if (visitor.hasResult()) {
-                passArgs.prepend((JCExpression)visitor.getSingleResult());
+                //passArgs.prepend((JCExpression)visitor.getSingleResult());
+                passArgs.prepend(boxType((JCExpression)visitor.getSingleResult(), memberExpr.getPrimary().getTypeModel()));
             }
             receiverType = makeJavaType(memberExpr.getPrimary().getTypeModel(), AbstractTransformer.TYPE_ARGUMENT);
             receiver = makeSelect("this", "instance", methodName);
@@ -651,12 +655,14 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         // Construct the call$() method
         boolean isVoid = ce.getTypeModel().isExactly(typeFact().getVoidDeclaration().getType());
-        int spec = 0;
+        //int spec = 0;
+        int spec = AbstractTransformer.NO_PRIMITIVES;
         if(isTypeParameter(determineExpressionType(ce)))
             spec = AbstractTransformer.TYPE_ARGUMENT;
         else if(generateNew)
             spec = AbstractTransformer.CLASS_NEW;
         JCExpression resultType = makeJavaType(ce.getTypeModel(), spec);
+        
         final String callMethodName = "call$";
         MethodDefinitionBuilder callMethod = MethodDefinitionBuilder.method(gen(), callMethodName);
         callMethod.modifiers(Flags.PUBLIC);
