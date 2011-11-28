@@ -1547,12 +1547,18 @@ comparisonExpression returns [Term term]
           $term = $comparisonOperator.operator; }
         ee2=existenceEmptinessExpression
         { $comparisonOperator.operator.setRightTerm($ee2.term); }
-      | typeOperator
-        { $typeOperator.operator.setTerm($ee1.term); 
-          $term = $typeOperator.operator;}
-        type
-        { $typeOperator.operator.setType($type.type); }
+      | to1=typeOperator
+        { $to1.operator.setTerm($ee1.term); 
+          $term = $to1.operator;}
+        t1=type
+        { $to1.operator.setType($t1.type); }
       )?
+    | to2=typeOperator
+      { $term = $to2.operator; }
+      t2=type
+      { $to2.operator.setType($t2.type); }
+      ee3=existenceEmptinessExpression
+      { $to2.operator.setTerm($ee3.term); }
     ;
 
 comparisonOperator returns [BinaryOperatorExpression operator]
@@ -1580,13 +1586,17 @@ typeOperator returns [TypeOperatorExpression operator]
     ;
 
 existenceEmptinessExpression returns [Term term]
-    : defaultExpression
-      { $term = $defaultExpression.term; }
+    : de1=defaultExpression
+      { $term = $de1.term; }
       (
-        existsNonemptyOperator
-        { $term = $existsNonemptyOperator.operator;
-          $existsNonemptyOperator.operator.setTerm($defaultExpression.term); }
+        eno1=existsNonemptyOperator
+        { $term = $eno1.operator;
+          $eno1.operator.setTerm($de1.term); }
       )?
+    | eno2=existsNonemptyOperator
+      { $term = $eno2.operator; }
+      de2=defaultExpression
+      { $eno2.operator.setTerm($de2.term); }
     ;
 
 existsNonemptyOperator returns [UnaryOperatorExpression operator]
@@ -2028,16 +2038,16 @@ compilerAnnotation returns [CompilerAnnotation annotation]
 
 
 condition returns [Condition condition]
-    : booleanCondition
-      { $condition=$booleanCondition.condition; }
-    | existsCondition
+    : (LPAREN 'exists')=>existsCondition
       { $condition=$existsCondition.condition; }
-    | nonemptyCondition
+    | (LPAREN 'nonempty')=>nonemptyCondition
       { $condition=$nonemptyCondition.condition; }
-    | isCondition 
+    | (LPAREN 'is')=>isCondition 
       { $condition=$isCondition.condition; }
-    | satisfiesCondition
+    | (LPAREN 'satisfies')=>satisfiesCondition
       { $condition=$satisfiesCondition.condition; }
+    | booleanCondition
+      { $condition=$booleanCondition.condition; }
     ;
     
 booleanCondition returns [BooleanCondition condition]
@@ -2264,12 +2274,12 @@ defaultCaseBlock returns [ElseClause clause]
     ;
 
 caseItem returns [CaseItem item]
-    : matchCaseCondition
-      { $item=$matchCaseCondition.item; }
-    | isCaseCondition 
+    : ('is')=>isCaseCondition 
       { $item=$isCaseCondition.item; }
-    | satisfiesCaseCondition
+    | ('satisfies')=>satisfiesCaseCondition
       { $item=$satisfiesCaseCondition.item; }
+    | matchCaseCondition
+      { $item=$matchCaseCondition.item; }
     ;
 
 matchCaseCondition returns [MatchCase item]

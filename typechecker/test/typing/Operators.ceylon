@@ -88,12 +88,21 @@ class Operators() {
     @error value x28 = 0->nothing;
     
     @type["Boolean"] value x29 = nothing exists;
+    @type["Boolean"] value x29n = exists nothing;
     
     @error value x30 = 1 exists;
+    @error value x30n = exists 1;
+    
+    @type["Boolean"] value x70 = {} nonempty;
+    @type["Boolean"] value x70n = nonempty {};
+    @error value x71 = {"hello"} nonempty;
+    @error value x71n = nonempty {"hello"};
     
     @type["Boolean"] value x31 = 1 is Natural;
+    @type["Boolean"] value x31n = is Natural 1;
     
     @type["Boolean"] value x32 = nothing is Natural;
+    @type["Boolean"] value x32n = is Natural nothing;
     
     @type["Boolean"] value x33 = 1 in {1, 2};
     
