@@ -17,4 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-TypeParameters<Natural,String> k = TypeParameters<Natural,String>(1, "foo");
+TypeParameters<Natural,String> t1 = TypeParameters<Natural,String>(1, "foo");
+
+class T2() satisfies InterfaceA & InterfaceB {}
+ClassWithUpperBounds<T2> t2 = ClassWithUpperBounds(T2());
+
+class T3() satisfies InterfaceWithTypeParam<InterfaceA, InterfaceB>{}
+ClassWithParameterizedUpperBounds<T3> t3 = ClassWithParameterizedUpperBounds(T3());
+
+class T4() satisfies InterfaceWithTypeParam<T4, T4>{}
+ClassWithSelfParameterizedUpperBounds<T4> t4 = ClassWithSelfParameterizedUpperBounds(T4());
+
+ClassWithErasedUpperBounds<T2> t5 = ClassWithErasedUpperBounds(T2());
+
+ClassWithVariance<Number, Number> t6 = ClassWithVariance<Number, Number>(1);
