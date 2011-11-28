@@ -216,9 +216,16 @@ public final class Integer
     
     @Override
     public boolean equals(@Name("that") java.lang.Object that) {
-        if (that instanceof Integer) {
+        if (that instanceof Natural) {
+            return value == ((Natural)that).value;
+        } 
+        else if (that instanceof Integer) {
             return value == ((Integer)that).value;
-        } else {
+        } 
+        else if (that instanceof Float) {
+            return value == ((Float)that).value;
+        } 
+        else {
             return false;
         }
     }

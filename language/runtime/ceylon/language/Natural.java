@@ -237,7 +237,14 @@ public final class Natural
     public boolean equals(java.lang.Object s) {
         if (s instanceof Natural) {
             return value == ((Natural)s).value;
-        } else {
+        } 
+        else if (s instanceof Integer) {
+            return value == ((Integer)s).value;
+        } 
+        else if (s instanceof Float) {
+            return value == ((Float)s).value;
+        } 
+        else {
             return false;
         }
     }
