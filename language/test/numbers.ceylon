@@ -32,4 +32,40 @@ shared void numbers() {
     assert(2*-3==-6, "natural times integer");
     assert(-1*1.5==-1.5, "integer times float");
     assert(-1.5*+2==-3.0, "integer times float");
+    
+    assert(1.negativeValue==-1, "natural negative");
+    assert(-1.negativeValue==+1, "integer negative");
+    assert(1.0.negativeValue==-1.0, "float negative");
+    assert(1.positiveValue==1, "natural positive");
+    assert(-1.positiveValue==-1, "integer positive");
+    assert(1.0.positiveValue==1.0, "float positive");
+    
+    assert(12.string=="12", "natural string");
+    assert((-12).string=="-12", "integer string");
+    assert((-5.5).string=="-5.5", "float string");
+    
+    assert(1.unit, "natural unit");
+    assert(!2.unit, "natural unit");
+    assert(0.zero, "natural zero");
+    assert(!1.zero, "natural zero");
+    assert(2.successor==3, "natural successor");
+    assert(2.predecessor==1, "natural predecessor");
+    assert((+1).unit, "integer unit");
+    assert(!(-1).unit, "integer unit");
+    assert((+0).zero, "integer zero");
+    assert(!(+1).zero, "integer zero");
+    assert((-2).successor==-1, "integer successor");
+    assert((-2).predecessor==-3, "integer predecessor");
+    
+    assert(2.fractionalPart==0, "natural fractional");
+    assert((-1).fractionalPart==0, "integer fractional");
+    assert(1.5.fractionalPart==0.5, "float fractional");
+    assert(2.wholePart==2, "natural fractional");
+    assert((-1).wholePart==-1, "integer fractional");
+    assert(1.5.wholePart==1.0, "float fractional");
+    
+    assert((+2).sign==+1, "integer sign");
+    assert((-3).sign==-1, "integer sign");
+    assert(2.0.sign==+1, "integer sign");
+    assert((-3.0).sign==-1, "integer sign");
 }
