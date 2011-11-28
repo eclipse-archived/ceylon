@@ -120,6 +120,13 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("boxing/StringBoxing");
     }
 
+    // Erasure
+    
+    @Test
+    public void testErsErasure(){
+        compareWithJavaSource("erasure/Erasure");
+    }
+
 
     // Literals
     
