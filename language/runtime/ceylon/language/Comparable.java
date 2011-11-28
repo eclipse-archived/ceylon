@@ -9,7 +9,7 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
 @Ceylon
 @TypeParameters({
     @TypeParameter(value = "Other", variance = Variance.IN)
- })
+})
 public interface Comparable<Other extends Comparable<Other>> extends Equality {
     
     public Comparison compare(@Name("other") Other other);
