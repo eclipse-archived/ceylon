@@ -93,7 +93,7 @@ public class ModuleBuilder {
 
     public Module getOrCreateModule(List<String> moduleName) {
         if (moduleName.size() == 0) {
-            throw new RuntimeException("Module cannot be top level");
+            return null;
         }
         Module module = null;
         final Set<Module> moduleList = context.getModules().getListOfModules();
