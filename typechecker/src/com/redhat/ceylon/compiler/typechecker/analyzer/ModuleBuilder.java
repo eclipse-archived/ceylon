@@ -17,6 +17,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
 /**
  * Build modules and packages
@@ -31,6 +32,7 @@ public class ModuleBuilder {
     private Module currentModule;
     private Modules modules;
     private final Map<Module,Set<Node>> missingModuleDependencies = new HashMap<Module, Set<Node>>();
+    private Map<List<String>, Set<String>> topLevelErrorsPerModuleName = new HashMap<List<String>,Set<String>>();
 
     public ModuleBuilder(Context context) {
         this.context = context;
@@ -116,8 +118,13 @@ public class ModuleBuilder {
             final Package currentPkg = packageStack.peekLast();
             final List<String> moduleName = currentPkg.getName();
             currentModule = getOrCreateModule(moduleName);
-            currentModule.setAvailable(true);
-            bindPackageToModule(currentPkg, currentModule);
+            if ( currentModule != null ) {
+                currentModule.setAvailable(true);
+                bindPackageToModule(currentPkg, currentModule);
+            }
+            else {
+                collectError(new ArrayList<String>(), "A module cannot be defined at the top level of the hierarchy");
+            }
         }
         else {
             StringBuilder error = new StringBuilder("Found two modules within the same hierarchy: '");
@@ -125,8 +132,18 @@ public class ModuleBuilder {
                 .append( "' and '" )
                 .append( formatPath( packageStack.peekLast().getName() ) )
                 .append("'");
-            System.err.println(error);
+            collectError(currentModule.getName(), error.toString());
+            collectError(packageStack.peekLast().getName(), error.toString());
         }
+    }
+
+    private void collectError(List<String> moduleName, String error) {
+        Set<String> errors = topLevelErrorsPerModuleName.get(moduleName);
+        if (errors == null) {
+            errors = new HashSet<String>();
+            topLevelErrorsPerModuleName.put(moduleName, errors);
+        }
+        errors.add(error);
     }
 
     private void createPackageAndAddToModule(String path) {
@@ -184,6 +201,15 @@ public class ModuleBuilder {
         }
         else {
             System.err.println("This is a type checker bug, please report. \nExpecting to add missing dependency error on non present definition: " + error);
+        }
+    }
+
+    public void addErrorsToModule(Module module, Node unit) {
+        Set<String> errors = topLevelErrorsPerModuleName.get(module.getName());
+        if (errors != null) {
+            for(String error : errors) {
+                unit.addError(error);
+            }
         }
     }
 }

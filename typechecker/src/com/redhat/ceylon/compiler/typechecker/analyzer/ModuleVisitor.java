@@ -65,28 +65,34 @@ public class ModuleVisitor extends Visitor {
                     else {
                         //mainModule = pkg.getModule();
                         mainModule = moduleBuilder.getOrCreateModule(pkg.getName()); //in compiler the Package has a null Module
-                        if ( !mainModule.getNameAsString().equals(moduleName) ) {
-                            nsa.addError("module name does not match descriptor location");
-                        }
-                        mainModule.setDoc(argumentToString(getArgument(that, "doc")));
-                        mainModule.setLicense(argumentToString(getArgument(that, "license")));
-                        Tree.SpecifiedArgument vsa = getArgument(that, "version");
-                        String version = argumentToString(vsa);
-                        if (version==null) {
-                            unit.addError("missing module version");
+                        if (mainModule == null) {
+                            unit.addError("A module cannot be defined at the top level of the hierarchy");
                         }
                         else {
-                            if (version.isEmpty()) {
-                                vsa.addError("empty version identifier");
+                            if ( !mainModule.getNameAsString().equals(moduleName) ) {
+                                nsa.addError("module name does not match descriptor location");
+                            }
+                            moduleBuilder.addErrorsToModule(mainModule, unit);
+                            mainModule.setDoc(argumentToString(getArgument(that, "doc")));
+                            mainModule.setLicense(argumentToString(getArgument(that, "license")));
+                            Tree.SpecifiedArgument vsa = getArgument(that, "version");
+                            String version = argumentToString(vsa);
+                            if (version==null) {
+                                unit.addError("missing module version");
                             }
                             else {
-                                mainModule.setVersion(version);
+                                if (version.isEmpty()) {
+                                    vsa.addError("empty version identifier");
+                                }
+                                else {
+                                    mainModule.setVersion(version);
+                                }
+                            }
+                            List<String> by = argumentToStrings(getArgument(that, "by"));
+                            if (by!=null) {
+                                mainModule.getAuthors().addAll(by);
                             }
                         }
-                    }
-                    List<String> by = argumentToStrings(getArgument(that, "by"));
-                    if (by!=null) {
-                        mainModule.getAuthors().addAll(by);
                     }
                 }
                 if (id.getText().equals("Import")) {
@@ -98,18 +104,23 @@ public class ModuleVisitor extends Visitor {
                     else {
                         //TODO: do something with the specified version number!
                         Module importedModule = moduleBuilder.getOrCreateModule(splitModuleName(moduleName));
-                        if (!mainModule.getDependencies().contains(importedModule)) {
-                            mainModule.getDependencies().add(importedModule);
+                        if (importedModule == null) {
+                            nsa.addError("A module cannot be defined at the top level of the hierarchy");
                         }
-                        moduleBuilder.addModuleDependencyDefinition(importedModule, nsa);
-                        Tree.SpecifiedArgument vsa = getArgument(that, "version");
-                        String version = argumentToString(vsa);
-                        if (version.isEmpty()) {
-                            vsa.addError("empty version identifier");
-                        }
-                        //TODO: this is wrong and temporary:
-                        if (importedModule.getVersion() == null) {
-                            importedModule.setVersion(version);
+                        else {
+                            if (!mainModule.getDependencies().contains(importedModule)) {
+                                mainModule.getDependencies().add(importedModule);
+                            }
+                            moduleBuilder.addModuleDependencyDefinition(importedModule, nsa);
+                            Tree.SpecifiedArgument vsa = getArgument(that, "version");
+                            String version = argumentToString(vsa);
+                            if (version.isEmpty()) {
+                                vsa.addError("empty version identifier");
+                            }
+                            //TODO: this is wrong and temporary:
+                            if (importedModule.getVersion() == null) {
+                                importedModule.setVersion(version);
+                            }
                         }
                     }
                 }
