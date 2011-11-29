@@ -18,7 +18,7 @@ class NamedArgumentInvocationInitWithSequence {
                 return new com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocationInitWithSequence(((ceylon.language.String)this.args[0]).toString(), (ceylon.language.Iterable<? extends ceylon.language.Natural>)this.args[1]);
             }
         }.call$().m();
-        new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, .ceylon.language.String.instance(""), .ceylon.language.Boolean.instance(true), new ceylon.language.ArraySequence<ceylon.language.Integer>(.ceylon.language.Integer.instance(4), .ceylon.language.Integer.instance(5), .ceylon.language.Integer.instance(6))){
+        new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, .ceylon.language.String.instance(""), .ceylon.language.Boolean.instance(true), new ceylon.language.ArraySequence<ceylon.language.Integer>(.ceylon.language.Integer.instance(4L), .ceylon.language.Integer.instance(5L), .ceylon.language.Integer.instance(6L))){
             
             public com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocationInitWithSequence.Inner call$() {
                 return new com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocationInitWithSequence.Inner(((ceylon.language.Boolean)this.args[1]).booleanValue(), ((ceylon.language.String)this.args[0]).toString(), (ceylon.language.Iterable<? extends ceylon.language.Integer>)this.args[2]);

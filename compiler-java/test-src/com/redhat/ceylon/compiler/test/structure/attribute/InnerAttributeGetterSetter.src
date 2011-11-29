@@ -16,9 +16,9 @@ class InnerAttributeGetterSetter {
         final innerGetterSetter$getter innerGetterSetter$getter = new innerGetterSetter$getter();
         
         final class innerGetterSetter$setter {
-            private .java.lang.Object value;
+            private long value;
             
-            void setInnerGetterSetter(.java.lang.Object innerGetterSetter) {
+            void setInnerGetterSetter(long innerGetterSetter) {
             }
             
             private innerGetterSetter$setter() {

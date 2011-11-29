@@ -17,11 +17,34 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-Module module {
-    name = 'com.redhat.ceylon.compiler.test.ceylon';
-    version = '0.1';
-    doc = "The Ceylon tests.";
-    by = { "Stef Epardaud" };
-    license = 'http://www.gnu.org/licenses/gpl.html';
-    dependencies = {};
+class CObject() extends Object() {
+}
+class CIdentifiableObject() extends IdentifiableObject() {
+}
+class CEquality() satisfies Equality {
+}
+interface IEquality satisfies Equality {
+}
+class CIEquality() satisfies IEquality {
+}
+class ErasedTypes() {
+    void m() {
+        value cobject = CObject();
+        if (is Object cobject) {
+        }
+        
+        value cident = CIdentifiableObject();
+        if (is CIdentifiableObject cident) {
+        }
+        
+        value cequal = CEquality();
+        if (is CEquality cequal) {
+        }
+        
+        value ciequal = CIEquality();
+        if (is CEquality ciequal) {
+        }
+        if (is IEquality ciequal) {
+        }
+    }
 }

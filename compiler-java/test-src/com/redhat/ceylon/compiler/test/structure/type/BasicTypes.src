@@ -5,7 +5,7 @@ public final class globalMethodInteger {
     private globalMethodInteger() {
     }
     
-    public static int globalMethodInteger(final int i) {
+    public static long globalMethodInteger(final long i) {
         return i;
     }
 }
@@ -119,9 +119,9 @@ public final class globalAttrNatural {
     }
 }
 public final class globalAttrInteger {
-    private static final int value = 1;
+    private static final long value = 1L;
     
-    public static int getGlobalAttrInteger() {
+    public static long getGlobalAttrInteger() {
         return value;
     }
     
@@ -234,9 +234,9 @@ class BasicTypes {
     private final long getPrivateAttrNatural() {
         return this.privateAttrNatural;
     }
-    private final int privateAttrInteger;
+    private final long privateAttrInteger;
     
-    private final int getPrivateAttrInteger() {
+    private final long getPrivateAttrInteger() {
         return this.privateAttrInteger;
     }
     private final double privateAttrFloat;
@@ -294,9 +294,9 @@ class BasicTypes {
     public final long getSharedAttrNatural() {
         return this.sharedAttrNatural;
     }
-    private final int sharedAttrInteger;
+    private final long sharedAttrInteger;
     
-    public final int getSharedAttrInteger() {
+    public final long getSharedAttrInteger() {
         return this.sharedAttrInteger;
     }
     private final double sharedAttrFloat;
@@ -352,7 +352,7 @@ class BasicTypes {
     
     private final void m() {
         final long localAttrNatural = getPrivateAttrNatural();
-        final int localAttrInteger = getPrivateAttrInteger();
+        final long localAttrInteger = getPrivateAttrInteger();
         final double localAttrFloat = getPrivateAttrFloat();
         final .java.lang.String localAttrString = getPrivateAttrString();
         final boolean localAttrBoolean = getPrivateAttrBoolean();
@@ -365,7 +365,7 @@ class BasicTypes {
         final ceylon.language.Character localAttrOptionalCharacter = getPrivateAttrOptionalCharacter();
     }
     
-    private final int methodInteger(final int i) {
+    private final long methodInteger(final long i) {
         return i;
     }
     
@@ -413,9 +413,9 @@ class BasicTypes {
         return i;
     }
     
-    BasicTypes(long paramNatural, int paramInteger, double paramFloat, .java.lang.String paramString, boolean paramBoolean, int paramCharacter, ceylon.language.Natural paramOptionalNatural, ceylon.language.Integer paramOptionalInteger, ceylon.language.Float paramOptionalFloat, ceylon.language.String paramOptionalString, ceylon.language.Boolean paramOptionalBoolean, ceylon.language.Character paramOptionalCharacter) {
+    BasicTypes(long paramNatural, long paramInteger, double paramFloat, .java.lang.String paramString, boolean paramBoolean, int paramCharacter, ceylon.language.Natural paramOptionalNatural, ceylon.language.Integer paramOptionalInteger, ceylon.language.Float paramOptionalFloat, ceylon.language.String paramOptionalString, ceylon.language.Boolean paramOptionalBoolean, ceylon.language.Character paramOptionalCharacter) {
         final long privateNonCapturedAttrNatural;
-        final int privateNonCapturedAttrInteger;
+        final long privateNonCapturedAttrInteger;
         final double privateNonCapturedAttrFloat;
         final .java.lang.String privateNonCapturedAttrString;
         final boolean privateNonCapturedAttrBoolean;
@@ -427,7 +427,7 @@ class BasicTypes {
         final ceylon.language.Boolean privateNonCapturedAttrOptionalBoolean;
         final ceylon.language.Character privateNonCapturedAttrOptionalCharacter;
         this.privateAttrNatural = 1L;
-        this.privateAttrInteger = 1;
+        this.privateAttrInteger = 1L;
         this.privateAttrFloat = 1.0;
         this.privateAttrString = "a";
         this.privateAttrBoolean = true;
@@ -439,7 +439,7 @@ class BasicTypes {
         this.privateAttrOptionalBoolean = null;
         this.privateAttrOptionalCharacter = null;
         this.sharedAttrNatural = 1L;
-        this.sharedAttrInteger = 1;
+        this.sharedAttrInteger = 1L;
         this.sharedAttrFloat = 1.0;
         this.sharedAttrString = "a";
         this.sharedAttrBoolean = true;
@@ -474,7 +474,7 @@ class IntegerParameterClass extends com.redhat.ceylon.compiler.test.structure.ty
         return param;
     }
     
-    IntegerParameterClass(int classParam) {
+    IntegerParameterClass(long classParam) {
         super(.ceylon.language.Integer.instance(classParam));
         this.attr = .ceylon.language.Integer.instance(classParam);
     }

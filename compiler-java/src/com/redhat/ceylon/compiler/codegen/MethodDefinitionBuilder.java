@@ -132,6 +132,10 @@ public class MethodDefinitionBuilder {
         if (resultType == null) {
             return gen.make().TypeIdent(VOID);
         } else {
+            // FIXME Temporary work-around for hashCode() until we get "small" annotations!
+            if ("hashCode".equals(name) && gen.isCeylonInteger(resultType.getType())) {
+                return gen.makeJavaType(resultType.getType(), AbstractTransformer.SMALL_TYPE);
+            }
             return gen.makeJavaType(resultType);
         }
     }
@@ -154,22 +158,22 @@ public class MethodDefinitionBuilder {
         return this;
     }
 
-    public MethodDefinitionBuilder typeParameter(String name, TypeParameter typeParameter) {
+    public MethodDefinitionBuilder typeParameter(TypeParameter typeParameter) {
         ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
         for (ProducedType t : typeParameter.getSatisfiedTypes()) {
             if (!gen.willEraseToObject(t)) {
                 bounds.append(gen.makeJavaType(t));
             }
         }
-        typeParams.append(gen.make().TypeParameter(gen.names().fromString(name), bounds.toList()));
+        typeParams.append(gen.make().TypeParameter(gen.names().fromString(typeParameter.getName()),
+                bounds.toList()));
         typeParamAnnotations.append(gen.makeAtTypeParameter(typeParameter));
         return this;
     }
 
     public MethodDefinitionBuilder typeParameter(Tree.TypeParameterDeclaration param) {
         gen.at(param);
-        String name = param.getIdentifier().getText();
-        return typeParameter(name, param.getDeclarationModel());
+        return typeParameter(param.getDeclarationModel());
     }
 
     public MethodDefinitionBuilder parameters(List<JCVariableDecl> decls) {

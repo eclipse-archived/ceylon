@@ -87,10 +87,14 @@ class MethodIfIs {
             ((com.redhat.ceylon.compiler.test.statement.conditional.Foo)$x$7).foo();
             ((com.redhat.ceylon.compiler.test.statement.conditional.BarInterface)$x$7).bar();
         }
+        if (x == null) {
+        }
         final .java.lang.Object $y$8 = give();
         if ($y$8 instanceof com.redhat.ceylon.compiler.test.statement.conditional.FooSub) {
             final com.redhat.ceylon.compiler.test.statement.conditional.FooSub $y$9 = (com.redhat.ceylon.compiler.test.statement.conditional.FooSub)$y$8;
             $y$9.foo();
+        }
+        if (give() == null) {
         }
     }
     

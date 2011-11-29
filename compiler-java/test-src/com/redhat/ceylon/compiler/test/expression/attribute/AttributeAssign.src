@@ -24,14 +24,16 @@ class AttributeAssign {
         return true;
     }
     
-    private final void setB3(.java.lang.Object b3) {
+    private final void setB3(boolean b3) {
+        final boolean _b3 = b3;
     }
     
     public final boolean getB4() {
         return true;
     }
     
-    public final void setB4(.java.lang.Object b4) {
+    public final void setB4(boolean b4) {
+        final boolean _b4 = b4;
     }
     
     private final void m() {

@@ -15,7 +15,7 @@ public class Bug227 {
         return this.get_num();
     }
     
-    public final void setNum(.java.lang.Object num) {
+    public final void setNum(long num) {
         set_num(num);
     }
     

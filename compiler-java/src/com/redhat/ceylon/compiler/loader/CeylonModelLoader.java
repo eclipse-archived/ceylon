@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -1110,6 +1111,8 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
 
     // from our annotation
     private void setTypeParameters(Scope scope, List<TypeParameter> params, Array typeParameters) {
+        // We must first add every type param, before we resolve the bounds, which can
+        // refer to type params.
         for(Attribute attribute : typeParameters.values){
             Compound typeParam = (Compound) attribute;
             TypeParameter param = new TypeParameter();
@@ -1132,9 +1135,12 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 }else if(varianceName.equals("OUT"))
                     param.setCovariant(true);
             }
-            
-            // FIXME: I'm pretty sure we can have bounds that refer to method 
-            // params, so we need to do this in two phases
+        }
+        // Now all type params have been set, we can resolve the references parts
+        Iterator<TypeParameter> paramsIterator = params.iterator();
+        for(Attribute attribute : typeParameters.values){
+            Compound typeParam = (Compound) attribute;
+            TypeParameter param = paramsIterator.next();
             Array satisfiesAttribute = (Array)typeParam.member(names.fromString("satisfies"));
             if(satisfiesAttribute != null){
                 for (Attribute satisfyAttribute : satisfiesAttribute.values) {
@@ -1148,6 +1154,8 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
 
     // from java type info
     private void setTypeParameters(Scope scope, List<TypeParameter> params, com.sun.tools.javac.util.List<TypeSymbol> typeParameters) {
+        // We must first add every type param, before we resolve the bounds, which can
+        // refer to type params.
         for(TypeSymbol typeParam : typeParameters){
             TypeParameter param = new TypeParameter();
             param.setUnit(((Element)scope).getUnit());
@@ -1159,10 +1167,12 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 scope.getMembers().add(param);
             param.setName(typeParam.name.toString());
             params.add(param);
-            
+        }
+        // Now all type params have been set, we can resolve the references parts
+        Iterator<TypeParameter> paramsIterator = params.iterator();
+        for(TypeSymbol typeParam : typeParameters){
+            TypeParameter param = paramsIterator.next();
             com.sun.tools.javac.util.List<Type> bounds = typeParam.getBounds();
-            // FIXME: I'm pretty sure we can have bounds that refer to method 
-            // params, so we need to do this in two phases
             for(Type bound : bounds){
                 // we turn java's default upper bound java.lang.Object into ceylon.language.Object
                 if(bound.tsym == symtab.objectType.tsym){

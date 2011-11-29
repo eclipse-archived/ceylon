@@ -6,14 +6,14 @@ class ClassAttributeGetterSetter {
         return "";
     }
     
-    private final void setF(.java.lang.Object f) {
+    private final void setF(.java.lang.String f) {
     }
     
     public final .java.lang.String getF2() {
         return "";
     }
     
-    public final void setF2(.java.lang.Object f2) {
+    public final void setF2(.java.lang.String f2) {
     }
     
     ClassAttributeGetterSetter() {

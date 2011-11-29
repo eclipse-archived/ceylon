@@ -245,22 +245,22 @@ public class ClassDefinitionBuilder {
         return this;
     }
 
-    private ClassDefinitionBuilder typeParameter(String name, TypeParameter typeParameter) {
+    public ClassDefinitionBuilder typeParameter(TypeParameter typeParameter) {
         ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
         for (ProducedType t : typeParameter.getSatisfiedTypes()) {
             if (!gen.willEraseToObject(t)) {
                 bounds.append(gen.makeJavaType(t));
             }
         }
-        typeParams.append(gen.make().TypeParameter(gen.names().fromString(name), bounds.toList()));
+        typeParams.append(gen.make().TypeParameter(gen.names().fromString(typeParameter.getName()),
+                bounds.toList()));
         typeParamAnnotations.append(gen.makeAtTypeParameter(typeParameter));
         return this;
     }
 
     public ClassDefinitionBuilder typeParameter(Tree.TypeParameterDeclaration param) {
         gen.at(param);
-        String name = param.getIdentifier().getText();
-        return typeParameter(name, param.getDeclarationModel());
+        return typeParameter(param.getDeclarationModel());
     }
 
     public ClassDefinitionBuilder extending(ProducedType extendingType) {

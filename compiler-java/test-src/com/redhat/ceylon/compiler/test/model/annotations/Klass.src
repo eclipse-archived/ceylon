@@ -4,29 +4,29 @@ package com.redhat.ceylon.compiler.test.model.annotations;
 public class Klass {
     
     @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
-    public final int m1(@.com.redhat.ceylon.compiler.metadata.java.Name("p1")
+    public final long m1(@.com.redhat.ceylon.compiler.metadata.java.Name("p1")
     @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
-    final int p1) {
-        return 1;
+    final long p1) {
+        return 1L;
     }
     
     @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     public final ceylon.language.Integer m2(@.com.redhat.ceylon.compiler.metadata.java.Name("p2")
     @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     final ceylon.language.Integer p2) {
-        return .ceylon.language.Integer.instance(1);
+        return .ceylon.language.Integer.instance(1L);
     }
     
     @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
     public final ceylon.language.Iterable<? extends ceylon.language.Integer> m3(@.com.redhat.ceylon.compiler.metadata.java.Name("p3")
     @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
     final ceylon.language.Iterable<? extends ceylon.language.Integer> p3) {
-        return new ceylon.language.ArraySequence<ceylon.language.Integer>(.ceylon.language.Integer.instance(1));
+        return new ceylon.language.ArraySequence<ceylon.language.Integer>(.ceylon.language.Integer.instance(1L));
     }
     
     public Klass(@.com.redhat.ceylon.compiler.metadata.java.Name("p1")
     @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
-    int p1, @.com.redhat.ceylon.compiler.metadata.java.Name("p2")
+    long p1, @.com.redhat.ceylon.compiler.metadata.java.Name("p2")
     @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
     ceylon.language.Integer p2, @.com.redhat.ceylon.compiler.metadata.java.Name("p3")
     @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")

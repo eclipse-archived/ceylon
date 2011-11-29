@@ -60,9 +60,35 @@ class TypeParameters <T,U> (T t, U u) {
  }
  
  //
- // lower bounds tests
- F methodWithLowerBounds<F>(F f)
-  given F abstracts InterfaceA {
-  return f;
+ // variance tests
+ O methodWithVariance<in I, out O>(I i)
+  given I satisfies O{
+  return i;
  }
+}
+
+//
+// upper bounds tests
+
+class ClassWithUpperBounds<F>(F f)
+  given F satisfies InterfaceA & InterfaceB {
+}
+
+class ClassWithParameterizedUpperBounds<F>(F f)
+ given F satisfies InterfaceWithTypeParam<InterfaceA, InterfaceB> {
+}
+
+class ClassWithSelfParameterizedUpperBounds<F>(F f)
+ given F satisfies InterfaceWithTypeParam<F, F> {
+}
+
+class ClassWithErasedUpperBounds<F>(F f)
+ given F satisfies IdentifiableObject {
+}
+ 
+//
+// variance tests
+
+class ClassWithVariance<in I, out O>(I i)
+  given I satisfies O{
 }

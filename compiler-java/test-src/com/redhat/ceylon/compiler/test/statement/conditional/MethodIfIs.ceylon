@@ -48,7 +48,7 @@ class Bar() satisfies Common & BarInterface {
 }
 @nomodel
 class MethodIfIs() {
-    shared void m(Object x) {
+    shared void m(Object? x) {
         if (is Foo x) {
             x.foo();
             if (is FooSub x) {
@@ -63,8 +63,12 @@ class MethodIfIs() {
             x.foo();
             x.bar();
         }
+        if (is Nothing x) {
+        }
         if (is FooSub y = give()) {
             y.foo();
+        }
+        if (is Nothing y = give()) {
         }
     }
     Foo give() {

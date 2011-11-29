@@ -7,7 +7,7 @@ class MethodErasure {
     }
     
     public final int hashCode() {
-        return 0;
+        return (int)0L;
     }
     
     private final .java.lang.String $hashCode() {
