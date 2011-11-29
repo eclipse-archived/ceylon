@@ -113,6 +113,10 @@ class Test() {
         // FIXME: this is broken:
         //topLevelLeftAttribute := middleVar;
         
+        // with boxing
+        // FIXME: this is broken
+        //Natural unboxed = p1;
+        
         // arithmetic operators
         Numeric<Natural>&Ordinal<Natural> n = 1;
         Natural n2 = n + n;
