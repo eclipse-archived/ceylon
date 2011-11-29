@@ -283,6 +283,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCExpression transform(Tree.IsOp op) {
         JCExpression type = makeJavaType(op.getType().getTypeModel());
+        // we don't need any erasure type cast for an "is" test
         return at(op).TypeTest(transformExpression(op.getTerm()), type);
     }
 
@@ -295,6 +296,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.EntryOp op) {
+        // no erasure cast needed for both terms
         JCExpression key = transformExpression(op.getLeftTerm());
         JCExpression elem = transformExpression(op.getRightTerm());
         ProducedType entryType = typeFact().getEntryType(op.getLeftTerm().getTypeModel(), op.getRightTerm().getTypeModel());
@@ -783,6 +785,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     JCExpression transformArg(Tree.NamedArgument arg) {
+        // named arguments get casted down the stack, so no need for erasure casts
         return transformExpression(getArgExpression(arg));
     }
 

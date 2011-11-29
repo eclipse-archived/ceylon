@@ -149,6 +149,7 @@ public class StatementTransformer extends AbstractTransformer {
                 specifierExpr = exists.getVariable().getSpecifierExpression().getExpression();
             }
             
+            // no need to cast for erasure here
             JCExpression expr = expressionGen().transformExpression(specifierExpr);
             
             // IsCondition with Nothing as ProducedType transformed to " == null" 
