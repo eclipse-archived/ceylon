@@ -58,6 +58,9 @@ class Test() {
             takesLeft(middle);
         }
     }
+    // WARNING: when the typechecker figures out that because Natural is final
+    // the Natural&EmptyInterface type cannot exist, we'll need to change it to
+    // something else
     Left testIntersection(Natural&EmptyInterface p1){
         Left&Right middle = CMiddle();
         // invocation
