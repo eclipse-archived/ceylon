@@ -90,7 +90,7 @@ class Test() {
         Natural n4 = m % m;
         Integer i1 = -m;
         Integer i2 = +m;
-                
+
         // equality operators
         Boolean b = n == n;
         // FIXME: this is broken
