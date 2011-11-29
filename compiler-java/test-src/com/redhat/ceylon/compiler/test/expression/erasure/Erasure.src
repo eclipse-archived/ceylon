@@ -186,6 +186,8 @@ class Test {
         com.redhat.ceylon.compiler.test.expression.erasure.Left left3 = (com.redhat.ceylon.compiler.test.expression.erasure.Left)middleVar;
         left3 = (com.redhat.ceylon.compiler.test.expression.erasure.Left)middleVar;
         setLeftAttribute((com.redhat.ceylon.compiler.test.expression.erasure.Left)middleVar);
+        final long unboxed = ((ceylon.language.Natural)p1).longValue();
+        final .java.lang.Object boxed = .ceylon.language.Natural.instance(1L);
         final .java.lang.Object n = .ceylon.language.Natural.instance(1L);
         final long n2 = ((ceylon.language.Summable<ceylon.language.Natural>)n).plus((ceylon.language.Natural)n).longValue();
         final long n3 = ((ceylon.language.Numeric<ceylon.language.Natural>)n).times((ceylon.language.Natural)n).longValue();
