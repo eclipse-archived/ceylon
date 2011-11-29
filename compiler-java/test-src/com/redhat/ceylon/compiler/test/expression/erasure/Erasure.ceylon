@@ -20,25 +20,33 @@
 @nomodel
 interface Top {
     shared formal void top();
+    shared formal Natural topAttribute;
 }
 @nomodel
 interface Left satisfies Top {
     shared formal void left();
+    shared formal Natural leftAttribute;
 }
 @nomodel
 interface Right satisfies Top {
     shared formal void right();
+    shared formal Natural rightAttribute;
 }
 @nomodel
 class CLeft() satisfies Left {
     shared actual void left() {}
     shared actual void top() {}
+    shared actual Natural topAttribute = 1;
+    shared actual Natural leftAttribute = 1;
 }
 @nomodel
 class CMiddle() satisfies Left & Right{
     shared actual void left() {}
     shared actual void top() {}
     shared actual void right() {}
+    shared actual Natural topAttribute = 1;
+    shared actual Natural leftAttribute = 1;
+    shared actual Natural rightAttribute = 1;
 }
 @nomodel
 interface EmptyInterface {}
@@ -52,8 +60,10 @@ class Test() {
     void testUnion(){
         Left|Right middle = CLeft();
         middle.top();
+        Natural n1 = middle.topAttribute;
         takesTop(middle);
         if(is Left middle){
+            Natural n2 = middle.leftAttribute;
             middle.left();
             takesLeft(middle);
         }
@@ -69,6 +79,14 @@ class Test() {
         middle.right();
         givesLeftAndRight().top();
         CMiddle().top();
+        // attribute access
+        variable Natural sync;
+        sync := middle.topAttribute;
+        sync := middle.leftAttribute;
+        sync := middle.rightAttribute;
+        sync := givesLeftAndRight().topAttribute;
+        sync := CMiddle().topAttribute;
+
         // positional param
         takesTop(middle);
         takesLeft(middle);
