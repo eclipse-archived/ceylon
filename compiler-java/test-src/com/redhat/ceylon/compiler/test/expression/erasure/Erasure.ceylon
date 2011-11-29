@@ -81,6 +81,7 @@ class Test() {
     // the Natural&EmptyInterface type cannot exist, we'll need to change it to
     // something else
     Left testIntersection(Natural&EmptyInterface p1,
+                          Natural&EmptyInterface|Nothing p1OrNothing,
                           Sequence<Top>&EmptyInterface tops){
         Left&Right middle = CMiddle();
         // invocation
@@ -173,6 +174,11 @@ class Test() {
         // entry
         value entry = p1 -> p1;
         
+        // conditions
+        if(is Natural p1){}
+        if(exists p1OrNothing){}
+        if(nonempty naturals){}
+
         if(true){
             Exception&EmptyInterface x = MyException(null, null);
             throw x;
