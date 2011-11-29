@@ -886,29 +886,34 @@ public class ExpressionVisitor extends Visitor {
     }*/
 
     ProducedType unwrap(ProducedType pt, Tree.QualifiedMemberOrTypeExpression mte) {
-        Tree.MemberOperator op = mte.getMemberOperator();
+        ProducedType result;
+    	Tree.MemberOperator op = mte.getMemberOperator();
         if (op instanceof Tree.SafeMemberOp)  {
             if (unit.isOptionalType(pt)) {
-                return unit.getDefiniteType(pt);
+                result = unit.getDefiniteType(pt);
             }
             else {
                 mte.getPrimary().addError("receiver not of optional type");
-                return pt;
+                result = pt;
             }
         }
         else if (op instanceof Tree.SpreadOp) {
             ProducedType st = unit.getNonemptySequenceType(pt);
             if (st==null) {
                 mte.getPrimary().addError("receiver not of type: Sequence");
-                return pt;
+                result = pt;
             }
             else {
-                return unit.getElementType(pt);
+                result = unit.getElementType(pt);
             }
         }
         else {
-            return pt;
+            result = pt;
         }
+        if (result==null) {
+        	result = new UnknownType(mte.getUnit()).getType();
+        }
+        return result;
     }
 
     ProducedType wrap(ProducedType pt, Tree.QualifiedMemberOrTypeExpression mte) {
@@ -1297,6 +1302,9 @@ public class ExpressionVisitor extends Visitor {
         a.setParameter(p);
         for (Tree.Expression e: a.getExpressionList().getExpressions()) {
             ProducedType paramType = pr.getTypedParameter(p).getType();
+            if (paramType==null) {
+                paramType = new UnknownType(a.getUnit()).getType();
+            }
             checkAssignable(e.getTypeModel(), unit.getElementType(paramType), a, 
                     "sequenced argument must be assignable to sequenced parameter " + 
                     p.getName() + " of " + pr.getDeclaration().getName());

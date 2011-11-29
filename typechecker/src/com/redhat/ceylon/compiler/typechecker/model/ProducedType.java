@@ -173,7 +173,7 @@ public class ProducedType extends ProducedReference {
      * Is this type a subtype of the given type? 
      */
     public boolean isSubtypeOf(ProducedType type) {
-        return isSubtypeOf(type, null);
+        return type!=null && isSubtypeOf(type, null);
     }
     
     /**
@@ -655,6 +655,9 @@ public class ProducedType extends ProducedReference {
             ProducedType result;
             if (tp.isContravariant()) { 
                 for (ProducedType pt: caseTypes) {
+                	if (pt==null) {
+                		return null;
+                	}
                     ProducedType st = pt.getSupertype(dec, selfTypeToIgnore);
                     if (st==null) {
                         return null;
@@ -667,6 +670,9 @@ public class ProducedType extends ProducedReference {
             }
             else {
                 for (ProducedType pt: caseTypes) {
+                	if (pt==null) {
+                		return null;
+                	}
                     ProducedType st = pt.getSupertype(dec, selfTypeToIgnore);
                     if (st==null) {
                         return null;
@@ -695,6 +701,9 @@ public class ProducedType extends ProducedReference {
             TypeDeclaration outer = (TypeDeclaration) dec.getContainer();
             List<ProducedType> list = new ArrayList<ProducedType>();
             for (ProducedType pt: caseTypes) {
+            	if (pt==null) {
+            		return null;
+            	}
                 ProducedType st = pt.getQualifyingType().getSupertype(outer, null);
                 list.add(st);
             }
