@@ -29,7 +29,7 @@ public class Sequence$impl {
     }
     
     public static <Element> java.lang.String toString(Sequence<Element> $this) {
-		StringBuilder result = new StringBuilder("{ ");
+		java.lang.StringBuilder result = new java.lang.StringBuilder("{ ");
 		for (Iterator<Element> iter=$this.getIterator(); iter!=null; iter=iter.getTail()) {
 			result.append(iter.getHead())
 				.append(", ");
