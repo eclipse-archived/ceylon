@@ -442,7 +442,9 @@ public class StatementTransformer extends AbstractTransformer {
                     makeIdent("ceylon.language.Exception"), List.<JCExpression>of(makeNull(), makeNull()),
                     null);
         } else {
-            exception = gen().expressionGen().transformExpression(expr);
+            // we must unerase the exception to Throwable
+            ProducedType exceptionType = expr.getTypeModel().getSupertype(t.getUnit().getExceptionDeclaration());
+            exception = gen().expressionGen().transformExpression(expr, BoxingStrategy.UNBOXED, exceptionType);
         }
         return make().Throw(exception);
     }

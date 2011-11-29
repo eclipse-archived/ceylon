@@ -55,6 +55,11 @@ interface EmptyInterface {}
 variable Left topLevelLeftAttribute := CLeft();
 
 @nomodel
+class MyException(String? m, Exception? x) 
+ extends Exception(m, x)
+ satisfies EmptyInterface {}
+
+@nomodel
 class Test() {
     void takesTop(Top top){}
     void takesLeft(Left left){}
@@ -168,6 +173,11 @@ class Test() {
         // entry
         value entry = p1 -> p1;
         
+        if(true){
+            Exception&EmptyInterface x = MyException(null, null);
+            throw x;
+        }        
+
         // return
         return middle;
     }
