@@ -52,6 +52,9 @@ class CMiddle() satisfies Left & Right{
 interface EmptyInterface {}
 
 @nomodel
+variable Left topLevelLeftAttribute := CLeft();
+
+@nomodel
 class Test() {
     void takesTop(Top top){}
     void takesLeft(Left left){}
@@ -107,6 +110,8 @@ class Test() {
         variable Left left3 := middleVar;
         left3 := middleVar; 
         leftAttribute := middleVar;
+        // FIXME: this is broken:
+        //topLevelLeftAttribute := middleVar;
         
         // arithmetic operators
         Numeric<Natural>&Ordinal<Natural> n = 1;
