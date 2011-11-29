@@ -80,4 +80,6 @@ shared void strings() {
     assert(!hello.keys.contains(5), "string keys");
     //assert(hello.keys.contains(-1), "string keys");
     assert(hello.keys.contains(0), "string keys");
+    
+    assert(hello.hash==("HE"+"LLO").lowercased.hash, "string hash");
 }

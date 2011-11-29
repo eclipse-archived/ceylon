@@ -110,4 +110,17 @@ shared void numbers() {
     assert(multiplyNaturalByFloat(3, 1.5)==4.5, "");
     assert(multiplyFloatByInteger(1.5, -1)==-1.5, "");                
     assert(multiplyNaturalByInteger(1, -1)==-1, "");
+    
+    assert(1.hash==(3-1)/2.hash, "natural hash");
+    assert((+0).hash==(-1+(+1))*+100.hash, "integer hash");
+    assert((2.2*2.2*2.2).hash==(2.2**3.0).hash, "float hash");
+    
+    assert(1.6.natural==2, "float natural");
+    assert(1.1.natural==1, "float natural");
+    assert((-1.6).integer==-2, "float integer");
+    assert((-1.1).integer==-1, "float integer");
+    assert(2.float==2.0, "natural float");
+    assert((-3).float==-3.0, "integer float");
+    assert(4.integer==+4, "natural integer");
+                
 }
