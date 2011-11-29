@@ -208,6 +208,7 @@ public class StatementTransformer extends AbstractTransformer {
             }
         } else if (cond instanceof Tree.BooleanCondition) {
             Tree.BooleanCondition booleanCondition = (Tree.BooleanCondition) cond;
+            // booleans can't be erased
             test = expressionGen().transformExpression(booleanCondition.getExpression(), 
                     BoxingStrategy.UNBOXED, null);
         } else {
@@ -310,6 +311,7 @@ public class StatementTransformer extends AbstractTransformer {
         List<JCAnnotation> annots = makeJavaTypeAnnotations(variable.getDeclarationModel());
 
         // ceylon.language.Iterator<T> $V$iter$X = ITERABLE.getIterator();
+        // FIXME: surely we need to unerase here
         JCExpression containment = expressionGen().transformExpression(specifierExpression, BoxingStrategy.BOXED, null);
         JCVariableDecl iter_decl = at(stmt).VarDef(make().Modifiers(0), names().fromString(aliasName(loop_var_name + "$iter")), iter_type_expr, at(stmt).Apply(null, makeSelect(containment, "getIterator"), List.<JCExpression> nil()));
         JCIdent iter_id = at(stmt).Ident(iter_decl.getName());
