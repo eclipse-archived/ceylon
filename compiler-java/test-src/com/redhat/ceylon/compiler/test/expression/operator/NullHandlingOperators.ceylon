@@ -35,7 +35,7 @@ shared class NullHandlingOperators() {
         variable Integer? nullSafeMember := int?.negativeValue;
         variable Integer? nullSafeInvoke := int?.plus(+1);
         nullSafeInvoke := int?.plus{
-            that = +1;
+            other = +1;
         };
     }
 }
