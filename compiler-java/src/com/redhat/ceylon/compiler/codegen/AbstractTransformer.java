@@ -921,6 +921,7 @@ public abstract class AbstractTransformer implements Transformation {
     protected JCExpression makeSequence(java.util.List<Expression> list, ProducedType seqElemType) {
         ListBuffer<JCExpression> elems = new ListBuffer<JCExpression>();
         for (Expression expr : list) {
+            // no need for erasure casts here
             elems.append(expressionGen().transformExpression(expr));
         }
         ProducedType seqType = typeFact().getDefaultSequenceType(seqElemType);
