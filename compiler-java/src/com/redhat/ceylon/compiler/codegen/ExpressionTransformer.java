@@ -229,7 +229,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         TypedDeclaration decl = (TypedDeclaration) ((Tree.Primary)leftTerm).getDeclaration();
 
         // right side is easy
-        JCExpression rhs = transformExpression(rightTerm, Util.getBoxingStrategy(decl), null);
+        JCExpression rhs = transformExpression(rightTerm, Util.getBoxingStrategy(decl), decl.getType());
          
         // left side depends
         
