@@ -1624,6 +1624,11 @@ public class ExpressionVisitor extends Visitor {
                         rhst.isSubtypeOf(unit.getCastableType(rhst))) {
                     rt = rhst;
                 }
+                else if (lhst.isExactly(rhst)) { 
+                	//in case it doesn't implement Castable at all
+                	//note the language spec does not actually bless this
+                	rt = lhst;
+                }
                 else {
                     that.addError("operand expressions must be promotable to common numeric type: " + 
                             lhst.getProducedTypeName() + ", " + 
@@ -1649,7 +1654,8 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType t = nt.getTypeArguments().isEmpty() ? 
                         nt : nt.getTypeArgumentList().get(0);
                 that.setTypeModel(t);
-                if (!rhst.isSubtypeOf(unit.getCastableType(t))) {
+                if (!rhst.isSubtypeOf(unit.getCastableType(t)) &&
+                		!rhst.isExactly(lhst)) { //note the language spec does not actually bless this
                     that.getRightTerm().addError("operand expression must be promotable to common numeric type: " + 
                             nt.getProducedTypeName());
                 }
