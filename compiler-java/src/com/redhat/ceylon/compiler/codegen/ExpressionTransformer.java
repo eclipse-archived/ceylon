@@ -342,7 +342,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         	return make().Erroneous();
         }
         
-        return make().Apply(null, makeSelect(transformExpression(term, BoxingStrategy.UNBOXED, expectedType), 
+        return make().Apply(null, makeSelect(transformExpression(term, BoxingStrategy.BOXED, expectedType), 
                 Util.getGetterName(operatorMethodName)), List.<JCExpression> nil());
     }
 
