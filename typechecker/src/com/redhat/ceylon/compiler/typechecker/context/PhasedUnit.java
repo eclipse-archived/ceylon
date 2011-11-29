@@ -1,9 +1,10 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import org.antlr.runtime.CommonTokenStream;
+import org.antlr.runtime.CommonToken;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.ControlFlowVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor;
@@ -46,18 +47,18 @@ public class PhasedUnit {
     private final String pathRelativeToSrcDir;
     private VirtualFile unitFile;
     private final Set<PhasedUnit> dependentsOf = new HashSet<PhasedUnit>();
-    private CommonTokenStream tokenStream;
+    private List<CommonToken> tokens;
     private boolean fullyTyped;
 
     public PhasedUnit(VirtualFile unitFile, VirtualFile srcDir, Tree.CompilationUnit cu, 
-            Package p, ModuleBuilder moduleBuilder, Context context, CommonTokenStream tokenStream) {
+            Package p, ModuleBuilder moduleBuilder, Context context, List<CommonToken> tokenStream) {
         this.compilationUnit = cu;
         this.pkg = p;
         this.unitFile = unitFile;
         this.fileName = unitFile.getName();
         this.pathRelativeToSrcDir = computeRelativePath(unitFile, srcDir);
         this.moduleBuilder = moduleBuilder;
-        this.tokenStream = tokenStream;
+        this.tokens = tokenStream;
     }
 
     @Deprecated
@@ -194,8 +195,8 @@ public class PhasedUnit {
         return dependentsOf;
     }
     
-    public CommonTokenStream getTokenStream() {
-        return tokenStream;
+    public List<CommonToken> getTokens() {
+        return tokens;
     }
 
 }
