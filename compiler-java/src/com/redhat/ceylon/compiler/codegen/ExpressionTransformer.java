@@ -311,8 +311,12 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transformUnaryOperator(Tree.UnaryOperatorExpression op, Interface compoundType) {
-        ProducedType leftType = op.getTerm().getTypeModel().getSupertype(compoundType);
+        ProducedType leftType = getSupertype(op.getTerm(), compoundType);
         return transform(op, leftType);
+    }
+    
+    private ProducedType getSupertype(Term term, Interface compoundType){
+        return term.getTypeModel().getSupertype(compoundType);
     }
 
     public JCExpression transform(Tree.UnaryOperatorExpression op, ProducedType expectedType) {
@@ -414,7 +418,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transformArithmeticOperator(Tree.BinaryOperatorExpression op, Interface compoundType) {
-        ProducedType leftType = op.getLeftTerm().getTypeModel().getSupertype(compoundType);
+        ProducedType leftType = getSupertype(op.getLeftTerm(), compoundType);
         ProducedType rightType = getTypeArgument(leftType);
         return transform(op, leftType, rightType);
     }
