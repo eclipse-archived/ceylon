@@ -8,7 +8,7 @@ doc "Abstraction of types which support a unary inversion
      an `Integer`."
 see (Natural, Integer, Float)
 by "Gavin"
-shared interface Invertable<Inverse> {
+shared interface Invertable<out Inverse> {
     
     doc "The inverse of the value, which may be expressed
          as an instance of a wider type."
