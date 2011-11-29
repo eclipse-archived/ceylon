@@ -74,9 +74,11 @@ import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCConditional;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
+import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCTypeApply;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCUnary;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -545,163 +547,320 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
     
-    private JCExpression transformNamedInvocation(InvocationExpression ce) {
-        final ListBuffer<JCExpression> callArgs;
-        final ListBuffer<JCExpression> passArgs = new ListBuffer<JCExpression>();
-        final String methodName;
-        final java.util.List<ParameterList> parameterLists;
-        final Primary primary = ce.getPrimary();
-        final Declaration primaryDecl = primary.getDeclaration();
-        if (primaryDecl instanceof Method) {
-            Method methodDecl = (Method)primaryDecl;
-            methodName = methodDecl.getName();
-            parameterLists = methodDecl.getParameterLists();
-        } else if (primaryDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-            com.redhat.ceylon.compiler.typechecker.model.Class methodDecl = (com.redhat.ceylon.compiler.typechecker.model.Class)primaryDecl;
-            methodName = methodDecl.getName();
-            parameterLists = methodDecl.getParameterLists();
-        } else {
+    /**
+     * <p>Builds a named argument call, which looks something like this:</p>
+     * <pre>
+     *    new NamedArgumentCall&lttINSTANCE_TYPE&gt;(BOX(INSTANCE), BOX(PASSED_ARGS...)) {
+     *        public RESULT call$() {
+     *            return this.instance.METHOD(UNBOX(POSTIONAL_ARGS));
+     *        }
+     *    }.UNBOX();
+     * </pre>
+     * @author tom
+     */
+    private class NamedArgumentCallBuilder {
+        
+        private static final String CALL_METHOD_NAME = "call$";
+        
+        private final InvocationExpression ce;
+        
+        /** 
+         * The arguments (expressions) passed to the method invocation. 
+         */
+        private ListBuffer<JCExpression> passedArguments;
+        
+        /** 
+         * The arguments the method is called with, 
+         * <code>(SomeCast)this.args[<i>n</i>]</code> 
+         */
+        private ListBuffer<JCExpression> positionalArguments;
+        
+        /** The expression for the method, including any necessary 
+         * qualification, along the lines of <code>this.instance.foo</code>. */ 
+        private JCExpression method;
+        
+        /**
+         * The instance the method is being invoked on.
+         */
+        private JCExpression instance;
+        
+        /** 
+         * The type parameter <i>T</i> for (the subclass of) the 
+         * <code>NamedArgumentCall&lt;T&gt;</code>, the (boxed) type of
+         * {@link #instance}.  
+         */
+        private JCExpression synthClassTypeParam;
+        /** 
+         * The <code>NamedArgumentCall&lt;T&gt;</code>, for <code>T</code> 
+         * given in {@link #synthClassTypeParam}.
+         */
+        private JCTypeApply synthClassType;
+        /**
+         * The declaration of {@link #synthClassType}.
+         */
+        private JCClassDecl synthClassDecl;
+        /**
+         * The instance of {@link #synthClassDecl}.
+         */
+        private JCNewClass synthClassInstance;
+
+        
+        public NamedArgumentCallBuilder(InvocationExpression ce) {
+            this.ce = ce;
+            final Declaration primaryDecl = getPrimaryDeclaration();
+            if (!(primaryDecl instanceof Method
+                    || primaryDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Class)) {
+                throw new RuntimeException("Illegal State: " + (primaryDecl != null ? primaryDecl.getClass() : "null"));
+            }
+        }
+        
+        private Primary getPrimary() {
+            return ce.getPrimary();
+        }
+        
+        private Declaration getPrimaryDeclaration() {
+            return getPrimary().getDeclaration();
+        }
+        
+        private String getMethodName() {
+            final Declaration primaryDecl = getPrimaryDeclaration();
+            if (primaryDecl instanceof Method) {
+                Method methodDecl = (Method)primaryDecl;
+                return methodDecl.getName();
+            } else if (primaryDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+                com.redhat.ceylon.compiler.typechecker.model.Class methodDecl = (com.redhat.ceylon.compiler.typechecker.model.Class)primaryDecl;
+                return methodDecl.getName();
+            }
+            throw new RuntimeException("Illegal State: " + (primaryDecl != null ? primaryDecl.getClass() : "null"));            
+        }
+        
+        private java.util.List<ParameterList> getParameterLists() {
+            final Declaration primaryDecl = getPrimaryDeclaration();
+            if (primaryDecl instanceof Method) {
+                Method methodDecl = (Method)primaryDecl;
+                return methodDecl.getParameterLists();
+            } else if (primaryDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+                com.redhat.ceylon.compiler.typechecker.model.Class methodDecl = (com.redhat.ceylon.compiler.typechecker.model.Class)primaryDecl;
+                return methodDecl.getParameterLists();
+            } 
             throw new RuntimeException("Illegal State: " + (primaryDecl != null ? primaryDecl.getClass() : "null"));
         }
-        java.util.List<NamedArgument> namedArguments = ce.getNamedArgumentList().getNamedArguments();
-        SequencedArgument sequencedArgument = ce.getNamedArgumentList().getSequencedArgument();
-        java.util.List<Parameter> declaredParams = parameterLists.get(0).getParameters();
-        Parameter lastDeclared = declaredParams.get(declaredParams.size() - 1);
-        boolean boundSequenced = false;
-        ArrayList<JCExpression> callArgsArray = new ArrayList<JCExpression>(Collections.<JCExpression>nCopies(namedArguments.size(), null));
-        for (NamedArgument namedArg : namedArguments) {
-            at(namedArg);
-            Parameter declaredParam = namedArg.getParameter();
-            if (declaredParam == null 
-                    || !declaredParam.getName().equals(namedArg.getIdentifier().getText())) {
-                throw new RuntimeException();
-            }
-            if (declaredParam.isSequenced()) {
-                boundSequenced = true;
-            }
-            int index = namedArguments.indexOf(namedArg);
-            JCExpression argExpr = make().Indexed(makeSelect("this", "args"), makeInteger(index));
-            ProducedType type = declaredParam.getType();
-            if (isTypeParameter(type)) {
-                type = namedArgType(namedArg);
-            }
-            argExpr = make().TypeCast(makeJavaType(type, AbstractTransformer.TYPE_ARGUMENT), argExpr);
-            if (Util.getBoxingStrategy(declaredParam) == BoxingStrategy.UNBOXED) {
-                argExpr = unboxType(argExpr, declaredParam.getType());
-            }
-            callArgsArray.set(declaredParams.indexOf(declaredParam), argExpr);
-        }
-        if (sequencedArgument != null) {
-            int index = namedArguments.size();
-            JCExpression argExpr = make().Indexed(makeSelect("this", "args"), makeInteger(index));
-            
-            ProducedType type = lastDeclared.getType();
-            argExpr = make().TypeCast(makeJavaType(type, AbstractTransformer.TYPE_ARGUMENT), argExpr);
-            callArgsArray.add(namedArguments.size(), unboxType(argExpr, lastDeclared.getType()));
-        } else if (lastDeclared.isSequenced() && !boundSequenced) {
-            callArgsArray.add(namedArguments.size(), makeEmpty());
-        }
-        callArgs = ListBuffer.<JCExpression>lb();
-        for (JCExpression expr : callArgsArray) {
-            callArgs.add(expr != null ? expr : make().Erroneous());
-        }
-        for (NamedArgument namedArg : namedArguments) {
-            at(namedArg);
-            passArgs.append(transformArg(namedArg));
-        }
-        if (sequencedArgument != null) {
-            at(sequencedArgument);
-            ProducedType seqElemType = typeFact().getIteratedType(sequencedArgument.getParameter().getType());
-            passArgs.append(makeSequence(sequencedArgument.getExpressionList().getExpressions(), seqElemType));   
-        }
-        at(ce);
-
-        List<JCExpression> typeArgs = transformTypeArguments(ce);
         
-        JCExpression receiverType;
-        final JCExpression receiver;
-        final boolean generateNew;
-        if (primary instanceof BaseMemberOrTypeExpression) {
-            BaseMemberOrTypeExpression memberExpr = (BaseMemberOrTypeExpression)primary;
-            generateNew = primary instanceof BaseTypeExpression;
-            if (memberExpr.getDeclaration().isToplevel()) {
-                passArgs.prepend(makeNull());
-                receiverType = makeIdent("java.lang.Void");
-                receiver = makeSelect(memberExpr.getDeclaration().getName(), methodName);// TODO encapsulate this
-            } else if (!memberExpr.getDeclaration().isClassMember()) {// local
-                passArgs.prepend(makeIdent(memberExpr.getDeclaration().getName())); // TODO Check it's as simple as this, and encapsulat
-                receiverType = makeIdent(memberExpr.getDeclaration().getName());// TODO: get the generated name somehow
-                receiver = makeSelect("this", "instance", methodName);
-            } else {
-                passArgs.prepend(makeNull());
-                receiverType = makeIdent("java.lang.Void");
-                receiver = makeIdent(methodName);
-            }
-        } else if (primary instanceof QualifiedMemberOrTypeExpression) {
-            QualifiedMemberOrTypeExpression memberExpr = (QualifiedMemberOrTypeExpression)primary;
-            CeylonVisitor visitor = new CeylonVisitor(gen(), typeArgs, callArgs);
-            memberExpr.getPrimary().visit(visitor);
-            if (visitor.hasResult()) {
-                //passArgs.prepend((JCExpression)visitor.getSingleResult());
-                passArgs.prepend(boxType((JCExpression)visitor.getSingleResult(), memberExpr.getPrimary().getTypeModel()));
-            }
-            receiverType = makeJavaType(memberExpr.getPrimary().getTypeModel(), AbstractTransformer.TYPE_ARGUMENT);
-            receiver = makeSelect("this", "instance", methodName);
-            generateNew = primary instanceof QualifiedTypeExpression;
-            
-        } else {
-            throw new RuntimeException("Not Implemented: Named argument calls only implemented on member and type expressions");
+        private ProducedType getTypeModel() {
+            return ce.getTypeModel();
         }
-
-        // Construct the call$() method
-        boolean isVoid = ce.getTypeModel().isExactly(typeFact().getVoidDeclaration().getType());
-        //int spec = 0;
-        int spec = AbstractTransformer.NO_PRIMITIVES;
-        if(isTypeParameter(determineExpressionType(ce)))
-            spec = AbstractTransformer.TYPE_ARGUMENT;
-        else if(generateNew)
-            spec = AbstractTransformer.CLASS_NEW;
-        JCExpression resultType = makeJavaType(ce.getTypeModel(), spec);
         
-        final String callMethodName = "call$";
-        MethodDefinitionBuilder callMethod = MethodDefinitionBuilder.method(gen(), callMethodName);
-        callMethod.modifiers(Flags.PUBLIC);
-        callMethod.resultType(resultType);
-        if (generateNew) {
-            callMethod.body(make().Return(make().NewClass(null, null, resultType, callArgs.toList(), null)));
-        } else {
-            JCExpression expr = make().Apply(null, receiver, callArgs.toList());
-            
-            if (isVoid) {
-                callMethod.body(List.<JCStatement>of(
-                        make().Exec(expr),
-                        make().Return(makeNull())));
+        private SequencedArgument getSequencedArgument() {
+            return ce.getNamedArgumentList().getSequencedArgument();
+        }
+
+        private java.util.List<NamedArgument> getNamedArguments() {
+            return ce.getNamedArgumentList().getNamedArguments();
+        }
+        
+        private boolean isGenerateNew() {
+            return getPrimary() instanceof BaseTypeExpression
+                    || getPrimary() instanceof QualifiedTypeExpression;
+        }
+        
+        private int getResultTypeSpec() {
+            int spec = 0;
+            //int spec = AbstractTransformer.NO_PRIMITIVES;
+            if (isTypeParameter(determineExpressionType(ce))) {
+                spec = AbstractTransformer.TYPE_ARGUMENT;
+            } else if (isGenerateNew()) {
+                spec = AbstractTransformer.CLASS_NEW;
+            }
+            return spec;
+        }
+
+        private boolean isVoid() {
+            boolean isVoid = getTypeModel().isExactly(typeFact().getVoidDeclaration().getType());
+            return isVoid;
+        }
+        
+        private Expression getArgumentExpression(Tree.NamedArgument arg) {
+            if (arg instanceof Tree.SpecifiedArgument) {
+                Expression expr = ((Tree.SpecifiedArgument)arg).getSpecifierExpression().getExpression();
+                return expr;
+            } else if (arg instanceof Tree.TypedArgument) {
+                throw new RuntimeException("Not yet implemented");
             } else {
-                callMethod.body(make().Return(expr));
+                throw new RuntimeException("Illegal State");
+            }
+        }
+        
+        private JCExpression transformArgument(Tree.NamedArgument arg) {
+            // named arguments get casted down the stack, so no need for erasure casts
+            return transformExpression(getArgumentExpression(arg));
+        }
+
+        private ProducedType getArgumentType(Tree.NamedArgument arg) {
+            if (arg instanceof Tree.SpecifiedArgument) {
+                return ((Tree.SpecifiedArgument)arg).getSpecifierExpression().getExpression().getTypeModel();
+            } else if (arg instanceof Tree.TypedArgument) {
+                throw new RuntimeException("Not yet implemented");
+            } else {
+                throw new RuntimeException("Illegal State");
+            }
+        }
+        
+        private void initPositionalArguments() {
+            java.util.List<NamedArgument> namedArguments = getNamedArguments();
+            java.util.List<Parameter> declaredParams = getParameterLists().get(0).getParameters();
+            Parameter lastDeclared = declaredParams.get(declaredParams.size() - 1);
+            boolean boundSequenced = false;
+            ArrayList<JCExpression> callArgsArray = new ArrayList<JCExpression>(Collections.<JCExpression>nCopies(namedArguments.size(), null));
+            for (NamedArgument namedArg : namedArguments) {
+                at(namedArg);
+                Parameter declaredParam = namedArg.getParameter();
+                if (declaredParam == null 
+                        || !declaredParam.getName().equals(namedArg.getIdentifier().getText())) {
+                    throw new RuntimeException();
+                }
+                if (declaredParam.isSequenced()) {
+                    boundSequenced = true;
+                }
+                int index = namedArguments.indexOf(namedArg);
+                JCExpression argExpr = make().Indexed(makeSelect("this", "args"), makeInteger(index));
+                ProducedType type = declaredParam.getType();
+                if (isTypeParameter(type)) {
+                    type = getArgumentType(namedArg);
+                }
+                argExpr = make().TypeCast(makeJavaType(type, AbstractTransformer.TYPE_ARGUMENT), argExpr);
+                if (Util.getBoxingStrategy(declaredParam) == BoxingStrategy.UNBOXED) {
+                    argExpr = unboxType(argExpr, declaredParam.getType());
+                }
+                callArgsArray.set(declaredParams.indexOf(declaredParam), argExpr);
+            }
+            
+            SequencedArgument sequencedArgument = getSequencedArgument();
+            if (sequencedArgument != null) {
+                int index = namedArguments.size();
+                JCExpression argExpr = make().Indexed(makeSelect("this", "args"), makeInteger(index));
+                
+                ProducedType type = lastDeclared.getType();
+                argExpr = make().TypeCast(makeJavaType(type, AbstractTransformer.TYPE_ARGUMENT), argExpr);
+                callArgsArray.add(namedArguments.size(), unboxType(argExpr, lastDeclared.getType()));
+            } else if (lastDeclared.isSequenced() && !boundSequenced) {
+                callArgsArray.add(namedArguments.size(), makeEmpty());
+            }
+            
+            positionalArguments = ListBuffer.<JCExpression>lb();
+            for (JCExpression expr : callArgsArray) {
+                positionalArguments.add(expr != null ? expr : make().Erroneous());
+            }
+            
+        }
+        
+        private void initPassedArguments() {
+            passedArguments = new ListBuffer<JCExpression>();
+            for (NamedArgument namedArg : getNamedArguments()) {
+                at(namedArg);
+                passedArguments.append(transformArgument(namedArg));
+            }
+            SequencedArgument sequencedArgument = getSequencedArgument();
+            if (sequencedArgument != null) {
+                at(sequencedArgument);
+                ProducedType seqElemType = typeFact().getIteratedType(sequencedArgument.getParameter().getType());
+                passedArguments.append(makeSequence(sequencedArgument.getExpressionList().getExpressions(), seqElemType));   
             }
         }
 
-        // Construct the class
-        JCExpression namedArgsClass = make().TypeApply(makeIdent(syms().ceylonNamedArgumentCall),
-                List.<JCExpression>of(receiverType));
+        private void initMethod() {
+            initPositionalArguments();
+            initPassedArguments();
+            at(ce);
+            Primary primary = getPrimary();
+            if (primary instanceof BaseMemberOrTypeExpression) {
+                BaseMemberOrTypeExpression memberExpr = (BaseMemberOrTypeExpression)primary;
+                Declaration memberDecl = memberExpr.getDeclaration();
+                if (memberDecl.isToplevel()) {
+                    instance = makeNull();
+                    synthClassTypeParam = makeIdent("java.lang.Void");
+                    method = makeSelect(memberDecl.getName(), getMethodName());// TODO encapsulate this
+                } else if (!memberDecl.isClassMember()) {// local
+                    instance = makeIdent(memberDecl.getName()); // TODO Check it's as simple as this, and encapsulat
+                    synthClassTypeParam = makeIdent(memberDecl.getName());// TODO: get the generated name somehow
+                    method = makeSelect("this", "instance", getMethodName());
+                } else {
+                    instance = makeNull();
+                    synthClassTypeParam = makeIdent("java.lang.Void");
+                    method = makeIdent(getMethodName());
+                }
+            } else if (primary instanceof QualifiedMemberOrTypeExpression) {
+                QualifiedMemberOrTypeExpression memberExpr = (QualifiedMemberOrTypeExpression)primary;
+                List<JCExpression> typeArgs = transformTypeArguments(ce);
+                CeylonVisitor visitor = new CeylonVisitor(gen(), typeArgs, positionalArguments);
+                Primary primary2 = memberExpr.getPrimary();
+                primary2.visit(visitor);
+                if (visitor.hasResult()) {
+                    this.instance = boxType((JCExpression)visitor.getSingleResult(), primary2.getTypeModel());
+                }
+                synthClassTypeParam = makeJavaType(primary2.getTypeModel(), AbstractTransformer.TYPE_ARGUMENT);
+                method = makeSelect("this", "instance", getMethodName());
+            } else {
+                throw new RuntimeException("Not Implemented: Named argument calls only implemented on member and type expressions");
+            }
+        }
+        
+        private JCMethodDecl declareCall$Decl() {
+            // Construct the call$() method
+            MethodDefinitionBuilder callMethod = MethodDefinitionBuilder.method(gen(), CALL_METHOD_NAME);
+            callMethod.modifiers(Flags.PUBLIC);
+            JCExpression resultType = makeJavaType(getTypeModel(), getResultTypeSpec());
+            callMethod.resultType(resultType);
+            if (isGenerateNew()) {
+                callMethod.body(make().Return(make().NewClass(null, null, resultType, positionalArguments.toList(), null)));
+            } else {
+                JCExpression expr = make().Apply(null, method, positionalArguments.toList());
+                if (isVoid()) {
+                    callMethod.body(List.<JCStatement>of(
+                            make().Exec(expr),
+                            make().Return(makeNull())));
+                } else {
+                    callMethod.body(make().Return(expr));
+                }
+            }
+            return callMethod.build();
+        }
+        
+        private void defineSynthClass() {
+            initMethod();
+            synthClassType = make().TypeApply(makeIdent(syms().ceylonNamedArgumentCall),
+                    List.<JCExpression>of(synthClassTypeParam));
+            synthClassDecl = make().ClassDef(make().Modifiers(0),
+                    names().empty,
+                    List.<JCTypeParameter>nil(),
+                    synthClassType,
+                    List.<JCExpression>nil(),
+                    List.<JCTree>of(declareCall$Decl()));
+        }
+        
+        private void newSynthClass() {
+            defineSynthClass();
+            passedArguments.prepend(instance);
+            synthClassInstance = make().NewClass(null,
+                    null,
+                    synthClassType,
+                    passedArguments.toList(),
+                    synthClassDecl);
+        }
 
-        JCClassDecl classDecl = make().ClassDef(make().Modifiers(0),
-                names().empty,
-                List.<JCTypeParameter>nil(),
-                namedArgsClass,
-                List.<JCExpression>nil(),
-                List.<JCTree>of(callMethod.build()));
-
-        // Create an instance of the class
-        JCNewClass newClass = make().NewClass(null,
-                null,
-                namedArgsClass,
-                passArgs.toList(),
-                classDecl);
-
-        // Call the call$() method
-        return make().Apply(null,
-                makeSelect(newClass, callMethodName), List.<JCExpression>nil());
+        private JCExpression applyCall$Method() {
+            newSynthClass();
+            // Call the call$() method
+            return make().Apply(null,
+                    makeSelect(synthClassInstance, CALL_METHOD_NAME), List.<JCExpression>nil());
+        }
+        
+        public JCExpression generate() {
+            return applyCall$Method();
+        }
+    }
+    
+    private JCExpression transformNamedInvocation(InvocationExpression ce) {
+        return new NamedArgumentCallBuilder(ce).generate();
     }
 
     private JCExpression transformPositionalInvocation(InvocationExpression ce) {
@@ -795,32 +954,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         return transformExpression(arg.getExpression(), 
                 Util.getBoxingStrategy(arg.getParameter()), 
                 arg.getParameter().getType());
-    }
-
-    Expression getArgExpression(Tree.NamedArgument arg) {
-        if (arg instanceof Tree.SpecifiedArgument) {
-            Expression expr = ((Tree.SpecifiedArgument)arg).getSpecifierExpression().getExpression();
-            return expr;
-        } else if (arg instanceof Tree.TypedArgument) {
-            throw new RuntimeException("Not yet implemented");
-        } else {
-            throw new RuntimeException("Illegal State");
-        }
-    }
-    
-    JCExpression transformArg(Tree.NamedArgument arg) {
-        // named arguments get casted down the stack, so no need for erasure casts
-        return transformExpression(getArgExpression(arg));
-    }
-
-    ProducedType namedArgType(Tree.NamedArgument arg) {
-        if (arg instanceof Tree.SpecifiedArgument) {
-            return ((Tree.SpecifiedArgument)arg).getSpecifierExpression().getExpression().getTypeModel();
-        } else if (arg instanceof Tree.TypedArgument) {
-            throw new RuntimeException("Not yet implemented");
-        } else {
-            throw new RuntimeException("Illegal State");
-        }
     }
 
     JCExpression ceylonLiteral(String s) {
