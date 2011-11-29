@@ -1004,14 +1004,20 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCTree transform(IndexExpression access) {
         boolean safe = access.getIndexOperator() instanceof Tree.SafeIndexOp;
 
-        // look at the lhs
-        JCExpression lhs = transformExpression(access.getPrimary());
-        
-        // do the index
+        // depends on the operator
         ElementOrRange elementOrRange = access.getElementOrRange();
         if(elementOrRange instanceof Tree.Element){
             Tree.Element element = (Element) elementOrRange;
-            JCExpression index = transformExpression(element.getExpression(), BoxingStrategy.BOXED, null);
+            // let's see what types there are
+            ProducedType leftType = getSupertype(access.getPrimary(), access.getUnit().getCorrespondenceDeclaration());
+            ProducedType rightType = getFirstTypeArgument(leftType);
+            
+            // do the index
+            JCExpression index = transformExpression(element.getExpression(), BoxingStrategy.BOXED, rightType);
+
+            // look at the lhs
+            JCExpression lhs = transformExpression(access.getPrimary(), BoxingStrategy.UNBOXED, leftType);
+
             if(!safe)
                 // make a "lhs.item(index)" call
                 return at(access).Apply(List.<JCTree.JCExpression>nil(), 
@@ -1032,6 +1038,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             // (let tmpVar in conditional)
             return make().LetExpr(tmpVar, conditional);
         }else{
+            // look at the lhs
+            JCExpression lhs = transformExpression(access.getPrimary(), BoxingStrategy.UNBOXED, null);
+            // do the indices
             Tree.ElementRange range = (ElementRange) elementOrRange;
             JCExpression start = transformExpression(range.getLowerBound(), BoxingStrategy.UNBOXED, null);
             JCExpression end = transformExpression(range.getUpperBound(), BoxingStrategy.UNBOXED, null);
