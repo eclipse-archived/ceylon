@@ -6,12 +6,12 @@ final class v {
     }
     
     static void v() {
-        ceylon.language.Natural three = new .ceylon.language.NamedArgumentCall<ceylon.language.Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L)){
+        final long three = new .ceylon.language.NamedArgumentCall<ceylon.language.Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L)){
             
             public ceylon.language.Natural call$() {
-                return this.instance.plus(((ceylon.language.Natural)this.args[0]).longValue());
+                return this.instance.plus((ceylon.language.Natural)this.args[0]);
             }
-        }.call$();
+        }.call$().longValue();
     }
     
     public static void main(.java.lang.String[] args) {

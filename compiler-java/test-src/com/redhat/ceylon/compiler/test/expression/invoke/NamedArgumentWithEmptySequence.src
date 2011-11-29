@@ -6,10 +6,10 @@ class NamedArgumentWithEmptySequence {
     }
     
     NamedArgumentWithEmptySequence() {
-        new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, ceylon.language.$empty.getEmpty()){
+        new .ceylon.language.NamedArgumentCall<java.lang.Void>(null){
             
             public .java.lang.Object call$() {
-                m((ceylon.language.Iterable<? extends ceylon.language.Natural>)this.args[0]);
+                m(ceylon.language.$empty.getEmpty());
                 return null;
             }
         }.call$();
