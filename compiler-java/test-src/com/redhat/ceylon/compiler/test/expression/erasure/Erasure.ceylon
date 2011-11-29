@@ -80,6 +80,7 @@ class Test() {
         middle.right();
         givesLeftAndRight().top();
         CMiddle().top();
+        
         // attribute access
         variable Natural sync;
         sync := middle.topAttribute;
@@ -91,9 +92,11 @@ class Test() {
         // positional param
         takesTop(middle);
         takesLeft(middle);
+        
         // named param
         takesTop{top = middle;};
         takesLeft{left = middle;};
+        
         // assign
         variable Left&Right middleVar := CMiddle();
         // FIXME: add this back when assignment is a proper expression
