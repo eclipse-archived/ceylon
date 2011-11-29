@@ -417,36 +417,6 @@ public class ClassTransformer extends AbstractTransformer {
         return defs;
     }
     
-    private JCExpression transform(final Tree.Annotation userAnn, Tree.ClassOrInterface classDecl, String methodName) {
-        List<JCExpression> values = List.<JCExpression> nil();
-        // FIXME: handle named arguments
-        for (Tree.PositionalArgument arg : userAnn.getPositionalArgumentList().getPositionalArguments()) {
-            values = values.append(expressionGen().transformExpression(arg.getExpression()));
-        }
-
-        JCExpression classLiteral;
-        if (classDecl != null) {
-            classLiteral = makeSelect(classDecl.getIdentifier().getText(), "class");
-        } else {
-            classLiteral = makeSelect(methodName, "class");
-        }
-
-        // FIXME: can we have something else?
-        Tree.BaseMemberExpression primary = (Tree.BaseMemberExpression) userAnn.getPrimary();
-        String name = primary.getIdentifier().getText();
-        JCExpression result = at(userAnn).Apply(null, makeSelect(name , name), values);
-        JCIdent addAnnotation = at(userAnn).Ident(names().fromString("addAnnotation"));
-        List<JCExpression> args;
-        if (methodName != null)
-            args = List.<JCExpression> of(classLiteral, expressionGen().ceylonLiteral(methodName), result);
-        else
-            args = List.<JCExpression> of(classLiteral, result);
-
-        result = at(userAnn).Apply(null, addAnnotation, args);
-
-        return result;
-    }
-
     private JCMethodDecl makeMainMethod(JCExpression callee) {
         // Add a main() method
         MethodDefinitionBuilder methbuilder = MethodDefinitionBuilder.main(this);
