@@ -288,8 +288,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.RangeOp op) {
-        JCExpression lower = transformExpression(op.getLeftTerm());
-        JCExpression upper = transformExpression(op.getRightTerm());
+        // we need to get the range bound type
+        ProducedType comparableType = getSupertype(op.getLeftTerm(), op.getUnit().getComparableDeclaration());
+        ProducedType paramType = getTypeArgument(comparableType);
+        JCExpression lower = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, paramType);
+        JCExpression upper = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, paramType);
         ProducedType rangeType = typeFact().getRangeType(op.getLeftTerm().getTypeModel());
         JCExpression typeExpr = makeJavaType(rangeType, CeylonTransformer.CLASS_NEW);
         return at(op).NewClass(null, null, typeExpr, List.<JCExpression> of(lower, upper), null);

@@ -160,7 +160,14 @@ class Test() {
         
         // erased type for sequences
         sync := naturals.size;
-                
+        
+        // range
+        // FIXME: haven't been able to get an erased range bound
+        //Natural[] seq = p1..p1;
+        
+        // entry
+        value entry = p1 -> p1;
+        
         // return
         return middle;
     }
