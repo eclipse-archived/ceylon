@@ -4,7 +4,7 @@ import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.TypeParameter;
 import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
 
-@TypeParameters({@TypeParameter(value="Inverse",
+@TypeParameters({@TypeParameter(value="Other",
         satisfies="ceylon.language.Integral<Other>")})
 public interface Integral<Other extends Integral<Other>> 
         extends Numeric<Other>, Ordinal<Other> {
