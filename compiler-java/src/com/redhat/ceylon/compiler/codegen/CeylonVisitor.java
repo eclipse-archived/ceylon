@@ -252,7 +252,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.ExpressionStatement tree) {
-        append(gen.at(tree).Exec(gen.expressionGen().transformExpression(tree.getExpression(), BoxingStrategy.INDIFFERENT, null)));
+        // ExpressionStatements do not return any value, therefore we don't care about the
+        // type of the expressions.
+        append(gen.at(tree).Exec(gen.expressionGen().transformExpression(tree.getExpression(), 
+                BoxingStrategy.INDIFFERENT, null)));
     }
     
     /*
