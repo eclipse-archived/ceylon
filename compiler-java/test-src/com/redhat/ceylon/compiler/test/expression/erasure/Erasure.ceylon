@@ -75,6 +75,10 @@ class Test() {
         // FIXME: add this back when assignment is a proper expression
         // (middleVar := CMiddle()).left();
         Left left = middleVar;
+        Left left2;
+        left2 = middleVar;
+        variable Left left3 := middleVar;
+        left3 := middleVar; 
         // arithmetic operators
         Numeric<Natural>&Ordinal<Natural> n = 1;
         Natural n2 = n + n;
