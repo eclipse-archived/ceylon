@@ -97,6 +97,10 @@ class Test() {
         // can't erase boolean types, since Boolean is final and thus can't have
         // intersections with things that can't be simplified to Boolean
 
+        // sequence operators
+        Sequence<Natural> naturals = {1};
+        Natural? n5 = naturals[n];
+
         // FIXME: this is broken        
         //Numeric<Natural>&Ordinal<Natural>&Integral<Natural> n = 1;
         //Natural n2 = n + n;
