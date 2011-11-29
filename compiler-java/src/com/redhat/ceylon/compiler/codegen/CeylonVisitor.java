@@ -233,12 +233,13 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         append(gen.statementGen().transform(op));
     }
 
-    // FIXME: not sure why we don't have just an entry for Tree.Term here...
     public void visit(Tree.OperatorExpression op) {
+        // FIXME: Do we really have operators not handled elsewhere than here?
         append(gen.at(op).Exec(gen.expressionGen().transformExpression(op)));
     }
 
     public void visit(Tree.Expression tree) {
+        // FIXME: Do we really have expressions not handled elsewhere than here?
         append(gen.at(tree).Exec(gen.expressionGen().transformExpression(tree)));
     }
 
@@ -396,6 +397,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
 
     // FIXME: port TypeName?
     public void visit(Tree.InitializerExpression value) {
+        // FIXME: is this even used?
         append(gen.expressionGen().transformExpression(value.getExpression()));
     }
 
