@@ -155,6 +155,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
             Expression expression = expressions.get(ii);
             at(expression);
+            // Here in both cases we don't need a type cast for erasure
             if (isCeylonBasicType(expression.getTypeModel())) {// TODO: Test should be erases to String, long, int, boolean, char, byte, float, double
                 // If erases to a Java primitive just call append, don't box it just to call format. 
                 builder = make().Apply(null, makeSelect(builder, "append"), List.<JCExpression>of(transformExpression(expression, BoxingStrategy.UNBOXED, null)));
@@ -211,6 +212,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.NotOp op) {
+        // No need for an erasure cast since Term must be Boolean and we never need to erase that
         JCExpression term = transformExpression(op.getTerm(), Util.getBoxingStrategy(op), null);
         JCUnary jcu = at(op).Unary(JCTree.NOT, term);
         return jcu;
