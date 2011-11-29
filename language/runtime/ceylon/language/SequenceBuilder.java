@@ -30,14 +30,14 @@ public class SequenceBuilder<Element> {
         }
     }
     
-    public synchronized void append(@Name("element") Element element) {
+    public final synchronized void append(@Name("element") Element element) {
     	if (list==null) {
     	    list = new ArrayList<Element>();
     	}
     	list.add(element);
     }
     
-    public synchronized void appendAll(@Sequenced @Name("elements") 
+    public final synchronized void appendAll(@Sequenced @Name("elements") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>") 
     Iterable<? extends Element> elements) {
     	if (list==null) {
