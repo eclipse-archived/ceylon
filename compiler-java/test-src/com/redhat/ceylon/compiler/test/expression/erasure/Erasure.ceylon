@@ -96,8 +96,7 @@ class Test() {
 
         // equality operators
         Boolean b = n == n;
-        // FIXME: this is broken
-        //Boolean b2 = n < n;
+        Boolean b2 = p1 < p1;
 
         // can't erase boolean types, since Boolean is final and thus can't have
         // intersections with things that can't be simplified to Boolean
