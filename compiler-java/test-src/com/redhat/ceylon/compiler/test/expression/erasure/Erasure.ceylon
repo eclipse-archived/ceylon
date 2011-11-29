@@ -147,6 +147,9 @@ class Test() {
         Empty|Sequence<Natural&EmptyInterface>|Nothing naturalsOrNothing = {p1};
         Natural? n52 = naturalsOrNothing?[p1];
 
+        // sequence expression
+        Natural[] plainNaturals = {p1};
+
         // FIXME: this is broken        
         //Numeric<Natural>&Ordinal<Natural>&Integral<Natural> n = 1;
         //Natural n2 = n + n;
