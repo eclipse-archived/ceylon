@@ -82,4 +82,11 @@ shared void strings() {
     assert(hello.keys.contains(0), "string keys");
     
     assert(hello.hash==("HE"+"LLO").lowercased.hash, "string hash");
+    
+    value builder = StringBuilder();
+    builder.append("hello");
+    builder.appendCharacter(` `);
+    builder.append("world");
+    String s = builder.string;
+    assert(s=="hello world", "string builder");
 }
