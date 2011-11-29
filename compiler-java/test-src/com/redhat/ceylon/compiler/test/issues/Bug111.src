@@ -9,7 +9,7 @@ class Bug111 {
     
     private final void m2() {
         final .java.lang.Object num = .ceylon.language.Natural.instance(0L);
-        final long mag = ((ceylon.language.Invertable<ceylon.language.Integer>)num).getNegativeValue().longValue();
+        final long mag = ((ceylon.language.Invertable<? extends ceylon.language.Integer>)num).getNegativeValue().longValue();
     }
     
     private final void m3() {
