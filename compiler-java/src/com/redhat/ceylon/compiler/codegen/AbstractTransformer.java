@@ -211,10 +211,12 @@ public abstract class AbstractTransformer implements Transformation {
         return make().Literal(TypeTags.BOT, null);
     }
     
-    protected JCExpression makeInteger(long i) {
-        // FIXME Using Integer only to make hashCode() work!!
-        // We should introduce "small"!!
-        return make().Literal(Integer.valueOf((int)i));
+    protected JCExpression makeInteger(int i) {
+        return make().Literal(Integer.valueOf(i));
+    }
+    
+    protected JCExpression makeLong(long i) {
+        return make().Literal(Long.valueOf(i));
     }
     
     protected JCExpression makeBoolean(boolean b) {
@@ -433,6 +435,7 @@ public abstract class AbstractTransformer implements Transformation {
     static final int CLASS_NEW = 1 << 1; // Yes, same as EXTENDS
     static final int WANT_RAW_TYPE = 1 << 3;
     static final int CATCH = 1 << 4;
+    static final int SMALL_TYPE = 1 << 5;
 
     protected JCExpression makeJavaType(TypedDeclaration typeDecl) {
         boolean isGenericsType = isGenericsImplementation(typeDecl);
@@ -482,12 +485,18 @@ public abstract class AbstractTransformer implements Transformation {
                 return make().Type(syms().stringType);
             } else if (isCeylonBoolean(type)) {
                 return make().TypeIdent(TypeTags.BOOLEAN);
-            } else if (isCeylonNatural(type)) {
-                return make().TypeIdent(TypeTags.LONG);
-            } else if (isCeylonInteger(type)) {
-                return make().TypeIdent(TypeTags.INT);
+            } else if (isCeylonNatural(type) || isCeylonInteger(type)) {
+                if ((flags & SMALL_TYPE) != 0) {
+                    return make().TypeIdent(TypeTags.INT);
+                } else {
+                    return make().TypeIdent(TypeTags.LONG);
+                }
             } else if (isCeylonFloat(type)) {
-                return make().TypeIdent(TypeTags.DOUBLE);
+                if ((flags & SMALL_TYPE) != 0) {
+                    return make().TypeIdent(TypeTags.FLOAT);
+                } else {
+                    return make().TypeIdent(TypeTags.DOUBLE);
+                }
             } else if (isCeylonCharacter(type)) {
                 return make().TypeIdent(TypeTags.INT);
             }
@@ -862,7 +871,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     private JCTree.JCMethodInvocation unboxInteger(JCExpression value) {
-        return makeUnboxType(value, "intValue");
+        return makeUnboxType(value, "longValue");
     }
     
     private JCTree.JCMethodInvocation unboxFloat(JCExpression value) {

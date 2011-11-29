@@ -4,8 +4,8 @@ class NumericLiteral {
     
     public final void m() {
         final long n1 = 9223372036854775807L;
-        final int n2 = 2147483647;
-        final int n3 = -2147483648;
+        final long n2 = 2147483647L;
+        final long n3 = -2147483648L;
         final double n4 = 1.7976931348623157E308;
         final double n5 = 4.9E-324;
     }

@@ -2,10 +2,10 @@ package com.redhat.ceylon.compiler.test.structure.method;
 
 class MethodWithParam {
     
-    private final void f(final int i) {
+    private final void f(final long i) {
     }
     
-    public final void f2(final int i) {
+    public final void f2(final long i) {
     }
     
     MethodWithParam() {

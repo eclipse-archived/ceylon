@@ -132,6 +132,10 @@ public class MethodDefinitionBuilder {
         if (resultType == null) {
             return gen.make().TypeIdent(VOID);
         } else {
+            // FIXME Temporary work-around for hashCode() until we get "small" annotations!
+            if ("hashCode".equals(name) && gen.isCeylonInteger(resultType.getType())) {
+                return gen.makeJavaType(resultType.getType(), AbstractTransformer.SMALL_TYPE);
+            }
             return gen.makeJavaType(resultType);
         }
     }

@@ -2,11 +2,11 @@ package com.redhat.ceylon.compiler.test.expression.invoke;
 
 class MethodErasure {
     
-    private final int m1() {
+    private final long m1() {
         return hashCode();
     }
     
-    private final int m2() {
+    private final long m2() {
         return this.hashCode();
     }
     

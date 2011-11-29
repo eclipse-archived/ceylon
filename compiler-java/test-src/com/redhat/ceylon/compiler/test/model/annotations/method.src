@@ -8,9 +8,9 @@ final class method {
     }
     
     @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
-    static int method(@.com.redhat.ceylon.compiler.metadata.java.Name("i")
+    static long method(@.com.redhat.ceylon.compiler.metadata.java.Name("i")
     @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
-    final int i) {
-        return 1;
+    final long i) {
+        return 1L;
     }
 }

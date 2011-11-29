@@ -298,10 +298,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         Tree.Term term = op.getTerm();
         if (term instanceof Tree.NaturalLiteral && op instanceof Tree.NegativeOp) {
             Tree.NaturalLiteral lit = (Tree.NaturalLiteral) term;
-            return makeInteger(-Long.parseLong(lit.getText()));
+            return makeLong(-Long.parseLong(lit.getText()));
         } else if (term instanceof Tree.NaturalLiteral && op instanceof Tree.PositiveOp) {
             Tree.NaturalLiteral lit = (Tree.NaturalLiteral) term;
-            return makeInteger(Long.parseLong(lit.getText()));
+            return makeLong(Long.parseLong(lit.getText()));
         }
         
         String operatorMethodName = unaryOperators.get(op.getClass());

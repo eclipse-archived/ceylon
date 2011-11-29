@@ -23,6 +23,7 @@ package com.redhat.ceylon.compiler.codegen;
 import static com.sun.tools.javac.code.Flags.FINAL;
 
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
@@ -404,8 +405,15 @@ public class StatementTransformer extends AbstractTransformer {
         Tree.Expression expr = ret.getExpression();
         JCExpression returnExpr = null;
         if (expr != null) {
-            // we can cast to TypedDeclaration here because return with expressions are only in Method
+            // we can cast to TypedDeclaration here because return with expressions are only in Method or Value
             returnExpr = expressionGen().transformExpression(expr.getTerm(), Util.getBoxingStrategy((TypedDeclaration)ret.getDeclaration()));
+            // FIXME Temporary work-around for hashCode() until we get "small" annotations!
+            if (isCeylonInteger(expr.getTypeModel())) {
+                MethodOrValue m = (MethodOrValue)ret.getDeclaration();
+                if ("hash".equals(m.getName())) {
+                    returnExpr = make().TypeCast(syms().intType, returnExpr);
+                }
+            }
         }
         return at(ret).Return(returnExpr);
     }

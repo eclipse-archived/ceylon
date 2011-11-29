@@ -23,7 +23,7 @@ class EqualsHashOverriding {
     
     @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
     public final int hashCode() {
-        return .ceylon.language.String.instance(s).hashCode();
+        return (int).ceylon.language.String.instance(s).hashCode();
     }
     
     EqualsHashOverriding(@.com.redhat.ceylon.compiler.metadata.java.Name("s")
