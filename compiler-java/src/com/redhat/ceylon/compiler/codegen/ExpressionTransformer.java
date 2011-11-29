@@ -430,6 +430,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         return null;
     }
 
+    private ProducedType getFirstTypeArgument(ProducedType leftType) {
+        if (leftType!=null && leftType.getTypeArguments().size() >= 1) {
+            return leftType.getTypeArgumentList().get(0);
+        }
+        return null;
+    }
+
     public JCExpression transform(Tree.BinaryOperatorExpression op, ProducedType leftType, ProducedType rightType) {
         JCExpression result = null;
         
