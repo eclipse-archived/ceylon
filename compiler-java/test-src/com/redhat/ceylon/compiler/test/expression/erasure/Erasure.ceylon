@@ -40,6 +40,8 @@ class CMiddle() satisfies Left & Right{
     shared actual void top() {}
     shared actual void right() {}
 }
+@nomodel
+interface EmptyInterface {}
 
 @nomodel
 class Test() {
@@ -56,7 +58,7 @@ class Test() {
             takesLeft(middle);
         }
     }
-    Left testIntersection(){
+    Left testIntersection(Natural&EmptyInterface p1){
         Left&Right middle = CMiddle();
         // invocation
         middle.top();
@@ -98,8 +100,8 @@ class Test() {
         // intersections with things that can't be simplified to Boolean
 
         // sequence operators
-        Sequence<Natural> naturals = {1};
-        Natural? n5 = naturals[n];
+        Empty|Sequence<Natural&EmptyInterface> naturals = {p1};
+        Natural? n5 = naturals[p1];
 
         // FIXME: this is broken        
         //Numeric<Natural>&Ordinal<Natural>&Integral<Natural> n = 1;
