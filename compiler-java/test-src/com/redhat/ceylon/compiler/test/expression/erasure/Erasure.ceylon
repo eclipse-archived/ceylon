@@ -75,7 +75,8 @@ class Test() {
     // WARNING: when the typechecker figures out that because Natural is final
     // the Natural&EmptyInterface type cannot exist, we'll need to change it to
     // something else
-    Left testIntersection(Natural&EmptyInterface p1){
+    Left testIntersection(Natural&EmptyInterface p1,
+                          Sequence<Top>&EmptyInterface tops){
         Left&Right middle = CMiddle();
         // invocation
         middle.top();
@@ -144,6 +145,22 @@ class Test() {
         //Natural n3 = n * n;
         //Natural n4 = n % n;
         
+        // iteration
+        // FIXME: I couldn't find a way to get a sequence erased to object
+        for(Natural&EmptyInterface it in naturals){
+            Numeric<Natural> n6 = it;
+        }
+        for(Top it in tops){
+            it.top();
+        }
+        Sequence<Top> topSequence = {middle}; 
+        for(Top it in topSequence){
+            it.top();
+        }
+        
+        // erased type for sequences
+        sync := naturals.size;
+                
         // return
         return middle;
     }
