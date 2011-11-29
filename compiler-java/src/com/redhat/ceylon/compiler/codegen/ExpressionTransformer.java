@@ -473,6 +473,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.LogicalOp op) {
+        // Both terms are Booleans and can't be erased to anything
         JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.UNBOXED, null);
         JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.UNBOXED, null);
 
