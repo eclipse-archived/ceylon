@@ -24,9 +24,9 @@ class TryCatchUnion {
         try {
             t();
         } catch (final com.redhat.ceylon.compiler.test.statement.trycatch.E1 e) {
-            c(e);
+            c((.java.lang.Throwable)e);
         } catch (final com.redhat.ceylon.compiler.test.statement.trycatch.E2 e) {
-            c(e);
+            c((.java.lang.Throwable)e);
         }
     }
     
