@@ -634,6 +634,18 @@ public class ExpressionTransformer extends AbstractTransformer {
             throw new RuntimeException("Illegal State: " + (primaryDecl != null ? primaryDecl.getClass() : "null"));            
         }
         
+        private ProducedType getMethodType() {
+            final Declaration primaryDecl = getPrimaryDeclaration();
+            if (primaryDecl instanceof Method) {
+                Method methodDecl = (Method)primaryDecl;
+                return methodDecl.getType();
+            } else if (primaryDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+                com.redhat.ceylon.compiler.typechecker.model.Class methodDecl = (com.redhat.ceylon.compiler.typechecker.model.Class)primaryDecl;
+                return methodDecl.getType();
+            }
+            throw new RuntimeException("Illegal State: " + (primaryDecl != null ? primaryDecl.getClass() : "null"));
+        }
+        
         private java.util.List<ParameterList> getParameterLists() {
             final Declaration primaryDecl = getPrimaryDeclaration();
             if (primaryDecl instanceof Method) {
@@ -665,11 +677,12 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         private int getResultTypeSpec() {
             int spec = 0;
-            //int spec = AbstractTransformer.NO_PRIMITIVES;
             if (isTypeParameter(determineExpressionType(ce))) {
                 spec = AbstractTransformer.TYPE_ARGUMENT;
             } else if (isGenerateNew()) {
                 spec = AbstractTransformer.CLASS_NEW;
+            } else if (!ce.getUnboxed()) {
+                spec = AbstractTransformer.NO_PRIMITIVES;
             }
             return spec;
         }
