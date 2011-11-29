@@ -56,6 +56,7 @@ class Test() {
     void takesTop(Top top){}
     void takesLeft(Left left){}
     Left & Right givesLeftAndRight(){ return CMiddle(); }
+    variable Left leftAttribute;
 
     void testUnion(){
         Left|Right middle = CLeft();
@@ -102,6 +103,8 @@ class Test() {
         left2 = middleVar;
         variable Left left3 := middleVar;
         left3 := middleVar; 
+        leftAttribute := middleVar;
+        
         // arithmetic operators
         Numeric<Natural>&Ordinal<Natural> n = 1;
         Natural n2 = n + n;
