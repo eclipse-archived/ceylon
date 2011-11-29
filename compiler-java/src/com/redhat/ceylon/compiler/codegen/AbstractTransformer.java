@@ -781,11 +781,12 @@ public abstract class AbstractTransformer implements Transformation {
         UNBOXED, BOXED, INDIFFERENT;
     }
 
-    protected JCExpression boxUnboxIfNecessary(JCExpression javaExpr, Tree.Term expr, BoxingStrategy boxingStrategy) {
+    protected JCExpression boxUnboxIfNecessary(JCExpression javaExpr, Tree.Term expr,
+            ProducedType exprType,
+            BoxingStrategy boxingStrategy) {
         if(boxingStrategy == BoxingStrategy.INDIFFERENT)
             return javaExpr;
         boolean targetBoxed = boxingStrategy == BoxingStrategy.BOXED;
-        ProducedType exprType = expr.getTypeModel();
         boolean exprBoxed = !Util.isUnBoxed(expr);
         // only box if the two differ
         if(targetBoxed == exprBoxed)

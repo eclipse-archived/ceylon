@@ -127,9 +127,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         JCExpression result = v.getSingleResult();
-        
-        result = boxUnboxIfNecessary(result, expr, boxingStrategy);
 
+        ProducedType exprType = expr.getTypeModel();
+        
         if (expectedType != null 
                 && willEraseToObject(expr.getTypeModel())
                 // don't add cast to an erased type 
@@ -138,8 +138,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                 && !isNothing(expr.getTypeModel())) {
             // Erased types need a type cast
             JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.TYPE_ARGUMENT);
+            exprType = expectedType;
             result = make().TypeCast(targetType, result);
         }
+
+        // we must to the boxing after the cast to the proper type
+        result = boxUnboxIfNecessary(result, expr, exprType, boxingStrategy);
 
         return result;
     }
