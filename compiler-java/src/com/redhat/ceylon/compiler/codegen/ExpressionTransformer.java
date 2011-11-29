@@ -128,7 +128,10 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         if (expectedType != null 
                 && willEraseToObject(expr.getTypeModel())
-                && !willEraseToObject(expectedType)) {
+                // don't add cast to an erased type 
+                && !willEraseToObject(expectedType)
+                // don't add cast for null
+                && !isNothing(expr.getTypeModel())) {
             // Erased types need a type cast
             JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.TYPE_ARGUMENT);
             result = make().TypeCast(targetType, result);
