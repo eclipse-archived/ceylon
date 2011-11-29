@@ -18,6 +18,7 @@
  * MA  02110-1301, USA.
  */
 class CObject() extends Object() {
+    shared actual String string = "";
 }
 class CIdentifiableObject() extends IdentifiableObject() {
 }
@@ -41,7 +42,7 @@ class ErasedTypes() {
         if (is CEquality cequal) {
         }
         
-        value ciequal = CIEquality();
+        Equality ciequal = CIEquality();
         if (is CEquality ciequal) {
         }
         if (is IEquality ciequal) {
