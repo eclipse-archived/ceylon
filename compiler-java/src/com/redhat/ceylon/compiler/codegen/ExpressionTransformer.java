@@ -1015,21 +1015,24 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(elementOrRange instanceof Tree.Element){
             Tree.Element element = (Element) elementOrRange;
             // let's see what types there are
-            ProducedType leftType = getSupertype(access.getPrimary(), access.getUnit().getCorrespondenceDeclaration());
-            ProducedType rightType = getFirstTypeArgument(leftType);
+            ProducedType leftType = access.getPrimary().getTypeModel();
+            if(safe)
+                leftType = access.getUnit().getDefiniteType(leftType);
+            ProducedType leftCorrespondenceType = leftType.getSupertype(access.getUnit().getCorrespondenceDeclaration());
+            ProducedType rightType = getFirstTypeArgument(leftCorrespondenceType);
             
             // do the index
             JCExpression index = transformExpression(element.getExpression(), BoxingStrategy.BOXED, rightType);
 
             // look at the lhs
-            JCExpression lhs = transformExpression(access.getPrimary(), BoxingStrategy.UNBOXED, leftType);
+            JCExpression lhs = transformExpression(access.getPrimary(), BoxingStrategy.UNBOXED, leftCorrespondenceType);
 
             if(!safe)
                 // make a "lhs.item(index)" call
                 return at(access).Apply(List.<JCTree.JCExpression>nil(), 
                         make().Select(lhs, names().fromString("item")), List.of(index));
             // make a (let ArrayElem tmp = lhs in (tmp != null ? tmp.item(index) : null)) call
-            JCExpression arrayType = makeJavaType(access.getPrimary().getTypeModel());
+            JCExpression arrayType = makeJavaType(leftCorrespondenceType);
             Name varName = names().fromString(tempName("safeaccess"));
             // tmpVar.item(index)
             JCExpression safeAccess = make().Apply(List.<JCTree.JCExpression>nil(), 

@@ -144,6 +144,8 @@ class Test() {
         // sequence operators
         Empty|Sequence<Natural&EmptyInterface> naturals = {p1};
         Natural? n5 = naturals[p1];
+        Empty|Sequence<Natural&EmptyInterface>|Nothing naturalsOrNothing = {p1};
+        Natural? n52 = naturalsOrNothing?[p1];
 
         // FIXME: this is broken        
         //Numeric<Natural>&Ordinal<Natural>&Integral<Natural> n = 1;
