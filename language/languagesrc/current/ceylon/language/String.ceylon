@@ -1,4 +1,6 @@
-doc "A string of characters."
+doc "A string of characters. Note that the internal UTF-16
+     encoding is hidden from clients. Each character in the
+     string is a 32-bit unicode character."
 by "Gavin"
 shared abstract class String()
         extends Object()

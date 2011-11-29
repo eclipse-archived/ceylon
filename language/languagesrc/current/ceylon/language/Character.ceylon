@@ -1,9 +1,12 @@
-doc "A unicode character."
+doc "A 32-bit unicode character."
 see (String)
 by "Gavin"
 shared abstract class Character()
         extends Object()
         satisfies Ordinal<Character> & Comparable<Character> {
+
+    doc "A string containg just this character."
+    shared actual formal String string;
 
     doc "The lowercase representation of this character."
     shared formal Character lowercased;
