@@ -7,7 +7,7 @@ public interface Number extends Format {
     @TypeInfo(value="ceylon.language.Natural")
     public long getNatural();
     @TypeInfo(value="ceylon.language.Integer")
-    public int getInteger();
+    public long getInteger();
     @TypeInfo(value="ceylon.language.Float")
     public double getFloat();
     
@@ -15,7 +15,7 @@ public interface Number extends Format {
     public boolean getNegative();
     
     @TypeInfo(value="ceylon.language.Integer")
-    public int getSign();
+    public long getSign();
     
     public Number getMagnitude();    
     public Number getFractionalPart();

@@ -111,7 +111,7 @@ public final class Float
     }
     
     @Override
-    public int getSign() {
+    public long getSign() {
         if (value > 0)
             return 1;
         if (value < 0)
@@ -149,13 +149,13 @@ public final class Float
     public long getNatural() {
         if (value < 0.0)
             throw new NegativeNumberException();
-        return (long) value;
+        return Math.round(value);
     }
     
     @TypeInfo(value="ceylon.language.Integer")
     @Override
-    public int getInteger() {
-        return (int) value;
+    public long getInteger() {
+        return Math.round(value);
     }
     
     @TypeInfo(value="ceylon.language.Float")

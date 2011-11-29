@@ -132,7 +132,7 @@ public final class Natural
     }
     
     @Override
-    public int getSign() {
+    public long getSign() {
         if (value > 0)
             return 1;
         if (value < 0)
@@ -177,8 +177,8 @@ public final class Natural
     
     @TypeInfo(value="ceylon.language.Integer")
     @Override
-    public int getInteger() {
-        return (int) value;
+    public long getInteger() {
+        return value;
     }
     
     @TypeInfo(value="ceylon.language.Float")
@@ -200,10 +200,6 @@ public final class Natural
     // Just a kludge til we have full autoboxing
     public long longValue() {
         return value;
-    }
-    
-    public int intValue() {
-        return (int) value;
     }
     
     @Override

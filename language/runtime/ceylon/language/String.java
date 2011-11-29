@@ -119,7 +119,7 @@ public final class String extends Object
 
     @Override
     public Character item(@Name("index") Natural key) {
-        int index = key.intValue();
+        long index = key.longValue();
         int length = value.length();
         if (index < 0 || index >= length)
             return null;
@@ -134,7 +134,7 @@ public final class String extends Object
 
     @Override
     public boolean defines(@Name("key") Natural key) {
-        int index = key.intValue();
+        long index = key.longValue();
         return index >= 0 && index < getSize();
     }
 
