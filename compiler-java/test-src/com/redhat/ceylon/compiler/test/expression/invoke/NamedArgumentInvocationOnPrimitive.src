@@ -12,6 +12,17 @@ final class v {
                 return this.instance.plus((ceylon.language.Natural)this.args[0]);
             }
         }.call$().longValue();
+        new .ceylon.language.NamedArgumentCall<ceylon.language.Natural>(new .ceylon.language.NamedArgumentCall<ceylon.language.Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L)){
+            
+            public ceylon.language.Natural call$() {
+                return this.instance.plus((ceylon.language.Natural)this.args[0]);
+            }
+        }.call$(), .ceylon.language.Natural.instance(3L)){
+            
+            public boolean call$() {
+                return this.instance.equals((.java.lang.Object)this.args[0]);
+            }
+        }.call$();
     }
     
     public static void main(.java.lang.String[] args) {
