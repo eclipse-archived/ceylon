@@ -138,7 +138,7 @@
 	    </ceylonc>
 	  </target>
       
-	  <target name="test" depends="compile.tests"
+	  <target name="test" depends="build,compile.tests"
 	  	 description="compile and run the tests">
 	  	 <java classname="run" classpath="${tests.file};${runtime.jar}"/>
 	  </target>
