@@ -926,8 +926,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         Tree.PositionalArgument arg = positional.getPositionalArguments().get(ii);
                         x = x.append(arg.getExpression());
                     }
-                    ProducedType seqElemType = typeFact().getIteratedType(lastDeclaredParam.getType());
-                    boxed = makeSequence(x, seqElemType);
+                    boxed = makeSequenceRaw(x);
                 }
                 args.append(boxed);
             }
