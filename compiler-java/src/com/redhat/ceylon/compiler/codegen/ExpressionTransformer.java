@@ -65,6 +65,7 @@ import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
+import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCUnary;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
@@ -498,18 +499,48 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     JCExpression transform(Tree.PostfixOperatorExpression expr) {
         String methodName;
-        boolean successor;
-        if (expr instanceof Tree.PostfixIncrementOp) {
-            successor = true;
-            methodName = "getPredecessor";
-        } else if (expr instanceof Tree.PostfixDecrementOp) {
-            successor = false;
+        if (expr instanceof Tree.PostfixIncrementOp){
             methodName = "getSuccessor";
-        } else {
-            return make().Erroneous();
+        }else if (expr instanceof Tree.PostfixDecrementOp){
+            methodName = "getPredecessor";
+        }else
+            throw new RuntimeException("Not implemented: " + expr.getNodeType());
+        
+        Term term = expr.getTerm();
+        List<JCVariableDecl> decls = List.nil();
+        List<JCStatement> stats = List.nil();
+        JCExpression result = null;
+        // attr++
+        // (let $tmp = attr; attr = $tmp.getSuccessor(); $tmp;)
+        if(term instanceof Tree.BaseMemberExpression){
+            JCExpression getter = transformExpression((Tree.BaseMemberExpression)term);
+            at(expr);
+            // Type $tmp = attr
+            JCExpression exprType = makeJavaType(expr.getTerm().getTypeModel(), NO_PRIMITIVES);
+            Name varName = names().fromString(tempName("op"));
+            JCVariableDecl tmpVar = make().VarDef(make().Modifiers(0), varName, exprType, getter);
+            decls = decls.prepend(tmpVar);
+
+            // attr = $tmp.getSuccessor()
+            JCExpression successor = unboxType(make().Apply(null, 
+                                                            makeSelect(make().Ident(varName), methodName), 
+                                                            List.<JCExpression>nil()), 
+                                               expr.getTerm().getTypeModel());
+            JCExpression assignment = transformAssignment(expr, term, successor);
+            stats = stats.prepend(at(expr).Exec(assignment));
+            // $tmp
+            result = make().Ident(varName);
         }
-        JCExpression op = makePrefixOp(expr, expr.getTerm(), successor);
-        return at(expr).Apply(null, makeSelect(op, methodName), List.<JCExpression>nil());
+        // e.attr++
+        // (let $tmpE = e, $tmpV = $tmpE.attr; $tmpE.attr = $tmpV.getSuccessor(); $tmpV;)
+        // e?.attr++ is probably not legal
+        // a[i]++
+        // (let $tmpA = a, $tmpI = i, $tmpV = $tmpA.item($tmpI); $tmpA.setItem($tmpI, $tmpV.getSuccessor()); $tmpV;)
+        // a?[i]++ is probably not legal
+        // a[i1..i1]++ and a[i1...]++ are probably not legal
+        // a[].attr++ and a[].e.attr++ are probably not legal
+
+        return make().LetExpr(decls, stats, result);
     }
 
     public JCExpression transform(Tree.PrefixOperatorExpression expr) {
