@@ -509,7 +509,7 @@ public class TreeMaker implements JCTree.Factory {
         return tree;
     }
 
-    public JCTree LetExpr(List<JCVariableDecl> defs, List<JCStatement> stats, JCTree expr) {
+    public LetExpr LetExpr(List<JCVariableDecl> defs, List<JCStatement> stats, JCTree expr) {
         LetExpr tree = new LetExpr(defs, stats, expr);
         tree.pos = pos;
         return tree;
