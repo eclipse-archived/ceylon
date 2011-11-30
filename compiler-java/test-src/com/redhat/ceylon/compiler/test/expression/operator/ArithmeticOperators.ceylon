@@ -33,13 +33,15 @@ shared class ArithmeticOperators() {
         ++n1;
         n1--;
         --n1;
+        
         i1 := +n1;
         i1 := -n1;
+        
         i1 := n1 + i2;
         i1 := n1 - i2;
         i1 := n1 * i2;
         i1 := n1 / i2;
-        i1 := n1 % i2;
+        n1 := n1 % n2;
         f1 := n1 ** f2;
         
         i1 += n2;
@@ -47,6 +49,5 @@ shared class ArithmeticOperators() {
         i1 *= i1;
         f1 /= f2;
         i1 %= i2;
-        
     }
 }
