@@ -223,6 +223,12 @@ public final class String extends Object
 		return index>=0 ? Natural.instance(index) : null;
     }
     
+    @TypeInfo("ceylon.language.Nothing|ceylon.language.Natural")
+    public Natural lastOccurrence(@Name("substring") java.lang.String substring) {
+    	int index = value.lastIndexOf(substring);
+		return index>=0 ? Natural.instance(index) : null;
+    }
+    
     @Override
     public boolean contains(@Name("element") 
     @TypeInfo("ceylon.language.Equality") 
