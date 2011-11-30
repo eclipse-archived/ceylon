@@ -245,13 +245,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             expr = v.getSingleResult();
         }
         
-        // FIXME: can this be anything else than a Value or a TypedDeclaration?
-        boolean variable = false;
-        if (decl instanceof Value) {
-            variable = ((Value)decl).isVariable();
-        } else {
-            variable = decl.isVariable();
-        }
+        boolean variable = decl.isVariable();
+        
         if (decl.isToplevel()) {
             // must use top level setter
             result = globalGen().setGlobalValue(
