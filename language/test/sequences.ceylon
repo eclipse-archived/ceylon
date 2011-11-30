@@ -49,4 +49,36 @@ shared void sequences() {
         i:=i+1;
     }
     assert(i==4, "sequence iteration");
+    
+    value union = SequenceBuilder<String|Float>();
+    union.append("x");
+    union.append(5.0);
+    union.appendAll("y", -1.0);
+    value useq = union.sequence;
+    assert(useq.size==4, "union sequence builder");
+    assert(useq.string=="{ x, 5.0, y, -1.0 }", "union sequence builder");
+    variable value s:=0;
+    variable value f:=0;
+    for (e in useq) {
+        if (is String e) {
+            s:=s+1;
+        }
+        if (is Float e) {
+            f:=f+1;
+        }
+    }
+    assert(s==2&&f==2, "union sequence iteration");
+    
+    String[] singleton = Singleton("hello");
+    assert(singleton.size==1, "singleton size");
+    assert(!singleton.empty, "singleton empty");
+    assert(singleton.defines(0), "singleton defines");
+    assert(!singleton.defines(1), "singleton defines");
+    if (nonempty singleton) {
+        assert(singleton.first=="hello", "singleton first");
+    }
+    else {
+        fail("singleton nonempty");
+    }
+    
 }
