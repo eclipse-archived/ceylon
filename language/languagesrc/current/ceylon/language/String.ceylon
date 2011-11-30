@@ -82,7 +82,7 @@ shared abstract class String()
          length. If this string is shorter than the given
          length, return this string. Otherwise return a
          string of the given length."
-    shared formal String final(Natural length);
+    shared formal String terminal(Natural length);
     
     doc "The length of the string (the number of characters
          it contains). In the case of the empty string, the
