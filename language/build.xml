@@ -14,12 +14,15 @@
     <property name="build.dir" value="${basedir}/build"/>
     <property name="build.classes" location="${build.dir}/classes"/>
     <property name="build.lib" location="${build.dir}/lib"/>
+    <property name="build.test" location="${build.dir}/test"/>
 
     <!-- The Java and Ceylon source files for the runtime -->
     <property name="runtime.src" location="runtime"/> 
 
     <!-- jar generated -->
     <property name="runtime.jar" location="${build.lib}/runtime.jar"/>
+
+    <property name="test.src" location="test"/>
 
     <tstamp/>
 
@@ -32,25 +35,29 @@
     <property name="module.language.name" value="ceylon.language"/>
     <property name="module.language.javasrcdir" value="${basedir}/runtime"/>
 
-    <!-- ################################################################## -->
+	<!-- module archives -->
+    <property name="dir.file" value="${repo.local.dir}/${module.language.dir}/${module.ceylon.language.version}"/>
+    <property name="src.file" value="${dir.file}/${module.language.name}-${module.ceylon.language.version}.src"/>
+    <property name="car.file" value="${dir.file}/${module.language.name}-${module.ceylon.language.version}.car"/>
+
+	<property name="tests.file" value="${build.test}/unversioned/default_module-unversioned.car"/>
+	
+	<!-- ################################################################## -->
 
 	  <!-- Rule to clean everything up -->
-    <target name="clean" description="Clean up everything.">
+    <target name="clean" description="Clean up everything">
         <delete dir="${build.dir}"/>
     </target>
 
     <!-- Repository targets -->
     <target name="init.repo"
-            description="Init local ceylon repository and add ceylon.language">
+            description="Initialize the default local Ceylon module repository">
         <mkdir dir="${repo.local.dir}"/>
     </target>
 
     <target name="publish"
             depends="init.repo,build"
-            description="Publish Ceylon language template">
-        <property name="dir.file" value="${repo.local.dir}/${module.language.dir}/${module.ceylon.language.version}"/>
-        <property name="src.file" value="${dir.file}/${module.language.name}-${module.ceylon.language.version}.src"/>
-        <property name="car.file" value="${dir.file}/${module.language.name}-${module.ceylon.language.version}.car"/>
+            description="Publish Ceylon language module to default repo">
 
         <delete dir="${dir.file}"/>
         <mkdir dir="${dir.file}"/>
@@ -69,7 +76,7 @@
     </target>
 
     <target name="clean.repo"
-            description="Clean local ceylon repository">
+            description="Clean default local Ceylon module repository">
         <delete dir="${repo.local.dir}"/>
     </target>
 
@@ -107,5 +114,33 @@
 
     <!-- Rule to compile and test -->
     <target name="build" depends="runtime.jar"/>
+	
+	  <target name="ceylonc">
+	    <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc" >
+	      <classpath>
+	        <pathelement location="../ceylon-compiler/build/lib/compiler.jar"/>       
+	      </classpath>
+	    </taskdef>
+	  </target>
+	  	    
+	  <path id="tests.classpath">
+	  </path>
+
+	  <target name="compile.tests" depends="ceylonc">
+        <delete dir="${build.test}"/>
+        <mkdir dir="${build.test}"/>
+	    <ceylonc
+	      classpathReference="tests.classpath"               
+	      compiler="../ceylon-compiler/bin/ceylonc"
+	      srcdir="${test.src}"
+	      destdir="${build.test}">
+	       <include name="**/*.ceylon"/>
+	    </ceylonc>
+	  </target>
+      
+	  <target name="test" depends="compile.tests"
+	  	 description="compile and run the tests">
+	  	 <java classname="run" classpath="${tests.file};${runtime.jar}"/>
+	  </target>
 
 </project>
