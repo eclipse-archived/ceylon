@@ -1,0 +1,35 @@
+package com.redhat.ceylon.compiler.test.expression.invoke;
+
+class SequencedTypeParamInvocation<T> {
+    
+    public final void algo(final ceylon.language.Iterable<? extends T> strings) {
+    }
+    
+    SequencedTypeParamInvocation() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new SequencedTypeParamInvocation();
+    }
+}
+final class foo {
+    
+    private foo() {
+    }
+    
+    static void foo() {
+        new .ceylon.language.NamedArgumentCall<com.redhat.ceylon.compiler.test.expression.invoke.SequencedTypeParamInvocation<ceylon.language.String>>(new com.redhat.ceylon.compiler.test.expression.invoke.SequencedTypeParamInvocation<ceylon.language.String>(), new ceylon.language.ArraySequence(.ceylon.language.String.instance("x"), .ceylon.language.String.instance("y"))){
+            
+            public .java.lang.Object call$() {
+                this.instance.algo((ceylon.language.Iterable)this.args[0]);
+                return null;
+            }
+        }.call$();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        foo();
+    }
+}
