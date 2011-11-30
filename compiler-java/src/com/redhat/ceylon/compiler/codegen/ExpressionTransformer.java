@@ -760,7 +760,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 JCExpression argExpr = make().Indexed(makeSelect("this", "args"), makeInteger(index));
                 
                 ProducedType type = lastDeclared.getType();
-                argExpr = make().TypeCast(makeJavaType(type, AbstractTransformer.TYPE_ARGUMENT), argExpr);
+                argExpr = make().TypeCast(makeJavaType(type, AbstractTransformer.WANT_RAW_TYPE), argExpr);
                 callArgsArray.add(namedArguments.size(), unboxType(argExpr, lastDeclared.getType()));
             } else if (lastDeclared.isSequenced() && !boundSequenced) {
                 callArgsArray.add(namedArguments.size(), makeEmpty());
@@ -783,7 +783,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (sequencedArgument != null) {
                 at(sequencedArgument);
                 ProducedType seqElemType = typeFact().getIteratedType(sequencedArgument.getParameter().getType());
-                passedArguments.append(makeSequence(sequencedArgument.getExpressionList().getExpressions(), seqElemType));   
+                passedArguments.append(makeSequenceRaw(sequencedArgument.getExpressionList().getExpressions()));   
             }
         }
 
