@@ -125,4 +125,17 @@ shared void numbers() {
     
     //assert(1.plus { other=2; }.equals (3), "natural named args");
                 
+    variable value i:=0;
+    for (x in 1..10) {
+        i:=i+1;
+        assert(x>=1&&x<=10, "natural range");
+    }
+    assert(i==10, "natural range");
+
+    i:=0;
+    for (x in -5..+5) {
+        i:=i+1;
+        assert(x>=-5&&x<=+5, "integer range");
+    }
+    assert(i==11, "integer range");
 }
