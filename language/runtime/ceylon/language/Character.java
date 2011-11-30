@@ -4,7 +4,7 @@ import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 public final class Character extends Object 
-        implements Comparable<Character>
+        implements Comparable<Character>, Ordinal<Character>
 {
     public final int codePoint;
 
@@ -110,6 +110,14 @@ public final class Character extends Object
 		return codePoint<=other.codePoint;
 	}
     
+    @Override
+    public Character getPredecessor() {
+    	return new Character(codePoint-1);
+    }
     
+    @Override
+    public Character getSuccessor() {
+    	return new Character(codePoint+1);
+    }
     
 }
