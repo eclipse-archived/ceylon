@@ -809,9 +809,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 primary2.visit(visitor);
                 if (visitor.hasResult()) {
                     JCExpression result = (JCExpression)visitor.getSingleResult();
-                    if (primary2.getUnboxed()) {
-                        result = boxType(result, primary2.getTypeModel());
-                    }
+                    result = boxUnboxIfNecessary(result, primary2, BoxingStrategy.BOXED);    
                     this.instance = result;
                 }
                 synthClassTypeParam = makeJavaType(primary2.getTypeModel(), AbstractTransformer.TYPE_ARGUMENT);
