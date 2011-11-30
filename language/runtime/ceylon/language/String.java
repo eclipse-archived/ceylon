@@ -268,5 +268,19 @@ public final class String extends Object
     public java.lang.String getTrimmed() {
     	return value.trim();
     }
+    
+    @TypeInfo("ceylon.language.String")
+    public java.lang.String initial(@TypeInfo("ceylon.language.Natural") 
+    @Name("length") long length) {
+        return length>value.length() ? value : 
+        	value.substring(0,  (int)length);
+    }
+
+    @TypeInfo("ceylon.language.String")
+    public java.lang.String terminal(@TypeInfo("ceylon.language.Natural") 
+    @Name("length") long length) {
+        return length>value.length() ? value : 
+        	value.substring(value.length()-5, value.length());
+    }
 
 }
