@@ -158,22 +158,26 @@ public class MethodDefinitionBuilder {
         return this;
     }
 
-    public MethodDefinitionBuilder typeParameter(TypeParameter typeParameter) {
+    public MethodDefinitionBuilder typeParameter(String name, java.util.List<ProducedType> satisfiedTypes, boolean covariant, boolean contravariant) {
         ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
-        for (ProducedType t : typeParameter.getSatisfiedTypes()) {
+        for (ProducedType t : satisfiedTypes) {
             if (!gen.willEraseToObject(t)) {
                 bounds.append(gen.makeJavaType(t));
             }
         }
-        typeParams.append(gen.make().TypeParameter(gen.names().fromString(typeParameter.getName()),
+        typeParams.append(gen.make().TypeParameter(gen.names().fromString(name),
                 bounds.toList()));
-        typeParamAnnotations.append(gen.makeAtTypeParameter(typeParameter));
+        typeParamAnnotations.append(gen.makeAtTypeParameter(name, satisfiedTypes, covariant, contravariant));
         return this;
     }
 
     public MethodDefinitionBuilder typeParameter(Tree.TypeParameterDeclaration param) {
         gen.at(param);
-        return typeParameter(param.getDeclarationModel());
+        TypeParameter declarationModel = param.getDeclarationModel();
+        return typeParameter(declarationModel.getName(), 
+                declarationModel.getSatisfiedTypes(),
+                declarationModel.isCovariant(),
+                declarationModel.isContravariant());
     }
 
     public MethodDefinitionBuilder parameters(List<JCVariableDecl> decls) {

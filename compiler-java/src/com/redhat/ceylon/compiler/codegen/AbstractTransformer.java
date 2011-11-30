@@ -699,15 +699,13 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtTypeInfoType, List.<JCExpression>of(make().Literal(name)));
     }
 
-    public JCAnnotation makeAtTypeParameter(TypeParameter typeParameter) {
-        String name = typeParameter.getName();
-        java.util.List<ProducedType> satisfiedTypes = typeParameter.getSatisfiedTypes();
+    public JCAnnotation makeAtTypeParameter(String name, java.util.List<ProducedType> satisfiedTypes, boolean covariant, boolean contravariant) {
         JCExpression nameAttribute = make().Assign(makeIdent("value"), make().Literal(name));
         // variance
         String variance = "NONE";
-        if(typeParameter.isCovariant())
+        if(covariant)
             variance = "OUT";
-        else if(typeParameter.isContravariant())
+        else if(contravariant)
             variance = "IN";
         JCExpression varianceAttribute = make().Assign(makeIdent("variance"), 
                 make().Select(makeIdent(syms().ceylonVarianceType), names().fromString(variance)));
