@@ -12,6 +12,8 @@ shared void booleans() {
     assert(true.equals(true), "boolean equals");
     assert(!true.equals("true"), "boolean equals");
     
+    if (true) {}
+    
     if (true) {
     }
     else {
@@ -20,9 +22,16 @@ shared void booleans() {
     if (false) {
         fail("if false");
     }
-    while (false) {
+    while (false&&1==1) {
         fail("while false");
     }
+    
+    if (false) {
+       fail("if false");
+    }
+    else {}
+    
+    while (true) { break; }
     
     function obj(Object o) {
         return o;

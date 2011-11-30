@@ -4,7 +4,9 @@ shared void strings() {
     assert(hello.size==5, "string size");
     assert("".size==0, "empty string size");
     
-    if (exists c = hello[0]) {
+    //value ch = "hello"[0];
+    
+    /*if (exists c = hello[0]) {
         assert(c==`h`, "string first element value");
     }
     else {
@@ -18,9 +20,9 @@ shared void strings() {
     }
     if (exists c = hello[hello.size]) {
         fail("string element out of range");
-    }
+    }*/
     
-    variable value i:=0;
+    /*variable value i:=0;
     for (c in hello) {
         value hc = hello[i];
         if (exists hc) {
@@ -28,7 +30,7 @@ shared void strings() {
         }
         i+=1;
     }
-    assert(i==hello.size, "string iteration");
+    assert(i==hello.size, "string iteration");*/
     for (c in "") {
         fail("empty string iteration");
     }

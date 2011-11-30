@@ -2,9 +2,9 @@ variable Natural assertionCount:=0;
 variable Natural failureCount:=0;
 
 shared void assert(Boolean assertion, String message) {
-    assertionCount+=1;
+    assertionCount:=assertionCount+1;
     if (!assertion) {
-        failureCount+=1;
+        failureCount:=failureCount+1;
         print("assertion failed \"" message "\"");
     }
 }

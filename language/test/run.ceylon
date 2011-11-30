@@ -1,4 +1,4 @@
-void run() {
+shared void run() {
     booleans();
     numbers();
     sequences();

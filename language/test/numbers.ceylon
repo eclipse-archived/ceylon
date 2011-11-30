@@ -122,5 +122,7 @@ shared void numbers() {
     assert(2.float==2.0, "natural float");
     assert((-3).float==-3.0, "integer float");
     assert(4.integer==+4, "natural integer");
+    
+    //assert(1.plus { other=2; }.equals (3), "natural named args");
                 
 }
