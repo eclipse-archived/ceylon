@@ -96,6 +96,10 @@ shared void strings() {
     builder.append("world");
     String s = builder.string;
     assert(s=="hello world", "string builder");
+    builder.appendAll();
+    builder.appendAll(" ");
+    builder.appendAll("goodbye", " ", "everyone");
+    assert(builder.string=="hello world goodbye everyone", "string builder");    
     
     assert("hello world".initial(5)=="hello", "string initial");
     assert("hello world".terminal(5)=="world", "string terminal");

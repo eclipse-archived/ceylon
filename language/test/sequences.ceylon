@@ -1,7 +1,3 @@
-/*class X<T>() {
-    shared void algo(T... strings) {}
-}*/
-
 shared void sequences() {
     value builder = SequenceBuilder<String>();
     value empty = builder.sequence;
@@ -28,9 +24,10 @@ shared void sequences() {
         assert(more.size==3, "sequence size");
         assert(more.first=="hello", "sequence first");
         assert(more.string=="{ hello, world, goodbye }", "sequence string");
-        //appender.appendAll("everyone", "good luck!");
-        appender.append("everyone");
-        appender.append("good luck!");
+        appender.appendAll();
+        appender.appendAll("everyone", "good luck!");
+        //appender.append("everyone");
+        //appender.append("good luck!");
         value evenMore = appender.sequence;
         assert(evenMore.size==5, "sequence size");
         assert(evenMore.string=="{ hello, world, goodbye, everyone, good luck! }", "sequence string");
@@ -52,5 +49,4 @@ shared void sequences() {
         i:=i+1;
     }
     assert(i==4, "sequence iteration");
-    //X<String>().algo("x", "y");
 }
