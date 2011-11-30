@@ -4,8 +4,8 @@ class SequencedParameterClassInstantiation {
     
     public final void m() {
         final com.redhat.ceylon.compiler.test.expression.instantiation.SequencedParameterClassInstantiation a = new com.redhat.ceylon.compiler.test.expression.instantiation.SequencedParameterClassInstantiation(1L, ceylon.language.$empty.getEmpty());
-        final com.redhat.ceylon.compiler.test.expression.instantiation.SequencedParameterClassInstantiation b = new com.redhat.ceylon.compiler.test.expression.instantiation.SequencedParameterClassInstantiation(1L, new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(2L)));
-        final com.redhat.ceylon.compiler.test.expression.instantiation.SequencedParameterClassInstantiation c = new com.redhat.ceylon.compiler.test.expression.instantiation.SequencedParameterClassInstantiation(1L, new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L)));
+        final com.redhat.ceylon.compiler.test.expression.instantiation.SequencedParameterClassInstantiation b = new com.redhat.ceylon.compiler.test.expression.instantiation.SequencedParameterClassInstantiation(1L, new ceylon.language.ArraySequence(.ceylon.language.Natural.instance(2L)));
+        final com.redhat.ceylon.compiler.test.expression.instantiation.SequencedParameterClassInstantiation c = new com.redhat.ceylon.compiler.test.expression.instantiation.SequencedParameterClassInstantiation(1L, new ceylon.language.ArraySequence(.ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L)));
     }
     
     SequencedParameterClassInstantiation(long a, ceylon.language.Iterable<? extends ceylon.language.Natural> args) {
