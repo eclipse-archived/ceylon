@@ -40,6 +40,7 @@ shared void strings() {
     assert("hello"+" "+"world"=="hello world", "string concatenation");
     assert(hello.uppercased=="HELLO", "uppercase");
     assert(hello.uppercased.lowercased==hello, "lowercase");
+    assert("GoodBye".lowercased=="goodbye", "lowercase");
     assert(hello.contains("ll"), "string contains");
     assert(!hello.contains("x"), "string contains");
     assert(hello.longerThan(4), "string longer than");
@@ -47,18 +48,22 @@ shared void strings() {
     assert(!hello.longerThan(5), "string longer than");
     assert(("  " + hello + "\n").trimmed==hello, "string trim");
     
-    value occ = hello.firstOccurrence("ll");
-    if (exists occ) {
+    if (exists occ = hello.firstOccurrence("ll")) {
         assert(occ==2, "string first occurrence");
     }
     else {
         fail("string first occurrence");
     }
-    value nocc = hello.firstOccurrence("x");
-    if (exists nocc) {
+    if (exists nocc = hello.firstOccurrence("x")) {
         fail("string no first occurrence");
     }
-    
+    if (exists locc = "hello hello".lastOccurrence("hell")) {
+        assert(locc==6, "string last occurrence");
+    }
+    else {
+        fail("string last occurrence");
+    }
+        
     value chars = hello.characters;
     if (exists c = chars.first) {
         assert(c==`h`, "string first character");
