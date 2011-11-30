@@ -508,35 +508,38 @@ public class ExpressionTransformer extends AbstractTransformer {
     JCExpression transform(Tree.PostfixOperatorExpression expr) {
         String methodName;
         boolean successor;
-        if (expr instanceof Tree.PostfixIncrementOp){
+        if (expr instanceof Tree.PostfixIncrementOp) {
             successor = true;
             methodName = "getPredecessor";
-        }else if (expr instanceof Tree.PostfixDecrementOp){
+        } else if (expr instanceof Tree.PostfixDecrementOp) {
             successor = false;
             methodName = "getSuccessor";
-        }else
-            throw new RuntimeException("Not implemented: " + expr.getNodeType());
+        } else {
+            return make().Erroneous();
+        }
         JCExpression op = makePrefixOp(expr, expr.getTerm(), successor);
         return at(expr).Apply(null, makeSelect(op, methodName), List.<JCExpression>nil());
     }
 
     public JCExpression transform(Tree.PrefixOperatorExpression expr) {
         boolean successor;
-        if (expr instanceof Tree.IncrementOp)
+        if (expr instanceof Tree.IncrementOp) {
             successor = true;
-        else if (expr instanceof Tree.DecrementOp)
+        } else if (expr instanceof Tree.DecrementOp) {
             successor = false;
-        else
-            throw new RuntimeException("Not implemented: " + expr.getNodeType());
+        } else {
+            return make().Erroneous();
+        }
         return makePrefixOp(expr, expr.getTerm(), successor);
     }
 
     private JCExpression makePrefixOp(Node expr, Term term, boolean successor) {
         String methodName;
-        if (successor)
+        if (successor) {
             methodName = "getSuccessor";
-        else
+        } else {
             methodName = "getPredecessor";
+        }
         JCExpression operand = transformExpression(term);
         return at(expr).Assign(operand, at(expr).Apply(null, makeSelect(operand, methodName), List.<JCExpression>nil()));
     }
