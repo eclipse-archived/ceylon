@@ -687,14 +687,15 @@ public class ProducedType extends ProducedReference {
         }
         //check that the unioned type args
         //satisfy the type constraints
-        for (int i=0; i<args.size(); i++) {
+        //disabled this according to #52
+        /*for (int i=0; i<args.size(); i++) {
             TypeParameter tp = dec.getTypeParameters().get(i);
             for (ProducedType ub: tp.getSatisfiedTypes()) {
                 if (!args.get(i).isSubtypeOf(ub)) {
                     return null;
                 }
             }
-        }
+        }*/
         //recurse to the qualifying type
         ProducedType outerType;
         if (dec.isMember()) {

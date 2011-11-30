@@ -190,4 +190,11 @@ class Union() {
     Outer<Object>.Inner<Object> foobart5 = foobar5;
     @type["Union.Outer<Object>.Inner<Object>"] value foobarts5 = foobar5.get;
     
+    class Sorted<out Elem>(Elem... them) 
+            given Elem satisfies Comparable<Elem> {
+        shared Elem[] elements = them;
+    }
+    Sorted<Integer>|Sorted<String> sorted = Sorted(+1,-1);
+    @type["Empty|Sequence<Integer|String>"] value elems = sorted.elements;
+    
 }
