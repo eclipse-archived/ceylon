@@ -1244,7 +1244,10 @@ public class Pretty extends JCTree.Visitor {
 
     public void visitLetExpr(LetExpr tree) {
         try {
-            print("(let " + tree.defs + " in " + tree.expr + ")");
+            if(tree.stats != null)
+                print("(let " + tree.defs + " in " + tree.stats + "; " + tree.expr + ")");
+            else
+                print("(let " + tree.defs + " in " + tree.expr + ")");
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

@@ -2180,6 +2180,8 @@ public class Gen extends JCTree.Visitor {
     public void visitLetExpr(LetExpr tree) {
         int limit = code.nextreg;
         genStats(tree.defs, env);
+        if(tree.stats != null)
+            genStats(tree.stats, env);
         result = genExpr(tree.expr, tree.expr.type).load();
         code.endScopes(limit);
     }

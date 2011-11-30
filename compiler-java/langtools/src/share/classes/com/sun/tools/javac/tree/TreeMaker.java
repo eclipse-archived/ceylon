@@ -31,6 +31,8 @@ import com.sun.tools.javac.code.Type.*;
 import com.sun.tools.javac.util.*;
 import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
 
+import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.tree.JCTree.*;
 
 import static com.sun.tools.javac.code.Flags.*;
@@ -497,6 +499,18 @@ public class TreeMaker implements JCTree.Factory {
 
     public LetExpr LetExpr(JCVariableDecl def, JCTree expr) {
         LetExpr tree = new LetExpr(List.of(def), expr);
+        tree.pos = pos;
+        return tree;
+    }
+
+    public LetExpr LetExpr(JCVariableDecl def, List<JCStatement> stats, JCTree expr) {
+        LetExpr tree = new LetExpr(List.of(def), stats, expr);
+        tree.pos = pos;
+        return tree;
+    }
+
+    public JCTree LetExpr(List<JCVariableDecl> defs, List<JCStatement> stats, JCTree expr) {
+        LetExpr tree = new LetExpr(defs, stats, expr);
         tree.pos = pos;
         return tree;
     }

@@ -46,6 +46,7 @@ import com.sun.source.tree.IdentifierTree;
 import com.sun.source.tree.MemberSelectTree;
 import com.sun.source.tree.TreeVisitor;
 import com.sun.source.util.SimpleTreeVisitor;
+import com.sun.source.util.Trees;
 
 import static com.sun.tools.javac.code.Flags.*;
 import static com.sun.tools.javac.code.Kinds.*;
@@ -2609,6 +2610,9 @@ public class Attr extends JCTree.Visitor {
             // we don't expect any result type from these var defs
             attribTree(def, localEnv, NIL, Type.noType);
         }
+        // do statements if we have any
+        if(tree.stats != null)
+            attribStats(tree.stats, localEnv);
         // now attribute the expression with the LET expected type (pt)
         attribExpr(tree.expr, localEnv, pt);
         // the type of the LET is the type of the expression

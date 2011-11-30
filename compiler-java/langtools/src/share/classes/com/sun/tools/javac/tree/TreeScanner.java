@@ -298,6 +298,7 @@ public class TreeScanner extends Visitor {
 
     public void visitLetExpr(LetExpr tree) {
         scan(tree.defs);
+        scan(tree.stats);
         scan(tree.expr);
     }
 

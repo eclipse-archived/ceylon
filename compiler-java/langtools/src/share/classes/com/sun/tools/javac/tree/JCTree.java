@@ -35,6 +35,8 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeKind;
 import javax.tools.JavaFileObject;
 
+import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.*;
 import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
 import com.sun.tools.javac.util.List;
@@ -2025,9 +2027,15 @@ public abstract class JCTree implements Tree, Cloneable, DiagnosticPosition {
     public static class LetExpr extends JCExpression {
         public List<JCVariableDecl> defs;
         public JCTree expr;
+        public List<JCStatement> stats;
         protected LetExpr(List<JCVariableDecl> defs, JCTree expr) {
             this.defs = defs;
             this.expr = expr;
+        }
+        public LetExpr(List<JCVariableDecl> defs, List<JCStatement> stats, JCTree expr) {
+            this.defs = defs;
+            this.expr = expr;
+            this.stats = stats;
         }
         @Override
         public void accept(Visitor v) { v.visitLetExpr(this); }

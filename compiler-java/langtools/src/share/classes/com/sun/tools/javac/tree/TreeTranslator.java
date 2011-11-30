@@ -385,6 +385,7 @@ public class TreeTranslator extends JCTree.Visitor {
 
     public void visitLetExpr(LetExpr tree) {
         tree.defs = translateVarDefs(tree.defs);
+        tree.stats = translate(tree.stats);
         tree.expr = translate(tree.expr);
         result = tree;
     }
