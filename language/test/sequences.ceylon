@@ -43,6 +43,8 @@ shared void sequences() {
     assert(result.keys.contains(0), "sequence keys");
     assert(result.keys.contains(1), "sequence keys");
     assert(!result.keys.contains(2), "sequence keys");
+    assert(result.defines(0)&&result.defines(1)&&!result.defines(2),
+           "sequence defines");
 
     if (nonempty result) {
         value rest = result.rest;
@@ -157,4 +159,22 @@ shared void sequences() {
     assert(!singleton.keys.contains(1), "singleton keys");
     assert(!singleton.keys.contains(2), "singleton keys");
 
+    value nulls = { null, "hello", null, "world" };
+    if (exists n0 = nulls[0]) { fail("sequence with nulls"); }
+    if (exists n1 = nulls[1]) {} else { fail("sequence with nulls"); }
+    assert(nulls.string=="{ null, hello, null, world }", "sequence with nulls");
+    variable value nonnull:=0;
+    for (o in nulls) {
+        if (exists o) { nonnull++; }
+    }
+    assert(nonnull==2, "iterate sequence with nulls");
+    
+    value coalesced = coalesce(nulls);
+    assert(coalesced.size==2, "coalesce size");
+    assert(coalesced.string=="{ hello, world }", "coalesce string");
+    assert(coalesced.keys.contains(0), "coalesced keys");
+    assert(coalesced.keys.contains(1), "coalesced keys");
+    assert(!coalesced.keys.contains(2), "coalesced keys");
+    assert(coalesced.defines(0)&&coalesced.defines(1)&&!coalesced.defines(2),
+           "coalesce defines");
 }
