@@ -436,10 +436,10 @@ public abstract class AbstractTransformer implements Transformation {
     static final int EXTENDS = 1 << 1;
     static final int TYPE_ARGUMENT = 1 << 2;
     static final int NO_PRIMITIVES = 1 << 2; // Yes, same as TYPE_ARGUMENT
-    static final int CLASS_NEW = 1 << 1; // Yes, same as EXTENDS
     static final int WANT_RAW_TYPE = 1 << 3;
     static final int CATCH = 1 << 4;
     static final int SMALL_TYPE = 1 << 5;
+    static final int CLASS_NEW = 1 << 6;
 
     protected JCExpression makeJavaType(TypedDeclaration typeDecl) {
         boolean isGenericsType = isGenericsImplementation(typeDecl);
@@ -451,8 +451,6 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     protected JCExpression makeJavaType(ProducedType type, int flags) {
-        int satisfiesOrExtendsOrTypeParam = flags & (SATISFIES | EXTENDS | TYPE_ARGUMENT);
-        int satisfiesOrExtends = flags & (SATISFIES | EXTENDS);
         
         if(type == null)
             return make().Erroneous();
@@ -484,7 +482,7 @@ public abstract class AbstractTransformer implements Transformation {
             } else {
                 return make().Type(syms().throwableType);
             }
-        } else if (satisfiesOrExtendsOrTypeParam == 0 && !isOptional(type)) {
+        } else if ((flags & (SATISFIES | EXTENDS | TYPE_ARGUMENT | CLASS_NEW)) == 0 && !isOptional(type)) {
             if (isCeylonString(type)) {
                 return make().Type(syms().stringType);
             } else if (isCeylonBoolean(type)) {
@@ -535,7 +533,7 @@ public abstract class AbstractTransformer implements Transformation {
                 JCExpression jta;
                 if (sameType(syms().ceylonVoidType, ta)) {
                     // For the root type Void:
-                    if (satisfiesOrExtends != 0) {
+                    if ((flags & (SATISFIES | EXTENDS)) != 0) {
                         // - The Ceylon type Foo<Void> appearing in an extends or satisfies
                         //   clause results in the Java raw type Foo<Object>
                         jta = make().Type(syms().objectType);
@@ -548,14 +546,14 @@ public abstract class AbstractTransformer implements Transformation {
                         if (tp.isContravariant()) {
                             jta = make().Type(syms().objectType);
                         } else if (tp.isCovariant()) {
-                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.UNBOUND), makeJavaType(ta));
+                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.UNBOUND), makeJavaType(ta, flags));
                         } else {
                             jta = make().Type(syms().objectType);
                         }
                     }
                 } else if (ta.getDeclaration() instanceof BottomType) {
                     // For the bottom type Bottom:
-                    if (satisfiesOrExtends != 0) {
+                    if ((flags & (SATISFIES | EXTENDS)) != 0) {
                         // - The Ceylon type Foo<Bottom> appearing in an extends or satisfies
                         //   clause results in the Java raw type Foo
                         // A bit ugly, but we need to escape from the loop and create a raw type, no generics
@@ -577,19 +575,19 @@ public abstract class AbstractTransformer implements Transformation {
                     }
                 } else {
                     // For an ordinary class or interface type T:
-                    if (satisfiesOrExtends != 0) {
+                    if ((flags & (SATISFIES | EXTENDS)) != 0) {
                         // - The Ceylon type Foo<T> appearing in an extends or satisfies clause
                         //   results in the Java type Foo<T>
-                        jta = makeJavaType(ta, satisfiesOrExtends);
+                        jta = makeJavaType(ta, (flags & (SATISFIES | EXTENDS)));
                     } else {
                         // - The Ceylon type Foo<T> appearing anywhere else results in the Java type
                         // - Foo<T> if Foo is invariant in T,
                         // - Foo<? extends T> if Foo is covariant in T, or
                         // - Foo<? super T> if Foo is contravariant in T
                         TypeParameter tp = tdecl.getTypeParameters().get(idx);
-                        if (tp.isContravariant()) {
+                        if (((flags & CLASS_NEW) == 0) && tp.isContravariant()) {
                             jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), makeJavaType(ta, TYPE_ARGUMENT));
-                        } else if (tp.isCovariant()) {
+                        } else if (((flags & CLASS_NEW) == 0) && tp.isCovariant()) {
                             jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), makeJavaType(ta, TYPE_ARGUMENT));
                         } else {
                             jta = makeJavaType(ta, TYPE_ARGUMENT);
