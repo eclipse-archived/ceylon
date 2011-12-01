@@ -370,14 +370,14 @@ public class ExpressionTransformer extends AbstractTransformer {
         final ProducedType leftType = getSupertype(op.getLeftTerm(), compoundType);
         final ProducedType rightType = getTypeArgument(leftType);
 
-        return transformSideEffectOperation(op, op.getLeftTerm(), new SideEffectOperationFactory(){
+        // we work on boxed types
+        return transformSideEffectOperation(op, op.getLeftTerm(), true, new SideEffectOperationFactory(){
             @Override
             public JCExpression makeOperation(JCExpression getter) {
                 // make this call: getter OP RHS
                 return transformBinaryOperator(op, infixOpClass, getter, leftType, rightType);
             }
         });
-
     }
     
     public JCExpression transform(Tree.BitwiseAssignmentOp op){
@@ -612,7 +612,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             return at(expr).Erroneous(List.<JCTree>nil());
         }
         
-        return transformSideEffectOperation(expr, expr.getTerm(), new SideEffectOperationFactory(){
+        // we work on boxed types
+        return transformSideEffectOperation(expr, expr.getTerm(), true, new SideEffectOperationFactory(){
             @Override
             public JCExpression makeOperation(JCExpression getter) {
                 // make this call: getter.getSuccessor() or getter.getPredecessor()
@@ -625,7 +626,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression makeOperation(JCExpression getter);
     }
     
-    private JCExpression transformSideEffectOperation(Node operator, Term term, SideEffectOperationFactory factory){
+    private JCExpression transformSideEffectOperation(Node operator, Term term, 
+            boolean boxResult, SideEffectOperationFactory factory){
+        
         List<JCVariableDecl> decls = List.nil();
         List<JCStatement> stats = List.nil();
         JCExpression result = null;
@@ -635,24 +638,25 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression getter = transform((Tree.BaseMemberExpression)term);
             at(operator);
             // Type $tmp = OP(attr);
-            JCExpression exprType = makeJavaType(term.getTypeModel(), NO_PRIMITIVES);
+            JCExpression exprType = makeJavaType(term.getTypeModel(), boxResult ? NO_PRIMITIVES : 0);
             Name varName = names().fromString(tempName("op"));
             // make sure we box the results if necessary
-            getter = boxUnboxIfNecessary(getter, term, term.getTypeModel(), BoxingStrategy.BOXED);
+            getter = boxUnboxIfNecessary(getter, term, term.getTypeModel(), 
+                    boxResult ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED);
             JCExpression newValue = factory.makeOperation(getter);
-            // no need to box/unbox here since newValue is boxed and so is $tmpV
+            // no need to box/unbox here since newValue and $tmpV share the same boxing type
             JCVariableDecl tmpVar = make().VarDef(make().Modifiers(0), varName, exprType, newValue);
             decls = decls.prepend(tmpVar);
 
             // attr = $tmp
-            // make sure the result is unboxed if necessary, $tmp is always boxed
+            // make sure the result is unboxed if necessary, $tmp may be boxed
             JCExpression value = make().Ident(varName);
-            value = boxUnboxIfNecessary(value, true, term.getTypeModel(), Util.getBoxingStrategy(term));
+            value = boxUnboxIfNecessary(value, boxResult, term.getTypeModel(), Util.getBoxingStrategy(term));
             JCExpression assignment = transformAssignment(operator, term, value);
             stats = stats.prepend(at(operator).Exec(assignment));
             
             // $tmp
-            // always return boxed
+            // return, with the box type we asked for
             result = make().Ident(varName);
         }
         else if(term instanceof Tree.QualifiedMemberExpression){
@@ -670,13 +674,14 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCVariableDecl tmpEVar = make().VarDef(make().Modifiers(0), varEName, exprType, e);
 
             // Type $tmpV = OP($tmpE.attr)
-            JCExpression attrType = makeJavaType(term.getTypeModel(), NO_PRIMITIVES);
+            JCExpression attrType = makeJavaType(term.getTypeModel(), boxResult ? NO_PRIMITIVES : 0);
             Name varVName = names().fromString(tempName("opV"));
             JCExpression getter = transformMemberExpression(qualified, make().Ident(varEName));
             // make sure we box the results if necessary
-            getter = boxUnboxIfNecessary(getter, term, term.getTypeModel(), BoxingStrategy.BOXED);
+            getter = boxUnboxIfNecessary(getter, term, term.getTypeModel(), 
+                    boxResult ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED);
             JCExpression newValue = factory.makeOperation(getter);
-            // no need to box/unbox here since newValue is boxed and so is $tmpV
+            // no need to box/unbox here since newValue and $tmpV share the same boxing type
             JCVariableDecl tmpVVar = make().VarDef(make().Modifiers(0), varVName, attrType, newValue);
 
             // define all the variables
@@ -686,12 +691,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             // $tmpE.attr = $tmpV
             // make sure $tmpV is unboxed if necessary
             JCExpression value = make().Ident(varVName);
-            value = boxUnboxIfNecessary(value, true, term.getTypeModel(), Util.getBoxingStrategy(term));
+            value = boxUnboxIfNecessary(value, boxResult, term.getTypeModel(), Util.getBoxingStrategy(term));
             JCExpression assignment = transformAssignment(operator, term, make().Ident(varEName), value);
             stats = stats.prepend(at(operator).Exec(assignment));
             
             // $tmpV
-            // always return boxed
+            // return, with the box type we asked for
             result = make().Ident(varVName);
         }else{
             log.error("ceylon", "Not supported yet");
