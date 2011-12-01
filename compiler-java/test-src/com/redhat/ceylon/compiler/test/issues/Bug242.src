@@ -1,0 +1,11 @@
+package com.redhat.ceylon.compiler.test.issues;
+
+public final class m {
+    
+    private m() {
+    }
+    
+    public static <T>void m(final ceylon.language.Iterable<? extends T> a, final long i) {
+        final T t = ((ceylon.language.Correspondence<? super ceylon.language.Natural, ? extends T>)a).item(.ceylon.language.Natural.instance(i));
+    }
+}
