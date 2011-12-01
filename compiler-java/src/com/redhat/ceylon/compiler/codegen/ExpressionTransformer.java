@@ -760,10 +760,16 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     public JCExpression transform(Tree.QualifiedMemberExpression expr) {
-        JCExpression primaryExpr = transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, 
-                expr.getTarget().getQualifyingType());
+        JCExpression primaryExpr = transformQualifiedMemberPrimary(expr);
         
         return transformMemberExpression(expr, primaryExpr);
+    }
+
+    private JCExpression transformQualifiedMemberPrimary(Tree.QualifiedMemberExpression expr) {
+        if(expr.getTarget() == null)
+            return at(expr).Erroneous(List.<JCTree>nil());
+        return transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, 
+                expr.getTarget().getQualifyingType());
     }
     
     public JCExpression transform(Tree.BaseMemberExpression expr) {
