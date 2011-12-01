@@ -40,9 +40,9 @@ shared void sequences() {
         fail("sequence item");
     }
 
-    //assert(result.keys.contains(0), "sequence keys");
-    //assert(result.keys.contains(1), "sequence keys");
-    //assert(!result.keys.contains(2), "sequence keys");
+    assert(result.keys.contains(0), "sequence keys");
+    assert(result.keys.contains(1), "sequence keys");
+    assert(!result.keys.contains(2), "sequence keys");
 
     if (nonempty result) {
         value appender = SequenceAppender(result);
