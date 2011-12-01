@@ -346,22 +346,35 @@ public class ExpressionTransformer extends AbstractTransformer {
                 Util.getGetterName(operatorMethodName)), List.<JCExpression> nil());
     }
 
-    public JCExpression transform(Tree.ArithmeticAssignmentOp op){
+    public JCExpression transform(final Tree.ArithmeticAssignmentOp op){
         // desugar it
-        Tree.BinaryOperatorExpression newOp;
-        if(op instanceof Tree.AddAssignOp)
-            newOp = new Tree.SumOp(op.getToken());
-        else if(op instanceof Tree.SubtractAssignOp)
-            newOp = new Tree.DifferenceOp(op.getToken());
+        final Class<? extends Tree.OperatorExpression> infixOpClass;
+        Interface compoundType = op.getUnit().getNumericDeclaration();
+        if(op instanceof Tree.AddAssignOp){
+            infixOpClass = Tree.SumOp.class;
+            op.getUnit().getSummableDeclaration();
+        }else if(op instanceof Tree.SubtractAssignOp)
+            infixOpClass = Tree.DifferenceOp.class;
         else if(op instanceof Tree.MultiplyAssignOp)
-            newOp = new Tree.ProductOp(op.getToken());
+            infixOpClass = Tree.ProductOp.class;
         else if(op instanceof Tree.DivideAssignOp)
-            newOp = new Tree.QuotientOp(op.getToken());
-        else if(op instanceof Tree.RemainderAssignOp)
-            newOp = new Tree.RemainderOp(op.getToken());
-        else
+            infixOpClass = Tree.QuotientOp.class;
+        else if(op instanceof Tree.RemainderAssignOp){
+            infixOpClass = Tree.RemainderOp.class;
+            compoundType = op.getUnit().getIntegralDeclaration();
+        }else
             throw new RuntimeException("Unsupported operator: "+op);
-        return desugarAssignmentOp(op, newOp);
+        final ProducedType leftType = getSupertype(op.getLeftTerm(), compoundType);
+        final ProducedType rightType = getTypeArgument(leftType);
+
+        return transformSideEffectOperation(op, op.getLeftTerm(), new SideEffectOperationFactory(){
+            @Override
+            public JCExpression makeOperation(JCExpression getter) {
+                // make this call: getter OP RHS
+                return transformBinaryOperator(op, infixOpClass, getter, leftType, rightType);
+            }
+        });
+
     }
     
     public JCExpression transform(Tree.BitwiseAssignmentOp op){
