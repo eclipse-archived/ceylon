@@ -385,16 +385,25 @@ public class ExpressionTransformer extends AbstractTransformer {
         return at(op).Erroneous(List.<JCTree>nil());
     }
 
-    public JCExpression transform(Tree.LogicalAssignmentOp op){
+    public JCExpression transform(final Tree.LogicalAssignmentOp op){
         // desugar it
-        Tree.BinaryOperatorExpression newOp;
+        final Class<? extends Tree.LogicalOp> operatorClass;
         if(op instanceof Tree.AndAssignOp)
-            newOp = new Tree.AndOp(op.getToken());
+            operatorClass = Tree.AndOp.class;
         else if(op instanceof Tree.OrAssignOp)
-            newOp = new Tree.OrOp(op.getToken());
-        else
-            throw new RuntimeException("Unsupported operator: "+op);
-        return desugarAssignmentOp(op, newOp);
+            operatorClass = Tree.OrOp.class;
+        else{
+            log.error("ceylon", "Not supported yet: "+op.getNodeType());
+            return at(op).Erroneous(List.<JCTree>nil());
+        }
+        // we work on unboxed types
+        return transformSideEffectOperation(op, op.getLeftTerm(), false, new SideEffectOperationFactory(){
+            @Override
+            public JCExpression makeOperation(JCExpression getter) {
+                // make this call: getter OP RHS
+                return transformLogicalOp(op, operatorClass, getter, op.getRightTerm());
+            }
+        });
     }
 
     // FIXME GET RID OF THIS, IT'S WRONG because we evaluate the LHS twice
@@ -496,14 +505,22 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.LogicalOp op) {
         // Both terms are Booleans and can't be erased to anything
         JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.UNBOXED, null);
-        JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.UNBOXED, null);
+        return transformLogicalOp(op, op.getClass(), left, op.getRightTerm());
+    }
+
+    private JCExpression transformLogicalOp(Node op, Class<? extends Tree.LogicalOp> operatorClass, 
+            JCExpression left, Term rightTerm) {
+        // Both terms are Booleans and can't be erased to anything
+        JCExpression right = transformExpression(rightTerm, BoxingStrategy.UNBOXED, null);
 
         JCBinary jcb = null;
-        if (op instanceof AndOp) {
+        if (operatorClass == AndOp.class) {
             jcb = at(op).Binary(JCTree.AND, left, right);
-        }
-        if (op instanceof OrOp) {
+        }else if (operatorClass == OrOp.class) {
             jcb = at(op).Binary(JCTree.OR, left, right);
+        }else{
+            log.error("ceylon", "Not supported yet: "+op.getNodeType());
+            return at(op).Erroneous(List.<JCTree>nil());
         }
         return jcb;
     }
