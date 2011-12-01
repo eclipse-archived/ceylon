@@ -18,15 +18,35 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-shared class LogicalOperators() {
+shared abstract class LogicalOperatorsParent<B>(){
+    shared formal variable B boxedB1;
+    shared formal variable B boxedB2;
+}
+
+@nomodel
+shared class LogicalOperators() extends LogicalOperatorsParent<Boolean>(){
     variable Boolean b1 := false;
     variable Boolean b2 := false;
-    
+    shared actual variable Boolean boxedB1 := b1;
+    shared actual variable Boolean boxedB2 := b2;
+        
     void logical() {
         b1 := !b2;
         b1 := true || b2;
         b1 := false && b2;
         b1 ||= b2;
         b1 &&= b2;
+        this.b1 ||= this.b2;
+        this.b1 &&= this.b2;
+    }
+
+    void logicalBoxed() {
+        boxedB1 := !boxedB2;
+        boxedB1 := true || boxedB2;
+        boxedB1 := false && boxedB2;
+        boxedB1 ||= boxedB2;
+        boxedB1 &&= boxedB2;
+        this.boxedB1 ||= this.boxedB2;
+        this.boxedB1 &&= this.boxedB2;
     }
 }

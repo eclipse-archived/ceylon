@@ -26,6 +26,8 @@ public class LogicalOperators {
         setB1(false && getB2());
         (let boolean $ceylontmpop0 = getB1() || getB2() in setB1($ceylontmpop0); $ceylontmpop0);
         (let boolean $ceylontmpop1 = getB1() && getB2() in setB1($ceylontmpop1); $ceylontmpop1);
+        (let com.redhat.ceylon.compiler.test.expression.operator.LogicalOperators $ceylontmpopE2 = this,boolean $ceylontmpopV3 = $ceylontmpopE2.getB1() || this.getB2() in $ceylontmpopE2.setB1($ceylontmpopV3); $ceylontmpopV3);
+        (let com.redhat.ceylon.compiler.test.expression.operator.LogicalOperators $ceylontmpopE4 = this,boolean $ceylontmpopV5 = $ceylontmpopE4.getB1() && this.getB2() in $ceylontmpopE4.setB1($ceylontmpopV5); $ceylontmpopV5);
     }
     
     public LogicalOperators() {
