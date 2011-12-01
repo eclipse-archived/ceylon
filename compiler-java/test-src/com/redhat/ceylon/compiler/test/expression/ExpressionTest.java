@@ -318,14 +318,6 @@ public class ExpressionTest extends CompilerTest {
     public void testOprSlotwiseOperators(){
         compareWithJavaSource("operator/SlotwiseOperators");
     }
-    @Test
-    public void testOprNumericOp(){
-        compareWithJavaSource("operator/NumericOp");
-    }
-    @Test
-    public void testOprLogicalOp(){
-        compareWithJavaSource("operator/LogicalOp");
-    }
     
     @Test
     public void testStpStringTemplate(){
