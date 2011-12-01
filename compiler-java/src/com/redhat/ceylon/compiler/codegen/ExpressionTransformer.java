@@ -49,6 +49,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.OrOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Outer;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequenceEnumeration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
@@ -587,26 +588,100 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.PrefixOperatorExpression expr) {
-        boolean successor;
-        if (expr instanceof Tree.IncrementOp) {
-            successor = true;
-        } else if (expr instanceof Tree.DecrementOp) {
-            successor = false;
-        } else {
-            return make().Erroneous();
-        }
-        return makePrefixOp(expr, expr.getTerm(), successor);
-    }
-
-    private JCExpression makePrefixOp(Node expr, Term term, boolean successor) {
         String methodName;
-        if (successor) {
+        if (expr instanceof Tree.IncrementOp){
             methodName = "getSuccessor";
-        } else {
+        }else if (expr instanceof Tree.DecrementOp){
             methodName = "getPredecessor";
+        }else{
+            log.error("ceylon", "Not supported yet: "+expr.getNodeType());
+            return at(expr).Erroneous(List.<JCTree>nil());
         }
-        JCExpression operand = transformExpression(term);
-        return at(expr).Assign(operand, at(expr).Apply(null, makeSelect(operand, methodName), List.<JCExpression>nil()));
+        
+        Term term = expr.getTerm();
+        List<JCVariableDecl> decls = List.nil();
+        List<JCStatement> stats = List.nil();
+        JCExpression result = null;
+        // ++attr
+        // (let $tmp = attr.getSuccessor(); attr = $tmp; $tmp)
+        if(term instanceof Tree.BaseMemberExpression){
+            JCExpression getter = transform((Tree.BaseMemberExpression)term);
+            at(expr);
+            // Type $tmp = attr.getSuccessor();
+            JCExpression exprType = makeJavaType(expr.getTerm().getTypeModel(), NO_PRIMITIVES);
+            Name varName = names().fromString(tempName("op"));
+            // make sure we box the results if necessary
+            getter = boxUnboxIfNecessary(getter, term, term.getTypeModel(), BoxingStrategy.BOXED);
+            JCExpression successor = make().Apply(null, 
+                                                  makeSelect(getter, methodName), 
+                                                  List.<JCExpression>nil());
+            // no need to box/unbox here since getSuccessor() returns boxed and so is $tmpV
+            JCVariableDecl tmpVar = make().VarDef(make().Modifiers(0), varName, exprType, successor);
+            decls = decls.prepend(tmpVar);
+
+            // attr = $tmp
+            // make sure the result is unboxed if necessary, $tmp is always boxed
+            JCExpression value = make().Ident(varName);
+            value = boxUnboxIfNecessary(value, true, term.getTypeModel(), Util.getBoxingStrategy(term));
+            JCExpression assignment = transformAssignment(expr, term, value);
+            stats = stats.prepend(at(expr).Exec(assignment));
+            
+            // $tmp
+            // always return boxed
+            result = make().Ident(varName);
+        }
+        else if(term instanceof Tree.QualifiedMemberExpression){
+            // ++e.attr
+            // (let $tmpE = e, $tmpV = $tmpE.attr.getSuccessor(); $tmpE.attr = $tmpV; $tmpV;)
+            Tree.QualifiedMemberExpression qualified = (QualifiedMemberExpression) term;
+
+            // transform the primary, this will get us a boxed primary 
+            JCExpression e = transformQualifiedMemberPrimary(qualified);
+            at(expr);
+            
+            // Type $tmpE = e
+            JCExpression exprType = makeJavaType(qualified.getTarget().getQualifyingType(), NO_PRIMITIVES);
+            Name varEName = names().fromString(tempName("opE"));
+            JCVariableDecl tmpEVar = make().VarDef(make().Modifiers(0), varEName, exprType, e);
+
+            // Type $tmpV = $tmpE.attr.getSuccessor()
+            JCExpression attrType = makeJavaType(term.getTypeModel(), NO_PRIMITIVES);
+            Name varVName = names().fromString(tempName("opV"));
+            JCExpression getter = transformMemberExpression(qualified, make().Ident(varEName));
+            // make sure we box the results if necessary
+            getter = boxUnboxIfNecessary(getter, term, term.getTypeModel(), BoxingStrategy.BOXED);
+            JCExpression successor = make().Apply(null, 
+                                                  makeSelect(getter, methodName), 
+                                                  List.<JCExpression>nil());
+            // no need to box/unbox here since getSuccessor() returns boxed and so is $tmpV
+            JCVariableDecl tmpVVar = make().VarDef(make().Modifiers(0), varVName, attrType, successor);
+
+            // define all the variables
+            decls = decls.prepend(tmpVVar);
+            decls = decls.prepend(tmpEVar);
+            
+            // $tmpE.attr = $tmpV
+            // make sure $tmpV is unboxed if necessary
+            JCExpression value = make().Ident(varVName);
+            value = boxUnboxIfNecessary(value, true, term.getTypeModel(), Util.getBoxingStrategy(term));
+            JCExpression assignment = transformAssignment(expr, term, make().Ident(varEName), value);
+            stats = stats.prepend(at(expr).Exec(assignment));
+            
+            // $tmpV
+            // always return boxed
+            result = make().Ident(varVName);
+        }else{
+            log.error("ceylon", "Not supported yet");
+            return at(expr).Erroneous(List.<JCTree>nil());
+        }
+        // ++(e?.attr) is probably not legal
+        // ++(a[i]) is not for M1 but will be:
+        // (let $tmpA = a, $tmpI = i, $tmpV = $tmpA.item($tmpI).getSuccessor(); $tmpA.setItem($tmpI, $tmpV); $tmpV;)
+        // ++(a?[i]) is probably not legal
+        // ++(a[i1..i1]) and ++(a[i1...]) are probably not legal
+        // ++(a[].attr) and ++(a[].e.attr) are probably not legal
+
+        return make().LetExpr(decls, stats, result);
     }
 
     JCExpression transform(Tree.InvocationExpression ce) {
