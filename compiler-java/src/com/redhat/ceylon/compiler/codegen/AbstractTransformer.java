@@ -30,6 +30,7 @@ import org.antlr.runtime.Token;
 import com.redhat.ceylon.compiler.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.loader.TypeFactory;
+import com.redhat.ceylon.compiler.tools.CeylonLog;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
@@ -60,6 +61,7 @@ import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
+import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Position;
 import com.sun.tools.javac.util.Position.LineMap;
@@ -74,6 +76,7 @@ public abstract class AbstractTransformer implements Transformation {
     private Symtab syms;
     private CeylonModelLoader loader;
     private TypeFactory typeFact;
+    protected Log log;
 
     public AbstractTransformer(Context context) {
         this.context = context;
@@ -82,6 +85,7 @@ public abstract class AbstractTransformer implements Transformation {
         syms = Symtab.instance(context);
         loader = CeylonModelLoader.instance(context);
         typeFact = TypeFactory.instance(context);
+        log = CeylonLog.instance(context);
     }
 
     @Override
