@@ -4,5 +4,6 @@ shared void run() {
     sequences();
     characters();
     strings();
+    threadlocals();
     results();
 }
