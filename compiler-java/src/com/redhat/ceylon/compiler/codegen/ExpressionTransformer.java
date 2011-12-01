@@ -381,19 +381,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     public JCExpression transform(Tree.BitwiseAssignmentOp op){
-        // desugar it
-        Tree.BinaryOperatorExpression newOp;
-        if(op instanceof Tree.ComplementAssignOp)
-            newOp = new Tree.ComplementOp(op.getToken());
-        else if(op instanceof Tree.UnionAssignOp)
-            newOp = new Tree.UnionOp(op.getToken());
-        else if(op instanceof Tree.XorAssignOp)
-            newOp = new Tree.XorOp(op.getToken());
-        else if(op instanceof Tree.IntersectAssignOp)
-            newOp = new Tree.IntersectionOp(op.getToken());
-        else
-            throw new RuntimeException("Unsupported operator: "+op);
-        return desugarAssignmentOp(op, newOp);
+        log.error("ceylon", "Not supported yet: "+op.getNodeType());
+        return at(op).Erroneous(List.<JCTree>nil());
     }
 
     public JCExpression transform(Tree.LogicalAssignmentOp op){
