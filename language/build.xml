@@ -96,7 +96,7 @@
        destdir="${build.classes}"/>
 -->
         <mkdir dir="${build.classes}"/>
-        <javac
+        <javac debug="true"
             srcdir="${runtime.src}"
             destdir="${build.classes}"/>
     </target>
