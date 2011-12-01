@@ -406,22 +406,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         });
     }
 
-    // FIXME GET RID OF THIS, IT'S WRONG because we evaluate the LHS twice
-    private JCExpression desugarAssignmentOp(Tree.AssignmentOp op, BinaryOperatorExpression newOp) {
-        newOp.setLeftTerm(op.getLeftTerm());
-        newOp.setRightTerm(op.getRightTerm());
-        
-        AssignOp assignOp = new Tree.AssignOp(op.getToken());
-        assignOp.setLeftTerm(op.getLeftTerm());
-        assignOp.setRightTerm(newOp);
-        assignOp.setTypeModel(op.getTypeModel());
-        newOp.setTypeModel(op.getTypeModel());
-
-        if(Util.isUnBoxed(op))
-            Util.markUnBoxed(newOp);
-        return transform(assignOp);
-    }
-
     public JCExpression transform(Tree.ComparisonOp op) {
         return transformArithmeticOperator(op, op.getUnit().getComparableDeclaration());
     }
