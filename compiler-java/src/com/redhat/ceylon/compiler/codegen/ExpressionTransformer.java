@@ -362,8 +362,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         else if(op instanceof Tree.RemainderAssignOp){
             infixOpClass = Tree.RemainderOp.class;
             compoundType = op.getUnit().getIntegralDeclaration();
-        }else
-            throw new RuntimeException("Unsupported operator: "+op);
+        }else{
+            log.error("ceylon", "Not supported yet: "+op.getNodeType());
+            return at(op).Erroneous(List.<JCTree>nil());
+        }
+        
         final ProducedType leftType = getSupertype(op.getLeftTerm(), compoundType);
         final ProducedType rightType = getTypeArgument(leftType);
 
