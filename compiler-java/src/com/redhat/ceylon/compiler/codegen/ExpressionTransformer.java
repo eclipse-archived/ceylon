@@ -529,7 +529,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             successor = boxUnboxIfNecessary(successor, true, term.getTypeModel(), Util.getBoxingStrategy(term));
             JCExpression assignment = transformAssignment(expr, term, successor);
             stats = stats.prepend(at(expr).Exec(assignment));
+
             // $tmp
+            // always return boxed
             result = make().Ident(varName);
         }
         else if(term instanceof Tree.QualifiedMemberExpression){
@@ -568,6 +570,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             stats = stats.prepend(at(expr).Exec(assignment));
             
             // $tmpV
+            // always return boxed
             result = make().Ident(varVName);
         }else{
             log.error("ceylon", "Not supported yet");
