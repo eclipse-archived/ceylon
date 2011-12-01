@@ -24,8 +24,8 @@ public class LogicalOperators {
         setB1(!getB2());
         setB1(true || getB2());
         setB1(false && getB2());
-        setB1(getB1() || getB2());
-        setB1(getB1() && getB2());
+        (let boolean $ceylontmpop0 = getB1() || getB2() in setB1($ceylontmpop0); $ceylontmpop0);
+        (let boolean $ceylontmpop1 = getB1() && getB2() in setB1($ceylontmpop1); $ceylontmpop1);
     }
     
     public LogicalOperators() {
