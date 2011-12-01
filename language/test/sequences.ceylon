@@ -45,6 +45,31 @@ shared void sequences() {
     assert(!result.keys.contains(2), "sequence keys");
 
     if (nonempty result) {
+        value rest = result.rest;
+        assert(rest.size==1, "rest size");
+        assert(rest.keys.contains(0), "rest keys");
+        assert(!rest.keys.contains(1), "rest keys");
+        if (exists str = rest[0]) {
+            assert(str=="world", "rest item");
+        }
+        else {
+            fail("rest item");
+        }
+        if (exists str = rest[1]) {
+            fail("rest item");
+        }
+        if (nonempty rest) {
+            assert(rest.first=="world", "rest first");
+            if (nonempty rr = rest.rest) {
+                fail("rest rest");
+            }
+        }
+        else {
+            fail("rest nonempty");
+        }
+    }
+
+    if (nonempty result) {
         value appender = SequenceAppender(result);
         appender.append("goodbye");
         value more = appender.sequence;
