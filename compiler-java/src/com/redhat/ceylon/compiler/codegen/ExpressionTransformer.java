@@ -499,8 +499,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             methodName = "getSuccessor";
         }else if (expr instanceof Tree.PostfixDecrementOp){
             methodName = "getPredecessor";
-        }else
-            throw new RuntimeException("Not implemented: " + expr.getNodeType());
+        }else{
+            log.error("ceylon", "Not supported yet: "+expr.getNodeType());
+            return at(expr).Erroneous(List.<JCTree>nil());
+        }
         
         Term term = expr.getTerm();
         List<JCVariableDecl> decls = List.nil();
@@ -568,7 +570,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // $tmpV
             result = make().Ident(varVName);
         }else{
-            log.warning("ceylon", "Not supported yet");
+            log.error("ceylon", "Not supported yet");
             return at(expr).Erroneous(List.<JCTree>nil());
         }
         // e?.attr++ is probably not legal
