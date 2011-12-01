@@ -23,6 +23,23 @@ shared void sequences() {
         fail("sequence first");
     }
     assert(result.string=="{ hello, world }", "sequence string");
+
+    if (exists str = result[0]) {
+        assert(str=="hello", "sequence item");
+    }
+    else {
+        fail("sequence item");
+    }
+    if (exists str = result[1]) {
+        assert(str=="world", "sequence item");
+    }
+    else {
+        fail("sequence item");
+    }
+    if (exists str = result[2]) {
+        fail("sequence item");
+    }
+
     if (nonempty result) {
         value appender = SequenceAppender(result);
         appender.append("goodbye");
@@ -97,5 +114,14 @@ shared void sequences() {
         j:=j+1;
     }
     assert(j==1, "singleton iteration");
+    if (exists str=singleton[0]) {
+        assert(str=="hello", "singleton item");
+    }
+    else {
+        fail("singleton item");
+    }
+    if (exists str=singleton[1]) {
+        fail("singleton item");
+    }
     
 }

@@ -65,6 +65,21 @@ shared void strings() {
     }
         
     value chars = hello.characters;
+    if (exists char = chars[0]) {
+        assert(char==`h`, "string characters");
+    }
+    else {
+        fail("string characters");
+    }
+    if (exists char = chars[3]) {
+        assert(char==`l`, "string characters");
+    }
+    else {
+        fail("string characters");
+    }
+    if (exists char = chars[5]) {
+        fail("string characters");
+    }
     if (exists c = chars.first) {
         assert(c==`h`, "string first character");
     }
