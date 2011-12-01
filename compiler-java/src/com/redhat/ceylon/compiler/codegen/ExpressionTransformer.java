@@ -58,11 +58,9 @@ import com.redhat.ceylon.compiler.util.Decl;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
-import com.sun.tools.javac.tree.JCTree.JCAssign;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCConditional;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
@@ -231,11 +229,6 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     JCExpression transformAssignment(Node op, Term leftTerm, JCExpression rhs) {
-        JCExpression result = null;
-
-        // FIXME: can this be anything else than a Primary?
-        TypedDeclaration decl = (TypedDeclaration) ((Tree.Primary)leftTerm).getDeclaration();
-
         // left side depends
         
         JCExpression expr = null;
@@ -244,7 +237,15 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (v.hasResult()) {
             expr = v.getSingleResult();
         }
-        
+        return transformAssignment(op, leftTerm, expr, rhs);
+    }
+    
+    JCExpression transformAssignment(Node op, Term leftTerm, JCExpression expr, JCExpression rhs) {
+        JCExpression result = null;
+
+        // FIXME: can this be anything else than a Primary?
+        TypedDeclaration decl = (TypedDeclaration) ((Tree.Primary)leftTerm).getDeclaration();
+
         boolean variable = decl.isVariable();
         
         if (decl.isToplevel()) {
