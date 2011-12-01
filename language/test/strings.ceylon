@@ -120,4 +120,7 @@ shared void strings() {
     assert("hello world".terminal(5)=="world", "string terminal");
     assert("hello world".initial(20)=="hello world", "string initial");
     assert("hello world".terminal(20)=="hello world", "string terminal");
+    
+    assert(min({"abc", "xyz", "foo", "bar"})=="abc", "strings min");
+    assert(max({"abc", "xyz", "foo", "bar"})=="xyz", "strings max");
 }

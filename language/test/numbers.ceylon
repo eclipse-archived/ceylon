@@ -139,12 +139,12 @@ shared void numbers() {
     }
     assert(i==11, "integer range");
     
-    /*assert(min({1, 5})==1, "min naturals");
+    assert(min({1, 5})==1, "min naturals");
     assert(min({-1, +5})==-1, "min integers");
     assert(min({-1.5, 5.2})==-1.5, "min floats");
     assert(max({1, 5})==5, "max naturals");
     assert(max({-1, +5})==+5, "max integers");
-    assert(max({-1.5, 5.2})==5.2, "max floats");*/
+    assert(max({-1.5, 5.2})==5.2, "max floats");
 
     variable value count := 0;
     count++;
