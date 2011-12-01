@@ -177,4 +177,21 @@ shared void sequences() {
     assert(!coalesced.keys.contains(2), "coalesced keys");
     assert(coalesced.defines(0)&&coalesced.defines(1)&&!coalesced.defines(2),
            "coalesce defines");
+    
+    value entriesBuilder = SequenceBuilder<Entry<Natural,String>>();
+    entriesBuilder.append(1->"hello");
+    entriesBuilder.append(2->"world");
+    value entries = entriesBuilder.sequence;
+    assert(entries.string=="{ 1->hello, 2->world }", "entries sequence");
+    variable value cntr:=0;
+    for (nat->str in entries) {
+        cntr++;
+        assert(nat==1||nat==2, "entry key iteration");
+        assert(str=="hello"||str=="world", "entry key iteration");
+    }
+    assert(cntr==2, "entry iteration");
+    
+    for (name->initial in { "Gavin"->`G`, "Tom"->`T` }) {
+        assert(name.initial(1)==initial.string, "entry iteration");
+    }
 }
