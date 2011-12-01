@@ -445,17 +445,26 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.BinaryOperatorExpression op, ProducedType leftType, ProducedType rightType) {
+        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, leftType);
+        return transformBinaryOperator(op, op.getClass(), left, leftType, rightType);
+    }
+
+    private JCExpression transformBinaryOperator(BinaryOperatorExpression op, 
+            Class<? extends Tree.OperatorExpression> operatorClass, 
+            JCExpression left, ProducedType leftType, ProducedType rightType) {
         JCExpression result = null;
         
-        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, leftType);
         JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, rightType);
         
-        if (op instanceof Tree.IdenticalOp) {
+        if (operatorClass == Tree.IdenticalOp.class) {
             result = at(op).Binary(JCTree.EQ, left, right);
         } else {
-            Class<? extends Tree.OperatorExpression> operatorClass = op.getClass();
-    
-            boolean loseComparison = op instanceof Tree.SmallAsOp || op instanceof Tree.SmallerOp || op instanceof Tree.LargerOp || op instanceof Tree.LargeAsOp;
+            Class<? extends Tree.OperatorExpression> originalOperatorClass = operatorClass;
+            boolean loseComparison = 
+                    operatorClass == Tree.SmallAsOp.class 
+                    || operatorClass == Tree.SmallerOp.class 
+                    || operatorClass == Tree.LargerOp.class
+                    || operatorClass == Tree.LargeAsOp.class;
     
             if (loseComparison) {
                 operatorClass = Tree.CompareOp.class;
@@ -468,7 +477,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             result = at(op).Apply(null, makeSelect(left, operatorMethodName), List.of(right));
     
             if (loseComparison) {
-                String operatorMethodName2 = binaryOperators.get(op.getClass());
+                String operatorMethodName2 = binaryOperators.get(originalOperatorClass);
                 if (operatorMethodName2 == null) {
                 	return make().Erroneous();
                 }
