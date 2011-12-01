@@ -20,8 +20,23 @@
 
 package com.redhat.ceylon.compiler.loader;
 
+import java.util.List;
+import java.util.Map;
+
+import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.DeclarationKind;
+import com.redhat.ceylon.compiler.typechecker.model.DeclarationWithProximity;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
 
@@ -55,6 +70,240 @@ public class LazyMethod extends Method {
     public ProducedType getType() {
         load();
         return super.getType();
+    }
+
+    @Override
+    public boolean isParameterized() {
+        load();
+        return super.isParameterized();
+    }
+
+    @Override
+    public List<TypeParameter> getTypeParameters() {
+        load();
+        return super.getTypeParameters();
+    }
+
+    @Override
+    public List<ParameterList> getParameterLists() {
+        load();
+        return super.getParameterLists();
+    }
+
+    @Override
+    public DeclarationKind getDeclarationKind() {
+        load();
+        return super.getDeclarationKind();
+    }
+
+    @Override
+    public TypeDeclaration getTypeDeclaration() {
+        load();
+        return super.getTypeDeclaration();
+    }
+
+    @Override
+    public ProducedTypedReference getProducedTypedReference(ProducedType qualifyingType, List<ProducedType> typeArguments) {
+        load();
+        return super.getProducedTypedReference(qualifyingType, typeArguments);
+    }
+
+    @Override
+    public ProducedReference getProducedReference(ProducedType pt, List<ProducedType> typeArguments) {
+        load();
+        return super.getProducedReference(pt, typeArguments);
+    }
+
+    @Override
+    public boolean isMember() {
+        load();
+        return super.isMember();
+    }
+
+    @Override
+    public boolean isVariable() {
+        load();
+        return super.isVariable();
+    }
+
+    @Override
+    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
+        load();
+        return super.getMatchingDeclarations(unit, startingWith, proximity);
+    }
+
+    @Override
+    public TypedDeclaration getOriginalDeclaration() {
+        load();
+        return super.getOriginalDeclaration();
+    }
+
+    @Override
+    public boolean getUnboxed() {
+        load();
+        return super.getUnboxed();
+    }
+
+    @Override
+    public Scope getVisibleScope() {
+        load();
+        return super.getVisibleScope();
+    }
+
+    @Override
+    public boolean isShared() {
+        load();
+        return super.isShared();
+    }
+
+    @Override
+    public List<Annotation> getAnnotations() {
+        load();
+        return super.getAnnotations();
+    }
+
+    @Override
+    public boolean isActual() {
+        load();
+        return super.isActual();
+    }
+
+    @Override
+    public boolean isFormal() {
+        load();
+        return super.isFormal();
+    }
+
+    @Override
+    public boolean isDefault() {
+        load();
+        return super.isDefault();
+    }
+
+    @Override
+    public Declaration getRefinedDeclaration() {
+        load();
+        return super.getRefinedDeclaration();
+    }
+
+    @Override
+    public boolean isVisible(Scope scope) {
+        load();
+        return super.isVisible(scope);
+    }
+
+    @Override
+    public boolean isDefinedInScope(Scope scope) {
+        load();
+        return super.isDefinedInScope(scope);
+    }
+
+    @Override
+    public boolean isCaptured() {
+        load();
+        return super.isCaptured();
+    }
+
+    @Override
+    public boolean isToplevel() {
+        load();
+        return super.isToplevel();
+    }
+
+    @Override
+    public boolean isClassMember() {
+        load();
+        return super.isClassMember();
+    }
+
+    @Override
+    public boolean isInterfaceMember() {
+        load();
+        return super.isInterfaceMember();
+    }
+
+    @Override
+    public boolean isClassOrInterfaceMember() {
+        load();
+        return super.isClassOrInterfaceMember();
+    }
+
+    @Override
+    public boolean refines(Declaration other) {
+        load();
+        return super.refines(other);
+    }
+
+    @Override
+    public Unit getUnit() {
+        load();
+        return super.getUnit();
+    }
+
+    @Override
+    public Scope getContainer() {
+        load();
+        return super.getContainer();
+    }
+
+    @Override
+    public List<Declaration> getMembers() {
+        load();
+        return super.getMembers();
+    }
+
+    @Override
+    protected Declaration getMemberOrParameter(String name) {
+        load();
+        return super.getMemberOrParameter(name);
+    }
+
+    @Override
+    public Declaration getDirectMemberOrParameter(String name) {
+        load();
+        return super.getDirectMemberOrParameter(name);
+    }
+
+    @Override
+    public Declaration getMember(String name) {
+        load();
+        return super.getMember(name);
+    }
+
+    @Override
+    public Declaration getDirectMember(String name) {
+        load();
+        return super.getDirectMember(name);
+    }
+
+    @Override
+    protected boolean isParameter(Declaration d) {
+        load();
+        return super.isParameter(d);
+    }
+
+    @Override
+    public ProducedType getDeclaringType(Declaration d) {
+        load();
+        return super.getDeclaringType(d);
+    }
+
+    @Override
+    public Declaration getMemberOrParameter(Unit unit, String name) {
+        load();
+        return super.getMemberOrParameter(unit, name);
+    }
+
+    @Override
+    public boolean isInherited(Declaration d) {
+        load();
+        return super.isInherited(d);
+    }
+
+    @Override
+    public TypeDeclaration getInheritingDeclaration(Declaration d) {
+        load();
+        return super.getInheritingDeclaration(d);
     }
 
 }
