@@ -172,5 +172,6 @@ shared void numbers() {
     assert(floatcount==4.0, "float increment");
     assert((floatcount*=2.5)==10.0, "float scale");
     assert((floatcount/=2.0)==5.0, "float scale");
+    assert((floatcount:=-2.0)==-2.0, "float assign");
     
 }
