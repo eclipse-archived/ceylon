@@ -1,16 +1,16 @@
 package com.redhat.ceylon.compiler.test.expression.invoke;
 
-class SequencedTypeParamInvocation<T> {
+class NamedArgumentSequencedTypeParamInvocation<T> {
     
     public final void algo(final ceylon.language.Iterable<? extends T> strings) {
     }
     
-    SequencedTypeParamInvocation() {
+    NamedArgumentSequencedTypeParamInvocation() {
     }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
-        new SequencedTypeParamInvocation();
+        new NamedArgumentSequencedTypeParamInvocation();
     }
 }
 final class foo {
@@ -19,7 +19,7 @@ final class foo {
     }
     
     static void foo() {
-        new .ceylon.language.NamedArgumentCall<com.redhat.ceylon.compiler.test.expression.invoke.SequencedTypeParamInvocation<ceylon.language.String>>(new com.redhat.ceylon.compiler.test.expression.invoke.SequencedTypeParamInvocation<ceylon.language.String>(), new ceylon.language.ArraySequence(.ceylon.language.String.instance("x"), .ceylon.language.String.instance("y"))){
+        new .ceylon.language.NamedArgumentCall<com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentSequencedTypeParamInvocation<ceylon.language.String>>(new com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentSequencedTypeParamInvocation<ceylon.language.String>(), new ceylon.language.ArraySequence(.ceylon.language.String.instance("x"), .ceylon.language.String.instance("y"))){
             
             public .java.lang.Object call$() {
                 this.instance.algo((ceylon.language.Iterable)this.args[0]);

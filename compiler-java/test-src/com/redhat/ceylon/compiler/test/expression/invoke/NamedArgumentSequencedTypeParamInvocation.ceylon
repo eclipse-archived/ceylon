@@ -1,8 +1,8 @@
 @nomodel
-class SequencedTypeParamInvocation<T>() {
+class NamedArgumentSequencedTypeParamInvocation<T>() {
     shared void algo(T... strings) {}
 }
 @nomodel
 void foo() {
-	SequencedTypeParamInvocation<String>().algo{"x", "y"};
+    NamedArgumentSequencedTypeParamInvocation<String>().algo{"x", "y"};
 }
