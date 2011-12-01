@@ -29,10 +29,5 @@ shared class BasicOperators() {
         i1 := i2.positiveValue;
         basic();
         basic{};
-        i1 .= positiveValue;
-        i1 .= plus(+3);
-        i1 .= plus{
-            that = +3;
-        };
     }
 }
