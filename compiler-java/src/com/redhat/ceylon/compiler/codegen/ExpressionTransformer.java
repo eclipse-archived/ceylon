@@ -509,19 +509,22 @@ public class ExpressionTransformer extends AbstractTransformer {
         // attr++
         // (let $tmp = attr; attr = $tmp.getSuccessor(); $tmp;)
         if(term instanceof Tree.BaseMemberExpression){
-            JCExpression getter = transformExpression((Tree.BaseMemberExpression)term);
+            JCExpression getter = transform((Tree.BaseMemberExpression)term);
             at(expr);
             // Type $tmp = attr
             JCExpression exprType = makeJavaType(expr.getTerm().getTypeModel(), NO_PRIMITIVES);
             Name varName = names().fromString(tempName("op"));
+            // make sure we box the results if necessary
+            getter = boxUnboxIfNecessary(getter, term, term.getTypeModel(), BoxingStrategy.BOXED);
             JCVariableDecl tmpVar = make().VarDef(make().Modifiers(0), varName, exprType, getter);
             decls = decls.prepend(tmpVar);
 
             // attr = $tmp.getSuccessor()
-            JCExpression successor = unboxType(make().Apply(null, 
-                                                            makeSelect(make().Ident(varName), methodName), 
-                                                            List.<JCExpression>nil()), 
-                                               expr.getTerm().getTypeModel());
+            JCExpression successor = make().Apply(null, 
+                                                  makeSelect(make().Ident(varName), methodName), 
+                                                  List.<JCExpression>nil());
+            // make sure the result is boxed if necessary, the result of successor/predecessor is always boxed
+            successor = boxUnboxIfNecessary(successor, true, term.getTypeModel(), Util.getBoxingStrategy(term));
             JCExpression assignment = transformAssignment(expr, term, successor);
             stats = stats.prepend(at(expr).Exec(assignment));
             // $tmp
