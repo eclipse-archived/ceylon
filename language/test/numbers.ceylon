@@ -138,4 +138,39 @@ shared void numbers() {
         assert(x>=-5&&x<=+5, "integer range");
     }
     assert(i==11, "integer range");
+    
+    /*assert(min({1, 5})==1, "min naturals");
+    assert(min({-1, +5})==-1, "min integers");
+    assert(min({-1.5, 5.2})==-1.5, "min floats");
+    assert(max({1, 5})==5, "max naturals");
+    assert(max({-1, +5})==+5, "max integers");
+    assert(max({-1.5, 5.2})==5.2, "max floats");*/
+
+    variable value count := 0;
+    count++;
+    ++count;
+    count+=2;
+    count*=3;
+    assert(count==12, "natural increment");
+    assert(--count==11, "natural decrement");
+    assert(count--==11, "natural decrement");
+    
+    variable value intcount := +0;
+    intcount++;
+    ++intcount;
+    intcount+=2;
+    intcount*=-3;
+    intcount--;
+    assert(intcount==-13, "integer increment");
+    assert(--intcount==-14, "integer decrement");
+    assert(intcount--==-14, "integer decrement");
+    
+    variable value floatcount := 0.0;
+    floatcount+=2.0;
+    floatcount*=3.0;
+    floatcount/=1.5;
+    assert(floatcount==4.0, "float increment");
+    assert((floatcount*=2.5)==10.0, "float scale");
+    assert((floatcount/=2.0)==5.0, "float scale");
+    
 }
