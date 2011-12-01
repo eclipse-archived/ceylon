@@ -40,6 +40,10 @@ shared void sequences() {
         fail("sequence item");
     }
 
+    //assert(result.keys.contains(0), "sequence keys");
+    //assert(result.keys.contains(1), "sequence keys");
+    //assert(!result.keys.contains(2), "sequence keys");
+
     if (nonempty result) {
         value appender = SequenceAppender(result);
         appender.append("goodbye");
@@ -124,4 +128,8 @@ shared void sequences() {
         fail("singleton item");
     }
     
+    assert(singleton.keys.contains(0), "singleton keys");
+    assert(!singleton.keys.contains(1), "singleton keys");
+    assert(!singleton.keys.contains(2), "singleton keys");
+
 }
