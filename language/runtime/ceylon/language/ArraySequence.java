@@ -58,7 +58,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
 	@Override
 	public boolean defines(Natural index) {
-		throw new RuntimeException("Not implemented yet");
+		return index.value+first<array.length;
 	}
 
 	@Override
@@ -102,22 +102,22 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
 	@Override
 	public Category getKeys() {
-		throw new RuntimeException("Not implemented yet");
+		return Correspondence$impl.getKeys(this);
 	}
 
 	@Override
 	public boolean definesEvery(Iterable<? extends Natural> keys) {
-		throw new RuntimeException("Not implemented yet");
+		return Correspondence$impl.definesEvery(this, keys);
 	}
 
 	@Override
 	public boolean definesAny(Iterable<? extends Natural> keys) {
-		throw new RuntimeException("Not implemented yet");
+		return Correspondence$impl.definesAny(this, keys);
 	}
 
 	@Override
-	public Sequence<Element> items(Iterable<? extends Natural> keys) {
-		throw new RuntimeException("Not implemented yet");
+	public Iterable<? extends Element> items(Iterable<? extends Natural> keys) {
+		return Correspondence$impl.items(this, keys);
 	}
 
 	@Override
