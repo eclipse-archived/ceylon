@@ -16,11 +16,11 @@ public class ThreadLocal<Value> {
         };
     }
     
-    public void setValue(Value value) {
-        this.value.set(value);
-    }
-    public Value getValue() {
+    public Value getCurrentValue() {
         return this.value.get();
+    }
+    public void setCurrentValue(Value value) {
+        this.value.set(value);
     }
     
     public void clear() {
