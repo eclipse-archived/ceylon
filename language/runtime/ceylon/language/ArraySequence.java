@@ -22,12 +22,12 @@ public class ArraySequence<Element> implements Sequence<Element> {
 	@Override
     @TypeInfo("ceylon.language.Natural")
 	public long getLastIndex() {
-		return getEmpty() ? null : array.length - first - 1;
+		return array.length - first - 1;
 	}
 
 	@Override
 	public Element getFirst() {
-		return (Element) (getEmpty() ? null : array[(int) first]);
+		return (Element) array[(int) first];
 	}
 
 	@Override
@@ -42,49 +42,41 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
 	@Override
 	public boolean getEmpty() {
-		return array.length <= first;
+		return false;
 	}
 
 	@Override
     @TypeInfo("ceylon.language.Natural")
 	public long getSize() {
-		return getEmpty() ? 0 : array.length - first;
+		return array.length - first;
 	}
 
 	@Override
 	public Element getLast() {
-		return (Element) (getEmpty() ? null : array[array.length - 1]);
+		return (Element) array[array.length - 1];
 	}
 
 	@Override
 	public boolean defines(Natural index) {
-		return index.value+first<array.length;
+		return index.longValue()+first<array.length;
 	}
 
 	@Override
 	public Iterator<Element> getIterator() {
-		return getEmpty() ? null : 
-			new ArraySequenceIterator<Element>(this);
+		return new ArraySequenceIterator();
 	}
 
-	public static class ArraySequenceIterator<Element> implements Iterator<Element> {
-
-		private final Sequence<? extends Element> sequence;
-
-		public ArraySequenceIterator(Sequence<? extends Element> sequence) {
-			this.sequence = sequence;
-		}
+	public class ArraySequenceIterator implements Iterator<Element> {
 
 		@Override
 		public Element getHead() {
-			return sequence.getFirst();
+			return getFirst();
 		}
 
 		@Override
 		public Iterator<Element> getTail() {
-			Iterable rest = sequence.getRest();
-			return rest.getEmpty() ? null :
-				new ArraySequenceIterator<Element>((Sequence<? extends Element>) rest);
+			Iterable rest = getRest();
+			return rest.getEmpty() ? null : rest.getIterator();
 		}
 		
 		@Override
@@ -96,8 +88,9 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
 	@Override
 	public Element item(Natural key) {
-		return (Element) (key.longValue() >= getSize() ? 
-		        null : array[(int) (key.longValue() - first)]);
+		long index = key.longValue()+first;
+		return (Element) (index >= array.length ? 
+		        null : array[(int) index]);
 	}
 
 	@Override
