@@ -38,26 +38,6 @@ shared class FloatTest() extends Test() {
     }	
     
 	@test
-	shared void testZero() {
-		Float one = +1.1;
-		Float two = +2.2;
-		Float zero = +0.0;
-		assertTrue(zero.zero);
-		assertFalse(one.zero);
-		assertFalse(two.zero);
-	}
-	
-	@test
-	shared void testUnit() {
-		Float one = +1.0;
-		Float one2 = +1.1;
-		Float zero = +0.0;
-		assertFalse(zero.unit);
-		assertTrue(one.unit);
-		assertFalse(one2.unit);
-	}
-	
-	@test
 	shared void testNegativeValue() {
 		Float positive = +1.5;
 		Float negative = -1.5;
