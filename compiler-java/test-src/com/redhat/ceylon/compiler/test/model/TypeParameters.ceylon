@@ -92,3 +92,40 @@ class ClassWithErasedUpperBounds<F>(F f)
 class ClassWithVariance<in I, out O>(I i)
   given I satisfies O{
 }
+
+//
+// Toplevel methods
+
+//
+// methods with type params
+
+T methodWithTypeParameters<T, U>(T t, U u){
+ return t;
+}
+
+//
+// upper bounds tests
+
+F methodWithUpperBounds<F>(F f)
+ given F satisfies InterfaceA & InterfaceB {
+ return f;
+}
+F methodWithParameterizedUpperBounds<F>(F f)
+ given F satisfies InterfaceWithTypeParam<InterfaceA, InterfaceB> {
+ return f;
+}
+F methodWithSelfParameterizedUpperBounds<F>(F f)
+ given F satisfies InterfaceWithTypeParam<F, F> {
+ return f;
+}
+F methodWithErasedUpperBounds<F>(F f)
+ given F satisfies IdentifiableObject {
+ return f;
+}
+
+//
+// variance tests
+O methodWithVariance<in I, out O>(I i)
+ given I satisfies O{
+ return i;
+}

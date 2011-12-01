@@ -31,3 +31,11 @@ ClassWithSelfParameterizedUpperBounds<T4> t4 = ClassWithSelfParameterizedUpperBo
 ClassWithErasedUpperBounds<T2> t5 = ClassWithErasedUpperBounds(T2());
 
 ClassWithVariance<Number, Number> t6 = ClassWithVariance<Number, Number>(1);
+
+void testToplevelMethodTypeParameters(){
+    methodWithUpperBounds(T2());
+    methodWithParameterizedUpperBounds(T3());
+    methodWithSelfParameterizedUpperBounds(T4());
+    methodWithErasedUpperBounds(T2());
+    methodWithVariance(1);
+}
