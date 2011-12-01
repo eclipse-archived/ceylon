@@ -17,6 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+ 
+variable Natural numericOperationIncrDecrTest := 0;
+Natural numericOperationIncrDecrTestGetter {
+    return numericOperationIncrDecrTest;
+}
+assign numericOperationIncrDecrTestGetter {
+    numericOperationIncrDecrTest := numericOperationIncrDecrTestGetter;
+}
+
 shared class NumericOperationTest() extends Test() {
 
   @test
@@ -55,4 +64,334 @@ shared class NumericOperationTest() extends Test() {
     assertTrue(largeAs);
   }
 
+  @test
+  shared void testUnboxedLocalIncrDecr(){
+    variable Natural n := 0;
+    assertEquals(0, n);
+
+    // postfix ++
+    assertEquals(0, n++);
+    assertEquals(1, n);
+    n++;
+    assertEquals(2, n);
+
+    // postfix --
+    assertEquals(2, n--);
+    assertEquals(1, n);
+    n--;
+    assertEquals(0, n);
+  
+    // prefix ++
+    assertEquals(1, ++n);
+    assertEquals(1, n);
+    ++n;
+    assertEquals(2, n);
+
+    // prefix --
+    assertEquals(1, --n);
+    assertEquals(1, n);
+    --n;
+    assertEquals(0, n);
+  }
+
+  @test
+  shared void testUnboxedLocalIncrDecrGetter(){
+    variable Natural nHolder := 0;
+    Natural n {
+        return nHolder;
+    }
+    assign n {
+        nHolder := n;
+    }
+    assertEquals(0, n);
+
+    // postfix ++
+    assertEquals(0, n++);
+    assertEquals(1, n);
+    n++;
+    assertEquals(2, n);
+
+    // postfix --
+    assertEquals(2, n--);
+    assertEquals(1, n);
+    n--;
+    assertEquals(0, n);
+  
+    // prefix ++
+    assertEquals(1, ++n);
+    assertEquals(1, n);
+    ++n;
+    assertEquals(2, n);
+
+    // prefix --
+    assertEquals(1, --n);
+    assertEquals(1, n);
+    --n;
+    assertEquals(0, n);
+  }
+
+  @test
+  shared void testBoxedLocalIncrDecr(){
+    variable Ordinal<Natural> n := 0;
+    assertEquals(0, n);
+
+    // postfix ++
+    assertEquals(0, n++);
+    assertEquals(1, n);
+    n++;
+    assertEquals(2, n);
+
+    // postfix --
+    assertEquals(2, n--);
+    assertEquals(1, n);
+    n--;
+    assertEquals(0, n);
+  
+    // prefix ++
+    assertEquals(1, ++n);
+    assertEquals(1, n);
+    ++n;
+    assertEquals(2, n);
+
+    // prefix --
+    assertEquals(1, --n);
+    assertEquals(1, n);
+    --n;
+    assertEquals(0, n);
+  }
+
+  variable Natural unboxedAttrIncrDecr := 0;
+  variable Natural unboxedAttrIncrDecrGetterHolder := 0;
+  Natural unboxedAttrIncrDecrGetter {
+    return unboxedAttrIncrDecrGetterHolder;
+  }
+  assign unboxedAttrIncrDecrGetter {
+    unboxedAttrIncrDecrGetterHolder := unboxedAttrIncrDecrGetter;
+  }
+
+  @test
+  shared void testUnboxedAttrIncrDecr(){
+    assertEquals(0, unboxedAttrIncrDecr);
+
+    // postfix ++
+    assertEquals(0, unboxedAttrIncrDecr++);
+    assertEquals(1, unboxedAttrIncrDecr);
+    unboxedAttrIncrDecr++;
+    assertEquals(2, unboxedAttrIncrDecr);
+
+    // postfix --
+    assertEquals(2, unboxedAttrIncrDecr--);
+    assertEquals(1, unboxedAttrIncrDecr);
+    unboxedAttrIncrDecr--;
+    assertEquals(0, unboxedAttrIncrDecr);
+  
+    // prefix ++
+    assertEquals(1, ++unboxedAttrIncrDecr);
+    assertEquals(1, unboxedAttrIncrDecr);
+    ++unboxedAttrIncrDecr;
+    assertEquals(2, unboxedAttrIncrDecr);
+
+    // prefix --
+    assertEquals(1, --unboxedAttrIncrDecr);
+    assertEquals(1, unboxedAttrIncrDecr);
+    --unboxedAttrIncrDecr;
+    assertEquals(0, unboxedAttrIncrDecr);
+  }
+
+  @test
+  shared void testUnboxedAttrIncrDecrGetter(){
+    assertEquals(0, unboxedAttrIncrDecrGetter);
+
+    // postfix ++
+    assertEquals(0, unboxedAttrIncrDecrGetter++);
+    assertEquals(1, unboxedAttrIncrDecrGetter);
+    unboxedAttrIncrDecrGetter++;
+    assertEquals(2, unboxedAttrIncrDecrGetter);
+
+    // postfix --
+    assertEquals(2, unboxedAttrIncrDecrGetter--);
+    assertEquals(1, unboxedAttrIncrDecrGetter);
+    unboxedAttrIncrDecrGetter--;
+    assertEquals(0, unboxedAttrIncrDecrGetter);
+  
+    // prefix ++
+    assertEquals(1, ++unboxedAttrIncrDecrGetter);
+    assertEquals(1, unboxedAttrIncrDecrGetter);
+    ++unboxedAttrIncrDecrGetter;
+    assertEquals(2, unboxedAttrIncrDecrGetter);
+
+    // prefix --
+    assertEquals(1, --unboxedAttrIncrDecrGetter);
+    assertEquals(1, unboxedAttrIncrDecrGetter);
+    --unboxedAttrIncrDecrGetter;
+    assertEquals(0, unboxedAttrIncrDecrGetter);
+  }
+
+  @test
+  shared void testUnboxedToplevelAttrIncrDecr(){
+    assertEquals(0, numericOperationIncrDecrTest);
+
+    // postfix ++
+    assertEquals(0, numericOperationIncrDecrTest++);
+    assertEquals(1, numericOperationIncrDecrTest);
+    numericOperationIncrDecrTest++;
+    assertEquals(2, numericOperationIncrDecrTest);
+
+    // postfix --
+    assertEquals(2, numericOperationIncrDecrTest--);
+    assertEquals(1, numericOperationIncrDecrTest);
+    numericOperationIncrDecrTest--;
+    assertEquals(0, numericOperationIncrDecrTest);
+  
+    // prefix ++
+    assertEquals(1, ++numericOperationIncrDecrTest);
+    assertEquals(1, numericOperationIncrDecrTest);
+    ++numericOperationIncrDecrTest;
+    assertEquals(2, numericOperationIncrDecrTest);
+
+    // prefix --
+    assertEquals(1, --numericOperationIncrDecrTest);
+    assertEquals(1, numericOperationIncrDecrTest);
+    --numericOperationIncrDecrTest;
+    assertEquals(0, numericOperationIncrDecrTest);
+  }
+
+  @test
+  shared void testUnboxedToplevelAttrIncrDecrGetter(){
+    assertEquals(0, numericOperationIncrDecrTestGetter);
+
+    // postfix ++
+    assertEquals(0, numericOperationIncrDecrTestGetter++);
+    assertEquals(1, numericOperationIncrDecrTestGetter);
+    numericOperationIncrDecrTestGetter++;
+    assertEquals(2, numericOperationIncrDecrTestGetter);
+
+    // postfix --
+    assertEquals(2, numericOperationIncrDecrTestGetter--);
+    assertEquals(1, numericOperationIncrDecrTestGetter);
+    numericOperationIncrDecrTestGetter--;
+    assertEquals(0, numericOperationIncrDecrTestGetter);
+  
+    // prefix ++
+    assertEquals(1, ++numericOperationIncrDecrTestGetter);
+    assertEquals(1, numericOperationIncrDecrTestGetter);
+    ++numericOperationIncrDecrTestGetter;
+    assertEquals(2, numericOperationIncrDecrTestGetter);
+
+    // prefix --
+    assertEquals(1, --numericOperationIncrDecrTestGetter);
+    assertEquals(1, numericOperationIncrDecrTestGetter);
+    --numericOperationIncrDecrTestGetter;
+    assertEquals(0, numericOperationIncrDecrTestGetter);
+  }
+
+  // Qualified tests
+
+  @test
+  shared void testUnboxedQualifiedAttrIncrDecr(){
+    assertEquals(0, this.unboxedAttrIncrDecr);
+
+    // postfix ++
+    assertEquals(0, this.unboxedAttrIncrDecr++);
+    assertEquals(1, this.unboxedAttrIncrDecr);
+    this.unboxedAttrIncrDecr++;
+    assertEquals(2, this.unboxedAttrIncrDecr);
+
+    // postfix --
+    assertEquals(2, this.unboxedAttrIncrDecr--);
+    assertEquals(1, this.unboxedAttrIncrDecr);
+    this.unboxedAttrIncrDecr--;
+    assertEquals(0, this.unboxedAttrIncrDecr);
+  
+    // prefix ++
+    assertEquals(1, ++this.unboxedAttrIncrDecr);
+    assertEquals(1, this.unboxedAttrIncrDecr);
+    ++this.unboxedAttrIncrDecr;
+    assertEquals(2, this.unboxedAttrIncrDecr);
+
+    // prefix --
+    assertEquals(1, --this.unboxedAttrIncrDecr);
+    assertEquals(1, this.unboxedAttrIncrDecr);
+    --this.unboxedAttrIncrDecr;
+    assertEquals(0, this.unboxedAttrIncrDecr);
+  }
+
+  @test
+  shared void testUnboxedQualifiedAttrIncrDecrGetter(){
+    assertEquals(0, this.unboxedAttrIncrDecrGetter);
+
+    // postfix ++
+    assertEquals(0, this.unboxedAttrIncrDecrGetter++);
+    assertEquals(1, this.unboxedAttrIncrDecrGetter);
+    this.unboxedAttrIncrDecrGetter++;
+    assertEquals(2, this.unboxedAttrIncrDecrGetter);
+
+    // postfix --
+    assertEquals(2, this.unboxedAttrIncrDecrGetter--);
+    assertEquals(1, this.unboxedAttrIncrDecrGetter);
+    this.unboxedAttrIncrDecrGetter--;
+    assertEquals(0, this.unboxedAttrIncrDecrGetter);
+  
+    // prefix ++
+    assertEquals(1, ++this.unboxedAttrIncrDecrGetter);
+    assertEquals(1, this.unboxedAttrIncrDecrGetter);
+    ++this.unboxedAttrIncrDecrGetter;
+    assertEquals(2, this.unboxedAttrIncrDecrGetter);
+
+    // prefix --
+    assertEquals(1, --this.unboxedAttrIncrDecrGetter);
+    assertEquals(1, this.unboxedAttrIncrDecrGetter);
+    --this.unboxedAttrIncrDecrGetter;
+    assertEquals(0, this.unboxedAttrIncrDecrGetter);
+  }
+  
+  variable Natural incrDecrCounter := 0;
+  
+  NumericOperationTest getThisOnce(){
+    if(incrDecrCounter == 1){
+      fail();
+    }
+    return this;
+  }
+  
+  void resetOnce(){
+    incrDecrCounter := 0;
+  }
+
+  @test
+  shared void testSingleAccessQualifiedAttrIncrDecr(){
+    assertEquals(0, this.unboxedAttrIncrDecr);
+
+    // postfix ++
+    assertEquals(0, getThisOnce().unboxedAttrIncrDecr++);
+    resetOnce();
+    assertEquals(1, this.unboxedAttrIncrDecr);
+    getThisOnce().unboxedAttrIncrDecr++;
+    resetOnce();
+    assertEquals(2, this.unboxedAttrIncrDecr);
+
+    // postfix --
+    assertEquals(2, getThisOnce().unboxedAttrIncrDecr--);
+    resetOnce();
+    assertEquals(1, this.unboxedAttrIncrDecr);
+    getThisOnce().unboxedAttrIncrDecr--;
+    resetOnce();
+    assertEquals(0, this.unboxedAttrIncrDecr);
+  
+    // prefix ++
+    assertEquals(1, ++getThisOnce().unboxedAttrIncrDecr);
+    resetOnce();
+    assertEquals(1, this.unboxedAttrIncrDecr);
+    ++getThisOnce().unboxedAttrIncrDecr;
+    resetOnce();
+    assertEquals(2, this.unboxedAttrIncrDecr);
+
+    // prefix --
+    assertEquals(1, --getThisOnce().unboxedAttrIncrDecr);
+    resetOnce();
+    assertEquals(1, this.unboxedAttrIncrDecr);
+    --getThisOnce().unboxedAttrIncrDecr;
+    resetOnce();
+    assertEquals(0, this.unboxedAttrIncrDecr);
+  }
 }
