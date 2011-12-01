@@ -128,18 +128,6 @@ class NamedArgumentCallHelper {
         throw new RuntimeException("Illegal State: " + (primaryDecl != null ? primaryDecl.getClass() : "null"));            
     }
     
-    private ProducedType getMethodType() {
-        final Declaration primaryDecl = getPrimaryDeclaration();
-        if (primaryDecl instanceof Method) {
-            Method methodDecl = (Method)primaryDecl;
-            return methodDecl.getType();
-        } else if (primaryDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-            com.redhat.ceylon.compiler.typechecker.model.Class methodDecl = (com.redhat.ceylon.compiler.typechecker.model.Class)primaryDecl;
-            return methodDecl.getType();
-        }
-        throw new RuntimeException("Illegal State: " + (primaryDecl != null ? primaryDecl.getClass() : "null"));
-    }
-    
     private java.util.List<ParameterList> getParameterLists() {
         final Declaration primaryDecl = getPrimaryDeclaration();
         if (primaryDecl instanceof Method) {
@@ -269,7 +257,6 @@ class NamedArgumentCallHelper {
         SequencedArgument sequencedArgument = getSequencedArgument();
         if (sequencedArgument != null) {
             exprTransformer.at(sequencedArgument);
-            ProducedType seqElemType = exprTransformer.typeFact().getIteratedType(sequencedArgument.getParameter().getType());
             passedArguments.append(exprTransformer.makeSequenceRaw(sequencedArgument.getExpressionList().getExpressions()));   
         }
     }
