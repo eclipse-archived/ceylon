@@ -10,6 +10,12 @@ shared void sequences() {
     builder.append("world");
     value result = builder.sequence;
     assert(result.size==2, "sequence size");
+    if (nonempty result) {
+        assert(result.lastIndex==1, "sequence last index");
+    }
+    else {
+        fail("sequence nonempty");
+    }
     if (exists first = result.first) {
         assert(first=="hello", "sequence first");
     }
@@ -74,11 +80,22 @@ shared void sequences() {
     assert(!singleton.empty, "singleton empty");
     assert(singleton.defines(0), "singleton defines");
     assert(!singleton.defines(1), "singleton defines");
+    assert(singleton.string=="{ hello }", "singletone string");
     if (nonempty singleton) {
         assert(singleton.first=="hello", "singleton first");
+        assert(singleton.lastIndex==0, "sequence last index");
+        if (nonempty rest = singleton.rest) {
+            fail("singleton rest empty");
+        }
     }
     else {
         fail("singleton nonempty");
     }
+    variable value j:=0;
+    for (x in singleton) {
+        assert(x=="hello", "singleton iteration");
+        j:=j+1;
+    }
+    assert(j==1, "singleton iteration");
     
 }
