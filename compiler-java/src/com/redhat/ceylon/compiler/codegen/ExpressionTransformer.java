@@ -425,7 +425,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transformArithmeticOperator(Tree.BinaryOperatorExpression op, Interface compoundType) {
         ProducedType leftType = getSupertype(op.getLeftTerm(), compoundType);
         ProducedType rightType = getTypeArgument(leftType);
-        return transform(op, leftType, rightType);
+        return transformBinaryOperator(op, leftType, rightType);
     }
     
     private ProducedType getTypeArgument(ProducedType leftType) {
@@ -442,7 +442,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return null;
     }
 
-    public JCExpression transform(Tree.BinaryOperatorExpression op, ProducedType leftType, ProducedType rightType) {
+    public JCExpression transformBinaryOperator(Tree.BinaryOperatorExpression op, ProducedType leftType, ProducedType rightType) {
         JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, leftType);
         return transformBinaryOperator(op, op.getClass(), left, leftType, rightType);
     }

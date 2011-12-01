@@ -342,7 +342,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.BinaryOperatorExpression op) {
-        append(gen.expressionGen().transform(op, null, null));
+        append(gen.expressionGen().transformBinaryOperator(op, null, null));
     }
     
     public void visit(Tree.ComparisonOp op) {
