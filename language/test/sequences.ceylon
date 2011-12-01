@@ -194,4 +194,5 @@ shared void sequences() {
     for (name->initial in { "Gavin"->`G`, "Tom"->`T` }) {
         assert(name.initial(1)==initial.string, "entry iteration");
     }
+
 }
