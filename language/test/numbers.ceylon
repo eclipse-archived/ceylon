@@ -174,4 +174,16 @@ shared void numbers() {
     assert((floatcount/=2.0)==5.0, "float scale");
     assert((floatcount:=-2.0)==-2.0, "float assign");
     
+    variable Natural vi;
+    variable Natural vj;
+    vi:=vj:=2;
+    assert(vi==2&&vj==2, "multi assign");
+    
+    class Inner() {
+    shared variable Natural vi:=0;
+    shared variable Natural vj:=0;
+    }
+    value inner = Inner();
+    //inner.vi:=inner.vj:=2;
+    
 }
