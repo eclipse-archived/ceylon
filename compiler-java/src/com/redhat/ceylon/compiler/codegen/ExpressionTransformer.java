@@ -295,9 +295,10 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     public JCExpression transform(Tree.IsOp op) {
-        JCExpression type = makeJavaType(op.getType().getTypeModel());
         // we don't need any erasure type cast for an "is" test
-        return at(op).TypeTest(transformExpression(op.getTerm()), type);
+        JCExpression expression = transformExpression(op.getTerm());
+        at(op);
+        return makeTypeTest(expression, op.getType().getTypeModel());
     }
 
     public JCExpression transform(Tree.RangeOp op) {
