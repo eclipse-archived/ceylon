@@ -1005,4 +1005,32 @@ public abstract class AbstractTransformer implements Transformation {
         }
     }
 
+    protected JCExpression makeTypeTest(JCExpression testExpr, ProducedType type) {
+        JCExpression result = null;
+        if (typeFact().isUnion(type)) {
+            UnionType union = (UnionType)type.getDeclaration();
+            for (ProducedType pt : union.getCaseTypes()) {
+                JCExpression partExpr = makeTypeTest(testExpr, pt);
+                if (result == null) {
+                    result = partExpr;
+                } else {
+                    result = make().Binary(JCTree.OR, result, partExpr);
+                }
+            }
+        } else if (typeFact().isIntersection(type)) {
+            IntersectionType union = (IntersectionType)type.getDeclaration();
+            for (ProducedType pt : union.getSatisfiedTypes()) {
+                JCExpression partExpr = makeTypeTest(testExpr, pt);
+                if (result == null) {
+                    result = partExpr;
+                } else {
+                    result = make().Binary(JCTree.AND, result, partExpr);
+                }
+            }
+        } else {
+            JCExpression rawTypeExpr = makeJavaType(type, NO_PRIMITIVES | WANT_RAW_TYPE);
+            result = make().TypeTest(testExpr, rawTypeExpr);
+        }
+        return result;
+    }
 }

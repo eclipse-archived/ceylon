@@ -202,7 +202,7 @@ public class StatementTransformer extends AbstractTransformer {
                 if (cond instanceof Tree.ExistsCondition) {
                     test = make().Binary(JCTree.NE, make().Ident(decl.name), makeNull());                
                 } else {
-                    // nonempty
+                    // nonempty and is
                     JCExpression testExpr = make().Ident(decl.name);
                     test = makeTypeTest(testExpr, toType);
                 }
@@ -246,35 +246,6 @@ public class StatementTransformer extends AbstractTransformer {
             return List.<JCStatement> of(cond1);
         }
     }
-
-    private JCExpression makeTypeTest(JCExpression testExpr, ProducedType type) {
-    	JCExpression result = null;
-    	if (typeFact().isUnion(type)) {
-    		UnionType union = (UnionType)type.getDeclaration();
-    		for (ProducedType pt : union.getCaseTypes()) {
-    			JCExpression partExpr = makeTypeTest(testExpr, pt);
-    			if (result == null) {
-    				result = partExpr;
-    			} else {
-    				result = make().Binary(JCTree.OR, result, partExpr);
-    			}
-    		}
-    	} else if (typeFact().isIntersection(type)) {
-    		IntersectionType union = (IntersectionType)type.getDeclaration();
-    		for (ProducedType pt : union.getSatisfiedTypes()) {
-    			JCExpression partExpr = makeTypeTest(testExpr, pt);
-    			if (result == null) {
-    				result = partExpr;
-    			} else {
-    				result = make().Binary(JCTree.AND, result, partExpr);
-    			}
-    		}
-    	} else {
-    		JCExpression rawTypeExpr = makeJavaType(type, NO_PRIMITIVES | WANT_RAW_TYPE);
-    		result = make().TypeTest(testExpr, rawTypeExpr);
-    	}
-    	return result;
-	}
 
 	List<JCStatement> transform(Tree.ForStatement stmt) {
         Name tempForFailVariable = currentForFailVariable;
