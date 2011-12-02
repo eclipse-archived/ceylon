@@ -23,13 +23,10 @@ shared class NullHandlingOperators() {
     variable Natural n1 := 0;
     variable Natural n2 := 0;
     variable Natural? nat := 0;
-    variable Integer i1 := +0;
-    variable Integer i2 := +0;
     variable Integer? int := +0;
     
-    void nullHandling(Natural[] seq) {
+    void nullHandling() {
         b1 := nat exists;
-        b1 := seq nonempty;
         n1 := nat ? n2;
         nat ?= n1;
         variable Integer? nullSafeMember := int?.negativeValue;
