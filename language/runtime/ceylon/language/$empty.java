@@ -61,6 +61,16 @@ public class $empty {
         public java.lang.String toString() {
         	return Empty$impl.toString(this);
         }
+        
+        @Override
+        public Empty segment(long from, long length) {
+        	return this;
+        }
+        
+        @Override
+        public Empty span(long from, long to) {
+        	return this;
+        }
 
     };
     

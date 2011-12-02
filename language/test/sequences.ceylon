@@ -6,7 +6,10 @@ shared void sequences() {
     if (nonempty empty) {
         fail("empty sequence");
     }
+    assert(!nonempty empty.span(1, 2), "empty sequence span");
+    assert(!nonempty empty.segment(1, 2), "empty sequence segment");
     assert(empty.string=="{}", "empty sequence string");
+    
     builder.append("hello");
     builder.append("world");
     value result = builder.sequence;
@@ -25,6 +28,14 @@ shared void sequences() {
         fail("sequence first");
     }
     assert(result.string=="{ hello, world }", "sequence string");
+    assert(result.span(1,1).string=="{ world }", "sequence span");
+    assert(result.span(0,3).string=="{ hello, world }", "sequence span");
+    assert(result.segment(1,1).string=="{ world }", "sequence segment");
+    assert(result.segment(0,3).string=="{ hello, world }", "sequence segment");
+    assert(nonempty result.span(1,1), "sequence span");
+    assert(nonempty result.segment(1,1), "sequence segment");
+    assert(nonempty result.span(0,0), "sequence span");
+    assert(!nonempty result.segment(0,0), "sequence segment");
 
     if (exists str = result[0]) {
         assert(str=="hello", "sequence item");
@@ -161,6 +172,15 @@ shared void sequences() {
         fail("singleton item");
     }
     
+    assert(nonempty singleton.span(0, 1), "singleton span");
+    assert(nonempty singleton.segment(0, 1), "singleton segment");
+    assert(singleton.span(0, 3).string=="{ hello }", "singleton span");
+    assert(singleton.segment(0, 3).string=="{ hello }", "singleton segment");
+    assert(!nonempty singleton.span(1, 1), "singleton span");
+    assert(!nonempty singleton.segment(1, 1), "singleton segment");
+    assert(nonempty singleton.span(0, 0), "singleton span");
+    assert(!nonempty singleton.segment(0, 0), "singleton segment");
+                                
     assert(singleton.keys.contains(0), "singleton keys");
     assert(!singleton.keys.contains(1), "singleton keys");
     assert(!singleton.keys.contains(2), "singleton keys");

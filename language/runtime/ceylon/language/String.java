@@ -9,7 +9,7 @@ public final class String extends Object
     implements Comparable<String>, Ordered<Character>, 
                Correspondence<Natural,Character>, Format,
                Sized, Summable<String>, Castable<String>,
-               Category {
+               Category, Ranged<String> {
 
     public final java.lang.String value;
 
@@ -330,6 +330,24 @@ public final class String extends Object
     		}
     		return result.toString();
     	}
+    }
+    
+    @Override
+    @TypeInfo("ceylon.language.String")
+    public String segment(@Name("from") @TypeInfo("ceylon.language.Natural") long from, 
+    		@Name("length") @TypeInfo("ceylon.language.Natural") long length) {
+    	if (from>=value.length()||length==0) return instance("");
+    	if (from+length>value.length()) length = value.length()-from;
+    	return instance(value.substring((int) from, (int) (from+length)));
+    }
+    
+    @Override
+    @TypeInfo("ceylon.language.String")
+    public String span(@Name("from") @TypeInfo("ceylon.language.Natural") long from, 
+    		@Name("to") @TypeInfo("ceylon.language.Natural") long to) {
+    	if (from>=value.length()||to<from) return instance("");
+    	if (to>=value.length()) to = value.length()-1;
+    	return instance(value.substring((int) from, (int) to+1));
     }
 
 }

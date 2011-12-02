@@ -92,13 +92,23 @@ public class Singleton<Element>
 			}
 		};
 	}
-	@Override
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element|ceylon.language.Nothing>")
-	public Sequence<? extends Element> span(@TypeInfo("ceylon.language.Natural") long from, @TypeInfo("ceylon.language.Natural") long to) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-	
+
+    @Override
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    public Iterable<? extends Element> segment(@Name("from") @TypeInfo("ceylon.language.Natural") long from, 
+    		@Name("length") @TypeInfo("ceylon.language.Natural") long length) {
+    	if (from>=1||length==0) return $empty.getEmpty();
+    	return this;
+    }
+    
+    @Override
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    public Iterable<? extends Element> span(@Name("from") @TypeInfo("ceylon.language.Natural") long from, 
+    		@Name("to") @TypeInfo("ceylon.language.Natural") long to) {
+    	if (from>=1||to<from) return $empty.getEmpty();
+    	return this;
+    }
+
 	@Override
 	public java.lang.String toString() {
 		return Sequence$impl.toString(this);

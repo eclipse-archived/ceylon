@@ -44,27 +44,23 @@ public interface Correspondence<Key,Item> {
         @TypeParameter(value = "Item", variance = Variance.OUT)
     })
     class Entries<Key,Item>
-    extends Object
-    implements Sequence<Item> {
+            extends Object
+            implements Sequence<Item> {
         private Sequence<Key> keys;
         private Correspondence<Key, Item> $this;
         Entries(Correspondence<Key,Item> $this, Sequence<Key> keys){
             this.keys = keys;
             this.$this = $this;
         }
-        @TypeInfo("ceylon.language.Natural")
         public final long getLastIndex() {
             return keys.getLastIndex();
         }
-        @TypeInfo("Item|ceylon.language.Nothing")
         public final Item getFirst() {
             return $this.item(keys.getFirst());
         }
-        @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
         public final ceylon.language.Iterable<? extends Item> getRest() {
             return $this.items(keys.getRest());
         }
-        @TypeInfo("Item|ceylon.language.Nothing")
         public final Item item(Natural index) {
             Key key = keys.item(index);
             if (key != null) {
@@ -75,19 +71,9 @@ public interface Correspondence<Key,Item> {
             }
         }
         @Override
-        @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
-        public Iterable<? extends Item> span(@TypeInfo("ceylon.language.Natural") long from, @TypeInfo("ceylon.language.Natural") long to) {
-            throw new RuntimeException("Not implemented"); //todo!
-        }
-        /*@Override
-        public Ordered<Item> segment(long from, long length) {
-            throw new RuntimeException("Not implemented"); //todo!
-        }*/
-        @Override
         public java.lang.String toString() {
             return Sequence$impl.toString(this);		
         }
-        @TypeInfo("ceylon.language.Sequence<Item|ceylon.language.Nothing>")
         public final Sequence<Item> getClone() {
             return this;
         }
@@ -96,22 +82,15 @@ public interface Correspondence<Key,Item> {
             return Correspondence$impl.getKeys(this);
         }
         @Override
-        public boolean definesEvery(@Sequenced @Name("keys") 
-        @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Natural>")
-        Iterable<? extends Natural> keys) {
+        public boolean definesEvery(Iterable<? extends Natural> keys) {
             return Correspondence$impl.definesEvery(this, keys);
         }
         @Override
-        public boolean definesAny(@Sequenced @Name("keys") 
-        @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Natural>")
-        Iterable<? extends Natural> keys) {
+        public boolean definesAny(Iterable<? extends Natural> keys) {
             return Correspondence$impl.definesAny(this, keys);
         }
         @Override
-        @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Item|ceylon.language.Nothing>")
-        public Iterable<? extends Item> items(@Sequenced @Name("keys") 
-        @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Natural>")
-        Iterable<? extends Natural> keys) {
+        public Iterable<? extends Item> items(Iterable<? extends Natural> keys) {
             return Correspondence$impl.items(this, keys);
         }
         @Override
@@ -119,7 +98,6 @@ public interface Correspondence<Key,Item> {
             return Sequence$impl.getEmpty(this);
         }
         @Override
-        @TypeInfo("ceylon.language.Natural")
         public long getSize() {
             return Sequence$impl.getSize(this);
         }
@@ -132,9 +110,18 @@ public interface Correspondence<Key,Item> {
             return Sequence$impl.defines(this, index);
         }
         @Override
-        @TypeInfo("ceylon.language.Iterator<Item>")
         public Iterator<Item> getIterator() {
             return Sequence$impl.getIterator(this);
+        }
+        @Override
+        public Iterable<? extends Item> segment(long from, long length) {
+        	// TODO Auto-generated method stub
+        	throw new UnsupportedOperationException();
+        }
+        @Override
+        public Iterable<? extends Item> span(long from, long to) {
+        	// TODO Auto-generated method stub
+        	throw new UnsupportedOperationException();
         }
     }
 }

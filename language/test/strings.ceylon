@@ -5,7 +5,12 @@ shared void strings() {
     assert("".size==0, "empty string size");
     assert(!exists "".lastIndex, "empty string last index");
     assert(!exists ""[0], "empty string first element exists");
-                
+    
+    assert(hello.span(1,3)=="ell", "string span");
+    assert(hello.segment(1,3)=="ell", "string segment");
+    assert("".span(1,3)=="", "empty string span");
+    assert("".segment(1,3)=="", "empty string segment");
+        
     assert(exists hello[0], "string first element exists");
     if (exists li = hello.lastIndex) {
         assert(exists hello[li], "string first element exists");

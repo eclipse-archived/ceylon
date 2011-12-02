@@ -2,6 +2,7 @@
 
 import com.redhat.ceylon.compiler.metadata.java.Ceylon;
 import com.redhat.ceylon.compiler.metadata.java.Name;
+import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 import com.redhat.ceylon.compiler.metadata.java.TypeParameter;
 import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
@@ -11,9 +12,16 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
 @TypeParameters({
     @TypeParameter(value = "Element", variance = Variance.OUT)
 })
+@SatisfiedTypes({
+    "ceylon.language.Correspondence<ceylon.language.Natural,Element>",
+    "ceylon.language.Ordered<Element>",
+    "ceylon.language.Sized",
+    "ceylon.language.Cloneable<ceylon.language.Sequence<Element>>",
+    "ceylon.language.Ranged<ceylon.language.Empty|ceylon.language.Sequence<Element>>"
+})
 public interface Sequence<Element> 
     extends Correspondence<Natural, Element>, Ordered<Element>, 
-        Sized, Cloneable<Sequence<Element>> {
+        Sized, Cloneable<Sequence<Element>>, Ranged {
     
     @TypeInfo("ceylon.language.Natural")
     public long getLastIndex();
@@ -72,12 +80,16 @@ public interface Sequence<Element>
         }
     }
     
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element|ceylon.language.Nothing>")
-    public Iterable<? extends Element> span(@TypeInfo("ceylon.language.Natural") long from, @TypeInfo("ceylon.language.Natural") long to);
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    public Iterable<? extends Element> span(
+    		@TypeInfo("ceylon.language.Natural") @Name("from") long from, 
+    		@TypeInfo("ceylon.language.Natural") @Name("to") long to);
     
-    /*@Override
-    public Ordered<Element> segment(long from, long length);*/
-
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    public Iterable<? extends Element> segment(
+    		@TypeInfo("ceylon.language.Natural") @Name("from") long from, 
+    		@TypeInfo("ceylon.language.Natural") @Name("length") long length);
+    
     public java.lang.String toString();
 
 }

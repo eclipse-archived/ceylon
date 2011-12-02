@@ -160,13 +160,7 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
     public Range<Element> getClone() {
         return this;
     }
-
-    @Override
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element|ceylon.language.Nothing>")
-    public Iterable<? extends Element> span(@TypeInfo("ceylon.language.Natural") long from, @TypeInfo("ceylon.language.Natural") long to) {
-        throw new RuntimeException("Not implemented"); //todo!
-    }
-
+    
     /*@Override
     public Ordered<Element> segment(long from, long length) {
         throw new RuntimeException("Not implemented"); //todo!
@@ -223,6 +217,29 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
     @Override
     public boolean defines(@Name("index") Natural index) {
         return Sequence$impl.defines(this, index);
+    }
+
+    @Override
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    public Iterable<? extends Element> segment(@Name("from") long from, @Name("length") long length) {
+    	if (from>getLastIndex()||length==0) return $empty.getEmpty();
+    	if (from+length>getSize()) length = getSize()-from;
+    	Element begin = first;
+    	for (int i=0; i<from; i++) {
+    		begin = begin.getSuccessor();
+    	}
+    	Element end = first;
+    	for (int i=0; i<length; i++) {
+    		end = end.getSuccessor();
+    	}
+    	return new Range<Element>(begin, end);
+    }
+    
+    @Override
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
+    public Iterable<? extends Element> span(@Name("from") long from, @Name("to") long to) {
+    	if (from>getLastIndex()||to<from) return $empty.getEmpty();
+    	return this;
     }
 
 }
