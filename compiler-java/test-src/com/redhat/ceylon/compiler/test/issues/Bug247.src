@@ -1,0 +1,30 @@
+package com.redhat.ceylon.compiler.test.issues;
+
+final class bug247_toplevel {
+    private static long value = 0L;
+    
+    static long getBug247_toplevel() {
+        return value;
+    }
+    
+    static void setBug247_toplevel(long bug247_toplevel) {
+        value = bug247_toplevel;
+    }
+    
+    private bug247_toplevel() {
+    }
+}
+final class bug247 {
+    
+    private bug247() {
+    }
+    
+    static void bug247() {
+        (let ceylon.language.Natural $ceylontmpop0 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.issues.bug247_toplevel.getBug247_toplevel()).plus(.ceylon.language.Natural.instance(1L)) in .com.redhat.ceylon.compiler.test.issues.bug247_toplevel.setBug247_toplevel($ceylontmpop0.longValue()); $ceylontmpop0);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        bug247();
+    }
+}
