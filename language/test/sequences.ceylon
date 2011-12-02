@@ -2,6 +2,7 @@ shared void sequences() {
     value builder = SequenceBuilder<String>();
     value empty = builder.sequence;
     assert(empty.size==0, "empty sequence");
+    assert(!nonempty empty, "empty sequence");
     if (nonempty empty) {
         fail("empty sequence");
     }
@@ -10,6 +11,7 @@ shared void sequences() {
     builder.append("world");
     value result = builder.sequence;
     assert(result.size==2, "sequence size");
+    assert(nonempty result, "nonempty sequence");
     if (nonempty result) {
         assert(result.lastIndex==1, "sequence last index");
     }
@@ -60,11 +62,13 @@ shared void sequences() {
         if (exists str = rest[1]) {
             fail("rest item");
         }
+        assert(nonempty rest, "empty rest");
         if (nonempty rest) {
             assert(rest.first=="world", "rest first");
             if (nonempty rr = rest.rest) {
                 fail("rest rest");
             }
+            assert(!nonempty rest.rest, "empty rest");
         }
         else {
             fail("rest nonempty");
@@ -128,10 +132,12 @@ shared void sequences() {
     assert(!singleton.empty, "singleton empty");
     assert(singleton.defines(0), "singleton defines");
     assert(!singleton.defines(1), "singleton defines");
-    assert(singleton.string=="{ hello }", "singletone string");
+    assert(singleton.string=="{ hello }", "singleton string");
+    assert(nonempty singleton, "singleton nonempty");
     if (nonempty singleton) {
         assert(singleton.first=="hello", "singleton first");
         assert(singleton.lastIndex==0, "sequence last index");
+        assert(!nonempty singleton.rest, "singleton rest empty");
         if (nonempty rest = singleton.rest) {
             fail("singleton rest empty");
         }
@@ -177,6 +183,7 @@ shared void sequences() {
     assert(!coalesced.keys.contains(2), "coalesced keys");
     assert(coalesced.defines(0)&&coalesced.defines(1)&&!coalesced.defines(2),
            "coalesce defines");
+    assert(nonempty coalesced, "nonempty coalesced");
     
     value entriesBuilder = SequenceBuilder<Natural->String>();
     entriesBuilder.append(1->"hello");
@@ -199,6 +206,7 @@ shared void sequences() {
     
     value sequenceEntries = entries("X1", "X2", "X3");
     assert(sequenceEntries.size==3, "entries size");
+    assert(nonempty sequenceEntries, "nonempty entries");
     if (nonempty sequenceEntries) {
         assert(sequenceEntries.first==Entry(0, "X1"), "entries first");
     }

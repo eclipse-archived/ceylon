@@ -3,7 +3,17 @@ shared void strings() {
     
     assert(hello.size==5, "string size");
     assert("".size==0, "empty string size");
-    
+    assert(!exists "".lastIndex, "empty string last index");
+    assert(!exists ""[0], "empty string first element exists");
+                
+    assert(exists hello[0], "string first element exists");
+    if (exists li = hello.lastIndex) {
+        assert(exists hello[li], "string first element exists");
+    }
+    else {
+        fail("string last index");
+    }
+    assert (!exists hello[hello.size], "string element not exists");
     if (exists c = hello[0]) {
         assert(c==`h`, "string first element value");
     }
