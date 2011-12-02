@@ -181,10 +181,10 @@ shared void sequences() {
     value entriesBuilder = SequenceBuilder<Entry<Natural,String>>();
     entriesBuilder.append(1->"hello");
     entriesBuilder.append(2->"world");
-    value entries = entriesBuilder.sequence;
-    assert(entries.string=="{ 1->hello, 2->world }", "entries sequence");
+    value entrySequence = entriesBuilder.sequence;
+    assert(entrySequence.string=="{ 1->hello, 2->world }", "entries sequence");
     variable value cntr:=0;
-    for (nat->str in entries) {
+    for (nat->str in entrySequence) {
         cntr++;
         assert(nat==1||nat==2, "entry key iteration");
         assert(str=="hello"||str=="world", "entry key iteration");
@@ -193,6 +193,20 @@ shared void sequences() {
     
     for (name->initial in { "Gavin"->`G`, "Tom"->`T` }) {
         assert(name.initial(1)==initial.string, "entry iteration");
+    }
+    
+    Entry<String,Entry<Boolean,String>> ent = "hello"->(true->"hello");
+    
+    value sequenceEntries = entries("X1", "X2", "X3");
+    assert(sequenceEntries.size==3, "entries size");
+    if (nonempty sequenceEntries) {
+        assert(sequenceEntries.first==Entry(0, "X1"), "entries first");
+    }
+    else {
+        fail("entries empty");
+    }
+    for (nat->str in sequenceEntries) {
+        assert("X"+(nat+1).string==str, "entries iteration");
     }
 
 }
