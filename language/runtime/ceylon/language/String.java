@@ -247,6 +247,14 @@ public final class String extends Object
     	}
     }
     
+    public boolean startsWith(@Name("substring") java.lang.String substring) {
+    	return value.startsWith(substring);
+    }
+    
+    public boolean endsWith(@Name("substring") java.lang.String substring) {
+    	return value.endsWith(substring);
+    }
+    
     @Override
     public boolean containsAny(@Sequenced @Name("elements") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Equality>")

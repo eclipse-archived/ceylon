@@ -138,6 +138,14 @@ shared abstract class String()
          of its substrings."
     shared actual formal Boolean contains(Equality element);
     
+    doc "Determines if this string starts with the given 
+         substring."
+    shared formal Boolean startsWith(String substring);
+    
+    doc "Determines if this string ends with the given 
+         substring."
+    shared formal Boolean endsWith(String substring);
+        
     doc "Returns the concatenation of this string with the
          given string."
     shared actual formal String plus(String other);

@@ -136,4 +136,11 @@ shared void strings() {
     assert(", ".join()=="", "string join no strings");
     assert(", ".join("foo")=="foo", "string join one string");
     assert(", ".join("foo", "bar", "baz")=="foo, bar, baz", "string join");
+    
+    assert("hello world".startsWith(hello), "string starts with");
+    assert("hello world".endsWith("world"), "string ends with");
+    assert(!"Hello world".startsWith(hello), "string starts with");
+    assert(!"hello World".endsWith("world"), "string ends with");
+    assert(!"".startsWith(hello), "empty string starts with");
+    assert(!"".endsWith("world"), "empty string ends with");
 }
