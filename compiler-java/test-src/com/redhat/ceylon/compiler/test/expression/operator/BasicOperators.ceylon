@@ -18,16 +18,31 @@
  * MA  02110-1301, USA.
  */
 @nomodel
+interface BasicOperatorsA {}
+@nomodel
+interface BasicOperatorsB {}
+
+@nomodel
 shared class BasicOperators() {
-    variable Boolean b1 := false;
-    variable Boolean b2 := false;
-    variable Integer i1 := +0;
-    variable Integer i2 := +0;
     
-    void basic() {
-        b1 := b2;
-        i1 := i2.positiveValue;
-        basic();
-        basic{};
+    void testIs() {
+        variable Boolean sync := false;
+        Object foo = sync; 
+        // boxing test
+        sync := is Boolean sync;
+        // normal test
+        sync := is Boolean foo;
+        // trick
+        sync := is Nothing foo;
+        sync := is Bottom foo;
+        sync := is Void foo;
+        // unions
+        //FIXME: sync := is BasicOperatorsA | BasicOperatorsB foo;
+        // intersections
+        //FIXME: sync := is BasicOperatorsA & BasicOperatorsB foo;
+        // erased types
+        sync := is Equality foo;
+        // type parameters
+        //M2: sync := is Sequence<Boolean> foo;
     }
 }
