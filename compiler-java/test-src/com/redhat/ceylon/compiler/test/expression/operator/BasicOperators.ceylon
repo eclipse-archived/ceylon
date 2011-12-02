@@ -59,4 +59,10 @@ shared class BasicOperators() {
         String[] seq = {};
         sync := nonempty seq;
     }
+
+    void testExists() {
+        variable Boolean sync := false;
+        Object? foo = sync; 
+        sync := foo exists;
+    }
 }
