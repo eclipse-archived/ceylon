@@ -1048,7 +1048,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression index = transformExpression(element.getExpression(), BoxingStrategy.BOXED, rightType);
 
             // look at the lhs
-            JCExpression lhs = transformExpression(access.getPrimary(), BoxingStrategy.UNBOXED, leftCorrespondenceType);
+            JCExpression lhs = transformExpression(access.getPrimary(), BoxingStrategy.BOXED, leftCorrespondenceType);
 
             if(!safe)
                 // make a "lhs.item(index)" call
