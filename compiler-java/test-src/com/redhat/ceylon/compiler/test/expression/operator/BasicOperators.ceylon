@@ -37,9 +37,11 @@ shared class BasicOperators() {
         sync := is Bottom foo;
         sync := is Void foo;
         // unions
-        //FIXME: sync := is BasicOperatorsA | BasicOperatorsB foo;
+        //FIXME: parser doesn't like that 
+        // sync := is BasicOperatorsA | BasicOperatorsB foo;
         // intersections
-        //FIXME: sync := is BasicOperatorsA & BasicOperatorsB foo;
+        //FIXME: parser doesn't like that
+        // sync := is BasicOperatorsA & BasicOperatorsB foo;
         // erased types
         sync := is Equality foo;
         // type parameters
