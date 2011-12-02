@@ -93,6 +93,20 @@ shared abstract class String()
     see (longerThan, shorterThan)
     shared actual formal Natural size;
     
+    doc "The index of the last character in the string, or
+         `null` if the string has no characters. Note that 
+         this operation is potentially costly for long 
+         strings, since the underlying representation of the 
+         characters uses a UTF-16 encoding."
+    shared Natural? lastIndex {
+        if (size==0) {
+            return null;
+        }
+        else {
+            return size-1;
+        }
+    }
+    
     doc "An iterator for the characters of the string."
     shared actual formal Iterator<Character>? iterator;
     

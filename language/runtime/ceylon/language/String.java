@@ -112,6 +112,12 @@ public final class String extends Object
         return value.codePointCount(0, value.length());
     }
 
+    @TypeInfo("ceylon.language.Nothing|ceylon.language.Natural")
+    public Natural getLastIndex() {
+    	int length = value.length();
+        return length==0 ? null : Natural.instance(length-1);
+    }
+
     @Override
     public boolean getEmpty() {
         return value.isEmpty();
