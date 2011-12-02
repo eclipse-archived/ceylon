@@ -55,6 +55,7 @@ shared void strings() {
     assert(!hello.longerThan(6), "string longer than");
     assert(!hello.longerThan(5), "string longer than");
     assert(("  " + hello + "\n").trimmed==hello, "string trim");
+    assert("hello\n    world\ngoodbye   everyone!".normalized=="hello world goodbye everyone!", "string normalize");
     
     if (exists occ = hello.firstOccurrence("ll")) {
         assert(occ==2, "string first occurrence");

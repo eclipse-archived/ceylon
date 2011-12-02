@@ -275,6 +275,24 @@ public final class String extends Object
     	return value.trim();
     }
     
+    public java.lang.String getNormalized() {
+    	java.lang.StringBuilder result = new java.lang.StringBuilder();
+    	boolean previousWasWhitespace=false;
+    	for (int i=0;i<value.length();) {
+    		int c = java.lang.Character.codePointAt(value, i);
+    		boolean isWhitespace = java.lang.Character.isWhitespace(c);
+    		if (!isWhitespace) {
+    			result.appendCodePoint(c);
+    		}
+    		else if (!previousWasWhitespace) {
+    			result.append(" ");
+    		}
+    		previousWasWhitespace = isWhitespace;
+    		i+=java.lang.Character.charCount(c);
+    	}
+    	return result.toString();
+    }
+    
     @TypeInfo("ceylon.language.String")
     public java.lang.String initial(@TypeInfo("ceylon.language.Natural") 
     @Name("length") long length) {
