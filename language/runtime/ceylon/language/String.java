@@ -288,5 +288,22 @@ public final class String extends Object
         return length>value.length() ? value : 
         	value.substring(value.length()-5, value.length());
     }
+    
+    public java.lang.String join(@Name("strings") @Sequenced
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>")
+    Iterable<? extends String> strings) {
+		Iterator<? extends String> it = strings.getIterator();
+    	if (it==null) {
+    		return "";
+    	}
+    	else {
+    		java.lang.StringBuilder result = new java.lang.StringBuilder();
+    		result.append(it.getHead());
+    		for (it=it.getTail();it!=null;it=it.getTail()) {
+    			result.append(value).append(it.getHead());
+    		}
+    		return result.toString();
+    	}
+    }
 
 }

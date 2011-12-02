@@ -131,4 +131,8 @@ shared void strings() {
     
     assert(min({"abc", "xyz", "foo", "bar"})=="abc", "strings min");
     assert(max({"abc", "xyz", "foo", "bar"})=="xyz", "strings max");
+    
+    assert(", ".join()=="", "string join no strings");
+    assert(", ".join("foo")=="foo", "string join one string");
+    assert(", ".join("foo", "bar", "baz")=="foo, bar, baz", "string join");
 }
