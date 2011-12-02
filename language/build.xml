@@ -30,10 +30,10 @@
     <property name="repo.local.dir" value="${user.home}/.ceylon/repo"/>
 
     <!-- ceylon.language -->
-    <property name="module.language.srcrootdir" value="${basedir}/languagesrc/current"/>
+    <property name="module.language.src" value="${basedir}/src"/>
     <property name="module.language.dir" value="ceylon/language"/>
     <property name="module.language.name" value="ceylon.language"/>
-    <property name="module.language.javasrcdir" value="${basedir}/runtime"/>
+    <property name="module.language.runtime" value="${basedir}/runtime"/>
 
 	<!-- module archives -->
     <property name="dir.file" value="${repo.local.dir}/${module.language.dir}/${module.ceylon.language.version}"/>
@@ -62,10 +62,10 @@
         <delete dir="${dir.file}"/>
         <mkdir dir="${dir.file}"/>
         <zip destfile="${src.file}">
-            <fileset dir="${module.language.srcrootdir}">
+            <fileset dir="${module.language.src}">
                 <include name="ceylon/language/**/*.ceylon"/>
             </fileset>
-            <fileset dir="${module.language.javasrcdir}">
+            <fileset dir="${module.language.runtime}">
                 <include name="**/*.java"/>
             </fileset>
             
