@@ -1,0 +1,22 @@
+package com.redhat.ceylon.compiler.test.expression.invoke;
+
+final class namedArgumentNoArgs {
+    
+    private namedArgumentNoArgs() {
+    }
+    
+    static void namedArgumentNoArgs() {
+        new .ceylon.language.NamedArgumentCall<java.lang.Void>(null){
+            
+            public .java.lang.Object call$() {
+                namedArgumentNoArgs.namedArgumentNoArgs();
+                return null;
+            }
+        }.call$();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        namedArgumentNoArgs();
+    }
+}

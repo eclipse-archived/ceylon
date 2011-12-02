@@ -182,6 +182,11 @@ public class ExpressionTest extends CompilerTest {
     }
     
     @Test
+    public void testInvNamedArgumentNoArgs(){
+        compareWithJavaSource("invoke/NamedArgumentNoArgs");
+    }
+    
+    @Test
     public void testInvNamedArgumentInvocationInit(){
         compareWithJavaSource("invoke/NamedArgumentInvocationInit");
     }

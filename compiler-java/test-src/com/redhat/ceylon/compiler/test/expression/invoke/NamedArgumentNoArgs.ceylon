@@ -1,0 +1,4 @@
+@nomodel
+void namedArgumentNoArgs() {
+    namedArgumentNoArgs{};
+}
