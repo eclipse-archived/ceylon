@@ -177,7 +177,7 @@ class NamedArgumentCallHelper {
     private ListBuffer<JCExpression> makePositionalArguments() {
         java.util.List<NamedArgument> namedArguments = getNamedArguments();
         java.util.List<Parameter> declaredParams = getParameterLists().get(0).getParameters();
-        Parameter lastDeclared = declaredParams.get(declaredParams.size() - 1);
+        Parameter lastDeclared = declaredParams.size() > 0 ? declaredParams.get(declaredParams.size() - 1) : null;
         boolean boundSequenced = false;
         ArrayList<JCExpression> callArgsArray = new ArrayList<JCExpression>(Collections.<JCExpression>nCopies(namedArguments.size(), null));
         for (NamedArgument namedArg : namedArguments) {
@@ -210,8 +210,10 @@ class NamedArgumentCallHelper {
             
             ProducedType type = lastDeclared.getType();
             argExpr = exprTransformer.make().TypeCast(exprTransformer.makeJavaType(type, AbstractTransformer.WANT_RAW_TYPE), argExpr);
-            callArgsArray.add(namedArguments.size(), exprTransformer.unboxType(argExpr, lastDeclared.getType()));
-        } else if (lastDeclared.isSequenced() && !boundSequenced) {
+            callArgsArray.add(namedArguments.size(), exprTransformer.unboxType(argExpr, type));
+        } else if (lastDeclared != null 
+                && lastDeclared.isSequenced() 
+                && !boundSequenced) {
             callArgsArray.add(namedArguments.size(), exprTransformer.makeEmpty());
         }
         
