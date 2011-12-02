@@ -680,6 +680,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
 
     private void complete(ClassOrInterface klass, ClassSymbol classSymbol) {
         HashSet<String> variables = new HashSet<String>();
+        String qualifiedName = getQualifiedName(classSymbol);
         // FIXME: deal with toplevel methods and attributes
         int constructorCount = 0;
         // then its methods
@@ -693,7 +694,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                     continue;
                 // FIXME: temporary, because some private classes from the jdk are referenced in private methods but not
                 // available
-                if(classSymbol.getQualifiedName().toString().startsWith("java.")
+                if(qualifiedName.startsWith("java.")
                         && (methodSymbol.flags() & Flags.PUBLIC) == 0)
                     continue;
 
@@ -703,7 +704,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                     if(constructorCount > 1){
                         // only warn once
                         if(constructorCount == 2)
-                            log.rawWarning(0, "Has multiple constructors: "+classSymbol.getQualifiedName());
+                            log.rawWarning(0, "Has multiple constructors: "+qualifiedName);
                         continue;
                     }
                     if(!(klass instanceof LazyClass)
@@ -756,7 +757,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             if (decl != null && decl instanceof Value) {
                 ((Value)decl).setVariable(true);
             } else {
-                log.rawWarning(0, "Has conflicting attribute and method name '" + var + "': "+classSymbol.getQualifiedName());
+                log.rawWarning(0, "Has conflicting attribute and method name '" + var + "': "+qualifiedName);
             }
         }
         
@@ -768,6 +769,14 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         setExtendedType(klass, classSymbol);
         setSatisfiedTypes(klass, classSymbol);
         fillRefinedDeclarations(klass);
+    }
+
+    private String getQualifiedName(ClassSymbol classSymbol) {
+        // as taken from ClassSymbol.className():
+        if(classSymbol.name.len == 0)
+            return classSymbol.flatname.toString();
+        else
+            return classSymbol.getQualifiedName().toString();
     }
 
     private void fillRefinedDeclarations(ClassOrInterface klass) {
@@ -918,7 +927,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             else
                 extendedType = getType(superClass, klass);
         }else{
-            String className = classSymbol.getQualifiedName().toString();
+            String className = getQualifiedName(classSymbol);
             if(className.equals("ceylon.language.Void")){
                 // ceylon.language.Void has no super type
             }else if(className.equals("ceylon.language.Exception")){
@@ -931,7 +940,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             }else{
                 // make sure we don't throw and just report an error when this sort of weird thing happens
                 if(superClass.tsym == null){
-                    log.error("ceylon", "Object has no super class symbol: "+classSymbol.getQualifiedName().toString());
+                    log.error("ceylon", "Object has no super class symbol: "+className);
                     return;
                 }
                 // now deal with type erasure, avoid having Object as superclass
