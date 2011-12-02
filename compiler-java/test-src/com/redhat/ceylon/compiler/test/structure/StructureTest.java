@@ -155,7 +155,7 @@ public class StructureTest extends CompilerTest {
         assertTrue(carFile.exists());
 
         // then try to compile only one module (the other being loaded from its car) 
-        compile("module/depend/b/module.ceylon", "module/depend/b/a.ceylon");
+        compile("module/depend/b/module.ceylon", "module/depend/b/a.ceylon", "module/depend/b/aWildcard.ceylon");
 
         carFile = getModuleArchive("com.redhat.ceylon.compiler.test.structure.module.depend.b", "6.6.6");
         assertTrue(carFile.exists());
