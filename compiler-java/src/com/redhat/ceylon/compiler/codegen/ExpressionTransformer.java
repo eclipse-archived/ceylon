@@ -75,7 +75,8 @@ import com.sun.tools.javac.util.Name;
  * This transformer deals with expressions only
  */
 public class ExpressionTransformer extends AbstractTransformer {
-
+    private boolean inStatement = false;
+    
     public static ExpressionTransformer getInstance(Context context) {
         ExpressionTransformer trans = context.get(ExpressionTransformer.class);
         if (trans == null) {
@@ -89,11 +90,24 @@ public class ExpressionTransformer extends AbstractTransformer {
         super(context);
     }
 
+    public JCStatement transform(Tree.ExpressionStatement tree) {
+        // ExpressionStatements do not return any value, therefore we don't care about the type of the expressions.
+        inStatement = true;
+        JCStatement result = at(tree).Exec(expressionGen().transformExpression(tree.getExpression(), BoxingStrategy.INDIFFERENT, null));
+        inStatement = false;
+        return result;
+    }
+    
     JCExpression transformExpression(final Tree.Term expr) {
         return transformExpression(expr, BoxingStrategy.BOXED, null);
     }
 
     JCExpression transformExpression(final Tree.Term expr, BoxingStrategy boxingStrategy, ProducedType expectedType) {
+        if (inStatement && boxingStrategy != BoxingStrategy.INDIFFERENT) {
+            // We're not directly inside the ExpressionStatement anymore
+            inStatement = false;
+        }
+        
         CeylonVisitor v = new CeylonVisitor(gen());
         if (expr instanceof Tree.Expression) {
             // Cope with things like ((expr))
@@ -219,16 +233,24 @@ public class ExpressionTransformer extends AbstractTransformer {
         return transformAssignment(op, op.getLeftTerm(), op.getRightTerm());
     }
 
-    JCExpression transformAssignment(Node op, Term leftTerm, Term rightTerm) {
+    public JCExpression transformAssignment(Node op, Term leftTerm, Term rightTerm) {
         // FIXME: can this be anything else than a Primary?
         TypedDeclaration decl = (TypedDeclaration) ((Tree.Primary)leftTerm).getDeclaration();
 
-        // right side is easy
+        // Remember and disable inStatement for RHS
+        boolean tmpInStatement = inStatement;
+        inStatement = false;
+        
+        // right side
         JCExpression rhs = transformExpression(rightTerm, Util.getBoxingStrategy(decl), decl.getType());
+
+        // Restore previous inStatement state for LHS
+        inStatement = tmpInStatement;
+        
         return transformAssignment(op, leftTerm, rhs);
     }
     
-    JCExpression transformAssignment(Node op, Term leftTerm, JCExpression rhs) {
+    private JCExpression transformAssignment(Node op, Term leftTerm, JCExpression rhs) {
         // left side depends
         
         JCExpression expr = null;
@@ -240,7 +262,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return transformAssignment(op, leftTerm, expr, rhs);
     }
     
-    JCExpression transformAssignment(Node op, Term leftTerm, JCExpression expr, JCExpression rhs) {
+    private JCExpression transformAssignment(Node op, Term leftTerm, JCExpression expr, JCExpression rhs) {
         JCExpression result = null;
 
         // FIXME: can this be anything else than a Primary?
@@ -255,16 +277,16 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if ((decl instanceof Getter)) {
             // must use the setter
             if (Decl.withinMethod(decl)) {
-                result = makeSetter(rhs, makeIdentOrSelect(expr, decl.getName() + "$setter", Util.getSetterName(decl.getName())));
+                result = makeSetter(rhs, expr, decl.getName() + "$setter", Util.getSetterName(decl.getName()));
             } else {
-                result = makeSetter(rhs, makeIdentOrSelect(expr, Util.getSetterName(decl.getName())));            
+                result = makeSetter(rhs, expr, Util.getSetterName(decl.getName()));            
             }
         } else if (variable && (Decl.isClassAttribute(decl))) {
             // must use the setter
-            result = makeSetter(rhs, makeIdentOrSelect(expr, Util.getSetterName(decl.getName())));
+            result = makeSetter(rhs, expr, Util.getSetterName(decl.getName()));
         } else if (variable && (decl.isCaptured() || decl.isShared())) {
             // must use the qualified setter
-            result = makeSetter(rhs, makeIdentOrSelect(expr, decl.getName(), Util.getSetterName(decl.getName())));
+            result = makeSetter(rhs, expr, decl.getName(), Util.getSetterName(decl.getName()));
         } else {
             result = at(op).Assign(makeIdentOrSelect(expr, decl.getName()), rhs);
         }
@@ -590,7 +612,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         return make().LetExpr(decls, stats, result);
     }
-
+    
     public JCExpression transform(Tree.PrefixOperatorExpression expr) {
         final String methodName;
         if (expr instanceof Tree.IncrementOp){

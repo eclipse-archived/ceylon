@@ -20,7 +20,6 @@
 
 package com.redhat.ceylon.compiler.codegen;
 
-import com.redhat.ceylon.compiler.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -253,10 +252,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.ExpressionStatement tree) {
-        // ExpressionStatements do not return any value, therefore we don't care about the
-        // type of the expressions.
-        append(gen.at(tree).Exec(gen.expressionGen().transformExpression(tree.getExpression(), 
-                BoxingStrategy.INDIFFERENT, null)));
+        append(gen.expressionGen().transform(tree));
     }
     
     /*
