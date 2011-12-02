@@ -178,7 +178,7 @@ shared void sequences() {
     assert(coalesced.defines(0)&&coalesced.defines(1)&&!coalesced.defines(2),
            "coalesce defines");
     
-    value entriesBuilder = SequenceBuilder<Entry<Natural,String>>();
+    value entriesBuilder = SequenceBuilder<Natural->String>();
     entriesBuilder.append(1->"hello");
     entriesBuilder.append(2->"world");
     value entrySequence = entriesBuilder.sequence;
@@ -195,7 +195,7 @@ shared void sequences() {
         assert(name.initial(1)==initial.string, "entry iteration");
     }
     
-    Entry<String,Entry<Boolean,String>> ent = "hello"->(true->"hello");
+    String->Entry<Boolean,String> ent = "hello"->(true->"hello");
     
     value sequenceEntries = entries("X1", "X2", "X3");
     assert(sequenceEntries.size==3, "entries size");
