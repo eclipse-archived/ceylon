@@ -50,6 +50,4 @@ public interface Transformation {
 
     public abstract ClassTransformer classGen();
 
-    public abstract GlobalTransformer globalGen();
-
 }

@@ -37,7 +37,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AndOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BinaryOperatorExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Element;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ElementOrRange;
@@ -251,10 +250,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         if (decl.isToplevel()) {
             // must use top level setter
-            result = globalGen().setGlobalValue(
-                    makeFQIdent(decl.getContainer().getQualifiedNameString()),
-                    decl.getName(),
-                    rhs);
+            result = make().Apply(
+                    List.<JCTree.JCExpression>nil(),
+                    makeSelect(makeFQIdent(decl.getContainer().getQualifiedNameString()), Util.quoteIfJavaKeyword(decl.getName()), Util.getSetterName(decl.getName())),
+                    List.of(rhs));
         } else if ((decl instanceof Getter)) {
             // must use the setter
             if (Decl.withinMethod(decl)) {
@@ -897,10 +896,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (decl instanceof Getter) {
             // invoke the getter
             if (decl.isToplevel()) {
-                result = globalGen().getGlobalValue(
-                        makeFQIdent(decl.getContainer().getQualifiedNameString()),
-                        decl.getName(),
-                        decl.getName());
+                result = make().Apply(
+                        List.<JCTree.JCExpression>nil(),
+                        makeSelect(makeFQIdent(decl.getContainer().getQualifiedNameString()), Util.quoteIfJavaKeyword(decl.getName()), Util.getGetterName(decl.getName())),
+                        List.<JCTree.JCExpression>nil());
             } else if (decl.isClassMember()) {
                 result =  make().Apply(List.<JCExpression>nil(), 
                         makeIdentOrSelect(primaryExpr, Util.getGetterName(decl.getName())),
@@ -927,9 +926,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                     result = makeBoolean(false);
                 } else {
                     // it's a toplevel attribute
-                    result = globalGen().getGlobalValue(
-                            makeFQIdent(decl.getContainer().getQualifiedNameString()),
-                            decl.getName());
+                    result = make().Apply(
+                            List.<JCTree.JCExpression>nil(),
+                            makeSelect(makeFQIdent(decl.getContainer().getQualifiedNameString()), Util.quoteIfJavaKeyword(decl.getName()), Util.getGetterName(decl.getName())),
+                            List.<JCTree.JCExpression>nil());
                 }
             } else if (Decl.isClassAttribute(decl)) {
                 // invoke the getter

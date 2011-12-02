@@ -165,11 +165,6 @@ public abstract class AbstractTransformer implements Transformation {
         return ClassTransformer.getInstance(context);
     }
     
-    @Override
-    public GlobalTransformer globalGen() {
-        return GlobalTransformer.getInstance(context);
-    }
-    
     protected JCExpression makeIdent(String nameAsString) {
         return makeIdent(nameAsString.split("\\."));
     }
@@ -963,7 +958,10 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     protected JCExpression makeEmpty() {
-        return globalGen().getGlobalValue(makeIdent("ceylon", "language"), "$empty");
+        return make().Apply(
+                List.<JCTree.JCExpression>nil(),
+                makeSelect(makeIdent("ceylon", "language"), Util.quoteIfJavaKeyword("$empty"), Util.getGetterName("$empty")),
+                List.<JCTree.JCExpression>nil());
     }
     
     /*
