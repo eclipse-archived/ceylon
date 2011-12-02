@@ -1555,7 +1555,7 @@ comparisonExpression returns [Term term]
       )?
     | to2=typeOperator
       { $term = $to2.operator; }
-      t2=qualifiedType
+      t2=qualifiedType //TODO: support "type" here, using a predicate
       { $to2.operator.setType($t2.type); }
       ee3=existenceEmptinessExpression
       { $to2.operator.setTerm($ee3.term); }
@@ -1838,21 +1838,28 @@ typeArgument returns [Type type]
     ;
     
 type returns [StaticType type]
+    @init { BaseType bt=null; 
+            TypeArgumentList tal=null; }
     : ut1=unionType
-      { $type=$ut1.type; }
+      { $type=$ut1.type; 
+        bt = new BaseType(null); 
+        tal = new TypeArgumentList(null); 
+        tal.addType($ut1.type); 
+        bt.setTypeArgumentList(tal); }
       (
         ENTRY_OP
-        ut2=unionType
-        { 
-          BaseType bt = new BaseType($ENTRY_OP);
+        { bt.setEndToken($ENTRY_OP); 
           CommonToken tok = new CommonToken($ENTRY_OP);
           tok.setText("Entry");
-          bt.setIdentifier( new Identifier(tok) );
-          TypeArgumentList tal = new TypeArgumentList(null);
-          tal.addType($ut1.type);
-          tal.addType($ut2.type);
-          bt.setTypeArgumentList(tal);
-        $type=bt; }
+          bt.setIdentifier( new Identifier(tok) ); }
+        (
+          ut2=unionType
+          { tal.addType($ut2.type);
+            bt.setEndToken(null); }
+        | { displayRecognitionError(getTokenNames(), 
+                new MismatchedTokenException(UIDENTIFIER, input)); }
+        )
+        { $type=bt; }
       )?
     ;
 
