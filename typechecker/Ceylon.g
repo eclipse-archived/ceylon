@@ -317,11 +317,11 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
             MethodDefinition mdef=new MethodDefinition(null);
             MethodDeclaration mdec=new MethodDeclaration(null); 
             $declaration = adec; }
-    : unionType
-      { adef.setType($unionType.type);
-        adec.setType($unionType.type); 
-        mdef.setType($unionType.type);
-        mdec.setType($unionType.type); }
+    : type
+      { adef.setType($type.type);
+        adec.setType($type.type); 
+        mdef.setType($type.type);
+        mdec.setType($type.type); }
       memberNameDeclaration
       { adef.setIdentifier($memberNameDeclaration.identifier);
         adec.setIdentifier($memberNameDeclaration.identifier); 
@@ -347,7 +347,7 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
         )?
         ( 
           { $declaration = mdef; }
-          mb=memberBody[$unionType.type] 
+          mb=memberBody[$type.type] 
          { mdef.setBlock($mb.block); }
         //-> ^(METHOD_DEFINITION unionType memberName methodParameters memberBody)
         | 
@@ -372,7 +372,7 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
       //-> ^(ATTRIBUTE_DECLARATION unionType memberName specifier? initializer?)
       | 
         { $declaration = adef; }
-        ab=memberBody[$unionType.type]
+        ab=memberBody[$type.type]
         { adef.setBlock($ab.block); }
       //-> ^(ATTRIBUTE_GETTER_DEFINITION unionType memberName memberBody)      
       )
@@ -568,8 +568,8 @@ extendedType returns [ExtendedType extendedType]
     : EXTENDS
       { $extendedType = new ExtendedType($EXTENDS); }
       (
-        type
-        { $extendedType.setType($type.type); }
+        qualifiedType
+        { $extendedType.setType($qualifiedType.type); }
         //-> ^(EXTENDED_TYPE[$EXTENDS] type ^(INVOCATION_EXPRESSION ^(EXTENDED_TYPE_EXPRESSION) positionalArguments))
       | SUPER MEMBER_OP 
         typeReference 
@@ -598,13 +598,13 @@ extendedType returns [ExtendedType extendedType]
 satisfiedTypes returns [SatisfiedTypes satisfiedTypes]
     : SATISFIES 
       { $satisfiedTypes = new SatisfiedTypes($SATISFIES); }
-      t1=type 
+      t1=qualifiedType 
       { $satisfiedTypes.addType($t1.type); }
       (
         i=INTERSECTION_OP
         { $satisfiedTypes.setEndToken($i); }
         (
-          t2=type
+          t2=qualifiedType
           { $satisfiedTypes.addType($t2.type); 
             $satisfiedTypes.setEndToken(null); }
         | { displayRecognitionError(getTokenNames(),
@@ -617,20 +617,20 @@ satisfiedTypes returns [SatisfiedTypes satisfiedTypes]
 abstractedType returns [AbstractedType abstractedType]
     : ABSTRACTED_TYPE
       { $abstractedType = new AbstractedType($ABSTRACTED_TYPE); }
-      type
-      { $abstractedType.setType($type.type); }
+      qualifiedType
+      { $abstractedType.setType($qualifiedType.type); }
     ;
 
 adaptedTypes returns [AdaptedTypes adaptedTypes]
     : ADAPTED_TYPES 
       { $adaptedTypes = new AdaptedTypes($ADAPTED_TYPES); }
-      t1=type 
+      t1=qualifiedType 
       { $adaptedTypes.addType($t1.type); }
       (
         i=INTERSECTION_OP 
         { $adaptedTypes.setEndToken($i); }
         (
-          t2=type
+          t2=qualifiedType
           { $adaptedTypes.addType($t2.type); 
             $adaptedTypes.setEndToken(null); }
         | { displayRecognitionError(getTokenNames(),
@@ -660,7 +660,7 @@ caseTypes returns [CaseTypes caseTypes]
     ;
 
 caseType returns [SimpleType type, BaseMemberExpression instance]
-    : t=type 
+    : t=qualifiedType 
       { $type=$t.type;}
     | memberName //-> ^(BASE_MEMBER_EXPRESSION memberName)
       { $instance = new BaseMemberExpression(null);
@@ -757,12 +757,12 @@ parameterDeclaration returns [Parameter parameter]
     ;
 
 valueParameter
-    : ENTRY_OP unionType memberName
+    : ENTRY_OP type memberName
     ;
 
 parameterType returns [Type type]
-    : unionType 
-      { $type = $unionType.type; }
+    : type 
+      { $type = $type.type; }
       ( 
         ELLIPSIS
         { SequencedType st = new SequencedType($ELLIPSIS);
@@ -916,7 +916,7 @@ annotatedDeclarationStart
 //expressions
 declarationStart
     : declarationKeyword 
-    | unionType (ELLIPSIS | LIDENTIFIER)
+    | type (ELLIPSIS | LIDENTIFIER)
     ;
 
 declarationKeyword
@@ -1012,8 +1012,8 @@ continueDirective returns [Continue directive]
 typeSpecifier returns [TypeSpecifier typeSpecifier]
     : SPECIFY 
       { $typeSpecifier = new TypeSpecifier($SPECIFY); }
-      type
-      { $typeSpecifier.setType($type.type); }
+      qualifiedType
+      { $typeSpecifier.setType($qualifiedType.type); }
     //-> ^(TYPE_SPECIFIER[$SPECIFY] type)
     ;
 
@@ -1199,7 +1199,7 @@ typeArgumentsStart
     : SMALLER_OP
     (
       UIDENTIFIER ('.' UIDENTIFIER)* /*| 'subtype')*/ (DEFAULT_OP|ARRAY)*
-      ((INTERSECTION_OP|UNION_OP) UIDENTIFIER ('.' UIDENTIFIER)* (DEFAULT_OP|ARRAY)*)*
+      ((INTERSECTION_OP|UNION_OP|ENTRY_OP) UIDENTIFIER ('.' UIDENTIFIER)* (DEFAULT_OP|ARRAY)*)*
       (LARGER_OP|SMALLER_OP|COMMA|ELLIPSIS)
     | 
       LARGER_OP //for IDE only!
@@ -1346,9 +1346,9 @@ typedMethodOrGetterArgument returns [TypedArgument declaration]
     @init { MethodArgument marg = new MethodArgument(null);
             AttributeArgument aarg = new AttributeArgument(null); 
             $declaration=aarg; }
-    : unionType 
-      { marg.setType($unionType.type);
-        aarg.setType($unionType.type); }
+    : type 
+      { marg.setType($type.type);
+        aarg.setType($type.type); }
       memberNameDeclaration
       { marg.setIdentifier($memberNameDeclaration.identifier);
         aarg.setIdentifier($memberNameDeclaration.identifier); }
@@ -1359,7 +1359,7 @@ typedMethodOrGetterArgument returns [TypedArgument declaration]
           { marg.addParameterList($parameters.parameterList); }
         )+
       )?
-      memberBody[$unionType.type]
+      memberBody[$type.type]
       { marg.setBlock($memberBody.block); 
         aarg.setBlock($memberBody.block); }
       //-> ^(METHOD_ARGUMENT unionType memberName parameters+ memberBody)
@@ -1550,12 +1550,12 @@ comparisonExpression returns [Term term]
       | to1=typeOperator
         { $to1.operator.setTerm($ee1.term); 
           $term = $to1.operator;}
-        t1=type
+        t1=qualifiedType
         { $to1.operator.setType($t1.type); }
       )?
     | to2=typeOperator
       { $term = $to2.operator; }
-      t2=type
+      t2=qualifiedType
       { $to2.operator.setType($t2.type); }
       ee3=existenceEmptinessExpression
       { $to2.operator.setTerm($ee3.term); }
@@ -1827,16 +1827,35 @@ typeArguments returns [TypeArgumentList typeArgumentList]
     ;
 
 typeArgument returns [Type type]
-    : unionType
-      { $type = $unionType.type; }
+    : t=type
+      { $type = $t.type; }
       ( 
         ELLIPSIS
         { SequencedType st = new SequencedType($ELLIPSIS);
-          st.setType($unionType.type); 
+          st.setType($t.type); 
           $type = st; }
       )? 
     ;
     
+type returns [StaticType type]
+    : ut1=unionType
+      { $type=$ut1.type; }
+      (
+        ENTRY_OP
+        ut2=unionType
+        { 
+          BaseType bt = new BaseType($ENTRY_OP);
+          CommonToken tok = new CommonToken($ENTRY_OP);
+          tok.setText("Entry");
+          bt.setIdentifier( new Identifier(tok) );
+          TypeArgumentList tal = new TypeArgumentList(null);
+          tal.addType($ut1.type);
+          tal.addType($ut2.type);
+          bt.setTypeArgumentList(tal);
+        $type=bt; }
+      )?
+    ;
+
 unionType returns [StaticType type]
     @init { UnionType ut=null; }
     : it1=intersectionType
@@ -1882,8 +1901,8 @@ intersectionType returns [StaticType type]
     ;
 
 abbreviatedType returns [StaticType type]
-    : t=type
-      { $type=$t.type; }
+    : qualifiedType
+      { $type=$qualifiedType.type; }
       (
         DEFAULT_OP 
         { UnionType ot = new UnionType(null);
@@ -1913,7 +1932,7 @@ abbreviatedType returns [StaticType type]
       )*
     ;
 
-type returns [SimpleType type]
+qualifiedType returns [SimpleType type]
     : ot=typeNameWithArguments
       { BaseType bt = new BaseType(null);
         bt.setIdentifier($ot.identifier);
@@ -2115,20 +2134,20 @@ nonemptyCondition returns [NonemptyCondition condition]
     ;
 
 isCondition returns [IsCondition condition]
-    : (LPAREN IS_OP unionType LIDENTIFIER RPAREN) 
+    : (LPAREN IS_OP type LIDENTIFIER RPAREN) 
       => l1=LPAREN 
       { $condition = new IsCondition($l1); }
-      i1=IS_OP t1=unionType impliedVariable 
+      i1=IS_OP t1=type impliedVariable 
       { $condition.setType($t1.type);
         $condition.setVariable($impliedVariable.variable); }
       r1=RPAREN
       { $condition.setEndToken($r1); }
     //-> ^(IS_CONDITION[$IS_OP] unionType ^(VARIABLE SYNTHETIC_VARIABLE memberName ^(SPECIFIER_EXPRESSION ^(EXPRESSION ^(BASE_MEMBER_EXPRESSION memberName)))))
-    | (LPAREN IS_OP unionType LIDENTIFIER SPECIFY)
+    | (LPAREN IS_OP type LIDENTIFIER SPECIFY)
       => l2=LPAREN
       { $condition = new IsCondition($l2); }
       i2=IS_OP 
-      ( t2=unionType
+      ( t2=type
       { $condition.setType($t2.type);
         Variable v = new Variable(null);
         v.setType($t2.type); 
@@ -2155,9 +2174,9 @@ satisfiesCondition returns [SatisfiesCondition condition]
     : LPAREN 
       { $condition = new SatisfiesCondition($LPAREN); }
       SATISFIES 
-      (t1=type 
+      (t1=qualifiedType 
       { $condition.setLeftType($t1.type); }
-      t2=type 
+      t2=qualifiedType 
       { $condition.setRightType($t2.type); })?
       RPAREN
       { $condition.setEndToken($RPAREN); }
@@ -2292,16 +2311,16 @@ matchCaseCondition returns [MatchCase item]
 isCaseCondition returns [IsCase item]
     : IS_OP 
       { $item = new IsCase($IS_OP); }
-      unionType
-      { $item.setType($unionType.type); }
+      type
+      { $item.setType($type.type); }
     //-> ^(IS_CASE[$IS_OP] unionType)
     ;
 
 satisfiesCaseCondition returns [SatisfiesCase item]
     : SATISFIES 
       { $item = new SatisfiesCase($SATISFIES); }
-      type
-      { $item.setType($type.type); }
+      qualifiedType
+      { $item.setType($qualifiedType.type); }
     //-> ^(SATISFIES_CASE[$SATISFIES] type)
     ;
 
@@ -2478,8 +2497,8 @@ variable returns [Variable variable]
 var returns [Variable variable]
     : { $variable = new Variable(null); }
     (
-      unionType 
-      { $variable.setType($unionType.type); }
+      type 
+      { $variable.setType($type.type); }
       mn1=memberName 
       { $variable.setIdentifier($mn1.identifier); }
       ( 

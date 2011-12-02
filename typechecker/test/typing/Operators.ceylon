@@ -217,4 +217,7 @@ class Operators() {
     b4 &&= b3;
     b5 ||= b4;
     
+    @type["Entry<String,Float>"] String->Float esf = "hello"->1.0;
+    @type["Sequence<Entry<String,Float>>"] Sequence<String->Float> esfs = {esf};
+    
 }
