@@ -154,7 +154,7 @@ public class StatementTransformer extends AbstractTransformer {
             
             // IsCondition with Nothing as ProducedType transformed to " == null" 
             if (cond instanceof Tree.IsCondition && isNothing(toType)) {
-                at(cond);                                
+                at(cond);
                 test = make().Binary(JCTree.EQ, expr, makeNull());
             } else {             
                 toType = simplifyType(toType);
