@@ -57,6 +57,8 @@ import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
+import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
+import com.sun.tools.javac.tree.JCTree.LetExpr;
 import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
@@ -1027,10 +1029,28 @@ public abstract class AbstractTransformer implements Transformation {
                     result = make().Binary(JCTree.AND, result, partExpr);
                 }
             }
+        } else if (type.isExactly(typeFact().getNothingDeclaration().getType())){
+            // is Nothing => is null
+            return make().Binary(JCTree.EQ, testExpr, makeNull());
+        } else if (type.isExactly(typeFact().getVoidDeclaration().getType())){
+            // everything is Void, it's the root of the hierarchy
+            return makeIgnoredEvalAndReturn(testExpr, makeBoolean(true));
+        } else if (type.getDeclaration() instanceof BottomType){
+            // nothing is Bottom
+            return makeIgnoredEvalAndReturn(testExpr, makeBoolean(false));
         } else {
             JCExpression rawTypeExpr = makeJavaType(type, NO_PRIMITIVES | WANT_RAW_TYPE);
             result = make().TypeTest(testExpr, rawTypeExpr);
         }
         return result;
+    }
+
+    protected LetExpr makeIgnoredEvalAndReturn(JCExpression toEval, JCExpression toReturn){
+        // define a variable of type j.l.Object to hold the result of the evaluation
+        JCVariableDecl def = make().VarDef(make().Modifiers(0), names.fromString(tempName()), 
+                make().Type(syms().objectType), toEval);
+        // then ignore this result and return something else
+        return make().LetExpr(def, toReturn);
+
     }
 }
