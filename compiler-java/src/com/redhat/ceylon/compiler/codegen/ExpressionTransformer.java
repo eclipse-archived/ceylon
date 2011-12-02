@@ -41,6 +41,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.BinaryOperatorExpression
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Element;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ElementOrRange;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ElementRange;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Exists;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IndexExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
@@ -303,10 +304,17 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCTree transform(Nonempty op) {
-        // we don't need any erasure type cast for an "is" test
+        // we don't need any erasure type cast for a "nonempty" test
         JCExpression expression = transformExpression(op.getTerm());
         at(op);
         return makeTypeTest(expression, op.getUnit().getSequenceDeclaration().getType());
+    }
+
+    public JCTree transform(Exists op) {
+        // we don't need any erasure type cast for an "exists" test
+        JCExpression expression = transformExpression(op.getTerm());
+        at(op);
+        return  make().Binary(JCTree.NE, expression, makeNull());
     }
 
     public JCExpression transform(Tree.RangeOp op) {
