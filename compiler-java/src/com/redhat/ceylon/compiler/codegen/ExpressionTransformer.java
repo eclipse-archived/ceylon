@@ -44,6 +44,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ElementRange;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IndexExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Nonempty;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.OrOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Outer;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
@@ -299,6 +300,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression expression = transformExpression(op.getTerm());
         at(op);
         return makeTypeTest(expression, op.getType().getTypeModel());
+    }
+
+    public JCTree transform(Nonempty op) {
+        // we don't need any erasure type cast for an "is" test
+        JCExpression expression = transformExpression(op.getTerm());
+        at(op);
+        return makeTypeTest(expression, op.getUnit().getSequenceDeclaration().getType());
     }
 
     public JCExpression transform(Tree.RangeOp op) {
