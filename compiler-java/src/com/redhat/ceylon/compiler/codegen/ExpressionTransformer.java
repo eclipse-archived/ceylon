@@ -248,40 +248,30 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         boolean variable = decl.isVariable();
         
+        at(op);
         if (decl.isToplevel()) {
             // must use top level setter
-            result = make().Apply(
-                    List.<JCTree.JCExpression>nil(),
-                    makeSelect(makeFQIdent(decl.getContainer().getQualifiedNameString()), Util.quoteIfJavaKeyword(decl.getName()), Util.getSetterName(decl.getName())),
-                    List.of(rhs));
+            result = makeSetter(rhs, makeFQIdent(decl.getContainer().getQualifiedNameString()), Util.quoteIfJavaKeyword(decl.getName()), Util.getSetterName(decl.getName()));
         } else if ((decl instanceof Getter)) {
             // must use the setter
             if (Decl.withinMethod(decl)) {
-                result = at(op).Apply(List.<JCTree.JCExpression>nil(),
-                        makeIdentOrSelect(expr, decl.getName() + "$setter", Util.getSetterName(decl.getName())),
-                        List.<JCTree.JCExpression>of(rhs));
+                result = makeSetter(rhs, makeIdentOrSelect(expr, decl.getName() + "$setter", Util.getSetterName(decl.getName())));
             } else {
-                result = at(op).Apply(List.<JCTree.JCExpression>nil(),
-                        makeIdentOrSelect(expr, Util.getSetterName(decl.getName())),
-                        List.<JCTree.JCExpression>of(rhs));            
+                result = makeSetter(rhs, makeIdentOrSelect(expr, Util.getSetterName(decl.getName())));            
             }
         } else if (variable && (Decl.isClassAttribute(decl))) {
             // must use the setter
-            result = at(op).Apply(List.<JCTree.JCExpression>nil(),
-                    makeIdentOrSelect(expr, Util.getSetterName(decl.getName())), 
-                    List.<JCTree.JCExpression>of(rhs));
+            result = makeSetter(rhs, makeIdentOrSelect(expr, Util.getSetterName(decl.getName())));
         } else if (variable && (decl.isCaptured() || decl.isShared())) {
             // must use the qualified setter
-            result = at(op).Apply(List.<JCTree.JCExpression>nil(),
-                    makeIdentOrSelect(expr, decl.getName(), Util.getSetterName(decl.getName())), 
-                    List.<JCTree.JCExpression>of(rhs));
+            result = makeSetter(rhs, makeIdentOrSelect(expr, decl.getName(), Util.getSetterName(decl.getName())));
         } else {
             result = at(op).Assign(makeIdentOrSelect(expr, decl.getName()), rhs);
         }
         
         return result;
     }
-
+    
     public JCExpression transform(Tree.IsOp op) {
         JCExpression type = makeJavaType(op.getType().getTypeModel());
         // we don't need any erasure type cast for an "is" test
@@ -896,23 +886,16 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (decl instanceof Getter) {
             // invoke the getter
             if (decl.isToplevel()) {
-                result = make().Apply(
-                        List.<JCTree.JCExpression>nil(),
-                        makeSelect(makeFQIdent(decl.getContainer().getQualifiedNameString()), Util.quoteIfJavaKeyword(decl.getName()), Util.getGetterName(decl.getName())),
-                        List.<JCTree.JCExpression>nil());
+                result = makeGetter(makeFQIdent(decl.getContainer().getQualifiedNameString()), Util.quoteIfJavaKeyword(decl.getName()), Util.getGetterName(decl.getName()));
             } else if (decl.isClassMember()) {
-                result =  make().Apply(List.<JCExpression>nil(), 
-                        makeIdentOrSelect(primaryExpr, Util.getGetterName(decl.getName())),
-                        List.<JCExpression>nil());
+                result =  makeGetter(primaryExpr, Util.getGetterName(decl.getName()));
             } else {
                 // method local attr
-                JCExpression fn;
                 if (isRecursiveReference(expr)) {
-                    fn = makeIdentOrSelect(primaryExpr, Util.getGetterName(decl.getName()));
+                    result = makeGetter(primaryExpr, Util.getGetterName(decl.getName()));
                 } else {
-                    fn = makeIdentOrSelect(primaryExpr, decl.getName() + "$getter", Util.getGetterName(decl.getName()));
+                    result = makeGetter(primaryExpr, decl.getName() + "$getter", Util.getGetterName(decl.getName()));
                 }
-                result = make().Apply(List.<JCExpression>nil(), fn, List.<JCExpression>nil());
             }
         } else if (decl instanceof Value) {
             if (decl.isToplevel()) {
@@ -926,21 +909,14 @@ public class ExpressionTransformer extends AbstractTransformer {
                     result = makeBoolean(false);
                 } else {
                     // it's a toplevel attribute
-                    result = make().Apply(
-                            List.<JCTree.JCExpression>nil(),
-                            makeSelect(makeFQIdent(decl.getContainer().getQualifiedNameString()), Util.quoteIfJavaKeyword(decl.getName()), Util.getGetterName(decl.getName())),
-                            List.<JCTree.JCExpression>nil());
+                    result = makeGetter(makeFQIdent(decl.getContainer().getQualifiedNameString()), Util.quoteIfJavaKeyword(decl.getName()), Util.getGetterName(decl.getName()));
                 }
             } else if (Decl.isClassAttribute(decl)) {
                 // invoke the getter
-                result = make().Apply(List.<JCExpression>nil(), 
-                       makeIdentOrSelect(primaryExpr, Util.getGetterName(decl.getName())),
-                       List.<JCExpression>nil());
+                result = makeGetter(primaryExpr, Util.getGetterName(decl.getName()));
              } else if (decl.isCaptured() || decl.isShared()) {
                  // invoke the qualified getter
-                 result = make().Apply(List.<JCExpression>nil(), 
-                        makeIdentOrSelect(primaryExpr, decl.getName(), Util.getGetterName(decl.getName())),
-                        List.<JCExpression>nil());
+                 result = makeGetter(primaryExpr, decl.getName(), Util.getGetterName(decl.getName()));
             }
         } else if (decl instanceof Method) {
             if (Decl.withinMethod(decl)) {
@@ -970,9 +946,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         if (result == null) {
             if (Util.isErasedAttribute(decl.getName())) {
-                result = make().Apply(null,
-                        makeIdentOrSelect(primaryExpr, Util.quoteMethodName(decl.getName())),
-                        List.<JCExpression>nil());
+                result = makeGetter(primaryExpr, Util.quoteMethodName(decl.getName()));
             } else {
                 result = makeIdentOrSelect(primaryExpr, substitute(decl.getName()));
             }
@@ -987,6 +961,18 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else {
             return makeIdent(names);
         }
+    }
+
+    private JCExpression makeGetter(JCExpression qualExpr, String... names) {
+        return make().Apply(List.<JCTree.JCExpression>nil(),
+                makeIdentOrSelect(qualExpr, names),
+                List.<JCTree.JCExpression>nil());
+    }
+
+    private JCExpression makeSetter(JCExpression valueExpr, JCExpression qualExpr, String... names) {
+        return make().Apply(List.<JCTree.JCExpression>nil(),
+                makeIdentOrSelect(qualExpr, names),
+                List.<JCTree.JCExpression>of(valueExpr));
     }
     
     private boolean isRecursiveReference(Tree.StaticMemberOrTypeExpression expr) {
