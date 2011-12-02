@@ -36,6 +36,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.LogicalAssignmentOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LogicalOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NaturalLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NegativeOp;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Nonempty;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NotOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositiveOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
@@ -182,6 +183,13 @@ public class BoxingVisitor extends Visitor {
 
     @Override
     public void visit(IsOp that) {
+        super.visit(that);
+        // this is not conditional
+        Util.markUnBoxed(that);
+    }
+
+    @Override
+    public void visit(Nonempty that) {
         super.visit(that);
         // this is not conditional
         Util.markUnBoxed(that);
