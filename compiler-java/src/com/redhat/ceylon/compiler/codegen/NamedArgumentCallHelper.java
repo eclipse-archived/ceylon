@@ -27,7 +27,6 @@ import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
-import com.sun.tools.javac.tree.JCTree.JCTypeApply;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -57,17 +56,6 @@ class NamedArgumentCallHelper {
      */
     private final InvocationExpression ce;
     
-    /** 
-     * The arguments (expressions) passed to the method invocation. 
-     */
-    private ListBuffer<JCExpression> passedArguments;
-    
-    /** 
-     * The arguments the method is called with, 
-     * <code>(SomeCast)this.args[<i>n</i>]</code> 
-     */
-    private ListBuffer<JCExpression> positionalArguments;
-    
     /** The expression for the method, including any necessary 
      * qualification, along the lines of <code>this.instance.foo</code>. */ 
     private JCExpression method;
@@ -83,20 +71,6 @@ class NamedArgumentCallHelper {
      * {@link #instance}.  
      */
     private JCExpression synthClassTypeParam;
-    /** 
-     * The <code>NamedArgumentCall&lt;T&gt;</code>, for <code>T</code> 
-     * given in {@link #synthClassTypeParam}.
-     */
-    private JCTypeApply synthClassType;
-    /**
-     * The declaration of {@link #synthClassType}.
-     */
-    private JCClassDecl synthClassDecl;
-    /**
-     * The instance of {@link #synthClassDecl}.
-     */
-    private JCNewClass synthClassInstance;
-
     
     public NamedArgumentCallHelper(ExpressionTransformer expressionTransformer, InvocationExpression ce) {
         exprTransformer = expressionTransformer;
@@ -200,7 +174,7 @@ class NamedArgumentCallHelper {
         }
     }
     
-    private void initPositionalArguments() {
+    private ListBuffer<JCExpression> makePositionalArguments() {
         java.util.List<NamedArgument> namedArguments = getNamedArguments();
         java.util.List<Parameter> declaredParams = getParameterLists().get(0).getParameters();
         Parameter lastDeclared = declaredParams.get(declaredParams.size() - 1);
@@ -241,15 +215,15 @@ class NamedArgumentCallHelper {
             callArgsArray.add(namedArguments.size(), exprTransformer.makeEmpty());
         }
         
-        positionalArguments = ListBuffer.<JCExpression>lb();
+        ListBuffer<JCExpression> positionalArguments = ListBuffer.<JCExpression>lb();
         for (JCExpression expr : callArgsArray) {
             positionalArguments.add(expr != null ? expr : exprTransformer.make().Erroneous());
         }
-        
+        return positionalArguments;
     }
     
-    private void initPassedArguments() {
-        passedArguments = new ListBuffer<JCExpression>();
+    private ListBuffer<JCExpression> makePassedArguments() {
+        ListBuffer<JCExpression> passedArguments = new ListBuffer<JCExpression>();
         for (NamedArgument namedArg : getNamedArguments()) {
             exprTransformer.at(namedArg);
             passedArguments.append(transformArgument(namedArg));
@@ -259,11 +233,10 @@ class NamedArgumentCallHelper {
             exprTransformer.at(sequencedArgument);
             passedArguments.append(exprTransformer.makeSequenceRaw(sequencedArgument.getExpressionList().getExpressions()));   
         }
+        return passedArguments;
     }
 
     private void initMethod() {
-        initPositionalArguments();
-        initPassedArguments();
         exprTransformer.at(ce);
         Primary primary = getPrimary();
         if (primary instanceof BaseMemberOrTypeExpression) {
@@ -285,7 +258,7 @@ class NamedArgumentCallHelper {
         } else if (primary instanceof QualifiedMemberOrTypeExpression) {
             QualifiedMemberOrTypeExpression memberExpr = (QualifiedMemberOrTypeExpression)primary;
             List<JCExpression> typeArgs = exprTransformer.transformTypeArguments(ce);
-            CeylonVisitor visitor = new CeylonVisitor(exprTransformer.gen(), typeArgs, positionalArguments);
+            CeylonVisitor visitor = new CeylonVisitor(exprTransformer.gen(), typeArgs, makePositionalArguments());
             Primary primary2 = memberExpr.getPrimary();
             primary2.visit(visitor);
             if (visitor.hasResult()) {
@@ -307,9 +280,9 @@ class NamedArgumentCallHelper {
         JCExpression resultType = exprTransformer.makeJavaType(getTypeModel(), getResultTypeSpec());
         callMethod.resultType(resultType);
         if (isGenerateNew()) {
-            callMethod.body(exprTransformer.make().Return(exprTransformer.make().NewClass(null, null, resultType, positionalArguments.toList(), null)));
+            callMethod.body(exprTransformer.make().Return(exprTransformer.make().NewClass(null, null, resultType, makePositionalArguments().toList(), null)));
         } else {
-            JCExpression expr = exprTransformer.make().Apply(null, method, positionalArguments.toList());
+            JCExpression expr = exprTransformer.make().Apply(null, method, makePositionalArguments().toList());
             if (isVoid()) {
                 callMethod.body(List.<JCStatement>of(
                         exprTransformer.make().Exec(expr),
@@ -321,36 +294,38 @@ class NamedArgumentCallHelper {
         return callMethod.build();
     }
     
-    private void defineSynthClass() {
-        initMethod();
-        synthClassType = exprTransformer.make().TypeApply(exprTransformer.makeIdent(exprTransformer.syms().ceylonNamedArgumentCall),
+    private JCExpression makeSynthClassType() {
+        return exprTransformer.make().TypeApply(exprTransformer.makeIdent(exprTransformer.syms().ceylonNamedArgumentCall),
                 List.<JCExpression>of(synthClassTypeParam));
-        synthClassDecl = exprTransformer.make().ClassDef(exprTransformer.make().Modifiers(0),
+    }
+    
+    private JCClassDecl makeSynthClass() {
+        return exprTransformer.make().ClassDef(exprTransformer.make().Modifiers(0),
                 exprTransformer.names().empty,
                 List.<JCTypeParameter>nil(),
-                synthClassType,
+                makeSynthClassType(),
                 List.<JCExpression>nil(),
                 List.<JCTree>of(declareCall$Decl()));
     }
     
-    private void newSynthClass() {
-        defineSynthClass();
+    private JCNewClass newSynthClass() {
+        ListBuffer<JCExpression> passedArguments = makePassedArguments();
         passedArguments.prepend(instance);
-        synthClassInstance = exprTransformer.make().NewClass(null,
+        return exprTransformer.make().NewClass(null,
                 null,
-                synthClassType,
+                makeSynthClassType(),
                 passedArguments.toList(),
-                synthClassDecl);
+                makeSynthClass());
     }
 
     private JCExpression applyCall$Method() {
-        newSynthClass();
         // Call the call$() method
         return exprTransformer.make().Apply(null,
-                exprTransformer.makeSelect(synthClassInstance, CALL_METHOD_NAME), List.<JCExpression>nil());
+                exprTransformer.makeSelect(newSynthClass(), CALL_METHOD_NAME), List.<JCExpression>nil());
     }
     
     public JCExpression generate() {
+        initMethod();
         return applyCall$Method();
     }
 }
