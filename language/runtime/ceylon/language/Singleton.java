@@ -112,17 +112,19 @@ public class Singleton<Element>
 
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Element> segment(@Name("from") @TypeInfo("ceylon.language.Natural") long from, 
-    		@Name("length") @TypeInfo("ceylon.language.Natural") long length) {
-    	if (from>=1||length==0) return $empty.getEmpty();
+    public Iterable<? extends Element> segment(@Name("from") Natural from, 
+    		@Name("length") Natural length) {
+    	if (from.longValue()>=1||length.longValue()==0) 
+    		return $empty.getEmpty();
     	return this;
     }
     
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Element> span(@Name("from") @TypeInfo("ceylon.language.Natural") long from, 
-    		@Name("to") @TypeInfo("ceylon.language.Natural") long to) {
-    	if (from>=1||to<from) return $empty.getEmpty();
+    public Iterable<? extends Element> span(@Name("from") Natural from, 
+    		@Name("to") Natural to) {
+    	if (from.longValue()>=1||to.longValue()<from.longValue()) 
+    		return $empty.getEmpty();
     	return this;
     }
 

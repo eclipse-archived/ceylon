@@ -2,7 +2,7 @@ doc "An iterator that produces the natural numbers, starting
      from 0."
 by "Gavin"
 shared object naturals 
-        satisfies Ordered<Natural> & Ranged<Natural[]> {
+        satisfies Ordered<Natural> & Ranged<Natural,Natural[]> {
     
     class NaturalIterator(Natural from) 
             satisfies Iterator<Natural> {

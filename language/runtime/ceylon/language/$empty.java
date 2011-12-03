@@ -63,12 +63,12 @@ public class $empty {
         }
         
         @Override
-        public Empty segment(long from, long length) {
+        public Empty segment(Natural from, Natural length) {
         	return this;
         }
         
         @Override
-        public Empty span(long from, long to) {
+        public Empty span(Natural from, Natural to) {
         	return this;
         }
 

@@ -9,7 +9,7 @@ public final class String extends Object
     implements Comparable<String>, Ordered<Character>, 
                Correspondence<Natural,Character>, Format,
                Sized, Summable<String>, Castable<String>,
-               Category, Ranged<String> {
+               Category, Ranged<Natural,String> {
 
     public final java.lang.String value;
 
@@ -334,20 +334,22 @@ public final class String extends Object
     
     @Override
     @TypeInfo("ceylon.language.String")
-    public String segment(@Name("from") @TypeInfo("ceylon.language.Natural") long from, 
-    		@Name("length") @TypeInfo("ceylon.language.Natural") long length) {
-    	if (from>=value.length()||length==0) return instance("");
-    	if (from+length>value.length()) length = value.length()-from;
-    	return instance(value.substring((int) from, (int) (from+length)));
+    public String segment(@Name("from") Natural from, @Name("length") Natural length) {
+    	if (from.longValue()>=value.length()||length.longValue()==0) 
+    		return instance("");
+    	if (from.longValue()+length.longValue()>value.length()) 
+    		length = Natural.instance(value.length()-from.longValue());
+    	return instance(value.substring((int) from.longValue(), 
+    			(int) (from.longValue()+length.longValue())));
     }
     
     @Override
     @TypeInfo("ceylon.language.String")
-    public String span(@Name("from") @TypeInfo("ceylon.language.Natural") long from, 
-    		@Name("to") @TypeInfo("ceylon.language.Natural") long to) {
-    	if (from>=value.length()||to<from) return instance("");
-    	if (to>=value.length()) to = value.length()-1;
-    	return instance(value.substring((int) from, (int) to+1));
+    public String span(@Name("from") Natural from, @Name("to") Natural to) {
+    	if (from.longValue()>=value.length()||to.longValue()<from.longValue()) 
+    		return instance("");
+    	if (to.longValue()>=value.length()) to = Natural.instance(value.length()-1);
+    	return instance(value.substring((int) from.longValue(), (int) to.longValue()+1));
     }
 
 }

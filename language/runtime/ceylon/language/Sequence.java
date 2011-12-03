@@ -17,11 +17,12 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
     "ceylon.language.Ordered<Element>",
     "ceylon.language.Sized",
     "ceylon.language.Cloneable<ceylon.language.Sequence<Element>>",
-    "ceylon.language.Ranged<ceylon.language.Empty|ceylon.language.Sequence<Element>>"
+    "ceylon.language.Ranged<ceylon.language.Natural,ceylon.language.Empty|ceylon.language.Sequence<Element>>"
 })
 public interface Sequence<Element> 
     extends Correspondence<Natural, Element>, Ordered<Element>, 
-        Sized, Cloneable<Sequence<Element>>, Ranged {
+        Sized, Cloneable<Sequence<Element>>, 
+        Ranged<Natural,Iterable<? extends Element>> {
     
     @TypeInfo("ceylon.language.Natural")
     public long getLastIndex();
@@ -80,15 +81,15 @@ public interface Sequence<Element>
         }
     }
     
+    @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public Iterable<? extends Element> span(
-    		@TypeInfo("ceylon.language.Natural") @Name("from") long from, 
-    		@TypeInfo("ceylon.language.Natural") @Name("to") long to);
+    		@Name("from") Natural from, @Name("to") Natural to);
     
+    @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public Iterable<? extends Element> segment(
-    		@TypeInfo("ceylon.language.Natural") @Name("from") long from, 
-    		@TypeInfo("ceylon.language.Natural") @Name("length") long length);
+    		@Name("from") Natural from, @Name("length") Natural length);
     
     public java.lang.String toString();
 

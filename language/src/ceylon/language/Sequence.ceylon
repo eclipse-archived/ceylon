@@ -3,9 +3,9 @@ doc "A nonempty sequence of values. `Sequence` does not
      operation may be inefficient for some sequences."
 by "Gavin"
 shared interface Sequence<out Element> 
-        satisfies Correspondence<Natural, Element> &  
+        satisfies Correspondence<Natural,Element> &  
                   Ordered<Element> & Sized & 
-                  Ranged<Element[]> &
+                  Ranged<Natural,Element[]> &
                   Cloneable<Sequence<Element>> {
     
     doc "The index of the last element of the sequence."

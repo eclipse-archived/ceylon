@@ -114,12 +114,12 @@ public interface Correspondence<Key,Item> {
             return Sequence$impl.getIterator(this);
         }
         @Override
-        public Iterable<? extends Item> segment(long from, long length) {
+        public Iterable<? extends Item> segment(Natural from, Natural length) {
         	// TODO Auto-generated method stub
         	throw new UnsupportedOperationException();
         }
         @Override
-        public Iterable<? extends Item> span(long from, long to) {
+        public Iterable<? extends Item> span(Natural from, Natural to) {
         	// TODO Auto-generated method stub
         	throw new UnsupportedOperationException();
         }

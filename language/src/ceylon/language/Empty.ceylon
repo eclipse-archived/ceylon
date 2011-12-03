@@ -1,7 +1,7 @@
 shared interface Empty
            satisfies Correspondence<Natural, Bottom> & 
                      Sized & Ordered<Bottom> & 
-                     Ranged<Empty> {
+                     Ranged<Natural,Empty> {
     
     shared actual Natural size { 
         return 0; 

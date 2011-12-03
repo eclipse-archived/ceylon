@@ -226,16 +226,17 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public Iterable<? extends Element> segment(
-    		@Name("from") @TypeInfo("ceylon.language.Natural") long from, 
-    		@Name("length") @TypeInfo("ceylon.language.Natural") long length) {
-    	if (from>getLastIndex()||length==0) return $empty.getEmpty();
-    	if (from+length>getSize()) length = getSize()-from;
+    		@Name("from") Natural from, @Name("length") Natural length) {
+    	if (from.longValue()>getLastIndex()||length.longValue()==0) 
+    		return $empty.getEmpty();
+    	if (from.longValue()+length.longValue()>getSize()) length = 
+    			Natural.instance(getSize()-from.longValue());
     	Element begin = first;
-    	for (int i=0; i<from; i++) {
+    	for (int i=0; i<from.longValue(); i++) {
     		begin = begin.getSuccessor();
     	}
     	Element end = first;
-    	for (int i=0; i<length; i++) {
+    	for (int i=0; i<length.longValue(); i++) {
     		end = end.getSuccessor();
     	}
     	return new Range<Element>(begin, end);
@@ -244,9 +245,9 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public Iterable<? extends Element> span(
-    		@Name("from") @TypeInfo("ceylon.language.Natural") long from,
-    		@Name("to") @TypeInfo("ceylon.language.Natural") long to) {
-    	if (from>getLastIndex()||to<from) return $empty.getEmpty();
+    		@Name("from") Natural from, @Name("to") Natural to) {
+    	if (from.longValue()>getLastIndex()||to.longValue()<from.longValue()) 
+    		return $empty.getEmpty();
     	return this;
     }
 

@@ -6,7 +6,7 @@ shared abstract class String()
         extends Object()
         satisfies Correspondence<Natural,Character> & 
                   Ordered<Character> & Comparable<String> &
-                  Sized & Ranged<String> & Category & 
+                  Sized & Ranged<Natural,String> & Category & 
                   Summable<String> & Castable<String> & 
                   Format {
     
