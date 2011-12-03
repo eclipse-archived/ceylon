@@ -15,6 +15,8 @@ class Operators() {
     
     @type["Float"] value x2 = 1.3 + 2.3;
     
+    @type["Integer"] value w9 = 1 - 2;
+    
     @type["Natural"] value w5 = 1 * 1;
     
     @type["Float"] value x3 = -2.5;

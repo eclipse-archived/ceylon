@@ -180,6 +180,10 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Summable");
     }
         
+    public Interface getSubtractableDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("Subtractable");
+    }
+        
     public Interface getNumericDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Numeric");
     }

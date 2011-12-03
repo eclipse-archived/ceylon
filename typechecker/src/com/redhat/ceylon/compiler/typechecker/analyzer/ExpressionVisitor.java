@@ -1621,19 +1621,29 @@ public class ExpressionVisitor extends Visitor {
             if (rhsst!=null && lhsst!=null) {
                 rhst = rhsst.getTypeArgumentList().get(0);
                 lhst = lhsst.getTypeArgumentList().get(0);
+                //find the common type to which arguments
+                //can be widened, according to Castable
                 ProducedType rt;
+                ProducedType st;
                 if (lhst.isSubtypeOf(unit.getCastableType(lhst)) && 
                         rhst.isSubtypeOf(unit.getCastableType(lhst))) {
+                	//the lhs has a wider type
                     rt = lhst;
+                    st = lhsst;
                 }
                 else if (lhst.isSubtypeOf(unit.getCastableType(rhst)) && 
                         rhst.isSubtypeOf(unit.getCastableType(rhst))) {
+                	//the rhs has a wider type
                     rt = rhst;
+                    st = rhsst;
                 }
                 else if (lhst.isExactly(rhst)) { 
-                	//in case it doesn't implement Castable at all
-                	//note the language spec does not actually bless this
+                	//in case the args don't implement Castable at all, but
+                	//they are exactly the same type, so no promotion is 
+                	//necessary - note the language spec does not actually 
+                	//bless this at present
                 	rt = lhst;
+                    st = lhsst;
                 }
                 else {
                     that.addError("operand expressions must be promotable to common numeric type: " + 
@@ -1641,9 +1651,18 @@ public class ExpressionVisitor extends Visitor {
                             rhst.getProducedTypeName());
                     return;
                 }
-                checkAssignable(rt, producedType(type,rt), that, 
-                        "operands must be of compatible numeric type");
-                that.setTypeModel(rt);
+                if (type.getTypeParameters().size()==2) {
+                	//for Subtractable
+                	ProducedType it = st.getTypeArgumentList().get(1);
+                    checkAssignable(rt, producedType(type, rt, it), that, 
+                            "operands must be of compatible numeric type");
+                	that.setTypeModel(it);
+                }
+                else {
+                    checkAssignable(rt, producedType(type, rt), that, 
+                            "operands must be of compatible numeric type");
+                    that.setTypeModel(rt);
+                }
             }
         }
     }
@@ -1850,6 +1869,9 @@ public class ExpressionVisitor extends Visitor {
         }
         else if (that instanceof Tree.RemainderOp) {
             return unit.getIntegralDeclaration();
+        }
+        else if (that instanceof Tree.DifferenceOp) {
+            return unit.getSubtractableDeclaration();
         }
         else {
             return unit.getNumericDeclaration();
