@@ -3,8 +3,8 @@ package com.redhat.ceylon.compiler.typechecker.model;
 
 public abstract class Parameter extends TypedDeclaration {
     
-    boolean defaulted;
-    boolean sequenced;
+	private boolean defaulted;
+	private boolean sequenced;
     private Declaration declaration;
     
     public boolean isDefaulted() {
