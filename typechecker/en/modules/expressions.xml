@@ -2743,7 +2743,7 @@ createItemMethod.intercept()
             </row>
     
             <row>
-                <entry>Member invocation and lookup, subrange,
+                <entry>Member invocation and lookup, span,
                 postfix increment, postfix decrement:</entry>
                 <entry>
                 <literal>.</literal>,
@@ -3639,6 +3639,8 @@ createItemMethod.intercept()
             <entry><literal>X</literal></entry>
             <entry><literal>Y?</literal></entry>
         </row>
+        
+        <!--
         <row>
             <entry><literal>lhs[indices]</literal></entry>
             <entry>sequenced lookup</entry>
@@ -3655,24 +3657,25 @@ createItemMethod.intercept()
             <entry><literal>Iterable &lt;X&gt;</literal></entry>
             <entry><literal>Iterable &lt;Y&gt;</literal></entry>
         </row>
+        -->
         
-        <row><entry namest="first" nameend="last"><emphasis>Sequence subranges</emphasis></entry></row>
+        <row><entry namest="first" nameend="last"><emphasis>Spans</emphasis></entry></row>
         
         <row>
             <entry><literal>lhs[x..y]</literal></entry>
-            <entry>subrange</entry>
-            <entry><literal>range(lhs,x,y)</literal></entry>
-            <entry><literal>X[]</literal></entry>
+            <entry>span</entry>
+            <entry><literal>lhs.span(x,y)</literal></entry>
+            <entry><literal>Ranged&lt;X&gt;</literal></entry>
             <entry>Two <literal>Natural</literal> values</entry>
-            <entry><literal>X[]</literal></entry>
+            <entry><literal>X</literal></entry>
         </row>
         <row>
             <entry><literal>lhs[x...]</literal></entry>
-            <entry>upper range</entry>
-            <entry><literal>range(lhs,x)</literal></entry>
-            <entry><literal>X[]</literal></entry>
+            <entry>upper span</entry>
+            <entry><literal>lhs.span(x)</literal></entry>
+            <entry><literal>Ranged&lt;X&gt;</literal></entry>
             <entry><literal>Natural</literal></entry>
-            <entry><literal>X[]</literal></entry>
+            <entry><literal>X</literal></entry>
         </row>
         <!--
         <row>
