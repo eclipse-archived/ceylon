@@ -2877,7 +2877,7 @@ createItemMethod.intercept()
                 <literal>*~></literal>-->
                 <literal>in</literal>,
                 <literal>is</literal>,
-                <literal>extends</literal>,
+                <!--<literal>extends</literal>,-->
                 <literal>satisfies</literal>
                 </entry>
                 <entry>Binary</entry>
@@ -3359,30 +3359,32 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Assignability</emphasis></entry></row>
         
         <row>
-            <entry><literal>lhs is rhs</literal></entry>
+            <entry><literal>is Type rhs</literal></entry>
             <entry>is</entry>
             <entry></entry>
-            <entry><literal>Object?</literal></entry>
             <entry>literal <literal>Type&lt;Void&gt;</literal></entry>
+            <entry><literal>Object?</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
-                
+        
         <row><entry namest="first" nameend="last"><emphasis>Inheritance</emphasis></entry></row>
         
+        <!--
         <row>
             <entry><literal>lhs extends rhs</literal></entry>
             <entry>extends</entry>
-            <entry><literal>lhs.extendsType(rhs)</literal></entry>
+            <entry></entry>
             <entry><literal>Type&lt;Void&gt;</literal></entry>
             <entry><literal>Class &lt;Void&gt;</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
+        -->
         
         <row>
-            <entry><literal>lhs satisfies rhs</literal></entry>
+            <entry><literal>satisfies Type rhs</literal></entry>
             <entry>satisfies</entry>
-            <entry><literal>lhs.satisfiesType(rhs)</literal></entry>
-            <entry><literal>Type&lt;Void&gt;</literal></entry>
+            <entry></entry>
+            <entry>literal <literal>Type&lt;Void&gt;</literal></entry>
             <entry><literal>Type&lt;Void&gt;</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
@@ -3503,7 +3505,7 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Existence</emphasis></entry></row>
         
         <row>
-            <entry><!--<<literal>lhs?</literal> or --><literal>lhs exists</literal></entry>
+            <entry><!--<<literal>lhs?</literal> or --><literal>exists lhs</literal></entry>
             <entry>exists</entry>
             <entry><literal>if (exists lhs) true else false</literal></entry>
             <entry><literal>Object?</literal></entry>
@@ -3511,7 +3513,7 @@ createItemMethod.intercept()
             <entry><literal>Boolean</literal></entry>
         </row>
         <row>
-            <entry><literal><!--??-->lhs nonempty</literal></entry>
+            <entry><literal><!--??-->nonempty lhs</literal></entry>
             <entry>nonempty</entry>
             <entry><literal>if (nonempty lhs) true else false</literal></entry>
             <entry><literal>Object[]?</literal></entry>
