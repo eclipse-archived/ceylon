@@ -110,19 +110,6 @@ public class StatementTransformer extends AbstractTransformer {
         return res;
     }
 
-// FIXME Seems this really has gone the way of the Dodo, maybe remove it forgood?
-//    List<JCStatement> transform(Tree.DoWhileStatement stmt) {
-//        Name tempForFailVariable = currentForFailVariable;
-//        currentForFailVariable = null;
-//        
-//        Tree.Block thenPart = stmt.getDoClause().getBlock();
-//        List<JCStatement> res = transformCondition(stmt.getDoClause().getCondition(), JCTree.DOLOOP, thenPart, null);
-//        
-//        currentForFailVariable = tempForFailVariable;
-//        
-//        return res;
-//    }
-
     private List<JCStatement> transformCondition(Tree.Condition cond, int tag, Tree.Block thenPart, Tree.Block elsePart) {
         JCExpression test;
         JCVariableDecl decl = null;
@@ -232,9 +219,6 @@ public class StatementTransformer extends AbstractTransformer {
             break;
         case JCTree.WHILELOOP:
             cond1 = make().WhileLoop(test, thenBlock);
-            break;
-        case JCTree.DOLOOP:
-            cond1 = make().DoLoop(thenBlock, test);
             break;
         default:
             throw new RuntimeException();
