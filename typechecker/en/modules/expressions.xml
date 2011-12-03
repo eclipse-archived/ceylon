@@ -3662,20 +3662,20 @@ createItemMethod.intercept()
         <row><entry namest="first" nameend="last"><emphasis>Spans</emphasis></entry></row>
         
         <row>
-            <entry><literal>lhs[x..y]</literal></entry>
+            <entry><literal>lhs[from..to]</literal></entry>
             <entry>span</entry>
-            <entry><literal>lhs.span(x,y)</literal></entry>
-            <entry><literal>Ranged&lt;X&gt;</literal></entry>
-            <entry>Two <literal>Natural</literal> values</entry>
-            <entry><literal>X</literal></entry>
+            <entry><literal>lhs.span(from,to)</literal></entry>
+            <entry><literal>Ranged&lt;X,Y&gt;</literal></entry>
+            <entry>Two <literal>X</literal> values</entry>
+            <entry><literal>Y</literal></entry>
         </row>
         <row>
-            <entry><literal>lhs[x...]</literal></entry>
+            <entry><literal>lhs[from...]</literal></entry>
             <entry>upper span</entry>
-            <entry><literal>lhs.span(x)</literal></entry>
-            <entry><literal>Ranged&lt;X&gt;</literal></entry>
-            <entry><literal>Natural</literal></entry>
+            <entry><literal>lhs.span(from)</literal></entry>
+            <entry><literal>Ranged&lt;X,Y&gt;</literal></entry>
             <entry><literal>X</literal></entry>
+            <entry><literal>Y</literal></entry>
         </row>
         <!--
         <row>
@@ -3708,7 +3708,7 @@ createItemMethod.intercept()
             <entry>spread member</entry>
             <entry><literal>for (X x in lhs) x.member</literal></entry>
             <entry><literal>X[]</literal></entry>
-            <entry><literal>Member &lt;X,T&gt;</literal></entry>
+            <entry><literal>Member&lt;X,T&gt;</literal></entry>
             <entry><literal>T[]</literal></entry>
         </row>
         
