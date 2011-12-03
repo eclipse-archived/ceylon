@@ -114,7 +114,8 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
     }
 
     @Override
-    public final boolean contains(@Name("element") @TypeInfo("ceylon.language.Equality") Object value) {
+    public final boolean contains(@Name("element") 
+    @TypeInfo("ceylon.language.Equality") Object value) {
         // FIXME
     	try {
 	        if(value != null /*&& value instanceof Element*/)
@@ -136,12 +137,15 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
     }
     
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public final Iterable<Element> by(@Name("stepSize") long stepSize){
-        throw new ceylon.language.Exception(null, null);
+    public final Iterable<Element> by(@Name("stepSize") 
+    @TypeInfo("ceylon.language.Natural") long stepSize){
+    	//TODO!!!!
+        throw new UnsupportedOperationException();
     }
     
     @Override
-    public final boolean equals(@Name("that") @TypeInfo("ceylon.language.Equality") java.lang.Object that){
+    public final boolean equals(@Name("that") 
+    @TypeInfo("ceylon.language.Equality") java.lang.Object that){
         if(that instanceof Range) {
             Range<Element> $that = (Range<Element>) that;
             return $that.getFirst().equals(getFirst()) && $that.getLast().equals(getLast());
@@ -221,7 +225,9 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
 
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Element> segment(@Name("from") long from, @Name("length") long length) {
+    public Iterable<? extends Element> segment(
+    		@Name("from") @TypeInfo("ceylon.language.Natural") long from, 
+    		@Name("length") @TypeInfo("ceylon.language.Natural") long length) {
     	if (from>getLastIndex()||length==0) return $empty.getEmpty();
     	if (from+length>getSize()) length = getSize()-from;
     	Element begin = first;
@@ -237,7 +243,9 @@ public class Range<Element extends Comparable<Element> & Ordinal<Element>>
     
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Element> span(@Name("from") long from, @Name("to") long to) {
+    public Iterable<? extends Element> span(
+    		@Name("from") @TypeInfo("ceylon.language.Natural") long from,
+    		@Name("to") @TypeInfo("ceylon.language.Natural") long to) {
     	if (from>getLastIndex()||to<from) return $empty.getEmpty();
     	return this;
     }

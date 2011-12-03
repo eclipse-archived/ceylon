@@ -25,7 +25,7 @@ public class StringBuilder {
         }
     }
     
-    public final synchronized void appendCharacter(@Name("string") 
+    public final synchronized void appendCharacter(@Name("character") 
     @TypeInfo("ceylon.language.Character") int character) {
         builder.append(java.lang.Character.toChars(character));
     }
