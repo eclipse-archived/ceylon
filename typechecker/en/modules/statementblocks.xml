@@ -505,7 +505,7 @@
 
         <para>This code is not legal, since the body of a method is an ordinary block:</para>
     
-        <programlisting>Entry&lt;Float,Float&gt; xy() {
+        <programlisting>Float->Float xy() {
     Float x { return y; }  //compiler error: y is not referenceable
     Float y { return x; }
     return x->y;
@@ -517,7 +517,7 @@
         <programlisting>class Point() {
     Float x { return y; }  //compiler error: y is not referenceable
     Float y { return x; }
-    Entry&lt;Float,Float&gt; xy = x->y;
+    Float->Float xy = x->y;
 }</programlisting>
 
         <para>However, this code <emphasis>is</emphasis> legal, since the statements occur 

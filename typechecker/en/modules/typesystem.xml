@@ -496,7 +496,7 @@
         <para>The union type constructor <literal>&amp;</literal> is associative, so the union 
         of three types may be written <literal>X&amp;Y&amp;Z</literal>.</para>
             
-        <programlisting>IntersectionType: AbbreviatedType ("&amp;" AbbreviatedType)*</programlisting>
+        <programlisting>IntersectionType: EntryType ("&amp;" EntryType)*</programlisting>
         
         <para>The intersection <literal>X&amp;Y</literal> inherits all members of both
         <literal>X</literal> and <literal>Y</literal>.</para>
@@ -709,16 +709,21 @@
         <programlisting>Abbreviation: "?" | "[]" | "[" dimension "]"</programlisting>
         -->
          
+        <para>A further abbreviation is supported for the parameterized type <literal>Entry</literal>
+        in the package <literal>ceylon.language</literal>.</para>
+        
+        <programlisting>EntryType: AbbreviatedType ("->" AbbreviatedType)?</programlisting>
+        
         <para>The following type name abbreviations are supported:</para>
         
         <itemizedlist>
             <listitem>
                 <para><literal>X?</literal> means <literal>Nothing|X</literal> for any 
-                type <literal>X</literal>, and</para>
+                type <literal>X</literal>,</para>
             </listitem>
             <listitem>
                 <para><literal>X[]</literal> means <literal>Empty|Sequence&lt;X&gt;</literal> 
-                for any type <literal>X</literal>.</para>
+                for any type <literal>X</literal>, and</para>
             </listitem>
             <!--
             <listitem>
@@ -726,6 +731,9 @@
                 for any type <literal>X</literal> and dimension <literal>n</literal>.</para>
             </listitem>
              -->
+            <listitem>
+                <para><literal>X->Y</literal> means <literal>Entry&lt;X,Y&gt;</literal>.</para>
+            </listitem>
         </itemizedlist>
         
         <para>Abbreviations may be combined:</para>
@@ -1931,7 +1939,7 @@ shared interface Successor&lt;out N&gt; satisfies Dimension given N satisfies Di
         <para>A parameterized type parameter appears as a produced type (with type 
         arguments) in the body of the declaration.</para>
         
-        <programlisting><![CDATA[Indirect<Entry<Key,Item>> entry<Indirect<X>,Key,Item>(Indirect<Key> key, Indirect<Item> item) 
+        <programlisting><![CDATA[Indirect<Key->Item> entry<Indirect<X>,Key,Item>(Indirect<Key> key, Indirect<Item> item) 
         given Indirect<X>(X x) satisfies Reference<X> {
     return Indirect(key.indirectedValue->item.indirectedValue);
 }]]></programlisting>
@@ -1945,7 +1953,7 @@ shared interface Successor&lt;out N&gt; satisfies Dimension given N satisfies Di
         <programlisting><![CDATA[WeakReference<Person> person = ... ;
 WeakReference<Org> org = ... ;
 //infers Indirect==WeakReference, Key==Person, Value==Org:
-WeakReference<Entry<Person,Org>> e = entry(person, org);]]></programlisting>
+WeakReference<Person->Org> e = entry(person, org);]]></programlisting>
         
         <para>Parameterized type parameters allow functions to operate generically 
         over "container" types:</para>
