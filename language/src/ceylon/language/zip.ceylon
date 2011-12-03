@@ -1,7 +1,7 @@
 shared Entry<Key,Item>[] zip<Key,Item>(Key[] keys, Item[] items)
         given Key satisfies Equality
         given Item satisfies Equality {
-    value builder = SequenceBuilder<Entry<Key,Item>>();
+    value builder = SequenceBuilder<Key->Item>();
     variable value ki := keys.iterator;
     variable value ii := items.iterator;
     while (exists eki=ki) {

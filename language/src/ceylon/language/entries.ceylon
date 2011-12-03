@@ -7,12 +7,12 @@ shared Entry<Natural,Element>[] entries<Element>(Element... sequence)
         
         object sequenceEntries
                 extends Object()
-                satisfies Sequence<Entry<Natural,Element>> {
+                satisfies Sequence<Natural->Element> {
             
-            shared actual Iterator<Entry<Natural,Element>> iterator {
+            shared actual Iterator<Natural->Element> iterator {
                 class EntryIterator(Natural from) 
                         extends Object()
-                        satisfies Iterator<Entry<Natural,Element>> {
+                        satisfies Iterator<Natural->Element> {
                     shared actual Entry<Natural,Element> head {
                         if (exists Element item = sequence[from]) {
                             return from->item;
@@ -21,7 +21,7 @@ shared Entry<Natural,Element>[] entries<Element>(Element... sequence)
                             throw;
                         }
                     }
-                    shared actual Iterator<Entry<Natural,Element>>? tail {
+                    shared actual Iterator<Natural->Element>? tail {
                         if (from<sequence.lastIndex) {
                             return EntryIterator(from+1);
                         }
