@@ -285,6 +285,16 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.SequencedTypeParameterDeclaration that) {
+        TypeParameter p = new TypeParameter();
+        p.setSequenced(true);
+        p.setDeclaration(declaration);
+        that.setDeclarationModel(p);
+        visitDeclaration(that, p);
+        super.visit(that);
+    }
+    
+    @Override
     public void visit(Tree.AnyMethod that) {
         Method m = new Method();
         that.setDeclarationModel(m);

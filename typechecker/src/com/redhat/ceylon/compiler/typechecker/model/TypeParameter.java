@@ -7,6 +7,7 @@ public class TypeParameter extends TypeDeclaration implements Functional {
 
     private boolean covariant;
     private boolean contravariant;
+    private boolean sequenced;
     private Declaration declaration;
     private ParameterList parameterList;
     private TypeDeclaration selfTypedDeclaration;
@@ -30,6 +31,14 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     public void setContravariant(boolean contravariant) {
         this.contravariant = contravariant;
     }
+    
+    public boolean isSequenced() {
+		return sequenced;
+	}
+    
+    public void setSequenced(boolean sequenced) {
+		this.sequenced = sequenced;
+	}
     
     public boolean isSelfType() {
         return selfTypedDeclaration!=null;
