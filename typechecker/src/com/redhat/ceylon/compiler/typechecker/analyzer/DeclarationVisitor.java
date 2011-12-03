@@ -220,11 +220,13 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.TypeDeclaration that) {
         super.visit(that);
         TypeDeclaration d = that.getDeclarationModel();
-        if (d==null) {
-            //TODO: this case is temporary until we have type constraints!
-        }
-        else {
-            d.setTypeParameters(getTypeParameters(that.getTypeParameterList()));
+        d.setTypeParameters(getTypeParameters(that.getTypeParameterList()));
+        if (d.isClassOrInterfaceMember()) {
+            for (TypeParameter tp: d.getTypeParameters()) {
+                if (tp.isSequenced()) {
+                    that.addError("sequenced type parameters for nested types not yet supported");
+                }
+            }
         }
     }
     
@@ -303,12 +305,17 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
         checkMethodParameters(that);
-        that.getDeclarationModel().setTypeParameters(getTypeParameters(that.getTypeParameterList()));
+        m.setTypeParameters(getTypeParameters(that.getTypeParameterList()));
         if (that.getType() instanceof Tree.ValueModifier) {
             that.getType().addError("methods may not be declared using the keyword value");
         }
         if (that.getType() instanceof Tree.FunctionModifier && m.isToplevel()) {
             that.getType().addError("toplevel methods may not be declared using the keyword function", 200);
+        }
+        for (TypeParameter tp: m.getTypeParameters()) {
+            if (tp.isSequenced()) {
+                that.addError("sequenced type parameters for methods not yet supported");
+            }
         }
     }
     
@@ -580,6 +587,10 @@ public class DeclarationVisitor extends Visitor {
         if (tpl!=null) {
             for (Tree.TypeParameterDeclaration tp: tpl.getTypeParameterDeclarations()) {
                 typeParameters.add(tp.getDeclarationModel());
+            }
+            Tree.SequencedTypeParameterDeclaration stp = tpl.getSequencedTypeParameterDeclaration();
+            if (stp!=null) {
+                typeParameters.add(stp.getDeclarationModel());
             }
         }
         return typeParameters;

@@ -63,6 +63,7 @@ public abstract class TypedDeclaration extends Declaration {
      */
     public ProducedTypedReference getProducedTypedReference(ProducedType qualifyingType,
             List<ProducedType> typeArguments) {
+    	//TODO: take into account sequenced type arguments
         ProducedTypedReference ptr = new ProducedTypedReference();
         ptr.setDeclaration(this);
         ptr.setQualifyingType(qualifyingType);

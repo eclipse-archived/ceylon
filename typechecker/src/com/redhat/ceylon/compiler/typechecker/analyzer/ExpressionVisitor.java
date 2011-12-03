@@ -542,7 +542,7 @@ public class ExpressionVisitor extends Visitor {
         validateHiddenAttribute(that);
         Setter setter = that.getDeclarationModel().getSetter();
         if (setter!=null) {
-        	setter.getParameter().setType(that.getDeclarationModel().getType());
+            setter.getParameter().setType(that.getDeclarationModel().getType());
         }
     }
 
@@ -887,7 +887,7 @@ public class ExpressionVisitor extends Visitor {
 
     ProducedType unwrap(ProducedType pt, Tree.QualifiedMemberOrTypeExpression mte) {
         ProducedType result;
-    	Tree.MemberOperator op = mte.getMemberOperator();
+        Tree.MemberOperator op = mte.getMemberOperator();
         if (op instanceof Tree.SafeMemberOp)  {
             if (unit.isOptionalType(pt)) {
                 result = unit.getDefiniteType(pt);
@@ -911,7 +911,7 @@ public class ExpressionVisitor extends Visitor {
             result = pt;
         }
         if (result==null) {
-        	result = new UnknownType(mte.getUnit()).getType();
+            result = new UnknownType(mte.getUnit()).getType();
         }
         return result;
     }
@@ -974,28 +974,30 @@ public class ExpressionVisitor extends Visitor {
         List<ProducedType> typeArgs = new ArrayList<ProducedType>();
         ParameterList parameters = dec.getParameterLists().get(0);
         for (TypeParameter tp: dec.getTypeParameters()) {
-            ProducedType ta = inferTypeArgument(that, tp, parameters);
-            List<ProducedType> list = new ArrayList<ProducedType>();
-            addToIntersection(list, ta, unit);
-            for (ProducedType st: tp.getSatisfiedTypes()) {
-                //TODO: st.getProducedType(receiver, dec, typeArgs);
-                if (//if the upper bound is a type parameter, ignore it
-                    !dec.getTypeParameters().contains(st.getDeclaration()) &&
-                    (st.getQualifyingType()==null ||
-                    !dec.getTypeParameters().contains(st.getQualifyingType().getDeclaration())) &&
-                    //TODO: remove this awful hack that 
-                    //tries to work around the possibility 
-                    //that a type parameter appears in the 
-                    //upper bound!
-                    !st.getDeclaration().isParameterized() &&
-                    (st.getQualifyingType()==null || 
-                    !st.getQualifyingType().getDeclaration().isParameterized())) {
-                    addToIntersection(list, st, unit);
+            if (!tp.isSequenced()) {
+                ProducedType ta = inferTypeArgument(that, tp, parameters);
+                List<ProducedType> list = new ArrayList<ProducedType>();
+                addToIntersection(list, ta, unit);
+                for (ProducedType st: tp.getSatisfiedTypes()) {
+                    //TODO: st.getProducedType(receiver, dec, typeArgs);
+                    if (//if the upper bound is a type parameter, ignore it
+                        !dec.getTypeParameters().contains(st.getDeclaration()) &&
+                        (st.getQualifyingType()==null ||
+                        !dec.getTypeParameters().contains(st.getQualifyingType().getDeclaration())) &&
+                        //TODO: remove this awful hack that 
+                        //tries to work around the possibility 
+                        //that a type parameter appears in the 
+                        //upper bound!
+                        !st.getDeclaration().isParameterized() &&
+                        (st.getQualifyingType()==null || 
+                        !st.getQualifyingType().getDeclaration().isParameterized())) {
+                        addToIntersection(list, st, unit);
+                    }
                 }
+                IntersectionType it = new IntersectionType(unit);
+                it.setSatisfiedTypes(list);
+                typeArgs.add(it.canonicalize().getType());
             }
-            IntersectionType it = new IntersectionType(unit);
-            it.setSatisfiedTypes(list);
-            typeArgs.add(it.canonicalize().getType());
         }
         return typeArgs;
     }
@@ -1627,22 +1629,22 @@ public class ExpressionVisitor extends Visitor {
                 ProducedType st;
                 if (lhst.isSubtypeOf(unit.getCastableType(lhst)) && 
                         rhst.isSubtypeOf(unit.getCastableType(lhst))) {
-                	//the lhs has a wider type
+                    //the lhs has a wider type
                     rt = lhst;
                     st = lhsst;
                 }
                 else if (lhst.isSubtypeOf(unit.getCastableType(rhst)) && 
                         rhst.isSubtypeOf(unit.getCastableType(rhst))) {
-                	//the rhs has a wider type
+                    //the rhs has a wider type
                     rt = rhst;
                     st = rhsst;
                 }
                 else if (lhst.isExactly(rhst)) { 
-                	//in case the args don't implement Castable at all, but
-                	//they are exactly the same type, so no promotion is 
-                	//necessary - note the language spec does not actually 
-                	//bless this at present
-                	rt = lhst;
+                    //in case the args don't implement Castable at all, but
+                    //they are exactly the same type, so no promotion is 
+                    //necessary - note the language spec does not actually 
+                    //bless this at present
+                    rt = lhst;
                     st = lhsst;
                 }
                 else {
@@ -1652,11 +1654,11 @@ public class ExpressionVisitor extends Visitor {
                     return;
                 }
                 if (type.getTypeParameters().size()==2) {
-                	//for Subtractable
-                	ProducedType it = st.getTypeArgumentList().get(1);
+                    //for Subtractable
+                    ProducedType it = st.getTypeArgumentList().get(1);
                     checkAssignable(rt, producedType(type, rt, it), that, 
                             "operands must be of compatible numeric type");
-                	that.setTypeModel(it);
+                    that.setTypeModel(it);
                 }
                 else {
                     checkAssignable(rt, producedType(type, rt), that, 
@@ -1680,7 +1682,7 @@ public class ExpressionVisitor extends Visitor {
                         nt : nt.getTypeArgumentList().get(0);
                 that.setTypeModel(t);
                 if (!rhst.isSubtypeOf(unit.getCastableType(t)) &&
-                		!rhst.isExactly(lhst)) { //note the language spec does not actually bless this
+                        !rhst.isExactly(lhst)) { //note the language spec does not actually bless this
                     that.getRightTerm().addError("operand expression must be promotable to common numeric type: " + 
                             nt.getProducedTypeName());
                 }
@@ -2211,9 +2213,15 @@ public class ExpressionVisitor extends Visitor {
 
     private void visitBaseTypeExpression(Tree.BaseTypeExpression that, TypeDeclaration type, 
             List<ProducedType> typeArgs, Tree.TypeArguments tal) {
+        ProducedType outerType = that.getScope().getDeclaringType(type);
+        ProducedType t = type.getProducedType(outerType, typeArgs);
+        if (!type.isAlias()) {
+            //TODO: remove this awful hack which means
+            //      we can't define aliases for types
+            //      with sequenced type parameters
+            type = t.getDeclaration();
+        }
         if ( acceptsTypeArguments(type, typeArgs, tal, that) ) {
-            ProducedType outerType = that.getScope().getDeclaringType(type);
-            ProducedType t = type.getProducedType(outerType, typeArgs);
             that.setTypeModel(t); //TODO: this is not correct, should be Callable
             that.setTarget(t);
         }

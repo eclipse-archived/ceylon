@@ -253,6 +253,12 @@ public class TypeVisitor extends Visitor {
         if (tal!=null) tal.setTypeModels(ta);
         //if (acceptsTypeArguments(dec, ta, tal, that)) {
             ProducedType pt = dec.getProducedType(ot, ta);
+            if (!dec.isAlias()) {
+            	//TODO: remove this awful hack which means
+            	//      we can't define aliases for types
+            	//      with sequenced type parameters
+            	dec = pt.getDeclaration();
+            }
             that.setTypeModel(pt);
             that.setDeclarationModel(dec);
         //}
@@ -345,8 +351,14 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
     }
 
-    @Override 
+    @Override
     public void visit(Tree.TypeParameterDeclaration that) {
+        that.getDeclarationModel().setExtendedType(unit.getVoidDeclaration().getType());
+        super.visit(that);
+    }
+    
+    @Override
+    public void visit(Tree.SequencedTypeParameterDeclaration that) {
         that.getDeclarationModel().setExtendedType(unit.getVoidDeclaration().getType());
         super.visit(that);
     }

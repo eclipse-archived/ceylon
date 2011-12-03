@@ -11,13 +11,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public abstract class TypeDeclaration extends Declaration implements Scope, Generic {
+public abstract class TypeDeclaration extends Declaration 
+        implements Scope, Generic, Cloneable {
 
     private ProducedType extendedType;
     private List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>();
     private List<ProducedType> caseTypes = null;
     private List<TypeParameter> typeParameters = Collections.emptyList();
     private ProducedType selfType;
+    
+    @Override
+    protected TypeDeclaration clone() {
+        try {
+            return (TypeDeclaration) super.clone();
+        } 
+        catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public boolean isParameterized() {
@@ -106,11 +117,42 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
         /*if (!acceptsArguments(this, typeArguments)) {
               return null;
           }*/
+        TypeDeclaration td = this;
+        if (!getTypeParameters().isEmpty()) {
+            int last = getTypeParameters().size()-1;
+            int lastArg = typeArguments.size()-1;
+            TypeParameter tp = getTypeParameters().get(last);
+            if (tp.isSequenced() && lastArg>last) {
+                //there are multiple args to sequenced param
+                td = clone();
+                td.typeParameters = new ArrayList<TypeParameter>();
+                td.typeParameters.addAll(getTypeParameters());
+                for (int i=1; i<=lastArg-last; i++) {
+                    TypeParameter tpc = (TypeParameter) tp.clone();
+                    tpc.setName(tp.getName()+i);
+                    td.getTypeParameters().add(tpc);
+                }
+            }
+            else if (tp.isSequenced() && lastArg==last-1) {
+                //there is no arg to sequenced param
+                td = clone();
+                td.typeParameters = new ArrayList<TypeParameter>();
+                td.typeParameters.addAll(getTypeParameters());
+                td.typeParameters.remove(tp);
+            }
+        }
         ProducedType pt = new ProducedType();
-        pt.setDeclaration(this);
+        pt.setDeclaration(td);
         pt.setQualifyingType(qualifyingType);
-        pt.setTypeArguments(arguments(this, qualifyingType, typeArguments));
+        pt.setTypeArguments(arguments(td, qualifyingType, typeArguments));
         return pt;
+    }
+    
+    @Override
+    public boolean equals(Object object) {
+        return super.equals(object) && 
+                getTypeParameters().size()==
+                    ((TypeDeclaration) object).getTypeParameters().size();
     }
 
     /**
@@ -256,30 +298,30 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
      * order and searching supertypes first.
      */
     public Declaration getRefinedMember(String name) {
-    	return getRefinedMember(name, new ArrayList<TypeDeclaration>());
+        return getRefinedMember(name, new ArrayList<TypeDeclaration>());
     }
 
     private Declaration getRefinedMember(String name, List<TypeDeclaration> visited) {
-    	if (visited.contains(this)) {
-    		return null;
-    	}
-    	else {
-	    	visited.add(this);
-	    	TypeDeclaration et = getExtendedTypeDeclaration();
-	    	if (et!=null) {
-				Declaration ed = et.getRefinedMember(name, visited);
-		    	if (ed!=null) {
-		    		return ed;
-		    	}
-	    	}
-			for (TypeDeclaration st: getSatisfiedTypeDeclarations()) {
-				Declaration sd = st.getRefinedMember(name, visited);
-				if (sd!=null) {
-					return sd;
-				}
-			}
-	    	return getDirectMember(name);
-    	}
+        if (visited.contains(this)) {
+            return null;
+        }
+        else {
+            visited.add(this);
+            TypeDeclaration et = getExtendedTypeDeclaration();
+            if (et!=null) {
+                Declaration ed = et.getRefinedMember(name, visited);
+                if (ed!=null) {
+                    return ed;
+                }
+            }
+            for (TypeDeclaration st: getSatisfiedTypeDeclarations()) {
+                Declaration sd = st.getRefinedMember(name, visited);
+                if (sd!=null) {
+                    return sd;
+                }
+            }
+            return getDirectMember(name);
+        }
     }
 
     /**
@@ -434,21 +476,21 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
     
     @Override
     public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
-    	Map<String, DeclarationWithProximity> result = getMatchingMemberDeclarations(startingWith, proximity);
-    	//TODO: is this correct? I thought inherited declarations hide outer
-    	//      declarations! I think this is a bug
-    	result.putAll(super.getMatchingDeclarations(unit, startingWith, proximity));
-    	return result;
+        Map<String, DeclarationWithProximity> result = getMatchingMemberDeclarations(startingWith, proximity);
+        //TODO: is this correct? I thought inherited declarations hide outer
+        //      declarations! I think this is a bug
+        result.putAll(super.getMatchingDeclarations(unit, startingWith, proximity));
+        return result;
     }
 
-	public Map<String, DeclarationWithProximity> getMatchingMemberDeclarations(String startingWith, int proximity) {
-		Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
+    public Map<String, DeclarationWithProximity> getMatchingMemberDeclarations(String startingWith, int proximity) {
+        Map<String, DeclarationWithProximity> result = new TreeMap<String, DeclarationWithProximity>();
         TypeDeclaration et = getExtendedTypeDeclaration();
-    	for (TypeDeclaration st: getSatisfiedTypeDeclarations()) {
-    	    //TODO: account for the case where one interface refines
-    	    //      a formal member of a second interface
-    		result.putAll(st.getMatchingMemberDeclarations(startingWith, proximity+1));
-    	}
+        for (TypeDeclaration st: getSatisfiedTypeDeclarations()) {
+            //TODO: account for the case where one interface refines
+            //      a formal member of a second interface
+            result.putAll(st.getMatchingMemberDeclarations(startingWith, proximity+1));
+        }
         if (et!=null) {
             //TODO: Object has a formal declaration of "string", that might 
             //      be refined by an interface, in which case we should ignore
@@ -457,12 +499,12 @@ public abstract class TypeDeclaration extends Declaration implements Scope, Gene
         }
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && d.isShared() && 
-            		isNameMatching(startingWith, d)) {
+                    isNameMatching(startingWith, d)) {
                 result.put(d.getName(), new DeclarationWithProximity(d, proximity));
             }
         }
-    	//TODO: self type?
-    	return result;
-	}
+        //TODO: self type?
+        return result;
+    }
 
 }
