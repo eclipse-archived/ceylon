@@ -1,0 +1,1 @@
+shared interface Callable<out Return, Argument...> {} 
