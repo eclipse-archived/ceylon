@@ -25,7 +25,7 @@ shared object naturals
             return {};
         }
         else {
-            return from..from+length-1;
+            return from..from+length.predecessor;
         }
     }
 

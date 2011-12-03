@@ -7,11 +7,12 @@ import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 @SatisfiedTypes({
     "ceylon.language.Castable<ceylon.language.Integer|ceylon.language.Float>",
     "ceylon.language.Integral<ceylon.language.Integer>",
-    "ceylon.language.Invertable<ceylon.language.Integer>"
+    "ceylon.language.Subtractable<ceylon.language.Integer,ceylon.language.Integer>"
 })
 public final class Integer
     extends Object
-    implements Castable<Numeric>, Integral<Integer>, Invertable<Integer> {
+    implements Castable<Numeric>, Integral<Integer>, 
+               Subtractable<Integer,Integer> {
     
     final long value;
     private Integer(long l) {

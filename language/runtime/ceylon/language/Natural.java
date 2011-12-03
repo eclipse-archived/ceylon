@@ -9,11 +9,12 @@ import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
 @SatisfiedTypes({
     "ceylon.language.Castable<ceylon.language.Natural|ceylon.language.Integer|ceylon.language.Float>",
     "ceylon.language.Integral<ceylon.language.Natural>",
-    "ceylon.language.Invertable<ceylon.language.Integer>"
+    "ceylon.language.Subtractable<ceylon.language.Natural,ceylon.language.Integer>"
 })
 public final class Natural
     extends Object
-    implements Castable<Numeric>, Integral<Natural>, Invertable<Integer> {
+    implements Castable<Numeric>, Integral<Natural>, 
+               Subtractable<Natural,Integer> {
     
     final long value;
     private Natural(long l) {
@@ -36,8 +37,8 @@ public final class Natural
     }
     
     @Override
-    public Natural minus(@Name("other") Natural op) {
-        return instance(value - op.value);
+    public Integer minus(@Name("other") Natural op) {
+        return Integer.instance(value - op.value);
     }
     
     @Override

@@ -103,7 +103,7 @@ shared abstract class String()
             return null;
         }
         else {
-            return size-1;
+            return size.predecessor;
         }
     }
     

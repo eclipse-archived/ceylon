@@ -5,7 +5,8 @@ import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 public final class Float
     extends Object
-    implements Castable<Float>, Numeric<Float>, Invertable<Float> {
+    implements Castable<Float>, Numeric<Float>, 
+               Subtractable<Float,Float> {
     
     final double value;
     private Float(double d) {

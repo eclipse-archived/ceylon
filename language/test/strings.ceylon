@@ -6,6 +6,8 @@ shared void strings() {
     assert(!exists "".lastIndex, "empty string last index");
     assert(!exists ""[0], "empty string first element exists");
     
+    assert("abcd".size==4, "string size");
+    
     assert(hello.span(1,3)=="ell", "string span");
     assert(hello.segment(1,3)=="ell", "string segment");
     assert("".span(1,3)=="", "empty string span");
@@ -25,7 +27,7 @@ shared void strings() {
     else {
         fail("string first element exists");
     }
-    if (exists c = hello[hello.size-1]) {
+    if (exists c = hello[hello.size.predecessor]) {
         assert(c==`o`, "string last element value");
     }
     else {

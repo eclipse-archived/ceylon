@@ -10,10 +10,6 @@ shared interface Numeric<Other> of Other
                   Summable<Other>
         given Other satisfies Numeric<Other> {
 
-    doc "The difference between this number and the given 
-         number."
-    shared formal Other minus(Other other);
-
     doc "The product of this number and the given number."
     shared formal Other times(Other other);
 

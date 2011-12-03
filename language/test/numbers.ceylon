@@ -15,7 +15,7 @@ shared void numbers() {
     assert(-1<+2, "integer comparison");
     assert(-0.5<0.0, "float comparison");
     assert(1+1==2, "natural addition");
-    assert(1-1==0, "natural subtraction");
+    assert(1-1==+0, "natural subtraction");
     assert(2*2==4, "natural multiplication");
     assert(2**3==8, "natural exponentiation");
     assert(+1 + -1==+0, "integer addition");
@@ -32,6 +32,11 @@ shared void numbers() {
     assert(2*-3==-6, "natural times integer");
     assert(-1*1.5==-1.5, "integer times float");
     assert(-1.5*+2==-3.0, "integer times float");
+    
+    assert(is Natural 1+1, "natural addition");
+    assert(is Integer 1-2, "natural subtraction");
+    assert(is Integer +1+1, "integer addition");
+    assert(is Integer +1-2, "integer subtraction");
     
     assert(1.negativeValue==-1, "natural negative");
     assert(-1.negativeValue==+1, "integer negative");

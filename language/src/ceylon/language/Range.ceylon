@@ -48,17 +48,17 @@ shared class Range<Element>(Element first, Element last)
 
     variable Natural index:=0;
     variable Element x:=first;
-    while (!pastEnd(x)) {
+    while (x!=last) {
         ++index;
         x:=next(x);
     }
     
     doc "The nonzero number of elements in the range."
-    shared actual Natural size = index;
+    shared actual Natural size = index+1;
     
     doc "The index of the end of the range."
     shared actual Natural lastIndex { 
-        return size-1; 
+        return index; 
     }
     
     doc "The rest of the range, without the start of the
