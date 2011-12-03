@@ -24,7 +24,7 @@ shared void innerMethodInvocation() {
             return 1;
         }
         else {
-            return n*fib(n-1);
+            return n*fib(n.predecessor);
         }
     }
     for (n in 0..50) {

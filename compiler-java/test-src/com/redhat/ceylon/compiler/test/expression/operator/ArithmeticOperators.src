@@ -1,12 +1,12 @@
 package com.redhat.ceylon.compiler.test.expression.operator;
 
-abstract class MyNatural extends .java.lang.Object implements ceylon.language.Castable, ceylon.language.Integral<com.redhat.ceylon.compiler.test.expression.operator.MyNatural>, ceylon.language.Invertable<com.redhat.ceylon.compiler.test.expression.operator.MyInteger> {
+abstract class MyNatural extends .java.lang.Object implements ceylon.language.Castable, ceylon.language.Integral<com.redhat.ceylon.compiler.test.expression.operator.MyNatural>, ceylon.language.Subtractable<com.redhat.ceylon.compiler.test.expression.operator.MyNatural, com.redhat.ceylon.compiler.test.expression.operator.MyInteger> {
     
     MyNatural() {
         super();
     }
 }
-abstract class MyInteger extends .java.lang.Object implements ceylon.language.Castable, ceylon.language.Integral<com.redhat.ceylon.compiler.test.expression.operator.MyInteger>, ceylon.language.Invertable<com.redhat.ceylon.compiler.test.expression.operator.MyInteger> {
+abstract class MyInteger extends .java.lang.Object implements ceylon.language.Castable, ceylon.language.Integral<com.redhat.ceylon.compiler.test.expression.operator.MyInteger>, ceylon.language.Subtractable<com.redhat.ceylon.compiler.test.expression.operator.MyInteger, com.redhat.ceylon.compiler.test.expression.operator.MyInteger> {
     
     MyInteger() {
         super();
@@ -144,119 +144,113 @@ class ArithmeticOperators {
         setI1(.ceylon.language.Natural.instance(getN1()).getPositiveValue().longValue());
         setI1(.ceylon.language.Natural.instance(getN1()).getNegativeValue().longValue());
         setN1(.ceylon.language.Natural.instance(getN1()).plus(.ceylon.language.Natural.instance(getN2())).longValue());
-        setN1(.ceylon.language.Natural.instance(getN1()).minus(.ceylon.language.Natural.instance(getN2())).longValue());
+        setI1(.ceylon.language.Natural.instance(getN1()).minus(.ceylon.language.Natural.instance(getN2())).longValue());
         setN1(.ceylon.language.Natural.instance(getN1()).times(.ceylon.language.Natural.instance(getN2())).longValue());
         setN1(.ceylon.language.Natural.instance(getN1()).divided(.ceylon.language.Natural.instance(getN2())).longValue());
         setN1(.ceylon.language.Natural.instance(getN1()).remainder(.ceylon.language.Natural.instance(getN2())).longValue());
         setN1(.ceylon.language.Natural.instance(getN1()).power(.ceylon.language.Natural.instance(getN2())).longValue());
         (let ceylon.language.Natural $ceylontmpop4 = .ceylon.language.Natural.instance(getN1()).plus(.ceylon.language.Natural.instance(getN2())) in setN1($ceylontmpop4.longValue()); $ceylontmpop4);
-        (let ceylon.language.Natural $ceylontmpop5 = .ceylon.language.Natural.instance(getN1()).minus(.ceylon.language.Natural.instance(getN2())) in setN1($ceylontmpop5.longValue()); $ceylontmpop5);
-        (let ceylon.language.Natural $ceylontmpop6 = .ceylon.language.Natural.instance(getN1()).times(.ceylon.language.Natural.instance(getN1())) in setN1($ceylontmpop6.longValue()); $ceylontmpop6);
-        (let ceylon.language.Natural $ceylontmpop7 = .ceylon.language.Natural.instance(getN1()).divided(.ceylon.language.Natural.instance(getN2())) in setN1($ceylontmpop7.longValue()); $ceylontmpop7);
-        (let ceylon.language.Natural $ceylontmpop8 = .ceylon.language.Natural.instance(getN1()).remainder(.ceylon.language.Natural.instance(getN2())) in setN1($ceylontmpop8.longValue()); $ceylontmpop8);
+        (let ceylon.language.Natural $ceylontmpop5 = .ceylon.language.Natural.instance(getN1()).times(.ceylon.language.Natural.instance(getN1())) in setN1($ceylontmpop5.longValue()); $ceylontmpop5);
+        (let ceylon.language.Natural $ceylontmpop6 = .ceylon.language.Natural.instance(getN1()).divided(.ceylon.language.Natural.instance(getN2())) in setN1($ceylontmpop6.longValue()); $ceylontmpop6);
+        (let ceylon.language.Natural $ceylontmpop7 = .ceylon.language.Natural.instance(getN1()).remainder(.ceylon.language.Natural.instance(getN2())) in setN1($ceylontmpop7.longValue()); $ceylontmpop7);
     }
     
     private final void unboxedGetterAttributes() {
-        (let ceylon.language.Natural $ceylontmpop9 = .ceylon.language.Natural.instance(getGetterN1()) in setGetterN1($ceylontmpop9.getSuccessor().longValue()); $ceylontmpop9);
-        (let ceylon.language.Natural $ceylontmpop10 = .ceylon.language.Natural.instance(getGetterN1()).getSuccessor() in setGetterN1($ceylontmpop10.longValue()); $ceylontmpop10);
-        (let ceylon.language.Natural $ceylontmpop11 = .ceylon.language.Natural.instance(getGetterN1()) in setGetterN1($ceylontmpop11.getPredecessor().longValue()); $ceylontmpop11);
-        (let ceylon.language.Natural $ceylontmpop12 = .ceylon.language.Natural.instance(getGetterN1()).getPredecessor() in setGetterN1($ceylontmpop12.longValue()); $ceylontmpop12);
+        (let ceylon.language.Natural $ceylontmpop8 = .ceylon.language.Natural.instance(getGetterN1()) in setGetterN1($ceylontmpop8.getSuccessor().longValue()); $ceylontmpop8);
+        (let ceylon.language.Natural $ceylontmpop9 = .ceylon.language.Natural.instance(getGetterN1()).getSuccessor() in setGetterN1($ceylontmpop9.longValue()); $ceylontmpop9);
+        (let ceylon.language.Natural $ceylontmpop10 = .ceylon.language.Natural.instance(getGetterN1()) in setGetterN1($ceylontmpop10.getPredecessor().longValue()); $ceylontmpop10);
+        (let ceylon.language.Natural $ceylontmpop11 = .ceylon.language.Natural.instance(getGetterN1()).getPredecessor() in setGetterN1($ceylontmpop11.longValue()); $ceylontmpop11);
         setGetterI1(.ceylon.language.Natural.instance(getGetterN1()).getPositiveValue().longValue());
         setGetterI1(.ceylon.language.Natural.instance(getGetterN1()).getNegativeValue().longValue());
         setGetterN1(.ceylon.language.Natural.instance(getGetterN1()).plus(.ceylon.language.Natural.instance(getGetterN2())).longValue());
-        setGetterN1(.ceylon.language.Natural.instance(getGetterN1()).minus(.ceylon.language.Natural.instance(getGetterN2())).longValue());
+        setGetterI1(.ceylon.language.Natural.instance(getGetterN1()).minus(.ceylon.language.Natural.instance(getGetterN2())).longValue());
         setGetterN1(.ceylon.language.Natural.instance(getGetterN1()).times(.ceylon.language.Natural.instance(getGetterN2())).longValue());
         setGetterN1(.ceylon.language.Natural.instance(getGetterN1()).divided(.ceylon.language.Natural.instance(getGetterN2())).longValue());
         setGetterN1(.ceylon.language.Natural.instance(getGetterN1()).remainder(.ceylon.language.Natural.instance(getGetterN2())).longValue());
         setGetterN1(.ceylon.language.Natural.instance(getGetterN1()).power(.ceylon.language.Natural.instance(getGetterN2())).longValue());
-        (let ceylon.language.Natural $ceylontmpop13 = .ceylon.language.Natural.instance(getGetterN1()).plus(.ceylon.language.Natural.instance(getGetterN2())) in setGetterN1($ceylontmpop13.longValue()); $ceylontmpop13);
-        (let ceylon.language.Natural $ceylontmpop14 = .ceylon.language.Natural.instance(getGetterN1()).minus(.ceylon.language.Natural.instance(getGetterN2())) in setGetterN1($ceylontmpop14.longValue()); $ceylontmpop14);
-        (let ceylon.language.Natural $ceylontmpop15 = .ceylon.language.Natural.instance(getGetterN1()).times(.ceylon.language.Natural.instance(getGetterN1())) in setGetterN1($ceylontmpop15.longValue()); $ceylontmpop15);
-        (let ceylon.language.Natural $ceylontmpop16 = .ceylon.language.Natural.instance(getGetterN1()).divided(.ceylon.language.Natural.instance(getGetterN2())) in setGetterN1($ceylontmpop16.longValue()); $ceylontmpop16);
-        (let ceylon.language.Natural $ceylontmpop17 = .ceylon.language.Natural.instance(getGetterN1()).remainder(.ceylon.language.Natural.instance(getGetterN2())) in setGetterN1($ceylontmpop17.longValue()); $ceylontmpop17);
+        (let ceylon.language.Natural $ceylontmpop12 = .ceylon.language.Natural.instance(getGetterN1()).plus(.ceylon.language.Natural.instance(getGetterN2())) in setGetterN1($ceylontmpop12.longValue()); $ceylontmpop12);
+        (let ceylon.language.Natural $ceylontmpop13 = .ceylon.language.Natural.instance(getGetterN1()).times(.ceylon.language.Natural.instance(getGetterN1())) in setGetterN1($ceylontmpop13.longValue()); $ceylontmpop13);
+        (let ceylon.language.Natural $ceylontmpop14 = .ceylon.language.Natural.instance(getGetterN1()).divided(.ceylon.language.Natural.instance(getGetterN2())) in setGetterN1($ceylontmpop14.longValue()); $ceylontmpop14);
+        (let ceylon.language.Natural $ceylontmpop15 = .ceylon.language.Natural.instance(getGetterN1()).remainder(.ceylon.language.Natural.instance(getGetterN2())) in setGetterN1($ceylontmpop15.longValue()); $ceylontmpop15);
     }
     
     private final void unboxedQualifiedAttributes() {
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE18 = this,ceylon.language.Natural $ceylontmpopV19 = .ceylon.language.Natural.instance($ceylontmpopE18.getN1()) in $ceylontmpopE18.setN1($ceylontmpopV19.getSuccessor().longValue()); $ceylontmpopV19);
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE20 = this,ceylon.language.Natural $ceylontmpopV21 = .ceylon.language.Natural.instance($ceylontmpopE20.getN1()).getSuccessor() in $ceylontmpopE20.setN1($ceylontmpopV21.longValue()); $ceylontmpopV21);
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE22 = this,ceylon.language.Natural $ceylontmpopV23 = .ceylon.language.Natural.instance($ceylontmpopE22.getN1()) in $ceylontmpopE22.setN1($ceylontmpopV23.getPredecessor().longValue()); $ceylontmpopV23);
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE24 = this,ceylon.language.Natural $ceylontmpopV25 = .ceylon.language.Natural.instance($ceylontmpopE24.getN1()).getPredecessor() in $ceylontmpopE24.setN1($ceylontmpopV25.longValue()); $ceylontmpopV25);
+        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE16 = this,ceylon.language.Natural $ceylontmpopV17 = .ceylon.language.Natural.instance($ceylontmpopE16.getN1()) in $ceylontmpopE16.setN1($ceylontmpopV17.getSuccessor().longValue()); $ceylontmpopV17);
+        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE18 = this,ceylon.language.Natural $ceylontmpopV19 = .ceylon.language.Natural.instance($ceylontmpopE18.getN1()).getSuccessor() in $ceylontmpopE18.setN1($ceylontmpopV19.longValue()); $ceylontmpopV19);
+        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE20 = this,ceylon.language.Natural $ceylontmpopV21 = .ceylon.language.Natural.instance($ceylontmpopE20.getN1()) in $ceylontmpopE20.setN1($ceylontmpopV21.getPredecessor().longValue()); $ceylontmpopV21);
+        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE22 = this,ceylon.language.Natural $ceylontmpopV23 = .ceylon.language.Natural.instance($ceylontmpopE22.getN1()).getPredecessor() in $ceylontmpopE22.setN1($ceylontmpopV23.longValue()); $ceylontmpopV23);
         this.setI1(.ceylon.language.Natural.instance(this.getN1()).getPositiveValue().longValue());
         this.setI1(.ceylon.language.Natural.instance(this.getN1()).getNegativeValue().longValue());
         this.setN1(.ceylon.language.Natural.instance(this.getN1()).plus(.ceylon.language.Natural.instance(this.getN2())).longValue());
-        this.setN1(.ceylon.language.Natural.instance(this.getN1()).minus(.ceylon.language.Natural.instance(this.getN2())).longValue());
+        this.setI1(.ceylon.language.Natural.instance(this.getN1()).minus(.ceylon.language.Natural.instance(this.getN2())).longValue());
         this.setN1(.ceylon.language.Natural.instance(this.getN1()).times(.ceylon.language.Natural.instance(this.getN2())).longValue());
         this.setN1(.ceylon.language.Natural.instance(this.getN1()).divided(.ceylon.language.Natural.instance(this.getN2())).longValue());
         this.setN1(.ceylon.language.Natural.instance(this.getN1()).remainder(.ceylon.language.Natural.instance(this.getN2())).longValue());
         this.setN1(.ceylon.language.Natural.instance(this.getN1()).power(.ceylon.language.Natural.instance(this.getN2())).longValue());
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE26 = this,ceylon.language.Natural $ceylontmpopV27 = .ceylon.language.Natural.instance($ceylontmpopE26.getN1()).plus(.ceylon.language.Natural.instance(this.getN2())) in $ceylontmpopE26.setN1($ceylontmpopV27.longValue()); $ceylontmpopV27);
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE28 = this,ceylon.language.Natural $ceylontmpopV29 = .ceylon.language.Natural.instance($ceylontmpopE28.getN1()).minus(.ceylon.language.Natural.instance(this.getN2())) in $ceylontmpopE28.setN1($ceylontmpopV29.longValue()); $ceylontmpopV29);
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE30 = this,ceylon.language.Natural $ceylontmpopV31 = .ceylon.language.Natural.instance($ceylontmpopE30.getN1()).times(.ceylon.language.Natural.instance(this.getN1())) in $ceylontmpopE30.setN1($ceylontmpopV31.longValue()); $ceylontmpopV31);
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE32 = this,ceylon.language.Natural $ceylontmpopV33 = .ceylon.language.Natural.instance($ceylontmpopE32.getN1()).divided(.ceylon.language.Natural.instance(this.getN2())) in $ceylontmpopE32.setN1($ceylontmpopV33.longValue()); $ceylontmpopV33);
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE34 = this,ceylon.language.Natural $ceylontmpopV35 = .ceylon.language.Natural.instance($ceylontmpopE34.getN1()).remainder(.ceylon.language.Natural.instance(this.getN2())) in $ceylontmpopE34.setN1($ceylontmpopV35.longValue()); $ceylontmpopV35);
+        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE24 = this,ceylon.language.Natural $ceylontmpopV25 = .ceylon.language.Natural.instance($ceylontmpopE24.getN1()).plus(.ceylon.language.Natural.instance(this.getN2())) in $ceylontmpopE24.setN1($ceylontmpopV25.longValue()); $ceylontmpopV25);
+        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE26 = this,ceylon.language.Natural $ceylontmpopV27 = .ceylon.language.Natural.instance($ceylontmpopE26.getN1()).times(.ceylon.language.Natural.instance(this.getN1())) in $ceylontmpopE26.setN1($ceylontmpopV27.longValue()); $ceylontmpopV27);
+        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE28 = this,ceylon.language.Natural $ceylontmpopV29 = .ceylon.language.Natural.instance($ceylontmpopE28.getN1()).divided(.ceylon.language.Natural.instance(this.getN2())) in $ceylontmpopE28.setN1($ceylontmpopV29.longValue()); $ceylontmpopV29);
+        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE30 = this,ceylon.language.Natural $ceylontmpopV31 = .ceylon.language.Natural.instance($ceylontmpopE30.getN1()).remainder(.ceylon.language.Natural.instance(this.getN2())) in $ceylontmpopE30.setN1($ceylontmpopV31.longValue()); $ceylontmpopV31);
     }
     
     private final void unboxedQualifiedGetterAttributes() {
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE36 = this,ceylon.language.Natural $ceylontmpopV37 = .ceylon.language.Natural.instance($ceylontmpopE36.getGetterN1()) in $ceylontmpopE36.setGetterN1($ceylontmpopV37.getSuccessor().longValue()); $ceylontmpopV37);
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE38 = this,ceylon.language.Natural $ceylontmpopV39 = .ceylon.language.Natural.instance($ceylontmpopE38.getGetterN1()).getSuccessor() in $ceylontmpopE38.setGetterN1($ceylontmpopV39.longValue()); $ceylontmpopV39);
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE40 = this,ceylon.language.Natural $ceylontmpopV41 = .ceylon.language.Natural.instance($ceylontmpopE40.getGetterN1()) in $ceylontmpopE40.setGetterN1($ceylontmpopV41.getPredecessor().longValue()); $ceylontmpopV41);
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE42 = this,ceylon.language.Natural $ceylontmpopV43 = .ceylon.language.Natural.instance($ceylontmpopE42.getGetterN1()).getPredecessor() in $ceylontmpopE42.setGetterN1($ceylontmpopV43.longValue()); $ceylontmpopV43);
+        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE32 = this,ceylon.language.Natural $ceylontmpopV33 = .ceylon.language.Natural.instance($ceylontmpopE32.getGetterN1()) in $ceylontmpopE32.setGetterN1($ceylontmpopV33.getSuccessor().longValue()); $ceylontmpopV33);
+        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE34 = this,ceylon.language.Natural $ceylontmpopV35 = .ceylon.language.Natural.instance($ceylontmpopE34.getGetterN1()).getSuccessor() in $ceylontmpopE34.setGetterN1($ceylontmpopV35.longValue()); $ceylontmpopV35);
+        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE36 = this,ceylon.language.Natural $ceylontmpopV37 = .ceylon.language.Natural.instance($ceylontmpopE36.getGetterN1()) in $ceylontmpopE36.setGetterN1($ceylontmpopV37.getPredecessor().longValue()); $ceylontmpopV37);
+        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE38 = this,ceylon.language.Natural $ceylontmpopV39 = .ceylon.language.Natural.instance($ceylontmpopE38.getGetterN1()).getPredecessor() in $ceylontmpopE38.setGetterN1($ceylontmpopV39.longValue()); $ceylontmpopV39);
         this.setGetterI1(.ceylon.language.Natural.instance(this.getGetterN1()).getPositiveValue().longValue());
         this.setGetterI1(.ceylon.language.Natural.instance(this.getGetterN1()).getNegativeValue().longValue());
         this.setGetterN1(.ceylon.language.Natural.instance(this.getGetterN1()).plus(.ceylon.language.Natural.instance(this.getGetterN2())).longValue());
-        this.setGetterN1(.ceylon.language.Natural.instance(this.getGetterN1()).minus(.ceylon.language.Natural.instance(this.getGetterN2())).longValue());
+        this.setGetterI1(.ceylon.language.Natural.instance(this.getGetterN1()).minus(.ceylon.language.Natural.instance(this.getGetterN2())).longValue());
         this.setGetterN1(.ceylon.language.Natural.instance(this.getGetterN1()).times(.ceylon.language.Natural.instance(this.getGetterN2())).longValue());
         this.setGetterN1(.ceylon.language.Natural.instance(this.getGetterN1()).divided(.ceylon.language.Natural.instance(this.getGetterN2())).longValue());
         this.setGetterN1(.ceylon.language.Natural.instance(this.getGetterN1()).remainder(.ceylon.language.Natural.instance(this.getGetterN2())).longValue());
         this.setGetterN1(.ceylon.language.Natural.instance(this.getGetterN1()).power(.ceylon.language.Natural.instance(this.getGetterN2())).longValue());
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE44 = this,ceylon.language.Natural $ceylontmpopV45 = .ceylon.language.Natural.instance($ceylontmpopE44.getGetterN1()).plus(.ceylon.language.Natural.instance(this.getGetterN2())) in $ceylontmpopE44.setGetterN1($ceylontmpopV45.longValue()); $ceylontmpopV45);
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE46 = this,ceylon.language.Natural $ceylontmpopV47 = .ceylon.language.Natural.instance($ceylontmpopE46.getGetterN1()).minus(.ceylon.language.Natural.instance(this.getGetterN2())) in $ceylontmpopE46.setGetterN1($ceylontmpopV47.longValue()); $ceylontmpopV47);
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE48 = this,ceylon.language.Natural $ceylontmpopV49 = .ceylon.language.Natural.instance($ceylontmpopE48.getGetterN1()).times(.ceylon.language.Natural.instance(this.getGetterN1())) in $ceylontmpopE48.setGetterN1($ceylontmpopV49.longValue()); $ceylontmpopV49);
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE50 = this,ceylon.language.Natural $ceylontmpopV51 = .ceylon.language.Natural.instance($ceylontmpopE50.getGetterN1()).divided(.ceylon.language.Natural.instance(this.getGetterN2())) in $ceylontmpopE50.setGetterN1($ceylontmpopV51.longValue()); $ceylontmpopV51);
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE52 = this,ceylon.language.Natural $ceylontmpopV53 = .ceylon.language.Natural.instance($ceylontmpopE52.getGetterN1()).remainder(.ceylon.language.Natural.instance(this.getGetterN2())) in $ceylontmpopE52.setGetterN1($ceylontmpopV53.longValue()); $ceylontmpopV53);
+        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE40 = this,ceylon.language.Natural $ceylontmpopV41 = .ceylon.language.Natural.instance($ceylontmpopE40.getGetterN1()).plus(.ceylon.language.Natural.instance(this.getGetterN2())) in $ceylontmpopE40.setGetterN1($ceylontmpopV41.longValue()); $ceylontmpopV41);
+        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE42 = this,ceylon.language.Natural $ceylontmpopV43 = .ceylon.language.Natural.instance($ceylontmpopE42.getGetterN1()).times(.ceylon.language.Natural.instance(this.getGetterN1())) in $ceylontmpopE42.setGetterN1($ceylontmpopV43.longValue()); $ceylontmpopV43);
+        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE44 = this,ceylon.language.Natural $ceylontmpopV45 = .ceylon.language.Natural.instance($ceylontmpopE44.getGetterN1()).divided(.ceylon.language.Natural.instance(this.getGetterN2())) in $ceylontmpopE44.setGetterN1($ceylontmpopV45.longValue()); $ceylontmpopV45);
+        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE46 = this,ceylon.language.Natural $ceylontmpopV47 = .ceylon.language.Natural.instance($ceylontmpopE46.getGetterN1()).remainder(.ceylon.language.Natural.instance(this.getGetterN2())) in $ceylontmpopE46.setGetterN1($ceylontmpopV47.longValue()); $ceylontmpopV47);
     }
     
     private final void boxedQualifiedAttributes() {
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE54 = this,com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpopV55 = $ceylontmpopE54.getBoxedN1() in $ceylontmpopE54.setBoxedN1($ceylontmpopV55.getSuccessor()); $ceylontmpopV55);
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE56 = this,com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpopV57 = $ceylontmpopE56.getBoxedN1().getSuccessor() in $ceylontmpopE56.setBoxedN1($ceylontmpopV57); $ceylontmpopV57);
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE58 = this,com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpopV59 = $ceylontmpopE58.getBoxedN1() in $ceylontmpopE58.setBoxedN1($ceylontmpopV59.getPredecessor()); $ceylontmpopV59);
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE60 = this,com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpopV61 = $ceylontmpopE60.getBoxedN1().getPredecessor() in $ceylontmpopE60.setBoxedN1($ceylontmpopV61); $ceylontmpopV61);
+        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE48 = this,com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpopV49 = $ceylontmpopE48.getBoxedN1() in $ceylontmpopE48.setBoxedN1($ceylontmpopV49.getSuccessor()); $ceylontmpopV49);
+        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE50 = this,com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpopV51 = $ceylontmpopE50.getBoxedN1().getSuccessor() in $ceylontmpopE50.setBoxedN1($ceylontmpopV51); $ceylontmpopV51);
+        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE52 = this,com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpopV53 = $ceylontmpopE52.getBoxedN1() in $ceylontmpopE52.setBoxedN1($ceylontmpopV53.getPredecessor()); $ceylontmpopV53);
+        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE54 = this,com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpopV55 = $ceylontmpopE54.getBoxedN1().getPredecessor() in $ceylontmpopE54.setBoxedN1($ceylontmpopV55); $ceylontmpopV55);
         this.setBoxedI1(this.getBoxedN1().getPositiveValue());
         this.setBoxedI1(this.getBoxedN1().getNegativeValue());
         this.setBoxedN1(this.getBoxedN1().plus(this.getBoxedN2()));
-        this.setBoxedN1(this.getBoxedN1().minus(this.getBoxedN2()));
+        this.setBoxedI1(this.getBoxedN1().minus(this.getBoxedN2()));
         this.setBoxedN1(this.getBoxedN1().times(this.getBoxedN2()));
         this.setBoxedN1(this.getBoxedN1().divided(this.getBoxedN2()));
         this.setBoxedN1(this.getBoxedN1().remainder(this.getBoxedN2()));
         this.setBoxedN1(this.getBoxedN1().power(this.getBoxedN2()));
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE62 = this,com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpopV63 = $ceylontmpopE62.getBoxedN1().plus(this.getBoxedN2()) in $ceylontmpopE62.setBoxedN1($ceylontmpopV63); $ceylontmpopV63);
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE64 = this,com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpopV65 = $ceylontmpopE64.getBoxedN1().minus(this.getBoxedN2()) in $ceylontmpopE64.setBoxedN1($ceylontmpopV65); $ceylontmpopV65);
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE66 = this,com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpopV67 = $ceylontmpopE66.getBoxedN1().times(this.getBoxedN1()) in $ceylontmpopE66.setBoxedN1($ceylontmpopV67); $ceylontmpopV67);
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE68 = this,com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpopV69 = $ceylontmpopE68.getBoxedN1().divided(this.getBoxedN2()) in $ceylontmpopE68.setBoxedN1($ceylontmpopV69); $ceylontmpopV69);
-        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE70 = this,com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpopV71 = $ceylontmpopE70.getBoxedN1().remainder(this.getBoxedN2()) in $ceylontmpopE70.setBoxedN1($ceylontmpopV71); $ceylontmpopV71);
+        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE56 = this,com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpopV57 = $ceylontmpopE56.getBoxedN1().plus(this.getBoxedN2()) in $ceylontmpopE56.setBoxedN1($ceylontmpopV57); $ceylontmpopV57);
+        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE58 = this,com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpopV59 = $ceylontmpopE58.getBoxedN1().times(this.getBoxedN1()) in $ceylontmpopE58.setBoxedN1($ceylontmpopV59); $ceylontmpopV59);
+        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE60 = this,com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpopV61 = $ceylontmpopE60.getBoxedN1().divided(this.getBoxedN2()) in $ceylontmpopE60.setBoxedN1($ceylontmpopV61); $ceylontmpopV61);
+        (let com.redhat.ceylon.compiler.test.expression.operator.ArithmeticOperators $ceylontmpopE62 = this,com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpopV63 = $ceylontmpopE62.getBoxedN1().remainder(this.getBoxedN2()) in $ceylontmpopE62.setBoxedN1($ceylontmpopV63); $ceylontmpopV63);
     }
     
     private final void unboxedLocals() {
         long n1 = 0L;
         long n2 = 0L;
         long i1 = 0L;
-        (let ceylon.language.Natural $ceylontmpop72 = .ceylon.language.Natural.instance(n1) in n1 = $ceylontmpop72.getSuccessor().longValue(); $ceylontmpop72);
-        (let ceylon.language.Natural $ceylontmpop73 = .ceylon.language.Natural.instance(n1).getSuccessor() in n1 = $ceylontmpop73.longValue(); $ceylontmpop73);
-        (let ceylon.language.Natural $ceylontmpop74 = .ceylon.language.Natural.instance(n1) in n1 = $ceylontmpop74.getPredecessor().longValue(); $ceylontmpop74);
-        (let ceylon.language.Natural $ceylontmpop75 = .ceylon.language.Natural.instance(n1).getPredecessor() in n1 = $ceylontmpop75.longValue(); $ceylontmpop75);
+        (let ceylon.language.Natural $ceylontmpop64 = .ceylon.language.Natural.instance(n1) in n1 = $ceylontmpop64.getSuccessor().longValue(); $ceylontmpop64);
+        (let ceylon.language.Natural $ceylontmpop65 = .ceylon.language.Natural.instance(n1).getSuccessor() in n1 = $ceylontmpop65.longValue(); $ceylontmpop65);
+        (let ceylon.language.Natural $ceylontmpop66 = .ceylon.language.Natural.instance(n1) in n1 = $ceylontmpop66.getPredecessor().longValue(); $ceylontmpop66);
+        (let ceylon.language.Natural $ceylontmpop67 = .ceylon.language.Natural.instance(n1).getPredecessor() in n1 = $ceylontmpop67.longValue(); $ceylontmpop67);
         i1 = .ceylon.language.Natural.instance(n1).getPositiveValue().longValue();
         i1 = .ceylon.language.Natural.instance(n1).getNegativeValue().longValue();
         n1 = .ceylon.language.Natural.instance(n1).plus(.ceylon.language.Natural.instance(n2)).longValue();
-        n1 = .ceylon.language.Natural.instance(n1).minus(.ceylon.language.Natural.instance(n2)).longValue();
+        i1 = .ceylon.language.Natural.instance(n1).minus(.ceylon.language.Natural.instance(n2)).longValue();
         n1 = .ceylon.language.Natural.instance(n1).times(.ceylon.language.Natural.instance(n2)).longValue();
         n1 = .ceylon.language.Natural.instance(n1).divided(.ceylon.language.Natural.instance(n2)).longValue();
         n1 = .ceylon.language.Natural.instance(n1).remainder(.ceylon.language.Natural.instance(n2)).longValue();
         n1 = .ceylon.language.Natural.instance(n1).power(.ceylon.language.Natural.instance(n2)).longValue();
-        (let ceylon.language.Natural $ceylontmpop76 = .ceylon.language.Natural.instance(n1).plus(.ceylon.language.Natural.instance(n2)) in n1 = $ceylontmpop76.longValue(); $ceylontmpop76);
-        (let ceylon.language.Natural $ceylontmpop77 = .ceylon.language.Natural.instance(n1).minus(.ceylon.language.Natural.instance(n2)) in n1 = $ceylontmpop77.longValue(); $ceylontmpop77);
-        (let ceylon.language.Natural $ceylontmpop78 = .ceylon.language.Natural.instance(n1).times(.ceylon.language.Natural.instance(n1)) in n1 = $ceylontmpop78.longValue(); $ceylontmpop78);
-        (let ceylon.language.Natural $ceylontmpop79 = .ceylon.language.Natural.instance(n1).divided(.ceylon.language.Natural.instance(n2)) in n1 = $ceylontmpop79.longValue(); $ceylontmpop79);
-        (let ceylon.language.Natural $ceylontmpop80 = .ceylon.language.Natural.instance(n1).remainder(.ceylon.language.Natural.instance(n2)) in n1 = $ceylontmpop80.longValue(); $ceylontmpop80);
+        (let ceylon.language.Natural $ceylontmpop68 = .ceylon.language.Natural.instance(n1).plus(.ceylon.language.Natural.instance(n2)) in n1 = $ceylontmpop68.longValue(); $ceylontmpop68);
+        (let ceylon.language.Natural $ceylontmpop69 = .ceylon.language.Natural.instance(n1).times(.ceylon.language.Natural.instance(n1)) in n1 = $ceylontmpop69.longValue(); $ceylontmpop69);
+        (let ceylon.language.Natural $ceylontmpop70 = .ceylon.language.Natural.instance(n1).divided(.ceylon.language.Natural.instance(n2)) in n1 = $ceylontmpop70.longValue(); $ceylontmpop70);
+        (let ceylon.language.Natural $ceylontmpop71 = .ceylon.language.Natural.instance(n1).remainder(.ceylon.language.Natural.instance(n2)) in n1 = $ceylontmpop71.longValue(); $ceylontmpop71);
     }
     
     private final void unboxedLocalGetters() {
@@ -377,86 +371,82 @@ class ArithmeticOperators {
             }
         }
         final getterI1$setter getterI1$setter = new getterI1$setter();
-        (let ceylon.language.Natural $ceylontmpop81 = .ceylon.language.Natural.instance(getterN1$getter.getGetterN1()) in getterN1$setter.setGetterN1($ceylontmpop81.getSuccessor().longValue()); $ceylontmpop81);
-        (let ceylon.language.Natural $ceylontmpop82 = .ceylon.language.Natural.instance(getterN1$getter.getGetterN1()).getSuccessor() in getterN1$setter.setGetterN1($ceylontmpop82.longValue()); $ceylontmpop82);
-        (let ceylon.language.Natural $ceylontmpop83 = .ceylon.language.Natural.instance(getterN1$getter.getGetterN1()) in getterN1$setter.setGetterN1($ceylontmpop83.getPredecessor().longValue()); $ceylontmpop83);
-        (let ceylon.language.Natural $ceylontmpop84 = .ceylon.language.Natural.instance(getterN1$getter.getGetterN1()).getPredecessor() in getterN1$setter.setGetterN1($ceylontmpop84.longValue()); $ceylontmpop84);
+        (let ceylon.language.Natural $ceylontmpop72 = .ceylon.language.Natural.instance(getterN1$getter.getGetterN1()) in getterN1$setter.setGetterN1($ceylontmpop72.getSuccessor().longValue()); $ceylontmpop72);
+        (let ceylon.language.Natural $ceylontmpop73 = .ceylon.language.Natural.instance(getterN1$getter.getGetterN1()).getSuccessor() in getterN1$setter.setGetterN1($ceylontmpop73.longValue()); $ceylontmpop73);
+        (let ceylon.language.Natural $ceylontmpop74 = .ceylon.language.Natural.instance(getterN1$getter.getGetterN1()) in getterN1$setter.setGetterN1($ceylontmpop74.getPredecessor().longValue()); $ceylontmpop74);
+        (let ceylon.language.Natural $ceylontmpop75 = .ceylon.language.Natural.instance(getterN1$getter.getGetterN1()).getPredecessor() in getterN1$setter.setGetterN1($ceylontmpop75.longValue()); $ceylontmpop75);
         getterI1$setter.setGetterI1(.ceylon.language.Natural.instance(getterN1$getter.getGetterN1()).getPositiveValue().longValue());
         getterI1$setter.setGetterI1(.ceylon.language.Natural.instance(getterN1$getter.getGetterN1()).getNegativeValue().longValue());
         getterN1$setter.setGetterN1(.ceylon.language.Natural.instance(getterN1$getter.getGetterN1()).plus(.ceylon.language.Natural.instance(getterN2$getter.getGetterN2())).longValue());
-        getterN1$setter.setGetterN1(.ceylon.language.Natural.instance(getterN1$getter.getGetterN1()).minus(.ceylon.language.Natural.instance(getterN2$getter.getGetterN2())).longValue());
+        getterI1$setter.setGetterI1(.ceylon.language.Natural.instance(getterN1$getter.getGetterN1()).minus(.ceylon.language.Natural.instance(getterN2$getter.getGetterN2())).longValue());
         getterN1$setter.setGetterN1(.ceylon.language.Natural.instance(getterN1$getter.getGetterN1()).times(.ceylon.language.Natural.instance(getterN2$getter.getGetterN2())).longValue());
         getterN1$setter.setGetterN1(.ceylon.language.Natural.instance(getterN1$getter.getGetterN1()).divided(.ceylon.language.Natural.instance(getterN2$getter.getGetterN2())).longValue());
         getterN1$setter.setGetterN1(.ceylon.language.Natural.instance(getterN1$getter.getGetterN1()).remainder(.ceylon.language.Natural.instance(getterN2$getter.getGetterN2())).longValue());
         getterN1$setter.setGetterN1(.ceylon.language.Natural.instance(getterN1$getter.getGetterN1()).power(.ceylon.language.Natural.instance(getterN2$getter.getGetterN2())).longValue());
-        (let ceylon.language.Natural $ceylontmpop85 = .ceylon.language.Natural.instance(getterN1$getter.getGetterN1()).plus(.ceylon.language.Natural.instance(getterN2$getter.getGetterN2())) in getterN1$setter.setGetterN1($ceylontmpop85.longValue()); $ceylontmpop85);
-        (let ceylon.language.Natural $ceylontmpop86 = .ceylon.language.Natural.instance(getterN1$getter.getGetterN1()).minus(.ceylon.language.Natural.instance(getterN2$getter.getGetterN2())) in getterN1$setter.setGetterN1($ceylontmpop86.longValue()); $ceylontmpop86);
-        (let ceylon.language.Natural $ceylontmpop87 = .ceylon.language.Natural.instance(getterN1$getter.getGetterN1()).times(.ceylon.language.Natural.instance(getterN1$getter.getGetterN1())) in getterN1$setter.setGetterN1($ceylontmpop87.longValue()); $ceylontmpop87);
-        (let ceylon.language.Natural $ceylontmpop88 = .ceylon.language.Natural.instance(getterN1$getter.getGetterN1()).divided(.ceylon.language.Natural.instance(getterN2$getter.getGetterN2())) in getterN1$setter.setGetterN1($ceylontmpop88.longValue()); $ceylontmpop88);
-        (let ceylon.language.Natural $ceylontmpop89 = .ceylon.language.Natural.instance(getterN1$getter.getGetterN1()).remainder(.ceylon.language.Natural.instance(getterN2$getter.getGetterN2())) in getterN1$setter.setGetterN1($ceylontmpop89.longValue()); $ceylontmpop89);
+        (let ceylon.language.Natural $ceylontmpop76 = .ceylon.language.Natural.instance(getterN1$getter.getGetterN1()).plus(.ceylon.language.Natural.instance(getterN2$getter.getGetterN2())) in getterN1$setter.setGetterN1($ceylontmpop76.longValue()); $ceylontmpop76);
+        (let ceylon.language.Natural $ceylontmpop77 = .ceylon.language.Natural.instance(getterN1$getter.getGetterN1()).times(.ceylon.language.Natural.instance(getterN1$getter.getGetterN1())) in getterN1$setter.setGetterN1($ceylontmpop77.longValue()); $ceylontmpop77);
+        (let ceylon.language.Natural $ceylontmpop78 = .ceylon.language.Natural.instance(getterN1$getter.getGetterN1()).divided(.ceylon.language.Natural.instance(getterN2$getter.getGetterN2())) in getterN1$setter.setGetterN1($ceylontmpop78.longValue()); $ceylontmpop78);
+        (let ceylon.language.Natural $ceylontmpop79 = .ceylon.language.Natural.instance(getterN1$getter.getGetterN1()).remainder(.ceylon.language.Natural.instance(getterN2$getter.getGetterN2())) in getterN1$setter.setGetterN1($ceylontmpop79.longValue()); $ceylontmpop79);
     }
     
     private final void boxedLocals() {
         com.redhat.ceylon.compiler.test.expression.operator.MyNatural n1 = initN;
         com.redhat.ceylon.compiler.test.expression.operator.MyNatural n2 = initN;
         com.redhat.ceylon.compiler.test.expression.operator.MyInteger i1 = initI;
-        (let com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpop90 = n1 in n1 = $ceylontmpop90.getSuccessor(); $ceylontmpop90);
-        (let com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpop91 = n1.getSuccessor() in n1 = $ceylontmpop91; $ceylontmpop91);
-        (let com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpop92 = n1 in n1 = $ceylontmpop92.getPredecessor(); $ceylontmpop92);
-        (let com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpop93 = n1.getPredecessor() in n1 = $ceylontmpop93; $ceylontmpop93);
+        (let com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpop80 = n1 in n1 = $ceylontmpop80.getSuccessor(); $ceylontmpop80);
+        (let com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpop81 = n1.getSuccessor() in n1 = $ceylontmpop81; $ceylontmpop81);
+        (let com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpop82 = n1 in n1 = $ceylontmpop82.getPredecessor(); $ceylontmpop82);
+        (let com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpop83 = n1.getPredecessor() in n1 = $ceylontmpop83; $ceylontmpop83);
         i1 = n1.getPositiveValue();
         i1 = n1.getNegativeValue();
         n1 = n1.plus(n2);
-        n1 = n1.minus(n2);
+        i1 = n1.minus(n2);
         n1 = n1.times(n2);
         n1 = n1.divided(n2);
         n1 = n1.remainder(n2);
         n1 = n1.power(n2);
-        (let com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpop94 = n1.plus(n2) in n1 = $ceylontmpop94; $ceylontmpop94);
-        (let com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpop95 = n1.minus(n2) in n1 = $ceylontmpop95; $ceylontmpop95);
-        (let com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpop96 = n1.times(n1) in n1 = $ceylontmpop96; $ceylontmpop96);
-        (let com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpop97 = n1.divided(n2) in n1 = $ceylontmpop97; $ceylontmpop97);
-        (let com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpop98 = n1.remainder(n2) in n1 = $ceylontmpop98; $ceylontmpop98);
+        (let com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpop84 = n1.plus(n2) in n1 = $ceylontmpop84; $ceylontmpop84);
+        (let com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpop85 = n1.times(n1) in n1 = $ceylontmpop85; $ceylontmpop85);
+        (let com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpop86 = n1.divided(n2) in n1 = $ceylontmpop86; $ceylontmpop86);
+        (let com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmpop87 = n1.remainder(n2) in n1 = $ceylontmpop87; $ceylontmpop87);
     }
     
     private final void unboxedToplevel() {
-        (let ceylon.language.Natural $ceylontmpop99 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.setToplevelN1($ceylontmpop99.getSuccessor().longValue()); $ceylontmpop99);
-        (let ceylon.language.Natural $ceylontmpop100 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()).getSuccessor() in .com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.setToplevelN1($ceylontmpop100.longValue()); $ceylontmpop100);
-        (let ceylon.language.Natural $ceylontmpop101 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.setToplevelN1($ceylontmpop101.getPredecessor().longValue()); $ceylontmpop101);
-        (let ceylon.language.Natural $ceylontmpop102 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()).getPredecessor() in .com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.setToplevelN1($ceylontmpop102.longValue()); $ceylontmpop102);
+        (let ceylon.language.Natural $ceylontmpop88 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.setToplevelN1($ceylontmpop88.getSuccessor().longValue()); $ceylontmpop88);
+        (let ceylon.language.Natural $ceylontmpop89 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()).getSuccessor() in .com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.setToplevelN1($ceylontmpop89.longValue()); $ceylontmpop89);
+        (let ceylon.language.Natural $ceylontmpop90 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.setToplevelN1($ceylontmpop90.getPredecessor().longValue()); $ceylontmpop90);
+        (let ceylon.language.Natural $ceylontmpop91 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()).getPredecessor() in .com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.setToplevelN1($ceylontmpop91.longValue()); $ceylontmpop91);
         .com.redhat.ceylon.compiler.test.expression.operator.toplevelI1.setToplevelI1(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()).getPositiveValue().longValue());
         .com.redhat.ceylon.compiler.test.expression.operator.toplevelI1.setToplevelI1(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()).getNegativeValue().longValue());
         .com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.setToplevelN1(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()).plus(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN2.getToplevelN2())).longValue());
-        .com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.setToplevelN1(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()).minus(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN2.getToplevelN2())).longValue());
+        .com.redhat.ceylon.compiler.test.expression.operator.toplevelI1.setToplevelI1(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()).minus(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN2.getToplevelN2())).longValue());
         .com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.setToplevelN1(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()).times(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN2.getToplevelN2())).longValue());
         .com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.setToplevelN1(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()).divided(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN2.getToplevelN2())).longValue());
         .com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.setToplevelN1(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()).remainder(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN2.getToplevelN2())).longValue());
         .com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.setToplevelN1(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()).power(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN2.getToplevelN2())).longValue());
-        (let ceylon.language.Natural $ceylontmpop103 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()).plus(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN2.getToplevelN2())) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.setToplevelN1($ceylontmpop103.longValue()); $ceylontmpop103);
-        (let ceylon.language.Natural $ceylontmpop104 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()).minus(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN2.getToplevelN2())) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.setToplevelN1($ceylontmpop104.longValue()); $ceylontmpop104);
-        (let ceylon.language.Natural $ceylontmpop105 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()).times(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1())) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.setToplevelN1($ceylontmpop105.longValue()); $ceylontmpop105);
-        (let ceylon.language.Natural $ceylontmpop106 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()).divided(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN2.getToplevelN2())) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.setToplevelN1($ceylontmpop106.longValue()); $ceylontmpop106);
-        (let ceylon.language.Natural $ceylontmpop107 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()).remainder(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN2.getToplevelN2())) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.setToplevelN1($ceylontmpop107.longValue()); $ceylontmpop107);
+        (let ceylon.language.Natural $ceylontmpop92 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()).plus(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN2.getToplevelN2())) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.setToplevelN1($ceylontmpop92.longValue()); $ceylontmpop92);
+        (let ceylon.language.Natural $ceylontmpop93 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()).times(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1())) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.setToplevelN1($ceylontmpop93.longValue()); $ceylontmpop93);
+        (let ceylon.language.Natural $ceylontmpop94 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()).divided(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN2.getToplevelN2())) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.setToplevelN1($ceylontmpop94.longValue()); $ceylontmpop94);
+        (let ceylon.language.Natural $ceylontmpop95 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.getToplevelN1()).remainder(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelN2.getToplevelN2())) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelN1.setToplevelN1($ceylontmpop95.longValue()); $ceylontmpop95);
     }
     
     private final void unboxedToplevelGetter() {
-        (let ceylon.language.Natural $ceylontmpop108 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.setToplevelGetterN1($ceylontmpop108.getSuccessor().longValue()); $ceylontmpop108);
-        (let ceylon.language.Natural $ceylontmpop109 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()).getSuccessor() in .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.setToplevelGetterN1($ceylontmpop109.longValue()); $ceylontmpop109);
-        (let ceylon.language.Natural $ceylontmpop110 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.setToplevelGetterN1($ceylontmpop110.getPredecessor().longValue()); $ceylontmpop110);
-        (let ceylon.language.Natural $ceylontmpop111 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()).getPredecessor() in .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.setToplevelGetterN1($ceylontmpop111.longValue()); $ceylontmpop111);
+        (let ceylon.language.Natural $ceylontmpop96 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.setToplevelGetterN1($ceylontmpop96.getSuccessor().longValue()); $ceylontmpop96);
+        (let ceylon.language.Natural $ceylontmpop97 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()).getSuccessor() in .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.setToplevelGetterN1($ceylontmpop97.longValue()); $ceylontmpop97);
+        (let ceylon.language.Natural $ceylontmpop98 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.setToplevelGetterN1($ceylontmpop98.getPredecessor().longValue()); $ceylontmpop98);
+        (let ceylon.language.Natural $ceylontmpop99 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()).getPredecessor() in .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.setToplevelGetterN1($ceylontmpop99.longValue()); $ceylontmpop99);
         .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterI1.setToplevelGetterI1(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()).getPositiveValue().longValue());
         .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterI1.setToplevelGetterI1(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()).getNegativeValue().longValue());
         .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.setToplevelGetterN1(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()).plus(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN2.getToplevelGetterN2())).longValue());
-        .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.setToplevelGetterN1(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()).minus(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN2.getToplevelGetterN2())).longValue());
+        .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterI1.setToplevelGetterI1(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()).minus(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN2.getToplevelGetterN2())).longValue());
         .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.setToplevelGetterN1(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()).times(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN2.getToplevelGetterN2())).longValue());
         .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.setToplevelGetterN1(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()).divided(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN2.getToplevelGetterN2())).longValue());
         .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.setToplevelGetterN1(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()).remainder(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN2.getToplevelGetterN2())).longValue());
         .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.setToplevelGetterN1(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()).power(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN2.getToplevelGetterN2())).longValue());
-        (let ceylon.language.Natural $ceylontmpop112 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()).plus(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN2.getToplevelGetterN2())) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.setToplevelGetterN1($ceylontmpop112.longValue()); $ceylontmpop112);
-        (let ceylon.language.Natural $ceylontmpop113 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()).minus(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN2.getToplevelGetterN2())) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.setToplevelGetterN1($ceylontmpop113.longValue()); $ceylontmpop113);
-        (let ceylon.language.Natural $ceylontmpop114 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()).times(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1())) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.setToplevelGetterN1($ceylontmpop114.longValue()); $ceylontmpop114);
-        (let ceylon.language.Natural $ceylontmpop115 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()).divided(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN2.getToplevelGetterN2())) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.setToplevelGetterN1($ceylontmpop115.longValue()); $ceylontmpop115);
-        (let ceylon.language.Natural $ceylontmpop116 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()).remainder(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN2.getToplevelGetterN2())) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.setToplevelGetterN1($ceylontmpop116.longValue()); $ceylontmpop116);
+        (let ceylon.language.Natural $ceylontmpop100 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()).plus(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN2.getToplevelGetterN2())) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.setToplevelGetterN1($ceylontmpop100.longValue()); $ceylontmpop100);
+        (let ceylon.language.Natural $ceylontmpop101 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()).times(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1())) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.setToplevelGetterN1($ceylontmpop101.longValue()); $ceylontmpop101);
+        (let ceylon.language.Natural $ceylontmpop102 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()).divided(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN2.getToplevelGetterN2())) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.setToplevelGetterN1($ceylontmpop102.longValue()); $ceylontmpop102);
+        (let ceylon.language.Natural $ceylontmpop103 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.getToplevelGetterN1()).remainder(.ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN2.getToplevelGetterN2())) in .com.redhat.ceylon.compiler.test.expression.operator.toplevelGetterN1.setToplevelGetterN1($ceylontmpop103.longValue()); $ceylontmpop103);
     }
     
     ArithmeticOperators(com.redhat.ceylon.compiler.test.expression.operator.MyNatural initN, com.redhat.ceylon.compiler.test.expression.operator.MyInteger initI) {

@@ -24,15 +24,13 @@ abstract class MyNatural()
         extends Object()
         satisfies Castable<MyNatural|MyInteger|Float> &
                   Integral<MyNatural> &
-                  Invertable<MyInteger> {}
+                  Subtractable<MyNatural,MyInteger> {}
 @nomodel
 abstract class MyInteger()
         extends Object()
         satisfies Castable<MyInteger|Float> &
                   Integral<MyInteger> &
-                  Invertable<MyInteger> {
-
-}
+                  Subtractable<MyInteger,MyInteger> {}
 
 @nomodel
 variable Natural toplevelN1 := 0;
@@ -99,14 +97,13 @@ class ArithmeticOperators(MyNatural initN, MyInteger initI) {
         i1 := -n1;
         
         n1 := n1 + n2;
-        n1 := n1 - n2;
+        i1 := n1 - n2;
         n1 := n1 * n2;
         n1 := n1 / n2;
         n1 := n1 % n2;
         n1 := n1 ** n2;
         
         n1 += n2;
-        n1 -= n2;
         n1 *= n1;
         n1 /= n2;
         n1 %= n2;
@@ -122,14 +119,13 @@ class ArithmeticOperators(MyNatural initN, MyInteger initI) {
         getterI1 := -getterN1;
         
         getterN1 := getterN1 + getterN2;
-        getterN1 := getterN1 - getterN2;
+        getterI1 := getterN1 - getterN2;
         getterN1 := getterN1 * getterN2;
         getterN1 := getterN1 / getterN2;
         getterN1 := getterN1 % getterN2;
         getterN1 := getterN1 ** getterN2;
         
         getterN1 += getterN2;
-        getterN1 -= getterN2;
         getterN1 *= getterN1;
         getterN1 /= getterN2;
         getterN1 %= getterN2;
@@ -148,14 +144,13 @@ class ArithmeticOperators(MyNatural initN, MyInteger initI) {
         this.i1 := -this.n1;
         
         this.n1 := this.n1 + this.n2;
-        this.n1 := this.n1 - this.n2;
+        this.i1 := this.n1 - this.n2;
         this.n1 := this.n1 * this.n2;
         this.n1 := this.n1 / this.n2;
         this.n1 := this.n1 % this.n2;
         this.n1 := this.n1 ** this.n2;
         
         this.n1 += this.n2;
-        this.n1 -= this.n2;
         this.n1 *= this.n1;
         this.n1 /= this.n2;
         this.n1 %= this.n2;
@@ -171,14 +166,13 @@ class ArithmeticOperators(MyNatural initN, MyInteger initI) {
         this.getterI1 := -this.getterN1;
         
         this.getterN1 := this.getterN1 + this.getterN2;
-        this.getterN1 := this.getterN1 - this.getterN2;
+        this.getterI1 := this.getterN1 - this.getterN2;
         this.getterN1 := this.getterN1 * this.getterN2;
         this.getterN1 := this.getterN1 / this.getterN2;
         this.getterN1 := this.getterN1 % this.getterN2;
         this.getterN1 := this.getterN1 ** this.getterN2;
         
         this.getterN1 += this.getterN2;
-        this.getterN1 -= this.getterN2;
         this.getterN1 *= this.getterN1;
         this.getterN1 /= this.getterN2;
         this.getterN1 %= this.getterN2;
@@ -194,14 +188,13 @@ class ArithmeticOperators(MyNatural initN, MyInteger initI) {
         this.boxedI1 := -this.boxedN1;
         
         this.boxedN1 := this.boxedN1 + this.boxedN2;
-        this.boxedN1 := this.boxedN1 - this.boxedN2;
+        this.boxedI1 := this.boxedN1 - this.boxedN2;
         this.boxedN1 := this.boxedN1 * this.boxedN2;
         this.boxedN1 := this.boxedN1 / this.boxedN2;
         this.boxedN1 := this.boxedN1 % this.boxedN2;
         this.boxedN1 := this.boxedN1 ** this.boxedN2;
         
         this.boxedN1 += this.boxedN2;
-        this.boxedN1 -= this.boxedN2;
         this.boxedN1 *= this.boxedN1;
         this.boxedN1 /= this.boxedN2;
         this.boxedN1 %= this.boxedN2;
@@ -224,14 +217,13 @@ class ArithmeticOperators(MyNatural initN, MyInteger initI) {
         i1 := -n1;
         
         n1 := n1 + n2;
-        n1 := n1 - n2;
+        i1 := n1 - n2;
         n1 := n1 * n2;
         n1 := n1 / n2;
         n1 := n1 % n2;
         n1 := n1 ** n2;
         
         n1 += n2;
-        n1 -= n2;
         n1 *= n1;
         n1 /= n2;
         n1 %= n2;
@@ -266,14 +258,13 @@ class ArithmeticOperators(MyNatural initN, MyInteger initI) {
         getterI1 := -getterN1;
         
         getterN1 := getterN1 + getterN2;
-        getterN1 := getterN1 - getterN2;
+        getterI1 := getterN1 - getterN2;
         getterN1 := getterN1 * getterN2;
         getterN1 := getterN1 / getterN2;
         getterN1 := getterN1 % getterN2;
         getterN1 := getterN1 ** getterN2;
         
         getterN1 += getterN2;
-        getterN1 -= getterN2;
         getterN1 *= getterN1;
         getterN1 /= getterN2;
         getterN1 %= getterN2;
@@ -293,14 +284,13 @@ class ArithmeticOperators(MyNatural initN, MyInteger initI) {
         i1 := -n1;
         
         n1 := n1 + n2;
-        n1 := n1 - n2;
+        i1 := n1 - n2;
         n1 := n1 * n2;
         n1 := n1 / n2;
         n1 := n1 % n2;
         n1 := n1 ** n2;
         
         n1 += n2;
-        n1 -= n2;
         n1 *= n1;
         n1 /= n2;
         n1 %= n2;
@@ -319,14 +309,13 @@ class ArithmeticOperators(MyNatural initN, MyInteger initI) {
         toplevelI1 := -toplevelN1;
         
         toplevelN1 := toplevelN1 + toplevelN2;
-        toplevelN1 := toplevelN1 - toplevelN2;
+        toplevelI1 := toplevelN1 - toplevelN2;
         toplevelN1 := toplevelN1 * toplevelN2;
         toplevelN1 := toplevelN1 / toplevelN2;
         toplevelN1 := toplevelN1 % toplevelN2;
         toplevelN1 := toplevelN1 ** toplevelN2;
         
         toplevelN1 += toplevelN2;
-        toplevelN1 -= toplevelN2;
         toplevelN1 *= toplevelN1;
         toplevelN1 /= toplevelN2;
         toplevelN1 %= toplevelN2;
@@ -342,14 +331,13 @@ class ArithmeticOperators(MyNatural initN, MyInteger initI) {
         toplevelGetterI1 := -toplevelGetterN1;
         
         toplevelGetterN1 := toplevelGetterN1 + toplevelGetterN2;
-        toplevelGetterN1 := toplevelGetterN1 - toplevelGetterN2;
+        toplevelGetterI1 := toplevelGetterN1 - toplevelGetterN2;
         toplevelGetterN1 := toplevelGetterN1 * toplevelGetterN2;
         toplevelGetterN1 := toplevelGetterN1 / toplevelGetterN2;
         toplevelGetterN1 := toplevelGetterN1 % toplevelGetterN2;
         toplevelGetterN1 := toplevelGetterN1 ** toplevelGetterN2;
         
         toplevelGetterN1 += toplevelGetterN2;
-        toplevelGetterN1 -= toplevelGetterN2;
         toplevelGetterN1 *= toplevelGetterN1;
         toplevelGetterN1 /= toplevelGetterN2;
         toplevelGetterN1 %= toplevelGetterN2;

@@ -16,7 +16,7 @@ public final class innerMethodInvocation {
                 if (.ceylon.language.Natural.instance(n).equals(.ceylon.language.Natural.instance(0L))) {
                     return 1L;
                 } else {
-                    return .ceylon.language.Natural.instance(n).times(.ceylon.language.Natural.instance(fib(.ceylon.language.Natural.instance(n).minus(.ceylon.language.Natural.instance(1L)).longValue()))).longValue();
+                    return .ceylon.language.Natural.instance(n).times(.ceylon.language.Natural.instance(fib(.ceylon.language.Natural.instance(n).getPredecessor().longValue()))).longValue();
                 }
             }
         }
