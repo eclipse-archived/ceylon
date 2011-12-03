@@ -1472,17 +1472,17 @@ public class ExpressionVisitor extends Visitor {
                                 pt.getDeclaration().getName() + " is not a subtype of Ranged");
                     }
                     else {
-                        ProducedType rt = rst.getTypeArgumentList().get(0);
+                        List<ProducedType> args = rst.getTypeArgumentList();
+                        ProducedType kt = args.get(0);
+                        ProducedType rt = args.get(1);
                         Tree.ElementRange er = (Tree.ElementRange) that.getElementOrRange();
-                        checkAssignable(er.getLowerBound().getTypeModel(), 
-                        		unit.getNaturalDeclaration().getType(), 
+                        checkAssignable(er.getLowerBound().getTypeModel(), kt,
                                 er.getLowerBound(), 
-                                "lower bound must be an index");
+                                "lower bound must be assignable to index type");
                         if (er.getUpperBound()!=null) {
-                            checkAssignable(er.getUpperBound().getTypeModel(), 
-                            		unit.getNaturalDeclaration().getType(), 
+                            checkAssignable(er.getUpperBound().getTypeModel(), kt,
                                     er.getUpperBound(), 
-                                    "upper bound must be an index");
+                                    "upper bound must be assignable to index type");
                         }
                         that.setTypeModel(rt);
                     }
