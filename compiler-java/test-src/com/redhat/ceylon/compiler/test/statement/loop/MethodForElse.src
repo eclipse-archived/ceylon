@@ -6,7 +6,7 @@ class MethodForElse {
         boolean $doforelse$0 = true;
         for (ceylon.language.Iterator<? extends ceylon.language.String> $s$iter$1 = seq.getIterator(); $s$iter$1 != null; $s$iter$1 = $s$iter$1.getTail()) {
             final .java.lang.String s = $s$iter$1.getHead().toString();
-            while (true) {
+            while ((let boolean $ceylontmp4$0 = true in $ceylontmp4$0)) {
                 boolean $doforelse$2 = true;
                 for (ceylon.language.Iterator<? extends ceylon.language.String> $t$iter$3 = seq.getIterator(); $t$iter$3 != null; $t$iter$3 = $t$iter$3.getTail()) {
                     final .java.lang.String t = $t$iter$3.getHead().toString();

@@ -218,7 +218,7 @@ public class StatementTransformer extends AbstractTransformer {
             cond1 = make().If(test, thenBlock, elseBlock);
             break;
         case JCTree.WHILELOOP:
-            cond1 = make().WhileLoop(test, thenBlock);
+            cond1 = make().WhileLoop(makeLetExpr(make().TypeIdent(TypeTags.BOOLEAN), test), thenBlock);
             break;
         default:
             throw new RuntimeException();

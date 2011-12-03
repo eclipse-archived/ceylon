@@ -57,6 +57,7 @@ import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
+import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.tree.JCTree.LetExpr;
 import com.sun.tools.javac.tree.TreeMaker;
@@ -290,6 +291,39 @@ public abstract class AbstractTransformer implements Transformation {
     // Creates a "new foo(arg1, arg2, ...);"
     protected JCTree.JCNewClass makeNewClass(JCExpression clazz, List<JCTree.JCExpression> args) {
         return make().NewClass(null, null, clazz, args, null);
+    }
+
+    // Creates a "( let var1=expr1,var2=expr2,...,varN=exprN in varN; )"
+    // or a "( let var1=expr1,var2=expr2,...,varN=exprN,exprO in exprO; )"
+    protected JCExpression makeLetExpr(JCExpression... args) {
+        return makeLetExpr(tempName(), null, args);
+    }
+
+    // Creates a "( let var1=expr1,var2=expr2,...,varN=exprN in statements; varN; )"
+    // or a "( let var1=expr1,var2=expr2,...,varN=exprN,exprO in statements; exprO; )"
+    protected JCExpression makeLetExpr(String varBaseName, List<JCStatement> statements, JCExpression... args) {
+        Name varName = null;
+        List<JCVariableDecl> decls = List.nil();
+        int i;
+        for (i = 0; (i + 1) < args.length; i += 2) {
+            JCExpression typeExpr = args[i];
+            JCExpression valueExpr = args[i+1];
+            varName = names().fromString(varBaseName + "$" + i);
+            JCVariableDecl varDecl = make().VarDef(make().Modifiers(0), varName, typeExpr, valueExpr);
+            decls = decls.append(varDecl);
+        }
+        
+        JCExpression result;
+        if (i == args.length) {
+            result = make().Ident(varName);
+        } else {
+            result = args[i];
+        }
+        if (statements != null) {
+            return make().LetExpr(decls, statements, result);
+        } else {
+            return make().LetExpr(decls, result);
+        }
     }
 
     /*
