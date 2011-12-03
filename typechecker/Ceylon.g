@@ -1838,9 +1838,14 @@ typeArgument returns [Type type]
     ;
     
 type returns [StaticType type]
+    : unionType 
+      { $type=$unionType.type; }
+    ;
+    
+entryType returns [StaticType type]
     @init { BaseType bt=null; 
             TypeArgumentList tal=null; }
-    : ut1=unionType
+    : ut1=abbreviatedType
       { $type=$ut1.type; 
         bt = new BaseType(null); 
         tal = new TypeArgumentList(null); 
@@ -1853,7 +1858,7 @@ type returns [StaticType type]
           tok.setText("Entry");
           bt.setIdentifier( new Identifier(tok) ); }
         (
-          ut2=unionType
+          ut2=abbreviatedType
           { tal.addType($ut2.type);
             bt.setEndToken(null); }
         | { displayRecognitionError(getTokenNames(), 
@@ -1887,7 +1892,7 @@ unionType returns [StaticType type]
 
 intersectionType returns [StaticType type]
     @init { IntersectionType it=null; }
-    : at1=abbreviatedType
+    : at1=entryType
       { $type = $at1.type;
         it = new IntersectionType(null);
         it.addStaticType($type); }
@@ -1896,7 +1901,7 @@ intersectionType returns [StaticType type]
           i=INTERSECTION_OP
           { it.setEndToken($i); }
           (
-            at2=abbreviatedType
+            at2=entryType
             { it.addStaticType($at2.type);
               it.setEndToken(null); }
           | { displayRecognitionError(getTokenNames(), 
