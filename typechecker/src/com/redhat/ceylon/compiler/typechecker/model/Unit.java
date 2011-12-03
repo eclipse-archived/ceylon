@@ -248,6 +248,10 @@ public class Unit {
         return (Class) getLanguageModuleDeclaration("Range");
     }
         
+    public Interface getRangedDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("Ranged");
+    }
+        
     public Class getEntryDeclaration() {
         return (Class) getLanguageModuleDeclaration("Entry");
     }

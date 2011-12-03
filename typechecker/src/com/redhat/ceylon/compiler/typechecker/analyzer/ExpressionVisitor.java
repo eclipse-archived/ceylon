@@ -1426,6 +1426,7 @@ public class ExpressionVisitor extends Visitor {
             that.getPrimary().addError("annotation must be a toplevel method reference");
         }
     }
+    
     @Override public void visit(Tree.IndexExpression that) {
         super.visit(that);
         ProducedType pt = type(that);
@@ -1442,44 +1443,49 @@ public class ExpressionVisitor extends Visitor {
                             pt.getDeclaration().getName() + " is not a subtype of Optional");
                 }
             }
-            ProducedType st = pt.minus(unit.getEmptyDeclaration())
-                        .getSupertype(unit.getCorrespondenceDeclaration());
-            if (st==null) {
-                st = pt.getSupertype(unit.getCorrespondenceDeclaration());
-            }
-            if (st==null) {
-                that.getPrimary().addError("illegal receiving type for index expression: " +
-                        pt.getDeclaration().getName() + " is not a of subtype of Correspondence");
+            if (that.getElementOrRange()==null) {
+                that.addError("malformed index expression");
             }
             else {
-                if (that.getElementOrRange()==null) {
-                    that.addError("malformed index expression");
-                }
-                else {
-                    List<ProducedType> args = st.getTypeArgumentList();
-                    ProducedType kt = args.get(0);
-                    ProducedType vt = args.get(1);
-                    ProducedType rt;
-                    if (that.getElementOrRange() instanceof Tree.Element) {
+                if (that.getElementOrRange() instanceof Tree.Element) {
+                    ProducedType cst = pt.getSupertype(unit.getCorrespondenceDeclaration());
+                    if (cst==null) {
+                        that.getPrimary().addError("illegal receiving type for index expression: " +
+                                pt.getDeclaration().getName() + " is not a subtype of Correspondence");
+                    }
+                    else {
+                        List<ProducedType> args = cst.getTypeArgumentList();
+                        ProducedType kt = args.get(0);
+                        ProducedType vt = args.get(1);
                         Tree.Element e = (Tree.Element) that.getElementOrRange();
                         checkAssignable(e.getExpression().getTypeModel(), kt, 
                                 e.getExpression(), 
                                 "index must be assignable to key type");
-                        rt = unit.getOptionalType(vt);
+                        ProducedType rt = unit.getOptionalType(vt);
+                        that.setTypeModel(rt);
+                    }
+                }
+                else {
+                    ProducedType rst = pt.getSupertype(unit.getRangedDeclaration());
+                    if (rst==null) {
+                        that.getPrimary().addError("illegal receiving type for index range expression: " +
+                                pt.getDeclaration().getName() + " is not a subtype of Ranged");
                     }
                     else {
+                        ProducedType rt = rst.getTypeArgumentList().get(0);
                         Tree.ElementRange er = (Tree.ElementRange) that.getElementOrRange();
-                        checkAssignable(er.getLowerBound().getTypeModel(), kt, 
+                        checkAssignable(er.getLowerBound().getTypeModel(), 
+                        		unit.getNaturalDeclaration().getType(), 
                                 er.getLowerBound(), 
-                                "lower bound must be assignable to key type");
+                                "lower bound must be an index");
                         if (er.getUpperBound()!=null) {
-                            checkAssignable(er.getUpperBound().getTypeModel(), kt, 
+                            checkAssignable(er.getUpperBound().getTypeModel(), 
+                            		unit.getNaturalDeclaration().getType(), 
                                     er.getUpperBound(), 
-                                    "upper bound must be assignable to key type");
+                                    "upper bound must be an index");
                         }
-                        rt = unit.getEmptyType(unit.getSequenceType(vt));
+                        that.setTypeModel(rt);
                     }
-                    that.setTypeModel(rt);
                 }
             }
         }

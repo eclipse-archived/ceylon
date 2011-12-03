@@ -363,5 +363,5 @@ class Assignability() {
     Sequence<Object> st1 = ut;
     Sequence<String|Natural> st2 = ut;
     @type["Nothing|String|Natural"] value item = ut[0];
-    @type["Empty|Sequence<String|Natural>"] value items = ut[1..2];
+    @type["Empty|Sequence<String>|Sequence<Natural>"] value items = ut[1..2];
 }
