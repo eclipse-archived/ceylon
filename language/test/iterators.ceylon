@@ -9,6 +9,12 @@ class Pair(String one, String two) satisfies Iterable<String> {
     shared actual Boolean empty = false;
 }
 
+/*class Prototype<out Element>(Element e)
+           satisfies Cloneable<Prototype<Element>> {
+   shared actual Prototype<Element> clone { return this; }
+}*/
+
+
 void iterators() {
     variable value i:=0;
     for (s in Pair("hello", "world")) {
@@ -17,4 +23,7 @@ void iterators() {
         i++;
     }
     assert(i==2, "iterator iteration");
+    
+    /*value prot = Prototype("hello");
+    assert(prot==prot.clone, "clone");*/
 }
