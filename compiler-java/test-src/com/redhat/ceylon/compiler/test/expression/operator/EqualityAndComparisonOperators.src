@@ -30,7 +30,7 @@ public class EqualityAndComparisonOperators {
     }
     
     private final void equalityAndComparison(final .java.lang.Object o1, final .java.lang.Object o2) {
-        setB1(o1.identical(o2).booleanValue());
+        setB1(o1 == o2);
         setB1(.ceylon.language.Natural.instance(getN1()).equals(.ceylon.language.Natural.instance(getN2())));
         setB1(!.ceylon.language.Natural.instance(getN1()).equals(.ceylon.language.Natural.instance(getN2())));
         final ceylon.language.Comparison c = .ceylon.language.Natural.instance(getN1()).compare(.ceylon.language.Natural.instance(getN2()));
@@ -38,7 +38,8 @@ public class EqualityAndComparisonOperators {
         setB1(.ceylon.language.Natural.instance(getN1()).compare(.ceylon.language.Natural.instance(getN2())).larger());
         setB1(.ceylon.language.Natural.instance(getN1()).compare(.ceylon.language.Natural.instance(getN2())).smallAs());
         setB1(.ceylon.language.Natural.instance(getN1()).compare(.ceylon.language.Natural.instance(getN2())).largeAs());
-        setB1(.ceylon.language.Natural.instance(getN1()) instanceof .ceylon.language.Natural);
+        setB1((let ceylon.language.Natural $ceylontmp0$0 = .ceylon.language.Natural.instance(getN1()) in new ceylon.language.Range<ceylon.language.Natural>(.ceylon.language.Natural.instance(getN1()), .ceylon.language.Natural.instance(getN2())).contains($ceylontmp0$0)));
+        setB1(.ceylon.language.Natural.instance(getN1()) instanceof ceylon.language.Natural);
     }
     
     public EqualityAndComparisonOperators() {
