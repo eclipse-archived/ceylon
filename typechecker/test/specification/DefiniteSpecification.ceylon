@@ -69,7 +69,7 @@ interface DefiniteSpecification {
             return x();
         }
         doSomething();
-        use(x);
+        use(x());
         doSomethingElse();
     }
     

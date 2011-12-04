@@ -948,6 +948,7 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else if (pr instanceof Tree.QualifiedTypeExpression) {
                     visitQualifiedTypeExpression((Tree.QualifiedTypeExpression) pr, 
+                    		((Tree.QualifiedTypeExpression) pr).getPrimary().getTypeModel(),
                             (TypeDeclaration) dec, typeArgs, mte.getTypeArguments());
                 }
                 else if (pr instanceof Tree.BaseMemberExpression) {
@@ -1208,16 +1209,24 @@ public class ExpressionVisitor extends Visitor {
             //that.addError("could not determine if receiving expression can be invoked");
         }
         else if (!prf.isFunctional()) {
+        	//TODO: this is temporary and should be removed, once we
+        	//      can typecheck parameters using the type args of
+        	//      Callable
             that.addError("receiving expression cannot be invoked");
         }
         else {
             if (!(that.getPrimary() instanceof Tree.ExtendedTypeExpression) 
-                    &&prf.getDeclaration() instanceof Class 
+                    && prf.getDeclaration() instanceof Class 
                     && ((Class) prf.getDeclaration()).isAbstract()) {
                 that.addError("abstract classes may not be instantiated");
             }
-            //that.setTypeModel(mr.getType()); //THIS IS THE CORRECT ONE!
-            that.setTypeModel(that.getPrimary().getTypeModel()); //TODO: THIS IS A TEMPORARY HACK!
+            //that.setTypeModel(prf.getType());
+            ProducedType ct = that.getPrimary().getTypeModel();
+            if (ct!=null && !ct.getTypeArgumentList().isEmpty()) {
+            	//pull the return type out of the Callable
+			    that.setTypeModel(ct.getTypeArgumentList().get(0));
+            }
+        	//TODO: typecheck parameters using the type args of Callable
             Functional dec = (Functional) that.getPrimary().getDeclaration();
             List<ParameterList> pls = dec.getParameterLists();
             if (pls.isEmpty()) {
@@ -2093,9 +2102,11 @@ public class ExpressionVisitor extends Visitor {
                         receiverType.getDeclaration().getName());
             }
             else {*/
-                ProducedType t = ptr.getType();
+                ProducedType wt = wrap(ptr.getType(), that);
+                ProducedType t = ptr.getDeclaration() instanceof Functional ?
+                		unit.getCallableType(ptr, wt) : wt;
                 that.setTarget(ptr); //TODO: how do we wrap ptr???
-                that.setTypeModel(wrap(t, that)); //TODO: this is not correct, should be Callable
+                that.setTypeModel(t);
             //}
         }
     }
@@ -2106,7 +2117,9 @@ public class ExpressionVisitor extends Visitor {
             ProducedType outerType = that.getScope().getDeclaringType(member);
             ProducedTypedReference pr = member.getProducedTypedReference(outerType, typeArgs);
             that.setTarget(pr);
-            ProducedType t = pr.getType();
+            ProducedType t = pr.getDeclaration() instanceof Functional ?
+            		unit.getCallableType(pr, pr.getType()) :
+            		pr.getType();
             if (t==null) {
                 that.addError("could not determine type of method or attribute reference: " +
                         name(that.getIdentifier()));
@@ -2145,6 +2158,11 @@ public class ExpressionVisitor extends Visitor {
         if (that.getTypeArgumentList()!=null)
             that.getTypeArgumentList().visit(this);*/
         ProducedType pt = that.getPrimary().getTypeModel();
+        if (that.getPrimary() instanceof Tree.QualifiedTypeExpression || 
+        		that.getPrimary() instanceof Tree.BaseTypeExpression) {
+        	//this is a qualified type name, not member reference
+        	pt = ((Tree.MemberOrTypeExpression) that.getPrimary()).getTarget().getType();
+        }
         if (pt!=null) {
             TypeDeclaration d = unwrap(pt, that).getDeclaration();
             TypeDeclaration type = (TypeDeclaration) d.getMember(name(that.getIdentifier()));
@@ -2165,14 +2183,15 @@ public class ExpressionVisitor extends Visitor {
                 if (explicitTypeArguments(type, tal)) {
                     List<ProducedType> ta = getTypeArguments(tal);
                     tal.setTypeModels(ta);
-                    visitQualifiedTypeExpression(that, type, ta, tal);
+                    visitQualifiedTypeExpression(that, pt, type, ta, tal);
                     //otherwise infer type arguments later
                 }
             }
             //TODO: this is temporary until we get metamodel reference expressions!
             if (that.getPrimary() instanceof Tree.BaseTypeExpression ||
                     that.getPrimary() instanceof Tree.QualifiedTypeExpression) {
-                checkTypeBelongsToContainingScope(that.getTypeModel(), that.getScope(), that);
+                checkTypeBelongsToContainingScope(that.getTarget().getType(), 
+                		that.getScope(), that);
             }
             if (!inExtendsClause && that.getPrimary() instanceof Tree.Super) {
                 if (type!=null && type.isFormal()) {
@@ -2202,11 +2221,12 @@ public class ExpressionVisitor extends Visitor {
         
 
     private void visitQualifiedTypeExpression(Tree.QualifiedTypeExpression that,
-            TypeDeclaration type, List<ProducedType> typeArgs, Tree.TypeArguments tal) {
-        ProducedType receiverType = unwrap(that.getPrimary().getTypeModel(), that);
+            ProducedType receivingType, TypeDeclaration type, 
+            List<ProducedType> typeArgs, Tree.TypeArguments tal) {
+        ProducedType receiverType = unwrap(receivingType, that);
         if (acceptsTypeArguments(receiverType, type, typeArgs, tal, that)) {
             ProducedType t = receiverType.getTypeMember(type, typeArgs);
-            that.setTypeModel(wrap(t, that)); //TODO: this is not correct, should be Callable
+            that.setTypeModel(unit.getCallableType(t,wrap(t, that)));
             that.setTarget(t);
         }
     }
@@ -2222,7 +2242,7 @@ public class ExpressionVisitor extends Visitor {
             type = t.getDeclaration();
         }
         if ( acceptsTypeArguments(type, typeArgs, tal, that) ) {
-            that.setTypeModel(t); //TODO: this is not correct, should be Callable
+            that.setTypeModel(unit.getCallableType(t,t));
             that.setTarget(t);
         }
     }

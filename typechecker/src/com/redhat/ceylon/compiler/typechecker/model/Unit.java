@@ -172,6 +172,10 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Iterator");
     }
 
+    public Interface getCallableDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("Callable");
+    }
+    
     public Interface getCastableDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Castable");
     }
@@ -258,6 +262,26 @@ public class Unit {
         
     public Class getEntryDeclaration() {
         return (Class) getLanguageModuleDeclaration("Entry");
+    }
+    
+    public ProducedType getCallableType(ProducedReference ref, ProducedType rt) {
+    	if (ref.getType().getDeclaration() instanceof UnknownType) {
+    		//special case for forward reference to member
+    		//with inferred type TODO: something better
+    		return ref.getType();
+    	}
+    	List<ProducedType> args = new ArrayList<ProducedType>();
+    	args.add(rt);
+    	if ( ref.getDeclaration() instanceof Functional) {
+    	    for (ParameterList pl: ((Functional) ref.getDeclaration()).getParameterLists()) {
+    	    	//TODO: support multiple parameter lists!!
+    	    	for (Parameter p: pl.getParameters()) {
+    	    		//TODO: support functional parameters!!
+    	    		args.add(ref.getTypedParameter(p).getType());
+    	    	}
+    	    }
+    	}
+    	return getCallableDeclaration().getProducedType(null, args);
     }
     
     public ProducedType getEmptyType(ProducedType pt) {
