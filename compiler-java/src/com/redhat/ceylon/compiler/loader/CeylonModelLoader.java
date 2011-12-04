@@ -20,8 +20,6 @@
 
 package com.redhat.ceylon.compiler.loader;
 
-import static com.sun.tools.javac.code.Kinds.PCK;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -33,6 +31,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.lang.model.type.TypeKind;
 import javax.tools.JavaFileObject.Kind;
 
@@ -685,6 +684,10 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         int constructorCount = 0;
         // then its methods
         for(Symbol member : classSymbol.getEnclosedElements()){
+            // We skip members marked with @Ignore
+            if(getAnnotation(member, symtab.ceylonAtIgnore) != null)
+                continue;
+            
             // FIXME: deal with multiple constructors
             if(member instanceof MethodSymbol){
                 MethodSymbol methodSymbol = (MethodSymbol) member;
@@ -990,6 +993,10 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     public void complete(LazyValue value) {
         MethodSymbol meth = null;
         for (Symbol member : value.classSymbol.members().getElements()) {
+            // We skip members marked with @Ignore
+            if(getAnnotation(member, symtab.ceylonAtIgnore) != null)
+                continue;
+            
             if (member instanceof MethodSymbol) {
                 MethodSymbol m = (MethodSymbol) member;
                 if (m.name.toString().equals(
@@ -1016,6 +1023,10 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         MethodSymbol meth = null;
         String lookupName = Util.quoteIfJavaKeyword(method.getName());
         for(Symbol member : method.classSymbol.members().getElements()){
+            // We skip members marked with @Ignore
+            if(getAnnotation(member, symtab.ceylonAtIgnore) != null)
+                continue;
+            
             if(member instanceof MethodSymbol){
                 MethodSymbol m = (MethodSymbol) member;
                 if(m.name.toString().equals(lookupName)){
