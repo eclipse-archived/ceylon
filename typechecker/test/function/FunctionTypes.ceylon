@@ -12,7 +12,7 @@ class X(String s) {
 void noop() {}
 
 void higher(String[] strings, Callable<Void,String> f) {
-    void fn(String str) = f;
+    @error void fn(String str) = f;
     for (s in strings) {
         fn(s);
     }
@@ -30,6 +30,18 @@ void method() {
     higher({"hello", "world"}, upper);
     higher({"hello", "world"}, X);
     @error higher({"hello", "world"}, noop);
+    
+    function up(String s) = upper;
+    void pr(String s) = print;
+    void np() = noop;
+    
+    function good(String s) = X;
+    X better(String s) = X;
+    @error function bad() = X;
+    @error function badder(Natural n) = X;
+    @error String worse(String s) = X;
+    @error String worst() = X;
+    @error void broke() = noop();
 }
 
 class Outer() {
