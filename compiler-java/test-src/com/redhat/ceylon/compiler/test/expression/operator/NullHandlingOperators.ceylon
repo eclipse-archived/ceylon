@@ -22,15 +22,17 @@ shared class NullHandlingOperators() {
     variable Boolean b1 := false;
     variable Natural n1 := 0;
     variable Natural n2 := 0;
-    variable Natural? nat := 0;
+    variable Natural? nat1 := 0;
+    variable Natural? nat2 := 0;
     variable Integer? int := +0;
     
     void nullHandling() {
-        b1 := nat exists;
-        n1 := nat ? n2;
-        nat ?= n1;
+        b1 := nat1 exists;
+        n1 := nat1 ? n2;
+        n1 := nat1 ? nat2 ? 0; 
         variable Integer? nullSafeMember := int?.negativeValue;
         variable Integer? nullSafeInvoke := int?.plus(+1);
+        variable Integer? nullSafeInvoke2 := (+1).plus(+1);
         nullSafeInvoke := int?.plus{
             other = +1;
         };

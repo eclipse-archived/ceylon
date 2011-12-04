@@ -100,6 +100,14 @@ public class ExpressionTransformer extends AbstractTransformer {
         return result;
     }
     
+    JCStatement transform(Tree.SpecifierStatement op) {
+        // ExpressionStatements do not return any value, therefore we don't care about the type of the expressions.
+        inStatement = true;
+        JCStatement result = at(op).Exec(expressionGen().transformAssignment(op, op.getBaseMemberExpression(), op.getSpecifierExpression().getExpression()));
+        inStatement = false;
+        return result;
+    }
+    
     JCExpression transformExpression(final Tree.Term expr) {
         return transformExpression(expr, BoxingStrategy.BOXED, null);
     }
@@ -246,15 +254,21 @@ public class ExpressionTransformer extends AbstractTransformer {
         // right side
         JCExpression rhs = transformExpression(rightTerm, Util.getBoxingStrategy(decl), decl.getType());
 
-        // Restore previous inStatement state for LHS
-        inStatement = tmpInStatement;
-        
-        return transformAssignment(op, leftTerm, rhs);
+        if (tmpInStatement) {
+            return transformAssignment(op, leftTerm, rhs);
+        } else {
+            return transformSideEffectOperation(op, leftTerm, true, new SideEffectOperationFactory(){
+                @Override
+                public JCExpression makeOperation(JCExpression getter) {
+                    // make this call: getter OP RHS
+                    return getter;
+                }
+            });
+        }
     }
     
-    private JCExpression transformAssignment(Node op, Term leftTerm, JCExpression rhs) {
+    private JCExpression transformAssignment(final Node op, Term leftTerm, JCExpression rhs) {
         // left side depends
-        
         JCExpression expr = null;
         CeylonVisitor v = new CeylonVisitor(gen());
         leftTerm.visitChildren(v);

@@ -384,10 +384,6 @@ public class StatementTransformer extends AbstractTransformer {
         return at(ret).Return(returnExpr);
     }
 
-    JCStatement transform(Tree.SpecifierStatement op) {
-        return at(op).Exec(expressionGen().transformAssignment(op, op.getBaseMemberExpression(), op.getSpecifierExpression().getExpression()));
-    }
-    
     public JCStatement transform(Throw t) {
         at(t);
         Expression expr = t.getExpression();
