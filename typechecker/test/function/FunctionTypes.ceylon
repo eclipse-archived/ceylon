@@ -11,7 +11,12 @@ class X(String s) {
 
 void noop() {}
 
-void higher1(String[] strings, Callable<Void,String> f) {}
+void higher1(String[] strings, Callable<Void,String> f) {
+    void g(String str) = f;
+    for (s in strings) {
+        g(s);
+    }
+}
 
 void higher2(String[] strings, void f(String str)) {
     for (s in strings) {

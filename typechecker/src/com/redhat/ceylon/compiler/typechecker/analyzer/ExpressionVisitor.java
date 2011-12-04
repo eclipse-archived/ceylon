@@ -9,9 +9,9 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersectio
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getContainingClassOrInterface;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getOuterClassOrInterface;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
 import java.util.ArrayList;
@@ -48,7 +48,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifiedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -590,34 +589,34 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
         SpecifierExpression se = that.getSpecifierExpression();
-		if (se!=null) {
-        	Term term = se.getExpression().getTerm();
-			if (!(((Tree.Primary) term).getDeclaration() instanceof Functional)) {
-				//TODO: this is too strict ... it is allowed to just be a value
-				//      if and only if it is a value of type Callable
-				se.addError("specified value must be a reference to a function or class");
-        	}
-        	else {
+        if (se!=null) {
+            ProducedType et = se.getExpression().getTypeModel();
+            //TODO: yew, fix this:
+            if (et==null || !et.getDeclaration().getQualifiedNameString()
+                    .equals("ceylon.language.Callable")) {
+                se.addError("specified value must be a reference to a function or class: " + 
+                        et.getDeclaration().getName() + " is not a subtype of Callable");
+            }
+            else {                    
                 inferFunctionType(that, se);
-                ProducedType et = se.getExpression().getTypeModel();
-	            if (that.getType()!=null) {
-	                checkFunctionType(that.getType().getTypeModel(), se);
-	            }
-	            for (Tree.ParameterList pl: that.getParameterLists()) {
-	                //TODO: support multiple parameter lists!
-	                if (et!=null) {
-	                    if (pl.getParameters().size()+1==et.getTypeArgumentList().size()) {
-	                        int i=0;
-	                        for (Tree.Parameter p: pl.getParameters()) {
-	                            checkParameterType(i++, p.getType().getTypeModel(), se);
-	                        }
-	                    }
-	                    else {
-	                        se.addError("specified reference must have the same number of parameters");
-	                    }
-	                }
-	            }
-        	}
+                if (that.getType()!=null) {
+                    checkFunctionType(that.getType().getTypeModel(), se);
+                }
+                for (Tree.ParameterList pl: that.getParameterLists()) {
+                    //TODO: support multiple parameter lists!
+                    if (et!=null) {
+                        if (pl.getParameters().size()+1==et.getTypeArgumentList().size()) {
+                            int i=0;
+                            for (Tree.Parameter p: pl.getParameters()) {
+                                checkParameterType(i++, p.getType().getTypeModel(), se);
+                            }
+                        }
+                        else {
+                            se.addError("specified reference must have the same number of parameters");
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -1040,6 +1039,7 @@ public class ExpressionVisitor extends Visitor {
             visitInvocation(that, ((Tree.ExtendedTypeExpression) pr).getTarget());
         }
         else {
+        	//TODO: fix this
             that.addWarning("direct invocation of Callable objects not yet supported");
         }
     }
@@ -1372,14 +1372,14 @@ public class ExpressionVisitor extends Visitor {
         ProducedType argType = null;
         if (a instanceof Tree.SpecifiedArgument) {
             SpecifiedArgument sa = (Tree.SpecifiedArgument) a;
-			argType = sa.getSpecifierExpression().getExpression().getTypeModel();
+            argType = sa.getSpecifierExpression().getExpression().getTypeModel();
         }
         else if (a instanceof Tree.TypedArgument) {
             TypedArgument ta = (Tree.TypedArgument) a;
             argType = ta.getDeclarationModel().getProducedReference(null,
-            		 //assuming an argument can't have type params 
-            		Collections.<ProducedType>emptyList()).getFullType();
-			//argType = ta.getType().getTypeModel();
+                     //assuming an argument can't have type params 
+                    Collections.<ProducedType>emptyList()).getFullType();
+            //argType = ta.getType().getTypeModel();
         }
         checkAssignable(argType, pr.getTypedParameter(p).getFullType(), a,
                 "named argument must be assignable to parameter " + 
