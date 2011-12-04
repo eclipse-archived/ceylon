@@ -419,7 +419,9 @@ public class ClassTransformer extends AbstractTransformer {
     
     private JCMethodDecl makeMainMethod(JCExpression callee) {
         // Add a main() method
-        MethodDefinitionBuilder methbuilder = MethodDefinitionBuilder.main(this);
+        MethodDefinitionBuilder methbuilder = MethodDefinitionBuilder
+                .main(this)
+                .annotations(makeAtIgnore());
         // Add call to process.setupArguments
         JCIdent argsId = make().Ident(names().fromString("args"));
         JCMethodInvocation processExpr = make().Apply(null, makeIdent("", "ceylon", "language", "process", "getProcess"), List.<JCTree.JCExpression>nil());
