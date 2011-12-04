@@ -505,22 +505,23 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkFunctionType(ProducedType declaredType, 
-            Tree.SpecifierExpression sie) {
+            Tree.SpecifierExpression sie, Tree.Type that) {
         if (sie!=null && sie.getExpression()!=null) {
             //TODO: validate that expression type really is Callable
             ProducedType rt = sie.getExpression().getTypeModel().getTypeArgumentList().get(0);
-            checkAssignable(rt, declaredType, sie, 
+            checkAssignable(rt, declaredType, that, 
                     "specified reference return type must be assignable to declared return type");
         }
     }
 
-    private void checkParameterType(int i, ProducedType declaredType, 
-            Tree.SpecifierExpression sie) {
+    private void checkParameterType(int i, Parameter p, 
+    		Tree.SpecifierExpression sie, Tree.Type that) {
         if (sie!=null && sie.getExpression()!=null) {
             //TODO: validate that expression type really is Callable
             ProducedType rt = sie.getExpression().getTypeModel().getTypeArgumentList().get(i+1);
-            checkIsExactly(rt, declaredType, sie, 
-                    "specified reference parameter type must be exactly the same as declared parameter type");
+            checkIsExactly(rt, p.getType(), that, 
+                    "specified reference parameter type must be exactly the same as declared type of parameter " + 
+                    p.getName());
         }
     }
 
@@ -600,7 +601,7 @@ public class ExpressionVisitor extends Visitor {
             else {                    
                 inferFunctionType(that, se);
                 if (that.getType()!=null) {
-                    checkFunctionType(that.getType().getTypeModel(), se);
+                    checkFunctionType(that.getType().getTypeModel(), se, that.getType());
                 }
                 for (Tree.ParameterList pl: that.getParameterLists()) {
                     //TODO: support multiple parameter lists!
@@ -608,7 +609,7 @@ public class ExpressionVisitor extends Visitor {
                         if (pl.getParameters().size()+1==et.getTypeArgumentList().size()) {
                             int i=0;
                             for (Tree.Parameter p: pl.getParameters()) {
-                                checkParameterType(i++, p.getType().getTypeModel(), se);
+                                checkParameterType(i++, p.getDeclarationModel(), se, p.getType());
                             }
                         }
                         else {
