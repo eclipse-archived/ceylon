@@ -161,6 +161,9 @@ public class RefinementVisitor extends Visitor {
 		}
 		ProducedReference refinedMember = ci.getType().getTypedReference(refined, typeArgs);
 		ProducedReference refiningMember = ci.getType().getTypedReference(dec, typeArgs);
+		//note: this version checks return type and parameter types in one shot, but the
+		//resulting error messages aren't as friendly, so do it the hard way instead!
+		//checkAssignable(refiningMember.getFullType(), refinedMember.getFullType(), that,
 		checkAssignable(refiningMember.getType(), refinedMember.getType(), that,
 		        "member type must be assignable to refined member type");
 		if (dec instanceof Functional && refined instanceof Functional) {
@@ -216,9 +219,9 @@ public class RefinementVisitor extends Visitor {
         else {
             for (int i=0; i<params.getParameters().size(); i++) {
                 Parameter rparam = refinedParams.getParameters().get(i);
-                ProducedType refinedParameterType = refinedMember.getTypedParameter(rparam).getType();
+                ProducedType refinedParameterType = refinedMember.getTypedParameter(rparam).getFullType();
                 Parameter param = params.getParameters().get(i);
-                ProducedType parameterType = member.getTypedParameter(param).getType();
+                ProducedType parameterType = member.getTypedParameter(param).getFullType();
                 Tree.Type type = getParameterList(that).getParameters().get(i).getType(); //some kind of syntax error
                 if (type!=null) {
                     if (refinedParameterType==null || parameterType==null) {

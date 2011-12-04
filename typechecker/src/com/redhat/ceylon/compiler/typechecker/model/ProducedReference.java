@@ -42,7 +42,20 @@ public abstract class ProducedReference {
     }
 
     public abstract ProducedType getType();
+    
+    public ProducedType getFullType() {
+    	return getFullType(getType());
+    }
 
+    public ProducedType getFullType(ProducedType wrappedType) {
+    	if (getDeclaration() instanceof Functional) {
+    		return getDeclaration().getUnit().getCallableType(this, wrappedType);
+    	}
+    	else {
+    		return wrappedType;
+    	}
+    }
+    
     public boolean isFunctional() {
         return declaration instanceof Functional;
     }

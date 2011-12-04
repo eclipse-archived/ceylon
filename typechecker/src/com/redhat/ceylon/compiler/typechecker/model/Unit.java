@@ -264,7 +264,7 @@ public class Unit {
         return (Class) getLanguageModuleDeclaration("Entry");
     }
     
-    public ProducedType getCallableType(ProducedReference ref, ProducedType rt) {
+    ProducedType getCallableType(ProducedReference ref, ProducedType rt) {
     	if (ref.getType().getDeclaration() instanceof UnknownType) {
     		//special case for forward reference to member
     		//with inferred type TODO: something better
@@ -276,8 +276,13 @@ public class Unit {
     	    for (ParameterList pl: ((Functional) ref.getDeclaration()).getParameterLists()) {
     	    	//TODO: support multiple parameter lists!!
     	    	for (Parameter p: pl.getParameters()) {
-    	    		//TODO: support functional parameters!!
-    	    		args.add(ref.getTypedParameter(p).getType());
+    	    		ProducedTypedReference np = ref.getTypedParameter(p);
+    	    		if (np.getDeclaration() instanceof Functional) {
+    	    			args.add(getCallableType(np, np.getType()));
+    	    		}
+    	    		else {
+					    args.add(np.getType());
+    	    		}
     	    	}
     	    }
     	}

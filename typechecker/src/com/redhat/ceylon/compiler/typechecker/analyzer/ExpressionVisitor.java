@@ -15,6 +15,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -45,8 +46,10 @@ import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifiedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -683,6 +686,7 @@ public class ExpressionVisitor extends Visitor {
                 Parameter ap = alias.getParameterList().getParameters().get(i);
                 Parameter cp = c.getParameterList().getParameters().get(i);
                 ProducedType pt = at.getTypedParameter(cp).getType();
+                //TODO: properly check type of functional parameters!!
                 checkAssignable(ap.getType(), pt, that, "alias parameter " + 
                         ap.getName() + " must be assignable to corresponding class parameter " +
                         cp.getName());
@@ -1367,13 +1371,17 @@ public class ExpressionVisitor extends Visitor {
         a.setParameter(p);
         ProducedType argType = null;
         if (a instanceof Tree.SpecifiedArgument) {
-            argType = ((Tree.SpecifiedArgument) a).getSpecifierExpression()
-                    .getExpression().getTypeModel();
+            SpecifiedArgument sa = (Tree.SpecifiedArgument) a;
+			argType = sa.getSpecifierExpression().getExpression().getTypeModel();
         }
         else if (a instanceof Tree.TypedArgument) {
-            argType = ((Tree.TypedArgument) a).getType().getTypeModel();
+            TypedArgument ta = (Tree.TypedArgument) a;
+            argType = ta.getDeclarationModel().getProducedReference(null,
+            		 //assuming an argument can't have type params 
+            		Collections.<ProducedType>emptyList()).getFullType();
+			//argType = ta.getType().getTypeModel();
         }
-        checkAssignable(argType, pr.getTypedParameter(p).getType(), a,
+        checkAssignable(argType, pr.getTypedParameter(p).getFullType(), a,
                 "named argument must be assignable to parameter " + 
                 p.getName() + " of " + pr.getDeclaration().getName());
     }
@@ -1382,7 +1390,7 @@ public class ExpressionVisitor extends Visitor {
             Parameter p) {
         a.setParameter(p);
         for (Tree.Expression e: a.getExpressionList().getExpressions()) {
-            ProducedType paramType = pr.getTypedParameter(p).getType();
+            ProducedType paramType = pr.getTypedParameter(p).getFullType();
             if (paramType==null) {
                 paramType = new UnknownType(a.getUnit()).getType();
             }
@@ -1431,7 +1439,7 @@ public class ExpressionVisitor extends Visitor {
                 }
             } 
             else {
-                ProducedType paramType = pr.getTypedParameter(p).getType();
+                ProducedType paramType = pr.getTypedParameter(p).getFullType();
                 if (p.isSequenced() && pal.getEllipsis()==null) {
                     checkSequencedPositionalArgument(p, pr, pal, i, paramType);
                     return;
@@ -2172,9 +2180,7 @@ public class ExpressionVisitor extends Visitor {
                         receiverType.getDeclaration().getName());
             }
             else {*/
-                ProducedType wt = wrap(ptr.getType(), that);
-                ProducedType t = ptr.getDeclaration() instanceof Functional ?
-                        unit.getCallableType(ptr, wt) : wt;
+                ProducedType t = ptr.getFullType(wrap(ptr.getType(), that));
                 that.setTarget(ptr); //TODO: how do we wrap ptr???
                 that.setTypeModel(t);
             //}
@@ -2187,9 +2193,7 @@ public class ExpressionVisitor extends Visitor {
             ProducedType outerType = that.getScope().getDeclaringType(member);
             ProducedTypedReference pr = member.getProducedTypedReference(outerType, typeArgs);
             that.setTarget(pr);
-            ProducedType t = pr.getDeclaration() instanceof Functional ?
-                    unit.getCallableType(pr, pr.getType()) :
-                    pr.getType();
+            ProducedType t = pr.getFullType();
             if (t==null) {
                 that.addError("could not determine type of method or attribute reference: " +
                         name(that.getIdentifier()));
@@ -2296,7 +2300,7 @@ public class ExpressionVisitor extends Visitor {
         ProducedType receiverType = unwrap(receivingType, that);
         if (acceptsTypeArguments(receiverType, type, typeArgs, tal, that)) {
             ProducedType t = receiverType.getTypeMember(type, typeArgs);
-            that.setTypeModel(unit.getCallableType(t,wrap(t, that)));
+            that.setTypeModel(t.getFullType(wrap(t, that)));
             that.setTarget(t);
         }
     }
@@ -2312,7 +2316,7 @@ public class ExpressionVisitor extends Visitor {
             type = t.getDeclaration();
         }
         if ( acceptsTypeArguments(type, typeArgs, tal, that) ) {
-            that.setTypeModel(unit.getCallableType(t,t));
+            that.setTypeModel(t.getFullType());
             that.setTarget(t);
         }
     }

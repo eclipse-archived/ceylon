@@ -26,5 +26,5 @@ public class ProducedTypedReference extends ProducedReference {
             return t.substitute(getTypeArguments()); //the type arguments to the member
         }
     }
-
+    
 }

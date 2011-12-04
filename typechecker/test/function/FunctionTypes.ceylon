@@ -11,12 +11,18 @@ class X(String s) {
 
 void noop() {}
 
-void higher(String[] strings, Callable<Void,String> f) {
-    @error void fn(String str) = f;
+void higher1(String[] strings, Callable<Void,String> f) {}
+
+void higher2(String[] strings, void f(String str)) {
     for (s in strings) {
-        fn(s);
+        f(s);
     }
+    @error f(1);
+    @error f();
+    @error f("hello", 2);
 }
+
+String str(Float f) { return f.string; }
 
 void method() {
     Callable<String,String> upperRef = upper;
@@ -26,22 +32,47 @@ void method() {
     Callable<X.Y> yRef = x.Y;
     Callable<Void> helloRef = x.hello;
     Callable<Void> noopRef = noop;
-    higher({"hello", "world"}, print);
-    higher({"hello", "world"}, upper);
-    higher({"hello", "world"}, X);
-    @error higher({"hello", "world"}, noop);
     
-    function up(String s) = upper;
+    higher1({"hello", "world"}, print);
+    higher1({"hello", "world"}, upper);
+    higher1({"hello", "world"}, X);
+    @error higher1({"hello", "world"}, noop);
+    @error higher1({"hello", "world"}, str);
+    
+    higher2({"hello", "world"}, print);
+    higher2({"hello", "world"}, upper);
+    higher2({"hello", "world"}, X);
+    @error higher2({"hello", "world"}, noop);
+    @error higher2({"hello", "world"}, str);
+    
+    @type["String"] function up(String s) = upper;
     void pr(String s) = print;
     void np() = noop;
     
-    function good(String s) = X;
+    @type["String"] up("hello");
+    @type["Void"] pr("hello");
+    @type["Void"] np();
+    
+    @type["X"] function good(String s) = X;
     X better(String s) = X;
-    @error function bad() = X;
-    @error function badder(Natural n) = X;
+    @type["X"] @error function bad() = X;
+    @type["X"] @error function badder(Natural n) = X;
     @error String worse(String s) = X;
     @error String worst() = X;
     @error void broke() = noop();
+    
+    higher2 { 
+        strings = {"goodbye"};
+        void f(String s) { print(s); }
+    };
+    higher2 { 
+        strings = {"goodbye"};
+        Natural f(String s) { print(s); return s.size; }
+    };
+    higher2 { 
+        strings = {"goodbye"};
+        @error void f(Natural n) { print(n.string); }
+    };
 }
 
 class Outer() {
