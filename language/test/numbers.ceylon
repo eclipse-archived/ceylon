@@ -185,8 +185,8 @@ shared void numbers() {
     assert(vi==2&&vj==2, "multi assign");
     
     class Inner() {
-    shared variable Natural vi:=0;
-    shared variable Natural vj:=0;
+        shared variable Natural vi:=0;
+        shared variable Natural vj:=0;
     }
     value inner = Inner();
     //inner.vi:=inner.vj:=2;
