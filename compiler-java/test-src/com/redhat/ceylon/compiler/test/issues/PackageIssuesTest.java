@@ -40,6 +40,12 @@ public class PackageIssuesTest extends CompilerTest {
         compareWithJavaSource("bug148_2/Bug148_2.src", "bug148_2/Bug148_2.ceylon");
         compareWithJavaSource("bug148_3/Bug148_3.src", "bug148_3/Bug148_3.ceylon");
     }
+    
+    @Test
+    public void testBug187(){
+        compile("bug187/Main.ceylon");
+        compareWithJavaSource("bug187/Bug187");
+    }
 	
     @Test
     public void testBug214(){
