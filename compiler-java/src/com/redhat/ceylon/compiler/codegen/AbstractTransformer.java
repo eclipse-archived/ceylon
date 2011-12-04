@@ -776,6 +776,10 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtObjectType);
     }
 
+    protected List<JCAnnotation> makeAtIgnore() {
+        return makeModelAnnotation(syms().ceylonAtIgnore);
+    }
+
     protected boolean needsAnnotations(Declaration decl) {
         Declaration reqdecl = decl;
         if (reqdecl instanceof Parameter) {
