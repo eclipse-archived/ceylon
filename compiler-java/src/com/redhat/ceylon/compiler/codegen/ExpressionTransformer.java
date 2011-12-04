@@ -214,7 +214,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         binaryOperators.put(Tree.XorOp.class, "xor");
         binaryOperators.put(Tree.EqualOp.class, "equals");
         binaryOperators.put(Tree.CompareOp.class, "compare");
-        binaryOperators.put(Tree.InOp.class, "contained");
 
         // Binary operators that act on intermediary Comparison objects
         binaryOperators.put(Tree.LargerOp.class, "larger");
@@ -505,10 +504,16 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if (operatorClass == Tree.DefaultOp.class) {
             String varBaseName = tempName();
             JCExpression varIdent = makeIdent(varBaseName + "$0");
-            JCExpression test = make().Binary(JCTree.NE, varIdent, makeNull());
-            JCExpression cond = at(op).Conditional(test , varIdent, right);
+            JCExpression test = at(op).Binary(JCTree.NE, varIdent, makeNull());
+            JCExpression cond = make().Conditional(test , varIdent, right);
             JCExpression typeExpr = makeJavaType(op.getLeftTerm().getTypeModel(), 0);
-            result = makeLetExpr(varBaseName, null, typeExpr , left, cond);
+            result = makeLetExpr(varBaseName, null, typeExpr, left, cond);
+        } else if (operatorClass == Tree.InOp.class) {
+            String varBaseName = tempName();
+            JCExpression varIdent = makeIdent(varBaseName + "$0");
+            JCExpression contains = at(op).Apply(null, makeSelect(right, "contains"), List.<JCExpression> of(varIdent));
+            JCExpression typeExpr = makeJavaType(op.getLeftTerm().getTypeModel(), NO_PRIMITIVES);
+            result = makeLetExpr(varBaseName, null, typeExpr, left, contains);
         } else {
             Class<? extends Tree.OperatorExpression> originalOperatorClass = operatorClass;
             boolean loseComparison = 
