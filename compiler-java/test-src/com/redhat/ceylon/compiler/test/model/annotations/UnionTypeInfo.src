@@ -6,6 +6,7 @@ public class Foo {
     public Foo() {
     }
     
+    @.com.redhat.ceylon.compiler.metadata.java.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
         new Foo();
@@ -17,6 +18,7 @@ public class Bar {
     public Bar() {
     }
     
+    @.com.redhat.ceylon.compiler.metadata.java.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process.getProcess().setupArguments(args);
         new Bar();
