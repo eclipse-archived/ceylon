@@ -8,5 +8,5 @@ shared Nothing default() { return null; }
 shared Nothing doc(String description) { return null; }
 shared Nothing see(Void... programElements) { return null; }
 shared Nothing by(String... authors) { return null; }
-shared Nothing throws(Void... types) { return null; }
+shared Nothing throws(Void type, String? when=null) { return null; }
 shared Nothing deprecated(String? reason=null) { return null; }

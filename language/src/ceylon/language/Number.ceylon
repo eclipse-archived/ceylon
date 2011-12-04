@@ -14,22 +14,22 @@ shared interface Number
     shared formal Boolean negative;
 
     doc "The number, represented as a `Float`."
-    throws (OverflowException
-            -> "if the number is too large to be represented 
-                as a `Float`")
+    throws (OverflowException,
+           "if the number is too large to be represented 
+            as a `Float`")
     shared formal Float float;
         
     doc "The number, represented as an `Integer`, after 
          truncation of any fractional part."
-    throws (OverflowException
-            -> "if the number is too large to be represented 
-                as an `Integer`")
+    throws (OverflowException,
+           "if the number is too large to be represented 
+            as an `Integer`")
     shared formal Integer integer;
     
     doc "The number, represented as a `Natural`, after 
          truncation of any fractional part."
-    throws (NegativeNumberException
-            -> "if the number is negative")
+    throws (NegativeNumberException,
+           "if the number is negative")
     shared formal Natural natural;
     
     doc "The magnitude of the number."
