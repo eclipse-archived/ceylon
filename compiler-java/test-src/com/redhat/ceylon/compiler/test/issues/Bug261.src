@@ -6,6 +6,8 @@ final class bug261 {
     }
     
     static void bug261() {
+        long vk;
+        long vl;
         
         class Inner {
             private long vi;
@@ -33,7 +35,8 @@ final class bug261 {
             }
         }
         final Inner inner = new Inner();
-        inner.setVi((let Inner $ceylontmpopE0 = inner,long $ceylontmpopV1 = $ceylontmpopE0.getVj() in $ceylontmpopE0.setVj($ceylontmpopV1); $ceylontmpopV1));
+        inner.setVi((let Inner $ceylontmpopE0 = inner,long $ceylontmpopV1 = 2L in $ceylontmpopE0.setVj($ceylontmpopV1); $ceylontmpopV1));
+        vk = (let long $ceylontmpop2 = 2L in vl = $ceylontmpop2; $ceylontmpop2);
     }
     
     public static void main(.java.lang.String[] args) {

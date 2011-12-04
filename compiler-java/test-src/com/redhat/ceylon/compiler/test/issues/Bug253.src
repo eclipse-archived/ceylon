@@ -53,7 +53,7 @@ final class bug253 {
         final com.redhat.ceylon.compiler.test.issues.IntBoxer boxer = new com.redhat.ceylon.compiler.test.issues.IntBoxer();
         boxer.setOne(.ceylon.language.Integer.instance(1L));
         boxer.setTwo(.ceylon.language.Integer.instance(2L));
-        boxer.setOne((let com.redhat.ceylon.compiler.test.issues.IntBoxer $ceylontmpopE0 = boxer,ceylon.language.Integer $ceylontmpopV1 = $ceylontmpopE0.getTwo() in $ceylontmpopE0.setTwo($ceylontmpopV1); $ceylontmpopV1));
+        boxer.setOne((let com.redhat.ceylon.compiler.test.issues.IntBoxer $ceylontmpopE0 = boxer,ceylon.language.Integer $ceylontmpopV1 = .ceylon.language.Integer.instance(3L) in $ceylontmpopE0.setTwo($ceylontmpopV1); $ceylontmpopV1));
     }
     
     public static void main(.java.lang.String[] args) {
