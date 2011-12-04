@@ -61,7 +61,7 @@ void method() {
     @type["X"] function good(String s) = X;
     X better(String s) = X;
     @type["X"] @error function bad() = X;
-    @type["X"] @error function badder(Natural n) = X;
+    @type["X"] function badder(@error Natural n) = X;
     @error String worse(String s) = X;
     @error String worst() = X;
     @error void broke() = noop();
