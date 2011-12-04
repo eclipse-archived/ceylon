@@ -22,7 +22,6 @@ package com.redhat.ceylon.compiler.util;
 
 import java.io.File;
 
-import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.compiler.codegen.AbstractTransformer.BoxingStrategy;
@@ -155,8 +154,6 @@ public class Util {
             return getTopmostRefinedDeclaration(refinedDecl);
         return decl;
     }
-
-    private final static Object IS_UNBOXED = new Object(){ public String toString() {return "IS_UNBOXED";};};
 
     public static boolean isUnBoxed(Term node){
         return node.getUnboxed();
