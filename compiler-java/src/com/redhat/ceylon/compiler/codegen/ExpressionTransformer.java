@@ -258,10 +258,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (tmpInStatement) {
             return transformAssignment(op, leftTerm, rhs);
         } else {
-            return transformSideEffectOperation(op, leftTerm, true, new SideEffectOperationFactory(){
+            return transformSideEffectOperation(op, leftTerm, Util.getBoxingStrategy(decl) == BoxingStrategy.BOXED, new SideEffectOperationFactory(){
                 @Override
                 public JCExpression makeOperation(JCExpression getter) {
-                    // make this call: getter OP RHS
                     return getter;
                 }
             });
