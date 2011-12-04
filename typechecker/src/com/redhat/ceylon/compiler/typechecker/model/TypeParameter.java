@@ -33,6 +33,10 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     }
     
     public boolean isSequenced() {
+    	//TODO get rid of hack!!!
+    	if (getName().equals("CallableArgument")) {
+    		return true;
+    	}
 		return sequenced;
 	}
     
