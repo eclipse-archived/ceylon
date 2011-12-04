@@ -484,6 +484,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         if (operatorClass == Tree.IdenticalOp.class) {
             result = at(op).Binary(JCTree.EQ, left, right);
+        } else if (operatorClass == Tree.DefaultOp.class) {
+            String varBaseName = tempName();
+            JCExpression varIdent = makeIdent(varBaseName + "$0");
+            JCExpression test = make().Binary(JCTree.NE, varIdent, makeNull());
+            JCExpression cond = at(op).Conditional(test , varIdent, right);
+            JCExpression typeExpr = makeJavaType(op.getLeftTerm().getTypeModel(), 0);
+            result = makeLetExpr(varBaseName, null, typeExpr , left, cond);
         } else {
             Class<? extends Tree.OperatorExpression> originalOperatorClass = operatorClass;
             boolean loseComparison = 
