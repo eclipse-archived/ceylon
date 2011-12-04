@@ -57,7 +57,7 @@ public interface Sequence<Element>
     */
     
     @TypeInfo("ceylon.language.Iterator<Element>")
-    public Iterator<Element> getIterator();
+    public Iterator<? extends Element> getIterator();
     
     class SequenceIterator<Element> extends Object
     implements Iterator<Element> {

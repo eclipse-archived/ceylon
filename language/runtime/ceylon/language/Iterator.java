@@ -15,6 +15,6 @@ public interface Iterator<Element> {
     public Element getHead();
     
     @TypeInfo("ceylon.language.Nothing|ceylon.language.Iterator<Element>")
-    public Iterator<Element> getTail();
+    public Iterator<? extends Element> getTail();
     
 }

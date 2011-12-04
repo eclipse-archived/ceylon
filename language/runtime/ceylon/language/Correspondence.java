@@ -110,7 +110,7 @@ public interface Correspondence<Key,Item> {
             return Sequence$impl.defines(this, index);
         }
         @Override
-        public Iterator<Item> getIterator() {
+        public Iterator<? extends Item> getIterator() {
             return Sequence$impl.getIterator(this);
         }
         @Override

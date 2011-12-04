@@ -15,6 +15,6 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
 	public boolean getEmpty();
     
     @TypeInfo("ceylon.language.Nothing|ceylon.language.Iterator<Element>")
-    public Iterator<Element> getIterator();
+    public Iterator<? extends Element> getIterator();
     
 }

@@ -24,13 +24,13 @@ public class Sequence$impl {
         return index.longValue() <= $this.getLastIndex();
     }
 
-    public static <Element> Iterator<Element> getIterator(Sequence<Element> $this){
+    public static <Element> Iterator<? extends Element> getIterator(Sequence<Element> $this){
         return new Sequence.SequenceIterator<Element>($this, 0);
     }
     
     public static <Element> java.lang.String toString(Sequence<Element> $this) {
 		java.lang.StringBuilder result = new java.lang.StringBuilder("{ ");
-		for (Iterator<Element> iter=$this.getIterator(); iter!=null; iter=iter.getTail()) {
+		for (Iterator<? extends Element> iter=$this.getIterator(); iter!=null; iter=iter.getTail()) {
 			result.append(iter.getHead())
 				.append(", ");
 		}
