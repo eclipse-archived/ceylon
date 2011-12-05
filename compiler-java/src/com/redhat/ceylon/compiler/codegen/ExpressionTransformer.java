@@ -413,7 +413,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         final ProducedType leftType = getSupertype(op.getLeftTerm(), compoundType);
-        final ProducedType rightType = getTypeArgument(leftType);
+        final ProducedType rightType = getTypeArgument(leftType, 0);
 
         // we work on boxed types
         return transformSideEffectOperation(op, op.getLeftTerm(), true, new SideEffectOperationFactory(){
@@ -466,7 +466,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.DifferenceOp op) {
         Interface compoundType = op.getUnit().getSubtractableDeclaration();
         ProducedType leftType = getSupertype(op.getLeftTerm(), compoundType );
-        ProducedType rightType = getFirstTypeArgument(leftType);
+        ProducedType rightType = getTypeArgument(leftType, 0);
         return transformBinaryOperator(op, leftType, rightType);
     }
 
@@ -487,9 +487,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         return null;
     }
 
-    private ProducedType getFirstTypeArgument(ProducedType leftType) {
-        if (leftType!=null && leftType.getTypeArguments().size() >= 1) {
-            return leftType.getTypeArgumentList().get(0);
+    private ProducedType getTypeArgument(ProducedType leftType, int i) {
+        if (leftType!=null && leftType.getTypeArguments().size() > i) {
+            return leftType.getTypeArgumentList().get(i);
         }
         return null;
     }
@@ -1106,7 +1106,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if(safe)
                 leftType = access.getUnit().getDefiniteType(leftType);
             ProducedType leftCorrespondenceType = leftType.getSupertype(access.getUnit().getCorrespondenceDeclaration());
-            ProducedType rightType = getFirstTypeArgument(leftCorrespondenceType);
+            ProducedType rightType = getTypeArgument(leftCorrespondenceType, 0);
             
             // do the index
             JCExpression index = transformExpression(element.getExpression(), BoxingStrategy.BOXED, rightType);
