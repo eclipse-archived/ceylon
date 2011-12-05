@@ -69,7 +69,7 @@ import com.sun.tools.javac.zip.ZipFileIndex;
 
 public class ModelLoaderTest extends CompilerTest {
     
-    private Set<Declaration> validDeclarations = new HashSet<Declaration>();
+    private Map<Declaration, Set<Declaration>> alreadyCompared = new HashMap<Declaration, Set<Declaration>>();
     
     protected void verifyClassLoading(String ceylon){
         // now compile the ceylon decl file
@@ -130,7 +130,7 @@ public class ModelLoaderTest extends CompilerTest {
     }
 
     private void compareDeclarations(Declaration validDeclaration, Declaration modelDeclaration) {
-        if(!validDeclarations.add(validDeclaration))
+        if(alreadyCompared(validDeclaration, modelDeclaration))
             return;
         // check that we have a unit
         Assert.assertNotNull("Missing Unit: "+modelDeclaration.getQualifiedNameString(), modelDeclaration.getUnit());
@@ -157,6 +157,15 @@ public class ModelLoaderTest extends CompilerTest {
         }
     }
     
+    private boolean alreadyCompared(Declaration validDeclaration, Declaration modelDeclaration) {
+        Set<Declaration> comparedDeclarations = alreadyCompared.get(modelDeclaration);
+        if(comparedDeclarations == null){
+            comparedDeclarations = new HashSet<Declaration>();
+            alreadyCompared.put(modelDeclaration, comparedDeclarations);
+        }
+        return !comparedDeclarations.add(validDeclaration);
+    }
+
     private void compareTypeParameters(TypeParameter validDeclaration, TypeParameter modelDeclaration) {
         String name = validDeclaration.getContainer().toString()+"<"+validDeclaration.getName()+">";
         Assert.assertEquals("[Contravariant]", validDeclaration.isContravariant(), modelDeclaration.isContravariant());
