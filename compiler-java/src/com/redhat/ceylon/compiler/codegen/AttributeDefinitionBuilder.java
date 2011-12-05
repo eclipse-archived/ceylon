@@ -171,10 +171,16 @@ public class AttributeDefinitionBuilder {
 
     public JCTree.JCBlock generateDefaultSetterBlock() {
         Name paramName = owner.names().fromString(attrName);
+        JCExpression fld;
+        if (fieldName.equals(paramName)) {
+            fld = owner.makeSelect("this", fieldName.toString());
+        } else {
+            fld = owner.make().Ident(fieldName);
+        }
         return owner.make().Block(0L, List.<JCTree.JCStatement>of(
                 owner.make().Exec(
                         owner.make().Assign(
-                                owner.make().Ident(fieldName),
+                                fld,
                                 owner.make().Ident(paramName)))));
     }
 
