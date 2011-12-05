@@ -259,16 +259,8 @@ class NamedArgumentCallHelper {
             }
         } else if (primary instanceof QualifiedMemberOrTypeExpression) {
             QualifiedMemberOrTypeExpression memberExpr = (QualifiedMemberOrTypeExpression)primary;
-            List<JCExpression> typeArgs = exprTransformer.transformTypeArguments(ce);
-            CeylonVisitor visitor = new CeylonVisitor(exprTransformer.gen(), typeArgs, makePositionalArguments());
-            Primary primary2 = memberExpr.getPrimary();
-            primary2.visit(visitor);
-            if (visitor.hasResult()) {
-                JCExpression result = (JCExpression)visitor.getSingleResult();
-                result = exprTransformer.boxUnboxIfNecessary(result, primary2, primary2.getTypeModel(), BoxingStrategy.BOXED);    
-                this.instance = result;
-            }
-            synthClassTypeParam = exprTransformer.makeJavaType(primary2.getTypeModel(), AbstractTransformer.TYPE_ARGUMENT);
+            this.instance = exprTransformer.transformExpression(memberExpr.getPrimary());
+            synthClassTypeParam = exprTransformer.makeJavaType(memberExpr.getPrimary().getTypeModel(), AbstractTransformer.TYPE_ARGUMENT);
             method = exprTransformer.makeSelect("this", "instance", getMethodName());
         } else {
             throw new RuntimeException("Not Implemented: Named argument calls only implemented on member and type expressions");

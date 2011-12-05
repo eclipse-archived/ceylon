@@ -27,7 +27,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.util.Decl;
 import com.sun.tools.javac.tree.JCTree;
-import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 
@@ -37,14 +36,12 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     
     private final ToplevelAttributesDefinitionBuilder topattrBuilder;
     private final ClassDefinitionBuilder classBuilder;
-    private final ListBuffer<JCExpression> args;
     
     public CeylonVisitor(CeylonTransformer ceylonTransformer) {
         this.gen = ceylonTransformer;
         this.defs = new ListBuffer<JCTree>();
         this.topattrBuilder = null;
         this.classBuilder = null;
-        this.args = null;
     }
 
     public CeylonVisitor(CeylonTransformer ceylonTransformer, ToplevelAttributesDefinitionBuilder topattrBuilder) {
@@ -52,7 +49,6 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         this.defs = new ListBuffer<JCTree>();
         this.topattrBuilder = topattrBuilder;
         this.classBuilder = null;
-        this.args = null;
     }
 
     public CeylonVisitor(CeylonTransformer ceylonTransformer, ClassDefinitionBuilder classBuilder) {
@@ -60,15 +56,6 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         this.defs = new ListBuffer<JCTree>();
         this.topattrBuilder = null;
         this.classBuilder = classBuilder;
-        this.args = null;
-    }
-
-    public CeylonVisitor(CeylonTransformer ceylonTransformer, List<JCExpression> typeArgs, ListBuffer<JCExpression> args) {
-        this.gen = ceylonTransformer;
-        this.defs = new ListBuffer<JCTree>();
-        this.topattrBuilder = null;
-        this.classBuilder = null;
-        this.args = args;
     }
     
     public void handleException(Exception e, Node that) {
@@ -265,11 +252,6 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     
     public void visit(Tree.QualifiedMemberExpression access) {
         append(gen.expressionGen().transform(access));
-    }
-
-    public void visit(Tree.BaseTypeExpression typeExp) {
-        // A constructor
-        append(gen.expressionGen().transform(typeExp, args.toList()));
     }
 
     public void visit(Tree.BaseMemberExpression access) {

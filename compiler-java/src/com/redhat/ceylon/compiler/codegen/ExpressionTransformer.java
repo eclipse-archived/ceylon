@@ -846,17 +846,11 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         List<JCExpression> typeArgs = transformTypeArguments(ce);
                     
-        CeylonVisitor visitor = new CeylonVisitor(gen(), typeArgs, args);
-        ce.getPrimary().visit(visitor);
-
-        if (!visitor.hasResult()) {
-        	return make().Erroneous();
-        }
-        
-        JCExpression expr = visitor.getSingleResult();
-        if (expr instanceof JCTree.JCNewClass) {
-            return expr;
+        if (ce.getPrimary() instanceof Tree.BaseTypeExpression) {
+            ProducedType classType = (ProducedType)((Tree.BaseTypeExpression)ce.getPrimary()).getTarget();
+            return at(ce).NewClass(null, null, makeJavaType(classType, CLASS_NEW), args.toList(), null);
         } else {
+            JCExpression expr = transformExpression(ce.getPrimary());
             return at(ce).Apply(typeArgs, expr, args.toList());
         }
     }
@@ -1062,11 +1056,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         return (s instanceof Declaration) && (s == decl);
     }
     
-    public JCExpression transform(Tree.BaseTypeExpression typeExp, List<JCExpression> args) {
-        // A constructor
-        return at(typeExp).NewClass(null, null, makeJavaType((ProducedType)typeExp.getTarget(), CLASS_NEW), args, null);
-    }
-
     public JCExpression transform(SequenceEnumeration value) {
         at(value);
         if (value.getExpressionList() == null) {
