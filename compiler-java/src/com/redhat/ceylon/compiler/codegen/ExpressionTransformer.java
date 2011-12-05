@@ -277,7 +277,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return transformAssignment(op, leftTerm, expr, rhs);
     }
     
-    private JCExpression transformAssignment(Node op, Term leftTerm, JCExpression expr, JCExpression rhs) {
+    private JCExpression transformAssignment(Node op, Term leftTerm, JCExpression lhs, JCExpression rhs) {
         JCExpression result = null;
 
         // FIXME: can this be anything else than a Primary?
@@ -289,24 +289,24 @@ public class ExpressionTransformer extends AbstractTransformer {
         String selector = Util.getSetterName(decl.getName());
         if (decl.isToplevel()) {
             // must use top level setter
-            expr = makeIdentOrSelect(makeFQIdent(decl.getContainer().getQualifiedNameString()), Util.quoteIfJavaKeyword(decl.getName()));
+            lhs = makeIdentOrSelect(makeFQIdent(decl.getContainer().getQualifiedNameString()), Util.quoteIfJavaKeyword(decl.getName()));
         } else if ((decl instanceof Getter)) {
             // must use the setter
             if (Decl.withinMethod(decl)) {
-                expr = makeIdentOrSelect(expr, decl.getName() + "$setter");
+                lhs = makeIdentOrSelect(lhs, decl.getName() + "$setter");
             }
         } else if (variable && (Decl.isClassAttribute(decl))) {
             // must use the setter, nothing to do
         } else if (variable && (decl.isCaptured() || decl.isShared())) {
             // must use the qualified setter
-            expr = makeIdentOrSelect(expr, decl.getName());
+            lhs = makeIdentOrSelect(lhs, decl.getName());
         } else {
-            result = at(op).Assign(makeIdentOrSelect(expr, decl.getName()), rhs);
+            result = at(op).Assign(makeIdentOrSelect(lhs, decl.getName()), rhs);
         }
         
         if (result == null) {
             result = make().Apply(List.<JCTree.JCExpression>nil(),
-                    makeIdentOrSelect(expr, selector),
+                    makeIdentOrSelect(lhs, selector),
                     List.<JCTree.JCExpression>of(rhs));
         }
         
