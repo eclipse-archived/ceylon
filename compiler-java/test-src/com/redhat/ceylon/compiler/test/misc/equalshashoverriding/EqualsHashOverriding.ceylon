@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+@nomodel
 class EqualsHashOverriding(String s) satisfies Equality {
     shared void print() {}
     shared actual Boolean equals(Equality that) {
@@ -31,9 +32,11 @@ class EqualsHashOverriding(String s) satisfies Equality {
         return s.hash;
     }
 }
+@nomodel
 class EqualsHashOverriding2(String s) satisfies Equality {
     shared actual Integer hash = +0;
 }
+@nomodel
 class EqualsHashOverriding3(String s) satisfies Equality {
     shared actual Integer hash;
     hash = +0;

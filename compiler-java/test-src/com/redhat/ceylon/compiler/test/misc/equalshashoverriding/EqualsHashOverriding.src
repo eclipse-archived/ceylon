@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.test.misc.equalshashoverriding;
 
-@.com.redhat.ceylon.compiler.metadata.java.Ceylon
 class EqualsHashOverriding {
     private final .java.lang.String s;
     
@@ -8,10 +7,7 @@ class EqualsHashOverriding {
     }
     
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Boolean")
-    public final boolean equals(@.com.redhat.ceylon.compiler.metadata.java.Name("that")
-    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Equality")
-    final .java.lang.Object that) {
+    public final boolean equals(final .java.lang.Object that) {
         final .java.lang.Object $that$0 = that;
         if ($that$0 instanceof com.redhat.ceylon.compiler.test.misc.equalshashoverriding.EqualsHashOverriding) {
             final com.redhat.ceylon.compiler.test.misc.equalshashoverriding.EqualsHashOverriding $that$1 = (com.redhat.ceylon.compiler.test.misc.equalshashoverriding.EqualsHashOverriding)$that$0;
@@ -25,13 +21,10 @@ class EqualsHashOverriding {
         return (int).ceylon.language.String.instance(s).hashCode();
     }
     
-    EqualsHashOverriding(@.com.redhat.ceylon.compiler.metadata.java.Name("s")
-    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.String")
-    .java.lang.String s) {
+    EqualsHashOverriding(.java.lang.String s) {
         this.s = s;
     }
 }
-@.com.redhat.ceylon.compiler.metadata.java.Ceylon
 class EqualsHashOverriding2 {
     private final long hash;
     
@@ -40,13 +33,10 @@ class EqualsHashOverriding2 {
         return (int)hash;
     }
     
-    EqualsHashOverriding2(@.com.redhat.ceylon.compiler.metadata.java.Name("s")
-    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.String")
-    .java.lang.String s) {
+    EqualsHashOverriding2(.java.lang.String s) {
         this.hash = 0L;
     }
 }
-@.com.redhat.ceylon.compiler.metadata.java.Ceylon
 class EqualsHashOverriding3 {
     private final long hash;
     
@@ -55,9 +45,7 @@ class EqualsHashOverriding3 {
         return (int)hash;
     }
     
-    EqualsHashOverriding3(@.com.redhat.ceylon.compiler.metadata.java.Name("s")
-    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.String")
-    .java.lang.String s) {
+    EqualsHashOverriding3(.java.lang.String s) {
         hash = 0L;
     }
 }
