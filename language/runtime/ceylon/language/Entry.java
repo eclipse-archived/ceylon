@@ -18,7 +18,8 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
  })
 @Class(extendsType="ceylon.language.Object")
 @SatisfiedTypes("ceylon.language.Equality")
-public class Entry<Key, Item> extends Object {
+public class Entry<Key, Item> {
+	
 	private Key key;
 	private Item item;
 	

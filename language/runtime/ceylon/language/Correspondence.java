@@ -46,7 +46,6 @@ public interface Correspondence<Key,Item> {
     })
     @Class(extendsType="ceylon.language.Object")
     class Entries<Key,Item>
-            extends Object
             implements Sequence<Item> {
         private Sequence<Key> keys;
         private Correspondence<Key, Item> $this;

@@ -14,7 +14,6 @@ import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
 })
 @Class(extendsType="ceylon.language.Object")
 public final class Natural
-    extends Object
     implements Castable<Numeric>, Integral<Natural>, 
                Subtractable<Natural,Integer> {
     

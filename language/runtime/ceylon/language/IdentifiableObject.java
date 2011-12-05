@@ -7,7 +7,7 @@ import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 @SatisfiedTypes("ceylon.language.Equality")
 @Class(extendsType="ceylon.language.Object")
-public abstract class IdentifiableObject extends Object  {
+public abstract class IdentifiableObject {
 
     public boolean equals(@Name("that") @TypeInfo("ceylon.language.Equality") java.lang.Object that) {
         //TODO: this is broken:   

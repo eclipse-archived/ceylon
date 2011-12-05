@@ -12,7 +12,6 @@ import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 })
 @Class(extendsType="ceylon.language.Object")
 public final class Integer
-    extends Object
     implements Castable<Numeric>, Integral<Integer>, 
                Subtractable<Integer,Integer> {
     

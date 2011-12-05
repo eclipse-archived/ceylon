@@ -6,7 +6,7 @@ import com.redhat.ceylon.compiler.metadata.java.Sequenced;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 @Class(extendsType="ceylon.language.Object")
-public final class String extends Object 
+public final class String
     implements Comparable<String>, Ordered<Character>, 
                Correspondence<Natural,Character>, Format,
                Sized, Summable<String>, Castable<String>,
@@ -239,7 +239,7 @@ public final class String extends Object
     @Override
     public boolean contains(@Name("element") 
     @TypeInfo("ceylon.language.Equality") 
-    Object element) {
+    java.lang.Object element) {
     	if (element instanceof String) {
     	    return firstOccurrence(((String)element).value)!=null;
     	}
@@ -259,14 +259,14 @@ public final class String extends Object
     @Override
     public boolean containsAny(@Sequenced @Name("elements") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Equality>")
-    Iterable<? extends Object> elements) {
+    Iterable<?> elements) {
     	return Category$impl.containsAny(this, elements);
     }
 
     @Override
     public boolean containsEvery(@Sequenced @Name("elements") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Equality>")
-    Iterable<? extends Object> elements) {
+    Iterable<?> elements) {
     	return Category$impl.containsEvery(this, elements);
     }
     

@@ -6,7 +6,6 @@ import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 @Class(extendsType="ceylon.language.Object")
 public final class Float
-    extends Object
     implements Castable<Float>, Numeric<Float>, 
                Subtractable<Float,Float> {
     

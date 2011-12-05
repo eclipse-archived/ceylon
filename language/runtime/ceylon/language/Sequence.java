@@ -59,8 +59,8 @@ public interface Sequence<Element>
     @TypeInfo("ceylon.language.Iterator<Element>")
     public Iterator<? extends Element> getIterator();
     
-    class SequenceIterator<Element> extends Object
-    implements Iterator<Element> {
+    class SequenceIterator<Element>
+            implements Iterator<Element> {
         private long from;
         private Sequence<Element> $this;
         SequenceIterator(Sequence<Element> $this, long from){

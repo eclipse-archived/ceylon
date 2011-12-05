@@ -4,10 +4,11 @@ import java.io.IOException;
 
 import com.redhat.ceylon.compiler.metadata.java.Ceylon;
 import com.redhat.ceylon.compiler.metadata.java.Name;
+import com.redhat.ceylon.compiler.metadata.java.Object;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
-@Ceylon @com.redhat.ceylon.compiler.metadata.java.Object
-public class process extends Object {
+@Ceylon @Object //TODO: extendedType=Object
+public class process extends ceylon.language.Object {
 	
     @SuppressWarnings("unchecked")
     private Iterable<? extends String> args = $empty.getEmpty();

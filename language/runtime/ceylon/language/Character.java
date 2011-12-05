@@ -9,9 +9,9 @@ import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 @SatisfiedTypes({"ceylon.language.Equality",
 		        "ceylon.language.Comparable<ceylon.language.Character>",
 		        "ceylon.language.Ordinal<ceylon.language.Character>"})
-public final class Character extends Object 
-        implements Comparable<Character>, Ordinal<Character>
-{
+public final class Character
+        implements Comparable<Character>, Ordinal<Character> {
+	
     public final int codePoint;
 
     Character(int codePoint) {

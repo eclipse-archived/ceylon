@@ -15,8 +15,7 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
 })
 @Class(extendsType="ceylon.language.Object")
 public class Singleton<Element> 
-		extends Object
-		implements Sequence<Element> {
+        implements Sequence<Element> {
 	
 	Element element;
 	

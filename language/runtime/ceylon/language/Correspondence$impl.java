@@ -9,7 +9,7 @@ public class Correspondence$impl {
 
     public static <Key,Item> Category getKeys(final Correspondence<Key,Item> $this){
         Category keys = new Category() {
-            public boolean contains(Object value) {
+            public boolean contains(java.lang.Object value) {
                 // FIXME
                 if (true/*value instanceof Key*/) {
                     return $this.defines((Key)value);
@@ -20,12 +20,12 @@ public class Correspondence$impl {
             }
 
             @Override
-            public boolean containsEvery(ceylon.language.Iterable<? extends Object> elements) {
+            public boolean containsEvery(ceylon.language.Iterable<?> elements) {
                 return Category$impl.containsEvery(this, elements);
             }
 
             @Override
-            public boolean containsAny(ceylon.language.Iterable<? extends Object> elements) {
+            public boolean containsAny(ceylon.language.Iterable<?> elements) {
                 return Category$impl.containsAny(this, elements);
             }
         };

@@ -11,7 +11,6 @@ import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 	             "ceylon.language.Category",
 	             "ceylon.language.Equality"})
 public class Range<Element extends Comparable<? super Element> & Ordinal<? extends Element>>
-    extends Object
     implements Sequence<Element>, Category {
     
     private Element first;
@@ -121,7 +120,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
 
     @Override
     public final boolean contains(@Name("element") 
-    @TypeInfo("ceylon.language.Equality") Object value) {
+    @TypeInfo("ceylon.language.Equality") java.lang.Object value) {
         // FIXME
     	try {
 	        if(value != null /*&& value instanceof Element*/)
@@ -207,7 +206,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     @Override
     public boolean containsEvery(@Sequenced @Name("elements") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Equality>")
-    Iterable<? extends Object> elements) {
+    Iterable<?> elements) {
         return Category$impl.containsEvery(this, elements);
     }
 
@@ -215,7 +214,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     @Override
     public boolean containsAny(@Sequenced @Name("elements") 
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Equality>")
-    Iterable<? extends Object> elements) {
+    Iterable<?> elements) {
         return Category$impl.containsAny(this, elements);
     }
 
