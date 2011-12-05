@@ -20,28 +20,25 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package com.redhat.ceylon.cmr.spi;
+package com.redhat.ceylon.cmr.impl;
 
-import java.io.IOException;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 
 /**
- * Represent repository contents as nodes.
+ * I/O utils.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface Node {
-    String getLabel();
+public class IOUtils {
 
-    Node getChild(String label);
+    static InputStream toStream(File file) {
+        try {
+            return new FileInputStream(file);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-    Iterable<? extends Node> getChildren();
-
-    boolean hasContent();
-
-    InputStream getContent() throws IOException;
-
-    Node getParent(String label);
-
-    Iterable<? extends Node> getParents();
 }

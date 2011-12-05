@@ -25,6 +25,7 @@ package com.redhat.ceylon.cmr.api;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Logger;
 
 /**
  * Abstract repository.
@@ -32,6 +33,9 @@ import java.io.InputStream;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public abstract class AbstractRepository implements Repository {
+
+    protected Logger log = Logger.getLogger(getClass().getName());
+
     public File getArtifact(String name, String version) throws IOException {
         ArtifactContext context = new ArtifactContext();
         context.setName(name);

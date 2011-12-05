@@ -24,11 +24,15 @@ package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.cmr.spi.OpenNode;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 
 /**
+ * Root node -- main entry point into Ceylon repositories.
+ *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class RootRepository extends AbstractNodeRepository {
@@ -53,6 +57,42 @@ public class RootRepository extends AbstractNodeRepository {
 
     public File getArtifact(ArtifactContext context) throws IOException {
         Node node = getLeafNode(context);
-        return fileContentStore.getFile(node);
+        if (node != null) {
+            File file = fileContentStore.getFile(node);
+            if (file.exists() == false) {
+                log.fine("Creating local copy of external node: " + node);
+                fileContentStore.putContent(node, node.getContent());
+                file = fileContentStore.getFile(node); // re-get
+                if (context.isIgnoreSHA() == false && node instanceof OpenNode) {
+                    OpenNode on = (OpenNode) node;
+                    ByteArrayInputStream shaStream = null; // TODO
+                    Node sha = node.getChild(SHA);
+                    if (sha == null) {
+                        // put it to ext node as well, if supported
+                        on.addContent(SHA, shaStream);
+                    }
+                    // create empty marker node
+                    OpenNode sl = on.addNode(SHA + LOCAL);
+                    // put sha to local store as well
+                    fileContentStore.putContent(sl, shaStream);
+                }
+            }
+            return file;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    protected boolean checkSHA(Node artifact) throws IOException {
+        if (super.checkSHA(artifact) == false) {
+            Node sha = artifact.getChild(SHA + LOCAL);
+            if (sha != null) {
+                File shaFile = fileContentStore.getFile(sha);
+                if (shaFile.exists())
+                    checkSHA(artifact, IOUtils.toStream(shaFile));
+            }
+        }
+        return false;
     }
 }

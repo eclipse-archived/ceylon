@@ -46,13 +46,9 @@ public class FileContentStore implements ContentStore {
         this.root = root;
     }
 
-    File getFile(Node node) throws IOException {
+    File getFile(Node node) {
         String path = getFullPath(node);
-        File file = new File(root, path);
-        if (file.exists() == false)
-            throw new IOException("Content doesn't exists: " + file);
-
-        return file;
+        return new File(root, path);
     }
 
     protected String getFullPath(Node node) {
@@ -62,24 +58,31 @@ public class FileContentStore implements ContentStore {
     }
 
     protected static void buildFullPath(Node node, StringBuilder path, boolean appendSeparator) {
-        Iterable<Node> parents = node.getParents();
+        Iterable<? extends Node> parents = node.getParents();
         //noinspection LoopStatementThatDoesntLoop
         for (Node parent : parents) {
             buildFullPath(parent, path, true);
             break; // just use the first one
         }
         path.append(node.getLabel());
-        if (appendSeparator)
+        if (appendSeparator && node.hasContent() == false)
             path.append(File.separator);
     }
 
+    public ContentHandle popContent(Node node) {
+        File file = getFile(node);
+        return (file.exists()) ? new FileContentHandle(file) : null;
+    }
+
     public ContentHandle getContent(Node node) throws IOException {
-        return new FileContentHandle(getFile(node));
+        File file = getFile(node);
+        if (file.exists() == false)
+            throw new IOException("Content doesn't exist: " + file);
+        return new FileContentHandle(file);
     }
 
     public ContentHandle putContent(Node node, InputStream stream) throws IOException {
-        String path = getFullPath(node);
-        File file = new File(root, path);
+        File file = getFile(node);
         if (file.exists())
             throw new IOException("Content already exists: " + file);
         // TODO -- copy content

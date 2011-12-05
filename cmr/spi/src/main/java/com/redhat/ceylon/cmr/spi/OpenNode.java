@@ -35,9 +35,9 @@ public interface OpenNode extends Node {
 
     void merge(Node other);
 
-    Node addNode(String label);
+    OpenNode addNode(String label);
+
+    OpenNode addContent(String label, InputStream content) throws IOException;
 
     Node removeNode(String label);
-
-    Node addContent(String label, InputStream content) throws IOException;
 }

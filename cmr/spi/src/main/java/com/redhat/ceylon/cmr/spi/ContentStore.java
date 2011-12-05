@@ -32,6 +32,8 @@ import java.io.InputStream;
  */
 public interface ContentStore {
 
+    ContentHandle popContent(Node node);
+
     ContentHandle getContent(Node node) throws IOException;
 
     ContentHandle putContent(Node node, InputStream stream) throws IOException;

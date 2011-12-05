@@ -40,9 +40,17 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class DefaultNode implements OpenNode {
 
+    private static ContentHandle MARKER = new ContentHandle() {
+        public InputStream getContent() throws IOException {
+            return null;
+        }
+        public void clean() {
+        }
+    };
+
     private String label;
-    private ConcurrentMap<String, Node> parents = new ConcurrentHashMap<String, Node>();
-    private ConcurrentMap<String, Node> children = new ConcurrentHashMap<String, Node>();
+    private ConcurrentMap<String, OpenNode> parents = new ConcurrentHashMap<String, OpenNode>();
+    private ConcurrentMap<String, OpenNode> children = new ConcurrentHashMap<String, OpenNode>();
 
     private volatile ContentHandle handle;
     private volatile MergeStrategy strategy;
@@ -111,7 +119,7 @@ public class DefaultNode implements OpenNode {
     }
 
     @Override
-    public Node addNode(String label) {
+    public OpenNode addNode(String label) {
         try {
             //noinspection NullableProblems
             return addNode(label, null, true);
@@ -135,16 +143,16 @@ public class DefaultNode implements OpenNode {
     }
 
     @Override
-    public Node addContent(String label, InputStream content) throws IOException {
+    public OpenNode addContent(String label, InputStream content) throws IOException {
         return addNode(label, content, false);
     }
 
-    protected Node addNode(String label, InputStream content, boolean allowNoContent) throws IOException {
+    protected OpenNode addNode(String label, InputStream content, boolean allowNoContent) throws IOException {
         if (content == null && allowNoContent == false)
             throw new IllegalArgumentException("Null content not allowed: " + label);
 
         DefaultNode node = new DefaultNode(label);
-        Node previous = children.putIfAbsent(label, node);
+        OpenNode previous = children.putIfAbsent(label, node);
         if (previous == null) {
             previous = node;
             node.parents.put(this.label, this);
@@ -167,26 +175,34 @@ public class DefaultNode implements OpenNode {
     }
 
     @Override
-    public Iterable<Node> getChildren() {
+    public Iterable<? extends Node> getChildren() {
         return children.values();
     }
 
     @Override
-    public boolean isLeaf() {
-        return children.isEmpty();
+    public boolean hasContent() {
+        if (handle == null || handle == MARKER)
+            return false;
+
+        ContentHandle ch = getContentStore().popContent(this);
+        if (ch == null) {
+            handle = MARKER;
+        }
+
+        return (ch != null);
     }
 
     @Override
     public InputStream getContent() throws IOException {
         if (handle != null) {
             return handle.getContent();
-        } else if (isLeaf()) {
-            ContentHandle ch = getContentStore().getContent(this);
-            InputStream stream = ch.getContent();
-            handle = ch;
-            return stream;
         } else {
-            return null;
+            ContentHandle ch = getContentStore().getContent(this);
+            if (ch == null) {
+                ch = MARKER;
+            }
+            handle = ch;
+            return ch.getContent();
         }
     }
 
@@ -196,7 +212,7 @@ public class DefaultNode implements OpenNode {
     }
 
     @Override
-    public Iterable<Node> getParents() {
+    public Iterable<? extends Node> getParents() {
         return parents.values();
     }
 

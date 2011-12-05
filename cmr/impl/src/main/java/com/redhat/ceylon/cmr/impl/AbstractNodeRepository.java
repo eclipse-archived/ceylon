@@ -27,25 +27,31 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public abstract class AbstractNodeRepository extends AbstractRepository {
 
-    protected Node root;
+    protected static final String CAR = ".car";
+    protected static final String SHA = ".sha";
+    protected static final String LOCAL = ".local";
 
-    protected Node getRoot() {
+    protected OpenNode root;
+
+    protected OpenNode getRoot() {
         if (root == null)
             throw new IllegalArgumentException("Missing root!");
 
         return root;
     }
 
-    protected void setRoot(Node root) {
+    protected void setRoot(OpenNode root) {
         if (root == null)
             throw new IllegalArgumentException("Null root");
         if (this.root != null)
@@ -54,21 +60,83 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
         this.root = root;
     }
 
+    protected String getArtifactName(ArtifactContext context, String extension) {
+        return context.getName() + "-" + context.getVersion() + extension;
+    }
+
+    protected List<String> getPath(ArtifactContext context, boolean addLeaf) {
+        String name = context.getName();
+        List<String> tokens = new ArrayList<String>();
+        tokens.addAll(Arrays.asList(name.split("\\.")));
+        tokens.add(context.getVersion()); // add version
+        if (addLeaf)
+            tokens.add(getLabel(context)); // add leaf name
+        return tokens;
+    }
+
     public void putArtifact(ArtifactContext context, InputStream content) throws IOException {
-        OpenNode node = getParentNode(context);
+        List<String> tokens = getPath(context, false);
+        Node parent = getNode(tokens);
+        if (parent == null) {
+            OpenNode current = root;
+            for (String path : tokens)
+                current = current.addNode(path);
+            parent = current;
+        }
+
         String label = getLabel(context);
-        node.addContent(label, content);
+        if (parent instanceof OpenNode) {
+            OpenNode on = (OpenNode) parent;
+            on.addContent(label, content);
+        } else {
+            throw new IOException("Parent node is not open: " + parent);
+        }
     }
 
     protected Node getLeafNode(ArtifactContext context) {
-        return null;  //To change body of created methods use File | Settings | File Templates.
+        Node node = getNode(getPath(context, true));
+        if (node == null) {
+            if (context.isThrowErrorIfMissing())
+                throw new IllegalArgumentException("No such artifact: " + context);
+            return null;
+        }
+
+        if (context.isIgnoreSHA() == false) {
+            try {
+                checkSHA(node);
+            } catch (IOException e) {
+                log.warning("Cannot check SHA: " + e);
+            }
+        }
+
+        return node;
     }
 
-    protected OpenNode getParentNode(ArtifactContext context) {
-        return null;  //To change body of created methods use File | Settings | File Templates.
+    protected boolean checkSHA(Node artifact) throws IOException {
+        Node sha = artifact.getChild(SHA);
+        if (sha != null) {
+            checkSHA(artifact, sha.getContent());
+            return true;
+        }
+        return false;
+    }
+
+    protected void checkSHA(Node artifact, InputStream shaStream) throws IOException {
+        // TODO
+    }
+
+    protected Node getNode(Iterable<String> tokens) {
+        Node current = root;
+        for (String token : tokens) {
+            current = current.getChild(token);
+            if (current == null) {
+                return null;
+            }
+        }
+        return current;
     }
 
     protected String getLabel(ArtifactContext context) {
-        return null;
+        return getArtifactName(context, CAR);
     }
 }
