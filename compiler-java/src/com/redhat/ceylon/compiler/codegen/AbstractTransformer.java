@@ -609,7 +609,7 @@ public abstract class AbstractTransformer implements Transformation {
                     if ((flags & (SATISFIES | EXTENDS)) != 0) {
                         // - The Ceylon type Foo<T> appearing in an extends or satisfies clause
                         //   results in the Java type Foo<T>
-                        jta = makeJavaType(ta, (flags & (SATISFIES | EXTENDS)));
+                        jta = makeJavaType(ta, TYPE_ARGUMENT);
                     } else {
                         // - The Ceylon type Foo<T> appearing anywhere else results in the Java type
                         // - Foo<T> if Foo is invariant in T,
