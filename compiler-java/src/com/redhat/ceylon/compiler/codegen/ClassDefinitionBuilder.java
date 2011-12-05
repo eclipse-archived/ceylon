@@ -269,6 +269,7 @@ public class ClassDefinitionBuilder {
 
     public ClassDefinitionBuilder extending(ProducedType extendingType) {
         this.extending = getSuperclass(extendingType);
+        annotations(gen.makeAtClass(extendingType));
         return this;
     }
 
@@ -287,6 +288,7 @@ public class ClassDefinitionBuilder {
     public ClassDefinitionBuilder satisfies(java.util.List<ProducedType> satisfies) {
         this.satisfies.addAll(transformSatisfiedTypes(satisfies));
         this.defs.addAll(appendConcreteInterfaceMembers(satisfies));
+        annotations(gen.makeAtSatisfiedTypes(satisfies));
         return this;
     }
 

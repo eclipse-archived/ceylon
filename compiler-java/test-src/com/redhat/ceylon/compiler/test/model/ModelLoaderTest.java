@@ -69,7 +69,7 @@ import com.sun.tools.javac.zip.ZipFileIndex;
 
 public class ModelLoaderTest extends CompilerTest {
     
-    private Set<Declaration> validDeclarations = new HashSet<Declaration>();
+    private Map<Declaration, Set<Declaration>> alreadyCompared = new HashMap<Declaration, Set<Declaration>>();
     
     protected void verifyClassLoading(String ceylon){
         // now compile the ceylon decl file
@@ -130,7 +130,7 @@ public class ModelLoaderTest extends CompilerTest {
     }
 
     private void compareDeclarations(Declaration validDeclaration, Declaration modelDeclaration) {
-        if(!validDeclarations.add(validDeclaration))
+        if(alreadyCompared(validDeclaration, modelDeclaration))
             return;
         // check that we have a unit
         Assert.assertNotNull("Missing Unit: "+modelDeclaration.getQualifiedNameString(), modelDeclaration.getUnit());
@@ -142,6 +142,16 @@ public class ModelLoaderTest extends CompilerTest {
         if(!(validDeclaration instanceof Parameter) || validDeclaration.isShared())
             Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [name]", validDeclaration.getQualifiedNameString(), modelDeclaration.getQualifiedNameString());
         Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [shared]", validDeclaration.isShared(), modelDeclaration.isShared());
+        // if they're not shared, stop at making sure they are the same type of object
+        if(!validDeclaration.isShared()){
+            boolean sameType = validDeclaration.getClass().isAssignableFrom(modelDeclaration.getClass());
+            // we may replace Getter or Setter with Value, no harm done
+            sameType |= validDeclaration instanceof Getter && modelDeclaration instanceof Value;
+            sameType |= validDeclaration instanceof Setter && modelDeclaration instanceof Value;
+            Assert.assertTrue(validDeclaration.getQualifiedNameString()+" [type]", sameType);
+            return;
+        }
+        // full check
         if(validDeclaration instanceof Class){
             Assert.assertTrue("[Class]", modelDeclaration instanceof Class);
             compareClassDeclarations((Class)validDeclaration, (Class)modelDeclaration);
@@ -157,6 +167,15 @@ public class ModelLoaderTest extends CompilerTest {
         }
     }
     
+    private boolean alreadyCompared(Declaration validDeclaration, Declaration modelDeclaration) {
+        Set<Declaration> comparedDeclarations = alreadyCompared.get(modelDeclaration);
+        if(comparedDeclarations == null){
+            comparedDeclarations = new HashSet<Declaration>();
+            alreadyCompared.put(modelDeclaration, comparedDeclarations);
+        }
+        return !comparedDeclarations.add(validDeclaration);
+    }
+
     private void compareTypeParameters(TypeParameter validDeclaration, TypeParameter modelDeclaration) {
         String name = validDeclaration.getContainer().toString()+"<"+validDeclaration.getName()+">";
         Assert.assertEquals("[Contravariant]", validDeclaration.isContravariant(), modelDeclaration.isContravariant());
@@ -286,5 +305,10 @@ public class ModelLoaderTest extends CompilerTest {
     @Test
     public void loadToplevelObjects(){
         verifyClassLoading("ToplevelObjects.ceylon");
+    }
+
+    @Test
+    public void loadErasedTypes(){
+        verifyClassLoading("ErasedTypes.ceylon");
     }
 }

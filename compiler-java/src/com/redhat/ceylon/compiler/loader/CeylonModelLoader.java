@@ -946,13 +946,19 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                     log.error("ceylon", "Object has no super class symbol: "+className);
                     return;
                 }
-                // now deal with type erasure, avoid having Object as superclass
-                String superClassName = superClass.tsym.getQualifiedName().toString();
-                if(superClassName.equals("java.lang.Object")){
-                    // FIXME: deal with @TypeInfo
-                    extendedType = getType(symtab.ceylonIdentifiableObjectType, klass);
+                // read it from annotation first
+                String superClassName = getAnnotationStringValue(classSymbol, symtab.ceylonAtClassType, "extendsType");
+                if(superClassName != null && !superClassName.isEmpty()){
+                    extendedType = decodeType(superClassName, klass);
                 }else{
-                    extendedType = getType(superClass, klass);
+                    // read it from the Java super type
+                    superClassName = superClass.tsym.getQualifiedName().toString();
+                    // now deal with type erasure, avoid having Object as superclass
+                    if(superClassName.equals("java.lang.Object")){
+                        extendedType = getType(symtab.ceylonIdentifiableObjectType, klass);
+                    }else{
+                        extendedType = getType(superClass, klass);
+                    }
                 }
             }
         }

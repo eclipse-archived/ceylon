@@ -64,7 +64,9 @@ class Test() {
     void takesTop(Top top){}
     void takesLeft(Left left){}
     Left & Right givesLeftAndRight(){ return CMiddle(); }
-    variable Left leftAttribute;
+    shared variable Left leftAttribute := CLeft();
+    shared variable Numeric<Natural>&Ordinal<Natural>&Subtractable<Natural,Integer> n := 1;
+    shared variable Integral<Natural>&Invertable<Integer> m := 1;
 
     void testUnion(){
         Left|Right middle = CLeft();
@@ -77,13 +79,16 @@ class Test() {
             takesLeft(middle);
         }
     }
+
     // WARNING: when the typechecker figures out that because Natural is final
     // the Natural&EmptyInterface type cannot exist, we'll need to change it to
     // something else
     Left testIntersection(Natural&EmptyInterface p1,
                           Natural&EmptyInterface|Nothing p1OrNothing,
-                          Sequence<Top>&EmptyInterface tops){
+                          Sequence<Top>&EmptyInterface tops,
+                          Test&EmptyInterface erasedTest){
         Left&Right middle = CMiddle();
+
         // invocation
         middle.top();
         middle.left();
@@ -117,6 +122,7 @@ class Test() {
         variable Left left3 := middleVar;
         left3 := middleVar; 
         leftAttribute := middleVar;
+        erasedTest.leftAttribute := middleVar;
         // FIXME: this is broken:
         //topLevelLeftAttribute := middleVar;
         
@@ -125,13 +131,22 @@ class Test() {
         Numeric<Natural>&Ordinal<Natural> boxed = 1;
 
         // arithmetic operators
-        Numeric<Natural>&Ordinal<Natural>&Subtractable<Natural,Integer> n = 1;
+        variable Numeric<Natural>&Ordinal<Natural>&Subtractable<Natural,Integer> n := 1;
         Natural n2 = n + n;
         value i0 = n - n;
         Natural n3 = n * n;
-        
-        Integral<Natural>&Invertable<Integer> m = 1;
+        n := n += n;
+        n := n -= n;
+        n := n *= n;
+        erasedTest.n := erasedTest.n += erasedTest.n;
+        erasedTest.n := erasedTest.n -= erasedTest.n;
+        erasedTest.n := erasedTest.n *= erasedTest.n;
+                
+        variable Integral<Natural>&Invertable<Integer> m := 1;
         Natural n4 = m % m;
+        n := m %= m;
+        erasedTest.n := erasedTest.m %= erasedTest.m;
+                
         Integer i1 = -m;
         Integer i2 = +m;
 
@@ -184,6 +199,10 @@ class Test() {
         if(is Natural p1){}
         if(exists p1OrNothing){}
         if(nonempty naturals){}
+        variable Boolean bSync;
+        bSync := is Natural p1;
+        bSync := exists p1OrNothing;
+        bSync := nonempty naturals;
 
         if(true){
             Exception&EmptyInterface x = MyException(null, null);

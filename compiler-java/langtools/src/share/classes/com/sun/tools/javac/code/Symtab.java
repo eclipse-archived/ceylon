@@ -189,6 +189,7 @@ public class Symtab {
     public final Type ceylonAtAttributeType;
     public final Type ceylonAtMethodType;
     public final Type ceylonAtObjectType;
+    public final Type ceylonAtClassType;
     public final Type ceylonAtSatisfiedTypes;
     public final Type ceylonAtIgnore;
     public final Type ceylonVarianceType;
@@ -506,6 +507,7 @@ public class Symtab {
         ceylonAtAttributeType = enterClass("com.redhat.ceylon.compiler.metadata.java.Attribute");
         ceylonAtMethodType = enterClass("com.redhat.ceylon.compiler.metadata.java.Method");
         ceylonAtObjectType = enterClass("com.redhat.ceylon.compiler.metadata.java.Object");
+        ceylonAtClassType = enterClass("com.redhat.ceylon.compiler.metadata.java.Class");
         ceylonAtSatisfiedTypes = enterClass("com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes");
         ceylonAtIgnore = enterClass("com.redhat.ceylon.compiler.metadata.java.Ignore");
         ceylonVarianceType = enterClass("com.redhat.ceylon.compiler.metadata.java.Variance");
