@@ -261,7 +261,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (tmpInStatement) {
             return transformAssignment(op, leftTerm, rhs);
         } else {
-            return transformSideEffectOperation(op, leftTerm, Util.getBoxingStrategy(decl) == BoxingStrategy.BOXED, new SideEffectOperationFactory(){
+            ProducedType valueType = leftTerm.getTypeModel();
+            return transformSideEffectOperation(op, leftTerm, Util.getBoxingStrategy(decl) == BoxingStrategy.BOXED, 
+                    valueType, valueType, new SideEffectOperationFactory(){
                 @Override
                 public JCExpression makeOperation(JCExpression getter) {
                     return rhs;
@@ -418,9 +420,16 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         final ProducedType leftType = getSupertype(op.getLeftTerm(), compoundType);
         final ProducedType rightType = getTypeArgument(leftType, 0);
+        ProducedType returnType;
+        if(op instanceof Tree.SubtractAssignOp)
+            returnType = getTypeArgument(leftType, 1);
+        else
+            returnType = rightType;
 
         // we work on boxed types
-        return transformSideEffectOperation(op, op.getLeftTerm(), true, new SideEffectOperationFactory(){
+        return transformSideEffectOperation(op, op.getLeftTerm(), true, 
+                leftType, returnType, 
+                new SideEffectOperationFactory(){
             @Override
             public JCExpression makeOperation(JCExpression getter) {
                 // make this call: getter OP RHS
@@ -445,8 +454,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             log.error("ceylon", "Not supported yet: "+op.getNodeType());
             return at(op).Erroneous(List.<JCTree>nil());
         }
+        ProducedType valueType = op.getLeftTerm().getTypeModel();
         // we work on unboxed types
-        return transformSideEffectOperation(op, op.getLeftTerm(), false, new SideEffectOperationFactory(){
+        return transformSideEffectOperation(op, op.getLeftTerm(), false, 
+                valueType, valueType, new SideEffectOperationFactory(){
             @Override
             public JCExpression makeOperation(JCExpression getter) {
                 // make this call: getter OP RHS
@@ -682,8 +693,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             return at(expr).Erroneous(List.<JCTree>nil());
         }
         
+        ProducedType valueType = expr.getTerm().getTypeModel();
         // we work on boxed types
-        return transformSideEffectOperation(expr, expr.getTerm(), true, new SideEffectOperationFactory(){
+        return transformSideEffectOperation(expr, expr.getTerm(), true, 
+                valueType, valueType, new SideEffectOperationFactory(){
             @Override
             public JCExpression makeOperation(JCExpression getter) {
                 // make this call: getter.getSuccessor() or getter.getPredecessor()
@@ -697,7 +710,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     private JCExpression transformSideEffectOperation(Node operator, Term term, 
-            boolean boxResult, SideEffectOperationFactory factory){
+            boolean boxResult, ProducedType valueType, ProducedType returnType, 
+            SideEffectOperationFactory factory){
         
         List<JCVariableDecl> decls = List.nil();
         List<JCStatement> stats = List.nil();
@@ -708,11 +722,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression getter = transform((Tree.BaseMemberExpression)term);
             at(operator);
             // Type $tmp = OP(attr);
-            JCExpression exprType = makeJavaType(term.getTypeModel(), boxResult ? NO_PRIMITIVES : 0);
+            JCExpression exprType = makeJavaType(returnType, boxResult ? NO_PRIMITIVES : 0);
             Name varName = names().fromString(tempName("op"));
             // make sure we box the results if necessary
-            getter = boxUnboxIfNecessary(getter, term, term.getTypeModel(), 
-                    boxResult ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED);
+            getter = applyErasureAndBoxing(getter, term, boxResult ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED, valueType);
             JCExpression newValue = factory.makeOperation(getter);
             // no need to box/unbox here since newValue and $tmpV share the same boxing type
             JCVariableDecl tmpVar = make().VarDef(make().Modifiers(0), varName, exprType, newValue);
@@ -744,12 +757,11 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCVariableDecl tmpEVar = make().VarDef(make().Modifiers(0), varEName, exprType, e);
 
             // Type $tmpV = OP($tmpE.attr)
-            JCExpression attrType = makeJavaType(term.getTypeModel(), boxResult ? NO_PRIMITIVES : 0);
+            JCExpression attrType = makeJavaType(returnType, boxResult ? NO_PRIMITIVES : 0);
             Name varVName = names().fromString(tempName("opV"));
             JCExpression getter = transformMemberExpression(qualified, make().Ident(varEName));
             // make sure we box the results if necessary
-            getter = boxUnboxIfNecessary(getter, term, term.getTypeModel(), 
-                    boxResult ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED);
+            getter = applyErasureAndBoxing(getter, term, boxResult ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED, valueType);
             JCExpression newValue = factory.makeOperation(getter);
             // no need to box/unbox here since newValue and $tmpV share the same boxing type
             JCVariableDecl tmpVVar = make().VarDef(make().Modifiers(0), varVName, attrType, newValue);
