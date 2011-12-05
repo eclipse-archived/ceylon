@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.metadata.java.Class;
 import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
@@ -9,6 +10,7 @@ import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
     "ceylon.language.Integral<ceylon.language.Integer>",
     "ceylon.language.Subtractable<ceylon.language.Integer,ceylon.language.Integer>"
 })
+@Class(extendsType="ceylon.language.Object")
 public final class Integer
     extends Object
     implements Castable<Numeric>, Integral<Integer>, 

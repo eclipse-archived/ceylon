@@ -1,10 +1,11 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.metadata.java.Class;
 import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.Sequenced;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
-
+@Class(extendsType="ceylon.language.Object")
 public final class String extends Object 
     implements Comparable<String>, Ordered<Character>, 
                Correspondence<Natural,Character>, Format,

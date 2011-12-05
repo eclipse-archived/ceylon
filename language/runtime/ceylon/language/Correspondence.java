@@ -1,6 +1,7 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.metadata.java.Ceylon;
+import com.redhat.ceylon.compiler.metadata.java.Class;
 import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
 import com.redhat.ceylon.compiler.metadata.java.Sequenced;
@@ -43,6 +44,7 @@ public interface Correspondence<Key,Item> {
                 satisfies="ceylon.language.Equality"),
         @TypeParameter(value = "Item", variance = Variance.OUT)
     })
+    @Class(extendsType="ceylon.language.Object")
     class Entries<Key,Item>
             extends Object
             implements Sequence<Item> {

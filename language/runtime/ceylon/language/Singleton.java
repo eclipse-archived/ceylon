@@ -1,6 +1,7 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.metadata.java.Ceylon;
+import com.redhat.ceylon.compiler.metadata.java.Class;
 import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.Sequenced;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
@@ -12,6 +13,7 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
 @TypeParameters({
     @TypeParameter(value = "Element", variance = Variance.OUT)
 })
+@Class(extendsType="ceylon.language.Object")
 public class Singleton<Element> 
 		extends Object
 		implements Sequence<Element> {

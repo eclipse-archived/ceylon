@@ -11,7 +11,7 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
     @TypeParameter(value = "Index", variance = Variance.IN),
     @TypeParameter(value = "Span", variance = Variance.OUT)
 })
-public interface Ranged<Index extends Comparable<Index>,Span> {
+public interface Ranged<Index extends Comparable<? super Index>, Span> {
     
 	public Span span(@Name("from") Index from, @Name("to") Index to);
     

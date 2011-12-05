@@ -1,12 +1,18 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.metadata.java.Class;
 import com.redhat.ceylon.compiler.metadata.java.Name;
+import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
 import com.redhat.ceylon.compiler.metadata.java.Sequenced;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
-public class Range<Element extends Comparable<Element> & Ordinal<Element>>
+@Class(extendsType="ceylon.language.Object")
+@SatisfiedTypes({"ceylon.language.Sequence<Element>", 
+	             "ceylon.language.Category",
+	             "ceylon.language.Equality"})
+public class Range<Element extends Comparable<? super Element> & Ordinal<? extends Element>>
     extends Object
-    implements Sequence<Element>, Equality, Category {
+    implements Sequence<Element>, Category {
     
     private Element first;
     private Element last;

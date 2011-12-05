@@ -1,7 +1,10 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
+@SatisfiedTypes({"ceylon.language.Format", 
+	             "ceylon.language.Equality"})
 public interface Number extends Format {
     
     @TypeInfo(value="ceylon.language.Natural")

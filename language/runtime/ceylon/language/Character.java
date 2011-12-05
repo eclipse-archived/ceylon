@@ -1,8 +1,14 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.metadata.java.Class;
 import com.redhat.ceylon.compiler.metadata.java.Name;
+import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
+@Class(extendsType="ceylon.language.Object")
+@SatisfiedTypes({"ceylon.language.Equality",
+		        "ceylon.language.Comparable<ceylon.language.Character>",
+		        "ceylon.language.Ordinal<ceylon.language.Character>"})
 public final class Character extends Object 
         implements Comparable<Character>, Ordinal<Character>
 {

@@ -1,7 +1,9 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.metadata.java.Ceylon;
+import com.redhat.ceylon.compiler.metadata.java.Class;
 import com.redhat.ceylon.compiler.metadata.java.Name;
+import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 import com.redhat.ceylon.compiler.metadata.java.TypeParameter;
 import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
@@ -14,8 +16,9 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
     @TypeParameter(value = "Item", variance = Variance.OUT, 
             satisfies="ceylon.language.Equality")
  })
-public class Entry<Key, Item> 
-    extends Object implements Equality {
+@Class(extendsType="ceylon.language.Object")
+@SatisfiedTypes("ceylon.language.Equality")
+public class Entry<Key, Item> extends Object {
 	private Key key;
 	private Item item;
 	
