@@ -136,6 +136,12 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         JCExpression result = v.getSingleResult();
 
+        result = applyErasureAndBoxing(result, expr, boxingStrategy, expectedType);
+
+        return result;
+    }
+    
+    private JCExpression applyErasureAndBoxing(JCExpression result, Term expr, BoxingStrategy boxingStrategy, ProducedType expectedType) {
         ProducedType exprType = expr.getTypeModel();
         
         if (expectedType != null 
@@ -151,11 +157,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
 
         // we must to the boxing after the cast to the proper type
-        result = boxUnboxIfNecessary(result, expr, exprType, boxingStrategy);
-
-        return result;
+        return boxUnboxIfNecessary(result, expr, exprType, boxingStrategy);
     }
-    
+
     public JCExpression transformStringExpression(Tree.StringTemplate expr) {
         at(expr);
         JCExpression builder;
