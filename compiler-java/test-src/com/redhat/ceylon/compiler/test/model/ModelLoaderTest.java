@@ -142,6 +142,16 @@ public class ModelLoaderTest extends CompilerTest {
         if(!(validDeclaration instanceof Parameter) || validDeclaration.isShared())
             Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [name]", validDeclaration.getQualifiedNameString(), modelDeclaration.getQualifiedNameString());
         Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [shared]", validDeclaration.isShared(), modelDeclaration.isShared());
+        // if they're not shared, stop at making sure they are the same type of object
+        if(!validDeclaration.isShared()){
+            boolean sameType = validDeclaration.getClass().isAssignableFrom(modelDeclaration.getClass());
+            // we may replace Getter or Setter with Value, no harm done
+            sameType |= validDeclaration instanceof Getter && modelDeclaration instanceof Value;
+            sameType |= validDeclaration instanceof Setter && modelDeclaration instanceof Value;
+            Assert.assertTrue(validDeclaration.getQualifiedNameString()+" [type]", sameType);
+            return;
+        }
+        // full check
         if(validDeclaration instanceof Class){
             Assert.assertTrue("[Class]", modelDeclaration instanceof Class);
             compareClassDeclarations((Class)validDeclaration, (Class)modelDeclaration);
