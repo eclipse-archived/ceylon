@@ -273,12 +273,17 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     private JCExpression transformAssignment(final Node op, Term leftTerm, JCExpression rhs) {
-        // left side depends
+        // left hand side can be either BaseMemberExpression, QualifiedMemberExpression or array access (M2)
+        // TODO: array access (M2)
         JCExpression expr = null;
-        CeylonVisitor v = new CeylonVisitor(gen());
-        leftTerm.visitChildren(v);
-        if (v.hasResult()) {
-            expr = v.getSingleResult();
+        if(leftTerm instanceof Tree.BaseMemberExpression)
+            expr = null;
+        else if(leftTerm instanceof Tree.QualifiedMemberExpression){
+            Tree.QualifiedMemberExpression qualified = ((Tree.QualifiedMemberExpression)leftTerm);
+            expr = transformExpression(qualified.getPrimary(), BoxingStrategy.BOXED, qualified.getTarget().getQualifyingType());
+        }else{
+            log.error("ceylon", "Not supported yet: "+op.getNodeType());
+            return at(op).Erroneous(List.<JCTree>nil());
         }
         return transformAssignment(op, leftTerm, expr, rhs);
     }
