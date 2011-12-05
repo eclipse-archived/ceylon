@@ -306,4 +306,9 @@ public class ModelLoaderTest extends CompilerTest {
     public void loadToplevelObjects(){
         verifyClassLoading("ToplevelObjects.ceylon");
     }
+
+    @Test
+    public void loadErasedTypes(){
+        verifyClassLoading("ErasedTypes.ceylon");
+    }
 }
