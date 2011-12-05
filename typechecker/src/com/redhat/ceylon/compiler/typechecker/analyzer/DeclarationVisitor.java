@@ -358,6 +358,7 @@ public class DeclarationVisitor extends Visitor {
         endDeclaration(d);
         exitScope(o);
         checkFunctionArgumentParameters(that);
+        that.addWarning("inline functions not yet supported");
     }
 
     private static void checkMethodParameters(Tree.AnyMethod that) {

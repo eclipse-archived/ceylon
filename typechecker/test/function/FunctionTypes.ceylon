@@ -18,6 +18,10 @@ void higher1(String[] strings, Callable<Void,String> f) {
     }
 }
 
+Y pass<X,Y>(Y f(X x), X x) {
+    return f(x);
+}
+
 void higher2(String[] strings, void f(String str)) {
     for (s in strings) {
         f(s);
@@ -65,6 +69,10 @@ void method() {
     @error String worse(String s) = X;
     @error String worst() = X;
     @error void broke() = noop();
+    
+    String s1 = pass(function (String s) s, "hello");
+    String s2 = pass(function (Float f) f.string, 1.0);
+    @error String s3 = pass(function (Float f) f.string, "hello");
     
     higher2 { 
         strings = {"goodbye"};
