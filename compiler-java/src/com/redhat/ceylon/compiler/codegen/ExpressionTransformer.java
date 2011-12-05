@@ -408,10 +408,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         Interface compoundType = op.getUnit().getNumericDeclaration();
         if(op instanceof Tree.AddAssignOp){
             infixOpClass = Tree.SumOp.class;
-            op.getUnit().getSummableDeclaration();
-        }else if(op instanceof Tree.SubtractAssignOp)
+            compoundType = op.getUnit().getSummableDeclaration();
+        }else if(op instanceof Tree.SubtractAssignOp){
             infixOpClass = Tree.DifferenceOp.class;
-        else if(op instanceof Tree.MultiplyAssignOp)
+            compoundType = op.getUnit().getSubtractableDeclaration();
+        }else if(op instanceof Tree.MultiplyAssignOp)
             infixOpClass = Tree.ProductOp.class;
         else if(op instanceof Tree.DivideAssignOp)
             infixOpClass = Tree.QuotientOp.class;
