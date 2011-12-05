@@ -125,8 +125,9 @@ class Test() {
         Numeric<Natural>&Ordinal<Natural> boxed = 1;
 
         // arithmetic operators
-        Numeric<Natural>&Ordinal<Natural> n = 1;
+        Numeric<Natural>&Ordinal<Natural>&Subtractable<Natural,Integer> n = 1;
         Natural n2 = n + n;
+        value i0 = n - n;
         Natural n3 = n * n;
         
         Integral<Natural>&Invertable<Integer> m = 1;

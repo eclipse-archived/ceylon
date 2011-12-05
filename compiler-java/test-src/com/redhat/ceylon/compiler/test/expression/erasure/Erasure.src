@@ -190,6 +190,7 @@ class Test {
         final .java.lang.Object boxed = .ceylon.language.Natural.instance(1L);
         final .java.lang.Object n = .ceylon.language.Natural.instance(1L);
         final long n2 = ((ceylon.language.Summable<ceylon.language.Natural>)n).plus((ceylon.language.Natural)n).longValue();
+        final long i0 = ((ceylon.language.Subtractable<ceylon.language.Natural, ceylon.language.Integer>)n).minus((ceylon.language.Natural)n).longValue();
         final long n3 = ((ceylon.language.Numeric<ceylon.language.Natural>)n).times((ceylon.language.Natural)n).longValue();
         final .java.lang.Object m = .ceylon.language.Natural.instance(1L);
         final long n4 = ((ceylon.language.Integral<ceylon.language.Natural>)m).remainder((ceylon.language.Natural)m).longValue();
