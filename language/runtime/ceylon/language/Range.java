@@ -47,14 +47,14 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }
     
     public final boolean getDecreasing(){
-        return last.smallerThan(first);
+        return last.compare(first).smaller();
     }
     
     private final boolean pastEnd(Element x){
-        if(getDecreasing())
-            return x.smallerThan(last);
+        if (getDecreasing())
+            return x.compare(last).smaller();
         else
-            return x.largerThan(last);
+            return x.compare(last).larger();
     }
     
     private final Element next(Element x){
@@ -134,10 +134,13 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }
 
     public final boolean includes(@Name("x") Element x){
-        if(getDecreasing()){
-            return x.asSmallAs(first) && x.asLargeAs(last);
-        }else{
-            return x.asLargeAs(first) && x.asSmallAs(last);
+        if (getDecreasing()){
+            return x.compare(first).smallAs() && 
+                    x.compare(last).largeAs();
+        }
+        else{
+            return x.compare(first).largeAs() && 
+                    x.compare(last).smallAs();
         }
     }
     

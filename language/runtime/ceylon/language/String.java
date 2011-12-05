@@ -76,7 +76,7 @@ public final class String
         return value;
     }
 
-    @Override
+    /*@Override
     public boolean largerThan(@Name("other") String other) {
         return value.compareTo(other.value) > 0;
     }
@@ -94,7 +94,7 @@ public final class String
     @Override
     public boolean asSmallAs(@Name("other") String other) {
         return value.compareTo(other.value) <= 0;
-    }
+    }*/
 
     @Override
     public <CastValue extends String> CastValue castTo() {

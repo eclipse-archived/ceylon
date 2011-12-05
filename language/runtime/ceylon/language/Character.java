@@ -96,7 +96,7 @@ public final class Character
             ((x == y) ? Comparison.EQUAL : Comparison.LARGER);
 	}
 
-	@Override
+	/*@Override
 	public boolean largerThan(@Name("other") Character other) {
 		return codePoint>other.codePoint;
 	}
@@ -114,7 +114,7 @@ public final class Character
 	@Override
 	public boolean asSmallAs(@Name("other") Character other) {
 		return codePoint<=other.codePoint;
-	}
+	}*/
     
     @Override
     public Character getPredecessor() {

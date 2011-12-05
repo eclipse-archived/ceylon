@@ -260,7 +260,7 @@ public final class Natural
         return java.lang.Long.toString(value);
     }
     
-    @Override
+    /*@Override
     public boolean largerThan(@Name("other") Natural other) {
         return value > other.value;
     }
@@ -278,5 +278,5 @@ public final class Natural
     @Override
     public boolean asSmallAs(@Name("other") Natural other) {
         return value <= other.value;
-    }
+    }*/
 }

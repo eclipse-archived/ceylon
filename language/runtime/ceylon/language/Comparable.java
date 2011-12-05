@@ -17,11 +17,11 @@ public interface Comparable<Other extends Comparable<? super Other>> {
     
     public Comparison compare(@Name("other") Other other);
     
-    public boolean largerThan(@Name("other") Other other); 
+    /*public boolean largerThan(@Name("other") Other other); 
     
     public boolean smallerThan(@Name("other") Other other);
     
     public boolean asLargeAs(@Name("other") Other other);
     
-    public boolean asSmallAs(@Name("other") Other other);
+    public boolean asSmallAs(@Name("other") Other other);*/
 }

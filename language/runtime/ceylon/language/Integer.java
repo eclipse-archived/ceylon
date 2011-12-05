@@ -233,7 +233,7 @@ public final class Integer
         return java.lang.Long.toString(value);
     }
     
-    @Override
+    /*@Override
     public boolean largerThan(@Name("other") Integer other) {
         return value > other.value;
     }
@@ -251,7 +251,7 @@ public final class Integer
     @Override
     public boolean asSmallAs(@Name("other") Integer other) {
         return value <= other.value;
-    }
+    }*/
     
     @Override
     public <CastValue extends Numeric> CastValue castTo() {

@@ -13,7 +13,7 @@ shared interface Comparable<in Other> of Other
          `x>z` (transitivity)."
     shared formal Comparison compare(Other other);
     
-    doc "Determines if this value is strictly larger than 
+    /*doc "Determines if this value is strictly larger than 
          the given value."
     shared Boolean largerThan(Other other) {
         return compare(other)==larger;
@@ -35,6 +35,6 @@ shared interface Comparable<in Other> of Other
          to the given value."
     shared Boolean asSmallAs(Other other) {
         return compare(other)!=larger;
-    }
+    }*/
     
 }

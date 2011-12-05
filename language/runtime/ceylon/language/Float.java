@@ -171,7 +171,7 @@ public final class Float
         return java.lang.Double.toString(value);
     }
     
-    @Override
+    /*@Override
     public boolean largerThan(@Name("other") Float other) {
         return value > other.value;
     }
@@ -189,7 +189,7 @@ public final class Float
     @Override
     public boolean asSmallAs(@Name("other") Float other) {
         return value <= other.value;
-    }
+    }*/
     
     @Override
     public boolean equals(@Name("that") @TypeInfo("ceylon.language.Equality") java.lang.Object that) {
