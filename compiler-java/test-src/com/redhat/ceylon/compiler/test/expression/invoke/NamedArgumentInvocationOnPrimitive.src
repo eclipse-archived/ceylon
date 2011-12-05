@@ -6,23 +6,8 @@ final class v {
     }
     
     static void v() {
-        final long three = new .ceylon.language.NamedArgumentCall<ceylon.language.Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L)){
-            
-            public ceylon.language.Natural call$() {
-                return this.instance.plus((ceylon.language.Natural)this.args[0]);
-            }
-        }.call$().longValue();
-        new .ceylon.language.NamedArgumentCall<ceylon.language.Natural>(new .ceylon.language.NamedArgumentCall<ceylon.language.Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L)){
-            
-            public ceylon.language.Natural call$() {
-                return this.instance.plus((ceylon.language.Natural)this.args[0]);
-            }
-        }.call$(), .ceylon.language.Natural.instance(3L)){
-            
-            public boolean call$() {
-                return this.instance.equals((.java.lang.Object)this.args[0]);
-            }
-        }.call$();
+        final long three = (let ceylon.language.Natural $arg$0$0 = .ceylon.language.Natural.instance(2L) in .ceylon.language.Natural.instance(1L).plus($arg$0$0)).longValue();
+        (let .java.lang.Object $arg$1$0 = .ceylon.language.Natural.instance(3L) in (let ceylon.language.Natural $arg$2$0 = .ceylon.language.Natural.instance(2L) in .ceylon.language.Natural.instance(1L).plus($arg$2$0)).equals($arg$1$0));
     }
     
     public static void main(.java.lang.String[] args) {

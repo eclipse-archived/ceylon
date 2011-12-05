@@ -6,13 +6,7 @@ final class namedArgumentNoArgs {
     }
     
     static void namedArgumentNoArgs() {
-        new .ceylon.language.NamedArgumentCall<java.lang.Void>(null){
-            
-            public .java.lang.Object call$() {
-                namedArgumentNoArgs.namedArgumentNoArgs();
-                return null;
-            }
-        }.call$();
+        (let  in .com.redhat.ceylon.compiler.test.expression.invoke.namedArgumentNoArgs.namedArgumentNoArgs(); null);
     }
     
     public static void main(.java.lang.String[] args) {

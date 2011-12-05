@@ -12,28 +12,10 @@ class NamedArgumentWithSequence {
     }
     
     private final void invoke() {
-        new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, .ceylon.language.Integer.instance(1L), new ceylon.language.ArraySequence(.ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L), .ceylon.language.Integer.instance(4L))){
-            
-            public .java.lang.Object call$() {
-                m(((ceylon.language.Integer)this.args[0]).longValue(), (ceylon.language.Iterable)this.args[1]);
-                return null;
-            }
-        }.call$();
+        (let long $arg$0$0 = 1L,ceylon.language.Iterable $arg$0$1 = new ceylon.language.ArraySequence(.ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L), .ceylon.language.Integer.instance(4L)) in m($arg$0$0, $arg$0$1); null);
         final .java.lang.Throwable e = new .ceylon.language.Exception(.ceylon.language.String.instance(""), null);
-        new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, e, new ceylon.language.ArraySequence(e, e, e)){
-            
-            public .java.lang.Object call$() {
-                m2((.java.lang.Throwable)this.args[0], (ceylon.language.Iterable)this.args[1]);
-                return null;
-            }
-        }.call$();
-        new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, this, new ceylon.language.ArraySequence(this, this, this)){
-            
-            public .java.lang.Object call$() {
-                m3((com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentWithSequence)this.args[0], (ceylon.language.Iterable)this.args[1]);
-                return null;
-            }
-        }.call$();
+        (let .java.lang.Throwable $arg$1$0 = e,ceylon.language.Iterable $arg$1$1 = new ceylon.language.ArraySequence(e, e, e) in m2($arg$1$0, $arg$1$1); null);
+        (let com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentWithSequence $arg$2$0 = this,ceylon.language.Iterable $arg$2$1 = new ceylon.language.ArraySequence(this, this, this) in m3($arg$2$0, $arg$2$1); null);
     }
     
     NamedArgumentWithSequence() {

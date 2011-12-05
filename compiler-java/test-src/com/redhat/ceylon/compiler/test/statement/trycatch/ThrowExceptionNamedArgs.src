@@ -3,12 +3,7 @@ package com.redhat.ceylon.compiler.test.statement.trycatch;
 class ThrowExceptionNamedArgs {
     
     private final void t() {
-        throw new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, .ceylon.language.String.instance("Bang!"), null){
-            
-            public .ceylon.language.Exception call$() {
-                return new .ceylon.language.Exception((ceylon.language.String)this.args[0], (.java.lang.Throwable)this.args[1]);
-            }
-        }.call$();
+        throw (let ceylon.language.String $arg$0$0 = .ceylon.language.String.instance("Bang!"),.java.lang.Throwable $arg$0$1 = null in new .ceylon.language.Exception($arg$0$0, $arg$0$1));
     }
     
     ThrowExceptionNamedArgs() {

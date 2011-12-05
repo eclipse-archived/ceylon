@@ -24,19 +24,8 @@ public class NamedArgumentInvocationLocal {
             }
         }
         final v v = new v();
-        new .ceylon.language.NamedArgumentCall<v>(v, .ceylon.language.String.instance("abc"), .ceylon.language.Natural.instance(123L)){
-            
-            public .java.lang.Object call$() {
-                this.instance.v(((ceylon.language.Natural)this.args[1]).longValue(), ((ceylon.language.String)this.args[0]).toString());
-                return null;
-            }
-        }.call$();
-        final long x = new .ceylon.language.NamedArgumentCall<m>(m, .ceylon.language.String.instance("abc"), .ceylon.language.Natural.instance(123L)){
-            
-            public long call$() {
-                return this.instance.m(((ceylon.language.Natural)this.args[1]).longValue(), ((ceylon.language.String)this.args[0]).toString());
-            }
-        }.call$();
+        (let .java.lang.String $arg$0$1 = "abc",long $arg$0$0 = 123L in v.v($arg$0$0, $arg$0$1); null);
+        final long x = (let .java.lang.String $arg$1$1 = "abc",long $arg$1$0 = 123L in m.m($arg$1$0, $arg$1$1));
     }
     
     public NamedArgumentInvocationLocal() {
@@ -63,20 +52,8 @@ class X {
             }
         }
         final foo foo = new foo();
-        new .ceylon.language.NamedArgumentCall<foo>(foo, .ceylon.language.Boolean.instance(true), .ceylon.language.String.instance("a")){
-            
-            public .java.lang.Object call$() {
-                this.instance.foo(((ceylon.language.String)this.args[1]).toString(), ((ceylon.language.Boolean)this.args[0]).booleanValue());
-                return null;
-            }
-        }.call$();
-        new .ceylon.language.NamedArgumentCall<com.redhat.ceylon.compiler.test.expression.invoke.X>(this, .ceylon.language.Boolean.instance(true), .ceylon.language.String.instance("a")){
-            
-            public .java.lang.Object call$() {
-                this.instance.foo(((ceylon.language.String)this.args[1]).toString(), ((ceylon.language.Boolean)this.args[0]).booleanValue());
-                return null;
-            }
-        }.call$();
+        (let boolean $arg$2$1 = true,.java.lang.String $arg$2$0 = "a" in foo.foo($arg$2$0, $arg$2$1); null);
+        (let boolean $arg$3$1 = true,.java.lang.String $arg$3$0 = "a" in this.foo($arg$3$0, $arg$3$1); null);
     }
     
     X() {

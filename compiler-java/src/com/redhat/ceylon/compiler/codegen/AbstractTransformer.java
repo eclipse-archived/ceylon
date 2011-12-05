@@ -381,6 +381,10 @@ public abstract class AbstractTransformer implements Transformation {
     protected boolean isNothing(ProducedType type) {
         return typeFact.getNothingDeclaration().getType().isExactly(type);
     }
+    
+    protected boolean isVoid(ProducedType type) {
+        return typeFact.getVoidDeclaration().getType().isExactly(type);
+    }
 
     protected ProducedType simplifyType(ProducedType type) {
         if (isOptional(type)) {
