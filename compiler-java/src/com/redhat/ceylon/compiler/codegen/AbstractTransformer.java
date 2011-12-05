@@ -776,6 +776,30 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtObjectType);
     }
 
+    protected List<JCAnnotation> makeAtClass(ProducedType extendedType) {
+        List<JCExpression> attributes = List.nil();
+        if(!extendedType.isExactly(typeFact.getIdentifiableObjectDeclaration().getType())){
+            JCExpression extendsAttribute = make().Assign(makeIdent("extendsType"), 
+                    make().Literal(serialiseTypeSignature(extendedType)));
+            attributes = attributes.prepend(extendsAttribute);
+        }
+        return makeModelAnnotation(syms().ceylonAtClassType, attributes);
+    }
+
+    protected List<JCAnnotation> makeAtSatisfiedTypes(java.util.List<ProducedType> satisfiedTypes) {
+        if(satisfiedTypes.isEmpty())
+            return List.nil();
+        ListBuffer<JCExpression> upperBounds = new ListBuffer<JCTree.JCExpression>();
+        for(ProducedType satisfiedType : satisfiedTypes){
+            String type = serialiseTypeSignature(satisfiedType);
+            upperBounds.append(make().Literal(type));
+        }
+        JCExpression satisfiesAttribute = make().Assign(makeIdent("value"), 
+                make().NewArray(null, null, upperBounds.toList()));
+        
+        return makeModelAnnotation(syms().ceylonAtSatisfiedTypes, List.of(satisfiesAttribute));
+    }
+
     protected List<JCAnnotation> makeAtIgnore() {
         return makeModelAnnotation(syms().ceylonAtIgnore);
     }
