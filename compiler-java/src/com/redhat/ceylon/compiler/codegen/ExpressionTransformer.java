@@ -420,7 +420,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             @Override
             public JCExpression makeOperation(JCExpression getter) {
                 // make this call: getter OP RHS
-                return transformBinaryOperator(op, infixOpClass, getter, leftType, rightType);
+                return transformBinaryOperator(op, infixOpClass, getter, rightType);
             }
         });
     }
@@ -496,12 +496,12 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCExpression transformBinaryOperator(Tree.BinaryOperatorExpression op, ProducedType leftType, ProducedType rightType) {
         JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, leftType);
-        return transformBinaryOperator(op, op.getClass(), left, leftType, rightType);
+        return transformBinaryOperator(op, op.getClass(), left, rightType);
     }
 
     private JCExpression transformBinaryOperator(BinaryOperatorExpression op, 
             Class<? extends Tree.OperatorExpression> operatorClass, 
-            JCExpression left, ProducedType leftType, ProducedType rightType) {
+            JCExpression left, ProducedType rightType) {
         JCExpression result = null;
         
         JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, rightType);
