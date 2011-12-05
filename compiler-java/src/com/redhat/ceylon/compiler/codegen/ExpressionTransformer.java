@@ -463,6 +463,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         return transformArithmeticOperator(op, op.getUnit().getSummableDeclaration());
     }
 
+    public JCExpression transform(Tree.DifferenceOp op) {
+        Interface compoundType = op.getUnit().getSubtractableDeclaration();
+        ProducedType leftType = getSupertype(op.getLeftTerm(), compoundType );
+        ProducedType rightType = getFirstTypeArgument(leftType);
+        return transformBinaryOperator(op, leftType, rightType);
+    }
+
     public JCExpression transform(Tree.RemainderOp op) {
         return transformArithmeticOperator(op, op.getUnit().getIntegralDeclaration());
     }
