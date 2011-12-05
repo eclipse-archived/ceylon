@@ -137,6 +137,13 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
+    @Override public void visit(Tree.FunctionArgument that) {
+    	super.visit(that);
+    	ProducedType t = that.getExpression().getTypeModel();
+		that.getDeclarationModel().setType(t);
+    	that.getType().setTypeModel(t);
+    }
+    
     @Override
     public void visit(Tree.AnyMethod that) {
         super.visit(that);
@@ -1503,7 +1510,16 @@ public class ExpressionVisitor extends Visitor {
             //TODO: this case is temporary until we get support for SPECIAL_ARGUMENTs
         }
         else {
-            checkAssignable(e.getTypeModel(), paramType, a, 
+            ProducedType et;
+            if (a instanceof Tree.FunctionArgument) {
+            	et = ((Tree.FunctionArgument) a).getDeclarationModel()
+            			.getProducedTypedReference(null, Collections.<ProducedType>emptyList())
+            			.getFullType();
+            }
+            else {
+            	et = e.getTypeModel();
+            }
+            checkAssignable(et, paramType, a, 
                     "argument must be assignable to parameter " + 
                     p.getName() + " of " + pr.getDeclaration().getName());
         }

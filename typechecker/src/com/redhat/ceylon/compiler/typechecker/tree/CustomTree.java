@@ -4,6 +4,25 @@ import org.antlr.runtime.Token;
 
 public class CustomTree extends Tree {
     
+    public static class FunctionArgument 
+            extends Tree.FunctionArgument {
+    	public FunctionArgument(Token token) {
+    		super(token);
+    	}
+    	@Override
+    	public void visitChildren(Visitor visitor) {
+    		if (getType()!=null)
+    			getType().visit(visitor);
+    		for (ParameterList pl: getParameterLists())
+    			pl.visit(visitor);
+    		if (getExpression()!=null)
+    			getExpression().visit(visitor);
+    	}
+    	@Override public String getNodeType() {
+    		return FunctionArgument.class.getSimpleName();
+    	}
+    }
+
     public static class AttributeDeclaration 
             extends Tree.AttributeDeclaration {
         public AttributeDeclaration(Token token) {

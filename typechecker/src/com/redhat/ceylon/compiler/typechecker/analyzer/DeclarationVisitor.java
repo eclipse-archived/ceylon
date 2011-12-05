@@ -112,6 +112,12 @@ public class DeclarationVisitor extends Visitor {
         unit.getDeclarations().add(model);
     }
 
+    private void visitArgument(Tree.FunctionArgument that, Declaration model) {
+        visitElement(that, model);
+        //that.setDeclarationModel(model);
+        unit.getDeclarations().add(model);
+    }
+
     private static boolean setModelName(Node that, Declaration model,
             Tree.Identifier id) {
         if (id==null || id.getText().startsWith("<missing")) {
@@ -341,10 +347,32 @@ public class DeclarationVisitor extends Visitor {
         checkMethodArgumentParameters(that);
     }
 
+    @Override
+    public void visit(Tree.FunctionArgument that) {
+        Method m = new Method();
+        that.setDeclarationModel(m);
+        visitArgument(that, m);
+        Scope o = enterScope(m);
+        Declaration d = beginDeclaration(that.getDeclarationModel());
+        super.visit(that);
+        endDeclaration(d);
+        exitScope(o);
+        checkFunctionArgumentParameters(that);
+    }
+
     private static void checkMethodParameters(Tree.AnyMethod that) {
         if (that.getParameterLists().isEmpty()) {
             that.addError("missing parameter list in method declaration: " + 
                     name(that.getIdentifier()) );
+        }
+        if ( that.getParameterLists().size()>1 ) {
+            that.addWarning("higher-order methods are not yet supported");
+        }
+    }
+
+    private static void checkFunctionArgumentParameters(Tree.FunctionArgument that) {
+        if (that.getParameterLists().isEmpty()) {
+            that.addError("missing parameter list in functional argument declaration");
         }
         if ( that.getParameterLists().size()>1 ) {
             that.addWarning("higher-order methods are not yet supported");

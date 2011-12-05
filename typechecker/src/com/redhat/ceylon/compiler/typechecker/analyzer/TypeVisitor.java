@@ -298,6 +298,12 @@ public class TypeVisitor extends Visitor {
         setType(that, that.getType(), that.getDeclarationModel());
     }
         
+    /*@Override 
+    public void visit(Tree.FunctionArgument that) {
+        super.visit(that);
+        setType(that, that.getType(), that.getDeclarationModel());
+    }*/
+        
     private void setType(Node that, Tree.Type type, TypedDeclaration td) {
         if (type==null) {
             that.addError("missing type of declaration: " + td.getName());

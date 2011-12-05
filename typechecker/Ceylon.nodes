@@ -617,6 +617,10 @@ argument list."
 ^(POSITIONAL_ARGUMENT 
     EXPRESSION
     Parameter parameter;)
+^(FUNCTION_ARGUMENT: POSITIONAL_ARGUMENT
+    LOCAL_MODIFIER type
+    PARAMETER_LIST*
+    Method declarationModel;)
 
 ^(abstract NAMED_ARGUMENT:STATEMENT_OR_ARGUMENT
     IDENTIFIER

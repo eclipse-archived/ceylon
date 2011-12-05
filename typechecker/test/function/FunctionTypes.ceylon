@@ -78,6 +78,15 @@ void method() {
         strings = {"goodbye"};
         @error void f(Natural n) { print(n.string); }
     };
+    
+    higher2 { 
+        strings = {"goodbye"};
+        function f(String s) { print(s); return s.size; }
+    };
+    higher2({"goodbye"}, (String s) print(s));
+    higher2({"goodbye"}, function (String s) print(s));
+    
+    @error print(s);
 }
 
 class Outer() {

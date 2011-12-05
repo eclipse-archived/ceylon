@@ -1434,13 +1434,33 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
     ;
 
 positionalArgument returns [PositionalArgument positionalArgument]
-    : //(declarationStart) => specialArgument | 
-      /*(parametersStart)=> parameters expression
-    |*/  expression
-      { $positionalArgument = new PositionalArgument(null);
-        $positionalArgument.setExpression($expression.expression); }
-    /*| 'function' parameters expression
-    | 'value' expression*/
+    @init { FunctionArgument fa = new FunctionArgument(null);
+            fa.setType(new FunctionModifier(null));
+            PositionalArgument pa = new PositionalArgument(null); }
+    : (FUNCTION_MODIFIER|parametersStart)=>
+      (
+        FUNCTION_MODIFIER 
+        { fa.setType(new FunctionModifier($FUNCTION_MODIFIER)); }
+      )?
+      p1=parameters
+      { fa.addParameterList($p1.parameterList); }
+      ( 
+        (parametersStart)=> 
+        p2=parameters
+        { fa.addParameterList($p2.parameterList); }
+      )*
+      expression
+      { fa.setExpression($expression.expression); 
+        $positionalArgument = fa; }
+    | VALUE_MODIFIER
+      { fa.setType(new FunctionModifier($VALUE_MODIFIER)); } 
+      expression
+      { fa.addParameterList(new ParameterList(null));
+        fa.setExpression($expression.expression); 
+        $positionalArgument = fa; }
+    | expression
+      { pa.setExpression($expression.expression);
+        $positionalArgument = pa; }
     ;
     
 /*inlineFunctionalArgument
