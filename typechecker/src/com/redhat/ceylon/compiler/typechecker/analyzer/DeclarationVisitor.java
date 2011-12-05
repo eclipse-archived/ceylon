@@ -796,6 +796,7 @@ public class DeclarationVisitor extends Visitor {
         Declaration d = beginDeclaration(that.getDeclarationModel());
         super.visit(that);
         endDeclaration(d);
+        that.addWarning("declaration-style named arguments not yet supported");
     }
 
     @Override
