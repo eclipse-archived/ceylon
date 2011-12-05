@@ -1,0 +1,20 @@
+package com.redhat.ceylon.compiler.test.structure.klass;
+
+interface SatisfiesGeneric_Foo<T> {
+}
+interface SatisfiesGeneric_Bar<T> {
+}
+interface SatisfiesGeneric_Baz<T> {
+}
+interface SatisfiesGeneric<X, Y, Z> {
+}
+class SatisfiesGenericImpl implements com.redhat.ceylon.compiler.test.structure.klass.SatisfiesGeneric<com.redhat.ceylon.compiler.test.structure.klass.SatisfiesGeneric_Foo<? super ceylon.language.Natural>, com.redhat.ceylon.compiler.test.structure.klass.SatisfiesGeneric_Bar<? extends ceylon.language.Integer>, com.redhat.ceylon.compiler.test.structure.klass.SatisfiesGeneric_Baz<ceylon.language.String>> {
+    
+    SatisfiesGenericImpl() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new SatisfiesGenericImpl();
+    }
+}

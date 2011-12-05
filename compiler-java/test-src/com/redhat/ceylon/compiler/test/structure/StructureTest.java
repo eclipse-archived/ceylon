@@ -317,12 +317,20 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("klass/Extends");
     }
     @Test
+    public void testKlsExtendsGeneric(){
+        compareWithJavaSource("klass/ExtendsGeneric");
+    }
+    @Test
     public void testKlsSatisfiesErasure(){
         compareWithJavaSource("klass/SatisfiesErasure");
     }
     @Test
     public void testKlsSatisfies(){
         compareWithJavaSource("klass/Satisfies");
+    }
+    @Test
+    public void testKlsSatisfiesGeneric(){
+        compareWithJavaSource("klass/SatisfiesGeneric");
     }
     @Test
     public void testKlsSatisfiesWithMembers(){
