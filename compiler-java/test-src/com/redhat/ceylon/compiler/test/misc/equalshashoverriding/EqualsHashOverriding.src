@@ -21,7 +21,6 @@ class EqualsHashOverriding {
         }
     }
     
-    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
     public final int hashCode() {
         return (int).ceylon.language.String.instance(s).hashCode();
     }
@@ -30,5 +29,35 @@ class EqualsHashOverriding {
     @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.String")
     .java.lang.String s) {
         this.s = s;
+    }
+}
+@.com.redhat.ceylon.compiler.metadata.java.Ceylon
+class EqualsHashOverriding2 {
+    private final long hash;
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return (int)hash;
+    }
+    
+    EqualsHashOverriding2(@.com.redhat.ceylon.compiler.metadata.java.Name("s")
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.String")
+    .java.lang.String s) {
+        this.hash = 0L;
+    }
+}
+@.com.redhat.ceylon.compiler.metadata.java.Ceylon
+class EqualsHashOverriding3 {
+    private final long hash;
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return (int)hash;
+    }
+    
+    EqualsHashOverriding3(@.com.redhat.ceylon.compiler.metadata.java.Name("s")
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.String")
+    .java.lang.String s) {
+        hash = 0L;
     }
 }

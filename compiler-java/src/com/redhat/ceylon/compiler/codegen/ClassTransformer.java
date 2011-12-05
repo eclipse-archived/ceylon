@@ -236,16 +236,12 @@ public class ClassTransformer extends AbstractTransformer {
     private List<JCTree> makeGetter(Tree.AttributeDeclaration decl) {
         at(decl);
         String atrrName = decl.getIdentifier().getText();
-        JCBlock body = null;
-        if (!Decl.isFormal(decl)) {
-            body = make().Block(0, List.<JCTree.JCStatement>of(make().Return(makeSelect("this", atrrName))));
-        }
         
         return AttributeDefinitionBuilder
             .getter(this, atrrName, decl.getDeclarationModel())
             .modifiers(transformAttributeGetSetDeclFlags(decl))
             .isActual(Decl.isActual(decl))
-            .getterBlock(body)
+            .isFormal(Decl.isFormal(decl))
             .build();
     }
 

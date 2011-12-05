@@ -4,7 +4,7 @@ class AttributeHidingMethodParam {
     private final boolean b;
     
     private final boolean getB() {
-        return this.b;
+        return b;
     }
     
     private final boolean m(final boolean b) {

@@ -20,14 +20,21 @@
 class EqualsHashOverriding(String s) satisfies Equality {
     shared void print() {}
     shared actual Boolean equals(Equality that) {
-    	if (is EqualsHashOverriding that) {
-    		return s.equals(that.s);
-    	}
-    	else {
-    		return false;
-    	}
+        if (is EqualsHashOverriding that) {
+            return s.equals(that.s);
+        }
+        else {
+            return false;
+        }
     }
     shared actual Integer hash {
-    	return s.hash;
+        return s.hash;
     }
+}
+class EqualsHashOverriding2(String s) satisfies Equality {
+    shared actual Integer hash = +0;
+}
+class EqualsHashOverriding3(String s) satisfies Equality {
+    shared actual Integer hash;
+    hash = +0;
 }

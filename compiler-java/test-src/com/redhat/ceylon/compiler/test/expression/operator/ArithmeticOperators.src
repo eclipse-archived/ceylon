@@ -60,7 +60,7 @@ class ArithmeticOperators {
     private long n1;
     
     private final long getN1() {
-        return this.n1;
+        return n1;
     }
     
     private final void setN1(long n1) {
@@ -69,7 +69,7 @@ class ArithmeticOperators {
     private long n2;
     
     private final long getN2() {
-        return this.n2;
+        return n2;
     }
     
     private final void setN2(long n2) {
@@ -78,7 +78,7 @@ class ArithmeticOperators {
     private long i1;
     
     private final long getI1() {
-        return this.i1;
+        return i1;
     }
     
     private final void setI1(long i1) {
@@ -111,7 +111,7 @@ class ArithmeticOperators {
     private com.redhat.ceylon.compiler.test.expression.operator.MyNatural boxedN1;
     
     private final com.redhat.ceylon.compiler.test.expression.operator.MyNatural getBoxedN1() {
-        return this.boxedN1;
+        return boxedN1;
     }
     
     private final void setBoxedN1(com.redhat.ceylon.compiler.test.expression.operator.MyNatural boxedN1) {
@@ -120,7 +120,7 @@ class ArithmeticOperators {
     private com.redhat.ceylon.compiler.test.expression.operator.MyNatural boxedN2;
     
     private final com.redhat.ceylon.compiler.test.expression.operator.MyNatural getBoxedN2() {
-        return this.boxedN2;
+        return boxedN2;
     }
     
     private final void setBoxedN2(com.redhat.ceylon.compiler.test.expression.operator.MyNatural boxedN2) {
@@ -129,7 +129,7 @@ class ArithmeticOperators {
     private com.redhat.ceylon.compiler.test.expression.operator.MyInteger boxedI1;
     
     private final com.redhat.ceylon.compiler.test.expression.operator.MyInteger getBoxedI1() {
-        return this.boxedI1;
+        return boxedI1;
     }
     
     private final void setBoxedI1(com.redhat.ceylon.compiler.test.expression.operator.MyInteger boxedI1) {

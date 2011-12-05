@@ -15,7 +15,7 @@ class IntBoxer implements com.redhat.ceylon.compiler.test.issues.Boxer<ceylon.la
     
     @.java.lang.Override
     public final ceylon.language.Integer getOne() {
-        return this.one;
+        return one;
     }
     
     @.java.lang.Override
@@ -26,7 +26,7 @@ class IntBoxer implements com.redhat.ceylon.compiler.test.issues.Boxer<ceylon.la
     
     @.java.lang.Override
     public final ceylon.language.Integer getTwo() {
-        return this.two;
+        return two;
     }
     
     @.java.lang.Override

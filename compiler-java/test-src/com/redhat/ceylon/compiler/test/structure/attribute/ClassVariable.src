@@ -4,7 +4,7 @@ abstract class ClassVariable {
     private .java.lang.String publicvar;
     
     public final .java.lang.String getPublicvar() {
-        return this.publicvar;
+        return publicvar;
     }
     
     public final void setPublicvar(.java.lang.String publicvar) {
@@ -13,7 +13,7 @@ abstract class ClassVariable {
     private .java.lang.String capturedvar;
     
     private final .java.lang.String getCapturedvar() {
-        return this.capturedvar;
+        return capturedvar;
     }
     
     private final void setCapturedvar(.java.lang.String capturedvar) {

@@ -4,12 +4,12 @@ class IndirectQualifiedAttributeAccess {
     private final boolean b;
     
     private final boolean getB() {
-        return this.b;
+        return b;
     }
     private final com.redhat.ceylon.compiler.test.expression.attribute.IndirectQualifiedAttributeAccess q;
     
     private final com.redhat.ceylon.compiler.test.expression.attribute.IndirectQualifiedAttributeAccess getQ() {
-        return this.q;
+        return q;
     }
     
     private final boolean test() {

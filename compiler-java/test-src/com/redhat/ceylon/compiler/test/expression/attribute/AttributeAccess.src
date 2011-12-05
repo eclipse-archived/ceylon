@@ -4,12 +4,12 @@ class AttributeAccess {
     private final boolean b1;
     
     private final boolean getB1() {
-        return this.b1;
+        return b1;
     }
     private final boolean b2;
     
     public final boolean getB2() {
-        return this.b2;
+        return b2;
     }
     
     private final boolean getB3() {

@@ -31,13 +31,13 @@ class CLeft implements com.redhat.ceylon.compiler.test.expression.erasure.Left {
     
     @.java.lang.Override
     public final long getTopAttribute() {
-        return this.topAttribute;
+        return topAttribute;
     }
     private final long leftAttribute;
     
     @.java.lang.Override
     public final long getLeftAttribute() {
-        return this.leftAttribute;
+        return leftAttribute;
     }
     
     CLeft() {
@@ -67,19 +67,19 @@ class CMiddle implements com.redhat.ceylon.compiler.test.expression.erasure.Left
     
     @.java.lang.Override
     public final long getTopAttribute() {
-        return this.topAttribute;
+        return topAttribute;
     }
     private final long leftAttribute;
     
     @.java.lang.Override
     public final long getLeftAttribute() {
-        return this.leftAttribute;
+        return leftAttribute;
     }
     private final long rightAttribute;
     
     @.java.lang.Override
     public final long getRightAttribute() {
-        return this.rightAttribute;
+        return rightAttribute;
     }
     
     CMiddle() {
@@ -129,7 +129,7 @@ class Test {
     private com.redhat.ceylon.compiler.test.expression.erasure.Left leftAttribute;
     
     private final com.redhat.ceylon.compiler.test.expression.erasure.Left getLeftAttribute() {
-        return this.leftAttribute;
+        return leftAttribute;
     }
     
     private final void setLeftAttribute(com.redhat.ceylon.compiler.test.expression.erasure.Left leftAttribute) {

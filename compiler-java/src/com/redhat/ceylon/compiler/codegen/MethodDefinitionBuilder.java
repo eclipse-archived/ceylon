@@ -57,6 +57,7 @@ public class MethodDefinitionBuilder {
     private long modifiers;
 
     private boolean isActual;
+    private boolean isFormal;
     
     private TypedDeclaration resultType;
     private JCExpression resultTypeExpr;
@@ -125,17 +126,13 @@ public class MethodDefinitionBuilder {
     }
 
     private JCBlock makeBody(ListBuffer<JCStatement> body2) {
-        return ((body != null) && ((modifiers & ABSTRACT) == 0)) ? gen.make().Block(0, body.toList()) : null;
+        return (!isFormal && (body != null) && ((modifiers & ABSTRACT) == 0)) ? gen.make().Block(0, body.toList()) : null;
     }
 
     private JCExpression makeResultType(TypedDeclaration resultType) {
         if (resultType == null) {
             return gen.make().TypeIdent(VOID);
         } else {
-            // FIXME Temporary work-around for hashCode() until we get "small" annotations!
-            if ("hashCode".equals(name) && gen.isCeylonInteger(resultType.getType())) {
-                return gen.makeJavaType(resultType.getType(), AbstractTransformer.SMALL_TYPE);
-            }
             return gen.makeJavaType(resultType);
         }
     }
@@ -219,6 +216,11 @@ public class MethodDefinitionBuilder {
 
     public MethodDefinitionBuilder isActual(boolean isActual) {
         this.isActual = isActual;
+        return this;
+    }
+    
+    public MethodDefinitionBuilder isFormal(boolean isFormal) {
+        this.isFormal = isFormal;
         return this;
     }
     

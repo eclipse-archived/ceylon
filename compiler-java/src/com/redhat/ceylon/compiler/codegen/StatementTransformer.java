@@ -371,7 +371,7 @@ public class StatementTransformer extends AbstractTransformer {
             returnExpr = expressionGen().transformExpression(expr.getTerm(), 
                     Util.getBoxingStrategy(declaration),
                     declaration.getType());
-            // FIXME Temporary work-around for hashCode() until we get "small" annotations!
+            // Special cast for the "hash" attribute which gets translated to hashCode()
             if (isCeylonInteger(expr.getTypeModel())) {
                 MethodOrValue m = (MethodOrValue)ret.getDeclaration();
                 if ("hash".equals(m.getName())) {

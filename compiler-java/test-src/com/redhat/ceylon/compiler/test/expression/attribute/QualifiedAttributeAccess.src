@@ -4,12 +4,12 @@ class QualifiedAttributeAccess {
     private final boolean b;
     
     private final boolean getB() {
-        return this.b;
+        return b;
     }
     private boolean b2;
     
     private final boolean getB2() {
-        return this.b2;
+        return b2;
     }
     
     private final void setB2(boolean b2) {
@@ -18,7 +18,7 @@ class QualifiedAttributeAccess {
     private final com.redhat.ceylon.compiler.test.expression.attribute.QualifiedAttributeAccess q;
     
     private final com.redhat.ceylon.compiler.test.expression.attribute.QualifiedAttributeAccess getQ() {
-        return this.q;
+        return q;
     }
     
     private final boolean m() {
@@ -64,7 +64,7 @@ class Foo {
     private final boolean b;
     
     public final boolean getB() {
-        return this.b;
+        return b;
     }
     
     Foo() {

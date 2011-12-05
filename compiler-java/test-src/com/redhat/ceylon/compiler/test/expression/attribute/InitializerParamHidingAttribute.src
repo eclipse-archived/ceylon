@@ -10,12 +10,12 @@ class InitializerParamHidingAttribute2 {
     private final boolean b;
     
     public final boolean getB() {
-        return this.b;
+        return b;
     }
     private final boolean b2;
     
     public final boolean getB2() {
-        return this.b2;
+        return b2;
     }
     
     InitializerParamHidingAttribute2(boolean b) {

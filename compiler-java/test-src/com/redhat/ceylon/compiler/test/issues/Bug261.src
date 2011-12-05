@@ -13,7 +13,7 @@ final class bug261 {
             private long vi;
             
             public final long getVi() {
-                return this.vi;
+                return vi;
             }
             
             public final void setVi(long vi) {
@@ -22,7 +22,7 @@ final class bug261 {
             private long vj;
             
             public final long getVj() {
-                return this.vj;
+                return vj;
             }
             
             public final void setVj(long vj) {

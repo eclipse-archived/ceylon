@@ -4,152 +4,152 @@ class Attribute {
     private final boolean abstract;
     
     public final boolean getAbstract() {
-        return this.abstract;
+        return abstract;
     }
     private final boolean assert;
     
     public final boolean getAssert() {
-        return this.assert;
+        return assert;
     }
     private final boolean boolean;
     
     public final boolean getBoolean() {
-        return this.boolean;
+        return boolean;
     }
     private final boolean byte;
     
     public final boolean getByte() {
-        return this.byte;
+        return byte;
     }
     private final boolean char;
     
     public final boolean getChar() {
-        return this.char;
+        return char;
     }
     private final boolean const;
     
     public final boolean getConst() {
-        return this.const;
+        return const;
     }
     private final boolean default;
     
     public final boolean getDefault() {
-        return this.default;
+        return default;
     }
     private final boolean do;
     
     public final boolean getDo() {
-        return this.do;
+        return do;
     }
     private final boolean double;
     
     public final boolean getDouble() {
-        return this.double;
+        return double;
     }
     private final boolean enum;
     
     public final boolean getEnum() {
-        return this.enum;
+        return enum;
     }
     private final boolean final;
     
     public final boolean getFinal() {
-        return this.final;
+        return final;
     }
     private final boolean float;
     
     public final boolean getFloat() {
-        return this.float;
+        return float;
     }
     private final boolean goto;
     
     public final boolean getGoto() {
-        return this.goto;
+        return goto;
     }
     private final boolean implements;
     
     public final boolean getImplements() {
-        return this.implements;
+        return implements;
     }
     private final boolean instanceof;
     
     public final boolean getInstanceof() {
-        return this.instanceof;
+        return instanceof;
     }
     private final boolean int;
     
     public final boolean getInt() {
-        return this.int;
+        return int;
     }
     private final boolean long;
     
     public final boolean getLong() {
-        return this.long;
+        return long;
     }
     private final boolean native;
     
     public final boolean getNative() {
-        return this.native;
+        return native;
     }
     private final boolean new;
     
     public final boolean getNew() {
-        return this.new;
+        return new;
     }
     private final boolean package;
     
     public final boolean getPackage() {
-        return this.package;
+        return package;
     }
     private final boolean private;
     
     public final boolean getPrivate() {
-        return this.private;
+        return private;
     }
     private final boolean protected;
     
     public final boolean getProtected() {
-        return this.protected;
+        return protected;
     }
     private final boolean public;
     
     public final boolean getPublic() {
-        return this.public;
+        return public;
     }
     private final boolean short;
     
     public final boolean getShort() {
-        return this.short;
+        return short;
     }
     private final boolean static;
     
     public final boolean getStatic() {
-        return this.static;
+        return static;
     }
     private final boolean strictfp;
     
     public final boolean getStrictfp() {
-        return this.strictfp;
+        return strictfp;
     }
     private final boolean synchronized;
     
     public final boolean getSynchronized() {
-        return this.synchronized;
+        return synchronized;
     }
     private final boolean throws;
     
     public final boolean getThrows() {
-        return this.throws;
+        return throws;
     }
     private final boolean transient;
     
     public final boolean getTransient() {
-        return this.transient;
+        return transient;
     }
     private final boolean volatile;
     
     public final boolean getVolatile() {
-        return this.volatile;
+        return volatile;
     }
     
     Attribute() {

@@ -28,9 +28,8 @@ public class Bar {
 class UnionTypeInfo {
     private final .java.lang.Object sharedAttr;
     
-    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("com.redhat.ceylon.compiler.test.model.annotations.Foo|com.redhat.ceylon.compiler.test.model.annotations.Bar")
     public final .java.lang.Object getSharedAttr() {
-        return this.sharedAttr;
+        return sharedAttr;
     }
     
     private final .java.lang.Object getGetter() {
@@ -40,7 +39,6 @@ class UnionTypeInfo {
     private final void setGetter(.java.lang.Object getter) {
     }
     
-    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("com.redhat.ceylon.compiler.test.model.annotations.Foo|com.redhat.ceylon.compiler.test.model.annotations.Bar")
     public final .java.lang.Object getSharedGetter() {
         return new com.redhat.ceylon.compiler.test.model.annotations.Foo();
     }
@@ -83,7 +81,6 @@ public class SharedUnionTypeInfo {
 final class toplevelAttribute {
     private static final .java.lang.Object value = new com.redhat.ceylon.compiler.test.model.annotations.Foo();
     
-    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("com.redhat.ceylon.compiler.test.model.annotations.Foo|com.redhat.ceylon.compiler.test.model.annotations.Bar")
     static .java.lang.Object getToplevelAttribute() {
         return value;
     }
@@ -96,7 +93,6 @@ final class toplevelAttribute {
 public final class sharedToplevelAttribute {
     private static final .java.lang.Object value = new com.redhat.ceylon.compiler.test.model.annotations.Bar();
     
-    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("com.redhat.ceylon.compiler.test.model.annotations.Foo|com.redhat.ceylon.compiler.test.model.annotations.Bar")
     public static .java.lang.Object getSharedToplevelAttribute() {
         return value;
     }
@@ -136,7 +132,6 @@ public final class sharedToplevelMethod {
 @.com.redhat.ceylon.compiler.metadata.java.Attribute
 final class toplevelGetter {
     
-    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("com.redhat.ceylon.compiler.test.model.annotations.Foo|com.redhat.ceylon.compiler.test.model.annotations.Bar")
     static .java.lang.Object getToplevelGetter() {
         return new com.redhat.ceylon.compiler.test.model.annotations.Foo();
     }
@@ -153,7 +148,6 @@ final class toplevelGetter {
 @.com.redhat.ceylon.compiler.metadata.java.Attribute
 public final class toplevelSharedGetter {
     
-    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("com.redhat.ceylon.compiler.test.model.annotations.Foo|com.redhat.ceylon.compiler.test.model.annotations.Bar")
     public static .java.lang.Object getToplevelSharedGetter() {
         return new com.redhat.ceylon.compiler.test.model.annotations.Foo();
     }

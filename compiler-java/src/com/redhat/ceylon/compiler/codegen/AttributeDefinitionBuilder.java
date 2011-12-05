@@ -55,11 +55,20 @@ public class AttributeDefinitionBuilder {
     private boolean writable = true;
     private final MethodDefinitionBuilder setterBuilder;
     
+    private boolean isHashCode = false;
+    
     private AbstractTransformer owner;
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, String className, String attrName, String fieldName) {
         boolean isGenericsType = owner.isGenericsImplementation(attrType);
-        JCExpression type = owner.makeJavaType(attrType.getType(), isGenericsType ? AbstractTransformer.TYPE_ARGUMENT : 0);
+        int typeFlags = isGenericsType ? AbstractTransformer.TYPE_ARGUMENT : 0;
+        // Special erasure for the "hash" attribute which gets translated to hashCode()
+        if ("hash".equals(attrName) && owner.isCeylonInteger(attrType.getType())) {
+            typeFlags = AbstractTransformer.SMALL_TYPE;
+            isHashCode = true;
+        }
+        
+        JCExpression type = owner.makeJavaType(attrType.getType(), typeFlags);
         this.attrType = type;
         
         this.owner = owner;
@@ -70,7 +79,7 @@ public class AttributeDefinitionBuilder {
         getterBuilder = MethodDefinitionBuilder
             .systemMethod(owner, Util.getGetterName(attrName))
             .block(generateDefaultGetterBlock())
-            .resultType(attrType);
+            .resultType(type);
         setterBuilder = MethodDefinitionBuilder
             .systemMethod(owner, Util.getSetterName(attrName))
             .block(generateDefaultSetterBlock())
@@ -152,11 +161,15 @@ public class AttributeDefinitionBuilder {
         );
     }
 
-    private JCTree.JCBlock generateDefaultGetterBlock() {
-        return owner.make().Block(0L, List.<JCTree.JCStatement>of(owner.make().Return(owner.make().Ident(fieldName))));
+    public JCTree.JCBlock generateDefaultGetterBlock() {
+        JCExpression returnExpr = owner.make().Ident(fieldName);
+        if (isHashCode) {
+            returnExpr = owner.make().TypeCast(owner.syms().intType, returnExpr);
+        }
+        return owner.make().Block(0L, List.<JCTree.JCStatement>of(owner.make().Return(returnExpr)));
     }
 
-    private JCTree.JCBlock generateDefaultSetterBlock() {
+    public JCTree.JCBlock generateDefaultSetterBlock() {
         Name paramName = owner.names().fromString(attrName);
         return owner.make().Block(0L, List.<JCTree.JCStatement>of(
                 owner.make().Exec(
@@ -202,6 +215,12 @@ public class AttributeDefinitionBuilder {
     public AttributeDefinitionBuilder isActual(boolean isActual) {
         getterBuilder.isActual(isActual);
         setterBuilder.isActual(isActual);
+        return this;
+    }
+
+    public AttributeDefinitionBuilder isFormal(boolean isFormal) {
+        getterBuilder.isFormal(isFormal);
+        setterBuilder.isFormal(isFormal);
         return this;
     }
 

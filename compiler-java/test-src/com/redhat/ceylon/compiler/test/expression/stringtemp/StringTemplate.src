@@ -5,7 +5,7 @@ class F implements ceylon.language.Format {
     
     @.java.lang.Override
     public final .java.lang.String getFormatted() {
-        return this.formatted;
+        return formatted;
     }
     
     F() {

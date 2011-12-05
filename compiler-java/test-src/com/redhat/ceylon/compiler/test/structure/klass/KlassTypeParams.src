@@ -8,12 +8,12 @@ class KlassTypeParams<U, V> {
     private final U attr;
     
     private final U getAttr() {
-        return this.attr;
+        return attr;
     }
     private V var;
     
     private final V getVar() {
-        return this.var;
+        return var;
     }
     
     private final void setVar(V var) {

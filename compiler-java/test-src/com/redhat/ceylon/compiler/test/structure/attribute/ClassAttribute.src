@@ -4,12 +4,12 @@ abstract class ClassAttribute {
     private final .java.lang.String publicvar;
     
     public final .java.lang.String getPublicvar() {
-        return this.publicvar;
+        return publicvar;
     }
     private final .java.lang.String capturedvar;
     
     private final .java.lang.String getCapturedvar() {
-        return this.capturedvar;
+        return capturedvar;
     }
     
     public abstract .java.lang.String getFormalvar();

@@ -4,7 +4,7 @@ public class Bug227 {
     private long _num;
     
     private final long get_num() {
-        return this._num;
+        return _num;
     }
     
     private final void set_num(long _num) {

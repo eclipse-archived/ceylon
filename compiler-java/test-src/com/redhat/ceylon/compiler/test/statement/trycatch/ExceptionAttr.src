@@ -4,7 +4,7 @@ class ExceptionAttr {
     private .java.lang.Throwable e;
     
     public final .java.lang.Throwable getE() {
-        return this.e;
+        return e;
     }
     
     public final void setE(.java.lang.Throwable e) {

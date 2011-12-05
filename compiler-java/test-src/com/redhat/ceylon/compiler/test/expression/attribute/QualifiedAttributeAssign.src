@@ -4,7 +4,7 @@ class QualifiedAttributeAssign {
     private boolean b;
     
     private final boolean getB() {
-        return this.b;
+        return b;
     }
     
     private final void setB(boolean b) {
@@ -13,7 +13,7 @@ class QualifiedAttributeAssign {
     private boolean b2;
     
     public final boolean getB2() {
-        return this.b2;
+        return b2;
     }
     
     public final void setB2(boolean b2) {
@@ -22,7 +22,7 @@ class QualifiedAttributeAssign {
     private final com.redhat.ceylon.compiler.test.expression.attribute.QualifiedAttributeAssign q;
     
     private final com.redhat.ceylon.compiler.test.expression.attribute.QualifiedAttributeAssign getQ() {
-        return this.q;
+        return q;
     }
     
     private final void m(final com.redhat.ceylon.compiler.test.expression.attribute.Foo f) {
@@ -49,7 +49,7 @@ class Foo {
     private boolean b;
     
     public final boolean getB() {
-        return this.b;
+        return b;
     }
     
     public final void setB(boolean b) {

@@ -4,17 +4,17 @@ final class x {
     private final boolean valShared;
     
     public final boolean getValShared() {
-        return this.valShared;
+        return valShared;
     }
     private final boolean valCaptured;
     
     private final boolean getValCaptured() {
-        return this.valCaptured;
+        return valCaptured;
     }
     private boolean varShared;
     
     public final boolean getVarShared() {
-        return this.varShared;
+        return varShared;
     }
     
     public final void setVarShared(boolean varShared) {
@@ -23,7 +23,7 @@ final class x {
     private boolean varCaptured;
     
     private final boolean getVarCaptured() {
-        return this.varCaptured;
+        return varCaptured;
     }
     
     private final void setVarCaptured(boolean varCaptured) {

@@ -4,7 +4,7 @@ public class CreatorOperators {
     private long n1;
     
     private final long getN1() {
-        return this.n1;
+        return n1;
     }
     
     private final void setN1(long n1) {
@@ -13,7 +13,7 @@ public class CreatorOperators {
     private long i1;
     
     private final long getI1() {
-        return this.i1;
+        return i1;
     }
     
     private final void setI1(long i1) {
@@ -22,7 +22,7 @@ public class CreatorOperators {
     private long i2;
     
     private final long getI2() {
-        return this.i2;
+        return i2;
     }
     
     private final void setI2(long i2) {
