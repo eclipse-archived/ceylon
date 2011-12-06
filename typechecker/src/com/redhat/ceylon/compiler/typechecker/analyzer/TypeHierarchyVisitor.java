@@ -92,9 +92,9 @@ public class TypeHierarchyVisitor extends Visitor {
                         boolean isMemberNameOnAncestor = isMemberNameOnAncestor(currentType, name);
                         if (!isMemberNameOnAncestor) {
                             StringBuilder sb = new StringBuilder("may not inherit two declarations with the same name that do not share a common supertype: ");
-                            sb.append("[").append(currentType.declaration.getQualifiedNameString()).append("#").append(name).append("]");
-                            String otherTypeName = getTypeDeclarationFor(aggregateMembers);
-                            sb.append(" and [").append(otherTypeName).append("#").append(name).append("]");
+                            sb.append(name).append(" is defined by supertypes ")
+                              .append(currentType.declaration.getName())
+                              .append(" and ").append(getTypeDeclarationFor(aggregateMembers));
                             that.addError(sb.toString());
                         }
                     }
@@ -147,9 +147,9 @@ public class TypeHierarchyVisitor extends Visitor {
                         boolean isMemberRefined = isMemberRefined(orderedTypes,index,name,currentTypeMembers);
                         if (!isMemberRefined) {
                             StringBuilder sb = new StringBuilder("may not inherit two declarations with the same name unless redefined in subclass: ");
-                            sb.append("[").append(currentType.declaration.getQualifiedNameString()).append("#").append(name).append("]");
-                            String otherTypeName = getTypeDeclarationFor(aggregateMembers);
-                            sb.append(" and [").append(otherTypeName).append("#").append(name).append("]");
+                            sb.append(name).append(" is defined by supertypes ")
+                              .append(currentType.declaration.getName())
+                              .append(" and ").append(getTypeDeclarationFor(aggregateMembers));
                             that.addError(sb.toString());
                         }
                     }
@@ -177,7 +177,7 @@ public class TypeHierarchyVisitor extends Visitor {
 
     private String getTypeDeclarationFor(Type.Members aggregateMembers) {
         Declaration memberDeclaration = getMemberDeclaration(aggregateMembers);
-        return memberDeclaration == null ? null : memberDeclaration.getDeclaringType(memberDeclaration).getDeclaration().getQualifiedNameString();
+        return memberDeclaration == null ? null : memberDeclaration.getDeclaringType(memberDeclaration).getDeclaration().getName();
     }
 
     private Declaration getMemberDeclaration(Type.Members aggregateMembers) {
