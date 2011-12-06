@@ -6,9 +6,9 @@ by "Gavin"
    "Tom"
 shared class Exception(
         doc "A description of the problem."
-        String? description=null,
+        String? description/*=null*/,
         doc "The underlying cause of this exception."
-        Exception? cause=null) 
+        Exception? cause/*=null*/) 
         extends IdentifiableObject() {
     
     doc "The underlying cause of this exception."
