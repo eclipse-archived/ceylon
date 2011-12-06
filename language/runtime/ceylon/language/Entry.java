@@ -45,9 +45,11 @@ public class Entry<Key, Item> {
 	@Override
 	public boolean equals(@Name("that") @TypeInfo("ceylon.language.Equality") java.lang.Object that) {
 		if (that instanceof Entry) {
-			Entry<Key, Item> that2 = (Entry)that;
-			return (this.key.equals(that2.key) && this.item.equals(that2.item));
-		} else {
+			Entry entry = (Entry) that;
+			return this.key.equals(entry.key) && 
+					this.item.equals(entry.item);
+		} 
+		else {
 			return false;
 		}
 	}
