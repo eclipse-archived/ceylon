@@ -94,6 +94,22 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
         }
     }
 
+    public void removeArtifact(ArtifactContext context) throws IOException {
+        final List<String> tokens = getPath(context, false);
+        Node parent = getNode(tokens);
+        if (parent != null) {
+            final String label = getLabel(context);
+            if (parent instanceof OpenNode) {
+                final OpenNode on = (OpenNode) parent;
+                on.removeNode(label);
+            } else {
+                throw new IOException("Parent node is not open: " + parent);
+            }
+        } else {
+            log.info("No such artifact: " + context);
+        }
+    }
+
     protected Node getLeafNode(ArtifactContext context) {
         final Node node = getNode(getPath(context, true));
         if (node == null) {

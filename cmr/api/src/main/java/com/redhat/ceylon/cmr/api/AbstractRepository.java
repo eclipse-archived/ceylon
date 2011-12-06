@@ -49,4 +49,11 @@ public abstract class AbstractRepository implements Repository {
         context.setVersion(version);
         putArtifact(context, content);
     }
+
+    public void removeArtifact(String name, String version) throws IOException {
+        ArtifactContext context = new ArtifactContext();
+        context.setName(name);
+        context.setVersion(version);
+        removeArtifact(context);
+    }
 }

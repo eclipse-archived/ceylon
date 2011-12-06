@@ -29,6 +29,6 @@ package com.redhat.ceylon.cmr.spi;
  */
 public interface MergeStrategy {
 
-    void conflict(Node previous, Node current);
+    void conflict(OpenNode previous, OpenNode current);
 
 }

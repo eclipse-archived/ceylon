@@ -39,4 +39,6 @@ public interface Repository {
     void putArtifact(String name, String version, InputStream content) throws IOException;
     void putArtifact(ArtifactContext context, InputStream content) throws IOException;
 
+    void removeArtifact(String name, String version) throws IOException;
+    void removeArtifact(ArtifactContext context) throws IOException;
 }
