@@ -127,7 +127,6 @@ class Test() {
         // FIXME: this is broken:
         //topLevelLeftAttribute := middleVar;
 
-        // this is broken due to https://github.com/ceylon/ceylon-spec/issues/87
         (middleVar := CMiddle()).left();
         (erasedTest.middleAttribute := middleVar).left();
         
