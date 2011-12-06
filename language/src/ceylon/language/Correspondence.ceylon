@@ -72,14 +72,14 @@ shared interface Correspondence<in Key, out Item>
     see (item)
     shared default Item?[] items(Key... keys) {
         if (nonempty keys) {
-            return Entries(keys.clone);
+            return Items(keys.clone);
         }
         else {
             return {};
         }
     }
-        
-    class Entries(Sequence<Key> keys)
+
+    class Items(Sequence<Key> keys)
             extends Object()
             satisfies Sequence<Item?> {
         shared actual Natural lastIndex {
@@ -99,14 +99,24 @@ shared interface Correspondence<in Key, out Item>
                 return null;
             }
         }
-        shared actual Item[] segment(Natural from, 
+        shared actual Item?[] segment(Natural from, 
                                      Natural length) {
-            throw; //todo
+            if (nonempty keys = keys.segment(from,length)) {
+                return outer.Items(keys);
+            }
+            else {
+                return {};
+            }
         }
-        shared actual Item[] span(Natural from, Natural? to) {
-            throw; //todo
+        shared actual Item?[] span(Natural from, Natural? to) {
+            if (nonempty k = keys.span(from,to)) {
+                return outer.Items(keys);
+            }
+            else {
+                return {};
+            }
         }
-        shared actual String string = "Entries"; //todo
+        //shared actual String string { return "Entries"; }
         shared actual Sequence<Item?> clone {
             return this;
         }

@@ -33,7 +33,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    public Iterable getRest() {
+    public Iterable<? extends Element> getRest() {
         if (first+1==array.length) {
             return $empty.getEmpty();
         }

@@ -78,8 +78,13 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }
 
     @Override
-    public Sequence<? extends Element> getRest() {
-        return new Range<Element>(next(getFirst()), getLast());
+    public Iterable<? extends Element> getRest() {
+    	if (atEnd(first)) {
+    	    return $empty.getEmpty();
+    	}
+    	else {
+            return new Range<Element>(next(getFirst()), getLast());
+    	}
     }
 
     @TypeInfo("ceylon.language.Nothing|Element")

@@ -1,9 +1,8 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.metadata.java.Ceylon;
-import com.redhat.ceylon.compiler.metadata.java.Class;
+import com.redhat.ceylon.compiler.metadata.java.Ignore;
 import com.redhat.ceylon.compiler.metadata.java.Name;
-import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
 import com.redhat.ceylon.compiler.metadata.java.Sequenced;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 import com.redhat.ceylon.compiler.metadata.java.TypeParameter;
@@ -38,18 +37,12 @@ public interface Correspondence<Key,Item> {
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Key>")
     Iterable<? extends Key> keys);
 
-    @SatisfiedTypes("ceylon.language.Sequence<Item|ceylon.language.Nothing>")
-    @TypeParameters({
-        @TypeParameter(value = "Key", variance = Variance.IN,
-                satisfies="ceylon.language.Equality"),
-        @TypeParameter(value = "Item", variance = Variance.OUT)
-    })
-    @Class(extendsType="ceylon.language.Object")
-    class Entries<Key,Item>
+    @Ignore
+    class Items<Key,Item>
             implements Sequence<Item> {
-        private Sequence<Key> keys;
+        private Sequence<? extends Key> keys;
         private Correspondence<Key, Item> $this;
-        Entries(Correspondence<Key,Item> $this, Sequence<Key> keys){
+        Items(Correspondence<Key,Item> $this, Sequence<? extends Key> keys){
             this.keys = keys;
             this.$this = $this;
         }
@@ -59,7 +52,7 @@ public interface Correspondence<Key,Item> {
         public final Item getFirst() {
             return $this.item(keys.getFirst());
         }
-        public final ceylon.language.Iterable<? extends Item> getRest() {
+        public final Iterable<? extends Item> getRest() {
             return $this.items(keys.getRest());
         }
         public final Item item(Natural index) {
@@ -116,13 +109,23 @@ public interface Correspondence<Key,Item> {
         }
         @Override
         public Iterable<? extends Item> segment(Natural from, Natural length) {
-        	// TODO Auto-generated method stub
-        	throw new UnsupportedOperationException();
+        	Iterable<? extends Key> keys = this.keys.segment(from, length);
+        	if (keys.getEmpty()) {
+        		return $empty.getEmpty();
+        	}
+        	else {
+        		return new Items<Key,Item>($this, (Sequence<? extends Key>)keys);
+        	}
         }
         @Override
         public Iterable<? extends Item> span(Natural from, Natural to) {
-        	// TODO Auto-generated method stub
-        	throw new UnsupportedOperationException();
+        	Iterable<? extends Key> keys = this.keys.span(from, to);
+        	if (keys.getEmpty()) {
+        		return $empty.getEmpty();
+        	}
+        	else {
+        		return new Items<Key,Item>($this, (Sequence<? extends Key>)keys);
+        	}
         }
     }
 }

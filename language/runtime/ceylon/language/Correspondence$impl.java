@@ -55,7 +55,7 @@ public class Correspondence$impl {
     public static <Key,Item> Iterable<? extends Item> items(Correspondence<Key,Item> $this, ceylon.language.Iterable<? extends Key> keys) {
         if (keys instanceof Sequence) {
             final ceylon.language.Sequence<? extends Key> $keys$1 = (ceylon.language.Sequence<? extends Key>)keys;
-            return new Correspondence.Entries($this, $keys$1.getClone());
+            return new Correspondence.Items($this, $keys$1.getClone());
         }
         else {
             return $empty.getEmpty();

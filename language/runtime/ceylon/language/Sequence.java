@@ -31,7 +31,7 @@ public interface Sequence<Element>
     public Element getFirst();
     
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable getRest();
+    public Iterable<? extends Element> getRest();
     
     public boolean getEmpty();
     
