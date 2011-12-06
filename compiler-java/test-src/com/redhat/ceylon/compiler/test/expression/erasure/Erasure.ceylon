@@ -224,6 +224,8 @@ class Test() {
         Empty|Sequence<Natural&EmptyInterface>|Nothing naturalsOrNothing = {p1};
         Natural? n52 = naturalsOrNothing?[p1];
         Top? t2 = topsOrNothing?[p1];
+        
+        Empty|Sequence<Natural&EmptyInterface> subrange = naturals[p1..p1];
 
         // sequence expression
         Natural[] plainNaturals = {p1};
