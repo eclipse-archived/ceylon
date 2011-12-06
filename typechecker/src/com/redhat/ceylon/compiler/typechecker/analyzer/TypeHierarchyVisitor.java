@@ -67,8 +67,8 @@ public class TypeHierarchyVisitor extends Visitor {
         List<Type> orderedTypes = sortDAGAndBuildMetadata(classOrInterface, that);
         if (concrete) {
             checkForFormalsNotImplemented(that, orderedTypes);
-            checkForDoubleMemberInheritanceNotOverridden(that, orderedTypes);
         }
+        checkForDoubleMemberInheritanceNotOverridden(that, orderedTypes);
         checkForDoubleMemberInheritanceWoCommonAncestor(that, orderedTypes);
     }
 
