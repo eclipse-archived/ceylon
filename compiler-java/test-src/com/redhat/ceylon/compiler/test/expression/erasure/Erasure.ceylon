@@ -140,6 +140,7 @@ class Test() {
         if(true){
             Exception&EmptyInterface x = MyException(null, null);
             x.printStackTrace();
+            value cause = x.cause;
             throw x;
         }        
 

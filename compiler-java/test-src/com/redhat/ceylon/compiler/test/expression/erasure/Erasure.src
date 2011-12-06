@@ -197,6 +197,7 @@ class Test {
         if (true) {
             final .java.lang.Object x = new com.redhat.ceylon.compiler.test.expression.erasure.MyException(null, null);
             ((.java.lang.Throwable)x).printStackTrace();
+            final .java.lang.Throwable cause = ((.java.lang.Throwable)x).getCause();
             throw (.java.lang.Throwable)x;
         }
         return (com.redhat.ceylon.compiler.test.expression.erasure.Left)middle;
