@@ -162,6 +162,37 @@ public class StructureTest extends CompilerTest {
     }
 
     @Test
+    public void testMdlImplicitDependentModule(){
+        // Compile only the first module 
+        compile("module/implicit/a/module.ceylon", "module/implicit/a/package.ceylon", "module/implicit/a/A.ceylon",
+                "module/implicit/b/module.ceylon", "module/implicit/b/package.ceylon", "module/implicit/b/B.ceylon", "module/implicit/b/B2.ceylon",
+                "module/implicit/c/module.ceylon", "module/implicit/c/package.ceylon", "module/implicit/c/c.ceylon");
+        
+        // Dependencies:
+        //
+        // c.ceylon--> B2.ceylon
+        //         |
+        //         '-> B.ceylon  --> A.ceylon
+
+        // Successfull tests :
+        
+        compile("module/implicit/c/c.ceylon");
+        compile("module/implicit/b/B.ceylon", "module/implicit/c/c.ceylon");
+        compile("module/implicit/b/B2.ceylon", "module/implicit/c/c.ceylon");
+        
+        // Failing tests :
+        
+        Boolean success1 = getCompilerTask("module/implicit/c/c.ceylon", "module/implicit/b/B.ceylon").call();
+        // => B.ceylon : package not found in dependent modules: com.redhat.ceylon.compiler.test.structure.module.implicit.a
+        Boolean success2 = getCompilerTask("module/implicit/c/c.ceylon", "module/implicit/b/B2.ceylon").call();
+        // => c.ceylon : TypeVisitor caused an exception visiting Import node: com.sun.tools.javac.code.Symbol$CompletionFailure: class file for com.redhat.ceylon.compiler.test.structure.module.implicit.a.A not found at unknown
+
+        Assert.assertTrue(success1 && success2);
+    }
+
+
+    
+    @Test
     public void testMdlMultipleRepos(){
         // Compile the first module in its own repo 
         File repoA = new File("build/ceylon-cars-a");
