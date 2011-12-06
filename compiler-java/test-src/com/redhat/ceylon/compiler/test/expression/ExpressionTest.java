@@ -295,10 +295,6 @@ public class ExpressionTest extends CompilerTest {
     // Operators
     
     @Test
-    public void testOprBasicOperators(){
-        compareWithJavaSource("operator/BasicOperators");
-    }
-    @Test
     public void testOprEqualityAndComparisonOperators(){
         compareWithJavaSource("operator/EqualityAndComparisonOperators");
     }

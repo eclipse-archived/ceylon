@@ -18,23 +18,77 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-shared class EqualityAndComparisonOperators() {
-    variable Boolean b1 := false;
-    variable Natural n1 := 0;
-    variable Natural n2 := 0;
+interface BasicOperatorsA {}
+@nomodel
+interface BasicOperatorsB {}
 
-    void equalityAndComparison(IdentifiableObject o1, IdentifiableObject o2) {
-        b1 := o1 === o2;
-        b1 := n1 == n2;
-        b1 := n1 != n2;
+@nomodel
+shared abstract class MyNatural()
+        extends Object()
+        satisfies Castable<MyNatural|Integer|Float> &
+                  Integral<MyNatural> &
+                  Subtractable<MyNatural,Integer> {}
+
+@nomodel
+shared class EqualityAndComparisonOperators() {
+
+// M2 b1 := n1 extends Natural;
+// M2 b1 := n1 satisfies Object;
+
+    void equalityAndComparisonUnboxed(IdentifiableObject o1, IdentifiableObject o2) {
+        variable Boolean sync := o1 === o2;
+        variable Natural n1 := 0;
+        variable Natural n2 := 0;
+        sync := n1 == n2;
+        sync := n1 != n2;
         Comparison c = n1 <=> n2;
-        b1 := n1 < n2;
-        b1 := n1 > n2;
-        b1 := n1 <= n2;
-        b1 := n1 >= n2;
-        b1 := n1 in n1..n2;
-        b1 := n1 is Natural;
-        // M2 b1 := n1 extends Natural;
-        // M2 b1 := n1 satisfies Object;
+        sync := n1 < n2;
+        sync := n1 > n2;
+        sync := n1 <= n2;
+        sync := n1 >= n2;
+    }
+
+    void equalityAndComparisonBoxed(IdentifiableObject o1, IdentifiableObject o2,
+                                    MyNatural n1, MyNatural n2) {
+        variable Boolean? sync := o1 === o2;
+        sync := n1 == n2;
+        sync := n1 != n2;
+        Comparison c = n1 <=> n2;
+        sync := n1 < n2;
+        sync := n1 > n2;
+        sync := n1 <= n2;
+        sync := n1 >= n2;
+    }
+
+    void testInBoxed(Natural n1, Natural n2){
+        Boolean b1 = n1 in n1..n2;
+    }
+
+    void testInUnboxed(MyNatural n1, MyNatural n2){
+        Boolean? b1 = n1 in n1..n2;
+    }
+
+    void testIs() {
+        variable Boolean sync := false;
+        Object foo = sync; 
+        // boxing test
+        sync := is Boolean sync;
+        Boolean? dest = is Boolean true;
+        // normal test
+        sync := is Boolean foo;
+        // trick
+        sync := is Nothing foo;
+        sync := is Bottom foo;
+        sync := is Void foo;
+        // unions
+        //FIXME: parser doesn't like that 
+        // sync := is BasicOperatorsA | BasicOperatorsB foo;
+        // intersections
+        //FIXME: parser doesn't like that
+        // sync := is BasicOperatorsA & BasicOperatorsB foo;
+        // erased types
+        sync := is Equality foo;
+        // type parameters
+        //M2: sync := is Sequence<Boolean> foo;
     }
 }

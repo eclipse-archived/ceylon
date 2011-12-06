@@ -19,22 +19,43 @@
  */
 @nomodel
 shared class NullHandlingOperators() {
-    variable Boolean b1 := false;
-    variable Natural n1 := 0;
-    variable Natural n2 := 0;
-    variable Natural? nat1 := 0;
-    variable Natural? nat2 := 0;
-    variable Integer? int := +0;
+    
+    T box<T>(T t){
+        return t;
+    }
     
     void nullHandling() {
-        b1 := nat1 exists;
-        n1 := nat1 ? n2;
-        n1 := nat1 ? nat2 ? 0; 
-        variable Integer? nullSafeMember := int?.negativeValue;
-        variable Integer? nullSafeInvoke := int?.plus(+1);
-        variable Integer? nullSafeInvoke2 := (+1).plus(+1);
-        nullSafeInvoke := int?.plus{
+        Natural? natOrNothing1 = 0;
+        Integer? intOrNothing = +0;
+        Natural n = natOrNothing1 ? 2;
+        Natural? nBoxed = natOrNothing1 ? box(0); 
+        variable Integer? nullSafeMember := intOrNothing?.negativeValue;
+        variable Integer? nullSafeInvoke := intOrNothing?.plus(+1);
+        nullSafeInvoke := intOrNothing?.plus{
             other = +1;
         };
+    }
+    
+    void testEmpty() {
+        variable Boolean sync := false;
+        sync := nonempty "".characters;
+        Object foo = sync; 
+        sync := nonempty foo;
+        sync := nonempty {};
+        Iterable<String> iter = {};
+        sync := nonempty iter;
+        String[] seq = {};
+        sync := nonempty seq;
+        // boxing
+        Boolean? boxed = nonempty seq;
+    }
+
+
+    void testExists() {
+        variable Boolean sync := false;
+        Object? foo = sync; 
+        sync := exists foo;
+        // boxing
+        Boolean? boxed = exists foo;
     }
 }
