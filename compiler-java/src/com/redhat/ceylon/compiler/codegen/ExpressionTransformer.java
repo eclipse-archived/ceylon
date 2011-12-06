@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import com.redhat.ceylon.compiler.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
@@ -658,7 +657,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // Type $tmpV = $tmpE.attr
             JCExpression attrType = makeJavaType(term.getTypeModel(), NO_PRIMITIVES);
             Name varVName = names().fromString(tempName("opV"));
-            JCExpression getter = transformMemberExpression(qualified, make().Ident(varEName), null);
+            JCExpression getter = transformMemberExpression(qualified, make().Ident(varEName));
             // make sure we box the results if necessary
             getter = boxUnboxIfNecessary(getter, term, term.getTypeModel(), BoxingStrategy.BOXED);
             JCVariableDecl tmpVVar = make().VarDef(make().Modifiers(0), varVName, attrType, getter);
@@ -770,7 +769,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // Type $tmpV = OP($tmpE.attr)
             JCExpression attrType = makeJavaType(returnType, boxResult ? NO_PRIMITIVES : 0);
             Name varVName = names().fromString(tempName("opV"));
-            JCExpression getter = transformMemberExpression(qualified, make().Ident(varEName), null);
+            JCExpression getter = transformMemberExpression(qualified, make().Ident(varEName));
             // make sure we box the results if necessary
             getter = applyErasureAndBoxing(getter, term, boxResult ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED, valueType);
             JCExpression newValue = factory.makeOperation(getter);
@@ -1035,7 +1034,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     public JCExpression transform(Tree.QualifiedMemberExpression expr) {
         JCExpression primaryExpr = transformQualifiedMemberPrimary(expr);
-        return transformMemberExpression(expr, primaryExpr, null);
+        return transformMemberExpression(expr, primaryExpr);
     }
 
     private JCExpression transformQualifiedMemberPrimary(Tree.QualifiedMemberExpression expr) {
@@ -1046,14 +1045,10 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     public JCExpression transform(Tree.BaseMemberExpression expr) {
-        return transformMemberExpression(expr, null, null);
+        return transformMemberExpression(expr, null);
     }
     
-    interface MemberExpressionFinalizer {
-        JCExpression finish(Declaration decl, JCExpression primaryExpr, String selector);
-    }
-    
-    private JCExpression transformMemberExpression(Tree.StaticMemberOrTypeExpression expr, JCExpression primaryExpr, MemberExpressionFinalizer finalizer) {
+    private JCExpression transformMemberExpression(Tree.StaticMemberOrTypeExpression expr, JCExpression primaryExpr) {
         JCExpression result = null;
 
         // do not throw, an error will already have been reported
@@ -1137,15 +1132,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
             }
             
-            if (finalizer != null) {
-                result = finalizer.finish(decl, primaryExpr, selector);
-            } else {
-                result = makeIdentOrSelect(primaryExpr, selector);
-                if (useGetter) {
-                    result = make().Apply(List.<JCTree.JCExpression>nil(),
-                            result,
-                            List.<JCTree.JCExpression>nil());
-                }
+            result = makeIdentOrSelect(primaryExpr, selector);
+            if (useGetter) {
+                result = make().Apply(List.<JCTree.JCExpression>nil(),
+                        result,
+                        List.<JCTree.JCExpression>nil());
             }
         }
         
