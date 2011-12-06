@@ -18,7 +18,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
 /**
  * Build modules and packages
@@ -32,7 +31,7 @@ public class ModuleBuilder {
     private final LinkedList<Package> packageStack = new LinkedList<Package>();
     private Module currentModule;
     private Modules modules;
-    private final Map<Module,Set<Node>> missingModuleDependencies = new HashMap<Module, Set<Node>>();
+    private final Map<Module,Set<Node>> moduleDependencyDefinition = new HashMap<Module, Set<Node>>();
     private Map<List<String>, Set<String>> topLevelErrorsPerModuleName = new HashMap<List<String>,Set<String>>();
 
     public ModuleBuilder(Context context) {
@@ -140,7 +139,7 @@ public class ModuleBuilder {
                 bindPackageToModule(currentPkg, currentModule);
             }
             else {
-                collectError(new ArrayList<String>(), "A module cannot be defined at the top level of the hierarchy");
+                addErrorToModule(new ArrayList<String>(), "A module cannot be defined at the top level of the hierarchy");
             }
         }
         else {
@@ -149,12 +148,12 @@ public class ModuleBuilder {
                 .append( "' and '" )
                 .append( formatPath( packageStack.peekLast().getName() ) )
                 .append("'");
-            collectError(currentModule.getName(), error.toString());
-            collectError(packageStack.peekLast().getName(), error.toString());
+            addErrorToModule(currentModule.getName(), error.toString());
+            addErrorToModule(packageStack.peekLast().getName(), error.toString());
         }
     }
 
-    private void collectError(List<String> moduleName, String error) {
+    private void addErrorToModule(List<String> moduleName, String error) {
         Set<String> errors = topLevelErrorsPerModuleName.get(moduleName);
         if (errors == null) {
             errors = new HashSet<String>();
@@ -201,16 +200,16 @@ public class ModuleBuilder {
     }
 
     public void addModuleDependencyDefinition(Module module, Node definition) {
-        Set<Node> moduleDepError = missingModuleDependencies.get(module);
-        if (moduleDepError == null) {
-            moduleDepError = new HashSet<Node>();
-            missingModuleDependencies.put(module, moduleDepError);
+        Set<Node> moduleDepDefinition = moduleDependencyDefinition.get(module);
+        if (moduleDepDefinition == null) {
+            moduleDepDefinition = new HashSet<Node>();
+            moduleDependencyDefinition.put(module, moduleDepDefinition);
         }
-        moduleDepError.add(definition);
+        moduleDepDefinition.add(definition);
     }
 
     public void addMissingDependencyError(Module module, String error) {
-        Set<Node> moduleDepError = missingModuleDependencies.get(module);
+        Set<Node> moduleDepError = moduleDependencyDefinition.get(module);
         if (moduleDepError != null) {
             for ( Node definition :  moduleDepError ) {
                 definition.addError(error);
@@ -221,7 +220,7 @@ public class ModuleBuilder {
         }
     }
 
-    public void addErrorsToModule(Module module, Node unit) {
+    public void attachErrorsToModuleUnit(Module module, Node unit) {
         Set<String> errors = topLevelErrorsPerModuleName.get(module.getName());
         if (errors != null) {
             for(String error : errors) {
