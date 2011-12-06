@@ -490,7 +490,8 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.Parameter that) {
     	super.visit(that);
     	if (that.getSpecifierExpression()!=null) {
-    		that.addWarning("parameter default values are not yet supported");
+    		that.getSpecifierExpression()
+    		    .addWarning("parameter default values are not yet supported");
     	}
     }
     
