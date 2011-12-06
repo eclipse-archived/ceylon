@@ -1,0 +1,26 @@
+package com.redhat.ceylon.compiler.test.expression.operator;
+
+public class SequenceOperators {
+    
+    private final <T>T box(final T x) {
+        return x;
+    }
+    
+    private final void sequence(final ceylon.language.Correspondence<? super ceylon.language.Natural, ? extends ceylon.language.String> c1, final ceylon.language.Correspondence<? super ceylon.language.Natural, ? extends ceylon.language.String> c2) {
+        ceylon.language.String s = c1.item(.ceylon.language.Natural.instance(1L));
+        s = c1.item(<ceylon.language.Natural>box(.ceylon.language.Natural.instance(1L)));
+        s = (let ceylon.language.Correspondence<? super ceylon.language.Natural, ? extends ceylon.language.String> $ceylontmpsafeaccess0 = c2 in $ceylontmpsafeaccess0 != null ? $ceylontmpsafeaccess0.item(.ceylon.language.Natural.instance(1L)) : null);
+        s = (let ceylon.language.Correspondence<? super ceylon.language.Natural, ? extends ceylon.language.String> $ceylontmpsafeaccess1 = c2 in $ceylontmpsafeaccess1 != null ? $ceylontmpsafeaccess1.item(<ceylon.language.Natural>box(.ceylon.language.Natural.instance(1L))) : null);
+        final ceylon.language.Iterable<? extends ceylon.language.String> sequence = new ceylon.language.ArraySequence<ceylon.language.String>(.ceylon.language.String.instance("foo"), .ceylon.language.String.instance("bar"));
+        final ceylon.language.Iterable<? extends ceylon.language.String> subrange = ((ceylon.language.Ranged<? super ceylon.language.Natural, ? extends ceylon.language.Iterable<? extends ceylon.language.String>>)sequence).span(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L));
+        final ceylon.language.Iterable<? extends ceylon.language.String> subrange2 = ((ceylon.language.Ranged<? super ceylon.language.Natural, ? extends ceylon.language.Iterable<? extends ceylon.language.String>>)sequence).span(<ceylon.language.Natural>box(.ceylon.language.Natural.instance(1L)), <ceylon.language.Natural>box(.ceylon.language.Natural.instance(2L)));
+    }
+    
+    public SequenceOperators() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        new SequenceOperators();
+    }
+}
