@@ -1242,12 +1242,16 @@ public class ExpressionTransformer extends AbstractTransformer {
             // (let tmpVar in conditional)
             return make().LetExpr(tmpVar, conditional);
         }else{
+            // find the types
+            ProducedType leftType = access.getPrimary().getTypeModel();
+            ProducedType leftRangedType = leftType.getSupertype(access.getUnit().getRangedDeclaration());
+            ProducedType rightType = getTypeArgument(leftRangedType, 0);
             // look at the lhs
-            JCExpression lhs = transformExpression(access.getPrimary(), BoxingStrategy.UNBOXED, null);
+            JCExpression lhs = transformExpression(access.getPrimary(), BoxingStrategy.BOXED, leftRangedType);
             // do the indices
             Tree.ElementRange range = (ElementRange) elementOrRange;
-            JCExpression start = transformExpression(range.getLowerBound(), BoxingStrategy.UNBOXED, null);
-            JCExpression end = transformExpression(range.getUpperBound(), BoxingStrategy.UNBOXED, null);
+            JCExpression start = transformExpression(range.getLowerBound(), BoxingStrategy.BOXED, rightType);
+            JCExpression end = transformExpression(range.getUpperBound(), BoxingStrategy.BOXED, rightType);
             // make a "lhs.span(start, end)" call
             return at(access).Apply(List.<JCTree.JCExpression>nil(), 
                     make().Select(lhs, names().fromString("span")), List.of(start, end));
