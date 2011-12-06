@@ -8,5 +8,6 @@ shared void run() {
     entriesAndRanges();
     comparables();
     clones();
+    types();
     results();
 }
