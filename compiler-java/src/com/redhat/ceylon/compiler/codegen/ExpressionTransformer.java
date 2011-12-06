@@ -54,6 +54,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.OrOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Outer;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequenceEnumeration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
@@ -118,6 +119,10 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     JCExpression transformExpression(final Tree.Term expr, BoxingStrategy boxingStrategy, ProducedType expectedType) {
+        if (expr == null) {
+            return null;
+        }
+        
         if (inStatement && boxingStrategy != BoxingStrategy.INDIFFERENT) {
             // We're not directly inside the ExpressionStatement anymore
             inStatement = false;
@@ -632,7 +637,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // attr++
         // (let $tmp = attr; attr = $tmp.getSuccessor(); $tmp;)
         if(term instanceof Tree.BaseMemberExpression){
-            JCExpression getter = transform((Tree.BaseMemberExpression)term);
+            JCExpression getter = transform((Tree.BaseMemberExpression)term, null);
             at(expr);
             // Type $tmp = attr
             JCExpression exprType = makeJavaType(returnType, NO_PRIMITIVES);
@@ -672,7 +677,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // Type $tmpV = $tmpE.attr
             JCExpression attrType = makeJavaType(returnType, NO_PRIMITIVES);
             Name varVName = names().fromString(tempName("opV"));
-            JCExpression getter = transformMemberExpression(qualified, make().Ident(varEName));
+            JCExpression getter = transformMemberExpression(qualified, make().Ident(varEName), null);
             // make sure we box the results if necessary
             getter = applyErasureAndBoxing(getter, term, BoxingStrategy.BOXED, returnType);
             JCVariableDecl tmpVVar = make().VarDef(make().Modifiers(0), varVName, attrType, getter);
@@ -746,7 +751,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // attr
         // (let $tmp = OP(attr); attr = $tmp; $tmp)
         if(term instanceof Tree.BaseMemberExpression){
-            JCExpression getter = transform((Tree.BaseMemberExpression)term);
+            JCExpression getter = transform((Tree.BaseMemberExpression)term, null);
             at(operator);
             // Type $tmp = OP(attr);
             JCExpression exprType = makeJavaType(returnType, boxResult ? NO_PRIMITIVES : 0);
@@ -786,7 +791,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // Type $tmpV = OP($tmpE.attr)
             JCExpression attrType = makeJavaType(returnType, boxResult ? NO_PRIMITIVES : 0);
             Name varVName = names().fromString(tempName("opV"));
-            JCExpression getter = transformMemberExpression(qualified, make().Ident(varEName));
+            JCExpression getter = transformMemberExpression(qualified, make().Ident(varEName), null);
             // make sure we box the results if necessary
             getter = applyErasureAndBoxing(getter, term, boxResult ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED, valueType);
             JCExpression newValue = factory.makeOperation(getter);
@@ -832,8 +837,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     private JCExpression transformNamedInvocation(InvocationExpression ce) {
-        List<JCVariableDecl> args = List.<JCVariableDecl> nil();
-        List<JCExpression> names = List.<JCExpression> nil();
+        final ListBuffer<JCVariableDecl> args = ListBuffer.lb();
+        final ListBuffer<JCExpression> names = ListBuffer.lb();
         Declaration primDecl = ce.getPrimary().getDeclaration();
         if (primDecl != null) {
             java.util.List<ParameterList> paramLists = ((Functional)primDecl).getParameterLists();
@@ -855,12 +860,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                     type = expr.getTypeModel();
                 }
                 int index = declaredParams.indexOf(declaredParam);
-                Name varName = names().fromString(varBaseName + "$" + index);
+                String varName = varBaseName + "$" + index;
                 BoxingStrategy boxType = Util.getBoxingStrategy(declaredParam);
                 JCExpression typeExpr = makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? TYPE_ARGUMENT : 0);
                 JCExpression argExpr = transformExpression(expr, boxType, type);
-                JCVariableDecl varDecl = make().VarDef(make().Modifiers(0), varName, typeExpr, argExpr);
-                args = args.append(varDecl);
+                JCVariableDecl varDecl = makeVar(varName, typeExpr, argExpr);
+                args.append(varDecl);
             }
             
             int argCount = namedArguments.size();
@@ -868,46 +873,65 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (sequencedArgument != null) {
                 at(sequencedArgument);
                 int index = namedArguments.size();
-                Name varName = names().fromString(varBaseName + "$" + index);
+                String varName = varBaseName + "$" + index;
                 JCExpression typeExpr = makeJavaType(lastDeclared.getType(), AbstractTransformer.WANT_RAW_TYPE);
                 JCExpression argExpr = makeSequenceRaw(sequencedArgument.getExpressionList().getExpressions());
-                JCVariableDecl varDecl = make().VarDef(make().Modifiers(0), varName, typeExpr, argExpr);
-                args = args.append(varDecl);
+                JCVariableDecl varDecl = makeVar(varName, typeExpr, argExpr);
+                args.append(varDecl);
                 argCount++;
             } else if (lastDeclared != null 
                     && lastDeclared.isSequenced() 
                     && !boundSequenced) {
                 int index = namedArguments.size();
-                Name varName = names().fromString(varBaseName + "$" + index);
+                String varName = varBaseName + "$" + index;
                 JCExpression typeExpr = makeJavaType(lastDeclared.getType(), AbstractTransformer.WANT_RAW_TYPE);
-                JCVariableDecl varDecl = make().VarDef(make().Modifiers(0), varName, typeExpr, makeEmpty());
-                args = args.append(varDecl);
+                JCVariableDecl varDecl = makeVar(varName, typeExpr, makeEmpty());
+                args.append(varDecl);
                 argCount++;
             }
             
             // Make a list of $arg0, $arg1, ... , $argN
             for (int i = 0; i < argCount; i++) {
-                names = names.append(make().Ident(names().fromString(varBaseName + "$" + i)));
+                names.append(make().Ident(names().fromString(varBaseName + "$" + i)));
             }
         }
 
-        List<JCExpression> typeArgs = transformTypeArguments(ce);
+        final List<JCExpression> typeArgs = transformTypeArguments(ce);
         
         at(ce);
         if (ce.getPrimary() instanceof Tree.BaseTypeExpression) {
             ProducedType classType = (ProducedType)((Tree.BaseTypeExpression)ce.getPrimary()).getTarget();
-            JCExpression newExpr = make().NewClass(null, typeArgs, makeJavaType(classType, CLASS_NEW), names, null);
-            return make().LetExpr(args, newExpr);
+            JCExpression newExpr = make().NewClass(null, typeArgs, makeJavaType(classType, CLASS_NEW), names.toList(), null);
+            return make().LetExpr(args.toList(), newExpr);
         } else {
-            JCExpression primExpr = transformExpression(ce.getPrimary());
-            JCExpression callExpr = make().Apply(typeArgs, primExpr, names);
+            JCExpression callExpr = transformPrimary(ce.getPrimary(), new TermTransformer() {
+
+                @Override
+                public JCExpression transform(Primary primary, JCExpression primaryExpr, String selector) {
+                    JCExpression tmpCallPrimExpr = null;
+                    if (primaryExpr != null && selector != null) {
+                        // Prepare the first argument holding the primary for the call
+                        String callVarName = aliasName("call");
+                        JCExpression callVarExpr = make().Ident(names().fromString(callVarName));
+                        ProducedType type = ((Tree.QualifiedMemberExpression)primary).getPrimary().getTypeModel();
+                        JCVariableDecl callVar = makeVar(callVarName, makeJavaType(type, NO_PRIMITIVES), primaryExpr);
+                        args.prepend(callVar);
+                        tmpCallPrimExpr = makeIdentOrSelect(callVarExpr, selector);
+                    } else {
+                        tmpCallPrimExpr = makeIdentOrSelect(primaryExpr, selector);
+                    }
+                    return make().Apply(typeArgs, tmpCallPrimExpr, names.toList());
+                }
+                
+            });
+
             ProducedType returnType = ce.getTypeModel();
             if (isVoid(returnType)) {
                 // void methods get wrapped like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1); null)
-                return make().LetExpr(args, List.<JCStatement>of(make().Exec(callExpr)), makeNull());
+                return make().LetExpr(args.toList(), List.<JCStatement>of(make().Exec(callExpr)), makeNull());
             } else {
                 // all other methods like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1))
-                return make().LetExpr(args, callExpr);
+                return make().LetExpr(args.toList(), callExpr);
             }
         }
     }
@@ -1047,9 +1071,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         return expr;
     }
     
-    public JCExpression transform(Tree.QualifiedMemberExpression expr) {
+    public JCExpression transform(Tree.QualifiedMemberExpression expr, TermTransformer transformer) {
         JCExpression primaryExpr = transformQualifiedMemberPrimary(expr);
-        return transformMemberExpression(expr, primaryExpr);
+        return transformMemberExpression(expr, primaryExpr, transformer);
     }
 
     private JCExpression transformQualifiedMemberPrimary(Tree.QualifiedMemberExpression expr) {
@@ -1059,11 +1083,25 @@ public class ExpressionTransformer extends AbstractTransformer {
                 expr.getTarget().getQualifyingType());
     }
     
-    public JCExpression transform(Tree.BaseMemberExpression expr) {
-        return transformMemberExpression(expr, null);
+    public JCExpression transform(Tree.BaseMemberExpression expr, TermTransformer transformer) {
+        return transformMemberExpression(expr, null, transformer);
     }
     
-    private JCExpression transformMemberExpression(Tree.StaticMemberOrTypeExpression expr, JCExpression primaryExpr) {
+    interface TermTransformer {
+        JCExpression transform(Primary primary, JCExpression primaryExpr, String selector);
+    }
+    
+    private JCExpression transformPrimary(Tree.Primary primary, TermTransformer transformer) {
+        if (primary instanceof Tree.QualifiedMemberExpression) {
+            return transform((Tree.QualifiedMemberExpression)primary, transformer);
+        } else if (primary instanceof Tree.BaseMemberExpression) {
+            return transform((Tree.BaseMemberExpression)primary, transformer);
+        } else {
+            return makeIdent(primary.getDeclaration().getName());
+        }
+    }
+    
+    private JCExpression transformMemberExpression(Tree.StaticMemberOrTypeExpression expr, JCExpression primaryExpr, TermTransformer transformer) {
         JCExpression result = null;
 
         // do not throw, an error will already have been reported
@@ -1072,12 +1110,14 @@ public class ExpressionTransformer extends AbstractTransformer {
             return make().Erroneous(List.<JCTree>nil());
         }
         
+        JCExpression qualExpr = null;
         String selector = null;
         if (decl instanceof Getter) {
             // invoke the getter
             if (decl.isToplevel()) {
-                primaryExpr = makeIdentOrSelect(makeFQIdent(decl.getContainer().getQualifiedNameString()), Util.quoteIfJavaKeyword(decl.getName()));
-                selector = Util.getGetterName(decl.getName());
+                primaryExpr = null;
+                qualExpr = makeIdentOrSelect(makeFQIdent(decl.getContainer().getQualifiedNameString()), Util.quoteIfJavaKeyword(decl.getName()), Util.getGetterName(decl.getName()));
+                selector = null;
             } else if (decl.isClassMember()) {
                 selector = Util.getGetterName(decl.getName());
             } else {
@@ -1116,8 +1156,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (!isRecursiveReference(expr)) {
                     path.add(decl.getName());
                 }
-                primaryExpr = makeIdent(path);
-                selector = Util.quoteMethodName(decl.getName());
+                path.add(Util.quoteMethodName(decl.getName()));
+                primaryExpr = null;
+                qualExpr = makeIdent(path);
+                selector = null;
             } else if (decl.isToplevel()) {
                 java.util.List<String> path = new LinkedList<String>();
                 // FQN must start with empty ident (see https://github.com/ceylon/ceylon-compiler/issues/148)
@@ -1129,16 +1171,18 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
                 // class
                 path.add(Util.quoteIfJavaKeyword(decl.getName()));
-                primaryExpr = makeIdent(path);
                 // method
-                selector = Util.quoteMethodName(decl.getName());
+                path.add(Util.quoteMethodName(decl.getName()));
+                primaryExpr = null;
+                qualExpr = makeIdent(path);
+                selector = null;
             } else {
                 selector = Util.quoteMethodName(decl.getName());
             }
         }
         if (result == null) {
             boolean useGetter = !(decl instanceof Method);
-            if (selector == null) {
+            if (qualExpr == null && selector == null) {
                 useGetter = Util.isErasedAttribute(decl.getName());
                 if (useGetter) {
                     selector = Util.quoteMethodName(decl.getName());
@@ -1146,23 +1190,34 @@ public class ExpressionTransformer extends AbstractTransformer {
                     selector = substitute(decl.getName());
                 }
             }
+            if (primaryExpr == null) {
+                primaryExpr = qualExpr;
+            }
             
-            result = makeIdentOrSelect(primaryExpr, selector);
-            if (useGetter) {
-                result = make().Apply(List.<JCTree.JCExpression>nil(),
-                        result,
-                        List.<JCTree.JCExpression>nil());
+            if (transformer != null) {
+                result = transformer.transform(expr, primaryExpr, selector);
+            } else {
+                result = makeIdentOrSelect(primaryExpr, selector);
+                if (useGetter) {
+                    result = make().Apply(List.<JCTree.JCExpression>nil(),
+                            result,
+                            List.<JCTree.JCExpression>nil());
+                }
             }
         }
         
         return result;
     }
 
-    private JCExpression makeIdentOrSelect(JCExpression expr, String... names) {
-        if (expr != null) {
-            return makeSelect(expr, names);
+    private JCExpression makeIdentOrSelect(JCExpression expr, String name, String... names) {
+        if (name != null) {
+            if (expr != null) {
+                return makeSelect(makeSelect(expr, name), names);
+            } else {
+                return makeSelect(makeIdent(name), names);
+            }
         } else {
-            return makeIdent(names);
+            return expr;
         }
     }
 

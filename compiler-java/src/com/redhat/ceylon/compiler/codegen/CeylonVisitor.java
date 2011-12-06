@@ -251,11 +251,11 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
     
     public void visit(Tree.QualifiedMemberExpression access) {
-        append(gen.expressionGen().transform(access));
+        append(gen.expressionGen().transform(access, null));
     }
 
     public void visit(Tree.BaseMemberExpression access) {
-        append(gen.expressionGen().transform(access));
+        append(gen.expressionGen().transform(access, null));
     }
     
     /*
