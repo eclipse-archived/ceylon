@@ -20,7 +20,8 @@ public final class coalesce {
     @TypeParameter(value="Element", satisfies="ceylon.language.Object")
     })
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public static <Element>ceylon.language.Iterable<? extends Element> coalesce(@Name("sequence")
+    public static <Element> Iterable<? extends Element> coalesce(
+    @Name("sequence")
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Nothing|Element>")
     final ceylon.language.Iterable<? extends Element> sequence) {
 		List<Element> list = new ArrayList<Element>();
