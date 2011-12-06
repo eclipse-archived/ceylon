@@ -480,6 +480,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         return transformArithmeticOperator(op, op.getUnit().getComparableDeclaration());
     }
 
+    public JCExpression transform(Tree.CompareOp op) {
+        return transformArithmeticOperator(op, op.getUnit().getComparableDeclaration());
+    }
+
     public JCExpression transform(Tree.ArithmeticOp op) {
         return transformArithmeticOperator(op, op.getUnit().getNumericDeclaration());
     }
