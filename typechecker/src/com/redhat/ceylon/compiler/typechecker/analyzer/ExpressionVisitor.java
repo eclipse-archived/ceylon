@@ -1753,7 +1753,7 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else {
                     that.addError("operand expressions must be promotable to common numeric type: " + 
-                            lhst.getProducedTypeName() + ", " + 
+                            lhst.getProducedTypeName() + " and " + 
                             rhst.getProducedTypeName());
                     return;
                 }
@@ -1788,8 +1788,16 @@ public class ExpressionVisitor extends Visitor {
                 //that.setTypeModel(t); //stef requests lhst to make it easier on backend
                 if (!rhst.isSubtypeOf(unit.getCastableType(t)) &&
                         !rhst.isExactly(lhst)) { //note the language spec does not actually bless this
-                    that.getRightTerm().addError("operand expression must be promotable to common numeric type: " + 
+                    that.getRightTerm().addError("operand expression must be promotable to declared type: " + 
+                            rhst.getProducedTypeName() + " is not promotable to " +
                             nt.getProducedTypeName());
+                }
+                if (type.getTypeParameters().size()==2) {
+                    //for Subtractable
+                    ProducedType it = nt.getTypeArgumentList().get(1);
+                    checkAssignable(lhst, it, that, 
+                            "result of operation must be assignable to declared type");
+                    that.setTypeModel(it);
                 }
             }
         }
@@ -1992,6 +2000,9 @@ public class ExpressionVisitor extends Visitor {
         }
         else if (that instanceof Tree.RemainderAssignOp) {
             return unit.getIntegralDeclaration();
+        }
+        else if (that instanceof Tree.SubtractAssignOp) {
+            return unit.getSubtractableDeclaration();
         }
         else {
             return unit.getNumericDeclaration();
