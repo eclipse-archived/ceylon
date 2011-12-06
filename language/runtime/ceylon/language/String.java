@@ -306,14 +306,14 @@ public final class String
     public java.lang.String initial(@TypeInfo("ceylon.language.Natural") 
     @Name("length") long length) {
         return length>value.length() ? value : 
-        	value.substring(0,  (int)length);
+        	value.substring(0, (int)length);
     }
 
     @TypeInfo("ceylon.language.String")
     public java.lang.String terminal(@TypeInfo("ceylon.language.Natural") 
     @Name("length") long length) {
         return length>value.length() ? value : 
-        	value.substring(value.length()-5, value.length());
+        	value.substring(value.length()-(int) length, value.length());
     }
     
     public java.lang.String join(@Name("strings") @Sequenced
