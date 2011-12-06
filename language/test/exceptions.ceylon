@@ -46,6 +46,18 @@ void exceptions() {
     
     caught:=false;
     try {
+        throw Exception("hello", null);
+    }
+    catch (OtherException|MyException e) {
+        fail("any exception");
+    }
+    catch (Exception me) {
+        caught:=true;
+    }
+    assert(caught, "caught");
+    
+    caught:=false;
+    try {
         throw Exception("hello", MyException());
     }
     catch (Exception e) {
