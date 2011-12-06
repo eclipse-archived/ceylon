@@ -20,6 +20,7 @@
 
 package com.redhat.ceylon.compiler.codegen;
 
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignOp;
@@ -62,7 +63,11 @@ public class BoxingVisitor extends Visitor {
         // handle errors gracefully
         if(that.getDeclaration() == null)
             return;
-        if(Util.isUnBoxed((TypedDeclaration)that.getDeclaration()) || transformer.isCeylonBoolean(that.getTypeModel()))
+        Declaration decl = that.getDeclaration();
+        if(Util.isUnBoxed((TypedDeclaration)decl)
+                // special cases for true/false
+                || transformer.isBooleanTrue(decl)
+                || transformer.isBooleanFalse(decl))
             Util.markUnBoxed(that);
     }
 
@@ -139,7 +144,8 @@ public class BoxingVisitor extends Visitor {
     @Override
     public void visit(NotOp that) {
         super.visit(that);
-        propagateFromTerm(that, that.getTerm());
+        // this is not conditional
+        Util.markUnBoxed(that);
     }
     
     @Override

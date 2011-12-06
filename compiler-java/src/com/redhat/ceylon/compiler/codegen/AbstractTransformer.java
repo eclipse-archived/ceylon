@@ -365,11 +365,11 @@ public abstract class AbstractTransformer implements Transformation {
      * Type handling
      */
 
-    protected boolean isBooleanTrue(Declaration decl) {
+    boolean isBooleanTrue(Declaration decl) {
         return decl == loader().getDeclaration("ceylon.language.$true", DeclarationType.VALUE);
     }
     
-    protected boolean isBooleanFalse(Declaration decl) {
+    boolean isBooleanFalse(Declaration decl) {
         return decl == loader().getDeclaration("ceylon.language.$false", DeclarationType.VALUE);
     }
     
