@@ -127,7 +127,9 @@ public class Singleton<Element>
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public Iterable<? extends Element> span(@Name("from") Natural from, 
+    		@TypeInfo("ceylon.language.Nothing|ceylon.language.Natural")
     		@Name("to") Natural to) {
+    	//if (to==null) to = Natural.instance(0);
     	if (from.longValue()>0) 
     		return $empty.getEmpty();
     	return this;

@@ -122,6 +122,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Override
     public Iterable<? extends Element> span(Natural from, Natural to) {
+    	if (to==null) to=Natural.instance(array.length-1);
         if (from.longValue()>getLastIndex()||to.longValue()<from.longValue()) {
             return $empty.getEmpty();
         }

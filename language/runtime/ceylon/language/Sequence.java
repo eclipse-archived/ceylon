@@ -83,13 +83,14 @@ public interface Sequence<Element>
     
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Element> span(
-    		@Name("from") Natural from, @Name("to") Natural to);
+    public Iterable<? extends Element> span(@Name("from") Natural from, 
+    		@TypeInfo("ceylon.language.Nothing|ceylon.language.Natural")
+    		@Name("to") Natural to);
     
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Element> segment(
-    		@Name("from") Natural from, @Name("length") Natural length);
+    public Iterable<? extends Element> segment(@Name("from") Natural from, 
+    		@Name("length") Natural length);
     
     public java.lang.String toString();
 

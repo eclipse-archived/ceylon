@@ -346,7 +346,10 @@ public final class String
     
     @Override
     @TypeInfo("ceylon.language.String")
-    public String span(@Name("from") Natural from, @Name("to") Natural to) {
+    public String span(@Name("from") Natural from, 
+    		@Name("to") @TypeInfo("ceylon.language.Nothing|ceylon.language.Natural") 
+            Natural to) {
+    	if (to==null) to=Natural.instance(value.length()-1);
     	if (from.longValue()>=value.length()||to.longValue()<from.longValue()) 
     		return instance("");
     	if (to.longValue()>=value.length()) to = Natural.instance(value.length()-1);

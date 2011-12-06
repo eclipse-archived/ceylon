@@ -232,8 +232,8 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
 
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Element> segment(
-    		@Name("from") Natural from, @Name("length") Natural length) {
+    public Iterable<? extends Element> segment(@Name("from") Natural from, 
+    		@Name("length") Natural length) {
     	if (from.longValue()>getLastIndex()||length.longValue()==0) 
     		return $empty.getEmpty();
     	if (from.longValue()+length.longValue()>getSize()) length = 
@@ -251,8 +251,10 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Element> span(
-    		@Name("from") Natural from, @Name("to") Natural to) {
+    public Iterable<? extends Element> span(@Name("from") Natural from,
+    		@TypeInfo("ceylon.language.Nothing|ceylon.language.Natural")
+    		@Name("to") Natural to) {
+    	if (to==null) to=Natural.instance(getLastIndex());
     	if (from.longValue()>getLastIndex()||to.longValue()<from.longValue()) 
     		return $empty.getEmpty();
     	return this;
