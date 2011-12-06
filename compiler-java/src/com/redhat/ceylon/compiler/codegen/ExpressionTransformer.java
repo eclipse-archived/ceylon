@@ -884,9 +884,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else {
             JCExpression primExpr = transformExpression(ce.getPrimary());
             JCExpression callExpr = make().Apply(typeArgs, primExpr, names);
-            
-            // FIXME This is probably not the right way to retrieve this info!
-            ProducedType returnType = (ce.getPrimary().getTypeModel().getTypeArgumentList().get(0));
+            ProducedType returnType = ce.getTypeModel();
             if (isVoid(returnType)) {
                 // void methods get wrapped like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1); null)
                 return make().LetExpr(args, List.<JCStatement>of(make().Exec(callExpr)), makeNull());
