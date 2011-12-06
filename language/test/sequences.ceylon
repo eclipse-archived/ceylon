@@ -236,5 +236,8 @@ shared void sequences() {
     for (nat->str in sequenceEntries) {
         assert("X"+(nat+1).string==str, "entries iteration");
     }
+    
+    Correspondence<Natural, String> c1 = {};
+    assert(!exists c1[0], "empty correspondence");
 
 }

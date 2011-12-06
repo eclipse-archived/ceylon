@@ -11,8 +11,8 @@ import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
     "ceylon.language.Sized"
 })
 public interface Empty 
-        extends Correspondence<Natural, java.lang.Object>, 
-                Ordered, Sized, Ranged<Natural,Empty> {
+        extends Correspondence, Ordered, Sized, 
+                Ranged<Natural,Empty> {
 	
     @TypeInfo("ceylon.language.Natural")
     public long getSize(); 
@@ -23,7 +23,7 @@ public interface Empty
     public Iterator getIterator();
     
     @TypeInfo("ceylon.language.Nothing")
-    public java.lang.Object item(@Name("key") Natural key);
+    public java.lang.Object item(@Name("key") java.lang.Object key);
     
     @TypeInfo("ceylon.language.Nothing")
     public java.lang.Object getFirst();

@@ -5,11 +5,11 @@ import com.redhat.ceylon.compiler.metadata.java.Ceylon;
 
 @Ceylon @Attribute
 public class $empty {
-    private final static Empty value = new Empty(){
+    private final static Empty value = new Empty() {
 
         @Override
-        public boolean defines(Natural key) {
-            return Correspondence$impl.defines(this, key);
+        public boolean defines(java.lang.Object key) {
+            return Correspondence$impl.defines(this, (Natural)key);
         }
 
         @Override
@@ -18,17 +18,17 @@ public class $empty {
         }
 
         @Override
-        public boolean definesEvery(Iterable<? extends Natural> keys) {
+        public boolean definesEvery(Iterable keys) {
             return Correspondence$impl.definesEvery(this, keys);
         }
 
         @Override
-        public boolean definesAny(Iterable<? extends Natural> keys) {
+        public boolean definesAny(Iterable keys) {
             return Correspondence$impl.definesAny(this, keys);
         }
 
         @Override
-        public Iterable<? extends java.lang.Object> items(Iterable<? extends Natural> keys) {
+        public Iterable<? extends java.lang.Object> items(Iterable keys) {
             return Correspondence$impl.items(this, keys);
         }
 
@@ -48,8 +48,8 @@ public class $empty {
         }
 
         @Override
-        public java.lang.Object item(Natural key) {
-            return Empty$impl.item(this, key);
+        public java.lang.Object item(java.lang.Object key) {
+            return Empty$impl.item(this, (Natural)key);
         }
 
         @Override
