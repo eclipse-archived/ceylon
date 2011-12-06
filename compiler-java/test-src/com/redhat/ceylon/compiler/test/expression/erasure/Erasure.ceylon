@@ -188,8 +188,11 @@ class Test() {
     void testComparisonOperators(Natural&EmptyInterface p1,
                                  Test&EmptyInterface erasedTest){
         // equality operators
-        Boolean b = n == n;
-        Boolean b2 = p1 < p1;
+        variable Boolean sync;
+        sync := erasedTest === erasedTest;
+        sync := p1 == p1;
+        sync := p1 < p1;
+        value cmp = p1 <=> p1;
     }
 
     void testSequences(Natural&EmptyInterface p1,

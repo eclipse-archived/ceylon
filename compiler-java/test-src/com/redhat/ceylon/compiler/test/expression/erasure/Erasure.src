@@ -238,8 +238,11 @@ class Test {
     }
     
     private final void testComparisonOperators(final .java.lang.Object p1, final .java.lang.Object erasedTest) {
-        final boolean b = getN().equals(getN());
-        final boolean b2 = ((ceylon.language.Comparable<? super ceylon.language.Natural>)p1).compare((ceylon.language.Natural)p1).smaller();
+        boolean sync;
+        sync = erasedTest == erasedTest;
+        sync = p1.equals(p1);
+        sync = ((ceylon.language.Comparable<? super ceylon.language.Natural>)p1).compare((ceylon.language.Natural)p1).smaller();
+        final ceylon.language.Comparison cmp = ((ceylon.language.Comparable<? super ceylon.language.Natural>)p1).compare((ceylon.language.Natural)p1);
     }
     
     private final void testSequences(final .java.lang.Object p1, final ceylon.language.Iterable leftsAndRights, final ceylon.language.Iterable leftsAndRightsEntries, final ceylon.language.Iterable topsOrNothing) {
