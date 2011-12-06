@@ -153,6 +153,10 @@ public class ModuleBuilder {
         }
     }
 
+    public void addErrorToModule(Module module, String error) {
+        addErrorToModule(module.getName(), error);
+    }
+
     private void addErrorToModule(List<String> moduleName, String error) {
         Set<String> errors = topLevelErrorsPerModuleName.get(moduleName);
         if (errors == null) {

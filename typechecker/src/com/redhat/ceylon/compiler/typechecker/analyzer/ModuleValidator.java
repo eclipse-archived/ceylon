@@ -67,7 +67,9 @@ public class ModuleValidator {
                 StringBuilder error = new StringBuilder("Circular dependency between modules: ");
                 buildDependencyString(dependencyTree, module, error);
                 error.append(".");
-                System.err.println(error);
+                //TODO is there a better place than the top level module triggering the error?
+                //nested modules might not have representations in the src tree
+                moduleBuilder.addErrorToModule( dependencyTree.getFirst(), error.toString() );
                 return;
             }
             if ( ! module.isAvailable() ) {
