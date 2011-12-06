@@ -254,7 +254,7 @@ public class DefaultNode implements OpenNode {
         } else {
             ContentTransformer ct = getService(ContentTransformer.class);
             if (ct != null)
-                return ct.transform(contentType, getInputStream());
+                return ct.transform(contentType, new LazyInputStream());
             else
                 return IOUtils.fromStream(contentType, getInputStream());
         }
@@ -294,5 +294,70 @@ public class DefaultNode implements OpenNode {
         }
 
         return false;
+    }
+
+    private class LazyInputStream extends InputStream {
+        private InputStream delegate;
+
+        private InputStream getDelegate() throws IOException {
+            if (delegate == null) {
+                InputStream is = DefaultNode.this.getInputStream();
+                if (is == null)
+                    throw new IllegalArgumentException("Null input stream!");
+                delegate = is;
+            }
+            return delegate;
+        }
+
+        public int read() throws IOException {
+            return getDelegate().read();
+        }
+
+        @Override
+        public int read(byte[] b) throws IOException {
+            return getDelegate().read(b);
+        }
+
+        @Override
+        public int read(byte[] b, int off, int len) throws IOException {
+            return getDelegate().read(b, off, len);
+        }
+
+        @Override
+        public long skip(long n) throws IOException {
+            return getDelegate().skip(n);
+        }
+
+        @Override
+        public int available() throws IOException {
+            return getDelegate().available();
+        }
+
+        @Override
+        public void mark(int readlimit) {
+            try {
+                getDelegate().mark(readlimit);
+            } catch (IOException ignored) {
+            }
+        }
+
+        @Override
+        public void reset() throws IOException {
+            getDelegate().reset();
+        }
+
+        @Override
+        public boolean markSupported() {
+            try {
+                return getDelegate().markSupported();
+            } catch (IOException ignored) {
+                return false;
+            }
+        }
+
+        public void close() throws IOException {
+            if (delegate != null)
+                delegate.close();
+        }
     }
 }
