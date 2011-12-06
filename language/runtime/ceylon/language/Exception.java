@@ -5,7 +5,10 @@ import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 public class Exception extends RuntimeException {
 
-    private ceylon.language.String description;
+	private static final long serialVersionUID = -1790691559137471641L;
+
+	private ceylon.language.String description;
+    
     public Exception(
             @TypeInfo("ceylon.language.String|ceylon.language.Nothing")
             @Name("description")
@@ -29,7 +32,8 @@ public class Exception extends RuntimeException {
         if (description != null
                 && description.value != null) {
             return description.value;
-        } else if (getCause() != null 
+        } 
+        else if (getCause() != null 
                 && getCause().getMessage() != null) {
             return getCause().getMessage();
         }
@@ -38,7 +42,7 @@ public class Exception extends RuntimeException {
 
     @TypeInfo("ceylon.language.String")
     public java.lang.String toString() {
-        return  "Exception \"" + getMessage() +"\""; 
+        return "Exception \"" + getMessage() +"\""; 
     }
     
     @Override
