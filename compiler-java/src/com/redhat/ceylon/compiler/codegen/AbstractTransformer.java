@@ -562,8 +562,13 @@ public abstract class AbstractTransformer implements Transformation {
                     // For any other intersection type U|V:
                     // - The Ceylon type Foo<U&V> results in the raw Java type Foo.
                     // A bit ugly, but we need to escape from the loop and create a raw type, no generics
-                    typeArgs = null;
-                    break;
+                    ProducedType iterType = typeFact().getNonemptyIterableType(typeFact().getDefiniteType(ta));
+                    // don't break if the union type is erased to something better than Object
+                    if(iterType == null){
+                        typeArgs = null;
+                        break;
+                    }else
+                        ta = iterType;
                 }
                 JCExpression jta;
                 if (sameType(syms().ceylonVoidType, ta)) {
