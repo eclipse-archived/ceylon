@@ -349,10 +349,12 @@ public final class String
     public String span(@Name("from") Natural from, 
     		@Name("to") @TypeInfo("ceylon.language.Nothing|ceylon.language.Natural") 
             Natural to) {
-    	if (to==null) to=Natural.instance(value.length()-1);
-    	if (from.longValue()>=value.length()||to.longValue()<from.longValue()) 
+    	int len = value.length();
+    	if (len==0) return instance("");
+		if (to==null) to=Natural.instance(len-1);
+    	if (from.longValue()>=len||to.longValue()<from.longValue()) 
     		return instance("");
-    	if (to.longValue()>=value.length()) to = Natural.instance(value.length()-1);
+    	if (to.longValue()>=len) to = Natural.instance(len-1);
     	return instance(value.substring((int) from.longValue(), (int) to.longValue()+1));
     }
 
