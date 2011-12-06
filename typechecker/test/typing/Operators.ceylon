@@ -155,13 +155,19 @@ class Operators() {
     @type["Natural"] ++n;
     @type["Natural"] n+=1;
     @type["Natural"] n/=3;
+    @type["Natural"] n*=2;
+    @error n*=-2;
     @error n+=1.0;
     @error n+=-1;
+    @error n-=1;
     
     variable Float f:=0.0;
     @type["Float"] f+=1.0;
     @type["Float"] f+=1;
     @type["Float"] f-=4;
+    @type["Float"] f/=4.0;
+    @type["Float"] f*=2;
+    @type["Float"] f/=-2;
     @type["Float"] f+=-1;
     
     variable Boolean bb := false;
