@@ -3950,9 +3950,9 @@ createItemMethod.intercept()
             <entry><literal>lhs - rhs</literal></entry>
             <entry>difference</entry>
             <entry><literal>lhs.castTo&lt;N&gt;() .minus(rhs.castTo&lt;N&gt;())</literal></entry>
-            <entry><literal>X satisfies Castable&lt;N&gt; &amp; Numeric&lt;X&gt;</literal></entry>
-            <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Numeric&lt;Y&gt;</literal></entry>
-            <entry><literal>N of X|Y</literal></entry>
+            <entry><literal>X satisfies Castable&lt;N&gt; &amp; Subtractable&lt;X,I&gt;</literal></entry>
+            <entry><literal>Y satisfies Castable&lt;N&gt; &amp; Subtractable&lt;Y,J&gt;</literal></entry>
+            <entry><literal>N of I|J</literal></entry>
         </row>
         <row>
             <entry><literal>lhs * rhs</literal></entry>
@@ -4001,7 +4001,7 @@ createItemMethod.intercept()
             <entry><literal>lhs -= rhs</literal></entry>
             <entry>subtract</entry>
             <entry><literal>lhs:=lhs .minus(rhs.castTo&lt;N&gt;())</literal></entry>
-            <entry><literal>Settable &lt;Numeric&lt;N&gt;&gt;</literal></entry>
+            <entry><literal>Settable &lt;Subtractable&lt;N,N&gt;&gt;</literal></entry>
             <entry><literal>Castable&lt;N&gt;</literal></entry>
             <entry><literal>N</literal></entry>
         </row>
