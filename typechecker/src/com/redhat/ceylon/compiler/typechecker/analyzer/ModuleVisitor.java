@@ -17,7 +17,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  * In theory should only be called on module.ceylon and
  * package.ceylon files
  *
- * Put retrictions on how module.ceylon files are built today:
+ * Put restrictions on how module.ceylon files are built today:
  *  - names and versions must be string literals or else the 
  *    visitor cannot extract them
  *  - imports must be "explicitly" defined, ie not imported as 
