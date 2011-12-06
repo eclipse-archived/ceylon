@@ -9,5 +9,6 @@ shared void run() {
     comparables();
     clones();
     types();
+    exceptions();
     results();
 }
