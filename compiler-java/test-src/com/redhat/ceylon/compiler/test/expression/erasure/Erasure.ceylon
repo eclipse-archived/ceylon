@@ -85,7 +85,8 @@ class Test() {
     // something else
     Left testIntersection(Natural&EmptyInterface p1,
                           Natural&EmptyInterface|Nothing p1OrNothing,
-                          Sequence<Top>&EmptyInterface tops,
+                          Sequence<Top&EmptyInterface>&EmptyInterface tops,
+                          Nothing|Sequence<Top&EmptyInterface>&EmptyInterface topsOrNothing,
                           Test&EmptyInterface erasedTest){
         Left&Right middle = CMiddle();
 
@@ -126,6 +127,34 @@ class Test() {
         // FIXME: this is broken:
         //topLevelLeftAttribute := middleVar;
         
+        // can't erase boolean types, since Boolean is final and thus can't have
+        // intersections with things that can't be simplified to Boolean
+        
+        // range
+        // FIXME: haven't been able to get an erased range bound
+        //Natural[] seq = p1..p1;
+        
+        // entry
+        value entry = p1 -> p1;
+        
+        // conditions
+        if(is Natural p1){}
+        if(exists p1OrNothing){}
+        variable Boolean bSync;
+        bSync := is Natural p1;
+        bSync := exists p1OrNothing;
+
+        if(true){
+            Exception&EmptyInterface x = MyException(null, null);
+            throw x;
+        }        
+
+        // return
+        return middle;
+    }
+
+    void testArithmeticOperators(Natural&EmptyInterface p1,
+                                 Test&EmptyInterface erasedTest){
         // with boxing
         Natural unboxed = p1;
         Numeric<Natural>&Ordinal<Natural> boxed = 1;
@@ -154,67 +183,85 @@ class Test() {
                 
         Integer i1 = -m;
         Integer i2 = +m;
+    }
 
+    void testComparisonOperators(Natural&EmptyInterface p1,
+                                 Test&EmptyInterface erasedTest){
         // equality operators
         Boolean b = n == n;
         Boolean b2 = p1 < p1;
+    }
 
-        // can't erase boolean types, since Boolean is final and thus can't have
-        // intersections with things that can't be simplified to Boolean
-
+    void testSequences(Natural&EmptyInterface p1,
+                       Sequence<Left&Right>&EmptyInterface leftsAndRights,
+                       Sequence<Entry<Left&Right&Equality,Left&Right&Equality>&EmptyInterface>&EmptyInterface leftsAndRightsEntries,
+                       Nothing|Sequence<Left&Right>&EmptyInterface topsOrNothing){
         // sequence operators
         Empty|Sequence<Natural&EmptyInterface> naturals = {p1};
         Natural? n5 = naturals[p1];
+        Top? t = leftsAndRights[p1];
         Empty|Sequence<Natural&EmptyInterface>|Nothing naturalsOrNothing = {p1};
         Natural? n52 = naturalsOrNothing?[p1];
+        Top? t2 = topsOrNothing?[p1];
 
         // sequence expression
         Natural[] plainNaturals = {p1};
 
-        // FIXME: this is broken        
-        //Numeric<Natural>&Ordinal<Natural>&Integral<Natural> n = 1;
-        //Natural n2 = n + n;
-        //Natural n3 = n * n;
-        //Natural n4 = n % n;
-        
         // iteration
         // FIXME: I couldn't find a way to get a sequence erased to object
         for(Natural&EmptyInterface it in naturals){
             Numeric<Natural> n6 = it;
         }
-        for(Top it in tops){
-            it.top();
+        for(Left itLeft in leftsAndRights){
+            itLeft.top();
+            itLeft.left();
         }
-        Sequence<Top> topSequence = {middle}; 
+        for(Left&Right itErased in leftsAndRights){
+            itErased.top();
+            itErased.left();
+            itErased.right();
+        }
+        for(itErasedValue in leftsAndRights){
+            itErasedValue.top();
+            itErasedValue.left();
+            itErasedValue.right();
+        }
+        // same with entries
+        for(Left itLeft1 -> Left itLeft2 in leftsAndRightsEntries){
+            itLeft1.top();
+            itLeft1.left();
+            itLeft2.top();
+            itLeft2.left();
+        }
+        for(Left&Right itErased1 -> Left&Right itErased2 in leftsAndRightsEntries){
+            itErased1.top();
+            itErased1.left();
+            itErased1.right();
+            itErased2.top();
+            itErased2.left();
+            itErased2.right();
+        }
+        for(itErasedValue1 -> itErasedValue2 in leftsAndRightsEntries){
+            itErasedValue1.top();
+            itErasedValue1.left();
+            itErasedValue1.right();
+            itErasedValue2.top();
+            itErasedValue2.left();
+            itErasedValue2.right();
+        }
+        Sequence<Top> topSequence = {CMiddle()}; 
         for(Top it in topSequence){
             it.top();
         }
         
         // erased type for sequences
+        variable Natural sync;
         sync := naturals.size;
-        
-        // range
-        // FIXME: haven't been able to get an erased range bound
-        //Natural[] seq = p1..p1;
-        
-        // entry
-        value entry = p1 -> p1;
-        
-        // conditions
-        if(is Natural p1){}
-        if(exists p1OrNothing){}
+        sync := leftsAndRights.size;
+
+        // nonempty tests
         if(nonempty naturals){}
         variable Boolean bSync;
-        bSync := is Natural p1;
-        bSync := exists p1OrNothing;
         bSync := nonempty naturals;
-
-        if(true){
-            Exception&EmptyInterface x = MyException(null, null);
-            throw x;
-        }        
-
-        // return
-        return middle;
     }
 }
