@@ -64,7 +64,9 @@ class Test() {
     void takesTop(Top top){}
     void takesLeft(Left left){}
     Left & Right givesLeftAndRight(){ return CMiddle(); }
+    
     shared variable Left leftAttribute := CLeft();
+    shared variable Left&Right middleAttribute := CMiddle();
     shared variable Numeric<Natural>&Ordinal<Natural>&Subtractable<Natural,Integer> n := 1;
     shared variable Integral<Natural>&Invertable<Integer> m := 1;
 
@@ -115,8 +117,6 @@ class Test() {
         
         // assign
         variable Left&Right middleVar := CMiddle();
-        // FIXME: add this back when assignment is a proper expression
-        // (middleVar := CMiddle()).left();
         Left left = middleVar;
         Left left2;
         left2 = middleVar;
@@ -126,6 +126,10 @@ class Test() {
         erasedTest.leftAttribute := middleVar;
         // FIXME: this is broken:
         //topLevelLeftAttribute := middleVar;
+
+        // this is broken due to https://github.com/ceylon/ceylon-spec/issues/87
+        (middleVar := CMiddle()).left();
+        (erasedTest.middleAttribute := middleVar).left();
         
         // can't erase boolean types, since Boolean is final and thus can't have
         // intersections with things that can't be simplified to Boolean
