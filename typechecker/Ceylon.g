@@ -1159,6 +1159,9 @@ enumeration returns [SequenceEnumeration sequenceEnumeration]
       (
         expressions
         { $sequenceEnumeration.setExpressionList($expressions.expressionList); }
+      | 
+        comprehension
+        { $sequenceEnumeration.setComprehension($comprehension.comprehension); }
       )?
       RBRACE
       { $sequenceEnumeration.setEndToken($RBRACE); }
@@ -1258,6 +1261,9 @@ namedArguments returns [NamedArgumentList namedArgumentList]
       ( 
         sequencedArgument
         { $namedArgumentList.setSequencedArgument($sequencedArgument.sequencedArgument); }
+      | 
+        comprehension
+        { $namedArgumentList.setComprehension($comprehension.comprehension); }
       )?
       RBRACE
       { $namedArgumentList.setEndToken($RBRACE); }
@@ -1429,6 +1435,10 @@ positionalArguments returns [PositionalArgumentList positionalArgumentList]
           { $positionalArgumentList.setEllipsis( new Ellipsis($ELLIPSIS) ); }
         )?
       )? 
+      (
+        comprehension
+        { $positionalArgumentList.setComprehension($comprehension.comprehension); }
+      )?
       RPAREN
       { $positionalArgumentList.setEndToken($RPAREN); }
     ;
@@ -1467,7 +1477,36 @@ positionalArgument returns [PositionalArgument positionalArgument]
     : memberName ((parametersStart) => parameters)? 
       (LPAREN expression RPAREN | block)
     ;*/
-    
+
+comprehension returns [Comprehension comprehension]
+    @init { $comprehension = new Comprehension(null); }
+    : (
+        join
+        { if ($join.join!=null) 
+              $comprehension.addJoin($join.join); }
+      )+
+      ( 
+        expression
+        { $comprehension.setExpression($expression.expression); }
+      | { displayRecognitionError(getTokenNames(), 
+            new MismatchedTokenException(LIDENTIFIER, input)); }
+      )
+    ;
+
+join returns [Join join]
+    : FOR_CLAUSE
+      { $join = new Join($FOR_CLAUSE); }
+      forIterator
+      { $join.setForIterator($forIterator.iterator); }
+      (
+        IF_CLAUSE 
+        { $join.setEndToken($IF_CLAUSE); }
+        condition
+        { $join.setForIterator($forIterator.iterator); 
+          $join.setEndToken(null); }
+      )?
+    ;
+
 assignmentExpression returns [Term term]
     : ee1=disjunctionExpression
       { $term = $ee1.term; }
