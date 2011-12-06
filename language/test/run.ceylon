@@ -5,5 +5,8 @@ shared void run() {
     characters();
     strings();
     iterators();
+    entriesAndRanges();
+    comparables();
+    clones();
     results();
 }
