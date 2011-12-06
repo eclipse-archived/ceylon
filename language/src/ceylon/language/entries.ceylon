@@ -21,12 +21,12 @@ shared Entry<Natural,Element>[] entries<Element>(Element... sequence)
                 return sequence.lastIndex;
             }
             
-            shared actual Entry<Natural,Element>[] rest { 
-                return entries(sequence.rest...);
+            shared actual Natural->Element first {
+                return 0->sequence.first;
             }
 
-            shared actual Entry<Natural,Element> first {
-                return 0->sequence.first;
+            shared actual Entry<Natural,Element>[] rest { 
+                return entries(sequence.rest...);
             }
 
             shared actual Entry<Natural,Element>? item(Natural index) {
