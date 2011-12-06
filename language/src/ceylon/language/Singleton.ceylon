@@ -36,7 +36,7 @@ shared class Singleton<Element>(Element element)
             return null;
         }
         shared actual String string {
-            return "iterator";
+            return "Iterator for " outer.string "";
         }
     }
     shared actual String string {
