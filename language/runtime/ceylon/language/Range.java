@@ -18,22 +18,21 @@ import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
 public class Range<Element extends Comparable<? super Element> & Ordinal<? extends Element>>
     implements Sequence<Element>, Category {
     
-    private Element first;
-    private Element last;
-    private long index;
-    private long size;
+    private final Element first;
+    private final Element last;
+    private final long size;
     
     public Range(@Name("first") Element first, 
     		     @Name("last") Element last) {
         this.first = first;
         this.last = last;
-        this.index = 0;
+        long index = 0;
         Element x = first;
-        while(!pastEnd(x)){
-            ++this.index;
+        while (!atEnd(x)) {
+            ++index;
             x = next(x);
         }
-        this.size = index;
+        this.size = index+1;
     }
     
     @Override
@@ -55,11 +54,8 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
         return last.compare(first).smaller();
     }
     
-    private final boolean pastEnd(Element x){
-        if (getDecreasing())
-            return x.compare(last).smaller();
-        else
-            return x.compare(last).larger();
+    private final boolean atEnd(Element x){
+        return x.compare(last).equal();
     }
     
     private final Element next(Element x){
@@ -91,14 +87,16 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     public Element item(@Name("n") Natural n) {
         long index = 0;
         Element x = first;
-        while(index < n.longValue() && !pastEnd(x)){
-            ++index;
-            x=next(x);
+        while (index<n.longValue()) {
+        	if (atEnd(x)){
+        		return null;
+        	}
+        	else {
+                ++index;
+                x=next(x);
+        	}
         }
-        if(pastEnd(x))
-            return null;
-        else
-            return x;
+        return x;
     }
 
     @Override
@@ -114,10 +112,8 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
             }
             @TypeInfo("ceylon.language.Nothing|ceylon.language.Iterator<Element>")
             public Iterator<Element> getTail() {
-                 Element next = next(x);
-                 if(pastEnd(next))
-                     return null;
-                 return new RangeIterator(next);
+                 return atEnd(x) ? 
+                		 null : new RangeIterator(next(x));
              }
         }
         return new RangeIterator(first);
@@ -128,10 +124,8 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     @TypeInfo("ceylon.language.Equality") java.lang.Object value) {
         // FIXME
     	try {
-	        if(value != null /*&& value instanceof Element*/)
-	            return includes((Element)value);
-	        else
-	            return false;
+    		return value != null /*&& value instanceof Element*/ ?
+	             includes((Element) value) : false;
     	}
     	catch (ClassCastException cce) { //ugly hack
     		return false;
@@ -143,7 +137,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
             return x.compare(first).smallAs() && 
                     x.compare(last).largeAs();
         }
-        else{
+        else {
             return x.compare(first).largeAs() && 
                     x.compare(last).smallAs();
         }
