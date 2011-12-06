@@ -1780,11 +1780,12 @@ public class ExpressionVisitor extends Visitor {
         if ( rhst!=null && lhst!=null ) {
             checkOperandType(lhst, type, that.getLeftTerm(), 
                     "operand expression must be of numeric type");
+            that.setTypeModel(lhst);
             ProducedType nt = lhst.getSupertype(type);
             if (nt!=null) {
                 ProducedType t = nt.getTypeArguments().isEmpty() ? 
                         nt : nt.getTypeArgumentList().get(0);
-                that.setTypeModel(t);
+                //that.setTypeModel(t); //stef requests lhst to make it easier on backend
                 if (!rhst.isSubtypeOf(unit.getCastableType(t)) &&
                         !rhst.isExactly(lhst)) { //note the language spec does not actually bless this
                     that.getRightTerm().addError("operand expression must be promotable to common numeric type: " + 
@@ -1925,7 +1926,8 @@ public class ExpressionVisitor extends Visitor {
             checkAssignable(rhst, lhst, that.getRightTerm(), 
                     "assigned expression must be assignable to declared type");
         }
-        that.setTypeModel(rhst);
+        //that.setTypeModel(rhst); //stef requests lhst to make it easier on backend
+        that.setTypeModel(lhst);
     }
 
     private static void checkAssignability(Tree.Term that) {
