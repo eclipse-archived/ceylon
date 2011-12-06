@@ -12,6 +12,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -41,11 +42,24 @@ public class TypeHierarchyVisitor extends Visitor {
 			public Set<Declaration> shared = new HashSet<Declaration>();
         }
 
-        @Override public String toString() {
+        @Override
+        public String toString() {
             return declaration.getName();
         }
     }
 
+    @Override
+    public void visit(Tree.ObjectDefinition that) {
+        super.visit(that);
+        final Value value = that.getDeclarationModel();
+        //an object definition is always concrete
+        List<Type> orderedTypes = sortDAGAndBuildMetadata(value.getTypeDeclaration(), that);
+        checkForFormalsNotImplemented(that, orderedTypes);
+        checkForDoubleMemberInheritanceNotOverridden(that, orderedTypes);
+        checkForDoubleMemberInheritanceWoCommonAncestor(that, orderedTypes);
+    }
+
+    @Override
     public void visit(Tree.ClassOrInterface that) {
         super.visit(that);
         final ClassOrInterface classOrInterface = that.getDeclarationModel();
@@ -58,7 +72,7 @@ public class TypeHierarchyVisitor extends Visitor {
         checkForDoubleMemberInheritanceWoCommonAncestor(that, orderedTypes);
     }
 
-    private void checkForDoubleMemberInheritanceWoCommonAncestor(Tree.ClassOrInterface that, List<Type> orderedTypes) {
+    private void checkForDoubleMemberInheritanceWoCommonAncestor(Tree.Declaration that, List<Type> orderedTypes) {
         Type aggregateType = new Type();
         for(Type currentType : orderedTypes) {
             for (Type.Members currentTypeMembers:currentType.membersByName.values()) {
@@ -106,7 +120,7 @@ public class TypeHierarchyVisitor extends Visitor {
         return sameMemberInherited;
     }
 
-    private void checkForDoubleMemberInheritanceNotOverridden(Tree.ClassOrInterface that, List<Type> orderedTypes) {
+    private void checkForDoubleMemberInheritanceNotOverridden(Tree.Declaration that, List<Type> orderedTypes) {
         Type aggregateType = new Type();
         int size = orderedTypes.size();
         for(int index = size -1;index>=0;index--) {
@@ -180,7 +194,7 @@ public class TypeHierarchyVisitor extends Visitor {
         return null;
     }
 
-    private void checkForFormalsNotImplemented(Tree.ClassOrInterface that, List<Type> orderedTypes) {
+    private void checkForFormalsNotImplemented(Tree.Declaration that, List<Type> orderedTypes) {
     	//TODO: this is broken, see failing test FormalActual.ceylon
         Type aggregation = buildAggregatedType(orderedTypes);
         for (Type.Members members:aggregation.membersByName.values()) {
