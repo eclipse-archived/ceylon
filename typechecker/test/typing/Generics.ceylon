@@ -99,6 +99,11 @@ class Generics() {
             shared actual X[] rest = {};
             shared actual GoodClassInheritance clone = GoodClassInheritance();
             shared actual X? item(Natural key) { return null; }
+            shared actual X[] segment(Natural from, Natural length) { return this; }
+            shared actual X first {
+                throw;
+            }
+            shared actual X[] span(Natural from, Natural? to) { return this; }
         }
         @error class BadClassInheritance() satisfies Sequence<Y> {}
         class GoodClassInheritance2() extends Producer<X>() {}
@@ -206,7 +211,9 @@ class Generics() {
     
     abstract class SortedList<T>(T... elements) 
         satisfies Sequence<T> 
-        given T satisfies Comparable<T> {}
+        given T satisfies Comparable<T> {
+        shared actual formal String string;
+    }
     
     interface WithCovariant<out X> {}
     class Good1<T>() satisfies WithCovariant<T> {}

@@ -14,4 +14,13 @@ class List<T>()
     shared actual T[] rest {
         return this;
     }
+    shared actual T[] segment(Natural from, Natural length) {
+        return this;
+    }
+    shared actual T first {
+        throw;
+    }
+    shared actual T[] span(Natural from, Natural? to) {
+        return this;
+    }
 }
