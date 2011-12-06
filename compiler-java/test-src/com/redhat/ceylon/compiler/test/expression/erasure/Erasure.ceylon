@@ -137,13 +137,6 @@ class Test() {
         // entry
         value entry = p1 -> p1;
         
-        // conditions
-        if(is Natural p1){}
-        if(exists p1OrNothing){}
-        variable Boolean bSync;
-        bSync := is Natural p1;
-        bSync := exists p1OrNothing;
-
         if(true){
             Exception&EmptyInterface x = MyException(null, null);
             throw x;
@@ -151,6 +144,17 @@ class Test() {
 
         // return
         return middle;
+    }
+
+    void testNullHandlingOperators(Natural&EmptyInterface p1,
+                                   Natural&EmptyInterface|Nothing p1OrNothing){
+        // conditions
+        if(exists p1OrNothing){}
+        variable Boolean bSync;
+        bSync := exists p1OrNothing;
+        
+        value p2 = p1OrNothing ? p1;
+        Natural n = p1OrNothing ? p1;
     }
 
     void testArithmeticOperators(Natural&EmptyInterface p1,
@@ -195,7 +199,12 @@ class Test() {
         sync := p1 < p1;
         value cmp = p1 <=> p1;
         
+        // in
         sync := p1 in container;
+        
+        // is
+        if(is Natural p1){}
+        sync := is Natural p1;
     }
 
     void testSequences(Natural&EmptyInterface p1,
