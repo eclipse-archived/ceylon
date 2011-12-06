@@ -21,7 +21,7 @@ class WithCircularTypeParams2<S,T>()
 void testMemberResolutionOnCircular() {
     String hi = CY().hello;
     CX cx = CY();
-    object o satisfies CB {}
+    @error object o satisfies CB {}
     o.noop();
     CA ca = o;
 }
