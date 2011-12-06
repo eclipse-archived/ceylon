@@ -117,7 +117,7 @@ shared interface Sequence<out Element>
          elements from the start index to last element of 
          the sequence."
     shared actual formal Element[] span(Natural from, 
-                                        Natural to);
+                                        Natural? to);
     
     doc "Returns a sequence containing the elements 
          beginning from the given index, with the given

@@ -188,7 +188,7 @@ shared class Range<Element>(Element first, Element last)
         throw; //todo!
     }
     
-    shared actual Element[] span(Natural from, Natural to) {
+    shared actual Element[] span(Natural from, Natural? to) {
         throw; //todo
     }
     

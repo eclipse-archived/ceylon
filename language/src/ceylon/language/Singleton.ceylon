@@ -35,6 +35,9 @@ shared class Singleton<Element>(Element element)
         shared actual Iterator<Element>? tail {
             return null;
         }
+        shared actual String string {
+            return "iterator";
+        }
     }
     shared actual String string {
         if (is Object first) {
@@ -57,8 +60,8 @@ shared class Singleton<Element>(Element element)
         }
     }
     
-    shared actual Element[] span(Natural from, Natural to) {
-        if (from>0 && to>0) {
+    shared actual Element[] span(Natural from, Natural? to) {
+        if (from>0) {
             return {};
         }
         else {

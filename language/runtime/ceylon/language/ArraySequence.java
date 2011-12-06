@@ -2,8 +2,10 @@ package ceylon.language;
 
 import java.util.Arrays;
 
+import com.redhat.ceylon.compiler.metadata.java.Ignore;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
+@Ignore
 public class ArraySequence<Element> implements Sequence<Element> {
 
     private final java.lang.Object[] array;
@@ -13,7 +15,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
         this.array = array;
         this.first = 0;
     }
-
+    
     ArraySequence(java.lang.Object[] array, long first) {
         this.array = array;
         this.first = first;

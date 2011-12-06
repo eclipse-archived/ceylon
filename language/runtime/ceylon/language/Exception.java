@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.metadata.java.Ignore;
 import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
@@ -7,19 +8,29 @@ public class Exception extends RuntimeException {
 
 	private static final long serialVersionUID = -1790691559137471641L;
 
-	private ceylon.language.String description;
+	private java.lang.String description;
     
     public Exception(
             @TypeInfo("ceylon.language.String|ceylon.language.Nothing")
             @Name("description")
-            ceylon.language.String description,
+            java.lang.String description,
             @TypeInfo("ceylon.language.Exception|ceylon.language.Nothing")
             @Name("cause")
             java.lang.Throwable cause
             
             ) {
-        super(description==null ? null : description.value, cause);
+        super(description==null ? null : description, cause);
         this.description = description;
+    }
+    
+    @Ignore
+    public Exception(java.lang.String description) {
+    	this (description, null);
+    }
+    
+    @Ignore
+    public Exception() {
+    	this (null, null);
     }
     
     @TypeInfo("ceylon.language.Exception|ceylon.language.Nothing")
@@ -30,8 +41,8 @@ public class Exception extends RuntimeException {
     @TypeInfo("ceylon.language.String")
     public java.lang.String getMessage() {
         if (description != null
-                && description.value != null) {
-            return description.value;
+                && description != null) {
+            return description;
         } 
         else if (getCause() != null 
                 && getCause().getMessage() != null) {

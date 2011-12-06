@@ -9,6 +9,22 @@ shared Entry<Natural,Element>[] entries<Element>(Element... sequence)
                 extends Object()
                 satisfies Sequence<Natural->Element> {
             
+            shared actual Sequence<Natural->Element> clone { 
+                return this;
+            }
+            
+            shared actual String string { 
+                return "sequenceEntries";
+            }
+            
+            shared actual Natural lastIndex { 
+                return sequence.lastIndex;
+            }
+            
+            shared actual Entry<Natural,Element>[] rest { 
+                return entries(sequence.rest...);
+            }
+            
             shared actual Iterator<Natural->Element> iterator {
                 class EntryIterator(Natural from) 
                         extends Object()

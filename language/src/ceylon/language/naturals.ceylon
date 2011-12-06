@@ -16,8 +16,13 @@ shared object naturals
     
     shared actual Iterator<Natural> iterator = NaturalIterator(0);
 
-    shared actual Range<Natural> span(Natural from, Natural to) {
-        return from..to;
+    shared actual Range<Natural> span(Natural from, Natural? to) {
+        if (exists to) {
+            return from..to;
+        }
+        else {
+            throw; //TODO!
+        }
     }
     
     shared actual Natural[] segment(Natural from, Natural length) {

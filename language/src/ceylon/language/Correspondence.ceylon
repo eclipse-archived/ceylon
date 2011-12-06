@@ -103,7 +103,7 @@ shared interface Correspondence<in Key, out Item>
                                      Natural length) {
             throw; //todo
         }
-        shared actual Item[] span(Natural from, Natural to) {
+        shared actual Item[] span(Natural from, Natural? to) {
             throw; //todo
         }
         shared actual String string = "Entries"; //todo

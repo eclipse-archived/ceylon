@@ -23,7 +23,7 @@ shared interface Empty
         return this;
     }
     
-    shared actual Empty span(Natural from, Natural to) {
+    shared actual Empty span(Natural from, Natural? to) {
         return this;
     }
     
