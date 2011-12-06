@@ -1502,7 +1502,7 @@ join returns [Join join]
         IF_CLAUSE 
         { $join.setEndToken($IF_CLAUSE); }
         condition
-        { $join.setForIterator($forIterator.iterator); 
+        { $join.setCondition($condition.condition); 
           $join.setEndToken(null); }
       )?
     ;
