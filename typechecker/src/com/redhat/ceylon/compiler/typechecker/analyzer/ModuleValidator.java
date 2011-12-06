@@ -102,7 +102,7 @@ public class ModuleValidator {
                     final List<PhasedUnit> listOfUnits = modulePhasedUnit.getPhasedUnits();
                     //populate module.getDependencies()
                     for (PhasedUnit pu : listOfUnits) {
-                        pu.buildModuleImport();
+                        pu.visitSrcModulePhase();
                     }
                 }
             }

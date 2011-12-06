@@ -49,6 +49,7 @@ public class PhasedUnit {
     private final Set<PhasedUnit> dependentsOf = new HashSet<PhasedUnit>();
     private List<CommonToken> tokens;
     private boolean fullyTyped;
+    private ModuleVisitor moduleVisitor;
 
     public PhasedUnit(VirtualFile unitFile, VirtualFile srcDir, Tree.CompilationUnit cu, 
             Package p, ModuleBuilder moduleBuilder, Context context, List<CommonToken> tokenStream) {
@@ -80,11 +81,18 @@ public class PhasedUnit {
         }
     }
 
-    public void buildModuleImport() {
+    public void visitSrcModulePhase() {
         if ( ModuleBuilder.MODULE_FILE.equals(fileName) ||
                 ModuleBuilder.PACKAGE_FILE.equals(fileName) ) {
-            final ModuleVisitor v = new ModuleVisitor(moduleBuilder, pkg);
-            compilationUnit.visit(v);
+            moduleVisitor = new ModuleVisitor(moduleBuilder, pkg);
+            compilationUnit.visit(moduleVisitor);
+        }
+    }
+
+    public void visitRemainingModulePhase() {
+        if ( moduleVisitor != null ) {
+            moduleVisitor.setPhase(ModuleVisitor.Phase.REMAINING);
+            compilationUnit.visit(moduleVisitor);
         }
     }
     

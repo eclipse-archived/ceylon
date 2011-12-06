@@ -108,7 +108,10 @@ public class TypeChecker {
     private void executePhases(PhasedUnits phasedUnits, boolean forceSilence) {
         final List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
         for (PhasedUnit pu : listOfUnits) {
-            pu.buildModuleImport();
+            pu.visitSrcModulePhase();
+        }
+        for (PhasedUnit pu : listOfUnits) {
+            pu.visitRemainingModulePhase();
         }
 
         final ModuleValidator moduleValidator = new ModuleValidator(context, phasedUnits);

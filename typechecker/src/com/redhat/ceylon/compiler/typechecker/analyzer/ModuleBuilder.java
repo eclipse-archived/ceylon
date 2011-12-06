@@ -91,7 +91,12 @@ public class ModuleBuilder {
         return packageStack.peekLast();
     }
 
-    public Module getOrCreateModule(List<String> moduleName) {
+    /**
+     * Get or create a module.
+     * version == null is considered equal to any version.
+     * Likewise a module with no version will match any version passed
+     */
+    public Module getOrCreateModule(List<String> moduleName, String version) {
         if (moduleName.size() == 0) {
             return null;
         }
@@ -100,24 +105,31 @@ public class ModuleBuilder {
         for (Module current : moduleList) {
             final List<String> names = current.getName();
             if ( names.size() == moduleName.size()
-                    && moduleName.containsAll(names) ) {
+                    && moduleName.containsAll(names)
+                    && compareVersions(version, current.getVersion())) {
                 module = current;
                 break;
             }
         }
         if (module == null) {
             module = createModule(moduleName);
+            module.setVersion(version);
             module.setLanguageModule(modules.getLanguageModule());
             moduleList.add(module);
         }
         return module;
     }
 
+    private boolean compareVersions(String version, String currentVersion) {
+        return currentVersion == null || version == null || currentVersion.equals(version);
+    }
+
     public void visitModuleFile() {
         if ( currentModule == null ) {
             final Package currentPkg = packageStack.peekLast();
             final List<String> moduleName = currentPkg.getName();
-            currentModule = getOrCreateModule(moduleName);
+            //we don't know the version at this stage, will be filled later
+            currentModule = getOrCreateModule(moduleName, null);
             if ( currentModule != null ) {
                 currentModule.setAvailable(true); // TODO : not necessary anymore ? the phasedUnit will be added. And the buildModuleImport()
                                                   //        function (which calls module.setAvailable()) will be called by the typeChecker
