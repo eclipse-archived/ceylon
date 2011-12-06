@@ -1480,33 +1480,45 @@ positionalArgument returns [PositionalArgument positionalArgument]
 
 comprehension returns [Comprehension comprehension]
     @init { $comprehension = new Comprehension(null); }
-    : (
-        join
-        { if ($join.join!=null) 
-              $comprehension.addJoin($join.join); }
-      )+
-      ( 
-        expression
-        { $comprehension.setExpression($expression.expression); }
-      | { displayRecognitionError(getTokenNames(), 
-            new MismatchedTokenException(LIDENTIFIER, input)); }
-      )
+    : forComprehensionClause
+      { $comprehension.setForComprehensionClause($forComprehensionClause.comprehensionClause); }
     ;
 
-join returns [Join join]
+comprehensionClause returns [ComprehensionClause comprehensionClause]
+    : forComprehensionClause 
+      { $comprehensionClause = $forComprehensionClause.comprehensionClause; }
+    | ifComprehensionClause 
+      { $comprehensionClause = $ifComprehensionClause.comprehensionClause; }
+    | expressionComprehensionClause 
+      { $comprehensionClause = $expressionComprehensionClause.comprehensionClause; }
+    ;
+
+expressionComprehensionClause returns [ExpressionComprehensionClause comprehensionClause]
+    : expression
+      { $comprehensionClause = new ExpressionComprehensionClause(null);
+        $comprehensionClause.setExpression($expression.expression); }
+    | { displayRecognitionError(getTokenNames(), 
+          new MismatchedTokenException(LIDENTIFIER, input)); }
+    ;
+
+forComprehensionClause returns [ForComprehensionClause comprehensionClause]
     : FOR_CLAUSE
-      { $join = new Join($FOR_CLAUSE); }
+      { $comprehensionClause = new ForComprehensionClause($FOR_CLAUSE); }
       forIterator
-      { $join.setForIterator($forIterator.iterator); }
-      (
-        IF_CLAUSE 
-        { $join.setEndToken($IF_CLAUSE); }
-        condition
-        { $join.setCondition($condition.condition); 
-          $join.setEndToken(null); }
-      )?
+      { $comprehensionClause.setForIterator($forIterator.iterator); }
+      comprehensionClause
+      { $comprehensionClause.setComprehensionClause($comprehensionClause.comprehensionClause); }
     ;
-
+    
+ifComprehensionClause returns [IfComprehensionClause comprehensionClause]
+    : IF_CLAUSE
+      { $comprehensionClause = new IfComprehensionClause($IF_CLAUSE); }
+      condition
+      { $comprehensionClause.setCondition($condition.condition); }
+      comprehensionClause
+      { $comprehensionClause.setComprehensionClause($comprehensionClause.comprehensionClause); }
+    ;
+    
 assignmentExpression returns [Term term]
     : ee1=disjunctionExpression
       { $term = $ee1.term; }
