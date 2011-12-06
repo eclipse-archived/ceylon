@@ -293,6 +293,10 @@ public abstract class AbstractTransformer implements Transformation {
         return make().NewClass(null, null, clazz, args, null);
     }
 
+    protected JCVariableDecl makeVar(String varName, JCExpression typeExpr, JCExpression valueExpr) {
+        return make().VarDef(make().Modifiers(0), names().fromString(varName), typeExpr, valueExpr);
+    }
+    
     // Creates a "( let var1=expr1,var2=expr2,...,varN=exprN in varN; )"
     // or a "( let var1=expr1,var2=expr2,...,varN=exprN,exprO in exprO; )"
     protected JCExpression makeLetExpr(JCExpression... args) {
@@ -302,20 +306,20 @@ public abstract class AbstractTransformer implements Transformation {
     // Creates a "( let var1=expr1,var2=expr2,...,varN=exprN in statements; varN; )"
     // or a "( let var1=expr1,var2=expr2,...,varN=exprN,exprO in statements; exprO; )"
     protected JCExpression makeLetExpr(String varBaseName, List<JCStatement> statements, JCExpression... args) {
-        Name varName = null;
+        String varName = null;
         List<JCVariableDecl> decls = List.nil();
         int i;
         for (i = 0; (i + 1) < args.length; i += 2) {
             JCExpression typeExpr = args[i];
             JCExpression valueExpr = args[i+1];
-            varName = names().fromString(varBaseName + "$" + i);
-            JCVariableDecl varDecl = make().VarDef(make().Modifiers(0), varName, typeExpr, valueExpr);
+            varName = varBaseName + "$" + i;
+            JCVariableDecl varDecl = makeVar(varName, typeExpr, valueExpr);
             decls = decls.append(varDecl);
         }
         
         JCExpression result;
         if (i == args.length) {
-            result = make().Ident(varName);
+            result = make().Ident(names().fromString(varName));
         } else {
             result = args[i];
         }
@@ -1118,8 +1122,7 @@ public abstract class AbstractTransformer implements Transformation {
 
     protected LetExpr makeIgnoredEvalAndReturn(JCExpression toEval, JCExpression toReturn){
         // define a variable of type j.l.Object to hold the result of the evaluation
-        JCVariableDecl def = make().VarDef(make().Modifiers(0), names.fromString(tempName()), 
-                make().Type(syms().objectType), toEval);
+        JCVariableDecl def = makeVar(tempName(), make().Type(syms().objectType), toEval);
         // then ignore this result and return something else
         return make().LetExpr(def, toReturn);
 
