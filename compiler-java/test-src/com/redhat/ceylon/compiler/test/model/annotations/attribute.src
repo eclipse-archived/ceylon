@@ -5,6 +5,7 @@ package com.redhat.ceylon.compiler.test.model.annotations;
 final class attr1 {
     private static final long value = 1L;
     
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
     static long getAttr1() {
         return value;
     }
@@ -17,6 +18,7 @@ final class attr1 {
 final class attr2 {
     private static long value = 1L;
     
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
     static long getAttr2() {
         return value;
     }
@@ -34,6 +36,7 @@ final class attr2 {
 @.com.redhat.ceylon.compiler.metadata.java.Attribute
 final class attr3 {
     
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
     static long getAttr3() {
         return 1L;
     }
@@ -45,6 +48,7 @@ final class attr3 {
 @.com.redhat.ceylon.compiler.metadata.java.Attribute
 final class attr4 {
     
+    @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.Integer")
     static long getAttr4() {
         return 1L;
     }
