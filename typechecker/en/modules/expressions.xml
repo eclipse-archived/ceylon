@@ -3029,18 +3029,28 @@ createItemMethod.intercept()
     
     <programlisting>if (b) then x else y   //pseudocode</programlisting>
     
-    <!--
     <para>means the value of <literal>result</literal> after execution of the
     following:</para>
     
-    <programlisting>X result; if (b) { result=x } else { result=y }</programlisting>
-    -->
+    <programlisting>X result; if (b) { result=x; } else { result=y; }</programlisting>
     
+    <para>Second,</para>
+    
+    <programlisting>let t=x in y   //pseudocode</programlisting>
+    
+    <para>means the value of <literal>result</literal> after execution of the
+    following:</para>
+    
+    <programlisting>X t = x; Y result=y;</programlisting>
+    
+    <!--  
     <para>means the same value produced by the Ceylon library method 
     <literal>when()</literal>:</para>
     
     <programlisting>when (b) then (x) else (y)</programlisting>
+    -->
     
+    <!--
     <para>Second,</para>
     
     <programlisting>if (exists o) then x else y   //pseudocode</programlisting>
@@ -3049,22 +3059,25 @@ createItemMethod.intercept()
     <literal>with()</literal>:</para>
     
     <programlisting>with (o) then (x) else (y)</programlisting>
+    -->
     
+    <!--
     <para>Third,</para>
     
     <programlisting>for (X x in c) e      //pseudocode</programlisting>
     
-    <!--
     <para>means the value of <literal>result</literal> after execution of the
     following:</para>
     
     <programlisting>OpenList&lt;E&gt; result = none; for (X x in c) { result.add(e); }</programlisting>
     -->
     
+    <!--
     <para>means the same value produced by the Ceylon library method 
     <literal>from()</literal>:</para>
     
     <programlisting>from (X x in c) select (e)</programlisting>
+    -->
     
     <para>The tables define semantics only. The compiler is permitted to emit equivalent 
     bytecode that produces the same value as the pseudo-code that defines the operator, 
@@ -3350,7 +3363,7 @@ createItemMethod.intercept()
         <row>
             <entry><literal>lhs in rhs</literal></entry>
             <entry>in</entry>
-            <entry><literal>let cat=lhs in rhs.contains(lhs)</literal></entry>
+            <entry><literal>let x=lhs in rhs.contains(x)</literal></entry>
             <entry><literal>Equality</literal></entry>
             <entry><literal>Category</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -3708,7 +3721,7 @@ createItemMethod.intercept()
         <row>
             <entry><literal>lhs[].member</literal></entry>
             <entry>spread member</entry>
-            <entry><literal>for (X x in lhs) x.member</literal></entry>
+            <entry><literal>{ for (X x in lhs) x.member }</literal></entry>
             <entry><literal>X[]</literal></entry>
             <entry><literal>Member&lt;X,T&gt;</literal></entry>
             <entry><literal>T[]</literal></entry>
@@ -3718,7 +3731,7 @@ createItemMethod.intercept()
             <entry><literal>lhs(x,y,z)</literal> or 
             <literal>lhs{a=x;b=y;}</literal></entry>
             <entry>spread invoke</entry>
-            <entry><literal>for (C c in lhs) c(x,y,z)</literal></entry>
+            <entry><literal>{ for (C c in lhs) c(x,y,z) }</literal></entry>
             <entry><literal>Callable &lt;T,P...&gt;[]</literal></entry>
             <entry><literal>P...</literal></entry>
             <entry><literal>T[]</literal></entry>
