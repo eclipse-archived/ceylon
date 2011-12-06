@@ -485,6 +485,14 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
     }
+
+    @Override
+    public void visit(Tree.Parameter that) {
+    	super.visit(that);
+    	if (that.getSpecifierExpression()!=null) {
+    		that.addWarning("parameter default values are not yet supported");
+    	}
+    }
     
     @Override
     public void visit(Tree.ValueParameterDeclaration that) {
