@@ -42,6 +42,7 @@ import java.util.concurrent.ConcurrentMap;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
+@SuppressWarnings({"NullableProblems"})
 public class DefaultNode implements OpenNode {
 
     private static ContentHandle MARKER = new ContentHandle() {
@@ -53,6 +54,7 @@ public class DefaultNode implements OpenNode {
     };
 
     private String label;
+    private Object value;
     private final ConcurrentMap<String, OpenNode> parents = new ConcurrentHashMap<String, OpenNode>();
     private final ConcurrentMap<String, OpenNode> children = new ConcurrentHashMap<String, OpenNode>();
 
@@ -63,12 +65,13 @@ public class DefaultNode implements OpenNode {
     public DefaultNode() {
     }
 
-    public DefaultNode(String label) {
+    public DefaultNode(String label, Object value) {
         this.label = label;
+        this.value = value;
     }
 
     public DefaultNode(ContentStore contentStore) {
-        this("<root>");
+        this("<root>", null);
         setContentStore(contentStore);
     }
 
@@ -149,9 +152,14 @@ public class DefaultNode implements OpenNode {
 
     @Override
     public OpenNode addNode(String label) {
+        return addNode(label, null);
+    }
+
+    @Override
+    public OpenNode addNode(String label, Object value) {
         try {
             //noinspection NullableProblems
-            return addNode(label, null, true);
+            return addNode(label, null, null, true);
         } catch (IOException e) {
             throw new RuntimeException("Should not be here!", e);
         }
@@ -173,7 +181,7 @@ public class DefaultNode implements OpenNode {
 
     @Override
     public OpenNode addContent(String label, InputStream content) throws IOException {
-        return addNode(label, content, false);
+        return addNode(label, null, content, false);
     }
 
     @Override
@@ -182,13 +190,13 @@ public class DefaultNode implements OpenNode {
         return addContent(label, stream);
     }
 
-    protected OpenNode addNode(String label, InputStream content, boolean allowNoContent) throws IOException {
+    protected OpenNode addNode(final String label, final Object value, InputStream content, boolean allowNoContent) throws IOException {
         if (label == null)
             throw new IllegalArgumentException("Null label");
         if (content == null && allowNoContent == false)
             throw new IllegalArgumentException("Null content not allowed: " + label);
 
-        DefaultNode node = new DefaultNode(label);
+        DefaultNode node = new DefaultNode(label, value);
         OpenNode previous = children.putIfAbsent(label, node);
         if (previous == null) {
             previous = node;
@@ -204,6 +212,14 @@ public class DefaultNode implements OpenNode {
     @Override
     public String getLabel() {
         return label;
+    }
+
+    @Override
+    public <T> T getValue(Class<T> valueType) {
+        if (valueType == null)
+            throw new IllegalArgumentException("Null value type");
+
+        return valueType.cast(value);
     }
 
     @Override

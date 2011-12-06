@@ -40,6 +40,8 @@ public interface OpenNode extends Node {
 
     OpenNode addNode(String label);
 
+    OpenNode addNode(String label, Object value);
+
     OpenNode addContent(String label, InputStream content) throws IOException;
 
     <T extends Serializable> OpenNode addContent(String label, T content) throws IOException;

@@ -22,6 +22,7 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
@@ -30,22 +31,31 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectStreamClass;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Logger;
 
 /**
  * I/O utils.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
+ * @author FroMage (for SHA1)
  */
 public class IOUtils {
 
+    private static final Logger log = Logger.getLogger(IOUtils.class.getName());
+    private static final char[] Hexadecimal = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+
     static void safeClose(Closeable c) {
         try {
-            c.close();
+            if (c != null)
+                c.close();
         } catch (IOException ignored) {
         }
     }
@@ -64,20 +74,16 @@ public class IOUtils {
         }
     }
 
-    static InputStream toInputStream(File file) {
-        try {
-            return new FileInputStream(file);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    static InputStream toInputStream(File file) throws IOException {
+        return new FileInputStream(file);
     }
 
     static <T extends Serializable> InputStream toObjectStream(T content) throws IOException {
         if (content == null)
             throw new IllegalArgumentException("Null content");
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(content);
         oos.flush();
         return new ByteArrayInputStream(baos.toByteArray());
@@ -90,7 +96,7 @@ public class IOUtils {
             throw new IllegalArgumentException("Null input stream!");
 
         final ClassLoader cl = contentType.getClassLoader();
-        ObjectInputStream ois = new ObjectInputStream(inputStream) {
+        final ObjectInputStream ois = new ObjectInputStream(inputStream) {
             @Override
             protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
                 return cl.loadClass(desc.getName());
@@ -108,5 +114,49 @@ public class IOUtils {
 
     static void writeToFile(File file, InputStream inputStream) throws IOException {
         copyStream(inputStream, new FileOutputStream(file));
+    }
+
+    static String sha1(InputStream is) {
+        final MessageDigest digest;
+        try {
+            digest = MessageDigest.getInstance("SHA-1");
+        } catch (NoSuchAlgorithmException e) {
+            // can't happen, specs say SHA-1 must be implemented
+            log.warning("Failed to get a SHA-1 message digest, your JRE does not follow the specs. No SHA-1 signature will be made");
+            return null;
+        }
+
+        final byte[] buffer = new byte[1024];
+        int read;
+        try {
+            while ((read = is.read(buffer)) != -1) {
+                digest.update(buffer, 0, read);
+            }
+        } catch (IOException e) {
+            log.warning("Failed to read input stream, no SHA-1 signature will be made");
+            return null;
+        } finally {
+            safeClose(is);
+        }
+        return toHexString(digest.digest());
+    }
+
+    static String readSha1(InputStream is) throws IOException {
+        final BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        try {
+            return reader.readLine();
+        } finally {
+            safeClose(reader);
+        }
+    }
+
+    static String toHexString(byte[] bytes) {
+        final char[] chars = new char[bytes.length * 2];
+        for (int b = 0, c = 0; b < bytes.length; b++) {
+            int v = (int) bytes[b] & 0xFF;
+            chars[c++] = Hexadecimal[v / 16];
+            chars[c++] = Hexadecimal[v % 16];
+        }
+        return new String(chars);
     }
 }

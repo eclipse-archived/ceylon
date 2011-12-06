@@ -28,6 +28,7 @@ import com.redhat.ceylon.cmr.spi.OpenNode;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 /**
@@ -65,7 +66,8 @@ public class RootRepository extends AbstractNodeRepository {
                 file = fileContentStore.getFile(node); // re-get
                 if (context.isIgnoreSHA() == false && node instanceof OpenNode) {
                     OpenNode on = (OpenNode) node;
-                    ByteArrayInputStream shaStream = null; // TODO
+                    String sha1 = IOUtils.sha1(new FileInputStream(file));
+                    ByteArrayInputStream shaStream = new ByteArrayInputStream(sha1.getBytes("ASCII"));
                     Node sha = node.getChild(SHA);
                     if (sha == null) {
                         // put it to ext node as well, if supported
@@ -84,15 +86,16 @@ public class RootRepository extends AbstractNodeRepository {
     }
 
     @Override
-    protected boolean checkSHA(Node artifact) throws IOException {
-        if (super.checkSHA(artifact) == false) {
+    protected Boolean checkSHA(Node artifact) throws IOException {
+        Boolean result = super.checkSHA(artifact);
+        if (result == null) {
             Node sha = artifact.getChild(SHA + LOCAL);
             if (sha != null) {
                 File shaFile = fileContentStore.getFile(sha);
                 if (shaFile.exists())
-                    checkSHA(artifact, IOUtils.toInputStream(shaFile));
+                    return checkSHA(artifact, IOUtils.toInputStream(shaFile));
             }
         }
-        return false;
+        return result;
     }
 }

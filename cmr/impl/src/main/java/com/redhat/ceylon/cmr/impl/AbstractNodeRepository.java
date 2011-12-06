@@ -41,6 +41,7 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
     protected static final String CAR = ".car";
     protected static final String SHA = ".sha";
     protected static final String LOCAL = ".local";
+    protected static final String CACHED = ".cached";
 
     protected OpenNode root;
 
@@ -65,8 +66,8 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
     }
 
     protected List<String> getPath(ArtifactContext context, boolean addLeaf) {
-        String name = context.getName();
-        List<String> tokens = new ArrayList<String>();
+        final String name = context.getName();
+        final List<String> tokens = new ArrayList<String>();
         tokens.addAll(Arrays.asList(name.split("\\.")));
         tokens.add(context.getVersion()); // add version
         if (addLeaf)
@@ -75,7 +76,7 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
     }
 
     public void putArtifact(ArtifactContext context, InputStream content) throws IOException {
-        List<String> tokens = getPath(context, false);
+        final List<String> tokens = getPath(context, false);
         Node parent = getNode(tokens);
         if (parent == null) {
             OpenNode current = root;
@@ -84,9 +85,9 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
             parent = current;
         }
 
-        String label = getLabel(context);
+        final String label = getLabel(context);
         if (parent instanceof OpenNode) {
-            OpenNode on = (OpenNode) parent;
+            final OpenNode on = (OpenNode) parent;
             on.addContent(label, content);
         } else {
             throw new IOException("Parent node is not open: " + parent);
@@ -94,7 +95,7 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
     }
 
     protected Node getLeafNode(ArtifactContext context) {
-        Node node = getNode(getPath(context, true));
+        final Node node = getNode(getPath(context, true));
         if (node == null) {
             if (context.isThrowErrorIfMissing())
                 throw new IllegalArgumentException("No such artifact: " + context);
@@ -102,27 +103,39 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
         }
 
         if (context.isIgnoreSHA() == false) {
-            try {
-                checkSHA(node);
-            } catch (IOException e) {
-                log.warning("Cannot check SHA: " + e);
+            Boolean result = null;
+            Node shaResult = node.getChild(SHA + CACHED);
+            if (shaResult == null) {
+                try {
+                    result = checkSHA(node);
+                    if (node instanceof OpenNode) {
+                        final OpenNode on = (OpenNode) node;
+                        on.addNode(SHA + CACHED, result);
+                    }
+                } catch (IOException e) {
+                    log.warning("Error checking SHA1: " + e);
+                }
+
+            } else {
+                result = shaResult.getValue(Boolean.class);
             }
+             // check sha
+            if (result != null && result == false)
+                throw new IllegalArgumentException("Invalid SHA1 for artifact: " + context);
         }
 
         return node;
     }
 
-    protected boolean checkSHA(Node artifact) throws IOException {
-        Node sha = artifact.getChild(SHA);
-        if (sha != null) {
-            checkSHA(artifact, sha.getInputStream());
-            return true;
-        }
-        return false;
+    protected Boolean checkSHA(Node artifact) throws IOException {
+        final Node sha = artifact.getChild(SHA);
+        return (sha != null) ? checkSHA(artifact, sha.getInputStream()) : null;
     }
 
-    protected void checkSHA(Node artifact, InputStream shaStream) throws IOException {
-        // TODO
+    protected boolean checkSHA(Node artifact, InputStream shaStream) throws IOException {
+        final String shaFromArtifact = IOUtils.sha1(artifact.getInputStream());
+        final String shaFromSha = IOUtils.readSha1(shaStream);
+        return shaFromArtifact.equals(shaFromSha);
     }
 
     protected Node getNode(Iterable<String> tokens) {

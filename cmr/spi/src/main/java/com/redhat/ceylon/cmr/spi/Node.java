@@ -33,6 +33,8 @@ import java.io.InputStream;
 public interface Node {
     String getLabel();
 
+    <T> T getValue(Class<T> valueType);
+
     Node getChild(String label);
 
     Iterable<? extends Node> getChildren();

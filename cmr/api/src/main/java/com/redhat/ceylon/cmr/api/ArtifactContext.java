@@ -75,4 +75,9 @@ public class ArtifactContext implements Serializable {
     public void setThrowErrorIfMissing(boolean throwErrorIfMissing) {
         this.throwErrorIfMissing = throwErrorIfMissing;
     }
+
+    @Override
+    public String toString() {
+        return getName() + "-" + getVersion();
+    }
 }
