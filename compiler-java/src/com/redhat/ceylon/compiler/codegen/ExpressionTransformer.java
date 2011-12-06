@@ -45,6 +45,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ElementOrRange;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ElementRange;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Exists;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.InOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IndexExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgument;
@@ -521,6 +522,12 @@ public class ExpressionTransformer extends AbstractTransformer {
             return leftType.getTypeArgumentList().get(i);
         }
         return null;
+    }
+
+    public JCTree transform(InOp op) {
+        ProducedType leftType = typeFact().getEqualityDeclaration().getType();
+        ProducedType rightType = typeFact().getCategoryDeclaration().getType();
+        return transformBinaryOperator(op, leftType, rightType);
     }
 
     public JCExpression transformBinaryOperator(Tree.BinaryOperatorExpression op, ProducedType leftType, ProducedType rightType) {

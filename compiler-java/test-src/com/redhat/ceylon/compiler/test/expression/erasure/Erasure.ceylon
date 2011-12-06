@@ -186,13 +186,16 @@ class Test() {
     }
 
     void testComparisonOperators(Natural&EmptyInterface p1,
-                                 Test&EmptyInterface erasedTest){
+                                 Test&EmptyInterface erasedTest,
+                                 Category&EmptyInterface container){
         // equality operators
         variable Boolean sync;
         sync := erasedTest === erasedTest;
         sync := p1 == p1;
         sync := p1 < p1;
         value cmp = p1 <=> p1;
+        
+        sync := p1 in container;
     }
 
     void testSequences(Natural&EmptyInterface p1,
