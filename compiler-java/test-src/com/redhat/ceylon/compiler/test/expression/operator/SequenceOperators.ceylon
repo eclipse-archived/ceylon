@@ -20,24 +20,32 @@
 @nomodel
 shared class SequenceOperators() {
     
+    Correspondence<Natural, String> c1 = {""};
+    Correspondence<Natural,String>? c2 = {""};
+    String[] sequence = {};
+    
     T box<T>(T x){ return x; }
     
-    void sequence(Correspondence<Natural, String> c1, Correspondence<Natural,String>? c2) {
+    void testSequence(Correspondence<Natural, String> c1, Correspondence<Natural,String>? c2) {
         variable String? s := c1[1];
+        s := this.c1[1];
         s := c1[box(1)];
 // M2:
 //        if (c1 satisfies OpenCorrespondence<Natural, String>) {
 //            c1[n1] := s;
 //        }
         s :=  c2?[1];
+        s :=  this.c2?[1];
         s :=  c2?[box(1)];
 // M2:        
 //        Natural[] indices = {1, 2, 3};
 //        variable String[] seq1 := c1[indices];
 //        variable Iterable<String> it1 := c1[indices.iterator];
 		String[] sequence = {"foo", "bar"};
-        String[] subrange = sequence[1..2];
-        String[] subrange2 = sequence[box(1)..box(2)];
+        variable String[] subrange;
+        subrange := sequence[1..2];
+        subrange := this.sequence[1..2];
+        subrange := sequence[box(1)..box(2)];
 /*
         variable String[] upperRange = c1[n1...];
         Natural[] spreadMember = n1[].size;
