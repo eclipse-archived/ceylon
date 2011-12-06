@@ -15,18 +15,18 @@ class NamedArgumentInvocation {
     }
     
     private final boolean simple2() {
-        (let .java.lang.String $arg$2$1 = "bar",long $arg$2$0 = 2L in this.v($arg$2$0, $arg$2$1); null);
-        return (let .java.lang.String $arg$3$1 = "bar",long $arg$3$0 = 2L in this.f($arg$3$0, $arg$3$1));
+        (let com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocation $call$3 = this,.java.lang.String $arg$2$1 = "bar",long $arg$2$0 = 2L in $call$3.v($arg$2$0, $arg$2$1); null);
+        return (let com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocation $call$5 = this,.java.lang.String $arg$4$1 = "bar",long $arg$4$0 = 2L in $call$5.f($arg$4$0, $arg$4$1));
     }
     
     private final boolean qualified() {
-        (let .java.lang.String $arg$4$1 = "bar",long $arg$4$0 = 2L in new com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocation().v($arg$4$0, $arg$4$1); null);
-        return (let .java.lang.String $arg$5$1 = "bar",long $arg$5$0 = 2L in new com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocation().f($arg$5$0, $arg$5$1));
+        (let com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocation $call$7 = new com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocation(),.java.lang.String $arg$6$1 = "bar",long $arg$6$0 = 2L in $call$7.v($arg$6$0, $arg$6$1); null);
+        return (let com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocation $call$9 = new com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocation(),.java.lang.String $arg$8$1 = "bar",long $arg$8$0 = 2L in $call$9.f($arg$8$0, $arg$8$1));
     }
     
     NamedArgumentInvocation() {
-        (let .java.lang.String $arg$6$1 = "foo",long $arg$6$0 = 0L in v($arg$6$0, $arg$6$1); null);
-        (let .java.lang.String $arg$7$1 = "foo",long $arg$7$0 = 0L in f($arg$7$0, $arg$7$1));
+        (let .java.lang.String $arg$10$1 = "foo",long $arg$10$0 = 0L in v($arg$10$0, $arg$10$1); null);
+        (let .java.lang.String $arg$11$1 = "foo",long $arg$11$0 = 0L in f($arg$11$0, $arg$11$1));
     }
     
     public static void main(.java.lang.String[] args) {

@@ -23,7 +23,7 @@ class GenericMethodInvocation {
     
     public final .java.lang.String m2() {
         final com.redhat.ceylon.compiler.test.expression.invoke.KlassMethodTypeParams k = new com.redhat.ceylon.compiler.test.expression.invoke.KlassMethodTypeParams();
-        return (let ceylon.language.String $arg$0$0 = .ceylon.language.String.instance("hello"),ceylon.language.Natural $arg$0$1 = .ceylon.language.Natural.instance(1L) in k.<ceylon.language.String, ceylon.language.Natural>bar($arg$0$0, $arg$0$1)).toString();
+        return (let com.redhat.ceylon.compiler.test.expression.invoke.KlassMethodTypeParams $call$1 = k,ceylon.language.String $arg$0$0 = .ceylon.language.String.instance("hello"),ceylon.language.Natural $arg$0$1 = .ceylon.language.Natural.instance(1L) in $call$1.<ceylon.language.String, ceylon.language.Natural>bar($arg$0$0, $arg$0$1)).toString();
     }
     
     GenericMethodInvocation() {

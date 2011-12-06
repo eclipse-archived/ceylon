@@ -19,7 +19,7 @@ final class foo {
     }
     
     static void foo() {
-        (let ceylon.language.Iterable $arg$0$0 = new ceylon.language.ArraySequence(.ceylon.language.String.instance("x"), .ceylon.language.String.instance("y")) in new com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentSequencedTypeParamInvocation<ceylon.language.String>().algo($arg$0$0); null);
+        (let com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentSequencedTypeParamInvocation<ceylon.language.String> $call$1 = new com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentSequencedTypeParamInvocation<ceylon.language.String>(),ceylon.language.Iterable $arg$0$0 = new ceylon.language.ArraySequence(.ceylon.language.String.instance("x"), .ceylon.language.String.instance("y")) in $call$1.algo($arg$0$0); null);
     }
     
     public static void main(.java.lang.String[] args) {

@@ -53,7 +53,7 @@ class X {
         }
         final foo foo = new foo();
         (let boolean $arg$2$1 = true,.java.lang.String $arg$2$0 = "a" in foo.foo($arg$2$0, $arg$2$1); null);
-        (let boolean $arg$3$1 = true,.java.lang.String $arg$3$0 = "a" in this.foo($arg$3$0, $arg$3$1); null);
+        (let com.redhat.ceylon.compiler.test.expression.invoke.X $call$4 = this,boolean $arg$3$1 = true,.java.lang.String $arg$3$0 = "a" in $call$4.foo($arg$3$0, $arg$3$1); null);
     }
     
     X() {
