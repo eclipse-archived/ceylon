@@ -8,6 +8,7 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.StatisticsVisitor;
 
@@ -18,6 +19,8 @@ import com.redhat.ceylon.compiler.typechecker.util.StatisticsVisitor;
  */
 //TODO make an interface?
 public class TypeChecker {
+
+    public static final String LANGUAGE_MODULE_VERSION = "0.1";
 
     private final boolean verbose;
     private final List<VirtualFile> srcDirectories;
@@ -107,11 +110,14 @@ public class TypeChecker {
 
     private void executePhases(PhasedUnits phasedUnits, boolean forceSilence) {
         final List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
-        for (PhasedUnit pu : listOfUnits) {
-            pu.visitSrcModulePhase();
-        }
-        for (PhasedUnit pu : listOfUnits) {
-            pu.visitRemainingModulePhase();
+
+        phasedUnits.getModuleBuilder().visitModules(listOfUnits);
+
+        //By now le language module version should be known (as local)
+        //or we should use the default one.
+        Module languageModule = context.getModules().getLanguageModule();
+        if (languageModule.getVersion() == null) {
+            languageModule.setVersion(LANGUAGE_MODULE_VERSION);
         }
 
         final ModuleValidator moduleValidator = new ModuleValidator(context, phasedUnits);

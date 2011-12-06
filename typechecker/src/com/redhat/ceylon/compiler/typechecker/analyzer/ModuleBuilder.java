@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.context.Context;
+import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
@@ -51,6 +52,7 @@ public class ModuleBuilder {
             final List<String> defaultModuleName = Collections.singletonList("<default module>");
             final Module defaultModule = createModule(defaultModuleName);
             defaultModule.setAvailable(true);
+            defaultModule.setVersion("<unknown>");
             bindPackageToModule(emptyPackage, defaultModule);
             modules.getListOfModules().add(defaultModule);
             modules.setDefaultModule(defaultModule);
@@ -225,6 +227,15 @@ public class ModuleBuilder {
             for(String error : errors) {
                 unit.addError(error);
             }
+        }
+    }
+
+    public void visitModules(List<PhasedUnit> listOfUnits) {
+        for (PhasedUnit pu : listOfUnits) {
+            pu.visitSrcModulePhase();
+        }
+        for (PhasedUnit pu : listOfUnits) {
+            pu.visitRemainingModulePhase();
         }
     }
 }

@@ -101,9 +101,7 @@ public class ModuleValidator {
                                                 //        should have been parsed and should be applied buildModuleImport()
                     final List<PhasedUnit> listOfUnits = modulePhasedUnit.getPhasedUnits();
                     //populate module.getDependencies()
-                    for (PhasedUnit pu : listOfUnits) {
-                        pu.visitSrcModulePhase();
-                    }
+                    moduleBuilder.visitModules(listOfUnits);
                 }
             }
             dependencyTree.addLast(module);
