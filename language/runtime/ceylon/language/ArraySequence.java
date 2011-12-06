@@ -122,30 +122,35 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Override
     public Iterable<? extends Element> span(Natural from, Natural to) {
-    	if (to==null) to=Natural.instance(array.length-1);
-        if (from.longValue()>getLastIndex()||to.longValue()<from.longValue()) {
+    	long fromIndex = from.longValue();
+    	long toIndex = to==null ? array.length-1 : to.longValue();
+        long lastIndex = getLastIndex();
+		if (fromIndex>lastIndex||toIndex<fromIndex) {
             return $empty.getEmpty();
         }
-        else if (to.longValue()>getLastIndex()) {
-            return new ArraySequence<Element>(array, from.longValue());
+        else if (toIndex>lastIndex) {
+            return new ArraySequence<Element>(array, fromIndex);
         }
         else {
             return new ArraySequence<Element>(Arrays.copyOfRange(array, 
-            		(int)from.longValue(), (int)to.longValue()+1), 0);
+            		(int)fromIndex, (int)toIndex+1), 0);
         }
     }
     
     @Override
     public Iterable<? extends Element> segment(Natural from, Natural length) {
-        if (from.longValue()>getLastIndex()||length.longValue()==0) {
+        long fromIndex = from.longValue();
+		long resultLength = length.longValue();
+		long lastIndex = getLastIndex();
+		if (fromIndex>lastIndex||resultLength==0) {
             return $empty.getEmpty();
         }
-        else if (from.longValue()+length.longValue()>getSize()) {
-            return new ArraySequence<Element>(array, from.longValue());
+        else if (fromIndex+resultLength>lastIndex) {
+            return new ArraySequence<Element>(array, fromIndex);
         }
         else {
             return new ArraySequence<Element>(Arrays.copyOfRange(array, 
-            		(int)from.longValue(), (int)(from.longValue() + length.longValue())), 0);
+            		(int)fromIndex, (int)(fromIndex + resultLength)), 0);
         }
     }
     

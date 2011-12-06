@@ -335,27 +335,29 @@ public final class String
     
     @Override
     @TypeInfo("ceylon.language.String")
-    public String segment(@Name("from") Natural from, @Name("length") Natural length) {
-    	if (from.longValue()>=value.length()||length.longValue()==0) 
-    		return instance("");
-    	if (from.longValue()+length.longValue()>value.length()) 
-    		length = Natural.instance(value.length()-from.longValue());
-    	return instance(value.substring((int) from.longValue(), 
-    			(int) (from.longValue()+length.longValue())));
+    public String segment(@Name("from") final Natural from, 
+    		@Name("length") final Natural length) {
+    	long fromIndex = from.longValue();
+    	long resultLength = length.longValue();
+    	int len = value.length();
+		if (fromIndex>=len || resultLength==0) return instance("");
+    	if (fromIndex+resultLength>len) resultLength = len-fromIndex;
+    	return instance(value.substring((int) fromIndex, 
+    			(int) (fromIndex+resultLength)));
     }
     
     @Override
     @TypeInfo("ceylon.language.String")
-    public String span(@Name("from") Natural from, 
+    public String span(@Name("from") final Natural from, 
     		@Name("to") @TypeInfo("ceylon.language.Nothing|ceylon.language.Natural") 
-            Natural to) {
+            final Natural to) {
     	int len = value.length();
     	if (len==0) return instance("");
-		if (to==null) to=Natural.instance(len-1);
-    	if (from.longValue()>=len||to.longValue()<from.longValue()) 
-    		return instance("");
-    	if (to.longValue()>=len) to = Natural.instance(len-1);
-    	return instance(value.substring((int) from.longValue(), (int) to.longValue()+1));
+    	long fromIndex = from.longValue();
+    	long toIndex = to==null ? len-1 : to.longValue();
+    	if (fromIndex>=len||toIndex<fromIndex) return instance("");
+    	if (toIndex>=len) toIndex = len-1;
+    	return instance(value.substring((int) fromIndex, (int) toIndex+1));
     }
 
 }
