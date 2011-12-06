@@ -192,9 +192,9 @@ class Test() {
 
         variable Integral<Natural>&Invertable<Integer> m := 1;
         Natural n4 = m % m;
-        n := m %= m;
-        erasedTest.n := erasedTest.m %= erasedTest.m;
-                
+        m := m %= m;
+        erasedTest.m := erasedTest.m %= erasedTest.m;
+
         Integer i1 = -m;
         Integer i2 = +m;
     }
