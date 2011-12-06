@@ -184,5 +184,8 @@ shared abstract class String()
     shared actual String string { 
         return this;
     }
-    
+
+    shared actual Boolean empty {
+        return size==0;
+    }
 }

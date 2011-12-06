@@ -24,6 +24,27 @@ shared Entry<Natural,Element>[] entries<Element>(Element... sequence)
             shared actual Entry<Natural,Element>[] rest { 
                 return entries(sequence.rest...);
             }
+
+            shared actual Entry<Natural,Element> first {
+                return 0->sequence.first;
+            }
+
+            shared actual Entry<Natural,Element>? item(Natural index) {
+                if (exists element = sequence[index]) {
+                    return index->element;    
+                }
+                else {
+                    return null;
+                }
+            }
+
+            shared actual Entry<Natural,Element>[] span(Natural from, Natural? to) {
+                return entries(sequence.span(from, to)...);
+            }
+
+            shared actual Entry<Natural,Element>[] segment(Natural from, Natural length) {
+                return entries(sequence.segment(from, length)...);
+            }
             
             shared actual Iterator<Natural->Element> iterator {
                 class EntryIterator(Natural from) 
