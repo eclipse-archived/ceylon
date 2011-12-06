@@ -78,14 +78,19 @@ public class FileContentStore implements ContentStore {
         File file = getFile(node);
         if (file.exists() == false)
             throw new IOException("Content doesn't exist: " + file);
+
         return new FileContentHandle(file);
     }
 
     public ContentHandle putContent(Node node, InputStream stream) throws IOException {
+        if (stream == null)
+            throw new IllegalArgumentException("Null stream!");
+
         File file = getFile(node);
         if (file.exists())
             throw new IOException("Content already exists: " + file);
-        // TODO -- copy content
+
+        IOUtils.writeToFile(file, stream);
         return new FileContentHandle(file);
     }
 

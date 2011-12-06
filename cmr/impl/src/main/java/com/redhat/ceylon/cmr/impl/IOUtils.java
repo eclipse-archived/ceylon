@@ -22,9 +22,18 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectStreamClass;
+import java.io.OutputStream;
 import java.io.Serializable;
 
 /**
@@ -34,6 +43,27 @@ import java.io.Serializable;
  */
 public class IOUtils {
 
+    static void safeClose(Closeable c) {
+        try {
+            c.close();
+        } catch (IOException ignored) {
+        }
+    }
+
+    static void copyStream(InputStream in, OutputStream out) throws IOException {
+        try {
+            final byte[] bytes = new byte[8192];
+            int cnt;
+            while ((cnt = in.read(bytes)) != -1) {
+                out.write(bytes, 0, cnt);
+            }
+            out.flush();
+        } finally {
+            safeClose(in);
+            safeClose(out);
+        }
+    }
+
     static InputStream toInputStream(File file) {
         try {
             return new FileInputStream(file);
@@ -42,16 +72,41 @@ public class IOUtils {
         }
     }
 
-    static <T extends Serializable> InputStream toObjectStream(T content) {
+    static <T extends Serializable> InputStream toObjectStream(T content) throws IOException {
         if (content == null)
             throw new IllegalArgumentException("Null content");
-        return null;  // TODO
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(content);
+        oos.flush();
+        return new ByteArrayInputStream(baos.toByteArray());
     }
 
-    static <T> T fromStream(Class<T> contentType, InputStream inputStream) {
+    static <T> T fromStream(Class<T> contentType, InputStream inputStream) throws IOException {
+        if (contentType == null)
+            throw new IllegalArgumentException("Null content type!");
         if (inputStream == null)
             throw new IllegalArgumentException("Null input stream!");
 
-        return null;  // TODO
+        final ClassLoader cl = contentType.getClassLoader();
+        ObjectInputStream ois = new ObjectInputStream(inputStream) {
+            @Override
+            protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
+                return cl.loadClass(desc.getName());
+            }
+        };
+        try {
+            Object result = ois.readObject();
+            return contentType.cast(result);
+        } catch (ClassNotFoundException e) {
+            throw new IOException(e);
+        } finally {
+            ois.close();
+        }
+    }
+
+    static void writeToFile(File file, InputStream inputStream) throws IOException {
+        copyStream(inputStream, new FileOutputStream(file));
     }
 }
