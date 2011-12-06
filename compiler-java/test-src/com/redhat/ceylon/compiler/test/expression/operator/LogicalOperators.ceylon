@@ -34,19 +34,19 @@ shared class LogicalOperators() extends LogicalOperatorsParent<Boolean>(){
         b1 := !b2;
         b1 := true || b2;
         b1 := false && b2;
-        b1 ||= b2;
-        b1 &&= b2;
-        this.b1 ||= this.b2;
-        this.b1 &&= this.b2;
+        b1 := b1 ||= b2;
+        b1 := b1 &&= b2;
+        b1 := this.b1 ||= this.b2;
+        b1 := this.b1 &&= this.b2;
     }
 
     void logicalBoxed() {
         boxedB1 := !boxedB2;
         boxedB1 := true || boxedB2;
         boxedB1 := false && boxedB2;
-        boxedB1 ||= boxedB2;
-        boxedB1 &&= boxedB2;
-        this.boxedB1 ||= this.boxedB2;
-        this.boxedB1 &&= this.boxedB2;
+        boxedB1 := boxedB1 ||= boxedB2;
+        boxedB1 := boxedB1 &&= boxedB2;
+        boxedB1 := this.boxedB1 ||= this.boxedB2;
+        boxedB1 := this.boxedB1 &&= this.boxedB2;
     }
 }
