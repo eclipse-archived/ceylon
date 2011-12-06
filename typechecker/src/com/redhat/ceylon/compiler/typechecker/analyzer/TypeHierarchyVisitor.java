@@ -37,6 +37,7 @@ public class TypeHierarchyVisitor extends Visitor {
             public String name;
             public Set<Declaration> formals = new HashSet<Declaration>();
             public Set<Declaration> actuals = new HashSet<Declaration>();
+            public Set<Declaration> actualsNonFormals = new HashSet<Declaration>();
             public Set<Declaration> defaults = new HashSet<Declaration>();
             public Set<Declaration> nonFormalsNonDefaults = new HashSet<Declaration>();
 			public Set<Declaration> shared = new HashSet<Declaration>();
@@ -98,13 +99,18 @@ public class TypeHierarchyVisitor extends Visitor {
                         }
                     }
                 }
-                aggregateMembers.nonFormalsNonDefaults.addAll(currentTypeMembers.nonFormalsNonDefaults);
-                aggregateMembers.actuals.addAll(currentTypeMembers.actuals);
-                aggregateMembers.formals.addAll(currentTypeMembers.formals);
-                aggregateMembers.defaults.addAll(currentTypeMembers.defaults);
-                aggregateMembers.shared.addAll(currentTypeMembers.shared);
+                pourCurrentTypeInfoIntoAggregatedType(currentTypeMembers, aggregateMembers);
             }
         }
+    }
+
+    private void pourCurrentTypeInfoIntoAggregatedType(Type.Members currentTypeMembers, Type.Members aggregateMembers) {
+        aggregateMembers.nonFormalsNonDefaults.addAll(currentTypeMembers.nonFormalsNonDefaults);
+        aggregateMembers.actuals.addAll(currentTypeMembers.actuals);
+        aggregateMembers.formals.addAll(currentTypeMembers.formals);
+        aggregateMembers.actualsNonFormals.addAll(currentTypeMembers.actualsNonFormals);
+        aggregateMembers.defaults.addAll(currentTypeMembers.defaults);
+        aggregateMembers.shared.addAll(currentTypeMembers.shared);
     }
 
     private boolean isMemberNameOnAncestor(Type currentType, String name) {
@@ -148,11 +154,7 @@ public class TypeHierarchyVisitor extends Visitor {
                         }
                     }
                 }
-                aggregateMembers.nonFormalsNonDefaults.addAll(currentTypeMembers.nonFormalsNonDefaults);
-                aggregateMembers.actuals.addAll(currentTypeMembers.actuals);
-                aggregateMembers.formals.addAll(currentTypeMembers.formals);
-                aggregateMembers.defaults.addAll(currentTypeMembers.defaults);
-                aggregateMembers.shared.addAll(currentTypeMembers.shared);
+                pourCurrentTypeInfoIntoAggregatedType(currentTypeMembers, aggregateMembers);
             }
         }
     }
@@ -195,10 +197,9 @@ public class TypeHierarchyVisitor extends Visitor {
     }
 
     private void checkForFormalsNotImplemented(Tree.Declaration that, List<Type> orderedTypes) {
-    	//TODO: this is broken, see failing test FormalActual.ceylon
         Type aggregation = buildAggregatedType(orderedTypes);
         for (Type.Members members:aggregation.membersByName.values()) {
-            if (members.formals.size()!=0&&members.actuals.size()==0) {
+            if (members.formals.size()!=0&&members.actualsNonFormals.size()==0) {
                 that.addError("formal member " + members.name + 
                         " not implemented in class hierarchy", 300);
             }
@@ -218,11 +219,17 @@ public class TypeHierarchyVisitor extends Visitor {
                     aggregateMembers.name = currentMembers.name;
                     aggregation.membersByName.put(currentMembers.name,aggregateMembers);
                 }
-                aggregateMembers.nonFormalsNonDefaults.addAll(currentMembers.nonFormalsNonDefaults);
-                aggregateMembers.actuals.addAll(currentMembers.actuals);
-                aggregateMembers.formals.addAll(currentMembers.formals);
-                aggregateMembers.defaults.addAll(currentMembers.defaults);
-                aggregateMembers.shared.addAll(currentMembers.shared);
+                pourCurrentTypeInfoIntoAggregatedType(currentMembers, aggregateMembers);
+                //if an actual implementation high in the hierarchy is overridden as formal => do not add
+                //remember we go from most specific to most generic type
+                for (Declaration actualNonFormal : currentMembers.actualsNonFormals) {
+                    for (Declaration formal : aggregateMembers.formals) {
+                        if (formal.getName().equals(actualNonFormal.getName())) {
+                            aggregateMembers.actualsNonFormals.remove(actualNonFormal);
+                            break;
+                        }
+                    }
+                }
             }
         }
         return aggregation;
@@ -307,6 +314,9 @@ public class TypeHierarchyVisitor extends Visitor {
                 }
                 if (member.isActual()) {
                     members.actuals.add(member);
+                    if (!member.isFormal()) {
+                        members.actualsNonFormals.add(member);
+                    }
                 }
                 if (member.isFormal()) {
                     members.formals.add(member);
