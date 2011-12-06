@@ -258,8 +258,8 @@ public class MethodDefinitionBuilder {
         return this;
     }
 
-    public MethodDefinitionBuilder resultType(JCExpression resultType) {
-        this.resultType = null;
+    public MethodDefinitionBuilder resultType(JCExpression resultType, TypedDeclaration typeDecl) {
+        this.resultType = typeDecl;
         this.resultTypeExpr = resultType;
         return this;
     }

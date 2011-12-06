@@ -79,7 +79,7 @@ public class AttributeDefinitionBuilder {
         getterBuilder = MethodDefinitionBuilder
             .systemMethod(owner, Util.getGetterName(attrName))
             .block(generateDefaultGetterBlock())
-            .resultType(type);
+            .resultType(type, attrType);
         setterBuilder = MethodDefinitionBuilder
             .systemMethod(owner, Util.getSetterName(attrName))
             .block(generateDefaultSetterBlock())
