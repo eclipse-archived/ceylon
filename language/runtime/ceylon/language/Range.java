@@ -5,11 +5,16 @@ import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
 import com.redhat.ceylon.compiler.metadata.java.Sequenced;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
+import com.redhat.ceylon.compiler.metadata.java.TypeParameter;
+import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
 
 @Class(extendsType="ceylon.language.Object")
 @SatisfiedTypes({"ceylon.language.Sequence<Element>", 
 	             "ceylon.language.Category",
 	             "ceylon.language.Equality"})
+@TypeParameters({@TypeParameter(value="Element", 
+    satisfies={"ceylon.language.Comparable<Element>",
+		       "ceylon.language.Ordinal<Element>"})})
 public class Range<Element extends Comparable<? super Element> & Ordinal<? extends Element>>
     implements Sequence<Element>, Category {
     
