@@ -132,10 +132,18 @@ shared void strings() {
     builder.appendAll("goodbye", " ", "everyone");
     assert(builder.string=="hello world goodbye everyone", "string builder");    
     
+    assert("hello world".initial(0)=="", "string initial");
+    assert("hello world".terminal(0)=="", "string terminal");
+    assert("hello world".initial(1)=="h", "string initial");
+    assert("hello world".terminal(1)=="d", "string terminal");
     assert("hello world".initial(5)=="hello", "string initial");
     assert("hello world".terminal(5)=="world", "string terminal");
     assert("hello world".initial(20)=="hello world", "string initial");
     assert("hello world".terminal(20)=="hello world", "string terminal");
+    assert("hello world".initial(10)=="hello worl", "string initial");
+    assert("hello world".terminal(10)=="ello world", "string terminal");
+    assert("hello world".initial(11)=="hello world", "string initial");
+    assert("hello world".terminal(11)=="hello world", "string terminal");
     
     assert(min({"abc", "xyz", "foo", "bar"})=="abc", "strings min");
     assert(max({"abc", "xyz", "foo", "bar"})=="xyz", "strings max");
