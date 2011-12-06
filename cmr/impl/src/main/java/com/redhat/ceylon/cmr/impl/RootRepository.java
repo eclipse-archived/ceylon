@@ -61,7 +61,7 @@ public class RootRepository extends AbstractNodeRepository {
             File file = fileContentStore.getFile(node);
             if (file.exists() == false) {
                 log.fine("Creating local copy of external node: " + node);
-                fileContentStore.putContent(node, node.getContent());
+                fileContentStore.putContent(node, node.getInputStream());
                 file = fileContentStore.getFile(node); // re-get
                 if (context.isIgnoreSHA() == false && node instanceof OpenNode) {
                     OpenNode on = (OpenNode) node;
@@ -90,7 +90,7 @@ public class RootRepository extends AbstractNodeRepository {
             if (sha != null) {
                 File shaFile = fileContentStore.getFile(sha);
                 if (shaFile.exists())
-                    checkSHA(artifact, IOUtils.toStream(shaFile));
+                    checkSHA(artifact, IOUtils.toInputStream(shaFile));
             }
         }
         return false;

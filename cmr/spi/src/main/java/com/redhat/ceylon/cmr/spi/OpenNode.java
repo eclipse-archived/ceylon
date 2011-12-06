@@ -24,6 +24,7 @@ package com.redhat.ceylon.cmr.spi;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 
 /**
  * Mutable node.
@@ -31,13 +32,17 @@ import java.io.InputStream;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public interface OpenNode extends Node {
-    void setMergeStrategy(MergeStrategy strategy);
+    <T> void addService(Class<T> serviceType, T service);
 
-    void merge(Node other);
+    void merge(OpenNode other);
+
+    void link(OpenNode other);
 
     OpenNode addNode(String label);
 
     OpenNode addContent(String label, InputStream content) throws IOException;
+
+    <T extends Serializable> OpenNode addContent(String label, T content) throws IOException;
 
     Node removeNode(String label);
 }

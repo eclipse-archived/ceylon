@@ -115,7 +115,7 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
     protected boolean checkSHA(Node artifact) throws IOException {
         Node sha = artifact.getChild(SHA);
         if (sha != null) {
-            checkSHA(artifact, sha.getContent());
+            checkSHA(artifact, sha.getInputStream());
             return true;
         }
         return false;

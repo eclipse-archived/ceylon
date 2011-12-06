@@ -39,7 +39,9 @@ public interface Node {
 
     boolean hasContent();
 
-    InputStream getContent() throws IOException;
+    InputStream getInputStream() throws IOException;
+
+    <T> T getContent(Class<T> contentType) throws IOException;
 
     Node getParent(String label);
 

@@ -24,12 +24,16 @@ package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.ContentStore;
+import com.redhat.ceylon.cmr.spi.ContentTransformer;
 import com.redhat.ceylon.cmr.spi.MergeStrategy;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
+import java.util.Map;
+import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -49,12 +53,12 @@ public class DefaultNode implements OpenNode {
     };
 
     private String label;
-    private ConcurrentMap<String, OpenNode> parents = new ConcurrentHashMap<String, OpenNode>();
-    private ConcurrentMap<String, OpenNode> children = new ConcurrentHashMap<String, OpenNode>();
+    private final ConcurrentMap<String, OpenNode> parents = new ConcurrentHashMap<String, OpenNode>();
+    private final ConcurrentMap<String, OpenNode> children = new ConcurrentHashMap<String, OpenNode>();
+
+    private final Map<Class<?>, Object> services = new WeakHashMap<Class<?>, Object>();
 
     private volatile ContentHandle handle;
-    private volatile MergeStrategy strategy;
-    private volatile ContentStore contentStore;
 
     public DefaultNode() {
     }
@@ -69,6 +73,7 @@ public class DefaultNode implements OpenNode {
     }
 
     protected ContentStore getContentStore() {
+        ContentStore contentStore = getService(ContentStore.class);
         if (contentStore != null)
             return contentStore;
 
@@ -87,10 +92,11 @@ public class DefaultNode implements OpenNode {
     }
 
     protected void setContentStore(ContentStore contentStore) {
-        this.contentStore = contentStore;
+        addService(ContentStore.class, contentStore);
     }
 
     protected MergeStrategy getStrategy() {
+        MergeStrategy strategy = getService(MergeStrategy.class);
         if (strategy != null)
             return strategy;
 
@@ -99,7 +105,7 @@ public class DefaultNode implements OpenNode {
                 DefaultNode dn = (DefaultNode) parent;
                 MergeStrategy ms = dn.getStrategy();
                 if (ms != null) {
-                    setMergeStrategy(ms);
+                    addService(MergeStrategy.class, ms);
                     return ms;
                 }
             }
@@ -108,14 +114,37 @@ public class DefaultNode implements OpenNode {
         throw new IllegalArgumentException("No merge strategy defined in node chain!");
     }
 
-    @Override
-    public void setMergeStrategy(MergeStrategy strategy) {
-        this.strategy = strategy;
+    protected synchronized <T> T getService(Class<T> serviceType) {
+        return serviceType.cast(services.get(serviceType));
     }
 
     @Override
-    public void merge(Node other) {
+    public synchronized <T> void addService(Class<T> serviceType, T service) {
+        if (serviceType == null)
+            throw new IllegalArgumentException("Null service type");
+
+        if (service != null)
+            services.put(serviceType, service);
+        else
+            services.remove(serviceType);
+    }
+
+    @Override
+    public void merge(OpenNode other) {
+        if (other == null)
+            throw new IllegalArgumentException("Null node!");
         // TODO
+    }
+
+    @Override
+    public void link(OpenNode child) {
+        if (child == null)
+            throw new IllegalArgumentException("Null node!");
+        children.put(child.getLabel(), child);
+        if (child instanceof DefaultNode) {
+            DefaultNode dn = (DefaultNode) child;
+            dn.parents.put(getLabel(), this);
+        }
     }
 
     @Override
@@ -147,7 +176,15 @@ public class DefaultNode implements OpenNode {
         return addNode(label, content, false);
     }
 
+    @Override
+    public <T extends Serializable> OpenNode addContent(String label, T content) throws IOException {
+        InputStream stream = IOUtils.toObjectStream(content);
+        return addContent(label, stream);
+    }
+
     protected OpenNode addNode(String label, InputStream content, boolean allowNoContent) throws IOException {
+        if (label == null)
+            throw new IllegalArgumentException("Null label");
         if (content == null && allowNoContent == false)
             throw new IllegalArgumentException("Null content not allowed: " + label);
 
@@ -155,7 +192,7 @@ public class DefaultNode implements OpenNode {
         OpenNode previous = children.putIfAbsent(label, node);
         if (previous == null) {
             previous = node;
-            node.parents.put(this.label, this);
+            node.parents.put(getLabel(), this);
             if (content != null)
                 node.handle = getContentStore().putContent(node, content);
         } else if (content != null) {
@@ -193,7 +230,7 @@ public class DefaultNode implements OpenNode {
     }
 
     @Override
-    public InputStream getContent() throws IOException {
+    public InputStream getInputStream() throws IOException {
         if (handle != null) {
             return handle.getContent();
         } else {
@@ -203,6 +240,23 @@ public class DefaultNode implements OpenNode {
             }
             handle = ch;
             return ch.getContent();
+        }
+    }
+
+    @Override
+    @SuppressWarnings({"unchecked"})
+    public <T> T getContent(Class<T> contentType) throws IOException {
+        if (contentType == null)
+            throw new IllegalArgumentException("Null content type!");
+
+        if (InputStream.class.equals(contentType)) {
+            return (T) getInputStream();
+        } else {
+            ContentTransformer ct = getService(ContentTransformer.class);
+            if (ct != null)
+                return ct.transform(contentType, getInputStream());
+            else
+                return IOUtils.fromStream(contentType, getInputStream());
         }
     }
 

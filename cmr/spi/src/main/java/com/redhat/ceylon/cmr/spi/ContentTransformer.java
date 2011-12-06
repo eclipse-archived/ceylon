@@ -20,38 +20,16 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package com.redhat.ceylon.cmr.impl;
+package com.redhat.ceylon.cmr.spi;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
 
 /**
- * I/O utils.
+ * Transform stream into content instance.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class IOUtils {
-
-    static InputStream toInputStream(File file) {
-        try {
-            return new FileInputStream(file);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    static <T extends Serializable> InputStream toObjectStream(T content) {
-        if (content == null)
-            throw new IllegalArgumentException("Null content");
-        return null;  // TODO
-    }
-
-    static <T> T fromStream(Class<T> contentType, InputStream inputStream) {
-        if (inputStream == null)
-            throw new IllegalArgumentException("Null input stream!");
-
-        return null;  // TODO
-    }
+public interface ContentTransformer {
+    <T> T transform(Class<T> contentType, InputStream stream) throws IOException;
 }
