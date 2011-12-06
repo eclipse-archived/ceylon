@@ -139,6 +139,7 @@ class Test() {
         
         if(true){
             Exception&EmptyInterface x = MyException(null, null);
+            x.printStackTrace();
             throw x;
         }        
 
@@ -155,6 +156,10 @@ class Test() {
         
         value p2 = p1OrNothing ? p1;
         Natural n = p1OrNothing ? p1;
+        
+        // FIXME: those operators are not yet supported
+        //value p3 = p1OrNothing?.remainder(p1);
+        //value p4 = p1OrNothing?.zero;
     }
 
     void testArithmeticOperators(Natural&EmptyInterface p1,

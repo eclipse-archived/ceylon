@@ -196,6 +196,7 @@ class Test {
         final ceylon.language.Entry entry = new ceylon.language.Entry(p1, p1);
         if (true) {
             final .java.lang.Object x = new com.redhat.ceylon.compiler.test.expression.erasure.MyException(null, null);
+            ((.java.lang.Throwable)x).printStackTrace();
             throw (.java.lang.Throwable)x;
         }
         return (com.redhat.ceylon.compiler.test.expression.erasure.Left)middle;
