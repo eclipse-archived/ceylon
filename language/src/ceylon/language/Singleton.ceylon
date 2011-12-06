@@ -35,6 +35,9 @@ shared class Singleton<Element>(Element element)
         shared actual Iterator<Element>? tail {
             return null;
         }
+        shared actual String string {
+            return "Iterator for " outer.string "";
+        }
     }
     shared actual String string {
         if (is Object first) {

@@ -108,6 +108,10 @@ public class Singleton<Element>
 			public Iterator<Element> getTail() {
 				return null;
 			}
+			@Override
+			public java.lang.String toString() {
+				return "Iterator for " + Singleton.this.toString();
+			}
 		};
 	}
 
