@@ -15,7 +15,9 @@ final class bug193 {
     }
     
     static void bug193() {
-        .com.redhat.ceylon.compiler.test.issues.x.<ceylon.language.Iterable<? extends ceylon.language.String>>x(new ceylon.language.ArraySequence<ceylon.language.String>(.ceylon.language.String.instance("hello")));
+        final ceylon.language.Iterable<? extends ceylon.language.String> arr = new ceylon.language.ArraySequence<ceylon.language.String>(.ceylon.language.String.instance("hello"));
+        .com.redhat.ceylon.compiler.test.issues.x.x((ceylon.language.Sized)arr);
+        .ceylon.language.print.print(.ceylon.language.Natural.instance(((ceylon.language.Sized)arr).getSize()));
     }
     
     public static void main(.java.lang.String[] args) {
