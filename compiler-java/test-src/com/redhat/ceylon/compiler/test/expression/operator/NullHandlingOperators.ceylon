@@ -64,5 +64,7 @@ shared class NullHandlingOperators() {
         String? foo = (n > 0) then "yes";
         String? bar = foo else "yes";
         String? baz = (n > 0) then "yes" else "no";
+        Float x = 5.0;
+        Float y = (x>0.0 then x else 1.0);
     }
 }

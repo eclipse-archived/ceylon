@@ -212,13 +212,6 @@ public class BoxingVisitor extends Visitor {
     }
 
     @Override
-    public void visit(ThenOp that) {
-        super.visit(that);
-        // this is not conditional
-        Util.markUnBoxed(that);
-    }
-
-    @Override
     public void visit(Nonempty that) {
         super.visit(that);
         // this is not conditional
