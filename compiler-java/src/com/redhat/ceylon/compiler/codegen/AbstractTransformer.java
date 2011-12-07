@@ -312,7 +312,7 @@ public abstract class AbstractTransformer implements Transformation {
         for (i = 0; (i + 1) < args.length; i += 2) {
             JCExpression typeExpr = args[i];
             JCExpression valueExpr = args[i+1];
-            varName = varBaseName + "$" + i;
+            varName = varBaseName + ((args.length > 3) ? "$" + i : "");
             JCVariableDecl varDecl = makeVar(varName, typeExpr, valueExpr);
             decls = decls.append(varDecl);
         }

@@ -54,7 +54,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.OrOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Outer;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequenceEnumeration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
@@ -550,18 +549,18 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (operatorClass == Tree.IdenticalOp.class) {
             result = at(op).Binary(JCTree.EQ, left, right);
         } else if (operatorClass == Tree.DefaultOp.class) {
-            String varBaseName = tempName();
-            JCExpression varIdent = makeIdent(varBaseName + "$0");
+            String varName = tempName();
+            JCExpression varIdent = makeIdent(varName);
             JCExpression test = at(op).Binary(JCTree.NE, varIdent, makeNull());
             JCExpression cond = make().Conditional(test , varIdent, right);
             JCExpression typeExpr = makeJavaType(op.getLeftTerm().getTypeModel(), 0);
-            result = makeLetExpr(varBaseName, null, typeExpr, left, cond);
+            result = makeLetExpr(varName, null, typeExpr, left, cond);
         } else if (operatorClass == Tree.InOp.class) {
-            String varBaseName = tempName();
-            JCExpression varIdent = makeIdent(varBaseName + "$0");
+            String varName = tempName();
+            JCExpression varIdent = makeIdent(varName);
             JCExpression contains = at(op).Apply(null, makeSelect(right, "contains"), List.<JCExpression> of(varIdent));
             JCExpression typeExpr = makeJavaType(op.getLeftTerm().getTypeModel(), NO_PRIMITIVES);
-            result = makeLetExpr(varBaseName, null, typeExpr, left, contains);
+            result = makeLetExpr(varName, null, typeExpr, left, contains);
         } else {
             Class<? extends Tree.OperatorExpression> originalOperatorClass = operatorClass;
             boolean loseComparison = 
@@ -836,7 +835,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
     
-    private JCExpression transformNamedInvocation(InvocationExpression ce) {
+    private JCExpression transformNamedInvocation(final InvocationExpression ce) {
         final ListBuffer<JCVariableDecl> args = ListBuffer.lb();
         final ListBuffer<JCExpression> names = ListBuffer.lb();
         Declaration primDecl = ce.getPrimary().getDeclaration();
@@ -904,35 +903,36 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression newExpr = make().NewClass(null, typeArgs, makeJavaType(classType, CLASS_NEW), names.toList(), null);
             return make().LetExpr(args.toList(), newExpr);
         } else {
-            JCExpression callExpr = transformPrimary(ce.getPrimary(), new TermTransformer() {
+            JCExpression result = transformPrimary(ce.getPrimary(), new TermTransformer() {
 
                 @Override
-                public JCExpression transform(Primary primary, JCExpression primaryExpr, String selector) {
+                public JCExpression transform(JCExpression primaryExpr, String selector) {
                     JCExpression tmpCallPrimExpr = null;
                     if (primaryExpr != null && selector != null) {
                         // Prepare the first argument holding the primary for the call
                         String callVarName = aliasName("call");
                         JCExpression callVarExpr = make().Ident(names().fromString(callVarName));
-                        ProducedType type = ((Tree.QualifiedMemberExpression)primary).getPrimary().getTypeModel();
+                        ProducedType type = ((Tree.QualifiedMemberExpression)ce.getPrimary()).getPrimary().getTypeModel();
                         JCVariableDecl callVar = makeVar(callVarName, makeJavaType(type, NO_PRIMITIVES), primaryExpr);
                         args.prepend(callVar);
                         tmpCallPrimExpr = makeIdentOrSelect(callVarExpr, selector);
                     } else {
                         tmpCallPrimExpr = makeIdentOrSelect(primaryExpr, selector);
                     }
-                    return make().Apply(typeArgs, tmpCallPrimExpr, names.toList());
+                    JCExpression callExpr = make().Apply(typeArgs, tmpCallPrimExpr, names.toList());
+
+                    ProducedType returnType = ce.getTypeModel();
+                    if (isVoid(returnType)) {
+                        // void methods get wrapped like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1); null)
+                        return make().LetExpr(args.toList(), List.<JCStatement>of(make().Exec(callExpr)), makeNull());
+                    } else {
+                        // all other methods like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1))
+                        return make().LetExpr(args.toList(), callExpr);
+                    }
                 }
                 
             });
-
-            ProducedType returnType = ce.getTypeModel();
-            if (isVoid(returnType)) {
-                // void methods get wrapped like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1); null)
-                return make().LetExpr(args.toList(), List.<JCStatement>of(make().Exec(callExpr)), makeNull());
-            } else {
-                // all other methods like (let $arg$1=expr, $arg$0=expr in call($arg$0, $arg$1))
-                return make().LetExpr(args.toList(), callExpr);
-            }
+            return result;
         }
     }
 
@@ -988,14 +988,22 @@ public class ExpressionTransformer extends AbstractTransformer {
                 args.append(transformArg(arg));
         }
 
-        List<JCExpression> typeArgs = transformTypeArguments(ce);
+        final List<JCExpression> typeArgs = transformTypeArguments(ce);
         
         if (ce.getPrimary() instanceof Tree.BaseTypeExpression) {
             ProducedType classType = (ProducedType)((Tree.BaseTypeExpression)ce.getPrimary()).getTarget();
             return at(ce).NewClass(null, null, makeJavaType(classType, CLASS_NEW), args.toList(), null);
         } else {
-            JCExpression expr = transformExpression(ce.getPrimary());
-            return at(ce).Apply(typeArgs, expr, args.toList());
+            JCExpression result = transformPrimary(ce.getPrimary(), new TermTransformer() {
+
+                @Override
+                public JCExpression transform(JCExpression primaryExpr, String selector) {
+                    JCExpression tmpCallPrimExpr = makeIdentOrSelect(primaryExpr, selector);
+                    return make().Apply(typeArgs, tmpCallPrimExpr, args.toList());
+                }
+                
+            });
+            return result;
         }
     }
 
@@ -1072,8 +1080,17 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     public JCExpression transform(Tree.QualifiedMemberExpression expr, TermTransformer transformer) {
+        JCExpression result;
         JCExpression primaryExpr = transformQualifiedMemberPrimary(expr);
-        return transformMemberExpression(expr, primaryExpr, transformer);
+        if (expr.getMemberOperator() instanceof Tree.SafeMemberOp) {
+            String tmpVarName = aliasName("safe");
+            JCExpression typeExpr = makeJavaType(expr.getTarget().getQualifyingType(), NO_PRIMITIVES);
+            result = transformMemberExpression(expr, makeIdent(tmpVarName), transformer);
+            result = makeLetExpr(tmpVarName, null, typeExpr, primaryExpr, result);
+        } else {
+            result = transformMemberExpression(expr, primaryExpr, transformer);
+        }
+        return result;
     }
 
     private JCExpression transformQualifiedMemberPrimary(Tree.QualifiedMemberExpression expr) {
@@ -1088,7 +1105,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     interface TermTransformer {
-        JCExpression transform(Primary primary, JCExpression primaryExpr, String selector);
+        JCExpression transform(JCExpression primaryExpr, String selector);
     }
     
     private JCExpression transformPrimary(Tree.Primary primary, TermTransformer transformer) {
@@ -1190,14 +1207,15 @@ public class ExpressionTransformer extends AbstractTransformer {
                     selector = substitute(decl.getName());
                 }
             }
-            if (primaryExpr == null) {
-                primaryExpr = qualExpr;
+            
+            if (qualExpr == null) {
+                qualExpr = primaryExpr;
             }
             
             if (transformer != null) {
-                result = transformer.transform(expr, primaryExpr, selector);
+                result = transformer.transform(qualExpr, selector);
             } else {
-                result = makeIdentOrSelect(primaryExpr, selector);
+                result = makeIdentOrSelect(qualExpr, selector);
                 if (useGetter) {
                     result = make().Apply(List.<JCTree.JCExpression>nil(),
                             result,
