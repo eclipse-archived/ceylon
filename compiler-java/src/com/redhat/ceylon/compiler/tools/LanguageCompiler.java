@@ -277,7 +277,10 @@ public class LanguageCompiler extends JavaCompiler {
                     module = loadModuleFromSource(pkgName, moduleTrees);
                 }
                 else if (! module.isAvailable()) {
-                	module.setAvailable(true);
+                    modules.getListOfModules().remove(module);
+                    Module fullModule = loadModuleFromSource(pkgName, moduleTrees);
+                    CeylonEnter.updateModulesDependingOn(modules.getListOfModules(), module, fullModule);
+                    module = fullModule;
                 }
 
                 if(module == null){
@@ -315,7 +318,6 @@ public class LanguageCompiler extends JavaCompiler {
             Module module = getModule(pkgName);
             if(module != null){
                 ceylonCompilationUnit.phasedUnit.getPackage().setModule(module);
-                module.setAvailable(true);
                 return module;
             }
         }
