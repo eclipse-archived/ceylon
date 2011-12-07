@@ -36,6 +36,13 @@ public class NullHandlingOperators {
         final ceylon.language.Boolean boxed = .ceylon.language.Boolean.instance(foo != null);
     }
     
+    private final void testThenElse() {
+        final long n = 5L;
+        final ceylon.language.String foo = .ceylon.language.Natural.instance(n).compare(.ceylon.language.Natural.instance(0L)).larger() ? .ceylon.language.String.instance("yes") : null;
+        final ceylon.language.String bar = (let ceylon.language.String $ceylontmp7 = foo in $ceylontmp7 != null ? $ceylontmp7 : .ceylon.language.String.instance("yes"));
+        final ceylon.language.String baz = .ceylon.language.String.instance((let ceylon.language.String $ceylontmp8 = .ceylon.language.Natural.instance(n).compare(.ceylon.language.Natural.instance(0L)).larger() ? .ceylon.language.String.instance("yes") : null in $ceylontmp8 != null ? $ceylontmp8 : .ceylon.language.String.instance("no")));
+    }
+    
     public NullHandlingOperators() {
     }
     

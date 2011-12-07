@@ -58,4 +58,11 @@ shared class NullHandlingOperators() {
         // boxing
         Boolean? boxed = exists foo;
     }
+    
+    void testThenElse() {
+        Natural n = 5;
+        String? foo = (n > 0) then "yes";
+        String? bar = foo else "yes";
+        String? baz = (n > 0) then "yes" else "no";
+    }
 }
