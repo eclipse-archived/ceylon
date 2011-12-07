@@ -1030,7 +1030,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             for (ProducedType arg : typeArguments) {
                 // cancel type parameters and go raw if we can't specify them
                 if(willEraseToObject(arg)
-                        || arg.getDeclaration() instanceof TypeParameter)
+                        || isTypeParameter(arg))
                     return List.nil();
                 result = result.append(makeJavaType(arg, AbstractTransformer.TYPE_ARGUMENT));
             }
