@@ -37,11 +37,11 @@ public class EqualityAndComparisonOperators {
     }
     
     private final void testInBoxed(final long n1, final long n2) {
-        final boolean b1 = (let ceylon.language.Natural $ceylontmp0$0 = .ceylon.language.Natural.instance(n1) in new ceylon.language.Range<ceylon.language.Natural>(.ceylon.language.Natural.instance(n1), .ceylon.language.Natural.instance(n2)).contains($ceylontmp0$0));
+        final boolean b1 = (let ceylon.language.Natural $ceylontmp0 = .ceylon.language.Natural.instance(n1) in new ceylon.language.Range<ceylon.language.Natural>(.ceylon.language.Natural.instance(n1), .ceylon.language.Natural.instance(n2)).contains($ceylontmp0));
     }
     
     private final void testInUnboxed(final com.redhat.ceylon.compiler.test.expression.operator.MyNatural n1, final com.redhat.ceylon.compiler.test.expression.operator.MyNatural n2) {
-        final ceylon.language.Boolean b1 = .ceylon.language.Boolean.instance((let com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmp1$0 = n1 in new ceylon.language.Range<com.redhat.ceylon.compiler.test.expression.operator.MyNatural>(n1, n2).contains($ceylontmp1$0)));
+        final ceylon.language.Boolean b1 = .ceylon.language.Boolean.instance((let com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmp1 = n1 in new ceylon.language.Range<com.redhat.ceylon.compiler.test.expression.operator.MyNatural>(n1, n2).contains($ceylontmp1)));
     }
     
     private final void testIs() {
