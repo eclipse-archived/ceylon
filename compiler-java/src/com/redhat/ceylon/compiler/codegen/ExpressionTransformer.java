@@ -1047,7 +1047,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             TypeParameter tp = (TypeParameter) type.getDeclaration();
             if(tp.getSatisfiedTypes().size() >= 1)
                 type = tp.getSatisfiedTypes().get(0).getType();
-            else if(!isRaw){
+            else if(!isRaw && typeArgumentModels != null){
                 // try to use the inferred type if we're not going raw
                 int typeParamIndex = getTypeParameterIndex(scope, tp);
                 if(typeParamIndex != -1)
