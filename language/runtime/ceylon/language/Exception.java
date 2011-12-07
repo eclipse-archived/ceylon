@@ -8,23 +8,23 @@ public class Exception extends RuntimeException {
 
 	private static final long serialVersionUID = -1790691559137471641L;
 
-	private java.lang.String description;
+	private String description;
     
     public Exception(
             @TypeInfo("ceylon.language.String|ceylon.language.Nothing")
             @Name("description")
-            java.lang.String description,
+            String description,
             @TypeInfo("ceylon.language.Exception|ceylon.language.Nothing")
             @Name("cause")
             java.lang.Throwable cause
             
             ) {
-        super(description==null ? null : description, cause);
+        super(description==null ? null : description.toString(), cause);
         this.description = description;
     }
     
     @Ignore
-    public Exception(java.lang.String description) {
+    public Exception(String description) {
     	this (description, null);
     }
     
@@ -42,7 +42,7 @@ public class Exception extends RuntimeException {
     public java.lang.String getMessage() {
         if (description != null
                 && description != null) {
-            return description;
+            return description.toString();
         } 
         else if (getCause() != null 
                 && getCause().getMessage() != null) {
