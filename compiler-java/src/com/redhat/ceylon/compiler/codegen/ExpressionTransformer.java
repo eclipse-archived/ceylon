@@ -124,6 +124,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             return null;
         }
         
+        at(expr);
         if (inStatement && boxingStrategy != BoxingStrategy.INDIFFERENT) {
             // We're not directly inside the ExpressionStatement anymore
             inStatement = false;
