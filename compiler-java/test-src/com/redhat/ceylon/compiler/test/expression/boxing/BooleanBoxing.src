@@ -15,8 +15,8 @@ class BooleanBoxing {
     }
     
     private final ceylon.language.Boolean negate2(final ceylon.language.Boolean b) {
-        final ceylon.language.Boolean $b$0 = b;
-        if ($b$0 != null) {
+        ceylon.language.Boolean $b$0;
+        if (($b$0 = b) != null) {
             final boolean $b$1 = $b$0.booleanValue();
             return .ceylon.language.Boolean.instance(!$b$1);
         }
@@ -24,8 +24,8 @@ class BooleanBoxing {
     }
     
     private final boolean negate3(final ceylon.language.Boolean b) {
-        final ceylon.language.Boolean $b$2 = b;
-        if ($b$2 != null) {
+        ceylon.language.Boolean $b$2;
+        if (($b$2 = b) != null) {
             final boolean $b$3 = $b$2.booleanValue();
             return !$b$3;
         } else {

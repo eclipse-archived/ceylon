@@ -17,8 +17,8 @@ class StringBoxing {
     }
     
     private final ceylon.language.String upper2(final ceylon.language.String s) {
-        final ceylon.language.String $s$0 = s;
-        if ($s$0 != null) {
+        ceylon.language.String $s$0;
+        if (($s$0 = s) != null) {
             final .java.lang.String $s$1 = $s$0.toString();
             return .ceylon.language.String.instance(.ceylon.language.String.instance($s$1).getUppercased());
         }
@@ -26,8 +26,8 @@ class StringBoxing {
     }
     
     private final .java.lang.String upper3(final ceylon.language.String s) {
-        final ceylon.language.String $s$2 = s;
-        if ($s$2 != null) {
+        ceylon.language.String $s$2;
+        if (($s$2 = s) != null) {
             final .java.lang.String $s$3 = $s$2.toString();
             return .ceylon.language.String.instance($s$3).getUppercased();
         } else {

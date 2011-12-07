@@ -3,8 +3,8 @@ package com.redhat.ceylon.compiler.test.statement.conditional;
 class MethodIfExists {
     
     public final long m(final ceylon.language.Natural x) {
-        final ceylon.language.Natural $x$0 = x;
-        if ($x$0 != null) {
+        ceylon.language.Natural $x$0;
+        if (($x$0 = x) != null) {
             final long $x$1 = $x$0.longValue();
             return $x$1;
         }
@@ -12,8 +12,8 @@ class MethodIfExists {
     }
     
     public final long m2(final ceylon.language.Natural x) {
-        final ceylon.language.Natural $y$2 = x;
-        if ($y$2 != null) {
+        ceylon.language.Natural $y$2;
+        if (($y$2 = x) != null) {
             final long $y$3 = $y$2.longValue();
             return $y$3;
         }

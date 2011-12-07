@@ -3,8 +3,8 @@ package com.redhat.ceylon.compiler.test.statement.conditional;
 class MethodIfNonEmpty {
     
     public final long m(final ceylon.language.Iterable<? extends ceylon.language.Natural> x) {
-        final ceylon.language.Iterable<? extends ceylon.language.Natural> $x$0 = x;
-        if ($x$0 instanceof ceylon.language.Sequence) {
+        ceylon.language.Iterable<? extends ceylon.language.Natural> $x$0;
+        if (($x$0 = x) instanceof ceylon.language.Sequence) {
             final ceylon.language.Sequence<? extends ceylon.language.Natural> $x$1 = (ceylon.language.Sequence<? extends ceylon.language.Natural>)$x$0;
             final ceylon.language.Sequence<? extends ceylon.language.Natural> s = $x$1;
         }
