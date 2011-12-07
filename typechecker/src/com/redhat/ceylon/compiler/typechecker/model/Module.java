@@ -8,7 +8,7 @@ public class Module {
     private List<String> name;
     private String version;
     private List<Package> packages = new ArrayList<Package>();
-    private List<Module> dependencies = new ArrayList<Module>();
+    private List<ModuleImport> imports = new ArrayList<ModuleImport>();
     private Module languageModule;
     private boolean available;
     private String license;
@@ -49,8 +49,8 @@ public class Module {
         return list;
     }
 
-    public List<Module> getDependencies() {
-        return dependencies;
+    public List<ModuleImport> getImports() {
+        return imports;
     }
     
     public Module getLanguageModule() {
@@ -72,8 +72,8 @@ public class Module {
     public List<Package> getAllPackages() {
         List<Package> list = new ArrayList<Package>();
         list.addAll(packages);
-        for (Module m: dependencies) {
-            list.addAll(m.getSharedPackages());
+        for (ModuleImport mi: imports) {
+            list.addAll(mi.getModule().getSharedPackages());
         }
         return list;
     }
@@ -81,8 +81,8 @@ public class Module {
     List<Package> getAllKnownPackages() {
         List<Package> list = new ArrayList<Package>();
         list.addAll(packages);
-        for (Module m: dependencies) {
-            list.addAll(m.getPackages());
+        for (ModuleImport mi: imports) {
+            list.addAll(mi.getModule().getPackages());
         }
         return list;
     }

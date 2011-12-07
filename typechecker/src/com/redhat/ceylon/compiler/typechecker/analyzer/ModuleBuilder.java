@@ -15,6 +15,7 @@ import java.util.Set;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -31,7 +32,7 @@ public class ModuleBuilder {
     private final LinkedList<Package> packageStack = new LinkedList<Package>();
     private Module currentModule;
     private Modules modules;
-    private final Map<Module,Set<Node>> moduleDependencyDefinition = new HashMap<Module, Set<Node>>();
+    private final Map<ModuleImport,Set<Node>> moduleDependencyDefinition = new HashMap<ModuleImport, Set<Node>>();
     private Map<List<String>, Set<String>> topLevelErrorsPerModuleName = new HashMap<List<String>,Set<String>>();
 
     public ModuleBuilder(Context context) {
@@ -64,7 +65,7 @@ public class ModuleBuilder {
             languageModule.setAvailable(false); //not available yet
             modules.setLanguageModule(languageModule);
             modules.getListOfModules().add(languageModule);
-            defaultModule.getDependencies().add(languageModule);
+            defaultModule.getImports().add(new ModuleImport(languageModule, false, false));
             defaultModule.setLanguageModule(languageModule);
             context.setModules(modules);
         }
@@ -203,23 +204,25 @@ public class ModuleBuilder {
         pkg.setModule(module);
     }
 
-    public void addModuleDependencyDefinition(Module module, Node definition) {
-        Set<Node> moduleDepDefinition = moduleDependencyDefinition.get(module);
+    public void addModuleDependencyDefinition(ModuleImport moduleImport, Node definition) {
+        Set<Node> moduleDepDefinition = moduleDependencyDefinition.get(moduleImport);
         if (moduleDepDefinition == null) {
             moduleDepDefinition = new HashSet<Node>();
-            moduleDependencyDefinition.put(module, moduleDepDefinition);
+            moduleDependencyDefinition.put(moduleImport, moduleDepDefinition);
         }
         moduleDepDefinition.add(definition);
     }
 
-    public void addMissingDependencyError(Module module, String error) {
-        Set<Node> moduleDepError = moduleDependencyDefinition.get(module);
+    public void attachErrorToDependencyDeclaration(ModuleImport moduleImport, String error) {
+        Set<Node> moduleDepError = moduleDependencyDefinition.get(moduleImport);
         if (moduleDepError != null) {
             for ( Node definition :  moduleDepError ) {
                 definition.addError(error);
             }
         }
         else {
+            //This probably can happen if the missing dependency is found deep in the dependency structure (ie the binary version of a module)
+            //TODO find the nearest src module that triggered the issue
             System.err.println("This is a type checker bug, please report. \nExpecting to add missing dependency error on non present definition: " + error);
         }
     }
@@ -240,5 +243,31 @@ public class ModuleBuilder {
         for (PhasedUnit pu : listOfUnits) {
             pu.visitRemainingModulePhase();
         }
+    }
+
+    public ModuleImport findImport(Module owner, Module dependency) {
+        for (ModuleImport modImprt : owner.getImports()) {
+            if (equalsForModules(modImprt.getModule(), dependency, true)) return modImprt;
+        }
+        return null;
+    }
+
+    public boolean equalsForModules(Module left, Module right, boolean exactVersionMatch) {
+        if (left == right) return true;
+        List<String> leftName = left.getName();
+        List<String> rightName = right.getName();
+        if (leftName.size() != rightName.size()) return false;
+        for(int index = 0 ; index < leftName.size(); index++) {
+            if (!leftName.get(index).equals(rightName.get(index))) return false;
+        }
+        if (exactVersionMatch && left.getVersion()!=right.getVersion()) return false;
+        return true;
+    }
+
+    public Module findModule(Module module, List<Module> listOfModules, boolean exactVersionMatch) {
+        for(Module current : listOfModules) {
+            if (exactVersionMatch && equalsForModules(module, current, exactVersionMatch)) return current;
+        }
+        return null;
     }
 }

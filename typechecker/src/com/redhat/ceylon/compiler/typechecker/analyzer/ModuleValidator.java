@@ -13,6 +13,7 @@ import com.redhat.ceylon.compiler.typechecker.exceptions.LanguageModuleNotFoundE
 import com.redhat.ceylon.compiler.typechecker.io.ArtifactProvider;
 import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 
 /**
  * Validate module dependency:
@@ -42,6 +43,7 @@ public class ModuleValidator {
      *  - build the object model of these compiled modules
      *  - declare a missing module as an error
      *  - detect circular dependencies
+     *  - detect module version conflicts
      */
     public void verifyModuleDependencyTree() {
         phasedUnitsOfDependencies = new ArrayList<PhasedUnits>();
@@ -50,7 +52,8 @@ public class ModuleValidator {
         final HashSet<Module> modulesCopy = new HashSet<Module>( context.getModules().getListOfModules() );
         for (Module module : modulesCopy) {
             dependencyTree.addLast(module);
-            verifyModuleDependencyTree( module.getDependencies(), dependencyTree );
+            //we don't care about propagated dependency here as top modules are independent from one another
+            verifyModuleDependencyTree(module.getImports(), dependencyTree, new ArrayList<Module>());
             dependencyTree.pollLast();
         }
         for (PhasedUnits units : phasedUnitsOfDependencies) {
@@ -59,10 +62,14 @@ public class ModuleValidator {
     }
 
     private void verifyModuleDependencyTree(
-            Collection<Module> modules,
-            LinkedList<Module> dependencyTree) {
-        for (Module module : modules) {
-            if ( dependencyTree.contains(module) ) {
+            Collection<ModuleImport> moduleImports,
+            LinkedList<Module> dependencyTree,
+            List<Module> propagatedDependencies) {
+        List<Module> visibleDependencies = new ArrayList<Module>();
+        visibleDependencies.add(dependencyTree.getLast()); //first addition => no possible conflict
+        for (ModuleImport moduleImport : moduleImports) {
+            Module module = moduleImport.getModule();
+            if (moduleBuilder.findModule(module, dependencyTree, false) != null) {
                 //circular dependency
                 StringBuilder error = new StringBuilder("Circular dependency between modules: ");
                 buildDependencyString(dependencyTree, module, error);
@@ -90,7 +97,8 @@ public class ModuleValidator {
                         throw new LanguageModuleNotFoundException(error.toString());
                     }
                     else {
-                        moduleBuilder.addMissingDependencyError(module, error.toString());
+                        //today we attach that to the module dependency
+                        moduleBuilder.attachErrorToDependencyDeclaration(moduleImport, error.toString());
                     }
                 }
                 else {
@@ -107,8 +115,37 @@ public class ModuleValidator {
                 }
             }
             dependencyTree.addLast(module);
-            verifyModuleDependencyTree( module.getDependencies(), dependencyTree );
+            List<Module> subModulePropagatedDependencies = new ArrayList<Module>();
+            verifyModuleDependencyTree( module.getImports(), dependencyTree, subModulePropagatedDependencies );
+            //visible dependency += subModule + subModulePropagatedDependencies
+            checkAndAddDependency(visibleDependencies, module, dependencyTree);
+            for (Module submodule : subModulePropagatedDependencies) {
+                checkAndAddDependency(visibleDependencies, submodule, dependencyTree);
+            }
+            //propagated dependency += if subModule.export then subModule + subModulePropagatedDependencies
+            if (moduleImport.isExport()) {
+                checkAndAddDependency(propagatedDependencies, module, dependencyTree);
+                for (Module submodule : subModulePropagatedDependencies) {
+                    checkAndAddDependency(propagatedDependencies, submodule, dependencyTree);
+                }
+            }
             dependencyTree.pollLast();
+        }
+    }
+
+    private void checkAndAddDependency(List<Module> dependencies, Module module, LinkedList<Module> dependencyTree) {
+        Module dupe = moduleBuilder.findModule(module, dependencies, false);
+        if (dupe != null) {
+            //TODO improve by giving the dependency string leading to these two conflicting modules
+            StringBuilder error = new StringBuilder("Module (transitively) imports conflicting versions of ");
+            error.append(module.getNameAsString())
+                    .append(". Version ").append(module.getVersion())
+                    .append(" and version ").append(dupe.getVersion())
+                    .append(" found and visible at the same time.");
+            moduleBuilder.addErrorToModule(dependencyTree.getFirst(), error.toString());
+        }
+        else {
+            dependencies.add(module);
         }
     }
 

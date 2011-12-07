@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseTypeExpression;
@@ -137,10 +138,16 @@ public class ModuleVisitor extends Visitor {
                     if (importedModule.getVersion() == null) {
                         importedModule.setVersion(version);
                     }
-                    if (!mainModule.getDependencies().contains(importedModule)) {
-                        mainModule.getDependencies().add(importedModule);
+                    ModuleImport moduleImport = moduleBuilder.findImport(mainModule, importedModule);
+                    if (moduleImport == null) {
+                        String optionalString = argumentToString(getArgument(that, "optional"));
+                        boolean optional = optionalString!=null && optionalString.equals("true");
+                        String exportString = argumentToString(getArgument(that, "export"));
+                        boolean export = exportString!=null && exportString.equals("true");
+                        moduleImport = new ModuleImport(importedModule, optional, export);
+                        mainModule.getImports().add(moduleImport);
                     }
-                    moduleBuilder.addModuleDependencyDefinition(importedModule, nsa);
+                    moduleBuilder.addModuleDependencyDefinition(moduleImport, nsa);
                 }
                 //else we leave it behind unprocessed
             }
