@@ -2513,6 +2513,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.QuotedLiteral that) {
         setLiteralType(that, unit.getQuotedDeclaration());
+        that.addWarning("single-quoted literals are not yet supported");
     }
     
     private void setLiteralType(Tree.Atom that, TypeDeclaration languageType) {
