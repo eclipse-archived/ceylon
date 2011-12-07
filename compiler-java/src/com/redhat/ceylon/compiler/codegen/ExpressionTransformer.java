@@ -1085,8 +1085,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (expr.getMemberOperator() instanceof Tree.SafeMemberOp) {
             String tmpVarName = aliasName("safe");
             JCExpression typeExpr = makeJavaType(expr.getTarget().getQualifyingType(), NO_PRIMITIVES);
-            result = transformMemberExpression(expr, makeIdent(tmpVarName), transformer);
-            result = makeLetExpr(tmpVarName, null, typeExpr, primaryExpr, result);
+            JCExpression transExpr = transformMemberExpression(expr, makeIdent(tmpVarName), transformer);
+            JCExpression testExpr = make().Binary(JCTree.NE, makeIdent(tmpVarName), makeNull());                
+            JCExpression condExpr = make().Conditional(testExpr, transExpr, makeNull());
+            result = makeLetExpr(tmpVarName, null, typeExpr, primaryExpr, condExpr);
         } else {
             result = transformMemberExpression(expr, primaryExpr, transformer);
         }

@@ -11,9 +11,9 @@ public class NullHandlingOperators {
         final ceylon.language.Integer intOrNothing = .ceylon.language.Integer.instance(0L);
         final long n = (let ceylon.language.Natural $ceylontmp0 = natOrNothing1 in $ceylontmp0 != null ? $ceylontmp0 : .ceylon.language.Natural.instance(2L)).longValue();
         final ceylon.language.Natural nBoxed = (let ceylon.language.Natural $ceylontmp1 = natOrNothing1 in $ceylontmp1 != null ? $ceylontmp1 : <ceylon.language.Natural>box(.ceylon.language.Natural.instance(0L)));
-        ceylon.language.Integer nullSafeMember = (let ceylon.language.Integer $safe$2 = intOrNothing in $safe$2.getNegativeValue());
-        ceylon.language.Integer nullSafeInvoke = (let ceylon.language.Integer $safe$3 = intOrNothing in $safe$3.plus(.ceylon.language.Integer.instance(1L)));
-        nullSafeInvoke = (let ceylon.language.Integer $safe$5 = intOrNothing in (let ceylon.language.Integer $call$6 = $safe$5,ceylon.language.Integer $arg$4$0 = .ceylon.language.Integer.instance(1L) in $call$6.plus($arg$4$0)));
+        ceylon.language.Integer nullSafeMember = (let ceylon.language.Integer $safe$2 = intOrNothing in $safe$2 != null ? $safe$2.getNegativeValue() : null);
+        ceylon.language.Integer nullSafeInvoke = (let ceylon.language.Integer $safe$3 = intOrNothing in $safe$3 != null ? $safe$3.plus(.ceylon.language.Integer.instance(1L)) : null);
+        nullSafeInvoke = (let ceylon.language.Integer $safe$5 = intOrNothing in $safe$5 != null ? (let ceylon.language.Integer $call$6 = $safe$5,ceylon.language.Integer $arg$4$0 = .ceylon.language.Integer.instance(1L) in $call$6.plus($arg$4$0)) : null);
     }
     
     private final void testEmpty() {
