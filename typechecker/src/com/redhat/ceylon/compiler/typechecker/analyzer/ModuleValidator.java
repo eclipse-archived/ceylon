@@ -97,7 +97,8 @@ public class ModuleValidator {
                     phasedUnitsOfDependencies.add(modulePhasedUnit);
                     modulePhasedUnit.parseUnit(src);
                     src.close();
-                    module.setAvailable(true);
+                    module.setAvailable(true);  // TODO : not necessary anymore ? since at least on module.ceylon 
+                                                //        should have been parsed and should be applied buildModuleImport()
                     final List<PhasedUnit> listOfUnits = modulePhasedUnit.getPhasedUnits();
                     //populate module.getDependencies()
                     for (PhasedUnit pu : listOfUnits) {
