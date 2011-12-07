@@ -132,10 +132,22 @@ shared abstract class String()
          not occur in this string."
     shared formal Natural? lastOccurrence(String substring);
     
-    doc "Determines if the given object is a `String` and, 
-         if so, if it occurs as a substring of this string. 
-         That is to say, a string is considered a `Category` 
-         of its substrings."
+    doc "The first index at which the given character occurs
+         within this string, or `null` if the character does
+         not occur in this string."
+    shared formal Natural? firstCharacterOccurrence(Character substring);
+    
+    doc "The last index at which the given character occurs
+         within this string, or `null` if the character does
+         not occur in this string."
+    shared formal Natural? lastCharacterOccurrence(Character substring);
+    
+        doc "Determines if the given object is a `String` and, 
+         if so, if it occurs as a substring of this string,
+         or if the object is a `Character` that occurs in
+         this string. That is to say, a string is considered 
+         a `Category` of its substrings and of its 
+         characters."
     shared actual formal Boolean contains(Equality element);
     
     doc "Determines if this string starts with the given 

@@ -66,6 +66,11 @@ shared void strings() {
     assert(("  " + hello + "\n").trimmed==hello, "string trim");
     assert("hello\n    world\ngoodbye   everyone!".normalized=="hello world goodbye everyone!", "string normalize");
     
+    assert(`l` in hello, "char in string");
+    assert(!`x` in hello, "char not in string");
+    assert("ell" in hello, "substring in string");
+    assert(!"goodbye" in hello, "substring not in string");
+                
     if (exists occ = hello.firstOccurrence("ll")) {
         assert(occ==2, "string first occurrence");
     }
@@ -76,6 +81,22 @@ shared void strings() {
         fail("string no first occurrence");
     }
     if (exists locc = "hello hello".lastOccurrence("hell")) {
+        assert(locc==6, "string last occurrence");
+    }
+    else {
+        fail("string last occurrence");
+    }
+        
+    if (exists occ = hello.firstCharacterOccurrence(`l`)) {
+        assert(occ==2, "string first occurrence");
+    }
+    else {
+        fail("string first occurrence");
+    }
+    if (exists nocc = hello.firstCharacterOccurrence(`x`)) {
+        fail("string no first occurrence");
+    }
+    if (exists locc = "hello hello".lastCharacterOccurrence(`h`)) {
         assert(locc==6, "string last occurrence");
     }
     else {

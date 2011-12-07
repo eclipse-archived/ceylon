@@ -130,6 +130,7 @@ public final class String
         int length = value.length();
         if (index < 0 || index >= length)
             return null;
+        //TODO: use Character.offsetByCodePoints
         for (int offset = 0, i = 0; offset <= length; i++) {
             int codePoint = value.codePointAt(offset);
             if (i==index)
@@ -236,12 +237,29 @@ public final class String
 		return index>=0 ? Natural.instance(index) : null;
     }
     
+    @TypeInfo("ceylon.language.Nothing|ceylon.language.Natural")
+    public Natural firstCharacterOccurrence(@Name("character") 
+    @TypeInfo("ceylon.language.Character") int character) {
+    	int index = value.indexOf(character);
+		return index>=0 ? Natural.instance(index) : null;
+    }
+    
+    @TypeInfo("ceylon.language.Nothing|ceylon.language.Natural")
+    public Natural lastCharacterOccurrence(@Name("character") 
+    @TypeInfo("ceylon.language.Character") int character) {
+    	int index = value.lastIndexOf(character);
+		return index>=0 ? Natural.instance(index) : null;
+    }
+    
     @Override
     public boolean contains(@Name("element") 
     @TypeInfo("ceylon.language.Equality") 
     java.lang.Object element) {
     	if (element instanceof String) {
-    	    return firstOccurrence(((String)element).value)!=null;
+    	    return value.indexOf(((String)element).value)>=0;
+    	}
+    	else if (element instanceof Character) {
+    	    return value.indexOf(((Character)element).intValue())>=0;
     	}
     	else {
     		return false;
