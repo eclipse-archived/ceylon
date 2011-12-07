@@ -10,11 +10,6 @@
         <listitem>
             <para>literal values, self references, and metamodel references,</para>
         </listitem>
-        <!--
-        <listitem>
-            <para>enumerated instance references,</para>
-        </listitem>
-        -->
         <listitem>
             <para>callable references,</para>
         </listitem>
@@ -22,7 +17,10 @@
             <para>invocation of methods and instantiation of classes,</para> 
         </listitem>
         <listitem>
-            <para>evaluation and assignment of attributes, and</para>
+            <para>evaluation and assignment of attributes,</para>
+        </listitem>
+        <listitem>
+            <para>comprehensions, and</para>
         </listitem>
         <!--listitem>
             <para>enumeration of sequences, and</para>
@@ -55,6 +53,9 @@
     that could be used to initialize a toplevel attribute of the package.</para>
     <para>At the very least, we need to properly define the scope in which the 
     above things are actually evaluated.</para></comment>
+    
+    <comment><para>TODO: For user interfaces, some kind of support for pass by
+    reference would be especially helpful.</para></comment>
     
     <section id="objectinstancesidentity">
         <title>Object instances, identity, and reference passing</title>
@@ -115,12 +116,12 @@ assert() that (semaphore&identical;s); //assertion never fails</programlisting>
         <para>As a special exception to the rules defined above:</para>
         
         <itemizedlist>
-        <listitem>
+        <!--listitem>
             <para>The compiler is permitted to emit bytecode that unexpectedly creates or
             avoids creating an actual instance of <literal>Gettable</literal> or 
             <literal>Settable</literal>, when an expression is evaluated, as long as this 
             does not affect the observable behavior of the program.</para>
-        </listitem>
+        </listitem-->
         <listitem>
             <para>The compiler is permitted to emit bytecode that produces a new instance of 
             certain types in the module <literal>ceylon.language</literal> without execution of 
@@ -146,6 +147,7 @@ assert() that (semaphore&identical;s); //assertion never fails</programlisting>
         
     </section>
     
+    <!--  
     <section id="lazyevaluation">
         <title>PROPOSAL: Lazy evaluation</title>
         
@@ -192,6 +194,7 @@ setGreeting(greeting);</programlisting>
         invoked directly inside the block that obtained it.</para></comment>
     
     </section>
+    -->
     
     <section id="literalvalues">
         <title>Literal values</title>
@@ -455,8 +458,10 @@ shared interface Color { ... }</programlisting>
         a type assignable to the interface <literal>Format</literal> defined in 
         <literal>ceylon.language</literal>.</para>
         
+        <!--
         <para>The entire character string template is an expression of type 
         <literal>Gettable&lt;String&gt;</literal>.</para>
+        -->
         
         <programlisting>log.info("Hello, " person.firstName " " person.lastName ", the time is " Time() ".");</programlisting>
         
@@ -476,13 +481,13 @@ shared interface Color { ... }</programlisting>
             </listitem>
         </itemizedlist>
         
+        <!-- 
         <para>Interpolated expressions are evaluated when the 
         <literal>Gettable&lt;String&gt;</literal> is evaluated to produce a constant 
         character string.</para>
-
-        <comment><para>TODO: Is there a good reason to add the following limitation: 
-        an interpolated expression in a string template may not refer to 
-        <literal>variable</literal> locals from the containing scope.</para></comment>
+        -->
+        
+        <comment><para>TODO: Should string templates be evaluated lazily?</para></comment>
         
     </section>
     
@@ -516,10 +521,10 @@ shared interface Color { ... }</programlisting>
         possibility would be to introduce a specialized syntax, for example something
         like <literal>super(Writer).write(string)</literal>.</para></comment>
         
-        </section>
+    </section>
         
-        <section>
-            <title><literal>this</literal></title>
+    <section>
+        <title><literal>this</literal></title>
             
         <para>The keyword <literal>this</literal> refers to the current instance, 
         and is assignable to the type of the current class or interface (the class 
@@ -642,21 +647,21 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
     <section id="valuereferences">
         <title>Value references</title>
                 
-        <para>A <emphasis>value reference</emphasis> is a reference to 
-        something&mdash;for example, an attribute, a local, or an invocation 
-        expression&mdash;that can be <emphasis>evaluated</emphasis>.</para>
+        <para>A <emphasis>value reference</emphasis> is a reference to  something&mdash;for 
+        example, an attribute, a local, or an invocation expression&mdash;that can be 
+        <emphasis>evaluated</emphasis>.</para>
 
-        <para>A value reference may be transparently converted to the actual current 
+        <!--para>A value reference may be transparently converted to the actual current 
         value of the attribute or local, or to the return value of the invocation, or 
         it may be passed, as a reference, to other code, which may use the reference to 
         <emphasis>evaluate</emphasis> the current value of the attribute or local, or
         to perform the invocation. A reference to a <literal>variable</literal> attribute 
         or local may be used to <emphasis>assign</emphasis> a new value to the attribute 
-        or local.</para>
+        or local.</para-->
         
-        <para>A value reference expression is assignable to <literal>Gettable&lt;T&gt;</literal> 
-        or <literal>Settable&lt;T&gt;</literal> where <literal>T</literal> is the type of 
-        the attribute or local, or the return type of the invocation expression.</para>
+        <para>A value reference expression is assignable to <!--<literal>Gettable&lt;T&gt;</literal> 
+        or <literal>Settable&lt;T&gt;</literal> where <literal>T</literal>--> the type 
+        of the attribute or local, or the return type of the invocation expression.</para>
         
         <section id="attributeandlocalreferences">
             <title>Attribute and local references</title>
@@ -669,8 +674,10 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         <programlisting>ValueReference: (Receiver ".")? MemberName</programlisting>
         
         <para>The type of an attribute reference or local reference expression for an 
-        attribute, local, or parameter of declared type <literal>X</literal> is:</para>
+        attribute, local, or parameter of declared type <literal>X</literal> is simply
+        <literal>X</literal>.</para>
         
+        <!--
         <itemizedlist>
             <listitem>
                 <para><literal>X</literal>, if <literal>X</literal> is assignable
@@ -689,10 +696,11 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
                 reference.</para>
             </listitem>
         </itemizedlist>
+        -->
         
         </section>
         
-        <section id="passbyreference">
+        <!--section id="passbyreference">
             <title>PROPOSAL: Pass by reference</title>
             
             <comment><para>NOTE: Lazy evaluation and pass by reference is a proposed feature for 
@@ -727,7 +735,7 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
             <para>An attribute or local of type <literal>Gettable</literal> or <literal>Settable</literal> 
             may not be declared <literal>variable</literal>.</para>
             
-        </section>
+        </section-->
         
     </section>
 
@@ -750,9 +758,9 @@ assert() that (tree &equals; node.outer.outer);</programlisting>
         <literal>Callable&lt;T,P...&gt;</literal> where <literal>T</literal> and 
         <literal>P...</literal> depend upon the schema of the method or class.</para>
         
-        <comment><para>TODO: we can support LINQ to SQL-like queries by making 
+        <!--comment><para>TODO: we can support LINQ to SQL-like queries by making 
         <literal>Callable</literal> provide an AST of the statements contained
-        in the method declaration, allowing translation to SQL.</para></comment>
+        in the method declaration, allowing translation to SQL.</para></comment-->
                 
         <section id="typearguments">
             <title>Type arguments</title>
@@ -927,8 +935,8 @@ sort(names, reverseAlpha);</programlisting>
     }
 }</programlisting>
 
-        <para>Calling a method with multiple parameter lists is similar to the operation 
-        of "currying" in a functional programming language.</para>
+        <para>Calling a method with multiple parameter lists is called <emphasis>partial 
+        application</emphasis> of the method.</para>
         
         <programlisting>Comparison order(Natural x, Natural y) = getOrder();
 Comparison comp = order(1,-1);</programlisting>
@@ -1047,8 +1055,7 @@ value comp = order(1,-1);</programlisting>
         corresponding argument expression must be <literal>P...</literal>. (That is, it
         must be a tuple parameter of declared type <literal>P...</literal>.)</para>
         
-        <para>The type of an invocation expression is:</para> 
-                        
+        <!--    
         <itemizedlist>
             <listitem>
                 <para><literal>R</literal>, if <literal>R</literal> is assignable
@@ -1058,40 +1065,46 @@ value comp = order(1,-1);</programlisting>
                 <para><literal>Gettable&lt;R&gt;</literal></para>
             </listitem>
         </itemizedlist>
-        
-        <para>where <literal>R</literal> is the type argument to the first type parameter 
+         -->
+        <para>The type of an invocation expression is simply <literal>R</literal>
+        where <literal>R</literal> is the type argument to the first type parameter 
         of the expression type <literal>Callable</literal> (the return type).</para>
         
         <section id="methodinvocation">
             <title>Method invocation</title>
             
-            <para>For a method invocation, the invocation expression is of type
-            <literal>Gettable&lt;R&gt;</literal> where <literal>R</literal> is the return 
+            <para>For a method invocation, the invocation expression is of type <literal>R</literal>
+            <!--literal>Gettable&lt;R&gt;</literal--> where <literal>R</literal> is the return 
             type of the method. The type of a <literal>void</literal> method invocation 
-            expression is <literal>Gettable&lt;Void&gt;</literal>.</para>
+            expression is <literal>Void</literal>. <!--literal>Gettable&lt;Void&gt;</literal--></para>
             
             <programlisting>log.info("Hello world!")</programlisting>
             <programlisting>log.info { message = "Hello world!"; }</programlisting>
             <programlisting>printer.print { join = ", "; "Gavin", "Emmanuel", "Max", "Steve" }</programlisting>
             <programlisting>printer.print { "Names: ", from (Person p in people) select (p.name) }</programlisting>
+            <programlisting>hash(default, firstName, initial, lastName)</programlisting>
+            <programlisting>hash { algorithm=default; firstName, initial, lastName }</programlisting>
+
+            <!-- 
             <programlisting>set(person.name)("Gavin")</programlisting>
             <programlisting>get(process.arguments)()</programlisting>
             
             <programlisting>amounts.sort() by (Float x, Float y) (x&lt;=&gt;y)</programlisting>
             <programlisting>people.each() perform (Person p) { log.info(p.name); }</programlisting>
             <programlisting>map.filter() by (String key->String item) (item nonempty)</programlisting>
-            
-            <programlisting>hash(default, firstName, initial, lastName)</programlisting>
-            <programlisting>hash { algorithm=default; firstName, initial, lastName }</programlisting>
-            
+                        
             <programlisting>from (people) where (Person p) (p.age>18) select (Person p) (p.name)</programlisting>
             <programlisting>iterate (map) 
     perform (String name->Object item) { 
         log.info("Entry: " name "->" item ""); 
     };</programlisting>
+             -->
     
-            <programlisting>performAs (subject) privilegedAction {
-    exec("java Hello");
+            <programlisting>perform {
+    as = subject;
+    void action() {
+        exec("java Hello");
+    }
 }</programlisting>
 
             <programlisting>check {
@@ -1100,16 +1113,15 @@ value comp = order(1,-1);</programlisting>
         action = read | execute;
     }
 }</programlisting>
-            
+             
         </section>
         
         <section id="classinstantiation">
             <title>Class instantiation</title>
             
             <para>Invocation of an initializer reference is called <emphasis>instantiation</emphasis> 
-            of the class. For a class instantation, the invocation expression is of type
-            <literal>Gettable&lt;T&gt;</literal> where <literal>T</literal> is the 
-            class.</para>
+            of the class. For a class instantation, the invocation expression is of type <literal>T</literal>
+            <!--literal>Gettable&lt;T&gt;</literal--> where <literal>T</literal> is the class.</para>
             
             <programlisting>HashMap&lt;String, Person&gt;(entries)</programlisting>
             <programlisting>Point { x=1.1; y=-2.3; }</programlisting>
@@ -1185,6 +1197,8 @@ value comp = order(1,-1);</programlisting>
         <para>For example:</para>
         
         <programlisting>(getProduct(id), 1)</programlisting>
+        
+        <para>TODO: syntax for inline functions.</para>
                 
         </section>
         
@@ -1295,7 +1309,7 @@ value comp = order(1,-1);</programlisting>
         attribute/method refinement is the model that we are following here. And it could be 
         very useful when defining structured data.</para></comment>
         
-        <comment><para>TODO: Especially, should we support <literal>if/else</literal> and
+        <!--comment><para>TODO: Especially, should we support <literal>if/else</literal> and
         <literal>for</literal> in a named argument list. This might be super-useful for
         templating, for example:</para>
         <programlisting>ul { 
@@ -1312,10 +1326,10 @@ value comp = order(1,-1);</programlisting>
 }</programlisting>
         <para>But the truth is that this would actually be a generally useful part of the 
         expression syntax.</para>
-        </comment>
+        </comment-->
         
-        <comment><para>TODO: Should we let you define a getter/setter pair for parameters of 
-        type <literal>Settable</literal>?</para></comment>
+        <comment><para>TODO: Should we let you define a getter/setter pair for parameters 
+        which are passed by reference?</para></comment>
         
         </section>
 
@@ -1355,6 +1369,8 @@ value comp = order(1,-1);</programlisting>
         <programlisting>(1, 1, 2, 3, 5, 8)</programlisting>
         <programlisting>(names...)</programlisting>
         <programlisting>(args...)</programlisting>
+        
+        <para>TODO: syntax for comprehensions.</para>
         
         <comment><para>TODO: Should we let you write <literal>{ x..., y... }</literal> to
         pass the concatenation of two sequences to a sequenced parameter? Or even things
@@ -1401,47 +1417,13 @@ value comp = order(1,-1);</programlisting>
     
 }</programlisting>
         
-        <!--
-        <para>Is equivalent to a class with three Java constructor declarations and an inner class:</para>
-        
-        <programlisting>public class Counter {
-        
-    public Counter() {
-        Counter(0);
-    }
-    
-    public Counter(Natural initialCount) {
-        ...;
-    }
-    
-    public Counter(CounterParameters namedParameters) {
-        Counter( namedParameters.initialCount );
-    }
-
-    public static class CounterParameters {
-        private Natural initialCount=0;
-        CounterParameters initialCount(Natural initialCount) { 
-            this.initialCount = initialCount;
-            return this;
-        }
-    }
-    
-}</programlisting>
-        -->
-        
         <para>May be instantiated using any of the following:</para>
         
         <programlisting>Counter()</programlisting>
         <programlisting>Counter(1)</programlisting>
         <programlisting>Counter {}</programlisting>
         <programlisting>Counter { initialCount=10; }</programlisting>
-        
-        <!--
-        <para>Is equivalent to this Java code:</para>
-        
-        <programlisting>new Counter ( new CounterParameters().initialCount(10) );</programlisting>
-        -->
-        
+                
             <para>This method:</para>
         
             <programlisting>shared class Counter() {
@@ -1455,33 +1437,6 @@ value comp = order(1,-1);</programlisting>
     ...
 
 }</programlisting>
-            <!--
-            <para>Is equivalent to three Java method declarations and an inner class:</para>
-        
-        <programlisting>public class Counter {
-        
-    void init() {
-        init(0);
-    }
-    
-    void init(Natural initialCount) {
-        count=initialCount;
-    }
-    
-    void init(CounterInitParameters namedParameters) {
-        init( namedParameters.initialCount );
-    }
-
-    static class CounterInitParameters {
-        private Natural initialCount=0;
-        CounterInitParameters initialCount(Natural initialCount) { 
-            this.initialCount = initialCount;
-            return this;
-        }
-    }
-    
-}</programlisting>
-            -->
             
             <para>May be invoked using any of the following:</para>
         
@@ -1489,15 +1444,10 @@ value comp = order(1,-1);</programlisting>
             <programlisting>counter.init(1)</programlisting>
             <programlisting>counter.init {}</programlisting>
             <programlisting>counter.init { initialCount=10; }</programlisting>
-            
-            <!--
-            <para>Is equivalent to this Java code:</para>
-        
-            <programlisting>counter.init ( new CounterInitParameters().initialCount(10) );</programlisting>
-            -->
- 
+
         </section>
         
+        <!--
         <section id="callablearguments">
             <title>Inline callable arguments</title>
             
@@ -1518,11 +1468,6 @@ value comp = order(1,-1);</programlisting>
                 expression, the braces and <literal>return</literal> keyword may be 
                 eliminated.</para>
             </listitem>
-            <!--listitem>
-                <para>parameter declarations may omit the explicit type, 
-                forcing the compiler to infer it, by specifying the keyword 
-                <literal>value</literal> where the type usually appears.</para>
-            </listitem-->
         </itemizedlist>
         
         <para>These arguments are called an <emphasis>inline callable arguments</emphasis> 
@@ -1603,175 +1548,7 @@ using() resource satisfies Usable {
         <programlisting>where (value p) (p.age>18)</programlisting></comment>
 
         </section>
-        
-        <section id="iteration">
-            <title>PROPOSAL: Iteration</title>
-            
-            <comment><para>NOTE: The following syntax extension is a proposed feature for 
-            a future version of the language.</para></comment>
-        
-        <para>A specialized invocation syntax is provided for toplevel methods which iterate 
-        collections. (This is Ceylon's much more flexible version of C#'s LINQ.) If the first 
-        parameter of the method is of type <literal>Iterable&lt;X&gt;</literal>, annotated 
-        <literal>iterated</literal>, and all remaining parameters are callable parameters, 
-        then the method may be invoked according to the following protocol:</para>
-        
-        <programlisting>Primary "(" ForIterator ")" FunctionalArguments</programlisting>
-        
-        <para>And then if a callable parameter has a parameter of type <literal>X</literal> 
-        annotated <literal>coordinated</literal>, that parameter need not be declared by its 
-        argument. Instead, the parameter is declared by the iterator.</para>
-        
-        <para>For example, for the following method declaration:</para>
-        
-        <programlisting>shared List&lt;Result&gt; from&lt;Element,Result&gt;(iterated Iterable&lt;Element&gt; elements, 
-                                         Boolean where(coordinated Element x),
-                                         Result select(coordinated Element x));</programlisting>
-                  
-        <para>We may invoke the method as follows:</para>
-                  
-        <programlisting>List&lt;String&gt; names = from (Person p in people) where (p.age>18) select (p.name);</programlisting>
-        
-        <para>Which is equivalent to:</para>
-        
-        <programlisting>List&lt;String&gt; names = from (people) where (Person p) (p.age>18) select (Person p) (p.name);</programlisting>
-        
-        <para>Or, we may invoke the method as follows:</para>
-                  
-        <programlisting>List&lt;String&gt; labels = from (Key key -> Item item in namedValues)
-                      where (user.authorized(key)) 
-                      select ($key + ": " + $item);</programlisting>
-        
-        <para>Which is equivalent to:</para>
-        
-        <programlisting>List&lt;String&gt; labels = from (namedValues)
-                      where (Key key -> Item item) (user.authorized(key)) 
-                      select (Key key -> Item item) ($key + ": " + $item);</programlisting>
-        
-        <para>Type inference simplifies this further:</para>
-        
-        <programlisting>value names = from (value p in people) where (p.age>18) select (p.name);</programlisting>
-        
-        <comment><para>TODO: would a declaration which more closely reflects the invocation 
-        syntax be easier to understand, something like this, for example:</para>
-        <programlisting>shared List&lt;Result&gt; from&lt;Element,Result&gt;(Element x in Iterable&lt;Element&gt; elements)
-                                         Boolean where(coordinated Element x)
-                                         Result select(coordinated Element x);</programlisting></comment>
-                
-        </section>
-        
-        <section id="localdefinition">
-            <title>PROPOSAL: Variable definition</title>
-            
-            <comment><para>NOTE: The following syntax extension is a proposed feature for 
-            a future version of the language.</para></comment>
-        
-        <para>A specialized invocation syntax is also provided for toplevel methods which 
-        define a variable. If the first parameter of the method is of type <literal>X</literal>,
-        annotated <literal>specified</literal>, and all remaining parameters are callable
-        parameters, then the method may be invoked according to the following protocol:</para>
-        
-        <programlisting>Primary "(" Variable Specifier ")" FunctionalArguments</programlisting>
-        
-        <para>And then if a callable parameter has a parameter of type <literal>X</literal> 
-        annotated <literal>coordinated</literal>, that parameter need not be declared by its 
-        argument. Instead, the parameter is declared by the variable specifier.</para>
-        
-        <para>For example, for the following method declaration:</para>
-        
-        <programlisting>
-shared Result with&lt;Value,Result&gt;(specified Value? val, 
-                                 Result then(coordinated Value x), 
-                                 Result otherwise());</programlisting>
-                  
-        <para>We may invoke the method as follows:</para>
-                  
-        <programlisting>Decimal amount = with (Payment p = order.payment) then (p.amount) otherwise (0.0);</programlisting>
-        
-        <para>Which is equivalent to:</para>
-        
-        <programlisting>Decimal amount = with (order.payment) then (Payment p) (p.amount) otherwise (0.0);</programlisting>
-        
-        <para>And for the following method declaration:</para>
-        
-        <programlisting>shared Result using&lt;Resource,Result&gt;(specified Resource resource, 
-                                     Result seek(coordinated Resource x))
-        given Resource satisfies Closeable;</programlisting>
-                  
-        <para>We may invoke the method as follows:</para>
-                  
-        <programlisting>Order order = using (Session s = Session()) seek (s.get(Order, oid));</programlisting>
-        
-        <para>Which is equivalent to:</para>
-        
-        <programlisting>Order order = using (Session()) seek (Session s) (s.get(Order, oid));</programlisting>
-        
-        <para>Type inference simplifies this further:</para>
-        
-        <programlisting>value amount = with (value p = order.payment) then (p.amount) otherwise (0.0);</programlisting>
-        <programlisting>value order = using (value s = Session()) seek (s.get(Order, oid));</programlisting>
-        
-        <comment><para>TODO: would a declaration which more closely reflects the invocation 
-        syntax be easier to understand, something like this, for example:</para>
-        <programlisting>shared Result with&lt;Resource,Result&gt;(Resource x = Resource? val) 
-                                    Result then(coordinated Resource x)
-                                    Result otherwise;</programlisting></comment>
-                
-        </section>
-        
-        <!--section id="caseslist">
-            <title>Lists of cases</title>
-        
-        <para>Finally, a specialized invocation syntax is provided for methods which define 
-        a list of cases. If the method has a parameter of type 
-        <literal>Iterable&lt;Entry&lt;Case&lt;X&gt;, functor Y()&gt;&gt;</literal> annotated 
-        <literal>cases</literal>, the parameter may be specified according to:</para>
-        
-        <programlisting>(case "(" Case ")" SimpleBlockExpression)+</programlisting>
-        
-        <para>For example, for the following method declaration:</para>
-        
-        <programlisting>shared
-Y select&lt;X, Y&gt;(X selector,
-              cases Entry&lt;Case&lt;X&gt;, functor Y()&gt;... cases);</programlisting>
-                  
-        <para>We may invoke the method as follows:</para>
-        
-        <programlisting>return select (payment.type) 
-    case (check) payByCheck(payment)
-    case (card) payByCard(payment);
-</programlisting>
-        
-        </section-->
-        <!--  
-        <para>Or, If the method has a parameter of type 
-        <literal>Enumeration&lt;functor Y(X x)&gt;</literal> annotated <literal>cases</literal>,
-        the parameter value may be specified according to:</para>
-        
-        <programlisting>(LIdentifier BlockExpression)+</programlisting>
-        
-        <para>For example, for the following method declaration:</para>
-        
-        <programlisting>shared
-X attempt&lt;X&gt;(functor X() seek, 
-             cases functor X(E e) given E satisfies Exception... except);</programlisting>
-                  
-        <para>We may invoke the method as follows:</para>
-        
-        <programlisting>attempt() 
-seek { 
-    produce doSomething(); 
-} 
-except (SomethingWrong sw) {
-    log.info(sw);
-    produce -1;
-}
-except (SomethingElseWrong sew) {
-    log.warn(sew);
-    produce -2;
-}</programlisting>
         -->
-            
             <!--
             <section id="resolvingoverloadedmethodsandtypes">
                 <title>Resolving direct invocations of overloaded methods and classes</title>
@@ -1788,10 +1565,6 @@ except (SomethingElseWrong sew) {
                         <para>taking the signature of the parameter list of the class, or of the 
                         first parameter list of the method, and</para>
                     </listitem>
-            --><!--listitem>
-                <para>replacing each occurrence of any type alias in the signature with the
-                aliased type, and</para>
-            </listitem--><!--
                     <listitem>
                         <para>replacing each occurrence of any type parameter of the receiving type
                         in the signature with the type argument of that parameter in the callable 
@@ -1873,188 +1646,20 @@ except (SomethingElseWrong sew) {
                 
             </section>
             -->
-
-                <!--
-                <comment><para>TODO: What about the case of an "unbound" type parameter which does
-                not appear in the parameter list? Is it an error, or should the compiler 
-                search through all imported types (in the calling scope) looking for a type that 
-                satisfies the constraints? This would work out a bit like Scala implicit parameters. 
-                For example:</para>
-                <programlisting><![CDATA[Producer<T> producer<T,P>()
-        given P() satisfies Producer<T> {
-    return P();
-}]]></programlisting>
-                <programlisting><![CDATA[T sum<T,M>(T[] ts) 
-        given M() satisfies Monoid<T> {
-    Monoid<T> monoid = M();
-    variable T result := monoid.zero;
-    for (T t in ts) {
-        result := monoid.sum(result,t);
-    }
-    return t;
-}]]></programlisting>
-                <para>Note that the difference is that a constraint (or expected return type) poses 
-                an upper bound, whereas an argument poses a lower bound.</para></comment>
-                -->                
-
-        </section>
-        
-        <!--  
-        <section>
-            <title>Attribute initialization</title>
-            
-            <para>Attribute initialization follows the following schema.</para>
-            
-            <programlisting>AttributeInitialization: Instantiation "{" Initialization* "}"</programlisting>
-            
-            <para>For example:</para>
-            
-            <programlisting>Person me = Person() { firstName="Gavin"; initial='A'; lastName="King"; }</programlisting>
-            
-            <para>The value of an attribute initialization is the instance being initialized.
-            The named argument values are assigned to uninitialized attributes of the instance.</para>
-                                   
-        </section>
-        -->
-        
-    <!--section id="inlineclassesliteralobjectsenumerations">
-        <title>Literal objects, inline classes, and enumerations</title>
-    
-        <para>Three additional kinds of expressions exist for inline instantiation of an object.</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>Literal objects allow instantiation and initialization of a class without 
-                execution of the constructor.</para>
-            </listitem>
-            <listitem>
-                <para>Inline classes allow inline instantiation of an anonymous subclass of a
-                certain class.</para>
-            </listitem>
-            <listitem>
-                <para>Enumerations allow instantiation of a collection via a simplified syntax.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>A literal object or inline class specification may bypass the constructor of the 
-        class or superclass. In this case, the literal object or inline class specification takes 
-        on responsibility for initialization of simple attributes of the class or superclass. This 
-        means that a literal object or inline class specification which bypasses the constructor 
-        must exist in a scope in which all attributes of the class or superclass are visible. Use 
-        of this feature does not bypass language level accessibility checks.</para>
-    
-    <section id="literalobjects">
-        <title>Literal objects</title>
-        
-        <para>A literal object is specified according to:</para>
-        
-        <programlisting>LiteralObject: "new" Type PositionalArguments? "{" (Assignment | Specification)* "}"</programlisting>
-        
-        <para>For example:</para>
-        
-        <programlisting>Calculator calc = new Calculator() { currentValue := 1.0; };</programlisting>
-        
-        <programlisting>Person gavin = new Person { 
-    firstName = "Gavin";
-    initial = 'A';
-    lastName = "King";
-    address := new Address { ... };
-    birthdate = new Date { day = 25; month = MARCH; year = ... };
-    employer := jboss;
-};</programlisting>
-
-        <para>A literal object must be of a concrete class and must either:</para>
-        
-        <itemizedlist>
-            <listitem>
-                <para>specify initialization parameters, and then an arbitrary list of
-                mutable attribute assignments, or</para>
-            </listitem>
-            <listitem>
-                <para>specify no initialization parameters, and specify values for each 
-                simple attribute of the class, including private attributes, except 
-                attributes annotated <literal>transient</literal>.</para>
-            </listitem>
-        </itemizedlist>
-        
-        <para>Literal objects which specify no initialization parameters are created without 
-        execution of the body of the class to which they belong. Literal objects may refer to 
-        immutable locals and members of the containing class in the attribute initializer 
-        expressions. They may not refer to mutable locals.</para>
-        
-        <para>The value of a literal object expression is a new instance of the class.</para>
-            
-        <comment><para>TODO: are you allowed to have arbitrary code inside a literal object 
-        specification?</para></comment>
-
-        <comment><para>TODO: is there some kind of solution for getting around access 
-        restrictions if you want to use a literal object specification for a class that
-        extends a superclass in another package/module?</para></comment>
-
-        <para>The classes <literal>Serializer</literal> and <literal>Deserializer</literal>
-        provide the ability to serialize and deserialize any object to its 
-        <emphasis>canonical literal form</emphasis>.</para>
-        
-        <programlisting>Person person = ...;
-Serializer&lt;Person&gt; srlz = Serializer(person);
-String serializedPerson = srlz; //using built-in converter
-Deserializer&lt;Person&gt; dsrlz = Deserializer&lt;Person&gt;(serializedPerson);
-Person deserialized = dsrlz; //using built-in converter</programlisting>
-
     </section>
-    
-        <section id="inlineclasses">
-            <title>Inline classes</title>
-            
-            <para>Inline classes may be specified according to:</para>
-            
-            <programlisting>InlineClass: "new" Annotation* Type PositionalArguments? Interfaces "{" Statement* "}"</programlisting>
-
-            <para>For example:</para>
-            
-            <programlisting>Task task = new Task() {
-    timeout := 1000;
-    shared actual void run() { ... }
-    shared actual void abort(Exception e) { ... }
-};</programlisting>
-
-            <programlisting>return new transactional Database 
-        satisfies Closeable {
-    url = "jdbc:hsqldb:.";
-    username = "gavin";
-    password = "foobar";
-    shared actual void create() { open(); }
-    shared actual void destroy() { close(); }
-};</programlisting>
-            
-            <para>An inline class is a literal object expression which may additionally:</para>
-            
-            <itemizedlist>
-                <listitem>
-                    <para>include arbitrary code to be executed when the inline class is
-                    evaluated,</para>
-                </listitem>
-                <listitem>
-                    <para>declare and refine members, and</para>
-                </listitem>
-                <listitem>
-                    <para>declare annotations.</para>
-                </listitem>
-            </itemizedlist>
-            
-            <para>The superclass of an inline class may be an abstract class. The inline
-            class itself must be concrete.</para>
-            
-            <para>The value of an inline class expression is a new instance of the inline 
-            class.</para>
-            
-        </section>
-        
-    </section-->
     
     <section id="evaluationandassignment">
         <title>Evaluation, invocation, and assignment</title>
         
+        <para>Evaluation of an expression may result in:</para>
+        
+        <itemizedlist>
+            <listitem><para>invocation of a method or instantiation of a class,</para></listitem>
+            <listitem><para>evaluation of an attribute or local, or</para></listitem>
+            <listitem><para>assignment to a <literal>variable</literal> attribute or local.</para></listitem>
+        </itemizedlist>
+        
+        <!--
         <para>A reference object&mdash;any instance of <literal>Gettable</literal>&mdash;can 
         be <emphasis>evaluated</emphasis> to produce a value. Evaluation is the process of
         transforming a reference of type <literal>Gettable&lt;T&gt;</literal> into a value of
@@ -2107,7 +1712,8 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         operator.</para>
          
         <programlisting>person.name := "Gavin";</programlisting>
-                
+        -->
+        
     <section id="evaluation">
         <title>Evaluation</title>
         
@@ -2116,6 +1722,7 @@ Person deserialized = dsrlz; //using built-in converter</programlisting>
         
         <programlisting>String name = person.name;</programlisting>
         
+        <!--
         <para>Sometimes we need to pass an attribute by reference:</para>
         
         <programlisting>Gettable&lt;String&gt; nameRef = person.name;
@@ -2127,7 +1734,8 @@ String name = nameRef;</programlisting>
         
         <programlisting>String getName() = get(person.name);
 String name = getName();</programlisting>
-                        
+        -->
+        
         <para>When a local evaluation is executed, the current value of the local is 
         immediately obtained. The resulting value is the current value of the local.</para>
                 
@@ -2159,7 +1767,8 @@ String name = getName();</programlisting>
         <para>The resulting value is the current value of the simple attribute or the 
         return value of the attribute getter, as specified by the <literal>return</literal> 
         directive.</para>
-
+        
+        <!--
         <para>Note that the <literal>item()</literal> method of <literal>Correspondence</literal>
         is also defined to return a <literal>Gettable</literal>.</para>
         
@@ -2174,6 +1783,7 @@ Person? person = personRef;</programlisting>
         
         <programlisting>Person? getPerson() = get(people[index]);
 Person? person = getPerson();</programlisting>
+        -->
         
     </section>
     
@@ -2188,6 +1798,7 @@ Person? person = getPerson();</programlisting>
         <programlisting>log.info("Hello world!");</programlisting>
         <programlisting>Map&lt;String, Person&gt; map = HashMap&lt;String, Person&gt;(entries);</programlisting>
         
+        <!--
         <para>Sometimes we need to perform an invocation lazily:</para>
         
         <programlisting>Gettable&lt;Void&gt; logInfoHello = log.info("Hello world!");
@@ -2196,6 +1807,7 @@ invoke(logInfoHello);</programlisting>
 
         <programlisting>Gettable&lt;Map&lt;String, Person&gt;&gt; createMapFromEntries = HashMap&lt;String, Person&gt;(entries);
 Map&lt;String, Person&gt; map = createMapFromEntries;</programlisting>
+        -->
         
         <para>When an evaluation of an invocation expression of a callable reference is 
         executed:</para>
@@ -2223,18 +1835,18 @@ Map&lt;String, Person&gt; map = createMapFromEntries;</programlisting>
             </listitem>
         </itemizedlist>
         
-        <para>When an evaluation of any other invocation expression is executed, the 
-        <literal>call()</literal> method of <literal>Callable</literal> is invoked.</para>
+        <!--para>When an evaluation of any other invocation expression is executed, the 
+        <literal>call()</literal> method of <literal>Callable</literal> is invoked.</para-->
         
         <para>A method invocation evaluates to the return value of the method, as specified 
         by the <literal>return</literal> directive. The argument values are passed to the 
         parameters of the method, and the body of the method is executed.</para>
-            
+        
         <para>The actual value that invocation of a <literal>void</literal> method returns
         is not specified here. The type system and the definition of the <literal>is</literal> 
         operator ensures that a value of type <literal>Void</literal> can never be narrowed
         to a more specific type.</para>
-            
+        
         <para>A class instantiation evaluates to a new instance of the class. The argument 
         values are passed to the initializer parameters of the class, and the initializer
         is executed.</para>
@@ -2249,6 +1861,7 @@ Map&lt;String, Person&gt; map = createMapFromEntries;</programlisting>
         
         <programlisting>person.name := "Gavin";</programlisting>
         
+        <!--
         <para>Sometimes we need to pass a <literal>variable</literal> attribute by 
         reference:</para>
         
@@ -2269,6 +1882,7 @@ getName(p) := "Gavin";</programlisting>
 
         <programlisting>setName(Settable&lt;String&gt; name, String arg) { name:=arg; }
 setName(p.name, "Gavin");</programlisting>
+        -->
         
         <para>When an attribute or local is assigned:</para>
         
@@ -2686,7 +2300,7 @@ createItemMethod.intercept()
     <section id="operatorprecedence">
         <title>Operator precedence</title>
         
-        <para>There are 15 distinct operator precedence levels, but these levels
+        <para>There are 16 distinct operator precedence levels, but these levels
         are arranged into layers in order to make them easier to predict.</para>
         
         <itemizedlist>
@@ -2697,7 +2311,8 @@ createItemMethod.intercept()
             <listitem>Operators in layer 3 are logical operators that operate
             upon <literal>Boolean</literal> arguments to produce a <literal>Boolean</literal>
             value.</listitem>
-            <listitem>Operators in layer 4 perform assignment.</listitem>
+            <listitem>Operators in layer 4 perform assignment and conditional
+            evaluation.</listitem>
         </itemizedlist>
         
         <para>Within each layer, postfix operators have a higher precedence than 
@@ -2923,6 +2538,14 @@ createItemMethod.intercept()
             
             <row>
                 <entry namest="first" nameend="last"><emphasis>Layer 4</emphasis></entry>
+            </row>
+            
+            <row>
+                <entry>Conditionals:</entry>
+                <entry><literal>then</literal>, 
+                <literal>else</literal></entry>
+                <entry>Binary</entry>
+                <entry>Left</entry>
             </row>
     
             <row>
@@ -3856,6 +3479,58 @@ createItemMethod.intercept()
         </row>
         
         -->
+        
+    </tbody>
+    </tgroup>
+    </table>
+    
+    </section>
+    
+    <section id="conditionals">
+    <title>Conditional operators</title>
+    
+        <para>Two special operators allow emulation of the famous ternary
+        operator of C-like languages.</para>
+    
+    <table>
+    <tgroup cols="6">
+        <colspec colnum="1" colwidth="4.5*" align="center" colname="first"/>
+        <colspec colnum="2" colwidth="3.0*" align="center"/>
+        <colspec colnum="3" colwidth="7.0*" align="center"/>
+        <colspec colnum="4" colwidth="4.0*" align="center"/>
+        <colspec colnum="5" colwidth="4.0*" align="center"/>
+        <colspec colnum="6" colwidth="4.0*" align="center" colname="last"/>
+    <thead>
+        <row>
+            <entry>Example</entry>
+            <entry>Name</entry>
+            <entry>Definition</entry>
+            <entry>LHS type</entry>
+            <entry>RHS type</entry>
+            <entry>Return type</entry>
+        </row>
+    </thead>
+    <tbody>
+    
+        <row><entry namest="first" nameend="last"><emphasis>Conditionals</emphasis></entry></row>
+
+        <row>
+            <entry><literal>lhs then rhs</literal></entry>
+            <entry>then</entry>
+            <entry><literal>if (lhs) then rhs else null</literal></entry>
+            <entry><literal>Boolean</literal></entry>
+            <entry><literal>T</literal></entry>
+            <entry><literal>T?</literal></entry>
+        </row>
+        
+        <row>
+            <entry><literal>lhs else rhs</literal></entry>
+            <entry>else</entry>
+            <entry><literal>if (exists lhs) then lhs else rhs</literal></entry>
+            <entry><literal>T?</literal></entry>
+            <entry><literal>T</literal></entry>
+            <entry><literal>T</literal></entry>
+        </row>
         
     </tbody>
     </tgroup>
