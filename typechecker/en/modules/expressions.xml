@@ -2842,7 +2842,7 @@ createItemMethod.intercept()
                 <entry>Default:</entry> 
                 <entry><literal>?</literal></entry>
                 <entry>Binary</entry>
-                <entry>Right</entry>
+                <entry>Left</entry>
             </row>
 
             <row>

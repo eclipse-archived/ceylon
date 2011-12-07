@@ -1520,7 +1520,7 @@ ifComprehensionClause returns [IfComprehensionClause comprehensionClause]
     ;
     
 assignmentExpression returns [Term term]
-    : ee1=disjunctionExpression
+    : ee1=thenElseExpression
       { $term = $ee1.term; }
       (
         assignmentOperator 
@@ -1546,6 +1546,25 @@ assignmentOperator returns [AssignmentOp operator]
     | AND_ASSIGN_OP { $operator = new AndAssignOp($AND_ASSIGN_OP); }
     | OR_ASSIGN_OP { $operator = new OrAssignOp($OR_ASSIGN_OP); }
     | DEFAULT_ASSIGN_OP { $operator = new DefaultAssignOp($DEFAULT_ASSIGN_OP); }
+    ;
+
+thenElseExpression returns [Term term]
+    : de1=disjunctionExpression
+      { $term = $de1.term; }
+      (
+        thenElseOperator 
+        { $thenElseOperator.operator.setLeftTerm($term);
+          $term = $thenElseOperator.operator; }
+        de2=disjunctionExpression
+        { $thenElseOperator.operator.setRightTerm($de2.term); }
+      )*
+    ;
+
+thenElseOperator returns [BinaryOperatorExpression operator]
+    : ELSE_CLAUSE 
+      { $operator = new DefaultOp($ELSE_CLAUSE); }
+    | THEN_CLAUSE
+      { $operator = new ThenOp($THEN_CLAUSE); }
     ;
 
 disjunctionExpression returns [Term term]
@@ -1686,15 +1705,15 @@ existsNonemptyOperator returns [UnaryOperatorExpression operator]
     ;
 
 defaultExpression returns [Term term]
-    : rangeIntervalEntryExpression
-      { $term = $rangeIntervalEntryExpression.term; }
+    : rie1=rangeIntervalEntryExpression
+      { $term = $rie1.term; }
       (
         defaultOperator 
         { $defaultOperator.operator.setLeftTerm($term);
           $term = $defaultOperator.operator; }
-        de=defaultExpression
-        { $defaultOperator.operator.setRightTerm($de.term); }
-      )?
+        rie2=rangeIntervalEntryExpression
+        { $defaultOperator.operator.setRightTerm($rie2.term); }
+      )*
     ;
 
 defaultOperator returns [DefaultOp operator]
@@ -2877,6 +2896,10 @@ SUPER
 SWITCH_CLAUSE
     :   'switch'
     ;
+
+THEN_CLAUSE
+    :   'then'
+    ;            
 
 THIS
     :   'this'
