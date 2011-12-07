@@ -19,7 +19,6 @@
  */
 @nomodel
 class TypeParameterErasure() {
-
     interface Top {
         shared formal void top();
         shared formal Natural topAttribute;
@@ -58,12 +57,18 @@ class TypeParameterErasure() {
         return t;
     }
 
-    T parameterizedWithErasedBounds<T>(T t)
+    T parameterizedWithIntersectionBounds<T>(T t)
     given T satisfies Left & Right {
         t.left();
         t.left{};
         t.right();
         t.right{};
+        return t;
+    }
+
+    T parameterizedWithErasedBounds<T>(T t)
+    given T satisfies Equality {
+        t.equals(t);
         return t;
     }
 
@@ -93,9 +98,14 @@ class TypeParameterErasure() {
         right := parameterizedWithBounds(middle);
         middle := parameterizedWithBounds(middle);
 
-        left := parameterizedWithErasedBounds(middle);
-        right := parameterizedWithErasedBounds(middle);
-        middle := parameterizedWithErasedBounds(middle);
+        left := parameterizedWithIntersectionBounds(middle);
+        right := parameterizedWithIntersectionBounds(middle);
+        middle := parameterizedWithIntersectionBounds(middle);
+
+        String s = parameterizedWithErasedBounds("");
+        String s2 = parameterizedWithErasedBounds<String>("");
+        Equality e = parameterizedWithErasedBounds("");
+        Equality e2 = parameterizedWithErasedBounds<Equality>("");
     }
 
     void testTypeParametersNamedArguments(){
@@ -124,9 +134,14 @@ class TypeParameterErasure() {
         right := parameterizedWithBounds{t=middle;};
         middle := parameterizedWithBounds{t=middle;};
 
-        left := parameterizedWithErasedBounds{t=middle;};
-        right := parameterizedWithErasedBounds{t=middle;};
-        middle := parameterizedWithErasedBounds{t=middle;};
+        left := parameterizedWithIntersectionBounds{t=middle;};
+        right := parameterizedWithIntersectionBounds{t=middle;};
+        middle := parameterizedWithIntersectionBounds{t=middle;};
+
+        String s = parameterizedWithErasedBounds{t = "";};
+        String s2 = parameterizedWithErasedBounds<String>{t = "";};
+        Equality e = parameterizedWithErasedBounds{t = "";};
+        Equality e2 = parameterizedWithErasedBounds<Equality>{t = "";};
     }
 
     class Parameterized<T>(T t) {
@@ -141,12 +156,17 @@ class TypeParameterErasure() {
             return i;
         }
 
-        shared Inner parameterizedWithErasedBounds<Inner>(Inner i, T t)
+        shared Inner parameterizedWithIntersectionBounds<Inner>(Inner i, T t)
         given Inner satisfies Left & Right {
             i.left();
             i.left{};
             i.right();
             i.right{};
+            return i;
+        }
+        shared Inner parameterizedWithErasedBounds<Inner>(Inner i, T t)
+        given Inner satisfies Equality {
+            i.equals(i);
             return i;
         }
     }
@@ -157,7 +177,7 @@ class TypeParameterErasure() {
         t.left{};
     }
 
-    class ParameterizedWithErasedBounds<T>(T t)
+    class ParameterizedWithIntersectionBounds<T>(T t)
     given T satisfies Left & Right {
         t.left();
         t.left{};
@@ -172,7 +192,11 @@ class TypeParameterErasure() {
         requiresCastLeft(middle);
         requiresCastLeft{l = middle;};
     }
-    
+
+    class ParameterizedWithErasedBounds<T>(T t)
+    given T satisfies Equality {
+    }
+
     void testTypeParameterInstantiations(){
         Left&Right middle = CMiddle();
         Left left = CLeft();
@@ -186,8 +210,11 @@ class TypeParameterErasure() {
         ParameterizedWithBounds<Left&Right> parameterizedWithBoundsMiddle = ParameterizedWithBounds(middle);
         ParameterizedWithBounds<Left> parameterizedWithBoundsLeft = ParameterizedWithBounds(left);
 
-        ParameterizedWithErasedBounds<Left&Right> parameterizedWithErasedBoundsMiddle = ParameterizedWithErasedBounds(middle);
-        ParameterizedWithErasedBounds<Left&Right> parameterizedWithErasedExplicitBoundsMiddle = ParameterizedWithErasedBounds<Left&Right>(middle);
+        ParameterizedWithIntersectionBounds<Left&Right> parameterizedWithIntersectionBoundsMiddle = ParameterizedWithIntersectionBounds(middle);
+        ParameterizedWithIntersectionBounds<Left&Right> parameterizedWithErasedExplicitBoundsMiddle = ParameterizedWithIntersectionBounds<Left&Right>(middle);
+        
+        ParameterizedWithErasedBounds<String> parameterizedWithErasedBoundsMiddle = ParameterizedWithErasedBounds("");
+        ParameterizedWithErasedBounds<String> parameterizedWithReallyErasedExplicitBoundsMiddle = ParameterizedWithErasedBounds<String>("");
         
         parameterizedMiddle.parameterized(left, middle);
         parameterizedMiddle.parameterized(middle, middle);
@@ -197,7 +224,11 @@ class TypeParameterErasure() {
         parameterizedMiddle.parameterizedWithBounds(left, middle);
         parameterizedMiddle.parameterizedWithBounds(middle, middle);
         
-        parameterizedMiddle.parameterizedWithErasedBounds(middle, middle);
+        parameterizedMiddle.parameterizedWithIntersectionBounds(middle, middle);
+
+        parameterizedMiddle.parameterizedWithErasedBounds("", middle);
+        parameterizedMiddle.parameterizedWithErasedBounds<Equality>("", middle);
+        parameterizedMiddle.parameterizedWithErasedBounds<String>("", middle);
     }
 
     void testTypeParameterInstantiationsNamedArguments(){
@@ -213,8 +244,8 @@ class TypeParameterErasure() {
         ParameterizedWithBounds<Left&Right> parameterizedWithBoundsMiddle = ParameterizedWithBounds{t=middle;};
         ParameterizedWithBounds<Left> parameterizedWithBoundsLeft = ParameterizedWithBounds{t=left;};
 
-        ParameterizedWithErasedBounds<Left&Right> parameterizedWithErasedBoundsMiddle = ParameterizedWithErasedBounds{t=middle;};
-        ParameterizedWithErasedBounds<Left&Right> parameterizedWithErasedExplicitBoundsMiddle = ParameterizedWithErasedBounds<Left&Right>{t=middle;};
+        ParameterizedWithIntersectionBounds<Left&Right> parameterizedWithIntersectionBoundsMiddle = ParameterizedWithIntersectionBounds{t=middle;};
+        ParameterizedWithIntersectionBounds<Left&Right> parameterizedWithErasedExplicitBoundsMiddle = ParameterizedWithIntersectionBounds<Left&Right>{t=middle;};
         
         parameterizedMiddle.parameterized{i=left; t=middle;};
         parameterizedMiddle.parameterized{i=middle; t= middle;};
@@ -224,6 +255,10 @@ class TypeParameterErasure() {
         parameterizedMiddle.parameterizedWithBounds{i=left; t=middle;};
         parameterizedMiddle.parameterizedWithBounds{i=middle; t=middle;};
         
-        parameterizedMiddle.parameterizedWithErasedBounds{i=middle; t=middle;};
+        parameterizedMiddle.parameterizedWithIntersectionBounds{i=middle; t=middle;};
+
+        parameterizedMiddle.parameterizedWithErasedBounds{i=""; t=middle;};
+        parameterizedMiddle.parameterizedWithErasedBounds<Equality>{i=""; t=middle;};
+        parameterizedMiddle.parameterizedWithErasedBounds<String>{i=""; t=middle;};
     }
 }
