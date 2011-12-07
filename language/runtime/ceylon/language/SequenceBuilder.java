@@ -11,10 +11,8 @@ import com.redhat.ceylon.compiler.metadata.java.TypeParameter;
 import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
 
 @Ceylon
-@TypeParameters({
-    @TypeParameter(value = "Element")
-})
-public class SequenceBuilder<Element> {
+@TypeParameters(@TypeParameter(value = "Element"))
+public class SequenceBuilder<Element> implements Sized {
 
     List<Element> list;
     
@@ -46,6 +44,16 @@ public class SequenceBuilder<Element> {
     	for (Iterator<? extends Element> iter=elements.getIterator(); iter!=null; iter=iter.getTail()) {
     	    list.add(iter.getHead());
     	}
+    }
+    
+    @Override
+    public final synchronized long getSize() {
+        return list.size();
+    }
+     
+    @Override
+    public final synchronized boolean getEmpty() {
+        return list.isEmpty();
     }
      
 }

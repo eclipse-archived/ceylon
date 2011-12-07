@@ -1,4 +1,4 @@
-shared class SequenceBuilder<Element>() {
+shared class SequenceBuilder<Element>() satisfies Sized {
     shared default Element[] sequence {
         throw;
     }
@@ -8,6 +8,8 @@ shared class SequenceBuilder<Element>() {
     default shared void appendAll(Element... elements) {
         throw;
     }
+    shared actual Natural size { throw; }
+    shared actual Boolean empty { throw; }
 }
 
 shared class SequenceAppender<Element>(Sequence<Element> elements) 
