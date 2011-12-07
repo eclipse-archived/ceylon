@@ -907,7 +907,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(ce);
         if (ce.getPrimary() instanceof Tree.BaseTypeExpression) {
             ProducedType classType = (ProducedType)((Tree.BaseTypeExpression)ce.getPrimary()).getTarget();
-            JCExpression newExpr = make().NewClass(null, typeArgs, makeJavaType(classType, CLASS_NEW), names.toList(), null);
+            JCExpression newExpr = make().NewClass(null, null, makeJavaType(classType, CLASS_NEW), names.toList(), null);
             return make().LetExpr(args.toList(), newExpr);
         } else {
             JCExpression result = transformPrimary(ce.getPrimary(), new TermTransformer() {
