@@ -1861,18 +1861,26 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    private void visitThenOperator(Tree.ThenOp that) {
+        ProducedType lhst = leftType(that);
+        ProducedType rhst = rightType(that);
+        if ( lhst!=null ) {
+            checkAssignable(lhst, unit.getBooleanDeclaration().getType(), that.getLeftTerm(), 
+                    "operand expression must be a boolean value");
+        }
+        if ( rhst!=null ) {
+            that.setTypeModel(unit.getOptionalType(rhst));
+        }
+    }
+
     private void visitInOperator(Tree.InOp that) {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if ( rhst!=null && lhst!=null ) {
-            checkAssignable(lhst, unit.getObjectDeclaration().getType(), that.getLeftTerm(), 
-                    "operand expression must be an object type");
-            ProducedType ut = unionType(unit.getCategoryDeclaration().getType(), 
-                    producedType(unit.getIterableDeclaration(), 
-                            unit.getEqualityDeclaration().getType()), 
-                    unit);
-            checkAssignable(rhst, ut, that.getRightTerm(), 
-                    "operand expression must be a category or iterator");
+            checkAssignable(lhst, unit.getEqualityDeclaration().getType(), that.getLeftTerm(), 
+                    "operand expression must support equality");
+            checkAssignable(rhst, unit.getCategoryDeclaration().getType(), that.getRightTerm(), 
+                    "operand expression must be a category");
         }
         that.setTypeModel( unit.getBooleanDeclaration().getType() );
     }
@@ -2042,6 +2050,11 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.DefaultOp that) {
         super.visit(that);
         visitDefaultOperator(that);
+    }
+        
+    @Override public void visit(Tree.ThenOp that) {
+        super.visit(that);
+        visitThenOperator(that);
     }
         
     @Override public void visit(Tree.NegativeOp that) {
