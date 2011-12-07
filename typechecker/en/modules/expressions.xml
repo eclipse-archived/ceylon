@@ -2940,8 +2940,8 @@ createItemMethod.intercept()
                 <literal>^=</literal>, 
                 <literal>~=</literal>, 
                 <literal>&amp;&amp;=</literal>, 
-                <literal>||=</literal>,
-                <literal>?=</literal>
+                <literal>||=</literal>
+                <!--literal>?=</literal-->
                 </entry>
                 <entry>Binary</entry>
                 <entry>Right</entry>
@@ -3544,7 +3544,8 @@ createItemMethod.intercept()
             <entry><literal>T</literal> or <literal>T?</literal></entry>
             <entry><literal>T</literal> or <literal>T?</literal></entry>
         </row>
-
+       
+        <!--
         <row><entry namest="first" nameend="last"><emphasis>Default assignment</emphasis></entry></row>
         
         <row>
@@ -3555,6 +3556,7 @@ createItemMethod.intercept()
             <entry><literal>T</literal> or <literal>T?</literal></entry>
             <entry><literal>T</literal> or <literal>T?</literal></entry>
         </row>
+        -->
         
         <row><entry namest="first" nameend="last"><emphasis>Nullafe invocation</emphasis></entry></row>
         
