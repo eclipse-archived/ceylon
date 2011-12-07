@@ -54,13 +54,16 @@ class TypeParameterErasure() {
     T parameterizedWithBounds<T>(T t)
     given T satisfies Right {
         t.right();
+        t.right{};
         return t;
     }
 
     T parameterizedWithErasedBounds<T>(T t)
     given T satisfies Left & Right {
         t.left();
+        t.left{};
         t.right();
+        t.right{};
         return t;
     }
 
@@ -95,6 +98,37 @@ class TypeParameterErasure() {
         middle := parameterizedWithErasedBounds(middle);
     }
 
+    void testTypeParametersNamedArguments(){
+        Integer i = parameterized<Integer>{t=+2;};
+        Integer i2 = parameterized{t=+2;};
+        Natural n = parameterized<Natural>{t=2;};
+        Natural n2 = parameterized{t=2;};
+
+        variable Left&Right middle;
+        variable Left left;
+        variable Right right;
+        middle := CMiddle();
+        
+        left := parameterized{t=middle;};
+        right := parameterized{t=middle;};
+        middle := parameterized{t=middle;};
+        // with explicit non-erased bounds
+        left := parameterized<Left>{t=middle;};
+        right := parameterized<Right>{t=middle;};
+        // with explicit erased bounds
+        left := parameterized<Left&Right>{t=middle;};
+        right := parameterized<Left&Right>{t=middle;};
+        middle := parameterized<Left&Right>{t=middle;};
+
+        left := parameterizedWithBounds{t=middle;};
+        right := parameterizedWithBounds{t=middle;};
+        middle := parameterizedWithBounds{t=middle;};
+
+        left := parameterizedWithErasedBounds{t=middle;};
+        right := parameterizedWithErasedBounds{t=middle;};
+        middle := parameterizedWithErasedBounds{t=middle;};
+    }
+
     class Parameterized<T>(T t) {
         shared Inner parameterized<Inner>(Inner i, T t) {
             return i;
@@ -103,13 +137,16 @@ class TypeParameterErasure() {
         shared Inner parameterizedWithBounds<Inner>(Inner i, T t)
         given Inner satisfies Left {
             i.left();
+            i.left{};
             return i;
         }
 
         shared Inner parameterizedWithErasedBounds<Inner>(Inner i, T t)
         given Inner satisfies Left & Right {
             i.left();
+            i.left{};
             i.right();
+            i.right{};
             return i;
         }
     }
@@ -117,18 +154,23 @@ class TypeParameterErasure() {
     class ParameterizedWithBounds<T>(T t)
     given T satisfies Left {
         t.left();
+        t.left{};
     }
 
     class ParameterizedWithErasedBounds<T>(T t)
     given T satisfies Left & Right {
         t.left();
+        t.left{};
         t.right();
-        
+        t.right{};
+                
         void requiresCastLeft(Left l){}
 
         Left&Right middle = CMiddle();
         requiresCastLeft(t);
+        requiresCastLeft{l = t;};
         requiresCastLeft(middle);
+        requiresCastLeft{l = middle;};
     }
     
     void testTypeParameterInstantiations(){
@@ -156,5 +198,32 @@ class TypeParameterErasure() {
         parameterizedMiddle.parameterizedWithBounds(middle, middle);
         
         parameterizedMiddle.parameterizedWithErasedBounds(middle, middle);
+    }
+
+    void testTypeParameterInstantiationsNamedArguments(){
+        Left&Right middle = CMiddle();
+        Left left = CLeft();
+        
+        Parameterized<Left&Right> parameterizedMiddle = Parameterized{t=middle;};
+        Parameterized<Left> parameterizedLeft = Parameterized{t=left;};
+
+        Parameterized<Left&Right> parameterizedExplicitMiddle = Parameterized<Left&Right>{t=middle;};
+        Parameterized<Left> parameterizedExplicitLeft = Parameterized<Left>{t=left;};
+
+        ParameterizedWithBounds<Left&Right> parameterizedWithBoundsMiddle = ParameterizedWithBounds{t=middle;};
+        ParameterizedWithBounds<Left> parameterizedWithBoundsLeft = ParameterizedWithBounds{t=left;};
+
+        ParameterizedWithErasedBounds<Left&Right> parameterizedWithErasedBoundsMiddle = ParameterizedWithErasedBounds{t=middle;};
+        ParameterizedWithErasedBounds<Left&Right> parameterizedWithErasedExplicitBoundsMiddle = ParameterizedWithErasedBounds<Left&Right>{t=middle;};
+        
+        parameterizedMiddle.parameterized{i=left; t=middle;};
+        parameterizedMiddle.parameterized{i=middle; t= middle;};
+        parameterizedMiddle.parameterized<Left>{i=middle; t= middle;};
+        parameterizedMiddle.parameterized<Left&Right>{i=middle; t=middle;};
+
+        parameterizedMiddle.parameterizedWithBounds{i=left; t=middle;};
+        parameterizedMiddle.parameterizedWithBounds{i=middle; t=middle;};
+        
+        parameterizedMiddle.parameterizedWithErasedBounds{i=middle; t=middle;};
     }
 }

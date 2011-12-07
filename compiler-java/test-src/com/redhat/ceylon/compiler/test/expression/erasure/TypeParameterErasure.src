@@ -96,12 +96,15 @@ class TypeParameterErasure {
     
     private final <T extends com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right>T parameterizedWithBounds(final T t) {
         t.right();
+        (let T $call$1 = t in $call$1.right(); null);
         return t;
     }
     
     private final <T extends com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left & com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right>T parameterizedWithErasedBounds(final T t) {
         t.left();
+        (let T $call$3 = t in $call$3.left(); null);
         t.right();
+        (let T $call$5 = t in $call$5.right(); null);
         return t;
     }
     
@@ -130,6 +133,31 @@ class TypeParameterErasure {
         middle = parameterizedWithErasedBounds((com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left)middle);
     }
     
+    private final void testTypeParametersNamedArguments() {
+        final long i = (let ceylon.language.Integer $arg$6$0 = .ceylon.language.Integer.instance(2L) in <ceylon.language.Integer>parameterized($arg$6$0)).longValue();
+        final long i2 = (let ceylon.language.Integer $arg$7$0 = .ceylon.language.Integer.instance(2L) in <ceylon.language.Integer>parameterized($arg$7$0)).longValue();
+        final long n = (let ceylon.language.Natural $arg$8$0 = .ceylon.language.Natural.instance(2L) in <ceylon.language.Natural>parameterized($arg$8$0)).longValue();
+        final long n2 = (let ceylon.language.Natural $arg$9$0 = .ceylon.language.Natural.instance(2L) in <ceylon.language.Natural>parameterized($arg$9$0)).longValue();
+        .java.lang.Object middle;
+        com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left left;
+        com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right right;
+        middle = new com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.CMiddle();
+        left = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left)(let .java.lang.Object $arg$10$0 = middle in parameterized($arg$10$0));
+        right = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right)(let .java.lang.Object $arg$11$0 = middle in parameterized($arg$11$0));
+        middle = (let .java.lang.Object $arg$12$0 = middle in parameterized($arg$12$0));
+        left = (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $arg$13$0 = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left)middle in <com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left>parameterized($arg$13$0));
+        right = (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right $arg$14$0 = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right)middle in <com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right>parameterized($arg$14$0));
+        left = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left)(let .java.lang.Object $arg$15$0 = middle in parameterized($arg$15$0));
+        right = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right)(let .java.lang.Object $arg$16$0 = middle in parameterized($arg$16$0));
+        middle = (let .java.lang.Object $arg$17$0 = middle in parameterized($arg$17$0));
+        left = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left)(let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right $arg$18$0 = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right)middle in parameterizedWithBounds($arg$18$0));
+        right = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right)(let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right $arg$19$0 = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right)middle in parameterizedWithBounds($arg$19$0));
+        middle = (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right $arg$20$0 = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right)middle in parameterizedWithBounds($arg$20$0));
+        left = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left)(let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $arg$21$0 = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left)middle in parameterizedWithErasedBounds($arg$21$0));
+        right = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right)(let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $arg$22$0 = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left)middle in parameterizedWithErasedBounds($arg$22$0));
+        middle = (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $arg$23$0 = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left)middle in parameterizedWithErasedBounds($arg$23$0));
+    }
+    
     class Parameterized<T> {
         
         public final <Inner>Inner parameterized(final Inner i, final T t) {
@@ -138,12 +166,15 @@ class TypeParameterErasure {
         
         public final <Inner extends com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left>Inner parameterizedWithBounds(final Inner i, final T t) {
             i.left();
+            (let Inner $call$25 = i in $call$25.left(); null);
             return i;
         }
         
         public final <Inner extends com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left & com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right>Inner parameterizedWithErasedBounds(final Inner i, final T t) {
             i.left();
+            (let Inner $call$27 = i in $call$27.left(); null);
             i.right();
+            (let Inner $call$29 = i in $call$29.right(); null);
             return i;
         }
         
@@ -155,6 +186,7 @@ class TypeParameterErasure {
         
         ParameterizedWithBounds(T t) {
             t.left();
+            (let T $call$31 = t in $call$31.left(); null);
         }
     }
     
@@ -165,10 +197,14 @@ class TypeParameterErasure {
         
         ParameterizedWithErasedBounds(T t) {
             t.left();
+            (let T $call$33 = t in $call$33.left(); null);
             t.right();
+            (let T $call$35 = t in $call$35.right(); null);
             final .java.lang.Object middle = new com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.CMiddle();
             requiresCastLeft(t);
+            (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $arg$36$0 = t in requiresCastLeft($arg$36$0); null);
             requiresCastLeft((com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left)middle);
+            (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $arg$37$0 = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left)middle in requiresCastLeft($arg$37$0); null);
         }
     }
     
@@ -190,6 +226,26 @@ class TypeParameterErasure {
         parameterizedMiddle.<com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left>parameterizedWithBounds(left, middle);
         parameterizedMiddle.parameterizedWithBounds((com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left)middle, middle);
         parameterizedMiddle.parameterizedWithErasedBounds((com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left)middle, middle);
+    }
+    
+    private final void testTypeParameterInstantiationsNamedArguments() {
+        final .java.lang.Object middle = new com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.CMiddle();
+        final com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left left = new com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.CLeft();
+        final com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized parameterizedMiddle = (let .java.lang.Object $arg$38$0 = middle in new com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized($arg$38$0));
+        final com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized<com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left> parameterizedLeft = (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $arg$39$0 = left in new <com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left>com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized<com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left>($arg$39$0));
+        final com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized parameterizedExplicitMiddle = (let .java.lang.Object $arg$40$0 = middle in new com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized($arg$40$0));
+        final com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized<com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left> parameterizedExplicitLeft = (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $arg$41$0 = left in new <com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left>com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized<com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left>($arg$41$0));
+        final com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithBounds parameterizedWithBoundsMiddle = (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $arg$42$0 = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left)middle in new com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithBounds($arg$42$0));
+        final com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithBounds<com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left> parameterizedWithBoundsLeft = (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $arg$43$0 = left in new <com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left>com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithBounds<com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left>($arg$43$0));
+        final com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithErasedBounds parameterizedWithErasedBoundsMiddle = (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $arg$44$0 = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left)middle in new com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithErasedBounds($arg$44$0));
+        final com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithErasedBounds parameterizedWithErasedExplicitBoundsMiddle = (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $arg$45$0 = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left)middle in new com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithErasedBounds($arg$45$0));
+        (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized $call$47 = parameterizedMiddle,com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $arg$46$0 = left,.java.lang.Object $arg$46$1 = middle in $call$47.<com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left>parameterized($arg$46$0, $arg$46$1));
+        (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized $call$49 = parameterizedMiddle,.java.lang.Object $arg$48$0 = middle,.java.lang.Object $arg$48$1 = middle in $call$49.parameterized($arg$48$0, $arg$48$1));
+        (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized $call$51 = parameterizedMiddle,com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $arg$50$0 = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left)middle,.java.lang.Object $arg$50$1 = middle in $call$51.<com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left>parameterized($arg$50$0, $arg$50$1));
+        (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized $call$53 = parameterizedMiddle,.java.lang.Object $arg$52$0 = middle,.java.lang.Object $arg$52$1 = middle in $call$53.parameterized($arg$52$0, $arg$52$1));
+        (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized $call$55 = parameterizedMiddle,com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $arg$54$0 = left,.java.lang.Object $arg$54$1 = middle in $call$55.<com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left>parameterizedWithBounds($arg$54$0, $arg$54$1));
+        (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized $call$57 = parameterizedMiddle,com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $arg$56$0 = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left)middle,.java.lang.Object $arg$56$1 = middle in $call$57.parameterizedWithBounds($arg$56$0, $arg$56$1));
+        (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized $call$59 = parameterizedMiddle,com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $arg$58$0 = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left)middle,.java.lang.Object $arg$58$1 = middle in $call$59.parameterizedWithErasedBounds($arg$58$0, $arg$58$1));
     }
     
     TypeParameterErasure() {
