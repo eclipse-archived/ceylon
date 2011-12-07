@@ -92,6 +92,7 @@ public class ModuleVisitor extends Visitor {
                             if (by!=null) {
                                 mainModule.getAuthors().addAll(by);
                             }
+                            mainModule.setAvailable(true);
                         }
                     }
                 }

@@ -119,7 +119,10 @@ public class ModuleBuilder {
             final List<String> moduleName = currentPkg.getName();
             currentModule = getOrCreateModule(moduleName);
             if ( currentModule != null ) {
-                currentModule.setAvailable(true);
+                currentModule.setAvailable(true); // TODO : not necessary anymore ? the phasedUnit will be added. And the buildModuleImport()
+                                                  //        function (which calls module.setAvailable()) will be called by the typeChecker
+                                                  //        BEFORE the ModuleValidator.verifyModuleDependencyTree() call that uses 
+                                                  //        isAvailable()
                 bindPackageToModule(currentPkg, currentModule);
             }
             else {
