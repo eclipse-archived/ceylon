@@ -126,6 +126,7 @@ class Operators() {
     
     X[] sequence = {X(), X()};
     String[]? noSequence = null;
+    String[] emp = {};
     
     @type["Nothing|Operators.X"] value x38 = sequence[0];
     @type["Empty|Sequence<Operators.X>"] value x39 = sequence[0..1];
@@ -137,6 +138,7 @@ class Operators() {
     @error value x44 = sequence["hello"...];
     @error value x45 = sequence[1.."hello"];
     
+    @type["Empty|Sequence<String>"] value e45 = emp[].uppercased;
     @type["Sequence<Empty|Sequence<Character>>"] value x46 = {"hello", "world"}[].characters;
     @type["Sequence<String>"] value x47 = {"hello", "world"}[].uppercased;
     @type["Nothing|Empty|Sequence<Character>"] value x48 = {"hello", "world"}[0]?.characters;
