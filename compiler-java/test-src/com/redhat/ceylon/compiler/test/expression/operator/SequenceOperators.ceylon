@@ -46,8 +46,11 @@ shared class SequenceOperators() {
         subrange := sequence[1..2];
         subrange := this.sequence[1..2];
         subrange := sequence[box(1)..box(2)];
+        variable String[] upperRange;
+        upperRange := sequence[1...];
+        upperRange := this.sequence[1...];
+        upperRange := sequence[box(1)...];
 /*
-        variable String[] upperRange = c1[n1...];
         Natural[] spreadMember = n1[].size;
         variable Iterable<String>[] spreadInvoke = n1[].lines();
         spreadInvoke = n1[].lines{};

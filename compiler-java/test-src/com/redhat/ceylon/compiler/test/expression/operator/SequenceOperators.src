@@ -33,6 +33,10 @@ public class SequenceOperators {
         subrange = ((ceylon.language.Ranged<? super ceylon.language.Natural, ? extends ceylon.language.Iterable<? extends ceylon.language.String>>)sequence).span(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L));
         subrange = ((ceylon.language.Ranged<? super ceylon.language.Natural, ? extends ceylon.language.Iterable<? extends ceylon.language.String>>)this.getSequence()).span(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L));
         subrange = ((ceylon.language.Ranged<? super ceylon.language.Natural, ? extends ceylon.language.Iterable<? extends ceylon.language.String>>)sequence).span(<ceylon.language.Natural>box(.ceylon.language.Natural.instance(1L)), <ceylon.language.Natural>box(.ceylon.language.Natural.instance(2L)));
+        ceylon.language.Iterable<? extends ceylon.language.String> upperRange;
+        upperRange = ((ceylon.language.Ranged<? super ceylon.language.Natural, ? extends ceylon.language.Iterable<? extends ceylon.language.String>>)sequence).span(.ceylon.language.Natural.instance(1L), null);
+        upperRange = ((ceylon.language.Ranged<? super ceylon.language.Natural, ? extends ceylon.language.Iterable<? extends ceylon.language.String>>)this.getSequence()).span(.ceylon.language.Natural.instance(1L), null);
+        upperRange = ((ceylon.language.Ranged<? super ceylon.language.Natural, ? extends ceylon.language.Iterable<? extends ceylon.language.String>>)sequence).span(<ceylon.language.Natural>box(.ceylon.language.Natural.instance(1L)), null);
     }
     
     public SequenceOperators() {
