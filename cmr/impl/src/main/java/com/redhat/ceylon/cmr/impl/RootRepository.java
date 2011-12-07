@@ -68,13 +68,13 @@ public class RootRepository extends AbstractNodeRepository {
                     OpenNode on = (OpenNode) node;
                     String sha1 = IOUtils.sha1(new FileInputStream(file));
                     ByteArrayInputStream shaStream = new ByteArrayInputStream(sha1.getBytes("ASCII"));
-                    Node sha = node.getChild(SHA);
+                    Node sha = node.getChild(SHA1);
                     if (sha == null) {
                         // put it to ext node as well, if supported
-                        on.addContent(SHA, shaStream);
+                        on.addContent(SHA1, shaStream);
                     }
                     // create empty marker node
-                    OpenNode sl = on.addNode(SHA + LOCAL);
+                    OpenNode sl = on.addNode(SHA1 + LOCAL);
                     // put sha to local store as well
                     fileContentStore.putContent(sl, shaStream);
                 }
@@ -89,7 +89,7 @@ public class RootRepository extends AbstractNodeRepository {
     protected Boolean checkSHA(Node artifact) throws IOException {
         Boolean result = super.checkSHA(artifact);
         if (result == null) {
-            Node sha = artifact.getChild(SHA + LOCAL);
+            Node sha = artifact.getChild(SHA1 + LOCAL);
             if (sha != null) {
                 File shaFile = fileContentStore.getFile(sha);
                 if (shaFile.exists())

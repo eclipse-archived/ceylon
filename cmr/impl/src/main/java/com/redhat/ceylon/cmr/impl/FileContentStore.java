@@ -31,6 +31,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * File content store.
@@ -39,7 +41,8 @@ import java.util.List;
  */
 public class FileContentStore implements ContentStore, StructureBuilder {
 
-    private File root;
+    private final File root;
+    private final ConcurrentMap<Node, File> cache = new ConcurrentHashMap<Node, File>();
 
     public FileContentStore(File root) {
         if (root == null)
@@ -48,18 +51,27 @@ public class FileContentStore implements ContentStore, StructureBuilder {
     }
 
     File getFile(Node node) {
-        String path = getFullPath(node);
-        return new File(root, path);
+        File file = cache.get(node);
+        if (file == null) { 
+            String path = getFullPath(node);
+            file = new File(root, path);
+            cache.put(node, file);
+        }
+        return file;
+    }
+
+    void clear() {
+        cache.clear();
     }
 
     protected String getFullPath(Node node) {
-        StringBuilder path = new StringBuilder();
+        final StringBuilder path = new StringBuilder();
         buildFullPath(node, path, false);
         return path.toString();
     }
 
     protected static void buildFullPath(Node node, StringBuilder path, boolean appendSeparator) {
-        Iterable<? extends Node> parents = node.getParents();
+        final Iterable<? extends Node> parents = node.getParents();
         //noinspection LoopStatementThatDoesntLoop
         for (Node parent : parents) {
             buildFullPath(parent, path, true);
@@ -71,35 +83,45 @@ public class FileContentStore implements ContentStore, StructureBuilder {
     }
 
     public ContentHandle popContent(Node node) {
-        File file = getFile(node);
-        return (file.exists()) ? new FileContentHandle(file) : null;
+        final File file = getFile(node);
+        return (file.exists() && file.isFile()) ? new FileContentHandle(node, file) : null;
     }
 
     public ContentHandle getContent(Node node) throws IOException {
-        File file = getFile(node);
+        final File file = getFile(node);
         if (file.exists() == false)
             throw new IOException("Content doesn't exist: " + file);
+        else if (file.isDirectory())
+            throw new IOException("Content is directory: " + file);
 
-        return new FileContentHandle(file);
+        return new FileContentHandle(node, file);
     }
 
     public ContentHandle putContent(Node node, InputStream stream) throws IOException {
         if (stream == null)
             throw new IllegalArgumentException("Null stream!");
 
-        File file = getFile(node);
+        final File file = getFile(node);
         if (file.exists())
             throw new IOException("Content already exists: " + file);
 
         IOUtils.writeToFile(file, stream);
-        return new FileContentHandle(file);
+        return new FileContentHandle(node, file);
     }
 
     public OpenNode find(Node parent, String child) {
-        File file = new File(getFile(parent), child);
+        File file;
+        if (parent.hasContent()) {
+            final File pf = getFile(parent);
+            final String path = pf.getPath();
+            file = new File(path + child); // just concat paths
+        } else {
+            file = new File(getFile(parent), child);
+        }
+
         if (file.exists()) {
-            DefaultNode node = new DefaultNode(child, null);
-            node.setHandle(new FileContentHandle(file));
+            final DefaultNode node = new DefaultNode(child, null);
+            node.setHandle(new FileContentHandle(node, file));
             return node;
         } else {
             return null;
@@ -107,12 +129,12 @@ public class FileContentStore implements ContentStore, StructureBuilder {
     }
 
     public Iterable<? extends OpenNode> find(Node parent) {
-        File pf = getFile(parent);
+        final File pf = getFile(parent);
         if (pf.exists()) {
             List<OpenNode> nodes = new ArrayList<OpenNode>();
             for (File file : pf.listFiles()) {
                 DefaultNode node = new DefaultNode(file.getName(), null);
-                node.setHandle(new FileContentHandle(file));
+                node.setHandle(new FileContentHandle(node, file));
                 nodes.add(node);
             }
             return nodes;
@@ -121,11 +143,13 @@ public class FileContentStore implements ContentStore, StructureBuilder {
         }
     }
 
-    private static class FileContentHandle implements ContentHandle {
+    private class FileContentHandle implements ContentHandle {
 
+        private Node owner;
         private File file;
 
-        private FileContentHandle(File file) {
+        private FileContentHandle(Node owner, File file) {
+            this.owner = owner;
             this.file = file;
         }
 
@@ -135,8 +159,12 @@ public class FileContentStore implements ContentStore, StructureBuilder {
 
         @Override
         public void clean() {
-            //noinspection ResultOfMethodCallIgnored
-            file.delete();
+            try {
+                //noinspection ResultOfMethodCallIgnored
+                file.delete();
+            } finally {
+                cache.remove(owner);
+            }
         }
     }
 }

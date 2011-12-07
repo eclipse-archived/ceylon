@@ -20,30 +20,29 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package com.redhat.ceylon.cmr.impl;
+package com.redhat.ceylon.test.smoke.test;
 
-import com.redhat.ceylon.cmr.spi.ContentStore;
-import com.redhat.ceylon.cmr.spi.StructureBuilder;
+import com.redhat.ceylon.cmr.impl.RootRepository;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.io.File;
+import java.net.URL;
 
 /**
- * Root node impl.
- *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class RootNode extends DefaultNode {
-    public RootNode(ContentStore contentStore, StructureBuilder structureBuilder) {
-        super("", null);
-        addService(ContentStore.class, contentStore);
-        addService(StructureBuilder.class, structureBuilder);
+public class SmokeTestCase {
+
+    @Test
+    public void testNavigation() throws Exception {
+        URL url = getClass().getResource("/repo");
+        Assert.assertNotNull(url);
+        File root = new File(url.toURI());
+        RootRepository repo = new RootRepository(root);
+        
+        File acme = repo.getArtifact("org.jboss.acme", "1.0.0.Final");
+        Assert.assertNotNull(acme);
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        return (obj == this); // should be only one
-    }
-
-    @Override
-    public String toString() {
-        return "<root>";
-    }
 }

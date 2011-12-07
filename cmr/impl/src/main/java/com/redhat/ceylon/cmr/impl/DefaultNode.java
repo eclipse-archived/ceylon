@@ -118,7 +118,7 @@ public class DefaultNode extends AbstractOpenNode {
 
     @Override
     public boolean hasContent() {
-        if (handle == null || handle == HANDLE_MARKER)
+        if (handle == HANDLE_MARKER)
             return false;
 
         ContentHandle ch = findService(ContentStore.class).popContent(this);

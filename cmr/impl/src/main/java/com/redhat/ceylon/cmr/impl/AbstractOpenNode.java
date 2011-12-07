@@ -217,6 +217,11 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
     }
 
     @Override
+    public String toString() {
+        return "[" + getLabel() +"]";
+    }
+
+    @Override
     public int hashCode() {
         return label.hashCode();
     }

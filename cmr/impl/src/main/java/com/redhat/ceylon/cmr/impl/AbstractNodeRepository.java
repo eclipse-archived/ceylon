@@ -39,7 +39,7 @@ import java.util.List;
 public abstract class AbstractNodeRepository extends AbstractRepository {
 
     protected static final String CAR = ".car";
-    protected static final String SHA = ".sha";
+    protected static final String SHA1 = ".sha1";
     protected static final String LOCAL = ".local";
     protected static final String CACHED = ".cached";
 
@@ -120,13 +120,13 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
 
         if (context.isIgnoreSHA() == false) {
             Boolean result = null;
-            Node shaResult = node.getChild(SHA + CACHED);
+            Node shaResult = node.getChild(SHA1 + CACHED);
             if (shaResult == null) {
                 try {
                     result = checkSHA(node);
                     if (node instanceof OpenNode) {
                         final OpenNode on = (OpenNode) node;
-                        on.addNode(SHA + CACHED, result);
+                        on.addNode(SHA1 + CACHED, result);
                     }
                 } catch (IOException e) {
                     log.warning("Error checking SHA1: " + e);
@@ -144,7 +144,7 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
     }
 
     protected Boolean checkSHA(Node artifact) throws IOException {
-        final Node sha = artifact.getChild(SHA);
+        final Node sha = artifact.getChild(SHA1);
         return (sha != null) ? checkSHA(artifact, sha.getInputStream()) : null;
     }
 
