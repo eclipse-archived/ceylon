@@ -2306,13 +2306,13 @@ createItemMethod.intercept()
         <itemizedlist>
             <listitem><para>Operators in layer 1 produce, transform, and combine
             values.</para></listitem>
-            <listitem>Operators in layer 2 compare or predicate values, producing
-            a <literal>Boolean</literal> result.</listitem>
-            <listitem>Operators in layer 3 are logical operators that operate
+            <listitem><para>Operators in layer 2 compare or predicate values, producing
+            a <literal>Boolean</literal> result.</para></listitem>
+            <listitem><para>Operators in layer 3 are logical operators that operate
             upon <literal>Boolean</literal> arguments to produce a <literal>Boolean</literal>
-            value.</listitem>
-            <listitem>Operators in layer 4 perform assignment and conditional
-            evaluation.</listitem>
+            value.</para></listitem>
+            <listitem><para>Operators in layer 4 perform assignment and conditional
+            evaluation.</para></listitem>
         </itemizedlist>
         
         <para>Within each layer, postfix operators have a higher precedence than 
