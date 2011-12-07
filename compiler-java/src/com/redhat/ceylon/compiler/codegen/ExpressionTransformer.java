@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
@@ -35,6 +36,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -153,7 +155,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression applyErasureAndBoxing(JCExpression result, Term expr, BoxingStrategy boxingStrategy, ProducedType expectedType) {
         ProducedType exprType = expr.getTypeModel();
         
-        if (expectedType != null 
+        if (expectedType != null
+                && !(expectedType.getDeclaration() instanceof TypeParameter) 
                 && willEraseToObject(expr.getTypeModel())
                 // don't add cast to an erased type 
                 && !willEraseToObject(expectedType)
@@ -895,7 +898,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         }
 
-        final List<JCExpression> typeArgs = transformTypeArguments(ce);
+        java.util.List<ProducedType> typeArgumentModels = getTypeArguments(ce);
+        final List<JCExpression> typeArgs = transformTypeArguments(typeArgumentModels);
         
         at(ce);
         if (ce.getPrimary() instanceof Tree.BaseTypeExpression) {
@@ -942,6 +946,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         boolean isVarargs = false;
         Declaration primaryDecl = ce.getPrimary().getDeclaration();
         PositionalArgumentList positional = ce.getPositionalArgumentList();
+
+        java.util.List<ProducedType> typeArgumentModels = getTypeArguments(ce);
+        final List<JCExpression> typeArgs = transformTypeArguments(typeArgumentModels);
+        boolean isRaw = typeArgs.isEmpty();
+        
         if (primaryDecl instanceof Method || primaryDecl instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
             java.util.List<Parameter> declaredParams;
             if(primaryDecl instanceof Method){
@@ -963,7 +972,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // first, append the normal args
                 for (int ii = 0; ii < numDeclared - 1; ii++) {
                     Tree.PositionalArgument arg = positional.getPositionalArguments().get(ii);
-                    args.append(transformArg(arg));
+                    args.append(transformArg(arg, isRaw, typeArgumentModels));
                 }
                 JCExpression boxed;
                 // then, box the remaining passed arguments
@@ -985,11 +994,9 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         if (!isVarargs) {
             for (Tree.PositionalArgument arg : positional.getPositionalArguments())
-                args.append(transformArg(arg));
+                args.append(transformArg(arg, isRaw, typeArgumentModels));
         }
 
-        final List<JCExpression> typeArgs = transformTypeArguments(ce);
-        
         if (ce.getPrimary() instanceof Tree.BaseTypeExpression) {
             ProducedType classType = (ProducedType)((Tree.BaseTypeExpression)ce.getPrimary()).getTarget();
             return at(ce).NewClass(null, null, makeJavaType(classType, CLASS_NEW), args.toList(), null);
@@ -1007,27 +1014,54 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
 
-    List<JCExpression> transformTypeArguments(Tree.InvocationExpression def) {
+    private java.util.List<ProducedType> getTypeArguments(InvocationExpression ce) {
+        if(ce.getPrimary() instanceof Tree.StaticMemberOrTypeExpression){
+            return ((Tree.StaticMemberOrTypeExpression)ce.getPrimary()).getTypeArguments().getTypeModels();
+        }
+        return null;
+    }
+
+    List<JCExpression> transformTypeArguments(java.util.List<ProducedType> typeArguments) {
         List<JCExpression> result = List.<JCExpression> nil();
-        if (def.getPrimary() instanceof Tree.StaticMemberOrTypeExpression) {
-            Tree.StaticMemberOrTypeExpression expr = (Tree.StaticMemberOrTypeExpression)def.getPrimary();
-            java.util.List<ProducedType> args = expr.getTypeArguments().getTypeModels();
-            if(args != null){
-                for (ProducedType arg : args) {
-                    result = result.append(makeJavaType(arg, AbstractTransformer.TYPE_ARGUMENT));
-                }
+        if(typeArguments != null){
+            for (ProducedType arg : typeArguments) {
+                // cancel type parameters and go raw if we can't specify them
+                if(willEraseToObject(arg)
+                        || arg.getDeclaration() instanceof TypeParameter)
+                    return List.nil();
+                result = result.append(makeJavaType(arg, AbstractTransformer.TYPE_ARGUMENT));
             }
         }
         return result;
     }
     
-    JCExpression transformArg(Tree.PositionalArgument arg) {
+    JCExpression transformArg(Tree.PositionalArgument arg, boolean isRaw, java.util.List<ProducedType> typeArgumentModels) {
         // deal with upstream errors, must have already been reported so let's not throw further
         if(arg.getParameter() == null)
             return make().Erroneous();
+        Parameter parameter = arg.getParameter();
+        Scope scope = parameter.getContainer();
+        ProducedType type = parameter.getType();
+        if(type.getDeclaration() instanceof TypeParameter){
+            TypeParameter tp = (TypeParameter) type.getDeclaration();
+            if(tp.getSatisfiedTypes().size() >= 1)
+                type = tp.getSatisfiedTypes().get(0).getType();
+            else if(!isRaw){
+                // try to use the inferred type if we're not going raw
+                int typeParamIndex = getTypeParameterIndex(scope, tp);
+                if(typeParamIndex != -1)
+                    type = typeArgumentModels.get(typeParamIndex);
+            }
+        }
         return transformExpression(arg.getExpression(), 
                 Util.getBoxingStrategy(arg.getParameter()), 
-                arg.getParameter().getType());
+                type);
+    }
+
+    private int getTypeParameterIndex(Scope scope, TypeParameter tp) {
+        if(scope instanceof Method)
+            return ((Method)scope).getTypeParameters().indexOf(tp);
+        return ((ClassOrInterface)scope).getTypeParameters().indexOf(tp);
     }
 
     JCExpression ceylonLiteral(String s) {
