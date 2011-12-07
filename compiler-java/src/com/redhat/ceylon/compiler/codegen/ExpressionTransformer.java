@@ -1367,7 +1367,11 @@ public class ExpressionTransformer extends AbstractTransformer {
             // do the indices
             Tree.ElementRange range = (ElementRange) elementOrRange;
             JCExpression start = transformExpression(range.getLowerBound(), BoxingStrategy.BOXED, rightType);
-            JCExpression end = transformExpression(range.getUpperBound(), BoxingStrategy.BOXED, rightType);
+            JCExpression end;
+            if(range.getUpperBound() != null)
+                end = transformExpression(range.getUpperBound(), BoxingStrategy.BOXED, rightType);
+            else
+                end = makeNull();
             // make a "lhs.span(start, end)" call
             return at(access).Apply(List.<JCTree.JCExpression>nil(), 
                     make().Select(lhs, names().fromString("span")), List.of(start, end));
