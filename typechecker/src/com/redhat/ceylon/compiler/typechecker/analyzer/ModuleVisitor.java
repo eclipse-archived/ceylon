@@ -104,7 +104,7 @@ public class ModuleVisitor extends Visitor {
                     if ( !mainModule.getNameAsString().equals(moduleName) ) {
                         nsa.addError("module name does not match descriptor location");
                     }
-                    moduleBuilder.attachErrorsToModuleUnit(mainModule, unit);
+                    moduleBuilder.addLinkBetweenModuleAndNode(mainModule, unit);
                     mainModule.setDoc(argumentToString(getArgument(that, "doc")));
                     mainModule.setLicense(argumentToString(getArgument(that, "license")));
                     List<String> by = argumentToStrings(getArgument(that, "by"));

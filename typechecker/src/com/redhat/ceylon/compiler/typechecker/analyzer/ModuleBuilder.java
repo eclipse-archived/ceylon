@@ -32,8 +32,9 @@ public class ModuleBuilder {
     private final LinkedList<Package> packageStack = new LinkedList<Package>();
     private Module currentModule;
     private Modules modules;
-    private final Map<ModuleImport,Set<Node>> moduleDependencyDefinition = new HashMap<ModuleImport, Set<Node>>();
+    private final Map<ModuleImport,Set<Node>> moduleImportToNode = new HashMap<ModuleImport, Set<Node>>();
     private Map<List<String>, Set<String>> topLevelErrorsPerModuleName = new HashMap<List<String>,Set<String>>();
+    private Map<Module, Node> moduleToNode = new HashMap<Module, Node>();
 
     public ModuleBuilder(Context context) {
         this.context = context;
@@ -154,19 +155,6 @@ public class ModuleBuilder {
         }
     }
 
-    public void addErrorToModule(Module module, String error) {
-        addErrorToModule(module.getName(), error);
-    }
-
-    private void addErrorToModule(List<String> moduleName, String error) {
-        Set<String> errors = topLevelErrorsPerModuleName.get(moduleName);
-        if (errors == null) {
-            errors = new HashSet<String>();
-            topLevelErrorsPerModuleName.put(moduleName, errors);
-        }
-        errors.add(error);
-    }
-
     private void createPackageAndAddToModule(String path) {
         Package pkg = new Package();
         final Package lastPkg = packageStack.peekLast();
@@ -205,16 +193,16 @@ public class ModuleBuilder {
     }
 
     public void addModuleDependencyDefinition(ModuleImport moduleImport, Node definition) {
-        Set<Node> moduleDepDefinition = moduleDependencyDefinition.get(moduleImport);
+        Set<Node> moduleDepDefinition = moduleImportToNode.get(moduleImport);
         if (moduleDepDefinition == null) {
             moduleDepDefinition = new HashSet<Node>();
-            moduleDependencyDefinition.put(moduleImport, moduleDepDefinition);
+            moduleImportToNode.put(moduleImport, moduleDepDefinition);
         }
         moduleDepDefinition.add(definition);
     }
 
     public void attachErrorToDependencyDeclaration(ModuleImport moduleImport, String error) {
-        Set<Node> moduleDepError = moduleDependencyDefinition.get(moduleImport);
+        Set<Node> moduleDepError = moduleImportToNode.get(moduleImport);
         if (moduleDepError != null) {
             for ( Node definition :  moduleDepError ) {
                 definition.addError(error);
@@ -223,17 +211,43 @@ public class ModuleBuilder {
         else {
             //This probably can happen if the missing dependency is found deep in the dependency structure (ie the binary version of a module)
             //TODO find the nearest src module that triggered the issue
-            System.err.println("This is a type checker bug, please report. \nExpecting to add missing dependency error on non present definition: " + error);
+            System.err.println("This might be a type checker bug, please report. \nExpecting to add missing dependency error on non present definition: " + error);
         }
     }
 
-    public void attachErrorsToModuleUnit(Module module, Node unit) {
+    //must be used *after* addLinkBetweenModuleAndNode has been set ie post ModuleVisitor visit
+    public void addErrorToModule(Module module, String error) {
+        Node node = moduleToNode.get(module);
+        if (node != null) {
+            node.addError(error);
+        }
+        else {
+            //might happen if the faulty module is a compiled module
+            System.err.println("This is a type checker bug, please report. " +
+                    "\nExpecting to add error on non present module node: " + module.toString() + ". Error " + error);
+        }
+    }
+
+    //only used if we really don't know the version
+    private void addErrorToModule(List<String> moduleName, String error) {
+        Set<String> errors = topLevelErrorsPerModuleName.get(moduleName);
+        if (errors == null) {
+            errors = new HashSet<String>();
+            topLevelErrorsPerModuleName.put(moduleName, errors);
+        }
+        errors.add(error);
+    }
+
+    public void addLinkBetweenModuleAndNode(Module module, Node unit) {
+        //keep link and display errors on modules where we don't know the version of
         Set<String> errors = topLevelErrorsPerModuleName.get(module.getName());
         if (errors != null) {
             for(String error : errors) {
                 unit.addError(error);
             }
+            errors.clear();
         }
+        moduleToNode.put(module,unit);
     }
 
     public void visitModules(List<PhasedUnit> listOfUnits) {
@@ -266,7 +280,7 @@ public class ModuleBuilder {
 
     public Module findModule(Module module, List<Module> listOfModules, boolean exactVersionMatch) {
         for(Module current : listOfModules) {
-            if (exactVersionMatch && equalsForModules(module, current, exactVersionMatch)) return current;
+            if (equalsForModules(module, current, exactVersionMatch)) return current;
         }
         return null;
     }
