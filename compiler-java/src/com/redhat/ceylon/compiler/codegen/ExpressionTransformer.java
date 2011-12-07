@@ -35,8 +35,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
-import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -47,7 +47,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ElementOrRange;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ElementRange;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Exists;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.InOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IndexExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgument;
@@ -532,12 +531,33 @@ public class ExpressionTransformer extends AbstractTransformer {
         return null;
     }
 
-    public JCTree transform(InOp op) {
-        ProducedType leftType = typeFact().getEqualityDeclaration().getType();
-        ProducedType rightType = typeFact().getCategoryDeclaration().getType();
-        return transformBinaryOperator(op, leftType, rightType);
+    public JCTree transform(Tree.DefaultOp op) {
+        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, typeFact().getBooleanDeclaration().getType());
+        JCExpression right = transformExpression(op.getRightTerm());
+        String varName = tempName();
+        JCExpression varIdent = makeIdent(varName);
+        JCExpression test = at(op).Binary(JCTree.NE, varIdent, makeNull());
+        JCExpression cond = make().Conditional(test , varIdent, right);
+        JCExpression typeExpr = makeJavaType(op.getLeftTerm().getTypeModel(), 0);
+        return makeLetExpr(varName, null, typeExpr, left, cond);
     }
-
+    
+    public JCTree transform(Tree.ThenOp op) {
+        JCExpression left = transformExpression(op.getLeftTerm(), Util.getBoxingStrategy(op.getLeftTerm()), typeFact().getBooleanDeclaration().getType());
+        JCExpression right = transformExpression(op.getRightTerm());
+        return make().Conditional(left , right, makeNull());
+    }
+    
+    public JCTree transform(Tree.InOp op) {
+        JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, typeFact().getEqualityDeclaration().getType());
+        JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, typeFact().getCategoryDeclaration().getType());
+        String varName = tempName();
+        JCExpression varIdent = makeIdent(varName);
+        JCExpression contains = at(op).Apply(null, makeSelect(right, "contains"), List.<JCExpression> of(varIdent));
+        JCExpression typeExpr = makeJavaType(op.getLeftTerm().getTypeModel(), NO_PRIMITIVES);
+        return makeLetExpr(varName, null, typeExpr, left, contains);
+    }
+    
     public JCExpression transformBinaryOperator(Tree.BinaryOperatorExpression op, ProducedType leftType, ProducedType rightType) {
         JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, leftType);
         return transformBinaryOperator(op, op.getClass(), left, rightType);
@@ -552,19 +572,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         if (operatorClass == Tree.IdenticalOp.class) {
             result = at(op).Binary(JCTree.EQ, left, right);
-        } else if (operatorClass == Tree.DefaultOp.class) {
-            String varName = tempName();
-            JCExpression varIdent = makeIdent(varName);
-            JCExpression test = at(op).Binary(JCTree.NE, varIdent, makeNull());
-            JCExpression cond = make().Conditional(test , varIdent, right);
-            JCExpression typeExpr = makeJavaType(op.getLeftTerm().getTypeModel(), 0);
-            result = makeLetExpr(varName, null, typeExpr, left, cond);
-        } else if (operatorClass == Tree.InOp.class) {
-            String varName = tempName();
-            JCExpression varIdent = makeIdent(varName);
-            JCExpression contains = at(op).Apply(null, makeSelect(right, "contains"), List.<JCExpression> of(varIdent));
-            JCExpression typeExpr = makeJavaType(op.getLeftTerm().getTypeModel(), NO_PRIMITIVES);
-            result = makeLetExpr(varName, null, typeExpr, left, contains);
         } else {
             Class<? extends Tree.OperatorExpression> originalOperatorClass = operatorClass;
             boolean loseComparison = 
