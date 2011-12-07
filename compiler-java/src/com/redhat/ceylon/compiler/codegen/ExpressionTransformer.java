@@ -1052,19 +1052,19 @@ public class ExpressionTransformer extends AbstractTransformer {
         ProducedType type = parameter.getType();
         if(isTypeParameter(type)){
             TypeParameter tp = (TypeParameter) type.getDeclaration();
+            if(!isRaw && typeArgumentModels != null){
+                // try to use the inferred type if we're not going raw
+                Scope scope = parameter.getContainer();
+                int typeParamIndex = getTypeParameterIndex(scope, tp);
+                if(typeParamIndex != -1)
+                    return typeArgumentModels.get(typeParamIndex);
+            }
             if(tp.getSatisfiedTypes().size() >= 1){
                 // try the first satisfied type
                 type = tp.getSatisfiedTypes().get(0).getType();
                 // unless it's erased, in which case try for more specific
                 if(!willEraseToObject(type))
                     return type;
-            }
-            if(!isRaw && typeArgumentModels != null){
-                // try to use the inferred type if we're not going raw
-                Scope scope = parameter.getContainer();
-                int typeParamIndex = getTypeParameterIndex(scope, tp);
-                if(typeParamIndex != -1)
-                    type = typeArgumentModels.get(typeParamIndex);
             }
         }
         return type;
