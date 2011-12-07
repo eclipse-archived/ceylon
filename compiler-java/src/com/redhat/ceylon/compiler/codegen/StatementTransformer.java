@@ -138,25 +138,24 @@ public class StatementTransformer extends AbstractTransformer {
             JCExpression expr = expressionGen().transformExpression(specifierExpr);
             
             // IsCondition with Nothing as ProducedType transformed to " == null" 
+            at(cond);
             if (cond instanceof Tree.IsCondition && isNothing(toType)) {
-                at(cond);
                 test = make().Binary(JCTree.EQ, expr, makeNull());
             } else {             
                 toType = simplifyType(toType);
                 JCExpression toTypeExpr = makeJavaType(toType);
     
-                Name tmpVarName = names().fromString(aliasName(name));
+                String tmpVarName = aliasName(name);
                 Name origVarName = names().fromString(name);
                 Name substVarName = names().fromString(aliasName(name));
     
-               
                 ProducedType tmpVarType = specifierExpr.getTypeModel();
                 JCExpression tmpVarTypeExpr;
                 // Want raw type for instanceof since it can't be used with generic types
                 JCExpression rawToTypeExpr = makeJavaType(toType, NO_PRIMITIVES | WANT_RAW_TYPE);
     
                 // Substitute variable with the correct type to use in the rest of the code block
-                JCExpression tmpVarExpr = at(cond).Ident(tmpVarName);
+                JCExpression tmpVarExpr = makeIdent(tmpVarName);
                 if (cond instanceof Tree.ExistsCondition) {
                     tmpVarExpr = unboxType(tmpVarExpr, toType);
                     tmpVarTypeExpr = makeJavaType(tmpVarType);
@@ -167,9 +166,11 @@ public class StatementTransformer extends AbstractTransformer {
                     tmpVarExpr = at(cond).TypeCast(toTypeExpr, tmpVarExpr);
                     tmpVarTypeExpr = makeJavaType(tmpVarType);
                 }
+                
                 // Temporary variable holding the result of the expression/variable to test
-                decl = at(cond).VarDef(make().Modifiers(FINAL), tmpVarName, tmpVarTypeExpr, expr);
+                decl = makeVar(tmpVarName, tmpVarTypeExpr, null);
     
+                // The variable holding the result for the code inside the code block
                 JCVariableDecl decl2 = at(cond).VarDef(make().Modifiers(FINAL), substVarName, toTypeExpr, tmpVarExpr);
                 
                 // Prepare for variable substitution in the following code block
@@ -184,11 +185,13 @@ public class StatementTransformer extends AbstractTransformer {
                 removeVariableSubst(origVarName.toString(), prevSubst);
                 
                 at(cond);
+                // Assign the expression to test to the temporary variable
+                JCExpression testExpr = make().Assign(makeIdent(tmpVarName), expr);
+                // Use the assignment in the following condition
                 if (cond instanceof Tree.ExistsCondition) {
-                    test = make().Binary(JCTree.NE, make().Ident(decl.name), makeNull());                
+                    test = make().Binary(JCTree.NE, testExpr, makeNull());                
                 } else {
                     // nonempty and is
-                    JCExpression testExpr = make().Ident(decl.name);
                     test = makeTypeTest(testExpr, toType);
                 }
             }
