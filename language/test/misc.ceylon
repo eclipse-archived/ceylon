@@ -32,6 +32,7 @@ void misc() {
         assert(bs.size==i, "builder size");
         bs.append(i);
     }
+    assert(bs.size==11, "builder size");
     
     for (n->e in entries(bs.sequence...)) {
         assert(n==e, "entry iteration");
