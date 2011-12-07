@@ -997,13 +997,16 @@ public class ExpressionVisitor extends Visitor {
         return result;
     }
 
-    ProducedType wrap(ProducedType pt, Tree.QualifiedMemberOrTypeExpression mte) {
+    ProducedType wrap(ProducedType pt, ProducedType receivingType, 
+    		Tree.QualifiedMemberOrTypeExpression mte) {
         Tree.MemberOperator op = mte.getMemberOperator();
         if (op instanceof Tree.SafeMemberOp)  {
             return unit.getOptionalType(pt);
         }
         else if (op instanceof Tree.SpreadOp) {
-            return unit.getSequenceType(pt);
+            ProducedType st = unit.getSequenceType(pt);        	
+        	return unit.isEmptyType(receivingType) ?
+                    unit.getEmptyType(st) : st;
         }
         else {
             return pt;
@@ -2214,7 +2217,8 @@ public class ExpressionVisitor extends Visitor {
 
     private void visitQualifiedMemberExpression(Tree.QualifiedMemberExpression that,
             TypedDeclaration member, List<ProducedType> typeArgs, Tree.TypeArguments tal) {
-        ProducedType receiverType = unwrap(that.getPrimary().getTypeModel(), that);
+        ProducedType receivingType = that.getPrimary().getTypeModel();
+		ProducedType receiverType = unwrap(receivingType, that);
         if (acceptsTypeArguments(receiverType, member, typeArgs, tal, that)) {
             ProducedTypedReference ptr = receiverType.getTypedMember(member, typeArgs);
             /*if (ptr==null) {
@@ -2223,7 +2227,7 @@ public class ExpressionVisitor extends Visitor {
                         receiverType.getDeclaration().getName());
             }
             else {*/
-                ProducedType t = ptr.getFullType(wrap(ptr.getType(), that));
+                ProducedType t = ptr.getFullType(wrap(ptr.getType(), receivingType, that));
                 that.setTarget(ptr); //TODO: how do we wrap ptr???
                 that.setTypeModel(t);
             //}
@@ -2343,7 +2347,7 @@ public class ExpressionVisitor extends Visitor {
         ProducedType receiverType = unwrap(receivingType, that);
         if (acceptsTypeArguments(receiverType, type, typeArgs, tal, that)) {
             ProducedType t = receiverType.getTypeMember(type, typeArgs);
-            that.setTypeModel(t.getFullType(wrap(t, that)));
+            that.setTypeModel(t.getFullType(wrap(t, receivingType, that)));
             that.setTarget(t);
         }
     }
