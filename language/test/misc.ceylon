@@ -21,4 +21,19 @@ void misc() {
     }
     assert(!exists x, "while exists");
     
+    variable value s := "hello";
+    while (nonempty chars = s.characters) { 
+        s:=""; 
+    }
+    assert(s=="", "while nonempty");
+    
+    value bs = SequenceBuilder<Natural>();
+    for (i in 0..10) {
+        assert(bs.size==i, "builder size");
+        bs.append(i);
+    }
+    
+    for (n->e in entries(bs.sequence...)) {
+        assert(n==e, "entry iteration");
+    }
 }
