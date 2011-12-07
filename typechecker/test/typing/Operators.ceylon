@@ -106,7 +106,7 @@ class Operators() {
     @type["Boolean"] value x32 = nothing is Natural;
     @type["Boolean"] value x32n = is Natural nothing;
     
-    @type["Boolean"] value x33 = 1 in {1, 2};
+    @type["Boolean"] value x33 = "hello" in "hello world";
     
     object cat satisfies Category {
         shared actual Boolean contains(Equality element) {
@@ -227,5 +227,11 @@ class Operators() {
     
     @type["Entry<String,Float>"] String->Float esf = "hello"->1.0;
     @type["Sequence<Entry<String,Float>>"] Sequence<String->Float> esfs = {esf};
+    
+    Float x=1.0;
+    Float result = x>0.0 then x else 0.0;
+    
+    String str1 = null ? null ? "hello";
+    String str2 = null else null else "hello";
     
 }
