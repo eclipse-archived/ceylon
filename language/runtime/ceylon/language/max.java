@@ -14,9 +14,7 @@ public final class max {
     private max() {
     }
     
-    @TypeParameters({
-    @TypeParameter(value="Value", satisfies="ceylon.language.Comparable<Value>")
-    })
+    @TypeParameters(@TypeParameter(value="Value", satisfies="ceylon.language.Comparable<Value>"))
     @TypeInfo("Value")
     public static <Value extends Comparable<? super Value>>Value max(@Name("values")
     @TypeInfo("ceylon.language.Sequence<Value>")

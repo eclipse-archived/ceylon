@@ -16,9 +16,7 @@ public final class coalesce {
     
     private coalesce() {}
     
-    @TypeParameters({
-    @TypeParameter(value="Element", satisfies="ceylon.language.Object")
-    })
+    @TypeParameters(@TypeParameter(value="Element", satisfies="ceylon.language.Object"))
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public static <Element> Iterable<? extends Element> coalesce(
     @Name("sequence")

@@ -9,9 +9,7 @@ import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
 import com.redhat.ceylon.compiler.metadata.java.Variance;
 
 @Ceylon
-@TypeParameters({
-    @TypeParameter(value = "Element", variance = Variance.OUT)
-})
+@TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT))
 @SatisfiedTypes({
     "ceylon.language.Correspondence<ceylon.language.Natural,Element>",
     "ceylon.language.Ordered<Element>",

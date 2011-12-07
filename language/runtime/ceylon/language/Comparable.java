@@ -8,10 +8,8 @@ import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
 import com.redhat.ceylon.compiler.metadata.java.Variance;
 
 @Ceylon
-@TypeParameters({
-    @TypeParameter(value = "Other", variance = Variance.IN,
-    		satisfies="ceylon.language.Comparable<Other>")
-})
+@TypeParameters(@TypeParameter(value = "Other", variance = Variance.IN,
+    		satisfies="ceylon.language.Comparable<Other>"))
 @SatisfiedTypes("ceylon.language.Equality")
 public interface Comparable<Other extends Comparable<? super Other>> {
     

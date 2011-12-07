@@ -12,9 +12,9 @@ import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
 @SatisfiedTypes({"ceylon.language.Sequence<Element>", 
 	             "ceylon.language.Category",
 	             "ceylon.language.Equality"})
-@TypeParameters({@TypeParameter(value="Element", 
+@TypeParameters(@TypeParameter(value="Element", 
     satisfies={"ceylon.language.Comparable<Element>",
-		       "ceylon.language.Ordinal<Element>"})})
+		       "ceylon.language.Ordinal<Element>"}))
 public class Range<Element extends Comparable<? super Element> & Ordinal<? extends Element>>
     implements Sequence<Element>, Category {
     

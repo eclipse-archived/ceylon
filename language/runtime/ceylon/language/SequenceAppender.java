@@ -9,9 +9,7 @@ import com.redhat.ceylon.compiler.metadata.java.TypeParameter;
 import com.redhat.ceylon.compiler.metadata.java.TypeParameters;
 
 @Ceylon
-@TypeParameters({
-    @TypeParameter(value = "Element")
-})
+@TypeParameters(@TypeParameter(value = "Element"))
 public class SequenceAppender<Element> extends SequenceBuilder<Element> {
     
     public SequenceAppender(@Name("elements") 

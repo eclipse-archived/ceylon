@@ -20,8 +20,8 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
 @SatisfiedTypes("ceylon.language.Equality")
 public class Entry<Key, Item> {
 	
-	private Key key;
-	private Item item;
+	private final Key key;
+	private final Item item;
 	
 	public Entry(@Name("key") Key key, 
 			     @Name("item") Item item) {
