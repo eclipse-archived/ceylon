@@ -109,7 +109,7 @@ public class Module {
 
     @Override
     public String toString() {
-        return "Module[" + getNameAsString() + "]";
+        return "Module[" + getNameAsString() + ", " + getVersion() + "]";
     }
     
     public String getDoc() {
