@@ -973,7 +973,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // first, append the normal args
                 for (int ii = 0; ii < numDeclared - 1; ii++) {
                     Tree.PositionalArgument arg = positional.getPositionalArguments().get(ii);
-                    args.append(transformArg(arg, isRaw, typeArgumentModels));
+                    args.append(transformArg(arg.getExpression(), arg.getParameter(), isRaw, typeArgumentModels));
                 }
                 JCExpression boxed;
                 // then, box the remaining passed arguments
@@ -995,7 +995,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         if (!isVarargs) {
             for (Tree.PositionalArgument arg : positional.getPositionalArguments())
-                args.append(transformArg(arg, isRaw, typeArgumentModels));
+                args.append(transformArg(arg.getExpression(), arg.getParameter(), isRaw, typeArgumentModels));
         }
 
         if (ce.getPrimary() instanceof Tree.BaseTypeExpression) {
@@ -1036,27 +1036,31 @@ public class ExpressionTransformer extends AbstractTransformer {
         return result;
     }
     
-    JCExpression transformArg(Tree.PositionalArgument arg, boolean isRaw, java.util.List<ProducedType> typeArgumentModels) {
+    JCExpression transformArg(Term expr, Parameter parameter, boolean isRaw, java.util.List<ProducedType> typeArgumentModels) {
         // deal with upstream errors, must have already been reported so let's not throw further
-        if(arg.getParameter() == null)
+        if(parameter == null)
             return make().Erroneous();
-        Parameter parameter = arg.getParameter();
-        Scope scope = parameter.getContainer();
+        ProducedType type = getTypeForParameter(parameter, isRaw, typeArgumentModels);
+        return transformExpression(expr, 
+                Util.getBoxingStrategy(parameter), 
+                type);
+    }
+
+    private ProducedType getTypeForParameter(Parameter parameter, boolean isRaw, java.util.List<ProducedType> typeArgumentModels) {
         ProducedType type = parameter.getType();
-        if(type.getDeclaration() instanceof TypeParameter){
+        if(isTypeParameter(type)){
             TypeParameter tp = (TypeParameter) type.getDeclaration();
             if(tp.getSatisfiedTypes().size() >= 1)
                 type = tp.getSatisfiedTypes().get(0).getType();
             else if(!isRaw && typeArgumentModels != null){
                 // try to use the inferred type if we're not going raw
+                Scope scope = parameter.getContainer();
                 int typeParamIndex = getTypeParameterIndex(scope, tp);
                 if(typeParamIndex != -1)
                     type = typeArgumentModels.get(typeParamIndex);
             }
         }
-        return transformExpression(arg.getExpression(), 
-                Util.getBoxingStrategy(arg.getParameter()), 
-                type);
+        return type;
     }
 
     private int getTypeParameterIndex(Scope scope, TypeParameter tp) {
