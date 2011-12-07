@@ -48,12 +48,12 @@ public class SequenceBuilder<Element> implements Sized {
     
     @Override
     public final synchronized long getSize() {
-        return list.size();
+        return list==null ? 0 : list.size();
     }
      
     @Override
     public final synchronized boolean getEmpty() {
-        return list.isEmpty();
+        return list==null ? true : list.isEmpty();
     }
      
 }
