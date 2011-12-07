@@ -33,8 +33,8 @@ void operators() {
     Float x = 0.5;
     assert(exists (x>0.0 then x), "then not null");
     assert(!exists (x<0.0 then x), "then null");
-    //assert((x<0.0 then x else 1.0) == 1.0, "then else");
-    //assert((x>0.0 then x else 1.0) == 0.5, "then");
+    assert((x<0.0 then x else 1.0) == 1.0, "then else");
+    assert((x>0.0 then x else 1.0) == 0.5, "then");
     
     assert((maybe else "goodbye")=="hello", "else");
     assert((maybeNot else "goodbye")=="goodbye", "else");
