@@ -20,24 +20,5 @@ void characters() {
         i:=i+1;
         assert(x>=`a`&&x<=`z`, "character range");
     }
-    assert(i==26, "character range");
-    
-    //TODO: move elsewhere!
-    
-    void print(Character... chars) {
-        for (c in chars) {
-            process.write(c.string);
-        }
-        process.write("\n");
-    }
-    
-    print("hello".characters...);
-    print( `h`, `i` );
-    print { chars="hello".characters; };
-    print { `h`, `i` };
-        
-    print();
-    
-    print{};
-            
+    assert(i==26, "character range");    
 }

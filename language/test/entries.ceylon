@@ -66,4 +66,8 @@ void entriesAndRanges() {
         assert(i==j--, "decreasing range iteration");
     }
     assert(j==-1, "decreasing range iteration");
+    
+    String->Entry<Boolean,String> ent = "hello"->(true->"hello");
+    assert(ent.item.item=="hello", "entry item item");
+    
 }

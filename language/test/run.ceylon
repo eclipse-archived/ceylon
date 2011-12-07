@@ -10,5 +10,7 @@ shared void run() {
     clones();
     types();
     exceptions();
+    operators();
+    misc();
     results();
 }

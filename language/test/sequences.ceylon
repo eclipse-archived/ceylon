@@ -227,8 +227,6 @@ shared void sequences() {
         assert(name.initial(1)==initial.string, "entry iteration");
     }
     
-    String->Entry<Boolean,String> ent = "hello"->(true->"hello");
-    
     value sequenceEntries = entries("X1", "X2", "X3");
     assert(sequenceEntries.size==3, "entries size");
     assert(nonempty sequenceEntries, "nonempty entries");
@@ -241,8 +239,5 @@ shared void sequences() {
     for (nat->str in sequenceEntries) {
         assert("X"+(nat+1).string==str, "entries iteration");
     }
-    
-    Correspondence<Natural, String> c1 = {};
-    assert(!exists c1[0], "empty correspondence");
-
+        
 }
