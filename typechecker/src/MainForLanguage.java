@@ -1,11 +1,6 @@
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
-import com.redhat.ceylon.compiler.typechecker.io.VFS;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-
-import java.io.File;
-import java.util.Arrays;
 
 /**
  * Some hack before a proper unit test harness is put in place
