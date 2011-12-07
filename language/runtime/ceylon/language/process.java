@@ -55,7 +55,7 @@ public class process extends ceylon.language.Object {
                 .readLine();
         } 
         catch (IOException e) {
-            throw new Exception("could not read line from standard input", e);
+            throw new Exception(String.instance("could not read line from standard input"), e);
         }
     }
     
