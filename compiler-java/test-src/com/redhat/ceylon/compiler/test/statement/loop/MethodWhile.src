@@ -4,7 +4,7 @@ class MethodWhile {
     
     public final long m() {
         boolean cont = true;
-        while ((let boolean $ceylontmp0$0 = cont in $ceylontmp0$0)) {
+        while ((let boolean $ceylontmp0 = cont in $ceylontmp0)) {
             cont = false;
         }
         return 0L;

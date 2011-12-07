@@ -6,7 +6,7 @@ final class bug248 {
     }
     
     static void bug248() {
-        while ((let boolean $ceylontmp0$0 = false in $ceylontmp0$0)) {
+        while ((let boolean $ceylontmp0 = false in $ceylontmp0)) {
             throw new ceylon.language.Exception(null, null);
         }
     }
