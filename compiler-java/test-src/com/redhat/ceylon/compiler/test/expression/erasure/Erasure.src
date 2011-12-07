@@ -271,7 +271,9 @@ class Test {
         final ceylon.language.Iterable naturalsOrNothing = new ceylon.language.ArraySequence(p1);
         final ceylon.language.Natural n52 = (ceylon.language.Natural)(let ceylon.language.Correspondence $ceylontmpsafeaccess32 = (ceylon.language.Correspondence)naturalsOrNothing in $ceylontmpsafeaccess32 != null ? $ceylontmpsafeaccess32.item((ceylon.language.Natural)p1) : null);
         final com.redhat.ceylon.compiler.test.expression.erasure.Top t2 = (com.redhat.ceylon.compiler.test.expression.erasure.Top)(let ceylon.language.Correspondence $ceylontmpsafeaccess33 = (ceylon.language.Correspondence)topsOrNothing in $ceylontmpsafeaccess33 != null ? $ceylontmpsafeaccess33.item((ceylon.language.Natural)p1) : null);
-        final ceylon.language.Iterable subrange = ((ceylon.language.Ranged<? super ceylon.language.Natural, ? extends ceylon.language.Iterable>)naturals).span((ceylon.language.Natural)p1, (ceylon.language.Natural)p1);
+        ceylon.language.Iterable subrange;
+        subrange = ((ceylon.language.Ranged<? super ceylon.language.Natural, ? extends ceylon.language.Iterable>)naturals).span((ceylon.language.Natural)p1, (ceylon.language.Natural)p1);
+        subrange = ((ceylon.language.Ranged<? super ceylon.language.Natural, ? extends ceylon.language.Iterable>)naturals).span((ceylon.language.Natural)p1, null);
         final ceylon.language.Iterable<? extends ceylon.language.Natural> plainNaturals = new ceylon.language.ArraySequence(p1);
         for (ceylon.language.Iterator $it$iter$34 = naturals.getIterator(); $it$iter$34 != null; $it$iter$34 = $it$iter$34.getTail()) {
             final .java.lang.Object it = $it$iter$34.getHead();
