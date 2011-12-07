@@ -26,8 +26,10 @@ import java.util.List;
 import javax.tools.JavaFileObject.Kind;
 
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
 import com.sun.tools.javac.code.Symbol.PackageSymbol;
@@ -52,6 +54,8 @@ public class LazyPackage extends Package {
         // FIXME: what's the difference?
         return getDirectMember(name);
     }
+    
+    // FIXME: redo this method better: https://github.com/ceylon/ceylon-spec/issues/90
     @Override
     public Declaration getDirectMember(String name) {
         String pkgName = getQualifiedNameString();
@@ -71,9 +75,18 @@ public class LazyPackage extends Package {
         // only get it from the classpath if we're not compiling it
         if(classSymbol != null && classSymbol.classfile.getKind() != Kind.SOURCE)
             return modelLoader.convertToDeclaration(className, DeclarationType.VALUE);
-        return super.getDirectMember(name);
+        return getDirectMemberFromSource(name);
     }
-    
+
+    private Declaration getDirectMemberFromSource(String name) {
+        for (Declaration d: super.getMembers()) {
+            if (isResolvable(d) && /*d.isShared() &&*/ isNamed(name, d)) {
+                return d;
+            }
+        }
+        return null;
+    }
+
     private String getQualifiedName(final String pkgName, String name) {
         // FIXME: some refactoring needed
         name = Util.quoteIfJavaKeyword(name);
@@ -83,6 +96,7 @@ public class LazyPackage extends Package {
     
     // FIXME: This is only here for wildcard imports, and we should be able to make it lazy like the rest
     // with a bit of work in the typechecker
+    // FIXME: redo this method better: https://github.com/ceylon/ceylon-spec/issues/90
     @Override
     public List<Declaration> getMembers() {
         // make sure the package is loaded
@@ -97,4 +111,17 @@ public class LazyPackage extends Package {
     public void addMember(Declaration d) {
         compiledDeclarations.add(d);
     }
+
+    // FIXME: remove those two when they are public in typechecker's model.Util
+    static boolean isResolvable(Declaration declaration) {
+        return declaration.getName()!=null &&
+            !(declaration instanceof Setter) && //return getters, not setters
+            !(declaration instanceof Class && 
+                    Character.isLowerCase(declaration.getName().charAt(0))); //don't return the type associated with an object dec 
+    }
+    
+    static boolean isNamed(String name, Declaration d) {
+        return d.getName()!=null && d.getName().equals(name);
+    }
+    
 }
