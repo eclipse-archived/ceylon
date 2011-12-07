@@ -82,11 +82,11 @@ public class ModuleValidator {
             if ( ! module.isAvailable() ) {
                 //try and load the module from the repository
                 final ArtifactProvider artifactProvider = context.getArtifactProvider();
-                final ClosableVirtualFile src = artifactProvider.getArtifact(module.getName(), "0.1", "src");
+                final ClosableVirtualFile src = artifactProvider.getArtifact(module.getName(), module.getVersion(), "src");
                 if (src == null) {
                     //not there => error
                     StringBuilder error = new StringBuilder("Cannot find module artifact ");
-                    error.append( artifactProvider.getArtifactName(module.getName(), "0.1", "src") )
+                    error.append( artifactProvider.getArtifactName(module.getName(), module.getVersion(), "src") )
                             .append(" in local repository ('~/.ceylon/repo')")
                             .append("\n\tDependency tree: ");
                     buildDependencyString(dependencyTree, module, error);
