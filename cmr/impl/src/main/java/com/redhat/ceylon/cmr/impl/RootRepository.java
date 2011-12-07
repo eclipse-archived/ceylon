@@ -53,7 +53,7 @@ public class RootRepository extends AbstractNodeRepository {
 
     public RootRepository(File rootDir) {
         fileContentStore = new FileContentStore(rootDir);
-        setRoot(new RootNode(fileContentStore));
+        setRoot(new RootNode(fileContentStore, fileContentStore));
     }
 
     public File getArtifact(ArtifactContext context) throws IOException {

@@ -32,10 +32,32 @@ import java.io.InputStream;
  */
 public interface ContentStore {
 
+    /**
+     * Just check if the content is there for node.
+     *
+     * @param node the node to check
+     * @return content handle or null if content doesn't exist
+     */
     ContentHandle popContent(Node node);
 
+    /**
+     * Get the content handle.
+     * Throw IO exception if the content is not there.
+     *
+     * @param node the node to check
+     * @return content handle
+     * @throws IOException if content is not found or any other I/O error
+     */
     ContentHandle getContent(Node node) throws IOException;
 
+    /**
+     * Put content for node.
+     *
+     * @param node the node to put against
+     * @param stream the content stream
+     * @return content handle
+     * @throws IOException for any I/O error
+     */
     ContentHandle putContent(Node node, InputStream stream) throws IOException;
 
 }

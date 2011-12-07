@@ -23,13 +23,7 @@
 package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.spi.ContentStore;
-import com.redhat.ceylon.cmr.spi.MergeStrategy;
-import com.redhat.ceylon.cmr.spi.Node;
-import com.redhat.ceylon.cmr.spi.OpenNode;
-
-import java.io.InputStream;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import com.redhat.ceylon.cmr.spi.StructureBuilder;
 
 /**
  * Root node impl.
@@ -37,8 +31,10 @@ import java.util.concurrent.ConcurrentMap;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class RootNode extends DefaultNode {
-    public RootNode(ContentStore contentStore) {
-        super(contentStore);
+    public RootNode(ContentStore contentStore, StructureBuilder structureBuilder) {
+        super("<root>", null);
+        addService(ContentStore.class, contentStore);
+        addService(StructureBuilder.class, structureBuilder);
     }
 
     @Override

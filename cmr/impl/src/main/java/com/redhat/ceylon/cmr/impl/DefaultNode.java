@@ -24,18 +24,12 @@ package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.ContentStore;
-import com.redhat.ceylon.cmr.spi.ContentTransformer;
-import com.redhat.ceylon.cmr.spi.MergeStrategy;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.util.Map;
-import java.util.WeakHashMap;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  * Default node impl.
@@ -43,93 +37,22 @@ import java.util.concurrent.ConcurrentMap;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 @SuppressWarnings({"NullableProblems"})
-public class DefaultNode implements OpenNode {
+public class DefaultNode extends AbstractOpenNode {
 
-    private static ContentHandle MARKER = new ContentHandle() {
-        public InputStream getContent() throws IOException {
-            return null;
-        }
-        public void clean() {
-        }
-    };
+    private static final long serialVersionUID = 1L;
 
-    private String label;
-    private Object value;
-    private final ConcurrentMap<String, OpenNode> parents = new ConcurrentHashMap<String, OpenNode>();
-    private final ConcurrentMap<String, OpenNode> children = new ConcurrentHashMap<String, OpenNode>();
-
-    private final Map<Class<?>, Object> services = new WeakHashMap<Class<?>, Object>();
-
-    private volatile ContentHandle handle;
+    private transient ContentHandle handle;
 
     public DefaultNode() {
+        // serialization only
     }
 
     public DefaultNode(String label, Object value) {
-        this.label = label;
-        this.value = value;
+        super(label, value);
     }
 
-    public DefaultNode(ContentStore contentStore) {
-        this("<root>", null);
-        setContentStore(contentStore);
-    }
-
-    protected ContentStore getContentStore() {
-        ContentStore contentStore = getService(ContentStore.class);
-        if (contentStore != null)
-            return contentStore;
-
-        for (Node parent : getParents()) {
-            if (parent instanceof DefaultNode) {
-                DefaultNode dn = (DefaultNode) parent;
-                ContentStore cs = dn.getContentStore();
-                if (cs != null) {
-                    setContentStore(cs);
-                    return cs;
-                }
-            }
-        }
-
-        throw new IllegalArgumentException("No content store defined in node chain!");
-    }
-
-    protected void setContentStore(ContentStore contentStore) {
-        addService(ContentStore.class, contentStore);
-    }
-
-    protected MergeStrategy getStrategy() {
-        MergeStrategy strategy = getService(MergeStrategy.class);
-        if (strategy != null)
-            return strategy;
-
-        for (Node parent : getParents()) {
-            if (parent instanceof DefaultNode) {
-                DefaultNode dn = (DefaultNode) parent;
-                MergeStrategy ms = dn.getStrategy();
-                if (ms != null) {
-                    addService(MergeStrategy.class, ms);
-                    return ms;
-                }
-            }
-        }
-
-        throw new IllegalArgumentException("No merge strategy defined in node chain!");
-    }
-
-    protected synchronized <T> T getService(Class<T> serviceType) {
-        return serviceType.cast(services.get(serviceType));
-    }
-
-    @Override
-    public synchronized <T> void addService(Class<T> serviceType, T service) {
-        if (serviceType == null)
-            throw new IllegalArgumentException("Null service type");
-
-        if (service != null)
-            services.put(serviceType, service);
-        else
-            services.remove(serviceType);
+    void setHandle(ContentHandle handle) {
+        this.handle = handle;
     }
 
     @Override
@@ -137,22 +60,6 @@ public class DefaultNode implements OpenNode {
         if (other == null)
             throw new IllegalArgumentException("Null node!");
         // TODO
-    }
-
-    @Override
-    public void link(OpenNode child) {
-        if (child == null)
-            throw new IllegalArgumentException("Null node!");
-        children.put(child.getLabel(), child);
-        if (child instanceof DefaultNode) {
-            DefaultNode dn = (DefaultNode) child;
-            dn.parents.put(getLabel(), this);
-        }
-    }
-
-    @Override
-    public OpenNode addNode(String label) {
-        return addNode(label, null);
     }
 
     @Override
@@ -202,7 +109,7 @@ public class DefaultNode implements OpenNode {
             previous = node;
             node.parents.put(getLabel(), this);
             if (content != null)
-                node.handle = getContentStore().putContent(node, content);
+                node.handle = findService(ContentStore.class).putContent(node, content);
         } else if (content != null) {
             throw new IllegalArgumentException("Content node already exists: " + label);
         }
@@ -210,36 +117,13 @@ public class DefaultNode implements OpenNode {
     }
 
     @Override
-    public String getLabel() {
-        return label;
-    }
-
-    @Override
-    public <T> T getValue(Class<T> valueType) {
-        if (valueType == null)
-            throw new IllegalArgumentException("Null value type");
-
-        return valueType.cast(value);
-    }
-
-    @Override
-    public Node getChild(String label) {
-        return children.get(label);
-    }
-
-    @Override
-    public Iterable<? extends Node> getChildren() {
-        return children.values();
-    }
-
-    @Override
     public boolean hasContent() {
-        if (handle == null || handle == MARKER)
+        if (handle == null || handle == HANDLE_MARKER)
             return false;
 
-        ContentHandle ch = getContentStore().popContent(this);
+        ContentHandle ch = findService(ContentStore.class).popContent(this);
         if (ch == null) {
-            handle = MARKER;
+            handle = HANDLE_MARKER;
         }
 
         return (ch != null);
@@ -250,130 +134,12 @@ public class DefaultNode implements OpenNode {
         if (handle != null) {
             return handle.getContent();
         } else {
-            ContentHandle ch = getContentStore().getContent(this);
+            ContentHandle ch = findService(ContentStore.class).getContent(this);
             if (ch == null) {
-                ch = MARKER;
+                ch = HANDLE_MARKER;
             }
             handle = ch;
             return ch.getContent();
-        }
-    }
-
-    @Override
-    @SuppressWarnings({"unchecked"})
-    public <T> T getContent(Class<T> contentType) throws IOException {
-        if (contentType == null)
-            throw new IllegalArgumentException("Null content type!");
-
-        if (InputStream.class.equals(contentType)) {
-            return (T) getInputStream();
-        } else {
-            ContentTransformer ct = getService(ContentTransformer.class);
-            if (ct != null)
-                return ct.transform(contentType, new LazyInputStream());
-            else
-                return IOUtils.fromStream(contentType, getInputStream());
-        }
-    }
-
-    @Override
-    public Node getParent(String label) {
-        return parents.get(label);
-    }
-
-    @Override
-    public Iterable<? extends Node> getParents() {
-        return parents.values();
-    }
-
-    @Override
-    public int hashCode() {
-        return label.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof Node == false)
-            return false;
-
-        Node dn = (Node) obj;
-
-        if (label.equals(dn.getLabel()) == false)
-            return false;
-
-        // check if we have the same parents
-        for (Node p : getParents()) {
-            for (Node dp : dn.getParents()) {
-                if (p.equals(dp))
-                    return true; // one is enough to make it true
-            }
-        }
-
-        return false;
-    }
-
-    private class LazyInputStream extends InputStream {
-        private InputStream delegate;
-
-        private InputStream getDelegate() throws IOException {
-            if (delegate == null) {
-                InputStream is = DefaultNode.this.getInputStream();
-                if (is == null)
-                    throw new IllegalArgumentException("Null input stream!");
-                delegate = is;
-            }
-            return delegate;
-        }
-
-        public int read() throws IOException {
-            return getDelegate().read();
-        }
-
-        @Override
-        public int read(byte[] b) throws IOException {
-            return getDelegate().read(b);
-        }
-
-        @Override
-        public int read(byte[] b, int off, int len) throws IOException {
-            return getDelegate().read(b, off, len);
-        }
-
-        @Override
-        public long skip(long n) throws IOException {
-            return getDelegate().skip(n);
-        }
-
-        @Override
-        public int available() throws IOException {
-            return getDelegate().available();
-        }
-
-        @Override
-        public void mark(int readlimit) {
-            try {
-                getDelegate().mark(readlimit);
-            } catch (IOException ignored) {
-            }
-        }
-
-        @Override
-        public void reset() throws IOException {
-            getDelegate().reset();
-        }
-
-        @Override
-        public boolean markSupported() {
-            try {
-                return getDelegate().markSupported();
-            } catch (IOException ignored) {
-                return false;
-            }
-        }
-
-        public void close() throws IOException {
-            if (delegate != null)
-                delegate.close();
         }
     }
 }

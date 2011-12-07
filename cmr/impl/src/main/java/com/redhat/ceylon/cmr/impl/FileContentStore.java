@@ -22,21 +22,22 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.spi.ContentHandle;
-import com.redhat.ceylon.cmr.spi.ContentStore;
-import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.cmr.spi.*;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * File content store.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class FileContentStore implements ContentStore {
+public class FileContentStore implements ContentStore, StructureBuilder {
 
     private File root;
 
@@ -92,6 +93,32 @@ public class FileContentStore implements ContentStore {
 
         IOUtils.writeToFile(file, stream);
         return new FileContentHandle(file);
+    }
+
+    public OpenNode find(Node parent, String child) {
+        File file = new File(getFile(parent), child);
+        if (file.exists()) {
+            DefaultNode node = new DefaultNode(child, null);
+            node.setHandle(new FileContentHandle(file));
+            return node;
+        } else {
+            return null;
+        }
+    }
+
+    public Iterable<? extends OpenNode> find(Node parent) {
+        File pf = getFile(parent);
+        if (pf.exists()) {
+            List<OpenNode> nodes = new ArrayList<OpenNode>();
+            for (File file : pf.listFiles()) {
+                DefaultNode node = new DefaultNode(file.getName(), null);
+                node.setHandle(new FileContentHandle(file));
+                nodes.add(node);
+            }
+            return nodes;
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     private static class FileContentHandle implements ContentHandle {
