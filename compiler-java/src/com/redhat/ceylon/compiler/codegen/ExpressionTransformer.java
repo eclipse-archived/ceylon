@@ -842,6 +842,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression transformNamedInvocation(final InvocationExpression ce) {
         final ListBuffer<JCVariableDecl> args = ListBuffer.lb();
         final ListBuffer<JCExpression> names = ListBuffer.lb();
+
+        java.util.List<ProducedType> typeArgumentModels = getTypeArguments(ce);
+        final List<JCExpression> typeArgs = transformTypeArguments(typeArgumentModels);
+        boolean isRaw = typeArgs.isEmpty();
+
         Declaration primDecl = ce.getPrimary().getDeclaration();
         if (primDecl != null) {
             java.util.List<ParameterList> paramLists = ((Functional)primDecl).getParameterLists();
@@ -858,13 +863,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                     boundSequenced = true;
                 }
                 Expression expr = ((Tree.SpecifiedArgument)namedArg).getSpecifierExpression().getExpression();
-                ProducedType type = declaredParam.getType();
-                if (isTypeParameter(type)) {
-                    type = expr.getTypeModel();
-                }
                 int index = declaredParams.indexOf(declaredParam);
                 String varName = varBaseName + "$" + index;
                 BoxingStrategy boxType = Util.getBoxingStrategy(declaredParam);
+                ProducedType type = getTypeForParameter(declaredParam, isRaw, typeArgumentModels);
+                // if we can't pick up on the type from the declaration, revert to the type of the expression
+                if(isTypeParameter(type))
+                    type = expr.getTypeModel();
                 JCExpression typeExpr = makeJavaType(type, (boxType == BoxingStrategy.BOXED) ? TYPE_ARGUMENT : 0);
                 JCExpression argExpr = transformExpression(expr, boxType, type);
                 JCVariableDecl varDecl = makeVar(varName, typeExpr, argExpr);
@@ -899,9 +904,6 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         }
 
-        java.util.List<ProducedType> typeArgumentModels = getTypeArguments(ce);
-        final List<JCExpression> typeArgs = transformTypeArguments(typeArgumentModels);
-        
         at(ce);
         if (ce.getPrimary() instanceof Tree.BaseTypeExpression) {
             ProducedType classType = (ProducedType)((Tree.BaseTypeExpression)ce.getPrimary()).getTarget();
