@@ -40,7 +40,7 @@ import java.util.concurrent.ConcurrentMap;
 public abstract class AbstractOpenNode implements OpenNode, Serializable {
 
     private static final long serialVersionUID = 1L;
-    private static final String NODE_MARKER = ".marker";   
+    private static final String NODE_MARKER = "#marker#";
     
     protected static ContentHandle HANDLE_MARKER = new ContentHandle() {
         public InputStream getContent() throws IOException {
@@ -162,12 +162,14 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
     @Override
     public Iterable<? extends Node> getChildren() {
         if (children.isEmpty()) {
+            children.put(NODE_MARKER, new MarkerNode()); // add marker
+
             ConcurrentMap<String, OpenNode> tmp = new ConcurrentHashMap<String, OpenNode>();
             for (OpenNode on : findService(StructureBuilder.class).find(this))
                 put(tmp, on.getLabel(), on);
             children.putAll(tmp);
-            children.put(NODE_MARKER, new MarkerNode());
-            return tmp.values();            
+
+            return tmp.values();
         } else {
             List<Node> nodes = new ArrayList<Node>();
             for (Node on : children.values()) {
