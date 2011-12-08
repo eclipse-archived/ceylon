@@ -104,10 +104,15 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
     public void link(OpenNode child) {
         if (child == null)
             throw new IllegalArgumentException("Null node!");
-        children.put(child.getLabel(), child);
-        if (child instanceof AbstractOpenNode) {
-            AbstractOpenNode dn = (AbstractOpenNode) child;
-            dn.parents.put(getLabel(), this);
+
+        OpenNode previous = children.putIfAbsent(child.getLabel(), child);
+        if (previous == null) {
+            if (child instanceof AbstractOpenNode) {
+                AbstractOpenNode dn = (AbstractOpenNode) child;
+                dn.parents.put(getLabel(), this);
+            }
+        } else {
+            merge(child);
         }
     }
 

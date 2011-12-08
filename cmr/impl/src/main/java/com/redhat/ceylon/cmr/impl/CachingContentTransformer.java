@@ -47,4 +47,19 @@ public class CachingContentTransformer implements ContentTransformer {
         }
         return cached;
     }
+
+    /**
+     * Clear cache.
+     *
+     * If contentType parameter is set, only that content is removed,
+     * otherwise whole cache is cleared.
+     *
+     * @param contentType the content type
+     */
+    public void clear(Class<?> contentType) {
+        if (contentType != null)
+            cache.remove(contentType);
+        else
+            cache.clear();
+    }
 }

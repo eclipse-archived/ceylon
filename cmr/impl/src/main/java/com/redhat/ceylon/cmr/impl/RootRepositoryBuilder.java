@@ -23,6 +23,8 @@
 package com.redhat.ceylon.cmr.impl;
 
 import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.spi.ContentTransformer;
+import com.redhat.ceylon.cmr.spi.MergeStrategy;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
 import java.io.File;
@@ -44,13 +46,32 @@ public class RootRepositoryBuilder {
         repository = new RootRepository(rootDir);
     }
 
+    private OpenNode getRoot() {
+        return repository.getRoot();
+    }
+
+    public RootRepositoryBuilder mergeStrategy(MergeStrategy strategy) {
+        getRoot().addService(MergeStrategy.class, strategy);
+        return this;
+    }
+
+    public RootRepositoryBuilder contentTransformer(ContentTransformer transformer) {
+        getRoot().addService(ContentTransformer.class, transformer);
+        return this;
+    }
+
+    public RootRepositoryBuilder cacheContent() {
+        getRoot().addService(ContentTransformer.class, new CachingContentTransformer());
+        return this;
+    }
+
     public RootRepositoryBuilder mergeNode(OpenNode node) {
-        repository.getRoot().merge(node);
+        getRoot().merge(node);
         return this;
     }
 
     public RootRepositoryBuilder linkNode(OpenNode node) {
-        repository.getRoot().link(node);
+        getRoot().link(node);
         return this;
     }
 

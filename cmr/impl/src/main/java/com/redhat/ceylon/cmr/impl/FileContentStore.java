@@ -53,7 +53,7 @@ public class FileContentStore implements ContentStore, StructureBuilder {
     File getFile(Node node) {
         File file = cache.get(node);
         if (file == null) { 
-            String path = getFullPath(node);
+            String path = NodeUtils.getFullPath(node);
             file = new File(root, path);
             cache.put(node, file);
         }
@@ -68,33 +68,6 @@ public class FileContentStore implements ContentStore, StructureBuilder {
     
     void clear() {
         cache.clear();
-    }
-
-    protected Node firstParent(Node node) {
-        final Iterable<? extends Node> parents = node.getParents();
-        //noinspection LoopStatementThatDoesntLoop
-        for (Node parent : parents) {
-            return parent;
-        }
-        return null;
-    }
-    
-    protected String getFullPath(Node node) {
-        final StringBuilder path = new StringBuilder();
-        buildFullPath(node, path, false);
-        return path.toString();
-    }
-
-    protected static void buildFullPath(Node node, StringBuilder path, boolean appendSeparator) {
-        final Iterable<? extends Node> parents = node.getParents();
-        //noinspection LoopStatementThatDoesntLoop
-        for (Node parent : parents) {
-            buildFullPath(parent, path, true);
-            break; // just use the first one
-        }
-        path.append(node.getLabel());
-        if (appendSeparator && node.hasContent() == false)
-            path.append(File.separator);
     }
 
     public ContentHandle popContent(Node node) {
@@ -177,7 +150,7 @@ public class FileContentStore implements ContentStore, StructureBuilder {
         File[] files = file.listFiles();
         if ((files == null || files.length == 0) && file.delete()) {
             cache.remove(node); // remove from cache, since probably not used anymore
-            delete(file.getParentFile(), firstParent(node));
+            delete(file.getParentFile(), NodeUtils.firstParent(node));
         }
     }
     
