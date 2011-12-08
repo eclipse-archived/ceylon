@@ -1113,6 +1113,12 @@ public abstract class AbstractTransformer implements Transformation {
         } else if (type.isExactly(typeFact().getVoidDeclaration().getType())){
             // everything is Void, it's the root of the hierarchy
             return makeIgnoredEvalAndReturn(testExpr, makeBoolean(true));
+        } else if (type.isExactly(typeFact().getEqualityDeclaration().getType())){
+            // it's erased
+            return makeUtilInvocation("isEquality", List.of(testExpr));
+        } else if (type.isExactly(typeFact().getIdentifiableObjectDeclaration().getType())){
+            // it's erased
+            return makeUtilInvocation("isIdentifiableObject", List.of(testExpr));
         } else if (type.getDeclaration() instanceof BottomType){
             // nothing is Bottom
             return makeIgnoredEvalAndReturn(testExpr, makeBoolean(false));
