@@ -4,7 +4,8 @@ options {
     memoize=false;
 }
 
-@parser::header { package com.redhat.ceylon.compiler.typechecker.parser; 
+@parser::header { package com.redhat.ceylon.compiler.typechecker.parser;
+                  import com.redhat.ceylon.compiler.typechecker.tree.Node;
                   import static com.redhat.ceylon.compiler.typechecker.tree.CustomTree.*; }
 @lexer::header { package com.redhat.ceylon.compiler.typechecker.parser; }
 
@@ -347,7 +348,7 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
         )?
         ( 
           { $declaration = mdef; }
-          mb=memberBody[$type.type] 
+          mb=methodBody[$type.type] 
          { mdef.setBlock($mb.block); }
         //-> ^(METHOD_DEFINITION unionType memberName methodParameters memberBody)
         | 
@@ -372,8 +373,13 @@ typedMethodOrAttributeDeclaration returns [TypedDeclaration declaration]
       //-> ^(ATTRIBUTE_DECLARATION unionType memberName specifier? initializer?)
       | 
         { $declaration = adef; }
-        ab=memberBody[$type.type]
-        { adef.setBlock($ab.block); }
+        ab=attributeBody[$type.type]
+        { if ($ab.result instanceof Block)
+              adef.setBlock((Block)$ab.result); 
+          else {
+              $declaration = adec;
+              adec.setSpecifierOrInitializerExpression((SpecifierExpression)$ab.result);
+          } }
       //-> ^(ATTRIBUTE_GETTER_DEFINITION unionType memberName memberBody)      
       )
     ;
@@ -534,7 +540,40 @@ classBody returns [ClassBody classBody]
 //can't tell whether a member body is a block
 //or a named argument list until after we
 //finish parsing it
-memberBody[StaticType type] returns [Block block]
+attributeBody[StaticType type] returns [Node result]
+      //options { memoize=true; }
+    : 
+    {$type instanceof BaseType}?=>
+    (
+      (namedArguments)
+      => namedArguments //first try to match with no directives or control structures
+      { SpecifierExpression specifier = new SpecifierExpression(null);
+        SimpleType t = (SimpleType) $type;
+        Expression e = new Expression(null);
+        InvocationExpression ie = new InvocationExpression(null);
+        BaseTypeExpression bme = new BaseTypeExpression(null);
+        bme.setIdentifier(t.getIdentifier());
+        bme.setTypeArguments(new InferredTypeArguments(null));
+        if (t.getTypeArgumentList()!=null)
+            bme.setTypeArguments(t.getTypeArgumentList());
+        ie.setPrimary(bme);
+        ie.setNamedArgumentList($namedArguments.namedArgumentList);
+        e.setTerm(ie);
+        specifier.setExpression(e);
+        $result=specifier; }
+    //-> ^(BLOCK ^(RETURN ^(EXPRESSION ^(INVOCATION_EXPRESSION ^(BASE_TYPE_EXPRESSION { ((CommonTree)$mt).getChild(0) } { ((CommonTree)$mt).getChild(1) } ) namedArguments))))
+      | b1=block //if there is a "return" directive or control structure, it must be a block
+      { $result=$b1.block; } 
+    )
+    | b2=block
+      { $result=$b2.block; }
+    ;
+
+//This rule accounts for the problem that we
+//can't tell whether a member body is a block
+//or a named argument list until after we
+//finish parsing it
+methodBody[StaticType type] returns [Block block]
       //options { memoize=true; }
     : 
     {$type instanceof BaseType}?=>
@@ -1373,9 +1412,9 @@ typedMethodOrGetterArgument returns [TypedArgument declaration]
           { marg.addParameterList($parameters.parameterList); }
         )+
       )?
-      memberBody[$type.type]
-      { marg.setBlock($memberBody.block); 
-        aarg.setBlock($memberBody.block); }
+      methodBody[$type.type]
+      { marg.setBlock($methodBody.block); 
+        aarg.setBlock($methodBody.block); }
       //-> ^(METHOD_ARGUMENT unionType memberName parameters+ memberBody)
       //-> ^(ATTRIBUTE_ARGUMENT unionType memberName memberBody)      
     ;
