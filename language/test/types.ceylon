@@ -3,15 +3,19 @@ class T() extends Object() {
 }
 
 void types() {
-    Object bool = true;
-    Object entry = 1->2;
+    Void bool = true;
+    Void entry = 1->2;
     Void nothing = null;
-    Object one = 1;
-    Object t = T();
-    assert(is Object bool, "boolean type");
-    assert(is IdentifiableObject bool, "boolean type");
-    assert(is Equality bool, "boolean type");
-    assert(!is Nothing bool, "not null boolean type");
+    Void one = 1;
+    Void t = T();
+    Void c = `c`;
+    Void str = "string";
+    
+    assert(is Object bool, "boolean type is object");
+    assert(is IdentifiableObject bool, "boolean type is identifiable");
+    assert(is Equality bool, "boolean type is equality");
+    assert(!is Nothing bool, "not null boolean type is not nothing");
+    assert(is Boolean bool, "boolean type");
     
     assert(is Nothing nothing, "null type");
     assert(!is Equality nothing, "null type");
@@ -27,19 +31,60 @@ void types() {
     assert(!is IdentifiableObject one, "not natural type");
     assert(is Equality one, "natural type");
     assert(!is Nothing one, "not null natural type");
-    
+    assert(is Natural one, "natural type");
+        
+    assert(is Object c, "not char type");
+    assert(!is IdentifiableObject c, "not char type");
+    assert(is Equality c, "char type");
+    assert(!is Nothing c, "not null char type");
+    assert(is Character c, "char type");
+        
+    assert(is Object str, "not string type");
+    assert(!is IdentifiableObject str, "not string type");
+    assert(is Equality str, "string type");
+    assert(!is Nothing str, "not null string type");
+    assert(is String str, "string type");
+        
     assert(!is Equality t, "not eq custom type");
     assert(!is IdentifiableObject t, "not id custom type");
     assert(!is Nothing t, "custom type");
     assert(is Object t, "custom type");
-    
+    assert(is T t, "custom type");
+        
+    if (is Equality bool) {} else { fail("boolean type"); }
+    if (is IdentifiableObject bool) {} else { fail("boolean type"); }
+    if (is Object bool) {} else { fail("boolean type"); }
+    if (is Nothing bool) { fail("null type"); }
+
+    if (is Equality one) {} else { fail("natural type"); }
+    if (is IdentifiableObject one) { fail("natural type"); }
+    if (is Object one) {} else { fail("natural type"); }
+    if (is Nothing one) { fail("null type"); }
+
+    if (is Equality c) {} else { fail("character type"); }
+    if (is IdentifiableObject c) { fail("character type"); }
+    if (is Object c) {} else { fail("character type"); }
+    if (is Nothing c) { fail("null type"); }
+
+    if (is Equality str) {} else { fail("string type"); }
+    if (is IdentifiableObject str) { fail("string type"); }
+    if (is Object str) {} else { fail("string type"); }
+    if (is Nothing str) { fail("null type"); }
+
     if (is Equality t) { fail("custom type"); }
     if (is IdentifiableObject t) { fail("custom type"); }
     if (is Object t) {} else { fail("custom type"); }
+    if (is Nothing t) { fail("null type"); }
 
     if (is Equality entry) {} else { fail("entry type"); }
     if (is IdentifiableObject entry) { fail("entry type"); }
     if (is Object entry) {} else { fail("entry type"); }
+    if (is Nothing entry) { fail("null type"); }
+        
+    if (is Equality nothing) { fail("null type"); }
+    if (is IdentifiableObject nothing) { fail("null type"); }
+    if (is Object nothing) { fail("null type"); }
+    if (is Nothing nothing) {} else { fail("null type"); }
     
     assert(className(1)=="ceylon.language.Natural", "natural classname");
     assert(className(1.0)=="ceylon.language.Float", "float classname");

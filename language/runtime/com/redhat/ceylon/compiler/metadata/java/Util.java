@@ -14,6 +14,9 @@ public class Util {
      * Returns true if the given object satisfies ceylon.language.Equality
      */
     public static boolean isEquality(java.lang.Object o){
+    	//TODO: broken for Java classes
+        if (extendsClass(o, "ceylon.language.IdentifiableObject"))
+            return true;
         return satisfiesInterface(o, "ceylon.language.Equality");
     }
     
@@ -21,6 +24,7 @@ public class Util {
      * Returns true if the given object extends ceylon.language.IdentifiableObject
      */
     public static boolean isIdentifiableObject(java.lang.Object o){
+    	//TODO: broken for Java classes
         return extendsClass(o, "ceylon.language.IdentifiableObject");
     }
     
