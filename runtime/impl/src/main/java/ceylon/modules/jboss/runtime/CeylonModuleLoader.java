@@ -55,6 +55,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class CeylonModuleLoader extends ModuleLoader {
+    private static final Set<String> CEYLON_PATHS = new HashSet<String>();
+
+    static {
+        CEYLON_PATHS.add("ceylon/lang");
+        CEYLON_PATHS.add("ceylon/lang/modules");
+    }
+
     private Repository repository;
     private Map<ModuleIdentifier, List<DependencySpec>> dependencies = new ConcurrentHashMap<ModuleIdentifier, List<DependencySpec>>();
     private Graph<ModuleIdentifier, ModuleIdentifier, Boolean> graph = new Graph<ModuleIdentifier, ModuleIdentifier, Boolean>();
@@ -195,6 +202,16 @@ public class CeylonModuleLoader extends ModuleLoader {
                     builder.setFallbackLoader(onDemandLoader);
                 }
             }
+
+            // TODO -- make ceylon runtime a module
+            // add system as a dependency to all modules, but filter it
+            DependencySpec sds = DependencySpec.createSystemDependencySpec(
+                    PathFilters.match("ceylon/**"),
+                    PathFilters.rejectAll(),
+                    CEYLON_PATHS
+            );
+            builder.addDependency(sds);
+            deps.add(sds);
 
             dependencies.put(moduleIdentifier, deps);
 

@@ -88,6 +88,8 @@ public abstract class ModulesTest {
             }
         });
 
+        System.setProperty("ceylon.repo", tmpdir.getPath());
+
         List<File> files = new ArrayList<File>();
         try {
             files.add(createModuleFile(tmpdir, module));

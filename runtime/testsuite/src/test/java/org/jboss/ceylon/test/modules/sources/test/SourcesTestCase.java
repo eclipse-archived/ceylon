@@ -24,6 +24,7 @@ package org.jboss.ceylon.test.modules.sources.test;
 
 import ceylon.modules.spi.Constants;
 import org.jboss.ceylon.test.modules.ModulesTest;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -36,6 +37,7 @@ import java.util.Map;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
+@Ignore // TODO -- enable sources repo
 public class SourcesTestCase extends ModulesTest {
     protected String getTestsuiteDir() throws Exception {
         URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
