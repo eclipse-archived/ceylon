@@ -135,7 +135,7 @@ public class ModuleValidator {
 
     private void checkAndAddDependency(List<Module> dependencies, Module module, LinkedList<Module> dependencyTree) {
         Module dupe = moduleBuilder.findModule(module, dependencies, false);
-        if (dupe != null) {
+        if (dupe != null && !isSameVersion(module, dupe)) {
             //TODO improve by giving the dependency string leading to these two conflicting modules
             StringBuilder error = new StringBuilder("Module (transitively) imports conflicting versions of ");
             error.append(module.getNameAsString())
@@ -147,6 +147,16 @@ public class ModuleValidator {
         else {
             dependencies.add(module);
         }
+    }
+
+    private boolean isSameVersion(Module module, Module dupe) {
+        if (module == null || dupe == null) return false;
+        if (dupe.getVersion() == null) {
+            System.err.println("TypeChecker assertion failure: version should not be null in " +
+                    "ModuleValidator.isSameVersion. Please report the issue with a test case");
+            return false;
+        }
+        return dupe.getVersion().equals(module.getVersion());
     }
 
     private void executeExternalModulePhases(PhasedUnits phasedUnits) {
