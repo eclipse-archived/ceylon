@@ -382,6 +382,16 @@ public final class String
     	return instance(value.substring((int) fromIndex, (int) toIndex+1));
     }
     
+    public java.lang.String getReversed() {
+    	int len = value.length();
+    	if (len<2) return value;
+    	java.lang.StringBuilder builder = new java.lang.StringBuilder();
+		for (int i=len-1; i>=0; i--) {
+    		builder.append(value.charAt(i));
+    	}
+    	return builder.toString();
+    }
+    
 	@TypeInfo("ceylon.language.Ordered<ceylon.language.String>")
     public Ordered<? extends String> split(
     		@TypeInfo("ceylon.language.Nothing|ceylon.language.Iterable<ceylon.language.Character>")

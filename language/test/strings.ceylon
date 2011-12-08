@@ -194,4 +194,8 @@ shared void strings() {
     for (tok in "  ".split(" ", true)) {
         fail("no string tokens");
     }
+    
+    assert("".reversed=="", "string reversed");
+    assert("x".reversed=="x", "string reversed");
+    assert(hello.reversed=="olleh", "string reversed");
 }
