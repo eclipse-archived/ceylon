@@ -48,6 +48,14 @@ public class MainForTest {
             throw new RuntimeException("Failed to pass getCompilationUnitFromRelativePath for top level files (no package) in real src dir");
         }
 
+        typeChecker = new TypeCheckerBuilder()
+                .verbose(false)
+                .addSrcDirectory( new File("test/moduledep1") )
+                .addSrcDirectory( new File("test/moduledep2") )
+                .addSrcDirectory( new File("test/moduletest") )
+                .getTypeChecker();
+        typeChecker.process();
+
         ClosableVirtualFile latestZippedLanguageSourceFile = MainHelper.getLatestZippedLanguageSourceFile();
         typeChecker = new TypeCheckerBuilder()
                 .verbose(false)
