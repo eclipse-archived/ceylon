@@ -23,7 +23,13 @@
 package com.redhat.ceylon.test.smoke.test;
 
 import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.impl.DefaultNode;
 import com.redhat.ceylon.cmr.impl.RootRepository;
+import com.redhat.ceylon.cmr.spi.ContentStore;
+import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.cmr.spi.StructureBuilder;
+import com.redhat.ceylon.test.smoke.support.ExtRepository;
+import com.redhat.ceylon.test.smoke.support.InMemoryContentStore;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -37,10 +43,14 @@ import java.net.URL;
  */
 public class SmokeTestCase {
 
-    protected Repository getRepository() throws URISyntaxException {
+    protected File getRepositoryRoot() throws URISyntaxException {
         URL url = getClass().getResource("/repo");
         Assert.assertNotNull(url);
-        File root = new File(url.toURI());
+        return new File(url.toURI());
+    }
+
+    protected Repository getRepository() throws URISyntaxException {
+        File root = getRepositoryRoot();
         return new RootRepository(root);
     }
 
@@ -69,4 +79,26 @@ public class SmokeTestCase {
         }
     }
 
+    @Test
+    public void testExternalNodes() throws Exception {
+        ExtRepository repo = new ExtRepository(getRepositoryRoot());
+
+        InMemoryContentStore imcs = new InMemoryContentStore();
+        OpenNode com = new DefaultNode("com");
+        com.addService(ContentStore.class, imcs);
+        com.addService(StructureBuilder.class, imcs);
+        repo.addToRoot(com);
+
+        ByteArrayInputStream baos = new ByteArrayInputStream("qwerty".getBytes());
+        String name = "com.redhat.fizbiz";
+        String version = "1.0.0.Beta1";
+        try {
+            repo.putArtifact(name, version, baos);
+
+            File file = repo.getArtifact(name, version);
+            Assert.assertNotNull(file);
+        } finally {
+            repo.removeArtifact(name, version);
+        }
+    }
 }

@@ -60,10 +60,25 @@ public class FileContentStore implements ContentStore, StructureBuilder {
         return file;
     }
 
+    void removeFile(Node node) {
+        File file = cache.remove(node);
+        if (file != null)
+            delete(file, node);
+    }
+    
     void clear() {
         cache.clear();
     }
 
+    protected Node firstParent(Node node) {
+        final Iterable<? extends Node> parents = node.getParents();
+        //noinspection LoopStatementThatDoesntLoop
+        for (Node parent : parents) {
+            return parent;
+        }
+        return null;
+    }
+    
     protected String getFullPath(Node node) {
         final StringBuilder path = new StringBuilder();
         buildFullPath(node, path, false);
@@ -125,7 +140,7 @@ public class FileContentStore implements ContentStore, StructureBuilder {
         }
 
         if (file.exists()) {
-            final DefaultNode node = new DefaultNode(child, null);
+            final DefaultNode node = new DefaultNode(child);
             if (file.isFile())
                 node.setHandle(new FileContentHandle(node, file));
             return node;
@@ -139,7 +154,7 @@ public class FileContentStore implements ContentStore, StructureBuilder {
         if (pf.exists()) {
             List<OpenNode> nodes = new ArrayList<OpenNode>();
             for (File file : pf.listFiles()) {
-                DefaultNode node = new DefaultNode(file.getName(), null);
+                DefaultNode node = new DefaultNode(file.getName());
                 if (file.isFile())
                     node.setHandle(new FileContentHandle(node, file));
                 nodes.add(node);
@@ -150,13 +165,20 @@ public class FileContentStore implements ContentStore, StructureBuilder {
         }
     }
 
-    protected static void delete(File root, File current) {
-        if (root.equals(current))
+    protected void delete(File file, Node node) {
+        if (file == null)
+            throw new IllegalArgumentException("Null file");
+        if (node == null)
+            throw new IllegalArgumentException("Null node");
+
+        if (root.equals(file))
             return;
-        
-        File[] files = current.listFiles();
-        if ((files == null || files.length == 0) && current.delete())
-            delete(root, current.getParentFile());
+
+        File[] files = file.listFiles();
+        if ((files == null || files.length == 0) && file.delete()) {
+            cache.remove(node); // remove from cache, since probably not used anymore
+            delete(file.getParentFile(), firstParent(node));
+        }
     }
     
     private class FileContentHandle implements ContentHandle {
@@ -175,12 +197,7 @@ public class FileContentStore implements ContentStore, StructureBuilder {
 
         @Override
         public void clean() {
-            try {
-                //noinspection ResultOfMethodCallIgnored
-                delete(root, file);
-            } finally {
-                cache.remove(owner);
-            }
+            delete(file, owner);
         }
     }
 }

@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * Default node impl.
+ * Abstract node impl.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */

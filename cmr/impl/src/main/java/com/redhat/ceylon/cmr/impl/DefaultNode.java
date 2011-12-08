@@ -47,6 +47,10 @@ public class DefaultNode extends AbstractOpenNode {
         // serialization only
     }
 
+    public DefaultNode(String label) {
+        super(label, null);
+    }
+
     public DefaultNode(String label, Object value) {
         super(label, value);
     }

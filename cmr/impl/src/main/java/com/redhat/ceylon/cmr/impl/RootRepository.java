@@ -86,6 +86,28 @@ public class RootRepository extends AbstractNodeRepository {
     }
 
     @Override
+    protected void removeNode(Node parent, String child) throws IOException {
+        final Node node = parent.getChild(child);
+        
+        try {
+            if (node != null) {
+                Node sl = node.getChild(SHA1 + LOCAL);
+                if (sl != null)
+                    fileContentStore.removeFile(sl);
+            }
+        } catch (Exception ignored) {            
+        }
+        
+        try {                        
+            super.removeNode(parent, child);
+        } finally {
+            if (node != null) {
+                fileContentStore.removeFile(node);
+            }                
+        }
+    }
+
+    @Override
     protected Boolean checkSHA(Node artifact) throws IOException {
         Boolean result = super.checkSHA(artifact);
         if (result == null) {

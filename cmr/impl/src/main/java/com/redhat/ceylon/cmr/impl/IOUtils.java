@@ -22,21 +22,7 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.ObjectStreamClass;
-import java.io.OutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Logger;
@@ -60,7 +46,14 @@ public class IOUtils {
         }
     }
 
-    static void copyStream(InputStream in, OutputStream out) throws IOException {
+    /**
+     * Copy stream.
+     *
+     * @param in input stream
+     * @param out output stream
+     * @throws IOException for any I/O error
+     */
+    public static void copyStream(InputStream in, OutputStream out) throws IOException {
         try {
             final byte[] bytes = new byte[8192];
             int cnt;

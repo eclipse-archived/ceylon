@@ -102,17 +102,21 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
         Node parent = getNode(tokens);
         if (parent != null) {
             final String label = getArtifactName(context);
-            if (parent instanceof OpenNode) {
-                final OpenNode on = (OpenNode) parent;
-                on.removeNode(label);
-            } else {
-                throw new IOException("Parent node is not open: " + parent);
-            }
+            removeNode(parent, label);
         } else {
             log.info("No such artifact: " + context);
         }
     }
 
+    protected void removeNode(Node parent, String child) throws IOException {
+        if (parent instanceof OpenNode) {
+            final OpenNode on = (OpenNode) parent;
+            on.removeNode(child);
+        } else {
+            throw new IOException("Parent node is not open: " + parent);
+        }
+    }
+    
     protected Node getLeafNode(ArtifactContext context) {
         final Node node = getNode(getPath(context, true));
         if (node == null) {
