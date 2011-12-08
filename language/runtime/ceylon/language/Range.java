@@ -1,5 +1,8 @@
 package ceylon.language;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.redhat.ceylon.compiler.metadata.java.Class;
 import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
@@ -28,7 +31,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
         this.last = last;
         long index = 0;
         Element x = first;
-        while (!atEnd(x)) {
+        while (!x.equals(last)) {
             ++index;
             x = next(x);
         }
@@ -54,15 +57,9 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
         return last.compare(first).smaller();
     }
     
-    private final boolean atEnd(Element x){
-        return x.compare(last).equal();
-    }
-    
     private final Element next(Element x){
-        if(getDecreasing())
-            return x.getPredecessor();
-        else
-            return x.getSuccessor();
+        return getDecreasing() ? 
+        		x.getPredecessor() : x.getSuccessor();
     }
 
     @Override
@@ -79,7 +76,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
 
     @Override
     public Iterable<? extends Element> getRest() {
-    	if (atEnd(first)) {
+    	if (first.equals(last)) {
     	    return $empty.getEmpty();
     	}
     	else {
@@ -93,7 +90,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
         long index = 0;
         Element x = first;
         while (index<n.longValue()) {
-        	if (atEnd(x)){
+        	if (x.equals(last)){
         		return null;
         	}
         	else {
@@ -117,7 +114,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
             }
             @TypeInfo("ceylon.language.Nothing|ceylon.language.Iterator<Element>")
             public Iterator<Element> getTail() {
-                 return atEnd(x) ? 
+                 return x.equals(last) ? 
                 		 null : new RangeIterator(next(x));
              }
         }
@@ -146,13 +143,6 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
             return x.compare(first).largeAs() && 
                     x.compare(last).smallAs();
         }
-    }
-    
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public final Iterable<Element> by(@Name("stepSize") 
-    @TypeInfo("ceylon.language.Natural") long stepSize){
-    	//TODO!!!!
-        throw new UnsupportedOperationException();
     }
     
     @Override
@@ -278,6 +268,27 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     		end = end.getSuccessor();
     	}
     	return new Range<Element>(begin, end);
+    }
+    
+    public Sequence<? extends Element> by(
+    		@TypeInfo("ceylon.language.Natural")
+    		@Name("stepSize") long stepSize) {
+    	if (stepSize==0) {
+    		throw new Exception(String.instance("step size must be nonzero"));
+    	}
+    	if (first.equals(last) || stepSize==1) {
+    		return this;
+    	}
+    	boolean decreasing = getDecreasing();
+    	List<Element> list = new ArrayList<Element>();
+    	for (Element elem = first; decreasing ? 
+    			elem.compare(last).largeAs() : elem.compare(last).smallAs();) {
+    		list.add(elem);
+    		for (int i=0; i<stepSize; i++) {
+    			elem = next(elem);
+    		}
+    	}
+    	return new ArraySequence<Element>(list.toArray(), 0);
     }
 
 }

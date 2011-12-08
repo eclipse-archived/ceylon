@@ -88,5 +88,12 @@ Range<Integer> range {
     assert(!nonempty (0..9).segment(3,0), "empty range segment");
     assert(!nonempty (0..9).span(11,12), "empty range span");
     assert(!nonempty (0..9).span(5,3), "empty range span"); //TODO: this is wrong
-                                                                                                                                
+    
+    assert((1..1).by(5).string=="1..1", "range by");
+    assert((0..9).by(1).string=="0..9", "range by 1");
+    assert((0..9).by(3).string=="{ 0, 3, 6, 9 }", "range by");
+    assert((2..11).by(3).string=="{ 2, 5, 8, 11 }", "range by");
+    assert((0..9).by(4).string=="{ 0, 4, 8 }", "range by");
+    assert((2..11).by(4).string=="{ 2, 6, 10 }", "range by");
+    
 }

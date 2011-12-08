@@ -28,10 +28,6 @@ shared class Range<Element>(Element first, Element last)
         return last<first; 
     }
     
-    Boolean atEnd(Element x) {
-        return x==last;
-    }
-    
     Element next(Element x) {
         return decreasing then x.predecessor 
                 else x.successor;
@@ -56,8 +52,7 @@ shared class Range<Element>(Element first, Element last)
          range."
     shared actual Element[] rest {
         Element n = next(first);
-        return n==last then {} 
-                else Range<Element>(n,last);
+        return n==last then {} else Range<Element>(n,last);
     }
     
     doc "The element of the range that occurs `n` values after
@@ -68,7 +63,7 @@ shared class Range<Element>(Element first, Element last)
         variable Natural index:=0;
         variable Element x:=first;
         while (index<n) {
-            if (atEnd(x)) {
+            if (x==last) {
                 return null;
             }
             else {
@@ -87,7 +82,7 @@ shared class Range<Element>(Element first, Element last)
                 return current;
             }
             shared actual Iterator<Element>? tail {
-                return atEnd(current) then null
+                return current==last then null
                         else RangeIterator(x);
             }
         }
@@ -119,11 +114,26 @@ shared class Range<Element>(Element first, Element last)
          step size, until a value outside the range is 
          reached. In the case of a decreasing range, the
          sequence is generated using decrements of the step
-         size."
-    shared Element[] by(Natural stepSize) {
+         size. The step size must be nonzero."
+    shared Sequence<Element> by(Natural stepSize) {
         //todo: should we just give Range a step size? Or
         //      add a subclass, perhaps?
-        throw; //todo!
+        if (stepSize.zero) {
+            throw Exception("step size must be nonzero");
+        }
+        if (first==last || stepSize.unit) {
+            return this;
+        }
+        value builder = SequenceAppender<Element>({first});
+        variable Element x := next(first);
+        value steps = 1..stepSize;
+        while (decreasing then x>=last else x<=last) {
+            builder.append(x);
+            for (i in steps) {
+                x := next(x);
+            }
+        }
+        return builder.sequence;
     }
 
     /*shared Natural? index(Element x) {
