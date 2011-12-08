@@ -30,6 +30,7 @@ import com.redhat.ceylon.compiler.test.misc.MiscTest;
 import com.redhat.ceylon.compiler.test.model.AnnotationsTest;
 import com.redhat.ceylon.compiler.test.model.ModelLoaderTest;
 import com.redhat.ceylon.compiler.test.model.TypeParserTest;
+import com.redhat.ceylon.compiler.test.recovery.RecoveryTest;
 import com.redhat.ceylon.compiler.test.statement.StatementTest;
 import com.redhat.ceylon.compiler.test.structure.StructureTest;
 
@@ -43,7 +44,8 @@ import com.redhat.ceylon.compiler.test.structure.StructureTest;
     ModelLoaderTest.class,
     StatementTest.class,
 	StructureTest.class,
-	TypeParserTest.class
+	TypeParserTest.class,
+	RecoveryTest.class
 })
 public class AllTests {
 }

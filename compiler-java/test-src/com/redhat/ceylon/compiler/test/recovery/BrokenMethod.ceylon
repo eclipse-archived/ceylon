@@ -1,0 +1,3 @@
+MissingType brokenMethod() {
+    fuuuuuu()();
+}
