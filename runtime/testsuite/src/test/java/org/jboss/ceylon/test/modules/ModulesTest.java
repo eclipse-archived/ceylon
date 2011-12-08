@@ -22,6 +22,14 @@
 
 package org.jboss.ceylon.test.modules;
 
+import ceylon.modules.Main;
+import ceylon.modules.jboss.runtime.JBossRuntime;
+import ceylon.modules.spi.Constants;
+import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.exporter.ZipExporter;
+import org.jboss.util.file.Files;
+import org.junit.Assert;
+
 import java.io.File;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -31,136 +39,112 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.exporter.ZipExporter;
-import org.jboss.util.file.Files;
-
-import ceylon.modules.Main;
-import ceylon.modules.jboss.runtime.JBossRuntime;
-import ceylon.modules.spi.Constants;
-import org.junit.Assert;
-
 /**
  * Modules test helper.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public abstract class ModulesTest
-{
-   private static String runtimeClassName;
+public abstract class ModulesTest {
+    private static String runtimeClassName;
 
-   static
-   {
-      // TODO -- fixme; //MicrocontainerRuntime.class;
-      runtimeClassName = System.getProperty("ceylon.runtime", JBossRuntime.class.getName());
-   }
+    static {
+        // TODO -- fixme; //MicrocontainerRuntime.class;
+        runtimeClassName = System.getProperty("ceylon.runtime", JBossRuntime.class.getName());
+    }
 
-   /**
-    * Get runtime class name.
-    *
-    * @return the runtime class name
-    */
-   protected String getRuntimeClassName()
-   {
-      return runtimeClassName;
-   }
+    /**
+     * Get runtime class name.
+     *
+     * @return the runtime class name
+     */
+    protected String getRuntimeClassName() {
+        return runtimeClassName;
+    }
 
-   protected File createModuleFile(File tmpdir, Archive module) throws Exception
-   {
-      String fullName = module.getName();
-      int p = fullName.indexOf("-");
-      if (p < 0)
-         throw new IllegalArgumentException("No name and version split: " + fullName);
-
-      String name = fullName.substring(0, p);
-      String version = fullName.substring(p + 1, fullName.lastIndexOf("."));
-
-      File targetDir = new File(tmpdir, toPathString(name, version));
-      if (targetDir.exists() == false)
-         Assert.assertTrue(targetDir.mkdirs());
-      File targetFile = new File(targetDir, fullName);
-
-      ZipExporter exporter = module.as(ZipExporter.class);
-      exporter.exportZip(targetFile, true);
-
-      return targetDir;
-   }
-
-   protected void testArchive(Archive module, Archive... libs) throws Exception
-   {
-      File tmpdir = AccessController.doPrivileged(new PrivilegedAction<File>()
-      {
-         public File run()
-         {
-            return new File(System.getProperty("java.io.tmpdir"));
-         }
-      });
-
-      List<File> files = new ArrayList<File>();
-      try
-      {
-         files.add(createModuleFile(tmpdir, module));
-         for (Archive lib : libs)
-            files.add(createModuleFile(tmpdir, lib));
-
-         String fullName = module.getName();
-         int p = fullName.indexOf("-");
-         if (p < 0)
+    protected File createModuleFile(File tmpdir, Archive module) throws Exception {
+        String fullName = module.getName();
+        int p = fullName.indexOf("-");
+        if (p < 0)
             throw new IllegalArgumentException("No name and version split: " + fullName);
 
-         String name = fullName.substring(0, p);
-         String version = fullName.substring(p + 1, fullName.lastIndexOf("."));
+        String name = fullName.substring(0, p);
+        String version = fullName.substring(p + 1, fullName.lastIndexOf("."));
 
-         Map<Constants, String> args = new HashMap<Constants, String>();
-         args.put(Constants.EXECUTABLE, getRuntimeClassName());
-         args.put(Constants.MODULE, name + "/" + version);
-         args.put(Constants.REPOSITORY, tmpdir.toString());
+        File targetDir = new File(tmpdir, toPathString(name, version));
+        if (targetDir.exists() == false)
+            Assert.assertTrue(targetDir.mkdirs());
+        File targetFile = new File(targetDir, fullName);
 
-         execute(args);
-      }
-      finally
-      {
-         for (File file : files)
-            Files.delete(file);
-      }
-   }
+        ZipExporter exporter = module.as(ZipExporter.class);
+        exporter.exportZip(targetFile, true);
 
-   protected void src(String module, String src) throws Exception
-   {
-      src(module, src, Collections.<Constants, String>emptyMap());
-   }
+        return targetDir;
+    }
 
-   protected void src(String module, String src, Map<Constants, String> extra) throws Exception
-   {
-      Map<Constants, String> args = new HashMap<Constants, String>();
-      args.put(Constants.EXECUTABLE, getRuntimeClassName());
-      args.put(Constants.MODULE, module);
-      args.put(Constants.SOURCE, src);
-      args.put(Constants.DEFAULT, "false");
-      args.putAll(extra);
+    protected void testArchive(Archive module, Archive... libs) throws Exception {
+        File tmpdir = AccessController.doPrivileged(new PrivilegedAction<File>() {
+            public File run() {
+                return new File(System.getProperty("java.io.tmpdir"));
+            }
+        });
 
-      execute(args);
-   }
+        List<File> files = new ArrayList<File>();
+        try {
+            files.add(createModuleFile(tmpdir, module));
+            for (Archive lib : libs)
+                files.add(createModuleFile(tmpdir, lib));
 
-   protected void execute(Map<Constants, String> args) throws Exception
-   {
-      List<String> strings = new ArrayList<String>();
-      for (Map.Entry<Constants, String> entry : args.entrySet())
-      {
-         strings.add("-" + entry.getKey());
-         strings.add(entry.getValue());
-      }
+            String fullName = module.getName();
+            int p = fullName.indexOf("-");
+            if (p < 0)
+                throw new IllegalArgumentException("No name and version split: " + fullName);
 
-      Main.execute(strings.toArray(new String[strings.size()]));
-   }
+            String name = fullName.substring(0, p);
+            String version = fullName.substring(p + 1, fullName.lastIndexOf("."));
 
-   protected static String toPathString(String name, String version)
-   {
-      final StringBuilder builder = new StringBuilder();
-      builder.append(name.replace('.', File.separatorChar));
-      builder.append(File.separatorChar).append(version);
-      builder.append(File.separatorChar);
-      return builder.toString();
-   }
+            Map<Constants, String> args = new HashMap<Constants, String>();
+            args.put(Constants.EXECUTABLE, getRuntimeClassName());
+            args.put(Constants.MODULE, name + "/" + version);
+            args.put(Constants.REPOSITORY, tmpdir.toString());
+
+            execute(args);
+        } finally {
+            for (File file : files)
+                Files.delete(file);
+        }
+    }
+
+    protected void src(String module, String src) throws Exception {
+        src(module, src, Collections.<Constants, String>emptyMap());
+    }
+
+    protected void src(String module, String src, Map<Constants, String> extra) throws Exception {
+        Map<Constants, String> args = new HashMap<Constants, String>();
+        args.put(Constants.EXECUTABLE, getRuntimeClassName());
+        args.put(Constants.MODULE, module);
+        args.put(Constants.SOURCE, src);
+        args.put(Constants.DEFAULT, "false");
+        args.putAll(extra);
+
+        execute(args);
+    }
+
+    protected void execute(Map<Constants, String> args) throws Exception {
+        List<String> strings = new ArrayList<String>();
+        for (Map.Entry<Constants, String> entry : args.entrySet()) {
+            strings.add("-" + entry.getKey());
+            strings.add(entry.getValue());
+        }
+
+        Main.execute(strings.toArray(new String[strings.size()]));
+    }
+
+    protected static String toPathString(String name, String version) {
+        final StringBuilder builder = new StringBuilder();
+        builder.append(name.replace('.', File.separatorChar));
+        builder.append(File.separatorChar).append(version);
+        builder.append(File.separatorChar);
+        return builder.toString();
+    }
 }
 

@@ -30,35 +30,29 @@ import ceylon.lang.modules.PathFilter;
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-final class BooleanPathFilter implements PathFilter
-{
-   private final boolean result;
+final class BooleanPathFilter implements PathFilter {
+    private final boolean result;
 
-   private BooleanPathFilter(final boolean result)
-   {
-      this.result = result;
-   }
+    private BooleanPathFilter(final boolean result) {
+        this.result = result;
+    }
 
-   public boolean accept(final String path)
-   {
-      return result;
-   }
+    public boolean accept(final String path) {
+        return result;
+    }
 
-   static final BooleanPathFilter TRUE = new BooleanPathFilter(true);
-   static final BooleanPathFilter FALSE = new BooleanPathFilter(false);
+    static final BooleanPathFilter TRUE = new BooleanPathFilter(true);
+    static final BooleanPathFilter FALSE = new BooleanPathFilter(false);
 
-   public int hashCode()
-   {
-      return Boolean.valueOf(result).hashCode();
-   }
+    public int hashCode() {
+        return Boolean.valueOf(result).hashCode();
+    }
 
-   public boolean equals(final Object obj)
-   {
-      return obj == this;
-   }
+    public boolean equals(final Object obj) {
+        return obj == this;
+    }
 
-   public String toString()
-   {
-      return result ? "Accept" : "Reject";
-   }
+    public String toString() {
+        return result ? "Accept" : "Reject";
+    }
 }

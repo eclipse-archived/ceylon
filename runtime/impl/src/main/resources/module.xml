@@ -28,7 +28,7 @@
     </resources>
 
     <main-class name="ceylon.modules.Main"/>
-   
+
     <dependencies>
         <module name="ceylon.modules.api" slot="1.0.0-SNAPSHOT" export="true"/>
     </dependencies>

@@ -28,12 +28,10 @@ import ceylon.lang.modules.ModuleVersion;
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class Module
-{
-   public ceylon.lang.modules.Module getModule()
-   {
-      ModuleName name = new ModuleName("si.alesj.ceylon");
-      ModuleVersion version = new ModuleVersion(1, 0, 0, "GA");
-      return new ceylon.lang.modules.Module(name, version, null, null, null);
-   }
+public class Module {
+    public ceylon.lang.modules.Module getModule() {
+        ModuleName name = new ModuleName("si.alesj.ceylon");
+        ModuleVersion version = new ModuleVersion(1, 0, 0, "GA");
+        return new ceylon.lang.modules.Module(name, version, null, null, null);
+    }
 }

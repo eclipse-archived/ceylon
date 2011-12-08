@@ -22,7 +22,6 @@
 
 package com.foobar.qwert;
 
-import ceylon.lang.Process;
 import ceylon.lang.modules.Import;
 import ceylon.lang.modules.ModuleName;
 import ceylon.lang.modules.ModuleVersion;
@@ -30,20 +29,16 @@ import ceylon.lang.modules.ModuleVersion;
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class Module
-{
-   public ceylon.lang.modules.Module getModule()
-   {
-      ModuleName name = new ModuleName("com.foobar.qwert");
-      ModuleVersion version = new ModuleVersion(1, 0, 0, "GA");
-      ceylon.lang.Runnable runnable = new ceylon.lang.Runnable()
-      {
-         public void run(Process process)
-         {
-            org.jboss.acme.Module.run();
-         }
-      };
-      Import im = new Import(new ModuleName("org.jboss.acme"), new ModuleVersion(1, 0, 0, "CR1"));
-      return new ceylon.lang.modules.Module(name, version, null, null, runnable, im);
-   }
+public class Module {
+    public ceylon.lang.modules.Module getModule() {
+        ModuleName name = new ModuleName("com.foobar.qwert");
+        ModuleVersion version = new ModuleVersion(1, 0, 0, "GA");
+        ceylon.lang.Runnable runnable = new ceylon.lang.Runnable() {
+            public void run(Process process) {
+                org.jboss.acme.Module.run();
+            }
+        };
+        Import im = new Import(new ModuleName("org.jboss.acme"), new ModuleVersion(1, 0, 0, "CR1"));
+        return new ceylon.lang.modules.Module(name, version, null, null, runnable, im);
+    }
 }

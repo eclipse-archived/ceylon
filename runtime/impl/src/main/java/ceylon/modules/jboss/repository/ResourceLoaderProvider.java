@@ -22,47 +22,41 @@
 
 package ceylon.modules.jboss.repository;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.jar.JarFile;
-
+import com.redhat.ceylon.cmr.api.Repository;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ResourceLoader;
 import org.jboss.modules.ResourceLoaders;
 
-import ceylon.modules.spi.repository.Repository;
+import java.io.File;
+import java.io.IOException;
+import java.util.jar.JarFile;
 
 /**
  * Provide proper resource loader.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class ResourceLoaderProvider
-{
-   /**
-    * Get resource loader.
-    *
-    * @param moduleIdentifier the module identifier
-    * @param repository the repository
-    * @param moduleFile the module file
-    * @return new resource loader
-    * @throws IOException for any I/O error
-    */
-   public static ResourceLoader getResourceLoader(
-         ModuleIdentifier moduleIdentifier,
-         Repository repository,
-         File moduleFile) throws IOException
-   {
-      File classesRoot = repository.getCompileDirectory();
-      if (classesRoot != null)
-      {
-         return new SourceResourceLoader(moduleFile, classesRoot, "");
-      }
-      else
-      {
-         JarFile jarFile = new JarFile(moduleFile);
-         String rootName = moduleIdentifier + ".car"; // TODO -- ok?
-         return ResourceLoaders.createJarResourceLoader(rootName, jarFile);
-      }
-   }
+public class ResourceLoaderProvider {
+    /**
+     * Get resource loader.
+     *
+     * @param moduleIdentifier the module identifier
+     * @param repository       the repository
+     * @param moduleFile       the module file
+     * @return new resource loader
+     * @throws IOException for any I/O error
+     */
+    public static ResourceLoader getResourceLoader(
+            ModuleIdentifier moduleIdentifier,
+            Repository repository,
+            File moduleFile) throws IOException {
+        File classesRoot = null; // TODO repository.getCompileDirectory();
+        if (classesRoot != null) {
+            return new SourceResourceLoader(moduleFile, classesRoot, "");
+        } else {
+            JarFile jarFile = new JarFile(moduleFile);
+            String rootName = moduleIdentifier + ".car"; // TODO -- ok?
+            return ResourceLoaders.createJarResourceLoader(rootName, jarFile);
+        }
+    }
 }

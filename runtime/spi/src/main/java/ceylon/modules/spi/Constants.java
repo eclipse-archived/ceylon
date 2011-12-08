@@ -27,26 +27,23 @@ package ceylon.modules.spi;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public enum Constants
-{
-   EXECUTABLE("executable"),
-   MODULE("module"),
-   REPOSITORY("rep"),
-   SOURCE("src"),
-   DEFAULT("d"),
-   SOURCES("sources"),
-   CLASSES("classes");
+public enum Constants {
+    EXECUTABLE("executable"),
+    MODULE("module"),
+    REPOSITORY("rep"),
+    SOURCE("src"),
+    DEFAULT("d"),
+    SOURCES("sources"),
+    CLASSES("classes");
 
-   private String value;
+    private String value;
 
-   Constants(String value)
-   {
-      this.value = value;
-   }
+    Constants(String value) {
+        this.value = value;
+    }
 
-   @Override
-   public String toString()
-   {
-      return value;
-   }
+    @Override
+    public String toString() {
+        return value;
+    }
 }

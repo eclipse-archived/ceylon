@@ -22,9 +22,9 @@
 
 package ceylon.lang.modules.helpers;
 
-import java.util.Arrays;
-
 import ceylon.lang.modules.PathFilter;
+
+import java.util.Arrays;
 
 /**
  * PathFilter implementation that aggregates multiple other filters.
@@ -33,69 +33,58 @@ import ceylon.lang.modules.PathFilter;
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-final class AggregatePathFilter implements PathFilter
-{
-   private final PathFilter[] delegates;
-   private final boolean any;
+final class AggregatePathFilter implements PathFilter {
+    private final PathFilter[] delegates;
+    private final boolean any;
 
-   /**
-    * Construct a new instance.
-    *
-    * @param any       {@code true} if this is an "any" filter, {@code false} if this an "all" filter
-    * @param delegates the delegate filter list
-    */
-   AggregatePathFilter(final boolean any, final PathFilter... delegates)
-   {
-      this.any = any;
-      this.delegates = delegates;
-   }
+    /**
+     * Construct a new instance.
+     *
+     * @param any       {@code true} if this is an "any" filter, {@code false} if this an "all" filter
+     * @param delegates the delegate filter list
+     */
+    AggregatePathFilter(final boolean any, final PathFilter... delegates) {
+        this.any = any;
+        this.delegates = delegates;
+    }
 
-   /**
-    * {@inheritDoc}
-    */
-   @Override
-   public boolean accept(String path)
-   {
-      for (PathFilter filter : delegates)
-      {
-         if (filter.accept(path) == any)
-         {
-            return any;
-         }
-      }
-      return !any;
-   }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean accept(String path) {
+        for (PathFilter filter : delegates) {
+            if (filter.accept(path) == any) {
+                return any;
+            }
+        }
+        return !any;
+    }
 
 
-   public int hashCode()
-   {
-      return Boolean.valueOf(any).hashCode() ^ Arrays.hashCode(delegates);
-   }
+    public int hashCode() {
+        return Boolean.valueOf(any).hashCode() ^ Arrays.hashCode(delegates);
+    }
 
-   public boolean equals(final Object obj)
-   {
-      return obj instanceof AggregatePathFilter && equals((AggregatePathFilter) obj);
-   }
+    public boolean equals(final Object obj) {
+        return obj instanceof AggregatePathFilter && equals((AggregatePathFilter) obj);
+    }
 
-   public boolean equals(final AggregatePathFilter obj)
-   {
-      return obj != null && obj.any == any && Arrays.equals(obj.delegates, delegates);
-   }
+    public boolean equals(final AggregatePathFilter obj) {
+        return obj != null && obj.any == any && Arrays.equals(obj.delegates, delegates);
+    }
 
-   public String toString()
-   {
-      final StringBuilder b = new StringBuilder();
-      b.append(any ? "Any " : "All ").append("of (");
-      for (int idx = 0; idx < delegates.length; idx++)
-      {
-         final PathFilter delegate = delegates[idx];
-         b.append(delegate);
-         if (idx < delegates.length - 1)
-         {
-            b.append(',');
-         }
-      }
-      b.append(')');
-      return b.toString();
-   }
+    public String toString() {
+        final StringBuilder b = new StringBuilder();
+        b.append(any ? "Any " : "All ").append("of (");
+        for (int idx = 0; idx < delegates.length; idx++) {
+            final PathFilter delegate = delegates[idx];
+            b.append(delegate);
+            if (idx < delegates.length - 1) {
+                b.append(',');
+            }
+        }
+        b.append(')');
+        return b.toString();
+    }
 }

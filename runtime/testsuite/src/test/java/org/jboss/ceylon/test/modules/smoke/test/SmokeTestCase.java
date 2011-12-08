@@ -28,46 +28,41 @@ import org.jboss.filtered.impl.SomeImpl;
 import org.jboss.filtered.spi.SomeSPI;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-
 import org.junit.Test;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class SmokeTestCase extends ModulesTest
-{
-   @Test
-   public void singleModule() throws Exception
-   {
-      JavaArchive module = ShrinkWrap.create(JavaArchive.class, "org.jboss.acme-1.0.0.CR1.car");
-      module.addClass(org.jboss.acme.Module.class);
-      testArchive(module);
-   }
+public class SmokeTestCase extends ModulesTest {
+    @Test
+    public void singleModule() throws Exception {
+        JavaArchive module = ShrinkWrap.create(JavaArchive.class, "org.jboss.acme-1.0.0.CR1.car");
+        module.addClass(org.jboss.acme.Module.class);
+        testArchive(module);
+    }
 
-   @Test
-   public void transitiveModule() throws Exception
-   {
-      JavaArchive module = ShrinkWrap.create(JavaArchive.class, "com.foobar.qwert-1.0.0.GA.car");
-      module.addClass(com.foobar.qwert.Module.class);
+    @Test
+    public void transitiveModule() throws Exception {
+        JavaArchive module = ShrinkWrap.create(JavaArchive.class, "com.foobar.qwert-1.0.0.GA.car");
+        module.addClass(com.foobar.qwert.Module.class);
 
-      JavaArchive lib = ShrinkWrap.create(JavaArchive.class, "org.jboss.acme-1.0.0.CR1.car");
-      lib.addClass(org.jboss.acme.Module.class);
+        JavaArchive lib = ShrinkWrap.create(JavaArchive.class, "org.jboss.acme-1.0.0.CR1.car");
+        lib.addClass(org.jboss.acme.Module.class);
 
-      testArchive(module, lib);
-   }
+        testArchive(module, lib);
+    }
 
-   @Test
-   public void filteredModule() throws Exception
-   {
-      JavaArchive module = ShrinkWrap.create(JavaArchive.class, "eu.cloud.clazz-1.0.0.GA.car");
-      module.addClass(eu.cloud.clazz.Module.class);
+    @Test
+    public void filteredModule() throws Exception {
+        JavaArchive module = ShrinkWrap.create(JavaArchive.class, "eu.cloud.clazz-1.0.0.GA.car");
+        module.addClass(eu.cloud.clazz.Module.class);
 
-      JavaArchive lib = ShrinkWrap.create(JavaArchive.class, "org.jboss.filtered-1.0.0.Alpha1.car");
-      lib.addClass(org.jboss.filtered.Module.class);
-      lib.addClass(SomeSPI.class);
-      lib.addClass(SomeAPI.class);
-      lib.addClass(SomeImpl.class);
+        JavaArchive lib = ShrinkWrap.create(JavaArchive.class, "org.jboss.filtered-1.0.0.Alpha1.car");
+        lib.addClass(org.jboss.filtered.Module.class);
+        lib.addClass(SomeSPI.class);
+        lib.addClass(SomeAPI.class);
+        lib.addClass(SomeImpl.class);
 
-      testArchive(module, lib);
-   }
+        testArchive(module, lib);
+    }
 }

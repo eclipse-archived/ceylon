@@ -22,22 +22,19 @@
 
 package ceylon.modules.jboss.runtime;
 
-import java.util.Map;
-
+import com.redhat.ceylon.cmr.api.Repository;
 import org.jboss.modules.ModuleLoader;
 
-import ceylon.modules.spi.repository.Repository;
+import java.util.Map;
 
 /**
  * Default Ceylon Modules runtime.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class JBossRuntime extends AbstractJBossRuntime
-{
-   protected ModuleLoader createModuleLoader(Map<String, String> args)
-   {
-      Repository repository = createRepository(args);
-      return new CeylonModuleLoader(repository);
-   }
+public class JBossRuntime extends AbstractJBossRuntime {
+    protected ModuleLoader createModuleLoader(Map<String, String> args) {
+        Repository repository = createRepository(args);
+        return new CeylonModuleLoader(repository);
+    }
 }

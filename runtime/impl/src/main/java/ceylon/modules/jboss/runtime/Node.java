@@ -31,72 +31,60 @@ import java.util.concurrent.ConcurrentHashMap;
  * @param <T> value type
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-class Node<T>
-{
-   private T value;
-   private String name;
-   private Node<T> parent;
-   private Map<String, Node<T>> children;
+class Node<T> {
+    private T value;
+    private String name;
+    private Node<T> parent;
+    private Map<String, Node<T>> children;
 
-   Node()
-   {
-   }
+    Node() {
+    }
 
-   Node(T value)
-   {
-      this.value = value;
-   }
+    Node(T value) {
+        this.value = value;
+    }
 
-   Node<T> addChild(String token)
-   {
-      return addChild(token, null);
-   }
+    Node<T> addChild(String token) {
+        return addChild(token, null);
+    }
 
-   Node<T> addChild(String token, T value)
-   {
-      if (children == null)
-         children = new ConcurrentHashMap<String, Node<T>>();
+    Node<T> addChild(String token, T value) {
+        if (children == null)
+            children = new ConcurrentHashMap<String, Node<T>>();
 
-      Node<T> child = children.get(token);
-      if (child == null)
-      {
-         child = new Node<T>(value);
-         child.name = token;
-         child.parent = this;
-         children.put(token, child);
-      }
-      return child;
-   }
+        Node<T> child = children.get(token);
+        if (child == null) {
+            child = new Node<T>(value);
+            child.name = token;
+            child.parent = this;
+            children.put(token, child);
+        }
+        return child;
+    }
 
-   Node<T> getChild(String token)
-   {
-      return children != null ? children.get(token) : null;
-   }
+    Node<T> getChild(String token) {
+        return children != null ? children.get(token) : null;
+    }
 
-   T getValue()
-   {
-      return value;
-   }
+    T getValue() {
+        return value;
+    }
 
-   void setValue(T value)
-   {
-      this.value = value;
-   }
+    void setValue(T value) {
+        this.value = value;
+    }
 
-   boolean isEmpty()
-   {
-      return (children == null || children.isEmpty());
-   }
+    boolean isEmpty() {
+        return (children == null || children.isEmpty());
+    }
 
-   void remove()
-   {
-      setValue(null);
-      
-      if (parent != null)
-      {
-         Map<String, Node<T>> nodes = parent.children;
-         if (nodes != null)
-            nodes.remove(name);
-      }
-   }
+    void remove() {
+        setValue(null);
+
+        if (parent != null) {
+            Map<String, Node<T>> nodes = parent.children;
+            if (nodes != null)
+                nodes.remove(name);
+        }
+    }
 }

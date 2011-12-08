@@ -30,25 +30,18 @@ import ceylon.lang.modules.PathFilter;
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class Module
-{
-   public ceylon.lang.modules.Module getModule()
-   {
-      ModuleName name = new ModuleName("eu.cloud.clazz");
-      ModuleVersion version = new ModuleVersion(1, 0, 0, "GA");
-      ceylon.lang.Runnable runnable = new ceylon.lang.Runnable()
-      {
-         public void run(ceylon.lang.Process process)
-         {
-            ClassLoader cl = Module.this.getClass().getClassLoader();
-            try
-            {
-               cl.loadClass("org.jboss.filtered.spi.SomeSPI");
-            }
-            catch (ClassNotFoundException e)
-            {
-               throw new RuntimeException(e);
-            }
+public class Module {
+    public ceylon.lang.modules.Module getModule() {
+        ModuleName name = new ModuleName("eu.cloud.clazz");
+        ModuleVersion version = new ModuleVersion(1, 0, 0, "GA");
+        ceylon.lang.Runnable runnable = new ceylon.lang.Runnable() {
+            public void run(ceylon.lang.Process process) {
+                ClassLoader cl = Module.this.getClass().getClassLoader();
+                try {
+                    cl.loadClass("org.jboss.filtered.spi.SomeSPI");
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
 /*
             try
             {
@@ -59,24 +52,19 @@ public class Module
             {
             }
 */
-            try
-            {
-               cl.loadClass("org.jboss.filtered.impl.SomeImpl");
-               throw new RuntimeException("Fail, should not be here!");
+                try {
+                    cl.loadClass("org.jboss.filtered.impl.SomeImpl");
+                    throw new RuntimeException("Fail, should not be here!");
+                } catch (ClassNotFoundException ignored) {
+                }
             }
-            catch (ClassNotFoundException ignored)
-            {
+        };
+        PathFilter imports = new PathFilter() {
+            public boolean accept(String path) {
+                return path.contains("spi"); // only import spis
             }
-         }
-      };
-      PathFilter imports = new PathFilter()
-      {
-         public boolean accept(String path)
-         {
-            return path.contains("spi"); // only import spis
-         }
-      };
-      Import im = new Import(new ModuleName("org.jboss.filtered"), new ModuleVersion(1, 0, 0, "Alpha1"), false, false, null, imports);
-      return new ceylon.lang.modules.Module(name, version, null, null, runnable, im);
-   }
+        };
+        Import im = new Import(new ModuleName("org.jboss.filtered"), new ModuleVersion(1, 0, 0, "Alpha1"), false, false, null, imports);
+        return new ceylon.lang.modules.Module(name, version, null, null, runnable, im);
+    }
 }

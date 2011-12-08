@@ -37,124 +37,105 @@ import java.util.concurrent.ConcurrentMap;
  * @param <E> exact edge cost type
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-class Graph<K, V, E>
-{
-   private ConcurrentMap<K, Vertex<V, E>> vertices = new ConcurrentHashMap<K, Vertex<V,E>>();
+class Graph<K, V, E> {
+    private ConcurrentMap<K, Vertex<V, E>> vertices = new ConcurrentHashMap<K, Vertex<V, E>>();
 
-   public Vertex<V, E> createVertex(K key, V value)
-   {
-      Vertex<V, E> v = new Vertex<V,E>(value);
-      Vertex<V, E> previous = vertices.putIfAbsent(key, v);
-      return (previous != null) ? previous : v;
-   }
+    public Vertex<V, E> createVertex(K key, V value) {
+        Vertex<V, E> v = new Vertex<V, E>(value);
+        Vertex<V, E> previous = vertices.putIfAbsent(key, v);
+        return (previous != null) ? previous : v;
+    }
 
-   public Vertex<V, E> getVertex(K key)
-   {
-      return vertices.get(key);  
-   }   
-   
-   public Collection<Vertex<V, E>> getVertices()
-   {
-      return vertices != null ? Collections.unmodifiableCollection(vertices.values()) : Collections.<Vertex<V,E>>emptySet();
-   }
+    public Vertex<V, E> getVertex(K key) {
+        return vertices.get(key);
+    }
 
-   public static class Vertex<V, E>
-   {
-      private V value;
-      private Set<Edge<V, E>> in;
-      private Set<Edge<V, E>> out;
+    public Collection<Vertex<V, E>> getVertices() {
+        return vertices != null ? Collections.unmodifiableCollection(vertices.values()) : Collections.<Vertex<V, E>>emptySet();
+    }
 
-      Vertex(V value)
-      {
-         this.value = value;
-      }
+    public static class Vertex<V, E> {
+        private V value;
+        private Set<Edge<V, E>> in;
+        private Set<Edge<V, E>> out;
 
-      public V getValue()
-      {
-         return value;
-      }
+        Vertex(V value) {
+            this.value = value;
+        }
 
-      private void addIn(Edge<V, E> edge)
-      {
-         if (in == null)
-            in = new HashSet<Edge<V, E>>();
-         
-         in.add(edge);
-      }
+        public V getValue() {
+            return value;
+        }
 
-      private void addOut(Edge<V, E> edge)
-      {
-         if (out == null)
-            out = new HashSet<Edge<V, E>>();
-         
-         out.add(edge);
-      }
+        private void addIn(Edge<V, E> edge) {
+            if (in == null)
+                in = new HashSet<Edge<V, E>>();
 
-      public Set<Edge<V, E>> getIn()
-      {
-         return in != null ? Collections.unmodifiableSet(in) : Collections.<Edge<V, E>>emptySet();
-      }
+            in.add(edge);
+        }
 
-      public Set<Edge<V, E>> getOut()
-      {
-         return out != null ? Collections.unmodifiableSet(out) : Collections.<Edge<V, E>>emptySet();
-      }
+        private void addOut(Edge<V, E> edge) {
+            if (out == null)
+                out = new HashSet<Edge<V, E>>();
 
-      public int hashCode()
-      {
-         return value.hashCode();
-      }
+            out.add(edge);
+        }
 
-      @SuppressWarnings({"unchecked"})
-      public boolean equals(Object obj)
-      {
-         if (obj instanceof Vertex == false)
-            return false;
+        public Set<Edge<V, E>> getIn() {
+            return in != null ? Collections.unmodifiableSet(in) : Collections.<Edge<V, E>>emptySet();
+        }
 
-         Vertex<V, E> other = (Vertex<V, E>) obj;
-         return value.equals(other.value);
-      }
-   }
+        public Set<Edge<V, E>> getOut() {
+            return out != null ? Collections.unmodifiableSet(out) : Collections.<Edge<V, E>>emptySet();
+        }
 
-   public static class Edge<V, E>
-   {
-      private E cost;
-      private Vertex<V, E> from;
-      private Vertex<V, E> to;
+        public int hashCode() {
+            return value.hashCode();
+        }
 
-      public static <V, E> void create(E cost, Vertex<V, E> from, Vertex<V, E> to)
-      {
-         new Edge<V, E>(cost, from, to);
-      }
+        @SuppressWarnings({"unchecked"})
+        public boolean equals(Object obj) {
+            if (obj instanceof Vertex == false)
+                return false;
 
-      private Edge(E cost, Vertex<V, E> from, Vertex<V, E> to)
-      {
-         if (from == null)
-            throw new IllegalArgumentException("Null from");
-         if (to == null)
-            throw new IllegalArgumentException("Null to");
+            Vertex<V, E> other = (Vertex<V, E>) obj;
+            return value.equals(other.value);
+        }
+    }
 
-         this.cost = cost;
-         this.from = from;
-         this.to = to;
+    public static class Edge<V, E> {
+        private E cost;
+        private Vertex<V, E> from;
+        private Vertex<V, E> to;
 
-         from.addOut(this);
-         to.addIn(this);
-      }
+        public static <V, E> void create(E cost, Vertex<V, E> from, Vertex<V, E> to) {
+            new Edge<V, E>(cost, from, to);
+        }
 
-      public E getCost()
-      {
-         return cost;
-      }
+        private Edge(E cost, Vertex<V, E> from, Vertex<V, E> to) {
+            if (from == null)
+                throw new IllegalArgumentException("Null from");
+            if (to == null)
+                throw new IllegalArgumentException("Null to");
 
-      public Vertex<V, E> getFrom()
-      {
-         return from;
-      }
+            this.cost = cost;
+            this.from = from;
+            this.to = to;
 
-      public Vertex<V, E> getTo()
-      {
-         return to;
-      }
-   }
+            from.addOut(this);
+            to.addIn(this);
+        }
+
+        public E getCost() {
+            return cost;
+        }
+
+        public Vertex<V, E> getFrom() {
+            return from;
+        }
+
+        public Vertex<V, E> getTo() {
+            return to;
+        }
+    }
 }

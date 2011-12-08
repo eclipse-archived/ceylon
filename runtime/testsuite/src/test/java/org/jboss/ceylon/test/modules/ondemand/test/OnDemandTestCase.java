@@ -25,7 +25,6 @@ package org.jboss.ceylon.test.modules.ondemand.test;
 import org.jboss.ceylon.test.modules.ModulesTest;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-
 import org.junit.Test;
 import si.alesj.ceylon.test.Touch;
 
@@ -34,22 +33,20 @@ import si.alesj.ceylon.test.Touch;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class OnDemandTestCase extends ModulesTest
-{
-   @Test
-   public void testBasic() throws Exception
-   {
-      JavaArchive module = ShrinkWrap.create(JavaArchive.class, "net.something.xyz-1.0.0.Final.car");
-      module.addClass(net.something.xyz.Module.class);
+public class OnDemandTestCase extends ModulesTest {
+    @Test
+    public void testBasic() throws Exception {
+        JavaArchive module = ShrinkWrap.create(JavaArchive.class, "net.something.xyz-1.0.0.Final.car");
+        module.addClass(net.something.xyz.Module.class);
 
-      JavaArchive lib1 = ShrinkWrap.create(JavaArchive.class, "org.jboss.acme-1.0.0.CR1.car");
-      lib1.addClass(org.jboss.acme.Module.class);
+        JavaArchive lib1 = ShrinkWrap.create(JavaArchive.class, "org.jboss.acme-1.0.0.CR1.car");
+        lib1.addClass(org.jboss.acme.Module.class);
 
-      JavaArchive lib2 = ShrinkWrap.create(JavaArchive.class, "si.alesj.ceylon-1.0.0.GA.car");
-      lib2.addClass(si.alesj.ceylon.Module.class);
-      lib2.addClass(Touch.class);
-      lib2.addResource("si/alesj/ceylon/test/config.xml");
+        JavaArchive lib2 = ShrinkWrap.create(JavaArchive.class, "si.alesj.ceylon-1.0.0.GA.car");
+        lib2.addClass(si.alesj.ceylon.Module.class);
+        lib2.addClass(Touch.class);
+        lib2.addResource("si/alesj/ceylon/test/config.xml");
 
-      testArchive(module, lib1, lib2);
-   }
+        testArchive(module, lib1, lib2);
+    }
 }

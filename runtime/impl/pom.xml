@@ -1,49 +1,49 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-   <parent>
-      <groupId>ceylon</groupId>
-      <artifactId>modules</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
-   </parent>
-   <modelVersion>4.0.0</modelVersion>
-   <groupId>ceylon</groupId>
-   <artifactId>modules-impl</artifactId>
-   <packaging>jar</packaging>
-   <version>1.0.0-SNAPSHOT</version>
-   <name>Ceylon Modules Impl</name>
-   <url>http://www.jboss.org/ceylon</url>
+    <parent>
+        <groupId>ceylon</groupId>
+        <artifactId>modules</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>ceylon</groupId>
+    <artifactId>modules-impl</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>Ceylon Modules Impl</name>
+    <url>http://www.jboss.org/ceylon</url>
 
-   <dependencies>
-      <dependency>
-         <groupId>ceylon</groupId>
-         <artifactId>sdk-mock</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>ceylon</groupId>
-         <artifactId>modules-spi</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>ceylon</groupId>
-         <artifactId>modules-api</artifactId>
-      </dependency>
+    <dependencies>
+        <dependency>
+            <groupId>ceylon</groupId>
+            <artifactId>sdk-mock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ceylon</groupId>
+            <artifactId>modules-spi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ceylon</groupId>
+            <artifactId>modules-api</artifactId>
+        </dependency>
 
-      <dependency>
-         <groupId>org.jboss.logging</groupId>
-         <artifactId>jboss-logging</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.logmanager</groupId>
-         <artifactId>jboss-logmanager</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.modules</groupId>
-         <artifactId>jboss-modules</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss</groupId>
-         <artifactId>jboss-vfs</artifactId>
-      </dependency>
-   </dependencies>
+        <dependency>
+            <groupId>com.redhat.ceylon.cmr</groupId>
+            <artifactId>cmr-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>jboss-logging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.logmanager</groupId>
+            <artifactId>jboss-logmanager</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.modules</groupId>
+            <artifactId>jboss-modules</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
 

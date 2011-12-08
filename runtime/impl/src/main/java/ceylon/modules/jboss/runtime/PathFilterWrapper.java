@@ -29,24 +29,20 @@ import org.jboss.modules.filter.PathFilter;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-class PathFilterWrapper implements PathFilter
-{
-   private final ceylon.lang.modules.PathFilter filter;
+class PathFilterWrapper implements PathFilter {
+    private final ceylon.lang.modules.PathFilter filter;
 
-   PathFilterWrapper(ceylon.lang.modules.PathFilter filter)
-   {
-      if (filter == null)
-         throw new IllegalArgumentException("Null filter");
-      this.filter = filter;
-   }
+    PathFilterWrapper(ceylon.lang.modules.PathFilter filter) {
+        if (filter == null)
+            throw new IllegalArgumentException("Null filter");
+        this.filter = filter;
+    }
 
-   public boolean accept(String path)
-   {
-      return filter.accept(path);
-   }
+    public boolean accept(String path) {
+        return filter.accept(path);
+    }
 
-   public String toString()
-   {
-      return filter.toString();
-   }
+    public String toString() {
+        return filter.toString();
+    }
 }

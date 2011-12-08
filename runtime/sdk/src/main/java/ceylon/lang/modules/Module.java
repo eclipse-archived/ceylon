@@ -22,91 +22,80 @@
 
 package ceylon.lang.modules;
 
-import java.net.URL;
-
 import ceylon.lang.modules.helpers.PathFilters;
+
+import java.net.URL;
 
 /**
  * Simple Module mock.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class Module extends Filterable
-{
-   private ModuleName name;
-   private ModuleVersion version;
-   private String doc;
-   private URL license;
-   private ceylon.lang.Runnable process;
-   private Import[] dependencies;
+public class Module extends Filterable {
+    private ModuleName name;
+    private ModuleVersion version;
+    private String doc;
+    private URL license;
+    private ceylon.lang.Runnable process;
+    private Import[] dependencies;
 
-   public Module(
-         ModuleName name,
-         ModuleVersion version,
-         String doc,
-         URL license,
-         ceylon.lang.Runnable process,
-         Import... dependencies)
-   {
-      this(name, version, doc, license, process, null, null, dependencies);
-   }
+    public Module(
+            ModuleName name,
+            ModuleVersion version,
+            String doc,
+            URL license,
+            ceylon.lang.Runnable process,
+            Import... dependencies) {
+        this(name, version, doc, license, process, null, null, dependencies);
+    }
 
-   public Module(
-         ModuleName name,
-         ModuleVersion version,
-         String doc,
-         URL license,
-         ceylon.lang.Runnable process,
-         PathFilter exports,
-         PathFilter imports,
-         Import... dependencies)
-   {
-      super(exports, imports);
-      this.name = name;
-      this.version = version;
-      this.doc = doc;
-      this.license = license;
-      this.process = process;
-      this.dependencies = dependencies;
-   }
+    public Module(
+            ModuleName name,
+            ModuleVersion version,
+            String doc,
+            URL license,
+            ceylon.lang.Runnable process,
+            PathFilter exports,
+            PathFilter imports,
+            Import... dependencies) {
+        super(exports, imports);
+        this.name = name;
+        this.version = version;
+        this.doc = doc;
+        this.license = license;
+        this.process = process;
+        this.dependencies = dependencies;
+    }
 
-   protected PathFilter getDefaultExports()
-   {
-      return PathFilters.regexp(name.getName().replace(".", "/") + ".*");
-   }
+    protected PathFilter getDefaultExports() {
+        return PathFilters.regexp(name.getName().replace(".", "/") + ".*");
+    }
 
-   protected PathFilter getDefaultImports()
-   {
-      return PathFilters.acceptAll();
-   }
+    protected PathFilter getDefaultImports() {
+        return PathFilters.acceptAll();
+    }
 
-   public ModuleName getName()
-   {
-      return name;
-   }
+    public ModuleName getName() {
+        return name;
+    }
 
-   public ModuleVersion getVersion()
-   {
-      return version;
-   }
+    public ModuleVersion getVersion() {
+        return version;
+    }
 
-   public String getDoc()
-   {
-      return doc;
-   }
+    public String getDoc() {
+        return doc;
+    }
 
-   public URL getLicense()
-   {
-      return license;
-   }
+    public URL getLicense() {
+        return license;
+    }
 
-   public ceylon.lang.Runnable getProcess()
-   {
-      return process;
-   }
+    public ceylon.lang.Runnable getProcess() {
+        return process;
+    }
 
-   public Import[] getDependencies()
-   {
-      return dependencies;
-   }
+    public Import[] getDependencies() {
+        return dependencies;
+    }
 }

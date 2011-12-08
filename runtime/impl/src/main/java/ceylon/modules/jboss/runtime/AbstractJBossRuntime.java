@@ -22,17 +22,16 @@
 
 package ceylon.modules.jboss.runtime;
 
-import java.util.Map;
-
+import ceylon.lang.modules.ModuleName;
+import ceylon.lang.modules.ModuleVersion;
+import ceylon.modules.api.runtime.AbstractRuntime;
+import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.impl.RootRepositoryBuilder;
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
 
-import ceylon.lang.modules.ModuleName;
-import ceylon.lang.modules.ModuleVersion;
-import ceylon.modules.api.repository.RepositoryFactory;
-import ceylon.modules.api.runtime.AbstractRuntime;
-import ceylon.modules.spi.repository.Repository;
+import java.util.Map;
 
 /**
  * Abstract Ceylon JBoss Modules runtime.
@@ -40,31 +39,30 @@ import ceylon.modules.spi.repository.Repository;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public abstract class AbstractJBossRuntime extends AbstractRuntime
-{
-   public ClassLoader createClassLoader(ModuleName name, ModuleVersion version, Map<String, String> args) throws Exception
-   {
-      ModuleLoader moduleLoader = createModuleLoader(args);
-      ModuleIdentifier moduleIdentifier = ModuleIdentifier.fromString(name + ":" + version);
-      Module module = moduleLoader.loadModule(moduleIdentifier);
-      return SecurityActions.getClassLoader(module);
-   }
-   /**
-    * Get repository extension.
-    *
-    * @param args the args
-    * @return repository extension
-    */
-   protected Repository createRepository(Map<String, String> args)
-   {
-      return RepositoryFactory.createRepository(args);
-   }
+public abstract class AbstractJBossRuntime extends AbstractRuntime {
+    public ClassLoader createClassLoader(ModuleName name, ModuleVersion version, Map<String, String> args) throws Exception {
+        ModuleLoader moduleLoader = createModuleLoader(args);
+        ModuleIdentifier moduleIdentifier = ModuleIdentifier.fromString(name + ":" + version);
+        Module module = moduleLoader.loadModule(moduleIdentifier);
+        return SecurityActions.getClassLoader(module);
+    }
 
-   /**
-    * Create module loader.
-    *
-    * @param args the args
-    * @return the module loader
-    */
-   protected abstract ModuleLoader createModuleLoader(Map<String, String> args);
+    /**
+     * Get repository extension.
+     *
+     * @param args the args
+     * @return repository extension
+     */
+    protected Repository createRepository(Map<String, String> args) {
+        final RootRepositoryBuilder builder = new RootRepositoryBuilder();
+        return builder.buildRepository();
+    }
+
+    /**
+     * Create module loader.
+     *
+     * @param args the args
+     * @return the module loader
+     */
+    protected abstract ModuleLoader createModuleLoader(Map<String, String> args);
 }

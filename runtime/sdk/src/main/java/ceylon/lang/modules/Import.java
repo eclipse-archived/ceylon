@@ -29,64 +29,53 @@ import ceylon.lang.modules.helpers.PathFilters;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class Import extends Filterable
-{
-   private ModuleName name;
-   private ModuleVersion version;
-   private Boolean optional = Boolean.FALSE;
-   private Boolean onDemand = Boolean.FALSE;
+public class Import extends Filterable {
+    private ModuleName name;
+    private ModuleVersion version;
+    private Boolean optional = Boolean.FALSE;
+    private Boolean onDemand = Boolean.FALSE;
 
-   public Import(ModuleName name, ModuleVersion version)
-   {
-      this(name, version, null, null);
-   }
+    public Import(ModuleName name, ModuleVersion version) {
+        this(name, version, null, null);
+    }
 
-   public Import(ModuleName name, ModuleVersion version, Boolean optional, Boolean onDemand)
-   {
-      this(name, version, optional, onDemand, null, null);
-   }
+    public Import(ModuleName name, ModuleVersion version, Boolean optional, Boolean onDemand) {
+        this(name, version, optional, onDemand, null, null);
+    }
 
-   public Import(ModuleName name, ModuleVersion version, Boolean optional, Boolean onDemand, PathFilter exports, PathFilter imports)
-   {
-      super(exports, imports);
-      this.name = name;
-      this.version = version;
-      this.optional = toBoolean(optional);
-      this.onDemand = toBoolean(onDemand);
-   }
+    public Import(ModuleName name, ModuleVersion version, Boolean optional, Boolean onDemand, PathFilter exports, PathFilter imports) {
+        super(exports, imports);
+        this.name = name;
+        this.version = version;
+        this.optional = toBoolean(optional);
+        this.onDemand = toBoolean(onDemand);
+    }
 
-   protected PathFilter getDefaultExports()
-   {
-      return PathFilters.rejectAll();
-   }
+    protected PathFilter getDefaultExports() {
+        return PathFilters.rejectAll();
+    }
 
-   protected PathFilter getDefaultImports()
-   {
-      return PathFilters.acceptAll();
-   }
+    protected PathFilter getDefaultImports() {
+        return PathFilters.acceptAll();
+    }
 
-   private static Boolean toBoolean(Boolean value)
-   {
-      return value != null && Boolean.TRUE.equals(value);
-   }
+    private static Boolean toBoolean(Boolean value) {
+        return value != null && Boolean.TRUE.equals(value);
+    }
 
-   public ModuleName getName()
-   {
-      return name;
-   }
+    public ModuleName getName() {
+        return name;
+    }
 
-   public ModuleVersion getVersion()
-   {
-      return version;
-   }
+    public ModuleVersion getVersion() {
+        return version;
+    }
 
-   public Boolean isOptional()
-   {
-      return optional;
-   }
+    public Boolean isOptional() {
+        return optional;
+    }
 
-   public Boolean isOnDemand()
-   {
-      return onDemand;
-   }
+    public Boolean isOnDemand() {
+        return onDemand;
+    }
 }

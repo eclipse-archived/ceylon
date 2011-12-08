@@ -22,54 +22,46 @@
 
 package net.something.xyz;
 
-import java.lang.reflect.Method;
-
-import ceylon.lang.Process;
 import ceylon.lang.modules.Import;
 import ceylon.lang.modules.ModuleName;
 import ceylon.lang.modules.ModuleVersion;
 
+import java.lang.reflect.Method;
+
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class Module
-{
-   public ceylon.lang.modules.Module getModule()
-   {
-      ModuleName name = new ModuleName("net.something.xyz");
-      ModuleVersion version = new ModuleVersion(1, 0, 0, "Final");
-      ceylon.lang.Runnable runnable = new ceylon.lang.Runnable()
-      {
-         public void run(Process process)
-         {
-            // test resource on_demand
-            ClassLoader cl = Module.this.getClass().getClassLoader();
+public class Module {
+    public ceylon.lang.modules.Module getModule() {
+        ModuleName name = new ModuleName("net.something.xyz");
+        ModuleVersion version = new ModuleVersion(1, 0, 0, "Final");
+        ceylon.lang.Runnable runnable = new ceylon.lang.Runnable() {
+            public void run(Process process) {
+                // test resource on_demand
+                ClassLoader cl = Module.this.getClass().getClassLoader();
 
-            try
-            {
-               // test class on_demand
-               Object m = cl.loadClass("org.jboss.acme.Module").newInstance();
-               Class<?> clazz = m.getClass();
-               ClassLoader clz = clazz.getClassLoader();
-               Method run = clazz.getMethod("run");
-               run.invoke(m);
+                try {
+                    // test class on_demand
+                    Object m = cl.loadClass("org.jboss.acme.Module").newInstance();
+                    Class<?> clazz = m.getClass();
+                    ClassLoader clz = clazz.getClassLoader();
+                    Method run = clazz.getMethod("run");
+                    run.invoke(m);
 
-               cl.loadClass("si.alesj.ceylon.test.Touch"); // MC currently only works on classes
+                    cl.loadClass("si.alesj.ceylon.test.Touch"); // MC currently only works on classes
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+
+                String resource = "si/alesj/ceylon/test/config.xml";
+                Object url = cl.getResource(resource);
+                if (url == null)
+                    throw new IllegalArgumentException("Null url: " + resource);
+                System.out.println("URL: " + url);
             }
-            catch (Exception e)
-            {
-               throw new RuntimeException(e);
-            }
-
-            String resource = "si/alesj/ceylon/test/config.xml";
-            Object url = cl.getResource(resource);
-            if (url == null)
-               throw new IllegalArgumentException("Null url: " + resource);
-            System.out.println("URL: " + url);
-         }
-      };
-      Import im1 = new Import(new ModuleName("org.jboss.acme"), new ModuleVersion(1, 0, 0, "CR1"), false, true);
-      Import im2 = new Import(new ModuleName("si.alesj.ceylon"), new ModuleVersion(1, 0, 0, "GA"), false, true);
-      return new ceylon.lang.modules.Module(name, version, null, null, runnable, im1, im2);
-   }
+        };
+        Import im1 = new Import(new ModuleName("org.jboss.acme"), new ModuleVersion(1, 0, 0, "CR1"), false, true);
+        Import im2 = new Import(new ModuleName("si.alesj.ceylon"), new ModuleVersion(1, 0, 0, "GA"), false, true);
+        return new ceylon.lang.modules.Module(name, version, null, null, runnable, im1, im2);
+    }
 }

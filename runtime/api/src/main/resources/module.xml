@@ -26,7 +26,7 @@
     <resources>
         <resource-root path="ceylon.modules.api-1.0.0-SNAPSHOT.jar"/>
     </resources>
-   
+
     <dependencies>
         <module name="ceylon.modules.spi" slot="1.0.0-SNAPSHOT" export="true"/>
     </dependencies>

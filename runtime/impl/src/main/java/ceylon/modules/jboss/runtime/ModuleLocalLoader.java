@@ -22,6 +22,10 @@
 
 package ceylon.modules.jboss.runtime;
 
+import org.jboss.modules.LocalLoader;
+import org.jboss.modules.Module;
+import org.jboss.modules.Resource;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -29,78 +33,60 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-import org.jboss.modules.LocalLoader;
-import org.jboss.modules.Module;
-import org.jboss.modules.Resource;
-
 /**
  * Module local loader.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-class ModuleLocalLoader implements LocalLoader
-{
-   private final Module module;
+class ModuleLocalLoader implements LocalLoader {
+    private final Module module;
 
-   ModuleLocalLoader(Module module)
-   {
-      this.module = module;
-   }
+    ModuleLocalLoader(Module module) {
+        this.module = module;
+    }
 
-   public Class<?> loadClassLocal(String name, boolean resolve)
-   {
-      try
-      {
-         return module.getClassLoader().loadClass(name, resolve);
-      }
-      catch (ClassNotFoundException ignored)
-      {
-         return null;
-      }
-   }
+    public Class<?> loadClassLocal(String name, boolean resolve) {
+        try {
+            return module.getClassLoader().loadClass(name, resolve);
+        } catch (ClassNotFoundException ignored) {
+            return null;
+        }
+    }
 
-   @SuppressWarnings({"unchecked"})
-   public List<Resource> loadResourceLocal(final String name)
-   {
-      final Enumeration<URL> urls = module.getExportedResources(name);
-      final List<Resource> list = new ArrayList<Resource>();
-      while (urls.hasMoreElements())
-         list.add(new URLResource(urls.nextElement()));
-      return list;
-   }
+    @SuppressWarnings({"unchecked"})
+    public List<Resource> loadResourceLocal(final String name) {
+        final Enumeration<URL> urls = module.getExportedResources(name);
+        final List<Resource> list = new ArrayList<Resource>();
+        while (urls.hasMoreElements())
+            list.add(new URLResource(urls.nextElement()));
+        return list;
+    }
 
-   public Resource loadResourceLocal(String root, String name)
-   {
-      return module.getExportedResource(root, name);
-   }
+    public Resource loadResourceLocal(String root, String name) {
+        return module.getExportedResource(root, name);
+    }
 
-   final static class URLResource implements Resource
-   {
-      private final URL url;
+    final static class URLResource implements Resource {
+        private final URL url;
 
-      public URLResource(final URL url)
-      {
-         this.url = url;
-      }
+        public URLResource(final URL url) {
+            this.url = url;
+        }
 
-      public String getName()
-      {
-         return url.getPath();
-      }
+        public String getName() {
+            return url.getPath();
+        }
 
-      public URL getURL()
-      {
-         return url;
-      }
+        public URL getURL() {
+            return url;
+        }
 
-      public InputStream openStream() throws IOException
-      {
-         return url.openStream();
-      }
+        public InputStream openStream() throws IOException {
+            return url.openStream();
+        }
 
-      public long getSize()
-      {
-         return 0L;
-      }
-   }
+        public long getSize() {
+            return 0L;
+        }
+    }
 }

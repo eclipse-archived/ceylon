@@ -30,49 +30,41 @@ import ceylon.lang.modules.PathFilter;
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-final class InvertingPathFilter implements PathFilter
-{
-   private final PathFilter delegate;
+final class InvertingPathFilter implements PathFilter {
+    private final PathFilter delegate;
 
-   /**
-    * Construct a new instance.
-    *
-    * @param delegate the filter to delegate to
-    */
-   InvertingPathFilter(final PathFilter delegate)
-   {
-      if (delegate == null)
-      {
-         throw new IllegalArgumentException("delegate is null");
-      }
-      this.delegate = delegate;
-   }
+    /**
+     * Construct a new instance.
+     *
+     * @param delegate the filter to delegate to
+     */
+    InvertingPathFilter(final PathFilter delegate) {
+        if (delegate == null) {
+            throw new IllegalArgumentException("delegate is null");
+        }
+        this.delegate = delegate;
+    }
 
-   /**
-    * {@inheritDoc}
-    */
-   public boolean accept(final String path)
-   {
-      return !delegate.accept(path);
-   }
+    /**
+     * {@inheritDoc}
+     */
+    public boolean accept(final String path) {
+        return !delegate.accept(path);
+    }
 
-   public int hashCode()
-   {
-      return 47 * delegate.hashCode();
-   }
+    public int hashCode() {
+        return 47 * delegate.hashCode();
+    }
 
-   public boolean equals(final Object obj)
-   {
-      return obj instanceof InvertingPathFilter && equals((InvertingPathFilter) obj);
-   }
+    public boolean equals(final Object obj) {
+        return obj instanceof InvertingPathFilter && equals((InvertingPathFilter) obj);
+    }
 
-   public boolean equals(final InvertingPathFilter obj)
-   {
-      return obj != null && obj.delegate.equals(delegate);
-   }
+    public boolean equals(final InvertingPathFilter obj) {
+        return obj != null && obj.delegate.equals(delegate);
+    }
 
-   public String toString()
-   {
-      return "not " + delegate.toString();
-   }
+    public String toString() {
+        return "not " + delegate.toString();
+    }
 }

@@ -22,9 +22,7 @@
 
 package ceylon.modules.jboss.runtime;
 
-import java.util.Collections;
-import java.util.List;
-
+import ceylon.lang.modules.Import;
 import org.jboss.modules.DependencySpec;
 import org.jboss.modules.LocalLoader;
 import org.jboss.modules.Module;
@@ -32,73 +30,63 @@ import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoadException;
 import org.jboss.modules.Resource;
 
-import ceylon.lang.modules.Import;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Load modules on demand.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-class OnDemandLocalLoader implements LocalLoader
-{
-   private ModuleIdentifier target;
-   private CeylonModuleLoader loader;
-   private Node<Import> root;
+class OnDemandLocalLoader implements LocalLoader {
+    private ModuleIdentifier target;
+    private CeylonModuleLoader loader;
+    private Node<Import> root;
 
-   OnDemandLocalLoader(ModuleIdentifier target, CeylonModuleLoader loader, Node<Import> root)
-   {
-      this.target = target;
-      this.loader = loader;
-      this.root = root;
-   }
+    OnDemandLocalLoader(ModuleIdentifier target, CeylonModuleLoader loader, Node<Import> root) {
+        this.target = target;
+        this.loader = loader;
+        this.root = root;
+    }
 
-   protected LocalLoader doUpdate(String[] tokens)
-   {
-      Node<Import> current = root;
-      for (String token : tokens)
-      {
-         current = current.getChild(token);
-         if (current == null)
-            return null;
+    protected LocalLoader doUpdate(String[] tokens) {
+        Node<Import> current = root;
+        for (String token : tokens) {
+            current = current.getChild(token);
+            if (current == null)
+                return null;
 
-         //noinspection SynchronizationOnLocalVariableOrMethodParameter
-         synchronized (current)
-         {
-            Import i = current.getValue();
-            if (i != null)
-            {
-               current.remove(); // remove, so we don't loop; should not happen though
+            //noinspection SynchronizationOnLocalVariableOrMethodParameter
+            synchronized (current) {
+                Import i = current.getValue();
+                if (i != null) {
+                    current.remove(); // remove, so we don't loop; should not happen though
 
-               DependencySpec mds = loader.createModuleDependency(i);
-               try
-               {
-                  Module owner = loader.preloadModule(target);
-                  loader.updateModule(owner, mds); // update / add lazy dep
+                    DependencySpec mds = loader.createModuleDependency(i);
+                    try {
+                        Module owner = loader.preloadModule(target);
+                        loader.updateModule(owner, mds); // update / add lazy dep
 
-                  Module module = loader.loadModule(CeylonModuleLoader.createModuleIdentifier(i));                  
-                  return new ModuleLocalLoader(module);
-               }
-               catch (ModuleLoadException ignored)
-               {
-                  return null;
-               }
+                        Module module = loader.loadModule(CeylonModuleLoader.createModuleIdentifier(i));
+                        return new ModuleLocalLoader(module);
+                    } catch (ModuleLoadException ignored) {
+                        return null;
+                    }
+                }
             }
-         }
-      }
-      return null;
-   }
+        }
+        return null;
+    }
 
-   public Class<?> loadClassLocal(String name, boolean resolve)
-   {
-      String[] tokens = name.split("\\.");
-      LocalLoader ll = doUpdate(tokens);
-      return (ll != null ? ll.loadClassLocal(name, resolve) : null);
-   }
+    public Class<?> loadClassLocal(String name, boolean resolve) {
+        String[] tokens = name.split("\\.");
+        LocalLoader ll = doUpdate(tokens);
+        return (ll != null ? ll.loadClassLocal(name, resolve) : null);
+    }
 
-   public List<Resource> loadResourceLocal(String name)
-   {
-      String[] tokens = name.split("/");
-      LocalLoader ll = doUpdate(tokens);
-      return (ll != null ? ll.loadResourceLocal(name) : Collections.<Resource>emptyList());
-   }
+    public List<Resource> loadResourceLocal(String name) {
+        String[] tokens = name.split("/");
+        LocalLoader ll = doUpdate(tokens);
+        return (ll != null ? ll.loadResourceLocal(name) : Collections.<Resource>emptyList());
+    }
 }

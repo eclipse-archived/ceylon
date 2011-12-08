@@ -27,12 +27,11 @@ package ceylon.lang;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface Runnable
-{
-   /**
-    * Run.
-    *
-    * @param process the process
-    */
-   void run(Process process);
+public interface Runnable {
+    /**
+     * Run.
+     *
+     * @param process the process
+     */
+    void run(Process process);
 }

@@ -22,27 +22,26 @@
 
 package ceylon.modules.spi.runtime;
 
-import java.util.Map;
-
 import ceylon.lang.modules.ModuleName;
 import ceylon.lang.modules.ModuleVersion;
 import ceylon.modules.spi.Executable;
+
+import java.util.Map;
 
 /**
  * Ceylon Modules runtime spi.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface Runtime extends Executable
-{
-   /**
-    * Create modular ClassLoader.
-    *
-    * @param name the module name
-    * @param version the module version
-    * @param args the command line arguments map
-    * @return module classloader instance
-    * @throws Exception for ay error
-    */
-   ClassLoader createClassLoader(ModuleName name, ModuleVersion version, Map<String, String> args) throws Exception;
+public interface Runtime extends Executable {
+    /**
+     * Create modular ClassLoader.
+     *
+     * @param name    the module name
+     * @param version the module version
+     * @param args    the command line arguments map
+     * @return module classloader instance
+     * @throws Exception for ay error
+     */
+    ClassLoader createClassLoader(ModuleName name, ModuleVersion version, Map<String, String> args) throws Exception;
 }

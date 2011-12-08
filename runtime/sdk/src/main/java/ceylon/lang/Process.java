@@ -29,22 +29,19 @@ import java.util.Map;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class Process
-{
-   private Map<String, String> args;
+public class Process {
+    private Map<String, String> args;
 
-   public Process(Map<String, String> args)
-   {
-      this.args = args;
-   }
+    public Process(Map<String, String> args) {
+        this.args = args;
+    }
 
-   /**
-    * Get initial arguments.
-    *
-    * @return the initial arguments
-    */
-   public Map<String, String> getArgs()
-   {
-      return args;
-   }
+    /**
+     * Get initial arguments.
+     *
+     * @return the initial arguments
+     */
+    public Map<String, String> getArgs() {
+        return args;
+    }
 }

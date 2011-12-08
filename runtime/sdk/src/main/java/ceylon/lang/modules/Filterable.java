@@ -27,54 +27,50 @@ package ceylon.lang.modules;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-abstract class Filterable
-{
-   private PathFilter exports;
-   private PathFilter imports;
+abstract class Filterable {
+    private PathFilter exports;
+    private PathFilter imports;
 
-   protected Filterable(PathFilter exports, PathFilter imports)
-   {
-      this.exports = exports;
-      this.imports = imports;
-   }
+    protected Filterable(PathFilter exports, PathFilter imports) {
+        this.exports = exports;
+        this.imports = imports;
+    }
 
-   /**
-    * Get default exports.
-    *
-    * @return the default exports
-    */
-   protected abstract PathFilter getDefaultExports();
+    /**
+     * Get default exports.
+     *
+     * @return the default exports
+     */
+    protected abstract PathFilter getDefaultExports();
 
-   /**
-    * Get default imports.
-    *
-    * @return the default imports
-    */
-   protected abstract PathFilter getDefaultImports();
+    /**
+     * Get default imports.
+     *
+     * @return the default imports
+     */
+    protected abstract PathFilter getDefaultImports();
 
-   /**
-    * Get exports.
-    *
-    * @return the exports
-    */
-   public PathFilter getExports()
-   {
-      if (exports == null)
-         exports = getDefaultExports();
+    /**
+     * Get exports.
+     *
+     * @return the exports
+     */
+    public PathFilter getExports() {
+        if (exports == null)
+            exports = getDefaultExports();
 
-      return exports;
-   }
+        return exports;
+    }
 
-   /**
-    * Get imports.
-    *
-    * @return the imports
-    */
-   public PathFilter getImports()
-   {
-      if (imports == null)
-         imports = getDefaultImports();
+    /**
+     * Get imports.
+     *
+     * @return the imports
+     */
+    public PathFilter getImports() {
+        if (imports == null)
+            imports = getDefaultImports();
 
-      return imports;
-   }
+        return imports;
+    }
 }

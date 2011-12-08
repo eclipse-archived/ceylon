@@ -27,22 +27,18 @@ package ceylon.lang.modules;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class ModuleName
-{
-   private String name;
+public class ModuleName {
+    private String name;
 
-   public ModuleName(String name)
-   {
-      this.name = name;
-   }
+    public ModuleName(String name) {
+        this.name = name;
+    }
 
-   public String getName()
-   {
-      return name;
-   }
+    public String getName() {
+        return name;
+    }
 
-   public String toString()
-   {
-      return getName();
-   }
+    public String toString() {
+        return getName();
+    }
 }

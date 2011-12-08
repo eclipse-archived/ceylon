@@ -27,14 +27,13 @@ package ceylon.lang.modules;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface PathFilter
-{
-   /**
-    * Determine whether a path should be accepted.  The given name is a path separated
-    * by "{@code /}" characters.
-    *
-    * @param path the path to check
-    * @return true if the path should be accepted, false if not
-    */
-   boolean accept(String path);
+public interface PathFilter {
+    /**
+     * Determine whether a path should be accepted.  The given name is a path separated
+     * by "{@code /}" characters.
+     *
+     * @param path the path to check
+     * @return true if the path should be accepted, false if not
+     */
+    boolean accept(String path);
 }

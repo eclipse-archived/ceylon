@@ -22,49 +22,44 @@
 
 package org.jboss.ceylon.test.modules.sources.test;
 
+import ceylon.modules.spi.Constants;
+import org.jboss.ceylon.test.modules.ModulesTest;
+import org.junit.Test;
+
 import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.jboss.ceylon.test.modules.ModulesTest;
-
-import ceylon.modules.spi.Constants;
-import org.junit.Test;
 
 /**
  * Test module usage from sources.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class SourcesTestCase extends ModulesTest
-{
-   protected String getTestsuiteDir() throws Exception
-   {
-      URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
-      File dir = new File(url.toURI());
-      String path = dir.getCanonicalPath();
-      int p = path.lastIndexOf("testsuite/");
-      return path.substring(0, p + "testsuite/".length());
-   }
+public class SourcesTestCase extends ModulesTest {
+    protected String getTestsuiteDir() throws Exception {
+        URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+        File dir = new File(url.toURI());
+        String path = dir.getCanonicalPath();
+        int p = path.lastIndexOf("testsuite/");
+        return path.substring(0, p + "testsuite/".length());
+    }
 
-   @Test
-   public void testSimpleUsage() throws Exception
-   {
-      Map<Constants, String> extra = new HashMap<Constants, String>();
-      extra.put(Constants.SOURCES, "src/test/java");
-      extra.put(Constants.CLASSES, "target/test-classes-bak");
+    @Test
+    public void testSimpleUsage() throws Exception {
+        Map<Constants, String> extra = new HashMap<Constants, String>();
+        extra.put(Constants.SOURCES, "src/test/java");
+        extra.put(Constants.CLASSES, "target/test-classes-bak");
 
-      src("org.jboss.acme", getTestsuiteDir(), extra);
-   }
+        src("org.jboss.acme", getTestsuiteDir(), extra);
+    }
 
-   @Test
-   public void testDependencyUsage() throws Exception
-   {
-      Map<Constants, String> extra = new HashMap<Constants, String>();
-      extra.put(Constants.SOURCES, "src/test/java");
-      extra.put(Constants.CLASSES, "target/test-classes-bak");
+    @Test
+    public void testDependencyUsage() throws Exception {
+        Map<Constants, String> extra = new HashMap<Constants, String>();
+        extra.put(Constants.SOURCES, "src/test/java");
+        extra.put(Constants.CLASSES, "target/test-classes-bak");
 
-      src("com.foobar.qwert", getTestsuiteDir(), extra);
-   }
+        src("com.foobar.qwert", getTestsuiteDir(), extra);
+    }
 }

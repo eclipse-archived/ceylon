@@ -27,16 +27,15 @@ import java.util.Map;
 /**
  * Simple executable.
  * It takes arguments map and starts a new process.
- * 
+ *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public interface Executable
-{
-   /**
-    * Execute process with args.
-    *
-    * @param args the args
-    * @throws Exception for any error
-    */
-   void execute(Map<String, String> args) throws Exception;
+public interface Executable {
+    /**
+     * Execute process with args.
+     *
+     * @param args the args
+     * @throws Exception for any error
+     */
+    void execute(Map<String, String> args) throws Exception;
 }

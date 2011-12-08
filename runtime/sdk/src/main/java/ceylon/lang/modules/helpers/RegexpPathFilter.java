@@ -22,80 +22,69 @@
 
 package ceylon.lang.modules.helpers;
 
-import java.util.regex.Pattern;
-
 import ceylon.lang.modules.PathFilter;
+
+import java.util.regex.Pattern;
 
 /**
  * Regexp implementation of PathFilter.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-class RegexpPathFilter implements PathFilter
-{
-   private final String regexp;
-   private final Pattern pattern;
+class RegexpPathFilter implements PathFilter {
+    private final String regexp;
+    private final Pattern pattern;
 
-   /**
-    * Construct a new instance.
-    *
-    * @param regexp the path regexp to match
-    */
-   RegexpPathFilter(final String regexp)
-   {
-      pattern = getPattern(regexp);
-      this.regexp = regexp;
-   }
+    /**
+     * Construct a new instance.
+     *
+     * @param regexp the path regexp to match
+     */
+    RegexpPathFilter(final String regexp) {
+        pattern = getPattern(regexp);
+        this.regexp = regexp;
+    }
 
-   /**
-    * Get pattern.
-    *
-    * @param regexp the regexp
-    * @return the pattern
-    */
-   protected Pattern getPattern(String regexp)
-   {
-      return Pattern.compile(regexp);     
-   }
+    /**
+     * Get pattern.
+     *
+     * @param regexp the regexp
+     * @return the pattern
+     */
+    protected Pattern getPattern(String regexp) {
+        return Pattern.compile(regexp);
+    }
 
-   /**
-    * Determine whether a path should be accepted.
-    *
-    * @param path the path to check
-    * @return true if the path should be accepted, false if not
-    */
-   public boolean accept(final String path)
-   {
-      return pattern.matcher(path).matches();
-   }
+    /**
+     * Determine whether a path should be accepted.
+     *
+     * @param path the path to check
+     * @return true if the path should be accepted, false if not
+     */
+    public boolean accept(final String path) {
+        return pattern.matcher(path).matches();
+    }
 
-   public int hashCode()
-   {
-      return regexp.hashCode();
-   }
+    public int hashCode() {
+        return regexp.hashCode();
+    }
 
-   public boolean equals(final Object obj)
-   {
-      return obj instanceof RegexpPathFilter && equals((RegexpPathFilter) obj);
-   }
+    public boolean equals(final Object obj) {
+        return obj instanceof RegexpPathFilter && equals((RegexpPathFilter) obj);
+    }
 
-   public boolean equals(final RegexpPathFilter obj)
-   {
-      return obj != null && obj.pattern.equals(pattern);
-   }
+    public boolean equals(final RegexpPathFilter obj) {
+        return obj != null && obj.pattern.equals(pattern);
+    }
 
-   public String toString()
-   {
-      final StringBuilder b = new StringBuilder();
-      b.append("match ");
-      if (regexp != null)
-      {
-         b.append('"').append(regexp).append('"');
-      }
-      else
-      {
-         b.append('/').append(pattern).append('/');
-      }
-      return b.toString();
-   }
+    public String toString() {
+        final StringBuilder b = new StringBuilder();
+        b.append("match ");
+        if (regexp != null) {
+            b.append('"').append(regexp).append('"');
+        } else {
+            b.append('/').append(pattern).append('/');
+        }
+        return b.toString();
+    }
 }

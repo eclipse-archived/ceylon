@@ -22,32 +22,28 @@
 
 package ceylon.modules.jboss.runtime;
 
+import org.jboss.modules.Module;
+
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-
-import org.jboss.modules.Module;
 
 /**
  * Security actions.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-class SecurityActions
-{
-   /**
-    * Get classloader from a module.
-    *
-    * @param module the current module
-    * @return module's classloader
-    */
-   static ClassLoader getClassLoader(final Module module)
-   {
-      return AccessController.doPrivileged(new PrivilegedAction<ClassLoader>()
-      {
-         public ClassLoader run()
-         {
-            return module.getClassLoader();
-         }
-      });
-   }
+class SecurityActions {
+    /**
+     * Get classloader from a module.
+     *
+     * @param module the current module
+     * @return module's classloader
+     */
+    static ClassLoader getClassLoader(final Module module) {
+        return AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
+            public ClassLoader run() {
+                return module.getClassLoader();
+            }
+        });
+    }
 }

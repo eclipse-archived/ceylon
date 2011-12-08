@@ -28,74 +28,64 @@ import java.io.IOException;
 
 /**
  * Abstract compiler adapter.
- * 
+ *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public abstract class AbstractCompilerAdapter implements CompilerAdapter
-{
-   private String languageSuffix;
+public abstract class AbstractCompilerAdapter implements CompilerAdapter {
+    private String languageSuffix;
 
-   /**
-    * Create new cmopiler adapter.
-    * The *true* lang suffix must contain a dot.
-    *
-    * @param languageSuffix the language suffix
-    */
-   protected AbstractCompilerAdapter(String languageSuffix)
-   {
-      if (languageSuffix == null)
-         throw new IllegalArgumentException("Null language suffix");
-      this.languageSuffix = languageSuffix;
-   }
+    /**
+     * Create new cmopiler adapter.
+     * The *true* lang suffix must contain a dot.
+     *
+     * @param languageSuffix the language suffix
+     */
+    protected AbstractCompilerAdapter(String languageSuffix) {
+        if (languageSuffix == null)
+            throw new IllegalArgumentException("Null language suffix");
+        this.languageSuffix = languageSuffix;
+    }
 
-   public String languageSuffix()
-   {
-      return languageSuffix;
-   }
+    public String languageSuffix() {
+        return languageSuffix;
+    }
 
-   public File findSource(File root, String name)
-   {
-      File file = new File(root, name + languageSuffix);
-      return file.exists() ? file : null;
-   }
+    public File findSource(File root, String name) {
+        File file = new File(root, name + languageSuffix);
+        return file.exists() ? file : null;
+    }
 
-   /**
-    * Get class's path.
-    *
-    * @param className the class name
-    * @return the class' path
-    */
-   protected String toPath(String className)
-   {
-      return toPath(className, languageSuffix);
-   }
+    /**
+     * Get class's path.
+     *
+     * @param className the class name
+     * @return the class' path
+     */
+    protected String toPath(String className) {
+        return toPath(className, languageSuffix);
+    }
 
-   /**
-    * Get class's path.
-    *
-    * @param className the class name
-    * @param suffix the suffix
-    * @return the class' path
-    */
-   protected static String toPath(String className, String suffix)
-   {
-      return className.replace(".", "/") + suffix;
-   }
+    /**
+     * Get class's path.
+     *
+     * @param className the class name
+     * @param suffix    the suffix
+     * @return the class' path
+     */
+    protected static String toPath(String className, String suffix) {
+        return className.replace(".", "/") + suffix;
+    }
 
-   /**
-    * Safe close.
-    *
-    * @param closeable the closeable
-    */
-   protected static void safeClose(final Closeable closeable)
-   {
-      if (closeable != null) try
-      {
-         closeable.close();
-      }
-      catch (IOException e)
-      {
-         // ignore
-      }
-   }
+    /**
+     * Safe close.
+     *
+     * @param closeable the closeable
+     */
+    protected static void safeClose(final Closeable closeable) {
+        if (closeable != null) try {
+            closeable.close();
+        } catch (IOException e) {
+            // ignore
+        }
+    }
 }
