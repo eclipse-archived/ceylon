@@ -36,12 +36,12 @@ public class ModuleVisitor extends Visitor {
      * the dependencies declaration
      */
     private Module mainModule;
-    private final ModuleBuilder moduleBuilder;
+    private final ModuleManager moduleBuilder;
     private final Package pkg;
     private Tree.CompilationUnit unit;
     private Phase phase = Phase.SRC_MODULE;
 
-    public ModuleVisitor(ModuleBuilder moduleBuilder, Package pkg) {
+    public ModuleVisitor(ModuleManager moduleBuilder, Package pkg) {
         this.moduleBuilder = moduleBuilder;
         this.pkg = pkg;
     }

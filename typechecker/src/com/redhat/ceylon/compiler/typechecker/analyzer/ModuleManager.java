@@ -21,11 +21,11 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 
 /**
- * Build modules and packages
+ * Manager modules and packages (build, retrieve, handle errors etc)
  *
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
-public class ModuleBuilder {
+public class ModuleManager {
     public static final String MODULE_FILE = "module.ceylon";
     public static final String PACKAGE_FILE = "package.ceylon";
     private final Context context;
@@ -36,7 +36,7 @@ public class ModuleBuilder {
     private Map<List<String>, Set<String>> topLevelErrorsPerModuleName = new HashMap<List<String>,Set<String>>();
     private Map<Module, Node> moduleToNode = new HashMap<Module, Node>();
 
-    public ModuleBuilder(Context context) {
+    public ModuleManager(Context context) {
         this.context = context;
     }
 

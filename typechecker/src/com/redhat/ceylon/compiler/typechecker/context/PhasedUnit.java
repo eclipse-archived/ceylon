@@ -10,7 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.ControlFlowVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DependedUponVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor;
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleBuilder;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.RefinementVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.SelfReferenceVisitor;
@@ -43,7 +43,7 @@ public class PhasedUnit {
     private Unit unit;
     //must be the non qualified file name
     private String fileName;
-    private final ModuleBuilder moduleBuilder;
+    private final ModuleManager moduleBuilder;
     private final String pathRelativeToSrcDir;
     private VirtualFile unitFile;
     private final Set<PhasedUnit> dependentsOf = new HashSet<PhasedUnit>();
@@ -52,7 +52,7 @@ public class PhasedUnit {
     private ModuleVisitor moduleVisitor;
 
     public PhasedUnit(VirtualFile unitFile, VirtualFile srcDir, Tree.CompilationUnit cu, 
-            Package p, ModuleBuilder moduleBuilder, Context context, List<CommonToken> tokenStream) {
+            Package p, ModuleManager moduleBuilder, Context context, List<CommonToken> tokenStream) {
         this.compilationUnit = cu;
         this.pkg = p;
         this.unitFile = unitFile;
@@ -64,7 +64,7 @@ public class PhasedUnit {
 
     @Deprecated
     protected PhasedUnit(VirtualFile unitFile, VirtualFile srcDir, Tree.CompilationUnit cu, 
-            Package p, ModuleBuilder moduleBuilder, Context context) {
+            Package p, ModuleManager moduleBuilder, Context context) {
         this(unitFile, srcDir, cu, p, moduleBuilder, context, null);
     }
     
@@ -82,8 +82,8 @@ public class PhasedUnit {
     }
 
     public void visitSrcModulePhase() {
-        if ( ModuleBuilder.MODULE_FILE.equals(fileName) ||
-                ModuleBuilder.PACKAGE_FILE.equals(fileName) ) {
+        if ( ModuleManager.MODULE_FILE.equals(fileName) ||
+                ModuleManager.PACKAGE_FILE.equals(fileName) ) {
             moduleVisitor = new ModuleVisitor(moduleBuilder, pkg);
             compilationUnit.visit(moduleVisitor);
         }

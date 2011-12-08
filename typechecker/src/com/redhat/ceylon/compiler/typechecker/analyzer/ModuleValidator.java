@@ -26,7 +26,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 public class ModuleValidator {
     private final Context context;
     private List<PhasedUnits> phasedUnitsOfDependencies;
-    private final ModuleBuilder moduleBuilder;
+    private final ModuleManager moduleBuilder;
 
     public ModuleValidator(Context context, PhasedUnits phasedUnits) {
         this.context = context;

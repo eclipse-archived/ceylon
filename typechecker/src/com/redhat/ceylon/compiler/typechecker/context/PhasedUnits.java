@@ -10,7 +10,7 @@ import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.CommonTokenStream;
 
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleBuilder;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
@@ -27,15 +27,15 @@ public class PhasedUnits {
     private Map<VirtualFile, PhasedUnit> phasedUnitPerFile = new LinkedHashMap<VirtualFile, PhasedUnit>();
     private Map<String, PhasedUnit> phasedUnitPerRelativePath = new HashMap<String, PhasedUnit>();
     private final Context context;
-    private final ModuleBuilder moduleBuilder;
+    private final ModuleManager moduleBuilder;
 
     public PhasedUnits(Context context) {
         this.context = context;
-        this.moduleBuilder = new ModuleBuilder(context);
+        this.moduleBuilder = new ModuleManager(context);
         this.moduleBuilder.initCoreModules();
     }
 
-    public PhasedUnits(Context context, ModuleBuilder moduleBuilder) {
+    public PhasedUnits(Context context, ModuleManager moduleBuilder) {
         this.context = context;
         this.moduleBuilder = moduleBuilder;
     }
@@ -51,7 +51,7 @@ public class PhasedUnits {
         this.phasedUnitPerFile.remove(phasedUnit.getUnitFile());
     }
 
-    public ModuleBuilder getModuleBuilder() {
+    public ModuleManager getModuleBuilder() {
         return moduleBuilder;
     }
 
@@ -150,7 +150,7 @@ public class PhasedUnits {
         moduleBuilder.push(dir.getName());
         final List<VirtualFile> files = dir.getChildren();
         for (VirtualFile file : files) {
-            if (ModuleBuilder.MODULE_FILE.equals(file.getName())) {
+            if (ModuleManager.MODULE_FILE.equals(file.getName())) {
                 moduleBuilder.visitModuleFile();
             }
         }
