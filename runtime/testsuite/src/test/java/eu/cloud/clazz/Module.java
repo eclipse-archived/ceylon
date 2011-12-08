@@ -22,18 +22,21 @@
 
 package eu.cloud.clazz;
 
-import ceylon.lang.modules.Import;
-import ceylon.lang.modules.ModuleName;
-import ceylon.lang.modules.ModuleVersion;
-import ceylon.lang.modules.PathFilter;
+import ceylon.language.Quoted;
+import ceylon.language.descriptor.Import;
+import ceylon.language.descriptor.PathFilter;
+import ceylon.language.descriptor.PathFilters;
+import ceylon.modules.api.runtime.ModuleVersion;
+import ceylon.modules.api.util.JavaToCeylon;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class Module {
-    public ceylon.lang.modules.Module getModule() {
-        ModuleName name = new ModuleName("eu.cloud.clazz");
-        ModuleVersion version = new ModuleVersion(1, 0, 0, "GA");
+    public ceylon.language.descriptor.Module getModule() {
+        Quoted name = JavaToCeylon.toQuoted("eu.cloud.clazz");
+        Quoted version = JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "GA").toString());
+/*
         ceylon.lang.Runnable runnable = new ceylon.lang.Runnable() {
             public void run(ceylon.lang.Process process) {
                 ClassLoader cl = Module.this.getClass().getClassLoader();
@@ -42,7 +45,6 @@ public class Module {
                 } catch (ClassNotFoundException e) {
                     throw new RuntimeException(e);
                 }
-/*
             try
             {
                cl.loadClass("org.jboss.filtered.api.SomeAPI");
@@ -51,7 +53,6 @@ public class Module {
             catch (ClassNotFoundException ignored)
             {
             }
-*/
                 try {
                     cl.loadClass("org.jboss.filtered.impl.SomeImpl");
                     throw new RuntimeException("Fail, should not be here!");
@@ -59,12 +60,21 @@ public class Module {
                 }
             }
         };
+*/
         PathFilter imports = new PathFilter() {
-            public boolean accept(String path) {
-                return path.contains("spi"); // only import spis
+            public ceylon.language.Boolean accept(ceylon.language.String path) {
+                boolean contains = path.contains(JavaToCeylon.toString("spi"));
+                return JavaToCeylon.toBoolean(contains);
             }
         };
-        Import im = new Import(new ModuleName("org.jboss.filtered"), new ModuleVersion(1, 0, 0, "Alpha1"), false, false, null, imports);
-        return new ceylon.lang.modules.Module(name, version, null, null, runnable, im);
+        Import im = new Import(
+                JavaToCeylon.toQuoted("org.jboss.filtered"),
+                JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "Alpha1").toString()),
+                false,
+                false,
+                false,
+                PathFilters.rejectAll(),
+                imports);
+        return new ceylon.language.descriptor.Module(name, version, null, null, null, JavaToCeylon.toIterable(im));
     }
 }

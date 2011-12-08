@@ -22,7 +22,7 @@
 
 package ceylon.modules.jboss.runtime;
 
-import ceylon.lang.modules.Import;
+import ceylon.language.descriptor.Import;
 import org.jboss.modules.DependencySpec;
 import org.jboss.modules.LocalLoader;
 import org.jboss.modules.Module;

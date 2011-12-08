@@ -22,19 +22,19 @@
 
 package net.something.xyz;
 
-import ceylon.lang.modules.Import;
-import ceylon.lang.modules.ModuleName;
-import ceylon.lang.modules.ModuleVersion;
-
-import java.lang.reflect.Method;
+import ceylon.language.Quoted;
+import ceylon.language.descriptor.Import;
+import ceylon.modules.api.runtime.ModuleVersion;
+import ceylon.modules.api.util.JavaToCeylon;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class Module {
-    public ceylon.lang.modules.Module getModule() {
-        ModuleName name = new ModuleName("net.something.xyz");
-        ModuleVersion version = new ModuleVersion(1, 0, 0, "Final");
+    public ceylon.language.descriptor.Module getModule() {
+        Quoted name = JavaToCeylon.toQuoted("net.something.xyz");
+        Quoted version = JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "Final").toString());
+/*
         ceylon.lang.Runnable runnable = new ceylon.lang.Runnable() {
             @Override
             public void run(ceylon.lang.Process process) {
@@ -61,8 +61,17 @@ public class Module {
                 System.out.println("URL: " + url);
             }
         };
-        Import im1 = new Import(new ModuleName("org.jboss.acme"), new ModuleVersion(1, 0, 0, "CR1"), false, true);
-        Import im2 = new Import(new ModuleName("si.alesj.ceylon"), new ModuleVersion(1, 0, 0, "GA"), false, true);
-        return new ceylon.lang.modules.Module(name, version, null, null, runnable, im1, im2);
+*/
+        Import im1 = new Import(
+                JavaToCeylon.toQuoted("org.jboss.acme"),
+                JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "CR1").toString()),
+                false,
+                true);
+        Import im2 = new Import(
+                JavaToCeylon.toQuoted("si.alesj.ceylon"),
+                JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "CR1").toString()),
+                false,
+                true);
+        return new ceylon.language.descriptor.Module(name, version, null, null, null, JavaToCeylon.toIterable(im1, im2));
     }
 }

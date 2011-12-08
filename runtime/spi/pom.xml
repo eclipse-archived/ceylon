@@ -15,8 +15,12 @@
 
     <dependencies>
         <dependency>
-            <groupId>ceylon</groupId>
-            <artifactId>sdk-mock</artifactId>
+            <groupId>ceylon.language</groupId>
+            <artifactId>ceylon-language</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.redhat.ceylon.typechecker</groupId>
+            <artifactId>ceylon-typechecker</artifactId>
         </dependency>
     </dependencies>
 

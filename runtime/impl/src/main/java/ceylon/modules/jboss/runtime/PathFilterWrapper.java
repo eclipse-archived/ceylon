@@ -30,16 +30,17 @@ import org.jboss.modules.filter.PathFilter;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 class PathFilterWrapper implements PathFilter {
-    private final ceylon.lang.modules.PathFilter filter;
+    private final ceylon.language.descriptor.PathFilter filter;
 
-    PathFilterWrapper(ceylon.lang.modules.PathFilter filter) {
+    PathFilterWrapper(ceylon.language.descriptor.PathFilter filter) {
         if (filter == null)
             throw new IllegalArgumentException("Null filter");
         this.filter = filter;
     }
 
     public boolean accept(String path) {
-        return filter.accept(path);
+        ceylon.language.String cs = ceylon.language.String.instance(path);
+        return filter.accept(cs).booleanValue();
     }
 
     public String toString() {

@@ -22,16 +22,17 @@
 
 package si.alesj.ceylon;
 
-import ceylon.lang.modules.ModuleName;
-import ceylon.lang.modules.ModuleVersion;
+import ceylon.language.Quoted;
+import ceylon.modules.api.runtime.ModuleVersion;
+import ceylon.modules.api.util.JavaToCeylon;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class Module {
-    public ceylon.lang.modules.Module getModule() {
-        ModuleName name = new ModuleName("si.alesj.ceylon");
-        ModuleVersion version = new ModuleVersion(1, 0, 0, "GA");
-        return new ceylon.lang.modules.Module(name, version, null, null, null);
+    public ceylon.language.descriptor.Module getModule() {
+        Quoted name = JavaToCeylon.toQuoted("si.alesj.ceylon");
+        Quoted version = JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "GA").toString());
+        return new ceylon.language.descriptor.Module(name, version, null, null, null, null);
     }
 }

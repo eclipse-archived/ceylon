@@ -98,7 +98,7 @@ public class Main {
         }
     }
 
-    private static <T> T instantiate(Class<T> expectedType, String defaultImpl) throws Exception {
+    public static <T> T instantiate(Class<T> expectedType, String defaultImpl) throws Exception {
         String impl = System.getProperty(expectedType.getName(), defaultImpl);
         ClassLoader cl = expectedType.getClassLoader();
         Class<?> clazz = cl.loadClass(impl);

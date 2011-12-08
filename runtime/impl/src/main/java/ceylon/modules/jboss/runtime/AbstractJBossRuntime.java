@@ -22,15 +22,18 @@
 
 package ceylon.modules.jboss.runtime;
 
-import ceylon.lang.modules.ModuleName;
-import ceylon.lang.modules.ModuleVersion;
+import ceylon.modules.Main;
 import ceylon.modules.api.runtime.AbstractRuntime;
+import ceylon.modules.spi.Constants;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.impl.RootRepositoryBuilder;
+import com.redhat.ceylon.cmr.spi.ContentTransformer;
+import com.redhat.ceylon.cmr.spi.MergeStrategy;
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
 
+import java.io.File;
 import java.util.Map;
 
 /**
@@ -40,7 +43,7 @@ import java.util.Map;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public abstract class AbstractJBossRuntime extends AbstractRuntime {
-    public ClassLoader createClassLoader(ModuleName name, ModuleVersion version, Map<String, String> args) throws Exception {
+    public ClassLoader createClassLoader(String name, String version, Map<String, String> args) throws Exception {
         ModuleLoader moduleLoader = createModuleLoader(args);
         ModuleIdentifier moduleIdentifier = ModuleIdentifier.fromString(name + ":" + version);
         Module module = moduleLoader.loadModule(moduleIdentifier);
@@ -54,8 +57,44 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
      * @return repository extension
      */
     protected Repository createRepository(Map<String, String> args) {
-        final RootRepositoryBuilder builder = new RootRepositoryBuilder();
+        RootRepositoryBuilder builder = null;
+        String root = args.get(Constants.REPOSITORY.toString());
+        if (root != null) {
+            File rootDir = new File(root);
+            if (rootDir.exists() && rootDir.isDirectory())
+                builder = new RootRepositoryBuilder(rootDir);
+        }
+        if (builder == null)
+            builder = new RootRepositoryBuilder();
+
+        final MergeStrategy ms = getService(MergeStrategy.class, args);
+        if (ms != null)
+            builder.mergeStrategy(ms);
+
+        if (Boolean.TRUE.equals(Boolean.valueOf(args.get(Constants.CACHE_CONTENT.toString()))))
+            builder.cacheContent();
+
+        final ContentTransformer ct = getService(ContentTransformer.class, args);
+        if (ct != null)
+            builder.contentTransformer(ct);
+
         return builder.buildRepository();
+    }
+
+    /**
+     * Get repository service.
+     *
+     * @param serviceType the service type
+     * @param args        the args
+     * @return service instance or null
+     */
+    protected <T> T getService(Class<T> serviceType, Map<String, String> args) {
+        try {
+            String impl = args.get(serviceType.getName());
+            return (impl != null) ? Main.instantiate(serviceType, impl) : null;
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Cannot instantiate service: " + serviceType.getName(), e);
+        }
     }
 
     /**

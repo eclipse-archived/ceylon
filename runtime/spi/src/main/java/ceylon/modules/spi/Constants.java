@@ -30,11 +30,12 @@ package ceylon.modules.spi;
 public enum Constants {
     EXECUTABLE("executable"),
     MODULE("module"),
-    REPOSITORY("rep"),
+    REPOSITORY("repository"),
     SOURCE("src"),
     DEFAULT("d"),
     SOURCES("sources"),
-    CLASSES("classes");
+    CLASSES("classes"),
+    CACHE_CONTENT("cache_content");
 
     private String value;
 

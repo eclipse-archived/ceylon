@@ -22,22 +22,24 @@
 
 package org.jboss.filtered;
 
-import ceylon.lang.modules.ModuleName;
-import ceylon.lang.modules.ModuleVersion;
-import ceylon.lang.modules.PathFilter;
+import ceylon.language.Quoted;
+import ceylon.language.descriptor.PathFilter;
+import ceylon.language.descriptor.PathFilters;
+import ceylon.modules.api.runtime.ModuleVersion;
+import ceylon.modules.api.util.JavaToCeylon;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class Module {
-    public ceylon.lang.modules.Module getModule() {
-        ModuleName name = new ModuleName("org.jboss.filtered");
-        ModuleVersion version = new ModuleVersion(1, 0, 0, "Alpha1");
+    public ceylon.language.descriptor.Module getModule() {
+        Quoted name = JavaToCeylon.toQuoted("org.jboss.filtered");
+        Quoted version = JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "Alpha1").toString());
         PathFilter exports = new PathFilter() {
-            public boolean accept(String path) {
-                return path.startsWith("org/jboss/filtered/spi") || path.startsWith("org/jboss/filtered/api");
+            public ceylon.language.Boolean accept(ceylon.language.String path) {
+                return JavaToCeylon.toBoolean(path.startsWith("org/jboss/filtered/spi") || path.startsWith("org/jboss/filtered/api"));
             }
         };
-        return new ceylon.lang.modules.Module(name, version, null, null, null, exports, null);
+        return new ceylon.language.descriptor.Module(name, version, null, null, null, null, exports, PathFilters.acceptAll());
     }
 }

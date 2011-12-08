@@ -22,9 +22,7 @@
 
 package ceylon.modules.api.runtime;
 
-import ceylon.lang.modules.Module;
-import ceylon.lang.modules.ModuleName;
-import ceylon.lang.modules.ModuleVersion;
+import ceylon.language.descriptor.Module;
 import ceylon.modules.spi.Constants;
 
 import java.lang.reflect.Method;
@@ -37,6 +35,9 @@ import java.util.Map;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runtime {
+
+    public static final String MODULE_INFO_CLASS = ".Module";
+
     /**
      * Load module instance.
      *
@@ -70,16 +71,13 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
             throw new IllegalArgumentException("Missing version info: " + exe);
 
         String name = exe.substring(0, p > 0 ? p : exe.length());
-        ModuleVersion version = (p > 0 ? ModuleVersion.parseVersion(exe.substring(p + 1)) : ModuleVersion.DEFAULT_VERSION);
+        ModuleVersion mv = (p > 0 ? ModuleVersion.parseVersion(exe.substring(p + 1)) : ModuleVersion.DEFAULT_VERSION);
 
-        ClassLoader cl = createClassLoader(new ModuleName(name), version, args);
-        String moduleClassName = name + ".Module"; // TODO -- allow for top level method
-        ceylon.lang.modules.Module runtimeModule = loadModule(cl, moduleClassName);
+        ClassLoader cl = createClassLoader(name, mv.toString(), args);
+        String moduleClassName = name + MODULE_INFO_CLASS;
+        Module runtimeModule = loadModule(cl, moduleClassName);
         if (runtimeModule == null)
             throw new IllegalArgumentException("Something went very wrong, missing runtime module!"); // TODO -- dump some more useful msg
 
-        ceylon.lang.Runnable runnable = runtimeModule.getProcess();
-        if (runnable != null)
-            runnable.run(new ceylon.lang.Process(args));
     }
 }
