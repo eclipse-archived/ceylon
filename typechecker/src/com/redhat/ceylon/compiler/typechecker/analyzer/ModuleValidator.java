@@ -26,11 +26,11 @@ import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 public class ModuleValidator {
     private final Context context;
     private List<PhasedUnits> phasedUnitsOfDependencies;
-    private final ModuleManager moduleBuilder;
+    private final ModuleManager moduleManager;
 
     public ModuleValidator(Context context, PhasedUnits phasedUnits) {
         this.context = context;
-        this.moduleBuilder = phasedUnits.getModuleBuilder();
+        this.moduleManager = phasedUnits.getModuleManager();
     }
 
     public List<PhasedUnits> getPhasedUnitsOfDependencies() {
@@ -69,14 +69,14 @@ public class ModuleValidator {
         visibleDependencies.add(dependencyTree.getLast()); //first addition => no possible conflict
         for (ModuleImport moduleImport : moduleImports) {
             Module module = moduleImport.getModule();
-            if (moduleBuilder.findModule(module, dependencyTree, true) != null) {
+            if (moduleManager.findModule(module, dependencyTree, true) != null) {
                 //circular dependency
                 StringBuilder error = new StringBuilder("Circular dependency between modules: ");
                 buildDependencyString(dependencyTree, module, error);
                 error.append(".");
                 //TODO is there a better place than the top level module triggering the error?
                 //nested modules might not have representations in the src tree
-                moduleBuilder.addErrorToModule( dependencyTree.getFirst(), error.toString() );
+                moduleManager.addErrorToModule( dependencyTree.getFirst(), error.toString() );
                 return;
             }
             if ( ! module.isAvailable() ) {
@@ -98,7 +98,7 @@ public class ModuleValidator {
                     }
                     else {
                         //today we attach that to the module dependency
-                        moduleBuilder.attachErrorToDependencyDeclaration(moduleImport, error.toString());
+                        moduleManager.attachErrorToDependencyDeclaration(moduleImport, error.toString());
                     }
                 }
                 else {
@@ -111,7 +111,7 @@ public class ModuleValidator {
                                                 //        should have been parsed and should be applied buildModuleImport()
                     final List<PhasedUnit> listOfUnits = modulePhasedUnit.getPhasedUnits();
                     //populate module.getDependencies()
-                    moduleBuilder.visitModules(listOfUnits);
+                    moduleManager.visitModules(listOfUnits);
                 }
             }
             dependencyTree.addLast(module);
@@ -134,7 +134,7 @@ public class ModuleValidator {
     }
 
     private void checkAndAddDependency(List<Module> dependencies, Module module, LinkedList<Module> dependencyTree) {
-        Module dupe = moduleBuilder.findModule(module, dependencies, false);
+        Module dupe = moduleManager.findModule(module, dependencies, false);
         if (dupe != null && !isSameVersion(module, dupe)) {
             //TODO improve by giving the dependency string leading to these two conflicting modules
             StringBuilder error = new StringBuilder("Module (transitively) imports conflicting versions of ");
@@ -142,7 +142,7 @@ public class ModuleValidator {
                     .append(". Version ").append(module.getVersion())
                     .append(" and version ").append(dupe.getVersion())
                     .append(" found and visible at the same time.");
-            moduleBuilder.addErrorToModule(dependencyTree.getFirst(), error.toString());
+            moduleManager.addErrorToModule(dependencyTree.getFirst(), error.toString());
         }
         else {
             dependencies.add(module);

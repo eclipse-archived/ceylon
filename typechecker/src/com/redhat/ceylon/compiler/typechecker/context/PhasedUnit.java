@@ -43,7 +43,7 @@ public class PhasedUnit {
     private Unit unit;
     //must be the non qualified file name
     private String fileName;
-    private final ModuleManager moduleBuilder;
+    private final ModuleManager moduleManager;
     private final String pathRelativeToSrcDir;
     private VirtualFile unitFile;
     private final Set<PhasedUnit> dependentsOf = new HashSet<PhasedUnit>();
@@ -52,20 +52,20 @@ public class PhasedUnit {
     private ModuleVisitor moduleVisitor;
 
     public PhasedUnit(VirtualFile unitFile, VirtualFile srcDir, Tree.CompilationUnit cu, 
-            Package p, ModuleManager moduleBuilder, Context context, List<CommonToken> tokenStream) {
+            Package p, ModuleManager moduleManager, Context context, List<CommonToken> tokenStream) {
         this.compilationUnit = cu;
         this.pkg = p;
         this.unitFile = unitFile;
         this.fileName = unitFile.getName();
         this.pathRelativeToSrcDir = computeRelativePath(unitFile, srcDir);
-        this.moduleBuilder = moduleBuilder;
+        this.moduleManager = moduleManager;
         this.tokens = tokenStream;
     }
 
     @Deprecated
     protected PhasedUnit(VirtualFile unitFile, VirtualFile srcDir, Tree.CompilationUnit cu, 
-            Package p, ModuleManager moduleBuilder, Context context) {
-        this(unitFile, srcDir, cu, p, moduleBuilder, context, null);
+            Package p, ModuleManager moduleManager, Context context) {
+        this(unitFile, srcDir, cu, p, moduleManager, context, null);
     }
     
     private String computeRelativePath(VirtualFile unitFile, VirtualFile srcDir) {
@@ -84,7 +84,7 @@ public class PhasedUnit {
     public void visitSrcModulePhase() {
         if ( ModuleManager.MODULE_FILE.equals(fileName) ||
                 ModuleManager.PACKAGE_FILE.equals(fileName) ) {
-            moduleVisitor = new ModuleVisitor(moduleBuilder, pkg);
+            moduleVisitor = new ModuleVisitor(moduleManager, pkg);
             compilationUnit.visit(moduleVisitor);
         }
     }

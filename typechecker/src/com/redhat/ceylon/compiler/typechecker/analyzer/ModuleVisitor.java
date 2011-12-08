@@ -36,13 +36,13 @@ public class ModuleVisitor extends Visitor {
      * the dependencies declaration
      */
     private Module mainModule;
-    private final ModuleManager moduleBuilder;
+    private final ModuleManager moduleManager;
     private final Package pkg;
     private Tree.CompilationUnit unit;
     private Phase phase = Phase.SRC_MODULE;
 
-    public ModuleVisitor(ModuleManager moduleBuilder, Package pkg) {
-        this.moduleBuilder = moduleBuilder;
+    public ModuleVisitor(ModuleManager moduleManager, Package pkg) {
+        this.moduleManager = moduleManager;
         this.pkg = pkg;
     }
 
@@ -95,7 +95,7 @@ public class ModuleVisitor extends Visitor {
                     }
                 }
                 //mainModule = pkg.getModule();
-                mainModule = moduleBuilder.getOrCreateModule(pkg.getName(),version); //in compiler the Package has a null Module
+                mainModule = moduleManager.getOrCreateModule(pkg.getName(),version); //in compiler the Package has a null Module
                 if (mainModule == null) {
                     unit.addError("A module cannot be defined at the top level of the hierarchy");
                 }
@@ -104,7 +104,7 @@ public class ModuleVisitor extends Visitor {
                     if ( !mainModule.getNameAsString().equals(moduleName) ) {
                         nsa.addError("module name does not match descriptor location");
                     }
-                    moduleBuilder.addLinkBetweenModuleAndNode(mainModule, unit);
+                    moduleManager.addLinkBetweenModuleAndNode(mainModule, unit);
                     mainModule.setDoc(argumentToString(getArgument(that, "doc")));
                     mainModule.setLicense(argumentToString(getArgument(that, "license")));
                     List<String> by = argumentToStrings(getArgument(that, "by"));
@@ -130,7 +130,7 @@ public class ModuleVisitor extends Visitor {
                 if (version.isEmpty()) {
                     vsa.addError("empty version identifier");
                 }
-                Module importedModule = moduleBuilder.getOrCreateModule(splitModuleName(moduleName),version);
+                Module importedModule = moduleManager.getOrCreateModule(splitModuleName(moduleName),version);
                 if (importedModule == null) {
                     nsa.addError("A module cannot be defined at the top level of the hierarchy");
                 }
@@ -138,7 +138,7 @@ public class ModuleVisitor extends Visitor {
                     if (importedModule.getVersion() == null) {
                         importedModule.setVersion(version);
                     }
-                    ModuleImport moduleImport = moduleBuilder.findImport(mainModule, importedModule);
+                    ModuleImport moduleImport = moduleManager.findImport(mainModule, importedModule);
                     if (moduleImport == null) {
                         String optionalString = argumentToString(getArgument(that, "optional"));
                         boolean optional = optionalString!=null && optionalString.equals("true");
@@ -147,7 +147,7 @@ public class ModuleVisitor extends Visitor {
                         moduleImport = new ModuleImport(importedModule, optional, export);
                         mainModule.getImports().add(moduleImport);
                     }
-                    moduleBuilder.addModuleDependencyDefinition(moduleImport, nsa);
+                    moduleManager.addModuleDependencyDefinition(moduleImport, nsa);
                 }
                 //else we leave it behind unprocessed
             }
