@@ -196,6 +196,8 @@ public class Symtab {
     public final Type ceylonAtTypeParameters;
     public final Type ceylonAtTypeParameter;
 
+    public final Type ceylonUtilType;
+
     /** The symbol representing the length field of an array.
      */
     public final VarSymbol lengthVar;
@@ -513,6 +515,8 @@ public class Symtab {
         ceylonVarianceType = enterClass("com.redhat.ceylon.compiler.metadata.java.Variance");
         ceylonAtTypeParameter = enterClass("com.redhat.ceylon.compiler.metadata.java.TypeParameter");
         ceylonAtTypeParameters = enterClass("com.redhat.ceylon.compiler.metadata.java.TypeParameters");
+
+        ceylonUtilType = enterClass("com.redhat.ceylon.compiler.metadata.java.Util");
 
         synthesizeEmptyInterfaceIfMissing(cloneableType);
         synthesizeEmptyInterfaceIfMissing(serializableType);
