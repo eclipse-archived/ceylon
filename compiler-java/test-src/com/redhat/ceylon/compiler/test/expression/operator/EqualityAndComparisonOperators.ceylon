@@ -80,6 +80,7 @@ shared class EqualityAndComparisonOperators() {
         sync := is Nothing foo;
         sync := is Bottom foo;
         sync := is Void foo;
+        sync := is Object foo;
         // unions
         //FIXME: parser doesn't like that 
         // sync := is BasicOperatorsA | BasicOperatorsB foo;
@@ -88,6 +89,8 @@ shared class EqualityAndComparisonOperators() {
         // sync := is BasicOperatorsA & BasicOperatorsB foo;
         // erased types
         sync := is Equality foo;
+        sync := is IdentifiableObject foo;
+        sync := is Exception foo;
         // type parameters
         //M2: sync := is Sequence<Boolean> foo;
     }
