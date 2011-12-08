@@ -105,23 +105,29 @@ public class FileContentStore implements ContentStore, StructureBuilder {
         if (file.exists())
             throw new IOException("Content already exists: " + file);
 
+        final File parent = file.getParentFile();
+        if (parent.exists() == false && parent.mkdirs() == false)
+            throw new IOException("Cannot create dirs: " + file);
+
         IOUtils.writeToFile(file, stream);
         return new FileContentHandle(node, file);
     }
 
     public OpenNode find(Node parent, String child) {
+        final File pf = getFile(parent);
+
         File file;
-        if (parent.hasContent()) {
-            final File pf = getFile(parent);
+        if (pf.isFile()) {
             final String path = pf.getPath();
             file = new File(path + child); // just concat paths
         } else {
-            file = new File(getFile(parent), child);
+            file = new File(pf, child);
         }
 
         if (file.exists()) {
             final DefaultNode node = new DefaultNode(child, null);
-            node.setHandle(new FileContentHandle(node, file));
+            if (file.isFile())
+                node.setHandle(new FileContentHandle(node, file));
             return node;
         } else {
             return null;
@@ -134,7 +140,8 @@ public class FileContentStore implements ContentStore, StructureBuilder {
             List<OpenNode> nodes = new ArrayList<OpenNode>();
             for (File file : pf.listFiles()) {
                 DefaultNode node = new DefaultNode(file.getName(), null);
-                node.setHandle(new FileContentHandle(node, file));
+                if (file.isFile())
+                    node.setHandle(new FileContentHandle(node, file));
                 nodes.add(node);
             }
             return nodes;
@@ -143,6 +150,15 @@ public class FileContentStore implements ContentStore, StructureBuilder {
         }
     }
 
+    protected static void delete(File root, File current) {
+        if (root.equals(current))
+            return;
+        
+        File[] files = current.listFiles();
+        if ((files == null || files.length == 0) && current.delete())
+            delete(root, current.getParentFile());
+    }
+    
     private class FileContentHandle implements ContentHandle {
 
         private Node owner;
@@ -161,7 +177,7 @@ public class FileContentStore implements ContentStore, StructureBuilder {
         public void clean() {
             try {
                 //noinspection ResultOfMethodCallIgnored
-                file.delete();
+                delete(root, file);
             } finally {
                 cache.remove(owner);
             }

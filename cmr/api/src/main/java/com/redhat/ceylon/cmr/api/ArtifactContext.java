@@ -30,8 +30,13 @@ import java.io.Serializable;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class ArtifactContext implements Serializable {
+    public static final String CAR = ".car";
+    public static final String JAR = ".jar";
+    public static final String ZIP = ".zip";
+
     private String name;
     private String version;
+    private String suffix = CAR;
     private boolean localOnly;
     private boolean ignoreSHA;
     private boolean throwErrorIfMissing;
@@ -50,6 +55,14 @@ public class ArtifactContext implements Serializable {
 
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    public String getSuffix() {
+        return suffix;
+    }
+
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
     }
 
     public boolean isLocalOnly() {

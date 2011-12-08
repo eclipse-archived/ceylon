@@ -22,11 +22,14 @@
 
 package com.redhat.ceylon.test.smoke.test;
 
+import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.impl.RootRepository;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
@@ -34,15 +37,36 @@ import java.net.URL;
  */
 public class SmokeTestCase {
 
-    @Test
-    public void testNavigation() throws Exception {
+    protected Repository getRepository() throws URISyntaxException {
         URL url = getClass().getResource("/repo");
         Assert.assertNotNull(url);
         File root = new File(url.toURI());
-        RootRepository repo = new RootRepository(root);
+        return new RootRepository(root);
+    }
+
+    @Test
+    public void testNavigation() throws Exception {
+        Repository repo = getRepository();
         
         File acme = repo.getArtifact("org.jboss.acme", "1.0.0.Final");
         Assert.assertNotNull(acme);
+    }
+
+    @Test
+    public void testPut() throws Exception {
+        Repository repo = getRepository();
+
+        ByteArrayInputStream baos = new ByteArrayInputStream("qwerty".getBytes());
+        String name = "com.redhat.foobar";
+        String version = "1.0.0.Alpha1";
+        try {
+            repo.putArtifact(name, version, baos);
+            
+            File file = repo.getArtifact(name, version);
+            Assert.assertNotNull(file);
+        } finally {
+            repo.removeArtifact(name, version);
+        }
     }
 
 }

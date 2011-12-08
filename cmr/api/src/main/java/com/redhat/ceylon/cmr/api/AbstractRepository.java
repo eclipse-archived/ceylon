@@ -23,6 +23,7 @@
 package com.redhat.ceylon.cmr.api;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Logger;
@@ -48,6 +49,14 @@ public abstract class AbstractRepository implements Repository {
         context.setName(name);
         context.setVersion(version);
         putArtifact(context, content);
+    }
+
+    public void putArtifact(String name, String version, File content) throws IOException {
+        putArtifact(name, version, new FileInputStream(content));
+    }
+
+    public void putArtifact(ArtifactContext context, File content) throws IOException {
+        putArtifact(context, new FileInputStream(content));
     }
 
     public void removeArtifact(String name, String version) throws IOException {

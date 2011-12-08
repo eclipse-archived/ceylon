@@ -38,7 +38,6 @@ import java.util.List;
  */
 public abstract class AbstractNodeRepository extends AbstractRepository {
 
-    protected static final String CAR = ".car";
     protected static final String SHA1 = ".sha1";
     protected static final String LOCAL = ".local";
     protected static final String CACHED = ".cached";
@@ -61,8 +60,12 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
         this.root = root;
     }
 
-    protected String getArtifactName(ArtifactContext context, String extension) {
-        return context.getName() + "-" + context.getVersion() + extension;
+    protected String getArtifactName(ArtifactContext context) {
+        return getArtifactName(context.getName(), context.getVersion(), context.getSuffix());
+    }
+
+    protected String getArtifactName(String name, String version, String suffix) {
+        return name + "-" + version + suffix;
     }
 
     protected List<String> getPath(ArtifactContext context, boolean addLeaf) {
@@ -71,7 +74,7 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
         tokens.addAll(Arrays.asList(name.split("\\.")));
         tokens.add(context.getVersion()); // add version
         if (addLeaf)
-            tokens.add(getLabel(context)); // add leaf name
+            tokens.add(getArtifactName(context)); // add leaf name
         return tokens;
     }
 
@@ -85,7 +88,7 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
             parent = current;
         }
 
-        final String label = getLabel(context);
+        final String label = getArtifactName(context);
         if (parent instanceof OpenNode) {
             final OpenNode on = (OpenNode) parent;
             on.addContent(label, content);
@@ -98,7 +101,7 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
         final List<String> tokens = getPath(context, false);
         Node parent = getNode(tokens);
         if (parent != null) {
-            final String label = getLabel(context);
+            final String label = getArtifactName(context);
             if (parent instanceof OpenNode) {
                 final OpenNode on = (OpenNode) parent;
                 on.removeNode(label);
@@ -163,9 +166,5 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
             }
         }
         return current;
-    }
-
-    protected String getLabel(ArtifactContext context) {
-        return getArtifactName(context, CAR);
     }
 }
