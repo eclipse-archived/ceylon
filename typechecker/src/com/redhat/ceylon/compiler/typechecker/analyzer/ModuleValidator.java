@@ -69,7 +69,7 @@ public class ModuleValidator {
         visibleDependencies.add(dependencyTree.getLast()); //first addition => no possible conflict
         for (ModuleImport moduleImport : moduleImports) {
             Module module = moduleImport.getModule();
-            if (moduleBuilder.findModule(module, dependencyTree, false) != null) {
+            if (moduleBuilder.findModule(module, dependencyTree, true) != null) {
                 //circular dependency
                 StringBuilder error = new StringBuilder("Circular dependency between modules: ");
                 buildDependencyString(dependencyTree, module, error);
