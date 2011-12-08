@@ -1,10 +1,14 @@
 package ceylon.language;
 
+import java.util.StringTokenizer;
+
+import com.redhat.ceylon.compiler.metadata.java.Ceylon;
 import com.redhat.ceylon.compiler.metadata.java.Class;
 import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.Sequenced;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
+@Ceylon
 @Class(extendsType="ceylon.language.Object")
 public final class String
     implements Comparable<String>, Ordered<Character>, 
@@ -177,7 +181,7 @@ public final class String
         return Correspondence$impl.items(this, keys);
     }
 
-    class StringIterator implements Iterator<Character> {
+	class StringIterator implements Iterator<Character> {
 
         private final int offset;
         private final int codePoint;
@@ -377,5 +381,100 @@ public final class String
     	if (toIndex>=len) toIndex = len-1;
     	return instance(value.substring((int) fromIndex, (int) toIndex+1));
     }
+    
+	@TypeInfo("ceylon.language.Ordered<ceylon.language.String>")
+    public Ordered<? extends String> split(
+    		@TypeInfo("ceylon.language.Nothing|ceylon.language.Iterable<ceylon.language.Character>")
+    		@Name("separator") Iterable<? extends Character> separators,
+    		@Name("discardSeparators") boolean discardSeparators) {
+    	java.lang.String delims;
+    	if (separators==null) {
+    		delims = " \t\n\r\f";
+    	}
+    	else if (separators instanceof String) {
+    		delims = separators.toString();
+    	}
+    	else {
+	    	java.lang.StringBuilder builder = new java.lang.StringBuilder();
+	    	for (Iterator<? extends Character> it=separators.getIterator(); it!=null; it=it.getTail()) {
+	    		builder.append(it.getHead());
+	    	}
+	    	delims = builder.toString();
+    	}
+	    return new Tokens(new StringTokenizer(value, delims, !discardSeparators));
+    }
+
+	private static final class Tokens implements Ordered<String> {
+		private final StringTokenizer tokens;
+		private final boolean empty;
+		private final String first;
+		private TokenIterator it;
+		private final boolean more;
+
+		private Tokens(StringTokenizer tokens) {
+			this.tokens = tokens;
+			empty = !tokens.hasMoreTokens();
+			first = empty ? null : String.instance(tokens.nextToken());
+			more = tokens.hasMoreTokens();
+		}
+
+		@Override
+		public Iterator<? extends String> getIterator() {
+			if (!more) {
+				return null;
+			}
+			else if (it==null) {
+				it = new TokenIterator(tokens, first);
+				return it;
+			}
+			else {
+			    return it;
+			}
+		}
+
+		@Override
+		public boolean getEmpty() {
+			return empty;
+		}
+
+		@Override
+		//@TypeInfo("ceylon.language.Nothing|ceylon.language.String")
+		public String getFirst() {
+			return first;
+		}
+	}
+
+    private static final class TokenIterator implements Iterator<String> {
+		private final StringTokenizer tokens;
+		private final String head;
+		private TokenIterator it;
+		private final boolean more;
+
+		private TokenIterator(StringTokenizer tokens, String head) {
+			this.tokens = tokens;
+			this.head = head;
+			more = tokens.hasMoreTokens();
+		}
+
+		@Override
+		public String getHead() {
+			return head;
+		}
+
+		@Override
+		public Iterator<? extends String> getTail() {
+			if (!more) {
+				return null;
+			}
+			else if (it==null) {
+				it = new TokenIterator(tokens, 
+						String.instance(tokens.nextToken()));
+				return it;
+			}
+			else {
+			    return it;
+			}
+		}
+	}
 
 }
