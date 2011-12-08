@@ -51,7 +51,7 @@ public class Main {
             
         }
         if (destDir == null) {
-            System.err.println("-dest-dir <dest-dir>: option required");
+            System.err.println("-out <dest-dir>: option required");
             System.exit(1);
         }
         if (srcDir == null) {
