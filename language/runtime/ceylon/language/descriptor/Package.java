@@ -4,7 +4,6 @@ import ceylon.language.Iterable;
 
 import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
-import com.redhat.ceylon.compiler.metadata.java.Name;
 
 public class Package {
     private ceylon.language.Quoted name;
@@ -14,9 +13,9 @@ public class Package {
 
     public Package(@Name("name") ceylon.language.Quoted name, 
     		@Name("shared") boolean shared,
-            @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>") @Name("by") 
-            ceylon.language.Iterable<? extends ceylon.language.String> by, 
-            @Name("doc") java.lang.String doc){
+    		@Name("doc") java.lang.String doc,
+            @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>") 
+            @Name("by") ceylon.language.Iterable<? extends ceylon.language.String> by){
         this.name = name;
         this.shared = shared;
         this.doc = doc;

@@ -9,18 +9,16 @@ import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 public class Module {
     private ceylon.language.Quoted name;
     private ceylon.language.Quoted version;
-    private ceylon.language.String doc;
+    private java.lang.String doc;
     private Iterable<? extends ceylon.language.String> by;
     private ceylon.language.Quoted license;
     private Iterable<? extends ceylon.language.descriptor.Import> dependencies;
 
     public Module(@Name("name") ceylon.language.Quoted name, 
             @Name("version") ceylon.language.Quoted version, 
-            @TypeInfo("ceylon.language.Nothing|ceylon.language.String") @Name("doc") 
-            ceylon.language.String doc, 
+            @Name("doc") java.lang.String doc, 
             @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>") 
-            @Name("by") 
-            ceylon.language.Iterable<? extends ceylon.language.String> by, 
+            @Name("by") ceylon.language.Iterable<? extends ceylon.language.String> by, 
             @TypeInfo("ceylon.language.Nothing|ceylon.language.Quoted") @Name("license") 
             ceylon.language.Quoted license,
             @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.descriptor.Import>") 
@@ -42,7 +40,7 @@ public class Module {
         return version;
     }
 
-    public ceylon.language.String getDoc() {
+    public java.lang.String getDoc() {
         return doc;
     }
 

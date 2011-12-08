@@ -1,18 +1,17 @@
 package ceylon.language.descriptor;
 
 import com.redhat.ceylon.compiler.metadata.java.Name;
-import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 public class Import {
     private ceylon.language.Quoted name;
     private ceylon.language.Quoted version;
-    private ceylon.language.Boolean optional;
-    private ceylon.language.Boolean export;
+    private boolean optional;
+    private boolean export;
 
     public Import(@Name("name") ceylon.language.Quoted name, 
             @Name("version") ceylon.language.Quoted version, 
-            @TypeInfo("ceylon.language.Nothing|ceylon.language.Boolean") @Name("optional") ceylon.language.Boolean optional, 
-            @TypeInfo("ceylon.language.Nothing|ceylon.language.Boolean") @Name("export") ceylon.language.Boolean export) {
+            @Name("optional") boolean optional, 
+            @Name("export") boolean export) {
         this.name = name;
         this.version = version;
         this.optional = optional;
@@ -27,11 +26,11 @@ public class Import {
         return version;
     }
 
-    public ceylon.language.Boolean getOptional() {
+    public boolean getOptional() {
         return optional;
     }
 
-    public ceylon.language.Boolean getExport() {
+    public boolean getExport() {
         return export;
     }
 }
