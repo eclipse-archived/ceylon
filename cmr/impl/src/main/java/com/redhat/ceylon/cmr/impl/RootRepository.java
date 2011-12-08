@@ -26,10 +26,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Root node -- main entry point into Ceylon repositories.
@@ -61,27 +58,46 @@ public class RootRepository extends AbstractNodeRepository {
         if (node != null) {
             File file = fileContentStore.getFile(node);
             if (file.exists() == false) {
-                log.fine("Creating local copy of external node: " + node);
-                fileContentStore.putContent(node, node.getInputStream());
-                file = fileContentStore.getFile(node); // re-get
-                if (context.isIgnoreSHA() == false && node instanceof OpenNode) {
-                    OpenNode on = (OpenNode) node;
-                    String sha1 = IOUtils.sha1(new FileInputStream(file));
-                    ByteArrayInputStream shaStream = new ByteArrayInputStream(sha1.getBytes("ASCII"));
-                    Node sha = node.getChild(SHA1);
-                    if (sha == null) {
-                        // put it to ext node as well, if supported
-                        on.addContent(SHA1, shaStream);
-                    }
-                    // create empty marker node
-                    OpenNode sl = on.addNode(SHA1 + LOCAL);
-                    // put sha to local store as well
-                    fileContentStore.putContent(sl, shaStream);
-                }
+                file = putContent(context, node, node.getInputStream());
             }
             return file;
         } else {
             return null;
+        }
+    }
+
+    protected File putContent(ArtifactContext context, Node node, InputStream stream) throws IOException {
+        log.fine("Creating local copy of external node: " + node);
+        fileContentStore.putContent(node, stream);
+        File file = fileContentStore.getFile(node); // re-get
+        if (context.isIgnoreSHA() == false && node instanceof OpenNode) {
+            OpenNode on = (OpenNode) node;
+            String sha1 = IOUtils.sha1(new FileInputStream(file));
+            ByteArrayInputStream shaStream = new ByteArrayInputStream(sha1.getBytes("ASCII"));
+            Node sha = node.getChild(SHA1);
+            if (sha == null) {
+                // put it to ext node as well, if supported
+                on.addContent(SHA1, shaStream);
+            }
+            // create empty marker node
+            OpenNode sl = on.addNode(SHA1 + LOCAL);
+            // put sha to local store as well
+            fileContentStore.putContent(sl, shaStream);
+        }
+        return file;
+    }
+
+    @Override
+    protected void addContent(ArtifactContext context, Node parent, String label, InputStream content) throws IOException {
+        Node child = parent.getChild(label);
+        if (child == null && parent instanceof OpenNode) {
+            OpenNode on = (OpenNode) parent;
+            child = on.addNode(label);
+        }
+        if (child != null) {
+            putContent(context, child, content);
+        } else {
+            throw new IOException("Cannot add child [" + label + "] content [" + content + "] on parent node: " + parent);
         }
     }
 

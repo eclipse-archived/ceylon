@@ -91,12 +91,17 @@ public abstract class AbstractNodeRepository extends AbstractRepository {
         final String label = getArtifactName(context);
         if (parent instanceof OpenNode) {
             final OpenNode on = (OpenNode) parent;
-            on.addContent(label, content);
+            if (on.addContent(label, content) == null)
+                addContent(context, parent, label, content);
         } else {
-            throw new IOException("Parent node is not open: " + parent);
+            addContent(context, parent, label, content);
         }
     }
 
+    protected void addContent(ArtifactContext context, Node parent, String label, InputStream content) throws IOException {
+        throw new IOException("Cannot add child [" + label + "] content [" + content + "] on parent node: " + parent);
+    }
+    
     public void removeArtifact(ArtifactContext context) throws IOException {
         final List<String> tokens = getPath(context, false);
         Node parent = getNode(tokens);

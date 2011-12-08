@@ -42,6 +42,14 @@ public interface OpenNode extends Node {
 
     OpenNode addNode(String label, Object value);
 
+    /**
+     * Add content.
+     *
+     * @param label the node label
+     * @param content the node content
+     * @return new node, or null if cannot add content
+     * @throws IOException for any I/O error
+     */
     OpenNode addContent(String label, InputStream content) throws IOException;
 
     <T extends Serializable> OpenNode addContent(String label, T content) throws IOException;
