@@ -1120,6 +1120,18 @@ public abstract class AbstractTransformer implements Transformation {
         return result;
     }
 
+    /**
+     * Invokes a static method of the Util helper class
+     * @param methodName name of the method
+     * @param params parameters
+     * @return the invocation AST
+     */
+    protected JCExpression makeUtilInvocation(String methodName, List<JCExpression> params) {
+        return make().Apply(null, make().Select(make().QualIdent(syms().ceylonUtilType.tsym), 
+                                                names().fromString(methodName)), 
+                            params);
+    }
+
     protected LetExpr makeIgnoredEvalAndReturn(JCExpression toEval, JCExpression toReturn){
         // define a variable of type j.l.Object to hold the result of the evaluation
         JCVariableDecl def = makeVar(tempName(), make().Type(syms().objectType), toEval);
