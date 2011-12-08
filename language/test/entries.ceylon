@@ -1,3 +1,15 @@
+/*Entry<Natural,String> entry {
+    item="hello";
+    key=1;
+}
+
+Range<Integer> range {
+    first=-3;
+    last=+10;
+}*/
+
+void entriesAndRanges() {
+    
 Entry<Natural,String> entry {
     item="hello";
     key=1;
@@ -8,8 +20,6 @@ Range<Integer> range {
     last=+10;
 }
 
-void entriesAndRanges() {
-    
     Entry<Equality, Equality> e = entry;
     assert(e.string=="1->hello", "entry string");
     assert(e.key==1, "entry key");
