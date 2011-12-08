@@ -24,6 +24,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.util.Decl;
 import com.sun.tools.javac.tree.JCTree;
@@ -71,6 +72,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
     
     public void visit(Tree.ClassOrInterface decl) {
+        if(hasClassErrors(decl))
+            return;
         boolean annots = gen.checkCompilerAnnotations(decl);
         if (Decl.withinClass(decl)) {
             classBuilder.defs(gen.classGen().transform(decl));
@@ -80,7 +83,14 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         gen.resetCompilerAnnotations(annots);
     }
 
+    private boolean hasClassErrors(ClassOrInterface decl) {
+        ClassErrorVisitor errorVisitor = new ClassErrorVisitor();
+        return errorVisitor.hasErrors(decl);
+    }
+
     public void visit(Tree.ObjectDefinition decl) {
+        if(hasErrors(decl))
+            return;
         boolean annots = gen.checkCompilerAnnotations(decl);
         if (Decl.withinClass(decl)) {
             classBuilder.defs(gen.classGen().transformObject(decl, classBuilder));
@@ -91,6 +101,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
     
     public void visit(Tree.AttributeDeclaration decl){
+        if(hasErrors(decl))
+            return;
         boolean annots = gen.checkCompilerAnnotations(decl);
         if (Decl.withinPackage(decl)) {
             // Toplevel attributes
@@ -109,6 +121,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.AttributeGetterDefinition decl){
+        if(hasErrors(decl))
+            return;
         boolean annots = gen.checkCompilerAnnotations(decl);
         if (Decl.withinClass(decl)) {
             classBuilder.defs(gen.classGen().transform(decl));
@@ -121,6 +135,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(final Tree.AttributeSetterDefinition decl) {
+        if(hasErrors(decl))
+            return;
         boolean annots = gen.checkCompilerAnnotations(decl);
         if (Decl.withinClass(decl)) {
             classBuilder.defs(gen.classGen().transform(decl));
@@ -133,6 +149,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.MethodDefinition decl) {
+        if(hasErrors(decl))
+            return;
         boolean annots = gen.checkCompilerAnnotations(decl);
         Scope container = decl.getDeclarationModel().getContainer();
         if (container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) {
@@ -147,9 +165,16 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.MethodDeclaration meth) {
+        if(hasErrors(meth))
+            return;
         classBuilder.defs(gen.classGen().transform(meth));
     }
     
+    private boolean hasErrors(Node decl) {
+        ErrorVisitor errorVisitor = new ErrorVisitor();
+        return errorVisitor.hasErrors(decl);
+    }
+
     /*
      * Class or Interface
      */
@@ -239,6 +264,10 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.ExpressionStatement tree) {
+        // this is used for class initializer statements so we want to avoid having errors
+        // in them
+        if(hasErrors(tree))
+            return;
         append(gen.expressionGen().transform(tree));
     }
     
