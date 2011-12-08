@@ -70,4 +70,13 @@ void entriesAndRanges() {
     String->Entry<Boolean,String> ent = "hello"->(true->"hello");
     assert(ent.item.item=="hello", "entry item item");
     
+    assert((0..10).segment(2, 3).string=="2..4", "range segment");
+    assert((0..10).span(2, 5).string=="2..5", "range span");
+    assert((2..10).segment(1, 3).string=="3..5", "range segment");
+    assert((2..10).span(2, 7).string=="4..9", "range span");
+    assert(!nonempty (0..9).segment(11,10), "empty range segment");
+    assert(!nonempty (0..9).segment(3,0), "empty range segment");
+    assert(!nonempty (0..9).span(11,12), "empty range span");
+    assert(!nonempty (0..9).span(5,3), "empty range span"); //TODO: this is wrong
+                                                                                                                                
 }

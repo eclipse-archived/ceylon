@@ -16,7 +16,7 @@ shared interface Iterable<out Element>
     doc "Determines if the iterable object is empty, that is
          to say, if `iterable.iterator` is `null`."
     shared actual default Boolean empty {
-        return !(iterator exists);
+        return !exists iterator;
     }
     
 }

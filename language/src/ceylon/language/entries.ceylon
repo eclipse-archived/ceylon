@@ -59,12 +59,8 @@ shared Entry<Natural,Element>[] entries<Element>(Element... sequence)
                         }
                     }
                     shared actual Iterator<Natural->Element>? tail {
-                        if (from<sequence.lastIndex) {
-                            return EntryIterator(from+1);
-                        }
-                        else {
-                            return null;
-                        }
+                        return from<sequence.lastIndex 
+                                then EntryIterator(from+1);
                     }
                     shared actual String string {
                         return "" sequence.string " from " from "";

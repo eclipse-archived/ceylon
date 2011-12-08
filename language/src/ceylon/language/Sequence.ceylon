@@ -88,12 +88,9 @@ shared interface Sequence<out Element>
             }
         }
         shared actual Iterator<Element>? tail {
-            if (from<lastIndex) {
-                return SequenceIterator(from+1);
-            }
-            else {
-                return null;
-            }
+            return from<lastIndex
+                then SequenceIterator(from+1)
+                else null;
         }
         shared actual String string {
             return "SequenceIterator";

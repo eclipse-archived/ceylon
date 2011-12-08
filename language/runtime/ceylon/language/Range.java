@@ -237,18 +237,22 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
 
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Element> segment(@Name("from") Natural from, 
-    		@Name("length") Natural length) {
-    	if (from.longValue()>getLastIndex()||length.longValue()==0) 
+    public Iterable<? extends Element> segment(
+    		@Name("from") final Natural from, 
+    		@Name("length") final Natural length) {
+    	long fromIndex = from.longValue();
+		long resultLength = length.longValue();
+		if (fromIndex>getLastIndex()||resultLength==0) 
     		return $empty.getEmpty();
-    	if (from.longValue()+length.longValue()>getSize()) length = 
-    			Natural.instance(getSize()-from.longValue());
+    	long len = getSize();
+		if (fromIndex+resultLength>len) 
+			    resultLength = len-fromIndex;
     	Element begin = first;
-    	for (int i=0; i<from.longValue(); i++) {
+    	for (int i=0; i<fromIndex; i++) {
     		begin = begin.getSuccessor();
     	}
-    	Element end = first;
-    	for (int i=0; i<length.longValue(); i++) {
+    	Element end = begin;
+    	for (int i=0; i<resultLength-1; i++) {
     		end = end.getSuccessor();
     	}
     	return new Range<Element>(begin, end);
@@ -256,13 +260,24 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Element> span(@Name("from") Natural from,
+    public Iterable<? extends Element> span(
+    		@Name("from") final Natural from,
     		@TypeInfo("ceylon.language.Nothing|ceylon.language.Natural")
-    		@Name("to") Natural to) {
-    	if (to==null) to=Natural.instance(getLastIndex());
-    	if (from.longValue()>getLastIndex()||to.longValue()<from.longValue()) 
+    		@Name("to") final Natural to) {
+		long lastIndex = getLastIndex();
+    	long fromIndex = from.longValue();
+		long toIndex = to==null ? lastIndex : to.longValue();
+		if (fromIndex>lastIndex||toIndex<fromIndex) 
     		return $empty.getEmpty();
-    	return this;
+    	Element begin = first;
+    	for (int i=0; i<fromIndex; i++) {
+    		begin = begin.getSuccessor();
+    	}
+    	Element end = first;
+    	for (int i=0; i<toIndex; i++) {
+    		end = end.getSuccessor();
+    	}
+    	return new Range<Element>(begin, end);
     }
 
 }

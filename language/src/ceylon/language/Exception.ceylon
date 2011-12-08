@@ -21,7 +21,7 @@ shared class Exception(
          otherwise the message of the cause, if any."
     see (description, cause)
     shared default String message {
-        return description ? cause?.message ? "";
+        return description else cause?.message else "";
     }
     
     shared actual default String string {

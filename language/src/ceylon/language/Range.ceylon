@@ -28,22 +28,13 @@ shared class Range<Element>(Element first, Element last)
         return last<first; 
     }
     
-    Boolean pastEnd(Element x) {
-        if (decreasing) {
-            return x<last;
-        }
-        else {
-            return x>last;
-        }
+    Boolean atEnd(Element x) {
+        return x==last;
     }
     
     Element next(Element x) {
-        if (decreasing) {
-            return x.predecessor;
-        }
-        else {
-            return x.successor;
-        }
+        return decreasing then x.predecessor 
+                else x.successor;
     }
 
     variable Natural index:=0;
@@ -64,7 +55,9 @@ shared class Range<Element>(Element first, Element last)
     doc "The rest of the range, without the start of the
          range."
     shared actual Element[] rest {
-        return Range<Element>(next(first),last);
+        Element n = next(first);
+        return n==last then {} 
+                else Range<Element>(n,last);
     }
     
     doc "The element of the range that occurs `n` values after
@@ -74,16 +67,16 @@ shared class Range<Element>(Element first, Element last)
         //optimize this for numbers!
         variable Natural index:=0;
         variable Element x:=first;
-        while (index<n && !pastEnd(x)) {
-            ++index;
-            x:=next(x);
+        while (index<n) {
+            if (atEnd(x)) {
+                return null;
+            }
+            else {
+                ++index;
+                x:=next(x);
+            }
         }
-        if (pastEnd(x)) {
-            return null;
-        }
-        else {
-            return x;
-        }
+        return x;
     }
     
     doc "An iterator for the elements of the range."
@@ -94,13 +87,8 @@ shared class Range<Element>(Element first, Element last)
                 return current;
             }
             shared actual Iterator<Element>? tail {
-                Element x = next(current);
-                if (pastEnd(x)) {
-                    return null;
-                }
-                else {
-                    return RangeIterator(x);
-                }
+                return atEnd(current) then null
+                        else RangeIterator(x);
             }
         }
         return RangeIterator(first);
@@ -118,12 +106,8 @@ shared class Range<Element>(Element first, Element last)
     
     doc "Determines if the range includes the given value."
     shared Boolean includes(Element x) {
-        if (decreasing) {
-            return x<=first && x>=last;
-        }
-        else {
-            return x>=first && x<=last;
-        }
+        return decreasing then x<=first && x>=last
+                else x>=first && x<=last;
     }
     
     /*shared Element[] excludingLast {

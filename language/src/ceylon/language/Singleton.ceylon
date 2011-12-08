@@ -52,20 +52,10 @@ shared class Singleton<Element>(Element element)
     }
     
     shared actual Element[] segment(Natural from, Natural length) {
-        if (from>0 || length==0) {
-            return {};
-        }
-        else {
-            return this;
-        }
+        return from>0 || length==0 then {} else this;
     }
     
     shared actual Element[] span(Natural from, Natural? to) {
-        if (from>0) {
-            return {};
-        }
-        else {
-            return this;
-        }
+        return from>0 then {} else this;
     }
 }

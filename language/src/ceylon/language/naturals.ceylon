@@ -26,12 +26,8 @@ shared object naturals
     }
     
     shared actual Natural[] segment(Natural from, Natural length) {
-        if (length==0) {
-            return {};
-        }
-        else {
-            return from..from+length.predecessor;
-        }
+        return length==0 then {} 
+                else from..from+length.predecessor;
     }
 
 }
