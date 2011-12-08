@@ -198,4 +198,10 @@ shared void strings() {
     assert("".reversed=="", "string reversed");
     assert("x".reversed=="x", "string reversed");
     assert(hello.reversed=="olleh", "string reversed");
+    
+    assert("hello".repeat(0)=="", "string repeat");
+    assert("hello".repeat(1)=="hello", "string repeat");
+    assert("hello".repeat(3)=="hellohellohello", "string repeat");
+    
+    assert("hello world".replace("hello","goodbye")=="goodbye world", "string replace");
 }

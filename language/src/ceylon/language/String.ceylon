@@ -162,6 +162,17 @@ shared abstract class String()
          given string."
     shared actual formal String plus(String other);
     
+    doc "Returns a string formed by repeating this string
+         the given number of times."
+    shared formal String repeat(Natural times);
+    
+    doc "Returns a string formed by replacing every 
+         occurrence in this string of the given substring
+         with the given replacement string, working from 
+         the start of this string to the end."
+    shared formal String replace(String substring, 
+                                 String replacement);
+    
     doc "Compare this string with the given string 
          lexicographically, according to the Unicode values
          of the characters."

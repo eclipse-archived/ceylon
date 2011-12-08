@@ -392,6 +392,25 @@ public final class String
     	return builder.toString();
     }
     
+    public java.lang.String repeat(
+    		@TypeInfo("ceylon.language.Natural") 
+    		@Name("times") long times) {
+    	int len = value.length();
+    	if (times==0 || len==0) return "";
+    	if (times==1) return value;
+    	java.lang.StringBuilder builder = new java.lang.StringBuilder(len*(int)times);
+    	for (int i=0; i<times; i++) {
+    		builder.append(value);
+    	}
+    	return builder.toString();
+    }
+    
+    public java.lang.String replace( 
+    		@Name("substring") java.lang.String substring,
+    		@Name("replacement") java.lang.String replacement) {
+    	return value.replace(substring, replacement);
+    }
+    
 	@TypeInfo("ceylon.language.Ordered<ceylon.language.String>")
     public Ordered<? extends String> split(
     		@TypeInfo("ceylon.language.Nothing|ceylon.language.Iterable<ceylon.language.Character>")
