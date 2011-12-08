@@ -57,12 +57,10 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class CeylonModuleLoader extends ModuleLoader {
     private static final ModuleIdentifier LANGUAGE;
-    private static final ModuleIdentifier TYPECHECKER;
 
     static {
         final String defaultVersion = System.getProperty("ceylon.version", "0.1");
         LANGUAGE = ModuleIdentifier.create("ceylon.language", defaultVersion);
-        TYPECHECKER = ModuleIdentifier.create("com.redhat.ceylon.typechecker", defaultVersion);
     }
 
     private Repository repository;
@@ -207,7 +205,6 @@ public class CeylonModuleLoader extends ModuleLoader {
             }
 
             createModuleDependency(vertex, deps, builder, LANGUAGE);
-            createModuleDependency(vertex, deps, builder, TYPECHECKER);
 
             dependencies.put(moduleIdentifier, deps);
 
