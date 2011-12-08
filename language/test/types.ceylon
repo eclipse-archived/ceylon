@@ -40,4 +40,9 @@ void types() {
     if (is Equality entry) {} else { fail("entry type"); }
     if (is IdentifiableObject entry) { fail("entry type"); }
     if (is Object entry) {} else { fail("entry type"); }
+    
+    assert(className(1)=="ceylon.language.Natural", "natural classname");
+    assert(className(1.0)=="ceylon.language.Float", "float classname");
+    assert(className("hello")=="ceylon.language.String", "string classname");
+    assert(className(1->"hello")=="ceylon.language.Entry", "entry classname");
 }
