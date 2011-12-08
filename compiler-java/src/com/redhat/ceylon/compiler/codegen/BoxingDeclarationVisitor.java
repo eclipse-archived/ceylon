@@ -26,6 +26,8 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
@@ -49,13 +51,25 @@ public class BoxingDeclarationVisitor extends Visitor {
         super.visit(that);
         // FIXME: we need to set those in the model loader as well
         Method method = that.getDeclarationModel();
+        // deal with invalid input
+        if(method == null)
+            return;
         Method refinedMethod = (Method) Util.getTopmostRefinedDeclaration(method);
+        // deal with invalid input
+        if(refinedMethod == null)
+            return;
         if(isPrimitive(method, refinedMethod)) {
             Util.markUnBoxed(method);
             Util.markUnBoxed(refinedMethod);
         }
-        Iterator<Parameter> parameters = method.getParameterLists().get(0).getParameters().iterator();
-        for(Parameter refinedParam : refinedMethod.getParameterLists().get(0).getParameters()){
+        List<ParameterList> methodParameterLists = method.getParameterLists();
+        List<ParameterList> refinedParameterLists = refinedMethod.getParameterLists();
+        // deal with invalid input
+        if(methodParameterLists.isEmpty()
+                || refinedParameterLists.isEmpty())
+            return;
+        Iterator<Parameter> parameters = methodParameterLists.get(0).getParameters().iterator();
+        for(Parameter refinedParam : refinedParameterLists.get(0).getParameters()){
             Parameter param = parameters.next();
             if(isPrimitive(param, refinedParam)) {
                 Util.markUnBoxed(param);
@@ -68,7 +82,14 @@ public class BoxingDeclarationVisitor extends Visitor {
     public void visit(ClassDefinition that) {
         super.visit(that);
         Class klass = that.getDeclarationModel();
-        List<Parameter> parameters = klass.getParameterLists().get(0).getParameters();
+        // deal with invalid input
+        if(klass == null)
+            return;
+        List<ParameterList> parameterLists = klass.getParameterLists();
+        // deal with invalid input
+        if(parameterLists.isEmpty())
+            return;
+        List<Parameter> parameters = parameterLists.get(0).getParameters();
         for(Parameter param : parameters){
             if(isPrimitive(param, param))
                 Util.markUnBoxed(param);
@@ -88,7 +109,13 @@ public class BoxingDeclarationVisitor extends Visitor {
     public void visit(AnyAttribute that) {
         super.visit(that);
         TypedDeclaration declaration = that.getDeclarationModel();
+        // deal with invalid input
+        if(declaration == null)
+            return;
         TypedDeclaration refinedDeclaration = Util.getTopmostRefinedDeclaration(declaration);
+        // deal with invalid input
+        if(refinedDeclaration == null)
+            return;
         if(isPrimitive(declaration, refinedDeclaration)) {
             Util.markUnBoxed(declaration);
             Util.markUnBoxed(refinedDeclaration);
@@ -98,8 +125,18 @@ public class BoxingDeclarationVisitor extends Visitor {
     @Override
     public void visit(AttributeSetterDefinition that) {
         super.visit(that);
-        TypedDeclaration declaration = that.getDeclarationModel().getParameter();
+        Setter declarationModel = that.getDeclarationModel();
+        // deal with invalid input
+        if(declarationModel == null)
+            return;
+        TypedDeclaration declaration = declarationModel.getParameter();
+        // deal with invalid input
+        if(declaration == null)
+            return;
         TypedDeclaration refinedDeclaration = Util.getTopmostRefinedDeclaration(declaration);
+        // deal with invalid input
+        if(refinedDeclaration == null)
+            return;
         if(isPrimitive(declaration, refinedDeclaration)) {
             Util.markUnBoxed(declaration);
             Util.markUnBoxed(refinedDeclaration);
@@ -110,6 +147,9 @@ public class BoxingDeclarationVisitor extends Visitor {
     public void visit(Variable that) {
         super.visit(that);
         TypedDeclaration declaration = that.getDeclarationModel();
+        // deal with invalid input
+        if(declaration == null)
+            return;
         if(isPrimitive(declaration, declaration))
             Util.markUnBoxed(declaration);
     }
