@@ -65,7 +65,7 @@ public class MiscTest extends CompilerTest {
     @Ignore("M2")
     @Test
     public void compileRuntime(){
-        String sourcePath = "../ceylon-spec/languagesrc/current";
+        String sourcePath = "../ceylon.language/src";
         String[] packages = {"ceylon.language", "ceylon.language.descriptor"};
         java.util.List<File> sourceFiles = new ArrayList<File>();
         for(String pkg : packages){
