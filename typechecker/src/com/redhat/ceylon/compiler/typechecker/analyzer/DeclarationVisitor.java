@@ -488,11 +488,11 @@ public class DeclarationVisitor extends Visitor {
 
     @Override
     public void visit(Tree.Parameter that) {
-    	super.visit(that);
-    	if (that.getSpecifierExpression()!=null) {
-    		that.getSpecifierExpression()
-    		    .addWarning("parameter default values are not yet supported");
-    	}
+        super.visit(that);
+        if (that.getSpecifierExpression()!=null) {
+            that.getSpecifierExpression()
+                .addWarning("parameter default values are not yet supported");
+        }
     }
     
     @Override
@@ -812,16 +812,19 @@ public class DeclarationVisitor extends Visitor {
     public void visit(Tree.TypeConstraint that) {
         TypeParameter p = (TypeParameter) scope.getMemberOrParameter(unit, name(that.getIdentifier()));
         that.setDeclarationModel(p);
-        if (p==null ) {
+        if (p==null) {
             that.addError("no matching type parameter for constraint: " + 
                     name(that.getIdentifier()));
-            super.visit(that);
+            p = new TypeParameter();
+            p.setDeclaration(declaration);
+            that.setDeclarationModel(p);
+            visitDeclaration(that, p);
         }
-        else {
-            Scope o = enterScope(p);
-            super.visit(that);
-            exitScope(o);
-        }
+        
+        Scope o = enterScope(p);
+        super.visit(that);
+        exitScope(o);
+
         if ( that.getAbstractedType()!=null ) {
             that.addWarning("lower bound type constraints are not yet supported");
         }

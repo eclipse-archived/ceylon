@@ -236,7 +236,7 @@ class Generics() {
     
     interface BadSequenceSequence<out T> 
             satisfies Sequence<T>
-            @error given T/*<out X>*/ satisfies Sequence<X> & Equality
+            /*@error*/ given T/*<out X>*/ satisfies Sequence<X> & Equality
             @error given X satisfies Equality {}
     
     class Upper<X>(X x)
