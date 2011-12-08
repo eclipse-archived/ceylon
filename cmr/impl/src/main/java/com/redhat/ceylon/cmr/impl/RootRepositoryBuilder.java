@@ -20,22 +20,42 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package com.redhat.ceylon.test.smoke.support;
+package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.impl.RootRepository;
+import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 
 import java.io.File;
 
 /**
+ * Root repository builder.
+ *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class ExtRepository extends RootRepository {
-    public ExtRepository(File rootDir) {
-        super(rootDir);
+public class RootRepositoryBuilder {
+
+    private RootRepository repository;
+
+    public RootRepositoryBuilder() {
+        repository = new RootRepository();
     }
 
-    public void addToRoot(OpenNode node) {
-        getRoot().link(node);
+    public RootRepositoryBuilder(File rootDir) {
+        repository = new RootRepository(rootDir);
     }
+
+    public RootRepositoryBuilder mergeNode(OpenNode node) {
+        repository.getRoot().merge(node);
+        return this;
+    }
+
+    public RootRepositoryBuilder linkNode(OpenNode node) {
+        repository.getRoot().link(node);
+        return this;
+    }
+
+    public Repository buildRepository() {
+        return repository;
+    }
+    
 }

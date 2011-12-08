@@ -25,10 +25,10 @@ package com.redhat.ceylon.test.smoke.test;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.impl.DefaultNode;
 import com.redhat.ceylon.cmr.impl.RootRepository;
+import com.redhat.ceylon.cmr.impl.RootRepositoryBuilder;
 import com.redhat.ceylon.cmr.spi.ContentStore;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
-import com.redhat.ceylon.test.smoke.support.ExtRepository;
 import com.redhat.ceylon.test.smoke.support.InMemoryContentStore;
 import org.junit.Assert;
 import org.junit.Test;
@@ -81,13 +81,14 @@ public class SmokeTestCase {
 
     @Test
     public void testExternalNodes() throws Exception {
-        ExtRepository repo = new ExtRepository(getRepositoryRoot());
+        RootRepositoryBuilder builder = new RootRepositoryBuilder(getRepositoryRoot());
 
         InMemoryContentStore imcs = new InMemoryContentStore();
         OpenNode com = new DefaultNode("com");
         com.addService(ContentStore.class, imcs);
         com.addService(StructureBuilder.class, imcs);
-        repo.addToRoot(com);
+
+        Repository repo = builder.linkNode(com).buildRepository();
 
         ByteArrayInputStream baos = new ByteArrayInputStream("qwerty".getBytes());
         String name = "com.redhat.fizbiz";
