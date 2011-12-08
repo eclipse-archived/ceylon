@@ -4,7 +4,7 @@ if [ $# -eq 0 ] ; then
     echo 'Usage: ceylond <options>'
     echo 'where possible options include:'
     echo '  -src                       Specify where to find input source files'
-    echo '  -dest-dir                  Specify repository to store generated documentation in'
+    echo '  -out                       Specify repository to store generated documentation in'
     exit 0
 fi
 
