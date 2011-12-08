@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,8 +36,8 @@ public class TypeHierarchyVisitor extends Visitor {
         public TypeDeclaration declaration;
         public static final class Members {
             public String name;
-            public Set<Declaration> formals = new HashSet<Declaration>();
-            public Set<Declaration> concretesOnInterfaces = new HashSet<Declaration>();
+            public Set<Declaration> formals = new LinkedHashSet<Declaration>();
+            public Set<Declaration> concretesOnInterfaces = new LinkedHashSet<Declaration>();
             public Set<Declaration> actuals = new HashSet<Declaration>();
             public Set<Declaration> actualsNonFormals = new HashSet<Declaration>();
             public Set<Declaration> defaults = new HashSet<Declaration>();
@@ -201,12 +202,16 @@ public class TypeHierarchyVisitor extends Visitor {
     private void checkForFormalsNotImplemented(Tree.Declaration that, List<Type> orderedTypes) {
         Type aggregation = buildAggregatedType(orderedTypes);
         for (Type.Members members:aggregation.membersByName.values()) {
-            if (members.formals.size()!=0&&members.actualsNonFormals.size()==0) {
-                that.addError("formal member " + members.name + 
+            if (!members.formals.isEmpty() && members.actualsNonFormals.isEmpty()) {
+                Declaration declaringType = (Declaration) members.formals.iterator().next().getContainer();
+				that.addError("formal member " + members.name + 
+                		" of " + declaringType.getName() +
                         " not implemented in class hierarchy", 300);
             }
-            if (members.concretesOnInterfaces.size()!=0&&members.actualsNonFormals.size()==0) {
+            if (!members.concretesOnInterfaces.isEmpty() && members.actualsNonFormals.isEmpty()) {
+                Declaration declaringType = (Declaration) members.concretesOnInterfaces.iterator().next().getContainer();
                 that.addWarning("interface member " + members.name + 
+                		" of " + declaringType.getName() +
                         " not implemented in class hierarchy (concrete interface members not yet supported)");
             }
         }
