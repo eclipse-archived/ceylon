@@ -32,6 +32,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 
+import javax.tools.DiagnosticListener;
 import javax.tools.JavaFileObject;
 
 import junit.framework.Assert;
@@ -52,7 +53,7 @@ public abstract class CompilerTest {
 	private final static String dir = "test-src";
 	protected final static String destDir = "build/ceylon-cars";
 	private final static String destCar = destDir + "/unversioned/default_module-unversioned.car";
-	private final static List<String> defaultOptions = Arrays.asList("-out", destDir, "-rep", destDir);
+	protected final static List<String> defaultOptions = Arrays.asList("-out", destDir, "-rep", destDir);
     
 	protected final String path;
 
@@ -72,8 +73,8 @@ public abstract class CompilerTest {
         }
 	}
 
-	protected CeyloncFileManager makeFileManager(CeyloncTool compiler){
-        return (CeyloncFileManager)compiler.getStandardFileManager(null, null, null);
+	protected CeyloncFileManager makeFileManager(CeyloncTool compiler, DiagnosticListener diagnosticListener){
+        return (CeyloncFileManager)compiler.getStandardFileManager(diagnosticListener, null, null);
 	}
 	
 	protected void compareWithJavaSource(String name) {
@@ -253,10 +254,15 @@ public abstract class CompilerTest {
 	}
 	
     protected CeyloncTaskImpl getCompilerTask(String... sourcePaths){
-        return getCompilerTask(defaultOptions, sourcePaths);
+        return getCompilerTask(defaultOptions, null, sourcePaths);
     }
-    
-	protected CeyloncTaskImpl getCompilerTask(List<String> defaultOptions, String... sourcePaths){
+
+    protected CeyloncTaskImpl getCompilerTask(List<String> defaultOptions, String... sourcePaths){
+        return getCompilerTask(defaultOptions, null, sourcePaths);
+    }
+
+	protected CeyloncTaskImpl getCompilerTask(List<String> defaultOptions, DiagnosticListener diagnosticListener, 
+	        String... sourcePaths){
         // make sure we get a fresh jar cache for each compiler run
 	    ZipFileIndex.clearCache();
         java.util.List<File> sourceFiles = new ArrayList<File>(sourcePaths.length);
@@ -265,7 +271,7 @@ public abstract class CompilerTest {
 	    }
 	    
 	    CeyloncTool runCompiler = makeCompiler();
-        CeyloncFileManager runFileManager = makeFileManager(runCompiler );
+        CeyloncFileManager runFileManager = makeFileManager(runCompiler, diagnosticListener);
         
         // make sure the destination repo exists
         new File(destDir).mkdirs();
@@ -275,7 +281,7 @@ public abstract class CompilerTest {
         options.addAll(Arrays.asList("-src", getSourcePath(), "-verbose"));
         Iterable<? extends JavaFileObject> compilationUnits1 =
             runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
-        return (CeyloncTaskImpl) runCompiler.getTask(null, runFileManager, null, 
+        return (CeyloncTaskImpl) runCompiler.getTask(null, runFileManager, diagnosticListener, 
                 options, null, compilationUnits1);
 	}
 
