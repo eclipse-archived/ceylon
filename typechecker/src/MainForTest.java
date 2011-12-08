@@ -19,7 +19,7 @@ public class MainForTest {
 
         TypeChecker typeChecker = new TypeCheckerBuilder()
                 .verbose(false)
-                .addSrcDirectory( new File("test") )
+                .addSrcDirectory( new File("test/main") )
                 .getTypeChecker();
         typeChecker.process();
         Tree.CompilationUnit compilationUnit = typeChecker.getPhasedUnitFromRelativePath("ceylon/language/Object.ceylon").getCompilationUnit();
@@ -40,7 +40,7 @@ public class MainForTest {
         }
         typeChecker = new TypeCheckerBuilder()
                 .verbose(false)
-                .addSrcDirectory( new File("test/capture") )
+                .addSrcDirectory( new File("test/main/capture") )
                 .getTypeChecker();
         typeChecker.process();
         compilationUnit = typeChecker.getPhasedUnitFromRelativePath("Capture.ceylon").getCompilationUnit();

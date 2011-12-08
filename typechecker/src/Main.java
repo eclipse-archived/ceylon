@@ -19,7 +19,9 @@ public class Main {
     public static void main(String[] args) throws Exception {
         String path;
         if ( args.length==0 ) {
-            path = "corpus";
+            System.err.println("Usage Main <directoryName>");
+            System.exit(-1);
+            return;
         }
         else {
             path = args[0];
