@@ -115,6 +115,11 @@ public class CeylonModuleLoader extends ModuleLoader {
         }
     }
 
+    @Override
+    protected org.jboss.modules.Module preloadModule(ModuleIdentifier identifier) throws ModuleLoadException {
+        return super.preloadModule(identifier);
+    }
+
     /**
      * Unload module.
      *
@@ -123,14 +128,6 @@ public class CeylonModuleLoader extends ModuleLoader {
     void unloadModule(org.jboss.modules.Module module) {
         dependencies.remove(module.getIdentifier());
         unloadModuleLocal(module);
-    }
-
-    @Override
-    protected org.jboss.modules.Module preloadModule(final ModuleIdentifier identifier) throws ModuleLoadException {
-        if (identifier.equals(ModuleIdentifier.SYSTEM))
-            return org.jboss.modules.Module.getSystemModule();
-
-        return super.preloadModule(identifier);
     }
 
     protected Module readModule(ModuleIdentifier mi, File moduleFile) throws Exception {
@@ -198,21 +195,8 @@ public class CeylonModuleLoader extends ModuleLoader {
                     builder.setFallbackLoader(onDemandLoader);
                 }
             }
-            // add system as a dependency to all modules, but filter it
-            DependencySpec sds = DependencySpec.createModuleDependencySpec(
-                    PathFilters.match("ceylon/**"),
-                    PathFilters.rejectAll(),
-                    this,
-                    ModuleIdentifier.SYSTEM,
-                    false
-            );
-            builder.addDependency(sds);
-            deps.add(sds);
 
             dependencies.put(moduleIdentifier, deps);
-
-            Graph.Vertex<ModuleIdentifier, Boolean> sv = graph.createVertex(ModuleIdentifier.SYSTEM, ModuleIdentifier.SYSTEM);
-            Graph.Edge.create(false, vertex, sv);
 
             return builder.create();
         } catch (ModuleLoadException mle) {

@@ -36,7 +36,8 @@ public class Module {
         ModuleName name = new ModuleName("net.something.xyz");
         ModuleVersion version = new ModuleVersion(1, 0, 0, "Final");
         ceylon.lang.Runnable runnable = new ceylon.lang.Runnable() {
-            public void run(Process process) {
+            @Override
+            public void run(ceylon.lang.Process process) {
                 // test resource on_demand
                 ClassLoader cl = Module.this.getClass().getClassLoader();
 

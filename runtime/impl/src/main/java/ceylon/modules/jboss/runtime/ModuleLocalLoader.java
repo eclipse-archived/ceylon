@@ -28,7 +28,12 @@ import org.jboss.modules.Resource;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.UndeclaredThrowableException;
 import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -39,7 +44,26 @@ import java.util.List;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 class ModuleLocalLoader implements LocalLoader {
+
+    private static final Method getPackage;
     private final Module module;
+
+    static {
+        getPackage = AccessController.doPrivileged(new PrivilegedAction<Method>() {
+            public Method run() {
+                for (Method method : ClassLoader.class.getDeclaredMethods()) {
+                    if (method.getName().equals("getPackage")) {
+                        Class<?>[] parameterTypes = method.getParameterTypes();
+                        if (parameterTypes.length == 1 && parameterTypes[0] == String.class) {
+                            method.setAccessible(true);
+                            return method;
+                        }
+                    }
+                }
+                throw new IllegalStateException("No getPackage method found on ClassLoader");
+            }
+        });
+    }
 
     ModuleLocalLoader(Module module) {
         this.module = module;
@@ -62,8 +86,23 @@ class ModuleLocalLoader implements LocalLoader {
         return list;
     }
 
-    public Resource loadResourceLocal(String root, String name) {
-        return module.getExportedResource(root, name);
+    @Override
+    public Package loadPackageLocal(String name) {
+        try {
+            return (Package) getPackage.invoke(module.getClassLoader(), name);
+        } catch (IllegalAccessException e) {
+            throw new IllegalAccessError(e.getMessage());
+        } catch (InvocationTargetException e) {
+            try {
+                throw e.getCause();
+            } catch (RuntimeException re) {
+                throw re;
+            } catch (Error er) {
+                throw er;
+            } catch (Throwable throwable) {
+                throw new UndeclaredThrowableException(throwable);
+            }
+        }
     }
 
     final static class URLResource implements Resource {

@@ -34,7 +34,8 @@ public class Module {
         ModuleName name = new ModuleName("com.foobar.qwert");
         ModuleVersion version = new ModuleVersion(1, 0, 0, "GA");
         ceylon.lang.Runnable runnable = new ceylon.lang.Runnable() {
-            public void run(Process process) {
+            @Override
+            public void run(ceylon.lang.Process process) {
                 org.jboss.acme.Module.run();
             }
         };

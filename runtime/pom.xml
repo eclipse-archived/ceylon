@@ -33,7 +33,7 @@
         <version.com.redhat.ceylon.cmr>1.0.0-SNAPSHOT</version.com.redhat.ceylon.cmr>
         <version.org.jboss.logging>3.0.1.GA</version.org.jboss.logging>
         <version.org.jboss.logmanager>1.2.0.GA</version.org.jboss.logmanager>
-        <version.org.jboss.modules>1.0.2.GA</version.org.jboss.modules>
+        <version.org.jboss.modules>1.1.0.CR4</version.org.jboss.modules>
         <version.org.jboss.shrinkwrap>1.0.0-alpha-11</version.org.jboss.shrinkwrap>
         <version.org.jboss.test>1.1.0.GA</version.org.jboss.test>
         <version.junit>4.8.1</version.junit>
