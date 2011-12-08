@@ -2,7 +2,7 @@ Module module {
     name = 'com.redhat.sample.multisource';
     version = '0.2';
     doc = "Test multi source file compilation";
-    license = 'http://www.gnu.org/licenses/lgpl.html';
+    license = 'http://www.apache.org/licenses/LICENSE-2.0.html';
     Import {
         name = 'ceylon.language';
         version = '0.1';
