@@ -181,4 +181,17 @@ shared void strings() {
     assert(!"hello World".endsWith("world"), "string ends with");
     assert(!"".startsWith(hello), "empty string starts with");
     assert(!"".endsWith("world"), "empty string ends with");
+    
+    assert(!exists "".split(null, true).first, "string split first");
+    assert(exists "hello".split(null, true).first, "string split first");
+    assert("hello world".split(null, true).first?""=="hello", "string split first");
+    variable value count:=0;
+    for (tok in "hello world goodbye".split(" ", true)) {
+        count++;
+        assert(tok.size>4, "string token");
+    }
+    assert(count==3, "string tokens");
+    for (tok in "  ".split(" ", true)) {
+        fail("no string tokens");
+    }
 }
