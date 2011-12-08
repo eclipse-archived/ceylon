@@ -236,4 +236,6 @@ class Operators() {
     String str1 = null ? null ? "hello";
     String str2 = null else null else "hello";
     
+    Float ff = null?1.0 + null?2.0;
+    
 }

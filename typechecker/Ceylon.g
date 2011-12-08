@@ -1684,7 +1684,7 @@ typeOperator returns [TypeOperatorExpression operator]
     ;
 
 existenceEmptinessExpression returns [Term term]
-    : de1=defaultExpression
+    : de1=rangeIntervalEntryExpression
       { $term = $de1.term; }
       (
         eno1=existsNonemptyOperator
@@ -1693,7 +1693,7 @@ existenceEmptinessExpression returns [Term term]
       )?
     | eno2=existsNonemptyOperator
       { $term = $eno2.operator; }
-      de2=defaultExpression
+      de2=rangeIntervalEntryExpression
       { $eno2.operator.setTerm($de2.term); }
     ;
 
@@ -1702,23 +1702,6 @@ existsNonemptyOperator returns [UnaryOperatorExpression operator]
       { $operator = new Exists($EXISTS); }
     | NONEMPTY
       { $operator = new Nonempty($NONEMPTY); }
-    ;
-
-defaultExpression returns [Term term]
-    : rie1=rangeIntervalEntryExpression
-      { $term = $rie1.term; }
-      (
-        defaultOperator 
-        { $defaultOperator.operator.setLeftTerm($term);
-          $term = $defaultOperator.operator; }
-        rie2=rangeIntervalEntryExpression
-        { $defaultOperator.operator.setRightTerm($rie2.term); }
-      )*
-    ;
-
-defaultOperator returns [DefaultOp operator]
-    : DEFAULT_OP 
-      { $operator = new DefaultOp($DEFAULT_OP); }
     ;
 
 rangeIntervalEntryExpression returns [Term term]
@@ -1766,13 +1749,13 @@ additiveOperator returns [BinaryOperatorExpression operator]
     ;
 
 multiplicativeExpression returns [Term term]
-    : ne1=negationComplementExpression
+    : ne1=defaultExpression
       { $term = $ne1.term; }
       (
         multiplicativeOperator 
         { $multiplicativeOperator.operator.setLeftTerm($term);
           $term = $multiplicativeOperator.operator; }
-        ne2=negationComplementExpression
+        ne2=defaultExpression
         { $multiplicativeOperator.operator.setRightTerm($ne2.term); }
       )*
     ;
@@ -1786,6 +1769,23 @@ multiplicativeOperator returns [BinaryOperatorExpression operator]
       { $operator = new RemainderOp($REMAINDER_OP); }
     | INTERSECTION_OP
       { $operator = new IntersectionOp($INTERSECTION_OP); }
+    ;
+
+defaultExpression returns [Term term]
+    : rie1=negationComplementExpression
+      { $term = $rie1.term; }
+      (
+        defaultOperator 
+        { $defaultOperator.operator.setLeftTerm($term);
+          $term = $defaultOperator.operator; }
+        rie2=negationComplementExpression
+        { $defaultOperator.operator.setRightTerm($rie2.term); }
+      )*
+    ;
+
+defaultOperator returns [DefaultOp operator]
+    : DEFAULT_OP 
+      { $operator = new DefaultOp($DEFAULT_OP); }
     ;
 
 negationComplementExpression returns [Term term]
