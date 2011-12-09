@@ -49,6 +49,17 @@ public final class NodeUtils {
     }
 
     /**
+     * Get root.
+     * 
+     * @param node the node
+     * @return the root
+     */
+    public static Node getRoot(Node node) {
+        Node root = firstParent(node);
+        return (root == null) ? node : getRoot(root);
+    }
+    
+    /**
      * Get full node path; using default File.separator
      *
      * @param node the node

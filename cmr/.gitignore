@@ -1,4 +1,7 @@
 .idea
+*.iml
+*.ipr
+*.iws
 /target/
 spi/target/
 api/target/

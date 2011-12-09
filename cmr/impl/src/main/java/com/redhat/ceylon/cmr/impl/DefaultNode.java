@@ -63,6 +63,9 @@ public class DefaultNode extends AbstractOpenNode {
     public void merge(OpenNode other) {
         if (other == null)
             throw new IllegalArgumentException("Null node!");
+        
+        Node root = NodeUtils.getRoot(this);
+        Node or = NodeUtils.getRoot(other);
         // TODO
     }
 

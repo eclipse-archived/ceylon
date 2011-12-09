@@ -40,10 +40,16 @@ public class RootRepositoryBuilder {
 
     public RootRepositoryBuilder() {
         repository = new RootRepository();
+        init();
     }
 
     public RootRepositoryBuilder(File rootDir) {
         repository = new RootRepository(rootDir);
+        init();
+    }
+
+    protected void init() {
+        getRoot().addService(MergeStrategy.class, new DefaultMergeStrategy());
     }
 
     private OpenNode getRoot() {

@@ -112,7 +112,8 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
                 dn.parents.put(getLabel(), this);
             }
         } else {
-            merge(child);
+            MergeStrategy ms = findService(MergeStrategy.class);
+            ms.conflict(previous, child);
         }
     }
 

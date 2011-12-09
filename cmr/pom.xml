@@ -1,0 +1,148 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.jboss</groupId>
+        <artifactId>jboss-parent</artifactId>
+        <version>5</version>
+    </parent>
+    <groupId>com.redhat.ceylon.cmr</groupId>
+    <artifactId>cmr-build</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>Ceylon Module Repository Build</name>
+    <url>http://www.ceylon-lang.org</url>
+    <description>Ceylon Module Resolver Build</description>
+
+    <modules>
+        <module>spi</module>
+        <module>api</module>
+        <module>impl</module>
+    </modules>
+
+    <properties>
+        <version.junit>4.8.1</version.junit>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <debug>true</debug>
+                    <encoding>UTF-8</encoding>
+                    <fork>true</fork>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.0-beta-9</version>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-idea-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <downloadSources>true</downloadSources>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.4.3</version>
+                <configuration>
+                    <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                    <includes>
+                        <include>com/redhat/ceylon/test/**/*TestCase.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>oss-sonatype-central</id>
+            <name>OSS Sonatype Central</name>
+            <url>https://oss.sonatype.org/content/repositories/central/</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+        </repository>
+        <repository>
+            <id>jboss-public-repository-group</id>
+            <name>JBoss Public Maven Repository Group</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>jboss-deprecated-repository</id>
+            <name>JBoss Deprecated Maven Repository</name>
+            <url>https://repository.jboss.org/nexus/content/repositories/deprecated</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <dependencyManagement>
+        <!-- The parent pom manages the inter-dependencies of the modules. -->
+        <dependencies>
+
+            <dependency>
+                <groupId>com.redhat.ceylon.cmr</groupId>
+                <artifactId>cmr-spi</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.redhat.ceylon.cmr</groupId>
+                <artifactId>cmr-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- Testing -->
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${version.junit}</version>
+                <scope>test</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <scm>
+        <connection>scm:git:git://github.com/ceylon/ceylon-module-resolver.git</connection>
+        <developerConnection>scm:git:git://github.com/ceylon/ceylon-module-resolver.git</developerConnection>
+        <url>scm:git:git://github.com/ceylon/ceylon-module-resolver.git</url>
+    </scm>
+
+</project>
+
