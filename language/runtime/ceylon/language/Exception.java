@@ -1,9 +1,13 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.metadata.java.Ceylon;
+import com.redhat.ceylon.compiler.metadata.java.Class;
 import com.redhat.ceylon.compiler.metadata.java.Ignore;
 import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
+@Ceylon
+@Class(extendsType="ceylon.language.IdentifiableObject")
 public class Exception extends RuntimeException {
 
 	private static final long serialVersionUID = -1790691559137471641L;

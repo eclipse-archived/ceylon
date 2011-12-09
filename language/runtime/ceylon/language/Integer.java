@@ -1,10 +1,12 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.metadata.java.Ceylon;
 import com.redhat.ceylon.compiler.metadata.java.Class;
 import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
+@Ceylon
 @SatisfiedTypes({
     "ceylon.language.Castable<ceylon.language.Integer|ceylon.language.Float>",
     "ceylon.language.Integral<ceylon.language.Integer>",

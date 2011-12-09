@@ -1,8 +1,10 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.metadata.java.Ceylon;
 import com.redhat.ceylon.compiler.metadata.java.Class;
 import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
 
+@Ceylon
 @Class(extendsType="ceylon.language.Object")
 @SatisfiedTypes("ceylon.language.Equality")
 public class Quoted {

@@ -1,9 +1,11 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.metadata.java.Ceylon;
 import com.redhat.ceylon.compiler.metadata.java.Name;
 import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
+@Ceylon
 @SatisfiedTypes({
     "ceylon.language.Correspondence<ceylon.language.Natural,ceylon.language.Bottom>",
     "ceylon.language.Ordered<ceylon.language.Bottom>",

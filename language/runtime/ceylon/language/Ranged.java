@@ -9,7 +9,8 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
 
 @Ceylon
 @TypeParameters({
-    @TypeParameter(value = "Index", variance = Variance.IN),
+    @TypeParameter(value = "Index", variance = Variance.IN,
+    		satisfies="ceylon.language.Comparable<Index>"),
     @TypeParameter(value = "Span", variance = Variance.OUT)
 })
 public interface Ranged<Index extends Comparable<? super Index>, Span> {

@@ -5,11 +5,21 @@ import java.util.StringTokenizer;
 import com.redhat.ceylon.compiler.metadata.java.Ceylon;
 import com.redhat.ceylon.compiler.metadata.java.Class;
 import com.redhat.ceylon.compiler.metadata.java.Name;
+import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
 import com.redhat.ceylon.compiler.metadata.java.Sequenced;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 @Ceylon
 @Class(extendsType="ceylon.language.Object")
+@SatisfiedTypes({"ceylon.language.Comparable<ceylon.language.String>",
+	             "ceylon.language.Ordered<ceylon.language.Character>",
+	             "ceylon.language.Correspondence<ceylon.language.Natural,ceylon.language.Character>",
+	             "ceylon.language.Format",
+	             "ceylon.language.Sized",
+	             "ceylon.language.Summable<ceylon.language.String>",
+                 "ceylon.language.Castable<ceylon.language.String>",
+                 "ceylon.language.Category",
+                 "ceylon.language.Ranged<ceylon.language.Natural,ceylon.language.String>"})
 public final class String
     implements Comparable<String>, Ordered<Character>, 
                Correspondence<Natural,Character>, Format,
