@@ -36,7 +36,7 @@ import si.alesj.ceylon.test.Touch;
  */
 public class OnDemandTestCase extends ModulesTest {
     @Test
-    public void testBasic() throws Exception {
+    public void testBasic() throws Throwable {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "net.something.xyz-1.0.0.Final.car");
         module.addClass(net.something.xyz.module.class);
 

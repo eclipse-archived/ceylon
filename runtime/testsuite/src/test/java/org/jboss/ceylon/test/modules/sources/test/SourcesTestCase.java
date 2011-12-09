@@ -39,7 +39,7 @@ import java.util.Map;
  */
 @Ignore // TODO -- enable sources repo
 public class SourcesTestCase extends ModulesTest {
-    protected String getTestsuiteDir() throws Exception {
+    protected String getTestsuiteDir() throws Throwable {
         URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
         File dir = new File(url.toURI());
         String path = dir.getCanonicalPath();
@@ -48,7 +48,7 @@ public class SourcesTestCase extends ModulesTest {
     }
 
     @Test
-    public void testSimpleUsage() throws Exception {
+    public void testSimpleUsage() throws Throwable {
         Map<Constants, String> extra = new HashMap<Constants, String>();
         extra.put(Constants.SOURCES, "src/test/java");
         extra.put(Constants.CLASSES, "target/test-classes-bak");
@@ -57,7 +57,7 @@ public class SourcesTestCase extends ModulesTest {
     }
 
     @Test
-    public void testDependencyUsage() throws Exception {
+    public void testDependencyUsage() throws Throwable {
         Map<Constants, String> extra = new HashMap<Constants, String>();
         extra.put(Constants.SOURCES, "src/test/java");
         extra.put(Constants.CLASSES, "target/test-classes-bak");

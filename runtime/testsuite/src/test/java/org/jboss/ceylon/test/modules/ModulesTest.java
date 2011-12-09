@@ -22,6 +22,7 @@
 
 package org.jboss.ceylon.test.modules;
 
+import ceylon.modules.spi.Constants;
 import org.jboss.modules.Main;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.exporter.ZipExporter;
@@ -86,10 +87,10 @@ public abstract class ModulesTest {
             String name = fullName.substring(0, p);
             String version = fullName.substring(p + 1, fullName.lastIndexOf("."));
 
-            Map<String, String> args = new HashMap<String, String>();
-            args.put("executable", RUNTIME_IMPL);
-            args.put("module", name + "/" + version);
-            args.put("repository", tmpdir.toString());
+            Map<Constants, String> args = new HashMap<Constants, String>();
+            args.put(Constants.EXECUTABLE, RUNTIME_IMPL);
+            args.put(Constants.MODULE, name + "/" + version);
+            args.put(Constants.REPOSITORY, tmpdir.toString());
 
             execute(args);
         } finally {
@@ -99,28 +100,28 @@ public abstract class ModulesTest {
     }
 
     protected void src(String module, String src) throws Throwable {
-        src(module, src, Collections.<String, String>emptyMap());
+        src(module, src, Collections.<Constants, String>emptyMap());
     }
 
-    protected void src(String module, String src, Map<String, String> extra) throws Throwable {
-        Map<String, String> args = new HashMap<String, String>();
-        args.put("executable", RUNTIME_IMPL);
-        args.put("module", module);
-        args.put("source", src);
-        args.put("d", "false");
+    protected void src(String module, String src, Map<Constants, String> extra) throws Throwable {
+        Map<Constants, String> args = new HashMap<Constants, String>();
+        args.put(Constants.EXECUTABLE, RUNTIME_IMPL);
+        args.put(Constants.MODULE, module);
+        args.put(Constants.SOURCE, src);
+        args.put(Constants.DEFAULT, "false");
         args.putAll(extra);
 
         execute(args);
     }
 
-    protected void execute(Map<String, String> map) throws Throwable {
+    protected void execute(Map<Constants, String> map) throws Throwable {
 
         // TODO -- add Modules custom params
 
         String[] args = new String[map.size() * 2];
         int i = 0;
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            args[i++] = entry.getKey();
+        for (Map.Entry<Constants, String> entry : map.entrySet()) {
+            args[i++] = entry.getKey().toString();
             args[i++] = entry.getValue();
         }
         Main.main(args);

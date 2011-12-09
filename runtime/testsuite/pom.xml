@@ -17,6 +17,27 @@
         <dependency>
             <groupId>org.jboss.modules</groupId>
             <artifactId>jboss-modules</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ceylon.language</groupId>
+            <artifactId>ceylon-language</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ceylon</groupId>
+            <artifactId>modules-spi</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ceylon</groupId>
+            <artifactId>modules-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ceylon</groupId>
+            <artifactId>modules-impl</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jboss.shrinkwrap</groupId>
@@ -31,11 +52,6 @@
         <dependency>
             <groupId>org.jboss.shrinkwrap</groupId>
             <artifactId>shrinkwrap-impl-base</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.test</groupId>
-            <artifactId>jboss-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

@@ -36,14 +36,14 @@ import org.junit.Test;
  */
 public class SmokeTestCase extends ModulesTest {
     @Test
-    public void singleModule() throws Exception {
+    public void singleModule() throws Throwable {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "org.jboss.acme-1.0.0.CR1.car");
         module.addClass(module.class);
         testArchive(module);
     }
 
     @Test
-    public void transitiveModule() throws Exception {
+    public void transitiveModule() throws Throwable {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "com.foobar.qwert-1.0.0.GA.car");
         module.addClass(com.foobar.qwert.module.class);
 
@@ -54,7 +54,7 @@ public class SmokeTestCase extends ModulesTest {
     }
 
     @Test
-    public void filteredModule() throws Exception {
+    public void filteredModule() throws Throwable {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "eu.cloud.clazz-1.0.0.GA.car");
         module.addClass(eu.cloud.clazz.module.class);
 
