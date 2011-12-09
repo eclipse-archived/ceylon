@@ -248,29 +248,29 @@ shared class NaturalTest() extends Test() {
     shared void testLargerThan() {
         Natural ten = 10;
         Natural zero = 0;
-        assertFalse(zero.largerThan(ten));
-        assertFalse(zero.largerThan(zero));
-        assertTrue(ten.largerThan(zero));
-        assertFalse(ten.largerThan(ten));  
+        assertFalse(zero > ten);
+        assertFalse(zero > zero);
+        assertTrue(ten > zero);
+        assertFalse(ten > ten);  
     }   
     
     @test
     shared void testAsLargeAs() {
         Natural ten = 10;
         Natural zero = 0;
-        assertFalse(zero.asLargeAs(ten));
-        assertTrue(zero.asLargeAs(zero));
-        assertTrue(ten.asLargeAs(zero));
-        assertTrue(ten.asLargeAs(ten));  
+        assertFalse(zero >= ten);
+        assertTrue(zero >= zero);
+        assertTrue(ten >= zero);
+        assertTrue(ten >= ten);  
     }  
     @test
     shared void testSmallerThan() {
         Natural ten = 10;
         Natural zero = 0;
-        assertTrue(zero.smallerThan(ten));
-        assertFalse(zero.smallerThan(zero)); 
-        assertFalse(ten.smallerThan(zero));
-        assertFalse(ten.smallerThan(ten));  
+        assertTrue(zero < ten);
+        assertFalse(zero < zero); 
+        assertFalse(ten < zero);
+        assertFalse(ten < ten);  
     }
 
 
@@ -278,10 +278,10 @@ shared class NaturalTest() extends Test() {
     shared void testAsSmallAs() {
         Natural ten = 10;
         Natural zero = 0;
-        assertTrue(zero.asSmallAs(ten));
-        assertTrue(zero.asSmallAs(zero)); 
-        assertFalse(ten.asSmallAs(zero));
-        assertTrue(ten.asSmallAs(ten));  
+        assertTrue(zero <= ten);
+        assertTrue(zero <= zero); 
+        assertFalse(ten <= zero);
+        assertTrue(ten <= ten);  
     }
 
     @test

@@ -279,15 +279,15 @@ shared class IntegerTest() extends Test() {
         Integer ten = +10;      
         Integer minusTwo = -2;
         Integer theZero = +0;
-        assertFalse(theZero.largerThan(ten));
-        assertTrue(theZero.largerThan(minusTwo));
-        assertFalse(theZero.largerThan(theZero));        
-        assertFalse(minusTwo.largerThan(minusTwo));             
-        assertFalse(minusTwo.largerThan(theZero));
-        assertFalse(minusTwo.largerThan(ten));
-        assertTrue(ten.largerThan(theZero));
-        assertTrue(ten.largerThan(minusTwo));
-        assertFalse(ten.largerThan(ten));  
+        assertFalse(theZero > ten);
+        assertTrue(theZero > minusTwo);
+        assertFalse(theZero > theZero);        
+        assertFalse(minusTwo > minusTwo);             
+        assertFalse(minusTwo > theZero);
+        assertFalse(minusTwo > ten);
+        assertTrue(ten > theZero);
+        assertTrue(ten > minusTwo);
+        assertFalse(ten > ten);  
     }   
     
     @test
@@ -295,15 +295,15 @@ shared class IntegerTest() extends Test() {
         Integer ten = +10;      
         Integer minusTwo = -2;
         Integer theZero = +0;
-        assertFalse(theZero.asLargeAs(ten));
-        assertTrue(theZero.asLargeAs(minusTwo));
-        assertTrue(theZero.asLargeAs(theZero));        
-        assertTrue(minusTwo.asLargeAs(minusTwo));             
-        assertFalse(minusTwo.asLargeAs(theZero));
-        assertFalse(minusTwo.asLargeAs(ten));
-        assertTrue(ten.asLargeAs(theZero));
-        assertTrue(ten.asLargeAs(minusTwo));
-        assertTrue(ten.asLargeAs(ten));  
+        assertFalse(theZero >= ten);
+        assertTrue(theZero >= minusTwo);
+        assertTrue(theZero >= theZero);        
+        assertTrue(minusTwo >= minusTwo);             
+        assertFalse(minusTwo >= theZero);
+        assertFalse(minusTwo >= ten);
+        assertTrue(ten >= theZero);
+        assertTrue(ten >= minusTwo);
+        assertTrue(ten >= ten);  
     }  
     
     @test
@@ -311,15 +311,15 @@ shared class IntegerTest() extends Test() {
         Integer ten = +10;      
         Integer minusTwo = -2;
         Integer theZero = +0;
-        assertTrue(theZero.smallerThan(ten));
-        assertFalse(theZero.smallerThan(minusTwo));
-        assertFalse(theZero.smallerThan(theZero));        
-        assertFalse(minusTwo.smallerThan(minusTwo));             
-        assertTrue(minusTwo.smallerThan(theZero));
-        assertTrue(minusTwo.smallerThan(ten));
-        assertFalse(ten.smallerThan(theZero));
-        assertFalse(ten.smallerThan(minusTwo));
-        assertFalse(ten.smallerThan(ten));  
+        assertTrue(theZero < ten);
+        assertFalse(theZero < minusTwo);
+        assertFalse(theZero < theZero);        
+        assertFalse(minusTwo < minusTwo);             
+        assertTrue(minusTwo < theZero);
+        assertTrue(minusTwo < ten);
+        assertFalse(ten < theZero);
+        assertFalse(ten < minusTwo);
+        assertFalse(ten < ten);  
     }
 
 
@@ -328,15 +328,15 @@ shared class IntegerTest() extends Test() {
         Integer ten = +10;      
         Integer minusTwo = -2;
         Integer theZero = +0;
-        assertTrue(theZero.asSmallAs(ten));
-        assertFalse(theZero.asSmallAs(minusTwo));
-        assertTrue(theZero.asSmallAs(theZero));        
-        assertTrue(minusTwo.asSmallAs(minusTwo));             
-        assertTrue(minusTwo.asSmallAs(theZero));
-        assertTrue(minusTwo.asSmallAs(ten));
-        assertFalse(ten.asSmallAs(theZero));
-        assertFalse(ten.asSmallAs(minusTwo));
-        assertTrue(ten.asSmallAs(ten));  
+        assertTrue(theZero <= ten);
+        assertFalse(theZero <= minusTwo);
+        assertTrue(theZero <= theZero);        
+        assertTrue(minusTwo <= minusTwo);             
+        assertTrue(minusTwo <= theZero);
+        assertTrue(minusTwo <= ten);
+        assertFalse(ten <= theZero);
+        assertFalse(ten <= minusTwo);
+        assertTrue(ten <= ten);  
     }
 
     @test

@@ -212,15 +212,15 @@ shared class FloatTest() extends Test() {
         Float ten = +10.5;      
         Float minusTwo = -2.3;
         Float zero = +0.0;
-        assertFalse(zero.largerThan(ten));
-        assertTrue(zero.largerThan(minusTwo));
-        assertFalse(zero.largerThan(zero));        
-        assertFalse(minusTwo.largerThan(minusTwo));             
-        assertFalse(minusTwo.largerThan(zero));
-        assertFalse(minusTwo.largerThan(ten));
-        assertTrue(ten.largerThan(zero));
-        assertTrue(ten.largerThan(minusTwo));
-        assertFalse(ten.largerThan(ten));  
+        assertFalse(zero > ten);
+        assertTrue(zero > minusTwo);
+        assertFalse(zero > zero);        
+        assertFalse(minusTwo > minusTwo);             
+        assertFalse(minusTwo > zero);
+        assertFalse(minusTwo > ten);
+        assertTrue(ten > zero);
+        assertTrue(ten > minusTwo);
+        assertFalse(ten > ten);  
     }   
     
     @test
@@ -228,15 +228,15 @@ shared class FloatTest() extends Test() {
         Float ten = +10.5;      
         Float minusTwo = -2.3;
         Float zero = +0.0;
-        assertFalse(zero.asLargeAs(ten));
-        assertTrue(zero.asLargeAs(minusTwo));
-        assertTrue(zero.asLargeAs(zero));        
-        assertTrue(minusTwo.asLargeAs(minusTwo));             
-        assertFalse(minusTwo.asLargeAs(zero));
-        assertFalse(minusTwo.asLargeAs(ten));
-        assertTrue(ten.asLargeAs(zero));
-        assertTrue(ten.asLargeAs(minusTwo));
-        assertTrue(ten.asLargeAs(ten));  
+        assertFalse(zero >= ten);
+        assertTrue(zero >= minusTwo);
+        assertTrue(zero >= zero);        
+        assertTrue(minusTwo >= minusTwo);             
+        assertFalse(minusTwo >= zero);
+        assertFalse(minusTwo >= ten);
+        assertTrue(ten >= zero);
+        assertTrue(ten >= minusTwo);
+        assertTrue(ten >= ten);  
     }  
     
     @test
@@ -244,15 +244,15 @@ shared class FloatTest() extends Test() {
         Float ten = +10.5;      
         Float minusTwo = -2.3;
         Float zero = +0.0;
-        assertTrue(zero.smallerThan(ten));
-        assertFalse(zero.smallerThan(minusTwo));
-        assertFalse(zero.smallerThan(zero));        
-        assertFalse(minusTwo.smallerThan(minusTwo));             
-        assertTrue(minusTwo.smallerThan(zero));
-        assertTrue(minusTwo.smallerThan(ten));
-        assertFalse(ten.smallerThan(zero));
-        assertFalse(ten.smallerThan(minusTwo));
-        assertFalse(ten.smallerThan(ten));  
+        assertTrue(zero < ten);
+        assertFalse(zero < minusTwo);
+        assertFalse(zero < zero);        
+        assertFalse(minusTwo < minusTwo);             
+        assertTrue(minusTwo < zero);
+        assertTrue(minusTwo < ten);
+        assertFalse(ten < zero);
+        assertFalse(ten < minusTwo);
+        assertFalse(ten < ten);  
     }
 
 
@@ -261,15 +261,15 @@ shared class FloatTest() extends Test() {
         Float ten = +10.5;      
         Float minusTwo = -2.3;
         Float zero = +0.0;
-        assertTrue(zero.asSmallAs(ten));
-        assertFalse(zero.asSmallAs(minusTwo));
-        assertTrue(zero.asSmallAs(zero));        
-        assertTrue(minusTwo.asSmallAs(minusTwo));             
-        assertTrue(minusTwo.asSmallAs(zero));
-        assertTrue(minusTwo.asSmallAs(ten));
-        assertFalse(ten.asSmallAs(zero));
-        assertFalse(ten.asSmallAs(minusTwo));
-        assertTrue(ten.asSmallAs(ten));  
+        assertTrue(zero <= ten);
+        assertFalse(zero <= minusTwo);
+        assertTrue(zero <= zero);        
+        assertTrue(minusTwo <= minusTwo);             
+        assertTrue(minusTwo <= zero);
+        assertTrue(minusTwo <= ten);
+        assertFalse(ten <= zero);
+        assertFalse(ten <= minusTwo);
+        assertTrue(ten <= ten);  
     }
 
     @test
