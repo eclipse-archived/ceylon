@@ -28,6 +28,16 @@ assign numericOperationIncrDecrTestGetter {
 
 shared class NumericOperationTest() extends Test() {
 
+  variable Natural incrDecrCounter := 0;
+  variable Natural unboxedAttrIncrDecr := 0;
+  variable Natural unboxedAttrIncrDecrGetterHolder := 0;
+  Natural unboxedAttrIncrDecrGetter {
+    return unboxedAttrIncrDecrGetterHolder;
+  }
+  assign unboxedAttrIncrDecrGetter {
+    unboxedAttrIncrDecrGetterHolder := unboxedAttrIncrDecrGetter;
+  }
+
   @test
   shared void testEqual() {
   	Boolean equal = 1==1;
@@ -131,8 +141,8 @@ shared class NumericOperationTest() extends Test() {
   }
 
   @test
-  shared void testBoxedLocalIncrDecr(){
-    variable Ordinal<Natural> n := 0;
+  shared void testBoxedLocalIncrDecr<T>(T init) given T satisfies Natural {
+    variable T n := init;
     assertEquals(0, n);
 
     // postfix ++
@@ -158,15 +168,6 @@ shared class NumericOperationTest() extends Test() {
     assertEquals(1, n);
     --n;
     assertEquals(0, n);
-  }
-
-  variable Natural unboxedAttrIncrDecr := 0;
-  variable Natural unboxedAttrIncrDecrGetterHolder := 0;
-  Natural unboxedAttrIncrDecrGetter {
-    return unboxedAttrIncrDecrGetterHolder;
-  }
-  assign unboxedAttrIncrDecrGetter {
-    unboxedAttrIncrDecrGetterHolder := unboxedAttrIncrDecrGetter;
   }
 
   @test
@@ -344,8 +345,6 @@ shared class NumericOperationTest() extends Test() {
     --this.unboxedAttrIncrDecrGetter;
     assertEquals(0, this.unboxedAttrIncrDecrGetter);
   }
-  
-  variable Natural incrDecrCounter := 0;
   
   NumericOperationTest getThisOnce(){
     if(incrDecrCounter == 1){
