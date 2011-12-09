@@ -25,8 +25,8 @@ package org.jboss.filtered;
 import ceylon.language.Quoted;
 import ceylon.language.descriptor.PathFilter;
 import ceylon.language.descriptor.PathFilters;
-import ceylon.modules.api.runtime.ModuleVersion;
 import ceylon.modules.api.util.JavaToCeylon;
+import ceylon.modules.api.util.ModuleVersion;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>

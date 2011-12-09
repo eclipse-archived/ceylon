@@ -57,10 +57,14 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class CeylonModuleLoader extends ModuleLoader {
     private static final ModuleIdentifier LANGUAGE;
+    private static final Set<String> CEYLON_RUNTIME_PATHS;
 
     static {
         final String defaultVersion = System.getProperty("ceylon.version", "0.1");
         LANGUAGE = ModuleIdentifier.create("ceylon.language", defaultVersion);
+
+        CEYLON_RUNTIME_PATHS = new HashSet<String>();
+        CEYLON_RUNTIME_PATHS.add(CeylonToJava.class.getPackage().getName().replace(".", "/"));
     }
 
     private Repository repository;
@@ -205,6 +209,15 @@ public class CeylonModuleLoader extends ModuleLoader {
             }
 
             createModuleDependency(vertex, deps, builder, LANGUAGE);
+
+            // add system paths
+            final DependencySpec sds = DependencySpec.createSystemDependencySpec(
+                    PathFilters.match("ceylon/*"),
+                    PathFilters.rejectAll(),
+                    CEYLON_RUNTIME_PATHS
+            );
+            builder.addDependency(sds);
+            deps.add(sds);
 
             dependencies.put(moduleIdentifier, deps);
 

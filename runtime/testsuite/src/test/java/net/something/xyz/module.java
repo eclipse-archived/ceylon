@@ -24,8 +24,8 @@ package net.something.xyz;
 
 import ceylon.language.Quoted;
 import ceylon.language.descriptor.Import;
-import ceylon.modules.api.runtime.ModuleVersion;
 import ceylon.modules.api.util.JavaToCeylon;
+import ceylon.modules.api.util.ModuleVersion;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>

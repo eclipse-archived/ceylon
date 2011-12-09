@@ -23,6 +23,7 @@
 package ceylon.modules.api.runtime;
 
 import ceylon.language.descriptor.Module;
+import ceylon.modules.api.util.ModuleVersion;
 import ceylon.modules.spi.Constants;
 
 import java.lang.reflect.Method;

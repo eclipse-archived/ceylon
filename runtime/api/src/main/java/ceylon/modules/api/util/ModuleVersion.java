@@ -20,7 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package ceylon.modules.api.runtime;
+package ceylon.modules.api.util;
 
 import java.io.Serializable;
 import java.util.NoSuchElementException;
