@@ -57,13 +57,13 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.jboss.modules</groupId>
-            <artifactId>jboss-modules</artifactId>
+            <groupId>ceylon.language</groupId>
+            <artifactId>ceylon-language</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>ceylon.language</groupId>
-            <artifactId>ceylon-language</artifactId>
+            <groupId>org.jboss.modules</groupId>
+            <artifactId>jboss-modules</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -74,11 +74,6 @@
         <dependency>
             <groupId>ceylon</groupId>
             <artifactId>modules-api</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>ceylon</groupId>
-            <artifactId>modules-impl</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
