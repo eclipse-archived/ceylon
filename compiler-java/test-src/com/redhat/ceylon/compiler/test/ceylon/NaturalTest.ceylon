@@ -98,7 +98,7 @@ shared class NaturalTest() extends Test() {
         assertEquals(seven,seven.minus(zero));
 		assertEquals(2, 10 - 8);
 		try {
-		  Natural negativeError = 1 - 2;
+		  Integer negativeError = 1 - 2;
 		  fail();		
 		} catch (Exception e) {
 		  
