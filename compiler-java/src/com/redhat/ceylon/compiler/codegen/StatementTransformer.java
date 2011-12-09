@@ -130,7 +130,7 @@ public class StatementTransformer extends AbstractTransformer {
             } else {
                 Tree.ExistsCondition exists = (Tree.ExistsCondition) cond;
                 name = exists.getVariable().getIdentifier().getText();
-                toType = exists.getVariable().getType().getTypeModel();
+                toType = simplifyType(exists.getVariable().getType().getTypeModel());
                 specifierExpr = exists.getVariable().getSpecifierExpression().getExpression();
             }
             
@@ -141,8 +141,7 @@ public class StatementTransformer extends AbstractTransformer {
             at(cond);
             if (cond instanceof Tree.IsCondition && isNothing(toType)) {
                 test = make().Binary(JCTree.EQ, expr, makeNull());
-            } else {             
-                toType = simplifyType(toType);
+            } else {
                 JCExpression toTypeExpr = makeJavaType(toType);
     
                 String tmpVarName = aliasName(name);
