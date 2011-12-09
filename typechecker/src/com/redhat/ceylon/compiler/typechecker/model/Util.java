@@ -141,7 +141,11 @@ public class Util {
         if (pt==null) {
             return;
         }
-        else if (pt.getDeclaration() instanceof UnionType) {
+        ProducedType selfType = pt.getDeclaration().getSelfType();
+		if (selfType!=null) {
+        	pt = selfType.substitute(pt.getTypeArguments()); //canonicalize type with self type to the self type
+        }
+        if (pt.getDeclaration() instanceof UnionType) {
             for (ProducedType t: pt.getDeclaration().getCaseTypes() ) {
                 addToUnion( list, t.substitute(pt.getTypeArguments()) );
             }
@@ -178,7 +182,11 @@ public class Util {
         if (pt==null) {
             return;
         }
-        else if (pt.getDeclaration() instanceof IntersectionType) {
+        ProducedType selfType = pt.getDeclaration().getSelfType();
+		if (selfType!=null) {
+        	pt = selfType.substitute(pt.getTypeArguments()); //canonicalize type with self type to the self type
+        }
+        if (pt.getDeclaration() instanceof IntersectionType) {
             for (ProducedType t: pt.getDeclaration().getSatisfiedTypes() ) {
                 addToIntersection(list, t.substitute(pt.getTypeArguments()), unit);
             }
