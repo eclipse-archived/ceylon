@@ -84,7 +84,7 @@ public abstract class ModulesTest {
     protected void testArchive(Archive module, Archive... libs) throws Exception {
         File tmpdir = AccessController.doPrivileged(new PrivilegedAction<File>() {
             public File run() {
-                return new File(System.getProperty("java.io.tmpdir"));
+                return new File(System.getProperty("ceylon.repo", System.getProperty("java.io.tmpdir")));
             }
         });
 

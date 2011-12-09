@@ -30,7 +30,7 @@ import ceylon.modules.api.util.JavaToCeylon;
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class Module {
+public class module {
     public ceylon.language.descriptor.Module getModule() {
         Quoted name = JavaToCeylon.toQuoted("net.something.xyz");
         Quoted version = JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "Final").toString());
@@ -39,11 +39,11 @@ public class Module {
             @Override
             public void run(ceylon.lang.Process process) {
                 // test resource on_demand
-                ClassLoader cl = Module.this.getClass().getClassLoader();
+                ClassLoader cl = module.this.getClass().getClassLoader();
 
                 try {
                     // test class on_demand
-                    Object m = cl.loadClass("org.jboss.acme.Module").newInstance();
+                    Object m = cl.loadClass("org.jboss.acme.module").newInstance();
                     Class<?> clazz = m.getClass();
                     ClassLoader clz = clazz.getClassLoader();
                     Method run = clazz.getMethod("run");

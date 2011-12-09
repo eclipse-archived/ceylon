@@ -29,7 +29,7 @@ import ceylon.modules.api.util.JavaToCeylon;
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class Module {
+public class module {
     public ceylon.language.descriptor.Module getModule() {
         Quoted name = JavaToCeylon.toQuoted("si.alesj.ceylon");
         Quoted version = JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "GA").toString());

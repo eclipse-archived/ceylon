@@ -30,7 +30,7 @@ import ceylon.modules.api.util.JavaToCeylon;
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class Module {
+public class module {
     public ceylon.language.descriptor.Module getModule() {
         Quoted name = JavaToCeylon.toQuoted("com.foobar.qwert");
         Quoted version = JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "GA").toString());
@@ -38,7 +38,7 @@ public class Module {
         ceylon.lang.Runnable runnable = new ceylon.lang.Runnable() {
             @Override
             public void run(ceylon.lang.Process process) {
-                org.jboss.acme.Module.run();
+                org.jboss.acme.module.run();
             }
         };
 */

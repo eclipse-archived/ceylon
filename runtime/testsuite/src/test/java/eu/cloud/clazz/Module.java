@@ -32,14 +32,14 @@ import ceylon.modules.api.util.JavaToCeylon;
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class Module {
+public class module {
     public ceylon.language.descriptor.Module getModule() {
         Quoted name = JavaToCeylon.toQuoted("eu.cloud.clazz");
         Quoted version = JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "GA").toString());
 /*
         ceylon.lang.Runnable runnable = new ceylon.lang.Runnable() {
             public void run(ceylon.lang.Process process) {
-                ClassLoader cl = Module.this.getClass().getClassLoader();
+                ClassLoader cl = module.this.getClass().getClassLoader();
                 try {
                     cl.loadClass("org.jboss.filtered.spi.SomeSPI");
                 } catch (ClassNotFoundException e) {

@@ -25,7 +25,10 @@ package ceylon.modules.api.runtime;
 import ceylon.language.descriptor.Module;
 import ceylon.modules.spi.Constants;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.security.AccessController;
+import java.security.PrivilegedExceptionAction;
 import java.util.Map;
 
 /**
@@ -36,7 +39,7 @@ import java.util.Map;
  */
 public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runtime {
 
-    public static final String MODULE_INFO_CLASS = ".Module";
+    public static final String MODULE_INFO_CLASS = ".module";
 
     /**
      * Load module instance.
@@ -47,16 +50,24 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
      * @throws Exception for any error
      */
     public static Module loadModule(ClassLoader cl, String moduleClassName) throws Exception {
-        Class<?> moduleClass;
+        final Class<?> moduleClass;
         try {
             moduleClass = cl.loadClass(moduleClassName);
         } catch (ClassNotFoundException ignored) {
             return null; // looks like no such Module class is available
         }
 
-        Object module = moduleClass.newInstance();
-        Method getModule = module.getClass().getMethod("getModule");
-        return (Module) getModule.invoke(module);
+        return AccessController.doPrivileged(new PrivilegedExceptionAction<Module>() {
+            @Override
+            public Module run() throws Exception {
+                final Constructor ctor = moduleClass.getDeclaredConstructor();
+                ctor.setAccessible(true);
+                Object module = ctor.newInstance();
+                final Method getModule = module.getClass().getMethod("getModule");
+                getModule.setAccessible(true);
+                return (Module) getModule.invoke(module);
+            }
+        });
     }
 
     public void execute(Map<String, String> args) throws Exception {

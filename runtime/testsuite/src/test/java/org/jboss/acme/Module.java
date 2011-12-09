@@ -29,7 +29,7 @@ import ceylon.modules.api.util.JavaToCeylon;
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class Module {
+public class module {
     public ceylon.language.descriptor.Module getModule() {
         Quoted name = JavaToCeylon.toQuoted("org.jboss.acme");
         Quoted version = JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "CR1").toString());
@@ -37,6 +37,6 @@ public class Module {
     }
 
     public static void run() {
-        System.out.println(Module.class.getName() + ": run ...");
+        System.out.println(module.class.getName() + ": run ...");
     }
 }
