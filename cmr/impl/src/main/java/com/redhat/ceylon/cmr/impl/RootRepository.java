@@ -136,4 +136,9 @@ public class RootRepository extends AbstractNodeRepository {
         }
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "RootRepository: " + fileContentStore;
+    }
 }

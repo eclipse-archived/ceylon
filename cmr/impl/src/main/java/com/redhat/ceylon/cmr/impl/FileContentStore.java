@@ -50,6 +50,11 @@ public class FileContentStore implements ContentStore, StructureBuilder {
         this.root = root;
     }
 
+    @Override
+    public String toString() {
+        return "FileContentStore: " + root;
+    }
+
     File getFile(Node node) {
         File file = cache.get(node);
         if (file == null) { 
