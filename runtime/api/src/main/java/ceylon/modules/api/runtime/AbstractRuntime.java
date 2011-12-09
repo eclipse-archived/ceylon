@@ -40,6 +40,7 @@ import java.util.Map;
 public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runtime {
 
     public static final String MODULE_INFO_CLASS = ".module";
+    public static final String RUN_INFO_CLASS = ".run";
 
     /**
      * Load module instance.
@@ -55,7 +56,7 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         try {
             moduleClass = cl.loadClass(moduleClassName);
         } catch (ClassNotFoundException ignored) {
-            return null; // looks like no such Module class is available
+            return null; // looks like no such module class is available
         }
 
         return AccessController.doPrivileged(new PrivilegedExceptionAction<Module>() {
@@ -64,6 +65,26 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
                 final Method getModule = moduleClass.getDeclaredMethod("getModule");
                 getModule.setAccessible(true);
                 return (Module) getModule.invoke(null); // it should be a static method
+            }
+        });
+    }
+
+    protected static void invokeRun(ClassLoader cl, String moduleName, final String... args) throws Exception {
+        final String runClassName = moduleName + RUN_INFO_CLASS;
+        final Class<?> runClass;
+        try {
+            runClass = cl.loadClass(runClassName);
+        } catch (ClassNotFoundException ignored) {
+            return; // looks like no such run class is available
+        }
+
+        AccessController.doPrivileged(new PrivilegedExceptionAction<Object>() {
+            @Override
+            public Object run() throws Exception {
+                final Method main = runClass.getDeclaredMethod("main", String[].class);
+                main.setAccessible(true);
+                main.invoke(null, args);
+                return null;
             }
         });
     }
@@ -87,5 +108,6 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         if (runtimeModule == null)
             throw new IllegalArgumentException("Something went very wrong, missing runtime module!"); // TODO -- dump some more useful msg
 
+        invokeRun(cl, name, null); // TODO
     }
 }

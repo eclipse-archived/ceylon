@@ -61,6 +61,7 @@ public class CeylonModuleLoader extends ModuleLoader {
     private static final ModuleIdentifier MODULES;
 
     private static final Set<String> CEYLON_RUNTIME_PATHS;
+    private static final Set<ModuleIdentifier> BOOTSTRAP;
 
     static {
         final String defaultVersion = System.getProperty("ceylon.version", "0.1");
@@ -70,6 +71,11 @@ public class CeylonModuleLoader extends ModuleLoader {
 
         CEYLON_RUNTIME_PATHS = new HashSet<String>();
         CEYLON_RUNTIME_PATHS.add(CeylonToJava.class.getPackage().getName().replace(".", "/"));
+
+        BOOTSTRAP = new HashSet<ModuleIdentifier>();
+        BOOTSTRAP.add(LANGUAGE);
+        BOOTSTRAP.add(CMR);
+        BOOTSTRAP.add(MODULES);
     }
 
     private Repository repository;
@@ -134,7 +140,7 @@ public class CeylonModuleLoader extends ModuleLoader {
 
     @Override
     protected org.jboss.modules.Module preloadModule(ModuleIdentifier mi) throws ModuleLoadException {
-        if (LANGUAGE.equals(mi) || CMR.equals(mi) || MODULES.equals(mi))
+        if (BOOTSTRAP.contains(mi))
             return org.jboss.modules.Module.getBootModuleLoader().loadModule(mi);
 
         return super.preloadModule(mi);
