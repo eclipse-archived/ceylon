@@ -12,11 +12,13 @@ public class ArraySequence<Element> implements Sequence<Element> {
     private final long first;
 
     public ArraySequence(Element... array) {
-        this.array = array;
-        this.first = 0;
+        this(array,0);
     }
     
     ArraySequence(java.lang.Object[] array, long first) {
+    	if (array.length==0 || array.length<=first) {
+    		throw new IllegalArgumentException("ArraySequence may not have zero elements");
+    	}
         this.array = array;
         this.first = first;
     }
