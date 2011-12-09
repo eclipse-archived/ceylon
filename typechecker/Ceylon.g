@@ -2206,13 +2206,13 @@ compilerAnnotation returns [CompilerAnnotation annotation]
 
 
 condition returns [Condition condition]
-    : (LPAREN 'exists')=>existsCondition
+    : (LPAREN EXISTS)=>existsCondition
       { $condition=$existsCondition.condition; }
-    | (LPAREN 'nonempty')=>nonemptyCondition
+    | (LPAREN NONEMPTY)=>nonemptyCondition
       { $condition=$nonemptyCondition.condition; }
-    | (LPAREN 'is')=>isCondition 
+    | (LPAREN IS_OP)=>isCondition 
       { $condition=$isCondition.condition; }
-    | (LPAREN 'satisfies')=>satisfiesCondition
+    | (LPAREN SATISFIES)=>satisfiesCondition
       { $condition=$satisfiesCondition.condition; }
     | booleanCondition
       { $condition=$booleanCondition.condition; }
@@ -2442,9 +2442,9 @@ defaultCaseBlock returns [ElseClause clause]
     ;
 
 caseItem returns [CaseItem item]
-    : ('is')=>isCaseCondition 
+    : (IS_OP)=>isCaseCondition 
       { $item=$isCaseCondition.item; }
-    | ('satisfies')=>satisfiesCaseCondition
+    | (SATISFIES)=>satisfiesCaseCondition
       { $item=$satisfiesCaseCondition.item; }
     | matchCaseCondition
       { $item=$matchCaseCondition.item; }
