@@ -28,10 +28,6 @@
             <artifactId>ceylon-language</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.redhat.ceylon.typechecker</groupId>
-            <artifactId>ceylon-typechecker</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.redhat.ceylon.cmr</groupId>
             <artifactId>cmr-impl</artifactId>
         </dependency>

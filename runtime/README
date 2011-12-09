@@ -1,6 +1,5 @@
 CEYLON RUNTIME
 
-We need to install Ceylon Language and Ceylon Typechecker into our local Maven repository.
+We need to install Ceylon Language into our local Maven repository.
 
 mvn install:install-file -Dfile=ceylon.language-0.1.car -DgroupId=ceylon.language -DartifactId=ceylon-language -Dversion=0.1 -Dpackaging=jar -DgeneratePom=true -DcreateChecksum=true
-mvn install:install-file -Dfile=com.redhat.ceylon.typechecker-0.1.jar -DgroupId=com.redhat.ceylon.typechecker -DartifactId=ceylon-typechecker -Dversion=0.1 -Dpackaging=jar -DgeneratePom=true -DcreateChecksum=true

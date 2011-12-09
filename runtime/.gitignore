@@ -4,6 +4,13 @@
 *.ipr
 api/target/
 dist/target/
+dist/ceylon/language/0.1/ceylon.language-0.1.car
+dist/com/redhat/ceylon/cmr/cmr-spi/main/com.redhat.ceylon.cmr-spi.jar
+dist/com/redhat/ceylon/cmr/cmr-api/main/com.redhat.ceylon.cmr-api.jar
+dist/com/redhat/ceylon/cmr/cmr-impl/main/com.redhat.ceylon.cmr-impl.jar
+dist/ceylon/modules/spi/main/ceylon.modules.spi.jar
+dist/ceylon/modules/api/main/ceylon.modules.api.jar
+dist/ceylon/modules/jboss/main/ceylon.modules.jboss.jar
 impl/target/
 mc/target/
 osgi/target/

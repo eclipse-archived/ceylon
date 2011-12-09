@@ -13,6 +13,48 @@
     <name>Ceylon Modules Testsuite</name>
     <url>http://www.jboss.org/ceylon</url>
 
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <phase>process-test-resources</phase>
+                        <configuration>
+                            <target>
+
+                                <!-- Language -->
+                                <copy file="${user.home}/.ceylon/repo/ceylon/language/${version.com.redhat.ceylon.language}/ceylon.language-${version.com.redhat.ceylon.language}.car"
+                                      tofile="../dist/ceylon/language/${version.com.redhat.ceylon.language}/ceylon.language-${version.com.redhat.ceylon.language}.car"/>
+
+                                <!-- Repository -->
+                                <copy file="${user.home}/.m2/repository/com/redhat/ceylon/cmr/cmr-spi/${version.com.redhat.ceylon.cmr}/cmr-spi-${version.com.redhat.ceylon.cmr}.jar"
+                                      tofile="../dist/com/redhat/ceylon/cmr/cmr-spi/main/cmr-spi.jar"/>
+                                <copy file="${user.home}/.m2/repository/com/redhat/ceylon/cmr/cmr-api/${version.com.redhat.ceylon.cmr}/cmr-api-${version.com.redhat.ceylon.cmr}.jar"
+                                      tofile="../dist/com/redhat/ceylon/cmr/cmr-api/main/cmr-api.jar"/>
+                                <copy file="${user.home}/.m2/repository/com/redhat/ceylon/cmr/cmr-impl/${version.com.redhat.ceylon.cmr}/cmr-impl-${version.com.redhat.ceylon.cmr}.jar"
+                                      tofile="../dist/com/redhat/ceylon/cmr/cmr-impl/main/cmr-impl.jar"/>
+
+                                <!-- Runtime -->
+                                <copy file="../spi/target/modules-spi-${project.version}.jar"
+                                      tofile="../dist/ceylon/modules/spi/main/ceylon.modules.spi.jar"/>
+                                <copy file="../api/target/modules-api-${project.version}.jar"
+                                      tofile="../dist/ceylon/modules/api/main/ceylon.modules.api.jar"/>
+                                <copy file="../impl/target/modules-impl-${project.version}.jar"
+                                      tofile="../dist/ceylon/modules/jboss/main/ceylon.modules.jboss.jar"/>
+
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>org.jboss.modules</groupId>

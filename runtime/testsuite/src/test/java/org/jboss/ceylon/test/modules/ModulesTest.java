@@ -116,15 +116,17 @@ public abstract class ModulesTest {
 
     protected void execute(Map<Constants, String> map) throws Throwable {
 
-        // TODO -- add Modules custom params
+        List<String> args = new ArrayList<String>();
+        // JBoss Modules args
+        args.add(Constants.MODULE_PATH.toString());
+        args.add("/Users/alesj/ceylon/ceylon-runtime/dist"); // TODO
+        args.add(Constants.CEYLON_RUNTIME_MODULE.toString());
 
-        String[] args = new String[map.size() * 2];
-        int i = 0;
         for (Map.Entry<Constants, String> entry : map.entrySet()) {
-            args[i++] = entry.getKey().toString();
-            args[i++] = entry.getValue();
+            args.add(entry.getKey().toString());
+            args.add(entry.getValue());
         }
-        Main.main(args);
+        Main.main(args.toArray(new String[args.size()]));
     }
 
     protected static String toPathString(String name, String version) {

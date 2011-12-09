@@ -18,10 +18,6 @@
             <groupId>ceylon.language</groupId>
             <artifactId>ceylon-language</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.redhat.ceylon.typechecker</groupId>
-            <artifactId>ceylon-typechecker</artifactId>
-        </dependency>
     </dependencies>
 
 </project>

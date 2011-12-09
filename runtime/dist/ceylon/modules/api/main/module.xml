@@ -22,14 +22,13 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<module xmlns="urn:jboss:module:1.0" name="ceylon.modules.jboss" slot="1.0.0-SNAPSHOT">
+<module xmlns="urn:jboss:module:1.0" name="ceylon.modules.api">
     <resources>
-        <resource-root path="ceylon.modules.plugins-1.0.0-SNAPSHOT.jar"/>
+        <resource-root path="ceylon.modules.api.jar"/>
     </resources>
 
-    <main-class name="ceylon.modules.Main"/>
-
     <dependencies>
-        <module name="ceylon.modules.spi" slot="1.0.0-SNAPSHOT" export="true"/>
+        <module name="ceylon.modules.spi"/>
+        <module name="ceylon.language" slot="0.1"/>
     </dependencies>
 </module>

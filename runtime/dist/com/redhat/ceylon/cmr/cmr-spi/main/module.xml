@@ -22,12 +22,11 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<module xmlns="urn:jboss:module:1.0" name="ceylon.modules.spi" slot="1.0.0-SNAPSHOT">
+<module xmlns="urn:jboss:module:1.0" name="com.redhat.ceylon.cmr.cmr-spi" slot="1.0.0-SNAPSHOT">
     <resources>
-        <resource-root path="ceylon.modules.spi-1.0.0-SNAPSHOT.jar"/>
+        <resource-root path="cmr-spi-1.0.0-SNAPSHOT.jar"/>
     </resources>
 
     <dependencies>
-        <module name="ceylon.lang" slot="1.0.0-SNAPSHOT" export="true"/>
     </dependencies>
 </module>
