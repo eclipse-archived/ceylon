@@ -1,7 +1,10 @@
 package com.redhat.ceylon.compiler.test.issues;
 
 final class bug247_toplevel {
-    private static long value = 0L;
+    private static long value;
+    static {
+        value = 0L;
+    }
     
     static long getBug247_toplevel() {
         return value;

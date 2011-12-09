@@ -5,7 +5,10 @@ class MethodWithLocalObject {
     private final void m() {
         
         final class ss {
-            private final .java.lang.String value = "foo";
+            private final .java.lang.String value;
+            {
+                value = "foo";
+            }
             
             .java.lang.String getSs() {
                 return value;

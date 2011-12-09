@@ -46,7 +46,10 @@ final class x {
         this.varShared = false;
         this.varCaptured = false;
     }
-    private static final com.redhat.ceylon.compiler.test.structure.toplevel.x value = new x();
+    private static final com.redhat.ceylon.compiler.test.structure.toplevel.x value;
+    static {
+        value = new x();
+    }
     
     static com.redhat.ceylon.compiler.test.structure.toplevel.x getX() {
         return value;

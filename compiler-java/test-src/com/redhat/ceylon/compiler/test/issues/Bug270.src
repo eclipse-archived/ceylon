@@ -1,7 +1,10 @@
 package com.redhat.ceylon.compiler.test.issues;
 
 final class bug270 {
-    private static final ceylon.language.Entry<? extends ceylon.language.Natural, ? extends ceylon.language.String> value = (let ceylon.language.String $arg$0$1 = .ceylon.language.String.instance("hello"),ceylon.language.Natural $arg$0$0 = .ceylon.language.Natural.instance(1L) in new ceylon.language.Entry<ceylon.language.Natural, ceylon.language.String>($arg$0$0, $arg$0$1));
+    private static final ceylon.language.Entry<? extends ceylon.language.Natural, ? extends ceylon.language.String> value;
+    static {
+        value = (let ceylon.language.String $arg$0$1 = .ceylon.language.String.instance("hello"),ceylon.language.Natural $arg$0$0 = .ceylon.language.Natural.instance(1L) in new ceylon.language.Entry<ceylon.language.Natural, ceylon.language.String>($arg$0$0, $arg$0$1));
+    }
     
     static ceylon.language.Entry<? extends ceylon.language.Natural, ? extends ceylon.language.String> getBug270() {
         return value;
@@ -11,7 +14,10 @@ final class bug270 {
     }
 }
 final class bug270Variable {
-    private static ceylon.language.Entry<? extends ceylon.language.Natural, ? extends ceylon.language.String> value = (let ceylon.language.String $arg$1$1 = .ceylon.language.String.instance("hello"),ceylon.language.Natural $arg$1$0 = .ceylon.language.Natural.instance(1L) in new ceylon.language.Entry<ceylon.language.Natural, ceylon.language.String>($arg$1$0, $arg$1$1));
+    private static ceylon.language.Entry<? extends ceylon.language.Natural, ? extends ceylon.language.String> value;
+    static {
+        value = (let ceylon.language.String $arg$1$1 = .ceylon.language.String.instance("hello"),ceylon.language.Natural $arg$1$0 = .ceylon.language.Natural.instance(1L) in new ceylon.language.Entry<ceylon.language.Natural, ceylon.language.String>($arg$1$0, $arg$1$1));
+    }
     
     static ceylon.language.Entry<? extends ceylon.language.Natural, ? extends ceylon.language.String> getBug270Variable() {
         return value;
@@ -34,7 +40,10 @@ final class bug270_eatEntry {
     }
 }
 final class bug270_2 {
-    private static final ceylon.language.Entry<? extends ceylon.language.Entry<? extends ceylon.language.Natural, ? extends ceylon.language.String>, ? extends ceylon.language.String> value = .com.redhat.ceylon.compiler.test.issues.bug270_eatEntry.<ceylon.language.Entry<? extends ceylon.language.Entry<? extends ceylon.language.Natural, ? extends ceylon.language.String>, ? extends ceylon.language.String>>bug270_eatEntry((let ceylon.language.String $arg$2$1 = .ceylon.language.String.instance("hello"),ceylon.language.Entry<? extends ceylon.language.Natural, ? extends ceylon.language.String> $arg$2$0 = (let ceylon.language.String $arg$3$1 = .ceylon.language.String.instance("hello"),ceylon.language.Natural $arg$3$0 = .ceylon.language.Natural.instance(1L) in new ceylon.language.Entry<ceylon.language.Natural, ceylon.language.String>($arg$3$0, $arg$3$1)) in new ceylon.language.Entry<ceylon.language.Entry<? extends ceylon.language.Natural, ? extends ceylon.language.String>, ceylon.language.String>($arg$2$0, $arg$2$1)));
+    private static final ceylon.language.Entry<? extends ceylon.language.Entry<? extends ceylon.language.Natural, ? extends ceylon.language.String>, ? extends ceylon.language.String> value;
+    static {
+        value = .com.redhat.ceylon.compiler.test.issues.bug270_eatEntry.<ceylon.language.Entry<? extends ceylon.language.Entry<? extends ceylon.language.Natural, ? extends ceylon.language.String>, ? extends ceylon.language.String>>bug270_eatEntry((let ceylon.language.String $arg$2$1 = .ceylon.language.String.instance("hello"),ceylon.language.Entry<? extends ceylon.language.Natural, ? extends ceylon.language.String> $arg$2$0 = (let ceylon.language.String $arg$3$1 = .ceylon.language.String.instance("hello"),ceylon.language.Natural $arg$3$0 = .ceylon.language.Natural.instance(1L) in new ceylon.language.Entry<ceylon.language.Natural, ceylon.language.String>($arg$3$0, $arg$3$1)) in new ceylon.language.Entry<ceylon.language.Entry<? extends ceylon.language.Natural, ? extends ceylon.language.String>, ceylon.language.String>($arg$2$0, $arg$2$1)));
+    }
     
     static ceylon.language.Entry<? extends ceylon.language.Entry<? extends ceylon.language.Natural, ? extends ceylon.language.String>, ? extends ceylon.language.String> getBug270_2() {
         return value;

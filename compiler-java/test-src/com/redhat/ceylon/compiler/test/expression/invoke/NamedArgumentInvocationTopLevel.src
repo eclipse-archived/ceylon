@@ -18,12 +18,10 @@ public final class v {
     }
 }
 final class x {
-    private static final long value = new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, .ceylon.language.String.instance("abc"), .ceylon.language.Natural.instance(123L)){
-        
-        public long call$() {
-            return f.f(((ceylon.language.Natural)this.args[1]).longValue(), ((ceylon.language.String)this.args[0]).toString());
-        }
-    }.call$();
+    private static final long value;
+    static {
+        value = (let .java.lang.String $arg$0$1 = "abc",long $arg$0$0 = 123L in .com.redhat.ceylon.compiler.test.expression.invoke.f.f($arg$0$0, $arg$0$1));
+    }
     
     static long getX() {
         return value;
@@ -33,13 +31,10 @@ final class x {
     }
 }
 final class y {
-    private static final .java.lang.Object value = new .ceylon.language.NamedArgumentCall<java.lang.Void>(null, .ceylon.language.String.instance("abc"), .ceylon.language.Natural.instance(123L)){
-        
-        public .java.lang.Object call$() {
-            v.v(((ceylon.language.Natural)this.args[1]).longValue(), ((ceylon.language.String)this.args[0]).toString());
-            return null;
-        }
-    }.call$();
+    private static final .java.lang.Object value;
+    static {
+        value = (let .java.lang.String $arg$1$1 = "abc",long $arg$1$0 = 123L in .com.redhat.ceylon.compiler.test.expression.invoke.v.v($arg$1$0, $arg$1$1); null);
+    }
     
     static .java.lang.Object getY() {
         return value;

@@ -1,7 +1,10 @@
 package bug148_2;
 
 final class f {
-    private static long value = 2L;
+    private static long value;
+    static {
+        value = 2L;
+    }
     
     static long getF() {
         return value;

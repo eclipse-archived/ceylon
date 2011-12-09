@@ -1,7 +1,10 @@
 package com.redhat.ceylon.compiler.test.expression.attribute;
 
 final class b1 {
-    private static boolean value = true;
+    private static boolean value;
+    static {
+        value = true;
+    }
     
     static boolean getB1() {
         return value;
@@ -15,7 +18,10 @@ final class b1 {
     }
 }
 public final class b2 {
-    private static boolean value = true;
+    private static boolean value;
+    static {
+        value = true;
+    }
     
     public static boolean getB2() {
         return value;

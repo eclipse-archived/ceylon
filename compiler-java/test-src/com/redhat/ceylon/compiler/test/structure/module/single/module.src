@@ -4,10 +4,14 @@ package com.redhat.ceylon.compiler.test.structure.module.single;
 @.com.redhat.ceylon.compiler.metadata.java.Attribute
 @.com.redhat.ceylon.compiler.metadata.java.Module(name = "com.redhat.ceylon.compiler.test.structure.module.single", version = "6.6.6", dependencies = {@.com.redhat.ceylon.compiler.metadata.java.Import(name = "com.redhat.ceylon.compiler.test.structure.module.single", version = "6.6.6"), @.com.redhat.ceylon.compiler.metadata.java.Import(name = "java")})
 final class module {
+    private static final ceylon.language.descriptor.Module value;
+    static {
+        value = (let ceylon.language.Quoted $arg$0$0 = .ceylon.language.Quoted.instance("com.redhat.ceylon.compiler.test.structure.module.single"),ceylon.language.Quoted $arg$0$1 = .ceylon.language.Quoted.instance("6.6.6"),.java.lang.String $arg$0$2 = "Bla bla.",ceylon.language.Iterable<? extends ceylon.language.String> $arg$0$3 = new ceylon.language.ArraySequence<ceylon.language.String>(.ceylon.language.String.instance("Stef FroMage")),ceylon.language.Quoted $arg$0$4 = .ceylon.language.Quoted.instance("http://www.gnu.org/licenses/gpl.html"),ceylon.language.Iterable $arg$0$5 = new ceylon.language.ArraySequence((let ceylon.language.Quoted $arg$1$0 = .ceylon.language.Quoted.instance("com.redhat.ceylon.compiler.test.structure.module.single"),ceylon.language.Quoted $arg$1$1 = .ceylon.language.Quoted.instance("6.6.6"),boolean $arg$1$2 = false,boolean $arg$1$3 = false in new ceylon.language.descriptor.Import($arg$1$0, $arg$1$1, $arg$1$2, $arg$1$3))) in new ceylon.language.descriptor.Module($arg$0$0, $arg$0$1, $arg$0$2, $arg$0$3, $arg$0$4, $arg$0$5));
+    }
     
     @.com.redhat.ceylon.compiler.metadata.java.TypeInfo("ceylon.language.descriptor.Module")
     static ceylon.language.descriptor.Module getModule() {
-        return (let ceylon.language.Quoted $arg$0$0 = .ceylon.language.Quoted.instance("com.redhat.ceylon.compiler.test.structure.module.single"),ceylon.language.Quoted $arg$0$1 = .ceylon.language.Quoted.instance("6.6.6"),ceylon.language.String $arg$0$2 = .ceylon.language.String.instance("Bla bla."),ceylon.language.Iterable<? extends ceylon.language.String> $arg$0$3 = new ceylon.language.ArraySequence<ceylon.language.String>(.ceylon.language.String.instance("Stef FroMage")),ceylon.language.Quoted $arg$0$4 = .ceylon.language.Quoted.instance("http://www.gnu.org/licenses/gpl.html"),ceylon.language.Iterable $arg$0$5 = new ceylon.language.ArraySequence((let ceylon.language.Quoted $arg$1$0 = .ceylon.language.Quoted.instance("com.redhat.ceylon.compiler.test.structure.module.single"),ceylon.language.Quoted $arg$1$1 = .ceylon.language.Quoted.instance("6.6.6"),ceylon.language.Boolean $arg$1$2 = .ceylon.language.Boolean.instance(false),ceylon.language.Boolean $arg$1$3 = .ceylon.language.Boolean.instance(false) in new ceylon.language.descriptor.Import($arg$1$0, $arg$1$1, $arg$1$2, $arg$1$3))) in new ceylon.language.descriptor.Module($arg$0$0, $arg$0$1, $arg$0$2, $arg$0$3, $arg$0$4, $arg$0$5));
+        return value;
     }
     
     private module() {

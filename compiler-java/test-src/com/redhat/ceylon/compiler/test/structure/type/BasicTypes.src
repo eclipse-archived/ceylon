@@ -109,7 +109,10 @@ public final class globalMethodOptionalCharacter {
     }
 }
 public final class globalAttrNatural {
-    private static final long value = 1L;
+    private static final long value;
+    static {
+        value = 1L;
+    }
     
     public static long getGlobalAttrNatural() {
         return value;
@@ -119,7 +122,10 @@ public final class globalAttrNatural {
     }
 }
 public final class globalAttrInteger {
-    private static final long value = 1L;
+    private static final long value;
+    static {
+        value = 1L;
+    }
     
     public static long getGlobalAttrInteger() {
         return value;
@@ -129,7 +135,10 @@ public final class globalAttrInteger {
     }
 }
 public final class globalAttrFloat {
-    private static final double value = 1.0;
+    private static final double value;
+    static {
+        value = 1.0;
+    }
     
     public static double getGlobalAttrFloat() {
         return value;
@@ -139,7 +148,10 @@ public final class globalAttrFloat {
     }
 }
 public final class globalAttrString {
-    private static final .java.lang.String value = "a";
+    private static final .java.lang.String value;
+    static {
+        value = "a";
+    }
     
     public static .java.lang.String getGlobalAttrString() {
         return value;
@@ -149,7 +161,10 @@ public final class globalAttrString {
     }
 }
 public final class globalAttrBoolean {
-    private static final boolean value = true;
+    private static final boolean value;
+    static {
+        value = true;
+    }
     
     public static boolean getGlobalAttrBoolean() {
         return value;
@@ -159,7 +174,10 @@ public final class globalAttrBoolean {
     }
 }
 public final class globalAttrCharacter {
-    private static final int value = 'a';
+    private static final int value;
+    static {
+        value = 'a';
+    }
     
     public static int getGlobalAttrCharacter() {
         return value;
@@ -169,7 +187,10 @@ public final class globalAttrCharacter {
     }
 }
 public final class globalAttrOptionalNatural {
-    private static final ceylon.language.Natural value = null;
+    private static final ceylon.language.Natural value;
+    static {
+        value = null;
+    }
     
     public static ceylon.language.Natural getGlobalAttrOptionalNatural() {
         return value;
@@ -179,7 +200,10 @@ public final class globalAttrOptionalNatural {
     }
 }
 public final class globalAttrOptionalInteger {
-    private static final ceylon.language.Integer value = null;
+    private static final ceylon.language.Integer value;
+    static {
+        value = null;
+    }
     
     public static ceylon.language.Integer getGlobalAttrOptionalInteger() {
         return value;
@@ -189,7 +213,10 @@ public final class globalAttrOptionalInteger {
     }
 }
 public final class globalAttrOptionalFloat {
-    private static final ceylon.language.Float value = null;
+    private static final ceylon.language.Float value;
+    static {
+        value = null;
+    }
     
     public static ceylon.language.Float getGlobalAttrOptionalFloat() {
         return value;
@@ -199,7 +226,10 @@ public final class globalAttrOptionalFloat {
     }
 }
 public final class globalAttrOptionalString {
-    private static final ceylon.language.String value = null;
+    private static final ceylon.language.String value;
+    static {
+        value = null;
+    }
     
     public static ceylon.language.String getGlobalAttrOptionalString() {
         return value;
@@ -209,7 +239,10 @@ public final class globalAttrOptionalString {
     }
 }
 public final class globalAttrOptionalBoolean {
-    private static final ceylon.language.Boolean value = null;
+    private static final ceylon.language.Boolean value;
+    static {
+        value = null;
+    }
     
     public static ceylon.language.Boolean getGlobalAttrOptionalBoolean() {
         return value;
@@ -219,7 +252,10 @@ public final class globalAttrOptionalBoolean {
     }
 }
 public final class globalAttrOptionalCharacter {
-    private static final ceylon.language.Character value = null;
+    private static final ceylon.language.Character value;
+    static {
+        value = null;
+    }
     
     public static ceylon.language.Character getGlobalAttrOptionalCharacter() {
         return value;

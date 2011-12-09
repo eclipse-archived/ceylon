@@ -13,7 +13,10 @@ abstract class MyInteger extends .java.lang.Object implements ceylon.language.Ca
     }
 }
 final class toplevelN1 {
-    private static long value = 0L;
+    private static long value;
+    static {
+        value = 0L;
+    }
     
     static long getToplevelN1() {
         return value;
@@ -27,7 +30,10 @@ final class toplevelN1 {
     }
 }
 final class toplevelN2 {
-    private static long value = 0L;
+    private static long value;
+    static {
+        value = 0L;
+    }
     
     static long getToplevelN2() {
         return value;
@@ -41,7 +47,10 @@ final class toplevelN2 {
     }
 }
 final class toplevelI1 {
-    private static long value = 0L;
+    private static long value;
+    static {
+        value = 0L;
+    }
     
     static long getToplevelI1() {
         return value;
@@ -256,7 +265,10 @@ class ArithmeticOperators {
     private final void unboxedLocalGetters() {
         
         final class n1 {
-            private long value = 0L;
+            private long value;
+            {
+                value = 0L;
+            }
             
             long getN1() {
                 return value;
@@ -272,7 +284,10 @@ class ArithmeticOperators {
         final n1 n1 = new n1();
         
         final class n2 {
-            private long value = 0L;
+            private long value;
+            {
+                value = 0L;
+            }
             
             long getN2() {
                 return value;
@@ -288,7 +303,10 @@ class ArithmeticOperators {
         final n2 n2 = new n2();
         
         final class i1 {
-            private long value = 0L;
+            private long value;
+            {
+                value = 0L;
+            }
             
             long getI1() {
                 return value;

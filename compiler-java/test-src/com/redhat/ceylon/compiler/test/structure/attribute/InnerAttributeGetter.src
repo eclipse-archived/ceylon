@@ -5,7 +5,10 @@ class InnerAttributeGetter {
     private final void m() {
         
         final class m {
-            private final long value = 2L;
+            private final long value;
+            {
+                value = 2L;
+            }
             
             long getM() {
                 return value;
