@@ -1810,7 +1810,7 @@ public class ExpressionVisitor extends Visitor {
                     ProducedType it = nt.getTypeArgumentList().get(1);
                     checkAssignable(it, lhst, that, 
                             "result of operation must be assignable to declared type");
-                    that.setTypeModel(it);
+                    //that.setTypeModel(it); //for consistency with := as requested by stef
                 }
             }
         }
