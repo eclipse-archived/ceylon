@@ -531,10 +531,6 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("type/Conversions");
     }
     @Test
-    public void testTypErasedTypes(){
-        compareWithJavaSource("type/ErasedTypes");
-    }
-    @Test
     public void testTypOptionalType(){
         compareWithJavaSource("type/OptionalType");
     }
