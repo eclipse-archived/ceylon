@@ -29,6 +29,8 @@ import ceylon.modules.spi.Constants;
 import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedExceptionAction;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -108,6 +110,12 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         if (runtimeModule == null)
             throw new IllegalArgumentException("Something went very wrong, missing runtime module!"); // TODO -- dump some more useful msg
 
-        invokeRun(cl, name, null); // TODO
+        List<String> la = new ArrayList<String>();
+        for (Map.Entry<String, String> entry : args.entrySet()) {
+            final String key = entry.getKey();
+            if (Constants.OP.toString().equals(key) == false)
+                la.add(key);
+        }
+        invokeRun(cl, name, la.toArray(new String[la.size()]));
     }
 }
