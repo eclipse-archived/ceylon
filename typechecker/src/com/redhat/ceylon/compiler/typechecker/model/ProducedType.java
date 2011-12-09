@@ -119,6 +119,16 @@ public class ProducedType extends ProducedReference {
         }
         else {
             if (!type.getDeclaration().equals(getDeclaration())) {
+            	ProducedType selfType = getDeclaration().getSelfType();
+    			if (selfType!=null &&
+    					type.isExactly(selfType.substitute(getTypeArguments()))) {
+    				return true;
+    			}
+            	ProducedType typeSelfType = type.getDeclaration().getSelfType();
+    			if (typeSelfType!=null &&
+    					isExactly(typeSelfType.substitute(type.getTypeArguments()))) {
+    				return true;
+    			}
                 return false;
             }
             else {

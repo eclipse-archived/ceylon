@@ -364,4 +364,13 @@ class Assignability() {
     Sequence<String|Natural> st2 = ut;
     @type["Nothing|String|Natural"] value item = ut[0];
     @type["Empty|Sequence<String>|Sequence<Natural>"] value items = ut[1..2];
+    
+    class Invariant<T>(T t) {}
+    Ordinal<Integer> ii1 = +1;
+    Integer ii2 = ii1;
+    Ordinal<Integer> ii3 = ii2;
+    Invariant<Ordinal<Integer>> iii1 = Invariant(ii1);
+    Invariant<Integer> iii2 = iii1;
+    Invariant<Ordinal<Integer>> iii3 = iii2;
+    
 }

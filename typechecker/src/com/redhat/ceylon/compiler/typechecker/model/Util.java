@@ -284,7 +284,8 @@ public class Util {
 
     static boolean addToSupertypes(List<ProducedType> list, ProducedType st) {
         for (ProducedType et: list) {
-            if (st.isExactly(et)) {
+            if (st.getDeclaration().equals(et.getDeclaration()) && //return both a type and its self type
+            		st.isExactly(et)) {
                 return false;
             }
         }
