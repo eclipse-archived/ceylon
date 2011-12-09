@@ -32,7 +32,7 @@ public class RecoveryTest extends CompilerTest {
 
     @Test
     public void testRcvClassWithBrokenMembers(){
-        compile("ClassWithBrokenMembers.ceylon", 33);
+        compile("ClassWithBrokenMembers.ceylon", 35);
     }
 
     private void compile(String ceylon, int expectedErrors){
