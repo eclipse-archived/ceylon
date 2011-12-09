@@ -14,7 +14,6 @@ public class Util {
      * Returns true if the given object satisfies ceylon.language.Equality
      */
     public static boolean isEquality(java.lang.Object o){
-    	//TODO: broken for Java classes
         if (extendsClass(o, "ceylon.language.IdentifiableObject"))
             return true;
         return satisfiesInterface(o, "ceylon.language.Equality");
@@ -24,7 +23,6 @@ public class Util {
      * Returns true if the given object extends ceylon.language.IdentifiableObject
      */
     public static boolean isIdentifiableObject(java.lang.Object o){
-    	//TODO: broken for Java classes
         return extendsClass(o, "ceylon.language.IdentifiableObject");
     }
     
@@ -42,6 +40,14 @@ public class Util {
     private static boolean classExtendsClass(java.lang.Class<?> klass, String className) {
         if(klass == null)
             return false;
+        if ((className.equals("ceylon.language.IdentifiableObject") || 
+             className.equals("ceylon.language.Equality"))
+                && klass!=java.lang.Object.class
+        		&& !klass.isAnnotationPresent(Ceylon.class)) {
+        	//TODO: this is broken for a Java class that
+        	//      extends a Ceylon class
+        	return true;
+        }
         Class classAnnotation = klass.getAnnotation(Class.class);
         if(classAnnotation != null
                 && classAnnotation.extendsType().equals(className))
