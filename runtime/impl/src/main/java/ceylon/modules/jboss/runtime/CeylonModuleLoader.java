@@ -59,8 +59,9 @@ public class CeylonModuleLoader extends ModuleLoader {
     private static final ModuleIdentifier LANGUAGE;
     private static final ModuleIdentifier CMR;
     private static final ModuleIdentifier MODULES;
+    private static final ModuleIdentifier RUNTIME;
 
-    private static final Set<String> CEYLON_RUNTIME_PATHS;
+    private static final String CEYLON_RUNTIME_PATH;
     private static final Set<ModuleIdentifier> BOOTSTRAP;
 
     static {
@@ -68,14 +69,15 @@ public class CeylonModuleLoader extends ModuleLoader {
         LANGUAGE = ModuleIdentifier.create("ceylon.language", defaultVersion);
         CMR = ModuleIdentifier.create("com.redhat.ceylon.cmr");
         MODULES = ModuleIdentifier.create("org.jboss.modules");
+        RUNTIME = ModuleIdentifier.create("ceylon.modules.jboss");
 
-        CEYLON_RUNTIME_PATHS = new HashSet<String>();
-        CEYLON_RUNTIME_PATHS.add(CeylonToJava.class.getPackage().getName().replace(".", "/"));
+        CEYLON_RUNTIME_PATH = CeylonToJava.class.getPackage().getName().replace(".", "/");
 
         BOOTSTRAP = new HashSet<ModuleIdentifier>();
         BOOTSTRAP.add(LANGUAGE);
         BOOTSTRAP.add(CMR);
         BOOTSTRAP.add(MODULES);
+        BOOTSTRAP.add(RUNTIME);
     }
 
     private Repository repository;
@@ -224,11 +226,13 @@ public class CeylonModuleLoader extends ModuleLoader {
 
             createModuleDependency(vertex, deps, builder, LANGUAGE);
 
-            // add system paths
-            final DependencySpec sds = DependencySpec.createSystemDependencySpec(
-                    PathFilters.match("ceylon/*"),
+            // add runtime utils
+            final DependencySpec sds = DependencySpec.createModuleDependencySpec(
+                    PathFilters.match(CEYLON_RUNTIME_PATH),
                     PathFilters.rejectAll(),
-                    CEYLON_RUNTIME_PATHS
+                    this,
+                    RUNTIME,
+                    false
             );
             builder.addDependency(sds);
             deps.add(sds);
