@@ -123,7 +123,7 @@ public abstract class ModulesTest {
         args.add(Constants.CEYLON_RUNTIME_MODULE.toString());
 
         for (Map.Entry<Constants, String> entry : map.entrySet()) {
-            args.add(entry.getKey().toString());
+            args.add(Constants.OP.toString() + entry.getKey());
             args.add(entry.getValue());
         }
         Main.main(args.toArray(new String[args.size()]));

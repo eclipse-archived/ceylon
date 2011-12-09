@@ -66,7 +66,7 @@ public class Main {
         int n = args.length;
         for (int i = 0; i < n; i++) {
             String arg = args[i];
-            if (arg.startsWith("-")) {
+            if (arg.startsWith(Constants.OP.toString())) {
                 if (i == n - 1)
                     throw new IllegalArgumentException("Missing argument value: " + arg);
 

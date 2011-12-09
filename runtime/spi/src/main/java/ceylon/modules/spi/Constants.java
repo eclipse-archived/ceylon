@@ -28,6 +28,7 @@ package ceylon.modules.spi;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public enum Constants {
+    OP("+"),
     EXECUTABLE("executable"),
     MODULE("module"),
     REPOSITORY("repository"),

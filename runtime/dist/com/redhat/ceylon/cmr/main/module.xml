@@ -22,13 +22,13 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<module xmlns="urn:jboss:module:1.0" name="ceylon.modules.api">
+<module xmlns="urn:jboss:module:1.0" name="com.redhat.ceylon.cmr">
     <resources>
-        <resource-root path="ceylon.modules.api.jar"/>
+        <resource-root path="cmr-spi.jar"/>
+        <resource-root path="cmr-api.jar"/>
+        <resource-root path="cmr-impl.jar"/>
     </resources>
 
     <dependencies>
-        <module name="ceylon.modules.spi"/>
-        <module name="ceylon.language" slot="0.1"/>
     </dependencies>
 </module>

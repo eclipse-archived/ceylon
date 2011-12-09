@@ -57,11 +57,16 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class CeylonModuleLoader extends ModuleLoader {
     private static final ModuleIdentifier LANGUAGE;
+    private static final ModuleIdentifier CMR;
+    private static final ModuleIdentifier MODULES;
+
     private static final Set<String> CEYLON_RUNTIME_PATHS;
 
     static {
         final String defaultVersion = System.getProperty("ceylon.version", "0.1");
         LANGUAGE = ModuleIdentifier.create("ceylon.language", defaultVersion);
+        CMR = ModuleIdentifier.create("com.redhat.ceylon.cmr");
+        MODULES = ModuleIdentifier.create("org.jboss.modules");
 
         CEYLON_RUNTIME_PATHS = new HashSet<String>();
         CEYLON_RUNTIME_PATHS.add(CeylonToJava.class.getPackage().getName().replace(".", "/"));
@@ -128,8 +133,11 @@ public class CeylonModuleLoader extends ModuleLoader {
     }
 
     @Override
-    protected org.jboss.modules.Module preloadModule(ModuleIdentifier identifier) throws ModuleLoadException {
-        return super.preloadModule(identifier);
+    protected org.jboss.modules.Module preloadModule(ModuleIdentifier mi) throws ModuleLoadException {
+        if (LANGUAGE.equals(mi) || CMR.equals(mi) || MODULES.equals(mi))
+            return org.jboss.modules.Module.getBootModuleLoader().loadModule(mi);
+
+        return super.preloadModule(mi);
     }
 
     /**
@@ -144,10 +152,10 @@ public class CeylonModuleLoader extends ModuleLoader {
 
     protected Module readModule(ModuleIdentifier mi, File moduleFile) throws Exception {
         // TODO -- handle directory
-        URL url = moduleFile.toURI().toURL();
-        ClassLoader cl = new URLClassLoader(new URL[]{url});
-        String modulePath = mi.getName() + AbstractRuntime.MODULE_INFO_CLASS;
-        return AbstractRuntime.loadModule(cl, modulePath);
+        final URL url = moduleFile.toURI().toURL();
+        final ClassLoader parent = getClass().getClassLoader();
+        final ClassLoader cl = new URLClassLoader(new URL[]{url}, parent);
+        return AbstractRuntime.loadModule(cl, mi.getName());
     }
 
     @Override

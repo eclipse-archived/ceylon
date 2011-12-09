@@ -44,12 +44,13 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
     /**
      * Load module instance.
      *
-     * @param cl              the classloader used to load the module descriptor.
-     * @param moduleClassName the module descriptor class name
+     * @param cl         the classloader used to load the module descriptor.
+     * @param moduleName the module name
      * @return new module instance or null if no such descriptor
      * @throws Exception for any error
      */
-    public static Module loadModule(ClassLoader cl, String moduleClassName) throws Exception {
+    public static Module loadModule(ClassLoader cl, String moduleName) throws Exception {
+        final String moduleClassName = moduleName + MODULE_INFO_CLASS;
         final Class<?> moduleClass;
         try {
             moduleClass = cl.loadClass(moduleClassName);
@@ -82,8 +83,7 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         ModuleVersion mv = (p > 0 ? ModuleVersion.parseVersion(exe.substring(p + 1)) : ModuleVersion.DEFAULT_VERSION);
 
         ClassLoader cl = createClassLoader(name, mv.toString(), args);
-        String moduleClassName = name + MODULE_INFO_CLASS;
-        Module runtimeModule = loadModule(cl, moduleClassName);
+        Module runtimeModule = loadModule(cl, name);
         if (runtimeModule == null)
             throw new IllegalArgumentException("Something went very wrong, missing runtime module!"); // TODO -- dump some more useful msg
 
