@@ -25,6 +25,7 @@ import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
+import com.sun.tools.javac.tree.JCTree.JCAssign;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -130,6 +131,8 @@ public class AttributeDefinitionBuilder {
     public void appendDefinitionsTo(ListBuffer<JCTree> defs) {
         if (hasField) {
             defs.append(generateField());
+            if(variableInit != null)
+                defs.append(generateFieldInit());
         }
 
         if (readable) {
@@ -146,7 +149,7 @@ public class AttributeDefinitionBuilder {
     private long getGetSetModifiers() {
         return modifiers & (Flags.PUBLIC | Flags.PRIVATE | Flags.ABSTRACT | Flags.FINAL | Flags.STATIC);
     }
-    
+
     private JCTree generateField() {
         long flags = Flags.PRIVATE | (modifiers & Flags.STATIC);
         if (!writable) {
@@ -157,8 +160,16 @@ public class AttributeDefinitionBuilder {
                 owner.make().Modifiers(flags),
                 fieldName,
                 attrType,
-                variableInit
+                null
         );
+    }
+
+    private JCTree generateFieldInit() {
+        long flags = (modifiers & Flags.STATIC);
+
+        JCAssign init = owner.make().Assign(owner.make().Ident(fieldName), variableInit);
+        return owner.make().Block(flags, 
+                List.<JCTree.JCStatement>of(owner.make().Exec(init)));
     }
 
     public JCTree.JCBlock generateDefaultGetterBlock() {
