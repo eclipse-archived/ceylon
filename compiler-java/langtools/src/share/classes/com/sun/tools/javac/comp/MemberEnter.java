@@ -31,6 +31,7 @@ import javax.tools.JavaFileObject;
 import com.sun.tools.javac.code.*;
 import com.sun.tools.javac.jvm.*;
 import com.sun.tools.javac.tree.*;
+import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.*;
 import com.sun.tools.javac.util.List;
 
@@ -637,6 +638,22 @@ public class MemberEnter extends JCTree.Visitor implements Completer {
         v.pos = tree.pos;
     }
 
+    /**
+     * Added for Ceylon, to make sure we attribute variables defined in Let expressions in
+     * class field initialisers
+     */
+    public void visitLetExpr(LetExpr that) {
+        // visit the var defs
+        for(JCVariableDecl varDecl : that.defs){
+            visitVarDef(varDecl);
+            // make sure we mark the variables as static if we're in a static context
+            // otherwise we get a resolving error later on
+            if(env.info.staticLevel > 0){
+                varDecl.sym.flags_field |= Flags.STATIC;
+            }
+        }
+    }
+    
     /** Create a fresh environment for a variable's initializer.
      *  If the variable is a field, the owner of the environment's scope
      *  is be the variable itself, otherwise the owner is the method
