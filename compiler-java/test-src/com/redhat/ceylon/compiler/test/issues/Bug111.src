@@ -15,7 +15,7 @@ class Bug111 {
     private final void m3() {
         final ceylon.language.Iterable nums = new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L));
         ceylon.language.Iterable $nums$0;
-        if (($nums$0 = nums) instanceof ceylon.language.Sequence || ($nums$0 = nums) instanceof ceylon.language.Sequence) {
+        if (($nums$0 = nums) instanceof ceylon.language.Sequence || nums instanceof ceylon.language.Sequence) {
             final ceylon.language.Iterable $nums$1 = (ceylon.language.Iterable)$nums$0;
             final .java.lang.Object first = ((ceylon.language.Sequence)$nums$1).getFirst();
         }

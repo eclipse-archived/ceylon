@@ -70,6 +70,9 @@ class MethodIfIs() {
         }
         if (is Nothing y = give()) {
         }
+        Void nothing = null;
+        if (is Character? nothing) {
+        }        
     }
     Foo give() {
         return FooSub();
