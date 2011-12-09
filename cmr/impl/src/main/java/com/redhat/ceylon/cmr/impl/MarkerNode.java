@@ -48,26 +48,27 @@ public class MarkerNode extends AbstractOpenNode {
 
     @Override
     public void merge(OpenNode other) {
+        throw new UnsupportedOperationException("Marker node doesn't support merge: " + toString());
     }
 
     @Override
     public OpenNode addNode(String label, Object value) {
-        return null; // cannot add to marker node
+        throw new UnsupportedOperationException("Marker node doesn't add node: " + toString());
     }
 
     @Override
     public OpenNode addContent(String label, InputStream content) throws IOException {
-        return null; // cannot add to marker node
+        throw new UnsupportedOperationException("Marker node doesn't add content: " + toString());
     }
 
     @Override
     public <T extends Serializable> OpenNode addContent(String label, T content) throws IOException {
-        return null; // cannot add to marker node
+        throw new UnsupportedOperationException("Marker node doesn't add content: " + toString());
     }
 
     @Override
     public Node removeNode(String label) {
-        return null; // cannot remove from marker node
+        throw new UnsupportedOperationException("Marker node doesn't remove node: " + toString());
     }
 
     @Override
