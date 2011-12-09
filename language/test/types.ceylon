@@ -10,6 +10,8 @@ void types() {
     Void t = T();
     Void c = `c`;
     Void str = "string";
+    //Void seq = {"hello"};
+    //Void empty = {};
     
     assert(is Object bool, "boolean type is object");
     assert(is IdentifiableObject bool, "boolean type is identifiable");
@@ -96,6 +98,7 @@ void types() {
     if (is IdentifiableObject entry) { fail("entry type"); }
     if (is Object entry) {} else { fail("entry type"); }
     if (is Nothing entry) { fail("null type"); }
+    //if (is Entry<Natural,Natural> entry) {} else { fail("entry type"); }
     
     if (is Equality nothing) { fail("null type"); }
     if (is IdentifiableObject nothing) { fail("null type"); }
@@ -111,7 +114,11 @@ void types() {
     if (is Equality&Format bool) { fail("intersection type"); } else {}
     if (is Sized&Category&Format str) {} else { fail("intersection type"); }
     if (is Sized&Category&Format t) { fail("intersection type"); } else {}
-                
+    //if (is String[] empty) {} else { fail("sequence type"); }
+    //if (is String[] seq) {} else { fail("sequence type"); }
+    //if (is String[]? seq) {} else { fail("sequence type"); }
+    //if (is Natural[] seq) { fail("sequence type"); } else {}
+    
     assert(className(1)=="ceylon.language.Natural", "natural classname");
     assert(className(1.0)=="ceylon.language.Float", "float classname");
     assert(className("hello")=="ceylon.language.String", "string classname");
