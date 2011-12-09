@@ -22,9 +22,7 @@
 
 package org.jboss.ceylon.test.modules;
 
-import ceylon.modules.Main;
-import ceylon.modules.jboss.runtime.JBossRuntime;
-import ceylon.modules.spi.Constants;
+import org.jboss.modules.Main;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.exporter.ZipExporter;
 import org.jboss.util.file.Files;
@@ -45,21 +43,7 @@ import java.util.Map;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public abstract class ModulesTest {
-    private static String runtimeClassName;
-
-    static {
-        // TODO -- fixme; //MicrocontainerRuntime.class;
-        runtimeClassName = System.getProperty("ceylon.runtime", JBossRuntime.class.getName());
-    }
-
-    /**
-     * Get runtime class name.
-     *
-     * @return the runtime class name
-     */
-    protected String getRuntimeClassName() {
-        return runtimeClassName;
-    }
+    private static final String RUNTIME_IMPL = "ceylon.modules.jboss.runtime.JBossRuntime";
 
     protected File createModuleFile(File tmpdir, Archive module) throws Exception {
         String fullName = module.getName();
@@ -81,7 +65,7 @@ public abstract class ModulesTest {
         return targetDir;
     }
 
-    protected void testArchive(Archive module, Archive... libs) throws Exception {
+    protected void testArchive(Archive module, Archive... libs) throws Throwable {
         File tmpdir = AccessController.doPrivileged(new PrivilegedAction<File>() {
             public File run() {
                 return new File(System.getProperty("ceylon.repo", System.getProperty("java.io.tmpdir")));
@@ -102,10 +86,10 @@ public abstract class ModulesTest {
             String name = fullName.substring(0, p);
             String version = fullName.substring(p + 1, fullName.lastIndexOf("."));
 
-            Map<Constants, String> args = new HashMap<Constants, String>();
-            args.put(Constants.EXECUTABLE, getRuntimeClassName());
-            args.put(Constants.MODULE, name + "/" + version);
-            args.put(Constants.REPOSITORY, tmpdir.toString());
+            Map<String, String> args = new HashMap<String, String>();
+            args.put("executable", RUNTIME_IMPL);
+            args.put("module", name + "/" + version);
+            args.put("repository", tmpdir.toString());
 
             execute(args);
         } finally {
@@ -114,29 +98,32 @@ public abstract class ModulesTest {
         }
     }
 
-    protected void src(String module, String src) throws Exception {
-        src(module, src, Collections.<Constants, String>emptyMap());
+    protected void src(String module, String src) throws Throwable {
+        src(module, src, Collections.<String, String>emptyMap());
     }
 
-    protected void src(String module, String src, Map<Constants, String> extra) throws Exception {
-        Map<Constants, String> args = new HashMap<Constants, String>();
-        args.put(Constants.EXECUTABLE, getRuntimeClassName());
-        args.put(Constants.MODULE, module);
-        args.put(Constants.SOURCE, src);
-        args.put(Constants.DEFAULT, "false");
+    protected void src(String module, String src, Map<String, String> extra) throws Throwable {
+        Map<String, String> args = new HashMap<String, String>();
+        args.put("executable", RUNTIME_IMPL);
+        args.put("module", module);
+        args.put("source", src);
+        args.put("d", "false");
         args.putAll(extra);
 
         execute(args);
     }
 
-    protected void execute(Map<Constants, String> args) throws Exception {
-        List<String> strings = new ArrayList<String>();
-        for (Map.Entry<Constants, String> entry : args.entrySet()) {
-            strings.add("-" + entry.getKey());
-            strings.add(entry.getValue());
-        }
+    protected void execute(Map<String, String> map) throws Throwable {
 
-        Main.execute(strings.toArray(new String[strings.size()]));
+        // TODO -- add Modules custom params
+
+        String[] args = new String[map.size() * 2];
+        int i = 0;
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            args[i++] = entry.getKey();
+            args[i++] = entry.getValue();
+        }
+        Main.main(args);
     }
 
     protected static String toPathString(String name, String version) {
