@@ -54,13 +54,14 @@ public final class CeylonToJava {
      * @return new java iterable
      */
     public static <T> Iterable<T> toIterable(final ceylon.language.Iterable<T> iterable) {
-        if (iterable == null)
+        if (iterable == null || iterable.getEmpty())
             return Collections.emptyList();
 
+        final ceylon.language.Iterator<? extends T> iterator = iterable.getIterator();
         return new Iterable<T>() {
 
-            private T head = iterable.getIterator().getHead();
-            private ceylon.language.Iterator<? extends T> tail = iterable.getIterator().getTail();
+            private T head = iterator.getHead();
+            private ceylon.language.Iterator<? extends T> tail = iterator.getTail();
 
             @Override
             public Iterator<T> iterator() {

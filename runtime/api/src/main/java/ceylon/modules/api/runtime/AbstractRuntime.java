@@ -25,7 +25,6 @@ package ceylon.modules.api.runtime;
 import ceylon.language.descriptor.Module;
 import ceylon.modules.spi.Constants;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedExceptionAction;
@@ -60,12 +59,9 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         return AccessController.doPrivileged(new PrivilegedExceptionAction<Module>() {
             @Override
             public Module run() throws Exception {
-                final Constructor ctor = moduleClass.getDeclaredConstructor();
-                ctor.setAccessible(true);
-                Object module = ctor.newInstance();
-                final Method getModule = module.getClass().getMethod("getModule");
+                final Method getModule = moduleClass.getDeclaredMethod("getModule");
                 getModule.setAccessible(true);
-                return (Module) getModule.invoke(module);
+                return (Module) getModule.invoke(null); // it should be a static method
             }
         });
     }
