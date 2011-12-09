@@ -1228,7 +1228,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (!isRecursiveReference(expr)) {
                     path.add(decl.getName());
                 }
-                path.add(Util.quoteMethodName(decl.getName()));
+                path.add(Util.quoteIfJavaKeyword(decl.getName()));
                 primaryExpr = null;
                 qualExpr = makeIdent(path);
                 selector = null;
@@ -1244,18 +1244,19 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // class
                 path.add(Util.quoteIfJavaKeyword(decl.getName()));
                 // method
-                path.add(Util.quoteMethodName(decl.getName()));
+                path.add(Util.quoteIfJavaKeyword(decl.getName()));
                 primaryExpr = null;
                 qualExpr = makeIdent(path);
                 selector = null;
             } else {
+                // not toplevel, not within method, must be a class member
                 selector = Util.quoteMethodName(decl.getName());
             }
         }
         if (result == null) {
             boolean useGetter = !(decl instanceof Method);
             if (qualExpr == null && selector == null) {
-                useGetter = Util.isErasedAttribute(decl.getName());
+                useGetter = decl.isClassOrInterfaceMember() && Util.isErasedAttribute(decl.getName());
                 if (useGetter) {
                     selector = Util.quoteMethodName(decl.getName());
                 } else {

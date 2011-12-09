@@ -71,8 +71,8 @@ public class MethodDefinitionBuilder {
     
     private ListBuffer<JCStatement> body = ListBuffer.lb();
 
-    public static MethodDefinitionBuilder method(AbstractTransformer gen, String name) {
-        return new MethodDefinitionBuilder(gen, Util.quoteMethodName(name));
+    public static MethodDefinitionBuilder method(AbstractTransformer gen, boolean isMember, String name) {
+        return new MethodDefinitionBuilder(gen, isMember ? Util.quoteMethodName(name) : Util.quoteIfJavaKeyword(name));
     }
     
     public static MethodDefinitionBuilder systemMethod(AbstractTransformer gen, String name) {

@@ -283,7 +283,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     public JCMethodDecl transform(Tree.AnyMethod def) {
         String name = def.getIdentifier().getText();
-        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, name);
+        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, def.getDeclarationModel().isClassOrInterfaceMember(), name);
         
         for (Tree.Parameter param : def.getParameterLists().get(0).getParameters()) {
             methodBuilder.parameter(param);
@@ -321,7 +321,7 @@ public class ClassTransformer extends AbstractTransformer {
 
     public JCMethodDecl transformConcreteInterfaceMember(MethodDefinition def, ProducedType type) {
         String name = def.getIdentifier().getText();
-        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(gen(), name);
+        MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(gen(), true, name);
         
         JCExpression typeExpr = makeJavaType(type);
         methodBuilder.parameter(FINAL, "$this", typeExpr, List.<JCTree.JCAnnotation>nil());
