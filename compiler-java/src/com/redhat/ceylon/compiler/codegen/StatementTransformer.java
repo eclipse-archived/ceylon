@@ -192,7 +192,7 @@ public class StatementTransformer extends AbstractTransformer {
                     test = make().Binary(JCTree.NE, testExpr, makeNull());                
                 } else {
                     // nonempty and is
-                    test = makeTypeTest(testExpr, toType);
+                    test = makeTypeTest(testExpr, expr, toType);
                 }
             }
         } else if (cond instanceof Tree.BooleanCondition) {
