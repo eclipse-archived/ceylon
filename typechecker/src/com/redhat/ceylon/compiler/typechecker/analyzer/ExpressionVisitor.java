@@ -138,10 +138,10 @@ public class ExpressionVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.FunctionArgument that) {
-    	super.visit(that);
-    	ProducedType t = that.getExpression().getTypeModel();
-		that.getDeclarationModel().setType(t);
-    	that.getType().setTypeModel(t);
+        super.visit(that);
+        ProducedType t = that.getExpression().getTypeModel();
+        that.getDeclarationModel().setType(t);
+        that.getType().setTypeModel(t);
     }
     
     @Override
@@ -279,11 +279,21 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkReified(Node that, ProducedType type) {
-        //TODO: intersections and unions!
-        if (type!=null && 
-                (isGeneric(type.getDeclaration()) || 
-                        type.getDeclaration() instanceof TypeParameter) ) {
-            that.addWarning("generic types in assignability conditions not yet supported (until we implement reified generics)");
+        if (type!=null) {
+            TypeDeclaration dec = type.getDeclaration();
+			if (dec instanceof UnionType) {
+                for (ProducedType pt: dec.getCaseTypes()) {
+                    checkReified(that, pt);
+                }
+            }
+            else if (dec instanceof IntersectionType) {
+                for (ProducedType pt: dec.getSatisfiedTypes()) {
+                    checkReified(that, pt);
+                }
+            }
+            else if (isGeneric(dec) || dec instanceof TypeParameter) {
+                that.addWarning("generic types in assignability conditions not yet supported (until we implement reified generics)");
+            }
         }
     }
 
@@ -522,7 +532,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkParameterType(int i, Parameter p, 
-    		Tree.SpecifierExpression sie, Tree.Type that) {
+            Tree.SpecifierExpression sie, Tree.Type that) {
         if (sie!=null && sie.getExpression()!=null) {
             //TODO: validate that expression type really is Callable
             ProducedType rt = sie.getExpression().getTypeModel().getTypeArgumentList().get(i+1);
@@ -998,14 +1008,14 @@ public class ExpressionVisitor extends Visitor {
     }
 
     ProducedType wrap(ProducedType pt, ProducedType receivingType, 
-    		Tree.QualifiedMemberOrTypeExpression mte) {
+            Tree.QualifiedMemberOrTypeExpression mte) {
         Tree.MemberOperator op = mte.getMemberOperator();
         if (op instanceof Tree.SafeMemberOp)  {
             return unit.getOptionalType(pt);
         }
         else if (op instanceof Tree.SpreadOp) {
-            ProducedType st = unit.getSequenceType(pt);        	
-        	return unit.isEmptyType(receivingType) ?
+            ProducedType st = unit.getSequenceType(pt);            
+            return unit.isEmptyType(receivingType) ?
                     unit.getEmptyType(st) : st;
         }
         else {
@@ -1050,7 +1060,7 @@ public class ExpressionVisitor extends Visitor {
             visitInvocation(that, ((Tree.ExtendedTypeExpression) pr).getTarget());
         }
         else {
-        	//TODO: fix this
+            //TODO: fix this
             that.addWarning("direct invocation of Callable objects not yet supported");
         }
     }
@@ -1515,12 +1525,12 @@ public class ExpressionVisitor extends Visitor {
         else {
             ProducedType et;
             if (a instanceof Tree.FunctionArgument) {
-            	et = ((Tree.FunctionArgument) a).getDeclarationModel()
-            			.getProducedTypedReference(null, Collections.<ProducedType>emptyList())
-            			.getFullType();
+                et = ((Tree.FunctionArgument) a).getDeclarationModel()
+                        .getProducedTypedReference(null, Collections.<ProducedType>emptyList())
+                        .getFullType();
             }
             else {
-            	et = e.getTypeModel();
+                et = e.getTypeModel();
             }
             checkAssignable(et, paramType, a, 
                     "argument must be assignable to parameter " + 
@@ -2218,7 +2228,7 @@ public class ExpressionVisitor extends Visitor {
     private void visitQualifiedMemberExpression(Tree.QualifiedMemberExpression that,
             TypedDeclaration member, List<ProducedType> typeArgs, Tree.TypeArguments tal) {
         ProducedType receivingType = that.getPrimary().getTypeModel();
-		ProducedType receiverType = unwrap(receivingType, that);
+        ProducedType receiverType = unwrap(receivingType, that);
         if (acceptsTypeArguments(receiverType, member, typeArgs, tal, that)) {
             ProducedTypedReference ptr = receiverType.getTypedMember(member, typeArgs);
             /*if (ptr==null) {
