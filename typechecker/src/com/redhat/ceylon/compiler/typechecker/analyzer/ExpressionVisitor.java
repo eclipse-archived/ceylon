@@ -1808,7 +1808,7 @@ public class ExpressionVisitor extends Visitor {
                 if (type.getTypeParameters().size()==2) {
                     //for Subtractable
                     ProducedType it = nt.getTypeArgumentList().get(1);
-                    checkAssignable(lhst, it, that, 
+                    checkAssignable(it, lhst, that, 
                             "result of operation must be assignable to declared type");
                     that.setTypeModel(it);
                 }
