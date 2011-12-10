@@ -19,6 +19,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
         this(array,0);
     }
     
+    @Ignore
     ArraySequence(java.lang.Object[] array, long first) {
     	if (array.length==0 || array.length<=first) {
     		throw new IllegalArgumentException("ArraySequence may not have zero elements");
