@@ -232,10 +232,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         binaryOperators.put(Tree.CompareOp.class, "compare");
 
         // Binary operators that act on intermediary Comparison objects
-        binaryOperators.put(Tree.LargerOp.class, "larger");
-        binaryOperators.put(Tree.SmallerOp.class, "smaller");
-        binaryOperators.put(Tree.LargeAsOp.class, "largeAs");
-        binaryOperators.put(Tree.SmallAsOp.class, "smallAs");
+        binaryOperators.put(Tree.LargerOp.class, "largerThan");
+        binaryOperators.put(Tree.SmallerOp.class, "smallerThan");
+        binaryOperators.put(Tree.LargeAsOp.class, "asLargeAs");
+        binaryOperators.put(Tree.SmallAsOp.class, "asSmallAs");
     }
 
     // FIXME: I'm pretty sure sugar is not supposed to be in there

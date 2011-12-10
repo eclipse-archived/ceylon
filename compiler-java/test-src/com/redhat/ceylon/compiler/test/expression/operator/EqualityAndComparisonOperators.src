@@ -19,10 +19,10 @@ public class EqualityAndComparisonOperators {
         sync = .ceylon.language.Natural.instance(n1).equals(.ceylon.language.Natural.instance(n2));
         sync = !.ceylon.language.Natural.instance(n1).equals(.ceylon.language.Natural.instance(n2));
         final ceylon.language.Comparison c = .ceylon.language.Natural.instance(n1).compare(.ceylon.language.Natural.instance(n2));
-        sync = .ceylon.language.Natural.instance(n1).compare(.ceylon.language.Natural.instance(n2)).smaller();
-        sync = .ceylon.language.Natural.instance(n1).compare(.ceylon.language.Natural.instance(n2)).larger();
-        sync = .ceylon.language.Natural.instance(n1).compare(.ceylon.language.Natural.instance(n2)).smallAs();
-        sync = .ceylon.language.Natural.instance(n1).compare(.ceylon.language.Natural.instance(n2)).largeAs();
+        sync = .ceylon.language.Natural.instance(n1).compare(.ceylon.language.Natural.instance(n2)).smallerThan();
+        sync = .ceylon.language.Natural.instance(n1).compare(.ceylon.language.Natural.instance(n2)).largerThan();
+        sync = .ceylon.language.Natural.instance(n1).compare(.ceylon.language.Natural.instance(n2)).asSmallAs();
+        sync = .ceylon.language.Natural.instance(n1).compare(.ceylon.language.Natural.instance(n2)).asLargeAs();
     }
     
     private final void equalityAndComparisonBoxed(final .java.lang.Object o1, final .java.lang.Object o2, final com.redhat.ceylon.compiler.test.expression.operator.MyNatural n1, final com.redhat.ceylon.compiler.test.expression.operator.MyNatural n2) {
@@ -30,10 +30,10 @@ public class EqualityAndComparisonOperators {
         sync = .ceylon.language.Boolean.instance(n1.equals(n2));
         sync = .ceylon.language.Boolean.instance(!n1.equals(n2));
         final ceylon.language.Comparison c = n1.compare(n2);
-        sync = .ceylon.language.Boolean.instance(n1.compare(n2).smaller());
-        sync = .ceylon.language.Boolean.instance(n1.compare(n2).larger());
-        sync = .ceylon.language.Boolean.instance(n1.compare(n2).smallAs());
-        sync = .ceylon.language.Boolean.instance(n1.compare(n2).largeAs());
+        sync = .ceylon.language.Boolean.instance(n1.compare(n2).smallerThan());
+        sync = .ceylon.language.Boolean.instance(n1.compare(n2).largerThan());
+        sync = .ceylon.language.Boolean.instance(n1.compare(n2).asSmallAs());
+        sync = .ceylon.language.Boolean.instance(n1.compare(n2).asLargeAs());
     }
     
     private final void testInBoxed(final long n1, final long n2) {
