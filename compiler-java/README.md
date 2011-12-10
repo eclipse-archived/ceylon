@@ -39,7 +39,7 @@ Then go into **ceylon-spec** and run
     
 To build and test the compiler return to **ceylon-compiler** and run
 
-    ant clean build
+    ant clean publish
     
 To run the tests type
 
@@ -49,7 +49,7 @@ Note that some of the tests currently fail. See more info in README.tests.
 
 Once built, the compiler lives in this jars:
 
-  build/lib/compiler.jar
+    ~/ceylon/repo/com/redhat/ceylon/compiler/0.1/com.redhat.ceylon.compiler-0.1.jar
 
 If you want to build and run the Ceylon compiler in Eclipse
 then please see README.eclipse for setup instructions.
