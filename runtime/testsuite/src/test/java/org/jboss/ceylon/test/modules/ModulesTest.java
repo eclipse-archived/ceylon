@@ -26,7 +26,6 @@ import ceylon.modules.spi.Constants;
 import org.jboss.modules.Main;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.exporter.ZipExporter;
-import org.jboss.util.file.Files;
 import org.junit.Assert;
 
 import java.io.File;
@@ -65,7 +64,7 @@ public abstract class ModulesTest {
         File targetFile = new File(targetDir, fullName);
 
         ZipExporter exporter = module.as(ZipExporter.class);
-        exporter.exportZip(targetFile, true);
+        exporter.exportTo(targetFile, true);
 
         return targetDir;
     }
@@ -99,8 +98,17 @@ public abstract class ModulesTest {
             execute(args);
         } finally {
             for (File file : files)
-                Files.delete(file);
+                delete(file);
         }
+    }
+
+    protected static void delete(File file) {
+        if (file.isDirectory()) {
+            for (File f : file.listFiles())
+                delete(f);
+        }
+        //noinspection ResultOfMethodCallIgnored
+        file.delete();
     }
 
     protected void src(String module, String src) throws Throwable {

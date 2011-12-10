@@ -27,11 +27,6 @@
             <groupId>com.redhat.ceylon.cmr</groupId>
             <artifactId>cmr-impl</artifactId>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
 </project>

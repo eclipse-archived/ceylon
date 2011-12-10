@@ -14,10 +14,6 @@
     <url>http://www.jboss.org/ceylon</url>
 
     <dependencies>
-        <dependency>
-            <groupId>ceylon.language</groupId>
-            <artifactId>ceylon-language</artifactId>
-        </dependency>
     </dependencies>
 
 </project>

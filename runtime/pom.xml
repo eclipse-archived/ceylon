@@ -32,11 +32,8 @@
     <properties>
         <version.com.redhat.ceylon.language>0.1</version.com.redhat.ceylon.language>
         <version.com.redhat.ceylon.cmr>1.0.0-SNAPSHOT</version.com.redhat.ceylon.cmr>
-        <version.org.jboss.logging>3.0.1.GA</version.org.jboss.logging>
-        <version.org.jboss.logmanager>1.2.0.GA</version.org.jboss.logmanager>
         <version.org.jboss.modules>1.1.0.CR4</version.org.jboss.modules>
-        <version.org.jboss.shrinkwrap>1.0.0-alpha-11</version.org.jboss.shrinkwrap>
-        <version.org.jboss.test>1.1.0.GA</version.org.jboss.test>
+        <version.org.jboss.shrinkwrap>1.0.0-cr-1</version.org.jboss.shrinkwrap>
         <version.junit>4.8.1</version.junit>
     </properties>
 
@@ -185,16 +182,6 @@
             </dependency>
 
             <dependency>
-                <groupId>org.jboss.logging</groupId>
-                <artifactId>jboss-logging</artifactId>
-                <version>${version.org.jboss.logging}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.logmanager</groupId>
-                <artifactId>jboss-logmanager</artifactId>
-                <version>${version.org.jboss.logmanager}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.jboss.modules</groupId>
                 <artifactId>jboss-modules</artifactId>
                 <version>${version.org.jboss.modules}</version>
@@ -216,12 +203,6 @@
                 <groupId>org.jboss.shrinkwrap</groupId>
                 <artifactId>shrinkwrap-impl-base</artifactId>
                 <version>${version.org.jboss.shrinkwrap}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.test</groupId>
-                <artifactId>jboss-test</artifactId>
-                <version>${version.org.jboss.test}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>

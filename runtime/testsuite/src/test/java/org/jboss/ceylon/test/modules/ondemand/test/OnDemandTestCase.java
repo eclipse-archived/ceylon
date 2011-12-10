@@ -46,7 +46,7 @@ public class OnDemandTestCase extends ModulesTest {
         JavaArchive lib2 = ShrinkWrap.create(JavaArchive.class, "si.alesj.ceylon-1.0.0.GA.car");
         lib2.addClass(module.class);
         lib2.addClass(Touch.class);
-        lib2.addResource("si/alesj/ceylon/test/config.xml");
+        lib2.addAsResource("si/alesj/ceylon/test/config.xml");
 
         testArchive(module, lib1, lib2);
     }
