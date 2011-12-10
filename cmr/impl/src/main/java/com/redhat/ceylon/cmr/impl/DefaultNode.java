@@ -115,8 +115,10 @@ public class DefaultNode extends AbstractOpenNode {
         if (previous == null) {
             previous = node;
             node.parents.put(getLabel(), this);
-            if (content != null)
-                node.handle = findService(ContentStore.class).putContent(node, content);
+            if (content != null) {
+                ContentStore contentStore = findService(ContentStore.class);
+                node.handle = contentStore.putContent(node, content);
+            }
         } else if (content != null) {
             throw new IllegalArgumentException("Content node already exists: " + label);
         }
