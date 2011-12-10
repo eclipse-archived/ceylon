@@ -183,7 +183,8 @@ public class Unit {
     public Interface getSummableDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Summable");
     }
-        
+    
+    //TODO: remove!
     public Interface getSubtractableDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Subtractable");
     }
@@ -219,7 +220,8 @@ public class Unit {
     public TypeDeclaration getFloatDeclaration() {
         return (TypeDeclaration) getLanguageModuleDeclaration("Float");
     }
-        
+    
+    //TODO: rename!
     public TypeDeclaration getNaturalDeclaration() {
         return (TypeDeclaration) getLanguageModuleDeclaration("Integer");
     }

@@ -238,13 +238,4 @@ class Operators() {
     
     Float ff = null?1.0 + null?2.0;
     
-    variable Subtractable<Integer,Integer> iii1 := +1;    
-    iii1:=iii1-iii1;
-    iii1-=iii1;
-    iii1 := iii1-=iii1;
-    variable Ordinal<Integer>&Subtractable<Integer,Integer> iii2 := +1;    
-    iii2:=iii2-iii2;
-    iii2-=iii2;
-    iii2 := iii2-=-iii2;
-
 }

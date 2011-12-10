@@ -1770,18 +1770,9 @@ public class ExpressionVisitor extends Visitor {
                             rhst.getProducedTypeName());
                     return;
                 }
-                if (type.getTypeParameters().size()==2) {
-                    //for Subtractable
-                    ProducedType it = st.getTypeArgumentList().get(1);
-                    checkAssignable(rt, producedType(type, rt, it), that, 
-                            "operands must be of compatible numeric type");
-                    that.setTypeModel(it);
-                }
-                else {
-                    checkAssignable(rt, producedType(type, rt), that, 
-                            "operands must be of compatible numeric type");
-                    that.setTypeModel(rt);
-                }
+                checkAssignable(rt, producedType(type, rt), that, 
+                        "operands must be of compatible numeric type");
+                that.setTypeModel(rt);
             }
         }
     }
@@ -1804,13 +1795,6 @@ public class ExpressionVisitor extends Visitor {
                     that.getRightTerm().addError("operand expression must be promotable to declared type: " + 
                             rhst.getProducedTypeName() + " is not promotable to " +
                             nt.getProducedTypeName());
-                }
-                if (type.getTypeParameters().size()==2) {
-                    //for Subtractable
-                    ProducedType it = nt.getTypeArgumentList().get(1);
-                    checkAssignable(it, lhst, that, 
-                            "result of operation must be assignable to declared type");
-                    //that.setTypeModel(it); //for consistency with := as requested by stef
                 }
             }
         }
@@ -2007,9 +1991,6 @@ public class ExpressionVisitor extends Visitor {
         else if (that instanceof Tree.RemainderOp) {
             return unit.getIntegralDeclaration();
         }
-        else if (that instanceof Tree.DifferenceOp) {
-            return unit.getSubtractableDeclaration();
-        }
         else {
             return unit.getNumericDeclaration();
         }
@@ -2021,9 +2002,6 @@ public class ExpressionVisitor extends Visitor {
         }
         else if (that instanceof Tree.RemainderAssignOp) {
             return unit.getIntegralDeclaration();
-        }
-        else if (that instanceof Tree.SubtractAssignOp) {
-            return unit.getSubtractableDeclaration();
         }
         else {
             return unit.getNumericDeclaration();
