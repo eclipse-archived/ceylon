@@ -41,7 +41,7 @@ public class Main {
             execute(args);
         } catch (Throwable t) {
             System.err.println("Illegal args: " + t);
-            t.printStackTrace();
+            throw new RuntimeException("Error using Ceyon Runtime.", t);
         }
     }
 

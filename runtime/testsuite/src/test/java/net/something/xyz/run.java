@@ -22,28 +22,32 @@
 
 package net.something.xyz;
 
-import ceylon.language.Quoted;
-import ceylon.language.descriptor.Import;
-import ceylon.modules.api.util.JavaToCeylon;
-import ceylon.modules.api.util.ModuleVersion;
+import java.lang.reflect.Method;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class module {
-    public static ceylon.language.descriptor.Module getModule() {
-        Quoted name = JavaToCeylon.toQuoted("net.something.xyz");
-        Quoted version = JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "Final").toString());
-        Import im1 = new Import(
-                JavaToCeylon.toQuoted("org.jboss.acme"),
-                JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "CR1").toString()),
-                false,
-                true);
-        Import im2 = new Import(
-                JavaToCeylon.toQuoted("si.alesj.ceylon"),
-                JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "GA").toString()),
-                false,
-                true);
-        return new ceylon.language.descriptor.Module(name, version, null, null, null, JavaToCeylon.toIterable(im1, im2));
+public class run {
+    public static void main(String[] args) {
+        // test resource on_demand
+        ClassLoader cl = run.class.getClassLoader();
+
+        try {
+            // test class on_demand
+            Object m = cl.loadClass("org.jboss.acme.run").newInstance();
+            Class<?> clazz = m.getClass();
+            Method run = clazz.getMethod("main", String[].class);
+            run.invoke(m, new String[]{"args"});
+
+            cl.loadClass("si.alesj.ceylon.test.Touch"); // MC currently only works on classes
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        String resource = "si/alesj/ceylon/test/config.xml";
+        Object url = cl.getResource(resource);
+        if (url == null)
+            throw new IllegalArgumentException("Null url: " + resource);
+        System.out.println("URL: " + url);
     }
 }

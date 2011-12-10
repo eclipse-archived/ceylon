@@ -36,31 +36,6 @@ public class module {
     public static ceylon.language.descriptor.Module getModule() {
         Quoted name = JavaToCeylon.toQuoted("eu.cloud.clazz");
         Quoted version = JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "GA").toString());
-/*
-        ceylon.lang.Runnable runnable = new ceylon.lang.Runnable() {
-            public void run(ceylon.lang.Process process) {
-                ClassLoader cl = module.this.getClass().getClassLoader();
-                try {
-                    cl.loadClass("org.jboss.filtered.spi.SomeSPI");
-                } catch (ClassNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-            try
-            {
-               cl.loadClass("org.jboss.filtered.api.SomeAPI");
-               throw new RuntimeException("Fail, should not be here!");
-            }
-            catch (ClassNotFoundException ignored)
-            {
-            }
-                try {
-                    cl.loadClass("org.jboss.filtered.impl.SomeImpl");
-                    throw new RuntimeException("Fail, should not be here!");
-                } catch (ClassNotFoundException ignored) {
-                }
-            }
-        };
-*/
         PathFilter imports = new PathFilter() {
             public ceylon.language.Boolean accept(ceylon.language.String path) {
                 boolean contains = path.contains(JavaToCeylon.toString("spi"));

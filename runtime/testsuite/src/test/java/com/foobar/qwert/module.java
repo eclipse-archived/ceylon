@@ -34,14 +34,6 @@ public class module {
     public static ceylon.language.descriptor.Module getModule() {
         Quoted name = JavaToCeylon.toQuoted("com.foobar.qwert");
         Quoted version = JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "GA").toString());
-/*
-        ceylon.lang.Runnable runnable = new ceylon.lang.Runnable() {
-            @Override
-            public void run(ceylon.lang.Process process) {
-                org.jboss.acme.module.run();
-            }
-        };
-*/
         Import im = new Import(
                 JavaToCeylon.toQuoted("org.jboss.acme"),
                 JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "CR1").toString()),

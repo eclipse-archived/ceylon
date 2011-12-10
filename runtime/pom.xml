@@ -103,6 +103,12 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.4.3</version>
                 <configuration>
+                    <systemProperties>
+                        <property>
+                            <name>ceylon.repo</name>
+                            <value>${user.home}/.ceylon/repo</value>
+                        </property>
+                    </systemProperties>
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
                     <includes>
                         <include>org/jboss/ceylon/test/**/*TestCase.java</include>

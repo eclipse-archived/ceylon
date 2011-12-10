@@ -20,30 +20,29 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package net.something.xyz;
-
-import ceylon.language.Quoted;
-import ceylon.language.descriptor.Import;
-import ceylon.modules.api.util.JavaToCeylon;
-import ceylon.modules.api.util.ModuleVersion;
+package eu.cloud.clazz;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class module {
-    public static ceylon.language.descriptor.Module getModule() {
-        Quoted name = JavaToCeylon.toQuoted("net.something.xyz");
-        Quoted version = JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "Final").toString());
-        Import im1 = new Import(
-                JavaToCeylon.toQuoted("org.jboss.acme"),
-                JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "CR1").toString()),
-                false,
-                true);
-        Import im2 = new Import(
-                JavaToCeylon.toQuoted("si.alesj.ceylon"),
-                JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "GA").toString()),
-                false,
-                true);
-        return new ceylon.language.descriptor.Module(name, version, null, null, null, JavaToCeylon.toIterable(im1, im2));
+public class run {
+    public static void main(String[] args) {
+        ClassLoader cl = run.class.getClassLoader();
+        try {
+            cl.loadClass("org.jboss.filtered.spi.SomeSPI");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            cl.loadClass("org.jboss.filtered.api.SomeAPI");
+            throw new RuntimeException("Fail, should not be here!");
+        } catch (ClassNotFoundException ignored) {
+        }
+        try {
+            cl.loadClass("org.jboss.filtered.impl.SomeImpl");
+            throw new RuntimeException("Fail, should not be here!");
+        } catch (ClassNotFoundException ignored) {
+        }
     }
 }
+
