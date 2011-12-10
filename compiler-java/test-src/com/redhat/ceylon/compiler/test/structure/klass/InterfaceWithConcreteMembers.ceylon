@@ -19,7 +19,7 @@
  */
 @nomodel
 interface InterfaceWithConcreteMembers {
- shared default Natural foo(Boolean b){
+ shared default Integer foo(Boolean b){
   return 1;
  }
 }

@@ -20,9 +20,9 @@
 @nomodel
 class LocalMethod() {
     void m() {
-        Natural local() {
+        Integer local() {
             return 0;
         }
-        Natural n = local();
+        Integer n = local();
     }
 }

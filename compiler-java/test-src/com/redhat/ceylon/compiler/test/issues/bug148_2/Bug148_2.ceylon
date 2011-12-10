@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel 
-variable Natural f := 2;
+variable Integer f := 2;
 
 @nomodel
 shared void bug148_2() {

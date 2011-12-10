@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.test.expression.invoke;
 
 class NamedArgumentWithEmptySequence {
     
-    private final void m(final ceylon.language.Iterable<? extends ceylon.language.Natural> b) {
+    private final void m(final ceylon.language.Iterable<? extends ceylon.language.Integer> b) {
     }
     
     NamedArgumentWithEmptySequence() {

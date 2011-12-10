@@ -18,4 +18,4 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-shared Natural i = 0;
+shared Integer i = 0;

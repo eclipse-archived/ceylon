@@ -22,10 +22,10 @@
 
 // static final field 
 @nomodel
-Entry<Natural,String> bug270 = Entry<Natural,String> {item="hello";key=1;};
+Entry<Integer,String> bug270 = Entry<Integer,String> {item="hello";key=1;};
 
 @nomodel
-variable Entry<Natural,String> bug270Variable := Entry<Natural,String> {item="hello";key=1;};
+variable Entry<Integer,String> bug270Variable := Entry<Integer,String> {item="hello";key=1;};
 
 @nomodel
 T bug270_eatEntry<T>(T entry){
@@ -33,9 +33,9 @@ T bug270_eatEntry<T>(T entry){
 }
 
 @nomodel
-Entry<Entry<Natural,String>,String> bug270_2 = bug270_eatEntry(Entry<Entry<Natural,String>,String> {
+Entry<Entry<Integer,String>,String> bug270_2 = bug270_eatEntry(Entry<Entry<Integer,String>,String> {
     item="hello";
-    key=Entry<Natural,String>{
+    key=Entry<Integer,String>{
         item="hello";
         key=1;
     };
@@ -45,12 +45,12 @@ Entry<Entry<Natural,String>,String> bug270_2 = bug270_eatEntry(Entry<Entry<Natur
 @nomodel
 class Bug270() {
     // in the constructor
-    Entry<Natural,String> bug270 = Entry<Natural,String> {item="hello";key=1;};
+    Entry<Integer,String> bug270 = Entry<Integer,String> {item="hello";key=1;};
 
     // in constructor with method call and entry in entry
-    Entry<Entry<Natural,String>,String> bug270_2 = bug270_eatEntry(Entry<Entry<Natural,String>,String> {
+    Entry<Entry<Integer,String>,String> bug270_2 = bug270_eatEntry(Entry<Entry<Integer,String>,String> {
         item="hello";
-        key=Entry<Natural,String>{
+        key=Entry<Integer,String>{
             item="hello";
             key=1;
         };
@@ -62,17 +62,17 @@ class Bug270() {
     
     void method(){
         // final variable 
-        Entry<Natural,String> bug270 = Entry<Natural,String> {item="hello";key=1;};
+        Entry<Integer,String> bug270 = Entry<Integer,String> {item="hello";key=1;};
 
         // variable 
-        variable Entry<Natural,String> bug270Variable := Entry<Natural,String> {item="hello";key=1;};
+        variable Entry<Integer,String> bug270Variable := Entry<Integer,String> {item="hello";key=1;};
         if(true){
             // inside a new block?
-            Entry<Natural,String> bug270_2 = Entry<Natural,String> {item="hello";key=1;};
+            Entry<Integer,String> bug270_2 = Entry<Integer,String> {item="hello";key=1;};
         }
         
         // as a method parameter
-        bug270_eatEntry(Entry<Natural,String> {item="hello";key=1;});
+        bug270_eatEntry(Entry<Integer,String> {item="hello";key=1;});
     }
     
 }

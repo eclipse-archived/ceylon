@@ -21,18 +21,18 @@ doc "This is `SharedClass`"
 see(PrivateClass) 
 shared class SharedClass() {
     doc "This simple attribte is `shared`"
-    shared Natural sharedAttribute = 1;
+    shared Integer sharedAttribute = 1;
     
     doc "This simple attribute is not `shared`"
-    Natural privateAttribute = 1;
+    Integer privateAttribute = 1;
     
     doc "This getter is `shared`"
-    shared Natural sharedGetter {
+    shared Integer sharedGetter {
         return 1;
     }
     
     doc "This getter is not `shared`"
-    Natural privateGetter {
+    Integer privateGetter {
         return 1;
     }
     
@@ -50,18 +50,18 @@ see(SharedClass)
 class PrivateClass() {
     
     doc "This simple attribte is `shared`"
-    shared Natural sharedAttribute = 1;
+    shared Integer sharedAttribute = 1;
     
     doc "This simple attribute is not `shared`"
-    Natural privateAttribute = 1;
+    Integer privateAttribute = 1;
     
     doc "This getter is `shared`"
-    shared Natural sharedGetter {
+    shared Integer sharedGetter {
         return 1;
     }
     
     doc "This getter is not `shared`"
-    Natural privateGetter {
+    Integer privateGetter {
         return 1;
     }
     

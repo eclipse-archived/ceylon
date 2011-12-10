@@ -23,6 +23,6 @@ class FunctionKeyword(){
         return 0;    
     }
     void m(){
-        Natural n = test();
+        Integer n = test();
     }
 }

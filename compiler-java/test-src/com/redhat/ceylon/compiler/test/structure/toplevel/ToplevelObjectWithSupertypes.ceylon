@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class C (Natural n){
+class C (Integer n){
 }
 
 @nomodel

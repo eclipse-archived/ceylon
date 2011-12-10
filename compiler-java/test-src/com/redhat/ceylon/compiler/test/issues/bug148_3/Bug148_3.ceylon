@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel 
-Natural f {return 2;}
+Integer f {return 2;}
 assign f { }
 
 @nomodel

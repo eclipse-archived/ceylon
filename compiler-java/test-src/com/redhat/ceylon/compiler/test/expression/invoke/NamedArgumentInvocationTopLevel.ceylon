@@ -18,16 +18,16 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-shared Natural f(Natural n, String s) {
+shared Integer f(Integer n, String s) {
     return n; 
 }
 
 @nomodel
-shared void v(Natural n, String s) {
+shared void v(Integer n, String s) {
 }
 
 @nomodel
-Natural x = f{
+Integer x = f{
     s="abc";
     n=123;
 };

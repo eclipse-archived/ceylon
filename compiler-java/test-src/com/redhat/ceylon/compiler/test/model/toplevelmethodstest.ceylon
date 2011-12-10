@@ -20,8 +20,8 @@
 void m() {
     topEmpty();
     topEmptyPublic();
-    topNatural();
-    topNaturalPublic();
+    topInteger();
+    topIntegerPublic();
     topParam(1);
     topParamPublic(1);
 }

@@ -31,10 +31,10 @@ class MethodForIterator(){
         for(String? s in {"aap",null,"mies"}){
             // Empty
         }
-        for(Natural n in {1,2,3}){
+        for(Integer n in {1,2,3}){
             // Empty
         }
-        for(Natural? n in {1,null,3}){
+        for(Integer? n in {1,null,3}){
             // Empty
         }
         for(Character c in "wim"){

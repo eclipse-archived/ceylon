@@ -27,7 +27,7 @@ class MethodLocalAccess {
         final class selfref$getter {
             
             long getSelfref() {
-                if (.ceylon.language.Natural.instance(getSelfref()).compare(.ceylon.language.Natural.instance(0L)).largerThan()) {
+                if (.ceylon.language.Integer.instance(getSelfref()).compare(.ceylon.language.Integer.instance(0L)).largerThan()) {
                     return 1L;
                 } else {
                     return 0L;

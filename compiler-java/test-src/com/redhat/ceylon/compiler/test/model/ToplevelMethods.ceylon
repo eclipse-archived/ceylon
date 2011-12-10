@@ -19,7 +19,7 @@
  */
 void topEmpty(){}
 shared void topEmptyPublic(){}
-Natural topNatural(){return 1;}
-shared Natural topNaturalPublic(){return 1;}
-Natural topParam(Natural p){return p;}
-shared Natural topParamPublic(Natural p){return p;}
+Integer topInteger(){return 1;}
+shared Integer topIntegerPublic(){return 1;}
+Integer topParam(Integer p){return p;}
+shared Integer topParamPublic(Integer p){return p;}

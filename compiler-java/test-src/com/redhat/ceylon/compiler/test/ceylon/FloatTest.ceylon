@@ -192,9 +192,9 @@ shared class FloatTest() extends Test() {
 	}
 	
 	@test
-	shared void testNatural() {
+	shared void testInteger() {
 		Float ten = +10.5;
-		Natural other = ten.natural;			
+		Integer other = ten.natural;			
 	}
 	
 	@test

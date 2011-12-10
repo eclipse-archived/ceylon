@@ -29,7 +29,7 @@ class StringTemplate() {
     void m2(String s) {
         String t = "Foo " s "";
     }
-    void m3(Natural n) {
+    void m3(Integer n) {
     	String t = "Foo " n " bar";
     }
     void m4() {

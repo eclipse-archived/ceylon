@@ -4,9 +4,9 @@ interface BasicOperatorsA {
 }
 interface BasicOperatorsB {
 }
-public abstract class MyNatural extends .java.lang.Object implements ceylon.language.Castable, ceylon.language.Integral<com.redhat.ceylon.compiler.test.expression.operator.MyNatural>, ceylon.language.Subtractable<com.redhat.ceylon.compiler.test.expression.operator.MyNatural, ceylon.language.Integer> {
+public abstract class MyInteger extends .java.lang.Object implements ceylon.language.Castable, ceylon.language.Integral<com.redhat.ceylon.compiler.test.expression.operator.MyInteger> {
     
-    public MyNatural() {
+    public MyInteger() {
         super();
     }
 }
@@ -16,16 +16,16 @@ public class EqualityAndComparisonOperators {
         boolean sync = o1 == o2;
         long n1 = 0L;
         long n2 = 0L;
-        sync = .ceylon.language.Natural.instance(n1).equals(.ceylon.language.Natural.instance(n2));
-        sync = !.ceylon.language.Natural.instance(n1).equals(.ceylon.language.Natural.instance(n2));
-        final ceylon.language.Comparison c = .ceylon.language.Natural.instance(n1).compare(.ceylon.language.Natural.instance(n2));
-        sync = .ceylon.language.Natural.instance(n1).compare(.ceylon.language.Natural.instance(n2)).smallerThan();
-        sync = .ceylon.language.Natural.instance(n1).compare(.ceylon.language.Natural.instance(n2)).largerThan();
-        sync = .ceylon.language.Natural.instance(n1).compare(.ceylon.language.Natural.instance(n2)).asSmallAs();
-        sync = .ceylon.language.Natural.instance(n1).compare(.ceylon.language.Natural.instance(n2)).asLargeAs();
+        sync = .ceylon.language.Integer.instance(n1).equals(.ceylon.language.Integer.instance(n2));
+        sync = !.ceylon.language.Integer.instance(n1).equals(.ceylon.language.Integer.instance(n2));
+        final ceylon.language.Comparison c = .ceylon.language.Integer.instance(n1).compare(.ceylon.language.Integer.instance(n2));
+        sync = .ceylon.language.Integer.instance(n1).compare(.ceylon.language.Integer.instance(n2)).smallerThan();
+        sync = .ceylon.language.Integer.instance(n1).compare(.ceylon.language.Integer.instance(n2)).largerThan();
+        sync = .ceylon.language.Integer.instance(n1).compare(.ceylon.language.Integer.instance(n2)).asSmallAs();
+        sync = .ceylon.language.Integer.instance(n1).compare(.ceylon.language.Integer.instance(n2)).asLargeAs();
     }
     
-    private final void equalityAndComparisonBoxed(final .java.lang.Object o1, final .java.lang.Object o2, final com.redhat.ceylon.compiler.test.expression.operator.MyNatural n1, final com.redhat.ceylon.compiler.test.expression.operator.MyNatural n2) {
+    private final void equalityAndComparisonBoxed(final .java.lang.Object o1, final .java.lang.Object o2, final com.redhat.ceylon.compiler.test.expression.operator.MyInteger n1, final com.redhat.ceylon.compiler.test.expression.operator.MyInteger n2) {
         ceylon.language.Boolean sync = .ceylon.language.Boolean.instance(o1 == o2);
         sync = .ceylon.language.Boolean.instance(n1.equals(n2));
         sync = .ceylon.language.Boolean.instance(!n1.equals(n2));
@@ -37,11 +37,11 @@ public class EqualityAndComparisonOperators {
     }
     
     private final void testInBoxed(final long n1, final long n2) {
-        final boolean b1 = (let ceylon.language.Natural $ceylontmp0 = .ceylon.language.Natural.instance(n1) in new ceylon.language.Range<ceylon.language.Natural>(.ceylon.language.Natural.instance(n1), .ceylon.language.Natural.instance(n2)).contains($ceylontmp0));
+        final boolean b1 = (let ceylon.language.Integer $ceylontmp0 = .ceylon.language.Integer.instance(n1) in new ceylon.language.Range<ceylon.language.Integer>(.ceylon.language.Integer.instance(n1), .ceylon.language.Integer.instance(n2)).contains($ceylontmp0));
     }
     
-    private final void testInUnboxed(final com.redhat.ceylon.compiler.test.expression.operator.MyNatural n1, final com.redhat.ceylon.compiler.test.expression.operator.MyNatural n2) {
-        final ceylon.language.Boolean b1 = .ceylon.language.Boolean.instance((let com.redhat.ceylon.compiler.test.expression.operator.MyNatural $ceylontmp1 = n1 in new ceylon.language.Range<com.redhat.ceylon.compiler.test.expression.operator.MyNatural>(n1, n2).contains($ceylontmp1)));
+    private final void testInUnboxed(final com.redhat.ceylon.compiler.test.expression.operator.MyInteger n1, final com.redhat.ceylon.compiler.test.expression.operator.MyInteger n2) {
+        final ceylon.language.Boolean b1 = .ceylon.language.Boolean.instance((let com.redhat.ceylon.compiler.test.expression.operator.MyInteger $ceylontmp1 = n1 in new ceylon.language.Range<com.redhat.ceylon.compiler.test.expression.operator.MyInteger>(n1, n2).contains($ceylontmp1)));
     }
     
     private final void testIs() {

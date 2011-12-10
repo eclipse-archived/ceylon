@@ -17,18 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-Natural attrNatural = 1;
-shared Natural attrNaturalPublic = 1;
-variable Natural attrVarNatural := 1;
-shared variable Natural attrVarNaturalPublic := 1;
-Natural attrGetNatural {
+Integer attrInteger = 1;
+shared Integer attrIntegerPublic = 1;
+variable Integer attrVarInteger := 1;
+shared variable Integer attrVarIntegerPublic := 1;
+Integer attrGetInteger {
     return 1;
 }
-shared Natural attrGetNaturalPublic {
+shared Integer attrGetIntegerPublic {
     return 1;
 }
-Natural attrGetSetNatural {
+Integer attrGetSetInteger {
     return 1;
 }
-assign attrGetSetNatural {
+assign attrGetSetInteger {
 }

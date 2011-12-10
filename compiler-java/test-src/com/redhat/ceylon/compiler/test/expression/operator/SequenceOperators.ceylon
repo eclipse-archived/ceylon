@@ -20,25 +20,25 @@
 @nomodel
 shared class SequenceOperators() {
     
-    Correspondence<Natural, String> c1 = {""};
-    Correspondence<Natural,String>? c2 = {""};
+    Correspondence<Integer, String> c1 = {""};
+    Correspondence<Integer,String>? c2 = {""};
     String[] sequence = {};
     
     T box<T>(T x){ return x; }
     
-    void testSequence(Correspondence<Natural, String> c1, Correspondence<Natural,String>? c2) {
+    void testSequence(Correspondence<Integer, String> c1, Correspondence<Integer,String>? c2) {
         variable String? s := c1[1];
         s := this.c1[1];
         s := c1[box(1)];
 // M2:
-//        if (c1 satisfies OpenCorrespondence<Natural, String>) {
+//        if (c1 satisfies OpenCorrespondence<Integer, String>) {
 //            c1[n1] := s;
 //        }
         s :=  c2?[1];
         s :=  this.c2?[1];
         s :=  c2?[box(1)];
 // M2:        
-//        Natural[] indices = {1, 2, 3};
+//        Integer[] indices = {1, 2, 3};
 //        variable String[] seq1 := c1[indices];
 //        variable Iterable<String> it1 := c1[indices.iterator];
 		String[] sequence = {"foo", "bar"};
@@ -51,7 +51,7 @@ shared class SequenceOperators() {
         upperRange := this.sequence[1...];
         upperRange := sequence[box(1)...];
 /*
-        Natural[] spreadMember = n1[].size;
+        Integer[] spreadMember = n1[].size;
         variable Iterable<String>[] spreadInvoke = n1[].lines();
         spreadInvoke = n1[].lines{};
 */       

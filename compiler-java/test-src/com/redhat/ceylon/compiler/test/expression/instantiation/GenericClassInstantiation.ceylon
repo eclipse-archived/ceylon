@@ -30,15 +30,15 @@ shared class KlassTypeParams<U,V>(U u, V v) {
 
 @nomodel
 class KlassTypeParamsInstantiation(){
-    shared KlassTypeParams<String, Natural> m() {
-        return KlassTypeParams<String, Natural>("foo", 2);
+    shared KlassTypeParams<String, Integer> m() {
+        return KlassTypeParams<String, Integer>("foo", 2);
     }
     shared String m2() {
-        value k = KlassTypeParams<String, Natural>("foo", 2);
+        value k = KlassTypeParams<String, Integer>("foo", 2);
         return k.foo("hello", 1);
     }
     shared String m3() {
-        value k = KlassTypeParams<String, Natural>("foo", 2);
+        value k = KlassTypeParams<String, Integer>("foo", 2);
         return k.foo{u = "hello"; v = 1;};
     }
     shared void typeArgumentInference(){

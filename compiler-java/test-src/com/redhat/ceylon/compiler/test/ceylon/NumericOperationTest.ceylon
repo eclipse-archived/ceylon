@@ -18,8 +18,8 @@
  * MA  02110-1301, USA.
  */
  
-variable Natural numericOperationIncrDecrTest := 0;
-Natural numericOperationIncrDecrTestGetter {
+variable Integer numericOperationIncrDecrTest := 0;
+Integer numericOperationIncrDecrTestGetter {
     return numericOperationIncrDecrTest;
 }
 assign numericOperationIncrDecrTestGetter {
@@ -28,10 +28,10 @@ assign numericOperationIncrDecrTestGetter {
 
 shared class NumericOperationTest() extends Test() {
 
-  variable Natural incrDecrCounter := 0;
-  variable Natural unboxedAttrIncrDecr := 0;
-  variable Natural unboxedAttrIncrDecrGetterHolder := 0;
-  Natural unboxedAttrIncrDecrGetter {
+  variable Integer incrDecrCounter := 0;
+  variable Integer unboxedAttrIncrDecr := 0;
+  variable Integer unboxedAttrIncrDecrGetterHolder := 0;
+  Integer unboxedAttrIncrDecrGetter {
     return unboxedAttrIncrDecrGetterHolder;
   }
   assign unboxedAttrIncrDecrGetter {
@@ -76,7 +76,7 @@ shared class NumericOperationTest() extends Test() {
 
   @test
   shared void testUnboxedLocalIncrDecr(){
-    variable Natural n := 0;
+    variable Integer n := 0;
     assertEquals(0, n);
 
     // postfix ++
@@ -106,8 +106,8 @@ shared class NumericOperationTest() extends Test() {
 
   @test
   shared void testUnboxedLocalIncrDecrGetter(){
-    variable Natural nHolder := 0;
-    Natural n {
+    variable Integer nHolder := 0;
+    Integer n {
         return nHolder;
     }
     assign n {
@@ -141,7 +141,7 @@ shared class NumericOperationTest() extends Test() {
   }
 
   @test
-  shared void testBoxedLocalIncrDecr<T>(T init) given T satisfies Natural {
+  shared void testBoxedLocalIncrDecr<T>(T init) given T satisfies Integer {
     variable T n := init;
     assertEquals(0, n);
 

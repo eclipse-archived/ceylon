@@ -19,11 +19,11 @@
  */
 @nomodel
 class MethodWithVarargs() {
-    shared void f1(Natural... ns) {
-        for (Natural n in ns) { }
+    shared void f1(Integer... ns) {
+        for (Integer n in ns) { }
     }
-    shared void f2(Natural i, Natural... ns) {
-        for (Natural n in ns) { }
+    shared void f2(Integer i, Integer... ns) {
+        for (Integer n in ns) { }
     }
     shared void f3(Object... os) {
         for (Object o in os) { }

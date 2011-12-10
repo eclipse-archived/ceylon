@@ -233,9 +233,9 @@ shared class IntegerTest() extends Test() {
 	}
 	
 	@test
-	shared void testNatural() {
+	shared void testInteger() {
 		Integer ten = +10;
-		Natural other = ten.natural;			
+		Integer other = ten.natural;			
 	}
 	
 	@test

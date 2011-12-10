@@ -33,5 +33,5 @@ interface SatisfiesGeneric<out X, in Y, Z> {
 }
 @nomodel
 class SatisfiesGenericImpl()
-    satisfies SatisfiesGeneric<SatisfiesGeneric_Foo<Natural>, SatisfiesGeneric_Bar<Integer>, SatisfiesGeneric_Baz<String>> {
+    satisfies SatisfiesGeneric<SatisfiesGeneric_Foo<Integer>, SatisfiesGeneric_Bar<Integer>, SatisfiesGeneric_Baz<String>> {
 }

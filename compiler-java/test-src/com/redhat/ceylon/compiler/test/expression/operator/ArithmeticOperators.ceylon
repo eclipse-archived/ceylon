@@ -20,33 +20,26 @@
 
 // we need those to test for boxed numbers
 @nomodel
-abstract class MyNatural()
-        extends Object()
-        satisfies Castable<MyNatural|MyInteger|Float> &
-                  Integral<MyNatural> &
-                  Subtractable<MyNatural,MyInteger> {}
-@nomodel
 abstract class MyInteger()
         extends Object()
         satisfies Castable<MyInteger|Float> &
-                  Integral<MyInteger> &
-                  Subtractable<MyInteger,MyInteger> {}
+                  Integral<MyInteger> {}
 
 @nomodel
-variable Natural toplevelN1 := 0;
+variable Integer toplevelN1 := 0;
 @nomodel
-variable Natural toplevelN2 := 0;
+variable Integer toplevelN2 := 0;
 @nomodel
 variable Integer toplevelI1 := +0;
 
 @nomodel 
-Natural toplevelGetterN1 {
+Integer toplevelGetterN1 {
     return toplevelN1; 
 }assign toplevelGetterN1 {
     toplevelN1 := toplevelGetterN1; 
 }
 @nomodel 
-Natural toplevelGetterN2 {
+Integer toplevelGetterN2 {
     return toplevelN2; 
 }assign toplevelGetterN2 {
     toplevelN2 := toplevelGetterN2; 
@@ -59,17 +52,17 @@ Integer toplevelGetterI1 {
 }
 
 @nomodel
-class ArithmeticOperators(MyNatural initN, MyInteger initI) {
-    variable Natural n1 := 0;
-    variable Natural n2 := 0;
+class ArithmeticOperators(MyInteger initN, MyInteger initI) {
+    variable Integer n1 := 0;
+    variable Integer n2 := 0;
     variable Integer i1 := +0;
     
-    Natural getterN1 {
+    Integer getterN1 {
         return n1; 
     }assign getterN1 {
         n1 := getterN1; 
     }
-    Natural getterN2 {
+    Integer getterN2 {
         return n2; 
     }assign getterN2 {
         n2 := getterN2; 
@@ -80,8 +73,8 @@ class ArithmeticOperators(MyNatural initN, MyInteger initI) {
         i1 := getterI1; 
     }
 
-    variable MyNatural boxedN1 := initN;
-    variable MyNatural boxedN2 := initN;
+    variable MyInteger boxedN1 := initN;
+    variable MyInteger boxedN2 := initN;
     variable MyInteger boxedI1 := initI;
 
     //
@@ -204,8 +197,8 @@ class ArithmeticOperators(MyNatural initN, MyInteger initI) {
     // Local Attributes
 
     void unboxedLocals() {
-        variable Natural n1 := 0;
-        variable Natural n2 := 0;
+        variable Integer n1 := 0;
+        variable Integer n2 := 0;
         variable Integer i1 := +0;
         
         n1++;
@@ -230,15 +223,15 @@ class ArithmeticOperators(MyNatural initN, MyInteger initI) {
     }
 
     void unboxedLocalGetters() {
-        variable Natural n1 := 0;
-        variable Natural n2 := 0;
+        variable Integer n1 := 0;
+        variable Integer n2 := 0;
         variable Integer i1 := +0;
-        Natural getterN1 {
+        Integer getterN1 {
             return n1; 
         }assign getterN1 {
             n1 := getterN1; 
         }
-        Natural getterN2 {
+        Integer getterN2 {
             return n2; 
         }assign getterN2 {
             n2 := getterN2; 
@@ -271,8 +264,8 @@ class ArithmeticOperators(MyNatural initN, MyInteger initI) {
     }
 
     void boxedLocals(){
-        variable MyNatural n1 := initN;
-        variable MyNatural n2 := initN;
+        variable MyInteger n1 := initN;
+        variable MyInteger n2 := initN;
         variable MyInteger i1 := initI;
 
         n1++;

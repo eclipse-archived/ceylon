@@ -24,7 +24,7 @@ class ValueKeyword(){
         value l = f;
         value l2 = test();
     }
-    Natural test(){
+    Integer test(){
         return 0;    
     }
 }

@@ -19,7 +19,7 @@
  */
 @nomodel
 class MethodIfElseIf(){
-    Natural m(){
+    Integer m(){
        if(true){
            return 1;
        }else if(false){

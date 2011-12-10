@@ -19,7 +19,7 @@
  */
 @nomodel
 class MethodDoWhile(){
-    shared Natural m(){
+    shared Integer m(){
         do {
             // Do stuff here;
         }

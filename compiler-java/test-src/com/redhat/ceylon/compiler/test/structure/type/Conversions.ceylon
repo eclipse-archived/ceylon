@@ -83,8 +83,8 @@ class Conversions() {
         
         // For an optional type T?:
         //  - The Ceylon type T? results in the Java type T
-        Natural? n1 = 1;
-        Natural? n2 = null;
+        Integer? n1 = 1;
+        Integer? n2 = null;
         
         // For any other union type U|V (U nor V is Optional):
         // - The Ceylon type U|V results in the Java type Object

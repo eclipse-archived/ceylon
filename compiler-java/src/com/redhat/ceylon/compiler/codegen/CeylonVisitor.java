@@ -409,7 +409,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     // NB spec 1.3.11 says "There are only two types of numeric
-    // literals: literals for Naturals and literals for Floats."
+    // literals: literals for Integers and literals for Floats."
     public void visit(Tree.NaturalLiteral lit) {
         append(gen.expressionGen().transform(lit));
     }

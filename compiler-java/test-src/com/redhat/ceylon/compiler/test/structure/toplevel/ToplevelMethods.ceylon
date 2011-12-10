@@ -22,6 +22,6 @@ void toplevelMethod() {
 }
 
 @nomodel
-Natural anotherToplevelMethod(Natural n) {
+Integer anotherToplevelMethod(Integer n) {
     return 0;
 }

@@ -25,14 +25,14 @@ class ClassInstantiation(){
 }
 
 @nomodel
-class ClassInstantiationWithParam(Natural i){
+class ClassInstantiationWithParam(Integer i){
     shared ClassInstantiationWithParam m() {
         return ClassInstantiationWithParam(2);
     }
 }
 
 @nomodel
-class ClassInstantiationWithParams(Natural i, String j){
+class ClassInstantiationWithParams(Integer i, String j){
     shared ClassInstantiationWithParams m() {
         return ClassInstantiationWithParams(2, "");
     }

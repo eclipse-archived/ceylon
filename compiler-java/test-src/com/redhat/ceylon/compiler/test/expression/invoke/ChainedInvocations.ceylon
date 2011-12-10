@@ -19,10 +19,10 @@
  */
 @nomodel
 class ChainedInvocations(){
-    Natural m() {
+    Integer m() {
         return ChainedInvocations().foo();
     }
-    Natural foo() {
+    Integer foo() {
         return 1;
     }
 }

@@ -19,9 +19,9 @@
  */
 @nomodel
 class MethodIfNonEmpty() {
-    shared Natural m(Natural[] x) {
+    shared Integer m(Integer[] x) {
         if (nonempty x) {
-            Sequence<Natural> s = x;
+            Sequence<Integer> s = x;
         }
         return 0;
     }

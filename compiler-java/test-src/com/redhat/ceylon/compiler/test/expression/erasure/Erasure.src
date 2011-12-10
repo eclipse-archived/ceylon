@@ -222,30 +222,30 @@ class Test {
         boolean bSync;
         bSync = p1OrNothing != null;
         final .java.lang.Object p2 = (let .java.lang.Object $ceylontmp9 = p1OrNothing in $ceylontmp9 != null ? $ceylontmp9 : p1);
-        final long n = ((ceylon.language.Natural)(let .java.lang.Object $ceylontmp10 = p1OrNothing in $ceylontmp10 != null ? $ceylontmp10 : p1)).longValue();
+        final long n = ((ceylon.language.Integer)(let .java.lang.Object $ceylontmp10 = p1OrNothing in $ceylontmp10 != null ? $ceylontmp10 : p1)).longValue();
     }
     
     private final void testArithmeticOperators(final .java.lang.Object p1, final .java.lang.Object erasedTest) {
-        final long unboxed = ((ceylon.language.Natural)p1).longValue();
-        final .java.lang.Object boxed = .ceylon.language.Natural.instance(1L);
-        .java.lang.Object n = .ceylon.language.Natural.instance(1L);
-        final long n2 = ((ceylon.language.Summable<ceylon.language.Natural>)n).plus((ceylon.language.Natural)n).longValue();
-        final long i0 = ((ceylon.language.Subtractable<ceylon.language.Natural, ceylon.language.Integer>)n).minus((ceylon.language.Natural)n).longValue();
-        final long n3 = ((ceylon.language.Numeric<ceylon.language.Natural>)n).times((ceylon.language.Natural)n).longValue();
-        n = (let ceylon.language.Natural $ceylontmpop11 = ((ceylon.language.Summable<ceylon.language.Natural>)n).plus((ceylon.language.Natural)n) in n = $ceylontmpop11; $ceylontmpop11);
-        n = (let ceylon.language.Integer $ceylontmpop12 = ((ceylon.language.Subtractable<ceylon.language.Natural, ceylon.language.Integer>)n).minus((ceylon.language.Natural)n) in n = $ceylontmpop12; $ceylontmpop12);
-        n = (let ceylon.language.Natural $ceylontmpop13 = ((ceylon.language.Numeric<ceylon.language.Natural>)n).times((ceylon.language.Natural)n) in n = $ceylontmpop13; $ceylontmpop13);
-        ((com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest).setN((let com.redhat.ceylon.compiler.test.expression.erasure.Test $ceylontmpopE14 = (com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest,ceylon.language.Natural $ceylontmpopV15 = ((ceylon.language.Summable<ceylon.language.Natural>)$ceylontmpopE14.getN()).plus((ceylon.language.Natural)((com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest).getN()) in $ceylontmpopE14.setN($ceylontmpopV15); $ceylontmpopV15));
-        ((com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest).setN((let com.redhat.ceylon.compiler.test.expression.erasure.Test $ceylontmpopE16 = (com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest,ceylon.language.Integer $ceylontmpopV17 = ((ceylon.language.Subtractable<ceylon.language.Natural, ceylon.language.Integer>)$ceylontmpopE16.getN()).minus((ceylon.language.Natural)((com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest).getN()) in $ceylontmpopE16.setN($ceylontmpopV17); $ceylontmpopV17));
-        ((com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest).setN((let com.redhat.ceylon.compiler.test.expression.erasure.Test $ceylontmpopE18 = (com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest,ceylon.language.Natural $ceylontmpopV19 = ((ceylon.language.Numeric<ceylon.language.Natural>)$ceylontmpopE18.getN()).times((ceylon.language.Natural)((com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest).getN()) in $ceylontmpopE18.setN($ceylontmpopV19); $ceylontmpopV19));
-        n = (let ceylon.language.Natural $ceylontmpop20 = (ceylon.language.Natural)n in n = $ceylontmpop20.getSuccessor(); $ceylontmpop20);
-        n = (let ceylon.language.Natural $ceylontmpop21 = ((ceylon.language.Ordinal<? extends ceylon.language.Natural>)n).getSuccessor() in n = $ceylontmpop21; $ceylontmpop21);
-        ((com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest).setN((let com.redhat.ceylon.compiler.test.expression.erasure.Test $ceylontmpopE22 = (com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest,ceylon.language.Natural $ceylontmpopV23 = (ceylon.language.Natural)$ceylontmpopE22.getN() in $ceylontmpopE22.setN($ceylontmpopV23.getSuccessor()); $ceylontmpopV23));
-        ((com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest).setN((let com.redhat.ceylon.compiler.test.expression.erasure.Test $ceylontmpopE24 = (com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest,ceylon.language.Natural $ceylontmpopV25 = ((ceylon.language.Ordinal<? extends ceylon.language.Natural>)$ceylontmpopE24.getN()).getSuccessor() in $ceylontmpopE24.setN($ceylontmpopV25); $ceylontmpopV25));
-        .java.lang.Object m = .ceylon.language.Natural.instance(1L);
-        final long n4 = ((ceylon.language.Integral<ceylon.language.Natural>)m).remainder((ceylon.language.Natural)m).longValue();
-        m = (let ceylon.language.Natural $ceylontmpop26 = ((ceylon.language.Integral<ceylon.language.Natural>)m).remainder((ceylon.language.Natural)m) in m = $ceylontmpop26; $ceylontmpop26);
-        ((com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest).setM((let com.redhat.ceylon.compiler.test.expression.erasure.Test $ceylontmpopE27 = (com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest,ceylon.language.Natural $ceylontmpopV28 = ((ceylon.language.Integral<ceylon.language.Natural>)$ceylontmpopE27.getM()).remainder((ceylon.language.Natural)((com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest).getM()) in $ceylontmpopE27.setM($ceylontmpopV28); $ceylontmpopV28));
+        final long unboxed = ((ceylon.language.Integer)p1).longValue();
+        final .java.lang.Object boxed = .ceylon.language.Integer.instance(1L);
+        .java.lang.Object n = .ceylon.language.Integer.instance(1L);
+        final long n2 = ((ceylon.language.Summable<ceylon.language.Integer>)n).plus((ceylon.language.Integer)n).longValue();
+        final long i0 = ((ceylon.language.Subtractable<ceylon.language.Integer, ceylon.language.Integer>)n).minus((ceylon.language.Integer)n).longValue();
+        final long n3 = ((ceylon.language.Numeric<ceylon.language.Integer>)n).times((ceylon.language.Integer)n).longValue();
+        n = (let ceylon.language.Integer $ceylontmpop11 = ((ceylon.language.Summable<ceylon.language.Integer>)n).plus((ceylon.language.Integer)n) in n = $ceylontmpop11; $ceylontmpop11);
+        n = (let ceylon.language.Integer $ceylontmpop12 = ((ceylon.language.Subtractable<ceylon.language.Integer, ceylon.language.Integer>)n).minus((ceylon.language.Integer)n) in n = $ceylontmpop12; $ceylontmpop12);
+        n = (let ceylon.language.Integer $ceylontmpop13 = ((ceylon.language.Numeric<ceylon.language.Integer>)n).times((ceylon.language.Integer)n) in n = $ceylontmpop13; $ceylontmpop13);
+        ((com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest).setN((let com.redhat.ceylon.compiler.test.expression.erasure.Test $ceylontmpopE14 = (com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest,ceylon.language.Integer $ceylontmpopV15 = ((ceylon.language.Summable<ceylon.language.Integer>)$ceylontmpopE14.getN()).plus((ceylon.language.Integer)((com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest).getN()) in $ceylontmpopE14.setN($ceylontmpopV15); $ceylontmpopV15));
+        ((com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest).setN((let com.redhat.ceylon.compiler.test.expression.erasure.Test $ceylontmpopE16 = (com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest,ceylon.language.Integer $ceylontmpopV17 = ((ceylon.language.Subtractable<ceylon.language.Integer, ceylon.language.Integer>)$ceylontmpopE16.getN()).minus((ceylon.language.Integer)((com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest).getN()) in $ceylontmpopE16.setN($ceylontmpopV17); $ceylontmpopV17));
+        ((com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest).setN((let com.redhat.ceylon.compiler.test.expression.erasure.Test $ceylontmpopE18 = (com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest,ceylon.language.Integer $ceylontmpopV19 = ((ceylon.language.Numeric<ceylon.language.Integer>)$ceylontmpopE18.getN()).times((ceylon.language.Integer)((com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest).getN()) in $ceylontmpopE18.setN($ceylontmpopV19); $ceylontmpopV19));
+        n = (let ceylon.language.Integer $ceylontmpop20 = (ceylon.language.Integer)n in n = $ceylontmpop20.getSuccessor(); $ceylontmpop20);
+        n = (let ceylon.language.Integer $ceylontmpop21 = ((ceylon.language.Ordinal<? extends ceylon.language.Integer>)n).getSuccessor() in n = $ceylontmpop21; $ceylontmpop21);
+        ((com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest).setN((let com.redhat.ceylon.compiler.test.expression.erasure.Test $ceylontmpopE22 = (com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest,ceylon.language.Integer $ceylontmpopV23 = (ceylon.language.Integer)$ceylontmpopE22.getN() in $ceylontmpopE22.setN($ceylontmpopV23.getSuccessor()); $ceylontmpopV23));
+        ((com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest).setN((let com.redhat.ceylon.compiler.test.expression.erasure.Test $ceylontmpopE24 = (com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest,ceylon.language.Integer $ceylontmpopV25 = ((ceylon.language.Ordinal<? extends ceylon.language.Integer>)$ceylontmpopE24.getN()).getSuccessor() in $ceylontmpopE24.setN($ceylontmpopV25); $ceylontmpopV25));
+        .java.lang.Object m = .ceylon.language.Integer.instance(1L);
+        final long n4 = ((ceylon.language.Integral<ceylon.language.Integer>)m).remainder((ceylon.language.Integer)m).longValue();
+        m = (let ceylon.language.Integer $ceylontmpop26 = ((ceylon.language.Integral<ceylon.language.Integer>)m).remainder((ceylon.language.Integer)m) in m = $ceylontmpop26; $ceylontmpop26);
+        ((com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest).setM((let com.redhat.ceylon.compiler.test.expression.erasure.Test $ceylontmpopE27 = (com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest,ceylon.language.Integer $ceylontmpopV28 = ((ceylon.language.Integral<ceylon.language.Integer>)$ceylontmpopE27.getM()).remainder((ceylon.language.Integer)((com.redhat.ceylon.compiler.test.expression.erasure.Test)erasedTest).getM()) in $ceylontmpopE27.setM($ceylontmpopV28); $ceylontmpopV28));
         final long i1 = ((ceylon.language.Invertable<? extends ceylon.language.Integer>)m).getNegativeValue().longValue();
         final long i2 = ((ceylon.language.Invertable<? extends ceylon.language.Integer>)m).getPositiveValue().longValue();
     }
@@ -254,30 +254,30 @@ class Test {
         boolean sync;
         sync = erasedTest == erasedTest;
         sync = p1.equals(p1);
-        sync = ((ceylon.language.Comparable<? super ceylon.language.Natural>)p1).compare((ceylon.language.Natural)p1).smaller();
-        final ceylon.language.Comparison cmp = ((ceylon.language.Comparable<? super ceylon.language.Natural>)p1).compare((ceylon.language.Natural)p1);
+        sync = ((ceylon.language.Comparable<? super ceylon.language.Integer>)p1).compare((ceylon.language.Integer)p1).smaller();
+        final ceylon.language.Comparison cmp = ((ceylon.language.Comparable<? super ceylon.language.Integer>)p1).compare((ceylon.language.Integer)p1);
         sync = (let .java.lang.Object $ceylontmp29 = p1 in ((ceylon.language.Category)container).contains($ceylontmp29));
         .java.lang.Object $p1$30;
-        if (($p1$30 = p1) instanceof ceylon.language.Natural) {
-            final long $p1$31 = ((ceylon.language.Natural)$p1$30).longValue();
+        if (($p1$30 = p1) instanceof ceylon.language.Integer) {
+            final long $p1$31 = ((ceylon.language.Integer)$p1$30).longValue();
         }
-        sync = p1 instanceof ceylon.language.Natural;
+        sync = p1 instanceof ceylon.language.Integer;
     }
     
     private final void testSequences(final .java.lang.Object p1, final ceylon.language.Iterable leftsAndRights, final ceylon.language.Iterable leftsAndRightsEntries, final ceylon.language.Iterable topsOrNothing) {
         final ceylon.language.Iterable naturals = new ceylon.language.ArraySequence(p1);
-        final ceylon.language.Natural n5 = (ceylon.language.Natural)((ceylon.language.Correspondence)naturals).item((ceylon.language.Natural)p1);
-        final com.redhat.ceylon.compiler.test.expression.erasure.Top t = (com.redhat.ceylon.compiler.test.expression.erasure.Top)((ceylon.language.Correspondence)leftsAndRights).item((ceylon.language.Natural)p1);
+        final ceylon.language.Integer n5 = (ceylon.language.Integer)((ceylon.language.Correspondence)naturals).item((ceylon.language.Integer)p1);
+        final com.redhat.ceylon.compiler.test.expression.erasure.Top t = (com.redhat.ceylon.compiler.test.expression.erasure.Top)((ceylon.language.Correspondence)leftsAndRights).item((ceylon.language.Integer)p1);
         final ceylon.language.Iterable naturalsOrNothing = new ceylon.language.ArraySequence(p1);
-        final ceylon.language.Natural n52 = (ceylon.language.Natural)(let ceylon.language.Correspondence $ceylontmpsafeaccess32 = (ceylon.language.Correspondence)naturalsOrNothing in $ceylontmpsafeaccess32 != null ? $ceylontmpsafeaccess32.item((ceylon.language.Natural)p1) : null);
-        final com.redhat.ceylon.compiler.test.expression.erasure.Top t2 = (com.redhat.ceylon.compiler.test.expression.erasure.Top)(let ceylon.language.Correspondence $ceylontmpsafeaccess33 = (ceylon.language.Correspondence)topsOrNothing in $ceylontmpsafeaccess33 != null ? $ceylontmpsafeaccess33.item((ceylon.language.Natural)p1) : null);
+        final ceylon.language.Integer n52 = (ceylon.language.Integer)(let ceylon.language.Correspondence $ceylontmpsafeaccess32 = (ceylon.language.Correspondence)naturalsOrNothing in $ceylontmpsafeaccess32 != null ? $ceylontmpsafeaccess32.item((ceylon.language.Integer)p1) : null);
+        final com.redhat.ceylon.compiler.test.expression.erasure.Top t2 = (com.redhat.ceylon.compiler.test.expression.erasure.Top)(let ceylon.language.Correspondence $ceylontmpsafeaccess33 = (ceylon.language.Correspondence)topsOrNothing in $ceylontmpsafeaccess33 != null ? $ceylontmpsafeaccess33.item((ceylon.language.Integer)p1) : null);
         ceylon.language.Iterable subrange;
-        subrange = ((ceylon.language.Ranged<? super ceylon.language.Natural, ? extends ceylon.language.Iterable>)naturals).span((ceylon.language.Natural)p1, (ceylon.language.Natural)p1);
-        subrange = ((ceylon.language.Ranged<? super ceylon.language.Natural, ? extends ceylon.language.Iterable>)naturals).span((ceylon.language.Natural)p1, null);
-        final ceylon.language.Iterable<? extends ceylon.language.Natural> plainNaturals = new ceylon.language.ArraySequence(p1);
+        subrange = ((ceylon.language.Ranged<? super ceylon.language.Integer, ? extends ceylon.language.Iterable>)naturals).span((ceylon.language.Integer)p1, (ceylon.language.Integer)p1);
+        subrange = ((ceylon.language.Ranged<? super ceylon.language.Integer, ? extends ceylon.language.Iterable>)naturals).span((ceylon.language.Integer)p1, null);
+        final ceylon.language.Iterable<? extends ceylon.language.Integer> plainNaturals = new ceylon.language.ArraySequence(p1);
         for (ceylon.language.Iterator $it$iter$34 = naturals.getIterator(); $it$iter$34 != null; $it$iter$34 = $it$iter$34.getTail()) {
             final .java.lang.Object it = $it$iter$34.getHead();
-            final ceylon.language.Numeric<ceylon.language.Natural> n6 = (ceylon.language.Numeric<ceylon.language.Natural>)it;
+            final ceylon.language.Numeric<ceylon.language.Integer> n6 = (ceylon.language.Numeric<ceylon.language.Integer>)it;
         }
         for (ceylon.language.Iterator<? extends com.redhat.ceylon.compiler.test.expression.erasure.Left> $itLeft$iter$35 = leftsAndRights.getIterator(); $itLeft$iter$35 != null; $itLeft$iter$35 = $itLeft$iter$35.getTail()) {
             final com.redhat.ceylon.compiler.test.expression.erasure.Left itLeft = $itLeft$iter$35.getHead();
@@ -343,8 +343,8 @@ class Test {
     Test() {
         this.leftAttribute = new com.redhat.ceylon.compiler.test.expression.erasure.CLeft();
         this.middleAttribute = new com.redhat.ceylon.compiler.test.expression.erasure.CMiddle();
-        this.n = .ceylon.language.Natural.instance(1L);
-        this.m = .ceylon.language.Natural.instance(1L);
+        this.n = .ceylon.language.Integer.instance(1L);
+        this.m = .ceylon.language.Integer.instance(1L);
     }
     
     public static void main(.java.lang.String[] args) {

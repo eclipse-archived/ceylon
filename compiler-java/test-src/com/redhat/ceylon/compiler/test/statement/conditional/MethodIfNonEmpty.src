@@ -2,11 +2,11 @@ package com.redhat.ceylon.compiler.test.statement.conditional;
 
 class MethodIfNonEmpty {
     
-    public final long m(final ceylon.language.Iterable<? extends ceylon.language.Natural> x) {
-        ceylon.language.Iterable<? extends ceylon.language.Natural> $x$0;
+    public final long m(final ceylon.language.Iterable<? extends ceylon.language.Integer> x) {
+        ceylon.language.Iterable<? extends ceylon.language.Integer> $x$0;
         if (($x$0 = x) instanceof ceylon.language.Sequence) {
-            final ceylon.language.Sequence<? extends ceylon.language.Natural> $x$1 = (ceylon.language.Sequence<? extends ceylon.language.Natural>)$x$0;
-            final ceylon.language.Sequence<? extends ceylon.language.Natural> s = $x$1;
+            final ceylon.language.Sequence<? extends ceylon.language.Integer> $x$1 = (ceylon.language.Sequence<? extends ceylon.language.Integer>)$x$0;
+            final ceylon.language.Sequence<? extends ceylon.language.Integer> s = $x$1;
         }
         return 0L;
     }

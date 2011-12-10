@@ -22,13 +22,13 @@ void foo(){
 }
 
 @nomodel
-Natural bar(Natural i, String j){
+Integer bar(Integer i, String j){
     return 1;
 }
 
 @nomodel
 class ToplevelMethodInvocation(){
-    Natural m() {
+    Integer m() {
         foo();
         return bar(1, "");
     }

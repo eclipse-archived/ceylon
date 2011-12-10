@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class SequencedParameterClassInstantiation(Natural a, Natural... args){
+class SequencedParameterClassInstantiation(Integer a, Integer... args){
     shared void m() {
         SequencedParameterClassInstantiation a = SequencedParameterClassInstantiation(1);
         SequencedParameterClassInstantiation b = SequencedParameterClassInstantiation(1, 2);

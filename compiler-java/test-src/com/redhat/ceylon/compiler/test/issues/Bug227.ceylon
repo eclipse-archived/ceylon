@@ -19,8 +19,8 @@
  */
 @nomodel
 shared class Bug227() {
-    variable Natural _num := 1;
-    shared Natural num {
+    variable Integer _num := 1;
+    shared Integer num {
         return this._num;
     } 
     assign num {

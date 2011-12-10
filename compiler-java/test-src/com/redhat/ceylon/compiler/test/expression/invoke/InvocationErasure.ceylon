@@ -40,7 +40,7 @@ class MethodErasure() {
     String hashCode() {
         return "bar";
     }
-    Natural toString() {
+    Integer toString() {
         return 0;
     }
 }

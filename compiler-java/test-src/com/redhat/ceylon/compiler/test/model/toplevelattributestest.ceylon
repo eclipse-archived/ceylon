@@ -18,10 +18,10 @@
  * MA  02110-1301, USA.
  */
 void m() {
-    Natural n1 = attrNatural;
-    Natural n2 = attrNaturalPublic;
-    Natural n3 = attrVarNatural;
-    Natural n4 = attrVarNaturalPublic;
-    Natural n5 = attrGetNatural;
-    Natural n6 = attrGetNaturalPublic;
+    Integer n1 = attrInteger;
+    Integer n2 = attrIntegerPublic;
+    Integer n3 = attrVarInteger;
+    Integer n4 = attrVarIntegerPublic;
+    Integer n5 = attrGetInteger;
+    Integer n6 = attrGetIntegerPublic;
 }
