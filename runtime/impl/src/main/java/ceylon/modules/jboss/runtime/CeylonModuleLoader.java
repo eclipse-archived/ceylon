@@ -36,7 +36,6 @@ import org.jboss.modules.ModuleLoader;
 import org.jboss.modules.ModuleSpec;
 import org.jboss.modules.ResourceLoader;
 import org.jboss.modules.ResourceLoaderSpec;
-import org.jboss.modules.filter.PathFilter;
 import org.jboss.modules.filter.PathFilters;
 
 import java.io.File;
@@ -185,10 +184,7 @@ public class CeylonModuleLoader extends ModuleLoader {
 
             Graph.Vertex<ModuleIdentifier, Boolean> vertex = graph.createVertex(moduleIdentifier, moduleIdentifier);
 
-            PathFilter exportFilter = new PathFilterWrapper(module.getExports());
-            PathFilter importFilter = new PathFilterWrapper(module.getImports());
-
-            DependencySpec lds = DependencySpec.createLocalDependencySpec(importFilter, exportFilter);
+            DependencySpec lds = DependencySpec.createLocalDependencySpec(PathFilters.acceptAll(), PathFilters.rejectAll());
             builder.addDependency(lds); // local resources
             deps.add(lds);
 
@@ -196,7 +192,7 @@ public class CeylonModuleLoader extends ModuleLoader {
             if (imports != null) {
                 Node<Import> root = new Node<Import>();
                 for (Import i : imports) {
-                    if (i.getOnDemand()) {
+                    if (i.getOptional()) {
                         String path = i.getName().toString();
                         Node<Import> current = root;
                         String[] tokens = path.split("\\.");
@@ -215,8 +211,7 @@ public class CeylonModuleLoader extends ModuleLoader {
 
                     ModuleIdentifier mi = createModuleIdentifier(i);
                     Graph.Vertex<ModuleIdentifier, Boolean> dv = graph.createVertex(mi, mi);
-                    boolean export = i.getExports() != ceylon.language.descriptor.PathFilters.rejectAll();
-                    Graph.Edge.create(export, vertex, dv);
+                    Graph.Edge.create(true, vertex, dv);
                 }
                 if (root.isEmpty() == false) {
                     LocalLoader onDemandLoader = new OnDemandLocalLoader(moduleIdentifier, this, root);
@@ -270,9 +265,7 @@ public class CeylonModuleLoader extends ModuleLoader {
      */
     DependencySpec createModuleDependency(Import i) {
         ModuleIdentifier mi = createModuleIdentifier(i);
-        PathFilter exportFilter = new PathFilterWrapper(i.getExports());
-        PathFilter importFilter = new PathFilterWrapper(i.getImports());
-        return DependencySpec.createModuleDependencySpec(importFilter, exportFilter, this, mi, i.getOptional());
+        return DependencySpec.createModuleDependencySpec(PathFilters.acceptAll(), PathFilters.rejectAll(), this, mi, i.getOptional());
     }
 
     /**
