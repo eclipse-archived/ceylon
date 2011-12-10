@@ -24,7 +24,6 @@ package eu.cloud.clazz;
 
 import ceylon.language.Quoted;
 import ceylon.language.descriptor.Import;
-import ceylon.language.descriptor.PathFilter;
 import ceylon.modules.api.util.JavaToCeylon;
 import ceylon.modules.api.util.ModuleVersion;
 
@@ -36,12 +35,14 @@ public class module {
         Quoted name = JavaToCeylon.toQuoted("eu.cloud.clazz");
         Quoted version = JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "GA").toString());
         // TODO -- maybe used later on
+        /*
         PathFilter imports = new PathFilter() {
             public ceylon.language.Boolean accept(ceylon.language.String path) {
                 boolean contains = path.contains(JavaToCeylon.toString("spi"));
                 return JavaToCeylon.toBoolean(contains);
             }
         };
+        */
         Import im = new Import(
                 JavaToCeylon.toQuoted("org.jboss.filtered"),
                 JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "Alpha1").toString()),

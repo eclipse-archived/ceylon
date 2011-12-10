@@ -23,7 +23,6 @@
 package org.jboss.filtered;
 
 import ceylon.language.Quoted;
-import ceylon.language.descriptor.PathFilter;
 import ceylon.modules.api.util.JavaToCeylon;
 import ceylon.modules.api.util.ModuleVersion;
 
@@ -35,11 +34,13 @@ public class module {
         Quoted name = JavaToCeylon.toQuoted("org.jboss.filtered");
         Quoted version = JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "Alpha1").toString());
         // TODO - maybe used later on
+        /*
         PathFilter exports = new PathFilter() {
             public ceylon.language.Boolean accept(ceylon.language.String path) {
                 return JavaToCeylon.toBoolean(path.startsWith("org/jboss/filtered/spi") || path.startsWith("org/jboss/filtered/api"));
             }
         };
+        */
         return new ceylon.language.descriptor.Module(name, version, null, null, null, null);
     }
 }
