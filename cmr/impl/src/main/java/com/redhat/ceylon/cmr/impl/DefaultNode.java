@@ -81,7 +81,7 @@ public class DefaultNode extends AbstractOpenNode {
 
     @Override
     public Node removeNode(String label) {
-        Node node = children.remove(label);
+        final Node node = children.remove(label);
         if (node instanceof DefaultNode) {
             DefaultNode dn = (DefaultNode) node;
             ContentHandle ch = dn.handle;
@@ -110,13 +110,13 @@ public class DefaultNode extends AbstractOpenNode {
         if (content == null && allowNoContent == false)
             throw new IllegalArgumentException("Null content not allowed: " + label);
 
-        DefaultNode node = new DefaultNode(label, value);
+        final DefaultNode node = new DefaultNode(label, value);
         OpenNode previous = children.putIfAbsent(label, node);
         if (previous == null) {
             previous = node;
             node.parents.put(getLabel(), this);
             if (content != null) {
-                ContentStore contentStore = findService(ContentStore.class);
+                final ContentStore contentStore = findService(ContentStore.class);
                 node.handle = contentStore.putContent(node, content);
             }
         } else if (content != null) {
@@ -130,7 +130,7 @@ public class DefaultNode extends AbstractOpenNode {
         if (handle == HANDLE_MARKER)
             return false;
 
-        ContentHandle ch = findService(ContentStore.class).popContent(this);
+        final ContentHandle ch = findService(ContentStore.class).popContent(this);
         if (ch == null) {
             handle = HANDLE_MARKER;
         }
