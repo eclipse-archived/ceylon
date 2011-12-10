@@ -12,11 +12,11 @@ public final class Comparison extends Case {
     public static final Comparison SMALLER = new Comparison("smaller");
     public static final Comparison EQUAL = new Comparison("equal");
     
-    public boolean larger() {
+    public boolean largerThan() {
         return this == LARGER;
     }
 
-    public boolean smaller() {
+    public boolean smallerThan() {
         return this == SMALLER;
     }
 
@@ -28,11 +28,11 @@ public final class Comparison extends Case {
         return this != EQUAL;
     }
 
-    public boolean largeAs() {
+    public boolean asLargeAs() {
         return this != SMALLER;
     }
 
-    public boolean smallAs() {
+    public boolean asSmallAs() {
         return this != LARGER;
     }
 

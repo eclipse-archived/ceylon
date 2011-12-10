@@ -56,7 +56,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }
     
     public final boolean getDecreasing(){
-        return last.compare(first).smaller();
+        return last.compare(first).smallerThan();
     }
     
     private final Element next(Element x){
@@ -138,12 +138,12 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
 
     public final boolean includes(@Name("x") Element x){
         if (getDecreasing()){
-            return x.compare(first).smallAs() && 
-                    x.compare(last).largeAs();
+            return x.compare(first).asSmallAs() && 
+                    x.compare(last).asLargeAs();
         }
         else {
-            return x.compare(first).largeAs() && 
-                    x.compare(last).smallAs();
+            return x.compare(first).asLargeAs() && 
+                    x.compare(last).asSmallAs();
         }
     }
     
@@ -284,7 +284,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     	boolean decreasing = getDecreasing();
     	List<Element> list = new ArrayList<Element>();
     	for (Element elem = first; decreasing ? 
-    			elem.compare(last).largeAs() : elem.compare(last).smallAs();) {
+    			elem.compare(last).asLargeAs() : elem.compare(last).asSmallAs();) {
     		list.add(elem);
     		for (int i=0; i<stepSize; i++) {
     			elem = next(elem);
