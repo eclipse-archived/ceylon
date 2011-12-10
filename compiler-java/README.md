@@ -35,7 +35,7 @@ Go into **ceylon.language** first and run
     
 Then go into **ceylon-spec** and run
 
-    ant clean tree publish
+    ant clean publish
     
 To build and test the compiler return to **ceylon-compiler** and run
 
