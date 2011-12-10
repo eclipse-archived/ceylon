@@ -49,26 +49,6 @@ public final class Float
         return instance(Math.pow(value, op.value));
     }
     
-    public Float plus(Natural op) {
-        return instance(value + op.value);
-    }
-    
-    public Float minus(Natural op) {
-        return instance(value - op.value);
-    }
-    
-    public Float times(Natural op) {
-        return instance(value * op.value);
-    }
-    
-    public Float divided(Natural op) {
-        return instance(value / op.value);
-    }
-    
-    public Float power(Natural op) {
-        return instance(Math.pow(value, op.value));
-    }
-    
     public Float plus(Integer op) {
         return instance(value + op.value);
     }
@@ -148,14 +128,6 @@ public final class Float
     
     // Conversions between numeric types
     
-    @TypeInfo(value="ceylon.language.Natural")
-    @Override
-    public long getNatural() {
-        if (value < 0.0)
-            throw new NegativeNumberException();
-        return Math.round(value);
-    }
-    
     @TypeInfo(value="ceylon.language.Integer")
     @Override
     public long getInteger() {
@@ -195,8 +167,8 @@ public final class Float
     
     @Override
     public boolean equals(@Name("that") @TypeInfo("ceylon.language.Equality") java.lang.Object that) {
-        if (that instanceof Natural) {
-            return value == ((Natural)that).value;
+        if (that instanceof Integer) {
+            return value == ((Integer)that).value;
         } 
         else if (that instanceof Integer) {
             return value == ((Integer)that).value;

@@ -15,7 +15,7 @@ void misc() {
     assert(stringify()=="", "no args");
     assert(stringify{}=="", "no named args");
             
-    variable Natural? x := 0;
+    variable Integer? x := 0;
     while (exists y = x) { 
         x := null; 
     }
@@ -27,7 +27,7 @@ void misc() {
     }
     assert(s=="", "while nonempty");
     
-    value bs = SequenceBuilder<Natural>();
+    value bs = SequenceBuilder<Integer>();
     for (i in 0..10) {
         assert(bs.size==i, "builder size");
         bs.append(i);

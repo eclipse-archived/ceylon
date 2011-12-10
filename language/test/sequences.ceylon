@@ -210,7 +210,7 @@ shared void sequences() {
            "coalesce defines");
     assert(nonempty coalesced, "nonempty coalesced");
     
-    value entriesBuilder = SequenceBuilder<Natural->String>();
+    value entriesBuilder = SequenceBuilder<Integer->String>();
     entriesBuilder.append(1->"hello");
     entriesBuilder.append(2->"world");
     value entrySequence = entriesBuilder.sequence;

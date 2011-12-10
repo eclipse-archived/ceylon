@@ -1,4 +1,28 @@
-/*Entry<Natural,String> entry {
+Entry<Integer,String> entry {
+    item="hello";
+    key=1;
+}
+
+Range<Integer> range {
+    first=-3;
+    last=+10;
+}
+
+/*class Holder() {
+shared Entry<Integer,String> entry {
+    item="hello";
+    key=1;
+}
+
+shared Range<Integer> range {
+    first=-3;
+    last=+10;
+}
+}*/
+
+void entriesAndRanges() {
+    
+/*Entry<Integer,String> entry {
     item="hello";
     key=1;
 }
@@ -8,19 +32,8 @@ Range<Integer> range {
     last=+10;
 }*/
 
-void entriesAndRanges() {
-    
-Entry<Natural,String> entry {
-    item="hello";
-    key=1;
-}
-
-Range<Integer> range {
-    first=-3;
-    last=+10;
-}
-
     Entry<Equality, Equality> e = entry;
+    //Entry<Equality, Equality> e = Holder().entry;
     assert(e.string=="1->hello", "entry string");
     assert(e.key==1, "entry key");
     assert(e.item=="hello", "entry item");

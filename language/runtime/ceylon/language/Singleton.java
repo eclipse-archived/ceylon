@@ -31,7 +31,7 @@ public class Singleton<Element>
 	
 	@Override
 	@TypeInfo("ceylon.language.Nothing|Element")
-	public Element item(@Name("index") Natural key) {
+	public Element item(@Name("index") Integer key) {
 		return key.longValue()==0 ? element : null;
 	}
 	
@@ -42,28 +42,28 @@ public class Singleton<Element>
 	
 	@Override
 	public boolean definesEvery(@Sequenced @Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Natural>")
-	Iterable<? extends Natural> keys) {
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
+	Iterable<? extends Integer> keys) {
 		return Correspondence$impl.definesEvery(this, keys);
 	}
 	
 	@Override
 	public boolean definesAny(@Sequenced @Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Natural>")
-	Iterable<? extends Natural> keys) {
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
+	Iterable<? extends Integer> keys) {
 		return Correspondence$impl.definesAny(this, keys);
 	}
 	
 	@Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element|ceylon.language.Nothing>")
 	public Iterable<? extends Element> items(@Sequenced @Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Natural>")
-	Iterable<? extends Natural> keys) {
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
+	Iterable<? extends Integer> keys) {
 		return Correspondence$impl.items(this, keys);
 	}
 	
 	@Override
-	@TypeInfo("ceylon.language.Natural")
+	@TypeInfo("ceylon.language.Integer")
 	public long getLastIndex() {
 		return 0;
 	}
@@ -84,7 +84,7 @@ public class Singleton<Element>
 	}
 	
 	@Override
-	@TypeInfo("ceylon.language.Natural")
+	@TypeInfo("ceylon.language.Integer")
 	public long getSize() {
 		return 1;
 	}
@@ -95,7 +95,7 @@ public class Singleton<Element>
 	}
 	
 	@Override
-	public boolean defines(@Name("index") Natural index) {
+	public boolean defines(@Name("index") Integer index) {
 		return index.longValue()==0;
 	}
 	@Override
@@ -118,8 +118,8 @@ public class Singleton<Element>
 
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Element> segment(@Name("from") Natural from, 
-    		@Name("length") Natural length) {
+    public Iterable<? extends Element> segment(@Name("from") Integer from, 
+    		@Name("length") Integer length) {
     	if (from.longValue()>0||length.longValue()==0) 
     		return $empty.getEmpty();
     	return this;
@@ -127,10 +127,10 @@ public class Singleton<Element>
     
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Element> span(@Name("from") Natural from, 
-    		@TypeInfo("ceylon.language.Nothing|ceylon.language.Natural")
-    		@Name("to") Natural to) {
-    	//if (to==null) to = Natural.instance(0);
+    public Iterable<? extends Element> span(@Name("from") Integer from, 
+    		@TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
+    		@Name("to") Integer to) {
+    	//if (to==null) to = Integer.instance(0);
     	if (from.longValue()>0) 
     		return $empty.getEmpty();
     	return this;

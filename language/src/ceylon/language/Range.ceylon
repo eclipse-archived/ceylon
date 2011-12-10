@@ -33,7 +33,7 @@ shared class Range<Element>(Element first, Element last)
                 else x.successor;
     }
 
-    variable Natural index:=0;
+    variable Integer index:=0;
     variable Element x:=first;
     while (x!=last) {
         ++index;
@@ -41,10 +41,10 @@ shared class Range<Element>(Element first, Element last)
     }
     
     doc "The nonzero number of elements in the range."
-    shared actual Natural size = index+1;
+    shared actual Integer size = index+1;
     
     doc "The index of the end of the range."
-    shared actual Natural lastIndex { 
+    shared actual Integer lastIndex { 
         return index; 
     }
     
@@ -58,9 +58,9 @@ shared class Range<Element>(Element first, Element last)
     doc "The element of the range that occurs `n` values after
          the start of the range. Note that this operation 
          is inefficient for large ranges."
-    shared actual Element? item(Natural n) {
+    shared actual Element? item(Integer n) {
         //optimize this for numbers!
-        variable Natural index:=0;
+        variable Integer index:=0;
         variable Element x:=first;
         while (index<n) {
             if (x==last) {
@@ -115,7 +115,7 @@ shared class Range<Element>(Element first, Element last)
          reached. In the case of a decreasing range, the
          sequence is generated using decrements of the step
          size. The step size must be nonzero."
-    shared Sequence<Element> by(Natural stepSize) {
+    shared Sequence<Element> by(Integer stepSize) {
         //todo: should we just give Range a step size? Or
         //      add a subclass, perhaps?
         if (stepSize.zero) {
@@ -136,13 +136,13 @@ shared class Range<Element>(Element first, Element last)
         return builder.sequence;
     }
 
-    /*shared Natural? index(Element x) {
+    /*shared Integer? index(Element x) {
     if (!includes(x)) {
         return null;
     }
     else {
         //optimize this for numbers!
-        variable Natural index:=0;
+        variable Integer index:=0;
         variable Element value:=first;
         while (value<x) {
             ++index;
@@ -177,12 +177,12 @@ shared class Range<Element>(Element first, Element last)
         throw; //todo!
     }*/
     
-    shared actual Element[] segment(Natural from, 
-                                    Natural length) {
+    shared actual Element[] segment(Integer from, 
+                                    Integer length) {
         throw; //todo!
     }
     
-    shared actual Element[] span(Natural from, Natural? to) {
+    shared actual Element[] span(Integer from, Integer? to) {
         throw; //todo
     }
     

@@ -10,7 +10,7 @@ public class Empty$impl {
     public static Iterator<java.lang.Object> getIterator(Empty $this){
         return null;
     }
-    public static java.lang.Object item(Empty $this, Natural key){
+    public static java.lang.Object item(Empty $this, Integer key){
         return null;
     }
     public static java.lang.Object getFirst(Empty $this){

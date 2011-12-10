@@ -8,7 +8,7 @@ shared class SequenceBuilder<Element>() satisfies Sized {
     default shared void appendAll(Element... elements) {
         throw;
     }
-    shared actual Natural size { throw; }
+    shared actual Integer size { throw; }
     shared actual Boolean empty { throw; }
 }
 

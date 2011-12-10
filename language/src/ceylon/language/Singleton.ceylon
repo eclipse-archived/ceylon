@@ -1,10 +1,10 @@
 shared class Singleton<Element>(Element element)
         extends Object()
         satisfies Sequence<Element> {
-    shared actual Natural lastIndex {
+    shared actual Integer lastIndex {
         return 0;
     }
-    shared actual Natural size {
+    shared actual Integer size {
         return 1;
     }
     shared actual Element first {
@@ -16,7 +16,7 @@ shared class Singleton<Element>(Element element)
     shared actual Empty rest {
         return {};
     }
-    shared actual Element? item(Natural index) {
+    shared actual Element? item(Integer index) {
         if (index==0) {
             return element;
         }
@@ -51,11 +51,11 @@ shared class Singleton<Element>(Element element)
         }
     }
     
-    shared actual Element[] segment(Natural from, Natural length) {
+    shared actual Element[] segment(Integer from, Integer length) {
         return from>0 || length==0 then {} else this;
     }
     
-    shared actual Element[] span(Natural from, Natural? to) {
+    shared actual Element[] span(Integer from, Integer? to) {
         return from>0 then {} else this;
     }
 }

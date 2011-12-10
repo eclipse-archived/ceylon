@@ -8,7 +8,7 @@ import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 @SatisfiedTypes("ceylon.language.Container")
 public interface Sized extends Container {
 
-    @TypeInfo("ceylon.language.Natural")
+    @TypeInfo("ceylon.language.Integer")
     public long getSize();
     
     public boolean getEmpty();/* {

@@ -55,7 +55,7 @@ public interface Correspondence<Key,Item> {
         public final Iterable<? extends Item> getRest() {
             return $this.items(keys.getRest());
         }
-        public final Item item(Natural index) {
+        public final Item item(Integer index) {
             Key key = keys.item(index);
             if (key != null) {
                 return $this.item(key);
@@ -76,15 +76,15 @@ public interface Correspondence<Key,Item> {
             return Correspondence$impl.getKeys(this);
         }
         @Override
-        public boolean definesEvery(Iterable<? extends Natural> keys) {
+        public boolean definesEvery(Iterable<? extends Integer> keys) {
             return Correspondence$impl.definesEvery(this, keys);
         }
         @Override
-        public boolean definesAny(Iterable<? extends Natural> keys) {
+        public boolean definesAny(Iterable<? extends Integer> keys) {
             return Correspondence$impl.definesAny(this, keys);
         }
         @Override
-        public Iterable<? extends Item> items(Iterable<? extends Natural> keys) {
+        public Iterable<? extends Item> items(Iterable<? extends Integer> keys) {
             return Correspondence$impl.items(this, keys);
         }
         @Override
@@ -100,7 +100,7 @@ public interface Correspondence<Key,Item> {
             return Sequence$impl.getLast(this);
         }
         @Override
-        public boolean defines(Natural index) {
+        public boolean defines(Integer index) {
             return Sequence$impl.defines(this, index);
         }
         @Override
@@ -108,7 +108,7 @@ public interface Correspondence<Key,Item> {
             return Sequence$impl.getIterator(this);
         }
         @Override
-        public Iterable<? extends Item> segment(Natural from, Natural length) {
+        public Iterable<? extends Item> segment(Integer from, Integer length) {
         	Iterable<? extends Key> keys = this.keys.segment(from, length);
         	if (keys.getEmpty()) {
         		return $empty.getEmpty();
@@ -118,7 +118,7 @@ public interface Correspondence<Key,Item> {
         	}
         }
         @Override
-        public Iterable<? extends Item> span(Natural from, Natural to) {
+        public Iterable<? extends Item> span(Integer from, Integer to) {
         	Iterable<? extends Key> keys = this.keys.span(from, to);
         	if (keys.getEmpty()) {
         		return $empty.getEmpty();

@@ -82,7 +82,7 @@ shared interface Correspondence<in Key, out Item>
     class Items(Sequence<Key> keys)
             extends Object()
             satisfies Sequence<Item?> {
-        shared actual Natural lastIndex {
+        shared actual Integer lastIndex {
             return keys.lastIndex;
         }
         shared actual Item? first {
@@ -91,7 +91,7 @@ shared interface Correspondence<in Key, out Item>
         shared actual Item?[] rest {
             return outer.items(keys.rest...);
         }
-        shared actual Item? item(Natural index) {
+        shared actual Item? item(Integer index) {
             if (exists Key key = keys.item(index)) {
                 return outer.item(key);
             }
@@ -99,8 +99,8 @@ shared interface Correspondence<in Key, out Item>
                 return null;
             }
         }
-        shared actual Item?[] segment(Natural from, 
-                                     Natural length) {
+        shared actual Item?[] segment(Integer from, 
+                                     Integer length) {
             if (nonempty keys = keys.segment(from,length)) {
                 return outer.Items(keys);
             }
@@ -108,7 +108,7 @@ shared interface Correspondence<in Key, out Item>
                 return {};
             }
         }
-        shared actual Item?[] span(Natural from, Natural? to) {
+        shared actual Item?[] span(Integer from, Integer? to) {
             if (nonempty k = keys.span(from,to)) {
                 return outer.Items(keys);
             }

@@ -21,20 +21,20 @@ shared interface Ordered<out Element>
          given number of elements immediately following the 
          skipped elements."
     shared default Ordered<Element> segment(
-            Natural skipping,
-            Natural finishingAfter) {
+            Integer skipping,
+            Integer finishingAfter) {
         if (finishingAfter==0) {
             return {};
         }
         else {
             variable Iterator<Element> it := iterator;
-            variable Natural skipped := 0;
+            variable Integer skipped := 0;
             while (++skipped<=skipping) {
                 it := iterator.tail;
             }
             
             class SegmentIterator(Iterator<Element> iterator, 
-                    Natural remaining) 
+                    Integer remaining) 
                     satisfies Iterator<Element> {
                 
                 shared actual Element? head {

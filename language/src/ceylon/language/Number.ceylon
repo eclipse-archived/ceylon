@@ -26,11 +26,11 @@ shared interface Number
             as an `Integer`")
     shared formal Integer integer;
     
-    doc "The number, represented as a `Natural`, after 
+    doc "The number, represented as a `Integer`, after 
          truncation of any fractional part."
     throws (NegativeNumberException,
            "if the number is negative")
-    shared formal Natural natural;
+    shared formal Integer natural;
     
     doc "The magnitude of the number."
     shared formal Number magnitude;

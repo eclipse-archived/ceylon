@@ -65,13 +65,13 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }
 
     @Override
-    @TypeInfo("ceylon.language.Natural")
+    @TypeInfo("ceylon.language.Integer")
     public final long getSize(){
         return size;
     }
 
     @Override
-    @TypeInfo("ceylon.language.Natural")
+    @TypeInfo("ceylon.language.Integer")
     public final long getLastIndex(){
         return size - 1;
     }
@@ -88,7 +88,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
 
     @TypeInfo("ceylon.language.Nothing|Element")
     @Override
-    public Element item(@Name("n") Natural n) {
+    public Element item(@Name("n") Integer n) {
         long index = 0;
         Element x = first;
         while (index<n.longValue()) {
@@ -181,23 +181,23 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
 
     @Override
     public boolean definesEvery(@Sequenced @Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Natural>")
-    Iterable<? extends Natural> keys) {
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
+    Iterable<? extends Integer> keys) {
         return Correspondence$impl.definesEvery(this, keys);
     }
 
     @Override
     public boolean definesAny(@Sequenced @Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Natural>")
-    Iterable<? extends Natural> keys) {
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
+    Iterable<? extends Integer> keys) {
         return Correspondence$impl.definesAny(this, keys);
     }
 
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element|ceylon.language.Nothing>")
     public Iterable<? extends Element> items(@Sequenced @Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Natural")
-    Iterable<? extends Natural> keys) {
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer")
+    Iterable<? extends Integer> keys) {
         return Correspondence$impl.items(this, keys);
     }
 
@@ -223,15 +223,15 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }
 
     @Override
-    public boolean defines(@Name("index") Natural index) {
+    public boolean defines(@Name("index") Integer index) {
         return Sequence$impl.defines(this, index);
     }
 
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public Iterable<? extends Element> segment(
-    		@Name("from") final Natural from, 
-    		@Name("length") final Natural length) {
+    		@Name("from") final Integer from, 
+    		@Name("length") final Integer length) {
     	long fromIndex = from.longValue();
 		long resultLength = length.longValue();
 		if (fromIndex>getLastIndex()||resultLength==0) 
@@ -253,9 +253,9 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
     public Iterable<? extends Element> span(
-    		@Name("from") final Natural from,
-    		@TypeInfo("ceylon.language.Nothing|ceylon.language.Natural")
-    		@Name("to") final Natural to) {
+    		@Name("from") final Integer from,
+    		@TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
+    		@Name("to") final Integer to) {
 		long lastIndex = getLastIndex();
     	long fromIndex = from.longValue();
 		long toIndex = to==null ? lastIndex : to.longValue();
@@ -273,7 +273,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? exten
     }
     
     public Sequence<? extends Element> by(
-    		@TypeInfo("ceylon.language.Natural")
+    		@TypeInfo("ceylon.language.Integer")
     		@Name("stepSize") long stepSize) {
     	if (stepSize==0) {
     		throw new Exception(String.instance("step size must be nonzero"));

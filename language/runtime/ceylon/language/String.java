@@ -13,18 +13,18 @@ import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 @Class(extendsType="ceylon.language.Object")
 @SatisfiedTypes({"ceylon.language.Comparable<ceylon.language.String>",
 	             "ceylon.language.Ordered<ceylon.language.Character>",
-	             "ceylon.language.Correspondence<ceylon.language.Natural,ceylon.language.Character>",
+	             "ceylon.language.Correspondence<ceylon.language.Integer,ceylon.language.Character>",
 	             "ceylon.language.Format",
 	             "ceylon.language.Sized",
 	             "ceylon.language.Summable<ceylon.language.String>",
                  "ceylon.language.Castable<ceylon.language.String>",
                  "ceylon.language.Category",
-                 "ceylon.language.Ranged<ceylon.language.Natural,ceylon.language.String>"})
+                 "ceylon.language.Ranged<ceylon.language.Integer,ceylon.language.String>"})
 public final class String
     implements Comparable<String>, Ordered<Character>, 
-               Correspondence<Natural,Character>, Format,
+               Correspondence<Integer,Character>, Format,
                Sized, Summable<String>, Castable<String>,
-               Category, Ranged<Natural,String> {
+               Category, Ranged<Integer,String> {
 
     public final java.lang.String value;
 
@@ -121,16 +121,16 @@ public final class String
     }
 
     @Override
-    @TypeInfo("ceylon.language.Natural")
+    @TypeInfo("ceylon.language.Integer")
     public long getSize() {
         //TODO: should we cache this value in an instvar?
         return value.codePointCount(0, value.length());
     }
 
-    @TypeInfo("ceylon.language.Nothing|ceylon.language.Natural")
-    public Natural getLastIndex() {
+    @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
+    public Integer getLastIndex() {
         int length = value.length();
-        return length==0 ? null : Natural.instance(length-1);
+        return length==0 ? null : Integer.instance(length-1);
     }
 
     @Override
@@ -139,7 +139,7 @@ public final class String
     }
 
     @Override
-    public Character item(@Name("index") Natural key) {
+    public Character item(@Name("index") Integer key) {
         long index = key.longValue();
         int length = value.length();
         if (index < 0 || index >= length)
@@ -155,7 +155,7 @@ public final class String
     }
 
     @Override
-    public boolean defines(@Name("key") Natural key) {
+    public boolean defines(@Name("key") Integer key) {
         long index = key.longValue();
         return index >= 0 && index < getSize();
     }
@@ -167,8 +167,8 @@ public final class String
 
     @Override
     public boolean definesEvery(@Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Natural>")
-    Iterable<? extends Natural> keys) {
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
+    Iterable<? extends Integer> keys) {
         //TODO: inefficient ... better to cache the result
         //      of getSize()
         return Correspondence$impl.definesEvery(this, keys);
@@ -176,8 +176,8 @@ public final class String
 
     @Override
     public boolean definesAny(@Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Natural>")
-    Iterable<? extends Natural> keys) {
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
+    Iterable<? extends Integer> keys) {
         //TODO: inefficient ... better to cache the result
         //      of getSize()
         return Correspondence$impl.definesAny(this, keys);
@@ -186,8 +186,8 @@ public final class String
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Character>")
     public Iterable<? extends Character> items(@Name("keys") 
-    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Natural>")
-    Iterable<? extends Natural> keys) {
+    @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.Integer>")
+    Iterable<? extends Integer> keys) {
         return Correspondence$impl.items(this, keys);
     }
 
@@ -239,30 +239,30 @@ public final class String
         return new ArraySequence<Character>(chars);
     }
     
-    @TypeInfo("ceylon.language.Nothing|ceylon.language.Natural")
-    public Natural firstOccurrence(@Name("substring") java.lang.String substring) {
+    @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
+    public Integer firstOccurrence(@Name("substring") java.lang.String substring) {
         int index = value.indexOf(substring);
-        return index>=0 ? Natural.instance(index) : null;
+        return index>=0 ? Integer.instance(index) : null;
     }
     
-    @TypeInfo("ceylon.language.Nothing|ceylon.language.Natural")
-    public Natural lastOccurrence(@Name("substring") java.lang.String substring) {
+    @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
+    public Integer lastOccurrence(@Name("substring") java.lang.String substring) {
         int index = value.lastIndexOf(substring);
-        return index>=0 ? Natural.instance(index) : null;
+        return index>=0 ? Integer.instance(index) : null;
     }
     
-    @TypeInfo("ceylon.language.Nothing|ceylon.language.Natural")
-    public Natural firstCharacterOccurrence(@Name("character") 
+    @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
+    public Integer firstCharacterOccurrence(@Name("character") 
     @TypeInfo("ceylon.language.Character") int character) {
         int index = value.indexOf(character);
-        return index>=0 ? Natural.instance(index) : null;
+        return index>=0 ? Integer.instance(index) : null;
     }
     
-    @TypeInfo("ceylon.language.Nothing|ceylon.language.Natural")
-    public Natural lastCharacterOccurrence(@Name("character") 
+    @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
+    public Integer lastCharacterOccurrence(@Name("character") 
     @TypeInfo("ceylon.language.Character") int character) {
         int index = value.lastIndexOf(character);
-        return index>=0 ? Natural.instance(index) : null;
+        return index>=0 ? Integer.instance(index) : null;
     }
     
     @Override
@@ -302,12 +302,12 @@ public final class String
         return Category$impl.containsEvery(this, elements);
     }
     
-    public boolean longerThan(@TypeInfo("ceylon.language.Natural") 
+    public boolean longerThan(@TypeInfo("ceylon.language.Integer") 
     @Name("length") long length) {
         return getSize()>length; //TODO: really inefficient!
     }
 
-    public boolean shorterThan(@TypeInfo("ceylon.language.Natural") 
+    public boolean shorterThan(@TypeInfo("ceylon.language.Integer") 
     @Name("length") long length) {
         return getSize()<length; //TODO: really inefficient!
     }
@@ -335,14 +335,14 @@ public final class String
     }
     
     @TypeInfo("ceylon.language.String")
-    public java.lang.String initial(@TypeInfo("ceylon.language.Natural") 
+    public java.lang.String initial(@TypeInfo("ceylon.language.Integer") 
     @Name("length") long length) {
         return length>value.length() ? value : 
             value.substring(0, (int)length);
     }
 
     @TypeInfo("ceylon.language.String")
-    public java.lang.String terminal(@TypeInfo("ceylon.language.Natural") 
+    public java.lang.String terminal(@TypeInfo("ceylon.language.Integer") 
     @Name("length") long length) {
         return length>value.length() ? value : 
             value.substring(value.length()-(int) length, value.length());
@@ -367,8 +367,8 @@ public final class String
     
     @Override
     @TypeInfo("ceylon.language.String")
-    public String segment(@Name("from") final Natural from, 
-            @Name("length") final Natural length) {
+    public String segment(@Name("from") final Integer from, 
+            @Name("length") final Integer length) {
         long fromIndex = from.longValue();
         long resultLength = length.longValue();
         int len = value.length();
@@ -380,9 +380,9 @@ public final class String
     
     @Override
     @TypeInfo("ceylon.language.String")
-    public String span(@Name("from") final Natural from, 
-            @Name("to") @TypeInfo("ceylon.language.Nothing|ceylon.language.Natural") 
-            final Natural to) {
+    public String span(@Name("from") final Integer from, 
+            @Name("to") @TypeInfo("ceylon.language.Nothing|ceylon.language.Integer") 
+            final Integer to) {
         int len = value.length();
         if (len==0) return instance("");
         long fromIndex = from.longValue();
@@ -403,7 +403,7 @@ public final class String
     }
     
     public java.lang.String repeat(
-            @TypeInfo("ceylon.language.Natural") 
+            @TypeInfo("ceylon.language.Integer") 
             @Name("times") long times) {
         int len = value.length();
         if (times==0 || len==0) return "";

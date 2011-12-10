@@ -7,16 +7,16 @@ import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 @Ceylon
 @SatisfiedTypes({
-    "ceylon.language.Correspondence<ceylon.language.Natural,ceylon.language.Bottom>",
+    "ceylon.language.Correspondence<ceylon.language.Integer,ceylon.language.Bottom>",
     "ceylon.language.Ordered<ceylon.language.Bottom>",
-    "ceylon.language.Ranged<ceylon.language.Natural,ceylon.language.Empty>",
+    "ceylon.language.Ranged<ceylon.language.Integer,ceylon.language.Empty>",
     "ceylon.language.Sized"
 })
 public interface Empty 
         extends Correspondence, Ordered, Sized, 
-                Ranged<Natural,Empty> {
+                Ranged<Integer,Empty> {
 	
-    @TypeInfo("ceylon.language.Natural")
+    @TypeInfo("ceylon.language.Integer")
     public long getSize(); 
     
     public boolean getEmpty();

@@ -11,7 +11,7 @@ public class Sequence$impl {
     }
 
     public static <Element> Element getLast(Sequence<Element> $this){
-        Element x = $this.item(Natural.instance($this.getLastIndex()));
+        Element x = $this.item(Integer.instance($this.getLastIndex()));
         if (x != null) {
             return x;
         }
@@ -20,7 +20,7 @@ public class Sequence$impl {
         } 
     }
 
-    public static <Element> boolean defines(Sequence<Element> $this, Natural index){
+    public static <Element> boolean defines(Sequence<Element> $this, Integer index){
         return index.longValue() <= $this.getLastIndex();
     }
 

@@ -33,7 +33,7 @@ shared void numbers() {
     assert(-1*1.5==-1.5, "integer times float");
     assert(-1.5*+2==-3.0, "integer times float");
     
-    assert(is Natural 1+1, "natural addition");
+    assert(is Integer 1+1, "natural addition");
     assert(is Integer 1-2, "natural subtraction");
     assert(is Integer +1+1, "integer addition");
     assert(is Integer +1-2, "integer subtraction");
@@ -80,23 +80,20 @@ shared void numbers() {
     function exp<T>(T x, T y) given T satisfies Numeric<T> {
         return x.power(y);
     }
-        
-    function addNaturals(Natural x, Natural y) {
-        return x+y;
-    }
+    
     function addIntegers(Integer x, Integer y) {
         return x+y;
     }
     function addFloats(Float x, Float y) {
         return x+y;
     }
-    function multiplyNaturalByFloat(Natural x, Float y) {
+    function multiplyIntegerByFloat(Integer x, Float y) {
         return x*y;
     }
     function multiplyFloatByInteger(Float x, Integer y) {
         return x*y;
     }
-    function multiplyNaturalByInteger(Natural x, Integer y) {
+    function multiplyIntegerByInteger(Integer x, Integer y) {
         return x*y;
     }
         
@@ -108,20 +105,20 @@ shared void numbers() {
     assert(exp(-1,+2)==+1, "");
     assert(exp(2.0,2.0)==4.0, "");
     
-    assert(addNaturals(2, 4)==6, "");
+    assert(addIntegers(2, 4)==6, "");
     assert(addIntegers(-2, -4)==-6, "");
     assert(addFloats(-1.0, 1.0)==0.0, "");
     
-    assert(multiplyNaturalByFloat(3, 1.5)==4.5, "");
+    assert(multiplyIntegerByFloat(3, 1.5)==4.5, "");
     assert(multiplyFloatByInteger(1.5, -1)==-1.5, "");                
-    assert(multiplyNaturalByInteger(1, -1)==-1, "");
+    assert(multiplyIntegerByInteger(1, -1)==-1, "");
     
     assert(1.hash==(3-1)/2.hash, "natural hash");
     assert((+0).hash==(-1+(+1))*+100.hash, "integer hash");
     assert((2.2*2.2*2.2).hash==(2.2**3.0).hash, "float hash");
     
-    assert(1.6.natural==2, "float natural");
-    assert(1.1.natural==1, "float natural");
+    assert(1.6.integer==2, "float natural");
+    assert(1.1.integer==1, "float natural");
     assert((-1.6).integer==-2, "float integer");
     assert((-1.1).integer==-1, "float integer");
     assert(2.float==2.0, "natural float");
@@ -179,16 +176,16 @@ shared void numbers() {
     assert((floatcount/=2.0)==5.0, "float scale");
     assert((floatcount:=-2.0)==-2.0, "float assign");
     
-    variable Natural vi;
-    variable Natural vj;
+    variable Integer vi;
+    variable Integer vj;
     vi:=vj:=2;
     assert(vi==2&&vj==2, "multi assign");
     vi+=1;
     vj*=2;
     
     class Inner() {
-        shared variable Natural vi:=0;
-        shared variable Natural vj:=0;
+        shared variable Integer vi:=0;
+        shared variable Integer vj:=0;
     }
     value inner = Inner();
     inner.vi:=inner.vj:=2;

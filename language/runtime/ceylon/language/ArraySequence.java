@@ -29,7 +29,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    @TypeInfo("ceylon.language.Natural")
+    @TypeInfo("ceylon.language.Integer")
     public long getLastIndex() {
         return array.length - first - 1;
     }
@@ -55,7 +55,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    @TypeInfo("ceylon.language.Natural")
+    @TypeInfo("ceylon.language.Integer")
     public long getSize() {
         return array.length - first;
     }
@@ -66,7 +66,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    public boolean defines(Natural index) {
+    public boolean defines(Integer index) {
         return index.longValue()+first<array.length;
     }
 
@@ -96,7 +96,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    public Element item(Natural key) {
+    public Element item(Integer key) {
         long index = key.longValue()+first;
         return (Element) (index >= array.length ? 
                 null : array[(int) index]);
@@ -108,17 +108,17 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    public boolean definesEvery(Iterable<? extends Natural> keys) {
+    public boolean definesEvery(Iterable<? extends Integer> keys) {
         return Correspondence$impl.definesEvery(this, keys);
     }
 
     @Override
-    public boolean definesAny(Iterable<? extends Natural> keys) {
+    public boolean definesAny(Iterable<? extends Integer> keys) {
         return Correspondence$impl.definesAny(this, keys);
     }
 
     @Override
-    public Iterable<? extends Element> items(Iterable<? extends Natural> keys) {
+    public Iterable<? extends Element> items(Iterable<? extends Integer> keys) {
         return Correspondence$impl.items(this, keys);
     }
 
@@ -128,7 +128,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
 
     @Override
-    public Iterable<? extends Element> span(Natural from, Natural to) {
+    public Iterable<? extends Element> span(Integer from, Integer to) {
     	long fromIndex = from.longValue();
     	long toIndex = to==null ? array.length-1 : to.longValue();
         long lastIndex = getLastIndex();
@@ -145,7 +145,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     }
     
     @Override
-    public Iterable<? extends Element> segment(Natural from, Natural length) {
+    public Iterable<? extends Element> segment(Integer from, Integer length) {
         long fromIndex = from.longValue();
 		long resultLength = length.longValue();
 		long lastIndex = getLastIndex();

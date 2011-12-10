@@ -11,18 +11,18 @@ import com.redhat.ceylon.compiler.metadata.java.Variance;
 @Ceylon
 @TypeParameters(@TypeParameter(value = "Element", variance = Variance.OUT))
 @SatisfiedTypes({
-    "ceylon.language.Correspondence<ceylon.language.Natural,Element>",
+    "ceylon.language.Correspondence<ceylon.language.Integer,Element>",
     "ceylon.language.Ordered<Element>",
     "ceylon.language.Sized",
     "ceylon.language.Cloneable<ceylon.language.Sequence<Element>>",
-    "ceylon.language.Ranged<ceylon.language.Natural,ceylon.language.Empty|ceylon.language.Sequence<Element>>"
+    "ceylon.language.Ranged<ceylon.language.Integer,ceylon.language.Empty|ceylon.language.Sequence<Element>>"
 })
 public interface Sequence<Element> 
-    extends Correspondence<Natural, Element>, Ordered<Element>, 
+    extends Correspondence<Integer, Element>, Ordered<Element>, 
         Sized, Cloneable<Sequence<Element>>, 
-        Ranged<Natural,Iterable<? extends Element>> {
+        Ranged<Integer,Iterable<? extends Element>> {
     
-    @TypeInfo("ceylon.language.Natural")
+    @TypeInfo("ceylon.language.Integer")
     public long getLastIndex();
     
     @TypeInfo("Element")
@@ -33,12 +33,12 @@ public interface Sequence<Element>
     
     public boolean getEmpty();
     
-    @TypeInfo("ceylon.language.Natural")
+    @TypeInfo("ceylon.language.Integer")
     public long getSize();
     
     public Element getLast();
     
-    public boolean defines(@Name("index") Natural index);
+    public boolean defines(@Name("index") Integer index);
     
     //this depends on efficient implementation of rest
     /*
@@ -67,7 +67,7 @@ public interface Sequence<Element>
         }
         @TypeInfo("ceylon.language.Nothing|Element")
         public final Element getHead() { 
-            return $this.item(Natural.instance(from));
+            return $this.item(Integer.instance(from));
         }
         @TypeInfo("ceylon.language.Nothing|ceylon.language.Iterator<Element>")
         public final Iterator<Element> getTail() {
@@ -81,14 +81,14 @@ public interface Sequence<Element>
     
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Element> span(@Name("from") Natural from, 
-    		@TypeInfo("ceylon.language.Nothing|ceylon.language.Natural")
-    		@Name("to") Natural to);
+    public Iterable<? extends Element> span(@Name("from") Integer from, 
+    		@TypeInfo("ceylon.language.Nothing|ceylon.language.Integer")
+    		@Name("to") Integer to);
     
     @Override
     @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<Element>")
-    public Iterable<? extends Element> segment(@Name("from") Natural from, 
-    		@Name("length") Natural length);
+    public Iterable<? extends Element> segment(@Name("from") Integer from, 
+    		@Name("length") Integer length);
     
     public java.lang.String toString();
 

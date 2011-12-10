@@ -1,4 +1,7 @@
 void operators() {
+    
+    Ordinal<Integer>&Subtractable<Integer,Integer> t;
+    
     String? maybe = "hello";
     String? maybeNot = null;
     assert(exists maybe?.uppercased, "?.");
@@ -18,10 +21,10 @@ void operators() {
     assert("hello" in "hello world", "in");
     assert("world" in "hello world", "in");
                 
-    Correspondence<Natural, String> c1 = {};
+    Correspondence<Integer, String> c1 = {};
     assert(!exists c1[0], "empty correspondence");
     
-    Ranged<Natural,String[]> sequence = {"foo", "bar"};
+    Ranged<Integer,String[]> sequence = {"foo", "bar"};
     String[] subrange = sequence[1..2];
     assert(subrange.size==1, "subrange size");
     assert(nonempty subrange, "subrange nonempty");
@@ -44,4 +47,11 @@ void operators() {
     assert(is X (xx else X()), "something");
     assert(is X (true then X()), "something");
     assert(is X (true then X() else X()), "something");
+
+    variable Subtractable<Integer,Integer> iii1 := +1;
+    iii1:=iii1-+1;
+    iii1-=+1;    
+    iii1 := iii1-=+1;
+    variable Ordinal<Integer>&Subtractable<Integer,Integer> iii2 := +1;    
+    iii2 := iii2-=-2;
 }

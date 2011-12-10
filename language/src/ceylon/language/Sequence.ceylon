@@ -3,14 +3,14 @@ doc "A nonempty sequence of values. `Sequence` does not
      operation may be inefficient for some sequences."
 by "Gavin"
 shared interface Sequence<out Element> 
-        satisfies Correspondence<Natural,Element> &  
+        satisfies Correspondence<Integer,Element> &  
                   Ordered<Element> & Sized & 
-                  Ranged<Natural,Element[]> &
+                  Ranged<Integer,Element[]> &
                   Cloneable<Sequence<Element>> {
     
     doc "The index of the last element of the sequence."
     see (size)
-    shared formal Natural lastIndex;
+    shared formal Integer lastIndex;
     
     doc "The first element of the sequence, that is, the
          element with index `0`."
@@ -29,7 +29,7 @@ shared interface Sequence<out Element>
     doc "The number of elements in this sequence, always
          `sequence.lastIndex+1`."
     see (lastIndex)
-    shared actual default Natural size {
+    shared actual default Integer size {
         return lastIndex+1;
     }
     
@@ -47,7 +47,7 @@ shared interface Sequence<out Element>
     doc "Determines if the given index refers to an element
          of this sequence, that is, if 
          `index<=sequence.lastIndex`."
-    shared actual default Boolean defines(Natural index) {
+    shared actual default Boolean defines(Integer index) {
         return index<=lastIndex;
     }
     
@@ -56,7 +56,7 @@ shared interface Sequence<out Element>
          of the sequence, that is, if 
          `index>sequence.lastIndex`. The first element of 
          the sequence has index `0`."
-    shared actual formal Element? item(Natural index);
+    shared actual formal Element? item(Integer index);
     
     //this depends on efficient implementation of rest
     /*
@@ -76,7 +76,7 @@ shared interface Sequence<out Element>
         return SequenceIterator(0);
     }
     
-    class SequenceIterator(Natural from)
+    class SequenceIterator(Integer from)
             extends Object()
             satisfies Iterator<Element> {
         shared actual Element head { 
@@ -113,14 +113,14 @@ shared interface Sequence<out Element>
          than the last index in the sequence, return all 
          elements from the start index to last element of 
          the sequence."
-    shared actual formal Element[] span(Natural from, 
-                                        Natural? to);
+    shared actual formal Element[] span(Integer from, 
+                                        Integer? to);
     
     doc "Returns a sequence containing the elements 
          beginning from the given index, with the given
          length."
-    shared actual formal Element[] segment(Natural from, 
-                                           Natural length);
+    shared actual formal Element[] segment(Integer from, 
+                                           Integer length);
     
     /*shared formal Sequence<Value> append<Value>(Value... elements)
             given Value abstracts Element;

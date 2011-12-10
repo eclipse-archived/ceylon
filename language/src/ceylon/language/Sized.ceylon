@@ -6,7 +6,7 @@ shared interface Sized
         
     doc "The number of elements or entries belonging to the 
          container."
-    shared formal Natural size;
+    shared formal Integer size;
     
     doc "Determine if the sized container is empty, that is,
          if `sized.size==0`."

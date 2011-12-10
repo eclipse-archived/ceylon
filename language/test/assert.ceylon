@@ -1,5 +1,5 @@
-variable Natural assertionCount:=0;
-variable Natural failureCount:=0;
+variable Integer assertionCount:=+0;
+variable Integer failureCount:=+0;
 
 shared void assert(Boolean assertion, String message) {
     assertionCount+=1;

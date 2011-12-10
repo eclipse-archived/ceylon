@@ -1,15 +1,15 @@
 doc "Produces a `Ordered` iterator of each index to element 
      `Entry` for the given sequence of values."
-shared Entry<Natural,Element>[] entries<Element>(Element... sequence) 
+shared Entry<Integer,Element>[] entries<Element>(Element... sequence) 
         given Element satisfies Equality {
     
     if (nonempty sequence) {
         
         object sequenceEntries
                 extends Object()
-                satisfies Sequence<Natural->Element> {
+                satisfies Sequence<Integer->Element> {
             
-            shared actual Sequence<Natural->Element> clone { 
+            shared actual Sequence<Integer->Element> clone { 
                 return this;
             }
             
@@ -17,19 +17,19 @@ shared Entry<Natural,Element>[] entries<Element>(Element... sequence)
                 return "sequenceEntries";
             }
             
-            shared actual Natural lastIndex { 
+            shared actual Integer lastIndex { 
                 return sequence.lastIndex;
             }
             
-            shared actual Natural->Element first {
+            shared actual Integer->Element first {
                 return 0->sequence.first;
             }
 
-            shared actual Entry<Natural,Element>[] rest { 
+            shared actual Entry<Integer,Element>[] rest { 
                 return entries(sequence.rest...);
             }
 
-            shared actual Entry<Natural,Element>? item(Natural index) {
+            shared actual Entry<Integer,Element>? item(Integer index) {
                 if (exists element = sequence[index]) {
                     return index->element;    
                 }
@@ -38,19 +38,19 @@ shared Entry<Natural,Element>[] entries<Element>(Element... sequence)
                 }
             }
 
-            shared actual Entry<Natural,Element>[] span(Natural from, Natural? to) {
+            shared actual Entry<Integer,Element>[] span(Integer from, Integer? to) {
                 return entries(sequence.span(from, to)...);
             }
 
-            shared actual Entry<Natural,Element>[] segment(Natural from, Natural length) {
+            shared actual Entry<Integer,Element>[] segment(Integer from, Integer length) {
                 return entries(sequence.segment(from, length)...);
             }
             
-            shared actual Iterator<Natural->Element> iterator {
-                class EntryIterator(Natural from) 
+            shared actual Iterator<Integer->Element> iterator {
+                class EntryIterator(Integer from) 
                         extends Object()
-                        satisfies Iterator<Natural->Element> {
-                    shared actual Entry<Natural,Element> head {
+                        satisfies Iterator<Integer->Element> {
+                    shared actual Entry<Integer,Element> head {
                         if (exists Element item = sequence[from]) {
                             return from->item;
                         }
@@ -58,7 +58,7 @@ shared Entry<Natural,Element>[] entries<Element>(Element... sequence)
                             throw;
                         }
                     }
-                    shared actual Iterator<Natural->Element>? tail {
+                    shared actual Iterator<Integer->Element>? tail {
                         return from<sequence.lastIndex 
                                 then EntryIterator(from+1);
                     }
@@ -69,15 +69,15 @@ shared Entry<Natural,Element>[] entries<Element>(Element... sequence)
                 return EntryIterator(0);
             }
             
-            /*shared actual Element? item(Natural index) {
+            /*shared actual Element? item(Integer index) {
                 return sequence[index];
             }
             
-            shared actual Natural size {
+            shared actual Integer size {
                 return sequence.size;
             }
             
-            shared actual Map<Natural,Element> clone {
+            shared actual Map<Integer,Element> clone {
                 if (nonempty sequence) {
                     return entries<Element>(sequence.clone...);
                 }

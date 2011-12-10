@@ -1,9 +1,9 @@
 doc "Abstraction of ordinal types, that is, types with 
      successor and predecessor operations, including
-     `Natural`, `Integer`, and other `Integral` numeric types.
+     `Integer`, `Integer`, and other `Integral` numeric types.
      `Character` is also considered an ordinal type. `Ordinal` 
      types may be used to generate a `Range`."
-see (Character, Natural, Integer, Integral, Range)
+see (Character, Integer, Integer, Integral, Range)
 by "Gavin"
 shared interface Ordinal<out Other> of Other
         satisfies Equality 

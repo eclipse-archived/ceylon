@@ -9,7 +9,7 @@ public class $empty {
 
         @Override
         public boolean defines(java.lang.Object key) {
-            return Correspondence$impl.defines(this, (Natural)key);
+            return Correspondence$impl.defines(this, (Integer)key);
         }
 
         @Override
@@ -49,7 +49,7 @@ public class $empty {
 
         @Override
         public java.lang.Object item(java.lang.Object key) {
-            return Empty$impl.item(this, (Natural)key);
+            return Empty$impl.item(this, (Integer)key);
         }
 
         @Override
@@ -63,12 +63,12 @@ public class $empty {
         }
         
         @Override
-        public Empty segment(Natural from, Natural length) {
+        public Empty segment(Integer from, Integer length) {
         	return this;
         }
         
         @Override
-        public Empty span(Natural from, Natural to) {
+        public Empty span(Integer from, Integer to) {
         	return this;
         }
 

@@ -31,14 +31,14 @@ void types() {
     assert(!is IdentifiableObject entry, "not entry type");
     assert(is Equality entry, "entry type");
     assert(!is Nothing entry, "not null entry type");
-    //assert(is Entry<Natural,Natural> entry, "entry type");
+    //assert(is Entry<Integer,Integer> entry, "entry type");
     assert(is Void entry, "entry type");
         
     assert(is Object one, "not natural type");
     assert(!is IdentifiableObject one, "not natural type");
     assert(is Equality one, "natural type");
     assert(!is Nothing one, "not null natural type");
-    assert(is Natural one, "natural type");
+    assert(is Integer one, "natural type");
     assert(is Void nothing, "natural type");
         
     assert(is Object c, "not char type");
@@ -72,8 +72,8 @@ void types() {
     if (is IdentifiableObject one) { fail("natural type"); }
     if (is Object one) {} else { fail("natural type"); }
     if (is Nothing one) { fail("null type"); }
-    if (is Natural one) {} else { fail("natural type"); }
-    if (is Natural? one) {} else { fail("optional natural type"); }
+    if (is Integer one) {} else { fail("natural type"); }
+    if (is Integer? one) {} else { fail("optional natural type"); }
 
     if (is Equality c) {} else { fail("character type"); }
     if (is IdentifiableObject c) { fail("character type"); }
@@ -98,7 +98,7 @@ void types() {
     if (is IdentifiableObject entry) { fail("entry type"); }
     if (is Object entry) {} else { fail("entry type"); }
     if (is Nothing entry) { fail("null type"); }
-    //if (is Entry<Natural,Natural> entry) {} else { fail("entry type"); }
+    //if (is Entry<Integer,Integer> entry) {} else { fail("entry type"); }
     
     if (is Equality nothing) { fail("null type"); }
     if (is IdentifiableObject nothing) { fail("null type"); }
@@ -117,9 +117,9 @@ void types() {
     //if (is String[] empty) {} else { fail("sequence type"); }
     //if (is String[] seq) {} else { fail("sequence type"); }
     //if (is String[]? seq) {} else { fail("sequence type"); }
-    //if (is Natural[] seq) { fail("sequence type"); } else {}
+    //if (is Integer[] seq) { fail("sequence type"); } else {}
     
-    assert(className(1)=="ceylon.language.Natural", "natural classname");
+    assert(className(1)=="ceylon.language.Integer", "natural classname");
     assert(className(1.0)=="ceylon.language.Float", "float classname");
     assert(className("hello")=="ceylon.language.String", "string classname");
     assert(className(1->"hello")=="ceylon.language.Entry", "entry classname");
