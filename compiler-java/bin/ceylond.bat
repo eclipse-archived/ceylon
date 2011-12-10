@@ -4,9 +4,9 @@ setlocal
 call %~dp0\args.bat %*
 
 rem JAVA_CP are classes required by the tool to run
-set JAVA_CP=%CEYLON_HOME%\build\lib\compiler.jar
-set JAVA_CP=%JAVA_CP%;%HOME%\.ceylon\repo\com\redhat\ceylon\typechecker\0.1\com.redhat.ceylon.typechecker-0.1.jar
-set JAVA_CP=%JAVA_CP%;%CEYLON_HOME%\lib\antlrworks-1.3.1.jar
+set JAVA_CP=%HOME%\.ceylon\repo\com\redhat\ceylon\compiler\%CEYLON_VERSION%\com.redhat.ceylon.compiler-%CEYLON_VERSION%.jar
+set JAVA_CP=%JAVA_CP%;%HOME%\.ceylon\repo\com\redhat\ceylon\typechecker\%CEYLON_VERSION%\com.redhat.ceylon.typechecker-%CEYLON_VERSION%.jar
+set JAVA_CP=%JAVA_CP%;%CEYLON_HOME%\lib\antlr-3.4-complete.jar
 set JAVA_CP=%JAVA_CP%;%CEYLON_HOME%\lib\markdownj-core-faf3bf83000.jar
 
 %JAVA% ^

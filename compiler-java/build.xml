@@ -4,13 +4,13 @@
 
   <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
   <property name="typechecker.jar" location="${ceylon.repo.dir}/com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar"/>
+  <property name="runtime.jar" location="${ceylon.repo.dir}/ceylon/language/${module.ceylon.language.version}/ceylon.language-${module.ceylon.language.version}.car"/>
 
   <!-- The Java source files for the compiler -->
   <property name="javac.src" location="langtools/src/share/classes"/>
   <property name="ceylonc.src" location="src"/>
   <property name="test.src" location="test-src"/>
 
-  
   <!-- Directories everything gets built into -->
   <property name="build" location="build"/>
   <property name="build.classes" location="${build}/classes"/>
@@ -18,13 +18,13 @@
   <property name="build.lib" location="${build}/lib"/>
   <property name="test.reports" location="${build}/test-reports"/>
 
-  <property name="antlr.lib" location="lib/antlrworks-1.3.1.jar"/>
+  <property name="antlr.lib" location="lib/antlr-3.4-complete.jar"/>
   <property name="markdown.lib" location="lib/markdownj-core-faf3bf83000.jar"/>
   <property name="junit.lib" location="lib/junit-4.9b2.jar"/>
 
   <!-- Jarfiles everything ends up in -->
-  <property name="compiler.jar" location="${build.lib}/compiler.jar"/>
-  <property name="runtime.jar" location="${ceylon.repo.dir}/ceylon/language/${module.ceylon.language.version}/ceylon.language-${module.ceylon.language.version}.car"/>
+  <property name="compiler.dir" value="${ceylon.repo.dir}/com/redhat/ceylon/compiler/${module.com.redhat.ceylon.compiler.version}"/>
+  <property name="compiler.jar" value="${compiler.dir}/com.redhat.ceylon.compiler-${module.com.redhat.ceylon.compiler.version}.jar"/>
   <property name="ceylon-tests.dir" location="${build.ceylon.cars}/com/redhat/ceylon/compiler/test/ceylon/0.1"/>
   <property name="ceylon-tests.car" location="${ceylon-tests.dir}/com.redhat.ceylon.compiler.test.ceylon-0.1.car"/>
 
@@ -60,6 +60,48 @@
     <pathelement path="${build.classes}"/>
   </path>
 
+  <!-- ################################################################## -->
+
+  <!-- Rule to clean everything up -->
+  <target name="clean">
+    <delete dir="${build}"/>
+    <delete dir="${antlr.dst}"/>
+  </target>
+
+  <!-- Repository targets -->
+  <target name="init.repo"
+      description="Initialize the default local Ceylon module repository">
+    <mkdir dir="${ceylon.repo.dir}"/>
+  </target>
+
+  <target name="publish"
+     depends="publish.compiler"
+     description="Publish Ceylon compiler module to default repo">
+  </target>
+
+  <target name="publish.compiler" depends="compiler.classes,init.repo">
+    <delete dir="${compiler.dir}"/>
+    <mkdir dir="${compiler.dir}"/>
+    <zip destfile="${compiler.jar}">
+      <fileset dir="${build.classes}">
+        <exclude name="ceylon/**"/>
+        <exclude name="com/redhat/ceylon/compiler/test/**"/>
+      </fileset>
+      <fileset dir="${javac.src}">
+        <include name="com/sun/tools/javac/resources/*.properties"/>
+      </fileset>
+    </zip>
+    <checksum file="${compiler.jar}" algorithm="sha1"/>
+  </target>
+
+  <target name="clean.repo"
+     description="Clean default local Ceylon module repository">
+    <delete dir="${ceylon.repo.dir}"/>
+  </target>
+
+  <!-- Rule to compile and test -->
+  <target name="all" depends="test"/>
+
   <!-- Rule to build compiler classes from their Java sources -->
   <target name="compiler.classes">
     <mkdir dir="${build.classes}"/>
@@ -92,10 +134,10 @@
   </target>
 
   <!-- Rule to build compiler jar -->
-  <target name="compiler.jar" depends="compiler.classes">
+  <target name="build" depends="compiler.classes">
     <mkdir dir="${build.lib}"/>
     <mkdir dir="${build.ceylon.cars}"/>
-    <jar destfile="${compiler.jar}">
+    <jar destfile="${build.lib}/compiler.jar">
       <fileset dir="${build.classes}">
         <exclude name="ceylon/**"/>
         <exclude name="com/redhat/ceylon/compiler/test/**"/>
@@ -108,7 +150,7 @@
 
   <!-- FIXME: Historical rule -->
   <!-- Rule to run the parser regression tests -->
-  <target name="test.parser" depends="compiler.jar">
+  <target name="test.parser" depends="publish">
     <mkdir dir="${parser.test.dst}"/>
     <apply executable="java">
       <arg value="-ea"/>
@@ -132,24 +174,12 @@
 
   <!-- FIXME: Historical rule -->
   <!-- Rule to run the compiler regression tests -->
-  <target name="test.compiler" depends="compiler.jar">
+  <target name="test.compiler" depends="publish">
     <exec executable="bin/compilertest" failonerror="true"/>
   </target>
 
-  <!-- Rule to compile and test -->
-  <target name="all" depends="test"/>
-
-  <!-- Rule to compile and test -->
-  <target name="build" depends="compiler.jar"/>
-
-  <!-- Rule to clean everything up -->
-  <target name="clean">
-    <delete dir="${build}"/>
-    <delete dir="${antlr.dst}"/>
-  </target>
-
   <!-- Runs the JUnit tests -->
-  <target name="test" depends="test.classes,ceylon-tests.car,compiler.jar" description="Runs the JUnit tests">
+  <target name="test" depends="publish,test.classes,ceylon-tests.car" description="Runs the JUnit tests">
     <mkdir dir="${test.reports}"/>
   	<property name="bootclasspath" refid="test.run.classpath" />
     <junit printsummary="yes" haltonfailure="no">
@@ -180,8 +210,36 @@
   </target>
 	
 	
+  <!-- Runs the JUnit compiler tests only -->
+  <target name="compiler-tests-only" depends="publish,test.classes" description="Runs the JUnit tests">
+    <mkdir dir="${test.reports}"/>
+    <property name="bootclasspath" refid="test.run.classpath" />
+    <junit printsummary="yes" haltonfailure="no">
+      <classpath refid="test.run.classpath"/>
+      <jvmarg value="-Xbootclasspath/p:${bootclasspath}"/>
+
+      <formatter type="xml"/>
+
+      <batchtest fork="yes" todir="${test.reports}">
+        <fileset dir="${test.src}">
+          <include name="**/*Test.java"/>
+          <exclude name="com/redhat/ceylon/compiler/test/CompilerTest.java"/>
+          <exclude name="com/redhat/ceylon/compiler/test/ceylon/**"/>
+        </fileset>
+      </batchtest>
+    </junit>
+ 
+    <junitreport todir="${test.reports}">
+      <fileset dir="${test.reports}">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report format="frames" todir="${test.reports}"/>
+    </junitreport>
+  </target>
+    
+    
   <!-- Runs the JUnit ceylon tests only -->
-  <target name="ceylon-tests-only" depends="test.classes,ceylon-tests.car,compiler.jar" description="Runs the JUnit tests">
+  <target name="ceylon-tests-only" depends="publish,test.classes,ceylon-tests.car" description="Runs the JUnit tests">
     <mkdir dir="${test.reports}"/>
   	<property name="bootclasspath" refid="test.run.classpath" />
     <junit printsummary="yes" haltonfailure="no">
@@ -207,7 +265,7 @@
     </junitreport>
   </target>
 
-  <target name="ceylonc" depends="compiler.jar">
+  <target name="ceylonc" depends="publish">
     <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc" >
       <classpath>
         <pathelement location="${compiler.jar}"/>      	
@@ -220,7 +278,7 @@
     <pathelement path="${ceylon-tests.car}"/>
   </path>
 	
-  <target name="ceylon-tests.car" depends="test.classes, compiler.jar, ceylonc">
+  <target name="ceylon-tests.car" depends="publish,test.classes,ceylonc">
   	<delete dir="${ceylon-tests.dir}"/>
     <mkdir dir="${ceylon-tests.dir}"/>
     <jar destfile="${ceylon-tests.car}">

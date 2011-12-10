@@ -22,7 +22,7 @@ done
 source $(dirname "$PRG")/args.sh
 
 # Classes required by the launcher and by the code being launched
-JAVA_CP="$HOME/.ceylon/repo/ceylon/language/0.1/ceylon.language-0.1.car:$USER_CP"
+JAVA_CP="$HOME/.ceylon/repo/ceylon/language/$CEYLON_VERSION/ceylon.language-$CEYLON_VERSION.car:$USER_CP"
 
 java \
     -enableassertions \

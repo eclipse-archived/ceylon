@@ -1,4 +1,7 @@
 rem User HOME
+
+set CEYLON_VERSION=0.1
+
 set HOME=%USERPROFILE%
 
 rem Find CEYLON_HOME
