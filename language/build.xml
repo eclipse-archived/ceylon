@@ -44,7 +44,7 @@
 	
 	<!-- ################################################################## -->
 
-	  <!-- Rule to clean everything up -->
+    <!-- Rule to clean everything up -->
     <target name="clean" description="Clean up everything">
         <delete dir="${build.dir}"/>
     </target>
@@ -118,7 +118,7 @@
 	  <target name="ceylonc">
 	    <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc" >
 	      <classpath>
-	        <pathelement location="../ceylon-compiler/build/lib/compiler.jar"/>       
+	        <pathelement location="${ceylon.repo.dir}/com/redhat/ceylon/compiler/${module.com.redhat.ceylon.compiler.version}/com.redhat.ceylon.compiler-${module.com.redhat.ceylon.compiler.version}.jar"/>       
 	      </classpath>
 	    </taskdef>
 	  </target>
