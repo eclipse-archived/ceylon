@@ -193,7 +193,7 @@ public class CeylonModuleLoader extends ModuleLoader {
                 Node<Import> root = new Node<Import>();
                 for (Import i : imports) {
                     if (i.getOptional()) {
-                        String path = i.getName().toString();
+                        String path = CeylonToJava.toString(i.getName());
                         Node<Import> current = root;
                         String[] tokens = path.split("\\.");
                         for (String token : tokens) {
@@ -275,7 +275,7 @@ public class CeylonModuleLoader extends ModuleLoader {
      * @return module identifer
      */
     static ModuleIdentifier createModuleIdentifier(Import i) {
-        return ModuleIdentifier.create(i.getName().toString(), i.getVersion().toString());
+        return ModuleIdentifier.create(CeylonToJava.toString(i.getName()), CeylonToJava.toString(i.getVersion()));
     }
 
     public String toString() {

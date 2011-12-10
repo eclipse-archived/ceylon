@@ -37,12 +37,12 @@ public class module {
         Import im1 = new Import(
                 JavaToCeylon.toQuoted("org.jboss.acme"),
                 JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "CR1").toString()),
-                false,
+                true,
                 true);
         Import im2 = new Import(
                 JavaToCeylon.toQuoted("si.alesj.ceylon"),
                 JavaToCeylon.toQuoted(new ModuleVersion(1, 0, 0, "GA").toString()),
-                false,
+                true,
                 true);
         return new ceylon.language.descriptor.Module(name, version, null, null, null, JavaToCeylon.toIterable(im1, im2));
     }
