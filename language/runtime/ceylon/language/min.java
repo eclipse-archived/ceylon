@@ -22,7 +22,7 @@ public final class min {
         Value min = values.getFirst();
         for (Iterator<? extends Value> $val$iter$0 = values.getRest().getIterator(); $val$iter$0 != null; $val$iter$0 = $val$iter$0.getTail()) {
             final Value val = $val$iter$0.getHead();
-            if (val.compare(min).smaller()) {
+            if (val.compare(min).smallerThan()) {
                 min = val;
             }
         }
