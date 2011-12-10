@@ -71,7 +71,7 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         });
     }
 
-    protected static void invokeRun(ClassLoader cl, String moduleName, final String... args) throws Exception {
+    protected static void invokeRun(ClassLoader cl, String moduleName, final String[] args) throws Exception {
         final String runClassName = moduleName + RUN_INFO_CLASS;
         final Class<?> runClass;
         try {
@@ -81,11 +81,13 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         }
 
         AccessController.doPrivileged(new PrivilegedExceptionAction<Object>() {
+            @SuppressWarnings("UnnecessaryLocalVariable")
             @Override
             public Object run() throws Exception {
                 final Method main = runClass.getDeclaredMethod("main", String[].class);
                 main.setAccessible(true);
-                main.invoke(null, args);
+                final Object sfa = args;
+                main.invoke(null, sfa);
                 return null;
             }
         });

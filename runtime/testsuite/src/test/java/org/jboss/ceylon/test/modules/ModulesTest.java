@@ -46,6 +46,10 @@ import java.util.Map;
 public abstract class ModulesTest {
     private static final String RUNTIME_IMPL = "ceylon.modules.jboss.runtime.JBossRuntime";
 
+    protected File getRepo() throws Throwable {
+        return new File(getClass().getResource("/repo").toURI());
+    }
+
     protected File createModuleFile(File tmpdir, Archive module) throws Exception {
         String fullName = module.getName();
         int p = fullName.indexOf("-");
@@ -101,6 +105,17 @@ public abstract class ModulesTest {
 
     protected void src(String module, String src) throws Throwable {
         src(module, src, Collections.<Constants, String>emptyMap());
+    }
+
+    protected void car(String module, Map<Constants, String> extra) throws Throwable {
+        Map<Constants, String> args = new HashMap<Constants, String>();
+        args.put(Constants.EXECUTABLE, RUNTIME_IMPL);
+        args.put(Constants.REPOSITORY, getRepo().getPath());
+        args.put(Constants.MODULE, module);
+        args.put(Constants.DEFAULT, "false");
+        args.putAll(extra);
+
+        execute(args);
     }
 
     protected void src(String module, String src, Map<Constants, String> extra) throws Throwable {
