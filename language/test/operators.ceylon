@@ -1,7 +1,5 @@
 void operators() {
     
-    Ordinal<Integer>&Subtractable<Integer,Integer> t;
-    
     String? maybe = "hello";
     String? maybeNot = null;
     assert(exists maybe?.uppercased, "?.");
@@ -48,10 +46,4 @@ void operators() {
     assert(is X (true then X()), "something");
     assert(is X (true then X() else X()), "something");
 
-    variable Subtractable<Integer,Integer> iii1 := +1;
-    iii1:=iii1-+1;
-    iii1-=+1;    
-    iii1 := iii1-=+1;
-    variable Ordinal<Integer>&Subtractable<Integer,Integer> iii2 := +1;    
-    iii2 := iii2-=-2;
 }

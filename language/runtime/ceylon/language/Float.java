@@ -3,13 +3,17 @@ package ceylon.language;
 import com.redhat.ceylon.compiler.metadata.java.Ceylon;
 import com.redhat.ceylon.compiler.metadata.java.Class;
 import com.redhat.ceylon.compiler.metadata.java.Name;
+import com.redhat.ceylon.compiler.metadata.java.SatisfiedTypes;
 import com.redhat.ceylon.compiler.metadata.java.TypeInfo;
 
 @Ceylon
 @Class(extendsType="ceylon.language.Object")
+@SatisfiedTypes({
+    "ceylon.language.Castable<ceylon.language.Float>",
+    "ceylon.language.Numeric<ceylon.language.Float>"
+})
 public final class Float
-    implements Castable<Float>, Numeric<Float>, 
-               Subtractable<Float,Float> {
+    implements Castable<Float>, Numeric<Float> {
     
     final double value;
     private Float(double d) {
