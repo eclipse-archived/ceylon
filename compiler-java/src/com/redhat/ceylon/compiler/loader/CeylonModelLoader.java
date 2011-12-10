@@ -38,6 +38,7 @@ import javax.tools.JavaFileObject.Kind;
 import com.redhat.ceylon.compiler.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.tools.CeylonLog;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.BottomType;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -49,6 +50,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -524,7 +526,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             moduleName = Arrays.asList("ceylon","language");
         else
             moduleName = Arrays.asList(pkgName.split("\\."));
-         Module module = phasedUnits.getModuleBuilder().getOrCreateModule(moduleName);
+         Module module = phasedUnits.getModuleManager().getOrCreateModule(moduleName, null);
          // make sure that when we load the ceylon language module we set it to where
          // the typechecker will look for it
          if(pkgName != null
@@ -571,6 +573,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     }
 
     private Module loadCompiledModule(ClassSymbol moduleClass, String moduleClassName) {
+        ModuleManager moduleManager = phasedUnits.getModuleManager();
         String name = getAnnotationStringValue(moduleClass, symtab.ceylonAtModuleType, "name");
         String version = getAnnotationStringValue(moduleClass, symtab.ceylonAtModuleType, "version");
         // FIXME: validate the name?
@@ -582,9 +585,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
             log.warning("ceylon", "Module class "+moduleClassName+" contains no version, ignoring it");
             return null;
         }
-        Module module = new CompilerModule(this);
-        module.setName(Arrays.asList(name.split("\\.")));
-        module.setVersion(version);
+        Module module = moduleManager.getOrCreateModule(Arrays.asList(name.split("\\.")), version);
         Modules modules = ceylonContext.getModules();
 
         List<Attribute> imports = getAnnotationArrayValue(moduleClass, symtab.ceylonAtModuleType, "dependencies").getValue();
@@ -597,23 +598,30 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 String dependencyName = (String) nameAttribute.getValue();
                 if (! dependencyName.equals("java"))
                 {
-                    Module dependency = findLoadedModule(modules, dependencyName);
-                    if(dependency == null){
-                        // The imports are added as dummy packages (with available = false)
-                        // So they will be recursively identified (and replaced by classpath-loaded full modules)
-                        // in the enclosing loop (in CeylonEnter.resolveModuleDependencies())
-                        dependency = new Module();
-                        dependency.setName(Arrays.asList(dependencyName.split("\\.")));
-
-                        Attribute versionAttribute = importAttribute.member(Name.fromString(names, "version"));
-                        if (versionAttribute != null)
-                        {
-                            String dependencyVersion = (String) versionAttribute.getValue();
-                            dependency.setVersion(dependencyVersion);
-                        }
-                        modules.getListOfModules().add(dependency);
+                    Attribute versionAttribute = importAttribute.member(Name.fromString(names, "version"));
+                    String dependencyVersion = null;
+                    if (versionAttribute != null) {
+                        dependencyVersion = (String) versionAttribute.getValue();
                     }
-                    module.getDependencies().add(dependency);
+                    else {
+                        dependencyVersion = version;
+                    }
+                    
+                    Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(dependencyName),version);
+                    
+                    Attribute optionalAttribute = importAttribute.member(Name.fromString(names, "optional"));
+                    String optionalString = optionalAttribute == null ? null : (String) optionalAttribute.getValue();
+                    
+                    Attribute exportAttribute = importAttribute.member(Name.fromString(names, "export"));
+                    String exportString = optionalAttribute == null ? null : (String) exportAttribute.getValue();
+                    
+                    ModuleImport moduleImport = moduleManager.findImport(module, dependency);
+                    if (moduleImport == null) {
+                        boolean optional = optionalString!=null && optionalString.equals("true");
+                        boolean export = exportString!=null && exportString.equals("true");
+                        moduleImport = new ModuleImport(dependency, optional, export);
+                        module.getImports().add(moduleImport);
+                    }
                 }
             }
         }
@@ -621,8 +629,13 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
         module.setAvailable(true);
         
         modules.getListOfModules().add(module);
-        module.setLanguageModule(modules.getLanguageModule());
-        module.getDependencies().add(modules.getLanguageModule());
+        Module languageModule = modules.getLanguageModule();
+        module.setLanguageModule(languageModule);
+        ModuleImport moduleImport = moduleManager.findImport(module, languageModule);
+        if (moduleImport == null) {
+            moduleImport = new ModuleImport(languageModule, false, false);
+            module.getImports().add(moduleImport);
+        }
         
         return module;
     }  

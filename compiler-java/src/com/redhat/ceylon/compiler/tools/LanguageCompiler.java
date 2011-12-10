@@ -32,9 +32,11 @@ package com.redhat.ceylon.compiler.tools;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardLocation;
@@ -48,8 +50,8 @@ import com.redhat.ceylon.compiler.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.codegen.CeylonTransformer;
 import com.redhat.ceylon.compiler.loader.CeylonEnter;
 import com.redhat.ceylon.compiler.loader.CeylonModelLoader;
-import com.redhat.ceylon.compiler.loader.CompilerModuleBuilder;
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleBuilder;
+import com.redhat.ceylon.compiler.loader.CompilerModuleManager;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
@@ -104,11 +106,11 @@ public class LanguageCompiler extends JavaCompiler {
         PhasedUnits phasedUnits = context.get(phasedUnitsKey);
         if (phasedUnits == null) {
             com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext = getCeylonContextInstance(context);
-            CompilerModuleBuilder moduleBuilder = new CompilerModuleBuilder(ceylonContext, context);
-            phasedUnits = new PhasedUnits(ceylonContext, moduleBuilder);
+            CompilerModuleManager moduleManager = new CompilerModuleManager(ceylonContext, context);
+            phasedUnits = new PhasedUnits(ceylonContext, moduleManager);
             context.put(phasedUnitsKey, phasedUnits);
             // we must call it here because we use the PhasedUnits constructor that doesn't call it
-            moduleBuilder.initCoreModules();
+            moduleManager.initCoreModules();
         }
         return phasedUnits;
     }
@@ -117,7 +119,14 @@ public class LanguageCompiler extends JavaCompiler {
     public static com.redhat.ceylon.compiler.typechecker.context.Context getCeylonContextInstance(Context context) {
         com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext = context.get(ceylonContextKey);
         if (ceylonContext == null) {
-            ceylonContext = new com.redhat.ceylon.compiler.typechecker.context.Context(new VFS());
+            CeyloncFileManager fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
+            VFS vfs = new VFS();
+            Iterable<? extends File> repos = fileManager.getLocation(CeylonLocation.REPOSITORY);
+            ArrayList<VirtualFile> virtualRepos = new ArrayList<VirtualFile>();
+            for (File repo : repos) {
+                virtualRepos.add(vfs.getFromFile(repo)); 
+            }
+            ceylonContext = new com.redhat.ceylon.compiler.typechecker.context.Context(virtualRepos, new VFS());
             context.put(ceylonContextKey, ceylonContext);
         }
         return ceylonContext;
@@ -212,7 +221,7 @@ public class LanguageCompiler extends JavaCompiler {
             } else if (parser.getNumberOfSyntaxErrors() != 0) {
                 log.error("ceylon.parser.failed");
             } else {
-                ModuleBuilder moduleBuilder = phasedUnits.getModuleBuilder();
+                ModuleManager moduleManager = phasedUnits.getModuleManager();
                 File sourceFile = new File(filename.toString());
                 // FIXME: temporary solution
                 VirtualFile file = vfs.getFromFile(sourceFile);
@@ -221,7 +230,7 @@ public class LanguageCompiler extends JavaCompiler {
                 String pkgName = getPackage(filename);
                 // make a Package with no module yet, we will resolve them later
                 com.redhat.ceylon.compiler.typechecker.model.Package p = modelLoader.findOrCreatePackage(null, pkgName == null ? "" : pkgName);
-                PhasedUnit phasedUnit = new CeylonPhasedUnit(file, srcDir, cu, p, moduleBuilder, ceylonContext, filename, map);
+                PhasedUnit phasedUnit = new CeylonPhasedUnit(file, srcDir, cu, p, moduleManager, ceylonContext, filename, map);
                 phasedUnits.addPhasedUnit(file, phasedUnit);
                 gen.setMap(map);
 
@@ -249,13 +258,10 @@ public class LanguageCompiler extends JavaCompiler {
     }
 
     private void loadCompiledModules(LinkedList<JCCompilationUnit> moduleTrees) {
-        final java.util.List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
-        for (PhasedUnit pu : listOfUnits) {
-            pu.buildModuleImport();
-        }
+        phasedUnits.visitModules();
         Modules modules = ceylonContext.getModules();
         // now make sure the phase units have their modules and packages set correctly
-        for (PhasedUnit pu : listOfUnits) {
+        for (PhasedUnit pu : phasedUnits.getPhasedUnits()) {
             Package pkg = pu.getPackage();
             // skip it if we already resolved the package
             if(pkg.getModule() != null)
@@ -277,10 +283,7 @@ public class LanguageCompiler extends JavaCompiler {
                     module = loadModuleFromSource(pkgName, moduleTrees);
                 }
                 else if (! module.isAvailable()) {
-                    modules.getListOfModules().remove(module);
-                    Module fullModule = loadModuleFromSource(pkgName, moduleTrees);
-                    CeylonEnter.updateModulesDependingOn(modules.getListOfModules(), module, fullModule);
-                    module = fullModule;
+                    loadModuleFromSource(pkgName, moduleTrees);
                 }
 
                 if(module == null){
@@ -313,9 +316,9 @@ public class LanguageCompiler extends JavaCompiler {
             CeylonCompilationUnit ceylonCompilationUnit = (CeylonCompilationUnit) parse(fileObject);
             moduleTrees.add(ceylonCompilationUnit);
             // parse the module info from there
-            ceylonCompilationUnit.phasedUnit.buildModuleImport();
+            Module module = ceylonCompilationUnit.phasedUnit.visitSrcModulePhase();
+            ceylonCompilationUnit.phasedUnit.visitRemainingModulePhase();
             // now try to obtain the parsed module
-            Module module = getModule(pkgName);
             if(module != null){
                 ceylonCompilationUnit.phasedUnit.getPackage().setModule(module);
                 return module;
@@ -329,16 +332,6 @@ public class LanguageCompiler extends JavaCompiler {
         if(lastDot == -1)
             return "";
         return pkgName.substring(0, lastDot);
-    }
-
-    private Module getModule(String pkgName) {
-        Modules modules = ceylonContext.getModules();
-        for(Module m : modules.getListOfModules()){
-            if(pkgName.equals(m.getNameAsString())){
-                return m;
-            }
-        }
-        return null;
     }
 
     // FIXME: this function is terrible, possibly refactor it with getPackage?

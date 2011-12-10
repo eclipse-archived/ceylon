@@ -22,7 +22,7 @@ package com.redhat.ceylon.compiler.tools;
 
 import javax.tools.JavaFileObject;
 
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleBuilder;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
@@ -36,9 +36,9 @@ public class CeylonPhasedUnit extends PhasedUnit {
     private LineMap lineMap;
 
     public CeylonPhasedUnit(VirtualFile unitFile, VirtualFile srcDir,
-            CompilationUnit cu, Package p, ModuleBuilder moduleBuilder,
+            CompilationUnit cu, Package p, ModuleManager moduleManager,
             Context context, JavaFileObject fileObject, LineMap map) {
-        super(unitFile, srcDir, cu, p, moduleBuilder, context);
+        super(unitFile, srcDir, cu, p, moduleManager, context);
         this.fileObject = fileObject;
         this.lineMap = map;
     }

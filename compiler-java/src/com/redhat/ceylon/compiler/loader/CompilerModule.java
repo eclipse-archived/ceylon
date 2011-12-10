@@ -21,6 +21,7 @@
 package com.redhat.ceylon.compiler.loader;
 
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.util.Util;
 import com.sun.tools.javac.util.Context;
@@ -53,9 +54,9 @@ public class CompilerModule extends Module {
                 return pkg;
         }
         // then try in dependencies
-        for(Module dependency : getDependencies()){
+        for(ModuleImport dependency : getImports()){
             // we don't have to worry about the default module here since we can't depend on it
-            pkg = findPackageInModule((CompilerModule) dependency, name);
+            pkg = findPackageInModule((CompilerModule) dependency.getModule(), name);
             if(pkg != null)
                 return pkg;
         }

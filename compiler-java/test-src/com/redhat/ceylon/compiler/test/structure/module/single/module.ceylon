@@ -23,10 +23,5 @@ Module module {
     doc = "Bla bla.";
     by = { "Stef FroMage" };
     license = 'http://www.gnu.org/licenses/gpl.html';
-    Import {
-        name = 'com.redhat.ceylon.compiler.test.structure.module.single';
-        version = '6.6.6';
-        optional = false;
-        export = false;
-    }
+    dependencies = {};
 }

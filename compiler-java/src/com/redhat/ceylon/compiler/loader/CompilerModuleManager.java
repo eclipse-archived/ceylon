@@ -20,17 +20,22 @@
 
 package com.redhat.ceylon.compiler.loader;
 
+import java.util.Arrays;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleBuilder;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
+import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
+import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 
-public class CompilerModuleBuilder extends ModuleBuilder {
+public class CompilerModuleManager extends ModuleManager {
 
     private com.sun.tools.javac.util.Context context;
+    private CeylonEnter ceylonEnter;
+    private CeylonModelLoader modelLoader;
 
-    public CompilerModuleBuilder(Context ceylonContext, com.sun.tools.javac.util.Context context) {
+    public CompilerModuleManager(Context ceylonContext, com.sun.tools.javac.util.Context context) {
         super(ceylonContext);
         this.context = context;
     }
@@ -40,5 +45,32 @@ public class CompilerModuleBuilder extends ModuleBuilder {
         Module module = new CompilerModule(context);
         module.setName(moduleName);
         return module;
+    }
+
+    @Override
+    public void resolveModule(Module module, VirtualFile artifact,
+            List<PhasedUnits> phasedUnitsOfDependencies) {
+        
+        getCeylonEnter().addModuleToClassPath(module, true); // To be able to load it from the corresponding archive
+        Module compiledModule = getModelLoader().loadCompiledModule(module.getNameAsString());
+    }
+
+    public CeylonEnter getCeylonEnter() {
+        if (ceylonEnter == null) {
+            ceylonEnter = CeylonEnter.instance(context);
+        }
+        return ceylonEnter;
+    }
+
+    public CeylonModelLoader getModelLoader() {
+        if (modelLoader == null) {
+            modelLoader = CeylonModelLoader.instance(context);
+        }
+        return modelLoader;
+    }
+
+    @Override
+    public Iterable<String> getSearchedArtifactExtensions() {
+        return Arrays.asList("car", "jar");
     }
 }

@@ -39,10 +39,12 @@ import com.redhat.ceylon.compiler.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisWarning;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleValidator;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -180,15 +182,8 @@ public class CeylonEnter extends Enter {
     private void resolveModuleDependencies() {
         Modules modules = ceylonContext.getModules();
         
-        // On all the modules that are not available (currently unresolved module dependencies),
-        // try to replace them with modules loaded from the classpath
-        // To manage new dependencies from just-loaded new modules, we iterate as long as a
-        // new module is successfully loaded from the classpath
-        boolean aNewModuleWasLoaded = false;
-        do {
-            aNewModuleWasLoaded = loadUnavailableModulesFromJars(modules.getListOfModules());
-        } while (aNewModuleWasLoaded);
-
+        ModuleValidator validator = new ModuleValidator(ceylonContext, phasedUnits);
+        validator.verifyModuleDependencyTree();
 
         // every module depends on java.lang implicitely
         Module javaModule = modelLoader.findOrCreateModule("java.lang");
@@ -196,39 +191,11 @@ public class CeylonEnter extends Enter {
         modelLoader.findOrCreatePackage(javaModule, "java.lang");
         for(Module m : modules.getListOfModules()){
             if(!m.getName().equals("java")){
-                m.getDependencies().add(javaModule);
-            }
-        }
-    }
-
-    private boolean loadUnavailableModulesFromJars(Collection<Module> modules) {
-        boolean aNewModuleWasLoaded = false;
-        Collection<Module> copyOfModules = new ArrayList<Module>(modules);
-        for (Module module : copyOfModules) {
-            if (! module.isAvailable()) {
-                // It is a dummy module, created on-the-fly as a dependency of a fully-parsed module file.
-                // Since it has never been fully parsed (neither from a source file nor from the classpath),
-                // it should be replaced now by a full one loaded from the classpath.
-
-                modules.remove(module);
-                addModuleToClassPath(module, true); // To be able to load it from the corresponding archive
-                Module compiledModule = modelLoader.loadCompiledModule(module.getNameAsString());
-                if (compiledModule != null) {
-                    updateModulesDependingOn(modules, module, compiledModule);
-                    aNewModuleWasLoaded = true;
+                ModuleImport moduleImport = phasedUnits.getModuleManager().findImport(m, javaModule);
+                if (moduleImport == null) {
+                    moduleImport = new ModuleImport(javaModule, false, true);
+                    m.getImports().add(moduleImport);
                 }
-            }
-        }
-        return aNewModuleWasLoaded;
-    }
-
-    public static void updateModulesDependingOn(Collection<Module> modules,
-            Module replacedModule, Module replacingModule) {
-        for (Module otherModule : modules) {
-            java.util.List<Module> dependencies = otherModule.getDependencies();
-            if (dependencies.contains(replacedModule)) {
-                dependencies.remove(replacedModule);
-                dependencies.add(replacingModule);
             }
         }
     }

@@ -36,6 +36,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -706,19 +707,21 @@ public abstract class AbstractTransformer implements Transformation {
     protected List<JCAnnotation> makeAtModule(Module module) {
         String name = module.getNameAsString();
         String version = module.getVersion();
-        java.util.List<Module> dependencies = module.getDependencies();
+        java.util.List<ModuleImport> dependencies = module.getImports();
         ListBuffer<JCExpression> imports = new ListBuffer<JCTree.JCExpression>();
-        for(Module dependency : dependencies){
-            JCExpression dependencyName = make().Assign(makeIdent("name"), make().Literal(dependency.getNameAsString()));
+        for(ModuleImport dependency : dependencies){
+            Module dependencyModule = dependency.getModule();
+            JCExpression dependencyName = make().Assign(makeIdent("name"), make().Literal(dependencyModule.getNameAsString()));
             JCExpression dependencyVersion = null;
-            if(dependency.getVersion() != null)
-                dependencyVersion = make().Assign(makeIdent("version"), make().Literal(dependency.getVersion()));
+            if(dependencyModule.getVersion() != null)
+                dependencyVersion = make().Assign(makeIdent("version"), make().Literal(dependencyModule.getVersion()));
             List<JCExpression> spec;
             if(dependencyVersion != null)
                 spec = List.<JCExpression>of(dependencyName, dependencyVersion);
             else
                 spec = List.<JCExpression>of(dependencyName);
-            JCAnnotation atImport = make().Annotation(makeIdent(syms().ceylonAtImportType), spec); 
+            JCAnnotation atImport = make().Annotation(makeIdent(syms().ceylonAtImportType), spec);
+            // TODO : add the export & optional annotations also ?
             imports.add(atImport);
         }
         JCExpression nameAttribute = make().Assign(makeIdent("name"), make().Literal(name));
