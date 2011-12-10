@@ -36,7 +36,7 @@ public final class Comparison extends Case {
         return this != LARGER;
     }
 
-	public Comparison(@Name("name") java.lang.String name) {
+	private Comparison(@Name("name") java.lang.String name) {
 		super(name);
 	}	
 
