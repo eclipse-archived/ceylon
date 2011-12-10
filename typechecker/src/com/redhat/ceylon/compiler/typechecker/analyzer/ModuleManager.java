@@ -14,6 +14,8 @@ import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
+import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
+import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
@@ -250,15 +252,6 @@ public class ModuleManager {
         moduleToNode.put(module,unit);
     }
 
-    public void visitModules(List<PhasedUnit> listOfUnits) {
-        for (PhasedUnit pu : listOfUnits) {
-            pu.visitSrcModulePhase();
-        }
-        for (PhasedUnit pu : listOfUnits) {
-            pu.visitRemainingModulePhase();
-        }
-    }
-
     public ModuleImport findImport(Module owner, Module dependency) {
         for (ModuleImport modImprt : owner.getImports()) {
             if (equalsForModules(modImprt.getModule(), dependency, true)) return modImprt;
@@ -283,5 +276,36 @@ public class ModuleManager {
             if (equalsForModules(module, current, exactVersionMatch)) return current;
         }
         return null;
+    }
+
+    public Module findLoadedModule(String moduleName, String searchedVersion) {
+        return findLoadedModule(moduleName, searchedVersion, modules);
+    }
+    
+    public Module findLoadedModule(String moduleName, String searchedVersion, Modules modules) {
+        for(Module module : modules.getListOfModules()){
+            if(module.getNameAsString().equals(moduleName)) {
+                if (searchedVersion != null && searchedVersion.equals(module.getVersion())){
+                    return module;
+                }
+            }
+        }
+        return null;
+    }
+
+    public void resolveModule(Module module, VirtualFile artifact, List<PhasedUnits> phasedUnitsOfDependencies) {
+        PhasedUnits modulePhasedUnit = new PhasedUnits(context);
+        phasedUnitsOfDependencies.add(modulePhasedUnit);
+        modulePhasedUnit.parseUnit(artifact);
+        //populate module.getDependencies()
+        modulePhasedUnit.visitModules();
+    }
+
+    public Iterable<String> getSearchedArtifactExtensions() {
+        return Arrays.asList("src");
+    }
+
+    public static List<String> splitModuleName(String moduleName) {
+        return Arrays.asList(moduleName.split("[\\.]"));
     }
 }

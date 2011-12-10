@@ -21,6 +21,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.TypeVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ValueVisitor;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -81,12 +82,14 @@ public class PhasedUnit {
         }
     }
 
-    public void visitSrcModulePhase() {
+    public Module visitSrcModulePhase() {
         if ( ModuleManager.MODULE_FILE.equals(fileName) ||
                 ModuleManager.PACKAGE_FILE.equals(fileName) ) {
             moduleVisitor = new ModuleVisitor(moduleManager, pkg);
             compilationUnit.visit(moduleVisitor);
+            return moduleVisitor.getMainModule();
         }
+        return null;
     }
 
     public void visitRemainingModulePhase() {

@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,6 +13,7 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.exceptions.LanguageModuleNotFoundException;
 import com.redhat.ceylon.compiler.typechecker.io.ArtifactProvider;
 import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
+import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 
@@ -28,6 +30,7 @@ public class ModuleValidator {
     private List<PhasedUnits> phasedUnitsOfDependencies;
     private final ModuleManager moduleManager;
 
+    
     public ModuleValidator(Context context, PhasedUnits phasedUnits) {
         this.context = context;
         this.moduleManager = phasedUnits.getModuleManager();
@@ -79,16 +82,46 @@ public class ModuleValidator {
                 moduleManager.addErrorToModule( dependencyTree.getFirst(), error.toString() );
                 return;
             }
+            List<String> searchedArtifacts = new ArrayList<String>();
+            Iterable<String> searchedArtifactExtensions = moduleManager.getSearchedArtifactExtensions();
+            
             if ( ! module.isAvailable() ) {
                 //try and load the module from the repository
-                final ArtifactProvider artifactProvider = context.getArtifactProvider();
-                final ClosableVirtualFile src = artifactProvider.getArtifact(module.getName(), module.getVersion(), "src");
-                if (src == null) {
+                VirtualFile artifact = null;
+                List<ArtifactProvider> artifactProviders = context.getArtifactProviders();
+                for (final ArtifactProvider artifactProvider : artifactProviders) {
+                    for (String extension : searchedArtifactExtensions) {
+                        searchedArtifacts.add(artifactProvider.getArtifactName(module.getName(), 
+                                module.getVersion(), extension));
+                    }
+                    artifact = artifactProvider.getArtifact(module.getName(), 
+                            module.getVersion(), 
+                            searchedArtifactExtensions);
+                    if (artifact != null) {
+                        break;
+                    }
+                }
+                if (artifact == null) {
                     //not there => error
-                    StringBuilder error = new StringBuilder("Cannot find module artifact ");
-                    error.append( artifactProvider.getArtifactName(module.getName(), module.getVersion(), "src") )
-                            .append(" in local repository ('~/.ceylon/repo')")
-                            .append("\n\tDependency tree: ");
+                    StringBuilder error = new StringBuilder("Cannot find module artifact(s) : ");
+                    if (searchedArtifacts.size() > 0) {
+                        error.append(searchedArtifacts.get(0));
+                    }
+                    for (String searchedArtifact : searchedArtifacts.subList(1, searchedArtifacts.size())) {
+                        error.append(", ");
+                        error.append("\n\t");
+                        error.append(searchedArtifact);
+                    }
+                    error.append("\n\t  in repositories : ");
+                    if (artifactProviders.size() > 0) {
+                        error.append(artifactProviders.get(0));
+                    }
+                    for (ArtifactProvider searchedProvider : artifactProviders.subList(1, artifactProviders.size())) {
+                        error.append(", ");
+                        error.append("\n\t");
+                        error.append(searchedProvider);
+                    }
+                    error.append("\n\tDependency tree: ");
                     buildDependencyString(dependencyTree, module, error);
                     error.append(".");
                     if ( module.getLanguageModule() == module ) {
@@ -102,16 +135,14 @@ public class ModuleValidator {
                     }
                 }
                 else {
-                    //parse module units and build module dependency and carry on
-                    PhasedUnits modulePhasedUnit = new PhasedUnits(context);
-                    phasedUnitsOfDependencies.add(modulePhasedUnit);
-                    modulePhasedUnit.parseUnit(src);
-                    src.close();
-                    module.setAvailable(true);  // TODO : not necessary anymore ? since at least on module.ceylon 
-                                                //        should have been parsed and should be applied buildModuleImport()
-                    final List<PhasedUnit> listOfUnits = modulePhasedUnit.getPhasedUnits();
-                    //populate module.getDependencies()
-                    moduleManager.visitModules(listOfUnits);
+                    try {
+                        //parse module units and build module dependency and carry on
+                        moduleManager.resolveModule(module, artifact, phasedUnitsOfDependencies);
+                    } finally {
+                        if (artifact instanceof ClosableVirtualFile) {
+                            ((ClosableVirtualFile)artifact).close();
+                        }
+                    }
                 }
             }
             dependencyTree.addLast(module);

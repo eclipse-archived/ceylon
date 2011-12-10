@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -130,7 +129,7 @@ public class ModuleVisitor extends Visitor {
                 if (version.isEmpty()) {
                     vsa.addError("empty version identifier");
                 }
-                Module importedModule = moduleManager.getOrCreateModule(splitModuleName(moduleName),version);
+                Module importedModule = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(moduleName),version);
                 if (importedModule == null) {
                     nsa.addError("A module cannot be defined at the top level of the hierarchy");
                 }
@@ -138,11 +137,11 @@ public class ModuleVisitor extends Visitor {
                     if (importedModule.getVersion() == null) {
                         importedModule.setVersion(version);
                     }
+                    String optionalString = argumentToString(getArgument(that, "optional"));
+                    String exportString = argumentToString(getArgument(that, "export"));
                     ModuleImport moduleImport = moduleManager.findImport(mainModule, importedModule);
                     if (moduleImport == null) {
-                        String optionalString = argumentToString(getArgument(that, "optional"));
                         boolean optional = optionalString!=null && optionalString.equals("true");
-                        String exportString = argumentToString(getArgument(that, "export"));
                         boolean export = exportString!=null && exportString.equals("true");
                         moduleImport = new ModuleImport(importedModule, optional, export);
                         mainModule.getImports().add(moduleImport);
@@ -173,10 +172,6 @@ public class ModuleVisitor extends Visitor {
                 }
             }
         }
-    }
-
-    private static List<String> splitModuleName(String moduleName) {
-        return Arrays.asList(moduleName.split("[\\.]"));
     }
 
     private Tree.SpecifiedArgument getArgument(Tree.InvocationExpression that, String name) {
@@ -249,5 +244,8 @@ public class ModuleVisitor extends Visitor {
     public enum Phase {
         SRC_MODULE,
         REMAINING
+    }
+    public Module getMainModule() {
+        return mainModule;
     }
 }

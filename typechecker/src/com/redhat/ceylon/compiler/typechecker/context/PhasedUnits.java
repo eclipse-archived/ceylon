@@ -159,4 +159,14 @@ public class PhasedUnits {
         }
         moduleManager.pop();
     }
+    
+    public void visitModules() {
+        List<PhasedUnit> listOfUnits = getPhasedUnits();
+        for (PhasedUnit pu : listOfUnits) {
+            pu.visitSrcModulePhase();
+        }
+        for (PhasedUnit pu : listOfUnits) {
+            pu.visitRemainingModulePhase();
+        }
+    }
 }
