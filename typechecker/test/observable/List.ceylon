@@ -2,25 +2,25 @@ class List<T>()
         extends Object()
         satisfies Sequence<T> {
     shared void add(T t) {}
-    shared actual Natural lastIndex {
+    shared actual Integer lastIndex {
         return 0;
     }
     shared actual List<T> clone {
         throw;
     }
-    shared actual T? item(Natural n) {
+    shared actual T? item(Integer n) {
         return null;
     }
     shared actual T[] rest {
         return this;
     }
-    shared actual T[] segment(Natural from, Natural length) {
+    shared actual T[] segment(Integer from, Integer length) {
         return this;
     }
     shared actual T first {
         throw;
     }
-    shared actual T[] span(Natural from, Natural? to) {
+    shared actual T[] span(Integer from, Integer? to) {
         return this;
     }
 }

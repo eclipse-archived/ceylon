@@ -46,16 +46,16 @@ class Optional() {
     String[] list = Foo<String>().list;
     
     @error String sssss = list.first;
-    @error Natural nnnn = list.lastIndex;
+    @error Integer nnnn = list.lastIndex;
     
     if (nonempty list) {
         String s = list.first;
-        Natural li = list.lastIndex;
+        Integer li = list.lastIndex;
     }
     
     if (nonempty Sequence<String> strings = optionalList) {
         String s = strings.first;
-        Natural li = strings.lastIndex;
+        Integer li = strings.lastIndex;
     }
     
     Sequence<String> stuff = { "foo" };
@@ -68,7 +68,7 @@ class Optional() {
     Character[]? maybechars = maybestuff?.characters;
     
     Character[] somechars = {};
-    Natural scs = somechars.size;
+    Integer scs = somechars.size;
     value sci = somechars.iterator;
     
     @type["Nothing|String|Integer|Sequence<Object>"] String? | String | String? | Integer | Sequence<Object> foobar1 = -1;

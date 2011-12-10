@@ -14,7 +14,7 @@ object x extends X<String>("Hello") {
     }
 }
 
-class Z() extends X<Natural>(1) {
+class Z() extends X<Integer>(1) {
     Y y() {
         Y y = Y();
         return y;

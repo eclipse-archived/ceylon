@@ -17,7 +17,7 @@ class Operators() {
     
     @type["Integer"] value w9 = 1 - 2;
     
-    @type["Natural"] value w5 = 1 * 1;
+    @type["Integer"] value w5 = 1 * 1;
     
     @type["Float"] value x3 = -2.5;
     
@@ -35,8 +35,8 @@ class Operators() {
     
     @type["Float"]  value x6 = 1.0 * 2.5 ** (-0.5);
     
-    @type["Natural"] value x7 = 10 % 3;
-    @type["Natural"] value x8 = 10 / 3;
+    @type["Integer"] value x7 = 10 % 3;
+    @type["Integer"] value x8 = 10 / 3;
     
     @error value w1 = 4.0 % 2.0;
     
@@ -75,17 +75,17 @@ class Operators() {
     
     @error value x24 = X() ? nothing;
     
-    @type["Range<Natural>"] value x25 = 1..4;
+    @type["Range<Integer>"] value x25 = 1..4;
     
     @type["Range<Integer>"] value x252 = -10..+10;
     
-    @error value x253 = -1..5;
+    value x253 = -1..5;
     
     @error value x26 = 1.2..3.4;
     
-    @type["Entry<Natural,Operators.X>"] value x27 = 0->X();
+    @type["Entry<Integer,Operators.X>"] value x27 = 0->X();
     @type["Operators.X"] value x27item = x27.item;
-    @type["Natural"] value x27key = x27.key;
+    @type["Integer"] value x27key = x27.key;
     
     @error value x28 = 0->nothing;
     
@@ -100,11 +100,11 @@ class Operators() {
     @error value x71 = {"hello"} nonempty;
     @error value x71n = nonempty {"hello"};
     
-    @type["Boolean"] value x31 = 1 is Natural;
-    @type["Boolean"] value x31n = is Natural 1;
+    @type["Boolean"] value x31 = 1 is Integer;
+    @type["Boolean"] value x31n = is Integer 1;
     
-    @type["Boolean"] value x32 = nothing is Natural;
-    @type["Boolean"] value x32n = is Natural nothing;
+    @type["Boolean"] value x32 = nothing is Integer;
+    @type["Boolean"] value x32n = is Integer nothing;
     
     @type["Boolean"] value x33 = "hello" in "hello world";
     
@@ -116,7 +116,7 @@ class Operators() {
     
     @type["Boolean"] value x55 = 1 in cat;
     
-    Sequence<Natural?> seqopt2 = { null, 1 };    
+    Sequence<Integer?> seqopt2 = { null, 1 };    
     @error value x56 = "foo" in seqopt2;
     
     @type["Comparison"] value x34 = 1<=>3;
@@ -152,16 +152,16 @@ class Operators() {
     @type["Nothing|Ordered<String>"] value x532 = noSequence?[0]?.split(" ");
     @type["Sequence<Operators.X>"] value x54 = {Operators()}[].X();
     
-    variable Natural n := 0;
-    @type["Natural"] n++;
-    @type["Natural"] ++n;
-    @type["Natural"] n+=1;
-    @type["Natural"] n/=3;
-    @type["Natural"] n*=2;
-    @error n*=-2;
+    variable Integer n := 0;
+    @type["Integer"] n++;
+    @type["Integer"] ++n;
+    @type["Integer"] n+=1;
+    @type["Integer"] n/=3;
+    @type["Integer"] n*=2;
+    n*=-2;
     @error n+=1.0;
-    @error n+=-1;
-    @error n-=1;
+    n+=-1;
+    n-=1;
     
     variable Float f:=0.0;
     @type["Float"] f+=1.0;
@@ -179,12 +179,12 @@ class Operators() {
     @error (n+1) ++;
     @error ++ (n+1);
     
-    Natural const = 0;
+    Integer const = 0;
     @error const++;
     @error --const;
     @error const+=10;
     
-    variable Natural nn;
+    variable Integer nn;
     @error nn+=1;
     @error nn++;
     
@@ -199,15 +199,15 @@ class Operators() {
     @type["Nothing|String"] value ns = { null, "hello", "world" }[1];
     String? ns2 = ns;
     
-    @type["Sequence<Integer|Natural>"] value ins = { -10, -1, 1, 3 };
-    @type["Nothing|Integer|Natural"] value ion = ins[2];
+    @type["Sequence<Integer|Float>"] value ins = { -10, -1, 1.0, 3 };
+    @type["Nothing|Integer|Float"] value ion = ins[2];
     @error String ions = ion.string;
-    Sequence<Integer|Natural> ins2 = ins;
-    Nothing|Integer|Natural ion2 = ion;
-    Integer?|Natural? ion3 = ion;
-    Nothing|Integer|Natural ion4 { return ion2; }
-    Nothing|Integer|Natural ion5 { return ion3; }
-    Integer|Natural defaultIon(Nothing|Integer|Natural x) {
+    Sequence<Integer|Float> ins2 = ins;
+    Nothing|Integer|Float ion2 = ion;
+    Integer?|Float? ion3 = ion;
+    Nothing|Integer|Float ion4 { return ion2; }
+    Nothing|Integer|Float ion5 { return ion3; }
+    Integer|Float defaultIon(Nothing|Integer|Float x) {
         if (exists x) {
             return x;
         }
@@ -215,7 +215,7 @@ class Operators() {
             return 0;
         }
     }
-    Integer|Natural defaultIon2(Nothing|Integer|Natural x) {
+    Integer|Float defaultIon2(Nothing|Integer|Float x) {
         return x?0;
     }
 

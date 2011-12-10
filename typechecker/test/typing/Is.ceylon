@@ -26,29 +26,29 @@ class Is() {
         if (strings is T) {}
     }
     
-    Correspondence<Natural,String> c = strings;
+    Correspondence<Integer,String> c = strings;
     if (is Sized c) {
         String? s = c[0];
-        Natural size = c.size;
+        Integer size = c.size;
         Boolean empty = c.empty;
-        @type["Correspondence<Natural,String>&Sized"] value cc = c;
+        @type["Correspondence<Integer,String>&Sized"] value cc = c;
     }
     
-    Correspondence<Natural,String> d = strings;
+    Correspondence<Integer,String> d = strings;
     if (is Sized&Container d) {
         String? s = d[0];
-        Natural size = d.size;
+        Integer size = d.size;
         Boolean empty = d.empty;
-        @type["Correspondence<Natural,String>&Sized"] value dd = d;
+        @type["Correspondence<Integer,String>&Sized"] value dd = d;
     }
 
-    Correspondence<Natural,String> e = strings;
+    Correspondence<Integer,String> e = strings;
     if (is Sized&Iterable<String> e) {
         String? s = e[0];
-        Natural size = e.size;
+        Integer size = e.size;
         Boolean empty = e.empty;
         for (String str in e) {} 
-        @type["Correspondence<Natural,String>&Sized&Iterable<String>"] value ee = e;
+        @type["Correspondence<Integer,String>&Sized&Iterable<String>"] value ee = e;
     }
 
 }

@@ -125,8 +125,8 @@ class Union() {
         }
     }
     
-    Sequence<String>|Sequence<Natural> sssn = { "hello" };
-    String|Natural sssnf = sssn.first;
+    Sequence<String>|Sequence<Integer> sssn = { "hello" };
+    String|Integer sssnf = sssn.first;
     
     function first<T>(T... args) {
         if (nonempty args) {
@@ -158,33 +158,33 @@ class Union() {
         extends super.Inner<U>(u) {}
     }
     
-    Outer<String>.Inner<Natural>|Outer<Float>.Inner<Integer> foobar1 = Outer<String>().Inner<Natural>(1);
+    Outer<String>.Inner<Integer>|Outer<Float>.Inner<Float> foobar1 = Outer<String>().Inner<Integer>(1);
     String foobarhello1 = foobar1.hello;
-    @type["Natural|Integer"] value foobaru1 = foobar1.u;
-    Outer<String|Float>.Inner<Natural|Integer> foobart1 = foobar1;
-    @type["Union.Outer<String|Float>.Inner<Natural|Integer>"] value foobarts1 = foobar1.get;
+    @type["Integer|Float"] value foobaru1 = foobar1.u;
+    Outer<String|Float>.Inner<Integer|Float> foobart1 = foobar1;
+    @type["Union.Outer<String|Float>.Inner<Integer|Float>"] value foobarts1 = foobar1.get;
     
-    SubOuter<String>.Inner<Natural>|Outer<Float>.Inner<Integer> foobar2 = SubOuter<String>().Inner<Natural>(1);
+    SubOuter<String>.Inner<Integer>|Outer<Float>.Inner<Float> foobar2 = SubOuter<String>().Inner<Integer>(1);
     String foobarhello2 = foobar2.hello;
-    @type["Natural|Integer"] value foobaru2 = foobar2.u;
-    Outer<String|Float>.Inner<Natural|Integer> foobart2 = foobar2;
-    @type["Union.Outer<String|Float>.Inner<Natural|Integer>"] value foobarts2 = foobar2.get;
+    @type["Integer|Float"] value foobaru2 = foobar2.u;
+    Outer<String|Float>.Inner<Integer|Float> foobart2 = foobar2;
+    @type["Union.Outer<String|Float>.Inner<Integer|Float>"] value foobarts2 = foobar2.get;
     
-    SubOuter<String>.Inner<Natural>|SpecialOuter<Float>.Inner<Integer> foobar3 = SubOuter<String>().Inner<Natural>(1);
+    SubOuter<String>.Inner<Integer>|SpecialOuter<Float>.Inner<Float> foobar3 = SubOuter<String>().Inner<Integer>(1);
     String foobarhello3 = foobar3.hello;
-    @type["Natural|Integer"] value foobaru3 = foobar3.u;
-    Outer<String|Float>.Inner<Natural|Integer> foobart3 = foobar3;
-    @type["Union.Outer<String|Float>.Inner<Natural|Integer>"] value foobarts3 = foobar3.get;
+    @type["Integer|Float"] value foobaru3 = foobar3.u;
+    Outer<String|Float>.Inner<Integer|Float> foobart3 = foobar3;
+    @type["Union.Outer<String|Float>.Inner<Integer|Float>"] value foobarts3 = foobar3.get;
     
-    SubOuter<Object>.Inner<Natural>|SpecialOuter<Float>.Inner<Object> foobar4 = SubOuter<String>().Inner<Natural>(1);
-    @type["Union.SubOuter<Object>.Inner<Natural>|Union.SpecialOuter<Float>.Inner<Object>"] value foobar4check = foobar4;
+    SubOuter<Object>.Inner<Integer>|SpecialOuter<Float>.Inner<Object> foobar4 = SubOuter<String>().Inner<Integer>(1);
+    @type["Union.SubOuter<Object>.Inner<Integer>|Union.SpecialOuter<Float>.Inner<Object>"] value foobar4check = foobar4;
     String foobarhello4 = foobar4.hello;
     @type["Object"] value foobaru4 = foobar4.u;
     Outer<Object>.Inner<Object> foobart4 = foobar4;
     @type["Union.Outer<Object>.Inner<Object>"] value foobarts4 = foobar4.get;
     
-    SubOuter<Object>.Inner<Natural>|ReallySpecialOuter<Float>.Inner<Object> foobar5 = SubOuter<String>().Inner<Natural>(1);
-    @type["Union.SubOuter<Object>.Inner<Natural>|Union.ReallySpecialOuter<Float>.Inner<Object>"] value foobar5check = foobar5;
+    SubOuter<Object>.Inner<Integer>|ReallySpecialOuter<Float>.Inner<Object> foobar5 = SubOuter<String>().Inner<Integer>(1);
+    @type["Union.SubOuter<Object>.Inner<Integer>|Union.ReallySpecialOuter<Float>.Inner<Object>"] value foobar5check = foobar5;
     String foobarhello5 = foobar5.hello;
     @type["Object"] value foobaru5 = foobar5.u;
     Outer<Object>.Inner<Object> foobart5 = foobar5;

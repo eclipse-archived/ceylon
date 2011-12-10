@@ -16,7 +16,7 @@ class SequencedArguments() {
     
     void print(String s, String... strings) {}
     void printAll(String[] strings) {}
-    void printSum(Natural... n) {}
+    void printSum(Integer... n) {}
     
     String[] names = { "stef", "tako" };
     

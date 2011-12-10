@@ -47,17 +47,17 @@ class Refinement() {
         
         class X() {
             shared default String hello = "Hello";
-            shared default variable Natural count := 0;
+            shared default variable Integer count := 0;
             shared default void print(String s) {}
             shared default String getHello() { return hello; }
             shared default class Z() {}
         }
         
         class Y() extends X() {
-            @error shared actual Natural hello = 1;
-            @error shared actual Natural count { return 1; }
+            @error shared actual Integer hello = 1;
+            @error shared actual Integer count { return 1; }
             shared actual void print(@error Object o) {}
-            @error shared actual Natural getHello() { return hello; }
+            @error shared actual Integer getHello() { return hello; }
             @error shared actual class Z() {}
         }
         
@@ -67,17 +67,17 @@ class Refinement() {
         
         class X() {
             shared default Object something = "Hello";
-            shared default Natural count = 0;
+            shared default Integer count = 0;
             shared default void print(Object o) {}
             shared default Object getSomething() { return something; }
             shared default class Z() {}
         }
         
         class Y() extends X() {
-            shared actual Natural something = 1;
-            shared actual variable Natural count := 0;
+            shared actual Integer something = 1;
+            shared actual variable Integer count := 0;
             shared actual void print(Object o) {}
-            shared actual Natural getSomething() { return something; }
+            shared actual Integer getSomething() { return something; }
             shared actual class Z() extends super.Z() {}
         }
         

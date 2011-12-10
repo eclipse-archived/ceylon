@@ -1,6 +1,6 @@
 interface Interfaces {
     
-    @error Natural count = 0;
+    @error Integer count = 0;
     
     @error count++;
     
@@ -38,12 +38,12 @@ interface Interfaces {
     
     abstract class NestedAbstractClass() {
         shared String hello = upper("hello");
-        shared formal Natural times;
+        shared formal Integer times;
     }
     
     class MemberClass() {
         shared String goodbye = upper("goodbye");
-        shared Natural times = 1;
+        shared Integer times = 1;
     }
     
     @error MemberClass();

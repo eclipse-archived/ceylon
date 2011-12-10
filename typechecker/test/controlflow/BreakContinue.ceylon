@@ -91,7 +91,7 @@ class BreakContinue() {
     }
     
     
-    Natural badReturnFromSetter() {
+    Integer badReturnFromSetter() {
         String bad {
             return "hello";
         }
@@ -101,7 +101,7 @@ class BreakContinue() {
         return 1;
     }
     
-    Natural badReturnFromSetter2() {
+    Integer badReturnFromSetter2() {
         String bad {
             return "hello";
         }
@@ -111,7 +111,7 @@ class BreakContinue() {
         return 1;
     }
     
-    Natural returnFromSetter() {
+    Integer returnFromSetter() {
         String bad {
             return "hello";
         }

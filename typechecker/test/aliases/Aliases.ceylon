@@ -36,7 +36,7 @@ class Aliases() {
     Interface<String> insa = isa;
     
     @error class BadC1() = Class<String>;
-    @error class BadC2(Natural n) = Class<String>;
+    @error class BadC2(Integer n) = Class<String>;
     @error class BadC3(String s1, String s2) = Class<String>;
     
 }

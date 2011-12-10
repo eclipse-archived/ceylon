@@ -24,19 +24,19 @@ class Generics() {
     Holder<String> h1 = Holder<String>("hello");
     String hello = h1.held;
     String hw = h1.add("hello", "world");
-    @error Natural en = h1.add(1,2);
+    @error Integer en = h1.add(1,2);
     
-    Holder<Natural> h2 = Holder<Natural>{ x = 0; };
-    Natural zero = h2.held;
-    Natural n = h2.add(1,2);
+    Holder<Integer> h2 = Holder<Integer>{ x = 0; };
+    Integer zero = h2.held;
+    Integer n = h2.add(1,2);
     @error String ehw = h2.add("hello", "world");
     
     @type["Float"] h2.noop<Float>(1.0);
     String s1 = h2.noop<String>("Hi!");
     String s2 = h2.noop("Hi!");
     
-    @type["Generics.Holder<Natural>"] create<Natural>(3);
-    Natural nn = create<Natural>(5).held;
+    @type["Generics.Holder<Integer>"] create<Integer>(3);
+    Integer nn = create<Integer>(5).held;
     
     X op<X>(X arg) {
         return arg;
@@ -95,15 +95,15 @@ class Generics() {
                 extends Object() 
                 satisfies Sequence<X> {
             //fake implementations
-            shared actual Natural lastIndex = 0;
+            shared actual Integer lastIndex = 0;
             shared actual X[] rest = {};
             shared actual GoodClassInheritance clone = GoodClassInheritance();
-            shared actual X? item(Natural key) { return null; }
-            shared actual X[] segment(Natural from, Natural length) { return this; }
+            shared actual X? item(Integer key) { return null; }
+            shared actual X[] segment(Integer from, Integer length) { return this; }
             shared actual X first {
                 throw;
             }
-            shared actual X[] span(Natural from, Natural? to) { return this; }
+            shared actual X[] span(Integer from, Integer? to) { return this; }
         }
         @error class BadClassInheritance() satisfies Sequence<Y> {}
         class GoodClassInheritance2() extends Producer<X>() {}
@@ -189,18 +189,18 @@ class Generics() {
         }
     }
         
-    @type["Generics.Outer<Natural>.Inner<String>"] Outer<Natural>(1).Inner<String>("hello");
-    @type["Generics.Outer<Natural>.Inner<String>"] Outer<Natural>(1).createInner("hello");
-    @type["Entry<Natural,String>"] Outer<Natural>(1).Inner<String>("hello").getIt();
-    @type["Entry<Natural,String>"] Outer<Natural>(1).createInner("hello").getIt();
+    @type["Generics.Outer<Integer>.Inner<String>"] Outer<Integer>(1).Inner<String>("hello");
+    @type["Generics.Outer<Integer>.Inner<String>"] Outer<Integer>(1).createInner("hello");
+    @type["Entry<Integer,String>"] Outer<Integer>(1).Inner<String>("hello").getIt();
+    @type["Entry<Integer,String>"] Outer<Integer>(1).createInner("hello").getIt();
 
-    Outer<Natural>.Inner<String> aa = Outer<Natural>(1).Inner<String>("hello");
-    @error Inner<String> bb = Outer<Natural>(1).Inner<String>("hello");
-    @error Outer<Natural> dd = Outer<Natural>(1).Inner<String>("hello");
-    @error Outer<Natural>.Inner<String> cc = Outer<Float>(1.3).Inner<String>("hello");
+    Outer<Integer>.Inner<String> aa = Outer<Integer>(1).Inner<String>("hello");
+    @error Inner<String> bb = Outer<Integer>(1).Inner<String>("hello");
+    @error Outer<Integer> dd = Outer<Integer>(1).Inner<String>("hello");
+    @error Outer<Integer>.Inner<String> cc = Outer<Float>(1.3).Inner<String>("hello");
     
-    @type["Generics.Outer<Natural>.Inner<String>"] value aaa = aa;
-    @type["Entry<Natural,String>"] aa.getIt();
+    @type["Generics.Outer<Integer>.Inner<String>"] value aaa = aa;
+    @type["Entry<Integer,String>"] aa.getIt();
     
     class Num() satisfies Comparable<Num> {
         //fake implementation
@@ -251,7 +251,7 @@ class Generics() {
     class Lower<W>(W w) extends Upper<W>(w)
             given W satisfies Equality {}
      
-    @type["Entry<String,Natural>"] Lower<String>("hello").method<Natural>("world",1);
+    @type["Entry<String,Integer>"] Lower<String>("hello").method<Integer>("world",1);
     @type["Generics.Upper<String>.Inner<Float>"] Lower<String>("hello").Inner<Float>("world", 2.3);
     
     interface Some<out X> {}
@@ -412,27 +412,27 @@ class Generics() {
     }
 
     interface Super1 satisfies Inter1<Bottom> & Inter2<String> {}
-    interface Super2 satisfies Inter1<Natural> & Inter2<Object> {}
+    interface Super2 satisfies Inter1<Integer> & Inter2<Object> {}
     class Impl() satisfies Super1 & Super2 {}
     value impl = Impl();
     String implget1 = impl.get();
-    @error Natural implget2 = impl.get();
+    @error Integer implget2 = impl.get();
     impl.put(1);
     @error impl.put("hello");
-    Inter1<Natural> inter1 = impl;
+    Inter1<Integer> inter1 = impl;
     Inter2<String> inter2 = impl;
     Inter1<Bottom> inter1b = impl;
     Inter2<Object> inter2o = impl;
 
     interface Super3 satisfies Inter1<Object> & Inter2<String> {}
-    interface Super4 satisfies Inter1<Natural> & Inter2<Bottom> {}
+    interface Super4 satisfies Inter1<Integer> & Inter2<Bottom> {}
     class Conc() satisfies Super3 & Super4 {}
     value conc = Conc();
     String concget1 = conc.get();
-    Natural concget2 = conc.get();
+    Integer concget2 = conc.get();
     conc.put(1);
     conc.put("hello");
-    Inter1<Natural> inter3 = conc;
+    Inter1<Integer> inter3 = conc;
     Inter2<String> inter4 = conc;
     Inter1<Bottom> inter3b = conc;
     Inter2<Object> inter4o = conc;

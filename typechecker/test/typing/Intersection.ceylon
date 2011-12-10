@@ -85,7 +85,7 @@ class Intersection() {
     WithParam<String&X|String&Y> wp1 = WithIntersectionArg<String,X|Y>();
     WithParam<String&X|String&Y> wp2 = WithUnionArg<String&X,String&Y>();
     WithParam<String&X|String&Y|Float&X|Float&Y> wp3 = WithIntersectionArg<String|Float,X|Y>();
-    WithParam<String&X&Float|String&Y&Float|String&X&Natural|String&Y&Natural> wp4 = WithMoreIntersectionArg<String,X|Y,Float|Natural>();
+    WithParam<String&X&Float|String&Y&Float|String&X&Integer|String&Y&Integer> wp4 = WithMoreIntersectionArg<String,X|Y,Float|Integer>();
     
     @type["String&Intersection.X|String&Intersection.Y"] WithIntersectionArg<String,X|Y>().get();
     @type["String&Intersection.X|String&Intersection.Y|Float&Intersection.X|Float&Intersection.Y"] WithIntersectionArg<String|Float,X|Y>().get();
@@ -116,8 +116,8 @@ class Intersection() {
     A&B intersect<A,B>(A a, B b) { throw; }
     @type["Bottom"] intersect(1, "hello");
     @type["Bottom"] intersect(null, {"hello"});
-    @type["Natural"] intersect(1, 3);
-    @type["Natural&Sequence<String>"] intersect(1, {"hello"});
+    @type["Integer"] intersect(1, 3);
+    @type["Integer&Sequence<String>"] intersect(1, {"hello"});
     @type["Bottom"] intersect(I({"hello"}), I({}));
     
 }

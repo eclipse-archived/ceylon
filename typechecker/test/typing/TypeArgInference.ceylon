@@ -6,12 +6,12 @@ class TypeArgInference() {
     }
     
     @type["TypeArgInference.X<String>"] X("hello", "world");
-    @type["TypeArgInference.X<Float|Natural>"] X(1.0, 1000);
+    @type["TypeArgInference.X<Float|Integer>"] X(1.0, 1000);
     @type["TypeArgInference.X<String>.Y<Float>"] X("hello", "world").Y(3.0);
     @type["Nothing|String"] X(1,2).opt("hello");
     
     @type["TypeArgInference.X<String>"] X{ t="hello"; s="world"; };
-    @type["TypeArgInference.X<Float|Natural>"] X { t=1.0; s=1000; };
+    @type["TypeArgInference.X<Float|Integer>"] X { t=1.0; s=1000; };
     @type["TypeArgInference.X<String>.Y<Float>"] X{ t="hello"; s="world"; }.Y { ss=3.0; };
     @type["Nothing|String"] X { t=1; s=2; }.opt{ r="hello"; };
     
@@ -32,7 +32,7 @@ class TypeArgInference() {
     //String secondString(String x, String y) = first<String>;
         
     class Const<T,S>(T t) given T satisfies Numeric<T> {}
-    @type["TypeArgInference.Const<Natural,Bottom>"] Const(1);
+    @type["TypeArgInference.Const<Integer,Bottom>"] Const(1);
     @error Const("hello");
     
     @error first("hello");
@@ -94,17 +94,17 @@ class TypeArgInference() {
     }
     
     @type["String"] f1("hello");
-    @type["Natural"] f2({1,2,3});
+    @type["Integer"] f2({1,2,3});
     
     interface Z {}
     interface W {}
-    object xzn extends X<Natural>(0, 1) satisfies Z&W {}
-    Z&X<Natural> zxn = xzn;
+    object xzn extends X<Integer>(0, 1) satisfies Z&W {}
+    Z&X<Integer> zxn = xzn;
     
     function g<T>(X<T>&Z x) { return x; }
     
-    @type["TypeArgInference.X<Natural>&TypeArgInference.Z"] g(xzn);
-    @type["TypeArgInference.X<Natural>&TypeArgInference.Z"] g(zxn);
+    @type["TypeArgInference.X<Integer>&TypeArgInference.Z"] g(xzn);
+    @type["TypeArgInference.X<Integer>&TypeArgInference.Z"] g(zxn);
     
     interface One<out T> {}
     interface Two<out T> {}
@@ -113,8 +113,8 @@ class TypeArgInference() {
     interface B {}
     
     object test0 satisfies One<A> & Two<B> {}
-    object test1 satisfies One<Natural> & Two<Float> {}
-    object test2 satisfies One<Number> & Two<Natural&String> {}
+    object test1 satisfies One<Integer> & Two<Float> {}
+    object test2 satisfies One<Number> & Two<Integer&String> {}
     
     T? acceptOneTwo<T>(One<T>&Two<T> arg) {
     	return null;
@@ -124,7 +124,7 @@ class TypeArgInference() {
     }
     
     @type["Nothing|TypeArgInference.A|TypeArgInference.B"] acceptOneTwo(test0);
-    @type["Nothing|Natural|Float"] acceptOneTwo(test1);
+    @type["Nothing|Integer|Float"] acceptOneTwo(test1);
     @type["Nothing|Number"] acceptOneTwo(test2);
     
     @type["Nothing|TypeArgInference.A&TypeArgInference.B"] @error acceptOneOrTwo(test0);

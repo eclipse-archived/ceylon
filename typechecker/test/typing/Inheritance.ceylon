@@ -32,18 +32,18 @@ class Inheritance() {
         }
     }
     
-    class ZZ(Natural n) 
-            extends X<Natural>(n) {
+    class ZZ(Integer n) 
+            extends X<Integer>(n) {
         @error String sss = getIt();
         @error Boolean b = isIt("hi");
     }
     
-    class GoodEnough(Natural n) 
+    class GoodEnough(Integer n) 
             extends X<String>(n.string) {}
     
     @error class Bad1() extends X<String>() {}
     
-    @error class Bad2(Natural n) extends X<String>(n) {}
+    @error class Bad2(Integer n) extends X<String>(n) {}
     
     @error class Bad3() extends I<String>() {}
     
@@ -56,10 +56,10 @@ class Inheritance() {
     I<String> iys = ys;
     Object oys = iys;
     
-    X<Natural> yn = Y<Natural>(1);
+    X<Integer> yn = Y<Integer>(1);
     yn.doIt(6);
-    @type["Natural"] yn.getIt();
-    I<Natural> iyn = yn;
+    @type["Integer"] yn.getIt();
+    I<Integer> iyn = yn;
     
     X<String> z = Z();
     z.doIt("to a string");
@@ -81,13 +81,13 @@ class Inheritance() {
     
     @type["String"] Z().getIt();
     
-    @type["Inheritance.W<Float,Natural>"] W<Float,Natural>(1.2, 1);
+    @type["Inheritance.W<Float,Integer>"] W<Float,Integer>(1.2, 1);
     
-    @type["Natural"] W<Float,Natural>(1.2, 1).getIt();
+    @type["Integer"] W<Float,Integer>(1.2, 1).getIt();
     
     /*object none satisfies Bottom[] {
-        shared actual Natural? lastIndex = null;
-        shared actual Nothing value(Natural n) {
+        shared actual Integer? lastIndex = null;
+        shared actual Nothing value(Integer n) {
             return null;
         }
     }*/

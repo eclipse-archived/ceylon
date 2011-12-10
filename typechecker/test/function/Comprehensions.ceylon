@@ -5,6 +5,6 @@ void comprehensions() {
     String?[] wordsAnNulls = { "hello", "world", null, "goodbye" };
     String joined1 = " ".join(for (w in wordsAnNulls) if (exists w) w.uppercased);
     String joined2 = " ".join { for (w in wordsAnNulls) if (exists w) w.trimmed };
-    Entry<String,Natural>[] entries = { for (s in words) for (n in 0..10) s->n };
+    Entry<String,Integer>[] entries = { for (s in words) for (n in 0..10) s->n };
         
 }

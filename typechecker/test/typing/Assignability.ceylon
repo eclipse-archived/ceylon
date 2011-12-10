@@ -138,8 +138,8 @@ class Assignability() {
     hello{ greeting = "Hi"; name = "Gavin"; };
     hello{};
     
-    void hi(@error String greeting = 1, String name = "World", Natural times = 1) {}
-    class Hi(@error String greeting = 23.0, String name = "World", @error Natural times = "X") {}
+    void hi(@error String greeting = 1, String name = "World", Integer times = 1) {}
+    class Hi(@error String greeting = 23.0, String name = "World", @error Integer times = "X") {}
     
     X something = X();
     X? nothing {
@@ -203,7 +203,7 @@ class Assignability() {
         print(seq.size.string);
     }
     
-    Natural? nat = null;
+    Integer? nat = null;
     @error if (nonempty nat) {} 
     
     for (X x in {X(), X()} ) {
@@ -258,11 +258,11 @@ class Assignability() {
     
     for (@error X x -> Y y in 12) {}
     
-    for (Natural i->String s in entries<String>({"hello", "world", "!"}...)) {
+    for (Integer i->String s in entries<String>({"hello", "world", "!"}...)) {
         print($i + ": " + s);
     }
     
-    for (Natural i->String s in entries<String>("hello", "world", "!")) {
+    for (Integer i->String s in entries<String>("hello", "world", "!")) {
         print($i + ": " + s);
     }
     
@@ -277,10 +277,10 @@ class Assignability() {
     for (Integer i in -10..+10) {
         print($i);
     }
-    for (Natural n in 0..100k) {
+    for (Integer n in 0..100k) {
         print($n);
     }
-    for (@error Natural i in -10..+10) {
+    for (@error Float i in -10..+10) {
         print($i);
     }
     
@@ -359,11 +359,11 @@ class Assignability() {
             return b;
         }
     }
-    @type["Sequence<String>|Sequence<Natural>"] value ut = f({ "aaa" },{ 1 });
+    @type["Sequence<String>|Sequence<Integer>"] value ut = f({ "aaa" },{ 1 });
     Sequence<Object> st1 = ut;
-    Sequence<String|Natural> st2 = ut;
-    @type["Nothing|String|Natural"] value item = ut[0];
-    @type["Empty|Sequence<String>|Sequence<Natural>"] value items = ut[1..2];
+    Sequence<String|Integer> st2 = ut;
+    @type["Nothing|String|Integer"] value item = ut[0];
+    @type["Empty|Sequence<String>|Sequence<Integer>"] value items = ut[1..2];
     
     class Invariant<T>(T t) {}
     Ordinal<Integer> ii1 = +1;

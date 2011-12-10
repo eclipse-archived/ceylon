@@ -221,7 +221,7 @@ public class Unit {
     }
         
     public TypeDeclaration getNaturalDeclaration() {
-        return (TypeDeclaration) getLanguageModuleDeclaration("Natural");
+        return (TypeDeclaration) getLanguageModuleDeclaration("Integer");
     }
         
     public TypeDeclaration getCharacterDeclaration() {

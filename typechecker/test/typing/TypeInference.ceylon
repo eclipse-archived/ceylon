@@ -29,9 +29,9 @@ interface TypeInference {
             return 0;    
         }
         void m(){
-            @type["Natural"] value n = test();
+            @type["Integer"] value n = test();
         }
-        @type["Natural"] function f() {
+        @type["Integer"] function f() {
             return test();
         }
     }
@@ -96,12 +96,12 @@ interface TypeInference {
     
     class MultipleReturnTypeInference() {
         
-        @type["String|Natural"] function inferredMethod() {
+        @type["String|Float"] function inferredMethod() {
             if (true) {
                 return "Hello";
             }
             else {
-                return 0;
+                return 0.0;
             }
         }
         
@@ -114,7 +114,7 @@ interface TypeInference {
             }
         }
         
-        @type["String|Natural|Integer"] function method() {
+        @type["String|Float|Integer"] function method() {
             if (1==0) {
                 return inferredMethod();
             }
@@ -145,7 +145,7 @@ interface TypeInference {
         @type["String"] value broken = join {
             value x { return "Hello"; }
             @error value y { return 0; }
-            @error function f(Natural z) { return z; }
+            @error function f(Integer z) { return z; }
         };
     }
 

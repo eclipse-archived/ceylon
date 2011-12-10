@@ -1,4 +1,4 @@
-variable Natural n:=0;
+variable Integer n:=0;
 
 class Capture() {
     
@@ -249,12 +249,12 @@ class Capture() {
         }
      }
      
-     class Something1(@uncaptured Natural n) {
-         shared Natural n = n;
+     class Something1(@uncaptured Integer n) {
+         shared Integer n = n;
      }
      
-     class Something(@captured Natural n) {
-         shared Natural n = n;
+     class Something(@captured Integer n) {
+         shared Integer n = n;
          shared void p() {
              print(n);
          }

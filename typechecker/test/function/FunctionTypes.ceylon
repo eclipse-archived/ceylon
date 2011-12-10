@@ -65,7 +65,7 @@ void method() {
     @type["X"] function good(String s) = X;
     X better(String s) = X;
     @type["X"] @error function bad() = X;
-    @type["X"] function badder(@error Natural n) = X;
+    @type["X"] function badder(@error Integer n) = X;
     @error String worse(String s) = X;
     @error String worst() = X;
     @error void broke() = noop();
@@ -80,11 +80,11 @@ void method() {
     };
     higher2 { 
         strings = {"goodbye"};
-        Natural f(String s) { print(s); return s.size; }
+        Integer f(String s) { print(s); return s.size; }
     };
     higher2 { 
         strings = {"goodbye"};
-        @error void f(Natural n) { print(n.string); }
+        @error void f(Integer n) { print(n.string); }
     };
     
     higher2 { 

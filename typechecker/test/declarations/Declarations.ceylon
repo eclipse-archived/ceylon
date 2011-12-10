@@ -58,7 +58,7 @@ interface Declarations {
     }
     
     void a(String s = "a string") {}
-    class A(Natural count = 1) {}
+    class A(Integer count = 1) {}
     
     void dup(String name, @error String name) {}
     
@@ -67,11 +67,11 @@ interface Declarations {
         for (c in hello.characters) {
             if (c==`h`) {
                 try {
-                    @error Natural hello = 1;
+                    @error Integer hello = 1;
                 }
             }
         }
-        Natural? count = null;
+        Integer? count = null;
         if (exists count) {}
     }
     

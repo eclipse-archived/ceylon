@@ -2,7 +2,7 @@ class OuterTypeArgs() {
 	class Foo<T>() given T satisfies Equality {
 		shared default class Bar<S>() given S satisfies Equality {
 			Bar<S> b0 = Bar<S>();
-			@error Bar<S> b1 = Foo<Natural>().Bar<S>();
+			@error Bar<S> b1 = Foo<Integer>().Bar<S>();
 			Bar<S> b2 = Foo<T>().Bar<S>();
 			shared default Bar<S> get() {
 				return this;
@@ -40,28 +40,28 @@ class OuterTypeArgs() {
 			}
 		}
 	}
-	Baz<String>.Bar<Natural> foobar = Baz<String>().Bar<Natural>();
-	@type["OuterTypeArgs.Foo<String>.Bar<Natural>"] value fbg = foobar.get();
+	Baz<String>.Bar<Integer> foobar = Baz<String>().Bar<Integer>();
+	@type["OuterTypeArgs.Foo<String>.Bar<Integer>"] value fbg = foobar.get();
 	@type["String"] value fbgt = foobar.getT();
 	Baz<Float>.Bar<String>.Qux<Object> foobarqux = Baz<Float>().Bar<String>().Qux<Object>();
 	@type["OuterTypeArgs.Foo<Float>.Bar<String>"] value fbqg = foobarqux.bar;
 	@type["Entry<Float,String>"] foobarqux.entry(1.0, "hello");
 
-	Fum<String>.Bar<Natural> fumbar = Fum<String>().Bar<Natural>();
-	@type["OuterTypeArgs.Fum<String>.Bar<Natural>"] value fmbg = fumbar.get();
-	Fum<String>.Bar<Natural>.Qux<Integer> fumbarqux = Fum<String>().Bar<Natural>().Qux<Integer>();
-	@type["OuterTypeArgs.Foo<String>.Bar<Natural>"] value fmbqg = fumbarqux.bar;
-	@type["Entry<String,Natural>"] fumbarqux.entry("given", 30);
+	Fum<String>.Bar<Integer> fumbar = Fum<String>().Bar<Integer>();
+	@type["OuterTypeArgs.Fum<String>.Bar<Integer>"] value fmbg = fumbar.get();
+	Fum<String>.Bar<Integer>.Qux<Integer> fumbarqux = Fum<String>().Bar<Integer>().Qux<Integer>();
+	@type["OuterTypeArgs.Foo<String>.Bar<Integer>"] value fmbqg = fumbarqux.bar;
+	@type["Entry<String,Integer>"] fumbarqux.entry("given", 30);
 	
-	Foo<String>.Bar<Natural> fb1 = fmbg;
-	Foo<String>.Bar<Natural> fb2 = fbg; 
-	Fum<String>.Bar<Natural> fb3 = fmbg;
-	@error Fum<String>.Bar<Natural> fb4 = fbg; 
-	Baz<String>.Bar<Natural> fb5 = fmbg;
-	Baz<String>.Bar<Natural> fb6 = fbg;
+	Foo<String>.Bar<Integer> fb1 = fmbg;
+	Foo<String>.Bar<Integer> fb2 = fbg; 
+	Fum<String>.Bar<Integer> fb3 = fmbg;
+	@error Fum<String>.Bar<Integer> fb4 = fbg; 
+	Baz<String>.Bar<Integer> fb5 = fmbg;
+	Baz<String>.Bar<Integer> fb6 = fbg;
 	
 	Baz<Equality>.Bar<String> bazbarobj = Baz<Equality>().Bar<String>();
-	@error Baz<Natural>.Bar<String> bazbarnat = bazbarobj;
+	@error Baz<Integer>.Bar<String> bazbarnat = bazbarobj;
 	
 	class Outer<out T>(T t) {
 		shared class Inner<out S>(S s) {
@@ -74,7 +74,7 @@ class OuterTypeArgs() {
 	Outer<Object>.Inner<String> oiobj = Outer("hello").Inner("world");
 	Outer<String>.Inner<Object> oiobj2 = Outer("hello").Inner("world");
 	@error Outer<String>.Inner<String> oistr = oiobj;
-	@error Outer<Natural>.Inner<String> oinat = Outer("hello").Inner("world");
+	@error Outer<Integer>.Inner<String> oinat = Outer("hello").Inner("world");
 
 	class Consumer<in T>(T t) {
 		shared class Inner<out S>(S s) {
@@ -87,7 +87,7 @@ class OuterTypeArgs() {
 	Consumer<Bottom>.Inner<String> ciobj = Consumer("hello").Inner("world");
 	Consumer<String>.Inner<Object> ciobj2 = Consumer("hello").Inner("world");
 	@error Consumer<String>.Inner<String> cistr = ciobj;
-	@error Consumer<Natural>.Inner<String> cinat = Consumer("hello").Inner("world");
+	@error Consumer<Integer>.Inner<String> cinat = Consumer("hello").Inner("world");
 
 }
 

@@ -56,7 +56,7 @@ class Primaries() {
     @type["String"] value p17 = "Hello";
     
     class Inner(A arg) {
-        Natural n = 0;
+        Integer n = 0;
         @type["Primaries.A"] value p1 = arg;
         @type["Primaries.A"] value p2 = aa;
         @type["Primaries.C"] value p3 = cc;
@@ -65,7 +65,7 @@ class Primaries() {
             @type["Primaries.Inner"] value p5 = this;
         }
         shared class Inner2() {
-            @type["Natural"] value p7 = outer.n;
+            @type["Integer"] value p7 = outer.n;
             @type["Primaries.Inner"] value p8 = outer;
             void inner() {
                 @type["Primaries.Inner.Inner2"] value p6 = this;
@@ -119,16 +119,16 @@ class Primaries() {
     B[] bs2 = {B(), S()};
     //H[] hs = {S(), T()};
     //G[] gs = {T(), S()};
-    @type["Sequence<Primaries.A|Primaries.B|String|Sequence<Natural>>"] value p26 = {A(),B(),"Hello",A(),{1,2,3}, S()};
+    @type["Sequence<Primaries.A|Primaries.B|String|Sequence<Integer>>"] value p26 = {A(),B(),"Hello",A(),{1,2,3}, S()};
     //Object[] stuff = {A(),B(),"Hello",{1,2,3}};
     value objects = {A(),B(),"Hello",{1,2,3}};
     //Object[] things = objects;
-    @type["Nothing|Primaries.A|Primaries.B|String|Sequence<Natural>"] value p27 = objects[1];
+    @type["Nothing|Primaries.A|Primaries.B|String|Sequence<Integer>"] value p27 = objects[1];
     @type["Nothing|String"] value p28 = objects[1]?.string;
     if (exists o = objects[1]) {
-        @type["Primaries.A|Primaries.B|String|Sequence<Natural>"] value p29 = o;
+        @type["Primaries.A|Primaries.B|String|Sequence<Integer>"] value p29 = o;
         String s = o.string;
-        @type["Sequence<Primaries.A|Primaries.B|String|Sequence<Natural>|Float>"] value p30 = {o, "foo", 3.1, A()};
+        @type["Sequence<Primaries.A|Primaries.B|String|Sequence<Integer>|Float>"] value p30 = {o, "foo", 3.1, A()};
     }
     @type["Empty|Sequence<String>"] String[] noStrings = {};
     @type["Empty"] value none = {};

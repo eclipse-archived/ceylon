@@ -1,7 +1,7 @@
 @error;
 abstract class Classes() {
     
-    variable Natural count := 0;
+    variable Integer count := 0;
     
     count++;
     
@@ -35,12 +35,12 @@ abstract class Classes() {
     
     abstract class NestedAbstractClass() {
         shared String hello = upper("hello");
-        shared formal Natural times;
+        shared formal Integer times;
     }
     
     class MemberClass() {
         shared String goodbye = upper("goodbye");
-        shared variable Natural times := 1;
+        shared variable Integer times := 1;
     }
     
     MemberClass();

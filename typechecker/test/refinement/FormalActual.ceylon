@@ -18,7 +18,7 @@ class WithActual() extends WithActualFormal() {
 
 
 abstract class Super2() {
-    shared default Natural defaultGetterSetter {
+    shared default Integer defaultGetterSetter {
         return 2;
     } 
     assign defaultGetterSetter {}
@@ -26,7 +26,7 @@ abstract class Super2() {
 
 abstract class Super1() extends Super2() {
 	 // we make a default attr formal
-    shared variable actual formal Natural defaultGetterSetter;
+    shared variable actual formal Integer defaultGetterSetter;
 }
 
 @error object obj extends WithFormal() {}
