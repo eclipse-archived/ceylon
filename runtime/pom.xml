@@ -102,6 +102,10 @@
                 <configuration>
                     <systemProperties>
                         <property>
+                            <name>ceylon.runtime.home</name>
+                            <value>${project.basedir}/..</value>
+                        </property>
+                        <property>
                             <name>ceylon.repo</name>
                             <value>${user.home}/.ceylon/repo</value>
                         </property>

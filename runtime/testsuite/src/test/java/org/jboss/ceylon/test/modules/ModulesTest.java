@@ -137,12 +137,17 @@ public abstract class ModulesTest {
         execute(args);
     }
 
+    protected String getBootstrapModules() {
+        final String projectHome = System.getProperty("ceylon.runtime.home", System.getProperty("user.dir"));
+        return projectHome + "/dist";
+    }
+
     protected void execute(Map<Constants, String> map) throws Throwable {
 
         List<String> args = new ArrayList<String>();
         // JBoss Modules args
         args.add(Constants.MODULE_PATH.toString());
-        args.add("/Users/alesj/ceylon/ceylon-runtime/dist"); // TODO
+        args.add(getBootstrapModules());
         args.add(Constants.CEYLON_RUNTIME_MODULE.toString());
 
         for (Map.Entry<Constants, String> entry : map.entrySet()) {
