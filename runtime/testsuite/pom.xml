@@ -24,6 +24,10 @@
                         <configuration>
                             <target>
 
+                                <!-- Bootstrap -->
+                                <copy file="${user.home}/.m2/repository/org/jboss/modules/jboss-modules/${version.org.jboss.modules}/jboss-modules-${version.org.jboss.modules}.jar"
+                                      tofile="../dist/bin/jboss-modules.jar"/>
+
                                 <!-- Language -->
                                 <copy file="${user.home}/.ceylon/repo/ceylon/language/${version.com.redhat.ceylon.language}/ceylon.language-${version.com.redhat.ceylon.language}.car"
                                       tofile="../dist/ceylon/language/${version.com.redhat.ceylon.language}/ceylon.language-${version.com.redhat.ceylon.language}.car"/>
