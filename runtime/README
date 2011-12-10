@@ -1,5 +1,40 @@
 CEYLON RUNTIME
 
-We need to install Ceylon Language into our local Maven repository.
+This project atm uses Maven for its build.
+There are a few steps needed to be able to build and test the project.
+
+1) We need to install Ceylon Language into our local Maven repository.
 
 mvn install:install-file -Dfile=ceylon.language-0.1.car -DgroupId=ceylon.language -DartifactId=ceylon-language -Dversion=0.1 -Dpackaging=jar -DgeneratePom=true -DcreateChecksum=true
+
+2) We need to checkout and build (mvn clean install) Ceylon Module Resolver project (CMR).
+
+https://github.com/ceylon/ceylon-module-resolver
+
+The CMR build version must match the one used in this project -- see root pom.xml.
+
+
+The Runtime uses JBoss Modules to build modular runtime system.
+Initially JBoss Modules uses out dist/ directory as its modules repository.
+This includes modules we need on the "bootstrap":
+ * Ceylon Language
+ * Ceylon Module Resolver
+ * Ceylon Runtime
+ * JBoss Modules (as a module info, actual classes are part of system classpath)
+
+ dist/ repository is built as part of the testsuite sub-project build.
+ jars are copied from our Maven repository, while the module.xml information is static.
+
+ This is the part that the user needs locally.
+ Afterwards Ceylon Runtime uses Ceylon Module Resolver to get its modules.
+ By default we use ~/.ceylon/repo as local CMR repository, but different repositories can be mounted.
+ (proper mounting API is wip)
+
+ In order to run your Ceylon app / module, you need to first place it into ~/.ceylon/repo.
+ Then you can use dist/bin/ceylon.sh to run the app / module.
+
+ ceylon.sh expects module name and version as its only parameter.
+ e.g. ./ceylon.sh hello/1.0.0 --> [full module name]/[version], where default version is 0.0.0 if left out
+
+ (I think the version atm needs to be in the form x.y.z[.qualifier]).
+
