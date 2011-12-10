@@ -118,7 +118,7 @@
 	  <target name="ceylonc">
 	    <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc" >
 	      <classpath>
-	        <pathelement location="${ceylon.repo.dir}/com/redhat/ceylon/compiler/${module.com.redhat.ceylon.compiler.version}/com.redhat.ceylon.compiler-${module.com.redhat.ceylon.compiler.version}.jar"/>       
+	        <pathelement location="${repo.local.dir}/com/redhat/ceylon/compiler/${module.com.redhat.ceylon.compiler.version}/com.redhat.ceylon.compiler-${module.com.redhat.ceylon.compiler.version}.jar"/>       
 	      </classpath>
 	    </taskdef>
 	  </target>
