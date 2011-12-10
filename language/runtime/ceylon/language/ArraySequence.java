@@ -67,7 +67,8 @@ public class ArraySequence<Element> implements Sequence<Element> {
 
     @Override
     public boolean defines(Integer index) {
-        return index.longValue()+first<array.length;
+        long ind = index.longValue();
+		return ind>=0 && ind+first<array.length;
     }
 
     @Override
@@ -98,7 +99,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override
     public Element item(Integer key) {
         long index = key.longValue()+first;
-        return (Element) (index >= array.length ? 
+        return (Element) (index<0 || index >= array.length ? 
                 null : array[(int) index]);
     }
 
@@ -130,6 +131,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override
     public Iterable<? extends Element> span(Integer from, Integer to) {
     	long fromIndex = from.longValue();
+    	if (fromIndex<0) fromIndex=0;
     	long toIndex = to==null ? array.length-1 : to.longValue();
         long lastIndex = getLastIndex();
 		if (fromIndex>lastIndex||toIndex<fromIndex) {
@@ -147,6 +149,7 @@ public class ArraySequence<Element> implements Sequence<Element> {
     @Override
     public Iterable<? extends Element> segment(Integer from, Integer length) {
         long fromIndex = from.longValue();
+    	if (fromIndex<0) fromIndex=0;
 		long resultLength = length.longValue();
 		long lastIndex = getLastIndex();
 		if (fromIndex>lastIndex||resultLength==0) {
