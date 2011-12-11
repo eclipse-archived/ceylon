@@ -38,4 +38,9 @@ public class ExamplesTestCase extends ModulesTest {
         car("hello/1.0.0", Collections.<Constants, String>emptyMap());
     }
 
+    @Test
+    public void testClient() throws Throwable {
+        car("client/1.0.0", Collections.<Constants, String>emptyMap());
+    }
+
 }
