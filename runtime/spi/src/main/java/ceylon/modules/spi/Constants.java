@@ -22,6 +22,8 @@
 
 package ceylon.modules.spi;
 
+import java.util.Map;
+
 /**
  * Ceylon constants.
  *
@@ -30,6 +32,7 @@ package ceylon.modules.spi;
 public enum Constants {
     OP("+"),
     MODULES_OP("-"),
+    EXTERNAL_OP("-"),
     EXECUTABLE("executable"),
     MODULE("module"),
     REPOSITORY("repository"),
@@ -50,5 +53,16 @@ public enum Constants {
     @Override
     public String toString() {
         return value;
+    }
+
+    /**
+     * Get Runtime argument.
+     *
+     * @param args the args map
+     * @param key  the key
+     * @return found argument or null
+     */
+    public static String getOpArgument(Map<String, String> args, Constants key) {
+        return args.get(Constants.OP.toString() + key);
     }
 }

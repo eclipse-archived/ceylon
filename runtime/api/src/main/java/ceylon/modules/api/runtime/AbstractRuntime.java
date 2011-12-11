@@ -33,6 +33,7 @@ import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Abstract Ceylon Modules runtime.
@@ -78,6 +79,7 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         try {
             runClass = cl.loadClass(runClassName);
         } catch (ClassNotFoundException ignored) {
+            Logger.getLogger("ceylon.runtime").warning("No " + runClassName + " available, nothing to run!");
             return; // looks like no such run class is available
         }
 
@@ -95,7 +97,7 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
     }
 
     public void execute(Map<String, String> args) throws Exception {
-        String exe = args.get(Constants.MODULE.toString());
+        String exe = Constants.getOpArgument(args, Constants.MODULE);
         if (exe == null)
             throw new IllegalArgumentException("No initial module defined: " + args);
 
@@ -123,7 +125,7 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         List<String> la = new ArrayList<String>();
         for (Map.Entry<String, String> entry : args.entrySet()) {
             final String key = entry.getKey();
-            if (Constants.OP.toString().equals(key) == false)
+            if (key.startsWith(Constants.OP.toString()) == false)
                 la.add(key);
         }
         invokeRun(cl, name, la.toArray(new String[la.size()]));

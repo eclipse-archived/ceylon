@@ -58,7 +58,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
      */
     protected Repository createRepository(Map<String, String> args) {
         RootRepositoryBuilder builder = null;
-        String root = args.get(Constants.REPOSITORY.toString());
+        String root = Constants.getOpArgument(args, Constants.REPOSITORY);
         if (root != null) {
             File rootDir = new File(root);
             if (rootDir.exists() && rootDir.isDirectory())
@@ -71,7 +71,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
         if (ms != null)
             builder.mergeStrategy(ms);
 
-        if (Boolean.TRUE.equals(Boolean.valueOf(args.get(Constants.CACHE_CONTENT.toString()))))
+        if (Boolean.TRUE.equals(Boolean.valueOf(Constants.getOpArgument(args, Constants.CACHE_CONTENT))))
             builder.cacheContent();
 
         final ContentTransformer ct = getService(ContentTransformer.class, args);

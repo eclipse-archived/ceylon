@@ -264,8 +264,15 @@ public class CeylonModuleLoader extends ModuleLoader {
      * @return new module dependency
      */
     DependencySpec createModuleDependency(Import i) {
-        ModuleIdentifier mi = createModuleIdentifier(i);
-        return DependencySpec.createModuleDependencySpec(this, mi, i.getExport(), i.getOptional());
+        final ModuleIdentifier mi = createModuleIdentifier(i);
+        final boolean export = i.getExport();
+        return DependencySpec.createModuleDependencySpec(
+                PathFilters.getDefaultImportFilterWithServices(), // import everything?
+                (export ? PathFilters.acceptAll() : PathFilters.rejectAll()),
+                this,
+                mi,
+                i.getOptional()
+        );
     }
 
     /**

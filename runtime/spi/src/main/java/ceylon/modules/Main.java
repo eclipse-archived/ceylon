@@ -53,7 +53,7 @@ public class Main {
      */
     public static void execute(String[] args) throws Exception {
         Map<String, String> argsMap = parseArgs(args);
-        String exe = argsMap.get(Constants.EXECUTABLE.toString());
+        String exe = Constants.getOpArgument(argsMap, Constants.EXECUTABLE);
         if (exe == null)
             throw new IllegalArgumentException("No executable present: " + argsMap);
 
@@ -73,7 +73,7 @@ public class Main {
                 if (i == n - 1)
                     throw new IllegalArgumentException("Missing argument value: " + arg);
 
-                map.put(arg.substring(1), args[i + 1]);
+                map.put(arg, args[i + 1]);
                 i++;
             } else {
                 if (first == false)
