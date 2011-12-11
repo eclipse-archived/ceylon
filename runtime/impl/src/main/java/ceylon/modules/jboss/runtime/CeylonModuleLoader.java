@@ -68,7 +68,7 @@ public class CeylonModuleLoader extends ModuleLoader {
         LANGUAGE = ModuleIdentifier.create("ceylon.language", defaultVersion);
         CMR = ModuleIdentifier.create("com.redhat.ceylon.cmr");
         MODULES = ModuleIdentifier.create("org.jboss.modules");
-        RUNTIME = ModuleIdentifier.create("ceylon.modules.jboss");
+        RUNTIME = ModuleIdentifier.create("ceylon.runtime");
 
         CEYLON_RUNTIME_PATH = CeylonToJava.class.getPackage().getName().replace(".", "/");
 

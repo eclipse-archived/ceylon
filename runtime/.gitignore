@@ -9,9 +9,9 @@ dist/ceylon/language/0.1/ceylon.language-0.1.car
 dist/com/redhat/ceylon/cmr/main/cmr-spi.jar
 dist/com/redhat/ceylon/cmr/main/cmr-api.jar
 dist/com/redhat/ceylon/cmr/main/cmr-impl.jar
-dist/ceylon/modules/jboss/main/ceylon.modules.spi.jar
-dist/ceylon/modules/jboss/main/ceylon.modules.api.jar
-dist/ceylon/modules/jboss/main/ceylon.modules.jboss.jar
+dist/ceylon/runtime/main/ceylon.modules.spi.jar
+dist/ceylon/runtime/main/ceylon.modules.api.jar
+dist/ceylon/runtime/main/ceylon.modules.jboss.jar
 dist/ceylon/language/0.1/ceylon.language-0.1.car.index
 dist/ceylon/modules/jboss/main/ceylon.modules.api.jar.index
 dist/ceylon/modules/jboss/main/ceylon.modules.jboss.jar.index

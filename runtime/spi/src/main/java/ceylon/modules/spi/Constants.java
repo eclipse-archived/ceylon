@@ -38,7 +38,7 @@ public enum Constants {
     CLASSES("classes"),
     CACHE_CONTENT("cache_content"),
     MODULE_PATH("-mp"),
-    CEYLON_RUNTIME_MODULE("ceylon.modules.jboss");
+    CEYLON_RUNTIME_MODULE("ceylon.runtime");
 
     private String value;
 

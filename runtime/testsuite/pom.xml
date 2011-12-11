@@ -42,11 +42,11 @@
 
                                 <!-- Runtime -->
                                 <copy file="../spi/target/modules-spi-${project.version}.jar"
-                                      tofile="../dist/ceylon/modules/jboss/main/ceylon.modules.spi.jar"/>
+                                      tofile="../dist/ceylon/runtime/main/ceylon.modules.spi.jar"/>
                                 <copy file="../api/target/modules-api-${project.version}.jar"
-                                      tofile="../dist/ceylon/modules/jboss/main/ceylon.modules.api.jar"/>
+                                      tofile="../dist/ceylon/runtime/main/ceylon.modules.api.jar"/>
                                 <copy file="../impl/target/modules-impl-${project.version}.jar"
-                                      tofile="../dist/ceylon/modules/jboss/main/ceylon.modules.jboss.jar"/>
+                                      tofile="../dist/ceylon/runtime/main/ceylon.modules.jboss.jar"/>
 
                             </target>
                         </configuration>

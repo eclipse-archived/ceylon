@@ -23,6 +23,7 @@
 package ceylon.modules.api.runtime;
 
 import ceylon.language.descriptor.Module;
+import ceylon.modules.api.util.CeylonToJava;
 import ceylon.modules.api.util.ModuleVersion;
 import ceylon.modules.spi.Constants;
 
@@ -111,6 +112,14 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         Module runtimeModule = loadModule(cl, name);
         if (runtimeModule == null)
             throw new IllegalArgumentException("Something went very wrong, missing runtime module!"); // TODO -- dump some more useful msg
+
+        String mn = CeylonToJava.toString(runtimeModule.getName());
+        if (name.equals(mn) == false)
+            throw new IllegalArgumentException("Input module name doesn't match module's name: " + name + " != " + mn);
+        String version = CeylonToJava.toString(runtimeModule.getVersion());
+        if (mv.equals(ModuleVersion.parseVersion(version)) == false)
+            throw new IllegalArgumentException("Input module version doesn't match module's version: " + mv + " != " + version);
+
 
         List<String> la = new ArrayList<String>();
         for (Map.Entry<String, String> entry : args.entrySet()) {
