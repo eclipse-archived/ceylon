@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
     <name>Ceylon Modules</name>
-    <url>http://www.jboss.org/ceylon</url>
+    <url>http://ceylon-lang.org</url>
     <description>A Ceylon Modules</description>
     <scm>
         <connection>scm:svn:http://anonsvn.jboss.org/repos/ceylon/modules/trunk</connection>
@@ -41,6 +41,7 @@
         <module>spi</module>
         <module>api</module>
         <module>impl</module>
+        <module>bootstrap</module>
         <module>testsuite</module>
     </modules>
 
@@ -171,6 +172,11 @@
             <dependency>
                 <groupId>ceylon</groupId>
                 <artifactId>modules-impl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ceylon</groupId>
+                <artifactId>modules-bootstrap</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

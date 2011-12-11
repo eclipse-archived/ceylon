@@ -139,7 +139,7 @@ public abstract class ModulesTest {
 
     protected String getBootstrapModules() {
         final String projectHome = System.getProperty("ceylon.runtime.home", System.getProperty("user.dir"));
-        return projectHome + "/dist";
+        return projectHome + File.separator + "dist";
     }
 
     protected void execute(Map<Constants, String> map) throws Throwable {

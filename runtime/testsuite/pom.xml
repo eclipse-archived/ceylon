@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
     <version>1.0.0-SNAPSHOT</version>
     <name>Ceylon Modules Testsuite</name>
-    <url>http://www.jboss.org/ceylon</url>
+    <url>http://ceylon-lang.org</url>
 
     <build>
         <plugins>
@@ -27,6 +27,8 @@
                                 <!-- Bootstrap -->
                                 <copy file="${user.home}/.m2/repository/org/jboss/modules/jboss-modules/${version.org.jboss.modules}/jboss-modules-${version.org.jboss.modules}.jar"
                                       tofile="../dist/bin/jboss-modules.jar"/>
+                                <copy file="../bootstrap/target/modules-bootstrap-${project.version}.jar"
+                                      tofile="../dist/bin/ceylon-runtime-bootstrap.jar"/>
 
                                 <!-- Language -->
                                 <copy file="${user.home}/.ceylon/repo/ceylon/language/${version.com.redhat.ceylon.language}/ceylon.language-${version.com.redhat.ceylon.language}.car"
@@ -78,6 +80,11 @@
         <dependency>
             <groupId>ceylon</groupId>
             <artifactId>modules-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ceylon</groupId>
+            <artifactId>modules-bootstrap</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

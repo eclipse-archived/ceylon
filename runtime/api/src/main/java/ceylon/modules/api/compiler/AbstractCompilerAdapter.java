@@ -73,7 +73,7 @@ public abstract class AbstractCompilerAdapter implements CompilerAdapter {
      * @return the class' path
      */
     protected static String toPath(String className, String suffix) {
-        return className.replace(".", "/") + suffix;
+        return className.replace(".", File.separator) + suffix;
     }
 
     /**

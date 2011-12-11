@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
     <version>1.0.0-SNAPSHOT</version>
     <name>Ceylon Modules Impl</name>
-    <url>http://www.jboss.org/ceylon</url>
+    <url>http://ceylon-lang.org</url>
 
     <dependencies>
         <dependency>
