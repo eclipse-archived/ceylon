@@ -184,7 +184,7 @@ public class CeylonModuleLoader extends ModuleLoader {
 
             Graph.Vertex<ModuleIdentifier, Boolean> vertex = graph.createVertex(moduleIdentifier, moduleIdentifier);
 
-            DependencySpec lds = DependencySpec.createLocalDependencySpec(PathFilters.acceptAll(), PathFilters.rejectAll());
+            DependencySpec lds = DependencySpec.createLocalDependencySpec();
             builder.addDependency(lds); // local resources
             deps.add(lds);
 
@@ -265,7 +265,7 @@ public class CeylonModuleLoader extends ModuleLoader {
      */
     DependencySpec createModuleDependency(Import i) {
         ModuleIdentifier mi = createModuleIdentifier(i);
-        return DependencySpec.createModuleDependencySpec(PathFilters.acceptAll(), PathFilters.rejectAll(), this, mi, i.getOptional());
+        return DependencySpec.createModuleDependencySpec(this, mi, i.getExport(), i.getOptional());
     }
 
     /**

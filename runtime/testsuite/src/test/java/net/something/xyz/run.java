@@ -37,7 +37,9 @@ public class run {
             Object m = cl.loadClass("org.jboss.acme.run").newInstance();
             Class<?> clazz = m.getClass();
             Method run = clazz.getMethod("main", String[].class);
-            run.invoke(m, new String[]{"args"});
+            @SuppressWarnings("UnnecessaryLocalVariable")
+            Object fsa = args;
+            run.invoke(m, fsa);
 
             cl.loadClass("si.alesj.ceylon.test.Touch"); // MC currently only works on classes
         } catch (Exception e) {

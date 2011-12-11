@@ -62,18 +62,24 @@ public class Main {
     }
 
     private static Map<String, String> parseArgs(String[] args) {
-        Map<String, String> map = new HashMap<String, String>();
+        final Map<String, String> map = new HashMap<String, String>();
+        boolean first = true; // filter out ModuleIdentifier
         int n = args.length;
         for (int i = 0; i < n; i++) {
-            String arg = args[i];
-            if (arg.startsWith(Constants.OP.toString())) {
+            final String arg = args[i];
+            if (arg.startsWith(Constants.MODULES_OP.toString())) {
+                i++; // it's a JBoss Modules command
+            } else if (arg.startsWith(Constants.OP.toString())) {
                 if (i == n - 1)
                     throw new IllegalArgumentException("Missing argument value: " + arg);
 
                 map.put(arg.substring(1), args[i + 1]);
                 i++;
             } else {
-                map.put(arg, arg); // put any arg in it anyway
+                if (first == false)
+                    map.put(arg, arg);
+                else
+                    first = false;
             }
         }
         return map;
@@ -85,7 +91,7 @@ public class Main {
         if (defaultImpl == null)
             throw new IllegalArgumentException("Null default impl");
 
-        SecurityManager sm = System.getSecurityManager();
+        final SecurityManager sm = System.getSecurityManager();
         if (sm == null) {
             return instantiate(expectedType, defaultImpl);
         } else {
@@ -99,10 +105,10 @@ public class Main {
     }
 
     public static <T> T instantiate(Class<T> expectedType, String defaultImpl) throws Exception {
-        String impl = System.getProperty(expectedType.getName(), defaultImpl);
-        ClassLoader cl = expectedType.getClassLoader();
-        Class<?> clazz = cl.loadClass(impl);
-        Object result = clazz.newInstance();
+        final String impl = System.getProperty(expectedType.getName(), defaultImpl);
+        final ClassLoader cl = expectedType.getClassLoader();
+        final Class<?> clazz = cl.loadClass(impl);
+        final Object result = clazz.newInstance();
         return expectedType.cast(result);
     }
 }

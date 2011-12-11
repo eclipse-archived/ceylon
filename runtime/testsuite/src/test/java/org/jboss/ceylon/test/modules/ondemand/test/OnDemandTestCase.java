@@ -38,10 +38,10 @@ public class OnDemandTestCase extends ModulesTest {
     @Test
     public void testBasic() throws Throwable {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "net.something.xyz-1.0.0.Final.car");
-        module.addClass(net.something.xyz.module.class);
+        module.addClasses(net.something.xyz.module.class, net.something.xyz.run.class);
 
         JavaArchive lib1 = ShrinkWrap.create(JavaArchive.class, "org.jboss.acme-1.0.0.CR1.car");
-        lib1.addClass(org.jboss.acme.module.class);
+        lib1.addClasses(org.jboss.acme.module.class, org.jboss.acme.run.class);
 
         JavaArchive lib2 = ShrinkWrap.create(JavaArchive.class, "si.alesj.ceylon-1.0.0.GA.car");
         lib2.addClass(module.class);

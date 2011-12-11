@@ -120,7 +120,6 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         if (mv.equals(ModuleVersion.parseVersion(version)) == false)
             throw new IllegalArgumentException("Input module version doesn't match module's version: " + mv + " != " + version);
 
-
         List<String> la = new ArrayList<String>();
         for (Map.Entry<String, String> entry : args.entrySet()) {
             final String key = entry.getKey();

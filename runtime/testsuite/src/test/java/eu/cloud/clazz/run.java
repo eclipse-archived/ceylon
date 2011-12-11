@@ -33,6 +33,7 @@ public class run {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+/*
         try {
             cl.loadClass("org.jboss.filtered.api.SomeAPI");
             throw new RuntimeException("Fail, should not be here!");
@@ -43,6 +44,7 @@ public class run {
             throw new RuntimeException("Fail, should not be here!");
         } catch (ClassNotFoundException ignored) {
         }
+*/
     }
 }
 

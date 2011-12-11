@@ -20,35 +20,13 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package ceylon.modules.spi;
+package org.jboss.acme;
 
 /**
- * Ceylon constants.
- *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public enum Constants {
-    OP("+"),
-    MODULES_OP("-"),
-    EXECUTABLE("executable"),
-    MODULE("module"),
-    REPOSITORY("repository"),
-    SOURCE("src"),
-    DEFAULT("d"),
-    SOURCES("sources"),
-    CLASSES("classes"),
-    CACHE_CONTENT("cache_content"),
-    MODULE_PATH("-mp"),
-    CEYLON_RUNTIME_MODULE("ceylon.runtime");
-
-    private String value;
-
-    Constants(String value) {
-        this.value = value;
-    }
-
-    @Override
-    public String toString() {
-        return value;
+public class run {
+    public static void main(String[] args) {
+        System.out.println(run.class.getName() + ": run ...");
     }
 }

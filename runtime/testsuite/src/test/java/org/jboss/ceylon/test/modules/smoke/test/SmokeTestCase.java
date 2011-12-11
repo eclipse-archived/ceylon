@@ -45,7 +45,7 @@ public class SmokeTestCase extends ModulesTest {
     @Test
     public void transitiveModule() throws Throwable {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "com.foobar.qwert-1.0.0.GA.car");
-        module.addClass(com.foobar.qwert.module.class);
+        module.addClasses(com.foobar.qwert.module.class, com.foobar.qwert.run.class);
 
         JavaArchive lib = ShrinkWrap.create(JavaArchive.class, "org.jboss.acme-1.0.0.CR1.car");
         lib.addClass(module.class);
@@ -56,7 +56,7 @@ public class SmokeTestCase extends ModulesTest {
     @Test
     public void filteredModule() throws Throwable {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "eu.cloud.clazz-1.0.0.GA.car");
-        module.addClass(eu.cloud.clazz.module.class);
+        module.addClasses(eu.cloud.clazz.module.class, eu.cloud.clazz.run.class);
 
         JavaArchive lib = ShrinkWrap.create(JavaArchive.class, "org.jboss.filtered-1.0.0.Alpha1.car");
         lib.addClass(org.jboss.filtered.module.class);
