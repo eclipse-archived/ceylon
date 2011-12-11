@@ -49,7 +49,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Ceyon JBoss Module loader.
+ * Ceylon JBoss Module loader.
  * It understands Ceylon repository notion.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
