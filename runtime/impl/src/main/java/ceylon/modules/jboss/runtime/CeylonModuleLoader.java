@@ -211,7 +211,7 @@ public class CeylonModuleLoader extends ModuleLoader {
 
                     ModuleIdentifier mi = createModuleIdentifier(i);
                     Graph.Vertex<ModuleIdentifier, Boolean> dv = graph.createVertex(mi, mi);
-                    Graph.Edge.create(false, vertex, dv);
+                    Graph.Edge.create(i.getExport(), vertex, dv);
                 }
                 if (root.isEmpty() == false) {
                     LocalLoader onDemandLoader = new OnDemandLocalLoader(moduleIdentifier, this, root);
