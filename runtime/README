@@ -26,6 +26,14 @@ This includes modules we need on the "bootstrap":
  jars are copied from our Maven repository, while the module.xml information is static.
 
  This is the part that the user needs locally.
+ To ease things, we create a zipped version of dist/ repository,
+ and place it under <CEYLON_REPOSITORY>/ceylon-runtime-bootstrap/ceylon-runtime-bootstrap.zip
+ In order to use this zipped module repository we need to use custom ModuleLoader - DistributionModuleLoader.
+ (see ceylon.sh script for the actual usage)
+ DistributionModuleLoader explodes (if not already present) this zipped repository at initialization,
+ and places the exploded repository under <CEYLON_REPOSITORY>/ceylon-runtime-bootstrap/ceylon-runtime-bootstrap-exploded directory.
+ You can force update with -Dforce.bootstrap.update=true system property flag.
+
  Afterwards Ceylon Runtime uses Ceylon Module Resolver to get its modules.
  By default we use ~/.ceylon/repo as local CMR repository, but different repositories can be mounted.
  (proper mounting API is wip)

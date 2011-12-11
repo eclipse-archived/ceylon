@@ -50,6 +50,10 @@
                                 <copy file="../impl/target/modules-impl-${project.version}.jar"
                                       tofile="../dist/ceylon/runtime/main/ceylon.modules.jboss.jar"/>
 
+                                <!-- Create zipped dist/ -->
+                                <zip destfile="${user.home}/.ceylon/repo/ceylon-runtime-bootstrap/ceylon-runtime-bootstrap.zip"
+                                     basedir="../dist"
+                                     excludes="bin/, bin/**, bin/*.*"/>
                             </target>
                         </configuration>
                         <goals>

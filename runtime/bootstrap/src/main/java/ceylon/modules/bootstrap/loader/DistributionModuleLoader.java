@@ -77,30 +77,52 @@ public class DistributionModuleLoader extends ModuleLoader {
      */
     protected File unzipDistribution(File dir, File zip) {
         File exploded = new File(dir, BOOTSTRAP_DISTRIBUTION + "-exploded");
-        if (exploded.exists() == false) {
+        if (exploded.exists()) {
+            if (forceBootstrapUpdate() == false)
+                return exploded;
+            else
+                delete(exploded); // cleanup
+        }
+
+        try {
+            final ZipFile zipFile = new ZipFile(zip);
             try {
-                final ZipFile zipFile = new ZipFile(zip);
-                try {
-                    final Enumeration<? extends ZipEntry> entries = zipFile.entries();
-                    while (entries.hasMoreElements()) {
-                        final ZipEntry ze = entries.nextElement();
-                        final File file = new File(exploded, ze.getName());
-                        if (ze.isDirectory()) {
-                            if (file.mkdirs() == false)
-                                throw new IllegalArgumentException("Cannot create dir: " + file);
-                        } else {
-                            FileOutputStream fos = new FileOutputStream(file);
-                            copyStream(zipFile.getInputStream(ze), fos);
-                        }
+                final Enumeration<? extends ZipEntry> entries = zipFile.entries();
+                while (entries.hasMoreElements()) {
+                    final ZipEntry ze = entries.nextElement();
+                    final File file = new File(exploded, ze.getName());
+                    if (ze.isDirectory()) {
+                        if (file.mkdirs() == false)
+                            throw new IllegalArgumentException("Cannot create dir: " + file);
+                    } else {
+                        final FileOutputStream fos = new FileOutputStream(file);
+                        copyStream(zipFile.getInputStream(ze), fos);
                     }
-                } finally {
-                    zipFile.close();
                 }
-            } catch (IOException e) {
-                throw new IllegalArgumentException(e);
+            } finally {
+                zipFile.close();
             }
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
         }
         return exploded;
+    }
+
+    protected boolean forceBootstrapUpdate() {
+        return AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
+            public Boolean run() {
+                return Boolean.getBoolean("force.bootstrap.update");
+            }
+        });
+    }
+
+    protected static void delete(File file) {
+        if (file.isDirectory()) {
+            for (File f : file.listFiles())
+                delete(f);
+        }
+        //noinspection ResultOfMethodCallIgnored
+        file.delete();
     }
 
     protected static void copyStream(final InputStream in, final OutputStream out) throws IOException {
