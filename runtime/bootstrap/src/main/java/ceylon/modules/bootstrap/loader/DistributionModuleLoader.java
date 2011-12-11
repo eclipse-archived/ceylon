@@ -22,14 +22,24 @@
 
 package ceylon.modules.bootstrap.loader;
 
+import org.jboss.modules.LocalModuleLoader;
+import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoadException;
 import org.jboss.modules.ModuleLoader;
 import org.jboss.modules.ModuleSpec;
 
+import java.io.Closeable;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.Enumeration;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * Load bootstrap modules from zipped ditribution repository.
@@ -38,8 +48,8 @@ import java.security.PrivilegedAction;
  */
 public class DistributionModuleLoader extends ModuleLoader {
 
-    private static final String BOOTSTRAP_DISTRIBUTION_ZIP = "ceylon-runtime-bootstrap.zip";
-    private final File distributionFile;
+    private static final String BOOTSTRAP_DISTRIBUTION = "ceylon-runtime-bootstrap";
+    private final ModuleLoader delegate;
 
     public DistributionModuleLoader() {
         final String ceylonRepository = AccessController.doPrivileged(new PrivilegedAction<String>() {
@@ -49,19 +59,82 @@ public class DistributionModuleLoader extends ModuleLoader {
                 return System.getProperty("ceylon.repo", defaultCeylonRepository);
             }
         });
-        final File temp = new File(ceylonRepository + File.separator + BOOTSTRAP_DISTRIBUTION_ZIP);
-        if (temp.exists() == false)
-            throw new IllegalArgumentException("No such Ceylon Runtime Bootstrap distribution file: " + temp);
-        distributionFile = temp;
+        final File dir = new File(ceylonRepository, BOOTSTRAP_DISTRIBUTION);
+        final File zip = new File(dir, BOOTSTRAP_DISTRIBUTION + ".zip");
+        if (zip.exists() == false)
+            throw new IllegalArgumentException("No such Ceylon Runtime Bootstrap distribution file: " + zip);
+
+        final File unzipped = unzipDistribution(dir, zip);
+        delegate = new LocalModuleLoader(new File[]{unzipped});
+    }
+
+    /**
+     * Unzip bootstrap distrubution if not already present.
+     *
+     * @param dir the unzip destination
+     * @param zip the zipped bootstrap distribution
+     * @return unziped root directory
+     */
+    protected File unzipDistribution(File dir, File zip) {
+        File exploded = new File(dir, BOOTSTRAP_DISTRIBUTION + "-exploded");
+        if (exploded.exists() == false) {
+            try {
+                final ZipFile zipFile = new ZipFile(zip);
+                try {
+                    final Enumeration<? extends ZipEntry> entries = zipFile.entries();
+                    while (entries.hasMoreElements()) {
+                        final ZipEntry ze = entries.nextElement();
+                        final File file = new File(exploded, ze.getName());
+                        if (ze.isDirectory()) {
+                            if (file.mkdirs() == false)
+                                throw new IllegalArgumentException("Cannot create dir: " + file);
+                        } else {
+                            FileOutputStream fos = new FileOutputStream(file);
+                            copyStream(zipFile.getInputStream(ze), fos);
+                        }
+                    }
+                } finally {
+                    zipFile.close();
+                }
+            } catch (IOException e) {
+                throw new IllegalArgumentException(e);
+            }
+        }
+        return exploded;
+    }
+
+    protected static void copyStream(final InputStream in, final OutputStream out) throws IOException {
+        final byte[] bytes = new byte[8192];
+        int cnt;
+        try {
+            while ((cnt = in.read(bytes)) != -1) {
+                out.write(bytes, 0, cnt);
+            }
+        } finally {
+            safeClose(in);
+            safeClose(out);
+        }
+    }
+
+    protected static void safeClose(Closeable c) {
+        try {
+            c.close();
+        } catch (Exception ignored) {
+        }
+    }
+
+    @Override
+    protected Module preloadModule(ModuleIdentifier identifier) throws ModuleLoadException {
+        return delegate.loadModule(identifier);
     }
 
     @Override
     protected ModuleSpec findModule(ModuleIdentifier moduleIdentifier) throws ModuleLoadException {
-        return null; // TODO
+        throw new ModuleLoadException("Should not be here, by-passing delegate loader?");
     }
 
     @Override
     public String toString() {
-        return "Ceylon Bootstrap Module Loader: " + distributionFile;
+        return "Ceylon Bootstrap Module Loader: " + delegate;
     }
 }
