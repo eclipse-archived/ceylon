@@ -37,6 +37,6 @@ public class module {
     }
 
     public static void run() {
-        System.out.println(module.class.getName() + ": run ...");
+        System.out.println("run ...");
     }
 }

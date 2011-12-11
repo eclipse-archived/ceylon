@@ -22,6 +22,7 @@
 
 package org.jboss.ceylon.test.modules.ondemand.test;
 
+import org.jboss.acme.Qwert;
 import org.jboss.ceylon.test.modules.ModulesTest;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -38,7 +39,7 @@ public class OnDemandTestCase extends ModulesTest {
     @Test
     public void testBasic() throws Throwable {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "net.something.xyz-1.0.0.Final.car");
-        module.addClasses(net.something.xyz.module.class, net.something.xyz.run.class);
+        module.addClasses(net.something.xyz.module.class, net.something.xyz.run.class, Qwert.class);
 
         JavaArchive lib1 = ShrinkWrap.create(JavaArchive.class, "org.jboss.acme-1.0.0.CR1.car");
         lib1.addClass(org.jboss.acme.module.class);
