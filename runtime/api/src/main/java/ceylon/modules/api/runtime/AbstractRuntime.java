@@ -27,9 +27,6 @@ import ceylon.modules.api.util.CeylonToJava;
 import ceylon.modules.api.util.ModuleVersion;
 import ceylon.modules.spi.Constants;
 
-import java.lang.reflect.Method;
-import java.security.AccessController;
-import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -63,14 +60,7 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
             return null; // looks like no such module class is available
         }
 
-        return AccessController.doPrivileged(new PrivilegedExceptionAction<Module>() {
-            @Override
-            public Module run() throws Exception {
-                final Method getModule = moduleClass.getDeclaredMethod("getModule");
-                getModule.setAccessible(true);
-                return (Module) getModule.invoke(null); // it should be a static method
-            }
-        });
+        return SecurityActions.getModule(moduleClass);
     }
 
     protected static void invokeRun(ClassLoader cl, String moduleName, final String[] args) throws Exception {
@@ -83,17 +73,7 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
             return; // looks like no such run class is available
         }
 
-        AccessController.doPrivileged(new PrivilegedExceptionAction<Object>() {
-            @SuppressWarnings("UnnecessaryLocalVariable")
-            @Override
-            public Object run() throws Exception {
-                final Method main = runClass.getDeclaredMethod("main", String[].class);
-                main.setAccessible(true);
-                final Object sfa = args;
-                main.invoke(null, sfa);
-                return null;
-            }
-        });
+        SecurityActions.invokeRun(runClass, args);
     }
 
     public void execute(Map<String, String> args) throws Exception {
