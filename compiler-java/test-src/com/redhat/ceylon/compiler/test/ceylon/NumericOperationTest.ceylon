@@ -26,7 +26,11 @@ assign numericOperationIncrDecrTestGetter {
     numericOperationIncrDecrTestToplevel := numericOperationIncrDecrTestGetter;
 }
 
-shared class NumericOperationTest() extends Test() {
+shared abstract class NumericOperationTestParameterized<T>(T init) extends Test(){
+    shared variable T boxedInteger := init;
+}
+
+shared class NumericOperationTest() extends NumericOperationTestParameterized<Integer>(+0) {
 
   variable Integer incrDecrCounter := 0;
   variable Integer unboxedAttrIncrDecr := 0;
@@ -141,33 +145,32 @@ shared class NumericOperationTest() extends Test() {
   }
 
   @test
-  shared void testBoxedLocalIncrDecr<T>(T init) given T satisfies Integer {
-    variable T n := init;
-    assertEquals(0, n);
+  shared void testBoxedIncrDecr() {
+    assertEquals(0, boxedInteger);
 
     // postfix ++
-    assertEquals(0, n++);
-    assertEquals(1, n);
-    n++;
-    assertEquals(2, n);
+    assertEquals(0, boxedInteger++);
+    assertEquals(1, boxedInteger);
+    boxedInteger++;
+    assertEquals(2, boxedInteger);
 
     // postfix --
-    assertEquals(2, n--);
-    assertEquals(1, n);
-    n--;
-    assertEquals(0, n);
+    assertEquals(2, boxedInteger--);
+    assertEquals(1, boxedInteger);
+    boxedInteger--;
+    assertEquals(0, boxedInteger);
   
     // prefix ++
-    assertEquals(1, ++n);
-    assertEquals(1, n);
-    ++n;
-    assertEquals(2, n);
+    assertEquals(1, ++boxedInteger);
+    assertEquals(1, boxedInteger);
+    ++boxedInteger;
+    assertEquals(2, boxedInteger);
 
     // prefix --
-    assertEquals(1, --n);
-    assertEquals(1, n);
-    --n;
-    assertEquals(0, n);
+    assertEquals(1, --boxedInteger);
+    assertEquals(1, boxedInteger);
+    --boxedInteger;
+    assertEquals(0, boxedInteger);
   }
 
   @test
