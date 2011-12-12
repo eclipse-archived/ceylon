@@ -201,7 +201,7 @@ public class Util {
         if(isDefaultModule(module))
             moduleName = "default_module";
         String version = module.getVersion();
-        if(version == null)
+        if(version == null || version.equals("<unknown>"))
             version = "unversioned";
         return moduleName+"-"+version+"."+extension;
     }
@@ -218,7 +218,7 @@ public class Util {
             modulePath = moduleName.replace('.', File.separatorChar);
         
         String version = module.getVersion();
-        if(version == null)
+        if(version == null || version.equals("<unknown>"))
             version = "unversioned";
         modulePath += File.separatorChar + version;
         
