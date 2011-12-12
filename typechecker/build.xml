@@ -44,7 +44,6 @@
     <!-- ANTLR -->
     <property name="antlr.src" location="Ceylon.g"/>
     <property name="antlr.dst" location="gensrc"/>
-    <property name="antlr.lib" location="lib/antlr-3.4-complete.jar"/>
 
     <!-- ################################################################## -->
 
