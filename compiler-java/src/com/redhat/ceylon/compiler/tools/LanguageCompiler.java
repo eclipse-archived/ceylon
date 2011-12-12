@@ -121,8 +121,13 @@ public class LanguageCompiler extends JavaCompiler {
         if (ceylonContext == null) {
             CeyloncFileManager fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
             VFS vfs = new VFS();
-            Iterable<? extends File> repos = fileManager.getLocation(CeylonLocation.REPOSITORY);
             ArrayList<VirtualFile> virtualRepos = new ArrayList<VirtualFile>();
+            Iterable<? extends File> outputLocation = fileManager.getLocation(StandardLocation.CLASS_OUTPUT);
+            if (outputLocation != null && outputLocation.iterator().hasNext()) {
+                File outputRepository = outputLocation.iterator().next();
+                virtualRepos.add(vfs.getFromFile(outputRepository)); 
+            }
+            Iterable<? extends File> repos = fileManager.getLocation(CeylonLocation.REPOSITORY);
             for (File repo : repos) {
                 virtualRepos.add(vfs.getFromFile(repo)); 
             }
