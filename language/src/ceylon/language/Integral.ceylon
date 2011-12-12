@@ -1,10 +1,10 @@
 doc "Abstraction of integral numeric types. That is, types 
-     with no fractional part, including `Integer` and `Integer`. 
-     The division operation for integral numeric types 
-     results in a remainder. Therefore, integral numeric 
-     types have an operation to determine the remainder of 
-     any division operation."
-see (Integer, Integer)
+     with no fractional part, including `Integer`. The 
+     division operation for integral numeric types results 
+     in a remainder. Therefore, integral numeric types have 
+     an operation to determine the remainder of any division 
+     operation."
+see (Integer)
 by "Gavin"
 shared interface Integral<Other> of Other
         satisfies Numeric<Other> & Ordinal<Other>

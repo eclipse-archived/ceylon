@@ -3,10 +3,9 @@ doc "Abstraction of types which support a unary inversion
      negative of the argument value. Note that the type 
      parameter of this interface is not restricted to be a 
      self type, in order to accommodate the possibility of 
-     types whose inverse can only be expressed in terms of a 
-     wider type. For example, the negative of a `Integer` is 
-     an `Integer`."
-see (Integer, Integer, Float)
+     types whose inverse can only be expressed in terms of 
+     a wider type."
+see (Integer, Float)
 by "Gavin"
 shared interface Invertable<out Inverse> {
     
