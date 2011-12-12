@@ -19,7 +19,7 @@
  */
 @nomodel
 shared void innerMethodInvocation() {
-    Natural fib(Natural n) {
+    Integer fib(Integer n) {
         if (n==0) {
             return 1;
         }

@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.test.expression.instantiation;
 class RangeInstantiation {
     
     public final .java.lang.Object m() {
-        return new ceylon.language.Range<ceylon.language.Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(10L));
+        return new ceylon.language.Range<ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L));
     }
     
     RangeInstantiation() {

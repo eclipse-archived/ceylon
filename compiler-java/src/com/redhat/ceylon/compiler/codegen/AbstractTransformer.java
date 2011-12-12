@@ -448,10 +448,6 @@ public abstract class AbstractTransformer implements Transformation {
         return (sameType(syms().ceylonBooleanType, type));
     }
     
-    protected boolean isCeylonNatural(ProducedType type) {
-        return (sameType(syms().ceylonNaturalType, type));
-    }
-    
     protected boolean isCeylonInteger(ProducedType type) {
         return (sameType(syms().ceylonIntegerType, type));
     }
@@ -465,7 +461,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     protected boolean isCeylonBasicType(ProducedType type) {
-        return (isCeylonString(type) || isCeylonBoolean(type) || isCeylonNatural(type) || isCeylonInteger(type) || isCeylonFloat(type) || isCeylonCharacter(type));
+        return (isCeylonString(type) || isCeylonBoolean(type) || isCeylonInteger(type) || isCeylonFloat(type) || isCeylonCharacter(type));
     }
 
     /*
@@ -527,7 +523,7 @@ public abstract class AbstractTransformer implements Transformation {
                 return make().Type(syms().stringType);
             } else if (isCeylonBoolean(type)) {
                 return make().TypeIdent(TypeTags.BOOLEAN);
-            } else if (isCeylonNatural(type) || isCeylonInteger(type)) {
+            } else if (isCeylonInteger(type)) {
                 if ((flags & SMALL_TYPE) != 0) {
                     return make().TypeIdent(TypeTags.INT);
                 } else {
@@ -887,9 +883,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     protected JCExpression unboxType(JCExpression expr, ProducedType targetType) {
-        if (isCeylonNatural(targetType)) {
-            expr = unboxNatural(expr);
-        } else if (isCeylonInteger(targetType)) {
+        if (isCeylonInteger(targetType)) {
             expr = unboxInteger(expr);
         } else if (isCeylonFloat(targetType)) {
             expr = unboxFloat(expr);
@@ -904,9 +898,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     protected JCExpression boxType(JCExpression expr, ProducedType exprType) {
-        if (isCeylonNatural(exprType)) {
-            expr = boxNatural(expr);
-        } else if (isCeylonInteger(exprType)) {
+        if (isCeylonInteger(exprType)) {
             expr = boxInteger(expr);
         } else if (isCeylonFloat(exprType)) {
             expr = boxFloat(expr);
@@ -918,10 +910,6 @@ public abstract class AbstractTransformer implements Transformation {
             expr = boxBoolean(expr);
         }
         return expr;
-    }
-    
-    private JCTree.JCMethodInvocation boxNatural(JCExpression value) {
-        return makeBoxType(value, syms().ceylonNaturalType);
     }
     
     private JCTree.JCMethodInvocation boxInteger(JCExpression value) {
@@ -946,10 +934,6 @@ public abstract class AbstractTransformer implements Transformation {
     
     private JCTree.JCMethodInvocation makeBoxType(JCExpression value, Type type) {
         return make().Apply(null, makeSelect(makeIdent(type), "instance"), List.<JCExpression>of(value));
-    }
-    
-    private JCTree.JCMethodInvocation unboxNatural(JCExpression value) {
-        return makeUnboxType(value, "longValue");
     }
     
     private JCTree.JCMethodInvocation unboxInteger(JCExpression value) {

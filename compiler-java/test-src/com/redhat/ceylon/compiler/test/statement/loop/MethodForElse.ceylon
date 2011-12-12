@@ -19,7 +19,7 @@
  */
 @nomodel
 class MethodForElse(){
-    shared Natural m(Sequence<String> seq){
+    shared Integer m(Sequence<String> seq){
         for(String s in seq){
             while (true) {
                 for(String t in seq){

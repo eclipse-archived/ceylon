@@ -20,7 +20,7 @@
 @nomodel
 class MethodForRange(){
     shared void m(){
-        for (Natural i in 1..10) {
+        for (Integer i in 1..10) {
             // Empty
         }
     }

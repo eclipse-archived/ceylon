@@ -19,5 +19,5 @@
  */
 class Klass() {
 }
-class KlassWithConstructor(Natural param, Natural... varargs) {
+class KlassWithConstructor(Integer param, Integer... varargs) {
 }

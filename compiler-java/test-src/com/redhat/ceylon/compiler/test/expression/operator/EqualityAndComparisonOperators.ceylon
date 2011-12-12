@@ -23,22 +23,21 @@ interface BasicOperatorsA {}
 interface BasicOperatorsB {}
 
 @nomodel
-shared abstract class MyNatural()
+shared abstract class MyInteger()
         extends Object()
-        satisfies Castable<MyNatural|Integer|Float> &
-                  Integral<MyNatural> &
-                  Subtractable<MyNatural,Integer> {}
+        satisfies Castable<MyInteger|Integer|Float> &
+                  Integral<MyInteger> {}
 
 @nomodel
 shared class EqualityAndComparisonOperators() {
 
-// M2 b1 := n1 extends Natural;
+// M2 b1 := n1 extends Integer;
 // M2 b1 := n1 satisfies Object;
 
     void equalityAndComparisonUnboxed(IdentifiableObject o1, IdentifiableObject o2) {
         variable Boolean sync := o1 === o2;
-        variable Natural n1 := 0;
-        variable Natural n2 := 0;
+        variable Integer n1 := 0;
+        variable Integer n2 := 0;
         sync := n1 == n2;
         sync := n1 != n2;
         Comparison c = n1 <=> n2;
@@ -49,7 +48,7 @@ shared class EqualityAndComparisonOperators() {
     }
 
     void equalityAndComparisonBoxed(IdentifiableObject o1, IdentifiableObject o2,
-                                    MyNatural n1, MyNatural n2) {
+                                    MyInteger n1, MyInteger n2) {
         variable Boolean? sync := o1 === o2;
         sync := n1 == n2;
         sync := n1 != n2;
@@ -60,11 +59,11 @@ shared class EqualityAndComparisonOperators() {
         sync := n1 >= n2;
     }
 
-    void testInBoxed(Natural n1, Natural n2){
+    void testInBoxed(Integer n1, Integer n2){
         Boolean b1 = n1 in n1..n2;
     }
 
-    void testInUnboxed(MyNatural n1, MyNatural n2){
+    void testInUnboxed(MyInteger n1, MyInteger n2){
         Boolean? b1 = n1 in n1..n2;
     }
 

@@ -20,33 +20,33 @@
 @nomodel
 interface Top {
     shared formal void top();
-    shared formal Natural topAttribute;
+    shared formal Integer topAttribute;
 }
 @nomodel
 interface Left satisfies Top {
     shared formal void left();
-    shared formal Natural leftAttribute;
+    shared formal Integer leftAttribute;
 }
 @nomodel
 interface Right satisfies Top {
     shared formal void right();
-    shared formal Natural rightAttribute;
+    shared formal Integer rightAttribute;
 }
 @nomodel
 class CLeft() satisfies Left {
     shared actual void left() {}
     shared actual void top() {}
-    shared actual Natural topAttribute = 1;
-    shared actual Natural leftAttribute = 1;
+    shared actual Integer topAttribute = 1;
+    shared actual Integer leftAttribute = 1;
 }
 @nomodel
 class CMiddle() satisfies Left & Right{
     shared actual void left() {}
     shared actual void top() {}
     shared actual void right() {}
-    shared actual Natural topAttribute = 1;
-    shared actual Natural leftAttribute = 1;
-    shared actual Natural rightAttribute = 1;
+    shared actual Integer topAttribute = 1;
+    shared actual Integer leftAttribute = 1;
+    shared actual Integer rightAttribute = 1;
 }
 @nomodel
 interface EmptyInterface {}
@@ -67,26 +67,26 @@ class Test() {
     
     shared variable Left leftAttribute := CLeft();
     shared variable Left&Right middleAttribute := CMiddle();
-    shared variable Numeric<Natural>&Ordinal<Natural>&Subtractable<Natural,Integer> n := 1;
-    shared variable Integral<Natural>&Invertable<Integer> m := 1;
+    shared variable Numeric<Integer>&Ordinal<Integer> n := 1;
+    shared variable Integral<Integer>&Invertable<Integer> m := 1;
 
     void testUnion(){
         Left|Right middle = CLeft();
         middle.top();
-        Natural n1 = middle.topAttribute;
+        Integer n1 = middle.topAttribute;
         takesTop(middle);
         if(is Left middle){
-            Natural n2 = middle.leftAttribute;
+            Integer n2 = middle.leftAttribute;
             middle.left();
             takesLeft(middle);
         }
     }
 
-    // WARNING: when the typechecker figures out that because Natural is final
-    // the Natural&EmptyInterface type cannot exist, we'll need to change it to
+    // WARNING: when the typechecker figures out that because Integer is final
+    // the Integer&EmptyInterface type cannot exist, we'll need to change it to
     // something else
-    Left testIntersection(Natural&EmptyInterface p1,
-                          Natural&EmptyInterface|Nothing p1OrNothing,
+    Left testIntersection(Integer&EmptyInterface p1,
+                          Integer&EmptyInterface|Nothing p1OrNothing,
                           Sequence<Top&EmptyInterface>&EmptyInterface tops,
                           Nothing|Sequence<Top&EmptyInterface>&EmptyInterface topsOrNothing,
                           Test&EmptyInterface erasedTest){
@@ -100,7 +100,7 @@ class Test() {
         CMiddle().top();
         
         // attribute access
-        variable Natural sync;
+        variable Integer sync;
         sync := middle.topAttribute;
         sync := middle.leftAttribute;
         sync := middle.rightAttribute;
@@ -135,7 +135,7 @@ class Test() {
         
         // range
         // FIXME: haven't been able to get an erased range bound
-        //Natural[] seq = p1..p1;
+        //Integer[] seq = p1..p1;
         
         // entry
         value entry = p1 -> p1;
@@ -151,32 +151,32 @@ class Test() {
         return middle;
     }
 
-    void testNullHandlingOperators(Natural&EmptyInterface p1,
-                                   Natural&EmptyInterface|Nothing p1OrNothing){
+    void testNullHandlingOperators(Integer&EmptyInterface p1,
+                                   Integer&EmptyInterface|Nothing p1OrNothing){
         // conditions
         if(exists p1OrNothing){}
         variable Boolean bSync;
         bSync := exists p1OrNothing;
         
         value p2 = p1OrNothing ? p1;
-        Natural n = p1OrNothing ? p1;
+        Integer n = p1OrNothing ? p1;
         
         // FIXME: those operators are not yet supported
         //value p3 = p1OrNothing?.remainder(p1);
         //value p4 = p1OrNothing?.zero;
     }
 
-    void testArithmeticOperators(Natural&EmptyInterface p1,
+    void testArithmeticOperators(Integer&EmptyInterface p1,
                                  Test&EmptyInterface erasedTest){
         // with boxing
-        Natural unboxed = p1;
-        Numeric<Natural>&Ordinal<Natural> boxed = 1;
+        Integer unboxed = p1;
+        Numeric<Integer>&Ordinal<Integer> boxed = 1;
 
         // arithmetic operators
-        variable Numeric<Natural>&Ordinal<Natural>&Subtractable<Natural,Integer> n := 1;
-        Natural n2 = n + n;
+        variable Numeric<Integer>&Ordinal<Integer> n := 1;
+        Integer n2 = n + n;
         value i0 = n - n;
-        Natural n3 = n * n;
+        Integer n3 = n * n;
         n := n += n;
         n := n -= n;
         n := n *= n;
@@ -189,8 +189,8 @@ class Test() {
         erasedTest.n := erasedTest.n++;
         erasedTest.n := ++erasedTest.n;
 
-        variable Integral<Natural>&Invertable<Integer> m := 1;
-        Natural n4 = m % m;
+        variable Integral<Integer>&Invertable<Integer> m := 1;
+        Integer n4 = m % m;
         m := m %= m;
         erasedTest.m := erasedTest.m %= erasedTest.m;
 
@@ -198,7 +198,7 @@ class Test() {
         Integer i2 = +m;
     }
 
-    void testComparisonOperators(Natural&EmptyInterface p1,
+    void testComparisonOperators(Integer&EmptyInterface p1,
                                  Test&EmptyInterface erasedTest,
                                  Category&EmptyInterface container){
         // equality operators
@@ -212,33 +212,33 @@ class Test() {
         sync := p1 in container;
         
         // is
-        if(is Natural p1){}
-        sync := is Natural p1;
+        if(is Integer p1){}
+        sync := is Integer p1;
     }
 
-    void testSequences(Natural&EmptyInterface p1,
+    void testSequences(Integer&EmptyInterface p1,
                        Sequence<Left&Right>&EmptyInterface leftsAndRights,
                        Sequence<Entry<Left&Right&Equality,Left&Right&Equality>&EmptyInterface>&EmptyInterface leftsAndRightsEntries,
                        Nothing|Sequence<Left&Right>&EmptyInterface topsOrNothing){
         // sequence operators
-        Empty|Sequence<Natural&EmptyInterface> naturals = {p1};
-        Natural? n5 = naturals[p1];
+        Empty|Sequence<Integer&EmptyInterface> naturals = {p1};
+        Integer? n5 = naturals[p1];
         Top? t = leftsAndRights[p1];
-        Empty|Sequence<Natural&EmptyInterface>|Nothing naturalsOrNothing = {p1};
-        Natural? n52 = naturalsOrNothing?[p1];
+        Empty|Sequence<Integer&EmptyInterface>|Nothing naturalsOrNothing = {p1};
+        Integer? n52 = naturalsOrNothing?[p1];
         Top? t2 = topsOrNothing?[p1];
         
-        variable Empty|Sequence<Natural&EmptyInterface> subrange;
+        variable Empty|Sequence<Integer&EmptyInterface> subrange;
         subrange := naturals[p1..p1];
         subrange := naturals[p1...];
 
         // sequence expression
-        Natural[] plainNaturals = {p1};
+        Integer[] plainIntegers = {p1};
 
         // iteration
         // FIXME: I couldn't find a way to get a sequence erased to object
-        for(Natural&EmptyInterface it in naturals){
-            Numeric<Natural> n6 = it;
+        for(Integer&EmptyInterface it in naturals){
+            Numeric<Integer> n6 = it;
         }
         for(Left itLeft in leftsAndRights){
             itLeft.top();
@@ -283,7 +283,7 @@ class Test() {
         }
         
         // erased type for sequences
-        variable Natural sync;
+        variable Integer sync;
         sync := naturals.size;
         sync := leftsAndRights.size;
 

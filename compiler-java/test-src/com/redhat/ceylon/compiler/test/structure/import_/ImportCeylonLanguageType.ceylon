@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import ceylon.language{Natural}
+import ceylon.language{Integer}
 import ceylon.language.descriptor{Module}
 
 @nomodel
-class ImportCeylonLanguageType(Natural n, Module m) {
+class ImportCeylonLanguageType(Integer n, Module m) {
 }

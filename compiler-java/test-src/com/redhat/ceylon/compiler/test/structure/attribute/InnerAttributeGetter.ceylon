@@ -21,9 +21,9 @@
 class InnerAttributeGetter() {
     void m() {
         value m = 2;
-        Natural innerGetter {
+        Integer innerGetter {
             return m;
         }
-        Natural n = innerGetter;
+        Integer n = innerGetter;
     }
 }

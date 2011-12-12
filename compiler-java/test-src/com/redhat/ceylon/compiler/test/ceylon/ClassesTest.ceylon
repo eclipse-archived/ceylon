@@ -23,7 +23,7 @@ shared class ClassesTest() extends Test() {
 	shared void testWithMethods() {	
 		class WithMethods() {
 			void doNothing() {}
-			shared Natural returnZero() { return 0; }
+			shared Integer returnZero() { return 0; }
 			shared String returnArgument(String arg) { return arg; }		
 		}
 		
@@ -35,7 +35,7 @@ shared class ClassesTest() extends Test() {
 	@test
 	shared void testWithAtributes() {
 		class WithAttributes() {
-			shared variable Natural count := 0;		
+			shared variable Integer count := 0;		
 			shared void inc() { count += 1;}		
 		}
 	
@@ -48,11 +48,11 @@ shared class ClassesTest() extends Test() {
 	@test
 	shared void testWithAbstractMethods() {
 		abstract class WithAbstractMethods() {					
-			shared formal Natural returnZero();		
+			shared formal Integer returnZero();		
 		}
 		
 		class Concrete() extends WithAbstractMethods() {
-			shared actual Natural returnZero() {return 0;}		
+			shared actual Integer returnZero() {return 0;}		
 		}
 		
 		Concrete instance = Concrete();

@@ -22,11 +22,11 @@ class NamedArgumentGetterInvocation(){
     Boolean m() {
         return f {
             String s { return "foo"; }
-            Natural n { return 2; }
+            Integer n { return 2; }
         };
     }
     
-    Boolean f(Natural n, String s) {
+    Boolean f(Integer n, String s) {
         return true;
     }
 }

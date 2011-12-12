@@ -29,7 +29,7 @@ class MethodInvocation(){
         return;
     }
     
-    Natural o(Natural oarg) {
+    Integer o(Integer oarg) {
         return oarg;
     }
     

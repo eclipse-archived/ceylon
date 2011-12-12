@@ -19,18 +19,18 @@
  */
 @nomodel
 class MethodLocalAccess(){
-    Natural m1(){
-        Natural n1 = 1;
+    Integer m1(){
+        Integer n1 = 1;
         return n1;
     }
-    Natural m2(){
-        Natural n2 {
+    Integer m2(){
+        Integer n2 {
             return 1;        
         }
         return n2;
     }
-    Natural m3(){
-        Natural selfref {
+    Integer m3(){
+        Integer selfref {
             if (selfref > 0) {
                 return 1;
             } else {

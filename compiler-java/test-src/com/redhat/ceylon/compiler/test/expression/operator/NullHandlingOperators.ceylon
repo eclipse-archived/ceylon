@@ -25,10 +25,10 @@ shared class NullHandlingOperators() {
     }
     
     void nullHandling() {
-        Natural? natOrNothing1 = 0;
+        Integer? natOrNothing1 = 0;
         Integer? intOrNothing = +0;
-        Natural n = natOrNothing1 ? 2;
-        Natural? nBoxed = natOrNothing1 ? box(0); 
+        Integer n = natOrNothing1 ? 2;
+        Integer? nBoxed = natOrNothing1 ? box(0); 
         variable Integer? nullSafeMember := intOrNothing?.negativeValue;
         variable Integer? nullSafeInvoke := intOrNothing?.plus(+1);
         nullSafeInvoke := intOrNothing?.plus{
@@ -60,7 +60,7 @@ shared class NullHandlingOperators() {
     }
     
     void testThenElse() {
-        Natural n = 5;
+        Integer n = 5;
         String? foo = (n > 0) then "yes";
         String? bar = foo else "yes";
         String? baz = (n > 0) then "yes" else "no";

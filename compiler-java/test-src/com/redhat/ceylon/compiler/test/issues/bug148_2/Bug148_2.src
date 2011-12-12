@@ -23,7 +23,7 @@ public final class bug148_2 {
     }
     
     public static void bug148_2() {
-        .ceylon.language.print.print(.ceylon.language.String.instance(.ceylon.language.Natural.instance(.bug148_2.f.getF()).toString()));
+        .ceylon.language.print.print(.ceylon.language.String.instance(.ceylon.language.Integer.instance(.bug148_2.f.getF()).toString()));
         .bug148_2.f.setF(3L);
     }
     

@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.test.expression.invoke;
 
 class NamedArgumentInvocationInitWithEmptySequence {
     
-    NamedArgumentInvocationInitWithEmptySequence(ceylon.language.Iterable<? extends ceylon.language.Natural> b) {
+    NamedArgumentInvocationInitWithEmptySequence(ceylon.language.Iterable<? extends ceylon.language.Integer> b) {
         final .java.lang.Object o = (let ceylon.language.Iterable $arg$0$0 = ceylon.language.$empty.getEmpty() in new com.redhat.ceylon.compiler.test.expression.invoke.NamedArgumentInvocationInitWithEmptySequence($arg$0$0));
     }
 }

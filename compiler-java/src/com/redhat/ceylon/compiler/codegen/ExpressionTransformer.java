@@ -423,7 +423,6 @@ public class ExpressionTransformer extends AbstractTransformer {
             compoundType = op.getUnit().getSummableDeclaration();
         }else if(op instanceof Tree.SubtractAssignOp){
             infixOpClass = Tree.DifferenceOp.class;
-            compoundType = op.getUnit().getSubtractableDeclaration();
         }else if(op instanceof Tree.MultiplyAssignOp)
             infixOpClass = Tree.ProductOp.class;
         else if(op instanceof Tree.DivideAssignOp)
@@ -501,10 +500,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.DifferenceOp op) {
-        Interface compoundType = op.getUnit().getSubtractableDeclaration();
-        ProducedType leftType = getSupertype(op.getLeftTerm(), compoundType );
-        ProducedType rightType = getTypeArgument(leftType, 0);
-        return transformBinaryOperator(op, leftType, rightType);
+        return transformArithmeticOperator(op, op.getUnit().getSummableDeclaration());
     }
 
     public JCExpression transform(Tree.RemainderOp op) {

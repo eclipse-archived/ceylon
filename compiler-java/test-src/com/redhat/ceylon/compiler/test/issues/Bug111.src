@@ -4,20 +4,20 @@ class Bug111 {
     
     private final void m1() {
         final long nat = 0L;
-        final long neg = .ceylon.language.Natural.instance(nat).getNegativeValue().longValue();
+        final long neg = .ceylon.language.Integer.instance(nat).getNegativeValue().longValue();
     }
     
     private final void m2() {
-        final .java.lang.Object num = .ceylon.language.Natural.instance(0L);
-        final long mag = ((ceylon.language.Invertable<? extends ceylon.language.Integer>)num).getNegativeValue().longValue();
+        final long num = 0L;
+        final long mag = .ceylon.language.Integer.instance(num).getNegativeValue().longValue();
     }
     
     private final void m3() {
-        final ceylon.language.Iterable nums = new ceylon.language.ArraySequence<ceylon.language.Natural>(.ceylon.language.Natural.instance(1L), .ceylon.language.Natural.instance(2L), .ceylon.language.Natural.instance(3L));
-        ceylon.language.Iterable $nums$0;
-        if (($nums$0 = nums) instanceof ceylon.language.Sequence || nums instanceof ceylon.language.Sequence) {
-            final ceylon.language.Iterable $nums$1 = (ceylon.language.Iterable)$nums$0;
-            final .java.lang.Object first = ((ceylon.language.Sequence)$nums$1).getFirst();
+        final ceylon.language.Iterable<? extends ceylon.language.Integer> nums = new ceylon.language.ArraySequence<ceylon.language.Integer>(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+        ceylon.language.Iterable<? extends ceylon.language.Integer> $nums$0;
+        if (($nums$0 = nums) instanceof ceylon.language.Sequence) {
+            final ceylon.language.Sequence<? extends ceylon.language.Integer> $nums$1 = (ceylon.language.Sequence<? extends ceylon.language.Integer>)$nums$0;
+            final ceylon.language.Integer first = $nums$1.getFirst();
         }
     }
     

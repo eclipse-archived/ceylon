@@ -35,14 +35,14 @@ abstract class Super1() extends Super2() {
 class KlassWithMethods() extends Super1() {
  void empty(){}
  shared void emptyPublic(){}
- Natural natural(){return 1;}
- shared Natural naturalPublic(){return 1;}
- Natural param(Natural p){return p;}
- shared Natural paramPublic(Natural p){return p;}
+ Integer natural(){return 1;}
+ shared Integer naturalPublic(){return 1;}
+ Integer param(Integer p){return p;}
+ shared Integer paramPublic(Integer p){return p;}
  // override all formal methods
  shared actual void formalMethod2(){}
  shared actual void defaultMethod(){}
  
  // varargs
- shared void varargs(Natural... args){}
+ shared void varargs(Integer... args){}
 }

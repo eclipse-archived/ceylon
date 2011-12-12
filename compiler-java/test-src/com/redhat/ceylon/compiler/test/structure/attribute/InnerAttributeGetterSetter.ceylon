@@ -20,11 +20,11 @@
 @nomodel
 class InnerAttributeGetterSetter() {
     void m() {
-        Natural innerGetterSetter {
+        Integer innerGetterSetter {
             return 0;
         } assign innerGetterSetter {
         }
-        Natural n = innerGetterSetter;
+        Integer n = innerGetterSetter;
         innerGetterSetter := 1;
     }
 }

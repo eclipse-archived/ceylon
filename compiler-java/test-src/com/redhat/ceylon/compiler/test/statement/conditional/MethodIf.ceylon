@@ -19,7 +19,7 @@
  */
 @nomodel
 class MethodIf(){
-   shared Natural m(){
+   shared Integer m(){
        if(true){
            return 1;
        }

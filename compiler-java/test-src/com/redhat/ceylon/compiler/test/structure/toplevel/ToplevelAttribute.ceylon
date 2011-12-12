@@ -18,4 +18,4 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-Natural i = 0;
+Integer i = 0;

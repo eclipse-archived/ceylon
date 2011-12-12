@@ -19,7 +19,7 @@
  */
 @nomodel
 class MethodIfSatisfies() {
-    shared Natural m() {
+    shared Integer m() {
         if (satisfies Integer Integer) {
             return 1;
         }

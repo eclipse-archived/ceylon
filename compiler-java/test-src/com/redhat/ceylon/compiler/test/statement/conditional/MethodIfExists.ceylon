@@ -19,13 +19,13 @@
  */
 @nomodel
 class MethodIfExists() {
-    shared Natural m(Natural? x) {
+    shared Integer m(Integer? x) {
         if (exists x) {
             return x;
         }
         return 0;
     }
-    shared Natural m2(Natural? x) {
+    shared Integer m2(Integer? x) {
         if (exists y = x) {
             return y;
         }

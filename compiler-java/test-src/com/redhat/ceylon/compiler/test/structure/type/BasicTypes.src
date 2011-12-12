@@ -9,15 +9,6 @@ public final class globalMethodInteger {
         return i;
     }
 }
-public final class globalMethodNatural {
-    
-    private globalMethodNatural() {
-    }
-    
-    public static long globalMethodNatural(final long i) {
-        return i;
-    }
-}
 public final class globalMethodFloat {
     
     private globalMethodFloat() {
@@ -63,15 +54,6 @@ public final class globalMethodOptionalInteger {
         return i;
     }
 }
-public final class globalMethodOptionalNatural {
-    
-    private globalMethodOptionalNatural() {
-    }
-    
-    public static ceylon.language.Natural globalMethodOptionalNatural(final ceylon.language.Natural i) {
-        return i;
-    }
-}
 public final class globalMethodOptionalFloat {
     
     private globalMethodOptionalFloat() {
@@ -106,19 +88,6 @@ public final class globalMethodOptionalCharacter {
     
     public static ceylon.language.Character globalMethodOptionalCharacter(final ceylon.language.Character i) {
         return i;
-    }
-}
-public final class globalAttrNatural {
-    private static final long value;
-    static {
-        value = 1L;
-    }
-    
-    public static long getGlobalAttrNatural() {
-        return value;
-    }
-    
-    private globalAttrNatural() {
     }
 }
 public final class globalAttrInteger {
@@ -184,19 +153,6 @@ public final class globalAttrCharacter {
     }
     
     private globalAttrCharacter() {
-    }
-}
-public final class globalAttrOptionalNatural {
-    private static final ceylon.language.Natural value;
-    static {
-        value = null;
-    }
-    
-    public static ceylon.language.Natural getGlobalAttrOptionalNatural() {
-        return value;
-    }
-    
-    private globalAttrOptionalNatural() {
     }
 }
 public final class globalAttrOptionalInteger {
@@ -265,11 +221,6 @@ public final class globalAttrOptionalCharacter {
     }
 }
 class BasicTypes {
-    private final long privateAttrNatural;
-    
-    private final long getPrivateAttrNatural() {
-        return privateAttrNatural;
-    }
     private final long privateAttrInteger;
     
     private final long getPrivateAttrInteger() {
@@ -294,11 +245,6 @@ class BasicTypes {
     
     private final int getPrivateAttrCharacter() {
         return privateAttrCharacter;
-    }
-    private final ceylon.language.Natural privateAttrOptionalNatural;
-    
-    private final ceylon.language.Natural getPrivateAttrOptionalNatural() {
-        return privateAttrOptionalNatural;
     }
     private final ceylon.language.Integer privateAttrOptionalInteger;
     
@@ -325,11 +271,6 @@ class BasicTypes {
     private final ceylon.language.Character getPrivateAttrOptionalCharacter() {
         return privateAttrOptionalCharacter;
     }
-    private final long sharedAttrNatural;
-    
-    public final long getSharedAttrNatural() {
-        return sharedAttrNatural;
-    }
     private final long sharedAttrInteger;
     
     public final long getSharedAttrInteger() {
@@ -354,11 +295,6 @@ class BasicTypes {
     
     public final int getSharedAttrCharacter() {
         return sharedAttrCharacter;
-    }
-    private final ceylon.language.Natural sharedAttrOptionalNatural;
-    
-    public final ceylon.language.Natural getSharedAttrOptionalNatural() {
-        return sharedAttrOptionalNatural;
     }
     private final ceylon.language.Integer sharedAttrOptionalInteger;
     
@@ -387,13 +323,11 @@ class BasicTypes {
     }
     
     private final void m() {
-        final long localAttrNatural = getPrivateAttrNatural();
         final long localAttrInteger = getPrivateAttrInteger();
         final double localAttrFloat = getPrivateAttrFloat();
         final .java.lang.String localAttrString = getPrivateAttrString();
         final boolean localAttrBoolean = getPrivateAttrBoolean();
         final int localAttrCharacter = getPrivateAttrCharacter();
-        final ceylon.language.Natural localAttrOptionalNatural = getPrivateAttrOptionalNatural();
         final ceylon.language.Integer localAttrOptionalInteger = getPrivateAttrOptionalInteger();
         final ceylon.language.Float localAttrOptionalFloat = getPrivateAttrOptionalFloat();
         final ceylon.language.String localAttrOptionalString = getPrivateAttrOptionalString();
@@ -402,10 +336,6 @@ class BasicTypes {
     }
     
     private final long methodInteger(final long i) {
-        return i;
-    }
-    
-    private final long methodNatural(final long i) {
         return i;
     }
     
@@ -429,10 +359,6 @@ class BasicTypes {
         return i;
     }
     
-    private final ceylon.language.Natural methodOptionalNatural(final ceylon.language.Natural i) {
-        return i;
-    }
-    
     private final ceylon.language.Float methodOptionalFloat(final ceylon.language.Float i) {
         return i;
     }
@@ -449,38 +375,32 @@ class BasicTypes {
         return i;
     }
     
-    BasicTypes(long paramNatural, long paramInteger, double paramFloat, .java.lang.String paramString, boolean paramBoolean, int paramCharacter, ceylon.language.Natural paramOptionalNatural, ceylon.language.Integer paramOptionalInteger, ceylon.language.Float paramOptionalFloat, ceylon.language.String paramOptionalString, ceylon.language.Boolean paramOptionalBoolean, ceylon.language.Character paramOptionalCharacter) {
-        final long privateNonCapturedAttrNatural;
+    BasicTypes(long paramInteger, double paramFloat, .java.lang.String paramString, boolean paramBoolean, int paramCharacter, ceylon.language.Integer paramOptionalInteger, ceylon.language.Float paramOptionalFloat, ceylon.language.String paramOptionalString, ceylon.language.Boolean paramOptionalBoolean, ceylon.language.Character paramOptionalCharacter) {
         final long privateNonCapturedAttrInteger;
         final double privateNonCapturedAttrFloat;
         final .java.lang.String privateNonCapturedAttrString;
         final boolean privateNonCapturedAttrBoolean;
         final int privateNonCapturedAttrCharacter;
-        final ceylon.language.Natural privateNonCapturedAttrOptionalNatural;
         final ceylon.language.Integer privateNonCapturedAttrOptionalInteger;
         final ceylon.language.Float privateNonCapturedAttrOptionalFloat;
         final ceylon.language.String privateNonCapturedAttrOptionalString;
         final ceylon.language.Boolean privateNonCapturedAttrOptionalBoolean;
         final ceylon.language.Character privateNonCapturedAttrOptionalCharacter;
-        this.privateAttrNatural = 1L;
         this.privateAttrInteger = 1L;
         this.privateAttrFloat = 1.0;
         this.privateAttrString = "a";
         this.privateAttrBoolean = true;
         this.privateAttrCharacter = 'a';
-        this.privateAttrOptionalNatural = null;
         this.privateAttrOptionalInteger = null;
         this.privateAttrOptionalFloat = null;
         this.privateAttrOptionalString = null;
         this.privateAttrOptionalBoolean = null;
         this.privateAttrOptionalCharacter = null;
-        this.sharedAttrNatural = 1L;
         this.sharedAttrInteger = 1L;
         this.sharedAttrFloat = 1.0;
         this.sharedAttrString = "a";
         this.sharedAttrBoolean = true;
         this.sharedAttrCharacter = 'a';
-        this.sharedAttrOptionalNatural = null;
         this.sharedAttrOptionalInteger = null;
         this.sharedAttrOptionalFloat = null;
         this.sharedAttrOptionalString = null;

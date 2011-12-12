@@ -23,7 +23,7 @@ final class bug247 {
     }
     
     static void bug247() {
-        (let ceylon.language.Natural $ceylontmpop0 = .ceylon.language.Natural.instance(.com.redhat.ceylon.compiler.test.issues.bug247_toplevel.getBug247_toplevel()).plus(.ceylon.language.Natural.instance(1L)) in .com.redhat.ceylon.compiler.test.issues.bug247_toplevel.setBug247_toplevel($ceylontmpop0.longValue()); $ceylontmpop0);
+        (let ceylon.language.Integer $ceylontmpop0 = .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.test.issues.bug247_toplevel.getBug247_toplevel()).plus(.ceylon.language.Integer.instance(1L)) in .com.redhat.ceylon.compiler.test.issues.bug247_toplevel.setBug247_toplevel($ceylontmpop0.longValue()); $ceylontmpop0);
     }
     
     public static void main(.java.lang.String[] args) {

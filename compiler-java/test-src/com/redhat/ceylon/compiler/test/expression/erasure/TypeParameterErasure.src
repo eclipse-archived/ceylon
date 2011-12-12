@@ -120,8 +120,8 @@ class TypeParameterErasure {
     private final void testTypeParameters() {
         final long i = <ceylon.language.Integer>parameterized(.ceylon.language.Integer.instance(2L)).longValue();
         final long i2 = <ceylon.language.Integer>parameterized(.ceylon.language.Integer.instance(2L)).longValue();
-        final long n = <ceylon.language.Natural>parameterized(.ceylon.language.Natural.instance(2L)).longValue();
-        final long n2 = <ceylon.language.Natural>parameterized(.ceylon.language.Natural.instance(2L)).longValue();
+        final long n = <ceylon.language.Integer>parameterized(.ceylon.language.Integer.instance(2L)).longValue();
+        final long n2 = <ceylon.language.Integer>parameterized(.ceylon.language.Integer.instance(2L)).longValue();
         .java.lang.Object middle;
         com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left left;
         com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right right;
@@ -144,15 +144,15 @@ class TypeParameterErasure {
         final .java.lang.String s2 = <ceylon.language.String>parameterizedWithErasedBounds(.ceylon.language.String.instance("")).toString();
         final .java.lang.Object e = <ceylon.language.String>parameterizedWithErasedBounds(.ceylon.language.String.instance(""));
         final .java.lang.Object e2 = parameterizedWithErasedBounds(.ceylon.language.String.instance(""));
-        <ceylon.language.Natural>parameterizedWithParameterizedBounds(.ceylon.language.Natural.instance(2L));
-        <ceylon.language.Natural>parameterizedWithParameterizedBounds(.ceylon.language.Natural.instance(2L));
+        <ceylon.language.Integer>parameterizedWithParameterizedBounds(.ceylon.language.Integer.instance(2L));
+        <ceylon.language.Integer>parameterizedWithParameterizedBounds(.ceylon.language.Integer.instance(2L));
     }
     
     private final void testTypeParametersNamedArguments() {
         final long i = (let ceylon.language.Integer $arg$6$0 = .ceylon.language.Integer.instance(2L) in <ceylon.language.Integer>parameterized($arg$6$0)).longValue();
         final long i2 = (let ceylon.language.Integer $arg$7$0 = .ceylon.language.Integer.instance(2L) in <ceylon.language.Integer>parameterized($arg$7$0)).longValue();
-        final long n = (let ceylon.language.Natural $arg$8$0 = .ceylon.language.Natural.instance(2L) in <ceylon.language.Natural>parameterized($arg$8$0)).longValue();
-        final long n2 = (let ceylon.language.Natural $arg$9$0 = .ceylon.language.Natural.instance(2L) in <ceylon.language.Natural>parameterized($arg$9$0)).longValue();
+        final long n = (let ceylon.language.Integer $arg$8$0 = .ceylon.language.Integer.instance(2L) in <ceylon.language.Integer>parameterized($arg$8$0)).longValue();
+        final long n2 = (let ceylon.language.Integer $arg$9$0 = .ceylon.language.Integer.instance(2L) in <ceylon.language.Integer>parameterized($arg$9$0)).longValue();
         .java.lang.Object middle;
         com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left left;
         com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Right right;
@@ -175,8 +175,8 @@ class TypeParameterErasure {
         final .java.lang.String s2 = (let ceylon.language.String $arg$25$0 = .ceylon.language.String.instance("") in <ceylon.language.String>parameterizedWithErasedBounds($arg$25$0)).toString();
         final .java.lang.Object e = (let ceylon.language.String $arg$26$0 = .ceylon.language.String.instance("") in <ceylon.language.String>parameterizedWithErasedBounds($arg$26$0));
         final .java.lang.Object e2 = (let .java.lang.Object $arg$27$0 = .ceylon.language.String.instance("") in parameterizedWithErasedBounds($arg$27$0));
-        (let ceylon.language.Natural $arg$28$0 = .ceylon.language.Natural.instance(2L) in <ceylon.language.Natural>parameterizedWithParameterizedBounds($arg$28$0));
-        (let ceylon.language.Natural $arg$29$0 = .ceylon.language.Natural.instance(2L) in <ceylon.language.Natural>parameterizedWithParameterizedBounds($arg$29$0));
+        (let ceylon.language.Integer $arg$28$0 = .ceylon.language.Integer.instance(2L) in <ceylon.language.Integer>parameterizedWithParameterizedBounds($arg$28$0));
+        (let ceylon.language.Integer $arg$29$0 = .ceylon.language.Integer.instance(2L) in <ceylon.language.Integer>parameterizedWithParameterizedBounds($arg$29$0));
     }
     
     class Parameterized<T> {
@@ -264,8 +264,8 @@ class TypeParameterErasure {
         final com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithIntersectionBounds parameterizedWithErasedExplicitBoundsMiddle = new com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithIntersectionBounds((com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left)middle);
         final com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithErasedBounds<ceylon.language.String> parameterizedWithErasedBoundsMiddle = new com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithErasedBounds<ceylon.language.String>(.ceylon.language.String.instance(""));
         final com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithErasedBounds<ceylon.language.String> parameterizedWithReallyErasedExplicitBoundsMiddle = new com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithErasedBounds<ceylon.language.String>(.ceylon.language.String.instance(""));
-        final com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<ceylon.language.Natural> parameterizedWithParameterizedBounds = new com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<ceylon.language.Natural>(.ceylon.language.Natural.instance(2L));
-        final com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<ceylon.language.Natural> parameterizedWithExplicitParameterizedBounds = new com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<ceylon.language.Natural>(.ceylon.language.Natural.instance(2L));
+        final com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<ceylon.language.Integer> parameterizedWithParameterizedBounds = new com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<ceylon.language.Integer>(.ceylon.language.Integer.instance(2L));
+        final com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<ceylon.language.Integer> parameterizedWithExplicitParameterizedBounds = new com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<ceylon.language.Integer>(.ceylon.language.Integer.instance(2L));
         parameterizedMiddle.<com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left>parameterized(left, middle);
         parameterizedMiddle.parameterized(middle, middle);
         parameterizedMiddle.<com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left>parameterized((com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left)middle, middle);
@@ -276,8 +276,8 @@ class TypeParameterErasure {
         parameterizedMiddle.<ceylon.language.String>parameterizedWithErasedBounds(.ceylon.language.String.instance(""), middle);
         parameterizedMiddle.parameterizedWithErasedBounds(.ceylon.language.String.instance(""), middle);
         parameterizedMiddle.<ceylon.language.String>parameterizedWithErasedBounds(.ceylon.language.String.instance(""), middle);
-        parameterizedMiddle.<ceylon.language.Natural>parameterizedWithParameterizedBounds(.ceylon.language.Natural.instance(2L), middle);
-        parameterizedMiddle.<ceylon.language.Natural>parameterizedWithParameterizedBounds(.ceylon.language.Natural.instance(2L), middle);
+        parameterizedMiddle.<ceylon.language.Integer>parameterizedWithParameterizedBounds(.ceylon.language.Integer.instance(2L), middle);
+        parameterizedMiddle.<ceylon.language.Integer>parameterizedWithParameterizedBounds(.ceylon.language.Integer.instance(2L), middle);
     }
     
     private final void testTypeParameterInstantiationsNamedArguments() {
@@ -291,8 +291,8 @@ class TypeParameterErasure {
         final com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithBounds<com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left> parameterizedWithBoundsLeft = (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $arg$49$0 = left in new com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithBounds<com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left>($arg$49$0));
         final com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithIntersectionBounds parameterizedWithIntersectionBoundsMiddle = (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $arg$50$0 = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left)middle in new com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithIntersectionBounds($arg$50$0));
         final com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithIntersectionBounds parameterizedWithErasedExplicitBoundsMiddle = (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $arg$51$0 = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left)middle in new com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithIntersectionBounds($arg$51$0));
-        final com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<ceylon.language.Natural> parameterizedWithParameterizedBounds = (let ceylon.language.Natural $arg$52$0 = .ceylon.language.Natural.instance(2L) in new com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<ceylon.language.Natural>($arg$52$0));
-        final com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<ceylon.language.Natural> parameterizedWithExplicitParameterizedBounds = (let ceylon.language.Natural $arg$53$0 = .ceylon.language.Natural.instance(2L) in new com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<ceylon.language.Natural>($arg$53$0));
+        final com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<ceylon.language.Integer> parameterizedWithParameterizedBounds = (let ceylon.language.Integer $arg$52$0 = .ceylon.language.Integer.instance(2L) in new com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<ceylon.language.Integer>($arg$52$0));
+        final com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<ceylon.language.Integer> parameterizedWithExplicitParameterizedBounds = (let ceylon.language.Integer $arg$53$0 = .ceylon.language.Integer.instance(2L) in new com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.ParameterizedWithParameterizedBounds<ceylon.language.Integer>($arg$53$0));
         (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized $call$55 = parameterizedMiddle,com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $arg$54$0 = left,.java.lang.Object $arg$54$1 = middle in $call$55.<com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left>parameterized($arg$54$0, $arg$54$1));
         (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized $call$57 = parameterizedMiddle,.java.lang.Object $arg$56$0 = middle,.java.lang.Object $arg$56$1 = middle in $call$57.parameterized($arg$56$0, $arg$56$1));
         (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized $call$59 = parameterizedMiddle,com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left $arg$58$0 = (com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left)middle,.java.lang.Object $arg$58$1 = middle in $call$59.<com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Left>parameterized($arg$58$0, $arg$58$1));
@@ -303,8 +303,8 @@ class TypeParameterErasure {
         (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized $call$69 = parameterizedMiddle,ceylon.language.String $arg$68$0 = .ceylon.language.String.instance(""),.java.lang.Object $arg$68$1 = middle in $call$69.<ceylon.language.String>parameterizedWithErasedBounds($arg$68$0, $arg$68$1));
         (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized $call$71 = parameterizedMiddle,.java.lang.Object $arg$70$0 = .ceylon.language.String.instance(""),.java.lang.Object $arg$70$1 = middle in $call$71.parameterizedWithErasedBounds($arg$70$0, $arg$70$1));
         (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized $call$73 = parameterizedMiddle,ceylon.language.String $arg$72$0 = .ceylon.language.String.instance(""),.java.lang.Object $arg$72$1 = middle in $call$73.<ceylon.language.String>parameterizedWithErasedBounds($arg$72$0, $arg$72$1));
-        (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized $call$75 = parameterizedMiddle,ceylon.language.Natural $arg$74$0 = .ceylon.language.Natural.instance(2L),.java.lang.Object $arg$74$1 = middle in $call$75.<ceylon.language.Natural>parameterizedWithParameterizedBounds($arg$74$0, $arg$74$1));
-        (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized $call$77 = parameterizedMiddle,ceylon.language.Natural $arg$76$0 = .ceylon.language.Natural.instance(2L),.java.lang.Object $arg$76$1 = middle in $call$77.<ceylon.language.Natural>parameterizedWithParameterizedBounds($arg$76$0, $arg$76$1));
+        (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized $call$75 = parameterizedMiddle,ceylon.language.Integer $arg$74$0 = .ceylon.language.Integer.instance(2L),.java.lang.Object $arg$74$1 = middle in $call$75.<ceylon.language.Integer>parameterizedWithParameterizedBounds($arg$74$0, $arg$74$1));
+        (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized $call$77 = parameterizedMiddle,ceylon.language.Integer $arg$76$0 = .ceylon.language.Integer.instance(2L),.java.lang.Object $arg$76$1 = middle in $call$77.<ceylon.language.Integer>parameterizedWithParameterizedBounds($arg$76$0, $arg$76$1));
     }
     
     TypeParameterErasure() {

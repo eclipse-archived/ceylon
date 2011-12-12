@@ -19,7 +19,7 @@
  */
 @nomodel
 class MethodWhile(){
-    shared Natural m(){
+    shared Integer m(){
         variable Boolean cont := true;
         while (cont) {
             cont := false;

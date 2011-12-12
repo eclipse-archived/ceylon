@@ -19,10 +19,10 @@
  */
 @nomodel
 class NamedArgumentInvocation(){
-    Boolean f(Natural n, String s) {
+    Boolean f(Integer n, String s) {
         return true;
     }
-    void v(Natural n, String s) {
+    void v(Integer n, String s) {
     }
     
     Boolean simple1() {

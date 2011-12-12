@@ -18,44 +18,44 @@
  * MA  02110-1301, USA.
  */
 abstract class Super2() {
- shared formal Natural formalAttr;
- shared formal Natural formalAttr2;
- shared default Natural defaultAttr = 2;
- shared default Natural defaultGetter {return 2;}
+ shared formal Integer formalAttr;
+ shared formal Integer formalAttr2;
+ shared default Integer defaultAttr = 2;
+ shared default Integer defaultGetter {return 2;}
  // FIXME: enable when this compiles
- //shared default Natural defaultGetterSetter {return 2;} assign defaultGetterSetter {}
+ //shared default Integer defaultGetterSetter {return 2;} assign defaultGetterSetter {}
 }
 
 abstract class Super1() extends Super2() {
  // we implement a formal attr
- shared actual Natural formalAttr = 1;
+ shared actual Integer formalAttr = 1;
  // we give a default impl to a formal attr
- shared actual default Natural formalAttr2 = 1;
+ shared actual default Integer formalAttr2 = 1;
  // we make a default attr formal
- shared actual formal Natural defaultAttr;
- shared actual formal Natural defaultGetter;
+ shared actual formal Integer defaultAttr;
+ shared actual formal Integer defaultGetter;
  // FIXME: enable when this compiles
- //shared variable actual formal Natural defaultGetterSetter;
+ //shared variable actual formal Integer defaultGetterSetter;
 }
 
 
 class KlassWithAttributes() extends Super1() {
-    Natural n1 = 1;
-    shared Natural n2 = 2;
-    variable Natural n3 := 3;
-    shared variable Natural n4 := 4;
-    Natural n5 {
+    Integer n1 = 1;
+    shared Integer n2 = 2;
+    variable Integer n3 := 3;
+    shared variable Integer n4 := 4;
+    Integer n5 {
         return 5;
     }
-    shared Natural n6 {
+    shared Integer n6 {
         return 6;
     }
-    Natural n7 {
+    Integer n7 {
         return 7;
     }
     assign n7 {
     }
-    shared Natural n8 {
+    shared Integer n8 {
         return 8;
     }
     assign n8 {
@@ -72,9 +72,9 @@ class KlassWithAttributes() extends Super1() {
     }
 
     // override all formal attrs
-    shared actual Natural formalAttr2 = 3;
-    shared actual Natural defaultAttr = 3;
-    shared actual Natural defaultGetter {return 3;}
+    shared actual Integer formalAttr2 = 3;
+    shared actual Integer defaultAttr = 3;
+    shared actual Integer defaultGetter {return 3;}
     // FIXME: enable when this compiles
-    //shared actual Natural defaultGetterSetter {return 3;} assign defaultGetterSetter {}
+    //shared actual Integer defaultGetterSetter {return 3;} assign defaultGetterSetter {}
 }

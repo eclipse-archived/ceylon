@@ -19,12 +19,12 @@
  */
 @nomodel
 void bug261() {
-    variable Natural vk;
-    variable Natural vl;
+    variable Integer vk;
+    variable Integer vl;
     
     class Inner() {
-        shared variable Natural vi:=0;
-        shared variable Natural vj:=0;
+        shared variable Integer vi:=0;
+        shared variable Integer vj:=0;
     }
     value inner = Inner();
     inner.vi:=inner.vj:=2;

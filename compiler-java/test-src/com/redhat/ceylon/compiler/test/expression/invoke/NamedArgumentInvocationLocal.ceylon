@@ -20,16 +20,16 @@
 @nomodel
 shared class NamedArgumentInvocationLocal() {
     shared void f() {
-        Natural m(Natural n, String s) {
+        Integer m(Integer n, String s) {
     	    return n;
         }
-        void v(Natural n, String s) {
+        void v(Integer n, String s) {
         }
         v{
             s="abc";
             n=123;
         };
-        Natural x = m{
+        Integer x = m{
             s="abc";
             n=123;
         };

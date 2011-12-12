@@ -139,8 +139,8 @@ class Conversions {
     public final void m() {
         final com.redhat.ceylon.compiler.test.structure.type.Foo c1 = new com.redhat.ceylon.compiler.test.structure.type.Foo();
         c1.a();
-        final ceylon.language.Natural n1 = .ceylon.language.Natural.instance(1L);
-        final ceylon.language.Natural n2 = null;
+        final ceylon.language.Integer n1 = .ceylon.language.Integer.instance(1L);
+        final ceylon.language.Integer n2 = null;
         final .java.lang.Object u1 = new com.redhat.ceylon.compiler.test.structure.type.Bar();
         ((com.redhat.ceylon.compiler.test.structure.type.Foo)u1).a();
         .java.lang.Object $u1$0;

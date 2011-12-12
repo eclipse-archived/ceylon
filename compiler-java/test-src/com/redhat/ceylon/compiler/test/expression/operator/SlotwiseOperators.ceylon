@@ -20,8 +20,8 @@
 shared class AllOperators() {
     variable Boolean b1 := false;
     variable Boolean b2 := false;
-    variable Natural n1 := 0;
-    variable Natural n2 := 0;
+    variable Integer n1 := 0;
+    variable Integer n2 := 0;
     variable Integer i1 := +0;
     variable Integer i2 := +0;
     variable Float f1 := 0.0;

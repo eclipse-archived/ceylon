@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-class NamedArgumentInvocationInit(String a, Natural b) {
+class NamedArgumentInvocationInit(String a, Integer b) {
     class Inner(Boolean x, String y, Integer z) {
     	shared void m2() { }
     }
