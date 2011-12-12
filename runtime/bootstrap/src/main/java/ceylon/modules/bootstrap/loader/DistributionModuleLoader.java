@@ -46,19 +46,13 @@ import java.util.zip.ZipFile;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class DistributionModuleLoader extends ModuleLoader {
+public class DistributionModuleLoader extends BootstrapModuleLoader {
 
     private static final String BOOTSTRAP_DISTRIBUTION = "ceylon-runtime-bootstrap";
     private final ModuleLoader delegate;
 
     public DistributionModuleLoader() {
-        final String ceylonRepository = AccessController.doPrivileged(new PrivilegedAction<String>() {
-            @Override
-            public String run() {
-                final String defaultCeylonRepository = System.getProperty("user.home") + File.separator + ".ceylon" + File.separator + "repo";
-                return System.getProperty("ceylon.repo", defaultCeylonRepository);
-            }
-        });
+        final String ceylonRepository = getCeylonRepository();
         final File dir = new File(ceylonRepository, BOOTSTRAP_DISTRIBUTION);
         final File zip = new File(dir, BOOTSTRAP_DISTRIBUTION + ".zip");
         if (zip.exists() == false)
