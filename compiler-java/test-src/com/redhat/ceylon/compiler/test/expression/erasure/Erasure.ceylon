@@ -36,17 +36,17 @@ interface Right satisfies Top {
 class CLeft() satisfies Left {
     shared actual void left() {}
     shared actual void top() {}
-    shared actual Integer topAttribute = 1;
-    shared actual Integer leftAttribute = 1;
+    shared actual Integer topAttribute = +1;
+    shared actual Integer leftAttribute = +1;
 }
 @nomodel
 class CMiddle() satisfies Left & Right{
     shared actual void left() {}
     shared actual void top() {}
     shared actual void right() {}
-    shared actual Integer topAttribute = 1;
-    shared actual Integer leftAttribute = 1;
-    shared actual Integer rightAttribute = 1;
+    shared actual Integer topAttribute = +1;
+    shared actual Integer leftAttribute = +1;
+    shared actual Integer rightAttribute = +1;
 }
 @nomodel
 interface EmptyInterface {}
@@ -67,8 +67,8 @@ class Test() {
     
     shared variable Left leftAttribute := CLeft();
     shared variable Left&Right middleAttribute := CMiddle();
-    shared variable Numeric<Integer>&Ordinal<Integer> n := 1;
-    shared variable Integral<Integer>&Invertable<Integer> m := 1;
+    shared variable Numeric<Integer>&Ordinal<Integer>&Subtractable<Integer,Integer> n := +1;
+    shared variable Integral<Natural>&Invertable<Integer> m := 1;
 
     void testUnion(){
         Left|Right middle = CLeft();
@@ -170,13 +170,14 @@ class Test() {
                                  Test&EmptyInterface erasedTest){
         // with boxing
         Integer unboxed = p1;
-        Numeric<Integer>&Ordinal<Integer> boxed = 1;
+        Numeric<Integer>&Ordinal<Integer> boxed = +1;
 
         // arithmetic operators
-        variable Numeric<Integer>&Ordinal<Integer> n := 1;
-        Integer n2 = n + n;
-        value i0 = n - n;
-        Integer n3 = n * n;
+        variable Numeric<Integer>&Ordinal<Integer>&Subtractable<Integer,Integer> n := +1;
+        variable Integer nSync;
+        nSync := n + n;
+        nSync := n - n;
+        nSync := n * n;
         n := n += n;
         n := n -= n;
         n := n *= n;
@@ -189,7 +190,7 @@ class Test() {
         erasedTest.n := erasedTest.n++;
         erasedTest.n := ++erasedTest.n;
 
-        variable Integral<Integer>&Invertable<Integer> m := 1;
+        variable Integral<Integer>&Invertable<Integer> m := +1;
         Integer n4 = m % m;
         m := m %= m;
         erasedTest.m := erasedTest.m %= erasedTest.m;

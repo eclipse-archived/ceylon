@@ -96,7 +96,10 @@ class CMiddle implements com.redhat.ceylon.compiler.test.expression.erasure.Left
 interface EmptyInterface {
 }
 final class topLevelLeftAttribute {
-    private static com.redhat.ceylon.compiler.test.expression.erasure.Left value = new com.redhat.ceylon.compiler.test.expression.erasure.CLeft();
+    private static com.redhat.ceylon.compiler.test.expression.erasure.Left value;
+    static {
+        value = new com.redhat.ceylon.compiler.test.expression.erasure.CLeft();
+    }
     
     static com.redhat.ceylon.compiler.test.expression.erasure.Left getTopLevelLeftAttribute() {
         return value;
@@ -221,17 +224,18 @@ class Test {
         }
         boolean bSync;
         bSync = p1OrNothing != null;
-        final .java.lang.Object p2 = (let .java.lang.Object $ceylontmp9 = p1OrNothing in $ceylontmp9 != null ? $ceylontmp9 : p1);
-        final long n = ((ceylon.language.Integer)(let .java.lang.Object $ceylontmp10 = p1OrNothing in $ceylontmp10 != null ? $ceylontmp10 : p1)).longValue();
+        final .java.lang.Object p2 = (let .java.lang.Object $ceylontmp9 = (ceylon.language.Boolean)p1OrNothing in $ceylontmp9 != null ? $ceylontmp9 : p1);
+        final long n = ((ceylon.language.Integer)(let .java.lang.Object $ceylontmp10 = (ceylon.language.Boolean)p1OrNothing in $ceylontmp10 != null ? $ceylontmp10 : p1)).longValue();
     }
     
     private final void testArithmeticOperators(final .java.lang.Object p1, final .java.lang.Object erasedTest) {
         final long unboxed = ((ceylon.language.Integer)p1).longValue();
         final .java.lang.Object boxed = .ceylon.language.Integer.instance(1L);
         .java.lang.Object n = .ceylon.language.Integer.instance(1L);
-        final long n2 = ((ceylon.language.Summable<ceylon.language.Integer>)n).plus((ceylon.language.Integer)n).longValue();
-        final long i0 = ((ceylon.language.Subtractable<ceylon.language.Integer, ceylon.language.Integer>)n).minus((ceylon.language.Integer)n).longValue();
-        final long n3 = ((ceylon.language.Numeric<ceylon.language.Integer>)n).times((ceylon.language.Integer)n).longValue();
+        long nSync;
+        nSync = ((ceylon.language.Summable<ceylon.language.Integer>)n).plus((ceylon.language.Integer)n).longValue();
+        nSync = ((ceylon.language.Subtractable<ceylon.language.Integer, ceylon.language.Integer>)n).minus((ceylon.language.Integer)n).longValue();
+        nSync = ((ceylon.language.Numeric<ceylon.language.Integer>)n).times((ceylon.language.Integer)n).longValue();
         n = (let ceylon.language.Integer $ceylontmpop11 = ((ceylon.language.Summable<ceylon.language.Integer>)n).plus((ceylon.language.Integer)n) in n = $ceylontmpop11; $ceylontmpop11);
         n = (let ceylon.language.Integer $ceylontmpop12 = ((ceylon.language.Subtractable<ceylon.language.Integer, ceylon.language.Integer>)n).minus((ceylon.language.Integer)n) in n = $ceylontmpop12; $ceylontmpop12);
         n = (let ceylon.language.Integer $ceylontmpop13 = ((ceylon.language.Numeric<ceylon.language.Integer>)n).times((ceylon.language.Integer)n) in n = $ceylontmpop13; $ceylontmpop13);
@@ -254,7 +258,7 @@ class Test {
         boolean sync;
         sync = erasedTest == erasedTest;
         sync = p1.equals(p1);
-        sync = ((ceylon.language.Comparable<? super ceylon.language.Integer>)p1).compare((ceylon.language.Integer)p1).smaller();
+        sync = ((ceylon.language.Comparable<? super ceylon.language.Integer>)p1).compare((ceylon.language.Integer)p1).smallerThan();
         final ceylon.language.Comparison cmp = ((ceylon.language.Comparable<? super ceylon.language.Integer>)p1).compare((ceylon.language.Integer)p1);
         sync = (let .java.lang.Object $ceylontmp29 = p1 in ((ceylon.language.Category)container).contains($ceylontmp29));
         .java.lang.Object $p1$30;
