@@ -249,7 +249,7 @@ public class ClassDefinitionBuilder {
         ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
         for (ProducedType t : satisfiedTypes) {
             if (!gen.willEraseToObject(t)) {
-                bounds.append(gen.makeJavaType(t));
+                bounds.append(gen.makeJavaType(t, AbstractTransformer.NO_PRIMITIVES));
             }
         }
         typeParams.append(gen.make().TypeParameter(gen.names().fromString(name),

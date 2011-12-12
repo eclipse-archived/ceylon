@@ -307,6 +307,17 @@ class TypeParameterErasure {
         (let com.redhat.ceylon.compiler.test.expression.erasure.TypeParameterErasure.Parameterized $call$77 = parameterizedMiddle,ceylon.language.Integer $arg$76$0 = .ceylon.language.Integer.instance(2L),.java.lang.Object $arg$76$1 = middle in $call$77.<ceylon.language.Integer>parameterizedWithParameterizedBounds($arg$76$0, $arg$76$1));
     }
     
+    private final <T extends ceylon.language.Integer>void testPrimitiveBound(final T init) {
+        T n = init;
+    }
+    
+    class TestPrimitiveBound<T extends ceylon.language.Integer> {
+        
+        TestPrimitiveBound(T init) {
+            T n = init;
+        }
+    }
+    
     TypeParameterErasure() {
     }
     

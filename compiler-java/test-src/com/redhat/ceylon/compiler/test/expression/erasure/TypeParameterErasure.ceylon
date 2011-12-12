@@ -294,4 +294,11 @@ class TypeParameterErasure() {
         parameterizedMiddle.parameterizedWithParameterizedBounds{i=2;t=middle;};
         parameterizedMiddle.parameterizedWithParameterizedBounds<Integer>{i=2;t=middle;};
     }
+
+    void testPrimitiveBound<T>(T init) given T satisfies Integer {
+        variable T n := init;
+    }
+    class TestPrimitiveBound<T>(T init) given T satisfies Integer {
+        variable T n := init;
+    }
 }
