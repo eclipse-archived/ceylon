@@ -18,9 +18,7 @@
   <property name="build.lib" location="${build}/lib"/>
   <property name="test.reports" location="${build}/test-reports"/>
 
-  <property name="antlr.lib" location="lib/antlr-3.4-complete.jar"/>
-  <property name="markdown.lib" location="lib/markdownj-core-faf3bf83000.jar"/>
-  <property name="junit.lib" location="lib/junit-4.9b2.jar"/>
+  <property name="markdown.lib" location="${base.path}/markdownj-core-faf3bf83000.jar"/>
 
   <!-- Jarfiles everything ends up in -->
   <property name="compiler.dir" value="${ceylon.repo.dir}/com/redhat/ceylon/compiler/${module.com.redhat.ceylon.compiler.version}"/>
