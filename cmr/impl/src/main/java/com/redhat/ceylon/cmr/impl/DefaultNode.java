@@ -64,8 +64,8 @@ public class DefaultNode extends AbstractOpenNode {
         if (other == null)
             throw new IllegalArgumentException("Null node!");
         
-        Node root = NodeUtils.getRoot(this);
-        Node or = NodeUtils.getRoot(other);
+        // Node root = NodeUtils.getRoot(this);
+        // Node or = NodeUtils.getRoot(other);
         // TODO
     }
 
@@ -127,12 +127,17 @@ public class DefaultNode extends AbstractOpenNode {
 
     @Override
     public boolean hasContent() {
-        if (handle == HANDLE_MARKER)
-            return false;
+        synchronized (this) {
+            if (handle == HANDLE_MARKER)
+                return false;
+            if (handle != null)
+                return true;
+        }
 
         final ContentHandle ch = findService(ContentStore.class).popContent(this);
-        if (ch == null) {
-            handle = HANDLE_MARKER;
+        
+        synchronized (this) {
+            handle = (ch == null) ? HANDLE_MARKER : ch;
         }
 
         return (ch != null);
@@ -140,15 +145,20 @@ public class DefaultNode extends AbstractOpenNode {
 
     @Override
     public InputStream getInputStream() throws IOException {
-        if (handle != null) {
-            return handle.getContent();
-        } else {
-            ContentHandle ch = findService(ContentStore.class).getContent(this);
-            if (ch == null) {
-                ch = HANDLE_MARKER;
-            }
-            handle = ch;
-            return ch.getContent();
+        synchronized (this) {
+            if (handle != null)
+                return handle.getContent();
         }
+
+        ContentHandle ch = findService(ContentStore.class).getContent(this);
+        if (ch == null) {
+            ch = HANDLE_MARKER;
+        }
+
+        synchronized (this) {
+            handle = ch;
+        }
+
+        return ch.getContent();
     }
 }
