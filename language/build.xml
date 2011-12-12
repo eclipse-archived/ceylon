@@ -40,7 +40,7 @@
     <property name="src.file" value="${dir.file}/${module.language.name}-${module.ceylon.language.version}.src"/>
     <property name="car.file" value="${dir.file}/${module.language.name}-${module.ceylon.language.version}.car"/>
 
-	<property name="tests.file" value="${build.test}/&lt;unknown&gt;/default_module-&lt;unknown&gt;.car"/>
+	<property name="tests.file" value="${build.test}/unversioned/default_module-unversioned.car"/>
 	
 	<!-- ################################################################## -->
 
