@@ -18,12 +18,12 @@
  * MA  02110-1301, USA.
  */
  
-variable Integer numericOperationIncrDecrTest := 0;
+variable Integer numericOperationIncrDecrTestToplevel := 0;
 Integer numericOperationIncrDecrTestGetter {
-    return numericOperationIncrDecrTest;
+    return numericOperationIncrDecrTestToplevel;
 }
 assign numericOperationIncrDecrTestGetter {
-    numericOperationIncrDecrTest := numericOperationIncrDecrTestGetter;
+    numericOperationIncrDecrTestToplevel := numericOperationIncrDecrTestGetter;
 }
 
 shared class NumericOperationTest() extends Test() {
@@ -230,31 +230,31 @@ shared class NumericOperationTest() extends Test() {
 
   @test
   shared void testUnboxedToplevelAttrIncrDecr(){
-    assertEquals(0, numericOperationIncrDecrTest);
+    assertEquals(0, numericOperationIncrDecrTestToplevel);
 
     // postfix ++
-    assertEquals(0, numericOperationIncrDecrTest++);
-    assertEquals(1, numericOperationIncrDecrTest);
-    numericOperationIncrDecrTest++;
-    assertEquals(2, numericOperationIncrDecrTest);
+    assertEquals(0, numericOperationIncrDecrTestToplevel++);
+    assertEquals(1, numericOperationIncrDecrTestToplevel);
+    numericOperationIncrDecrTestToplevel++;
+    assertEquals(2, numericOperationIncrDecrTestToplevel);
 
     // postfix --
-    assertEquals(2, numericOperationIncrDecrTest--);
-    assertEquals(1, numericOperationIncrDecrTest);
-    numericOperationIncrDecrTest--;
-    assertEquals(0, numericOperationIncrDecrTest);
+    assertEquals(2, numericOperationIncrDecrTestToplevel--);
+    assertEquals(1, numericOperationIncrDecrTestToplevel);
+    numericOperationIncrDecrTestToplevel--;
+    assertEquals(0, numericOperationIncrDecrTestToplevel);
   
     // prefix ++
-    assertEquals(1, ++numericOperationIncrDecrTest);
-    assertEquals(1, numericOperationIncrDecrTest);
-    ++numericOperationIncrDecrTest;
-    assertEquals(2, numericOperationIncrDecrTest);
+    assertEquals(1, ++numericOperationIncrDecrTestToplevel);
+    assertEquals(1, numericOperationIncrDecrTestToplevel);
+    ++numericOperationIncrDecrTestToplevel;
+    assertEquals(2, numericOperationIncrDecrTestToplevel);
 
     // prefix --
-    assertEquals(1, --numericOperationIncrDecrTest);
-    assertEquals(1, numericOperationIncrDecrTest);
-    --numericOperationIncrDecrTest;
-    assertEquals(0, numericOperationIncrDecrTest);
+    assertEquals(1, --numericOperationIncrDecrTestToplevel);
+    assertEquals(1, numericOperationIncrDecrTestToplevel);
+    --numericOperationIncrDecrTestToplevel;
+    assertEquals(0, numericOperationIncrDecrTestToplevel);
   }
 
   @test
