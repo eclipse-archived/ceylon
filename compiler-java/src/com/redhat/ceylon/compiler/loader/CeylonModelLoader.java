@@ -404,6 +404,8 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     Declaration convertToDeclaration(String typeName, DeclarationType declarationType) {
         if ("ceylon.language.Bottom".equals(typeName)) {
             return new BottomType(typeFactory);
+        } else if ("java.lang.Exception".equals(typeName)) {
+            return convertToDeclaration("ceylon.language.Exception", declarationType);
         }
         ClassSymbol classSymbol = lookupClassSymbol(typeName);
         if (classSymbol == null) {
@@ -934,7 +936,7 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
     private void setExtendedType(ClassOrInterface klass, ClassSymbol classSymbol) {
         // look at its super type
         Type superClass = classSymbol.getSuperclass();
-        ProducedType extendedType = null;
+        ProducedType extendedType;
         
         if(klass instanceof Interface){
             // interfaces need to have their superclass set to Object
@@ -944,12 +946,17 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                 extendedType = getType(superClass, klass);
         }else{
             String className = getQualifiedName(classSymbol);
+            String superClassName = superClass.tsym.getQualifiedName().toString();
             if(className.equals("ceylon.language.Void")){
                 // ceylon.language.Void has no super type
+                extendedType = null;
             }else if(className.equals("java.lang.Object")){
                 // we pretend its superclass is something else, but note that in theory we shouldn't 
                 // be seeing j.l.Object at all due to unerasure
                 extendedType = getType(symtab.ceylonIdentifiableObjectType, klass);
+            }else if(superClassName.equals("java.lang.Exception")){
+                // we pretend that a subclass of j.l.Excpetion is really a subclass of c.l.Excpetion
+                extendedType = getType(symtab.ceylonExceptionType, klass);
             }else{
                 // make sure we don't throw and just report an error when this sort of weird thing happens
                 if(superClass.tsym == null){
@@ -957,12 +964,11 @@ public class CeylonModelLoader implements ModelCompleter, ModelLoader {
                     return;
                 }
                 // read it from annotation first
-                String superClassName = getAnnotationStringValue(classSymbol, symtab.ceylonAtClassType, "extendsType");
-                if(superClassName != null && !superClassName.isEmpty()){
-                    extendedType = decodeType(superClassName, klass);
+                String annotationSuperClassName = getAnnotationStringValue(classSymbol, symtab.ceylonAtClassType, "extendsType");
+                if(annotationSuperClassName != null && !annotationSuperClassName.isEmpty()){
+                    extendedType = decodeType(annotationSuperClassName, klass);
                 }else{
                     // read it from the Java super type
-                    superClassName = superClass.tsym.getQualifiedName().toString();
                     // now deal with type erasure, avoid having Object as superclass
                     if(superClassName.equals("java.lang.Object")){
                         extendedType = getType(symtab.ceylonIdentifiableObjectType, klass);

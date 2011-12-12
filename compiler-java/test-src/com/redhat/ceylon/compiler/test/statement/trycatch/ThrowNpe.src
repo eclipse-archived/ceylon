@@ -7,6 +7,10 @@ final class test {
     
     static void test() {
         try {
+            throw new .ceylon.language.Exception(.ceylon.language.String.instance(""), null);
+        } catch (final .java.lang.Exception npe) {
+        }
+        try {
             throw new java.lang.NullPointerException();
         } catch (final java.lang.NullPointerException npe) {
         }

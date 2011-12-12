@@ -17,10 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import java.lang { NullPointerException }
+import java.lang { Exception, NullPointerException }
 
 @nomodel
 void test() {
+    try {
+        throw Exception("", null);
+    }
+    catch (Exception npe) {}
     try {
         throw NullPointerException();
     }
