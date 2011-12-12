@@ -437,15 +437,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         final ProducedType leftType = getSupertype(op.getLeftTerm(), compoundType);
         final ProducedType rightType = getTypeArgument(leftType, 0);
-        ProducedType returnType;
-        if(op instanceof Tree.SubtractAssignOp)
-            returnType = getTypeArgument(leftType, 1);
-        else
-            returnType = rightType;
 
         // we work on boxed types
         return transformSideEffectOperation(op, op.getLeftTerm(), true, 
-                leftType, returnType, 
+                leftType, rightType, 
                 new SideEffectOperationFactory(){
             @Override
             public JCExpression makeOperation(JCExpression getter) {
@@ -496,10 +491,6 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     public JCExpression transform(Tree.SumOp op) {
-        return transformArithmeticOperator(op, op.getUnit().getSummableDeclaration());
-    }
-
-    public JCExpression transform(Tree.DifferenceOp op) {
         return transformArithmeticOperator(op, op.getUnit().getSummableDeclaration());
     }
 
