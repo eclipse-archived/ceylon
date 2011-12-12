@@ -347,14 +347,14 @@ shared class NumericOperationTest() extends Test() {
   }
   
   NumericOperationTest getThisOnce(){
-    if(incrDecrCounter == 1){
+    if(incrDecrCounter == +1){
       fail();
     }
     return this;
   }
   
   void resetOnce(){
-    incrDecrCounter := 0;
+    incrDecrCounter := +0;
   }
 
   @test
