@@ -19,18 +19,28 @@ public class ArtifactProvider {
         this.vfs = vfs;
     }
 
+    public ArtifactProvider(VirtualFile homeRepo, VFS vfs) {
+        this.homeRepo = homeRepo;
+        this.vfs = vfs;
+    }
+    
     /**
      * Return the artifact or null if not present
      * Must be closed when done with it
      */
-    public ClosableVirtualFile getArtifact(List<String> moduleName, String version, String extension) {
+    public ClosableVirtualFile getArtifact(List<String> moduleName, String version, Iterable<String> extensions) {
         VirtualFile moduleDirectory = getModuleDirectory(moduleName, version);
         if (moduleDirectory == null) {
             return null;
         }
-        final VirtualFile child = getChild(moduleDirectory, getArtifactName(moduleName, version, extension) );
-        //build sha1 and compare it
-        return child == null ? null : vfs.openAsContainer(child);
+        for (String extension : extensions) {
+            final VirtualFile child = getChild(moduleDirectory, getArtifactName(moduleName, version, extension) );
+            if (child != null) {
+                //build sha1 and compare it
+                return vfs.openAsContainer(child);
+            }
+        }
+        return null;
     }
 
     /**
@@ -69,5 +79,10 @@ public class ArtifactProvider {
             }
         }
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return homeRepo.getPath();
     }
 }

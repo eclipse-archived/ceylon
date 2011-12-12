@@ -1,7 +1,12 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.redhat.ceylon.compiler.typechecker.io.ArtifactProvider;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
+import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 
 /**
@@ -11,13 +16,21 @@ import com.redhat.ceylon.compiler.typechecker.model.Modules;
  */
 public class Context {
 
-    private ArtifactProvider artifactProvider;
+    private List<ArtifactProvider> artifactProviders;
     private Modules modules;
     private VFS vfs;
 
     public Context(VFS vfs) {
         this.vfs = vfs;
-        this.artifactProvider = new ArtifactProvider(vfs);
+        this.artifactProviders = Arrays.asList(new ArtifactProvider(vfs));
+    }
+
+    public Context(Iterable<VirtualFile> repos, VFS vfs) {
+        this.vfs = vfs;
+        this.artifactProviders = new ArrayList<ArtifactProvider>();
+        for (VirtualFile repo : repos) {
+            artifactProviders.add(new ArtifactProvider(repo, vfs));
+        }
     }
 
     public Modules getModules() {
@@ -28,8 +41,8 @@ public class Context {
         this.modules = modules;
     }
 
-    public ArtifactProvider getArtifactProvider() {
-        return artifactProvider;
+    public List<ArtifactProvider> getArtifactProviders() {
+        return artifactProviders;
     }
 
     public VFS getVfs() {

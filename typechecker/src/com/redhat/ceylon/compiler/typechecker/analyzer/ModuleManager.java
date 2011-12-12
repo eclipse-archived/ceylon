@@ -13,28 +13,32 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.context.Context;
+import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
+import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
+import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
 /**
- * Build modules and packages
+ * Manager modules and packages (build, retrieve, handle errors etc)
  *
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
-public class ModuleBuilder {
+public class ModuleManager {
     public static final String MODULE_FILE = "module.ceylon";
     public static final String PACKAGE_FILE = "package.ceylon";
     private final Context context;
     private final LinkedList<Package> packageStack = new LinkedList<Package>();
     private Module currentModule;
     private Modules modules;
-    private final Map<Module,Set<Node>> missingModuleDependencies = new HashMap<Module, Set<Node>>();
+    private final Map<ModuleImport,Set<Node>> moduleImportToNode = new HashMap<ModuleImport, Set<Node>>();
     private Map<List<String>, Set<String>> topLevelErrorsPerModuleName = new HashMap<List<String>,Set<String>>();
+    private Map<Module, Node> moduleToNode = new HashMap<Module, Node>();
 
-    public ModuleBuilder(Context context) {
+    public ModuleManager(Context context) {
         this.context = context;
     }
 
@@ -51,6 +55,7 @@ public class ModuleBuilder {
             final List<String> defaultModuleName = Collections.singletonList("<default module>");
             final Module defaultModule = createModule(defaultModuleName);
             defaultModule.setAvailable(true);
+            defaultModule.setVersion("<unknown>");
             bindPackageToModule(emptyPackage, defaultModule);
             modules.getListOfModules().add(defaultModule);
             modules.setDefaultModule(defaultModule);
@@ -63,7 +68,7 @@ public class ModuleBuilder {
             languageModule.setAvailable(false); //not available yet
             modules.setLanguageModule(languageModule);
             modules.getListOfModules().add(languageModule);
-            defaultModule.getDependencies().add(languageModule);
+            defaultModule.getImports().add(new ModuleImport(languageModule, false, false));
             defaultModule.setLanguageModule(languageModule);
             context.setModules(modules);
         }
@@ -91,7 +96,12 @@ public class ModuleBuilder {
         return packageStack.peekLast();
     }
 
-    public Module getOrCreateModule(List<String> moduleName) {
+    /**
+     * Get or create a module.
+     * version == null is considered equal to any version.
+     * Likewise a module with no version will match any version passed
+     */
+    public Module getOrCreateModule(List<String> moduleName, String version) {
         if (moduleName.size() == 0) {
             return null;
         }
@@ -100,24 +110,31 @@ public class ModuleBuilder {
         for (Module current : moduleList) {
             final List<String> names = current.getName();
             if ( names.size() == moduleName.size()
-                    && moduleName.containsAll(names) ) {
+                    && moduleName.containsAll(names)
+                    && compareVersions(version, current.getVersion())) {
                 module = current;
                 break;
             }
         }
         if (module == null) {
             module = createModule(moduleName);
+            module.setVersion(version);
             module.setLanguageModule(modules.getLanguageModule());
             moduleList.add(module);
         }
         return module;
     }
 
+    private boolean compareVersions(String version, String currentVersion) {
+        return currentVersion == null || version == null || currentVersion.equals(version);
+    }
+
     public void visitModuleFile() {
         if ( currentModule == null ) {
             final Package currentPkg = packageStack.peekLast();
             final List<String> moduleName = currentPkg.getName();
-            currentModule = getOrCreateModule(moduleName);
+            //we don't know the version at this stage, will be filled later
+            currentModule = getOrCreateModule(moduleName, null);
             if ( currentModule != null ) {
                 currentModule.setAvailable(true); // TODO : not necessary anymore ? the phasedUnit will be added. And the buildModuleImport()
                                                   //        function (which calls module.setAvailable()) will be called by the typeChecker
@@ -126,7 +143,7 @@ public class ModuleBuilder {
                 bindPackageToModule(currentPkg, currentModule);
             }
             else {
-                collectError(new ArrayList<String>(), "A module cannot be defined at the top level of the hierarchy");
+                addErrorToModule(new ArrayList<String>(), "A module cannot be defined at the top level of the hierarchy");
             }
         }
         else {
@@ -135,18 +152,9 @@ public class ModuleBuilder {
                 .append( "' and '" )
                 .append( formatPath( packageStack.peekLast().getName() ) )
                 .append("'");
-            collectError(currentModule.getName(), error.toString());
-            collectError(packageStack.peekLast().getName(), error.toString());
+            addErrorToModule(currentModule.getName(), error.toString());
+            addErrorToModule(packageStack.peekLast().getName(), error.toString());
         }
-    }
-
-    private void collectError(List<String> moduleName, String error) {
-        Set<String> errors = topLevelErrorsPerModuleName.get(moduleName);
-        if (errors == null) {
-            errors = new HashSet<String>();
-            topLevelErrorsPerModuleName.put(moduleName, errors);
-        }
-        errors.add(error);
     }
 
     private void createPackageAndAddToModule(String path) {
@@ -186,33 +194,118 @@ public class ModuleBuilder {
         pkg.setModule(module);
     }
 
-    public void addModuleDependencyDefinition(Module module, Node definition) {
-        Set<Node> moduleDepError = missingModuleDependencies.get(module);
-        if (moduleDepError == null) {
-            moduleDepError = new HashSet<Node>();
-            missingModuleDependencies.put(module, moduleDepError);
+    public void addModuleDependencyDefinition(ModuleImport moduleImport, Node definition) {
+        Set<Node> moduleDepDefinition = moduleImportToNode.get(moduleImport);
+        if (moduleDepDefinition == null) {
+            moduleDepDefinition = new HashSet<Node>();
+            moduleImportToNode.put(moduleImport, moduleDepDefinition);
         }
-        moduleDepError.add(definition);
+        moduleDepDefinition.add(definition);
     }
 
-    public void addMissingDependencyError(Module module, String error) {
-        Set<Node> moduleDepError = missingModuleDependencies.get(module);
+    public void attachErrorToDependencyDeclaration(ModuleImport moduleImport, String error) {
+        Set<Node> moduleDepError = moduleImportToNode.get(moduleImport);
         if (moduleDepError != null) {
             for ( Node definition :  moduleDepError ) {
                 definition.addError(error);
             }
         }
         else {
-            System.err.println("This is a type checker bug, please report. \nExpecting to add missing dependency error on non present definition: " + error);
+            //This probably can happen if the missing dependency is found deep in the dependency structure (ie the binary version of a module)
+            //TODO find the nearest src module that triggered the issue
+            System.err.println("This might be a type checker bug, please report. \nExpecting to add missing dependency error on non present definition: " + error);
         }
     }
 
-    public void addErrorsToModule(Module module, Node unit) {
+    //must be used *after* addLinkBetweenModuleAndNode has been set ie post ModuleVisitor visit
+    public void addErrorToModule(Module module, String error) {
+        Node node = moduleToNode.get(module);
+        if (node != null) {
+            node.addError(error);
+        }
+        else {
+            //might happen if the faulty module is a compiled module
+            System.err.println("This is a type checker bug, please report. " +
+                    "\nExpecting to add error on non present module node: " + module.toString() + ". Error " + error);
+        }
+    }
+
+    //only used if we really don't know the version
+    private void addErrorToModule(List<String> moduleName, String error) {
+        Set<String> errors = topLevelErrorsPerModuleName.get(moduleName);
+        if (errors == null) {
+            errors = new HashSet<String>();
+            topLevelErrorsPerModuleName.put(moduleName, errors);
+        }
+        errors.add(error);
+    }
+
+    public void addLinkBetweenModuleAndNode(Module module, Node unit) {
+        //keep link and display errors on modules where we don't know the version of
         Set<String> errors = topLevelErrorsPerModuleName.get(module.getName());
         if (errors != null) {
             for(String error : errors) {
                 unit.addError(error);
             }
+            errors.clear();
         }
+        moduleToNode.put(module,unit);
+    }
+
+    public ModuleImport findImport(Module owner, Module dependency) {
+        for (ModuleImport modImprt : owner.getImports()) {
+            if (equalsForModules(modImprt.getModule(), dependency, true)) return modImprt;
+        }
+        return null;
+    }
+
+    public boolean equalsForModules(Module left, Module right, boolean exactVersionMatch) {
+        if (left == right) return true;
+        List<String> leftName = left.getName();
+        List<String> rightName = right.getName();
+        if (leftName.size() != rightName.size()) return false;
+        for(int index = 0 ; index < leftName.size(); index++) {
+            if (!leftName.get(index).equals(rightName.get(index))) return false;
+        }
+        if (exactVersionMatch && left.getVersion()!=right.getVersion()) return false;
+        return true;
+    }
+
+    public Module findModule(Module module, List<Module> listOfModules, boolean exactVersionMatch) {
+        for(Module current : listOfModules) {
+            if (equalsForModules(module, current, exactVersionMatch)) return current;
+        }
+        return null;
+    }
+
+    public Module findLoadedModule(String moduleName, String searchedVersion) {
+        return findLoadedModule(moduleName, searchedVersion, modules);
+    }
+    
+    public Module findLoadedModule(String moduleName, String searchedVersion, Modules modules) {
+        for(Module module : modules.getListOfModules()){
+            if(module.getNameAsString().equals(moduleName)) {
+                if (searchedVersion != null && searchedVersion.equals(module.getVersion())){
+                    return module;
+                }
+            }
+        }
+        return null;
+    }
+
+    public void resolveModule(Module module, VirtualFile artifact, List<PhasedUnits> phasedUnitsOfDependencies) {
+        PhasedUnits modulePhasedUnit = new PhasedUnits(context);
+        phasedUnitsOfDependencies.add(modulePhasedUnit);
+        modulePhasedUnit.parseUnit(artifact);
+        //populate module.getDependencies()
+        modulePhasedUnit.visitModules();
+    }
+
+    public Iterable<String> getSearchedArtifactExtensions() {
+        return Arrays.asList("src");
+    }
+
+    public static List<String> splitModuleName(String moduleName) {
+        return Arrays.asList(moduleName.split("[\\.]"));
     }
 }

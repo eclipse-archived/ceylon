@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,7 +13,9 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.exceptions.LanguageModuleNotFoundException;
 import com.redhat.ceylon.compiler.typechecker.io.ArtifactProvider;
 import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
+import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 
 /**
  * Validate module dependency:
@@ -25,11 +28,12 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 public class ModuleValidator {
     private final Context context;
     private List<PhasedUnits> phasedUnitsOfDependencies;
-    private final ModuleBuilder moduleBuilder;
+    private final ModuleManager moduleManager;
 
+    
     public ModuleValidator(Context context, PhasedUnits phasedUnits) {
         this.context = context;
-        this.moduleBuilder = phasedUnits.getModuleBuilder();
+        this.moduleManager = phasedUnits.getModuleManager();
     }
 
     public List<PhasedUnits> getPhasedUnitsOfDependencies() {
@@ -42,6 +46,7 @@ public class ModuleValidator {
      *  - build the object model of these compiled modules
      *  - declare a missing module as an error
      *  - detect circular dependencies
+     *  - detect module version conflicts
      */
     public void verifyModuleDependencyTree() {
         phasedUnitsOfDependencies = new ArrayList<PhasedUnits>();
@@ -50,7 +55,8 @@ public class ModuleValidator {
         final HashSet<Module> modulesCopy = new HashSet<Module>( context.getModules().getListOfModules() );
         for (Module module : modulesCopy) {
             dependencyTree.addLast(module);
-            verifyModuleDependencyTree( module.getDependencies(), dependencyTree );
+            //we don't care about propagated dependency here as top modules are independent from one another
+            verifyModuleDependencyTree(module.getImports(), dependencyTree, new ArrayList<Module>());
             dependencyTree.pollLast();
         }
         for (PhasedUnits units : phasedUnitsOfDependencies) {
@@ -59,27 +65,63 @@ public class ModuleValidator {
     }
 
     private void verifyModuleDependencyTree(
-            Collection<Module> modules,
-            LinkedList<Module> dependencyTree) {
-        for (Module module : modules) {
-            if ( dependencyTree.contains(module) ) {
+            Collection<ModuleImport> moduleImports,
+            LinkedList<Module> dependencyTree,
+            List<Module> propagatedDependencies) {
+        List<Module> visibleDependencies = new ArrayList<Module>();
+        visibleDependencies.add(dependencyTree.getLast()); //first addition => no possible conflict
+        for (ModuleImport moduleImport : moduleImports) {
+            Module module = moduleImport.getModule();
+            if (moduleManager.findModule(module, dependencyTree, true) != null) {
                 //circular dependency
                 StringBuilder error = new StringBuilder("Circular dependency between modules: ");
                 buildDependencyString(dependencyTree, module, error);
                 error.append(".");
-                System.err.println(error);
+                //TODO is there a better place than the top level module triggering the error?
+                //nested modules might not have representations in the src tree
+                moduleManager.addErrorToModule( dependencyTree.getFirst(), error.toString() );
                 return;
             }
+            List<String> searchedArtifacts = new ArrayList<String>();
+            Iterable<String> searchedArtifactExtensions = moduleManager.getSearchedArtifactExtensions();
+            
             if ( ! module.isAvailable() ) {
                 //try and load the module from the repository
-                final ArtifactProvider artifactProvider = context.getArtifactProvider();
-                final ClosableVirtualFile src = artifactProvider.getArtifact(module.getName(), "0.1", "src");
-                if (src == null) {
+                VirtualFile artifact = null;
+                List<ArtifactProvider> artifactProviders = context.getArtifactProviders();
+                for (final ArtifactProvider artifactProvider : artifactProviders) {
+                    for (String extension : searchedArtifactExtensions) {
+                        searchedArtifacts.add(artifactProvider.getArtifactName(module.getName(), 
+                                module.getVersion(), extension));
+                    }
+                    artifact = artifactProvider.getArtifact(module.getName(), 
+                            module.getVersion(), 
+                            searchedArtifactExtensions);
+                    if (artifact != null) {
+                        break;
+                    }
+                }
+                if (artifact == null) {
                     //not there => error
-                    StringBuilder error = new StringBuilder("Cannot find module artifact ");
-                    error.append( artifactProvider.getArtifactName(module.getName(), "0.1", "src") )
-                            .append(" in local repository ('~/.ceylon/repo')")
-                            .append("\n\tDependency tree: ");
+                    StringBuilder error = new StringBuilder("Cannot find module artifact(s) : ");
+                    if (searchedArtifacts.size() > 0) {
+                        error.append(searchedArtifacts.get(0));
+                    }
+                    for (String searchedArtifact : searchedArtifacts.subList(1, searchedArtifacts.size())) {
+                        error.append(", ");
+                        error.append("\n\t");
+                        error.append(searchedArtifact);
+                    }
+                    error.append("\n\t  in repositories : ");
+                    if (artifactProviders.size() > 0) {
+                        error.append(artifactProviders.get(0));
+                    }
+                    for (ArtifactProvider searchedProvider : artifactProviders.subList(1, artifactProviders.size())) {
+                        error.append(", ");
+                        error.append("\n\t");
+                        error.append(searchedProvider);
+                    }
+                    error.append("\n\tDependency tree: ");
                     buildDependencyString(dependencyTree, module, error);
                     error.append(".");
                     if ( module.getLanguageModule() == module ) {
@@ -88,28 +130,64 @@ public class ModuleValidator {
                         throw new LanguageModuleNotFoundException(error.toString());
                     }
                     else {
-                        moduleBuilder.addMissingDependencyError(module, error.toString());
+                        //today we attach that to the module dependency
+                        moduleManager.attachErrorToDependencyDeclaration(moduleImport, error.toString());
                     }
                 }
                 else {
-                    //parse module units and build module dependency and carry on
-                    PhasedUnits modulePhasedUnit = new PhasedUnits(context);
-                    phasedUnitsOfDependencies.add(modulePhasedUnit);
-                    modulePhasedUnit.parseUnit(src);
-                    src.close();
-                    module.setAvailable(true);  // TODO : not necessary anymore ? since at least on module.ceylon 
-                                                //        should have been parsed and should be applied buildModuleImport()
-                    final List<PhasedUnit> listOfUnits = modulePhasedUnit.getPhasedUnits();
-                    //populate module.getDependencies()
-                    for (PhasedUnit pu : listOfUnits) {
-                        pu.buildModuleImport();
+                    try {
+                        //parse module units and build module dependency and carry on
+                        moduleManager.resolveModule(module, artifact, phasedUnitsOfDependencies);
+                    } finally {
+                        if (artifact instanceof ClosableVirtualFile) {
+                            ((ClosableVirtualFile)artifact).close();
+                        }
                     }
                 }
             }
             dependencyTree.addLast(module);
-            verifyModuleDependencyTree( module.getDependencies(), dependencyTree );
+            List<Module> subModulePropagatedDependencies = new ArrayList<Module>();
+            verifyModuleDependencyTree( module.getImports(), dependencyTree, subModulePropagatedDependencies );
+            //visible dependency += subModule + subModulePropagatedDependencies
+            checkAndAddDependency(visibleDependencies, module, dependencyTree);
+            for (Module submodule : subModulePropagatedDependencies) {
+                checkAndAddDependency(visibleDependencies, submodule, dependencyTree);
+            }
+            //propagated dependency += if subModule.export then subModule + subModulePropagatedDependencies
+            if (moduleImport.isExport()) {
+                checkAndAddDependency(propagatedDependencies, module, dependencyTree);
+                for (Module submodule : subModulePropagatedDependencies) {
+                    checkAndAddDependency(propagatedDependencies, submodule, dependencyTree);
+                }
+            }
             dependencyTree.pollLast();
         }
+    }
+
+    private void checkAndAddDependency(List<Module> dependencies, Module module, LinkedList<Module> dependencyTree) {
+        Module dupe = moduleManager.findModule(module, dependencies, false);
+        if (dupe != null && !isSameVersion(module, dupe)) {
+            //TODO improve by giving the dependency string leading to these two conflicting modules
+            StringBuilder error = new StringBuilder("Module (transitively) imports conflicting versions of ");
+            error.append(module.getNameAsString())
+                    .append(". Version ").append(module.getVersion())
+                    .append(" and version ").append(dupe.getVersion())
+                    .append(" found and visible at the same time.");
+            moduleManager.addErrorToModule(dependencyTree.getFirst(), error.toString());
+        }
+        else {
+            dependencies.add(module);
+        }
+    }
+
+    private boolean isSameVersion(Module module, Module dupe) {
+        if (module == null || dupe == null) return false;
+        if (dupe.getVersion() == null) {
+            System.err.println("TypeChecker assertion failure: version should not be null in " +
+                    "ModuleValidator.isSameVersion. Please report the issue with a test case");
+            return false;
+        }
+        return dupe.getVersion().equals(module.getVersion());
     }
 
     private void executeExternalModulePhases(PhasedUnits phasedUnits) {

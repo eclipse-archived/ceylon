@@ -19,7 +19,7 @@ public class MainForTest {
 
         TypeChecker typeChecker = new TypeCheckerBuilder()
                 .verbose(false)
-                .addSrcDirectory( new File("test") )
+                .addSrcDirectory( new File("test/main") )
                 .getTypeChecker();
         typeChecker.process();
         Tree.CompilationUnit compilationUnit = typeChecker.getPhasedUnitFromRelativePath("ceylon/language/Object.ceylon").getCompilationUnit();
@@ -40,13 +40,21 @@ public class MainForTest {
         }
         typeChecker = new TypeCheckerBuilder()
                 .verbose(false)
-                .addSrcDirectory( new File("test/capture") )
+                .addSrcDirectory( new File("test/main/capture") )
                 .getTypeChecker();
         typeChecker.process();
         compilationUnit = typeChecker.getPhasedUnitFromRelativePath("Capture.ceylon").getCompilationUnit();
         if ( compilationUnit == null ) {
             throw new RuntimeException("Failed to pass getCompilationUnitFromRelativePath for top level files (no package) in real src dir");
         }
+
+        typeChecker = new TypeCheckerBuilder()
+                .verbose(false)
+                .addSrcDirectory( new File("test/moduledep1") )
+                .addSrcDirectory( new File("test/moduledep2") )
+                .addSrcDirectory( new File("test/moduletest") )
+                .getTypeChecker();
+        typeChecker.process();
 
         ClosableVirtualFile latestZippedLanguageSourceFile = MainHelper.getLatestZippedLanguageSourceFile();
         typeChecker = new TypeCheckerBuilder()

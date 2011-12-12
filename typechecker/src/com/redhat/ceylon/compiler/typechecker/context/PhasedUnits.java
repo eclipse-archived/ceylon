@@ -10,7 +10,7 @@ import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.CommonTokenStream;
 
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleBuilder;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
@@ -27,17 +27,17 @@ public class PhasedUnits {
     private Map<VirtualFile, PhasedUnit> phasedUnitPerFile = new LinkedHashMap<VirtualFile, PhasedUnit>();
     private Map<String, PhasedUnit> phasedUnitPerRelativePath = new HashMap<String, PhasedUnit>();
     private final Context context;
-    private final ModuleBuilder moduleBuilder;
+    private final ModuleManager moduleManager;
 
     public PhasedUnits(Context context) {
         this.context = context;
-        this.moduleBuilder = new ModuleBuilder(context);
-        this.moduleBuilder.initCoreModules();
+        this.moduleManager = new ModuleManager(context);
+        this.moduleManager.initCoreModules();
     }
 
-    public PhasedUnits(Context context, ModuleBuilder moduleBuilder) {
+    public PhasedUnits(Context context, ModuleManager moduleManager) {
         this.context = context;
-        this.moduleBuilder = moduleBuilder;
+        this.moduleManager = moduleManager;
     }
     
     public void addPhasedUnit(VirtualFile unitFile, PhasedUnit phasedUnit) {
@@ -51,8 +51,8 @@ public class PhasedUnits {
         this.phasedUnitPerFile.remove(phasedUnit.getUnitFile());
     }
 
-    public ModuleBuilder getModuleBuilder() {
-        return moduleBuilder;
+    public ModuleManager getModuleManager() {
+        return moduleManager;
     }
 
     public List<PhasedUnit> getPhasedUnits() {
@@ -116,7 +116,7 @@ public class PhasedUnits {
             List<CommonToken> tokens = new ArrayList<CommonToken>(tokenStream.getTokens().size()); 
             tokens.addAll(tokenStream.getTokens());
             PhasedUnit phasedUnit = new PhasedUnit(file, srcDir, cu, 
-                    moduleBuilder.getCurrentPackage(), moduleBuilder, 
+                    moduleManager.getCurrentPackage(), moduleManager,
                     context, tokens);
             addPhasedUnit(file, phasedUnit);
 
@@ -147,16 +147,26 @@ public class PhasedUnits {
     }
 
     private void processDirectory(VirtualFile dir, VirtualFile srcDir) throws Exception {
-        moduleBuilder.push(dir.getName());
+        moduleManager.push(dir.getName());
         final List<VirtualFile> files = dir.getChildren();
         for (VirtualFile file : files) {
-            if (ModuleBuilder.MODULE_FILE.equals(file.getName())) {
-                moduleBuilder.visitModuleFile();
+            if (ModuleManager.MODULE_FILE.equals(file.getName())) {
+                moduleManager.visitModuleFile();
             }
         }
         for (VirtualFile file : files) {
             parseFileOrDirectory(file, srcDir);
         }
-        moduleBuilder.pop();
+        moduleManager.pop();
+    }
+    
+    public void visitModules() {
+        List<PhasedUnit> listOfUnits = getPhasedUnits();
+        for (PhasedUnit pu : listOfUnits) {
+            pu.visitSrcModulePhase();
+        }
+        for (PhasedUnit pu : listOfUnits) {
+            pu.visitRemainingModulePhase();
+        }
     }
 }

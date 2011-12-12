@@ -1,10 +1,10 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseTypeExpression;
@@ -17,7 +17,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  * In theory should only be called on module.ceylon and
  * package.ceylon files
  *
- * Put retrictions on how module.ceylon files are built today:
+ * Put restrictions on how module.ceylon files are built today:
  *  - names and versions must be string literals or else the 
  *    visitor cannot extract them
  *  - imports must be "explicitly" defined, ie not imported as 
@@ -35,14 +35,20 @@ public class ModuleVisitor extends Visitor {
      * the dependencies declaration
      */
     private Module mainModule;
-    private final ModuleBuilder moduleBuilder;
+    private final ModuleManager moduleManager;
     private final Package pkg;
     private Tree.CompilationUnit unit;
+    private Phase phase = Phase.SRC_MODULE;
 
-    public ModuleVisitor(ModuleBuilder moduleBuilder, Package pkg) {
-        this.moduleBuilder = moduleBuilder;
+    public ModuleVisitor(ModuleManager moduleManager, Package pkg) {
+        this.moduleManager = moduleManager;
         this.pkg = pkg;
     }
+
+    public void setPhase(Phase phase) {
+        this.phase = phase;
+    }
+
     
     @Override
     public void visit(Tree.CompilationUnit that) {
@@ -56,103 +62,116 @@ public class ModuleVisitor extends Visitor {
         if (p instanceof Tree.BaseTypeExpression) {
             Identifier id = ((BaseTypeExpression) p).getIdentifier();
             if (id!=null) {
-                if (id.getText().equals("Module")) {
-                    Tree.SpecifiedArgument nsa = getArgument(that, "name");
-                    String moduleName = argumentToString(nsa);
-                    if (moduleName==null) {
-                        unit.addError("missing module name");
-                    }
-                    else {
-                        //mainModule = pkg.getModule();
-                        mainModule = moduleBuilder.getOrCreateModule(pkg.getName()); //in compiler the Package has a null Module
-                        if (mainModule == null) {
-                            unit.addError("A module cannot be defined at the top level of the hierarchy");
-                        }
-                        else {
-                            if ( !mainModule.getNameAsString().equals(moduleName) ) {
-                                nsa.addError("module name does not match descriptor location");
-                            }
-                            moduleBuilder.addErrorsToModule(mainModule, unit);
-                            mainModule.setDoc(argumentToString(getArgument(that, "doc")));
-                            mainModule.setLicense(argumentToString(getArgument(that, "license")));
-                            Tree.SpecifiedArgument vsa = getArgument(that, "version");
-                            String version = argumentToString(vsa);
-                            if (version==null) {
-                                unit.addError("missing module version");
-                            }
-                            else {
-                                if (version.isEmpty()) {
-                                    vsa.addError("empty version identifier");
-                                }
-                                else {
-                                    mainModule.setVersion(version);
-                                }
-                            }
-                            List<String> by = argumentToStrings(getArgument(that, "by"));
-                            if (by!=null) {
-                                mainModule.getAuthors().addAll(by);
-                            }
-                            mainModule.setAvailable(true);
-                        }
-                    }
-                }
-                if (id.getText().equals("Import")) {
-                    Tree.SpecifiedArgument nsa = getArgument(that, "name");
-                    String moduleName = argumentToString(nsa);
-                    if (moduleName==null) {
-                        unit.addError("missing imported module name");
-                    }
-                    else {
-                        //TODO: do something with the specified version number!
-                        Module importedModule = moduleBuilder.getOrCreateModule(splitModuleName(moduleName));
-                        if (importedModule == null) {
-                            nsa.addError("A module cannot be defined at the top level of the hierarchy");
-                        }
-                        else {
-                            if (!mainModule.getDependencies().contains(importedModule)) {
-                                mainModule.getDependencies().add(importedModule);
-                            }
-                            moduleBuilder.addModuleDependencyDefinition(importedModule, nsa);
-                            Tree.SpecifiedArgument vsa = getArgument(that, "version");
-                            String version = argumentToString(vsa);
-                            if (version.isEmpty()) {
-                                vsa.addError("empty version identifier");
-                            }
-                            //TODO: this is wrong and temporary:
-                            if (importedModule.getVersion() == null) {
-                                importedModule.setVersion(version);
-                            }
-                        }
-                    }
-                }
-                if (id.getText().equals("Package")) {
-                    Tree.SpecifiedArgument nsa = getArgument(that, "name");
-                    String packageName = argumentToString(nsa);
-                    if (packageName==null) {
-                        unit.addError("missing package name");
-                    }
-                    else {
-                        if ( !pkg.getNameAsString().equals(packageName) ) {
-                            nsa.addError("package name does not match descriptor location");
-                        }
-                        pkg.setDoc(argumentToString(getArgument(that, "doc")));
-                        String shared = argumentToString(getArgument(that, "shared"));
-                        if (shared!=null && shared.equals("true")) {
-                            pkg.setShared(true);
-                        }
-                        List<String> by = argumentToStrings(getArgument(that, "by"));
-                        if (by!=null) {
-                            pkg.getAuthors().addAll(by);
-                        }
-                    }
+                switch (phase) {
+                    case SRC_MODULE:
+                        visitForSrcModulePhase(that,id);
+                        break;
+                    case REMAINING:
+                        visitForRemainingPhase(that,id);
+                        break;
                 }
             }
         }
         super.visit(that);
     }
 
-    private static List<String> splitModuleName(String moduleName) {
-        return Arrays.asList(moduleName.split("[\\.]"));
+    private void visitForSrcModulePhase(Tree.InvocationExpression that, Identifier id) {
+        if (id.getText().equals("Module")) {
+            Tree.SpecifiedArgument nsa = getArgument(that, "name");
+            String moduleName = argumentToString(nsa);
+            if (moduleName==null) {
+                unit.addError("missing module name");
+            }
+            else {
+                Tree.SpecifiedArgument vsa = getArgument(that, "version");
+                String version = argumentToString(vsa);
+                if (version==null) {
+                    unit.addError("missing module version");
+                }
+                else {
+                    if (version.isEmpty()) {
+                        vsa.addError("empty version identifier");
+                    }
+                }
+                //mainModule = pkg.getModule();
+                mainModule = moduleManager.getOrCreateModule(pkg.getName(),version); //in compiler the Package has a null Module
+                if (mainModule == null) {
+                    unit.addError("A module cannot be defined at the top level of the hierarchy");
+                }
+                else {
+                    mainModule.setVersion(version);
+                    if ( !mainModule.getNameAsString().equals(moduleName) ) {
+                        nsa.addError("module name does not match descriptor location");
+                    }
+                    moduleManager.addLinkBetweenModuleAndNode(mainModule, unit);
+                    mainModule.setDoc(argumentToString(getArgument(that, "doc")));
+                    mainModule.setLicense(argumentToString(getArgument(that, "license")));
+                    List<String> by = argumentToStrings(getArgument(that, "by"));
+                    if (by!=null) {
+                        mainModule.getAuthors().addAll(by);
+                    }
+                    mainModule.setAvailable(true);
+                }
+            }
+        }
+    }
+
+    private void visitForRemainingPhase(Tree.InvocationExpression that, Identifier id) {
+        if (id.getText().equals("Import")) {
+            Tree.SpecifiedArgument nsa = getArgument(that, "name");
+            String moduleName = argumentToString(nsa);
+            if (moduleName==null) {
+                unit.addError("missing imported module name");
+            }
+            else {
+                Tree.SpecifiedArgument vsa = getArgument(that, "version");
+                String version = argumentToString(vsa);
+                if (version.isEmpty()) {
+                    vsa.addError("empty version identifier");
+                }
+                Module importedModule = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(moduleName),version);
+                if (importedModule == null) {
+                    nsa.addError("A module cannot be defined at the top level of the hierarchy");
+                }
+                else if (mainModule != null) {
+                    if (importedModule.getVersion() == null) {
+                        importedModule.setVersion(version);
+                    }
+                    String optionalString = argumentToString(getArgument(that, "optional"));
+                    String exportString = argumentToString(getArgument(that, "export"));
+                    ModuleImport moduleImport = moduleManager.findImport(mainModule, importedModule);
+                    if (moduleImport == null) {
+                        boolean optional = optionalString!=null && optionalString.equals("true");
+                        boolean export = exportString!=null && exportString.equals("true");
+                        moduleImport = new ModuleImport(importedModule, optional, export);
+                        mainModule.getImports().add(moduleImport);
+                    }
+                    moduleManager.addModuleDependencyDefinition(moduleImport, nsa);
+                }
+                //else we leave it behind unprocessed
+            }
+        }
+        if (id.getText().equals("Package")) {
+            Tree.SpecifiedArgument nsa = getArgument(that, "name");
+            String packageName = argumentToString(nsa);
+            if (packageName==null) {
+                unit.addError("missing package name");
+            }
+            else {
+                if ( !pkg.getNameAsString().equals(packageName) ) {
+                    nsa.addError("package name does not match descriptor location");
+                }
+                pkg.setDoc(argumentToString(getArgument(that, "doc")));
+                String shared = argumentToString(getArgument(that, "shared"));
+                if (shared!=null && shared.equals("true")) {
+                    pkg.setShared(true);
+                }
+                List<String> by = argumentToStrings(getArgument(that, "by"));
+                if (by!=null) {
+                    pkg.getAuthors().addAll(by);
+                }
+            }
+        }
     }
 
     private Tree.SpecifiedArgument getArgument(Tree.InvocationExpression that, String name) {
@@ -222,5 +241,11 @@ public class ModuleVisitor extends Visitor {
             return null;
         }
     }
-
+    public enum Phase {
+        SRC_MODULE,
+        REMAINING
+    }
+    public Module getMainModule() {
+        return mainModule;
+    }
 }

@@ -10,7 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.ControlFlowVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DependedUponVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor;
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleBuilder;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.RefinementVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.SelfReferenceVisitor;
@@ -21,6 +21,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.TypeVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ValueVisitor;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -43,28 +44,29 @@ public class PhasedUnit {
     private Unit unit;
     //must be the non qualified file name
     private String fileName;
-    private final ModuleBuilder moduleBuilder;
+    private final ModuleManager moduleManager;
     private final String pathRelativeToSrcDir;
     private VirtualFile unitFile;
     private final Set<PhasedUnit> dependentsOf = new HashSet<PhasedUnit>();
     private List<CommonToken> tokens;
     private boolean fullyTyped;
+    private ModuleVisitor moduleVisitor;
 
     public PhasedUnit(VirtualFile unitFile, VirtualFile srcDir, Tree.CompilationUnit cu, 
-            Package p, ModuleBuilder moduleBuilder, Context context, List<CommonToken> tokenStream) {
+            Package p, ModuleManager moduleManager, Context context, List<CommonToken> tokenStream) {
         this.compilationUnit = cu;
         this.pkg = p;
         this.unitFile = unitFile;
         this.fileName = unitFile.getName();
         this.pathRelativeToSrcDir = computeRelativePath(unitFile, srcDir);
-        this.moduleBuilder = moduleBuilder;
+        this.moduleManager = moduleManager;
         this.tokens = tokenStream;
     }
 
     @Deprecated
     protected PhasedUnit(VirtualFile unitFile, VirtualFile srcDir, Tree.CompilationUnit cu, 
-            Package p, ModuleBuilder moduleBuilder, Context context) {
-        this(unitFile, srcDir, cu, p, moduleBuilder, context, null);
+            Package p, ModuleManager moduleManager, Context context) {
+        this(unitFile, srcDir, cu, p, moduleManager, context, null);
     }
     
     private String computeRelativePath(VirtualFile unitFile, VirtualFile srcDir) {
@@ -80,11 +82,20 @@ public class PhasedUnit {
         }
     }
 
-    public void buildModuleImport() {
-        if ( ModuleBuilder.MODULE_FILE.equals(fileName) ||
-                ModuleBuilder.PACKAGE_FILE.equals(fileName) ) {
-            final ModuleVisitor v = new ModuleVisitor(moduleBuilder, pkg);
-            compilationUnit.visit(v);
+    public Module visitSrcModulePhase() {
+        if ( ModuleManager.MODULE_FILE.equals(fileName) ||
+                ModuleManager.PACKAGE_FILE.equals(fileName) ) {
+            moduleVisitor = new ModuleVisitor(moduleManager, pkg);
+            compilationUnit.visit(moduleVisitor);
+            return moduleVisitor.getMainModule();
+        }
+        return null;
+    }
+
+    public void visitRemainingModulePhase() {
+        if ( moduleVisitor != null ) {
+            moduleVisitor.setPhase(ModuleVisitor.Phase.REMAINING);
+            compilationUnit.visit(moduleVisitor);
         }
     }
     
