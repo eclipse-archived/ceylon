@@ -155,9 +155,8 @@ public class RemoteModuleLoader extends BootstrapModuleLoader {
         }
     }
 
-    protected List<String> parseResourcePaths(InputStream moduleXMLStream, ModuleIdentifier moduleIdentifier) {
-        // TODO
-        throw new UnsupportedOperationException("Not yet implemented: " + moduleXMLStream + " / " + moduleIdentifier);
+    protected List<String> parseResourcePaths(InputStream moduleXMLStream, ModuleIdentifier moduleIdentifier) throws ModuleLoadException {
+        return ModuleXmlParser.parseResourcePaths(moduleXMLStream, moduleIdentifier);
     }
 
     protected File getLocalFile(String name) {
