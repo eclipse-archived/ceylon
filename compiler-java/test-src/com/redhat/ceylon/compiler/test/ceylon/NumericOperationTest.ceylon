@@ -30,7 +30,7 @@ shared abstract class NumericOperationTestParameterized<T>(T init) extends Test(
     shared variable T boxedInteger := init;
 }
 
-shared class NumericOperationTest() extends NumericOperationTestParameterized<Integer>(+0) {
+shared class NumericOperationTest() extends NumericOperationTestParameterized<Integer>(0) {
 
   variable Integer incrDecrCounter := 0;
   variable Integer unboxedAttrIncrDecr := 0;
@@ -350,14 +350,14 @@ shared class NumericOperationTest() extends NumericOperationTestParameterized<In
   }
   
   NumericOperationTest getThisOnce(){
-    if(incrDecrCounter == +1){
+    if(incrDecrCounter == 1){
       fail();
     }
     return this;
   }
   
   void resetOnce(){
-    incrDecrCounter := +0;
+    incrDecrCounter := 0;
   }
 
   @test
