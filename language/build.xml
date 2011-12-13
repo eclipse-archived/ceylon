@@ -13,6 +13,7 @@
     <!-- Set build directories for all formats. -->
     <property name="build.dir" value="${basedir}/build"/>
     <property name="build.classes" location="${build.dir}/classes"/>
+    <property name="build.dist" location="${build.dir}/dist"/>
     <property name="build.lib" location="${build.dir}/lib"/>
     <property name="build.test" location="${build.dir}/test"/>
 
@@ -27,41 +28,53 @@
     <tstamp/>
 
     <!-- Local repository -->
-    <property name="repo.local.dir" value="${user.home}/.ceylon/repo"/>
-
+    <!-- Detect user's HOME directory -->
+    <condition property="ceylon.repo.base" value="${user.home}/Ceylon" else="${user.home}/.ceylon">
+        <and>
+            <os family="windows"/>
+        </and>
+    </condition>
+    <property name="ceylon.repo.dir" location="${ceylon.repo.base}/repo"/>
+    
     <!-- ceylon.language -->
     <property name="module.language.src" value="${basedir}/src"/>
     <property name="module.language.dir" value="ceylon/language"/>
     <property name="module.language.name" value="ceylon.language"/>
     <property name="module.language.runtime" value="${basedir}/runtime"/>
 
-	<!-- module archives -->
-    <property name="dir.file" value="${repo.local.dir}/${module.language.dir}/${module.ceylon.language.version}"/>
-    <property name="src.file" value="${dir.file}/${module.language.name}-${module.ceylon.language.version}.src"/>
-    <property name="car.file" value="${dir.file}/${module.language.name}-${module.ceylon.language.version}.car"/>
+    <!-- module archives -->
+    <property name="ceylon.language.dir" value="${module.language.dir}/${module.ceylon.language.version}"/>
+    <property name="ceylon.language.src" value="${ceylon.language.dir}/${module.language.name}-${module.ceylon.language.version}.src"/>
+    <property name="ceylon.language.car" value="${ceylon.language.dir}/${module.language.name}-${module.ceylon.language.version}.car"/>
+    <property name="ceylon.language.repo" value="${ceylon.repo.base}/${ceylon.language.dir}"/>
+    <property name="ceylon.language.dist" value="${build.dist}/${ceylon.language.dir}"/>
 
-	<property name="tests.file" value="${build.test}/&lt;unknown&gt;/default_module-&lt;unknown&gt;.car"/>
-	
-	<!-- ################################################################## -->
+    <property name="tests.file" value="${build.test}/&lt;unknown&gt;/default_module-&lt;unknown&gt;.car"/>
+
+    <!-- ################################################################## -->
+    <!-- constant to declare a file binary for checksumsum -->
+    <property name="checksum.binary-prefix" value=" *" />
+    <!-- Helper target, used to create a sha1 checksum file  -->
+    <!-- Requires 'file' as a parameter. -->
+    <target name="sha1sum">
+        <fail unless="file"/>
+        <fail if="filename"/>
+        <fail if="value"/>
+        <basename file="${file}" property="filename"/>
+        <checksum file="${file}" property="value" algorithm="sha1"/>
+        <echo file="${file}.sha1" message="${value}${checksum.binary-prefix}${filename}"/>
+    </target>
 
     <!-- Rule to clean everything up -->
     <target name="clean" description="Clean up everything">
         <delete dir="${build.dir}"/>
     </target>
 
-    <!-- Repository targets -->
-    <target name="init.repo"
-            description="Initialize the default local Ceylon module repository">
-        <mkdir dir="${repo.local.dir}"/>
-    </target>
-
-    <target name="publish"
-            depends="init.repo,build"
-            description="Publish Ceylon language module to default repo">
-
-        <delete dir="${dir.file}"/>
-        <mkdir dir="${dir.file}"/>
-        <zip destfile="${src.file}">
+    <target name="dist"
+            depends="build"
+            description="Create Ceylon language distribution">
+        <mkdir dir="${ceylon.language.dist}"/>
+        <zip destfile="${build.dist}/${ceylon.language.src}">
             <fileset dir="${module.language.src}">
                 <include name="ceylon/language/**/*.ceylon"/>
             </fileset>
@@ -70,14 +83,32 @@
             </fileset>
             
         </zip>
-        <checksum file="${src.file}" algorithm="sha1"/>
-        <copy file="${runtime.jar}" tofile="${car.file}"/>
-        <checksum file="${car.file}" algorithm="sha1"/>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist}/${ceylon.language.src}" />
+        </antcall>
+        <copy file="${runtime.jar}" tofile="${build.dist}/${ceylon.language.car}"/>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist}/${ceylon.language.car}" />
+        </antcall>
+    </target>
+
+    <!-- Repository targets -->
+    <target name="publish"
+            depends="dist,clean.repo,init.repo"
+            description="Publish Ceylon language module to default repo">
+        <copy todir="${ceylon.language.repo}">
+            <fileset dir="${ceylon.language.dist}"/>
+        </copy>
+    </target>
+
+    <target name="init.repo"
+            description="Create default local Ceylon module repository">
+        <mkdir dir="${ceylon.language.repo}"/>
     </target>
 
     <target name="clean.repo"
             description="Clean default local Ceylon module repository">
-        <delete dir="${repo.local.dir}"/>
+        <delete dir="${ceylon.language.repo}"/>
     </target>
 
     <!-- Tasks related to building the runtime -->
@@ -98,7 +129,8 @@
         <mkdir dir="${build.classes}"/>
         <javac debug="true"
             srcdir="${runtime.src}"
-            destdir="${build.classes}"/>
+            destdir="${build.classes}"
+            includeantruntime="false"/>
     </target>
 
     <!-- Rule to build runtime jar -->
@@ -118,7 +150,7 @@
 	  <target name="ceylonc">
 	    <taskdef name="ceylonc" classname="com.redhat.ceylon.compiler.ant.Ceylonc" >
 	      <classpath>
-	        <pathelement location="${repo.local.dir}/com/redhat/ceylon/compiler/${module.com.redhat.ceylon.compiler.version}/com.redhat.ceylon.compiler-${module.com.redhat.ceylon.compiler.version}.jar"/>       
+	        <pathelement location="${ceylon.repo.dir}/com/redhat/ceylon/compiler/${module.com.redhat.ceylon.compiler.version}/com.redhat.ceylon.compiler-${module.com.redhat.ceylon.compiler.version}.jar"/>
 	      </classpath>
 	    </taskdef>
 	  </target>
