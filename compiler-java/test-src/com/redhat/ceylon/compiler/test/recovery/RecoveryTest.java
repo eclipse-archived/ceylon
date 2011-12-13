@@ -17,25 +17,25 @@ public class RecoveryTest extends CompilerTest {
     
     @Test
     public void testRcvBrokenClass(){
-        compile("BrokenClass.ceylon", 3);
+        compile(3, "BrokenClass.ceylon");
     }
 
     @Test
     public void testRcvBrokenMethod(){
-        compile("BrokenMethod.ceylon", 3);
+        compile(3, "BrokenMethod.ceylon");
     }
 
     @Test
     public void testRcvBrokenAttribute(){
-        compile("BrokenAttribute.ceylon", 11);
+        compile(11, "BrokenAttribute.ceylon");
     }
 
     @Test
     public void testRcvClassWithBrokenMembers(){
-        compile("ClassWithBrokenMembers.ceylon", 35);
+        compile(35, "ClassWithBrokenMembers.ceylon");
     }
 
-    private void compile(String ceylon, int expectedErrors){
+    private void compile(int expectedErrors, String... ceylon){
         DiagnosticCollector<JavaFileObject> errorCollector = new DiagnosticCollector<JavaFileObject>();
         Boolean success = getCompilerTask(defaultOptions, errorCollector , ceylon).call();
         Assert.assertEquals(expectedErrors, getErrorCount(errorCollector));
