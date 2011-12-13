@@ -21,6 +21,8 @@
 interface Top {
     shared formal void top();
     shared formal Integer topAttribute;
+    shared formal Left&Right leftAndRightAttribute;
+    shared formal Left&Right leftAndRightMethod(Left&Right param);
 }
 @nomodel
 interface Left satisfies Top {
@@ -33,13 +35,6 @@ interface Right satisfies Top {
     shared formal Integer rightAttribute;
 }
 @nomodel
-class CLeft() satisfies Left {
-    shared actual void left() {}
-    shared actual void top() {}
-    shared actual Integer topAttribute = 1;
-    shared actual Integer leftAttribute = 1;
-}
-@nomodel
 class CMiddle() satisfies Left & Right{
     shared actual void left() {}
     shared actual void top() {}
@@ -47,6 +42,21 @@ class CMiddle() satisfies Left & Right{
     shared actual Integer topAttribute = 1;
     shared actual Integer leftAttribute = 1;
     shared actual Integer rightAttribute = 1;
+    shared actual Left&Right leftAndRightAttribute = CMiddle();
+    shared actual Left&Right leftAndRightMethod(Left&Right param) {
+        return param;
+    }
+}
+@nomodel
+class CLeft() satisfies Left {
+    shared actual void left() {}
+    shared actual void top() {}
+    shared actual Integer topAttribute = 1;
+    shared actual Integer leftAttribute = 1;
+    shared actual Left&Right leftAndRightAttribute = CMiddle();
+    shared actual Left&Right leftAndRightMethod(Left&Right param) {
+        return param;
+    }
 }
 @nomodel
 interface EmptyInterface {}
@@ -291,5 +301,11 @@ class Test() {
         if(nonempty naturals){}
         variable Boolean bSync;
         bSync := nonempty naturals;
+        
+        // spread op
+        Left[]&Right[] spreadMember = leftsAndRights[].leftAndRightAttribute;
+        variable Left[]&Right[] spreadInvocation;
+        spreadInvocation := leftsAndRights[].leftAndRightMethod(CMiddle());
+        spreadInvocation := leftsAndRights[].leftAndRightMethod{param = CMiddle();};
     }
 }
