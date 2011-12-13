@@ -17,6 +17,12 @@ done
 # Set CEYLON_HOME
 CEYLON_HOME=$(dirname "$PRG)")/..
 
+# set CEYLON_REPO if not already set
+if test -z "$CEYLON_REPO"
+then
+    CEYLON_REPO=$HOME/.ceylon/repo
+fi
+
 unset USER_CP
 unset ARGS
 unset BOOTSTRAP

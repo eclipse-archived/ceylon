@@ -23,8 +23,8 @@ done
 source $(dirname "$PRG")/args.sh
 
 # JAVA_CP are classes required by the tool to run
-JAVA_CP="$HOME/.ceylon/repo/com/redhat/ceylon/compiler/$CEYLON_VERSION/com.redhat.ceylon.compiler-$CEYLON_VERSION.jar"
-JAVA_CP="$JAVA_CP:$HOME/.ceylon/repo/com/redhat/ceylon/typechecker/$CEYLON_VERSION/com.redhat.ceylon.typechecker-$CEYLON_VERSION.jar"
+JAVA_CP="$CEYLON_REPO/com/redhat/ceylon/compiler/$CEYLON_VERSION/com.redhat.ceylon.compiler-$CEYLON_VERSION.jar"
+JAVA_CP="$JAVA_CP:$CEYLON_REPO/com/redhat/ceylon/typechecker/$CEYLON_VERSION/com.redhat.ceylon.typechecker-$CEYLON_VERSION.jar"
 JAVA_CP="$JAVA_CP:$CEYLON_HOME/lib/antlr-3.4-complete.jar"
 JAVA_CP="$JAVA_CP:$CEYLON_HOME/lib/markdownj-core-faf3bf83000.jar"
 
