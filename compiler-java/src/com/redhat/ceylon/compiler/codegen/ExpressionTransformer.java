@@ -76,7 +76,6 @@ import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewArray;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
-import com.sun.tools.javac.tree.JCTree.JCTypeApply;
 import com.sun.tools.javac.tree.JCTree.JCUnary;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
@@ -111,8 +110,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         return result;
     }
     
-    JCStatement transform(Tree.SpecifierStatement op) {
-        // ExpressionStatements do not return any value, therefore we don't care about the type of the expressions.
+    public JCStatement transform(Tree.SpecifierStatement op) {
+        // SpecifierStatement do not return any value, therefore we don't care about the type of the expressions.
         inStatement = true;
         JCStatement result = at(op).Exec(expressionGen().transformAssignment(op, op.getBaseMemberExpression(), op.getSpecifierExpression().getExpression()));
         inStatement = false;
