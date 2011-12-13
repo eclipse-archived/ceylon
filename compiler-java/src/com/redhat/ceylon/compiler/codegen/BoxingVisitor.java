@@ -47,7 +47,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpressio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ThenOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.util.Util;
 

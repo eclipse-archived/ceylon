@@ -31,9 +31,9 @@ import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.util.Util;
@@ -47,7 +47,7 @@ public class BoxingDeclarationVisitor extends Visitor {
     }
     
     @Override
-    public void visit(MethodDefinition that) {
+    public void visit(AnyMethod that) {
         super.visit(that);
         // FIXME: we need to set those in the model loader as well
         Method method = that.getDeclarationModel();
