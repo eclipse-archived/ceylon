@@ -142,6 +142,12 @@
         <literal>org.hibernate</literal> vs <literal>org.hibernate_example</literal>
         or <literal>org.hibernate.core</literal> vs 
         <literal>org.hibernate.example</literal>.</para></comment>
+
+        <para>In a compilation source directory, all packages that do not belong to an
+        identified module belong to the <emphasis>default module</emphasis>. The name
+        of the default module is <literal>[default]</literal>. The default module has no
+        version and cannot be published to a remote repository nor to the local
+        repository cache (under <filename>~/.ceylon/repo</filename></para>
         
         <para>A module <emphasis>version identifier</emphasis> is a
         character string containing digits, periods, and lowercase
