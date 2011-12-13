@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Module {
 
-    public static final String DEFAULT_MODULE_NAME = "[default]";
+    public static final String DEFAULT_MODULE_NAME = "default";
 
     private List<String> name;
     private String version;

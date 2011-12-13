@@ -82,6 +82,9 @@ public class ModuleVisitor extends Visitor {
             if (moduleName==null) {
                 unit.addError("missing module name");
             }
+            else if (moduleName.startsWith(Module.DEFAULT_MODULE_NAME)) {
+                unit.addError("default is a reserved module name");
+            }
             else {
                 Tree.SpecifiedArgument vsa = getArgument(that, "version");
                 String version = argumentToString(vsa);
