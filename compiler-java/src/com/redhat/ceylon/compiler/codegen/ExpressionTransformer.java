@@ -76,6 +76,7 @@ import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewArray;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCTypeApply;
 import com.sun.tools.javac.tree.JCTree.JCUnary;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.Context;
@@ -1156,6 +1157,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // sequence
         String srcSequenceName = varBaseName+"$0";
         ProducedType srcSequenceType = typeFact().getNonemptySequenceType(expr.getPrimary().getTypeModel());
+        ProducedType srcElementType = typeFact().getElementType(srcSequenceType);
         JCExpression srcSequenceTypeExpr = makeJavaType(srcSequenceType, NO_PRIMITIVES);
         JCExpression srcSequenceExpr = transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, srcSequenceType);
 
@@ -1176,8 +1178,16 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCNewArray newArrayExpr = make().NewArray(arrayElementType, List.of(makeIdent(sizeName)), null);
         
         // return the new array
+        JCExpression returnArrayType = makeJavaType(expr.getTarget().getType(), SATISFIES);
+        JCExpression returnArrayIdent = make().QualIdent(syms().ceylonArraySequenceType.tsym);
+        JCExpression returnArrayTypeExpr;
+        // avoid putting type parameters such as j.l.Object
+        if(returnArrayType != null)
+            returnArrayTypeExpr = make().TypeApply(returnArrayIdent, List.of(returnArrayType));
+        else // go raw
+            returnArrayTypeExpr = returnArrayIdent;
         JCNewClass returnArray = make().NewClass(null, null, 
-                make().TypeApply(make().QualIdent(syms().ceylonArraySequenceType.tsym), List.of(arrayElementType)), 
+                returnArrayTypeExpr, 
                 List.of(makeIdent(newArrayName)), null);
         
         // for loop
@@ -1200,6 +1210,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 make().Select(makeIdent(srcSequenceName), names().fromString("item")),
                 List.<JCExpression>of(boxedIndex));
         // item.member
+        sequenceItemExpr = applyErasureAndBoxing(sequenceItemExpr, srcElementType, true, BoxingStrategy.BOXED, 
+                expr.getTarget().getQualifyingType());
         JCExpression appliedExpr = transformMemberExpression(expr, sequenceItemExpr, transformer);
         // reset back here after transformMemberExpression
         at(expr);
