@@ -5,6 +5,8 @@ import java.util.List;
 
 public class Module {
 
+    public static final String DEFAULT_MODULE_NAME = "[default]";
+
     private List<String> name;
     private String version;
     private List<Package> packages = new ArrayList<Package>();
@@ -14,7 +16,8 @@ public class Module {
     private String license;
     private String doc;
     private List<String> authors = new ArrayList<String>();
-    
+    private boolean isDefault;
+
     /**
      * Whether or not the module is available in the
      * source path or the repository
@@ -131,5 +134,15 @@ public class Module {
     public List<String> getAuthors() {
 		return authors;
 	}
-    
+
+    /**
+     * Is this the default module hosting all units outside of an explicit module
+     */
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(boolean isDefault) {
+        this.isDefault = isDefault;
+    }
 }

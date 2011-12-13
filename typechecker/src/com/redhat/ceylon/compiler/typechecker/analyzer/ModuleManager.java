@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.context.Context;
-import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -52,10 +51,11 @@ public class ModuleManager {
             packageStack.addLast(emptyPackage);
 
             //build default module (module in which packages belong to when not explicitly under a module
-            final List<String> defaultModuleName = Collections.singletonList("<default module>");
+            final List<String> defaultModuleName = Collections.singletonList(Module.DEFAULT_MODULE_NAME);
             final Module defaultModule = createModule(defaultModuleName);
+            defaultModule.setDefault(true);
             defaultModule.setAvailable(true);
-            defaultModule.setVersion("<unknown>");
+            defaultModule.setVersion("unversioned");
             bindPackageToModule(emptyPackage, defaultModule);
             modules.getListOfModules().add(defaultModule);
             modules.setDefaultModule(defaultModule);
